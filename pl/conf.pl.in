@@ -31,7 +31,7 @@ $ALLOW_FILE =	".*\\.(?:$HTML_SUFFIX)|.*\\.txt" . # HTML, plain text
 		"|.*\\.pdf|.*\\.ps" . 		   # PDF, PostScript
 		"|.*\\.tex|.*\\.dvi" .   	   # TeX, DVI
 		"|.*\\.rpm|.*\\.deb" .   	   # RPM, DEB
-		"|.*\\.doc|.*\\.xls|.*\\.ppt" .	   # Word, Excel, PowerPoint
+		"|.*\\.doc|.*\\.xls|.*\\.pp[st]" . # Word, Excel, PowerPoint
 		"|.*\\.j[sabf]w|.*\\.jtd" .        # Ichitaro 4, 5, 6, 7, 8
 		"|.*\\.sx[widc]" .                 # OpenOffice Writer,Calc,Impress,Draw
 		"|.*\\.rtf" .   	           # Rich Text Format

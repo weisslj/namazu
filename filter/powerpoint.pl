@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: powerpoint.pl,v 1.10 2003-08-03 04:00:09 opengl2772 Exp $
+# $Id: powerpoint.pl,v 1.11 2004-01-09 23:01:43 usu Exp $
 # Copyright (C) 2000 Ken-ichi Hirose, 
 #               2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -76,7 +76,7 @@ sub post_codeconv () {
 sub add_magic ($) {
     my ($magic) = @_;
 
-    $magic->addFileExts('\\.ppt$', 'application/powerpoint');
+    $magic->addFileExts('\\.pp[st]$', 'application/powerpoint');
     return;
 }
 

@@ -7,6 +7,7 @@
 
 1999-05-29  Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>
 
+	* lib/conf.pl.in: Modified a usage message in Japanese vastly.
 	* src/mknmz.pl: Modified command line option parsing codes
 	  using	Getopt::Long module.
 	* src/cgi.c: Fixed validate_dbname() bug and

@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.9 1999-05-29 08:20:38 satoru Exp $
+# $Id: mknmz.pl.in,v 1.10 1999-05-29 08:56:37 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -598,7 +598,7 @@ sub parse_options ()
 #    Getopt::Long::Configure('bundling');
     Getopt::Long::config('bundling');
     GetOptions('u|uuencode'          => \$conf::UuencodeOpt,
-	       'h|mailnews'          => \$conf::MailNewsOpt,
+	       'h|rfc822'            => \$conf::MailNewsOpt,
 	       'H|no-hiragana'       => \$conf::HiraganaOpt,
 	       'G|no-okurigana'      => \$conf::OkuriganaOpt,
 	       'E|no-edge-symbol'    => \$conf::NoEdgeSymbolOpt,
@@ -622,7 +622,7 @@ sub parse_options ()
 	       'O|output-dir=s'      => \$output_dir,
 	       'l|lang=s'            => \$conf::LANGUAGE,
 	       'T|template-dir=s'    => \$LIBDIR,
-	       't|target-regex=s'    => \$conf::TARGET_FILE,
+	       't|allow-regex=s'    => \$conf::ALLOW_REGEX,
 
 	       'v|version'           => \$opt_version,
 	       '0|help'              => \$opt_help,
@@ -644,7 +644,7 @@ sub parse_options ()
 	exit 1;
     }
     if ($opt_all) {
-	$conf::TARGET_FILE = ".*";
+	$conf::ALLOW_REGEX = ".*";
     }
     if ($opt_chasen) {
 	$conf::WAKATI = $conf::KAKASI;
@@ -660,7 +660,7 @@ sub parse_options ()
     }
     if ($opt_man) {
 	$conf::ManOpt      = 1;
-	$conf::TARGET_FILE = '.*\.\d.*';
+	$conf::ALLOW_REGEX = '.*\.\d.*';
     }
     if ($opt_include) {
 	shift @argv;
@@ -889,8 +889,8 @@ sub append_finfo () {
 sub wanted ($$){
     my ($name, $rarray) = @_;
     push(@{$rarray}, $name) if 
-	($name !~ m!^.*/(($conf::DENY_FILE)(\.gz|\.Z)?)$!i &&
-	 $name =~ m!^.*/(($conf::TARGET_FILE)(\.gz|\.Z|\?.*)?)$!i && -f $name && -r $name);
+	($name !~ m!^.*/(($conf::DENY_REGEX)(\.gz|\.Z)?)$!i &&
+	 $name =~ m!^.*/(($conf::ALLOW_REGEX)(\.gz|\.Z|\?.*)?)$!i && -f $name && -r $name);
 }
 
 # インデックスの追加の準備を行う
@@ -1741,7 +1741,7 @@ sub make_finfo_index () {
 muda($conf::File{'BODY_MSG_EN'}, $conf::HELPER_EXTENSIONS,
      $conf::SEARCH_FIELD, $conf::ON_MEMORY_MAX,
      $conf::File{'BODY_MSG_JA'}, $conf::WORD_LENG_MAX,
-     $conf::MHONARC_MESSAGE_FILE, $conf::DENY_FILE, $conf::INTSIZE,
+     $conf::MHONARC_MESSAGE_FILE, $conf::DENY_REGEX, $conf::INTSIZE,
      $conf::MailNewsOpt, $conf::NoLineAdOpt, $conf::CHASEN_MORPH,
      $conf::UuencodeOpt, $conf::MHONARC_HEADER, $conf::CHASEN,
      $conf::KAKASI, $conf::OkuriganaOpt, $TARGET_DIR,

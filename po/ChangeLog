@@ -1,3 +1,7 @@
+2000-02-22  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* POTFILES.in: Add filter/html.pl
+
 2000-02-16  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* POTFILES.in: Add pl/var.pl.in

@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.28 2000-02-22 03:44:13 satoru Exp $
+# $Id: mknmz.in,v 1.29 2000-02-22 13:16:29 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -349,15 +349,7 @@ sub namazu_core ($$$$$$) {
     util::dprint(_("after load_document: ")."$uri: $cfile_size, $text_size, $kanji, $mtype\n");
 
     # check if the file is acceptable.
-    my $err = check_file($cfile, $cfile_size, $text_size, $mtype);
-    if (defined $err) {
-	print $msg_prefix . "$uri $err\n";
-	print $fh_errorsfile "$cfile $err\n"; 
-	return 0;  # return 0 if error
-    }
-
-    # check if the file should be excluded.
-    $err = isexcluded($cfile, $uri, \$content);
+    my $err = check_file($cfile, $cfile_size, $text_size, $mtype, $uri);
     if (defined $err) {
 	print $msg_prefix . "$uri $err\n";
 	print $fh_errorsfile "$cfile $err\n"; 
@@ -383,27 +375,9 @@ sub namazu_core ($$$$$$) {
     return $cfile_size;
 }
 
-# Check wheter or not the given URI is excluded.
-sub isexcluded ($$$) {
-    my ($cfile, $uri, $contref) = @_;
-    my $err = undef;
-
-    if ($var::Opt{'robotexclude'}) {
-	if ($uri =~ m/^$conf::ROBOTS_EXCLUDE_URIS/io) {
-	    $err = "is excluded because of /robots.txt.\n";
-	} elsif ($cfile =~ /\.($conf::HTML_SUFFIX)$/io &&
-		 $$contref =~ /META\s+NAME\s*=\s*([\'\"]?)ROBOTS\1\s+[^>]*
-		 CONTENT\s*=\s*([\'\"]?).*?(NOINDEX|NONE).*?\2[^>]*>/ix)  #"
-	{
-	    $err = "is excluded because of <META> element.";
-	}
-    }
-
-    return $err;
-
-}
-
-# make a URI from a file name
+#
+# Make the URI from the given file name.
+#
 sub generate_uri ($) {
     my ($file) = @_;
     return undef unless defined $file;
@@ -1295,9 +1269,11 @@ sub show_version () {
     print $usage::VERSION_INFO;
 }
 
-# check the file -- 0: OK / 1: NG
-sub check_file ($$$$) {
-    my ($cfile, $cfile_size, $text_size, $mtype) = @_;
+#
+# check the file. No $msg is good.
+#
+sub check_file ($$$$$) {
+    my ($cfile, $cfile_size, $text_size, $mtype, $uri) = @_;
 
     my $msg = undef;
     if (! -e $cfile) {
@@ -1318,6 +1294,8 @@ sub check_file ($$$$) {
 	$msg = $mtype;
     } elsif ($mtype =~ /^x-system/) {
 	$msg = _("system error occurred! ")."($mtype)".(" skipped.");
+    } elsif ($uri =~ m/^$conf::ROBOTS_EXCLUDE_URIS/o) {
+	$msg = _("is excluded because of /robots.txt! skipped.");
     }
 
     return $msg;
@@ -2222,17 +2200,15 @@ sub decide_type ($$) {
 #
 # For avoiding "used only once: possible typo at ..." warnings.
 #
-muda($conf::ON_MEMORY_MAX,
+muda($conf::ON_MEMORY_MAX, $conf::ROBOTS_EXCLUDE_URIS,
      $conf::WORD_LENG_MAX, $conf::TEXT_SIZE_MAX,
      $conf::DENY_FILE, $var::INTSIZE,
      $conf::CHASEN_NOUN, $conf::CHASEN,
      $conf::KAKASI, $var::Opt{'okurigana'},
-     $var::Opt{'hiragana'}, $conf::ROBOTS_EXCLUDE_URLS, $conf::DIRECTORY_INDEX,
-     $conf::HTML_SUFFIX, $usage::USAGE, 
-     $var::Opt{'noheadabst'}, $usage::VERSION_INFO,
+     $var::Opt{'hiragana'}, $conf::DIRECTORY_INDEX,
+     $usage::USAGE, $var::Opt{'noheadabst'}, $usage::VERSION_INFO,
      $var::Opt{'noencodeurl'}, $var::Opt{'htaccessexclude'}, 
-     $var::RECURSIVE_ACTIONS, $conf::ROBOTS_EXCLUDE_URIS, 
-     $conf::ROBOTS_EXCLUDE_URLS, $conf::META_TAGS, $var::USE_NKF_MODULE,
+     $var::RECURSIVE_ACTIONS, $conf::META_TAGS, $var::USE_NKF_MODULE,
      $conf::ADDRESS, $var::MAILING_ADDRESS,
      $conf::FILE_SIZE_MAX,
      );

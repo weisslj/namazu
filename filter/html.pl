@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: html.pl,v 1.25 2000-02-16 07:35:30 satoru Exp $
+# $Id: html.pl,v 1.26 2000-02-22 13:16:24 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -58,6 +58,11 @@ sub filter ($$$$$) {
 
     util::vprint("Processing html file ...\n");
 
+    if ($var::Opt{'robotexclude'}) {
+	my $err = isexcluded($cont);
+	return $err if $err;
+    }
+
     html_filter($cont, $weighted_str, $fields, $headings);
     
     gfilter::line_adjust_filter($cont);
@@ -67,6 +72,20 @@ sub filter ($$$$$) {
 			   $fields, $headings);
     return undef;
 }
+
+# Check wheter or not the given URI is excluded.
+sub isexcluded ($) {
+    my ($contref) = @_;
+    my $err = undef;
+
+    if ($$contref =~ /META\s+NAME\s*=\s*([\'\"]?)ROBOTS\1\s+[^>]*
+	CONTENT\s*=\s*([\'\"]?).*?(NOINDEX|NONE).*?\2[^>]*>/ix)  #"
+    {
+	$err = _("is excluded because of <meta name=\"robots\" ...>");
+    }
+    return $err;
+}
+
 
 sub html_filter ($$$$) {
     my ($contref, $weighted_str, $fields, $headings) = @_;
@@ -296,7 +315,7 @@ sub encode_entity ($) {
 #
 sub parse_robots_txt () {
     if (not -f "$conf::ROBOTS_TXT") {
-	warn "$conf::ROBOTS_TXT does not exists";
+	print STDERR "$conf::ROBOTS_TXT: not found\n";
 	$conf::ROBOTS_EXCLUDE_URIS="\t";
 	return 0;
     }

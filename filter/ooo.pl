@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: ooo.pl,v 1.13 2004-10-20 10:01:18 opengl2772 Exp $
+# $Id: ooo.pl,v 1.14 2004-12-27 17:30:57 opengl2772 Exp $
 # Copyright (C) 2003 Yukio USUDA 
 #               2003,2004 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -26,6 +26,8 @@ package ooo;
 use strict;
 use English;
 require 'util.pl';
+require 'gfilter.pl';
+
 
 my $utfconvpath = undef;
 my $unzippath = undef;
@@ -42,12 +44,12 @@ sub mediatype() {
 sub status() {
     $unzippath = util::checkcmd('unzip');
     if (defined $unzippath){
-	@unzipopts = ("-p");
-       if (util::islang("ja")) {
+        @unzipopts = ("-p");
+        if (util::islang("ja")) {
            if ($English::PERL_VERSION >= 5.008) {
-		$utfconvpath = "none";
-		return 'yes';
-	   }
+               $utfconvpath = "none";
+               return 'yes';
+           }
            $utfconvpath = util::checkcmd('lv');
            if ($utfconvpath){ 
                return 'yes';
@@ -100,8 +102,8 @@ sub filter_metafile ($$$) {
     my $xml = "";
     my $tmpfile  = util::tmpnam('NMZ.zip');
     { 
-	my $fh = util::efopen("> $tmpfile");
-	print $fh $$contref;
+        my $fh = util::efopen("> $tmpfile");
+        print $fh $$contref;
         util::fclose($fh);
     }
     my @cmd = ($unzippath, @unzipopts, $tmpfile, $metafile);
@@ -153,8 +155,8 @@ sub filter_contentfile ($$$$$) {
     my $xml = "";
     my $tmpfile  = util::tmpnam('NMZ.zip');
     { 
-	my $fh = util::efopen("> $tmpfile");
-	print $fh $$contref;
+        my $fh = util::efopen("> $tmpfile");
+        print $fh $$contref;
         util::fclose($fh);
     }
     my @cmd = ($unzippath, @unzipopts, $tmpfile, $contentfile);
@@ -174,8 +176,8 @@ sub filter_contentfile ($$$$$) {
 
     # Code conversion for Japanese document.
     if (util::islang("ja")) {
-         ooo::utoe(\$xml);
-         codeconv::normalize_eucjp(\$xml);
+        ooo::utoe(\$xml);
+        codeconv::normalize_eucjp(\$xml);
     }
     $$contref = $xml;
     gfilter::line_adjust_filter($contref);
@@ -223,11 +225,11 @@ sub utoe ($) {
     my ($tmp) = @_;
     if ($utfconvpath =~ /lv/){
         my $tmpfile  = util::tmpnam('NMZ.ooo');
-	{
-	    my $fh = util::efopen("> $tmpfile");
-	    print $fh $$tmp;
+        {
+            my $fh = util::efopen("> $tmpfile");
+            print $fh $$tmp;
             util::fclose($fh);
-	}
+        }
         my $cmd = ($utfconvpath . " -Iu8 " . "-Oej " . $tmpfile . " |");
         $$tmp = "";
         my $fh = util::efopen($cmd);

@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.10 1999-05-29 08:56:37 satoru Exp $
+# $Id: mknmz.pl.in,v 1.11 1999-05-30 10:37:20 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -622,7 +622,7 @@ sub parse_options ()
 	       'O|output-dir=s'      => \$output_dir,
 	       'l|lang=s'            => \$conf::LANGUAGE,
 	       'T|template-dir=s'    => \$LIBDIR,
-	       't|allow-regex=s'    => \$conf::ALLOW_REGEX,
+	       't|allow-regex=s'     => \$conf::ALLOW_REGEX,
 
 	       'v|version'           => \$opt_version,
 	       '0|help'              => \$opt_help,
@@ -637,11 +637,11 @@ sub parse_options ()
 
     if ($opt_version) {
 	print "mknmz v$conf::VERSION\n";
-	exit 1;
+	exit 0;
     }
     if ($opt_help) {
 	show_usage();
-	exit 1;
+	exit 0;
     }
     if ($opt_all) {
 	$conf::ALLOW_REGEX = ".*";

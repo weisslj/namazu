@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.4 1999-05-29 08:20:49 satoru Exp $
+ * $Id: cgi.c,v 1.5 1999-05-30 10:37:20 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -275,8 +275,10 @@ int get_cgi_variables(uchar * query, uchar *subquery)
  * with no arguments also trhough this function */
 void cgi_initialize(uchar * query, uchar *subquery)
 {
-    if (get_cgi_variables(query, subquery))
+    if (get_cgi_variables(query, subquery)) {
 	show_usage();	/* if it is NOT CGI, show usage usage */
+	exit(0);
+    }
     if (DbNumber == 0) {
         DbNames[DbNumber] = (uchar *) malloc(strlen(DEFAULT_DIR) + 1);
         if (DbNames[DbNumber] == NULL) {

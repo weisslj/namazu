@@ -5,11 +5,17 @@
 	about major changes from previous version, please see 
 	"manual.html#VERSIONDIFF".
 
+1999-05-30  Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>
+
+	* src/namazu.c: Modified it to use GNU getopt.c for parsing
+	command line options and to support long-name options.
+	* src/getopt.[ch], src/getopt1.c: GNU getopt.c added.
+	
 1999-05-29  Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>
 
 	* lib/conf.pl.in: Modified a usage message in Japanese vastly.
 	* src/mknmz.pl: Modified command line option parsing codes
-	  using	Getopt::Long module.
+	using Getopt::Long module.
 	* src/cgi.c: Fixed validate_dbname() bug and
 	  - [MAEDA Atusi <maeda@is.uec.ac.jp>] - patch
 	* src/hlist.c: Fixed put_hlist bug

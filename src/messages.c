@@ -2,7 +2,7 @@
  * 
  * messages.c -
  * 
- * $Id: messages.c,v 1.3 1999-05-14 04:38:50 satoru Exp $
+ * $Id: messages.c,v 1.4 1999-05-30 10:37:20 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -40,9 +40,7 @@ uchar Lang[] = (uchar *)"en";
 
 /* information about Namazu */
 uchar *COPYRIGHT = (uchar *)
-"  $Id: messages.c,v 1.3 1999-05-14 04:38:50 satoru Exp $
- * 
- * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.";
+"Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.";
 
 uchar *MSG_USAGE, *MSG_TOO_LONG_KEY, *MSG_TOO_MANY_KEYITEM,
 *MSG_RESULT_HEADER, *MSG_NO_HIT, *MSG_HIT_1, *MSG_HIT_2,
@@ -68,28 +66,29 @@ void initialize_message(void)
 #endif
 
       MSG_USAGE = (uchar *)"%s\n\
-  全文検索システム Namazu の検索プログラム v%s\n\n\
-  usage: namazu [options] <query> [index dir(s)] \n\
-     -n (num)  : 一度に表示する件数\n\
-     -w (num)  : 表示するリストの先頭番号\n\
-     -s        : 短いフォーマットで出力\n\
-     -S        : もっと短いフォーマット (リスト表示) で出力\n\
-     -v        : usage を表示する (この表示)\n\
-     -f (file) : namazu.conf を指定する\n\
-     -h        : HTML で出力する\n\
-     -l        : 新しい順にソートする\n\
-     -e        : 古い順にソートする\n\
-     -a        : 検索結果をすべて表示する\n\
-     -c        : ヒット数のみを表示する\n\
-     -r        : 参考ヒット数を表示しない\n\
-     -q        : 検索結果以外のメッセージを表示しない\n\
-     -o (file) : 指定したファイルに検索結果を出力する\n\
-     -C        : コンフィギュレーション内容を表示する\n\
-     -H        : 先の検索結果へのリンクを表示する (ほぼ無意味) \n\
-     -F        : <FORM> ... </FORM> の部分を強制的に表示する\n\
-     -R        : URL の置き換えを行わない\n\
-     -U        : plain text で出力する時に URL encode の復元を行わない\n\
-     -L (lang) : メッセージの言語を設定する ja または en\n";
+全文検索システム Namazu の検索プログラム v%s\n\n\
+usage: namazu [options] <query> [index dir(s)] \n\
+   -n, --max=num           一度に表示する件数\n\
+   -w, --whence=num        表示するリストの先頭番号\n\
+   -s, --short             短いフォーマットで出力\n\
+   -S, --very-short        もっと短いフォーマット (リスト表示) で出力\n\
+   -h, --html              HTML で出力する\n\
+   -l, --late              新しい順にソートする\n\
+   -e, --early             古い順にソートする\n\
+   -a, --all               検索結果をすべて表示する\n\
+   -c, --hit-count         ヒット数のみを表示する\n\
+   -r, --no-references     参考ヒット数を表示しない\n\
+   -H, --page              先の検索結果へのリンクを表示する (ほぼ無意味) \n\
+   -F, --form              <FORM> ... </FORM> の部分を強制的に表示する\n\
+   -R, --no-replace-url    URL の置き換えを行わない\n\
+   -U, --no-encode-url     URL encode の復元を行わない\n\
+   -o, --output-file=file  指定したファイルに検索結果を出力する\n\
+   -f, --config=file       namazu.conf を指定する\n\
+   -C, --show-config       コンフィギュレーション内容を表示する\n\
+   -q, --quiet             検索結果以外のメッセージを表示しない\n\
+   -L, --lang=lang         メッセージの言語を設定する ja または en\n\
+   -v, --version           ヴァージョンを表示する\n\
+   -0, --help              help を表示する (この表示)\n";
 
         /* output messages (Japanese message should be outputed by
            euctojisput function */

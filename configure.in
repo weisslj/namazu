@@ -9,7 +9,7 @@ dnl
 
 dnl Process this file with autoconf to produce a configure script.
 AC_INIT(src/cgi.c)
-AM_INIT_AUTOMAKE(namazu, 1.9)
+AM_INIT_AUTOMAKE(namazu, 1.9-devel)
 
 dnl Do you wish?
 dnl PATH=/bin:/usr/bin:/usr/sbin:/usr/local/bin:$PATH

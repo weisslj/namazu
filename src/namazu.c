@@ -1,9 +1,8 @@
-
 /*
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.4 1999-05-29 08:21:09 satoru Exp $
+ * $Id: namazu.c,v 1.5 1999-05-30 10:37:20 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -36,6 +35,7 @@
 #include <unistd.h>
 #include <sys/stat.h>
 #include "namazu.h"
+#include "getopt.h"
 
 
 /* stupid function intended for debug use */
@@ -72,13 +72,12 @@ void cat(uchar *fname)
 /* display the usage and version info and exit */
 void show_usage(void)
 {
-    uchar buf[1024];
+    uchar buf[2048];
     strcpy(buf, MSG_USAGE);
 #if	defined(_WIN32) || defined(__EMX__)
     euctosjis(buf);
 #endif
     printf(buf, COPYRIGHT, VERSION);
-    exit(0);
 }
 
 
@@ -96,113 +95,121 @@ void set_redirect_stdout_to_file(uchar * fname)
     close(fd);
 }
 
-/* get command line options */
-int get_commandline_opt(int ac, uchar **av)
-{
-    int i, j;
+/*
+ * Command line options.
+ */
+static const char *short_options = "acCefFhHlL:n:o:qrRsSUvw0";
+static struct option long_options[] = {
+    {"all",              no_argument,       NULL, 'a'},
+    {"hit-count",        no_argument,       NULL, 'c'},
+    {"show-config",      no_argument,       NULL, 'C'},
+    {"early",            no_argument,       NULL, 'e'},
+    {"config",           no_argument,       NULL, 'f'},
+    {"form",             no_argument,       NULL, 'F'},
+    {"html",             no_argument,       NULL, 'h'},
+    {"page",             no_argument,       NULL, 'H'},
+    {"late",             no_argument,       NULL, 'l'},
+    {"lang",             required_argument, NULL, 'L'},
+    {"max",              required_argument, NULL, 'n'},
+    {"output-file",      required_argument, NULL, 'o'},
+    {"quiet",            no_argument,       NULL, 'q'},
+    {"no-ref",           no_argument,       NULL, 'r'},
+    {"no-replace-url",   no_argument,       NULL, 'R'},
+    {"short",            no_argument,       NULL, 's'},
+    {"very-short",       no_argument,       NULL, 'S'},
+    {"no-encode-url",    no_argument,       NULL, 'U'},
+    {"version",          no_argument,       NULL, 'v'},
+    {"whence",           required_argument, NULL, 'w'},
+    {"help",             no_argument,       NULL, '0'},
+    {NULL, 0, NULL, 0}
+};
 
-    for (i = 1; i < ac; i++) {
-	if (av[i][0] == '-') {
-            for (j = 1;  av[i][j] != '\0' ; j++) {
-                switch (av[i][j]) {
-                case 'n':
-                    if (av[i][j + 1] == '\0' && i < ac - 1)
-                        HListMax = atoi(av[++i]);
-		    if (HListMax < 0)
-			HListMax = 0;
-                    goto LOOP1;
-                case 'w':
-                    if (av[i][j + 1] == '\0' && i < ac - 1)
-                        HListWhence = atoi(av[++i]);
-                    goto LOOP1;
-                case 'd':
-                    Debug = 1;
-                    break;
-                case 's':
-                    ShortFormat = 1;
-                    break;
-                case 'S':
-                    MoreShortFormat = 1;
-                    break;
-                case 'q':
-                    Quiet = 1;
-                    break;
-                case 'c':
-                    HitCountOnly = 1;
-                    break;
-                case 'h':
-                    HtmlOutput = 1;
-                    break;
-                case 'H':
-                    HidePageIndex = 0;
-                    break;
-                case 'F':
-                    ForcePrintForm = 1;
-                    break;
-                case 'a':
-                    AllList = 1;
-                    break;
-                case 'l':
-                    LaterOrder = 1;
-                    ScoreSort = 0;
-                    break;
-                case 'e':
-                    LaterOrder = 0;
-                    ScoreSort = 0;
-                    break;
-                case 'R':
-                    NoReplace = 1;
-                    break;
-                case 'r':
-                    NoReference = 1;
-                    break;
-                case 'U':
-                    DecodeURL = 0;
-                    break;
-                case 'v':
-                    show_usage();
-                    break;
-                case 'C':
-                    load_namazu_conf(av[0]);
-                    show_configuration();
-                    break;
-                case 'f':
-                    if (av[i][j + 1] == '\0' && i < ac - 1)
-                        strcpy(NAMAZURC, av[++i]);
-                    load_namazu_conf(av[0]);
-                    goto LOOP1;
-                case 'L':
-                    if (av[i][j + 1] == '\0' && i < ac - 1) {
-                        strncpy(Lang, av[i + 1], 2);
-                        i++;
-                        initialize_message();
-                    }
-                    goto LOOP1;
-                case 'o':
-                    if (av[i][j + 1] == '\0' && i < ac - 1)
-                        set_redirect_stdout_to_file(av[++i]);
-                    goto LOOP1;
-                case 't':
-                    if (av[i][j + 1] == '\0' && i < ac - 1) {
-                        if (!strcmp(av[i + 1], "SIMPLE"))
-                            TfIdf = 0;
-                        if (!strcmp(av[i + 1], "TFIDF"))
-                            TfIdf = 1;
-                        i++;
-                    }
-                    goto LOOP1;
-		case '-':
-		    i++;
-		    goto out;
-                }
-            } 
-        } else {
+/* parse command line options */
+int parse_options(int argc, char **argv)
+{
+    for (;;) {
+        int ch = getopt_long(argc, argv, short_options, long_options, NULL);
+        if (ch == EOF) {
             break;
-        }
-    LOOP1: ;
-    }
-out:
-    return i;
+	}
+	switch (ch) {
+	case 'n':
+	    HListMax = atoi(optarg);
+	    break;
+	case 'w':
+	    HListWhence = atoi(optarg);
+	    break;
+	case 'd':
+	    Debug = 1;
+	    break;
+	case 's':
+	    ShortFormat = 1;
+	    break;
+	case 'S':
+	    MoreShortFormat = 1;
+	    break;
+	case 'q':
+	    Quiet = 1;
+	    break;
+	case 'c':
+	    HitCountOnly = 1;
+	    break;
+	case 'h':
+	    HtmlOutput = 1;
+	    break;
+	case 'H':
+	    HidePageIndex = 0;
+	    break;
+	case 'F':
+	    ForcePrintForm = 1;
+	    break;
+	case 'a':
+	    AllList = 1;
+	    break;
+	case 'l':
+	    LaterOrder = 1;
+	    ScoreSort = 0;
+	    break;
+	case 'e':
+	    LaterOrder = 0;
+	    ScoreSort = 0;
+	    break;
+	case 'R':
+	    NoReplace = 1;
+	    break;
+	case 'r':
+	    NoReference = 1;
+	    break;
+	case 'U':
+	    DecodeURL = 0;
+	    break;
+	case 'v':
+	    printf("namazu v%s\n", VERSION);
+	    exit(0);
+	    break;
+	case '0':
+	    show_usage();
+	    exit(0);
+	    break;
+	case 'C':
+	    load_namazu_conf(argv[0]);
+	    show_configuration();
+	    break;
+	case 'f':
+	    strcpy(NAMAZURC, optarg);
+	    load_namazu_conf(argv[0]);
+	    break;
+	case 'L':
+	    strncpy(Lang, optarg, 2);
+	    initialize_message();
+	    break;
+	case 'o':
+	    set_redirect_stdout_to_file(optarg);
+	    break;
+	}
+    } 
+
+    return optind;
 }
 
 void free_dbnames(void)
@@ -390,10 +397,12 @@ int main(int argc, char **argv)
 				 * do not diplay page index
 				 */
 	load_namazu_conf(argv[0]);
-        /* do commad line processing */
-	i = get_commandline_opt(argc, (uchar **)argv); 
-	if (i == argc)
+        /* parse commad line options */
+	i = parse_options(argc, argv); 
+	if (i == argc) {
 	    show_usage();
+	    exit(0);
+	}
 	if (strlen(argv[i]) > QUERY_MAX_LENGTH) {
 	    fputx(MSG_TOO_LONG_KEY, stdout);
 	    return 1;

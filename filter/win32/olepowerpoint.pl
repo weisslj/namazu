@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: olepowerpoint.pl,v 1.3 2000-03-22 21:53:14 kenzo- Exp $
+# $Id: olepowerpoint.pl,v 1.4 2001-01-04 01:58:01 baba Exp $
 # Copyright (C) 1999 Jun Kurabe ,
 #               1999 Ken-ichi Hirose All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -38,8 +38,10 @@
 # V2.10 1999/11/09 Change Name 
 #                  Merge three program ReadMSWord.pl, ReadExcel.pl, ReadPPT.pl
 # V2.11 1999/11/15  separate file.
-#					modify some functions.
+#                   modify some functions.
 # V2.12 1999/11/27 Use Office::OLE::Const to define constant value
+# V2.13 2000/05/16 Optimize for Namazu filter ...
+# V2.14 2000/10/28 contribute patch by Yoshinori.TAKESAKO-san.
 #
 
 package olepowerpoint;
@@ -84,16 +86,20 @@ sub filter ($$$$$) {
       = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
-    util::vprint("Processing powerpoint file ...\n");
+    util::vprint("Processing powerpoint file ... (using  'Win32::OLE->new PowerPoint.Application')\n");
 
-	$cfile =~ s/\//\\/g;
-    $$cont = ReadPPT::ReadPPT($cfile);
+    $cfile =~ s/\//\\/g;
+    $$cont = "";
+    ReadPPT::ReadPPT($cfile, $cont, $fields);
+    $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($cont);
+    $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
+     unless $fields->{'title'};
     gfilter::show_filter_debug_info($cont, $weighted_str,
-			   $fields, $headings);
+      $fields, $headings);
     return undef;
 }
 
@@ -104,48 +110,40 @@ use Win32::OLE;
 use Win32::OLE::Enum;
 use Win32::OLE::Const;
 
-sub enum {
-    my $enum_objs = shift;
-    my $func = shift;
+sub enum ($$$) {
+    my ($enum_objs, $func, $cont) = @_;
 
     die "No Objects or No Function" unless ($enum_objs and $func );
 
     my $e = Win32::OLE::Enum->new($enum_objs);
     while(($obj = $e->Next)) {
-	return 0 if (!&$func($obj));
+        return 0 if (!&$func($obj, $cont));
     }
     return 1;
 }
 
 sub getProperties {
-    my $doc = shift;
-    my $allText = '';
+    my ($cfile, $fields) = @_;
 
     # get Title
-    my $title = $doc->BuiltInDocumentProperties(1)->{Value};
-    my $subject = $doc->BuiltInDocumentProperties(2)->{Value};
-    my $author = $doc->BuiltInDocumentProperties(3)->{Value};
-    my $lastAuthor = $doc->BuiltInDocumentProperties(7)->{Value};
-    my $createDate = $doc->BuiltInDocumentProperties(11)->{Value};
-    my $editDate = $doc->BuiltInDocumentProperties(12)->{Value};
+    $fields->{'title'} = "$cfile->BuiltInDocumentProperties(1)->{Value}"
+      unless $cfile->BuiltInDocumentProperties(1)->{Value};            # title
+#    $fields->{'title'} = $cfile->BuiltInDocumentProperties(2)->{Value}; # subject
+#    $fields->{'author'} = $cfile->BuiltInDocumentProperties(3)->{Value}; # author
+    $fields->{'author'} = "$cfile->BuiltInDocumentProperties(7)->{Value}"
+      unless $cfile->BuiltInDocumentProperties(7)->{Value};            # lastauthor
+#    $fields->{'date'} = $cfile->BuiltInDocumentProperties(11)->{Value}; # createdate
+    $fields->{'date'} = "$cfile->BuiltInDocumentProperties(12)->{Value}"
+      unless $cfile->BuiltInDocumentProperties(12)->{Value};            # editdate
+#    $fields->{'date'} = $cfile->BuiltInDocumentProperties(13)->{Value}; # editdate?
 
-    $allText .= 'Subject: ' . $title . ' ' . $subject ;
-    $allText .= "\n";
-    $allText .= 'From: ' . $author . ',' . $lastAuthor;
-    $allText .= "\n";
-    $allText .= 'Date: ' . $createDate;
-    $allText .= "\n";
-    $allText .= 'Edit: ' . $editDate;
-    $allText .= "\n";
-    $allText .= "\n";
-
-    return $allText;
+    return undef;
 }
 
 package ReadPPT;
 
-sub ReadPPT {
-    my $fileName = shift;
+sub ReadPPT ($$$) {
+    my ($cfile, $cont, $fields) = @_;
 
     # Copy From Win32::OLE Example Program
     # use existing instance if PowerPoint is already running
@@ -153,63 +151,66 @@ sub ReadPPT {
     eval {$ppt = Win32::OLE->GetActiveObject('PowerPoint.Application')};
     die "PowerPoint not installed" if $@;
     unless (defined $ppt) {
-	$ppt = Win32::OLE->new('PowerPoint.Application', sub {$_[0]->Quit;})
-	    or die "Oops, cannot start PowerPoint";
+    $ppt = Win32::OLE->new('PowerPoint.Application', sub {$_[0]->Quit(0);})
+     or die "Oops, cannot start PowerPoint";
     }
     #End of Copy From Win32::OLE Example Program
     # Must set Visible = true 
     $ppt->{Visible} = 1;
 
     # Load Office 98 Constant
-    $office_consts = Win32::OLE::Const->Load("Microsoft Office 8.0 Object Library");
+    local $office_consts;
+    open (SAVEERR,">&STDERR");
+    open (STDERR,">nul");
+    $office_consts = Win32::OLE::Const->Load("Microsoft Office 9.0 Object Library");
+    $office_consts = Win32::OLE::Const->Load("Microsoft Office 8.0 Object Library") unless $office_consts;
+    open (STDERR,">&SAVEERR");
 
-    my $prs = $ppt->{Presentations}->Open($fileName);
-    die "Cannot open File $fileName" unless ( defined $prs );
+    my $prs = $ppt->{Presentations}->Open($cfile);
+    die "Cannot open File $cfile" unless ( defined $prs );
 
-    $allText = '';
-    $allText .= olepowerpoint::getProperties($prs);
-    $allText .= getSlides($prs);
+    olepowerpoint::getProperties($prs, $fields);
+    getSlides($prs, $cont);
+
     $prs->close();
     undef $prs;
     undef $ppt;
 
-    return $allText;
+    return undef;
 }
 
-sub getSlides {
-    my $prs = shift;
-    my $allText = '';
+sub getSlides ($$) {
+    my ($prs, $cont) = @_;
 
     my $enum_a_slide = sub {
-	my $slide = shift;
+    my $slide = shift;
 
-	my $enum_a_headerfooter = sub {
-	    my $obj = shift;
-	    $allText .= $obj->Header->{Text} if ( $obj->{Header} && $obj->Header->{Text} ) ;
-	    $allText .= $obj->Footer->{Text} if ( $obj->{Footer} && $obj->Footer->{Text} ) ;
-	    return 1;
-	};
-
-	sub enum_a_shape {
-	    my $shape = shift;
-	    # Get text whaen TextFrame in Shapes and Text in TextFrame 
-	    if ($shape->{HasTextFrame} && $shape->TextFrame->TextRange) { # 
-		my $p = $shape->TextFrame->TextRange->{Text};
-		$getShapes::allText .= $p;
-		$getShapes::allText .= "\n";
-	    } elsif ( $shape->{Type} == $office_consts->{msoGroup} ) { 
-		olepowerpoint::enum($shape->GroupItems,\&enum_a_shape);
-	    } 
-	    return 1;
-	};
-
-        olepowerpoint::enum($slide->Shapes, \&enum_a_shape);
-        &$enum_a_headerfooter($slide->HeadersFooters);
+    my $enum_a_headerfooter = sub {
+        my $obj = shift;
+        $$cont .= $obj->Header->{Text} if ( $obj->{Header} && $obj->Header->{Text} ) ;
+        $$cont .= $obj->Footer->{Text} if ( $obj->{Footer} && $obj->Footer->{Text} ) ;
         return 1;
     };
 
-    olepowerpoint::enum($prs->Slides, $enum_a_slide);
-    return $allText;
+    sub enum_a_shape ($$) {
+    my ($shape, $cont) = @_;
+        # Get text whaen TextFrame in Shapes and Text in TextFrame 
+        if ($shape->{HasTextFrame} && $shape->TextFrame->TextRange) { # 
+        my $p = $shape->TextFrame->TextRange->{Text};
+            $$cont .= "$p\n" if ( defined $p );
+        } elsif ( $shape->{Type} == $office_consts->{msoGroup} ) { 
+            olepowerpoint::enum($shape->GroupItems, \&enum_a_shape, $cont);
+        } 
+        return 1;
+    };
+
+        olepowerpoint::enum($slide->Shapes, \&enum_a_shape, $cont);
+#        &$enum_a_headerfooter($slide->HeadersFooters);
+        return 1;
+    };
+
+    olepowerpoint::enum($prs->Slides, $enum_a_slide, $cont);
+    return undef;
 }
 
 #main

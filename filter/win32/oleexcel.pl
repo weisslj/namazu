@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: oleexcel.pl,v 1.4 2000-03-22 21:53:14 kenzo- Exp $
+# $Id: oleexcel.pl,v 1.5 2001-01-04 01:58:01 baba Exp $
 # Copyright (C) 1999 Jun Kurabe ,
 #               1999 Ken-ichi Hirose All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -36,9 +36,11 @@
 #                  Get Text From Grouped Shape Items
 # V2.10 1999/11/09 Change Name 
 #                  Merge three program ReadMSWord.pl, ReadExcel.pl, ReadPPT.pl
-# V2.11 1999/11/15  separate file.
-#					modify some functions.
+# V2.11 1999/11/15 separate file.
+#                  modify some functions.
 # V2.12 1999/11/27 Use Office::OLE::Const to define constant value
+# V2.13 2000/05/16 Optimize for Namazu filter ...
+# V2.14 2000/10/28 contribute patch by Yoshinori.TAKESAKO-san.
 #
 
 package oleexcel;
@@ -83,16 +85,20 @@ sub filter ($$$$$) {
       = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
-    util::vprint("Processing excel file ...\n");
+    util::vprint("Processing excel file ... (using  'Win32::OLE->new Excel.Application')\n");
 
-	$cfile =~ s/\//\\/g;
-    $$cont = ReadExcel::ReadExcel($cfile);
+    $cfile =~ s/\//\\/g;
+    $$cont = "";
+    ReadExcel::ReadExcel($cfile, $cont, $fields);
+    $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($cont);
+    $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
+     unless $fields->{'title'};
     gfilter::show_filter_debug_info($cont, $weighted_str,
-			   $fields, $headings);
+      $fields, $headings);
     return undef;
 }
 
@@ -103,142 +109,137 @@ use Win32::OLE;
 use Win32::OLE::Enum;
 use Win32::OLE::Const;
 
-sub enum {
-    my $enum_objs = shift;
-    my $func = shift;
+sub enum ($$$) {
+    my ($enum_objs, $func, $cont) = @_;
 
     die "No Objects or No Function" unless ($enum_objs and $func );
 
     my $e = Win32::OLE::Enum->new($enum_objs);
     while(($obj = $e->Next)) {
-	return 0 if (!&$func($obj));
+        return 0 if (!&$func($obj, $cont));
     }
     return 1;
 }
 
 sub getProperties {
-    my $doc = shift;
-    my $allText = '';
+    my ($cfile, $fields) = @_;
 
     # get Title
-    my $title = $doc->BuiltInDocumentProperties(1)->{Value};
-    my $subject = $doc->BuiltInDocumentProperties(2)->{Value};
-    my $author = $doc->BuiltInDocumentProperties(3)->{Value};
-    my $lastAuthor = $doc->BuiltInDocumentProperties(7)->{Value};
-    my $createDate = $doc->BuiltInDocumentProperties(11)->{Value};
-    my $editDate = $doc->BuiltInDocumentProperties(12)->{Value};
+    $fields->{'title'} = "$cfile->BuiltInDocumentProperties(1)->{Value}"
+      unless $cfile->BuiltInDocumentProperties(1)->{Value};            # title
+#    $fields->{'title'} = $cfile->BuiltInDocumentProperties(2)->{Value}; # subject
+#    $fields->{'author'} = $cfile->BuiltInDocumentProperties(3)->{Value}; # author
+    $fields->{'author'} = "$cfile->BuiltInDocumentProperties(7)->{Value}"
+      unless $cfile->BuiltInDocumentProperties(7)->{Value};            # lastauthor
+#    $fields->{'date'} = $cfile->BuiltInDocumentProperties(11)->{Value}; # createdate
+#    $fields->{'date'} = "$cfile->BuiltInDocumentProperties(12)->{Value}"
+#      unless $cfile->BuiltInDocumentProperties(12)->{Value};            # editdate
+#    $fields->{'date'} = $cfile->BuiltInDocumentProperties(13)->{Value}; # editdate?
 
-    $allText .= 'Subject: ' . $title . ' ' . $subject ;
-    $allText .= "\n";
-    $allText .= 'From: ' . $author . ',' . $lastAuthor;
-    $allText .= "\n";
-    $allText .= 'Date: ' . $createDate;
-    $allText .= "\n";
-    $allText .= 'Edit: ' . $editDate;
-    $allText .= "\n";
-    $allText .= "\n";
-
-    return $allText;
+    return undef;
 }
 
 package ReadExcel;
 
-sub ReadExcel {
-    my $fileName = shift;
+sub ReadExcel ($$$) {
+    my ($cfile, $cont, $fields) = @_;
 
     # Copy from Win32::OLE Example Program
     # use existing instance if Excel is already running
     my $excel; 
     eval {$excel = Win32::OLE->GetActiveObject('Excel.Application')};
-    die "MSWord not installed" if $@;
+    die "Excel not installed" if $@;
     unless (defined $excel) {
-	$excel = Win32::OLE->new('Excel.Application', sub {$_[0]->Quit;})
-	    or die "Oops, cannot start Word";
+        $excel = Win32::OLE->new('Excel.Application', sub {$_[0]->Quit;})
+         or die "Oops, cannot start Excel";
     }
     # End of Copy from Win32::OLE Example Program
     # for debug
     # $excel->{Visible} = 1;
 
     # Load Office 98 Constant
-    $office_consts = Win32::OLE::Const->Load("Microsoft Office 8.0 Object Library");
+    local $office_consts;
+    open (SAVEERR,">&STDERR");
+    open (STDERR,">nul");
+    $office_consts = Win32::OLE::Const->Load("Microsoft Office 9.0 Object Library");
+    $office_consts = Win32::OLE::Const->Load("Microsoft Office 8.0 Object Library") unless $office_consts;
+    open (STDERR,">&SAVEERR");
+    
+    my $wb = $excel->Workbooks->Open($cfile);
+    die "Cannot open File $cfile" unless ( defined $wb );
+    # print $cfile,"\n";
+    # print $wb,"\n";
 
-    my $wb = $excel->Workbooks->Open($fileName);
-	# print $fileName,"\n";
-	# print $wb,"\n";
-    die "Cannot open File $fileName" unless ( defined $wb );
+    oleexcel::getProperties($wb, $fields);
+    getSheets($wb, $cont);
 
-    $allText = '';
-    $allText .= oleexcel::getProperties($wb);
-    $allText .= getSheets($wb);
     $wb->close(0);
     undef $wb;
     undef $excel;
 
-    return $allText;
+    return undef;
 }
 
-sub getSheets{
-    my $wb = shift;
-    my $allText = '';
+sub getSheets ($$) {
+    my ($wb, $cont) = @_;
+
     my $enum_a_sheet = sub {
-	my $obj = shift;
-	$allText .= getCells($obj);
-	$allText .= getShapes($obj);
-	return 1;
+    my $obj = shift;
+        getCells($obj, $cont);
+        getShapes($obj, $cont);
+        return 1;
     };
 
-    oleexcel::enum($wb->Worksheets, $enum_a_sheet);
-
-    return $allText;
+    oleexcel::enum($wb->Worksheets, $enum_a_sheet, $cont);
+    return undef;
 }
 
-sub getCells {
+sub getCells ($$) {
     # parameter 
     # sheet: Sheet Object
     # Return Value
     #   Text which is contained in cell on a sheet
-    my $sheet = shift;
+    my ($sheet, $cont) = @_;
+
     my $ur = $sheet->{UsedRange};
-    my $allText = '';
+
     my $enum_a_cell = sub {
-	my $cell = shift;
-	$allText .= $cell->{Value};
-	$allText .= "\n";
-	return 1;
+    my $cell = shift;
+    my $p = $cell->{Value};
+        $$cont .= "$p\n" if ( defined $p );
+        return 1;
     };
 
-    oleexcel::enum($ur->Cells, $enum_a_cell);
-    return $allText;
+    oleexcel::enum($ur->Cells, $enum_a_cell, $cont);
+    return undef;
 }
 
-sub getShapes {
-    my $sheet = shift;
-    my $allText = '';
+sub getShapes ($$) {
+    my ($sheet, $cont) = @_;
 
     my $depth = 0;
 
     sub enum_a_shape {
-	my $obj = shift;
-	$getShapes::depth++;
-	# print "passed YY $getShapes::depth\n";
-	# print "type = ", $obj->{Type}, "\n";
-	if ( $obj->{Type} == $office_consts->{msoGroup} ) { #msoGroup = 6
-	# print "passed XX\n";
-	    oleexcel::enum($obj->GroupItems,\&enum_a_shape);
-	} elsif ($obj->{Type} == $office_consts->{msoTextBox} ||
-		 $obj->{Type} == $office_consts->{msoAutoShape} ) { 
-	    if ($obj->{TextFrame} && $obj->TextFrame->{Characters}) {
-		my $p = $obj->TextFrame->Characters->{Text} ;
-		$getShapes::allText .= $p;
-		$getShapes::allText .= "\n";
-	    }
-	}
-	$getShapes::depth--;
-	return 1;
+    my ($obj, $cont) = @_;
+    $getShapes::depth++;
+    # print "passed YY $getShapes::depth\n";
+    # print "type = ", $obj->{Type}, "\n";
+    if ( $obj->{Type} == $office_consts->{msoGroup} ) { #msoGroup = 6
+        # print "passed XX\n";
+        oleexcel::enum($obj->GroupItems, \&enum_a_shape, $cont);
+    } elsif ($obj->{Type} == $office_consts->{msoTextBox} ||
+     $obj->{Type} == $office_consts->{msoAutoShape} ) { 
+        if ($obj->{TextFrame} && $obj->TextFrame->{Characters}) {
+            my $p = $obj->TextFrame->Characters->{Text} ;
+            $$cont .= "$p\n" if ( defined $p );
+        }
+    }
+    $getShapes::depth--;
+    return 1;
     };
 
-    oleexcel::enum($sheet->Shapes,\&enum_a_shape);
-    return $allText;
+    oleexcel::enum($sheet->Shapes,\&enum_a_shape, $cont);
+    return undef;
 }
 
 #main

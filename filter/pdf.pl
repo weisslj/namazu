@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: pdf.pl,v 1.21 2000-08-21 01:52:13 knok Exp $
+# $Id: pdf.pl,v 1.22 2001-01-04 01:57:58 baba Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -75,8 +75,11 @@ sub filter ($$$$$) {
 	util::vprint("Processing pdf file ... (using  '$pdfconvpath')\n");
 	system("$pdfconvpath -q $tmpfile $tmpfile2");
     }
-    return 'Unable to convert pdf file (maybe copying protection)'
-      unless (-e $tmpfile2);
+    unless (-e $tmpfile2) {
+	unlink $tmpfile;
+	unlink $tmpfile2;
+	return 'Unable to convert pdf file (maybe copying protection)';
+    }
 
     $fh = util::efopen("< $tmpfile2");
     $$cont = util::readfile($fh);

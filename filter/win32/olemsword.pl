@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: olemsword.pl,v 1.3 2000-03-22 21:53:14 kenzo- Exp $
+# $Id: olemsword.pl,v 1.4 2001-01-04 01:58:01 baba Exp $
 # Copyright (C) 1999 Jun Kurabe ,
-#               1999 Ken-ichi Hirose All rights reserved.
+#               1999-2000 Ken-ichi Hirose All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -38,8 +38,10 @@
 # V2.10 1999/11/09 Change Name 
 #                  Merge three program ReadMSWord.pl, ReadExcel.pl, ReadPPT.pl
 # V2.11 1999/11/15  separate file.
-#					modify some functions.
+#                   modify some functions.
 # V2.12 1999/11/27 Use Office::OLE::Const to define constant value
+# V2.13 2000/04/27 Optimize for Namazu filter ...
+# V2.14 2000/10/28 contribute patch by Yoshinori.TAKESAKO-san.
 #
 
 package olemsword;
@@ -84,10 +86,12 @@ sub filter ($$$$$) {
       = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
-    util::vprint("Processing msword file ...\n");
+    util::vprint("Processing ms-word file ... (using  'Win32::OLE->new Word.Application')\n");
 
-	$cfile =~ s/\//\\/g;
-    $$cont = ReadMSWord::ReadMSWord($cfile);
+    $cfile =~ s/\//\\/g;
+    $$cont = "";
+    ReadMSWord::ReadMSWord($cfile, $cont, $fields);
+    $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);
@@ -95,7 +99,7 @@ sub filter ($$$$$) {
     $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
       unless $fields->{'title'};
     gfilter::show_filter_debug_info($cont, $weighted_str,
-			   $fields, $headings);
+      $fields, $headings);
     return undef;
 }
 
@@ -106,48 +110,40 @@ use Win32::OLE;
 use Win32::OLE::Enum;
 use Win32::OLE::Const;
 
-sub enum {
-    my $enum_objs = shift;
-    my $func = shift;
+sub enum ($$$) {
+    my ($enum_objs, $func, $cont) = @_;
 
     die "No Objects or No Function" unless ($enum_objs and $func );
 
     my $e = Win32::OLE::Enum->new($enum_objs);
     while(($obj = $e->Next)) {
-	return 0 if (!&$func($obj));
+    return 0 if (!&$func($obj, $cont));
     }
     return 1;
 }
 
-sub getProperties {
-    my $doc = shift;
-    my $allText = '';
+sub getProperties ($$) {
+    my ($cfile, $fields) = @_;
 
     # get Title
-    my $title = $doc->BuiltInDocumentProperties(1)->{Value};
-    my $subject = $doc->BuiltInDocumentProperties(2)->{Value};
-    my $author = $doc->BuiltInDocumentProperties(3)->{Value};
-    my $lastAuthor = $doc->BuiltInDocumentProperties(7)->{Value};
-    my $createDate = $doc->BuiltInDocumentProperties(11)->{Value};
-    my $editDate = $doc->BuiltInDocumentProperties(12)->{Value};
+    $fields->{'title'} = "$cfile->BuiltInDocumentProperties(1)->{Value}"
+      unless $cfile->BuiltInDocumentProperties(1)->{Value};            # title
+#    $fields->{'title'} = $cfile->BuiltInDocumentProperties(2)->{Value}; # subject
+#    $fields->{'author'} = $cfile->BuiltInDocumentProperties(3)->{Value}; # author
+    $fields->{'author'} = "$cfile->BuiltInDocumentProperties(7)->{Value}"
+      unless $cfile->BuiltInDocumentProperties(7)->{Value};            # lastauthor
+#    $fields->{'date'} = $cfile->BuiltInDocumentProperties(11)->{Value}; # createdate
+    $fields->{'date'} = "$cfile->BuiltInDocumentProperties(12)->{Value}"
+      unless $cfile->BuiltInDocumentProperties(12)->{Value};            # editdate
+#    $fields->{'date'} = $cfile->BuiltInDocumentProperties(13)->{Value}; # editdate?
 
-    $allText .= 'Subject: ' . $title . ' ' . $subject ;
-    $allText .= "\n";
-    $allText .= 'From: ' . $author . ',' . $lastAuthor;
-    $allText .= "\n";
-    $allText .= 'Date: ' . $createDate;
-    $allText .= "\n";
-    $allText .= 'Edit: ' . $editDate;
-    $allText .= "\n";
-    $allText .= "\n";
-
-    return $allText;
+    return undef;
 }
 
 package ReadMSWord;
 
-sub ReadMSWord {
-    my $fileName = shift;
+sub ReadMSWord ($$$) {
+    my ($cfile, $cont, $fields) = @_;
 
     # Copy From Win32::OLE Example Program
     # use existing instance if Word is already running
@@ -155,107 +151,107 @@ sub ReadMSWord {
     eval {$word = Win32::OLE->GetActiveObject('Word.Application')};
     die "MSWord not installed" if $@;
     unless (defined $word) {
-	$word = Win32::OLE->new('Word.Application', sub {$_[0]->Quit;})
-	    or die "Oops, cannot start Word";
+        $word = Win32::OLE->new('Word.Application', sub {$_[0]->Quit(0);})
+         or die "Oops, cannot start Word";
     }
     # End of Copy From Win32::OLE Example Program
     # for debug
     # $word->{Visible} = 1;
 
     # Load Office 98 Constant
-    $office_consts = Win32::OLE::Const->Load("Microsoft Office 8.0 Object Library");
+    local $office_consts;
+    open (SAVEERR,">&STDERR");
+    open (STDERR,">nul");
+    $office_consts = Win32::OLE::Const->Load("Microsoft Office 9.0 Object Library");
+    $office_consts = Win32::OLE::Const->Load("Microsoft Office 8.0 Object Library") unless $office_consts;
+    open (STDERR,">&SAVEERR");
 
-    my $doc = $word->{Documents}->open($fileName);
-    die "Cannnot open DOC" unless ( defined $doc ) ;
+    my $doc = $word->{Documents}->open($cfile);
+    die "Cannot open File $cfile" unless ( defined $doc ) ;
 
-    $allText = '';
-    $allText .= olemsword::getProperties($doc);
-    $allText .= getParagraphs($doc);
-    $allText .= getFrames($doc);
-    $allText .= getShapes($doc);
-    $allText .= getHeadersFooters($doc);
+    olemsword::getProperties($doc, $fields);
+    getParagraphs($doc, $cont);
+    getFrames($doc, $cont);
+    getShapes($doc, $cont);
+    getHeadersFooters($doc, $cont);
+
     $doc->close(0);
     undef $doc;
     undef $word;
 
-    return $allText;
+    return undef;
 }
 
-sub getParagraphs {
-    my $doc = shift;
-    my $allText = '';
+sub getParagraphs ($$) {
+    my ($doc, $cont) = @_;
 
     my $enum_func = sub {
-	my $obj = shift;
-	my $p = $obj->Range->{Text};
-	chop $p;
-	$allText .= $p;
-	$allText .= "\n";
-	return 1;
+    my $obj = shift;
+    my $p = $obj->Range->{Text};
+#       chop $p;
+        $$cont .= "$p\n" if ( defined $p );
+        return 1;
     };
 
-    olemsword::enum($doc->Paragraphs,$enum_func);
-    return $allText;
+    olemsword::enum($doc->Paragraphs, $enum_func, $cont);
+    return undef;
 }
 
-sub getShapes {
-    my $doc = shift;
-    my $allText = '';
-    sub enum_a_shape {
-	my $obj = shift;
-	if ($obj->TextFrame->{HasText}) { # 
-	    my $p = $obj->TextFrame->TextRange->{Text};
-	    chop $p;
-	    $getShapes::allText .= $p;
-	    $getShapes::allText .= "\n";
-	} elsif ( $obj->{Type} == $office_consts->{msoGroup} ) { #msoGroup = 6
-	    olemsword::enum($obj->GroupItems,\&enum_a_shape);
-	} 
-	return 1;
+sub getShapes ($$) {
+    my ($doc, $cont) = @_;
+
+    sub enum_a_shape ($$) {
+    my ($obj, $cont) = @_;
+    if ($obj->TextFrame->{HasText}) { # 
+        my $p = $obj->TextFrame->TextRange->{Text};
+#       chop $p;
+        $$cont .= "$p\n" if ( defined $p );
+    } elsif ( $obj->{Type} == $office_consts->{msoGroup} ) { 
+        # msoGroup = 6
+        olemsword::enum($obj->GroupItems, \&enum_a_shape, $cont);
+    } 
+    return 1;
     };
 
-    olemsword::enum($doc->Shapes, \&enum_a_shape);
-    return $allText;
+    olemsword::enum($doc->Shapes, \&enum_a_shape, $cont);
+    return undef;
 }
 
-sub getFrames {
-    my $doc = shift;
-    my $allText = '';
+sub getFrames ($$) {
+    my ($doc, $cont) = @_;
+
     my $enum_func = sub {
-	my $obj = shift;
-	my $p = $obj->Range->{Text};
-	chop $p;
-	$allText .= $p;
-	$allText .= "\n";
-	return 1;
+    my $obj = shift;
+    my $p = $obj->Range->{Text};
+#       chop $p;
+        $$cont .= "$p\n" if ( defined $p );
+        return 1;
     };
 
-    olemsword::enum($doc->Frames, $enum_func);
-    return $allText;
+    olemsword::enum($doc->Frames, $enum_func, $cont);
+    return undef;
 }
 
-sub getHeadersFooters {
-    my $doc = shift;
-    my $allText = '';
+sub getHeadersFooters ($$) {
+    my ($doc, $cont) = @_;
 
     my $enum_a_section = sub {
-	my $obj = shift;
-	my $enum_a_headerfooter = sub {
-	    my $obj = shift;
-	    my $p = $obj->Range->{Text};
-	    chop $p;
-	    $allText .= $p;
-	    $allText .= "\n";
-	    return 1;
-	};
-
-	olemsword::enum($obj->Headers, $enum_a_headerfooter);
-	olemsword::enum($obj->Footers, $enum_a_headerfooter);
-	return 1;
+    my $obj = shift;
+    my $enum_a_headerfooter = sub {
+        my $obj = shift;
+        my $p = $obj->Range->{Text};
+#       chop $p;
+        $$cont .= "$p\n" if ( defined $p );
+        return 1;
     };
 
-    olemsword::enum($doc->Sections,$enum_a_section);
-    return $allText;
+    olemsword::enum($obj->Headers, $enum_a_headerfooter, $cont);
+    olemsword::enum($obj->Footers, $enum_a_headerfooter, $cont);
+    return 1;
+    };
+
+    olemsword::enum($doc->Sections, $enum_a_section, $cont);
+    return undef;
 }
 
 #main

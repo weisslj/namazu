@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: ichitaro456.pl,v 1.4 2000-04-06 19:08:14 kenzo- Exp $
+# $Id: ichitaro456.pl,v 1.5 2001-01-04 01:58:01 baba Exp $
 # Copyright (C) 1999 Ken-ichi Hirose,
 #               2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -27,6 +27,7 @@
 
 package ichitaro456;
 use strict;
+use Cwd;
 use File::Copy;
 require 'util.pl';
 require 'gfilter.pl';
@@ -41,15 +42,15 @@ sub mediatype() {
 sub status() {
     $ichitaro456 = util::checkcmd('jstxt.exe');
     if (defined $ichitaro456) {
-    if ($mknmz::SYSTEM eq "MSWin32") {
-        return 'yes';
-    } else {
-    $doscmd = util::checkcmd('doscmd');
-    if (defined $doscmd) {
-        $ichitaro456 = "$doscmd $ichitaro456";
-        return 'yes';
-    }
-    }
+        if ($mknmz::SYSTEM eq "MSWin32") {
+            return 'yes';
+        } else {
+            $doscmd = util::checkcmd('doscmd');
+            if (defined $doscmd) {
+                $ichitaro456 = "$doscmd $ichitaro456";
+                return 'yes';
+            }
+        }
     }
     return 'no';
 }
@@ -80,29 +81,25 @@ sub filter ($$$$$) {
 
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
-    my $tmpfile  = util::tmpnam('NMZ.jstxt');
-    my $tmpfile3 = util::tmpnam('NMZJSTXT');
-    copy("$cfile", "$tmpfile3");
-    my $tmpfile2 = $tmpfile3;
+    my $tmpfile = util::tmpnam('NMZjstxt');
+    copy("$cfile", "$tmpfile");
+    my $tmpfile2 = $tmpfile;
     my $tmpext = $cfile;
     $tmpext =~ s/^.*(j[sab]w$)/$1/i;
     $tmpfile2 =~ s/tmp$/$tmpext/;
-    move("$tmpfile3", "$tmpfile2");
-    $tmpfile2 = "C:$tmpfile2"
-     if ($ichitaro456 =~ m/doscmd/ && $tmpfile2 =~ m!^/!);
+    move("$tmpfile", "$tmpfile2");
 
     util::vprint("Processing ichitaro file ... (using  '$ichitaro456')\n");
 
-    system("$ichitaro456 -k -s -p $tmpfile2 > $tmpfile");
+    my $cwd = getcwd();
+    chdir("$var::OUTPUT_DIR");
+    my $fh_cmd = util::efopen("$ichitaro456 -k -s -p NMZjstxt.$tmpext |");
+    chdir("$cwd");
+ 
+    $$cont = "";
+    while (<$fh_cmd>) {$$cont .= $_;}
+    undef $fh_cmd;
 
-    {
-        my $fh = util::efopen("< $tmpfile");
-        $$cont = util::readfile($fh);
-    }
-
-    unlink($tmpfile);
-    $tmpfile2 =~ s/^C://
-     if ($ichitaro456 =~ m/doscmd/);
     unlink($tmpfile2);
 
     gfilter::line_adjust_filter($cont);
@@ -111,7 +108,7 @@ sub filter ($$$$$) {
     $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
       unless $fields->{'title'};
     gfilter::show_filter_debug_info($cont, $weighted_str,
-			   $fields, $headings);
+    $fields, $headings);
     return undef;
 }
 

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: dvi.pl,v 1.1 2001-01-02 08:06:53 baba Exp $
+# $Id: dvi.pl,v 1.2 2001-01-04 01:57:58 baba Exp $
 # Copyright (C) 2000 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -80,16 +80,22 @@ sub filter ($$$$$) {
     } else {
 	system("$dvipath -q $tmpfile -o $tmpfile2");
     }
-    return 'Unable to convert dvi file' unless (-e $tmpfile2);
+    unless (-e $tmpfile2) {
+	unlink("$tmpfile.dvi");
+	unlink($tmpfile2);
+	return 'Unable to convert dvi file';
+    }
 
     $fh = util::efopen("$tmpfile2");
     my $size = util::filesize($fh);
     if ($size > $conf::FILE_SIZE_MAX) {
+	unlink("$tmpfile.dvi");
+	unlink($tmpfile2);
 	return 'too_large_dvi_file';
     }
     $$cont = util::readfile($fh);
     undef $fh;
-    unlink($tmpfile);
+    unlink("$tmpfile.dvi");
     unlink($tmpfile2);
     return undef;
 }

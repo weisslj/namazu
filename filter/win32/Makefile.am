@@ -9,7 +9,8 @@ filter_DATA = olemsword.pl \
 	     olepowerpoint.pl \
 	     ichitaro456.pl \
 	     oletaro.pl \
-	     olertf.pl
+	     olertf.pl \
+	     olevisio.pl
 
 EXTRA_DIST = $(filter_DATA)
 

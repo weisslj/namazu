@@ -1,3 +1,7 @@
+2004-09-01  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+	* filter/win32/olevisio.pl: Add new filter.
+
 2004-08-24  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* HACKING, HACKING-ja: Anonymous CVS is changed.
@@ -9026,4 +9030,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1219 2004-08-24 09:30:47 opengl2772 Exp $
+$Id: ChangeLog,v 1.1220 2004-08-31 16:47:46 opengl2772 Exp $

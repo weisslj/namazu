@@ -3,8 +3,8 @@
 <html>
 <head>
 <meta name="ROBOTS" content="NOINDEX,NOFOLLOW">
-<link rel=stylesheet href="../namazu.css">
-<link rev=made href="mailto:developers@namazu.org">
+<link rel="stylesheet" href="../namazu.css">
+<link rev="made" href="mailto:developers@namazu.org">
 <title>Namazu User's Manual</title>
 </head>
 <body lang="ja">
@@ -22,56 +22,61 @@ GNU General Public License version 2</a> に
 <h2>目次</h2>
 
 <ul>
-<li><a href="#components">Namazuの基本構成</a>
+<li><a href="#components">Namazuの基本構成</a></li>
 <li><a href="#mknmz">mknmzコマンド</a>
   <ul>
-  <li><a href="#mknmz-option">mknmzコマンド行引数</a>
-  <li><a href="#mknmzrc">mknmzrcの設定</a>
-  <li><a href="#doc-filter">文書フィルタ</a>
+  <li><a href="#mknmz-option">mknmzコマンド行引数</a></li>
+  <li><a href="#mknmzrc">mknmzrcの設定</a></li>
+  <li><a href="#doc-filter">文書フィルタ</a></li>
   </ul>
+</li>
 <li><a href="#namazu">namazuコマンド</a>
   <ul>
-  <li><a href="#namazu-option">namazuコマンド行引数</a>
-  <li><a href="#namazurc">namazurcの設定</a>
-  <li><a href="#default-index">基本インデックス</a>
+  <li><a href="#namazu-option">namazuコマンド行引数</a></li>
+  <li><a href="#namazurc">namazurcの設定</a></li>
+  <li><a href="#default-index">基本インデックス</a></li>
   </ul>
+</li>
 <li><a href="#cgi">namazu.cgi</a>
   <ul>
-  <li><a href="#setting">namazu.cgiの設置</a>
-  <li><a href="#.namazurc">.namazurc の設定</a>
-  <li><a href="#template">雛形ファイル</a>
-  <li><a href="#form">formの設定</a>
-  <li><a href="#form-idxname">インデックスを選択する</a>
-  <li><a href="#form-idxnames">複数のインデックスを選択する</a>
-  <li><a href="#form-subquery">補助検索式の利用法</a>
-  <li><a href="#form-lang">検索結果の言語を選択する</a>
+  <li><a href="#setting">namazu.cgiの設置</a></li>
+  <li><a href="#.namazurc">.namazurc の設定</a></li>
+  <li><a href="#template">雛形ファイル</a></li>
+  <li><a href="#form">formの設定</a></li>
+  <li><a href="#form-idxname">インデックスを選択する</a></li>
+  <li><a href="#form-idxnames">複数のインデックスを選択する</a></li>
+  <li><a href="#form-subquery">補助検索式の利用法</a></li>
+  <li><a href="#form-lang">検索結果の言語を選択する</a></li>
   </ul>
+</li>
 <li><a href="#tools">付属ツール</a>
   <ul>
-  <li><a href="#bnamazu">bnamazu</a>
-  <li><a href="#nmzgrep">nmzgrep</a>
-  <li><a href="#gcnmz">gcnmz</a>
-  <li><a href="#mailutime">mailutime</a>
-  <li><a href="#vfnmz">vfnmz</a>
-  <li><a href="#rfnmz">rfnmz</a>
-  <li><a href="#lnnmz">lnnmz</a>
-  <li><a href="#adnmz">adnmz</a>
-  <li><a href="#kwnmz">kwnmz</a>
-  <li><a href="#nmzmerge">nmzmerge</a>
+  <li><a href="#bnamazu">bnamazu</a></li>
+  <li><a href="#nmzgrep">nmzgrep</a></li>
+  <li><a href="#gcnmz">gcnmz</a></li>
+  <li><a href="#mailutime">mailutime</a></li>
+  <li><a href="#vfnmz">vfnmz</a></li>
+  <li><a href="#rfnmz">rfnmz</a></li>
+  <li><a href="#lnnmz">lnnmz</a></li>
+  <li><a href="#adnmz">adnmz</a></li>
+  <li><a href="#kwnmz">kwnmz</a></li>
+  <li><a href="#nmzmerge">nmzmerge</a></li>
   </ul>
+</li>
 <li><a href="#query">検索式</a>
   <ul>
-  <li><a href="#query-term">単一単語検索</a>
-  <li><a href="#query-and">AND検索</a>
-  <li><a href="#query-or">OR検索</a>
-  <li><a href="#query-not">NOT検索</a>
-  <li><a href="#query-grouping">グループ化</a>
-  <li><a href="#query-phrase">フレイズ検索</a>
-  <li><a href="#query-substring">部分一致検索</a>
-  <li><a href="#query-regex">正規表現検索</a>
-  <li><a href="#query-field">フィールド指定の検索</a>
-  <li><a href="#query-notes">特記事項</a>
+  <li><a href="#query-term">単一単語検索</a></li>
+  <li><a href="#query-and">AND検索</a></li>
+  <li><a href="#query-or">OR検索</a></li>
+  <li><a href="#query-not">NOT検索</a></li>
+  <li><a href="#query-grouping">グループ化</a></li>
+  <li><a href="#query-phrase">フレイズ検索</a></li>
+  <li><a href="#query-substring">部分一致検索</a></li>
+  <li><a href="#query-regex">正規表現検索</a></li>
+  <li><a href="#query-field">フィールド指定の検索</a></li>
+  <li><a href="#query-notes">特記事項</a></li>
   </ul>
+</li>
 </ul>
 
 <h2><a name="components">Namazuの基本構成</a></h2>
@@ -197,8 +202,9 @@ mknmz は
 <ol>
 <li><code>$(sysconfdir)/$(PACKAGE)/mknmzrc</code><br>
 通常は /usr/local/etc/namazu/mknmzrc
-<li>~/.mknmzrc
-<li>-f, --config=FILE オプションで FILE に指定した mknmzrc(等)
+</li>
+<li>~/.mknmzrc</li>
+<li>-f, --config=FILE オプションで FILE に指定した mknmzrc(等)</li>
 </ol>
 
 <p>
@@ -411,33 +417,33 @@ JSTXT</a>
 
 <dt>oleexcel.pl
 <dd>Microsoft Excel文書を扱う
-<dd>必需品: Microsoft Excel 97 SP1以降/2000/2002(XP)/2003 のいずれか
+<dd>必需品: Microsoft Excel 97 SP1 以降/2000/2002(XP)/2003 のいずれか
 
 <dt>olemsword.pl
 <dd>Microsoft Word文書を扱う
-<dd>必需品: Microsoft Word 97 SP1以降/98/2000/2002(XP)/2003 のいずれか
+<dd>必需品: Microsoft Word 97 SP1 以降/98/2000/2002(XP)/2003 のいずれか
 
 <dt>olepowerpoint.pl
 <dd>Microsoft PowerPoint文書を扱う
-<dd>必需品: Microsoft PowerPoint 97 SP1以降/2000/2002(XP)/2003 のいずれか
+<dd>必需品: Microsoft PowerPoint 97 SP1 以降/2000/2002(XP)/2003 のいずれか
 
 <dt>oletaro.pl
 <dd>一太郎 (バージョン 4) の文書を扱う
-<dd>必需品: Microsoft Word 97 SP1以降/98/2000 のいずれか
+<dd>必需品: Microsoft Word 97 SP1 以降/98/2000 のいずれか
 <dd>必需品: および Microsoft Office 付属の該当文書コンバータ
 <BR><BR>
 <dd>一太郎 (バージョン 5 〜 6) の文書を扱う
-<dd>必需品: Microsoft Word 97 SP1以降/98/2000/2002(XP) のいずれか
+<dd>必需品: Microsoft Word 97 SP1 以降/98/2000/2002(XP) のいずれか
 <dd>必需品: および Microsoft Office 付属の該当文書コンバータ
 <BR><BR>
 <dd>一太郎 (バージョン 7 〜 13, 2004他) の文書を扱う
-<dd>必需品: Microsoft Word 97 SP1以降/98/2000/2002(XP)/2003 のいずれか
+<dd>必需品: Microsoft Word 97 SP1 以降/98/2000/2002(XP)/2003 のいずれか
 <dd>必需品: および Microsoft Office 付属の該当文書コンバータ
 
 
 <dt>olertf.pl
 <dd>RTF (Rich Text Format) 形式の文書を扱う
-<dd>必需品: Microsoft Word 97 SP1以降/98/2000/2002(XP)/2003 のいずれか
+<dd>必需品: Microsoft Word 97 SP1 以降/98/2000/2002(XP)/2003 のいずれか
 
 </dl>
 
@@ -512,9 +518,11 @@ namazu は
 <ol>
 <li><code>$(sysconfdir)/$(PACKAGE)/namazurc</code><br>
 通常は /usr/local/etc/namazu/namazurc
-<li>~/.namazurc
+</li>
+<li>~/.namazurc</li>
 <li>-f, --config=FILE オプションで指定した namazurc<br>
 (CGIの場合は namazu.cgi を設置したディレクトリ の .namazurc)
+</li>
 </ol>
 
 <p>
@@ -547,7 +555,8 @@ namazurc の設定項目の説明は namazurc-sample ファイルにコメント
 <ul>
 <li>標準は $(localstatedir)/$(PACKAGE)/index<br>
 通常は /usr/local/var/namazu/index)
-<li><a href="#namazurc">namazurc</a> の Index指示で変更可能
+</li>
+<li><a href="#namazurc">namazurc</a> の Index指示で変更可能</li>
 </ul>
 
 <p>
@@ -697,8 +706,10 @@ namazurc の Template指示で指定したディレクトリのものが用いら
 <ul>
 <li>選択されたインデックスが 1つのとき<br>
 選択されたインデックスの雛形ファイルが用いられる
+</li>
 <li>選択されたインデックスが複数のとき<br>
 <a href="#default-index">基本インデックス</a>の雛形ファイルが用いられる
+</li>
 </ul>
 
 <h3><a name="form-subquery">補助検索式の利用法</a></h3>
@@ -1081,12 +1092,16 @@ href="http://www.perl.com/">Perl</a>とほぼ同じです。 例:
 <ul>
 <li><code class="example">+subject:Linux</code><br>
 (Subject: に <code>Linux</code>が含まれる文書)
+</li>
 <li><code class="example">+subject:"GNU Emacs"</code><br>
 (Subject: に <code>GNU Emacs</code>が含まれる文書)
+</li>
 <li><code class="example">+from:foo@bar.jp</code><br>
 (From: に <code>foo@bar.jp</code> が含まれる文書)
+</li>
 <li><code class="example">+message-id:&lt;199801240555.OAA18737@foo.bar.jp&gt;</code><br>
 (Message-Id を指定)
+</li>
 </ul>
 
 <h3><a name="query-notes">特記事項</a></h3>
@@ -1094,23 +1109,28 @@ href="http://www.perl.com/">Perl</a>とほぼ同じです。 例:
 <ul>
 <li>いずれの検索方法でもアルファベットの大文字・小文字の区別
 はしません。
+</li>
 
 <li>日本語の複合語は形態素単位に分割し、それらを<a
 href="#query-phrase"> フレイズ検索</a>します。分割は不適切に
 行なわれることがあります。
+</li>
 
 <li>JIS X 0208 (いわゆる全角文字) の英数字と記号の一部 
 (ASCIIと重複しているもの) は ASCII (いわゆる半角文字) として
 処理されます。
+</li>
 
 <li>記号を含む語の検索ができます。例: <code>TCP/IP</code>。
 ただし、記号の処理は完全ではないので <code>TCP and IP</code> 
 のように分割して<a href="#query-and">AND検索</a>をかけた方が取りこ
 ぼしがありません (その代わり余計なファイルまでヒットしてしま
 う可能性があります)。
+</li>
 
 <li>中間一致・後方一致、正規表現、フィールド指定の検索には少
 し時間がかかります。
+</li>
 
 <li><code class="operator">and</code>, <code
 class="operator">or</code>, <code
@@ -1121,6 +1141,7 @@ class="operator">not</code> を単語として検索したいときはそれ
 <!-- foo
 Tknamazu および namazu.el から検索するときは必ず後者で指定します。
 -->
+</li>
 
 </ul>
 <!-- query -->
@@ -1133,7 +1154,7 @@ Tknamazu および namazu.el から検索するときは必ず後者で指定します。
 Copyright (C) 2000-2004 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: manual.html,v 1.84 2004-05-13 23:54:41 opengl2772 Exp $
+$Id: manual.html,v 1.85 2004-08-04 03:14:27 opengl2772 Exp $
 </div>
 <address>
 developers@namazu.org

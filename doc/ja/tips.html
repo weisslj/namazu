@@ -3,8 +3,8 @@
 <html>
 <head>
 <meta name="ROBOTS" content="NOINDEX,NOFOLLOW">
-<link rel=stylesheet href="../namazu.css">
-<link rev=made href="mailto:developers@namazu.org">
+<link rel="stylesheet" href="../namazu.css">
+<link rev="made" href="mailto:developers@namazu.org">
 <title>Namazu tips</title>
 </head>
 <body lang="ja">
@@ -13,17 +13,17 @@
 
 <h2>目次</h2>
 <ul>
-<li><a href="#indexing">インデックス作成の高速化</a>
-<li><a href="#saving-memory">メモリを節約したインデックス作成</a>
-<li><a href="#weight">HTML要素によるスコアの重みづけ</a>
-<li><a href="#html">HTMLの処理</a>
-<li><a href="#line-adjustment">行頭行末の処理</a>
-<li><a href="#digest">HTML文書の要約作成</a>
-<li><a href="#mailnews">Mail/News の要約作成</a>
-<li><a href="#symbol">記号を含む単語のインデックス処理</a>
-<li><a href="#phrase">(あやしげな)フレイズ検索の実現</a>
+<li><a href="#indexing">インデックス作成の高速化</a></li>
+<li><a href="#saving-memory">メモリを節約したインデックス作成</a></li>
+<li><a href="#weight">HTML要素によるスコアの重みづけ</a></li>
+<li><a href="#html">HTMLの処理</a></li>
+<li><a href="#line-adjustment">行頭行末の処理</a></li>
+<li><a href="#digest">HTML文書の要約作成</a></li>
+<li><a href="#mailnews">Mail/News の要約作成</a></li>
+<li><a href="#symbol">記号を含む単語のインデックス処理</a></li>
+<li><a href="#phrase">(あやしげな)フレイズ検索の実現</a></li>
 <li><a href="#update-index">文書の更新・削除に対応インデック
-スの更新</a>
+スの更新</a></li>
 </ul>
 
 <h2><a name="indexing">インデックス作成の高速化</a></h2>
@@ -33,10 +33,11 @@
 NKF, KAKASI (または ChaSen) をそれぞれコマンドとして呼び出し
 たときと較べて 1.5倍 - 2倍くらい速くなります。
   <ul>
-  <li><a href="ftp://ftp.ie.u-ryukyu.ac.jp/pub/software/kono/nkf171.shar">NKF</a>
-  <li><a href="http://www.daionet.gr.jp/~knok/kakasi/">Text::Kakasi</a>
-  <li><a href="http://www.daionet.gr.jp/~knok/chasen/"> Text::ChaSen1</a>
+  <li><a href="ftp://ftp.ie.u-ryukyu.ac.jp/pub/software/kono/nkf171.shar">NKF</a></li>
+  <li><a href="http://www.daionet.gr.jp/~knok/kakasi/">Text::Kakasi</a></li>
+  <li><a href="http://www.daionet.gr.jp/~knok/chasen/"> Text::ChaSen1</a></li>
   </ul>
+</li>
 
 <li><code>--media-type=mtype</code> オプションを指定する<br>
 mknmz は File-MMagic モジュールを使って文書形式の自動判別を
@@ -49,6 +50,7 @@ media-type=mtype を指定することで自動判別の処理を停止できま
 指定する代わりに --mailnews を指定できます。同じく MHonArc 
 なら --media-type='text/html; x-type=mhonarc' の代わりに 
 --mhonarc で指定できます。
+</li>
 
 <li>mknmzrc の <code>$ON_MEMORY_MAX</code> の値を大き
 くする<br> 
@@ -57,10 +59,12 @@ media-type=mtype を指定することで自動判別の処理を停止できま
 モリ上で処理する文書ファイルの量を制限しています。メモリを 1
 GBくらい積んだ計算機を使っているなら、この値に 100 MB を設定
 しても大丈夫でしょう。作業ファイルへの書き出し回数が減ります。
+</li>
 
 <li>高速な計算機を使う<br> 高速な CPU + 大量のメモリ + 高速
 な HDDを積んだ計算機を使うと効果的です。$ON_MEMORY_MAX の変
 更をお忘れなく。
+</li>
 </ul>
 
 <h2><a name="saving-memory">メモリを節約したインデックス作成</a></h2>
@@ -82,6 +86,7 @@ mknmz は mknmzrc の $ON_MEMORY_MAX の値で、一度にメモリに読
 --checkpoint を指定すると、mknmz はこのときに自分自身を exec 
 し直します。結果として mknmz のプロセスはぐっと小さくなりま
 す。興味のある方は挙動を top で眺めてください。
+</li>
 
 <li>mknmzrc の $ON_MEMORY_MAX の値を小さくする<br>
 
@@ -89,6 +94,7 @@ mknmz は mknmzrc の $ON_MEMORY_MAX の値で、一度にメモリに読
 メモリを 64 MB 程度積んだ計算機を想定しています。 64 MB より
 少ないメモリしか持たない計算機で mknmz を実行する場合は 
 mknmzrc の $ON_MEMORY_MAX の値を小さくするといいでしょう。
+</li>
 </ul>
 
 
@@ -101,15 +107,15 @@ mknmzrc の $ON_MEMORY_MAX の値を小さくするといいでしょう。
 
 
 <ul>
-<li><code>&lt;title&gt; 16</code>
-<li><code>&lt;h1&gt; 8</code>
-<li><code>&lt;h2&gt; 7</code>
-<li><code>&lt;h3&gt; 6</code>
-<li><code>&lt;h4&gt; 5</code>
-<li><code>&lt;h5&gt; 4</code>
-<li><code>&lt;h6&gt; 3</code>
-<li><code>&lt;a&gt; 4</code>
-<li><code>&lt;strong&gt;, &lt;em&gt;, &lt;code&gt;, &lt;kbd&gt;, &lt;samp&gt;, &lt;cite&gt;, &lt;var&gt; 2</code>
+<li><code>&lt;title&gt; 16</code></li>
+<li><code>&lt;h1&gt; 8</code></li>
+<li><code>&lt;h2&gt; 7</code></li>
+<li><code>&lt;h3&gt; 6</code></li>
+<li><code>&lt;h4&gt; 5</code></li>
+<li><code>&lt;h5&gt; 4</code></li>
+<li><code>&lt;h6&gt; 3</code></li>
+<li><code>&lt;a&gt; 4</code></li>
+<li><code>&lt;strong&gt;, &lt;em&gt;, &lt;code&gt;, &lt;kbd&gt;, &lt;samp&gt;, &lt;cite&gt;, &lt;var&gt; 2</code></li>
 </ul>
 
 <p>
@@ -246,10 +252,10 @@ foo bar ...<br>
 <a href="http://www.namazu.org/">Namazu Homepage</a>
 </p>
 <div class="copyright">
-Copyright (C) 2000 Namazu Project. All rights reserved.
+Copyright (C) 2000-2004 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: tips.html,v 1.9 2001-11-07 10:45:40 kenji Exp $
+$Id: tips.html,v 1.10 2004-08-04 03:14:27 opengl2772 Exp $
 </div>
 <address>
 developers@namazu.org

@@ -3,6 +3,10 @@
 	* filter/{excel, msword, powerpoint}.pl: Support Perl5.8 Encode 
 	for code convert.
 
+        * doc/{ja, en}/*: Update messages.
+
+        * doc/update-doc.pl: close() is added.
+
 2004-07-30  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* pl/conf.pl.in: A comment is changed.
@@ -8998,4 +9002,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1212 2004-08-03 15:13:11 opengl2772 Exp $
+$Id: ChangeLog,v 1.1213 2004-08-04 03:14:27 opengl2772 Exp $

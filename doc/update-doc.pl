@@ -70,6 +70,8 @@ sub readfile {
     my $size = -s $fh;
     read $fh, $cont, $size;
 
+    $fh->close();
+
     return $cont;
 }
 
@@ -81,6 +83,8 @@ sub writefile {
     binmode($fh);
 
     print $fh $cont;
+
+    $fh->close();
 }
 
 sub encode {

@@ -6,7 +6,7 @@ LOG=`pwd`/test-log
 echo '  *** starting ' $0 >>$LOG
 pwd=`pwd`
 tmprc="$pwd/../src/.namazurc"
-echo "Index $pwd/idx1" > $tmprc
+echo "Index $pwd/idx19" > $tmprc
 
 # To make messages English
 LANG= ; export LANG
@@ -42,8 +42,8 @@ fi
 QUERY_STRING='query=namazu&format="<S>strike</S>'
 export QUERY_STRING 
 
-RESULT=`./namazu.cgi | grep '<S>' | wc -l`
-if [ $RESULT -ne 0 ]
+RESULT=`./namazu.cgi | grep '&quot' | wc -l`
+if [ $RESULT -ne 1 ]
 then
 	echo $RESULT >> $LOG
 	exit 1
@@ -64,8 +64,8 @@ fi
 QUERY_STRING='query=namazu&sort="<S>strike</S>'
 export QUERY_STRING 
 
-RESULT=`./namazu.cgi | grep '<S>' | wc -l`
-if [ $RESULT -ne 0 ]
+RESULT=`./namazu.cgi | grep '&quot' | wc -l`
+if [ $RESULT -ne 1 ]
 then
 	echo $RESULT >> $LOG
 	exit 1
@@ -75,8 +75,8 @@ fi
 QUERY_STRING='query=namazu&max="<S>strike</S>'
 export QUERY_STRING 
 
-RESULT=`./namazu.cgi | grep '<S>' | wc -l`
-if [ $RESULT -ne 0 ]
+RESULT=`./namazu.cgi | grep '&quot' | wc -l`
+if [ $RESULT -ne 1 ]
 then
 	echo $RESULT >> $LOG
 	exit 1
@@ -97,8 +97,8 @@ fi
 QUERY_STRING='query=namazu&lang="<S>strike</S>'
 export QUERY_STRING 
 
-RESULT=`./namazu.cgi | grep '<S>' | wc -l`
-if [ $RESULT -ne 0 ]
+RESULT=`./namazu.cgi | grep '&quot' | wc -l`
+if [ $RESULT -ne 1 ]
 then
 	echo $RESULT >> $LOG
 	exit 1
@@ -108,8 +108,8 @@ fi
 QUERY_STRING='query=namazu&reference="<S>strike</S>'
 export QUERY_STRING 
 
-RESULT=`./namazu.cgi | grep '<S>' | wc -l`
-if [ $RESULT -ne 0 ]
+RESULT=`./namazu.cgi | grep '&quot' | wc -l`
+if [ $RESULT -ne 1 ]
 then
 	echo $RESULT >> $LOG
 	exit 1
@@ -119,8 +119,8 @@ fi
 QUERY_STRING='query=namazu&submit="<S>strike</S>'
 export QUERY_STRING 
 
-RESULT=`./namazu.cgi | grep '<S>' | wc -l`
-if [ $RESULT -ne 0 ]
+RESULT=`./namazu.cgi | grep '&quot' | wc -l`
+if [ $RESULT -ne 1 ]
 then
 	echo $RESULT >> $LOG
 	exit 1

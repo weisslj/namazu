@@ -1,12 +1,36 @@
-2000-02-19  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+2000-02-28  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
-	* MMagic.pm: Change URI of Namazu website in a comment.
+	* MMagic.pm: Changed URI for Namzu Project.
+	(contributed by Satoru Takabayasi)
 
-1999-12-01  Ryuji Abe  <raeva@t3.rim.or.jp>
+	* perl-File-MMagic.spec: Created.
+	(contributed by Ryuji Abe)
 
-	* perl-File-MMagic.spec: New File for build RPM package.
+2000-02-24  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
-	* MANIFEST: s/File-MMagic.spec/perl-File-MMagic.spec/g.
+	* MMagic.pm: Changed to work subtest matching.
+
+2000-02-10  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* Version 0.20.
+
+	* MMagic.pm: Fixed media type for RIFF format.
+	Added audio/mpeg, video/mpeg, video/quicktime format.
+	(Thanks for Mr. Perter Breton.)
+
+1999-12-02  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* prel-File-MMagic.spec: Renamed from File-MMagic.spec.
+
+1999-11-30  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* MMagic.pm: Version 0.19.
+
+1999-11-29  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* MMagic.pm: Changed to work with Win32 envoronment.
+	Added excel, powerpoint, ichitaro* entries.
+	(Thanks for kenzo-.)
 
 1999-11-15  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 

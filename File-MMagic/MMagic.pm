@@ -1,6 +1,6 @@
 # File::MMagic
 #
-# $Id: MMagic.pm,v 1.11 2000-02-19 08:00:10 satoru Exp $
+# $Id: MMagic.pm,v 1.12 2000-02-28 05:46:53 knok Exp $
 #
 # This program is originated from file.kulp that is a production of The
 # Unix Reconstruction Projct.
@@ -112,7 +112,8 @@ File::MMagic - Guess file type
   use File::MMagic;
   use FileHandle;
 
-  $mm = new File::MMagic;
+  $mm = new File::MMagic; # use internal magic file
+  # $mm = File::MMagic::new('/etc/magic'); # use external magic file
   $res = $mm->checktype_filename("/somewhere/unknown/file");
 
   $fh = new FileHandle "< /somewhere/unknown/file2";
@@ -274,7 +275,7 @@ BEGIN {
 	    f => "\f",
 	    v => "\v" );
 
-$VERSION = "0.18.3";
+$VERSION = "0.20.2";
 undef $dataLoc;
 }
 
@@ -294,8 +295,8 @@ sub new {
     } else {
 	my $filename = shift;
 	my $fh = new FileHandle;
+        binmode($fh);
 	if ($fh->open("< $filename")) {
-		binmode($fh);
 	    &readMagicHandle($self, $fh);
 	} else {
 	    warn __PACKAGE__ . " couldn't load specified file $filename";
@@ -306,13 +307,6 @@ sub new {
 # different texts.  This isn't rocket science.  It's prone to
 # failure so these checks are only a last resort.
     $self->{SPECIALS} = {
-#		 "text/plain; x-type=rfc" => [
-#			      "^Network Working Group",
-#			      "^Request for Comments:",
-#			      "^Obsoletes:",
-#			      "^Category:",
-#			      "^Updates:",
-#				   ],
 		 "message/rfc822" => [ "^Received:",   
 			     "^>From ",       
 			     "^From ",       
@@ -351,9 +345,6 @@ sub new {
 	     'txt$' => 'text/plain',
 	     'html$' => 'text/html',
 	     'htm$' => 'text/html',
-#	     '^rfc\d+\.txt$' => 'text/plain; x-type=rfc',
-#	     '^draft-(\w*-)+-\d+\.txt$' => 'text/plain; x-type=internet-draft', #' (for cperl-mode)
-#	     '^fyi\d+\.txt$' => 'text/plain; x-type=fyi',
     };
     bless($self);
     return $self;
@@ -616,13 +607,14 @@ sub check_binary {
 }
 
 
-#if ($checkMagic) {
-#    # read the whole file if we haven't already
-#    while (!$$MF[0]->eof()) {
-#	readMagicEntry(\@magic,$MF);
-#    }
-#    dumpMagic(\@magic);
-#}
+sub check_magic {
+    my $self = shift @_;
+    # read the whole file if we haven't already
+    while (!$self->{MF}->[0]->eof()) {
+	readMagicEntry($self->{magic}, $self->{MF});
+    }
+    dumpMagic($self->{magic});
+}
 
 ####### SUBROUTINES ###########
 
@@ -784,6 +776,7 @@ sub magicMatch {
 
 sub magicMatchStr {
     my ($item, $p_desc, $str) = @_;
+    my $origstr = $str;
 
     # delayed evaluation.  if this is our first time considering
     # this item, then parse out its structure.  @$item is just the
@@ -825,7 +818,7 @@ sub magicMatchStr {
     }
     else {
 	# absolute offset
-	# nothing to do.
+	$str = substr($str, $offset);
     }
 
     if ($type eq 'string') {
@@ -924,9 +917,10 @@ sub magicMatchStr {
 	}
 
 	my $subtest;
-#	foreach $subtest (@$subtests) {
-#	    magicMatch($subtest,$p_desc,$fh);
-#	}
+	foreach $subtest (@$subtests) {
+	    # finish evaluation when matched.
+	    magicMatchStr($subtest,$p_desc,$origstr);
+	}
 
 	return 1;
     }
@@ -1180,6 +1174,8 @@ sub readMagicLine {
 # in decimal.
 sub dumpMagic {
     my ($magic,$depth) = @_;
+    $magic = [] unless defined $magic;
+    $depth = 0 unless defined $depth;
 
     my $entry;
     foreach $entry (@$magic) {
@@ -1319,7 +1315,7 @@ __DATA__
 # Microsoft WAVE format (*.wav)
 # [GRR 950115:  probably all of the shorts and longs should be leshort/lelong]
 #					Microsoft RIFF
-0	string		RIFF		audio/unknown	
+0	string		RIFF		audio/x-msvideo	
 #					- WAVE format
 >8	string		WAVE		audio/x-wav	
 
@@ -1620,3 +1616,21 @@ __DATA__
 >48	byte		0x1B		application/excel
 >64 byte		0x00		application/powerpoint
 >64 byte		0x01		application/msword
+
+#
+# MPEG audio/video format
+# Contributer: Peter Breton
+#
+
+0	belong		0x000001b3	video/mpeg
+0	belong		0x000001ba	video/mpeg
+0	beshort		&0xffe0		audio/mpeg
+
+#
+# QuickTime format
+# Contributer: Peter Breton
+#
+
+0	string		MOVI		video/quicktime
+4	string		moov		video/quicktime
+4	string		mdat		video/quicktime

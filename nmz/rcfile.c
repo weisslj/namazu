@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.12 2000-01-07 23:49:41 satoru Exp $
+ * $Id: rcfile.c,v 1.13 2000-01-07 23:59:33 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -327,16 +327,16 @@ is_valid_argnum(const char *directive, int argnum)
 	int argnum;
     };
     struct conf_directive dtab[] = {
-	{"BLANK", 0},
-	{"COMMENT", 0},
-	{"INDEX", 1},
-	{"BASE", 1},
-	{"ALIAS", 2},
-	{"REPLACE", 2},
-	{"LOGGING", 1},
-	{"SCORING", 1},
-	{"LANG", 1},
-	{NULL, 0}
+	{ "BLANK",   0 },
+	{ "COMMENT", 0 },
+	{ "INDEX",   1 },
+	{ "BASE",    1 },
+	{ "ALIAS",   2 },
+	{ "REPLACE", 2 },
+	{ "LOGGING", 1 },
+	{ "SCORING", 1 },
+	{ "LANG",    1 },
+	{ NULL,      0 }
     };
     int i;
 
@@ -351,14 +351,12 @@ is_valid_argnum(const char *directive, int argnum)
 		errmsg = "too many arguments";
 		return 0;  /* NG */
 	    } else {
-		/* MUST NOT be reached here! */
 		assert(0);
 		/* NOTREACHED */
 		return 0;
 	    }
 	}
     }
-    /* MUST NOT be reached here! */
     assert(0);
     /* NOTREACHED */
     return 0;

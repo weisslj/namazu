@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.45 2000-03-10 08:07:26 satoru Exp $
+# $Id: mknmz.in,v 1.46 2000-03-11 04:09:17 masao Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -139,7 +139,8 @@ sub main () {
     }
     # This should be out of above blocks because of file handler closing.
     re_exec($flist_ptr, $docid_count, $docid_base, $start_time, 
-	    $total_files_size, $total_files_num, $key_count) if $checkpoint;
+	    $total_files_size, $total_files_num,
+	    $file_count, $key_count) if $checkpoint;
 
     if (%KeyIndex) {
 	$key_count = write_index();
@@ -229,9 +230,9 @@ sub load_rcfiles () {
     util::vprint("\n");
 }
 
-sub re_exec($$$$$$$) {
+sub re_exec($$$$$$$$) {
     my ($flist_ptr, $docid_count, $docid_base, $start_time, 
-	$total_files_size, $total_files_num, $key_count) = @_;
+	$total_files_size, $total_files_num, $file_count, $key_count) = @_;
 
     # store variables
     {
@@ -248,6 +249,7 @@ sub re_exec($$$$$$$) {
 	\$total_files_size = $total_files_size;
 	\$total_files_num = $total_files_num;
 	\$key_count = $key_count;
+	\$file_count = $file_count;
 	\$\$ = $$;
 EOM
     }
@@ -1713,7 +1715,7 @@ sub pickup_updated_files (\%) {
 	    my $cfile_mtime = (stat($cfile))[9];
 	    my $rfile_mtime = $ref->{'mtime'}[$i];
 
-	    if ($rfile_mtime < $cfile_mtime) {
+	    if ($rfile_mtime != $cfile_mtime) {
 		# The file is updated!
 		unless ($printed{$cfile}) {
 		    print "$cfile " . _("was updated!\n");

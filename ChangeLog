@@ -1,3 +1,10 @@
+2000-03-11  Masao Takaku  <masao@ulis.ac.jp>
+
+	* script/mknmz.in (re_exec): Store $file_count.
+
+	* script/mknmz.in (pickup_updated_files): Change a condition for
+	updated files.
+
 2000-03-10  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* tests/data/ja/Makefile.am (EXTRA_DIST): Add excel5.xls,

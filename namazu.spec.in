@@ -1,11 +1,17 @@
+%define ver	@VERSION@
+%define rel	1
+%define prefix	/usr
+%define sysconfdir	/etc
+%define localstatedir	/var
+
 Summary: Namazu is a search engine intented for easy use
 Name: namazu
-Version: @VERSION@
-Release: 1
+Version: %ver
+Release: %rel
 Copyright: GPL
 Group: Utilities/Text
 Requires: perl >= 5.004, kakasi, nkf
-Source0: @PACKAGE@-@VERSION@.tar.gz
+Source: %{name}-%{ver}.tar.gz
 URL: http://openlab.ring.gr.jp/namazu/
 BuildRoot: /var/tmp/namazu
 
@@ -16,7 +22,21 @@ engine, but also works as personal use such as search system for
 local HDD.  Now, search clients for Mule and Tcl/Tk, JAVA and
 Win32 are available.
 
+%package devel
+Summary: Libraries and include files of Namazu
+Group: Development/Libraries
+Requires: %name = %{PACKAGE_VERSION}
+
+%description devel
+Libraries and include files of Namazu.
+
 %changelog
+* Wed Nov 03 1999 Ryuji Abe <raeva@t3.rim.or.jp>
+- Use our definite macros, ver, rel, prefix, sysconfdir, and localstatedir.
+- If configure not found, use autogen.sh.
+- Optimized for SMP environment.
+- Build devel package.
+
 * Tue Oct 12 1999 Ryuji Abe <raeva@t3.rim.or.jp>
 - Fixed correctly executables entry at %files.
 - Added missing /usr/share/locale entry at %files.
@@ -33,34 +53,57 @@ Win32 are available.
 - 
 
 %prep 
-rm -rf $RPM_BUILD_ROOT
-
 %setup
 
 %build
-CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=/usr
-make
+if [! -f configure]; then
+CFLAGS="$RPM_OPT_FLAGS" ./autogen.sh \
+	--prefix=%prefix \
+	--sysconfdir=%sysconfdir \
+	--localstatedir=%localstatedir
+else
+CFLAGS="$RPM_OPT_FLAGS" ./configure \
+	--prefix=%prefix \
+	--sysconfdir=%sysconfdir \
+	--localstatedir=%localstatedir
+fi
+if [ "$SMP" != "" ]; then
+  make -j$SMP "MAKE=make -j$SMP"
+else
+  make
+fi
 
 %install
-make prefix=$RPM_BUILD_ROOT/usr install
+rm -rf $RPM_BUILD_ROOT
+make prefix=$RPM_BUILD_ROOT%{prefix} \
+     sysconfdir=$RPM_BUILD_ROOT%{sysconfdir} \
+     localstatedir=$RPM_BUILD_ROOT%{localstatedir} \
+     install
+strip $RPM_BUILD_ROOT%{prefix}/bin/* ||:
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%post -p /sbin/ldconfig
+%postun -p /sbin/ldconfig
+
 %files
 %defattr(-, root, root)
-
 %doc AUTHORS ChangeLog COPYING NEWS README README-ja
-/usr/bin/namazu
-/usr/bin/*nmz
-/usr/bin/mailutime
-#/usr/share/emacs/site-lisp/*
-/usr/share/locale/*
-/usr/share/namazu/*
-#/usr/share/tknamazu/*
-/usr/var/namazu/*
-/usr/etc/namazu/*
-/usr/include/*
-/usr/lib/*
+%config %{sysconfdir}/namazu/*
+%{prefix}/bin/namazu
+%{prefix}/bin/*nmz
+%{prefix}/bin/mailutime
+%{prefix}/lib/libnmz.so.*
+#%{prefix}/share/emacs/site-lisp/*
+%{prefix}/share/locale/*
+%{prefix}/share/namazu/*
+#%{prefix}/share/tknamazu/*
+%{localstatedir}/namazu/*
 
-
+%files devel
+%defattr(-, root, root)
+%{prefix}/include/libnamazu.h
+%{prefix}/lib/libnmz.so
+%{prefix}/lib/libnmz.la
+%{prefix}/lib/libnmz.a

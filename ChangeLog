@@ -5,6 +5,7 @@
 	(parse_options): Add --html-split option.
 	(process_file): New function.
 	(namazu_core): Add --html-split handling.
+	(process_file): Fix bug.
 
 	* pl/htmlsplit.pl: New file.
 

@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.39 2000-03-02 02:39:34 satoru Exp $
+# $Id: mknmz.in,v 1.40 2000-03-02 02:53:06 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -164,7 +164,7 @@ sub process_file ($$$$$$) {
     my $processed_num = 0;
     my $file_size = util::filesize($cfile);
 
-    if ($Opt{'htmlsplit'}) {
+    if ($var::Opt{'htmlsplit'}) {
 	require "htmlsplit.pl";
 	my @parts = htmlsplit::split($cfile, "NMZ.partial");
 	if (@parts > 1) {
@@ -181,9 +181,9 @@ sub process_file ($$$$$$) {
 					 $uri, $id, $#parts);
 		if ($result > 0) {
 		    $processed_num++;
+		    my $rname = $part ? "$cfile\t$part" : "$cfile";
+		    put_registry($rname);
 		}
-		my $rname = $part ? "$cfile\t$part" : "$cfile";
-		put_registry($rname);
 		$id++;
 	    }
 	    return ($file_size, $processed_num);
@@ -195,6 +195,7 @@ sub process_file ($$$$$$) {
 			     undef, undef, undef);
     if ($result > 0) {
 	$processed_num++;
+	put_registry($cfile);
     }
 
     return ($file_size, $processed_num);

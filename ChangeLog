@@ -15,6 +15,10 @@
 
 1999-11-01  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
+	* ltconfig, ltmain.sh, config.guess, config.sub: Added.
+
+	* nmz/Makefile.am: Fixed unnecessary macro.
+
 	* nmz/*: Added new directory and moved libnamazu.* files from 
 	src/ directory.
 

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: codeconv.pl,v 1.4 2000-01-06 10:01:55 satoru Exp $
+# $Id: codeconv.pl,v 1.5 2000-01-25 23:53:11 satoru Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -106,19 +106,21 @@ sub eucjp_to_shiftjis ($) {
 sub toeuc ($) {
     my ($contref) = @_;
 
-    if (util::islang("ja") && ! $var::USE_NKF_MODULE) {
-	my $nkftmp = util::tmpnam("NMZ.nkf");
-	{
-	    my $nh = util::efopen("|$conf::NKF -emXZ1 > $nkftmp");
-	    print $nh $$contref;
+    if (util::islang("ja")) {
+	if ($var::USE_NKF_MODULE) {
+	    $$contref = NKF::nkf("-emXZ1", $$contref);
+	} else {
+	    my $nkftmp = util::tmpnam("NMZ.nkf");
+	    {
+		my $nh = util::efopen("|$conf::NKF -emXZ1 > $nkftmp");
+		print $nh $$contref;
+	    }
+	    {
+		my $nh = util::efopen("< $nkftmp");
+		$$contref = util::readfile($nh);
+	    }
+	    unlink($nkftmp);
 	}
-	{
-	    my $nh = util::efopen("< $nkftmp");
-	    $$contref = util::readfile($nh);
-	}
-	unlink($nkftmp);
-    } else {
-	$$contref = NKF::nkf("-emXZ1", $$contref);
     }
 }
 1;

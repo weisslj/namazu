@@ -1,3 +1,7 @@
+2000-01-26  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* pl/codeconv.pl (toeuc): Fix codeconv bug. [namazu 1316]
+
 2000-01-25  Ryuji Abe  <raeva@t3.rim.or.jp>
 
 	* nmz/util.h: (nmz_iskanji): Moved to wakati.c as iskanji.

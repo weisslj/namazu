@@ -1,6 +1,11 @@
-$Id: TODO-satoru,v 1.14 2000-01-20 11:38:25 satoru Exp $
+$Id: TODO-satoru,v 1.15 2000-01-25 23:53:10 satoru Exp $
 
 やるべきことの備忘録 by 高林
+
+  * src/em.h でハードコーディングしている
+      #define EM_START_TAG "<strong class=\"keyword\">"
+      #define EM_END_TAG   "</strong>"
+    を namazurc で設定可能にする
 
   * mknmz.pl.in: File::Copy を使おう
 

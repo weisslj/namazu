@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: html.pl,v 1.15 1999-08-31 10:17:49 knok Exp $
+# $Id: html.pl,v 1.16 1999-09-03 02:42:56 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -107,7 +107,6 @@ sub get_author ($$) {
 	    $fields->{'author'} = $1;
 	}
     }
-    
 }
 
 # TITLE を取り出す <TITLE LANG="ja_JP"> などにも考慮しています

@@ -1,5 +1,18 @@
 1999-09-03  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/namazu.h, src/hlist.c: Change data structure of HLIST to
+	better one.
+	
+	* src/mknmz.pl.in (append_index): Fix a bug: Can't update index
+	correctly. [namazu-dev 322]
+	
+	* src/mknmz.pl.in (complete_field_info): Fix a bug: condition for
+	setting "(unknown)" to $fields->{'from'} .
+
+	* src/mknmz.pl.in: Rename: make_field_index -> complete_field_info
+
+	* src/mknmz.pl.in (check_present_index): Fix a bug. [namazu-dev 322]
+	
 	* src/mknmz.pl.in: Replace get_unpackw() with readw() which is
 	used in gcnmz.in by <furukawa@tcp-ip.or.jp>.
 	

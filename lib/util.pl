@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.20 1999-09-01 01:11:21 satoru Exp $
+# $Id: util.pl,v 1.21 1999-09-03 02:42:57 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -33,6 +33,7 @@ sub cp ($$) {
     my $fh_from = efopen($from);
     my $fh_to = efopen(">$to");
 
+    dprint("cp: $from -> $to\n");
     my $buf = "";
     while(read ($fh_from, $buf, 16384)) {
         print $fh_to $buf;

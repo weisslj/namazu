@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.17 1999-09-02 23:06:36 satoru Exp $
+ * $Id: search.c,v 1.18 1999-09-03 02:42:59 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -335,8 +335,8 @@ HLIST cmp_phrase_hash(int hash_key, HLIST val,
 	for (i = j = v = 0; i < n; i++) {
 	    fid = *(list + i) + sum;
 	    sum = fid;
-	    for (; j < val.n && fid >= val.fid[j]; j++) {
-		if (fid == val.fid[j]) {
+	    for (; j < val.n && fid >= val.d[j].fid; j++) {
+		if (fid == val.d[j].fid) {
 		    copy_hlist(val, v++, val, j);
 		}
 	    }

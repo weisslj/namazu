@@ -18,13 +18,18 @@
 
 typedef unsigned char uchar;
 
+struct hlist_data {
+    int scr;  /* score */
+    int fid;  /* file ID */
+    int did;  /* database (index) ID */
+    int date; /* file's date */
+};
+typedef struct hlist_data hlist_data;
+
 /* data structure for search result */
 struct hlist {
     int n;
-    int *scr;  /* score */
-    int *fid;  /* file ID */
-    int *did;  /* database (index) ID */
-    int *date; /* file's date */
+    hlist_data *d;
 };
 typedef struct hlist HLIST;
 

@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.17 1999-09-02 23:06:36 satoru Exp $
+ * $Id: hlist.c,v 1.18 1999-09-03 02:42:58 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -57,10 +57,7 @@ int  cmp(const void*, const void*);
 
 void memcpy_hlist(HLIST to, HLIST from, int n)
 {
-    memcpy(to.fid + n, from.fid, from.n * sizeof (int));
-    memcpy(to.scr + n, from.scr, from.n * sizeof (int));
-    memcpy(to.did + n, from.did, from.n * sizeof (int));
-    memcpy(to.date + n, from.date, from.n * sizeof (int));
+    memcpy(to.d + n,  from.d,  from.n * sizeof (to.d[0]));
 }
 
 void set_date_zero_all(HLIST hlist)
@@ -68,7 +65,7 @@ void set_date_zero_all(HLIST hlist)
     int i;
 
     for (i = 0; i < hlist.n; i++) {
-        hlist.date[i] = 0;
+        hlist.d[i].date = 0;
     }
 }
 
@@ -89,7 +86,7 @@ void prep_field_sort(HLIST hlist)
     for (i = 0; i < hlist.n; i++) {
 	uchar buf[BUFSIZE];
 	int leng;
-	get_field_data(hlist.did[i], hlist.fid[i], Field, buf);
+	get_field_data(hlist.d[i].did, hlist.d[i].fid, Field, buf);
 	chomp(buf);
 	leng = strlen(buf);
 
@@ -108,7 +105,7 @@ void prep_field_sort(HLIST hlist)
     if (numeric == 1) {
 	for (i = 0; i < hlist.n; i++) {
 	    /* overwrite hlist.date data for field-specified sorting */
-	    hlist.date[i] = atoi(tab[i].str);
+	    hlist.d[i].date = atoi(tab[i].str);
 	    free(tab[i].str);
 	}
 	
@@ -116,7 +113,7 @@ void prep_field_sort(HLIST hlist)
 	qsort(tab, hlist.n, sizeof(tab[0]), cmp);
 	for (i = 0; i < hlist.n; i++) {
 	    /* overwrite hlist.date data for field-specified sorting */
-	    hlist.date[tab[i].num] = i;
+	    hlist.d[tab[i].num].date = i;
 	    free(tab[i].str);
 	}
     }
@@ -159,17 +156,17 @@ HLIST andmerge(HLIST left, HLIST right, int *ignore)
 	for (;; j++) {
 	    if (j >= right.n)
 		goto OUT;
-	    if (left.fid[i] < right.fid[j])
+	    if (left.d[i].fid < right.d[j].fid)
 		break;
-	    if (left.fid[i] == right.fid[j]) {
+	    if (left.d[i].fid == right.d[j].fid) {
 
 		copy_hlist(left, v, left, i);
                 if (TfIdf) {
-                    left.scr[v] = left.scr[i] + right.scr[j];
+                    left.d[v].scr = left.d[i].scr + right.d[j].scr;
                 } else {
                     /* assign a smaller number, left or right*/
-                    left.scr[v] = left.scr[i] < right.scr[j] ?
-                        left.scr[i] : right.scr[j];
+                    left.d[v].scr = left.d[i].scr < right.d[j].scr ?
+                        left.d[i].scr : right.d[j].scr;
                 }
 		v++;
 		j++;
@@ -203,9 +200,9 @@ HLIST notmerge(HLIST left, HLIST right, int *ignore)
 
     for (v = 0, i = 0, j = 0; i < left.n; i++) {
 	for (f = 0; j < right.n; j++) {
-	    if (left.fid[i] < right.fid[j])
+	    if (left.d[i].fid < right.d[j].fid)
 		break;
-	    if (left.fid[i] == right.fid[j]) {
+	    if (left.d[i].fid == right.d[j].fid) {
 		j++;
 		f = 1;
 		break;
@@ -244,15 +241,15 @@ HLIST ormerge(HLIST left, HLIST right)
     malloc_hlist(&val, n);
 
     for (v = 0, i = 0, j = 0; i < left.n; i++) {
-	for (; left.fid[i] >= right.fid[j] && j < right.n; j++) {
-	    if (left.fid[i] == right.fid[j]) {
+	for (; left.d[i].fid >= right.d[j].fid && j < right.n; j++) {
+	    if (left.d[i].fid == right.d[j].fid) {
 
                 if (TfIdf) {
-                    left.scr[i] = left.scr[i] + right.scr[j];
+                    left.d[i].scr = left.d[i].scr + right.d[j].scr;
                 } else {
                     /* assign a large number, left or right */
-                    left.scr[i] = left.scr[i] > right.scr[j] ?
-                        left.scr[i] : right.scr[j];
+                    left.d[i].scr = left.d[i].scr > right.d[j].scr ?
+                        left.d[i].scr : right.d[j].scr;
                 }
 		j++;
 		break;
@@ -279,42 +276,19 @@ HLIST ormerge(HLIST left, HLIST right)
 void malloc_hlist(HLIST * hlist, int n)
 {
     if (n <= 0) return;
-    hlist->fid = (int *)malloc(n * sizeof(int));
-    if (hlist->fid == NULL) {
+    hlist->d = (hlist_data *)malloc(n * sizeof(hlist_data));
+    if (hlist->d == NULL) {
 	 die("malloc_hlist");
     }
-    hlist->scr = (int *)malloc(n * sizeof(int));
-    if (hlist->scr == NULL) {
-	 die("malloc_hlist");
-    }
-    hlist->did = (int *)malloc(n * sizeof(int));
-    if (hlist->did == NULL) {
-	 die("malloc_hlist");
-    }
-    hlist->date = (int *)malloc(n * sizeof(int));
-    if (hlist->date == NULL) {
-	 die("malloc_hlist");
-    }
+
     hlist->n = n;
 }
 
 void realloc_hlist(HLIST * hlist, int n)
 {
     if (n <= 0) return;
-    hlist->fid = (int *) realloc(hlist->fid, n * sizeof(int));
-    if (hlist->fid == NULL) {
-	 die("realloc_hlist");
-    }
-    hlist->scr = (int *) realloc(hlist->scr, n * sizeof(int));
-    if (hlist->scr == NULL) {
-	 die("realloc_hlist");
-    }
-    hlist->did = (int *) realloc(hlist->did, n * sizeof(int));
-    if (hlist->did == NULL) {
-	 die("realloc_hlist");
-    }
-    hlist->date = (int *) realloc(hlist->date, n * sizeof(int));
-    if (hlist->date == NULL) {
+    hlist->d = (hlist_data *) realloc(hlist->d, n * sizeof(hlist_data));
+    if (hlist->d == NULL) {
 	 die("realloc_hlist");
     }
 }
@@ -322,25 +296,19 @@ void realloc_hlist(HLIST * hlist, int n)
 void free_hlist(HLIST hlist)
 {
     if (hlist.n <= 0) return;
-    free(hlist.fid);
-    free(hlist.scr);
-    free(hlist.did);
-    free(hlist.date);
+    free(hlist.d);
 }
 
 void copy_hlist(HLIST to, int n_to, HLIST from, int n_from)
 {
-    to.fid[n_to] = from.fid[n_from];
-    to.scr[n_to] = from.scr[n_from];
-    to.did[n_to] = from.did[n_from];
-    to.date[n_to] = from.date[n_from];
+    to.d[n_to] = from.d[n_from];
 }
 
 void set_did_hlist(HLIST hlist, int id)
 {
     int i;
     for (i = 0; i < hlist.n; i++) {
-        hlist.did[i] = id;
+        hlist.d[i].did = id;
     }
 }
 
@@ -383,13 +351,13 @@ HLIST do_date_processing(HLIST hlist)
     }
 
     for (i = 0; i < hlist.n ; i++) {
-        if (-1 == fseek(date_index, hlist.fid[i] * sizeof(hlist.date[i]), 0)) {
+        if (-1 == fseek(date_index, hlist.d[i].fid * sizeof(hlist.d[i].date), 0)) {
             set_date_zero_all(hlist);
             return hlist; /* error */
         }
-        freadx(&hlist.date[i], sizeof(hlist.date[i]), 1, date_index);
+        freadx(&hlist.d[i].date, sizeof(hlist.d[i].date), 1, date_index);
 
-        if (hlist.date[i] == -1) {  
+        if (hlist.d[i].date == -1) {  
             /* the missing number, this document has been deleted */
             int j;
 
@@ -437,11 +405,11 @@ HLIST get_hlist(int index)
 	malloc_hlist(&hlist, n / 2);
 	
 	for (i = 0; i < n; i += 2) {
-	    hlist.fid[i / 2] = *(buf + i) + sum;
-	    sum = hlist.fid[i / 2];
-	    hlist.scr[i / 2] = *(buf + i + 1);
+	    hlist.d[i/2].fid = *(buf + i) + sum;
+	    sum = hlist.d[i/2].fid;
+	    hlist.d[i/2].scr = *(buf + i + 1);
             if (TfIdf) {
-                hlist.scr[i / 2] = (int)(hlist.scr[i / 2] * idf) + 1;
+                hlist.d[i/2].scr = (int)(hlist.d[i/2].scr * idf) + 1;
             }
 	}
         hlist.n = n / 2;
@@ -477,16 +445,16 @@ void nmz_mergesort(int first, int last, HLIST hlist, HLIST work, int mode)
             int bool = 0;
 
             if (mode == SORT_BY_SCORE) {
-                if (work.scr[j] >= hlist.scr[i]) {
+                if (work.d[j].scr >= hlist.d[i].scr) {
                     bool = 1;
                 }
             } else if (mode == SORT_BY_DATE){
-                if (work.date[j] >= hlist.date[i]) {
+                if (work.d[j].date >= hlist.d[i].date) {
                     bool = 1;
                 }
             } else if (mode == SORT_BY_FIELD) {
 		/* work.date and hlist.date have pre-sorted field ranks */
-                if (work.date[j] >= hlist.date[i]) {
+                if (work.d[j].date >= hlist.d[i].date) {
                     bool = 1;
                 }
 	    }

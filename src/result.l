@@ -1,7 +1,7 @@
 /*
  * result.l -
  * -*- C -*-
- * $Id: result.l,v 1.20 1999-09-02 09:11:07 satoru Exp $
+ * $Id: result.l,v 1.21 1999-09-03 02:42:59 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -173,10 +173,10 @@ void print_hlist(HLIST hlist)
     for (i = HListWhence; i < hlist.n; i++) {
 	char template[BUFSIZE];
 	strcpy(Buf, "\t");  /* '\t' has an important role cf. fputx() */
-	Score   = hlist.scr[i];
+	Score   = hlist.d[i].scr;
 	Counter = i + 1;
-	Fid = hlist.fid[i];
-	Did = hlist.did[i];
+	Fid = hlist.d[i].fid;
+	Did = hlist.d[i].did;
 	make_fullpathname_result(Did);
 	strcpy(template, NMZ.result);
 	strcat(template, ".");

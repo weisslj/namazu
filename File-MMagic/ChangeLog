@@ -1,0 +1,64 @@
+1999-07-29  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* Fixed %SPECIALS evaluation bug.
+
+1999-07-14  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* Added blessing FileHandle process in new function.
+	 (Thanks to Mr. majiCk)
+
+1999-07-13  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* Release version 0.15.
+	
+1999-07-06  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* Fix %SPECIALS media types.
+	 (text/(rfc822|news) is bad, message/* is correct.
+	  Thanks to Mr.Takaku.)
+	* Changed %SPECIALS token regexp.
+
+1999-06-29  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* Fix truncating data processing bug in checktype_data function
+	 (pack('a8192') padded "\0", it cause a probrem.)
+
+1999-06-18  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* Add initialize some variables code in readMagicEntry function
+	 (to avoid '-w' warning).
+	* Add length check code in checktype_contents function.
+
+1999-06-17  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* Change %SPECIAL checking code.
+	* Add checktype_byfilename function.
+	* Add data truncation process on checktype_data function.
+
+1999-06-16  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* Reorder some magic entries.
+	* Fix MHonArc magic entry.
+	* Add RFC check to %SPECIALS.
+
+1999-06-15  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* Add 2 magic entries (MHonArc and bzip2).
+
+1999-06-14  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* Add the Apache License.
+	 (Thanks to Ian Kluft.)
+	* Add checktype_contents() function.
+	* Add zero check routine in check_binary() funciton.
+
+1999-06-11  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* Change __DATA__ handling.
+	 (Thanks to Mr. Inaba, Mr. Maeda, and fj.comp.lang.perl.)
+
+1999-06-10  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* Initial version.
+	* Branch 'classify' version.
+

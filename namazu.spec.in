@@ -10,7 +10,7 @@ Name: namazu
 Version: %ver
 Release: %rel
 Copyright: GPL
-Group: Utilities/Text
+Group: Applications/Text
 Requires: perl >= 5.004, perl-File-MMagic >= 0.19, perl-NKF >= 1.70
 Requires: kakasi >= 2.3.0, perl-Text-Kakasi >= 1.00
 Source: namazu-%{ver}.tar.gz
@@ -34,7 +34,7 @@ Libraries and include files of Namazu.
 
 #%package elisp
 #Summary: An interface of Namazu for GNU Emacs
-#Group: Utilities/Text
+#Group: Applications/Text
 #Requires: %name = %{PACKAGE_VERSION}, emacs
 #
 #%description elisp
@@ -42,13 +42,17 @@ Libraries and include files of Namazu.
 
 #%package cgi
 #Summary: An interface of Namazu for CGI
-#Group: Utilities/Text
+#Group: Applications/Text
 #Requires: %name = %{PACKAGE_VERSION}, apache
 #
 #%description cgi
 #An interface of Namazu for CGI.
 
 %changelog
+* Wed Feb 02 1999 Ryuji Abe <raeva@t3.rim.or.jp>
+- Apapted for namazu-current.
+- Changed group Utilities/Text -> Applications/Text.
+
 * Thu Dec 30 1999 Ryuji Abe <raeva@t3.rim.or.jp>
 - rpm-3.0.x adaptations.
 - Added package entries elisp and cgi (currently comment out). 
@@ -109,12 +113,16 @@ make prefix=$RPM_BUILD_ROOT%{prefix} \
      sysconfdir=$RPM_BUILD_ROOT%{sysconfdir} \
      localstatedir=$RPM_BUILD_ROOT%{localstatedir} \
      install
+mv $RPM_BUILD_ROOT%{sysconfdir}/namazu/namazurc-sample \
+	$RPM_BUILD_ROOT%{sysconfdir}/namazu/namazurc
+mv $RPM_BUILD_ROOT%{sysconfdir}/namazu/mknmzrc-sample \
+	$RPM_BUILD_ROOT%{sysconfdir}/namazu/mknmzrc
 chmod a+rw -R $RPM_BUILD_ROOT%{localstatedir}/namazu
 chmod a+rw -R $RPM_BUILD_ROOT%{localstatedir}/namazu/index
 strip $RPM_BUILD_ROOT%{prefix}/bin/namazu
 
 #mkdir -p $RPM_BUILD_ROOT/home/httpd/cgi-bin/
-#cp $RPM_BUILD_ROOT%{prefix}/bin/namazu \
+#cp $RPM_BUILD_ROOT%{prefix}/libexec/namazu.cgi \
 #    $RPM_BUILD_ROOT/home/httpd/cgi-bin/namazu.cgi
 
 %clean
@@ -125,11 +133,13 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-, root, root)
-%doc AUTHORS ChangeLog COPYING NEWS README README-ja
+%doc AUTHORS ChangeLog COPYING INSTALL INSTALL-ja README README-ja
+%doc NEWS THANKS TODO
 %config %{sysconfdir}/namazu/*
 %{prefix}/bin/namazu
 %{prefix}/bin/*nmz
 %{prefix}/bin/mailutime
+%{prefix}/bin/nmzgrep
 %{prefix}/lib/libnmz.so.*
 %{prefix}/man/man1
 %{prefix}/share/locale/*
@@ -152,4 +162,5 @@ rm -rf $RPM_BUILD_ROOT
 
 #%files cgi
 #%defattr(-, root, root)
-#/home/httpd/cgi-bin/namazu.cgi
+#%{prefix}/libexec/namazu.cgi
+#home/httpd/cgi-bin/namazu.cgi

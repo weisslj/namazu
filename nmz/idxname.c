@@ -2,7 +2,7 @@
  * 
  * idxname.c - Idx handling routines.
  *
- * $Id: idxname.c,v 1.11 2000-01-06 10:01:52 satoru Exp $
+ * $Id: idxname.c,v 1.12 2000-01-07 01:21:56 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
@@ -202,7 +202,7 @@ set_idx_hitnumlist(int id, struct nmz_hitnumlist *hnlist)
 }
 
 /*
- * Push strstruct nmz_hitnumlist handling subroutines
+ * Push something and return pushed list.
  */
 struct nmz_hitnumlist *
 push_hitnum(struct nmz_hitnumlist *hn, 

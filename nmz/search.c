@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.44 2000-01-06 10:01:53 satoru Exp $
+ * $Id: search.c,v 1.45 2000-01-07 01:21:56 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -401,7 +401,7 @@ do_phrase_search(const char *key, NmzResult val)
     }
 
     if (open_phrase_index_files(&phrase, &phrase_index)) {
-        val.stat = ERR_PHRASE_SEARCH_FAILED;  /* cannot open regex index */
+        val.stat = ERR_PHRASE_SEARCH_FAILED;  /* cannot open phrase index */
         return val;
     }
         
@@ -586,11 +586,11 @@ get_regex_part(char *expr, const char *str)
 static NmzResult 
 do_field_search(const char *fieldpat, NmzResult val)
 {
-    char expr[BUFSIZE * 2], /* because of escaping meta characters */
-        field_name[BUFSIZE], file_name[BUFSIZE];
+    char expr[BUFSIZE * 2], /* For escaping meta characters */
+        *field_name, file_name[BUFSIZE];
     FILE *fp;
 
-    get_field_name(field_name, fieldpat);
+    field_name = get_field_name(fieldpat);
     get_regex_part(expr, fieldpat);
     do_regex_preprocessing(expr);
 
@@ -599,8 +599,7 @@ do_field_search(const char *fieldpat, NmzResult val)
 
     fp = fopen(file_name, "rb");
     if (fp == NULL) {
-        set_dyingmsg("%s: cannot open file.\n", file_name);
-        val.stat = ERR_CANNOT_OPEN_INDEX;
+        val.stat = ERR_FIELD_SEARCH_FAILED;
         return val;
     }
     val = regex_grep(expr, fp, field_name, 1); /* last argument must be 1 */

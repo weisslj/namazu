@@ -1,3 +1,7 @@
+2000-01-07  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* ja.po: Update a message.
+
 2000-01-06  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* Makefile.in.in (ADDITIONAL_FILES):

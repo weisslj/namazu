@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2000-01-06 23:05+0900\n"
+"POT-Creation-Date: 2000-01-07 10:19+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -58,14 +58,18 @@ msgid "cannot open phrase index"
 msgstr ""
 
 #: nmz/util.c:612
-msgid "cannot open this index"
+msgid "cannot open field index"
 msgstr ""
 
 #: nmz/util.c:615
-msgid "You don't have a permission to access the index"
+msgid "cannot open this index"
 msgstr ""
 
 #: nmz/util.c:618
+msgid "You don't have a permission to access the index"
+msgstr ""
+
+#: nmz/util.c:621
 msgid "Unknown error. Report bug!"
 msgstr ""
 
@@ -111,22 +115,22 @@ msgid ""
 "\n"
 msgstr ""
 
-#: src/output.c:580
+#: src/output.c:582
 #, c-format
 msgid ""
 "\t<h2>Error!</h2>\n"
 "<p>%s</p>\n"
 msgstr ""
 
-#: src/output.c:590
+#: src/output.c:592
 msgid "\t<h2>Results:</h2>\n"
 msgstr ""
 
-#: src/output.c:597
+#: src/output.c:599
 msgid "References: "
 msgstr ""
 
-#: src/output.c:639
+#: src/output.c:641
 msgid "\t<p>No document matching your query.</p>\n"
 msgstr ""
 

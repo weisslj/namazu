@@ -2,7 +2,7 @@
  * 
  * alias.c - 
  *
- * $Id: alias.c,v 1.5 2000-01-06 10:01:51 satoru Exp $
+ * $Id: alias.c,v 1.6 2000-01-07 01:21:56 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
@@ -104,3 +104,5 @@ show_aliases(void)
 	list = list->next;
     }
 }
+
+

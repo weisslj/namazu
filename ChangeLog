@@ -1,3 +1,14 @@
+2000-01-07  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* nmz/field.c (get_field_name): Change interface. All callers
+	changed. 
+
+	* nmz/util.c (nmz_get_errmsg): Handle ERR_FIELD_SEARCH_FAILED.
+
+	* nmz/search.c (do_field_search): Use ERR_CANNOT_OPEN_INDEX.
+
+	* nmz/libnamazu.h (enum nmz_stat): Add ERR_FIELD_SEARCH_FAILED.
+
 2000-01-06  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* scripts/mknmz.pl.in: Moved location of requiring gettext.pl.

@@ -8,7 +8,7 @@ enum {
 };
 
 extern int isfield ( const char *key );
-extern void get_field_name ( char *field, const char *fieldpat );
+extern char *get_field_name ( const char *fieldpat );
 extern void get_field_data ( int idxid, int docid, const char *field, char *data );
 
 #endif /* _FIELD_H */

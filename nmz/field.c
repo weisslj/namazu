@@ -85,10 +85,16 @@ isfield(const char *key)
     return 0;
 }
 
-void 
-get_field_name(char *field, const char *fieldpat)
+/*
+ * This function returns a string storing a field name in
+ * the fieldpat. The string can only be used until the next
+ * call to the function. 
+ */
+char *
+get_field_name(const char *fieldpat)
 {
-    char *tmp = field;
+    static char field_name[BUFSIZE]; /* storing field name */
+    char *tmp = field_name;
 
     fieldpat++;  /* ignore beggining '+' mark */
     while (*fieldpat) {
@@ -101,7 +107,8 @@ get_field_name(char *field, const char *fieldpat)
     }
     *tmp = '\0';
 
-    apply_field_alias(field);
+    apply_field_alias(field_name);
+    return field_name;
 }
 
 void 

@@ -1,5 +1,5 @@
 /*
- * $Id: util.c,v 1.35 2000-01-06 06:52:39 satoru Exp $
+ * $Id: util.c,v 1.36 2000-01-07 01:21:56 satoru Exp $
  *
  * Imported scan_hex(), scan_oct(), xmalloc(), xrealloc() from 
  * Ruby b19's"util.c" and "gc.c". Thanks to Matsumoto-san for consent!
@@ -607,6 +607,9 @@ nmz_get_errmsg(enum nmz_stat stat)
 	break;
     case ERR_PHRASE_SEARCH_FAILED:
 	msg = _("cannot open phrase index");
+	break;
+    case ERR_FIELD_SEARCH_FAILED:
+	msg = _("cannot open field index");
 	break;
     case ERR_CANNOT_OPEN_INDEX:
 	msg = _("cannot open this index");

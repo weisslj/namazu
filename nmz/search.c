@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.83 2000-12-21 07:12:46 knok Exp $
+ * $Id: search.c,v 1.84 2001-01-27 02:18:18 baba Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -838,7 +838,7 @@ make_fullpathname_index(int n)
 static 
 void remove_quotes(char *str) 
 {
-    if (strlen(str) >= 3 && (*str == '"' && str[strlen(str) - 1] == '"') 
+    if ((strlen(str) >= 3 && (*str == '"' && str[strlen(str) - 1] == '"'))
 	|| (*str == '{' && str[strlen(str) - 1] == '}')) 
     {
 	strcpy(str, str + 1); 

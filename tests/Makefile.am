@@ -2,14 +2,15 @@
 AUTOMAKE_OPTIONS = 1.4 no-dependencies
 SUBDIRS = data
 
-TESTS =	mknmz-1 mknmz-2 mknmz-3 mknmz-4 mknmz-5 \
+TESTS =	mknmz-1 mknmz-2 mknmz-3 mknmz-4 mknmz-5 mknmz-6 \
 	gcnmz-1 \
 	idxdiff-1 idxdiff-2 idxdiff-3 \
 	namazu-1 namazu-2 namazu-3 namazu-4 \
 	namazu-cgi-1 namazu-cgi-2 \
+	namazu-query \
 	namazu-nasty-cases
 
 clean-local:
-	rm -rf test-log tmp-data idx[0-9]* 
+	rm -rf test-log tmp-data tmp.* idx[0-9]* 
 
 EXTRA_DIST = $(TESTS) select-data

@@ -2,7 +2,7 @@
 # -*- Perl -*-
 #
 # bnamazu -- search with "namazu" and browse its results with a web browser.
-# $Id: bnamazu.in,v 1.1 1999-12-19 13:41:12 satoru Exp $
+# $Id: bnamazu.in,v 1.2 1999-12-20 00:18:24 satoru Exp $
 # 
 # Copyright (C) 1998 Hajime BABA. All rights reserved.
 #
@@ -30,17 +30,31 @@ my $namazu_opts = "-h"; # default options for namazu
 my $newwindow = 0;
 my $browser = "lynx";   # default web browser
 
+my $tmpdir = ".";
+$tmpdir = "/tmp" if -d "/tmp";
+$tmpdir = $ENV{"TMPDIR"} if defined $ENV{"TMPDIR"};
+
+my $user = "unknown";
+$user = $ENV{"USER"} if defined $ENV{"USER"};
+$user = $ENV{"USERNAME"} if defined $ENV{"USERNAME"};
+
 main();
 
 sub main {
-    my $tmpdir = ".";
-    $tmpdir = "/tmp" if -d "/tmp";
-    $tmpdir = $ENV{"TMPDIR"} if defined $ENV{"TMPDIR"};
-
     my @args = parse_options();
-    
+
+    my $results_html = "";
+    if ($browser =~ /netscape/) {
+	# It is impossible to remove a tmpfile immediately after invoking
+	# netscape. Because netscape requires the tmpfile to go back to it.
+	# So, we should remove a previous tmpfile at this time.
+	unlink_previous_netscape_tmpfile();  
+	$results_html = "$tmpdir/.bnamazu-$user-netscape-$$.html";
+    } else {
+	$results_html = "$tmpdir/.bnamazu-$user-$$.html";
+    }
+
     # invoke namazu
-    my $results_html = "$tmpdir/bnamazu$$.html";
     my $cmd = "$namazu $namazu_opts @args > $results_html 2> /dev/null";
     system $cmd;
 
@@ -108,10 +122,15 @@ sub exec_browser ($) {
 	    $cmd = "$browser $file &";
 	}
     } else {
-	$cmd = "$browser $file";
+        # remove tmpfile immediately after a browser exits.
+	$cmd = "$browser $file; rm -f $file";
     }
 
     # go!
     system $cmd;
-    unlink $file;
 }    
+
+sub unlink_previous_netscape_tmpfile () {
+    my @tmpfiles = glob "$tmpdir/.bnamazu-$user-netscape-[-0-9]*.html";
+    unlink @tmpfiles;
+}

@@ -1,3 +1,11 @@
+1999-12-20  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* scripts/bnamazu.in (unlink_previous_netscape_tmpfile): New function.
+	Since it is impossible to remove a tmpfile immediately after
+	invoking netscape (netscape requires the tmpfile to go back to
+	it). we should remove a previous tmpfile at next bnamazu execution.
+	(main): Use unlink_previous_netscape_tmpfile.
+
 1999-12-20  Ryuji Abe  <raeva@t3.rim.or.jp>
 
 	* scripts/Makefile.am (ETAGS_ARGS): Handling perl scripts.

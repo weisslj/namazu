@@ -1,3 +1,8 @@
+2000-07-19  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* scripts/mknmz.in (find_target): Added a routine to skip empty
+	line target (namazu-bugs-ja#20).
+
 2000-07-06  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* scripts/mknmz.in (main): Fixed ignore MKNMZRC environment bug
@@ -5741,4 +5746,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.705 2000-07-06 05:39:56 knok Exp $
+$Id: ChangeLog,v 1.706 2000-07-19 09:09:36 knok Exp $

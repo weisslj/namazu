@@ -2,6 +2,7 @@
 #
 # Test for incremental indexing.
 #
+LOG=`pwd`/test-log
 if test ! -d idx2; then
     mkdir idx2
 else

@@ -1,6 +1,10 @@
 2000-02-27  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
-	* tests/Makefile.am (TESTS): Add mknmz-4, gcnmz-1 and idxdiff-3.
+	* tests/*-[0-9]: Improve test-log handling.
+
+	* tests/Makefile.am (TESTS): Add mknmz-4, gcnmz-1, namazu-3 and
+	idxdiff-3.
+	(TESTS): Add mknmz-5 and namazu-4.
 
 	* tests/mknmz-4: New file.
 

@@ -1,3 +1,8 @@
+Overview of Changes in Namazu 2.0.1 - Feb 28, 2000
+
+* Test suites are supplied. Just type `make check'.
+* Fix many bugs.
+
 Overview of Changes in Namazu 2.0 - Feb 20, 2000
 
 * NLS support using GNU gettext is added.

@@ -2,6 +2,7 @@
 #
 # Test for namazu.cgi.
 #
+LOG=`pwd`/test-log
 
 docnum=`perl -lne 'print $1 if /^files (\d+)/' "idx1/NMZ.status"`
 
@@ -17,6 +18,6 @@ cd ../src
 hitnum=`./namazu.cgi | perl -ne 'print $1 if /<!-- HIT -->(\d+)<!-- HIT -->/'`
 rm -f $tmprc
 
-#echo $docnum $hitnum
+echo "docnum:" $docnum, "hitnum:" $hitnum >> $LOG
 test "$docnum" != "$hitnum" && exit 1  # error if not matched
 exit 0

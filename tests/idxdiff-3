@@ -5,6 +5,7 @@
 # idx5: reference index which is simply indexed.
 # idx6: garbage collected by gcnmz.
 #
+LOG=`pwd`/test-log
 
 cd idx5
 targets=`find . -type f -name 'NMZ.*' | \

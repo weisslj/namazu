@@ -2,6 +2,7 @@
 #
 # Test for gcnmz.
 #
+LOG=`pwd`/test-log
 
 if test ! -d idx5; then
     mkdir idx5
@@ -18,7 +19,7 @@ cp -r idx4 idx6
 
 # Simple indexing to make a reference index.
 cd ../scripts 
-./mknmz -O ../tests/idx5 ../tests/tmp-data >> ../tests/test-log
+./mknmz -O ../tests/idx5 ../tests/tmp-data >> $LOG
 test "$?" != "0" && exit 1  # error if not success
 
 # Apply gcnmz for idx6.

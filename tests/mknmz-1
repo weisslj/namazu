@@ -2,6 +2,7 @@
 #
 # Test for simple indexing.
 #
+LOG=`pwd`/test-log
 
 if test ! -d idx1; then
     mkdir idx1
@@ -11,5 +12,5 @@ fi
 
 # Simple indexing.
 cd ../scripts 
-./mknmz -O ../tests/idx1 ../tests/data >> ../tests/test-log
+./mknmz -O ../tests/idx1 ../tests/data >> $LOG
 exit $?

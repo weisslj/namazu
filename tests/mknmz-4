@@ -2,6 +2,9 @@
 #
 # Test for deleting documents in an index.
 #
+LOG=`pwd`/test-log
+
+LOG=`pwd`/test-log
 
 if test ! -d idx4; then
     mkdir idx4
@@ -17,7 +20,7 @@ cp -r data tmp-data
 
 # Simple indexing.
 cd ../scripts 
-./mknmz -O ../tests/idx4 ../tests/tmp-data >> ../tests/test-log
+./mknmz -O ../tests/idx4 ../tests/tmp-data >> $LOG
 test "$?" != "0" && exit 1  # error if not success
 
 prevdocnum=`perl -lne 'print $1 if /^files (\d+)/' ../tests/idx4/NMZ.status`
@@ -29,10 +32,11 @@ cd ../
 
 # Update the index.
 cd ../scripts 
-./mknmz --update=../tests/idx4 >> ../tests/test-log
+./mknmz --update=../tests/idx4 >> $LOG
 test "$?" != "0" && exit 1  # error if not success
 
 postdocnum=`perl -lne 'print $1 if /^files (\d+)/' ../tests/idx4/NMZ.status`
 
+echo "predocnum:" $prevdocnum, "postdocnum:" $postdocnum >> $LOG
 test $prevdocnum -le $postdocnum && exit 1  # error if prev <= post
 exit 0

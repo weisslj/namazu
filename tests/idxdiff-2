@@ -5,6 +5,7 @@
 # idx1: simply indexed.
 # idx3: indexed with --checkpoint and $ON_MEMORY_MAX is 0.
 #
+LOG=`pwd`/test-log
 
 cd idx1
 targets=`find . -type f -name 'NMZ.*' | \

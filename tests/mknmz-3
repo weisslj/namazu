@@ -2,6 +2,7 @@
 #
 # Test for indexing with --checkpoint and $ON_MEMORY_MAX is 0.
 #
+LOG=`pwd`/test-log
 
 if test ! -d idx3; then
     mkdir idx3

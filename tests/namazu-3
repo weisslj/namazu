@@ -2,18 +2,19 @@
 #
 # Test for namazu. Searching an index having deleted documents.
 #
+LOG=`pwd`/test-log
 
 docnum=`perl -lne 'print $1 if /^files (\d+)/' idx4/NMZ.status`
 
 # Check simple searching.
 cd ../src
-./namazu namazu ../tests/idx4 >> ../tests/test-log
+./namazu namazu ../tests/idx4 >> $LOG
 test "$?" != "0" && exit 1  # error if not success
 
 # Check the number of retrieved documents.
 cd ../src
 hitnum=`./namazu -c namazu ../tests/idx4`
-#echo $docnum $hitnum
+echo "docnum:" $docnum, "hitnum:" $hitnum >> $LOG
 test "$docnum" != "$hitnum" && exit 1  # error if not matched
 
 exit 0

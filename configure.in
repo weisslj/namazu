@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.129 2000-09-05 05:47:42 rug Exp $
+dnl $Id: configure.in,v 1.130 2000-09-06 06:08:42 rug Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -131,7 +131,7 @@ AC_REPLACE_FUNCS(strstr)
 NMZ_REPLACE_FUNCS([memmove memset strcasecmp strncasecmp strcspn strerror])
 AC_CHECK_FUNCS([vsnprintf _vsnprintf __vsnprintf])
 if test $ac_cv_func_vsnprintf = no && test $ac_cv_func__vsnprintf = no && test $ac_cv_func__vsnprintf = no; then
-    NMZ_LIBOBJS="$NMZ_LIBOBJS vsnprintf.${ac_objext}"
+    NMZ_LIBOBJS="$NMZ_LIBOBJS vsnprintf.lo"
 fi
 
 dnl for debugging.

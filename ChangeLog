@@ -4,6 +4,8 @@
 	not ${ac_objext}.
 	(NMZ_REPLACE_FUNCS): Likewise.
 
+	* configure.in: Also set NMZ_LIBOBJS vsnprintf.lo, not vsnprintf.${ac_objext}.
+
 2000-09-05  Ryuji Abe <rug@namazu.org>
 
 	* acinclude.m4: Do libnmz adaptation.
@@ -5933,4 +5935,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.720 2000-09-06 06:04:31 rug Exp $
+$Id: ChangeLog,v 1.721 2000-09-06 06:08:42 rug Exp $

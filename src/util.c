@@ -62,7 +62,7 @@ static int is_little_endian(void)
     char *c;
     
     c = (char *)&n;
-    if (*c == 1) { /* little endian */
+    if (*c == 1) {
 	return 1;
     } else {
 	return 0;

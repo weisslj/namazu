@@ -118,7 +118,7 @@ The above searches a keyword "bar" for the index under
 
 <!-- mknmz-option -->
 <pre>
-    mknmz 2.0.x, an indexer of Namazu.
+    mknmz 2.1.0, an indexer of Namazu.
     
     Usage: mknmz [options] &lt;target&gt;...
     
@@ -174,6 +174,7 @@ The above searches a keyword "bar" for the index under
       -V, --verbose            be verbose.
       -d, --debug              be debug mode.
           --help               show this help and exit.
+          --                   Terminate option list.
     
     Report bugs to &lt;bug-namazu@namazu.org&gt;.
 </pre>
@@ -455,7 +456,7 @@ Thanks in advance.
 
 <!-- namazu-option -->
 <pre>
-    namazu 2.0.x, a search program of Namazu.
+    namazu 2.1.0, a search program of Namazu.
     
     Usage: namazu [options] &lt;query&gt; [index]... 
         -n, --max=NUM        set the number of documents shown to NUM.
@@ -482,7 +483,8 @@ Thanks in advance.
         -q, --quiet          do not display extra messages except search results.
         -d, --debug          be in debug mode.
         -v, --version        show the namazu version and exit.
-            --help           show this help and exit
+            --help           show this help and exit.
+            --               Terminate option list.
     
     Report bugs to &lt;bug-namazu@namazu.org&gt;.
 </pre>
@@ -916,9 +918,7 @@ Linux or FreeBSD
 This query specifies two or more terms for retrieving all of the
 documents which contain a first term but do not contain the
 following terms. Insert the <code class="operator">not</code>
-operator between the terms, for example:
-</p>
-
+operator between the terms, for example:</p>
 <p class="example">
 Linux not UNIX
 </p>
@@ -928,7 +928,7 @@ Linux not UNIX
 <p>
 You can group queries by surrounding them by
 parentheses. The parentheses should be separated by one or
-more spaces, e.g. 
+more spaces. e.g. 
 </p>
 
 <p class="example">
@@ -950,7 +950,7 @@ so wrong results may occasionally occur.  Example:
 
 <!-- foo
 <p>
-You must choose the latter with Tknamazu or namazu.el.
+You must choose the latter with Tkanamzu or namazu.el.
 </p>
 -->
 
@@ -960,13 +960,13 @@ The are three types of searching by substring matching.
 </p>
 
 <dl> 
-<dt>Prefix matching
-<dd><code class="example">inter*</code> (terms which begin with <code>inter</code>)
-<dt>Inside matching
-<dd><code class="example">*text*</code> (terms which contain <code>text</code>) 
-<dt>Suffix matching
+<dt>Prefix matching</dt>
+<dd><code class="example">inter*</code> (terms which begin with <code>inter</code>)</dd>
+<dt>Inside matching</dt>
+<dd><code class="example">*text*</code> (terms which contain <code>text</code>)</dd>
+<dt>Suffix matching</dt>
 <dd><code class="example">*net</code> (terms which terminated
-with <code>net</code>)
+with <code>net</code>)</dd>
 </dl>
 
 
@@ -992,8 +992,7 @@ e.g.,
 You can limit your search to specific fields such as
 <code>Subject:</code>, <code>From:</code>,
 <code>Message-Id:</code>. This feature is especially convenient for
-Mail/News documents, for example:
-</p>
+Mail/News documents, for example:</p>
 
 <ul>
 <li><code class="example">+subject:Linux</code><br>
@@ -1021,12 +1020,10 @@ in a <code>From:</code> field)
 alphabet characters; i.e. Namazu does
 case-insensitive pattern matching.
 
-
 <li>Japanese phrases are automatically segmented into
 morphemes and are handled as <a
 href="#query-phrase">phrase searching</a>. This process occasionally
 causes invalid segmentation.
-
 
 <li>Letters, numbers or parts of symbols (duplicated in
 ASCII) which are defined in JIS X 0208 (Japanese
@@ -1064,7 +1061,7 @@ You must choose the latter with Tkanamzu or namazu.el.
 Copyright (C) 2000-2004 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: manual.html,v 1.64 2004-09-20 02:35:32 usu Exp $
+$Id: manual.html,v 1.65 2004-12-27 15:43:15 opengl2772 Exp $
 </div>
 <address>
 developers@namazu.org

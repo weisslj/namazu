@@ -132,7 +132,7 @@ mknmz を実行したディレクトリに NMZ.* というファイルを作成し
 
 <!-- mknmz-option -->
 <pre>
-    mknmz 2.0.x, Namazu のインデックス作成プログラム 
+    mknmz 2.1.0, Namazu のインデックス作成プログラム 
     
     使い方: mknmz [オプション] &lt;対象&gt;...
     
@@ -154,6 +154,7 @@ mknmz を実行したディレクトリに NMZ.* というファイルを作成し
                                例: -50 で 50 日以内、+50 で 50 日より古いものだけ
     
     形態素解析:
+      -b, --use-mecab         日本語の単語のわかち書きに MeCab を用いる
       -c, --use-chasen        日本語の単語のわかち書きに ChaSen を用いる
       -k, --use-kakasi        日本語の単語のわかち書きに KAKASI を用いる
       -m, --use-chasen-noun   名詞のみを抽出する
@@ -164,7 +165,7 @@ mknmz を実行したディレクトリに NMZ.* というファイルを作成し
       -G, --no-okurigana    送り仮名を削除する
       -H, --no-hiragana     平仮名のみの単語は登録しない
       -K, --no-symbol       記号をすべて削除する
-          --decode-base64   添付されたBase64エンコード部分をデコードする 
+          --decode-base64   添付されたBase64エンコード部分をデコードする
     
     要約:
       -U, --no-encode-uri       URIのencodeを行わない
@@ -187,8 +188,9 @@ mknmz を実行したディレクトリに NMZ.* というファイルを作成し
       -q, --quiet             インデックス処理の最中にメッセージを表示しない
       -v, --version           ヴァージョンを表示する
       -V, --verbose           口やかましいモード
-      -d, --debug             デバッグモード
+          --debug             デバッグモード
           --help              このヘルプを表示する
+          --                  オプションリストを終了する
     
     バグ報告は &lt;bug-namazu@namazu.org&gt; へどうぞ
 </pre>
@@ -474,7 +476,7 @@ JSTXT</a>
 
 <!-- namazu-option -->
 <pre>
-    namazu 2.0.x, Namazu の検索プログラム
+    namazu 2.1.0, Namazu の検索プログラム
     
     使い方: namazu [options] &lt;query&gt; [index]...
         -n, --max=NUM           一度に表示する件数
@@ -501,6 +503,7 @@ JSTXT</a>
         -d, --debug             デバッグモード
         -v, --version           ヴァージョンを表示する
             --help              このヘルプを表示する
+            --                  オプションリストを終了する
     
     バグ報告は &lt;bug-namazu@namazu.org&gt; へどうぞ
 </pre>
@@ -1122,15 +1125,15 @@ Tknamazu および namazu.el から検索するときは必ず後者で指定します。
 </p>
 
 <dl> 
-<dt>前方一致検索
+<dt>前方一致検索</dt>
 <dd><code class="example">inter*</code>
-(<code>inter</code> から始まる単語を含む文書を検索)
-<dt>中間一致検索
+(<code>inter</code> から始まる単語を含む文書を検索)</dd>
+<dt>中間一致検索</dt>
 <dd><code class="example">*text*</code>
-(<code>text</code> を内包する単語を含む文書を検索)
-<dt>後方一致検索
+(<code>text</code> を内包する単語を含む文書を検索)</dd>
+<dt>後方一致検索</dt>
 <dd><code class="example">*net</code>
-(<code>net</code> で終わる単語を含む文書を検索)
+(<code>net</code> で終わる単語を含む文書を検索)</dd>
 </dl>
 
 
@@ -1223,7 +1226,7 @@ Tknamazu および namazu.el から検索するときは必ず後者で指定します。
 Copyright (C) 2000-2004 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: manual.html,v 1.88 2004-10-01 16:43:15 usu Exp $
+$Id: manual.html,v 1.89 2004-12-27 15:43:16 opengl2772 Exp $
 </div>
 <address>
 developers@namazu.org

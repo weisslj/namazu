@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.39 1999-12-12 13:18:16 rug Exp $
+ * $Id: cgi.c,v 1.40 1999-12-12 14:09:07 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -106,9 +106,9 @@ static int validate_idxname(char * idxname)
 #endif
 
     if (*idxname == '\0' || *idxname == '/' || (win32 && *idxname == '\\')) {
-        nmz_fputs_stdout(MSG_MIME_HEADER);
+        nmz_print(MSG_MIME_HEADER);
 	printf("%s : ", idxname);
-        nmz_fputs_stdout(_("Invalid idxname."));
+        nmz_print(_("Invalid idxname."));
         exit(EXIT_FAILURE);
     }
     while (*idxname) {
@@ -116,9 +116,9 @@ static int validate_idxname(char * idxname)
 	    strcmp("..", idxname) == 0 ||
             (win32 && nmz_strprefixcasecmp("..\\", idxname) == 0)) 
         {
-            nmz_fputs_stdout(MSG_MIME_HEADER);
+            nmz_print(MSG_MIME_HEADER);
 	    printf("%s : ", idxname);
-            nmz_fputs_stdout(_("Invalid idxname."));
+            nmz_print(_("Invalid idxname."));
             exit(EXIT_FAILURE);
         }
 	/* Skip until next '/' */
@@ -305,7 +305,7 @@ static int apply_cgifunc(struct cgivar *cv, struct cgiarg *ca)
 static void process_cgi_var_query(char *value, struct cgiarg *ca)
 {
     if (strlen(value) > QUERY_MAX) {
-	nmz_fputs_stdout(MSG_MIME_HEADER);
+	nmz_print(MSG_MIME_HEADER);
 	html_print(_(MSG_TOO_LONG_QUERY));
 	exit(EXIT_FAILURE);
     }
@@ -326,7 +326,7 @@ static void process_cgi_var_query(char *value, struct cgiarg *ca)
 static void process_cgi_var_subquery(char *value, struct cgiarg *ca)
 {
     if (strlen(value) > QUERY_MAX) {
-	nmz_fputs_stdout(MSG_MIME_HEADER);
+	nmz_print(MSG_MIME_HEADER);
 	html_print(_(MSG_TOO_LONG_QUERY));
 	exit(EXIT_FAILURE);
     }

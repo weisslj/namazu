@@ -1,5 +1,5 @@
 /*
- * $Id: util.c,v 1.28 1999-12-12 13:18:14 rug Exp $
+ * $Id: util.c,v 1.29 1999-12-12 14:09:04 rug Exp $
  *
  * Imported scan_hex(), scan_oct(), xmalloc(), xrealloc() from 
  * Ruby b19's"util.c" and "gc.c". Thanks to Matsumoto-san for consent!
@@ -568,7 +568,7 @@ char *nmz_get_errmsg(enum nmz_stat stat)
 }
 
 /* FIXME: Tell me if you know more better function name (or better way). */
-void nmz_fputs_stdout(char *s) {
+void nmz_print(char *s) {
     fputs(s, stdout);
 }
 

@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.27 1999-12-12 13:18:17 rug Exp $
+ * $Id: form.c,v 1.28 1999-12-12 14:09:07 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -95,10 +95,10 @@ static int replace_query_value(char *p, char *query)
     if (cmp_element(p, (char *)"input type=\"text\" name=\"query\"") == 0) {
         for (; *p; p++)
             fputc(*p, stdout);
-        nmz_fputs_stdout(" value=\"");
+        nmz_print(" value=\"");
 	conv_ext(tmp_query);
-        nmz_fputs_stdout(tmp_query); 
-        nmz_fputs_stdout("\"");
+        nmz_print(tmp_query); 
+        nmz_print("\"");
         return 0;
     }
     return 1;
@@ -258,7 +258,7 @@ static int check_checkbox(char *s)
             }
         }
         if (db_count == searched) {
-            nmz_fputs_stdout(" checked");
+            nmz_print(" checked");
         }
         return 0;
     }
@@ -356,11 +356,11 @@ void print_headfoot(char * fname, char * query, char *subquery)
 		    strcpy(tmp_query, query);
 		    conv_ext(tmp_query);
 
-		    nmz_fputs_stdout(": &lt;");
-		    nmz_fputs_stdout(tmp_query);
-		    nmz_fputs_stdout("&gt;");
+		    nmz_print(": &lt;");
+		    nmz_print(tmp_query);
+		    nmz_print("&gt;");
 		}
-		nmz_fputs_stdout("</title>\n");
+		nmz_print("</title>\n");
                 p = (char *)strchr(p, '>');
                 continue;
             }

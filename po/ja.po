@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: namazu 2.0\n"
-"POT-Creation-Date: 1999-12-10 09:02+0900\n"
+"POT-Creation-Date: 1999-12-12 23:07+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>\n"
 "Language-Team: Japanese <satoru-t@is.aist-nara.ac.jp>\n"
@@ -33,44 +33,44 @@ msgstr ""
 "標準の言語: %s\n"
 "スコア計算: %s\n"
 
-#: nmz/util.c:536
+#: nmz/util.c:533
 msgid "Fatal error occered!"
 msgstr "致命的なエラー"
 
-#: nmz/util.c:542
+#: nmz/util.c:539
 msgid "Invalid query"
 msgstr "不正な idxname の指定です"
 
-#: nmz/util.c:545
+#: nmz/util.c:542
 #, fuzzy
 msgid "Too many query tokens"
 msgstr "検索式の項目が多すぎます\n"
 
-#: nmz/util.c:548
+#: nmz/util.c:545
 msgid "Too many words matched. Ignored"
 msgstr "マッチする単語が多すぎるので無視しました"
 
-#: nmz/util.c:551
+#: nmz/util.c:548
 msgid "Too many pages hit. Ignored"
 msgstr "ヒット数が多すぎるので無視しました"
 
-#: nmz/util.c:554
+#: nmz/util.c:551
 msgid "cannot open regex index"
 msgstr "正規表現用インデックスが開けませんでした"
 
-#: nmz/util.c:557
+#: nmz/util.c:554
 msgid "cannot open phrase index"
 msgstr "フレイズ検索用インデックスが開けませんでした"
 
-#: nmz/util.c:560
+#: nmz/util.c:557
 msgid "cannot open this index"
 msgstr "インデックスが開けませんでした"
 
-#: nmz/util.c:563
+#: nmz/util.c:560
 msgid "You don't have a permission to access the index"
 msgstr "インデックスにアクセスする権利がありません"
 
-#: nmz/util.c:566
+#: nmz/util.c:563
 msgid "Unknown error. Report bug!"
 msgstr "不明なエラー。バグ報告してください"
 

@@ -2,7 +2,7 @@
  * 
  * conf.c -
  * 
- * $Id: rcfile.c,v 1.4 1999-12-12 13:18:14 rug Exp $
+ * $Id: rcfile.c,v 1.5 1999-12-12 14:09:04 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -302,7 +302,7 @@ static enum nmz_stat parse_rcfile(char *line, int lineno)
 	if (argnum == 2) {
 	    printf("    ARG2: [%s]\n", arg2);
 	}
-	nmz_fputs_stdout("\n");
+	nmz_print("\n");
     }
 
     if (!is_valid_argnum(directive, argnum)) {

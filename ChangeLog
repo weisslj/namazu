@@ -13,7 +13,7 @@
 	s/freadx/nmz_fread/g
 	s/getidxptr/nmz_getidxptr/g
 	s/decode_uri/nmz_decode_uri/g
-	s/print/nmz_fputs_stdout/g (#FIXME)
+	s/print/nmz_print/g
 
 	* nmz/field.c: Likewise.
 

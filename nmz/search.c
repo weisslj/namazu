@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.33 1999-12-12 13:18:14 rug Exp $
+ * $Id: search.c,v 1.34 1999-12-12 14:09:04 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -614,7 +614,7 @@ static int check_lockfile(void)
 
     if ((lock = fopen(NMZ.lock, "rb"))) {
 	fclose(lock);
-        nmz_fputs_stdout("(now be in system maintenance)");
+        nmz_print("(now be in system maintenance)");
         return 1;
     }
     return 0;

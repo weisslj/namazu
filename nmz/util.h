@@ -3,7 +3,7 @@
   util.h -
 
   $Author: rug $
-  $Date: 1999-12-12 13:18:15 $
+  $Date: 1999-12-12 14:09:04 $
   created at: Thu Mar  9 11:55:53 JST 1995
 
   Copyright (C) 1993-1998 Yukihiro Matsumoto
@@ -75,6 +75,6 @@ extern void nmz_cat ( char *fname );
 extern char *nmz_getenv ( char *s );
 extern void nmz_decode_uri ( char * s );
 extern char *nmz_get_errmsg ( enum nmz_stat stat );
-extern void nmz_fputs_stdout ( char *s );
+extern void nmz_print ( char *s );
 
 #endif /* _UTIL_H */

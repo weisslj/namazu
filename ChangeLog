@@ -1,5 +1,11 @@
 2001-12-21  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
+	* src/result.c (replace_field): Changed to entitize special 
+	characters in HTML mode.
+
+	* src/output.c (puts_entitize): Created the new function and
+	changed to use it.
+
 	* nmz/*.c: Fixed some segfault bugs.
 	
 	* src/*.c: Fixed some segfault bugs.
@@ -7281,4 +7287,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.906 2001-12-21 05:39:19 knok Exp $
+$Id: ChangeLog,v 1.907 2001-12-21 07:59:27 knok Exp $

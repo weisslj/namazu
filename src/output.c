@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.90 2001-12-21 03:30:41 knok Exp $
+ * $Id: output.c,v 1.91 2001-12-21 07:59:27 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -471,16 +471,12 @@ print_query(const char * qs, int w)
 	    for (qs += strlen("whence="); isdigit(*qs); qs++);
 	} else {
 	    /* '"' is converted to entities "&quot;" */
-	    if (*qs == '"') {
-		fputs("&quot;", stdout);
-	    } else {
-		fputc(*qs, stdout);
-	    }
+	    putc_entitize(*qs);
 	    qs++;
 	}
     }
     if (foo == 0) {
-	printf("&whence=%d", w);
+	printf("&amp;whence=%d", w);
     }
 }
 
@@ -798,20 +794,26 @@ puts_entitize(char *str)
 {
     char *p = str;
     for (; *p != 0; p++) {
-	if (*p == '<') {
+	putc_entitize(*p);
+    }
+}
+
+void
+putc_entitize(int c)
+{
+	if (c == '<') {
 	    fputs("&lt;", stdout);
-	} else if (*p == '>') {
+	} else if (c == '>') {
 	    fputs("&gt;", stdout);
-	} else if (*p == '&') {
+	} else if (c == '&') {
 	    fputs("&amp;", stdout);
-	} else if (*p == '"') {
+	} else if (c == '"') {
 	    fputs("&quot;", stdout);
-	} else if (*p == '\'') {
+	} else if (c == '\'') {
 	    fputs("&apos;", stdout);
 	} else {
-	    fputc(*p, stdout);
+	    fputc(c, stdout);
 	}
-    }
 }
 
 void 

@@ -151,6 +151,15 @@ then
 	exit 1
 fi
 
+QUERY_STRING='query=namazu&idxname=idx19'
+export QUERY_STRING 
+RESULT=`./namazu.cgi 2>&1 | grep '&amp;idxname' | wc -l`
+if [ $RESULT -eq 0 ]
+then
+	echo $RESULT >> $LOG
+	exit 1
+fi
+
 # check "dbname"
 QUERY_STRING='query=namazu&dbname=idx1&dbname="<S>strike</S>'
 export QUERY_STRING 

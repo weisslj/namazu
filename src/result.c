@@ -1,5 +1,5 @@
 /*
- * $Id: result.c,v 1.64 2001-12-21 03:30:41 knok Exp $
+ * $Id: result.c,v 1.65 2001-12-21 07:59:27 knok Exp $
  * 
  * Copyright (C) 1989, 1990 Free Software Foundation, Inc.
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
@@ -161,8 +161,9 @@ replace_field(struct nmz_data d, int counter,
     if (strcasecmp(field, "uri") != 0) {
 	if (is_htmlmode()) {
 	    emphasize(buf);
+	} else {
+	    encode_entity(buf);
 	}
-	encode_entity(buf);
     }
 
 

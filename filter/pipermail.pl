@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: pipermail.pl,v 1.2 2004-07-21 16:34:39 opengl2772 Exp $
+# $Id: pipermail.pl,v 1.3 2004-07-22 09:49:59 opengl2772 Exp $
 # Copyright (C) 2004 Namazu Project All rights reserved.
 #
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -79,12 +79,15 @@ sub filter ($$$$$) {
     } 
 
     pipermail_filter($contref, $weighted_str, $fields);
+util::vprint("*after:piper\n" . $$contref . "\n");
     html::html_filter($contref, \$dummy_weighted_str, \%dummy_fields, $headings);
+util::vprint("*after:html\n" . $$contref . "\n");
 
     $$contref =~ s/^\s+//;
     mailnews::uuencode_filter($contref);
     mailnews::mailnews_filter($contref, \$dummy_weighted_str, \%dummy_fields);
     mailnews::mailnews_citation_filter($contref, \$dummy_weighted_str);
+util::vprint("*after:mailnews\n" . $$contref . "\n");
 
     gfilter::line_adjust_filter($contref);
     gfilter::line_adjust_filter($weighted_str);
@@ -107,7 +110,7 @@ sub pipermail_filter ($$$) {
 
         util::vprint("Looking at header: " . $head . "\n");
         if ($head =~ 
-        m!<h1>(.*?)</h1>\s*<b>(.*?)\s*</b>(?:\s*<a href=.*?>(.*?)\s*</a>)?\s*<br>\s*<i>(.*?)</i>!is) {
+        m!<h1>(.*?)</h1>\s*<b>(.*?)\s*</b>(?:\s*<a\s+.*?href=.*?>(.*?)\s*</a>)?\s*<br>\s*<i>(.*?)</i>!is) {
             {
                 my $title = uncommentize($1);
                 codeconv::toeuc(\$title);
@@ -127,6 +130,7 @@ sub pipermail_filter ($$$) {
                 if (defined $3) {
                     my $email = $3;
 #                    $email =~ s/ at /@/s;    # no spam
+#                    $email =~ s/ @ /@/s;     # no spam
                     $from .= " <$email>";
                 }
                 html::decode_entity(\$from);
@@ -137,6 +141,18 @@ sub pipermail_filter ($$$) {
             {
                 my $date = $4;
                 html::decode_entity(\$date);
+                codeconv::toeuc(\$date);
+                if (util::islang("ja")) {
+                    if ($date =~ m/(\d{4})Ç¯\s*(\d{1,2})·î\s*(\d{1,2})Æü\s+\(.*\)\s+(\d{2}:\d{2}:\d{2})\s+(\w+)/s) {
+                        my @month = (
+                            "Jan", "Feb", "Mar", "Apr",
+                            "May", "Jun", "Jul", "Aug",
+                            "Sep", "Oct", "Nov", "Dec"
+                        );
+                        my $m = $month[$2 - 1];
+                        $date = "Mon $m $3 $4 $5 $1";
+                    }
+                }
                 my $err = time_to_rfc822time(\$date);
                 $fields->{'date'} = $date unless(defined $err);
             }
@@ -145,6 +161,10 @@ sub pipermail_filter ($$$) {
 
     $$contref =~ s/<head>(.*)?<\/head>//si;
     $$contref =~ s/<h1>.*<!--beginarticle-->//si;
+    $$contref =~ s/ at /@/s;
+    if (util::islang("ja")) {
+        $$contref =~ s/ @ /@/s;
+    }
 }
 
 sub uncommentize {

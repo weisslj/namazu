@@ -36,7 +36,7 @@ This index contains <!-- FILE --> 0 <!-- FILE --> documents and
 <p>
 <strong>Query:</strong> 
 <input type="text" name="query" size="40">
-<input type="submit" name="submit" value="Search!">
+<input type="submit" value="Search!">
 <!-- <input type="hidden" name="idxname" value="foobar"> -->
 <a href="{cgi}">[How to search]</a>
 </p>

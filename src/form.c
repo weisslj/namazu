@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.64 2001-09-02 08:25:35 rug Exp $
+ * $Id: form.c,v 1.65 2001-09-12 04:52:02 takesako Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -365,7 +365,7 @@ read_headfoot(const char *fname)
     }
 
     script_name= getenv("SCRIPT_NAME");
-    document_name= getenv("DOCUMENT_NAME");
+    document_name= getenv("DOCUMENT_URI");
 
     /* Can't determine script_name */
     if (script_name == NULL) {

@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.83 2001-09-02 08:25:35 rug Exp $
+ * $Id: output.c,v 1.84 2001-09-12 04:52:02 takesako Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -487,11 +487,11 @@ print_page_index(int n)
     int i, max, whence;
     char *qs; /* QUERY_STRING */
     char *sn; /* SCRIPT_NAME  */
-    char *dn; /* DOCUMENT_NAME  */
+    char *dn; /* DOCUMENT_URI  */
 
     qs = nmz_getenv("QUERY_STRING");
     sn = nmz_getenv("SCRIPT_NAME");
-    dn = nmz_getenv("DOCUMENT_NAME");
+    dn = nmz_getenv("DOCUMENT_URI");
 
     if(dn == NULL || *dn == '\0') 
         dn=sn;

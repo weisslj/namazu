@@ -1,3 +1,19 @@
+2001-09-12  Yoshinori TAKESAKO  <takesako@namazu.org>
+
+	* src/output.c (print_page_index): Fixed the bug of DOCUMENT_NAME 
+	lookup. When namazu.cgi is called from SSI (Server Side Includes),
+	reference of the environment variable changed into DOCUMENT_URI 
+	from DOCUMENT_NAME.
+
+	* src/form.c (read_headfoot): Likewise.
+
+	* NEWS: Updated.
+
+2001-09-12  Yoshinori TAKESAKO  <takesako@namazu.org>
+
+	* templete/NMZ.head{|.es|.fr|.ja}: Deleted the name attribute of 
+	search form's submit button from HTML header of templete files. 
+
 2001-09-11  Yoshinori TAKESAKO  <takesako@namazu.org>
 
 	* autogen.sh (AC_PROG_LIBTOOL): Use instead of AM_PROG_LIBTOOL.
@@ -7000,4 +7016,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.863 2001-09-11 03:47:29 takesako Exp $
+$Id: ChangeLog,v 1.864 2001-09-12 04:52:02 takesako Exp $

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: man.pl,v 1.22 2000-02-27 15:09:04 satoru Exp $
+# $Id: man.pl,v 1.23 2000-02-29 06:10:16 satoru Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -51,9 +51,9 @@ sub status() {
 	# Check wheter -Tnippon is valid.
 	`echo ''| $roffpath -Tnippon 1>/dev/null 2>&1`;
 	if ($? == 0) {
-	    $roffargs = '-Tnippon' ;
+	    $roffargs = '-Wall -Tnippon' ;
 	} else {
-	    $roffargs = '-Tascii';
+	    $roffargs = '-Wall -Tascii';
 	}
 	# print "// $roffargs\n";
     } elsif ($roffpath =~ /\bj?groff$/) {

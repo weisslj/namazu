@@ -2,7 +2,7 @@
  * 
  * codeconv.c -
  * 
- * $Id: codeconv.c,v 1.32 2001-09-02 08:25:33 rug Exp $
+ * $Id: codeconv.c,v 1.33 2004-02-20 20:21:31 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -48,6 +48,12 @@
 #include <strings.h>
 #endif
 
+/* #define TEST_UTF8 */
+
+#ifdef TEST_UTF8
+#    include <iconv.h>
+#endif /* TEST_UTF8 */
+
 #include "libnamazu.h"
 #include "codeconv.h"
 #include "util.h"
@@ -56,6 +62,9 @@
 
 static uchar kanji2nd;
 
+#ifdef TEST_UTF8
+static int nmz_codeconv_internal_EX(char *buffer, int bufferSize);
+#endif /* TEST_UTF8 */
 
 /*
  *
@@ -490,9 +499,289 @@ void
 nmz_codeconv_query(char *query)
 {
     if (nmz_is_lang_ja()) {
+#ifdef TEST_UTF8
+		/* BUFSIZE = size of query */
+        if (nmz_codeconv_internal_EX(query, BUFSIZE)) {
+            zen2han(query);
+            return;
+        }
+#endif /* TEST_UTF8 */
         if (nmz_codeconv_internal(query)) {
             zen2han(query);
         }
     }
 }
 
+#ifdef TEST_UTF8
+
+enum code_type {
+    CODE_TYPE_ERROR = -1,
+    CODE_TYPE_UNKNOWN = 0,
+    CODE_TYPE_JIS,
+    CODE_TYPE_UTF8,
+    CODE_TYPE_EUCJP,
+    CODE_TYPE_SJIS
+};
+
+static int 
+nmz_codeconv_internal_EX(char *buffer, int bufferSize)
+{
+    int i, j;
+    char *bufferJIS;
+    char *bufferUTF8;
+    char *bufferSJIS;
+
+    typedef struct {
+        enum code_type type;
+        int length, bytes;
+    } CODE_DATA;
+
+    CODE_DATA data[3], _data[3];
+    int count;
+
+
+    if ((bufferJIS = calloc(sizeof(char), bufferSize)) == NULL) {
+	nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
+        return 0;
+    }
+
+    /******************************************/
+    /* ISO-2022-JP                            */
+    /******************************************/
+    {
+        strncpy(bufferJIS, buffer, bufferSize);
+        if (nmz_from_to(bufferJIS, bufferSize, "ISO-2022-JP", "EUC-JP")) {
+            strncpy(buffer, bufferJIS, bufferSize);
+            free(bufferJIS);
+            return 1;
+        }
+    }
+
+    if ((bufferSJIS = calloc(sizeof(char), bufferSize)) == NULL) {
+	nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
+        free(bufferJIS);
+        return 0;
+    }
+    bufferUTF8 = bufferJIS;
+    bufferUTF8[bufferSize - 1] = '\0';
+
+    /******************************************/
+    /* init                                   */
+    /******************************************/
+    for(i = 0; i < 3; i++) {
+       data[i].length = 0;
+       data[i].bytes = 0;
+    }
+    data[0].type = CODE_TYPE_UTF8;
+    data[1].type = CODE_TYPE_EUCJP;
+    data[2].type = CODE_TYPE_SJIS;
+
+    /******************************************/
+    /* UTF-8                                  */
+    /******************************************/
+    strncpy(bufferUTF8, buffer, bufferSize);
+    if (nmz_from_to(bufferUTF8, bufferSize, "UTF-8", "EUC-JP")) {
+        data[0].length = nmz_lengthEUCJP(bufferUTF8, strlen(bufferUTF8));
+        if (data[0].length != 0) {
+            data[0].bytes = strlen(bufferUTF8);
+        }
+    }
+
+    /******************************************/
+    /* EUC-JP                                 */
+    /******************************************/
+    data[1].length = nmz_lengthEUCJP(buffer, strlen(buffer));
+    if (data[1].length) {
+        data[1].bytes = strlen(buffer);
+    }
+
+    /******************************************/
+    /* SHIFT_JIS                              */
+    /******************************************/
+    strncpy(bufferSJIS, buffer, bufferSize);
+    if (nmz_from_to(bufferSJIS, bufferSize, "SHIFT_JIS", "EUC-JP")) {
+        data[2].length = nmz_lengthEUCJP(bufferSJIS, strlen(bufferSJIS));
+        if (data[2].length != 0) {
+            data[2].bytes = strlen(bufferSJIS);
+        }
+    }
+
+    /******************************************/
+
+    for(i = 0 ; i < 3 - 1; i++) {
+        for(j = i + 1 ; j < 3; j++) {
+            if (data[i].length > data[j].length) {
+                /* swap */
+                CODE_DATA temp;
+
+                temp = data[i];
+                data[i] = data[j];
+                data[j] = temp;
+            }
+        }
+    }
+
+    count = 0;
+    for(i = 0; i < 3; i++) {
+        if (data[i].length == 0) {
+            continue;
+        }
+        _data[count++] = data[i];
+    }
+
+    if (count == 0) {
+        free(bufferUTF8);
+        free(bufferSJIS);
+        return 0;
+    }
+
+    if (count >= 2) {
+        if (_data[0].length == _data[1].length) {
+            if (data[0].bytes > data[1].bytes) {
+                _data[0] = _data[1];
+            }
+        }
+    }
+
+    /******************************************/
+
+    if (_data[0].type == CODE_TYPE_UTF8) {
+        strncpy(buffer, bufferUTF8, bufferSize);
+    } else if (_data[0].type == CODE_TYPE_SJIS) {
+        strncpy(buffer, bufferSJIS, bufferSize);
+    }
+
+    free(bufferUTF8);
+    free(bufferSJIS);
+
+    return 1;
+}
+
+char *
+nmz_from_to(char *buffer, int bufferSize,
+    const char *fromCode, const char *toCode)
+{
+    iconv_t cd;
+    size_t sz_from, sz_to;
+    char *toBuffer = NULL;
+    char *from, *to;
+    size_t status;
+
+    if (!buffer || bufferSize <= 0) {
+        return NULL;
+    }
+
+    sz_from = strlen(buffer) + 1;
+    sz_to = bufferSize;
+
+    toBuffer = (char *)calloc(sizeof(char), sz_to);
+    if (!toBuffer) {
+	    nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
+        return NULL;
+    }
+
+    from = buffer;
+    to = toBuffer;
+
+    cd = iconv_open(toCode, fromCode);
+
+    status = iconv(cd, &from, &sz_from, &to, &sz_to);
+
+    iconv_close(cd);
+
+    if (status == -1) {
+        if (toBuffer) {
+            free(toBuffer);
+        }
+        return NULL;
+    }
+
+    strncpy(buffer, toBuffer, bufferSize - 1);
+    buffer[bufferSize - 1] = '\0';
+
+    free(toBuffer);
+
+    return buffer;
+}
+
+char *
+nmz_codeconv(const char *fromCode, char *fromBuffer, int fromBufferSize,
+    const char *toCode, char *toBuffer, int toBufferSize)
+{
+    iconv_t cd;
+    size_t sz_from, sz_to;
+    char *from, *to;
+    size_t status;
+
+    if (!fromBuffer || fromBufferSize <= 0
+    || !toBuffer || toBufferSize <= 0) {
+        return NULL;
+    }
+
+    sz_from = strlen(fromBuffer) + 1;
+    sz_to = toBufferSize;
+
+    from = fromBuffer;
+    to = toBuffer;
+
+    cd = iconv_open(toCode, fromCode);
+
+    status = iconv(cd, &from, &sz_from, &to, &sz_to);
+
+    iconv_close(cd);
+
+    if (status == -1) {
+        return NULL;
+    }
+
+    toBuffer[toBufferSize - 1] = '\0';
+
+    return toBuffer;
+}
+
+int 
+nmz_lengthEUCJP(const char *str, int length)
+{
+   int i, mode = 0;
+   unsigned char ch;
+   int count = 0;
+
+   for(i = 0; i < length; i++) {
+       ch = (unsigned char)str[i];
+       if (mode == 0) {
+           count++;
+           if (ch >= 0xa1 && ch <= 0xfe) {
+               mode = 3;
+           } else if (ch == 0x8e) {
+               mode = 1;
+           } else if (ch == 0x8f) {
+               mode = 2;
+           } else if (ch >= 0x80) {
+               return 0;
+           }
+       } else if (mode == 1) {              /* 2bytes char kana */
+           if (ch >= 0xa1 && ch <= 0xdf) {
+               mode = 0;
+           } else {
+               return 0;
+           }
+       } else if (mode == 2 || mode == 3) { /* 2,3bytes char */
+           if (ch >= 0xa1 && ch <= 0xfe) {
+               mode++;
+               if (mode == 4) {
+                   mode = 0;
+               }
+           } else {
+               return 0;
+           }
+       }
+   }
+
+   if (mode != 0) {
+       return 0;
+   }
+
+   return count;
+}
+
+#endif /* TEST_UTF8 */

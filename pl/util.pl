@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.27 2003-01-15 10:12:17 knok Exp $
+# $Id: util.pl,v 1.28 2004-01-11 08:57:58 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -26,6 +26,7 @@
 package util;
 use strict;
 use IO::File;
+require 'time.pl';
 
 use vars qw($LANG_MSG $LANG);
 $LANG_MSG = "C";           # language of messages
@@ -91,7 +92,7 @@ sub commas ($) {
     $num;
 }
 
-# RFC 822 format without timezone
+# RFC 822 format
 sub rfc822time ($)
 {
     my ($time) = @_;
@@ -102,10 +103,10 @@ sub rfc822time ($)
     my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst) 
 	= localtime($time);
 
-    return sprintf("%s, %.2d %s %d %.2d:%.2d:%.2d", 
+    return sprintf("%s, %.2d %s %d %.2d:%.2d:%.2d %s", 
 		   $week_names[$wday],
 		   $mday, $month_names[$mon], $year + 1900,
-		   $hour, $min, $sec);
+		   $hour, $min, $sec, time::gettimezone());
 }
 
 sub readfile ($) {

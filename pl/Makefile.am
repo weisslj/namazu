@@ -17,7 +17,8 @@ perllib_DATA = \
 	util.pl \
 	var.pl \
 	wakati.pl \
-	indexer.pl
+	indexer.pl \
+	time.pl
 
 # Slightly different from perllib_DATA because of *.in files.
 EXTRA_DIST = $\

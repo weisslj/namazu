@@ -1,3 +1,7 @@
+2002-09-07  Hajime BABA  <baba@plain.isas.ac.jp>
+
+	* script/mknmz.in: Fixed the bug of FILE_SIZE restriction.
+
 2002-09-04  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* template/Makefile.am (template_DATA): Added *.de files.
@@ -7643,4 +7647,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.975 2002-09-04 04:36:07 knok Exp $
+$Id: ChangeLog,v 1.976 2002-09-06 18:42:22 baba Exp $

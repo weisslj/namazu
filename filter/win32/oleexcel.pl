@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: oleexcel.pl,v 1.18 2004-05-10 06:02:49 opengl2772 Exp $
+# $Id: oleexcel.pl,v 1.19 2004-05-13 14:52:43 usu Exp $
 # Copyright (C) 2001 Yoshinori TAKESAKO,
 #               1999 Jun Kurabe,
 #               1999 Ken-ichi Hirose,
@@ -54,10 +54,11 @@ require 'gfilter.pl';
 
 use Win32;
 use Win32::OLE qw(in with);
-use Win32::OLE::Const 'Microsoft Excel';
+use Win32::OLE::Const;
 
 # for Excel application start only one time
 my $excel;
+my $const;
 
 # Excel appliation destructor
 END {
@@ -73,7 +74,7 @@ sub mediatype() {
 sub status() {
     open (SAVEERR,">&STDERR");
     open (STDERR,">nul");
-    my $const;
+    $const = Win32::OLE::Const->Load("Microsoft Excel");
     $const = Win32::OLE::Const->Load("Microsoft Excel 11.0 Object Library");
     $const = Win32::OLE::Const->Load("Microsoft Excel 10.0 Object Library") unless $const;
     $const = Win32::OLE::Const->Load("Microsoft Excel 9.0 Object Library") unless $const;
@@ -206,7 +207,7 @@ sub filter ($$$$$) {
 	$sheet->Select;
 	my $ret = $excel->ActiveWorkbook->SaveAs({
 	    'FileName'     => &Win32_FullPath($tmpfile),
-	    'FileFormat'   => xlText,  # xlText
+	    'FileFormat'   => $const->{xlText},  # xlText
 	    'CreateBackup' => 0        # False
 	});
 

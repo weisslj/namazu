@@ -1,3 +1,8 @@
+2004-05-13  Yukio USUDA <usu@namazu.org>
+
+	* filter/win32/oleexcel.pl(filter): Avoid bareword "xlText" not
+	allowed while "strict subs".
+
 2004-05-11  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* filter/win32/ole*.pl: Fix a typo.
@@ -8887,4 +8892,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1184 2004-05-11 18:38:22 opengl2772 Exp $
+$Id: ChangeLog,v 1.1185 2004-05-13 14:52:42 usu Exp $

@@ -1,3 +1,8 @@
+2001-12-27  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* tests/Makefile.am: Added 2 tests.
+	(contributed by Tietew, thanks.)
+
 2001-12-25  NOKUBI Takatsugu  <knok@daionet.gr.jp>
   
 	* src/result.c (replace_field): Changed to encode into entity on
@@ -7298,4 +7303,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.910 2001-12-26 01:46:02 knok Exp $
+$Id: ChangeLog,v 1.911 2001-12-27 08:32:02 knok Exp $

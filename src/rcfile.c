@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.3 2000-01-23 13:05:30 satoru Exp $
+ * $Id: rcfile.c,v 1.4 2000-01-27 00:12:13 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -214,9 +214,7 @@ process_rc_lang(const char *directive, const struct nmz_strlist *args)
 {
     char *arg1 = args->value;
 
-    if (getenv("LANG") == NULL) { /* Environmental variable LANG is not set */
-	nmz_set_lang(arg1);
-    }
+    nmz_set_lang(arg1);
     return SUCCESS;
 }
 

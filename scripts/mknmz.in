@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.18 2000-02-19 09:14:56 satoru Exp $
+# $Id: mknmz.in,v 1.19 2000-02-19 10:33:05 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -1129,9 +1129,7 @@ sub find_target (@) {
 	my $target = shift @targets;
 	
 	if (-f $target) { # target is a file.
-	    util::vprint(sprintf(_("Targeted:\t%s"), $target));
-	    $counts{'possible'}++;
-	    push @flist, $target;
+	    add_target($target, \@flist, \%counts);
 	} elsif (-d $target) { # target is a directory.
 	    my $cwd = cwd();
 	    chdir $target;
@@ -1141,50 +1139,7 @@ sub find_target (@) {
 	    #
 	    my $wanted_closure = sub {
 		my $fname = "$File::Find::dir/$_";
-
-		if ($fname =~ /[\n\r]/) {
-		    $fname =~ s/[\n\r]//g;
-		    print "Warning: $fname contains LF/CR chars, skip it\n";
-		    return;   # skip a file name containing LF/CR chars.
-		}
-		return unless -f $fname && -r $fname;
-
-		$counts{'possible'}++;
-		if ( defined $conf::EXCLUDE_PATH && 
-			    $fname =~ /$conf::EXCLUDE_PATH/ ) {
-		    util::vprint(sprintf(_("Excluded:	%s"), $fname));
-		    $counts{'excluded'}++;
-		    return; 
-		}
-
-		if (defined $conf::MTIME) {
-		    my ($dev,$ino,$mode,$nlink,$uid,$gid) = lstat($fname);
-		    if ($conf::MTIME < 0 && (int(-C _) > $conf::MTIME)) {
-			util::vprint(sprintf(_("Too old:	%s"), $fname));
-			$counts{'too_old'}++;
-			return;
-		    }
-		    if ($conf::MTIME > 0 && (int(-C _) < $conf::MTIME)) {
-			util::vprint(sprintf(_("Too new:	%s"), $fname));
-			$counts{'too_new'}++;
-			return;
-		    }
-		}
-		if ($fname =~ m!^.*/(($conf::DENY_FILE)(\.gz|\.Z)?)$!i ) {
-		    util::vprint(sprintf(_("Denied:	%s"), $fname));
-		    $counts{'denied'}++; 
-		    return;
-		}
-		if ($fname !~ m!^.*/(($conf::ALLOW_FILE)(\.gz|\.Z|\?.*)?)$!i)
-		{
-		    util::vprint(sprintf(_("Not allowed:	%s"), $fname));
-		    $counts{'not_allowed'}++; 
-		    return;
-		}
-		else{
-		    util::vprint(sprintf(_("Targeted:	%s"), $fname));
-		    push @flist, $fname;
-		}
+		add_target($fname, \@flist, \%counts);
 	    };
 
 	    find($wanted_closure, cwd());
@@ -1208,6 +1163,56 @@ sub find_target (@) {
     report_find_target($elapsed, $#flist + 1, %counts);
 
     return @flist;
+}
+
+sub add_target ($\@\%) {
+    my ($target, $flists_ref, $counts_ref) = @_;
+
+    if ($target =~ /[\n\r]/) {
+	$target =~ s/[\n\r]//g;
+	print STDERR "Warning: $target contains LF/CR chars, skip it\n";
+	return;   # skip a file name containing LF/CR chars.
+    }
+    return unless -f $target && -r $target;
+
+    $counts_ref->{'possible'}++;
+    if (defined $conf::EXCLUDE_PATH && 
+	$target =~ /$conf::EXCLUDE_PATH/ ) 
+    {
+        util::vprint(sprintf(_("Excluded:	%s"), $target));
+	$counts_ref->{'excluded'}++;
+	return; 
+    }
+
+    if (defined $conf::MTIME) {
+	my ($dev,$ino,$mode,$nlink,$uid,$gid) = lstat($target);
+	if ($conf::MTIME < 0 && (int(-C _) > $conf::MTIME)) {
+	  util::vprint(sprintf(_("Too old:	%s"), $target));
+	    $counts_ref->{'too_old'}++;
+	    return;
+	}
+	if ($conf::MTIME > 0 && (int(-C _) < $conf::MTIME)) {
+	  util::vprint(sprintf(_("Too new:	%s"), $target));
+	    $counts_ref->{'too_new'}++;
+	    return;
+	}
+    }
+    if ($target =~ m!^.*/(($conf::DENY_FILE)(\.gz|\.Z)?)$!i ) {
+      util::vprint(sprintf(_("Denied:	%s"), $target));
+	$counts_ref->{'denied'}++; 
+	return;
+    }
+    if ($target !~ m!^.*/(($conf::ALLOW_FILE)(\.gz|\.Z|\?.*)?)$!i)
+    {
+      util::vprint(sprintf(_("Not allowed:	%s"), $target));
+	$counts_ref->{'not_allowed'}++; 
+	return;
+    }
+    else{
+      util::vprint(sprintf(_("Targeted:	%s"), $target));
+	push @$flists_ref, $target;
+    }
+
 }
 
 sub report_find_target ($$%) {

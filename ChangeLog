@@ -2,6 +2,8 @@
 
 	* scripts/mknmz.in: Change a variable name:
 	s/$CCS/$CodingSystem/.
+	(add_target): New function.
+	(find_target): Use add_target().
 
 	* scripts/mknmz.in (load_rcfiles): Use @LoadedRcfiles.
 	(show_config): Gettextized.

@@ -1,7 +1,7 @@
 Overview of Changes in Namazu 2.0.1 - Feb 28, 2000
 
 * Test suites are supplied. Just type `make check'.
-* Fix many bugs.
+* Fix bugs discovered after 2.0 was released.
 
 Overview of Changes in Namazu 2.0 - Feb 20, 2000
 

@@ -1,5 +1,7 @@
 1999-08-29  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/Makefile.am: Fix lacks of noinst_HEADERS
+	
 	* lib/util.pl (readfile): Comment out $conf::FILE_SIZE_LIMIT
 	condition codes.
 	

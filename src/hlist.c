@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.20 1999-09-03 10:20:54 satoru Exp $
+ * $Id: hlist.c,v 1.21 1999-09-03 10:32:03 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -107,15 +107,13 @@ void field_sort(HLIST hlist)
 
     if (numeric == 1) {
 	qsort(hlist.d, hlist.n, sizeof(hlist.d[0]), field_ncmp);
-	for (i = 0; i < hlist.n; i++) {
-	    free(hlist.d[i].field);
-	}
 	
     } else {
 	qsort(hlist.d, hlist.n, sizeof(hlist.d[0]), field_scmp);
-	for (i = 0; i < hlist.n; i++) {
-	    free(hlist.d[i].field);
-	}
+    }
+
+    for (i = 0; i < hlist.n; i++) {
+	free(hlist.d[i].field);
     }
 }
 

@@ -1,5 +1,8 @@
 1999-12-30  Ryuji Abe  <raeva@t3.rim.or.jp>
 
+	* nmz-config.in (--cflags): Revert to set @includedir@
+	instead of @pkgincludedir@.
+
 	* pl/Makefile.am (perllib_DATA): Fixed typo.
 	(EXTRA_DIST): Likewise.
 

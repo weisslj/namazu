@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.78 2000-12-20 01:06:48 knok Exp $
+# $Id: mknmz.in,v 1.79 2001-01-12 05:15:37 baba Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -461,13 +461,23 @@ sub namazu_core ($$$$$$$$$$) {
     # Check if the file is acceptable.
     my $err = check_file($cfile, $cfile_size, $text_size, $mtype, $uri);
     if (defined $err) {
-	print $msg_prefix . "$uri $err\n";
+	if (($SYSTEM eq "MSWin32") || ($SYSTEM eq "os2")) {
+	    my $uri2 = codeconv::eucjp_to_shiftjis($uri);
+	    print $msg_prefix . "$uri2 $err\n";
+	} else {
+	    print $msg_prefix . "$uri $err\n";
+	}
 	print $fh_errorsfile "$cfile $err\n"; 
 	return 0;  # return 0 if error
     }
 
     # Print processing file name as URI.
-    print $msg_prefix . "$uri [$mtype]\n";
+    if (($SYSTEM eq "MSWin32") || ($SYSTEM eq "os2")) {
+	my $uri2 = codeconv::eucjp_to_shiftjis($uri);
+	print $msg_prefix . "$uri2 [$mtype]\n";
+    } else {
+	print $msg_prefix . "$uri [$mtype]\n";
+    }
 
     complete_field_info(\%fields, $cfile, $uri, 
 			\$headings, \$content, \$weighted_str);

@@ -1,6 +1,6 @@
 # 
 # -*- Perl -*-
-# $Id: oletaro6.pl,v 1.1 2001-01-04 07:21:48 baba Exp $
+# $Id: oletaro.pl,v 1.1 2001-01-12 05:15:31 baba Exp $
 # 
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -23,13 +23,17 @@
 #  This file must be encoded in EUC-JP encoding
 #  
 
-package oletaro6;
+package oletaro;
 use strict;
 require 'util.pl';
 require 'gfilter.pl';
 
 sub mediatype() {
-    return ('application/ichitaro6');
+    return (
+        'application/ichitaro4', 'application/ichitaro5',
+        'application/ichitaro6', 'application/ichitaro7',
+        'application/x-js-taro'
+    );
 }
 
 sub status() {
@@ -55,17 +59,19 @@ sub post_codeconv () {
 
 sub add_magic ($) {
     my ($magic) = @_;
-
+    $magic->addFileExts('\\.jsw$', 'application/ichitaro4');
+    $magic->addFileExts('\\.jaw$|\\.jtw$', 'application/ichitaro5');
     $magic->addFileExts('\\.jbw$|\\.juw$', 'application/ichitaro6');
+    $magic->addFileExts('\\.jfw$|\\.jvw$', 'application/ichitaro7');
+    $magic->addFileExts('\\.jtd$|\\.jtt$', 'application/x-js-taro');
     return;
 }
 
 sub filter ($$$$$) {
-    my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
-      = @_;
+    my ($orig_cfile, $cont, $weighted_str, $headings, $fields) = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
-    util::vprint("Processing ichitaro6 file ...\n");
+    util::vprint("Processing ichitaro file ...\n");
 
     $cfile =~ s/\//\\/g;
     $$cont = "";
@@ -76,9 +82,9 @@ sub filter ($$$$$) {
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($cont);
     $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
-      unless $fields->{'title'};
-    gfilter::show_filter_debug_info($cont, $weighted_str,
-			   $fields, $headings);
+	unless $fields->{'title'};
+    gfilter::show_filter_debug_info($cont, $weighted_str, $fields, $headings);
+
     return undef;
 }
 

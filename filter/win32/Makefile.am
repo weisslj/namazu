@@ -8,11 +8,7 @@ filter_DATA = olemsword.pl \
 	     oleexcel.pl \
 	     olepowerpoint.pl \
 	     ichitaro456.pl \
-	     oletaro4.pl \
-	     oletaro5.pl \
-	     oletaro6.pl \
-	     oletaro7.pl \
-	     oletaro8.pl \
+	     oletaro.pl \
 	     olertf.pl
 
 EXTRA_DIST = $(filter_DATA)

@@ -1,3 +1,26 @@
+2001-01-12  Hajime BABA  <baba@kusastro.kyoto-u.ac.jp>
+
+	* scripts/mknmz.in (namazu_core): Applied patch which displayes 
+	pathname including Japanese correctly on Win32/OS2 system.
+	Courtesy by Mitsuo Satou (namazu-win32-users-ja#00540).
+
+	* filter/win32/olepowerpoint.pl: Fixed waste opening of PPT
+	(set $ppt->{Visible}=0), magic numbers and indentation.
+	
+	* filter/win32/oleexcel.pl: Fixed for password authentificated
+	files, some magic numbers and indentation.
+	
+	* filter/win32/olemsword.pl: Fixed magic numbers and indentation.
+	
+	* filter/win32/olertf.pl: Fixed indentation.
+	
+	* filter/win32/oletaro.pl: Substitution for oletaro[45678].pl
+	Thanks to Yoshinori.TAKESAKO (namazu-win32-users-ja#00558).
+	
+	* filter/win32/{oletaro[45678].pl}: Obsolete.
+
+	* filter/win32/Makefile.am: Added oletaro.pl, removed [45678].pl
+	
 2001-01-11  Rei FURUKAWA  <furukawa@tcp-ip.or.jp>
 
 	* pl/nmzidx.pl: Modify total documents counting.
@@ -6258,4 +6281,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.788 2001-01-10 16:59:45 furukawa Exp $
+$Id: ChangeLog,v 1.789 2001-01-12 05:15:27 baba Exp $

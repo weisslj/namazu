@@ -1,6 +1,6 @@
 # 
 # -*- Perl -*-
-# $Id: olertf.pl,v 1.2 2001-01-04 07:21:48 baba Exp $
+# $Id: olertf.pl,v 1.3 2001-01-12 05:15:31 baba Exp $
 # 
 # Copyright (C) 2000 Yoshinori.TAKESAKO ,
 #               2000 Jun Kurabe ,
@@ -63,8 +63,7 @@ sub add_magic ($) {
 }
 
 sub filter ($$$$$) {
-    my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
-      = @_;
+    my ($orig_cfile, $cont, $weighted_str, $headings, $fields) = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
     util::vprint("Processing rtf file ...\n");
@@ -78,9 +77,9 @@ sub filter ($$$$$) {
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($cont);
     $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
-      unless $fields->{'title'};
-    gfilter::show_filter_debug_info($cont, $weighted_str,
-			   $fields, $headings);
+	unless $fields->{'title'};
+    gfilter::show_filter_debug_info($cont, $weighted_str, $fields, $headings);
+
     return undef;
 }
 

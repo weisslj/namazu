@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: olepowerpoint.pl,v 1.5 2001-01-04 07:21:48 baba Exp $
+# $Id: olepowerpoint.pl,v 1.6 2001-01-12 05:15:31 baba Exp $
 # Copyright (C) 1999 Jun Kurabe ,
 #               1999 Ken-ichi Hirose All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -9,7 +9,7 @@
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation; either versions 2, or (at your option)
 #  any later version.
-# 
+#
 #  This program is distributed in the hope that it will be useful
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -21,10 +21,10 @@
 #  02111-1307, USA
 #
 #  This file must be encoded in EUC-JP encoding
-#  
-#  
+#
+#
 #  Some Code copy from Win32::OLE Example program.
-#  Licence for these code is 
+#  Licence for these code is
 #    You may distribute under the terms of either the GNU General Public
 #    License or the Artistic License, as specified in the README(Win32::OLE) file.
 #
@@ -33,9 +33,9 @@
 # V1.00 1999/10/30
 # V1.01 1999/11/03 Add getFrames by Jun Kurabe
 # V1.02 1999/11/03 Change getProperties of check TextFrame statement
-# V2.00 1999/11/06 Change Program Structure 
+# V2.00 1999/11/06 Change Program Structure
 #                  Get Text From Grouped Shape Items
-# V2.10 1999/11/09 Change Name 
+# V2.10 1999/11/09 Change Name
 #                  Merge three program ReadMSWord.pl, ReadExcel.pl, ReadPPT.pl
 # V2.11 1999/11/15  separate file.
 #                   modify some functions.
@@ -54,8 +54,8 @@ sub mediatype() {
 }
 
 sub status() {
-    open (SAVEERR,">&STDERR");    
-    open (STDERR,">nul");    
+    open (SAVEERR,">&STDERR");
+    open (STDERR,">nul");
     my $powerpoint = Win32::OLE->new('PowerPoint.Application','Quit');
     open (STDERR,">&SAVEERR");
     return 'yes' if (defined $powerpoint);
@@ -82,8 +82,7 @@ sub add_magic ($) {
 }
 
 sub filter ($$$$$) {
-    my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
-      = @_;
+    my ($orig_cfile, $cont, $weighted_str, $headings, $fields) = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
     util::vprint("Processing powerpoint file ... (using  'Win32::OLE->new PowerPoint.Application')\n");
@@ -97,14 +96,14 @@ sub filter ($$$$$) {
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($cont);
     $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
-     unless $fields->{'title'};
-    gfilter::show_filter_debug_info($cont, $weighted_str,
-      $fields, $headings);
+	unless $fields->{'title'};
+    gfilter::show_filter_debug_info($cont, $weighted_str, $fields, $headings);
+
     return undef;
 }
 
 
-# Original of this code was contributed by <jun-krb@mars.dti.ne.jp>. 
+# Original of this code was contributed by <jun-krb@mars.dti.ne.jp>.
 
 use Win32::OLE;
 use Win32::OLE::Enum;
@@ -122,20 +121,26 @@ sub enum ($$$) {
     return 1;
 }
 
-sub getProperties {
+sub getProperties ($$) {
     my ($cfile, $fields) = @_;
 
-    # get Title
-    $fields->{'title'} = $cfile->BuiltInDocumentProperties(1)->{Value}
-      unless $cfile->BuiltInDocumentProperties(1)->{Value};            # title
-#    $fields->{'title'} = $cfile->BuiltInDocumentProperties(2)->{Value}; # subject
-#    $fields->{'author'} = $cfile->BuiltInDocumentProperties(3)->{Value}; # author
-    $fields->{'author'} = $cfile->BuiltInDocumentProperties(7)->{Value}
-      unless $cfile->BuiltInDocumentProperties(7)->{Value};            # lastauthor
-#    $fields->{'date'} = $cfile->BuiltInDocumentProperties(11)->{Value}; # createdate
-    $fields->{'date'} = $cfile->BuiltInDocumentProperties(12)->{Value}
-      unless $cfile->BuiltInDocumentProperties(12)->{Value};            # editdate
-#    $fields->{'date'} = $cfile->BuiltInDocumentProperties(13)->{Value}; # editdate?
+    # See VBA online help using Microsoft PowerPoint in detail.
+    # Topic item: 'DocumentProperty Object'.
+
+    my $title = $cfile->BuiltInDocumentProperties('Title')->{Value};
+    $title = $cfile->BuiltInDocumentProperties('Subject')->{Value}
+	unless (defined $title);
+    $fields->{'title'} = $title if (defined $title);
+
+    my $author = $cfile->BuiltInDocumentProperties('Author')->{Value};
+    $author = $cfile->BuiltInDocumentProperties('Last Author')->{Value}
+	unless (defined $author);
+    $fields->{'author'} = $author if (defined $author);
+
+#    my $date = $cfile->BuiltInDocumentProperties('Last Save Time')->{Value};
+#    $date = $cfile->BuiltInDocumentProperties('Creation Date')->{Value}
+#	unless (defined $date);
+#    $fields->{'date'} = $date if (defined $date);
 
     return undef;
 }
@@ -147,30 +152,33 @@ sub ReadPPT ($$$) {
 
     # Copy From Win32::OLE Example Program
     # use existing instance if PowerPoint is already running
-    my $ppt; 
+    my $ppt;
     eval {$ppt = Win32::OLE->GetActiveObject('PowerPoint.Application')};
     die "PowerPoint not installed" if $@;
     unless (defined $ppt) {
-    $ppt = Win32::OLE->new('PowerPoint.Application', sub {$_[0]->Quit;})
-	or die "Oops, cannot start PowerPoint";
+	$ppt = Win32::OLE->new('PowerPoint.Application', sub {$_[0]->Quit;})
+	    or die "Oops, cannot start PowerPoint";
     }
     #End of Copy From Win32::OLE Example Program
-    # Must set Visible = true 
-    $ppt->{Visible} = 1;
 
-    # Load Office 98 Constant
-    local $office_consts;
+    # Redirect stderr to null device, to ignore Error and Exception message.
     open (SAVEERR,">&STDERR");
     open (STDERR,">nul");
+    # Load Office 98 Constant
+    local $office_consts;
     $office_consts = Win32::OLE::Const->Load("Microsoft Office 9.0 Object Library");
     $office_consts = Win32::OLE::Const->Load("Microsoft Office 8.0 Object Library") unless $office_consts;
+    # 'Visible = false' causes exception but noharm, so we ignore... X-(
+    $ppt->{Visible} = 0;
+    # Restore stderr device usually.
     open (STDERR,">&SAVEERR");
 
     my $prs = $ppt->{Presentations}->Open({
 	'FileName' => $cfile,
-	'ReadOnly' => 1
+	'ReadOnly' => 1,
+	'WithWindow' => 0,
 	});
-    die "Cannot open File $cfile" unless ( defined $prs );
+    die "Cannot open File $cfile" unless (defined $prs);
 
     olepowerpoint::getProperties($prs, $fields);
     getSlides($prs, $cont);
@@ -186,26 +194,26 @@ sub getSlides ($$) {
     my ($prs, $cont) = @_;
 
     my $enum_a_slide = sub {
-    my $slide = shift;
+	my $slide = shift;
 
-    my $enum_a_headerfooter = sub {
-        my $obj = shift;
-        $$cont .= $obj->Header->{Text} if ( $obj->{Header} && $obj->Header->{Text} ) ;
-        $$cont .= $obj->Footer->{Text} if ( $obj->{Footer} && $obj->Footer->{Text} ) ;
-        return 1;
-    };
+	my $enum_a_headerfooter = sub {
+	    my $obj = shift;
+	    $$cont .= $obj->Header->{Text} if ( $obj->{Header} && $obj->Header->{Text} ) ;
+	    $$cont .= $obj->Footer->{Text} if ( $obj->{Footer} && $obj->Footer->{Text} ) ;
+	    return 1;
+	};
 
-    sub enum_a_shape ($$) {
-	my ($shape, $cont) = @_;
-        # Get text whaen TextFrame in Shapes and Text in TextFrame 
-        if ($shape->{HasTextFrame} && $shape->TextFrame->TextRange) { # 
-	    my $p = $shape->TextFrame->TextRange->{Text};
-            $$cont .= "$p\n" if ( defined $p );
-        } elsif ( $shape->{Type} == $office_consts->{msoGroup} ) { 
+	sub enum_a_shape ($$) {
+	    my ($shape, $cont) = @_;
+	    # Get text whaen TextFrame in Shapes and Text in TextFrame
+	    if ($shape->{HasTextFrame} && $shape->TextFrame->TextRange) {
+		my $p = $shape->TextFrame->TextRange->{Text};
+		$$cont .= "$p\n" if (defined $p);
+	    } elsif ( $shape->{Type} == $office_consts->{msoGroup} ) {
 	    olepowerpoint::enum($shape->GroupItems, \&enum_a_shape, $cont);
-        }
-        return 1;
-    };
+	    }
+	    return 1;
+	};
 
         olepowerpoint::enum($slide->Shapes, \&enum_a_shape, $cont);
 #        &$enum_a_headerfooter($slide->HeadersFooters);

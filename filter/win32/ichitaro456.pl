@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: ichitaro456.pl,v 1.5 2001-01-04 01:58:01 baba Exp $
+# $Id: ichitaro456.pl,v 1.6 2001-01-12 05:15:31 baba Exp $
 # Copyright (C) 1999 Ken-ichi Hirose,
 #               2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -106,9 +106,9 @@ sub filter ($$$$$) {
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($cont);
     $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
-      unless $fields->{'title'};
-    gfilter::show_filter_debug_info($cont, $weighted_str,
-    $fields, $headings);
+	unless $fields->{'title'};
+    gfilter::show_filter_debug_info($cont, $weighted_str, $fields, $headings);
+
     return undef;
 }
 

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: namazu 2.0\n"
-"POT-Creation-Date: 2000-01-19 09:20+0900\n"
+"POT-Creation-Date: 2000-01-19 17:33+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>\n"
 "Language-Team: Japanese <satoru-t@is.aist-nara.ac.jp>\n"
@@ -148,7 +148,7 @@ msgid "\t<p>No document matching your query.</p>\n"
 msgstr "\t<p>検索式にマッチする文書はありませんでした。</p>\n"
 
 #: src/usage.c:52
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "namazu %s, a search program of Namazu.\n"
 "\n"
@@ -169,7 +169,7 @@ msgid ""
 "    -H, --page           print further result links. (nearly meaningless)\n"
 "    -F, --form           force to print <form> ... </form> region.\n"
 "    -R, --no-replace     do not replace URI string.\n"
-"    -U, --no-encode-uri  do not decode URI when printing in a plain format.\n"
+"    -U, --no-decode-uri  do not decode URI when printing in a plain format.\n"
 "    -o, --output=file    set output file name.\n"
 "    -f, --config=file    set a pathname of a config file.\n"
 "    -C, --show-config    print current configuration.\n"

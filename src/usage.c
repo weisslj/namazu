@@ -2,7 +2,7 @@
  * 
  * usage.c -
  * 
- * $Id: usage.c,v 1.17 2000-01-09 01:44:26 satoru Exp $
+ * $Id: usage.c,v 1.18 2000-01-19 08:34:42 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -68,7 +68,7 @@ Usage: namazu [options] <query> [index]... \n\
     -H, --page           print further result links. (nearly meaningless)\n\
     -F, --form           force to print <form> ... </form> region.\n\
     -R, --no-replace     do not replace URI string.\n\
-    -U, --no-encode-uri  do not decode URI when printing in a plain format.\n\
+    -U, --no-decode-uri  do not decode URI when printing in a plain format.\n\
     -o, --output=file    set output file name.\n\
     -f, --config=file    set a pathname of a config file.\n\
     -C, --show-config    print current configuration.\n\

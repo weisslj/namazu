@@ -1,5 +1,5 @@
 /*
- * $Id: result.c,v 1.42 2000-01-19 08:15:37 satoru Exp $
+ * $Id: result.c,v 1.43 2000-01-19 08:34:41 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -39,8 +39,8 @@
 #include "parser.h"
 #include "query.h"
 
-static int urireplace  = 1;   /* replace URI in results */
-static int uridecode   = 0;   /* decode URI in results */
+static int urireplace  = 1;   /* Replace URI in results as default. */
+static int uridecode   = 1;   /* Decode  URI in results as default. */
 
 /*
  *

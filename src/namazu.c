@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.89 2000-01-18 08:16:38 satoru Exp $
+ * $Id: namazu.c,v 1.90 2000-01-19 08:34:41 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -150,7 +150,7 @@ static struct option long_options[] = {
     { "no-references",    no_argument,       NULL, 'r' },
     { "no-replace",       no_argument,       NULL, 'R' },
     { "short",            no_argument,       NULL, 's' },
-    { "no-encode-uri",    no_argument,       NULL, 'U' },
+    { "no-decode-uri",    no_argument,       NULL, 'U' },
     { "version",          no_argument,       NULL, 'v' },
     { "whence",           required_argument, NULL, 'w' },
     { NULL, 0, NULL, 0 }
@@ -236,6 +236,7 @@ parse_options(int argc, char **argv)
 	    break;
 	case 'h':
 	    set_htmlmode(1);
+	    set_uridecode(0);  /* Do no decode URI in results. */
 	    break;
 	case 'H':
 	    set_pageindex(1);
@@ -253,7 +254,7 @@ parse_options(int argc, char **argv)
 	    set_refprint(0);
 	    break;
 	case 'U':
-	    set_uridecode(1);
+	    set_uridecode(0); /* Do not deocode URI in results. */
 	    break;
 	case 'v':
 	    show_version();
@@ -409,10 +410,10 @@ main(int argc, char **argv)
 	set_cgimode(1);
 	set_htmlmode(1);
 	set_pageindex(1);	 /* Print page index */
-	set_formprint(1);	 /* Print "<form> ... </form>" */
+	set_formprint(1);	 /* Print "<form> ... </form>"  */
+	set_uridecode(0);        /* Do not decode URI in results. */
     } else {
 	set_refprint(1);
-	set_uridecode(1);	 /* Decode a URI */
 
 	if (nmz_load_rcfile(argv[0]) != SUCCESS) {
 	    die(nmz_get_dyingmsg());

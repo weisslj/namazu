@@ -1,6 +1,14 @@
 2000-01-19  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/usage.c (show_usage): s/no-encode-uri/no-decode-uri/
+
+	* src/namazu.c (parse_options): Insert set_uridecode(0) at proper
+	positions.
+	(main): Ditto.
+	long_options[]: s/no-encode-uri/no-decode-uri/
+
 	* src/result.c (replace_field): Fix the bug [namazu-dev 1250].
+	Change the default value of uridecode.
 
 2000-01-18  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 

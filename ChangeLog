@@ -1,3 +1,8 @@
+2004-05-03  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * namazu.spec.in: RedHat software namazu.spec was taken in.
+        The unnecessary patch was deleted.
+
 2004-05-02  Yukio USUDA <usu@namazu.org>
 
 	* filter/zip.pl(filter): Added array @files in consideration on the
@@ -8817,4 +8822,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1165 2004-05-02 00:12:51 usu Exp $
+$Id: ChangeLog,v 1.1166 2004-05-03 19:09:11 opengl2772 Exp $

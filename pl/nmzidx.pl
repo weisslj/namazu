@@ -3,7 +3,7 @@
 # nmzidx.pl - subroutines for accessing Namazu index files (NMZ.*)
 #         by furukawa@tcp-ip.or.jp
 #
-# $Id: nmzidx.pl,v 1.14 2002-10-31 10:24:16 knok Exp $
+# $Id: nmzidx.pl,v 1.15 2002-11-07 06:51:57 knok Exp $
 #
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -704,7 +704,7 @@ sub log_close{
 
 
 # copy from util.pl
-sub commas ($) {
+sub comma ($) {
     my ($num) = @_;
 
     $num = "0" if ($num eq "");

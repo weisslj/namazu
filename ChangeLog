@@ -1,5 +1,22 @@
 2000-02-27  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* filter/man.pl (status): Add -Tnippon checking for LANG `ja'. 
+
+	* filter/tex.pl: Improve $texconvpath handling call
+	util::chechcmd() only once.
+
+	* filter/pdf.pl: Likewise
+
+	* filter/compress.pl: Likewise
+
+	* filter/ichitaro456.pl: Likewise
+
+	* filter/bzip2.pl: Likewise
+
+	* filter/gzip.pl: Likewise
+
+	* filter/msword.pl: Likewise.
+
 	* nmz/util.c (nmz_strerror): Add the message for
 	ERR_INDEX_IS_LOCKED and modify other messages.
 

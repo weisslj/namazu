@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: msword.pl,v 1.16 2000-02-26 08:11:01 satoru Exp $
+# $Id: msword.pl,v 1.17 2000-02-27 14:10:34 satoru Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -29,18 +29,23 @@ require 'util.pl';
 require 'gfilter.pl';
 require 'html.pl';
 
+my $wordconvpath  = undef;
+my $utfconvpath   = undef;
+my $wvversionpath = undef;
+
 sub mediatype() {
     return ('application/msword');
 }
 
 sub status() {
-    my $wordconvpath = util::checkcmd('wvHtml');
+    $wordconvpath = util::checkcmd('wvHtml');
     return 'no' unless defined $wordconvpath;
     if (!util::islang("ja")) {
 	return 'yes';
     } else {
-	my $utfconvpath = util::checkcmd('lv');
-	if (defined $utfconvpath) {
+	$utfconvpath   = util::checkcmd('lv');
+        $wvversionpath = util::checkcmd('wvVersion');
+	if ((defined $utfconvpath) && (defined $wvversionpath)) {
 	    return 'yes';
 	} else {
 	    return 'no';
@@ -72,15 +77,10 @@ sub filter ($$$$$) {
     my $tmpfile  = util::tmpnam('NMZ.word');
     my $tmpfile2 = util::tmpnam('NMZ.word2');
 
-    my $wordconvpath = util::checkcmd('wvHtml');
     return "Unable to execute msword-converter" unless (-x $wordconvpath);
 
-    my $utfconvpath;
-    my $wvversionpath;
     if (util::islang("ja")) {
-	$utfconvpath = util::checkcmd('lv');
 	return "Unable to execute utf-converter" unless (-x $utfconvpath);
-	$wvversionpath = util::checkcmd('wvVersion');
 	return "Unable to execute utf-converter" unless (-x $wvversionpath);
     }
 

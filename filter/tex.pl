@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: tex.pl,v 1.5 2000-02-13 04:44:37 satoru Exp $
+# $Id: tex.pl,v 1.6 2000-02-27 14:10:34 satoru Exp $
 # Copyright (C) 1999 Satoru Takabayashi ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -27,12 +27,14 @@ use strict;
 require 'util.pl';
 require 'gfilter.pl';
 
+my $texconvpath = undef;
+
 sub mediatype() {
     return ('application/x-tex');
 }
 
 sub status() {
-    my $texconvpath = util::checkcmd('detex');
+    $texconvpath = util::checkcmd('detex');
     return 'yes' if (defined $texconvpath);
     return 'no';
 }
@@ -79,7 +81,6 @@ sub filter ($$$$$) {
     }
 
     my $tmpfile = util::tmpnam('NMZ.tex');
-    my $texconvpath = util::checkcmd('detex');
     return "Unable to execute tex-converter" unless (-x $texconvpath);
     util::vprint("Processing tex file ... (using  '$texconvpath')\n");
 

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: man.pl,v 1.20 2000-02-13 04:44:37 satoru Exp $
+# $Id: man.pl,v 1.21 2000-02-27 14:10:34 satoru Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -28,18 +28,42 @@ use strict;
 require 'util.pl';
 require 'gfilter.pl';
 
+my $roffpath = undef;
+my $roffargs = undef;
+
 sub mediatype() {
     return ('text/x-roff');
 }
 
 sub status() {
-    my $roffpath = util::checkcmd('jgroff');
-    return 'yes' if (defined $roffpath);
-    $roffpath = util::checkcmd('groff');
-    return 'yes' if (defined $roffpath);
-    $roffpath = util::checkcmd('nroff');
-    return 'yes' if (defined $roffpath);
-    return 'no';
+    $roffpath = util::checkcmd('jgroff');
+    unless (defined $roffpath) {
+	$roffpath = util::checkcmd('groff');
+    }
+    unless (defined $roffpath) {
+	$roffpath = util::checkcmd('nroff');
+    }
+    unless (defined $roffpath) {
+	return 'no';
+    }
+
+    if (util::islang("ja") && $roffpath =~ /\bj?groff$/) {
+	# Check wheter -Tnippon is valid.
+	`echo ''| $roffpath -Tnippon 1>/dev/null 2>&1`;
+	if ($? == 0) {
+	    $roffargs = '-Tnippon' ;
+	} else {
+	    $roffargs = '-Tascii';
+	}
+	# print "// $roffargs\n";
+    } elsif ($roffpath =~ /\bgroff$/) {
+	$roffargs = '-Tascii';
+    } elsif ($roffpath =~ /nroff$/) {
+	$roffargs = '';
+    } else {
+	die;
+    }
+    return 'yes';
 }
 
 sub recursive() {
@@ -64,15 +88,7 @@ sub filter ($$$$$) {
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
     my $tmpfile = util::tmpnam('NMZ.man');
-    my $roffpath = util::checkcmd('jgroff');
-    $roffpath = util::checkcmd('groff') unless (defined $roffpath);
-    $roffpath = util::checkcmd('nroff') unless (defined $roffpath);
     return "Unable to execute nroff/groff/jgroff" unless (-x $roffpath);
-
-    my $roffargs;
-    $roffargs = '-Tnippon' if ($roffpath =~ /\bjgroff$/);
-    $roffargs = '-Tascii' if ($roffpath =~ /\bgroff$/);
-    $roffargs = '' if ($roffpath =~ /nroff$/);
 
     {
       util::vprint("Processing man file ... (using '$roffpath -man $roffargs')\n");

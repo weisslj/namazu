@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: gzip.pl,v 1.12 2000-02-11 12:54:21 satoru Exp $
+# $Id: gzip.pl,v 1.13 2000-02-27 14:10:34 satoru Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -27,13 +27,15 @@ package gzip;
 use strict;
 require 'util.pl';
 
+my $gzippath = undef;
+
 sub mediatype() {
     return ('application/x-gzip');
 }
 
 sub status() {
     return 'yes' if (util::checklib('Compress/Zlib.pm'));
-    my $gzippath = util::checkcmd('gzip');
+    $gzippath = util::checkcmd('gzip');
     return 'yes' if (defined $gzippath);
     return 'no';
 }
@@ -71,7 +73,6 @@ sub filter_file ($) {
     my ($contref) = @_;
 
     my $tmpfile = util::tmpnam('NMZ.gzip');
-    my $gzippath = util::checkcmd('gzip');
     return "Unable to execute gzip" unless (-x $gzippath);
     my $fh = util::efopen("|$gzippath -cd > $tmpfile");
 

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: compress.pl,v 1.11 2000-02-11 12:54:20 satoru Exp $
+# $Id: compress.pl,v 1.12 2000-02-27 14:10:34 satoru Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -27,12 +27,14 @@ package compress;
 use strict;
 require 'util.pl';
 
+my $zcatpath = undef;
+
 sub mediatype() {
     return ('application/x-compress');
 }
 
 sub status() {
-    my $zcatpath = util::checkcmd('zcat');
+    $zcatpath = util::checkcmd('zcat');
     return 'no' unless (defined $zcatpath);
     return 'yes';
 }
@@ -58,7 +60,6 @@ sub filter ($$$$$) {
       = @_;
 
     my $tmpfile = util::tmpnam('NMZ.compr');
-    my $zcatpath = util::checkcmd('zcat');
     return "Unable to execute zcat" unless (-x $zcatpath);
 
     util::vprint("Processing compress file ... (using  '$zcatpath')\n");

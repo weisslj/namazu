@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: pdf.pl,v 1.17 2000-02-11 12:54:22 satoru Exp $
+# $Id: pdf.pl,v 1.18 2000-02-27 14:10:34 satoru Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -28,12 +28,14 @@ use strict;
 require 'util.pl';
 require 'gfilter.pl';
 
+my $pdfconvpath = undef;
+
 sub mediatype() {
     return ('application/pdf');
 }
 
 sub status() {
-    my $pdfconvpath = util::checkcmd('pdftotext');
+    $pdfconvpath = util::checkcmd('pdftotext');
     return 'yes' if (defined $pdfconvpath);
     return 'no';
 }
@@ -61,7 +63,6 @@ sub filter ($$$$$) {
 
     my $tmpfile = util::tmpnam('NMZ.pdf');
     my $tmpfile2 = util::tmpnam('NMZ.pdf2');
-    my $pdfconvpath = util::checkcmd('pdftotext');
     return "Unable to execute pdf-converter" unless (-x $pdfconvpath);
     util::vprint("Processing pdf file ... (using  '$pdfconvpath')\n");
 

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: ichitaro456.pl,v 1.5 2000-02-22 17:04:43 kenzo- Exp $
+# $Id: ichitaro456.pl,v 1.6 2000-02-27 14:10:34 satoru Exp $
 # Copyright (C) 1999 Ken-ichi Hirose All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -29,12 +29,14 @@ use strict;
 require 'util.pl';
 require 'gfilter.pl';
 
+my $ichitaro456 = undef;
+
 sub mediatype() {
     return ('application/ichitaro4', 'application/ichitaro5', 'application/ichitaro6');
 }
 
 sub status() {
-    my $ichitaro456 = util::checkcmd('jstxt');
+    $ichitaro456 = util::checkcmd('jstxt');
     return 'yes' if (defined $ichitaro456);
     return 'no';
 }
@@ -62,7 +64,6 @@ sub filter ($$$$$) {
 
     my $tmpfile  = util::tmpnam('NMZ.jstxt');
 
-    my $ichitaro456 = util::checkcmd('jstxt');
     return "Unable to execute ichitaro-converter" unless (-x $ichitaro456);
 
     util::vprint("Processing ichitaro file ... (using  '$ichitaro456')\n");

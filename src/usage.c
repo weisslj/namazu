@@ -2,7 +2,7 @@
  * 
  * usage.c -
  * 
- * $Id: usage.c,v 1.10 1999-11-19 01:32:51 satoru Exp $
+ * $Id: usage.c,v 1.11 1999-11-19 01:44:38 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -42,7 +42,7 @@ void show_usage(void)
     char buf[BUFSIZE * 4];
     char *usage = (char *)
     N_("\
-namazu of Namazu %s\n\n\
+namazu %s, a search program of Namazu.\n\n\
 Usage: namazu [options] <query> [index]... \n\
     -n, --max=num        set number of documents shown at once.\n\
     -w, --whence=num     set first number of documents shown in results.\n\

@@ -1,5 +1,5 @@
 # -*- Perl -*-
-# $Id: usage.pl,v 1.4 1999-11-18 13:59:11 satoru Exp $
+# $Id: usage.pl,v 1.5 1999-11-19 01:44:35 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -36,7 +36,7 @@ EOFusage
 ## Japanese usage (long)
 ##
 $USAGE_JA = <<EOFusage;
-mknmz - Namazu のインデックス作成プログラム $var::VERSION
+mknmz $var::VERSION, Namazu のインデックス作成プログラム 
 
 使い方: mknmz [options] <target>...
 
@@ -87,13 +87,15 @@ mknmz - Namazu のインデックス作成プログラム $var::VERSION
   -V, --verbose           口やかましいモード
       --debug             デバッグモード
       --help              このヘルプを表示する
+
+バグ報告は <bug-namazu\@namazu.org> へどうぞ
 EOFusage
 
 ##
 ## English usage (long)
 ##
 $USAGE_EN = <<EOFusage;
-mknmz of Namazu $var::VERSION
+mknmz $var::VERSION, an indexer of Namazu.
 
 Usage: mknmz [options] <target>...
 
@@ -143,6 +145,8 @@ Miscellaneous:
   -V, --verbose            be verbose.
       --debug              be debug mode.
       --help               show this help and exit.
+
+Report bugs to <bug-namazu\@namazu.org>.
 EOFusage
 
 ##
@@ -150,8 +154,8 @@ EOFusage
 ##
 $VERSION_INFO = <<EOFversion;
 mknmz of Namazu 1.9.8
-
 Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
+
 This is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)

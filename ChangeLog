@@ -1,5 +1,7 @@
 1999-11-19  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* pl/usage.pl: Modify usage messages.
+
 	* src/usage.c (show_usage): Renamed from show_long_usage()
 	(show_usage): Add a message "Report bugs to <bug-namazu@namazu.org>."
 	(show_version): Reformated.

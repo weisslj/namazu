@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: powerpoint.pl,v 1.14 2004-02-15 16:20:10 opengl2772 Exp $
+# $Id: powerpoint.pl,v 1.15 2004-02-22 10:59:00 opengl2772 Exp $
 # Copyright (C) 2000 Ken-ichi Hirose, 
 #               2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -139,9 +139,11 @@ sub filter_ppt ($$$$$) {
 	    my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
 	    my $size = util::filesize($fh_out);
 	    if ($size == 0) {
+                unlink $tmpfile;
 		return "Unable to convert file ($utfconvpath error occurred).";
 	    }
 	    if ($size > $conf::TEXT_SIZE_MAX) {
+                unlink $tmpfile;
 		return 'Too large powerpoint file';
 	    }
 	    $$cont = util::readfile($fh_out);
@@ -191,9 +193,11 @@ sub filter_doccat ($$$$$) {
 	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
 	my $size = util::filesize($fh_out);
 	if ($size == 0) {
+            unlink $tmpfile;
 	    return "Unable to convert file ($pptconvpath error occurred).";
 	}
 	if ($size > $conf::TEXT_SIZE_MAX) {
+            unlink $tmpfile;
 	    return 'Too large powerpoint file.';
 	}
         $$cont = util::readfile($fh_out);

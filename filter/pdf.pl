@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: pdf.pl,v 1.32 2004-01-30 16:41:28 opengl2772 Exp $
+# $Id: pdf.pl,v 1.33 2004-02-22 10:59:00 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -108,16 +108,19 @@ sub filter ($$$$$) {
     util::systemcmd($pdfconvpath, @pdfconvopts, $tmpfile, $tmpfile2);
     unless (-e $tmpfile2) {
 	unlink $tmpfile;
-	unlink $tmpfile2;
 	return 'Unable to convert pdf file (maybe copying protection)';
     }
     {
 	my $fh = util::efopen("< $tmpfile2");
 	my $size = util::filesize($fh);
 	if ($size == 0) {
+	    unlink $tmpfile;
+	    unlink $tmpfile2;
 	    return "Unable to convert file ($pdfconvpath error occurred)";
 	}
 	if ($size > $conf::TEXT_SIZE_MAX) {
+	    unlink $tmpfile;
+	    unlink $tmpfile2;
 	    return 'Too large pdf file';
 	}
 	$$cont = util::readfile($fh);

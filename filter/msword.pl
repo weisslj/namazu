@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: msword.pl,v 1.43 2004-02-20 19:17:34 opengl2772 Exp $
+# $Id: msword.pl,v 1.44 2004-02-22 10:59:00 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -124,6 +124,7 @@ sub filter_wv ($$$$$) {
 	    $supported = 1 if ($docversion =~ /^word[78]$/);
 	}
 	unless ($supported) {
+            unlink $tmpfile;
 	    return _("Unsupported format: ") .  $docversion;
 	}
     }
@@ -140,6 +141,8 @@ sub filter_wv ($$$$$) {
             @wordconvopts = ("--targetdir=$tpath");
 	} else {
             if (util::islang("ja")) {
+                unlink $tmpfile;
+                unlink $tmpfile2;
                 return _("Unsupported format: ") .  $docversion
                     if ($docversion =~ /^word7$/);
             }
@@ -151,6 +154,7 @@ sub filter_wv ($$$$$) {
 
     util::systemcmd($wordconvpath, @wordconvopts, $tmpfile, $ofile);
     unless (-e $tmpfile2) {
+        unlink $tmpfile;
 	return "Unable to convert file ($wordconvpath error occurred).";
     } else {
 	my $fh = util::efopen("< $tmpfile2");
@@ -178,9 +182,13 @@ sub filter_wv ($$$$$) {
 	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
 	my $size = util::filesize($fh_out);
 	if ($size == 0) {
+            unlink $tmpfile;
+            unlink $tmpfile2;
 	    return "Unable to convert file ($utfconvpath error occurred).";
 	}
 	if ($size > $conf::TEXT_SIZE_MAX) {
+            unlink $tmpfile;
+            unlink $tmpfile2;
 	    return 'Too large word file';
 	}
 	$$cont = util::readfile($fh_out);
@@ -229,9 +237,11 @@ sub filter_doccat ($$$$$) {
 	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
 	my $size = util::filesize($fh_out);
 	if ($size == 0) {
+            unlink $tmpfile;
 	    return "Unable to convert file ($wordconvpath error occurred).";
 	}
 	if ($size > $conf::TEXT_SIZE_MAX) {
+            unlink $tmpfile;
 	    return 'Too large word file.';
 	}
         $$cont = util::readfile($fh_out);

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: excel.pl,v 1.20 2004-02-15 14:44:44 opengl2772 Exp $
+# $Id: excel.pl,v 1.21 2004-02-22 10:59:00 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu, 
 #               2000 Namazu Project All rights reserved.
@@ -122,9 +122,11 @@ sub filter_xl ($$$$$) {
 	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
 	my $size = util::filesize($fh_out);
 	if ($size == 0) {
+            unlink $tmpfile;
 	    return "Unable to convert file ($xlconvpath error occurred).";
 	}
 	if ($size > $conf::TEXT_SIZE_MAX) {
+            unlink $tmpfile;
 	    return 'Too large excel file';
 	}
 	$$cont = util::readfile($fh_out);
@@ -148,9 +150,11 @@ sub filter_xl ($$$$$) {
 	    my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
 	    my $size = util::filesize($fh_out);
 	    if ($size == 0) {
+                unlink $tmpfile;
 		return "Unable to convert file ($xlconvpath error occurred)";
 	    }
 	    if ($size > $conf::TEXT_SIZE_MAX) {
+                unlink $tmpfile;
 		return 'Too large excel file';
 	    }
 	    $$cont = util::readfile($fh_out);
@@ -202,9 +206,11 @@ sub filter_doccat ($$$$$) {
 	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
 	my $size = util::filesize($fh_out);
 	if ($size == 0) {
+            unlink $tmpfile;
 	    return "Unable to convert file ($xlconvpath error occurred)";
 	}
 	if ($size > $conf::TEXT_SIZE_MAX) {
+            unlink $tmpfile;
 	    return 'Too large excel file.';
 	}
         $$cont = util::readfile($fh_out);

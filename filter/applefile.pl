@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: applefile.pl,v 1.2 2004-02-20 19:10:37 opengl2772 Exp $
+# $Id: applefile.pl,v 1.3 2004-02-22 10:59:00 opengl2772 Exp $
 # Copyright (C) 2004 Tadamasa Teranishi All rights reserved ,
 # Copyright (C) 2004 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -66,7 +66,7 @@ sub filter ($$$$$) {
     my ($orig_cfile, $contref, $weighted_str, $headings, $fields)
       = @_;
 
-    util::vprint("Processing applfile ...\n");
+    util::vprint("Processing applefile ...\n");
 
     my $magic = unpack('N', substr($$contref, 0, 4));
 

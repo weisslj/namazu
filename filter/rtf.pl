@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: rtf.pl,v 1.9 2004-02-20 19:17:34 opengl2772 Exp $
+# $Id: rtf.pl,v 1.10 2004-02-22 10:59:00 opengl2772 Exp $
 # Copyright (C) 2003-2004 Tadamasa Teranishi All rights reserved.
 # Copyright (C) 2000-2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -124,9 +124,11 @@ sub filter_rtf2html ($$$$$) {
 	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
 	my $size = util::filesize($fh_out);
 	if ($size == 0) {
+            unlink $tmpfile;
 	    return "Unable to convert file ($rtfconvpath error occurred).";
 	}
 	if ($size > $conf::TEXT_SIZE_MAX) {
+            unlink $tmpfile;
 	    return 'Too large rtf file.';
 	}
         $$cont = util::readfile($fh_out);
@@ -167,9 +169,11 @@ sub filter_doccat ($$$$$) {
 	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
 	my $size = util::filesize($fh_out);
 	if ($size == 0) {
+            unlink $tmpfile;
 	    return "Unable to convert file ($rtfconvpath error occurred).";
 	}
 	if ($size > $conf::TEXT_SIZE_MAX) {
+            unlink $tmpfile;
 	    return 'Too large rtf file.';
 	}
         $$cont = util::readfile($fh_out);

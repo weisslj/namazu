@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: man.pl,v 1.28 2002-09-23 08:52:32 baba Exp $
+# $Id: man.pl,v 1.29 2004-02-22 10:59:00 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -104,9 +104,11 @@ sub filter ($$$$$) {
 	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
         my $size = util::filesize($fh_out);
 	if ($size == 0) {
+            unlink $tmpfile;
 	    return "Unable to convert file ($roffpath error occurred)";
 	}
 	if ($size > $conf::TEXT_SIZE_MAX) {
+            unlink $tmpfile;
 	    return 'Too large man file';
 	}
 	$$cont = util::readfile($fh_out);

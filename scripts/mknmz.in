@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.118 2003-02-27 10:04:50 knok Exp $
+# $Id: mknmz.in,v 1.119 2003-03-28 08:59:23 opengl2772 Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -578,6 +578,7 @@ sub namazu_core ($$$$$$$$$$) {
     $content .= $weighted_str;   # add weights
     $Indexer->init(\$content, $conf::WORD_LENG_MAX, $var::Opt{'nosymbol'});
     $Indexer->noedgesymbol() if ($var::Opt{'noedgesymbol'});
+    $content =~ tr/\x00-\x08\x0b-\x0c\x0e-\x1a/ /; # Remove control char.
     do_wakatigaki(\$content, $kanji);
     $content =~ tr/A-Z/a-z/; # Normalize
     $Indexer->count_words();

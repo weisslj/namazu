@@ -1,3 +1,9 @@
+2003-03-28  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * script/mknmz.in: Remove control char.
+
+        * filter/mhonarc.pl: Add codeconv::toeuc() after uncommentize().
+
 2003-03-27  Yukio USUDA <usu@namazu.org>
 
 	* filter/ooo.pl (add_magic): Add addMagicEntry.
@@ -7851,4 +7857,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1010 2003-03-27 14:07:54 usu Exp $
+$Id: ChangeLog,v 1.1011 2003-03-28 08:59:22 opengl2772 Exp $

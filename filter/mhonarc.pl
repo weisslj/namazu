@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mhonarc.pl,v 1.26 2002-10-31 08:51:01 knok Exp $
+# $Id: mhonarc.pl,v 1.27 2003-03-28 08:59:24 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu,
 #               2002 Earl Hood
@@ -156,14 +156,25 @@ sub load_mhonarc_fields {
 
     if ($mha_head =~ /<!--X-Subject: ([^-]+) -->/) {
 	my $subject = uncommentize($1);
+        if (util::islang("ja")) {
+            codeconv::toeuc(\$subject);
+        }
 	1  while ($subject =~ s/\A\s*(re|sv|fwd|fw)[\[\]\d]*[:>-]+\s*//i);
 	$subject =~ s/\A\s*\[[^\]]+\]\s*//;
 	$fields->{'subject'} = $subject;
     }
     if ($mha_head =~ /<!--X-From-R13: ([^-]+) -->/) {
-	$fields->{'from'} = mrot13(uncommentize($1));
+        my $from = mrot13(uncommentize($1));
+        if (util::islang("ja")) {
+            codeconv::toeuc(\$from);
+        }
+        $fields->{'from'} = $from;
     } elsif ($mha_head =~ /<!--X-From: ([^-]+) -->/) {
-	$fields->{'from'} = uncommentize($1);
+        my $from = uncommentize($1);
+        if (util::islang("ja")) {
+            codeconv::toeuc(\$from);
+        }
+        $fields->{'from'} = $from;
     }
     if ($mha_head =~ /<!--X-Message-Id: ([^-]+) -->/) {
 	$fields->{'message-id'} = '&lt;' . uncommentize($1). '&gt;';

@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu-cgi.c,v 1.22 2003-04-18 13:04:44 knok Exp $
+ * $Id: namazu-cgi.c,v 1.23 2003-11-18 18:28:22 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -110,12 +110,12 @@ combine_pathname(char *dest, const char *command, const char *name)
 #endif
 
     strcpy(dest, command);
-    for (i = strlen(dest) - 1; i > 0; i--) {
+    for (i = strlen(dest) - 1; i >= 0; i--) {
 	if (dest[i] == '/' || (win32 && dest[i] == '\\')) {
-	    i++;
 	    break;
 	}
     }
+    i++;
     strcpy(dest + i, name);
     return;
 }

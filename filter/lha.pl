@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: lha.pl,v 1.2 2004-05-04 22:11:15 opengl2772 Exp $
+# $Id: lha.pl,v 1.3 2004-05-05 09:32:41 opengl2772 Exp $
 #  lha filter for namazu
 #  Copyright (C) 2004 Tadamasa Teranishi,
 #                2004 MATSUMURA Namihiko <po-jp@counterghost.net>,
@@ -74,7 +74,7 @@ sub add_magic ($) {
     $magic->addMagicEntry("2\tstring\t-lz4-\tapplication/x-lha");
     $magic->addMagicEntry("2\tstring\t-lz5-\tapplication/x-lha");
 
-    $magic->addFileExts('\\.lzh', 'application/x-lha');
+#    $magic->addFileExts('\\.lzh', 'application/x-lha');
     return;
 }
 
@@ -110,8 +110,6 @@ sub filter_lha_unix ($$$$$) {
 
     util::vprint("Processing lha file ... (using  '$lhapath')\n");
 
-    $$contref = "";
-
     my %files;
     my $tmpfile2 = util::tmpnam('NMZ.lha.list');
     my $status = system("$lhapath lq2g $tmpfile > $tmpfile2");
@@ -126,14 +124,24 @@ sub filter_lha_unix ($$$$$) {
 		\S+\s+			# year
 		(.+)$//mx)		# filename
         {
-            $files{$2} = $1;
-            my $fname = "./" . $2;
+            my $name = $2;
+            $files{$name} = $1;
+            my $fname = "./" . $name;
             codeconv::toeuc(\$fname);
             $fname = gfilter::filename_to_title($fname, $weighted_str);
             $$contref .= $fname . " ";
+
+            codeconv::toeuc(\$name);
+            util::vprint("lha: $name");
         }
+    } else {
+        unlink($tmpfile2);
+        unlink($tmpfile);
+        return "Unable to convert file ($lhapath error occurred).";
     }
     unlink($tmpfile2);
+
+    $$contref = "";
 
     foreach my $fname (keys %files){
         my $size = $files{$fname};

@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.72 2000-08-10 07:05:24 knok Exp $
+# $Id: mknmz.in,v 1.73 2000-08-21 01:59:15 knok Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -1279,7 +1279,7 @@ sub find_target (@) {
 	    find($wanted_closure, cwd());
 	    chdir $cwd;
 	} else {
-	    die _("unsupported target: ") . $target;
+	    print STDERR _("unsupported target: ") . $target;
 	}
     }
 

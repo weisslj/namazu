@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: lha.pl,v 1.1 2004-04-29 19:35:13 opengl2772 Exp $
+# $Id: lha.pl,v 1.2 2004-05-04 22:11:15 opengl2772 Exp $
 #  lha filter for namazu
 #  Copyright (C) 2004 Tadamasa Teranishi,
 #                2004 MATSUMURA Namihiko <po-jp@counterghost.net>,
@@ -26,18 +26,22 @@
 
 package lha;
 use strict;
-use File::Find;
-use Cwd;
 require 'util.pl';
 
-my $lhapath;
+my $lhapath = undef;
+
+my $SYSTEM = $^O;
 
 sub mediatype() {
     return ('application/x-lha');
 }
 
 sub status() {
+    return 'no' if ($SYSTEM =~ /^(?:MSWin32|os2)$/i);
+
+    # Only LHa for UNIX.
     $lhapath = util::checkcmd('lha');
+
     return 'yes' if (defined $lhapath);
     return 'no';
 }
@@ -75,69 +79,91 @@ sub add_magic ($) {
 }
 
 sub filter ($$$$$) {
+    my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
+        = @_;
+    my $err = undef;
+
+    if ($SYSTEM =~ /^(?:MSWin32|os2)$/i) {
+#        $err = filter_lha_msdos($orig_cfile, $cont, $weighted_str, $headings, $fields);
+    } else {
+        $err = filter_lha_unix($orig_cfile, $cont, $weighted_str, $headings, $fields);
+    }
+    return $err;
+}
+
+sub filter_lha_unix ($$$$$) {
     my ($orig_cfile, $contref, $weighted_str, $headings, $fields)
       = @_;
 
-    my $tmpfile = util::tmpnam('NMZ.lha');
+    my $depth = 0;
+    my $tmpfile;
+    do {
+       $tmpfile = util::tmpnam('NMZ.lha' . substr("000$depth", -1, 4));
+       $depth++;
+    } while ( -f $tmpfile);
+
     {
 	my $fh = util::efopen("> $tmpfile");
 	print $fh $$contref;
         util::fclose($fh);
     }
 
-    my $tmpdir = util::tmpnam('NMZ.lha_dir');
-    my $cwd = cwd();
-    $tmpdir = mknmz::absolute_path($cwd, $tmpdir);
-    rm_r($tmpdir) if (-d $tmpdir);
-    mkdir($tmpdir);
-
     util::vprint("Processing lha file ... (using  '$lhapath')\n");
 
     $$contref = "";
 
-    my $status = system("$lhapath -xq2w=$tmpdir $tmpfile");
-    if ($status != 0) {
-        unlink($tmpfile);
-        rm_r($tmpdir);
-        return "Unable to convert lha file ($lhapath error occurred).";
+    my %files;
+    my $tmpfile2 = util::tmpnam('NMZ.lha.list');
+    my $status = system("$lhapath lq2g $tmpfile > $tmpfile2");
+    if ($status == 0) {
+        my $filelist = util::readfile("$tmpfile2");
+        while ($filelist =~ s/^\S+\s+	# permission
+		(?:\S+\s+)?		# (uid, giD)
+		(\d+)\s+		# filesize
+		\S+\s+			# rate
+		\S+\s+			# month
+		\S+\s+			# day
+		\S+\s+			# year
+		(.+)$//mx)		# filename
+        {
+            $files{$2} = $1;
+            my $fname = "./" . $2;
+            codeconv::toeuc(\$fname);
+            $fname = gfilter::filename_to_title($fname, $weighted_str);
+            $$contref .= $fname . " ";
+        }
     }
+    unlink($tmpfile2);
 
-    my $sub = sub {
-	my $tmpfile = "$File::Find::dir/$_";
-	if (-f $tmpfile) {
-	    my $fh = util::efopen("$tmpfile");
-	    my $con = util::readfile($fh);
-	    my $err = lha::nesting_filter($tmpfile, \$con, $weighted_str);
-	    if (defined $err) {
-		util::dprint("filter/lha.pl gets error message \"$err\"");
-	    }
-	    $$contref .= $con . " ";
-	    util::fclose($fh);
-	    unlink($tmpfile);
+    foreach my $fname (keys %files){
+        my $size = $files{$fname};
+        if ($size == 0) {
+            util::dprint("$fname: filesize is 0");
+        } elsif ($size > $conf::FILE_SIZE_MAX) {
+            util::dprint("$fname: Too large lhaed file");
+        } else {
+            my $tmpfile3 = util::tmpnam('NMZ.lha.file');
+            my $status = system("$lhapath -pq2 $tmpfile \"$fname\" > $tmpfile3");
+            if ($status == 0) {
+                my $con = util::readfile($tmpfile3);
+                unlink($tmpfile3);
+
+                my $lhaedname = "lhaed_content";
+                if ($fname =~ /.*(\..*)/){
+                    $lhaedname = $lhaedname . $1;
+                }
+                my $err = lha::nesting_filter($lhaedname, \$con, $weighted_str);
+                if (defined $err) {
+                    util::dprint("filter/lha.pl gets error message \"$err\"");
+                }
+                $$contref .= $con . " ";
+            } else {
+                unlink($tmpfile3);
+            }
 	}
-    };
-    find ($sub, $tmpdir);
+    }
     unlink($tmpfile);
-    rm_r($tmpdir);
     return undef;
-}
-
-sub rm_r {
-    my ($targetdir) = @_;
-    my @dirs;
-    my $sub = sub {
-	my $tmpfile = "$File::Find::dir/$_";
-	if (-f $tmpfile) {
-	    unlink($tmpfile);
-	} elsif (-d $tmpfile) {
-	    unshift @dirs, $tmpfile
-	}
-    };
-    find($sub, $targetdir);
-    foreach (@dirs) {
-	rmdir $_;
-    }
-    rmdir $targetdir;
 }
 
 sub nesting_filter ($$$){
@@ -147,14 +173,10 @@ sub nesting_filter ($$$){
     my $headings = "";
     my %fields;
     my $mmtype = undef;
-    codeconv::toeuc(\$filename);
-    $filename = gfilter::filename_to_title($filename, $weighted_str);
 
     my ($kanji, $mtype) = mknmz::apply_filter(\$filename, $contref, 
 			$weighted_str, \$headings, \%fields, 
 			$dummy_shelterfname, $mmtype);
-
-    $$contref .= " ". $filename;
 
     if ($mtype =~ /; x-system=unsupported$/){
 	$$contref = "";

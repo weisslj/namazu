@@ -2,6 +2,9 @@
 
 	* filter/zip.pl: Fixed typo (htf).
 
+	* filter/lha.pl: Redesign the filter module to lha archived files
+	one by one.(Workaround for unsupported charcter in filename.)
+
 2004-05-04  Yukio USUDA <usu@namazu.org>
 
 	* filter/zip.pl: Redesign the filter module to unzip archived files
@@ -8833,4 +8836,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1169 2004-05-04 19:50:58 opengl2772 Exp $
+$Id: ChangeLog,v 1.1170 2004-05-04 22:11:14 opengl2772 Exp $

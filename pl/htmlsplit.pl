@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: htmlsplit.pl,v 1.4 2000-03-04 11:11:37 satoru Exp $
+# $Id: htmlsplit.pl,v 1.5 2000-03-09 13:48:29 satoru Exp $
 #
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -24,6 +24,7 @@
 
 package htmlsplit;
 require "util.pl";
+require "html.pl";
 
 use strict;
 
@@ -55,6 +56,7 @@ sub split ($$) {
 		'title'    => get_title(\$cont),
 		'author'   => get_author(\$cont),
 		'anchored' => "",
+		'name'     => "",
 		'base'     => $base,
 		'names'    => [],
 		);
@@ -117,12 +119,23 @@ sub write_partial_file($$$$$) {
     my $prev_name     = $info_ref->{'name'};
     my $prev_anchored = $info_ref->{'anchored'};
 
+    html::remove_html_elements(\$prev_anchored);
+    $prev_anchored =~ s/^\s+//;
+    $prev_anchored =~ s/\s+$//;
+    my $title = $orig_title;
+
+    # FIXME: I don't know why this processing causes "Use of
+    # uninitialized value" warning if use $prev_anchored or
+    # $prev_name directly. perl's bug?
+    if ($prev_anchored ne "") {
+	$title .= ": $prev_anchored";
+    } elsif ($prev_name ne "") {
+	$title .= ": $prev_name";
+    }
+
     my $fname = util::tmpnam("$base.$id");
-
     my $fh = util::efopen(">$fname");
-
     my $header = $Header;
-    my $title = $prev_anchored ? "$orig_title: $prev_anchored" : $orig_title;
     $header =~ s/\$\{subject\}/$title/g;
     $header =~ s/\$\{author\}/$author/g;
     print $fh $header;

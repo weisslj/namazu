@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.43 2000-03-08 14:35:22 kenzo- Exp $
+# $Id: mknmz.in,v 1.44 2000-03-09 13:48:30 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -170,8 +170,8 @@ sub process_file ($$$$$$) {
 	    my $id = 0;
 	    for my $part (@parts) {
 		my $fname = util::tmpnam("NMZ.partial.$id");
-		my $name  = $part ? "#$part" : "";
-		my $uri   = generate_uri($cfile) . $name;
+		my $fragment  = $part ? $part : undef;
+		my $uri   = generate_uri($cfile, $fragment);
 		my $result = namazu_core($fname, 
 					 $docid_count + $processed_num, 
 					 $docid_base, $file_count, 
@@ -451,38 +451,41 @@ sub namazu_core ($$$$$$$$$$) {
 #
 # Make the URI from the given file name.
 #
-sub generate_uri ($) {
-    my ($file) = @_;
-    return undef unless defined $file;
-    my $uri = $file;
-
-    if ($var::Opt{'ommit'}) {
-    }
+sub generate_uri (@) {
+    my ($file, $fragment) = @_;
+    return "" unless defined $file;
 
     # omit a file name if omittable
-    $uri =~ s!^(.*)/($conf::DIRECTORY_INDEX)$!$1/!o; 
+    $file =~ s!^(.*)/($conf::DIRECTORY_INDEX)$!$1/!o; 
 
     if (defined $ReplaceCode) {
 	# transforming URI by evaling
-	$_ = $uri;
+	$_ = $file;
 	eval $ReplaceCode;
-	$uri = $_;
+	$file = $_;
     }
 
     if (($SYSTEM eq "MSWin32") || ($SYSTEM eq "os2")) {
-	$uri =~ s#^([A-Z]):#/$1|#i; # converting a drive part like: /C|
+	$file =~ s#^([A-Z]):#/$1|#i; # converting a drive part like: /C|
     }
 
     unless ($var::Opt{'noencodeuri'}) {
-	# Escape unsafe characters (not strict)
-	$uri =~ s/\%/%25/g;  # Convert original '%' into '%25' v1.1.1.2
-	$uri =~ s/([^a-zA-Z0-9~\-\_\.\/\:\%])/
-	    sprintf("%%%02X",ord($1))/ge;
-	if (($SYSTEM eq "MSWin32") || ($SYSTEM eq "os2")) {
-	    # restore '|' for drive letter rule of Win32, OS/2
-	    $uri =~ s!^/([A-Z])%7C!/$1|!i;
+	for my $tmp ($file, $fragment) {
+	    next unless defined $tmp;
+	    # Escape unsafe characters (not strict)
+	    $tmp =~ s/\%/%25/g;  # Convert original '%' into '%25' v1.1.1.2
+	    $tmp =~ s/([^a-zA-Z0-9~\-\_\.\/\:\%])/
+		sprintf("%%%02X",ord($1))/ge;
+	    if (($SYSTEM eq "MSWin32") || ($SYSTEM eq "os2")) {
+		# restore '|' for drive letter rule of Win32, OS/2
+		$tmp =~ s!^/([A-Z])%7C!/$1|!i;
+	    }
 	}
     }
+
+
+    my $uri = $file;
+    $uri .= "#" . $fragment if defined $fragment;
     return $uri;
 }
 

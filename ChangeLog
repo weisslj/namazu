@@ -1,3 +1,9 @@
+2000-03-09  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* scripts/mknmz.in (generate_uri): Handle $fragment.
+
+	* pl/htmlsplit.pl (write_partial_file): Improve $title handling.
+
 2000-03-08  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* tests/data/ja/Makefile.am (EXTRA_DIST): Add word2000.doc.

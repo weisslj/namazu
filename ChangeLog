@@ -3,6 +3,7 @@
 	* scripts/mknmz.in (codeconv_document): New function.
 	(load_document): Call codeconv_document() after pre_codeconv()
 	and post_codeconv() processing. [namazu-dev 1744]
+	(codeconv_document): Handle both CR+LR and CR  well.
 
 	* nmz/util.c (nmz_isnumstr): Fix isdigit() related
 	bug. [namazu-dev 1731] 

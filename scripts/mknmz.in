@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.24 2000-02-21 08:46:59 satoru Exp $
+# $Id: mknmz.in,v 1.25 2000-02-21 08:53:40 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -688,9 +688,10 @@ sub load_document ($$$$\%) {
 }
 
 sub codeconv_document ($) {
-    my ($contref) = @_;
-    codeconv::toeuc($contref);
-    $$contref =~ tr/\r//d;
+    my ($textref) = @_;
+    codeconv::toeuc($textref);
+    $$textref =~ s/\r\n/\n/g;
+    $$textref =~ s/\r/\n/g;
 }
 
 sub prep () {

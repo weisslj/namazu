@@ -33,7 +33,8 @@ EXTRA_DIST = $\
 	util.pl \
 	var.pl \
 	wakati.pl \
-	indexer.pl
+	indexer.pl \
+	time.pl
 
 CLEANFILES = gettext.pl
 

@@ -1,3 +1,9 @@
+2004-08-22  Yukio USUDA <usu@namazu.org>
+
+	* pl/Makefile.am (EXTRA_DIST): Add time.pl.
+
+	* pl/time.pl (gettimezone): Avoid negative epoch(time_t) value.
+
 2004-08-15  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * filter/msword.pl: refactoring.
@@ -9016,4 +9022,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1217 2004-08-15 04:07:41 opengl2772 Exp $
+$Id: ChangeLog,v 1.1218 2004-08-22 13:09:27 usu Exp $

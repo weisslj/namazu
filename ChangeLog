@@ -1,5 +1,8 @@
 2000-04-05  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* filter/Makefile.am (filter_DATA): Remove wordpro.pl and oasys.pl
+	temporarily because they were not tested enough.
+
 	* configure.in (AC_OUTPUT): Add tests/data/html-split/Makefile.
 
 	* tests/data/html-split/Makefile.am (EXTRA_DIST): New file.
@@ -11,7 +14,7 @@
 	(set_phrase_trick): Change conditions to determine a
 	phrase. i.e. "{  }" is not a phrase.
 
-	* tests/namazu-5: Add nasty tests.
+	* tests/namazu-5: Add malicious tests.
 
 	* nmz/query.c (nmz_make_query): Add debug messages.
 
@@ -121,7 +124,7 @@
 
 	* filter/win32/ichitaro456.pl: Remove.
 
-	* filter/powerpoint.pl: Add new file. this filter use doccat.
+	* filter/powerpoint.pl: Add new file. this filter uses doccat.
 
 	* filter/taro.pl: Likewise.
 
@@ -5460,4 +5463,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.670 2000-04-05 07:57:56 satoru Exp $
+$Id: ChangeLog,v 1.671 2000-04-05 08:53:19 satoru Exp $

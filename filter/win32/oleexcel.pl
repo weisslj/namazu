@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: oleexcel.pl,v 1.19 2004-05-13 14:52:43 usu Exp $
+# $Id: oleexcel.pl,v 1.20 2004-05-23 10:51:39 opengl2772 Exp $
 # Copyright (C) 2001 Yoshinori TAKESAKO,
 #               1999 Jun Kurabe,
 #               1999 Ken-ichi Hirose,
@@ -57,14 +57,16 @@ use Win32::OLE qw(in with);
 use Win32::OLE::Const;
 
 # for Excel application start only one time
-my $excel;
-my $const;
+my $excel = undef;
+my $const = undef;
 
-# Excel appliation destructor
+# Excel application destructor
 END {
-    util::vprint("Excel->Quit\n");
-    $excel->Quit if defined $excel;
-    undef $excel;
+    if (defined $excel) {
+        util::vprint("Excel->Quit\n");
+        $excel->Quit();
+        undef $excel;
+    }
 }
 
 sub mediatype() {
@@ -74,7 +76,6 @@ sub mediatype() {
 sub status() {
     open (SAVEERR,">&STDERR");
     open (STDERR,">nul");
-    $const = Win32::OLE::Const->Load("Microsoft Excel");
     $const = Win32::OLE::Const->Load("Microsoft Excel 11.0 Object Library");
     $const = Win32::OLE::Const->Load("Microsoft Excel 10.0 Object Library") unless $const;
     $const = Win32::OLE::Const->Load("Microsoft Excel 9.0 Object Library") unless $const;
@@ -93,7 +94,7 @@ sub pre_codeconv() {
 }
 
 sub post_codeconv () {
-    return 1;
+    return 0;
 }
 
 sub add_magic ($) {
@@ -111,28 +112,41 @@ sub getProperties ($$$) {
     my $title = $cfile->BuiltInDocumentProperties('Title')->{Value};
     $title = $cfile->BuiltInDocumentProperties('Subject')->{Value}
 	unless (defined $title);
-    $fields->{'title'} = codeconv::shiftjis_to_eucjp($title)
-	if (defined $title);
+    if (defined $title) {
+        $title = codeconv::shiftjis_to_eucjp($title);
+        codeconv::normalize_eucjp(\$title);
+        $fields->{'title'} = $title;
 
-    my $weight = $conf::Weight{'html'}->{'title'};
-    $$weighted_str .= "\x7f$weight\x7f$fields->{'title'}\x7f/$weight\x7f\n";
+        my $weight = $conf::Weight{'html'}->{'title'};
+        $$weighted_str .= "\x7f$weight\x7f$fields->{'title'}\x7f/$weight\x7f\n";
+    }
 
     my $author = $cfile->BuiltInDocumentProperties('Last Author')->{Value};
     $author = $cfile->BuiltInDocumentProperties('Author')->{Value}
 	unless (defined $author);
-    $fields->{'author'} = codeconv::shiftjis_to_eucjp($author)
-	if (defined $author);
+    if (defined $author) {
+        $author = codeconv::shiftjis_to_eucjp($author);
+        codeconv::normalize_eucjp(\$author);
+        $fields->{'author'} = $author;
+    }
 
     # my $date = $cfile->BuiltInDocumentProperties('Last Save Time')->{Value};
     # $date = $cfile->BuiltInDocumentProperties('Creation Date')->{Value}
     #    unless (defined $date);
-    # $fields->{'date'} = codeconv::shiftjis_to_eucjp($date)
-    #     if (defined $date);
+    # if (defined $date) {
+    #     $date = codeconv::shiftjis_to_eucjp($date);
+    #     codeconv::normalize_eucjp(\$date);
+    #     $fields->{'date'} = $date;
+    # }
 
     my $keyword = $cfile->BuiltInDocumentProperties('keywords')->{Value};
-    $keyword = codeconv::shiftjis_to_eucjp($keyword);
-    $weight = $conf::Weight{'metakey'};
-    $$weighted_str .= "\x7f$weight\x7f$keyword\x7f/$weight\x7f\n";
+    if (defined $keyword) {
+        $keyword = codeconv::shiftjis_to_eucjp($keyword);
+        codeconv::normalize_eucjp(\$keyword);
+
+        my $weight = $conf::Weight{'metakey'};
+        $$weighted_str .= "\x7f$weight\x7f$keyword\x7f/$weight\x7f\n";
+    }
 
     return undef;
 }
@@ -147,14 +161,72 @@ sub Win32_FullPath ($) {
     return $file;
 }
 
+sub GetExt($) {
+    my ($filename) = @_;
+
+    my $ext = $filename;
+    $ext =~ s!.*/!!g;
+    if ($ext !~ s/^.*(\.[^\.]*)$/$1/) {
+        $ext = "";
+    }
+
+    return $ext;
+}
+
 my $Count = 0;
 
 sub filter ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields) = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
-    my $fileName = $cfile;
 
     util::vprint("Processing excel file ...\n");
+
+    my $err = ReadDocument($cfile, $cont, $weighted_str, $headings, $fields);
+    return $err if (defined $err);
+
+    gfilter::line_adjust_filter($cont);
+    gfilter::line_adjust_filter($weighted_str);
+    gfilter::white_space_adjust_filter($cont);
+    $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
+	unless $fields->{'title'};
+    gfilter::show_filter_debug_info($cont, $weighted_str, $fields, $headings);
+
+    return undef;
+}
+
+sub ReadDocument ($$$$$) {
+    my ($cfile, $cont, $weighted_str, $headings, $fields) = @_;
+
+    my $ext = GetExt($cfile);
+    my $tmpfile = util::tmpnam('NMZ.oleexcel') . $ext;
+    {
+        my $fh = util::efopen("> $tmpfile");
+        print $fh $$cont;
+        util::fclose($fh);
+    }
+
+    my $err = ReadExcel($tmpfile, $cont, $weighted_str, $headings, $fields);
+    unlink($tmpfile);
+
+    codeconv::toeuc($cont);
+
+    # TEXT_SIZE_MAX
+    my $text_size_max = $conf::TEXT_SIZE_MAX;
+    if (length($$cont) > $text_size_max) {
+	util::vprint("text size is too LARGE! Cut down on test size: $text_size_max bytes");
+	$$cont = substr($$cont, 0, $text_size_max);
+	$$cont =~ s/\n.*$//m;
+    }
+
+    return $err;
+}
+
+sub ReadExcel ($$$$$) {
+    my ($cfile, $cont, $weighted_str, $headings, $fields) = @_;
+
+    my $win32filename = $cfile;
+    $win32filename =~ s/\//\\/g;
+    $$cont = "";
 
     # make temporary file name
     my $tmpfile0 = util::tmpnam("NMZ.xls.$Count.0");
@@ -164,29 +236,30 @@ sub filter ($$$$$) {
 
     # use existing instance if Excel is already running.
     # my $excel;
-    eval {$excel = Win32::OLE->GetActiveObject('Excel.Application')};
-    die "MSExcel not installed" if $@;
+    # eval {$excel = Win32::OLE->GetActiveObject('Excel.Application')};
+    # die "MSExcel not installed" if $@;
     unless (defined $excel) {
 	$excel = Win32::OLE->new('Excel.Application', sub {$_[0]->Quit;})
-	    or die "Oops, cannot start Excel";
+	    or return "Oops, cannot start Excel." . Win32::OLE->LastError();
     }
 
-    $Win32::OLE::Warn = 0;
-    $excel->{Visible} = 0;
-    $excel->{DisplayAlerts} = 0;
-    $excel->{EnableEvents} = 0;
+    $Win32::OLE::Warn = 0;             # False
+    $excel->{Visible} = 0;             # False
+    $excel->{DisplayAlerts} = 0;       # False
+    $excel->{EnableEvents} = 0;        # False
+    $excel->{AutomationSecurity} = 3;  # msoAutomationSecurityForceDisable
 
     # Open the excel workbooks.
     # In order to skip password-protected file, send a dummy password.
     my $Book = $excel->Workbooks->Open({
-	'FileName'                  => &Win32_FullPath($fileName),
-	'ReadOnly'                  => 1,
-	'IgnoreReadOnlyRecommended' => 1,
-	'Updatelinks'               => 0,
+	'FileName'                  => $win32filename,
+	'Updatelinks'               => 0,  # False
+	'ReadOnly'                  => 1,  # True
+	'Password'                  => 'dummy password',
 	'WriteResPassword'          => 'dummy password',
-	'Password'                  => 'dummy password'
+	'IgnoreReadOnlyRecommended' => 1   # True
     });
-    return "$fileName: cannot open file\n" unless (defined $Book);
+    return "Cannot open File $cfile" unless (defined $Book);
 
     # get some properties
     getProperties($Book, $fields, $weighted_str);
@@ -208,7 +281,7 @@ sub filter ($$$$$) {
 	my $ret = $excel->ActiveWorkbook->SaveAs({
 	    'FileName'     => &Win32_FullPath($tmpfile),
 	    'FileFormat'   => $const->{xlText},  # xlText
-	    'CreateBackup' => 0        # False
+	    'CreateBackup' => 0                  # False
 	});
 
 	# print this sheetName
@@ -245,34 +318,22 @@ sub filter ($$$$$) {
 	close(FH2);
     }
 
-    $Book->Close(0);
+    $Book->Close({
+        'SaveChanges' => 0  # False
+    });
     undef $Book;
     # undef $excel;
 
     # read all text from temporary file 2
-    my $fh2 = util::efopen("< $tmpfile2");
-    $$cont = util::readfile($fh2);
-    util::fclose($fh2);
-    undef $fh2;
+    {
+        my $fh2 = util::efopen("< $tmpfile2");
+        $$cont = util::readfile($fh2);
+        util::fclose($fh2);
+        undef $fh2;
+    }
 
     # unlink temporary file 0,1,2
     unlink $tmpfile0, $tmpfile1, $tmpfile2;
-
-    # TEXT_SIZE_MAX
-    my $text_size_max = 1000000;
-    $text_size_max = $conf::TEXT_SIZE_MAX if defined $conf::TEXT_SIZE_MAX;
-    if (length($$cont) > $text_size_max) {
-	util::vprint("text size is too LARGE! Cut down on test size: $text_size_max bytes");
-	$$cont = substr($$cont, 0, $text_size_max);
-	$$cont =~ s/\n.*$//m;
-    }
-
-    # gfilter::line_adjust_filter($cont);
-    gfilter::line_adjust_filter($weighted_str);
-    # gfilter::white_space_adjust_filter($cont);
-    $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
-	unless $fields->{'title'};
-    gfilter::show_filter_debug_info($cont, $weighted_str, $fields, $headings);
 
     return undef;
 }

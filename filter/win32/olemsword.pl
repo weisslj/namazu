@@ -1,8 +1,9 @@
 #
 # -*- Perl -*-
-# $Id: olemsword.pl,v 1.14 2004-05-11 17:32:28 opengl2772 Exp $
-# Copyright (C) 1999 Jun Kurabe ,
-#		1999-2000 Ken-ichi Hirose All rights reserved.
+# $Id: olemsword.pl,v 1.15 2004-05-23 10:51:39 opengl2772 Exp $
+# Copyright (C) 1999 Jun Kurabe,
+#		1999-2000 Ken-ichi Hirose,
+#               2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -77,7 +78,7 @@ sub pre_codeconv() {
 }
 
 sub post_codeconv () {
-    return 1;
+    return 0;
 }
 
 sub add_magic ($) {
@@ -93,10 +94,8 @@ sub filter ($$$$$) {
 
     util::vprint("Processing ms-word file ... (using  'Win32::OLE->new Word.Application')\n");
 
-    $cfile =~ s/\//\\/g;
-    $$cont = "";
-    ReadMSWord::ReadMSWord($cfile, $cont, $fields, $weighted_str);
-    $cfile = defined $orig_cfile ? $$orig_cfile : '';
+    my $err = ReadMSWord::ReadDocument($cfile, $cont, $fields, $weighted_str);
+    return $err if (defined $err);
 
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);
@@ -135,27 +134,41 @@ sub getProperties ($$$) {
     my $title = $cfile->BuiltInDocumentProperties('Title')->{Value};
     $title = $cfile->BuiltInDocumentProperties('Subject')->{Value}
 	unless (defined $title);
-    $fields->{'title'} = codeconv::shiftjis_to_eucjp($title)
-	if (defined $title);
+    if (defined $title) {
+        $title = codeconv::shiftjis_to_eucjp($title);
+        codeconv::normalize_eucjp(\$title);
+        $fields->{'title'} = $title;
 
-    my $weight = $conf::Weight{'html'}->{'title'};
-    $$weighted_str .= "\x7f$weight\x7f$fields->{'title'}\x7f/$weight\x7f\n";
+        my $weight = $conf::Weight{'html'}->{'title'};
+        $$weighted_str .= "\x7f$weight\x7f$fields->{'title'}\x7f/$weight\x7f\n";
+    }
 
     my $author = $cfile->BuiltInDocumentProperties('Last Author')->{Value};
     $author = $cfile->BuiltInDocumentProperties('Author')->{Value}
 	unless (defined $author);
-    $fields->{'author'} = codeconv::shiftjis_to_eucjp($author)
-	if (defined $author);
+    if (defined $author) {
+        $author = codeconv::shiftjis_to_eucjp($author);
+        codeconv::normalize_eucjp(\$author);
+        $fields->{'author'} = $author;
+    }
 
-#    my $date = $cfile->BuiltInDocumentProperties('Last Save Time')->{Value};
-#    $date = $cfile->BuiltInDocumentProperties('Creation Date')->{Value}
-#	unless (defined $date);
-#    $fields->{'date'} = codeconv::shiftjis_to_eucjp($date) if (defined $date);
+    # my $date = $cfile->BuiltInDocumentProperties('Last Save Time')->{Value};
+    # $date = $cfile->BuiltInDocumentProperties('Creation Date')->{Value}
+    #    unless (defined $date);
+    # if (defined $date) {
+    #     $date = codeconv::shiftjis_to_eucjp($date);
+    #     codeconv::normalize_eucjp(\$date);
+    #     $fields->{'date'} = $date;
+    # }
 
     my $keyword = $cfile->BuiltInDocumentProperties('keywords')->{Value};
-    $keyword = codeconv::shiftjis_to_eucjp($keyword);
-    $weight = $conf::Weight{'metakey'};
-    $$weighted_str .= "\x7f$weight\x7f$keyword\x7f/$weight\x7f\n";
+    if (defined $keyword) {
+        $keyword = codeconv::shiftjis_to_eucjp($keyword);
+        codeconv::normalize_eucjp(\$keyword);
+
+        my $weight = $conf::Weight{'metakey'};
+        $$weighted_str .= "\x7f$weight\x7f$keyword\x7f/$weight\x7f\n";
+    }
 
     return undef;
 }
@@ -165,16 +178,59 @@ package ReadMSWord;
 my $word = undef;
 my $office_consts = undef;
 
+# Word application destructor
+END {
+    if (defined $word) {
+	util::vprint("Word->Quit\n");
+	$word->Quit(0);
+	undef $word;
+    }
+}
+
+sub GetExt($) {
+    my ($filename) = @_;
+
+    my $ext = $filename;
+    $ext =~ s!.*/!!g;
+    if ($ext !~ s/^.*(\.[^\.]*)$/$1/) {
+        $ext = "";
+    }
+
+    return $ext;
+}
+
+sub ReadDocument ($$$$) {
+    my ($cfile, $cont, $fields, $weighted_str) = @_;
+
+    my $ext = GetExt($cfile);
+    my $tmpfile = util::tmpnam('NMZ.olemsword') . $ext;
+    {
+        my $fh = util::efopen("> $tmpfile");
+        print $fh $$cont;
+        util::fclose($fh);
+    }
+
+    my $err = ReadMSWord::ReadMSWord($tmpfile, $cont, $fields, $weighted_str);
+    unlink $tmpfile;
+
+    codeconv::toeuc($cont);
+
+    return $err;
+}
+
 sub ReadMSWord ($$$$) {
     my ($cfile, $cont, $fields, $weighted_str) = @_;
 
+    $cfile =~ s/\//\\/g;
+    $$cont = "";
+
     # Copy From Win32::OLE Example Program
     # use existing instance if Word is already running
-    eval {$word = Win32::OLE->GetActiveObject('Word.Application')};
-    die "MSWord not installed" if $@;
+    # eval {$word = Win32::OLE->GetActiveObject('Word.Application')};
+    # die "MSWord not installed" if $@;
     unless (defined $word) {
-	$word = Win32::OLE->new('Word.Application')
-	    or die "Oops, cannot start Word";
+	$word = Win32::OLE->new('Word.Application', 'Quit')
+	    or return "Oops, cannot start Word." . Win32::OLE->LastError();
     }
     # End of Copy From Win32::OLE Example Program
 
@@ -186,18 +242,25 @@ sub ReadMSWord ($$$$) {
     $office_consts = Win32::OLE::Const->Load("Microsoft Office 10.0 Object Library") unless $office_consts;
     $office_consts = Win32::OLE::Const->Load("Microsoft Office 9.0 Object Library") unless $office_consts;
     $office_consts = Win32::OLE::Const->Load("Microsoft Office 8.0 Object Library") unless $office_consts;
+
+    $Win32::OLE::Warn = 0;            # False
     # for debug
-    # $word->{Visible} = 1;
+    # $word->{Visible} = 1;             # True
+    $word->{Visible} = 0;             # False
+    $word->{DisplayAlerts} = 0;       # wdAlertsNone
+    $word->{AutomationSecurity} = 3;  # msoAutomationSecurityForceDisable
+
     # Restore stderr device usually.
     open (STDERR,">&SAVEERR");
 
     # In order to skip password-protected file, send a dummy password.
-    my $doc = $word->{Documents}->open({
-	'FileName' => $cfile,
+    my $doc = $word->{Documents}->Open({
+	'FileName'         => $cfile,
 	'PasswordDocument' => 'dummy password',
-	'ReadOnly' => 1
+	'PasswordTemplate' => 'dummy password',
+	'ReadOnly'         => 1,  # True
 	});
-    die "Cannot open File $cfile" unless (defined $doc) ;
+    return "Cannot open File $cfile" unless (defined $doc);
 
     olemsword::getProperties($doc, $fields, $weighted_str);
     getParagraphs($doc, $cont);
@@ -205,18 +268,12 @@ sub ReadMSWord ($$$$) {
     getShapes($doc, $cont);
     getHeadersFooters($doc, $cont);
 
-    $doc->close(0);
+    $doc->Close({
+        'SaveChanges' => 0  # False
+    });
     undef $doc;
 
     return undef;
-}
-
-END {
-    if (defined $word) {
-	util::vprint("Word->Quit\n");
-	$word->Quit;
-	undef $word;
-    }
 }
 
 sub getParagraphs ($$) {

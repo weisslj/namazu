@@ -1,6 +1,6 @@
 # 
 # -*- Perl -*-
-# $Id: oletaro.pl,v 1.7 2004-03-20 18:26:04 opengl2772 Exp $
+# $Id: oletaro.pl,v 1.8 2004-05-23 10:51:39 opengl2772 Exp $
 # 
 # Copyright (C) 2000-2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -95,7 +95,7 @@ sub pre_codeconv() {
 }
 
 sub post_codeconv () {
-    return 1;
+    return 0;
 }
 
 sub add_magic ($) {
@@ -114,10 +114,8 @@ sub filter ($$$$$) {
 
     util::vprint("Processing ichitaro file ...\n");
 
-    $cfile =~ s/\//\\/g;
-    $$cont = "";
-    ReadMSWord::ReadMSWord($cfile, $cont, $fields, $weighted_str);
-    $cfile = defined $orig_cfile ? $$orig_cfile : '';
+    my $err = ReadMSWord::ReadDocument($cfile, $cont, $fields, $weighted_str);
+    return $err if (defined $err);
 
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);

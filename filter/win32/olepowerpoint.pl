@@ -1,8 +1,9 @@
 #
 # -*- Perl -*-
-# $Id: olepowerpoint.pl,v 1.15 2004-05-11 17:32:28 opengl2772 Exp $
-# Copyright (C) 1999 Jun Kurabe ,
-#               1999 Ken-ichi Hirose All rights reserved.
+# $Id: olepowerpoint.pl,v 1.16 2004-05-23 10:51:39 opengl2772 Exp $
+# Copyright (C) 1999 Jun Kurabe,
+#               1999 Ken-ichi Hirose,
+#               2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -77,7 +78,7 @@ sub pre_codeconv() {
 }
 
 sub post_codeconv () {
-    return 1;
+    return 0;
 }
 
 sub add_magic ($) {
@@ -93,10 +94,8 @@ sub filter ($$$$$) {
 
     util::vprint("Processing powerpoint file ... (using  'Win32::OLE->new PowerPoint.Application')\n");
 
-    $cfile =~ s/\//\\/g;
-    $$cont = "";
-    ReadPPT::ReadPPT($cfile, $cont, $fields, $weighted_str);
-    $cfile = defined $orig_cfile ? $$orig_cfile : '';
+    my $err = ReadPPT::ReadDocument($cfile, $cont, $fields, $weighted_str);
+    return $err if (defined $err);
 
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);
@@ -138,27 +137,41 @@ sub getProperties ($$$) {
 	unless (defined $title);
     undef $title if $title eq # which has no slide title
 	"\xbd\xd7\xb2\xc4\xde\x20\xc0\xb2\xc4\xd9\x82\xc8\x82\xb5";
-    $fields->{'title'} = codeconv::shiftjis_to_eucjp($title)
-	if (defined $title);
+    if (defined $title) {
+        $title = codeconv::shiftjis_to_eucjp($title);
+        codeconv::normalize_eucjp(\$title);
+        $fields->{'title'} = $title;
 
-    my $weight = $conf::Weight{'html'}->{'title'};
-    $$weighted_str .= "\x7f$weight\x7f$fields->{'title'}\x7f/$weight\x7f\n";
+        my $weight = $conf::Weight{'html'}->{'title'};
+        $$weighted_str .= "\x7f$weight\x7f$fields->{'title'}\x7f/$weight\x7f\n";
+    }
 
     my $author = $cfile->BuiltInDocumentProperties('Author')->{Value};
     $author = $cfile->BuiltInDocumentProperties('Last Author')->{Value}
 	unless (defined $author);
-    $fields->{'author'} = codeconv::shiftjis_to_eucjp($author)
-	if (defined $author);
+    if (defined $author) {
+        $author = codeconv::shiftjis_to_eucjp($author);
+        codeconv::normalize_eucjp(\$author);
+        $fields->{'author'} = $author;
+    }
 
-#    my $date = $cfile->BuiltInDocumentProperties('Last Save Time')->{Value};
-#    $date = $cfile->BuiltInDocumentProperties('Creation Date')->{Value}
-#	unless (defined $date);
-#    $fields->{'date'} = codeconv::shiftjis_to_eucjp($date) if (defined $date);
+    # my $date = $cfile->BuiltInDocumentProperties('Last Save Time')->{Value};
+    # $date = $cfile->BuiltInDocumentProperties('Creation Date')->{Value}
+    #    unless (defined $date);
+    # if (defined $date) {
+    #     $date = codeconv::shiftjis_to_eucjp($date);
+    #     codeconv::normalize_eucjp(\$date);
+    #     $fields->{'date'} = $date;
+    # }
 
     my $keyword = $cfile->BuiltInDocumentProperties('keywords')->{Value};
-    $keyword = codeconv::shiftjis_to_eucjp($keyword);
-    $weight = $conf::Weight{'metakey'};
-    $$weighted_str .= "\x7f$weight\x7f$keyword\x7f/$weight\x7f\n";
+    if (defined $keyword) {
+        $keyword = codeconv::shiftjis_to_eucjp($keyword);
+        codeconv::normalize_eucjp(\$keyword);
+
+        my $weight = $conf::Weight{'metakey'};
+        $$weighted_str .= "\x7f$weight\x7f$keyword\x7f/$weight\x7f\n";
+    }
 
     return undef;
 }
@@ -167,17 +180,51 @@ package ReadPPT;
 
 my $office_consts = undef;
 
+sub GetExt($) {
+    my ($filename) = @_;
+
+    my $ext = $filename;
+    $ext =~ s!.*/!!g;
+    if ($ext !~ s/^.*(\.[^\.]*)$/$1/) {
+        $ext = "";
+    }
+
+    return $ext;
+}
+
+sub ReadDocument ($$$$) {
+    my ($cfile, $cont, $fields, $weighted_str) = @_;
+
+    my $ext = GetExt($cfile);
+    my $tmpfile = util::tmpnam('NMZ.olepowerpoint') . $ext;
+    {
+        my $fh = util::efopen("> $tmpfile");
+        print $fh $$cont;
+        util::fclose($fh);
+    }
+
+    my $err = ReadPPT::ReadPPT($tmpfile, $cont, $fields, $weighted_str);
+    unlink $tmpfile;
+
+    codeconv::toeuc($cont);
+
+    return $err;
+}
+
 sub ReadPPT ($$$$) {
     my ($cfile, $cont, $fields, $weighted_str) = @_;
 
+    $cfile =~ s/\//\\/g;
+    $$cont = "";
+
     # Copy From Win32::OLE Example Program
     # use existing instance if PowerPoint is already running
-    my $ppt;
+    my $ppt = undef;
     eval {$ppt = Win32::OLE->GetActiveObject('PowerPoint.Application')};
-    die "PowerPoint not installed" if $@;
+    # die "PowerPoint not installed" if $@;
     unless (defined $ppt) {
 	$ppt = Win32::OLE->new('PowerPoint.Application', sub {$_[0]->Quit;})
-	    or die "Oops, cannot start PowerPoint";
+	    or return "Oops, cannot start PowerPoint." . Win32::OLE->LastError();
     }
     #End of Copy From Win32::OLE Example Program
 
@@ -189,22 +236,29 @@ sub ReadPPT ($$$$) {
     $office_consts = Win32::OLE::Const->Load("Microsoft Office 10.0 Object Library") unless $office_consts;
     $office_consts = Win32::OLE::Const->Load("Microsoft Office 9.0 Object Library") unless $office_consts;
     $office_consts = Win32::OLE::Const->Load("Microsoft Office 8.0 Object Library") unless $office_consts;
+
+    $Win32::OLE::Warn = 0;           # False
     # 'Visible = false' causes exception but noharm, so we ignore... X-(
-    $ppt->{Visible} = 0;
+    $ppt->{Visible} = 0;             # msoFalse
+    $ppt->{DisplayAlerts} = 1;       # ppAlertsNone
+    $ppt->{AutomationSecurity} = 3;  # msoAutomationSecurityForceDisable
+
+
     # Restore stderr device usually.
     open (STDERR,">&SAVEERR");
 
     my $prs = $ppt->{Presentations}->Open({
-	'FileName' => $cfile,
-	'ReadOnly' => 1,
-	'WithWindow' => 0,
+	'FileName'      => $cfile,
+#	 'ReadOnly'      => 1,   # msoCTrue
+	'ReadOnly'      => -1,  # msoTrue
+	'WithWindow'    => 0    # msoFalse
 	});
-    die "Cannot open File $cfile" unless (defined $prs);
+    return "Cannot open File $cfile" unless (defined $prs);
 
     olepowerpoint::getProperties($prs, $fields, $weighted_str);
     getSlides($prs, $cont);
 
-    $prs->close();
+    $prs->Close();
     undef $prs;
     undef $ppt;
 

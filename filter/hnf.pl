@@ -1,10 +1,10 @@
 #
 # -*- Perl -*-
-# $Id: hnf.pl,v 1.4 2000-02-11 12:54:21 satoru Exp $
+# $Id: hnf.pl,v 1.5 2000-02-19 12:57:02 kenji Exp $
 #
 # HNF Filter for Namazu 2.0
-# version 0.9.6
-# 2000/1/28  Kenji Suzuki <kenji@h14m.org>
+# version 0.9.8
+# 2000/2/18  Kenji Suzuki <kenji@h14m.org>
 #
 # Copyright (C) 1999,2000  Kenji Suzuki, HyperNikkiSystem Project
 # All rights reserved.
@@ -131,6 +131,8 @@ sub hnf_filter ($$$$$$$) {
     $$contref =~ s/^NEW (.*)/command_NEW <h1>$mark$1<\/h1>/gm;
     $$contref =~ 
 	s/^LNEW (.*?) (.*)/command_LNEW <h1>$mark<a href=\"$1\">$2<\/a><\/h1>/gm;
+    $$contref =~ 
+	s/^RLNEW (.*?) (.*?) (.*)/command_RLNEW <h1>$mark<a href=\"$1 $2\">$3<\/a><\/h1>/gm;
     $$contref =~ s/command_GRP (.*)\n/command_GRP $1 /gm;
     $$contref =~ s/command_CAT (.*)\n/command_CAT $1 /gm;
 
@@ -142,6 +144,8 @@ sub hnf_filter ($$$$$$$) {
 	command_SUB <strong>$1<\/strong>/gm;
     $$contref =~ s/^LSUB (.*?) (.*)/
 	command_LSUB <strong><a href=\"$1\">$2<\/a><\/strong>/gm;
+    $$contref =~ s/^RLSUB (.*?) (.*?) (.*)/
+        command_RLSUB <strong><a href=\"$1 $2\">$3<\/a><\/strong>/gm;
  
     $$contref =~ s/^LINK (.*?) (.*)/
 	command_LINK <a href=\"$1\">$2<\/a>/gm;

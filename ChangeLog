@@ -1,3 +1,7 @@
+2000-02-19  Kenji Suzuki  <kenji@po.ganseki.ne.jp>
+
+        * filter/hnf.pl: support new hnf command, RLNEW, RLSUB.
+
 2000-02-19  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* doc/Makefile.am (css_DATA): New variable.

@@ -1,3 +1,9 @@
+2000-02-16  Hideyuki SHIRAI  <shirai@rdmg.mgcs.mei.co.jp>
+
+	* namazu.el: New face setting, if (eq hilit-background-mode 'dark).
+	(namazu-msg-highlight-function): New Variable for highlight message function settting.
+	(namazu-view-file): Bind "," key to namazu-view-top.
+
 2000-02-12  Toshiaki Tanaka  <toshiaki@ksj1.kansai-sc.toshiba.co.jp>
 
 	* namazu.el: Customization support. Add namazu-index-history,

@@ -2,7 +2,7 @@
 ;;
 ;; Mule $B>e$G(B Namazu $B$rMxMQ$7$?8!:w$r9T$&$?$a$N(B elisp $B$G$9!#(B
 ;;
-;;  $Id: namazu.el,v 1.10 2000-02-13 07:24:15 shirai Exp $
+;;  $Id: namazu.el,v 1.11 2000-02-16 08:58:09 shirai Exp $
 
 (defconst namazu-version "namazu.el 1.0.3")
 
@@ -77,7 +77,7 @@
 ;; $B$d$^$@(B $B$"$-$i(B <akira@linux.or.jp> $B$5$s$,2~B$$r2C$($?$b$N$r!"(B
 ;; $BEZ20(B $B2mL-(B <tsuchiya@pine.kuee.kyoto-u.ac.jp> $B$5$s!"(B
 ;; $BKY8}63B@O:(B <kyota@po.ntts.co.jp> $B$5$sC#$N<8S#7cNe$K$h$j(B
-;; $BGr0f=(9T(B <shirai@rdmg.mgcs.mei.co.jp> $B$,2~B$$7$F$$$k$b$N$G$9!#(B
+;; Namazu Project $B$,2~B$$7$F$$$k$b$N$G$9!#(B
 ;; $B$$$+$J$k7A$G$NMxMQ!&:FG[I[$K$D$$$F$b8"Mx$NN`$O0l@Z<gD%$7$^$;$s!#(B
 ;; $B<+M3$K07$C$F$b$i$C$F9=$$$^$;$s!#(B
 ;;
@@ -200,6 +200,16 @@ PATH $B$,DL$C$F$$$J$$>l9g$K$OE,Ev$J%W%m%0%i%`L>$r;XDj$7$^$9!#(B"
   :type '(repeat (string :tag "Header"))
   :group 'namazu)
 
+(defcustom namazu-msg-highlight-function nil
+  "*A function, view-msg highlight method.
+e.g.
+  namazu-msg-highlight-mew -- use Mew functions(require Mew 1.94 or later)."
+  :type '(radio (function-item :tag "use Mew functions"
+			       :format "%t\n"
+			       namazu-msg-highlight-mew)
+		(function :tag "Other"))
+  :group 'namazu)
+
 (defvar namazu-cs-write
   (if (memq system-type '(OS/2 emx windows-nt))
       (if (> emacs-major-version 19) 'sjis-dos '*sjis*dos)
@@ -255,6 +265,7 @@ PATH $B$,DL$C$F$$$J$$>l9g$K$OE,Ev$J%W%m%0%i%`L>$r;XDj$7$^$9!#(B"
 (defvar namazu-output-pages-pattern
   "^[^:]+: \\(\\[[0-9]+\\]\\)*\\[\\([0-9]+\\)\\]$"
   "$B8!:w7k2L$N%Z!<%8?t$r<($99T$N%Q%?!<%s(B")
+(defvar namazu-view-vismark nil)
 
 (and (locate-library "browse-url") (require 'browse-url))
 (and (locate-library "jka-compr") (require 'jka-compr))
@@ -756,14 +767,19 @@ mouse $B$N??$sCf$N%\%?%s$r2!$9$H!"2!$7$?0LCV$K$h$C$F!"(B\"$BJ8>O$r;2>H(B\"$
     (if namazu-view-other-window
 	(view-file-other-window file)
       (view-file file)))
-  (rename-buffer (concat namazu-buffer (buffer-name)) t))
+  ;; xxx
+  (if (and (boundp 'view-mode-map) view-mode-map)
+      (define-key view-mode-map "," 'namazu-view-top))
+  (if (and (boundp 'view-minor-mode-map) view-minor-mode-map)
+      (define-key view-minor-mode-map "," 'namazu-view-top))
+  (make-local-variable 'namazu-view-vismark))
 
 (defun namazu-view-msg (&optional file)
   "View message function."
   (namazu-view-file file)
   (let ((buffer-read-only nil)
 	(vis-head "")
-	hspos vismark)
+	hspos)
     (goto-char (point-min))
     (if (not (re-search-forward "^$" nil t))
 	()
@@ -785,7 +801,7 @@ mouse $B$N??$sCf$N%\%?%s$r2!$9$H!"2!$7$?0LCV$K$h$C$F!"(B\"$BJ8>O$r;2>H(B\"$
 		       (delete-region hspos (point)))))
 		  namazu-msg-visible-field)
 	  (goto-char (point-max))
-	  (setq vismark (point-marker))
+	  (setq namazu-view-vismark (point-marker))
 	  (insert vis-head)
 	  (condition-case err
 	      (cond
@@ -795,10 +811,21 @@ mouse $B$N??$sCf$N%\%?%s$r2!$9$H!"2!$7$?0LCV$K$h$C$F!"(B\"$BJ8>O$r;2>H(B\"$
 		(eword-decode-region (point-min) (point-max) t)))
 	    (error nil))
 	  (widen)))
-      (goto-char vismark)
+      (goto-char namazu-view-vismark)
       (recenter 0)
+      (if namazu-msg-highlight-function
+	  (funcall namazu-msg-highlight-function))
       (set-visited-file-name nil)
       (set-buffer-modified-p nil))))
+
+(defun namazu-view-top ()
+  "goto namazu view top point."
+  (interactive)
+  (if (and (boundp 'namazu-view-vismark)
+	   (markerp namazu-view-vismark))
+      (goto-char namazu-view-vismark)
+    (goto-char (point-min)))
+  (recenter 0))
 
 (defun namazu-browse-url (url)
   "browse-url $B$r;H$C$FI=<($7$^$9!#(B
@@ -921,16 +948,60 @@ mouse $B$N??$sCf$N%\%?%s$r2!$9$H!"2!$7$?0LCV$K$h$C$F!"(B\"$BJ8>O$r;2>H(B\"$
 		(setq font-lock-keywords namazu-font-lock-keywords)
 		(font-lock-mode 1)))))
  ((featurep 'hilit19)
-  (hilit-set-mode-patterns
-   'namazu-mode
-   (list
-    (list namazu-output-title-pattern  1 'red-bold-underline)
-    (list namazu-output-title-pattern  2 'purple)
-    (list namazu-output-title-pattern  3 'grey40)
-    (list namazu-output-header-pattern 1 'DarkGoldenrod)
-    (list namazu-output-url-pattern    1 'blue-bold-underline)
-    (list namazu-output-url-pattern    3 'grey40)))
+  (if (and (boundp 'hilit-background-mode)
+	   (eq hilit-background-mode 'dark))
+      (hilit-set-mode-patterns
+       'namazu-mode
+       (list
+	(list namazu-output-title-pattern  1 'red-bold-underline)
+	(list namazu-output-title-pattern  2 'yellow-bold)
+	(list namazu-output-title-pattern  3 'grey80)
+	(list namazu-output-header-pattern 1 'palegreen)
+	(list namazu-output-url-pattern    1 'gold-underline)
+	(list namazu-output-url-pattern    3 'grey80)))
+    (hilit-set-mode-patterns
+     'namazu-mode
+     (list
+      (list namazu-output-title-pattern  1 'red-bold-underline)
+      (list namazu-output-title-pattern  2 'purple)
+      (list namazu-output-title-pattern  3 'grey40)
+      (list namazu-output-header-pattern 1 'DarkGoldenrod)
+      (list namazu-output-url-pattern    1 'blue-bold-underline)
+      (list namazu-output-url-pattern    3 'grey40))))
   (add-hook 'namazu-display-hook
 	    'hilit-rehighlight-buffer-quietly)))
+
+;; Message highlight functions. 
+;; e.g. 
+;; (setq namazu-msg-highlight-function 'namazu-msg-highlight-mew)
+
+;;
+;; for Mew freak.
+(defun namazu-msg-highlight-mew ()
+  "namazu message highlight use Mew functions (1.94 or later)."
+  (save-excursion
+    (condition-case err
+	(progn
+	  (if (not (and (boundp 'mew-version)
+			mew-version))
+	      (save-excursion
+		(require 'mew)
+		(mew-init)
+		(if (get-buffer mew-buffer-hello)
+		    (kill-buffer mew-buffer-hello))))
+	  (goto-char (point-min))
+	  (if (and (fboundp 'mew-highlight-header-region)
+		   (re-search-forward "^$" nil t))
+	      (progn
+		(mew-highlight-header-region (point-min) (point))
+		(put-text-property (point) (1+ (point)) 'read-only t))) ;; header-end
+	  (cond
+	   ((fboundp 'mew-cite-color)
+	    (mew-cite-color))
+	   ((fboundp 'mew-highlight-body)
+	    (mew-highlight-body)))
+	  (and (fboundp 'mew-highlight-url)
+	       (mew-highlight-url)))
+      (error nil))))
 
 ;; end here.

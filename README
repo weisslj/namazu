@@ -4,9 +4,9 @@
 What is Namazu?
 
    Namazu is a full-text search system intended for easy
-   use.  Not only it works as a CGI program for a small or
-   medium scale Web search engine, but also works as a
-   personal use search system for your pile of emails.
+   use. Not only does it work as a small or medium scale Web
+   search engine, but also as a personal search system for
+   email or other files.
 
    Namazu is a free software under the terms of the GNU
    General Public License version 2. See the file COPYING

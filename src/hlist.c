@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.19 1999-09-03 09:42:59 satoru Exp $
+ * $Id: hlist.c,v 1.20 1999-09-03 10:20:54 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -129,13 +129,12 @@ int field_scmp(const void *p1, const void *p2)
     v1 = (hlist_data *) p1;
     v2 = (hlist_data *) p2;
 
-    /* NOTE: comparison "a - b" is not safe for NEGATIVE numbers */
     r = strcmp(v2->field, v1->field);
     if (r == 0) {
-	return r = v2->rank - v1->rank;
-    } else {
-	return r;
+        /* NOTE: comparison "a - b" is not safe for NEGATIVE numbers */
+	r = v2->rank - v1->rank;
     }
+    return r;
 }
 
 /* field_ncmp: 
@@ -151,10 +150,9 @@ int field_ncmp(const void *p1, const void *p2)
     /* NOTE: comparison "a - b" is not safe for NEGATIVE numbers */
     r = atoi(v2->field) - atoi(v1->field);
     if (r ==0) {
-	return v2->rank -v1->rank;
-    } else {
-	return r;
+	r = v2->rank -v1->rank;
     }
+    return r;
 }
 
 
@@ -171,10 +169,9 @@ int score_cmp(const void *p1, const void *p2)
     /* NOTE: comparison "a - b" is not safe for NEGATIVE numbers */
     r = v2->scr - v1->scr;
     if (r == 0) {
-	return v2->rank - v1->rank;
-    } else {
-	return r;
+	r = v2->rank - v1->rank;
     }
+    return r;
     /* return (r = v2->scr - v1->scr) ? r : v2->rank - v1->rank; */
 }
 
@@ -191,10 +188,9 @@ int date_cmp(const void *p1, const void *p2)
     /* NOTE: comparison "a - b" is not safe for NEGATIVE numbers */
     r = v2->date - v1->date;
     if (r == 0) {
-	return v2->rank - v1->rank;
-    } else {
-	return r;
-    }
+	r = v2->rank - v1->rank;
+    } 
+    return r;
 }
 
 /************************************************************

@@ -79,14 +79,15 @@
 #EmphasisTags  "<strong class=\"keyword\">"   "</strong>"
 
 ##
-## MaxHit: Set the maximum number of pages. If pages matched more than
-## this, its results will be ignore.
+## MaxHit: Set the maximum number of documents which can be
+## handled in query operation.  If documents matching a
+## query exceed the value, they will be ignored.
 ##
 #MaxHit	10000
 
 ##
-## MaxMatch: Set the maximum number of words. If words matched (with
-## prefix-, inside-, suffix-matching query or regex query) more than
-## this, its results will be ignored.
+## MaxMatch: Set the maximum number of words which can be
+## handled in regex/prefix/inside/suffix query. If documents
+## matching a query exceed the value, they will be ignored.
 ##
 #MaxMatch	1000

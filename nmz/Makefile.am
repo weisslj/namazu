@@ -1,6 +1,6 @@
 # Process this file with automake to produce Makefile.in
 #
-# $Id: Makefile.am,v 1.24 2000-01-09 13:00:37 satoru Exp $
+# $Id: Makefile.am,v 1.25 2000-01-09 13:16:54 satoru Exp $
 #
 
 AUTOMAKE_OPTIONS = 1.4 no-dependencies
@@ -28,12 +28,5 @@ libnmz_la_SOURCES = alias.c alias.h codeconv.c codeconv.h rcfile.c \
 
 libnmz_la_LDFLAGS = -version-info 1:0:0
 
-add-prefix:
-	echo "/* Add nmz prefix by Satoru Takabayashi */" > regex.c
-	echo "/* Add nmz prefix by Satoru Takabayashi */" > regex.h
-	perl get-extern-funcs.pl regex-ruby.c > extern-funcs
-	perl add-prefix.pl  nmz  regex-ruby.h < extern-funcs >> regex.h
-	perl add-prefix.pl  nmz  regex-ruby.c < extern-funcs |\
-	perl -pe 's/\b(scan_oct|scan_hex|xmalloc|xrealloc)\b/nmz_$$1/g'\
-	     >> regex.c
-	rm extern-funcs
+##Bug in automake: Can't use `if MAINTAINER_MODE'
+@MAINTAINER_MODE_TRUE@include $(srcdir)/maintMakefile

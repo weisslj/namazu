@@ -1,5 +1,9 @@
 2000-01-09  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* nmz/Makefile.am: Move add-prefix to maintMakefile
+
+	* nmz/maintMakefile: New file.
+
 	* nmz/re.h (ALLOC_N): Use nmz_xmalloc() instead of xmalloc()
 	(ALLOC): Ditto.
 	
@@ -8,9 +12,6 @@
 	s/xmalloc)/nmz_xmalloc/g
 	s/scan_hex/nmz_scan_hex/g
 	s/scan_oct/nmz_scan_oct/g
-
-	* nmz/Makefile.am (add-prefix): Convert regex-ruby.[ch] to
-	regex.[ch] with adding nmz prefix to extern functions.
 
 	* nmz/regex.[ch]: Generated from Ruby 1.4.3's regex.[ch].
 	Add prefix to all extern functions. All callers	changed. 

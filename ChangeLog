@@ -1,3 +1,8 @@
+2000-02-10  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* scripts/mknmz.in (load_target_list): Fix the map
+	bug. [namazu-dev 1533]. 
+
 2000-02-07  Ryuji Abe  <raeva@t3.rim.or.jp>
 
 	* CREDITS: New File.

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: dvi.pl,v 1.10 2004-10-16 14:54:12 opengl2772 Exp $
+# $Id: dvi.pl,v 1.11 2004-11-19 16:28:51 opengl2772 Exp $
 # Copyright (C) 2000,2004 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -81,7 +81,7 @@ sub filter ($$$$$) {
 	= @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
-    util::vprint("Processing dvi file ... (using '$dviconvpath')\n");
+    util::vprint("Processing dvi file ... (using  '$dviconvpath')\n");
 
     if (util::islang("ja")) {
         # -J option: dvi2tty-5.1 for Debian

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: pdf.pl,v 1.36 2004-10-16 14:54:12 opengl2772 Exp $
+# $Id: pdf.pl,v 1.37 2004-11-19 16:28:51 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu ,
 #               2000-2004 Namazu Project All rights reserved.
@@ -118,7 +118,7 @@ sub filter ($$$$$) {
       = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
-    util::vprint("Processing pdf file ... (using '$pdfconvpath')\n");
+    util::vprint("Processing pdf file ... (using  '$pdfconvpath')\n");
 
     my $tmpfile = util::tmpnam('NMZ.pdf');
     my $tmpfile2 = util::tmpnam('NMZ.pdf2');

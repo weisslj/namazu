@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: man.pl,v 1.32 2004-10-16 14:54:12 opengl2772 Exp $
+# $Id: man.pl,v 1.33 2004-11-19 16:28:51 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu ,
 #               2004 Namazu Project All rights reserved.
@@ -96,7 +96,7 @@ sub filter ($$$$$) {
 	= @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
-    util::vprint("Processing man file ... (using '$roffpath @roffopts')\n");
+    util::vprint("Processing man file ... (using  '$roffpath @roffopts')\n");
 
     my $tmpfile = util::tmpnam('NMZ.man');
     {

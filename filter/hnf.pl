@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: hnf.pl,v 1.11 2004-10-16 14:54:12 opengl2772 Exp $
+# $Id: hnf.pl,v 1.12 2004-11-19 16:28:51 opengl2772 Exp $
 #
 # hnf filter for Namazu 2.0
 # version 0.9.15
@@ -41,11 +41,8 @@ sub mediatype() {
 }
 
 sub status() {
-    {
-        # The check of a dependence filter.
-        my $status = html::status();
-        return 'no' if ($status ne 'yes');
-    }
+    # The check of a dependence filter.
+    return 'no' if (html::status() ne 'yes');
 
     return 'yes';
 }

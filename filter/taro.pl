@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: taro.pl,v 1.13 2004-10-16 14:54:12 opengl2772 Exp $
+# $Id: taro.pl,v 1.14 2004-11-19 16:28:51 opengl2772 Exp $
 # Copyright (C) 2000 Ken-ichi Hirose, 
 #               2000,2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -79,7 +79,7 @@ sub filter ($$$$$) {
       = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
-    util::vprint("Processing taro file ... (using '$taroconvpath')\n");
+    util::vprint("Processing taro file ... (using  '$taroconvpath')\n");
 
     my $tmpfile  = util::tmpnam('NMZ.taro');
     {

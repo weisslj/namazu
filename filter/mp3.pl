@@ -1,8 +1,7 @@
 #
 # -*- Perl -*-
-# $Id: mp3.pl,v 1.7 2004-09-18 12:30:41 usu Exp $
+# $Id: mp3.pl,v 1.8 2004-11-19 16:28:51 opengl2772 Exp $
 # Copyright (C) 2002 Luc@2113.ch ,
-#               2002 2113.ch ,  
 #               2003-2004 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -40,7 +39,7 @@ sub status() {
     # http://sourceforge.net/projects/pudge/
     if (util::checklib('MP3/Info.pm')) {
 	eval 'use MP3::Info 1.01;';
-	return 'yes' unless $@;
+        return 'yes' unless $@;
     }
     return 'no';
 }
@@ -75,7 +74,7 @@ sub filter($$$$$) {
 	return undef;
     }
 
-    util::vprint("Processing mp3 file ... (using MP3::Info module)\n");
+    util::vprint("Processing mp3 file ... (using  MP3::Info module)\n");
 
     my $mp3;
 

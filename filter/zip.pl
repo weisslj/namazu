@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: zip.pl,v 1.13 2004-10-16 14:54:12 opengl2772 Exp $
+# $Id: zip.pl,v 1.14 2004-11-19 16:28:51 opengl2772 Exp $
 #  zip filter for namazu
 #  Copyright (C) 2004 MATSUMURA Namihiko <po-jp@counterghost.net>
 #                2004 Yukio USUDA <usu@namazu.org>
@@ -92,7 +92,7 @@ sub az_filter ($$$$$) {
     my ($tmpfile, $contref, $weighted_str, $headings, $fields)
       = @_;
 
-    util::vprint("Processing zip file ... (using Archive::ZIP module)\n");
+    util::vprint("Processing zip file ... (using  Archive::ZIP module)\n");
 
     eval 'use Archive::Zip;';
     my $zip = Archive::Zip->new();

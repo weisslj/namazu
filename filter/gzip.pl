@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: gzip.pl,v 1.3 1999-08-28 05:55:58 satoru Exp $
+# $Id: gzip.pl,v 1.4 1999-08-28 11:32:24 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -44,7 +44,7 @@ sub recursive() {
     return 1;
 }
 
-sub filter ($$$$$$$) {
+sub filter ($$$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields, $size)
       = @_;
 
@@ -63,7 +63,7 @@ sub filter_file ($) {
     my $gzippath = util::checkcmd('gzip');
     my $fh = util::efopen("|$gzippath -cd > $TMPFILE");
 
-    vprint("Processing gzip file ... (using  '$gzippath')\n");
+    util::vprint("Processing gzip file ... (using  '$gzippath')\n");
 
     print $fh $$contref;
     undef $fh;
@@ -77,7 +77,7 @@ sub filter_file ($) {
 sub filter_xs ($) {
     my ($contref) = @_;
 
-    vprint("Processing gzip file ... (using  Compress::Zlib)\n");
+    util::vprint("Processing gzip file ... (using  Compress::Zlib)\n");
 
     eval 'use Compress::Zlib;';
 

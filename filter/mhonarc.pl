@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mhonarc.pl,v 1.6 1999-08-28 05:55:58 satoru Exp $
+# $Id: mhonarc.pl,v 1.7 1999-08-28 11:32:25 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -26,7 +26,7 @@
 package mhonarc;
 use strict;
 require 'util.pl';
-#require 'filter.pl';
+require 'gfilter.pl';
 require 'html.pl';
 require 'mailnews.pl';
 
@@ -42,26 +42,26 @@ sub recursive() {
     return 0;
 }
 
-sub filter ($$$$$$$) {
+sub filter ($$$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields, $size)
       = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
-    vprint("Processing MHonArc file ...\n");
+    util::vprint("Processing MHonArc file ...\n");
 
     mhonarc_filter($cont, $weighted_str, $fields);
     html::html_filter($cont, $weighted_str, $fields, $headings);
 
-    filter::uuencode_filter($cont);
+    gfilter::uuencode_filter($cont);
     mailnews::mailnews_filter($cont, $weighted_str, $fields);
     mailnews::mailnews_citation_filter($cont, $weighted_str);
 
-    filter::line_adjust_filter($cont) unless $var::Opt{NoLineAd};
-    filter::line_adjust_filter($weighted_str) unless $var::Opt{NoLineAd};
-    filter::white_space_adjust_filter($cont);
-    $fields->{title} = filter::filename_to_title($cfile, $weighted_str)
+    gfilter::line_adjust_filter($cont) unless $var::Opt{NoLineAd};
+    gfilter::line_adjust_filter($weighted_str) unless $var::Opt{NoLineAd};
+    gfilter::white_space_adjust_filter($cont);
+    $fields->{title} = gfilter::filename_to_title($cfile, $weighted_str)
       unless $fields->{title};
-    filter::show_filter_debug_info($cont, $weighted_str,
+    gfilter::show_filter_debug_info($cont, $weighted_str,
 			   $fields, $headings);
 }
 

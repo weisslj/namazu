@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: html.pl,v 1.7 1999-08-28 05:55:58 satoru Exp $
+# $Id: html.pl,v 1.8 1999-08-28 11:32:24 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -24,7 +24,7 @@
 
 package html;
 use strict;
-#require 'filter.pl';
+require 'gfilter.pl';
 
 sub mediatype() {
     return ('text/html');
@@ -38,21 +38,21 @@ sub recursive() {
     return 0;
 }
 
-sub filter ($$$$$$$) {
+sub filter ($$$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields, $size)
       = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
-    vprint("Processing html file ...\n");
+    util::vprint("Processing html file ...\n");
 
     html_filter($cont, $weighted_str, $fields, $headings);
     
-    filter::line_adjust_filter($cont) unless $var::Opt{NoLineAd};
-    filter::line_adjust_filter($weighted_str) unless $var::Opt{NoLineAd};
-    filter::white_space_adjust_filter($cont);
-    $fields->{title} = filter::filename_to_title($cfile, $weighted_str)
+    gfilter::line_adjust_filter($cont) unless $var::Opt{NoLineAd};
+    gfilter::line_adjust_filter($weighted_str) unless $var::Opt{NoLineAd};
+    gfilter::white_space_adjust_filter($cont);
+    $fields->{title} = gfilter::filename_to_title($cfile, $weighted_str)
       unless $fields->{title};
-    filter::show_filter_debug_info($cont, $weighted_str,
+    gfilter::show_filter_debug_info($cont, $weighted_str,
 			   $fields, $headings);
 }
 

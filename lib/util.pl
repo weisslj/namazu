@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.11 1999-08-28 09:26:17 satoru Exp $
+# $Id: util.pl,v 1.12 1999-08-28 11:32:27 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -30,8 +30,8 @@ use IO::File;
 sub cp ($$) {
     my ($from, $to) = @_;
 
-    my $fh_from = efpoen($from);
-    my $fh_to = efpoen(">$to");
+    my $fh_from = efopen($from);
+    my $fh_to = efopen(">$to");
 
     my $buf = "";
     while(read ($fh_from, $buf, 16384)) {
@@ -73,11 +73,15 @@ sub fopen ($) {
 }
 
 sub dprint (@) {
-    print STDERR '// ', @_ if $var::Opt{Debug};
+    if ($var::Opt{Debug}) {
+	map {print STDERR '// ', $_, "\n"} @_;
+    }
 } 
 
 sub vprint (@) {
-    print STDERR '@@ ', @_ if $var::Opt{verbose} || $var::Opt{Debug};
+    if ($var::Opt{verbose} || $var::Opt{Debug}) {
+	map {print STDERR '@@ ', $_, "\n"} @_;
+    }
 } 
 
 
@@ -120,7 +124,7 @@ sub readfile ($) {
 	    return '';
 	}
     } else {
-	$fh = efpoen($arg);
+	$fh = efopen($arg);
     }
 
     my $cont = "";

@@ -1,5 +1,7 @@
 2000-03-16  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* pl/conf.pl.in: Change comments.
+
 	* scripts/mknmz.in (load_rcfile): Remove $ConfigFile = $rcfile;
 	(generate_uri): Add "-e" to codeconv::toeuc().
 	(init): Call load_rcfile($ENV{'MKNMZRC'}) in the funcion.

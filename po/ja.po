@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2000-02-27 17:32+0900\n"
+"POT-Creation-Date: 2000-02-27 22:00+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Transfer-Encoding: ENCODING\n"
 
 #: nmz/util.c:482
-msgid "Fatal error occered!"
+msgid "Fatal error occured!"
 msgstr "致命的なエラー"
 
 #: nmz/util.c:485
@@ -34,27 +34,27 @@ msgid "Too many words matched. Ignored"
 msgstr "マッチする単語が多すぎるので無視しました"
 
 #: nmz/util.c:497
-msgid "Too many pages hit. Ignored"
+msgid "Too many documents hit. Ignored"
 msgstr "ヒット数が多すぎるので無視しました"
 
 #: nmz/util.c:500
-msgid "cannot open regex index"
+msgid "can't open the regex index"
 msgstr "正規表現用インデックスが開けませんでした"
 
 #: nmz/util.c:503
-msgid "cannot open phrase index"
+msgid "can't open the phrase index"
 msgstr "フレイズ検索用インデックスが開けませんでした"
 
 #: nmz/util.c:506
-msgid "cannot open field index"
+msgid "can't open the field index"
 msgstr "フィールド検索用のインデックスが開けませんでした"
 
 #: nmz/util.c:509
-msgid "cannot open this index"
+msgid "can't open the index"
 msgstr "インデックスが開けませんでした"
 
 #: nmz/util.c:512
-msgid "cannot open result format file"
+msgid "can't open the result format file"
 msgstr "結果出力の書式指定ファイルが開けませんでした"
 
 #: nmz/util.c:515
@@ -62,6 +62,10 @@ msgid "You don't have a permission to access the index"
 msgstr "インデックスにアクセスする権利がありません"
 
 #: nmz/util.c:518
+msgid "The index is locked for maintenance"
+msgstr "インデックスは保守作業の最中です"
+
+#: nmz/util.c:521
 msgid "Unknown error. Report bug!"
 msgstr "不明なエラー。バグ報告してください"
 
@@ -208,7 +212,8 @@ msgid ""
 "    -o, --output=FILE    set the output file name to FILE.\n"
 "    -f, --config=FILE    set the config file name to FILE.\n"
 "    -C, --show-config    print current configuration.\n"
-"    -q, --quiet          do not display extra messages except search results.\n"
+"    -q, --quiet          do not display extra messages except search "
+"results.\n"
 "    -d, --debug          be debug mode.\n"
 "    -v, --version        show the version of namazu and exit.\n"
 "        --help           show this help and exit\n"
@@ -714,19 +719,27 @@ msgid ""
 "Target files:\n"
 "  -a, --all                target all files.\n"
 "  -e, --robots-txt         exclude files which is excluded by robots.txt.\n"
-"  -t, --media-type=MTYPE   set the media type for all target files to MTYPE.\n"
+"  -t, --media-type=MTYPE   set the media type for all target files to "
+"MTYPE.\n"
 "  -h, --mailnews           same as --media-type='message/rfc822'\n"
 "      --mhonarc            same as --media-type='text/html; x-type=mhonarc'\n"
 "  -A, --htaccess           exclude files restricted by .htaccess.\n"
 "  -F, --target-list=FILE   load FILE which contains a list of target files.\n"
-"      --allow=PATTERN      set PATTERN for file names which should be allowed.\n"
-"      --deny=PATTERN       set PATTERN for file names which should be denied.\n"
-"      --exclude=PATTERN    set PATTERN for pathnames which should be excluded.\n"
-"  -M, --meta               handle HTML meta tags for field-specified search.\n"
+"      --allow=PATTERN      set PATTERN for file names which should be "
+"allowed.\n"
+"      --deny=PATTERN       set PATTERN for file names which should be "
+"denied.\n"
+"      --exclude=PATTERN    set PATTERN for pathnames which should be "
+"excluded.\n"
+"  -M, --meta               handle HTML meta tags for field-specified "
+"search.\n"
 "  -r, --replace=CODE       set CODE for replacing URI.\n"
-"  -o, --ole                use OLE document filters. (works on Windows only)\n"
-"      --mtime=NUM          limit by mtime just like find(1)'s -mtime option.\n"
-"                           e.g., -50 for recent 50 days, +50 for older than 50.\n"
+"  -o, --ole                use OLE document filters. (works on Windows "
+"only)\n"
+"      --mtime=NUM          limit by mtime just like find(1)'s -mtime "
+"option.\n"
+"                           e.g., -50 for recent 50 days, +50 for older than "
+"50.\n"
 "\n"
 "Morphological Analysis:\n"
 "  -c, --use-chasen         use ChaSen for analyzing Japanese.\n"
@@ -782,7 +795,8 @@ msgstr ""
 "  -r, --replace=CODE       URIを置換するためのコードを指定する\n"
 "  -o, --ole                OLEの文書フィルタを用いる (Windows環境のみ)\n"
 "      --mtime=INT          変更日制限 find(1) の -mtime と同じ規則\n"
-"                           例: -50 で 50 日以内、+50 で 50 日より古いものだけ\n"
+"                           例: -50 で 50 日以内、+50 で 50 "
+"日より古いものだけ\n"
 "\n"
 "形態素解析:\n"
 "  -c, --use-chasen        日本語の単語のわかち書きに ChaSen を用いる\n"

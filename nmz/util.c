@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: util.c,v 1.64 2000-02-25 13:31:40 satoru Exp $
+ * $Id: util.c,v 1.65 2000-02-27 13:01:24 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -479,7 +479,7 @@ nmz_strerror(enum nmz_stat errnum)
 
     switch (errnum) {
     case ERR_FATAL:
-	msg = _("Fatal error occered!");
+	msg = _("Fatal error occured!");
 	break;
     case ERR_TOO_LONG_QUERY:
         msg = _("Too long query");
@@ -494,25 +494,28 @@ nmz_strerror(enum nmz_stat errnum)
 	msg = _("Too many words matched. Ignored");
 	break;
     case ERR_TOO_MUCH_HIT:
-	msg = _("Too many pages hit. Ignored");
+	msg = _("Too many documents hit. Ignored");
 	break;
     case ERR_REGEX_SEARCH_FAILED:
-	msg = _("cannot open regex index");
+	msg = _("can't open the regex index");
 	break;
     case ERR_PHRASE_SEARCH_FAILED:
-	msg = _("cannot open phrase index");
+	msg = _("can't open the phrase index");
 	break;
     case ERR_FIELD_SEARCH_FAILED:
-	msg = _("cannot open field index");
+	msg = _("can't open the field index");
 	break;
     case ERR_CANNOT_OPEN_INDEX:
-	msg = _("cannot open this index");
+	msg = _("can't open the index");
 	break;
     case ERR_CANNOT_OPEN_RESULT_FORMAT_FILE:
-	msg = _("cannot open result format file");
+	msg = _("can't open the result format file");
 	break;
     case ERR_NO_PERMISSION:
-	msg = _("You don\'t have a permission to access the index");
+	msg = _("You don't have a permission to access the index");
+	break;
+    case ERR_INDEX_IS_LOCKED:
+	msg = _("The index is locked for maintenance");
 	break;
     default:
 	msg = _("Unknown error. Report bug!");

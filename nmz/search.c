@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.71 2000-02-20 06:35:02 rug Exp $
+ * $Id: search.c,v 1.72 2000-02-27 13:01:24 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -395,7 +395,7 @@ do_phrase_search(const char *key, NmzResult val)
     }
 
     if (open_phrase_index_files(&phrase, &phrase_index)) {
-        val.stat = ERR_PHRASE_SEARCH_FAILED;  /* cannot open phrase index */
+        val.stat = ERR_PHRASE_SEARCH_FAILED;  /* can't open phrase index */
         return val;
     }
         
@@ -557,7 +557,7 @@ do_regex_search(const char *expr, NmzResult val)
     fp = fopen(NMZ.w, "rb");
     if (fp == NULL) {
         nmz_warn_printf("%s: %s", NMZ.w, strerror(errno));
-        val.stat = ERR_REGEX_SEARCH_FAILED;  /* cannot open regex index */
+        val.stat = ERR_REGEX_SEARCH_FAILED;  /* can't open regex index */
         return val;
     }
     val = nmz_regex_grep(tmpexpr, fp, "", 0);
@@ -698,10 +698,6 @@ check_access(void)
 static enum nmz_stat
 open_index_files(void)
 {
-    if (is_locked()) {
-        return FAILURE;
-    }
-
     Nmz.i = fopen(NMZ.i, "rb");
     if (Nmz.i == NULL) {
         nmz_debug_printf("%s: %s", NMZ.i, strerror(errno));
@@ -777,6 +773,11 @@ nmz_search_sub(NmzResult hlist, const char *query, int n)
 
     if (check_access() != ALLOW) { /* if access denied */
 	hlist.stat = ERR_NO_PERMISSION;
+	return hlist;
+    }
+
+    if (is_locked()) {
+	hlist.stat = ERR_INDEX_IS_LOCKED;
 	return hlist;
     }
 

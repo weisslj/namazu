@@ -1,3 +1,19 @@
+2000-02-27  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* nmz/util.c (nmz_strerror): Add the message for
+	ERR_INDEX_IS_LOCKED and modify other messages.
+
+	* nmz/libnamazu.h (enum nmz_stat): Add member
+	ERR_INDEX_IS_LOCKED. 
+
+	* nmz/search.c (open_index_files): Don't call is_locked().
+	(nmz_search_sub): Call is_locked() here.
+
+	* doc/en/Makefile.am (html_DATA): Add nmz.html.
+
+	* doc/en/nmz.html: New file. Thanks to kaoru-ya@is.aist-nara.ac.jp
+	for translation of the document.
+
 2000-02-27  Kenji Suzuki  <kenji@po.ganseki.ne.jp>
 
         * filter/hnf.pl: GRP bug fix again

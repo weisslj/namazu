@@ -55,8 +55,8 @@
 <ul>
 <li>DocumentID are sorted in ascending order --INPORTANT.
 <li>DocumentID are stored by only gaps.<br>
- e.g., 1, 5, 29, 34 -&gt; 1, 4, 24, 15
-<li>Data is stored in "pack 'w'" format.
+ e.g., 1, 5, 29, 34 -&gt; 1, 4, 24, 5
+<li>Data is stored in "pack 'w'" format.  (BER compression)
 </ul>
 
 
@@ -174,8 +174,8 @@ search is inaccurate, it usually works fine.
 <ul>
 <li>DocumentID are sorted in ascending order. -- IMPORTANT
 <li>DocumentID are stored by only gaps.<br>
- e.g., 1, 5, 29, 34 -&gt; 1, 4, 24, 15
-<li>All data is stored in "pack 'w'".
+ e.g., 1, 5, 29, 34 -&gt; 1, 4, 24, 5
+<li>All data is stored in "pack 'w'".  (BER compression)
 </ul>
 
 <h2><a name="pi">NMZ.pi</a></h2>
@@ -401,7 +401,7 @@ Log file for searched keywords.
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: nmz.html,v 1.9 2000-03-18 01:38:14 satoru Exp $
+$Id: nmz.html,v 1.10 2000-03-18 16:03:02 satoru Exp $
 </div>
 <address>
 developers@namazu.org

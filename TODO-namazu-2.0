@@ -1,4 +1,4 @@
-$Id: TODO-namazu-2.0,v 1.35 2000-01-28 07:36:22 satoru Exp $
+$Id: TODO-namazu-2.0,v 1.36 2000-01-28 13:13:00 satoru Exp $
 
 検討項目
 
@@ -72,11 +72,6 @@ $Id: TODO-namazu-2.0,v 1.35 2000-01-28 07:36:22 satoru Exp $
 
 藤原のつけ足し (2000/01/10)
  ** mknmz
-  * using Find.pm instead of find.pl
-    (prune for EXCLUDE directory)
-    find.pl の代りに Find.pm を使うようにする。
-    いまは \@flist を wanted に渡しているが Find.pm だと
-    出来ないので、少しだけ面倒
 
  ** mknmz/namazu 
   * .mknmzrc / .namazurc clean up (multiple or single file)

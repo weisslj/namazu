@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: hdml.pl,v 1.1 2000-11-17 05:23:43 knok Exp $
+# $Id: hdml.pl,v 1.2 2000-11-17 06:11:06 knok Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -23,7 +23,7 @@
 #  This file must be encoded in EUC-JP encoding
 #
 
-package html;
+package hdml;
 use strict;
 require 'gfilter.pl';
 

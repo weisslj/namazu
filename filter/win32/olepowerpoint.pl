@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: olepowerpoint.pl,v 1.14 2004-04-10 16:32:13 opengl2772 Exp $
+# $Id: olepowerpoint.pl,v 1.15 2004-05-11 17:32:28 opengl2772 Exp $
 # Copyright (C) 1999 Jun Kurabe ,
 #               1999 Ken-ichi Hirose All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -185,7 +185,7 @@ sub ReadPPT ($$$$) {
     open (SAVEERR,">&STDERR");
     open (STDERR,">nul");
     # Load Office 97/98/2000/XP/2003 Constant
-    $office_consts = Win32::OLE::Const->Load("Microsoft Office 11.0 Object Library");
+    $office_consts = Win32::OLE::Const->Load("Microsoft Office 11.0 Object Library") unless $office_consts;
     $office_consts = Win32::OLE::Const->Load("Microsoft Office 10.0 Object Library") unless $office_consts;
     $office_consts = Win32::OLE::Const->Load("Microsoft Office 9.0 Object Library") unless $office_consts;
     $office_consts = Win32::OLE::Const->Load("Microsoft Office 8.0 Object Library") unless $office_consts;

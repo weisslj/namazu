@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: powerpoint.pl,v 1.8 2002-09-23 08:52:32 baba Exp $
+# $Id: powerpoint.pl,v 1.9 2003-07-21 11:39:36 usu Exp $
 # Copyright (C) 2000 Ken-ichi Hirose, 
 #               2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -137,6 +137,7 @@ sub filter_ppt ($$$$$) {
 		return 'Too large powerpoint file';
 	    }
 	    $$cont = util::readfile($fh_out);
+            codeconv::normalize_eucjp($cont);
 	}
     } 
     unlink $tmpfile;

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: excel.pl,v 1.16 2002-09-23 08:52:32 baba Exp $
+# $Id: excel.pl,v 1.17 2003-07-21 11:39:36 usu Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu, 
 #               2000 Namazu Project All rights reserved.
@@ -146,6 +146,7 @@ sub filter_xl ($$$$$) {
 		return 'Too large excel file';
 	    }
 	    $$cont = util::readfile($fh_out);
+            codeconv::normalize_eucjp($cont);
 	}
     } 
 

@@ -1,3 +1,23 @@
+2003-07-21  Yukio USUDA <usu@namazu.org>
+
+	* scripts/mknmz.in(show_config): Modify message
+
+	* pl/codeconv.pl(eucjp_zen2han_ascii,normalize_eucjp): New 
+	subroutines 
+
+	* filter/{excel|msword|powerpoint|ooo|taro7_10}.pl: Added 
+	codeconv::normalize_eucjp()
+
+	* filter/ooo.pl: Added addMagicEntry for OpenOffice.org1.1
+
+	* tests/data/{en,ja}/apachecache.txt: Added new file for 
+	testsuite.  
+
+	* doc/{en,ja}/manual.html (filter): Added descriptions about
+	apachecache
+
+	* filter/Makefile.am: Added an entry for apachecache.pl
+
 2003-07-17  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* nmz/libnamazu.{c,h}: Remove nmz_ltversion() and renamed
@@ -8042,4 +8062,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1040 2003-07-17 09:49:57 knok Exp $
+$Id: ChangeLog,v 1.1041 2003-07-21 11:39:31 usu Exp $

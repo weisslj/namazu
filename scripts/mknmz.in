@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.120 2003-04-20 04:18:56 usu Exp $
+# $Id: mknmz.in,v 1.121 2003-07-21 11:39:41 usu Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -1361,7 +1361,11 @@ sub show_config () {
     keys %var::Supported;
     print _("Supported media types: \n");
     for my $mtype (@supported) {
-	print "  $mtype\n";
+        print "  $mtype";
+        if ($var::REQUIRE_ACTIONS{$mtype}){
+            print ": $var::REQUIRE_ACTIONS{$mtype}.pl";
+        }
+        print "\n";
     }
 }
 

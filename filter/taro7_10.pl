@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: taro7_10.pl,v 1.5 2003-06-15 13:54:37 opengl2772 Exp $
+# $Id: taro7_10.pl,v 1.6 2003-07-21 11:39:36 usu Exp $
 # Copyright (C) 2003 Yukio USUDA
 #               2003 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -126,6 +126,7 @@ sub taro7_10_filter ($$$$$) {
                 taro7_10::u16toe(\$authorname);
                 taro7_10::remove_ctlcode(\$authorname);
                 $authorname =~ s/\00//g;
+                codeconv::normalize_eucjp(\$authorname);
                 $fields->{'author'} = $authorname;
             }
         }
@@ -135,6 +136,7 @@ sub taro7_10_filter ($$$$$) {
     taro7_10::remove_ctlcodearea(\$tmp);
     taro7_10::u16toe(\$tmp);
     taro7_10::remove_ctlcode(\$tmp);
+    codeconv::normalize_eucjp(\$tmp);
     $$contref = $tmp;
 
     gfilter::line_adjust_filter($contref);

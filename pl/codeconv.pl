@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: codeconv.pl,v 1.13 2001-08-08 09:05:48 knok Exp $
+# $Id: codeconv.pl,v 1.14 2003-07-21 11:39:39 usu Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -149,4 +149,22 @@ sub toeuc ($) {
 	}
     }
 }
+
+sub eucjp_zen2han_ascii ($) {
+    my ($str) = @_;
+    if (util::islang("ja")) {         
+        $str =~ s/\xa3([\xb0-\xb9\xc1-\xda\xe1-\xfa])/pack("C",unpack("C",$1)-0x80)/ge;
+    }
+    $str;
+}
+ 
+sub normalize_eucjp ($) {
+    my ($contref) = @_;
+    if (util::islang("ja")) {
+        $$contref = codeconv::eucjp_han2zen_kana($$contref);
+        $$contref = codeconv::eucjp_zen2han_ascii($$contref);
+    }
+    $contref;
+}
+
 1;

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: msword.pl,v 1.35 2002-11-12 07:27:38 knok Exp $
+# $Id: msword.pl,v 1.36 2003-07-21 11:39:36 usu Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2002 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -157,6 +157,7 @@ sub filter_wv ($$$$$) {
 	    return 'Too large word file';
 	}
 	$$cont = util::readfile($fh_out);
+        codeconv::normalize_eucjp($cont);
     }
 
     unlink $tmpfile;

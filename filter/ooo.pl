@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: ooo.pl,v 1.5 2003-05-13 14:46:01 usu Exp $
+# $Id: ooo.pl,v 1.6 2003-07-21 11:39:36 usu Exp $
 # Copyright (C) 2003 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -74,6 +74,7 @@ sub post_codeconv () {
 sub add_magic ($) {
     my ($magic) = @_;
     $magic->addMagicEntry('30	string	content.xml	application/vnd.sun.xml.writer');
+    $magic->addMagicEntry('30   string  mimetypeapplication/vnd.sun.xml application/vnd.sun.xml.writer');
     $magic->addFileExts('\\.sxw', 'application/vnd.sun.xml.writer');
     return;
 }
@@ -111,6 +112,9 @@ sub filter_metafile ($$$) {
         ooo::utoe(\$authorname);
         ooo::utoe(\$title);
         ooo::utoe(\$keywords);
+        codeconv::normalize_eucjp(\$authorname);
+        codeconv::normalize_eucjp(\$title);
+        codeconv::normalize_eucjp(\$keywords);
     }
     if (!($authorname eq "")){
         $fields->{'author'} = $authorname;
@@ -148,6 +152,7 @@ sub filter_contentfile ($$$$$) {
     # Code conversion for Japanese document.
     if (util::islang("ja")) {
          ooo::utoe(\$xml);
+         codeconv::normalize_eucjp(\$xml);
     }
     $$contref = $xml;
     gfilter::line_adjust_filter($contref);

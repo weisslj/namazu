@@ -17,7 +17,7 @@ LIBS = -lm @LEXLIB@
 exec_prefix =	@prefix@/@PACKAGE@
 
 bin_PROGRAMS = namazu
-bin_SCRIPTS = clnmz gcnmz mailutime mknmz rvnmz vfnmz wdnmz gtnmz
+bin_SCRIPTS = clnmz gcnmz mailutime mknmz rvnmz vfnmz gtnmz
 
 namazu_SOURCES = cgi.c codeconv.c conf.c form.c hlist.c message.c \
 	namazu.c output.c parser.c re.c regex.c search.c \

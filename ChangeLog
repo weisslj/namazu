@@ -1,5 +1,7 @@
 1999-08-25  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* configure.in, src/Makefile.am, src/wdnmz.in:
+	Remove wdnmz.in
 	* src/*.[ch]: Rerrange C coding styles.
 	* src/{cgi.h,field.h,hlist.h,parser.h,result.h,codeconv.h,form.h,
 	message.h,re.h,search.h,variable.h,conf.h,type.h,wakati.h,enum.h,

@@ -1,5 +1,6 @@
 /* Extended regular expression matching and search library.
-   Copyright (C) 1985, 1989-90 Free Software Foundation, Inc.
+   $Id: regex.c,v 1.2 1999-05-14 04:33:08 satoru Exp $
+ * Copyright (C) 1985, 1989-90 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by

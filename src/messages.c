@@ -2,6 +2,7 @@
  * 
  * messages.c -
  * 
+ * $Id: messages.c,v 1.2 1999-05-14 04:33:07 satoru Exp $
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
@@ -38,7 +39,8 @@ uchar Lang[] = (uchar *)"en";
 
 /* information about Namazu */
 uchar *COPYRIGHT = (uchar *)
-"  Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.";
+"  $Id: messages.c,v 1.2 1999-05-14 04:33:07 satoru Exp $
+ * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.";
 
 uchar *MSG_USAGE, *MSG_TOO_LONG_KEY, *MSG_TOO_MANY_KEYITEM,
 *MSG_RESULT_HEADER, *MSG_NO_HIT, *MSG_HIT_1, *MSG_HIT_2,

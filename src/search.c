@@ -2,6 +2,7 @@
  * 
  * search.c -
  * 
+ * $Id: search.c,v 1.2 1999-05-14 04:33:09 satoru Exp $
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 

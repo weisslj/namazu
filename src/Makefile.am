@@ -16,6 +16,7 @@ bin_SCRIPTS = gcnmz mailutime mknmz gtnmz
 
 CLEANFILES = mknmz.pl $(bin_SCRIPTS)
 
+libdir      = @datadir@/@PACKAGE@/@VERSION@/lib
 filterdir   = @datadir@/@PACKAGE@/@VERSION@/filter
 templatedir = @datadir@/@PACKAGE@/@VERSION@/template
 

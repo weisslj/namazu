@@ -26,7 +26,6 @@ datadir = @datadir@
 sysconfdir = @sysconfdir@
 sharedstatedir = @sharedstatedir@
 localstatedir = @localstatedir@
-libdir = @libdir@
 infodir = @infodir@
 mandir = @mandir@
 includedir = @includedir@
@@ -101,6 +100,7 @@ bin_SCRIPTS = gcnmz mailutime mknmz gtnmz
 
 CLEANFILES = mknmz.pl $(bin_SCRIPTS)
 
+libdir = @datadir@/@PACKAGE@/@VERSION@/lib
 filterdir = @datadir@/@PACKAGE@/@VERSION@/filter
 templatedir = @datadir@/@PACKAGE@/@VERSION@/template
 

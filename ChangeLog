@@ -29,6 +29,7 @@
 	* Makefile.am: Add "@FILE_MMAGIC@" into SUBDIRS
 	* configure.in: Add codes to chedk "File::MMagic" module.
 	* Makefile.am: Change dist-hook: to remove CVS directories.
+	* src/Makefile.am: Add "libdir" macro.
 	
 1999-08-25  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 

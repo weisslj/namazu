@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.84 1999-12-16 07:02:36 satoru Exp $
+# $Id: mknmz.pl.in,v 1.85 1999-12-16 07:27:33 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -330,6 +330,10 @@ sub namazu_core ($$$) {
     $content .= $weighted_str;   # add weights
     count_words($file_count, $file_base, \$content, $kanji);
     make_phrase_hash($file_count, $file_base, \$content);
+
+    # assertion
+    util::assert($cfile_size != 0, 
+		 "cfile_size == 0 at the end of namazu_core.");
 
     return $cfile_size;
 }
@@ -1269,11 +1273,8 @@ sub set_target_files() {
 	return (scalar @{$rfiles{'name'}}, @flist); 
     };
 
-    if (@{$rfiles{'name'}} != @{$rfiles{'mtime'}}) {
-	util::dprint("\n\n== registered ==\n", join("\n", @{$rfiles{'name'}}));
-	util::dprint("\n\n== mtimes ==\n", join("\n", @{$rfiles{'mtime'}}));
-	util::cdie("NMZ.r ($#{$rfiles{'name'}}) and NMZ.t ($#{$rfiles{'mtime'}}) are not consistent!\n");
-    }
+    util::assert(@{$rfiles{'name'}} == @{$rfiles{'mtime'}},
+		 "NMZ.r ($#{$rfiles{'name'}}) and NMZ.t ($#{$rfiles{'mtime'}}) are not consistent!");
 
     # pick up deleted files and do marking
     # (registered in the NMZ.r but not existent in the filesystem)

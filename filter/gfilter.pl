@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: gfilter.pl,v 1.8 1999-09-06 03:21:57 satoru Exp $
+# $Id: gfilter.pl,v 1.9 1999-12-16 07:27:31 satoru Exp $
 # Copyright (C) 1999 Satoru Takabayashi ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -27,7 +27,8 @@ package gfilter;
 # Show debug information for filters
 sub show_filter_debug_info ($$$$) {
     my ($contref, $weighted_str, $fields, $headings) = @_;
-    util::dprint("-- title --\n$fields->{'title'}\n");
+    util::dprint("-- title --\n$fields->{'title'}\n") 
+	if defined $fields->{'title'};
     util::dprint("-- content --\n$$contref\n");
     util::dprint("-- weighted_str: --\n$$weighted_str\n");
     util::dprint("-- headings --\n$$headings\n");

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.5 1999-11-23 18:23:32 kenzo- Exp $
+# $Id: util.pl,v 1.6 1999-12-16 07:27:32 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -229,4 +229,11 @@ sub islang($) {
     }
 }
 
+sub assert($$) {
+    my ($bool, $msg) = @_;
+
+    if (!$bool) {
+	die "ASSERTION ERROR!: $msg";
+    }
+}
 1;

@@ -1,5 +1,13 @@
 1999-12-16  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* filter/gfilter.pl (show_filter_debug_info): Fix a warning.
+	"Use of uninitialized value at ../filter/gfilter.pl line 30"
+
+	* src/mknmz.pl.in (namazu_core): Use util::assert().
+	(set_target_files()): Use util::assert().
+
+	* pl/util.pl (assert): New function like assert(3);
+
 	* src/mknmz.pl.in (find_target): Uniq @flist. [namazu-dev 1020]
 	(find_target): Fix a syntax mistake.
 	(check_file): Fix "is 0 size! skipped." condition. [namazu-dev 1023]

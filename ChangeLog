@@ -21,8 +21,6 @@
 
 	* lib/hash.pl: Remove   (rename -> seed.pl)
 	
-	* src/mknmz.pl.in: Add `--test' option. [namazu-dev 254]
-	
 	* src/mknmz.pl.in: Add `readconf()' function.
 	
 	* lib/util.pl: Modify `dprint' and `vprint' to print prefix

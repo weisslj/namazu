@@ -1,5 +1,11 @@
 2000-01-20  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/namazu.c (namazu_core): Use nmz_free_internal() instead of
+	calling nmz_free_idxnames(), nmz_free_aliases() and
+	nmz_free_replaces() respectively.
+
+	* nmz/libnamazu.c (nmz_free_internal): New function.
+
 	* scripts/mknmz.pl.in (load_modules): Modify textdomain calling.
 
 	* pl/gettext.pl.in (choose_catalog): New function.

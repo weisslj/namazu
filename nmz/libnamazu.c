@@ -2,7 +2,7 @@
  * 
  * libnamazu.c - Namazu library api
  *
- * $Id: libnamazu.c,v 1.26 2000-01-13 18:33:02 rug Exp $
+ * $Id: libnamazu.c,v 1.27 2000-01-20 11:38:27 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
@@ -49,6 +49,8 @@
 #include "regex.h"
 #include "var.h"
 #include "alias.h"
+#include "replace.h"
+#include "idxname.h"
 
 static enum nmz_sortmethod  sortmethod  = SORT_BY_SCORE;
 static enum nmz_sortorder   sortorder   = DESCENDING;
@@ -62,6 +64,18 @@ static char dyingmsg[BUFSIZE] = "";
  * Public functions
  *
  */
+
+
+/*
+ * Free all internal data.
+ */ 
+void
+nmz_free_internal(void)
+{
+    nmz_free_idxnames();
+    nmz_free_aliases();
+    nmz_free_replaces();
+}
 
 void 
 nmz_codeconv_query(char *query)

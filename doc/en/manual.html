@@ -104,7 +104,7 @@ To search the created index, you can use <code>namazu</code>
 command. For example:
 </p>
 
-<p><code>% namazu</code> bar /home/foo/Namazu/bar</p>
+<p><code>% namazu</code> bar /home/foo/Namazu/foobar</p>
 
 <p>
 In this case, you can search the index in 
@@ -136,8 +136,8 @@ In this case, you can search the index in
       -M, --meta               handle HTML meta tags for field-specified search.
       -r, --replace=CODE       set CODE for replacing URI.
       -o, --ole                use OLE document filters. (works on Windows only)
-          --mtime=NUM          limit by date, (minus NUM for recent, i.e.,
-                               -50 for recent 50 days, 50 for older than 50.)
+          --mtime=NUM          limit by mtime just like find(1)'s -mtime option.
+                               e.g., -50 for recent 50 days, +50 for older than 50.
     
     Morphological Analysis:
       -c, --use-chasen         use ChaSen for analyzing Japanese.
@@ -206,7 +206,7 @@ comments.
 <h3><a name="doc-filter">Document filters</a></h3>
 
 <p>
-mknmz detects a media type of document and handle the
+mknmz detects a media type of a document and handle the
 document with proper filtering processing. For example, to
 handle an HTML document, mknmz extracts the &lt;title&gt;
 content, removes all HTML elements, and do other proper
@@ -339,7 +339,7 @@ enable OLE filters by running mknmz with --ole option.
 <p>
 To specify one or more indecies, you can specify them as
 <code>[index dir]...</code>. namazu uses <a
-href="#default-index">Default Index</a> as the targets.
+href="#default-index">Default Index</a> as the target.
 </p>
 
 <p>
@@ -365,7 +365,7 @@ file. mknmz load them by the following rule.
 
 <ol>
 <li><code>$(sysconfdir)/$(PACKAGE)/namazurc</code><br>
-Usually, /usr/local/etc/mknmz/namazurc
+(Usually, /usr/local/etc/mknmz/namazurc
 <li>~/.namazurc
 <li>file which is specified by -f or --config=FILE option.
 </ol>
@@ -428,8 +428,8 @@ Japanese.
 <h3><a name="template">Template files</a></h3>
 
 <p>
-Template files are files which customize search
-results. Their roles are as follows:
+Template files customize search results. Their roles are as
+follows:
 </p>
 
 <dl>
@@ -531,13 +531,13 @@ NMZ.head.
 
 <p>
 In this example, candidates for indices are foo, bar and
-baz.  <a href="#template">Template files</a> which is used
-can be set by the Template directive in namazurc. If
-Tempalte directive is not set, namazu.cgi uses template by
-the following rule:
+baz.  <a href="#template">Template files</a> can be set by
+the Template directive in namazurc. If Tempalte directive is
+not set, namazu.cgi uses template fiels by the following
+rule:
 
 <ul>
-<li>If only one selected index is selected,<br>
+<li>If only one index is selected,<br>
 namazu.cgi uses template files in the selected index.
 <li>If multiple indices are selected,<br>
 namazu.cgi uses tempalte files in the <a
@@ -571,8 +571,8 @@ pages by URI.
 <h3><a name="bnamazu">bnamazu</a></h3>
 
 <p>
-bnamazu is a tool to search with Web browser on the command
-line. Search results are passed to Web browser (default:
+bnamazu searches with namazu and browse its results with a
+Web browser. Search results are passed to Web browser (default:
 lynx). Usage:
 </p>
 
@@ -582,8 +582,8 @@ lynx). Usage:
 
 <p>
 You can specify your favorite Web browser with -b option. -n
-option is only worked if Web browser is netscape.  If -n is
-specified, new window is opned for displaying the search
+option is effective only if Web browser is netscape.  If -n
+is specified, new window is opned for displaying the search
 results.
 </p>
 
@@ -614,8 +614,8 @@ apply egrep to searched documents, you can do as follows:
 
 <p>
 Updating an index may produce garbage data in the index if
-documents were deleted or updated.  gcnmz is the tool for
-removing the garbage data.  Usage:
+documents were deleted or updated.  gcnmz removes the
+garbage data.  Usage:
 </p>
 
 <p>
@@ -709,8 +709,7 @@ namazu
 <p>
 The query specifies two or more terms for retrieving all
 documents which contain both terms. You can insert the
-<code class="operator">and</code> operator between the terms to do AND
-query. e.g., 
+<code class="operator">and</code> operator between the terms. e.g., 
 </p>
 
 <p class="example">
@@ -726,7 +725,7 @@ separated by one ore more spaces is assumed to be AND query.
 <p>
 The query specifies two or more terms for retrieving all
 documents which contain either term. You can insert the
-<code class="operator">or</code> operator between the terms to do OR query.
+<code class="operator">or</code> operator between the terms.
 e.g.,
 </p>
 
@@ -750,7 +749,7 @@ Linux not UNIX
 <h3><a name="query-grouping">Grouping</a></h3>
 <p>
 You can group queries by surrounding them by
-parentheses. the parentheses should be separated by one ore
+parentheses. The parentheses should be separated by one or
 more spaces. e.g., 
 </p>
 
@@ -760,12 +759,11 @@ more spaces. e.g.,
 
 <h3><a name="query-phrase">Phrase searching</a></h3>
 <p>
-You can search a phrase which consists of two or more terms
+You can search for a phrase which consists of two or more terms
 by surrounding them with double quotes like
 <code class="operator">"..."</code> or with braces like <code class="operator">{...}</code>.
-You must choose the latter with Tkanamzu or namazu.el.
 In Namazu, precision of phrase searching is not 100 %,
-so it cause wrong results occasionally. e.g.,
+so it causes wrong results occasionally. e.g.,
 </p>
 
 <p class="example">
@@ -798,9 +796,9 @@ with <code>net</code>)
 
 <p>
 You can use regular expressions for pattern matching. The
-regular expressions must be surrounded by slashes like
-<code class="operator">/.../</code>. Namazu uses codes of <a
-href="http://www.netlab.co.jp/ruby/">Ruby</a> for the
+regular expressions must be surrounded by slashes like <code
+class="operator">/.../</code>. Namazu uses <a
+href="http://www.ruby-lang.org/">Ruby</a>'s regular
 regular expressions engine. It offers generally <a
 href="http://www.perl.com/">Perl</a> compatible flavor.
 e.g.,
@@ -888,7 +886,7 @@ You must choose the latter with Tkanamzu or namazu.el.
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: manual.html,v 1.11 2000-02-20 07:13:07 satoru Exp $
+$Id: manual.html,v 1.12 2000-02-20 09:15:53 satoru Exp $
 </div>
 <address>
 developers@namazu.org

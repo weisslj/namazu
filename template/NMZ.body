@@ -15,8 +15,7 @@ namazu
 <p>
 The query specifies two or more terms for retrieving all
 documents which contain both terms. You can insert the
-<code class="operator">and</code> operator between the terms to do AND
-query. e.g., 
+<code class="operator">and</code> operator between the terms. e.g., 
 </p>
 
 <p class="example">
@@ -32,7 +31,7 @@ separated by one ore more spaces is assumed to be AND query.
 <p>
 The query specifies two or more terms for retrieving all
 documents which contain either term. You can insert the
-<code class="operator">or</code> operator between the terms to do OR query.
+<code class="operator">or</code> operator between the terms.
 e.g.,
 </p>
 
@@ -56,7 +55,7 @@ Linux not UNIX
 <h3><a name="query-grouping">Grouping</a></h3>
 <p>
 You can group queries by surrounding them by
-parentheses. the parentheses should be separated by one ore
+parentheses. The parentheses should be separated by one or
 more spaces. e.g., 
 </p>
 
@@ -66,12 +65,11 @@ more spaces. e.g.,
 
 <h3><a name="query-phrase">Phrase searching</a></h3>
 <p>
-You can search a phrase which consists of two or more terms
+You can search for a phrase which consists of two or more terms
 by surrounding them with double quotes like
 <code class="operator">"..."</code> or with braces like <code class="operator">{...}</code>.
-You must choose the latter with Tkanamzu or namazu.el.
 In Namazu, precision of phrase searching is not 100 %,
-so it cause wrong results occasionally. e.g.,
+so it causes wrong results occasionally. e.g.,
 </p>
 
 <p class="example">
@@ -104,9 +102,9 @@ with <code>net</code>)
 
 <p>
 You can use regular expressions for pattern matching. The
-regular expressions must be surrounded by slashes like
-<code class="operator">/.../</code>. Namazu uses codes of <a
-href="http://www.netlab.co.jp/ruby/">Ruby</a> for the
+regular expressions must be surrounded by slashes like <code
+class="operator">/.../</code>. Namazu uses <a
+href="http://www.ruby-lang.org/">Ruby</a>'s regular
 regular expressions engine. It offers generally <a
 href="http://www.perl.com/">Perl</a> compatible flavor.
 e.g.,

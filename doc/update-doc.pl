@@ -1,7 +1,7 @@
 #! /usr/bin/perl -w
 use strict;
 use FileHandle;
-use NKF;
+#use NKF;
 
 # 
 # Get a list of directory names. 
@@ -29,7 +29,7 @@ for my $lang (@langs) {
     my $templfname = "../template/NMZ.body";
     $templfname = "$templfname.$lang" if -s "$templfname.$lang";
     my $query_desc = readfile($templfname);
-    $query_desc = nkf("-j", $query_desc) if $lang eq "ja";
+#    $query_desc = nkf("-j", $query_desc) if $lang eq "ja";
     
     $mancont =~ s{(<!-- query -->).*(<!-- query -->)}
                {$1\n$query_desc$2}s;
@@ -43,8 +43,8 @@ for my $lang (@langs) {
     my $mknmz_help  = readfile("tmp2");
     $namazu_help = encode($namazu_help);
     $mknmz_help  = encode($mknmz_help);
-    $namazu_help = nkf("-j", $namazu_help) if $lang eq "ja";
-    $mknmz_help  = nkf("-j", $mknmz_help) if $lang eq "ja";
+#    $namazu_help = nkf("-j", $namazu_help) if $lang eq "ja";
+#    $mknmz_help  = nkf("-j", $mknmz_help) if $lang eq "ja";
     unlink "tmp1", "tmp2";
 
     # Indent

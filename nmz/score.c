@@ -2,7 +2,7 @@
  * 
  * score.c - scoring-related functions of Namazu
  * 
- * $Id: score.c,v 1.2 2001-02-26 08:54:43 baba Exp $
+ * $Id: score.c,v 1.3 2001-02-28 08:20:16 baba Exp $
  * 
  * Copyright (C) 2001 Hajime BABA  All rights reserved.
  * Copyright (C) 2001 Namazu Project All rights reserved.
@@ -471,7 +471,7 @@ nmz_recompute_score(NmzResult *hlist)
 	/* Multiple qds_dis_ratio to balance each scores */
 	hlist->data[i].score = (int)(qds[i] + qds_dis_ratio * dis[i]);
 
-	nmz_debug_printf("orig: %4d, recalc: %4d (qds: %.1f, dis: %.1f)\n",
+	nmz_debug_printf("orig: %4d, recompute: %4d (qds: %.1f, dis: %.1f)\n",
 			 orig[i], hlist->data[i].score, qds[i],
 			 qds_dis_ratio * dis[i]);
     }

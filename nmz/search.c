@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.36 1999-12-20 23:38:55 satoru Exp $
+ * $Id: search.c,v 1.37 1999-12-24 09:01:28 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -183,7 +183,7 @@ static NmzResult prefix_match(char * orig_key, int v)
     int i, j, n;
     NmzResult tmp, val;
     char buf[BUFSIZE], key[BUFSIZE];
-    val.num = 0;
+    val.num  = 0;
 
     strcpy(key, orig_key);
     key[strlen(key) - 1] = '\0';
@@ -314,8 +314,10 @@ static NmzResult do_prefix_match_search(char *key, NmzResult val)
         val = prefix_match(key, v);
 	if (val.stat == ERR_FATAL)
 	    return val;
+	val.stat = SUCCESS;
     } else {
-        val.num = 0;  /* no hit */
+        val.num  = 0;  /* no hit */
+	val.stat = SUCCESS; /* no hit but success */
 	val.data = NULL;
     }
     return val;

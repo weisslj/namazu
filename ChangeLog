@@ -1,5 +1,8 @@
 1999-12-24  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* nmz/search.c (do_prefix_match_search): Fix a bug occured when no
+	documents are hit.
+
 	* scripts/bnamazu.in (main): Fix space-containing-argument bug.
 	(cannot treat a phrase search query)
 

@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.82 1999-12-15 07:40:14 satoru Exp $
+# $Id: mknmz.pl.in,v 1.83 1999-12-15 23:54:23 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -1019,6 +1019,10 @@ sub find_target (@) {
 	    push(@flist, $target);
 	}
     }
+
+    # uniq @flist
+    my %mark = {};
+    @flist = grep {$mark{$_}++; $mark{$_} == 1} @flist;
 
     return @flist;
 }

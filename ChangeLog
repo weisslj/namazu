@@ -1,3 +1,7 @@
+1999-12-16  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* src/mknmz.pl.in (find_target): Uniq @flist. [namazu-dev 1020]
+
 1999-12-15  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* nmz/Makefile.am (libnmz_la_LDFLAGS): Set -version-info to 0:1:0

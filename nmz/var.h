@@ -9,12 +9,12 @@ extern char BASE_URI[];
 extern char CONFDIR[];
 extern char NAMAZURC[];
 
-extern REPLACE *Replace;
-extern ALIAS   *Alias;
+extern struct nmz_replace *Replace;
+extern struct nmz_alias   *Alias;
 
-extern NMZ_NAMES NMZ;
-extern NMZ_FILES Nmz;
-extern INDICES   Idx;
-extern QUERY     Query;
+extern struct nmz_names NMZ;
+extern struct nmz_files Nmz;
+extern struct nmz_indices   Idx;
+extern struct nmz_query     Query;
 
 #endif /* _VARIABLE_H */

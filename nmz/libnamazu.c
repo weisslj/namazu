@@ -2,7 +2,7 @@
  * 
  * libnamazu.c - Namazu library api
  *
- * $Id: libnamazu.c,v 1.10 1999-12-04 04:37:31 satoru Exp $
+ * $Id: libnamazu.c,v 1.11 1999-12-04 07:32:23 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
@@ -60,8 +60,8 @@
 #include "regex.h"
 #include "var.h"
 
-static int  sortmethod  = SORT_BY_SCORE;
-static int  sortorder   = DESCENDING;
+static enum nmz_sort_method  sortmethod  = SORT_BY_SCORE;
+static enum nmz_sort_order   sortorder   = DESCENDING;
 static int  debugmode   = 0;
 static int  loggingmode = 1;   /* do logging with NMZ.slog */
 static char dyingmsg[BUFSIZE] = "Initialized";
@@ -84,7 +84,7 @@ void free_idxnames(void)
 
 void free_aliases(void)
 {
-    ALIAS *list, *next;
+    struct nmz_alias *list, *next;
     list = Alias;
 
     while (list) {
@@ -98,7 +98,7 @@ void free_aliases(void)
 
 void free_replaces(void)
 {
-    REPLACE *list, *next;
+    struct nmz_replace *list, *next;
     list = Replace;
 
     while (list) {
@@ -177,7 +177,7 @@ int expand_idxname_aliases(void)
     int i;
 
     for (i = 0; i < Idx.num; i++) {
-	ALIAS *list = Alias;
+	struct nmz_alias *list = Alias;
 	while (list) {
 	    if (strcmp(Idx.names[i], list->alias) == 0) {
 		free(Idx.names[i]);
@@ -222,22 +222,22 @@ char *set_namazurc(char *arg)
     return strcpy(NAMAZURC, arg);
 }
 
-void set_sortmethod(int method)
+void set_sortmethod(enum nmz_sort_method method)
 {
     sortmethod = method;
 }
 
-int get_sortmethod(void)
+enum nmz_sort_method get_sortmethod(void)
 {
     return sortmethod;
 }
 
-void set_sortorder(int order)
+void set_sortorder(enum nmz_sort_order order)
 {
     sortorder = order;
 }
 
-int get_sortorder(void)
+enum nmz_sort_order get_sortorder(void)
 {
     return sortorder;
 }

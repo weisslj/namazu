@@ -2,7 +2,7 @@
  * 
  * conf.c -
  * 
- * $Id: conf.c,v 1.8 1999-11-23 09:46:17 satoru Exp $
+ * $Id: conf.c,v 1.9 1999-12-04 07:32:22 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -52,8 +52,8 @@ static int ConfLoaded = 0;
 
 static void set_pathname(char*, char*, char*);
 static FILE *open_conf_file(char*);
-static ALIAS *add_alias(ALIAS*, char*, char*);
-static REPLACE *add_replace(int, REPLACE*, char*, char*);
+static struct nmz_alias *add_alias(struct nmz_alias*, char*, char*);
+static struct nmz_replace *add_replace(int, struct nmz_replace*, char*, char*);
 static int parse_conf(char *, int);
 static int get_conf_args(char*, char*, char*, char*);
 static int get_conf_arg(char*, char*);
@@ -77,11 +77,11 @@ static void set_pathname(char *to, char *o, char *name)
     return;
 }
 
-static ALIAS *add_alias(ALIAS *ptr, char *alias, char *real)
+static struct nmz_alias *add_alias(struct nmz_alias *ptr, char *alias, char *real)
 {
-    ALIAS *tmp;
+    struct nmz_alias *tmp;
     
-    tmp = malloc(sizeof(ALIAS));
+    tmp = malloc(sizeof(struct nmz_alias));
     if (tmp == NULL) {
 	 set_dyingmsg("add_alias_malloc");
 	 return NULL;
@@ -104,11 +104,11 @@ static ALIAS *add_alias(ALIAS *ptr, char *alias, char *real)
     return tmp;
 }
 
-static REPLACE *add_replace(int lineno, REPLACE *ptr, char *pat, char *rep)
+static struct nmz_replace *add_replace(int lineno, struct nmz_replace *ptr, char *pat, char *rep)
 {
-    REPLACE *tmp;
+    struct nmz_replace *tmp;
     
-    tmp = malloc(sizeof(REPLACE));
+    tmp = malloc(sizeof(struct nmz_replace));
     if (tmp == NULL) {
 	 set_dyingmsg("add_replace_malloc");
 	 return NULL;
@@ -372,8 +372,8 @@ static int check_argnum(char *directive, int argnum)
 	{"COMMENT", 0},
 	{"INDEX", 1},
 	{"BASE", 1},
-	{"REPLACE", 2},
-	{"ALIAS", 2},
+	{"struct nmz_replace", 2},
+	{"struct nmz_alias", 2},
 	{"LOGGING", 1},
 	{"SCORING", 1},
 	{"LANG", 1},
@@ -408,11 +408,11 @@ static int apply_conf(char *directive, int lineno, char *arg1, char *arg2)
 	strcpy(DEFAULT_INDEX, arg1);
     } else if (strcasecmp(directive, "BASE") == 0) {
 	strcpy(BASE_URI, arg1);
-    } else if (strcasecmp(directive, "REPLACE") == 0) {
+    } else if (strcasecmp(directive, "struct nmz_replace") == 0) {
 	Replace = add_replace(lineno, Replace, arg1, arg2);
 	if (Replace == NULL)
 	  return 1;
-    } else if (strcasecmp(directive, "ALIAS") == 0) {
+    } else if (strcasecmp(directive, "struct nmz_alias") == 0) {
 	Alias = add_alias(Alias, arg1, arg2);
 	if (Alias == NULL)
 	  return 1;
@@ -489,7 +489,7 @@ Scoring: %s\n\
            get_lang(), TfIdf ? "tfidf" : "simple");
 
     {
-	ALIAS *list = Alias;
+	struct nmz_alias *list = Alias;
 
 	while (list) {
 	    printf(_("Alias:   \"%s\" -> \"%s\"\n"), 
@@ -498,7 +498,7 @@ Scoring: %s\n\
 	}
     }
     {
-	REPLACE *list = Replace;
+	struct nmz_replace *list = Replace;
 
 	while (list) {
 	    printf(_("Replace: \"%s\" -> \"%s\"\n"), 

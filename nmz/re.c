@@ -2,7 +2,7 @@
  * 
  * re.c -
  * 
- * $Id: re.c,v 1.8 1999-12-04 04:50:10 satoru Exp $
+ * $Id: re.c,v 1.9 1999-12-04 07:32:23 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -53,7 +53,7 @@ int replace_uri(char *uri)
 {
     int npat, nrep, i, j;
     char tmp[BUFSIZE];
-    REPLACE *list = Replace;
+    struct nmz_replace *list = Replace;
     int is_regex_matching = 0;
 
     strcpy(tmp, uri);
@@ -192,7 +192,7 @@ NmzResult regex_grep(char *orig_expr, FILE *fp, char *field, int field_mode)
         if (strlen(buf) == 0) {
             continue;
         }
-        if (uri_mode) {  /* consider the REPLACE directive in namazurc */ 
+        if (uri_mode) {  /* consider the struct nmz_replace directive in namazurc */ 
             replace_uri(buf);
         }
         strlower(buf);

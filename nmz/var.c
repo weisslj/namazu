@@ -2,7 +2,7 @@
  * 
  * var.c -
  * 
- * $Id: var.c,v 1.8 1999-11-23 14:18:35 satoru Exp $
+ * $Id: var.c,v 1.9 1999-12-04 07:32:23 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -53,11 +53,11 @@ int TfIdf = OPT_SCORING;   /* switch of TfIdf mode */
 int TfIdf = 1;
 #endif
 
-REPLACE *Replace = NULL;
-ALIAS   *Alias   = NULL;
+struct nmz_replace *Replace = NULL;
+struct nmz_alias   *Alias   = NULL;
 
-NMZ_FILES Nmz;  /* NMZ.* files' file pointers */
-NMZ_NAMES NMZ = {  /* NMZ.* files' names */
+struct nmz_files Nmz;  /* NMZ.* files' file pointers */
+struct nmz_names NMZ = {  /* NMZ.* files' names */
     "NMZ.i", 
     "NMZ.ii",
     "NMZ.head",
@@ -76,6 +76,6 @@ NMZ_NAMES NMZ = {  /* NMZ.* files' names */
     "NMZ.access"
 };
 
-INDICES Idx;
-QUERY Query;
+struct nmz_indices Idx;
+struct nmz_query Query;
 

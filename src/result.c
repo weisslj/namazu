@@ -1,6 +1,6 @@
 /*
  * result.c -
- * $Id: result.c,v 1.25 1999-12-03 07:53:52 masao Exp $
+ * $Id: result.c,v 1.26 1999-12-04 07:32:26 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -47,10 +47,10 @@
 
 static void encode_entity(char*);
 static void emphasize(char*);
-static void replace_field(HLIST_DATA, int, char*, char*);
+static void replace_field(struct nmz_data, int, char*, char*);
 
 
-static void replace_field(HLIST_DATA d, int counter, 
+static void replace_field(struct nmz_data d, int counter, 
 			  char *field, char *result)
 {
     /* 8 is length of '&quot;' + 2 (for emphasizing). 
@@ -150,7 +150,7 @@ void make_fullpathname_result(int n)
     pathcat(base, NMZ.result);
 }
 
-void compose_result(HLIST_DATA d, int counter, 
+void compose_result(struct nmz_data d, int counter, 
 			   char *template, char *r)
 {
     char *p = template;

@@ -1,6 +1,15 @@
 1999-12-04  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* nmz/libnamazu.h (enum nmz_sort_mode): Add tag.
+	(enum nmz_sort_order): Add tag.
+	(enum nmz_search_method): Add tag.
+	(enum nmz_stat): Add tag.
+	
+	* nmz/libnamazu.h (struct nmz_result): Renamed from hlist.
+
 	* nmz/libnamazu.h (struct nmz_data): Renamed from hlist_data.
+
+	* nmz/var.h: Remove useless variable declarations.
 
 	* nmz/search.c (push_hitnum): Renamed from push_phraseres.
 	(free_hitnums): Renamed from free_phraseres.

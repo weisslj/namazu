@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.11 1999-12-04 04:50:09 satoru Exp $
+ * $Id: hlist.c,v 1.12 1999-12-04 07:32:23 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -516,7 +516,7 @@ NmzResult get_hlist(int index)
 
 
 /* interface to invoke merge sort function */
-int sort_hlist(NmzResult hlist, int mode)
+int sort_hlist(NmzResult hlist, enum nmz_sort_method mode)
 {
     set_rank(hlist); /* conserve current order for STABLE sorting */
 

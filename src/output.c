@@ -46,7 +46,7 @@ static char template[BUFSIZE]     = "normal"; /* suffix of NMZ.result.* */
 
 static void fputs_without_html_tag(char *s, FILE *fp);
 static void emprint(char *s, int entity_encode);
-static void print_word_hit_count(PHRASERES *pr);
+static void print_word_hit_count(struct nmz_hitnum *pr);
 
 /* print s to stdout with processing for emphasizing and entity encoding  */
 static void emprint(char *s, int entity_encode)
@@ -448,7 +448,7 @@ void print_msgfile(char *fname) {
 }
 
 /* display the hlist */
-void print_hlist(HLIST hlist)
+void print_hlist(NmzResult hlist)
 {
     int i;
     char *templates[INDEX_MAX];
@@ -504,7 +504,7 @@ void print_hit_count ()
 {
     int i;
     for (i = 0; i < Idx.num; i ++) {
-        PHRASERES *pr = Idx.pr[i];
+        struct nmz_hitnum *pr = Idx.pr[i];
 	if (is_refprint() && !is_countmode() && 
 	    !is_listmode() && !is_quietmode()) 
 	{
@@ -531,7 +531,7 @@ void print_hit_count ()
     }
 }
 
-static void print_word_hit_count (PHRASERES *pr)
+static void print_word_hit_count (struct nmz_hitnum *pr)
 {
     if (is_refprint() && !is_countmode() && 
 	!is_listmode() && !is_quietmode()) 
@@ -592,7 +592,7 @@ void print_hitnum(int n)
     html_print(_("	 documents matching your query.</strong></p>\n\n"));
 }
 
-void print_listing(HLIST hlist)
+void print_listing(NmzResult hlist)
 {
     if (is_htmlmode()) {
         print("<dl>\n");
@@ -605,7 +605,7 @@ void print_listing(HLIST hlist)
     }
 }
 
-void print_range(HLIST hlist)
+void print_range(NmzResult hlist)
 {
     if (is_htmlmode())
         print("<p>\n");

@@ -65,10 +65,7 @@ while test $# -gt 0; do
 	;;
 
     --cflags)
-        if test @pkgincludedir@ != /usr/include ; then
-          includes=-I@pkgincludedir@
-        fi
-        echo $includes
+        echo -I@pkgincludedir@
        	;;
 
     --libs)

@@ -1,4 +1,11 @@
-1999-11-05  Ryuji Abe <raeva@t3.rim.or.jp>
+1999-11-06  Ryuji Abe  <raeva@t3.rim.or.jp>
+
+	* nmz-config.in (--cflags): Always output @pkgincludedir@.
+	* src/Makefile.am: Cleaned up.
+	(indexdir): New variable.
+	(DEFS): Set OPT_CONFDIR=$(confdir), and OPT_INDEXDIR=$(indexdir). 
+
+1999-11-05  Ryuji Abe  <raeva@t3.rim.or.jp>
 
 	* nmz-config.in: Changed @includedir@ to @pkgincludedir@
  

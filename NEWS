@@ -1,3 +1,19 @@
+Overview of Changes in Namazu 2.0.11 - June xx, 2002
+
+* Change output warning to NMZ.warnlog file instead stderr
+  (for CSS issue on some environments)
+* Update some filters.
+* Fix possibility of buffer overflow.
+* Fix shell execution issue on rpm/deb files.
+* Adaptation to xpdf 1.0x (filter/pdf.pl).
+* Fix possibility of relative path vulnerability on Win95/98.
+* Improve HTML filter (exclude scripting language code).
+
+Overview of Changes in Namazu 2.0.10 - Dec 27, 2001
+
+* Fix another cross-site scripting vulnerability.
+* Fix possibility of buffer overflow.
+
 Overview of Changes in Namazu 2.0.9 - Nov 30, 2001
 
 * Fix another cross-site scripting vulnerability.

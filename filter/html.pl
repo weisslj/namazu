@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: html.pl,v 1.33 2002-02-25 10:27:58 knok Exp $
+# $Id: html.pl,v 1.34 2002-06-17 05:03:13 knok Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -26,6 +26,8 @@
 package html;
 use strict;
 require 'gfilter.pl';
+
+my $EMBEDDED_FILE = '\.(asp|jsp|php[3s]?|phtml)(?:\.gz)?';
 
 sub mediatype() {
     return ('text/html');
@@ -61,6 +63,10 @@ sub filter ($$$$$) {
     if ($var::Opt{'robotexclude'}) {
 	my $err = isexcluded($cont);
 	return $err if $err;
+    }
+
+    if ($cfile =~ /($EMBEDDED_FILE)$/o) {
+       embedded_filter($cont);
     }
 
     html_filter($cont, $weighted_str, $fields, $headings);
@@ -109,6 +115,18 @@ sub html_filter ($$$$) {
     for my $key (keys %{$fields}) {
 	html::decode_entity(\$fields->{$key});
     }
+}
+
+# Get rid of HTML-embedded codes
+sub embedded_filter ($) {
+    my ($contref) = @_;
+
+    # handle with ASP,JSP,PHP,VBScript,JScript and JavaScript.
+    $$contref =~ s/<%.*?%>//gs;
+    $$contref =~ s/<\?.*?\?>//gs;
+    $$contref =~ s/<asp:.*?\/>//gs;
+    $$contref =~ s/<jsp:.*?\/>//gs;
+    $$contref =~ s/<script.*>.*<\/script>//igs;
 }
 
 # Convert independent < > s into entity references for escaping.

@@ -1,3 +1,9 @@
+2002-06-17  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* filter/html.pl: Applied scrpit code exclusory patch.
+	(http://www.namazu.org/ml/namazu-devel-ja/msg02091.html
+	contributed by HAJIME Baba.)
+
 2002-06-13  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* scripts/mknmz.in (append_index): Fixed to remain keyword numbers
@@ -7544,4 +7550,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.953 2002-06-13 06:54:33 knok Exp $
+$Id: ChangeLog,v 1.954 2002-06-17 05:03:11 knok Exp $

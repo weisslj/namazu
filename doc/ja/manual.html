@@ -8,44 +8,44 @@
 <title>Manual of Namazu</title>
 </head>
 <body lang="ja">
-<h1>$BA4J88!:w%7%9%F%`(B Namazu $B@bL@=q(B</h1>
+<h1>Á´Ê¸¸¡º÷¥·¥¹¥Æ¥à Namazu ÀâÌÀ½ñ</h1>
 <hr>
 
 <p>
-Namazu $B$N:G?7>pJs$O(B <a
-href="http://www.namazu.org/">http://www.namazu.org/</a> $B$+(B
-$B$iF~<j$G$-$^$9!#(BNamazu$B$O(B <a
-href="http://www.gnu.org/copyleft/gpl.html">GPL2</a> $B$K=>$C(B
-$B$?%U%j!<%=%U%H%&%'%"$G$9!#40A4$KL5J]>Z$G$9!#(B
+Namazu ¤ÎºÇ¿·¾ðÊó¤Ï <a
+href="http://www.namazu.org/">http://www.namazu.org/</a> ¤«
+¤éÆþ¼ê¤Ç¤­¤Þ¤¹¡£Namazu¤Ï <a
+href="http://www.gnu.org/copyleft/gpl.html">GPL2</a> ¤Ë½¾¤Ã
+¤¿¥Õ¥ê¡¼¥½¥Õ¥È¥¦¥§¥¢¤Ç¤¹¡£´°Á´¤ËÌµÊÝ¾Ú¤Ç¤¹¡£
 </p>
 
-<h2>$BL\<!(B</h2>
+<h2>ÌÜ¼¡</h2>
 
 <ul>
-<li><a href="#organization">Namazu$B$N4pK\9=@.(B</a>
-<li><a href="#mknmz">mknmz$B%3%^%s%I(B</a>
+<li><a href="#organization">Namazu¤Î´ðËÜ¹½À®</a>
+<li><a href="#mknmz">mknmz¥³¥Þ¥ó¥É</a>
   <ul>
-  <li><a href="#mknmz-option">mknmz$B%3%^%s%I9T0z?t(B</a>
-  <li><a href="#mknmzrc">mknmzrc$B$N@_Dj(B</a>
-  <li><a href="#doc-filter">$BJ8=q%U%#%k%?(B</a>
+  <li><a href="#mknmz-option">mknmz¥³¥Þ¥ó¥É¹Ô°ú¿ô</a>
+  <li><a href="#mknmzrc">mknmzrc¤ÎÀßÄê</a>
+  <li><a href="#doc-filter">Ê¸½ñ¥Õ¥£¥ë¥¿</a>
   </ul>
-<li><a href="#namazu">namazu$B%3%^%s%I(B</a>
+<li><a href="#namazu">namazu¥³¥Þ¥ó¥É</a>
   <ul>
-  <li><a href="#namazu-option">namazu$B%3%^%s%I9T0z?t(B</a>
-  <li><a href="#namazurc">namazurc$B$N@_Dj(B</a>
-  <li><a href="#default-index">$B4pK\%$%s%G%C%/%9(B</a>
+  <li><a href="#namazu-option">namazu¥³¥Þ¥ó¥É¹Ô°ú¿ô</a>
+  <li><a href="#namazurc">namazurc¤ÎÀßÄê</a>
+  <li><a href="#default-index">´ðËÜ¥¤¥ó¥Ç¥Ã¥¯¥¹</a>
   </ul>
 <li><a href="#cgi">namazu.cgi</a>
   <ul>
-  <li><a href="#setting">namazu.cgi$B$N@_CV(B</a>
-  <li><a href="#.namazurc">.namazurc $B$N@_Dj(B</a>
-  <li><a href="#template">$B?w7A%U%!%$%k(B</a>
-  <li><a href="#form">form$B$N@_Dj(B</a>
-  <li><a href="#form-idxname">$B%$%s%G%C%/%9$rA*Br$9$k(B</a>
-  <li><a href="#form-idxnames">$BJ#?t$N%$%s%G%C%/%9$rA*Br$9$k(B</a>
-  <li><a href="#form-subquery">$BJd=u8!:w<0$NMxMQK!(B</a>
+  <li><a href="#setting">namazu.cgi¤ÎÀßÃÖ</a>
+  <li><a href="#.namazurc">.namazurc ¤ÎÀßÄê</a>
+  <li><a href="#template">¿÷·Á¥Õ¥¡¥¤¥ë</a>
+  <li><a href="#form">form¤ÎÀßÄê</a>
+  <li><a href="#form-idxname">¥¤¥ó¥Ç¥Ã¥¯¥¹¤òÁªÂò¤¹¤ë</a>
+  <li><a href="#form-idxnames">Ê£¿ô¤Î¥¤¥ó¥Ç¥Ã¥¯¥¹¤òÁªÂò¤¹¤ë</a>
+  <li><a href="#form-subquery">Êä½õ¸¡º÷¼°¤ÎÍøÍÑË¡</a>
   </ul>
-<li><a href="#tools">$BIUB0%D!<%k(B</a>
+<li><a href="#tools">ÉÕÂ°¥Ä¡¼¥ë</a>
   <ul>
   <li><a href="#bnamazu">bnamazu</a>
   <li><a href="#nmzgrep">nmzgrep</a>
@@ -54,454 +54,454 @@ href="http://www.gnu.org/copyleft/gpl.html">GPL2</a> $B$K=>$C(B
   <li><a href="#vfnmz">vfnmz</a>
   <li><a href="#rfnmz">rfnmz</a>
   </ul>
-<li><a href="#query">$B8!:w<0(B</a>
+<li><a href="#query">¸¡º÷¼°</a>
   <ul>
-  <li><a href="#query-term">$BC10lC18l8!:w(B</a>
-  <li><a href="#query-and">AND$B8!:w(B</a>
-  <li><a href="#query-or">OR$B8!:w(B</a>
-  <li><a href="#query-not">NOT$B8!:w(B</a>
-  <li><a href="#query-grouping">$B%0%k!<%W2=(B</a>
-  <li><a href="#query-phrase">$B%U%l%$%:8!:w(B</a>
-  <li><a href="#query-substring">$BItJ,0lCW8!:w(B</a>
-  <li><a href="#query-regex">$B@55,I=8=8!:w(B</a>
-  <li><a href="#query-field">$B%U%#!<%k%I;XDj$N8!:w(B</a>
-  <li><a href="#query-notes">$BFC5-;v9`(B</a>
+  <li><a href="#query-term">Ã±°ìÃ±¸ì¸¡º÷</a>
+  <li><a href="#query-and">AND¸¡º÷</a>
+  <li><a href="#query-or">OR¸¡º÷</a>
+  <li><a href="#query-not">NOT¸¡º÷</a>
+  <li><a href="#query-grouping">¥°¥ë¡¼¥×²½</a>
+  <li><a href="#query-phrase">¥Õ¥ì¥¤¥º¸¡º÷</a>
+  <li><a href="#query-substring">ÉôÊ¬°ìÃ×¸¡º÷</a>
+  <li><a href="#query-regex">Àµµ¬É½¸½¸¡º÷</a>
+  <li><a href="#query-field">¥Õ¥£¡¼¥ë¥É»ØÄê¤Î¸¡º÷</a>
+  <li><a href="#query-notes">ÆÃµ­»ö¹à</a>
   </ul>
 </ul>
 
-<h2><a name="organization">Namazu$B$N4pK\9=@.(B</a></h2>
+<h2><a name="organization">Namazu¤Î´ðËÜ¹½À®</a></h2>
 
 <p>
-Namazu$B$OA4J88!:w%7%9%F%`$G$9!#(BNamazu $B$O%$%s%G%C%/%9$N:n@.$r(B
-$B9T$&(B mknmz $B%3%^%s%I$H!"8!:w$r9T$&(B namazu$B%3%^%s%I$+$i9=@.$5$l(B
-$B$F$$$^$9!#(B
+Namazu¤ÏÁ´Ê¸¸¡º÷¥·¥¹¥Æ¥à¤Ç¤¹¡£Namazu ¤Ï¥¤¥ó¥Ç¥Ã¥¯¥¹¤ÎºîÀ®¤ò
+¹Ô¤¦ mknmz ¥³¥Þ¥ó¥É¤È¡¢¸¡º÷¤ò¹Ô¤¦ namazu¥³¥Þ¥ó¥É¤«¤é¹½À®¤µ¤ì
+¤Æ¤¤¤Þ¤¹¡£
 </p>
 
 <p>
-$BBgNL$NJ8=q$r9bB.$K8!:w$9$k$?$a$K$O!"$I$NC18l$,$I$NJ8=q$G;H$o(B
-$B$l$F$$$k$+$r5-O?$7$?:w0z%U%!%$%k(B ($B%$%s%G%C%/%9(B) $B$r$"$i$+$8$a(B
-$B:n@.$9$kI,MW$,$"$j$^$9!#%$%s%G%C%/%9$O$A$g$&$I=q@R$N:w0z$H;w(B
-$B$F$$$^$9!#(B
+ÂçÎÌ¤ÎÊ¸½ñ¤ò¹âÂ®¤Ë¸¡º÷¤¹¤ë¤¿¤á¤Ë¤Ï¡¢¤É¤ÎÃ±¸ì¤¬¤É¤ÎÊ¸½ñ¤Ç»È¤ï
+¤ì¤Æ¤¤¤ë¤«¤òµ­Ï¿¤·¤¿º÷°ú¥Õ¥¡¥¤¥ë (¥¤¥ó¥Ç¥Ã¥¯¥¹) ¤ò¤¢¤é¤«¤¸¤á
+ºîÀ®¤¹¤ëÉ¬Í×¤¬¤¢¤ê¤Þ¤¹¡£¥¤¥ó¥Ç¥Ã¥¯¥¹¤Ï¤Á¤ç¤¦¤É½ñÀÒ¤Îº÷°ú¤È»÷
+¤Æ¤¤¤Þ¤¹¡£
 </p>
 
 <p>
-$B%$%s%G%C%/%9$r:n@.$9$k$K$O(B mknmz $B%3%^%s%I$rMQ$$$^$9!#(Bmknmz 
-$B$N0z?t$K%$%s%G%C%/%9:n@.$NBP>]$H$9$k%G%#%l%/%H%jL>$rM?$($^$9!#(B
-$B$?$H$($P!"(B /home/foo/public_html $B$rBP>]$H$9$k$J$i(B
-$B$P(B
+¥¤¥ó¥Ç¥Ã¥¯¥¹¤òºîÀ®¤¹¤ë¤Ë¤Ï mknmz ¥³¥Þ¥ó¥É¤òÍÑ¤¤¤Þ¤¹¡£mknmz 
+¤Î°ú¿ô¤Ë¥¤¥ó¥Ç¥Ã¥¯¥¹ºîÀ®¤ÎÂÐ¾Ý¤È¤¹¤ë¥Ç¥£¥ì¥¯¥È¥êÌ¾¤òÍ¿¤¨¤Þ¤¹¡£
+¤¿¤È¤¨¤Ð¡¢ /home/foo/public_html ¤òÂÐ¾Ý¤È¤¹¤ë¤Ê¤é
+¤Ð
 </p>
 
 <p><code>% mknmz</code> /home/foo/public_html
 </p>
 
 <p>
-$B$H<B9T$7$^$9!#$9$k$H!"(B /home/foo/public_html $B0J2<(B
-$B$N(B *.html *.txt $B$H$$$C$?%U%!%$%k$K$D$$$F:w0z$E$1$r9T$$!"(B
-mknmz $B$r<B9T$7$?%G%#%l%/%H%j$K(B NMZ.* $B$H$$$&%U%!%$%k$r:n@.$7(B
-$B$^$9!#$3$N(B NMZ.* $B%U%!%$%k$,(B Namazu $B$N%$%s%G%C%/%9$G$9!#(B
+¤È¼Â¹Ô¤·¤Þ¤¹¡£¤¹¤ë¤È¡¢ /home/foo/public_html °Ê²¼
+¤Î *.html *.txt ¤È¤¤¤Ã¤¿¥Õ¥¡¥¤¥ë¤Ë¤Ä¤¤¤Æº÷°ú¤Å¤±¤ò¹Ô¤¤¡¢
+mknmz ¤ò¼Â¹Ô¤·¤¿¥Ç¥£¥ì¥¯¥È¥ê¤Ë NMZ.* ¤È¤¤¤¦¥Õ¥¡¥¤¥ë¤òºîÀ®¤·
+¤Þ¤¹¡£¤³¤Î NMZ.* ¥Õ¥¡¥¤¥ë¤¬ Namazu ¤Î¥¤¥ó¥Ç¥Ã¥¯¥¹¤Ç¤¹¡£
 </p>
 
 <p>
-$B:n@.$5$l$?%$%s%G%C%/%9$KBP$7$F8!:w$r9T$&$K$O(B
-<code>namazu</code>$B%3%^%s%I$rMQ$$$^$9!#(B
+ºîÀ®¤µ¤ì¤¿¥¤¥ó¥Ç¥Ã¥¯¥¹¤ËÂÐ¤·¤Æ¸¡º÷¤ò¹Ô¤¦¤Ë¤Ï
+<code>namazu</code>¥³¥Þ¥ó¥É¤òÍÑ¤¤¤Þ¤¹¡£
 </p>
 
 <p><code>% namazu</code> bar
 /home/foo/Namazu/bar</p>
 
 <p>
-$B$H<B9T$9$l$P!"(B/home/foo/Namazu/bar $B$K$"$k%$%s%G%C%/(B
-$B%9$KBP$7$F%-!<%o!<%I(B bar $B$r8!:w$7$^$9!#(B
+¤È¼Â¹Ô¤¹¤ì¤Ð¡¢/home/foo/Namazu/bar ¤Ë¤¢¤ë¥¤¥ó¥Ç¥Ã¥¯
+¥¹¤ËÂÐ¤·¤Æ¥­¡¼¥ï¡¼¥É bar ¤ò¸¡º÷¤·¤Þ¤¹¡£
 </p>
 
 
-<h2><a name="mknmz">mknmz$B%3%^%s%I(B</a></h2>
+<h2><a name="mknmz">mknmz¥³¥Þ¥ó¥É</a></h2>
 
-<h3><a name="mknmz-option">mknmz$B%3%^%s%I9T0z?t(B</a></h3>
+<h3><a name="mknmz-option">mknmz¥³¥Þ¥ó¥É¹Ô°ú¿ô</a></h3>
 
 <!-- mknmz-option -->
 <pre>
-    mknmz 1.9.15, Namazu $B$N%$%s%G%C%/%9:n@.%W%m%0%i%`(B 
+    mknmz 1.9.15, Namazu ¤Î¥¤¥ó¥Ç¥Ã¥¯¥¹ºîÀ®¥×¥í¥°¥é¥à 
     
-    $B;H$$J}(B: mknmz [options] &lt;target&gt;...
+    »È¤¤Êý: mknmz [options] &lt;target&gt;...
     
-    $BBP>]%U%!%$%k(B:
-      -a, --all                $B$9$Y$F$N%U%!%$%k$rBP>]$H$9$k(B
-      -e, --robots-txt         $B%m%\%C%H$h$1$5$l$F$$$k%U%!%$%k$r=|30$9$k(B
-      -t, --media-type=MTYPE   $BBP>]%U%!%$%k$NJ8=q7A<0$r;XDj$9$k(B
-      -h, --mailnews           --media-type='message/rfc822' $B$HF1$8(B
-          --mhonarc            --media-type='text/html; x-type=mhonarc' $B$HF1$8(B
-      -A, --htaccess           .htaccess $B$G@)8B$5$l$?%U%!%$%k$r=|30$9$k(B
-      -F, --target-list=FILE   $B%$%s%G%C%/%9BP>]$N%U%!%$%k$N%j%9%H$rFI$_9~$`(B
-          --allow=PATTERN      $BBP>]$H$9$k%U%!%$%kL>$N@55,I=8=$r;XDj$9$k(B
-          --deny=PATTERN       $B5q@d$9$k%U%!%$%kL>$N@55,I=8=$r;XDj$9$k(B
-          --exclude=PATTERN    $B=|30$9$k%Q%9L>$N@55,I=8=$r;XDj$9$k(B
-      -M, --meta               HTML$B$N(B meta$B%?%0$r%U%#!<%k%I;XDj8!:w$KMQ$$$k(B
-      -r, --replace=CODE       URI$B$rCV49$9$k$?$a$N%3!<%I$r;XDj$9$k(B
-      -o, --ole                OLE$B$NJ8=q%U%#%k%?$rMQ$$$k(B (Windows$B4D6-$N$_(B)
-          --mtime=INT          $BJQ99F|@)8B(B (int $B$,(B $BIi$G:G6a!"@5$G8E$$$b$N$@$1!"(B
-                               $BNc(B: -50 $B$G(B 50 $BF|0JFb!"(B50 $B$G(B 50 $BF|$h$j8E$$$b$N$@$1(B)
+    ÂÐ¾Ý¥Õ¥¡¥¤¥ë:
+      -a, --all                ¤¹¤Ù¤Æ¤Î¥Õ¥¡¥¤¥ë¤òÂÐ¾Ý¤È¤¹¤ë
+      -e, --robots-txt         ¥í¥Ü¥Ã¥È¤è¤±¤µ¤ì¤Æ¤¤¤ë¥Õ¥¡¥¤¥ë¤ò½ü³°¤¹¤ë
+      -t, --media-type=MTYPE   ÂÐ¾Ý¥Õ¥¡¥¤¥ë¤ÎÊ¸½ñ·Á¼°¤ò»ØÄê¤¹¤ë
+      -h, --mailnews           --media-type='message/rfc822' ¤ÈÆ±¤¸
+          --mhonarc            --media-type='text/html; x-type=mhonarc' ¤ÈÆ±¤¸
+      -A, --htaccess           .htaccess ¤ÇÀ©¸Â¤µ¤ì¤¿¥Õ¥¡¥¤¥ë¤ò½ü³°¤¹¤ë
+      -F, --target-list=FILE   ¥¤¥ó¥Ç¥Ã¥¯¥¹ÂÐ¾Ý¤Î¥Õ¥¡¥¤¥ë¤Î¥ê¥¹¥È¤òÆÉ¤ß¹þ¤à
+          --allow=PATTERN      ÂÐ¾Ý¤È¤¹¤ë¥Õ¥¡¥¤¥ëÌ¾¤ÎÀµµ¬É½¸½¤ò»ØÄê¤¹¤ë
+          --deny=PATTERN       µñÀä¤¹¤ë¥Õ¥¡¥¤¥ëÌ¾¤ÎÀµµ¬É½¸½¤ò»ØÄê¤¹¤ë
+          --exclude=PATTERN    ½ü³°¤¹¤ë¥Ñ¥¹Ì¾¤ÎÀµµ¬É½¸½¤ò»ØÄê¤¹¤ë
+      -M, --meta               HTML¤Î meta¥¿¥°¤ò¥Õ¥£¡¼¥ë¥É»ØÄê¸¡º÷¤ËÍÑ¤¤¤ë
+      -r, --replace=CODE       URI¤òÃÖ´¹¤¹¤ë¤¿¤á¤Î¥³¡¼¥É¤ò»ØÄê¤¹¤ë
+      -o, --ole                OLE¤ÎÊ¸½ñ¥Õ¥£¥ë¥¿¤òÍÑ¤¤¤ë (Windows´Ä¶­¤Î¤ß)
+          --mtime=INT          ÊÑ¹¹ÆüÀ©¸Â (int ¤¬ Éé¤ÇºÇ¶á¡¢Àµ¤Ç¸Å¤¤¤â¤Î¤À¤±¡¢
+                               Îã: -50 ¤Ç 50 Æü°ÊÆâ¡¢50 ¤Ç 50 Æü¤è¤ê¸Å¤¤¤â¤Î¤À¤±)
     
-    $B7ABVAG2r@O(B:
-      -c, --use-chasen        $BF|K\8l$NC18l$N$o$+$A=q$-$K(B ChaSen $B$rMQ$$$k(B
-      -k, --use-kakasi        $BF|K\8l$NC18l$N$o$+$A=q$-$K(B KAKASI $B$rMQ$$$k(B
-      -m, --use-chasen-noun   $BL>;l$N$_$rCj=P$9$k(B
+    ·ÁÂÖÁÇ²òÀÏ:
+      -c, --use-chasen        ÆüËÜ¸ì¤ÎÃ±¸ì¤Î¤ï¤«¤Á½ñ¤­¤Ë ChaSen ¤òÍÑ¤¤¤ë
+      -k, --use-kakasi        ÆüËÜ¸ì¤ÎÃ±¸ì¤Î¤ï¤«¤Á½ñ¤­¤Ë KAKASI ¤òÍÑ¤¤¤ë
+      -m, --use-chasen-noun   Ì¾»ì¤Î¤ß¤òÃê½Ð¤¹¤ë
     
-    $BJ8;zNs=hM}(B:
-      -E, --no-edge-symbol  $BC18l$NN>C<$N5-9f$O:o=|$9$k(B
-      -G, --no-okurigana    $BAw$j2>L>$r:o=|$9$k(B
-      -H, --no-hiragana     $BJ?2>L>$N$_$NC18l$OEPO?$7$J$$(B
-      -K, --no-symbol       $B5-9f$r$9$Y$F:o=|$9$k(B
+    Ê¸»úÎó½èÍý:
+      -E, --no-edge-symbol  Ã±¸ì¤ÎÎ¾Ã¼¤Îµ­¹æ¤Ïºï½ü¤¹¤ë
+      -G, --no-okurigana    Á÷¤ê²¾Ì¾¤òºï½ü¤¹¤ë
+      -H, --no-hiragana     Ê¿²¾Ì¾¤Î¤ß¤ÎÃ±¸ì¤ÏÅÐÏ¿¤·¤Ê¤¤
+      -K, --no-symbol       µ­¹æ¤ò¤¹¤Ù¤Æºï½ü¤¹¤ë
     
-    $BMWLs(B:
-      -U, --no-encode-uri       URI$B$N(Bencode$B$r9T$o$J$$(B
-      -x, --no-heading-summary  HTML $B$N%X%G%#%s%0$K$h$kMWLs:n@.$r9T$o$J$$(B
+    Í×Ìó:
+      -U, --no-encode-uri       URI¤Îencode¤ò¹Ô¤ï¤Ê¤¤
+      -x, --no-heading-summary  HTML ¤Î¥Ø¥Ç¥£¥ó¥°¤Ë¤è¤ëÍ×ÌóºîÀ®¤ò¹Ô¤ï¤Ê¤¤
     
     
-    $B%$%s%G%C%/%9:n@.(B:
-          --update=INDEX        $B99?7$9$k%$%s%G%C%/%9$r;XDj$9$k(B
-      -Y, --no-delete           $B:o=|$5$l$?J8=q$N8!=P$r9T$o$J$$(B
-      -Z, --no-update           $BJ8=q$N99?7!&:o=|$rH?1G$7$J$$(B
+    ¥¤¥ó¥Ç¥Ã¥¯¥¹ºîÀ®:
+          --update=INDEX        ¹¹¿·¤¹¤ë¥¤¥ó¥Ç¥Ã¥¯¥¹¤ò»ØÄê¤¹¤ë
+      -Y, --no-delete           ºï½ü¤µ¤ì¤¿Ê¸½ñ¤Î¸¡½Ð¤ò¹Ô¤ï¤Ê¤¤
+      -Z, --no-update           Ê¸½ñ¤Î¹¹¿·¡¦ºï½ü¤òÈ¿±Ç¤·¤Ê¤¤
     
-    $B$=$NB>(B:
-      -s, --checkpoint        $B%A%'%C%/%]%$%s%H5!9=$r:nF0$5$;$k(B
-      -f, --config=FILE       $B@_Dj%U%!%$%k$r;XDj$9$k(B
-      -I, --include=FILE      $B%+%9%?%^%$%:MQ%U%!%$%k$rFI$_9~$`(B
-      -O, --output-dir=DIR    $B%$%s%G%C%/%9$N=PNO@h$r;XDj$9$k(B
-      -T, --template-dir=DIR  NMZ.{head,foot,body}.* $B$N%G%#%l%/%H%j$r;XDj$9$k(B
-      -q, --quiet             $B%$%s%G%C%/%9=hM}$N:GCf$K%a%C%;!<%8$rI=<($7$J$$(B
-      -v, --version           $B%t%!!<%8%g%s$rI=<($9$k(B
-      -V, --verbose           $B8}$d$+$^$7$$%b!<%I(B
-          --debug             $B%G%P%C%0%b!<%I(B
-          --help              $B$3$N%X%k%W$rI=<($9$k(B
+    ¤½¤ÎÂ¾:
+      -s, --checkpoint        ¥Á¥§¥Ã¥¯¥Ý¥¤¥ó¥Èµ¡¹½¤òºîÆ°¤µ¤»¤ë
+      -f, --config=FILE       ÀßÄê¥Õ¥¡¥¤¥ë¤ò»ØÄê¤¹¤ë
+      -I, --include=FILE      ¥«¥¹¥¿¥Þ¥¤¥ºÍÑ¥Õ¥¡¥¤¥ë¤òÆÉ¤ß¹þ¤à
+      -O, --output-dir=DIR    ¥¤¥ó¥Ç¥Ã¥¯¥¹¤Î½ÐÎÏÀè¤ò»ØÄê¤¹¤ë
+      -T, --template-dir=DIR  NMZ.{head,foot,body}.* ¤Î¥Ç¥£¥ì¥¯¥È¥ê¤ò»ØÄê¤¹¤ë
+      -q, --quiet             ¥¤¥ó¥Ç¥Ã¥¯¥¹½èÍý¤ÎºÇÃæ¤Ë¥á¥Ã¥»¡¼¥¸¤òÉ½¼¨¤·¤Ê¤¤
+      -v, --version           ¥ô¥¡¡¼¥¸¥ç¥ó¤òÉ½¼¨¤¹¤ë
+      -V, --verbose           ¸ý¤ä¤«¤Þ¤·¤¤¥â¡¼¥É
+          --debug             ¥Ç¥Ð¥Ã¥°¥â¡¼¥É
+          --help              ¤³¤Î¥Ø¥ë¥×¤òÉ½¼¨¤¹¤ë
     
-    $B%P%0Js9p$O(B &lt;bug-namazu@namazu.org&gt; $B$X$I$&$>(B
+    ¥Ð¥°Êó¹ð¤Ï &lt;bug-namazu@namazu.org&gt; ¤Ø¤É¤¦¤¾
 </pre>
 <!-- mknmz-option -->
 
 
-<h3><a name="mknmzrc">mknmzrc$B$N@_Dj(B</a></h3>
+<h3><a name="mknmzrc">mknmzrc¤ÎÀßÄê</a></h3>
 <p>
-mknmzrc $B$*$h$S(B .mknmzrc $B$G$O$$$/$D$+$N@_Dj$,9T$($^$9!#(B
-mknmz $B$O(B
+mknmzrc ¤ª¤è¤Ó .mknmzrc ¤Ç¤Ï¤¤¤¯¤Ä¤«¤ÎÀßÄê¤¬¹Ô¤¨¤Þ¤¹¡£
+mknmz ¤Ï
 </p>
 
 <ol>
 <li><code>$(sysconfdir)/$(PACKAGE)/mknmzrc</code><br>
-$BDL>o$O(B /usr/local/etc/mknmz/mknmzrc
+ÄÌ¾ï¤Ï /usr/local/etc/mknmz/mknmzrc
 <li>~/.mknmzrc
-<li>-f, --config= $B%*%W%7%g%s$G;XDj$7$?(B mknmzrc
+<li>-f, --config= ¥ª¥×¥·¥ç¥ó¤Ç»ØÄê¤·¤¿ mknmzrc
 </ol>
 
 <p>
-$B$N=g$G@_Dj%U%!%$%k$rC5$7$FFI$_9~$_$^$9!#(B
+¤Î½ç¤ÇÀßÄê¥Õ¥¡¥¤¥ë¤òÃµ¤·¤ÆÆÉ¤ß¹þ¤ß¤Þ¤¹¡£
 </p>
 
 <p>
-$B%$%s%9%H!<%kD>8e$N>uBV$G$O(B 
-<code>$(sysconfdir)/$(PACKAGE)/mknmzrc-sample</code> $B$H$$$&(B
-$B%5%s%W%k%U%!%$%k$,MQ0U$5$l$F$$$^$9!#$3$l$r(B 
-<code>$(sysconfdir)/$(PACKAGE)/mknmzrc</code> $B$K%3%T!<$9$k!"(B
-$B$"$k$$$O<+J,$N%[!<%`%G%#%l%/%H%j$K(B ~/.mknmzrc $B$H$7$F%3%T!<$7(B
-$B$FMxMQ$7$^$9!#(B
+¥¤¥ó¥¹¥È¡¼¥ëÄ¾¸å¤Î¾õÂÖ¤Ç¤Ï 
+<code>$(sysconfdir)/$(PACKAGE)/mknmzrc-sample</code> ¤È¤¤¤¦
+¥µ¥ó¥×¥ë¥Õ¥¡¥¤¥ë¤¬ÍÑ°Õ¤µ¤ì¤Æ¤¤¤Þ¤¹¡£¤³¤ì¤ò 
+<code>$(sysconfdir)/$(PACKAGE)/mknmzrc</code> ¤Ë¥³¥Ô¡¼¤¹¤ë¡¢
+¤¢¤ë¤¤¤Ï¼«Ê¬¤Î¥Û¡¼¥à¥Ç¥£¥ì¥¯¥È¥ê¤Ë ~/.mknmzrc ¤È¤·¤Æ¥³¥Ô¡¼¤·
+¤ÆÍøÍÑ¤·¤Þ¤¹¡£
 </p>
 
 <p>
-mknmzrc $B$N@_Dj9`L\$N@bL@$O(B mknmzrc-sample $B%U%!%$%k$K%3%a%s%H(B
-$B$H$7$F=q$+$l$F$$$^$9!#(B
+mknmzrc ¤ÎÀßÄê¹àÌÜ¤ÎÀâÌÀ¤Ï mknmzrc-sample ¥Õ¥¡¥¤¥ë¤Ë¥³¥á¥ó¥È
+¤È¤·¤Æ½ñ¤«¤ì¤Æ¤¤¤Þ¤¹¡£
 </p>
 
 
-<h3><a name="doc-filter">$BJ8=q%U%#%k%?(B</a></h3>
+<h3><a name="doc-filter">Ê¸½ñ¥Õ¥£¥ë¥¿</a></h3>
 
 <p>
-mknmz $B$OBP>]%U%!%$%k$NJ8=q7A<0$r<+F0$GH=JL$7$F!"E,@Z$J%U%#%k(B
-$B%?=hM}$r9T$$$^$9!#$?$H$($P!"(B HTML$BJ8=q$G$O(B &lt;title&gt; $B$NCj(B
-$B=P$d!"(BHTML$B%?%0$N=|5n$r9T$$$^$9!#$3$N=hM}$O(B
-<code>$(datadir)/$(PACKAGE)/filter</code> $B$KCV$+$l$kJ8=q%U%#(B
-$B%k%?$K$h$C$F9T$o$l$^$9!#I8=`$GMQ0U$5$l$F$$$kJ8=q%U%#%k%?$O<!(B
-$B$NDL$j$G$9!#(B
+mknmz ¤ÏÂÐ¾Ý¥Õ¥¡¥¤¥ë¤ÎÊ¸½ñ·Á¼°¤ò¼«Æ°¤ÇÈ½ÊÌ¤·¤Æ¡¢Å¬ÀÚ¤Ê¥Õ¥£¥ë
+¥¿½èÍý¤ò¹Ô¤¤¤Þ¤¹¡£¤¿¤È¤¨¤Ð¡¢ HTMLÊ¸½ñ¤Ç¤Ï &lt;title&gt; ¤ÎÃê
+½Ð¤ä¡¢HTML¥¿¥°¤Î½üµî¤ò¹Ô¤¤¤Þ¤¹¡£¤³¤Î½èÍý¤Ï
+<code>$(datadir)/$(PACKAGE)/filter</code> ¤ËÃÖ¤«¤ì¤ëÊ¸½ñ¥Õ¥£
+¥ë¥¿¤Ë¤è¤Ã¤Æ¹Ô¤ï¤ì¤Þ¤¹¡£É¸½à¤ÇÍÑ°Õ¤µ¤ì¤Æ¤¤¤ëÊ¸½ñ¥Õ¥£¥ë¥¿¤Ï¼¡
+¤ÎÄÌ¤ê¤Ç¤¹¡£
 </p>
 
 <dl>
 <dt>gzip.pl
-<dd>gzip$B$G05=L$5$l$?%U%!%$%k$r07$&(B<br>
-<dd>$BI,<{IJ(B: <a href="http://www.gzip.org/">gzip</a> $B%3%^%s%I(B
-$B$^$?$O(B Compress::Zlib $B%b%8%e!<%k(B
+<dd>gzip¤Ç°µ½Ì¤µ¤ì¤¿¥Õ¥¡¥¤¥ë¤ò°·¤¦<br>
+<dd>É¬¼ûÉÊ: <a href="http://www.gzip.org/">gzip</a> ¥³¥Þ¥ó¥É
+¤Þ¤¿¤Ï Compress::Zlib ¥â¥¸¥å¡¼¥ë
 
 <dt>bzip2.pl
-<dd>bzip2$B$G05=L$5$l$?%U%!%$%k$r07$&(B
-<dd>$BI,<{IJ(B: <a
-href="http://sourceware.cygnus.com/bzip2/">bzip2</a> $B%3%^%s(B
-$B%I(B
+<dd>bzip2¤Ç°µ½Ì¤µ¤ì¤¿¥Õ¥¡¥¤¥ë¤ò°·¤¦
+<dd>É¬¼ûÉÊ: <a
+href="http://sourceware.cygnus.com/bzip2/">bzip2</a> ¥³¥Þ¥ó
+¥É
 
 <dt>compress.pl
-<dd>compress$B$G05=L$5$l$?%U%!%$%k$r07$&(B
-<dd>$BI,<{IJ(B: compress$B%3%^%s%I(B
+<dd>compress¤Ç°µ½Ì¤µ¤ì¤¿¥Õ¥¡¥¤¥ë¤ò°·¤¦
+<dd>É¬¼ûÉÊ: compress¥³¥Þ¥ó¥É
 
 <dt>hnf.pl
-<dd><a href="http://www.h14m.org/">$B%O%$%Q!<F|5-%7%9%F%`(B</a> $B$N%U%!(B
-$B%$%k$r07$&(B
-<dd>$BI,<{IJ(B: $B$J$7(B
-<dd>$BCm0U(B: hnf $B%U%#%k%?$OFC<l!#(B<a
-href="http://www.h14m.org/">Hyper NIKKI System Project</a>$B$+(B
-$B$i(B namazu_for_hns $B$rF~<j$9$kI,MW$,$"$k(B
+<dd><a href="http://www.h14m.org/">¥Ï¥¤¥Ñ¡¼Æüµ­¥·¥¹¥Æ¥à</a> ¤Î¥Õ¥¡
+¥¤¥ë¤ò°·¤¦
+<dd>É¬¼ûÉÊ: ¤Ê¤·
+<dd>Ãí°Õ: hnf ¥Õ¥£¥ë¥¿¤ÏÆÃ¼ì¡£<a
+href="http://www.h14m.org/">Hyper NIKKI System Project</a>¤«
+¤é namazu_for_hns ¤òÆþ¼ê¤¹¤ëÉ¬Í×¤¬¤¢¤ë
 
 <dt>html.pl
-<dd>HTML$BJ8=q$r07$&(B
-<dd>$BI,<{IJ(B: $B$J$7(B
+<dd>HTMLÊ¸½ñ¤ò°·¤¦
+<dd>É¬¼ûÉÊ: ¤Ê¤·
 
 <dt>ichitaro456.pl
-<dd>$B0lB@O:(B 4, 5, 6 $B$N%U%!%$%k$r07$&(B
-<dd>$BI,<{IJ(B: <a
+<dd>°ìÂÀÏº 4, 5, 6 ¤Î¥Õ¥¡¥¤¥ë¤ò°·¤¦
+<dd>É¬¼ûÉÊ: <a
 href="http://www.vector.co.jp/soft/dl/dos/writing/s0013972.html">JSTXT</a>
-<dd>$BCm0U(B: JSTXT
-$B$O(B Windows$BMQ$N%D!<%k$G$9!#(B
+<dd>Ãí°Õ: JSTXT
+¤Ï WindowsÍÑ¤Î¥Ä¡¼¥ë¤Ç¤¹¡£
 
 <dt>mailnews.pl
-<dd>Mail/News $B$N%U%!%$%k$r07$&(B
-<dd>$BI,<{IJ(B: $B$J$7(B
+<dd>Mail/News ¤Î¥Õ¥¡¥¤¥ë¤ò°·¤¦
+<dd>É¬¼ûÉÊ: ¤Ê¤·
 
 <dt>man.pl
-<dd>man $B$r07$&(B
-<dd>$BI,<{IJ(B: nroff, groff, jgroff
-<dd>$BCm0U(B: $BF|K\8l$N(B man $B$r07$&$K$O(B -T nippon $B$KBP1~$7$?(B jgroff $B$,I,MW(B
+<dd>man ¤ò°·¤¦
+<dd>É¬¼ûÉÊ: nroff, groff, jgroff
+<dd>Ãí°Õ: ÆüËÜ¸ì¤Î man ¤ò°·¤¦¤Ë¤Ï -T nippon ¤ËÂÐ±þ¤·¤¿ jgroff ¤¬É¬Í×
 
 <dt>mhonarc.pl
-<dd>MHonArc $B$N%U%!%$%k$r07$&(B
-<dd>$BI,<{IJ(B: $B$J$7(B
+<dd>MHonArc ¤Î¥Õ¥¡¥¤¥ë¤ò°·¤¦
+<dd>É¬¼ûÉÊ: ¤Ê¤·
 
 <dt>msword.pl
-<dd>Word$BJ8=q$r07$&(B
-<dd>$BI,<{IJ(B: <a href="http://www.wvWare.com/">wvWare</a>, 
+<dd>WordÊ¸½ñ¤ò°·¤¦
+<dd>É¬¼ûÉÊ: <a href="http://www.wvWare.com/">wvWare</a>, 
 <a href="http://www.ff.iij4u.or.jp/~nrt/lv/">lv</a>
 
 <dt>pdf.pl
-<dd>PDF$B%U%!%$%k$r07$&(B
-<dd>$BI,<{IJ(B: <a href="http://www.foolabs.com/xpdf/">xpdf</a>
-$B$KIUB0$N(B pdftotext$B%3%^%s%I(B
+<dd>PDF¥Õ¥¡¥¤¥ë¤ò°·¤¦
+<dd>É¬¼ûÉÊ: <a href="http://www.foolabs.com/xpdf/">xpdf</a>
+¤ËÉÕÂ°¤Î pdftotext¥³¥Þ¥ó¥É
 
 <dt>rfc.pl
-<dd>RFC$B$N%U%!%$%k$r07$&(B
-<dd>$BI,<{IJ(B: $B$J$7(B
+<dd>RFC¤Î¥Õ¥¡¥¤¥ë¤ò°·¤¦
+<dd>É¬¼ûÉÊ: ¤Ê¤·
 
 <dt>tex.pl
-<dd>TeX$B$N%U%!%$%k$r07$&(B
-<dd>$BI,<{IJ(B: <a
+<dd>TeX¤Î¥Õ¥¡¥¤¥ë¤ò°·¤¦
+<dd>É¬¼ûÉÊ: <a
 href="http://www.cs.purdue.edu/homes/trinkle/detex/">detex</a>
 </dl>
 
 <p>
-ole $B$+$i;O$^$kJ8=q%U%#%k%?$O(B Windows$B@lMQ$G$9!#(BOLE$B$NJ8=q%U%#(B
-$B%k%?$rMQ$$$k$K$O(B mknmz $B$r(B --ole $B%*%W%7%g%s$D$1$F<B9T$7$^$9!#(B
+ole ¤«¤é»Ï¤Þ¤ëÊ¸½ñ¥Õ¥£¥ë¥¿¤Ï WindowsÀìÍÑ¤Ç¤¹¡£OLE¤ÎÊ¸½ñ¥Õ¥£
+¥ë¥¿¤òÍÑ¤¤¤ë¤Ë¤Ï mknmz ¤ò --ole ¥ª¥×¥·¥ç¥ó¤Ä¤±¤Æ¼Â¹Ô¤·¤Þ¤¹¡£
 </p>
 
 <dl>
 <dt>oleexcel.pl
-<dd>Excel$B$N%U%!%$%k$r07$&(B
-<dd>$BI,<{IJ(B: Excel
+<dd>Excel¤Î¥Õ¥¡¥¤¥ë¤ò°·¤¦
+<dd>É¬¼ûÉÊ: Excel
 
 <dt>olemsword.pl
-<dd>Word$BJ8=q$r07$&(B
-<dd>$BI,<{IJ(B: Word
+<dd>WordÊ¸½ñ¤ò°·¤¦
+<dd>É¬¼ûÉÊ: Word
 
 <dt>olepowerpoint.pl
-<dd>Power Point $B$N%U%!%$%k$r07$&(B
-<dd>$BI,<{IJ(B: Power Point
+<dd>Power Point ¤Î¥Õ¥¡¥¤¥ë¤ò°·¤¦
+<dd>É¬¼ûÉÊ: Power Point
 </dl>
 
 
-<h2><a name="namazu">namazu$B%3%^%s%I(B</a></h2>
+<h2><a name="namazu">namazu¥³¥Þ¥ó¥É</a></h2>
 
-<h3><a name="namazu-option">namazu$B%3%^%s%I9T0z?t(B</a></h3>
+<h3><a name="namazu-option">namazu¥³¥Þ¥ó¥É¹Ô°ú¿ô</a></h3>
 
 <!-- namazu-option -->
 <pre>
-    namazu 1.9.15, Namazu $B$N8!:w%W%m%0%i%`(B
+    namazu 1.9.15, Namazu ¤Î¸¡º÷¥×¥í¥°¥é¥à
     
-    $B;H$$J}(B: namazu [options] &lt;query&gt; [index]...
-        -n, --max=NUM           $B0lEY$KI=<($9$k7o?t(B
-        -w, --whence=NUM        $BI=<($9$k8!:w7k2L$N@hF,HV9f(B
-        -l, --list              $B8!:w7k2L$r(B URI$B!&%Q%9L>$r%j%9%H$G=PNO$9$k(B
-        -s, --short             $BC;$$=q<0$G=PNO$9$k(B
-            --result=EXT        $B7k2LI=<($KMQ$$$k(B NMZ.result.EXT $B$r;XDj$9$k(B
-            --late              $B8!:w7k2L$r?7$7$$=g$K%=!<%H$9$k(B
-            --early             $B8!:w7k2L$r8E$$=g$K%=!<%H$9$k(B
-            --sort=METHOD       $B%=!<%HJ}K!$r;XDj$9$k(B (score, date, field:name)
-            --ascending         $B%=!<%H$NJ}8~$r>:=g$K$9$k(B ($BI8=`$O9_=g(B)
-        -a, --all               $B8!:w7k2L$r$9$Y$FI=<($9$k(B
-        -c, --count             $B%R%C%H?t$N$_$rI=<($9$k(B
-        -h, --html              HTML$B$G=PNO$9$k(B
-        -r, --no-references     $B;29M%R%C%H?t$rI=<($7$J$$(B
-        -H, --page              $B@h$N8!:w7k2L$X$N%j%s%/$rI=<($9$k(B ($B$[$\L50UL#(B) 
-        -F, --form              &lt;form&gt; ... &lt;/form&gt; $B$NItJ,$r6/@)E*$KI=<($9$k(B
-        -R, --no-replace        URI $B$NCV$-49$($r9T$o$J$$(B
-        -U, --no-decode-uri     URI encode $B$NI|85$r9T$o$J$$(B
-        -o, --output=FILE       $B;XDj$7$?%U%!%$%k$K8!:w7k2L$r=PNO$9$k(B
-        -f, --config=FILE       $B@_Dj%U%!%$%k$r;XDj$9$k(B
-        -C, --show-config       $B@_Dj$rI=<($9$k(B
-        -q, --quiet             $B8!:w7k2L0J30$N%a%C%;!<%8$rI=<($7$J$$(B
-        -v, --version           $B%t%!!<%8%g%s$rI=<($9$k(B
-            --help              $B$3$N%X%k%W$rI=<($9$k(B
+    »È¤¤Êý: namazu [options] &lt;query&gt; [index]...
+        -n, --max=NUM           °ìÅÙ¤ËÉ½¼¨¤¹¤ë·ï¿ô
+        -w, --whence=NUM        É½¼¨¤¹¤ë¸¡º÷·ë²Ì¤ÎÀèÆ¬ÈÖ¹æ
+        -l, --list              ¸¡º÷·ë²Ì¤ò URI¡¦¥Ñ¥¹Ì¾¤ò¥ê¥¹¥È¤Ç½ÐÎÏ¤¹¤ë
+        -s, --short             Ã»¤¤½ñ¼°¤Ç½ÐÎÏ¤¹¤ë
+            --result=EXT        ·ë²ÌÉ½¼¨¤ËÍÑ¤¤¤ë NMZ.result.EXT ¤ò»ØÄê¤¹¤ë
+            --late              ¸¡º÷·ë²Ì¤ò¿·¤·¤¤½ç¤Ë¥½¡¼¥È¤¹¤ë
+            --early             ¸¡º÷·ë²Ì¤ò¸Å¤¤½ç¤Ë¥½¡¼¥È¤¹¤ë
+            --sort=METHOD       ¥½¡¼¥ÈÊýË¡¤ò»ØÄê¤¹¤ë (score, date, field:name)
+            --ascending         ¥½¡¼¥È¤ÎÊý¸þ¤ò¾º½ç¤Ë¤¹¤ë (É¸½à¤Ï¹ß½ç)
+        -a, --all               ¸¡º÷·ë²Ì¤ò¤¹¤Ù¤ÆÉ½¼¨¤¹¤ë
+        -c, --count             ¥Ò¥Ã¥È¿ô¤Î¤ß¤òÉ½¼¨¤¹¤ë
+        -h, --html              HTML¤Ç½ÐÎÏ¤¹¤ë
+        -r, --no-references     »²¹Í¥Ò¥Ã¥È¿ô¤òÉ½¼¨¤·¤Ê¤¤
+        -H, --page              Àè¤Î¸¡º÷·ë²Ì¤Ø¤Î¥ê¥ó¥¯¤òÉ½¼¨¤¹¤ë (¤Û¤ÜÌµ°ÕÌ£) 
+        -F, --form              &lt;form&gt; ... &lt;/form&gt; ¤ÎÉôÊ¬¤ò¶¯À©Åª¤ËÉ½¼¨¤¹¤ë
+        -R, --no-replace        URI ¤ÎÃÖ¤­´¹¤¨¤ò¹Ô¤ï¤Ê¤¤
+        -U, --no-decode-uri     URI encode ¤ÎÉü¸µ¤ò¹Ô¤ï¤Ê¤¤
+        -o, --output=FILE       »ØÄê¤·¤¿¥Õ¥¡¥¤¥ë¤Ë¸¡º÷·ë²Ì¤ò½ÐÎÏ¤¹¤ë
+        -f, --config=FILE       ÀßÄê¥Õ¥¡¥¤¥ë¤ò»ØÄê¤¹¤ë
+        -C, --show-config       ÀßÄê¤òÉ½¼¨¤¹¤ë
+        -q, --quiet             ¸¡º÷·ë²Ì°Ê³°¤Î¥á¥Ã¥»¡¼¥¸¤òÉ½¼¨¤·¤Ê¤¤
+        -v, --version           ¥ô¥¡¡¼¥¸¥ç¥ó¤òÉ½¼¨¤¹¤ë
+            --help              ¤³¤Î¥Ø¥ë¥×¤òÉ½¼¨¤¹¤ë
     
-    $B%P%0Js9p$O(B &lt;bug-namazu@namazu.org&gt; $B$X$I$&$>(B
+    ¥Ð¥°Êó¹ð¤Ï &lt;bug-namazu@namazu.org&gt; ¤Ø¤É¤¦¤¾
 </pre>
 <!-- namazu-option -->
 
 <p>
-$B%3%^%s%I9T0z?t$N(B <code>[index dir]...</code> $B$K8!:wBP>]$N%$(B
-$B%s%G%C%/%9$r;XDj$7$^$9!#%$%s%G%C%/%9$N;XDj$r>JN,$9$k$H!"(B<a
-href="#default-index">$B4pK\%$%s%G%C%/%9(B</a>$B$,8!:wBP>]$H$J$j$^(B
-$B$9!#(B
+¥³¥Þ¥ó¥É¹Ô°ú¿ô¤Î <code>[index dir]...</code> ¤Ë¸¡º÷ÂÐ¾Ý¤Î¥¤
+¥ó¥Ç¥Ã¥¯¥¹¤ò»ØÄê¤·¤Þ¤¹¡£¥¤¥ó¥Ç¥Ã¥¯¥¹¤Î»ØÄê¤ò¾ÊÎ¬¤¹¤ë¤È¡¢<a
+href="#default-index">´ðËÜ¥¤¥ó¥Ç¥Ã¥¯¥¹</a>¤¬¸¡º÷ÂÐ¾Ý¤È¤Ê¤ê¤Þ
+¤¹¡£
 </p>
 
 <p>
-$B$^$?!"(B +foo, +bar $B$N$h$&$KF,$K(B <code>+</code> $B5-9f$r$D$1$k$H!"(B
-$B4pK\%$%s%G%C%/%9$+$i$NAjBP%Q%9$G%$%s%G%C%/%9$r;XDj$G$-$^$9!#(B
+¤Þ¤¿¡¢ +foo, +bar ¤Î¤è¤¦¤ËÆ¬¤Ë <code>+</code> µ­¹æ¤ò¤Ä¤±¤ë¤È¡¢
+´ðËÜ¥¤¥ó¥Ç¥Ã¥¯¥¹¤«¤é¤ÎÁêÂÐ¥Ñ¥¹¤Ç¥¤¥ó¥Ç¥Ã¥¯¥¹¤ò»ØÄê¤Ç¤­¤Þ¤¹¡£
 </p>
 
 <p>
-$B%3%^%s%I9T$+$i<B9T$7$?$H$-$OI8=`$G$O<AAG$J%F%-%9%H$H$7$F8!:w(B
-$B7k2L$r=PNO$7$^$9!#(BHTML $B$G=PNO$9$k>l9g$K$O(B -h $B%*%W%7%g%s$r;X(B
-$BDj$7$^$9!#(B
+¥³¥Þ¥ó¥É¹Ô¤«¤é¼Â¹Ô¤·¤¿¤È¤­¤ÏÉ¸½à¤Ç¤Ï¼ÁÁÇ¤Ê¥Æ¥­¥¹¥È¤È¤·¤Æ¸¡º÷
+·ë²Ì¤ò½ÐÎÏ¤·¤Þ¤¹¡£HTML ¤Ç½ÐÎÏ¤¹¤ë¾ì¹ç¤Ë¤Ï -h ¥ª¥×¥·¥ç¥ó¤ò»Ø
+Äê¤·¤Þ¤¹¡£
 </p>
 
 <p>
-$B8!:w7k2L$N(B 21 $B7oL\$+$i(B 40 $B7oL\$^$G$rI=<($5$;$?$$$H$-$O(B -n 20
--w 20 $B$H;XDj$7$^$9!#(B-w $B$NCM$,(B 21 $B$G$J$$$H$3$m$KCm0U$7$F$/$@(B
-$B$5$$!#(B
+¸¡º÷·ë²Ì¤Î 21 ·ïÌÜ¤«¤é 40 ·ïÌÜ¤Þ¤Ç¤òÉ½¼¨¤µ¤»¤¿¤¤¤È¤­¤Ï -n 20
+-w 20 ¤È»ØÄê¤·¤Þ¤¹¡£-w ¤ÎÃÍ¤¬ 21 ¤Ç¤Ê¤¤¤È¤³¤í¤ËÃí°Õ¤·¤Æ¤¯¤À
+¤µ¤¤¡£
 </p>
 
-<h3><a name="namazurc">namazurc$B$N@_Dj(B</a></h3>
+<h3><a name="namazurc">namazurc¤ÎÀßÄê</a></h3>
 <p>
-namazurc $B$*$h$S(B .namazurc $B$G$O$$$/$D$+$N@_Dj$,9T$($^$9!#(B
-namazu $B$O(B
+namazurc ¤ª¤è¤Ó .namazurc ¤Ç¤Ï¤¤¤¯¤Ä¤«¤ÎÀßÄê¤¬¹Ô¤¨¤Þ¤¹¡£
+namazu ¤Ï
 </p>
 
 <ol>
 <li><code>$(sysconfdir)/$(PACKAGE)/namazurc</code><br>
-$BDL>o$O(B /usr/local/etc/namazu/namazurc
+ÄÌ¾ï¤Ï /usr/local/etc/namazu/namazurc
 <li>~/.namazurc
-<li>-f, --config= $B%*%W%7%g%s$G;XDj$7$?(B namazurc
+<li>-f, --config= ¥ª¥×¥·¥ç¥ó¤Ç»ØÄê¤·¤¿ namazurc
 </ol>
 
 <p>
-$B$N=g$G@_Dj%U%!%$%k$rC5$7$FFI$_9~$_$^$9!#(B
+¤Î½ç¤ÇÀßÄê¥Õ¥¡¥¤¥ë¤òÃµ¤·¤ÆÆÉ¤ß¹þ¤ß¤Þ¤¹¡£
 </p>
 
 <p>
-$B%$%s%9%H!<%kD>8e$N>uBV$G$O(B 
-<code>$(sysconfdir)/$(PACKAGE)/namazurc-sample</code> $B$H$$$&(B
-$B%5%s%W%k%U%!%$%k$,MQ0U$5$l$F$$$^$9!#$3$l$r(B 
-<code>$(sysconfdir)/$(PACKAGE)/namazurc</code> $B$K%3%T!<$9$k!"(B
-$B$"$k$$$O<+J,$N%[!<%`%G%#%l%/%H%j$K(B ~/.namazurc $B$H$7$F%3%T!<(B
-$B$7$FMxMQ$7$^$9!#(B
+¥¤¥ó¥¹¥È¡¼¥ëÄ¾¸å¤Î¾õÂÖ¤Ç¤Ï 
+<code>$(sysconfdir)/$(PACKAGE)/namazurc-sample</code> ¤È¤¤¤¦
+¥µ¥ó¥×¥ë¥Õ¥¡¥¤¥ë¤¬ÍÑ°Õ¤µ¤ì¤Æ¤¤¤Þ¤¹¡£¤³¤ì¤ò 
+<code>$(sysconfdir)/$(PACKAGE)/namazurc</code> ¤Ë¥³¥Ô¡¼¤¹¤ë¡¢
+¤¢¤ë¤¤¤Ï¼«Ê¬¤Î¥Û¡¼¥à¥Ç¥£¥ì¥¯¥È¥ê¤Ë ~/.namazurc ¤È¤·¤Æ¥³¥Ô¡¼
+¤·¤ÆÍøÍÑ¤·¤Þ¤¹¡£
 </p>
 
 <p>
-namazurc $B$N@_Dj9`L\$N@bL@$O(B namazurc-sample $B%U%!%$%k$K%3%a%s%H(B
-$B$H$7$F=q$+$l$F$$$^$9!#(B
+namazurc ¤ÎÀßÄê¹àÌÜ¤ÎÀâÌÀ¤Ï namazurc-sample ¥Õ¥¡¥¤¥ë¤Ë¥³¥á¥ó¥È
+¤È¤·¤Æ½ñ¤«¤ì¤Æ¤¤¤Þ¤¹¡£
 </p>
 
-<h3><a name="default-index">$B4pK\%$%s%G%C%/%9(B</a></h3>
+<h3><a name="default-index">´ðËÜ¥¤¥ó¥Ç¥Ã¥¯¥¹</a></h3>
 
 <p>
-$B4pK\%$%s%G%C%/%9$O!"8!:w;~$K%$%s%G%C%/%9$N;XDj$,>JN,$5$l$?$H(B
-$B$-$K8!:wBP>]$H$J$k%$%s%G%C%/%9$G$9!#4pK\%$%s%G%C%/%9$O<!$N5,(B
-$BB'$K=>$$$^$9!#(B
+´ðËÜ¥¤¥ó¥Ç¥Ã¥¯¥¹¤Ï¡¢¸¡º÷»þ¤Ë¥¤¥ó¥Ç¥Ã¥¯¥¹¤Î»ØÄê¤¬¾ÊÎ¬¤µ¤ì¤¿¤È
+¤­¤Ë¸¡º÷ÂÐ¾Ý¤È¤Ê¤ë¥¤¥ó¥Ç¥Ã¥¯¥¹¤Ç¤¹¡£´ðËÜ¥¤¥ó¥Ç¥Ã¥¯¥¹¤Ï¼¡¤Îµ¬
+Â§¤Ë½¾¤¤¤Þ¤¹¡£
 </p>
 
 <ul>
-<li>$BI8=`$O(B $(localstatedir)/$(PACKAGE)/index<br>
-$BDL>o$O(B /usr/local/var/namazu/index)
-<li><a href="#namazurc">namazurc</a> $B$N(B Index$B;X<($GJQ992DG=(B
+<li>É¸½à¤Ï $(localstatedir)/$(PACKAGE)/index<br>
+ÄÌ¾ï¤Ï /usr/local/var/namazu/index)
+<li><a href="#namazurc">namazurc</a> ¤Î Index»Ø¼¨¤ÇÊÑ¹¹²ÄÇ½
 </ul>
 
 <p>
-CGI (<a href="#cgi">namazu.cgi</a>) $B$G$O!"(B<a
-href="#form-idxname">$B%$%s%G%C%/%9$rA*Br$9$k(B</a>$B:]$K4pK\%$%s(B
-$B%G%C%/%9$+$i$NAjBP%Q%9$G;XDj$7$^$9!#(B
+CGI (<a href="#cgi">namazu.cgi</a>) ¤Ç¤Ï¡¢<a
+href="#form-idxname">¥¤¥ó¥Ç¥Ã¥¯¥¹¤òÁªÂò¤¹¤ë</a>ºÝ¤Ë´ðËÜ¥¤¥ó
+¥Ç¥Ã¥¯¥¹¤«¤é¤ÎÁêÂÐ¥Ñ¥¹¤Ç»ØÄê¤·¤Þ¤¹¡£
 </p>
 
 <h2><a name="cgi">namazu.cgi</a></h2>
 
-<h3><a name="setting">namazu.cgi$B$N@_CV(B</a></h3>
+<h3><a name="setting">namazu.cgi¤ÎÀßÃÖ</a></h3>
 
 <p>
-CGI$B$H$7$F(B Namazu$B$rMxMQ$9$k$K$O!"(B namazu.cgi $B$rMQ$$$^$9!#(B
-namazu.cgi $B$O(B <code>$(libexecdir)</code> $B%G%#%l%/%H%j(B ($BDL>o(B
-$B$O(B/usr/local/libexec) $B$K%$%s%9%H!<%k$5$l$^$9!#(BCGI $B$r@_CV$7$?(B
-$B$$%G%#%l%/%H%j$K(B namazu.cgi$B$r%3%T!<$9$l$P@_CV40N;$G$9!#(B
+CGI¤È¤·¤Æ Namazu¤òÍøÍÑ¤¹¤ë¤Ë¤Ï¡¢ namazu.cgi ¤òÍÑ¤¤¤Þ¤¹¡£
+namazu.cgi ¤Ï <code>$(libexecdir)</code> ¥Ç¥£¥ì¥¯¥È¥ê (ÄÌ¾ï
+¤Ï/usr/local/libexec) ¤Ë¥¤¥ó¥¹¥È¡¼¥ë¤µ¤ì¤Þ¤¹¡£CGI ¤òÀßÃÖ¤·¤¿
+¤¤¥Ç¥£¥ì¥¯¥È¥ê¤Ë namazu.cgi¤ò¥³¥Ô¡¼¤¹¤ì¤ÐÀßÃÖ´°Î»¤Ç¤¹¡£
 </p>
 
-<h3><a name=".namazurc">.namazurc $B$N@_Dj(B</a></h3>
+<h3><a name=".namazurc">.namazurc ¤ÎÀßÄê</a></h3>
 
 <p>
-namazu.cgi $B$r@_CV$7$?%G%#%l%/%H%j$K(B .namazurc $B%U%!%$%k$rCV$/(B
-$B$H!"(BCGI$B$N<B9T;~$K@_Dj%U%!%$%k$H$7$FFI$_9~$^$l$^$9!#F|K\8l$G(B
-$BI=<($9$k$K$O<!$N@_Dj$,I,?\$G$9!#(B
+namazu.cgi ¤òÀßÃÖ¤·¤¿¥Ç¥£¥ì¥¯¥È¥ê¤Ë .namazurc ¥Õ¥¡¥¤¥ë¤òÃÖ¤¯
+¤È¡¢CGI¤Î¼Â¹Ô»þ¤ËÀßÄê¥Õ¥¡¥¤¥ë¤È¤·¤ÆÆÉ¤ß¹þ¤Þ¤ì¤Þ¤¹¡£ÆüËÜ¸ì¤Ç
+É½¼¨¤¹¤ë¤Ë¤Ï¼¡¤ÎÀßÄê¤¬É¬¿Ü¤Ç¤¹¡£
 </p>
 
 <p><code>Lang ja</code></p>
 
-<h3><a name="template">$B?w7A%U%!%$%k(B</a></h3>
+<h3><a name="template">¿÷·Á¥Õ¥¡¥¤¥ë</a></h3>
 
 <p>
-$B?w7A%U%!%$%k$O(B HTML$B$G$N7k2L=PNO$N=q<0$rDj5A$9$k%U%!%$%k72$G(B
-$B$9!#$=$l$>$l$NLr3d$O<!$NDL$j$G$9!#(B
+¿÷·Á¥Õ¥¡¥¤¥ë¤Ï HTML¤Ç¤Î·ë²Ì½ÐÎÏ¤Î½ñ¼°¤òÄêµÁ¤¹¤ë¥Õ¥¡¥¤¥ë·²¤Ç
+¤¹¡£¤½¤ì¤¾¤ì¤ÎÌò³ä¤Ï¼¡¤ÎÄÌ¤ê¤Ç¤¹¡£
 </p>
 
 <dl>
 <dt><a href="nmz.html#head">NMZ.head</a>
-<dd>$B8!:w7k2L$NKAF,ItJ,(B
+<dd>¸¡º÷·ë²Ì¤ÎËÁÆ¬ÉôÊ¬
 <dt><a href="nmz.html#foot">NMZ.foot</a>
-<dd>$B8!:w7k2L$NKvHxItJ,(B
+<dd>¸¡º÷·ë²Ì¤ÎËöÈøÉôÊ¬
 <dt><a href="nmz.html#body">NMZ.body</a>
-<dd>$B8!:w<0$N@bL@(B
+<dd>¸¡º÷¼°¤ÎÀâÌÀ
 <dt><a href="nmz.html#tips">NMZ.tips</a>
-<dd>$B8!:w$N%3%D(B
+<dd>¸¡º÷¤Î¥³¥Ä
 <dt><a href="nmz.html#result">NMZ.result</a>
-<dd>$B8!:w7k2L$NI=<(=q<0(B
+<dd>¸¡º÷·ë²Ì¤ÎÉ½¼¨½ñ¼°
 </dl>
 
 <p>
-$B$3$l$i$N%U%!%$%k$O8@8l$4$H$KJ,$+$l$F$$$^$9!#%U%!%$%kL>$NKvHx(B
-$B$,(B .ja $B$G=*$o$k$b$N$,F|K\8lMQ$G$9!#(B
+¤³¤ì¤é¤Î¥Õ¥¡¥¤¥ë¤Ï¸À¸ì¤´¤È¤ËÊ¬¤«¤ì¤Æ¤¤¤Þ¤¹¡£¥Õ¥¡¥¤¥ëÌ¾¤ÎËöÈø
+¤¬ .ja ¤Ç½ª¤ï¤ë¤â¤Î¤¬ÆüËÜ¸ìÍÑ¤Ç¤¹¡£
 </p>
 
-<h3><a name="form">form$B$N@_Dj(B</a></h3>
+<h3><a name="form">form¤ÎÀßÄê</a></h3>
 
 <p>
-form$B$O(B NMZ.head $B$KDj5A$5$l$F$$$^$9!#(BCGI$BJQ?t$O<!$NDL$j$G$9!#(B
+form¤Ï NMZ.head ¤ËÄêµÁ¤µ¤ì¤Æ¤¤¤Þ¤¹¡£CGIÊÑ¿ô¤Ï¼¡¤ÎÄÌ¤ê¤Ç¤¹¡£
 </p>
 
 <dl>
 <dt>query
-<dd>$B8!:w<0$N;XDj$G$9!#(B
+<dd>¸¡º÷¼°¤Î»ØÄê¤Ç¤¹¡£
 <dt>max
-<dd>$B0lEY$KI=<($9$k8!:w7k2L$N7o?t$r;XDj$7$^$9!#(B
+<dd>°ìÅÙ¤ËÉ½¼¨¤¹¤ë¸¡º÷·ë²Ì¤Î·ï¿ô¤ò»ØÄê¤·¤Þ¤¹¡£
 <dt>result
-<dd>$B8!:w7k2L$NI=<(7A<0$r;XDj$7$^$9!#(B
+<dd>¸¡º÷·ë²Ì¤ÎÉ½¼¨·Á¼°¤ò»ØÄê¤·¤Þ¤¹¡£
 <dt>sort
-<dd>$B%=!<%H$NJ}K!$r;XDj$7$^$9!#(B
+<dd>¥½¡¼¥È¤ÎÊýË¡¤ò»ØÄê¤·¤Þ¤¹¡£
 <dt>idxname
-<dd>$B8!:w$9$k%$%s%G%C%/%9L>$r;XDj$7$^$9!#(B
+<dd>¸¡º÷¤¹¤ë¥¤¥ó¥Ç¥Ã¥¯¥¹Ì¾¤ò»ØÄê¤·¤Þ¤¹¡£
 <dt>subquery
-<dd>$BJd=u$N8!:w<0$r;XDj$7$^$9!#(B
+<dd>Êä½õ¤Î¸¡º÷¼°¤ò»ØÄê¤·¤Þ¤¹¡£
 <dt>whence
-<dd>$B8!:w7k2L$r2?7oL\$+$iI=<($9$k$+$r;XDj$7$^$9!#(B
+<dd>¸¡º÷·ë²Ì¤ò²¿·ïÌÜ¤«¤éÉ½¼¨¤¹¤ë¤«¤ò»ØÄê¤·¤Þ¤¹¡£
 </dl>
 
-<h3><a name="form-idxname">$B%$%s%G%C%/%9$rA*Br$9$k(B</a></h3>
+<h3><a name="form-idxname">¥¤¥ó¥Ç¥Ã¥¯¥¹¤òÁªÂò¤¹¤ë</a></h3>
 
 <p>
-$B%V%i%&%6$+$i%$%s%G%C%/%9$rA*Br2DG=$K$9$k$K$O(B NMZ.head $B$K<!$N(B
-$B$h$&$K5-=R$7$^$9!#(B
+¥Ö¥é¥¦¥¶¤«¤é¥¤¥ó¥Ç¥Ã¥¯¥¹¤òÁªÂò²ÄÇ½¤Ë¤¹¤ë¤Ë¤Ï NMZ.head ¤Ë¼¡¤Î
+¤è¤¦¤Ëµ­½Ò¤·¤Þ¤¹¡£
 </p>
 
 <pre>
 
-      &lt;strong&gt;$B8!:wBP>](B:&lt;/strong&gt;
+      &lt;strong&gt;¸¡º÷ÂÐ¾Ý:&lt;/strong&gt;
       &lt;select name="idxname"&gt;
       &lt;option selected value="foo"&gt;foo
       &lt;option value="bar"&gt;bar
@@ -510,12 +510,12 @@ form$B$O(B NMZ.head $B$KDj5A$5$l$F$$$^$9!#(BCGI$BJQ?t$O<!$NDL$j$G$9!#(B
 </pre>
 
 <p>
-$B$3$NNc$G$O!"(B foo, bar, baz $B$NCf$+$i%$%s%G%C%/%9$r(B
-$BA*Br2DG=$K$7$F$$$^$9!#(Bfoo $B$,A*$P$l$?;~$O(B<a
-href="#default-index">$B4pK\%$%s%G%C%/%9(B</a> $B$N2<$K$"$k(B 
-foo $B%$%s%G%C%/%9$r8!:w$7$^$9!#4pK\%$%s%G%C%/%9$,(B 
-/usr/local/var/namazu/index $B$N>l9g$O<!$N%G%#%l%/%H%j9=@.$K$J(B
-$B$j$^$9!#(B
+¤³¤ÎÎã¤Ç¤Ï¡¢ foo, bar, baz ¤ÎÃæ¤«¤é¥¤¥ó¥Ç¥Ã¥¯¥¹¤ò
+ÁªÂò²ÄÇ½¤Ë¤·¤Æ¤¤¤Þ¤¹¡£foo ¤¬Áª¤Ð¤ì¤¿»þ¤Ï<a
+href="#default-index">´ðËÜ¥¤¥ó¥Ç¥Ã¥¯¥¹</a> ¤Î²¼¤Ë¤¢¤ë 
+foo ¥¤¥ó¥Ç¥Ã¥¯¥¹¤ò¸¡º÷¤·¤Þ¤¹¡£´ðËÜ¥¤¥ó¥Ç¥Ã¥¯¥¹¤¬ 
+/usr/local/var/namazu/index ¤Î¾ì¹ç¤Ï¼¡¤Î¥Ç¥£¥ì¥¯¥È¥ê¹½À®¤Ë¤Ê
+¤ê¤Þ¤¹¡£
 </p>
 
 <pre>
@@ -532,15 +532,15 @@ foo $B%$%s%G%C%/%9$r8!:w$7$^$9!#4pK\%$%s%G%C%/%9$,(B
 </pre>
 
 
-<h3><a name="form-idxnames">$BJ#?t$N%$%s%G%C%/%9$rA*Br$9$k(B</a></h3>
+<h3><a name="form-idxnames">Ê£¿ô¤Î¥¤¥ó¥Ç¥Ã¥¯¥¹¤òÁªÂò¤¹¤ë</a></h3>
 <p>
-$BJ#?t$N%$%s%G%C%/%9$r8!:w$9$k$O(B NMZ.head $B$K(B checkbox $B$N5-=R$r(B
-$B$7$^$9!#(B
+Ê£¿ô¤Î¥¤¥ó¥Ç¥Ã¥¯¥¹¤ò¸¡º÷¤¹¤ë¤Ï NMZ.head ¤Ë checkbox ¤Îµ­½Ò¤ò
+¤·¤Þ¤¹¡£
 </p>
 
 <pre>
 
-      &lt;strong&gt;$BBP>]%$%s%G%C%/%9(B&lt;/strong&gt;
+      &lt;strong&gt;ÂÐ¾Ý¥¤¥ó¥Ç¥Ã¥¯¥¹&lt;/strong&gt;
       &lt;ul&gt;
       &lt;li&gt;&lt;input type="checkbox" name="idxname" value="foo"&gt;foo
       &lt;li&gt;&lt;input type="checkbox" name="idxname" value="bar"&gt;bar
@@ -549,50 +549,50 @@ foo $B%$%s%G%C%/%9$r8!:w$7$^$9!#4pK\%$%s%G%C%/%9$,(B
 </pre>
 
 <p>
-$B$3$NNc$G$O(B foo, bar, baz $B$+$iJ#?tA*Br$7$F8!:w$G$-$^$9!#8!:w(B
-$B7k2L$K;H$o$l$k(B<a href="#template">$B?w7A%U%!%$%k(B</a>$B$O(B 
-namazurc $B$N(B Template$B;X<($G;XDj$7$?%G%#%l%/%H%j$N$b$N$,MQ$$$i(B
-$B$l$^$9!#(BTemplate $B$,;XDj$5$l$F$$$J$$$H$-$O!"<!$N5,B'$K=>$$$^(B
-$B$9!#(B
+¤³¤ÎÎã¤Ç¤Ï foo, bar, baz ¤«¤éÊ£¿ôÁªÂò¤·¤Æ¸¡º÷¤Ç¤­¤Þ¤¹¡£¸¡º÷
+·ë²Ì¤Ë»È¤ï¤ì¤ë<a href="#template">¿÷·Á¥Õ¥¡¥¤¥ë</a>¤Ï 
+namazurc ¤Î Template»Ø¼¨¤Ç»ØÄê¤·¤¿¥Ç¥£¥ì¥¯¥È¥ê¤Î¤â¤Î¤¬ÍÑ¤¤¤é
+¤ì¤Þ¤¹¡£Template ¤¬»ØÄê¤µ¤ì¤Æ¤¤¤Ê¤¤¤È¤­¤Ï¡¢¼¡¤Îµ¬Â§¤Ë½¾¤¤¤Þ
+¤¹¡£
 </p>
 
 <ul>
-<li>$BA*Br$5$l$?%$%s%G%C%/%9$,(B 1$B$D$N$H$-(B<br>
-$BA*Br$5$l$?%$%s%G%C%/%9$N?w7A%U%!%$%k$,MQ$$$i$l$k(B
-<li>$BA*Br$5$l$?%$%s%G%C%/%9$,J#?t$N$H$-(B<br>
-<a href="#default-index">$B4pK\%$%s%G%C%/%9(B</a>$B$N?w7A%U%!%$%k$,MQ$$$i$l$k(B
+<li>ÁªÂò¤µ¤ì¤¿¥¤¥ó¥Ç¥Ã¥¯¥¹¤¬ 1¤Ä¤Î¤È¤­<br>
+ÁªÂò¤µ¤ì¤¿¥¤¥ó¥Ç¥Ã¥¯¥¹¤Î¿÷·Á¥Õ¥¡¥¤¥ë¤¬ÍÑ¤¤¤é¤ì¤ë
+<li>ÁªÂò¤µ¤ì¤¿¥¤¥ó¥Ç¥Ã¥¯¥¹¤¬Ê£¿ô¤Î¤È¤­<br>
+<a href="#default-index">´ðËÜ¥¤¥ó¥Ç¥Ã¥¯¥¹</a>¤Î¿÷·Á¥Õ¥¡¥¤¥ë¤¬ÍÑ¤¤¤é¤ì¤ë
 </ul>
 
-<h3><a name="form-subquery">$BJd=u8!:w<0$NMxMQK!(B</a></h3>
+<h3><a name="form-subquery">Êä½õ¸¡º÷¼°¤ÎÍøÍÑË¡</a></h3>
 
 <p>
-$BMxMQ<T$,F~NO$9$k8!:w<0$H$OJL$K!"Jd=u8!:w<0$r@_Dj$G$-$^$9!#$?(B
-$B$H$($P<!$NNc$G$O!"8!:wBP>]$N%Z%$%8$rA*Br2DG=$K$7$F$$$^$9!#8!(B
-$B:wBP>]$N(B URI$B$r(B +uri: $B$G@)8B$7$F$$$k$H$3$m$,MW$G$9!#(B
+ÍøÍÑ¼Ô¤¬ÆþÎÏ¤¹¤ë¸¡º÷¼°¤È¤ÏÊÌ¤Ë¡¢Êä½õ¸¡º÷¼°¤òÀßÄê¤Ç¤­¤Þ¤¹¡£¤¿
+¤È¤¨¤Ð¼¡¤ÎÎã¤Ç¤Ï¡¢¸¡º÷ÂÐ¾Ý¤Î¥Ú¥¤¥¸¤òÁªÂò²ÄÇ½¤Ë¤·¤Æ¤¤¤Þ¤¹¡£¸¡
+º÷ÂÐ¾Ý¤Î URI¤ò +uri: ¤ÇÀ©¸Â¤·¤Æ¤¤¤ë¤È¤³¤í¤¬Í×¤Ç¤¹¡£
 </p>
 
 <pre>
 
-      &lt;strong&gt;$B8!:wBP>](B&lt;/strong&gt;
+      &lt;strong&gt;¸¡º÷ÂÐ¾Ý&lt;/strong&gt;
       &lt;select name="subquery"&gt;
-      &lt;option value=""&gt;$BA4BN(B
-      &lt;option value="+uri:/^http://foo.bar.jp/foo//"&gt;foo$B$N%Z%$%8(B
-      &lt;option value="+uri:/^http://foo.bar.jp/bar//"&gt;bar$B$N%Z%$%8(B
-      &lt;option value="+uri:/^http://foo.bar.jp/baz//"&gt;baz$B$N%Z%$%8(B
-      &lt;option value="+uri:/^http://foo.bar.jp/quux//"&gt;quux$B$N%Z%$%8(B
+      &lt;option value=""&gt;Á´ÂÎ
+      &lt;option value="+uri:/^http://foo.bar.jp/foo//"&gt;foo¤Î¥Ú¥¤¥¸
+      &lt;option value="+uri:/^http://foo.bar.jp/bar//"&gt;bar¤Î¥Ú¥¤¥¸
+      &lt;option value="+uri:/^http://foo.bar.jp/baz//"&gt;baz¤Î¥Ú¥¤¥¸
+      &lt;option value="+uri:/^http://foo.bar.jp/quux//"&gt;quux¤Î¥Ú¥¤¥¸
       &lt;/select&gt;
       &lt;input type="hidden" name="reference" value="off"&gt;
 </pre>
 
 
-<h2><a name="tools">$BIUB0%D!<%k(B</a></h2>
+<h2><a name="tools">ÉÕÂ°¥Ä¡¼¥ë</a></h2>
 
 <h3><a name="bnamazu">bnamazu</a></h3>
 
 <p>
-bnamazu $B$O(B Web$B%V%i%&%6$HO"7H$7$F8!:w$r9T$&%D!<%k$G$9!#8!:w7k(B
-$B2L$r(B Web$B%V%i%&%6(B ($BI8=`$G$O(B lynx) $B$KEO$7$F1\Mw$G$-$^$9!#%3%^(B
-$B%s%I9T$+$i<!$N$h$&$K<B9T$7$^$9!#(B
+bnamazu ¤Ï Web¥Ö¥é¥¦¥¶¤ÈÏ¢·È¤·¤Æ¸¡º÷¤ò¹Ô¤¦¥Ä¡¼¥ë¤Ç¤¹¡£¸¡º÷·ë
+²Ì¤ò Web¥Ö¥é¥¦¥¶ (É¸½à¤Ç¤Ï lynx) ¤ËÅÏ¤·¤Æ±ÜÍ÷¤Ç¤­¤Þ¤¹¡£¥³¥Þ
+¥ó¥É¹Ô¤«¤é¼¡¤Î¤è¤¦¤Ë¼Â¹Ô¤·¤Þ¤¹¡£
 </p>
 
 <p>
@@ -600,20 +600,20 @@ bnamazu $B$O(B Web$B%V%i%&%6$HO"7H$7$F8!:w$r9T$&%D!<%k$G$9!#8!:w7k(B
 </p>
 
 <p>
--b $B%*%W%7%g%s$G(B Web$B%V%i%&%6$r;XDj$G$-$^$9!#(B -n $B$O(BWeb$B%V%i%&%6(B
-$B$,(B netscape $B$N$H$-$N$_M-8z$J%*%W%7%g%s$G$9!#(B-n $B$r;XDj$9$k$H!"(B
-$B?7$7$$(B netscape $B$N?7$7$$%&%#%s%I%&$r3+$$$F8!:w7k2L$rI=<($7$^(B
-$B$9!#(B
+-b ¥ª¥×¥·¥ç¥ó¤Ç Web¥Ö¥é¥¦¥¶¤ò»ØÄê¤Ç¤­¤Þ¤¹¡£ -n ¤ÏWeb¥Ö¥é¥¦¥¶
+¤¬ netscape ¤Î¤È¤­¤Î¤ßÍ­¸ú¤Ê¥ª¥×¥·¥ç¥ó¤Ç¤¹¡£-n ¤ò»ØÄê¤¹¤ë¤È¡¢
+¿·¤·¤¤ netscape ¤Î¿·¤·¤¤¥¦¥£¥ó¥É¥¦¤ò³«¤¤¤Æ¸¡º÷·ë²Ì¤òÉ½¼¨¤·¤Þ
+¤¹¡£
 </p>
 
 
 <h3><a name="nmzgrep">nmzgrep</a></h3>
 
 <p>
-nmzgrep $B$O(B namazu $B%3%^%s%I$HO"7H$7$F(B egrep $B$r<B9T$9$k%D!<%k(B
-$B$G$9!#8!:w$K%R%C%H$7$?J8=q$KBP$7$F!"(Begrep$B$r$+$1$^$9!#(Begrep 
-$B$rE,MQ$9$k$3$H$G!"$=$N%-!<%o!<%I$,$I$N9T$K=P8=$9$k$+$,$o$+$j(B
-$B$^$9!#%3%^%s%I9T$+$i<!$N$h$&$K<B9T$7$^$9!#(B
+nmzgrep ¤Ï namazu ¥³¥Þ¥ó¥É¤ÈÏ¢·È¤·¤Æ egrep ¤ò¼Â¹Ô¤¹¤ë¥Ä¡¼¥ë
+¤Ç¤¹¡£¸¡º÷¤Ë¥Ò¥Ã¥È¤·¤¿Ê¸½ñ¤ËÂÐ¤·¤Æ¡¢egrep¤ò¤«¤±¤Þ¤¹¡£egrep 
+¤òÅ¬ÍÑ¤¹¤ë¤³¤È¤Ç¡¢¤½¤Î¥­¡¼¥ï¡¼¥É¤¬¤É¤Î¹Ô¤Ë½Ð¸½¤¹¤ë¤«¤¬¤ï¤«¤ê
+¤Þ¤¹¡£¥³¥Þ¥ó¥É¹Ô¤«¤é¼¡¤Î¤è¤¦¤Ë¼Â¹Ô¤·¤Þ¤¹¡£
 </p>
 
 <p>
@@ -622,9 +622,9 @@ nmzgrep $B$O(B namazu $B%3%^%s%I$HO"7H$7$F(B egrep $B$r<B9T$9$k%D!<%k(B
 
 
 <p>
-$B$?$H$($P!"(B ~/Namazu/foobar $B$KCV$+$l$F$$$k%$%s%G%C%/%9$KBP$7$F(B
-foo $B$G8!:w$7!"%R%C%H$7$?J8=q$KBP$7$F$5$i$K(B egrep $B$r$+$1$k$K(B
-$B$O!"<!$N$h$&$K<B9T$7$^$9!#(B
+¤¿¤È¤¨¤Ð¡¢ ~/Namazu/foobar ¤ËÃÖ¤«¤ì¤Æ¤¤¤ë¥¤¥ó¥Ç¥Ã¥¯¥¹¤ËÂÐ¤·¤Æ
+foo ¤Ç¸¡º÷¤·¡¢¥Ò¥Ã¥È¤·¤¿Ê¸½ñ¤ËÂÐ¤·¤Æ¤µ¤é¤Ë egrep ¤ò¤«¤±¤ë¤Ë
+¤Ï¡¢¼¡¤Î¤è¤¦¤Ë¼Â¹Ô¤·¤Þ¤¹¡£
 </p>
 
 <p>
@@ -634,10 +634,10 @@ foo $B$G8!:w$7!"%R%C%H$7$?J8=q$KBP$7$F$5$i$K(B egrep $B$r$+$1$k$K(B
 <h3><a name="gcnmz">gcnmz</a></h3>
 
 <p>
-$BJ8=q$N99?7!&:o=|$rH<$&%$%s%G%C%/%9$N99?7$r7+$jJV$7$F$$$/$H!"(B
-$B%$%s%G%C%/%9Fb$KITMW$J%G!<%?$,N/$^$C$F$$$-$^$9!#(Bgcnmz $B$O$3$N(B
-$BITMW$J%G!<%?$r:o=|$9$k%D!<%k$G$9!#%3%^%s%I9T$+$i<!$N$h$&$K<B(B
-$B9T$7$^$9!#(B
+Ê¸½ñ¤Î¹¹¿·¡¦ºï½ü¤òÈ¼¤¦¥¤¥ó¥Ç¥Ã¥¯¥¹¤Î¹¹¿·¤ò·«¤êÊÖ¤·¤Æ¤¤¤¯¤È¡¢
+¥¤¥ó¥Ç¥Ã¥¯¥¹Æâ¤ËÉÔÍ×¤Ê¥Ç¡¼¥¿¤¬Î¯¤Þ¤Ã¤Æ¤¤¤­¤Þ¤¹¡£gcnmz ¤Ï¤³¤Î
+ÉÔÍ×¤Ê¥Ç¡¼¥¿¤òºï½ü¤¹¤ë¥Ä¡¼¥ë¤Ç¤¹¡£¥³¥Þ¥ó¥É¹Ô¤«¤é¼¡¤Î¤è¤¦¤Ë¼Â
+¹Ô¤·¤Þ¤¹¡£
 </p>
 
 <p>
@@ -645,8 +645,8 @@ foo $B$G8!:w$7!"%R%C%H$7$?J8=q$KBP$7$F$5$i$K(B egrep $B$r$+$1$k$K(B
 </p>
 
 <p>
-$B$?$H$($P!"(B ~/Namazu/foobar $B$KCV$+$l$F$$$k%$%s%G%C%/%9$r%4%_A]=|(B
-$B$9$k$J$i!"<!$N$h$&$K<B9T$7$^$9!#(B
+¤¿¤È¤¨¤Ð¡¢ ~/Namazu/foobar ¤ËÃÖ¤«¤ì¤Æ¤¤¤ë¥¤¥ó¥Ç¥Ã¥¯¥¹¤ò¥´¥ßÁÝ½ü
+¤¹¤ë¤Ê¤é¡¢¼¡¤Î¤è¤¦¤Ë¼Â¹Ô¤·¤Þ¤¹¡£
 </p>
 
 <p>
@@ -656,8 +656,8 @@ foo $B$G8!:w$7!"%R%C%H$7$?J8=q$KBP$7$F$5$i$K(B egrep $B$r$+$1$k$K(B
 <h3><a name="mailutime">mailutime</a></h3>
 
 <p>
-mailutime $B$O(B Mail/News $B$N%U%!%$%k$N%?%$%`%9%?%s%W$r(B Date: $B%X%C(B
-$B%@$K9g$o$;$k%D!<%k$G$9!#%3%^%s%I9T$+$i<!$N$h$&$K<B9T$7$^$9!#(B
+mailutime ¤Ï Mail/News ¤Î¥Õ¥¡¥¤¥ë¤Î¥¿¥¤¥à¥¹¥¿¥ó¥×¤ò Date: ¥Ø¥Ã
+¥À¤Ë¹ç¤ï¤»¤ë¥Ä¡¼¥ë¤Ç¤¹¡£¥³¥Þ¥ó¥É¹Ô¤«¤é¼¡¤Î¤è¤¦¤Ë¼Â¹Ô¤·¤Þ¤¹¡£
 </p>
 
 <p>
@@ -665,8 +665,8 @@ mailutime $B$O(B Mail/News $B$N%U%!%$%k$N%?%$%`%9%?%s%W$r(B Date: $B%X%C(B
 </p>
 
 <p>
-$B$?$H$($P!"(B ~/Mail/ml/foobar $B$KCV$+$l$F$$$k%a%$%k$N%?%$%`%9%?(B
-$B%s%W$rJQ99$9$k$J$i!"<!$N$h$&$K<B9T$7$^$9!#(B
+¤¿¤È¤¨¤Ð¡¢ ~/Mail/ml/foobar ¤ËÃÖ¤«¤ì¤Æ¤¤¤ë¥á¥¤¥ë¤Î¥¿¥¤¥à¥¹¥¿
+¥ó¥×¤òÊÑ¹¹¤¹¤ë¤Ê¤é¡¢¼¡¤Î¤è¤¦¤Ë¼Â¹Ô¤·¤Þ¤¹¡£
 </p>
 
 <p>
@@ -677,8 +677,8 @@ mailutime $B$O(B Mail/News $B$N%U%!%$%k$N%?%$%`%9%?%s%W$r(B Date: $B%X%C(B
 <h3><a name="vfnmz">vfnmz</a></h3>
 
 <p>
-vfnmz $B$O8!:w7k2L$NI=<($r(B preview $B$9$k%D!<%k$G$9!#%3%^%s%I9T(B
-$B$+$i<!$N$h$&$K<B9T$7$^$9!#(B
+vfnmz ¤Ï¸¡º÷·ë²Ì¤ÎÉ½¼¨¤ò preview ¤¹¤ë¥Ä¡¼¥ë¤Ç¤¹¡£¥³¥Þ¥ó¥É¹Ô
+¤«¤é¼¡¤Î¤è¤¦¤Ë¼Â¹Ô¤·¤Þ¤¹¡£
 </p>
 
 <p>
@@ -686,20 +686,20 @@ vfnmz $B$O8!:w7k2L$NI=<($r(B preview $B$9$k%D!<%k$G$9!#%3%^%s%I9T(B
 </p>
 
 <p>
-$B$?$H$($P!"(B ~/Namazu/foobar $B$KCV$+$l$F$$$k%$%s%G%C%/%9$r(B preview 
-$B$9$k$J$i!"<!$N$h$&$K<B9T$7$^$9!#(B
+¤¿¤È¤¨¤Ð¡¢ ~/Namazu/foobar ¤ËÃÖ¤«¤ì¤Æ¤¤¤ë¥¤¥ó¥Ç¥Ã¥¯¥¹¤ò preview 
+¤¹¤ë¤Ê¤é¡¢¼¡¤Î¤è¤¦¤Ë¼Â¹Ô¤·¤Þ¤¹¡£
 </p>
 
 <p>
 <code>% vfnmz ~/Namazu/foobar &gt; foobar.html</code><br>
-<code>% lynx foobar.html # $B=PNO$r%V%i%&%6$G1\Mw$9$k(B</code>
+<code>% lynx foobar.html # ½ÐÎÏ¤ò¥Ö¥é¥¦¥¶¤Ç±ÜÍ÷¤¹¤ë</code>
 </p>
 
 <h3><a name="rfnmz">rfnmz</a></h3>
 
 <p>
-rfnmz $B$O(B NMZ.field.*.i $B$r:F9=C[$9$k%D!<%k$G$9!#%3%^%s%I9T$+(B
-$B$i<!$N$h$&$K<B9T$7$^$9!#(B
+rfnmz ¤Ï NMZ.field.*.i ¤òºÆ¹½ÃÛ¤¹¤ë¥Ä¡¼¥ë¤Ç¤¹¡£¥³¥Þ¥ó¥É¹Ô¤«
+¤é¼¡¤Î¤è¤¦¤Ë¼Â¹Ô¤·¤Þ¤¹¡£
 </p>
 
 <p>
@@ -707,8 +707,8 @@ rfnmz $B$O(B NMZ.field.*.i $B$r:F9=C[$9$k%D!<%k$G$9!#%3%^%s%I9T$+(B
 </p>
 
 <p>
-$B$?$H$($P!"(B ~/Namazu/foobar $B$KCV$+$l$F$$$k(B NMZ.field.*.i $B$r:F(B
-$B9=C[$9$k$J$i!"<!$N$h$&$K<B9T$7$^$9!#(B
+¤¿¤È¤¨¤Ð¡¢ ~/Namazu/foobar ¤ËÃÖ¤«¤ì¤Æ¤¤¤ë NMZ.field.*.i ¤òºÆ
+¹½ÃÛ¤¹¤ë¤Ê¤é¡¢¼¡¤Î¤è¤¦¤Ë¼Â¹Ô¤·¤Þ¤¹¡£
 </p>
 
 <p>
@@ -716,72 +716,72 @@ rfnmz $B$O(B NMZ.field.*.i $B$r:F9=C[$9$k%D!<%k$G$9!#%3%^%s%I9T$+(B
 </p>
 
 <!-- query -->
-<h2><a name="query">$B8!:w<0(B</a></h2>
+<h2><a name="query">¸¡º÷¼°</a></h2>
 
-<h3><a name="query-term">$BC10lC18l8!:w(B</a></h3>
+<h3><a name="query-term">Ã±°ìÃ±¸ì¸¡º÷</a></h3>
 <p>
-$BD4$Y$?$$C18l$r0l$D;XDj$9$k$@$1$N$b$C$H$b4pK\E*$J8!:w<jK!$G$9!#(B
-$BNc(B: 
+Ä´¤Ù¤¿¤¤Ã±¸ì¤ò°ì¤Ä»ØÄê¤¹¤ë¤À¤±¤Î¤â¤Ã¤È¤â´ðËÜÅª¤Ê¸¡º÷¼êË¡¤Ç¤¹¡£
+Îã: 
 </p>
 
 <p class="example">
 namazu
 </p>
 
-<h3><a name="query-and">AND$B8!:w(B</a></h3> 
+<h3><a name="query-and">AND¸¡º÷</a></h3> 
 
 <p>
-$B$"$kC18l$H$"$kC18l$NN>J}$r4^$`J8=q$r8!:w$7$^$9!#8!:w7k2L$r9J(B
-$B$j9~$`$N$KM-8z$G$9!#(B3$B$D0J>e$NC18l$r;XDj$9$k$3$H$b2DG=$G$9!#(B
-$BC18l$HC18l$N4V$K(B <code class="operator">and</code> $B$rA^$_$^$9!#Nc(B:
+¤¢¤ëÃ±¸ì¤È¤¢¤ëÃ±¸ì¤ÎÎ¾Êý¤ò´Þ¤àÊ¸½ñ¤ò¸¡º÷¤·¤Þ¤¹¡£¸¡º÷·ë²Ì¤ò¹Ê
+¤ê¹þ¤à¤Î¤ËÍ­¸ú¤Ç¤¹¡£3¤Ä°Ê¾å¤ÎÃ±¸ì¤ò»ØÄê¤¹¤ë¤³¤È¤â²ÄÇ½¤Ç¤¹¡£
+Ã±¸ì¤ÈÃ±¸ì¤Î´Ö¤Ë <code class="operator">and</code> ¤òÁÞ¤ß¤Þ¤¹¡£Îã:
 </p>
 
 <p class="example">Linux and Netscape</p>
 
 <p>
-<code class="operator">and</code> $B$O>JN,$G$-$^$9!#C18l$r6uGr$G6h@Z$C$FMeNs$9(B
-$B$k$H$=$l$i$N8l$9$Y$F$r4^$`J8=q$r(BAND$B8!:w$7$^$9!#(B
+<code class="operator">and</code> ¤Ï¾ÊÎ¬¤Ç¤­¤Þ¤¹¡£Ã±¸ì¤ò¶õÇò¤Ç¶èÀÚ¤Ã¤ÆÍåÎó¤¹
+¤ë¤È¤½¤ì¤é¤Î¸ì¤¹¤Ù¤Æ¤ò´Þ¤àÊ¸½ñ¤òAND¸¡º÷¤·¤Þ¤¹¡£
 </p>
 
-<h3><a name="query-or">OR$B8!:w(B</a></h3>
+<h3><a name="query-or">OR¸¡º÷</a></h3>
 <p>
-$B$"$kC18l$H$"$kC18l$N$I$A$i$+$r4^$`J8=q$r8!:w$7$^$9!#(B3$B$D0J>e(B
-$B$NC18l$r;XDj$9$k$3$H$b2DG=$G$9!#C18l$HC18l$N4V$K(B 
-<code class="operator">or</code> $B$rA^$_$^$9!#Nc(B: 
+¤¢¤ëÃ±¸ì¤È¤¢¤ëÃ±¸ì¤Î¤É¤Á¤é¤«¤ò´Þ¤àÊ¸½ñ¤ò¸¡º÷¤·¤Þ¤¹¡£3¤Ä°Ê¾å
+¤ÎÃ±¸ì¤ò»ØÄê¤¹¤ë¤³¤È¤â²ÄÇ½¤Ç¤¹¡£Ã±¸ì¤ÈÃ±¸ì¤Î´Ö¤Ë 
+<code class="operator">or</code> ¤òÁÞ¤ß¤Þ¤¹¡£Îã: 
 </p>
 
 <p class="example">
 Linux or FreeBSD
 </p>
 
-<h3><a name="query-not">NOT$B8!:w(B</a></h3>
+<h3><a name="query-not">NOT¸¡º÷</a></h3>
 <p>
-$B$"$kC18l$r4^$_!"$"$kC18l$r4^$^$J$$J8=q$r8!:w$7$^$9!#(B3$B$D0J>e(B
-$B$NC18l$r;XDj$9$k$3$H$b2DG=$G$9!#C18l$HC18l$N4V$K(B 
-<code class="operator">not</code> $B$rA^$_$^$9!#Nc(B: 
+¤¢¤ëÃ±¸ì¤ò´Þ¤ß¡¢¤¢¤ëÃ±¸ì¤ò´Þ¤Þ¤Ê¤¤Ê¸½ñ¤ò¸¡º÷¤·¤Þ¤¹¡£3¤Ä°Ê¾å
+¤ÎÃ±¸ì¤ò»ØÄê¤¹¤ë¤³¤È¤â²ÄÇ½¤Ç¤¹¡£Ã±¸ì¤ÈÃ±¸ì¤Î´Ö¤Ë 
+<code class="operator">not</code> ¤òÁÞ¤ß¤Þ¤¹¡£Îã: 
 </p>
 
 <p class="example">
 Linux not UNIX
 </p>
 
-<h3><a name="query-grouping">$B%0%k!<%W2=(B</a></h3>
+<h3><a name="query-grouping">¥°¥ë¡¼¥×²½</a></h3>
 <p>
-AND$B8!:w!"(BOR$B8!:w!"(BNOT$B8!:w$r3g8L$G%0%k!<%W2=$G$-$^$9!#3g8L$NN>(B
-$BNY$K$O6uGr$rF~$l$kI,MW$,$"$j$^$9!#Nc(B:
+AND¸¡º÷¡¢OR¸¡º÷¡¢NOT¸¡º÷¤ò³ç¸Ì¤Ç¥°¥ë¡¼¥×²½¤Ç¤­¤Þ¤¹¡£³ç¸Ì¤ÎÎ¾
+ÎÙ¤Ë¤Ï¶õÇò¤òÆþ¤ì¤ëÉ¬Í×¤¬¤¢¤ê¤Þ¤¹¡£Îã:
 </p>
 
 <p class="example">
 ( Linux or FreeBSD ) and Netscape not Windows
 </p>
 
-<h3><a name="query-phrase">$B%U%l%$%:8!:w(B</a></h3>
+<h3><a name="query-phrase">¥Õ¥ì¥¤¥º¸¡º÷</a></h3>
 <p>
-2$B8l0J>e$+$i$J$kJ#9g8l$r8!:w$7$^$9!#(B <code
-class="operator">"..."</code> $B$H(B2$B=E0zMQId$G!"$"$k$$$O(B <code
-class="operator">{...}</code> $B$HCf3g8L$G0O$_$^$9!#(BNamazu$B$N%U(B
-$B%l%$%:8!:w$O@:EY$,(B 100 % $B$G$O$J$$$?$a!"$H$-$I$-8m$k$3$H$,$"(B
-$B$j$^$9!#Nc(B: </p>
+2¸ì°Ê¾å¤«¤é¤Ê¤ëÊ£¹ç¸ì¤ò¸¡º÷¤·¤Þ¤¹¡£ <code
+class="operator">"..."</code> ¤È2½Å°úÍÑÉä¤Ç¡¢¤¢¤ë¤¤¤Ï <code
+class="operator">{...}</code> ¤ÈÃæ³ç¸Ì¤Ç°Ï¤ß¤Þ¤¹¡£Namazu¤Î¥Õ
+¥ì¥¤¥º¸¡º÷¤ÏÀºÅÙ¤¬ 100 % ¤Ç¤Ï¤Ê¤¤¤¿¤á¡¢¤È¤­¤É¤­¸í¤ë¤³¤È¤¬¤¢
+¤ê¤Þ¤¹¡£Îã: </p>
 
 <p class="example">
 {GNU Emacs}
@@ -789,94 +789,94 @@ class="operator">{...}</code> $B$HCf3g8L$G0O$_$^$9!#(BNamazu$B$N%U(B
 
 <!-- foo
 <p>
-Tknamazu $B$*$h$S(B namazu.el $B$+$i8!:w$9$k$H$-$OI,$:8e<T$G;XDj$7$^$9!#(B
+Tknamazu ¤ª¤è¤Ó namazu.el ¤«¤é¸¡º÷¤¹¤ë¤È¤­¤ÏÉ¬¤º¸å¼Ô¤Ç»ØÄê¤·¤Þ¤¹¡£
 </p>
 -->
 
-<h3><a name="query-substring">$BItJ,0lCW8!:w(B</a></h3>
+<h3><a name="query-substring">ÉôÊ¬°ìÃ×¸¡º÷</a></h3>
 <p>
-$BItJ,0lCW8!:w$K$OA0J}0lCW!"Cf4V0lCW!"8eJ}0lCW$N(B 3$B<oN`$,$"$j$^$9!#(B
+ÉôÊ¬°ìÃ×¸¡º÷¤Ë¤ÏÁ°Êý°ìÃ×¡¢Ãæ´Ö°ìÃ×¡¢¸åÊý°ìÃ×¤Î 3¼ïÎà¤¬¤¢¤ê¤Þ¤¹¡£
 </p>
 
 <dl> 
-<dt>$BA0J}0lCW8!:w(B
+<dt>Á°Êý°ìÃ×¸¡º÷
 <dd><code class="example">inter*</code>
-(<code>inter</code> $B$+$i;O$^$kC18l$r4^$`J8=q$r8!:w(B)
-<dt>$BCf4V0lCW8!:w(B
+(<code>inter</code> ¤«¤é»Ï¤Þ¤ëÃ±¸ì¤ò´Þ¤àÊ¸½ñ¤ò¸¡º÷)
+<dt>Ãæ´Ö°ìÃ×¸¡º÷
 <dd><code class="example">*text*</code>
-(<code>text</code> $B$rFbJq$9$kC18l$r4^$`J8=q$r8!:w(B)
-<dt>$B8eJ}0lCW8!:w(B
+(<code>text</code> ¤òÆâÊñ¤¹¤ëÃ±¸ì¤ò´Þ¤àÊ¸½ñ¤ò¸¡º÷)
+<dt>¸åÊý°ìÃ×¸¡º÷
 <dd><code class="example">*net</code>
-(<code>net</code> $B$G=*$o$kC18l$r4^$`J8=q$r8!:w(B)
+(<code>net</code> ¤Ç½ª¤ï¤ëÃ±¸ì¤ò´Þ¤àÊ¸½ñ¤ò¸¡º÷)
 </dl>
 
 
-<h3><a name="query-regex">$B@55,I=8=8!:w(B</a></h3>
+<h3><a name="query-regex">Àµµ¬É½¸½¸¡º÷</a></h3>
 
 <p>
-$B8!:w$9$k%-!<%o!<%I$r@55,I=8=$G;XDj$7$^$9!#@55,I=8=$O(B 
-<code class="operator">/.../</code> $B$N$h$&$K%9%i%C%7%e5-9f$G0O$_$^$9!#@55,I=(B
-$B8=$N%(%s%8%s$K$O(B<a
-href="http://www.ruby-lang.org/">Ruby</a>$B$N%3!<%I$rMxMQ(B
-$B$7$F$$$^$9!#@55,I=8=$N=q<0$O(B<a
-href="http://www.perl.com/">Perl</a>$B$H$[$\F1$8$G$9!#(B $BNc(B:
+¸¡º÷¤¹¤ë¥­¡¼¥ï¡¼¥É¤òÀµµ¬É½¸½¤Ç»ØÄê¤·¤Þ¤¹¡£Àµµ¬É½¸½¤Ï 
+<code class="operator">/.../</code> ¤Î¤è¤¦¤Ë¥¹¥é¥Ã¥·¥åµ­¹æ¤Ç°Ï¤ß¤Þ¤¹¡£Àµµ¬É½
+¸½¤Î¥¨¥ó¥¸¥ó¤Ë¤Ï<a
+href="http://www.ruby-lang.org/">Ruby</a>¤Î¥³¡¼¥É¤òÍøÍÑ
+¤·¤Æ¤¤¤Þ¤¹¡£Àµµ¬É½¸½¤Î½ñ¼°¤Ï<a
+href="http://www.perl.com/">Perl</a>¤È¤Û¤ÜÆ±¤¸¤Ç¤¹¡£ Îã:
 </p>
 
 <p class="example">
-/$B%$%s%?!<(B?$B%U%'(B[$B%$!<(B]$B%9(B/
+/¥¤¥ó¥¿¡¼?¥Õ¥§[¥¤¡¼]¥¹/
 </p>
 
 
-<h3><a name="query-field">$B%U%#!<%k%I;XDj$N8!:w(B</a></h3>
+<h3><a name="query-field">¥Õ¥£¡¼¥ë¥É»ØÄê¤Î¸¡º÷</a></h3>
 <p>
 <code>Subject:</code>, <code>From:</code>,
-<code>Message-Id:</code> $B$H$$$C$?%U%#!<%k%I$r;XDj$7$F8!(B
-$B:w$9$k<jK!$G$9!#FC$K(BMail/News $B$N%U%!%$%k$r07$&:]$K8z2L$rH/4x(B
-$B$7$^$9!#Nc(B:
+<code>Message-Id:</code> ¤È¤¤¤Ã¤¿¥Õ¥£¡¼¥ë¥É¤ò»ØÄê¤·¤Æ¸¡
+º÷¤¹¤ë¼êË¡¤Ç¤¹¡£ÆÃ¤ËMail/News ¤Î¥Õ¥¡¥¤¥ë¤ò°·¤¦ºÝ¤Ë¸ú²Ì¤òÈ¯´ø
+¤·¤Þ¤¹¡£Îã:
 </p>
 
 <ul>
 <li><code class="example">+subject:Linux</code><br>
-(Subject: $B$K(B <code>Linux</code>$B$,4^$^$l$kJ8=q(B)
+(Subject: ¤Ë <code>Linux</code>¤¬´Þ¤Þ¤ì¤ëÊ¸½ñ)
 <li><code class="example">+subject:"GNU Emacs"</code><br>
-(Subject: $B$K(B <code>GNU Emacs</code>$B$,4^$^$l$kJ8=q(B)
+(Subject: ¤Ë <code>GNU Emacs</code>¤¬´Þ¤Þ¤ì¤ëÊ¸½ñ)
 <li><code class="example">+from:foo@bar.jp</code><br>
-(From: $B$K(B <code>foo@bar.jp</code> $B$,4^$^$l$kJ8=q(B)
+(From: ¤Ë <code>foo@bar.jp</code> ¤¬´Þ¤Þ¤ì¤ëÊ¸½ñ)
 <li><code class="example">+message-id:&lt;199801240555.OAA18737@foo.bar.jp&gt;</code><br>
-(Message-Id $B$r;XDj(B)
+(Message-Id ¤ò»ØÄê)
 </ul>
 
-<h3><a name="query-notes">$BFC5-;v9`(B</a></h3>
+<h3><a name="query-notes">ÆÃµ­»ö¹à</a></h3>
 
 <ul>
-<li>$B$$$:$l$N8!:wJ}K!$G$b%"%k%U%!%Y%C%H$NBgJ8;z!&>.J8;z$N6hJL(B
-$B$O$7$^$;$s!#(B
+<li>¤¤¤º¤ì¤Î¸¡º÷ÊýË¡¤Ç¤â¥¢¥ë¥Õ¥¡¥Ù¥Ã¥È¤ÎÂçÊ¸»ú¡¦¾®Ê¸»ú¤Î¶èÊÌ
+¤Ï¤·¤Þ¤»¤ó¡£
 
-<li>$BF|K\8l$NJ#9g8l$O7ABVAGC10L$KJ,3d$7!"$=$l$i$r(B<a
-href="#query-phrase"> $B%U%l%$%:8!:w(B</a>$B$7$^$9!#J,3d$OITE,@Z$K(B
-$B9T$J$o$l$k$3$H$,$"$j$^$9!#(B
+<li>ÆüËÜ¸ì¤ÎÊ£¹ç¸ì¤Ï·ÁÂÖÁÇÃ±°Ì¤ËÊ¬³ä¤·¡¢¤½¤ì¤é¤ò<a
+href="#query-phrase"> ¥Õ¥ì¥¤¥º¸¡º÷</a>¤·¤Þ¤¹¡£Ê¬³ä¤ÏÉÔÅ¬ÀÚ¤Ë
+¹Ô¤Ê¤ï¤ì¤ë¤³¤È¤¬¤¢¤ê¤Þ¤¹¡£
 
-<li>JIS X 0208 ($B$$$o$f$kA43QJ8;z(B) $B$N1Q?t;z$H5-9f$N0lIt(B 
-(ASCII$B$H=EJ#$7$F$$$k$b$N(B) $B$O(B ASCII ($B$$$o$f$kH>3QJ8;z(B) $B$H$7$F(B
-$B=hM}$5$l$^$9!#(B
+<li>JIS X 0208 (¤¤¤ï¤æ¤ëÁ´³ÑÊ¸»ú) ¤Î±Ñ¿ô»ú¤Èµ­¹æ¤Î°ìÉô 
+(ASCII¤È½ÅÊ£¤·¤Æ¤¤¤ë¤â¤Î) ¤Ï ASCII (¤¤¤ï¤æ¤ëÈ¾³ÑÊ¸»ú) ¤È¤·¤Æ
+½èÍý¤µ¤ì¤Þ¤¹¡£
 
-<li>$B5-9f$r4^$`8l$N8!:w$,$G$-$^$9!#Nc(B: <code>TCP/IP</code>$B!#(B
-$B$?$@$7!"5-9f$N=hM}$O40A4$G$O$J$$$N$G(B <code>TCP and IP</code> 
-$B$N$h$&$KJ,3d$7$F(B<a href="#query-and">AND$B8!:w(B</a>$B$r$+$1$?J}$,<h$j$3(B
-$B$\$7$,$"$j$^$;$s(B ($B$=$NBe$o$jM>7W$J%U%!%$%k$^$G%R%C%H$7$F$7$^(B
-$B$&2DG=@-$,$"$j$^$9(B)$B!#(B
+<li>µ­¹æ¤ò´Þ¤à¸ì¤Î¸¡º÷¤¬¤Ç¤­¤Þ¤¹¡£Îã: <code>TCP/IP</code>¡£
+¤¿¤À¤·¡¢µ­¹æ¤Î½èÍý¤Ï´°Á´¤Ç¤Ï¤Ê¤¤¤Î¤Ç <code>TCP and IP</code> 
+¤Î¤è¤¦¤ËÊ¬³ä¤·¤Æ<a href="#query-and">AND¸¡º÷</a>¤ò¤«¤±¤¿Êý¤¬¼è¤ê¤³
+¤Ü¤·¤¬¤¢¤ê¤Þ¤»¤ó (¤½¤ÎÂå¤ï¤êÍ¾·×¤Ê¥Õ¥¡¥¤¥ë¤Þ¤Ç¥Ò¥Ã¥È¤·¤Æ¤·¤Þ
+¤¦²ÄÇ½À­¤¬¤¢¤ê¤Þ¤¹)¡£
 
-<li>$BCf4V0lCW!&8eJ}0lCW!"@55,I=8=!"%U%#!<%k%I;XDj$N8!:w$K$O>/(B
-$B$7;~4V$,$+$+$j$^$9!#(B
+<li>Ãæ´Ö°ìÃ×¡¦¸åÊý°ìÃ×¡¢Àµµ¬É½¸½¡¢¥Õ¥£¡¼¥ë¥É»ØÄê¤Î¸¡º÷¤Ë¤Ï¾¯
+¤·»þ´Ö¤¬¤«¤«¤ê¤Þ¤¹¡£
 
 <li><code class="operator">and</code>, <code
 class="operator">or</code>, <code
-class="operator">not</code> $B$rC18l$H$7$F8!:w$7$?$$$H$-$O$=$l(B
-$B$>$l!"(B <code class="operator">"..."</code> $B$H(B2$B=E0zMQId$G!"(B
-$B$"$k$$$O(B <code class="operator">{...}</code> $B$HCf3g8L$G0O$_$^$9!#(B 
+class="operator">not</code> ¤òÃ±¸ì¤È¤·¤Æ¸¡º÷¤·¤¿¤¤¤È¤­¤Ï¤½¤ì
+¤¾¤ì¡¢ <code class="operator">"..."</code> ¤È2½Å°úÍÑÉä¤Ç¡¢
+¤¢¤ë¤¤¤Ï <code class="operator">{...}</code> ¤ÈÃæ³ç¸Ì¤Ç°Ï¤ß¤Þ¤¹¡£ 
 
 <!-- foo
-Tknamazu $B$*$h$S(B namazu.el $B$+$i8!:w$9$k$H$-$OI,$:8e<T$G;XDj$7$^$9!#(B
+Tknamazu ¤ª¤è¤Ó namazu.el ¤«¤é¸¡º÷¤¹¤ë¤È¤­¤ÏÉ¬¤º¸å¼Ô¤Ç»ØÄê¤·¤Þ¤¹¡£
 -->
 
 </ul>
@@ -890,7 +890,7 @@ Tknamazu $B$*$h$S(B namazu.el $B$+$i8!:w$9$k$H$-$OI,$:8e<T$G;XDj$7$^$9!#(B
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: manual.html,v 1.24 2000-02-19 08:50:14 satoru Exp $
+$Id: manual.html,v 1.25 2000-02-19 14:06:54 satoru Exp $
 </div>
 <address>
 developers@namazu.org

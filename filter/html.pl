@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: html.pl,v 1.6 1999-08-28 02:43:12 satoru Exp $
+# $Id: html.pl,v 1.7 1999-08-28 05:55:58 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -43,8 +43,7 @@ sub filter ($$$$$$$) {
       = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
-    print "Proccessing html file ...\n"
-      if ($var::Opt{Verbose});
+    vprint("Processing html file ...\n");
 
     html_filter($cont, $weighted_str, $fields, $headings);
     

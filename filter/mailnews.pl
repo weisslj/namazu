@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mailnews.pl,v 1.7 1999-08-28 02:43:12 satoru Exp $
+# $Id: mailnews.pl,v 1.8 1999-08-28 05:55:58 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -45,8 +45,7 @@ sub filter ($$$$$$$) {
       = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
-    print "Proccessing mail/news file ...\n"
-      if ($var::Opt{Verbose});
+    vprint("Processing mail/news file ...\n");
 
     filter::uuencode_filter($cont);
     mailnews_filter($cont, $weighted_str, $fields);

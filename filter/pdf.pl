@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: pdf.pl,v 1.2 1999-08-28 02:43:12 satoru Exp $
+# $Id: pdf.pl,v 1.3 1999-08-28 05:55:59 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -51,8 +51,7 @@ sub filter ($$$$$$$) {
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
     my $pdfconvpath = util::checkcmd('pdftotext');
-    print "Proccessing pdf file ... (use '$pdfconvpath')\n"
-      if ($var::Opt{Verbose});
+    vprint("Processing pdf file ... (using  '$pdfconvpath')\n");
 
     my $fh = util::efopen("> $TMPFILE");
     print $fh $$cont;

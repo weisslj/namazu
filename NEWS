@@ -1,5 +1,7 @@
 Overview of Changes in Namazu 2.0.13 - April 1, 2004
 
+* Include File::MMagic 1.20.
+* Add -X and --check-filesize options for mknmz text-processing.
 * Add Polish translations.
   (Contributed by Kryzystof Drewicz.)
 * Add German translations.

@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.55 1999-09-01 06:31:32 knok Exp $
+# $Id: mknmz.pl.in,v 1.56 1999-09-01 07:17:42 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -124,7 +124,7 @@ sub main () {
     exit 0;
 }
 
-sub read_config($) {
+sub read_config () {
     my (@cand) = ();
     push @cand, $ConfigFile if defined $ConfigFile;
     push @cand, "$ENV{HOME}/.mknmzrc", "$CONFDIR/mknmz.conf";
@@ -133,6 +133,7 @@ sub read_config($) {
 	if (-f $conf) {
 	    util::vprint("conf: $conf\n");
 	    do $conf;
+	    $ConfigFile = $conf;
 	    return;
 	}
     }
@@ -223,7 +224,7 @@ sub load_modules () {
 	eval "\$recursive = ${module}::recursive();";
 	eval "\$codeconv  = ${module}::codeconv();";
 	for my $mt (@mtypes) {
-	    $conf::Supported{$mt} = $status;
+	    $var::Supported{$mt} = $status;
 	    $var::REQUIRE_ACTIONS{$mt} = $module;
 	    $var::RECURSIVE_ACTIONS{$mt} = $recursive if ($recursive);
 	    $var::REQUIRE_CODECONV{$mt} = $codeconv if ($codeconv);
@@ -509,7 +510,7 @@ sub load_document ($$$$\%) {
 	      $$contref =~ tr/\x00-\x09\x0b-\x1f\x7f\xff/    /;
 	}
 	util::dprint("Detected type: $mtype\n");
-	if (! defined $conf::Supported{$mtype} || $conf::Supported{$mtype} ne 'yes') {
+	if (! defined $var::Supported{$mtype} || $var::Supported{$mtype} ne 'yes') {
 	    util::vprint("Unsupported data type $mtype\n");
 	    return ($file_size, $file_size, 0, "$mtype; x-system=unsupported");
 	}
@@ -685,6 +686,7 @@ sub parse_options ()
     my $opt_chasen_morph = 0;
     my $opt_kakasi = 0;
     my $opt_checkpoint_sub = 0;
+    my $opt_show_config = 0;
 
     my $output_dir = undef;
     my $update_index = undef;
@@ -700,6 +702,7 @@ sub parse_options ()
 	       '3|allow=s'           => \$conf::ALLOW_REGEX,
 	       '4|update=s'          => \$update_index,
 	       'A|htacces'           => \$var::Opt{htaccessexclude},
+	       'C|show-config'       => \$opt_show_config,
 	       'E|no-edge-symbol'    => \$var::Opt{noedgesymbol},
 	       'F|target-list=s'     => \$target_list,
 	       'G|no-okurigana'      => \$var::Opt{okurigana},
@@ -737,6 +740,12 @@ sub parse_options ()
 
     if ($opt_version) {
 	print "mknmz v$var::VERSION\n";
+	exit 0;
+    }
+
+    if ($opt_show_config) {
+	read_config();
+	show_config();
 	exit 0;
     }
 
@@ -830,6 +839,28 @@ sub parse_options ()
     return ($output_dir, @targets);
 }
 
+sub show_config () {
+    $ConfigFile = "(none)" unless defined $ConfigFile;
+    print "Config: $ConfigFile\n";
+    print "System: $SYSTEM\n" if $SYSTEM;
+    print "Namazu: $var::VERSION\n" if $var::VERSION;
+    print "Perl:   $]\n" if $];   # '$]' has a perl version
+    print "NKF:    $conf::NKF\n" if $conf::NKF;
+    print "KAKASI: $conf::KAKASI\n" if $conf::KAKASI;
+    print "ChaSen: $conf::CHASEN\n" if $conf::CHASEN;
+    print "Wakati: $conf::WAKATI\n" if $conf::WAKATI;
+    print "Lang:   $conf::LANGUAGE\n";
+    print "CCS:    $CCS\n";
+    print "CONFDIR:     $CONFDIR\n";
+    print "LIBDIR:      $LIBDIR\n";
+    print "FILTERDIR:   $FILTERDIR\n";
+    print "TEMPLATEDIR: $TEMPLATEDIR\n";
+
+    my @supported = sort grep { $var::Supported{$_} eq "yes" }
+    keys %var::Supported;
+    print "Supported media types: \n";
+    print "  $_\n" for  (@supported);
+}
 
 sub load_target_list ($) {
     my ($file) = @_;
@@ -1373,10 +1404,10 @@ sub put_log ($$$$) {
     $logmsg .= "Size: $total_files_size bytes\n" if $total_files_size;
     $logmsg .= "Added Keywords: $added_keys_count words\n" if $added_keys_count;
     $logmsg .= "Total Keywords: $total_keys_count words\n" if $total_keys_count;
-    $logmsg .= "Wakati: $conf::WAKATI\n" if $conf::WAKATI;
-    $logmsg .= "Perl Version: $]\n" if $];   # '$]' has a perl version
-    $logmsg .= "Namazu Version: $var::VERSION\n" if $var::VERSION;
+    $logmsg .= "Perl: $]\n" if $];   # '$]' has a perl version
+    $logmsg .= "Namazu: $var::VERSION\n" if $var::VERSION;
     $logmsg .= "System: $SYSTEM\n" if $SYSTEM;
+    $logmsg .= "Wakati: $conf::WAKATI\n" if $conf::WAKATI;
     $logmsg .= "Time: $processtime sec.\n"if $processtime;
     $logmsg .= "\n";
 
@@ -1860,7 +1891,7 @@ muda($conf::SEARCH_FIELD, $conf::ON_MEMORY_MAX,
      $var::Opt{noheadabst}, @seed::Seed,
      $var::Opt{debug}, $var::Opt{noencodeurl}, $var::Opt{htaccessexclude}, 
      $var::RECURSIVE_ACTIONS, $conf::ROBOTS_EXCLUDE_URIS, 
-     $conf::ROBOTS_EXCLUDE_URLS, $conf::Supported);
+     $conf::ROBOTS_EXCLUDE_URLS);
 
 
 sub muda(@) {}

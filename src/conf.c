@@ -2,7 +2,7 @@
  * 
  * conf.c -
  * 
- * $Id: conf.c,v 1.7 1999-08-25 03:43:59 satoru Exp $
+ * $Id: conf.c,v 1.8 1999-09-01 07:17:42 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -204,36 +204,35 @@ void load_conf(char *av0)
 
 void show_conf(void)
 {
-    printf("namazu configurations\n");
     if (ConfLoaded)
-	printf("configuration file: %s\n", NAMAZU_CONF);
+	printf("Config:  %s\n", NAMAZU_CONF);
 
     printf("\
-  * DEFAULT_DIR: %s\n\
-  * BASE_URI   : %s\n\
-  * LOGGING    : %s\n\
-  * LANGUAGE   : %s\n\
-  * SCORING    : %s\n\
-", DEFAULT_DIR, BASE_URI, Logging ? "ON" : "OFF",
-           Lang, TfIdf ? "TFIDF" : "SIMPLE");
+Default: %s\n\
+BASE:    %s\n\
+Logging: %s\n\
+Lang:    %s\n\
+Scoring: %s\n\
+", DEFAULT_DIR, BASE_URI, Logging ? "on" : "off",
+           Lang, TfIdf ? "tfidf" : "simple");
 
-    {
-	REPLACE list = Replace;
-
-	while (list.src) {
-	    printf("  * REPLACE    : \"%s\" -> \"%s\"\n", 
-		   list.src->str, list.dst->str);
-	    list.src = list.src->next;
-	    list.dst = list.dst->next;
-	}
-    }
     {
 	ALIAS *list = Alias;
 
 	while (list) {
-	    printf("  * ALIAS      : \"%s\" -> \"%s\"\n", 
+	    printf("Alias:   \"%s\" -> \"%s\"\n", 
 		   list->alias, list->real);
 	    list = list->next;
+	}
+    }
+    {
+	REPLACE list = Replace;
+
+	while (list.src) {
+	    printf("Replace: \"%s\" -> \"%s\"\n", 
+		   list.src->str, list.dst->str);
+	    list.src = list.src->next;
+	    list.dst = list.dst->next;
 	}
     }
 

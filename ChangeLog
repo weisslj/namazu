@@ -1,5 +1,15 @@
 1999-09-01  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/conf.c (show_conf): Modify messages.
+
+	* src/mknmz.pl.in, lib/var.pl.in: Rename an variable:
+	%conf::Supported -> %var::Supported 
+	
+	* src/mknmz.pl.in: Add --show-config option and implement
+	show_config() function. 
+
+	* src/mknmz.pl.in (put_log): Modify loggin messages a bit.
+	
 	* tknamazu/Makefile.am (CLEANFILES): Add $(bin_SCRIPTS).
 	
 	* template/NMZ.head.{en,ja}: Abolish using "format={short,long}" 
@@ -47,11 +57,13 @@
 	
 	* tknamazu/tknamazu.xpm: Removed.
 
+
 1999-09-01  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* src/mknmz.pl.in: exclude gfilter.pl from filters/*.pl in 
 	load_mocules() functions.
 
+	
 1999-08-31  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* lib/wakati.pm: Fix `tmpname' function name typo.

@@ -1,5 +1,5 @@
 # -*- Perl -*-
-# $Id: var.pl.in,v 1.12 1999-09-01 01:11:22 satoru Exp $
+# $Id: var.pl.in,v 1.13 1999-09-01 07:17:41 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -133,6 +133,9 @@ $PREFIX = "";
     (
      'text/plain' => 1,
      );
-%Supported = ();
+%Supported = 
+    (
+     'text/plain' => "yes",
+     );
 
 1;

@@ -13,6 +13,8 @@ my $INDEX  = undef;
 my $RESULT = "NMZ.result.normal";
 my %FIELD_ALIASES = ('title' => 'subject', 'author' => 'from');
 
+sub compose($$);
+
 if (@ARGV == 0) {
     print <<EOFusage;
 usage: vfnmz <index> [NMZ.result.foobar]

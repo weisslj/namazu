@@ -1,3 +1,9 @@
+2004-09-19  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+	* scripts/{adnmz, bnamazu, kwnmz, lnnmz, nmzgrep, vfnmz}.in:
+	The addition of '-w' option. Correction of the code out of which
+	warning comes.
+
 2004-09-18  Yukio USUDA <usu@namazu.org>
 
 	* Refactoring(scripts/mknmz.in): handle filter routines 
@@ -9085,4 +9091,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1228 2004-09-18 12:30:40 usu Exp $
+$Id: ChangeLog,v 1.1229 2004-09-19 03:21:07 opengl2772 Exp $

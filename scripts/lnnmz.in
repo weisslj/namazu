@@ -1,7 +1,7 @@
-#! %PERL%
+#! %PERL% -w
 # -*- Perl -*-
 # lnnmz - program to make NMZ.field.link
-# $Id: lnnmz.in,v 1.4 2004-09-07 10:26:18 opengl2772 Exp $
+# $Id: lnnmz.in,v 1.5 2004-09-19 03:21:07 opengl2772 Exp $
 #
 # Copyright (C) 2000 osamu2001@livedoor.com  All rights reserved.
 # Copyright (C) 2000 furukawa@tcp-ip.or.jp  All rights reserved.
@@ -36,6 +36,8 @@ use File::Spec;
 my $PKGDATADIR = $ENV{'pkgdatadir'} || "@pkgdatadir@";
 push(@INC, $PKGDATADIR . "/pl");
 require 'nmzidx.pl';
+
+sub rel2abs($;$);
 
 # for example
 my %inv_replace = (
@@ -151,7 +153,7 @@ sub splitpath($) {
 }
 
 # Converts a relative path to an absolute path. 
-sub rel2abs($$) {
+sub rel2abs($;$) {
     my ($path,$base ) = @_;
 
     # Clean up $path

@@ -1,10 +1,10 @@
-#! %PERL%
+#! %PERL% -w
 # -*- Perl -*-
 #
 # nmzgrep - search namazu-indexed documents for a given pattern and 
 #           print lines matching the pattern.
 # 
-# $Id: nmzgrep.in,v 1.2 2004-04-29 16:00:40 opengl2772 Exp $
+# $Id: nmzgrep.in,v 1.3 2004-09-19 03:21:07 opengl2772 Exp $
 #
 # Copyright (C) 1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.

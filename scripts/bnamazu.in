@@ -1,8 +1,8 @@
-#! %PERL%
+#! %PERL% -w
 # -*- Perl -*-
 #
 # bnamazu -- search with "namazu" and browse its results with a web browser.
-# $Id: bnamazu.in,v 1.5 2004-04-29 16:00:40 opengl2772 Exp $
+# $Id: bnamazu.in,v 1.6 2004-09-19 03:21:07 opengl2772 Exp $
 # 
 # Copyright (C) 1998 Hajime BABA. All rights reserved.
 #

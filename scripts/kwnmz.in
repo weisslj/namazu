@@ -1,13 +1,14 @@
-#! %PERL%
+#! %PERL% -w
 # -*- Perl -*-
 #
-# $Id: kwnmz.in,v 1.5 2001-11-06 05:28:36 rug Exp $
+# $Id: kwnmz.in,v 1.6 2004-09-19 03:21:07 opengl2772 Exp $
 #
 # kwnmz - program to make NMZ.field.keywords
 #         by furukawa@tcp-ip.or.jp
 # modified by osamu2001@livedoor.com
 #
 
+use strict;
 my $PKGDATADIR = $ENV{'pkgdatadir'} || "@pkgdatadir@";
 push(@INC, $PKGDATADIR . "/pl");
 require 'nmzidx.pl';
@@ -22,6 +23,8 @@ my $j_flag = undef;
 
 my $backup = 1;
 my $meta = 1;
+
+my @tfidf;
 
 while (@ARGV && $ARGV[0] =~ s/^\-//){
     my $argv = shift;
@@ -164,7 +167,7 @@ sub usage{
          "  -r MAX_RATE         set MAX_RATE (hit/total). (default: 0.5)\n" .
          "\n" .
          "  -e PATTERN          set PATTERN for ascii words which should be allowed.\n" .
-         "  -E                  same as '-e /^[\da-z_]{3}/'\n" .
+         "  -E                  same as '-e /^[\\da-z_]{3}/'\n" .
          "  -j PATTERN          set PATTERN for non-ascii words which should be allowed.\n" .
          "  -J                  same as '-j /(^(\\xa5.){3})|(^([\\xb0-\\xf4].){2})/'\n"
          );

@@ -19,5 +19,7 @@ EXTRA_DIST = $(pkgdata_DATA) tknamazu.spec.in tknamazu.spec
 
 tknamazu: tknamazu.tcl
 	sed -e 's!%PKGDATADIR%!$(pkgdatadir)!g' \
+		-e 's!%NAMAZU%!$(ext_namazu)!g' \
+		-e 's!%MKNMZ%!$(ext_mknmz)!g' \
 	tknamazu.tcl > $@
 	chmod +x $@

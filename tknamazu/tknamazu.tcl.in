@@ -2,7 +2,7 @@
 #
 # tknamazu.tcl - Tcl/Tk front-end for Namazu.
 #
-# $Id: tknamazu.tcl.in,v 1.8 1999-11-02 18:25:56 kenzo- Exp $
+# $Id: tknamazu.tcl.in,v 1.9 1999-11-02 18:49:40 kenzo- Exp $
 #
 # Copyright (C) 1998-1999 Ken-ichi Hirose. All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -30,7 +30,7 @@ regsub {^(.*)/.*$} $basedir {\1} basedir
 
 ################ Evaluation and Initialize items
 global conf
-set conf(NAMAZU) {@NAMAZU@}
+set conf(NAMAZU) {%NAMAZU%}
 set conf(BROWSER) {@LYNX@}
 set conf(EXTBROWSER) {@NETSCAPE@}
 set conf(UNCOMPRESS) {@ZCAT@}
@@ -40,7 +40,7 @@ set conf(MANPATH) {/usr/local/man /usr/share/man /usr/bin/man /usr/man /usr/X11R
 set conf(GNUINFO) {@INFO@}
 set conf(GNUINFOFILTER) {}
 set conf(GNUINFOTMP) {/tmp/.gnuinfotmp}
-set conf(MKNMZ) {@MKNMZ@}
+set conf(MKNMZ) {%MKNMZ%}
 set conf(INDEXOUTPUTDIR) {@INDEXDIR@}
 set conf(WIDTH) {80}
 set conf(HEIGHT) {20}

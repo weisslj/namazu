@@ -11,12 +11,12 @@ cd ../src
 
 # `xyzzy' should NOT be found.
 hitnum=`./namazu -c xyzzy  ../tests/idx10`
-echo foo $hitnum >> $LOG
+echo xyzzy $hitnum >> $LOG
 test "$hitnum" != "0" && exit 1  # error if not equal
 
 # `orabidoo' should NOT be found.
 hitnum=`./namazu -c orabidoo  ../tests/idx10`
-echo foo $hitnum >> $LOG
+echo orabidoo $hitnum >> $LOG
 test "$hitnum" != "0" && exit 1  # error if not equal
 
 exit 0

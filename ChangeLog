@@ -3,6 +3,8 @@
 	* scripts/mknmz.in(process_file): Fixed typo 
 	(--checkpoint did not work).
 
+        * tests/namazu-[78]: Update messages.
+
 2004-03-13  Yukio USUDA <usu@namazu.org>
 
 	* filter/koffice.pl(get_kivio_content): Add new subroutine.
@@ -8582,4 +8584,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1119 2004-03-17 06:25:33 opengl2772 Exp $
+$Id: ChangeLog,v 1.1120 2004-03-17 09:46:48 opengl2772 Exp $

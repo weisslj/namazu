@@ -1,7 +1,7 @@
 /*
  * result.l -
  * -*- C -*-
- * $Id: result.l,v 1.12 1999-08-31 08:38:00 satoru Exp $
+ * $Id: result.l,v 1.13 1999-08-31 09:15:54 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -166,7 +166,13 @@ void get_field_data(char *key)
      */
     fseek(fp_field, getidxptr(fp_field_idx, Fid), 0);
     fgets(buf, BUFSIZE, fp_field);
+    chomp(buf);
 
+    /* Insert commas if the field is a numeric string */
+    if (isnumstr(buf))
+    {
+	commas(buf);
+    }
 
     if (!strcmp(field, "uri")) {
 	replace_uri(buf);
@@ -177,7 +183,6 @@ void get_field_data(char *key)
 	}
     }
 
-    chomp(buf);
     encode_entity(buf);
     strcat(Buf, buf);
     fclose(fp_field);

@@ -402,3 +402,38 @@ void setprogname(char *argv0)
 {
     progname = argv0;
 }
+
+int  isnumstr(char *str)
+{
+    int i, nonnum = 0;
+
+    if (strlen(str) > 10) {  /* too large number */
+	return 0;
+    }
+
+    for (i = 0; str[i] != '\0'; i++) {
+	if (!isdigit(str[i])) {
+	    nonnum = 1;
+	    return 0;
+	}
+    }
+    return 1;
+}
+
+void commas(char *str)
+{
+    int i, n;
+    int leng = strlen(str);
+
+    n = leng + (leng - 1) / 3;
+    str[n] = '\0';
+    n--;
+    for (i = 0; i < leng; i++, n--) {
+	str[n] = str[leng - 1 - i];
+	if (i % 3 == 2 && n != 0) {
+	    n--;
+	    str[n] = ',';
+	}
+    }
+}
+

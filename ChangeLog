@@ -21,6 +21,11 @@
 
 1999-08-31  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/result.l (get_field_data): Insert commas if given filed is a
+	numeric string.
+	
+	* src/util.c: Add isnumstr() and commas() functions.
+	
 	* tknamazu/{Makefile.am,README.tknamazu}:
 	s/tknamazu.gif/tknamazu.xpm/g
 	

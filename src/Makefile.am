@@ -16,9 +16,10 @@ bin_SCRIPTS = gcnmz mailutime mknmz gtnmz
 
 CLEANFILES = mknmz.pl $(bin_SCRIPTS)
 
-libdir      = @datadir@/@PACKAGE@/@VERSION@/lib
-filterdir   = @datadir@/@PACKAGE@/@VERSION@/filter
-templatedir = @datadir@/@PACKAGE@/@VERSION@/template
+pkgdatadir  = @datadir@/@PACKAGE@
+libdir      = @pkgdatadir@/lib
+filterdir   = @pkgdatadir@/filter
+templatedir = @pkgdatadir@/template
 
 namazu_SOURCES = cgi.c codeconv.c conf.c form.c hlist.c message.c \
 	namazu.c output.c parser.c re.c regex.c search.c \

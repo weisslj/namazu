@@ -11,7 +11,7 @@ CLEANFILES = lib/conf.pl namazu.spec \
 	     File-MMagic/Makefile File-MMagic/pm_to_blib
 CLEANDIRS  = File-MMagic/blib
 
-pkgdatadir = @datadir@/@PACKAGE@/@VERSION@
+pkgdatadir = @datadir@/@PACKAGE@
 
 install-data-local:
 	$(mkinstalldirs) $(pkgdatadir)/index

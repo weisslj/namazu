@@ -2,7 +2,7 @@
  * 
  * libnamazu.c - Namazu library api
  *
- * $Id: libnamazu.c,v 1.13 1999-12-06 09:15:15 satoru Exp $
+ * $Id: libnamazu.c,v 1.14 1999-12-07 09:14:01 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
@@ -51,7 +51,6 @@
 #include "codeconv.h"
 #include "form.h"
 #include "usage.h"
-#include "conf.h"
 #include "output.h"
 #include "search.h"
 #include "cgi.h"
@@ -83,23 +82,6 @@ void free_idxnames(void)
     Idx.num = 0;
 }
 
-void make_fullpathname_msg(void)
-{
-    char *base;
-    
-    if (Idx.num == 1) {
-        base = Idx.names[0];
-    } else {
-        base = DEFAULT_INDEX;
-    }
-    
-    pathcat(base, NMZ.head);
-    pathcat(base, NMZ.foot);
-    pathcat(base, NMZ.body);
-    pathcat(base, NMZ.lock);
-    pathcat(base, NMZ.tips);
-}
-
 void codeconv_query(char *query)
 {
     if (is_lang_ja()) {
@@ -107,21 +89,6 @@ void codeconv_query(char *query)
             zen2han(query);
         }
     }
-}
-
-/* get an environmental variable of NAMAZUCONFPATH
- * original by Shimizu-san [1998-02-27]
- */
-void getenv_namazurc(void)
-{
-    char *env_namazu_conf;
-
-    env_namazu_conf = getenv("NAMAZUCONFPATH");
-    if (env_namazu_conf == NULL)
-        env_namazu_conf = getenv("NAMAZUCONF");
-
-    if (env_namazu_conf != NULL)
-        strcpy(NAMAZURC, env_namazu_conf);
 }
 
 void uniq_idxnames(void)
@@ -185,11 +152,6 @@ int complete_idxnames(void)
 	}
     }
     return 0;
-}
-
-char *set_namazurc(char *arg)
-{
-    return strcpy(NAMAZURC, arg);
 }
 
 void set_sortmethod(enum nmz_sort_method method)

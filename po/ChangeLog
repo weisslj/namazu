@@ -1,3 +1,7 @@
+1999-12-07  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* POTFILES.in: s/conf.c/rcfile.c/.
+
 1999-11-19  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* ja.po: Fix usage. 

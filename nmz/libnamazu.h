@@ -2,7 +2,7 @@
  * 
  * libnamazu.h - Namazu library api
  *
- * $Id: libnamazu.h,v 1.22 1999-12-07 08:21:36 satoru Exp $
+ * $Id: libnamazu.h,v 1.23 1999-12-07 09:14:02 satoru Exp $
  * 
  */
 
@@ -177,13 +177,10 @@ struct nmz_hitnum {
 extern void free_idxnames ( void );
 extern void free_aliases ( void );
 extern void free_replaces ( void );
-extern void make_fullpathname_msg ( void );
 extern void codeconv_query ( char *query );
-extern void getenv_namazurc ( void );
 extern void uniq_idxnames ( void );
 extern int expand_idxname_aliases ( void );
 extern int complete_idxnames ( void );
-extern char *set_namazurc ( char *arg );
 extern void set_sortmethod ( enum nmz_sort_method method );
 extern enum nmz_sort_method get_sortmethod ( void );
 extern void set_sortorder ( enum nmz_sort_order order );
@@ -200,13 +197,10 @@ extern char *get_dyingmsg ( void );
 extern void free_idxnames (/* void */);
 extern void free_aliases (/* void */);
 extern void free_replaces (/* void */);
-extern void make_fullpathname_msg (/* void */);
 extern void codeconv_query (/* char *query */);
-extern void getenv_namazurc (/* void */);
 extern void uniq_idxnames (/* void */);
 extern int expand_idxname_aliases (/* void */);
 extern int complete_idxnames (/* void */);
-extern char *set_namazurc (/* char *arg */);
 extern void set_sortmethod (/* enum nmz_sort_method method */);
 extern enum nmz_sort_method get_sortmethod (/* void */);
 extern void set_sortorder (/* enum nmz_sort_order order */);

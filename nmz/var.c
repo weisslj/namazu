@@ -2,7 +2,7 @@
  * 
  * var.c -
  * 
- * $Id: var.c,v 1.10 1999-12-04 09:28:55 satoru Exp $
+ * $Id: var.c,v 1.11 1999-12-07 09:14:02 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -41,9 +41,6 @@ char DEFAULT_INDEX[BUFSIZE] = OPT_INDEXDIR;
 
 /* default directory to place config files */
 char CONFDIR[BUFSIZE] = OPT_CONFDIR;
-
-/* namazurc */
-char NAMAZURC[BUFSIZE] = "";
 
 #ifdef OPT_SCORING
 #define TFIDF  1

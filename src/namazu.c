@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.55 1999-12-06 13:38:39 satoru Exp $
+ * $Id: namazu.c,v 1.56 1999-12-07 09:14:04 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -52,7 +52,7 @@
 #include "codeconv.h"
 #include "form.h"
 #include "usage.h"
-#include "conf.h"
+#include "rcfile.h"
 #include "output.h"
 #include "search.h"
 #include "cgi.h"
@@ -245,9 +245,9 @@ static int parse_options(int argc, char **argv)
 	    exit(EXIT_SUCCESS);
 	    break;
 	case 'C':
-	    if (load_conf(argv[0]) != SUCCESS)
+	    if (load_rcfile(argv[0]) != SUCCESS)
 		diewithmsg();
-	    show_conf();
+	    show_rcfile();
 	    exit(EXIT_SUCCESS);
 	    break;
 	case 'L':
@@ -392,6 +392,23 @@ static enum nmz_stat namazu_core(char * query, char *subquery, char *av0)
     return SUCCESS;
 }
 
+static void make_fullpathname_msg(void)
+{
+    char *base;
+    
+    if (Idx.num == 1) {
+        base = Idx.names[0];
+    } else {
+        base = DEFAULT_INDEX;
+    }
+    
+    pathcat(base, NMZ.head);
+    pathcat(base, NMZ.foot);
+    pathcat(base, NMZ.body);
+    pathcat(base, NMZ.lock);
+    pathcat(base, NMZ.tips);
+}
+
 static void suicide (int signum)
 {
     die("processing time exceeds a limit: %d", SUICIDE_TIME);
@@ -407,12 +424,10 @@ int main(int argc, char **argv)
     bindtextdomain(PACKAGE, LOCALEDIR);
     textdomain(PACKAGE);
 
-    getenv_namazurc();
-
     Idx.num = 0;
 
     if (argc == 1) { /* if no argument, assume this session as CGI */
-	if (load_conf(argv[0]) != SUCCESS)
+	if (load_rcfile(argv[0]) != SUCCESS)
 	    diewithmsg();
 	set_cgimode(1);
 	set_htmlmode(1);
@@ -423,7 +438,7 @@ int main(int argc, char **argv)
 	set_formprint(0);	 /* do not print "<form> ... </form>" */
 
 	i = parse_options(argc, argv); 
-	if (load_conf(argv[0]) != SUCCESS)
+	if (load_rcfile(argv[0]) != SUCCESS)
 	    diewithmsg();
 
 	if (i == argc) {

@@ -1,4 +1,4 @@
-nmz/conf.c
+nmz/rcfile.c
 nmz/search.c
 nmz/wakati.c
 src/cgi.c

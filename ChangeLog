@@ -1,3 +1,30 @@
+1999-12-07  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* nmz/rcfile.c (getenv_namazurc): Moved from libnamazu.c.
+	(load_conf): Remove unnecessary codes: BASE_URI[0] = '\0';
+	(open_conf_file): Call getenv_namazurc at the first.
+	(set_namazurc): Moved from libnamazu.c.
+	(rcfile_is_loaded): Renamed from ConfLoaded.
+	(show_rcfile): Renamed from show_conf.
+	(load_rcfile): Renamed from load_conf.
+	(open_rcfile): Renamed from open_conf_file.
+	(get_rc_args): Renamed from get_conf_args.
+	(get_rc_arg): Renamed from get_conf_arg.
+	(parse_rcfile): Renamed from parse_conf.
+	(apply_rc): Renamed from apply_conf.
+
+	* nmz/Makefile.am: s/conf.([ch])/rcfile.$1/g;
+
+	* nmz/rcfile.c: Renamed from conf.c
+
+	* nmz/rcfile.h: Renamed from conf.h
+
+	* nmz/var.c: Remove a variable: char NAMAZURC[BUFSIZE] = "";
+
+	* src/namazu.c (main): Remove getenv_namazurc() calling.
+
+	* src/namazu.c (make_fullpathname_msg): Moved from libnamazu.c
+
 1999-12-06  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* nmz/search.c (hash): Fix a 8 bit char handling bug.

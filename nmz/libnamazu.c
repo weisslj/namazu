@@ -2,7 +2,7 @@
  * 
  * libnamazu.c - Namazu library api
  *
- * $Id: libnamazu.c,v 1.1 1999-11-01 07:23:55 knok Exp $
+ * $Id: libnamazu.c,v 1.2 1999-11-01 14:13:16 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
@@ -120,7 +120,7 @@ void codeconv_query(uchar *query)
 /* get an environmental variable of NAMAZUCONFPATH
  * original by Shimizu-san [1998-02-27]
  */
-void getenv_namazuconf(void)
+void getenv_namazurc(void)
 {
     uchar *env_namazu_conf;
 

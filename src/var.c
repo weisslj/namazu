@@ -2,7 +2,7 @@
  * 
  * values.c -
  * 
- * $Id: var.c,v 1.9 1999-10-13 08:19:58 satoru Exp $
+ * $Id: var.c,v 1.10 1999-11-01 14:13:20 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -29,22 +29,14 @@
 #include "namazu.h"
 #include "re.h"
 
-/* default directory of where indices are */
-#ifdef OPT_INDEXDIR
-uchar DEFAULT_INDEX[BUFSIZE] = OPT_INDEXDIR;
-#else
-uchar DEFAULT_INDEX[BUFSIZE] = "/usr/local/share/namazu/index";
-#endif
-
 /* string of HTML 's <BASE HREF="...">  (namazu.conf) */
 uchar BASE_URI[BUFSIZE] = "";
 
-/* namazu.conf */
-#ifdef OPT_NAMAZU_CONF
-uchar NAMAZU_CONF[BUFSIZE] = OPT_NAMAZU_CONF;
-#else
-uchar NAMAZU_CONF[BUFSIZE] = "/usr/local/share/conf/namazu.conf";
-#endif
+/* default directory to place indices */
+uchar DEFAULT_INDEX[BUFSIZE] = OPT_INDEXDIR;
+
+/* default directory to place config files */
+uchar CONFDIR[BUFSIZE] = OPT_CONFDIR;
 
 /* namazurc */
 uchar NAMAZURC[BUFSIZE] = "";

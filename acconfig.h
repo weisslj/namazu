@@ -1,8 +1,8 @@
-/* Define the pathname of default index directory */
+/* Define the pathname of the default index directory */
 #undef OPT_INDEXDIR
 
-/* Define the pathname of namazu.conf */
-#undef OPT_NAMAZU_CONF
+/* Define the pathname of the config directory */
+#undef OPT_CONFDIR
 
 /* Define the default language (ja or en) */
 #undef OPT_LANGUAGE

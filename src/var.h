@@ -25,7 +25,7 @@ extern int SortOrder;
 extern uchar DEFAULT_INDEX[];
 
 extern uchar BASE_URI[];
-extern uchar NAMAZU_CONF[];
+extern uchar CONFDIR[];
 extern uchar NAMAZURC[];
 
 extern uchar *ScriptName;

@@ -1,5 +1,28 @@
 1999-11-01  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/conf.[ch], src/var.c: Introduce CONFDIR and abolish
+	NAMAZU_CONF.
+	
+	* src/mknmz.pl.in: Use mknmzrc instead of mknmz.conf.
+	
+	* src/Makefile.am (confdir): Use $(sysconfdir)/$(PACKAGE).
+
+	* conf/Makefile.am: Modify to handle namazurc and mknmzrc instead
+	of namazu.conf-dist and mknmz.conf-dist
+	
+	* conf/namazurc: New file.
+
+	* conf/namazu.conf-dist: Removed.
+	
+	* configure.in: Abolish --with-confdir. Use --sysconfdir instead
+	for setting a config files directory.
+
+	* **/*.[ch]: 's/namazuconf/namazurc/g'
+	
+	* src/*.[ch]: s/hlist_data/HLIST_DATA/g
+
+	* configure.in: Fix --with-scoring=METHOD option.
+
 	* configure.in: Add AC_SUBST(CONFDIR)
 	Modify message for --with-confdir.
 

@@ -31,7 +31,7 @@
 
 typedef unsigned char uchar;
 
-struct hlist_data {
+struct HLIST_DATA {
     int score;   /* score */
     int docid;   /* document ID */
     int idxid;   /* index ID */
@@ -39,12 +39,12 @@ struct hlist_data {
     int rank;    /* ranking data for stable sorting */
     char *field; /* for field-specified search*/
 };
-typedef struct hlist_data hlist_data;
+typedef struct HLIST_DATA HLIST_DATA;
 
 /* data structure for search result */
 struct hlist {
     int n;
-    hlist_data *d;
+    HLIST_DATA *d;
 };
 typedef struct hlist HLIST;
 

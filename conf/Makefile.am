@@ -1,10 +1,11 @@
 AUTOMAKE_OPTIONS = 1.4 no-dependencies
 
-confdir = @CONFDIR@
-conf_DATA = namazu.conf-dist mknmz.conf-dist
-EXTRA_DIST = namazu.conf-dist
-CLEANFILES = mknmz.conf-dist
+confdir = $(sysconfdir)/$(PACKAGE)
+conf_DATA = namazurc mknmzrc
+EXTRA_DIST = namazurc
+CLEANFILES = mknmzrc
 
-mknmz.conf-dist: ../pl/conf.pl
+mknmzrc: ../pl/conf.pl
 	@grep -v '^package conf;$$' ../pl/conf.pl | \
-	perl -pe 's/^(\$$|\@|\%)/$$1conf::/' > $@
+	perl -pe 's/^(\$$|\@|\%)/$$1conf::/' | \
+	perl -pe 's/^/\x23 / unless /^(\x23|$$)/' > $@

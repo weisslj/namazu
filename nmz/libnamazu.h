@@ -2,7 +2,7 @@
  * 
  * libnamazu.h - Namazu library api
  *
- * $Id: libnamazu.h,v 1.1 1999-11-01 07:23:55 knok Exp $
+ * $Id: libnamazu.h,v 1.2 1999-11-01 14:13:16 satoru Exp $
  * 
  */
 
@@ -14,7 +14,7 @@ void free_aliases(void);
 void free_replaces(void);
 void make_fullpathname_msg(void);
 void codeconv_query(uchar *query);
-void getenv_namazuconf(void);
+void getenv_namazurc(void);
 void uniq_idxnames(void);
 int expand_idxname_aliases(void);
 int complete_idxnames(void);

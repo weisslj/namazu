@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.69 1999-10-11 04:25:26 satoru Exp $
+# $Id: mknmz.pl.in,v 1.70 1999-11-01 14:13:19 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -38,7 +38,7 @@ use vars qw($SYSTEM);
 $SYSTEM = $^O;
 
 my $CCS = "euc";
-my $CONFDIR  = "%CONFDIR%";      # directory where mknmz.conf are in.
+my $CONFDIR  = "%CONFDIR%";      # directory where mknmzrc are in.
 my $LIBDIR  = "%LIBDIR%";      # directory where library etc. are in.
 my $FILTERDIR  = "%FILTERDIR%";      # directory where filters are in.
 my $TEMPLATEDIR  = "%TEMPLATEDIR%";      # directory where templates are in.
@@ -132,7 +132,7 @@ sub main () {
 sub read_config () {
     my (@cand) = ();
     push @cand, $ConfigFile if defined $ConfigFile;
-    push @cand, "$ENV{'HOME'}/.mknmzrc", "$CONFDIR/mknmz.conf";
+    push @cand, "$ENV{'HOME'}/.mknmzrc", "$CONFDIR/mknmzrc";
 
     for my $conf (@cand) {
 	if (-f $conf) {

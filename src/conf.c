@@ -2,7 +2,7 @@
  * 
  * conf.c -
  * 
- * $Id: conf.c,v 1.13 1999-10-11 04:25:24 satoru Exp $
+ * $Id: conf.c,v 1.14 1999-11-01 14:13:19 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -143,7 +143,7 @@ static REPLACE *add_replace(int lineno, REPLACE *ptr, uchar *pat, uchar *rep)
 /*
  1. current_executing_binary_dir/.namazurc
  2. ${HOME}/.namazurc
- 3. lib/namazu.conf
+ 3. DEFAULT_NAMAZURC (SYSCONFDIR/namazurc)
  */
 static FILE *open_conf_file(char *av0)
 {
@@ -153,7 +153,6 @@ static FILE *open_conf_file(char *av0)
     /* be invoked with -f option to specify rcfile */
     if (NAMAZURC[0]) {
         if ((fp = fopen(NAMAZURC, "rb"))) {
-            strcpy(NAMAZU_CONF, NAMAZURC);
             return fp;
         }
     }
@@ -161,7 +160,7 @@ static FILE *open_conf_file(char *av0)
     /* check the where program is */
     set_pathname(fname, av0, ".namazurc");
     if ((fp = fopen(fname, "rb"))) {
-        strcpy(NAMAZU_CONF, fname);
+        strcpy(NAMAZURC, fname);
         return fp;
     }
 
@@ -170,13 +169,16 @@ static FILE *open_conf_file(char *av0)
         strcpy(fname, home);
         strcat(fname, "/.namazurc");
         if ((fp = fopen(fname, "rb"))) {
-            strcpy(NAMAZU_CONF, fname);
+            strcpy(NAMAZURC, fname);
             return fp;
         }
     }
 
     /* check the defalut */
-    if ((fp = fopen(NAMAZU_CONF, "rb"))) {
+    strcpy(fname, CONFDIR);
+    strcat(fname, "/namazurc");
+    if ((fp = fopen(fname, "rb"))) {
+	strcpy(NAMAZURC, fname);
         return fp;
     }
     return (FILE *) NULL;
@@ -454,7 +456,7 @@ int load_conf(char *av0)
 	    return 1;
 	if (errmsg != NULL) { /* error occurred */
 	    diemsg("%s:%d: syntax error: %s.\n",  
-		NAMAZU_CONF, lineno, errmsg);
+		   NAMAZURC, lineno, errmsg);
 	    return 1;
 	}
     }
@@ -465,7 +467,7 @@ int load_conf(char *av0)
 void show_conf(void)
 {
     if (ConfLoaded == 1) {
-	printf("Config:  %s\n", NAMAZU_CONF);
+	printf(_("Config:  %s\n"), NAMAZURC);
     }
 
     printf(_("\

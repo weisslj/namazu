@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.32 1999-10-19 07:24:02 knok Exp $
+ * $Id: namazu.c,v 1.33 1999-11-01 14:13:20 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -322,7 +322,7 @@ int main(int argc, char **argv)
     bindtextdomain(PACKAGE, LOCALEDIR);
     textdomain(PACKAGE);
 
-    getenv_namazuconf();
+    getenv_namazurc();
 
     Idx.num = 0;
 

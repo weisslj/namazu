@@ -2,6 +2,6 @@
 #define _RESULT_H
 
 void make_fullpathname_result(int);
-void compose_result(hlist_data, int, uchar*, uchar*);
+void compose_result(HLIST_DATA, int, uchar*, uchar*);
 
 #endif /* _RESULT_H */

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: namazu 2.0\n"
-"POT-Creation-Date: 1999-10-27 00:50-0700\n"
+"POT-Creation-Date: 1999-11-01 23:04+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>\n"
 "Language-Team: Japanese <satoru-t@is.aist-nara.ac.jp>\n"
@@ -21,7 +21,12 @@ msgstr "不正な idxname の指定です"
 msgid "Too long QUERY_STRING"
 msgstr "CGIの QUERY_STRING が長すぎます"
 
-#: src/conf.c:471
+#: src/conf.c:470
+#, c-format
+msgid "Config:  %s\n"
+msgstr "設定ファイル:  %s\\n"
+
+#: src/conf.c:473
 #, c-format
 msgid ""
 "Default: %s\n"
@@ -36,12 +41,12 @@ msgstr ""
 "標準の言語: %s\n"
 "スコア計算: %s\n"
 
-#: src/conf.c:484
+#: src/conf.c:486
 #, c-format
 msgid "Alias:   \"%s\" -> \"%s\"\n"
 msgstr "別名:   \"%s\" -> \"%s\"\n"
 
-#: src/conf.c:493
+#: src/conf.c:495
 #, c-format
 msgid "Replace: \"%s\" -> \"%s\"\n"
 msgstr "置換: \"%s\" -> \"%s\"\n"

@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.24 1999-10-11 04:25:25 satoru Exp $
+ * $Id: hlist.c,v 1.25 1999-11-01 14:13:19 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -123,11 +123,11 @@ static int field_sort(HLIST hlist)
    compare of a pair of hlist.d[].field as string in descending order */
 static int field_scmp(const void *p1, const void *p2)
 {
-    hlist_data *v1, *v2;
+    HLIST_DATA *v1, *v2;
     int r;
 
-    v1 = (hlist_data *) p1;
-    v2 = (hlist_data *) p2;
+    v1 = (HLIST_DATA *) p1;
+    v2 = (HLIST_DATA *) p2;
 
     r = strcmp(v2->field, v1->field);
     if (r == 0) {
@@ -141,11 +141,11 @@ static int field_scmp(const void *p1, const void *p2)
    compare of a pair of hlist.d[].field as number in descending order */
 static int field_ncmp(const void *p1, const void *p2)
 {
-    hlist_data *v1, *v2;
+    HLIST_DATA *v1, *v2;
     int r;
 
-    v1 = (hlist_data *) p1;
-    v2 = (hlist_data *) p2;
+    v1 = (HLIST_DATA *) p1;
+    v2 = (HLIST_DATA *) p2;
 
     /* NOTE: comparison "a - b" is not safe for NEGATIVE numbers */
     r = atoi(v2->field) - atoi(v1->field);
@@ -160,11 +160,11 @@ static int field_ncmp(const void *p1, const void *p2)
    compare of a pair of hlist.d[].score as number in descending order */
 static int score_cmp(const void *p1, const void *p2)
 {
-    hlist_data *v1, *v2;
+    HLIST_DATA *v1, *v2;
     int r;
     
-    v1 = (hlist_data *) p1;
-    v2 = (hlist_data *) p2;
+    v1 = (HLIST_DATA *) p1;
+    v2 = (HLIST_DATA *) p2;
 
     /* NOTE: comparison "a - b" is not safe for NEGATIVE numbers */
     r = v2->score - v1->score;
@@ -179,11 +179,11 @@ static int score_cmp(const void *p1, const void *p2)
    compare of a pair of hlist.d[].date as number in descending order */
 static int date_cmp(const void *p1, const void *p2)
 {
-    hlist_data *v1, *v2;
+    HLIST_DATA *v1, *v2;
     int r;
 
-    v1 = (hlist_data *) p1;
-    v2 = (hlist_data *) p2;
+    v1 = (HLIST_DATA *) p1;
+    v2 = (HLIST_DATA *) p2;
 
     /* NOTE: comparison "a - b" is not safe for NEGATIVE numbers */
     r = v2->date - v1->date;
@@ -340,7 +340,7 @@ HLIST ormerge(HLIST left, HLIST right)
 void malloc_hlist(HLIST * hlist, int n)
 {
     if (n <= 0) return;
-    hlist->d = (hlist_data *)malloc(n * sizeof(hlist_data));
+    hlist->d = (HLIST_DATA *)malloc(n * sizeof(HLIST_DATA));
     if (hlist->d == NULL) {
 	 diemsg("malloc_hlist");
 	 hlist->n = DIE_HLIST;
@@ -353,7 +353,7 @@ void malloc_hlist(HLIST * hlist, int n)
 void realloc_hlist(HLIST * hlist, int n)
 {
     if (n <= 0) return;
-    hlist->d = (hlist_data *) realloc(hlist->d, n * sizeof(hlist_data));
+    hlist->d = (HLIST_DATA *) realloc(hlist->d, n * sizeof(HLIST_DATA));
     if (hlist->d == NULL) {
 	 diemsg("realloc_hlist");
 	 hlist->n = DIE_HLIST;

@@ -2,7 +2,7 @@
  * 
  * re.c -
  * 
- * $Id: re.c,v 1.6 1999-10-11 04:25:28 satoru Exp $
+ * $Id: re.c,v 1.7 1999-11-01 14:13:20 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -187,7 +187,7 @@ HLIST regex_grep(uchar *orig_expr, FILE *fp, uchar *field, int field_mode)
         if (strlen(buf) == 0) {
             continue;
         }
-        if (uri_mode) {  /* consider the REPLACE directive in namazu.conf */ 
+        if (uri_mode) {  /* consider the REPLACE directive in namazurc */ 
             replace_uri(buf);
         }
         strlower(buf);

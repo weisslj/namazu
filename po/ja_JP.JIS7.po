@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: namazu 2.0\n"
-"POT-Creation-Date: 1999-10-27 00:50-0700\n"
+"POT-Creation-Date: 1999-11-01 23:04+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>\n"
 "Language-Team: Japanese <satoru-t@is.aist-nara.ac.jp>\n"
@@ -21,7 +21,12 @@ msgstr "\033\044\102\111\124\100\065\044\112\033\050\102 idxname \033\044\102\04
 msgid "Too long QUERY_STRING"
 msgstr "CGI\033\044\102\044\116\033\050\102 QUERY_STRING \033\044\102\044\054\104\071\044\071\044\056\044\136\044\071\033\050\102"
 
-#: src/conf.c:471
+#: src/conf.c:470
+#, c-format
+msgid "Config:  %s\n"
+msgstr "\033\044\102\100\137\104\152%%\125%%\041%%\044%%\153\033\050\102:  %s\\n"
+
+#: src/conf.c:473
 #, c-format
 msgid ""
 "Default: %s\n"
@@ -36,12 +41,12 @@ msgstr ""
 "\033\044\102\111\070\075\140\044\116\070\100\070\154\033\050\102: %s\n"
 "\033\044\102%%\071%%\063%%\042\067\127\073\073\033\050\102: %s\n"
 
-#: src/conf.c:484
+#: src/conf.c:486
 #, c-format
 msgid "Alias:   \"%s\" -> \"%s\"\n"
 msgstr "\033\044\102\112\114\114\076\033\050\102:   \"%s\" -> \"%s\"\n"
 
-#: src/conf.c:493
+#: src/conf.c:495
 #, c-format
 msgid "Replace: \"%s\" -> \"%s\"\n"
 msgstr "\033\044\102\103\126\064\071\033\050\102: \"%s\" -> \"%s\"\n"

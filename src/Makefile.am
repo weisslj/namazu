@@ -20,7 +20,7 @@ INCLUDES  = -I.. -I../intl -I../lib -I../nmz
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 LDADD = @INTLLIBS@ ../lib/libnmzut.a ../nmz/.libs/libnmz.a
 
-confdir     = @CONFDIR@
+confdir     = $(sysconfdir)/$(PACKAGE)
 perllibdir  = $(pkgdatadir)/pl
 filterdir   = $(pkgdatadir)/filter
 templatedir = $(pkgdatadir)/template

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 1999-10-27 00:50-0700\n"
+"POT-Creation-Date: 1999-11-01 23:04+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,7 +22,12 @@ msgstr ""
 msgid "Too long QUERY_STRING"
 msgstr ""
 
-#: src/conf.c:471
+#: src/conf.c:470
+#, c-format
+msgid "Config:  %s\n"
+msgstr ""
+
+#: src/conf.c:473
 #, c-format
 msgid ""
 "Default: %s\n"
@@ -32,12 +37,12 @@ msgid ""
 "Scoring: %s\n"
 msgstr ""
 
-#: src/conf.c:484
+#: src/conf.c:486
 #, c-format
 msgid "Alias:   \"%s\" -> \"%s\"\n"
 msgstr ""
 
-#: src/conf.c:493
+#: src/conf.c:495
 #, c-format
 msgid "Replace: \"%s\" -> \"%s\"\n"
 msgstr ""

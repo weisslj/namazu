@@ -18,40 +18,34 @@
 #                 98/06/05      1.07            kinput widget, man,info bug fix
 #                 98/06/15      1.10            for Namazu 1.2.0
 #                 98/06/22      1.11            manpath bug fix
+#                 99/08/30	1.90		autoconfize
 #
 #
-global version; set version "1.11"
+global version; set version "@VERSION@"
 
-if [info exists env(TKNMZPATH)] {
-    set basedir "$env(TKNMZPATH)"
-} else {
-    set basedir [lindex $argv0 0]
-#    regsub -all {\\} $basedir {/} basedir
-    regsub {^(.*)/.*$} $basedir {\1} basedir
-}
 
 ################ Evaluation and Initialize items
 global conf
 set conf(EXTBROWSER) {/usr/local/netscape/netscape}
 set conf(EXTVIEWER) {/usr/local/bin/jless}
-set conf(NAMAZU) {@bindir@/namazu}
+set conf(NAMAZU) {%BINDIR%/namazu}
 set conf(BROWSER) {@LYNX@ -dump}
 set conf(UNCOMPRESS) {@ZCAT@}
-set conf(MANPAGE) {@ROFF@ -man -Tnippon}
+set conf(MANPAGE) {@GROFF@ -man -Tnippon}
 set conf(MANPAGEFILTER) {}
 set conf(MANPATH) {/usr/local/man/ja_JP.EUC /usr/local/man/ja_JP.ujis /usr/man/ja_JP.ujis /usr/local/man /usr/share/man /usr/bin/man /usr/man /usr/X11R6/man /usr/openwin/man}
 set conf(GNUINFO) {@INFO@}
 set conf(GNUINFOFILTER) {}
 set conf(GNUINFOTMP) {/tmp/.gnuinfotmp}
-set conf(MKNMZ) {@bindir@/mknmz}
-set conf(WDNMZ) {@bindir@/wdnmz}
-set conf(DBOUTPUTDIR) {/usr/local/namazu/index}
+set conf(MKNMZ) {%BINDIR%/mknmz}
+set conf(WDNMZ) {%BINDIR%/wdnmz}
+set conf(DBOUTPUTDIR) {%PKGDATADIR%/index}
 set conf(WIDTH) {80}
 set conf(HEIGHT) {20}
 set conf(WIDGETFONT) {-misc-Fixed-Medium-R-Normal-*-*-120-*-*-*-*-*-*}
 set conf(TEXTFONT) {-misc-Fixed-Medium-R-Normal-*-*-120-*-*-*-*-*-*}
 set conf(WIDGETCOLOR) {gray90}
-set conf(LANGUAGE) {JAPANESE}
+set conf(LANGUAGE) {@TK_LANGUAGE@}
 set conf(OPTIONS) {}
 set conf(NMZCONF) {}
 set conf(DATABASES) {}
@@ -68,7 +62,7 @@ set conf(machine) "$tcl_platform(machine)"
 set conf(os) "$tcl_platform(os)"
 set conf(osversion) "$tcl_platform(osVersion)"
 set conf(userhome) "$env(HOME)"
-set conf(tknmzhome) "$basedir"
+set conf(tknmzhome) "%PKGDATADIR%"
 
 if {[catch {open "$conf(userhome)/.tknmzrc"} input] \
     && [catch {open "$conf(tknmzhome)/.tknmzrc"} input]} {
@@ -955,7 +949,7 @@ proc AboutTknamazu {} {
     set m2 {.about.info.list2}
 
     listbox $m1 -bg white -height 7 -width 12 -font $conf(WIDGETFONT) -borderwidth 0
-    $m1 insert end "TKNMZPATH"
+    $m1 insert end "tknmzhome"
     $m1 insert end "HOME"
     $m1 insert end "Tcl/Tk"
     $m1 insert end "PatchLevel"

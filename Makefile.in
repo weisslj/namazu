@@ -100,7 +100,7 @@ CLEANFILES = lib/conf.pl namazu.spec 	     filter/gzip.pl filter/compress.pl fil
 
 CLEANDIRS = File-MMagic/blib
 
-pkgdatadir = @datadir@/@PACKAGE@/@VERSION@
+pkgdatadir = @datadir@/@PACKAGE@
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = config.h

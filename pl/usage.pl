@@ -1,5 +1,5 @@
 # -*- Perl -*-
-# $Id: usage.pl,v 1.20 2000-02-19 11:26:44 satoru Exp $
+# $Id: usage.pl,v 1.21 2000-02-19 11:40:10 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -54,7 +54,6 @@ Target files:\n\
   -o, --ole                use OLE document filters. (works on Windows only)\n\
       --mtime=NUM          limit by mtime just like find(1)'s -mtime option.\n\
                            e.g., -50 for recent 50 days, +50 for older than 50.\n\
-
 \n\
 Morphological Analysis:\n\
   -c, --use-chasen         use ChaSen for analyzing Japanese.\n\

@@ -1,5 +1,7 @@
 2000-02-19  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* scripts/mknmz.in: s/$conf::MTIME/$var::Opt{'mtime'}/g
+
 	* pl/usage.pl ($USAGE): Modify description for --mtime.
 
 	* scripts/mknmz.in: Change a variable name:

@@ -1,3 +1,20 @@
+2000-03-08  Ken-ichi Hirose  <kenzo-@tama.or.jp>
+
+	* scripts/mknmz.in (load_win32modules): Remove top of the unshift
+	in load_win32modules.
+
+2000-03-08  Ken-ichi Hirose  <kenzo-@tama.or.jp>
+
+	* scripts/mknmz.in (load_win32modules): Add "$FILTERDIR/win32"
+	to @INC.
+
+	* filter/win32/olemsword.pl (status): wrapped STDERR by nul.
+
+	* filter/win32/oleexcel.pl (status): Likewise.
+
+	* filter/win32/olepowerpoint.pl (status): Likewise.
+
+
 2000-03-06  Ryuji Abe  <raeva@t3.rim.or.jp>
 
 	* nmz/i18n.c (nmz_set_lang)[HAVE_PUTENV]: Use malloc()

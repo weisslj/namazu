@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu-cgi.c,v 1.12 2000-02-19 00:51:25 kenzo- Exp $
+ * $Id: namazu-cgi.c,v 1.13 2000-02-20 06:35:03 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -37,7 +37,7 @@
 #include <signal.h>
 #include <stdarg.h>
 
-#if defined (WIN32) && !defined (__CYGWIN32__)
+#if defined (_WIN32) && !defined (__CYGWIN__)
 /*
  * It's not Unix, really.  See?  Capital letters. 
  */

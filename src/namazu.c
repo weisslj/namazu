@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.35 1999-11-14 22:54:00 kenzo- Exp $
+ * $Id: namazu.c,v 1.36 1999-11-16 01:49:02 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -57,20 +57,35 @@
 #include "idxname.h"
 #include "i18n.h"
 
-/* redirect stdio to specified file */
-int set_redirect_stdout_to_file(uchar * fname)
-{
-    int fd;
+/************************************************************
+ *
+ * Private functions
+ *
+ ************************************************************/
 
-    if (-1 == (fd = open(fname, O_CREAT | O_TRUNC | O_WRONLY, 00600))) {
+static int stdio2file(uchar*);
+static int parse_options(int, char**);
+static int namazu_core(uchar*, uchar*, uchar*);
+static void suicide(void);
+
+/* redirect stdio to specified file */
+static int stdio2file(uchar * fname)
+{
+/*   int fd;
+ *   if (-1 == (fd = open(fname, O_CREAT | O_TRUNC | O_WRONLY, 00600))) {
+ *	diemsg("stdio2file(cannot open)");
+ *	return 1;
+ *    }
+ *    close(STDOUT);
+ *    dup(fd);
+ *    close(STDERR);
+ *    dup(fd);
+ *    close(fd);
+ */
+    if (freopen(fname, "wb", stdout) == NULL) {
 	diemsg("stdio2file(cannot open)");
 	return 1;
     }
-    close(STDOUT);
-    dup(fd);
-    close(STDERR);
-    dup(fd);
-    close(fd);
     return 0;
 }
 
@@ -108,7 +123,7 @@ static struct option long_options[] = {
 };
 
 /* parse command line options */
-int parse_options(int argc, char **argv)
+static int parse_options(int argc, char **argv)
 {
     for (;;) {
         int ch = getopt_long(argc, argv, short_options, long_options, NULL);
@@ -206,7 +221,7 @@ int parse_options(int argc, char **argv)
 	    set_lang(optarg);
 	    break;
 	case 'o':
-	    if (set_redirect_stdout_to_file(optarg))
+	    if (stdio2file(optarg))
 	      return DIE_ERROR;
 	    break;
 	}
@@ -216,7 +231,7 @@ int parse_options(int argc, char **argv)
 }
 
 /* namazu core routine */
-int namazu_core(uchar * query, uchar *subquery, uchar *av0)
+static int namazu_core(uchar * query, uchar *subquery, uchar *av0)
 {
     uchar query_with_subquery[BUFSIZE * 2];
     HLIST hlist;
@@ -322,7 +337,7 @@ int namazu_core(uchar * query, uchar *subquery, uchar *av0)
     return 0;
 }
 
-void suicide ()
+static void suicide (void)
 {
     diemsg("processing time exceeds a limit: %d", SUICIDE_TIME);
     diewithmsg();
@@ -403,7 +418,7 @@ int main(int argc, char **argv)
 
     if (IsCGI) {
 	/* set a suicide timer */
-	signal(SIGALRM, suicide);
+	signal(SIGALRM, (void *)suicide);
 	alarm(SUICIDE_TIME);
     }
 

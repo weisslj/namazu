@@ -1,3 +1,9 @@
+1999-11-16  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* src/namazu.c (stdio2file): reimplemented with
+	freopen(). Good-bye open(), close() and dup(). :-)
+
+
 1999-11-15  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* File-MMagic/* : New upstream version.

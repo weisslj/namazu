@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 1999-11-14 22:50+0900\n"
+"POT-Creation-Date: 1999-11-15 08:54+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -60,7 +60,7 @@ msgstr ""
 msgid "Too long QUERY_STRING"
 msgstr ""
 
-#: src/namazu.c:299
+#: src/namazu.c:306
 msgid "\t<p>No document matching your query.</p>\n"
 msgstr ""
 

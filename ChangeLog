@@ -10,6 +10,10 @@
         $SYSTEM It changes into $English::OSNAME. $perlver It changes 
         into $English::PERL_VERSION. 
 
+        * filter/{lnnmz.in, mailutime.in, mknmz.in, nmzcat.in, nmzegrep.in, 
+        vfnmz.in}: $SYSTEM It changes into $English::OSNAME. 
+        $perlver It changes into $English::PERL_VERSION. 
+
 2004-10-18  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * filter/{msword, excel, powerpoint}.pl: The addition of the check 
@@ -9212,4 +9216,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1254 2004-10-20 10:01:17 opengl2772 Exp $
+$Id: ChangeLog,v 1.1255 2004-10-20 14:44:40 opengl2772 Exp $

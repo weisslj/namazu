@@ -4,7 +4,7 @@
 # mailutime - a tool to unify a file time stamp with 
 #             RFC 822 'Date:' field in a mail.
 #             It also supports MHonArc messages.
-# $Id: mailutime.in,v 1.6 2004-04-29 16:00:40 opengl2772 Exp $
+# $Id: mailutime.in,v 1.7 2004-10-20 14:44:40 opengl2772 Exp $
 #
 # Version 1.0.3    [01/16/2004]
 # Version 1.0.2    [12/12/1998]
@@ -63,9 +63,11 @@ my $re_sec   =  '(?:[0-5][0-9])';
 
 my $DebugOpt = 0;
     
+sub main();
+
 main();
 
-sub main {
+sub main () {
     foreach my $file (@ARGV) {
 	my $date;
 	my ($fh) = new IO::File;

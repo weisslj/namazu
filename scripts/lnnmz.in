@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # lnnmz - program to make NMZ.field.link
-# $Id: lnnmz.in,v 1.5 2004-09-19 03:21:07 opengl2772 Exp $
+# $Id: lnnmz.in,v 1.6 2004-10-20 14:44:40 opengl2772 Exp $
 #
 # Copyright (C) 2000 osamu2001@livedoor.com  All rights reserved.
 # Copyright (C) 2000 furukawa@tcp-ip.or.jp  All rights reserved.
@@ -30,6 +30,7 @@
 package lnnmz;
 
 use strict;
+use English;
 use Cwd;
 use File::Spec;
 
@@ -178,7 +179,7 @@ sub rel2abs($;$) {
 
 sub canonpath {
     my ($path) = @_;
-    $path =~ s|/+|/|g unless($^O eq 'cygwin');     # xx////xx  -> xx/xx
+    $path =~ s|/+|/|g unless($English::OSNAME eq 'cygwin'); # xx////xx  -> xx/xx
     $path =~ s|(/\.)+/|/|g;                        # xx/././xx -> xx/xx
     $path =~ s|^(\./)+||s unless $path eq "./";    # ./xx      -> xx
     $path =~ s|^/(\.\./)+|/|s;                     # /../../xx -> xx

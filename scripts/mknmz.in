@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.145 2004-10-17 09:25:09 usu Exp $
+# $Id: mknmz.in,v 1.146 2004-10-20 14:44:40 opengl2772 Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -27,6 +27,7 @@
 
 package mknmz;
 require 5.004;
+use English;
 use lib "%ADDITIONAL_INC%";
 use Cwd;
 use IO::File;
@@ -40,7 +41,7 @@ use DirHandle;
 use File::Basename;
 
 use vars qw($SYSTEM);
-$SYSTEM = $^O;
+$SYSTEM = $English::OSNAME;
 
 my $NAMAZU_INDEX_VERSION = "2.0";
 
@@ -77,7 +78,7 @@ main();
 sub main {
     my $start_time = time;
 
-    if ($] == 5.008001) {
+    if ($English::PERL_VERSION == 5.008001) {
         unless (defined $ENV{PERL_HASH_SEED} && $ENV{PERL_HASH_SEED} eq 0) {
             print "Run mknmz with the environment variable PERL_HASH_SEED=0\n";
             exit 1;
@@ -269,7 +270,7 @@ sub load_rcfiles () {
 
 sub load_rcfile ($) {
     my ($rcfile) = @_;
-    if ($SYSTEM eq "MSWin32" || $SYSTEM eq "os2") {
+    if ($English::OSNAME eq "MSWin32" || $English::OSNAME eq "os2") {
 	util::win32_yen_to_slash(\$rcfile);
     }
     return if (grep {m/^$rcfile$/} @LoadedRcfiles);
@@ -328,8 +329,7 @@ sub put_registry ($) {
 # Initialization
 #   $CodingSystem: Character Coding System 'euc' or 'sjis'
 sub init () {
-    $SYSTEM = $^O;
-    if (($SYSTEM eq "MSWin32") || ($SYSTEM eq "os2")) {
+    if (($English::OSNAME eq "MSWin32") || ($English::OSNAME eq "os2")) {
 	$CodingSystem = "sjis";
 	if ($CONFDIR !~ /^[A-Z]:|^\\\\/i && $0 =~ m#^([A-Z]:)(/|\\)#i) {
 	    $CONFDIR = $1 . $CONFDIR ;
@@ -507,7 +507,7 @@ sub namazu_core ($$$$$$$$$$) {
     my $err = undef;
     if ($$contref eq "") {
 	$err = $Document->get_errmsg();
-	if (($SYSTEM eq "MSWin32") || ($SYSTEM eq "os2")) {
+	if (($English::OSNAME eq "MSWin32") || ($English::OSNAME eq "os2")) {
 	    my $uri2 = codeconv::eucjp_to_shiftjis($uri);
 	    print $msg_prefix . "$uri2 $err\n";
 	} else {
@@ -518,7 +518,7 @@ sub namazu_core ($$$$$$$$$$) {
     }
 
     # Print processing file name as URI.
-    if (($SYSTEM eq "MSWin32") || ($SYSTEM eq "os2")) {
+    if (($English::OSNAME eq "MSWin32") || ($English::OSNAME eq "os2")) {
 	my $uri2 = codeconv::eucjp_to_shiftjis($uri);
 	print $msg_prefix . "$uri2 [$mtype]\n";
     } else {
@@ -588,11 +588,11 @@ sub generate_uri (@) {
 	$file = $_;
     }
 
-    if (($SYSTEM eq "MSWin32") || ($SYSTEM eq "os2")) {
+    if (($English::OSNAME eq "MSWin32") || ($English::OSNAME eq "os2")) {
 	$file =~ s#^([A-Z]):#/$1|#i; # converting a drive part like: /C|
     }
 
-    if (($SYSTEM eq "MSWin32") || ($SYSTEM eq "os2")) {
+    if (($English::OSNAME eq "MSWin32") || ($English::OSNAME eq "os2")) {
 	$file = codeconv::shiftjis_to_eucjp($file);
     }
     if (defined $fragment) {
@@ -613,7 +613,7 @@ sub generate_uri (@) {
 
     my $uri = $file;
     $uri .= "#" . $fragment if defined $fragment;
-    if (($SYSTEM eq "MSWin32") || ($SYSTEM eq "os2")) {
+    if (($English::OSNAME eq "MSWin32") || ($English::OSNAME eq "os2")) {
         # restore '|' for drive letter rule of Win32, OS/2
         $uri =~ s!^/([A-Z])%7C!/$1|!i;
     }
@@ -1163,7 +1163,7 @@ sub parse_options
     util::cdie("$output_dir: "._("invalid output directory\n"))
 	unless (-d $output_dir && -w $output_dir);
 
-    if ($SYSTEM eq "MSWin32" || $SYSTEM eq "os2") {
+    if ($English::OSNAME eq "MSWin32" || $English::OSNAME eq "os2") {
 	util::win32_yen_to_slash(\$output_dir); 
     }
 
@@ -1183,9 +1183,9 @@ sub show_config () {
     my $filter = $Document->get_filter();
 
     print _("Loaded rcfile: ") . "@LoadedRcfiles\n" if @LoadedRcfiles;
-    print _("System: ") . "$SYSTEM\n" if $SYSTEM;
+    print _("System: ") . "$English::OSNAME\n" if $English::OSNAME;
     print _("Namazu: ") . "$var::VERSION\n" if $var::VERSION;
-    print _("Perl: ") . "$]\n" if $];   # '$]' has a perl version
+    print _("Perl: ") . sprintf("%f\n", $English::PERL_VERSION);
     print _("File-MMagic: ") . $Document->get_info('mmagic_ver') . "\n";
     print _("NKF: ") . "$conf::NKF\n" if $conf::NKF;
     print _("KAKASI: ") . "$conf::KAKASI\n" if $conf::KAKASI;
@@ -1206,7 +1206,7 @@ sub load_target_list ($) {
     my ($file) = @_;
     my $fh_targets = util::efopen($file);
     my @targets = <$fh_targets>;
-    if (($SYSTEM eq "MSWin32") || ($SYSTEM eq "os2")) {
+    if (($English::OSNAME eq "MSWin32") || ($English::OSNAME eq "os2")) {
 	foreach my $tmp (@targets){
 	    $tmp =~ s/\r//g;
 	    util::win32_yen_to_slash(\$tmp);
@@ -1223,7 +1223,7 @@ sub absolute_path($$) {
     return $path if (util::isurl($path));
     $path =~ s!^\.$!\./!;
     $path =~ s!^\.[/\\]!$cwd/!;
-    if (($SYSTEM eq "MSWin32") || ($SYSTEM eq "os2")) {
+    if (($English::OSNAME eq "MSWin32") || ($English::OSNAME eq "os2")) {
 	util::win32_yen_to_slash(\$path);
         if ($path =~ m!^//!) {
         } elsif ($path =~ m!^/[^/]!) {
@@ -1248,7 +1248,7 @@ sub find_target (@) {
     @targets = map { absolute_path($cwd, $_) } @targets;
 
     # Convert \ to / with consideration for Shift_JIS encoding.
-    if (($SYSTEM eq "MSWin32") || ($SYSTEM eq "os2")) {
+    if (($English::OSNAME eq "MSWin32") || ($English::OSNAME eq "os2")) {
 	foreach my $tmp (@targets){
 	    util::win32_yen_to_slash(\$tmp);
 	}
@@ -1952,8 +1952,8 @@ sub put_log ($$$$) {
     push @logmsgs, N_("File/Sec:"),  sprintf "%.2f", 
     	(($added_files_count + $updated_documents_count) / $processtime) 
 	if $processtime;
-    push @logmsgs, N_("System:"), "$SYSTEM" if $SYSTEM;
-    push @logmsgs, N_("Perl:"),   "$]" if $];   # '$]' has a perl version
+    push @logmsgs, N_("System:"), "$English::OSNAME" if $English::OSNAME;
+    push @logmsgs, N_("Perl:"),   sprintf("%f\n", $English::PERL_VERSION);
     push @logmsgs, N_("Namazu:"), "$var::VERSION" if $var::VERSION;
 
     my $log_for_file = "";

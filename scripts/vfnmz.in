@@ -8,7 +8,6 @@
 #
 use strict;
 
-my $SYSTEM = $^O;             # $^O contains system name
 my $INDEX  = undef;
 my $RESULT = "NMZ.result.normal";
 my %FIELD_ALIASES = ('title' => 'subject', 'author' => 'from');

@@ -4,7 +4,7 @@
 # nmzegrep - search namazu-indexed documents for a given pattern and 
 #            print lines matching the pattern.
 # 
-# $Id: nmzegrep.in,v 1.3 2004-10-17 09:25:09 usu Exp $
+# $Id: nmzegrep.in,v 1.4 2004-10-20 14:44:40 opengl2772 Exp $
 #
 # Copyright (C) 2004 Yukio USUDA All rights reserved.
 # Copyright (C) 2004 Namazu Project All rights reserved.
@@ -27,6 +27,7 @@
 #
 
 use strict;
+use English;
 use FileHandle;
 require 5.004;
 
@@ -55,10 +56,8 @@ require "document.pl" || die "unable to require \"document.pl\"\n";
 require "var.pl" || die "unable to require \"var.pl\"\n";
 require "conf.pl" || die "unable to require \"conf.pl\"\n";
 
-my $SYSTEM = $^O;
-
 my $tmpdir = "/tmp/NMZ$$";
-if ($SYSTEM eq "MSWin32") {
+if ($English::OSNAME eq "MSWin32") {
     $tmpdir = "$ENV{'TMP'}/NMZ$$";
 }
 if (mkdir $tmpdir) {

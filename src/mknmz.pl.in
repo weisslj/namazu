@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.87 1999-12-17 01:49:14 satoru Exp $
+# $Id: mknmz.pl.in,v 1.88 1999-12-17 08:40:25 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -1196,7 +1196,7 @@ sub change_dbnames ($) {
 sub wanted ($$){
     my ($name, $rarray) = @_;
 
-    return if /[\n\r]/;  # skip a file name containing LF/CR chars.
+    return if $name =~ /[\n\r]/;  # skip a file name containing LF/CR chars.
     return if(defined $conf::EXCLUDE_REGEX && $name =~ /$conf::EXCLUDE_REGEX/);
 
     if ($name !~ m!^.*/(($conf::DENY_REGEX)(\.gz|\.Z)?)$!i &&

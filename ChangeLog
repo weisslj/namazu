@@ -1,6 +1,7 @@
 1999-12-17  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* src/mknmz.pl.in (wanted): Skip a file name containing LF/CR chars.
+	(wanted): Fix a potential hazard. (Don't use $_ as default)
 
 1999-12-16  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 

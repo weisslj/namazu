@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: namazu 2.0\n"
-"POT-Creation-Date: 2000-01-25 19:58+0900\n"
+"POT-Creation-Date: 2000-01-26 22:25+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>\n"
 "Language-Team: Japanese <satoru-t@is.aist-nara.ac.jp>\n"
@@ -178,7 +178,8 @@ msgid ""
 "    -o, --output=file    set output file name.\n"
 "    -f, --config=file    set a pathname of a config file.\n"
 "    -C, --show-config    print current configuration.\n"
-"    -q, --quiet          do not display extra messages except search results.\n"
+"    -q, --quiet          do not display extra messages except search "
+"results.\n"
 "    -L, --lang=lang      set language (ja or en)\n"
 "    -v, --version        show the version of namazu and exit.\n"
 "        --help           show this help and exit\n"
@@ -286,7 +287,9 @@ msgstr ""
 
 #: scripts/mknmz.pl.in:738
 msgid "Present index is old type. it's unsupported.\n"
-msgstr "すでに存在するインデックスは古い形式のものです。今はサポートされていません。\n"
+msgstr ""
+"すでに存在するインデックスは古い形式のものです。今はサポートされていません。"
+"\n"
 
 #: scripts/mknmz.pl.in:888
 msgid "Inherited argv: "
@@ -323,8 +326,12 @@ msgstr " findfiles 終了: "
 
 #: scripts/mknmz.pl.in:1067
 #, c-format
-msgid " find_target: Scanned : (%d), Files: (%d), Elapsed: (%d), Files/sec: (%.1f).\n"
-msgstr " find_target: Scanned : (%d), Files: (%d), Elapsed: (%d), Files/sec: (%.1f).\n"
+msgid ""
+" find_target: Scanned : (%d), Files: (%d), Elapsed: (%d), Files/sec: "
+"(%.1f).\n"
+msgstr ""
+" find_target: Scanned : (%d), Files: (%d), Elapsed: (%d), Files/sec: "
+"(%.1f).\n"
 
 #: scripts/mknmz.pl.in:1076
 msgid "lang: "

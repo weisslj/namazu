@@ -1,5 +1,13 @@
 2000-01-26  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/namazu.c (main): Fix a security hole in CGI mode which
+	allows malicious person to put a garbage file on a Web server's
+	directory such as /tmp. -- reported by Motoyuki Kasahara
+	<m-kasahr@sra.co.jp>
+
+	* src/form.c (replace_query_value): Use html_print() to print the
+	query instead of print(). 
+
 	* pl/codeconv.pl (toeuc): Fix codeconv bug. [namazu 1316]
 
 2000-01-25  Ryuji Abe  <raeva@t3.rim.or.jp>

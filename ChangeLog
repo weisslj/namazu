@@ -1,5 +1,8 @@
 1999-09-02  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/{namazu,message}.c: Change a option name: 
+	--reverse -> --ascending
+	
 	* src/*.[chl]: Implement namazu --sort=field:title option.
 	
 	* src/util.[ch]: Implement the following functions:

@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.23 1999-09-02 02:54:10 satoru Exp $
+ * $Id: namazu.c,v 1.24 1999-09-02 03:51:31 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -86,7 +86,7 @@ static struct option long_options[] = {
     {"late",             no_argument,       NULL, '2'},
     {"early",            no_argument,       NULL, '3'},
     {"sort",             required_argument, NULL, '4'},
-    {"reverse",          no_argument, NULL, '5'},
+    {"ascending",        no_argument,       NULL, '5'},
     {"all",              no_argument,       NULL, 'a'},
     {"count",            no_argument,       NULL, 'c'},
     {"show-config",      no_argument,       NULL, 'C'},
@@ -145,7 +145,7 @@ int parse_options(int argc, char **argv)
 	    }
 	}
 	break;
-	case '5':  /* --reverse */
+	case '5':  /* --ascending */
 	    SortDirection = ASCENDING;
 	    break;
 	case 'n':

@@ -26,7 +26,7 @@ $HTML_SUFFIX = 'html?|[ps]html|html\.[a-z]{2}|asp|cgi';
 #       Do NOT use `$' or `^' anchors.
 #       Case-insensitive.
 #
-$ALLOW_FILE = '.*\.txt|.*\.pdf|.*\.doc|.*\.tex' . "|.*\.(?:$HTML_SUFFIX)";
+$ALLOW_FILE = ".*\\.(?:$HTML_SUFFIX)|.*\\.txt|.*\\.pdf|.*\\.doc|.*\\.tex|\\d+";
 
 #
 # This pattern specifies file names which will NOT be targeted.
@@ -34,7 +34,7 @@ $ALLOW_FILE = '.*\.txt|.*\.pdf|.*\.doc|.*\.tex' . "|.*\.(?:$HTML_SUFFIX)";
 #       Do NOT use `$' or `^' anchors.
 #       Case-insensitive.
 #
-$DENY_FILE = '.*\.(gif|png|jpg|jpeg)|.*\.tar\.gz|core|.*\.bak|.*~|\..*|\x23.*|NMZ\..*';
+$DENY_FILE = ".*\\.(gif|png|jpg|jpeg)|.*\\.tar\\.gz|core|.*\\.bak|.*~|\\..*|\x23.*";
 
 #
 # This pattern specifies PATHNAMEs which will NOT be targeted.

@@ -6,6 +6,7 @@
 
 	* pl/conf.pl.in ($ALLOW_FILE): Fix quotation bug. [namazu-dev
 	1705] 
+	($ALLOW_FILE): Add \d+.
 
 	* nmz/util.c (nmz_isnumstr): Simplified.  [namazu-dev 1692]
 

@@ -19,18 +19,18 @@ else
     rm -f $IDXDIR/NMZ.*
 fi
 
-echo "package conf; \$FILTERDIR='$FDIR'; 1;" > mknmzrc-mknmz12
+echo "package conf; \$FILTERDIR='$FDIR'; 1;" > $tmprc 
 RESULTCOUNT=`../scripts/mknmz -f $tmprc -C|egrep x-test|wc -l`
-rm -f mknmzrc-mknmz12
+rm -f $tmprc
 test $RESULTCOUNT -eq 1 || exit $?
 
-echo "package conf; \$FILTERDIR='$FDIR'; 1;" > mknmzrc-mknmz12
+echo "package conf; \$FILTERDIR='$FDIR'; 1;" > $tmprc
 if  test ! -d $IDXDIR; then 
     mkdir     $IDXDIR
 fi
 
 ../scripts/mknmz -f $tmprc --allow='.*.txt' -O $IDXDIR $TARGET >> $LOG 2>&1
-rm -f mknmzrc-mknmz12
+rm -f $tmprc
 RESULTCOUNT=`wc -l < $IDXDIR/NMZ.field.uri`
 test $TXTCOUNT -eq $RESULTCOUNT
 exit $?

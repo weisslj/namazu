@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.59 2003-06-08 13:51:30 opengl2772 Exp $
+ * $Id: hlist.c,v 1.60 2003-06-16 14:31:42 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -568,19 +568,35 @@ nmz_get_hlist(int index)
 	nmz_debug_printf("idf: %f (N:%d, n:%d)\n", idf, document_number, n/2);
     }
 
-    if (n > nmz_get_maxhit() * 2) {  
-        /* '* 2' means NMZ.i contains a file-ID and a score. */
-        hlist.stat = ERR_TOO_MUCH_HIT;
-    } else {
+    {
 	int sum = 0;
-	buf = malloc(n * sizeof(int)); /* with pelnty margin */
+	int hit;
+	int maxhit = nmz_get_maxhit();
+	int bersize = n;
+	int totalsize;
+
+	hit = (bersize < maxhit * 2 ? bersize : maxhit * 2);
+	buf = malloc(hit * sizeof(int));
 	if (buf == NULL) {
 	    nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
 	    hlist.data = NULL;
 	    hlist.stat = ERR_FATAL;
 	    return hlist;
 	}
-	n = nmz_read_unpackw(Nmz.i, buf, n) / 2;
+
+        n = 0;
+        totalsize = 0;
+        while (totalsize < bersize) {
+            totalsize += nmz_get_unpackw(Nmz.i, &buf[n]);
+            n++;
+            if (n > maxhit * 2) {
+                hlist.stat = ERR_TOO_MUCH_HIT;
+                free(buf);
+                return hlist;
+            }
+        }
+        n /= 2;
+
 	nmz_malloc_hlist(&hlist, n);
 	if (hlist.stat == ERR_FATAL) {
 	    free(buf);

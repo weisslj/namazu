@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: pipermail.pl,v 1.3 2004-07-22 09:49:59 opengl2772 Exp $
+# $Id: pipermail.pl,v 1.4 2004-08-05 22:57:36 opengl2772 Exp $
 # Copyright (C) 2004 Namazu Project All rights reserved.
 #
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -48,7 +48,7 @@ sub recursive() {
 }
 
 sub pre_codeconv() {
-    return 1;
+    return 0;
 }
 
 sub post_codeconv () {
@@ -112,7 +112,9 @@ sub pipermail_filter ($$$) {
         if ($head =~ 
         m!<h1>(.*?)</h1>\s*<b>(.*?)\s*</b>(?:\s*<a\s+.*?href=.*?>(.*?)\s*</a>)?\s*<br>\s*<i>(.*?)</i>!is) {
             {
-                my $title = uncommentize($1);
+                my $title = $1;
+                $title =~ s/&gt;/>/g;
+                $title = uncommentize($title);
                 codeconv::toeuc(\$title);
 
                 1  while ($title =~ s/\A\s*(re|sv|fwd|fw|aw)[\[\]\d]*[:>-]+\s*//i);
@@ -161,6 +163,7 @@ sub pipermail_filter ($$$) {
 
     $$contref =~ s/<head>(.*)?<\/head>//si;
     $$contref =~ s/<h1>.*<!--beginarticle-->//si;
+    codeconv::toeuc($contref);
     $$contref =~ s/ at /@/s;
     if (util::islang("ja")) {
         $$contref =~ s/ @ /@/s;

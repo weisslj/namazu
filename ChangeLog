@@ -2,6 +2,10 @@
 
 	* src/usage.c (show_mini_usage): s/more options/more information/
 
+1999-10-27  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* File-MMagic/Makefile.PL: Added AUTOHR and ABSTRACT paramaters.
+
 1999-10-26  Rei FURUKAWA  <furukawa@tcp-ip.or.up>
 
 	* pl/nmzidx.pl, src/gcnmz.pl.in: Close unused file handles.

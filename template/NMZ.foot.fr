@@ -1,0 +1,12 @@
+<hr>
+<p>
+Ce moteur de recherche utilise  
+<strong><a href="@OPT_NMZ_URI@">Namazu</a> <!-- VERSION --> v@VERSION@ <!-- VERSION --></strong>
+</p>
+<address>
+<!-- ADDRESS -->
+<a href="mailto:@OPT_ADMIN_EMAIL@">@OPT_ADMIN_EMAIL@</a>
+<!-- ADDRESS -->
+</address>
+</body>
+</html>

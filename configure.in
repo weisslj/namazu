@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.130 2000-09-06 06:08:42 rug Exp $
+dnl $Id: configure.in,v 1.131 2000-09-19 09:03:31 knok Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -88,7 +88,7 @@ fi
 dnl *
 dnl * I18N
 dnl *
-ALL_LINGUAS="ja ja_JP.SJIS es"
+ALL_LINGUAS="ja ja_JP.SJIS es fr"
 AM_GNU_GETTEXT
 
 dnl Checks for libraries.

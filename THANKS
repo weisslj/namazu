@@ -1,4 +1,12 @@
-# $Id: THANKS,v 1.9 2000-02-13 04:22:32 rug Exp $
+$Id: THANKS,v 1.10 2000-02-14 02:51:00 satoru Exp $
+
+We have been trying to keep track of everyone who
+contributes to Namazu.  Please contact us if you know anyone
+whose name should be on this list but isn't.
+
+Thanks to all of the following for their valuable
+hints/fixes/discussions/contributions:
+
 "Andrew S. Howell" <andy@tibco.com>
 "Burton A. Leland . 1315" <burt@mdli.com>
 "Hayato YAMANA" <yamana@etl.go.jp>
@@ -87,3 +95,4 @@ yoshihide hirose <hirose@niko.fast.co.jp>
 Æ£¸¶À¿/ Makoto Fujiwara <makoto@ki.nu>
 Á°ÅÄ¹¬ÈÏ /Yukinori Maeda <yuki@zephyr.elcom.nitech.ac.jp>
 Âç¹õÍÎ»Ë  <daikoku@lang2.bs1.fc.nec.co.jp>
+

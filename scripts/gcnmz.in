@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 #
-# $Id: gcnmz.in,v 1.2 2000-01-30 23:32:36 rug Exp $
+# $Id: gcnmz.in,v 1.3 2000-01-31 08:56:48 satoru Exp $
 #
 # gcnmz.pl - by furukawa@tcp-ip.or.jp
 #
@@ -106,7 +106,7 @@ sub gcnmz{
 
 sub usage{
     print
-        ("Usage: gcnmz [options] <target(s)>\n" .
+        ("Usage: gcnmz [options] <target>...\n" .
          "  --help              show this help and exit.\n" .
          "  -b, --no-backup     do not backup original file.\n"
          );

@@ -15,7 +15,7 @@ my %FIELD_ALIASES = ('title' => 'subject', 'author' => 'from');
 
 if (@ARGV == 0) {
     print <<EOFusage;
-usage: vfnmz <index dir> [NMZ.result.foobar]
+usage: vfnmz <index> [NMZ.result.foobar]
 EOFusage
     exit(1);
 }

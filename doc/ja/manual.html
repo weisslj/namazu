@@ -22,60 +22,33 @@ href="http://www.namazu.org/">http://www.namazu.org/</a> か
 <h2>目次</h2>
 
 <ul>
-<li><a href="#usage">使い方</a>
+<li><a href="#organization">Namazuの基本構成</a>
+<li><a href="#mknmz">mknmzコマンド</a>
   <ul>
-  <li><a href="#usage-general">基本編</a>
-  <li><a href="#usage-cgi">CGI として使う</a>
-  <li><a href="#mknmz-option">mknmz のコマンドラインオプション</a>
-  <li><a href="#namazu-option">namazu のコマンドラインオプション</a>
-  <li><a href="#namazurc">namazurc での設定について</a>
+  <li><a href="#mknmz-option">mknmzコマンド行引数</a>
+  <li><a href="#mknmzrc">mknmzrcの設定</a>
   </ul>
-<li><a href="#search">実際の検索に役立てる</a>
+<li><a href="#namazu">namazuコマンド</a>
   <ul>
-  <li><a href="#search-on-command-line">コマンドラインから検索する</a>
-  <li><a href="#search-on-cgi">CGIとして検索する</a>
-  <li><a href="#search-on-mule">Mule から検索する</a>
-  <li><a href="#search-on-x">X Window System から検索する</a>
-  <li><a href="#search-on-win32">Windows 95/NT から検索する</a>
+  <li><a href="#namazu-option">namazuコマンド行引数</a>
+  <li><a href="#namazurc">namazurcの設定</a>
   </ul>
-<li><a href="#tips">雑多な情報</a>
+<li><a href="#tools">付属ツール</a>
   <ul>
-  <li><a href="#log">検索されたキーワードのログ</a>
-  <li><a href="#when-confused">インデックスの作成/更新に混乱したら</a>
-  <li><a href="#maillist">メイリングリスト・Newsのアーカイヴの全文検索システムを作成するには</a>
-  <li><a href="#robots-txt">/robots.txt で指定されたファイルを対象か
-ら除外する</a>
-  <li><a href="#htaccess">.htaccess で指定されたファイルを対象から除
-外する</a>
+  <li><a href="#bnamazu">bnamazu</a>
+  <li><a href="#nmzgrep">nmzgrep</a>
+  <li><a href="#gcnmz">gcnmz</a>
+  <li><a href="#mailutime">mailutime</a>
+  <li><a href="#vfnmz">vfnmz</a>
   </ul>
-<li><a href="#form">Namazu の用いる &lt;form&gt;の形式</a>
+<li><a href="#cgi">CGIとして利用する</a>
   <ul>
-  <li><a href="#outform">結果表示の件数と出力フォーマット</a>
+  <li><a href="#form">結果表示の件数と出力フォーマット</a>
   <li><a href="#idxname">ブラウザからインデックスを指定する方法</a>
   <li><a href="#multiple-indices">複数のインデックスに検索をかける方法</a>
   <li><a href="#subquery">検索対象のURIを制限する方法</a>
   </ul>
-<li><a href="#implimentation">Namazu の設計と実装</a>
-  <ul>
-  <li><a href="#digest">HTML タグによる文書の要約の作成</a>
-  <li><a href="#tagscoring">HTML タグによるスコアの重みづけルール</a>
-  <li><a href="#htmltag">その他 HTML タグの処理</a>
-  <li><a href="#line">行頭行末の処理</a>
-  <li><a href="#mailnews">Mail/News の要約作成</a>
-  <li><a href="#charset">文字コードの扱い</a>
-  <li><a href="#andor">アンド/オア検索時のスコア計算</a>
-    <ul>
-    <li><a href="#tfidf">tf idf法によるスコアの計算</a>
-  </ul>
-  <li><a href="#symbol">記号を含む単語のインデックス処理</a>
-  <li><a href="#algorithm">Namazu の検索アルゴリズム</a>
-  <li><a href="#regexp-search">正規表現/後方一致/中間一致検索の実装</a>
-  <li><a href="#phrase-search">(あやしげな)フレイズ検索の実装</a>
-  <li><a href="#update-index">文書の更新・削除に対応インデックスの
-更新</a>
-  <li><a href="#sort-by-date">文書の日付による検索結果の新しい順/古い順のソート</a>
-  </ul>
-<li><a href="#query-description">検索式の説明</a>
+<li><a href="#query">検索式</a>
   <ul>
   <li><a href="#query-term">単一単語検索</a>
   <li><a href="#query-and">AND検索</a>
@@ -90,128 +63,56 @@ href="http://www.namazu.org/">http://www.namazu.org/</a> か
   </ul>
 </ul>
 
-<h2><a name="usage">使い方</a></h2>
-
-<h3><a name="usage-general">基本編</a></h3>
+<h2><a name="organization">Namazuの基本構成</a></h2>
 
 <p>
-インデックスを作成するには mknmz の引数にインデックス作成の
-対象とするファイル・ディレクトリ名を与えます。
-つまり <var>/home/foo/public_html</var> を対象とするならば
-</p>
-
-<p><code>% mknmz </code><var>/home/foo/public_html</var>
+Namazuは全文検索システムです。Namazu はインデックスの作成を
+行う mknmz コマンドと、検索を行う namazuコマンドから構成され
+ています。
 </p>
 
 <p>
-と実行します。<var>/home/foo/public_html</var> 以下の *.html
-*.txt といったファイル (mknmzrc の $conf::ALLOW_REGEX で設定
-できます) をすべてインデックスして、 mknmz を実行したカレン
-トディレクトリに NMZ.* というファイルを作成します。
+大量の文書を高速に検索するためには、どの単語がどの文書で使わ
+れているかを記録した索引ファイル (インデックス) をあらかじめ
+作成する必要があります。インデックスはちょうど書籍の索引と似
+ています。
 </p>
 
 <p>
-二度目以降は、新たに追加・更新・削除されたファイルを検出して
-インデックスを更新します。文書の更新/削除の検出を抑制するに
-は -Z オプションをつけてください。削除された文書の検出のみを
-抑制するときは -Y オプション用います。
+インデックスを作成するには mknmz コマンドを用います。mknmz 
+の引数にインデックス作成の対象とするディレクトリ名を与えます。
+たとえば、 <var>/home/foo/public_html</var> を対象とするなら
+ば
 </p>
 
-
-<p>make で作成された <code>namazu</code> が検索プログラムです。</p>
-
-<p><code>% namazu <code>"</code><var>bar</var><code>"</code>
- </code><var>/home/quux/namazu/index</var></p>
-
-<p>のように実行すれば、 <var>/home/quux/namazu/index</var>
-(namazurc の Index で設定したディレクトリの場合は省略できま
-す) にある NMZ.* をもとにキーワード <var>bar</var> を検索し
-ます。 <code>namazu</code> のコマンドラインオプションは<a
-href="#namazu-option">別の項</a>で説明します。標準ではコマン
-ドラインから実行した際はプレインなテキストで出力します。HTML 
-で出力したい場合には -h オプションを指定します。
+<p><code>% mknmz</code> <var>/home/foo/public_html</var>
 </p>
 
 <p>
-また、
-</p>
-
-<p>
-<code>% namazu <code> "</code><var>bar</var><code>"</code> 
-</code><var>/home/quux/namazu/index/foo</var> <var>/home/quux/namazu/index/bar</var>
-</p>
-
-<p>
-のように複数のインデックス (foo, bar) を指定できます。
+と実行します。すると、 <var>/home/foo/public_html</var> 以下
+の *.html *.txt といったファイルについて索引づけを行い、
+mknmz を実行したディレクトリに NMZ.* というファイルを作成し
+ます。この NMZ.* ファイルが Namazu のインデックスです。
 </p>
 
 
-<h3><a name="usage-cgi">CGI として使う</a></h3>
-
 <p>
-CGI として動作させる場合は検索対象となるインデックスファイルを Makefie の
-<code>INDEXDIR</code> で指定したディレクトリ、
-または <a href="#namazurc">namazurc</a> ファイルで設定した場所にに置く必要があります。
-そうでないと CGI プログラムから参照できないので注意してください。
+作成されたインデックスに対して検索を行うには
+<code>namazu</code>コマンドを用います。
 </p>
 
+<p><code>% namazu</code> <var>bar</var>
+<var>/home/foo/NMZ/bar</var></p>
+
 <p>
-標準では mknmz によって作成されるインデックスには
-<code>&lt;a href="/home/quux/public_html/index.html"&gt;</code> のように URI が展開されています。
+と実行すれば、/home/foo/NMZ/bar にあるインデックスに対してキー
+ワード <var>bar</var> を検索します。
 </p>
 
-<p>
-ローカルのディスクを対象としたときはこれで良いと思いますが、
-WWW 用の検索エンジンを作るときは困ります。
-</p>
 
-<p>
-CGI として用いるために
-<code>http://</code> から始まる URI を作成するにはいくつかの方法があります。
-一つは</p>
+<h2><a name="mknmz">mknmzコマンド</a></h2>
 
-<p>
-<a href="#namazurc">namazurc</a> に
-</p>
-
-<p>
-<code>Replace  /home/foo/public_html/  http://foo.bar.jp/~foo/</code>
-</p>
-
-<p>
-のように指定しておくことで (各項目は TAB で区切ってください)、
-検索結果の出力時に <code>/home/foo/public_html/</code> の部
-分を <code>http://foo.bar.jp/~foo/</code> に動的に置き換え
-て出力できます。この方法ではひとつのインデックスをローカル用
-と CGI 用と共用できるのが利点です。コマンドラインから検索す
-るときには -R オプションを指定すればこの置換を行いません。
-</p>
-
-<p>
---replace=code
-</p>
-
-<p>
-検索プログラムは (日本語ならば) NMZ.head.ja と NMZ.foot.ja という
-ヘッダとフッタのファイルを参照します。これらは mknmz を実行した際
-にサンプルが作成されますが、必要に応じてメッセージを自分用に書き直
-しておきましょう。特に &lt;title&gt; ... &lt;/TITLE&gt; は変更する
-ことを強くお勧めします。
-</p>
-
-<p>
-この NMZ.head.ja と NMZ.foot.ja にあるファイル数やキーワード
-数の記述されている部分はインデックスを更新した際に、自動的に
-更新されます。
-</p>
-
-<p>
-一通りの設定が終わったらブラウザから CGI としてアクセスしてみてください。
-NMZ.head.ja, NMZ.body.ja, NMZ.foot.ja を元にした表示を行います。
-メッセージは自分のサイトに合わせて書き替えてください。
-</p>
-
-<h3><a name="mknmz-option">mknmz のコマンドラインオプション</a></h3>
+<h3><a name="mknmz-option">mknmzコマンド行引数</a></h3>
 
 <!-- mknmz-option -->
 <pre>
@@ -238,7 +139,7 @@ NMZ.head.ja, NMZ.body.ja, NMZ.foot.ja を元にした表示を行います。
     形態素解析:
       -c, --use-chasen        日本語の単語のわかち書きに ChaSen を用いる
       -k, --use-kakasi        日本語の単語のわかち書きに KAKASI を用いる
-      -m, --use-chasen-morph  名詞のみを抽出する
+      -m, --use-chasen-noun   名詞のみを抽出する
     
     文字列処理:
       -E, --no-edge-symbol  単語の両端の記号は削除する
@@ -254,7 +155,7 @@ NMZ.head.ja, NMZ.body.ja, NMZ.foot.ja を元にした表示を行います。
     インデックス作成:
           --update=index        更新するインデックスを指定する
       -Y, --no-delete           削除された文書の検出を行わない
-      -Z, --no-update           文書の更新/削除を反映しない
+      -Z, --no-update           文書の更新・削除を反映しない
     
     その他:
       -s, --checkpoint        チェックポイント機構を作動させる
@@ -272,27 +173,40 @@ NMZ.head.ja, NMZ.body.ja, NMZ.foot.ja を元にした表示を行います。
 </pre>
 <!-- mknmz-option -->
 
+
+<h3><a name="mknmzrc">mknmzrcの設定</a></h3>
 <p>
-これらのオプションは -am のようにつなげて指定しても -a -m のように別々に指定しても構いません。
+mknmzrc および .mknmzrc ではいくつかの設定が行えます。
+mknmz は
+</p>
+
+<ol>
+<li>$(sysconfdir)/$(PACKAGE)/mknmzrc<br>
+通常は /usr/local/etc/mknmz/mknmzrc
+<li>~/.mknmzrc
+<li>-f, --config= オプションで指定した mknmzrc
+</ol>
+
+<p>
+の順で設定ファイルを探して読み込みます。
 </p>
 
 <p>
--I オプションに続けてファイルを指定すると、
-mknmz 実行時にそのファイルをインクルード (require) します。
-これは主に変数を上書きするのに役立ちます。 
+インストール直後の状態では 
+$(sysconfdir)/$(PACKAGE)/mknmzrc-sample というサンプルファイ
+ルが用意されています。これを 
+$(sysconfdir)/$(PACKAGE)/mknmzrc にコピーする、あるいは自分
+のホームディレクトリに ~/.mknmzrc としてコピーして利用します。
 </p>
 
 <p>
--F オプションに続けてファイルを指定すると、
-インデックスのターゲットのリストを読み込ませることができます。
-このリストは一行一ファイルの形式です。たとえば
+mknmzrc の設定項目の説明は mknmzrc-sample ファイルにコメント
+として書かれています。
 </p>
 
-<p>
-<code>% find -type f -name '*.html' /foo/bar &gt; list</code>
-</p>
+<h2><a name="namazu">namazuコマンド</a></h2>
 
-<h3><a name="namazu-option">namazu のコマンドラインオプション</a></h3>
+<h3><a name="namazu-option">namazuコマンド行引数</a></h3>
 
 <!-- namazu-option -->
 <pre>
@@ -300,8 +214,8 @@ mknmz 実行時にそのファイルをインクルード (require) します。
     
     使い方: namazu [options] &lt;query&gt; [index]...
         -n, --max=num           一度に表示する件数
-        -w, --whence=num        表示するリストの先頭番号
-        -l, --list              検索結果を URI・パス名のリストで出力
+        -w, --whence=num        表示する検索結果の先頭番号
+        -l, --list              検索結果を URI・パス名をリストで出力
         -s, --short             短いフォーマットで出力
             --result=ext        結果表示に用いる NMZ.result.ext を指定
             --late              検索結果を新しい順にソートする
@@ -310,7 +224,7 @@ mknmz 実行時にそのファイルをインクルード (require) します。
             --ascending         ソートの方向を昇順にする (標準は降順)
         -a, --all               検索結果をすべて表示する
         -c, --count             ヒット数のみを表示する
-        -h, --html              HTML で出力する
+        -h, --html              HTMLで出力する
         -r, --no-references     参考ヒット数を表示しない
         -H, --page              先の検索結果へのリンクを表示する (ほぼ無意味) 
         -F, --form              &lt;form&gt; ... &lt;/form&gt; の部分を強制的に表示する
@@ -321,7 +235,7 @@ mknmz 実行時にそのファイルをインクルード (require) します。
         -C, --show-config       設定を表示する
         -q, --quiet             検索結果以外のメッセージを表示しない
         -v, --version           ヴァージョンを表示する
-            --help              help を表示する (この表示)
+            --help              このヘルプを表示する
     
     バグ報告は &lt;bug-namazu@namazu.org&gt; へどうぞ
 </pre>
@@ -338,14 +252,14 @@ dir]...</code> は検索対象となるインデックスの置いてあるディ
 </p>
 
 <p>
-コマンドラインから実行したときは標準でプレインなテキストとし
+コマンド行から実行したときは標準でプレインなテキストとし
 て検索結果の表示を行います。HTML で出力する場合には -h オプ
 ションを使います。CGI から検索したときは結果が一度に表示でき
 ないと下の方に [1] [2] [3] のように先の検索結果へ進むための
-リンクが作られますが、コマンドラインから実行したときにはこれ
+リンクが作られますが、コマンド行から実行したときにはこれ
 らの表示は無意味なので、表示しません。この余分な表示を何らか
 の理由によって強制的に表示させるには -H オプションを使います。
-また、コマンドラインから実行したときは標準で &lt;form&gt;
+また、コマンド行から実行したときは標準で &lt;form&gt;
 ... &lt;/FORM&gt; を表示させないようになっていますが、 -F を
 つけると強制的に表示させることができます。
 </p>
@@ -361,10 +275,10 @@ dir]...</code> は検索対象となるインデックスの置いてあるディ
 </p>
 
 <p>
--U オプションはコマンドラインから実行して plain text で結果出力する際に URI encode のデコードを行わないためのオプションです。標準では行われるようになっています。
+-U オプションはコマンド行から実行して plain text で結果出力する際に URI encode のデコードを行わないためのオプションです。標準では行われるようになっています。
 </p>
 
-<h3><a name="namazurc">namazurc での設定について</a></h3>
+<h3><a name="namazurc">namazurcの設定</a></h3>
 <p>
 namazurc および .namazurc ではいくつかの設定が行えます。
 namazu は
@@ -378,218 +292,86 @@ namazu は
 </ol>
 
 <p>
-の順で探して読み込みます。
-</p>
-
-
-<p>
-オリジナルは namazurc-sample という名前になっているので、
-これを namazurc または .namazurc という名前にコピーして使います。
-オリジナルは残しておいた方が良いでしょう。
-これは主に make 時の設定とは違う環境に合わせるときに用います。
-</p>
-
-<ul>
-<li><code>INDEX /usr/local/namazu/index</code><br>
-ディフォルトで参照するインデックスのあるディレクトリ
-
-<li><code>REPLACE /home/foo/public_html/
-http://www.hoge.jp/~foo/</code><br> これは検索結果の出力時
-に URI の頭の <code>/home/foo/public_html/</code> の部分を 
-<code>http://www.hoge.jp/~foo/</code> に置き換えるための設
-定です。ローカル用に作ったインデックスを CGI 用に使うときに
-役立ちます。コマンドラインから namazu を実行する際には -R オ
-プションをつけるとこの設定を無効にできます。
-
-<li><code>LOGGING OFF</code><br> 検索に使われたキーワードの
-ログを取らないならば OFF を設定してください。標準ではログを
-取ります。
-
-<li><code>LANG ja</code><br> メッセージの言語を ja または en 
-で指定します。
-</ul>
-
-<h2><a name="search">実際の検索に役立てる</a></h2>
-
-<h3><a name="search-on-command-line">コマンドラインから検索する</a></h3>
-<p>
-namazu をコマンドラインから実行した場合、その出力をパイプで less に渡して眺めることができますが、
-せっかくの検索結果を元にリンクを辿っていくことができないのであまり便利ではありません。
+の順で設定ファイルを探して読み込みます。
 </p>
 
 <p>
-<code>namazu -h "keyword" &gt; result.html</code>
+インストール直後の状態では 
+$(sysconfdir)/$(PACKAGE)/namazurc-sample というサンプルファイ
+ルが用意されています。これを 
+$(sysconfdir)/$(PACKAGE)/namazurc にコピーする、あるいは自分
+のホームディレクトリに ~/.namazurc としてコピーして利用します。
 </p>
 
 <p>
-のように出力を HTML でファイルに書き出してそれをブラウザで読み込めば検索結果のリンクをたどることができます。
+namazurc の設定項目の説明は namazurc-sample ファイルにコメント
+として書かれています。
+</p>
+
+<h2><a name="tools">付属ツール</a></h2>
+
+<h3><a name="bnamazu">bnamazu</a></h3>
+
+<p>
+bnamazu は Webブラウザと連携して検索を行うツールです。検索結
+果を Webブラウザ (標準では lynx) に渡して閲覧できます。コマ
+ンド行から次のように実行します。
 </p>
 
 <p>
-bnamazu
+<code>% bnamazu [-n] [-b browser] [namazu's options] &lt;query&gt; [index]...</code>
+</p>
+
+<h3><a name="nmzgrep">nmzgrep</a></h3>
+
+<p>
+nmzgrep は namazu コマンドと連携して egrep を実行するツール
+です。検索にヒットした文書に対して、egrepをかけます。コマン
+ド行から次のように実行します。
 </p>
 
 <p>
-<code>bnamazu -b "browser" -d "database" "keyword"</code>
+<code>% nmzgrep [egrep's options] &lt;pattern&gt; [index]...</code>
+</p>
+
+
+<h3><a name="gcnmz">gcnmz</a></h3>
+
+<p>
+gcnmz はインデックスを掃除するツールです。コマン
+ド行から次のように実行します。
 </p>
 
 <p>
-のように実行することで、 <code>keyword</code> を検索し、その結果をテンポラリファイルに保存してそれを自動的に <code>browser</code> で指定したブラウザに渡して読み込ませるというツールです。
-<code>-b browser</code> を省略すると標準では Netscape Navigator が呼び出されるようになっています。
+<code>% gcnmz [options] &lt;target&gt;...</code>
+</p>
+
+<h3><a name="mailutime">mailutime</a></h3>
+
+<p>
+mailutime は Mail/News のファイルのタイムスタンプを Date: ヘッ
+ダに合わせるツールです。コマンド行から次のように実行します。
 </p>
 
 <p>
-コマンドラインから使うのもなんだかなあという方は Mule や X, Win32 から使えるそれぞれの検索フロントエンドを使うと便利でしょう。
+<code>% mailutime &lt;target&gt;...</code>
 </p>
 
-<h3><a name="search-on-cgi">CGIとして検索する</a></h3>
-<p>
-CGIとして動作させることで WWW 全文検索エンジンになります。イ
-ンターネットを通じて広く公開しても良いですし、イントラネット
-として内輪だけで共有する使い方も考えられます。普段使い慣れた
-ブラウザで閲覧できるところも利点です。
-</p>
-
-<h3><a name="search-on-mule">Mule から検索する</a></h3>
+<h3><a name="vfnmz">vfnmz</a></h3>
 
 <p>
-Mule から検索できるインタフェース (namazu.el) を
-パッケージに同梱させてもらうことになりました。
-namazu.el を作成してくださった
-まつもとゆきひろさん、やまだあきらさん、馬場肇さんに感謝します。
+vfnmz は検索結果の表示を preview するツールです。コマンド行
+から次のように実行します。
 </p>
 
 <p>
-<code>
-(setq load-path (cons (expand-file-name "/home/foo/elisp") load-path))<br>
-(autoload 'namazu "namazu" nil t)
-</code>
-</p>
-
-<p>
-のように記述することで Mule から <code>M-x namazu</code> で 
-namazu-mode を呼び出すことができるようになります。詳しい説明は 
-<a href="http://arika.org/linux/tools/namazu-el/">namazu.el</a>
-のペイジを参照してください。とても便利です。
-</p>
-
-<h3><a name="search-on-x">X Window System から検索する</a></h3>
-<p>
-広瀬@NECエンジニアリングさんが Tcl/Tk による GUI な検索クラ
-イアント Tknamazuを作ってくださいました。contrib ディレクト
-リに tknamazu-XXX.tar.gz という名前でファイルがあります。使
-用するには <a href="http://lynx.browser.org/">lynx</a> が必
-要です。v2.6 などの古いヴァージョンの lynx では問題があるの
-で新しい版を用意する必要があります。
-</p>
-
-<p>
-詳しくは Tknamazu 付属のドキュメントを参照してください。
-また、
-広瀬さんによる
-<a href="http://www.tama.or.jp/~kenzo-/Namazu/tknamazu/">Tcl/Tk Namazu client</a>
-のペイジがあります。
-</p>
-
-<h3><a name="search-on-win32">Windows 95/NT から検索する</a></h3>
-<p>
-私の先輩の<a href="http://www.na.rim.or.jp/~s_yam/">山下誠二さん</a>が "Search-S for Namazu" という名前の Win32 用の GUI な検索ツールを作ってくださいました。
-</p>
-
-<p>
-実行ファイルのサイズが大きいため Namazu の配布パッケージには含まれていません。
-最新版は <a href="http://www.na.rim.or.jp/~s_yam/library/search-s.html">山下さんのWebサイト</a> から取ってくることができます。
-</p>
-
-<p>
-このツールは Delphi で記述されており、ソースも付属しています。
-検索結果は Netscape Navigator および Internet Explorer に渡して表示させることができる他、内部ブラウザで表示することもできます。
-この場合はファイルの中身の表示も含めて単体で動作します。
-</p>
-
-<h2><a name="tips">雑多な情報</a></h2>
-
-
-<h3><a name="log">検索されたキーワードのログ</a></h3>
-
-<p>
-NMZ.slog は検索されたキーワードのログを保存します。ログは
-</p>
-
-<p>
-<code>検索されたキーワード TAB ヒット数 TAB ホスト名(or IP アドレ
-ス) TAB 日時</code>
-</p>
-
-<p>
-の書式で保存されます。日本語 EUC で保存され、 TAB で区切られ
-ています。
-</p>
-
-<p>
-<code>% awk '-F\t' '{ print $1 }' NMZ.slog | sort f| uniq -c |
-sort -nr</code>
-</p>
-
-<p>
-のようにコマンドラインから実行すれば検索されたキーワードをそれぞれ
-カウントして数字の大きい順に出力できます。
+<code>vfnmz &lt;index&gt; [NMZ.result.foobar]</code>
 </p>
 
 
-<h3><a name="when-confused">インデックスの作成/更新に混乱したら</a></h3>
+<h2><a name="cgi">CGIとして利用する</a></h2>
 
-<p>
-普通に行っていればまず問題は起こらないはずですが、 NMZ.* ファイル
-を下手にいじってしまうと更新がうまくいかなくなります。また、インデッ
-クス作成の途中で強制終了などをして中途半端な NMZ.* ファイルの残骸
-が残っていたりすると次にインデックス作成を行う際におかしな動作をす
-る可能性があります。そのようなときはすみやかに NMZ.* をすべて削除
-して最初からインデックス作成をやり直してください。
-</p>
-
-
-<h3><a name="maillist">メイリングリスト・Newsのアーカイヴの全文検索システムを作成するには</a></h3>
-
-<p>
-メイリングリストや NetNews のアーカイヴをインデックス化する際には 
-<a
-href="http://www.oac.uci.edu/indiv/ehood/mhonarc.html">MHonArc</a> 
-を使って HTML 変換コンヴァータを利用してからインデックス作成するこ
-とをお勧めします。これらのコンヴァータを使えば議論のスレッド単位で
-の相互リンクを張ってくれるので文書のクロスリファレンス性も高まりま
-すし、 HTML のタグ付けをすることによってスコアリングの品質も向上し
-ます。このように、素のままのテキストファイルと比べて断然データベー
-スとしての価値が高まります。
-</p>
-
-<p>
-Namazu の配布パッケージの<code>contrib/</code> のディレクトリに眞
-柄さんが作成された MHonArc 2.2.0用の日本語化パッチ 
-</p>
-
-<h3><a name="robots-txt">/robots.txt で指定されたファイルを対象か
-ら除外する</a></h3>
-
-<p>
-(文書化はまだ不十分です。この説明でわかる方だけ挑戦してください)
-</p>
-
-
-<h3><a name="htaccess">.htaccess で指定されたファイルを対象から除
-外する</a></h3>
-
-<p>
-mknmz に -A オプションを指定して実行してください。 .htaccess内に
-deny か require valid-user, user, group 行が含まれる場合はそのディ
-レクトリ以下をインデックスの対象から除外します。
-</p>
-
-
-
-<h2><a name="form">Namazu の用いる &lt;form&gt;の形式</a></h2>
-
-<h3><a name="outform">結果表示の件数と出力フォーマット</a></h3>
+<h3><a name="form">結果表示の件数と出力フォーマット</a></h3>
 
 <p>標準で作成される NMZ.head には</p>
 
@@ -681,12 +463,12 @@ namazurc の <code>Index</code> で設定されたディレクトリの下
 <p>
 &lt;strong&gt;対象インデックス&lt;/STRONG&gt;&lt;BR&gt;<br>
 &lt;ul&gt;<br>
-&lt;li&gt;&lt;INPUT TYPE="CHECKBOX" NAME="idxname"
-        VALUE="foo"   CHECKED&gt;foo<br>
-&lt;li&gt;&lt;INPUT TYPE="CHECKBOX" NAME="idxname"
-        VALUE="bar" CHECKED&gt;bar<br>
-&lt;li&gt;&lt;INPUT TYPE="CHECKBOX" NAME="idxname"
-        VALUE="baz"   CHECKED&gt;baz<br>
+&lt;li&gt;&lt;input type="checkbox" name="idxname"
+        value="foo"   checked&gt;foo<br>
+&lt;li&gt;&lt;input type="checkbox" name="idxname"
+        value="bar" checked&gt;bar<br>
+&lt;li&gt;&lt;input type="checkbox" name="idxname"
+        value="baz"   checked&gt;baz<br>
 &lt;/ul&gt;<br>
 </p>
 
@@ -727,242 +509,8 @@ subquery には +URI: 固定ではなく任意の検索式を指定できます。
 </p>
 
 
-<h2><a name="implimentation">Namazu の設計と実装</a></h2>
-
-
-<h3><a name="digest">HTML タグによる文書の要約の作成</a></h3>
-
-<p>
-HTML は元々 SGML の一アプリケーションであり、文書の構造を定
-義する言語ですから、&lt;h[1-6]&gt; タグによって定義される文
-書のヘディング (見出し) の情報を利用することによって簡単に要
-約らしきものを作成できます。要約は標準では 200 文字
-に設定されていますから、ヘディングだけを集めて足りない部分は
-文書の先頭から補うようにします。また、対象が単なるテキストファ
-イルだった場合には文書の先頭から 200 文字をそのまま使います。
-Namazu ではこのように単純なアプローチを取っています。
-
-</p>
-
-<h3><a name="tagscoring">HTML タグによるスコアの重みづけルール</a></h3>
-
-<p>標準では</p>
-
-<ul>
-<li><code>&lt;title&gt; 16</code>
-<li><code>&lt;h1&gt; 8</code>
-<li><code>&lt;h2&gt; 7</code>
-<li><code>&lt;h3&gt; 6</code>
-<li><code>&lt;h4&gt; 5</code>
-<li><code>&lt;h5&gt; 4</code>
-<li><code>&lt;h6&gt; 3</code>
-<li><code>&lt;a&gt; 4</code>
-<li><code>&lt;strong&gt;, &lt;EM&gt;, &lt;CODE&gt;, &lt;KBD&gt;, &lt;SAMP&gt;, &lt;CITE&gt;, &lt;VAR&gt; 2</code>
-</ul>
-
-<p>のように HTML タグに応じてスコアに重みづけがされています。
-この値に根拠はありません。
-</p>
-
-<p>また <code>&lt;meta name="keywords" content="</code><var>foo bar</var><code>"&gt;</code> の <var>foo bar</var> に対しては 32 のスコアがつきます。
-これは <code>$METAKEYW</code> という変数に設定されています。
-</p>
-
-
-<h3><a name="htmltag">その他 HTML タグの処理</a></h3>
-<p>
-Namazu ではインデックス作成の際に &amp;quot;, &amp;amp;, &amp;lt;, &amp;gt; および &amp;#9-10, &amp;#32-126 の named entity と numbered entity を復号しています。
- &amp;lt &amp;gt; のようにホワイトスペース区切りで複数指定して最後にセミコロンを打った形式でも大丈夫です。
-内部処理を日本語 EUC で行うため ISO-8859-1 の右半分 (0x80-0xff) の記号は処理できません。
-同じ理由により UCS-4 の numbered entity にも対応不可能です。
-また、インデックス作成の際には &lt;img&gt; タグの ALT 要素の取り出しを行っています。
-
-</p>
-
-
-<h3><a name="line">行頭行末の処理</a></h3>
-<p>
-行頭/行末の空白/タブ、行頭の &gt; | # : を削除します。
-また、行末が日本語で終わる場合は改行コードを無視します (日本語の単語が行末で分断されてしまうのを防ぐ) 。
-これら処理は特にメイルのファイルをなどを扱う際に効果を発揮します。
-これらのルーチンのアイディアとコードは古川@ヤマハさんがくださいました。
-また、英文ハイフォネーションの復元も行います。
-</p>
-
-<h3><a name="mailnews">Mail/News の要約作成</a></h3>
-<p>
-Mail/News のファイルを扱う際は「◯◯@△△と申します」のように自分
-の名前を名乗る行や、引用時の「◯◯さんは△△の記事において□□時頃
-書きました」のような情報、<code>&gt; </code> などで表される引用部
-分をできるだけ要約に含ませないように処理をしています。これらのメッ
-セージは要約には含まれませんが、検索対象には入ります。
-</p>
-
-
-<h3><a name="charset">文字コードの扱い</a></h3>
-
-<p>
-内部処理を ASCII + 日本語 EUC 、出力を ISO-2022-JP で行っています。
- JIS X 0201 の右半分 (いわゆる半角カナ) の文字は扱えません。
-また、多言語の処理も行えません。
-
-</p>
-
-
-<h3><a name="andor">アンド/オア検索時のスコア計算</a></h3>
-
-<h4><a name="tfidf">tf idf法によるスコアの計算</a></h4>
-<p>
-tf idf法によるスコア計算を実装しました。これは与えられたキー
-ワードが2つ以上あるときに用いられます。
-</p>
-
-<p>
-計算式は次の通り。
-</p>
-
-<ul>
-<li><code>tf = 文書に含まれるキーワードの出現回数</code>
-<li><code>N = 全文書数</code>
-<li><code>n = キーワードが含まれる文章の数</code>
-<li><code>idf = log(N/n)</code> (Inverse Document Frequency)
-<li><code>スコア = tf * idf</code>
-</ul>
-
-<p>
-これにより多くの文書に含まれるキーワードには低いスコアがつき、
-そのキーワードを含む文書が少ない場合には高いスコアがつくこと
-になります。
-</p>
-
-<h3><a name="symbol">記号を含む単語のインデックス処理</a></h3>
-
-<p>
-記号の処理はなかなか難しい問題です。例えば <code>(foo is
-bar.)</code> のような文があったときに単純に空白区切りでイン
-デックス化してしまうと <code>"(foo", "is", "bar.)"</code> の
-ように登録されてしまい、これでは foo や bar で検索できなくて
-困ります (<code>"bar*"</code> とすることで前方一致は引っかか
-りますが、アルゴリズムの性釈上、前方一致以外の部分一致は不可
-能です) 。
-</p>
-
-<p>
-この問題を回避するためには記号をすべて取り払ってしまえば最も楽なの
-ですが、 <code>.emacs, TCP/IP</code> といった記号混じりの単語で検
-索したい場合もあります。
- Namazu ではインデックス化しようとするファイルに 
-<code>tcp/ip</code> のような文があった場合、 <code>"tcp/ip",
-"tcp", "ip"</code> のように 3 つに分解してインデックスに登録します。
-</p>
-
-<p>
-また、 <code>(tcp/ip)</code> という文があった場合には 
-<code>"(tcp/ip)", "tcp/ip", "tcp", "ip"</code> のように 4 つ
-に分解します。<code>&lt;s.takabayashi&gt;, e-mail:</code> の
-ようなものでも同じです。さすがに <code>((tcp/ip))</code> の
-ように入れ子構造になっている場合の処理は行っていないので 
-<code>"((tcp/ip))", "(tcp/ip)", "tcp", "ip"</code> のように
-処理されます。最初の例の場合は <code>"(foo", "foo", "is",
-"bar.)", "bar.", "bar"</code> のように登録されるため foo で
-も bar でも検索できます。
-</p>
-
-
-<h3><a name="algorithm">Namazu の検索アルゴリズム</a></h3>
-
-<p>
-Namazu の検索アルゴリズムは基本的には単純な 2分探索です。
-</p>
-
-<h3><a name="regexp-search">正規表現/後方一致/中間一致検索の実装</a></h3>
-
-<p>
-正規表現は <a
-href="http://www.netlab.co.jp/ruby/jp/">Ruby</a> のコードを
-利用しています。。たとえば <code>/インター?フェ[ーイ]ス
-/</code> といった指定が可能になっています。
-</p>
-
-<h3><a name="phrase-search">(あやしげな)フレイズ検索の実装</a></h3>
-
-<p>
-フレイズ検索の実装はかねてからの目標でした。最も問題だったの
-は単純に現状のインデックスの構造の延長上に実装するとインデッ
-クスのサイズが巨大になるということでした。
-</p>
-
-<p>「フレイズを構成する個々の単語はすべて AND検索でそのファイルに
-存在することが分かっているのだから、調べる必要があるのは単語の並び
-だけである。精度を多少犠牲にして単語をハッシュ値に変換すればサイズ
-は小さくなる。」</p>
-
-<p>なるほど、これはいける、ということで実装したのが Namazu のフレー
-ズ検索です (古川さん Thanks!)。「あやしげな」というのは精度
-が 100% ではないことを意味します。</p>
-
-<p>フレイズは 2語単位で 16 bitのハッシュ値に変換して記録しているの
-で、たとえば "foo bar baz" というフレイズで検索すると</p>
-
-<p>
-...<br>
-foo bar ...<br>
-... bar baz
-</p>
-
-<p>のように "foo bar" と "bar baz" の含まれるファイルもヒットして
-しまいます。これはちょっと困ったことですが、少なくとも foo &amp;
-bar &amp; baz で検索するよりは候補を絞れます。</p>
-
-<p>理想的には "foo bar baz" を確実に検索できた方が望ましいのですが、
-インデックスのサイズとの兼ね合いもあるので難しいところです。</p>
-
-<p>
-フレイズ用のインデックス NMZ.p のサイズは転置ファイル NMZ.i よりは
-小さくなります。また、これの補助インデックスとして 256KB (int =
-32bitで計算) を必要とします。
-</p>
-
-<h3><a name="update-index">文書の更新・削除に対応インデックスの
-更新</a></h3>
-
-<p>
-この仕組みは実際にインデックスから登録済の文書を更新/削除するので
-はなく、欠番情報を記録することによって実現されています。つまり、イ
-ンデックスに記録された元の情報はそのままで、単にその文書の IDが欠
-番になるだけです。この情報は NMZ.t に記録され、検索時に参照されま
-す。また、文書の日付情報と共用されています。
-</p>
-
-
-<p>
-文書の更新/削除を含むインデックスの更新を繰り返していくと欠番が増
-えて記録効率が悪くなっていきます。そこで、古川@ヤマハさん作の欠
-番を詰めるツール gcnmz の出番です。使い方は
-</p>
-
-<p>
-<code>% gcnmz /some/where/NMZ</code>
-</p>
-
-<p>
-のようにゴミ掃除対象の NMZ.* ファイルのパスをファイル名の NMZまで
-を指定します (拡張子の前まで)。このツールはまでテストが不十分なの
-で十分注意して使ってください。なお、ゴミ掃除する前の元のファイルは 
-*.BAK として残ります。</p>
-
-
-<h3><a name="sort-by-date">文書の日付による検索結果の新しい順/古い順のソート</a></h3>
-
-<p>
-Mail/News の Date: ヘッダに合わせてファイルのタイムスタンプを修正
-するツール mailutime を添付したので必要な人は使ってください。 
-MHonArc を使っている人は -modtime オプションで同じことができます。
-</p>
-
-
 <!-- query -->
-<h2><a name="query-description">検索式の説明</a></h2>
+<h2><a name="query">検索式</a></h2>
 
 <h3><a name="query-term">単一単語検索</a></h3>
 <p>
@@ -1088,7 +636,7 @@ href="http://www.perl.com/">Perl</a>とほぼ同じです。 例:
 (Subject: に <code>GNU Emacs</code>が含まれる文書)
 <li><code class="example">+from:foo@bar.jp</code><br>
 (From: に <code>foo@bar.jp</code> が含まれる文書)
-<li><code class="example">+message-id:&lt;199801240555.oaa18737@foo.bar.jp&gt;</code><br>
+<li><code class="example">+message-id:&lt;199801240555.OAA18737@foo.bar.jp&gt;</code><br>
 (Message-Id を指定)
 </ul>
 
@@ -1098,8 +646,9 @@ href="http://www.perl.com/">Perl</a>とほぼ同じです。 例:
 <li>いずれの検索方法でもアルファベットの大文字・小文字の区別
 はしません。
 
-<li>日本語の複合語は形態素単位に分割し、それらをフレイズ検索
-します。分割は不適切に行なわれることがあります。
+<li>日本語の複合語は形態素単位に分割し、それらを<a
+href="#phrase"> フレイズ検索</a>します。分割は不適切に行なわ
+れることがあります。
 
 <li>JIS X 0208 (いわゆる全角文字) の英数字と記号の一部 
 (ASCIIと重複しているもの) は ASCII (いわゆる半角文字) として
@@ -1107,9 +656,9 @@ href="http://www.perl.com/">Perl</a>とほぼ同じです。 例:
 
 <li>記号を含む語の検索ができます。例: <code>TCP/IP</code>。
 ただし、記号の処理は完全ではないので <code>TCP and IP</code> 
-のように分割してAND検索をかけた方が取りこぼしがありません 
-(その代わり余計なファイルまでヒットしてしまう可能性がありま
-す)。
+のように分割して<a href="#and">AND検索</a>をかけた方が取りこ
+ぼしがありません (その代わり余計なファイルまでヒットしてしま
+う可能性があります)。
 
 <li>中間一致・後方一致、正規表現、フィールド指定の検索には少
 し時間がかかります。
@@ -1135,7 +684,7 @@ Tknamazu および namazu.el から検索するときは必ず後者で指定します。
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: manual.html,v 1.3 2000-01-31 06:24:01 satoru Exp $
+$Id: manual.html,v 1.4 2000-01-31 08:56:46 satoru Exp $
 </div>
 <address>
 developers@namazu.org

@@ -1,5 +1,9 @@
 2000-01-31  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* scripts/vfnmz.in: Change usage message.
+
+	* scripts/gcnmz.in (usage): Ditto.
+
 	* scripts/mknmz.pl (parse_options): Change option name:
 	s/--use-chasen-morph/--use-chasen-noun/. All related variables are
 	changed.

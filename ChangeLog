@@ -1,3 +1,7 @@
+2000-05-15  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* src/output.c: Apply Jun Kuriyama's patch. namazu-bugs-ja#19
+
 2000-05-10  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* nmz/util.c (nmz_readfile): Fix namazu-bugs-ja#18 by applying
@@ -5667,4 +5671,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.692 2000-05-10 06:40:22 satoru Exp $
+$Id: ChangeLog,v 1.693 2000-05-15 00:35:57 satoru Exp $

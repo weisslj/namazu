@@ -1,4 +1,4 @@
-$Id: THANKS,v 1.21 2000-05-10 06:40:04 satoru Exp $
+$Id: THANKS,v 1.22 2000-05-15 00:35:58 satoru Exp $
 
 We have been trying to keep track of everyone who
 contributes to Namazu.  Please contact us if you know anyone
@@ -26,6 +26,7 @@ Hiroshi Kato <tumibito@mm.rd.nttdata.co.jp>
 Hisaaki Shibata <shibata@opost1.netspace.or.jp>
 Jose Juan Zapater <compi@arrakis.es>
 Jun Kurabe <jun-krb@mars.dti.ne.jp>
+Jun Kuriyama <kuriyama@FreeBSD.org>
 Jun Morimoto <morimoto@marib.imagica.co.jp>
 Junio Hamano <junio@twinsun.com>
 Katsuhiro Ueno <unnie@blue.sky.or.jp>
@@ -87,7 +88,6 @@ hosokawa@ntc.keio.ac.jp (HOSOKAWA Tatsumi)
 kenzo-@tama.or.jp (Ken-ichi Hirose)
 kita@sec.rd.nttdata.co.jp (´îÂ¿ ½ß°ìÏº)
 kjm@rins.ryukoku.ac.jp (KOJIMA Hajime /¾®ÅçÈ¥)
-kuriyama@FreeBSD.org
 masao@ulis.ac.jp (Masao Takaku)
 matz@netlab.co.jp (Yukihiro Matsumoto)
 mithara <mithara@da2.so-net.or.jp>

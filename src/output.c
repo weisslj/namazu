@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.71 2000-04-04 07:38:59 masao Exp $
+ * $Id: output.c,v 1.72 2000-05-15 00:35:58 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -475,7 +475,7 @@ print_query(const char * qs, int w)
 }
 
 /*
- * Displayi page index.
+ * Display page index.
  */
 static void 
 print_page_index(int n)
@@ -614,11 +614,14 @@ print_msgfile(const char *fname) {
 	strcat(tmpfname, suffix);
 
 	buf = nmz_readfile(tmpfname); /* buf is allocated in nmz_readfile. */
+	if (buf == NULL) {
+	    die(nmz_get_dyingmsg());
+	}
 	/* In case of suffix isn't equal to lang, we need code conversion */
 	if (strcmp(suffix, nmz_get_lang()) != 0) {
             /* new is allocated in nmz_codeconv_external. */
 	    char *new = nmz_codeconv_external(buf); 
-	    free(buf);  /* Then we shoul free buf's memory */
+	    free(buf);  /* Then we should free buf's memory */
 	    buf = new;
 	}
 

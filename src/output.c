@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.94 2003-03-21 09:46:49 opengl2772 Exp $
+ * $Id: output.c,v 1.95 2003-03-23 17:53:16 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -117,7 +117,7 @@ static void
 emprint(char *s, int entity_encode)
 {
     int i;
-    for (i = 0; *s && i < BUFSIZE; s++) {
+    for (i = 0; *s && i < BUFSIZE * 16; s++) {
 	if (*s == EM_START_MARK) {
 	    fputs(emphasis_start_tag, stdout);
 	    continue;

@@ -1,5 +1,5 @@
 /*
- * $Id: result.c,v 1.69 2003-03-23 12:20:40 opengl2772 Exp $
+ * $Id: result.c,v 1.70 2003-03-23 17:53:16 opengl2772 Exp $
  * 
  * Copyright (C) 1989, 1990 Free Software Foundation, Inc.
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
@@ -207,6 +207,11 @@ emphasize(char *str)
 	char *ptr = str;
 	char key[BUFSIZE] = "";
 	int keylen = 0;
+        int findFlag = 0;
+        char *keys;
+        char *word;
+        char *lowerString, *lowerPtr;
+        char *startPos, *endPos;
 
 	if (nmz_is_query_op(nmz_get_querytoken(i)))
 	    continue;
@@ -217,7 +222,79 @@ emphasize(char *str)
 	    nmz_tr(key, "\t", " ");
             memmove(key, key + 1, strlen(key + 1) + 1);
             key[strlen(key) - 1] = '\0';
+
+            for (ptr = key; *ptr; ptr++) {
+                *ptr = tolower(*ptr);
+            }
+
+            ptr = str;
+            lowerPtr = lowerString;
+            while (*ptr) {
+                lowerString = strdup(str);
+                for (lowerPtr = lowerString; *lowerPtr; lowerPtr++) {
+                    *lowerPtr = tolower(*lowerPtr);
+                }
+                lowerPtr = lowerString + (ptr - str);
+
+                findFlag = 0;
+                for (; *lowerPtr; lowerPtr++, ptr++) {
+                   keys = strdup(key);
+                   word = strtok(keys, " \t\n\r");
+                   if (!strncmp(lowerPtr, word, strlen(word))) {
+                       startPos = lowerPtr;
+                       endPos = lowerPtr + strlen(word);
+                       lowerPtr += strlen(word);
+                       ptr += strlen(word);
+                       findFlag = 1;
+                       while ((word = strtok(NULL, " \t\n\r"))) {
+                           while (*lowerPtr == ' ' || *lowerPtr == '\t' || *lowerPtr == '\r' || *lowerPtr == '\n') {
+                               lowerPtr++;
+                               ptr++;
+                           }
+                           if (!strncmp(lowerPtr, word, strlen(word))) {
+                               findFlag = 1;
+                               endPos = lowerPtr + strlen(word);
+                           }
+                           else {
+                               findFlag = 0;
+                               break;
+                           }
+                           lowerPtr += strlen(word);
+                           ptr += strlen(word);
+                       }
+                   }
+                   free(keys);
+
+                   if (findFlag) {
+                       break;
+                   }
+                }
+
+                free(lowerString);
+
+                if (!findFlag) {
+                    break;
+                }
+
+                keylen = endPos - startPos;
+                ptr -= keylen;
+                memmove(ptr + 2, ptr, strlen(ptr) + 1);
+                memmove(ptr + 1, ptr + 2, keylen);
+                *ptr = EM_START_MARK;
+                *(ptr + keylen + 1) = EM_END_MARK;
+                ptr += keylen + 2;
+            }
+            continue;
 	}
+
+        if (strlen(key) > 0) {
+            if ((key[0] == '"' && key[strlen(key) - 1] == '"')
+            || (key[0] == '{' && key[strlen(key) - 1] == '}')
+            || (key[0] == '/' && key[strlen(key) - 1] == '/')) {
+                memmove(key, key + 1, strlen(key + 1) + 1);
+                key[strlen(key) - 1] = '\0';
+            }
+        }
 
 	keylen = strlen(key);
 
@@ -294,7 +371,7 @@ compose_result(struct nmz_data d, int counter,
 		p += 2;
 	    }
 	} else {
-	    strncat(r, p, BUFSIZE - strlen(r) - 1);
+	    strncat(r, p, BUFSIZE * 128 - strlen(r) - 1);
 	    break;
 	}
     } while (1);

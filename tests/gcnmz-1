@@ -17,6 +17,19 @@ fi
 # Copy idx4 for testing gcnmz.
 cp -r idx4 idx6
 
+
+# Copy docments.
+if test -d tmp-data; then
+    rm -rf tmp-data
+fi
+cp -r data tmp-data
+
+# Remove some documents.
+cd ../tests/tmp-data
+find . -type f -name '*.txt' | xargs rm -f
+cd ../
+
+
 # Simple indexing to make a reference index.
 cd ../scripts 
 ./mknmz -O ../tests/idx5 ../tests/tmp-data >> $LOG

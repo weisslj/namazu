@@ -1,0 +1,4 @@
+BUGS
+* <index>/NMZ.*.jaがISO-2022-JPでencodingされたままになっている。
+* make update-poが効かない。
+* -with-tknamazuしていないときにmake distがコケる。[ad-hocに解決済]

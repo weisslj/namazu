@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: msword.pl,v 1.40 2004-02-15 14:44:44 opengl2772 Exp $
+# $Id: msword.pl,v 1.41 2004-02-15 16:20:10 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2002 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -253,6 +253,8 @@ sub getSummaryInfo ($$$$$) {
     # 10001 : 0x00002711 : x-mac-japanese
     # 65001 : 0xfffffde9 : UTF-8
 
+
+    my $codepage = "000003a4"; # Shift_JIS
     my $title = undef;
     my $subject = undef;
     my $lastauthor = undef;

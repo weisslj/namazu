@@ -2,7 +2,7 @@
 
 @SET_MAKE@
 EXTRA_DIST = README-ja namazu.spec.in
-EXTRA_DIRS = lib filter
+EXTRA_DIRS = lib filter template
 # EXTRA_DIRS = contrib doc lib misc
 SUBDIRS = src
 

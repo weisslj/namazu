@@ -1,42 +1,49 @@
 %define ver	@VERSION@
+%define  RELEASE 1
+%define  rel     %{?CUSTOM_RELEASE} %{!?CUSTOM_RELEASE:%RELEASE}
+%define prefix	/usr
 
 Summary: Tcl/Tk front-end for namazu
 Name: tknamazu
 Version: %{ver}
-Release: 1
+Release: %{rel}
 Copyright: GPL
-Group: Utilities/Text
+Group: Applications/Text
 Requires: namazu, tcl, tk, lynx
 Source0: tknamazu-%{ver}.tar.gz
 URL: http://www.tama.or.jp/%7Ekenzo-/Namazu/tknamazu/
-BuildRoot: /var/tmp/tknamazu-%{ver}-buildroot
+BuildRoot: /var/tmp/%{name}-%{ver}-buildroot
+BuildArchitectures: noarch
 
 %description
 TkNamazu is Tcl/Tk front-end for namazu.
 
-%changelog 
+%changelog
+* Sun Feb 20 2000 Ryuji Abe <raeva@t3.rim.or.jp>
+- Changed group Utilities/Text -> Applications/Text.
+- Removed CFLAGS="$RPM_OPT_FLAGS" at %build.
+- Use prefix macro.
+- Changed BuildArchitetures noarch.
+
 * Sat Sep 11 1999 Ryuji Abe <raeva@t3.rim.or.jp>
 - First Build.
 
 %prep 
-rm -rf $RPM_BUILD_ROOT
-
 %setup
 
 %build
-CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=/usr
+./configure --prefix=%{prefix}
 make
 
 %install
-make prefix=$RPM_BUILD_ROOT/usr install
+rm -rf $RPM_BUILD_ROOT
+make prefix=$RPM_BUILD_ROOT%{prefix} install
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-, root, root)
-
 %doc AUTHORS ChangeLog COPYING NEWS README
-/usr/bin/tknamazu
-/usr/share/tknamazu/*
-
+%{prefix}/bin/tknamazu
+%{prefix}/share/tknamazu/*

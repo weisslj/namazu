@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: msword.pl,v 1.20 2000-03-15 06:53:50 satoru Exp $
+# $Id: msword.pl,v 1.21 2000-03-22 21:11:59 kenzo- Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -39,7 +39,8 @@ sub mediatype() {
 
 sub status() {
     $wordconvpath = util::checkcmd('wvHtml');
-    return 'no' unless defined $wordconvpath;
+#    return 'no' unless defined $wordconvpath;
+    if (defined $wordconvpath) {
     if (!util::islang("ja")) {
 	return 'yes';
     } else {
@@ -51,6 +52,11 @@ sub status() {
 	    return 'no';
 	}
     }
+	} else {
+    $wordconvpath = util::checkcmd('doccat');
+    return 'yes' if defined $wordconvpath;
+	return 'no';
+	}
 }
 
 sub recursive() {
@@ -70,6 +76,19 @@ sub add_magic ($) {
 }
 
 sub filter ($$$$$) {
+    my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
+      = @_;
+    my $err = undef;
+ 
+    if (util::checkcmd('wvHtml')) {
+    $err = filter_wv($orig_cfile, $cont, $weighted_str, $headings, $fields);
+    } else { 
+    $err = filter_doccat($orig_cfile, $cont, $weighted_str, $headings, $fields);
+    }
+    return $err;
+}   
+
+sub filter_wv ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
       = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
@@ -129,6 +148,32 @@ sub filter ($$$$$) {
       unless $fields->{'title'};
     gfilter::show_filter_debug_info($cont, $weighted_str,
 			   $fields, $headings);
+    return undef;
+}
+
+sub filter_doccat ($$$$$) {
+    my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
+      = @_;
+    my $cfile = defined $orig_cfile ? $$orig_cfile : '';
+ 
+    my $tmpfile  = util::tmpnam('NMZ.word');
+
+	system("$wordconvpath -o e $cfile > $tmpfile");
+
+    {
+    my $fh = util::efopen("< $tmpfile");
+    $$cont = util::readfile($fh);
+	}
+
+    unlink($tmpfile);
+
+    gfilter::line_adjust_filter($cont);
+    gfilter::line_adjust_filter($weighted_str);
+    gfilter::white_space_adjust_filter($cont);
+    $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
+      unless $fields->{'title'};
+    gfilter::show_filter_debug_info($cont, $weighted_str,
+               $fields, $headings);
     return undef;
 }
 

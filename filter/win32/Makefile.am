@@ -6,8 +6,7 @@ filterdir = $(pkgdatadir)/filter/win32
 
 filter_DATA = olemsword.pl \
 	     oleexcel.pl \
-	     olepowerpoint.pl \
-	     ichitaro456.pl
+	     olepowerpoint.pl
 
 EXTRA_DIST = $(filter_DATA)
 

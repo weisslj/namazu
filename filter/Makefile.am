@@ -26,6 +26,9 @@ filter_DATA = bzip2.pl \
 	     pdf.pl \
 	     rfc.pl \
 	     tex.pl \
+	     powerpoint.pl \
+	     taro.pl \
+	     ichitaro456.pl \
 	     hnf.pl
 
 EXTRA_DIST = $(filter_DATA)
@@ -36,4 +39,3 @@ TAGS_DEPENDENCIES = $(filter_DATA)
 # To remove Windows specific files installed by Namazu 2.0 and/or 2.0.1
 install-data-local:
 	rm -f $(filterdir)/ole*.pl
-	rm -f $(filterdir)/ichitaro.pl

@@ -405,9 +405,10 @@ s#<em>aaa</em>#<strong>bbb</strong>#
             bbb (http://foo.bar.jp/) となります。)
 </p>
 
-  <li> (/usr/local/etc/namazu/mknmzrc の $HTML_SUFFIX の設定によって)
-     *.html *.html.ja *.phtml *.html *.asp *.cgi などだけを調べ、メー
-      ルのようなものはこの指定では調べません。
+  <li> (/usr/local/etc/namazu/mknmzrc の $conf::ALLOW_FILE,
+     $conf::DENY_FILE の設定によって) 
+     *.html *.html.ja *.phtml *.html *.asp *.cgi などだけを
+     対象とします。メイルは標準の設定では対象としません。
   <li>手軽にメイルなどを調べるなら -a を付けておきます。
 </ul>
 
@@ -626,7 +627,7 @@ cgi-bin が動く HTTP server を Webブラウザを通じて利用する形
 <dt>対象ファイルについて
 <dd>
 指定した「対象ディレクトリ」の中で、何が検索の対象になるかと
-いう疑問があるとしたら、答えは、<strong>(mknmzrc の)</strong> $ALLOW_FILE, $DENY_FILE の設定。それ
+いう疑問があるとしたら、答えは、<strong>(mknmzrc の)</strong> $conf::ALLOW_FILE, $conf::DENY_FILE の設定。それ
 と -a 選択で決まる。
 
 <dt>mew-1.94b2x と mew-nmz.el
@@ -771,7 +772,7 @@ Webブラウザの言語の設定に日本語(ja) を追加してください
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: tutorial.html,v 1.32 2000-02-20 04:24:05 kenji Exp $
+$Id: tutorial.html,v 1.33 2000-02-20 05:31:21 satoru Exp $
 </div>
 <address>
 developers@namazu.org

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: codeconv.pl,v 1.16 2003-08-01 01:45:10 makoto Exp $
+# $Id: codeconv.pl,v 1.17 2004-01-30 15:04:39 usu Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -153,7 +153,9 @@ sub toeuc ($) {
 sub eucjp_zen2han_ascii ($) {
     my ($str) = @_;
     if (util::islang("ja")) {         
-        $str =~ s/\xa3([\xb0-\xb9\xc1-\xda\xe1-\xfa])/pack("C",unpack("C",$1)-0x80)/ge;
+	$str =~ s/([\xa1-\xfe][\xa1-\xfe]|\x8e[\xa1-\xdf]|\x8f[\xa1-\xfe][\xa1-\xfe])/
+	my $tmp = $1;
+	$tmp =~ m!\xa3([\xb0-\xb9\xc1-\xda\xe1-\xfa])! ? $1 & "\x7F" : $tmp/gse;    
     }
     $str;
 }

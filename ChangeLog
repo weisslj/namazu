@@ -1,3 +1,7 @@
+1999-11-24  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* nmz/util.c (reverse_byte_order): Be type-independent.
+
 1999-11-23  Ken-ichi Hirose  <kenzo-@tama.or.jp>
 
 	* src/mknmz.pl.in: Modify make_summary function.

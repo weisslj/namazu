@@ -29,16 +29,17 @@
  *
  */
 
-static void reverse_byte_order (int*, int, int);
+static void reverse_byte_order (void*, int, int);
 
 /* reverse byte order */
-static void reverse_byte_order (int *p, int n, int size)
+static void reverse_byte_order (void *p, int n, int size)
 {
     int i, j;
-    char *c, tmp;
+    char *pp, tmp;
 
+    pp = (char *)p;
     for (i = 0; i < n; i++) {
-        c = (char *)(p + i);
+        char *c = (pp + (i * size));
         for (j = 0; j < (size / 2); j++) {
             tmp = *(c + j);
             *(c + j)= *(c + size - 1 - j);

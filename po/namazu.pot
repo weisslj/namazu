@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 1999-11-23 23:07+0900\n"
+"POT-Creation-Date: 1999-11-24 07:49+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -47,19 +47,19 @@ msgstr ""
 msgid "Too long QUERY_STRING"
 msgstr ""
 
-#: src/namazu.c:317
+#: src/namazu.c:316
 msgid ""
 "\t<h2>Error!</h2>\n"
 "<p>Invalid query.</p>\n"
 msgstr ""
 
-#: src/namazu.c:321
+#: src/namazu.c:320
 msgid ""
 "\t<h2>Error!</h2>\n"
 "<p>Too many query tokens.</p>\n"
 msgstr ""
 
-#: src/namazu.c:370
+#: src/namazu.c:369
 msgid "\t<p>No document matching your query.</p>\n"
 msgstr ""
 

@@ -18,7 +18,7 @@ $ADDRESS = '@OPT_ADMIN_EMAIL@';
 #
 # This pattern specifies HTML suffixes.
 #
-$HTML_SUFFIX = 'html?|[ps]html|html\.[a-z]{2}|asp|cgi';
+$HTML_SUFFIX = "html?|[ps]html|html\\.[a-z]{2}|asp|cgi";
 
 #
 # This pattern specifies file names which will be targeted.
@@ -66,7 +66,7 @@ $SEARCH_FIELD = "message-id|subject|from|date|uri|newsgroups|to|summary|size";
 # This pattern specifies meta tags which used for field-specified 
 # searching.  NOTE: case-insensitive
 #
-$META_TAGS = 'keywords|description';
+$META_TAGS = "keywords|description";
 
 #
 # This pattern specifies aliases for NMZ.field.* files.

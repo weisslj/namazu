@@ -1,3 +1,9 @@
+1999-10-19  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* src/libnamazu.{c,h}: Added some setting functions.
+
+	* src/namazu.c: Moved set_redirect_stdout_to_file function.
+
 1999-10-14  Ryuji Abe <raeva@t3.rim.or.jp>
 
 	* acinclude.m4: Moved all macros previously defined 

@@ -2,7 +2,7 @@
  * 
  * libnamazu.c - Namazu library api
  *
- * $Id: libnamazu.c,v 1.1 1999-10-12 07:28:10 knok Exp $
+ * $Id: libnamazu.c,v 1.2 1999-10-19 07:24:02 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
@@ -49,23 +49,6 @@
 #include "cgi.h"
 #include "hlist.h"
 #include "i18n.h"
-
-/* redirect stdio to specified file */
-int set_redirect_stdout_to_file(uchar * fname)
-{
-    int fd;
-
-    if (-1 == (fd = open(fname, O_CREAT | O_TRUNC | O_WRONLY, 00600))) {
-	diemsg("stdio2file(cannot open)");
-	return 1;
-    }
-    close(STDOUT);
-    dup(fd);
-    close(STDERR);
-    dup(fd);
-    close(fd);
-    return 0;
-}
 
 void free_idxnames(void)
 {
@@ -211,3 +194,45 @@ int complete_idxnames(void)
     }
     return 0;
 }
+
+char *set_namazurc(char *arg)
+{
+    return strcpy(NAMAZURC, arg);
+}
+
+char *set_template(char *arg)
+{
+    return strcpy(Template, arg);
+}
+
+void set_sortbydate(void)
+{
+    SortMethod = SORT_BY_DATE;
+}
+
+void set_sortbyscore(void)
+{
+    SortMethod = SORT_BY_SCORE;
+}
+
+void set_sortbyfield(void)
+{
+    SortMethod = SORT_BY_FIELD;
+}
+
+void set_sort_descending(void)
+{
+    SortOrder = DESCENDING;
+}
+
+void set_sort_ascending(void)
+{
+    SortOrder = ASCENDING;
+}
+
+void set_debug(void)
+{
+    Debug = 1;
+}
+
+

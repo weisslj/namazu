@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.31 1999-10-13 08:30:43 knok Exp $
+ * $Id: namazu.c,v 1.32 1999-10-19 07:24:02 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -49,6 +49,23 @@
 #include "hlist.h"
 #include "idxname.h"
 #include "i18n.h"
+
+/* redirect stdio to specified file */
+int set_redirect_stdout_to_file(uchar * fname)
+{
+    int fd;
+
+    if (-1 == (fd = open(fname, O_CREAT | O_TRUNC | O_WRONLY, 00600))) {
+	diemsg("stdio2file(cannot open)");
+	return 1;
+    }
+    close(STDOUT);
+    dup(fd);
+    close(STDERR);
+    dup(fd);
+    close(fd);
+    return 0;
+}
 
 /*
  * Command line options.
@@ -97,33 +114,33 @@ int parse_options(int argc, char **argv)
 	    return DIE_NOERROR;
 	    break;
 	case '1':
-	    strcpy(Template, optarg);
+	    set_template(optarg);
 	    break;
 	case '2':
-	    SortMethod    = SORT_BY_DATE;
-	    SortOrder = DESCENDING;
+	    set_sortbydate();
+	    set_sort_descending();
 	    break;	  
 	case '3':	  
-	    SortMethod    = SORT_BY_DATE;
-	    SortOrder = ASCENDING;
+	    set_sortbydate();
+	    set_sort_ascending();
 	    break;
 	case '4':  /* --sort */
 	{
 	    if (strcasecmp(optarg, "score") == 0) {
-		SortMethod = SORT_BY_SCORE;
+		set_sortbyscore();
 	    } else if (strcasecmp(optarg, "date") == 0) {
-		SortMethod    = SORT_BY_DATE;
+		set_sortbydate();
 	    } else if (strprefixcasecmp(optarg, "field:") == 0) {
-		SortMethod    = SORT_BY_FIELD;
+		set_sortbyfield();
 		set_sort_field(optarg + 6);
 	    }
 	}
 	break;
 	case '5':  /* --ascending */
-	    SortOrder = ASCENDING;
+	    set_sort_ascending();
 	    break;
 	case 'f':
-	    strcpy(NAMAZURC, optarg);
+	    set_namazurc(optarg);
 	    break;
 	case 'n':
 	    HListMax = atoi(optarg);
@@ -132,10 +149,10 @@ int parse_options(int argc, char **argv)
 	    HListWhence = atoi(optarg);
 	    break;
 	case 'd':
-	    Debug = 1;
+	    set_debug();
 	    break;
 	case 's':
-	    strcpy(Template, "short");
+	    set_template("short");
 	    break;
 	case 'l':
 	case 'S':  /* 'S' for backward compatibility */

@@ -2,8 +2,8 @@
 
   util.h -
 
-  $Author: knok $
-  $Date: 1999-11-12 00:49:07 $
+  $Author: satoru $
+  $Date: 1999-11-14 13:55:02 $
   created at: Thu Mar  9 11:55:53 JST 1995
 
   Copyright (C) 1993-1998 Yukihiro Matsumoto
@@ -50,7 +50,6 @@ void *xrealloc(void*, unsigned long);
 void tr(uchar*, uchar*, uchar*);
 void chomp(uchar*);
 
-void decode_uri(uchar *);
 void strlower();
 void delete_backslashes();
 int get_unpackw();

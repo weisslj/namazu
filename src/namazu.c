@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.33 1999-11-01 14:13:20 satoru Exp $
+ * $Id: namazu.c,v 1.34 1999-11-14 13:55:05 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -232,6 +232,8 @@ int namazu_core(uchar * query, uchar *subquery, uchar *av0)
             print_headfoot(NMZ.foot, query, subquery);
         }
 	free_idxnames();
+	free_aliases();
+	free_replaces();
 	/*	exit(1);*/
 	return 1;
     }
@@ -240,17 +242,20 @@ int namazu_core(uchar * query, uchar *subquery, uchar *av0)
     debug_printf(" -w: %d\n", HListWhence);
     debug_printf("query: [%s]\n", query);
 
+    if (HtmlOutput && IsCGI) {
+	print(MSG_MIME_HEADER);
+    }
+
+    if (HtmlOutput) {
+	print_headfoot(NMZ.head, query, subquery);
+    }
+
     /* search */
     hlist = search_main(query_with_subquery);
     if (hlist.n == DIE_HLIST)
         return DIE_ERROR;
 
-    if (HtmlOutput && IsCGI)
-	print(MSG_MIME_HEADER);
-    if (HtmlOutput)
-	print_headfoot(NMZ.head, query, subquery);
-
-    /* result1 */
+    /* result1:  <h2>Results:</h2>, References:  */
     if (!HitCountOnly && !ListFormat && !NoReference && !Quiet) {
         print_result1();
 
@@ -268,7 +273,11 @@ int namazu_core(uchar * query, uchar *subquery, uchar *av0)
         if (Idx.num > 1 && HtmlOutput) {
             print("</ul>\n");
         }
-        print_result2();
+	if (Idx.num == 1 && HtmlOutput) {
+	    print("\n</p>\n");
+	} else {
+	    fputc('\n', stdout);
+	}
     }
 
     if (hlist.n > 0) {
@@ -294,11 +303,11 @@ int namazu_core(uchar * query, uchar *subquery, uchar *av0)
         }
     }
 
-    free_hlist(hlist);
-
     if (HtmlOutput) {
 	print_headfoot(NMZ.foot, query, subquery);
     }
+
+    free_hlist(hlist);
     free_idxnames();
     free_aliases();
     free_replaces();

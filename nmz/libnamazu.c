@@ -2,7 +2,7 @@
  * 
  * libnamazu.c - Namazu library api
  *
- * $Id: libnamazu.c,v 1.2 1999-11-01 14:13:16 satoru Exp $
+ * $Id: libnamazu.c,v 1.3 1999-11-14 13:55:01 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
@@ -49,6 +49,7 @@
 #include "cgi.h"
 #include "hlist.h"
 #include "i18n.h"
+#include "regex.h"
 
 void free_idxnames(void)
 {

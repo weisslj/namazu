@@ -2,7 +2,7 @@
  * 
  * conf.c -
  * 
- * $Id: conf.c,v 1.2 1999-11-08 09:17:36 knok Exp $
+ * $Id: conf.c,v 1.3 1999-11-14 13:55:01 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -77,7 +77,7 @@ static ALIAS *add_alias(ALIAS *ptr, uchar *alias, uchar *real)
 {
     ALIAS *tmp;
     
-    tmp = malloc(sizeof *tmp);
+    tmp = malloc(sizeof(ALIAS));
     if (tmp == NULL) {
 	 diemsg("add_alias_malloc");
 	 return NULL;
@@ -104,7 +104,7 @@ static REPLACE *add_replace(int lineno, REPLACE *ptr, uchar *pat, uchar *rep)
 {
     REPLACE *tmp;
     
-    tmp = malloc(sizeof *tmp);
+    tmp = malloc(sizeof(REPLACE));
     if (tmp == NULL) {
 	 diemsg("add_replace_malloc");
 	 return NULL;

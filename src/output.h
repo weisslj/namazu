@@ -9,7 +9,6 @@ void print_msgfile(uchar*);
 void print_hlist(HLIST);
 
 void print_result1(void);
-void print_result2(void);
 void print_hitnum(int n);
 void print_listing(HLIST hlist);
 void print_range(HLIST hlist);

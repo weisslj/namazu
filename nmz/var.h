@@ -28,10 +28,6 @@ extern uchar BASE_URI[];
 extern uchar CONFDIR[];
 extern uchar NAMAZURC[];
 
-extern uchar *ScriptName;
-extern uchar *QueryString;
-extern uchar *ContentLength;
-
 extern uchar INDEX[];
 extern uchar INDEXINDEX[];
 extern uchar HEADERFILE[];

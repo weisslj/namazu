@@ -25,11 +25,13 @@ enum {
     DESCENDING     /* Direction of sorting */
 };
 
-enum {
-    ERR_TOO_MUCH_MATCH,
-    ERR_TOO_MUCH_HIT,
-    ERR_REGEX_SEARCH_FAILED,
-    ERR_PHRASE_SEARCH_FAILED
+enum {  /* all should be negative value. */
+    ERR_TOO_MUCH_MATCH       = -1,
+    ERR_TOO_MUCH_HIT         = -2,
+    ERR_REGEX_SEARCH_FAILED  = -3,
+    ERR_PHRASE_SEARCH_FAILED = -4,
+    ERR_CANNOT_OPEN_INDEX    = -5,
+    ERR_NO_PERMISSION        = -6,
 };
 
 /* error code */
@@ -38,7 +40,7 @@ enum {
     DIE_ERROR = -2,
     DIE_NOERROR = -1,
 
-    DIE_HLIST = -10
+    DIE_HLIST = -255
 };
 
 #endif /* _MAGIC_H */

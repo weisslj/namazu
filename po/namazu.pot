@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 1999-11-08 18:39+0900\n"
+"POT-Creation-Date: 1999-11-14 22:50+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -39,14 +39,6 @@ msgstr ""
 msgid "Replace: \"%s\" -> \"%s\"\n"
 msgstr ""
 
-#: nmz/search.c:708
-msgid "(You don't have a permission to access the index)"
-msgstr ""
-
-#: nmz/search.c:715
-msgid " (cannot open this index)\n"
-msgstr ""
-
 #. if no item available
 #: nmz/wakati.c:233
 msgid ""
@@ -60,15 +52,15 @@ msgid ""
 "<p>Too many query tokens.</p>\n"
 msgstr ""
 
-#: src/cgi.c:66 src/cgi.c:76
+#: src/cgi.c:103 src/cgi.c:113
 msgid "Invalid idxname."
 msgstr ""
 
-#: src/cgi.c:108 src/cgi.c:119
+#: src/cgi.c:185 src/cgi.c:200
 msgid "Too long QUERY_STRING"
 msgstr ""
 
-#: src/namazu.c:290
+#: src/namazu.c:299
 msgid "\t<p>No document matching your query.</p>\n"
 msgstr ""
 
@@ -81,36 +73,44 @@ msgstr ""
 msgid "Current List: %d"
 msgstr ""
 
-#: src/output.c:354
+#: src/output.c:358
 #, c-format
 msgid " [ TOTAL: %d ]"
 msgstr ""
 
-#: src/output.c:377
+#: src/output.c:381
 msgid " (Too many words matched. Ignored.)"
 msgstr ""
 
-#: src/output.c:379
+#: src/output.c:383
 msgid " (Too many pages hit. Ignored.)"
 msgstr ""
 
-#: src/output.c:381
+#: src/output.c:385
 msgid " (cannot open regex index)"
 msgstr ""
 
-#: src/output.c:392
-msgid "\t<h2>Results:</h2>\n"
+#: src/output.c:387
+msgid " (cannot open this index)\n"
+msgstr ""
+
+#: src/output.c:389
+msgid "(You don't have a permission to access the index)"
 msgstr ""
 
 #: src/output.c:399
+msgid "\t<h2>Results:</h2>\n"
+msgstr ""
+
+#: src/output.c:406
 msgid "References: "
 msgstr ""
 
-#: src/output.c:416
+#: src/output.c:414
 msgid "\t<p><strong> Total "
 msgstr ""
 
-#: src/output.c:423
+#: src/output.c:421
 msgid ""
 "\t documents matching your query.</strong></p>\n"
 "\n"

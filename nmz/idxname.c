@@ -2,7 +2,7 @@
  * 
  * idxname.c - Idx handling routines.
  *
- * $Id: idxname.c,v 1.1 1999-11-08 05:06:05 knok Exp $
+ * $Id: idxname.c,v 1.2 1999-11-14 13:55:01 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
@@ -34,19 +34,19 @@
 
 int add_index(uchar *idxname)
 {
-  int newidxnum = Idx.num;
-  if (newidxnum >= INDEX_MAX)
-    return ERR_INDEX_MAX;
-  Idx.names[newidxnum] = (uchar *) malloc(strlen(idxname) + 1);
-  if (Idx.names[newidxnum] == NULL)
-    return ERR_MALLOC;
-  strcpy(Idx.names[newidxnum], idxname);
-  Idx.pr[newidxnum] = NULL;
-  Idx.num = newidxnum + 1;
-  return Idx.num;
+    int newidxnum = Idx.num;
+    if (newidxnum >= INDEX_MAX)
+	return ERR_INDEX_MAX;
+    Idx.names[newidxnum] = (uchar *) malloc(strlen(idxname) + 1);
+    if (Idx.names[newidxnum] == NULL)
+	return ERR_MALLOC;
+    strcpy(Idx.names[newidxnum], idxname);
+    Idx.pr[newidxnum] = NULL;
+    Idx.num = newidxnum + 1;
+    return Idx.num;
 }
 
 int getidxnum()
 {
-  return Idx.num;
+    return Idx.num;
 }

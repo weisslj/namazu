@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.2 1999-11-12 04:05:44 satoru Exp $
+ * $Id: search.c,v 1.3 1999-11-14 13:55:01 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -703,16 +703,13 @@ static HLIST search_sub(HLIST hlist, uchar *query, uchar *query_orig, int n)
 
     if (IsCGI && check_accessfile() == DENY) {
 	/* if access denied */
-	hlist.n = DIE_HLIST;
-	free_hlist(hlist);
-	diemsg(_("(You don\'t have a permission to access the index)"));
+	hlist.n = ERR_NO_PERMISSION;
 	return hlist;
     }
 
     if (open_index_files()) {
         /* if open failed */
-        hlist.n = DIE_HLIST;
-        diemsg(_(" (cannot open this index)\n"));
+        hlist.n = ERR_CANNOT_OPEN_INDEX;
         return hlist;
     }
 
@@ -838,6 +835,17 @@ HLIST search_main(uchar *query)
     for (i = 0; i < Idx.num; i++) {
         make_fullpathname_index(i);
         tmp[i] = search_sub(tmp[i], query, query_orig, i);
+
+	if (tmp[i].n < 0) {/* ERROR occured */
+	    PHRASERES *prtmp;
+	    if ((prtmp = push_phraseres(Idx.pr[i], tmp[i].n, "")) == NULL) 
+	    {
+		hlist.n = DIE_HLIST;
+		return hlist;
+	    }
+	    Idx.pr[i] = prtmp;
+	}
+
 	if (tmp[i].n == DIE_HLIST) {
 	    hlist.d = NULL;
 	    hlist.n = DIE_HLIST;
@@ -900,12 +908,14 @@ HLIST do_search(uchar *orig_key, HLIST val)
     }
 
     if (mode != PHRASE_MODE) { /* phrase mode print status by itself */
-      PHRASERES *prtmp;
-      if ((prtmp = push_phraseres(Idx.pr[CurrentIndexNumber], val.n, orig_key)) == NULL) {
-	  val.n = DIE_HLIST;
-	  return val;
-      }
-      Idx.pr[CurrentIndexNumber] = prtmp;
+	PHRASERES *prtmp;
+	if ((prtmp = push_phraseres(Idx.pr[CurrentIndexNumber], 
+				    val.n, orig_key)) == NULL) 
+	{
+	    val.n = DIE_HLIST;
+	    return val;
+	}
+	Idx.pr[CurrentIndexNumber] = prtmp;
     }
     return val;
 }

@@ -1,7 +1,26 @@
 1999-11-14  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* nmz/search.c (search_main): Handle errors occured at search_sub().
+
+	* nmz/magic.h (ERR_*): make them all nagative value.
+
+	* src/output.c (print_word_hit_count): Handle
+	ERR_CANNOT_OPEN_INDEX and ERR_NO_PERMISSION. 
+
+	* nmz/magic.h: Add ERR_CANNOT_OPEN_INDEX and ERR_NO_PERMISSION.
+
+	* src/output.[ch] (priint_result1): Abolished.
+
+	* nmz/search.c (search_sub): Use print() instead of diemsg().
+
+	* src/namazu.c (namazu_core): Call free_aliases() and
+	free_replaces() at *query == '\0'.
+
 	* src/Makefile.am (LDADD): Change order to fix a problem on make.
 	[namazu-dev 822]
+
+	* src/cgi.c: Entirely rewritten.
+	
 
 1999-11-13  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 

@@ -21,18 +21,6 @@
  *
  ************************************************************/
 
-static uchar URIdecode(uchar, uchar);
-
-/* decde URIencode */
-/* c & 0xdf means to uppercase c */
-static uchar URIdecode(uchar c, uchar c2)
-{
-
-    c = ((c >= 'A' ? ((c & 0xdf) - 'A') + 10 : (c - '0'))) * 16;
-    c += (c2 >= 'A' ? ((c2 & 0xdf) - 'A') + 10 : (c2 - '0'));
-    return c;
-}
-
 /* reverse byte order */
 static void reverse_byte_order (int *p, int n)
 {
@@ -169,23 +157,6 @@ void chomp(uchar * s)
     }
 }
 
-
-/* decoding URI encoded strings */
-void decode_uri(uchar * s)
-{
-    int i, j;
-    for (i = j = 0; s[i]; i++, j++) {
-	if (s[i] == '%') {
-	    s[j] = URIdecode(s[i + 1], s[i + 2]);
-	    i += 2;
-	} else if (s[i] == '+') {
-	    s[j] = ' ';
-	} else {
-	    s[j] = s[i];
-	}
-    }
-    s[j] = '\0';
-}
 
 void strlower(uchar *str)
 {

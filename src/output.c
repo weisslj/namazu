@@ -339,14 +339,18 @@ void print_hit_count ()
 		}
 	    }
 	}
-        if (!HitCountOnly && !ListFormat && !NoReference && !Quiet && Idx.mode[i] == PHRASE_MODE) {
+        if (!HitCountOnly && !ListFormat && 
+	    !NoReference && !Quiet && Idx.mode[i] == PHRASE_MODE) 
+	{
 	    print(" { ");
 	}
         while (pr != NULL) {
 	    print_word_hit_count(pr->word, pr->hitnum);
 	    pr = pr->next;
 	}
-	if (!HitCountOnly && !ListFormat && !NoReference && !Quiet && Idx.mode[i] == PHRASE_MODE) {
+	if (!HitCountOnly && !ListFormat && 
+	    !NoReference && !Quiet && Idx.mode[i] == PHRASE_MODE) 
+	{
 	    printf(" :: %d } ", Idx.phrasehit[i]);
 	}
 	if (!HitCountOnly && !ListFormat && !NoReference && !Quiet) {
@@ -379,14 +383,17 @@ static void print_word_hit_count (uchar *key, int hitnum)
                 msg = _(" (Too many pages hit. Ignored.)");
             } else if (hitnum == ERR_REGEX_SEARCH_FAILED) {
                 msg = _(" (cannot open regex index)");
-            } 
+            } else if (hitnum == ERR_CANNOT_OPEN_INDEX) {
+		msg = _(" (cannot open this index)\n");
+            } else if (hitnum == ERR_NO_PERMISSION) {
+		msg = _("(You don\'t have a permission to access the index)");
+	    }
             print(_(msg));
         }
         print(" ] ");
     }
 }
 
-/* flow of displaying search results */
 void print_result1(void)
 {
     html_print(_("	<h2>Results:</h2>\n"));
@@ -399,15 +406,6 @@ void print_result1(void)
     print(_("References: "));
     if (Idx.num > 1 && HtmlOutput) {
 	fputs("</p>\n", stdout);
-    }
-}
-
-void print_result2(void)
-{
-    if (Idx.num == 1 && HtmlOutput) {
-	print("\n</p>\n");
-    } else {
-	fputc('\n', stdout);
     }
 }
 

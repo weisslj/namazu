@@ -1,0 +1,31 @@
+--- regex-ruby.c.orig	Fri Jan 18 15:10:28 2002
++++ regex-ruby.c	Fri Jan 18 15:18:41 2002
+@@ -95,15 +95,21 @@
+ #  endif
+ # endif /* atarist */
+ #else
+-# if defined(HAVE_ALLOCA_H)
++# ifdef _MSC_VER
++#  include <malloc.h>
++#  define alloca _alloca
++# else
++# if HAVE_ALLOCA_H
+ #  include <alloca.h>
+-# elif !defined(alloca)
+-char *alloca();
++# else
++#  ifdef _AIX
++ #pragma alloca
++#  else
++#   ifndef alloca /* predefined by HP cc +Olibcalls */
++char *alloca ();
++#   endif
++#  endif
+ # endif
+-#endif /* __GNUC__ */
+-
+-#ifdef _AIX
+-#pragma alloca
+ #endif
+ 
+ #ifdef HAVE_STRING_H

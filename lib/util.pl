@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.9 1999-08-28 02:43:15 satoru Exp $
+# $Id: util.pl,v 1.10 1999-08-28 05:58:02 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -48,7 +48,7 @@ sub Rename($$) {
     if (0 == rename($from, $to)) {
 	die "rename($from, $to): $!\n";
     }
-    dprint("// Renamed: $from, $to\n");
+    dprint("Renamed: $from, $to\n");
 }
 
 sub efopen ($) {
@@ -73,8 +73,13 @@ sub fopen ($) {
 }
 
 sub dprint (@) {
-    print STDERR @_ if $var::Opt{Debug};
+    print STDERR "// ", @_ if $var::Opt{Debug};
 } 
+
+sub vprint (@) {
+    print STDERR ":: ", @_ if $var::Opt{Verbose};
+} 
+
 
 sub commas ($) {
     my ($num) = @_;

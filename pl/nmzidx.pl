@@ -619,10 +619,12 @@ sub write_status{
         my $fi = &nmzlib::open_db($in, 'status');
         my $fo = &nmzlib::open_db($self, 'status');
         while (defined(my $line = $fi->getline)){
-            $line = "file $file\n" if $line =~ /^file /;
-            $line = "key $key\n" if $line =~ /^key /;
+            $line = "files $file\n" if $line =~ /^files /;
+            $line = "keys $key\n" if $line =~ /^keys /;
             $fo->print($line);
         }
+        $fi->close;
+        $fo->close;
         my $dh = new DirHandle($in->{'dir'});
         while (defined(my $ent = $dh->read)){
             if ($ent =~ /^NMZ\.(head\.[^\.]+)$/){
@@ -634,6 +636,8 @@ sub write_status{
                     $line =~ s/(\<\!-- KEY --\>).*?\1/$1 $key $1/;
                     $fo->print($line);
                 }
+                $fi->close;
+                $fo->close;
             }
         }
         undef $dh;

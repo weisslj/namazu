@@ -1,5 +1,9 @@
 2001-09-08  Yoshinori TAKESAKO  <takesako@namazu.org>
 
+	* NEWS: Updated.
+
+2001-09-08  Yoshinori TAKESAKO  <takesako@namazu.org>
+
 	* nmz/hlist.c (nmz_andmerge): Fixed the bug of searching on AND 
 	query. That namazu displayed the excessive results, when 
 	there are the words which don't match or hit at all. 
@@ -6985,4 +6989,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.860 2001-09-08 07:51:53 takesako Exp $
+$Id: ChangeLog,v 1.861 2001-09-08 12:49:07 takesako Exp $

@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.11 2000-01-29 04:58:25 satoru Exp $
+ * $Id: rcfile.c,v 1.12 2000-01-29 05:31:40 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -640,22 +640,29 @@ show_config(void)
 	for (i =0; i < loaded_rcfiles.num; i++) {
 	    printf(_("Loaded rcfile: %s\n"), loaded_rcfiles.fnames[i]);
 	}
-	printf("\n");
+	printf("--------------------------------------------------------\n");
     }
 
     printf(_("\
-Index:   %s\n\
-Logging: %s\n\
-Lang:    %s\n\
-Scoring: %s\n\
+Index:    %s\n\
+Logging:  %s\n\
+Lang:     %s\n\
+Scoring:  %s\n\
+Template: %s\n\
+EmphasisTags:\n\
+    start: %s\n\
+    end:   %s\n\
 "), nmz_get_defaultidx(), nmz_is_loggingmode() ? "on" : "off",
-           nmz_get_lang(), nmz_is_tfidfmode() ? "tfidf" : "simple");
+           nmz_get_lang(), nmz_is_tfidfmode() ? "tfidf" : "simple",
+	   get_templatedir(), 
+	   get_emphasis_tag_start(), get_emphasis_tag_end()
+	   );
 
     /* Show aliases. */
     {
 	struct nmz_alias *list = nmz_get_aliases();
 	while (list) {
-	    printf(_("Alias: \"%s\"  -> \"%s\"\n"), 
+	    printf(_("Alias: %-10s\t%s\n"), 
 		   list->alias, list->real);
 	    list = list->next;
 	}
@@ -665,7 +672,7 @@ Scoring: %s\n\
     {
 	struct nmz_replace *list = nmz_get_replaces();
 	while (list) {
-	    printf(_("Replace: \"%s\" -> \"%s\"\n"), 
+	    printf(_("Replace: %-10s\t%s\n"), 
 		   list->pat, list->rep);
 	    list = list->next;
 	}

@@ -1,5 +1,10 @@
 2000-01-29  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/rcfile.c (show_config): Modify display formats.
+
+	* src/output.c (get_emphasis_tag_start): New function.
+	(get_emphasis_tag_end): Ditto.
+
 	* nmz/replace.c (nmz_show_replaces): Abolished.
 	(nmz_get_replaces): New function.
 

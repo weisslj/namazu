@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2000-01-29 13:57+0900\n"
+"POT-Creation-Date: 2000-01-29 14:30+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -155,20 +155,24 @@ msgstr ""
 #: src/rcfile.c:646
 #, c-format
 msgid ""
-"Index:   %s\n"
-"Logging: %s\n"
-"Lang:    %s\n"
-"Scoring: %s\n"
+"Index:    %s\n"
+"Logging:  %s\n"
+"Lang:     %s\n"
+"Scoring:  %s\n"
+"Template: %s\n"
+"EmphasisTags:\n"
+"    start: %s\n"
+"    end:   %s\n"
 msgstr ""
 
-#: src/rcfile.c:658
+#: src/rcfile.c:665
 #, c-format
-msgid "Alias: \"%s\"  -> \"%s\"\n"
+msgid "Alias: %-10s\t%s\n"
 msgstr ""
 
-#: src/rcfile.c:668
+#: src/rcfile.c:675
 #, c-format
-msgid "Replace: \"%s\" -> \"%s\"\n"
+msgid "Replace: %-10s\t%s\n"
 msgstr ""
 
 #: src/usage.c:51

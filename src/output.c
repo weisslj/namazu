@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.64 2000-01-28 09:40:21 satoru Exp $
+ * $Id: output.c,v 1.65 2000-01-29 05:31:40 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -792,6 +792,18 @@ set_emphasis_tags(const char *start_tag, const char *end_tag)
 {
     strcpy(emphasis_start_tag, start_tag);
     strcpy(emphasis_end_tag,   end_tag);
+}
+
+char *
+get_emphasis_tag_start(void)
+{
+    return emphasis_start_tag;
+}
+
+char *
+get_emphasis_tag_end(void)
+{
+    return emphasis_end_tag;
 }
 
 void 

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: namazu 2.0\n"
-"POT-Creation-Date: 2000-01-29 13:57+0900\n"
+"POT-Creation-Date: 2000-01-29 14:30+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>\n"
 "Language-Team: Japanese <satoru-t@is.aist-nara.ac.jp>\n"
@@ -158,25 +158,33 @@ msgstr "読み込んだ設定ファイル: %s\n"
 #: src/rcfile.c:646
 #, c-format
 msgid ""
-"Index:   %s\n"
-"Logging: %s\n"
-"Lang:    %s\n"
-"Scoring: %s\n"
+"Index:    %s\n"
+"Logging:  %s\n"
+"Lang:     %s\n"
+"Scoring:  %s\n"
+"Template: %s\n"
+"EmphasisTags:\n"
+"    start: %s\n"
+"    end:   %s\n"
 msgstr ""
-"インデックス (Index): %s\n"
-"ログの記録 (Logging): %s\n"
-"使用する言語 (Lang):  %s\n"
-"スコア計算 (Scoring): %s\n"
+"インデックス (Index):    %s\n"
+"ログの記録 (Logging):    %s\n"
+"使用する言語 (Lang):     %s\n"
+"スコア計算 (Scoring):    %s\n"
+"テンプレート (Template): %s\n"
+"強調タグ (EmphasisTags): \n"
+"    始まり: %s\n"
+"    終わり: %s\n"
 
-#: src/rcfile.c:658
+#: src/rcfile.c:665
 #, c-format
-msgid "Alias: \"%s\"  -> \"%s\"\n"
-msgstr "別名 (Alias):   \"%s\" -> \"%s\"\n"
+msgid "Alias: %-10s\t%s\n"
+msgstr "別名 (Alias): %-10s     %s\n"
 
-#: src/rcfile.c:668
+#: src/rcfile.c:675
 #, c-format
-msgid "Replace: \"%s\" -> \"%s\"\n"
-msgstr "置換 (Replace): \"%s\" -> \"%s\"\n"
+msgid "Replace: %-10s\t%s\n"
+msgstr "置換 (Replace): %-10s   %s\n"
 
 #: src/usage.c:51
 #, c-format
@@ -690,15 +698,25 @@ msgstr ""
 "\n"
 "バグ報告は <%s> へどうぞ\n"
 
-#~ msgid "Alias:   %s -> %s\n"
-#~ msgstr "別名 (Alias):   %s -> %s\n"
+#~ msgid "Alias: \"%s\"  -> \"%s\"\n"
+#~ msgstr "別名 (Alias):   \"%s\" -> \"%s\"\n"
 
-#, fuzzy
-#~ msgid "Replace: \"%s\"  \"%s\"\n"
+#~ msgid "Replace: \"%s\" -> \"%s\"\n"
 #~ msgstr "置換 (Replace): \"%s\" -> \"%s\"\n"
 
-#~ msgid "Alias: %s  %s\n"
-#~ msgstr "別名 (Alias): %s %s\n"
+#~ msgid ""
+#~ "Index:   %s\n"
+#~ "Logging: %s\n"
+#~ "Lang:    %s\n"
+#~ "Scoring: %s\n"
+#~ msgstr ""
+#~ "インデックス (Index): %s\n"
+#~ "ログの記録 (Logging): %s\n"
+#~ "使用する言語 (Lang):  %s\n"
+#~ "スコア計算 (Scoring): %s\n"
+
+#~ msgid "Alias:   %s -> %s\n"
+#~ msgstr "別名 (Alias):   %s -> %s\n"
 
 #~ msgid "Config:  %s\n"
 #~ msgstr "設定ファイル:  %s\n"

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: oleexcel.pl,v 1.3 2000-03-14 19:20:06 kenzo- Exp $
+# $Id: oleexcel.pl,v 1.4 2000-03-22 21:53:14 kenzo- Exp $
 # Copyright (C) 1999 Jun Kurabe ,
 #               1999 Ken-ichi Hirose All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -51,9 +51,10 @@ sub mediatype() {
 }
 
 sub status() {
-	open (STDERR,">nul");
+    open (SAVEERR,">&STDERR");    
+    open (STDERR,">nul");    
     my $excel = Win32::OLE->new('Excel.Application','Quit');
-	open (STDERR,">&STDERR");
+    open (STDERR,">&SAVEERR");
     return 'yes' if (defined $excel);
     return 'no';
 }

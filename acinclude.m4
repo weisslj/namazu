@@ -830,7 +830,6 @@ dnl *
 dnl * for supporting --with-emacs=EMACS, --with-lispdir=DIR
 dnl *
 dnl * Imported from Lookup [1999-11-02]
-dnl * Modify a message by <satoru-t@is.aist-nara.ac.jp>.
 
 dnl Copyright (C) 1999 NISHIDA Keisuke <knishida@ring.aist.go.jp>
 dnl
@@ -857,13 +856,13 @@ AC_DEFUN(AM_PATH_LISPDIR,
     [  --with-emacs=EMACS      compile with EMACS [EMACS=emacs, xemacs...]],
     [case "${withval}" in
        yes)	EMACS= ;;
-       no)	AC_MSG_ERROR([emacs is not available]) ;;
+       no)	AC_MSG_WARN([emacs is not available]) ;;
        *)	EMACS=${withval} ;;
      esac], EMACS=)
   if test "x$EMACS" = "xt" -o "x$EMACS" = x; then
     AC_PATH_PROGS(EMACS, emacs xemacs mule, no)
     if test $EMACS = no; then
-      AC_MSG_WARN(you should install Emacs first)
+      AC_MSG_WARN(emacs is not available)
     fi
   fi
   dnl # 
@@ -918,7 +917,7 @@ AC_DEFUN(AM_PATH_LISPDIR,
     [  --with-lispdir=DIR      emacs lisp are in DIR [guessed]],
     [case "${withval}" in
        yes)	lispdir= ;;
-       no)	AC_MSG_ERROR(lispdir is not available) ;;
+       no)	AC_MSG_WARN(lispdir is not available) ;;
        *)	lispdir=${withval} ;;
      esac], lispdir=)
   AC_MSG_CHECKING([where .elc files should go])

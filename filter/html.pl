@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: html.pl,v 1.35 2003-04-20 12:34:37 opengl2772 Exp $
+# $Id: html.pl,v 1.36 2003-04-29 01:58:42 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -100,7 +100,8 @@ sub html_filter ($$$$) {
     $fields->{'title'} = html::get_title($contref, $weighted_str);
     html::get_author($contref, $fields);
     html::get_meta_tags($contref, $weighted_str, $fields);
-    html::get_img_alt($contref);
+#    html::get_img_alt($contref);
+    html::get_alt_attr($contref);
     html::get_table_summary($contref);
     html::get_title_attr($contref);
     html::normalize_html_element($contref);
@@ -216,18 +217,26 @@ sub get_img_alt ($) {
     $$contref =~ s/<IMG[^>]*\s+ALT\s*=\s*[\"\']?([^\"\']*)[\"\']?[^>]*>/ $1 /gi; #"
 }
 
+# Get foo from <XXX ... ALT="foo">
+# It's not to handle HTML strictly.
+sub get_alt_attr ($) {
+    my ($contref) = @_;
+
+    $$contref =~ s/(<[A-Z]+[^>]*)\s+ALT\s*=\s*[\"\']?([^\"\']*)[\"\']?([^>]*>)/ $2 $1$3/gi; #"
+}
+
 # Get foo from <TABLE ... SUMMARY="foo">
 sub get_table_summary ($) {
     my ($contref) = @_;
 
-    $$contref =~ s/<TABLE[^>]*\s+SUMMARY\s*=\s*[\"\']?([^\"\']*)[\"\']?[^>]*>/ $1 /gi; #"
+    $$contref =~ s/(<TABLE[^>]*)\s+SUMMARY\s*=\s*[\"\']?([^\"\']*)[\"\']?([^>]*>)/ $2 $1$3/gi; #"
 }
 
 # Get foo from <XXX ... TITLE="foo">
 sub get_title_attr ($) {
     my ($contref) = @_;
 
-    $$contref =~ s/<[A-Z]+[^>]*\s+TITLE\s*=\s*[\"\']?([^\"\']*)[\"\']?[^>]*>/ $1 /gi; #"
+    $$contref =~ s/(<[A-Z]+[^>]*)\s+TITLE\s*=\s*[\"\']?([^\"\']*)[\"\']?([^>]*>)/ $2 $1$3/gi; #"
 }
 
 # Normalize elements like: <A HREF...> -> <A>

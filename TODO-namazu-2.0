@@ -113,3 +113,27 @@ mknmzでのNMZ.lockの検出を起動直後に！というのをお願いします。
   * NMZ.log を利用してインデックスの更新をする
     - mknmz のコマンドライン引数を指定する手間を省く
 
+
+From: Kazutaka SHIGENO <shigeno@iij-mc.co.jp>
+Date: Sun, 23 May 1999 14:01:38 +0900
+
+(2) スキップするファイル/ディレクトリの指定
+
+スキップするファイル名に関しては mknmz の $DENY_FILE で
+指定できるようですが、ディレクトリも含めたファイル名で
+指定できるようにできませんでしょうか。
+
+これは例えば ~htdocs/ 以下を対象とするが
+ ~htdocs/OLD/ の中身や ~htdocs/ABC/*\.html は除外したい、
+という場合に便利です。定義するなら以下のような変数名でしょうか。
+
+	$DENY_DIR_FILE = OLD|ABC/.*\\.html
+
+これを応用すると、あるディレクトリの下にある
+古い MHonArc の作成したインデックスをスキップさせたい場合に
+下記の指定で可能です。
+
+	$DENY_DIR_FILE = OLD_MHonArc/.*/(maillist|threads)\\.html
+
+同じようなことは robots.txt でもできそうですが、
+外の検索エンジンとは別にして考えた方がいいかと思います。

@@ -1,3 +1,10 @@
+2003-07-13  Yoshinori TAKESAKO  <takesako@namazu.org>
+
+	* pl/wakati.pl: Support $WAKATI="module_mecab"; in mknmzrc.
+	Syntax: "module_mecab" means using perl binding module of MeCab.
+	MeCab is Yet Another Part-of-Speech and Morphological Analyzer.
+	http://cl.aist-nara.ac.jp/~taku-ku/software/mecab/
+
 2003-07-07  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * filter/*: It is unnecessary. islang() is deleted.
@@ -7987,4 +7994,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1032 2003-07-07 13:50:58 opengl2772 Exp $
+$Id: ChangeLog,v 1.1033 2003-07-13 10:17:59 takesako Exp $

@@ -15,7 +15,7 @@ EXTRA_DIRS = doc etc template
 DISTCLEANFILES = File-MMagic/Makefile File-MMagic/pm_to_blib \
 		 conf/mknmz.conf-dist lib/var.pl lib/conf.pl
 
-DISTCLEANDIRS  = File-MMagic/blib conf/conf File-MMagic/CVS
+DISTCLEANDIRS  = File-MMagic/blib File-MMagic/CVS
 
 pkgdatadir = @datadir@/@PACKAGE@
 

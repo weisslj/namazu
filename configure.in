@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.42 1999-11-01 07:54:07 satoru Exp $
+dnl $Id: configure.in,v 1.43 1999-11-01 08:26:40 satoru Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -416,6 +416,7 @@ AC_ARG_WITH(
     [CONFDIR=${withval}], [CONFDIR="${prefix}/share/namazu/conf"]
 )
 AC_MSG_RESULT($CONFDIR)
+AC_SUBST(CONFDIR)
 
 dnl *
 dnl * Set default Namazu path names.

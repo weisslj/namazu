@@ -1,6 +1,6 @@
 AUTOMAKE_OPTIONS = 1.4 no-dependencies
 
-confdir = $(pkgdatadir)/conf
+confdir = @CONFDIR@
 conf_DATA = namazu.conf-dist mknmz.conf-dist
 EXTRA_DIST = namazu.conf-dist
 CLEANFILES = mknmz.conf-dist

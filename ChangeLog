@@ -1,5 +1,11 @@
 1999-11-01  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* configure.in: Add AC_SUBST(CONFDIR)
+
+	* conf/Makefile.am (confdir): Use @CONFDIR@.
+
+	* Makefile.am (DISTCLEANDIRS): Remove meaningless "conf/conf".
+
 	* src/Makefile.am (confdir): Use @CONFDIR@.
 	
 	* configure.in (AM_INIT_AUTOMAKE): Change a version number to 1.9.7.

@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.4 1999-05-04 04:42:38 satoru Exp $
+# $Id: mknmz.pl.in,v 1.5 1999-05-07 06:14:14 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -622,8 +622,12 @@ sub parse_command_line_options ()
 	    $conf::LANGUAGE = $argv[0];
 	} elsif ($argv[0] =~ /F$/) {
 	    shift @argv;
-	    @flist = load_target_list($argv[0]);
-	    print "Loaded: $argv[0]\n" unless $conf::QuietOpt;
+	    if ($CheckPoint{'continue'}) {
+		@flist = ("dummy");
+	    } else {
+		@flist = load_target_list($argv[0]);
+		print "Loaded: $argv[0]\n" unless $conf::QuietOpt;
+	    }
 	    $target_loaded = 1;
 	    $target_dir = cwd();
 	} elsif ($argv[0] =~ /t$/) {
@@ -1084,7 +1088,7 @@ sub load_registry () {
 		splice(@list, $mark{$tmp}, 1, "# $tmp");
 		undef $mark{$tmp};
 	    } else {
-		die "ERROR: malformed NMZ.t format!\n";
+		die "ERROR: malformed NMZ.r format!\n";
 	    }
 	} else {
 	    unless (defined($mark{$line})) {

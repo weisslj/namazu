@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.106 2000-02-16 13:35:35 rug Exp $
+dnl $Id: configure.in,v 1.107 2000-02-18 03:59:53 satoru Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -216,7 +216,7 @@ if test $PERL = "no" || $PERL -e 'exit ($] >= 5.004)'; then
 fi
 
 AC_MSG_CHECKING(for NKF perl module)
-if $PERL -MNKF -e '' 1>/dev/null 2> /dev/null; then
+if $PERL -e "use lib '$PMDIR'; use NKF" >/dev/null 2>&1; then
     NKF=module_nkf
     AC_MSG_RESULT(yes)
 else
@@ -228,7 +228,7 @@ if test "$NKF" = "no"; then
 fi
 
 AC_MSG_CHECKING(for Text::Kakasi perl module)
-if $PERL -MText::Kakasi -e '' 1>/dev/null 2> /dev/null; then
+if $PERL -e "use lib '$PMDIR'; use Text::Kakasi" >/dev/null 2>&1; then
     KAKASI=module_kakasi
     AC_MSG_RESULT(yes)
 else
@@ -237,7 +237,7 @@ else
 fi
 
 AC_MSG_CHECKING(for Text::ChaSen perl module)
-if $PERL -MText::ChaSen -e '' 1>/dev/null 2> /dev/null; then
+if $PERL -e "use lib '$PMDIR'; use Text::ChaSen" >/dev/null 2>&1; then
     CHASEN=module_chasen
     AC_MSG_RESULT(yes)
 else

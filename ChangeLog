@@ -1,3 +1,26 @@
+2000-02-18  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* scripts/mknmz.in (generate_uri): Fix $DIRECTORY_INDEX handling.
+
+	* pl/conf.pl.in: Change variable names. [namazu-dev 1638]
+	s/ALLOW_REGEX/ALLOW_FILE/g, s/DENY_REGEX/DENY_FILE/g,
+	s/EXCLUDE_REGEX/EXCLUDE_PATH/g, s/DEFAULT_FILE/DEFAULT_INEDX/g.
+	All users changed.
+
+	* scripts/mknmz.in 
+	(find_target): Report detail messages in --verbose mode. 
+	[namazu-dev 1653]
+	(report_find_target): New function. 
+	
+	* configure.in: Modify perl module detections. (NKF, Text::Kakasi,
+	Text::ChaSen)
+
+2000-02-17  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* doc/en/namazu.css: New file.
+
+	* scripts/mknmz.in (check_file): s/data type/media type/
+
 2000-02-16  Ryuji Abe <raeva@t3.rim.or.jp>
 
 	* configure.in (LTVERSION): Set 3:0:0.
@@ -582,6 +605,7 @@
 
 	* src/namazu.c (namazu_core): Abolish 3rd parameter. All callers
 	changed. 
+
 	* src/usage.c (show_usage): Use MAILING_ADDRESS macro.
 
 	* pl/var.pl.in: Define $MAILING_ADDRESS.

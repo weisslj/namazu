@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.15 2000-02-16 10:22:10 satoru Exp $
+# $Id: mknmz.in,v 1.16 2000-02-18 04:00:01 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -410,10 +410,10 @@ sub generate_uri ($) {
     if ($var::Opt{'ommit'}) {
     }
 
-    if (defined $ReplaceCode) {
-	# omit a file name if omittable
-	$uri =~ s!(.*)/($conf::DEFAULT_FILE)$!$1/!o; 
+    # omit a file name if omittable
+    $uri =~ s!^(.*)/($conf::DIRECTORY_INDEX)$!$1/!o; 
 
+    if (defined $ReplaceCode) {
 	# transforming URI by evaling
 	$_ = $uri;
 	eval $ReplaceCode;
@@ -863,9 +863,9 @@ sub parse_options ()
     Getopt::Long::config('bundling');
     GetOptions(
        	       '0|help'              => \$opt_help,
-	       '1|exclude=s'         => \$conf::EXCLUDE_REGEX,
-	       '2|deny=s'            => \$conf::DENY_REGEX,
-	       '3|allow=s'           => \$conf::ALLOW_REGEX,
+	       '1|exclude=s'         => \$conf::EXCLUDE_PATH,
+	       '2|deny=s'            => \$conf::DENY_FILE,
+	       '3|allow=s'           => \$conf::ALLOW_FILE,
 	       '4|update=s'          => \$update_index,
 	       '5|mhonarc'           => \$opt_mhonarc,
 	       '6|mtime=s'           => \$conf::MTIME,
@@ -965,7 +965,7 @@ sub parse_options ()
 	$MediaType = 'text/html; x-type=mhonarc';
     }
     if ($opt_all) {
-	$conf::ALLOW_REGEX = ".*";
+	$conf::ALLOW_FILE = ".*";
     }
     if ($opt_chasen) {
 	$conf::WAKATI = $conf::CHASEN;
@@ -1112,14 +1112,29 @@ sub find_target (@) {
 	} @targets;
     }
 
+    # For reporting effects of --allow, --deny, --exclude, --mtime
+    # options in --verbose mode.
+    my %counts = (); 
+    $counts{'possible'} = 0;
+    $counts{'excluded'} = 0;
+    $counts{'too_old'} = 0;
+    $counts{'too_new'} = 0;
+    $counts{'not_allowed'} = 0;
+    $counts{'denied'} = 0;
+
     # Traverse directories.
     # This routine is not efficent but I prefer reliable logic.
     my @flist = ();
     my $start = time();
-    util::vprint (_(" findfiles starting: "). localtime($start). "\n");
+    util::vprint(_("find_target starting: "). localtime($start). "\n");
     while (@targets) {
 	my $target = shift @targets;
-	if (-d $target) { # target is a directory
+	
+	if (-f $target) { # target is a file.
+	    util::vprint(sprintf(_("Targeted:\t%s"), $target));
+	    $counts{'possible'}++;
+	    push @flist, $target;
+	} elsif (-d $target) { # target is a directory.
 	    my $cwd = cwd();
 	    chdir $target;
 
@@ -1136,29 +1151,48 @@ sub find_target (@) {
 		}
 		return unless -f $fname && -r $fname;
 
-		return if defined $conf::EXCLUDE_REGEX && 
-		          $fname =~ /$conf::EXCLUDE_REGEX/;
+		$counts{'possible'}++;
+		if ( defined $conf::EXCLUDE_PATH && 
+			    $fname =~ /$conf::EXCLUDE_PATH/ ) {
+		    util::vprint(sprintf(_("Excluded:	%s"), $fname));
+		    $counts{'excluded'}++;
+		    return; 
+		}
 
 		if (defined $conf::MTIME) {
 		    my ($dev,$ino,$mode,$nlink,$uid,$gid) = lstat($fname);
-		    return if ($conf::MTIME < 0 && (int(-C _) 
-						    > $conf::MTIME)); 
-		    return if ($conf::MTIME > 0 && (int(-C _) 
-						    < $conf::MTIME));
+		    if ($conf::MTIME < 0 && (int(-C _) > $conf::MTIME)) {
+			util::vprint(sprintf(_("Too old:	%s"), $fname));
+			$counts{'too_old'}++;
+			return;
+		    }
+		    if ($conf::MTIME > 0 && (int(-C _) < $conf::MTIME)) {
+			util::vprint(sprintf(_("Too new:	%s"), $fname));
+			$counts{'too_new'}++;
+			return;
+		    }
 		}
-
-		if ($fname !~ m!^.*/(($conf::DENY_REGEX)(\.gz|\.Z)?)$!i &&
-		    $fname =~ m!^.*/(($conf::ALLOW_REGEX)(\.gz|\.Z|\?.*)?)$!i)
+		if ($fname =~ m!^.*/(($conf::DENY_FILE)(\.gz|\.Z)?)$!i ) {
+		    util::vprint(sprintf(_("Denied:	%s"), $fname));
+		    $counts{'denied'}++; 
+		    return;
+		}
+		if ($fname !~ m!^.*/(($conf::ALLOW_FILE)(\.gz|\.Z|\?.*)?)$!i)
 		{
-		    push(@flist, $fname);
-		    util::dprint(_("wanted: ") . "$fname\n");
+		    util::vprint(sprintf(_("Not allowed:	%s"), $fname));
+		    $counts{'not_allowed'}++; 
+		    return;
+		}
+		else{
+		    util::vprint(sprintf(_("Targeted:	%s"), $fname));
+		    push @flist, $fname;
 		}
 	    };
 
 	    find($wanted_closure, cwd());
 	    chdir $cwd;
 	} else {
-	    push(@flist, $target);
+	    die _("unsupported target: ") . $target;
 	}
     }
 
@@ -1171,12 +1205,28 @@ sub find_target (@) {
 
     my $elapsed = time() - $start ;
     $elapsed += 1 ;   # to round up and avoid 0 
-    util::vprint(_("findfiles    ended: "). localtime(time()). "\n");
-    util::vprint(sprintf(_("Target Files: %d (Scan Performance: Elapsed Sec.: %d, Files/sec: %.1f)\n"), 
-	   $#flist + 1, $elapsed, 
-	   ($#flist + 1) /$elapsed));
+
+    # For --verbose option.
+    report_find_target($elapsed, $#flist + 1, %counts);
 
     return @flist;
+}
+
+sub report_find_target ($$%) {
+    my ($elapsed, $num_targeted, %counts) = @_;
+
+    util::vprint(_("find_target finished: ") . localtime(time()). "\n");
+    util::vprint(sprintf(_("Target Files: %d (Scan Performance: Elapsed Sec.: %d, Files/sec: %.1f)"), 
+			 $num_targeted, $elapsed, 
+			 $num_targeted /$elapsed));
+    util::vprint(sprintf(_("  Possible: %d, Not allowed: %d, Denied: %d, Excluded: %d"), 
+			 $counts{'possible'}, 
+			 $counts{'not_allowed'},  
+			 $counts{'denied'}, 
+			 $counts{'excluded'}));
+    util::vprint(sprintf(_("  MTIME too old: %d, MTIME too new: %d"),
+			 $counts{'too_old'}, 
+			 $counts{'too_new'}));
 }
 
 # Original of this code was contributed by <furukawa@tcp-ip.or.jp>. 
@@ -1224,7 +1274,7 @@ sub check_file ($$$$) {
 	$msg = _("is too LARGE a text! skipped.");
     } elsif ($mtype =~ /; x-system=unsupported$/) {
 	$mtype =~ s/; x-system=unsupported$//;
-	$msg = _("Unsupported data type ")."($mtype)"._(" skipped.");
+	$msg = _("Unsupported media type ")."($mtype)"._(" skipped.");
     } elsif ($mtype =~ /; x-error=.*$/) {
 	$mtype =~ s/^.*; x-error=(.*)$/$1/;
 	$msg = $mtype;
@@ -2134,10 +2184,10 @@ sub decide_type ($$) {
 #
 muda($conf::ON_MEMORY_MAX,
      $conf::WORD_LENG_MAX, $conf::TEXT_SIZE_MAX,
-     $conf::DENY_REGEX, $var::INTSIZE,
+     $conf::DENY_FILE, $var::INTSIZE,
      $conf::CHASEN_NOUN, $conf::CHASEN,
      $conf::KAKASI, $var::Opt{'okurigana'},
-     $var::Opt{'hiragana'}, $conf::ROBOTS_EXCLUDE_URLS, $conf::DEFAULT_FILE,
+     $var::Opt{'hiragana'}, $conf::ROBOTS_EXCLUDE_URLS, $conf::DIRECTORY_INDEX,
      $conf::HTML_SUFFIX, $usage::USAGE, 
      $var::Opt{'noheadabst'}, $usage::VERSION_INFO,
      $var::Opt{'noencodeurl'}, $var::Opt{'htaccessexclude'}, 

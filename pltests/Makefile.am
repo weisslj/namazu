@@ -35,7 +35,7 @@ EXTRA_DIST = README-ja.txt pltests.pl.in \
 	namazu-cgi-3.pl.in namazu-cgi-4.pl.in \
 	namazu-cgi-5.pl.in \
 	namazu-cgi-7.pl.in namazu-cgi-8.pl.in \
-	namazu-cgi-9.in namazu-cgi-10.in
+	namazu-cgi-9.pl.in namazu-cgi-10.pl.in
 
 #CLEANFILES = $(LOG) $(INDEX) $(TMPDATA) $(PROGRAM)
 

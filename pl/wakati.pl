@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: wakati.pl,v 1.12 2003-07-15 04:48:15 takesako Exp $
+# $Id: wakati.pl,v 1.13 2004-02-23 16:25:43 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -43,10 +43,10 @@ sub wakatize_japanese ($) {
 	    $tmp[$ndx] = ' ' . $tmp[$ndx] . ' ';
             $tmp[$ndx] =~ s!\x7f *(\d+) *\x7f([^\x7f]*)\x7f */ *\d+ *\x7f!\x7f$1\x7f $2 \x7f/$1\x7f!g;
 	    if ($var::Opt{'okurigana'}) {
-		$tmp[$ndx] =~ s/([^\xa4][\xa1-\xfe])+(\xa4[\xa1-\xf3])+ /$1 /g;
+		$tmp[$ndx] =~ s/((?:[^\xa4][\xa1-\xfe])+)(?:\xa4[\xa1-\xf3])+ /$1 /g;
 	    }
 	    if ($var::Opt{'hiragana'}) {
-		$tmp[$ndx] =~ s/ (\xa4[\xa1-\xf3])+ //g;
+		$tmp[$ndx] =~ s/ (?:\xa4[\xa1-\xf3])+ //g;
 	    }
         }
     }

@@ -1,3 +1,8 @@
+2000-02-03  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* src/output.c (fputs_without_html_tag): Add &quot; handling.
+	[namazu-dev 1444]
+
 2000-02-02  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* configure.in: Add friendly messages to File-MMagic handling.

@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.66 2000-02-01 06:36:01 rug Exp $
+ * $Id: output.c,v 1.67 2000-02-03 09:51:12 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -208,15 +208,18 @@ fputs_without_html_tag(const char *str, FILE *fp)
 	    continue;
 	}
 	if (f == 0) {
-	    if (strncmp(str, "&lt;", 4) == 0) {
+	    if (nmz_strprefixcmp(str, "&lt;") == 0) {
 		buf[i++] = '<';
 		str += 3;
-	    } else if (strncmp(str, "&gt;", 4) == 0) {
+	    } else if (nmz_strprefixcmp(str, "&gt;") == 0) {
 		buf[i++] = '>';
 		str += 3;
-	    } else if (strncmp(str, "&amp;", 5) == 0) {
+	    } else if (nmz_strprefixcmp(str, "&amp;") == 0) {
 		buf[i++] = '&';
 		str += 4;
+	    } else if (nmz_strprefixcmp(str, "&quot;") == 0) {
+		buf[i++] = '"';
+		str += 5;
 	    } else {
 		buf[i++] = *str;
 	    }

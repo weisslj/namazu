@@ -1,5 +1,5 @@
 /*
- * $Id: result.c,v 1.65 2001-12-21 07:59:27 knok Exp $
+ * $Id: result.c,v 1.66 2001-12-26 01:46:03 knok Exp $
  * 
  * Copyright (C) 1989, 1990 Free Software Foundation, Inc.
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
@@ -156,16 +156,12 @@ replace_field(struct nmz_data d, int counter,
 
     /* 
      * Do not emphasize keywords in URI.
-     * And do not encode entity in URI.
      */
-    if (strcasecmp(field, "uri") != 0) {
-	if (is_htmlmode()) {
+    if (is_htmlmode()) {
+	encode_entity(buf);
+	if (strcasecmp(field, "uri") != 0)
 	    emphasize(buf);
-	} else {
-	    encode_entity(buf);
-	}
     }
-
 
     /* Insert commas if the buf is a numeric string. */
     if (nmz_isnumstr(buf)) {

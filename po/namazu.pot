@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 1999-11-08 17:42+0900\n"
+"POT-Creation-Date: 1999-11-08 18:39+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -14,12 +14,12 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: ENCODING\n"
 
-#: nmz/conf.c:470
+#: nmz/conf.c:471
 #, c-format
 msgid "Config:  %s\n"
 msgstr ""
 
-#: nmz/conf.c:473
+#: nmz/conf.c:474
 #, c-format
 msgid ""
 "Default: %s\n"
@@ -29,12 +29,12 @@ msgid ""
 "Scoring: %s\n"
 msgstr ""
 
-#: nmz/conf.c:486
+#: nmz/conf.c:487
 #, c-format
 msgid "Alias:   \"%s\" -> \"%s\"\n"
 msgstr ""
 
-#: nmz/conf.c:495
+#: nmz/conf.c:496
 #, c-format
 msgid "Replace: \"%s\" -> \"%s\"\n"
 msgstr ""

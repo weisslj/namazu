@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: ooo.pl,v 1.7 2003-09-06 08:26:37 usu Exp $
+# $Id: ooo.pl,v 1.8 2004-02-07 08:33:13 usu Exp $
 # Copyright (C) 2003 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -26,10 +26,6 @@ use strict;
 require 'util.pl';
 
 my $perlver =$];
-$perlver =~ s/\.//;
-$perlver =~ m/^(\d\d\d\d)\d*$/;
-$perlver = 0; 
-#$perlver = $1;
 my $utfconvpath = undef;
 
 sub mediatype() {
@@ -43,8 +39,11 @@ sub mediatype() {
 sub status() {
     my $unzippath = util::checkcmd('unzip');
     if (defined $unzippath){
-        if (util::islang("ja")) {
-           return 'yes' if ($perlver >= 5008);
+       if (util::islang("ja")) {
+           if ($perlver >= 5.008) {
+		$utfconvpath = "none";
+		return 'yes';
+	   }
            $utfconvpath = util::checkcmd('lv');
            if ($utfconvpath){ 
                return 'yes';
@@ -215,8 +214,8 @@ sub utoe ($) {
             $$tmp .= $line;
         }
         unlink $tmpfile;
-    }elsif ($perlver >= 5008){
-        eval 'use Encode;';
+    }elsif ($perlver >= 5.008){
+        eval 'use Encode qw/from_to Unicode JP/;';
         Encode::from_to($$tmp, "utf-8" ,"euc-jp");
     }else{
         eval require 'unicode.pl';

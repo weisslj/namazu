@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mailnews.pl,v 1.30 2004-02-03 14:14:45 usu Exp $
+# $Id: mailnews.pl,v 1.31 2004-02-07 08:33:13 usu Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -208,7 +208,7 @@ sub multipart_process ($$$$){
 			multipart_process(\$body, $boundary2, $weighted_str, $fields);
 			$$contref .= $body;
 		    }
-		} else {
+		} elsif ($body ne "") {
 		    nesting_filter(\$head, \$body, $contenttype, $weighted_str);
 		    $$contref .= $body;
 		}
@@ -359,7 +359,7 @@ sub base64_filter ($){
 
 sub quotedprint_filter ($){
     my ($bodyref) = @_;
-    if ($has_base64) {
+    if ($has_base64 && $var::Opt{'decodebase64'}) {
 	eval 'use MIME::QuotedPrint ();';
 	$$bodyref = MIME::QuotedPrint::decode_qp($$bodyref);
     } else {
@@ -374,16 +374,34 @@ sub nesting_filter ($$$$){
     my $headings = "";
     my %fields;
     my $filename = "";
-    if ($$headref =~ m!^content-disposition:\s*\S+\s*filename="(.+)"!mi){
+    if ($$headref =~ m!^content-disposition:\s*\S+\s*filename="(.+?)"!smi){
 	$filename = $1;
+
+	#AL-Mail divides filename into some lines when MIME B encoding.
+	$filename =~ s/\s+//g;
+
     } elsif ($$headref =~ m!^content-location:\s*(\S+)!mi){
 	$filename = $1;
+
+    } elsif ($$headref =~ m!^content-disposition:\s*\S+\s*(filename\*.+?[^;])$!smi){
+	#RFC2231 MIME encoded
+	$filename =$1;
+	$filename =~ s/;.+?=//smg;
+	(my $charset, my $lang, my $tmp) = ($filename =~ /=(.+)'(.+)'(.+)/);
+	if ($tmp) {
+	    $tmp =~ s/%(\w\w)/chr(hex($1))/eg;
+	    $filename = $tmp;
+	    codeconv::toeuc(\$filename);
+	}else {
+	    $filename =~ s/filename.*=//;
+	}
     }
     util::dprint("((Attached filename: $filename))\n");
 
-    if ($mmtype =~ m!application/octet-stream!){
-	$mmtype = undef
-    }
+    #if ($mmtype =~ m!application/octet-stream!){
+	$mmtype = undef;
+    #}
+
     my ($kanji, $mtype) = mknmz::apply_filter(\$filename, $bodyref, 
 			$weighted_str, \$headings, \%fields, 
 			$dummy_shelterfname, $mmtype);
@@ -396,6 +414,7 @@ sub nesting_filter ($$$$){
         $err = $1;
         util::dprint("filter/mailnews.pl gets error message \"$err\"");
     }else{
+	$$bodyref .= " ". $filename;
 	gfilter::show_filter_debug_info($bodyref, $weighted_str,
 					\%fields, \$headings);
     }

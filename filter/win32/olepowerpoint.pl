@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: olepowerpoint.pl,v 1.7 2001-01-19 09:55:17 baba Exp $
+# $Id: olepowerpoint.pl,v 1.8 2001-01-25 21:20:52 takesako Exp $
 # Copyright (C) 1999 Jun Kurabe ,
 #               1999 Ken-ichi Hirose All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -42,6 +42,7 @@
 # V2.12 1999/11/27 Use Office::OLE::Const to define constant value
 # V2.13 2000/05/16 Optimize for Namazu filter ...
 # V2.14 2000/10/28 contribute patch by Yoshinori.TAKESAKO-san.
+# V2.20 2001/01/24 get a title from filename which has no slide title
 #
 
 package olepowerpoint;
@@ -133,6 +134,8 @@ sub getProperties ($$) {
     my $title = $cfile->BuiltInDocumentProperties('Title')->{Value};
     $title = $cfile->BuiltInDocumentProperties('Subject')->{Value}
 	unless (defined $title);
+    undef $title if $title eq # which has no slide title
+	"\xbd\xd7\xb2\xc4\xde\x20\xc0\xb2\xc4\xd9\x82\xc8\x82\xb5";
     $fields->{'title'} = codeconv::shiftjis_to_eucjp($title)
 	if (defined $title);
 

@@ -1,3 +1,9 @@
+2000-03-29  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* Version 1.05.
+
+	* MMagic.pm: Removed "\v" from %ESC.
+
 2000-03-23  Ken-ichi Hirose  <kenzo-@tama.or.jp>
 
 	* Version 1.03.

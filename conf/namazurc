@@ -1,7 +1,7 @@
 # This is a Namazu configuration file.
 #
 #   Originally, this file is named 'namazurc-sample'.  so you should
-#   copy this to 'namazurc' to be effective.
+#   copy this to 'namazurc' to make the file effective.
 #
 #   Each item is must be separated by one or more SPACE or TAB characters. 
 #   You can use a double-quoted string for represanting a string which 

@@ -2,7 +2,7 @@
  * 
  * values.c -
  * 
- * $Id: values.c,v 1.4 1999-06-12 14:29:32 satoru Exp $
+ * $Id: values.c,v 1.5 1999-08-12 06:59:39 masao Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -50,8 +50,6 @@ uchar NAMAZU_CONF[BUFSIZE] = "/usr/local/namazu/lib/namazu.conf";
 uchar NAMAZURC[BUFSIZE] = "";
 
 /* files which Namazu uses */
-uchar FLIST[BUFSIZE] = "NMZ.f";
-uchar FLISTINDEX[BUFSIZE] = "NMZ.fi";
 uchar INDEX[BUFSIZE] = "NMZ.i";
 uchar INDEXINDEX[BUFSIZE] = "NMZ.ii";
 uchar HEADERFILE[BUFSIZE] = "NMZ.head";
@@ -103,7 +101,7 @@ int AllDocumentN = 0;  /* number of all of documents */
 uchar KeyTable[BUFSIZE];		/* table which saving query */
 uchar *KeyItem[KEY_ITEM_MAX + 1];	/* pointers of items of query */
 uchar *DbNames[DB_MAX + 1];   /* name of databases */
-FILE *Flist, *FlistIndex, *Index, *IndexIndex, *Phrase, *PhraseIndex;
+FILE *Index, *IndexIndex, *Phrase, *PhraseIndex;
 
 REPLACE Replace = { NULL, NULL };
 ALIAS   Alias   = { NULL, NULL };

@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.4 1999-06-12 14:29:31 satoru Exp $
+ * $Id: search.c,v 1.5 1999-08-12 06:59:39 masao Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -841,7 +841,7 @@ HLIST search_and_print_reference(HLIST hlist, uchar *query,
     if (KeyItem[1] == NULL && strchr(KeyItem[0], '\t') == NULL)
         TfIdf = 0;
     if (TfIdf) {
-        AllDocumentN = get_file_size(FLISTINDEX) / sizeof(int);
+        AllDocumentN = get_file_size(DATEINDEX) / sizeof(int);
     }
 
     /* search */
@@ -872,7 +872,6 @@ void make_fullpathname_index(int n)
 
     pathcat(base, INDEX);
     pathcat(base, INDEXINDEX);
-    pathcat(base, FLISTINDEX);
     pathcat(base, WORDLIST);
     pathcat(base, PHRASE);
     pathcat(base, PHRASEINDEX);

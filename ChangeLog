@@ -5,6 +5,11 @@
 	about major changes from previous version, please see 
 	"manual.html#VERSIONDIFF".
 
+1999-08-12  masao@ulis.ac.jp (Masao Takaku)
+
+	* src/search.c: Fix TfIdf scoring bug.
+	* src/namazu.h, src/values.c: Delete NMZ.{f,fi} related code.
+	
 1999-07-22  Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>
 
 	* configure.in: Add a feature to determine admin's email address

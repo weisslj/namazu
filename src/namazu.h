@@ -124,7 +124,7 @@ extern uchar *KeyItem[];
 extern uchar DEFAULT_DIR[];
 extern uchar *DbNames[];
 extern uchar Lang[];
-extern FILE *Flist, *FlistIndex, *Index, *IndexIndex;
+extern FILE *Index, *IndexIndex;
 
 extern uchar BASE_URI[];
 extern uchar NAMAZU_CONF[];
@@ -134,8 +134,6 @@ extern uchar *ScriptName;
 extern uchar *QueryString;
 extern uchar *ContentLength;
 
-extern uchar FLIST[];
-extern uchar FLISTINDEX[];
 extern uchar INDEX[];
 extern uchar INDEXINDEX[];
 extern uchar HEADERFILE[];

@@ -37,6 +37,6 @@ extern char *get_templatesuffix ( void );
 extern void html_print ( const char *str );
 extern void print ( const char *str );
 extern void die(const char *fmt, ...);
-extern void emprint ( char *str, int entity_encode );
+extern void puts_entitize( char *str );
 
 #endif /* _OUTPUT_H */

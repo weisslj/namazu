@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.65 2001-12-04 04:40:10 knok Exp $
+ * $Id: cgi.c,v 1.66 2001-12-05 08:33:08 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -122,7 +122,7 @@ validate_idxname(const char * idxname)
 
     if (*idxname == '\0' || *idxname == '/' || (win32 && *idxname == '\\')) {
         printf("%s text/html" CRLF CRLF, MSG_MIME_HEADER);
-	emprint(idxname, 1);
+	puts_entitize(idxname);
 	printf(" : ");
         printf(_("Invalid idxname."));
         exit(EXIT_FAILURE);
@@ -133,7 +133,7 @@ validate_idxname(const char * idxname)
             (win32 && nmz_strprefixcasecmp("..\\", idxname) == 0)) 
         {
 	    printf("%s text/html" CRLF CRLF, MSG_MIME_HEADER);
-	    emprint(idxname, 1);
+	    puts_entitize(idxname);
 	    printf(" : ");
             printf(_("Invalid idxname."));
             exit(EXIT_FAILURE);

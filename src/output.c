@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.88 2001-12-04 04:40:10 knok Exp $
+ * $Id: output.c,v 1.89 2001-12-05 08:33:08 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -86,6 +86,7 @@ char contenttype[BUFSIZE] = "text/html";
  *
  */
 
+static void emprint( char *s, int entity_encode );
 static void fputs_without_html_tag ( const char *str, FILE *fp );
 static char *load_nmz_result(const char *basedir);
 static void print_hitnum_each ( struct nmz_hitnumlist *hn );
@@ -111,7 +112,7 @@ static void print_errmsg(int errid);
  * Print s to stdout with processing for emphasizing keyword 
  * and entity encoding.
  */
-void 
+static void 
 emprint(char *s, int entity_encode)
 {
     int i;
@@ -586,7 +587,7 @@ print_hitnum_all_idx(void)
 			    + strlen(nmz_get_defaultidx()) + 1;
 		    }
 		    printf("<li><strong>");
-		    emprint(idxname, 1);
+		    puts_entitize(idxname);
 		    printf("</strong>: ");
 		} else {
 		    printf("(%s)", nmz_get_idxname(idxid));
@@ -786,6 +787,30 @@ print_default_page (void) {
 	print_headfoot(NMZ.head, "", "");
 	print_msgfile(NMZ.body);
 	print_headfoot(NMZ.foot, "", "");
+    }
+}
+
+/*
+ * output string as non-html (replace special characters by entities)
+ */
+void
+puts_entitize(char *str)
+{
+    char *p = str;
+    for (; *p != 0; p++) {
+	if (*p == '<') {
+	    fputs("&lt;", stdout);
+	} else if (*p == '>') {
+	    fputs("&gt;", stdout);
+	} else if (*p == '&') {
+	    fputs("&amp;", stdout);
+	} else if (*p == '"') {
+	    fputs("&quot;", stdout);
+	} else if (*p == '\'') {
+	    fputs("&apos;", stdout);
+	} else {
+	    fputc(*p, stdout);
+	}
     }
 }
 

@@ -1,3 +1,17 @@
+2000-03-04  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* pl/htmlsplit.pl (split): Change the pattern for <a name=...>.
+
+	* pl/htmlsplit.pl (write_partial_file): Change ${author}
+	handling. 
+	* src/namazu.c (namazu_core): Call nmz_codeconv_query() in the
+	function.  [namazu-devel-ja:00155]
+
+	* nmz/query.c (nmz_make_query): Do not call nmz_codeconv_query()
+	in the function. 
+
+	* src/output.c (emprint): Remove ISO-2022-JP handling.
+
 2000-03-03  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* tests/Makefile.am (TESTS): Add namazu-nasty-cases.

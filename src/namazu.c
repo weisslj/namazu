@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.101 2000-03-03 03:36:21 satoru Exp $
+ * $Id: namazu.c,v 1.102 2000-03-04 11:11:39 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -119,6 +119,15 @@ namazu_core(char * query, char *subquery)
     /* Make full-pathname of NMZ.{head,foot,msg,body,slog}.?? */
     make_fullpathname_msg();
 
+    /* 
+     * Convert query and subquery's  encoding for searching. 
+     */
+    nmz_codeconv_query(query);
+    nmz_codeconv_query(subquery);
+
+    /*
+     * And then, concatnate them.
+     */
     strcpy(query_with_subquery, query);
     if (strlen(subquery) > 0) {
 	strcat(query_with_subquery, " ");
@@ -126,7 +135,7 @@ namazu_core(char * query, char *subquery)
     }
 
     /* 
-     * If query is null or the number of indices are 0
+     * If query is null or the number of indices is 0
      * show NMZ.head,body,foot and return with SUCCESS.
      */
     if (*query == '\0' || nmz_get_idxnum() == 0) {

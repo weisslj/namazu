@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: htmlsplit.pl,v 1.3 2000-03-02 23:03:21 satoru Exp $
+# $Id: htmlsplit.pl,v 1.4 2000-03-04 11:11:37 satoru Exp $
 #
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -32,6 +32,7 @@ my $Header = << 'EOS';
         "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
+<link rev=made href="mailto:${author}">
 <title>${subject}</title>
 </head>
 <body>
@@ -40,9 +41,6 @@ EOS
 
     my $Footer = << 'EOS';
 <hr>
-<address>
-    ${author}
-</address>
 </body>
 </html>
 EOS
@@ -63,8 +61,14 @@ sub split ($$) {
 
     my $id = 0;
 #    $cont =~ s/(<a\s[^>]*href=(["']))#(.+?)(\2[^>]*>)/$1$3.html$4/gi; #'
-    $cont =~ s{\G(.+?)<a\s[^>]*name=(["'])(.+?)\2[^>]*>(.*?)</a>} #'
-          {write_partial_file($1, $3, $4, $id++, \%info)}sgexi;
+    $cont =~ s {
+                \G(.+?)                                      # 1
+	        (<h([1-6])>)?\s*                             # 2, 3
+                <a\s[^>]*name=(["'])(.+?)\4[^>]*>(.*?)</a>   # 4,5,6
+                \s*(</h\3>)?                                 # 7
+             } {
+                write_partial_file($1, $5, $6, $id++, \%info)
+             }sgexi;
     write_partial_file($cont, "", "", $id, \%info);
 
     return @{$info{'names'}};
@@ -120,11 +124,11 @@ sub write_partial_file($$$$$) {
     my $header = $Header;
     my $title = $prev_anchored ? "$orig_title: $prev_anchored" : $orig_title;
     $header =~ s/\$\{subject\}/$title/g;
+    $header =~ s/\$\{author\}/$author/g;
     print $fh $header;
     print $fh $cont;
 
     my $footer = $Footer;
-    $footer =~ s/\$\{author\}/$author/g;
     print $fh $footer;
 
     push @{$info_ref->{'names'}}, $prev_name;

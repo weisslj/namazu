@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.53 2000-03-03 03:36:21 satoru Exp $
+ * $Id: form.c,v 1.54 2000-03-04 11:11:39 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -106,6 +106,7 @@ replace_query_value(const char *p, const char *query)
         for (; *p; p++)
             fputc(*p, stdout);
         printf(" value=\"");
+
         html_print(converted);  /* for treating <>&" chars in the query. */
         printf("\"");
 

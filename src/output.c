@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.69 2000-03-03 03:36:21 satoru Exp $
+ * $Id: output.c,v 1.70 2000-03-04 11:11:39 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -106,34 +106,6 @@ emprint(char *s, int entity_encode)
 {
     int i;
     for (i = 0; *s && i < BUFSIZE; s++) {
-	/* Iso-2022-jp handling */
-	if ((strncmp(s, "\033$", 2) == 0)
-	    && (*(s + 2) == 'B' || *(s + 2) == '@')) 
-	{
-	    char *p;
-	    int n = 0;
-	    char buf[BUFSIZE];
-
-	    strncpy(buf, s, 3);
-	    n += 3;
-	    s += 3;
-	    p = strstr(s, "\033(");
-	    if (p == NULL) {   /* non-terminating jis x 0208 */
-		fputs(s, stdout);
-		return; 
-	    }
-	    if (*(p + 2) == 'J' || *(p + 2) == 'B' || *(p + 2) == 'H') {
-		int len = p - s + 3;
-		strncpy(buf + n, s, len);
-		n += len;
-		buf[n] = '\0';
-		fputs(buf, stdout);
-		s += len;
-	    } else {  /* unknown charset designation */
-		fputs(s, stdout);
-		return;
-	    }
-	}
 	if (*s == EM_START_MARK) {
 	    fputs(emphasis_start_tag, stdout);
 	    continue;

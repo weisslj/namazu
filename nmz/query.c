@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: query.c,v 1.10 2000-02-16 12:57:44 satoru Exp $
+ * $Id: query.c,v 1.11 2000-03-04 11:11:37 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -138,8 +138,6 @@ nmz_make_query(const char *querystring)
     }
 
     strcpy(query.str, querystring);
-    /* Normalize the query.str encoding for searching. */
-    nmz_codeconv_query(query.str);
 
     set_phrase_trick(query.str);
     set_regex_trick(query.str);

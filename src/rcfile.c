@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.12 2000-01-29 05:31:40 satoru Exp $
+ * $Id: rcfile.c,v 1.13 2000-01-29 05:36:08 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -640,7 +640,7 @@ show_config(void)
 	for (i =0; i < loaded_rcfiles.num; i++) {
 	    printf(_("Loaded rcfile: %s\n"), loaded_rcfiles.fnames[i]);
 	}
-	printf("--------------------------------------------------------\n");
+	printf("--------------------------------------------------------------\n");
     }
 
     printf(_("\

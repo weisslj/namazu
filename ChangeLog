@@ -1,3 +1,13 @@
+2001-01-29  Ryuji Abe  <rug@namazu.org>
+
+	* doc/en/manual.html: Fixed URLs.
+
+	* doc/en/tutorial.html: Likewise.
+
+	* doc/ja/manual.html: Likewise.
+
+	* doc/ja/tutorial.html: Likewise.
+
 2001-01-27  Ryuji Abe  <rug@namazu.org>
 
 	* doc/en/manual.html (filter): Added descriptions about deb, dvi,
@@ -6367,4 +6377,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.803 2001-01-27 08:49:40 rug Exp $
+$Id: ChangeLog,v 1.804 2001-01-29 14:19:26 rug Exp $

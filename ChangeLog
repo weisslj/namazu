@@ -1,3 +1,9 @@
+1999-11-08  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* nmz/Makefile.am (INCLUDES): Add -I../nmz
+
+	* po/POTFILES.in: Re-list all.
+
 1999-11-08  Ryuji Abe  <raeva@t3.rim.or.jp>
 
 	* nmz/Makefile.am (DEFS): Same as src/Makefile.am.

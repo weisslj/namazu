@@ -1,15 +1,14 @@
 # Process this file with automake to produce Makefile.in
 #
-# $Id: Makefile.am,v 1.7 1999-11-08 05:43:37 rug Exp $
+# $Id: Makefile.am,v 1.8 1999-11-08 08:50:34 satoru Exp $
 #
 
 AUTOMAKE_OPTIONS = no-dependencies
 
+INCLUDES = -I.. -I../lib -I../src -I../intl -I../nmz
 localedir   = $(datadir)/locale
 confdir     = $(sysconfdir)/$(PACKAGE)
 indexdir    = $(localstatedir)/$(PACKAGE)/index
-
-INCLUDES = -I.. -I../lib -I../src -I../intl
 DEFS = -DLOCALEDIR=\"$(localedir)\" \
        -DOPT_CONFDIR=\"$(confdir)\" \
        -DOPT_INDEXDIR=\"$(indexdir)\" \

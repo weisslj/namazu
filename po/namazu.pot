@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 1999-11-01 23:26+0900\n"
+"POT-Creation-Date: 1999-11-08 17:42+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -14,20 +14,12 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: ENCODING\n"
 
-#: src/cgi.c:66 src/cgi.c:76
-msgid "Invalid idxname."
-msgstr ""
-
-#: src/cgi.c:108 src/cgi.c:119
-msgid "Too long QUERY_STRING"
-msgstr ""
-
-#: src/conf.c:470
+#: nmz/conf.c:470
 #, c-format
 msgid "Config:  %s\n"
 msgstr ""
 
-#: src/conf.c:473
+#: nmz/conf.c:473
 #, c-format
 msgid ""
 "Default: %s\n"
@@ -37,14 +29,43 @@ msgid ""
 "Scoring: %s\n"
 msgstr ""
 
-#: src/conf.c:486
+#: nmz/conf.c:486
 #, c-format
 msgid "Alias:   \"%s\" -> \"%s\"\n"
 msgstr ""
 
-#: src/conf.c:495
+#: nmz/conf.c:495
 #, c-format
 msgid "Replace: \"%s\" -> \"%s\"\n"
+msgstr ""
+
+#: nmz/search.c:708
+msgid "(You don't have a permission to access the index)"
+msgstr ""
+
+#: nmz/search.c:715
+msgid " (cannot open this index)\n"
+msgstr ""
+
+#. if no item available
+#: nmz/wakati.c:233
+msgid ""
+"\t<h2>Error!</h2>\n"
+"<p>Invalid query.</p>\n"
+msgstr ""
+
+#: nmz/wakati.c:239
+msgid ""
+"\t<h2>Error!</h2>\n"
+"<p>Too many query tokens.</p>\n"
+msgstr ""
+
+#: src/cgi.c:66 src/cgi.c:76
+msgid "Invalid idxname."
+msgstr ""
+
+#: src/cgi.c:108 src/cgi.c:119
+msgid "Too long QUERY_STRING"
 msgstr ""
 
 #: src/namazu.c:290
@@ -95,14 +116,6 @@ msgid ""
 "\n"
 msgstr ""
 
-#: src/search.c:708
-msgid "(You don't have a permission to access the index)"
-msgstr ""
-
-#: src/search.c:715
-msgid " (cannot open this index)\n"
-msgstr ""
-
 #: src/usage.c:44
 #, c-format
 msgid ""
@@ -143,17 +156,4 @@ msgstr ""
 
 #: src/usage.c:81
 msgid "Try `namazu --help' for more information.\n"
-msgstr ""
-
-#. if no item available
-#: src/wakati.c:233
-msgid ""
-"\t<h2>Error!</h2>\n"
-"<p>Invalid query.</p>\n"
-msgstr ""
-
-#: src/wakati.c:239
-msgid ""
-"\t<h2>Error!</h2>\n"
-"<p>Too many query tokens.</p>\n"
 msgstr ""

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: namazu 2.0\n"
-"POT-Creation-Date: 1999-11-01 23:26+0900\n"
+"POT-Creation-Date: 1999-11-08 17:42+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>\n"
 "Language-Team: Japanese <satoru-t@is.aist-nara.ac.jp>\n"
@@ -13,20 +13,12 @@ msgstr ""
 "Content-Type: text/plain; charset=EUC-JP\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
-#: src/cgi.c:66 src/cgi.c:76
-msgid "Invalid idxname."
-msgstr "不正な idxname の指定です"
-
-#: src/cgi.c:108 src/cgi.c:119
-msgid "Too long QUERY_STRING"
-msgstr "CGIの QUERY_STRING が長すぎます"
-
-#: src/conf.c:470
+#: nmz/conf.c:470
 #, c-format
 msgid "Config:  %s\n"
 msgstr "設定ファイル:  %s\n"
 
-#: src/conf.c:473
+#: nmz/conf.c:473
 #, c-format
 msgid ""
 "Default: %s\n"
@@ -41,15 +33,48 @@ msgstr ""
 "標準の言語: %s\n"
 "スコア計算: %s\n"
 
-#: src/conf.c:486
+#: nmz/conf.c:486
 #, c-format
 msgid "Alias:   \"%s\" -> \"%s\"\n"
 msgstr "別名:   \"%s\" -> \"%s\"\n"
 
-#: src/conf.c:495
+#: nmz/conf.c:495
 #, c-format
 msgid "Replace: \"%s\" -> \"%s\"\n"
 msgstr "置換: \"%s\" -> \"%s\"\n"
+
+#: nmz/search.c:708
+msgid "(You don't have a permission to access the index)"
+msgstr "（インデックスにアクセスする権利がありません）"
+
+#: nmz/search.c:715
+msgid " (cannot open this index)\n"
+msgstr " (インデックスが開けませんでした)\n"
+
+#. if no item available
+#: nmz/wakati.c:233
+msgid ""
+"\t<h2>Error!</h2>\n"
+"<p>Invalid query.</p>\n"
+msgstr ""
+"\t<h2>エラー!</h2>\n"
+"<p>検索式が不正です。</p>\n"
+
+#: nmz/wakati.c:239
+msgid ""
+"\t<h2>Error!</h2>\n"
+"<p>Too many query tokens.</p>\n"
+msgstr ""
+"\t<h2>エラー!</h2>\n"
+"<p>検索式の項目が多すぎます。</p>\n"
+
+#: src/cgi.c:66 src/cgi.c:76
+msgid "Invalid idxname."
+msgstr "不正な idxname の指定です"
+
+#: src/cgi.c:108 src/cgi.c:119
+msgid "Too long QUERY_STRING"
+msgstr "CGIの QUERY_STRING が長すぎます"
 
 #: src/namazu.c:290
 msgid "\t<p>No document matching your query.</p>\n"
@@ -100,14 +125,6 @@ msgid ""
 msgstr ""
 "\t 個の文書が見つかりました。</strong></p>\n"
 "\n"
-
-#: src/search.c:708
-msgid "(You don't have a permission to access the index)"
-msgstr "（インデックスにアクセスする権利がありません）"
-
-#: src/search.c:715
-msgid " (cannot open this index)\n"
-msgstr " (インデックスが開けませんでした)\n"
 
 #: src/usage.c:44
 #, c-format
@@ -177,23 +194,6 @@ msgstr "使い方: namazu [オプション] <検索式> [インデックス...]\n"
 #: src/usage.c:81
 msgid "Try `namazu --help' for more information.\n"
 msgstr "`namazu --help' でオプションの説明が表示されます\n"
-
-#. if no item available
-#: src/wakati.c:233
-msgid ""
-"\t<h2>Error!</h2>\n"
-"<p>Invalid query.</p>\n"
-msgstr ""
-"\t<h2>エラー!</h2>\n"
-"<p>検索式が不正です。</p>\n"
-
-#: src/wakati.c:239
-msgid ""
-"\t<h2>Error!</h2>\n"
-"<p>Too many query tokens.</p>\n"
-msgstr ""
-"\t<h2>エラー!</h2>\n"
-"<p>検索式の項目が多すぎます。</p>\n"
 
 #~ msgid ""
 #~ "\t<h2>Error!</h2>\n"

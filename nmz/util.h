@@ -41,7 +41,6 @@ extern void nmz_debug_printf ( const char *fmt, ... );
 extern void nmz_pathcat ( const char *base, char *name );
 extern int nmz_isnumstr ( const char *str );
 extern void nmz_strlower ( char *str );
-extern char * nmz_strcasestr ( const char *haystack, const char *needle );
 extern int nmz_strprefixcasecmp ( const char *str1, const char *str2 );
 extern int nmz_strprefixcmp ( const char *str1, const char *str2 );
 extern int nmz_strsuffixcmp ( const char *str1, const char *str2 );

@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: util.c,v 1.54 2000-01-31 06:24:03 satoru Exp $
+ * $Id: util.c,v 1.55 2000-01-31 10:36:16 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -370,32 +370,6 @@ nmz_strlower(char *str)
         str++;
     }
 }
-
-/* 
- * Case-insensitive brute force search.
- * (with consideration for EUC encoding schemes)
- */
-char *
-nmz_strcasestr(const char *haystack, const char *needle)
-{
-    int n = strlen(needle);
-    int euc_mode = 0;
-
-    if (nmz_is_lang_ja()) {
-	euc_mode = 1;
-    }
-
-    for (; *haystack != '\0'; haystack++) {
-	if (strncasecmp(haystack, needle, n) == 0) {
-	    return (char *)haystack;
-	}
-	if (euc_mode && nmz_iseuc(*haystack)) {
-	    haystack++;
-	}
-    }
-    return NULL;
-}
-
 
 int 
 nmz_strprefixcasecmp(const char *str1, const char *str2)

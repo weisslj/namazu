@@ -18,8 +18,10 @@
 
 	* nmz/util.[ch] (nmz_commas): Moved to src/result.c as commas.
 	(nmz_subst): Moved to src/form.c as subst.
+	(nmz_strcasestr): Moved to src/result.c as strcasestr.
 
 	* src/result.c (commas): Be static.
+	(strcasestr): Likewise.
 
 	* src/form.c (subst): Likewise.
 

@@ -1,5 +1,5 @@
 /*
- * $Id: result.c,v 1.48 2000-01-30 22:18:12 rug Exp $
+ * $Id: result.c,v 1.49 2000-01-31 10:36:17 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -49,6 +49,7 @@ static int uridecode   = 1;   /* Decode  URI in results as default. */
  */
 
 static void commas ( char *str );
+static char * strcasestr ( const char *haystack, const char *needle );
 static void replace_field ( struct nmz_data d, int counter, const char *field, char *result );
 static void encode_entity ( char *str );
 static void emphasize ( char *str );
@@ -72,6 +73,31 @@ commas(char *str)
 	    str[n] = ',';
 	}
     }
+}
+
+/* 
+ * Case-insensitive brute force search.
+ * (with consideration for EUC encoding schemes)
+ */
+static char *
+strcasestr(const char *haystack, const char *needle)
+{
+    int n = strlen(needle);
+    int euc_mode = 0;
+
+    if (nmz_is_lang_ja()) {
+	euc_mode = 1;
+    }
+
+    for (; *haystack != '\0'; haystack++) {
+	if (strncasecmp(haystack, needle, n) == 0) {
+	    return (char *)haystack;
+	}
+	if (euc_mode && nmz_iseuc(*haystack)) {
+	    haystack++;
+	}
+    }
+    return NULL;
 }
 
 static void 
@@ -170,7 +196,7 @@ emphasize(char *str)
 	keylen = strlen(key);
 
 	do {
-	    ptr = nmz_strcasestr(ptr, key);
+	    ptr = strcasestr(ptr, key);
 	    if (ptr != NULL) {
 		memmove(ptr + 2, ptr, strlen(ptr) + 1);
 		memmove(ptr + 1, ptr + 2, keylen);

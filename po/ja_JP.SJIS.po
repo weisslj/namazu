@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: namazu 2.0\n"
-"POT-Creation-Date: 2000-02-20 22:55+0900\n"
+"POT-Creation-Date: 2000-02-20 23:54+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>\n"
 "Language-Team: Japanese <satoru-t@is.aist-nara.ac.jp>\n"
@@ -708,11 +708,11 @@ msgstr "Renamed: "
 msgid "not an IO::File/FileHandle object!\n"
 msgstr "IO::File/FileHandle オブジェクトではありません。\n"
 
-#: pl/util.pl:206
+#: pl/util.pl:205
 msgid "Remove tmporary files:"
 msgstr "一時ファイルを削除:"
 
-#: pl/util.pl:224
+#: pl/util.pl:223
 msgid "ASSERTION ERROR!: "
 msgstr "ASSERTION ERROR!: "
 

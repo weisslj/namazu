@@ -1,4 +1,13 @@
+2000-02-21  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* nmz/util.c (nmz_isnumstr): Fix isdigit() related
+	bug. [namazu-dev 1731] 
+
+  	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.0.1
+	
 2000-02-20  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+  	* Namazu: Version 2.0 released.
 
   	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.0.
 

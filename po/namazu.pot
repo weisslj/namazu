@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2000-02-20 22:55+0900\n"
+"POT-Creation-Date: 2000-02-21 12:05+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -14,55 +14,55 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: ENCODING\n"
 
-#: nmz/util.c:486
+#: nmz/util.c:482
 msgid "Fatal error occered!"
 msgstr ""
 
-#: nmz/util.c:489
+#: nmz/util.c:485
 msgid "Too long query"
 msgstr ""
 
-#: nmz/util.c:492
+#: nmz/util.c:488
 msgid "Invalid query"
 msgstr ""
 
-#: nmz/util.c:495
+#: nmz/util.c:491
 msgid "Too many query tokens"
 msgstr ""
 
-#: nmz/util.c:498
+#: nmz/util.c:494
 msgid "Too many words matched. Ignored"
 msgstr ""
 
-#: nmz/util.c:501
+#: nmz/util.c:497
 msgid "Too many pages hit. Ignored"
 msgstr ""
 
-#: nmz/util.c:504
+#: nmz/util.c:500
 msgid "cannot open regex index"
 msgstr ""
 
-#: nmz/util.c:507
+#: nmz/util.c:503
 msgid "cannot open phrase index"
 msgstr ""
 
-#: nmz/util.c:510
+#: nmz/util.c:506
 msgid "cannot open field index"
 msgstr ""
 
-#: nmz/util.c:513
+#: nmz/util.c:509
 msgid "cannot open this index"
 msgstr ""
 
-#: nmz/util.c:516
+#: nmz/util.c:512
 msgid "cannot open result format file"
 msgstr ""
 
-#: nmz/util.c:519
+#: nmz/util.c:515
 msgid "You don't have a permission to access the index"
 msgstr ""
 
-#: nmz/util.c:522
+#: nmz/util.c:518
 msgid "Unknown error. Report bug!"
 msgstr ""
 
@@ -620,11 +620,11 @@ msgstr ""
 msgid "not an IO::File/FileHandle object!\n"
 msgstr ""
 
-#: pl/util.pl:206
+#: pl/util.pl:205
 msgid "Remove tmporary files:"
 msgstr ""
 
-#: pl/util.pl:224
+#: pl/util.pl:223
 msgid "ASSERTION ERROR!: "
 msgstr ""
 

@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: util.c,v 1.61 2000-02-20 13:49:09 satoru Exp $
+ * $Id: util.c,v 1.62 2000-02-21 04:20:39 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -336,18 +336,14 @@ nmz_pathcat(const char *base, char *name)
 int 
 nmz_isnumstr(const char *str)
 {
-    const char *p;
+    const unsigned char *p;
 
     if (strlen(str) > 10) {  /* Too large number */
 	return 0;
     }
 
-    for (p = str; *p != '\0'; p++) {
-	/*
-	 * FIXME: We cannot use isdigit() because it doesn't
-	 * work on a poor system. [namazu-dev 1718] 
-	 */
-	if (! (*p >= '0' && *p <= '9')) {
+    for (p = (const unsigned char *)str; *p != '\0'; p++) {
+	if (! isdigit((int)*p)) {
 	    return 0;
 	}
     }

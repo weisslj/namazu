@@ -2,7 +2,7 @@
  * 
  * parser.c -
  * 
- * $Id: parser.c,v 1.4 1999-11-19 02:58:16 satoru Exp $
+ * $Id: parser.c,v 1.5 1999-11-23 14:18:34 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -41,7 +41,6 @@
 #include "search.h"
 #include "parser.h"
 #include "var.h"
-#include "magic.h"
 
 static int Cp = 0; /* variable that saves current position of parser */
 
@@ -76,7 +75,8 @@ static int isop(char * c)
 static HLIST factor(int *ignore)
 {
     HLIST val;
-    val.n = 0;
+    val.n    = 0;
+    val.stat = SUCCESS;
 
     while (1) {
         if (Query.tab[Cp] == 0) {
@@ -88,7 +88,7 @@ static HLIST factor(int *ignore)
             if (Query.tab[Cp] == NULL)
                 return val;
             val = expr();
-	    if (val.n == DIE_HLIST)
+	    if (val.stat == ERR_FATAL)
 	        return val;
             if (Query.tab[Cp] == NULL)
                 return val;
@@ -97,7 +97,7 @@ static HLIST factor(int *ignore)
             break;
         } else if (!isop(Query.tab[Cp])) {
             val = do_search(Query.tab[Cp], val);
-	    if (val.n == DIE_HLIST)
+	    if (val.stat == ERR_FATAL)
 	       return val;
             /*  ERR_TOO_MUCH_MATCH;
                 ERR_TOO_MUCH_HIT;  case */
@@ -144,11 +144,11 @@ static HLIST term(void)
     int ignore = 0, op;
 
     left = factor(&ignore);
-    if (left.n == DIE_HLIST)
+    if (left.stat == ERR_FATAL)
         return left;
     while ((op = andop())) {
 	right = factor(&ignore);
-	if (right.n == DIE_HLIST)
+	if (right.stat == ERR_FATAL)
 	    return right;
 	if (op == AND_OP) {
 	    left = andmerge(left, right, &ignore);
@@ -186,14 +186,14 @@ HLIST expr(void)
     HLIST left, right;
 
     left = term();
-    if (left.n == DIE_HLIST)
+    if (left.stat == ERR_FATAL)
         return left;
     while (orop()) {
 	right = term();
-	if (right.n == DIE_HLIST)
+	if (right.stat == ERR_FATAL)
 	    return right;
 	left = ormerge(left, right);
-	if (left.n == DIE_HLIST)
+	if (left.stat == ERR_FATAL)
 	    return left;
     }
     return left;

@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.12 1999-11-23 12:58:32 satoru Exp $
+ * $Id: search.c,v 1.13 1999-11-23 14:18:35 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -53,7 +53,6 @@
 #include "i18n.h"
 #include "codeconv.h"
 #include "var.h"
-#include "magic.h"
 
 
 enum { ALLOW, DENY } perm;
@@ -190,7 +189,7 @@ static HLIST prefix_match(char * orig_key, int v)
            because treat 'a*' completely is too consuming */
 	if (j > IGNORE_MATCH) {
 	    free_hlist(val);
-	    val.n = ERR_TOO_MUCH_MATCH;
+	    val.stat = ERR_TOO_MUCH_MATCH;
 	    break;
 	}
 	if (-1 == fseek(Nmz.w, getidxptr(Nmz.wi, i), 0)) {
@@ -200,19 +199,19 @@ static HLIST prefix_match(char * orig_key, int v)
         chomp(buf);
 	if (strncmp(key, buf, n) == 0) {
 	    tmp = get_hlist(i);
-	    if (tmp.n == DIE_HLIST)
+	    if (tmp.stat == ERR_FATAL)
 	        return tmp;
 	    if (tmp.n > IGNORE_HIT) {
 		free_hlist(val);
-		val.n = ERR_TOO_MUCH_MATCH;
+		val.stat = ERR_TOO_MUCH_MATCH;
 		break;
 	    }
 	    val = ormerge(val, tmp);
-	    if (val.n == DIE_HLIST)
+	    if (val.stat == ERR_FATAL)
 	        return val;
 	    if (val.n > IGNORE_HIT) {
 		free_hlist(val);
-		val.n = ERR_TOO_MUCH_MATCH;
+		val.stat = ERR_TOO_MUCH_MATCH;
 		break;
 	    }
 	    debug_printf("fw: %s, %d, %d\n", buf, tmp.n, val.n);
@@ -280,7 +279,7 @@ static HLIST do_word_search(char *key, HLIST val)
     if ((v = binsearch(key, 0)) != -1) {
         /* if found, get list */
         val = get_hlist(v);
-	if (val.n == DIE_HLIST)
+	if (val.stat == ERR_FATAL)
 	    return val;
     } else {
         val.n = 0;  /* no hit */
@@ -296,7 +295,7 @@ static HLIST do_prefix_match_search(char *key, HLIST val)
     if ((v = binsearch(key, 1)) != -1) { /* 2nd argument must be 1  */
         /* if found, do foward match */
         val = prefix_match(key, v);
-	if (val.n == DIE_HLIST)
+	if (val.stat == ERR_FATAL)
 	    return val;
     } else {
         val.n = 0;  /* no hit */
@@ -344,8 +343,7 @@ static HLIST cmp_phrase_hash(int hash_key, HLIST val,
     list = (int *)malloc(n * sizeof(int));
     if (list == NULL) {
 	 set_dyingmsg("cmp_phrase_hash_malloc");
-	 val.n = -1;
-	 val.d = NULL;
+	 val.stat = ERR_FATAL;
 	 return val;
     }
 
@@ -402,7 +400,7 @@ static HLIST do_phrase_search(char *key, HLIST val)
     }
 
     if (open_phrase_index_files(&phrase, &phrase_index)) {
-        val.n = ERR_PHRASE_SEARCH_FAILED;  /* cannot open regex index */
+        val.stat = ERR_PHRASE_SEARCH_FAILED;  /* cannot open regex index */
         return val;
     }
         
@@ -419,12 +417,12 @@ static HLIST do_phrase_search(char *key, HLIST val)
 	    PHRASERES *prtmp;
 
             tmp = do_word_search(p, val);
-	    if (tmp.n == DIE_HLIST) 
+	    if (tmp.stat == ERR_FATAL) 
 	        return tmp;
 	    if ((prtmp = push_phraseres(
 		Idx.pr[CurrentIndexNumber], tmp.n, p)) == NULL) 
 	    {
-		tmp.n = DIE_HLIST;
+		tmp.stat = ERR_FATAL;
 		return tmp;
 	    }
 	    Idx.pr[CurrentIndexNumber] = prtmp;
@@ -432,7 +430,8 @@ static HLIST do_phrase_search(char *key, HLIST val)
             if (i == 0) {
                 val = tmp;
             } else {
-		if (tmp.n == ERR_TOO_MUCH_HIT || val.n == ERR_TOO_MUCH_HIT) {
+		if (tmp.stat == ERR_TOO_MUCH_HIT || 
+		    val.stat == ERR_TOO_MUCH_HIT) {
 		    ignore = 1;
 		} else {
 		    ignore = 0;
@@ -447,7 +446,7 @@ static HLIST do_phrase_search(char *key, HLIST val)
 			     word_b, p, h, val.n);
 		if (val.n == 0) {
 		    break;
-		} else if (val.n == DIE_HLIST) {
+		} else if (val.stat == ERR_FATAL) {
 		    return val;
 		}
 	    }
@@ -525,7 +524,7 @@ static HLIST do_regex_search(char *orig_expr, HLIST val)
     fp = fopen(NMZ.w, "rb");
     if (fp == NULL) {
         debug_printf("%s: cannot open file.\n", NMZ.w);
-        val.n = ERR_REGEX_SEARCH_FAILED;  /* cannot open regex index */
+        val.stat = ERR_REGEX_SEARCH_FAILED;  /* cannot open regex index */
         return val;
     }
     val = regex_grep(expr, fp, "", 0);
@@ -555,8 +554,8 @@ static HLIST do_field_search(char *str, HLIST val)
 
     fp = fopen(file_name, "rb");
     if (fp == NULL) {
-        debug_printf("%s: cannot open file.\n", file_name);
-        val.n = -4;  /* cannot open field index */
+        set_dyingmsg("%s: cannot open file.\n", file_name);
+        val.stat = ERR_CANNOT_OPEN_INDEX;
         return val;
     }
     val = regex_grep(expr, fp, field_name, 1); /* last argument must be 1 */
@@ -723,13 +722,13 @@ static HLIST search_sub(HLIST hlist, char *query, char *query_orig, int n)
 
     if (check_accessfile() == DENY) {
 	/* if access denied */
-	hlist.n = ERR_NO_PERMISSION;
+	hlist.stat = ERR_NO_PERMISSION;
 	return hlist;
     }
 
     if (open_index_files()) {
         /* if open failed */
-        hlist.n = ERR_CANNOT_OPEN_INDEX;
+        hlist.stat = ERR_CANNOT_OPEN_INDEX;
         return hlist;
     }
 
@@ -743,12 +742,12 @@ static HLIST search_sub(HLIST hlist, char *query, char *query_orig, int n)
     /* search */
     init_parser();
     hlist = expr();
-    if (hlist.n == DIE_HLIST) {
+    if (hlist.stat == ERR_FATAL) {
 	set_dyingmsg("search error");
         return hlist;
     }
 
-    if (hlist.n) {  /* if hit */
+    if (hlist.n == SUCCESS && hlist.n > 0) {  /* if hit */
         set_idxid_hlist(hlist, n);
     }
     Idx.total[CurrentIndexNumber] = hlist.n;
@@ -850,15 +849,18 @@ HLIST search_main(char *query)
     char query_orig[BUFSIZE];
     int i, ret;
 
+    hlist.stat = SUCCESS;
+
     if (strlen(query) > QUERY_MAX) {
-	hlist.status = ERR_TOO_LONG_QUERY;
+	hlist.stat = ERR_TOO_LONG_QUERY;
+	return hlist;
     }
 
     strcpy(query_orig, query); /* save */
 
     ret = split_query(query);
     if (ret != SUCCESS) {
-	hlist.status = ret;
+	hlist.stat = ret;
 	return hlist;
     }
 
@@ -866,40 +868,40 @@ HLIST search_main(char *query)
         make_fullpathname_index(i);
         tmp[i] = search_sub(tmp[i], query, query_orig, i);
 
-	if (tmp[i].n < 0) {/* ERROR occured */
+	if (tmp[i].stat != SUCCESS) {/* ERROR occured */
 	    PHRASERES *prtmp;
 	    if ((prtmp = push_phraseres(Idx.pr[i], tmp[i].n, "")) == NULL) 
 	    {
-		hlist.n = DIE_HLIST;
+		hlist.stat = ERR_FATAL;
 		return hlist;
 	    }
 	    Idx.pr[i] = prtmp;
 	}
 
-	if (tmp[i].n == DIE_HLIST) {
+	if (tmp[i].stat == ERR_FATAL) {
 	    hlist.d = NULL;
-	    hlist.n = DIE_HLIST;
+	    hlist.stat = ERR_FATAL;
 	    return hlist; /* need freeing memory? */
 	}
     }
 
     hlist = merge_hlist(tmp);
 
-    if (hlist.n > 0) { /* HIT!! */
-        if (sort_hlist(hlist, SORT_BY_DATE))   /* sort by date at first*/
-	  {
-	    hlist.n = DIE_HLIST;
+    if (hlist.stat == SUCCESS && hlist.n > 0) { /* HIT!! */
+	/* sort by date at first*/
+        if (sort_hlist(hlist, SORT_BY_DATE) == FAILURE) {
+	    hlist.stat = ERR_FATAL;
 	    return hlist;
-	  }
+	}
 	if (get_sortmethod() != SORT_BY_DATE) {
-	    if (sort_hlist(hlist, get_sortmethod())) {
-	        hlist.n = DIE_HLIST;
+	    if (sort_hlist(hlist, get_sortmethod()) == FAILURE) {
+	        hlist.stat = ERR_FATAL;
 		return hlist;
 	    }
 	}
         if (get_sortorder() == ASCENDING) {  /* default is descending */
 	    if (reverse_hlist(hlist)) {
-	        hlist.n = DIE_HLIST;
+	        hlist.stat = ERR_FATAL;
 		return hlist; 
 	    }
         }
@@ -919,8 +921,8 @@ HLIST do_search(char *orig_key, HLIST val)
     strlower(key);
     mode = detect_search_mode(key);
     if (mode == ERROR_MODE) {
-      val.n = DIE_HLIST;
-      return val;
+	val.stat = ERR_FATAL;
+	return val;
     }
     Idx.mode[CurrentIndexNumber] = mode;
     delete_beginning_backslash(key);
@@ -942,7 +944,7 @@ HLIST do_search(char *orig_key, HLIST val)
 	if ((prtmp = push_phraseres(Idx.pr[CurrentIndexNumber], 
 				    val.n, orig_key)) == NULL) 
 	{
-	    val.n = DIE_HLIST;
+	    val.stat = ERR_FATAL;
 	    return val;
 	}
 	Idx.pr[CurrentIndexNumber] = prtmp;

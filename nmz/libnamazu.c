@@ -2,7 +2,7 @@
  * 
  * libnamazu.c - Namazu library api
  *
- * $Id: libnamazu.c,v 1.8 1999-11-23 11:58:50 satoru Exp $
+ * $Id: libnamazu.c,v 1.9 1999-11-23 14:18:34 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
@@ -59,7 +59,6 @@
 #include "i18n.h"
 #include "regex.h"
 #include "var.h"
-#include "magic.h"
 
 static int  sortmethod  = SORT_BY_SCORE;
 static int  sortorder   = DESCENDING;
@@ -185,7 +184,7 @@ int expand_idxname_aliases(void)
 		Idx.names[i] = (char *) malloc(strlen(list->real) + 1);
 		if (Idx.names[i] == NULL) {
 		    set_dyingmsg("expand_idxname_aliases: malloc()");
-		    return DIE_ERROR;
+		    return FAILURE;
 		}
 		strcpy(Idx.names[i], list->real);
             }
@@ -206,7 +205,7 @@ int complete_idxnames(void)
 				  + 1 + strlen(Idx.names[i]) + 1);
 	    if (tmp == NULL) {
 		set_dyingmsg("complete_idxnames: malloc()");
-		return DIE_ERROR;
+		return FAILURE;
 	    }
 	    strcpy(tmp, DEFAULT_INDEX);
 	    strcat(tmp, "/");

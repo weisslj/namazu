@@ -2,7 +2,7 @@
  * 
  * re.c -
  * 
- * $Id: re.c,v 1.5 1999-11-19 09:04:20 satoru Exp $
+ * $Id: re.c,v 1.6 1999-11-23 14:18:34 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -39,7 +39,6 @@
 #include "re.h"
 #include "i18n.h"
 #include "var.h"
-#include "magic.h"
 
 #define STEP 256
 
@@ -171,7 +170,7 @@ HLIST regex_grep(char *orig_expr, FILE *fp, char *field, int field_mode)
 
     if (field_mode) {
         malloc_hlist(&val, size += STEP);
-	if (val.n == DIE_HLIST)
+	if (val.stat == ERR_FATAL)
 	    return val;
 	val.n = 0; /* set 0 for no matching case */
         max = IGNORE_HIT;
@@ -207,7 +206,7 @@ HLIST regex_grep(char *orig_expr, FILE *fp, char *field, int field_mode)
             }
             if (!field_mode) {
                 tmp = get_hlist(i);
-		if (tmp.n == DIE_HLIST)
+		if (tmp.stat == ERR_FATAL)
 		    return tmp;
                 if (tmp.n > IGNORE_HIT) {
                     free_hlist(val);
@@ -217,7 +216,7 @@ HLIST regex_grep(char *orig_expr, FILE *fp, char *field, int field_mode)
             } else {
                 if (n > size) {
                     realloc_hlist(&val, size += STEP);
-		    if (val.n == DIE_HLIST)
+		    if (val.stat == ERR_FATAL)
 		        return val;
                 }
                 val.d[n-1].docid = i;
@@ -227,7 +226,7 @@ HLIST regex_grep(char *orig_expr, FILE *fp, char *field, int field_mode)
 
             if (!field_mode) {
                 val = ormerge(val, tmp);
-		if (val.n == DIE_HLIST)
+		if (val.stat == ERR_FATAL)
 		    return val;
             } 
             if (val.n > IGNORE_HIT) {

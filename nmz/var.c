@@ -2,7 +2,7 @@
  * 
  * var.c -
  * 
- * $Id: var.c,v 1.7 1999-11-23 12:58:32 satoru Exp $
+ * $Id: var.c,v 1.8 1999-11-23 14:18:35 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -32,7 +32,6 @@
 #include "namazu.h"
 #include "libnamazu.h"
 #include "re.h"
-#include "magic.h"
 
 /* string of HTML 's <BASE HREF="...">  (namazu.conf) */
 char BASE_URI[BUFSIZE] = "";

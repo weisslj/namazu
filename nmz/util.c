@@ -21,7 +21,7 @@
 #include "util.h"
 #include "i18n.h"
 #include "var.h"
-
+#include "system.h"
 
 /*
  *
@@ -266,7 +266,7 @@ void die(char *fmt, ...)
     va_end(args);
     fprintf(stderr, "\n");
 
-    exit(1);
+    exit(EXIT_FAILURE);
 }
 
 void diewithmsg()
@@ -278,7 +278,7 @@ void diewithmsg()
     fprintf(stderr, "%s", get_dyingmsg());
     fprintf(stderr, "\n");
 
-    exit(2);
+    exit(EXIT_FAILURE);
 }
 
 /* warning messaging function */

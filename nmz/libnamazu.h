@@ -2,7 +2,7 @@
  * 
  * libnamazu.h - Namazu library api
  *
- * $Id: libnamazu.h,v 1.12 1999-11-23 12:58:31 satoru Exp $
+ * $Id: libnamazu.h,v 1.13 1999-11-23 14:18:34 satoru Exp $
  * 
  */
 
@@ -30,13 +30,50 @@ enum {
 };
 
 
+/*
+ *
+ * Magic Numbers
+ *
+ */
+
+enum {
+    ESC    = 0x1b,      /* Code of ESC */
+    STDIN  = 0,		/* stdin's  fd */
+    STDOUT = 1,		/* stdout's fd */
+    STDERR = 2		/* stderr's fd */
+};
+
+enum {
+    SORT_BY_SCORE,  /* at displaying results time */
+    SORT_BY_DATE,   /* at displaying results time */
+    SORT_BY_FIELD   /* at displaying results time */
+};
+
+enum {
+    ASCENDING,     /* Direction of sorting */
+    DESCENDING     /* Direction of sorting */
+};
+
 /* for error handling */
 enum {
-    SUCCESS,
+    SUCCESS = 0,
+    FAILURE = -1
+};
+
+/* for error handling */
+enum {
+    ERR_FATAL,
     ERR_TOO_LONG_QUERY,
     ERR_INVALID_QUERY,
-    ERR_TOO_MANY_TOKENS
+    ERR_TOO_MANY_TOKENS,
+    ERR_TOO_MUCH_MATCH,
+    ERR_TOO_MUCH_HIT,
+    ERR_REGEX_SEARCH_FAILED,
+    ERR_PHRASE_SEARCH_FAILED,
+    ERR_CANNOT_OPEN_INDEX,
+    ERR_NO_PERMISSION
 };
+
 
 /*
  *
@@ -52,14 +89,14 @@ typedef struct hlist_data {
     int idxid;   /* index ID */
     int date;    /* document's date */
     int rank;    /* ranking data for stable sorting */
-    int status;  /* mainly used for storing error status code */
+    int stat;    /* status code mainly used for error handling */
     char *field; /* for field-specified search*/
 } HLIST_DATA;
 
 /* data structure for search result */
 typedef struct hlist {
     int n;
-    int status;  /* mainly used for storing error status code */
+    int stat;    /* status code mainly used for error handling */
     HLIST_DATA *d;
 } HLIST;
 
@@ -71,7 +108,7 @@ typedef struct alias {
 
 typedef struct re_pattern_buffer REGEX;
 
-typedef struct REPLACE {
+typedef struct replace {
     struct replace *next;
     char  *pat;  /* pattern */
     char  *rep;  /* replacement */

@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.7 1999-11-23 09:46:17 satoru Exp $
+ * $Id: hlist.c,v 1.8 1999-11-23 14:18:34 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -39,7 +39,6 @@
 #include "hlist.h"
 #include "field.h"
 #include "var.h"
-#include "magic.h"
 
 static int DocNum = 0;  /* Number of documents covered in atarget index */
 static char Field[BUFSIZE] = "";  /* Field name used with sorting */
@@ -57,7 +56,6 @@ typedef struct str_num str_num;
  */
 
 static void memcpy_hlist(HLIST, HLIST, int);
-static void init_date(HLIST);
 static void set_rank(HLIST);
 static int  field_sort(HLIST);
 static int  field_scmp(const void*, const void*);
@@ -68,15 +66,6 @@ static int  score_cmp(const void*, const void*);
 static void memcpy_hlist(HLIST to, HLIST from, int n)
 {
     memcpy(to.d + n,  from.d,  from.n * sizeof (to.d[0]));
-}
-
-static void init_date(HLIST hlist)
-{
-    int i;
-
-    for (i = 0; i < hlist.n; i++) {
-        hlist.d[i].date = 0;
-    }
 }
 
 static void set_rank(HLIST hlist)
@@ -107,7 +96,7 @@ static int field_sort(HLIST hlist)
 	hlist.d[i].field = (char *)malloc(leng + 1);
 	if (hlist.d[i].field == NULL) {
 	    set_dyingmsg("int_field_sort");
-	    return DIE_ERROR;
+	    return FAILURE;
 	}
 	strcpy(hlist.d[i].field, buf);
     } 
@@ -219,11 +208,11 @@ HLIST andmerge(HLIST left, HLIST right, int *ignore)
 	return right;
     }
 
-    if (left.n <= 0) {
+    if (left.stat != SUCCESS || left.n <= 0) {
 	free_hlist(right);
 	return left;
     }
-    if (right.n <= 0) {
+    if (right.stat != SUCCESS || right.n <= 0) {
 	free_hlist(left);
 	return right;
     }
@@ -253,7 +242,7 @@ HLIST andmerge(HLIST left, HLIST right, int *ignore)
   OUT:
     free_hlist(right);
     left.n = v;
-    if (left.n <= 0)
+    if (left.stat != SUCCESS || left.n <= 0)
 	free_hlist(left);
     return left;
 }
@@ -273,11 +262,11 @@ HLIST notmerge(HLIST left, HLIST right, int *ignore)
 	return right;
     }
 
-    if (right.n <= 0) {
+    if (right.stat != SUCCESS || right.n <= 0) {
 	free_hlist(right);
 	return left;
     }
-    if (left.n <= 0) {
+    if (left.stat != SUCCESS || left.n <= 0) {
 	free_hlist(left);
 	return right;
     }
@@ -299,7 +288,7 @@ HLIST notmerge(HLIST left, HLIST right, int *ignore)
     }
     free_hlist(right);
     left.n = v;
-    if (left.n <= 0)
+    if (left.stat != SUCCESS || left.n <= 0)
 	free_hlist(left);
     return left;
 }
@@ -313,15 +302,17 @@ HLIST ormerge(HLIST left, HLIST right)
     int i, j, v, n;
     HLIST val;
 
-    if (left.n <= 0 && right.n <= 0) {
+    if ((left.stat  != SUCCESS || left.n <= 0) && 
+	(right.stat != SUCCESS || right.n <= 0)) 
+    {
 	free_hlist(right);
 	return left;
     }
-    if (left.n <= 0) {
+    if (left.stat != SUCCESS || left.n <= 0) {
 	free_hlist(left);
 	return right;
     }
-    if (right.n <= 0){
+    if (right.stat != SUCCESS || right.n <= 0){
 	free_hlist(right);
 	return left;
     }
@@ -329,7 +320,7 @@ HLIST ormerge(HLIST left, HLIST right)
     n = left.n + right.n;
 
     malloc_hlist(&val, n);
-    if (val.n == DIE_HLIST)
+    if (val.stat == ERR_FATAL)
         return val;
 
     for (v = 0, i = 0, j = 0; i < left.n; i++) {
@@ -371,7 +362,7 @@ void malloc_hlist(HLIST * hlist, int n)
     hlist->d = (HLIST_DATA *)malloc(n * sizeof(HLIST_DATA));
     if (hlist->d == NULL) {
 	 set_dyingmsg("malloc_hlist");
-	 hlist->n = DIE_HLIST;
+	 hlist->stat = ERR_FATAL;
 	 return;
     }
 
@@ -380,17 +371,17 @@ void malloc_hlist(HLIST * hlist, int n)
 
 void realloc_hlist(HLIST * hlist, int n)
 {
-    if (n <= 0) return;
+    if (hlist->stat != SUCCESS || n <= 0) return;
     hlist->d = (HLIST_DATA *) realloc(hlist->d, n * sizeof(HLIST_DATA));
     if (hlist->d == NULL) {
 	 set_dyingmsg("realloc_hlist");
-	 hlist->n = DIE_HLIST;
+	 hlist->stat = ERR_FATAL;
     }
 }
 
 void free_hlist(HLIST hlist)
 {
-    if (hlist.n <= 0) return;
+    if (hlist.stat != SUCCESS || hlist.n <= 0) return;
     free(hlist.d);
 }
 
@@ -414,15 +405,15 @@ HLIST merge_hlist(HLIST *hlists)
 
     if (Idx.num == 1) return hlists[0];
     for(i = n = 0; i < Idx.num; i++) {
-        if (hlists[i].n > 0) {
+        if (hlists[i].stat == SUCCESS && hlists[i].n > 0) {
             n += hlists[i].n;
         }
     }
     malloc_hlist(&value, n);
-    if (value.n == DIE_HLIST)
+    if (value.stat == ERR_FATAL)
         return value;
     for(i = n = 0; i < Idx.num; i++) {
-        if (hlists[i].n <= 0) 
+        if (hlists[i].stat != SUCCESS || hlists[i].n <= 0) 
             continue;
         memcpy_hlist(value, hlists[i], n);
         n += hlists[i].n;
@@ -440,14 +431,15 @@ HLIST do_date_processing(HLIST hlist)
 
     date_index = fopen(NMZ.t, "rb");
     if (date_index == NULL) {
-	warnf("%s: cannot open file.\n", NMZ.t);
-        init_date(hlist);
+	set_dyingmsg("%s: cannot open file.\n", NMZ.t);
+	hlist.stat = ERR_FATAL;
         return hlist; /* error */
     }
 
     for (i = 0; i < hlist.n ; i++) {
         if (-1 == fseek(date_index, hlist.d[i].docid * sizeof(hlist.d[i].date), 0)) {
-            init_date(hlist);
+	    set_dyingmsg("%s: cannot open file.\n", NMZ.t);
+	    hlist.stat = ERR_FATAL;
             return hlist; /* error */
         }
         freadx(&hlist.d[i].date, sizeof(hlist.d[i].date), 1, date_index);
@@ -476,8 +468,10 @@ HLIST get_hlist(int index)
     double idf = 0;
     hlist.n = 0;
 
-    if (-1 == fseek(Nmz.i, getidxptr(Nmz.ii, index), 0))
+    if (-1 == fseek(Nmz.i, getidxptr(Nmz.ii, index), 0)) {
+	hlist.stat = ERR_FATAL;
 	return hlist; /* error */
+    }
 
     get_unpackw(Nmz.i, &n);
 
@@ -488,19 +482,19 @@ HLIST get_hlist(int index)
 
     if (n >= IGNORE_HIT * 2) {  
         /* '* 2' means NMZ.i contains a file-ID and a score. */
-        hlist.n = ERR_TOO_MUCH_HIT;
+        hlist.stat = ERR_TOO_MUCH_HIT;
     } else {
 	int sum = 0;
 	buf = (int *) malloc(n * sizeof(int)); /* with pelnty margin */
 	if (buf == NULL) {
 	    set_dyingmsg("get_hlist");
 	    hlist.d = NULL;
-	    hlist.n = DIE_HLIST;
+	    hlist.stat = ERR_FATAL;
 	    return hlist;
 	}
 	n = read_unpackw(Nmz.i, buf, n);
 	malloc_hlist(&hlist, n / 2);
-	if (hlist.n == DIE_HLIST)
+	if (hlist.stat == ERR_FATAL)
 	    return hlist;
 	
 	for (i = 0; i < n; i += 2) {
@@ -525,8 +519,8 @@ int sort_hlist(HLIST hlist, int mode)
     set_rank(hlist); /* conserve current order for STABLE sorting */
 
     if (mode == SORT_BY_FIELD) {
-	if (field_sort(hlist))
-	    return DIE_ERROR;
+	if (field_sort(hlist) == FAILURE)
+	    return FAILURE;
     } else if (mode == SORT_BY_DATE) {
 	qsort(hlist.d, hlist.n, sizeof(hlist.d[0]), date_cmp);
     } else if (mode == SORT_BY_SCORE) {
@@ -545,8 +539,8 @@ int reverse_hlist(HLIST hlist)
     HLIST tmp;
 
     malloc_hlist(&tmp, 1);
-    if (tmp.n == DIE_HLIST)
-        return DIE_ERROR;
+    if (tmp.stat == ERR_FATAL)
+        return FAILURE;
     m = 0;
     n = hlist.n - 1;
     while (m < n) {

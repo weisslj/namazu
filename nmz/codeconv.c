@@ -2,7 +2,7 @@
  * 
  * codeconv.c -
  * 
- * $Id: codeconv.c,v 1.7 1999-11-23 09:46:17 satoru Exp $
+ * $Id: codeconv.c,v 1.8 1999-11-23 14:18:33 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -42,7 +42,6 @@
 #include "codeconv.h"
 #include "util.h"
 #include "i18n.h"
-#include "magic.h"
 
 static uchar kanji2nd;
 

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: taro7_10.pl,v 1.2 2003-03-13 09:56:55 knok Exp $
+# $Id: taro7_10.pl,v 1.3 2003-03-21 17:31:52 usu Exp $
 # Copyright (C) 2003 Yukio USUDA
 #               2003 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -23,18 +23,25 @@
 
 package taro7_10;
 use strict;
-use File::Copy;
 require 'util.pl';
 require 'gfilter.pl';
-#require 'unicode.pl';
+
+my $perlver =$];
+$perlver =~ s/\.//;
+$perlver =~ m/^(\d\d\d\d)\d*$/;
+$perlver = 0;
+#$perlver = $1;
 
 sub mediatype() {
     return ('application/x-js-taro');
 }
 
 sub status() {
-    my $unicodepath = util::checklib('unicode.pl');
-    return 'yes' if defined $unicodepath;
+    return 'yes' if ($perlver >= 5008);
+    my $utfconvpath = util::checklib('unicode.pl');
+    if ($utfconvpath){ 
+         return 'yes';
+    } 
     return 'no'; 
 }
 
@@ -60,13 +67,18 @@ sub add_magic ($) {
 sub filter ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
       = @_;
+    my $err = undef;
+    $err = taro7_10_filter($orig_cfile, $cont, $weighted_str, $headings, $fields);
+    return $err;
+}
+
+sub taro7_10_filter ($$$$$) {
+    my ($orig_cfile, $contref, $weighted_str, $headings, $fields)
+      = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
-    my $tmpfile  = util::tmpnam('NMZ.taro');
-    my $tmpfile2 = util::tmpnam('NMZ.taro2');
-    eval 'require "unicode.pl";';
-    open(OUT, "> $tmpfile2");
-    binmode(OUT);
-    my @data = unpack("C*", $$cont);
+    my $err = undef;
+    my $tmp = "";
+    my @data = unpack("C*", $$contref);
     my $i = 0;
     while ( $i <= $#data) {
         if (pack("C", $data[$i]) eq "T") {
@@ -76,16 +88,21 @@ sub filter ($$$$$) {
                 $matchdata .= pack("C", $data[$j]);
                 $j++;
             }
+            # This is magic word for search text data.
             if ( $matchdata eq "TextV.01"){
                 my $textsizep = pack("C4", $data[$i+8], $data[$i+9],
                                         $data[$i+10], $data[$i+11]);
                 my $textsize = unpack("N", $textsizep);
+                if (($i + $textsize)> $#data){
+                    $err = "File information (size of text data) have problem.";
+                    return $err;
+                }
                 my $k = 1;
                 while ( $k <= ($textsize * 2)) {
-                    print OUT pack("C", $data[$i + 11 + $k]);
+                    $tmp .= pack("C", $data[$i + 11 + $k]);
                     $k++;
                 }
-                print OUT  pack("n", 10);
+                $tmp .= pack("n", 10);
                 $i = $j + $k;
             }
         }elsif (pack("C", $data[$i]) eq "\x04") {
@@ -95,41 +112,48 @@ sub filter ($$$$$) {
                 $matchdata .= pack("C", $data[$j]);
                 $j++;
             }
+            # This is magic word for search author's name.
+            # This may be imprecise definition.
             if ( $matchdata eq pack("H20", "040000315c4f10620580")){
                 my $textsize =  $data[$i+80] - 2;
                 my $k = 1;
-                my $authorname;
+                my $authorname = "";
                 while ( $k <= ($textsize)) {
-                    $authorname .= pack("C", $data[$i + 95 + $k]);
-                    $k++;
+                    my $hbyte = pack("C", $data[$i + 95 + $k]);
+                    my $lbyte = pack("C", $data[$i + 95 + $k +1 ]);
+                    $authorname .= $lbyte . $hbyte;
+                    $k += 2;
                 }
-                my @unicodeList = unpack("v*", $authorname);
-                $authorname = &unicode::u2e(@unicodeList);
-                $authorname =~ s/\x00//g;
+                taro7_10::u16toe(\$authorname);
+                taro7_10::remove_ctlcode(\$authorname);
+                $authorname =~ s/\00//g;
                 $fields->{'author'} = $authorname;
             }
         }
         $i++;
     }
-    close(OUT);
+    taro7_10::u16toe(\$tmp);
+    taro7_10::remove_ctlcode(\$tmp);
+    $$contref = $tmp;
 
-     my $buf; 
-     my ($dev, $ino, $mode, $nlink, $uid, $gid,
-     $rdev, $size, $atime, $mtime, $ctime, $blksize, $blocks)
-        = stat("$tmpfile2");
-    open(IN, "$tmpfile2");
-    binmode(IN);
-    read(IN, $buf, $size);
-    close(IN);
-    my @unicodeList = unpack("n*", $buf);
-    my $eucString   = &unicode::u2e(@unicodeList);
+    gfilter::line_adjust_filter($contref);
+    gfilter::line_adjust_filter($weighted_str);
+    gfilter::white_space_adjust_filter($contref);
+    $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
+      unless $fields->{'title'};
+    gfilter::show_filter_debug_info($contref, $weighted_str,
+               $fields, $headings);
+    return undef;
+}
 
-    open(OUT, "> $tmpfile");
-    binmode(OUT);
-    $i =0;
-    while ( $i < length($eucString)) {
-        my $code1 = unpack("C",substr($eucString, $i, 1));
-        my $code2 = unpack("C",substr($eucString, $i+1, 1));
+sub remove_ctlcode ($) {
+    my ($eucString) = @_;
+    my $tmp = "";
+    my $i =0;
+    my $eucStringSize = length($$eucString);
+    while ( $i < $eucStringSize -1 ) {
+        my $code1 = unpack("C",substr($$eucString, $i, 1));
+        my $code2 = unpack("C",substr($$eucString, $i+1, 1));
         my $code = "";
         if (($code1 == hex("00")) and ($code2 >= hex("20"))
           and ($code2 <= hex("7f"))) {
@@ -151,27 +175,23 @@ sub filter ($$$$$) {
             $i++;
         }
         $i++;
-        print OUT $code;
+        $tmp .= $code;
     }
-    close(OUT);
+    $$eucString = $tmp;
+}
 
-    {
-        my $fh = util::efopen("< $tmpfile");
-        $$cont = util::readfile($fh);
+# convert utf-16 to euc
+# require Perl5.8 or unicode.pl
+sub u16toe ($) {
+    my ($tmp) = @_;
+    if ($perlver >= 5008){
+        eval 'use Encode;';
+        Encode::from_to($$tmp, "utf-16" ,"euc-jp");
+    }else{
+        eval require 'unicode.pl';
+        my @unicodeList = unpack("n*", $$tmp);
+        $$tmp = unicode::u2e(@unicodeList);
     }
-
-    unlink($tmpfile);
-    unlink($tmpfile2);
-
-    gfilter::line_adjust_filter($cont);
-    gfilter::line_adjust_filter($weighted_str);
-    gfilter::white_space_adjust_filter($cont);
-    $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
-      unless $fields->{'title'};
-    gfilter::show_filter_debug_info($cont, $weighted_str,
-               $fields, $headings);
-    return undef;
 }
 
 1;
-

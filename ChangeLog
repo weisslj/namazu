@@ -1,5 +1,7 @@
 1999-09-04  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* configure.in (AM_INIT_AUTOMAKE): Change a version number to 1.9.1.
+	
 	* template/namazu.conf-dist: Modify a bit.
 
 	* src/conf.c: Abolish $HOME substitution.

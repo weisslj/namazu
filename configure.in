@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.23 1999-09-02 04:17:36 satoru Exp $
+dnl $Id: configure.in,v 1.24 1999-09-04 09:22:37 satoru Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -11,7 +11,7 @@ dnl
 
 dnl Process this file with autoconf to produce a configure script.
 AC_INIT(src/cgi.c)
-AM_INIT_AUTOMAKE(namazu, 1.90)
+AM_INIT_AUTOMAKE(namazu, 1.9.1)
 
 dnl This option requires config.guess, config.sub and install-sh
 dnl AC_CANONICAL_SYSTEM

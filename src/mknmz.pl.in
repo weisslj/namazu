@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.58 1999-09-03 01:50:52 satoru Exp $
+# $Id: mknmz.pl.in,v 1.59 1999-09-04 10:11:09 masao Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -88,7 +88,7 @@ sub main () {
 
 	# Process target files one by one
 	while (defined(my $line = <$fh_flist>)) {
-	    $flist_ptr += length;
+	    $flist_ptr += length($line);
 	    my $cfile = $line;
 	    chomp $cfile;
 	    my $cfile_size = namazu_core($cfile, $file_count, $file_base, 
@@ -860,7 +860,9 @@ sub show_config () {
     my @supported = sort grep { $var::Supported{$_} eq "yes" }
     keys %var::Supported;
     print "Supported media types: \n";
-    print "  $_\n" for  (@supported);
+    for my $mtype (@supported) {
+	print "  $mtype\n";
+    }
 }
 
 sub load_target_list ($) {

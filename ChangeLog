@@ -1,3 +1,7 @@
+2001-08-26  Rei FURUKAWA  <furukawa@tcp-ip.or.jp>
+
+	* doc/ja/manual.html: Added explanation of kwnmz and nmzmerge.
+
 2001-08-23  Hajime BABA <hajime.baba@nao.ac.jp>
 
 	* pl/conf.pl.in ($ALLOW_FILES): Added extensions of Ichitaro 7 and 8.
@@ -6925,4 +6929,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.853 2001-08-23 08:18:49 baba Exp $
+$Id: ChangeLog,v 1.854 2001-08-26 14:28:19 furukawa Exp $

@@ -1,16 +1,12 @@
-$Id: TODO-satoru,v 1.7 2000-01-09 13:31:50 satoru Exp $
+$Id: TODO-satoru,v 1.8 2000-01-10 09:07:46 satoru Exp $
 
 やるべきことの備忘録 by 高林
+
+  * var.c: BASE_URI, DEFAULT_INDEX, CONFDIR, TfIdf を隠蔽する
 
   * rcfile.c: syntax error のメッセージを gettext化
 
   * rcfile.c: \ で改行を escape 可能にする
-
-  * rcfile.c: デバッグモードを namazurc で設定可能にする
-
-  * rcfile.c: function pointer を使って書き直す
-
-  * parser.c: Cp は変数名が不適切
 
   * conv_query() を nmz_search() から呼ぶようにする。
 

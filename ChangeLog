@@ -1,5 +1,9 @@
 2000-01-10  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* nmz/parser.c (factor): Use temporary variable to simplify codes.
+	(andop): Ditto.
+	(orop): Ditto.
+
 	* nmz/idxname.c (nmz_add_index): Add warning message.
 
 	* nmz/parser.c (factor): Handle an invalid query as error.

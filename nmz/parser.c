@@ -2,7 +2,7 @@
  * 
  * parser.c -
  * 
- * $Id: parser.c,v 1.17 2000-01-10 08:26:50 satoru Exp $
+ * $Id: parser.c,v 1.18 2000-01-10 09:07:47 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -62,11 +62,12 @@ factor(int *ignore)
     val.num = 0;
 
     while (1) {
-        if (nmz_get_querytoken(Cp) == NULL) {
+	char *token = nmz_get_querytoken(Cp);
+        if (token == NULL) {
             return val;
 	}
 
-        if (strcmp(nmz_get_querytoken(Cp), LP_STRING) == 0) {
+        if (strcmp(token, LP_STRING) == 0) {
             Cp++;
             if (nmz_get_querytoken(Cp) == NULL) {
 		val.stat = ERR_INVALID_QUERY;
@@ -83,8 +84,8 @@ factor(int *ignore)
             if (strcmp(nmz_get_querytoken(Cp), RP_STRING) == 0)
                 Cp++;
             break;
-        } else if (!nmz_is_query_op(nmz_get_querytoken(Cp))) {
-            val = nmz_do_searching(nmz_get_querytoken(Cp), val);
+        } else if (!nmz_is_query_op(token)) {
+            val = nmz_do_searching(token, val);
 	    if (val.stat == ERR_FATAL)
 	       return val;
             if (val.stat == ERR_TOO_MUCH_MATCH ||
@@ -107,23 +108,25 @@ factor(int *ignore)
 static int 
 andop(void)
 {
-    if (nmz_get_querytoken(Cp) == NULL)
+    char *token = nmz_get_querytoken(Cp);
+
+    if (token == NULL)
 	return 0;
-    if ((strcmp(nmz_get_querytoken(Cp), AND_STRING) == 0) ||
-	(strcmp(nmz_get_querytoken(Cp), AND_STRING_ALT) ==0)) 
+    if ((strcmp(token, AND_STRING) == 0) ||
+	(strcmp(token, AND_STRING_ALT) ==0)) 
     {
 	Cp++;
 	return AND_OP;
     }
-    if ((strcmp(nmz_get_querytoken(Cp), NOT_STRING) == 0)||
-	(strcmp(nmz_get_querytoken(Cp), NOT_STRING_ALT) == 0)) 
+    if ((strcmp(token, NOT_STRING) == 0)||
+	(strcmp(token, NOT_STRING_ALT) == 0)) 
     {
 	Cp++;
 	return NOT_OP;
     }
-    if (strcmp(nmz_get_querytoken(Cp), LP_STRING) == 0)
+    if (strcmp(token, LP_STRING) == 0)
 	return AND_OP;
-    if (!nmz_is_query_op(nmz_get_querytoken(Cp)))
+    if (!nmz_is_query_op(token))
 	return AND_OP;
     return 0;
 }
@@ -155,10 +158,12 @@ term(void)
 static int 
 orop(void)
 {
-    if (nmz_get_querytoken(Cp) == NULL)
+    char *token = nmz_get_querytoken(Cp);
+
+    if (token == NULL)
 	return 0;
-    if ((strcmp(nmz_get_querytoken(Cp), OR_STRING) == 0)||
-	(strcmp(nmz_get_querytoken(Cp), OR_STRING_ALT) == 0)) 
+    if ((strcmp(token, OR_STRING) == 0)|| 
+	(strcmp(token, OR_STRING_ALT) == 0)) 
     {
 	Cp++;
 	return 1;

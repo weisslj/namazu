@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.20 2000-01-10 08:26:50 satoru Exp $
+ * $Id: rcfile.c,v 1.21 2000-01-10 09:07:47 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -342,7 +342,7 @@ replace_home(char *str)
 /*
  * Get the directive and the following args and return them as a list.
  *
- * NOTE: the string `line' should be chomped.
+ * NOTE: the string `line' should be chomped before calling the function.
  */
 struct nmz_strlist*
 get_rc_args(const char *line)

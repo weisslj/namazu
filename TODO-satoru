@@ -1,4 +1,4 @@
-$Id: TODO-satoru,v 1.32 2000-04-10 04:43:38 satoru Exp $
+$Id: TODO-satoru,v 1.33 2000-06-16 01:46:14 satoru Exp $
 やるべきことの備忘録 by 高林
 
 手っ取り早く片づける仕事
@@ -22,7 +22,7 @@ $Id: TODO-satoru,v 1.32 2000-04-10 04:43:38 satoru Exp $
 
   * search.c: nmz_binsearch() を左端を検索するようにする
     prefix_match() は後戻りしない
-    - Programming Pearls のコードが使える
+    - Programming Pearls 2nd ed. p. 93 のコードが使える
 
   * query.c を書き直す 
     - まともに字句解析すべし

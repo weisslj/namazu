@@ -25,7 +25,7 @@
 ## Replace: Replace TARGET with REPLACEMENT in URIs in search
 ## results.  
 ##
-## TARGET is specified by perl-like regular expressions.  
+## TARGET is specified by Ruby's perl-like regular expressions.  
 ## You can caputure sub-strings in TARGET by surrounding them 
 ## with `(' and `)'and use them later as backreferences by
 ## \1, \2, \3,... \9.
@@ -41,6 +41,9 @@
 ##  
 ## If you do not want to do the processing on command line use, 
 ## run namazu with -U option.
+##
+## You can specify more than one Replace rules but the only 
+## first-matched rule are applied. 
 ##
 #Replace       /home/foo/public_html/  http://www.foo.bar.jp/~foo/
 

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: namazu 2.0\n"
-"POT-Creation-Date: 2000-02-20 22:18+0900\n"
+"POT-Creation-Date: 2000-02-20 22:55+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>\n"
 "Language-Team: Japanese <satoru-t@is.aist-nara.ac.jp>\n"
@@ -13,57 +13,57 @@ msgstr ""
 "Content-Type: text/plain; charset=Shift_JIS\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
-#: nmz/util.c:482
+#: nmz/util.c:486
 msgid "Fatal error occered!"
 msgstr "致命的なエラー"
 
-#: nmz/util.c:485
+#: nmz/util.c:489
 #, fuzzy
 msgid "Too long query"
 msgstr "検索式が長すぎます"
 
-#: nmz/util.c:488
+#: nmz/util.c:492
 msgid "Invalid query"
 msgstr "不正な検索式です"
 
-#: nmz/util.c:491
+#: nmz/util.c:495
 #, fuzzy
 msgid "Too many query tokens"
 msgstr "検索式の項目が多すぎます\n"
 
-#: nmz/util.c:494
+#: nmz/util.c:498
 msgid "Too many words matched. Ignored"
 msgstr "マッチする単語が多すぎるので無視しました"
 
-#: nmz/util.c:497
+#: nmz/util.c:501
 msgid "Too many pages hit. Ignored"
 msgstr "ヒット数が多すぎるので無視しました"
 
-#: nmz/util.c:500
+#: nmz/util.c:504
 msgid "cannot open regex index"
 msgstr "正規表\現用インデックスが開けませんでした"
 
-#: nmz/util.c:503
+#: nmz/util.c:507
 msgid "cannot open phrase index"
 msgstr "フレイズ検索用インデックスが開けませんでした"
 
-#: nmz/util.c:506
+#: nmz/util.c:510
 msgid "cannot open field index"
 msgstr "フィールド検索用のインデックスが開けませんでした"
 
-#: nmz/util.c:509
+#: nmz/util.c:513
 msgid "cannot open this index"
 msgstr "インデックスが開けませんでした"
 
-#: nmz/util.c:512
+#: nmz/util.c:516
 msgid "cannot open result format file"
 msgstr "結果出力の書式指定ファイルが開けませんでした"
 
-#: nmz/util.c:515
+#: nmz/util.c:519
 msgid "You don't have a permission to access the index"
 msgstr "インデックスにアクセスする権利がありません"
 
-#: nmz/util.c:518
+#: nmz/util.c:522
 msgid "Unknown error. Report bug!"
 msgstr "不明なエラー。バグ報告してください"
 

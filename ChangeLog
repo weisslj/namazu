@@ -1,3 +1,29 @@
+2000-02-20  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+  	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.0.
+
+	* pl/util.pl (remove_tmpfiles): Fix --debug mode bug.
+	[namazu-dev 1722]
+
+	* nmz/util.c (nmz_isnumstr): Do not use isdigit(). [namazu-dev
+	1718] 
+
+	* pl/util.pl (tmpnam): Do not use $$.
+
+	* pl/util.pl (remove_tmpfiles): Likewise.
+
+	* scripts/mknmz.in (update_field_index): Likewise.
+	
+	* doc/en/Makefile.am (html_DATA): Remove nmz.html
+
+	* doc/en/nmz.html: Removed temporally.
+	
+	* pl/conf.pl.in ($ALLOW_FILE): Fix quotation bug. [namazu-dev
+	1705] 
+	($ALLOW_FILE): Add \d+.
+
+	* nmz/util.c (nmz_isnumstr): Simplified.  [namazu-dev 1692]
+
 2000-02-20  Kenji Suzuki  <kenji@po.ganseki.ne.jp>
 
         * filter/hnf.pl: GRP bug fix
@@ -16,28 +42,19 @@
 
 	* src/Makefile.am (namazu_cgi_LDFLAGS): Removed.
 
-2000-02-20  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+2000-02-20  Ryuji Abe <raeva@t3.rim.or.jp>
 
-	* nmz/util.c (nmz_isnumstr): Do not use isdigit(). [namazu-dev
-	1718] 
+	* nmz/hlist.c: s/__CYGWIN32__/__CYGWIN__/g.
 
-  	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.0.
+	* nmz/search.c: Likewise.
 
-	* pl/util.pl (tmpnam): Do not use $$.
+	* nmz/libnamazu.c: Likewise.
 
-	* pl/util.pl (remove_tmpfiles): Likewise.
+	* src/namazu-cgi.c: Likewise.
 
-	* scripts/mknmz.in (update_field_index): Likewise.
-	
-	* doc/en/Makefile.am (html_DATA): Remove nmz.html
+	* src/namazu-cgi.c: s/WIN32/_WIN32/g.
 
-	* doc/en/nmz.html: Removed temporally.
-	
-	* pl/conf.pl.in ($ALLOW_FILE): Fix quotation bug. [namazu-dev
-	1705] 
-	($ALLOW_FILE): Add \d+.
-
-	* nmz/util.c (nmz_isnumstr): Simplified.  [namazu-dev 1692]
+	* src/Makefile.am (namazu_cgi_LDFLAGS): Removed.
 
 2000-02-19  Kenji Suzuki  <kenji@po.ganseki.ne.jp>
 

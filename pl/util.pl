@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.12 2000-02-20 13:13:04 satoru Exp $
+# $Id: util.pl,v 1.13 2000-02-20 14:50:17 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -197,7 +197,6 @@ sub cdie (@) {
 # remove_tmpfiles ... remove temporary files which mknmz would make
 sub remove_tmpfiles () {
     return unless defined $var::OUTPUT_DIR;
-    return if $var::Opt{'debug'};
 
     my @list = glob "$var::OUTPUT_DIR/NMZ.*.tmp";
     push @list, $var::NMZ{'err'}   if -z $var::NMZ{'err'}; # if size == 0

@@ -33,7 +33,7 @@ Requires: %name = %{PACKAGE_VERSION}
 Libraries and include files of Namazu.
 
 %changelog
-* Sat Feb 19 15:18:38 JST 2000 Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>
+* Sat Feb 19 2000 Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>
 - Change URL.
 
 * Tue Feb 15 2000 Ryuji Abe <raeva@t3.rim.or.jp>

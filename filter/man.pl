@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: man.pl,v 1.21 2000-02-27 14:10:34 satoru Exp $
+# $Id: man.pl,v 1.22 2000-02-27 15:09:04 satoru Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -56,7 +56,7 @@ sub status() {
 	    $roffargs = '-Tascii';
 	}
 	# print "// $roffargs\n";
-    } elsif ($roffpath =~ /\bgroff$/) {
+    } elsif ($roffpath =~ /\bj?groff$/) {
 	$roffargs = '-Tascii';
     } elsif ($roffpath =~ /nroff$/) {
 	$roffargs = '';

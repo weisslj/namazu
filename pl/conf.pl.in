@@ -163,18 +163,6 @@ $MAX_FIELD_LENGTH = 200;
 
 #---------------------------------------------------------------
 #
-# Settings for robots.txt
-# FIXME: I don't know whether the settings works or not.
-#
-
-$HTDOCUMENT_ROOT = "/usr/local/apache/share/htdocs";
-$HTDOCUMENT_ROOT_URI_PREFIX = "http://www.foo.domain.jp/";
-$ROBOTS_TXT = "$HTDOCUMENT_ROOT/robots.txt";
-$ROBOTS_EXCLUDE_URIS = "";
-
-
-#---------------------------------------------------------------
-#
 # Softwares for handling a Japanese text
 #
 

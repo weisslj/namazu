@@ -12,9 +12,6 @@ mknmz 2.0.1, an indexer of Namazu.
 \fB\-a\fR, \fB\-\-all\fR
 target all files.
 .TP
-\fB\-e\fR, \fB\-\-robots\-txt\fR
-exclude files which is excluded by robots.txt.
-.TP
 \fB\-t\fR, \fB\-\-media\-type\fR=\fIMTYPE\fR
 set the media type for all target files to MTYPE.
 .TP
@@ -23,9 +20,6 @@ same as \fB\-\-media\-type=\fR'message/rfc822'
 .TP
 \fB\-\-mhonarc\fR
 same as \fB\-\-media\-type=\fR'text/html; x-type=mhonarc'
-.TP
-\fB\-A\fR, \fB\-\-htaccess\fR
-exclude files restricted by .htaccess.
 .TP
 \fB\-F\fR, \fB\-\-target\-list\fR=\fIFILE\fR
 load FILE which contains a list of target files.
@@ -38,6 +32,10 @@ set PATTERN for file names which should be denied.
 .TP
 \fB\-\-exclude\fR=\fIPATTERN\fR
 set PATTERN for pathnames which should be excluded.
+.TP
+\fB\-e\fR, \fB\-\-robots\fR
+exclude HTML files containing
+<meta name="ROBOTS" content="NOINDEX">
 .TP
 \fB\-M\fR, \fB\-\-meta\fR
 handle HTML meta tags for field-specified search.

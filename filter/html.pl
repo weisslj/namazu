@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: html.pl,v 1.26 2000-02-22 13:16:24 satoru Exp $
+# $Id: html.pl,v 1.27 2000-02-27 15:09:04 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -307,66 +307,4 @@ sub encode_entity ($) {
     $$tmp;
 }
 
-# Handle robots.txt
-# Ignore all lines except Disallow:.
-#
-# This code was contributed by 
-#  - [Gorochan ^o^ <kunito@hal.t.u-tokyo.ac.jp>]
-#
-sub parse_robots_txt () {
-    if (not -f "$conf::ROBOTS_TXT") {
-	print STDERR "$conf::ROBOTS_TXT: not found\n";
-	$conf::ROBOTS_EXCLUDE_URIS="\t";
-	return 0;
-    }
-
-    my $fh_robottxt = util::efopen($conf::ROBOTS_TXT);
-    while(defined(my $line = <$fh_robottxt>)) {
-	$line =~ /^Disallow:\s*(\S+)/i && do {
-	    my $uri = $1;
-	    $uri =~ s/\%/%25/g;  # Replace original % with %25  v1.1.1.2
-	    $uri =~ s/([^a-zA-Z0-9\-\_\.\/\:\%])/
-		sprintf("%%%02X",ord($1))/ge;
-	    if (($mknmz::SYSTEM eq "MSWin32") || ($mknmz::SYSTEM eq "os2")) {
-		# restore '|' for drive letter rule of Win32, OS/2
-		$uri =~ s!^/([A-Z])%7C!/$1|!i;
-	    }
-	    $conf::ROBOTS_EXCLUDE_URIS .= 
-		"^$conf::HTDOCUMENT_ROOT_URI_PREFIX$uri|";
-	}
-    }
-    chop($conf::ROBOTS_EXCLUDE_URIS);
-}
-
-
-
-#
-# Added by G.Kunito <kunito@hal.t.u-tokyo.ac.jp>
-# slightly modified by <satoru@isoternet.org> [1999-01-30]
-#
-# check a ".htaccess" to make sure of the access restricted files
-# return(1) if deny, require valid-user, user, group directives are set
-# 
-sub parse_htaccess () {
-    my $inLimit = 0;
-    my $err;
-    my $r = 0;
-    my $CWD;
-
-    my $fh = util::fopen(".htaccess") or 
-	$err = $!,  $CWD = cwd() , util::cdie("$CWD/.htaccess : $err\n");
-    while(defined(my $line = <$fh>)) {
-	$line =~ s/^\#.*$//;
-	$line =~ /^\s*$/ && next;
-	$line =~ /^\s*deny\s+|require\s+(valid-user|usr|group)([^\w]+|$)/i && 
-        do {
-	    $r=1;
-	    last;
-	};
-    }
-    return $r;
-}
-
-
 1;
-

@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.33 2000-02-26 15:13:59 satoru Exp $
+# $Id: mknmz.in,v 1.34 2000-02-27 15:09:07 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -873,7 +873,6 @@ sub parse_options ()
 	       '4|update=s'          => \$update_index,
 	       '5|mhonarc'           => \$opt_mhonarc,
 	       '6|mtime=s'           => \$var::Opt{'mtime'},
-	       'A|htacces'           => \$var::Opt{'htaccessexclude'},
 	       'C|show-config'       => \$opt_show_config,
 	       'E|no-edge-symbol'    => \$var::Opt{'noedgesymbol'},
 	       'F|target-list=s'     => \$target_list,
@@ -892,7 +891,7 @@ sub parse_options ()
 	       'a|all'               => \$opt_all,
 	       'c|use-chasen'        => \$opt_chasen,
 	       'd|debug'             => \$var::Opt{'debug'},
-	       'e|robots-txt'        => \$var::Opt{'robotexclude'},
+	       'e|robots'            => \$var::Opt{'robotexclude'},
 	       'f|config=s'          => \$opt_config,
 	       'h|mailnews'          => \$opt_mailnews,
 	       'k|use-kakasi'        => \$opt_kakasi,
@@ -982,9 +981,6 @@ sub parse_options ()
     if ($opt_kakasi) {
 	$conf::WAKATI = $conf::KAKASI;
 	$var::Opt{'noun'} = 0;
-    }
-    if ($var::Opt{'robotexclude'}) {
-        html::parse_robots_txt();
     }
     if ($include_file) {
 	do $include_file;
@@ -1324,11 +1320,6 @@ sub check_file ($$$$$) {
     } elsif ($mtype =~ /^x-system/) {
 	$msg = _("system error occurred! ")."($mtype)".(" skipped.");
     } 
-
-# FIXME: should be removed.
-# elsif ($uri =~ m/^$conf::ROBOTS_EXCLUDE_URIS/o) {
-#	$msg = _("is excluded because of /robots.txt! skipped.");
-#    }
 
     return $msg;
 }
@@ -2241,7 +2232,7 @@ muda($conf::ON_MEMORY_MAX,
      $conf::KAKASI, $var::Opt{'okurigana'},
      $var::Opt{'hiragana'}, $conf::DIRECTORY_INDEX,
      $usage::USAGE, $var::Opt{'noheadabst'}, $usage::VERSION_INFO,
-     $var::Opt{'noencodeurl'}, $var::Opt{'htaccessexclude'}, 
+     $var::Opt{'noencodeurl'}, 
      $var::RECURSIVE_ACTIONS, $conf::META_TAGS, $var::USE_NKF_MODULE,
      $conf::ADDRESS, $var::MAILING_ADDRESS,
      $conf::FILE_SIZE_MAX,

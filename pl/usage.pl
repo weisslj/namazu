@@ -1,5 +1,5 @@
 # -*- Perl -*-
-# $Id: usage.pl,v 1.22 2000-02-25 06:49:07 satoru Exp $
+# $Id: usage.pl,v 1.23 2000-02-27 15:09:06 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -40,15 +40,15 @@ Usage: mknmz [options] <target>...\n\
 \n\
 Target files:\n\
   -a, --all                target all files.\n\
-  -e, --robots-txt         exclude files which is excluded by robots.txt.\n\
   -t, --media-type=MTYPE   set the media type for all target files to MTYPE.\n\
   -h, --mailnews           same as --media-type='message/rfc822'\n\
       --mhonarc            same as --media-type='text/html; x-type=mhonarc'\n\
-  -A, --htaccess           exclude files restricted by .htaccess.\n\
   -F, --target-list=FILE   load FILE which contains a list of target files.\n\
       --allow=PATTERN      set PATTERN for file names which should be allowed.\n\
       --deny=PATTERN       set PATTERN for file names which should be denied.\n\
       --exclude=PATTERN    set PATTERN for pathnames which should be excluded.\n\
+  -e, --robots             exclude HTML files containing\n\
+                           <meta name=\"ROBOTS\" content=\"NOINDEX\">\n\
   -M, --meta               handle HTML meta tags for field-specified search.\n\
   -r, --replace=CODE       set CODE for replacing URI.\n\
   -o, --ole                use OLE document filters. (works on Windows only)\n\

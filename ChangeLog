@@ -1,5 +1,16 @@
 2000-02-27  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* pl/usage.pl): Modify usage.
+
+	* scripts/mknmz.in (check_file): Remove robots.txt related comments.
+	(parse_options): Change option name: --robots-txt -> --robots.
+
+	* filter/html.pl (parse_robots_txt): Abolished.
+	(parse_htaccess): Abolished.
+
+	* pl/conf.pl.in: Abolish robots.txt related variables. They are no
+	longer supported.
+
 	* filter/man.pl (status): Add -Tnippon checking for LANG `ja'. 
 
 	* filter/tex.pl: Improve $texconvpath handling call

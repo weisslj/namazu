@@ -127,15 +127,15 @@ mknmz を実行したディレクトリに NMZ.* というファイルを作成し
     
     対象ファイル:
       -a, --all                すべてのファイルを対象とする
-      -e, --robots-txt         ロボットよけされているファイルを除外する
       -t, --media-type=MTYPE   対象ファイルの文書形式を指定する
       -h, --mailnews           --media-type='message/rfc822' と同じ
           --mhonarc            --media-type='text/html; x-type=mhonarc' と同じ
-      -A, --htaccess           .htaccess で制限されたファイルを除外する
       -F, --target-list=FILE   インデックス対象のファイルのリストを読み込む
           --allow=PATTERN      対象とするファイル名の正規表現を指定する
           --deny=PATTERN       拒絶するファイル名の正規表現を指定する
           --exclude=PATTERN    除外するパス名の正規表現を指定する
+      -e, --robots             次の記述を含む HTMLファイルを除外する
+                               &lt;meta name=\"ROBOTS\" content=\"NOINDEX\"&gt;
       -M, --meta               HTMLの metaタグをフィールド指定検索に用いる
       -r, --replace=CODE       URIを置換するためのコードを指定する
       -o, --ole                OLEの文書フィルタを用いる (Windows環境のみ)
@@ -917,7 +917,7 @@ Tknamazu および namazu.el から検索するときは必ず後者で指定します。
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: manual.html,v 1.34 2000-02-26 08:57:50 satoru Exp $
+$Id: manual.html,v 1.35 2000-02-27 15:09:04 satoru Exp $
 </div>
 <address>
 developers@namazu.org

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: msword.pl,v 1.17 2000-02-27 14:10:34 satoru Exp $
+# $Id: msword.pl,v 1.18 2000-02-27 15:09:04 satoru Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -50,7 +50,7 @@ sub status() {
 	} else {
 	    return 'no';
 	}
-    } 
+    }
 }
 
 sub recursive() {

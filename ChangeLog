@@ -1,3 +1,10 @@
+2000-02-11  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* scripts/mknmz.in (parse_options): Gettextize a message.
+	(load_document): Fix the serious bug reported in [namazu-dev 1526].
+
+	* filter/msword.pl: s/mswordview/wvHtml/g
+
 2000-02-11  Ryuji Abe  <raeva@t3.rim.or.jp>
 
 	* nmz/util.h (struct nmz_strlist): Removed.

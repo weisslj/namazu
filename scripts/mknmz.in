@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.7 2000-02-10 12:38:08 satoru Exp $
+# $Id: mknmz.in,v 1.8 2000-02-11 09:44:22 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -621,9 +621,7 @@ sub load_document ($$$$\%) {
 
 	# Pre code conversion.
 	if ($var::REQUIRE_PRE_CODECONV{$mtype}) {
-	    print "pre codeconv\n";
 	    codeconv::toeuc($contref);
-	    gfilter::white_space_adjust_filter($contref);
 	}
 
 	if (! $var::Supported{$mtype} || 
@@ -654,7 +652,6 @@ sub load_document ($$$$\%) {
 	    if ($var::REQUIRE_POST_CODECONV{$mtype}) {
 		print "post codeconv\n";
 	    	codeconv::toeuc($contref);
-	    	gfilter::white_space_adjust_filter($contref);
 	    }
 
 	    next if ($var::RECURSIVE_ACTIONS{$mtype});
@@ -914,7 +911,7 @@ sub parse_options ()
 
     if (defined $update_index) {
 	unless (-d $update_index) {
-	    print _("No such index: $update_index\n");
+	    print _("No such index: "), "$update_index\n";
 	    exit 1;
 	}
 

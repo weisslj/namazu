@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: msword.pl,v 1.12 2000-02-06 07:36:41 satoru Exp $
+# $Id: msword.pl,v 1.13 2000-02-11 09:44:19 satoru Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -34,7 +34,7 @@ sub mediatype() {
 }
 
 sub status() {
-    my $wordconvpath = util::checkcmd('mswordview');
+    my $wordconvpath = util::checkcmd('wvHtml');
     my $utfconvpath = util::checkcmd('lv');
     return 'yes' if (defined $wordconvpath && defined $utfconvpath);
     return 'no';
@@ -60,7 +60,7 @@ sub filter ($$$$$) {
     my $tmpfile  = util::tmpnam('NMZ.word');
     my $tmpfile2 = util::tmpnam('NMZ.word2');
 
-    my $wordconvpath = util::checkcmd('mswordview');
+    my $wordconvpath = util::checkcmd('wvHtml');
     my $utfconvpath = util::checkcmd('lv');
     return "Unable to execute msword-converter" unless (-x $wordconvpath);
     return "Unable to execute utf-converter" unless (-x $utfconvpath);

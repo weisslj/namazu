@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 #
-# $Id: nmzmerge.in,v 1.3 2004-04-19 20:32:33 opengl2772 Exp $
+# $Id: nmzmerge.in,v 1.4 2004-09-07 10:26:18 opengl2772 Exp $
 #
 # nmzmerge.pl - program to merge index
 #         by furukawa@tcp-ip.or.jp
@@ -30,10 +30,26 @@ sub nmzmerge{
         my $nmz0_file = $nmz0->open_flist;
 
         my $nmz1_file = $nmz1->open_flist;
+        unless (defined $nmz1_file->{'t'}) {
+            $nmz1_file->close;
+            $nmz0->remove_tmpdb;
+            $nmz0->close;
+            $nmz1->close;
+            $nmz2->close;
+            return;
+        }
         my @field = keys %{$nmz1_file->{'field'}};
         $nmz1_file->close;
 
         my $nmz2_file = $nmz2->open_flist;
+        unless (defined $nmz2_file->{'t'}) {
+            $nmz2_file->close;
+            $nmz0->remove_tmpdb;
+            $nmz0->close;
+            $nmz1->close;
+            $nmz2->close;
+            return;
+        }
         @field = (@field, (keys %{$nmz2_file->{'field'}}));
         $nmz2_file->close;
 

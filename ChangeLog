@@ -1,5 +1,7 @@
 2000-02-18  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* pl/usage.pl: Change usage a bit.
+
 	* scripts/mknmz.in (generate_uri): Fix $DIRECTORY_INDEX handling.
 
 	* pl/conf.pl.in: Change variable names. [namazu-dev 1638]

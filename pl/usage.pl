@@ -1,5 +1,5 @@
 # -*- Perl -*-
-# $Id: usage.pl,v 1.18 2000-02-16 12:57:45 satoru Exp $
+# $Id: usage.pl,v 1.19 2000-02-18 04:35:28 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -46,9 +46,9 @@ Target files:\n\
       --mhonarc            same as --media-type='text/html; x-type=mhonarc'\n\
   -A, --htaccess           exclude files restricted by .htaccess.\n\
   -F, --target-list=FILE   load FILE which contains a list of target files.\n\
-      --allow=PATTERN      set PATTERN for file names which will be allowed.\n\
-      --deny=PATTERN       set PATTERN for file names which will be denied.\n\
-      --exclude=PATTERN    set PATTERN for pathnames which will be excluded.\n\
+      --allow=PATTERN      set PATTERN for file names which should be allowed.\n\
+      --deny=PATTERN       set PATTERN for file names which should be denied.\n\
+      --exclude=PATTERN    set PATTERN for pathnames which should be excluded.\n\
   -M, --meta               handle HTML meta tags for field-specified search.\n\
   -r, --replace=CODE       set CODE for replacing URI.\n\
   -o, --ole                use OLE document filters. (works on Windows only)\n\

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: powerpoint.pl,v 1.12 2004-01-16 13:07:10 opengl2772 Exp $
+# $Id: powerpoint.pl,v 1.13 2004-02-15 14:44:44 opengl2772 Exp $
 # Copyright (C) 2000 Ken-ichi Hirose, 
 #               2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -233,8 +233,8 @@ sub getSummaryInfo ($$$$$) {
 
     # Codepage
     #   932 : 0x000003a4 : Shift_JIS
-    # 10001 : 0xfffffde9 : x-mac-japanese
-    # 65001 : 0x00002711 : UTF-8
+    # 10001 : 0x00002711 : x-mac-japanese
+    # 65001 : 0xfffffde9 : UTF-8
 
     my $codepage = "000003a4"; # Shift_JIS
     my $title = undef;

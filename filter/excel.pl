@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: excel.pl,v 1.19 2004-01-16 13:07:10 opengl2772 Exp $
+# $Id: excel.pl,v 1.20 2004-02-15 14:44:44 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu, 
 #               2000 Namazu Project All rights reserved.
@@ -244,8 +244,9 @@ sub getSummaryInfo ($$$$$) {
 
     # Codepage
     #   932 : 0x000003a4 : Shift_JIS
-    # 10001 : 0xfffffde9 : x-mac-japanese
-    # 65001 : 0x00002711 : UTF-8
+    # 10001 : 0x00002711 : x-mac-japanese
+    # 65001 : 0xfffffde9 : UTF-8
+
 
     my $codepage = "000003a4"; # Shift_JIS
     my $title = undef;

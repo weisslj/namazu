@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.51 1999-08-31 15:01:24 satoru Exp $
+# $Id: mknmz.pl.in,v 1.52 1999-08-31 23:53:09 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -468,7 +468,7 @@ sub put_dateindex ($) {
 
 # load a document file
 sub load_document ($$$$\%) {
-    my ($orig_cfile, $content, $weighted_str, $headings, $fields)
+    my ($orig_cfile, $contref, $weighted_str, $headings, $fields)
       = @_;
     my $cfile = $$orig_cfile;
 
@@ -489,23 +489,23 @@ sub load_document ($$$$\%) {
     if ($file_size > $conf::TEXT_SIZE_MAX) {
 	return ($file_size, $file_size, 0, 'x-system/x-error');
     }
-   $$content = util::readfile($cfile);
-#    $file_size = length($$content);
+   $$contref = util::readfile($cfile);
+#    $file_size = length($$contref);
 
     # filtering process
     my $mm = new File::MMagic;
     my $mtype;
     while (1) {
 	my $mtype_n = $mm->checktype_byfilename($cfile);
-	my $mtype_c = $mm->checktype_contents($$content);
+	my $mtype_c = $mm->checktype_contents($$contref);
 	$mtype = decide_type($mtype_n, $mtype_c);
 	if (defined $var::REQUIRE_CODECONV{$mtype}) {
-	      codeconv::toeuc($content);
-	      $content =~ s/[ \t]+/ /g;   # remain LFs v1.03
-	      $content =~ s/\r\n/\n/g;    # remain LFs for ChaSen
-	      $content =~ s/\r/\n/g;      # CR+LF or CR are into LF
+	      codeconv::toeuc($contref);
+	      $$contref =~ s/[ \t]+/ /g;   # remain LFs v1.03
+	      $$contref =~ s/\r\n/\n/g;    # remain LFs for ChaSen
+	      $$contref =~ s/\r/\n/g;      # CR+LF or CR are into LF
 	      # Control characters be into space
-	      $content =~ tr/\x00-\x09\x0b-\x1f\x7f\xff/    /;
+	      $$contref =~ tr/\x00-\x09\x0b-\x1f\x7f\xff/    /;
 	}
 	util::dprint("Detected type: $mtype\n");
 	if (! defined $conf::Supported{$mtype} || $conf::Supported{$mtype} ne 'yes') {
@@ -517,7 +517,7 @@ sub load_document ($$$$\%) {
 	    require $var::REQUIRE_ACTIONS{$mtype}.'.pl';
 	    my $err = undef;
 	    eval '$err = ' . $var::REQUIRE_ACTIONS{$mtype} .
-	      '::filter($orig_cfile, $content, $weighted_str, $headings, $fields);';
+	      '::filter($orig_cfile, $contref, $weighted_str, $headings, $fields);';
 	    if ($err) {
 		return ($file_size, $file_size, 0, "$mtype; x-error=$err");
 	    }
@@ -530,14 +530,14 @@ sub load_document ($$$$\%) {
 	last;
     }
 
-    my $text_size = length($$content); # masure text size at this time
+    my $text_size = length($$contref); # masure text size at this time
 
     if ($SYSTEM eq "MSWin32" && $shelter_cfile ne "") {
 	unlink $cfile;
 	$cfile = $shelter_cfile;
     }
 
-    my $kanji = $$content =~ tr/\xa1-\xfe/\xa1-\xfe/;  # Kanji contained?
+    my $kanji = $$contref =~ tr/\xa1-\xfe/\xa1-\xfe/;  # Kanji contained?
 
     return ($file_size, $text_size, $kanji, $mtype);
 }

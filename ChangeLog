@@ -1,5 +1,8 @@
 1999-09-01  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/mknmz.pl.in (load_document): Fix stupid bugs which I made
+	yesterday. (I forgot preceding `$' mark for ref values)
+
  	* tknamazu/{Makefile.am,README.tknamazu}:
 	s/tknamazu.xpm/tknamazu.ppm/g
 	

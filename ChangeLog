@@ -1,3 +1,8 @@
+2000-08-21  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* filter/pdf.pl (filter): Changed to invoke pdftotext without
+	"-eucjp" option in non-Japanese environment.
+
 2000-08-21  Ryuji Abe  <rug@namazu.org>
 
 	* Makefile.am (SUBDIRS): Changed order (Entering lib before nmz).
@@ -5811,4 +5816,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.712 2000-08-20 21:19:33 rug Exp $
+$Id: ChangeLog,v 1.713 2000-08-21 01:52:13 knok Exp $

@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.141 2001-08-10 07:39:08 rug Exp $
+dnl $Id: configure.in,v 1.142 2001-09-01 11:47:24 rug Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -131,6 +131,10 @@ AC_TYPE_SIZE_T
 
 dnl Checks for library functions.
 AC_FUNC_ALLOCA
+
+LTALLOCA=`echo "$ALLOCA" | sed 's/\.[^.]* /.lo /g;s/\.[^.]*$/.lo/'`
+AC_SUBST(LTALLOCA)
+
 AC_FUNC_MMAP
 NMZ_FUNC_MEMCMP
 AC_FUNC_VPRINTF

@@ -2,6 +2,16 @@
 
 	* nmz/regex.c: Fixed alloca related macro.
 
+	* nmz/alloca.c: Moved from lib.
+
+	* nmz/Makefile.am (EXTRA_DIST): Added alloca.c.
+	(libnmz_la_LIBADD): Added @LTALLOCA@.
+	(libnmz_la_DEPENDENCIES): Likewise.
+
+	* lib/Makefile.am (EXTRA_DIST): Remove alloca.c.
+
+	* configure.in: AC_SUBST(LTALLOCA).
+
 2001-08-26  Rei FURUKAWA  <furukawa@tcp-ip.or.jp>
 
 	* doc/ja/manual.html: Added explanation of kwnmz and nmzmerge.
@@ -6933,4 +6943,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.855 2001-09-01 09:45:05 rug Exp $
+$Id: ChangeLog,v 1.856 2001-09-01 11:47:24 rug Exp $

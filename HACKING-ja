@@ -4,6 +4,7 @@ CVS から入手した Namazu を make するには、あらかじめ以下の
 1. GNU m4 1.4
 2. GNU autoconf 2.13
 3. GNU automake 1.4
+4. GNU gettext 0.10.35
 
 いずれも GNU のミラー(e.g. ftp://ftp.ring.gr.jp/pub/GNU) 
 から手に入れることができます。

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: htmlsplit.pl,v 1.5 2000-03-09 13:48:29 satoru Exp $
+# $Id: htmlsplit.pl,v 1.6 2000-03-22 06:10:52 satoru Exp $
 #
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -61,15 +61,24 @@ sub split ($$) {
 		'names'    => [],
 		);
 
+    # <http://www.w3.org/TR/html4/intro/sgmltut.html#h-3.2.2>
+    # 
+    # In certain cases, authors may specify the value of an attribute
+    # without any quotation marks. The attribute value may only contain
+    # letters (a-z and A-Z), digits (0-9), hyphens (ASCII decimal 45), and
+    # periods (ASCII decimal 46). We recommend using quotation marks even
+    # when it is possible to eliminate them.
+
     my $id = 0;
 #    $cont =~ s/(<a\s[^>]*href=(["']))#(.+?)(\2[^>]*>)/$1$3.html$4/gi; #'
     $cont =~ s {
                 \G(.+?)                                      # 1
 	        (<h([1-6])>)?\s*                             # 2, 3
-                <a\s[^>]*name=(["'])(.+?)\4[^>]*>(.*?)</a>   # 4,5,6
+                <a\s[^>]*name=([a-zA-Z0-9-\.]+|              # 4,
+                (["']).+?\5)[^>]*>(.*?)</a>                  # 5,6
                 \s*(</h\3>)?                                 # 7
              } {
-                write_partial_file($1, $5, $6, $id++, \%info)
+                write_partial_file($1, $4, $6, $id++, \%info)
              }sgexi;
     write_partial_file($cont, "", "", $id, \%info);
 
@@ -112,6 +121,8 @@ sub get_author ($) {
 
 sub write_partial_file($$$$$) {
     my ($cont, $name, $anchored, $id, $info_ref) = @_;
+
+    $name =~ s/^(["'])(.*)\1$/$2/;  # Remove quotation marks.
 
     my $author        = $info_ref->{'author'};
     my $base          = $info_ref->{'base'};

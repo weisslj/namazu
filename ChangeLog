@@ -1,5 +1,7 @@
 1999-11-18  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* man/Makefile.am: Remove clean: command.
+
 	* man/mknmz.1: New file.
 
 	* man/namazu.1: New file.

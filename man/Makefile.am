@@ -4,5 +4,3 @@ update-man:
 	LANG=C help2man -N ../src/namazu > namazu.1
 	LANG=C help2man -N ../src/mknmz > mknmz.1
 
-clean:
-	rm $(man_MANS)

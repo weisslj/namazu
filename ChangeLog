@@ -1,3 +1,7 @@
+2002-04-26  Ryuji Abe  <rug@namazu.org>
+
+	* contrib/ChangeLog: New File.
+
 2002-04-25  Ryuji Abe  <rug@namazu.org>
 
 	* Makefile.am (SUBDIRS): Add contrib.
@@ -205,9 +209,6 @@
 	* filter/msword.pl: Ditto.
 
 2002-01-08  NOKUBI Takatsugu  <knok@daionet.gr.jp>
-
-	* contrib/spreadexcel.pl: Added a new file.
-	(Contributed by Mineo Kasai, thanks.)
 
 	* THANKS: Updated.
 
@@ -7530,4 +7531,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.949 2002-04-25 08:58:39 rug Exp $
+$Id: ChangeLog,v 1.950 2002-04-26 10:33:30 rug Exp $

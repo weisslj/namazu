@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.108 2002-06-17 06:34:05 takesako Exp $
+# $Id: mknmz.in,v 1.109 2002-08-29 07:43:41 fumiya Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -1293,9 +1293,8 @@ sub find_target (@) {
 	    if (-l $target) {
 		my $dh = new DirHandle($target);
 		while (defined(my $ent = $dh->read)) {
-		    next if ($ent =~ /^\.{1,2}$/);
+		    next if ($ent eq '.' || $ent eq '..');
 		    my $fname = "$target/$ent";
-		    next if ($fname eq '.' || $fname eq '..');
 		    if (-d $fname) {
 			push(@subtargets, $fname);
 		    } else {

@@ -1,4 +1,13 @@
-Overview of Changes in Namazu 2.0.11 - August xx, 2002
+Overview of Changes in Namazu 2.x.x - XXXX, 200x
+
+* Add Polish translations.
+  (Contributed by Kryzystof Drewicz.)
+
+Overview of Changes in Namazu 2.0.12 - September 3, 2002
+
+* Fix more cross-site scripting issue around NMZ.warnlog.
+
+Overview of Changes in Namazu 2.0.11 - September 2, 2002
 
 * Change output warning to NMZ.warnlog file instead stderr
   (for cross-site scripting issue on some environments)
@@ -8,6 +17,7 @@ Overview of Changes in Namazu 2.0.11 - August xx, 2002
 * Adaptation to xpdf 1.0x (filter/pdf.pl).
 * Fix possibility of relative path vulnerability on Win95/98.
 * Improve HTML filter (exclude scripting language code).
+* Add German template files.
 
 Overview of Changes in Namazu 2.0.10 - Dec 27, 2001
 

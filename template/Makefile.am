@@ -32,7 +32,12 @@ template_DATA = \
 	NMZ.foot.de \
 	NMZ.head.de \
 	NMZ.result.normal.de \
-	NMZ.result.short.de
-
+	NMZ.result.short.de \
+	NMZ.body.pl \
+	NMZ.foot.pl \
+	NMZ.head.pl \
+	NMZ.result.normal.pl \
+	NMZ.result.short.pl \
+	NMZ.tips.pl
 
 EXTRA_DIST = $(template_DATA)

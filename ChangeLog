@@ -1,3 +1,24 @@
+2002-10-04  Ryuji Abe  <rug@namazu.org>
+
+	* template/Makefile.am (template_DATA): Added polish translations.
+	(Contributed by Krzysztof Drewicz. Thanks.)
+
+	* template/NMZ.body.pl: Likewise.
+
+	* template/NMZ.foot.pl: Likewise.
+
+	* template/NMZ.head.pl: Likewise.
+
+	* template/NMZ.result.normal.pl: Likewise.
+
+	* template/NMZ.result.short.pl: Likewise.
+
+	* template/NMZ.tips.pl: Likewise.
+	
+	* THANKS: Added more contributers.
+
+	* NEWS: Added descriptions.
+
 2002-09-26  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* scripts/mknmz.in (clean_field_index): Refactoring: splitted out
@@ -7697,4 +7718,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.983 2002-09-26 07:22:37 knok Exp $
+$Id: ChangeLog,v 1.984 2002-10-04 06:25:10 rug Exp $

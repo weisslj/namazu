@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.85 2001-09-13 05:43:32 takesako Exp $
+ * $Id: output.c,v 1.86 2001-11-25 11:46:07 takesako Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -470,7 +470,13 @@ print_query(const char * qs, int w)
 	    printf("whence=%d", w);
 	    for (qs += strlen("whence="); isdigit(*qs); qs++);
 	} else {
-	    fputc(*(qs++), stdout);
+	    /* '"' is converted to entities "&quot;" */
+	    if (*qs == '"') {
+		fputs("&quot;", stdout);
+	    } else {
+		fputc(*qs, stdout);
+	    }
+	    qs++;
 	}
     }
     if (foo == 0) {

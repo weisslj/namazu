@@ -1,0 +1,39 @@
+$Id: TODO-satoru,v 1.1 2000-01-06 09:16:10 satoru Exp $
+
+やるべきことの備忘録 by 高林
+
+  * 一対多の alias に対応する。例: Alias all-ml foo bar baz quux
+
+  * rcfile.c を function pointer を使って書き直す
+
+  * 存在しないフィールド名を指定したときの問題を直す +newsgroup: とか
+
+  * output.c (print_hlist): エラーを返すべし
+
+  * File::Copy を使おう - mknmz
+
+  * complete_idxnames などの実行位置を nmz_search にする?
+
+  * nmz/libnamazu.c を廃止 (中の関数は適切なファイルに移動する)
+
+  * nmz/libnamazu.h -> nmz/libnmz.h
+
+  * extern 関数を吟味する -> できるだけ減らす (static にする)
+
+  * hlist と名のつく関数の名前を変える
+
+  * NmzResult(旧HLIST) 関連の処理 -> 戻り値をポインタでもらう
+    NULLポインタでエラーを返す
+
+  * NMZ.slog はライブラリが出力するものなのか? (要検討)
+
+  * var.[ch] の扱いはどうすべきか (廃止したいが NMZ は残したい)
+
+  * 文書整備
+
+
+将来の構想
+
+  * 3.0 は一から書き直したい、という野望はあるけれど…
+    - まだまだプログラミングについて勉強不足
+    - 書き直している時間が取れるか疑問

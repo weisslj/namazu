@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.80 2000-01-19 09:10:58 satoru Exp $
+dnl $Id: configure.in,v 1.81 2000-01-19 09:25:37 satoru Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -14,7 +14,7 @@ dnl * Process this file with autoconf to produce a configure script.
 dnl *
 AC_INIT(src/cgi.c)
 AC_PREREQ(2.13)               dnl Minimum Autoconf version required.
-AM_INIT_AUTOMAKE(namazu, 1.9.13)
+AM_INIT_AUTOMAKE(namazu, 1.9.12)
 AM_MAINTAINER_MODE
 
 dnl *

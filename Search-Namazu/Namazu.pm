@@ -19,7 +19,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 # 02111-1307, USA
 #
-# $Id: Namazu.pm,v 1.9 2000-05-25 07:52:21 knok Exp $
+# $Id: Namazu.pm,v 1.10 2000-08-25 04:04:07 knok Exp $
 #
 
 package Search::Namazu;
@@ -150,9 +150,7 @@ sub Search {
     }
 
     if (defined $lang) {
-	if (nmz_setlang($lang)) {
-	  return ();
-      }
+	nmz_setlang($lang);
     }
 
 # query and get hlist

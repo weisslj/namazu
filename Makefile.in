@@ -71,10 +71,10 @@ OBJEXT = @OBJEXT@
 OPT_ADMIN_EMAIL = @OPT_ADMIN_EMAIL@
 OPT_CGI_LOCATION = @OPT_CGI_LOCATION@
 OPT_LANGUAGE = @OPT_LANGUAGE@
+OPT_SCORING = @OPT_SCORING@
 OPT_WAKATI_DEFAULT = @OPT_WAKATI_DEFAULT@
 PACKAGE = @PACKAGE@
 PERL = @PERL@
-SCORING = @SCORING@
 TEST_MODE = @TEST_MODE@
 TKNAMAZU = @TKNAMAZU@
 TK_LANGUAGE = @TK_LANGUAGE@
@@ -94,7 +94,7 @@ EXTRA_DIST = README-ja namazu.spec.in namazu.spec 	     ChangeLog.old.1.gz File-
 
 EXTRA_DIRS = doc etc lib lisp filter template
 
-CLEANFILES = filter/gzip.pl filter/compress.pl filter/man.pl filter/rfc.pl 	     filter/bzip2.pl filter/msword.pl filter/supported.pl 	     File-MMagic/Makefile File-MMagic/pm_to_blib 	     conf/mknmz.conf-dist lib/var.pl lib/conf.pl
+CLEANFILES = File-MMagic/Makefile File-MMagic/pm_to_blib 	     conf/mknmz.conf-dist lib/var.pl lib/conf.pl
 
 CLEANDIRS = File-MMagic/blib
 

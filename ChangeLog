@@ -1,14 +1,7 @@
-1999-09-01  NOKUBI Takatsugu  <knok@daionet.gr.jp>
-
-	* src/mknmz.pl.in: Exclude gfilter.pl from filters/*.pl in 
-	load_mocules() functions.
-
-	* Makefile.am: Remove necessary files in CLEANFILES.
-
-	* ChangeLog: Reorder log.
-
-	
 1999-09-01  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* acconfg.h: Rename several macro definiions for C program.
+	(I edited config.h.in a few minutes ago but it's meaningless)
 
 	* configure.in, config.h.in, src/{var,message.c}:
 	Rename several macro definiions for C program.
@@ -79,6 +72,16 @@
 	* tknamazu/tknamazu.xpm: Removed.
 
 
+1999-09-01  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* src/mknmz.pl.in: Exclude gfilter.pl from filters/*.pl in 
+	load_mocules() functions.
+
+	* Makefile.am: Remove necessary files in CLEANFILES.
+
+	* ChangeLog: Reorder log.
+
+	
 1999-08-31  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* lib/wakati.pm: Fix `tmpname' function name typo.

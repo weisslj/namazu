@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.20 1999-09-01 07:54:18 satoru Exp $
+dnl $Id: configure.in,v 1.21 1999-09-01 08:26:22 satoru Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -147,7 +147,7 @@ else
 	AC_MSG_ERROR(KAKASI or ChaSen required to handle Japanese code)
     fi
 
-    AC_MSG_CHECKING(for OPT_WAKATI_DEFAULT)
+    AC_MSG_CHECKING(for default wakatigaki processor)
     OPT_WAKATI_DEFAULT=
     if test "$KAKASI" != "no"; then
 	OPT_WAKATI_DEFAULT=KAKASI
@@ -345,7 +345,7 @@ fi
 dnl *
 dnl * Define a scoring method (default: TFIDF)
 dnl *
-AC_MSG_CHECKING(for SCORING)
+AC_MSG_CHECKING(for a scoring method)
 AC_ARG_WITH(scoring,
 [  --with-scoring=METHOD   set scoring method (SIMPLE or TFIDF) [TFIDF]],
 [case "${withval}" in
@@ -354,7 +354,7 @@ AC_ARG_WITH(scoring,
 esac], [scoring='TFIDF'])
 AC_MSG_RESULT($scoring)
 SCORING=$scoring
-AC_SUBST(SCORING)
+AC_SUBST(OPT_SCORING)
 
 dnl *
 dnl * Define a test mode (defult: off)

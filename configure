@@ -2439,8 +2439,8 @@ fi
 	{ echo "configure: error: KAKASI or ChaSen required to handle Japanese code" 1>&2; exit 1; }
     fi
 
-    echo $ac_n "checking for OPT_WAKATI_DEFAULT""... $ac_c" 1>&6
-echo "configure:2444: checking for OPT_WAKATI_DEFAULT" >&5
+    echo $ac_n "checking for default wakatigaki processor""... $ac_c" 1>&6
+echo "configure:2444: checking for default wakatigaki processor" >&5
     OPT_WAKATI_DEFAULT=
     if test "$KAKASI" != "no"; then
 	OPT_WAKATI_DEFAULT=KAKASI
@@ -2825,8 +2825,8 @@ if test -n "$EMXOS2"; then
 fi
 
 
-echo $ac_n "checking for SCORING""... $ac_c" 1>&6
-echo "configure:2830: checking for SCORING" >&5
+echo $ac_n "checking for a scoring method""... $ac_c" 1>&6
+echo "configure:2830: checking for a scoring method" >&5
 # Check whether --with-scoring or --without-scoring was given.
 if test "${with_scoring+set}" = set; then
   withval="$with_scoring"
@@ -3057,7 +3057,7 @@ s%@ZCAT@%$ZCAT%g
 s%@FILE_MMAGIC@%$FILE_MMAGIC%g
 s%@OPT_CGI_LOCATION@%$OPT_CGI_LOCATION%g
 s%@OPT_ADMIN_EMAIL@%$OPT_ADMIN_EMAIL%g
-s%@SCORING@%$SCORING%g
+s%@OPT_SCORING@%$OPT_SCORING%g
 s%@TEST_MODE@%$TEST_MODE%g
 
 CEOF

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: htmlsplit.pl,v 1.12 2001-09-19 07:37:59 knok Exp $
+# $Id: htmlsplit.pl,v 1.13 2004-05-23 10:30:11 opengl2772 Exp $
 #
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -166,7 +166,7 @@ sub write_partial_file($$$$$$) {
 
     # FIXME: Actually we don't need this. 
     #        But some perl versions need this.
-    close($fh);
+    util::fclose($fh);
     utime($mtime, $mtime, $fname);
 
     return "";

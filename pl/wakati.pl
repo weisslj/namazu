@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: wakati.pl,v 1.14 2004-03-04 10:44:21 knok Exp $
+# $Id: wakati.pl,v 1.15 2004-05-23 10:30:11 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -96,11 +96,13 @@ sub wakatize_japanese_sub ($) {
 	{
 	    my $fh_wakati = util::efopen("|$conf::WAKATI > $tmpfile");
 	    print $fh_wakati $$content;
+            util::fclose($fh_wakati);
 	}
 	{
 	    my $fh_wakati = util::efopen($tmpfile);
 	    @tmp = <$fh_wakati>;
 	    chomp @tmp;
+            util::fclose($fh_wakati);
 	}
 	unlink $tmpfile;
     }

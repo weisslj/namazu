@@ -1,3 +1,7 @@
+2004-05-23  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * pl/{htmlsplit, wakati}.pl: util::fclose() is added.
+
 2004-05-22  Yukio USUDA <usu@namazu.org>
 
 	* scripts/mknmz.in(load_filters): Changed selecting same mediatype
@@ -8920,4 +8924,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1191 2004-05-21 15:11:38 usu Exp $
+$Id: ChangeLog,v 1.1192 2004-05-23 10:30:10 opengl2772 Exp $

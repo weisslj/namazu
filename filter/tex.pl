@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: tex.pl,v 1.11 2004-10-16 14:54:12 opengl2772 Exp $
+# $Id: tex.pl,v 1.12 2004-11-26 15:23:44 opengl2772 Exp $
 # Copyright (C) 1999 Satoru Takabayashi ,
 #               2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -107,7 +107,7 @@ sub filter ($$$$$) {
             unlink $tmpfile;
 	    return "Unable to convert file ($texconvpath error occurred).";
 	}
-	if ($size > $conf::TEXT_SIZE_MAX) {
+	if ($size > $conf::FILE_SIZE_MAX) {
             util::fclose($fh_out);
             unlink $tmpfile;
 	    return 'Too large tex file.';

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: taro.pl,v 1.15 2004-11-24 14:20:33 opengl2772 Exp $
+# $Id: taro.pl,v 1.16 2004-11-26 15:23:44 opengl2772 Exp $
 # Copyright (C) 2000 Ken-ichi Hirose, 
 #               2000,2001,2003,2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -103,7 +103,7 @@ sub filter ($$$$$) {
             unlink $tmpfile;
             return "Unable to convert file ($taroconvpath error occurred).";
         }
-        if ($size > $conf::TEXT_SIZE_MAX) {
+        if ($size > $conf::FILE_SIZE_MAX) {
             util::fclose($fh_out);
             unlink $tmpfile;
             return 'Too large taro file.';

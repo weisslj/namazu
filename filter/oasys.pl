@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: oasys.pl,v 1.11 2004-11-20 18:25:03 opengl2772 Exp $
+# $Id: oasys.pl,v 1.12 2004-11-26 15:23:44 opengl2772 Exp $
 # Copyright (C) 2000 Ken-ichi Hirose , 
 #               2000,2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -90,7 +90,7 @@ sub filter ($$$$$) {
             unlink $tmpfile;
 	    return "Unable to convert file ($oasysconvpath error occurred)";
 	}
-	if ($size > $conf::TEXT_SIZE_MAX) {
+	if ($size > $conf::FILE_SIZE_MAX) {
             util::fclose($fh_out);
             unlink $tmpfile;
 	    return 'Too large oasys file.';

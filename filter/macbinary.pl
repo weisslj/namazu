@@ -1,7 +1,7 @@
 #
 # -*- Perl -*-
-# $Id: macbinary.pl,v 1.5 2004-09-18 12:30:41 usu Exp $
-# Copyright (C) 2003 Namazu Project All rights reserved ,
+# $Id: macbinary.pl,v 1.6 2004-11-26 15:23:44 opengl2772 Exp $
+# Copyright (C) 2003 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify

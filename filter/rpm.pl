@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: rpm.pl,v 1.14 2004-11-24 16:17:06 opengl2772 Exp $
+# $Id: rpm.pl,v 1.15 2004-11-26 15:23:44 opengl2772 Exp $
 # Copyright (C) 2000,2001,2002,2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -97,7 +97,7 @@ sub filter ($$$$$) {
             unlink $tmpfile;
             return "Unable to convert file ($rpmpath error occurred).";
         }
-        if ($size > $conf::TEXT_SIZE_MAX) {
+        if ($size > $conf::FILE_SIZE_MAX) {
             util::fclose($fh_out);
             unlink $tmpfile;
             return 'Too large rpm file.';

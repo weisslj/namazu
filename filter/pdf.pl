@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: pdf.pl,v 1.38 2004-11-24 17:48:15 opengl2772 Exp $
+# $Id: pdf.pl,v 1.39 2004-11-26 15:23:44 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu ,
 #               2000-2004 Namazu Project All rights reserved.
@@ -148,7 +148,7 @@ sub filter ($$$$$) {
             unlink $tmpfile2;
             return "Unable to convert file ($pdfconvpath error occurred)";
         }
-        if ($size > $conf::TEXT_SIZE_MAX) {
+        if ($size > $conf::FILE_SIZE_MAX) {
             util::fclose($fh);
             unlink $tmpfile;
             unlink $tmpfile2;

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: powerpoint.pl,v 1.25 2004-11-21 13:52:10 opengl2772 Exp $
+# $Id: powerpoint.pl,v 1.26 2004-11-26 15:23:44 opengl2772 Exp $
 # Copyright (C) 2000 Ken-ichi Hirose, 
 #               2000-2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -61,7 +61,7 @@ sub status() {
             return 'yes' if ($English::PERL_VERSION >= 5.008);
             return 'yes' if ($nkfversion >= 2.04);
 
-        $utfconvpath = util::checkcmd('lv');
+            $utfconvpath = util::checkcmd('lv');
             if (defined $utfconvpath) {
                 return 'yes';
             } else {
@@ -145,7 +145,7 @@ sub filter_ppt ($$$$$) {
             unlink $tmpfile;
             return "Unable to convert file ($pptconvpath error occurred).";
         }
-        if ($size > $conf::TEXT_SIZE_MAX) {
+        if ($size > $conf::FILE_SIZE_MAX) {
             util::fclose($fh_out);
             unlink $tmpfile;
             return 'Too large powerpoint file.';
@@ -219,7 +219,7 @@ sub filter_doccat ($$$$$) {
             unlink $tmpfile;
             return "Unable to convert file ($pptconvpath error occurred).";
         }
-        if ($size > $conf::TEXT_SIZE_MAX) {
+        if ($size > $conf::FILE_SIZE_MAX) {
             util::fclose($fh_out);
             unlink $tmpfile;
             return 'Too large powerpoint file.';
@@ -263,7 +263,7 @@ sub getSummaryInfo ($$$$$) {
     if ($size == 0) {
         return undef;
     }
-    if ($size > $conf::TEXT_SIZE_MAX) {
+    if ($size > $conf::FILE_SIZE_MAX) {
         return 'Too large summary file.';
     }
 

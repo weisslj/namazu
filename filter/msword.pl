@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: msword.pl,v 1.55 2004-11-21 13:52:10 opengl2772 Exp $
+# $Id: msword.pl,v 1.56 2004-11-26 15:23:44 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi,
 #               2000-2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -163,7 +163,7 @@ sub filter_wv ($$$$$) {
     my $title = $fields->{'title'};
 
 
-    if (basename($wordconvpath) =~ /wvWare/i) {
+    if ($convname =~ /wvWare/i) {
         $err = filter_wvWare($tmpfile, $cont, $weighted_str, $headings, $fields);
     } else {
         $err = filter_wvHtml($tmpfile, $cont, $weighted_str, $headings, $fields);
@@ -223,7 +223,7 @@ sub filter_wvWare ($$$$$) {
         unlink($tmpfile2);
         return "Unable to convert file ($wordconvpath error occurred).";
     }
-    if ($size > $conf::TEXT_SIZE_MAX) {
+    if ($size > $conf::FILE_SIZE_MAX) {
         util::fclose($fh_out);
         unlink($tmpfile2);
         return 'Too large word file.';
@@ -295,7 +295,7 @@ sub filter_wvHtml ($$$$$) {
         unlink $tmpfile2;
         return "Unable to convert file ($wordconvpath error occurred).";
     }
-    if ($size > $conf::TEXT_SIZE_MAX) {
+    if ($size > $conf::FILE_SIZE_MAX) {
         unlink $tmpfile2;
         return 'Too large word file.';
     }
@@ -348,7 +348,7 @@ sub filter_doccat ($$$$$) {
             unlink $tmpfile;
             return "Unable to convert file ($wordconvpath error occurred).";
         }
-        if ($size > $conf::TEXT_SIZE_MAX) {
+        if ($size > $conf::FILE_SIZE_MAX) {
             util::fclose($fh_out);
             unlink $tmpfile;
             return 'Too large word file.';
@@ -418,7 +418,7 @@ sub getSummaryInfo ($$$$$) {
     if ($size == 0) {
         return undef;
     }
-    if ($size > $conf::TEXT_SIZE_MAX) {
+    if ($size > $conf::FILE_SIZE_MAX) {
         return 'Too large summary file.';
     }
 

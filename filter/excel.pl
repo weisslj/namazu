@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: excel.pl,v 1.32 2004-11-21 13:52:10 opengl2772 Exp $
+# $Id: excel.pl,v 1.33 2004-11-26 15:23:44 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi,
 #               1999 NOKUBI Takatsugu, 
 #               2000-2004 Namazu Project All rights reserved.
@@ -147,7 +147,7 @@ sub filter_xl ($$$$$) {
             unlink $tmpfile;
             return "Unable to convert file ($xlconvpath error occurred).";
         }
-        if ($size > $conf::TEXT_SIZE_MAX) {
+        if ($size > $conf::FILE_SIZE_MAX) {
             util::fclose($fh_out);
             unlink $tmpfile;
             return 'Too large excel file.';
@@ -177,7 +177,7 @@ sub filter_xl ($$$$$) {
 
     # Title shoud be removed.
     # Because xlHtml generate poor <TITLE>/foo/bar/NMZ.excel.tmp</TITLE>.
-    $$cont =~ s!<TITLE.*?>.*?</TITLE>!!si;
+    $$cont =~ s!<TITLE.*?>.*?</TITLE>!!is;
 
     html::html_filter($cont, $weighted_str, $fields, $headings);
     $fields->{'title'} = $title if (defined $title);
@@ -222,7 +222,7 @@ sub filter_doccat ($$$$$) {
             unlink $tmpfile;
             return "Unable to convert file ($xlconvpath error occurred)";
         }
-        if ($size > $conf::TEXT_SIZE_MAX) {
+        if ($size > $conf::FILE_SIZE_MAX) {
             util::fclose($fh_out);
             unlink $tmpfile;
             return 'Too large excel file.';
@@ -266,7 +266,7 @@ sub getSummaryInfo ($$$$$) {
     if ($size == 0) {
         return undef;
     }
-    if ($size > $conf::TEXT_SIZE_MAX) {
+    if ($size > $conf::FILE_SIZE_MAX) {
         return 'Too large summary file.';
     }
 

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: doccat.pl,v 1.7 2004-10-16 14:54:12 opengl2772 Exp $
+# $Id: doccat.pl,v 1.8 2004-11-26 15:23:44 opengl2772 Exp $
 # Copyright (C) 2001 SATOH Fumiyasu,
 #               2001,2004 Namazu Project. All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -204,7 +204,7 @@ sub filter ($$$$$) {
             unlink($tmpfile2);
             return "Unable to convert file ($doccatpath error occurred).";
         }
-        if ($size > $conf::TEXT_SIZE_MAX) {
+        if ($size > $conf::FILE_SIZE_MAX) {
             unlink($tmpfile);
             unlink($tmpfile2);
             return 'Too large doccat file.';

@@ -1,6 +1,6 @@
 /*
  * result.c -
- * $Id: result.c,v 1.31 1999-12-12 13:18:17 rug Exp $
+ * $Id: result.c,v 1.32 1999-12-19 09:50:43 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -50,6 +50,8 @@ static int uridecode   = 0;   /* decode URI in results */
 static void encode_entity(char*);
 static void emphasize(char*);
 static void replace_field(struct nmz_data, int, char*, char*);
+static int is_urireplace(void);
+static int is_uridecode(void)
 
 
 static void replace_field(struct nmz_data d, int counter, 

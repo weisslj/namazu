@@ -1,5 +1,8 @@
 1999-12-19  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/result.c (is_urireplace): Prepare its prototype declaration.
+	(is_uridecode): Prepare its prototype declaration.
+	
 	* Makefile.am (SUBDIRS): Add scripts.
 
 	* configure.in (AC_OUTPUT): Adjust to src/scripts exchanging.

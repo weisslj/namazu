@@ -1,3 +1,9 @@
+2000-02-19  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* tknamazu.hlp.ja: Change URI of Namazu website.
+
+	* tknamazu.hlp.en: Change URI of Namazu website.
+
 2000-02-19  Ken-ichi Hirose <kenzo-@tama.or.jp>
 
 	* tknamazu.tcl.in: command line option change for Namazu 2.0.

@@ -1,6 +1,6 @@
 # File::MMagic
 #
-# $Id: MMagic.pm,v 1.10 1999-11-21 19:58:54 kenzo- Exp $
+# $Id: MMagic.pm,v 1.11 2000-02-19 08:00:10 satoru Exp $
 #
 # This program is originated from file.kulp that is a production of The
 # Unix Reconstruction Projct.
@@ -1231,7 +1231,7 @@ __DATA__
 #
 
 # The following paramaters are created for Namazu.
-# <http://openlab.ring.gr.jp/namazu/>
+# <http://www.namazu.org/>
 #
 # 1999/08/13
 #0	string		\<!--\ MHonArc		text/html; x-type=mhonarc

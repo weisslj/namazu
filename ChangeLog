@@ -1,3 +1,15 @@
+2000-02-19  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* README: Change URI of Namazu website.
+
+	* README-ja: Likewise.
+
+	* scripts/Makefile.am (bin_SCRIPTS): Add rfnmz.
+
+	* configure.in (AC_OUTPUT): Add rfnmz.
+
+	* scripts/rfnmz.in: New file.
+
 2000-02-19  Ken-ichi Hirose  <kenzo-@tama.or.jp>
 
 	* nmz/hlist.c: Change the include point of unistd.h and surround

@@ -10,7 +10,7 @@
 
 AUTOMAKE_OPTIONS = 1.4 no-dependencies
 
-bin_SCRIPTS    = gcnmz mailutime mknmz vfnmz kwnmz nmzgrep bnamazu
+bin_SCRIPTS    = bnamazu gcnmz kwnmz mailutime mknmz nmzgrep rfnmz vfnmz 
 noinst_SCRIPTS = gtnmz
 
 EXTRA_DIST = gcnmz.in kwnmz.in mknmz.in

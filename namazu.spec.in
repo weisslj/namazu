@@ -14,7 +14,7 @@ Group: Applications/Text
 Requires: perl >= 5.004, perl-File-MMagic >= 0.20, perl-NKF >= 1.70
 Requires: kakasi >= 2.3.0, perl-Text-Kakasi >= 1.00
 Source: namazu-%{ver}.tar.gz
-URL: http://openlab.ring.gr.jp/namazu/
+URL: http://www.namazu.org/
 BuildRoot: /var/tmp/namazu-%{ver}-root
 
 %description
@@ -33,6 +33,9 @@ Requires: %name = %{PACKAGE_VERSION}
 Libraries and include files of Namazu.
 
 %changelog
+* Sat Feb 19 15:18:38 JST 2000 Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>
+- Change URL.
+
 * Tue Feb 15 2000 Ryuji Abe <raeva@t3.rim.or.jp>
 - Delete package entries elisp and cgi.
 

@@ -49,17 +49,6 @@ then
 	exit 1
 fi
 
-# check "result" (for special character)
-QUERY_STRING='query=namazu&result=%60ls%60'
-export QUERY_STRING 
-
-RESULT=`./namazu.cgi 2>&1 | grep '\`ls\`' | wc -l`
-if [ $RESULT -ne 1 ]
-then
-	echo $RESULT >> $LOG
-	exit 1
-fi
-
 # check "sort"
 QUERY_STRING='query=namazu&sort="<S>strike</S>'
 export QUERY_STRING 

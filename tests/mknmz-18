@@ -32,7 +32,7 @@ RESULT1=`../scripts/mknmz -O $IDX  $TMPDATA 2>&1 | tee -a $LOG`
 #
 RESULT2=`../scripts/mknmz -O $IDX -z $TMPDATA 2>&1 | tee -a $LOG`
 
-if [ "$RESULT1" == "$RESULT2" ]
+if [ "$RESULT1" = "$RESULT2" ]
 then
 	exit 1
 fi

@@ -104,7 +104,7 @@ with <code>net</code>)
 You can use regular expressions for pattern matching. The
 regular expressions must be surrounded by slashes like <code
 class="operator">/.../</code>. Namazu uses <a
-href="http://www.ruby-lang.org/">Ruby</a>'s regular
+href="http://www.netlab.co.jp/ruby/">Ruby</a>'s regular
 regular expressions engine. It offers generally <a
 href="http://www.perl.com/">Perl</a> compatible flavor.
 e.g.,

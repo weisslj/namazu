@@ -10,10 +10,10 @@ BUILT_TKNAMAZU =
 DIST_TKNAMAZU = tknamazu
 endif
 
-SUBDIRS = conf doc etc filter intl po lib nmz pl src lisp man scripts \
+SUBDIRS = conf doc etc filter intl po lib nmz pl src lisp scripts man \
 	  tests template $(BUILT_TKNAMAZU)
 
-DIST_SUBDIRS = conf doc etc filter intl po lib nmz pl src lisp man scripts \
+DIST_SUBDIRS = conf doc etc filter intl po lib nmz pl src lisp scripts man \
 	  tests template $(BUILT_TKNAMAZU)
 
 

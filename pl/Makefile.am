@@ -9,6 +9,7 @@ perllib_DATA = \
 	codeconv.pl \
 	conf.pl \
 	find.pl \
+	gettext.pl \
 	nmzidx.pl \
 	seed.pl \
 	usage.pl \
@@ -20,6 +21,7 @@ EXTRA_DIST = \
 	codeconv.pl \
 	conf.pl.in \
 	find.pl \
+	gettext.pl.in \
 	nmzidx.pl \
 	seed.pl \
 	usage.pl \
@@ -30,7 +32,7 @@ EXTRA_DIST = \
 gettext.pl: gettext.pl.in
 	rm -f @
 	sed -e 's!%LOCALEDIR%!$(localedir)!g' \
-	$gettext.pl.in > $@
+	gettext.pl.in > $@
 	chmod +x $@
 
 ETAGS_ARGS = $(perllib_DATA) --lang=perl

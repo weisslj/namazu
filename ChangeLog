@@ -1,3 +1,8 @@
+2004-04-08  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * filter/taro7_10.pl (mediatype): Added media type
+        `application/ichitaro7'.
+
 2004-04-07  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * doc/ja/tutorial.html: Update
@@ -8717,4 +8722,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1146 2004-04-07 08:45:51 opengl2772 Exp $
+$Id: ChangeLog,v 1.1147 2004-04-08 07:37:30 opengl2772 Exp $

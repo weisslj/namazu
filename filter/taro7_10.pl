@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: taro7_10.pl,v 1.10 2004-02-01 01:41:31 usu Exp $
+# $Id: taro7_10.pl,v 1.11 2004-04-08 07:37:30 opengl2772 Exp $
 # Copyright (C) 2003 Yukio USUDA
 #               2003 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -29,7 +29,9 @@ require 'gfilter.pl';
 my $perlver =$];
 
 sub mediatype() {
-    return ('application/x-js-taro');
+    return (
+        'application/ichitaro7', 'application/x-js-taro'
+    );
 }
 
 sub status() {
@@ -59,7 +61,7 @@ sub post_codeconv() {
 sub add_magic($) {
     my ($magic) = @_;
     $magic->addFileExts('(?i)\\.jtd', 'application/x-js-taro');
-    $magic->addFileExts('(?i)\\.jfw', 'application/x-js-taro');
+    $magic->addFileExts('(?i)\\.jfw', 'application/ichitaro7');
     return;
 }
 

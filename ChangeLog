@@ -1,5 +1,8 @@
 2000-01-09  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* configure.in (ALL_LINGUAS): Remove ja_JP.ISO-2022-JP.
+	(AC_OUTPUT): Remove po/make_iso-2022-jp_po.
+
 	* nmz/Makefile.am: Move add-prefix to maintMakefile
 
 	* nmz/maintMakefile: New file.

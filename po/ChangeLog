@@ -1,3 +1,12 @@
+2000-01-09  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* make_iso-2022-jp_po.in: Removed.
+	
+	* ja_JP.ISO-2022-JP.po: Removed.
+	
+	* Makefile.in.in (ADDITIONAL_FILES): Remove make_iso-2022-jp_po.in.
+	(update-po): Comment out ISO-2022-JP related codes.
+
 2000-01-07  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* ja.po: Update messages.

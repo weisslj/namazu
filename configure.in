@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.71 2000-01-07 09:06:18 satoru Exp $
+dnl $Id: configure.in,v 1.72 2000-01-09 13:26:48 satoru Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -50,7 +50,7 @@ fi
 dnl *
 dnl * I18N
 dnl *
-ALL_LINGUAS="ja ja_JP.SJIS ja_JP.ISO-2022-JP"
+ALL_LINGUAS="ja ja_JP.SJIS"
 AM_GNU_GETTEXT
 
 dnl Checks for libraries.
@@ -432,7 +432,6 @@ AC_OUTPUT([Makefile
 	   pl/var.pl
 	   pl/conf.pl
 	   po/Makefile.in
-	   po/make_iso-2022-jp_po
 	   scripts/Makefile 
 	   scripts/mknmz.pl
 	   scripts/gcnmz.pl
@@ -454,8 +453,7 @@ AC_OUTPUT([Makefile
 		    scripts/mailutime \
 		    scripts/nmzgrep \
 		    scripts/vfnmz \
-		    scripts/bnamazu \
-		    po/make_iso-2022-jp_po]) 
+		    scripts/bnamazu ]) 
 
 # Local Variables:
 # mode:shell-script

@@ -1,3 +1,7 @@
+2000-10-10  Ryuji Abe  <rug@namazu.org>
+
+	* NEWS: Updated for new release.
+
 2000-10-07  Rei FURUKAWA  <furukawa@tcp-ip.or.jp>
 
 	* scripts/kwnmz.in: Correct the expression of score.
@@ -6023,4 +6027,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.741 2000-10-06 20:23:20 furukawa Exp $
+$Id: ChangeLog,v 1.742 2000-10-10 08:40:48 rug Exp $

@@ -1,9 +1,20 @@
+Overview of Changes in Namazu 2.0.5 - Oct 10, 2000
+
+* Fix several bugs.
+* Add Spanish and French translations.
+  (Contributed by Jose Juan Zapater and Stephane Legrand.)
+* Add some new directives in namazurc.
+  MaxHit, MaxMatch
+* Include new upstream version of File::MMagic perl module (1.08).
+* Using libtool 1.3.5.
+* MSWord filter now supports wv 0.6.0 <http://wvWare.sourceforge.net>.
+
 Overview of Changes in Namazu 2.0.4 - Apr 10, 2000
 
 * Fix a security hole which may remove your file at an
-indexing process. It is occured only if doccat
-<http://www.dehenken.co.jp/products/doccat/> is installed on
-your system.
+  indexing process. It is occured only if doccat
+  <http://www.dehenken.co.jp/products/doccat/> is installed on
+  your system.
 
 Overview of Changes in Namazu 2.0.3 - Apr 05, 2000
 

@@ -1,4 +1,3 @@
-/* Add nmz prefix by Satoru Takabayashi */
 /* Extended regular expression matching and search library.
    Copyright (C) 1993, 94, 95, 96, 97, 98 Free Software Foundation, Inc.
 
@@ -59,10 +58,10 @@
 # define _(args) ()
 #endif
 
-#ifndef nmz_xmalloc
-void *nmz_xmalloc _((unsigned long));
+#ifndef xmalloc
+void *xmalloc _((unsigned long));
 void *xcalloc _((unsigned long,unsigned long));
-void *nmz_xrealloc _((void*,unsigned long));
+void *xrealloc _((void*,unsigned long));
 void free _((void*));
 #endif
 
@@ -108,7 +107,7 @@ char *alloca();
         (type*)memcpy(stackx, stackb, len * sizeof (type)))
 #else  /* NO_ALLOCA defined */
 
-#define RE_ALLOCATE nmz_xmalloc
+#define RE_ALLOCATE xmalloc
 
 #define FREE_VAR(var) do { if (var) free(var); var = NULL; } while(0)
 #define FREE_VARIABLES()
@@ -116,12 +115,12 @@ char *alloca();
 #define FREE_AND_RETURN_VOID(stackb)   do { free(stackb); return; } while(0)
 #define FREE_AND_RETURN(stackb,val)    do { free(stackb); return(val); } while(0)
 #define DOUBLE_STACK(stackx,stackb,len,type) \
-        (type*)nmz_xrealloc(stackb, 2 * len * sizeof(type))
+        (type*)xrealloc(stackb, 2 * len * sizeof(type))
 #endif /* NO_ALLOCA */
 
 #define RE_TALLOC(n,t)  ((t*)RE_ALLOCATE((n)*sizeof(t)))
-#define TMALLOC(n,t)    ((t*)nmz_xmalloc((n)*sizeof(t)))
-#define TREALLOC(s,n,t) (s=((t*)nmz_xrealloc(s,(n)*sizeof(t))))
+#define TMALLOC(n,t)    ((t*)xmalloc((n)*sizeof(t)))
+#define TREALLOC(s,n,t) (s=((t*)xrealloc(s,(n)*sizeof(t))))
 
 #define EXPAND_FAIL_STACK(stackx,stackb,len) 				\
     do {								\
@@ -136,7 +135,7 @@ char *alloca();
 /* Get the interface, including the syntax bits.  */
 #include "regex.h"
 
-/* Subroutines for nmz_re_compile_pattern.  */
+/* Subroutines for re_compile_pattern.  */
 static void store_jump _((char*, int, char*));
 static void insert_jump _((int, char*, char*, char*));
 static void store_jump_n _((char*, int, char*, unsigned));
@@ -148,7 +147,7 @@ static int memcmp_translate _((unsigned char*, unsigned char*, int));
 /* Define the syntax stuff, so we can do the \<, \>, etc.  */
 
 /* This must be nonzero for the wordchar and notwordchar pattern
-   commands in nmz_re_match.  */
+   commands in re_match.  */
 #define Sword  1
 #define Sword2 2
 
@@ -190,7 +189,7 @@ init_syntax_once()
 }
 
 void
-nmz_re_set_casetable(table)
+re_set_casetable(table)
      const char *table;
 {
   translate = (const unsigned char*)table;
@@ -393,14 +392,14 @@ enum regexpcode
    defined in regex.h.  */
 
 long
-nmz_re_set_syntax(syntax)
+re_set_syntax(syntax)
   long syntax;
 {
     /* obsolete */
 }
 
 
-/* Macros for nmz_re_compile_pattern, which is found below these definitions.  */
+/* Macros for re_compile_pattern, which is found below these definitions.  */
 
 #define TRANSLATE_P() ((options&RE_OPTION_IGNORECASE) && translate)
 #define MAY_TRANSLATE() ((bufp->options&(RE_OPTION_IGNORECASE|RE_MAY_IGNORECASE)) && translate)
@@ -517,7 +516,7 @@ print_mbc(c)
     if (bufp->allocated == (1L<<16)) goto too_big;			\
     bufp->allocated *= 2;						\
     if (bufp->allocated > (1L<<16)) bufp->allocated = (1L<<16);		\
-    bufp->buffer = (char*)nmz_xrealloc (bufp->buffer, bufp->allocated);	\
+    bufp->buffer = (char*)xrealloc (bufp->buffer, bufp->allocated);	\
     if (bufp->buffer == 0)						\
       goto memory_exhausted;						\
     b = (b - old_buffer) + bufp->buffer;				\
@@ -1081,7 +1080,7 @@ read_backslash(c)
   return c;
 }
 
-/* nmz_re_compile_pattern takes a regular-expression string
+/* re_compile_pattern takes a regular-expression string
    and converts it into a buffer full of byte commands for matching.
 
    PATTERN   is the address of the pattern string
@@ -1090,14 +1089,14 @@ read_backslash(c)
 	     on where to store the byte commands.
 	     This structure contains a  char *  which points to the
 	     actual space, which should have been obtained with malloc.
-	     nmz_re_compile_pattern may use realloc to grow the buffer space.
+	     re_compile_pattern may use realloc to grow the buffer space.
 
    The number of bytes of commands can be found out by looking in
    the `struct re_pattern_buffer' that bufp pointed to, after
-   nmz_re_compile_pattern returns. */
+   re_compile_pattern returns. */
 
 char *
-nmz_re_compile_pattern(pattern, size, bufp)
+re_compile_pattern(pattern, size, bufp)
      const char *pattern;
      int size;
      struct re_pattern_buffer *bufp;
@@ -1192,10 +1191,10 @@ nmz_re_compile_pattern(pattern, size, bufp)
     bufp->allocated = INIT_BUF_SIZE;
     if (bufp->buffer)
       /* EXTEND_BUFFER loses when bufp->allocated is 0.  */
-      bufp->buffer = (char*)nmz_xrealloc (bufp->buffer, INIT_BUF_SIZE);
+      bufp->buffer = (char*)xrealloc (bufp->buffer, INIT_BUF_SIZE);
     else
       /* Caller did not allocate a buffer.  Do it for them.  */
-      bufp->buffer = (char*)nmz_xmalloc(INIT_BUF_SIZE);
+      bufp->buffer = (char*)xmalloc(INIT_BUF_SIZE);
     if (!bufp->buffer) goto memory_exhausted;
     begalt = b = bufp->buffer;
   }
@@ -1439,7 +1438,7 @@ nmz_re_compile_pattern(pattern, size, bufp)
 	    continue;
 
 	  case 'x':
-	    c = nmz_scan_hex(p, 2, &numlen);
+	    c = scan_hex(p, 2, &numlen);
 	    p += numlen;
 	    had_num_literal = 1;
 	    break;
@@ -1447,7 +1446,7 @@ nmz_re_compile_pattern(pattern, size, bufp)
 	  case '0': case '1': case '2': case '3': case '4':
 	  case '5': case '6': case '7': case '8': case '9':
 	    PATUNFETCH;
-	    c = nmz_scan_oct(p, 3, &numlen);
+	    c = scan_oct(p, 3, &numlen);
 	    p += numlen;
 	    had_num_literal = 1;
 	    break;
@@ -1730,7 +1729,7 @@ nmz_re_compile_pattern(pattern, size, bufp)
 	/* Push a dummy failure point at the end of the
 	   alternative for a possible future
 	   `finalize_jump' to pop.  See comments at
-	   `push_dummy_failure' in `nmz_re_match'.  */
+	   `push_dummy_failure' in `re_match'.  */
 	BUFPUSH(push_dummy_failure);
 
 	/* We allocated space for this jump when we assigned
@@ -1943,7 +1942,7 @@ nmz_re_compile_pattern(pattern, size, bufp)
 	/* Initialize lower bound of the `succeed_n', even
 	   though it will be set during matching by its
 	   attendant `set_number_at' (inserted next),
-	   because `nmz_re_compile_fastmap' needs to know.
+	   because `re_compile_fastmap' needs to know.
 	   Jump to the `jump_n' we might insert below.  */
 	insert_jump_n(succeed_n, laststart, b + (nbytes/2), 
 		      b, lower_bound);
@@ -2090,7 +2089,7 @@ nmz_re_compile_pattern(pattern, size, bufp)
 	/* hex */
       case 'x':
 	had_mbchar = 0;
-	c = nmz_scan_hex(p, 2, &numlen);
+	c = scan_hex(p, 2, &numlen);
 	p += numlen;
 	had_num_literal = 1;
 	goto numeric_char;
@@ -2098,7 +2097,7 @@ nmz_re_compile_pattern(pattern, size, bufp)
 	/* octal */
       case '0':
 	had_mbchar = 0;
-	c = nmz_scan_oct(p, 3, &numlen);
+	c = scan_oct(p, 3, &numlen);
 	p += numlen;
 	had_num_literal = 1;
 	goto numeric_char;
@@ -2121,7 +2120,7 @@ nmz_re_compile_pattern(pattern, size, bufp)
 	  if (c1 >= regnum) {
 	    /* need to get octal */
 	    p = p_save;
-	    c = nmz_scan_oct(p_save, 3, &numlen) & 0xff;
+	    c = scan_oct(p_save, 3, &numlen) & 0xff;
 	    p = p_save + numlen;
 	    c1 = 0;
 	    had_num_literal = 1;
@@ -2270,7 +2269,7 @@ nmz_re_compile_pattern(pattern, size, bufp)
       }
     }
     if (!(bufp->options & RE_OPTIMIZE_NO_BM)) {
-      bufp->must_skip = (int *) nmz_xmalloc((1 << BYTEWIDTH)*sizeof(int));
+      bufp->must_skip = (int *) xmalloc((1 << BYTEWIDTH)*sizeof(int));
       bm_init_skip(bufp->must_skip, bufp->must+1,
 		   (unsigned char)bufp->must[0],
 		   MAY_TRANSLATE()?translate:0);
@@ -2303,7 +2302,7 @@ nmz_re_compile_pattern(pattern, size, bufp)
 }
 
 void
-nmz_re_free_pattern(bufp)
+re_free_pattern(bufp)
      struct re_pattern_buffer *bufp;
 {
   free(bufp->buffer);
@@ -2580,14 +2579,14 @@ bm_search(little, llen, big, blen, skip, translate)
 
 /* Given a pattern, compute a fastmap from it.  The fastmap records
    which of the (1 << BYTEWIDTH) possible characters can start a string
-   that matches the pattern.  This fastmap is used by nmz_re_search to skip
+   that matches the pattern.  This fastmap is used by re_search to skip
    quickly over totally implausible text.
 
    The caller must supply the address of a (1 << BYTEWIDTH)-byte data 
    area as bufp->fastmap.
    The other components of bufp describe the pattern to be used.  */
 void
-nmz_re_compile_fastmap(bufp)
+re_compile_fastmap(bufp)
      struct re_pattern_buffer *bufp;
 {
   unsigned char *pattern = (unsigned char*)bufp->buffer;
@@ -2931,7 +2930,7 @@ nmz_re_compile_fastmap(bufp)
    failure stack overflow).  */
 
 int
-nmz_re_search(bufp, string, size, startpos, range, regs)
+re_search(bufp, string, size, startpos, range, regs)
      struct re_pattern_buffer *bufp;
      const char *string;
      int size, startpos, range;
@@ -2946,7 +2945,7 @@ nmz_re_search(bufp, string, size, startpos, range, regs)
 
   /* Update the fastmap now if not correct already.  */
   if (fastmap && !bufp->fastmap_accurate) {
-    nmz_re_compile_fastmap(bufp);
+    re_compile_fastmap(bufp);
   }
 
   /* If the search isn't to be a backwards one, don't waste time in a
@@ -2958,7 +2957,7 @@ nmz_re_search(bufp, string, size, startpos, range, regs)
       if (range > 0) {
 	if (startpos > 0)
 	  return -1;
-	else if (nmz_re_match(bufp, string, size, 0, regs) >= 0)
+	else if (re_match(bufp, string, size, 0, regs) >= 0)
 	    return 0;
 	return -1;
       }
@@ -3058,7 +3057,7 @@ nmz_re_search(bufp, string, size, startpos, range, regs)
 
     if (startpos > size) return -1;
     if (anchor && size > 0 && startpos == size) return -1;
-    val = nmz_re_match(bufp, string, size, startpos, regs);
+    val = re_match(bufp, string, size, startpos, regs);
     if (val >= 0)
       return startpos;
     if (val == -2)
@@ -3142,15 +3141,15 @@ nmz_re_search(bufp, string, size, startpos, range, regs)
 
 
 
-/* The following are used for nmz_re_match, defined below:  */
+/* The following are used for re_match, defined below:  */
 
-/* Accessing macros used in nmz_re_match: */
+/* Accessing macros used in re_match: */
 
 #define IS_ACTIVE(R)  ((R).bits.is_active)
 #define MATCHED_SOMETHING(R)  ((R).bits.matched_something)
 
 
-/* Macros used by nmz_re_match:  */
+/* Macros used by re_match:  */
 
 /* I.e., regstart, regend, and reg_info.  */
 #define NUM_REG_ITEMS  3
@@ -3295,7 +3294,7 @@ init_regs(regs, num_regs)
    length of the substring which was matched.  */
 
 int
-nmz_re_match(bufp, string_arg, size, pos, regs)
+re_match(bufp, string_arg, size, pos, regs)
      struct re_pattern_buffer *bufp;
      const char *string_arg;
      int size, pos;
@@ -3377,7 +3376,7 @@ nmz_re_match(bufp, string_arg, size, pos, regs)
   stacke = &stackb[MAX_NUM_FAILURE_ITEMS * NFAILURES];
 
 #ifdef DEBUG_REGEX
-  fprintf(stderr, "Entering nmz_re_match(%s%s)\n", string1_arg, string2_arg);
+  fprintf(stderr, "Entering re_match(%s%s)\n", string1_arg, string2_arg);
 #endif
 
   /* Initialize subexpression text positions to -1 to mark ones that no
@@ -4149,7 +4148,7 @@ memcmp_translate(s1, s2, len)
 }
 
 void
-nmz_re_copy_registers(regs1, regs2)
+re_copy_registers(regs1, regs2)
      struct re_registers *regs1, *regs2;
 {
   int i;
@@ -4173,7 +4172,7 @@ nmz_re_copy_registers(regs1, regs2)
 }
 
 void
-nmz_re_free_registers(regs)
+re_free_registers(regs)
      struct re_registers *regs;
 {
   if (regs->allocated == 0) return;
@@ -4263,7 +4262,7 @@ static const unsigned char mbctab_utf8[] = {
 const unsigned char *re_mbctab = mbctab_ascii;
 
 void
-nmz_re_mbcinit(mbctype)
+re_mbcinit(mbctype)
      int mbctype;
 {
   switch (mbctype) {

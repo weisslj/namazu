@@ -1,18 +1,3 @@
-/*
-
-  util.h -
-
-  $Author: satoru $
-  $Date: 2000-01-08 09:27:20 $
-  created at: Thu Mar  9 11:55:53 JST 1995
-
-  Copyright (C) 1993-1998 Yukihiro Matsumoto
-
-  Modifications for Namazu 
-  by satoru-t@is.aist-nara.ac.jp
-
-*/
-
 #ifndef _UTIL_H
 #define _UTIL_H
 
@@ -28,7 +13,6 @@
  * Macros
  *
  */
-
 #define iskanji1st(c) (((uchar)(c) >= 0x81 && \
                        (uchar)(c)) <= 0x9f || \
                        ((uchar)(c) >= 0xe0 && \
@@ -45,10 +29,10 @@
 #define iseuc(c)  ((uchar)(c) >= 0xa1 && (uchar)(c) <= 0xfe)
 
 
-extern unsigned long scan_oct ( char *start, int len, int *retlen );
-extern unsigned long scan_hex ( char *start, int len, int *retlen );
-extern void * xmalloc ( unsigned long size );
-extern void * xrealloc ( void *ptr, unsigned long size );
+extern unsigned long nmz_scan_oct ( char *start, int len, int *retlen );
+extern unsigned long nmz_scan_hex ( char *start, int len, int *retlen );
+extern void * nmz_xmalloc ( unsigned long size );
+extern void * nmz_xrealloc ( void *ptr, unsigned long size );
 extern void nmz_tr ( char *str, const char *lstr, const char *rstr );
 extern void nmz_chomp ( char * str );
 extern size_t nmz_fread ( void *ptr, size_t size, size_t nmemb, FILE *stream );

@@ -1,4 +1,3 @@
-/* Add nmz prefix by Satoru Takabayashi */
 /* Definitions for data structures and routines for the regular
    expression library, version 0.12.
    Copyright (C) 1985,89,90,91,92,93,95,96,97,98 Free Software Foundation, Inc.
@@ -29,15 +28,15 @@
 
 /* symbol mangling for ruby */
 #ifdef RUBY
-# define nmz_re_compile_fastmap ruby_re_compile_fastmap
-# define nmz_re_compile_pattern ruby_re_compile_pattern
-# define nmz_re_copy_registers ruby_re_copy_registers
-# define nmz_re_free_pattern ruby_re_free_pattern
-# define nmz_re_free_registers ruby_re_free_registers
-# define nmz_re_match ruby_re_match
-# define nmz_re_mbcinit ruby_re_mbcinit
-# define nmz_re_search ruby_re_search
-# define nmz_re_set_casetable ruby_re_set_casetable
+# define re_compile_fastmap ruby_re_compile_fastmap
+# define re_compile_pattern ruby_re_compile_pattern
+# define re_copy_registers ruby_re_copy_registers
+# define re_free_pattern ruby_re_free_pattern
+# define re_free_registers ruby_re_free_registers
+# define re_match ruby_re_match
+# define re_mbcinit ruby_re_mbcinit
+# define re_search ruby_re_search
+# define re_set_casetable ruby_re_set_casetable
 # define register_info_type ruby_register_info_type
 #endif
 
@@ -87,16 +86,16 @@
 
 extern const unsigned char *re_mbctab;
 #if defined(__STDC__)
-void nmz_re_mbcinit (int);
+void re_mbcinit (int);
 #else
-void nmz_re_mbcinit ();
+void re_mbcinit ();
 #endif
 
 #undef ismbchar
 #define ismbchar(c) re_mbctab[(unsigned char)(c)]
 #define mbclen(c)   (re_mbctab[(unsigned char)(c)]+1)
 
-/* Structure used in nmz_re_match() */
+/* Structure used in re_match() */
 
 typedef union
 {
@@ -115,7 +114,7 @@ struct re_pattern_buffer
     int allocated;	/* Size of space that `buffer' points to. */
     int used;		/* Length of portion of buffer actually occupied  */
     char *fastmap;	/* Pointer to fastmap, if any, or zero if none.  */
-			/* nmz_re_search uses the fastmap, if there is one,
+			/* re_search uses the fastmap, if there is one,
 			   to skip over totally implausible characters.  */
     char *must;	        /* Pointer to exact pattern which strings should have
 			   to be matched.  */
@@ -134,7 +133,7 @@ struct re_pattern_buffer
 			   but at end of range or before a character
 			   listed in the fastmap.  */
 
-    /* stack & working area for nmz_re_match() */
+    /* stack & working area for re_match() */
     unsigned char **regstart;
     unsigned char **regend;
     unsigned char **old_regstart;
@@ -148,7 +147,7 @@ typedef struct re_pattern_buffer regex_t;
 
 /* Structure to store register contents data in.
 
-   Pass the address of such a structure as an argument to nmz_re_match, etc.,
+   Pass the address of such a structure as an argument to re_match, etc.,
    if you want this information back.
 
    For i from 1 to RE_NREGS - 1, start[i] records the starting index in
@@ -178,22 +177,22 @@ typedef struct
 
 
 #ifdef NeXT
-#define nmz_re_match rre_match
+#define re_match rre_match
 #endif
 
 #ifdef __STDC__
 
-extern char *nmz_re_compile_pattern (const char *, int, struct re_pattern_buffer *);
-void nmz_re_free_pattern (struct re_pattern_buffer *);
+extern char *re_compile_pattern (const char *, int, struct re_pattern_buffer *);
+void re_free_pattern (struct re_pattern_buffer *);
 /* Is this really advertised?  */
-extern void nmz_re_compile_fastmap (struct re_pattern_buffer *);
-extern int nmz_re_search (struct re_pattern_buffer *, const char*, int, int, int,
+extern void re_compile_fastmap (struct re_pattern_buffer *);
+extern int re_search (struct re_pattern_buffer *, const char*, int, int, int,
 		      struct re_registers *);
-extern int nmz_re_match (struct re_pattern_buffer *, const char *, int, int,
+extern int re_match (struct re_pattern_buffer *, const char *, int, int,
 		     struct re_registers *);
-extern void nmz_re_set_casetable (const char *table);
-extern void nmz_re_copy_registers (struct re_registers*, struct re_registers*);
-extern void nmz_re_free_registers (struct re_registers*);
+extern void re_set_casetable (const char *table);
+extern void re_copy_registers (struct re_registers*, struct re_registers*);
+extern void re_free_registers (struct re_registers*);
 
 #ifndef RUBY
 /* 4.2 bsd compatibility.  */
@@ -203,15 +202,15 @@ extern int re_exec (const char *);
 
 #else /* !__STDC__ */
 
-extern char *nmz_re_compile_pattern ();
+extern char *re_compile_pattern ();
 void re_free_regexp ();
 /* Is this really advertised? */
-extern void nmz_re_compile_fastmap ();
-extern int nmz_re_search ();
-extern int nmz_re_match ();
-extern void nmz_re_set_casetable ();
-extern void nmz_re_copy_registers ();
-extern void nmz_re_free_registers ();
+extern void re_compile_fastmap ();
+extern int re_search ();
+extern int re_match ();
+extern void re_set_casetable ();
+extern void re_copy_registers ();
+extern void re_free_registers ();
 
 #endif /* __STDC__ */
 

@@ -1,8 +1,28 @@
 /*
- * $Id: util.c,v 1.44 2000-01-09 11:28:55 satoru Exp $
- *
- * Imported scan_hex(), scan_oct(), xmalloc(), xrealloc() from 
- * Ruby b19's"util.c" and "gc.c". Thanks to Matsumoto-san for consent!
+ * 
+ * $Id: util.c,v 1.45 2000-01-09 13:00:40 satoru Exp $
+ * 
+ * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
+ * This is free software with ABSOLUTELY NO WARRANTY.
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+ * 02111-1307, USA
+ * 
+ * nmz_scan_hex(), nmz_scan_oct(), nmz_xmalloc(), nmz_xrealloc() are 
+ * originally imported from Ruby b19's "util.c" and "gc.c". 
+ * Thanks to Mr. Yukihiro Matsumoto <matz@netlab.co.jp>.
  *
  */
 
@@ -87,10 +107,7 @@ nmz_tolower(int c)
  */
 
 unsigned long
-scan_oct(start, len, retlen)
-char *start;
-int len;
-int *retlen;
+nmz_scan_oct(char *start, int len, int *retlen)
 {
     register char *s = start;
     register unsigned long retval = 0;
@@ -105,10 +122,7 @@ int *retlen;
 }
 
 unsigned long
-scan_hex(start, len, retlen)
-char *start;
-int len;
-int *retlen;
+nmz_scan_hex(char *start, int len, int *retlen)
 {
     static char hexdigit[] = "0123456789abcdef0123456789ABCDEFx";
     register char *s = start;
@@ -128,8 +142,7 @@ int *retlen;
 static unsigned long malloc_memories = 0;
 
 void *
-xmalloc(size)
-    unsigned long size;
+nmz_xmalloc(unsigned long size)
 {
     void *mem;
 
@@ -141,13 +154,11 @@ xmalloc(size)
 }
 
 void *
-xrealloc(ptr, size)
-    void *ptr;
-    unsigned long size;
+nmz_xrealloc(void *ptr, unsigned long size)
 {
     void *mem;
 
-    if (!ptr) return xmalloc(size);
+    if (!ptr) return nmz_xmalloc(size);
     mem = realloc(ptr, size);
     return mem;
 }

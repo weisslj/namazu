@@ -2,7 +2,7 @@
  * 
  * replace.c - 
  *
- * $Id: replace.c,v 1.9 2000-01-09 08:39:22 satoru Exp $
+ * $Id: replace.c,v 1.10 2000-01-09 13:00:40 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
@@ -56,7 +56,7 @@ nmz_free_replaces(void)
 	free(list->pat);
 	free(list->rep);
 	if (list->pat_re != NULL) {
-	    re_free_pattern(list->pat_re);
+	    nmz_re_free_pattern(list->pat_re);
 	}
 	free(list);
 	list = next;
@@ -89,7 +89,8 @@ nmz_replace_uri(char *uri)
 	     * string substitution.
 	     */
 	    is_regex_matching = 0;
-	} else if (0 < (mlen = re_match (re, tmp, strlen (tmp), 0, &regs))) {
+	} else if (0 < (mlen = nmz_re_match (re, tmp, strlen (tmp), 0, &regs)))
+	{
 	    /* We got a match.  Try to replace the string. */
 	    char repl[BUFSIZE];
 	    char *subst = list->rep;
@@ -142,7 +143,7 @@ nmz_replace_uri(char *uri)
 		strcpy(uri, repl);
 		strcpy(uri + j, tmp + mlen);
 	    }
-	    re_free_registers (&regs);
+	    nmz_re_free_registers (&regs);
 	}
 	if (is_regex_matching) {
 	    return 0;
@@ -196,9 +197,9 @@ nmz_add_replace(const char *pat, const char *rep)
     strcpy(newp->pat, pat);
     strcpy(newp->rep, rep);
 
-    if (re_compile_pattern (newp->pat, strlen (newp->pat), newp->pat_re)) {
+    if (nmz_re_compile_pattern (newp->pat, strlen (newp->pat), newp->pat_re)) {
 	/* Re_comp fails; set NULL to pat_re  */
-	re_free_pattern(newp->pat_re);
+	nmz_re_free_pattern(newp->pat_re);
 	newp->pat_re = NULL;
     }
     

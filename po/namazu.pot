@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2000-01-09 20:28+0900\n"
+"POT-Creation-Date: 2000-01-09 21:56+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,51 +29,51 @@ msgid ""
 "Scoring: %s\n"
 msgstr ""
 
-#: nmz/util.c:548
+#: nmz/util.c:559
 msgid "Fatal error occered!"
 msgstr ""
 
-#: nmz/util.c:554
+#: nmz/util.c:565
 msgid "Invalid query"
 msgstr ""
 
-#: nmz/util.c:557
+#: nmz/util.c:568
 msgid "Too many query tokens"
 msgstr ""
 
-#: nmz/util.c:560
+#: nmz/util.c:571
 msgid "Too many words matched. Ignored"
 msgstr ""
 
-#: nmz/util.c:563
+#: nmz/util.c:574
 msgid "Too many pages hit. Ignored"
 msgstr ""
 
-#: nmz/util.c:566
+#: nmz/util.c:577
 msgid "cannot open regex index"
 msgstr ""
 
-#: nmz/util.c:569
+#: nmz/util.c:580
 msgid "cannot open phrase index"
 msgstr ""
 
-#: nmz/util.c:572
+#: nmz/util.c:583
 msgid "cannot open field index"
 msgstr ""
 
-#: nmz/util.c:575
+#: nmz/util.c:586
 msgid "cannot open this index"
 msgstr ""
 
-#: nmz/util.c:578
+#: nmz/util.c:589
 msgid "cannot open result format file"
 msgstr ""
 
-#: nmz/util.c:581
+#: nmz/util.c:592
 msgid "You don't have a permission to access the index"
 msgstr ""
 
-#: nmz/util.c:584
+#: nmz/util.c:595
 msgid "Unknown error. Report bug!"
 msgstr ""
 
@@ -82,7 +82,7 @@ msgstr ""
 msgid "Alias:   \"%s\" -> \"%s\"\n"
 msgstr ""
 
-#: nmz/replace.c:217
+#: nmz/replace.c:218
 #, c-format
 msgid "Replace: \"%s\" -> \"%s\"\n"
 msgstr ""

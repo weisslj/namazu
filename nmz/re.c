@@ -2,7 +2,7 @@
  * 
  * re.c -
  * 
- * $Id: re.c,v 1.24 2000-01-09 11:28:54 satoru Exp $
+ * $Id: re.c,v 1.25 2000-01-09 13:00:38 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -61,9 +61,9 @@ regex_grep(const char *orig_expr, FILE *fp, const char *field, int field_mode)
     val.num = 0;
 
     if (nmz_is_lang_ja()) {
-        re_mbcinit(MBCTYPE_EUC);
+        nmz_re_mbcinit(MBCTYPE_EUC);
     } else {
-        re_mbcinit(MBCTYPE_ASCII);
+        nmz_re_mbcinit(MBCTYPE_ASCII);
     }
     rp = ALLOC(struct re_pattern_buffer);
     MEMZERO((char *)rp, struct re_pattern_buffer, 1);
@@ -86,7 +86,7 @@ regex_grep(const char *orig_expr, FILE *fp, const char *field, int field_mode)
         max = IGNORE_MATCH;
     }
 
-    re_compile_pattern(expr, strlen(expr), rp);
+    nmz_re_compile_pattern(expr, strlen(expr), rp);
 
     for (i = n = 0; fgets(buf, BUFSIZE, fp); i++) {
         if (buf[strlen(buf) - 1] != '\n') {  /* too long */
@@ -101,7 +101,7 @@ regex_grep(const char *orig_expr, FILE *fp, const char *field, int field_mode)
             nmz_replace_uri(buf);
         }
         nmz_strlower(buf);
-        if (-1 != re_search(rp, buf, strlen(buf), 0, strlen(buf), 0)) { 
+        if (-1 != nmz_re_search(rp, buf, strlen(buf), 0, strlen(buf), 0)) { 
            /* Matched */
             n++;
             if (n > max) {
@@ -161,7 +161,7 @@ regex_grep(const char *orig_expr, FILE *fp, const char *field, int field_mode)
         val = nmz_do_date_processing(val);
     }
 
-    re_free_pattern(rp);
+    nmz_re_free_pattern(rp);
     return val;
 }
 

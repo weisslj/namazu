@@ -1,5 +1,27 @@
 2000-01-09  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* nmz/re.h (ALLOC_N): Use nmz_xmalloc() instead of xmalloc()
+	(ALLOC): Ditto.
+	
+	* nmz/util.c: Changed function names.
+	s/xrealloc/nmz_xrealloc/g
+	s/xmalloc)/nmz_xmalloc/g
+	s/scan_hex/nmz_scan_hex/g
+	s/scan_oct/nmz_scan_oct/g
+
+	* nmz/Makefile.am (add-prefix): Convert regex-ruby.[ch] to
+	regex.[ch] with adding nmz prefix to extern functions.
+
+	* nmz/add-prefix.pl: New file.
+	
+	* nmz/get-extern-funcs.pl: New file.
+
+	* nmz/regex.[ch]: Generated from regex-ruby.[ch] with make
+	add-prefix. Add prefix to all extern functions. All callers
+	changed. 
+	
+	* nmz/regex-ruby.[ch]: Imported from source Ruby 1.4.3.
+	
 	* nmz/hlist.[ch]: Changed function names.
 	s/andmerge/nmz_andmerge/g
 	s/notmerge/nmz_notmerge/g

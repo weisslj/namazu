@@ -1,5 +1,8 @@
 2000-02-24  KOSEKI Yoshinori  <kose@yk.NetLaputa.ne.jp>
 
+	* namazu.el (namazu-split-dir): use namazu-dir-alist.
+	(namazu-make-field-completion-alist): Ditto. (and Fix :-)
+
 	* namazu.el (namazu-make-field-completion-alist): Fix, namazu-dir`s'.
 
 2000-02-16  Hideyuki SHIRAI  <shirai@rdmg.mgcs.mei.co.jp>

@@ -2,7 +2,7 @@
 ;;
 ;; Mule 上で Namazu を利用した検索を行うための elisp です。
 ;;
-;;  $Id: namazu.el,v 1.12 2000-02-24 03:29:01 kose Exp $
+;;  $Id: namazu.el,v 1.13 2000-02-24 06:48:33 kose Exp $
 
 (defconst namazu-version "namazu.el 1.0.3")
 
@@ -466,18 +466,19 @@ e.g.
 
 (defun namazu-split-dir (dirs)
   "インデックスディレクトリ文字列を分割し、\"~\" などを展開します。"
-  (let ((tmpdir1 dirs) (dir-list (list)))
+  (let ((tmpdir1 dirs) (dir-list (list))
+	(nmz-expand-filename (function (lambda (f)
+		(expand-file-name (namazu-unescape-dir 
+		    (or (cdr (assoc f namazu-dir-alist)) f)))))))
     (while (string-match "\\([^\\\\]\\) " tmpdir1)
       (save-match-data
 	(setq dir-list
 	      (append dir-list
-		      (list (expand-file-name
-			     (namazu-unescape-dir
-			      (substring tmpdir1 0 (match-end 1))))))))
+		      (list (funcall nmz-expand-filename
+			      (substring tmpdir1 0 (match-end 1)))))))
       (setq tmpdir1 (substring tmpdir1 (match-end 0))))
     (if dirs
-	(append dir-list (list (expand-file-name
-				(namazu-unescape-dir tmpdir1))))
+	(append dir-list (list (funcall nmz-expand-filename tmpdir1)))
       dir-list)))
 
 (defun namazu-expand-dir-alias (dir)
@@ -527,20 +528,20 @@ e.g.
 
 (defun namazu-make-field-completion-alist (namazu-dirs)
   "make \'+files:\' completion alist."
-  (let (dir flist fields fname
+  (let (dir flist fields fname el
 	 (dirs (namazu-split-dir 
-	   (if namazu-dirs
-	       (or (cdr (assoc namazu-dirs namazu-dir-alist)) namazu-dirs)
-	     (or namazu-default-dir
-		 (setq namazu-default-dir (namazu-get-default-index-dir)))))))
+		(or namazu-dirs namazu-default-dir
+		    (setq namazu-default-dir (namazu-get-default-index-dir))))))
     (while (setq dir (car dirs))
       (if (file-exists-p dir)
-	  (setq flist (append (directory-files dir))))
+	  (setq flist (append (directory-files dir) flist)))
       (setq dirs (cdr dirs)))
     (while (setq fname (car flist))
       (and (string-match "NMZ.field.\\([^.]+\\)\\'" fname)
-           (setq fields (append (list (list (format "+%s:"
-              (substring fname (match-beginning 1) (match-end 1))))) fields)))
+	   (setq el (list (format "+%s:"
+              (substring fname (match-beginning 1) (match-end 1)))))
+	   (if (not (member el fields))
+	       (setq fields (append (list el) fields))))
       (setq flist (cdr flist)))
     fields))
 

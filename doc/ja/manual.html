@@ -19,12 +19,14 @@ href="http://www.namazu.org/">http://www.namazu.org/</a> か
 </p>
 
 <h2>目次</h2>
+
 <ul>
 <li><a href="#organization">Namazuの基本構成</a>
 <li><a href="#mknmz">mknmzコマンド</a>
   <ul>
   <li><a href="#mknmz-option">mknmzコマンド行引数</a>
   <li><a href="#mknmzrc">mknmzrcの設定</a>
+  <li><a href="#doc-filter">文書フィルタ</a>
   </ul>
 <li><a href="#namazu">namazuコマンド</a>
   <ul>
@@ -64,7 +66,6 @@ href="http://www.namazu.org/">http://www.namazu.org/</a> か
   <li><a href="#query-notes">特記事項</a>
   </ul>
 </ul>
-
 
 <h2><a name="organization">Namazuの基本構成</a></h2>
 
@@ -195,9 +196,9 @@ mknmz は
 
 <p>
 インストール直後の状態では 
-$(sysconfdir)/$(PACKAGE)/mknmzrc-sample というサンプルファイ
+<code>$(sysconfdir)/$(PACKAGE)/mknmzrc-sample</code> というサンプルファイ
 ルが用意されています。これを 
-$(sysconfdir)/$(PACKAGE)/mknmzrc にコピーする、あるいは自分
+<code>$(sysconfdir)/$(PACKAGE)/mknmzrc</code> にコピーする、あるいは自分
 のホームディレクトリに ~/.mknmzrc としてコピーして利用します。
 </p>
 
@@ -205,6 +206,97 @@ $(sysconfdir)/$(PACKAGE)/mknmzrc にコピーする、あるいは自分
 mknmzrc の設定項目の説明は mknmzrc-sample ファイルにコメント
 として書かれています。
 </p>
+
+
+<h3><a name="doc-filter">文書フィルタ</a></h3>
+
+<p>
+mknmz は対象ファイルの文書形式を自動で判別して、適切なフィル
+タ処理を行います。たとえば、 HTML文書では &lt;title&gt; の抽
+出や、HTMLタグの除去を行います。この処理は
+<code>$(datadir)/$(PACKAGE)/filter</code> に置かれる文書フィ
+ルタによって行われます。標準で用意されている文書フィルタは次
+の通りです。
+</p>
+
+<dl>
+<dt>gzip.pl
+<dd>gzipで圧縮されたファイルを扱う<br>
+<dd>必需品: <a href="http://www.gzip.org/">gzip</a> コマンド
+または Compress::Zlib モジュール
+
+<dt>bzip2.pl
+<dd>bzip2で圧縮されたファイルを扱う
+<dd>必需品: <a
+href="http://sourceware.cygnus.com/bzip2/">bzip2</a> コマン
+ド
+
+<dt>compress.pl
+<dd>compressで圧縮されたファイルを扱う
+<dd>必需品: compressコマンド
+
+<dt>hnf.pl
+<dd><a href="http://www.h14m.org/">ハイパー日記システム</a> のファ
+イルを扱う
+<dd>必需品: なし
+
+<dt>html.pl
+<dd>HTML文書を扱う
+<dd>必需品: なし
+
+<dt>ichitaro456.pl
+<dd>一太郎 4, 5, 6 のファイルを扱う
+<dd>必需品: jstxt
+
+<dt>mailnews.pl
+<dd>Mail/News のファイルを扱う
+<dd>必需品: なし
+
+<dt>man.pl
+<dd>man を扱う
+<dd>必需品: nroff, groff, jgroff
+
+<dt>mhonarc.pl
+<dd>MHonArc のファイルを扱う
+<dd>必需品: なし
+
+<dt>msword.pl
+<dd>Word文書を扱う
+<dd>必需品: <a href="http://www.wvWare.com/">wvWare</a>
+
+<dt>pdf.pl
+<dd>PDFファイルを扱う
+<dd>必需品: <a href="http://www.foolabs.com/xpdf/">xpdf</a>
+に付属の pdftotextコマンド
+
+<dt>rfc.pl
+<dd>RFCのファイルを扱う
+<dd>必需品: なし
+
+<dt>tex.pl
+<dd>TeXのファイルを扱う
+<dd>必需品: <a
+href="http://www.cs.purdue.edu/homes/trinkle/detex/">detex</a>
+</dl>
+
+<p>
+ole から始まるファイル名の文書フィルタは Windows専用です。
+</p>
+
+<dl>
+<dt>oleexcel.pl
+<dd>Excelのファイルを扱う
+<dd>必需品: Excel
+
+<dt>olemsword.pl
+<dd>Word文書を扱う
+<dd>必需品: Word
+
+<dt>olepowerpoint.pl
+<dd>Power Point のファイルを扱う
+<dd>必需品: Power Point
+</dl>
+
 
 <h2><a name="namazu">namazuコマンド</a></h2>
 
@@ -275,7 +367,7 @@ namazu は
 </p>
 
 <ol>
-<li>$(sysconfdir)/$(PACKAGE)/namazurc<br>
+<li><code>$(sysconfdir)/$(PACKAGE)/namazurc</code><br>
 通常は /usr/local/etc/namazu/namazurc
 <li>~/.namazurc
 <li>-f, --config= オプションで指定した namazurc
@@ -287,10 +379,11 @@ namazu は
 
 <p>
 インストール直後の状態では 
-$(sysconfdir)/$(PACKAGE)/namazurc-sample というサンプルファイ
-ルが用意されています。これを 
-$(sysconfdir)/$(PACKAGE)/namazurc にコピーする、あるいは自分
-のホームディレクトリに ~/.namazurc としてコピーして利用します。
+<code>$(sysconfdir)/$(PACKAGE)/namazurc-sample</code> という
+サンプルファイルが用意されています。これを 
+<code>$(sysconfdir)/$(PACKAGE)/namazurc</code> にコピーする、
+あるいは自分のホームディレクトリに ~/.namazurc としてコピー
+して利用します。
 </p>
 
 <p>
@@ -774,7 +867,7 @@ Tknamazu および namazu.el から検索するときは必ず後者で指定します。
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: manual.html,v 1.10 2000-02-05 02:10:16 satoru Exp $
+$Id: manual.html,v 1.11 2000-02-06 09:38:00 satoru Exp $
 </div>
 <address>
 developers@namazu.org

@@ -1,4 +1,4 @@
-/* $Id: namazu.css,v 1.1 2000-01-31 01:32:33 satoru Exp $ */
+/* $Id: namazu.css,v 1.2 2000-02-06 09:38:01 satoru Exp $ */
 
 body { 
 	background-color: White; 
@@ -55,4 +55,9 @@ code.operator  {
 	color: Navy;
 	font-family: monospace; 
 	font-weight: bold; 
+}
+
+dd.requirement {
+	font-style: italic;
+	color: blue;
 }

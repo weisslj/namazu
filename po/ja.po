@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: namazu 2.0\n"
-"POT-Creation-Date: 2000-01-04 14:05+0900\n"
+"POT-Creation-Date: 2000-01-06 13:00+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>\n"
 "Language-Team: Japanese <satoru-t@is.aist-nara.ac.jp>\n"
@@ -13,12 +13,12 @@ msgstr ""
 "Content-Type: text/plain; charset=EUC-JP\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
-#: nmz/rcfile.c:447
+#: nmz/rcfile.c:449
 #, c-format
 msgid "Config:  %s\n"
 msgstr "設定ファイル:  %s\n"
 
-#: nmz/rcfile.c:450
+#: nmz/rcfile.c:452
 #, c-format
 msgid ""
 "Default: %s\n"
@@ -33,84 +33,84 @@ msgstr ""
 "標準の言語: %s\n"
 "スコア計算: %s\n"
 
-#: nmz/util.c:577
+#: nmz/util.c:589
 msgid "Fatal error occered!"
 msgstr "致命的なエラー"
 
-#: nmz/util.c:583
+#: nmz/util.c:595
 msgid "Invalid query"
 msgstr "不正な idxname の指定です"
 
-#: nmz/util.c:586
+#: nmz/util.c:598
 #, fuzzy
 msgid "Too many query tokens"
 msgstr "検索式の項目が多すぎます\n"
 
-#: nmz/util.c:589
+#: nmz/util.c:601
 msgid "Too many words matched. Ignored"
 msgstr "マッチする単語が多すぎるので無視しました"
 
-#: nmz/util.c:592
+#: nmz/util.c:604
 msgid "Too many pages hit. Ignored"
 msgstr "ヒット数が多すぎるので無視しました"
 
-#: nmz/util.c:595
+#: nmz/util.c:607
 msgid "cannot open regex index"
 msgstr "正規表現用インデックスが開けませんでした"
 
-#: nmz/util.c:598
+#: nmz/util.c:610
 msgid "cannot open phrase index"
 msgstr "フレイズ検索用インデックスが開けませんでした"
 
-#: nmz/util.c:601
+#: nmz/util.c:613
 msgid "cannot open this index"
 msgstr "インデックスが開けませんでした"
 
-#: nmz/util.c:604
+#: nmz/util.c:616
 msgid "You don't have a permission to access the index"
 msgstr "インデックスにアクセスする権利がありません"
 
-#: nmz/util.c:607
+#: nmz/util.c:619
 msgid "Unknown error. Report bug!"
 msgstr "不明なエラー。バグ報告してください"
 
-#: nmz/alias.c:100
+#: nmz/alias.c:102
 #, c-format
 msgid "Alias:   \"%s\" -> \"%s\"\n"
 msgstr "別名:   \"%s\" -> \"%s\"\n"
 
-#: nmz/replace.c:214
+#: nmz/replace.c:216
 #, c-format
 msgid "Replace: \"%s\" -> \"%s\"\n"
 msgstr "置換: \"%s\" -> \"%s\"\n"
 
-#: src/cgi.c:112 src/cgi.c:122
+#: src/cgi.c:111 src/cgi.c:121
 msgid "Invalid idxname."
 msgstr "不正な idxname の指定です"
 
-#: src/cgi.c:197 src/cgi.c:212
+#: src/cgi.c:207 src/cgi.c:222
 msgid "Too long QUERY_STRING"
 msgstr "CGIの QUERY_STRING が長すぎます"
 
-#: src/output.c:372
+#: src/output.c:389
 msgid "\t<strong>Page:</strong> "
 msgstr "\t<strong>ペイジ:</strong> "
 
-#: src/output.c:415
+#: src/output.c:434
 #, c-format
 msgid "Current List: %d"
 msgstr "現在のリスト: %d"
 
-#: src/output.c:462
+#: src/output.c:482
 #, c-format
 msgid " [ TOTAL: %d ]"
 msgstr " [ 合計: %d ]"
 
-#: src/output.c:472
+#: src/output.c:492
 msgid "\t<p><strong> Total "
 msgstr "\t<p><strong>検索式にマッチする "
 
-#: src/output.c:479
+#: src/output.c:499
 msgid ""
 "\t documents matching your query.</strong></p>\n"
 "\n"
@@ -118,7 +118,7 @@ msgstr ""
 "\t 個の文書が見つかりました。</strong></p>\n"
 "\n"
 
-#: src/output.c:543
+#: src/output.c:579
 #, c-format
 msgid ""
 "\t<h2>Error!</h2>\n"
@@ -127,19 +127,19 @@ msgstr ""
 "\t<h2>エラー!</h2>\n"
 "<p>%s</p>\n"
 
-#: src/output.c:553
+#: src/output.c:589
 msgid "\t<h2>Results:</h2>\n"
 msgstr "\t<h2>検索結果</h2>\n"
 
-#: src/output.c:560
+#: src/output.c:596
 msgid "References: "
 msgstr "参考ヒット数: "
 
-#: src/output.c:602
+#: src/output.c:638
 msgid "\t<p>No document matching your query.</p>\n"
 msgstr "\t<p>検索式にマッチする文書はありませんでした。</p>\n"
 
-#: src/usage.c:50
+#: src/usage.c:52
 #, c-format
 msgid ""
 "namazu %s, a search program of Namazu.\n"
@@ -203,11 +203,11 @@ msgstr ""
 "\n"
 "バグ報告は <bug-namazu@namazu.org> へどうぞ\n"
 
-#: src/usage.c:89
+#: src/usage.c:91
 msgid "Usage: namazu [options] <query> [index]...\n"
 msgstr "使い方: namazu [オプション] <検索式> [インデックス]...\n"
 
-#: src/usage.c:90
+#: src/usage.c:92
 msgid "Try `namazu --help' for more information.\n"
 msgstr "`namazu --help' でより詳しい情報がが表示されます\n"
 

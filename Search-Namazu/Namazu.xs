@@ -20,7 +20,7 @@ Namazu.xs
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 # 02111-1307, USA
 
-$Id: Namazu.xs,v 1.3 1999-11-09 08:34:36 knok Exp $
+$Id: Namazu.xs,v 1.4 1999-11-10 08:04:51 knok Exp $
 
 */
 
@@ -65,13 +65,13 @@ call_search_main(query)
 	CODE:
 		uniq_idxnames();
 		expand_idxname_aliases();
-		compete_idxnames();
+		complete_idxnames();
 
 		qstr = SvPV(query, na);
 		retar = newAV();
 		hlist = search_main(qstr);
 		for (i = 0; i < hlist.n; i ++) {
-			SV *ohlist = perl_eval_pv("new Seach::Namazu::HList", TRUE);
+			SV *ohlist = perl_eval_pv("new Search::Namazu::HList", TRUE);
 			get_field_data(hlist.d[i].idxid, hlist.d[i].docid, "uri", result);
 			PUSHMARK(SP);
 			XPUSHs(ohlist);

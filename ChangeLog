@@ -1,3 +1,7 @@
+1999-11-10  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* Search-Namazu/* : Implemented (work but very unstable).
+
 1999-11-09  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* src/i18n.{c,h} : Moved to nmz/ directory.

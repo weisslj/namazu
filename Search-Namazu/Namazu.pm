@@ -19,7 +19,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 # 02111-1307, USA
 #
-# $Id: Namazu.pm,v 1.3 1999-11-09 08:34:36 knok Exp $
+# $Id: Namazu.pm,v 1.4 1999-11-10 08:04:51 knok Exp $
 #
 
 package Search::Namazu;
@@ -32,7 +32,7 @@ Search::Namazu - Namazu library module for perl
 
   use Search::Namazu;
 
-  $res = Search::Namazu::Search(index => '/usr/local/namazu/index',
+  @hlists = Search::Namazu::Search(index => '/usr/local/namazu/index',
 				query => 'foo');
 
 =head1 DESCRIPTION
@@ -113,7 +113,7 @@ sub Search {
 	@indices = ($index);
     }
     for my $idx (@indices) {
-	if (add_nmzindex($idx) < 0) {
+	if (nmz_addindex($idx) < 0) {
 	    return NMZ_ERR_INDEX;
 	}
     }
@@ -131,32 +131,37 @@ sub Search {
     }
 
     if ($sortord == NMZ_DESCENDSORT) {
-	nmz_descendsort();
+	nmz_descendingsort();
     } elsif ($sortord == NMZ_ASCENDSORT) {
-	nmz_ascendsort();
+	nmz_ascendingsort();
     } else {
-	nmz_descendsort();
+	nmz_descendingsort();
     }
 
     if (defined $config) {
-	if (nmz_setconfig($config))
+	if (nmz_setconfig($config)) {
 	  return ();
+      }
     }
 
     if (defined $lang) {
-	if (nmz_setlang($lang))
+	if (nmz_setlang($lang)) {
 	  return ();
+      }
     }
 
 # query and get hlist
 
-    if (! defined $query)
-      return ();
+    if (! defined $query) {
+	return ();
+    }
 
 # create Search::Namazu::Result object
 
-# return object
-    
+    my @hlists = call_search_main($query);
+
+# return objects
+    return @hlists;
 }
 
 package Search::Namazu::HList;
@@ -181,6 +186,7 @@ sub set {
     $self->{uri} = $uri;
     $self->{date} = $date;
     $self->{rank} = $rank;
+    print "$score $uri $date $rank\n";
 }
 
 sub score {

@@ -1,3 +1,8 @@
+2004-08-08  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * src/form.c(replace_query_value): strncat() The mistake of the 3rd 
+        argument is corrected.
+
 2004-08-06  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * filter/pipermail.pl: Correction to the bug of pipermail
@@ -9007,4 +9012,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1215 2004-08-06 05:08:23 opengl2772 Exp $
+$Id: ChangeLog,v 1.1216 2004-08-08 11:44:52 opengl2772 Exp $

@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.74 2004-07-20 18:19:03 opengl2772 Exp $
+ * $Id: form.c,v 1.75 2004-08-08 11:44:52 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -123,8 +123,8 @@ replace_query_value(const char *p, const char *query)
             get_value(p, value);
 
             strncpy(buffer, " value=\"", BUFSIZE - 1);
-            strncat(buffer, value, BUFSIZE - 1);
-            strncat(buffer, "\"", BUFSIZE - 1);
+            strncat(buffer, value, BUFSIZE - strlen(buffer) - 1);
+            strncat(buffer, "\"", BUFSIZE - strlen(buffer) - 1);
             buffer[BUFSIZE - 1] = '\0';
             delete_str((char *)p, buffer);
 	}

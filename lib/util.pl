@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.3 1999-08-25 00:40:18 knok Exp $
+# $Id: util.pl,v 1.4 1999-08-25 10:20:54 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -117,20 +117,6 @@ sub rfc822time ($)
 		   $week_names[$wday],
 		   $mday, $month_names[$mon], $year + 1900,
 		   $hour, $min, $sec);
-}
-
-sub read_file ($) {
-    my ($file) = @_;
-    my $fh_file;
-
-    if ($conf::LANGUAGE eq "ja" && ! $conf::USE_NKF_MODULE) {
-	$fh_file = util::fopen_or_die("$conf::NKF -e $file|");
-    } else {
-	$fh_file = util::fopen_or_die($file);
-    }
-    my $buf = join("", <$fh_file>);
-    $buf = NKF::nkf("-e", $buf) if $conf::USE_NKF_MODULE;
-    return $buf;
 }
 
 sub readfile ($) {

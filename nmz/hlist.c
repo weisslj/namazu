@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.10 1999-12-04 04:37:31 satoru Exp $
+ * $Id: hlist.c,v 1.11 1999-12-04 04:50:09 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -55,20 +55,20 @@ typedef struct str_num str_num;
  *
  */
 
-static void memcpy_hlist(HLIST, HLIST, int);
-static void set_rank(HLIST);
-static int  field_sort(HLIST);
+static void memcpy_hlist(NmzResult, NmzResult, int);
+static void set_rank(NmzResult);
+static int  field_sort(NmzResult);
 static int  field_scmp(const void*, const void*);
 static int  field_ncmp(const void*, const void*);
 static int  date_cmp(const void*, const void*);
 static int  score_cmp(const void*, const void*);
 
-static void memcpy_hlist(HLIST to, HLIST from, int n)
+static void memcpy_hlist(NmzResult to, NmzResult from, int n)
 {
     memcpy(to.data + n,  from.data,  from.num * sizeof (to.data[0]));
 }
 
-static void set_rank(HLIST hlist)
+static void set_rank(NmzResult hlist)
 {
     int i;
 
@@ -78,7 +78,7 @@ static void set_rank(HLIST hlist)
     }
 }
 
-static int field_sort(HLIST hlist) 
+static int field_sort(NmzResult hlist) 
 {
     int i, numeric = 1;
 
@@ -195,7 +195,7 @@ static int date_cmp(const void *p1, const void *p2)
  */
 
 /* merge the left and  right with AND rule */
-HLIST andmerge(HLIST left, HLIST right, int *ignore)
+NmzResult andmerge(NmzResult left, NmzResult right, int *ignore)
 {
     int i, j, v;
 
@@ -249,7 +249,7 @@ HLIST andmerge(HLIST left, HLIST right, int *ignore)
 
 
 /* merge the left and  right with NOT rule */
-HLIST notmerge(HLIST left, HLIST right, int *ignore)
+NmzResult notmerge(NmzResult left, NmzResult right, int *ignore)
 {
     int i, j, v, f;
 
@@ -297,10 +297,10 @@ HLIST notmerge(HLIST left, HLIST right, int *ignore)
 /*
  * merge the left and  right with OR rule
  */
-HLIST ormerge(HLIST left, HLIST right)
+NmzResult ormerge(NmzResult left, NmzResult right)
 {
     int i, j, v, n;
-    HLIST val;
+    NmzResult val;
 
     if ((left.stat  != SUCCESS || left.num <= 0) && 
 	(right.stat != SUCCESS || right.num <= 0)) 
@@ -356,7 +356,7 @@ HLIST ormerge(HLIST left, HLIST right)
     return val;
 }
 
-void malloc_hlist(HLIST * hlist, int n)
+void malloc_hlist(NmzResult * hlist, int n)
 {
     if (n <= 0) return;
     hlist->data = malloc(n * sizeof(struct nmz_data));
@@ -370,7 +370,7 @@ void malloc_hlist(HLIST * hlist, int n)
     hlist->stat = SUCCESS;
 }
 
-void realloc_hlist(HLIST * hlist, int n)
+void realloc_hlist(NmzResult * hlist, int n)
 {
     if (hlist->stat != SUCCESS || n <= 0) return;
     hlist->data = realloc(hlist->data, n * sizeof(struct nmz_data));
@@ -380,18 +380,18 @@ void realloc_hlist(HLIST * hlist, int n)
     }
 }
 
-void free_hlist(HLIST hlist)
+void free_hlist(NmzResult hlist)
 {
     if (hlist.stat != SUCCESS || hlist.num <= 0) return;
     free(hlist.data);
 }
 
-void copy_hlist(HLIST to, int n_to, HLIST from, int n_from)
+void copy_hlist(NmzResult to, int n_to, NmzResult from, int n_from)
 {
     to.data[n_to] = from.data[n_from];
 }
 
-void set_idxid_hlist(HLIST hlist, int id)
+void set_idxid_hlist(NmzResult hlist, int id)
 {
     int i;
     for (i = 0; i < hlist.num; i++) {
@@ -399,10 +399,10 @@ void set_idxid_hlist(HLIST hlist, int id)
     }
 }
 
-HLIST merge_hlist(HLIST *hlists)
+NmzResult merge_hlist(NmzResult *hlists)
 {
     int i, n;
-    HLIST value;
+    NmzResult value;
 
     if (Idx.num == 1) return hlists[0];
     for(i = n = 0; i < Idx.num; i++) {
@@ -425,7 +425,7 @@ HLIST merge_hlist(HLIST *hlists)
 }
 
 /* get date info from NMZ.t and do the missing number processing */
-HLIST do_date_processing(HLIST hlist)
+NmzResult do_date_processing(NmzResult hlist)
 {
     FILE *date_index;
     int i;
@@ -462,10 +462,10 @@ HLIST do_date_processing(HLIST hlist)
 }
 
 /* get the hit list */
-HLIST get_hlist(int index)
+NmzResult get_hlist(int index)
 {
     int n, *buf, i;
-    HLIST hlist;
+    NmzResult hlist;
     double idf = 0;
     hlist.num  = 0;
     hlist.stat = SUCCESS;
@@ -516,7 +516,7 @@ HLIST get_hlist(int index)
 
 
 /* interface to invoke merge sort function */
-int sort_hlist(HLIST hlist, int mode)
+int sort_hlist(NmzResult hlist, int mode)
 {
     set_rank(hlist); /* conserve current order for STABLE sorting */
 
@@ -535,10 +535,10 @@ int sort_hlist(HLIST hlist, int mode)
  * reverse a given hlist
  * original of this routine was contributed by Furukawa-san [1997-11-13]
  */
-int reverse_hlist(HLIST hlist)
+int reverse_hlist(NmzResult hlist)
 {
     int m, n;
-    HLIST tmp;
+    NmzResult tmp;
 
     malloc_hlist(&tmp, 1);
     if (tmp.stat == ERR_FATAL)

@@ -2,7 +2,7 @@
  * 
  * parser.c -
  * 
- * $Id: parser.c,v 1.7 1999-12-04 01:20:37 satoru Exp $
+ * $Id: parser.c,v 1.8 1999-12-04 04:50:10 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -50,14 +50,14 @@ static int Cp = 0; /* variable that saves current position of parser */
  *
  */
 
-static HLIST factor(int*);
+static NmzResult factor(int*);
 static int andop(void);
-static HLIST term(void);
+static NmzResult term(void);
 static int orop(void);
 
-static HLIST factor(int *ignore)
+static NmzResult factor(int *ignore)
 {
-    HLIST val;
+    NmzResult val;
     val.num = 0;
 
     while (1) {
@@ -120,9 +120,9 @@ static int andop(void)
     return 0;
 }
 
-static HLIST term(void)
+static NmzResult term(void)
 {
-    HLIST left, right;
+    NmzResult left, right;
     int ignore = 0, op;
 
     left = factor(&ignore);
@@ -163,9 +163,9 @@ static int orop(void)
  *
  */
 
-HLIST expr(void)
+NmzResult expr(void)
 {
-    HLIST left, right;
+    NmzResult left, right;
 
     left = term();
     if (left.stat == ERR_FATAL)

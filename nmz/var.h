@@ -9,22 +9,6 @@ extern char BASE_URI[];
 extern char CONFDIR[];
 extern char NAMAZURC[];
 
-extern char INDEX[];
-extern char INDEXINDEX[];
-extern char HEADERFILE[];
-extern char FOOTERFILE[];
-extern char LOCKFILE[];
-extern char LOCKMSGFILE[];
-extern char BODYMSGFILE[];
-extern char RESULTFILE[];
-extern char SLOG[];
-extern char WORDLIST[];
-extern char FIELDINFO[];
-extern char DATEINDEX[];
-
-extern char PHRASE[];
-extern char PHRASEINDEX[];
-
 extern REPLACE *Replace;
 extern ALIAS   *Alias;
 

@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.17 1999-12-04 04:37:31 satoru Exp $
+ * $Id: search.c,v 1.18 1999-12-04 04:50:10 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -66,24 +66,24 @@ enum { ALLOW, DENY } perm;
 static void show_status(int, int);
 static int get_file_size (char*);
 static void lrget(char* , int*, int*);
-static HLIST prefix_match(char* , int);
+static NmzResult prefix_match(char* , int);
 static enum nmz_search_mode detect_search_mode(char*);
-static HLIST do_word_search(char*, HLIST);
-static HLIST do_prefix_match_search(char*, HLIST);
+static NmzResult do_word_search(char*, NmzResult);
+static NmzResult do_prefix_match_search(char*, NmzResult);
 static int hash(char*);
-static HLIST cmp_phrase_hash(int, HLIST, FILE *, FILE *);
+static NmzResult cmp_phrase_hash(int, NmzResult, FILE *, FILE *);
 static int open_phrase_index_files(FILE**, FILE**);
-static HLIST do_phrase_search(char*, HLIST);
+static NmzResult do_phrase_search(char*, NmzResult);
 static void do_regex_preprocessing(char*);
-static HLIST do_regex_search(char*, HLIST);
+static NmzResult do_regex_search(char*, NmzResult);
 static void get_expr(char*, char*);
-static HLIST do_field_search(char*, HLIST);
+static NmzResult do_field_search(char*, NmzResult);
 static void delete_beginning_backslash(char*);
 static int check_lockfile(void);
 static int open_index_files();
 static void close_index_files(void);
 static void do_logging(char* , int);
-static HLIST search_sub(HLIST, char*, char*, int);
+static NmzResult search_sub(NmzResult, char*, char*, int);
 static void make_fullpathname_index(int);
 static int check_accessfile();
 static void parse_access(char *, char *, char *);
@@ -166,10 +166,10 @@ static void lrget(char * key, int *l, int *r)
 }
 
 /* Prefix match search */
-static HLIST prefix_match(char * orig_key, int v)
+static NmzResult prefix_match(char * orig_key, int v)
 {
     int i, j, n;
-    HLIST tmp, val;
+    NmzResult tmp, val;
     char buf[BUFSIZE], key[BUFSIZE];
     val.num = 0;
 
@@ -276,7 +276,7 @@ static enum nmz_search_mode detect_search_mode(char *key) {
     }
 }
 
-static HLIST do_word_search(char *key, HLIST val)
+static NmzResult do_word_search(char *key, NmzResult val)
 {
     int v;
 
@@ -293,7 +293,7 @@ static HLIST do_word_search(char *key, HLIST val)
     return val;
 }
 
-static HLIST do_prefix_match_search(char *key, HLIST val)
+static NmzResult do_prefix_match_search(char *key, NmzResult val)
 {
     int v;
 
@@ -326,8 +326,8 @@ static int hash(char *str)
     return (hash & 65535);
 }
 
-/* get the phrase hash and compare it with HLIST */
-static HLIST cmp_phrase_hash(int hash_key, HLIST val, 
+/* get the phrase hash and compare it with NmzResult */
+static NmzResult cmp_phrase_hash(int hash_key, NmzResult val, 
                           FILE *phrase, FILE *phrase_index)
 {
     int i, j, v, n, *list;
@@ -391,7 +391,7 @@ static int open_phrase_index_files(FILE **phrase, FILE **phrase_index)
 
 
 /* phrase search */
-static HLIST do_phrase_search(char *key, HLIST val)
+static NmzResult do_phrase_search(char *key, NmzResult val)
 {
     int i, h = 0, ignore = 0;
     char *p, *q, *word_b = 0, word_mix[BUFSIZE];
@@ -417,7 +417,7 @@ static HLIST do_phrase_search(char *key, HLIST val)
             *q = '\0';
 	}
         if (strlen(p) > 0) {
-            HLIST tmp;
+            NmzResult tmp;
 
             tmp = do_word_search(p, val);
 	    if (tmp.stat == ERR_FATAL) 
@@ -509,7 +509,7 @@ static void do_regex_preprocessing(char *expr)
     }
 }
 
-static HLIST do_regex_search(char *orig_expr, HLIST val)
+static NmzResult do_regex_search(char *orig_expr, NmzResult val)
 {
     FILE *fp;
     char expr[BUFSIZE * 2]; /* because of escaping meta characters */
@@ -535,7 +535,7 @@ static void get_expr(char *expr, char *str)
     strcpy(expr, str);
 }
 
-static HLIST do_field_search(char *str, HLIST val)
+static NmzResult do_field_search(char *str, NmzResult val)
 {
     char expr[BUFSIZE * 2], /* because of escaping meta characters */
         field_name[BUFSIZE], file_name[BUFSIZE];
@@ -712,7 +712,7 @@ static void do_logging(char * query, int n)
     fclose(slog);
 }
 
-static HLIST search_sub(HLIST hlist, char *query, char *query_orig, int n)
+static NmzResult search_sub(NmzResult hlist, char *query, char *query_orig, int n)
 {
     CurrentIndexNumber = n;
 
@@ -839,9 +839,9 @@ int binsearch(char *orig_key, int prefix_match_mode)
 }
 
 /* flow of search */
-HLIST search_main(char *query)
+NmzResult search_main(char *query)
 {
-    HLIST hlist, tmp[INDEX_MAX];
+    NmzResult hlist, tmp[INDEX_MAX];
     char query_orig[BUFSIZE];
     int i, ret;
 
@@ -897,7 +897,7 @@ HLIST search_main(char *query)
 
 
 
-HLIST do_search(char *orig_key, HLIST val)
+NmzResult do_search(char *orig_key, NmzResult val)
 {
     enum nmz_search_mode mode;
     char key[BUFSIZE];

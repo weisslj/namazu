@@ -17,7 +17,7 @@
 #define NOT_OP 2
 
 extern void init_parser(void);
-extern HLIST expr(void);
+extern NmzResult expr(void);
 extern int isop(char *);
 
 #endif /* _PARSER_H */

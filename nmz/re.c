@@ -2,7 +2,7 @@
  * 
  * re.c -
  * 
- * $Id: re.c,v 1.7 1999-12-04 01:20:37 satoru Exp $
+ * $Id: re.c,v 1.8 1999-12-04 04:50:10 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -147,12 +147,12 @@ int replace_uri(char *uri)
     return 0;
 }
 
-HLIST regex_grep(char *orig_expr, FILE *fp, char *field, int field_mode)
+NmzResult regex_grep(char *orig_expr, FILE *fp, char *field, int field_mode)
 {
     char buf[BUFSIZE], expr[BUFSIZE];
     REGEX *rp;
     int i, n, size = 0, max, uri_mode = 0;
-    HLIST val, tmp;
+    NmzResult val, tmp;
     val.num = 0;
 
     if (is_lang_ja()) {

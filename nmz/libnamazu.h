@@ -2,7 +2,7 @@
  * 
  * libnamazu.h - Namazu library api
  *
- * $Id: libnamazu.h,v 1.17 1999-12-04 04:37:31 satoru Exp $
+ * $Id: libnamazu.h,v 1.18 1999-12-04 04:50:10 satoru Exp $
  * 
  */
 
@@ -81,20 +81,20 @@ enum nmz_stat {
 };
 
 struct nmz_data {
-    int score;   /* score */
+    int score;
     int docid;   /* document ID */
     int idxid;   /* index ID */
     int date;    /* document's date */
     int rank;    /* ranking data for stable sorting */
-    char *field; /* for field-specified search*/
+    char *field; /* field's contents for field-specified search */
 };
 
 /* data structure for search result */
-typedef struct hlist {
+typedef struct nmz_result {
     int num;           /* number of elements in its data */
     enum nmz_stat stat; /* status code mainly used for error handling */
     struct nmz_data *data;  /* dynamic array for storing docid, etc. */
-} HLIST;
+} NmzResult;
 
 typedef struct alias {
     char *alias;

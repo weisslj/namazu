@@ -2,8 +2,8 @@
 #define _SEARCH_H
 
 extern int binsearch(char*, int);
-extern HLIST search_main(char*);
-extern HLIST do_search(char *, HLIST);
+extern NmzResult search_main(char*);
+extern NmzResult do_search(char *, NmzResult);
 
 extern void free_hitnums(struct nmz_hitnum *);
 

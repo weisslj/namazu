@@ -1,3 +1,7 @@
+2004-01-13  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * pl/time.pl: Added a new function getwday().
+
 2004-01-12  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * filter/rpm.pl: Correction of a source code.
@@ -8272,4 +8276,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1074 2004-01-11 19:32:31 opengl2772 Exp $
+$Id: ChangeLog,v 1.1075 2004-01-12 16:51:53 opengl2772 Exp $

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: time.pl,v 1.1 2004-01-11 08:57:58 opengl2772 Exp $
+# $Id: time.pl,v 1.2 2004-01-12 16:51:54 opengl2772 Exp $
 # Copyright (C) 2004 Tadamasa Teranishi
 #               2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -65,17 +65,24 @@ sub ctime_to_rfc822time ($) {
 
     my $ctime = $$conf;
 
-    $ctime =~ s/  / /gs;
+    if ($ctime =~ /^\s*(\w{3})\s+(\w{3})\s+(\d+)\s+(\d+):(\d+):(\d+)\s+(\d+)/) {
+        my $week = $1;
+        my $month = $2;
+        my $day = $3;
+        my $hour = $4;
+        my $min = $5;
+        my $sec = $6;
+        my $year = $7;
 
-    my ($week, $month, $day, $time, $year) = split(/ /, $ctime);
-    $day = "0" . $day if (length($day) == 1);
-    my ($hour, $min, $sec) = split(/:/, $time);
+        my $timezone = gettimezone();
 
-    my $timezone = gettimezone();
+        $$conf = sprintf("%s, %2.2d %s %d %2.2d:%2.2d:%2.2d %s\n",
+            $week, $day, $month, $year, $hour, $min, $sec, $timezone);
 
-    $$conf = sprintf("$week, $day $month $year $hour:$min:$sec $timezone\n");
+        return undef;
+    }
 
-    return undef;
+    return "Illegal format.";
 }
 
 sub timezone ($) {
@@ -91,6 +98,18 @@ sub timezone ($) {
 
 sub gettimezone () {
     return timezone(-timelocal(gmtime(0)));
+}
+
+sub getwday {
+    my ($year, $month, $day) = @_;
+
+    if ($month == 1 or $month == 2) {
+        $year--;
+        $month += 12;
+    }
+
+    return ($year + int($year / 4) - int($year/100) + int($year / 400)
+        + int((13 * $month + 8) / 5) + $day) % 7;
 }
 
 1;

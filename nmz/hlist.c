@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.52 2001-09-02 05:50:38 rug Exp $
+ * $Id: hlist.c,v 1.53 2001-09-02 08:25:33 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -28,7 +28,6 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <math.h>
 #include <errno.h>
 #ifdef HAVE_CONFIG_H
@@ -44,6 +43,12 @@
 # ifdef _WIN32
 # include <io.h>
 # endif
+#endif
+
+#ifdef HAVE_STRING_H
+#include <string.h>
+#else
+#include <strings.h>
 #endif
 
 #include "libnamazu.h"

@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.82 2001-08-08 09:05:51 knok Exp $
+ * $Id: output.c,v 1.83 2001-09-02 08:25:35 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -25,7 +25,6 @@
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <ctype.h>
 #include <stdarg.h>
 #ifdef HAVE_CONFIG_H
@@ -34,6 +33,13 @@
 #ifdef HAVE_SUPPORT_H
 #  include "support.h"
 #endif
+
+#ifdef HAVE_STRING_H
+#include <string.h>
+#else
+#include <strings.h>
+#endif
+
 #include "namazu.h"
 #include "libnamazu.h"
 #include "codeconv.h"

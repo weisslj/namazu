@@ -1,6 +1,6 @@
 /*
  * l10n-ja.c -
- * $Id: l10n-ja.c,v 1.3 2001-08-16 10:16:22 rug Exp $
+ * $Id: l10n-ja.c,v 1.4 2001-09-02 08:25:33 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -24,17 +24,24 @@
  * 
  */
 
+#ifdef HAVE_CONFIG_H
+#  include "config.h"
+#endif
+
+#ifdef HAVE_STRING_H
+#include <string.h>
+#else
+#include <strings.h>
+#endif
+
+#include "i18n.h"
+#include "l10n-ja.h"
+
 /*
  *
  * Public functions
  *
  */
-#include <string.h>
-#ifdef HAVE_CONFIG_H
-#  include "config.h"
-#endif
-#include "i18n.h"
-#include "l10n-ja.h"
 
 /* 
  * FIXME: ad-hoc function. 

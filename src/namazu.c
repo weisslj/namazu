@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.103 2001-09-02 05:50:39 rug Exp $
+ * $Id: namazu.c,v 1.104 2001-09-02 08:25:35 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -31,7 +31,6 @@
 #include <sys/types.h>
 #include <fcntl.h>
 #include <ctype.h>
-#include <string.h>
 #include <sys/stat.h>
 #include <signal.h>
 
@@ -45,6 +44,12 @@
 # ifdef _WIN32
 # include <io.h>
 # endif
+#endif
+
+#ifdef HAVE_STRING_H
+#include <string.h>
+#else
+#include <strings.h>
 #endif
 
 #include "namazu.h"

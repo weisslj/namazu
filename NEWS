@@ -1,4 +1,14 @@
-Overview of Changes in Namazu 2.0.6 (draft) - Jul 27, 2001
+Overview of Changes in Namazu 2.0.7 (draft) - Aug 31, 2001
+
+* Bug fix release.
+* Fix nmz_is_lang_ja() to return correct value.
+* Fix header files installation.
+* Fix mknmz checkpoint bug.
+* Added extensions of Ichitaro 7 and 8.
+* Fixed the bug when target directories contain the
+  current directory. (Only Win32 Platforms)
+
+Overview of Changes in Namazu 2.0.6 - Aug 10, 2001
 
 * Fix path delimiter problem on Windows environment.
  (namazu-win32-ja#00411)

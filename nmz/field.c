@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: field.c,v 1.29 2000-09-05 05:47:42 rug Exp $
+ * $Id: field.c,v 1.30 2001-09-02 08:25:33 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -27,13 +27,19 @@
 #include <errno.h>
 #include <ctype.h>
 #include <stdio.h>
-#include <string.h>
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
 #endif
 #ifdef HAVE_SUPPORT_H
 #  include "support.h"
 #endif
+
+#ifdef HAVE_STRING_H
+#include <string.h>
+#else
+#include <strings.h>
+#endif
+
 #include "libnamazu.h"
 #include "field.h"
 #include "util.h"

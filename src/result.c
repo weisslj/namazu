@@ -1,5 +1,5 @@
 /*
- * $Id: result.c,v 1.61 2001-08-08 09:05:51 knok Exp $
+ * $Id: result.c,v 1.62 2001-09-02 08:25:35 rug Exp $
  * 
  * Copyright (C) 1989, 1990 Free Software Foundation, Inc.
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
@@ -23,7 +23,6 @@
  * 
  * 
  */
-#include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
 #ifdef HAVE_CONFIG_H
@@ -32,6 +31,13 @@
 #ifdef HAVE_SUPPORT_H
 #  include "support.h"
 #endif
+
+#ifdef HAVE_STRING_H
+#include <string.h>
+#else
+#include <strings.h>
+#endif
+
 #include "namazu.h"
 #include "i18n.h"
 #include "util.h"

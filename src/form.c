@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.63 2001-09-02 05:50:39 rug Exp $
+ * $Id: form.c,v 1.64 2001-09-02 08:25:35 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -29,7 +29,6 @@
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <ctype.h>
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
@@ -44,6 +43,12 @@
 # ifdef _WIN32
 # include <io.h>
 # endif
+#endif
+
+#ifdef HAVE_STRING_H
+#include <string.h>
+#else
+#include <strings.h>
 #endif
 
 #include "namazu.h"

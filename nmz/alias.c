@@ -2,7 +2,7 @@
  * 
  * alias.c - 
  *
- * $Id: alias.c,v 1.15 2000-09-05 05:47:42 rug Exp $
+ * $Id: alias.c,v 1.16 2001-09-02 08:25:33 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -35,9 +35,15 @@
 #endif
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <errno.h>
 #include <assert.h>
+
+#ifdef HAVE_STRING_H
+#include <string.h>
+#else
+#include <strings.h>
+#endif
+
 #include "alias.h"
 #include "util.h"
 #include "libnamazu.h"

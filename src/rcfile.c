@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.31 2001-02-26 08:39:54 baba Exp $
+ * $Id: rcfile.c,v 1.32 2001-09-02 08:25:35 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -26,7 +26,6 @@
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <errno.h>
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
@@ -34,6 +33,13 @@
 #ifdef HAVE_SUPPORT_H
 #  include "support.h"
 #endif
+
+#ifdef HAVE_STRING_H
+#include <string.h>
+#else
+#include <strings.h>
+#endif
+
 #include "namazu.h"
 #include "libnamazu.h"
 #include "rcfile.h"

@@ -1,6 +1,6 @@
 /*
  * i18n.c -
- * $Id: i18n.c,v 1.26 2001-06-21 06:21:32 rug Exp $
+ * $Id: i18n.c,v 1.27 2001-09-02 08:25:33 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -25,16 +25,23 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
 #endif
-#include "libnamazu.h"
-#include "util.h"
-#include "i18n.h"
+
+#ifdef HAVE_STRING_H
+#include <string.h>
+#else
+#include <strings.h>
+#endif
+
 #ifdef HAVE_LOCALE_H
 # include <locale.h>
 #endif
+
+#include "libnamazu.h"
+#include "util.h"
+#include "i18n.h"
 
 /*
  *

@@ -2,7 +2,7 @@
  * 
  * wakati.c -
  * 
- * $Id: wakati.c,v 1.26 2000-01-28 09:40:13 satoru Exp $
+ * $Id: wakati.c,v 1.27 2001-09-02 08:25:33 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -27,11 +27,17 @@
  */
 
 #include <stdio.h>
-#include <string.h>
 #include <ctype.h>
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
 #endif
+
+#ifdef HAVE_STRING_H
+#include <string.h>
+#else
+#include <strings.h>
+#endif
+
 #include "libnamazu.h"
 #include "util.h"
 #include "search.h"

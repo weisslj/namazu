@@ -2,7 +2,7 @@
  * 
  * parser.c -
  * 
- * $Id: parser.c,v 1.22 2001-03-11 16:02:45 furukawa Exp $
+ * $Id: parser.c,v 1.23 2001-09-02 08:25:33 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -32,10 +32,16 @@
  */
 
 #include <stdio.h>
-#include <string.h>
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
 #endif
+
+#ifdef HAVE_STRING_H
+#include <string.h>
+#else
+#include <strings.h>
+#endif
+
 #include "libnamazu.h"
 #include "hlist.h"
 #include "search.h"

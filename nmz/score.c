@@ -2,7 +2,7 @@
  * 
  * score.c - scoring-related functions of Namazu
  * 
- * $Id: score.c,v 1.4 2001-09-02 05:50:38 rug Exp $
+ * $Id: score.c,v 1.5 2001-09-02 08:25:33 rug Exp $
  * 
  * Copyright (C) 2001 Hajime BABA  All rights reserved.
  * Copyright (C) 2001 Namazu Project All rights reserved.
@@ -31,7 +31,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <math.h>
 #include <errno.h>
 #include <time.h>
@@ -48,6 +47,12 @@
 # ifdef _WIN32
 # include <io.h>
 # endif
+#endif
+
+#ifdef HAVE_STRING_H
+#include <string.h>
+#else
+#include <strings.h>
 #endif
 
 #include "libnamazu.h"

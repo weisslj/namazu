@@ -83,7 +83,7 @@ current</a> は CVS で取得できます。
 <h2><a name="components">Namazu の構成部品</a></h2> 
 
 <p>
-Namazu は大きく分けて次の二つから構成されています。 
+Namazu は大きく分けて mknmz と namazu の二つから構成されています。 
 </p>
 <ul>
 <li>mknmz<br> 
@@ -142,7 +142,7 @@ CPAN</a></td>
 
 <tr>
  <td><a href="http://kakasi.namazu.org/index.html">KAKASI</a></td>
- <td>日本語・ ローマ字 変換系<td>△</td><td>2.3.1</td><td>&gt;=</td>
+ <td>日本語・ ローマ字 変換系<td>△</td><td>2.3.1</td><td>&lt;=</td>
  <td><a href="ftp://kakasi.namazu.org/pub/kakasi/kakasi-2.3.1.tar.gz">
  kakasi-2.3.1.tar.gz</a></td>
  <td rowspan=2>
@@ -153,11 +153,11 @@ CPAN</a></td>
  </tr>
 
 <tr>
-  <td><a href="http://www.daionet.gr.jp/~knok/kakasi">Text::Kakasi</a></td>
+  <td><a href="http://www.daionet.gr.jp/~knok/kakasi/">Text::Kakasi</a></td>
   <td>KAKASI Perl モジュール化<td>▲</td>
-  <td>1.00</td><td>&lt;=</td>
+  <td>1.01</td><td>&lt;=</td>
   <td>
-  <a href="http://www.daionet.gr.jp/~knok/kakasi/Text-Kakasi-1.00.tar.gz">Text-Kakasi-1.00.tar.gz</a>
+  <a href="http://www.daionet.gr.jp/~knok/kakasi/Text-Kakasi-1.01.tar.gz">Text-Kakasi-1.01.tar.gz</a>
   </td>
   <td><br></td>
   </tr>
@@ -264,7 +264,7 @@ namazu 2.0 以降では ChaSen2 にだけ対応しています。
 ルを作るには手動で
 <pre>
 cp libchasen.a /usr/local/lib
-ranlib -t /usr/local/lib/libchasen.a # ここはシステムに応じて
+ranlib /usr/local/lib/libchasen.a # ここはシステムに応じて
 </pre>
 とする必要があります。
 
@@ -440,12 +440,12 @@ s#<em>aaa</em>#<strong>bbb</strong>#
 </p>
 
 <h2><a name="customize-mknmz">mknmz の調整</a></h2>
-<pre>
+<!--
 メイル
 HTML
 その他の形式 (Re: filter)
 他の Web
-</pre>
+-->
 
 <p>
 Namazu は元々は HTML 形式のものを処理するように考えられてい
@@ -456,14 +456,13 @@ Namazu は元々は HTML 形式のものを処理するように考えられてい
 </p>
 
 <dl>
-<dt>MH形式のメイル
+<dt>MH 形式のメイル
   <dd>mknmz に -a オプションをつけて実行します。<br>
 <code class=command>% mknmz -a ~/Mail/foobar</code>
 
-
 <dt>MHonArc
-<dd>これは HTML 形式ですし、Namazu にこの形式に対応した処理が含ま
-れています。
+  <dd>初めから HTML 形式ですが、更に Namazu
+にこの形式に対応した処理が含まれています。
 
 <dt>hnf
   <dd> hnf 用の .mknmzrc と起動手続が
@@ -477,7 +476,7 @@ Namazu は元々は HTML 形式のものを処理するように考えられてい
 <p>
 mknmz のコマンド行引数は、<a
 href="manual.html#mknmz-option">mknmz --help</a>とすると得ら
-れます。また-C を付けると、その時の構成を表示してくれます。
+れます。また-C を付けると、その時の構成を次のように表示してくれます。
 </p>
 
 <pre>
@@ -599,14 +598,16 @@ DirectoryIndex</td><td> index.html
 </table>
 
 <p>
-などが関係して来る。(管理者)と書いてあるもの以外は .htaccess にも
+などが関係して来ます。(管理者)と書いてあるもの以外は .htaccess にも
 書ける(ただし apache の設置時にそれを禁止することもできるので不可の場合もある)
 </p>
 
+<!--
 <h3>型紙(template)のこと</h3>
 <p>
 /usr/local/share/namazu/template
 </p>
+-->
 
 <h2><a name="can-do">Namazu でできること</a></h2>
 
@@ -722,31 +723,31 @@ conf.pl で行ったが 2.0 では namazurc, mknmzrc に変更された。
 <dd>
 Namazu の動作を make 時から変更したいというような時に、その
 設定が書ける。
+<code>Index, Replace, Base, Logging, Lang, Template</code>
+の設定ができる。
 詳しくは<a href="manual.html#namazurc">説明書</a>そ参照のこ
 と。
 
-<code>Index, Replace, Base, Logging, Lang, Template</code>
-の設定ができる。
 <dt>Perl モジュール (Perl module)
 <dd>NKF, KAKASI, ChaSen などは以前は  Namazu から外部 process として呼出さ
-れていた。この場合、プロセスをいちいち起動するので
+れていた。この場合、プロセスをファイル毎に起動するので
 時間がかかる。
-現在では、これらの perl モジュールが用意されて、
+現在の版では、これらの perl モジュールを使うしくみが用意されて、
 perl からモジュールとして呼出されるようにできる。
 そうするとプロセスを起動しないで済む分、実行速度が有利になる。
+
 <br>この機能は Namazu-1.3 以前では提供されていない。 
 1.4 以降の機能である。
 Namazu に必要な Perl のモジュールが入っているかどうかは
-
 <pre>
 perl -MText::Kakasi -e ''
 perl -MText::ChaSen -e ''
 perl -MNKF -e ''
 </pre>
-
 のように入力した時に、何も表示されなければいい。
+そうしておいて namazu で ./configure すると、これらが使われるよう
+に設置される。
 </dl>
-
 
 <h2><a name="reference">参照</a></h2>
 
@@ -792,7 +793,7 @@ Webブラウザの言語の設定に日本語(ja) を追加してください
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: tutorial.html,v 1.18 2000-02-18 05:26:31 satoru Exp $
+$Id: tutorial.html,v 1.19 2000-02-19 06:36:23 makoto Exp $
 </div>
 <address>
 developers@namazu.org

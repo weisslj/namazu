@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: postscript.pl,v 1.7 2002-08-10 10:32:10 baba Exp $
+# $Id: postscript.pl,v 1.8 2002-08-26 02:55:26 baba Exp $
 # Copyright (C) 2000 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -80,8 +80,8 @@ sub filter ($$$$$) {
     undef $fh;
 
     my $devnull = util::devnull();
-    open(SAVEOUT, ">&STDOUT");
-    open(STDOUT, ">&$devnull");
+    open(SAVEERR, ">&STDERR");
+    open(STDERR, "> $devnull");
     if (util::islang("ja")) {
 	if ($landscape) {
 	    system("$postscriptpath -l $tmpfile > $tmpfile2");
@@ -91,7 +91,7 @@ sub filter ($$$$$) {
     } else {
 	system("$postscriptpath $tmpfile > $tmpfile2");
     }
-    open(STDOUT, ">&SAVEOUT");
+    open(STDERR, ">&SAVEERR");
     unless ($? == 0) {
 	unlink($tmpfile);
 	unlink($tmpfile2);

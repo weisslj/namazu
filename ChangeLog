@@ -1,3 +1,8 @@
+2002-08-26  Hajime BABA  <baba@plain.isas.ac.jp>
+
+        * filter/msword.pl: Fixed warnings of undefined variables.
+        * filter/postscript.pl: Fixed redirection problem (sorry...)
+
 2002-08-19  Ryuji Abe  <rug@namazu.org>
 
 	* NEWS: Use `cross-site scripting' instead of `CSS'.
@@ -7622,4 +7627,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.970 2002-08-19 07:39:23 rug Exp $
+$Id: ChangeLog,v 1.971 2002-08-26 02:55:25 baba Exp $

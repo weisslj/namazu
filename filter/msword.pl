@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: msword.pl,v 1.30 2002-01-10 10:48:35 knok Exp $
+# $Id: msword.pl,v 1.31 2002-08-26 02:55:26 baba Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Satoru Takabayashi Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -100,7 +100,7 @@ sub filter_wv ($$$$$) {
 
     my $tmpfile  = util::tmpnam('NMZ.word');
     my $tmpfile2 = util::tmpnam('NMZ.word2');
-    my ($ofile, $tpath, $options, $version);
+    my ($ofile, $tpath, $options, $version) = ("", "", "", "");
 
     if (util::islang("ja")) {
     }

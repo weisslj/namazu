@@ -1,3 +1,7 @@
+2000-01-04  Ryuji Abe <raeva@t3.rim.or.jp>
+
+	* configure.in (AM_MAINTAINER_MODE): Enabled maintainer mode.
+
 2000-01-04  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* {nmz,src}/*.c: Change C style (function definition).

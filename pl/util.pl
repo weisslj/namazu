@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.18 2000-12-15 05:42:40 knok Exp $
+# $Id: util.pl,v 1.19 2000-12-15 05:46:00 knok Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -227,7 +227,7 @@ sub assert($$) {
     }
 }
 
-sub systemcmd() {
+sub systemcmd {
     if ($mknmz::SYSTEM eq "MSWin32" || $mknmz::SYSTEM eq "os2") {
 	my @args = ();
 	foreach my $tmp (@_) {

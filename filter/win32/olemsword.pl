@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: olemsword.pl,v 1.4 2001-01-04 01:58:01 baba Exp $
+# $Id: olemsword.pl,v 1.5 2001-01-04 07:21:48 baba Exp $
 # Copyright (C) 1999 Jun Kurabe ,
 #               1999-2000 Ken-ichi Hirose All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -126,15 +126,15 @@ sub getProperties ($$) {
     my ($cfile, $fields) = @_;
 
     # get Title
-    $fields->{'title'} = "$cfile->BuiltInDocumentProperties(1)->{Value}"
+    $fields->{'title'} = $cfile->BuiltInDocumentProperties(1)->{Value}
       unless $cfile->BuiltInDocumentProperties(1)->{Value};            # title
 #    $fields->{'title'} = $cfile->BuiltInDocumentProperties(2)->{Value}; # subject
 #    $fields->{'author'} = $cfile->BuiltInDocumentProperties(3)->{Value}; # author
-    $fields->{'author'} = "$cfile->BuiltInDocumentProperties(7)->{Value}"
+    $fields->{'author'} = $cfile->BuiltInDocumentProperties(7)->{Value}
       unless $cfile->BuiltInDocumentProperties(7)->{Value};            # lastauthor
 #    $fields->{'date'} = $cfile->BuiltInDocumentProperties(11)->{Value}; # createdate
-    $fields->{'date'} = "$cfile->BuiltInDocumentProperties(12)->{Value}"
-      unless $cfile->BuiltInDocumentProperties(12)->{Value};            # editdate
+#    $fields->{'date'} = $cfile->BuiltInDocumentProperties(12)->{Value}
+#      unless $cfile->BuiltInDocumentProperties(12)->{Value};            # editdate
 #    $fields->{'date'} = $cfile->BuiltInDocumentProperties(13)->{Value}; # editdate?
 
     return undef;
@@ -166,7 +166,12 @@ sub ReadMSWord ($$$) {
     $office_consts = Win32::OLE::Const->Load("Microsoft Office 8.0 Object Library") unless $office_consts;
     open (STDERR,">&SAVEERR");
 
-    my $doc = $word->{Documents}->open($cfile);
+    # In order to skip password-protected file, send a dummy password.
+    my $doc = $word->{Documents}->open({
+	'FileName' => $cfile,
+	'PasswordDocument' => 'dummy password',
+	'ReadOnly' => 1
+	});
     die "Cannot open File $cfile" unless ( defined $doc ) ;
 
     olemsword::getProperties($doc, $fields);

@@ -1,5 +1,19 @@
 2001-01-04  Hajime BABA  <baba@kusastro.kyoto-u.ac.jp>
 
+	* filter/win32/ole{msword,excel,powerpoint}.pl: Applied some patches
+	of namazu-win32-users-ja 540, by Mitsuo Satou <satou@osk.3web.ne.jp>.
+	
+	* filter/win32/olertf.pl: Fixed arguments of ReadMSWord::ReadMSWord().
+
+	* filter/win32/ole{taro[45678]}.pl: Newly added,
+	which are inspired by olertf.pl.
+
+	* filter/win32/Makefile.am: Added an entry for oletaro?.pl
+	
+	* tests/data/ja/{rtf.rtf,taro7.jfw,taro8.jdt}: Newly added.
+	
+2001-01-04  Hajime BABA  <baba@kusastro.kyoto-u.ac.jp>
+
 	* tests/data/{en,ja}/rpm.rpm: Fixed included spec file.
 
 	* filter/{dvi|pdf|postscript}.pl: Clean-up tmpfiles,
@@ -6228,4 +6242,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.784 2001-01-04 01:57:53 baba Exp $
+$Id: ChangeLog,v 1.785 2001-01-04 07:21:45 baba Exp $

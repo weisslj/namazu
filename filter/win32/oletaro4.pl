@@ -1,10 +1,8 @@
 # 
 # -*- Perl -*-
-# $Id: olertf.pl,v 1.2 2001-01-04 07:21:48 baba Exp $
+# $Id: oletaro4.pl,v 1.1 2001-01-04 07:21:48 baba Exp $
 # 
-# Copyright (C) 2000 Yoshinori.TAKESAKO ,
-#               2000 Jun Kurabe ,
-#               2000 Ken-ichi Hirose All rights reserved.
+# Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -25,13 +23,13 @@
 #  This file must be encoded in EUC-JP encoding
 #  
 
-package olertf;
+package oletaro4;
 use strict;
 require 'util.pl';
 require 'gfilter.pl';
 
 sub mediatype() {
-    return ('application/rtf');
+    return ('application/ichitaro4');
 }
 
 sub status() {
@@ -58,7 +56,7 @@ sub post_codeconv () {
 sub add_magic ($) {
     my ($magic) = @_;
 
-    $magic->addFileExts('\\.rtf$', 'application/rtf');
+    $magic->addFileExts('\\.jsw$', 'application/ichitaro4');
     return;
 }
 
@@ -67,7 +65,7 @@ sub filter ($$$$$) {
       = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
-    util::vprint("Processing rtf file ...\n");
+    util::vprint("Processing ichitaro4 file ...\n");
 
     $cfile =~ s/\//\\/g;
     $$cont = "";

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: oleexcel.pl,v 1.5 2001-01-04 01:58:01 baba Exp $
+# $Id: oleexcel.pl,v 1.6 2001-01-04 07:21:48 baba Exp $
 # Copyright (C) 1999 Jun Kurabe ,
 #               1999 Ken-ichi Hirose All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -125,11 +125,11 @@ sub getProperties {
     my ($cfile, $fields) = @_;
 
     # get Title
-    $fields->{'title'} = "$cfile->BuiltInDocumentProperties(1)->{Value}"
+    $fields->{'title'} = $cfile->BuiltInDocumentProperties(1)->{Value}
       unless $cfile->BuiltInDocumentProperties(1)->{Value};            # title
 #    $fields->{'title'} = $cfile->BuiltInDocumentProperties(2)->{Value}; # subject
 #    $fields->{'author'} = $cfile->BuiltInDocumentProperties(3)->{Value}; # author
-    $fields->{'author'} = "$cfile->BuiltInDocumentProperties(7)->{Value}"
+    $fields->{'author'} = $cfile->BuiltInDocumentProperties(7)->{Value}
       unless $cfile->BuiltInDocumentProperties(7)->{Value};            # lastauthor
 #    $fields->{'date'} = $cfile->BuiltInDocumentProperties(11)->{Value}; # createdate
 #    $fields->{'date'} = "$cfile->BuiltInDocumentProperties(12)->{Value}"
@@ -165,7 +165,10 @@ sub ReadExcel ($$$) {
     $office_consts = Win32::OLE::Const->Load("Microsoft Office 8.0 Object Library") unless $office_consts;
     open (STDERR,">&SAVEERR");
     
-    my $wb = $excel->Workbooks->Open($cfile);
+    my $wb = $excel->Workbooks->Open({
+	'FileName' => $cfile,
+	'ReadOnly' => 1
+	});
     die "Cannot open File $cfile" unless ( defined $wb );
     # print $cfile,"\n";
     # print $wb,"\n";
@@ -201,11 +204,18 @@ sub getCells ($$) {
     #   Text which is contained in cell on a sheet
     my ($sheet, $cont) = @_;
 
-    my $ur = $sheet->{UsedRange};
+    # In order to avoid too much index time, restrict 100x100 cells.
+    my $tmpur = $sheet->{UsedRange};
+    my $tmprc = ($tmpur->Rows->Count    >100 ? 100 : $tmpur->Rows->Count);
+    my $tmpcc = ($tmpur->Columns->Count >100 ? 100 : $tmpur->Columns->Count);
+    my $ur = $sheet->Range(
+			   $sheet->Cells($tmpur->Rows->Row, $tmpur->Columns->Column),
+			   $sheet->Cells($tmpur->Rows( $tmprc )->Row, $tmpur->Columns( $tmpcc )->Column)
+			   );
 
     my $enum_a_cell = sub {
-    my $cell = shift;
-    my $p = $cell->{Value};
+	my $cell = shift;
+	my $p = $cell->{Value};
         $$cont .= "$p\n" if ( defined $p );
         return 1;
     };
@@ -228,7 +238,7 @@ sub getShapes ($$) {
         # print "passed XX\n";
         oleexcel::enum($obj->GroupItems, \&enum_a_shape, $cont);
     } elsif ($obj->{Type} == $office_consts->{msoTextBox} ||
-     $obj->{Type} == $office_consts->{msoAutoShape} ) { 
+	     $obj->{Type} == $office_consts->{msoAutoShape} ) { 
         if ($obj->{TextFrame} && $obj->TextFrame->{Characters}) {
             my $p = $obj->TextFrame->Characters->{Text} ;
             $$cont .= "$p\n" if ( defined $p );

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: olepowerpoint.pl,v 1.4 2001-01-04 01:58:01 baba Exp $
+# $Id: olepowerpoint.pl,v 1.5 2001-01-04 07:21:48 baba Exp $
 # Copyright (C) 1999 Jun Kurabe ,
 #               1999 Ken-ichi Hirose All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -126,14 +126,14 @@ sub getProperties {
     my ($cfile, $fields) = @_;
 
     # get Title
-    $fields->{'title'} = "$cfile->BuiltInDocumentProperties(1)->{Value}"
+    $fields->{'title'} = $cfile->BuiltInDocumentProperties(1)->{Value}
       unless $cfile->BuiltInDocumentProperties(1)->{Value};            # title
 #    $fields->{'title'} = $cfile->BuiltInDocumentProperties(2)->{Value}; # subject
 #    $fields->{'author'} = $cfile->BuiltInDocumentProperties(3)->{Value}; # author
-    $fields->{'author'} = "$cfile->BuiltInDocumentProperties(7)->{Value}"
+    $fields->{'author'} = $cfile->BuiltInDocumentProperties(7)->{Value}
       unless $cfile->BuiltInDocumentProperties(7)->{Value};            # lastauthor
 #    $fields->{'date'} = $cfile->BuiltInDocumentProperties(11)->{Value}; # createdate
-    $fields->{'date'} = "$cfile->BuiltInDocumentProperties(12)->{Value}"
+    $fields->{'date'} = $cfile->BuiltInDocumentProperties(12)->{Value}
       unless $cfile->BuiltInDocumentProperties(12)->{Value};            # editdate
 #    $fields->{'date'} = $cfile->BuiltInDocumentProperties(13)->{Value}; # editdate?
 
@@ -151,8 +151,8 @@ sub ReadPPT ($$$) {
     eval {$ppt = Win32::OLE->GetActiveObject('PowerPoint.Application')};
     die "PowerPoint not installed" if $@;
     unless (defined $ppt) {
-    $ppt = Win32::OLE->new('PowerPoint.Application', sub {$_[0]->Quit(0);})
-     or die "Oops, cannot start PowerPoint";
+    $ppt = Win32::OLE->new('PowerPoint.Application', sub {$_[0]->Quit;})
+	or die "Oops, cannot start PowerPoint";
     }
     #End of Copy From Win32::OLE Example Program
     # Must set Visible = true 
@@ -166,7 +166,10 @@ sub ReadPPT ($$$) {
     $office_consts = Win32::OLE::Const->Load("Microsoft Office 8.0 Object Library") unless $office_consts;
     open (STDERR,">&SAVEERR");
 
-    my $prs = $ppt->{Presentations}->Open($cfile);
+    my $prs = $ppt->{Presentations}->Open({
+	'FileName' => $cfile,
+	'ReadOnly' => 1
+	});
     die "Cannot open File $cfile" unless ( defined $prs );
 
     olepowerpoint::getProperties($prs, $fields);
@@ -193,14 +196,14 @@ sub getSlides ($$) {
     };
 
     sub enum_a_shape ($$) {
-    my ($shape, $cont) = @_;
+	my ($shape, $cont) = @_;
         # Get text whaen TextFrame in Shapes and Text in TextFrame 
         if ($shape->{HasTextFrame} && $shape->TextFrame->TextRange) { # 
-        my $p = $shape->TextFrame->TextRange->{Text};
+	    my $p = $shape->TextFrame->TextRange->{Text};
             $$cont .= "$p\n" if ( defined $p );
         } elsif ( $shape->{Type} == $office_consts->{msoGroup} ) { 
-            olepowerpoint::enum($shape->GroupItems, \&enum_a_shape, $cont);
-        } 
+	    olepowerpoint::enum($shape->GroupItems, \&enum_a_shape, $cont);
+        }
         return 1;
     };
 

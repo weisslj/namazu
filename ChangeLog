@@ -1,3 +1,12 @@
+2004-03-10  Yukio USUDA <usu@namazu.org>
+
+	* filter/{gnumeric.pl,koffice.pl}: Add new filter.
+
+	* tests/data/{en,ja}/{gnumeric.gnumeric,kword.kwd,kspread.ksp}:
+	Add new file.
+
+	* pl/conf.pl.in ($ALLOW_FILES): Added extensions of Gnumeric and
+	KOffice.
 
 2004-03-10  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
@@ -8545,4 +8554,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1112 2004-03-10 13:14:36 opengl2772 Exp $
+$Id: ChangeLog,v 1.1113 2004-03-10 13:55:05 usu Exp $

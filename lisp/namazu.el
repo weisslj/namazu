@@ -2,7 +2,7 @@
 ;;
 ;; Mule $B>e$G(B Namazu $B$rMxMQ$7$?8!:w$r9T$&$?$a$N(B elisp $B$G$9!#(B
 ;;
-;;  $Id: namazu.el,v 1.7 2000-01-29 15:49:30 kose Exp $
+;;  $Id: namazu.el,v 1.8 2000-02-01 12:20:03 shirai Exp $
 
 (defconst namazu-version "namazu.el 1.0.3")
 
@@ -28,19 +28,8 @@
 ;;
 ;; $BMQ0U$9$kI,MW$,$"$k$+$bCN$l$J$$$b$N(B:
 ;; $BA0=R$NDL$j(B browse-url $B$,I,MW$G$9$,!"(B19.28 $B%Y!<%9$N(B Mule $B$K$O(B
-;; $B$3$l$,4^$^$l$F$$$J$$$h$&$G$9!#0J2<$N(B URL $B$J$I$+$iF~<j$7$F$/$@$5$$!#(B
-;; $B$^$?!"$*;H$$$N(B Mule $B$KE:IU$5$l$F$$$k(B browse-url $B$O(B
-;; $B8E$$%P!<%8%g%s$N$b$N$+$b$7$l$^$;$s$N$G(B
-;; $B:G?7%P!<%8%g%s$r%A%'%C%/$7$F$_$k$N$b$h$$$G$7$g$&!#(B
-;;
-;;   <URL:http://wombat.doc.ic.ac.uk/emacs/browse-url.el>
-;;
-;; 19.28 $B%Y!<%9$N(B Mule $B$G$O(B 930 $B9TL\$"$?$j$K$"$k(B
-;; (require 'term) $B$r(B (require 'terminal) $B$KJQ99$9$kI,MW$,$"$j$^$9!#(B
-;;
-;; browse-url-lynx-xterm $B$G(B lynx $B$r;H$C$F%V%i%&%:$9$k>l9g$K$O(B
-;; (setq browse-url-xterm-program "kterm") $B$N$h$&$J(B
-;; $B@_Dj$rDI2C$7$F$*$$$?J}$,$h$$$H;W$$$^$9!#(B
+;; $B$3$l$,4^$^$l$F$$$J$$$h$&$G$9!#F1:-$N(B "browse-url-for-emacs-19.28.el"
+;; $B$r$*;H$$2<$5$$!#(B
 ;;
 ;; $B8!:wJ}K!(B:
 ;; $B>e5-$N@_Dj$r=*$($?$i(B M-x namazu $B$H%?%$%W$7$F$/$@$5$$!#(B
@@ -151,11 +140,15 @@ PATH $B$,DL$C$F$$$J$$>l9g$K$OE,Ev$J%W%m%0%i%`L>$r;XDj$7$^$9!#(B")
     ("." . view-file))
   "*$B%U%!%$%kL>$N%Q%?!<%s$H$=$l$KBP1~$9$k1\Mw4X?t$r@_Dj$7$^$9!#(B")
 
-(defvar namazu-cs
+(defvar namazu-cs-write
   (if (memq system-type '(OS/2 emx windows-nt))
       (if (> emacs-major-version 19) 'sjis-dos '*sjis*dos)
     (if (> emacs-major-version 19) 'euc-jp '*euc-japan*))
-  "*OS $B$NFbIt%3!<%I$H0[$J$j!"$+$DF0$+$J$$>l9g$KJQ99$7$F$_$F$/$@$5$$!#(B")
+  "*Coding system for namazu process (output).")
+
+(defvar namazu-cs-read
+  (if (> emacs-major-version 19) 'undecided '*autoconv*)
+  "*Coding system for namazu process (input).")
 
 (defvar namazu-config-file-path
   (list (getenv "NAMAZUCONFPATH")
@@ -193,10 +186,10 @@ PATH $B$,DL$C$F$$$J$$>l9g$K$OE,Ev$J%W%m%0%i%`L>$r;XDj$7$^$9!#(B")
   "^\\(\\(~?/\\|[a-z]+:\\)[^ ]+\\) \\(.*\\)$"
   "$B8!:w7k2L$NCf$N%I%-%e%a%s%H$N:_=h(B(URL)$B$r<($99T$N%Q%?!<%s(B")
 (defvar namazu-output-current-list-pattern
-  "^Current List: [0-9]+ - [0-9]+$"
+  "^[^:]+: [0-9]+ - [0-9]+$"
   "$B8!:w7k2L$NCf$N$I$NItJ,$r1\MwCf$+$r<($99T$N%Q%?!<%s(B")
 (defvar namazu-output-pages-pattern
-  "^Page: \\(\\[[0-9]+\\]\\)*\\[\\([0-9]+\\)\\]$"
+  "^[^:]+: \\(\\[[0-9]+\\]\\)*\\[\\([0-9]+\\)\\]$"
   "$B8!:w7k2L$N%Z!<%8?t$r<($99T$N%Q%?!<%s(B")
 
 (and (locate-library "browse-url") (require 'browse-url))
@@ -231,11 +224,11 @@ PATH $B$,DL$C$F$$$J$$>l9g$K$OE,Ev$J%W%m%0%i%`L>$r;XDj$7$^$9!#(B")
     (buffer-disable-undo (current-buffer))
     (erase-buffer)
     (message "Namazu running ...")
-    (let ((default-process-coding-system (cons namazu-cs namazu-cs))
-	  (process-input-coding-system namazu-cs)
-	  (process-output-coding-system namazu-cs)
-	  (coding-system-for-read namazu-cs)
-	  (coding-system-for-write namazu-cs))
+    (let ((default-process-coding-system (cons namazu-cs-read namazu-cs-write))
+	  (process-input-coding-system namazu-cs-read)
+	  (process-output-coding-system namazu-cs-write)
+	  (coding-system-for-read namazu-cs-read)
+	  (coding-system-for-write namazu-cs-write))
       (apply (function call-process) namazu-command nil t nil arg-list))
     (if (not (and buffer
 		  (get-buffer buffer)
@@ -245,8 +238,7 @@ PATH $B$,DL$C$F$$$J$$>l9g$K$OE,Ev$J%W%m%0%i%`L>$r;XDj$7$^$9!#(B")
       (goto-char (point-min))
       (save-excursion
 	(namazu-fill)
-	(if (re-search-forward
-	     namazu-output-pages-pattern nil t)
+	(if (re-search-forward namazu-output-pages-pattern nil t)
 	    (setq namazu-max-page
 		  (+ -1 (string-to-int (buffer-substring
 					(match-beginning 2) (match-end 2)))))
@@ -280,7 +272,8 @@ PATH $B$,DL$C$F$$$J$$>l9g$K$OE,Ev$J%W%m%0%i%`L>$r;XDj$7$^$9!#(B")
 	  ))
       ;; there is description
       (let ((fill-column default-fill-column)
-	    (fill-prefix namazu-fill-prefix))
+	    (fill-prefix namazu-fill-prefix)
+	    (enable-kinsoku nil))
 	(insert namazu-fill-prefix)
 	(fill-region (point)
 		     (save-excursion (forward-line 1) (point))))
@@ -290,19 +283,6 @@ PATH $B$,DL$C$F$$$J$$>l9g$K$OE,Ev$J%W%m%0%i%`L>$r;XDj$7$^$9!#(B")
 	(delete-char 1)
 	(forward-line 1))
       )))
-
-;; Abolish
-;; (defun namazu-escape-key (key)
-;;   "$B8!:w<0Cf$N(B \\ $B$H(B ' $B$r%(%9%1!<%W$7$^$9!#(B"
-;;   (let ((tmpkey1 key) (tmpkey2 ""))
-;;     (while (string-match "\\(['\\]\\)" tmpkey1)
-;; 	 (setq tmpkey2
-;; 	       (concat tmpkey2
-;; 		       (substring tmpkey1 0 (match-beginning 0))
-;; 		       "\\" (substring tmpkey1
-;; 				       (match-beginning 1) (match-end 1))))
-;; 	 (setq tmpkey1 (substring tmpkey1 (match-end 0))))
-;;     (concat tmpkey2 tmpkey1)))
 
 (defun namazu-re-search (&optional key)
   "$B8=:_$N8!:w%-!<$rJQ99$7$?>e$G:F8!:w$7$^$9!#(B"
@@ -794,8 +774,7 @@ mouse $B$N??$sCf$N%\%?%s$r2!$9$H!"2!$7$?0LCV$K$h$C$F!"(B\"$BJ8>O$r;2>H(B\"$
 		 '(3 font-lock-type-face))
 	   (list namazu-output-current-list-pattern
 		 0 'font-lock-comment-face)
-	   (list namazu-output-pages-pattern 0 'font-lock-comment-face))
-	  "Namazu $B$G$N8!:w7k2L$K$*2=>Q$r$9$k$?$a$N@_Dj$G$9(B. ")
+	   (list namazu-output-pages-pattern 0 'font-lock-comment-face)))
 	(add-hook
 	 'namazu-display-hook
 	 (lambda ()

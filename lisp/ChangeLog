@@ -1,3 +1,10 @@
+2000-02-01  Hideyuki SHIRAI  <shirai@rdmg.mgcs.mei.co.jp>
+
+	* namazu.el: (namazu-cs-read|write): New variables for namazu process.
+	(namazu-output-(current-list|pages)-pattern): Fix, for pattern match.
+
+	* browse-url-for-emacs-19.28.el: New file. browse-url.el for Emacs 19.28.
+
 2000-01-24  KOSEKI Yoshinori  <kose@yk.NetLaputa.ne.jp>
 
 	* namazu.el (namazu-make-field-completion-alist): Ignore NMZ.field.`foo'.i.

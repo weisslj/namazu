@@ -1,3 +1,8 @@
+2000-08-10  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* scripts/mknmz.in: Added checking routine for the "negative numbers"
+	bug (namazu-bugs-ja#31).
+
 2000-08-09  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* scripts/mknmz.in (put_field_index): Added workaround for beginning
@@ -5762,4 +5767,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.710 2000-08-09 08:18:28 knok Exp $
+$Id: ChangeLog,v 1.711 2000-08-10 07:05:24 knok Exp $

@@ -75,8 +75,8 @@ fi
 QUERY_STRING='query=namazu&max="<S>strike</S>'
 export QUERY_STRING 
 
-RESULT=`./namazu.cgi | grep '&quot' | wc -l`
-if [ $RESULT -ne 1 ]
+RESULT=`./namazu.cgi | grep '<S>' | wc -l`
+if [ $RESULT -ne 0 ]
 then
 	echo $RESULT >> $LOG
 	exit 1

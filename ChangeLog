@@ -1,3 +1,6 @@
+2001-01-13  Kenji Suzuki  <kenji@po.ganseki.ne.jp>
+	* filter/html.pl: Fix $var::Opt{'NoHeadAbst'} to $var::Opt{'noheadabst'}
+
 2001-01-12  Hajime BABA  <baba@kusastro.kyoto-u.ac.jp>
 
 	* scripts/mknmz.in (namazu_core): Applied patch which displayes 
@@ -6281,4 +6284,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.789 2001-01-12 05:15:27 baba Exp $
+$Id: ChangeLog,v 1.790 2001-01-13 14:08:37 kenji Exp $

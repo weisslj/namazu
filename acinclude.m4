@@ -469,6 +469,7 @@ AC_ARG_ENABLE(libtool-lock,
   [  --disable-libtool-lock  avoid locking (might break parallel builds)])
 test "x$enable_libtool_lock" = xno && libtool_flags="$libtool_flags --disable-lock"
 test x"$silent" = xyes && libtool_flags="$libtool_flags --silent"
+test x"$ac_cv_mingw32" = xyes && LN_S="ln"
 
 # Some flags need to be propagated to the compiler or linker for good
 # libtool support.
@@ -632,7 +633,13 @@ ac_prog=ld
 if test "$ac_cv_prog_gcc" = yes; then
   # Check if gcc -print-prog-name=ld gives a path.
   AC_MSG_CHECKING([for ld used by GCC])
-  ac_prog=`($CC -print-prog-name=ld) 2>&5`
+  case $host in
+  *-*-mingw*)
+    # gcc leaves a trailing carriage return which upsets mingw
+    ac_prog=`($CC -print-prog-name=ld) 2>&5 | tr -d '\015'` ;;
+  *)
+    ac_prog=`($CC -print-prog-name=ld) 2>&5` ;;
+  esac
   case "$ac_prog" in
     # Accept absolute paths.
 changequote(,)dnl
@@ -646,6 +653,10 @@ changequote([,])dnl
       done
       test -z "$LD" && LD="$ac_prog"
       ;;
+  ld*)
+    ac_prog=ld
+    test -z "$LD" && LD="$ac_dir/$ac_prog"
+    ;;
   "")
     # If it fails, then pretend we aren't using GCC.
     ac_prog=ld

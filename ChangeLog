@@ -1,3 +1,14 @@
+1999-11-02  Ryuji Abe  <raeva@t3.rim.or.jp>
+
+	* acinclude.m4: Added libtool related macros from kakasi-2.3.1.
+
+	* nmz/Makefile.am (include_HEADERS): libnamazu.h.
+	(libnmz_la_LDFLAGS): Set version-info to 0:0:0. Each libtool 
+	library should be started with version infomation of `0:0:0'.
+
+	* src/Makefile.am (LDADD): Linked libtool library (libnmz.la) 
+	instead of real library (libnmz.a).
+
 1999-11-01  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* src/conf.[ch], src/var.c: Introduce CONFDIR and abolish

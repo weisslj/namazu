@@ -9,23 +9,15 @@
 
 	* nmz/query.c (nmz_make_query): Add debug messages.
 
-2000-04-04  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
-
-	* tests/Makefile.am (TESTS): Add namazu-cgi-3
-
-	* tests/namazu-cgi-3: New file.
-
-	* nmz/search.c (remove_quotes): Add condition to prevent core dump
-	when query `"' is specified.
-
 2000-04-05  Ken-ichi Hirose  <kenzo-@tama.or.jp>
 
-	* src/form.c (select_option): Fixed selected idxname value 
+	* src/form.c (select_option): Fix selected idxname value 
         mark selected function.
 
-	* src/cgi.c (get_query_string): Add An httpd server for Win9x.
+	* src/cgi.c (get_query_string): Add An httpd server for Win9x
+	handling.
 
-	* filter/msword.pl (filter_doccat): Fixed multi-byte path.
+	* filter/msword.pl (filter_doccat): Fix multi-byte path.
 
 	* filter/excel.pl (filter_doccat): Likewise.
 
@@ -37,9 +29,18 @@
 
 	* filter/Makefile.am : Add wordpro.pl, oasys.pl.
 
-	* filter/wordpro.pl : Newfile.
+	* filter/wordpro.pl : New file.
 
-	* filter/oasys.pl : Newfile.
+	* filter/oasys.pl : New file.
+
+2000-04-04  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* tests/Makefile.am (TESTS): Add namazu-cgi-3
+
+	* tests/namazu-cgi-3: New file.
+
+	* nmz/search.c (remove_quotes): Add condition to prevent core dump
+	when query `"' is specified.
 
 2000-04-04  Masao Takaku  <masao@ulis.ac.jp>
 
@@ -5453,4 +5454,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.667 2000-04-05 07:07:51 satoru Exp $
+$Id: ChangeLog,v 1.668 2000-04-05 07:21:13 satoru Exp $

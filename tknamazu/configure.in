@@ -1,6 +1,6 @@
 dnl
 dnl configure for Tknamazu
-dnl $Id: configure.in,v 1.4 2000-02-19 00:57:04 kenzo- Exp $
+dnl $Id: configure.in,v 1.5 2004-04-20 14:25:46 opengl2772 Exp $
 dnl
 
 dnl Process this file with autoconf to produce a configure script.
@@ -18,7 +18,7 @@ AC_ARG_WITH(
 	namazu,
 	[  --with-namazu=PATH      set namazu location [search path]],
 	AC_MSG_RESULT(using $with_namazu for namazu)
-	NAMAZU = $with_namazu,
+	NAMAZU=$with_namazu,
 	[AC_PATH_PROG(NAMAZU, namazu, no)]
 )
 if test "$NAMAZU" = "no"; then
@@ -28,7 +28,7 @@ AC_ARG_WITH(
 	mknmz,
 	[  --with-mknmz=PATH       set mknmz location [search path]],
 	AC_MSG_RESULT(using $with_mknmz for mknmz)
-	MKNMZ = $with_mknmz,
+	MKNMZ=$with_mknmz,
 	[AC_PATH_PROG(MKNMZ, mknmz, no)]
 )
 if test "$MKNMZ" = "no"; then
@@ -50,7 +50,7 @@ AC_ARG_WITH(
 	wish,
 	[  --with-wish=PATH        set wish location [search path]],
 	AC_MSG_RESULT(using $with_wish for wish)
-	WISH = $with_wish,
+	WISH=$with_wish,
 	dnl checking for wish (ugly)
 	[AC_PATH_PROGS(WISH, wish8.0jp wish4.2jp wish8.3 wish8.2 wish8.1 wish, no)]
 )
@@ -61,7 +61,7 @@ AC_ARG_WITH(
 	lynx,
 	[  --with-lynx=PATH        set lynx browser location [search path]],
 	AC_MSG_RESULT(using $with_lynx for lynx)
-	LYNX = $with_lynx,
+	LYNX=$with_lynx,
 	[AC_PATH_PROG(LYNX, lynx, no)]
 )
 if test "$LYNX" = "no"; then
@@ -71,7 +71,7 @@ AC_ARG_WITH(
 	groff,
 	[  --with-groff=PATH       set groff location [search path]],
 	AC_MSG_RESULT(using $with_groff for groff)
-	GROFF = $with_groff,
+	GROFF=$with_groff,
 	[AC_PATH_PROGS(GROFF, jgroff groff nroff, no)]
 )
 if test "$GROFF" = "no"; then
@@ -81,7 +81,7 @@ AC_ARG_WITH(
 	info,
 	[  --with-info=PATH        set info location [search path]],
 	AC_MSG_RESULT(using $with_info for info)
-	INFO = $with_info,
+	INFO=$with_info,
 	[AC_PATH_PROG(INFO, info, no)]
 )
 if test "$INFO" = "no"; then
@@ -91,7 +91,7 @@ AC_ARG_WITH(
 	zcat,
 	[  --with-zcat=PATH        set zcat location [search path]],
 	AC_MSG_RESULT(using $with_zcat for zcat)
-	ZCAT = $with_zcat,
+	ZCAT=$with_zcat,
 	[AC_PATH_PROG(ZCAT, zcat, no)]
 )
 if test "$ZCAT" = "no"; then
@@ -101,7 +101,7 @@ AC_ARG_WITH(
     netscape,
     [  --with-netscape=PATH    set netscape location [search path]],
     AC_MSG_RESULT(using $with_netscape for netscape)
-    NETSCAPE = $with_netscape,
+    NETSCAPE=$with_netscape,
     [AC_PATH_PROG(NETSCAPE, netscape, no)]
 )
 if test "$NETSCAPE" = "no"; then

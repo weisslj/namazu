@@ -4,16 +4,12 @@ CVSへのアクセス
 Anonymous CVS で最新のソースコードを誰でも入手できます。
 方法は次の通りです。
 
-% cvs -d :pserver:guest@cvs.namazu.org:/storage/cvsroot login
-CVS password: guest
-% cvs -d :pserver:guest@cvs.namazu.org:/storage/cvsroot co -P namazu
+% cvs -d :pserver:anonymous@cvs.namazu.org:/storage/cvsroot co -P namazu
 
 また、2001-06-25から安定版 (2.0.x) と開発版 (2.1.x) に分岐
 しました。安定版のソースを入手したい場合には
 
-% cvs -d :pserver:guest@cvs.namazu.org:/storage/cvsroot login
-CVS password: guest
-% cvs -d :pserver:guest@cvs.namazu.org:/storage/cvsroot co -r stable-2-0 namazu
+% cvs -d :pserver:anonymous@cvs.namazu.org:/storage/cvsroot co -r stable-2-0 namazu
 
 としてください。
 

@@ -4,17 +4,13 @@ CVS Access
 You can also check out the very newest version via Anonymous CVS.
 Here's now:
 
-% cvs -d :pserver:guest@cvs.namazu.org:/storage/cvsroot login
-CVS password: guest
-% cvs -d :pserver:guest@cvs.namazu.org:/storage/cvsroot co -P namazu
+% cvs -d :pserver:anonymous@cvs.namazu.org:/storage/cvsroot co -P namazu
 
 Namazu has been branched into the stable version (2.0.x) and
 the development version (2.1.x) on 2001-06-25. If You want to
 check out the stable version, type the following information instead:
 
-% cvs -d :pserver:guest@cvs.namazu.org:/storage/cvsroot login
-CVS password: guest
-% cvs -d :pserver:guest@cvs.namazu.org:/storage/cvsroot co -r stable-2-0 namazu
+% cvs -d :pserver:anonymous@cvs.namazu.org:/storage/cvsroot co -r stable-2-0 namazu
 
 ==============================================================
 

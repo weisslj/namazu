@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: html.pl,v 1.34 2002-06-17 05:03:13 knok Exp $
+# $Id: html.pl,v 1.35 2003-04-20 12:34:37 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -147,7 +147,7 @@ sub get_author ($$) {
 
     if ($$contref =~ m!<LINK\s[^>]*?HREF=([\"\'])mailto:(.*?)\1\s*>!i) { #"
 	    $fields->{'author'} = $2;
-    } elsif ($$contref =~ m!.*<ADDRESS[^>]*>([^<]*?)</ADDRESS>!i) {
+    } elsif ($$contref =~ m!.*<ADDRESS[^>]*>(.*?)</ADDRESS>!is) {
 	my $tmp = $1;
 #	$tmp =~ s/\s//g;
 	if ($tmp =~ /\b([\w\.\-]+\@[\w\.\-]+(?:\.[\w\.\-]+)+)\b/) {
@@ -164,7 +164,7 @@ sub get_title ($$) {
     my ($contref, $weighted_str) = @_;
     my $title = '';
     
-    if ($$contref =~ s!<TITLE[^>]*>([^<]+)</TITLE>!!i) {
+    if ($$contref =~ s!<TITLE[^>]*>(.*?)</TITLE>!!is) {
 	$title = $1;
 	$title =~ s/\s+/ /g;
 	$title =~ s/^\s+//;
@@ -241,7 +241,7 @@ sub normalize_html_element ($) {
 sub erase_above_body ($) {
     my ($contref) = @_;
 
-    $$contref =~ s/^.*<body>//is;
+    $$contref =~ s/^.*<BODY[^>]*>//is;
 }
 
 

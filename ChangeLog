@@ -1,5 +1,9 @@
 1999-12-10  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* Namazu: Version 1.9.11 released.
+	
+	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 1.9.11.
+
 	* src/cgi.h: Remove #ifdef __STDC__ related codes.
 	src/output.h: Remove #ifdef __STDC__ related codes.
 	src/result.h: Remove #ifdef __STDC__ related codes.

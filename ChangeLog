@@ -1,5 +1,11 @@
 2000-01-31  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* scripts/mknmz.pl (parse_options): Change option name:
+	s/--use-chasen-morph/--use-chasen-noun/. All related variables are
+	changed.
+
+	* nmz/util.c (nmz_is_file_exists): Bug fix: fclose(fp).
+
 	* template/NMZ.body.ja: Change anchor names.
 
 	* template/NMZ.body: Ditto.

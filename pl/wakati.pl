@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: wakati.pl,v 1.8 2000-01-28 09:40:16 satoru Exp $
+# $Id: wakati.pl,v 1.9 2000-01-31 06:24:04 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -51,7 +51,7 @@ sub wakatize_japanese ($) {
     }
 
     # Collect only noun words when -m option is specified.
-    if ($var::Opt{'morph'}) {
+    if ($var::Opt{'noun'}) {
 	$$content = "";
 	$$content .= shift(@tmp) =~ /(.+ )Ì¾»ì/ ? $1 : "" while @tmp; 
     } else {

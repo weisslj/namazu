@@ -8,7 +8,7 @@
 </head>
 <body lang="ja">
 <h1>$BA4J88!:w%7%9%F%`(B Namazu $B@bL@=q(B</h1>
-<p> Last Modified: 2000-01-30
+<p> Last Modified: 2000-01-31
 </p>
 <hr>
 
@@ -33,31 +33,27 @@ href="http://www.namazu.org/">http://www.namazu.org/</a> $B$+(B
 <li><a href="#search">$B<B:]$N8!:w$KLrN)$F$k(B</a>
   <ul>
   <li><a href="#search-on-command-line">$B%3%^%s%I%i%$%s$+$i8!:w$9$k(B</a>
-  <li><a href="#search-on-cgi">http $B$rDL$7$F(B CGI $B$H$7$F8!:w$9$k(B</a>
+  <li><a href="#search-on-cgi">CGI$B$H$7$F8!:w$9$k(B</a>
   <li><a href="#search-on-mule">Mule $B$+$i8!:w$9$k(B</a>
   <li><a href="#search-on-x">X Window System $B$+$i8!:w$9$k(B</a>
   <li><a href="#search-on-win32">Windows 95/NT $B$+$i8!:w$9$k(B</a>
-  <li><a href="#search-on-java">Java $BHG8!:w%/%i%$%"%s%H$r;H$&(B</a>
   </ul>
 <li><a href="#tips">$B;(B?$J>pJs(B</a>
   <ul>
   <li><a href="#log">$B8!:w$5$l$?%-!<%o!<%I$N%m%0(B</a>
   <li><a href="#when-confused">$B%$%s%G%C%/%9$N:n@.(B/$B99?7$K:.Mp$7$?$i(B</a>
-  <li><a href="#maillist">$B%a%$%j%s%0%j%9%H(B/News$B$N%"!<%+%$%t$NA4J88!:w%7%9%F%`$r:n@.$9$k$K$O(B</a>
-  <li><a href="#man">man $B$NA4J88!:w%7%9%F%`$r:n@.$9$k$K$O(B</a>
-  <li><a href="#mknmz-f">mknmz -F $B%*%W%7%g%s$r3hMQ$9$k(B</a>
+  <li><a href="#maillist">$B%a%$%j%s%0%j%9%H!&(BNews$B$N%"!<%+%$%t$NA4J88!:w%7%9%F%`$r:n@.$9$k$K$O(B</a>
   <li><a href="#robots-txt">/robots.txt $B$G;XDj$5$l$?%U%!%$%k$rBP>]$+(B
 $B$i=|30$9$k(B</a>
   <li><a href="#htaccess">.htaccess $B$G;XDj$5$l$?%U%!%$%k$rBP>]$+$i=|(B
 $B30$9$k(B</a>
   </ul>
-<li><a href="#form">Namazu $B$NMQ$$$k(B &lt;FORM&gt;$B$N7A<0(B</a>
+<li><a href="#form">Namazu $B$NMQ$$$k(B &lt;form&gt;$B$N7A<0(B</a>
   <ul>
-  <li><a href="#whyget">$B$J$<(B GET $B$J$N$+(B</a>
   <li><a href="#outform">$B7k2LI=<($N7o?t$H=PNO%U%)!<%^%C%H(B</a>
-  <li><a href="#dbname">$B%V%i%&%6$+$i%$%s%G%C%/%9$r;XDj$9$kJ}K!(B</a>
+  <li><a href="#idxname">$B%V%i%&%6$+$i%$%s%G%C%/%9$r;XDj$9$kJ}K!(B</a>
   <li><a href="#multiple-indices">$BJ#?t$N%$%s%G%C%/%9$K8!:w$r$+$1$kJ}K!(B</a>
-  <li><a href="#subquery">$B8!:wBP>]$N(BURL$B$r@)8B$9$kJ}K!(B</a>
+  <li><a href="#subquery">$B8!:wBP>]$N(BURI$B$r@)8B$9$kJ}K!(B</a>
   </ul>
 <li><a href="#implimentation">Namazu $B$N@_7W$H<BAu(B</a>
   <ul>
@@ -70,16 +66,14 @@ href="http://www.namazu.org/">http://www.namazu.org/</a> $B$+(B
   <li><a href="#andor">$B%"%s%I(B/$B%*%"8!:w;~$N%9%3%"7W;;(B</a>
     <ul>
     <li><a href="#tfidf">tf idf$BK!$K$h$k%9%3%"$N7W;;(B</a>
-    <li><a href="#obsolete-scoring">$B=>Mh$N%9%3%"$N7W;;(B</a>
   </ul>
   <li><a href="#symbol">$B5-9f$r4^$`C18l$N%$%s%G%C%/%9=hM}(B</a>
   <li><a href="#algorithm">Namazu $B$N8!:w%"%k%4%j%:%`(B</a>
   <li><a href="#regexp-search">$B@55,I=8=(B/$B8eJ}0lCW(B/$BCf4V0lCW8!:w$N<BAu(B</a>
   <li><a href="#phrase-search">($B$"$d$7$2$J(B)$B%U%l%$%:8!:w$N<BAu(B</a>
-  <li><a href="#update-index">$BJ8=q$N99?7(B/$B:o=|$KBP1~%$%s%G%C%/%9$N(B
-$B%"%C%W%G!<%H(B</a>
+  <li><a href="#update-index">$BJ8=q$N99?7!&:o=|$KBP1~%$%s%G%C%/%9$N(B
+$B99?7(B</a>
   <li><a href="#sort-by-date">$BJ8=q$NF|IU$K$h$k8!:w7k2L$N?7$7$$=g(B/$B8E$$=g$N%=!<%H(B</a>
-  <li><a href="#wakatigaki">$B8!:w;~$NF|K\8l$N$o$+$A=q$-(B</a>
   </ul>
 <li><a href="#query-description">$B8!:w<0$N@bL@(B</a>
   <ul>
@@ -101,7 +95,8 @@ href="http://www.namazu.org/">http://www.namazu.org/</a> $B$+(B
 <h3><a name="usage-general">$B4pK\JT(B</a></h3>
 
 <p>
-$B%$%s%G%C%/%9$r:n@.$9$k$K$O(B mknmz $B$N0z?t$K%$%s%G%C%/%9$r:n@.$9$k85$H$J$k%U%!%$%k$N$"$k%G%#%l%/%H%jL>$rM?$($^$9!#(B
+$B%$%s%G%C%/%9$r:n@.$9$k$K$O(B mknmz $B$N0z?t$K%$%s%G%C%/%9:n@.$N(B
+$BBP>]$H$9$k%U%!%$%k!&%G%#%l%/%H%jL>$rM?$($^$9!#(B
 $B$D$^$j(B <var>/home/foo/public_html</var> $B$rBP>]$H$9$k$J$i$P(B
 </p>
 
@@ -109,17 +104,17 @@ href="http://www.namazu.org/">http://www.namazu.org/</a> $B$+(B
 </p>
 
 <p>
-$B$H<B9T$9$l$P(B <var>/home/foo/public_html</var> $B0J2<$N(B *.html *.txt 
-$B$H$$$C$?%U%!%$%k(B (Makefile $B$N(B OPT_TARGET_FILE $B$KDj5A$5$l$F$$$^$9(B)
- $B$r$9$Y$F%$%s%G%C%/%9$7$F!"(B mknmz $B$r<B9T$7$?%+%l%s%H%G%#%l%/%H%j$K(B 
-NMZ.* $B$H$$$&%U%!%$%k$r:n@.$7$^$9!#(B
+$B$H<B9T$7$^$9!#(B<var>/home/foo/public_html</var> $B0J2<$N(B *.html
+*.txt $B$H$$$C$?%U%!%$%k(B (mknmzrc $B$N(B $conf::ALLOW_REGEX $B$G@_Dj(B
+$B$G$-$^$9(B) $B$r$9$Y$F%$%s%G%C%/%9$7$F!"(B mknmz $B$r<B9T$7$?%+%l%s(B
+$B%H%G%#%l%/%H%j$K(B NMZ.* $B$H$$$&%U%!%$%k$r:n@.$7$^$9!#(B
 </p>
 
 <p>
-$BFsEYL\0J9_$O!"A02s0J9_$KDI2C(B/$B99?7(B/$B:o=|$5$l$?%U%!%$%k$rCj=P$7$F%$%s(B
-$B%G%C%/%9$r%"%C%W%G!<%H$9$k;EAH$_$K$J$C$F$$$^$9!#J8=q$N99?7(B/$B:o=|$N(B
-$B8!=P$rM^@)$9$k$K$O(B -Z $B%*%W%7%g%s$r$D$1$F$/$@$5$$!#:o=|$5$l$?J8=q$N(B
-$B8!=P$N$_$rM^@)$9$k$H$-$O(B -Y $B%*%W%7%g%sMQ$$$^$9!#(B
+$BFsEYL\0J9_$O!"?7$?$KDI2C!&99?7!&:o=|$5$l$?%U%!%$%k$r8!=P$7$F(B
+$B%$%s%G%C%/%9$r99?7$7$^$9!#J8=q$N99?7(B/$B:o=|$N8!=P$rM^@)$9$k$K(B
+$B$O(B -Z $B%*%W%7%g%s$r$D$1$F$/$@$5$$!#:o=|$5$l$?J8=q$N8!=P$N$_$r(B
+$BM^@)$9$k$H$-$O(B -Y $B%*%W%7%g%sMQ$$$^$9!#(B
 </p>
 
 
@@ -128,11 +123,13 @@ NMZ.* $B$H$$$&%U%!%$%k$r:n@.$7$^$9!#(B
 <p><code>% namazu <code>"</code><var>bar</var><code>"</code>
  </code><var>/home/quux/namazu/index</var></p>
 
-<p>$B$N$h$&$K<B9T$9$l$P!"(B <var>/home/quux/namazu/index</var> 
-($B$3$l$O(B Makefile $B$N(B <code>INDEXDIR</code> $B$G@_Dj$7$?%G%#%l%/%H%j$N>l9g$O>JN,$G$-$^$9(B) 
-$B$K$"$k(B NMZ.* $B$r$b$H$K%-!<%o!<%I(B <var>bar</var> $B$r8!:w$7$^$9!#(B <code>namazu</code> $B$N%3%^%s%I%i%$%s%*%W%7%g%s$O(B<a href="#namazu-opt">$BJL$N9`(B</a>$B$G@bL@$7$^$9!#(B
-$B%G%#%U%)%k%H$G$O%3%^%s%I%i%$%s$+$i<B9T$7$?:]$O%W%l%$%s$J%F%-%9%H$G=PNO$7$^$9!#(B
-HTML $B$G=PNO$7$?$$>l9g$K$O(B -h $B%*%W%7%g%s$r;XDj$7$^$9!#(B
+<p>$B$N$h$&$K<B9T$9$l$P!"(B <var>/home/quux/namazu/index</var>
+(namazurc $B$N(B Index $B$G@_Dj$7$?%G%#%l%/%H%j$N>l9g$O>JN,$G$-$^(B
+$B$9(B) $B$K$"$k(B NMZ.* $B$r$b$H$K%-!<%o!<%I(B <var>bar</var> $B$r8!:w$7(B
+$B$^$9!#(B <code>namazu</code> $B$N%3%^%s%I%i%$%s%*%W%7%g%s$O(B<a
+href="#namazu-option">$BJL$N9`(B</a>$B$G@bL@$7$^$9!#I8=`$G$O%3%^%s(B
+$B%I%i%$%s$+$i<B9T$7$?:]$O%W%l%$%s$J%F%-%9%H$G=PNO$7$^$9!#(BHTML 
+$B$G=PNO$7$?$$>l9g$K$O(B -h $B%*%W%7%g%s$r;XDj$7$^$9!#(B
 </p>
 
 <p>
@@ -141,11 +138,11 @@ HTML $B$G=PNO$7$?$$>l9g$K$O(B -h $B%*%W%7%g%s$r;XDj$7$^$9!#(B
 
 <p>
 <code>% namazu <code> "</code><var>bar</var><code>"</code> 
-</code><var>/home/quux/namazu/index/hoge1</var> <var>/home/quux/namazu/index/hoge2</var>
+</code><var>/home/quux/namazu/index/foo</var> <var>/home/quux/namazu/index/bar</var>
 </p>
 
 <p>
-$B$N$h$&$KJ#?t$N%$%s%G%C%/%9(B (hoge1, hoge2) $B$r;XDj$9$k$3$H$b$G$-$^$9!#(B
+$B$N$h$&$KJ#?t$N%$%s%G%C%/%9(B (foo, bar) $B$r;XDj$G$-$^$9!#(B
 </p>
 
 
@@ -159,8 +156,8 @@ CGI $B$H$7$FF0:n$5$;$k>l9g$O8!:wBP>]$H$J$k%$%s%G%C%/%9%U%!%$%k$r(B Makefie $B
 </p>
 
 <p>
-$B%G%#%U%)%k%H$G$O(B mknmz $B$K$h$C$F:n@.$5$l$k%$%s%G%C%/%9$K$O(B
-<code>&lt;A HREF="/home/quux/public_html/index.html"&gt;</code> $B$N$h$&$K(B URL $B$,E83+$5$l$F$$$^$9!#(B
+$BI8=`$G$O(B mknmz $B$K$h$C$F:n@.$5$l$k%$%s%G%C%/%9$K$O(B
+<code>&lt;a href="/home/quux/public_html/index.html"&gt;</code> $B$N$h$&$K(B URI $B$,E83+$5$l$F$$$^$9!#(B
 </p>
 
 <p>
@@ -170,7 +167,7 @@ WWW $BMQ$N8!:w%(%s%8%s$r:n$k$H$-$O:$$j$^$9!#(B
 
 <p>
 CGI $B$H$7$FMQ$$$k$?$a$K(B
-<code>http://</code> $B$+$i;O$^$k(B URL $B$r:n@.$9$k$K$O$$$/$D$+$NJ}K!$,$"$j$^$9!#(B
+<code>http://</code> $B$+$i;O$^$k(B URI $B$r:n@.$9$k$K$O$$$/$D$+$NJ}K!$,$"$j$^$9!#(B
 $B0l$D$O(B</p>
 
 <p>
@@ -178,85 +175,40 @@ CGI $B$H$7$FMQ$$$k$?$a$K(B
 </p>
 
 <p>
-<code>REPLACE  /home/foo/public_html/  http://foo.bar.jp/%7Efoo/</code>
+<code>Replace  /home/foo/public_html/  http://foo.bar.jp/~foo/</code>
 </p>
 
 <p>
 $B$N$h$&$K;XDj$7$F$*$/$3$H$G(B ($B3F9`L\$O(B TAB $B$G6h@Z$C$F$/$@$5$$(B)$B!"(B
 $B8!:w7k2L$N=PNO;~$K(B <code>/home/foo/public_html/</code> $B$NIt(B
-$BJ,$r(B <code>http://foo.bar.jp/%7Efoo/</code> $B$KF0E*$KCV$-49$((B
+$BJ,$r(B <code>http://foo.bar.jp/~foo/</code> $B$KF0E*$KCV$-49$((B
 $B$F=PNO$G$-$^$9!#$3$NJ}K!$G$O$R$H$D$N%$%s%G%C%/%9$r%m!<%+%kMQ(B
 $B$H(B CGI $BMQ$H6&MQ$G$-$k$N$,MxE@$G$9!#%3%^%s%I%i%$%s$+$i8!:w$9(B
 $B$k$H$-$K$O(B -R $B%*%W%7%g%s$r;XDj$9$l$P$3$NCV49$r9T$$$^$;$s!#(B
 </p>
 
 <p>
-$BJL$N<jK!$H$7$F$O(B
-</p>
-
-<p><code>mknmz "</code><var>http://foo.bar.jp/~quux/</var><code>" "</code><var>/home/foo/public_html</var><code>"</code></p>
-
-<p>$B$N$h$&$K0z?t$K<+J,$N(B URL $B$r;XDj$9$kJ}K!$b$"$j$^$9!#(B
-$B$3$l$O(B mknmz $B$,%$%s%G%C%/%9:n@.$r9T$&:]$KBP>]%G%#%l%/%H%j$X0\F0$7!"(B <code>&amp;find()</code> $B$r<B9T$7$FF@$i$l$k(B
-</p>
-
-<p><code>./index.html</code></p>
-
-<p>$B$H$$$&%U%!%$%kL>$NF,$K(B <code>http://foo.bar.jp/~quux/</code> $B$r$/$C$D$1$F(B URL $B$r:n$j=P$7$^$9!#(B
-
-$BKh2s$3$l$rF~NO$9$k$N$,LLE]$H$$$&>l9g$O!"(B  mknmz $B$N%=!<%9$NF,$NJ}$K$"$k(B</p>
-
-<p><code>$URL_PREFIX = "\t";</code></p>
-
-<p>
-$B$NItJ,$r=$@5$7$FG$0U$N(B URL $B$r=q$$$F$*$/$3$H$G$9!#Nc$($P(B
-</p>
-
-<p><code>$URL_PREFIX =
-"</code><var>http://foo.bar.jp/~quux/</var><code>";</code></p>
-
-<p>$B$N$h$&$K@_Dj$7$^$9!#(B</p>
-
-
-<p>
-$BKvHx$,%G%#%l%/%H%j$G=*$o$k(B URL $B$NI=5-$r$7$?$$>l9g$b$"$j$^$9!#IaDL(B
-$B$O(B index.html $B$O>JN,$G$-$k$h$&$K@_Dj$5$l$F$$$k$b$N$G$9!#$3$l$O(B 
-Makefile $B$N(B OPT_DEFAULT_FILE $B$G;XDj$G$-$^$9(B
-</p>
-
-<p>
-$BAjBP%Q%9$N(B URL $B$r:n$j$?$$>l9g$O(B
-</p>
-
-<p><code>mknmz "" </code>"<var>/home/foo/public_html</var><code>"</code></p>
-
-<p>
-$B$N$h$&$K(B URL $B$N;XDj$r(B "" $B$H(B null $B$G;XDj$7$^$9!#(B
-$BAjBP%Q%9$G(B URL $B$r:n@.$7$?>l9g$O8!:w7k2LI=<($K(B &lt;BASE HREF="..."&gt; $B$r=PNO$9$k$h$&$K$7$^$9!#(B
-<a href="#namazurc">namazurc</a> $B$G(B <code>BASE</code> $B$N@_Dj$r$7$F$/$@$5$$!#(B
+--replace=code
 </p>
 
 <p>
 $B8!:w%W%m%0%i%`$O(B ($BF|K\8l$J$i$P(B) NMZ.head.ja $B$H(B NMZ.foot.ja $B$H$$$&(B
 $B%X%C%@$H%U%C%?$N%U%!%$%k$r;2>H$7$^$9!#$3$l$i$O(B mknmz $B$r<B9T$7$?:](B
 $B$K%5%s%W%k$,:n@.$5$l$^$9$,!"I,MW$K1~$8$F%a%C%;!<%8$r<+J,MQ$K=q$-D>(B
-$B$7$F$*$-$^$7$g$&!#FC$K(B &lt;TITLE&gt; ... &lt;/TITLE&gt; $B$OJQ99$9$k(B
+$B$7$F$*$-$^$7$g$&!#FC$K(B &lt;title&gt; ... &lt;/TITLE&gt; $B$OJQ99$9$k(B
 $B$3$H$r6/$/$*4+$a$7$^$9!#(B
 </p>
 
 <p>
-$B$3$N(B NMZ.head.ja $B$H(B NMZ.foot.ja $B$K$"$k%U%!%$%k?t$d%-!<%o!<%I?t$N5-(B
-$B=R$5$l$F$$$kItJ,$O%$%s%G%C%/%9$r99?7$7$?:]$K!"<+F0E*$K99?7$5$l$k$h(B
-$B$&$K$J$C$F$$$k$N$G!"(B <code>&lt;!-- FILE --&gt;</code> $B$H$$$C$?%@%_!<(B
-$B$N%?%0$r>C$5$J$$$G$/$@$5$$(B ($B$=$s$J>pJs$OI,MW$J$$$H$$$&$N$J$i:o=|$7(B
-$B$F$b9=$$$^$;$s(B) $B!#(B
+$B$3$N(B NMZ.head.ja $B$H(B NMZ.foot.ja $B$K$"$k%U%!%$%k?t$d%-!<%o!<%I(B
+$B?t$N5-=R$5$l$F$$$kItJ,$O%$%s%G%C%/%9$r99?7$7$?:]$K!"<+F0E*$K(B
+$B99?7$5$l$^$9!#(B
 </p>
 
 <p>
 $B0lDL$j$N@_Dj$,=*$o$C$?$i%V%i%&%6$+$i(B CGI $B$H$7$F%"%/%;%9$7$F$_$F$/$@$5$$!#(B
 NMZ.head.ja, NMZ.body.ja, NMZ.foot.ja $B$r85$K$7$?I=<($r9T$$$^$9!#(B
 $B%a%C%;!<%8$O<+J,$N%5%$%H$K9g$o$;$F=q$-BX$($F$/$@$5$$!#(B
-$B$=$N:]$OJ8;z%3!<%I$rI,$:(B ISO-2022-JP $B$GJ]B8$7$^$9!#(B
 </p>
 
 <h3><a name="mknmz-option">mknmz $B$N%3%^%s%I%i%$%s%*%W%7%g%s(B</a></h3>
@@ -322,12 +274,6 @@ NMZ.head.ja, NMZ.body.ja, NMZ.foot.ja $B$r85$K$7$?I=<($r9T$$$^$9!#(B
 
 <p>
 $B$3$l$i$N%*%W%7%g%s$O(B -am $B$N$h$&$K$D$J$2$F;XDj$7$F$b(B -a -m $B$N$h$&$KJL!9$K;XDj$7$F$b9=$$$^$;$s!#(B
-$B$?$@$7!"(B -I $B%*%W%7%g%s$N8e$m$K$O$R$H$D6uGr$r$"$1$F<!$N0z?t$G%U%!%$%k$r;XDj$9$k$h$&$K$7$F$/$@$5$$!#(B
--k -c -m $B$N$$$:$l$+$N%*%W%7%g%s$r>JN,$7$?>l9g$O(B Makefile $B$N(B <code>WAKATI</code> $B$G;XDj$7$?$b$N$,;H$o$l$^$9!#(B
-</p>
-
-<p>-R $B$H(B -P$B%*%W%7%g%s$O$=$l$>$l@55,I=8=MQ%$%s%G%C%/%9$H%U%l%$%:8!(B
-$B:wMQ%$%s%G%C%/%9$r(B<strong>$B:n@.$7$?$/$J$$(B</strong>$B$H$-$K;XDj$7$^$9!#(B
 </p>
 
 <p>
@@ -343,14 +289,7 @@ mknmz $B<B9T;~$K$=$N%U%!%$%k$r%$%s%/%k!<%I(B (require) $B$7$^$9!#(B
 </p>
 
 <p>
-<code>% find -type f -name '*.html' /foo/bar</code>
-</p>
-
-<p>
-$B$N$h$&$K$7$F:n@.$7$F$/$@$5$$!#$J$*!"(B "/foo/bar/baz/" $B$N$h$&$K:G8e(B
-$B$,(B / $B$G=*$o$k(B (Win32, OS/2 $B$J$i(B \) $B9T$,$"$C$?$H$-$O$=$NItJ,$r(B find 
-$B$7$FE83+$7$^$9!#$3$N$H$-$O(B $TARGET_FILE $B$K=>$C$F%U%!%$%k$r=&$$$^$9(B 
-(v1.3.0.0$B0J9_(B)$B!#(B
+<code>% find -type f -name '*.html' /foo/bar &gt; list</code>
 </p>
 
 <h3><a name="namazu-option">namazu $B$N%3%^%s%I%i%$%s%*%W%7%g%s(B</a></h3>
@@ -389,29 +328,30 @@ mknmz $B<B9T;~$K$=$N%U%!%$%k$r%$%s%/%k!<%I(B (require) $B$7$^$9!#(B
 <!-- namazu-option -->
 
 <p>
-<code>% namazu [options] <query> [index]...</code>
+<code>% namazu [options] &lt;query&gt; [index]...</code>
 </p>
 
 <p>
 $B$N$h$&$K<B9T$9$k7A$K$J$C$F$$$^$9!#(B<code>[index
-dir(s)]</code> $B$O8!:wBP>]$H$J$k%$%s%G%C%/%9$NCV$$$F$"$k%G%#(B
-$B%l%/%H%j$N;XDj$G$9$,!"(B Makefile $B$N(B <code>INDEXDIR</code> $B$G(B
-$B@_Dj$7$?%G%#%l%/%H%j$N>l9g$O>JN,$G$-$^$9!#(B
+dir]...</code> $B$O8!:wBP>]$H$J$k%$%s%G%C%/%9$NCV$$$F$"$k%G%#(B
+$B%l%/%H%j$N;XDj$G$9!#(B
 </p>
 
 <p>
-$B%3%^%s%I%i%$%s$+$i<B9T$7$?$H$-$O%G%#%U%)%k%H$G%W%l%$%s$J%F%-%9%H$H$7$F8!:w7k2L$NI=<($r9T$$$^$9!#(B
-HTML $B$G=PNO$9$k>l9g$K$O(B -h $B%*%W%7%g%s$r;H$$$^$9!#(B
-CGI $B$+$i8!:w$7$?$H$-$O7k2L$,0lEY$KI=<($G$-$J$$$H2<$NJ}$K(B [1] [2] [3] $B$N$h$&$K@h$N8!:w7k2L$X?J$`$?$a$N%j%s%/$,:n$i$l$^$9$,!"(B
-$B%3%^%s%I%i%$%s$+$i<B9T$7$?$H$-$K$O$3$l$i$NI=<($OL50UL#$J$N$G!"I=<($7$J$$$h$&$K$J$C$F$$$^$9!#(B
-$B$3$NM>J,$JI=<($r2?$i$+$NM}M3$K$h$C$F6/@)E*$KI=<($5$;$k$K$O(B -H $B%*%W%7%g%s$r;H$$$^$9!#(B
-$B$^$?!"%3%^%s%I%i%$%s$+$i<B9T$7$?$H$-$O%G%#%U%)%k%H$G(B &lt;FORM&gt; ... &lt;/FORM&gt; $B$rI=<($5$;$J$$$h$&$K$J$C$F$$$^$9$,!"(B -F $B$r$D$1$k$H6/@)E*$KI=<($5$;$k$3$H$,$G$-$^$9!#(B
+$B%3%^%s%I%i%$%s$+$i<B9T$7$?$H$-$OI8=`$G%W%l%$%s$J%F%-%9%H$H$7(B
+$B$F8!:w7k2L$NI=<($r9T$$$^$9!#(BHTML $B$G=PNO$9$k>l9g$K$O(B -h $B%*%W(B
+$B%7%g%s$r;H$$$^$9!#(BCGI $B$+$i8!:w$7$?$H$-$O7k2L$,0lEY$KI=<($G$-(B
+$B$J$$$H2<$NJ}$K(B [1] [2] [3] $B$N$h$&$K@h$N8!:w7k2L$X?J$`$?$a$N(B
+$B%j%s%/$,:n$i$l$^$9$,!"%3%^%s%I%i%$%s$+$i<B9T$7$?$H$-$K$O$3$l(B
+$B$i$NI=<($OL50UL#$J$N$G!"I=<($7$^$;$s!#$3$NM>J,$JI=<($r2?$i$+(B
+$B$NM}M3$K$h$C$F6/@)E*$KI=<($5$;$k$K$O(B -H $B%*%W%7%g%s$r;H$$$^$9!#(B
+$B$^$?!"%3%^%s%I%i%$%s$+$i<B9T$7$?$H$-$OI8=`$G(B &lt;form&gt;
+... &lt;/FORM&gt; $B$rI=<($5$;$J$$$h$&$K$J$C$F$$$^$9$,!"(B -F $B$r(B
+$B$D$1$k$H6/@)E*$KI=<($5$;$k$3$H$,$G$-$^$9!#(B
 </p>
 
 <p>
 -a $B%*%W%7%g%s$O8!:w7k2L$r$9$Y$FI=<($5$;$^$9!#(B
-$B$3$l$O%3%^%s%I%i%$%s$+$i<B9T$7$?$H$-$@$1$NFCJL$J%*%W%7%g%s$G$9!#(B
-CGI $B$H$7$F;H$&>l9g$O$9$Y$F$rI=<($9$k$3$H$O4:$($F$G$-$J$$$h$&$K$7$F$$$^$9!#(B
 </p>
 
 <p>
@@ -421,7 +361,7 @@ CGI $B$H$7$F;H$&>l9g$O$9$Y$F$rI=<($9$k$3$H$O4:$($F$G$-$J$$$h$&$K$7$F$$$^$9!#(B
 </p>
 
 <p>
--U $B%*%W%7%g%s$O%3%^%s%I%i%$%s$+$i<B9T$7$F(B plain text $B$G7k2L=PNO$9$k:]$K(B URL encode $B$N%G%3!<%I$r9T$o$J$$$?$a$N%*%W%7%g%s$G$9!#%G%#%U%)%k%H$G$O9T$o$l$k$h$&$K$J$C$F$$$^$9!#(B
+-U $B%*%W%7%g%s$O%3%^%s%I%i%$%s$+$i<B9T$7$F(B plain text $B$G7k2L=PNO$9$k:]$K(B URI encode $B$N%G%3!<%I$r9T$o$J$$$?$a$N%*%W%7%g%s$G$9!#I8=`$G$O9T$o$l$k$h$&$K$J$C$F$$$^$9!#(B
 </p>
 
 <h3><a name="namazurc">namazurc $B$G$N@_Dj$K$D$$$F(B</a></h3>
@@ -431,58 +371,43 @@ namazu $B$O(B
 </p>
 
 <ol>
-<li>namazu $B$r<B9T$7$?%G%#%l%/%H%j$K$"$k(B <code>.namazurc</code> (CGI$B$N$H$-$KJXMx$G$7$g$&(B)
-<li>$B%f!<%6$N%[!<%`%G%#%l%/%H%j$K$"$k(B <code>.namazurc</code>
-<li>Makefile $B$G(B LIBDIR $B$K;XDj$7$?%G%#%l%/%H%j$K$"$k(B 
-<code>namazurc</code> ($BDL>o$O(B /usr/local/namazu/lib/namazurc)
+<li>$(sysconfdir)/$(PACKAGE)/namazurc<br>
+$BDL>o$O(B /usr/local/etc/namazu/namazurc
+<li>~/.namazurc
+<li>-f, --config= $B%*%W%7%g%s$G;XDj$7$?(B namazurc
 </ol>
 
 <p>
-$B$N=g$GC5$7$F8+$D$+$l$P$3$l$r%j%=!<%9%U%!%$%k$H$7$FFI$_9~$_$^$9!#(B
+$B$N=g$GC5$7$FFI$_9~$_$^$9!#(B
 </p>
 
 
 <p>
-$B%*%j%8%J%k$O(B namazurc-dist $B$H$$$&L>A0$K$J$C$F$$$k$N$G!"(B
+$B%*%j%8%J%k$O(B namazurc-sample $B$H$$$&L>A0$K$J$C$F$$$k$N$G!"(B
 $B$3$l$r(B namazurc $B$^$?$O(B .namazurc $B$H$$$&L>A0$K%3%T!<$7$F;H$$$^$9!#(B
 $B%*%j%8%J%k$O;D$7$F$*$$$?J}$,NI$$$G$7$g$&!#(B
 $B$3$l$O<g$K(B make $B;~$N@_Dj$H$O0c$&4D6-$K9g$o$;$k$H$-$KMQ$$$^$9!#(B
 </p>
 
-<p>
-<strong>$B3F9`L\$HCM$O(B TAB $B$G6h@Z$j$^$9(B</strong>$B!#$3$l$O;EMM$G$9$N$GCm0U$7$F$/$@$5$$!#@_Dj$N0UL#$O0J2<$NDL$j$G$9!#(B
-</p>
-
 <ul>
-<li><code>INDEX /usr/local/namazu/index</code><br> $B%G%#%U%)(B
-$B%k%H$G;2>H$9$k%$%s%G%C%/%9$N$"$k%G%#%l%/%H%j(B
+<li><code>INDEX /usr/local/namazu/index</code><br>
+$B%G%#%U%)%k%H$G;2>H$9$k%$%s%G%C%/%9$N$"$k%G%#%l%/%H%j(B
+
 <li><code>REPLACE /home/foo/public_html/
-http://www.hoge.jp/%7Efoo/</code><br> $B$3$l$O8!:w7k2L$N=PNO;~(B
-$B$K(B URL $B$NF,$N(B <code>/home/foo/public_html/</code> $B$NItJ,$r(B 
-<code>http://www.hoge.jp/%7Efoo/</code> $B$KCV$-49$($k$?$a$N@_(B
+http://www.hoge.jp/~foo/</code><br> $B$3$l$O8!:w7k2L$N=PNO;~(B
+$B$K(B URI $B$NF,$N(B <code>/home/foo/public_html/</code> $B$NItJ,$r(B 
+<code>http://www.hoge.jp/~foo/</code> $B$KCV$-49$($k$?$a$N@_(B
 $BDj$G$9!#%m!<%+%kMQ$K:n$C$?%$%s%G%C%/%9$r(B CGI $BMQ$K;H$&$H$-$K(B
 $BLrN)$A$^$9!#%3%^%s%I%i%$%s$+$i(B namazu $B$r<B9T$9$k:]$K$O(B -R $B%*(B
-$B%W%7%g%s$r$D$1$k$H$3$N@_Dj$rL58z$K$G$-$^$9!#(B<li><code>BASE
-file://localhost/home/foo/bar/documents/</code><br> &lt;BASE
-HREF="..."&gt; $B$r8!:w7k2LI=<($N:]$K=PNO$5$;$k$?$a$N;XDj$G$9!#(B
-$B$3$l$O!"%$%s%G%C%/%9$rAjBP%Q%9$G:n$C$?>l9g$K8z2L$rH/4x$7$^$9!#(B
-$BKvHx$r(B / $B$G=*$o$i$;$k$h$&$K$9$kI,MW$,$"$k$N$GCm0U$7$F$/$@$5(B
-$B$$!#(B<li><code>WAKATI /usr/local/bin/kakasi</code><br> $B$o$+$A(B
-$B=q$-MQ%W%m%0%i%`$N%Q%9$G$9!#(B KAKASI $B$^$?$O(B ChaSen $B$N(B make $B;~(B
-$B$K;XDj$7$?$b$N$G$J$1$l$P$J$j$^$;$s!#(B<li><code>LOGGING
-OFF</code><br> $B8!:w$K;H$o$l$?%-!<%o!<%I$N%m%0$r<h$i$J$$$J$i(B
-$B$P(B OFF $B$r@_Dj$7$F$/$@$5$$!#%G%#%U%)%k%H$G$O%m%0$r<h$j$^$9!#(B
+$B%W%7%g%s$r$D$1$k$H$3$N@_Dj$rL58z$K$G$-$^$9!#(B
+
+<li><code>LOGGING OFF</code><br> $B8!:w$K;H$o$l$?%-!<%o!<%I$N(B
+$B%m%0$r<h$i$J$$$J$i$P(B OFF $B$r@_Dj$7$F$/$@$5$$!#I8=`$G$O%m%0$r(B
+$B<h$j$^$9!#(B
+
 <li><code>LANG ja</code><br> $B%a%C%;!<%8$N8@8l$r(B ja $B$^$?$O(B en 
 $B$G;XDj$7$^$9!#(B
 </ul>
-
-<p>
-$BI,MW$J@_Dj$O(B make $B;~$K9T$C$F$$$k$N$G!"FC$KJQ$o$C$?$3$H$r$7$h(B
-$B$&$H$7$J$$8B$j!"(B namazurc $B$G@_Dj$r$9$kI,MW$O$"$j$^$;$s!#(B 
-make $B;~$K(B -DNOCONF $B$r;XDj$9$k$3$H$G$3$N%U%!%$%k$N;2>H$rM^@)(B
-$B$G$-$^$9!#(B
-</p>
-
 
 <h2><a name="search">$B<B:]$N8!:w$KLrN)$F$k(B</a></h2>
 
@@ -501,8 +426,7 @@ namazu $B$r%3%^%s%I%i%$%s$+$i<B9T$7$?>l9g!"$=$N=PNO$r%Q%$%W$G(B less $B$KEO$7
 </p>
 
 <p>
-$B$3$l$O$A$g$C$HLLE]$@$>!"$H$$$&J}$N$?$a$K>e$N=hM}$r<+F02=$7$F$/$l$k%3%^%s%I%i%$%sMQ8!:w%/%i%$%"%s%H$rGO>lH%(B@$B5~Bg$5$s$,:n$C$F$/$@$5$$$^$7$?!#(B
-$B$3$l$O(B
+bnamazu
 </p>
 
 <p>
@@ -511,26 +435,19 @@ namazu $B$r%3%^%s%I%i%$%s$+$i<B9T$7$?>l9g!"$=$N=PNO$r%Q%$%W$G(B less $B$KEO$7
 
 <p>
 $B$N$h$&$K<B9T$9$k$3$H$G!"(B <code>keyword</code> $B$r8!:w$7!"$=$N7k2L$r%F%s%]%i%j%U%!%$%k$KJ]B8$7$F$=$l$r<+F0E*$K(B <code>browser</code> $B$G;XDj$7$?%V%i%&%6$KEO$7$FFI$_9~$^$;$k$H$$$&%D!<%k$G$9!#(B
-<code>-b browser</code> $B$r>JN,$9$k$H%G%#%U%)%k%H$G$O(B Netscape Navigator $B$,8F$S=P$5$l$k$h$&$K$J$C$F$$$^$9!#(B
-</p>
-
-<p>
-<code>-d database</code> $B$O8!:wBP>]$H$9$k%$%s%G%C%/%9$N$"$k%G%#%l%/%H%j$r;XDj$7$^$9!#$3$l$r>JN,$7$?>l9g$O(B <code>namazu</code> $B$N(B <code>DEFAULT_DIR</code> $B$,BP>]$H$J$j$^$9!#(B
-</p>
-
-<p>
-$B$3$l$O$J$+$J$+%;%3%$$h$&$G$$$F!"7k9=JXMx$J%D!<%k$G$9!#(B Namazu $B$N%Q%C%1!<%8$rE83+$7$?$H$-$K$G$-$k(B contrib $B%G%#%l%/%H%j$KF~$C$F$$$^$9!#$<$R$*;n$72<$5$$!#(B
+<code>-b browser</code> $B$r>JN,$9$k$HI8=`$G$O(B Netscape Navigator $B$,8F$S=P$5$l$k$h$&$K$J$C$F$$$^$9!#(B
 </p>
 
 <p>
 $B%3%^%s%I%i%$%s$+$i;H$&$N$b$J$s$@$+$J$"$H$$$&J}$O(B Mule $B$d(B X, Win32 $B$+$i;H$($k$=$l$>$l$N8!:w%U%m%s%H%(%s%I$r;H$&$HJXMx$G$7$g$&!#(B
 </p>
 
-<h3><a name="search-on-cgi">http $B$rDL$7$F(B CGI $B$H$7$F8!:w$9$k(B</a></h3>
+<h3><a name="search-on-cgi">CGI$B$H$7$F8!:w$9$k(B</a></h3>
 <p>
-CGI $B$H$7$FF0:n$5$;$k$3$H$G(B WWW $BA4J88!:w%(%s%8%s$K$J$j$^$9!#(B
-$B%$%s%?!<%M%C%H$rDL$7$F9-$/8x3+$7$F$bNI$$$G$9$7!"%$%s%H%i%M%C%H$H$7$FFbNX$@$1$G6&M-$9$k;H$$J}$b9M$($i$l$^$9!#(B
-$BIaCJ;H$$47$l$?%V%i%&%6$G1\Mw$G$-$k$H$3$m$bMxE@$G$9!#(B
+CGI$B$H$7$FF0:n$5$;$k$3$H$G(B WWW $BA4J88!:w%(%s%8%s$K$J$j$^$9!#%$(B
+$B%s%?!<%M%C%H$rDL$8$F9-$/8x3+$7$F$bNI$$$G$9$7!"%$%s%H%i%M%C%H(B
+$B$H$7$FFbNX$@$1$G6&M-$9$k;H$$J}$b9M$($i$l$^$9!#IaCJ;H$$47$l$?(B
+$B%V%i%&%6$G1\Mw$G$-$k$H$3$m$bMxE@$G$9!#(B
 </p>
 
 <h3><a name="search-on-mule">Mule $B$+$i8!:w$9$k(B</a></h3>
@@ -540,11 +457,6 @@ Mule $B$+$i8!:w$G$-$k%$%s%?%U%'!<%9(B (namazu.el) $B$r(B
 $B%Q%C%1!<%8$KF1:-$5$;$F$b$i$&$3$H$K$J$j$^$7$?!#(B
 namazu.el $B$r:n@.$7$F$/$@$5$C$?(B
 $B$^$D$b$H$f$-$R$m$5$s!"$d$^$@$"$-$i$5$s!"GO>lH%$5$s$K46<U$7$^$9!#(B
-</p>
-
-<p>
-Namazu $B$N(B contrib $B%G%#%l%/%H%j$KF~$C$F$$$k(B namazu.el-xxxxxxxx.xx.gz $B$r$I$3$+E,Ev$J>l=j$X(B
- namazu.el $B$H$$$&L>A0$GCV$-$^$9!#Nc$($P(B /home/foo/elisp $B$KCV$$$?>l9g$O(B <code>.emacs</code> $B$K(B
 </p>
 
 <p>
@@ -563,42 +475,30 @@ namazu-mode $B$r8F$S=P$9$3$H$,$G$-$k$h$&$K$J$j$^$9!#>\$7$$@bL@$O(B
 
 <h3><a name="search-on-x">X Window System $B$+$i8!:w$9$k(B</a></h3>
 <p>
-$B9-@%(B@NEC$B%(%s%8%K%"%j%s%0$5$s$,(B Tcl/Tk $B$K$h$k(B GUI $B$J8!:w%/%i%$%"%s%H(B Tknamazu$B$r:n$C$F$/$@$5$$$^$7$?!#(B
-contrib $B%G%#%l%/%H%j$K(B tknamazu-XXX.tar.gz $B$H$$$&L>A0$G%U%!%$%k$,$"$j$^$9!#(B
-$B;HMQ$9$k$K$O(B <a href="http://lynx.browser.org/">lynx</a> $B$,I,MW$K$J$j$^$9!#(B
-v2.6 $B$J$I$N8E$$%t%!!<%8%g%s$N(B lynx $B$G$OLdBj$,$"$k$N$G?7$7$$(B
-$BHG$rMQ0U$9$kI,MW$,$"$j$^$9!#(B
+$B9-@%(B@NEC$B%(%s%8%K%"%j%s%0$5$s$,(B Tcl/Tk $B$K$h$k(B GUI $B$J8!:w%/%i(B
+$B%$%"%s%H(B Tknamazu$B$r:n$C$F$/$@$5$$$^$7$?!#(Bcontrib $B%G%#%l%/%H(B
+$B%j$K(B tknamazu-XXX.tar.gz $B$H$$$&L>A0$G%U%!%$%k$,$"$j$^$9!#;H(B
+$BMQ$9$k$K$O(B <a href="http://lynx.browser.org/">lynx</a> $B$,I,(B
+$BMW$G$9!#(Bv2.6 $B$J$I$N8E$$%t%!!<%8%g%s$N(B lynx $B$G$OLdBj$,$"$k$N(B
+$B$G?7$7$$HG$rMQ0U$9$kI,MW$,$"$j$^$9!#(B
 </p>
-
-<p>
-Tknamazu$B$NFCD'$O<!$NDL$j$G$9!#(B
-</p>
-
-<ul>
-<li>$B8!:w7k2L$NI=<($N:]$K;H$o$l$?%-!<%o!<%I$NItJ,$,@V$GI=<($5$l$k(B
-<li>$B%j%s%/$r:8%/%j%C%/$9$k$H(B plain text $B$J$i$=$N$^$^!"(B HTML $B$J$i(B lynx -dump $B$rDL$7$?7A$G%U%!%$%k$NFbMF$,I=<($5$l$k(B ($B$3$N$H$-$b%-!<%o!<%IItJ,$O@V$/$J$C$F$$$F$o$+$j$d$9$$(B)$B!"(B
-$B1&%/%j%C%/$9$k$H(B Netscape Navigator ($BJQ992DG=(B) $B$rN)$A>e$2$FI=<($5$;$k$3$H$,$G$-$k(B
-<li>lynx -dump $B$GI=<($5$;$?;~$J$I$O%U%!%$%k$NCf$N(B URL $BItJ,$K$O<+F0E*$K%j%s%/$,D%$i$l$k!#$5$i$K2<J}$N(B References $B$rMxMQ$9$l$P(B Navigator $B$r$o$6$o$6N)$A>e$2$kI,MW$b$J$/4JC1$J%&%'%V%V%i%&%6$N$h$&$K;H$($k(B
-<li>$B8!:w7k2L$N2hLL$K$O$$$D$G$b(B "Back to result" $B%\%?%s$GLa$k$3$H$,$G$-$k(B
-<li>$BJ#?t%$%s%G%C%/%9$N8!:w$KBP1~$7$F$$$k(B
-</ul>
 
 <p>
 $B>\$7$/$O(B Tknamazu $BIUB0$N%I%-%e%a%s%H$r;2>H$7$F$/$@$5$$!#(B
 $B$^$?!"(B
 $B9-@%$5$s$K$h$k(B
-<a href="http://www.tama.or.jp/%7Ekenzo-/Namazu/tknamazu/">Tcl/Tk Namazu client</a>
-$B$N%Z%$%8$,$"$k$N$G!"$3$A$i$r;2>H$9$k$H:G?7>pJs$,<j$KF~$j$^$9!#(B
+<a href="http://www.tama.or.jp/~kenzo-/Namazu/tknamazu/">Tcl/Tk Namazu client</a>
+$B$N%Z%$%8$,$"$j$^$9!#(B
 </p>
 
 <h3><a name="search-on-win32">Windows 95/NT $B$+$i8!:w$9$k(B</a></h3>
 <p>
-$B;d$N@hGZ$N(B<a href="http://www.na.rim.or.jp/%7Es_yam/">$B;32<@?Fs$5$s(B</a>$B$,(B "Search-S for Namazu" $B$H$$$&L>A0$N(B Win32 $BMQ$N(B GUI $B$J8!:w%D!<%k$r:n$C$F$/$@$5$$$^$7$?!#(B
+$B;d$N@hGZ$N(B<a href="http://www.na.rim.or.jp/~s_yam/">$B;32<@?Fs$5$s(B</a>$B$,(B "Search-S for Namazu" $B$H$$$&L>A0$N(B Win32 $BMQ$N(B GUI $B$J8!:w%D!<%k$r:n$C$F$/$@$5$$$^$7$?!#(B
 </p>
 
 <p>
 $B<B9T%U%!%$%k$N%5%$%:$,Bg$-$$$?$a(B Namazu $B$NG[I[%Q%C%1!<%8$K$O4^$^$l$F$$$^$;$s!#(B
-$B:G?7HG$O(B <a href="http://www.na.rim.or.jp/%7Es_yam/library/search-s.html">$B;32<$5$s$N%&%'%V%5%$%H(B</a> $B$+$i<h$C$F$/$k$3$H$,$G$-$^$9!#(B
+$B:G?7HG$O(B <a href="http://www.na.rim.or.jp/~s_yam/library/search-s.html">$B;32<$5$s$N(BWeb$B%5%$%H(B</a> $B$+$i<h$C$F$/$k$3$H$,$G$-$^$9!#(B
 </p>
 
 <p>
@@ -606,19 +506,6 @@ Tknamazu$B$NFCD'$O<!$NDL$j$G$9!#(B
 $B8!:w7k2L$O(B Netscape Navigator $B$*$h$S(B Internet Explorer $B$KEO$7$FI=<($5$;$k$3$H$,$G$-$kB>!"FbIt%V%i%&%6$GI=<($9$k$3$H$b$G$-$^$9!#(B
 $B$3$N>l9g$O%U%!%$%k$NCf?H$NI=<($b4^$a$FC1BN$GF0:n$7$^$9!#(B
 </p>
-
-<p>
-$B9-@%(B@NEC$B%(%s%8%"%j%s%0$5$s$K$h$k(B <a href="http://www.tama.or.jp/%7Ekenzo-/Namazu/">Namazu for Win32</a> $B$HAH$_9g$o$;$k$3$H$K$h$C$F(BWin32 $B4D6-$G$N<j7Z$JA4J88!:w%D!<%k$H$7$F;H$($k$H;W$$$^$9!#(B
-</p>
-
-<h3><a name="search-on-java">Java $BHG8!:w%/%i%$%"%s%H$r;H$&(B</a></h3>
-<p>
-$B$^$D$`$i$N$>$_$5$s$K$h$k(B Java$BHG$N8!:w%/%i%$%"%s%H$,(B
-contrib $B%G%#%l%/%H%j$K<}O?$5$l$F$$$^$9!#(B
-$B$3$A$i$b(B GUI $B$J8!:w%D!<%k$H$7$FF0:n$7$^$9!#(B
-Java $B$N<B9T4D6-$r;}$C$F$$$kJ}$O$<$R$*;n$7$/$@$5$$!#(B
-</p>
-
 
 <h2><a name="tips">$B;(B?$J>pJs(B</a></h2>
 
@@ -635,8 +522,8 @@ NMZ.slog $B$O8!:w$5$l$?%-!<%o!<%I$N%m%0$rJ]B8$7$^$9!#%m%0$O(B
 </p>
 
 <p>
-$B$N$h$&$J=q<0$GJ]B8$5$l$^$9!#F|K\8l(B EUC $B$GJ]B8$5$l!"(B TAB $B$G6h@Z$C$F(B
-$B$$$k$N$G!"8e!9%F%-%9%H=hM}$r;\$9$N$bMF0W$G$7$g$&!#Nc$($P(B
+$B$N=q<0$GJ]B8$5$l$^$9!#F|K\8l(B EUC $B$GJ]B8$5$l!"(B TAB $B$G6h@Z$i$l(B
+$B$F$$$^$9!#(B
 </p>
 
 <p>
@@ -653,7 +540,7 @@ sort -nr</code>
 <h3><a name="when-confused">$B%$%s%G%C%/%9$N:n@.(B/$B99?7$K:.Mp$7$?$i(B</a></h3>
 
 <p>
-$BIaDL$K9T$C$F$$$l$PFC$KLdBj$O5/$3$i$J$$$O$:$G$9$,!"(B NMZ.* $B%U%!%$%k(B
+$BIaDL$K9T$C$F$$$l$P$^$:LdBj$O5/$3$i$J$$$O$:$G$9$,!"(B NMZ.* $B%U%!%$%k(B
 $B$r2<<j$K$$$8$C$F$7$^$&$H99?7$,$&$^$/$$$+$J$/$J$j$^$9!#$^$?!"%$%s%G%C(B
 $B%/%9:n@.$NESCf$G6/@)=*N;$J$I$r$7$FCfESH>C<$J(B NMZ.* $B%U%!%$%k$N;D3<(B
 $B$,;D$C$F$$$?$j$9$k$H<!$K%$%s%G%C%/%9:n@.$r9T$&:]$K$*$+$7$JF0:n$r$9(B
@@ -662,13 +549,13 @@ sort -nr</code>
 </p>
 
 
-<h3><a name="maillist">$B%a%$%j%s%0%j%9%H(B/News$B$N%"!<%+%$%t$NA4J88!:w%7%9%F%`$r:n@.$9$k$K$O(B</a></h3>
+<h3><a name="maillist">$B%a%$%j%s%0%j%9%H!&(BNews$B$N%"!<%+%$%t$NA4J88!:w%7%9%F%`$r:n@.$9$k$K$O(B</a></h3>
 
 <p>
 $B%a%$%j%s%0%j%9%H$d(B NetNews $B$N%"!<%+%$%t$r%$%s%G%C%/%92=$9$k:]$K$O(B 
 <a
 href="http://www.oac.uci.edu/indiv/ehood/mhonarc.html">MHonArc</a> 
-$B$N$h$&$J(B HTML $BJQ49%3%s%t%!!<%?$rMxMQ$7$F$+$i%$%s%G%C%/%9:n@.$9$k$3(B
+$B$r;H$C$F(B HTML $BJQ49%3%s%t%!!<%?$rMxMQ$7$F$+$i%$%s%G%C%/%9:n@.$9$k$3(B
 $B$H$r$*4+$a$7$^$9!#$3$l$i$N%3%s%t%!!<%?$r;H$($P5DO@$N%9%l%C%IC10L$G(B
 $B$NAj8_%j%s%/$rD%$C$F$/$l$k$N$GJ8=q$N%/%m%9%j%U%!%l%s%9@-$b9b$^$j$^(B
 $B$9$7!"(B HTML $B$N%?%0IU$1$r$9$k$3$H$K$h$C$F%9%3%"%j%s%0$NIJ<A$b8~>e$7(B
@@ -681,73 +568,11 @@ Namazu $B$NG[I[%Q%C%1!<%8$N(B<code>contrib/</code> $B$N%G%#%l%/%H%j$KbC(B
 $BJA$5$s$,:n@.$5$l$?(B MHonArc 2.2.0$BMQ$NF|K\8l2=%Q%C%A(B 
 </p>
 
-<h3><a name="man">man $B$NA4J88!:w%7%9%F%`$r:n@.$9$k$K$O(B</a></h3>
-<p>
-mknmz $B<B9T;~$K(B <code>-r</code> $B%*%W%7%g%s$r$D$1$k$H(B Makefile $B$N(B
-</p>
-
-<pre>
-<code>OPT_HELPER_MAN            = /usr/bin/jgroff -man -Tnippon</code>
-</pre>
-
-<p>
-$B$G;XDj$7$?%U%#%k%?$rDL$7$F(B man $B$N%U%!%$%k$r07$$$^$9!#(Bmknmz $BFb$G$b(B
-$B%U%#%k%?=hM}$,9T$o$l$^$9$,!"$3$N=hM}$O3d$H$$$$2C8:$G$9!#(B
-</p>
-
-
-<h3><a name="mknmz-f">mknmz -F $B%*%W%7%g%s$r3hMQ$9$k(B</a></h3>
-
-<p>
-mknmz $B$K(B -F $B%*%W%7%g%s$r;XDj$9$k$H%$%s%G%C%/%9$NBP>]$H$J$k%U%!%$%k(B
-$B$N%j%9%H$rEO$9$3$H$,$G$-$^$9!#$3$N$H$-!"(B 
-</p>
-
-<p>
-/home/hoge/foo/
-</p>
-
-<p>
-$B$N$h$&$KKvHx$,(B / $B$G=*$o$k9T$,$"$k$H$=$N%G%#%l%/%H%jFb$N%U%!%$%k$r(B
-$B:F5"E*$K<hF@$7$^$9!#$?$H$($P(B
-</p>
-
-<p>
-/home/hoge/foo/<br>
-/home/hoge/bar/<br>
-/home/hoge/baz/
-</p>
-
-<p>
-$B$N$h$&$K;XDj$9$k$H(B /home/hoge/foo, /home/hoge/bar, /home/hoge/baz 
-$B$H(B3$B$D$N%G%#%l%/%H%j0J2<$N%U%!%$%k$r0lEY$K%$%s%G%C%/%9$G$-$^$9!#(B
-</p>
-
-
 <h3><a name="robots-txt">/robots.txt $B$G;XDj$5$l$?%U%!%$%k$rBP>]$+(B
 $B$i=|30$9$k(B</a></h3>
 
 <p>
 ($BJ8=q2=$O$^$@IT==J,$G$9!#$3$N@bL@$G$o$+$kJ}$@$1D)@o$7$F$/$@$5$$(B)
-</p>
-
-<p>
-Makefile $B$N(B
-</p>
-
-<pre>
-##################################################################
-## Robots.txt
-OPT_HTDOCUMENT_ROOT     = /usr/local/apache/share/htdocs
-OPT_HTDOCUMENT_ROOT_URL_PREFIX  = http://www.foo.domain.jp/
-OPT_ROBOTS_EXCLUDE_URLS = ''
-</pre>
-
-<p>
-$B$r@_Dj$7$F(B mknmz $B<B9T;~$K(B -e $B%*%W%7%g%s$r$D$1$F$/$@$5$$!#(BDisallow 
-$B%G%#%l%/%F%#%t$G;XDj$5$l$?%U%!%$%k$O=|30$5$l$^$9!#$3$N5!G=$O(B
-<a href="mailto:kunito@hal.t.u-tokyo.ac.jp">$BT"F,$5$s(B</a>$B$,%3!<%I$r(B
-$BDs6!$7$F$/$@$5$$$^$7$?(B (Thanks!)$B!#(B
 </p>
 
 
@@ -760,50 +585,30 @@ deny $B$+(B require valid-user, user, group $B9T$,4^$^$l$k>l9g$O$=$N%G%#(B
 $B%l%/%H%j0J2<$r%$%s%G%C%/%9$NBP>]$+$i=|30$7$^$9!#(B
 </p>
 
-<p>
-$B$3$N5!G=$O(B
-<a href="mailto:kunito@hal.t.u-tokyo.ac.jp">$BT"F,$5$s(B</a>$B$,%3!<%I$r(B
-$BDs6!$7$F$/$@$5$$$^$7$?(B (Thanks!)$B!#(B
-</p>
 
 
-<h2><a name="form">Namazu $B$NMQ$$$k(B &lt;FORM&gt;$B$N7A<0(B</a></h2>
-
-<h3><a name="whyget">$B$J$<(B GET $B$J$N$+(B</a></h3>
-<p>Namazu $B$G$O(B</p>
-
-<p><code>&lt;FORM METHOD="GET" ACTION="/cgi-bin/namazu.cgi"&gt;</code></p>
-
-<p>
-$B$N$h$&$K(B GET $B%a%=%C%I$r;H$C$FF~NO%G!<%?$rEO$7$F$$$^$9!#4pK\E*$K(B 
-GET $B$h$j$b(B POST $B$NJ}$,?.Mj@-$,9b$/!"9-$/MQ$$$i$l$F$$$k$N$G$9$,!"8!(B
-$B:w7k2L$N%Z%$%8C10L$G$NI=<($r<B8=$9$k$?$a$K(B GET $B$r;H$&$3$H$K$7$^$7(B
-$B$?!#<B:]$N$H$3$m!"8!:w%7%9%F%`$H$$$&@-<A$+$i$7$F%V%i%&%6$+$i5pBg$J(B
-$B%G!<%?$,Aw$i$l$F$/$k$3$H$O$^$:$J$$$N$G!"LdBj$O$J$$$H;W$o$l$^$9!#(B
-
-</p>
-
+<h2><a name="form">Namazu $B$NMQ$$$k(B &lt;form&gt;$B$N7A<0(B</a></h2>
 
 <h3><a name="outform">$B7k2LI=<($N7o?t$H=PNO%U%)!<%^%C%H(B</a></h3>
 
-<p>$B%G%#%U%)%k%H$G:n@.$5$l$k(B NMZ.head $B$K$O(B</p>
+<p>$BI8=`$G:n@.$5$l$k(B NMZ.head $B$K$O(B</p>
 
 <p>
-<code>&lt;P&gt;</code><br>
-<code>&lt;STRONG&gt;$B0lEY$KI=<($9$k7o?t(B:&lt;/STRONG&gt;</code><br>
-<code>&lt;SELECT NAME="max"&gt;</code><br>
-<code>&lt;OPTION VALUE="10"&gt;10</code><br>
-<code>&lt;OPTION SELECTED VALUE="20"&gt;20</code><br>
-<code>&lt;OPTION VALUE="30"&gt;30</code><br>
-<code>&lt;OPTION VALUE="50"&gt;50</code><br>
-<code>&lt;OPTION VALUE="100"&gt;100</code><br>
-<code>&lt;/SELECT&gt;</code><br>
-<code>&lt;STRONG&gt;$BJ8=q$NMWLsI=<((B:&lt;/STRONG&gt;</code><br>
-<code>&lt;SELECT NAME="format"&gt;</code><br>
-<code>&lt;OPTION SELECTED VALUE="long"&gt;ON</code><br>
-<code>&lt;OPTION VALUE="short"&gt;OFF</code><br>
-<code>&lt;/SELECT&gt;</code><br>
-<code>&lt;/P&gt;</code><br>
+<code>&lt;p&gt;</code><br>
+<code>&lt;strong&gt;$B0lEY$KI=<($9$k7o?t(B:&lt;/STRONG&gt;</code><br>
+<code>&lt;select name="max"&gt;</code><br>
+<code>&lt;option value="10"&gt;10</code><br>
+<code>&lt;option selected value="20"&gt;20</code><br>
+<code>&lt;option value="30"&gt;30</code><br>
+<code>&lt;option value="50"&gt;50</code><br>
+<code>&lt;option value="100"&gt;100</code><br>
+<code>&lt;/select&gt;</code><br>
+<code>&lt;strong&gt;$BJ8=q$NMWLsI=<((B:&lt;/STRONG&gt;</code><br>
+<code>&lt;select name="format"&gt;</code><br>
+<code>&lt;option selected value="long"&gt;ON</code><br>
+<code>&lt;option value="short"&gt;OFF</code><br>
+<code>&lt;/select&gt;</code><br>
+<code>&lt;/p&gt;</code><br>
 </p>
 
 <p>
@@ -812,33 +617,31 @@ GET $B$h$j$b(B POST $B$NJ}$,?.Mj@-$,9b$/!"9-$/MQ$$$i$l$F$$$k$N$G$9$,!"8!(B
 </p>
 
 
-<h3><a name="dbname">$B%V%i%&%6$+$i%$%s%G%C%/%9$r;XDj$9$kJ}K!(B</a></h3>
+<h3><a name="idxname">$B%V%i%&%6$+$i%$%s%G%C%/%9$r;XDj$9$kJ}K!(B</a></h3>
 
 <p>
-$B%V%i%&%6$+$iJ#?t$N%$%s%G%C%/%9$NCf$+$i$R$H$D$rA*$Y$k$h$&$K@_Dj$9$k(B
-$B$3$H$b$G$-$^$9!#$?$@$7!"3d$H$d$d$3$7$$$N$G;EAH$_$r$h$/M}2r$7$F$$$k(B
-$B?M$G$J$$$HFq$7$$$+$b$7$l$^$;$s!#$^$:=i2s%"%/%;%9MQ$N(B index.html $B$J(B
-$B$I$r:n@.$7$^$9!#$=$N(B <code>&lt;FORM&gt;&lt;/FORM&gt;</code> $B$NCf$K(B
+$B%V%i%&%6$+$iJ#?t$N%$%s%G%C%/%9$NCf$+$i$R$H$D$rA*$Y$k$h$&$K@_(B
+$BDj$G$-$^$9!#(B
 </p>
 
 <p>
-<code>&lt;STRONG&gt;$B8!:wBP>](B:&lt;/STRONG&gt;</code><br>
-<code>&lt;SELECT NAME="dbname"&gt;</code><br>
-<code>&lt;OPTION SELECTED VALUE="</code><var>foo</var><code>"&gt;</code><var>foo</var><br>
-<code>&lt;OPTION VALUE="</code><var>bar</var><code>"&gt;</code><var>bar</var><br>
-<code>&lt;OPTION VALUE="</code><var>baz</var><code>"&gt;</code><var>baz</var><br>
-<code>&lt;/SELECT&gt;</code><br>
+<code>&lt;strong&gt;$B8!:wBP>](B:&lt;/STRONG&gt;</code><br>
+<code>&lt;select name="idxname"&gt;</code><br>
+<code>&lt;option selected value="</code><var>foo</var><code>"&gt;</code><var>foo</var><br>
+<code>&lt;option value="</code><var>bar</var><code>"&gt;</code><var>bar</var><br>
+<code>&lt;option value="</code><var>baz</var><code>"&gt;</code><var>baz</var><br>
+<code>&lt;/select&gt;</code><br>
 </p>
 
 <p>
-$B$N$h$&$J5-=R$r$$$l$F$*$/$3$H$G!"(B <var>foo, bar, baz</var> $B$NCf$+$i(B
-$B%G!<%?%Y!<%9$N;XDj$,$G$-$k$h$&$K$J$j$^$9!#$3$NA*Br$NMWAG$O$$$/$D$"$C(B
-$B$F$b9=$$$^$;$s!#(B
- <var>foo</var> $B$,A*$P$l$?;~$O(B Makefile $B$N(B <code>INDEXDIR</code> 
-$B$GDj5A$5$l$?%G%#%l%/%H%j$N2<$K$"$k(B <var>foo</var> $B$H$$$&%G%#%l%/%H(B
-$B%j$K$"$k(B NMZ.* $B$r85$K8!:w$9$k$3$H$K$J$j$^$9!#(B 
-<code>INDEXDIR</code> $B$,(B <code>/usr/local/namazu/index</code> $B$N>l(B
-$B9g$O2<$N$h$&$J%G%#%l%/%H%j9=B$$K$J$j$^$9!#(B
+$B$N$h$&$J5-=R$r$$$l$F$*$/$3$H$G!"(B <var>foo, bar, baz</var> $B$N(B
+$BCf$+$i%G!<%?%Y!<%9$N;XDj$,$G$-$k$h$&$K$J$j$^$9!#$3$NA*Br$NMW(B
+$BAG$O$$$/$D$"$C$F$b9=$$$^$;$s!#(B<var>foo</var> $B$,A*$P$l$?;~$O(B 
+namazurc $B$N(B <code>Index</code> $B$G@_Dj$5$l$?%G%#%l%/%H%j$N2<(B
+$B$K$"$k(B <var>foo</var> $B$H$$$&%G%#%l%/%H%j$K$"$k(B NMZ.* $B$r85$K(B
+$B8!:w$9$k$3$H$K$J$j$^$9!#(B <code>Index</code> $B$,(B 
+<code>/usr/local/var/namazu/index</code> $B$N>l9g$O2<$N$h$&$J(B
+$B%G%#%l%/%H%j9=B$$K$J$j$^$9!#(B
 </p>
 
 <pre>
@@ -854,15 +657,15 @@ GET $B$h$j$b(B POST $B$NJ}$,?.Mj@-$,9b$/!"9-$/MQ$$$i$l$F$$$k$N$G$9$,!"8!(B
 
 <p>
 $B$^$?!"$=$N(B <var>foo, bar, baz</var> $B$K$"$k3F(B NMZ.head $B$K$b$=$l$>$l(B
-$B>e$N$h$&$J5-=R$r$$$l$F$*$+$J$1$l$P$J$j$^$;$s(B (SELECTED $B$O$D$1$J$/(B
-$B$F$bNI$$$G$9(B)$B!#(BACTION $B$N;XDj$K$D$$$F$b$9$Y$F$N(B NMZ.head $B$GF1$8J*$r(B
-$B;XDj$7$F$*$-$^$9!#%G%#%U%)%k%H$G:n@.$5$l$k(B NMZ.head $B$K$O$3$N%G!<%?(B
+$B>e$N$h$&$J5-=R$r$$$l$F$*$+$J$1$l$P$J$j$^$;$s(B (selected $B$O$D$1$J$/(B
+$B$F$b$$$$$G$9(B)$B!#(Baction $B$N;XDj$K$D$$$F$b$9$Y$F$N(B NMZ.head $B$GF1$8J*$r(B
+$B;XDj$7$F$*$-$^$9!#I8=`$G:n@.$5$l$k(B NMZ.head $B$K$O$3$N%G!<%?(B
 $B%Y!<%9;XDj$N@_Dj$O5-=R$5$l$F$$$J$$$N$G!"I,MW$N$"$k?M$O3F<+$GDI2C$7(B
 $B$F$/$@$5$$!#(B
 </p>
 
 <p>
-&lt;INPUT TYPE="HIDDEN" NAME="dbname" VALUE="foo"&gt;
+&lt;input type="hidden" name="idxname" value="foo"&gt;
 </p>
 
 <p>
@@ -871,38 +674,35 @@ GET $B$h$j$b(B POST $B$NJ}$,?.Mj@-$,9b$/!"9-$/MQ$$$i$l$F$$$k$N$G$9$,!"8!(B
 
 <h3><a name="multiple-indices">$BJ#?t$N%$%s%G%C%/%9$K8!:w$r$+$1$kJ}K!(B</a></h3>
 <p>
-v1.1.2 $B$+$i$OJ#?t$N%$%s%G%C%/%9$K8!:w$r$+$1$F7k2L$r%^!<%8$7$F=PNO(B
-$B$G$-$k$h$&$K$J$j$^$7$?!#(B&lt;FORM&gt; ... &lt;/FORM&gt; 
-$B$NCf$K2<$N$h$&$J5-=R$rF~$l$F$/$@$5$$!#Cm0UE@$O>e$N(B<a
-href="#dbname">$B%V%i%&%6$+$i%$%s%G%C%/%9$r;XDj$9$kJ}K!(B</a>$B$G=R$Y$?(B
-$B$b$N$HF1$8$G$9!#(B
+&lt;form&gt; ... &lt;/FORM&gt; 
+$B$NCf$K2<$N$h$&$J5-=R$rF~$l$F$/$@$5$$!#(B
 </p>
 
 <p>
-&lt;STRONG&gt;$BBP>]%$%s%G%C%/%9(B&lt;/STRONG&gt;&lt;BR&gt;<br>
-&lt;UL&gt;<br>
-&lt;LI&gt;&lt;INPUT TYPE="CHECKBOX" NAME="dbname"
+&lt;strong&gt;$BBP>]%$%s%G%C%/%9(B&lt;/STRONG&gt;&lt;BR&gt;<br>
+&lt;ul&gt;<br>
+&lt;li&gt;&lt;INPUT TYPE="CHECKBOX" NAME="idxname"
         VALUE="foo"   CHECKED&gt;foo<br>
-&lt;LI&gt;&lt;INPUT TYPE="CHECKBOX" NAME="dbname"
+&lt;li&gt;&lt;INPUT TYPE="CHECKBOX" NAME="idxname"
         VALUE="bar" CHECKED&gt;bar<br>
-&lt;LI&gt;&lt;INPUT TYPE="CHECKBOX" NAME="dbname"
+&lt;li&gt;&lt;INPUT TYPE="CHECKBOX" NAME="idxname"
         VALUE="baz"   CHECKED&gt;baz<br>
-&lt;/UL&gt;<br>
+&lt;/ul&gt;<br>
 </p>
 
 <p>
 $B$3$N$h$&$K5-=R$7$F$*$/$3$H$G(B foo, bar, baz $B$+$iJ#?tA*Br$7$F(B
 $B8!:w$G$-$^$9!#8!:w7k2L$K;H$o$l$k(B NMZ.head, NMZ.foot $B$O(B 
-Makefile $B$G(B INDEXDIR $B$G;XDj$7$?$H$3$m$K$"$k$b$N$,;H$o$l$^$9(B 
-($B$^$?$O(B namazurc $B$NCf$G(B INDEX $B$N9`L\$G;XDj$7$?%G%#%l%/%H%j$K(B
-$B$"$k$b$N(B)$B!#%$%s%G%C%/%9$N;XDj$,$R$H$D$@$C$?>l9g$K$O8D!9$N(B 
-NMZ.head, NMZ.foot $B$,;H$o$l$kE@$KCm0U$7$F$/$@$5$$!#$3$l$r2s(B
-$BHr$7$?$$>l9g$K$O$9$Y$F$N(B NMZ.head, NMZ.foot $B$r6&DL$K$7$F$7$^(B
-$B$&$3$H$G$9!#(B
+namazurc $B$N(B Index $B$G;XDj$7$?%G%#%l%/%H%j$K$"$k$b$N$,;H$o$l$^(B
+$B$9(B ($B$^$?$O(B namazurc $B$NCf$G(B INDEX $B$N9`L\$G;XDj$7$?%G%#%l%/%H(B
+$B%j$K$"$k$b$N(B)$B!#%$%s%G%C%/%9$N;XDj$,$R$H$D$@$C$?>l9g$K$O8D!9(B
+$B$N(B NMZ.head, NMZ.foot $B$,;H$o$l$kE@$KCm0U$7$F$/$@$5$$!#$3$l$r(B
+$B2sHr$7$?$$>l9g$K$O$9$Y$F$N(B NMZ.head, NMZ.foot $B$r6&DL$K$7$F$7(B
+$B$^$&$3$H$G$9!#(B
 </p>
 
 
-<h3><a name="subquery">$B8!:wBP>]$N(BURL$B$r@)8B$9$kJ}K!(B</a></h3>
+<h3><a name="subquery">$B8!:wBP>]$N(BURI$B$r@)8B$9$kJ}K!(B</a></h3>
 
 <p>
 CGI $B$K(B subquery $B$NCM$rEO$9$3$H$G<B8=$G$-$^$9!#$?$H$($P0J2<$N$h$&$K(B
@@ -911,20 +711,19 @@ CGI $B$K(B subquery $B$NCM$rEO$9$3$H$G<B8=$G$-$^$9!#$?$H$($P0J2<$N$h$&$K(B
 </p>
 
 <p>
-&lt;STRONG&gt;$B8!:wBP>](B&lt;/STRONG&gt;<br>
-&lt;SELECT NAME="subquery"&gt;<br>
-&lt;OPTION VALUE=""&gt;$BA4BN(B<br>
-&lt;OPTION VALUE="+url:/^http://foo.bar.jp/aaaa//"&gt;aaaa$B$N%3!<%J!<(B<br>
-&lt;OPTION VALUE="+url:/^http://foo.bar.jp/bbbb//"&gt;bbbb$B$N%3!<%J!<(B<br>
-&lt;OPTION VALUE="+url:/^http://foo.bar.jp/cccc//"&gt;cccc$B$N%3!<%J!<(B<br>
-&lt;OPTION VALUE="+url:/^http://foo.bar.jp/dddd//"&gt;dddd$B$N%3!<%J!<(B<br>
-&lt;/SELECT&gt;<br>
-&lt;INPUT TYPE="HIDDEN" NAME="reference" VALUE="off"&gt;<br>
+&lt;strong&gt;$B8!:wBP>](B&lt;/STRONG&gt;<br>
+&lt;select name="subquery"&gt;<br>
+&lt;option value=""&gt;$BA4BN(B<br>
+&lt;option value="+uri:/^http://foo.bar.jp/aaaa//"&gt;aaaa$B$N%3!<%J!<(B<br>
+&lt;option value="+uri:/^http://foo.bar.jp/bbbb//"&gt;bbbb$B$N%3!<%J!<(B<br>
+&lt;option value="+uri:/^http://foo.bar.jp/cccc//"&gt;cccc$B$N%3!<%J!<(B<br>
+&lt;option value="+uri:/^http://foo.bar.jp/dddd//"&gt;dddd$B$N%3!<%J!<(B<br>
+&lt;/select&gt;<br>
+&lt;input type="hidden" name="reference" value="off"&gt;<br>
 </p>
 
 <p>
-subquery $B$K$O(B +url: $B8GDj$G$O$J$/G$0U$N8!:w<0$r;XDj$G$-$^$9!#$3$N5!(B
-$BG=$O>/$7$d$d$3$7$$$N$G(B Namazu$B$K47$l$F$+$iD)@o$9$k$3$H$r$*4+$a$7$^$9!#(B
+subquery $B$K$O(B +URI: $B8GDj$G$O$J$/G$0U$N8!:w<0$r;XDj$G$-$^$9!#(B
 </p>
 
 
@@ -935,9 +734,9 @@ subquery $B$K$O(B +url: $B8GDj$G$O$J$/G$0U$N8!:w<0$r;XDj$G$-$^$9!#$3$N5!(B
 
 <p>
 HTML $B$O85!9(B SGML $B$N0l%"%W%j%1!<%7%g%s$G$"$j!"J8=q$N9=B$$rDj(B
-$B5A$9$k8@8l$G$9$+$i!"(B&lt;H[1-6]&gt; $B%?%0$K$h$C$FDj5A$5$l$kJ8(B
+$B5A$9$k8@8l$G$9$+$i!"(B&lt;h[1-6]&gt; $B%?%0$K$h$C$FDj5A$5$l$kJ8(B
 $B=q$N%X%G%#%s%0(B ($B8+=P$7(B) $B$N>pJs$rMxMQ$9$k$3$H$K$h$C$F4JC1$KMW(B
-$BLs$i$7$-$b$N$r:n@.$G$-$^$9!#MWLs$O%G%#%U%)%k%H$G$O(B 200 $BJ8;z(B
+$BLs$i$7$-$b$N$r:n@.$G$-$^$9!#MWLs$OI8=`$G$O(B 200 $BJ8;z(B
 $B$K@_Dj$5$l$F$$$^$9$+$i!"%X%G%#%s%0$@$1$r=8$a$FB-$j$J$$ItJ,$O(B
 $BJ8=q$N@hF,$+$iJd$&$h$&$K$7$^$9!#$^$?!"BP>]$,C1$J$k%F%-%9%H%U%!(B
 $B%$%k$@$C$?>l9g$K$OJ8=q$N@hF,$+$i(B 200 $BJ8;z$r$=$N$^$^;H$$$^$9!#(B
@@ -947,25 +746,25 @@ Namazu $B$G$O$3$N$h$&$KC1=c$J%"%W%m!<%A$r<h$C$F$$$^$9!#(B
 
 <h3><a name="tagscoring">HTML $B%?%0$K$h$k%9%3%"$N=E$_$E$1%k!<%k(B</a></h3>
 
-<p>$B%G%#%U%)%k%H$G$O(B</p>
+<p>$BI8=`$G$O(B</p>
 
 <ul>
-<li><code>&lt;TITLE&gt; 16</code>
-<li><code>&lt;H1&gt; 8</code>
-<li><code>&lt;H2&gt; 7</code>
-<li><code>&lt;H3&gt; 6</code>
-<li><code>&lt;H4&gt; 5</code>
-<li><code>&lt;H5&gt; 4</code>
-<li><code>&lt;H6&gt; 3</code>
-<li><code>&lt;A&gt; 4</code>
-<li><code>&lt;STRONG&gt;, &lt;EM&gt;, &lt;CODE&gt;, &lt;KBD&gt;, &lt;SAMP&gt;, &lt;CITE&gt;, &lt;VAR&gt; 2</code>
+<li><code>&lt;title&gt; 16</code>
+<li><code>&lt;h1&gt; 8</code>
+<li><code>&lt;h2&gt; 7</code>
+<li><code>&lt;h3&gt; 6</code>
+<li><code>&lt;h4&gt; 5</code>
+<li><code>&lt;h5&gt; 4</code>
+<li><code>&lt;h6&gt; 3</code>
+<li><code>&lt;a&gt; 4</code>
+<li><code>&lt;strong&gt;, &lt;EM&gt;, &lt;CODE&gt;, &lt;KBD&gt;, &lt;SAMP&gt;, &lt;CITE&gt;, &lt;VAR&gt; 2</code>
 </ul>
 
 <p>$B$N$h$&$K(B HTML $B%?%0$K1~$8$F%9%3%"$K=E$_$E$1$,$5$l$F$$$^$9!#(B
 $B$3$NCM$K:,5r$O$"$j$^$;$s!#(B
 </p>
 
-<p>$B$^$?(B <code>&lt;META NAME="keywords" CONTENT="</code><var>foo bar</var><code>"&gt;</code> $B$N(B <var>foo bar</var> $B$KBP$7$F$O(B 32 $B$N%9%3%"$,$D$-$^$9!#(B
+<p>$B$^$?(B <code>&lt;meta name="keywords" content="</code><var>foo bar</var><code>"&gt;</code> $B$N(B <var>foo bar</var> $B$KBP$7$F$O(B 32 $B$N%9%3%"$,$D$-$^$9!#(B
 $B$3$l$O(B <code>$METAKEYW</code> $B$H$$$&JQ?t$K@_Dj$5$l$F$$$^$9!#(B
 </p>
 
@@ -975,8 +774,8 @@ Namazu $B$G$O$3$N$h$&$KC1=c$J%"%W%m!<%A$r<h$C$F$$$^$9!#(B
 Namazu $B$G$O%$%s%G%C%/%9:n@.$N:]$K(B &amp;quot;, &amp;amp;, &amp;lt;, &amp;gt; $B$*$h$S(B &amp;#9-10, &amp;#32-126 $B$N(B named entity $B$H(B numbered entity $B$rI|9f$7$F$$$^$9!#(B
  &amp;lt &amp;gt; $B$N$h$&$K%[%o%$%H%9%Z!<%96h@Z$j$GJ#?t;XDj$7$F:G8e$K%;%_%3%m%s$rBG$C$?7A<0$G$bBg>fIW$G$9!#(B
 $BFbIt=hM}$rF|K\8l(B EUC $B$G9T$&$?$a(B ISO-8859-1 $B$N1&H>J,(B (0x80-0xff) $B$N5-9f$O=hM}$G$-$^$;$s!#(B
-$BF1$8M}M3$K$h$j(B I18N $B3HD%$5$l$?(B UCS-4 $B$J(B numbered entity $B$K$bBP1~IT2DG=$G$9!#(B
-$B$^$?!"%$%s%G%C%/%9:n@.$N:]$K$O(B &lt;IMG&gt; $B%?%0$N(B ALT $BMWAG$N<h$j=P$7$r9T$C$F$$$^$9!#(B
+$BF1$8M}M3$K$h$j(B UCS-4 $B$N(B numbered entity $B$K$bBP1~IT2DG=$G$9!#(B
+$B$^$?!"%$%s%G%C%/%9:n@.$N:]$K$O(B &lt;img&gt; $B%?%0$N(B ALT $BMWAG$N<h$j=P$7$r9T$C$F$$$^$9!#(B
 
 </p>
 
@@ -996,7 +795,7 @@ Mail/News $B$N%U%!%$%k$r07$&:]$O!V"~"~(B@$B"$"$$H?=$7$^$9!W$N$h$&$K<+J,(B
 $B$NL>A0$rL>>h$k9T$d!"0zMQ;~$N!V"~"~$5$s$O"$"$$N5-;v$K$*$$$F"""";~:"(B
 $B=q$-$^$7$?!W$N$h$&$J>pJs!"(B<code>&gt; </code> $B$J$I$GI=$5$l$k0zMQIt(B
 $BJ,$r$G$-$k$@$1MWLs$K4^$^$;$J$$$h$&$K=hM}$r$7$F$$$^$9!#$3$l$i$N%a%C(B
-$B%;!<%8$OMWLs$K$O4^$^$l$^$;$s$,!"8!:wBP>]$K$OF~$k$h$&$K$J$C$F$$$^$9!#(B
+$B%;!<%8$OMWLs$K$O4^$^$l$^$;$s$,!"8!:wBP>]$K$OF~$j$^$9!#(B
 </p>
 
 
@@ -1014,12 +813,12 @@ Mail/News $B$N%U%!%$%k$r07$&:]$O!V"~"~(B@$B"$"$$H?=$7$^$9!W$N$h$&$K<+J,(B
 
 <h4><a name="tfidf">tf idf$BK!$K$h$k%9%3%"$N7W;;(B</a></h4>
 <p>
-v1.1.2.2$B$+$i$O(Btf idf$BK!$K$h$k%9%3%"7W;;$r<BAu$7$^$7$?!#(B
-$B$3$l$OM?$($i$l$?%-!<%o!<%I$,(B2$B$D0J>e$"$k$H$-$KMQ$$$i$l$^$9!#(B
+tf idf$BK!$K$h$k%9%3%"7W;;$r<BAu$7$^$7$?!#$3$l$OM?$($i$l$?%-!<(B
+$B%o!<%I$,(B2$B$D0J>e$"$k$H$-$KMQ$$$i$l$^$9!#(B
 </p>
 
 <p>
-$B7W;;<0$O(B
+$B7W;;<0$O<!$NDL$j!#(B
 </p>
 
 <ul>
@@ -1031,31 +830,21 @@ v1.1.2.2$B$+$i$O(Btf idf$BK!$K$h$k%9%3%"7W;;$r<BAu$7$^$7$?!#(B
 </ul>
 
 <p>
-$B$N$h$&$K$J$C$F$$$^$9!#$3$l$K$h$jB?$/$NJ8=q$K4^$^$l$k%-!<%o!<%I$K$O(B
-$BDc$$%9%3%"$,$D$-!"$=$N%-!<%o!<%I$r4^$`J8=q$,>/$J$$>l9g$K$O9b$$%9%3(B
-$B%"$,$D$/$3$H$K$J$j$^$9!#(B
-</p>
-
-
-<h4><a name="obsolete-scoring">$B=>Mh$N%9%3%"$N7W;;(B</a></h4>
-<p>
-A $B$H$$$&C18l$H(B B $B$H$$$&C18l$r%"%s%I$^$?$O%*%"8!:w$7$?>l9g!"$=$l$>(B
-$B$l$NC18l$N%9%3%"$r85$K%9%3%"$N:F7W;;$r9T$$$^$9!#6qBNE*$K$O!"%"%s%I(B
-$B$N$H$-$O(B A $B$H(B B $B$rHf$Y$F%9%3%"$N>.$5$$J}$r!"(B $B%*%"$N$H$-$O(B A $B$H(B B 
-$B$NBg$-$$J}$r?7$7$$%9%3%"$H$7$F:NMQ$7$^$9!#Nc$($P(B "THE BEATLES" $B$H(B
-$B$$$&%-!<%o!<%I$G%"%s%I8!:w$r$+$1$?>l9g!"(B "THE" $B$NJ}$N%9%3%"$O$[$H(B
-$B$s$I0UL#$,$J$$$?$a!">.$5$$J}$N%9%3%"$r=E;k$7$^$9!#(B
+$B$3$l$K$h$jB?$/$NJ8=q$K4^$^$l$k%-!<%o!<%I$K$ODc$$%9%3%"$,$D$-!"(B
+$B$=$N%-!<%o!<%I$r4^$`J8=q$,>/$J$$>l9g$K$O9b$$%9%3%"$,$D$/$3$H(B
+$B$K$J$j$^$9!#(B
 </p>
 
 <h3><a name="symbol">$B5-9f$r4^$`C18l$N%$%s%G%C%/%9=hM}(B</a></h3>
 
 <p>
 $B5-9f$N=hM}$O$J$+$J$+Fq$7$$LdBj$G$9!#Nc$($P(B <code>(foo is
-bar.)</code> $B$N$h$&$JJ8$,$"$C$?$H$-$KC1=c$K%9%Z!<%96h@Z$j$G%$%s%G%C(B
-$B%/%92=$7$F$7$^$&$H(B <code>"(foo", "is", "bar.)"</code> $B$N$h$&$KEPO?(B
-$B$5$l$F$7$^$$!"$3$l$G$O(B foo $B$d(B bar $B$G8!:w$G$-$J$/$F:$$j$^$9(B 
-(<code>"bar*"</code> $B$H$9$k$3$H$GA0J}0lCW$O0z$C$+$+$j$^$9$,!"%"%k(B
-$B%4%j%:%`$N@-<a>e!"A0J}0lCW0J30$NItJ,0lCW$OIT2DG=$G$9(B) $B!#(B
+bar.)</code> $B$N$h$&$JJ8$,$"$C$?$H$-$KC1=c$K6uGr6h@Z$j$G%$%s(B
+$B%G%C%/%92=$7$F$7$^$&$H(B <code>"(foo", "is", "bar.)"</code> $B$N(B
+$B$h$&$KEPO?$5$l$F$7$^$$!"$3$l$G$O(B foo $B$d(B bar $B$G8!:w$G$-$J$/$F(B
+$B:$$j$^$9(B (<code>"bar*"</code> $B$H$9$k$3$H$GA0J}0lCW$O0z$C$+$+(B
+$B$j$^$9$,!"%"%k%4%j%:%`$N@-<a>e!"A0J}0lCW0J30$NItJ,0lCW$OIT2D(B
+$BG=$G$9(B) $B!#(B
 </p>
 
 <p>
@@ -1065,10 +854,6 @@ bar.)</code> $B$N$h$&$JJ8$,$"$C$?$H$-$KC1=c$K%9%Z!<%96h@Z$j$G%$%s%G%C(B
  Namazu $B$G$O%$%s%G%C%/%92=$7$h$&$H$9$k%U%!%$%k$K(B 
 <code>tcp/ip</code> $B$N$h$&$JJ8$,$"$C$?>l9g!"(B <code>"tcp/ip",
 "tcp", "ip"</code> $B$N$h$&$K(B 3 $B$D$KJ,2r$7$F%$%s%G%C%/%9$KEPO?$7$^$9!#(B
- tcp/ip $B$+$i(B tcp, ip $B$H<h$j=P$7$FEPO?$7$F$b$"$^$j0UL#$,$J$$$h$&$K(B
-$B;W$($k$+$bCN$l$^$;$s$,!"(B s.takabayashi $B$H$$$&J8$KBP$7$F(B 
-s.takabayashi $B$@$1$G$J$/(B takabayashi $B$d(B s &amp; takabayashi $B$G$b8!(B
-$B:w$G$-$k$h$&$K$H$NG[N8$G$9!#(B
 </p>
 
 <p>
@@ -1083,30 +868,6 @@ s.takabayashi $B$@$1$G$J$/(B takabayashi $B$d(B s &amp; takabayashi $B$G$b8
 $B$b(B bar $B$G$b8!:w$G$-$^$9!#(B
 </p>
 
-<p>
-$B$3$N<jK!$G$b$^$@C18l$N<h$j$3$\$7$,H/@8$9$k$H$$$&E@$G40A4$H$$(B
-$B$&$o$1$G$O$J$$$N$G$9$,(B ($BNc$($P(B 
-<code>e-mail:foobar@foo.bar.jp</code> $B$H$$$&J8$+$i(B 
-<code>foobar@foo.bar.jp</code> $B$r<h$j=P$9$3$H$O$G(B
-$B$-$J$$(B) $B!"$=$s$J$K0-$/$J$$$H;W$C$F$$$^$9!#7gE@$H$7$F$O%$%s%G%C(B
-$B%/%9$N%5%$%:$,7k9=Bg$-$/$J$C$F$7$^$&$3$H$G$9$M!#8!:w$N=@Fp@-(B
-$B$r9b$a$h$&$H$9$k$H$I$&$7$F$b%4%_$,A}$($F$7$^$$$^$9!#(B
-</p>
-
-<p>
-$B0lHLE*$J%"%W%m!<%A$H$7$F!"5-9f$d?t;z$r0l@ZL5;k$9$k!"8!:w$9$k0UL#$N(B
-$B$J$$C18l$rL5;k$9$k(B ($B=u;l$J$I$NIJ;l$r<N$F$k(B)$B!"$R$i$,$J$rL5;k$9$k!"(B
-$BC;$$C18l$rL5;k$9$k!"IQEY$N0[>o$K9b$$C18l$rL5;k$9$k!"(B $B$J$I$H$$$C$?(B
-$B<jK!$K$h$C$F%4%_$r8:$i$9$3$H$b9M$($i$l$^$9$,!"(B Namazu $B$G$O>.Cf5,LO(B
-$B$NA4J88!:w%(%s%8%s$H$$$&$3$H$G$G$-$k$@$1B?$/$NC18l$r%$%s%G%C%/%9$K(B
-$B4^$a$k$h$&$K<BAu$7$F$$$^$9!#$^$?!"(B mknmz $B<B9T;~$K(B -H, -K $B$H$$$C$?(B
-$B%*%W%7%g%s$r;XDj$9$k$3$H$G$R$i$,$J$N$_$+$i$J$kC18l$rL5;k$7$?$j5-9f(B
-$B$r$9$Y$F:o=|$7$?$j$H$$$C$?$3$H$b$G$-$^$9!#(B
- -m $B%*%W%7%g%s$r;XDj$9$k$H(B ChaSen $B$K$h$kIJ;l>pJs$rMxMQ$7$FL>;l$N$_(B
-$B$rEPO?$H$$$C$?=hM}$b9T$($^$9!#(B
-
-</p>
-
 
 <h3><a name="algorithm">Namazu $B$N8!:w%"%k%4%j%:%`(B</a></h3>
 
@@ -1117,18 +878,19 @@ Namazu $B$N8!:w%"%k%4%j%:%`$O4pK\E*$K$OC1=c$J(B 2$BJ,C5:w$G$9!#(B
 <h3><a name="regexp-search">$B@55,I=8=(B/$B8eJ}0lCW(B/$BCf4V0lCW8!:w$N<BAu(B</a></h3>
 
 <p>
-$B@55,I=8=$O(B <a href="http://www.netlab.co.jp/ruby/jp/">Ruby</a> $B$N(B
-$B%3!<%I$r;H$o$;$F$$$?$@$$$F$$$k$N$G(B ($B$^$D$b$H$f$-$R$m$5$s(B Thanks!)$B!"(B
-$BF|K\8l$b07$($^$9!#$?$H$($P(B <code>/$B%$%s%?!<(B?$B%U%'(B[$B!<%$(B]$B%9(B/</code> $B$H(B
-$B$$$C$?;XDj$,2DG=$K$J$C$F$$$^$9!#(B
+$B@55,I=8=$O(B <a
+href="http://www.netlab.co.jp/ruby/jp/">Ruby</a> $B$N%3!<%I$r(B
+$BMxMQ$7$F$$$^$9!#!#$?$H$($P(B <code>/$B%$%s%?!<(B?$B%U%'(B[$B!<%$(B]$B%9(B
+/</code> $B$H$$$C$?;XDj$,2DG=$K$J$C$F$$$^$9!#(B
 </p>
 
 <h3><a name="phrase-search">($B$"$d$7$2$J(B)$B%U%l%$%:8!:w$N<BAu(B</a></h3>
 
-<p>$B%U%l%$%:8!:w$N<BAu$O$+$M$F$+$i$NL\I8$G$7$?!#:G$bLdBj$@$C$?$N$O(B
-$BC1=c$K8=>u$N%$%s%G%C%/%9$N9=B$$N1dD9>e$K<BAu$9$k$H%$%s%G%C%/%9$N%5(B
-$B%$%:$,5pBg$K$J$k$H$$$&$3$H$G$7$?!#NI$$J}K!$,;W$$$D$+$:$KG:$s$G$$$k(B
-$B$H!"8E@n(B@$B%d%^%O$5$s$+$i<!$N$h$&$J=u8@$r$$$?$@$-$^$7$?!#(B</p>
+<p>
+$B%U%l%$%:8!:w$N<BAu$O$+$M$F$+$i$NL\I8$G$7$?!#:G$bLdBj$@$C$?$N(B
+$B$OC1=c$K8=>u$N%$%s%G%C%/%9$N9=B$$N1dD9>e$K<BAu$9$k$H%$%s%G%C(B
+$B%/%9$N%5%$%:$,5pBg$K$J$k$H$$$&$3$H$G$7$?!#(B
+</p>
 
 <p>$B!V%U%l%$%:$r9=@.$9$k8D!9$NC18l$O$9$Y$F(B AND$B8!:w$G$=$N%U%!%$%k$K(B
 $BB8:_$9$k$3$H$,J,$+$C$F$$$k$N$@$+$i!"D4$Y$kI,MW$,$"$k$N$OC18l$NJB$S(B
@@ -1153,8 +915,7 @@ foo bar ...<br>
 bar &amp; baz $B$G8!:w$9$k$h$j$O8uJd$r9J$l$^$9!#(B</p>
 
 <p>$BM}A[E*$K$O(B "foo bar baz" $B$r3N<B$K8!:w$G$-$?J}$,K>$^$7$$$N$G$9$,!"(B
-$B%$%s%G%C%/%9$N%5%$%:$H$N7s$M9g$$$b$"$k$N$GFq$7$$$H$3$m$G$9!#$b$C$H(B
-$BNI$$J}K!$,8+$D$+$l$PCV$-49$($?$$$H;W$C$F$$$^$9!#(B</p>
+$B%$%s%G%C%/%9$N%5%$%:$H$N7s$M9g$$$b$"$k$N$GFq$7$$$H$3$m$G$9!#(B</p>
 
 <p>
 $B%U%l%$%:MQ$N%$%s%G%C%/%9(B NMZ.p $B$N%5%$%:$OE>CV%U%!%$%k(B NMZ.i $B$h$j$O(B
@@ -1162,16 +923,8 @@ bar &amp; baz $B$G8!:w$9$k$h$j$O8uJd$r9J$l$^$9!#(B</p>
 32bit$B$G7W;;(B) $B$rI,MW$H$7$^$9!#(B
 </p>
 
-<h3><a name="update-index">$BJ8=q$N99?7(B/$B:o=|$KBP1~%$%s%G%C%/%9$N(B
-$B%"%C%W%G!<%H(B</a></h3>
-
-<p>
-v1.3.0.0 $B$h$jA0$N%t%!!<%8%g%s$G$O%$%s%G%C%/%9$OJ8=q$NDI2C$7$+$G$-$:!"(B
-$B%&%'%V%Z%$%8$J$I!"IQHK$K99?7$5$l$kJ8=q$rBP>]$H$9$k>l9g$K$OKh2sA4BN(B
-$B$N%$%s%G%C%/%9$r:n$jD>$5$J$1$l$P$J$i$:!"ITJX$G$7$?!#(B
-v1.3.0.0 $B$+$i$OJ8=q$N99?7(B/$B:o=|$KBP1~$7$?%$%s%G%C%C%/%9$N%"%C%W%G!<(B
-$B%H$r9T$&$3$H$,$G$-$^$9!#(B
-</p>
+<h3><a name="update-index">$BJ8=q$N99?7!&:o=|$KBP1~%$%s%G%C%/%9$N(B
+$B99?7(B</a></h3>
 
 <p>
 $B$3$N;EAH$_$O<B:]$K%$%s%G%C%/%9$+$iEPO?:Q$NJ8=q$r99?7(B/$B:o=|$9$k$N$G(B
@@ -1189,7 +942,7 @@ v1.3.0.0 $B$+$i$OJ8=q$N99?7(B/$B:o=|$KBP1~$7$?%$%s%G%C%C%/%9$N%"%C%W%G!<(B
 </p>
 
 <p>
-<code>% gcnmz /doko/soko/NMZ</code>
+<code>% gcnmz /some/where/NMZ</code>
 </p>
 
 <p>
@@ -1207,15 +960,6 @@ Mail/News $B$N(B Date: $B%X%C%@$K9g$o$;$F%U%!%$%k$N%?%$%`%9%?%s%W$r=$@5(B
 MHonArc $B$r;H$C$F$$$k?M$O(B -modtime $B%*%W%7%g%s$GF1$8$3$H$,$G$-$^$9!#(B
 </p>
 
-
-<h3><a name="wakatigaki">$B8!:w;~$NF|K\8l$N$o$+$A=q$-(B</a></h3>
-
-<p>
-v1.2.0.2 $B$+$i$O8!:w;~$KF|K\8l$N$o$+$A=q$-$r<+A0$G9T$&$h$&$K$J$j$^(B
-$B$7$?!#$3$l$K$h$j(B KAKASI/ChaSen $B$r8F$S=P$9I,MW$,$J$/$J$j!"=hM}B.EY(B
-$B$,>e$,$j$^$7$?!#(BNMZ.i $B$r<-=q$NBe$o$j$K;2>H$7$F<B8=$7$F$$$^$9!#J8;z(B
-$BNs$N:8$+$i:GD90lCW$GJ,3d$7$F$$$k$@$1$G$9!#(B
-</p>
 
 <!-- query -->
 <h2><a name="query-description">$B8!:w<0$N@bL@(B</a></h2>
@@ -1344,7 +1088,7 @@ href="http://www.perl.com/">Perl</a>$B$H$[$\F1$8$G$9!#(B $BNc(B:
 (Subject: $B$K(B <code>GNU Emacs</code>$B$,4^$^$l$kJ8=q(B)
 <li><code class="example">+from:foo@bar.jp</code><br>
 (From: $B$K(B <code>foo@bar.jp</code> $B$,4^$^$l$kJ8=q(B)
-<li><code class="example">+message-id:&lt;199801240555.OAA18737@foo.bar.jp&gt;</code><br>
+<li><code class="example">+message-id:&lt;199801240555.oaa18737@foo.bar.jp&gt;</code><br>
 (Message-Id $B$r;XDj(B)
 </ul>
 
@@ -1354,9 +1098,8 @@ href="http://www.perl.com/">Perl</a>$B$H$[$\F1$8$G$9!#(B $BNc(B:
 <li>$B$$$:$l$N8!:wJ}K!$G$b%"%k%U%!%Y%C%H$NBgJ8;z!&>.J8;z$N6hJL(B
 $B$O$7$^$;$s!#(B
 
-<li>$BF|K\8l$NJ#9g8l$O7ABVAGC10L$KJ,3d$7!"$=$l$i$r(B<a
-href="#phrase"> $B%U%l%$%:8!:w(B</a>$B$7$^$9!#J,3d$OITE,@Z$K9T$J$o(B
-$B$l$k$3$H$,$"$j$^$9!#(B
+<li>$BF|K\8l$NJ#9g8l$O7ABVAGC10L$KJ,3d$7!"$=$l$i$r%U%l%$%:8!:w(B
+$B$7$^$9!#J,3d$OITE,@Z$K9T$J$o$l$k$3$H$,$"$j$^$9!#(B
 
 <li>JIS X 0208 ($B$$$o$f$kA43QJ8;z(B) $B$N1Q?t;z$H5-9f$N0lIt(B 
 (ASCII$B$H=EJ#$7$F$$$k$b$N(B) $B$O(B ASCII ($B$$$o$f$kH>3QJ8;z(B) $B$H$7$F(B
@@ -1364,9 +1107,9 @@ href="#phrase"> $B%U%l%$%:8!:w(B</a>$B$7$^$9!#J,3d$OITE,@Z$K9T$J$o(B
 
 <li>$B5-9f$r4^$`8l$N8!:w$,$G$-$^$9!#Nc(B: <code>TCP/IP</code>$B!#(B
 $B$?$@$7!"5-9f$N=hM}$O40A4$G$O$J$$$N$G(B <code>TCP and IP</code> 
-$B$N$h$&$KJ,3d$7$F(B<a href="#and">AND$B8!:w(B</a>$B$r$+$1$?J}$,<h$j$3(B
-$B$\$7$,$"$j$^$;$s(B ($B$=$NBe$o$jM>7W$J%U%!%$%k$^$G%R%C%H$7$F$7$^(B
-$B$&2DG=@-$,$"$j$^$9(B)$B!#(B
+$B$N$h$&$KJ,3d$7$F(BAND$B8!:w$r$+$1$?J}$,<h$j$3$\$7$,$"$j$^$;$s(B 
+($B$=$NBe$o$jM>7W$J%U%!%$%k$^$G%R%C%H$7$F$7$^$&2DG=@-$,$"$j$^(B
+$B$9(B)$B!#(B
 
 <li>$BCf4V0lCW!&8eJ}0lCW!"@55,I=8=!"%U%#!<%k%I;XDj$N8!:w$K$O>/(B
 $B$7;~4V$,$+$+$j$^$9!#(B
@@ -1392,7 +1135,7 @@ Tknamazu $B$*$h$S(B namazu.el $B$+$i8!:w$9$k$H$-$OI,$:8e<T$G;XDj$7$^$9!#(B
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: manual.html,v 1.2 2000-01-31 01:32:33 satoru Exp $
+$Id: manual.html,v 1.3 2000-01-31 06:24:01 satoru Exp $
 </div>
 <address>
 developers@namazu.org

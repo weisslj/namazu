@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: util.c,v 1.53 2000-01-30 22:18:10 rug Exp $
+ * $Id: util.c,v 1.54 2000-01-31 06:24:03 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -615,6 +615,7 @@ int nmz_is_file_exists(const char *fname)
     if (fp == NULL) {
 	return 0; /* FAILURE */
     } else {
+	fclose(fp);
 	return 1; /* SUCCESS */
     }
 }

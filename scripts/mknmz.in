@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.2 2000-01-30 23:32:36 rug Exp $
+# $Id: mknmz.in,v 1.3 2000-01-31 06:24:07 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -709,7 +709,7 @@ sub require_modules() {
 	require Text::ChaSen || die "unable to require \"Text::ChaSen\"\n";
         util::dprint(_("wakati: using Text::ChaSen module\n"));
 	my @arg = ('-j', '-F', '%m ');
-	@arg    = ('-j', '-F', '%m %H\\n') if $var::Opt{'morph'};
+	@arg    = ('-j', '-F', '%m %H\\n') if $var::Opt{'noun'};
 	my $res = Text::ChaSen::getopt_argv('chasen-perl', @arg);
     }
 }
@@ -815,7 +815,7 @@ sub parse_options ()
     my $opt_help = 0;
     my $opt_all = 0;
     my $opt_chasen = 0;
-    my $opt_chasen_morph = 0;
+    my $opt_chasen_noun = 0;
     my $opt_kakasi = 0;
     my $opt_checkpoint_sub = 0;
     my $opt_show_config = 0;
@@ -861,7 +861,7 @@ sub parse_options ()
 	       'f|config=s'          => \$opt_config,
 	       'h|mailnews'          => \$opt_mailnews,
 	       'k|use-kakasi'        => \$opt_kakasi,
-	       'm|use-chasen-morph'  => \$opt_chasen_morph,
+	       'm|use-chasen-noun'   => \$opt_chasen_noun,
 	       'o|ole'               => \$var::Opt{'ole'},
 	       'q|quiet'             => \$var::Opt{'quiet'},
 	       'r|replace=s'         => \$ReplaceCode,
@@ -922,15 +922,15 @@ sub parse_options ()
     }
     if ($opt_chasen) {
 	$conf::WAKATI = $conf::CHASEN;
-	$var::Opt{'morph'} = 0;
+	$var::Opt{'noun'} = 0;
     }
-    if ($opt_chasen_morph) {
-	$conf::WAKATI = $conf::CHASEN_MORPH;
-	$var::Opt{'morph'} = 1;
+    if ($opt_chasen_noun) {
+	$conf::WAKATI = $conf::CHASEN_NOUN;
+	$var::Opt{'noun'} = 1;
     }
     if ($opt_kakasi) {
 	$conf::WAKATI = $conf::KAKASI;
-	$var::Opt{'morph'} = 0;
+	$var::Opt{'noun'} = 0;
     }
     if ($var::Opt{'robotexclude'}) {
         html::parse_robots_txt();
@@ -2075,7 +2075,7 @@ sub decide_type ($$) {
 muda($conf::ON_MEMORY_MAX,
      $conf::WORD_LENG_MAX, $conf::TEXT_SIZE_MAX,
      $conf::DENY_REGEX, $var::INTSIZE,
-     $conf::CHASEN_MORPH, $conf::CHASEN,
+     $conf::CHASEN_NOUN, $conf::CHASEN,
      $conf::KAKASI, $var::Opt{'okurigana'},
      $var::Opt{'hiragana'}, $conf::ROBOTS_EXCLUDE_URLS, $conf::DEFAULT_FILE,
      $conf::HTML_SUFFIX, $usage::USAGE, 

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2000-01-30 18:53+0900\n"
+"POT-Creation-Date: 2000-01-31 15:20+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -14,55 +14,55 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: ENCODING\n"
 
-#: nmz/util.c:559
+#: nmz/util.c:518
 msgid "Fatal error occered!"
 msgstr ""
 
-#: nmz/util.c:562
+#: nmz/util.c:521
 msgid "Too long query"
 msgstr ""
 
-#: nmz/util.c:565
+#: nmz/util.c:524
 msgid "Invalid query"
 msgstr ""
 
-#: nmz/util.c:568
+#: nmz/util.c:527
 msgid "Too many query tokens"
 msgstr ""
 
-#: nmz/util.c:571
+#: nmz/util.c:530
 msgid "Too many words matched. Ignored"
 msgstr ""
 
-#: nmz/util.c:574
+#: nmz/util.c:533
 msgid "Too many pages hit. Ignored"
 msgstr ""
 
-#: nmz/util.c:577
+#: nmz/util.c:536
 msgid "cannot open regex index"
 msgstr ""
 
-#: nmz/util.c:580
+#: nmz/util.c:539
 msgid "cannot open phrase index"
 msgstr ""
 
-#: nmz/util.c:583
+#: nmz/util.c:542
 msgid "cannot open field index"
 msgstr ""
 
-#: nmz/util.c:586
+#: nmz/util.c:545
 msgid "cannot open this index"
 msgstr ""
 
-#: nmz/util.c:589
+#: nmz/util.c:548
 msgid "cannot open result format file"
 msgstr ""
 
-#: nmz/util.c:592
+#: nmz/util.c:551
 msgid "You don't have a permission to access the index"
 msgstr ""
 
-#: nmz/util.c:595
+#: nmz/util.c:554
 msgid "Unknown error. Report bug!"
 msgstr ""
 
@@ -215,273 +215,273 @@ msgstr ""
 msgid "Try `namazu --help' for more information.\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:106
+#: scripts/mknmz.in:106
 msgid "target file: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:159
+#: scripts/mknmz.in:159
 msgid "Reading rcfile: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:193
+#: scripts/mknmz.in:193
 msgid "Checkpoint reached: re-exec mknmz...\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:328
+#: scripts/mknmz.in:328
 msgid "after load_document: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:622
+#: scripts/mknmz.in:622
 msgid "Detected type: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:624 scripts/mknmz.pl.in:1153
+#: scripts/mknmz.in:624 scripts/mknmz.in:1153
 msgid "Unsupported data type "
 msgstr ""
 
-#: scripts/mknmz.pl.in:628
+#: scripts/mknmz.in:628
 msgid "Using "
 msgstr ""
 
-#: scripts/mknmz.pl.in:630
+#: scripts/mknmz.in:630
 msgid "unable to require "
 msgstr ""
 
-#: scripts/mknmz.pl.in:638
+#: scripts/mknmz.in:638
 msgid "Faild to call "
 msgstr ""
 
-#: scripts/mknmz.pl.in:680 scripts/mknmz.pl.in:1284
+#: scripts/mknmz.in:680 scripts/mknmz.in:1284
 msgid "No files to index.\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:700
+#: scripts/mknmz.in:700
 msgid "code conversion: using NKF module\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:705
+#: scripts/mknmz.in:705
 msgid "wakati: using Text::Kakasi module\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:710
+#: scripts/mknmz.in:710
 msgid "wakati: using Text::ChaSen module\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:724
+#: scripts/mknmz.in:724
 msgid ""
 "found. Maybe this index is being updated by another process now.\n"
 "If not, you can remove this file.\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:753
+#: scripts/mknmz.in:753
 msgid "Present index is old type. it's unsupported.\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:902
+#: scripts/mknmz.in:902
 msgid "Inherited argv: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:906
+#: scripts/mknmz.in:906
 msgid "Inherited cwd: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:947
+#: scripts/mknmz.in:947
 msgid "Loaded: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:962
+#: scripts/mknmz.in:962
 msgid "Invalid replace: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:964
+#: scripts/mknmz.in:964
 msgid "Replace: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:973
+#: scripts/mknmz.in:973
 msgid "invalid output directory\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1062
+#: scripts/mknmz.in:1062
 msgid " findfiles starting: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:1097
+#: scripts/mknmz.in:1097
 msgid "wanted: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:1113
+#: scripts/mknmz.in:1113
 msgid "findfiles    ended: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:1114
+#: scripts/mknmz.in:1114
 #, c-format
 msgid ""
 "Target Files: %d (Scan Performance: Elapsed Sec.: %d, Files/sec: %.1f)\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1122
+#: scripts/mknmz.in:1122
 msgid "lang: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:1132
+#: scripts/mknmz.in:1132
 msgid "Usage: mknmz [options] <target>...\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1133
+#: scripts/mknmz.in:1133
 msgid "Try `mknmz --help' for more information.\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1146
+#: scripts/mknmz.in:1146
 msgid "is 0 size! skipped."
 msgstr ""
 
-#: scripts/mknmz.pl.in:1148
+#: scripts/mknmz.in:1148
 msgid "may be a BINARY file! skipped."
 msgstr ""
 
-#: scripts/mknmz.pl.in:1150
+#: scripts/mknmz.in:1150
 msgid "is too LARGE a text! skipped."
 msgstr ""
 
-#: scripts/mknmz.pl.in:1153
+#: scripts/mknmz.in:1153
 msgid " skipped."
 msgstr ""
 
-#: scripts/mknmz.pl.in:1158
+#: scripts/mknmz.in:1158
 msgid "system error occurred! "
 msgstr ""
 
-#: scripts/mknmz.pl.in:1358
+#: scripts/mknmz.in:1358
 msgid ""
 "\n"
 "\n"
 "== found ==\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1359
+#: scripts/mknmz.in:1359
 msgid ""
 "\n"
 "\n"
 "== registered ==\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1360
+#: scripts/mknmz.in:1360
 msgid ""
 "\n"
 "\n"
 "== overlapped  ==\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1361
+#: scripts/mknmz.in:1361
 msgid ""
 "\n"
 "\n"
 "== deleted  ==\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1362
+#: scripts/mknmz.in:1362
 msgid ""
 "\n"
 "\n"
 "== updated ==\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1363
+#: scripts/mknmz.in:1363
 msgid ""
 "\n"
 "\n"
 "== files to index ==\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1387
+#: scripts/mknmz.in:1387
 msgid "## deleted: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:1410
+#: scripts/mknmz.in:1410
 msgid "## indexed: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:1436
+#: scripts/mknmz.in:1436
 msgid "update_field_index: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:1456
+#: scripts/mknmz.in:1456
 msgid "was updated!\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1497
+#: scripts/mknmz.in:1497
 msgid "ERROR: malformed NMZ.r format!\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1579
+#: scripts/mknmz.in:1579
 msgid "[Append]"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1581
+#: scripts/mknmz.in:1581
 msgid "[Base]"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1583
+#: scripts/mknmz.in:1583
 msgid "Date:"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1584
+#: scripts/mknmz.in:1584
 msgid "Added Documents:"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1586
+#: scripts/mknmz.in:1586
 msgid "Deleted Documents:"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1588
+#: scripts/mknmz.in:1588
 msgid "Updated Documents:"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1590
+#: scripts/mknmz.in:1590
 msgid "Size (bytes):"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1592
+#: scripts/mknmz.in:1592
 msgid "Total Documents:"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1594
+#: scripts/mknmz.in:1594
 msgid "Added Keywords:"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1596
+#: scripts/mknmz.in:1596
 msgid "Total Keywords:"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1598
+#: scripts/mknmz.in:1598
 msgid "Wakati:"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1599
+#: scripts/mknmz.in:1599
 msgid "Time (sec):"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1600
+#: scripts/mknmz.in:1600
 msgid "File/Sec:"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1603
+#: scripts/mknmz.in:1603
 msgid "System:"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1604
+#: scripts/mknmz.in:1604
 msgid "Perl:"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1605
+#: scripts/mknmz.in:1605
 msgid "Namazu:"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1730
+#: scripts/mknmz.in:1730
 msgid "doing write_phrase_hash() processing.\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1957
+#: scripts/mknmz.in:1957
 msgid "doing write_index() processing.\n"
 msgstr ""
 
@@ -547,7 +547,7 @@ msgid ""
 "Morphological Analysis:\n"
 "  -c, --use-chasen         use ChaSen for analyzing Japanese.\n"
 "  -k, --use-kakasi         use KAKASI for analyzing Japanese.\n"
-"  -m, --use-chasen-morph   use ChaSen for collecting only nouns.\n"
+"  -m, --use-chasen-noun    use ChaSen for extracting only nouns.\n"
 "\n"
 "Text Operations:\n"
 "  -E, --no-edge-symbol     remove symbols on edge of word.\n"

@@ -1,5 +1,5 @@
 # -*- Perl -*-
-# $Id: usage.pl,v 1.15 2000-01-29 04:58:20 satoru Exp $
+# $Id: usage.pl,v 1.16 2000-01-31 06:24:04 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -57,7 +57,7 @@ Target files:\n\
 Morphological Analysis:\n\
   -c, --use-chasen         use ChaSen for analyzing Japanese.\n\
   -k, --use-kakasi         use KAKASI for analyzing Japanese.\n\
-  -m, --use-chasen-morph   use ChaSen for collecting only nouns.\n\
+  -m, --use-chasen-noun    use ChaSen for extracting only nouns.\n\
 \n\
 Text Operations:\n\
   -E, --no-edge-symbol     remove symbols on edge of word.\n\

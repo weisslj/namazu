@@ -22,7 +22,7 @@ $KAKASI = "@KAKASI@ -ieuc -oeuc -w";
 $CHASEN = "@CHASEN@ -j -F '\%m '";
 
 # ChaSen 1.51 or later (with morphological processing)
-$CHASEN_MORPH = "@CHASEN@ -j -F '\%m %H\\n'";
+$CHASEN_NOUN = "@CHASEN@ -j -F '\%m %H\\n'";
 
 # Default Japanese processer
 $WAKATI  = $@OPT_WAKATI_DEFAULT@;

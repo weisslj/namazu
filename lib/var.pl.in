@@ -1,5 +1,5 @@
 # -*- Perl -*-
-# $Id: var.pl.in,v 1.10 1999-08-31 05:37:36 satoru Exp $
+# $Id: var.pl.in,v 1.11 1999-08-31 09:34:35 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -130,11 +130,6 @@ $PREFIX = "";
 %REQUIRE_CODECONV = 
     (
      'text/plain' => 1,
-     'message/rfc822' => 1,
-     'message/news' => 1,
-     'text/html' => 1,
-     'text/html; x-type=mhonarc' => 1,
-     'text/x-roff' => 1,
      );
 %Supported = ();
 

@@ -18,6 +18,8 @@
 
 1999-08-31  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* lib/var.pl.in: Remove serveal media types into %REQUIRE_CODECONV.
+
 	* src/result.l (get_field_data): Insert commas if given filed is a
 	numeric string.
 	

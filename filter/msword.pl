@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: msword.pl,v 1.14 2000-02-11 12:54:21 satoru Exp $
+# $Id: msword.pl,v 1.15 2000-02-26 05:41:59 satoru Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -75,7 +75,7 @@ sub filter ($$$$$) {
     print $fh $$cont;
     undef $fh;
 
-    system("$wordconvpath -o - $tmpfile | $utfconvpath -Iu8 -Oej > $tmpfile2");
+    system("$wordconvpath $tmpfile | $utfconvpath -Iu8 -Oej > $tmpfile2");
     $fh = util::efopen("< $tmpfile2");
     $$cont = util::readfile($fh);
     undef $fh;

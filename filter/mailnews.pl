@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mailnews.pl,v 1.23 2000-02-11 16:46:30 satoru Exp $
+# $Id: mailnews.pl,v 1.24 2000-02-26 05:41:59 satoru Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -110,16 +110,6 @@ sub mailnews_filter ($$$) {
 
 	    my $weight = $conf::Weight{'html'}->{'title'};
 	    $$weighted_str .= "\x7f$weight\x7f$line\x7f/$weight\x7f\n";
-	} elsif ($line =~ /^(\S+):\s(.*)/i) {
-	    my $name = $1;
-	    my $value = $2;
-	    $fields->{lc($name)} = $value;
-	    if ($name =~ /^($conf::REMAIN_HEADER)$/io) {
-		# keep some fields specified REMAIN_HEADER for search keyword
-		my $weight = $conf::Weight{'headers'};
-		$$weighted_str .= 
-		    "\x7f$weight\x7f$value\x7f/$weight\x7f\n";
-	    }
  	} elsif ($line =~ s/^content-type:\s*//i) {
 	    if ($line =~ /multipart.*boundary="(.*)"/i){
 		$boundary = $1;
@@ -129,6 +119,16 @@ sub mailnews_filter ($$$) {
 		# contributed by Hiroshi Kato <tumibito@mm.rd.nttdata.co.jp>
   		$partial = $1;
   		util::dprint("((partial: $partial))\n");
+	    }
+	} elsif ($line =~ /^(\S+):\s(.*)/i) {
+	    my $name = $1;
+	    my $value = $2;
+	    $fields->{lc($name)} = $value;
+	    if ($name =~ /^($conf::REMAIN_HEADER)$/io) {
+		# keep some fields specified REMAIN_HEADER for search keyword
+		my $weight = $conf::Weight{'headers'};
+		$$weighted_str .= 
+		    "\x7f$weight\x7f$value\x7f/$weight\x7f\n";
 	    }
 	} 
     }

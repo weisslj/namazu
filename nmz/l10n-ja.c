@@ -1,6 +1,6 @@
 /*
  * l10n-ja.c -
- * $Id: l10n-ja.c,v 1.2 2001-06-21 06:21:32 rug Exp $
+ * $Id: l10n-ja.c,v 1.3 2001-08-16 10:16:22 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -47,13 +47,13 @@ nmz_is_lang_ja(void)
     const char *lang;
 
     lang = nmz_get_lang_ctype();
-    if (strcmp(lang, "japanese")) {
+    if (!strcmp(lang, "japanese")) {
 	return 1; /* TRUE */
     } 
-    if (strcmp(lang, "ja")) {
+    if (!strcmp(lang, "ja")) {
 	return 1; /* TRUE */
     } 
-    if (strncmp(lang, "ja_JP", 5)) {
+    if (!strncmp(lang, "ja_JP", 5)) {
 	return 1; /* TRUE */
     } 
     return 0; /* FALSE */

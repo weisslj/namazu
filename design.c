@@ -3,7 +3,12 @@
 int
 main()
 {
-    // クエリーは単なる文字列
+    // クエリーは単なる文字列 (でいいの?)
+    // nmz_idxset_search の中でパーズするのと
+    // 外でパーズして渡すのとどちらがいいのだろう?
+    // 外でパーズするなら 
+    //   nmz_query *q = nmz_query_new("foo and bar");
+    // といった感じかな?
     char *query = "foo and bar";
 
     // 設定ファイルを読み込む

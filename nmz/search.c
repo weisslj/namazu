@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.53 2000-01-09 08:22:33 satoru Exp $
+ * $Id: search.c,v 1.54 2000-01-09 08:31:37 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -422,7 +422,7 @@ do_phrase_search(const char *key, NmzResult val)
 	if (tmp.stat == ERR_FATAL) 
 	    return tmp;
 
-	pr_hitnum = push_hitnum(pr_hitnum, word, tmp.num, tmp.stat);
+	pr_hitnum = nmz_push_hitnum(pr_hitnum, word, tmp.num, tmp.stat);
 	if (pr_hitnum == NULL) {
 	    tmp.stat = ERR_FATAL;
 	    return tmp;
@@ -459,15 +459,15 @@ do_phrase_search(const char *key, NmzResult val)
 	struct nmz_hitnumlist *cur, *tmp;
 
 	/* Get current hitnum list */
-	cur = get_idx_hitnumlist(cur_idxnum);
+	cur = nmz_get_idx_hitnumlist(cur_idxnum);
 
         /* Push dummy element */
-	cur = push_hitnum(cur, "", 0, SUCCESS);
+	cur = nmz_push_hitnum(cur, "", 0, SUCCESS);
 	if (cur == NULL) {
 	    val.stat = ERR_FATAL;
 	    return val;
 	}
-	set_idx_hitnumlist(cur_idxnum, cur);
+	nmz_set_idx_hitnumlist(cur_idxnum, cur);
 
 	/* Get the last element */
 	tmp = cur;
@@ -790,7 +790,7 @@ nmz_search_sub(NmzResult hlist, const char *query, int n)
     if (hlist.stat == SUCCESS && hlist.num > 0) {  /* if hit */
         set_idxid_hlist(hlist, n);
     }
-    set_idx_totalhitnum(cur_idxnum, hlist.num);
+    nmz_set_idx_totalhitnum(cur_idxnum, hlist.num);
     close_index_files();
 
     if (nmz_is_loggingmode()) {
@@ -804,7 +804,7 @@ make_fullpathname_index(int n)
 {
     char *base;
 
-    base = get_idxname(n);
+    base = nmz_get_idxname(n);
 
     nmz_pathcat(base, NMZ.i);
     nmz_pathcat(base, NMZ.ii);
@@ -839,19 +839,19 @@ void remove_quotes(char *str)
 static enum nmz_stat
 normalize_idxnames(void)
 {
-    if (expand_idxname_aliases() != SUCCESS) {
+    if (nmz_expand_idxname_aliases() != SUCCESS) {
 	return FAILURE;
     }
-    if (complete_idxnames() != SUCCESS) {
+    if (nmz_complete_idxnames() != SUCCESS) {
         return FAILURE;
     }
 
-    uniq_idxnames();
+    nmz_uniq_idxnames();
 
     if (nmz_is_debugmode()) {
 	int i;
-        for (i = 0; i < get_idxnum(); i++) {
-            nmz_debug_printf("Index name [%d]: %s\n", i, get_idxname(i));
+        for (i = 0; i < nmz_get_idxnum(); i++) {
+            nmz_debug_printf("Index name [%d]: %s\n", i, nmz_get_idxname(i));
         }
     }
     return SUCCESS;
@@ -945,7 +945,7 @@ nmz_search(const char *query)
 	return hlist;
     }
 
-    for (i = 0; i < get_idxnum(); i++) {
+    for (i = 0; i < nmz_get_idxnum(); i++) {
         make_fullpathname_index(i);
         tmp[i] = nmz_search_sub(tmp[i], query, i);
 
@@ -962,10 +962,10 @@ nmz_search(const char *query)
 		 * Save the error state for later error messaging.
 		 */
 		struct nmz_hitnumlist *cur;
-		cur = get_idx_hitnumlist(cur_idxnum);
+		cur = nmz_get_idx_hitnumlist(cur_idxnum);
 		if (cur == NULL) { /* error occured */
-		    cur = push_hitnum(cur, "", 0, tmp[i].stat);
-		    set_idx_hitnumlist(cur_idxnum, cur);
+		    cur = nmz_push_hitnum(cur, "", 0, tmp[i].stat);
+		    nmz_set_idx_hitnumlist(cur_idxnum, cur);
 		}
 		if (cur == NULL) {
 		    hlist.stat = ERR_FATAL;
@@ -1064,13 +1064,13 @@ nmz_do_searching(const char *key, NmzResult val)
 
     if (mode != PHRASE_MODE) {
 	struct nmz_hitnumlist *cur;
-	cur = get_idx_hitnumlist(cur_idxnum);
-	cur = push_hitnum(cur, key, val.num, val.stat);
+	cur = nmz_get_idx_hitnumlist(cur_idxnum);
+	cur = nmz_push_hitnum(cur, key, val.num, val.stat);
 	if (cur == NULL) {
 	    val.stat = ERR_FATAL;
 	    return val;
 	}
-	set_idx_hitnumlist(cur_idxnum, cur);
+	nmz_set_idx_hitnumlist(cur_idxnum, cur);
     }
 
     return val;

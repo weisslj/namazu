@@ -1,5 +1,17 @@
 2000-01-09  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* nmz/idxname.[ch]: Changed function names.
+	s/add_index/nmz_add_index/g
+	s/get_idxnum/nmz_get_idxnum/g
+	s/uniq_idxnames/nmz_uniq_idxnames/g
+	s/expand_idxname_aliases/nmz_expand_idxname_aliases/g
+	s/complete_idxnames/nmz_complete_idxnames/g
+	s/get_idxname/nmz_get_idxname/g
+	s/get_idx_totalhitnum/nmz_get_idx_totalhitnum/g
+	s/set_idx_totalhitnum/nmz_set_idx_totalhitnum/g
+	s/get_idx_hitnumlist/nmz_get_idx_hitnumlist/g
+	s/set_idx_hitnumlist/nmz_set_idx_hitnumlist/g
+
 	* nmz/searc.[ch]: Changed function names. 
 	s/free_hitnums/nmz_free_hitnums/g
 	s/binsearch/nmz_binsearch/g

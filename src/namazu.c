@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.81 2000-01-09 08:08:13 satoru Exp $
+ * $Id: namazu.c,v 1.82 2000-01-09 08:31:40 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -296,7 +296,7 @@ namazu_core(char * query, char *subquery, const char *argv0)
     /* If query is null, show NMZ.head,body,foot and exit with error */
     if (*query == '\0') {
 	print_default_page();
-	free_idxnames();
+	nmz_free_idxnames();
 	nmz_free_aliases();
 	nmz_free_replaces();
 	return FAILURE;
@@ -319,7 +319,7 @@ namazu_core(char * query, char *subquery, const char *argv0)
     }
 
     free_hlist(hlist);
-    free_idxnames();
+    nmz_free_idxnames();
     nmz_free_aliases();
     nmz_free_replaces();
 
@@ -331,8 +331,8 @@ make_fullpathname_msg(void)
 {
     char *base;
     
-    if (get_idxnum() == 1) {
-        base = get_idxname(0);
+    if (nmz_get_idxnum() == 1) {
+        base = nmz_get_idxname(0);
     } else {
         base = DEFAULT_INDEX;
     }
@@ -422,15 +422,15 @@ main(int argc, char **argv)
 	}
         strcpy(query, argv[i++]);
         if (i < argc) {
-	    int curidx = get_idxnum();
+	    int curidx = nmz_get_idxnum();
             for (curidx = 0; i < argc && curidx < INDEX_MAX; i++) {
-	        if (add_index(argv[i]) != SUCCESS) {
+	        if (nmz_add_index(argv[i]) != SUCCESS) {
 		    die("invalid idxname: %s", argv[i]);
 		}
             }
         } 
-        if (get_idxnum() == 0) {
-	    if (add_index(DEFAULT_INDEX) != SUCCESS) {
+        if (nmz_get_idxnum() == 0) {
+	    if (nmz_add_index(DEFAULT_INDEX) != SUCCESS) {
 		die("invalid idxname: %s", argv[i]);
 	    }
 	}

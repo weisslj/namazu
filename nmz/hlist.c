@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.33 2000-01-09 08:22:32 satoru Exp $
+ * $Id: hlist.c,v 1.34 2000-01-09 08:31:36 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -425,11 +425,11 @@ merge_hlist(NmzResult *hlists)
     int i, n;
     NmzResult value;
 
-    if (get_idxnum() == 1) {
+    if (nmz_get_idxnum() == 1) {
 	return hlists[0];
     }
 
-    for(i = n = 0; i < get_idxnum(); i++) {
+    for(i = n = 0; i < nmz_get_idxnum(); i++) {
         if (hlists[i].stat == SUCCESS && hlists[i].num > 0) {
             n += hlists[i].num;
         }
@@ -437,7 +437,7 @@ merge_hlist(NmzResult *hlists)
     malloc_hlist(&value, n);
     if (value.stat == ERR_FATAL)
         return value;
-    for(i = n = 0; i < get_idxnum(); i++) {
+    for(i = n = 0; i < nmz_get_idxnum(); i++) {
         if (hlists[i].stat != SUCCESS || hlists[i].num <= 0) 
             continue;
         memcpy_hlist(value, hlists[i], n);

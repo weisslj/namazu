@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.49 2000-01-08 09:27:24 satoru Exp $
+ * $Id: output.c,v 1.50 2000-01-09 08:31:40 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -225,7 +225,7 @@ make_fullpathname_result(int n)
 {
     char *base;
 
-    base = get_idxname(n);
+    base = nmz_get_idxname(n);
     nmz_pathcat(base, NMZ.result);
 }
 
@@ -336,7 +336,7 @@ print_hlist(NmzResult hlist)
     }
 
     /* Set NULL to all templates[] */
-    for (i = 0; i < get_idxnum(); i++) {
+    for (i = 0; i < nmz_get_idxnum(); i++) {
 	templates[i] = NULL;
     }
 
@@ -381,7 +381,7 @@ print_hlist(NmzResult hlist)
     }
 
     /* Free all templates[] */
-    for (i = 0; i < get_idxnum(); i++) {
+    for (i = 0; i < nmz_get_idxnum(); i++) {
 	if (templates[i] != NULL) {
 	    free(templates[i]);
 	}
@@ -508,23 +508,23 @@ static void
 print_hitnum_all_idx(void)
 {
     int idxid;
-    for (idxid = 0; idxid < get_idxnum(); idxid ++) {
-        struct nmz_hitnumlist *hnlist = get_idx_hitnumlist(idxid);
+    for (idxid = 0; idxid < nmz_get_idxnum(); idxid ++) {
+        struct nmz_hitnumlist *hnlist = nmz_get_idx_hitnumlist(idxid);
 
 	if (is_refprint() && !is_countmode() && 
 	    !is_listmode() && !is_quietmode()) 
 	{
-	    if (get_idxnum() > 1) {
+	    if (nmz_get_idxnum() > 1) {
 	        if (is_htmlmode()) {
-		    char *idxname = get_idxname(idxid);
+		    char *idxname = nmz_get_idxname(idxid);
 		    if (is_cgimode()) {
 			/* For hiding a full pathname of an index */
 			idxname = 
-			    get_idxname(idxid) + strlen(DEFAULT_INDEX) + 1;
+			    nmz_get_idxname(idxid) + strlen(DEFAULT_INDEX) + 1;
 		    }
 		    printf("<li><strong>%s</strong>: ", idxname);
 		} else {
-		    printf("(%s)", get_idxname(idxid));
+		    printf("(%s)", nmz_get_idxname(idxid));
 		}
 	    }
 	}
@@ -536,8 +536,8 @@ print_hitnum_all_idx(void)
 
 	if (is_refprint() && !is_countmode() && !is_listmode() && 
 	    !is_quietmode()) {
-	    if (get_idxnum() > 1 && get_querytokennum() > 1) {
-	        printf(_(" [ TOTAL: %d ]"), get_idx_totalhitnum(idxid));
+	    if (nmz_get_idxnum() > 1 && get_querytokennum() > 1) {
+	        printf(_(" [ TOTAL: %d ]"), nmz_get_idx_totalhitnum(idxid));
 	    }
 	    nmz_print("\n");
 	}
@@ -647,11 +647,11 @@ print_result(NmzResult hlist, const char *query, const char *subquery)
 	    fputc('\n', stdout);
 	}
 	nmz_print(_("References: "));
-	if (get_idxnum() > 1 && is_htmlmode()) {
+	if (nmz_get_idxnum() > 1 && is_htmlmode()) {
 	    fputs("</p>\n", stdout);
 	}
 
-        if (get_idxnum() > 1) {
+        if (nmz_get_idxnum() > 1) {
             nmz_print("\n");
             if (is_htmlmode())
                 nmz_print("<ul>\n");
@@ -662,10 +662,10 @@ print_result(NmzResult hlist, const char *query, const char *subquery)
 
     if (is_refprint() && !is_countmode() && 
 	!is_listmode() && !is_quietmode()) {
-        if (get_idxnum() > 1 && is_htmlmode()) {
+        if (nmz_get_idxnum() > 1 && is_htmlmode()) {
             nmz_print("</ul>\n");
         }
-	if (get_idxnum() == 1 && is_htmlmode()) {
+	if (nmz_get_idxnum() == 1 && is_htmlmode()) {
 	    nmz_print("\n</p>\n");
 	} else {
 	    fputc('\n', stdout);

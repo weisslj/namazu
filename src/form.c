@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.40 2000-01-09 08:22:36 satoru Exp $
+ * $Id: form.c,v 1.41 2000-01-09 08:31:39 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -223,7 +223,7 @@ select_option(char *s, const char *name, const char *subquery)
                 fputs(" selected", stdout);
             }
         } else if (strcasecmp(name, "idxname") == 0) {
-            if (get_idxnum() >= 1 && nmz_strsuffixcmp(value, get_idxname(0))) {
+            if (nmz_get_idxnum() >= 1 && nmz_strsuffixcmp(value, nmz_get_idxname(0))) {
                 fputs(" selected", stdout);
             }
         } else if (strcasecmp(name, "subquery") == 0) {
@@ -266,9 +266,9 @@ check_checkbox(char *str)
                 strcpy(name, pp);
                 pp += strlen(pp);
             }
-            for (i = 0; i < get_idxnum(); i++) {
+            for (i = 0; i < nmz_get_idxnum(); i++) {
                 if (strcmp(name, 
-			   get_idxname(i) + strlen(DEFAULT_INDEX) + 1) == 0) 
+			   nmz_get_idxname(i) + strlen(DEFAULT_INDEX) + 1) == 0) 
 		{
                     searched++;
                     break;

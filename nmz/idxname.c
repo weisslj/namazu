@@ -2,7 +2,7 @@
  * 
  * idxname.c - Idx handling routines.
  *
- * $Id: idxname.c,v 1.16 2000-01-09 08:22:33 satoru Exp $
+ * $Id: idxname.c,v 1.17 2000-01-09 08:31:36 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
@@ -48,7 +48,7 @@ static struct nmz_indices indices = {0}; /* Initialize member `num' with 0 */
  */
 
 enum nmz_stat 
-add_index(const char *idxname)
+nmz_add_index(const char *idxname)
 {
     int newidxnum = indices.num;
     if (newidxnum >= INDEX_MAX)
@@ -64,7 +64,7 @@ add_index(const char *idxname)
 }
 
 void 
-free_idxnames(void)
+nmz_free_idxnames(void)
 {
     int i;
     for (i = 0; i < indices.num; i++) {
@@ -78,7 +78,7 @@ free_idxnames(void)
  * Except duplicated indices with a simple O(n^2) algorithm.
  */
 void 
-uniq_idxnames(void)
+nmz_uniq_idxnames(void)
 {
     int i, j, k;
 
@@ -101,7 +101,7 @@ uniq_idxnames(void)
  * e.g., Alias quux /home/foobar/NMZ/quux
  */
 int 
-expand_idxname_aliases(void)
+nmz_expand_idxname_aliases(void)
 {
     int i;
 
@@ -128,7 +128,7 @@ expand_idxname_aliases(void)
  * e.g.,  +foobar -> (DEFAULT_INDEX)/foobar
  */
 int 
-complete_idxnames(void)
+nmz_complete_idxnames(void)
 {
     int i;
 
@@ -155,7 +155,7 @@ complete_idxnames(void)
  * Get the name of the index specified by id.
  */
 char *
-get_idxname(int id)
+nmz_get_idxname(int id)
 {
     return indices.names[id];
 }
@@ -164,7 +164,7 @@ get_idxname(int id)
  * Get the total number of indices to search.
  */
 int 
-get_idxnum()
+nmz_get_idxnum()
 {
     return indices.num;
 }
@@ -173,7 +173,7 @@ get_idxnum()
  * Set the total hit number of the index specified by id.
  */
 void
-set_idx_totalhitnum(int id, int hitnum)
+nmz_set_idx_totalhitnum(int id, int hitnum)
 {
     indices.totalhitnums[id] = hitnum;
 }
@@ -182,7 +182,7 @@ set_idx_totalhitnum(int id, int hitnum)
  * Get the total hit number of the index specified by id.
  */
 int
-get_idx_totalhitnum(int id)
+nmz_get_idx_totalhitnum(int id)
 {
     return indices.totalhitnums[id];
 }
@@ -191,13 +191,13 @@ get_idx_totalhitnum(int id)
  * Get the hitnumlist of the index specified by id.
  */
 struct nmz_hitnumlist *
-get_idx_hitnumlist(int id)
+nmz_get_idx_hitnumlist(int id)
 {
     return indices.hitnumlists[id];
 }
 
 void
-set_idx_hitnumlist(int id, struct nmz_hitnumlist *hnlist)
+nmz_set_idx_hitnumlist(int id, struct nmz_hitnumlist *hnlist)
 {
     indices.hitnumlists[id] = hnlist;
 }
@@ -206,7 +206,7 @@ set_idx_hitnumlist(int id, struct nmz_hitnumlist *hnlist)
  * Push something and return pushed list.
  */
 struct nmz_hitnumlist *
-push_hitnum(struct nmz_hitnumlist *hn, 
+nmz_push_hitnum(struct nmz_hitnumlist *hn, 
 	    const char *str,
 	    int hitnum, 
 	    enum nmz_stat stat

@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: field.c,v 1.22 2000-01-07 09:40:54 satoru Exp $
+ * $Id: field.c,v 1.23 2000-01-09 08:31:36 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -77,7 +77,7 @@ make_fullpathname_field(int n)
 {
     char *base;
 
-    base = get_idxname(n);
+    base = nmz_get_idxname(n);
     nmz_pathcat(base, NMZ.field);
 }
 

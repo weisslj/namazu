@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: html.pl,v 1.38 2003-06-05 12:08:16 makoto Exp $
+# $Id: html.pl,v 1.39 2003-06-07 08:34:15 makoto Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -317,7 +317,7 @@ sub decode_numbered_entity ($) {
     return ""
 	if $num >= 0 && $num <= 31 || $num >= 127 && $num <= 159 ;
     return "" 
-	if $num >=127 && islang('ja');
+	if $num >=127 && util::islang('ja');
     sprintf ("%c",$num);
 }
 

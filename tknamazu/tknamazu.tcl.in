@@ -2,7 +2,7 @@
 #
 # tknamazu.tcl - Tcl/Tk front-end for Namazu.
 #
-# $Id: tknamazu.tcl.in,v 1.12 2000-02-20 12:41:19 kenzo- Exp $
+# $Id: tknamazu.tcl.in,v 1.13 2000-02-20 13:30:37 kenzo- Exp $
 #
 # Copyright (C) 1998-2000 Ken-ichi Hirose. All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -2468,10 +2468,10 @@ MainKeyBind
 SetColor {.tknmz}
 
 if {$argc > 0} {
-    if {[file exists [lindex $argv 1]]} {
-		Browse [lindex $argv 1]
+    if {[file exists [lindex $argv 0]]} {
+		Browse [lindex $argv 0]
 	} else {
-        MessageBox info ok {Error occurred} {[lindex $argv 1]: File not found.}
+        MessageBox info ok {File not found.} [lindex $argv 0]
 	}
 } else {
 	HelpView

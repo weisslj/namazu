@@ -1,6 +1,6 @@
 # Process this file with automake to produce Makefile.in
 #
-# $Id: Makefile.am,v 1.42 2003-07-26 08:25:13 knok Exp $
+# $Id: Makefile.am,v 1.43 2004-04-16 14:35:54 opengl2772 Exp $
 #
 
 AUTOMAKE_OPTIONS = 1.4 no-dependencies
@@ -43,6 +43,9 @@ nmzversion.c: nmzversion.c.in
 	rm -f nmzversion.c
 	sed -e 's!%VERSION%!@VERSION@!g'  nmzversion.c.in > nmzversion.c.tmp
 	mv nmzversion.c.tmp nmzversion.c
+
+clean-generic:
+	-rm -f $(CLEAN_FILES)
 
 ##Bug in automake: Can't use `if MAINTAINER_MODE'
 @MAINTAINER_MODE_TRUE@include $(srcdir)/maintMakefile

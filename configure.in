@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.113 2000-02-26 14:42:08 satoru Exp $
+dnl $Id: configure.in,v 1.114 2000-02-29 04:25:33 satoru Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -390,6 +390,7 @@ AC_OUTPUT([Makefile
 	   tests/Makefile
 	   tests/data/Makefile
 	   tests/data/ja/Makefile
+	   tests/data/en/Makefile
 	  ],
 	  [chmod +x nmz-config \
 		    scripts/bnamazu \

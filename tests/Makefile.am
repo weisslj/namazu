@@ -9,6 +9,6 @@ TESTS =	mknmz-1 mknmz-2 mknmz-3 mknmz-4 mknmz-5 \
 	namazu-cgi-1 namazu-cgi-2
 
 clean-local:
-	rm -rf tmp-data idx* test-log
+	rm -rf test-log tmp-data idx[0-9]* 
 
-EXTRA_DIST = $(TESTS)
+EXTRA_DIST = $(TESTS) select-data

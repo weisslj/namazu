@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: html.pl,v 1.27 2000-02-27 15:09:04 satoru Exp $
+# $Id: html.pl,v 1.28 2000-02-29 04:25:33 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -123,7 +123,7 @@ sub get_author ($$) {
 
     # <LINK REV=MADE HREF="mailto:ccsatoru@vega.aichi-u.ac.jp">
 
-    if ($$contref =~ m!<LINK\s[^>]*?HREF=([\"\'])mailto:(.*?)\1>!i) { #"
+    if ($$contref =~ m!<LINK\s[^>]*?HREF=([\"\'])mailto:(.*?)\1\s*>!i) { #"
 	    $fields->{'author'} = $2;
     } elsif ($$contref =~ m!.*<ADDRESS[^>]*>([^<]*?)</ADDRESS>!i) {
 	my $tmp = $1;

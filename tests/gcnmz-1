@@ -3,6 +3,8 @@
 # Test for gcnmz.
 #
 LOG=`pwd`/test-log
+TARGET=`./select-data`
+TMPDATA=`pwd`/tmp-data
 
 if test ! -d idx5; then
     mkdir idx5
@@ -22,17 +24,17 @@ cp -rp idx4 idx6
 if test -d tmp-data; then
     rm -rf tmp-data
 fi
-cp -rp data tmp-data
+cp -rp $TARGET tmp-data
 
 # Remove some documents.
-cd ../tests/tmp-data
+cd $TMPDATA
 find . -type f -name '*.txt' | xargs rm -f
 cd ../
 
 
 # Simple indexing to make a reference index.
 cd ../scripts 
-./mknmz -O ../tests/idx5 ../tests/tmp-data >> $LOG
+./mknmz -O ../tests/idx5 $TMPDATA >> $LOG
 test "$?" != "0" && exit 1  # error if not success
 
 # Apply gcnmz for idx6.

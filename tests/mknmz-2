@@ -3,16 +3,21 @@
 # Test for incremental indexing.
 #
 LOG=`pwd`/test-log
+TARGET=`./select-data`
+
 if test ! -d idx2; then
     mkdir idx2
 else
     rm -f idx2/NMZ.*
 fi
 
-cd ../tests/data
+prevpwd=`pwd`
+cd $TARGET
 pwd=`pwd`
 targets=`find $pwd -type f | grep -v CVS | grep -v Makefile | sort`
-cd ../../scripts
+cd $prevpwd
+cd ../scripts
+
 for target in $targets; do
    ./mknmz --no-delete -O ../tests/idx2 $target \
 	>> $LOG

@@ -3,6 +3,8 @@
 # Test for updating documents in an index.
 #
 LOG=`pwd`/test-log
+TARGET=`./select-data`
+TMPDATA=`pwd`/tmp-data
 
 if test ! -d idx7; then
     mkdir idx7
@@ -14,17 +16,17 @@ fi
 if test -d tmp-data; then
     rm -rf tmp-data
 fi
-cp -rp data tmp-data
+cp -rp $TARGET tmp-data
 
 # Simple indexing.
 cd ../scripts 
-./mknmz -O ../tests/idx7 ../tests/tmp-data >> $LOG
+./mknmz -O ../tests/idx7 $TMPDATA >> $LOG
 test "$?" != "0" && exit 1  # error if not success
 
 prevdocnum=`perl -lne 'print $1 if /^files (\d+)/' ../tests/idx7/NMZ.status`
 
 # Update some documents. Add `xyzzy' to each document.
-cd ../tests/tmp-data
+cd $TMPDATA
 find . -type f | egrep '(plain|mail)\.txt$' | \
     perl -nle 'system "echo xyzzy >> $_"'
 cd ../

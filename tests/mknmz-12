@@ -4,12 +4,12 @@
 #
 
 LOG=`pwd`/test-log
-TARGET=$srcdir/data/filter/  # from script
+TARGET=$top_srcdir/tests/data/filter/  # from script
 echo '  *** starting ' $0 >>$LOG
 
 IDXDIR=idx15
-TXTCOUNT=`ls $srcdir/data/filter/*.txt|wc -l`
-FDIR=$srcdir/data/filter
+TXTCOUNT=`ls $top_srcdir/tests/data/filter/*.txt|wc -l`
+FDIR=$top_srcdir/tests/data/filter
 MKNMZRC=`pwd`/mknmzrc-mknmz12
 export MKNMZRC
 

@@ -63,7 +63,7 @@ aclocal -I .
 echo "Running autoheader..."
 autoheader
 echo "Running automake ..."
-automake
+automake --add-missing --copy
 echo "Running autoconf ..."
 autoconf
 

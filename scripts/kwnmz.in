@@ -1,7 +1,7 @@
 #! %PERL%
 # -*- Perl -*-
 #
-# $Id: kwnmz.in,v 1.3 2000-09-30 13:39:36 furukawa Exp $
+# $Id: kwnmz.in,v 1.4 2000-10-06 20:22:42 furukawa Exp $
 #
 # kwnmz - program to make NMZ.field.keywords
 #         by furukawa@tcp-ip.or.jp
@@ -92,7 +92,8 @@ sub kwnmz{
 
         my $word_number = 0;
         my $word_hit_number = 0;
-        my $lim = $nmzi->open_flist->{'size'} * $rate;
+        my $number_of_document = $nmzi->open_flist->{'size'};
+        my $lim = $number_of_document * $rate;
         my $wh = $nmzi->open_word;
         exit 1 unless $wh->{'size'};
 
@@ -110,9 +111,9 @@ sub kwnmz{
             next if $hit <= 1;
 
             ++$word_hit_number;
-            $hit = log($hit);
+            $hit = log($number_of_document/$hit);
             for my $fileno (keys %list_i){
-                $tfidf[$fileno]{$word} = $list_i{$fileno} / $hit;
+                $tfidf[$fileno]{$word} = $list_i{$fileno} * $hit;
                 if (scalar(keys %{$tfidf[$fileno]}) > ($num << 1)){
                     my @sorted_words = sort{
                         $tfidf[$fileno]->{$b} <=> $tfidf[$fileno]->{$a}

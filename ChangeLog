@@ -1,3 +1,8 @@
+2000-10-07  Rei FURUKAWA  <furukawa@tcp-ip.or.jp>
+
+	* scripts/kwnmz.in: Correct the expression of score.
+	Thanks to Mr. Osamu Okano. [namazu-devel-ja 868]
+
 2000-10-06  Ryuji Abe  <rug@namazu.org>
 
 	* nmz/support.h: Fixed symbol prefix _nmz_.
@@ -6018,4 +6023,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.740 2000-10-06 16:07:14 rug Exp $
+$Id: ChangeLog,v 1.741 2000-10-06 20:23:20 furukawa Exp $

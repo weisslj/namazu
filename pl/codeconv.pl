@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: codeconv.pl,v 1.9 2000-03-16 15:04:44 satoru Exp $
+# $Id: codeconv.pl,v 1.10 2000-03-16 15:06:59 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -75,7 +75,10 @@ sub stoe ($$) {
 
 sub shiftjis_to_eucjp ($){
     my ($str) = @_;
-    $str =~ s/([\x81-\x9f\xe0-\xfa])(.)|([\xa1-\xdf])([\xde\xdf]?)/($3? ktoe($3, $4): stoe($1, $2))/ge;
+
+    if (util::islang("ja")) {
+	$str =~ s/([\x81-\x9f\xe0-\xfa])(.)|([\xa1-\xdf])([\xde\xdf]?)/($3? ktoe($3, $4): stoe($1, $2))/ge;
+    }
     return $str;
 }
 

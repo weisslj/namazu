@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.21 2000-01-10 09:07:47 satoru Exp $
+ * $Id: rcfile.c,v 1.22 2000-01-10 09:31:44 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -443,8 +443,7 @@ parse_rcfile(const char *line, int lineno)
 
 	printf("%4d: Directive: [%s]\n", lineno, directive);
 
-	ptr = args->next; /* Skip the directive. */
-	for (i = 1 ; ptr != NULL; i++) {
+	for (ptr = args, i = 1 ; ptr != NULL; i++) {
 	    printf("      Argument %d: [%s]\n", i, ptr->value);
 	    ptr = ptr->next;
 	}
@@ -516,7 +515,7 @@ nmz_load_rcfile(const char *argv0)
 {
     FILE *fp;
     char buf[BUFSIZE];
-    int lineno = 0;
+    int lineno = 1;
 
     fp = open_rcfile(argv0);
     if (fp == NULL)
@@ -524,13 +523,30 @@ nmz_load_rcfile(const char *argv0)
 
     rcfile_is_loaded = 1;  /* for nmz_show_rcfile() */
 
-    while (fgets(buf, BUFSIZE, fp)) {
-	lineno++;
-	nmz_chomp(buf);
+    while (fgets(buf, BUFSIZE, fp) != NULL) {
+	int current_lineno = lineno;
+	
+	do {
+	    lineno++;
+	    nmz_chomp(buf);
+	    if (buf[strlen(buf) - 1] == '\\') { /* ending with \ */
+		int remaining;
+		
+		buf[strlen(buf) - 1] = '\0'; /* Remove ending \ */
+		remaining = BUFSIZE - strlen(buf);
+		if (fgets(buf + strlen(buf), remaining, fp) == NULL) {
+		    nmz_chomp(buf);
+		    break;
+		}
+	    } else {
+		break;
+	    }
+	} while (1);
+
 	nmz_conv_ja_any_to_eucjp(buf);  /* for Shift_JIS encoding */
-	if (parse_rcfile(buf, lineno) != SUCCESS) {
+	if (parse_rcfile(buf, current_lineno) != SUCCESS) {
 	    nmz_set_dyingmsg(nmz_msg("%s:%d: syntax error: %s.",  
-				     namazurc, lineno, errmsg));
+				     namazurc, current_lineno, errmsg));
 	    return FAILURE;
 	}
     }

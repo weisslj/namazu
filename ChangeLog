@@ -1,5 +1,9 @@
 2000-01-10  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* nmz/rcfile.c (nmz_load_rcfile): Handle a line ending with `\' to
+	concatenate the next line.
+	(parse_rcfile): Fix bug.
+
 	* nmz/parser.c (factor): Use temporary variable to simplify codes.
 	(andop): Ditto.
 	(orop): Ditto.

@@ -1,6 +1,6 @@
 # File::MMagic
 #
-# $Id: MMagic.pm,v 1.25 2001-02-09 01:08:44 knok Exp $
+# $Id: MMagic.pm,v 1.26 2001-02-09 01:09:47 knok Exp $
 #
 # This program is originated from file.kulp that is a production of The
 # Unix Reconstruction Projct.
@@ -274,7 +274,7 @@ BEGIN {
 	    t => "\t",
 	    f => "\f");
 
-$VERSION = "1.11";
+$VERSION = "1.12";
 $allowEightbit = 1;
 undef $dataLoc;
 }

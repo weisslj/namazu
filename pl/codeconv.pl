@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: codeconv.pl,v 1.15 2003-07-29 22:32:18 makoto Exp $
+# $Id: codeconv.pl,v 1.16 2003-08-01 01:45:10 makoto Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -134,7 +134,7 @@ sub toeuc ($) {
 	my $nkf_opt = "-emXZ1";
 
 	if ($var::USE_NKF_MODULE) {
-	    $contref = [NKF::nkf($nkf_opt, $$contref)]; # namazu-devel-ja #3152
+	    $$contref = NKF::nkf($nkf_opt, $$contref); # namazu-devel-ja #3152 -> backed out, #3181
 	} else {
 	    my $nkftmp = util::tmpnam("NMZ.nkf");
 	    {

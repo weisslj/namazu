@@ -1,3 +1,9 @@
+2003-08-01  Makoto Fujiwara  <makoto@ki.nu>
+
+	* pl/codeconv.pl (toeuc): backed out to 1.14 
+	$$contref = NKF::nkf($nkf_opt, $$contref);
+	( namazu-devel-ja #3181, sync with stable-2-0)
+
 2003-07-31  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* Imported File-MMagic 1.20.
@@ -8095,4 +8101,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1046 2003-07-31 13:36:24 knok Exp $
+$Id: ChangeLog,v 1.1047 2003-08-01 01:45:08 makoto Exp $

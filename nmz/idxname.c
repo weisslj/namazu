@@ -2,7 +2,7 @@
  * 
  * idxname.c - Idx handling routines.
  *
- * $Id: idxname.c,v 1.19 2000-01-10 08:26:50 satoru Exp $
+ * $Id: idxname.c,v 1.20 2000-01-10 08:43:45 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
@@ -51,8 +51,11 @@ enum nmz_stat
 nmz_add_index(const char *idxname)
 {
     int newidxnum = indices.num;
-    if (newidxnum >= INDEX_MAX)
+
+    if (newidxnum >= INDEX_MAX) {
+	nmz_warn_printf("Too many indices.\n");
 	return FAILURE;
+    }
     indices.names[newidxnum] = malloc(strlen(idxname) + 1);
     if (indices.names[newidxnum] == NULL)
 	return FAILURE;
@@ -107,7 +110,7 @@ nmz_expand_idxname_aliases(void)
 
     for (i = 0; i < indices.num; i++) {
 	struct nmz_alias *list = nmz_get_aliases();
-	while (list) {
+	while (list != NULL) {
 	    if (strcmp(indices.names[i], list->alias) == 0) {
 		free(indices.names[i]);
 		indices.names[i] = malloc(strlen(list->real) + 1);

@@ -1,5 +1,7 @@
 2000-01-10  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* nmz/idxname.c (nmz_add_index): Add warning message.
+
 	* nmz/parser.c (factor): Handle an invalid query as error.
 
 	* nmz/rcfile.c (process_rc_blank): New function.

@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: query.c,v 1.5 2000-01-09 08:52:28 satoru Exp $
+ * $Id: query.c,v 1.6 2000-01-10 08:43:45 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -48,6 +48,7 @@ static void set_regex_trick(char *str);
 /* 
  * Replace duble quotes with spaces and replace internal spaces with TABs
  *{foo bar} is also acceptable.
+ * FIXME: very complicated ad hoc routine.
  */
 static void 
 set_phrase_trick(char *str)
@@ -77,7 +78,7 @@ set_phrase_trick(char *str)
 
 /* 
  * Replace internal spaces in the regex pattern with  
- * very complicated ad hoc routine :-( 
+ * FIXME: very complicated ad hoc routine.
  */
 static void 
 set_regex_trick(char *str)
@@ -123,6 +124,7 @@ set_regex_trick(char *str)
 
 /*
  * Make the query from the string querystring.
+ * FIXME: The function is tremendously dirty. it should be rewritten.
  */
 enum nmz_stat
 nmz_make_query(const char *querystring)
@@ -151,7 +153,7 @@ nmz_make_query(const char *querystring)
 	nmz_debug_printf("query.tabN: %d\n", tokennum);
     }
 
-    if (tokennum == 0) { /* if no item available */
+    if (tokennum == 0) { /* if no token available */
 	return ERR_INVALID_QUERY;
     }
 

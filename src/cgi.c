@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.3 1999-05-14 04:38:49 satoru Exp $
+ * $Id: cgi.c,v 1.4 1999-05-29 08:20:49 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -45,19 +45,26 @@ int validate_dbname(uchar * dbname)
     win32 = 1;
 #endif
 
-    if (*dbname == '/' || (win32 && *dbname == '\\')) {
+    if (*dbname == '\0' || *dbname == '/' || (win32 && *dbname == '\\')) {
         fputs(MSG_MIME_HEADER, stdout);
         fputx(MSG_INVALID_DB_NAME, stdout);
         exit(1);
     }
-    for (; *dbname; dbname++) {
-        if (strncmp("../", dbname, 3) == 0 || 
+    while (*dbname) {
+        if (strncmp("../", dbname, 3) == 0 ||
+	    strcmp("..", dbname) == 0 ||
             (win32 && strncmp("..\\", dbname, 3) == 0)) 
         {
             fputs(MSG_MIME_HEADER, stdout);
             fputx(MSG_INVALID_DB_NAME, stdout);
             exit(1);
         }
+	/* Skip until next '/' */
+	while (*dbname && *dbname != '/' && !(win32 && *dbname == '\\'))
+	  dbname++;
+	/* Skip '/' */
+	if (*dbname)
+	  dbname++;
     }
     dbname--;  /* remove ending slashed */
     while (*dbname == '/' || (win32 && *dbname == '\\')) {

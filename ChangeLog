@@ -11,6 +11,12 @@
 	skipping media type guessing with File::MMagic.
 	
 	* lib/find.pl: Abolish fncmp().
+
+1999-09-08  NOKUBI Takatsugu <knok@daionet.gr.jp>
+
+	* Update File::MMagic.
+
+	* Optimized filetype checking routine.
 	
 
 1999-09-07  Ryuji Abe <raeva@t3.rim.or.jp>

@@ -3,12 +3,11 @@
 	* Changed %SPECIALS contents.
 	  (Remove 'Organization:' from news,
 	   add space character on rfc822/news message header,
-	   add "X-Mailer: " on rfc822,
-	   add "X-Newsreader: " on news.)
+	   add "^X-Mailer: " on rfc822,
+	   add "^X-Newsreader: " on news,
+	   add "^From ", "^To: " on rfc822.)
 
-1999-09-07  NOKUBI Takatsugu  <knok@daionet.gr.jp>
-
-	* Changed arguments of magicMatchStr function.
+	* Separated checktype_magic() from checktype_contents().
 
 1999-09-06  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 

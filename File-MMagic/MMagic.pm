@@ -1,6 +1,6 @@
 # File::MMagic
 #
-# $Id: MMagic.pm,v 1.5 1999-09-08 02:56:43 knok Exp $
+# $Id: MMagic.pm,v 1.6 1999-09-08 05:18:44 knok Exp $
 #
 # This program is originated from file.kulp that is a production of The
 # Unix Reconstruction Projct.
@@ -286,7 +286,9 @@ BEGIN {
 			      "^Updates:",
 				   ],
 		 "message/rfc822" => [ "^Received:",   
-			     "^>From",       
+			     "^>From ",       
+			     "^From ",       
+			     "^To: ",
 			     "^Return-Path: ",
 			     "^Cc: ",
 			     "^X-Mailer: "],
@@ -467,20 +469,36 @@ sub checktype_filehandle {
 sub checktype_contents {
     my $self = shift;
     my $data = shift;
-    my $desc;
     my $mtype;
 
     return 'application/octet-stream' if (length($data) <= 0);
 
+    $mtype = checktype_magic($self, $data);
+
+    # 4) check if it's text or binary.
+    # if it's text, then do a bunch of searching for special tokens
+    if (!defined $mtype) {
+	$mtype = checktype_data($self, $data);
+    }
+
+    $mtype = 'text/plain' if (! defined $mtype);
+
+    return $mtype;
+}
+
+sub checktype_magic {
+    my $self = shift;
+    my $data = shift;
+    my $desc;
+    my $mtype;
+
     # 3) iterate over each magic entry.
-    my $matchFound = 0;
     my $m;
     for ($m = 0; $m <= $#{$self->{magic}}; $m++) {
 
 	# check if the m-th magic entry matches
 	# if it does, then $desc will contain an updated description
 	if (magicMatchStr($self->{magic}->[$m],\$desc,$data)) {
-	    $matchFound = 1;
 	    $mtype = $desc;
 	    last;
 	}
@@ -492,14 +510,6 @@ sub checktype_contents {
 	    readMagicEntry($self->{magic}, $self->{MF});
 	}
     }
-
-    # 4) check if it's text or binary.
-    # if it's text, then do a bunch of searching for special tokens
-    if (!$matchFound) {
-	$mtype = checktype_data($self, $data);
-    }
-
-    $mtype = 'text/plain' if (! defined $mtype);
 
     return $mtype;
 }
@@ -534,10 +544,10 @@ sub checktype_data {
 	}
 	
       ALLDONE:
-	$mtype = 'text/plain' if (! defined $mtype);
+#	$mtype = 'text/plain' if (! defined $mtype);
     }
 	
-    $mtype = 'text/plain' if (! defined $mtype);
+#    $mtype = 'text/plain' if (! defined $mtype);
     return $mtype;
 }
 

@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.67 1999-09-08 00:43:11 satoru Exp $
+# $Id: mknmz.pl.in,v 1.68 1999-09-08 05:18:45 knok Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -507,7 +507,10 @@ sub load_document ($$$$\%) {
 	    $mtype = $MediaType;
 	} else {
 	    my $mtype_n = $Magic->checktype_byfilename($cfile);
-	    my $mtype_c = $Magic->checktype_contents($$contref);
+	    my $mtype_c = $Magic->checktype_data($$contref);
+	    $mtype_c = $Magic->checktype_magic($$contref) 
+	      if ((! defined $mtype_c) || $mtype_c =~ /^application\/octet-stream$/);
+	    $mtype_c = 'text/plain' unless (defined $mtype_c);
 	    $mtype = decide_type($mtype_n, $mtype_c);
 	}
 	if (defined $var::REQUIRE_CODECONV{$mtype}) {
@@ -1865,7 +1868,7 @@ sub write_index_sub () {
 # decide file type from diffrent type ditection
 sub decide_type ($$) {
     my ($name, $cont) = @_;
-    return $name if ($name eq $cont);
+    return $name if (!defined $cont || $name eq $cont);
 
     if ($cont =~ /^text/ && $name =~ /.*;.*x-type=(rfc|internet-draft|fyi)/) {
 	return $name;

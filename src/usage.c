@@ -2,7 +2,7 @@
  * 
  * usage.c -
  * 
- * $Id: usage.c,v 1.28 2004-03-17 11:28:22 usu Exp $
+ * $Id: usage.c,v 1.29 2004-04-27 12:15:33 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -75,7 +75,8 @@ Usage: namazu [options] <query> [index]... \n\
     -q, --quiet          do not display extra messages except search results.\n\
     -d, --debug          be in debug mode.\n\
     -v, --version        show the namazu version and exit.\n\
-        --help           show this help and exit\n\
+        --help           show this help and exit.\n\
+        --               Terminate option list.\n\
 \n\
 Report bugs to <%s>.\n\
 ");

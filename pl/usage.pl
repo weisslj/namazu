@@ -1,5 +1,5 @@
 # -*- Perl -*-
-# $Id: usage.pl,v 1.31 2004-04-23 14:19:26 usu Exp $
+# $Id: usage.pl,v 1.32 2004-04-27 12:15:32 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -90,6 +90,7 @@ Miscellaneous:
   -V, --verbose            be verbose.
   -d, --debug              be debug mode.
       --help               show this help and exit.
+      --                   Terminate option list.
 
 Report bugs to <%s>.
 ");

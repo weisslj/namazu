@@ -3,6 +3,11 @@
 	* src/namazu-cmd.c (parse_options): nmz_optarg A NULL check is
 	added.
 
+	* pl/usage.pl, src/usage.c (show_usage): The terminus of an 
+	option list is shown. "--" It added to usage.
+
+	* po/*: Update messages.
+
 2004-04-25  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* tests/ja-{mknmz, namazu, namazu-cgi}-*, tests/select-data:
@@ -8773,4 +8778,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1157 2004-04-27 05:26:11 opengl2772 Exp $
+$Id: ChangeLog,v 1.1158 2004-04-27 12:15:29 opengl2772 Exp $

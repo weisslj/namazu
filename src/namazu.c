@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.9 1999-08-23 01:52:59 satoru Exp $
+ * $Id: namazu.c,v 1.10 1999-08-23 03:47:53 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -443,8 +443,9 @@ int main(int argc, char **argv)
             DbNumber = 1;
 	}
     }
-    if (IsCGI)
+    if (IsCGI) {
 	cgi_initialize(query, subquery);
+    }
 
     uniq_dbnames();
     expand_dbname_aliases();
@@ -456,9 +457,11 @@ int main(int argc, char **argv)
         }
     }
 
-    /* set a suicide timer */
-    signal(SIGALRM, suicide);
-    alarm(SUICIDE_TIME);
+    if (IsCGI) {
+	/* set a suicide timer */
+	signal(SIGALRM, suicide);
+	alarm(SUICIDE_TIME);
+    }
 
     namazu_core(query, subquery, argv[0]);
     return 0;

@@ -85,19 +85,20 @@ WISH = @WISH@
 ZCAT = @ZCAT@
 
 AUTOMAKE_OPTIONS = no-dependencies
+tknamazudir = @pkgdatadir@/tknamazu
 
 bin_SCRIPTS = tknamazu
-pkgdata_DATA = tknamazu.hlp tknamazu.gif mini-tknamazu.xpm
+tknamazu_DATA = tknamazu.hlp tknamazu.gif mini-tknamazu.xpm
 
 CLEANFILES = tknamazu.tcl
 
-EXTRA_DIST = README.tknamazu $(pkgdata_DATA)
+EXTRA_DIST = README.tknamazu $(tknamazu_DATA)
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = ../config.h
 CONFIG_CLEAN_FILES =  tknamazu.tcl
 SCRIPTS =  $(bin_SCRIPTS)
 
-DATA =  $(pkgdata_DATA)
+DATA =  $(tknamazu_DATA)
 
 DIST_COMMON =  Makefile.am Makefile.in tknamazu.tcl.in
 
@@ -137,23 +138,23 @@ uninstall-binSCRIPTS:
 	  rm -f $(DESTDIR)$(bindir)/`echo $$p|sed '$(transform)'`; \
 	done
 
-install-pkgdataDATA: $(pkgdata_DATA)
+install-tknamazuDATA: $(tknamazu_DATA)
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(pkgdatadir)
-	@list='$(pkgdata_DATA)'; for p in $$list; do \
+	$(mkinstalldirs) $(DESTDIR)$(tknamazudir)
+	@list='$(tknamazu_DATA)'; for p in $$list; do \
 	  if test -f $(srcdir)/$$p; then \
-	    echo " $(INSTALL_DATA) $(srcdir)/$$p $(DESTDIR)$(pkgdatadir)/$$p"; \
-	    $(INSTALL_DATA) $(srcdir)/$$p $(DESTDIR)$(pkgdatadir)/$$p; \
+	    echo " $(INSTALL_DATA) $(srcdir)/$$p $(DESTDIR)$(tknamazudir)/$$p"; \
+	    $(INSTALL_DATA) $(srcdir)/$$p $(DESTDIR)$(tknamazudir)/$$p; \
 	  else if test -f $$p; then \
-	    echo " $(INSTALL_DATA) $$p $(DESTDIR)$(pkgdatadir)/$$p"; \
-	    $(INSTALL_DATA) $$p $(DESTDIR)$(pkgdatadir)/$$p; \
+	    echo " $(INSTALL_DATA) $$p $(DESTDIR)$(tknamazudir)/$$p"; \
+	    $(INSTALL_DATA) $$p $(DESTDIR)$(tknamazudir)/$$p; \
 	  fi; fi; \
 	done
 
-uninstall-pkgdataDATA:
+uninstall-tknamazuDATA:
 	@$(NORMAL_UNINSTALL)
-	list='$(pkgdata_DATA)'; for p in $$list; do \
-	  rm -f $(DESTDIR)$(pkgdatadir)/$$p; \
+	list='$(tknamazu_DATA)'; for p in $$list; do \
+	  rm -f $(DESTDIR)$(tknamazudir)/$$p; \
 	done
 tags: TAGS
 TAGS:
@@ -185,20 +186,20 @@ installcheck: installcheck-am
 install-exec-am: install-binSCRIPTS
 install-exec: install-exec-am
 
-install-data-am: install-pkgdataDATA
+install-data-am: install-tknamazuDATA
 install-data: install-data-am
 
 install-am: all-am
 	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
 install: install-am
-uninstall-am: uninstall-binSCRIPTS uninstall-pkgdataDATA
+uninstall-am: uninstall-binSCRIPTS uninstall-tknamazuDATA
 uninstall: uninstall-am
 all-am: Makefile $(SCRIPTS) $(DATA)
 all-redirect: all-am
 install-strip:
 	$(MAKE) $(AM_MAKEFLAGS) AM_INSTALL_PROGRAM_FLAGS=-s install
 installdirs:
-	$(mkinstalldirs)  $(DESTDIR)$(bindir) $(DESTDIR)$(pkgdatadir)
+	$(mkinstalldirs)  $(DESTDIR)$(bindir) $(DESTDIR)$(tknamazudir)
 
 
 mostlyclean-generic:
@@ -229,9 +230,9 @@ maintainer-clean-am:  maintainer-clean-generic distclean-am
 
 maintainer-clean: maintainer-clean-am
 
-.PHONY: uninstall-binSCRIPTS install-binSCRIPTS uninstall-pkgdataDATA \
-install-pkgdataDATA tags distdir info-am info dvi-am dvi check check-am \
-installcheck-am installcheck install-exec-am install-exec \
+.PHONY: uninstall-binSCRIPTS install-binSCRIPTS uninstall-tknamazuDATA \
+install-tknamazuDATA tags distdir info-am info dvi-am dvi check \
+check-am installcheck-am installcheck install-exec-am install-exec \
 install-data-am install-data install-am install uninstall-am uninstall \
 all-redirect all-am all installdirs mostlyclean-generic \
 distclean-generic clean-generic maintainer-clean-generic clean \

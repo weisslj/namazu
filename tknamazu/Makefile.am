@@ -1,13 +1,14 @@
 ## Process this file with automake to produce Makefile.in
 
 AUTOMAKE_OPTIONS = no-dependencies
+tknamazudir = @pkgdatadir@/tknamazu
 
 bin_SCRIPTS = tknamazu
-pkgdata_DATA = tknamazu.hlp tknamazu.gif mini-tknamazu.xpm
+tknamazu_DATA = tknamazu.hlp tknamazu.gif mini-tknamazu.xpm
 
 CLEANFILES = tknamazu.tcl
 
-EXTRA_DIST = README.tknamazu $(pkgdata_DATA)
+EXTRA_DIST = README.tknamazu $(tknamazu_DATA)
 
 tknamazu: tknamazu.tcl
 	sed -e 's!%BINDIR%!$(bindir)!g' \

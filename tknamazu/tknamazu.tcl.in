@@ -18,10 +18,10 @@
 #                 98/06/05      1.07            kinput widget, man,info bug fix
 #                 98/06/15      1.10            for Namazu 1.2.0
 #                 98/06/22      1.11            manpath bug fix
-#                 99/08/30	1.90		autoconfize
+#                 99/08/31	1.12		autoconfize
 #
 #
-global version; set version "@VERSION@"
+global version; set version "1.12"
 
 
 ################ Evaluation and Initialize items

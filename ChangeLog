@@ -1,3 +1,9 @@
+2004-05-01  Yukio USUDA <usu@namazu.org>
+
+	* filter/zip.pl(filter): Add filesize check before load unziped files.
+
+	* filter/zip.pl(rm_r): Add write permission to temporary directory. 
+
 2004-04-30  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* filter/zip.pl: The comment was put into the summary.
@@ -8801,4 +8807,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1162 2004-04-29 19:35:12 opengl2772 Exp $
+$Id: ChangeLog,v 1.1163 2004-05-01 08:36:19 usu Exp $

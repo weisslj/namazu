@@ -23,7 +23,7 @@ templatedir = $(pkgdatadir)/template
 
 namazu_SOURCES = cgi.c codeconv.c conf.c field.c form.c getopt.c \
 		 getopt1.c hlist.c message.c namazu.c output.c parser.c re.c \
-		 result.l regex.c search.c seed.c util.c usage.c var.c wakati.c
+		 result.c regex.c search.c seed.c util.c usage.c var.c wakati.c
 noinst_HEADERS = namazu.h regex.h util.h getopt.h field.h codeconv.h \
 		 form.h usage.h hlist.h re.h output.h conf.h em.h \
 		 magic.h critical.h cgi.h message.h var.h parser.h search.h \

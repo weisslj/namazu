@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.13 1999-09-04 08:25:11 satoru Exp $
+ * $Id: form.c,v 1.14 1999-09-05 02:33:55 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -31,10 +31,6 @@
 #include <string.h>
 #include <ctype.h>
 #include <unistd.h>
-#ifdef __EMX__
-#include <sys/types.h>
-#endif
-#include <sys/stat.h>
 #include "namazu.h"
 #include "util.h"
 #include "form.h"
@@ -48,7 +44,6 @@
  *
  ************************************************************/
 
-uchar *load_headfoot(uchar*);
 int cmp_element(uchar*, uchar*);
 int replace_key_value(uchar*, uchar*);
 int replace_action(uchar*);
@@ -58,30 +53,6 @@ void get_select_name(uchar*, uchar*);
 int select_option(uchar*, uchar*, uchar*);
 int check_checkbox(uchar*);
 void treat_tag(uchar*, uchar*, uchar*, uchar *, uchar *);
-
-/* load the whole of file */
-uchar *load_headfoot(uchar *fname)
-{
-    uchar *buf;
-    FILE *fp;
-    struct stat fstatus;
-
-    stat(fname, &fstatus);
-    fp = fopen(fname, "rb");
-    if (fp == NULL) {
-        fprintf(stderr, "warning: Can't open %s\n", fname);
-        return 0;
-    }
-    buf = (uchar *) malloc(fstatus.st_size + 1);
-    if (buf == NULL) {
-	 die("print_headfoot(malloc)");
-    }
-    if (fread(buf, sizeof(uchar), fstatus.st_size, fp) == 0)
-        die("print_headfoot(fread)");
-    *(buf + fstatus.st_size) = '\0';
-    fclose(fp);
-    return buf;
-}
 
 /* compare the element
  * some measure of containing LF or redundant spaces are acceptable.
@@ -337,7 +308,7 @@ void print_headfoot(uchar * fname, uchar * query, uchar *subquery)
 {
     uchar *buf, *p, *q, name[BUFSIZE] = "";
     int f, f2;
-    buf = load_headfoot(fname);
+    buf = readfile(fname);
     if (buf == NULL) {
         return;
     }

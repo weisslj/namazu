@@ -96,7 +96,7 @@ libdir = $(pkgdatadir)/lib
 filterdir = $(pkgdatadir)/filter
 templatedir = $(pkgdatadir)/template
 
-namazu_SOURCES = cgi.c codeconv.c conf.c field.c form.c getopt.c 		 getopt1.c hlist.c message.c namazu.c output.c parser.c re.c 		 result.l regex.c search.c seed.c util.c usage.c var.c wakati.c
+namazu_SOURCES = cgi.c codeconv.c conf.c field.c form.c getopt.c 		 getopt1.c hlist.c message.c namazu.c output.c parser.c re.c 		 result.c regex.c search.c seed.c util.c usage.c var.c wakati.c
 
 noinst_HEADERS = namazu.h regex.h util.h getopt.h field.h codeconv.h 		 form.h usage.h hlist.h re.h output.h conf.h em.h 		 magic.h critical.h cgi.h message.h var.h parser.h search.h 		 result.h wakati.h
 
@@ -121,8 +121,6 @@ namazu_DEPENDENCIES =
 namazu_LDFLAGS = 
 SCRIPTS =  $(bin_SCRIPTS)
 
-LEX_OUTPUT_ROOT = @LEX_OUTPUT_ROOT@
-LEXLIB = @LEXLIB@
 CFLAGS = @CFLAGS@
 COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
@@ -130,7 +128,7 @@ LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(LDFLAGS) -o $@
 HEADERS =  $(noinst_HEADERS)
 
 DIST_COMMON =  Makefile.am Makefile.in gcnmz.in gtnmz.in mailutime.in \
-mknmz.pl.in result.c
+mknmz.pl.in
 
 
 DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
@@ -142,7 +140,7 @@ OBJECTS = $(namazu_OBJECTS)
 
 all: all-redirect
 .SUFFIXES:
-.SUFFIXES: .S .c .l .o .obj .s
+.SUFFIXES: .S .c .o .obj .s
 $(srcdir)/Makefile.in: Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
 	cd $(top_srcdir) && $(AUTOMAKE) --gnu src/Makefile
 
@@ -231,8 +229,6 @@ uninstall-binSCRIPTS:
 	list='$(bin_SCRIPTS)'; for p in $$list; do \
 	  rm -f $(DESTDIR)$(bindir)/`echo $$p|sed '$(transform)'`; \
 	done
-.l.c:
-	$(LEX) $(AM_LFLAGS) $(LFLAGS) $< && mv $(LEX_OUTPUT_ROOT).c $@
 
 tags: TAGS
 
@@ -315,7 +311,6 @@ distclean-generic:
 	-rm -f config.cache config.log stamp-h stamp-h[0-9]*
 
 maintainer-clean-generic:
-	-test -z "resultl" || rm -f resultl
 mostlyclean-am:  mostlyclean-binPROGRAMS mostlyclean-compile \
 		mostlyclean-tags mostlyclean-generic
 

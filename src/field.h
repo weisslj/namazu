@@ -3,6 +3,10 @@
 
 #define FIELD_SAFE_CHARS "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_"
 
+enum {
+    FIELD_CACHE_SIZE = 8        /* Size of field caches */
+};
+
 int is_field_safe_character(int);
 int isfield(uchar *);
 void apply_field_alias(uchar *);

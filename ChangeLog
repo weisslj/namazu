@@ -1,5 +1,17 @@
 1999-09-05  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/field.c (get_field_data): Implement a simple cache
+	mechanism.
+
+	* src/result.c (replace_field): Fix a bug: don't call
+	encode_entity() if HtmlOutput == 0; (it should always be called)
+
+	* src/result.c: Rewrite a scanner for NMZ.result without lex.
+	
+	* src/result.c: New files.
+	
+	* src/result.l: Removed.
+	
 	* src/cgi.c (get_cgi_vars): Fix a bug: can't sort by score at CGI.
 
 	

@@ -3,7 +3,7 @@
   util.h -
 
   $Author: satoru $
-  $Date: 1999-09-02 02:54:11 $
+  $Date: 1999-09-05 02:33:55 $
   created at: Thu Mar  9 11:55:53 JST 1995
 
   Copyright (C) 1993-1998 Yukihiro Matsumoto
@@ -77,6 +77,7 @@ int strprefixcmp(uchar *, uchar *);
 int strsuffixcmp(uchar *, uchar *);
 int strprefixcasecmp(uchar *, uchar *);
 int strsuffixcasecmp(uchar *, uchar *);
+uchar *readfile(uchar*);
 
 #endif /* _UTIL_H */
 

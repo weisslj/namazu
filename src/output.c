@@ -239,7 +239,7 @@ void fputx(uchar *str, FILE *fp)
     uchar buf[BUFSIZE * 16];
     int ishtml = 0;
 
-    if ((int)*str == (int)'\t') {
+    if ((int)*str == (int)'\t') { /* Namazu's HTML message */
         ishtml = 1;
     }
 

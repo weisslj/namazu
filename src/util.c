@@ -8,6 +8,10 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <stdarg.h>
+#ifdef __EMX__
+#include <sys/types.h>
+#endif
+#include <sys/stat.h>
 #include "namazu.h"
 #include "util.h"
 
@@ -472,5 +476,29 @@ int strsuffixcmp(uchar *str1, uchar *str2)
     } else {					     
 	return strcmp(str2 + leng2 - leng1, str1);
     }
+}
+
+/* load the whole of file */
+uchar *readfile(uchar *fname)
+{
+    uchar *buf;
+    FILE *fp;
+    struct stat fstatus;
+
+    stat(fname, &fstatus);
+    fp = fopen(fname, "rb");
+    if (fp == NULL) {
+        fprintf(stderr, "warning: Can't open %s\n", fname);
+        return 0;
+    }
+    buf = (uchar *) malloc(fstatus.st_size + 1);
+    if (buf == NULL) {
+	 die("readfile(malloc)");
+    }
+    if (fread(buf, sizeof(uchar), fstatus.st_size, fp) == 0)
+        die("readfile(fread)");
+    *(buf + fstatus.st_size) = '\0';
+    fclose(fp);
+    return buf;
 }
 

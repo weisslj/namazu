@@ -90,12 +90,35 @@ void get_field_name(uchar *field, uchar *str)
     apply_field_alias(field);
 }
 
-void get_field_data(int did, int fid, uchar *field, uchar *data) 
+void get_field_data(int did, int fid, uchar *orig_field, uchar *data) 
 {
     uchar fname[BUFSIZE];
+    uchar *field = orig_field;
+    int i;
+    static int cache_idx = 0, cache_num = 0;
     FILE *fp_field, *fp_field_idx;
+    struct field_cache {
+	int did;
+	int fid;
+	uchar field[BUFSIZE];
+	uchar data[BUFSIZE];
+    };
+    static struct field_cache fc[FIELD_CACHE_SIZE];
 
-    apply_field_alias(field);
+    apply_field_alias(field);  /* This would overwrite `field' */
+
+    /* consult caches */
+    for (i = 0; i < cache_num; i++) {
+	if (Debug) {
+	    printf("@@ field cache [%s] hit!\n", field);
+	}
+	if (did == fc[i].did && fid == fc[i].fid &&
+	    strcmp(field, fc[i].field) == 0)
+	{  /* cache hit! */
+	    strcpy(data, fc[i].data);
+	    return;
+	}
+    }
 
     /* make a pathname */
     make_fullpathname_field(did);
@@ -127,5 +150,15 @@ void get_field_data(int did, int fid, uchar *field, uchar *data)
 
     fclose(fp_field);
     fclose(fp_field_idx);
+
+    /* cache */
+    fc[cache_idx].did = did;
+    fc[cache_idx].fid = fid;
+    strcpy(fc[cache_idx].field, field);
+    strcpy(fc[cache_idx].data, data);
+    cache_idx = (cache_idx + 1) % FIELD_CACHE_SIZE;
+    if (cache_num < FIELD_CACHE_SIZE) {
+	cache_num++;
+    }
 }
 

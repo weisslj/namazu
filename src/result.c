@@ -1,7 +1,7 @@
 /*
  * result.l -
  * -*- C -*-
- * $Id: result.l,v 1.21 1999-09-03 02:42:59 satoru Exp $
+ * $Id: result.c,v 1.15 1999-09-05 02:33:55 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -24,8 +24,8 @@
  * This file must be encoded in EUC-JP encoding.
  * 
  */
-%{
 #include <string.h>
+#include <stdlib.h>
 #include "namazu.h"
 #include "util.h"
 #include "field.h"
@@ -33,17 +33,6 @@
 #include "re.h"
 #include "result.h"
 #include "em.h"
-
-	void replace_field(uchar *);
-	static int Fid, Did;
-	static uchar Buf[BUFSIZE * 16];
-	static int Score, Counter;
-%}
-
-%%
-\$\{([-_a-zA-Z]+|namazu::[-_a-zA-Z]+)\} 	       replace_field(yytext);
-.|\n                           strcat(Buf, yytext);
-%%
 
 /************************************************************
  *
@@ -54,34 +43,65 @@
 void make_fullpathname_result(int);
 void encode_entity(uchar*);
 void emphasize(uchar*);
+void compose_result(hlist_data, int, uchar*, uchar*);
+void replace_field(hlist_data, int, uchar*, uchar*);
 
-void replace_field(uchar *key) 
+void compose_result(hlist_data d, int counter, uchar *template, uchar *r)
 {
-    uchar field[BUFSIZE];
+    uchar *p = template;
+    uchar achars[BUFSIZE]; /* acceptable characters */
+
+    strcpy(r, "\t");  /* '\t' has an important role cf. fputx() */
+
+    strcpy(achars, FIELD_SAFE_CHARS);
+    strcat(achars, ":");  /* for namazu::score, namazu::counter */
+
+    do {
+	uchar *pp;
+	pp = strstr(p, "${");
+	if (pp != NULL) {
+	    int n;
+	    strncat(r, p, pp - p);
+	    pp += 2;  /* skip "${" */
+	    n = strspn(pp, achars);
+	    if (n > 0 && pp[n] == '}') {
+		uchar field[BUFSIZE];
+		
+		strncpy(field, pp, n);
+		field[n] = '\0';
+		replace_field(d, counter, field, r);
+		p = pp + n + 1; /* +1 for skipping "}" */
+	    } else {
+		p += 2;
+	    }
+	} else {
+	    strcat(r, p);
+	    break;
+	}
+    } while (1);
+}
+
+
+void replace_field(hlist_data d, int counter, uchar *field, uchar *result)
+{
     /* 8 is length of '&quot;' + 2 (for emphasizing). 
        It's a consideration for buffer overflow (overkill?) */
     uchar buf[BUFSIZE * 8];  
 
-    /* Remove '{$' and '}' */
-    strcpy(field, key + 2);
-    *(field + strlen(field) - 1) = '\0';
-
     if (strcmp(field, "namazu::score") == 0) {
-	sprintf(buf, "%d", Score);
+	sprintf(buf, "%d", d.scr);
 	commas(buf);
     } else if (strcmp(field, "namazu::counter") == 0) {
-	sprintf(buf, "%d", Counter);
+	sprintf(buf, "%d", counter);
 	commas(buf);
     } else {
-	get_field_data(Did, Fid, field, buf);
+	get_field_data(d.did, d.fid, field, buf);
     }
     /* do not emphasize in URI */
-    if (strcmp(field, "uri") != 0 && HtmlOutput) {
+    if (strcasecmp(field, "uri") != 0 && HtmlOutput) {
 	emphasize(buf);
     }
-    if (HtmlOutput) {
-	encode_entity(buf);
-    }
+    encode_entity(buf);
 
     /* Insert commas if the buf is a numeric string */
     if (isnumstr(buf))
@@ -89,7 +109,7 @@ void replace_field(uchar *key)
 	commas(buf);
     }
 
-    strcat(Buf, buf);
+    strcat(result, buf);
 }
 
 void make_fullpathname_result(int n)
@@ -165,37 +185,49 @@ void emphasize(uchar *str)
 void print_hlist(HLIST hlist)
 {
     int i;
+    uchar *templates[INDEX_MAX];
+    uchar result[BUFSIZE * 16];
 
     if (hlist.n <= 0 || HListMax == 0) {
 	return;
     }
 
+    /* set NULL to all templates[] */
+    for (i = 0; i < Idx.num; i++) {
+	templates[i] = NULL;
+    }
+
     for (i = HListWhence; i < hlist.n; i++) {
-	char template[BUFSIZE];
-	strcpy(Buf, "\t");  /* '\t' has an important role cf. fputx() */
-	Score   = hlist.d[i].scr;
-	Counter = i + 1;
-	Fid = hlist.d[i].fid;
-	Did = hlist.d[i].did;
-	make_fullpathname_result(Did);
-	strcpy(template, NMZ.result);
-	strcat(template, ".");
-	strcat(template, Template);  /* usually "normal" */
+	int counter;
+
+	counter = i + 1;
 
 	if (!AllList && (i >= HListWhence + HListMax))
 	    break;
 	if (MoreShortFormat) {
-	    get_field_data(Did, Fid, "uri", Buf);
+	    get_field_data(hlist.d[i].did, hlist.d[i].fid, "uri", result);
 	} else {
-	    if ((yyin = fopen(template, "r")) == NULL) {
-		die("print_hlist: %s", template);
-		exit(-1);
+	    if (templates[hlist.d[i].did] == NULL) {  /* not loaded */
+		uchar fname[BUFSIZE];
+
+		make_fullpathname_result(hlist.d[i].did);
+		strcpy(fname, NMZ.result);
+		strcat(fname, ".");
+		strcat(fname, Template);  /* usually "normal" */
+		templates[hlist.d[i].did] = readfile(fname);
 	    }
-	    yylex();
-	    fclose(yyin);
+	    compose_result(hlist.d[i], counter, 
+			   templates[hlist.d[i].did],  result);
 	}
-	fputx(Buf, stdout);
+	fputx(result, stdout);
 	fputx("\n", stdout);
+    }
+
+    /* free all templates[] */
+    for (i = 0; i < Idx.num; i++) {
+	if (templates[i] != NULL) {
+	    free(templates[i]);
+	}
     }
 }
 

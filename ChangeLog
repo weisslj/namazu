@@ -4,6 +4,11 @@
 
         * filter/rtf.pl: Support rtf2html.
 
+        * doc/{ja,en}/manual.html (filter): Added descriptions about 
+	rtf.
+
+        * doc/ja/manual.html (filter): Bug fix.
+
 2003-06-07  Makoto Fujiwara  <makoto@ki.nu>
 
 	* filter/html.pl (decode_numbered_entity): should be
@@ -7955,4 +7960,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1025 2003-06-08 08:32:51 opengl2772 Exp $
+$Id: ChangeLog,v 1.1026 2003-06-08 08:56:54 opengl2772 Exp $

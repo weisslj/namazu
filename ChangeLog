@@ -2,6 +2,8 @@
 
 	* nmz/support.h: Fixed symbol prefix _nmz_.
 
+	* THANKS: Updated.
+
 2000-10-05  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* scripts/mknmz.in (get_status): Added a workaround for
@@ -6016,4 +6018,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.739 2000-10-06 07:28:36 rug Exp $
+$Id: ChangeLog,v 1.740 2000-10-06 16:07:14 rug Exp $

@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.61 2000-01-13 18:33:02 rug Exp $
+ * $Id: search.c,v 1.62 2000-01-18 08:16:36 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -951,7 +951,7 @@ nmz_search(const char *query)
         tmp[i] = nmz_search_sub(tmp[i], query, i);
 
 	if (tmp[i].stat != SUCCESS) {
-
+	    tmp[i].num = 0;
 	    if (tmp[i].stat == ERR_FATAL) {
 		hlist.data = NULL;
 		hlist.stat = tmp[i].stat;

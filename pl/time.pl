@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: time.pl,v 1.4 2004-08-22 13:09:27 usu Exp $
+# $Id: time.pl,v 1.5 2004-09-08 13:13:56 usu Exp $
 # Copyright (C) 2004 Tadamasa Teranishi
 #               2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -109,7 +109,7 @@ sub timezone ($) {
 }
 
 sub gettimezone {
-    return timezone(timelocal(localtime()) - timelocal(gmtime()));
+    return timezone(timelocal(localtime(1000000)) - timelocal(gmtime(1000000)));
 }
 
 sub getwday {

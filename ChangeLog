@@ -1,4 +1,8 @@
-003-09-29  Yukio USUDA <usu@namazu.org>
+2003-10-07  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * filter/mailnews.pl: Fixed the problem in [n-u-j:03172,03208].
+
+2003-09-29  Yukio USUDA <usu@namazu.org>
 
         * filter/taro7_10.pl: Change to use OLE-Storage_Lite perl module.
 
@@ -8193,4 +8197,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1058 2003-09-29 11:18:14 usu Exp $
+$Id: ChangeLog,v 1.1059 2003-10-07 05:48:55 opengl2772 Exp $

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mailnews.pl,v 1.27 2001-04-23 09:09:38 knok Exp $
+# $Id: mailnews.pl,v 1.28 2003-10-07 05:48:56 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -120,7 +120,10 @@ sub mailnews_filter ($$$) {
 		# contributed by Hiroshi Kato <tumibito@mm.rd.nttdata.co.jp>
   		$partial = $1;
   		util::dprint("((partial: $partial))\n");
-	    }
+            } elsif ($line !~ m!text/plain!i) {
+                $$contref = '';
+                return;
+            }
 	} elsif ($line =~ /^(\S+):\s*(.*)/i) {
 	    my $name = $1;
 	    my $value = $2;

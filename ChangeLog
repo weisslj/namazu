@@ -1,3 +1,7 @@
+2000-10-24  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* Namazu: Version 2.0.5 released.
+
 2000-10-23  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* tests/namazu-9 : s/unset LANG/LANG= ; export LANG/
@@ -6080,4 +6084,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.753 2000-10-23 05:57:59 knok Exp $
+$Id: ChangeLog,v 1.754 2000-10-24 06:46:37 knok Exp $

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: olepowerpoint.pl,v 1.6 2001-01-12 05:15:31 baba Exp $
+# $Id: olepowerpoint.pl,v 1.7 2001-01-19 09:55:17 baba Exp $
 # Copyright (C) 1999 Jun Kurabe ,
 #               1999 Ken-ichi Hirose All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -56,9 +56,12 @@ sub mediatype() {
 sub status() {
     open (SAVEERR,">&STDERR");
     open (STDERR,">nul");
-    my $powerpoint = Win32::OLE->new('PowerPoint.Application','Quit');
+    my $const;
+    $const = Win32::OLE::Const->Load("Microsoft PowerPoint 9.0 Object Library");
+    $const = Win32::OLE::Const->Load("Microsoft PowerPoint 8.0 Object Library")
+	unless $const;
     open (STDERR,">&SAVEERR");
-    return 'yes' if (defined $powerpoint);
+    return 'yes' if (defined $const);
     return 'no';
 }
 
@@ -130,17 +133,19 @@ sub getProperties ($$) {
     my $title = $cfile->BuiltInDocumentProperties('Title')->{Value};
     $title = $cfile->BuiltInDocumentProperties('Subject')->{Value}
 	unless (defined $title);
-    $fields->{'title'} = $title if (defined $title);
+    $fields->{'title'} = codeconv::shiftjis_to_eucjp($title)
+	if (defined $title);
 
     my $author = $cfile->BuiltInDocumentProperties('Author')->{Value};
     $author = $cfile->BuiltInDocumentProperties('Last Author')->{Value}
 	unless (defined $author);
-    $fields->{'author'} = $author if (defined $author);
+    $fields->{'author'} = codeconv::shiftjis_to_eucjp($author)
+	if (defined $author);
 
 #    my $date = $cfile->BuiltInDocumentProperties('Last Save Time')->{Value};
 #    $date = $cfile->BuiltInDocumentProperties('Creation Date')->{Value}
 #	unless (defined $date);
-#    $fields->{'date'} = $date if (defined $date);
+#    $fields->{'date'} = codeconv::shiftjis_to_eucjp($date) if (defined $date);
 
     return undef;
 }

@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.12 1999-06-12 14:29:30 satoru Exp $
+# $Id: mknmz.pl.in,v 1.13 1999-06-12 14:37:51 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -362,7 +362,9 @@ sub put_field_index (\%$) {
 	    $fields->{$key} =~ s/\s+$//;
 	    $fields->{$key} =~ s/^\s+//;
 	    $output = $fields->{$key} . "\n";
-	    $output = substr $output, 1023;
+	    if (length($output) >= 1024) {
+		$output = substr $output, 0, 1023;
+	    }
 	} else {
 	    $output = "\n";
 	}

@@ -11,7 +11,7 @@ Version: %ver
 Release: %rel
 Copyright: GPL
 Group: Applications/Text
-Requires: perl >= 5.004, perl-File-MMagic >= 0.19, perl-NKF >= 1.70
+Requires: perl >= 5.004, perl-File-MMagic >= 0.20, perl-NKF >= 1.70
 Requires: kakasi >= 2.3.0, perl-Text-Kakasi >= 1.00
 Source: namazu-%{ver}.tar.gz
 URL: http://openlab.ring.gr.jp/namazu/
@@ -32,23 +32,10 @@ Requires: %name = %{PACKAGE_VERSION}
 %description devel
 Libraries and include files of Namazu.
 
-#%package elisp
-#Summary: An interface of Namazu for GNU Emacs
-#Group: Applications/Text
-#Requires: %name = %{PACKAGE_VERSION}, emacs
-#
-#%description elisp
-#An interface of Namazu for GNU Emacs.
-
-#%package cgi
-#Summary: An interface of Namazu for CGI
-#Group: Applications/Text
-#Requires: %name = %{PACKAGE_VERSION}, apache
-#
-#%description cgi
-#An interface of Namazu for CGI.
-
 %changelog
+* Tue Feb 15 2000 Ryuji Abe <raeva@t3.rim.or.jp>
+- Delete package entries elisp and cgi.
+
 * Wed Feb 02 1999 Ryuji Abe <raeva@t3.rim.or.jp>
 - Apapted for namazu-current.
 - Changed group Utilities/Text -> Applications/Text.
@@ -121,10 +108,6 @@ chmod a+rw -R $RPM_BUILD_ROOT%{localstatedir}/namazu
 chmod a+rw -R $RPM_BUILD_ROOT%{localstatedir}/namazu/index
 strip $RPM_BUILD_ROOT%{prefix}/bin/namazu
 
-#mkdir -p $RPM_BUILD_ROOT/home/httpd/cgi-bin/
-#cp $RPM_BUILD_ROOT%{prefix}/libexec/namazu.cgi \
-#    $RPM_BUILD_ROOT/home/httpd/cgi-bin/namazu.cgi
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -141,6 +124,7 @@ rm -rf $RPM_BUILD_ROOT
 %{prefix}/bin/mailutime
 %{prefix}/bin/nmzgrep
 %{prefix}/lib/libnmz.so.*
+%{prefix}/libexec/namazu.cgi
 %{prefix}/man/man1
 %{prefix}/share/locale/*
 %{prefix}/share/namazu/*
@@ -154,13 +138,3 @@ rm -rf $RPM_BUILD_ROOT
 %{prefix}/lib/libnmz.so
 %{prefix}/lib/libnmz.la
 %{prefix}/lib/libnmz.a
-
-#%files elisp
-#%defattr(-, root, root)
-#%doc lisp/ChangeLog lisp/ChangeLog.gnus-nmz-1
-#%{prefix}/share/emacs/site-lisp/*
-
-#%files cgi
-#%defattr(-, root, root)
-#%{prefix}/libexec/namazu.cgi
-#home/httpd/cgi-bin/namazu.cgi

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: excel.pl,v 1.13 2000-12-15 05:37:41 knok Exp $
+# $Id: excel.pl,v 1.14 2002-01-10 10:48:35 knok Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu, 
 #               2000 Namazu Project All rights reserved.
@@ -26,6 +26,7 @@
 
 package excel;
 use strict;
+use File::Basename;
 use File::Copy;
 require 'util.pl';
 require 'gfilter.pl';
@@ -33,15 +34,17 @@ require 'html.pl';
 
 my $xlconvpath  = undef;
 my $utfconvpath = undef;
+my $convname = undef;
 
 sub mediatype() {
     return ('application/excel');
 }
 
 sub status() {
-    $xlconvpath = util::checkcmd('xlHtml');
+    $xlconvpath = util::checkcmd('xlhtml') || util::checkcmd('xlHtml');
 #    return 'no' unless defined $xlconvpath;
     if (defined $xlconvpath) {
+	$convname = basename($xlconvpath);
 	if (!util::islang("ja")) {
 	    return 'yes';
 	} else {
@@ -83,7 +86,7 @@ sub filter ($$$$$) {
       = @_;
     my $err = undef;
 
-    if (util::checkcmd('xlHtml')) {
+    if ($convname =~ /xlhtml/i) {
     $err = filter_xl($orig_cfile, $cont, $weighted_str, $headings, $fields);
     } else {
     $err = filter_doccat($orig_cfile, $cont, $weighted_str, $headings, $fields);

@@ -1,3 +1,12 @@
+2002-01-10  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* filter/powerpoint.pl: Adopted to new convert programs.
+	(Contributed by Takahiro Kambe and Kaz SHiMZ, thanks)
+
+	* filter/excel.pl: Ditto.
+
+	* filter/msword.pl: Ditto.
+
 2002-01-08  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* contrib/spreadexcel.pl: Added a new file.
@@ -7324,4 +7333,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.915 2002-01-08 09:39:07 knok Exp $
+$Id: ChangeLog,v 1.916 2002-01-10 10:48:34 knok Exp $

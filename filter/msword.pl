@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: msword.pl,v 1.29 2001-08-08 09:05:46 knok Exp $
+# $Id: msword.pl,v 1.30 2002-01-10 10:48:35 knok Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Satoru Takabayashi Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -25,6 +25,7 @@
 
 package msword;
 use strict;
+use File::Basename;
 use File::Copy;
 require 'util.pl';
 require 'gfilter.pl';
@@ -33,6 +34,7 @@ require 'html.pl';
 my $wordconvpath  = undef;
 my $utfconvpath   = undef;
 my $wvversionpath = undef;
+my $wordconvname = undef;
 
 sub mediatype() {
     return ('application/msword');
@@ -79,8 +81,11 @@ sub filter ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
       = @_;
     my $err = undef;
- 
-    if (util::checkcmd('wvHtml')) {
+
+    if (not defined $wordconvname) {
+	$wordconvname = basename($wordconvpath);
+    }
+    if ($wordconvname =~ /wvhtml/i) {
     $err = filter_wv($orig_cfile, $cont, $weighted_str, $headings, $fields);
     } else { 
     $err = filter_doccat($orig_cfile, $cont, $weighted_str, $headings, $fields);
@@ -95,7 +100,7 @@ sub filter_wv ($$$$$) {
 
     my $tmpfile  = util::tmpnam('NMZ.word');
     my $tmpfile2 = util::tmpnam('NMZ.word2');
-
+    my ($ofile, $tpath, $options, $version);
 
     if (util::islang("ja")) {
     }
@@ -107,8 +112,17 @@ sub filter_wv ($$$$$) {
 	print $fh $$cont;
     }
 
+    $version = `$wordconvpath --version 2>/dev/null`;
+    chomp $version;
+    if ($version ne "" and $version !~ /usage/i and $version ge "0.7") {
+       ($ofile, $tpath) = fileparse($tmpfile2);
+       $options = "--targetdir=$tpath";
+    } else {
+       $ofile = $tmpfile2;
+    }
+
     if (!util::islang("ja")) {
-	system("$wordconvpath $tmpfile $tmpfile2");
+	system("$wordconvpath $options $tmpfile $ofile");
     } else {
 	my $version = "unknown";
 	my $supported = undef;
@@ -125,7 +139,7 @@ sub filter_wv ($$$$$) {
 	    }
 	}
 	return _("Unsupported format: ") .  $version unless $supported;
-	system("$wordconvpath $tmpfile $tmpfile2");
+	system("$wordconvpath $options $tmpfile $ofile");
         system("$utfconvpath -Iu8 -Oej $tmpfile2 > $tmpfile");
 	unlink($tmpfile2);
 	rename($tmpfile, $tmpfile2);

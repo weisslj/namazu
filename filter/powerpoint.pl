@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: powerpoint.pl,v 1.6 2000-12-26 04:59:01 knok Exp $
+# $Id: powerpoint.pl,v 1.7 2002-01-10 10:48:35 knok Exp $
 # Copyright (C) 2000 Ken-ichi Hirose, 
 #               2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -25,6 +25,7 @@
 
 package powerpoint;
 use strict;
+use File::Basename;
 use File::Copy;
 require 'util.pl';
 require 'gfilter.pl';
@@ -32,15 +33,17 @@ require 'html.pl';
 
 my $pptconvpath  = undef;
 my $utfconvpath = undef;
+my $pptconvname = undef;
 
 sub mediatype() {
     return ('application/powerpoint');
 }
 
 sub status() {
-	$pptconvpath = util::checkcmd('pptHtml');
+	$pptconvpath = util::checkcmd('ppthtml') || util::checkcmd('pptHtml');
 #	return 'no' unless defined $pptconvpath
 	if (defined $pptconvpath) {
+	    $pptconvname = basename($pptconvpath);
 		if (!util::islang("ja")) {
 			return 'yes';
 		} else {
@@ -82,7 +85,7 @@ sub filter ($$$$$) {
       = @_;
     my $err = undef;
 
-    if (util::checkcmd('pptHtml')) {
+    if ($pptconvname =~ /ppthtml/i) {
     $err = filter_ppt($orig_cfile, $cont, $weighted_str, $headings, $fields);
     } else {
     $err = filter_doccat($orig_cfile, $cont, $weighted_str, $headings, $fields);

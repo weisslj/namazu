@@ -5,6 +5,12 @@
         * nmz/search.c (do_phrase_search): Forgets to fclose() at the time 
         of an error.
 
+        * scripts/mknmz.in (write_phrase_hash_sub): util::fclose() is added.
+
+        * scripts/mknmz.in (append_index): When a file was deleted, 
+        the bug which is mistaken in calculation of the total number of 
+        files was corrected.
+
 2004-03-27  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* tests/ja-namazu-cgi-1: The argument of namazu.cgi is deleted.
@@ -8669,4 +8675,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1136 2004-03-28 00:37:18 opengl2772 Exp $
+$Id: ChangeLog,v 1.1137 2004-03-28 02:11:49 opengl2772 Exp $

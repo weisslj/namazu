@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.135 2004-03-17 06:25:34 opengl2772 Exp $
+# $Id: mknmz.in,v 1.136 2004-03-28 02:11:50 opengl2772 Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -1822,8 +1822,8 @@ sub append_index (@) {
 	    set_lockfile($var::NMZ{'lock2'});
 	    update_dateindex();
 	    update_registry(0);
+	    make_headfoot_pages(0, get_total_keys());
 	    put_log(0, 0, 0, get_total_keys());
-	    make_headfoot_pages(get_status("files"), get_status("keys"));
 	    util::remove_tmpfiles();
 	}
 	print _("No files to index.\n");
@@ -2321,7 +2321,7 @@ sub write_phrase_hash_sub () {
     my $fh_tmp_p  = util::efopen(">$var::NMZ{'__p'}");
 
     my $fh_phrase = util::fopen($var::NMZ{'_p'});
-    my $fh_phraseindex;
+    my $fh_phraseindex = undef;
     if ($fh_phrase) {
 	$fh_phraseindex = util::efopen($var::NMZ{'_pi'});
 	$opened = 1;
@@ -2374,6 +2374,16 @@ sub write_phrase_hash_sub () {
 	    }
 	}
     }
+
+    if ($opened) {
+        util::fclose($fh_phraseindex);
+    }
+    if (defined $fh_phrase) {
+        util::fclose($fh_phrase);
+    }
+    util::fclose($fh_tmp_p);
+    util::fclose($fh_tmp_pi);
+
     %PhraseHash = ();
     %PhraseHashLast = ();
 }

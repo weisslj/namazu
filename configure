@@ -2748,8 +2748,8 @@ fi
 
 
 
-echo $ac_n "checking for OPT_CGI_LOCATION""... $ac_c" 1>&6
-echo "configure:2753: checking for OPT_CGI_LOCATION" >&5
+echo $ac_n "checking for CGI location""... $ac_c" 1>&6
+echo "configure:2753: checking for CGI location" >&5
 # Check whether --with-cgi_location or --without-cgi_location was given.
 if test "${with_cgi_location+set}" = set; then
   withval="$with_cgi_location"
@@ -2860,8 +2860,9 @@ fi
 
 
 test "${prefix}" = NONE && prefix=/usr/local
+pkgdatadir="$prefix/share/namazu"
 cat >> confdefs.h <<EOF
-#define INDEXDIR "${pkgdatadir}/index"
+#define OPT_INDEXDIR "${pkgdatadir}/index"
 EOF
 
 cat >> confdefs.h <<EOF
@@ -2869,11 +2870,11 @@ cat >> confdefs.h <<EOF
 EOF
 
 cat >> confdefs.h <<EOF
-#define LANGUAGE "$OPT_LANGUAGE"
+#define OPT_LANGUAGE "$OPT_LANGUAGE"
 EOF
 
 cat >> confdefs.h <<EOF
-#define SCORING $SCORING
+#define OPT_SCORING $SCORING
 EOF
 
 cat >> confdefs.h <<\EOF

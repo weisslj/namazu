@@ -1,5 +1,14 @@
 1999-09-01  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* configure.in, config.h.in, src/{var,message.c}:
+	Rename several macro definiions for C program.
+	
+	* src/*.[ch]: s/DEFAULT_DIR/DEFAULT_INDEX/g
+	
+	* src/namazu.c: s/dbnames/idxnames/g
+	
+	* src/hlist.c (malloc_hlist): Set hlist->n = n; at the ending.
+	
 	* src/{usage,message}.c: Modify namazu's usages.
 	
 	* src/conf.c (show_conf): Modify messages.

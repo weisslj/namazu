@@ -2,7 +2,7 @@
  * 
  * values.c -
  * 
- * $Id: var.c,v 1.3 1999-09-01 02:04:54 satoru Exp $
+ * $Id: var.c,v 1.4 1999-09-01 07:54:21 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -30,10 +30,10 @@
 #include "namazu.h"
 
 /* default directory of where indices are */
-#ifdef INDEXDIR
-uchar DEFAULT_DIR[BUFSIZE] = INDEXDIR;
+#ifdef OPT_INDEXDIR
+uchar DEFAULT_INDEX[BUFSIZE] = OPT_INDEXDIR;
 #else
-uchar DEFAULT_DIR[BUFSIZE] = "/usr/local/namazu/index";
+uchar DEFAULT_INDEX[BUFSIZE] = "/usr/local/share/namazu/index";
 #endif
 
 /* string of HTML 's <BASE HREF="...">  (namazu.conf) */
@@ -43,7 +43,7 @@ uchar BASE_URI[BUFSIZE] = "";
 #ifdef OPT_NAMAZU_CONF
 uchar NAMAZU_CONF[BUFSIZE] = OPT_NAMAZU_CONF;
 #else
-uchar NAMAZU_CONF[BUFSIZE] = "/usr/local/namazu/lib/namazu.conf";
+uchar NAMAZU_CONF[BUFSIZE] = "/usr/local/share/conf/namazu.conf";
 #endif
 
 /* namazurc */
@@ -71,10 +71,10 @@ int Logging = 1;		/* if do logging:  1 */
 int OppositeEndian = 0;         /* if opposite byte order: 1 */
 int NoReference = 0;		/* if no display reference: 1  */
 
-#ifdef SCORING
+#ifdef OPT_SCORING
 #define TFIDF  1
 #define SIMPLE 0
-int TfIdf = SCORING;   /* switch of TfIdf mode */
+int TfIdf = OPT_SCORING;   /* switch of TfIdf mode */
 #else
 int TfIdf = 1;
 #endif

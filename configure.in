@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.19 1999-08-30 17:19:27 rug Exp $
+dnl $Id: configure.in,v 1.20 1999-09-01 07:54:18 satoru Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -264,7 +264,7 @@ AC_SUBST(FILE_MMAGIC)
 dnl *
 dnl * CGI location
 dnl *
-AC_MSG_CHECKING(for OPT_CGI_LOCATION)
+AC_MSG_CHECKING(for CGI location)
 AC_ARG_WITH(
         cgi_location,
 	[  --with-cgi-location=DIR      set CGI location [/cgi-bin]],
@@ -375,10 +375,11 @@ dnl *
 dnl * Set default Namazu directories.
 dnl * 
 test "${prefix}" = NONE && prefix=/usr/local
-AC_DEFINE_UNQUOTED(INDEXDIR, "${pkgdatadir}/index")
+pkgdatadir="$prefix/share/namazu"
+AC_DEFINE_UNQUOTED(OPT_INDEXDIR, "${pkgdatadir}/index")
 AC_DEFINE_UNQUOTED(OPT_NAMAZU_CONF, "${pkgdatadir}/lib/namazu.conf")
-AC_DEFINE_UNQUOTED(LANGUAGE, "$OPT_LANGUAGE")
-AC_DEFINE_UNQUOTED(SCORING, $SCORING)
+AC_DEFINE_UNQUOTED(OPT_LANGUAGE, "$OPT_LANGUAGE")
+AC_DEFINE_UNQUOTED(OPT_SCORING, $SCORING)
 AC_DEFINE(MSIE4MACFIX)
 
 dnl * 

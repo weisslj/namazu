@@ -41,15 +41,6 @@
 	( 1999年1月以降の記事 OR 1998年1月以前の記事 AND "TERM" )
 	といった検索をしたい。
 
-  * mknmzの利用するモジュールの表示機能。(たかく氏)
-	以下のような感じでしょうか。
-	% mknmz -C
-	Perl:	/usr/local/bin/perl (Version 5.004_04)
-	NKF:	module_nkf
-	KAKASI: /usr/local/bin/kakasi
-	ChaSen:	module_chasen1
-	WAKATI_DEFAULT:	KAKASI
-
   * XSベースの Namazu.pm (野首さん [namazu 633] )
 
     今のような、雛形HTMLファイルを修正してカスタマイズするというやり方は、
@@ -146,6 +137,16 @@
   | 指定できるようにできませんでしょうか。
 
   => mknmz --exclude=regex で対応
+
+  * mknmzの利用するモジュールの表示機能。(たかく氏)
+	以下のような感じでしょうか。
+	% mknmz -C
+	Perl:	/usr/local/bin/perl (Version 5.004_04)
+	NKF:	module_nkf
+	KAKASI: /usr/local/bin/kakasi
+	ChaSen:	module_chasen1
+	WAKATI_DEFAULT:	KAKASI
+  => 実装しました 1999-09-01
 
 
 ======================================================

@@ -2,7 +2,7 @@
  * 
  * conf.c -
  * 
- * $Id: conf.c,v 1.8 1999-09-01 07:17:42 satoru Exp $
+ * $Id: conf.c,v 1.9 1999-09-01 07:54:20 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -159,7 +159,7 @@ void load_conf(char *av0)
 	chomp(buf);
 	if (!strncmp(buf, "INDEX\t", 6)) {
 	    for (n = 6; buf[n] == '\t'; n++);
-	    strcpy(DEFAULT_DIR, buf + n);
+	    strcpy(DEFAULT_INDEX, buf + n);
 	} else if (!strncmp(buf, "BASE\t", 5)) {
 	    for (n = 5; buf[n] == '\t'; n++);
 	    strcpy(BASE_URI, buf + n);
@@ -204,8 +204,9 @@ void load_conf(char *av0)
 
 void show_conf(void)
 {
-    if (ConfLoaded)
+    if (ConfLoaded) {
 	printf("Config:  %s\n", NAMAZU_CONF);
+    }
 
     printf("\
 Default: %s\n\
@@ -213,7 +214,7 @@ BASE:    %s\n\
 Logging: %s\n\
 Lang:    %s\n\
 Scoring: %s\n\
-", DEFAULT_DIR, BASE_URI, Logging ? "on" : "off",
+", DEFAULT_INDEX, BASE_URI, Logging ? "on" : "off",
            Lang, TfIdf ? "tfidf" : "simple");
 
     {

@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.13 1999-09-01 02:04:53 satoru Exp $
+ * $Id: hlist.c,v 1.14 1999-09-01 07:54:20 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -224,6 +224,7 @@ void malloc_hlist(HLIST * hlist, int n)
     if (hlist->date == NULL) {
 	 die("malloc_hlist");
     }
+    hlist->n = n;
 }
 
 void realloc_hlist(HLIST * hlist, int n)
@@ -436,8 +437,8 @@ void nmz_mergesort(int first, int last, HLIST hlist, HLIST work, int mode)
 void sort_hlist(HLIST hlist, int mode)
 {
     HLIST work;
-    malloc_hlist(&work, hlist.n);
 
+    malloc_hlist(&work, hlist.n);
     nmz_mergesort(0, hlist.n - 1, hlist, work, mode);
     free_hlist(work);
 }

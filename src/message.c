@@ -2,7 +2,7 @@
  * 
  * messages.c -
  * 
- * $Id: message.c,v 1.8 1999-09-01 07:24:12 satoru Exp $
+ * $Id: message.c,v 1.9 1999-09-01 07:54:21 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -31,10 +31,10 @@
 #include "namazu.h"
 #include "util.h"
 
-#ifdef LANGUAGE
-uchar Lang[] = LANGUAGE;
+#ifdef OPT_LANGUAGE
+uchar Lang[] = OPT_LANGUAGE;
 #else
-uchar Lang[] = (uchar *)"en";
+uchar Lang[] = "en";
 #endif
 
 /* information about Namazu */

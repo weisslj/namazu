@@ -24,7 +24,7 @@ extern int OppositeEndian;
 extern int TfIdf;
 extern int NoReference;
 
-extern uchar DEFAULT_DIR[];
+extern uchar DEFAULT_INDEX[];
 extern uchar Lang[];
 
 extern uchar BASE_URI[];

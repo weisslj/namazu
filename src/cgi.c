@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.12 1999-09-01 02:43:49 satoru Exp $
+ * $Id: cgi.c,v 1.13 1999-09-01 07:54:20 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -132,7 +132,7 @@ int get_cgi_vars(uchar * query, uchar *subquery)
         uchar *path_info = (uchar *)getenv("PATH_INFO");
         if (strlen(path_info) > 0 && strlen(path_info) < 128) {
             validate_dbname(path_info);
-            sprintf(tmp, "%s%s", DEFAULT_DIR, path_info);
+            sprintf(tmp, "%s%s", DEFAULT_INDEX, path_info);
             Idx.names[Idx.num] = (uchar *) malloc(strlen(tmp) + 1);
             if (Idx.names[Idx.num] == NULL) {
                 die("cgi: malloc(dbname)");
@@ -281,12 +281,12 @@ int get_cgi_vars(uchar * query, uchar *subquery)
                     continue;
                 }
                 Idx.names[Idx.num] = (uchar *)
-                    malloc(strlen(DEFAULT_DIR) + 1 + strlen(name) + 1);
+                    malloc(strlen(DEFAULT_INDEX) + 1 + strlen(name) + 1);
                 if (Idx.names[Idx.num] == NULL) {
                     die("cgi: malloc(dbname)");
                 }
                 validate_dbname(name);
-                strcpy(Idx.names[Idx.num], DEFAULT_DIR);
+                strcpy(Idx.names[Idx.num], DEFAULT_INDEX);
                 strcat(Idx.names[Idx.num], "/");
                 strcat(Idx.names[Idx.num], name);
                 Idx.num++;
@@ -315,11 +315,11 @@ void init_cgi(uchar * query, uchar *subquery)
 	exit(1);
     }
     if (Idx.num == 0) {
-        Idx.names[Idx.num] = (uchar *) malloc(strlen(DEFAULT_DIR) + 1);
+        Idx.names[Idx.num] = (uchar *) malloc(strlen(DEFAULT_INDEX) + 1);
         if (Idx.names[Idx.num] == NULL) {
             die("cgi_initialize: malloc(dbname)");
         }
-        strcpy(Idx.names[Idx.num], DEFAULT_DIR);
+        strcpy(Idx.names[Idx.num], DEFAULT_INDEX);
         Idx.num++;
     } 
 }

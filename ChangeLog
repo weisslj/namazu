@@ -1,3 +1,7 @@
+2001-07-10  Hajime BABA  <hajime.baba@nao.ac.jp>
+	
+	* doc/en/*.html: Corrected trivial mis-spellings.
+
 2001-07-10  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* Merged with stable-2-0 branch.
@@ -6684,4 +6688,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.839 2001-07-10 08:57:33 knok Exp $
+$Id: ChangeLog,v 1.840 2001-07-10 09:38:54 baba Exp $

@@ -216,11 +216,11 @@ The setting details are given as comments in
 
 <p>
 <code>mknmz</code> automatically identifies target file types and
-performs appropriate document filering. For HTML documents, filtering
+performs appropriate document filtering. For HTML documents, filtering
 includes extraction of &lt;title&gt; or deletion of HTML tags. These
 filtering are taken care by document filters in
 <code>$(datadir)/$(PACKAGE)/filter</code>. The standard document
-fileters are described below.
+filters are described below.
 </p>
 
 <dl>
@@ -249,7 +249,7 @@ href="http://sources.redhat.com/bzip2/">bzip2</a> command.
 (it only needs for Japanese documents)
 
 <dt>excel.pl
-<dd>Handle an Micosoft Excel file.
+<dd>Handle an Microsoft Excel file.
 <dd>Requirement: <a href="http://www.xlHtml.org/">xlHtml</a>
 <!--
 <dd>Alternate command: <a href="http://www.dehenken.co.jp/products/doccat/">doccat</a>
@@ -304,7 +304,7 @@ of <a href="http://www.h14m.org/">Hyper NIKKI System Project</a>.
 <dd>Requirement: ps2ascii
 
 <dt>powerpoint.pl
-<dd>Handle an Micosoft PowerPoint file.
+<dd>Handle an Microsoft PowerPoint file.
 <dd>Requirement: pptHtml, a part of <a href="http://www.xlHtml.org/">xlHtml</a>
 <!--
 <dd>Alternate command: <a href="http://www.dehenken.co.jp/products/doccat/">doccat</a>
@@ -475,7 +475,7 @@ The setting details are given as comments in
 
 <p>
 Default index is the index which is used by default.
-Defualt index follows the rules described bellow.
+Default index follows the rules described bellow.
 </p>
 
 <ul>
@@ -507,7 +507,7 @@ directory of your system, installation is done!
 <p>
 If you have <code>.namazurc file</code> in the directory namazu.cgi is
 stored, <code>.namazurc file</code> will be treated as the CGI
-congifuration file. To display Japanese, you need the following
+configuration file. To display Japanese, you need the following
 settings.
 </p>
 
@@ -561,7 +561,7 @@ form is defined in NMZ.head.  CGI variables are as follows:
 <dt>whence
 <dd>specify where you wish to display query results.
 <dt>reference
-<dd>specify wheter reference hit counts is desplayed or not.
+<dd>specify whether reference hit counts is displayed or not.
 <dt>lang
 <dd>specify language of search results.
 </dl>
@@ -621,7 +621,7 @@ For selecting multiple indices, NMZ.head need a checkbox.
 </pre>
 
 <p>
-In the above example, you can select multiple indecies from foo, bar,
+In the above example, you can select multiple indices from foo, bar,
 and/or baz. The template file specified in Template directive in
 <code>namazurc</code> is used in searching. If no file is given in
 Template directive, the following rules apply.
@@ -630,7 +630,7 @@ Template directive, the following rules apply.
 <ul>
 <li>When a single index is selected<br>
 the template file for the selected index is used.
-<li>When multiple indecies are selected<br>
+<li>When multiple indices are selected<br>
 the template file for the <a href="#default-index">default index</a> is used.
 </ul>
 
@@ -727,8 +727,8 @@ apply egrep to searched documents, you can do as follows:
 <h3><a name="gcnmz">gcnmz</a></h3>
 
 <p>
-When you repeat updates of indecies caused by addition and/or
-deleteion of documents, garbage will be created in index
+When you repeat updates of indices caused by addition and/or
+deletion of documents, garbage will be created in index
 files. <code>gcnmz</code> is a tool for garbage collection. The
 command line options are as follows.
 </p>
@@ -738,7 +738,7 @@ command line options are as follows.
 </p>
 
 <p>
-To run garbage collection for indecies in ~/Namazu/foobar, type
+To run garbage collection for indices in ~/Namazu/foobar, type
 </p>
 
 <p>
@@ -778,7 +778,7 @@ options are as follows.
 </p>
 
 <p>
-To preview indecies stored in ~/Mail/ml/foobar, type
+To preview indices stored in ~/Mail/ml/foobar, type
 </p>
 
 <p>
@@ -831,7 +831,7 @@ Linux and Netscape
 </p>
 
 <p>
-You can ommit the <code class="operator">and</code> operator.  Terms which is
+You can omit the <code class="operator">and</code> operator.  Terms which is
 separated by one ore more spaces is assumed to be AND query.
 </p>
 
@@ -850,7 +850,7 @@ Linux or FreeBSD
 <h3><a name="query-not">NOT query</a></h3>
 <p>
 The query specifies two or more terms for retrieving all
-documents which contain a first term but does't contain the
+documents which contain a first term but doesn't contain the
 following terms. You can insert the <code class="operator">not</code>
 operator between the terms to do NOT query.  e.g.,
 </p>
@@ -886,7 +886,7 @@ so it causes wrong results occasionally. e.g.,
 
 <!-- foo
 <p>
-You must choose the latter with Tkanamzu or namazu.el.
+You must choose the latter with Tknamazu or namazu.el.
 </p>
 -->
 
@@ -1000,7 +1000,7 @@ You must choose the latter with Tkanamzu or namazu.el.
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: manual.html,v 1.41 2001-02-05 12:05:51 shirai Exp $
+$Id: manual.html,v 1.42 2001-07-10 09:38:54 baba Exp $
 </div>
 <address>
 developers@namazu.org

@@ -87,7 +87,7 @@ through $ON_MEMORY_MAX in mknmzrc. And mknmz writes
 temporary files when the size of loaded documents reaches
 the value.
 
-Using --checckpoint option makes mknmz re-exec itself at
+Using --checkpoint option makes mknmz re-exec itself at
 this time. As a result, the size of mknmz's process
 decreases considerably. Use top command to see behavior if
 you are curious.
@@ -148,7 +148,7 @@ Spaces, tabs at the beginning and the end of lines and &gt;
 | # : at the beginning are removed. If the line ends with a
 Japanese character, the newline code will be ignored. (This
 prevents segmentation of Japanese words at the end of line.)
-These procesing will be effective particulary for Mail
+These processing will be effective particularly for Mail
 files. Moreover, recovery of English hyphenation will be
 handled.
 </p>
@@ -158,7 +158,7 @@ handled.
 <p>
 HTML defines the structure of documents. A simple digest can
 be made by using the heading information of documents
-defined by &lt;h[1-6]&gt;. By defualt, the length of digest
+defined by &lt;h[1-6]&gt;. By default, the length of digest
 is set to 200 characters. If words from the heading are not
 enough, more words are supplemented from the beginning of
 the documents. If the target is text file, the first 200
@@ -168,7 +168,7 @@ characters of the documents are simply used.
 <h2><a name="mailnews">Mail/News Digest</a></h2>
 <p>
 When dealing Mail/News files, quotation indicators as in
-(foo@bar.jp wrote:"), quatation bodies beginning, for
+(foo@bar.jp wrote:"), quotation bodies beginning, for
 example, with <code>&gt;</code> are not included in the
 Mail/News digest. Note that these messages are not included
 in the digests, but are included in the search targets.
@@ -234,7 +234,7 @@ foo bar ...<br>
 
 <p>
 
-When collision of hash values ocurred, wrong search results
+When collision of hash values occurred, wrong search results
 may be returned. But, at least, words foo, bar, baz are all
 included, for mistakenly retrieved documents.
 </p>
@@ -267,7 +267,7 @@ garbage by gcnmz.
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: tips.html,v 1.3 2000-04-06 02:01:02 satoru Exp $
+$Id: tips.html,v 1.4 2001-07-10 09:38:54 baba Exp $
 </div>
 <address>
 developers@namazu.org

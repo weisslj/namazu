@@ -177,7 +177,7 @@ CPAN</a></td>
   <td>2.2.1</td><td>&lt;=</td><td>
   <a href="http://chasen.aist-nara.ac.jp/stable/chasen/chasen-2.2.1.tar.gz">chasen-2.2.1.tar.gz</a><a href="http://chasen.aist-nara.ac.jp/stable/ipadic/ipadic-2.4.1.tar.gz">ipadic-2.4.1.tar.gz</a>
   </td><td>
-  <a href="http://chasen.aist-nara.ac.jp/">Nara Institute of Sicence and Technology </a>
+  <a href="http://chasen.aist-nara.ac.jp/">Nara Institute of Science and Technology </a>
   </td><td>
   <a href="http://chasen.aist-nara.ac.jp/chasen/distribution.html">Distribution Policy</a></td>
   <td>
@@ -221,7 +221,7 @@ are required only if you want to use Namazu for handling
 Japanese documents. If not, you have not to have them.
 
 <li>
-** means that you need either KAKASI ot ChaSen for Japanese processing.
+** means that you need either KAKASI or ChaSen for Japanese processing.
 <table cellspacing=0 cellpadding=3 border=1>
 <tr><td>If you have both ...</td><td>
 For segmentation, KAKASI is used by default, however, ChaSen can be used by specifying -c option.</tr>
@@ -306,7 +306,7 @@ option usages.
 </p>
 
 <table cellspacing=0 cellpadding=3 border=1>
-  <caption>How to get help menum in command-line</caption>
+  <caption>How to get help menus in command-line</caption>
   <tr><th>Argument</th><th>Meaning</th><th>Other Arguments</th></tr>
 
   <tr><td>None</td> <td>Short Usage<td>Cannot add any argument
@@ -362,8 +362,8 @@ For example,
 
 <p>
 mknmz will output the following messages during the creation
-of index.  If you wish to display messages in Japansese,
-please refer to <a href="#japanese">Japanese Envirnment</a>.
+of index.  If you wish to display messages in Japanese,
+please refer to <a href="#japanese">Japanese Environment</a>.
 </p>
 
 <pre>
@@ -572,7 +572,7 @@ configuration may be forbidden in Apache configuration.)
 <strong>
 What is written here is not "guarantee".
 </strong>
-Just introduce the advanced usage that deveoplers have in mind.
+Just introduce the advanced usage that developers have in mind.
 </p>
 
 <ul>
@@ -589,7 +589,7 @@ Compare the users' search expression with the above words,
 and display the files that the word is found.
 
 <li>
-In this example, the word is specyfied not in part but in
+In this example, the word is specified not in part but in
 exact.  Hence, if the word is "sys", "system" cannot be found.
 If you wish to include "system", you can use "*", in our
 case, "sys*", "*sys*".  Note that "sys*" stands for strings
@@ -629,13 +629,13 @@ are coded in contrib/mew-nmz.el, and you can find further information in contrib
 <h2><a name="terminology">Terminology</a></h2>
 <dl>
 <dt><a href="http://kakasi.namazu.org/">KAKASI</a>
-<dd>Software to convert Kanji to Hiragana/Katakana/Ro-maji. Namazu uses this as a segmentaion tool.
+<dd>Software to convert Kanji to Hiragana/Katakana/Ro-maji. Namazu uses this as a segmentation tool.
 
 <dt>
 <a href="http://chasen.aist-nara.ac.jp/">ChaSen</a>
-<dd>Japanese morpological analyser. Namazu uses this as a segmentaion tool. 
+<dd>Japanese morphological analyzer. Namazu uses this as a segmentation tool. 
 
-<dt>Segmentaion
+<dt>Segmentation
 <dd>
 Unlike English, Japanese will not put spaces between words. Plain Japanese texts will first be preprocessed so that words are segmented and spaces are put in between. This is called segmentation.
 (The term "segmentation" is used in the same context other than computing words)
@@ -643,7 +643,7 @@ Unlike English, Japanese will not put spaces between words. Plain Japanese texts
 <dt>Index(Noun)
 <dd>
 <pre>
-               (Preparaion)                (Search display)
+               (Preparation)                (Search display)
                           mknmz       namazu
                          ^     |     ^      |
                          |     v     |      v
@@ -679,7 +679,7 @@ namazurc, mknmzrc respectively.
 
 <dt>namazurc  (/usr/local/etc/namazu/namazurc)
 <dd>
-Configure this if you wish to change the behaviour of namazu
+Configure this if you wish to change the behavior of namazu
 and/or namazu.cgi.
 You can configure
 <code>Index, Replace, Logging, Lang, Template</code>
@@ -715,8 +715,8 @@ modules will be used.
 <dt>KAKASI - Kanji Kana Simple Inverter
   <dd> Program and Dictionary to convert Kanji-Kana
   sentences to Hiragana/Ro-maji sentences.  <br>
-  Creator: Hironobu Takahashi, Maintanance: KAKASI Project<br>
-  In Namazu, KAKASI is used for Japanese segmentaion.<br>
+  Creator: Hironobu Takahashi, Maintenance: KAKASI Project<br>
+  In Namazu, KAKASI is used for Japanese segmentation.<br>
   <a href="http://kakasi.namazu.org/">http://kakasi.namazu.org/</a>
   <br>
 
@@ -747,7 +747,7 @@ modules will be used.
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: tutorial.html,v 1.9 2001-01-29 14:19:26 rug Exp $
+$Id: tutorial.html,v 1.10 2001-07-10 09:38:54 baba Exp $
 </div>
 <address>
 developers@namazu.org

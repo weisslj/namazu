@@ -1,5 +1,12 @@
+1999-12-02  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* src/mknmz.pl.in (parse_options): Modify "config=s" handling.
+	(main): Change a position of calling read_config(). [namazu-dev 910]
+	
 1999-11-29  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* pl/*.gmo: Removed. [namazu-dev 903]
+	
 	* lib/Makefile.am (EXTRA_DIST): Add system.h
 
 1999-11-24  Ryuji Abe  <raeva@t3.rim.or.jp>

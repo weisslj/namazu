@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.79 1999-11-23 18:23:31 kenzo- Exp $
+# $Id: mknmz.pl.in,v 1.80 1999-12-02 00:05:40 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -68,9 +68,9 @@ sub main () {
     init();
     setup_magic();
     load_modules();
+    read_config();
     my $file_base = prep();
     load_olemodules() if ($var::Opt{'ole'});
-    read_config();
 
     my $swap = 1;
     my $file_count = 0;
@@ -767,6 +767,7 @@ sub parse_options ()
     my $opt_mailnews = 0;
     my $opt_mhonarc = 0;
 
+    my $opt_config = undef;
     my $output_dir = undef;
     my $update_index = undef;
     my $include_file = undef;
@@ -802,7 +803,7 @@ sub parse_options ()
 	       'c|use-chasen'        => \$opt_chasen,
 	       'd|debug'             => \$var::Opt{'debug'},
 	       'e|robots-txt'        => \$var::Opt{'robotexclude'},
-	       'f|config=s'          => \$ConfigFile,
+	       'f|config=s'          => \$opt_config,
 	       'h|mailnews'          => \$opt_mailnews,
 	       'k|use-kakasi'        => \$opt_kakasi,
 	       'm|use-chasen-morph'  => \$opt_chasen_morph,
@@ -816,6 +817,11 @@ sub parse_options ()
 	       'x|no-heading-summary'=> \$var::Opt{'noheadabst'},
 	       );
 
+    if ($opt_config) {
+	$ConfigFile = $opt_config;
+	read_config();
+    }
+
     if ($opt_help) {
 	show_usage();
 	exit 1;
@@ -827,7 +833,7 @@ sub parse_options ()
     }
 
     if ($opt_show_config) {
-    load_olemodules() if ($var::Opt{'ole'});
+	load_olemodules() if ($var::Opt{'ole'});
 	read_config();
 	show_config();
 	exit 1;

@@ -1,11 +1,37 @@
 ;;; gnus-nmz-1.el --- interface between Namazu and Gnus.
 
-;; Author: KOSEKI Yoshinori <kose@yk.NetLaputa.ne.jp>
-;; Keywords: mail, news
+;; Copyright (C) 1999, 2000 KOSEKI Yoshinori <kose@wizard.tamra.co.jp>
+;; Copyright (C) 2000 Namazu Project All rights reserved.
+
+;; Author: KOSEKI Yoshinori <kose@wizard.tamra.co.jp>
+;;         and Namazu Project.
+;; Version: -1.0.2
+;; Keywords: mail, news, Namazu, Gnus
+
+;; This file is not part of GNU Emacs but obeys its copyright notice.
+
+;; This file is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation; either version 2, or (at your option)
+;; any later version.
+
+;; This file is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with GNU Emacs; see the file COPYING.  If not, write to
+;; the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+;; Boston, MA 02111-1307, USA.
+
+;;; Commentary:
+
+;; 
 
 ;;; Code:
 
-(defconst gnus-nmz-version "gnus-nmz -1.0.1"
+(defconst gnus-nmz-version "gnus-nmz -1.0.2"
   "Version string for this version of gnus-nmz-1.")
 
 (require 'namazu)

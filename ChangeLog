@@ -1,3 +1,10 @@
+2000-03-20  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* filter/mailnews.pl (filter): Apply Katsuhiro Ueno's patch
+	[n-u-j:00114] 
+
+  	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.0.3
+
 2000-03-20  Masao Takaku  <masao@ulis.ac.jp>
 
 	* scripts/mknmz.in (process_file): Remove temporary partial files.
@@ -18,7 +25,7 @@
 	* Namazu: Version 2.0.2 released.
 
 	* scripts/mknmz.in (load_modules): Add "../filter" to @INC.
-	[namazu-devel-ja: 00229]
+	[n-d-j: 00229]
 	
 	* scripts/mknmz.in (generate_uri): Use
 	codeconv::shiftjis_to_eucjp() for $file and codeconv::toeuc() for
@@ -28,7 +35,7 @@
 	* pl/codeconv.pl (shiftjis_to_eucjp): Check util::islang("ja").
 
 	* scripts/mknmz.in (generate_uri): Use codeconv::shiftjis_to_eucjp
-	instead of codeconv::toeuc(). [namazu-devel-ja: 00219]
+	instead of codeconv::toeuc(). [n-d-j: 00219]
 
 	* filter/gfilter.pl (filename_to_title): Call codeconv::toeuc.
 
@@ -49,12 +56,12 @@
 	(main): Do not call load_rcfile($ENV{'MKNMZRC'}) in the funcion.
 
 	* pl/codeconv.pl (toeuc): Introduce 2nd parameter for nkf's options.
-	[namazu-devel-ja: 00214]
+	[n-d-j: 00214]
 	
 2000-03-15  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* scripts/mknmz.in: Apply Hideyuki SHIRAI patch.
-	[namazu-devel-ja 00212]
+	[n-d-j 00212]
 
 	* filter/win32/ichitaro456.pl: Likewise.
 
@@ -65,9 +72,9 @@
 	* pl/nmzidx.pl: Fix NMZ.head handling bug.
 
 	* scripts/mknmz.in (generate_uri): Fix character encoding
-	handling.  [namazu-devel-ja 00205] 
+	handling.  [n-d-j 00205] 
 
-	* filter/bzip2.pl: Remove -x checking. [namazu-devel-ja 00202]
+	* filter/bzip2.pl: Remove -x checking. [n-d-j 00202]
 	
 	* filter/compress.pl: Likewise.
 	
@@ -258,7 +265,7 @@
 	* pl/htmlsplit.pl (write_partial_file): Change ${author}
 	handling. 
 	* src/namazu.c (namazu_core): Call nmz_codeconv_query() in the
-	function.  [namazu-devel-ja:00155]
+	function.  [n-d-j:00155]
 
 	* nmz/query.c (nmz_make_query): Do not call nmz_codeconv_query()
 	in the function. 
@@ -298,10 +305,10 @@
 	of %info hash.
 
 	* pl/util.pl (checkcmd): Add workaround for Windows and OS/2.
-	[namazu-devel-ja:00147]
+	[n-d-j:00147]
 	
 	* pl/htmlsplit.pl (write_partial_file): Add close($fh).
-	[namazu-devel-ja:00147]
+	[n-d-j:00147]
 
 	* filter/Makefile.am (install-data-local): Remove Windows specific
 	files installed by Namazu 2.0 or/and 2.0.1.
@@ -322,7 +329,7 @@
 	* pl/conf.pl.in ($HTML_SUFFIX): Remove "asp|cgi".
 
 	* pl/htmlsplit.pl (split): Make patterns case insensitive.
-	[namazu-devel-ja:00143]
+	[n-d-j:00143]
 	(write_partial_file): Use util::efopen.
 
 2000-03-02  Ryuji Abe  <raeva@t3.rim.or.jp>
@@ -343,7 +350,7 @@
 2000-03-01  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* nmz/field.c (nmz_get_field_data): Be safe.
-	[namazu-devel-ja:00138]
+	[n-d-j:00138]
 
 	* scripts/mknmz.in (write_version): New function.
 	(do_remain_job): Call write_version().
@@ -489,7 +496,7 @@
 	* tests/data/ja/Makefile.am (EXTRA_DIST): Fix a typo.
 
 	* tests/data/ja/taro4.jsw: Renamed from ichitaro4.jsw because
-	JSTXT.EXE can handle only an 8.3 file name. [namazu-devel-ja:00076]
+	JSTXT.EXE can handle only an 8.3 file name. [n-d-j:00076]
 			
 	* tests/data/ja/taro5.jaw: Likewise.
 			
@@ -511,18 +518,18 @@
 
 	* tests/data/ja/Makefile.am (EXTRA_DIST): Add ichitaro4.jsw,
 	ichitaro5.jaw and ichitaro6.jbw.
-	[namazu-devel-ja:00063] [namazu-devel-ja:00066] 
+	[n-d-j:00063] [n-d-j:00066] 
 
 	* scripts/mknmz.in (decide_type): Improve $name handling.
 
 	* filter/ichitaro456.pl (add_magic): Add magics for ichitaro[456]
-	[namazu-devel-ja:00063] 
+	[n-d-j:00063] 
 
 	* tests/Makefile.am (clean-local): New	rule. 
-	[namazu-devel-ja:00064] 
+	[n-d-j:00064] 
 
 	* filter/ichitaro456.pl (post_codeconv): return 1
-	[namazu-devel-ja:00058] 
+	[n-d-j:00058] 
 
 	* tests/Makefile.am (EXTRA_DIST): New variable.
 
@@ -701,7 +708,7 @@
 	(filter): Likewise.
 
 	* filter/mailnews.pl: Fix multipart handling bug by applying
-	Toshiaki -PCX- Tanaka's patch.	[namazu-devel-ja:00030]
+	Toshiaki -PCX- Tanaka's patch.	[n-d-j:00030]
 
 2000-02-26  Ken-ichi Hirose  <kenzo-@tama.or.jp>
 
@@ -730,9 +737,9 @@
 
 	* scripts/mknmz.in (getmsg): New function.
 	(complete_field_info): Use getmsg() for "unknown".
-	[namazu-devel-ja:00022]
+	[n-d-j:00022]
 	
-	* nmz/util.c (nmz_chomp): Rewritten. [namazu-devel-ja:00018]
+	* nmz/util.c (nmz_chomp): Rewritten. [n-d-j:00018]
 
 	* scripts/mknmz.in (add_target): Add a message for an unreadable
 	file. 
@@ -5300,4 +5307,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.647 2000-03-20 12:11:22 masao Exp $
+$Id: ChangeLog,v 1.648 2000-03-20 14:24:14 satoru Exp $

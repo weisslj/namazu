@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: olepowerpoint.pl,v 1.1 2000-03-06 10:16:55 rug Exp $
+# $Id: olepowerpoint.pl,v 1.2 2000-03-14 19:20:06 kenzo- Exp $
 # Copyright (C) 1999 Jun Kurabe ,
 #               1999 Ken-ichi Hirose All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -52,7 +52,9 @@ sub mediatype() {
 }
 
 sub status() {
+	open (STDERR,">nul");
     my $powerpoint = Win32::OLE->new('PowerPoint.Application','Quit');
+	open (STDERR,">&STDERR");
     return 'yes' if (defined $powerpoint);
     return 'no';
 }
@@ -70,6 +72,9 @@ sub post_codeconv () {
 }
 
 sub add_magic ($) {
+    my ($magic) = @_;
+
+    $magic->addFileExts('\\.ppt$', 'application/powerpoint');
     return;
 }
 

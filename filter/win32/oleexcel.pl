@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: oleexcel.pl,v 1.2 2000-03-13 15:32:03 kenzo- Exp $
+# $Id: oleexcel.pl,v 1.3 2000-03-14 19:20:06 kenzo- Exp $
 # Copyright (C) 1999 Jun Kurabe ,
 #               1999 Ken-ichi Hirose All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -51,7 +51,9 @@ sub mediatype() {
 }
 
 sub status() {
+	open (STDERR,">nul");
     my $excel = Win32::OLE->new('Excel.Application','Quit');
+	open (STDERR,">&STDERR");
     return 'yes' if (defined $excel);
     return 'no';
 }
@@ -69,6 +71,9 @@ sub post_codeconv () {
 }
 
 sub add_magic ($) {
+    my ($magic) = @_;
+
+    $magic->addFileExts('\\.xls$', 'application/excel');
     return;
 }
 

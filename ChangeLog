@@ -1,3 +1,11 @@
+2000-03-15  Ken-ichi Hirose  <kenzo-@tama.or.jp>
+
+	* filter/win32/olemsword.pl (add_magic): Add addFileExts.
+
+	* filter/win32/oleexcel.pl (add_magic): Likewise.
+
+	* filter/win32/olepowerpoint.pl (add_magic): Likewise.
+
 2000-03-14  Ken-ichi Hirose  <kenzo-@tama.or.jp>
 
 	* scripts/mknmz.in (load_rcfile): Fix reread same file bug.

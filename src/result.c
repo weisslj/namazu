@@ -1,5 +1,5 @@
 /*
- * $Id: result.c,v 1.59 2000-09-06 09:02:51 rug Exp $
+ * $Id: result.c,v 1.60 2001-07-10 08:57:38 knok Exp $
  * 
  * Copyright (C) 1989, 1990 Free Software Foundation, Inc.
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
@@ -25,6 +25,7 @@
  */
 #include <string.h>
 #include <stdlib.h>
+#include <ctype.h>
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
 #endif
@@ -55,10 +56,11 @@ static int uridecode   = 1;   /* Decode  URI in results as default. */
  */
 
 static void commas ( char *str );
-static char *strcasestr ( char *s1, char *s2 );
+static char *my_strcasestr ( char *s1, char *s2 );
 static void replace_field ( struct nmz_data d, int counter, const char *field, char *result );
 static void encode_entity ( char *str );
 static void emphasize ( char *str );
+static int is_wordboundary ( char *str );
 static int is_urireplace ( void );
 static int is_uridecode ( void );
 
@@ -90,7 +92,7 @@ commas(char *numstr)
  */
 
 static char *
-strcasestr (s1, s2)
+my_strcasestr (s1, s2)
      char *s1;
      char *s2;
 {
@@ -98,12 +100,19 @@ strcasestr (s1, s2)
     char *p1;
     char *p2;
     char *s = s1;
+    int ja_mode;
+
+    ja_mode = nmz_is_lang_ja ();
 
     for (p2 = s2, i = 0; *s; p2 = s2, i++, s++) {
 	for (p1 = s; *p1 && *p2 && (_nmz_tolower(*p1) == _nmz_tolower(*p2)); p1++, p2++)
 	    ;
 	if (!*p2)
 	    break;
+	if (ja_mode && nmz_iseuc(*s)) {
+	    i++;
+	    if (!*(++s)) break;
+	}
     }
     if (!*p2)
 	return s1 + i;
@@ -209,16 +218,28 @@ emphasize(char *str)
 	keylen = strlen(key);
 
 	do {
-	    ptr = strcasestr(ptr, key);
+	    ptr = my_strcasestr(ptr, key);
 	    if (ptr != NULL) {
-		memmove(ptr + 2, ptr, strlen(ptr) + 1);
-		memmove(ptr + 1, ptr + 2, keylen);
-		*ptr = EM_START_MARK;
-		*(ptr + keylen + 1) = EM_END_MARK;
-		ptr += 2;
+              if ((ptr == str || is_wordboundary(ptr - 1))
+                  && keylen && is_wordboundary(ptr + keylen - 1)){
+                memmove(ptr + 2, ptr, strlen(ptr) + 1);
+                memmove(ptr + 1, ptr + 2, keylen);
+                *ptr = EM_START_MARK;
+                *(ptr + keylen + 1) = EM_END_MARK;
+                ptr += 2;
+              }
+              ptr += keylen;
 	    }
 	} while (ptr != NULL);
     }
+}
+
+static int
+is_wordboundary(char *p)
+{
+  if (isalpha(*p) && isalpha(*(p + 1))) return 0;
+  if (isdigit(*p) && isdigit(*(p + 1))) return 0;
+  return 1;
 }
 
 static int 

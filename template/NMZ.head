@@ -75,7 +75,7 @@ This index contains <!-- FILE --> 0 <!-- FILE --> documents and
 <ul>
 <li><input type="checkbox" name="idxname" value="foo" checked>foo 
 <li><input type="checkbox" name="idxname" value="bar">bar
-<li><input type="checkbox" name="idxname" value="bar">baz
+<li><input type="checkbox" name="idxname" value="baz">baz
 </ul>
 </p>
 -->

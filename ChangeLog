@@ -1,7 +1,133 @@
+2001-07-10  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* Merged with stable-2-0 branch.
+
+	* tests/mknmz-15: Added a new test script for checking
+	duplicate folder.
+
+	* tests/{mknmz-14,namazu-11} : Added new test scripts
+	for checking emphasized keyword.
+
+2001-07-10  Yoshinori TAKESAKO  <takesako@namazu.org>
+
+	* src/namazu-cgi.c: Added #include "usage.h" for prototype 
+	of show_version() function.
+
+	* nmz/codeconv.c (euctosjis): Do cast for avoiding warning.
+	And 'JIS X 0212 HOJO KANJI' EUC-JP charactors converts to 
+	Shift_JIS 0x81ac (JIS 0x222e) code.
+
+2001-07-10  Yoshinori TAKESAKO  <takesako@namazu.org>
+
+	* pl/codeconv.pl (chomp_eucjp): Added new function. 
+	It removes a garbage EUC-JP 1st charactor at the end.
+
+	* scripts/mknmz.in (make_summary, put_field_index): 
+	Using new function codeconv::chomp_eucjp().
+
+2001-07-09  Yoshinori TAKESAKO  <takesako@namazu.org>
+
+	* pl/codeconv.pl (eucjp_to_shiftjis): Fixed the problem, that the
+	EUC-JP charactor sequence was incorrectly converted into Shift_JIS
+	code, if 'JIS X 0201 KATAKANA' was contained.
+
+	* pl/codeconv.pl (shiftjis_to_eucjp): Stopped automatically
+	converting --- 'JIS X 0201 KATAKANA (hankaku)' charactors
+	to 'JIS X 0208 KATAKANA (zenkaku)'.
+	
+	* pl/codeconv.pl (eucjp_han2zen_kana): Added new function. 
+	This function converts 'JIS X 0201 KATAKANA (hankaku)' charactors
+	to 'JIS X 0208 KATAKANA (zenkaku)' in EUC-JP.
+
+	* filter/gfilter.pl (filename_to_title): Using new function 
+	codeconv::eucjp_han2zen_kana() for Win32 Shift_JIS filename.
+	
+2001-07-09  Yoshinori TAKESAKO  <takesako@namazu.org>
+
+	* nmz/util.h (nmz_iseuc_kana1st): Added new macro. This function 
+	distinguishes the 1st byte of 'JIS X 0201 KATAKANA' in EUC-JP.
+
+	* nmz/util.h (nmz_iseuc_hojo1st): Added new macro. This function 
+	distinguishes the 1st byte of 'JIS X 0212 HOJO KANJI' in EUC-JP.
+
+	* nmz/codeconv.c (euctosjis): Fixed the problem, that the EUC-JP 
+	charactor sequence was incorrectly converted into Shift_JIS code, 
+	if 'JIS X 0201 KATAKANA' was contained.
+
+2001-07-07  Ryuji Abe  <rug@namazu.org>
+
+	* tests/select-data: Detected $LC_CTYPE and ignored $LANGUAGE.
+
+2001-07-07  Rei FURUKAWA  <furukawa@tcp-ip.or.jp>
+
+	* scripts/mknmz.in (put_field_index): uniq @keys.
+
+2001-07-06  Rei FURUKAWA  <furukawa@tcp-ip.or.jp>
+
+	* src/result.c (emphasize): Changed to check word boundary.
+
+2001-07-05  Hideyuki SHIRAI  <shirai@meadowy.org>
+
+	* tests/ja-mknmz-1: Replace "==" to "=" for old /bin/sh.
+
+	* tests/ja-namazu-cgi-1: Ditto.
+	
+2001-07-05  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.0.6pre2.
+
+	* src/namazu-cgi.c (main): Added a call of show_version() before
+	die().
+
+2001-07-04  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* tests/mknmz-13: Added default checkbox patch.
+	(Contributed by Mr. Philip.)
+
+2001-07-03  Yoshinori TAKESAKO  <takesako@namazu.org>
+
+	* src/result.c (my_strcasestr): Checked a buffer overflow,
+	the case where a character sequence was over at the 1st byte
+	of EUC-JP.
+
+2001-07-03  Ryuji Abe  <rug@namazu.org>
+
+	* src/result.c (my_strcasestr): Renamed from strcasestr(), and
+	fixed EUC-JP handling.
+
+2001-07-03  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* tests/namazu-cgi-6, tests/mknmz-13: Added 2 new test scripts
+	for idxname CGI paramater.
+
+	* po/fr.po: Added some translation.
+	(Contributed by Stephane Legrand, thank you!)
+
+2001-07-02  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* src/output.c: Applied Philip's DOCUMENT_NAME patch.
+	(namazu-users-en#00136)
+
+2001-06-26  Ryuji Abe  <rug@namazu.org>
+
+	* template/NMZ.head.ja: Changed title `Namazu: a Full-Text
+	Search Engine'.
+
+	* configure.in (AC_OUTPUT): Remove scripts/nmzmerge.
+	
+2001-06-26  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* NEWS: Added some description.
+
+2001-06-25  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* New branch: stable-2-0
+
 2001-06-25  Ryuji Abe  <rug@namazu.org>
 
 	* configure.in (AC_OUTPUT): Add scripts/nmzmerge.
-	(AM_INIT_AUTOMAKE): Bumped version number to 2.1.0.
+
+	* NEWS: Added description about changes in 2.0.6.
 
 2001-06-25  Rei FURUKAWA  <furukawa@tcp-ip.or.jp>
 
@@ -6558,4 +6684,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.838 2001-06-25 10:31:08 rug Exp $
+$Id: ChangeLog,v 1.839 2001-07-10 08:57:33 knok Exp $

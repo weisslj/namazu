@@ -5,7 +5,7 @@
 <!-- LINK-REV-MADE -->
 <link rev=made href="mailto:foobar@namazu.org">
 <!-- LINK-REV-MADE -->
-<title>Namazu a full text retrieval search system</title>
+<title>Namazu: a Full-Text Search Engine</title>
 <style type="text/css"><!--
   strong.keyword { color: Red; }
   p.example      { text-indent: 1em; 
@@ -76,7 +76,7 @@
 <ul>
 <li><input type="checkbox" name="idxname" value="foo" checked>foo 
 <li><input type="checkbox" name="idxname" value="bar">bar
-<li><input type="checkbox" name="idxname" value="bar">baz
+<li><input type="checkbox" name="idxname" value="baz">baz
 </ul>
 </p>
 -->

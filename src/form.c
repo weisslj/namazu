@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.60 2001-06-19 08:48:04 knok Exp $
+ * $Id: form.c,v 1.61 2001-07-10 08:57:38 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -176,7 +176,9 @@ select_option(char *s, const char *name, const char *subquery)
     char value[BUFSIZE];
 
     if (cmp_element(s, (char *)"option") == 0) {
-        delete_str(s, (char *)"selected ");
+	if(strcmp(nmz_getenv("QUERY_STRING"), "")) {
+            delete_str(s, (char *)"selected ");
+	}
         fputs(s, stdout);
         get_value(s, value);
         if (strcasecmp(name, "result") == 0) {
@@ -259,7 +261,9 @@ check_checkbox(char *str)
         char *pp;
         int db_count, searched;
 
-        delete_str(str, (char *)"checked");
+	if(strcmp(nmz_getenv("QUERY_STRING"), "")) {
+            delete_str(str, (char *)"checked");
+	}
         fputs(str, stdout);
         get_value(str, value);
         for (pp = value, db_count = searched = 0 ; *pp ;db_count++) {

@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.80 2001-04-20 07:38:27 knok Exp $
+ * $Id: output.c,v 1.81 2001-07-10 08:57:38 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -481,9 +481,14 @@ print_page_index(int n)
     int i, max, whence;
     char *qs; /* QUERY_STRING */
     char *sn; /* SCRIPT_NAME  */
+    char *dn; /* DOCUMENT_NAME  */
 
     qs = nmz_getenv("QUERY_STRING");
     sn = nmz_getenv("SCRIPT_NAME");
+    dn = nmz_getenv("DOCUMENT_NAME");
+
+    if(strcmp(dn, "")) 
+        dn=sn;
 
     html_print(_("	<strong>Page:</strong> "));
 
@@ -495,7 +500,7 @@ print_page_index(int n)
 	if (is_htmlmode()) {
 	    if (i * max != whence) {
 		printf("<a href=\"");
-		fputs(sn, stdout);
+		fputs(dn, stdout);
 		fputc('?', stdout);
 		print_query(qs, i * max);
 		printf("\">");

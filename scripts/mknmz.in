@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.85 2001-06-21 06:21:33 rug Exp $
+# $Id: mknmz.in,v 1.86 2001-07-10 08:57:37 knok Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -638,9 +638,8 @@ sub make_summary ($$$) {
 
     # -1 means "LF"
     my $summary = substr $tmp, 0, $conf::MAX_FIELD_LENGTH - 1;
-    my $kanji = $summary =~ tr/\xa1-\xfe/\xa1-\xfe/;
     # Remove a garbage Kanji 1st char at the end.
-    chop($summary) if $kanji %2;
+    $summary = codeconv::chomp_eucjp($summary);
 
     $summary =~ s/^\s+//;
     $summary =~ s/\s+/ /g;   # normalize white spaces
@@ -669,6 +668,10 @@ sub put_field_index (\%$) {
     my @keys = split '\|', $conf::SEARCH_FIELD;
     if ($var::Opt{'meta'}) {
 	push @keys, (split '\|', $conf::META_TAGS);
+
+        # uniq @keys
+        my %mark = ();
+        @keys = grep {$mark{$_}++; $mark{$_} == 1} @keys;
     }
     for my $key (@keys) {
 	my $lkey = lc($key);
@@ -685,9 +688,8 @@ sub put_field_index (\%$) {
 
 	    # -1 means "LF"
 	    $output = substr $output, 0, $conf::MAX_FIELD_LENGTH - 1;
-	    my $kanji = $output =~ tr/\xa1-\xfe/\xa1-\xfe/;
 	    # Remove a garbage Kanji 1st char at the end.
-	    chop($output) if $kanji %2;
+	    $output = codeconv::chomp_eucjp($output);
 
 	    $output .= "\n";
 	} else {

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: codeconv.pl,v 1.11 2000-03-17 03:10:28 satoru Exp $
+# $Id: codeconv.pl,v 1.12 2001-07-10 08:57:35 knok Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -40,7 +40,7 @@ my @ktoe = (0xA3, 0xD6, 0xD7, 0xA2, 0xA6, 0xF2, 0xA1, 0xA3,
 	     0xEB, 0xEC, 0xED, 0xEF, 0xF3, 0xAB, 0xAC, );
 
 # convert JIS X0201 KANA characters to JIS X0208 KANA
-sub ktoe {
+sub ktoe ($$) {
     my ($c1, $c2) = @_;
     $c1 = ord($c1) & 0x7f;
     my($hi) = ($c1 <= 0x25 || $c1 == 0x30 || 0x5e <= $c1)? "\xa1": "\xa5";
@@ -51,64 +51,82 @@ sub ktoe {
             $lo = 0xdd;
         }else{
             $lo++;
-            $lo++ if ord($c2) & 0x7f == 0x5f;
+            $lo++ if (ord($c2) == 0xdf);
         }
     }
     return $hi . chr($lo);
 }
 
-# convert Shift_JIS to EUC-JP
-sub stoe ($$) {
-    my($c1, $c2) = @_;
+sub eucjp_han2zen_kana ($) {
+    my ($str) = @_;
+    if (util::islang("ja")) {
+	$str =~ s/\x8e([\xa1-\xdf])(\x8e([\xde\xdf]))?/&ktoe($1,$3)/geo;
+    }
+    $str;
+}
 
-    $c1 = ord($c1);
-    $c2 = ord($c2);
-    $c1 += ($c1 - 0x60) & 0x7f;
-    if ($c2 < 0x9f){
-        $c1--;
-        $c2 += ($c2 < 0x7f) + 0x60;
-    }else{
-        $c2 += 2;
+# convert Shift_JIS to EUC-JP
+sub stoe ($) {
+    my ($c1, $c2) = unpack('CC', shift);
+
+    if (0xa1 <= $c1 && $c1 <= 0xdf) {
+	$c2 = $c1;
+	$c1 = 0x8e;
+    } elsif (0x9f <= $c2) {
+	$c1 = $c1 * 2 - ($c1 >= 0xe0 ? 0xe0 : 0x60);
+	$c2 += 2;
+    } else {
+	$c1 = $c1 * 2 - ($c1 >= 0xe0 ? 0xe1 : 0x61);
+	$c2 += 0x60 + ($c2 < 0x7f);
     }
     return chr($c1) . chr($c2);
 }
 
-sub shiftjis_to_eucjp ($){
+sub shiftjis_to_eucjp ($) {
     my ($str) = @_;
-
     if (util::islang("ja")) {
-	$str =~ s/([\x81-\x9f\xe0-\xfa])(.)|([\xa1-\xdf])([\xde\xdf]?)/($3? ktoe($3, $4): stoe($1, $2))/ge;
+	$str =~ s/([\x81-\x9f\xe0-\xfc][\x40-\x7e\x80-\xfc]|[\xa1-\xdf])/&stoe($1)/geo;
     }
     return $str;
 }
 
-sub etos($$) {
-    my($c1, $c2) = @_;
+# convert EUC-JP to Shift_JIS
+sub etos ($) {
+    my ($c1, $c2) = unpack('CC', shift);
 
-    $c1 = ord($c1) & 0x7f;
-    $c2 = ord($c2) & 0x7f;
-
-    if ($c1 & 1) {
-        $c1 = ($c1 >> 1) + 0x71;
-        $c2 += 0x1f;
-        $c2++ if $c2 >= 0x7f;
+    if ($c1 == 0x8e) {      # JIS X 0201 KATAKANA
+	return chr($c2);
+    } elsif ($c1 == 0x8f) { # JIS X 0212 HOJO KANJI
+	return "\x81\xac";
+    } elsif ($c1 % 2) {
+	$c1 = ($c1>>1) + ($c1 < 0xdf ? 0x31 : 0x71);
+	$c2 -= 0x60 + ($c2 < 0xe0);
     } else {
-        $c1 = ($c1 >> 1) + 0x70;
-        $c2 += 0x7e;
+	$c1 = ($c1>>1) + ($c1 < 0xdf ? 0x30 : 0x70);
+	$c2 -= 2;
     }
-    $c1 += 0x40 if $c1 > 0x9f;
-
     return chr($c1) . chr($c2);
 }
 
 sub eucjp_to_shiftjis ($) {
     my ($str) = @_;
     if (util::islang("ja")) {
-	$str =~ s/([\xa1-\xfe])([\xa1-\xfe])/etos($1, $2)/ge;
+	$str =~ s/([\xa1-\xfe][\xa1-\xfe]|\x8e[\xa1-\xdf]|\x8f[\xa1-\xfe][\xa1-\xfe])/&etos($1)/ge;
     }
     return $str;
 }
 
+# Remove a garbage EUC-JP 1st charactor at the end.
+sub chomp_eucjp ($) {
+    my ($str) = @_;
+    if ($str =~ /\x8f$/ or $str =~ tr/\x8e\xa1-\xfe// % 2) {
+	chop($str);
+	chop($str) if ($str =~ /\x8f$/);
+    }
+    return $str;
+}
+
+# convert to EUC-JP by using NKF
 sub toeuc ($) {
     my ($contref, $opt) = @_;
 

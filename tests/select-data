@@ -5,7 +5,7 @@
 
 base=`pwd`/data
 
-for lang in "$LANGUAGE" "$LC_ALL" "$LANG"; do
+for lang in "$LC_ALL" "$LC_CTYPE" "$LANG"; do
     cand=`echo "$lang" | perl -nle 'print $1 if /^(..)/'`
     if test -n "$cand" -a -d "$base/$cand"; then
 	echo "$base/$cand"

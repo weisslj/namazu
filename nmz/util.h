@@ -10,8 +10,9 @@
  *
  */
 
-#define nmz_iseuc(c)  ((uchar)(c) >= 0xa1 && (uchar)(c) <= 0xfe)
-
+#define nmz_iseuc(c)         ((uchar)(c) >= 0xa1 && (uchar)(c) <= 0xfe)
+#define nmz_iseuc_kana1st(c) ((uchar)(c) == 0x8e)
+#define nmz_iseuc_hojo1st(c) ((uchar)(c) == 0x8f)
 
 extern unsigned long nmz_scan_oct ( char *start, int len, int *retlen );
 extern unsigned long nmz_scan_hex ( char *start, int len, int *retlen );

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: gfilter.pl,v 1.13 2000-05-10 06:40:22 satoru Exp $
+# $Id: gfilter.pl,v 1.14 2001-07-10 08:57:34 knok Exp $
 # Copyright (C) 1999 Satoru Takabayashi ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -56,7 +56,7 @@ sub filename_to_title ($$) {
     # for MSWin32's filename using Shift_JIS [1998-09-24]
     if (($mknmz::SYSTEM eq "MSWin32") || ($mknmz::SYSTEM eq "os2")) {
 	$cfile = codeconv::shiftjis_to_eucjp($cfile);
-        codeconv::toeuc(\$cfile);  # Be so-called hankaku.
+	$cfile = codeconv::eucjp_han2zen_kana($cfile);
     }
     
     $cfile =~ m!^.*/([^/]*)$!;

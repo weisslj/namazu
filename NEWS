@@ -1,10 +1,13 @@
-Overview of Changes in Namazu 2.1.0 (draft) - Jun 25, 2001
+Overview of Changes in Namazu 2.0.6 (draft) - Jun 25, 2001
 
-[currently same as stable-2-0 branch]
-* Fix path delimter problem on Windows environment.
+* Fix path delimter probrem on Windows environment.
  (namazu-win32-ja#00411)
+* Fix html parse probrem.
+ (namazu-bugs-ja#23)
+* Added ContentType directive in namazurc.
+ (namazu-bugs-ja#34)
 * Fix ignore $FILTERDIR specification.
-  (namazu-bugs-ja#45)
+ (namazu-bugs-ja#45)
 * Fix locale related environment variables handlings.
 * Fix ERR_TOO_MANY_HIT handlings and total documents counting. 
 * Add more scoring(ranking) methods.

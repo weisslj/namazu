@@ -2,7 +2,7 @@
  * 
  * codeconv.c -
  * 
- * $Id: codeconv.c,v 1.29 2000-09-05 05:47:42 rug Exp $
+ * $Id: codeconv.c,v 1.30 2001-07-10 08:57:34 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -235,14 +235,12 @@ euctosjis(uchar *s)
     uchar c, c2;
     int i = 0, j = 0;
 
-    if (!(c = *(s + j++)))
-	return;
-
-    while (1) {
+    while ((int)(c = *(s + j++))) {
 	if (nmz_iseuc(c)) {
+	    /* G1 for JIS X 0208 KANJI */
 	    if (!(c2 = *(s + j++))) {
 		*(s + i++) = c;
-		return;
+		break;
 	    }
 	    if (nmz_iseuc(c2)) {
 		c = jistojms(c & 0x7f, c2 & 0x7f);
@@ -252,11 +250,28 @@ euctosjis(uchar *s)
 		*(s + i++) = c;
 		*(s + i++) = c2;
 	    }
+	} else if (nmz_iseuc_kana1st(c)) {
+	    /* G2 for JIS X 0201 KATAKANA */
+	    if (!(c2 = *(s + j++))) {
+		*(s + i++) = c;
+		break;
+	    }
+	    *(s + i++) = c2;
+	} else if (nmz_iseuc_hojo1st(c)) {
+	    /* G3 for JIS X 0212 HOJO KANJI */
+	    if (!(c2 = *(s + j++))) {
+		*(s + i++) = c;
+		break;
+	    }
+	    *(s + i++) = 0x81;
+	    if (!(c2 = *(s + j++)))
+		break;
+	    *(s + i++) = 0xac;
 	} else
+	    /* G0 for ASCII or JIS X 0201 ROMAN SET */
 	    *(s + i++) = c;
-	if (!(c = *(s + j++)))
-	    return;
     }
+    *(s + i) = 0;
 }
 
 /*

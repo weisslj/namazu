@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu-cgi.c,v 1.16 2000-03-13 15:32:04 kenzo- Exp $
+ * $Id: namazu-cgi.c,v 1.17 2001-07-10 08:57:38 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -53,6 +53,7 @@
 #include "libnamazu.h"
 #include "util.h"
 #include "codeconv.h"
+#include "usage.h"
 #include "rcfile.h"
 #include "output.h"
 #include "search.h"
@@ -138,6 +139,8 @@ main(int argc, char **argv)
     if (!(getenv("QUERY_STRING")
 #endif
      && getenv("SCRIPT_NAME"))) {
+	show_version();
+	puts("");
 	die("environment variable QUERY_STRING and SCRIPT_NAME are required");
     }
 

@@ -8,6 +8,14 @@
 	
 1999-08-30  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* conf/mknmz.conf-dist.in: Append "|.*\.pdf|.*\.doc" regex into
+	$ALLOW_REGEX for handling pdf and msword documents by default.
+	And remove `_default' target.
+	
+	* src/mknmz.pl.in, conf/mknmz.conf: Abolish $FILE_SIZE_LIMIT but
+	introduce $TEXT_SIZE_MAX instead for handling binary files such as
+	pdf and msword.
+
 	* src/mknmz.pl.in, lib/usage.pl: Abolish the following options and
 	  remove their codes.
 	    -R, --no-regex-index

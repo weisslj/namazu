@@ -1,5 +1,5 @@
 # -*- CPerl -*-
-# $Id: mknmz.conf-dist.in,v 1.1 1999-08-28 01:22:15 satoru Exp $
+# $Id: mknmz.conf-dist.in,v 1.2 1999-08-30 07:44:28 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -62,13 +62,10 @@ $URI_PREFIX = "";
 ## ("_default" would be made by httpdown)
 $DEFAULT_FILE = "_default";
 
-## Target files' regex
-## target file for indexing (case insensitive)
-## ("_default" is a file httpdown would generate.)
-## do *not* use '$' and '^' regular expression meta charactors.
-## that will be automatically appended by mknmz.pl.
-##
-$ALLOW_REGEX = '.*\.html?|.*\.txt|.*_default';
+## Target files' regex. (case insensitive)
+## Do *not* use '$' and '^' regular expression meta charactors.
+## That will be automatically added by mknmz.
+$ALLOW_REGEX = '.*\.html?|.*\.txt|.*_default|.*\.pdf|.*\.doc';
 
 ## Non-Target files' regex
 ## this regular expression describes the names of the files which
@@ -84,9 +81,6 @@ $HTML_SUFFIX = 'html?|[ps]html|html\.[a-z]{2}|asp|cgi';
 
 ## Place where CGI prgrams is in. e.g. /cgi-bin/, /htbin/
 $CGI_DIR = '/(cgi-bin|htbin)/';
-
-## MHonArc's message file
-$MHONARC_MESSAGE_FILE = 'msg\d{5}\.html(?:\.gz)?';
 
 ## MHonArc's header for identification (regex)
 $MHONARC_HEADER = '<\!-- MHonArc v\d\.\d\.\d -->';
@@ -116,9 +110,9 @@ $NO_TITLE = "No title in original";    # document has no title
 $ON_MEMORY_MAX   = 5000000;
 #                  M  K  bytes   
 
-## File size limitation. The file larger than this value will not be indexed.
-$FILE_SIZE_LIMIT =  600000;
-#                   M  K  bytes   
+## Text size limitation. a text larger than this value will be ignored.
+$TEXT_SIZE_MAX   =  600000;
+#                  M  K  bytes   
 
 ## Word length limitation. The word longer than this value will be ignored.
 $WORD_LENG_MAX   = 128;

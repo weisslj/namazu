@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- CPerl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.42 1999-08-30 07:25:46 satoru Exp $
+# $Id: mknmz.pl.in,v 1.43 1999-08-30 07:44:30 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -250,12 +250,12 @@ sub namazu_core ($$$) {
     my $title = "";
 
     my $uri = generate_uri($cfile);  # Make a URI from a file name
-    my ($cfile_size, $kanji, $mtype) = 
+    my ($cfile_size, $text_size, $kanji, $mtype) = 
 	load_document(\$cfile, \$title, \$content, \$weighted_str,
 		      \$headings, \%fields);
 
     # Do checking
-    my $err = check_file($cfile, \$content, $cfile_size, $mtype);
+    my $err = check_file($cfile, \$content, $text_size, $mtype);
     if ($err) {
 	print $file_count + $file_base . " $uri $err\n" unless $var::Opt{quiet};
 	print $fh_errorsfile "$cfile $err\n"; 
@@ -459,7 +459,7 @@ sub load_document ($$$$$\%) {
       = @_;
     my $cfile = $$orig_cfile;
 
-    return (0, 0, 0) unless (-f $cfile && -r $cfile);
+    return (0, 0, 0, 0) unless (-f $cfile && -r $cfile);
 
     # for handling a filename which contains Shift_JIS code
     my $shelter_cfile = "";
@@ -472,6 +472,7 @@ sub load_document ($$$$$\%) {
     }
 
     $$content = util::readfile($cfile);
+    my $file_size = length($$content);
 
     # filtering process
     my $mm = new File::MMagic;
@@ -500,7 +501,7 @@ sub load_document ($$$$$\%) {
 	last;
     }
 
-    my $size = length($$content); # masure size at this time
+    my $text_size = length($$content); # masure text size at this time
 
     if ($SYSTEM eq "MSWin32" && $shelter_cfile ne "") {
 	unlink $cfile;
@@ -516,7 +517,7 @@ sub load_document ($$$$$\%) {
     $$content =~ tr/\x00-\x09\x0b-\x1f\x7f\xff/    /;
     my $kanji = $$content =~ tr/\xa1-\xfe/\xa1-\xfe/;  # Kanji contained?
 
-    return ($size, $kanji, $mtype);
+    return ($file_size, $text_size, $kanji, $mtype);
 }
 
 sub prep () {
@@ -861,15 +862,15 @@ sub show_mini_usage () {
 
 # check the file -- 0: OK / 1: NG
 sub check_file ($$$$) {
-    my ($cfile, $content, $size, $mtype) = @_;
+    my ($cfile, $content, $text_size, $mtype) = @_;
 
     my $msg = "";
-    if ($size == 0) {
+    if ($text_size == 0) {
 	$msg = "is 0 size! skipped.";
     } elsif ($mtype =~ /^application\/octet-stream/) {
 	$msg = "may be a BINARY file! skipped.";
-    } elsif ($size > $conf::FILE_SIZE_LIMIT) {
-	$msg = "is too LARGE file! skipped.";
+    } elsif ($text_size > $conf::TEXT_SIZE_MAX) {
+	$msg = "is too a LARGE text! skipped.";
     } elsif ($mtype =~ /^x-system/) {
 	$msg = "system error occurred! ($mtype) skipped.";
     } elsif ($$content =~ /^$conf::MHONARC_HEADER/o) {

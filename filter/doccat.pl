@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: doccat.pl,v 1.2 2004-05-11 02:40:18 opengl2772 Exp $
+# $Id: doccat.pl,v 1.3 2004-05-11 08:31:24 opengl2772 Exp $
 # Copyright (C) 2001 SATOH Fumiyasu,
 #               2001,2004 Namazu Project. All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -137,6 +137,8 @@ sub add_magic ($) {
     # File::MMagic detects PDF document as `application/pdf'
 
     # RTF
+    $magic->addFileExts('\\.rtf$', 'application/rtf');
+
     $magic->addMagicEntry("0\tstring\t{\\rtf\t");
     $magic->addMagicEntry(">6\tstring\t\\ansi\tapplication/rtf");
     $magic->addMagicEntry(">6\tstring\t\\mac\tapplication/rtf");

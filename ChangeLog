@@ -1,3 +1,7 @@
+2002-08-19  Ryuji Abe  <rug@namazu.org>
+
+	* NEWS: Use `cross-site scripting' instead of `CSS'.
+
 2002-08-10  Hajime BABA  <baba@plain.isas.ac.jp>
 
         * configure.in (AC_OUTPUT): Add contrib/Makefile.
@@ -7618,4 +7622,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.969 2002-08-10 10:47:44 baba Exp $
+$Id: ChangeLog,v 1.970 2002-08-19 07:39:23 rug Exp $

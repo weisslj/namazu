@@ -1,7 +1,7 @@
-Overview of Changes in Namazu 2.0.11 - June xx, 2002
+Overview of Changes in Namazu 2.0.11 - August xx, 2002
 
 * Change output warning to NMZ.warnlog file instead stderr
-  (for CSS issue on some environments)
+  (for cross-site scripting issue on some environments)
 * Update some filters.
 * Fix possibility of buffer overflow.
 * Fix shell execution issue on rpm/deb files.

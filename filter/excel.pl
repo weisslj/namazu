@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: excel.pl,v 1.4 2000-03-10 08:07:24 satoru Exp $
+# $Id: excel.pl,v 1.5 2000-03-15 06:53:50 satoru Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu, 
 #               2000 Namazu Project All rights reserved.
@@ -79,8 +79,6 @@ sub filter ($$$$$) {
     my $tmpfile  = util::tmpnam('NMZ.excel');
     my $tmpfile2 = util::tmpnam('NMZ.excel2');
 
-    return "Unable to execute excel-converter" unless (-x $xlconvpath);
-    return "Unable to execute utf-converter" unless (-x $utfconvpath);
 
     util::vprint("Processing ms-excel file ... (using  '$xlconvpath', '$utfconvpath')\n");
 

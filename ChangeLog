@@ -1,4 +1,29 @@
-2000-03-15  Ken-ichi Hirose  <kenzo-@tama.or.jp>
+2000-03-15  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* scripts/mknmz.in (generate_uri): Fix character encoding
+	handling.  [namazu-devel-ja 00205] 
+
+	* filter/bzip2.pl: Remove -x checking. [namazu-devel-ja 00202]
+	
+	* filter/compress.pl: Likewise.
+	
+	* filter/excel.pl: Likewise.
+	
+	* filter/gzip.pl: Likewise.
+	
+	* filter/man.pl: Likewise.
+	
+	* filter/msword.pl: Likewise.
+	
+	* filter/pdf.pl: Likewise.
+	
+	* filter/tex.pl: Likewise.
+	
+2000-03-13  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* configure.in: Change File-MMagic detection.
+
+2000-03-13  ken-ichi Hirose  <kenzo-@tama.or.jp>
 
 	* filter/win32/olemsword.pl (add_magic): Add addFileExts.
 
@@ -22,6 +47,7 @@
 
 2000-03-13  Ken-ichi Hirose  <kenzo-@tama.or.jp>
 
+>>>>>>> 1.631
 	* scripts/mknmz.in (load_rcfiles): separate load_rcfile() function.
 	(main): Add load_rcfile($ENV{'MKNMZRC'}).
 

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: gzip.pl,v 1.13 2000-02-27 14:10:34 satoru Exp $
+# $Id: gzip.pl,v 1.14 2000-03-15 06:53:50 satoru Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -73,7 +73,6 @@ sub filter_file ($) {
     my ($contref) = @_;
 
     my $tmpfile = util::tmpnam('NMZ.gzip');
-    return "Unable to execute gzip" unless (-x $gzippath);
     my $fh = util::efopen("|$gzippath -cd > $tmpfile");
 
     util::vprint("Processing gzip file ... (using  '$gzippath')\n");

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: msword.pl,v 1.19 2000-02-27 22:45:16 satoru Exp $
+# $Id: msword.pl,v 1.20 2000-03-15 06:53:50 satoru Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -77,11 +77,8 @@ sub filter ($$$$$) {
     my $tmpfile  = util::tmpnam('NMZ.word');
     my $tmpfile2 = util::tmpnam('NMZ.word2');
 
-    return "Unable to execute msword-converter" unless (-x $wordconvpath);
 
     if (util::islang("ja")) {
-	return "Unable to execute utf-converter" unless (-x $utfconvpath);
-	return "Unable to execute utf-converter" unless (-x $wvversionpath);
     }
 
     util::vprint("Processing ms-word file ... (using  '$wordconvpath')\n");

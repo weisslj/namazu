@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: bzip2.pl,v 1.13 2000-02-27 14:10:34 satoru Exp $
+# $Id: bzip2.pl,v 1.14 2000-03-15 06:53:50 satoru Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -60,7 +60,6 @@ sub filter ($$$$$) {
       = @_;
 
     my $tmpfile = util::tmpnam('NMZ.bzip2');
-    return "Unable to execute bzip2" unless (-x $bzip2path);
 
     util::vprint("Processing bzip2 file ... (using  '$bzip2path')\n");
 

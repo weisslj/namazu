@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: pdf.pl,v 1.18 2000-02-27 14:10:34 satoru Exp $
+# $Id: pdf.pl,v 1.19 2000-03-15 06:53:50 satoru Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -63,7 +63,6 @@ sub filter ($$$$$) {
 
     my $tmpfile = util::tmpnam('NMZ.pdf');
     my $tmpfile2 = util::tmpnam('NMZ.pdf2');
-    return "Unable to execute pdf-converter" unless (-x $pdfconvpath);
     util::vprint("Processing pdf file ... (using  '$pdfconvpath')\n");
 
     my $fh = util::efopen("> $tmpfile");

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: man.pl,v 1.24 2000-03-13 15:32:05 kenzo- Exp $
+# $Id: man.pl,v 1.25 2000-03-15 06:53:50 satoru Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -46,22 +46,19 @@ sub status() {
     unless (defined $roffpath) {
 	return 'no';
     }
-    if (util::islang("ja") && $roffpath =~ /\bj?groff(\.exe)?$/) {
-	if (($mknmz::SYSTEM eq "MSWin32") || ($mknmz::SYSTEM eq "os2")){
-	    $roffargs = '-Wall -Tascii';
+
+    if (util::islang("ja") && $roffpath =~ /\bj?groff$/) {
+	# Check wheter -Tnippon is valid.
+	`echo ''| $roffpath -Tnippon 1>/dev/null 2>&1`;
+	if ($? == 0) {
+	    $roffargs = '-Wall -Tnippon' ;
 	} else {
-	    # Check wheter -Tnippon is valid.
-	    `echo ''| $roffpath -Tnippon 1>/dev/null 2>&1`;
-	    if ($? == 0) {
-		$roffargs = '-Wall -Tnippon' ;
-	    } else {
-		$roffargs = '-Wall -Tascii';
-	    }
+	    $roffargs = '-Wall -Tascii';
 	}
 	# print "// $roffargs\n";
-    } elsif ($roffpath =~ /\bj?groff(\.exe)?$/) {
+    } elsif ($roffpath =~ /\bj?groff$/) {
 	$roffargs = '-Tascii';
-    } elsif ($roffpath =~ /nroff(\.exe)?$/) {
+    } elsif ($roffpath =~ /nroff$/) {
 	$roffargs = '';
     } else {
 	die;
@@ -91,7 +88,6 @@ sub filter ($$$$$) {
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
     my $tmpfile = util::tmpnam('NMZ.man');
-    return "Unable to execute nroff/groff/jgroff" unless (-x $roffpath);
 
     {
       util::vprint("Processing man file ... (using '$roffpath -man $roffargs')\n");

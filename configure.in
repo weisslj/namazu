@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.119 2000-03-12 05:49:08 satoru Exp $
+dnl $Id: configure.in,v 1.120 2000-03-15 06:53:50 satoru Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -312,7 +312,7 @@ tmp=`$PERL -nle 'print \$1 if /^\\$VERSION = \"([\d\.]+)\";\$/' \
 AC_MSG_CHECKING(for File::MMagic perl module)
 changequote([, ])
 
-if $PERL -e "use lib '$PMDIR'; use File::MMagic $tmp;" >/dev/null 2>&1; then
+if $PERL -e "use lib '$PMDIR'; use File::MMagic $tmp;"; then
     AC_MSG_RESULT(yes)
     file_mmagic=no
 else

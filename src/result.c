@@ -1,5 +1,5 @@
 /*
- * $Id: result.c,v 1.50 2000-01-31 10:43:58 satoru Exp $
+ * $Id: result.c,v 1.51 2000-02-06 22:43:59 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -28,6 +28,7 @@
 #  include "config.h"
 #endif
 #include "namazu.h"
+#include "i18n.h"
 #include "util.h"
 #include "field.h"
 #include "output.h"

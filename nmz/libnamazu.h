@@ -2,7 +2,7 @@
  * 
  * libnamazu.h - Namazu library api
  *
- * $Id: libnamazu.h,v 1.40 2000-02-01 04:38:28 rug Exp $
+ * $Id: libnamazu.h,v 1.41 2000-02-06 22:43:57 rug Exp $
  * 
  */
 
@@ -11,6 +11,10 @@
 
 #include <stdio.h>   /* for FILE struct */
 
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
 /*
  * Set the message of error occurred in libnmz.
@@ -84,6 +88,12 @@ enum {
 
 typedef unsigned char uchar;
 
+/*
+ * forward declarations of namazu types.
+ */
+
+typedef struct _NmzResult NmzResult;
+
 /* 
  * Status code for error handling.
  */
@@ -150,12 +160,11 @@ struct nmz_data {
 /* 
  * Data structure for search result.
  */
-typedef struct nmz_result {
+struct _NmzResult {
     int num;           /* number of elements in its data */
     enum nmz_stat stat; /* status code mainly used for error handling */
     struct nmz_data *data;  /* dynamic array for storing nmz_data's. */
-} NmzResult;
-
+};
 
 /* 
  * NMZ.* files' names.
@@ -232,5 +241,9 @@ extern char *nmz_get_dyingmsg ( void );
 extern char *nmz_set_dyingmsg_sub(const char *fmt, ...);
 extern char *nmz_msg(const char *fmt, ...);
 extern void nmz_free_internal(void);
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
 
 #endif /* _LIBNAMAZU_H */

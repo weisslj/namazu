@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.65 2000-01-28 09:40:13 satoru Exp $
+ * $Id: search.c,v 1.66 2000-02-06 22:43:58 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -24,7 +24,6 @@
  * 
  */
 
-#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -92,6 +91,7 @@ static NmzResult nmz_search_sub ( NmzResult hlist, const char *query, int n );
 static void make_fullpathname_index ( int n );
 static void remove_quotes(char *str);
 static enum nmz_stat normalize_idxnames(void);
+static int issymbol ( int c );
 
 /*
  * Show the status for debug use
@@ -293,7 +293,7 @@ hash(const char *str)
     uchar *ustr = (uchar *)str;  /* for 8 bit chars handling */
 
     for (i = j = 0; *ustr; i++) {
-        if (!nmz_issymbol(*ustr)) { /* except symbol */
+        if (!issymbol(*ustr)) { /* except symbol */
             hash ^= nmz_seed[j & 0x3][*ustr];
             j++;
         }
@@ -857,6 +857,16 @@ normalize_idxnames(void)
         }
     }
     return SUCCESS;
+}
+
+static int 
+issymbol(int c)
+{
+    if (c >= 0x00 && c < 0x80 && !isalnum(c)) {
+        return 1;
+    } else {
+	return 0;
+    }
 }
 
 /*

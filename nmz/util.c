@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: util.c,v 1.57 2000-02-05 13:15:04 satoru Exp $
+ * $Id: util.c,v 1.58 2000-02-06 22:43:58 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -263,16 +263,6 @@ nmz_getidxptr(FILE * fp, long point)
     fseek(fp, point * sizeof(int), 0);
     nmz_fread(&val, sizeof(int), 1, fp);
     return (long) val;
-}
-
-int 
-nmz_issymbol(int c)
-{
-    if (c >= 0x00 && c < 0x80 && !isalnum(c)) {
-        return 1;
-    } else {
-	return 0;
-    }
 }
 
 /* 

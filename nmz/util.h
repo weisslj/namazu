@@ -35,7 +35,6 @@ extern size_t nmz_fread ( void *ptr, size_t size, size_t nmemb, FILE *stream );
 extern int nmz_get_unpackw ( FILE *fp, int *data );
 extern int nmz_read_unpackw ( FILE *fp, int *buf, int size );
 extern long nmz_getidxptr ( FILE * fp, long point );
-extern int nmz_issymbol ( int c );
 extern void nmz_warn_printf ( const char *fmt, ... );
 extern void nmz_debug_printf ( const char *fmt, ... );
 extern void nmz_pathcat ( const char *base, char *name );

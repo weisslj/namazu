@@ -1,3 +1,14 @@
+2000-02-07  Ryuji Abe  <raeva@t3.rim.or.jp>
+
+	* nmz/libnamazu.h: Covered with #ifdef __cplusplus.
+	(struct _NmzResult): Renamed from nmz_result.
+
+	* nmz/util.[ch] (nmz_issymbol): Moved to nmz/search.c as issymbol.
+
+	* nmz/search.c (issymbol): Be static.
+
+	* nmz/result.c: Includes "i18n.h".
+
 2000-02-06  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* pl/usage.pl: Add a description for --ole option.

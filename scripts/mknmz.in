@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.149 2004-12-06 16:19:44 opengl2772 Exp $
+# $Id: mknmz.in,v 1.150 2005-02-21 23:27:32 knok Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -1558,7 +1558,6 @@ sub make_slog_file () {
     {
 	my $fh_slogfile = util::efopen(">>$var::NMZ{'slog'}");
     }
-    chmod 0666, $var::NMZ{'slog'};
 }
 
 

@@ -1,3 +1,7 @@
+2005-02-22  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* scripts/mknmz.in (make_slog_file): Removed chmod 666.
+
 2005-01-23  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * pl/filter.pl.in (_codeconv_document): It is corrected that the
@@ -9336,4 +9340,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1289 2005-01-23 13:00:34 opengl2772 Exp $
+$Id: ChangeLog,v 1.1290 2005-02-21 23:27:32 knok Exp $

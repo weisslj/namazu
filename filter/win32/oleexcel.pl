@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: oleexcel.pl,v 1.16 2004-03-09 11:56:00 opengl2772 Exp $
+# $Id: oleexcel.pl,v 1.17 2004-05-10 06:00:11 opengl2772 Exp $
 # Copyright (C) 2001 Yoshinori TAKESAKO,
 #               1999 Jun Kurabe ,
 #               1999 Ken-ichi Hirose All rights reserved.
@@ -250,6 +250,7 @@ sub filter ($$$$$) {
     # read all text from temporary file 2
     my $fh2 = util::efopen("< $tmpfile2");
     $$cont = util::readfile($fh2);
+    util::fclose($fh2);
     undef $fh2;
 
     # unlink temporary file 0,1,2

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: ichitaro456.pl,v 1.6 2001-01-12 05:15:31 baba Exp $
+# $Id: ichitaro456.pl,v 1.7 2004-05-10 06:00:11 opengl2772 Exp $
 # Copyright (C) 1999 Ken-ichi Hirose,
 #               2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -98,6 +98,7 @@ sub filter ($$$$$) {
  
     $$cont = "";
     while (<$fh_cmd>) {$$cont .= $_;}
+    util::fclose($fh_cmd);
     undef $fh_cmd;
 
     unlink($tmpfile2);

@@ -1,5 +1,9 @@
 2001-08-20  Hajime BABA <hajime.baba@nao.ac.jp>
 
+	* doc/ja/manual.html: Added explanation of lnnmz and adnmz.
+
+2001-08-20  Hajime BABA <hajime.baba@nao.ac.jp>
+
 	* ChangeLog, ChangeLog.1, doc/en/manual.html, filter/postscript.pl,
 	  man/mknmz.1, nmz/util.c, pl/usage.pl, pl/util.pl, po/es.po,
 	  po/fr.po, po/ja.po, po/ja_JP.SJIS.po, po/namazu.pot,
@@ -6913,4 +6917,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.850 2001-08-20 13:31:55 baba Exp $
+$Id: ChangeLog,v 1.851 2001-08-20 13:43:43 baba Exp $

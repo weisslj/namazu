@@ -54,6 +54,8 @@ GNU General Public License version 2</a> に
   <li><a href="#mailutime">mailutime</a>
   <li><a href="#vfnmz">vfnmz</a>
   <li><a href="#rfnmz">rfnmz</a>
+  <li><a href="#lnnmz">lnnmz</a>
+  <li><a href="#adnmz">adnmz</a>
   </ul>
 <li><a href="#query">検索式</a>
   <ul>
@@ -806,6 +808,59 @@ rfnmz は NMZ.field.*.i を再構築するツールです。コマンド行か
 <code>% rfnmz ~/Namazu/foobar</code><br>
 </p>
 
+<h3><a name="lnnmz">lnnmz</a></h3>
+
+<p>
+lnnmz は、検索対象の HTML ファイルに含まれるハイパーリンクを抽出し
+たファイルである NMZ.field.link を作成するコマンドです。lnnmz 実行
+時には元のHTML ファイルが読める必要があります。通常は関係ないはず
+ですが、リモートサイトの検索などで wget などで一時的に取ってきただ
+けという場合には注意が必要です。コマンド行から以下のように実行しま
+す。
+</p>
+
+<p>
+<code>% lnnmz [options] &lt;target&gt;...</code>
+</p>
+
+<p>
+たとえば、 ~/Namazu/foobar に置かれているインデックスの
+NMZ.field.link を作成するなら、次のように実行します。
+</p>
+
+<p>
+<code>% lnnmz ~/Namazu/foobar</code><br>
+</p>
+
+<p>
+なお、lnnmz は HTML ファイルのリンクしか検出しません。シンプルテキ
+ストやPDF 他のリンク構造は検出しないだけでエラーなどにはなりません。
+</p>
+
+<h3><a name="adnmz">adnmz</a></h3>
+
+<p>
+adnmz は NMZ.field.link を使って検索対象のHTMLファイル間の相互のハ
+イパーリンク構造を示す NMZ.field.adjacency を作成するコマンドです。
+文書間のリンク関係を文書IDに変換したもので、隣接リストそのものです。
+実行時に NMZ.field.link が必要ですので、lnnmz と事実上セットである
+と考えるのが良いでしょう。コマンド行から以下のように実行します。
+</p>
+
+<p>
+<code>% adnmz [options] &lt;target&gt;...</code>
+</p>
+
+<p>
+たとえば、 ~/Namazu/foobar に置かれているインデックスの
+NMZ.field.adjacency を作成するなら、次のように実行します。
+</p>
+
+<p>
+<code>% adnmz ~/Namazu/foobar</code><br>
+</p>
+
+
 <!-- query -->
 <h2><a name="query">検索式</a></h2>
 
@@ -981,7 +1036,7 @@ Tknamazu および namazu.el から検索するときは必ず後者で指定します。
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: manual.html,v 1.61 2001-08-08 09:05:45 knok Exp $
+$Id: manual.html,v 1.62 2001-08-20 13:43:43 baba Exp $
 </div>
 <address>
 developers@namazu.org

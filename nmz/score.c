@@ -2,7 +2,7 @@
  * 
  * score.c - scoring-related functions of Namazu
  * 
- * $Id: score.c,v 1.1 2001-02-26 08:39:52 baba Exp $
+ * $Id: score.c,v 1.2 2001-02-26 08:54:43 baba Exp $
  * 
  * Copyright (C) 2001 Hajime BABA  All rights reserved.
  * Copyright (C) 2001 Namazu Project All rights reserved.
@@ -386,7 +386,7 @@ calc_docid_intrinsic_score(struct nmz_data d)
     double dis = 0.0;
     double freshness_factor, urilength_factor;
 
-    pagerank_factor = freshness_factor = urilength_factor = 1.0;
+    freshness_factor = urilength_factor = 1.0;
 
     /* calculate each factors */
     if (use_freshness_factor) {

@@ -1,3 +1,8 @@
+2004-10-09  Yukio USUDA <usu@namazu.org>
+
+	* scripts/mknmz.in(absolute_path): Allow MS-Windows UNC paths.
+	(Universal Naming Convention: \\ServerName\ShareName\Directory)
+
 2004-10-05  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* nmz/regrex.h: Correction of prototype declaration.
@@ -9136,4 +9141,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1237 2004-10-05 13:57:19 opengl2772 Exp $
+$Id: ChangeLog,v 1.1238 2004-10-09 08:55:47 usu Exp $

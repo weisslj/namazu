@@ -9,7 +9,7 @@
 ## Thanks to [Ryuji Abe <raeva@t3.rim.or.jp>] for many contribution
 
 AUTOMAKE_OPTIONS = no-dependencies
-LIBS = -lm @LEXLIB@
+LIBS = -lm
 
 bin_PROGRAMS = namazu
 bin_SCRIPTS = gcnmz mailutime mknmz gtnmz

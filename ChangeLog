@@ -4,6 +4,8 @@
 
 1999-09-05  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* configure.in, src/Makefile: Remove lex related codes.
+	
 	* **/*.pl{,.in}: Change all notations for representing hash value:
 	key string must be single-quoted. e.g., $NMZ{log} -> NMZ{'log'}
 	

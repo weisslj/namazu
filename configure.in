@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.24 1999-09-04 09:22:37 satoru Exp $
+dnl $Id: configure.in,v 1.25 1999-09-05 10:45:12 satoru Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -21,7 +21,6 @@ AC_PROG_CC
 AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
-AM_PROG_LEX
 
 if test -n "$GCC"; then
     CFLAGS="$CFLAGS -Wall"

@@ -141,9 +141,10 @@ void get_field_data(int idxid, int docid, char *orig_field, char *data)
         nmz_debug_printf("%s: cannot open file.\n", fname);
     }
 
-    /* You can rely on that length of one field is shorter than 
-       BUFSIZE (1024) because its length is restricted at 
-       put_field_index() in mknmz.
+    /* 
+     * You can rely on that length of a field is shorter than 
+     * BUFSIZE (1024) because its length is restricted in 
+     * conf.pl: $conf::MAX_FIELD_LENGTH = 200;
      */
     fseek(fp_field, nmz_getidxptr(fp_field_idx, docid), 0);
     fgets(data, BUFSIZE, fp_field);

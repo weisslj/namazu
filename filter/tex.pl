@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: tex.pl,v 1.1 1999-12-30 13:16:34 satoru Exp $
+# $Id: tex.pl,v 1.2 1999-12-31 02:07:55 satoru Exp $
 # Copyright (C) 1999 Satoru Takabayashi ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -49,6 +49,19 @@ sub filter ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
       = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
+
+    if ($$cont =~ m/\\title\{(.*?)\}/s) {
+	$fields->{'title'} = $1;
+	$fields->{'title'} =~ s/\\\\/ /g;
+    }
+    if ($$cont =~ m/\\author\{(.*?)\}/s) {
+	$fields->{'author'} = $1;
+	$fields->{'author'} =~ s/\\\\/ /g;
+    }
+    if ($$cont =~ m/\\begin\{abstract\}(.*?)\\end\{abstract\}/s) {
+	$fields->{'summary'} = $1;
+	$fields->{'summary'} =~ s/\\\\/ /g;
+    }
 
     my $tmpfile = util::tmpnam('NMZ.tex');
     my $texconvpath = util::checkcmd('detex');

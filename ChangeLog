@@ -1,5 +1,20 @@
 1999-12-31  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* filter/tex.pl (filter): Use \title{foo}, \author{bar},
+	\begin{abstract} ... \end{abstract} information if available.
+
+	* scripts/mknmz.pl.in (put_field_index): Use MAX_FIELD_LENGTH to
+	limit a field string.
+	(make_summary): Ditto.
+
+	* pl/conf.pl.in: s/SUMMARY_LENGTH/MAX_FIELD_LENGTH/
+	Add comments on MAX_FIELD_LENGTH.
+
+	* scripts/mknmz.pl.in (load_modules): Use ../filter/*.pl if
+	exists. (for developing use)
+	(load_modules): Allow `-' in a filter file name.
+	(load_modules): Restore unshift @INC, "../filter".
+
 	* HACKING-ja: Attach [namazu-dev 1077] patch.
 
 	* Makefile.am (snapshot): New rule for making snapshot.

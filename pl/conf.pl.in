@@ -143,8 +143,12 @@ $NON_SEPARATION_ELEMENTS = 'A|TT|CODE|SAMP|KBD|VAR|B|STRONG|I|EM|CITE|FONT|U|'.
 
 $INVALID_LENG = 128; 
 
-## Length of a summary
-$SUMMARY_LENGTH = 200;
+################################################################
+##
+## Max length of a field
+## This MUST be smaller than libnamazu.h's BUFSIZE (1024).
+##
+$MAX_FIELD_LENGTH = 200;
 
 
 ################################################################

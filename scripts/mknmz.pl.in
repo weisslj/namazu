@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.3 1999-12-30 13:16:36 satoru Exp $
+# $Id: mknmz.pl.in,v 1.4 1999-12-31 02:07:59 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -242,10 +242,14 @@ sub load_modules () {
 
     # Check filter modules
     my @filters = ();
-    @filters = glob "$FILTERDIR/*.pl" if @filters == 0;
-
+    if (-f "../filter/gfilter.pl") { # to ease developing
+	@filters = glob "../filter/*.pl" if @filters == 0;
+	unshift @INC, "../filter";
+    } else {
+	@filters = glob "$FILTERDIR/*.pl" if @filters == 0;
+    }
     for my $filter (@filters) {
-	$filter =~ m!(\w+)\.pl$!;
+	$filter =~ m!([-\w]+)\.pl$!;
 	my $module = $1;
 	next if ($module eq 'gfilter'); # skip gfilter (not for filtering)
 	next if ($module =~ /^ole/i);
@@ -445,7 +449,7 @@ sub complete_field_info (\%$$\$\$\$) {
 sub make_summary ($$$) {
     my ($contref, $headings, $cfile) = @_;
 
-    # pick up $conf::SUMMARY_LENGTH bytes string
+    # pick up $conf::MAX_FIELD_LENGTH bytes string
     my $tmp = "";
     if ($$headings ne "") {
 	$$headings =~ s/^\s+//;
@@ -457,7 +461,7 @@ sub make_summary ($$$) {
 
     my $offset = 0;
     my $tmplen = 0;
-    while (($tmplen = $conf::SUMMARY_LENGTH + 1 - length($tmp)) > 0
+    while (($tmplen = $conf::MAX_FIELD_LENGTH + 1 - length($tmp)) > 0
            && $offset < length($$contref))
     {
         $tmp .= substr $$contref, $offset, $tmplen;
@@ -466,15 +470,11 @@ sub make_summary ($$$) {
         $tmp =~ s/([-=*\#])\1{2,}/$1$1/g;
     }
 
-    my $summary = substr $tmp, 0, $conf::SUMMARY_LENGTH;
+    # -1 means "LF"
+    my $summary = substr $tmp, 0, $conf::MAX_FIELD_LENGTH - 1;
     my $kanji = $summary =~ tr/\xa1-\xfe/\xa1-\xfe/;
-    $summary .= substr($tmp, $conf::SUMMARY_LENGTH, 1) if $kanji %2;
-
-#    length($tmp) < $conf::SUMMARY_LENGTH + 1 ?
-#          $tmplen = $conf::SUMMARY_LENGTH : $tmplen = length($tmp) - 1;
-#      my $summary = substr($tmp, 0, $tmplen);
-#      my $kanji = $summary =~ tr/\xa1-\xfe/\xa1-\xfe/;
-#      $summary .= substr($tmp, $tmplen, 1) if $kanji %2;
+    # Remove a garbage Kanji 1st char at the end.
+    chop($summary) if $kanji %2;
 
     $summary =~ s/^\s+//;
     $summary =~ s/\s+/ /g;   # normalize white spaces
@@ -513,11 +513,15 @@ sub put_field_index (\%$) {
 	    $fields->{$key} =~ s/\s+/ /g;
 	    $fields->{$key} =~ s/\s+$//;
 	    $fields->{$key} =~ s/^\s+//;
-	    $output = $fields->{$key} . "\n";
-	    if (length($output) > 1024) {
-		$output = substr $output, 0, 1022;
-		$output .= "\n";
-	    }
+	    $output = $fields->{$key};
+
+	    # -1 means "LF"
+	    $output = substr $output, 0, $conf::MAX_FIELD_LENGTH - 1;
+	    my $kanji = $output =~ tr/\xa1-\xfe/\xa1-\xfe/;
+	    # Remove a garbage Kanji 1st char at the end.
+	    chop($output) if $kanji %2;
+
+	    $output .= "\n";
 	} else {
 	    $output = "\n";
 	}

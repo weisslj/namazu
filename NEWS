@@ -1,13 +1,17 @@
-Overview of Changes in Namazu 2.0.13 - August nn, 2003
+Overview of Changes in Namazu 2.0.13 - April 1, 2004
 
 * Add Polish translations.
   (Contributed by Kryzystof Drewicz.)
 * Add German translations.
   (Contributed by Gerald Pfeifer.)
 * Add new filters (Ichitaro variants, OpenOffice.org, RTF, apachecache)
-* Adapt new filter programs (wvWare 0.7.4, xpdf 2.02)
+* Add new filter (Macbinary)
+* Adapt new filter programs (wvWare 0.7.4, xpdf 2.02 - 3.00)
 * Add new directives for namazurc (SUICIDE_TIME, REGEX_SEARCH)
   (to prevent possibility of remote DoS, reported by sheepman.)
+* Add new directives for mknmzrc (HTML_ATTRIBUTES)
+  (This pattern specifies attribute of a HTML tag which should be
+  searchable.)
 * Change soname (LTVERSION 7:0:0, lib/libnmz.so.6 -> lib/libnmz.so.7)
 * Support $WAKATI="module_mecab"; in mknmzrc. (experimental)
 * Fix MacOSX compilation problem (getopt.c deviation from gengetopt-2.5)

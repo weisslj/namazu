@@ -6,7 +6,7 @@ tknamazudir = @pkgdatadir@/tknamazu
 bin_SCRIPTS = tknamazu
 tknamazu_DATA = tknamazu.hlp tknamazu.ppm mini-tknamazu.xpm
 
-CLEANFILES = tknamazu.tcl
+CLEANFILES = tknamazu.tcl $(bin_SCRIPTS)
 
 EXTRA_DIST = README.tknamazu $(tknamazu_DATA)
 

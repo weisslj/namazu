@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: taro.pl,v 1.14 2004-11-19 16:28:51 opengl2772 Exp $
+# $Id: taro.pl,v 1.15 2004-11-24 14:20:33 opengl2772 Exp $
 # Copyright (C) 2000 Ken-ichi Hirose, 
-#               2000,2004 Namazu Project All rights reserved.
+#               2000,2001,2003,2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -33,10 +33,10 @@ my @taroconvopts = undef;
 
 sub mediatype() {
     return qw(
-	application/ichitaro5
-	application/ichitaro6
-	application/ichitaro7
-	application/x-js-taro
+        application/ichitaro5
+        application/ichitaro6
+        application/ichitaro7
+        application/x-js-taro
     );
 }
 
@@ -83,12 +83,12 @@ sub filter ($$$$$) {
 
     my $tmpfile  = util::tmpnam('NMZ.taro');
     {
-	my $fh = util::efopen("> $tmpfile");
-	print $fh $$cont;
+        my $fh = util::efopen("> $tmpfile");
+        print $fh $$cont;
         util::fclose($fh);
     }
     {
-	my @cmd = ($taroconvpath, @taroconvopts, $tmpfile);
+        my @cmd = ($taroconvpath, @taroconvopts, $tmpfile);
         my $fh_out = IO::File->new_tmpfile();
         my $status = util::syscmd(
             command => \@cmd,
@@ -97,17 +97,17 @@ sub filter ($$$$$) {
                 "stderr" => "/dev/null",
             },
         );
-	my $size = util::filesize($fh_out);
-	if ($size == 0) {
+        my $size = util::filesize($fh_out);
+        if ($size == 0) {
             util::fclose($fh_out);
             unlink $tmpfile;
-	    return "Unable to convert file ($taroconvpath error occurred).";
-	}
-	if ($size > $conf::TEXT_SIZE_MAX) {
+            return "Unable to convert file ($taroconvpath error occurred).";
+        }
+        if ($size > $conf::TEXT_SIZE_MAX) {
             util::fclose($fh_out);
             unlink $tmpfile;
-	    return 'Too large taro file.';
-	}
+            return 'Too large taro file.';
+        }
         $$cont = util::readfile($fh_out, "t");
         util::fclose($fh_out);
     }
@@ -117,9 +117,9 @@ sub filter ($$$$$) {
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($cont);
     $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
-	unless $fields->{'title'};
+        unless $fields->{'title'};
     gfilter::show_filter_debug_info($cont, $weighted_str,
-				    $fields, $headings);
+                                    $fields, $headings);
 
     return undef;
 }

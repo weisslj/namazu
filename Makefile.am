@@ -58,12 +58,12 @@ cxref: stamp-h
 	    $(mkinstalldirs) cxref; \
 	fi
 	cxref -N namazu -html20-src -I . -I src -I nmz -I lib \
-	    -warn-all -index-all -xref-all -O cxref \
+	    -warn-xref -index-all -xref-all -O cxref \
 	    {nmz,src,lib}/*.[ch] 1> cxref/warnings 
 
 	# Two passes are needed for accurate cross referencing.
 	cxref -N namazu -html20-src -I . -I src -I nmz -I lib \
-	    -warn-all -index-all -xref-all -O cxref \
+	    -warn-xref -index-all -xref-all -O cxref \
 	    {nmz,src,lib}/*.[ch] 1> cxref/warnings 
 
 

@@ -5,6 +5,7 @@
 	(global): New command for using global.
 	<http://www.tamacom.com/global/>
 	(cxref): A tiny fix.
+	(cxref): Use -warn-xref instead of -warn-all
 
 	* nmz/search.h: Add #include "namazu.h" for NmzResult type.
 

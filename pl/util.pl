@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.14 2000-02-27 14:10:35 satoru Exp $
+# $Id: util.pl,v 1.15 2000-03-02 11:06:36 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -160,7 +160,10 @@ sub checklib ($) {
 # checkcmd ... check command path
 sub checkcmd ($) {
     my $cmd = shift;
-    for my $dir (split(/:|;/, $ENV{'PATH'})) {
+    my $pd = ':';
+    $pd = ';' if (($^O eq "MSWin32") || ($^O eq "os2"));
+
+    for my $dir (split(/$pd/, $ENV{'PATH'})) {
 	return "$dir/$cmd" if (-x "$dir/$cmd");
 	return "$dir/$cmd.com" if (-x "$dir/$cmd.com" &&
 		(($mknmz::SYSTEM eq "MSWin32") || ($mknmz::SYSTEM eq "os2")));

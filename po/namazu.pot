@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2000-03-02 11:52+0900\n"
+"POT-Creation-Date: 2000-03-02 17:59+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -232,11 +232,11 @@ msgstr ""
 msgid "Writing index files..."
 msgstr ""
 
-#: scripts/mknmz.in:221
+#: scripts/mknmz.in:220
 msgid "Reading rcfile: "
 msgstr ""
 
-#: scripts/mknmz.in:257
+#: scripts/mknmz.in:256
 msgid "Checkpoint reached: re-exec mknmz...\n"
 msgstr ""
 
@@ -480,137 +480,141 @@ msgstr ""
 msgid "system error occurred! "
 msgstr ""
 
-#: scripts/mknmz.in:1607
+#: scripts/mknmz.in:1609
 msgid ""
 "\n"
 "\n"
 "== found ==\n"
 msgstr ""
 
-#: scripts/mknmz.in:1608
+#: scripts/mknmz.in:1610
 msgid ""
 "\n"
 "\n"
 "== registered ==\n"
 msgstr ""
 
-#: scripts/mknmz.in:1609
+#: scripts/mknmz.in:1611
 msgid ""
 "\n"
 "\n"
 "== overlapped  ==\n"
 msgstr ""
 
-#: scripts/mknmz.in:1610
+#: scripts/mknmz.in:1612
 msgid ""
 "\n"
 "\n"
 "== deleted  ==\n"
 msgstr ""
 
-#: scripts/mknmz.in:1611
+#: scripts/mknmz.in:1613
 msgid ""
 "\n"
 "\n"
 "== updated ==\n"
 msgstr ""
 
-#: scripts/mknmz.in:1612
+#: scripts/mknmz.in:1614
 msgid ""
 "\n"
 "\n"
 "== files to index ==\n"
 msgstr ""
 
-#: scripts/mknmz.in:1636
+#: scripts/mknmz.in:1638
 msgid "## deleted: "
 msgstr ""
 
-#: scripts/mknmz.in:1659
+#: scripts/mknmz.in:1661
 msgid "## indexed: "
 msgstr ""
 
-#: scripts/mknmz.in:1685
+#: scripts/mknmz.in:1687
 msgid "update_field_index: "
 msgstr ""
 
-#: scripts/mknmz.in:1705
+#: scripts/mknmz.in:1702
+msgid "was deleted!\n"
+msgstr ""
+
+#: scripts/mknmz.in:1713
 msgid "was updated!\n"
 msgstr ""
 
-#: scripts/mknmz.in:1746
+#: scripts/mknmz.in:1756
 msgid "ERROR: malformed NMZ.r format!\n"
 msgstr ""
 
-#: scripts/mknmz.in:1828
+#: scripts/mknmz.in:1840
 msgid "[Append]"
 msgstr ""
 
-#: scripts/mknmz.in:1830
+#: scripts/mknmz.in:1842
 msgid "[Base]"
 msgstr ""
 
-#: scripts/mknmz.in:1832
+#: scripts/mknmz.in:1844
 msgid "Date:"
 msgstr ""
 
-#: scripts/mknmz.in:1833
+#: scripts/mknmz.in:1845
 msgid "Added Documents:"
 msgstr ""
 
-#: scripts/mknmz.in:1835
+#: scripts/mknmz.in:1847
 msgid "Deleted Documents:"
 msgstr ""
 
-#: scripts/mknmz.in:1837
+#: scripts/mknmz.in:1849
 msgid "Updated Documents:"
 msgstr ""
 
-#: scripts/mknmz.in:1839
+#: scripts/mknmz.in:1851
 msgid "Size (bytes):"
 msgstr ""
 
-#: scripts/mknmz.in:1841
+#: scripts/mknmz.in:1853
 msgid "Total Documents:"
 msgstr ""
 
-#: scripts/mknmz.in:1843
+#: scripts/mknmz.in:1855
 msgid "Added Keywords:"
 msgstr ""
 
-#: scripts/mknmz.in:1845
+#: scripts/mknmz.in:1857
 msgid "Total Keywords:"
 msgstr ""
 
-#: scripts/mknmz.in:1847
+#: scripts/mknmz.in:1859
 msgid "Wakati:"
 msgstr ""
 
-#: scripts/mknmz.in:1848
+#: scripts/mknmz.in:1860
 msgid "Time (sec):"
 msgstr ""
 
-#: scripts/mknmz.in:1850
+#: scripts/mknmz.in:1862
 msgid "File/Sec:"
 msgstr ""
 
-#: scripts/mknmz.in:1853
+#: scripts/mknmz.in:1865
 msgid "System:"
 msgstr ""
 
-#: scripts/mknmz.in:1854
+#: scripts/mknmz.in:1866
 msgid "Perl:"
 msgstr ""
 
-#: scripts/mknmz.in:1855
+#: scripts/mknmz.in:1867
 msgid "Namazu:"
 msgstr ""
 
-#: scripts/mknmz.in:1980
+#: scripts/mknmz.in:1992
 msgid "doing write_phrase_hash() processing.\n"
 msgstr ""
 
-#: scripts/mknmz.in:2207
+#: scripts/mknmz.in:2220
 msgid "doing write_index() processing.\n"
 msgstr ""
 
@@ -622,11 +626,11 @@ msgstr ""
 msgid "not an IO::File/FileHandle object!\n"
 msgstr ""
 
-#: pl/util.pl:205
+#: pl/util.pl:208
 msgid "Remove tmporary files:"
 msgstr ""
 
-#: pl/util.pl:223
+#: pl/util.pl:226
 msgid "ASSERTION ERROR!: "
 msgstr ""
 
@@ -671,6 +675,8 @@ msgid ""
 "  -M, --meta               handle HTML meta tags for field-specified "
 "search.\n"
 "  -r, --replace=CODE       set CODE for replacing URI.\n"
+"      --html-split         split an HTML file with <a name=\"...\"> "
+"anchors.\n"
 "      --mtime=NUM          limit by mtime just like find(1)'s -mtime "
 "option.\n"
 "                           e.g., -50 for recent 50 days, +50 for older than "

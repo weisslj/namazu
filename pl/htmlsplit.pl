@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: htmlsplit.pl,v 1.1 2000-03-02 02:39:33 satoru Exp $
+# $Id: htmlsplit.pl,v 1.2 2000-03-02 11:06:36 satoru Exp $
 #
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -26,7 +26,7 @@ package htmlsplit;
 require "util.pl";
 
 use strict;
-use FileHandle;
+
 my $Header = << 'EOS';
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
         "http://www.w3.org/TR/html4/strict.dtd">
@@ -48,33 +48,27 @@ EOS
 </html>
 EOS
 
-my $Title;
-my $Author;
-my $Name;
-my $Anchored;
-my @Names;
-my $Base;
-
 sub split ($$) {
     my ($fname, $base) = @_;
 
     my $fh = util::efopen($fname);
     my $cont   = join '', <$fh>;
-    $Title  = get_title(\$cont);
-    $Author = get_author(\$cont);
 
-    $Base = $base;
-    $Name     = "";
-    $Anchored = "";
-    @Names = ();
+    my %info = (
+		'title'    => get_title(\$cont),
+		'author'   => get_author(\$cont),
+		'anchored' => "",
+		'base'     => $base,
+		'names'    => [],
+		);
 
     my $id = 0;
-    $cont =~ s/(<a\s[^>]*href=(["']))#(.+?)(\2[^>]*>)/$1$3.html$4/g; #'
-$cont =~ s{\G(.+?)<a\s[^>]*name=(["'])(.+?)\2[^>]*>(.*?)</a>} #'
-          {write_partial_file($1, $3, $4, $id++)}sgex;
-    write_partial_file($cont, "", "", $id);
+#    $cont =~ s/(<a\s[^>]*href=(["']))#(.+?)(\2[^>]*>)/$1$3.html$4/gi; #'
+    $cont =~ s{\G(.+?)<a\s[^>]*name=(["'])(.+?)\2[^>]*>(.*?)</a>} #'
+          {write_partial_file($1, $3, $4, $id++, \%info)}sgexi;
+    write_partial_file($cont, "", "", $id, \%info);
 
-    return @Names;
+    return @{$info{'names'}};
 }
 
 sub get_title ($) {
@@ -111,27 +105,36 @@ sub get_author ($) {
     return $author;
 }
 
-sub write_partial_file($$$) {
-    my ($cont, $name, $anchored, $id) = @_;
-    my $fname = util::tmpnam("$Base.$id");
+sub write_partial_file($$$$$) {
+    my ($cont, $name, $anchored, $id, $info_ref) = @_;
 
-    my $fh = new FileHandle;
-    $fh->open(">$fname") || die "$fname: $!";
+    my $author        = $info_ref->{'author'};
+    my $base          = $info_ref->{'base'};
+    my $orig_title    = $info_ref->{'title'};
+    my $prev_name     = $info_ref->{'name'};
+    my $prev_anchored = $info_ref->{'anchored'};
+
+    my $fname = util::tmpnam("$base.$id");
+
+    my $fh = util::efopen(">$fname");
 
     my $header = $Header;
-    my $title = $Anchored ? "$Title: $Anchored" : $Title;
+    my $title = $prev_anchored ? "$orig_title: $prev_anchored" : $orig_title;
     $header =~ s/\$\{subject\}/$title/g;
     print $fh $header;
     print $fh $cont;
 
     my $footer = $Footer;
-    $footer =~ s/\$\{author\}/$Author/g;
+    $footer =~ s/\$\{author\}/$author/g;
     print $fh $footer;
 
-    push @Names, $Name;
+    push @{$info_ref->{'names'}}, $prev_name;
+    $info_ref->{'anchored'} = $anchored;
+    $info_ref->{'name'} = $name;
 
-    $Name = $name;
-    $Anchored = $anchored;
+    # FIXME: Actually we don't need this. 
+    #        But some perl versions need this.
+    close($fh);
 
     return "";
 }

@@ -18,7 +18,7 @@ $ADDRESS = '@OPT_ADMIN_EMAIL@';
 #
 # This pattern specifies HTML suffixes.
 #
-$HTML_SUFFIX = "html?|[ps]html|html\\.[a-z]{2}|asp|cgi";
+$HTML_SUFFIX = "html?|[ps]html|html\\.[a-z]{2}";
 
 #
 # This pattern specifies file names which will be targeted.

@@ -1,3 +1,36 @@
+2000-03-02  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* pl/htmlsplit.pl (split): Remove global variables through the use
+	of %info hash.
+
+	* pl/util.pl (checkcmd): Add workaround for Windows and OS/2.
+	[namazu-devel-ja:00147]
+	
+	* pl/htmlsplit.pl (write_partial_file): Add close($fh).
+	[namazu-devel-ja:00147]
+
+	* filter/Makefile.am (install-data-local): Remove Windows specific
+	files installed by Namazu 2.0 or/and 2.0.1.
+
+	* scripts/mknmz.in (pickup_updated_files): Avoid duplicated
+	outputs caused by --html-split support.
+
+	* pl/usage.pl: Add the description for --html-split.
+
+	* scripts/mknmz.in (load_modules): Require htmlsplit.pl.
+	(set_target_files): Change grep style.
+	(pickup_updated_files): Gettextized.
+	(add_target): Skip a file name containing TAB.
+
+	* pl/Makefile.am (EXTRA_DIST): Add htmlsplit.pl.
+	(perllib_DATA): Likewise.
+
+	* pl/conf.pl.in ($HTML_SUFFIX): Remove "asp|cgi".
+
+	* pl/htmlsplit.pl (split): Make patterns case insensitive.
+	[namazu-devel-ja:00143]
+	(write_partial_file): Use util::efopen.
+
 2000-03-02  Ryuji Abe  <raeva@t3.rim.or.jp>
 
 	* configure.in (LTVERSION): Set 3:2:0.

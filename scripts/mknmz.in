@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.40 2000-03-02 02:53:06 satoru Exp $
+# $Id: mknmz.in,v 1.41 2000-03-02 11:06:37 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -164,8 +164,7 @@ sub process_file ($$$$$$) {
     my $processed_num = 0;
     my $file_size = util::filesize($cfile);
 
-    if ($var::Opt{'htmlsplit'}) {
-	require "htmlsplit.pl";
+    if ($var::Opt{'htmlsplit'} && $cfile =~ $conf::HTML_SUFFIX) {
 	my @parts = htmlsplit::split($cfile, "NMZ.partial");
 	if (@parts > 1) {
 	    my $id = 0;
@@ -318,6 +317,7 @@ sub load_modules () {
     require "codeconv.pl" || die "unable to require \"codeconv.pl\"\n";
     require "wakati.pl" || die "unable to require \"wakati.pl\"\n";
     require "seed.pl" || die "unable to require \"seed.pl\"\n";
+    require "htmlsplit.pl" || die "unable to require \"htmlsplit.pl\"\n";
 
     @Seed = seed::init();
     textdomain('namazu', $LANG);
@@ -1236,10 +1236,10 @@ sub find_target (@) {
 sub add_target ($\@\%) {
     my ($target, $flists_ref, $counts_ref) = @_;
 
-    if ($target =~ /[\n\r]/) {
-	$target =~ s/[\n\r]//g;
-	print STDERR "Warning: $target contains LF/CR chars, skip it\n";
-	return;   # skip a file name containing LF/CR chars.
+    if ($target =~ /[\n\r\t]/) {
+	$target =~ s/[\n\r\t]//g;
+	print STDERR "Warning: $target contains LF/CR/TAB chars, skip it\n";
+	return;   # skip a file name containing LF/CR/TAB chars.
     }
 
     return unless -f $target;  # Only file is targeted.
@@ -1553,26 +1553,27 @@ sub set_target_files() {
     my %rfiles;    # 'rfiles' means 'registered files'
     my @found_files = @_;
 
-    # load the list of registered files
+    # Load the list of registered files
     $rfiles{'name'} = [ load_registry() ];
 
-    # pick up overlap files and do marking
+    # Pick up overlap files and do marking
     my %mark1;
     my @overlapped_files;
-    grep($_ !~ /^\# / && $mark1{$_}++, @{$rfiles{'name'}});
-    $rfiles{'overlapped'} = {}; # prepare an anonymous hash
-    for (grep ($mark1{$_}, @found_files)) {
-	$rfiles{'overlapped'}{$_} = 1;
-	push(@overlapped_files, $_);
+    grep {$_ !~ /^\# / && $mark1{$_}++ } @{$rfiles{'name'}};
+    $rfiles{'overlapped'} = {}; # Prepare an anonymous hash.
+    for my $overlapped (grep { $mark1{$_} } @found_files) {
+	$rfiles{'overlapped'}{$overlapped} = 1;
+	push @overlapped_files, $overlapped;
     };
-    # pick up not overlapped files which are files to index
-    my @flist = grep(! $mark1{$_}, @found_files);
+
+    # Pick up not overlapped files which are files to index.
+    my @flist = grep { ! $mark1{$_} } @found_files;
 	 
     if ($var::Opt{'noupdate'}) {
 	return (scalar @{$rfiles{'name'}}, @flist);
     };
 
-    # load the date index
+    # Load the date index.
     $rfiles{'mtime'} = [ load_dateindex() ];
 
     if (@{$rfiles{'mtime'}} == 0) {
@@ -1582,26 +1583,27 @@ sub set_target_files() {
     util::assert(@{$rfiles{'name'}} == @{$rfiles{'mtime'}},
 		 "NMZ.r ($#{$rfiles{'name'}}) and NMZ.t ($#{$rfiles{'mtime'}}) are not consistent!");
 
-    # pick up deleted files and do marking
+    # Pick up deleted files and do marking
     # (registered in the NMZ.r but not existent in the filesystem)
     my @deleted_files;
     unless ($var::Opt{'nodelete'}) {
 	my %mark2;
-	grep($mark2{$_}++, @found_files);
-	for (grep($_ !~ /^\# / && ! $mark2{$_} && ! $rfiles{'overlapped'}{$_}
-		      , @{$rfiles{'name'}})) 
+	grep { $mark2{$_}++ } @found_files;
+	for my $deleted (grep { $_ !~ /^\# / && ! $mark2{$_} && 
+				! $rfiles{'overlapped'}{$_} } 
+			 @{$rfiles{'name'}}) 
 	{
-	    $rfiles{'deleted'}{$_} = 1;
-	    push(@deleted_files, $_);
+	    $rfiles{'deleted'}{$deleted} = 1;
+	    push @deleted_files, $deleted;
 	}
     }
 
-    # pick up updated files and set the missing number for deleted files
+    # Pick up updated files and set the missing number for deleted files
     my @updated_files = pickup_updated_files(\%rfiles);
 
-    # append updated files to list of files to index
+    # Append updated files to the list of files to index
     if (@updated_files) {
-	push(@flist, @updated_files);
+	push @flist, @updated_files;
     }
 
     util::dprint(_("\n\n== found ==\n"), join("\n", @found_files), "\n");
@@ -1631,7 +1633,7 @@ sub preupdate_registry(@) {
     my (@list) = @_;
 
     my $fh_registry = util::efopen(">$var::NMZ{'_r'}");
-    @list = grep(s/(.*)/\# $1\n/, @list);
+    @list = grep { s/(.*)/\# $1\n/ } @list;
     print $fh_registry @list;
     print $fh_registry &_("## deleted: ") . util::rfc822time(time()) . "\n\n";
 }
@@ -1691,10 +1693,15 @@ sub pickup_updated_files (\%) {
     my ($ref) = @_;
     my @updated_files = ();
 
+    # To avoid duplicated outputs caused by --html-split support.
+    my %printed = ();
     my $i = 0;
     for my $cfile (@{$ref->{'name'}}) {
 	if (defined($ref->{'deleted'}{$cfile})) {
-	    print "$cfile was deleted!\n";
+	    unless ($printed{$cfile}) {
+		print "$cfile " . _("was deleted!\n");
+		$printed{$cfile} = 1;
+	    }
 	    $ref->{'mtime'}[$i] = -1; # Assign the missing number.
 	} elsif (defined($ref->{'overlapped'}{$cfile})) {
 	    my $cfile_mtime = (stat($cfile))[9];
@@ -1702,7 +1709,10 @@ sub pickup_updated_files (\%) {
 
 	    if ($rfile_mtime < $cfile_mtime) {
 		# The file is updated!
-		print "$cfile " . _("was updated!\n");
+		unless ($printed{$cfile}) {
+		    print "$cfile " . _("was updated!\n");
+		    $printed{$cfile} = 1;
+		}
 		$ref->{'mtime'}[$i] = -1; # Assign the missing number.
 		push(@updated_files, $cfile);
 	    }
@@ -1747,7 +1757,9 @@ sub load_registry () {
 	    }
 	} else {
 	    unless (defined($mark{$line})) {
-		push(@list, $line);
+		# Remove HTML's anchor generated by --html-split option.
+		$line =~ s/\t.*$//g;  
+		push @list, $line;
 		$mark{$line} = $i;
 		$i++;
 	    } 
@@ -2097,8 +2109,9 @@ sub count_words ($$$$) {
     }
 }
 
-# count words and do score weighting
-# count words and do score weighting
+#
+# Count words and do score weighting
+#
 sub wordcount_sub ($$\%) {
     my ($text, $weight, $word_count) = @_;
 
@@ -2318,7 +2331,7 @@ muda($conf::ON_MEMORY_MAX,
      $conf::KAKASI, $var::Opt{'okurigana'},
      $var::Opt{'hiragana'}, $conf::DIRECTORY_INDEX,
      $usage::USAGE, $var::Opt{'noheadabst'}, $usage::VERSION_INFO,
-     $var::Opt{'noencodeurl'}, 
+     $var::Opt{'noencodeurl'}, $conf::HTML_SUFFIX,
      $var::RECURSIVE_ACTIONS, $conf::META_TAGS, $var::USE_NKF_MODULE,
      $conf::ADDRESS, $var::MAILING_ADDRESS,
      $conf::FILE_SIZE_MAX,

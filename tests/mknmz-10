@@ -19,12 +19,12 @@ else
     rm -f idx13/NMZ.*
 fi
 
-HOME=`pwd`; export HOME
-tmprc="$HOME/.mknmzrc"
+pwd=`pwd`
+tmprc="$pwd/tmp.mknmzrc"
 echo '$conf::ALLOW_FILE=".*\\.txt"' > $tmprc
 
-../scripts/mknmz -O                    idx12 $TARGET >> $LOG 2>&1
-../scripts/mknmz --allow='.*\.html' -O idx13 $TARGET >> $LOG 2>&1
+../scripts/mknmz -f $tmprc -O                    idx12 $TARGET >> $LOG 2>&1
+../scripts/mknmz -f $tmprc --allow='.*\.html' -O idx13 $TARGET >> $LOG 2>&1
 rm $tmprc
 grep -v '\.txt'  idx12/NMZ.field.uri >> $LOG && exit 1
 grep '\.txt'     idx12/NMZ.field.uri >> $LOG || exit $?

@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.132 2004-03-04 10:44:24 knok Exp $
+# $Id: mknmz.in,v 1.133 2004-03-07 09:47:17 usu Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -86,7 +86,7 @@ sub main {
     util::set_lang();
     textdomain('namazu', $util::LANG_MSG);
 
-    load_rcfiles();
+    load_rcfiles() if !(defined $ENV{'MKNMZNORC'});
     load_modules();
     load_archivemodules();
     my ($output_dir, @targets) = parse_options();
@@ -1159,14 +1159,15 @@ sub parse_options
     my $target_list = undef;
     my $index_lang = undef;
 
+    my %opt_conf;
 
 #    Getopt::Long::Configure('bundling');
     Getopt::Long::config('bundling');
     my %argopts = (
        	       '0|help'              => \$opt_help,
-	       '1|exclude=s'         => \$conf::EXCLUDE_PATH,
-	       '2|deny=s'            => \$conf::DENY_FILE,
-	       '3|allow=s'           => \$conf::ALLOW_FILE,
+	       '1|exclude=s'         => \$opt_conf{'EXCLUDE_PATH'},
+	       '2|deny=s'            => \$opt_conf{'DENY_FILE'},
+	       '3|allow=s'           => \$opt_conf{'ALLOW_FILE'},
 	       '4|update=s'          => \$update_index,
 	       '5|mhonarc'           => \$opt_mhonarc,
 	       '6|mtime=s'           => \$var::Opt{'mtime'},
@@ -1227,6 +1228,11 @@ sub parse_options
 
     if ($opt_config) {
 	load_rcfile($ConfigFile = $opt_config);
+    }
+    foreach my $key (keys %opt_conf){
+	if (defined ($opt_conf{$key})) { 
+	     ${*{$conf::{$key}}{SCALAR}} = $opt_conf{$key};
+	}
     }
 
     if ($index_lang) {

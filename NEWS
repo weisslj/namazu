@@ -4,11 +4,22 @@ Overview of Changes in Namazu 2.0 - Feb 20, 2000
 * Using GNU automake-1.4.
 * Namazu core search engine library is provided.
 * Using GNU libtool-1.3.3.
-* Access control support by NMZ.access.
 * Perl XSUB module support for mknmz is added.
-* Using File::MMagic perl module for guess file type.
-* Many filters for file processing. (MS Word, PDF, TeX etc.)
-* Check point (Re-execute) support for mknmz.
-* Replace URL basename in namazurc.
-* New nmz-config helper script.
-* Documentations are rewritten.
+* New index structure has no compatibility with previous one.
+* Index size is reduced by about 50%.
+* namazu and namazu.cgi are separated.
+* Using File::MMagic perl module for file type detection.
+* New filters are added. MS Word, PDF, TeX, etc.
+* Access control support by NMZ.access.
+* Customizable results display by NMZ.result.
+* Support sorting results in an arbitrary field.
+* Keyword emphasizing in results display.
+* Support long options for namazu and mknmz.
+* Check point (Re-execution) support for mknmz.
+* New config file mknmzrc is introduced.
+* Old config file namazu.conf is renamed to namazurc.
+* bnamazu is refined.
+* New tool nmzgrep is included.
+* New nmz-config helper script is included.
+* Documentation are totally rewritten.
+* Official Web site has moved to <http://www.namazu.org/>.

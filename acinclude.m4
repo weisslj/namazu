@@ -423,9 +423,6 @@ AC_DEFUN(AM_PATH_LISPDIR,
      esac], EMACS=)
   if test "x$EMACS" = "xt" -o "x$EMACS" = x; then
     AC_PATH_PROGS(EMACS, emacs xemacs mule, no)
-    if test $EMACS = no; then
-      AC_MSG_WARN(emacs is not available)
-    fi
   fi
   dnl # 
   dnl # Check Emacs directories
@@ -474,7 +471,6 @@ AC_DEFUN(AM_PATH_LISPDIR,
       esac
     fi
     AC_MSG_RESULT($emacsdir)
-    AC_SUBST(emacsdir)
     dnl # 
     dnl # Check Emacs site-lisp directories
     dnl #
@@ -486,9 +482,7 @@ AC_DEFUN(AM_PATH_LISPDIR,
          *)	lispdir=${withval} ;;
        esac], lispdir=)
     AC_MSG_CHECKING([where .elc files should go])
-    if test $EMACS = no; then
-      AC_MSG_WARN(emacs is not available)
-    else
+    if test $EMACS != "no"; then
       if test "x$lispdir" = x; then
         lispdir="$emacsdir/site-lisp"
         if test -d $emacsdir/lisp; then

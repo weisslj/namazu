@@ -1,3 +1,7 @@
+2000-01-29  Ryuji Abe  <raeva@t3.rim.or.jp>
+
+	* acinclude.m4 (AM_PATH_LISPDIR): Do not AC_SUBST(emacsdir).
+
 2000-01-28  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* pl/Makefile.am (perllib_DATA): Remove find.pl.

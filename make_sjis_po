@@ -29,7 +29,7 @@ main ()
   return 0;
 }
 EOF
-cc tmp.c -o tmp.aout &&
+gcc tmp.c -o tmp.aout &&
 (
   if test -s po/ja_JP.SJIS.po; then
     mv po/ja_JP.SJIS.po po/ja_JP.SJIS.po.bak;

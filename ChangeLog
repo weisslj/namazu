@@ -1,3 +1,13 @@
+2000-02-15  Ken-ichi Hirose  <kenzo-@tama.or.jp>
+
+	* nmz/hlist.c: Select unistd.h or io.h for MSVC++. 
+	* nmz/libnamazu.c: Select unistd.h or io.h for MSVC++. 
+	* nmz/search.c: Select unistd.h or io.h for MSVC++. 
+
+	* pl/gettext.pl.in: Set binmode for CATALOG.
+
+	* scripts/mknmz.in: Check and replace path  \ to /.
+
 2000-02-14  Ryuji Abe  <raeva@t3.rim.or.jp>
 
 	* configure.in: Added libtool versioning section.

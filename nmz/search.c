@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.67 2000-02-13 17:34:53 rug Exp $
+ * $Id: search.c,v 1.68 2000-02-14 21:30:31 kenzo- Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -30,7 +30,11 @@
 #include <errno.h>
 #include <ctype.h>
 #include <time.h>
+#if defined (WIN32) && !defined (__CYGWIN32__)
+#include <io.h>
+#else
 #include <unistd.h>
+#endif
 #ifdef __EMX__
 #include <sys/types.h>
 #endif

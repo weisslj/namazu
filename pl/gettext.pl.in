@@ -28,6 +28,7 @@ sub textdomain
     return if ! $catalog;
 
     open (CATALOG, $catalog) || return;
+    binmode (CATALOG);
     sysread (CATALOG, $buffer, (stat CATALOG)[7]);
     close CATALOG;
 

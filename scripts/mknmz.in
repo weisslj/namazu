@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.10 2000-02-11 16:46:34 satoru Exp $
+# $Id: mknmz.in,v 1.11 2000-02-14 21:30:33 kenzo- Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -1046,7 +1046,7 @@ sub load_target_list ($) {
     my $fh_targets = util::efopen($file);
     my @targets = <$fh_targets>;
     if (($SYSTEM eq "MSWin32") || ($SYSTEM eq "os2")) {
-	map { 
+	grep { 
 	    s/\r//g; 
 	    # Replace \ with / with consideration for Shift_JIS.
 	    s!([\x81-\x9f\xe0-\xef][\x40-\x7e\x80-\xfc]|[\x01-\x7f])!
@@ -1063,6 +1063,8 @@ sub absolute_path($$) {
 
     $path =~ s!^\./!$cwd/!;
     if (($SYSTEM eq "MSWin32") || ($SYSTEM eq "os2")) {
+	    $path =~ s!([\x81-\x9f\xe0-\xef][\x40-\x7e\x80-\xfc]|[\x01-\x7f])!
+	    $1 eq "\\" ? "/" : $1!gex;
         $path =~ s,^([A-Z](?!:/)),$cwd/$1,i;
     } else {
         $path =~ s!^([^/])!$cwd/$1!; 

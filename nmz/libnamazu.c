@@ -2,7 +2,7 @@
  * 
  * libnamazu.c - Namazu library api
  *
- * $Id: libnamazu.c,v 1.30 2000-02-01 04:38:28 rug Exp $
+ * $Id: libnamazu.c,v 1.31 2000-02-14 21:30:31 kenzo- Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -33,7 +33,11 @@
 #include <fcntl.h>
 #include <ctype.h>
 #include <string.h>
+#if defined (WIN32) && !defined (__CYGWIN32__)
+#include <io.h>
+#else
 #include <unistd.h>
+#endif
 #include <sys/stat.h>
 #include <signal.h>
 #include <stdarg.h>

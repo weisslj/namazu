@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.41 2000-01-28 09:40:11 satoru Exp $
+ * $Id: hlist.c,v 1.42 2000-02-14 21:30:31 kenzo- Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -29,7 +29,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#if defined (WIN32) && !defined (__CYGWIN32__)
+#include <io.h>
+#else
 #include <unistd.h>
+#endif
 #include <math.h>
 #include <errno.h>
 #ifdef HAVE_CONFIG_H

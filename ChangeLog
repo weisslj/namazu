@@ -1,3 +1,7 @@
+2000-01-03  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* pl/Makefile.am (gettext.pl): Remove "chmod +x $@"
+
 2000-01-03  Ryuji Abe <raeva@t3.rim.or.jp>
 
 	* acinclude.m4 (AM_WITH_CCMALLOC): Tiny Fix.

@@ -29,3 +29,54 @@ word95.doc          .... Word 2001 for Mac 出力の Word 6.0/95 形式
 [[[ MacBinaryIII sample ]]]
 simpletext.txt
 textedit.rtf
+
+=============================================================================
+type & creator
+=============================================================================
+filename : excel2001.htm
+type     : TEXT
+creator  : MSIE
+
+filename : excel2001.xls
+type     : XLS8
+creator  : XCEL
+
+filename : excel5-2001.xls
+type     : XLS5
+creator  : XCEL
+
+filename : excel95.xls
+type     : XLS5
+creator  : XCEL
+
+filename : powerpoint2001.ppt
+type     : SLD8
+creator  : PPT3
+
+filename : powerpoint2001.rtf
+type     : RTF 
+creator  : PPT3
+
+filename : powerpoint4_0.ppt
+type     : SLD3
+creator  : PPT3
+
+filename : word.txt
+type     : TEXT
+creator  : MSWD
+
+filename : word2001.doc
+type     : W8BN
+creator  : MSWD
+
+filename : word2001.htm
+type     : TEXT
+creator  : MSIE
+
+filename : word2001.rtf
+type     : RTF 
+creator  : MSWD
+
+filename : word95.doc
+type     : W6BN
+creator  : MSWD

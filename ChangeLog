@@ -1,3 +1,7 @@
+1999-10-11  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* configure.in (AM_INIT_AUTOMAKE): Change a version number to 1.9.6.
+
 1999-10-07  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* src/{result.c, search.c}: Move output functions to output.c.

@@ -1,3 +1,9 @@
+2000-10-05  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* scripts/mknmz.in (get_status): Added a workaround for
+	ActivePerl bug.
+	Thanks to Yoshinori Takesako. [namazu-devel-ja 906]
+
 2000-10-04  Ryuji Abe  <rug@namazu.org>
 
 	* nmz/Makefile.am (libnmz_la_DEPENDENCIES): Set $(NMZ_LIBOBJS).
@@ -6006,4 +6012,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.737 2000-10-04 09:21:19 rug Exp $
+$Id: ChangeLog,v 1.738 2000-10-05 04:58:18 knok Exp $

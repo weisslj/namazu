@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.75 2000-09-01 07:29:28 knok Exp $
+# $Id: mknmz.in,v 1.76 2000-10-05 04:58:19 knok Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -1854,6 +1854,7 @@ sub get_status($) {
     while (defined(my $line = <$fh>)) {
 	if ($line =~ /^$key\s+(.*)$/) {
 	    util::dprint("status: $key = $1\n");
+	    $fh->close;
 	    return $1;
 	}
     }

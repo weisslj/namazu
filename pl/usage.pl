@@ -1,5 +1,5 @@
 # -*- Perl -*-
-# $Id: usage.pl,v 1.6 1999-11-19 03:47:09 satoru Exp $
+# $Id: usage.pl,v 1.7 1999-12-13 05:31:01 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -153,7 +153,7 @@ EOFusage
 ## Version information
 ##
 $VERSION_INFO = <<EOFversion;
-mknmz of Namazu 1.9.8
+mknmz of Namazu $var::VERSION
 Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 
 This is free software; you can redistribute it and/or modify

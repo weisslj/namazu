@@ -1,3 +1,7 @@
+1999-12-13  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* pl/usage.pl: Use $var::VERSION in version info.
+
 1999-12-12  Ryuji Abe <raeva@t3.rim.or.jp>
 
 	* util.[ch] : Changed function names.

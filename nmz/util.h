@@ -3,7 +3,7 @@
   util.h -
 
   $Author: knok $
-  $Date: 1999-11-08 09:17:37 $
+  $Date: 1999-11-12 00:49:07 $
   created at: Thu Mar  9 11:55:53 JST 1995
 
   Copyright (C) 1993-1998 Yukihiro Matsumoto
@@ -30,7 +30,9 @@
                       ((c) >= 0xe0 && (c) <= 0xfc))
 #define iskanji2nd(c) ((c) >= 0x40 && (c) <= 0xfc && (c) != 0x7f)
 #define iseuc(c)  ((c) >= 0xa1 && (c) <= 0xfe)
+#ifndef iskanji /* for jperl */
 #define iskanji(c)  (iseuc(*(c)) && iseuc(*(c + 1)))
+#endif
 #define ischoon(c) ((int)*(c) == 0xa1 && (int)*(c + 1) == 0xbc)
 #define iseuc(c)  ((c) >= 0xa1 && (c) <= 0xfe)
 

@@ -2,6 +2,11 @@
 
 	* acinclude.m4: Fix lispdir related codes to handle $prefix correctly.
 
+1999-11-12  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* nmz/util.h: Added #ifndef condition to iskanji definition
+	for jperl.
+
 1999-11-10  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* Search-Namazu/Namazu.xs : Fixed to return array.

@@ -1,3 +1,9 @@
+2001-04-23  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* filter/mailnews.pl (mailnews_filter): Fixed wrong handling
+	about some headers.
+	(Reported and a patch contributed by Tietew)
+
 2001-04-20  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* src/output.c (fputs_without_html_tag, print_query): 
@@ -6438,4 +6444,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.818 2001-04-23 08:48:25 knok Exp $
+$Id: ChangeLog,v 1.819 2001-04-23 09:09:38 knok Exp $

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: msword.pl,v 1.18 2000-02-27 15:09:04 satoru Exp $
+# $Id: msword.pl,v 1.19 2000-02-27 22:45:16 satoru Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -115,6 +115,9 @@ sub filter ($$$$$) {
     {
 	my $fh = util::efopen("< $tmpfile2");
 	$$cont = util::readfile($fh);
+
+	# Exclude wvHtml's footer becaues it has no good index terms.
+	$$cont =~ s/<!--Section Ends-->.*$//s;
     }
 
     unlink($tmpfile);

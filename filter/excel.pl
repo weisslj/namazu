@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: excel.pl,v 1.2 2000-02-27 14:22:29 satoru Exp $
+# $Id: excel.pl,v 1.3 2000-02-27 22:45:16 satoru Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu, 
 #               2000 Namazu Project All rights reserved.
@@ -95,6 +95,9 @@ sub filter ($$$$$) {
     {
 	my $fh = util::efopen("< $tmpfile2");
 	$$cont = util::readfile($fh);
+
+	# Exclude xlHtml's footer becaues it has no good index terms.
+	$$cont =~ s/^<hr><FONT SIZE=-1>Created with.*$//sm;
     }
 
     unlink($tmpfile);

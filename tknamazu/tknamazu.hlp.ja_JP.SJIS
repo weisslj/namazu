@@ -3,78 +3,88 @@
                                                                     Rev 1.10 
 =============================================================================
 Contents
-        [1] はじめに
-        [2] 各ヴィジェットの説明
-        [3] メニューバーの説明
-        [4] ポップアップメニューの説明
-        [5] マウスの説明
-        [6] キーバインドの説明
-        [7] リソースファイル(~/.tknamazurc)の説明
-        [8] ハイパーテキストブラウザ(lynx)
-        [9] マニュアルブラウザ(groff)
-        [10] インフォブラウザ(info)
-        [11] 漢字の入力(kinput2)
-        [12] バグレポートの送り方
-        [13] Namazuの検索式（参考）
-        [14] 画面の説明（参考）
+        [1] はじめに。
+        [2] 各ヴィジェットの説明。
+        [3] メニューバーの説明。
+        [4] ポップアップメニューの説明。
+        [5] マウスの説明。
+        [6] キーバインドの説明。
+        [7] リソースファイル(~/.tknamazurc)の説明。
+        [8] ハイパーテキストブラウザ(lynx)。
+        [9] マニュアルブラウザ(groff)。
+        [10] インフォブラウザ(info)。
+        [11] 漢字の入力(kinput2)。
+        [12] バグレポートの送り方。
+        [13] Namazuの検索式（付録）。
+        [14] 画面の説明（付録）。
 
 References
 
-1. はじめに
------------
+1.はじめに。
+------------
 
  このユーティリティは、Unixベースに開発が進められてきた日本語全文検索エンジン
-Namazuを、GUI で快適に使ってしまおうという目論み :-) の為に作られました。ター
+Namazuを、GUI で快適に使ってしまおうという目論みの為に作られました。;-) ター
 ゲットは X Window System ですが、 Tcl/Tk という GUI をインタプリタで簡単につ
-くれる言語を使っている為、 X Window System 以外にも Windows95/NT や OS/2 、
-Mac 等々の Tcl/Tk の動作するプラットホームで動くはずです。詳細は同梱されてい
+くれる言語を使っている為、 X Window System 以外にも Windows や OS/2 、Mac 等々
+の Tcl/Tk の動作するプラットホームで動くはずです。詳細は同梱されてい
 る説明をご参照下さい。
+
+ TkNamazu はコマンドラインはもちろん Internet や Intranet で公開されている
+Web site の Namazu 検索システムにも対応しています。:-)
 
  最新版は以下の URL で公開しています。
     0. <URL:http://www.tama.or.jp/%7Ekenzo-/Namazu/tknamazu/>
  （尚、このページは必要に応じて更新されます。）
 
 
-2. 各ヴィジェットの説明
------------------------
+2.各ヴィジェットの説明。
+------------------------
 
-  (1) タイトルバー
+  (1) タイトルバー。
          メインヴィジェットには TkNamazu と表示されます。
 
-  (2) メニューバー
+  (2) メニューバー。
          TkNamazu の各機能を選択する事が出来ます。<Alt(Grph)Key> + <各項目の
          アンダーラインが引かている文字key> でショートカット選択が出来ます。
          メニューバーの詳細については次の章([3] メニューバーの説明)で取り上
          げます。
 
-  (3) 検索フォーム
+  (3) 検索フォーム。
          Keyword の所に Namazu の検索式の仕様に沿って keyword を入力して下さ
         い。検索式の仕様については([7] 検索式)で説明します。
-         ・<Alt> + <K> で keyword entry にフォーカスを合わせる事が出来ます。
-         ・<Shift> + <Space> または <Ctrl> + <Shift右> で kinput2 の入力
+         + <Alt> + <K> で keyword entry にフォーカスを合わせる事が出来ます。
+         + <Shift> + <Space> または <Ctrl> + <Shift右> で kinput2 の入力
         Window を開いて漢字入力を行う事が出来ます。(Windows ではそれぞれのか
         な漢字変換ソフトのキーバインドで、漢字を入力する事が出来ます。)
-         ・<Alt> + <S> で Search ボタンにフォーカスを合わせる事が出来ます。
+         + <Alt> + <S> で Search ボタンにフォーカスを合わせる事が出来ます。
          フォーカスが移動したら <Space> で決定すれば検索が実行されます。
-         ・<Alt> + <Q> で  ボタンにフォーカスを合わせる事が出来ます。フォーカ
+         + <Alt> + <Q> で  ボタンにフォーカスを合わせる事が出来ます。フォーカ
          スが移動したら <Space> で決定すれば確認後 TkNamazu を終了する事が出
          来ます。
 
-  (4) オプションバー上段
-         Namazu の主要 option を簡単に変更する事が出来ます。
-         ・<Alt> + <C> で表示する検索結果の数を指定する事が出来ます。デフォル
+  (4) オプションバー上段。
+         Namazu の主要 option を変更する事が出来ます。
+         + <Alt> + <C> で表示する検索結果の数を指定する事が出来ます。デフォル
          トは 9 個です。
-         ・<Alt> + <U> で要約を表示する／しないを指定すことが出来ます。デフォ
+         + <Alt> + <U> で要約を表示する／しないを指定すことが出来ます。デフォ
          ルトは表示するです。
+         + <Alt> + <O> で検索結果のソート種別を変更します。デフォルトはスコア
+         順です。
         
-  (5) オプションバー下段
-         Namazu の主要 option を簡単に変更する事が出来ます。
-         ・<Alt> + <C> で表示する検索結果の数を指定する事が出来ます。デフォル
-         トは 9 個です。
-         ・<Alt> + <U> で要約を表示する／しないを指定すことが出来ます。デフォ
-         ルトは表示するです。
+  (5) オプションバー下段。
+         TkNamazu に関する機能を変更する事が出来ます。
+         + <Alt> + <B> で表示する lynx の References に関する動作が
+         変わります。"0" `で References に画面が移動するだけ。"1" で Local
+         へのリンク(file:// や http://localhost/)の時だけリンクを辿る。
+         "2" ですべてのリンクを辿る動作になります。デフォルトは "1" です。
+         + <Alt> + <W> でメールやニュースの記事であればヘッダ部分を上部に
+         隠します（滑らせます）。デフォルトは隠すです。
+         + <Alt> + <T> で実行する namazu or namazu.cgi を規定できます。
+         デフォルトは commandline です。
+         
         
-  (6) 結果表示画面 & スクロールバー
+  (6) 結果表示画面 & スクロールバー。
          検索結果、Edit -> Load tknamazurc の出力、Help -> Help の出力等を表示し
         ます。スクロールバーにフォーカスが合っていれば、<Cursor-Key> , 
         <RollUp/Down> , <Ctrl> + <Home> , <Ctrl> + <Help> 等々が使用する事が
@@ -85,8 +95,8 @@ Mac 等々の Tcl/Tk の動作するプラットホームで動くはずです。詳細は同梱されてい
         になります。
 
 
-3. メニューバーの説明
----------------------
+3.メニューバーの説明。
+----------------------
 
   (1) File
     i)   Open
@@ -99,18 +109,15 @@ Mac 等々の Tcl/Tk の動作するプラットホームで動くはずです。詳細は同梱されてい
          指定された directory の namazurc をコマンドラインオプションで指定
          します。例えば REPLACE 等を一時的に変更したい時に効果を発揮します。
     v)   Indexes
-         .tknamazurc の INDEXESx ([12] リソースファイル...) で指定した NMZ.i を
+         .tknamazurc の INDEXESx ([7] リソースファイル...) で指定した NMZ.i を
          表示／選択する事が出来ます。
-        ・カスケードメニューで一番上の点線の部分を”左クリックor<Space(決定)>”
-        すると SelectDB を単独で浮かせる事が出来ます。いろいろな組合せを選択す
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-        る時は、浮かせた方が断然便利ですので是非試してみてください。
-        ・カスケードメニューで <Alt> + <S> で全てを選択する事が出来ます。
-        ・カスケードメニューで <Alt> + <C> で全ての選択を解除する事が出来ます。
-    vi)  AddDB
-         .tknamazurc に登録されていない DB(NMZ.i) を DataBase Selecter に登録しま
-        す。
-    vii) Quit
+        + カスケードメニューで一番上の点線の部分を”左クリックor<Space(決定)>”
+        すると Select Indexes を単独で浮かせる事が出来ます。いろいろな組合せを
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        選択する時は、浮かせた方が断然便利ですので是非試してみてください。
+        + カスケードメニューで <Alt> + <S> で全てを選択する事が出来ます。
+        + カスケードメニューで <Alt> + <C> で全ての選択を解除する事が出来ます。
+    vi)  Quit
          TkNamazu を終了します。
 
   (2) Edit
@@ -125,9 +132,8 @@ Mac 等々の Tcl/Tk の動作するプラットホームで動くはずです。詳細は同梱されてい
     v)   Find
          結果表示画面内で目的の文字列を検索します。
     vi)  Set authorization
-         user 制限をしている URL にアクセスする時に、事前に設定しておいて下さ
-                                                     ^^^^^^
-         い。
+         user 制限をしている URL にアクセスする時に、事前に設定しておいて
+         下さい。
          この入力ダイアログではパスワードを隠しません。入力中に他の人に見られ
          ないように十分注意して下さい。また TkNamazu を終了すると、ここで入力
          された値は破棄されます。TkNamazu の再立ち上げを行った場合は入力しな
@@ -158,8 +164,8 @@ Mac 等々の Tcl/Tk の動作するプラットホームで動くはずです。詳細は同梱されてい
          TkNamazu の version と status を表示します。
 
 
-4. ポップアップメニューの説明
------------------------------
+4.ポップアップメニューの説明。
+------------------------------
 
   (1) Search this
          選択されている単語を Namazu で検索します。
@@ -198,10 +204,10 @@ Mac 等々の Tcl/Tk の動作するプラットホームで動くはずです。詳細は同梱されてい
          TkNamazu を終了します。
 
 
-5. マウスの説明
----------------
+5.マウスの説明。
+----------------
 
-  (1) 左シングルクリック
+  (1) 左シングルクリック。
          結果表示画面内の blue に反転表示されているところで、左シングルクリック
         すると URL もしくは HTML であれば lynx filer を通した結果が表示されま
         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -210,23 +216,23 @@ Mac 等々の Tcl/Tk の動作するプラットホームで動くはずです。詳細は同梱されてい
          ちなみに blue に反転表示されている所以外で、左シングルクリックすると
         scrollbar に focus が移るようになっています。
 
-  (2) 中央シングルクリック(無い場合は、左右同時押し)
+  (2) 中央シングルクリック(無い場合は、左右同時押し)。
          結果表示画面内の blue に反転表示されているところで、右シングルクリック
         すると URL もしくは HTML であれば 外部 browser (デフォルトは Netscape)
         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
         で表示します。自分の machine の local file でただの plain text であれば
-        外部viewer (デフォルトは less) で表示します。
+        もう一つ TkNamazu を立ちあげて表示します。
 
-  (3) 右シングルクリック
+  (3) 右シングルクリック。
          結果表示画面もしくは検索フォームで右シングルクリックすると、ポップアッ
         プメニューをを立ち上げることが出来ます。そのまま指を離さないで、実行し
         たい機能を選択して下さい。
 
 
-6. キーバインドの説明
----------------------
+6.キーバインドの説明。
+----------------------
 
-  (1) 全体的な Keybind
+  (1) 全体的なキーバインド。
         <Tab>           : 次のアイテムへ。
         <Space>         : ボタン押下(決定／実行)。
         <Ctrl> + <F>    : Edit -> Find と同じ。検索画面を表示する。
@@ -235,7 +241,7 @@ Mac 等々の Tcl/Tk の動作するプラットホームで動くはずです。詳細は同梱されてい
         <Ctrl> + <N>    : 次の行へ。
         <Ctrl> + <P>    : 前の行へ。
 
-  (2) entry(文字入力部分) に focus がある時の Keybind
+  (2) 文字入力部分にフォーカスがある時のキーバインド。
         <Return>        : entry 内容で実行。
         <Escape>        : キャンセル。
         <Home>          : 行頭へ。
@@ -246,7 +252,7 @@ Mac 等々の Tcl/Tk の動作するプラットホームで動くはずです。詳細は同梱されてい
         <Ctrl> + <\>        : 漢字入力を行う(root 形式で kinput2 Window を開く)
         <Ctrl> + <漢字>     : 漢字入力を行う(root 形式で kinput2 Window を開く)
 
-  (2) scrollbar に focus がある時の Keybind
+  (2) スクロールバーにフォーカスがある時のキーバインド。
         <Space>         : 次のページへ。
         <BackSpace>     : 前のページへ。
         <Return>        : 次の行へ。
@@ -254,85 +260,78 @@ Mac 等々の Tcl/Tk の動作するプラットホームで動くはずです。詳細は同梱されてい
         <Ctrl> + <Help> : ページの最後へ。
 
 
-7. リソースファイル(~/.tknamazurc)の説明
-----------------------------------------
+7.リソースファイル(~/.tknamazurc)の説明。
+-----------------------------------------
 
  .tknamazurc とは TkNamazu の設定を規定しておく file です。 TkNamazu は起動される
 と、起動したユーザーの Home directory を探しに行きます。もしなければ TKNMZPATH
 で規定されている directory を探します。それでもなければ自分で持っている default
 で立ちあがります。
- 各項目は大文字で、項目と値の間は必ず１つ以上の<TAB>で区切ってください。
-                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ 各項目は大文字で、項目と値の間は必ず1つ以上の<SPACE>か<TAB>で区切ってください。
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
  また行頭に # を書けばコメント扱になります。
 
-
-  (1) EXTBROWSER
-# 外部閲覧用の Web Browser を full path で指定してください。
-EXTBROWSER		/usr/local/bin/netscape
-
-  (2) EXTVIEWER
-# 外部閲覧用の Viewer か Editer を full path で指定してください。
-EXTVIEWER		/usr/local/bin/jless
-
-  (3) NAMAZU
+  (1) NAMAZU
 # Namauz のある所を full path で指定してください。
 NAMAZU			/usr/local/bin/namazu
 
-  (4) BROWSER
+  (2) BROWSER
 # HTML を理解するのと protcol がついた URL を取得する為に lynx を使用します。
-# tcl は network が弱いので。。。 full path で指定してください。
-BROWSER			/usr/local/bin/lynx -dump
+# full path で指定してください。
+BROWSER			/usr/local/bin/lynx
 
-  (5) UNCOMPRESS
+  (3) EXTBROWSER
+# 外部閲覧用の Web Browser を full path で指定してください。
+EXTBROWSER		/usr/local/bin/netscape
+
+  (4) UNCOMPRESS
 # zcat のある所を full path で指定してください。
 UNCOMPRESS		/usr/bin/zcat
 
-  (6) MANPAGE
+  (5) MANPAGE
 # groff のある所を full path で指定してください。
-MANPAGE			/usr/local/bin/groff -man -Tnippon
+MANPAGE			/usr/local/bin/groff
 
-  (7) MANPAGEFILTER
+  (6) MANPAGEFILTER
 # groff の処理の後に通したい filter のある所を full path で指定してください。
 # filter という位置づけの為、shell のパイプを使います。コマンドの最初に "| " を
 # 必ず入れてください。
 MANPAGEFILTER		
 
-  (8) MANPATH
+  (7) MANPATH
 # manual を検索する path をスペースで区切って列挙してください。
 # ちなみに左側に書いた path から順番に検索されます。
-MANPATH			/usr/local/man/ja_JP.EUC /usr/local/man/ja_JP.ujis /usr/man/ja_JP.ujis /usr/local/man /usr/share/man /usr/bin/man /usr/man /usr/X11R6/man /usr/openwin/man
+MANPATH			/usr/local/man /usr/share/man /usr/bin/man /usr/man /usr/X11R6/man /usr/openwin/man
 
-  (9) GNUINFO
+  (8) GNUINFO
 # info のある所を full path で指定してください。
 GNUINFO			/usr/bin/info
 
-  (10) GNUINFOFILTER
+  (9) GNUINFOFILTER
 # info の処理の後に通したい filter のある所を full path で指定してください。
 # filter という位置づけの為、shell のパイプを使います。コマンドの最初に "| " を
 # 必ず入れてください。
 GNUINFOFILTER		
 
-  (11) GNUINFOTMP
+  (10) GNUINFOTMP
 # info の出力を一時的に格納する file を full path で指定してください。
 GNUINFOTMP		/tmp/.gnuinfotmp
 
-  (12) MKNMZ
-# mknmz のある所を full path で指定してください。
-MKNMZ			/usr/local/namazu/bin/mknmz
-
-  (13) WDNMZ
-# wdnmz のある所を full path で指定してください。
-WDNMZ			/usr/local/namazu/bin/wdnmz
-
-  (14) WIDTH
+  (11) WIDTH
 # デフォルトの横幅を char 単位で規定してください。
 WIDTH			80
 
-  (15) HEIGHT
+  (12) HEIGHT
 # デフォルトの高さを char 単位で規定してください。
 HEIGHT			20
 
-  (16) WIDGETFONT
+  (13) LANG
+# ユーザの環境変数の設定が行われていない場合や強制的に規定したい場合は
+# 設定してください。
+# 設定していなければユーザの環境変数を使用します。
+LANG			
+
+  (14) WIDGETFONT
 # menu bar 等の font を指定してください。
 # xlsfonts で確認してください。ちなみに各項目の説明は。。。
 # -提供者-フォントファミリ-太さ-傾き-幅-追加スタイル
@@ -340,68 +339,84 @@ HEIGHT			20
 #                 -間隔-平均フォント幅-キャラクタセット-エンコード-
 WIDGETFONT		-misc-Fixed-Medium-R-Normal-*-*-120-*-*-*-*-*-*
 
-  (17) TEXTFONT
+  (15) TEXTFONT
 # 結果を表示するテキスト画面の font を指定してください。
 TEXTFONT		-misc-Fixed-Medium-R-Normal-*-*-120-*-*-*-*-*-*
 
-  (18) WIDGETCOLOR
+  (16) WIDGETCOLOR
 # menu bar 等の色を指定してください。
 WIDGETCOLOR		gray90
 
-  (19) LANGUAGE
-# 表示言語を指定してください。
-LANGUAGE                JAPANESE
-
-  (20) OPTIONS
+  (17) OPTIONS
 # Namazu のコマンドラインオプションを規定してください。
-OPTIONS			-U
+OPTIONS			
 
-  (21) NAMAZURC
+  (18) NAMAZURC
 # namazurc のある場所を full path で指定してください。
 NAMAZURC			
 
-  (22) MKLOCATION
-# mknmz をスタートさせるデフォルトディレクトリを full path で規定してください。
-MKLOCATION		./
+  (19) INDEXES
+# NMZ.* のある場所をコマンドラインから規定したい時に入力してください。
+# namazu-112 以降を使用して複数の場所を指定する時は<SPACE>で区切ってください。
+INDEXES			/usr/local/var/namazu/index
+
+  (20) MKNMZ
+# mknmz のある所を full path で指定してください。
+MKNMZ			/usr/local/bin/mknmz
+
+  (21) INDEXOUTPUTDIR
+# mknmz で作られる NMZ.* の出力先を規定したい時に入力してください。
+INDEXOUTPUTDIR	/usr/local/var/namazu/index
+
+  (22) TARGETDIR
+# mknmz で indexing するデフォルトディレクトリを full path で規定してください。
+TARGETDIR		./
 
   (23) MKOPTIONS
 # mknmz のコマンドラインオプションを規定してください。
 MKOPTIONS		
 
-  (24) WDLOCATION
-# wdnmz をスタートさせるデフォルトディレクトリを full path で規定してください。
-WDLOCATION		./NMZ.i
+  (24) SMARTBROWSE
+# mknmz のコマンドラインオプションを規定してください。
+SMARTBROWSE		
 
-  (25) DBOUTPUTDIR
-# mknmz で作られる NMZ.* の出力先を規定したい時に入力してください。
-# 但し namazu-112 以降の機能です。
-DBOUTPUTDIR		/usr/local/namazu/index
+  (25) HEADERWIPE
+# mknmz のコマンドラインオプションを規定してください。
+HEADERWIPE		
 
-  (26) DATABASES
-# NMZ.* のある場所をコマンドラインから規定したい時に入力してください。
-# namazu-112 以降を使用して複数の場所を指定する時は<SPACE>で区切ってください。
-DATABASES		/usr/local/namazu/index
+  (26) LOCALSITES
+# mknmz のコマンドラインオプションを規定してください。
+LOCALSITES		
 
-  (27) DATABASESx
+  (27) THOUGHTFULFIND
+# mknmz のコマンドラインオプションを規定してください。
+THOUGHTFULFIND		
+
+  (28) INDEXESx
 # NMZ.* のある場所を DataBase Selecter に設定します。
 # 一つ目は title を、その後ろに<SPACE>で区切って NMZ.i の directory を列挙して
 # 下さい。
-DATABASES1		main /usr/local/namazu/index
-DATABASES2		public /usr/local/data/txt /usr/local/pub/data/html
-DATABASES3		rfc /usr/local/data/rfc
-DATABASES4		webauto /usr/local/public_html/webauto/web_site
-DATABASES5		teleport /usr/local/public_html/teleport/projects
+INDEXES1		main /usr/local/var/namazu/index
+INDEXES2		hogehoge /usr/local/var/namazu/index/hogehoge
 
-  (28) BOOKMARKSx
+  (29) BOOKMARKSx
 # 頻繁にアクセスする file や URL を登録することができます。
 # 一つ目は title を、その後ろに<SPACE>で区切って full path のファイル名や
 # URL を書いて下さい。
-BOOKMARKS1		Namazu-intro /usr/local/namazu/doc/intro.html
-BOOKMARKS2		Home http://www.tama.or.jp/%7Ekenzo-/Namazu/tknamazu/
+BOOKMARKS1		Namazu-manual /usr/local/share/namazu/doc/ja/manual.html
+BOOKMARKS2		Namazu-Homepage http://www.namazu.org/
 
 
-8. ハイパーテキストブラウザ(lynx)
----------------------------------
+  (30) NAMAZUSITESx
+# Namazu を使って実現している検索 Web site を登録します。
+# 一つ目は title を、その後ろに<SPACE>で区切って full path のファイル名や
+# URL を書いて下さい。
+NAMAZUSITES1		localhost http://localhost/cgi-bin/namazu.cgi
+NAMAZUSITES2		Namazu-mailinglist http://ml.namazu.org/cgi-bin/namazu.cgi
+
+
+8.ハイパーテキストブラウザ(lynx)。
+----------------------------------
 
  TkNamazu は http: や ftp: , file: 等の protocol のついた URL からの file の取
 得と、 HTML file の表示を 全て lynx に頼っています。ここでは lynx で必要な設定
@@ -441,8 +456,8 @@ BOOKMARKS2		Home http://www.tama.or.jp/%7Ekenzo-/Namazu/tknamazu/
             no_proxy:hogehoge.co.jp,foo.com,bar.net
 
 
-9. マニュアルブラウザ(groff)
-----------------------------
+9.マニュアルブラウザ(groff)。
+-----------------------------
 
  TkNamazu は man page format のファイルを表示する事が出来ます。groff 自
 体の設定は特に必要ありません。また man page を表示しないのであればイン
@@ -455,11 +470,11 @@ BOOKMARKS2		Home http://www.tama.or.jp/%7Ekenzo-/Namazu/tknamazu/
 ここでちゃんと表示されない場合は多分 groff がおかしいのでしょう。
  しかしちゃんと表示される場合は、 TkNamazu の不具合である可能性が高いの
 で表示された画面を [File] -> [Save] でファイルに落として、バグレポート
-([13] Bug report) に添えて送って頂けるようお願い致します。
+([12] バグレポートの送り方) に添えて送って頂けるようお願い致します。
 
 
-10. インフォブラウザ(info)
---------------------------
+10.インフォブラウザ(info)。
+---------------------------
 
  TkNamazu は gnu の info format のファイルを表示する事が出来ます。info
 自体の設定は特に必要ありません。また info を表示しないのであればインス
@@ -472,11 +487,11 @@ BOOKMARKS2		Home http://www.tama.or.jp/%7Ekenzo-/Namazu/tknamazu/
 ここでちゃんと表示されない場合は多分 info がおかしいのでしょう。
  しかしちゃんと表示される場合は、 TkNamazu の不具合である可能性が高いの
 で表示された画面を [File] -> [Save] でファイルに落として、バグレポート
-([13] Bug report) に添えて送って頂けるようお願い致します。
+([12] バグレポートの送り方) に添えて送って頂けるようお願い致します。
 
 
-11. 漢字の入力(kinput2)
------------------------
+11.漢字の入力(kinput2)。
+------------------------
 
  TkNamazu は漢字の入力に kinput2 を使用します。startx や initx を使用し
 て X Window System を起動している人は Home directory の .xinitrc に、
@@ -491,20 +506,20 @@ xdm で起動している人は .xsession に、以下の一行を追加しておくと良いで
 きるようになるはずです。
 
 
-12. バグレポートの送り方
-------------------------
+12.バグレポートの送り方。
+-------------------------
 
  TkNamazu の使用に関しては基本的に  at your own risk でお願いいたします。
 但し、不具合orバグに関してはできるだけ対処したいと思っていますので、不具合orバ
-グを見つけた方は広瀬<kenzo-@tama.or.jp>までご連絡して頂けるよう、宜しくお願い致
-します。
+グを見つけた方は "Namazu メーリングリスト" <namazu@ring.gr.jp>もしくは
+"広瀬" <kenzo-@tama.or.jp>までご連絡して頂けるよう、宜しくお願い致します。
  またその際に [Edit] -> [Display configuration] で表示される内容を、[File] ->
 [Save] でファイルに落として mail に添付し、Namazu  version を併記して送っていた
-だけると助かります。(もちろん強制ではありません。)
+だけると助かります。
 
 
-13. Namazuの検索式（参考）
---------------------------
+13.Namazuの検索式（参考）。
+---------------------------
 
 [ 検索の方法 ]
   単一単語検索
@@ -622,7 +637,8 @@ xdm で起動している人は .xsession に、以下の一行を追加しておくと良いで
        と中括弧で囲みます。
 
 
-14. 画面の説明（参考）
+14.画面の説明（参考）。
+-----------------------
 
 +---+----------------------------------------------------+
 |TK | TkNamazu                                           |<-タイトルバー
@@ -662,4 +678,4 @@ xdm で起動している人は .xsession に、以下の一行を追加しておくと良いで
 
 ============================================================================ 
 Copyright (C) 1998-2000 Ken-ichi Hirose. All rights reserved.
-$Id: tknamazu.hlp.ja_JP.SJIS,v 1.1 2000-02-20 09:18:00 rug Exp $
+$Id: tknamazu.hlp.ja_JP.SJIS,v 1.2 2000-02-20 12:41:19 kenzo- Exp $

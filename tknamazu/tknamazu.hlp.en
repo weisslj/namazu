@@ -1,587 +1,140 @@
-============================================================================ 
-Manual of Tcl/Tk client for Namazu the full text retrieval search system. 
-                                                                    Rev 1.09 
-============================================================================ 
+=============================================================================
+Manual of Tcl/Tk front-end for Namazu the full text retrieval search system. 
+                                                                    Rev 1.10 
+=============================================================================
 Contents
         [1] Intro
-        [2] Window Description
+        [2] Widget Description
         [3] Menubar Description
         [4] Popup Description
-        [5] Mouse Configuration
-        [6] Key Configuration
-        [7] Input Rule
-        [8] Resource File(~/.tknmzrc) Description
-        [9] Hyper Text Browsing (lynx)
-        [10] Man Page Browsing (groff)
-        [11] Info Browsing (info)
-        [12] KANJI Input (kinput2)
-        [13] Bug Report
-        [14] etc
+        [5] Mouse Description
+        [6] Key Bind Description
+        [7] Resource File(~/.tknamazurc) Description
+        [8] Hyper Text Browsing(lynx)
+        [9] Man Page Browsing(groff)
+        [10] Info Browsing(info)
+        [11] KANJI Input(for japanese)
+        [12] Bug Report
+        [13] Input Rule of Namazu (appendix)
+        [14] Display Description (appendix)
+
 
 References
 
+1.Intro
+-------
 
- 1. Intro
+ This utility was made for the intention of let's use the full text retrieval 
+search system Namazu that development had been advanced in the Unix base 
+comfortably with GUI.
 
- д│д╬ецб╝е╞егеъе╞егд╧бвUnixе┘б╝е╣д╦│л╚пдм┐╩дсдщдьд╞днд┐╞№╦▄╕ь┴┤╩╕╕б║ўеиеєе╕еє
-NamazuдЄбвGUI д╟▓ў┼мд╦╗╚д├д╞д╖д▐дкджд╚дддж╠▄╧└д▀ :-) д╬░┘д╦║юдщдьд▐д╖д┐бге┐б╝
-е▓е├е╚д╧ X Window System д╟д╣дмбв Tcl/Tk д╚дддж GUI дЄедеєе┐е╫еъе┐д╟┤╩├▒д╦д─дп
-дьды╕└╕ьдЄ╗╚д├д╞ддды░┘бв X Window System ░╩│░д╦дт Windows95/NT дф OS/2 бвMac 
-┼∙б╣д╬ Tcl/Tk д╬╞░║юд╣дые╫еще├е╚е█б╝ерд╟╞░дпд╧д║д╟д╣бг╛▄║┘д╧╞▒║нд╡дьд╞ддды└т╠└
-дЄд┤╗▓╛╚▓╝д╡ддбг
+ It is supposed to move in the platform that Windows and OS/2, Mac, 
+etc... Tcl/Tk executable platform besides X Window System because the language 
+which can make GUI of Tcl/Tk easily by interpreter is being used though a 
+target is X Window System.
+ Refer to the README file that it is packed together for the details.
 
- ║╟┐╖╚╟д╧
+ A command line complies with the Namazu reference system of Web site that 
+of course it is introduced to the public with Internet and Intranet as well 
+with TkNamazu.
+
+
+ The latest edition is introduced to the public with the following URL.
     0. <URL:http://www.tama.or.jp/%7Ekenzo-/Namazu/tknamazu/>
-д╟╕°│лд╖д╞ддд▐д╣бгб╩╛░бвд│д╬е┌б╝е╕д╧╔м═╫д╦▒■д╕д╞╣╣┐╖д╡дьд▐д╣бгб╦
-
-
- 2. Window Description
-
- Tknamazu дЄ╬йд┴╛хд▓дыд╚([14] etc)д╟╝ид╣дшджд╩▓ш╠╠дм╕╜дьд▐д╣бг
-░╩▓╝д╦│╞б╣д╬╡б╟╜д╚╗╚дд╩¤дЄ╝ид╖д▐д╣бг
-
-  (1) е┐еде╚еые╨б╝
-         Main Widget(Window) д╟д╧ tknamazu д╚╔╜╝ид╡дьд▐д╣бг
-
-  (2) есе╦ехб╝е╨б╝
-         Tknamazu д╬│╞╡б╟╜дЄ┴к┬Єд╣ды╗Ўдм╜╨═шд▐д╣бг<Alt(Grph)Key> + <│╞╣р╠▄д╬ев
-        еєе└б╝ещедеєдм░·длд╞ддды╩╕╗·key> д╟е╖ечб╝е╚еле├е╚┴к┬Єдм╜╨═шд▐д╣бгесе╦
-        ехб╝е╨б╝д╬╛▄║┘д╦д─ддд╞д╧╝бд╬╛╧([3] Menubar Description)д╟╝шдъ╛хд▓д▐д╣бг
-
-  (3) ╕б║ўе╒ейб╝ер
-         Keyword д╬╜ъд╦ Namazu д╬╕б║ў╝░д╬╗┼══д╦▒шд├д╞ keyword дЄ╞■╬╧д╖д╞▓╝д╡
-        ддбг╕б║ў╝░д╬╗┼══д╦д─ддд╞д╧([7] Input Rule)д╟└т╠└д╖д▐д╣бг
-         бж<Alt> + <K> д╟ keyword entry д╦е╒ейб╝еле╣дЄ╣чдяд╗ды╗Ўдм╜╨═шд▐д╣бг
-         бж<Shift> + <Space> д▐д┐д╧ <Ctrl> + <Shift▒ж> д╟ kinput2 д╬╞■╬╧
-        Window дЄ│лддд╞┤┴╗·╞■╬╧дЄ╣╘дж╗Ўдм╜╨═шд▐д╣бг(Windows д╟д╧д╜дьд╛дьд╬дл
-        д╩┤┴╗·╩╤┤╣е╜е╒е╚д╬енб╝е╨едеєе╔д╟бв┤┴╗·дЄ╞■╬╧д╣ды╗Ўдм╜╨═шд▐д╣бг)
-         бж<Alt> + <S> д╟ Search е▄е┐еєд╦е╒ейб╝еле╣дЄ╣чдяд╗ды╗Ўдм╜╨═шд▐д╣бге╒ей
-        б╝еле╣дм░▄╞░д╖д┐дщ <Space> д╟╖ш─ъд╣дьд╨╕б║ўдм╝┬╣╘д╡дьд▐д╣бг
-         бж<Alt> + <Q> д╟  е▄е┐еєд╦е╒ейб╝еле╣дЄ╣чдяд╗ды╗Ўдм╜╨═шд▐д╣бге╒ейб╝еле╣
-        дм░▄╞░д╖д┐дщ <Space> д╟╖ш─ъд╣дьд╨│╬╟з╕х Tknamazu дЄ╜к╬╗д╣ды╗Ўдм╜╨═шд▐
-        д╣бг
-
-  (4) еке╫е╖ечеєе╨б╝
-         Namazu д╬╝ч═╫ option дЄ┤╩├▒д╦╩╤╣╣д╣ды╗Ўдм╜╨═шд▐д╣бг
-         бж<Alt> + <C> д╟╔╜╝ид╣ды╕б║ў╖ы▓╠д╬┐ЇдЄ╗╪─ъд╣ды╗Ўдм╜╨═шд▐д╣бге╟е╒ейеые╚
-        д╧ 10 ╕─д╟д╣бг
-         бж<Alt> + <U> д╟═╫╠єдЄ╔╜╝ид╣дыб┐д╖д╩дддЄ╗╪─ъд╣д│д╚дм╜╨═шд▐д╣бге╟е╒ейеы
-        е╚д╧╔╜╝ид╣дыд╟д╣бг
-        
-  (5) ╖ы▓╠╔╜╝и▓ш╠╠ & е╣епеэб╝еые╨б╝
-         ╕б║ў╖ы▓╠бвEdit -> Load tknmzrc д╬╜╨╬╧бвHelp -> Help д╬╜╨╬╧┼∙дЄ╔╜╝ид╖д▐
-        д╣бге╣епеэб╝еые╨б╝д╦е╒ейб╝еле╣дм╣чд├д╞дддьд╨бв<Cursor-Key> , 
-        <RollUp/Down> , <Ctrl> + <Home> , <Ctrl> + <Help> ┼∙б╣дм╗╚═╤д╣ды╗Ўдм╜╨
-        ═шд▐д╣бг
-         д▐д┐╖ы▓╠╔╜╝и▓ш╠╠д╧─╠╛я╩╘╜╕д╟днд╩дддшджд╦д╩д├д╞ддд▐д╣дмбв
-        Edit -> Editable дЄ┴к┬Єд╣ды╗Ўд╦дшд├д╞╩╘╜╕д╟дндыдшджд╦д╩дъд▐д╣бгд╜д╬д█дл
-        ╩╕╗·д╬┴к┬Єдм╜╨═шд╩дд╗■дт Editable д╦д╣ды╗Ўд╦дшд├д╞бв┴к┬Єд╟дндыдшджд╦д╩
-        дъд▐д╣бг
-
-
- 3. Menubar Description
-
-  (1) File
-    i)   Open
-         ╗╪─ъд╖д┐ file дЄ╞т┬в viewer д╟╔╜╝ид╡д╗д▐д╣бг
-    ii)  Open URL
-         ╗╪─ъд╖д┐ URL дЄ╞т┬в viewer д╦╔╜╝ид╡д╗д▐д╣бг
-    iii) Save
-         ╖ы▓╠╔╜╝и▓ш╠╠д╦╔╜╝ид╡дьд╞ддды╞т═╞дЄбве╒ебедеыд╦╩▌┬╕д╖д▐д╣бг
-    iv)  Load namazu.conf
-         ╗╪─ъд╡дьд┐ directory д╬ namazu.conf дЄе│е▐еєе╔ещедеєеке╫е╖ечеєд╟╗╪─ъд╖
-        д▐д╣бг╬удид╨ REPLACE ┼∙дЄ░ь╗■┼кд╦╩╤╣╣д╖д┐дд╗■┼∙д╦╕·▓╠дЄ╚п┤°д╖д▐д╣бг
-    v)   SelectDB
-         .tknmzrc д╬ DATABASESx ([12] Resource...) д╟╗╪─ъд╖д┐ NMZ.i дЄ╔╜╝иб┐┴к┬Є
-        д╣ды╗Ўдм╜╨═шд▐д╣бг
-        бжеле╣е▒б╝е╔есе╦ехб╝д╟░ь╚╓╛хд╬┼└└■д╬╔Ї╩мдЄб╔║╕епеъе├епor<Space(╖ш─ъ)>б╔
-        д╣дыд╚ SelectDB дЄ├▒╞╚д╟╔тдлд╗ды╗Ўдм╜╨═шд▐д╣бгдддэдддэд╩┴╚╣чд╗дЄ┴к┬Єд╣
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-        ды╗■д╧бв╔тдлд╗д┐╩¤дм├╟┴│╩╪═°д╟д╣д╬д╟└з╚є╗юд╖д╞д▀д╞дпд└д╡ддбг
-        бжеле╣е▒б╝е╔есе╦ехб╝д╟ <Alt> + <S> д╟┴┤д╞дЄ┴к┬Єд╣ды╗Ўдм╜╨═шд▐д╣бг
-        бжеле╣е▒б╝е╔есе╦ехб╝д╟ <Alt> + <C> д╟┴┤д╞д╬┴к┬ЄдЄ▓Є╜№д╣ды╗Ўдм╜╨═шд▐д╣бг
-    vi)  AddDB
-         .tknmzrc д╦┼╨╧┐д╡дьд╞ддд╩дд DB(NMZ.i) дЄ DataBase Selecter д╦┼╨╧┐д╖д▐
-        д╣бг
-    vii) Quit
-         Tknamazu дЄ╜к╬╗д╖д▐д╣бг
-
-  (2) Edit
-    i)   Editable
-         ╖ы▓╠╔╜╝и▓ш╠╠дЄ╩╘╜╕▓─╟╜д╦д╖д▐д╣бг
-    ii)  Copy
-         ┴к┬Є├цд╬╩╕╗·╬єдЄ Clipboard д╦ copy д╖д▐д╣бг
-    iii) Cut
-         ┴к┬Є├цд╬╩╕╗·╬єдЄ Clipboard д╦ cut д╖д▐д╣бг
-    iv)  Paste
-         Clipboard д╦│╩╟╝д╡дьд╞ддды╩╕╗·╬єдЄелб╝е╜еыд╬░╠├╓д╦ paste д╖д▐д╣бг
-    v)   Find
-         ╖ы▓╠╔╜╝и▓ш╠╠╞тд╟╠▄┼кд╬╩╕╗·╬єдЄ╕б║ўд╖д▐д╣бг
-    vi)  Set authorization
-         user └й╕┬дЄд╖д╞ддды URL д╦евепе╗е╣д╣ды╗■д╦бв╗Ў┴░д╦└▀─ъд╖д╞дкддд╞▓╝д╡
-                                                     ^^^^^^
-         ддбг
-         д│д╬╞■╬╧е└едевеэе░д╟д╧е╤е╣еяб╝е╔дЄ▒гд╖д▐д╗дєбг╞■╬╧├цд╦┬╛д╬┐═д╦╕лдщдьд╩
-         дддшджд╦╜╜╩м├э░╒д╖д╞▓╝д╡ддбгд▐д┐ Tknamazu дЄ╜к╬╗д╣дыд╚бвд│д│д╟╞■╬╧д╡дь
-         д┐├═д╧╟╦┤■д╡дьд▐д╣бгTknamazu д╬║╞╬йд┴╛хд▓дЄ╣╘д├д┐╛ь╣чд╧╞■╬╧д╖д╩дкд╖д╞
-         ▓╝д╡ддбг
-    vii) Display configuration
-         ╕╜║▀(╝┬╣╘д╖д┐╜╓┤╓)д╬ Tknamazu д╬└▀─ъб┐е╣е╞б╝е┐е╣дЄ╔╜╝ид╖д▐д╣бг
-         д│д╬╞т═╞дЄ save д╖д╞дкддд╞ Resource file(.tknmzrc) д╚д╖д╞╗╚дж╗Ўдт╜╨═ш
-         д▐д╣бг
-    viii)Load tknmzrc
-         ░ь╗■┼кд╦┬╛д╬ Resource file(.tknmzrc) дЄ╞╔д▀╣■д▀д┐дд╗■д╦╗╚═╤д╖д▐д╣бг
-
-  (3) Go
-    i)   To Head
-         ╖ы▓╠╔╜╝и▓ш╠╠д╬║╟╛х├╝д╦░▄╞░д╖д▐д╣бг
-    ii)  To Tail
-         ╖ы▓╠╔╜╝и▓ш╠╠д╬║╟▓╝├╝д╦░▄╞░д╖д▐д╣бг
-    iii) Bookmark 
-         ╔╤╚╦д╦╕лды file дфбв╣еднд╩ URL дЄ┼╨╧┐д╖д╞дкд▒д▐д╣бг
-
-  (4) Mknmz
-    i)   Execute mknmz
-         Namazu д╬едеєе╟е├епе╣дЄ║ю└од╣ды mknmz е│е▐еєе╔дЄ╝┬╣╘д╖д▐д╣бг
-
-  (5) Wdnmz
-    i)   Execute wdnmz
-         Namazu д╬едеєе╟е├епе╣дЄ▒▄═ўд╣ды wdnmz е│е▐еєе╔дЄ╝┬╣╘д╖д▐д╣бг
-
-  (6) Help
-    i)   Help
-         Tknamazu д╬ Help е╒ебедеы(д│д╬е╒ебедеы)дЄ╔╜╝ид╖д▐д╣бг
-    ii)  Version
-         Tknamazu д╬ version д╚ status дЄ╔╜╝ид╖д▐д╣бг
-
+ БiAnd, this page is renewed if necessary.Бj
 
- 4. Popup Description
 
-  (1) Search this
-         ┴к┬Єд╡дьд╞ддды├▒╕ьдЄ Namazu д╟╕б║ўд╖д▐д╣бг
+2.Widget Description
+--------------------
 
-  (2) Copy and Paste to keyword
-         ┴к┬Єд╡дьд╞ддды├▒╕ьдЄбвKeyword ╞■╬╧ widget д╦ copy д╖д▐д╣бг
+Please wait a few days.
+Wwriting now.
 
-  (3) Copy and Paste to Findword
-         ┴к┬Єд╡дьд╞ддды├▒╕ьдЄбвFind ╞■╬╧ widget д╦ copy д╖д▐д╣бг
 
-  (4) Copy this URL
-         link ╔╜╝ид╡дьд╞ддды URL дЄ Clipboard д╦ copy д╖д▐д╣бг
+3.Menubar Description
+---------------------
 
-  (5) Copy
-         ┴к┬Є├цд╬╩╕╗·╬єдЄ Clipboard д╦ copy д╖д▐д╣бг
+Please wait a few days.
+Wwriting now.
 
-  (6) Paste
-         Clipboard д╦│╩╟╝д╡дьд╞ддды╩╕╗·╬єдЄелб╝е╜еыд╬░╠├╓д╦ paste д╖д▐д╣бг
 
-  (7) Cut
-         ┴к┬Є├цд╬╩╕╗·╬єдЄ Clipboard д╦ cut д╖д▐д╣бг
+4.Popup Description
+-------------------
 
-  (8) External Browser or Viewer
-         │░╔Ї browser дтд╖дпд╧ viewer д╟╔╜╝ид╖д▐д╣бг
+Please wait a few days.
+Wwriting now.
 
-  (9) To Head
-         ╖ы▓╠╔╜╝и▓ш╠╠д╬║╟╛х├╝д╦░▄╞░д╖д▐д╣бг
 
-  (10) To Tail
-         ╖ы▓╠╔╜╝и▓ш╠╠д╬║╟▓╝├╝д╦░▄╞░д╖д▐д╣бг
+5.Mouse Description
+-------------------
 
-  (11) Editable
-         ╖ы▓╠╔╜╝и▓ш╠╠дЄ╩╘╜╕▓─╟╜д╦д╖д▐д╣бг
+Please wait a few days.
+Wwriting now.
 
-  (12) Quit
-         Tknamazu дЄ╜к╬╗д╖д▐д╣бг
 
+6.Key Bind Description
+----------------------
 
- 5. Mouse Configuration
+Please wait a few days.
+Wwriting now.
 
-  (1) ║╕е╖еєе░еыепеъе├еп
-         ╖ы▓╠╔╜╝и▓ш╠╠╞тд╬ blue д╦╚┐┼╛╔╜╝ид╡дьд╞дддыд╚д│дэд╟бв║╕е╖еєе░еыепеъе├еп
-        д╣дыд╚ URL дтд╖дпд╧ HTML д╟двдьд╨ lynx filer дЄ─╠д╖д┐╖ы▓╠дм╔╜╝ид╡дьд▐
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-        д╣бг╝л╩мд╬ machine д╬ local file д╟д┐д└д╬ plain text д╟двдьд╨╝л┴░д╬ 
-        viewer д╟╔╜╝ид╖д▐д╣бг
-         д┴д╩д▀д╦ blue д╦╚┐┼╛╔╜╝ид╡дьд╞ддды╜ъ░╩│░д╟бв║╕е╖еєе░еыепеъе├епд╣дыд╚
-        scrollbar д╦ focus дм░▄дыдшджд╦д╩д├д╞ддд▐д╣бг
 
-  (2) ├ц▒√е╖еєе░еыепеъе├еп(╠╡дд╛ь╣чд╧бв║╕▒ж╞▒╗■▓бд╖)
-         ╖ы▓╠╔╜╝и▓ш╠╠╞тд╬ blue д╦╚┐┼╛╔╜╝ид╡дьд╞дддыд╚д│дэд╟бв▒же╖еєе░еыепеъе├еп
-        д╣дыд╚ URL дтд╖дпд╧ HTML д╟двдьд╨ │░╔Ї browser (е╟е╒ейеые╚д╧ Netscape)
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-        д╟╔╜╝ид╖д▐д╣бг╝л╩мд╬ machine д╬ local file д╟д┐д└д╬ plain text д╟двдьд╨
-        │░╔Їviewer (е╟е╒ейеые╚д╧ less) д╟╔╜╝ид╖д▐д╣бг
+7.Resource File(~/.tknamazurc) Description
+------------------------------------------
 
-  (3) ▒же╖еєе░еыепеъе├еп
-         ╖ы▓╠╔╜╝и▓ш╠╠дтд╖дпд╧╕б║ўе╒ейб╝ерд╟▒же╖еєе░еыепеъе├епд╣дыд╚бве▌е├е╫еве├
-        е╫есе╦ехб╝дЄдЄ╬йд┴╛хд▓дыд│д╚дм╜╨═шд▐д╣бгд╜д╬д▐д▐╗╪дЄ╬ед╡д╩ддд╟бв╝┬╣╘д╖
-        д┐дд╡б╟╜дЄ┴к┬Єд╖д╞▓╝д╡ддбг
+Please wait a few days.
+Wwriting now.
 
 
- 6. Key Configuration
+8.Hyper Text Browsing(lynx)
+---------------------------
 
-  (1) ┴┤┬╬┼кд╩ Keybind
-        <Tab>           : ╝бд╬еведе╞ерд╪бг
-        <Space>         : е▄е┐еє▓б▓╝(╖ш─ъб┐╝┬╣╘)бг
-        <Ctrl> + <F>    : Edit -> Find д╚╞▒д╕бг╕б║ў▓ш╠╠дЄ╔╜╝ид╣дыбг
-        <Ctrl> + <V>    : ╝бд╬е┌б╝е╕д╪бг
-        <Ctrl> + <Z>    : ┴░д╬е┌б╝е╕д╪бг
-        <Ctrl> + <N>    : ╝бд╬╣╘д╪бг
-        <Ctrl> + <P>    : ┴░д╬╣╘д╪бг
+Please wait a few days.
+Wwriting now.
 
-  (2) entry(╩╕╗·╞■╬╧╔Ї╩м) д╦ focus дмдвды╗■д╬ Keybind
-        <Return>        : entry ╞т═╞д╟╝┬╣╘бг
-        <Escape>        : енеуеєе╗еыбг
-        <Home>          : ╣╘╞мд╪бг
-        <Help>          : ╣╘├╝д╪бг
-        <Shift> + <Space>   : ┤┴╗·╞■╬╧дЄ╣╘дж(over ╖┴╝░д╟ kinput2 Window дЄ│лдп)
-        <Ctrl> + <O>        : ┤┴╗·╞■╬╧дЄ╣╘дж(over ╖┴╝░д╟ kinput2 Window дЄ│лдп)
-        <Ctrl> + <Shift▒ж>  : ┤┴╗·╞■╬╧дЄ╣╘дж(root ╖┴╝░д╟ kinput2 Window дЄ│лдп)
-        <Ctrl> + <\>        : ┤┴╗·╞■╬╧дЄ╣╘дж(root ╖┴╝░д╟ kinput2 Window дЄ│лдп)
-        <Ctrl> + <┤┴╗·>     : ┤┴╗·╞■╬╧дЄ╣╘дж(root ╖┴╝░д╟ kinput2 Window дЄ│лдп)
 
-  (2) scrollbar д╦ focus дмдвды╗■д╬ Keybind
-        <Space>         : ╝бд╬е┌б╝е╕д╪бг
-        <BackSpace>     : ┴░д╬е┌б╝е╕д╪бг
-        <Return>        : ╝бд╬╣╘д╪бг
-        <Ctrl> + <Home> : е┌б╝е╕д╬└ш╞мд╪бг
-        <Ctrl> + <Help> : е┌б╝е╕д╬║╟╕хд╪бг
+9.Man Page Browsing(groff)
+--------------------------
 
+Please wait a few days.
+Wwriting now.
 
- 7. Input Rule
 
-This search system is case insensitive. You can use asterisk character at the 
-end of the word to do forward match
-search, for instance: "foo*" 
+10.Info Browsing(info)
+----------------------
 
-Separating keywords by spaces is automatically assumed to be AND-search that 
-is to find only documents containing all of the specified keywords. 
+Please wait a few days.
+Wwriting now.
 
-You can search the word containing symbols like "TCP/IP". However, this 
-processing isn't perfect, so you can describe "TCP IP" instead of "TCP/IP", 
-but it may cause noisy results. 
 
-This search system has boolean operators '&', '!', '|'. In place of symbols, 
-the word "and", "or", "not", are accepted. Each operator must be separated by 
-space. 
+11.KANJI Input(for japanese)
+----------------------------
 
-For exapmle (both expressions is same meaning): 
+Please wait a few days.
+Wwriting now.
 
-       ( sed | awk ) ! perl & regexp 
-       ( sed or awk ) not perl and regexp 
 
-This sample finds the files which contain "sed" or "awk", and no "perl", 
-but include "regexp". 
+12.Bug Report
+-------------
 
-You can use nested parenthesises expression for advanced search. 
+Please wait a few days.
+Wwriting now.
 
-By surronding words with double quotation mark '"' or curly brace '{' '}', 
-Namazu would recognize it as phrase but it is not perfect precision, so it 
-cause wrong hit occasionally. 
 
-For exapmle (both expressions is same meaning): 
+13.Input Rule of Namazu (appendix)
+----------------------------------
 
-       "SIMPLE MAIL TRANSFER PROTOCOL" 
-       {SIMPLE MAIL TRANSFER PROTOCOL} 
+Please wait a few days.
+Wwriting now.
 
-Also, Namazu can do "regular expression search", "middle or backward match 
-search" but it's little slow.
 
-For exapmle: 
+14.Display Description (appendix)
+---------------------------------
 
-       *net (backward match) 
-       *foo* (middle match) 
-       /(foo|bar)[a-z]+/ (regular expression) 
-       "rain dance" (phrase) 
-
-You can do 'field specified search' as well if indices are prepared.
-
-     +date:/Aug 1998/ (something dated on 'Aug 1998') 
-     +from:foo@bar.jp (article by foo@bar.jp) 
-     +subject:"internet message" (search a string for Subject:) 
-     +subject:"(mule|xemacs|emacs)" (search a string for Subject: with regex) 
-     +message-id:<199801240555.OAA18737@foo.bar.jp> (Message-Id) 
-     +title:amarok (title of document) 
-     +author:foo@bar.jp (author of document) 
-     +url:http://foo.bar.jp/ (URL of document) 
-
-
- д╡дщд╦╛▄д╖дд╛Ё╩єдЄ├╬дъд┐дд╩¤д╧ Namazu д╬е▐е╦ехевеы
-    <URL:http://www.namazu.org/manual.html>
-дЄ╗▓╛╚д╖д╞дпд└д╡ддбг 
-
-
- 8. Resource File(~/.tknmzrc) Description
-
- .tknmzrc д╚д╧ Tknamazu д╬└▀─ъдЄ╡м─ъд╖д╞дкдп file д╟д╣бг Tknamazu д╧╡п╞░д╡дьды
-д╚бв╡п╞░д╖д┐ецб╝е╢б╝д╬ Home directory дЄ├╡д╖д╦╣╘днд▐д╣бгдтд╖д╩д▒дьд╨ TKNMZPATH
-д╟╡м─ъд╡дьд╞ддды directory дЄ├╡д╖д▐д╣бгд╜дьд╟дтд╩д▒дьд╨╝л╩мд╟╗¤д├д╞ддды default
-д╟╬йд┴двдмдъд▐д╣бг
- │╞╣р╠▄д╧┬ч╩╕╗·д╟бв╣р╠▄д╚├═д╬┤╓д╧╔мд║г▒д─░╩╛хд╬<TAB>д╟╢ш└┌д├д╞дпд└д╡ддбг
-                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
- д▐д┐╣╘╞мд╦ # дЄ╜ёд▒д╨е│есеєе╚░╖д╦д╩дъд▐д╣бг
-
-
-  (1) EXTBROWSER
-# │░╔Ї▒▄═ў═╤д╬ Web Browser дЄ full path д╟╗╪─ъд╖д╞дпд└д╡ддбг
-EXTBROWSER		/usr/local/bin/netscape
-
-  (2) EXTVIEWER
-# │░╔Ї▒▄═ў═╤д╬ Viewer дл Editer дЄ full path д╟╗╪─ъд╖д╞дпд└д╡ддбг
-EXTVIEWER		/usr/local/bin/jless
-
-  (3) NAMAZU
-# Namauz д╬двды╜ъдЄ full path д╟╗╪─ъд╖д╞дпд└д╡ддбг
-NAMAZU			/usr/local/bin/namazu
-
-  (4) BROWSER
-# HTML дЄ═¤▓Єд╣дыд╬д╚ protcol дмд─ддд┐ URL дЄ╝ш╞└д╣ды░┘д╦ lynx дЄ╗╚═╤д╖д▐д╣бг
-# tcl д╧ network дм╝хддд╬д╟бгбгбг full path д╟╗╪─ъд╖д╞дпд└д╡ддбг
-BROWSER			/usr/local/bin/lynx -dump
-
-  (5) UNCOMPRESS
-# zcat д╬двды╜ъдЄ full path д╟╗╪─ъд╖д╞дпд└д╡ддбг
-UNCOMPRESS		/usr/bin/zcat
-
-  (6) MANPAGE
-# groff д╬двды╜ъдЄ full path д╟╗╪─ъд╖д╞дпд└д╡ддбг
-MANPAGE			/usr/local/bin/groff -man -Tnippon
-
-  (7) MANPAGEFILTER
-# groff д╬╜ш═¤д╬╕хд╦─╠д╖д┐дд filter д╬двды╜ъдЄ full path д╟╗╪─ъд╖д╞дпд└д╡ддбг
-# filter д╚дддж░╠├╓д┼д▒д╬░┘бвshell д╬е╤еде╫дЄ╗╚ддд▐д╣бге│е▐еєе╔д╬║╟╜щд╦ "| " дЄ
-# ╔мд║╞■дьд╞дпд└д╡ддбг
-MANPAGEFILTER		
-
-  (8) MANPATH
-# manual дЄ╕б║ўд╣ды path дЄе╣е┌б╝е╣д╟╢ш└┌д├д╞╬є╡єд╖д╞дпд└д╡ддбг
-# д┴д╩д▀д╦║╕┬жд╦╜ёддд┐ path длдщ╜ч╚╓д╦╕б║ўд╡дьд▐д╣бг
-MANPATH			/usr/local/man/ja_JP.EUC /usr/local/man/ja_JP.ujis /usr/man/ja_JP.ujis /usr/local/man /usr/share/man /usr/bin/man /usr/man /usr/X11R6/man /usr/openwin/man
-
-  (9) GNUINFO
-# info д╬двды╜ъдЄ full path д╟╗╪─ъд╖д╞дпд└д╡ддбг
-GNUINFO			/usr/bin/info
-
-  (10) GNUINFOFILTER
-# info д╬╜ш═¤д╬╕хд╦─╠д╖д┐дд filter д╬двды╜ъдЄ full path д╟╗╪─ъд╖д╞дпд└д╡ддбг
-# filter д╚дддж░╠├╓д┼д▒д╬░┘бвshell д╬е╤еде╫дЄ╗╚ддд▐д╣бге│е▐еєе╔д╬║╟╜щд╦ "| " дЄ
-# ╔мд║╞■дьд╞дпд└д╡ддбг
-GNUINFOFILTER		
-
-  (11) GNUINFOTMP
-# info д╬╜╨╬╧дЄ░ь╗■┼кд╦│╩╟╝д╣ды file дЄ full path д╟╗╪─ъд╖д╞дпд└д╡ддбг
-GNUINFOTMP		/tmp/.gnuinfotmp
-
-  (12) MKNMZ
-# mknmz д╬двды╜ъдЄ full path д╟╗╪─ъд╖д╞дпд└д╡ддбг
-MKNMZ			/usr/local/namazu/bin/mknmz
-
-  (13) WDNMZ
-# wdnmz д╬двды╜ъдЄ full path д╟╗╪─ъд╖д╞дпд└д╡ддбг
-WDNMZ			/usr/local/namazu/bin/wdnmz
-
-  (14) WIDTH
-# е╟е╒ейеые╚д╬▓г╔¤дЄ char ├▒░╠д╟╡м─ъд╖д╞дпд└д╡ддбг
-WIDTH			80
-
-  (15) HEIGHT
-# е╟е╒ейеые╚д╬╣тд╡дЄ char ├▒░╠д╟╡м─ъд╖д╞дпд└д╡ддбг
-HEIGHT			20
-
-  (16) WIDGETFONT
-# menu bar ┼∙д╬ font дЄ╗╪─ъд╖д╞дпд└д╡ддбг
-# xlsfonts д╟│╬╟зд╖д╞дпд└д╡ддбгд┴д╩д▀д╦│╞╣р╠▄д╬└т╠└д╧бгбгбг
-# -─є╢б╝╘-е╒ейеєе╚е╒ебе▀еъ-┬└д╡-╖╣дн-╔¤-─╔▓├е╣е┐едеы
-#         -е╘епе╗еы┐Ї-е▌едеєе╚┐Ї-X╩¤╕■д╬▓Є┴№┼┘-Y╩¤╕■д╬▓Є┴№┼┘
-#                 -┤╓│╓-╩┐╢╤е╒ейеєе╚╔¤-енеуещепе┐е╗е├е╚-еиеєе│б╝е╔-
-WIDGETFONT		-misc-Fixed-Medium-R-Normal-*-*-120-*-*-*-*-*-*
-
-  (17) TEXTFONT
-# ╖ы▓╠дЄ╔╜╝ид╣дые╞ене╣е╚▓ш╠╠д╬ font дЄ╗╪─ъд╖д╞дпд└д╡ддбг
-TEXTFONT		-misc-Fixed-Medium-R-Normal-*-*-120-*-*-*-*-*-*
-
-  (18) WIDGETCOLOR
-# menu bar ┼∙д╬┐здЄ╗╪─ъд╖д╞дпд└д╡ддбг
-WIDGETCOLOR		gray90
-
-  (19) LANGUAGE
-# ╔╜╝и╕└╕ьдЄ╗╪─ъд╖д╞дпд└д╡ддбг
-LANGUAGE                JAPANESE
-
-  (20) OPTIONS
-# Namazu д╬е│е▐еєе╔ещедеєеке╫е╖ечеєдЄ╡м─ъд╖д╞дпд└д╡ддбг
-OPTIONS			-U
-
-  (21) NMZCONF
-# namazu.conf д╬двды╛ь╜ъдЄ full path д╟╗╪─ъд╖д╞дпд└д╡ддбг
-NMZCONF			
-
-  (22) MKLOCATION
-# mknmz дЄе╣е┐б╝е╚д╡д╗дые╟е╒ейеые╚е╟егеьепе╚еъдЄ full path д╟╡м─ъд╖д╞дпд└д╡ддбг
-MKLOCATION		./
-
-  (23) MKOPTIONS
-# mknmz д╬е│е▐еєе╔ещедеєеке╫е╖ечеєдЄ╡м─ъд╖д╞дпд└д╡ддбг
-MKOPTIONS		
-
-  (24) WDLOCATION
-# wdnmz дЄе╣е┐б╝е╚д╡д╗дые╟е╒ейеые╚е╟егеьепе╚еъдЄ full path д╟╡м─ъд╖д╞дпд└д╡ддбг
-WDLOCATION		./NMZ.i
-
-  (25) DBOUTPUTDIR
-# mknmz д╟║юдщдьды NMZ.* д╬╜╨╬╧└шдЄ╡м─ъд╖д┐дд╗■д╦╞■╬╧д╖д╞дпд└д╡ддбг
-# ├вд╖ namazu-112 ░╩╣▀д╬╡б╟╜д╟д╣бг
-DBOUTPUTDIR		/usr/local/namazu/index
-
-  (26) DATABASES
-# NMZ.* д╬двды╛ь╜ъдЄе│е▐еєе╔ещедеєдлдщ╡м─ъд╖д┐дд╗■д╦╞■╬╧д╖д╞дпд└д╡ддбг
-# namazu-112 ░╩╣▀дЄ╗╚═╤д╖д╞╩г┐Їд╬╛ь╜ъдЄ╗╪─ъд╣ды╗■д╧<SPACE>д╟╢ш└┌д├д╞дпд└д╡ддбг
-DATABASES		/usr/local/namazu/index
-
-  (27) DATABASESx
-# NMZ.* д╬двды╛ь╜ъдЄ DataBase Selecter д╦└▀─ъд╖д▐д╣бг
-# ░ьд─╠▄д╧ title дЄбвд╜д╬╕хдэд╦<SPACE>д╟╢ш└┌д├д╞ NMZ.i д╬ directory дЄ╬є╡єд╖д╞
-# ▓╝д╡ддбг
-DATABASES1		main /usr/local/namazu/index
-DATABASES2		public /usr/local/data/txt /usr/local/pub/data/html
-DATABASES3		rfc /usr/local/data/rfc
-DATABASES4		webauto /usr/local/public_html/webauto/web_site
-DATABASES5		teleport /usr/local/public_html/teleport/projects
-
-  (28) BOOKMARKSx
-# ╔╤╚╦д╦евепе╗е╣д╣ды file дф URL дЄ┼╨╧┐д╣дыд│д╚дмд╟днд▐д╣бг
-# ░ьд─╠▄д╧ title дЄбвд╜д╬╕хдэд╦<SPACE>д╟╢ш└┌д├д╞ full path д╬е╒ебедеы╠╛дф
-# URL дЄ╜ёддд╞▓╝д╡ддбг
-BOOKMARKS1		Namazu-intro /usr/local/namazu/doc/intro.html
-BOOKMARKS2		Home http://www.tama.or.jp/%7Ekenzo-/Namazu/tknamazu/
-
-
- 9. Hyper Text Browsing (lynx)
-
- Tknamazu д╧ http: дф ftp: , file: ┼∙д╬ protocol д╬д─ддд┐ URL длдщд╬ file д╬╝ш
-╞└д╚бв HTML file д╬╔╜╝идЄ ┴┤д╞ lynx д╦═ъд├д╞ддд▐д╣бгд│д│д╟д╧ lynx д╟╔м═╫д╩└▀─ъ
-дЄ└т╠└д╖д▐д╣бг
- lynx д╬└▀─ъд╧ HOME directory д╬ .lynxrc длбвдтд╖дпд╧ /usr/local/lib д▐д┐д╧ 
-/use/local/etc д╦двды lynx.cfg д╟╣╘ддд▐д╣бгд│д│д╟д╧║╟─у╕┬╔м═╫д╩└▀─ъд╖дл╜ёддд╞дд
-д▐д╗дєбгдшдъ╛▄д╖дд└т╠└д╧ lynx(1) дф lynx ┼║╔╒д╬ document дЄд┤╗▓╛╚▓╝д╡ддбг
-
-  (1) default character set (CHARACTER_SET)
-         default character set д╚д╧ lynx д╬╜╨╬╧д╣дыенеуещепе┐б╝е│б╝е╔дЄ└▀─ъд╣ды
-        ╣р╠▄д╟д╣бг Unix╖╧д╟д╧─╠╛я
-
-            CHARACTER_SET: Japanese (EUC)
-
-        д╟┬ч╛ц╔╫д╩д╧д║д╟д╣бг Windows╖╧д╟д╧
-
-            CHARACTER_SET: Japanese (SJIS)
-
-        д╚д╖д╞дкд▒д╨╠ф┬ъд╩ддд╟д╖дчджбг
-        д▐д┐ lynx дЄ╝┬╣╘д╖д╞
-
-            Raw 8-bit or CJK m(O)de      : ON
-
-        д╟двды╗Ўдт│╬╟зд╖д╞дкддд╞▓╝д╡ддбг
-
-  (2) Proxy variables (http_proxy, ftp_proxy, no_proxy)
-         Proxy д╚д╧┬х═¤е╡б╝е╨д╬╗Ўд╟бв╞├д╦ firewall дЄ└▀─ъд╖д╞ддды┤ы╢╚д╬╞т╔Їдлдщ
-        │░╔Їд╬ Internet д╦евепе╗е╣д╣ды╗■д╦╔м╗ъд╚д╩дъд▐д╣бгд▐д║е═е├е╚еяб╝еп┤╔═¤
-        ╝╘д╦┬х═¤е╡б╝е╨д╬ host╠╛ д╚ port╚╓╣ц дЄ╩╣ддд╞░╩▓╝д╬дшджд╦└▀─ъд╖д╞▓╝д╡ддбг
-
-            http_proxy:http://host╠╛:port╚╓╣ц/
-            ftp_proxy:http://host╠╛:port╚╓╣ц/
-
-         ╝бд╦д╜д╬┬х═¤е╡б╝е╨дЄ╗╚дяд╩ддд╟евепе╗е╣д╣ды domain дЄелеєе▐д╟╢ш└┌д├д╞
-        ╬є╡єд╖д╞▓╝д╡ддбг
-
-            no_proxy:hogehoge.co.jp,foo.com,bar.net
-
-
- 10. Man Page Browsing (groff)
-         Tknamazu д╧ man page format д╬е╒ебедеыдЄ╔╜╝ид╣ды╗Ўдм╜╨═шд▐д╣бгgroff ╝л
-        ┬╬д╬└▀─ъд╧╞├д╦╔м═╫двдъд▐д╗дєбгд▐д┐ man page дЄ╔╜╝ид╖д╩ддд╬д╟двдьд╨едеє
-        е╣е╚б╝еыд╖д╩дпд╞дт╣╜ддд▐д╗дєбг
-         man page д╬╔╜╝идмджд▐дп╣╘длд╩дд╗■д╧бвд▐д║╖ы▓╠╔╜╝и▓ш╠╠д╬║╟╛х├╝д╦
-
-             %/usr/local/bin/groff -man -Tnippon ....
-
-        д╚╔╜╝ид╡дьд╞ддды╣╘дЄд╜д╬д▐д▐ command line д╟╝┬╣╘д╖д╞д▀д╞▓╝д╡ддбг
-        д│д│д╟д┴дудєд╚╔╜╝ид╡дьд╩дд╛ь╣чд╧┬┐╩м groff дмдкдлд╖ддд╬д╟д╖дчджбг
-         д╖длд╖д┴дудєд╚╔╜╝ид╡дьды╛ь╣чд╧бв Tknamazu д╬╔╘╢ё╣чд╟двды▓─╟╜└ндм╣тддд╬
-        д╟╔╜╝ид╡дьд┐▓ш╠╠дЄ [File] -> [Save] д╟е╒ебедеыд╦═юд╚д╖д╞бве╨е░еье▌б╝е╚
-        ([13] Bug report) д╦┼║дид╞┴ўд├д╞─║д▒дыдшдждк┤ъдд├╫д╖д▐д╣бг
-
-
- 11. Info Browsing (info)
-         Tknamazu д╧ gnu д╬ info format д╬е╒ебедеыдЄ╔╜╝ид╣ды╗Ўдм╜╨═шд▐д╣бгinfo
-        ╝л┬╬д╬└▀─ъд╧╞├д╦╔м═╫двдъд▐д╗дєбгд▐д┐ info дЄ╔╜╝ид╖д╩ддд╬д╟двдьд╨едеєе╣
-        е╚б╝еыд╖д╩дпд╞дт╣╜ддд▐д╗дєбг
-         info д╬╔╜╝идмджд▐дп╣╘длд╩дд╗■д╧бвд▐д║╖ы▓╠╔╜╝и▓ш╠╠д╬║╟╛х├╝д╦
-
-             %/usr/bin/info ....
-
-        д╚╔╜╝ид╡дьд╞ддды╣╘дЄд╜д╬д▐д▐ command line д╟╝┬╣╘д╖д╞д▀д╞▓╝д╡ддбг
-        д│д│д╟д┴дудєд╚╔╜╝ид╡дьд╩дд╛ь╣чд╧┬┐╩м info дмдкдлд╖ддд╬д╟д╖дчджбг
-         д╖длд╖д┴дудєд╚╔╜╝ид╡дьды╛ь╣чд╧бв Tknamazu д╬╔╘╢ё╣чд╟двды▓─╟╜└ндм╣тддд╬
-        д╟╔╜╝ид╡дьд┐▓ш╠╠дЄ [File] -> [Save] д╟е╒ебедеыд╦═юд╚д╖д╞бве╨е░еье▌б╝е╚
-        ([13] Bug report) д╦┼║дид╞┴ўд├д╞─║д▒дыдшдждк┤ъдд├╫д╖д▐д╣бг
-
-
- 12. KANJI Input (kinput2)
-         Tknamazu д╧┤┴╗·д╬╞■╬╧д╦ kinput2 дЄ╗╚═╤д╖д▐д╣бгstartx дф initx дЄ╗╚═╤д╖
-        д╞ X Window System дЄ╡п╞░д╖д╞ддды┐═д╧ Home directory д╬ .xinitrc д╦бв
-        xdm д╟╡п╞░д╖д╞ддды┐═д╧ .xsession д╦бв░╩▓╝д╬░ь╣╘дЄ─╔▓├д╖д╞дкдпд╚╬╔ддд╟
-        д╖дчджбг 
-
-            kinput2 -canna localhost &
-
-        (╛х╡нд╧ canna version д╬╛ь╣чд╟д╣)
-         д▐д┐ Window Manager д╬ kill е▄е┐еєд╩д╔д╟ kinput2 д╬ widget дЄ╛├д╖д╞д╖
-        д▐д├д┐╛ь╣чд╧бве│е▐еєе╔ещедеєдлдщ╛х╡ндЄ╞■╬╧б┐╝┬╣╘д╣дьд╨д▐д┐┤┴╗·дм╞■╬╧д╟
-        дндыдшджд╦д╩дыд╧д║д╟д╣бг
-
- 13. Bug Report
-
- Tknamazu д╬╗╚═╤д╦┤╪д╖д╞д╧┤Ё╦▄┼кд╦  at your own risk д╟дк┤ъддддд┐д╖д▐д╣бг
-├вд╖бв╔╘╢ё╣чorе╨е░д╦┤╪д╖д╞д╧д╟дндыд└д▒┬╨╜шд╖д┐ддд╚╗╫д├д╞ддд▐д╣д╬д╟бв╔╘╢ё╣чorе╨
-е░дЄ╕лд─д▒д┐╩¤д╧╣н└е<kenzo-@tama.or.jp>д▐д╟д┤╧в═эд╖д╞─║д▒дыдшджбв╡╣д╖дпдк┤ъдд├╫
-д╖д▐д╣бг
- д▐д┐д╜д╬║▌д╦ [Edit] -> [Display configuration] д╟╔╜╝ид╡дьды╞т═╞дЄбв[File] ->
-[Save] д╟е╒ебедеыд╦═юд╚д╖д╞ mail д╦┼║╔╒д╖бвNamazu  version дЄ╩╗╡нд╖д╞┴ўд├д╞ддд┐
-д└д▒дыд╚╜їдлдъд▐д╣бг(дтд┴дэдє╢п└йд╟д╧двдъд▐д╗дєбг)
-
-
- 14. etc
-
-иоими│имимимимимимимимимимимимимимимимимимимимимимимимимимип
-инTKинTkNamazu                                            ин<-е┐еде╚еые╨б╝
-и▓ими╡имимимимимимимимимимимимимимимимимимимимимимимимимими┤
-инFile  Edit  Go  Mknmz  Wdnmz                        Helpин<-есе╦ехб╝е╨б╝
-и▓имимимимимимимимимимимимимимимимимимимимимимимимимимимими┤
-ин        иоимимимимимимимимимимимимимипиоимимимипиоимимипин
-инKeyword:ин                          ининSearchининQuitинин<-╕б║ўе╒ейб╝ер
-ин        и▒имимимимимимимимимимимимими░и▒имимими░и▒имими░ин
-ин              иоимимип        иоимимип      иоимимимимипин
-инDisplay Count:ин10 -инSummary:инON -ин      инTknamazuинин<-еке╫е╖ечеєе╨б╝
-ин              и▒имими░        и▒имими░      и▒имимимими░ин
-иниоимимимимимимимимимимимимимимимимимимимимимимимимипиоипин
-инин                                                инининин<-╖ы▓╠╔╜╝и▓ш╠╠ &
-инин                                                инининин  е╣епеэб╝еые╨б╝
-инин                                                инининин
-инин                                                инининин
-инин                                                инининин
-инин                                                инининин
-инин                                                инининин
-инин                                                инининин
-инин                                                инининин
-инин                                                инининин
-инин                                                инининин
-инин                                                инининин
-инин                                                инининин
-инин                                                инининин
-инин                                                инининин
-ини▒имимимимимимимимимимимимимимимимимимимимимимимими░и▒и░ин
-и▒имимимимимимимимимимимимимимимимимимимимимимимимимимимими░
+Please wait a few days.
+Wwriting now.
 
 
 ============================================================================ 
-Copyright (C) 1998-1999 Ken-ichi Hirose. All rights reserved.
+Copyright (C) 1998-2000 Ken-ichi Hirose. All rights reserved.
+$Id: tknamazu.hlp.en,v 1.4 2000-02-20 12:41:19 kenzo- Exp $

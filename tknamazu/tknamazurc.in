@@ -1,24 +1,52 @@
 #
-# Tcl / Tk Namazu client configuration file
+# Tcl/Tk front-end for Namazu resources file.
+#
+# $Id: tknamazurc.in,v 1.2 2000-02-20 12:41:19 kenzo- Exp $
 #
 #
-# このファイルは HOME で規定されるディレクトリもしくは TKNMZPATH で規定
-# される tknamazu.tcl と同じディレクトリに置いておいてください。
+# このファイルは HOME で規定されるディレクトリもしくは TKNAMAZURC で規定
+# されるディレクトリもしくは tknamazu.tcl と同じディレクトリに
+# 置いておいてください。
 #
-# 各項目は大文字で、項目と値の間は１つ以上の<TAB>で区切ってください。
+# 各項目は大文字で、項目と値の間は１つ以上の<SPACE>か<TAB>で区切ってください。
 # 行頭に # を書けばコメント扱になります。
 
+
+# Namauz のある所を full path で指定してください。
+NAMAZU			%NAMAZU%
+
+# HTML を理解するのと protcol がついた URL を取得する為に lynx を使用します。
+# full path で指定してください。
+BROWSER			@LYNX@
 
 # 外部閲覧用の Web Browser を full path で指定してください。
 EXTBROWSER		@NETSCAPE@
 
+# zcat のある所を full path で指定してください。
+UNCOMPRESS		@ZCAT@
+
+# groff のある所を full path で指定してください。
+MANPAGE			@GROFF@
+
+# groff の処理の後に通したい filter のある所を full path で指定してください。
+# filter という位置づけの為、shell のパイプを使います。コマンドの最初に "| " を
+# 必ず入れてください。
+MANPAGEFILTER		
+
 # manual を検索する path をスペースで区切って列挙してください。
-MANPATH			/usr/local/man/ /usr/man/ /usr/share/man /usr/bin/man /usr/man /usr/X11R6/man /usr/openwin/man
+# ちなみに左側に書いた path から順番に検索されます。
+MANPATH			/usr/local/man /usr/share/man /usr/bin/man /usr/man /usr/X11R6/man /usr/openwin/man
+
+# info のある所を full path で指定してください。
+GNUINFO			@INFO@
 
 # info の処理の後に通したい filter のある所を full path で指定してください。
 # filter という位置づけの為、shell のパイプを使います。コマンドの最初に "| " を
 # 必ず入れてください。
 GNUINFOFILTER		
+
+# info の出力を一時的に格納する file を full path で指定してください。
+GNUINFOTMP		/tmp/.gnuinfotmp
 
 # デフォルトの横幅を char 単位で規定してください。
 WIDTH			80
@@ -26,7 +54,16 @@ WIDTH			80
 # デフォルトの高さを char 単位で規定してください。
 HEIGHT			20
 
+# ユーザの環境変数の設定が行われていない場合や強制的に規定したい場合は
+# 設定してください。
+# 設定していなければユーザの環境変数を使用します。
+LANG			
+
 # menu bar 等の font を指定してください。
+# xlsfonts で確認してください。ちなみに各項目の説明は。。。
+# -提供者-フォントファミリ-太さ-傾き-幅-追加スタイル
+#         -ピクセル数-ポイント数-X方向の解像度-Y方向の解像度
+#                 -間隔-平均フォント幅-キャラクタセット-エンコード-
 WIDGETFONT		-misc-Fixed-Medium-R-Normal-*-*-120-*-*-*-*-*-*
 
 # 結果を表示するテキスト画面の font を指定してください。
@@ -38,34 +75,53 @@ WIDGETCOLOR		gray90
 # Namazu のコマンドラインオプションを規定してください。
 OPTIONS			
 
-# namazu.conf のある場所を full path で指定してください。
-NMZCONF			
+# namazurc のある場所を full path で指定してください。
+NAMAZURC			
 
-# mknmz をスタートさせるデフォルトディレクトリを full path で規定してください。
-MKLOCATION		./
+# NMZ.* のある場所をコマンドラインから規定したい時に入力してください。
+# namazu-112 以降を使用して複数の場所を指定する時は<SPACE>で区切ってください。
+INDEXES			@INDEXDIR@
+
+# mknmz のある所を full path で指定してください。
+MKNMZ			%MKNMZ%
+
+# mknmz で作られる NMZ.* の出力先を規定したい時に入力してください。
+INDEXOUTPUTDIR	@INDEXDIR@
+
+# mknmz で indexing するデフォルトディレクトリを full path で規定してください。
+TARGETDIR		./
 
 # mknmz のコマンドラインオプションを規定してください。
 MKOPTIONS		
 
-# mknmz で作られる NMZ.* の出力先を規定したい時に入力してください。
-# 但し namazu-112 以降の機能です。
-DBOUTPUTDIR		/usr/local/namazu/index
+# mknmz のコマンドラインオプションを規定してください。
+SMARTBROWSE		
 
-# NMZ.* のある場所をコマンドラインから規定したい時に入力してください。
-# namazu-112 以降を使用して複数の場所を指定する時は<SPACE>で区切ってください。
-#DATABASES		/usr/local/namazu/index /usr/home/kenzo-/public_html/teleport/projects /usr/home/kenzo-/public_html/webauto/web_site
+# mknmz のコマンドラインオプションを規定してください。
+HEADERWIPE		
 
-# NMZ.* のある場所を DataBase Selecter に設定します。
-# 以下の例を参考にしてください ^^;;;
-#DATABASES1		main /usr/local/namazu/index
-#DATABASES2		public /usr/home/kenzo-/data/txt /usr/home/kenzo-/data/html
-#DATABASES3		rfc /usr/home/kenzo-/data/rfc
-#DATABASES4		svp /usr/home/kenzo-/common/svp-bin
-#DATABASES5		neec /usr/home/kenzo-/public_html/wget
-#DATABASES6		webauto /usr/home/kenzo-/public_html/webauto/web_site
-#DATABASES7		teleport /usr/home/kenzo-/public_html/teleport/projects
+# mknmz のコマンドラインオプションを規定してください。
+LOCALSITES		
+
+# mknmz のコマンドラインオプションを規定してください。
+THOUGHTFULFIND		
+
+# NMZ.* のある場所を Index Selecter に設定します。
+# 一つ目は title を、その後ろに<SPACE>で区切って NMZ.i の directory を列挙して
+# 下さい。
+INDEXES1		main /usr/local/var/namazu/index
+INDEXES2		hogehoge /usr/local/var/namazu/index/hogehoge
 
 # 頻繁にアクセスする file や URL を登録することができます。
 # 一つ目は title を、その後ろに<SPACE>で区切って full path のファイル名や
 # URL を書いて下さい。
-#BOOKMARKS1		Namazu-intro /usr/local/namazu/doc/intro.html
+BOOKMARKS1		Namazu-manual /usr/local/share/namazu/doc/ja/manual.html
+BOOKMARKS2		Namazu-Homepage http://www.namazu.org/
+
+
+# Namazu を使って実現している検索 Web site を登録します。
+# 一つ目は title を、その後ろに<SPACE>で区切って full path のファイル名や
+# URL を書いて下さい。
+NAMAZUSITES1		localhost http://localhost/cgi-bin/namazu.cgi
+NAMAZUSITES2		Namazu-mailinglist http://ml.namazu.org/cgi-bin/namazu.cgi
+

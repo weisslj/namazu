@@ -2,7 +2,7 @@
 #
 # tknamazu.tcl - Tcl/Tk front-end for Namazu.
 #
-# $Id: tknamazu.tcl.in,v 1.11 2000-02-19 23:58:50 kenzo- Exp $
+# $Id: tknamazu.tcl.in,v 1.12 2000-02-20 12:41:19 kenzo- Exp $
 #
 # Copyright (C) 1998-2000 Ken-ichi Hirose. All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -45,32 +45,32 @@ proc SetDefaultResources {} {
 	set conf(GNUINFO) {@INFO@}
 	set conf(GNUINFOFILTER) {}
 	set conf(GNUINFOTMP) {/tmp/.gnuinfotmp}
-	set conf(MKNMZ) {%MKNMZ%}
-	set conf(INDEXOUTPUTDIR) {@INDEXDIR@}
 	set conf(WIDTH) {80}
-	set conf(HEIGHT) {21}
+	set conf(HEIGHT) {20}
 	set conf(LANG) {}
 	set conf(WIDGETFONT) {-misc-Fixed-Medium-R-Normal-*-*-120-*-*-*-*-*-*}
 	set conf(TEXTFONT) {-misc-Fixed-Medium-R-Normal-*-*-120-*-*-*-*-*-*}
 	set conf(WIDGETCOLOR) {gray90}
-	set conf(SELECTCOLOR) {blue60}
-	set conf(TROUGHTCOLOR) {gray30}
-	set conf(FONTCOLOR) {black}
-	set conf(MARKCOLOR) {red}
-	set conf(LINKCOLOR) {blue}
-	set conf(REFERENCECOLOR) {green3}
+#	set conf(SELECTCOLOR) {blue60}
+#	set conf(TROUGHTCOLOR) {gray30}
+#	set conf(FONTCOLOR) {black}
+#	set conf(MARKCOLOR) {red}
+#	set conf(LINKCOLOR) {blue}
+#	set conf(REFERENCECOLOR) {green3}
 	set conf(OPTIONS) {}
 	set conf(NAMAZURC) {}
 	set conf(INDEXES) {@INDEXDIR@}
-	set conf(MKLOCATION) {./}
+	set conf(MKNMZ) {%MKNMZ%}
+	set conf(INDEXOUTPUTDIR) {@INDEXDIR@}
+	set conf(TARGETDIR) {./}
 	set conf(MKOPTIONS) {}
-	set conf(WDLOCATION) {./NMZ.i}
 	set conf(SMARTBROWSE) {1}
 	set conf(HEADERWIPE) {ON}
 	set conf(LOCALSITES) {}
 	set conf(THOUGHTFULFIND) {0}
 
 	set conf(tknmzhome) {%PKGDATADIR%}
+	set conf(wishpath) {@WISH@}
 	set conf(viewer) {}
 	set conf(manpagedir) {}
 	set conf(gnuinfofile) {}
@@ -168,11 +168,14 @@ proc Initialization {} {
 	} else {
 	    regsub {^(..).*} $conf(LANG) {\1} conf(language)
 	}
+	if [regexp -nocase {^windows|^os2|^mac|^beos} $conf(os)] {
+		set conf(argv0) "conf(wishpath) conf(argv0)"
+	}
 	
 	set inside(keyword) {}
 	set inside(history) {}
 	set inside(lynxauth) {}
-	set inside(urlforext) {}
+	set inside(clippedurl) {}
 }
 
 ################ proc routine
@@ -321,7 +324,7 @@ proc Kick { url x y } {
         }
     } else {
         regsub {^/([A-z])\|(/.*)} $url {\1:\2} url
-        catch {open "|$conf(EXTVIEWER) $url"}
+        catch {open "|$conf(argv0) $url"}
     }
 }
 
@@ -1536,9 +1539,9 @@ proc CopyString {} {
 proc CopyURL {} {
     global inside
 
-    if {$inside(urlforext) != ""} {
+    if {$inside(clippedurl) != ""} {
         clipboard clear
-        clipboard append $inside(urlforext)
+        clipboard append $inside(clippedurl)
     }
 }
 
@@ -1701,9 +1704,9 @@ proc PopupMenu { x y } {
         after 100 {grab .popupmenu}
     }
 
-    set inside(urlforext) {}
+    set inside(clippedurl) {}
     if [regexp {(kicker[0-9]+)} [$log tag names [$log index current]] match urltag] {
-        set inside(urlforext) [$log get $urltag.first $urltag.last]
+        set inside(clippedurl) [$log get $urltag.first $urltag.last]
     }
 
     menu .popupmenu -tearoff no
@@ -1727,9 +1730,9 @@ proc PopupMenu { x y } {
         -command {$log config -state normal -relief sunken } -font $conf(WIDGETFONT)
     .popupmenu add separator
     .popupmenu add command -label {External Browser or Viewer} -underline 1 \
-        -command {Kick $inside(urlforext) {} {}} -font $conf(WIDGETFONT)
+        -command {Kick $inside(clippedurl) {} {}} -font $conf(WIDGETFONT)
     .popupmenu add command -label {Other TkNamazu} -underline 1 \
-        -command {catch {open "|$conf(argv0) $inside(urlforext)"}} \
+        -command {catch {open "|$conf(argv0) $inside(clippedurl)"}} \
         -font $conf(WIDGETFONT)
     .popupmenu add separator
     .popupmenu add command -label {Quit} -underline 0 \
@@ -1742,7 +1745,7 @@ proc PopupMenu { x y } {
 }
 
 proc PopupMenu2 { x y } {
-    global conf inside LOG
+    global conf inside log
 
     if [winfo exists .popupmenu2] {
         catch {destroy .popupmenu2}
@@ -1854,6 +1857,7 @@ proc Quit {} {
 	    if {$answer == 1} {
 	        grab release .quit
 		    destroy .tknmz
+		    focus $inside(oldfocus)
 	        exit
 	    } else {
             break
@@ -1881,7 +1885,7 @@ proc HelpView {} {
 	    Viewer "$conf(tknmzhome)/tknamazu.hlp.en" {}
 	}
 
-    Mark {TKNAMAZU}
+    Mark {TKNAMAZU ^^}
     $log config -cursor {}
     update
 
@@ -2136,7 +2140,7 @@ proc MknmzHelper {} {
     pack .tkmknmz.input -side top -fill x
     label .tkmknmz.input.l -text {Location:} -padx 0 -font $conf(WIDGETFONT)
     entry .tkmknmz.input.location -width 20 -font $conf(WIDGETFONT) \
-        -relief sunken -textvariable conf(MKLOCATION)
+        -relief sunken -textvariable conf(TARGETDIR)
     pack .tkmknmz.input.l -side left
     pack .tkmknmz.input.location -side left -fill x -expand true
     set mkbut [button .tkmknmz.input.execute -text {Execute} -font $conf(WIDGETFONT) \
@@ -2171,7 +2175,7 @@ proc ExecMknmz {} {
 
     MakeOptions
     $mklog delete 1.0 end
-    if [catch {open "|$conf(MKNMZ) $conf(MKOPTIONS) \"$conf(MKLOCATION)\""} mkinput] {
+    if [catch {open "|$conf(MKNMZ) $conf(MKOPTIONS) \"$conf(TARGETDIR)\""} mkinput] {
         $mklog insert end "$mkinput\n"
     } else {
         fileevent $mkinput readable {
@@ -2184,7 +2188,7 @@ proc ExecMknmz {} {
                 update
             }
         }
-        set conf(commandline) "$conf(MKNMZ) $conf(MKOPTIONS) $conf(MKLOCATION)"
+        set conf(commandline) "$conf(MKNMZ) $conf(MKOPTIONS) $conf(TARGETDIR)"
         $mklog insert end "%$conf(commandline)\n"
         $mkbut config -text {Stop} -command {BreakMknmz}
     }
@@ -2200,18 +2204,20 @@ proc BreakMknmz {} {
 proc DirectoryExplorer {} {
     global conf
 
-    set conf(MKLOCATION) [tk_getOpenFile -filetypes {{ALL {*}}}]
-    regsub {^(.*/).*} $conf(MKLOCATION) {\1} conf(MKLOCATION)
+    set conf(TARGETDIR) [tk_getOpenFile -filetypes {{ALL {*}}}]
+    regsub {^(.*/).*} $conf(TARGETDIR) {\1} conf(TARGETDIR)
 }
 
 proc MainWidget {} {
 global conf inside version log but
 
+set inside(oldfocus) [focus]
 wm withdraw .
 toplevel .tknmz -class TkNamazu
 wm minsize .tknmz 40 5
 wm title .tknmz "TkNamazu version $version"
 wm iconname .tknmz "tknamazu"
+wm protocol .tknmz WM_DELETE_WINDOW {exit}
 
 frame .tknmz.menubar
 pack .tknmz.menubar -side top -fill x
@@ -2228,7 +2234,7 @@ pack .tknmz.menubar -side top -fill x
     .tknmz.file.menu add command -label {Load namazurc} -underline 0 \
         -font $conf(WIDGETFONT) -command {LoadConf}
     .tknmz.file.menu add separator
-    .tknmz.file.menu add cascade -label {Select Index} -underline 0 \
+    .tknmz.file.menu add cascade -label {Select Indexes} -underline 0 \
         -menu .tknmz.file.menu.selnmzidx -font $conf(WIDGETFONT)
     MakeNamazuIndexLuncher
     .tknmz.file.menu add separator
@@ -2271,9 +2277,9 @@ pack .tknmz.menubar -side top -fill x
     .tknmz.go.menu add cascade -label {Bookmark} -underline 4 \
         -menu .tknmz.go.menu.selbookmark -font $conf(WIDGETFONT)
     MakeBookMarkLuncher
-    .tknmz.go.menu add separator
-    .tknmz.go.menu add cascade -label {History} -underline 1 \
-        -font $conf(WIDGETFONT) -command {}
+#    .tknmz.go.menu add separator
+#    .tknmz.go.menu add cascade -label {History} -underline 1 \
+#        -font $conf(WIDGETFONT) -command {}
 
     menubutton .tknmz.mknmz -text {Mknmz} -menu .tknmz.mknmz.menu -underline 0 \
         -font $conf(WIDGETFONT)

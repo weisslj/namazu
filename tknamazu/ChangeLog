@@ -1,5 +1,11 @@
 2000-02-20  Ken-ichi Hirose  <kenzo-@tama.or.jp>
 
+	* tknamazu.hlp.en: rewrite.
+
+	* tknamazurc.in: rewrite.
+
+2000-02-20  Ken-ichi Hirose  <kenzo-@tama.or.jp>
+
 	* tknamazu.hlp.ja: some info add.
 
 	* tknamazu.hlp.ja_JP.SJIS: New file. convert from tknamazu.hlp.ja.

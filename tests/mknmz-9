@@ -19,7 +19,7 @@ i=20
 while test $i -gt 0
 do {
     i=`expr $i - 1`
-    if test -e ../tests/idx11/NMZ.lock2
+    if test -r ../tests/idx11/NMZ.lock2
     then {
         kill -TERM `cat ../tests/idx11/NMZ.lock2`
         wait

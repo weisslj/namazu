@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: man.pl,v 1.12 1999-10-11 04:25:04 satoru Exp $
+# $Id: man.pl,v 1.13 1999-12-27 13:05:27 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -112,7 +112,7 @@ sub man_filter ($$$) {
     }
 
     if ($$contref =~ 
-	s/(.+^(?:DESCRIPTION 解説|DESCRIPTIONS?|SHELL GRAMMAR|INTRODUCTION|【概要】|解説|説明|機能説明|基本機能説明)\s*\n)//ims) 
+	s/\A(.+^(?:DESCRIPTION 解説|DESCRIPTIONS?|SHELL GRAMMAR|INTRODUCTION|【概要】|解説|説明|機能説明|基本機能説明)\s*\n)//ims) 
     {
 	$$contref = $name . $$contref;
 	$$weighted_str .= "\x7f1\x7f$1\x7f/1\x7f\n";

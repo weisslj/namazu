@@ -1,3 +1,11 @@
+1999-12-27  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* scripts/mknmz.pl.in: Set autoflush(1) to STDERR.
+	(main): Add debug messaging.
+
+	* filter/man.pl (man_filter): Modify a regex to avoid exponential
+	backtracking.
+
 1999-12-24  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* nmz/search.c (do_prefix_match_search): Fix a bug occured when no

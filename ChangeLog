@@ -1,5 +1,9 @@
 2000-12-26  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
+	* filter/powerpoint.pl: Changed to use pptHtml (a component
+	of xlHtml).
+	(Contributed by Teranishi)
+
 	* tests/data/{ja,en}/powerpoint97.ppt: Added test data.
 	(Contributed by Teranishi)
 
@@ -6161,4 +6165,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.772 2000-12-26 00:50:06 knok Exp $
+$Id: ChangeLog,v 1.773 2000-12-26 04:59:01 knok Exp $

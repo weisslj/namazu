@@ -1,3 +1,7 @@
+2000-04-09  Ryuji Abe  <raeva@t3.rim.or.jp>
+
+	* template/NMZ.body: Updated the Ruby link.
+
 2000-04-07  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* tests/Makefile.am (TESTS): Add namazu-cgi-4.
@@ -5532,4 +5536,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.679 2000-04-07 02:15:52 satoru Exp $
+$Id: ChangeLog,v 1.680 2000-04-09 07:57:15 rug Exp $

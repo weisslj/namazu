@@ -2,7 +2,7 @@
  * 
  * re.c -
  * 
- * $Id: re.c,v 1.28 2000-01-28 09:40:12 satoru Exp $
+ * $Id: re.c,v 1.29 2000-02-13 17:34:53 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -38,7 +38,7 @@
 #include "hlist.h"
 #include "replace.h"
 #include "re.h"
-#include "i18n.h"
+#include "l10n-ja.h"
 #include "var.h"
 
 #define STEP 256

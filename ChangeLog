@@ -1,3 +1,32 @@
+2000-02-14  Ryuji Abe  <raeva@t3.rim.or.jp>
+
+	* configure.in: Fixed for help message.
+
+	* nmz/i18n.c (nmz_is_lang_ja): Moved to l10n-ja.c.
+	(Lang): Removed.
+	(guess_category_value): New function that taken from 
+	GNU gettext 0.10.35 package.
+	(nmz_set_lang): Calls guess_category_value for get
+	environment variables.
+	(nmz_get_lang): Likewise.
+
+	* nmz/l10n-ja.c: New File.
+	(nmz_is_lang_ja): Calls nmz_get_lang. Use strncmp
+	instead of nmz_strprefixcmp.
+
+	* nmz/l10n-ja.h: New File.
+
+	* nmz/Makefile.am (pkginclude_HEADERS): Added l10n-ja.[ch].
+	(libnmz_la_SOURCES): Likewise.
+
+	* nmz/codeconv.c: Includes l10n-ja.h.
+
+	* nmz/search.c: Includes l10n-ja.h instead of i18n.h.
+
+	* nmz/re.c: Likewise.
+
+	* src/result.c: Likewise.
+
 2000-02-13  Kenji Suzuki  <kenji@po.ganseki.ne.jp>
 
         * test/d20000220.hnf: New file.

@@ -1,6 +1,6 @@
 /*
  * i18n.c -
- * $Id: i18n.c,v 1.19 2000-02-12 13:34:58 rug Exp $
+ * $Id: i18n.c,v 1.20 2000-02-13 17:34:53 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -36,7 +36,50 @@
 # include <locale.h>
 #endif
 
-static char Lang[BUFSIZE] = "C";
+/*
+ *
+ * Private functions
+ *
+ */
+
+static const char *guess_category_value ( const char *categoryname );
+
+
+/* The following is (partly) taken from the gettext package.
+   Copyright (C) 1995, 1996, 1997, 1998 Free Software Foundation, Inc.  */
+
+static const char *
+guess_category_value (const char *categoryname)
+{
+  const char *retval;
+
+  /* The highest priority value is the `LANGUAGE' environment
+     variable.  This is a GNU extension.  */
+  retval = getenv ("LANGUAGE");
+  if (retval != NULL && retval[0] != '\0')
+    return retval;
+
+  /* `LANGUAGE' is not set.  So we have to proceed with the POSIX
+     methods of looking to `LC_ALL', `LC_xxx', and `LANG'.  On some
+     systems this can be done by the `setlocale' function itself.  */
+
+  /* Setting of LC_ALL overwrites all other.  */
+  retval = getenv ("LC_ALL");  
+  if (retval != NULL && retval[0] != '\0')
+    return retval;
+
+  /* Next comes the name of the desired category.  */
+  retval = getenv (categoryname);
+  if (retval != NULL && retval[0] != '\0')
+    return retval;
+
+  /* Last possibility is the LANG environment variable.  */
+  retval = getenv ("LANG");
+  if (retval != NULL && retval[0] != '\0')
+    return retval;
+
+  return NULL;
+}
 
 /*
  *
@@ -44,46 +87,14 @@ static char Lang[BUFSIZE] = "C";
  *
  */
 
-int 
-nmz_is_lang_ja(void)
-{
-    if (strcmp(Lang, "japanese")) {
-	return 1;
-    } 
-    if (strcmp(Lang, "ja")) {
-	return 1;
-    } 
-    if (nmz_strprefixcmp(Lang, "ja_JP")) {
-	return 1;
-    } 
-    return 0;
-}
-
 char *
 nmz_set_lang(const char *lang)
 {
-    if (*lang != '\0') {  /* given lang is explicitly specified */
-	strcpy(Lang, lang);
-    } else {
-	if ((lang = getenv("LC_ALL")) != NULL) {
-	    strcpy(Lang, lang);
-	} else if ((lang = getenv("LC_MESSAGES")) != NULL) {
-	    strcpy(Lang, lang);
-	} else if ((lang = getenv("LANG")) != NULL) {
-	    strcpy(Lang, lang);
-	} else {
-	    /* No locale is set as an envornment variable. */
-	    return Lang;
-	}
-    } 
+    const char* env;
 
-    /* 
-     * Set enviromental variables for gettext() only if LANG is not set.
-     */
-    if (getenv("LANG") == NULL) {
-	setenv("LC_ALL", Lang, 1);
-	setenv("LC_MESSAGES", Lang, 1);
-	setenv("LANG", Lang, 1);
+    env = guess_category_value("LC_MESSAGES");
+    if (env == NULL && *lang != '\0') {
+	setenv("LANG", lang, 1);
     }
 
 #ifdef HAVE_SETLOCALE
@@ -91,13 +102,18 @@ nmz_set_lang(const char *lang)
     setlocale (LC_ALL, "");
 #endif
 
-    return Lang;
+    return (char *)lang;
 }
 
 char *
 nmz_get_lang(void) 
 {
-    return Lang;
+    char *lang;
+    lang = (char *)guess_category_value("LC_MESSAGES");
+    if (lang == NULL)
+	return "C";
+    else
+	return lang;
 }
 
 /*

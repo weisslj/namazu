@@ -16,7 +16,6 @@
 #endif
 #define N_(Text) Text
 
-extern int nmz_is_lang_ja ( void );
 extern char *nmz_set_lang ( const char *lang );
 extern char *nmz_get_lang ( void );
 extern enum nmz_stat nmz_choose_msgfile_suffix ( const char *pfname, char *lang_suffix );

@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.66 2000-02-06 22:43:58 rug Exp $
+ * $Id: search.c,v 1.67 2000-02-13 17:34:53 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -47,7 +47,7 @@
 #include "re.h"
 #include "wakati.h"
 #include "search.h"
-#include "i18n.h"
+#include "l10n-ja.h"
 #include "codeconv.h"
 #include "var.h"
 #include "seed.h"

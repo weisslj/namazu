@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.19 2000-02-10 21:03:59 rug Exp $
+ * $Id: rcfile.c,v 1.20 2000-02-13 17:34:55 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.

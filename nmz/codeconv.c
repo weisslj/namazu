@@ -2,7 +2,7 @@
  * 
  * codeconv.c -
  * 
- * $Id: codeconv.c,v 1.24 2000-02-01 06:36:00 rug Exp $
+ * $Id: codeconv.c,v 1.25 2000-02-13 17:34:53 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -43,6 +43,7 @@
 #include "codeconv.h"
 #include "util.h"
 #include "i18n.h"
+#include "l10n-ja.h"
 
 static uchar kanji2nd;
 

@@ -1,5 +1,23 @@
 2000-01-27  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/output.c (is_cgimode): Be static.
+
+	* src/rcfile.c: Make directive_tab static.
+
+	* src/Makefile.am (common_SOURCES): Renamed from namazu_SOURCES
+	(namazu_SOURCES): Use $(common_SOURCES) and namazu-cmd.c
+	(namazu_cgi_SOURCES): Use $(common_SOURCES) and namazu-cgi.c
+
+	* src/namazu-cmd.c: New file derived from namazu.c
+
+	* src/namazu-cgi.c: Ditto.
+
+	* src/namazui.c (suicide): Removed.
+	(main): Ditto.
+	(parse_options): Ditto.
+	(ck_atoi): Ditto.
+	(stdio2file): Ditto.
+
 	* src/namazu.c (main): Change position of calling nmz_set_lang()
 	and load_rcfile().
 

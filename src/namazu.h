@@ -1,6 +1,8 @@
 #ifndef _NAMAZU_H
 #define _NAMAZU_H
 
+#include "libnamazu.h" /* for enum nmz_stat */
+
 enum {
     PAGE_MAX            = 20,  /* Max number of result pages */
     RESULT_MAX          = 100, /* Max number of result displays at once */
@@ -12,7 +14,7 @@ enum {
 			      processing time exceeds this */
 };
 
-extern int main(int argc, char **argv);
 extern void die(const char *fmt, ...);
+extern enum nmz_stat namazu_core ( char * query, char *subquery, const char *argv0 );
 
 #endif /* _NAMAZU_H */

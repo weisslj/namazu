@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.4 2000-01-27 00:12:13 satoru Exp $
+ * $Id: rcfile.c,v 1.5 2000-01-27 03:05:04 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -91,7 +91,7 @@ struct conf_directive {
 			  const struct nmz_strlist *args);
 };
 
-struct conf_directive directive_tab[] = {
+static struct conf_directive directive_tab[] = {
     { "BLANK",   0, 0, process_rc_blank },
     { "COMMENT", 0, 0, process_rc_comment },
     { "DEBUG",   1, 0, process_rc_debug },

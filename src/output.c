@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.56 2000-01-13 01:13:26 satoru Exp $
+ * $Id: output.c,v 1.57 2000-01-27 03:05:04 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -870,4 +870,5 @@ void
 print(const char *str) {
     fputs(str, stdout);
 }
+
 

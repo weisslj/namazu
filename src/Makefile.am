@@ -17,8 +17,6 @@ localedir   = $(datadir)/locale
 confdir     = $(sysconfdir)/$(PACKAGE)
 indexdir    = $(localstatedir)/$(PACKAGE)/index
 
-##################################################################
-
 DEFS = -DLOCALEDIR=\"$(localedir)\" \
        -DOPT_CONFDIR=\"$(confdir)\" \
        -DOPT_INDEXDIR=\"$(indexdir)\" \
@@ -26,10 +24,11 @@ DEFS = -DLOCALEDIR=\"$(localedir)\" \
 INCLUDES  = -I.. -I../intl -I../lib -I../nmz
 LDADD = @INTLLIBS@ $(top_srcdir)/nmz/libnmz.la  ../lib/libnmzut.a 
 
-namazu_SOURCES = cgi.c cgi.h em.h form.c form.h message.h \
+common_SOURCES = cgi.c cgi.h em.h form.c form.h message.h \
 		 namazu.c namazu.h output.c output.h rcfile.c rcfile.h \
 		 result.c result.h usage.c usage.h
 
-namazu_cgi_SOURCES = $(namazu_SOURCES)
+namazu_SOURCES     = $(common_SOURCES) namazu-cmd.c
+namazu_cgi_SOURCES = $(common_SOURCES) namazu-cgi.c
 namazu_cgi_LDFLAGS = -static
 

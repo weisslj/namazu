@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2000-01-13 10:13+0900\n"
+"POT-Creation-Date: 2000-01-16 21:34+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -14,12 +14,12 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: ENCODING\n"
 
-#: nmz/rcfile.c:576
+#: nmz/rcfile.c:580
 #, c-format
 msgid "Config:  %s\n"
 msgstr ""
 
-#: nmz/rcfile.c:579
+#: nmz/rcfile.c:583
 #, c-format
 msgid ""
 "Default: %s\n"
@@ -217,7 +217,7 @@ msgstr ""
 msgid "Faild to call "
 msgstr ""
 
-#: scripts/mknmz.pl.in:665 scripts/mknmz.pl.in:1275
+#: scripts/mknmz.pl.in:665 scripts/mknmz.pl.in:1268
 msgid "No files to index.\n"
 msgstr ""
 
@@ -306,76 +306,132 @@ msgstr ""
 msgid "system error occurred! "
 msgstr ""
 
-#: scripts/mknmz.pl.in:1253
+#: scripts/mknmz.pl.in:1246
 msgid "wanted: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:1347
+#: scripts/mknmz.pl.in:1340
 msgid ""
 "\n"
 "\n"
 "== found ==\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1348
+#: scripts/mknmz.pl.in:1341
 msgid ""
 "\n"
 "\n"
 "== registered ==\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1349
+#: scripts/mknmz.pl.in:1342
 msgid ""
 "\n"
 "\n"
 "== overlapped  ==\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1350
+#: scripts/mknmz.pl.in:1343
 msgid ""
 "\n"
 "\n"
 "== deleted  ==\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1351
+#: scripts/mknmz.pl.in:1344
 msgid ""
 "\n"
 "\n"
 "== updated ==\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1352
+#: scripts/mknmz.pl.in:1345
 msgid ""
 "\n"
 "\n"
 "== files to index ==\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1376
+#: scripts/mknmz.pl.in:1369
 msgid "## deleted: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:1399
+#: scripts/mknmz.pl.in:1392
 msgid "## indexed: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:1425
+#: scripts/mknmz.pl.in:1418
 msgid "update_field_index: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:1445
+#: scripts/mknmz.pl.in:1438
 msgid "was updated!\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1486
+#: scripts/mknmz.pl.in:1479
 msgid "ERROR: malformed NMZ.r format!\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1694
+#: scripts/mknmz.pl.in:1680
 msgid "doing write_phrase_hash() processing.\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1921
+#: scripts/mknmz.pl.in:1907
 msgid "doing write_index() processing.\n"
+msgstr ""
+
+#: pl/util.pl:52
+msgid "Renamed: "
+msgstr ""
+
+#: pl/util.pl:128 pl/util.pl:153
+msgid "not an IO::File/FileHandle object!\n"
+msgstr ""
+
+#: pl/util.pl:218
+msgid "Remove tmporary files:"
+msgstr ""
+
+#: pl/util.pl:236
+msgid "ASSERTION ERROR!: "
+msgstr ""
+
+#: pl/wakati.pl:59
+msgid "-- wakatized content --\n"
+msgstr ""
+
+#: pl/wakati.pl:74
+msgid "invalid wakati module: "
+msgstr ""
+
+#: pl/wakati.pl:76
+msgid "-- wakatized bare content --\n"
+msgstr ""
+
+#: pl/wakati.pl:80
+msgid "wakati: using "
+msgstr ""
+
+#: pl/find.pl:42
+msgid "Can't stat "
+msgstr ""
+
+#: pl/find.pl:53
+msgid "Can't cd to "
+msgstr ""
+
+#: pl/find.pl:87
+msgid "is exclude because of .htaccess\n"
+msgstr ""
+
+#: pl/find.pl:95
+msgid "Can't open "
+msgstr ""
+
+#: pl/find.pl:128
+msgid "Looped symbolic link detected "
+msgstr ""
+
+#: pl/find.pl:128
+msgid " skipped.\n"
 msgstr ""

@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.26 2000-01-13 01:13:22 satoru Exp $
+ * $Id: rcfile.c,v 1.27 2000-01-16 12:39:33 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -47,8 +47,12 @@
  */
 static char *namazurcdir = OPT_CONFDIR;
 
-static char *errmsg  = NULL;
+/*
+ * User specified namazurc. This can be set with nmz_set_namazurc().
+ */
 static char namazurc[BUFSIZE] = "";
+
+static char *errmsg  = NULL;
 static int  rcfile_is_loaded = 0;
 
 
@@ -243,7 +247,7 @@ set_pathname(char *dest, const char *command, const char *name)
 }
 
 /*
- * 1. current_executing_binary_dir/.namazurc
+ * 1. current_executed_binary_dir/.namazurc
  * 2. ${HOME}/.namazurc
  * 3. DEFAULT_NAMAZURC (SYSCONFDIR/namazurc)
  */

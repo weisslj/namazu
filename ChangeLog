@@ -1,3 +1,9 @@
+2000-01-16  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* scripts/mknmz.pl.in (write_message): Do not convert character
+	encoding. (Fix the bug reported in [namazu-dev 1209])
+	(make_headfoot): Ditto.
+
 2000-01-16  Ryuji Abe  <raeva@t3.rim.or.jp>
 
 	* configure.in: Use BUILD_TKNAMAZU conditional instead of 

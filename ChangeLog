@@ -1,5 +1,7 @@
 2000-01-20  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* scripts/mknmz.pl.in (muda): Add $var::USE_NKF_MODULE.
+
 	* configure.in: Fix --with-pmdir handling.
 
 	* nmz/query.c (nmz_make_query): Call nmz_codeconv_query().

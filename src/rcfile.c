@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.40 2004-02-21 12:16:28 opengl2772 Exp $
+ * $Id: rcfile.c,v 1.41 2004-04-03 07:16:46 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2003 Namazu Project All rights reserved.
@@ -763,11 +763,21 @@ set_namazurc(const char *arg)
 enum nmz_stat 
 load_rcfiles(void)
 {
+    char *env_norc, namazunorc[BUFSIZE] = "";
+
+    if ((env_norc = getenv("NAMAZUNORC"))) {
+        strncpy(namazunorc, env_norc, BUFSIZE - 1);
+        namazunorc[BUFSIZE - 1] = '\0';
+        nmz_strlower(namazunorc);
+    }
+
+    nmz_debug_printf("NAMAZUNORC: '%s'", namazunorc);
+
     /*
      *  1. $(sysconfdir)/$(PACKAGE)/namazurc
      *     - This can be overriden by environmentl variable NAMAZURC.
      */
-    {
+    if (strcmp("all", namazunorc) != 0 && strcmp("sysconfig", namazunorc) != 0) {
 	char *env = getenv_namazurc();
 	if (env != NULL) {
 	    if (load_rcfile(env) != SUCCESS) {
@@ -792,7 +802,7 @@ load_rcfiles(void)
     /*
      *  2. ~/.namazurc
      */
-    {
+    if (strcmp("all", namazunorc) != 0 && strcmp("home", namazunorc) != 0) {
 	char *home = getenv("HOME");
 	if (home != NULL) {
 	    char fname[BUFSIZE] = "";

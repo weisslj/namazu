@@ -3,7 +3,7 @@ AUTOMAKE_OPTIONS = 1.4 no-dependencies
 SUBDIRS = data
 
 TESTS_ENVIRONMENT = top_srcdir=$(top_srcdir) top_builddir=$(top_builddir) \
-		    pkgdatadir=$(top_srcdir) MKNMZNORC=
+		    pkgdatadir=$(top_srcdir) MKNMZNORC= NAMAZUNORC=ALL
 
 TESTS =	mknmz-1 mknmz-2 mknmz-3 mknmz-4 mknmz-5 \
 	mknmz-6 mknmz-7 mknmz-8 mknmz-9 mknmz-10 \

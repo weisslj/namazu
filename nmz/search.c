@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.82 2000-12-18 10:08:50 knok Exp $
+ * $Id: search.c,v 1.83 2000-12-21 07:12:46 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -709,17 +709,17 @@ open_index_files(void)
     Nmz.i = fopen(NMZ.i, "rb");
     if (Nmz.i == NULL) {
         nmz_debug_printf("%s: %s", NMZ.i, strerror(errno));
-	return FAILURE;
+	return ERR_CANNOT_OPEN_INDEX;
     }
     Nmz.ii = fopen(NMZ.ii, "rb");
     if (Nmz.ii == NULL) {
         nmz_debug_printf("%s: %s", NMZ.ii, strerror(errno));
-	return FAILURE;
+	return ERR_CANNOT_OPEN_INDEX;
     }
     Nmz.w = fopen(NMZ.w, "rb");
     if (Nmz.w == NULL) {
         nmz_debug_printf("%s: %s", NMZ.w, strerror(errno));
-	return FAILURE;
+	return ERR_CANNOT_OPEN_INDEX;
     }
 
     return SUCCESS;
@@ -787,10 +787,7 @@ nmz_search_sub(NmzResult hlist, const char *query, int n)
 
     if ((nstat = open_index_files()) != SUCCESS) {
         /* If open failed */
-	if (nstat == ERR_OLD_INDEX_FORMAT)
-	    hlist.stat = nstat;
-	else
-	    hlist.stat = ERR_CANNOT_OPEN_INDEX;
+	hlist.stat = nstat;
         return hlist;
     }
 

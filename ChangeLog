@@ -1,3 +1,9 @@
+1999-11-24  Ryuji Abe  <raeva@t3.rim.or.jp>
+
+	* pxgettext: New file derived from gimp-perl.
+	
+	* Makefile.am (EXTRA_DIST): Added pxgettext.
+
 1999-11-24  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* nmz/util.c (reverse_byte_order): Be type-independent.

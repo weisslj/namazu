@@ -3,7 +3,7 @@ AUTOMAKE_OPTIONS = 1.4 no-dependencies
 SUBDIRS = data
 
 TESTS =	mknmz-1 mknmz-2 mknmz-3 mknmz-4 mknmz-5 \
-	mknmz-6 mknmz-7 mknmz-8 mknmz-9 mknmz-10 
+	mknmz-6 mknmz-7 mknmz-8 mknmz-9 mknmz-10 \
 	mknmz-11 mknmz-12 \
 	gcnmz-1 \
 	idxdiff-1 idxdiff-2 idxdiff-3 \

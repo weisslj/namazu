@@ -1,0 +1,29 @@
+# This is the Namazu configuration file.
+#   originally, this file is named 'namazu.conf-dist'. so you should
+#   copy this to 'namazu.conf' to use.
+#
+#   item and value are MUST be separated with TAB character.
+#   see "manual.html#NAMAZU_CONF" for detailed information.
+#     <Directive List>
+#       * INDEX   : Pathname where index file (NMZ.*) is placed.
+#       * REPLACE : Replace URL string for search result output.
+#                   describe by TARGET, REPLACEMENT order. 
+#                   if you do not want to do this replacement in command
+#                   line use, you can run 'namazu' with -U option and 
+#                   avoid this processing.
+#       * BASE    : append <BASE HREF="..."> to search result HTML.
+#                   this value must terminate with '/' or '\' character.
+#       * LOGGING : set OFF to turn off search keyword logging. 
+#                   default: logging ON (to NMZ.slog)
+#	* LANG    : set language code registrated in ISO 639
+#                   such as `ja', `en', `de', and etc.
+#                   if you set 'de' to this, namazu would use 
+#                   NMZ.(head|foot|body|msg).de as message files.
+#	* SCORING : set scoring method TFIDF or SIMPLE.
+#
+#INDEX		/usr/local/namazu/index
+#REPLACE	/home/foo/public_html/	http://www.hoge.jp/%7Efoo/
+#BASE		file://localhost/home/foo/documents/
+#LOGGING	OFF
+#LANG		ja
+#SCORING	TFIDF

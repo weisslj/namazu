@@ -2,7 +2,7 @@
 
 	* src/output.c (fputs_without_html_tag, print_query): 
 	Fixed inappropriate substitution on idxname, closes: bugs-ja#52.
-	(Reported and a patch contributed by Akihiro Sagwa)
+	(Reported and a patch contributed by Akihiro Sagawa)
 
 2001-04-17  SATOH Fumiyasu  <fumiya@samba.gr.jp>
 
@@ -6438,4 +6438,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.817 2001-04-20 07:38:26 knok Exp $
+$Id: ChangeLog,v 1.818 2001-04-23 08:48:25 knok Exp $

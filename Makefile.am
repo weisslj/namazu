@@ -40,6 +40,7 @@ dist-hook:
 	    rm -f $(distdir)/$$subdir/*.{bak,orig}; \
 	    rm -f $(distdir)/$$subdir/.cvsignore; \
 	    rm -f $(distdir)/$$subdir/autogen.sh; \
+	    rm -rf $(distdir)/$$subdir/autom4te.cache; \
 	    rm -rf $(distdir)/$$subdir/CVS; \
 	    rm -rf $(distdir)/$$subdir/*/CVS; \
 	done

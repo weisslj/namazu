@@ -2,7 +2,7 @@
  * 
  * codeconv.c -
  * 
- * $Id: codeconv.c,v 1.14 2000-01-07 09:58:11 satoru Exp $
+ * $Id: codeconv.c,v 1.15 2000-01-07 11:35:48 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -31,6 +31,7 @@
  * (Quick KANJI code Converter  C Version 1.0) 
  */
 
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

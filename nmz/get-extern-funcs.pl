@@ -1,6 +1,6 @@
 #! /usr/bin/perl
 #
-# $Id: get-extern-funcs.pl,v 1.1 2000-01-09 13:00:38 satoru Exp $
+# $Id: get-extern-funcs.pl,v 1.2 2000-01-09 13:39:47 satoru Exp $
 #
 # Copyright (C) 2000 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -23,21 +23,13 @@
 use strict;
 use FileHandle;
 
-die if @ARGV != 1;
-my $file   = $ARGV[0];
-
 my @list = ();
-{
-    my $in = new FileHandle;
-    $in->open("cextract $file|") || die;
-
-    while (<$in>) {
-	push @list, $_ if m!^#if __STDC__! .. m!^#else /\* __STDC__ \*/!;
-    }
-
-    @list = grep {m!^extern !} @list;
-    @list = map  {m!^extern .* (\w+) *\(!; $1 . "\n"} @list;
+while (<>) {
+    push @list, $_ if m!^#if __STDC__! .. m!^#else /\* __STDC__ \*/!;
 }
+
+@list = grep {m!^extern !} @list;
+@list = map  {m!^extern .* (\w+) *\(!; $1 . "\n"} @list;
 
 print @list;
 

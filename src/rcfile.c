@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.24 2000-05-03 23:56:59 masao Exp $
+ * $Id: rcfile.c,v 1.25 2000-05-04 00:49:52 masao Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -534,10 +534,10 @@ parse_rcfile(const char *line, int lineno)
 	StrList *ptr;
 	int i;
 
-	printf("%4d: Directive:  [%s]\n", lineno, directive);
+	nmz_debug_printf("%4d: Directive:  [%s]\n", lineno, directive);
 
 	for (ptr = args, i = 1 ; ptr != NULL; i++) {
-	    printf("      Argument %d: [%s]\n", i, ptr->value);
+	    nmz_debug_printf("      Argument %d: [%s]\n", i, ptr->value);
 	    ptr = ptr->next;
 	}
     }

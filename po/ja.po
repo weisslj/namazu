@@ -2,25 +2,16 @@
 # Copyright (C) YEAR Free Software Foundation, Inc.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2000-02-26 17:03+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: ENCODING\n"
-
-#~ # SOME DESCRIPTIVE TITLE.
-#~ # Copyright (C) YEAR Free Software Foundation, Inc.
-#~ # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#~ #
-#~ msgid ""
-#~ msgstr ""
-#~ "POT-Creation-Date: 2000-02-25 21:52+0900\n"
-#~ "tmp/manual.kaoru-ya.txt\n"
 
 #: nmz/util.c:482
 msgid "Fatal error occered!"
@@ -846,6 +837,10 @@ msgstr "題名なしの文書"
 #: filter/html.pl:84
 msgid "is excluded because of <meta name=\"robots\" ...>"
 msgstr "は <meta name=\"robots\" ...> によって除外されています"
+
+#: filter/msword.pl:111
+msgid "Unsupported format: "
+msgstr "未対応の形式: "
 
 #~ msgid "unknown"
 #~ msgstr "不明"

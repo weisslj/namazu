@@ -1,0 +1,957 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2000-02-26 17:03+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: ENCODING\n"
+
+#: nmz/util.c:482
+msgid "Fatal error occered!"
+msgstr "致命的なエラー"
+
+#: nmz/util.c:485
+msgid "Too long query"
+msgstr "検索式が長すぎます"
+
+#: nmz/util.c:488
+msgid "Invalid query"
+msgstr "不正な検索式です"
+
+#: nmz/util.c:491
+msgid "Too many query tokens"
+msgstr "検索式の項目が多すぎます"
+
+#: nmz/util.c:494
+msgid "Too many words matched. Ignored"
+msgstr "マッチする単語が多すぎるので無視しました"
+
+#: nmz/util.c:497
+msgid "Too many pages hit. Ignored"
+msgstr "ヒット数が多すぎるので無視しました"
+
+#: nmz/util.c:500
+msgid "cannot open regex index"
+msgstr "正規表\現用インデックスが開けませんでした"
+
+#: nmz/util.c:503
+msgid "cannot open phrase index"
+msgstr "フレイズ検索用インデックスが開けませんでした"
+
+#: nmz/util.c:506
+msgid "cannot open field index"
+msgstr "フィールド検索用のインデックスが開けませんでした"
+
+#: nmz/util.c:509
+msgid "cannot open this index"
+msgstr "インデックスが開けませんでした"
+
+#: nmz/util.c:512
+msgid "cannot open result format file"
+msgstr "結果出力の書式指定ファイルが開けませんでした"
+
+#: nmz/util.c:515
+msgid "You don't have a permission to access the index"
+msgstr "インデックスにアクセスする権利がありません"
+
+#: nmz/util.c:518
+msgid "Unknown error. Report bug!"
+msgstr "不明なエラー。バグ報告してください"
+
+#: src/cgi.c:113 src/cgi.c:123
+msgid "Invalid idxname."
+msgstr "不正な idxname の指定です"
+
+#: src/cgi.c:207
+msgid "Too long QUERY_STRING"
+msgstr "CGIの QUERY_STRING が長すぎます"
+
+#: src/output.c:517
+msgid "\t<strong>Page:</strong> "
+msgstr "\t<strong>ペイジ:</strong> "
+
+#: src/output.c:562
+#, c-format
+msgid "Current List: %d"
+msgstr "現在のリスト: %d"
+
+#: src/output.c:610
+#, c-format
+msgid " [ TOTAL: %d ]"
+msgstr " [ 合計: %d ]"
+
+#: src/output.c:620
+msgid "\t<p><strong> Total "
+msgstr "\t<p><strong>検索式にマッチする "
+
+#: src/output.c:627
+msgid ""
+"\t documents matching your query.</strong></p>\n"
+"\n"
+msgstr ""
+"\t 個の文書が見つかりました。</strong></p>\n"
+"\n"
+
+#: src/output.c:683
+#, c-format
+msgid ""
+"\t<h2>Error!</h2>\n"
+"<p>%s</p>\n"
+msgstr ""
+"\t<h2>エラー!</h2>\n"
+"<p>%s</p>\n"
+
+#: src/output.c:713
+msgid "\t<h2>Results:</h2>\n"
+msgstr "\t<h2>検索結果</h2>\n"
+
+#: src/output.c:720
+msgid "References: "
+msgstr "参考ヒット数: "
+
+#: src/output.c:767
+msgid "\t<p>No document matching your query.</p>\n"
+msgstr "\t<p>検索式にマッチする文書はありませんでした。</p>\n"
+
+#. terminator not matched
+#: src/rcfile.c:315
+msgid "can't find string terminator"
+msgstr "文字列の終端が見つかりません"
+
+#: src/rcfile.c:431
+msgid "invalid directive name"
+msgstr "不正な指示子です"
+
+#: src/rcfile.c:444
+msgid "can't find arguments"
+msgstr "引数が見つかりません"
+
+#: src/rcfile.c:547
+msgid "too few arguments"
+msgstr "引数が足りません"
+
+#: src/rcfile.c:550
+msgid "too many arguments"
+msgstr "引数が多すぎます"
+
+#: src/rcfile.c:560
+msgid "unknown directive"
+msgstr "不明な指示子です"
+
+#: src/rcfile.c:611
+#, c-format
+msgid "%s:%d: syntax error: %s"
+msgstr "%s:%d: 構\文エラー: %s"
+
+#: src/rcfile.c:716
+#, c-format
+msgid "Loaded rcfile: %s\n"
+msgstr "読み込んだ設定ファイル: %s\n"
+
+#: src/rcfile.c:721
+#, c-format
+msgid ""
+"Index:        %s\n"
+"Logging:      %s\n"
+"Lang:         %s\n"
+"Scoring:      %s\n"
+"Template:     %s\n"
+"EmphasisTags: %s\t%s\n"
+msgstr ""
+"インデックス (Index):    %s\n"
+"ログの記録 (Logging):    %s\n"
+"使用する言語 (Lang):     %s\n"
+"スコア計算 (Scoring):    %s\n"
+"テンプレート (Template): %s\n"
+"強調タグ (EmphasisTags): %s\t%s\n"
+
+#: src/rcfile.c:738
+#, c-format
+msgid "Alias:   %-20s\t%s\n"
+msgstr "別名 (Alias):   %-20s\t%s\n"
+
+#: src/rcfile.c:748
+#, c-format
+msgid "Replace: %-20s\t%s\n"
+msgstr "置換 (Replace): %-20s\t%s\n"
+
+#: src/usage.c:51
+#, c-format
+msgid ""
+"namazu %s, a search program of Namazu.\n"
+"\n"
+"Usage: namazu [options] <query> [index]... \n"
+"    -n, --max=NUM        set number of documents shown to NUM.\n"
+"    -w, --whence=NUM     set first number of documents shown to NUM.\n"
+"    -l, --list           print results by listing format.\n"
+"    -s, --short          print results by short format.\n"
+"        --results=EXT    set NMZ.result.EXT for printing results.\n"
+"        --late           sort documents in late order.\n"
+"        --early          sort documents in early order.\n"
+"        --sort=METHOD    set a sort METHOD (score, date, field:name)\n"
+"        --ascending      sort in ascending order (default: descending)\n"
+"    -a, --all            print all results.\n"
+"    -c, --count          print only number of hits.\n"
+"    -h, --html           print in HTML format.\n"
+"    -r, --no-references  do not display reference hit counts.\n"
+"    -H, --page           print further result links. (nearly meaningless)\n"
+"    -F, --form           force to print <form> ... </form> region.\n"
+"    -R, --no-replace     do not replace URI string.\n"
+"    -U, --no-decode-uri  do not decode URI when printing in a plain format.\n"
+"    -o, --output=FILE    set the output file name to FILE.\n"
+"    -f, --config=FILE    set the config file name to FILE.\n"
+"    -C, --show-config    print current configuration.\n"
+"    -q, --quiet          do not display extra messages except search "
+"results.\n"
+"    -d, --debug          be debug mode.\n"
+"    -v, --version        show the version of namazu and exit.\n"
+"        --help           show this help and exit\n"
+"\n"
+"Report bugs to <%s>.\n"
+msgstr ""
+"namazu %s, Namazu の検索プログラム\n"
+"\n"
+"使い方: namazu [options] <query> [index]...\n"
+"    -n, --max=NUM           一度に表\示する件数\n"
+"    -w, --whence=NUM        表\示する検索結果の先頭番号\n"
+"    -l, --list              検索結果を URI・パス名をリストで出力する\n"
+"    -s, --short             短い書式で出力する\n"
+"        --result=EXT        結果表\示に用いる NMZ.result.EXT を指定する\n"
+"        --late              検索結果を新しい順にソ\ートする\n"
+"        --early             検索結果を古い順にソ\ートする\n"
+"        --sort=METHOD       ソ\ート方法を指定する (score, date, field:name)\n"
+"        --ascending         ソ\ートの方向を昇順にする (標準は降順)\n"
+"    -a, --all               検索結果をすべて表\示する\n"
+"    -c, --count             ヒット数のみを表\示する\n"
+"    -h, --html              HTMLで出力する\n"
+"    -r, --no-references     参考ヒット数を表\示しない\n"
+"    -H, --page              先の検索結果へのリンクを表\示する (ほぼ無意味) \n"
+"    -F, --form              <form> ... </form> の部分を強制的に表\示する\n"
+"    -R, --no-replace        URI の置き換えを行わない\n"
+"    -U, --no-decode-uri     URI encode の復元を行わない\n"
+"    -o, --output=FILE       指定したファイルに検索結果を出力する\n"
+"    -f, --config=FILE       設定ファイルを指定する\n"
+"    -C, --show-config       設定を表\示する\n"
+"    -q, --quiet             検索結果以外のメッセージを表\示しない\n"
+"    -d, --debug             デバッグモード\n"
+"    -v, --version           ヴァージョンを表\示する\n"
+"        --help              このヘルプを表\示する\n"
+"\n"
+"バグ報告は <%s> へどうぞ\n"
+
+#: src/usage.c:89
+msgid "Usage: namazu [options] <query> [index]...\n"
+msgstr "使い方: namazu [オプション] <検索式> [インデックス]...\n"
+
+#: src/usage.c:90
+msgid "Try `namazu --help' for more information.\n"
+msgstr "`namazu --help' でより詳しい情報が表\示されます\n"
+
+#: scripts/mknmz.in:92
+msgid " files are found to be indexed.\n"
+msgstr "個のファイルがインデックス作成の対象として見つかりました\n"
+
+#: scripts/mknmz.in:110
+msgid "target file: "
+msgstr "対象ファイル: "
+
+#: scripts/mknmz.in:126 scripts/mknmz.in:141
+msgid "Writing index files..."
+msgstr "インデックスを書き出しています..."
+
+#: scripts/mknmz.in:169
+msgid "Reading rcfile: "
+msgstr "設定ファイルを読み込み中: "
+
+#: scripts/mknmz.in:204
+msgid "Checkpoint reached: re-exec mknmz...\n"
+msgstr "チェックポイントに到達しました。mknmz を再実行します...\n"
+
+#: scripts/mknmz.in:349
+msgid "after load_document: "
+msgstr "load_document 実行後: "
+
+#: scripts/mknmz.in:628
+msgid "Detected type: "
+msgstr "検出されたタイプ: "
+
+#: scripts/mknmz.in:639
+msgid "Unsupported data type "
+msgstr "未対応のメディアタイプ "
+
+#: scripts/mknmz.in:644
+msgid "Using "
+msgstr "モジュール: "
+
+#: scripts/mknmz.in:646
+msgid "unable to require "
+msgstr "以下のモジュールが require できません "
+
+#: scripts/mknmz.in:656
+msgid "Faild to call "
+msgstr "呼び出しに失敗 "
+
+#: scripts/mknmz.in:712 scripts/mknmz.in:1457
+msgid "No files to index.\n"
+msgstr "インデックスすべきファイルはありません\n"
+
+#: scripts/mknmz.in:733
+msgid "code conversion: using NKF module\n"
+msgstr "コード変換に NKF モジュールを用います\n"
+
+#: scripts/mknmz.in:738
+msgid "wakati: using Text::Kakasi module\n"
+msgstr "わかち書きに Text::Kakasi モジュールを用います\n"
+
+#: scripts/mknmz.in:743
+msgid "wakati: using Text::ChaSen module\n"
+msgstr "わかち書きに Text::ChaSen モジュールを用います。\n"
+
+#: scripts/mknmz.in:757
+msgid ""
+"found. Maybe this index is being updated by another process now.\n"
+"If not, you can remove this file.\n"
+msgstr ""
+"ファイルを発見しました\n"
+"このインデックスは他のプロセスによって更新されている可能\性があります\n"
+"そうでなければ、このファイルを削除してください\n"
+
+#: scripts/mknmz.in:786
+msgid "Present index is old type. it's unsupported.\n"
+msgstr "存在するインデックスは古い形式です。今は対応していません\n"
+
+#: scripts/mknmz.in:943
+msgid "No such index: "
+msgstr "インデックスが見つかりません: "
+
+#: scripts/mknmz.in:952
+msgid "Inherited argv: "
+msgstr "継承された引数 (argv): "
+
+#: scripts/mknmz.in:956
+msgid "Inherited cwd: "
+msgstr "継承されたカレントディレクトリ (cwd): "
+
+#: scripts/mknmz.in:997
+msgid "Loaded: "
+msgstr "読み込み完了: "
+
+#: scripts/mknmz.in:1012
+msgid "Invalid replace: "
+msgstr "不正な replace 指定: "
+
+#: scripts/mknmz.in:1014
+msgid "Replace: "
+msgstr "Replace: "
+
+#: scripts/mknmz.in:1023
+msgid "invalid output directory\n"
+msgstr "無効な出力ディレクトリ指定\n"
+
+#: scripts/mknmz.in:1046
+msgid "Loaded rcfile: "
+msgstr "読み込んだ設定ファイル: "
+
+#: scripts/mknmz.in:1047
+msgid "System: "
+msgstr "システム: "
+
+#: scripts/mknmz.in:1048
+msgid "Namazu: "
+msgstr "Namazu: "
+
+#: scripts/mknmz.in:1049
+msgid "Perl: "
+msgstr "Perl: "
+
+#: scripts/mknmz.in:1050
+msgid "NKF: "
+msgstr ""
+
+#: scripts/mknmz.in:1051
+msgid "KAKASI: "
+msgstr "KAKASI: "
+
+#: scripts/mknmz.in:1052
+msgid "ChaSen: "
+msgstr "ChaSen: "
+
+#: scripts/mknmz.in:1053
+msgid "Wakati: "
+msgstr "わかち書き: "
+
+#: scripts/mknmz.in:1054
+msgid "Lang: "
+msgstr "言語: "
+
+#: scripts/mknmz.in:1055
+msgid "Coding System: "
+msgstr "文字コード: "
+
+#: scripts/mknmz.in:1056
+msgid "CONFDIR: "
+msgstr "CONFDIR: "
+
+#: scripts/mknmz.in:1057
+msgid "LIBDIR: "
+msgstr "LIBDIR: "
+
+#: scripts/mknmz.in:1058
+msgid "FILTERDIR: "
+msgstr "FILTERDIR: "
+
+#: scripts/mknmz.in:1059
+msgid "TEMPLATEDIR: "
+msgstr "TEMPLATEDIR: "
+
+#: scripts/mknmz.in:1063
+msgid "Supported media types: \n"
+msgstr "対応メディアタイプ: \n"
+
+#: scripts/mknmz.in:1128
+msgid "find_target starting: "
+msgstr "対象の探索を開始: "
+
+#: scripts/mknmz.in:1149
+msgid "unsupported target: "
+msgstr "未対応の対象: "
+
+#: scripts/mknmz.in:1183
+#, c-format
+msgid "Unreadable:\t%s"
+msgstr "読めない:\t%s"
+
+#: scripts/mknmz.in:1192
+#, c-format
+msgid "Excluded:\t%s"
+msgstr "除外:\t%s"
+
+#: scripts/mknmz.in:1206 scripts/mknmz.in:1220
+#, c-format
+msgid "Too old:\t%s"
+msgstr "古すぎ:\t%s"
+
+#: scripts/mknmz.in:1213 scripts/mknmz.in:1223
+#, c-format
+msgid "Too new:\t%s"
+msgstr "新しすぎ:\t%s"
+
+#: scripts/mknmz.in:1240
+#, c-format
+msgid "Denied:\t%s"
+msgstr "拒絶:\t%s"
+
+#: scripts/mknmz.in:1245
+#, c-format
+msgid "Not allowed:\t%s"
+msgstr "不許可:\t%s"
+
+#: scripts/mknmz.in:1249
+#, c-format
+msgid "Targeted:\t%s"
+msgstr "適合:\t%s"
+
+#: scripts/mknmz.in:1258
+msgid "find_target finished: "
+msgstr "対象の探索を終了: "
+
+#: scripts/mknmz.in:1259
+#, c-format
+msgid "Target Files: %d (Scan Performance: Elapsed Sec.: %d, Files/sec: %.1f)"
+msgstr "対象ファイル数: %d (走査性能\: 経過秒: %d, ファイル/秒: %.1f)"
+
+#: scripts/mknmz.in:1262
+#, c-format
+msgid "  Possible: %d, Not allowed: %d, Denied: %d, Excluded: %d"
+msgstr "  潜在: %d, 不許可: %d, 拒絶: %d, 除外: %d"
+
+#: scripts/mknmz.in:1267
+#, c-format
+msgid "  MTIME too old: %d, MTIME too new: %d"
+msgstr "  MTIME 古すぎ: %d, MTIME 新しすぎ: %d"
+
+#: scripts/mknmz.in:1282
+msgid "lang: "
+msgstr "言語: "
+
+#: scripts/mknmz.in:1292
+msgid "Usage: mknmz [options] <target>...\n"
+msgstr "使い方: mknmz [オプション] <検索式> [インデックス]...\n"
+
+#: scripts/mknmz.in:1293
+msgid "Try `mknmz --help' for more information.\n"
+msgstr "`mknmz --help' でより詳しい情報が表\示されます\n"
+
+#: scripts/mknmz.in:1308
+msgid "does NOT EXIST! skipped."
+msgstr "は存在しないので無視します"
+
+#: scripts/mknmz.in:1310
+msgid "is NOT READABLE! skipped."
+msgstr "は読み込み不可能\なので無視します"
+
+#: scripts/mknmz.in:1312
+msgid "is 0 size! skipped."
+msgstr "はサイズが 0 なので無視します"
+
+#: scripts/mknmz.in:1314
+msgid "may be a BINARY file! skipped."
+msgstr "はバイナリと思われるので無視します"
+
+#: scripts/mknmz.in:1316
+msgid "is too LARGE a text! skipped."
+msgstr "ファイルが巨大なので無視します"
+
+#: scripts/mknmz.in:1319
+msgid "Unsupported media type "
+msgstr "未対応のメディアタイプ "
+
+#: scripts/mknmz.in:1319
+msgid " skipped."
+msgstr "無視します"
+
+#: scripts/mknmz.in:1324
+msgid "system error occurred! "
+msgstr "致命的なエラー"
+
+#: scripts/mknmz.in:1531
+msgid ""
+"\n"
+"\n"
+"== found ==\n"
+msgstr ""
+"\n"
+"\n"
+"== found ==\n"
+
+#: scripts/mknmz.in:1532
+msgid ""
+"\n"
+"\n"
+"== registered ==\n"
+msgstr ""
+"\n"
+"\n"
+"== registered ==\n"
+
+#: scripts/mknmz.in:1533
+msgid ""
+"\n"
+"\n"
+"== overlapped  ==\n"
+msgstr ""
+"\n"
+"\n"
+"== overlapped  ==\n"
+
+#: scripts/mknmz.in:1534
+msgid ""
+"\n"
+"\n"
+"== deleted  ==\n"
+msgstr ""
+"\n"
+"\n"
+"== deleted  ==\n"
+
+#: scripts/mknmz.in:1535
+msgid ""
+"\n"
+"\n"
+"== updated ==\n"
+msgstr ""
+"\n"
+"\n"
+"== updated ==\n"
+
+#: scripts/mknmz.in:1536
+msgid ""
+"\n"
+"\n"
+"== files to index ==\n"
+msgstr ""
+"\n"
+"\n"
+"== files to index ==\n"
+
+#: scripts/mknmz.in:1560
+msgid "## deleted: "
+msgstr "## deleted: "
+
+#: scripts/mknmz.in:1583
+msgid "## indexed: "
+msgstr "## indexed: "
+
+#: scripts/mknmz.in:1609
+msgid "update_field_index: "
+msgstr "フィールド検索用のインデックスが開けませんでした"
+
+#: scripts/mknmz.in:1629
+msgid "was updated!\n"
+msgstr "ファイルは更新されています\n"
+
+#: scripts/mknmz.in:1670
+msgid "ERROR: malformed NMZ.r format!\n"
+msgstr "エラー: NMZ.r が無効な形式です\n"
+
+#: scripts/mknmz.in:1752
+msgid "[Append]"
+msgstr "[追加]"
+
+#: scripts/mknmz.in:1754
+msgid "[Base]"
+msgstr "[基本]"
+
+#: scripts/mknmz.in:1756
+msgid "Date:"
+msgstr "日付:"
+
+#: scripts/mknmz.in:1757
+msgid "Added Documents:"
+msgstr "追加された文書の数:"
+
+#: scripts/mknmz.in:1759
+msgid "Deleted Documents:"
+msgstr "削除された文書の数:"
+
+#: scripts/mknmz.in:1761
+msgid "Updated Documents:"
+msgstr "更新された文書の数:"
+
+#: scripts/mknmz.in:1763
+msgid "Size (bytes):"
+msgstr "サイズ (bytes): "
+
+#: scripts/mknmz.in:1765
+msgid "Total Documents:"
+msgstr "合計の文書数:"
+
+#: scripts/mknmz.in:1767
+msgid "Added Keywords:"
+msgstr "追加キーワード数:"
+
+#: scripts/mknmz.in:1769
+msgid "Total Keywords:"
+msgstr "合計キーワード数:"
+
+#: scripts/mknmz.in:1771
+msgid "Wakati:"
+msgstr "わかち書き:"
+
+#: scripts/mknmz.in:1772
+msgid "Time (sec):"
+msgstr "経過時間 (秒):"
+
+#: scripts/mknmz.in:1774
+msgid "File/Sec:"
+msgstr "ファイル/秒:"
+
+#: scripts/mknmz.in:1777
+msgid "System:"
+msgstr "システム:"
+
+#: scripts/mknmz.in:1778
+msgid "Perl:"
+msgstr "Perl:"
+
+#: scripts/mknmz.in:1779
+msgid "Namazu:"
+msgstr "Namazu:"
+
+#: scripts/mknmz.in:1904
+msgid "doing write_phrase_hash() processing.\n"
+msgstr "write_phrase_hash() 実行.\n"
+
+#: scripts/mknmz.in:2131
+msgid "doing write_index() processing.\n"
+msgstr "write_index() 実行.\n"
+
+#: pl/util.pl:39
+msgid "Renamed: "
+msgstr "Renamed: "
+
+#: pl/util.pl:115 pl/util.pl:140
+msgid "not an IO::File/FileHandle object!\n"
+msgstr "IO::File/FileHandle オブジェクトではありません\n"
+
+#: pl/util.pl:205
+msgid "Remove tmporary files:"
+msgstr "一時ファイルを削除:"
+
+#: pl/util.pl:223
+msgid "ASSERTION ERROR!: "
+msgstr "ASSERTION ERROR!: "
+
+#: pl/wakati.pl:60
+msgid "-- wakatized content --\n"
+msgstr "-- wakatized content --\n"
+
+#: pl/wakati.pl:75
+msgid "invalid wakati module: "
+msgstr "無効なわかち書きモジュール: "
+
+#: pl/wakati.pl:77
+msgid "-- wakatized bare content --\n"
+msgstr "-- wakatized bare content --\n"
+
+#: pl/wakati.pl:81
+msgid "wakati: using "
+msgstr "wakati: 以下を利用 "
+
+#: pl/usage.pl:37
+#, c-format
+msgid ""
+"mknmz %s, an indexer of Namazu.\n"
+"\n"
+"Usage: mknmz [options] <target>...\n"
+"\n"
+"Target files:\n"
+"  -a, --all                target all files.\n"
+"  -e, --robots-txt         exclude files which is excluded by robots.txt.\n"
+"  -t, --media-type=MTYPE   set the media type for all target files to "
+"MTYPE.\n"
+"  -h, --mailnews           same as --media-type='message/rfc822'\n"
+"      --mhonarc            same as --media-type='text/html; x-type=mhonarc'\n"
+"  -A, --htaccess           exclude files restricted by .htaccess.\n"
+"  -F, --target-list=FILE   load FILE which contains a list of target files.\n"
+"      --allow=PATTERN      set PATTERN for file names which should be "
+"allowed.\n"
+"      --deny=PATTERN       set PATTERN for file names which should be "
+"denied.\n"
+"      --exclude=PATTERN    set PATTERN for pathnames which should be "
+"excluded.\n"
+"  -M, --meta               handle HTML meta tags for field-specified "
+"search.\n"
+"  -r, --replace=CODE       set CODE for replacing URI.\n"
+"  -o, --ole                use OLE document filters. (works on Windows "
+"only)\n"
+"      --mtime=NUM          limit by mtime just like find(1)'s -mtime "
+"option.\n"
+"                           e.g., -50 for recent 50 days, +50 for older than "
+"50.\n"
+"\n"
+"Morphological Analysis:\n"
+"  -c, --use-chasen         use ChaSen for analyzing Japanese.\n"
+"  -k, --use-kakasi         use KAKASI for analyzing Japanese.\n"
+"  -m, --use-chasen-noun    use ChaSen for extracting only nouns.\n"
+"\n"
+"Text Operations:\n"
+"  -E, --no-edge-symbol     remove symbols on edge of word.\n"
+"  -G, --no-okurigana       remove Okurigana in word.\n"
+"  -H, --no-hiragana        ignore words consist of Hiragana only.\n"
+"  -K, --no-symbol          remove symbols.\n"
+"\n"
+"Summarization:\n"
+"  -U, --no-encode-uri      do not encode URI.\n"
+"  -x, --no-heading-summary do not make summary with HTML's headings.\n"
+"\n"
+"Index Construction:\n"
+"      --update=INDEX       set INDEX for updating.\n"
+"  -Y, --no-delete          do not detect removed documents.\n"
+"  -Z, --no-update          do not detect update and deleted documents.\n"
+"\n"
+"Miscellaneous:\n"
+"  -s, --checkpoint         turn on the checkpoint mechanism.\n"
+"  -C, --show-config        show the current configuration.\n"
+"  -f, --config=FILE        use FILE as a config file.\n"
+"  -I, --include=FILE       include your customization FILE.\n"
+"  -O, --output-dir=DIR     set DIR to output the index.\n"
+"  -T, --template-dir=DIR   set DIR having NMZ.{head,foot,body}.*.\n"
+"  -q, --quiet              suppress status messages during execution.\n"
+"  -v, --version            show the version of namazu and exit.\n"
+"  -V, --verbose            be verbose.\n"
+"      --debug              be debug mode.\n"
+"      --help               show this help and exit.\n"
+"\n"
+"Report bugs to <%s>.\n"
+msgstr ""
+"mknmz %s, Namazu のインデックス作成プログラム \n"
+"\n"
+"使い方: mknmz [options] <target>...\n"
+"\n"
+"対象ファイル:\n"
+"  -a, --all                すべてのファイルを対象とする\n"
+"  -e, --robots-txt         ロボットよけされているファイルを除外する\n"
+"  -t, --media-type=MTYPE   対象ファイルの文書形式を指定する\n"
+"  -h, --mailnews           --media-type='message/rfc822' と同じ\n"
+"      --mhonarc            --media-type='text/html; x-type=mhonarc' と同じ\n"
+"  -A, --htaccess           .htaccess で制限されたファイルを除外する\n"
+"  -F, --target-list=FILE   インデックス対象のファイルのリストを読み込む\n"
+"      --allow=PATTERN      対象とするファイル名の正規表\現を指定する\n"
+"      --deny=PATTERN       拒絶するファイル名の正規表\現を指定する\n"
+"      --exclude=PATTERN    除外するパス名の正規表\現を指定する\n"
+"  -M, --meta               HTMLの metaタグをフィールド指定検索に用いる\n"
+"  -r, --replace=CODE       URIを置換するためのコードを指定する\n"
+"  -o, --ole                OLEの文書フィルタを用いる (Windows環境のみ)\n"
+"      --mtime=INT          変更日制限 find(1) の -mtime と同じ規則\n"
+"                           例: -50 で 50 日以内、+50 で 50 "
+"日より古いものだけ\n"
+"\n"
+"形態素解析:\n"
+"  -c, --use-chasen        日本語の単語のわかち書きに ChaSen を用いる\n"
+"  -k, --use-kakasi        日本語の単語のわかち書きに KAKASI を用いる\n"
+"  -m, --use-chasen-noun   名詞のみを抽出する\n"
+"\n"
+"文字列処理:\n"
+"  -E, --no-edge-symbol  単語の両端の記号は削除する\n"
+"  -G, --no-okurigana    送り仮名を削除する\n"
+"  -H, --no-hiragana     平仮名のみの単語は登録しない\n"
+"  -K, --no-symbol       記号をすべて削除する\n"
+"\n"
+"要約:\n"
+"  -U, --no-encode-uri       URIのencodeを行わない\n"
+"  -x, --no-heading-summary  HTML のヘディングによる要約作成を行わない\n"
+"\n"
+"\n"
+"インデックス作成:\n"
+"      --update=INDEX        更新するインデックスを指定する\n"
+"  -Y, --no-delete           削除された文書の検出を行わない\n"
+"  -Z, --no-update           文書の更新・削除を反映しない\n"
+"\n"
+"その他:\n"
+"  -s, --checkpoint        チェックポイント機構\を作動させる\n"
+"  -C, --show-config       現在の設定を表\示する\n"
+"  -f, --config=FILE       設定ファイルを指定する\n"
+"  -I, --include=FILE      カスタマイズ用ファイルを読み込む\n"
+"  -O, --output-dir=DIR    インデックスの出力先を指定する\n"
+"  -T, --template-dir=DIR  NMZ.{head,foot,body}.* のディレクトリを指定する\n"
+"  -q, --quiet             インデックス処理の最中にメッセージを表\示しない\n"
+"  -v, --version           ヴァージョンを表\示する\n"
+"  -V, --verbose           口やかましいモード\n"
+"      --debug             デバッグモード\n"
+"      --help              このヘルプを表\示する\n"
+"\n"
+"バグ報告は <%s> へどうぞ\n"
+
+#: pl/var.pl.in:125
+msgid "No title in original"
+msgstr "題名なしの文書"
+
+#: filter/html.pl:84
+msgid "is excluded because of <meta name=\"robots\" ...>"
+msgstr "は <meta name=\"robots\" ...> によって除外されています"
+
+#: filter/msword.pl:111
+msgid "Unsupported format: "
+msgstr "未対応の形式: "
+
+#~ msgid "unknown"
+#~ msgstr "不明"
+
+#~ msgid "is excluded because of /robots.txt! skipped."
+#~ msgstr " は /robots.txt により除外されているので無視しました"
+
+#~ msgid "wanted: "
+#~ msgstr "wanted: "
+
+#~ msgid "findfiles    ended: "
+#~ msgstr " findfiles 終了: "
+
+#~ msgid "Writing index files temporally..."
+#~ msgstr "インデックスを一時的に書き出しています..."
+
+#~ msgid "Number of target files: "
+#~ msgstr "対象ファイルの個数: "
+
+#~ msgid "Alias: \"%s\"  -> \"%s\"\n"
+#~ msgstr "別名 (Alias):   \"%s\" -> \"%s\"\n"
+
+#~ msgid "Replace: \"%s\" -> \"%s\"\n"
+#~ msgstr "置換 (Replace): \"%s\" -> \"%s\"\n"
+
+#~ msgid ""
+#~ "Index:   %s\n"
+#~ "Logging: %s\n"
+#~ "Lang:    %s\n"
+#~ "Scoring: %s\n"
+#~ msgstr ""
+#~ "インデックス (Index): %s\n"
+#~ "ログの記録 (Logging): %s\n"
+#~ "使用する言語 (Lang):  %s\n"
+#~ "スコア計算 (Scoring): %s\n"
+
+#~ msgid "Alias:   %s -> %s\n"
+#~ msgstr "別名 (Alias):   %s -> %s\n"
+
+#~ msgid "Config:  %s\n"
+#~ msgstr "設定ファイル:  %s\n"
+
+#~ msgid "Can't cd to "
+#~ msgstr "次のディレクトリに移動できません "
+
+#~ msgid "Can't open "
+#~ msgstr "以下のファイルがオープンできません: "
+
+#~ msgid "Looped symbolic link detected "
+#~ msgstr "循環しているシンボリックリンクを発見 "
+
+#~ msgid " skipped.\n"
+#~ msgstr " スキップします\n"
+
+#~ msgid "Date: $date\n"
+#~ msgstr "日付: $date\n"
+
+#, fuzzy
+#~ msgid "Added Documents: $added_files_count files\n"
+#~ msgstr "追加された文書数: $added_files_count個\n"
+
+#, fuzzy
+#~ msgid "Deleted Documents: $deleted_files_count files\n"
+#~ msgstr "削除された文書数: $deleted_files_count個\n"
+
+#, fuzzy
+#~ msgid "Updated Documents: $updated_files_count files\n"
+#~ msgstr "更新された文書数: $updated_files_count個\n"
+
+#, fuzzy
+#~ msgid "Total Documents: $total_files_count files\n"
+#~ msgstr "合計の文書数: $total_files_count個\n"
+
+#~ msgid "Size: $total_files_size bytes\n"
+#~ msgstr "サイズ: $total_files_size bytes\n"
+
+#~ msgid "Added Keywords: $added_keys_count words\n"
+#~ msgstr "追加されたキーワード数: $added_keys_count個\n"
+
+#~ msgid "Total Keywords: $total_keys_count words\n"
+#~ msgstr "合計のキーワード数: $total_keys_count個\n"
+
+#~ msgid "Namazu: $var::VERSION\n"
+#~ msgstr "Namazu: $var::VERSION\n"
+
+#~ msgid "Wakati: $conf::WAKATI\n"
+#~ msgstr "わかち書きプログラム: $conf::WAKATI\n"
+
+#~ msgid "Time: $processtime sec.\n"
+#~ msgstr "経過時間: $processtime秒\n"
+
+#~ msgid "can't find a delimiter after directive"
+#~ msgstr "ディレクティヴの後ろに区切り文字が見つかりません"
+
+#, fuzzy
+#~ msgid ""
+#~ "Usage: mknmz [options] <target>...\n"
+#~ "Try `mknmz --help' for more information.);"
+#~ msgstr "`namazu --help' でより詳しい情報が表\示されます\n"
+
+#~ msgid ""
+#~ "\t<h2>Error!</h2>\n"
+#~ "<p>Too long Query.</p>\n"
+#~ msgstr ""
+#~ "\t<h2>エラー!</h2>\n"
+#~ "<p>検索式が長すぎます。</p>\n"
+
+#~ msgid ""
+#~ "To Administrator:\n"
+#~ "Check the definition of INDEXDIR.\n"
+#~ msgstr "管理者へ: INDEXDIR の設定を確認してください\n"
+
+#~ msgid "Word count: "
+#~ msgstr "\t<strong>参考ヒット数:</strong> "

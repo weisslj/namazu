@@ -15,3 +15,4 @@ pl/wakati.pl
 pl/usage.pl
 pl/var.pl.in
 filter/html.pl
+filter/msword.pl

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2000-02-25 23:34+0900\n"
+"POT-Creation-Date: 2000-02-26 17:03+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -720,4 +720,8 @@ msgstr ""
 
 #: filter/html.pl:84
 msgid "is excluded because of <meta name=\"robots\" ...>"
+msgstr ""
+
+#: filter/msword.pl:111
+msgid "Unsupported format: "
 msgstr ""

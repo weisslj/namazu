@@ -1,6 +1,8 @@
 2000-02-26  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* filter/msword.pl (filter): Fix wvHtml option. (-o was unnecessary)
+	(status): Add conditions for Japanese environment.
+	(filter): Likewise.
 
 	* filter/mailnews.pl: Fix multipart handling bug by applying
 	Toshiaki -PCX- Tanaka's patch.	[namazu-devel-ja:00030]

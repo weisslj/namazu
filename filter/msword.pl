@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: msword.pl,v 1.15 2000-02-26 05:41:59 satoru Exp $
+# $Id: msword.pl,v 1.16 2000-02-26 08:11:01 satoru Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -35,9 +35,17 @@ sub mediatype() {
 
 sub status() {
     my $wordconvpath = util::checkcmd('wvHtml');
-    my $utfconvpath = util::checkcmd('lv');
-    return 'yes' if (defined $wordconvpath && defined $utfconvpath);
-    return 'no';
+    return 'no' unless defined $wordconvpath;
+    if (!util::islang("ja")) {
+	return 'yes';
+    } else {
+	my $utfconvpath = util::checkcmd('lv');
+	if (defined $utfconvpath) {
+	    return 'yes';
+	} else {
+	    return 'no';
+	}
+    } 
 }
 
 sub recursive() {
@@ -65,20 +73,50 @@ sub filter ($$$$$) {
     my $tmpfile2 = util::tmpnam('NMZ.word2');
 
     my $wordconvpath = util::checkcmd('wvHtml');
-    my $utfconvpath = util::checkcmd('lv');
     return "Unable to execute msword-converter" unless (-x $wordconvpath);
-    return "Unable to execute utf-converter" unless (-x $utfconvpath);
 
-    util::vprint("Processing ms-word file ... (using  '$wordconvpath', '$utfconvpath')\n");
+    my $utfconvpath;
+    my $wvversionpath;
+    if (util::islang("ja")) {
+	$utfconvpath = util::checkcmd('lv');
+	return "Unable to execute utf-converter" unless (-x $utfconvpath);
+	$wvversionpath = util::checkcmd('wvVersion');
+	return "Unable to execute utf-converter" unless (-x $wvversionpath);
+    }
 
-    my $fh = util::efopen("> $tmpfile");
-    print $fh $$cont;
-    undef $fh;
+    util::vprint("Processing ms-word file ... (using  '$wordconvpath')\n");
 
-    system("$wordconvpath $tmpfile | $utfconvpath -Iu8 -Oej > $tmpfile2");
-    $fh = util::efopen("< $tmpfile2");
-    $$cont = util::readfile($fh);
-    undef $fh;
+    { 
+	my $fh = util::efopen("> $tmpfile");
+	print $fh $$cont;
+    }
+
+    if (!util::islang("ja")) {
+	system("$wordconvpath $tmpfile > $tmpfile2");
+    } else {
+	my $version = "unknown";
+	my $supported = undef;
+	my $fh_cmd = util::efopen("$wvversionpath $tmpfile |");
+	while (<$fh_cmd>) {
+	    if (/^Version: (word\d+),/i) {
+		$version = $1;
+		#
+		# Only word8 format is supported for Japanese.
+		#
+		if ($version =~ /^word8$/) {
+		    $supported = 1;
+		}
+	    }
+	}
+	return _("Unsupported format: ") .  $version unless $supported;
+	system("$wordconvpath $tmpfile | $utfconvpath -Iu8 -Oej > $tmpfile2");
+    }
+
+    {
+	my $fh = util::efopen("< $tmpfile2");
+	$$cont = util::readfile($fh);
+    }
+
     unlink($tmpfile);
     unlink($tmpfile2);
 

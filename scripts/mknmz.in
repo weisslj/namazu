@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.94 2001-09-18 08:52:19 knok Exp $
+# $Id: mknmz.in,v 1.95 2001-09-18 09:34:50 knok Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -343,11 +343,12 @@ sub init () {
 
 sub preload_modules () { 
     unshift @INC, $LIBDIR;
-    my $srcdir = '';
-    if (defined($ENV{'srcdir'})) {      ## for VPATH ;make check
-	$srcdir = $ENV{'srcdir'} .'/';}
-    unshift @INC, $srcdir. "../pl";	# FIXME: remove the workaround for   (util.pl)
-    unshift @INC, $srcdir. "../filter";	# test suites.
+    my $srcdir = undef;
+    if (defined $ENV{'top_srcdir'}) {      ## for VPATH ;make check
+	$srcdir = $ENV{'top_srcdir'} .'/';}
+    unshift @INC, $srcdir. "/pl" if defined $srcdir;	# FIXME: remove the workaround for   (util.pl)
+    unshift @INC, $srcdir. "/filter" if defined $srcdir;# test suites.
+    unshift @INC, $ENV{'top_builddir'} . '/pl' if defined $ENV{'top_builddir'};
 
     require "conf.pl" || die "unable to require \"conf.pl\"\n";
     require "util.pl" || die "unable to require \"util.pl\"\n";

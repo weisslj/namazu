@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: hdml.pl,v 1.3 2000-11-17 06:27:05 knok Exp $
+# $Id: hdml.pl,v 1.4 2000-11-17 06:43:43 knok Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -182,7 +182,7 @@ sub remove_html_elements ($) {
     my ($contref) = @_;
 
     # remove all comments
-    $$contref =~ s/<!--.*?-->//gs;
+    $$contref =~ s/<!?--.*?-->//gs;
 
     # remove all elements
     $$contref =~ s!</?([A-Z]\w*)(?:\s+[A-Z]\w*(?:\s*=\s*(?:(["']).*?\2|[\w\-.]+))?)*\s*>!element_space($1)!gsixe;

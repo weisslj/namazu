@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: rtf.pl,v 1.1 2003-03-20 14:40:54 opengl2772 Exp $
+# $Id: rtf.pl,v 1.2 2003-03-20 15:45:25 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi All rights reserved.
-# Copyright (C) 2000 Satoru Takabayashi Namazu Project All rights reserved.
+# Copyright (C) 2000-2002 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -25,14 +25,11 @@
 
 package rtf;
 use strict;
-use File::Basename;
-use File::Copy;
 require 'util.pl';
 require 'gfilter.pl';
 
 my $rtfconvpath  = undef;
-my $doccatversionpath = undef;
-my $rtfconvname = undef;
+my @rtfconvopts  = undef;
 
 sub mediatype() {
     return ('application/rtf');
@@ -40,20 +37,19 @@ sub mediatype() {
 
 sub status() {
     $rtfconvpath = util::checkcmd('doccat');
-
+    @rtfconvopts = ("-o", "e");
     if (defined $rtfconvpath) {
-	my $fh_cmd = util::efopen("$rtfconvpath -V |");
-	while (<$fh_cmd>) {
-	    if (/TF Library *: *Version *: *(\d*)\.(\d*)/i) {
-		my $major = $1;
-		my $minor = $2 . "000";
-		if ($major >= 1 && substr($minor, 0, 2) >= 42) {
-		    return 'yes';
-		}
-	    }
-	}
+        my $fh_cmd = util::efopen("$rtfconvpath -V |");
+        while (<$fh_cmd>) {
+            if (/TF Library *: *Version *: *(\d*)\.(\d*)/i) {
+                my $major = $1;
+                my $minor = $2 . "000";
+                if ($major >= 1 && substr($minor, 0, 2) >= 42) {
+                    return 'yes';
+                }
+            }
+        }
     }
-
     return 'no';
 }
 
@@ -79,34 +75,39 @@ sub add_magic ($) {
 
 sub filter ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
-      = @_;
+	= @_;
     my $err = undef;
 
-    if (not defined $rtfconvname) {
-	$rtfconvname = basename($rtfconvpath);
-    }
     $err = filter_doccat($orig_cfile, $cont, $weighted_str, $headings, $fields);
+ 
     return $err;
 }   
 
 sub filter_doccat ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
-      = @_;
+	= @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
- 
+    
+    util::vprint("Processing rtf file ... (using  '$rtfconvpath')\n");
+
     my $tmpfile  = util::tmpnam('NMZ.rtf');
-    my $tmpfile2 = util::tmpnam('NMZ.rtf2');   
-    copy("$cfile", "$tmpfile2");
-
-    system("$rtfconvpath -o e $tmpfile2 > $tmpfile");
-
     {
-        my $fh = util::efopen("< $tmpfile");
-        $$cont = util::readfile($fh);
+	my $fh = util::efopen("> $tmpfile");
+	print $fh $$cont;
     }
-
-    unlink($tmpfile);
-    unlink($tmpfile2);
+    {
+	my @cmd = ($rtfconvpath, @rtfconvopts, $tmpfile);
+	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
+	my $size = util::filesize($fh_out);
+	if ($size == 0) {
+	    return "Unable to convert file ($rtfconvpath error occurred).";
+	}
+	if ($size > $conf::TEXT_SIZE_MAX) {
+	    return 'Too large rtf file.';
+	}
+        $$cont = util::readfile($fh_out);
+    }
+    unlink $tmpfile;
 
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);
@@ -114,7 +115,8 @@ sub filter_doccat ($$$$$) {
     $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
 	unless $fields->{'title'};
     gfilter::show_filter_debug_info($cont, $weighted_str,
-               $fields, $headings);
+				    $fields, $headings);
+
     return undef;
 }
 

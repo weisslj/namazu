@@ -1,7 +1,9 @@
 1999-08-27  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* lib/util.pl: Add checkcmd function.
+
 	* filter/*.pl, src/mknmz.pl.in: Implement dynamic command ditection.
+
 	* lib/conf.pl.in: Add %supported variable.
 
 1999-08-27  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
@@ -26,6 +28,10 @@
 	by using show_mini_usage().
 
 	* ChangeLog: Change a format into double-spaced.
+
+	* src/*.[ch]: Rename variables for NMZ.* files.
+
+	* Makefile.am: Add AUTOMAKE_OPTIONS = no-dependencies
 
 	
 1999-08-26  Ryuji Abe <raeva@t3.rim.or.jp>

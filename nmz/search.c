@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.48 2000-01-07 09:33:56 satoru Exp $
+ * $Id: search.c,v 1.49 2000-01-07 09:40:55 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -550,7 +550,7 @@ do_regex_search(const char *expr, NmzResult val)
 
     fp = fopen(NMZ.w, "rb");
     if (fp == NULL) {
-        nmz_debug_printf("%s: cannot open file.\n", NMZ.w);
+        nmz_warn_printf("%s: %s", NMZ.w, strerror(errno));
         val.stat = ERR_REGEX_SEARCH_FAILED;  /* cannot open regex index */
         return val;
     }
@@ -746,7 +746,7 @@ do_logging(const char *query, int n)
 
     slog = fopen(NMZ.slog, "a");
     if (slog == NULL) {
-	nmz_warn_printf("%s: Permission denied\n", NMZ.slog);
+	nmz_warn_printf("%s: %s", NMZ.slog, strerror(errno));
 	return;
     }
     rhost = nmz_getenv("REMOTE_HOST");

@@ -1,3 +1,29 @@
+/*
+ * 
+ * $Id: field.c,v 1.22 2000-01-07 09:40:54 satoru Exp $
+ * 
+ * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
+ * This is free software with ABSOLUTELY NO WARRANTY.
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+ * 02111-1307, USA
+ * 
+ * 
+ */
+
+#include <errno.h>
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>
@@ -152,13 +178,13 @@ get_field_data(int idxid, int docid, const char *field, char *data)
     
     fp_field = fopen(fname, "rb");
     if (fp_field == NULL) {
-        nmz_debug_printf("%s: cannot open file.\n", fname);
+        nmz_warn_printf("%s: %s", fname, strerror(errno));
     }
 
     strcat(fname, ".i");
     fp_field_idx = fopen(fname, "rb");
     if (fp_field_idx == NULL) {
-        nmz_debug_printf("%s: cannot open file.\n", fname);
+        nmz_warn_printf("%s: %s", fname, strerror(errno));
     }
 
     /* 

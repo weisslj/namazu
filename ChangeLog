@@ -1,8 +1,18 @@
 2000-01-07  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
-	* src/output.c (print_errmsg): Prototyped.
+	* nmz/field.c (get_field_data): Use nmz_warn_printf() instead of
+	nmz_debug_printf() and use strerror().
+	Include <errno.h>
+	Add copyright notice.
 
-	* nmz/search.c (normalize_idxnames): Prototyped.
+	* nmz/search.c (do_logging): Use strerror().
+	Include <errno.h>
+	(do_regex_search): Use nmz_warn_printf() instead of
+	nmz_debug_printf() and use strerror().
+
+	* src/output.c (print_errmsg): Prepare prototype.
+
+	* nmz/search.c (normalize_idxnames): Prepare prototype.
 
 	* nmz/query.c: Include "query.h"
 

@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu-cmd.c,v 1.6 2000-01-29 02:33:45 satoru Exp $
+ * $Id: namazu-cmd.c,v 1.7 2000-01-29 04:58:25 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -190,9 +190,6 @@ parse_options(int argc, char **argv)
 	    break;
 	case 'f':
 	    set_namazurc(optarg);
-	    if (load_rcfile(argv[0]) != SUCCESS) {
-		die(nmz_get_dyingmsg());
-	    }
 	    break;
 	case 'n':
 	    if (ck_atoi(optarg, &tmp)) {
@@ -249,10 +246,10 @@ parse_options(int argc, char **argv)
 	    exit(EXIT_SUCCESS);
 	    break;
 	case 'C':
-	    if (load_rcfile(argv[0]) != SUCCESS) {
+	    if (load_rcfiles() != SUCCESS) {
 		die(nmz_get_dyingmsg());
 	    }
-	    show_rcfile();
+	    show_config();
 	    exit(EXIT_SUCCESS);
 	    break;
 	case 'o':
@@ -274,9 +271,6 @@ main(int argc, char **argv)
     textdomain(PACKAGE);
 
     nmz_set_lang("");
-    if (load_rcfile(argv[0]) != SUCCESS) {
-	die(nmz_get_dyingmsg());
-    }
 
     if (getenv("QUERY_STRING") && getenv("SCRIPT_NAME")) {
 	/* 
@@ -322,6 +316,10 @@ main(int argc, char **argv)
 		die("invalid idxname: %s", argv[i]);
 	    }
 	}
+    }
+
+    if (load_rcfiles() != SUCCESS) {
+	die(nmz_get_dyingmsg());
     }
 
     if (namazu_core(query, subquery) == ERR_FATAL) {

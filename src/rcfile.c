@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.10 2000-01-28 09:40:21 satoru Exp $
+ * $Id: rcfile.c,v 1.11 2000-01-29 04:58:25 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -53,11 +53,19 @@ static char *namazurcdir = OPT_CONFDIR;
 /*
  * User specified namazurc. This can be set with set_namazurc().
  */
-static char namazurc[BUFSIZE] = "";
+static char user_namazurc[BUFSIZE] = "";
 
 static char *errmsg  = NULL;
-static int  rcfile_is_loaded = 0;
 
+/* 
+ * Storing loaded rcfile names for show_config().
+ *
+ * 3 is the max number of rcfiles may be loaded.
+ */
+struct {
+    char fnames[3][BUFSIZE];
+    int num;
+} loaded_rcfiles = { {"", "", ""}, 0 };
 
 /*
  *
@@ -65,9 +73,7 @@ static int  rcfile_is_loaded = 0;
  *
  */
 
-static void getenv_namazurc ( void );
-static void set_pathname(char *dest, const char *command, const char *name);
-static FILE *open_rcfile ( const char *argv0 );
+static char *getenv_namazurc ( void );
 static int get_rc_arg ( const char *line, char *arg );
 static void replace_home ( char *str );
 static struct nmz_strlist *get_rc_args ( const char *line );
@@ -231,86 +237,33 @@ process_rc_template(const char *directive, const struct nmz_strlist *args)
 }
 
 /* 
- * Get an environmental variable of NAMAZUCONFPATH
- * contributed by Shimizu-san [1998-02-27]
+ * Get the environment variable of NAMAZURC, NAMAZUCONF or
+ * NAMAZUCONFPATH.  and return it. Original of this code is
+ * contributed by Kaz SHiMZ <kshimz@sfc.co.jp> [1998-02-27] 
  */
-static void 
+static char *
 getenv_namazurc(void)
 {
-    char *env_namazu_conf;
+    char *env_namazurc;
 
-    env_namazu_conf = getenv("NAMAZUCONFPATH");
-    if (env_namazu_conf == NULL)
-        env_namazu_conf = getenv("NAMAZUCONF");
-
-    if (env_namazu_conf != NULL)
-        strcpy(namazurc, env_namazu_conf);
-}
-
-/*
- * Make the pathname `dest' by conjuncting `command' and `name'.
- */
-static void 
-set_pathname(char *dest, const char *command, const char *name)
-{
-    int i;
-
-    strcpy(dest, command);
-    for (i = strlen(dest) - 1; i > 0; i--) {
-	if (dest[i] == '/') {
-	    i++;
-	    break;
-	}
-    }
-    strcpy(dest + i, name);
-    return;
-}
-
-/*
- * 1. current_executed_binary_dir/.namazurc
- * 2. ${HOME}/.namazurc
- * 3. DEFAULT_NAMAZURC (SYSCONFDIR/namazurc)
- */
-static FILE *
-open_rcfile(const char *argv0)
-{
-    FILE *fp;
-    char fname[BUFSIZE], *home;
-
-    getenv_namazurc();
-
-    /* Rcfile is specified (not default) */
-    if (namazurc[0] != '\0') {
-        if ((fp = fopen(namazurc, "rb"))) {
-            return fp;
-        }
+    env_namazurc = getenv("NAMAZURC");
+    if (env_namazurc != NULL) {
+	return env_namazurc;
     }
 
-    /* Check the where program is */
-    set_pathname(fname, argv0, ".namazurc");
-    if ((fp = fopen(fname, "rb"))) {
-        strcpy(namazurc, fname);
-        return fp;
+    /* For backward compatibility. */
+    env_namazurc = getenv("NAMAZUCONF");
+    if (env_namazurc != NULL) {
+	return env_namazurc;
     }
 
-    /* Checke a home directory */
-    if ((home = getenv("HOME")) != NULL) {
-        strcpy(fname, home);
-        strcat(fname, "/.namazurc");
-        if ((fp = fopen(fname, "rb"))) {
-            strcpy(namazurc, fname);
-            return fp;
-        }
+    /* For backward compatibility. */
+    env_namazurc = getenv("NAMAZUCONFPATH");
+    if (env_namazurc != NULL) {
+	return env_namazurc;
     }
 
-    /* Check the defalut */
-    strcpy(fname, namazurcdir);
-    strcat(fname, "/namazurc");
-    if ((fp = fopen(fname, "rb"))) {
-	strcpy(namazurc, fname);
-        return fp;
-    }
-    return (FILE *) NULL;
+    return NULL;
 }
 
 static int 
@@ -534,34 +487,114 @@ apply_rc(int lineno, const char *directive, struct nmz_strlist *args)
     return FAILURE;
 }
 
+static void 
+add_loaded_rcfile(const char *fname) {
+    int no = loaded_rcfiles.num;
+
+    strcpy(loaded_rcfiles.fnames[no], fname);
+    loaded_rcfiles.num++;
+}
+
+
 /*
  *
  * Public functions
  *
  */
 
-char *
+void
 set_namazurc(const char *arg)
 {
-    return strcpy(namazurc, arg);
+    strcpy(user_namazurc, arg);
+}
+
+/*
+ * Load namazurcs:
+ *
+ *  1. $(sysconfdir)/$(PACKAGE)/namazurc
+ *     - This can be overriden by environmentl variable NAMAZURC.
+ *
+ *  2.  ~/.namazurc
+ *
+ *  3. user-specified namazurc set by namazu --config=file option.
+ *
+ * If multiple files exists, read all of them.
+ */
+enum nmz_stat 
+load_rcfiles(void)
+{
+    /*
+     *  1. $(sysconfdir)/$(PACKAGE)/namazurc
+     *     - This can be overriden by environmentl variable NAMAZURC.
+     */
+    {
+	char *env = getenv_namazurc();
+	if (env != NULL) {
+	    if (load_rcfile(env) != SUCCESS) {
+		return FAILURE;
+	    }
+	} else {
+	    char fname[BUFSIZE];
+	    strcpy(fname, namazurcdir);
+	    strcat(fname, "/namazurc");
+	    /* 
+	 * Load the file only if it exists.
+	 */
+	    if (nmz_is_file_exists(fname)) {
+		if (load_rcfile(fname) != SUCCESS) {
+		    return FAILURE;
+		}
+	    }
+	}
+    }
+
+    /*
+     *  2. ~/.namazurc
+     */
+    {
+	char *home = getenv("HOME");
+	if (home != NULL) {
+	    char fname[BUFSIZE];
+	    strcpy(fname, home);
+	    strcat(fname, "/.namazurc");
+	    /* 
+	     * Load the file only if it exists.
+	     */
+	    if (nmz_is_file_exists(fname)) {
+		if (load_rcfile(fname) != SUCCESS) {
+		    return FAILURE;
+		}
+	    }
+	}
+    }
+
+    /*
+     *  3. user-specified namazurc set by namazu --config=file option.
+     */
+    if (user_namazurc[0] != '\0') {
+	if (load_rcfile(user_namazurc) != SUCCESS) {
+	    return FAILURE;
+	}
+    }
+
+    return SUCCESS;
 }
 
 /* 
- * Load rcfile of namazu 
- * FIXME: Taking the argv0 parameter is dirty spec.
+ * Load the namazurc specified with fname.
  */
 enum nmz_stat 
-load_rcfile(const char *argv0)
+load_rcfile(const char *fname)
 {
     FILE *fp;
     char buf[BUFSIZE];
     int lineno = 1;
 
-    fp = open_rcfile(argv0);
-    if (fp == NULL)
-	return SUCCESS; /* no rcfile exists */
-
-    rcfile_is_loaded = 1;  /* for show_rcfile() */
+    fp = fopen(fname, "rb");
+    if (fp == NULL) { /* open failed */
+	nmz_set_dyingmsg(nmz_msg("%s: %s", fname, strerror(errno)));
+	return FAILURE;
+    }
 
     while (fgets(buf, BUFSIZE, fp) != NULL) {
 	int current_lineno = lineno;
@@ -586,19 +619,28 @@ load_rcfile(const char *argv0)
 	nmz_conv_ja_any_to_eucjp(buf);  /* for Shift_JIS encoding */
 	if (parse_rcfile(buf, current_lineno) != SUCCESS) {
 	    nmz_set_dyingmsg(nmz_msg(_("%s:%d: syntax error: %s"),  
-				     namazurc, current_lineno, errmsg));
+				     fname, current_lineno, errmsg));
 	    return FAILURE;
 	}
     }
     fclose(fp);
+
+    add_loaded_rcfile(fname); /* For show_config() */
+    nmz_debug_printf("load_rcfile: %s loaded\n", fname);
+
     return SUCCESS;
 }
 
 void 
-show_rcfile(void)
+show_config(void)
 {
-    if (rcfile_is_loaded == 1) {
-	printf(_("Config:  %s\n"), namazurc);
+    int i;
+
+    if (loaded_rcfiles.num >= 1) {
+	for (i =0; i < loaded_rcfiles.num; i++) {
+	    printf(_("Loaded rcfile: %s\n"), loaded_rcfiles.fnames[i]);
+	}
+	printf("\n");
     }
 
     printf(_("\
@@ -609,8 +651,25 @@ Scoring: %s\n\
 "), nmz_get_defaultidx(), nmz_is_loggingmode() ? "on" : "off",
            nmz_get_lang(), nmz_is_tfidfmode() ? "tfidf" : "simple");
 
-    nmz_show_aliases();
-    nmz_show_replaces();
+    /* Show aliases. */
+    {
+	struct nmz_alias *list = nmz_get_aliases();
+	while (list) {
+	    printf(_("Alias: \"%s\"  -> \"%s\"\n"), 
+		   list->alias, list->real);
+	    list = list->next;
+	}
+    }
+
+    /* Show replaces. */
+    {
+	struct nmz_replace *list = nmz_get_replaces();
+	while (list) {
+	    printf(_("Replace: \"%s\" -> \"%s\"\n"), 
+		   list->pat, list->rep);
+	    list = list->next;
+	}
+    }
 
     /*    exit(0);*/
     return;

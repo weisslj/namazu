@@ -2,7 +2,7 @@
  * 
  * replace.c - 
  *
- * $Id: replace.c,v 1.12 2000-01-28 09:40:13 satoru Exp $
+ * $Id: replace.c,v 1.13 2000-01-29 04:58:18 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -210,14 +210,12 @@ nmz_add_replace(const char *pat, const char *rep)
     return SUCCESS;
 }
 
-void 
-nmz_show_replaces(void)
+/*
+ * It's very dangerous to use!
+ */
+struct nmz_replace *
+nmz_get_replaces(void)
 {
-    struct nmz_replace *list = replaces;
-
-    while (list) {
-	printf(_("Replace: \"%s\" -> \"%s\"\n"), 
-	       list->pat, list->rep);
-	list = list->next;
-    }
+    return replaces;
 }
+

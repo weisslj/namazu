@@ -1,5 +1,36 @@
 2000-01-29  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* nmz/replace.c (nmz_show_replaces): Abolished.
+	(nmz_get_replaces): New function.
+
+	* nmz/alias.c (nmz_show_aliases): Abolished.
+
+	* nmz/replace.c (nmz_get_replaces): New function.
+
+	* src/rcfile.c (add_loaded_rcfile): New function.
+
+	* scripts/mknmz.pl.in (load_rcfiles): Renamed to be same name in
+	used in namazu command.
+
+	* src/rcfile.c (set_namazurc): Be void.
+
+	* src/namazu-cgi.c (conjuct_pathname): New function derived from
+	set_pathname in rcfile.c.
+
+	* src/rcfile.c (show_config): Renamed from show_rcfile and modified.
+	(set_pathname): Abolished.
+	
+	* src/namazu-cmd.c (main): Change timing of loding rcfile.
+
+	* src/namazu-cgi.c (main): Ditto.
+
+	* nmz/util.c (nmz_is_file_exists): New function.
+
+	* src/rcfile.c (getenv_namazurc): Change behaviour.
+	(load_rcfile): Change behaviour.
+	(load_rcfiles): New function derived from open_rcfile.
+	(open_rcfile): Abolished.
+
 	* scripts/mknmz.pl.in (show_usage): Gettextized.
 
 	* pl/usage.pl: Gettextized.

@@ -1,5 +1,5 @@
 # -*- Perl -*-
-# $Id: usage.pl,v 1.14 2000-01-29 02:33:41 satoru Exp $
+# $Id: usage.pl,v 1.15 2000-01-29 04:58:20 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -31,7 +31,7 @@ sub N_ {
 }
 
 #
-# To deceive xgettext, Add fake "\n\" at the end of each line.
+# To deceive xgettext, add fake "\n\" at the end of each line.
 # This "\n\" is handled in mknmz's show_usage().
 #
 $USAGE = N_("mknmz %s, an indexer of Namazu.\n\

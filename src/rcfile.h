@@ -5,8 +5,9 @@
 
 #define DIRECTIVE_CHARS "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_"
 
-extern char *set_namazurc ( const char *arg );
-extern enum nmz_stat load_rcfile ( const char *av0 );
-extern void show_rcfile ( void );
+extern enum nmz_stat load_rcfiles ( void );
+extern enum nmz_stat load_rcfile ( const char *fname );
+extern void show_config ( void );
+extern void set_namazurc ( const char *arg );
 
 #endif /* _CONF_H */

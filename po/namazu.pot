@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2000-01-29 11:31+0900\n"
+"POT-Creation-Date: 2000-01-29 13:57+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -66,16 +66,6 @@ msgstr ""
 msgid "Unknown error. Report bug!"
 msgstr ""
 
-#: nmz/alias.c:106
-#, c-format
-msgid "Alias:   \"%s\" -> \"%s\"\n"
-msgstr ""
-
-#: nmz/replace.c:219
-#, c-format
-msgid "Replace: \"%s\" -> \"%s\"\n"
-msgstr ""
-
 #: src/cgi.c:113 src/cgi.c:123
 msgid "Invalid idxname."
 msgstr ""
@@ -128,47 +118,57 @@ msgid "\t<p>No document matching your query.</p>\n"
 msgstr ""
 
 #. terminator not matched
-#: src/rcfile.c:336
+#: src/rcfile.c:289
 msgid "can't find string terminator"
 msgstr ""
 
-#: src/rcfile.c:404
+#: src/rcfile.c:357
 msgid "invalid directive name"
 msgstr ""
 
-#: src/rcfile.c:417
+#: src/rcfile.c:370
 msgid "can't find arguments"
 msgstr ""
 
-#: src/rcfile.c:520
+#: src/rcfile.c:473
 msgid "too few arguments"
 msgstr ""
 
-#: src/rcfile.c:523
+#: src/rcfile.c:476
 msgid "too many arguments"
 msgstr ""
 
-#: src/rcfile.c:533
+#: src/rcfile.c:486
 msgid "unknown directive"
 msgstr ""
 
-#: src/rcfile.c:588
+#: src/rcfile.c:621
 #, c-format
 msgid "%s:%d: syntax error: %s"
 msgstr ""
 
-#: src/rcfile.c:601
+#: src/rcfile.c:641
 #, c-format
-msgid "Config:  %s\n"
+msgid "Loaded rcfile: %s\n"
 msgstr ""
 
-#: src/rcfile.c:604
+#: src/rcfile.c:646
 #, c-format
 msgid ""
 "Index:   %s\n"
 "Logging: %s\n"
 "Lang:    %s\n"
 "Scoring: %s\n"
+msgstr ""
+
+#: src/rcfile.c:658
+#, c-format
+msgid "Alias: \"%s\"  -> \"%s\"\n"
+msgstr ""
+
+#: src/rcfile.c:668
+#, c-format
+msgid "Replace: \"%s\" -> \"%s\"\n"
 msgstr ""
 
 #: src/usage.c:51
@@ -217,269 +217,269 @@ msgstr ""
 msgid "target file: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:148
+#: scripts/mknmz.pl.in:159
 msgid "Reading rcfile: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:182
+#: scripts/mknmz.pl.in:193
 msgid "Checkpoint reached: re-exec mknmz...\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:317
+#: scripts/mknmz.pl.in:328
 msgid "after load_document: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:611
+#: scripts/mknmz.pl.in:622
 msgid "Detected type: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:613 scripts/mknmz.pl.in:1141
+#: scripts/mknmz.pl.in:624 scripts/mknmz.pl.in:1153
 msgid "Unsupported data type "
 msgstr ""
 
-#: scripts/mknmz.pl.in:617
+#: scripts/mknmz.pl.in:628
 msgid "Using "
 msgstr ""
 
-#: scripts/mknmz.pl.in:619
+#: scripts/mknmz.pl.in:630
 msgid "unable to require "
 msgstr ""
 
-#: scripts/mknmz.pl.in:627
+#: scripts/mknmz.pl.in:638
 msgid "Faild to call "
 msgstr ""
 
-#: scripts/mknmz.pl.in:669 scripts/mknmz.pl.in:1272
+#: scripts/mknmz.pl.in:680 scripts/mknmz.pl.in:1284
 msgid "No files to index.\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:689
+#: scripts/mknmz.pl.in:700
 msgid "code conversion: using NKF module\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:694
+#: scripts/mknmz.pl.in:705
 msgid "wakati: using Text::Kakasi module\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:699
+#: scripts/mknmz.pl.in:710
 msgid "wakati: using Text::ChaSen module\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:713
+#: scripts/mknmz.pl.in:724
 msgid ""
 "found. Maybe this index is being updated by another process now.\n"
 "If not, you can remove this file.\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:742
+#: scripts/mknmz.pl.in:753
 msgid "Present index is old type. it's unsupported.\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:891
+#: scripts/mknmz.pl.in:902
 msgid "Inherited argv: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:895
+#: scripts/mknmz.pl.in:906
 msgid "Inherited cwd: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:936
+#: scripts/mknmz.pl.in:947
 msgid "Loaded: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:951
+#: scripts/mknmz.pl.in:962
 msgid "Invalid replace: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:953
+#: scripts/mknmz.pl.in:964
 msgid "Replace: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:962
+#: scripts/mknmz.pl.in:973
 msgid "invalid output directory\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1051
+#: scripts/mknmz.pl.in:1062
 msgid " findfiles starting: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:1086
+#: scripts/mknmz.pl.in:1097
 msgid "wanted: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:1102
+#: scripts/mknmz.pl.in:1113
 msgid "findfiles    ended: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:1103
+#: scripts/mknmz.pl.in:1114
 #, c-format
 msgid ""
 "Target Files: %d (Scan Performance: Elapsed Sec.: %d, Files/sec: %.1f)\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1111
+#: scripts/mknmz.pl.in:1122
 msgid "lang: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:1120
+#: scripts/mknmz.pl.in:1132
 msgid "Usage: mknmz [options] <target>...\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1121
+#: scripts/mknmz.pl.in:1133
 msgid "Try `mknmz --help' for more information.\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1134
+#: scripts/mknmz.pl.in:1146
 msgid "is 0 size! skipped."
 msgstr ""
 
-#: scripts/mknmz.pl.in:1136
+#: scripts/mknmz.pl.in:1148
 msgid "may be a BINARY file! skipped."
 msgstr ""
 
-#: scripts/mknmz.pl.in:1138
+#: scripts/mknmz.pl.in:1150
 msgid "is too LARGE a text! skipped."
 msgstr ""
 
-#: scripts/mknmz.pl.in:1141
+#: scripts/mknmz.pl.in:1153
 msgid " skipped."
 msgstr ""
 
-#: scripts/mknmz.pl.in:1146
+#: scripts/mknmz.pl.in:1158
 msgid "system error occurred! "
 msgstr ""
 
-#: scripts/mknmz.pl.in:1346
+#: scripts/mknmz.pl.in:1358
 msgid ""
 "\n"
 "\n"
 "== found ==\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1347
+#: scripts/mknmz.pl.in:1359
 msgid ""
 "\n"
 "\n"
 "== registered ==\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1348
+#: scripts/mknmz.pl.in:1360
 msgid ""
 "\n"
 "\n"
 "== overlapped  ==\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1349
+#: scripts/mknmz.pl.in:1361
 msgid ""
 "\n"
 "\n"
 "== deleted  ==\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1350
+#: scripts/mknmz.pl.in:1362
 msgid ""
 "\n"
 "\n"
 "== updated ==\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1351
+#: scripts/mknmz.pl.in:1363
 msgid ""
 "\n"
 "\n"
 "== files to index ==\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1375
+#: scripts/mknmz.pl.in:1387
 msgid "## deleted: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:1398
+#: scripts/mknmz.pl.in:1410
 msgid "## indexed: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:1424
+#: scripts/mknmz.pl.in:1436
 msgid "update_field_index: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:1444
+#: scripts/mknmz.pl.in:1456
 msgid "was updated!\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1485
+#: scripts/mknmz.pl.in:1497
 msgid "ERROR: malformed NMZ.r format!\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1567
+#: scripts/mknmz.pl.in:1579
 msgid "[Append]"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1569
+#: scripts/mknmz.pl.in:1581
 msgid "[Base]"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1571
+#: scripts/mknmz.pl.in:1583
 msgid "Date:"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1572
+#: scripts/mknmz.pl.in:1584
 msgid "Added Documents:"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1574
+#: scripts/mknmz.pl.in:1586
 msgid "Deleted Documents:"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1576
+#: scripts/mknmz.pl.in:1588
 msgid "Updated Documents:"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1578
+#: scripts/mknmz.pl.in:1590
 msgid "Size (bytes):"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1580
+#: scripts/mknmz.pl.in:1592
 msgid "Total Documents:"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1582
+#: scripts/mknmz.pl.in:1594
 msgid "Added Keywords:"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1584
+#: scripts/mknmz.pl.in:1596
 msgid "Total Keywords:"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1586
+#: scripts/mknmz.pl.in:1598
 msgid "Wakati:"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1587
+#: scripts/mknmz.pl.in:1599
 msgid "Time (sec):"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1588
+#: scripts/mknmz.pl.in:1600
 msgid "File/Sec:"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1591
+#: scripts/mknmz.pl.in:1603
 msgid "System:"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1592
+#: scripts/mknmz.pl.in:1604
 msgid "Perl:"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1593
+#: scripts/mknmz.pl.in:1605
 msgid "Namazu:"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1718
+#: scripts/mknmz.pl.in:1730
 msgid "doing write_phrase_hash() processing.\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1945
+#: scripts/mknmz.pl.in:1957
 msgid "doing write_index() processing.\n"
 msgstr ""
 

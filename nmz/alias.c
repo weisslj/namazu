@@ -2,7 +2,7 @@
  * 
  * alias.c - 
  *
- * $Id: alias.c,v 1.12 2000-01-28 09:40:11 satoru Exp $
+ * $Id: alias.c,v 1.13 2000-01-29 04:58:18 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -96,17 +96,3 @@ nmz_get_aliases(void)
 {
     return aliases;
 }
-
-void 
-nmz_show_aliases(void)
-{
-    struct nmz_alias *list = aliases;
-
-    while (list) {
-	printf(_("Alias:   \"%s\" -> \"%s\"\n"), 
-	       list->alias, list->real);
-	list = list->next;
-    }
-}
-
-

@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: util.c,v 1.51 2000-01-28 09:40:13 satoru Exp $
+ * $Id: util.c,v 1.52 2000-01-29 04:58:19 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -646,6 +646,19 @@ nmz_free_strlist(struct nmz_strlist *list)
     }
 }
 
+/*
+ * Check wheter the file fname exists or not.
+ * FIXME: This may be reimplemented with stat/fstat?
+ */
+int nmz_is_file_exists(const char *fname)
+{
+    FILE *fp = fopen(fname, "r");
+    if (fp == NULL) {
+	return 0; /* FAILURE */
+    } else {
+	return 1; /* SUCCESS */
+    }
+}
 
 /*
  * The following functions are commented as a reminder.  

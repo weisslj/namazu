@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu-cgi.c,v 1.6 2000-01-28 09:40:21 satoru Exp $
+ * $Id: namazu-cgi.c,v 1.7 2000-01-29 04:58:24 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -80,6 +80,25 @@ suicide (int signum)
 }
 
 /*
+ * Make the pathname `dest' by conjuncting `command' and `name'.
+ */
+static void 
+combine_pathname(char *dest, const char *command, const char *name)
+{
+    int i;
+
+    strcpy(dest, command);
+    for (i = strlen(dest) - 1; i > 0; i--) {
+	if (dest[i] == '/') {
+	    i++;
+	    break;
+	}
+    }
+    strcpy(dest + i, name);
+    return;
+}
+
+/*
  *
  * Public functions
  *
@@ -94,9 +113,6 @@ main(int argc, char **argv)
     textdomain(PACKAGE);
 
     nmz_set_lang("");
-    if (load_rcfile(argv[0]) != SUCCESS) {
-	die(nmz_get_dyingmsg());
-    }
 
     /* Both environment variables are required. */
     if (!(getenv("QUERY_STRING") && getenv("SCRIPT_NAME"))) {
@@ -121,6 +137,22 @@ main(int argc, char **argv)
     set_uridecode(0);        /* Do not decode URI in results. */
 
     init_cgi(query, subquery);
+
+    if (load_rcfiles() != SUCCESS) {
+	die(nmz_get_dyingmsg());
+    }
+
+    {
+	/*
+	 * Load .namazurc located in the directory
+	 * where namazu.cgi command is.
+	 */
+	char fname[BUFSIZE];
+	combine_pathname(fname, argv[0], ".namazurc");
+	if (nmz_is_file_exists(fname)) {
+	    load_rcfile(fname);
+	}
+    }
 
     if (namazu_core(query, subquery) == ERR_FATAL) {
         die(nmz_get_dyingmsg());

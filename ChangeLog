@@ -4,6 +4,7 @@
 	* src/{cgi.h,field.h,hlist.h,parser.h,result.h,codeconv.h,form.h,
 	message.h,re.h,search.h,variable.h,conf.h,type.h,wakati.h,enum.h,
 	output.h,usage.h}: New files.
+	* src/{re.c,usage.c,message.c,field.c}: New files.
 
 1999-08-25 NOKUBI Takatsugu <knok@daionet.gr.jp>
 

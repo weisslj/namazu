@@ -1,0 +1,113 @@
+#! @PERL@ -w
+# -*- Perl -*-
+#
+# $Id: gcnmz.pl.in,v 1.1 1999-12-19 04:19:57 satoru Exp $
+#
+# gcnmz.pl - by furukawa@tcp-ip.or.jp
+#
+
+push(@INC, '%LIBDIR%');
+require 'nmzidx.pl';
+
+my $backup = 1;
+
+while (@ARGV && $ARGV[0] =~ s/^\-//){
+    my $argv = shift;
+
+    &usage, exit if $argv eq '-help';
+    $backup = 0, next if $argv eq '-no-backup';
+
+    while ($argv =~ s/^(.)//){
+        $backup = 0 if $1 eq 'b';
+    }
+}
+
+if (@ARGV){
+    for my $argv (@ARGV){
+        $argv =~ s/NMZ$// unless -d $argv;
+        $argv = '.' if $argv eq '';
+        &gcnmz($argv, $backup) if -d $argv;
+    }
+}else{
+    &gcnmz('.', $backup);
+}
+
+sub gcnmz{
+    my $dir = shift;
+    my $backup = shift;
+    my %table = ();
+    my $nmzi = new nmzidx($dir);
+    defined($nmzi) or die("NMZ.lock2 found. Maybe this index is being updated by another process now.");
+
+    my $nmzo = new nmzidx($dir, 'w');
+    {
+        my $file_num = 0;
+        my %list;
+        my $nmzfi = $nmzi->open_flist;
+        my $nmzfo = $nmzo->open_flist;
+        while (defined $nmzfi->read(\%list)){
+            if ($list{'t'} != -1){
+                $table{$file_num} = $nmzfo->{'offset'};
+                $nmzfo->write(\%list);
+            }
+            ++$file_num;
+        }
+        $nmzfi->close;
+        $nmzfo->close;
+    }
+
+    {
+        my $word;
+        my %list_i;
+
+        my $nmzwi = $nmzi->open_word;
+        my $nmzwo = $nmzo->open_word;
+        while (defined $nmzwi->read(\$word, \%list_i)){
+            my %list_o;
+            for my $key (keys %list_i){
+                if (defined $table{$key}){
+                    $list_o{$table{$key}} = $list_i{$key};
+                }
+            }
+            $nmzwo->write($word, \%list_o);
+        }
+        $nmzwi->close;
+        $nmzwo->close;
+    }
+
+    {
+        my $nmzpi = $nmzi->open_phrase;
+        my $nmzpo = $nmzo->open_phrase;
+        for (my $x = 0; $x < 0x10000; $x++){
+            my @list_i;
+            my @list_o;
+            $nmzpi->read(\@list_i);
+            for my $key (@list_i){
+                if (defined $table{$key}){
+                    push(@list_o, $table{$key});
+                }
+            }
+            $nmzpo->write(\@list_o);
+        }
+        $nmzpi->close;
+        $nmzpo->close;
+    }
+
+    $nmzo->write_status($nmzi);
+    $nmzo->replace_db($backup);
+    if (my $log = $nmzo->log_open("[Garbage Collection]")){
+        $log->printf("Collected Entry: %d files\n", $nmzi->{'flist'}->{'offset'} - $nmzo->{'flist'}->{'offset'});
+        $log->printf("Total Files: %d files\n", $nmzo->{'flist'}->{'offset'});
+        $log->printf("Total Keywords: %d files\n", $nmzo->{'word'}->{'offset'});
+        $nmzo->log_close;
+    }
+    $nmzi->close;
+}
+
+sub usage{
+    print
+        ("Usage: gcnmz [options] <target(s)>\n" .
+         "  --help              show this help and exit.\n" .
+         "  -b, --no-backup     do not backup original file.\n"
+         );
+}

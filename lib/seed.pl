@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: hash.pl,v 1.2 1999-05-04 04:42:38 satoru Exp $
+# $Id: seed.pl,v 1.1 1999-08-28 09:40:03 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -21,14 +21,12 @@
 #
 #  This file must be encoded in EUC-JP encoding
 
-package hash;
-use strict;
+package seed;
 
-# Knuth先生の ``hash'' (UNIX MAGAZINE 1998 5月号) 用の乱数表
-# 0-65535までの数を使った要素数256の乱数表を 4つ使います。
-sub init_seed () {
-    return (
-	 [
+#
+# Dr. Knuth's ``hash'' (from UNIX MAGAZINE May, 1998)
+#
+@Seed =([
 	  3852, 26205, 51350, 2876, 47217, 47194, 55549, 43312, 
 	  63689, 40984, 62703, 10954, 13108, 60460, 41680, 32277, 
 	  51887, 28590, 17502, 57168, 37798, 27466, 13800, 12816, 
@@ -165,6 +163,4 @@ sub init_seed () {
 	  51770, 17655, 11744, 32966, 48622, 23162, 46352, 65423
 	  ]
 	    );
-}
-
 1;

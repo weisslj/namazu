@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.3 2000-01-31 06:24:07 satoru Exp $
+# $Id: mknmz.in,v 1.4 2000-02-05 04:23:22 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -1561,18 +1561,18 @@ sub put_log ($$$$) {
     my ($total_files_size, $start_time, $file_count, $total_keys_count) = @_;
 
     my $date = localtime;
-    my $added_files_count   = util::commas($file_count - $UpdatedFilesCount);
-    my $deleted_files_count = util::commas($DeletedFilesCount);
-    my $updated_files_count = util::commas($UpdatedFilesCount);
-    my $total_files_count   = util::commas(get_total_files() + $file_count 
-					   - $DeletedFilesCount - $UpdatedFilesCount);
+    my $added_files_count   = $file_count - $UpdatedFilesCount;
+    my $deleted_files_count = $DeletedFilesCount;
+    my $updated_files_count = $UpdatedFilesCount;
+    my $total_files_count   = get_total_files() + $file_count 
+			      - $DeletedFilesCount - $UpdatedFilesCount;
     my $added_keys_count    = 0;
-    $added_keys_count       = util::commas($total_keys_count - get_total_keys());
+    $added_keys_count       = $total_keys_count - get_total_keys();
 
     my $processtime         = time - $start_time;
     $processtime            = 0 if $start_time == 0;
-    $total_files_size        = util::commas($total_files_size);
-    $total_keys_count       = util::commas($total_keys_count);
+    $total_files_size       = $total_files_size;
+    $total_keys_count       = $total_keys_count;
 
     my @logmsgs = ();
     if ($APPENDMODE) {
@@ -1581,25 +1581,26 @@ sub put_log ($$$$) {
 	push @logmsgs, N_("[Base]");
     }
     push @logmsgs, N_("Date:"), "$date" if $date;
-    push @logmsgs, N_("Added Documents:"), "$added_files_count" 
+    push @logmsgs, N_("Added Documents:"), util::commas("$added_files_count")
 	if $added_files_count;
-    push @logmsgs, N_("Deleted Documents:"), "$deleted_files_count" 
-	if $deleted_files_count;
-    push @logmsgs, N_("Updated Documents:"), "$updated_files_count" 
-	if $updated_files_count;
-    push @logmsgs, N_("Size (bytes):"), "$total_files_size"
+    push @logmsgs, N_("Deleted Documents:"), 
+	util::commas("$deleted_files_count") if $deleted_files_count;
+    push @logmsgs, N_("Updated Documents:"), 
+	util::commas("$updated_files_count") if $updated_files_count;
+    push @logmsgs, N_("Size (bytes):"), util::commas("$total_files_size")
 	if $total_files_size;
-    push @logmsgs, N_("Total Documents:"), "$total_files_count" 
+    push @logmsgs, N_("Total Documents:"), util::commas("$total_files_count") 
 	if $total_files_count;
-    push @logmsgs, N_("Added Keywords:"), "$added_keys_count" 
+    push @logmsgs, N_("Added Keywords:"), util::commas("$added_keys_count") 
 	if $added_keys_count;
-    push @logmsgs, N_("Total Keywords:"), "$total_keys_count" 
+    push @logmsgs, N_("Total Keywords:"), util::commas("$total_keys_count") 
 	if $total_keys_count;
     push @logmsgs, N_("Wakati:"), "$conf::WAKATI" if $conf::WAKATI;
-    push @logmsgs, N_("Time (sec):"), "$processtime" if $processtime;
-    push @logmsgs, N_("File/Sec:"), 
-        (($added_files_count + $updated_files_count) / $processtime) 
-	    if $processtime;
+    push @logmsgs, N_("Time (sec):"), util::commas("$processtime")
+	if $processtime;
+    push @logmsgs, N_("File/Sec:"),  sprintf "%.2f", 
+    	(($added_files_count + $updated_files_count) / $processtime) 
+	if $processtime;
     push @logmsgs, N_("System:"), "$SYSTEM" if $SYSTEM;
     push @logmsgs, N_("Perl:"),   "$]" if $];   # '$]' has a perl version
     push @logmsgs, N_("Namazu:"), "$var::VERSION" if $var::VERSION;

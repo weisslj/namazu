@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2000-02-03 18:39+0900\n"
+"POT-Creation-Date: 2000-02-05 13:12+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -461,27 +461,27 @@ msgstr ""
 msgid "Time (sec):"
 msgstr ""
 
-#: scripts/mknmz.in:1600
+#: scripts/mknmz.in:1601
 msgid "File/Sec:"
 msgstr ""
 
-#: scripts/mknmz.in:1603
+#: scripts/mknmz.in:1604
 msgid "System:"
 msgstr ""
 
-#: scripts/mknmz.in:1604
+#: scripts/mknmz.in:1605
 msgid "Perl:"
 msgstr ""
 
-#: scripts/mknmz.in:1605
+#: scripts/mknmz.in:1606
 msgid "Namazu:"
 msgstr ""
 
-#: scripts/mknmz.in:1730
+#: scripts/mknmz.in:1731
 msgid "doing write_phrase_hash() processing.\n"
 msgstr ""
 
-#: scripts/mknmz.in:1957
+#: scripts/mknmz.in:1958
 msgid "doing write_index() processing.\n"
 msgstr ""
 

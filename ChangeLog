@@ -1,3 +1,7 @@
+2000-02-05  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* scripts/mknmz.in (put_log): Fix commas() causing bug.
+
 2000-02-04  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* scripts/Makefile.am: Remove #######+ bar.

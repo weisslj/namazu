@@ -1,3 +1,7 @@
+2003-08-13  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * filter/rtf.pl: Add addMagicEntry.
+
 2003-08-07  Makoto Fujiwara  <makoto@ki.nu>
  
 	* doc/{en,ja}/tutorial.html: File-MMagic-1.20 required
@@ -8126,4 +8130,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1051 2003-08-07 09:19:19 makoto Exp $
+$Id: ChangeLog,v 1.1052 2003-08-13 15:25:26 opengl2772 Exp $

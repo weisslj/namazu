@@ -1,6 +1,14 @@
 1999-09-03  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
-	* src/search.c: Don't re-sort if SortMethod == SORT_BY_DATE.
+	* src/mknmz.pl.in: Replace get_unpackw() with readw() which is
+	used in gcnmz.in by <furukawa@tcp-ip.or.jp>.
+	
+	* src/gcnmz.in: New gcnmz was contributed by <furukawa@tcp-ip.or.jp>.
+	
+	* src/hlist.c (prep_field_sort): Aply reverse_hlist() at first. 
+	
+	* src/search.c (search_main) : Don't re-sort if SortMethod ==
+	SORT_BY_DATE.
 
 	
 1999-09-02  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>

@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.56 1999-09-01 07:17:42 satoru Exp $
+# $Id: mknmz.pl.in,v 1.57 1999-09-03 00:55:32 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -1552,7 +1552,7 @@ sub write_phrase_hash_sub () {
 	    read($fh_phraseindex, $tmp, $var::INTSIZE);
 	    $tmp = unpack("N", $tmp);
 	    if ($tmp != 0xffffffff) { # 0xffffffff
-		$baseleng = get_unpackw($fh_phrase);
+		$baseleng = readw($fh_phrase);
 		read($fh_phrase, $baserecord, $baseleng);
 	    }
 	}
@@ -1725,26 +1725,18 @@ sub write_index () {
     return $key_count;
 }
 
-# this is very inefficient
-sub get_unpackw ($) {
-    my ($fh) = @_;
-
-    my $val = 0;
-    while (1) {
-	my $tmp = getc($fh);
-        util::cdie("fatal error occurred in get_unpackw\n") 
-	    unless defined $tmp;
-	$tmp = ord($tmp);
-
-	if ($tmp < 128) {
-	    $val += $tmp;
-	    return $val;
-	} else {
-	    $tmp &= 0x7f;
-	    $val += $tmp;
-	    $val <<= 7;
-	}
+# readw: read one pack 'w' word.
+# This code was contributed by <furukawa@tcp-ip.or.jp>.
+sub readw ($) {
+    my $fh = shift;
+    my $ret = '';
+    my $c;
+    
+    while (read($fh, $c, 1)){
+	$ret .= $c;
+	last unless 0x80 & ord $c;
     }
+    return unpack('w', $ret);
 }
 
 sub get_last_fid ($$) {
@@ -1794,7 +1786,7 @@ sub write_index_sub () {
 	    chop $line;
 	    my $current_word = $line;
 
-	    my $baseleng = get_unpackw($fh_i);
+	    my $baseleng = readw($fh_i);
 	    read($fh_i, $baserecord, $baseleng);
 
  	    for (; $cnt < @words; $cnt++) {

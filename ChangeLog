@@ -1,3 +1,7 @@
+2000-03-02  Ryuji Abe  <raeva@t3.rim.or.jp>
+
+	* configure.in (LTVERSION): Set 3:2:0.
+
 2000-03-02  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* scripts/mknmz.in (process_file): New file.

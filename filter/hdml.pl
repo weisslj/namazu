@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: hdml.pl,v 1.4 2000-11-17 06:43:43 knok Exp $
+# $Id: hdml.pl,v 1.5 2001-02-07 10:13:53 knok Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -58,9 +58,9 @@ sub filter ($$$$$) {
       = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
-    util::vprint("Processing html file ...\n");
+    util::vprint("Processing hdml file ...\n");
 
-    html_filter($cont, $weighted_str, $fields, $headings);
+    hdml($cont, $weighted_str, $fields, $headings);
     
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);
@@ -70,22 +70,22 @@ sub filter ($$$$$) {
     return undef;
 }
 
-sub html_filter ($$$$) {
+sub hdml ($$$$) {
     my ($contref, $weighted_str, $fields, $headings) = @_;
 
-    html::escape_lt_gt($contref);
-    $fields->{'title'} = html::get_title($contref, $weighted_str);
-    html::get_img_alt($contref);
-    html::get_title_attr($contref);
-    html::normalize_html_element($contref);
-    html::weight_element($contref, $weighted_str, $headings);
-    html::remove_html_elements($contref);
+    hdml::escape_lt_gt($contref);
+    $fields->{'title'} = hdml::get_title($contref, $weighted_str);
+    hdml::get_img_alt($contref);
+    hdml::get_title_attr($contref);
+    hdml::normalize_hdml_element($contref);
+    hdml::weight_element($contref, $weighted_str, $headings);
+    hdml::remove_hdml_elements($contref);
     # restore entities of each content.
-    html::decode_entity($contref);
-    html::decode_entity($weighted_str);
-    html::decode_entity($headings);
+    hdml::decode_entity($contref);
+    hdml::decode_entity($weighted_str);
+    hdml::decode_entity($headings);
     for my $key (keys %{$fields}) {
-	html::decode_entity(\$fields->{$key});
+	hdml::decode_entity(\$fields->{$key});
     }
 }
 
@@ -134,7 +134,7 @@ sub get_title_attr ($) {
 }
 
 # Normalize elements like: <A HREF...> -> <A>
-sub normalize_html_element ($) {
+sub normalize_hdml_element ($) {
     my ($contref) = @_;
 
     $$contref =~ s/<([!\w]+)\s+[^>]*>/<$1>/g;
@@ -178,7 +178,7 @@ sub element_space ($) {
 }
 
 # remove all HTML elements. it's not perfect but almost works.
-sub remove_html_elements ($) {
+sub remove_hdml_elements ($) {
     my ($contref) = @_;
 
     # remove all comments

@@ -1,3 +1,7 @@
+2001-02-07  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* filter/hdml.pl : Fixed bad name space (s/html/hdml).
+
 2001-02-05  Hideyuki SHIRAI  <shirai@rdmg.mgcs.mei.co.jp>
 
 	* doc/en/manual.html (rfnmz): Fixed usage.
@@ -6383,4 +6387,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.806 2001-02-05 12:18:58 shirai Exp $
+$Id: ChangeLog,v 1.807 2001-02-07 10:13:52 knok Exp $

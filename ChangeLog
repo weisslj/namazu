@@ -2,6 +2,7 @@
 
 	* doc/Makefile.am (css_DATA): New variable.
 	(cssdir): Likewise.
+	(EXTRA_DIST): Likewise.
 
 	* doc/ja/Makefile.am (EXTRA_DIST): Remove namazu.css.
 

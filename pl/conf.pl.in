@@ -31,15 +31,17 @@ $HTML_SUFFIX = 'html?|[ps]html|html\.[a-z]{2}|asp|cgi';
 # This pattern specifies file names which will be targeted.
 # NOTE: It can be specified by --allow=regex option.
 #       Do NOT use `$' or `^' anchors.
+#       Case-insensitive.
 #
-$ALLOW_REGEX = ".*\.(?:$HTML_SUFFIX)|.*\.txt|.*_default|.*\.pdf|.*\.doc|.*\.tex";
+$ALLOW_REGEX = ".*\.(?:$HTML_SUFFIX)|.*\.txt|.*\.pdf|.*\.doc|.*\.tex";
 
 #
 # This pattern specifies file names which will NOT be targeted.
 # NOTE: It can be specified by --deny=regex option.
 #       Do NOT use `$' or `^' anchors.
+#       Case-insensitive.
 #
-$DENY_REGEX = '.*\.gif|.*\.png|.*\.(jpg|jpeg)|.*\.tar\.gz|core|.*\.bak|.*~|\..*|\x23.*|NMZ\..*';
+$DENY_REGEX = '.*\.(gif|png|jpg|jpeg)|.*\.tar\.gz|core|.*\.bak|.*~|\..*|\x23.*|NMZ\..*';
 
 #
 # This pattern specifies PATHNAMEs which will NOT be targeted.

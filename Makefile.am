@@ -10,32 +10,26 @@ BUILT_TKNAMAZU =
 DIST_TKNAMAZU = tknamazu
 endif
 
-SUBDIRS = intl po conf filter nmz lib pl src lisp man scripts \
+SUBDIRS      = conf doc etc filter intl po nmz lib pl src lisp man scripts \
 	  template $(BUILT_TKNAMAZU)
 
-DIST_SUBDIRS = intl po conf filter nmz lib pl src lisp man scripts \
+DIST_SUBDIRS = conf doc etc filter intl po nmz lib pl src lisp man scripts \
 	  template $(BUILT_TKNAMAZU)
 
 
 bin_SCRIPTS = nmz-config
 
-EXTRA_DIST = README-ja INSTALL-ja namazu.spec.in namazu.spec \
-	     CREDITS ChangeLog.1 maintMakefile
+etcdir     = $(pkgdatadir)/etc
+etc_DATA   = README-ja INSTALL-ja namazu.spec.in namazu.spec \
+	     CREDITS ChangeLog.1 
 
-COMMON_DIRS = doc etc
-EXTRA_DIRS = $(COMMON_DIRS) $(DIST_TKNAMAZU) File-MMagic
+EXTRA_DIST = $(etc_DATA) maintMakefile
+
+
+EXTRA_DIRS = $(DIST_TKNAMAZU) File-MMagic
 
 install-data-local:
 	$(mkinstalldirs) $(localstatedir)/$(PACKAGE)/index
-	for subdir in $(COMMON_DIRS); do \
-	    cp -rp $(srcdir)/$$subdir $(pkgdatadir); \
-	    rm -rf $(pkgdatadir)/$$subdir/CVS; \
-	    rm -rf $(pkgdatadir)/$$subdir/*/CVS; \
-	    rm -f $(pkgdatadir)/$$subdir/Makefile*; \
-	done
-	cp ChangeLog COPYING NEWS README README-ja THANKS TODO \
-		$(pkgdatadir)/etc
-	rm -f $(pkgdatadir)/template/*.in
 
 dist-hook:
 	for subdir in $(EXTRA_DIRS); do \
@@ -46,14 +40,6 @@ dist-hook:
 	    rm -f $(distdir)/$$subdir/autogen.sh; \
 	    rm -rf $(distdir)/$$subdir/CVS; \
 	    rm -rf $(distdir)/$$subdir/*/CVS; \
-	done
-
-	for file in $(DISTCLEANFILES); do \
-	    rm -f $(distdir)/$$file; \
-	done
-
-	for dir in $(DISTCLEANDIRS); do \
-	    rm -rf $(distdir)/$$dir; \
 	done
 
 ##Bug in automake: Can't use `if MAINTAINER_MODE'

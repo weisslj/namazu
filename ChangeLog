@@ -1,5 +1,27 @@
 2000-02-16  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* Makefile.am (SUBDIRS): Add doc and etc.
+	(DIST_SUBDIRS): Likewise.
+	(etc_DATA): New variable.
+	(etcdir): Likewise.
+	(COMMON_DIRS): Abolished.
+	(dist-hook): Simplified.
+	(install-data-local): Likewise.
+
+	* configure.in (AC_OUTPUT): Add doc/Makefile, 
+	doc/ja/Makefile, doc/en/Makefile, etc/Makefile.
+
+	* doc/ja/Makefile.am: New file.
+
+	* doc/en/Makefile.am: New file.
+
+	* doc/Makefile.am: New file.
+
+	* etc/Makefile.am: New file.
+
+	* pl/conf.pl.in (ALLOW_REGEX): Remove ".*_default".
+	(DENY_REGEX): Remove "NMZ\..*".
+
 	* filter/mhonarc.pl (MHONARC_MESSAGE_FILE): Moved from conf.pl.in.
 
 	* pl/conf.pl.in (MHONARC_HEADER): Abolished.

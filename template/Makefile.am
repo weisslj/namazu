@@ -18,6 +18,7 @@ template_DATA = \
 	NMZ.tips \
 	NMZ.tips.ja
 
+# Slightly different from template_DATA because of *.in files.
 EXTRA_DIST = \
 	NMZ.body \
 	NMZ.body.ja \

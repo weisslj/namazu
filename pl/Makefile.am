@@ -16,7 +16,8 @@ perllib_DATA = \
 	var.pl \
 	wakati.pl
 
-EXTRA_DIST = \
+# Slightly different from perllib_DATA because of *.in files.
+EXTRA_DIST = $\
 	codeconv.pl \
 	conf.pl \
 	gettext.pl.in \

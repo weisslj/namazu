@@ -1,5 +1,5 @@
 # -*- Perl -*-
-# $Id: usage.pl,v 1.32 2004-04-27 12:15:32 opengl2772 Exp $
+# $Id: usage.pl,v 1.33 2004-12-27 15:52:05 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -56,6 +56,7 @@ Target files:
                            e.g., -50 for recent 50 days, +50 for older than 50.
 
 Morphological Analysis:
+  -b, --use-mecab          use MeCab for analyzing Japanese.
   -c, --use-chasen         use ChaSen for analyzing Japanese.
   -k, --use-kakasi         use KAKASI for analyzing Japanese.
   -m, --use-chasen-noun    use ChaSen for extracting only nouns.

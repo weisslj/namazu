@@ -1,0 +1,25 @@
+#! /bin/sh
+#
+# Test for symlink directory
+#
+
+LOG=`pwd`/test-log
+TARGET=`pwd`/data/symlink
+IDXDIR=idx14
+TXTCOUNT=`ls ./data/symlink/*.txt|wc -l`
+
+if test ! -d $IDXDIR; then
+    mkdir $IDXDIR
+else
+    rm -f $IDXDIR/NMZ.*
+fi
+
+if test ! -L $TARGET; then
+    ln -s `pwd`/data/en $TARGET
+fi
+
+cd ../scripts
+./mknmz --allow='.*.txt' -O ../tests/$IDXDIR $TARGET >> $LOG 2>&1
+RESULTCOUNT=`wc -l < ../tests/$IDXDIR/NMZ.field.uri`
+test $TXTCOUNT -eq $RESULTCOUNT
+exit $?

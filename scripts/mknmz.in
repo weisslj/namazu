@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.76 2000-10-05 04:58:19 knok Exp $
+# $Id: mknmz.in,v 1.77 2000-11-16 10:41:20 knok Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -36,6 +36,7 @@ use Time::Local;
 use strict;  # be strict since v1.2.0
 use Getopt::Long;
 use File::Copy;
+use DirHandle;
 
 use vars qw($SYSTEM $LANG);
 $SYSTEM = $^O;
@@ -1266,8 +1267,24 @@ sub find_target (@) {
 	if (-f $target) { # target is a file.
 	    add_target($target, \@flist, \%counts);
 	} elsif (-d $target) { # target is a directory.
-	    my $cwd = cwd();
-	    chdir $target;
+	    my @subtargets = ();
+	    # Find subdirectories in target directory
+	    # because File::Find::find() does not follow symlink.
+	    if (-l $target) {
+		my $dh = new DirHandle($target);
+		while (defined(my $ent = $dh->read)) {
+		    next if ($ent =~ /^\.{1,2}$/);
+		    my $fname = "$target/$ent";
+		    next if ($fname eq '.' || $fname eq '..');
+		    if (-d $fname) {
+			push(@subtargets, $fname);
+		    } else {
+			add_target($fname, \@flist, \%counts);
+		    }
+		}
+	    } else {
+		@subtargets = ($target);
+	    }
 
 	    #
 	    # Wanted routine for File::Find's find().
@@ -1277,8 +1294,7 @@ sub find_target (@) {
 		add_target($fname, \@flist, \%counts);
 	    };
 
-	    find($wanted_closure, cwd());
-	    chdir $cwd;
+	    find($wanted_closure, @subtargets);
 	} else {
 	    print STDERR _("unsupported target: ") . $target;
 	}

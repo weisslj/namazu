@@ -1,5 +1,5 @@
 /*
- * $Id: util.c,v 1.27 1999-12-09 22:57:17 satoru Exp $
+ * $Id: util.c,v 1.28 1999-12-12 13:18:14 rug Exp $
  *
  * Imported scan_hex(), scan_oct(), xmalloc(), xrealloc() from 
  * Ruby b19's"util.c" and "gc.c". Thanks to Matsumoto-san for consent!
@@ -160,17 +160,8 @@ void nmz_chomp(char * s)
 }
 
 
-void strlower(char *str)
-{
-    while (*str) {
-        *str = tolower(*str);
-        str++;
-    }
-}
-
-
 /* fread with endian consideration */
-size_t freadx(void *ptr, size_t size, size_t nmemb, FILE *stream)
+size_t nmz_fread(void *ptr, size_t size, size_t nmemb, FILE *stream)
 {
     size_t value;
 
@@ -220,16 +211,16 @@ int nmz_read_unpackw(FILE *fp, int *buf, int size) {
 }
 
 /* read index and return with value */
-long getidxptr(FILE * fp, long p)
+long nmz_getidxptr(FILE * fp, long p)
 {
     int val;
 
     fseek(fp, p * sizeof(int), 0);
-    freadx(&val, sizeof(int), 1, fp);
+    nmz_fread(&val, sizeof(int), 1, fp);
     return (long) val;
 }
 
-int issymbol(int c)
+int nmz_issymbol(int c)
 {
     if (c >= 0x00 && c < 0x80 && !isalnum(c)) {
         return 1;
@@ -337,7 +328,7 @@ void nmz_pathcat(char *base, char *name)
     strcpy(name, work);
 }
 
-int isnumstr(char *str)
+int nmz_isnumstr(char *str)
 {
     int i, nonnum = 0;
 
@@ -354,7 +345,7 @@ int isnumstr(char *str)
     return 1;
 }
 
-void commas(char *str)
+void nmz_commas(char *str)
 {
     int i, n;
     int leng = strlen(str);
@@ -371,11 +362,20 @@ void commas(char *str)
     }
 }
 
+
+void nmz_strlower(char *str)
+{
+    while (*str) {
+        *str = tolower(*str);
+        str++;
+    }
+}
+
 /* 
  * case-insensitive brute force search  
  * (with consideration for EUC encoding schemes)
  */
-char *strcasestr(char *haystack, char *needle)
+char *nmz_strcasestr(char *haystack, char *needle)
 {
     int n = strlen(needle);
     int euc_mode = 0;
@@ -396,7 +396,7 @@ char *strcasestr(char *haystack, char *needle)
 }
 
 
-int strprefixcasecmp(char *str1, char *str2)
+int nmz_strprefixcasecmp(char *str1, char *str2)
 {
     int leng1, leng2;
 
@@ -410,7 +410,7 @@ int strprefixcasecmp(char *str1, char *str2)
     }
 }
 
-int strprefixcmp(char *str1, char *str2)
+int nmz_strprefixcmp(char *str1, char *str2)
 {
     int leng1, leng2;
 
@@ -424,7 +424,7 @@ int strprefixcmp(char *str1, char *str2)
     }
 }
 
-int strsuffixcmp(char *str1, char *str2)
+int nmz_strsuffixcmp(char *str1, char *str2)
 {
     int leng1, leng2;
 
@@ -500,18 +500,15 @@ void nmz_cat(char *fname)
     nmz_warn_printf("can't open %s\n", fname);
 }
 
-char *safe_getenv(char *s)
+/* safe version of getenv.  */
+char *nmz_getenv(char *s)
 {
     char *cp;
     return (cp = getenv(s)) ? cp : "";
 }
 
-void print(char *s) {
-    fputs(s, stdout);
-}
-
 /* decoding URI encoded strings */
-void decode_uri(char * s)
+void nmz_decode_uri(char * s)
 {
     int i, j;
     for (i = j = 0; s[i]; i++, j++) {
@@ -570,13 +567,18 @@ char *nmz_get_errmsg(enum nmz_stat stat)
     return msg;
 }
 
+/* FIXME: Tell me if you know more better function name (or better way). */
+void nmz_fputs_stdout(char *s) {
+    fputs(s, stdout);
+}
+
 
 /*
  * The following functions are commented as a reminder.
  */
 
 /*
- * void delete_backslashes(char *str)
+ * void nmz_delete_backslashes(char *str)
  * {
  *     char *pos = str;
  * 
@@ -599,7 +601,7 @@ char *nmz_get_errmsg(enum nmz_stat stat)
  */
 
 /*
- * int strsuffixcasecmp(char *str1, char *str2)
+ * int nmz_strsuffixcasecmp(char *str1, char *str2)
  * {
  *     int leng1, leng2;
  * 

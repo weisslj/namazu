@@ -1,6 +1,6 @@
 /*
  * i18n.c -
- * $Id: i18n.c,v 1.7 1999-12-09 08:12:26 satoru Exp $
+ * $Id: i18n.c,v 1.8 1999-12-12 13:18:14 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -51,7 +51,7 @@ int is_lang_ja(void)
     if (strcmp(Lang, "ja")) {
 	return 1;
     } 
-    if (strprefixcmp(Lang, "ja_JP")) {
+    if (nmz_strprefixcmp(Lang, "ja_JP")) {
 	return 1;
     } 
     return 0;

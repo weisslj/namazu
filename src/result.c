@@ -1,6 +1,6 @@
 /*
  * result.c -
- * $Id: result.c,v 1.30 1999-12-09 08:33:50 satoru Exp $
+ * $Id: result.c,v 1.31 1999-12-12 13:18:17 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -61,10 +61,10 @@ static void replace_field(struct nmz_data d, int counter,
 
     if (strcmp(field, "namazu::score") == 0) {
 	sprintf(buf, "%d", d.score);
-	commas(buf);
+	nmz_commas(buf);
     } else if (strcmp(field, "namazu::counter") == 0) {
 	sprintf(buf, "%d", counter);
-	commas(buf);
+	nmz_commas(buf);
     } else {
 	get_field_data(d.idxid, d.docid, field, buf);
 	if (strcasecmp(field, "uri") == 0) {
@@ -72,7 +72,7 @@ static void replace_field(struct nmz_data d, int counter,
 		replace_uri(buf);
 	    }
 	    if (is_uridecode()) {
-		decode_uri(buf);
+		nmz_decode_uri(buf);
 	    }
 	}
     }
@@ -85,8 +85,8 @@ static void replace_field(struct nmz_data d, int counter,
     encode_entity(buf);
 
     /* Insert commas if the buf is a numeric string */
-    if (isnumstr(buf)) {
-	commas(buf);
+    if (nmz_isnumstr(buf)) {
+	nmz_commas(buf);
     }
 
     strcat(result, buf);
@@ -138,7 +138,7 @@ static void emphasize(char *str)
 	keylen = strlen(key);
 
 	do {
-	    ptr = strcasestr(ptr, key);
+	    ptr = nmz_strcasestr(ptr, key);
 	    if (ptr != NULL) {
 		memmove(ptr + 2, ptr, strlen(ptr) + 1);
 		memmove(ptr + 1, ptr + 2, keylen);

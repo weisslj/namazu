@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.32 1999-12-09 10:41:54 satoru Exp $
+ * $Id: search.c,v 1.33 1999-12-12 13:18:14 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -143,12 +143,12 @@ static void show_status(int l, int r)
 {
     char buf[BUFSIZE];
 
-    fseek(Nmz.w, getidxptr(Nmz.wi, l), 0);
+    fseek(Nmz.w, nmz_getidxptr(Nmz.wi, l), 0);
     fgets(buf, BUFSIZE, Nmz.w);
     nmz_chomp(buf);
 
     nmz_debug_printf("l:%d: %s", l, buf);
-    fseek(Nmz.w, getidxptr(Nmz.wi, r), 0);
+    fseek(Nmz.w, nmz_getidxptr(Nmz.wi, r), 0);
     fgets(buf, BUFSIZE, Nmz.w);
     nmz_chomp(buf);
 
@@ -190,7 +190,7 @@ static NmzResult prefix_match(char * orig_key, int v)
     n = strlen(key);
 
     for (i = v; i >= 0; i--) {
-	fseek(Nmz.w, getidxptr(Nmz.wi, i), 0);
+	fseek(Nmz.w, nmz_getidxptr(Nmz.wi, i), 0);
 	fgets(buf, BUFSIZE, Nmz.w);
 	if (strncmp(key, buf, n) != 0) {
 	    break;
@@ -208,7 +208,7 @@ static NmzResult prefix_match(char * orig_key, int v)
 	    val.stat = ERR_TOO_MUCH_MATCH;
 	    break;
 	}
-	if (-1 == fseek(Nmz.w, getidxptr(Nmz.wi, i), 0)) {
+	if (-1 == fseek(Nmz.w, nmz_getidxptr(Nmz.wi, i), 0)) {
 	    break;
 	}
 	fgets(buf, BUFSIZE, Nmz.w);
@@ -329,7 +329,7 @@ static int hash(char *str)
     uchar *ustr = (uchar *)str;  /* for 8 bit chars handling */
 
     for (i = j = 0; *ustr; i++) {
-        if (!issymbol(*ustr)) { /* except symbol */
+        if (!nmz_issymbol(*ustr)) { /* except symbol */
             hash ^= nmz_seed[j & 0x3][*ustr];
             j++;
         }
@@ -348,7 +348,7 @@ static NmzResult cmp_phrase_hash(int hash_key, NmzResult val,
     if (val.num == 0) {
         return val;
     }
-    ptr = getidxptr(phrase_index, hash_key);
+    ptr = nmz_getidxptr(phrase_index, hash_key);
     if (ptr <= 0) {
 	free_hlist(val);
         val.num = 0;
@@ -614,7 +614,7 @@ static int check_lockfile(void)
 
     if ((lock = fopen(NMZ.lock, "rb"))) {
 	fclose(lock);
-        print("(now be in system maintenance)");
+        nmz_fputs_stdout("(now be in system maintenance)");
         return 1;
     }
     return 0;
@@ -632,27 +632,27 @@ static enum nmz_perm parse_access(char *line, char *rhost, char *raddr)
 	/* Ignore blank line or comment line */
         return perm;
     }
-    if (strprefixcasecmp(line, "allow") == 0) {
+    if (nmz_strprefixcasecmp(line, "allow") == 0) {
 	line += strlen("allow");
 	line += strspn(line, " \t");
 	if (strcasecmp(line, "all") == 0) {
 	    perm = ALLOW;
-	} else if (*raddr != '\0' && strprefixcmp(line, raddr) == 0) {
+	} else if (*raddr != '\0' && nmz_strprefixcmp(line, raddr) == 0) {
 	    /* IP Address : forward match */
 	    perm = ALLOW;
-	} else if (*rhost != '\0' && strsuffixcmp(line, rhost) == 0) {
+	} else if (*rhost != '\0' && nmz_strsuffixcmp(line, rhost) == 0) {
 	    /* Hostname : backword match */
 	    perm = ALLOW;
 	}
-    } else if (strprefixcasecmp(line, "deny") == 0) {
+    } else if (nmz_strprefixcasecmp(line, "deny") == 0) {
 	line += strlen("deny");
 	line += strspn(line, " \t");
 	if (strcasecmp(line, "all") == 0) {
 	    perm = DENY;
-	} else if (*raddr != '\0' && strprefixcmp(line, raddr) == 0) {
+	} else if (*raddr != '\0' && nmz_strprefixcmp(line, raddr) == 0) {
 	    /* IP Address : forward match */
 	    perm = DENY;
-	} else if (*rhost != '\0' && strsuffixcmp(line, rhost) == 0) {
+	} else if (*rhost != '\0' && nmz_strsuffixcmp(line, rhost) == 0) {
 	    /* Hostname : backword match */
 	    perm = DENY;
 	}
@@ -667,8 +667,8 @@ static enum nmz_perm check_access(void)
     FILE *fp;
     enum nmz_perm perm = ALLOW;
     
-    rhost = safe_getenv("REMOTE_HOST");
-    raddr = safe_getenv("REMOTE_ADDR");
+    rhost = nmz_getenv("REMOTE_HOST");
+    raddr = nmz_getenv("REMOTE_ADDR");
 
     if (*rhost == '\0' && *raddr == '\0') { /* not from remote */
 	return perm;
@@ -740,9 +740,9 @@ static void do_logging(char * query, int n)
 	nmz_warn_printf("%s: Permission denied\n", NMZ.slog);
 	return;
     }
-    rhost = safe_getenv("REMOTE_HOST");
+    rhost = nmz_getenv("REMOTE_HOST");
     if (*rhost == '\0') {
-	rhost = safe_getenv("REMOTE_ADDR");
+	rhost = nmz_getenv("REMOTE_ADDR");
     }
     if (*rhost == '\0')
 	rhost = "LOCALHOST";
@@ -836,7 +836,7 @@ int binsearch(char *orig_key, int prefix_match_mode)
 	x = (l + r) / 2;
 
 	/* over BUFSIZE (maybe 1024) size keyword is nuisance */
-	fseek(Nmz.w, getidxptr(Nmz.wi, x), 0);
+	fseek(Nmz.w, nmz_getidxptr(Nmz.wi, x), 0);
 	fgets(term, BUFSIZE, Nmz.w);
 	nmz_chomp(term);
 
@@ -961,7 +961,7 @@ NmzResult do_search(char *orig_key, NmzResult val)
     char key[BUFSIZE];
 
     strcpy(key, orig_key);
-    strlower(key);
+    nmz_strlower(key);
     mode = detect_search_mode(key);
     if (mode == ERROR_MODE) {
 	val.stat = ERR_FATAL;

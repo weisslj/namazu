@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.66 1999-12-10 00:01:32 satoru Exp $
+ * $Id: namazu.c,v 1.67 1999-12-12 13:18:17 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -180,7 +180,7 @@ static int parse_options(int argc, char **argv)
 		set_sortmethod(SORT_BY_SCORE);
 	    } else if (strcasecmp(optarg, "date") == 0) {
 		set_sortmethod(SORT_BY_DATE);
-	    } else if (strprefixcasecmp(optarg, "field:") == 0) {
+	    } else if (nmz_strprefixcasecmp(optarg, "field:") == 0) {
 		set_sortmethod(SORT_BY_FIELD);
 		set_sortfield(optarg + strlen("field:"));
 	    }

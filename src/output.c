@@ -205,7 +205,7 @@ static void print_hitnum_each (struct nmz_hitnum *hn)
         if (is_refprint() && !is_countmode() && !is_listmode() && 
 	    !is_quietmode())
 	{
-	    print(" { ");
+	    nmz_fputs_stdout(" { ");
 	}
     }
 
@@ -217,15 +217,15 @@ static void print_hitnum_each (struct nmz_hitnum *hn)
 	    strcpy(tmp_word, hnptr->word);
 	    conv_ext(tmp_word);
 
-	    print(" [ ");
-	    print(tmp_word);
+	    nmz_fputs_stdout(" [ ");
+	    nmz_fputs_stdout(tmp_word);
 	    if (hnptr->stat == SUCCESS) {
 		printf(": %d", hnptr->hitnum);
 	    } else {
 		char *errmsg = nmz_get_errmsg(hnptr->stat);
 		printf(" (%s) ", errmsg);
 	    }
-	    print(" ] ");
+	    nmz_fputs_stdout(" ] ");
 	    hnptr = hnptr->next;
 	} while (hn->phrase && hnptr != NULL);
     }
@@ -315,7 +315,7 @@ static void print_hlist(NmzResult hlist)
 		       templates[hlist.data[i].idxid],  result);
 	conv_ext(result);
 	html_print(result);
-	print("\n");
+	nmz_fputs_stdout("\n");
     }
 
     /* free all templates[] */
@@ -333,7 +333,7 @@ static void print_query(char * qs, int w)
 {
     int foo = 0;
     while (*qs) {
-	if (strprefixcmp(qs, "whence=") == 0) {
+	if (nmz_strprefixcmp(qs, "whence=") == 0) {
 	    foo = 1;
 	    printf("whence=%d", w);
 	    for (qs += strlen("whence="); isdigit(*qs); qs++);
@@ -353,8 +353,8 @@ static void print_page_index(int n)
     char *qs; /* QUERY_STRING */
     char *sn; /* SCRIPT_NAME  */
 
-    qs = safe_getenv("QUERY_STRING");
-    sn = safe_getenv("SCRIPT_NAME");
+    qs = nmz_getenv("QUERY_STRING");
+    sn = nmz_getenv("SCRIPT_NAME");
 
     html_print(_("	<strong>Page:</strong> "));
 
@@ -365,21 +365,21 @@ static void print_page_index(int n)
 	    break;
 	if (is_htmlmode()) {
 	    if (i * max != whence) {
-		print("<a href=\"");
+		nmz_fputs_stdout("<a href=\"");
 		fputs(sn, stdout);
 		fputc('?', stdout);
 		print_query(qs, i * max);
-		print("\">");
+		nmz_fputs_stdout("\">");
 	    } else {
-		print("<strong>");
+		nmz_fputs_stdout("<strong>");
 	    }
 	}
 	printf("[%d]", i + 1);
 	if (is_htmlmode()) {
 	    if (i * max != whence) {
-		print("</A> ");
+		nmz_fputs_stdout("</A> ");
 	    } else
-		print("</strong> ");
+		nmz_fputs_stdout("</strong> ");
 	}
 	if (is_allresult()) {
 	    break;
@@ -396,18 +396,18 @@ static void print_current_range(int listmax)
     whence = get_listwhence();
 
     if (is_htmlmode()) {
-	print("<strong>");
+	nmz_fputs_stdout("<strong>");
     }
     printf(_("Current List: %d"), whence + 1);
 
-    print(" - ");
+    nmz_fputs_stdout(" - ");
     if (!is_allresult() && ((whence + max) < listmax)) {
 	printf("%d", whence + max);
     } else {
 	printf("%d", listmax);
     }
     if (is_htmlmode()) {
-	print("</strong><br>\n");
+	nmz_fputs_stdout("</strong><br>\n");
     } else {
 	fputc('\n', stdout);
     }
@@ -442,7 +442,7 @@ static void print_hitnum_all_idx(void)
 	    if (Idx.num > 1 && Query.tab[1]) {
 	        printf(_(" [ TOTAL: %d ]"), Idx.total[i]);
 	    }
-	    print("\n");
+	    nmz_fputs_stdout("\n");
 	}
     }
 }
@@ -462,13 +462,13 @@ static void print_hitnum(int n)
 static void print_listing(NmzResult hlist)
 {
     if (is_htmlmode()) {
-        print("<dl>\n");
+        nmz_fputs_stdout("<dl>\n");
     }
     
     print_hlist(hlist);
     
     if (is_htmlmode()) {
-        print("</dl>\n");
+        nmz_fputs_stdout("</dl>\n");
     }
 }
 
@@ -484,15 +484,15 @@ static void print_msgfile(char *fname) {
 static void print_range(NmzResult hlist)
 {
     if (is_htmlmode())
-        print("<p>\n");
+        nmz_fputs_stdout("<p>\n");
     print_current_range(hlist.num);
     if (is_pageindex()) {
         print_page_index(hlist.num);
     }
     if (is_htmlmode()) {
-        print("</p>\n");
+        nmz_fputs_stdout("</p>\n");
     } else {
-        print("\n");
+        nmz_fputs_stdout("\n");
     }
 }
 
@@ -506,7 +506,7 @@ enum nmz_stat print_result(NmzResult hlist, char *query, char *subquery)
 {
 
     if (is_htmlmode() && is_cgimode()) {
-	print(MSG_MIME_HEADER);
+	nmz_fputs_stdout(MSG_MIME_HEADER);
     }
 
     if (is_htmlmode()) {
@@ -533,15 +533,15 @@ enum nmz_stat print_result(NmzResult hlist, char *query, char *subquery)
 	} else {
 	    fputc('\n', stdout);
 	}
-	print(_("References: "));
+	nmz_fputs_stdout(_("References: "));
 	if (Idx.num > 1 && is_htmlmode()) {
 	    fputs("</p>\n", stdout);
 	}
 
         if (Idx.num > 1) {
-            print("\n");
+            nmz_fputs_stdout("\n");
             if (is_htmlmode())
-                print("<ul>\n");
+                nmz_fputs_stdout("<ul>\n");
         }
     }
 
@@ -550,10 +550,10 @@ enum nmz_stat print_result(NmzResult hlist, char *query, char *subquery)
     if (is_refprint() && !is_countmode() && 
 	!is_listmode() && !is_quietmode()) {
         if (Idx.num > 1 && is_htmlmode()) {
-            print("</ul>\n");
+            nmz_fputs_stdout("</ul>\n");
         }
 	if (Idx.num == 1 && is_htmlmode()) {
-	    print("\n</p>\n");
+	    nmz_fputs_stdout("\n</p>\n");
 	} else {
 	    fputc('\n', stdout);
 	}
@@ -573,7 +573,7 @@ enum nmz_stat print_result(NmzResult hlist, char *query, char *subquery)
         }
     } else {
         if (is_countmode()) {
-            print("0\n");
+            nmz_fputs_stdout("0\n");
         } else if (!is_listmode()) {
             html_print(_("	<p>No document matching your query.</p>\n"));
 	    if (is_htmlmode()) {
@@ -592,7 +592,7 @@ enum nmz_stat print_result(NmzResult hlist, char *query, char *subquery)
 /* Print default page: NMZ.{head,body,foot} */
 void print_default_page (void) {
     if (is_htmlmode()) {
-	print(MSG_MIME_HEADER);
+	nmz_fputs_stdout(MSG_MIME_HEADER);
 	print_headfoot(NMZ.head, "", "");
 	print_msgfile(NMZ.body);
 	print_headfoot(NMZ.foot, "", "");

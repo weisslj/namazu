@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.38 1999-12-10 00:01:32 satoru Exp $
+ * $Id: cgi.c,v 1.39 1999-12-12 13:18:16 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -106,19 +106,19 @@ static int validate_idxname(char * idxname)
 #endif
 
     if (*idxname == '\0' || *idxname == '/' || (win32 && *idxname == '\\')) {
-        print(MSG_MIME_HEADER);
+        nmz_fputs_stdout(MSG_MIME_HEADER);
 	printf("%s : ", idxname);
-        print(_("Invalid idxname."));
+        nmz_fputs_stdout(_("Invalid idxname."));
         exit(EXIT_FAILURE);
     }
     while (*idxname) {
-        if (strprefixcasecmp("../", idxname) == 0 ||
+        if (nmz_strprefixcasecmp("../", idxname) == 0 ||
 	    strcmp("..", idxname) == 0 ||
-            (win32 && strprefixcasecmp("..\\", idxname) == 0)) 
+            (win32 && nmz_strprefixcasecmp("..\\", idxname) == 0)) 
         {
-            print(MSG_MIME_HEADER);
+            nmz_fputs_stdout(MSG_MIME_HEADER);
 	    printf("%s : ", idxname);
-            print(_("Invalid idxname."));
+            nmz_fputs_stdout(_("Invalid idxname."));
             exit(EXIT_FAILURE);
         }
 	/* Skip until next '/' */
@@ -249,7 +249,7 @@ static struct cgivar *get_cgi_vars(char *qs)
 	len = tmp - qs;
 	strncpy(value, qs, len);
 	*(value + len) = '\0';
-	decode_uri(value);
+	nmz_decode_uri(value);
 	qs += len;
 
 	cv = add_cgivar(cv, name, value);
@@ -305,17 +305,17 @@ static int apply_cgifunc(struct cgivar *cv, struct cgiarg *ca)
 static void process_cgi_var_query(char *value, struct cgiarg *ca)
 {
     if (strlen(value) > QUERY_MAX) {
-	print(MSG_MIME_HEADER);
+	nmz_fputs_stdout(MSG_MIME_HEADER);
 	html_print(_(MSG_TOO_LONG_QUERY));
 	exit(EXIT_FAILURE);
     }
 #ifdef MSIE4MACFIX
 #define MSIE4MAC "Mozilla/4.0 (compatible; MSIE 4.01; Mac"
 
-    if (strprefixcasecmp(value, "%1B") == 0) {
+    if (nmz_strprefixcasecmp(value, "%1B") == 0) {
 	char *agent = getenv("HTTP_USER_AGENT");
-	if (agent && strprefixcasecmp(agent, MSIE4MAC) == 0) {
-	    decode_uri(value);
+	if (agent && nmz_strprefixcasecmp(agent, MSIE4MAC) == 0) {
+	    nmz_decode_uri(value);
 	}
     }
 #endif /* MSIE4MACFIX */
@@ -326,17 +326,17 @@ static void process_cgi_var_query(char *value, struct cgiarg *ca)
 static void process_cgi_var_subquery(char *value, struct cgiarg *ca)
 {
     if (strlen(value) > QUERY_MAX) {
-	print(MSG_MIME_HEADER);
+	nmz_fputs_stdout(MSG_MIME_HEADER);
 	html_print(_(MSG_TOO_LONG_QUERY));
 	exit(EXIT_FAILURE);
     }
 #ifdef MSIE4MACFIX
 #define MSIE4MAC "Mozilla/4.0 (compatible; MSIE 4.01; Mac"
 
-    if (strprefixcasecmp(value, "%1B") == 0) {
+    if (nmz_strprefixcasecmp(value, "%1B") == 0) {
 	char *agent = getenv("HTTP_USER_AGENT");
-	if (agent && strprefixcasecmp(agent, MSIE4MAC) == 0) {
-	    decode_uri(value);
+	if (agent && nmz_strprefixcasecmp(agent, MSIE4MAC) == 0) {
+	    nmz_decode_uri(value);
 	}
     }
 #endif /* MSIE4MACFIX */
@@ -356,22 +356,22 @@ static void process_cgi_var_format(char *value, struct cgiarg *ca)
 
 static void process_cgi_var_sort(char *value, struct cgiarg *ca)
 {
-    if (strprefixcasecmp(value, "score") == 0) {
+    if (nmz_strprefixcasecmp(value, "score") == 0) {
 	set_sortmethod(SORT_BY_SCORE);
 	set_sortorder(DESCENDING);
-    } if (strprefixcasecmp(value, "later") == 0) {  /* backward compat. */
+    } if (nmz_strprefixcasecmp(value, "later") == 0) {  /* backward compat. */
 	set_sortmethod(SORT_BY_DATE);
 	set_sortorder(DESCENDING);
-    } if (strprefixcasecmp(value, "earlier") == 0) { /* backward compat. */
+    } if (nmz_strprefixcasecmp(value, "earlier") == 0) { /* backward compat. */
 	set_sortmethod(SORT_BY_DATE);
 	set_sortorder(ASCENDING);
-    } else if (strprefixcasecmp(value, "date:late") == 0) {
+    } else if (nmz_strprefixcasecmp(value, "date:late") == 0) {
 	set_sortmethod(SORT_BY_DATE);
 	set_sortorder(DESCENDING);
-    } else if (strprefixcasecmp(value, "date:early") == 0) {
+    } else if (nmz_strprefixcasecmp(value, "date:early") == 0) {
 	set_sortmethod(SORT_BY_DATE);
 	set_sortorder(ASCENDING);
-    } else if (strprefixcasecmp(value, "field:") == 0) {
+    } else if (nmz_strprefixcasecmp(value, "field:") == 0) {
 	int n;
 	char field[BUFSIZE];
 
@@ -383,10 +383,10 @@ static void process_cgi_var_sort(char *value, struct cgiarg *ca)
 
 	value += n;
 	set_sortmethod(SORT_BY_FIELD);
-	if (strprefixcasecmp(value, ":ascending") == 0) {
+	if (nmz_strprefixcasecmp(value, ":ascending") == 0) {
 	    set_sortorder(ASCENDING);
 	    value += strlen(":ascending");
-	} else if (strprefixcasecmp(value, ":descending") == 0) {
+	} else if (nmz_strprefixcasecmp(value, ":descending") == 0) {
 	    set_sortorder(DESCENDING);
 	    value += strlen(":descending");
 	}

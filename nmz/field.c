@@ -145,7 +145,7 @@ void get_field_data(int idxid, int docid, char *orig_field, char *data)
        BUFSIZE (1024) because its length is restricted at 
        put_field_index() in mknmz.
      */
-    fseek(fp_field, getidxptr(fp_field_idx, docid), 0);
+    fseek(fp_field, nmz_getidxptr(fp_field_idx, docid), 0);
     fgets(data, BUFSIZE, fp_field);
     nmz_chomp(data);
 

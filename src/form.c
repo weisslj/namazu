@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.26 1999-12-10 00:01:32 satoru Exp $
+ * $Id: form.c,v 1.27 1999-12-12 13:18:17 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -95,10 +95,10 @@ static int replace_query_value(char *p, char *query)
     if (cmp_element(p, (char *)"input type=\"text\" name=\"query\"") == 0) {
         for (; *p; p++)
             fputc(*p, stdout);
-        print(" value=\"");
+        nmz_fputs_stdout(" value=\"");
 	conv_ext(tmp_query);
-        print(tmp_query); 
-        print("\"");
+        nmz_fputs_stdout(tmp_query); 
+        nmz_fputs_stdout("\"");
         return 0;
     }
     return 1;
@@ -124,7 +124,7 @@ static void get_value(char *s, char *v)
 {
     *v = '\0';
     for (; *s; s++) {
-        if (strprefixcasecmp(s, "value=\"") == 0) {
+        if (nmz_strprefixcasecmp(s, "value=\"") == 0) {
             for (s += strlen("value=\""); *s && *s != '"'; s++, v++) 
 	    {
                 *v = *s;
@@ -177,7 +177,7 @@ static int select_option(char *s, char *name, char *subquery)
 		       get_sortmethod() == SORT_BY_SCORE) 
 	    {
                 fputs(" selected", stdout);
-            } else if ((strprefixcasecmp(value, "field:") == 0) && 
+            } else if ((nmz_strprefixcasecmp(value, "field:") == 0) && 
 		       get_sortmethod() == SORT_BY_FIELD) 
 	    {
 		char *p;
@@ -190,9 +190,9 @@ static int select_option(char *s, char *name, char *subquery)
 		field[n] = '\0'; /* Hey, don't forget this after strncpy()! */
 		p += n;
 
-		if (strprefixcasecmp(p, ":ascending") == 0) {
+		if (nmz_strprefixcasecmp(p, ":ascending") == 0) {
 		    order = ASCENDING;
-		} else if (strprefixcasecmp(p, ":descending") == 0) {
+		} else if (nmz_strprefixcasecmp(p, ":descending") == 0) {
 		    order = DESCENDING;
 		}
 
@@ -208,7 +208,7 @@ static int select_option(char *s, char *name, char *subquery)
                 fputs(" selected", stdout);
             }
         } else if (strcasecmp(name, "idxname") == 0) {
-            if (*Idx.names[0] && strsuffixcmp(value, Idx.names[0]) == 0) {
+            if (*Idx.names[0] && nmz_strsuffixcmp(value, Idx.names[0]) == 0) {
                 fputs(" selected", stdout);
             }
         } else if (strcasecmp(name, "subquery") == 0) {
@@ -258,7 +258,7 @@ static int check_checkbox(char *s)
             }
         }
         if (db_count == searched) {
-            print(" checked");
+            nmz_fputs_stdout(" checked");
         }
         return 0;
     }
@@ -345,34 +345,34 @@ void print_headfoot(char * fname, char * query, char *subquery)
     }
 
     for (p = buf, f = f2 = 0; *p; p++) {
-        if (BASE_URI[0] && (strprefixcasecmp(p, "\n</head>") == 0)) {
+        if (BASE_URI[0] && (nmz_strprefixcasecmp(p, "\n</head>") == 0)) {
             printf("\n<base href=\"%s\">", BASE_URI);
         }
 
         if (f == 0 && *p == '<') {
-            if (strprefixcasecmp(p, "</title>") == 0) {
+            if (nmz_strprefixcasecmp(p, "</title>") == 0) {
 		if (*query != '\0') {
 		    char tmp_query[BUFSIZE];
 		    strcpy(tmp_query, query);
 		    conv_ext(tmp_query);
 
-		    print(": &lt;");
-		    print(tmp_query);
-		    print("&gt;");
+		    nmz_fputs_stdout(": &lt;");
+		    nmz_fputs_stdout(tmp_query);
+		    nmz_fputs_stdout("&gt;");
 		}
-		print("</title>\n");
+		nmz_fputs_stdout("</title>\n");
                 p = (char *)strchr(p, '>');
                 continue;
             }
 
             if (!is_formprint() && 
-		(strprefixcasecmp(p, "<form ") == 0)) 
+		(nmz_strprefixcasecmp(p, "<form ") == 0)) 
 	    {
 		f2 = 1;
 	    }
 
             if (!is_formprint() && 
-		(strprefixcasecmp(p, "</form>") == 0)) 
+		(nmz_strprefixcasecmp(p, "</form>") == 0)) 
             {
 		f2 = 0; 
 		p += 6; continue;

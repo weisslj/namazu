@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.21 1999-12-10 00:01:30 satoru Exp $
+ * $Id: hlist.c,v 1.22 1999-12-12 13:18:14 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -89,7 +89,7 @@ static int field_sort(NmzResult hlist)
 	nmz_chomp(buf);
 	leng = strlen(buf);
 
-	if (numeric == 1 && ! isnumstr(buf)) {
+	if (numeric == 1 && ! nmz_isnumstr(buf)) {
 	    numeric = 0;
 	}
 
@@ -447,7 +447,7 @@ NmzResult do_date_processing(NmzResult hlist)
 	    hlist.stat = ERR_FATAL;
             return hlist; /* error */
         }
-        freadx(&hlist.data[i].date, sizeof(hlist.data[i].date), 1, date_index);
+        nmz_fread(&hlist.data[i].date, sizeof(hlist.data[i].date), 1, date_index);
 
         if (hlist.data[i].date == -1) {  
             /* the missing number, this document has been deleted */
@@ -474,7 +474,7 @@ NmzResult get_hlist(int index)
     hlist.num  = 0;
     hlist.stat = SUCCESS;
 
-    if (-1 == fseek(Nmz.i, getidxptr(Nmz.ii, index), 0)) {
+    if (-1 == fseek(Nmz.i, nmz_getidxptr(Nmz.ii, index), 0)) {
 	hlist.stat = ERR_FATAL;
 	return hlist; /* error */
     }

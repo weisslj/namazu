@@ -2,7 +2,7 @@
  * 
  * re.c -
  * 
- * $Id: re.c,v 1.16 1999-12-09 09:10:53 satoru Exp $
+ * $Id: re.c,v 1.17 1999-12-12 13:18:14 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -96,7 +96,7 @@ NmzResult regex_grep(char *orig_expr, FILE *fp, char *field, int field_mode)
         if (uri_mode) {  /* consider the REPLACE directive in namazurc */ 
             replace_uri(buf);
         }
-        strlower(buf);
+        nmz_strlower(buf);
         if (-1 != re_search(rp, buf, strlen(buf), 0, strlen(buf), 0)) { 
            /* matched */
             n++;
@@ -144,7 +144,7 @@ NmzResult regex_grep(char *orig_expr, FILE *fp, char *field, int field_mode)
                     nmz_debug_printf("field: [%d]<%s> id: %d\n", 
                             val.num, buf, i);
                 } else {
-                    fseek(Nmz.w, getidxptr(Nmz.wi, i), 0);
+                    fseek(Nmz.w, nmz_getidxptr(Nmz.wi, i), 0);
                     fgets(buf2, BUFSIZE, Nmz.w);
                     nmz_chomp(buf2);
                     nmz_debug_printf("re: %s, (%d:%s), %d, %d\n", 

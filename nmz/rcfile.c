@@ -2,7 +2,7 @@
  * 
  * conf.c -
  * 
- * $Id: rcfile.c,v 1.3 1999-12-09 02:30:55 satoru Exp $
+ * $Id: rcfile.c,v 1.4 1999-12-12 13:18:14 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -182,7 +182,7 @@ static void replace_home(char *str)
     char tmp[BUFSIZE];
 
     strcpy(tmp, str);
-    if (strprefixcmp(tmp, "~/") == 0) {
+    if (nmz_strprefixcmp(tmp, "~/") == 0) {
 	char *home;
 	/* checke a home directory */
 	if ((home = getenv("HOME")) != NULL) {
@@ -302,7 +302,7 @@ static enum nmz_stat parse_rcfile(char *line, int lineno)
 	if (argnum == 2) {
 	    printf("    ARG2: [%s]\n", arg2);
 	}
-	print("\n");
+	nmz_fputs_stdout("\n");
     }
 
     if (!is_valid_argnum(directive, argnum)) {

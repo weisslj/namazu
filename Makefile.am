@@ -3,7 +3,8 @@
 @SET_MAKE@
 AUTOMAKE_OPTIONS = 1.4 no-dependencies
 
-SUBDIRS = intl po conf filter nmz lib pl src lisp @FILE_MMAGIC@ @TKNAMAZU@
+SUBDIRS = intl po conf filter nmz lib pl src lisp man \
+	  @FILE_MMAGIC@ @TKNAMAZU@
 
 DIST_SUBDIRS = $(SUBDIRS) tknamazu
 

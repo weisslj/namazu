@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: ichitaro456.pl,v 1.6 2000-02-27 14:10:34 satoru Exp $
+# $Id: ichitaro456.pl,v 1.7 2000-02-28 05:44:49 satoru Exp $
 # Copyright (C) 1999 Ken-ichi Hirose All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -50,7 +50,7 @@ sub pre_codeconv() {
 }
 
 sub post_codeconv () {
-    return 0;
+    return 1;
 }
 
 sub add_magic ($) {

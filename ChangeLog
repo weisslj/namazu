@@ -1,5 +1,8 @@
 2000-02-28  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* filter/ichitaro456.pl (post_codeconv): return 1
+	[namazu-devel-ja:00058] 
+
 	* tests/Makefile.am (EXTRA_DIST): New variable.
 
 	* tests/mknmz-3: Fix test-log handling.

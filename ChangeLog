@@ -1,3 +1,7 @@
+2001-09-01  Ryuji Abe  <rug@namazu.org>
+
+	* nmz/regex.c: Fixed alloca related macro.
+
 2001-08-26  Rei FURUKAWA  <furukawa@tcp-ip.or.jp>
 
 	* doc/ja/manual.html: Added explanation of kwnmz and nmzmerge.
@@ -6929,4 +6933,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.854 2001-08-26 14:28:19 furukawa Exp $
+$Id: ChangeLog,v 1.855 2001-09-01 09:45:05 rug Exp $

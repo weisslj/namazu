@@ -81,16 +81,23 @@ void free _((void*));
 #  endif
 # endif /* atarist */
 #else
-# if defined(HAVE_ALLOCA_H)
-#  include <alloca.h>
+# ifdef _MSC_VER
+#  include <malloc.h>
+#  define alloca _alloca
 # else
-char *alloca();
+#  if HAVE_ALLOCA_H
+#   include <alloca.h>
+#  else
+#   ifdef _AIX
+ #pragma alloca
+#   else
+#    ifndef alloca /* predefined by HP cc +Olibcalls */
+char *alloca ();
+#    endif
+#   endif
+#  endif
 # endif
 #endif /* __GNUC__ */
-
-#ifdef _AIX
-#pragma alloca
-#endif
 
 #ifdef HAVE_STRING_H
 # include <string.h>

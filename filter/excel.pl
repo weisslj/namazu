@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: excel.pl,v 1.12 2000-04-14 00:11:12 satoru Exp $
+# $Id: excel.pl,v 1.13 2000-12-15 05:37:41 knok Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu, 
 #               2000 Namazu Project All rights reserved.
@@ -111,7 +111,7 @@ sub filter_xl ($$$$$) {
 
     # -m: No encoding for multibyte. It's necessary to
     # handle a Japanese Excel 5.0 or 95 document correctly.
-    system("$xlconvpath -m $tmpfile > $tmpfile2");
+    util::systemcmd("$xlconvpath -m $tmpfile > $tmpfile2");
 
     {
 	my $fh = util::efopen("< $tmpfile2");
@@ -130,7 +130,7 @@ sub filter_xl ($$$$$) {
 	    my $fh = util::efopen("> $tmpfile");
 	    print $fh $$cont;
 	}
-	system("$utfconvpath -I$encoding -Oej $tmpfile > $tmpfile2");
+	util::systemcmd("$utfconvpath -I$encoding -Oej $tmpfile > $tmpfile2");
 	{
 	    my $fh = util::efopen("< $tmpfile2");
 	    $$cont = util::readfile($fh);
@@ -169,7 +169,7 @@ sub filter_doccat ($$$$$) {
     my $tmpfile2 = util::tmpnam('NMZ.excel2');   
     copy("$cfile", "$tmpfile2");
 
-    system("$xlconvpath -o e $tmpfile2 > $tmpfile");
+    util::systemcmd("$xlconvpath -o e $tmpfile2 > $tmpfile");
 
     {
         my $fh = util::efopen("< $tmpfile");

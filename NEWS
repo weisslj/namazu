@@ -1,3 +1,8 @@
+Overview of Changes in Namazu 2.0.6 (draft) - Dec 15, 2000
+
+* Fix path delimter probrem on Windows environment.
+ (namazu-win32-ja#00411)
+
 Overview of Changes in Namazu 2.0.5 - Oct 10, 2000
 
 * Fix several bugs.

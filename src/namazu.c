@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.106 2003-03-21 09:46:49 opengl2772 Exp $
+ * $Id: namazu.c,v 1.107 2005-01-20 12:28:25 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -141,10 +141,13 @@ namazu_core(char * query, char *subquery)
     /*
      * And then, concatnate them.
      */
-    strncpy(query_with_subquery, query, BUFSIZE * 2 - 1);
     if (strlen(subquery) > 0) {
-	strncat(query_with_subquery, " ", BUFSIZE * 2 - 1 - strlen(query_with_subquery));
+        strncpy(query_with_subquery, "( ", BUFSIZE * 2 - 1);
+        strncat(query_with_subquery, query, BUFSIZE * 2 - 1 - strlen(query_with_subquery));
+	strncat(query_with_subquery, " ) ", BUFSIZE * 2 - 1 - strlen(query_with_subquery));
 	strncat(query_with_subquery, subquery, BUFSIZE * 2 - 1 - strlen(query_with_subquery));
+    } else {
+        strncpy(query_with_subquery, query, BUFSIZE * 2 - 1);
     }
 
     /* 

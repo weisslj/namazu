@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: pdf.pl,v 1.25 2002-07-24 09:53:03 baba Exp $
+# $Id: pdf.pl,v 1.26 2002-07-25 14:11:36 baba Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -101,7 +101,6 @@ sub filter ($$$$$) {
     $fh = util::efopen("< $tmpfile2");
     $$cont = util::readfile($fh);
     undef $fh;
-    unlink $tmpfile;
     unlink $tmpfile2;
 
     gfilter::line_adjust_filter($cont);
@@ -114,7 +113,11 @@ sub filter ($$$$$) {
 
     if (defined $pdfinfopath) {
 	my $tmpfile3 = util::tmpnam('NMZ.pdf3');
-	system("$pdfinfopath $cfile > $tmpfile3");
+#	system("$pdfinfopath $tmpfile > $tmpfile3");
+	open(SAVEOUT, ">&STDOUT");
+	open(SAVEOUT, ">$tmpfile3");
+	system("$pdfinfopath $tmpfile");
+	open(STDOUT, ">&SAVEOUT");
 	my $fh = util::efopen("< $tmpfile3");
 	$$cont = util::readfile($fh);
 	undef $fh;
@@ -126,6 +129,8 @@ sub filter ($$$$$) {
 	    $fields->{'author'} = $1;
 	}
     }
+
+    unlink $tmpfile;
 
     return undef;
 }

@@ -1,0 +1,11 @@
+<hr>
+<p>
+この全文検索システムは
+<strong><a href="$conf::NMZ_URI">Namazu</a> <!-- VERSION --> v$conf::VERSION <!-- VERSION --></strong>
+によって構築されています。
+</p>
+<address>
+<a href="mailto:$conf::ADMIN">$conf::ADMIN</a>
+</address>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN"
+        "http://www.w3.org/TR/REC-html40/strict.dtd">
+<html>
+<head>
+<link rev=MADE href="mailto:$conf::ADMIN">
+<title>Namazu the full text retrieval search system</title>
+<style type="text/css"><!--
+ strong.keyword { color: #ff0000; }
+--></style>
+</head>
+<body lang="en">
+<h1>Namazu the full text retrieval search system</h1>
+<p>
+This index contains <!-- FILE --> 0 <!-- FILE --> files and
+<!-- KEY --> 0 <!-- KEY --> keywords. 
+</p>
+<p>
+<strong>Last modified: <!-- DATE --> date <!-- DATE --></strong>
+</p>
+<hr>
+<form method="GET" action="$conf::CGI_ACTION">
+<p>
+<strong>Search String:</strong> 
+<input type="TEXT" name="key" size="40">
+<input type="SUBMIT" name="submit" value="Search!">
+<input type="HIDDEN" name="whence" value="0">
+</p>
+<p>
+<strong>Display:</strong>
+<select name="max">
+<option value="10">10
+<option selected value="20">20
+<option value="30">30
+<option value="50">50
+<option value="100">100
+</select>
+<strong>Description:</strong>
+<select name="format">
+<option selected value="long">ON
+<option value="short">OFF
+</select>
+<strong>Sort:</strong>
+<select name="sort">
+<option selected value="score">score
+<option value="later">in late order
+<option value="earlier">in early order
+</select>
+</p>
+<!--
+<p>
+<strong>Target:</strong>
+<ul>
+<li><input type="checkbox" name="dbname" value="foo" checked>foo 
+<li><input type="checkbox" name="dbname" value="bar">bar
+<li><input type="checkbox" name="dbname" value="bar">baz
+</ul>
+</p>
+-->
+</form>

@@ -1,0 +1,77 @@
+<h2>検索の方法</h2>
+
+<p>
+大文字、小文字の区別はありません。<var>foo*</var> のように末尾にアスタリスクを指定することで前方一致検索が可能です。また、単語をスペース区切りで並べて書くとアンド検索になります。日本語は KAKASI/ChaSen によって分解され、「日本語情報処理」なら 「日本語」 「情報処理」 のように 2 つの単語に分かれてアンド検索されます。日本語の単語の分解は完全ではありません。品質は辞書によって決定されます。
+</p>
+
+<p>
+全角 (2 bytes) アルファベット・記号はすべて 1 byte として処理されます。記号を含む検索も可能で <code>TCP/IP</code> というような単語の検索も可能です。ただし、記号の処理は完全ではないので <code>TCP IP</code> のように分けてアンド検索をかけた方が取りこぼしがありません (その代わり余計なファイルまでヒットしてしまう可能性もありますが)。
+</p>
+
+<p>
+括弧を含めたアンド検索とオア検索およびノット検索が可能になっており検索式に <code>&amp;  |  ! ( )</code> を用います。記号の代わりに <code>and/or/not</code> で指定することも可能です。
+検索式はひとつづつスペース区切りで入力しなければなりません。
+たとえば
+</p>
+
+<ul>
+<li><code>( sed | awk ) ! perl &amp; regexp</code>
+<li><code>( sed or awk ) not perl and regexp</code>
+</ul>
+
+<p>
+のように指定します。
+</p>
+
+
+<p>
+これは「 sed または awk が含まれ、perl は含まれない、そして regexp が含まれる」文書を検索するという意味になります。
+括弧のネストもできるので、さらに複雑な検索式で検索することも可能です。
+</p>
+
+<p>フレーズをダブルクォーテーションまたは中括弧 '{' '}' で囲むこと
+でフレーズ検索ができます。ただし、精度は 100%ではありません。とき
+どきはずれます。たとえば</p>
+
+<ul>
+<li><code>"SIMPLE MAIL TRANSFER PROTOCOL"</code>
+<li><code>{SIMPLE MAIL TRANSFER PROTOCOL}</code>
+</ul>
+
+<p>
+のように指定します。
+</p>
+
+<p>正規表現および中間一致/後方一致の検索も可能です。ただしちょっと
+遅いです。これは日本語も使えます。</p>
+
+<ul>
+<li><code>*大学</code> (後方一致)
+<li><code>*ネット*</code>  (中間一致)
+<li><code>/インター?フェ[ーイ]ス/</code>  (正規表現)
+<li><code>"静岡県浜松市"</code>  (フレーズ)
+</ul>
+
+<p>
+のように指定します。
+</p>
+
+<p>フィールド指定の検索を行うことができます (フィールド検索用のイ
+ンデックスが作ってあれば) 日本語も使えます。</p>
+
+<ul>
+<li><code>+date:/Aug 1998/</code> (1998年 8月のもの)
+<li><code>+from:foo@bar.jp</code>  (差出人が foo@bar.jp)
+<li><code>+subject:"internet message"</code>  (Subject:を文字列で検索)
+<li><code>+subject:{internet message}</code>  (上と同じ)
+<li><code>+subject:/(mule|xemacs|emacs)/</code>  (Subject:を正規表現で検索)
+<li><code>+message-id:&lt;199801240555.OAA18737@foo.bar.jp&gt;</code>  (Message-Id)
+<li><code>+title:amarok</code>  (文書のタイトル)
+<li><code>+author:foo@bar.jp</code>  (文書の著者)
+<li><code>+url:http://foo.bar.jp/</code>  (文書のURI)
+</ul>
+
+<p>
+のように指定します。
+</p>
+

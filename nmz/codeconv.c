@@ -2,7 +2,7 @@
  * 
  * codeconv.c -
  * 
- * $Id: codeconv.c,v 1.26 2000-02-16 13:14:11 satoru Exp $
+ * $Id: codeconv.c,v 1.27 2000-06-21 11:16:27 masao Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -437,16 +437,16 @@ nmz_codeconv_external (const char *str) {
     }
 
     lang = nmz_get_lang();
-    if (strcasecmp(lang, "japanese") == 0 || 
-	strcasecmp(lang, "ja") == 0 || 
-	strcasecmp(lang, "ja_JP.EUC") == 0 || 
-	strcasecmp(lang, "ja_JP.ujis") == 0 ||
-	strcasecmp(lang, "ja_JP.eucJP") == 0)  /* EUC-JP */
+    if (nmz_strcasecmp(lang, "japanese") == 0 || 
+	nmz_strcasecmp(lang, "ja") == 0 || 
+	nmz_strcasecmp(lang, "ja_JP.EUC") == 0 || 
+	nmz_strcasecmp(lang, "ja_JP.ujis") == 0 ||
+	nmz_strcasecmp(lang, "ja_JP.eucJP") == 0)  /* EUC-JP */
     {
 	;
-    } else if (strcasecmp(lang, "ja_JP.SJIS") == 0) { /* Shift_JIS */
+    } else if (nmz_strcasecmp(lang, "ja_JP.SJIS") == 0) { /* Shift_JIS */
 	euctosjis((uchar *)tmp);
-    } else if (strcasecmp(lang, "ja_JP.ISO-2022-JP") == 0) { /* ISO-2022-JP */
+    } else if (nmz_strcasecmp(lang, "ja_JP.ISO-2022-JP") == 0) { /* ISO-2022-JP */
 	/*
 	 * Prepare enough memory for ISO-2022-JP encoding.
 	 * FIXME: It's not space-efficient. In the future, 

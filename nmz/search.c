@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.75 2000-05-03 23:56:58 masao Exp $
+ * $Id: search.c,v 1.76 2000-06-21 11:16:27 masao Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -640,7 +640,7 @@ parse_access(const char *line, const char *rhost, const char *raddr, enum nmz_pe
     if (nmz_strprefixcasecmp(line, "allow") == 0) {
 	line += strlen("allow");
 	line += strspn(line, " \t");
-	if (strcasecmp(line, "all") == 0) {
+	if (nmz_strcasecmp(line, "all") == 0) {
 	    perm = ALLOW;
 	} else if (*raddr != '\0' && nmz_strprefixcmp(line, raddr) == 0) {
 	    /* IP Address : forward match */
@@ -652,7 +652,7 @@ parse_access(const char *line, const char *rhost, const char *raddr, enum nmz_pe
     } else if (nmz_strprefixcasecmp(line, "deny") == 0) {
 	line += strlen("deny");
 	line += strspn(line, " \t");
-	if (strcasecmp(line, "all") == 0) {
+	if (nmz_strcasecmp(line, "all") == 0) {
 	    perm = DENY;
 	} else if (*raddr != '\0' && nmz_strprefixcmp(line, raddr) == 0) {
 	    /* IP Address : forward match */

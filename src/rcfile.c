@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.26 2000-05-08 23:38:43 masao Exp $
+ * $Id: rcfile.c,v 1.27 2000-06-21 11:16:29 masao Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -162,9 +162,9 @@ process_rc_debug(const char *directive, const StrList *args)
 {
     char *arg1 = args->value;
 
-    if (strcasecmp(arg1, "ON") == 0) {
+    if (nmz_strcasecmp(arg1, "ON") == 0) {
 	nmz_set_debugmode(1);
-    } else if (strcasecmp(arg1, "OFF") == 0) {
+    } else if (nmz_strcasecmp(arg1, "OFF") == 0) {
 	nmz_set_debugmode(0);
     }
     return SUCCESS;
@@ -211,9 +211,9 @@ process_rc_logging(const char *directive, const StrList *args)
 {
     char *arg1 = args->value;
 
-    if (strcasecmp(arg1, "ON") == 0) {
+    if (nmz_strcasecmp(arg1, "ON") == 0) {
 	nmz_set_loggingmode(1);
-    } else if (strcasecmp(arg1, "OFF") == 0) {
+    } else if (nmz_strcasecmp(arg1, "OFF") == 0) {
 	nmz_set_loggingmode(0);
     }
 
@@ -225,9 +225,9 @@ process_rc_scoring(const char *directive, const StrList *args)
 {
     char *arg1 = args->value;
 
-    if (strcasecmp(arg1, "TFIDF") == 0) {
+    if (nmz_strcasecmp(arg1, "TFIDF") == 0) {
 	nmz_set_tfidfmode(1);
-    } else if (strcasecmp(arg1, "SIMPLE") == 0) {
+    } else if (nmz_strcasecmp(arg1, "SIMPLE") == 0) {
 	nmz_set_tfidfmode(0);
     }
     return SUCCESS;
@@ -522,8 +522,8 @@ parse_rcfile(const char *line, int lineno)
      * namazurc.
      */
     if (nmz_is_debugmode() &&
-	(strcasecmp(directive, "COMMENT") != 0) &&
-	(strcasecmp(directive, "BLANK") != 0))
+	(nmz_strcasecmp(directive, "COMMENT") != 0) &&
+	(nmz_strcasecmp(directive, "BLANK") != 0))
     {
 	StrList *ptr;
 	int i;
@@ -552,7 +552,7 @@ apply_rc(int lineno, const char *directive, StrList *args)
     }
 
     for (; dtab->name != NULL;  dtab++) {
-	if (strcasecmp(dtab->name, directive) == 0) {
+	if (nmz_strcasecmp(dtab->name, directive) == 0) {
 	    /* 
 	     * Check whether the number of argument is right.
 	     */

@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: util.c,v 1.68 2000-05-10 06:40:23 satoru Exp $
+ * $Id: util.c,v 1.69 2000-06-21 11:16:27 masao Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -363,6 +363,46 @@ nmz_strlower(char *str)
         *str = nmz_tolower(*str);
         str++;
     }
+}
+
+int
+nmz_strcasecmp(const char *str1, const char *str2)
+{
+    int c1, c2;
+    char *p1 = str1;
+    char *p2 = str2;
+
+    if (str1 == str2)
+	return 0;
+
+    do {
+	c1 = nmz_tolower(*p1++);
+	c2 = nmz_tolower(*p2++);
+	if (c1 == '\0' || c2 == '\0')
+	    break;
+    } while (c1 == c2);
+    
+    return c1 - c2;
+}
+
+int
+nmz_strncasecmp(const char *str1, const char *str2, int n)
+{
+    int c1, c2;
+    char *p1 = str1;
+    char *p2 = str2;
+    
+    if (p1 == p2 || n == 0)
+	return 0;
+
+    do {
+	c1 = nmz_tolower(*p1++);
+	c2 = nmz_tolower(*p2++);
+	if (c1 == '\0' || c2 == '\0')
+	    break;
+    } while (c1 == c2 && --n > 0);
+    
+    return c1 - c2;
 }
 
 int 

@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.56 2000-04-04 22:22:40 kenzo- Exp $
+ * $Id: form.c,v 1.57 2000-06-21 11:16:29 masao Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -176,22 +176,22 @@ select_option(char *s, const char *name, const char *subquery)
         delete_str(s, (char *)"selected ");
         fputs(s, stdout);
         get_value(s, value);
-        if (strcasecmp(name, "result") == 0) {
-            if (strcasecmp(value, get_templatesuffix()) == 0) {
+        if (nmz_strcasecmp(name, "result") == 0) {
+            if (nmz_strcasecmp(value, get_templatesuffix()) == 0) {
                 fputs(" selected", stdout);
             }
-        } else if (strcasecmp(name, "sort") == 0) {
-            if ((strcasecmp(value, "date:late") == 0) && 
+        } else if (nmz_strcasecmp(name, "sort") == 0) {
+            if ((nmz_strcasecmp(value, "date:late") == 0) && 
 		nmz_get_sortmethod() == SORT_BY_DATE &&
 		nmz_get_sortorder()  == DESCENDING) 
 	    {
                 fputs(" selected", stdout);
-            } else if ((strcasecmp(value, "date:early") == 0) && 
+            } else if ((nmz_strcasecmp(value, "date:early") == 0) && 
 		       nmz_get_sortmethod() == SORT_BY_DATE &&
 		       nmz_get_sortorder()  == ASCENDING)
             {
                 fputs(" selected", stdout);
-            } else if ((strcasecmp(value, "score") == 0) && 
+            } else if ((nmz_strcasecmp(value, "score") == 0) && 
 		       nmz_get_sortmethod() == SORT_BY_SCORE) 
 	    {
                 fputs(" selected", stdout);
@@ -221,19 +221,19 @@ select_option(char *s, const char *name, const char *subquery)
 		}
             }
 
-        } else if (strcasecmp(name, "lang") == 0) {
-            if (strcasecmp(value, nmz_get_lang()) == 0) {
+        } else if (nmz_strcasecmp(name, "lang") == 0) {
+            if (nmz_strcasecmp(value, nmz_get_lang()) == 0) {
                 fputs(" selected", stdout);
             }
-        } else if (strcasecmp(name, "idxname") == 0) {
+        } else if (nmz_strcasecmp(name, "idxname") == 0) {
             if (nmz_get_idxnum() >= 1 && nmz_strsuffixcmp(value, nmz_get_idxname(0)) == 0) {
                 fputs(" selected", stdout);
             }
-        } else if (strcasecmp(name, "subquery") == 0) {
-            if (strcasecmp(value, subquery)  == 0) {
+        } else if (nmz_strcasecmp(name, "subquery") == 0) {
+            if (nmz_strcasecmp(value, subquery)  == 0) {
                 fputs(" selected", stdout);
             }
-        } else if (strcasecmp(name, "max") == 0) {
+        } else if (nmz_strcasecmp(name, "max") == 0) {
             if (atoi(value) == get_maxresult()) {
                 fputs(" selected", stdout);
             }

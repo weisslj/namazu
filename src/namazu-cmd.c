@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu-cmd.c,v 1.11 2000-03-03 03:36:21 satoru Exp $
+ * $Id: namazu-cmd.c,v 1.12 2000-06-21 11:16:29 masao Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -175,9 +175,9 @@ parse_options(int argc, char **argv)
 	    break;
 	case '4':  /* --sort */
 	{
-	    if (strcasecmp(optarg, "score") == 0) {
+	    if (nmz_strcasecmp(optarg, "score") == 0) {
 		nmz_set_sortmethod(SORT_BY_SCORE);
-	    } else if (strcasecmp(optarg, "date") == 0) {
+	    } else if (nmz_strcasecmp(optarg, "date") == 0) {
 		nmz_set_sortmethod(SORT_BY_DATE);
 	    } else if (nmz_strprefixcasecmp(optarg, "field:") == 0) {
 		nmz_set_sortmethod(SORT_BY_FIELD);

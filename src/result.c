@@ -1,5 +1,5 @@
 /*
- * $Id: result.c,v 1.54 2000-02-20 01:41:38 satoru Exp $
+ * $Id: result.c,v 1.55 2000-06-21 11:16:29 masao Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -98,7 +98,7 @@ strcasestr(const char *haystack, const char *needle)
     }
 
     for (; *haystack != '\0'; haystack++) {
-	if (strncasecmp(haystack, needle, n) == 0) {
+	if (nmz_strncasecmp(haystack, needle, n) == 0) {
 	    return (char *)haystack;  /* cast for avoiding warning. */
 	}
 	if (euc_mode && nmz_iseuc(*haystack)) {
@@ -126,7 +126,7 @@ replace_field(struct nmz_data d, int counter,
 	commas(buf);
     } else {
 	nmz_get_field_data(d.idxid, d.docid, field, buf);
-	if (strcasecmp(field, "uri") == 0) {
+	if (nmz_strcasecmp(field, "uri") == 0) {
 	    if (is_urireplace()) {
 		nmz_replace_uri(buf);
 	    }
@@ -140,7 +140,7 @@ replace_field(struct nmz_data d, int counter,
      * Do not emphasize keywords in URI.
      * And do not encode entity in URI.
      */
-    if (strcasecmp(field, "uri") != 0) {
+    if (nmz_strcasecmp(field, "uri") != 0) {
 	if (is_htmlmode()) {
 	    emphasize(buf);
 	}

@@ -1,3 +1,10 @@
+2002-04-25  Ryuji Abe  <rug@namazu.org>
+
+	* Makefile.am (SUBDIRS): Add contrib.
+	(DIST_SUBDIRS): Likewise.
+
+	* contrib/Makefile.am: New file.
+
 2002-04-09  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* filter/postscript.pl (filter): Fixed excessive argument on
@@ -7523,4 +7530,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.948 2002-04-09 07:04:02 knok Exp $
+$Id: ChangeLog,v 1.949 2002-04-25 08:58:39 rug Exp $

@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.97 2001-09-19 09:10:15 knok Exp $
+# $Id: mknmz.in,v 1.98 2001-09-21 08:12:03 knok Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -365,6 +365,7 @@ sub load_modules () {
     require "codeconv.pl" || die "unable to require \"codeconv.pl\"\n";
     require "wakati.pl" || die "unable to require \"wakati.pl\"\n";
     require "seed.pl" || die "unable to require \"seed.pl\"\n";
+    require "gfilter.pl" || die "unable to require \"gfilter.pl\"\n";
 
     @Seed = seed::init();
 }
@@ -390,15 +391,11 @@ sub load_filtermodules () {
 	    unshift @INC, "$srcfilterdir";
 	} else {
 	    @filters = glob "$FILTERDIR/*.pl";
-	    require "$srcfilterdir/gfilter.pl";
 	}
     } else {
 	@filters = glob "$FILTERDIR/*.pl";
     }
 
-    # Exclude gfilter.pl
-    @filters = grep { $_ !~ m!/gfilter\.pl$! } @filters;
-      
     load_filters(@filters);
 }
 

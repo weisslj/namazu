@@ -9,6 +9,7 @@ perllib_DATA = \
 	codeconv.pl \
 	conf.pl \
 	gettext.pl \
+	gfilter.pl \
 	htmlsplit.pl \
 	nmzidx.pl \
 	seed.pl \
@@ -22,6 +23,7 @@ EXTRA_DIST = $\
 	codeconv.pl \
 	conf.pl \
 	gettext.pl.in \
+	gfilter.pl \
 	htmlsplit.pl \
 	nmzidx.pl \
 	seed.pl \

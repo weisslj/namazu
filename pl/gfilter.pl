@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: gfilter.pl,v 1.15 2001-08-08 09:05:46 knok Exp $
+# $Id: gfilter.pl,v 1.2 2001-09-21 08:12:03 knok Exp $
 # Copyright (C) 1999 Satoru Takabayashi ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mp3.pl,v 1.5 2004-03-31 14:08:08 usu Exp $
+# $Id: mp3.pl,v 1.6 2004-05-08 13:19:48 usu Exp $
 # Copyright (C) 2002 Luc@2113.ch ,
 #               2002 2113.ch ,  
 #               2003-2004 Namazu Project All rights reserved ,
@@ -87,7 +87,6 @@ sub filter($$$$$) {
     }
     $mp3 = $tmpfile;
 
-    eval 'use MP3::Info;';
     my $tagref = get_mp3tag($mp3);
 
     my $songname = defined $tagref->{TITLE} ? $tagref->{TITLE} : ''; 

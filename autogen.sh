@@ -45,6 +45,27 @@ test -n "$NO_AUTOCONF" || (autoheader --version) < /dev/null > /dev/null 2>&1 ||
   DIE=1
 }
 
+(grep "^AM_PROG_LIBTOOL" configure.in >/dev/null) && {
+  (libtool --version) < /dev/null > /dev/null 2>&1 || {
+    echo
+    echo "**Error**: You must have \`libtool' installed to compile Gnome."
+    echo "Get ftp://ftp.gnu.org/pub/gnu/libtool-1.3.tar.gz"
+    echo "(or a newer version if it is available)"
+    DIE=1
+  }
+}
+
+grep "^AM_GNU_GETTEXT" configure.in >/dev/null && {
+  grep "sed.*POTFILES" configure.in >/dev/null || \
+  (gettext --version) < /dev/null > /dev/null 2>&1 || {
+    echo
+    echo "**Error**: You must have \`gettext' installed to compile Gnome."
+    echo "Get ftp://ftp.gnu.org/pub/gnu/gettext-0.10.35.tar.gz"
+    echo "(or a newer version if it is available)"
+    DIE=1
+  }
+}
+
 if test "$DIE" -eq 1; then
         exit 1
 fi
@@ -58,6 +79,10 @@ fi
 
 echo "Generating configure script and Makefiles for Namazu."
 
+if grep "^AM_PROG_LIBTOOL" configure.in >/dev/null; then
+  echo "Running libtoolize..."
+  libtoolize --force --copy
+fi
 echo "Running aclocal ..."
 aclocal -I .
 echo "Running autoheader..."

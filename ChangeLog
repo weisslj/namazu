@@ -1,3 +1,7 @@
+2000-01-06  Ryuji Abe <raeva@t3.rim.or.jp>
+
+	* acinclude.m4: Removed libtool related macros.
+
 2000-01-06  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* Makefile.am (EXTRA_DIST): Add INSTALL-ja.

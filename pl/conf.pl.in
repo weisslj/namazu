@@ -34,7 +34,7 @@ $DEFAULT_FILE = "index.html";
 ## Target files' regex. (case insensitive)
 ## Do *not* use '$' and '^' regular expression meta characters.
 ## That will be automatically added by mknmz.
-$ALLOW_REGEX = '.*\.html?|.*\.txt|.*_default|.*\.pdf|.*\.doc';
+$ALLOW_REGEX = '.*\.html?|.*\.txt|.*_default|.*\.pdf|.*\.doc|.*\.tex';
 
 ## Non-Target files' regex
 ## this regular expression describes the names of the files which

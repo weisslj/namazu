@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.2 1999-12-27 13:05:30 satoru Exp $
+# $Id: mknmz.pl.in,v 1.3 1999-12-30 13:16:36 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -229,7 +229,6 @@ sub load_modules () {
     unshift @INC, $LIBDIR;
     unshift @INC, $FILTERDIR;
     unshift @INC, "../pl";
-    unshift @INC, "../filter";
 
     require "var.pl" || die "unable to require \"var.pl\"\n";
     require "conf.pl" || die "unable to require \"conf.pl\"\n";
@@ -2010,6 +2009,10 @@ sub setup_magic () {
     $Magic->addFileExts('^draft-(\w*-)+-\d+\.txt$', 'text/plain; x-type=internet-draft');
     $Magic->addFileExts('^fyi\d+\.txt$' => 'text/plain; x-type=fyi');
     $Magic->addMagicEntry('0	string		\<!--\ MHonArc		text/html; x-type=mhonarc');
+
+    $Magic->addSpecials("application/x-tex",
+	"^\\document(style|class)");
+    $Magic->addFileExts('\\.tex$', 'application/x-tex');
 }
 
 # decide file type from diffrent type ditection

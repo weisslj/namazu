@@ -1,3 +1,17 @@
+1999-12-30  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* pl/conf.pl.in: Add ".*\.tex" to $ALLOW_REGEX.
+
+	* scripts/mknmz.pl.in (load_modules): Remove:
+	unshift @INC, "../filter"; Because it's useless.
+
+	* filter/Makefile.am (filter_DATA): Add tex.pl
+
+	* filter/tex.pl: New file. (derivated from pdf.pl)
+
+	* scripts/mknmz.pl.in (setup_magic): Add settings for TeX .
+
+
 1999-12-30  Ryuji Abe  <raeva@t3.rim.or.jp>
 
 	* nmz-config.in (--cflags): Revert to set @includedir@

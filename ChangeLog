@@ -1,5 +1,9 @@
 2000-02-07  Ryuji Abe  <raeva@t3.rim.or.jp>
 
+	* CREDITS: New File.
+
+	* Makefile.am (EXTRA_DIST): Added CREDITS.
+
 	* nmz/libnamazu.h: Covered with #ifdef __cplusplus.
 	(struct _NmzResult): Renamed from nmz_result.
 

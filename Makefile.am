@@ -20,7 +20,7 @@ DIST_SUBDIRS = intl po conf filter nmz lib pl src lisp man scripts \
 bin_SCRIPTS = nmz-config
 
 EXTRA_DIST = README-ja INSTALL-ja namazu.spec.in namazu.spec \
-	     ChangeLog.1 maintMakefile
+	     CREDITS ChangeLog.1 maintMakefile
 
 COMMON_DIRS = doc etc
 EXTRA_DIRS = $(COMMON_DIRS) $(DIST_TKNAMAZU) File-MMagic

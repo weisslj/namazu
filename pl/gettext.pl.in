@@ -66,7 +66,7 @@ sub choose_catalog
     my ($language, $domain) = @_;
     
     while (1) {
-	my $catalog =  "%LOCALEDIR%/$language/LC_MESSAGES/$domain.mo";
+	my $catalog =  "@LOCALEDIR@/$language/LC_MESSAGES/$domain.mo";
 	return $catalog if -f $catalog; # if the catalog file exists.
 
 	# Truncate $language by the following order: 

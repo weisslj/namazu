@@ -17,6 +17,13 @@
 
 	* configure.in (AC_OUTPUT): Likewise.
 
+	* pl/gettext.pl.in: Changed %LOCALEDIR% -> @LOCALEDIR@.
+
+	* pl/Makefile.am: Fixed for handle gettext.pl.in.
+	(TAGS_DEPENDENCIES): Set.
+
+	* filter/Makefile.am (TAGS_DEPENDENCIES): Set.
+
 2000-01-29  Kenji Suzuki  <kenji@po.ganseki.ne.jp>
 
 	* filter/hnf.pl: s/SUMMARY_LENGTH/MAX_FIELD_LENGTH/

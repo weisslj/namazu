@@ -18,9 +18,10 @@ perllib_DATA = \
 
 EXTRA_DIST = $(perllib_DATA)
 
-gettext.pl: gettext.pl.in
-	rm -f @
-	sed -e 's!%LOCALEDIR%!$(localedir)!g' \
-	gettext.pl.in > $@
+gettext.pl: gettext.pl.in Makefile
+	rm -f gettext.pl.in
+	sed -e 's!@LOCALEDIR@!$(localedir)!g' \
+	gettext.pl.in > gettext.pl
 
 ETAGS_ARGS = $(perllib_DATA) --lang=perl
+TAGS_DEPENDENCIES = $(perllib_DATA)

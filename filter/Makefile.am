@@ -26,3 +26,4 @@ filter_DATA = bzip2.pl \
 EXTRA_DIST = $(filter_DATA)
 
 ETAGS_ARGS = $(filter_DATA) --lang=perl
+TAGS_DEPENDENCIES = $(filter_DATA)

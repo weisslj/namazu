@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: pdf.pl,v 1.13 2000-01-06 10:01:49 satoru Exp $
+# $Id: pdf.pl,v 1.14 2000-02-06 00:00:43 satoru Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -43,7 +43,7 @@ sub recursive() {
 }
 
 sub codeconv() {
-    return 0;
+    return 1;
 }
 
 sub filter ($$$$$) {

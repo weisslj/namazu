@@ -71,8 +71,10 @@
 
 1999-09-01  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
-	* src/mknmz.pl.in: exclude gfilter.pl from filters/*.pl in 
+	* src/mknmz.pl.in: Exclude gfilter.pl from filters/*.pl in 
 	load_mocules() functions.
+
+	* Makefile.am: Remove necessary files in CLEANFILES.
 
 	
 1999-08-31  NOKUBI Takatsugu  <knok@daionet.gr.jp>

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: postscript.pl,v 1.8 2002-08-26 02:55:26 baba Exp $
+# $Id: postscript.pl,v 1.9 2002-09-23 08:52:32 baba Exp $
 # Copyright (C) 2000 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -26,7 +26,9 @@ package postscript;
 use strict;
 require 'util.pl';
 
-my $postscriptpath = undef;
+my $psconvpath = undef;
+my @psconvopts = undef;
+my $envpath = undef;
 
 sub mediatype() {
     return ('application/postscript');
@@ -34,11 +36,12 @@ sub mediatype() {
 
 sub status() {
     if (util::islang("ja")) {
-	$postscriptpath = util::checkcmd('ps2text');
+	$psconvpath = util::checkcmd('ps2text');
     } else {
-	$postscriptpath = util::checkcmd('ps2ascii');
+	$psconvpath = util::checkcmd('ps2ascii');
     }
-    return 'no' unless (defined $postscriptpath);
+    $envpath = util::checkcmd('env');
+    return 'no' unless (defined $psconvpath && defined $envpath);
     return 'yes';
 }
 
@@ -51,7 +54,7 @@ sub pre_codeconv() {
 }
 
 sub post_codeconv () {
-    return 0;
+    return 1;
 }
 
 sub add_magic ($) {
@@ -61,61 +64,52 @@ sub add_magic ($) {
 sub filter ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
       = @_;
+    my $cfile = defined $orig_cfile ? $$orig_cfile : '';
+
+    util::vprint("Processing postscript file ... (using  '$psconvpath')\n");
 
     my $tmpfile = util::tmpnam('NMZ.postscript');
-    my $tmpfile2 = util::tmpnam('NMZ.postscript2');
-
-    util::vprint("Processing postscript file ... (using  '$postscriptpath')\n");
-
-    my $fh = util::efopen("> $tmpfile");
-    print $fh $$cont;
-    undef $fh;
-
-    my $landscape = 0;
-    $fh = util::efopen("$tmpfile");
-    while (<$fh>) {
-	last if (/^%%EndComments$/);
-	$landscape = 1 if (/^%%Orientation: Landscape$/i);
+    {
+	my $fh = util::efopen("> $tmpfile");
+	print $fh $$cont;
     }
-    undef $fh;
-
-    my $devnull = util::devnull();
-    open(SAVEERR, ">&STDERR");
-    open(STDERR, "> $devnull");
-    if (util::islang("ja")) {
-	if ($landscape) {
-	    system("$postscriptpath -l $tmpfile > $tmpfile2");
-	} else {
-	    system("$postscriptpath $tmpfile > $tmpfile2");
+    {
+	my $landscape = 0;
+	my $fh = util::efopen("< $tmpfile");
+	while (<$fh>) {
+	    last if (/^%%EndComments$/);
+	    $landscape = 1 if (/^%%Orientation: Landscape$/i);
 	}
-    } else {
-	system("$postscriptpath $tmpfile > $tmpfile2");
+	undef $fh;
+	if (util::islang("ja") && $landscape) {
+	    @psconvopts = ("-l");
+	} else {
+	    @psconvopts = ();
+	}
     }
-    open(STDERR, ">&SAVEERR");
-    unless ($? == 0) {
-	unlink($tmpfile);
-	unlink($tmpfile2);
-	return "Unable to convert postscript file ($postscriptpath error occurred)";
+    {
+	my @env = ($envpath, "LANG=$util::LANG");
+	my @cmd = (@env, $psconvpath, @psconvopts, $tmpfile);
+	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
+	my $size = util::filesize($fh_out);
+	if ($size == 0) {
+	    return "Unable to convert postscript file ($psconvpath error occurred)";
+	}
+	if ($size > $conf::TEXT_SIZE_MAX) {
+	    return 'Too large postscript file';
+	}
+	$$cont = util::readfile($fh_out);
     }
+    unlink $tmpfile;
 
-    $fh = util::efopen("$tmpfile2");
-    my $size = util::filesize($fh);
-    if ($size == 0) {
-	undef $fh;
-	unlink($tmpfile);
-	unlink($tmpfile2);
-	return "Unable to convert postscript file ($postscriptpath error occurred)";
-    }
-    if ($size > $conf::FILE_SIZE_MAX) {
-	undef $fh;
-	unlink($tmpfile);
-	unlink($tmpfile2);
-	return 'too_large_postscript_file';
-    }
-    $$cont = util::readfile($fh);
-    undef $fh;
-    unlink($tmpfile);
-    unlink($tmpfile2);
+    gfilter::line_adjust_filter($cont);
+    gfilter::line_adjust_filter($weighted_str);
+    gfilter::white_space_adjust_filter($cont);
+    $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
+	unless $fields->{'title'};
+    gfilter::show_filter_debug_info($cont, $weighted_str,
+				    $fields, $headings);
+
     return undef;
 }
 

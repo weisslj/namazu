@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: tex.pl,v 1.7 2000-03-15 06:53:50 satoru Exp $
+# $Id: tex.pl,v 1.8 2002-09-23 08:52:32 baba Exp $
 # Copyright (C) 1999 Satoru Takabayashi ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -28,6 +28,7 @@ require 'util.pl';
 require 'gfilter.pl';
 
 my $texconvpath = undef;
+my @texconvopts = undef;
 
 sub mediatype() {
     return ('application/x-tex');
@@ -35,6 +36,7 @@ sub mediatype() {
 
 sub status() {
     $texconvpath = util::checkcmd('detex');
+    @texconvopts = ("-n");
     return 'yes' if (defined $texconvpath);
     return 'no';
 }
@@ -67,6 +69,8 @@ sub filter ($$$$$) {
       = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
+    util::vprint("Processing tex file ... (using  '$texconvpath')\n");
+
     if ($$cont =~ m/\\title\{(.*?)\}/s) {
 	$fields->{'title'} = $1;
 	$fields->{'title'} =~ s/\\\\/ /g;
@@ -81,25 +85,32 @@ sub filter ($$$$$) {
     }
 
     my $tmpfile = util::tmpnam('NMZ.tex');
-    util::vprint("Processing tex file ... (using  '$texconvpath')\n");
-
     {
-	my $fh = util::efopen("| $texconvpath > $tmpfile");
+	my $fh = util::efopen("> $tmpfile");
 	print $fh $$cont;
     }
-
     {
-	my $fh = util::efopen("< $tmpfile");
-	$$cont = util::readfile($fh);
+	my @cmd = ($texconvpath, @texconvopts, $tmpfile);
+	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
+	my $size = util::filesize($fh_out);
+	if ($size == 0) {
+	    return "Unable to convert file ($texconvpath error occurred).";
+	}
+	if ($size > $conf::TEXT_SIZE_MAX) {
+	    return 'Too large tex file.';
+	}
+	$$cont = util::readfile($fh_out);
     }
+    unlink $tmpfile;
 
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($cont);
     $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
-      unless $fields->{'title'};
+	unless $fields->{'title'};
     gfilter::show_filter_debug_info($cont, $weighted_str,
-			   $fields, $headings);
+				    $fields, $headings);
+
     return undef;
 }
 

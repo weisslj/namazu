@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: deb.pl,v 1.6 2002-03-25 07:56:15 knok Exp $
+# $Id: deb.pl,v 1.7 2002-09-23 08:52:32 baba Exp $
 # Copyright (C) 2000 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -28,6 +28,8 @@ require 'util.pl';
 require 'gfilter.pl';
 
 my $dpkgpath = undef;
+my @dpkgopts = undef;
+my $envpath = undef;
 
 sub mediatype() {
     return ('application/x-deb');
@@ -35,7 +37,9 @@ sub mediatype() {
 
 sub status() {
     $dpkgpath = util::checkcmd('dpkg');
-    return 'no' unless (defined $dpkgpath);
+    @dpkgopts = ("--info");
+    $envpath = util::checkcmd('env');
+    return 'no' unless (defined $dpkgpath && defined $envpath);
     return 'yes';
 }
 
@@ -60,32 +64,40 @@ sub add_magic ($) {
 
 sub filter ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
-      = @_;
+	= @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
+    util::vprint("Processing deb file ... (using '$dpkgpath')\n");
+
     my $tmpfile = util::tmpnam('NMZ.deb');
-
-    util::vprint("Processing deb file ... (using  '$dpkgpath')\n");
-
-    #FIXME: needed more smart solutions.
-    util::systemcmd("env LC_ALL=$util::LANG LANGUAGE=$util::LANG $dpkgpath --info " . quotemeta($cfile) . " > $tmpfile");
-
-    my $fh = util::efopen("$tmpfile");
-    my $size = util::filesize($fh);
-    if ($size > $conf::FILE_SIZE_MAX) {
-	return 'too_large_dpkg_file';
+    {	
+	my $fh = util::efopen("> $tmpfile");
+	print $fh $$cont;
     }
-    $$cont = util::readfile($fh);
-    undef $fh;
-    unlink($tmpfile);
+    {
+	my @env = ($envpath, "LC_ALL=$util::LANG", "LANGUAGE=$util::LANG");
+	my @cmd = (@env, $dpkgpath, @dpkgopts, $tmpfile);
+	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
+	my $size = util::filesize($fh_out);
+	if ($size == 0) {
+	    return "Unable to convert file ($dpkgpath error occurred)";
+	}
+	if ($size > $conf::TEXT_SIZE_MAX) {
+	    return 'Too large deb file';
+	}
+	$$cont = util::readfile($fh_out);
+    }
+    unlink $tmpfile;
 
     dpkg_filter($cont, $weighted_str, $fields, $headings);
 
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($cont);
+    $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
+	unless $fields->{'title'};
     gfilter::show_filter_debug_info($cont, $weighted_str,
-			   $fields, $headings);
+				    $fields, $headings);
 
     return undef;
 }

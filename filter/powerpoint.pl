@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: powerpoint.pl,v 1.7 2002-01-10 10:48:35 knok Exp $
+# $Id: powerpoint.pl,v 1.8 2002-09-23 08:52:32 baba Exp $
 # Copyright (C) 2000 Ken-ichi Hirose, 
 #               2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -31,34 +31,35 @@ require 'util.pl';
 require 'gfilter.pl';
 require 'html.pl';
 
-my $pptconvpath  = undef;
+my $pptconvpath = undef;
+my @pptconvopts = undef;
 my $utfconvpath = undef;
-my $pptconvname = undef;
 
 sub mediatype() {
     return ('application/powerpoint');
 }
 
 sub status() {
-	$pptconvpath = util::checkcmd('ppthtml') || util::checkcmd('pptHtml');
-#	return 'no' unless defined $pptconvpath
-	if (defined $pptconvpath) {
-	    $pptconvname = basename($pptconvpath);
-		if (!util::islang("ja")) {
-			return 'yes';
-		} else {
-			$utfconvpath = util::checkcmd('lv');
-			if (defined $utfconvpath) {
-				return 'yes';
-			} else {
-				return 'no';
-			}
-		} 
+    $pptconvpath = util::checkcmd('ppthtml') || util::checkcmd('pptHtml');
+#    return 'no' unless defined $pptconvpath
+    if (defined $pptconvpath) {
+	@pptconvopts = ();
+	if (!util::islang("ja")) {
+	    return 'yes';
 	} else {
-		$pptconvpath = util::checkcmd('doccat');
-		return 'yes' if defined $pptconvpath;
-		return 'no'; 
-	}
+	    $utfconvpath = util::checkcmd('lv');
+	    if (defined $utfconvpath) {
+		return 'yes';
+	    } else {
+		return 'no';
+	    }
+	} 
+    } else {
+	$pptconvpath = util::checkcmd('doccat');
+	@pptconvopts = ("-o", "e");
+	return 'yes' if defined $pptconvpath;
+	return 'no'; 
+    }
 }
 
 sub recursive() {
@@ -82,41 +83,35 @@ sub add_magic ($) {
 
 sub filter ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
-      = @_;
+	= @_;
     my $err = undef;
 
-    if ($pptconvname =~ /ppthtml/i) {
-    $err = filter_ppt($orig_cfile, $cont, $weighted_str, $headings, $fields);
+    if (basename($pptconvpath) =~ /ppthtml/i) {
+	$err = filter_ppt($orig_cfile, $cont, $weighted_str, $headings, $fields);
     } else {
-    $err = filter_doccat($orig_cfile, $cont, $weighted_str, $headings, $fields);
+	$err = filter_doccat($orig_cfile, $cont, $weighted_str, $headings, $fields);
     }
     return $err;
 }
 
 sub filter_ppt ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
-      = @_;
+	= @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
+    util::vprint("Processing powerpoint file ... (using  '$pptconvpath')\n");
+
     my $tmpfile  = util::tmpnam('NMZ.powerpoint');
-    my $tmpfile2 = util::tmpnam('NMZ.powerpoint2');
-
-
-    util::vprint("Processing ms-powerpoint file ... (using  '$pptconvpath')\n");
-
     {
 	my $fh = util::efopen("> $tmpfile");
 	print $fh $$cont;
     }
 
-#
-
-    # handle a Japanese PowerPoint ocument correctly.
-    system("$pptconvpath $tmpfile > $tmpfile2");
-
     {
-	my $fh = util::efopen("< $tmpfile2");
-	$$cont = util::readfile($fh);
+	# handle a Japanese PowerPoint document correctly.
+	my @cmd = ($pptconvpath, @pptconvopts, $tmpfile);
+	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
+	$$cont = util::readfile($fh_out);
     }
 
     # Code conversion for Japanese document.
@@ -131,19 +126,24 @@ sub filter_ppt ($$$$$) {
 	    my $fh = util::efopen("> $tmpfile");
 	    print $fh $$cont;
 	}
-	system("$utfconvpath -I$encoding -Oej $tmpfile > $tmpfile2");
 	{
-	    my $fh = util::efopen("< $tmpfile2");
-	    $$cont = util::readfile($fh);
+	    my @cmd = ($utfconvpath, "-I$encoding", "-Oej", $tmpfile);
+	    my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
+	    my $size = util::filesize($fh_out);
+	    if ($size == 0) {
+		return "Unable to convert file ($utfconvpath error occurred).";
+	    }
+	    if ($size > $conf::TEXT_SIZE_MAX) {
+		return 'Too large powerpoint file';
+	    }
+	    $$cont = util::readfile($fh_out);
 	}
     } 
+    unlink $tmpfile;
 
     # Extract the author and exclude pptHtml's footer at once.
     $$cont =~ s!^<FONT SIZE=-1><I>Spreadsheet's Author:&nbsp;(.*?)</I></FONT><br>.*!!ms;  # '
     $fields->{'author'} = $1 if defined $1;
-
-    unlink($tmpfile);
-    unlink($tmpfile2);
 
     # Title shoud be removed.
     $$cont =~ s!<TITLE>.+</TITLE>!!;
@@ -153,39 +153,48 @@ sub filter_ppt ($$$$$) {
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($cont);
-
-    $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str);
+    $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
+	unless $fields->{'title'};
     gfilter::show_filter_debug_info($cont, $weighted_str,
-			   $fields, $headings);
+				    $fields, $headings);
+
     return undef;
 }
 
 sub filter_doccat ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
-      = @_;
+	= @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
+    util::vprint("Processing powerpoint file ... (using  '$pptconvpath')\n");
+
     my $tmpfile  = util::tmpnam('NMZ.powerpoint');
-    my $tmpfile2 = util::tmpnam('NMZ.powerpoint2');
-    copy("$cfile", "$tmpfile2");
-
-    system("$pptconvpath -o e $tmpfile2 > $tmpfile");
-
     {
-        my $fh = util::efopen("< $tmpfile");
-        $$cont = util::readfile($fh);
+	my $fh = util::efopen("> $tmpfile");
+	print $fh $$cont;
     }
-
-    unlink($tmpfile);
-    unlink($tmpfile2);
+    {
+	my @cmd = ($pptconvpath, @pptconvopts, $tmpfile);
+	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
+	my $size = util::filesize($fh_out);
+	if ($size == 0) {
+	    return "Unable to convert file ($pptconvpath error occurred).";
+	}
+	if ($size > $conf::TEXT_SIZE_MAX) {
+	    return 'Too large powerpoint file.';
+	}
+        $$cont = util::readfile($fh_out);
+    }
+    unlink $tmpfile;
 
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($cont);
     $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
-      unless $fields->{'title'};
+	unless $fields->{'title'};
     gfilter::show_filter_debug_info($cont, $weighted_str,
-               $fields, $headings);
+				    $fields, $headings);
+
     return undef;
 }
 

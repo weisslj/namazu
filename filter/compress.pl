@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: compress.pl,v 1.17 2002-03-15 08:36:16 knok Exp $
+# $Id: compress.pl,v 1.18 2002-09-23 08:52:32 baba Exp $
 # Copyright (C) 2000 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -27,6 +27,7 @@ use strict;
 require 'util.pl';
 
 my $zcatpath = undef;
+my @zcatopts = undef;
 
 sub mediatype() {
     return ('application/x-compress');
@@ -34,6 +35,7 @@ sub mediatype() {
 
 sub status() {
     $zcatpath = util::checkcmd('zcat');
+    @zcatopts = ("-cd");
     return 'no' unless (defined $zcatpath);
     return 'yes';
 }
@@ -56,23 +58,29 @@ sub add_magic ($) {
 
 sub filter ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
-      = @_;
-
-    my $tmpfile = util::tmpnam('NMZ.compr');
+	= @_;
 
     util::vprint("Processing compress file ... (using  '$zcatpath')\n");
 
-    my $fh = util::efopen("|$zcatpath > $tmpfile");
-    print $fh $$cont;
-    undef $fh;
-    $fh = util::efopen("$tmpfile");
-    my $size = util::filesize($fh);
-    if ($size > $conf::FILE_SIZE_MAX) {
-	return 'too_large_gzipped_file';
+    my $tmpfile = util::tmpnam('NMZ.compr');
+    {
+	my $fh = util::efopen("> $tmpfile");
+	print $fh $$cont;
     }
-    $$cont = util::readfile($fh);
-    undef $fh;
+    {
+	my @cmd = ($zcatpath, @zcatopts, $tmpfile);
+	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
+	my $size = util::filesize($fh_out);
+	if ($size == 0) {
+	    return "Unable to convert file ($zcatpath error occurred)";
+	}
+	if ($size > $conf::FILE_SIZE_MAX) {
+	    return 'Too large compressed file';
+	}
+	$$cont = util::readfile($fh_out);
+    }
     unlink $tmpfile;
+
     return undef;
 }
 

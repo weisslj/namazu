@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: rpm.pl,v 1.5 2002-03-25 07:56:15 knok Exp $
+# $Id: rpm.pl,v 1.6 2002-09-23 08:52:32 baba Exp $
 # Copyright (C) 2000 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -28,6 +28,8 @@ require 'util.pl';
 require 'gfilter.pl';
 
 my $rpmpath = undef;
+my @rpmopts = undef;
+my $envpath = undef;
 
 sub mediatype() {
     return ('application/x-rpm');
@@ -35,7 +37,9 @@ sub mediatype() {
 
 sub status() {
     $rpmpath = util::checkcmd('rpm');
-    return 'no' unless (defined $rpmpath);
+    @rpmopts = ("-qpi");
+    $envpath = util::checkcmd('env');
+    return 'no' unless (defined $rpmpath && defined $envpath);
     return 'yes';
 }
 
@@ -62,30 +66,39 @@ sub filter ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
       = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
-
-    my $tmpfile = util::tmpnam('NMZ.rpm');
+    my $size = 0;
 
     util::vprint("Processing rpm file ... (using  '$rpmpath')\n");
 
-    #FIXME: needed more smart solutions.
-    util::systemcmd("env LC_ALL=$util::LANG LANGUAGE=$util::LANG $rpmpath -qpi " . quotemeta($cfile) . " > $tmpfile");
-
-    my $fh = util::efopen("$tmpfile");
-    my $size = util::filesize($fh);
-    if ($size > $conf::FILE_SIZE_MAX) {
-	return 'too_large_rpm_file';
+    my $tmpfile = util::tmpnam('NMZ.rpm');
+    {   
+        my $fh = util::efopen("> $tmpfile");
+        print $fh $$cont;
     }
-    $$cont = util::readfile($fh);
-    undef $fh;
-    unlink($tmpfile);
+    {
+	my @env = ($envpath, "LC_ALL=$util::LANG", "LANGUAGE=$util::LANG");
+	my @cmd = (@env, $rpmpath, @rpmopts, $tmpfile);
+	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
+	my $size = util::filesize($fh_out);
+	if ($size == 0) {
+	    return "Unable to convert file ($rpmpath error occurred).";
+	}
+	if ($size > $conf::TEXT_SIZE_MAX) {
+	    return 'Too large rpm file.';
+	}
+	$$cont = util::readfile($fh_out);
+    }
+    unlink $tmpfile;
 
     rpm_filter($cont, $weighted_str, $fields, $headings);
 
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($cont);
+    $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
+	unless $fields->{'title'};
     gfilter::show_filter_debug_info($cont, $weighted_str,
-			   $fields, $headings);
+				    $fields, $headings);
 
     return undef;
 }

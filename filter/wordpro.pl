@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: wordpro.pl,v 1.6 2001-06-19 09:08:15 fumiya Exp $
+# $Id: wordpro.pl,v 1.7 2002-09-23 08:52:32 baba Exp $
 # Copyright (C) 2000 Ken-ichi Hirose, 
 #               2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -29,7 +29,8 @@ use File::Copy;
 require 'util.pl';
 require 'gfilter.pl';
 
-my $wordproconvpath  = undef;
+my $wordproconvpath = undef;
+my @wordproconvopts = undef;
 
 sub mediatype() {
     return ('application/x-lotus-wordpro');
@@ -37,6 +38,7 @@ sub mediatype() {
 
 sub status() {
     $wordproconvpath = util::checkcmd('doccat');
+    @wordproconvopts = ("-o", "e");
     return 'yes' if defined $wordproconvpath;
     return 'no'; 
 }
@@ -65,19 +67,26 @@ sub filter ($$$$$) {
       = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
+    util::vprint("Processing wordpro file ... (using '$wordproconvpath')\n");
+
     my $tmpfile  = util::tmpnam('NMZ.wordpro');
-    my $tmpfile2 = util::tmpnam('NMZ.wordpro2');
-    copy("$cfile", "$tmpfile2");
-
-    system("$wordproconvpath -o e $tmpfile2 > $tmpfile");
-
-    {
-        my $fh = util::efopen("< $tmpfile");
-        $$cont = util::readfile($fh);
+    {   
+        my $fh = util::efopen("> $tmpfile");
+        print $fh $$cont;
     }
-
-    unlink($tmpfile);
-    unlink($tmpfile2);
+    {   
+        my @cmd = ($wordproconvpath, @wordproconvopts, $tmpfile);
+        my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
+	my $size = util::filesize($fh_out);
+	if ($size == 0) {
+	    return "Unable to convert file ($wordproconvpath error occurred).";
+	}
+	if ($size > $conf::TEXT_SIZE_MAX) {
+	    return 'Too large wordpro file.';
+	}
+        $$cont = util::readfile($fh_out);
+    }
+    unlink $tmpfile;
 
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);
@@ -85,7 +94,8 @@ sub filter ($$$$$) {
     $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
 	unless $fields->{'title'};
     gfilter::show_filter_debug_info($cont, $weighted_str,
-               $fields, $headings);
+				    $fields, $headings);
+
     return undef;
 }
 

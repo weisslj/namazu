@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: dvi.pl,v 1.2 2001-01-04 01:57:58 baba Exp $
+# $Id: dvi.pl,v 1.3 2002-09-23 08:52:32 baba Exp $
 # Copyright (C) 2000 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -26,19 +26,20 @@ package dvi;
 use strict;
 require 'util.pl';
 
-my $dvipath = undef;
-my $nkfpath = undef;
+my $dviconvpath = undef;
+my @dviconvopts = undef;
+my $envpath = undef;
+my @env = undef;
 
 sub mediatype() {
     return ('application/x-dvi');
 }
 
 sub status() {
-    $dvipath = util::checkcmd('dvi2tty');
-    if (util::islang("ja")) {
-	$nkfpath = util::checkcmd('nkf');
-    }
-    return 'no' unless (defined $dvipath);
+    $dviconvpath = util::checkcmd('dvi2tty');
+    $envpath = util::checkcmd('env');
+    @env = ($envpath, "DVI2TTY=");
+    return 'no' unless (defined $dviconvpath && defined $envpath);
     return 'yes';
 }
 
@@ -51,7 +52,7 @@ sub pre_codeconv() {
 }
 
 sub post_codeconv () {
-    return 0;
+    return 1;
 }
 
 sub add_magic ($) {
@@ -60,43 +61,51 @@ sub add_magic ($) {
 
 sub filter ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
-      = @_;
+	= @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
-    my $tmpfile = util::tmpnam('NMZ.dvi');
-    my $tmpfile2 = util::tmpnam('NMZ.dvi2');
+    util::vprint("Processing dvi file ... (using '$dviconvpath')\n");
 
-    # note that dvi2tty need suffix .dvi
-    my $fh = util::efopen("> $tmpfile.dvi");
-    print $fh $$cont;
-    undef $fh;
-
-    util::vprint("Processing dvi file ... (using  '$dvipath')\n");
     if (util::islang("ja")) {
 	# -J option: dvi2tty-5.1 for Debian
-#	system("$dvipath -J -q $tmpfile -o $tmpfile2");
-	# ugly: nkf is needed because of prevent 'mojibake' :-(
-	system("$dvipath -J -q $tmpfile | $nkfpath -e > $tmpfile2");
+	@dviconvopts = ("-q", "-J");
     } else {
-	system("$dvipath -q $tmpfile -o $tmpfile2");
-    }
-    unless (-e $tmpfile2) {
-	unlink("$tmpfile.dvi");
-	unlink($tmpfile2);
-	return 'Unable to convert dvi file';
+	@dviconvopts = ("-q");
     }
 
-    $fh = util::efopen("$tmpfile2");
-    my $size = util::filesize($fh);
-    if ($size > $conf::FILE_SIZE_MAX) {
-	unlink("$tmpfile.dvi");
-	unlink($tmpfile2);
-	return 'too_large_dvi_file';
+    my $tmpfile = util::tmpnam('NMZ.dvi');
+    {
+	# note that dvi2tty need suffix .dvi
+	my $fh = util::efopen("> $tmpfile.dvi");
+	print $fh $$cont;
     }
-    $$cont = util::readfile($fh);
-    undef $fh;
+    {
+	my @cmd = (@env, $dviconvpath, @dviconvopts, "$tmpfile.dvi");
+	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
+	my $size = util::filesize($fh_out);
+	if ($size == 0) {
+	    return "Unable to convert file ($dviconvpath error occurred)";
+	}
+	if ($size > $conf::TEXT_SIZE_MAX) {
+	    return 'Too large dvi file';
+	} 
+	$$cont = util::readfile($fh_out);
+    }
     unlink("$tmpfile.dvi");
-    unlink($tmpfile2);
+
+    # post_codeconv() does not work... (?_?)
+    if (util::islang("ja")) {
+	codeconv::toeuc($cont);
+    }
+
+    gfilter::line_adjust_filter($cont);
+    gfilter::line_adjust_filter($weighted_str);
+    gfilter::white_space_adjust_filter($cont);
+    $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
+	unless $fields->{'title'};
+    gfilter::show_filter_debug_info($cont, $weighted_str,
+				    $fields, $headings);
+
     return undef;
 }
 

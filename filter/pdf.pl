@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: pdf.pl,v 1.28 2002-07-29 08:17:36 knok Exp $
+# $Id: pdf.pl,v 1.29 2002-09-23 08:52:32 baba Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -30,8 +30,8 @@ require 'gfilter.pl';
 
 my $pdfconvpath = undef;
 my $pdfinfopath = undef;
+my @pdfconvopts = undef;
 my $pdfconvver = 0;
-my $pdfconvarg = '';
 
 sub mediatype() {
     return ('application/pdf');
@@ -41,16 +41,18 @@ sub status() {
     $pdfconvpath = util::checkcmd('pdftotext');
     $pdfinfopath = util::checkcmd('pdfinfo');
     if (defined $pdfconvpath) {
-	my $ret = `$pdfconvpath 2>&1`;
-	if ($ret =~ /^pdftotext\s+version\s+([0-9]+\.[0-9]+)/) {
+	my ($status, $fh_out, $fh_err) = util::systemcmd($pdfconvpath);
+	if (<$fh_err> =~ /^pdftotext\s+version\s+([0-9]+\.[0-9]+)/) {
 	    $pdfconvver = $1;
 	}
 	if (util::islang("ja")) {
 	    if ($pdfconvver >= 1.00) {
-		$pdfconvarg = '-enc EUC-JP';
+		@pdfconvopts = ('-q', '-raw', '-enc', 'EUC-JP');
 	    } else {
-		$pdfconvarg = '-eucjp';
+		@pdfconvopts = ('-q', '-raw', '-eucjp');
 	    }
+	} else {
+	    @pdfconvopts = ('-q', '-raw');
 	}
 	return 'yes';
     }
@@ -78,30 +80,51 @@ sub filter ($$$$$) {
       = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
+    util::vprint("Processing pdf file ... (using '$pdfconvpath')\n");
+
     my $tmpfile = util::tmpnam('NMZ.pdf');
     my $tmpfile2 = util::tmpnam('NMZ.pdf2');
-
-    my $fh = util::efopen("> $tmpfile");
-    print $fh $$cont;
-    undef $fh;
-
-    if (util::islang("ja")) {
-	util::vprint("Processing pdf file ... (using  '$pdfconvpath' in Japanese mode)\n");
-	system("$pdfconvpath -q $pdfconvarg -raw $tmpfile $tmpfile2");
-    } else {
-	util::vprint("Processing pdf file ... (using  '$pdfconvpath')\n");
-	system("$pdfconvpath -q -raw $tmpfile $tmpfile2");
+    {
+	my $fh = util::efopen("> $tmpfile");
+	print $fh $$cont;
     }
+    util::systemcmd($pdfconvpath, @pdfconvopts, $tmpfile, $tmpfile2);
     unless (-e $tmpfile2) {
 	unlink $tmpfile;
 	unlink $tmpfile2;
 	return 'Unable to convert pdf file (maybe copying protection)';
     }
+    {
+	my $fh = util::efopen("< $tmpfile2");
+	my $size = util::filesize($fh);
+	if ($size == 0) {
+	    return "Unable to convert file ($pdfconvpath error occurred)";
+	}
+	if ($size > $conf::TEXT_SIZE_MAX) {
+	    return 'Too large pdf file';
+	}
+	$$cont = util::readfile($fh);
+    }
 
-    $fh = util::efopen("< $tmpfile2");
-    $$cont = util::readfile($fh);
-    undef $fh;
+    if (defined $pdfinfopath) {
+	my @cmd = ($pdfinfopath, $tmpfile);
+	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
+        my $result = util::readfile($fh_out);
+	if ($result =~ /Title:\s+(.*)/) { # or /Subject:\s+(.*)/
+	    $fields->{'title'} = $1;
+	}
+	if ($result =~ /Author:\s+(.*)/) {
+	    $fields->{'author'} = $1;
+	}
+    }
+
+    unlink $tmpfile;
     unlink $tmpfile2;
+    
+    # Zenkaku-space handling bug fix (before pdftotext-0.90)
+    if (util::islang("ja") && $pdfconvver <= 0.90) {
+	$$cont =~ s/\xa1\xa0/\xa1\xa1/g;
+    }
 
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);
@@ -109,28 +132,7 @@ sub filter ($$$$$) {
     $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
 	unless $fields->{'title'};
     gfilter::show_filter_debug_info($cont, $weighted_str,
-			   $fields, $headings);
-
-    if (defined $pdfinfopath) {
-	my $tmpfile3 = util::tmpnam('NMZ.pdf3');
-#	system("$pdfinfopath $tmpfile > $tmpfile3");
-	open(SAVEOUT, ">&STDOUT");
-	open(STDOUT, ">$tmpfile3");
-	system("$pdfinfopath $tmpfile");
-	open(STDOUT, ">&SAVEOUT");
-	my $fh = util::efopen("< $tmpfile3");
-	my $cont2 = util::readfile($fh);
-	undef $fh;
-	unlink($tmpfile3);
-	if ($cont2 =~ /Title: (.*)/) { # or /Subject: (.*)/
-	    $fields->{'title'} = $1;
-	}
-	if ($cont2 =~ /Author: (.*)/) {
-	    $fields->{'author'} = $1;
-	}
-    }
-
-    unlink $tmpfile;
+				    $fields, $headings);
 
     return undef;
 }

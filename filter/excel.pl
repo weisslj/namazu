@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: excel.pl,v 1.15 2002-07-31 07:27:31 knok Exp $
+# $Id: excel.pl,v 1.16 2002-09-23 08:52:32 baba Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu, 
 #               2000 Namazu Project All rights reserved.
@@ -33,8 +33,8 @@ require 'gfilter.pl';
 require 'html.pl';
 
 my $xlconvpath  = undef;
+my @xlconvopts  = undef;
 my $utfconvpath = undef;
-my $convname = undef;
 
 sub mediatype() {
     return ('application/excel');
@@ -44,7 +44,7 @@ sub status() {
     $xlconvpath = util::checkcmd('xlhtml') || util::checkcmd('xlHtml');
 #    return 'no' unless defined $xlconvpath;
     if (defined $xlconvpath) {
-	$convname = basename($xlconvpath);
+	@xlconvopts = ("-m");
 	if (!util::islang("ja")) {
 	    return 'yes';
 	} else {
@@ -57,6 +57,7 @@ sub status() {
 	} 
     } else {
         $xlconvpath = util::checkcmd('doccat');
+	@xlconvopts = ("-o", "e");
         return 'yes' if defined $xlconvpath;
         return 'no'; 
     }
@@ -83,42 +84,43 @@ sub add_magic ($) {
 
 sub filter ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
-      = @_;
+	= @_;
     my $err = undef;
 
-    if ($convname =~ /xlhtml/i) {
-    $err = filter_xl($orig_cfile, $cont, $weighted_str, $headings, $fields);
+    if (basename($xlconvpath) =~ /xlhtml/i) {
+	$err = filter_xl($orig_cfile, $cont, $weighted_str, $headings, $fields);
     } else {
-    $err = filter_doccat($orig_cfile, $cont, $weighted_str, $headings, $fields);
+	$err = filter_doccat($orig_cfile, $cont, $weighted_str, $headings, $fields);
     }
     return $err;
 }
 
 sub filter_xl ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
-      = @_;
+	= @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
-
-    my $tmpfile  = util::tmpnam('NMZ.excel');
-    my $tmpfile2 = util::tmpnam('NMZ.excel2');
-
 
     util::vprint("Processing ms-excel file ... (using  '$xlconvpath')\n");
 
+    my $tmpfile  = util::tmpnam('NMZ.excel');
     {
 	my $fh = util::efopen("> $tmpfile");
 	print $fh $$cont;
     }
 
-#
-
     # -m: No encoding for multibyte. It's necessary to
     # handle a Japanese Excel 5.0 or 95 document correctly.
-    util::systemcmd("$xlconvpath -m $tmpfile > $tmpfile2");
-
     {
-	my $fh = util::efopen("< $tmpfile2");
-	$$cont = util::readfile($fh);
+	my @cmd = ($xlconvpath, @xlconvopts, $tmpfile);
+	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
+	my $size = util::filesize($fh_out);
+	if ($size == 0) {
+	    return "Unable to convert file ($xlconvpath error occurred).";
+	}
+	if ($size > $conf::TEXT_SIZE_MAX) {
+	    return 'Too large excel file';
+	}
+	$$cont = util::readfile($fh_out);
     }
 
     # Code conversion for Japanese document.
@@ -133,19 +135,25 @@ sub filter_xl ($$$$$) {
 	    my $fh = util::efopen("> $tmpfile");
 	    print $fh $$cont;
 	}
-	util::systemcmd("$utfconvpath -I$encoding -Oej $tmpfile > $tmpfile2");
 	{
-	    my $fh = util::efopen("< $tmpfile2");
-	    $$cont = util::readfile($fh);
+	    my @cmd = ($utfconvpath, "-I$encoding", "-Oej", $tmpfile);
+	    my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
+	    my $size = util::filesize($fh_out);
+	    if ($size == 0) {
+		return "Unable to convert file ($xlconvpath error occurred)";
+	    }
+	    if ($size > $conf::TEXT_SIZE_MAX) {
+		return 'Too large excel file';
+	    }
+	    $$cont = util::readfile($fh_out);
 	}
     } 
+
+    unlink $tmpfile;
 
     # Extract the author and exclude xlHtml's footer at once.
     $$cont =~ s!^<FONT SIZE="?-1"?><I>Spreadsheet's Author:&nbsp;(.*?)</I></FONT><br>.*!!ms;  # '
     $fields->{'author'} = $1;
-
-    unlink($tmpfile);
-    unlink($tmpfile2);
 
     # Title shoud be removed.
     # Because xlHtml generate poor <TITLE>/foo/bar/NMZ.excel.tmp</TITLE>.
@@ -156,31 +164,39 @@ sub filter_xl ($$$$$) {
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($cont);
-
-    $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str);
+    $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
+	unless $fields->{'title'};
     gfilter::show_filter_debug_info($cont, $weighted_str,
-			   $fields, $headings);
+				    $fields, $headings);
+
     return undef;
 }
 
 sub filter_doccat ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
-      = @_;
+	= @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
+    util::vprint("Processing ms-excel file ... (using  '$xlconvpath')\n");
+
     my $tmpfile  = util::tmpnam('NMZ.excel');
-    my $tmpfile2 = util::tmpnam('NMZ.excel2');   
-    copy("$cfile", "$tmpfile2");
-
-    util::systemcmd("$xlconvpath -o e $tmpfile2 > $tmpfile");
-
     {
-        my $fh = util::efopen("< $tmpfile");
-        $$cont = util::readfile($fh);
+	my $fh = util::efopen("> $tmpfile");
+	print $fh $$cont;
     }
-
-    unlink($tmpfile);
-    unlink($tmpfile2);
+    {
+	my @cmd = ($xlconvpath, @xlconvopts, $tmpfile);
+	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
+	my $size = util::filesize($fh_out);
+	if ($size == 0) {
+	    return "Unable to convert file ($xlconvpath error occurred)";
+	}
+	if ($size > $conf::TEXT_SIZE_MAX) {
+	    return 'Too large excel file.';
+	}
+        $$cont = util::readfile($fh_out);
+    }
+    unlink $tmpfile;
 
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);
@@ -188,7 +204,8 @@ sub filter_doccat ($$$$$) {
     $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
 	unless $fields->{'title'};
     gfilter::show_filter_debug_info($cont, $weighted_str,
-               $fields, $headings);
+				    $fields, $headings);
+
     return undef;
 }
 

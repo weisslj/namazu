@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: gzip.pl,v 1.16 2000-03-23 10:41:04 knok Exp $
+# $Id: gzip.pl,v 1.17 2002-09-23 08:52:32 baba Exp $
 # Copyright (C) 2000 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -27,6 +27,7 @@ use strict;
 require 'util.pl';
 
 my $gzippath = undef;
+my @gzipopts = undef;
 
 sub mediatype() {
     return ('application/x-gzip');
@@ -35,6 +36,7 @@ sub mediatype() {
 sub status() {
     return 'yes' if (util::checklib('Compress/Zlib.pm'));
     $gzippath = util::checkcmd('gzip');
+    @gzipopts = ("-cd");
     return 'yes' if (defined $gzippath);
     return 'no';
 }
@@ -57,7 +59,7 @@ sub add_magic ($) {
 
 sub filter ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
-      = @_;
+	= @_;
     my $err = undef;
 
     if (util::checklib('Compress/Zlib.pm')) {
@@ -71,21 +73,27 @@ sub filter ($$$$$) {
 sub filter_file ($) {
     my ($contref) = @_;
 
-    my $tmpfile = util::tmpnam('NMZ.gzip');
-    my $fh = util::efopen("|$gzippath -cd > $tmpfile");
-
     util::vprint("Processing gzip file ... (using  '$gzippath')\n");
 
-    print $fh $$contref;
-    undef $fh;
-    $fh = util::efopen("$tmpfile");
-    my $size = util::filesize($fh);
-    if ($size > $conf::FILE_SIZE_MAX) {
-	return 'too_large_gzipped_file';
+    my $tmpfile = util::tmpnam('NMZ.gzip');
+    {
+	my $fh = util::efopen("> $tmpfile");
+	print $fh $$contref;
     }
-    $$contref = util::readfile($fh);
-    $fh->close();
-    unlink($tmpfile);
+    {
+	my @cmd = ($gzippath, @gzipopts, $tmpfile);
+	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
+	my $size = util::filesize($fh_out);
+	if ($size == 0) {
+	    return "Unable to convert file ($gzippath error occurred)";
+	}
+	if ($size > $conf::FILE_SIZE_MAX) {
+	    return 'Too large gzipped file';
+	}
+	$$contref = util::readfile($fh_out);
+    }
+    unlink $tmpfile;
+
     return undef;
 }
 

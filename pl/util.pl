@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.25 2001-09-16 22:29:49 makoto Exp $
+# $Id: util.pl,v 1.26 2002-09-23 08:52:33 baba Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -258,17 +258,37 @@ sub assert($$) {
     }
 }
 
-sub systemcmd {
+sub systemcmd(@) {
+    my $status = undef;
+    my @args = @_;
     if ($mknmz::SYSTEM eq "MSWin32" || $mknmz::SYSTEM eq "os2") {
-	my @args = ();
-	foreach my $tmp (@_) {
-	    $tmp =~ s!/!\\!g;
-	    push @args, $tmp;
+	foreach my $arg (@args) {
+	    $arg =~ s!/!\\!g;
 	}
-	system(@args);
-    } else {
-	system(@_);
     }
+    dprint(_("Invoked: ") . join(' ', @args));
+
+    my $fh_out = IO::File->new_tmpfile();
+    my $fh_err = IO::File->new_tmpfile();
+
+    {
+	my $saveout = new IO::File (">&" . STDOUT->fileno()) or cdie "Can't dup STDOUT: $!";
+	my $saveerr = new IO::File (">&" . STDERR->fileno()) or cdie "Can't dup STDERR: $!";
+	STDOUT->fdopen($fh_out->fileno(), 'w') or cdie "Can't open fh_out: $!";
+	STDERR->fdopen($fh_err->fileno(), 'w') or cdie "Can't open fh_err: $!";
+
+	# Use an indirect object: see Perl Cookbook Recipe 16.2 in detail.
+	$status = system { $args[0] } @args;
+
+	STDOUT->fdopen($saveout->fileno(), 'w') or cdie "Can't restore saveout: $!";
+	STDERR->fdopen($saveerr->fileno(), 'w') or cdie "Can't restore saveerr: $!";
+    }
+
+    # Note that the file position of filehandles must be rewinded.
+    $fh_out->seek(0, SEEK_SET) or cdie "seek: $!";
+    $fh_err->seek(0, SEEK_SET) or cdie "seek: $!";
+
+    return ($status, $fh_out, $fh_err);
 }
 
 # Returns a string representation of the null device.

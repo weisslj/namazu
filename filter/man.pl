@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: man.pl,v 1.27 2002-02-13 07:39:35 knok Exp $
+# $Id: man.pl,v 1.28 2002-09-23 08:52:32 baba Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -29,8 +29,9 @@ require 'util.pl';
 require 'gfilter.pl';
 
 my $roffpath = undef;
-my $roffargs = undef;
-my $langenv = '';
+my @roffopts = undef;
+my $envpath = undef;
+my @env = undef;
 
 sub mediatype() {
     return ('text/x-roff');
@@ -38,36 +39,29 @@ sub mediatype() {
 
 sub status() {
     $roffpath = util::checkcmd('jgroff');
-    unless (defined $roffpath) {
-	$roffpath = util::checkcmd('groff');
-    }
-    unless (defined $roffpath) {
-	$roffpath = util::checkcmd('nroff');
-    }
-    unless (defined $roffpath) {
+    $roffpath = util::checkcmd('groff') unless (defined $roffpath);
+    $roffpath = util::checkcmd('nroff') unless (defined $roffpath);
+    $envpath = util::checkcmd('env');
+    unless (defined $roffpath && defined $envpath) {
 	return 'no';
     }
+    @env = ($envpath, "LC_ALL=$util::LANG", "LANGUAGE=$util::LANG");
 
     if (util::islang("ja") && $roffpath =~ /\bj?groff$/) {
 	# Check wheter -Tnippon is valid.
-	$langenv = "env LC_ALL=$util::LANG LANGUAGE=$util::LANG";
-	if (($mknmz::SYSTEM eq "MSWin32") || ($mknmz::SYSTEM eq "os2")){
-	    `echo ''| $langenv $roffpath -Tnippon 1>nul 2>&1`;
+	my @cmd = (@env, $roffpath, "-Tnippon", util::devnull());
+	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
+	if ($status == 0) {
+	    @roffopts = ('-man', '-Wall', '-Tnippon');
 	} else {
-	    `echo ''| $langenv $roffpath -Tnippon 1>/dev/null 2>&1`;
+	    @roffopts = ('-man', '-Wall', '-Tascii');
 	}
-	if ($? == 0) {
-	    $roffargs = '-Wall -Tnippon' ;
-	} else {
-	    $roffargs = '-Wall -Tascii';
-	}
-	# print "// $roffargs\n";
     } elsif ($roffpath =~ /\bj?groff$/) {
-	$roffargs = '-Tascii';
+	@roffopts = ('-man', '-Tascii');
     } elsif ($roffpath =~ /nroff$/) {
-	$roffargs = '';
+	@roffopts = ('-man');
     } else {
-	die;
+	return 'no';
     }
     return 'yes';
 }
@@ -81,7 +75,7 @@ sub pre_codeconv() {
 }
 
 sub post_codeconv () {
-    return 0;
+    return 1;
 }
 
 sub add_magic ($) {
@@ -90,14 +84,14 @@ sub add_magic ($) {
 
 sub filter ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
-      = @_;
+	= @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
-    my $tmpfile = util::tmpnam('NMZ.man');
+    util::vprint("Processing man file ... (using '$roffpath @roffopts')\n");
 
+    my $tmpfile = util::tmpnam('NMZ.man');
     {
-      util::vprint("Processing man file ... (using '$roffpath -man $roffargs')\n");
-	my $fh = util::efopen("|$langenv $roffpath -man $roffargs > $tmpfile");
+	my $fh = util::efopen("> $tmpfile");
 
 	# Make groff output one paragraph per one line.
 	# Thanks to Tatsuo SEKINE <tsekine@isoternet.org> for his suggestion.
@@ -106,20 +100,28 @@ sub filter ($$$$$) {
 	print $fh $$cont;
     }
     {
-	my $fh = util::efopen("$tmpfile");
-	$$cont = util::readfile($fh);
-	unlink($tmpfile);
+	my @cmd = (@env, $roffpath, @roffopts, $tmpfile);
+	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
+        my $size = util::filesize($fh_out);
+	if ($size == 0) {
+	    return "Unable to convert file ($roffpath error occurred)";
+	}
+	if ($size > $conf::TEXT_SIZE_MAX) {
+	    return 'Too large man file';
+	}
+	$$cont = util::readfile($fh_out);
     }
-
-    codeconv::toeuc($cont);
+    unlink $tmpfile;
 
     man_filter($cont, $weighted_str, $fields);
 
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($cont);
+    $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
+	unless $fields->{'title'};
     gfilter::show_filter_debug_info($cont, $weighted_str,
-			   $fields, $headings);
+				    $fields, $headings);
     return undef;
 }
 

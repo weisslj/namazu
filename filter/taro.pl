@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: taro.pl,v 1.7 2001-06-19 09:08:15 fumiya Exp $
+# $Id: taro.pl,v 1.8 2002-09-23 08:52:32 baba Exp $
 # Copyright (C) 2000 Ken-ichi Hirose, 
 #               2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -29,7 +29,8 @@ use File::Copy;
 require 'util.pl';
 require 'gfilter.pl';
 
-my $taroconvpath  = undef;
+my $taroconvpath = undef;
+my @taroconvopts = undef;
 
 sub mediatype() {
     # File::MMagic detects Ichitaro 6 document as `application/ichitaro6'
@@ -41,6 +42,7 @@ sub mediatype() {
 
 sub status() {
     $taroconvpath = util::checkcmd('doccat');
+    @taroconvopts = ("-o", "e");
     return 'yes' if defined $taroconvpath;
     return 'no'; 
 }
@@ -72,27 +74,35 @@ sub filter ($$$$$) {
       = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
+    util::vprint("Processing taro file ... (using '$taroconvpath')\n");
+
     my $tmpfile  = util::tmpnam('NMZ.taro');
-    my $tmpfile2 = util::tmpnam('NMZ.taro2');
-    copy("$cfile", "$tmpfile2");
-
-    system("$taroconvpath -o e $tmpfile2 > $tmpfile");
-
     {
-        my $fh = util::efopen("< $tmpfile");
-        $$cont = util::readfile($fh);
+	my $fh = util::efopen("> $tmpfile");
+	print $fh $$cont;
     }
-
-    unlink($tmpfile);
-    unlink($tmpfile2);
+    {
+	my @cmd = ($taroconvpath, @taroconvopts, $tmpfile);
+	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
+	my $size = util::filesize($fh_out);
+	if ($size == 0) {
+	    return "Unable to convert file ($taroconvpath error occurred).";
+	}
+	if ($size > $conf::TEXT_SIZE_MAX) {
+	    return 'Too large taro file.';
+	}
+        $$cont = util::readfile($fh_out);
+    }
+    unlink $tmpfile;
 
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($cont);
     $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
-      unless $fields->{'title'};
+	unless $fields->{'title'};
     gfilter::show_filter_debug_info($cont, $weighted_str,
-               $fields, $headings);
+				    $fields, $headings);
+
     return undef;
 }
 

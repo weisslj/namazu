@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: bzip2.pl,v 1.16 2000-03-23 10:41:04 knok Exp $
+# $Id: bzip2.pl,v 1.17 2002-09-23 08:52:32 baba Exp $
 # Copyright (C) 2000 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -27,6 +27,7 @@ use strict;
 require 'util.pl';
 
 my $bzip2path = undef;
+my @bzip2opts = undef;
 
 sub mediatype() {
     return ('application/x-bzip2');
@@ -34,6 +35,7 @@ sub mediatype() {
 
 sub status() {
     $bzip2path = util::checkcmd('bzip2');
+    @bzip2opts = ("-cd");
     return 'no' unless (defined $bzip2path);
     return 'yes';
 }
@@ -56,25 +58,29 @@ sub add_magic ($) {
 
 sub filter ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
-      = @_;
-
-    my $tmpfile = util::tmpnam('NMZ.bzip2');
+	= @_;
 
     util::vprint("Processing bzip2 file ... (using  '$bzip2path')\n");
 
+    my $tmpfile = util::tmpnam('NMZ.bzip2');
     {
-	my $fh = util::efopen("|$bzip2path -d > $tmpfile");
+	my $fh = util::efopen("> $tmpfile");
 	print $fh $$cont;
     }
     {
-	my $fh = util::efopen("$tmpfile");
-	my $size = util::filesize($fh);
-	if ($size > $conf::FILE_SIZE_MAX) {
-	    return 'too_large_gzipped_file';
+	my @cmd = ($bzip2path, @bzip2opts, $tmpfile);
+	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
+	my $size = util::filesize($fh_out);
+	if ($size == 0) {
+	    return "Unable to convert file ($bzip2path error occurred)";
 	}
-	$$cont = util::readfile($fh);
+	if ($size > $conf::FILE_SIZE_MAX) {
+	    return 'Too large bzipped file';
+	}
+	$$cont = util::readfile($fh_out);
     }
-    unlink($tmpfile);
+    unlink $tmpfile;
+
     return undef;
 }
 

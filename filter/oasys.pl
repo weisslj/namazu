@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: oasys.pl,v 1.5 2001-04-13 05:53:41 knok Exp $
+# $Id: oasys.pl,v 1.6 2002-09-23 08:52:32 baba Exp $
 # Copyright (C) 2000 Ken-ichi Hirose, 
 #               2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -30,6 +30,7 @@ require 'util.pl';
 require 'gfilter.pl';
 
 my $oasysconvpath  = undef;
+my @oasysconvopts  = undef;
 
 sub mediatype() {
     return ('application/oasys');
@@ -37,6 +38,7 @@ sub mediatype() {
 
 sub status() {
     $oasysconvpath = util::checkcmd('doccat');
+    @oasysconvopts  = ("-o", "e");
     return 'yes' if defined $oasysconvpath;
     return 'no'; 
 }
@@ -62,30 +64,38 @@ sub add_magic ($) {
 
 sub filter ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
-      = @_;
+	= @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
+    util::vprint("Processing oasys file ... (using  '$oasysconvpath')\n");
+
     my $tmpfile  = util::tmpnam('NMZ.oasys');
-    my $tmpfile2 = util::tmpnam('NMZ.oasys2');
-    copy("$cfile", "$tmpfile2");
-
-    system("$oasysconvpath -o e $tmpfile2 > $tmpfile");
-
     {
-        my $fh = util::efopen("< $tmpfile");
-        $$cont = util::readfile($fh);
+	my $fh = util::efopen("> $tmpfile");
+	print $fh $$cont;
     }
-
-    unlink($tmpfile);
-    unlink($tmpfile2);
+    {
+	my @cmd = ($oasysconvpath, @oasysconvopts, $tmpfile);
+	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
+	my $size = util::filesize($fh_out);
+	if ($size == 0) {
+	    return "Unable to convert file ($oasysconvpath error occurred)";
+	}
+	if ($size > $conf::TEXT_SIZE_MAX) {
+	    return 'Too large oasys file.';
+	}
+        $$cont = util::readfile($fh_out);
+    }
+    unlink $tmpfile;
 
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($cont);
     $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
-      unless $fields->{'title'};
+	unless $fields->{'title'};
     gfilter::show_filter_debug_info($cont, $weighted_str,
-               $fields, $headings);
+				    $fields, $headings);
+
     return undef;
 }
 

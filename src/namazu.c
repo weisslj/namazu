@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.104 2001-09-02 08:25:35 rug Exp $
+ * $Id: namazu.c,v 1.105 2002-01-11 05:18:00 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -111,7 +111,7 @@ make_fullpathname_msg(void)
 void 
 set_templatedir(char *dir)
 {
-    strcpy(templatedir, dir);
+    strncpy(templatedir, dir, BUFSIZE - 1);
 }
 
 char *
@@ -141,10 +141,10 @@ namazu_core(char * query, char *subquery)
     /*
      * And then, concatnate them.
      */
-    strcpy(query_with_subquery, query);
+    strncpy(query_with_subquery, query, BUFSIZE * 2 - 1);
     if (strlen(subquery) > 0) {
-	strcat(query_with_subquery, " ");
-	strcat(query_with_subquery, subquery);
+	strncat(query_with_subquery, " ", BUFSIZE * 2 - 1 - strlen(query_with_subquery));
+	strncat(query_with_subquery, subquery, BUFSIZE * 2 - 1 - strlen(query_with_subquery));
     }
 
     /* 

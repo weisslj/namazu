@@ -13,7 +13,7 @@ TESTS =	mknmz-1 mknmz-2 mknmz-3 mknmz-4 mknmz-5 \
 	idxdiff-1 idxdiff-2 idxdiff-3 \
 	namazu-1 namazu-2 namazu-3 namazu-4 namazu-5 \
 	namazu-6 namazu-7 namazu-8 namazu-9 namazu-10 \
-	namazu-11 \
+	namazu-11 namazu-12 \
 	namazu-cgi-1 namazu-cgi-2 namazu-cgi-3 namazu-cgi-4 \
 	namazu-cgi-5 namazu-cgi-6 namazu-cgi-7 namazu-cgi-8 \
 	namazu-cgi-9 namazu-cgi-10 \

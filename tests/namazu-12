@@ -1,0 +1,14 @@
+#! /bin/sh
+#
+# Test for buffer overflow
+#
+LOG=`pwd`/test-log
+echo '  *** starting ' $0 >>$LOG
+
+# To make messages English
+LANG= ; export LANG
+unset LANGUAGE
+unset LC_ALL
+unset LC_MESSAGES
+
+../src/namazu nonexistant `perl -e 'print "x"x3000'` | grep "^No document match" > /dev/null || exit 1

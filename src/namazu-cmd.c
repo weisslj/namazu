@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu-cmd.c,v 1.19 2001-09-02 08:25:35 rug Exp $
+ * $Id: namazu-cmd.c,v 1.20 2002-01-11 05:18:00 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -339,7 +339,7 @@ main(int argc, char **argv)
 	    return 1;
 	}
 
-        strcpy(query, argv[i++]);
+        strncpy(query, argv[i++], BUFSIZE - 1);
         if (i < argc) {
 	    int curidx = nmz_get_idxnum();
             for (curidx = 0; i < argc && curidx < INDEX_MAX; i++) {

@@ -1,5 +1,16 @@
 1999-08-28  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/mknmz.pl.in: Print a mediatype at processing time by
+	default.
+	
+	* filter/*.pl: Modify them to use `vprint()' to print verbose
+	messages. 
+
+	* filter/*.pl: Fix typos.
+
+	* lib/util.pl: Add funtion called 'vprint()' for printing verbose
+	messaegs. 
+	
 	* filter/supported.pl: Remove
 	
 	* Makefile.am (EXTRA_DIST): Add ChangeLog.old.1.gz

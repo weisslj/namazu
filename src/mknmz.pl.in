@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- CPerl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.31 1999-08-28 02:43:17 satoru Exp $
+# $Id: mknmz.pl.in,v 1.32 1999-08-28 05:59:23 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -207,7 +207,7 @@ sub init () {
     for my $module (@filters) {
 	$module =~ s/\Q$filterdir2\E\/(.*).pl$/$1/;
 	require "$module.pl";
-	util::dprint("// $module.pl loaded\n");
+	util::dprint("$module.pl loaded\n");
 	my (@mtypes, $status, $recursive);
 	eval '@mtypes = '    . $module . "::mediatype();";
 	eval '$status = '    . $module . "::status();";
@@ -265,7 +265,8 @@ sub namazu_core ($$$) {
 	}
     }
     # Output processing file name as URL
-    print $file_count + $file_base . " $url".($var::Opt{Verbose} ? ":$mtype" : '') ."\n" unless $var::Opt{Quiet};
+    print $file_count + $file_base . 
+	" $url :: $mtype\n" unless $var::Opt{Quiet;
 
     make_field_index(\%fields, $cfile, $uri, \$headings, \$content);
     put_field_index(\%fields, $field_indices) unless $var::Opt{NoFieldIndex};
@@ -469,8 +470,7 @@ sub load_document ($$$$$\%) {
 	my $mtype_c = $mm->checktype_content($$content);
 	$mtype = decide_type($mtype_n, $mtype_c);
 	if (defined $var::REQUIRE_ACTIONS{$mtype}) {
-	    print "Using $var::REQUIRE_ACTIONS{$mtype}.pl\n"
-	      if ($var::Opt{Verbose});
+	    vprint("Using $var::REQUIRE_ACTIONS{$mtype}.pl\n");
 	    require $var::REQUIRE_ACTIONS{$mtype}.'.pl';
 	    eval $var::REQUIRE_ACTIONS{$mtype} .
 	      '::filter($orig_cfile, $content, $weighted_str, $headings, $fields, $sizeref);';
@@ -573,17 +573,17 @@ sub save_flist(@) {
 sub require_modules() {
     if ($conf::LANGUAGE eq "ja" && $conf::NKF =~ /^module_nkf/) {
 	require NKF;
-        util::dprint("// code conversion: using NKF module\n");
+        util::dprint("code conversion: using NKF module\n");
 	$var::USE_NKF_MODULE = 1;
     }
     if ($conf::LANGUAGE eq "ja" && $conf::WAKATI =~ /^module_kakasi/) {
 	require Text::Kakasi;
-        util::dprint("// wakati: using Text::Kakasi module\n");
+        util::dprint("wakati: using Text::Kakasi module\n");
 	my $res = Text::Kakasi::getopt_argv('kakasi', '-ieuc', '-oeuc', '-w');
     }
     if ($conf::LANGUAGE eq "ja" && $conf::WAKATI =~ /^module_chasen1/) {
 	require Text::ChaSen1;
-        util::dprint("// wakati: using Text::ChaSen1 module\n");
+        util::dprint("wakati: using Text::ChaSen1 module\n");
 	my @arg = ('-j', '-F', '%m ');
 	@arg    = ('-j', '-F', '%m %H\\n') if $var::Opt{Morph};
 	my $res = Text::ChaSen1::getopt_argv('chasen-perl', @arg);
@@ -1532,7 +1532,7 @@ sub write_phrase_hash_sub () {
     my $opened = 0;
 
     return 0 if %PhraseHash eq "0";
-    util::dprint("// doing write_phrase_hash() processing.\n");
+    util::dprint("doing write_phrase_hash() processing.\n");
 
     my $fh_tmp_pi = util::efopen(">$var::File{'TMP_PI'}");
     my $fh_tmp_p  = util::efopen(">$var::File{'TMP_P'}");
@@ -1776,7 +1776,7 @@ sub write_index_sub () {
     my @words = sort keys(%KeyIndex);
     return 0 if $#words == -1;
 
-    util::dprint("// doing write_index() processing.\n");
+    util::dprint("doing write_index() processing.\n");
     my $fh_indexindex = util::efopen(">$var::File{'INDEXINDEX_'}");
     my $fh_tmp_i = util::efopen(">$var::File{'TMP_I'}");
     my $fh_tmp_w = util::efopen(">$var::File{'TMP_W'}") unless $var::Opt{NoRegexIndex};

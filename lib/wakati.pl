@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: wakati.pl,v 1.6 1999-08-28 02:43:16 satoru Exp $
+# $Id: wakati.pl,v 1.7 1999-08-28 05:59:22 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -74,7 +74,7 @@ sub wakatize_japanese_sub ($) {
         util::dprint("-- wakatized bare content --\n$str\n\n");
 	@tmp = split('\n', $str);
     } else {
-        util::dprint("// wakati: using $conf::WAKATI\n");
+        util::dprint("wakati: using $conf::WAKATI\n");
 	# IPC::Open2 もあるけど試したらちょっと変でしかも遅かった
 	{
 	    my $fh_wakati = util::efopen("|$conf::WAKATI > $var::File{'TMP_WAKATI'}");

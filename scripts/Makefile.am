@@ -23,8 +23,6 @@ indexdir    = $(localstatedir)/$(PACKAGE)/index
 perllibdir  = $(pkgdatadir)/pl
 templatedir = $(pkgdatadir)/template
 
-##################################################################
-
 gcnmz: gcnmz.in Makefile
 	rm -f gcnmz
 	sed -e 's!%PERL%!$(PERL)!g' \

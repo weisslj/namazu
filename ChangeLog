@@ -1,3 +1,7 @@
+1999-12-21  Makoto Fujiwara  <makoto@ki.nu>
+
+	* po/Makefile.in.in: Add $(srcdir)/ to let BSD make work.
+
 1999-12-21  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* nmz/util.c (nmz_tolower): New function. substitute for tolower(3).
@@ -56,19 +60,21 @@
 	* scripts: New directory for containig mainly perl scripts.
 	
 1999-12-19  Makoto Fujiwara <makoto@ki.nu>
-	* src/mknmz.pl.in (find_target): $scanned to count total # of files.
-	(read_config) neat output when -V is said.
-	(prep): check lock2 before find_target (new function check_lock).
-	(parse_option): add --mtime to give the similar func. as find(1).
-	(wanted): warn filename if $name contains \n\r.
+	
+	* src/mknmz.pl.in (find_target): $Scanned to count total # of files.
+	(read_config) Neat output when -V is said.
+	(prep): Check lock2 before find_target (new function check_lock).
+	(parse_option): Add --mtime to give the similar func. as find(1).
+	(wanted): Warn filename if $name contains \n\r.
 	
 	* pl/usage.pl: add --mtime string.
 	 
 1999-12-19  Makoto Fujiwara <makoto@ki.nu>
-	* src/mknmz.pl.in (find_target): add to show Elapsed time,
-	if -V, print start and end time.
 	
-	* AUTHORS: add my address
+	* src/mknmz.pl.in (find_target): Add to show Elapsed time,
+	If -V, print start and end time.
+	
+	* AUTHORS: Add my address
 	
 1999-12-18  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 

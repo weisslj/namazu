@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.13 2000-02-15 13:19:19 makoto Exp $
+# $Id: mknmz.in,v 1.14 2000-02-16 06:22:37 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -337,7 +337,7 @@ sub namazu_core ($$$$$$) {
     my $content = "";
     my $weighted_str = "";
     my %fields;
-    my $msg_prefix = $file_count + $file_base + 1 . "/$total_files_num - ";
+    my $msg_prefix = $file_count + 1 . "/$total_files_num - ";
 
     my $uri = generate_uri($cfile);  # Make a URI from a file name
     my ($cfile_size, $text_size, $kanji, $mtype) = 

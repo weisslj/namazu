@@ -1,3 +1,8 @@
+2001-11-22  Ryuji Abe  <rug@namazu.org>
+
+	* HACKING-ja: Added more description about GNU gettext
+	0.10.36 (or later).
+
 2001-11-06  Ryuji Abe  <rug@namazu.org>
 
 	* scripts/mknmz.in ($PKGDATADIR): New variable. The value
@@ -7139,4 +7144,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.883 2001-11-06 05:28:36 rug Exp $
+$Id: ChangeLog,v 1.884 2001-11-22 11:45:49 rug Exp $

@@ -49,6 +49,16 @@ CVS からソースを取得したら、まずautogen.sh スクリプトを実行
 
 基本的にはこれの繰り返しです。:)
 
+なお、GNU gettext 0.10.36 以降では Big5 や Shift_JIS な文字列を
+'\' でエスケープする必要はなくなりましたが、'\' でエスケープ
+された文字列を含むカタログを処理するためには、環境変数
+OLD_PO_FILE_INPUT および OLD_PO_FILE_OUTPUT を設定する必要が
+あります。具体的には
+
+% env OLD_PO_FILE_INPUT=yes OLD_PO_FILE_OUTPUT=yes make update-po
+
+などとしてください。
+
 ================================================================
 
 Namazu のコーディング規則 - Perl編

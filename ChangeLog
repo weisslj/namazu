@@ -1,5 +1,19 @@
 2000-02-11  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* test/html.html: New file.
+	
+	* test/mail: New file.
+
+	* test/man.1: New file.
+
+	* test/msg00000.html: New file.
+
+	* test/plain.txt: New file.
+
+	* test/rfc0000.txt: New file.
+
+	* test/tex.tex: New file.
+
 	* filter/rfc.pl (pre_codeconv): Return 1.
 
 	* scripts/mknmz.in (complete_field_info): Gettextize "unknown".

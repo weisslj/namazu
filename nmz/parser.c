@@ -2,7 +2,7 @@
  * 
  * parser.c -
  * 
- * $Id: parser.c,v 1.11 2000-01-06 06:52:39 satoru Exp $
+ * $Id: parser.c,v 1.12 2000-01-06 08:27:29 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -40,6 +40,7 @@
 #include "search.h"
 #include "parser.h"
 #include "var.h"
+#include "query.h"
 
 static int Cp = 0; /* variable that saves current position of parser */
 
@@ -61,24 +62,24 @@ factor(int *ignore)
     val.num = 0;
 
     while (1) {
-        if (Query.tab[Cp] == NULL) {
+        if (get_querytoken(Cp) == NULL) {
             return val;
 	}
 
-        if (strcmp(Query.tab[Cp], LP_STRING) == 0) {
+        if (strcmp(get_querytoken(Cp), LP_STRING) == 0) {
             Cp++;
-            if (Query.tab[Cp] == NULL)
+            if (get_querytoken(Cp) == NULL)
                 return val;
             val = expr();
 	    if (val.stat == ERR_FATAL)
 	        return val;
-            if (Query.tab[Cp] == NULL)
+            if (get_querytoken(Cp) == NULL)
                 return val;
-            if (strcmp(Query.tab[Cp], RP_STRING) == 0)
+            if (strcmp(get_querytoken(Cp), RP_STRING) == 0)
                 Cp++;
             break;
-        } else if (!isop(Query.tab[Cp])) {
-            val = do_search(Query.tab[Cp], val);
+        } else if (!isop(get_querytoken(Cp))) {
+            val = do_search(get_querytoken(Cp), val);
 	    if (val.stat == ERR_FATAL)
 	       return val;
             if (val.stat == ERR_TOO_MUCH_MATCH ||
@@ -100,23 +101,23 @@ factor(int *ignore)
 static int 
 andop(void)
 {
-    if (Query.tab[Cp] == NULL)
+    if (get_querytoken(Cp) == NULL)
 	return 0;
-    if ((strcmp(Query.tab[Cp], AND_STRING) == 0) ||
-	(strcmp(Query.tab[Cp], AND_STRING_ALT) ==0)) 
+    if ((strcmp(get_querytoken(Cp), AND_STRING) == 0) ||
+	(strcmp(get_querytoken(Cp), AND_STRING_ALT) ==0)) 
     {
 	Cp++;
 	return AND_OP;
     }
-    if ((strcmp(Query.tab[Cp], NOT_STRING) == 0)||
-	(strcmp(Query.tab[Cp], NOT_STRING_ALT) == 0)) 
+    if ((strcmp(get_querytoken(Cp), NOT_STRING) == 0)||
+	(strcmp(get_querytoken(Cp), NOT_STRING_ALT) == 0)) 
     {
 	Cp++;
 	return NOT_OP;
     }
-    if (strcmp(Query.tab[Cp], LP_STRING) == 0)
+    if (strcmp(get_querytoken(Cp), LP_STRING) == 0)
 	return AND_OP;
-    if (isop(Query.tab[Cp]) == 0)
+    if (!isop(get_querytoken(Cp)))
 	return AND_OP;
     return 0;
 }
@@ -148,10 +149,10 @@ term(void)
 static int 
 orop(void)
 {
-    if (Query.tab[Cp] == NULL)
+    if (get_querytoken(Cp) == NULL)
 	return 0;
-    if ((strcmp(Query.tab[Cp], OR_STRING) == 0)||
-	(strcmp(Query.tab[Cp], OR_STRING_ALT) == 0)) 
+    if ((strcmp(get_querytoken(Cp), OR_STRING) == 0)||
+	(strcmp(get_querytoken(Cp), OR_STRING_ALT) == 0)) 
     {
 	Cp++;
 	return 1;

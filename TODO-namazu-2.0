@@ -1,5 +1,7 @@
 未実装
 
+  * test suite を作る
+
   * 常に INDEX の NMZ.{head,foot,..}.* を参照するという設定
     項目を namazu.conf/.namazurc に追加する
 

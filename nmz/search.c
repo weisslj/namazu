@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.42 2000-01-06 06:52:39 satoru Exp $
+ * $Id: search.c,v 1.43 2000-01-06 08:27:29 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -52,6 +52,7 @@
 #include "var.h"
 #include "seed.h"
 #include "idxname.h"
+#include "query.h"
 
 enum nmz_perm { ALLOW, DENY };
 static int cur_idxnum = -1;
@@ -788,16 +789,13 @@ nmz_search_sub(NmzResult hlist, const char *query, int n)
         return hlist;
     }
 
-    /* If query contains only one keyword, turn TfIdf mode off */
-    if (Query.tab[1] == NULL && strchr(Query.tab[0], '\t') == NULL)
-        TfIdf = 0;
     if (TfIdf) {
 	set_docnum(get_file_size(NMZ.t) / sizeof(int));
     }
 
-    /* Search! */
     init_parser();
-    hlist = expr();
+    hlist = expr(); /* Do searching! */
+
     if (hlist.stat == ERR_FATAL) {
 	set_dyingmsg("search error");
         return hlist;
@@ -923,19 +921,11 @@ NmzResult
 nmz_search(const char *query)
 {
     NmzResult hlist, tmp[INDEX_MAX];
-    char tmpquery[BUFSIZE];
     int i, ret;
 
-    if (strlen(query) > QUERY_MAX) {
-	hlist.stat = ERR_TOO_LONG_QUERY;
-	return hlist;
-    }
-
-    strcpy(tmpquery, query);
-
-    ret = split_query(tmpquery);
+    ret = make_query(query);
     if (ret != SUCCESS) {
-	hlist.stat = ret;
+	hlist.stat = ERR_FATAL;
 	return hlist;
     }
 
@@ -951,10 +941,10 @@ nmz_search(const char *query)
 		return hlist; /* FIXME: need freeing memory? */
 	    }
 
-	    /* 
-	     * Save the error state for later error messaging.
-	     */
 	    {
+		/* 
+		 * Save the error state for later error messaging.
+		 */
 		struct nmz_hitnumlist *cur;
 		cur = get_idx_hitnumlist(cur_idxnum);
 		if (cur == NULL) { /* error occured */
@@ -1024,14 +1014,23 @@ do_search(const char *key, NmzResult val)
 
     if (mode == WORD_MODE || mode == PHRASE_MODE) {
 	remove_quotes(tmpkey);
-	/* If under Japanese mode, do wakatigaki (word segmentation)*/
+	/* If under Japanese mode, do wakatigaki (word segmentation) */
 	if (is_lang_ja()) {
 	    if (wakati(tmpkey)) {
 		val.stat = ERR_FATAL;
 		return val;
 	    }
+	    /* Re-examine because tmpkey is wakatied. */
+	    mode = detect_search_mode(tmpkey);
 	}
     }
+
+    /* 
+     * If query contains only one keyword, turn TfIdf mode off.
+     * This processing MUST be done after wakati(tmpkey).
+     */
+    if (get_querytokennum() == 1 && strchr(get_querytoken(0), '\t') == NULL)
+        TfIdf = 0;
 
     delete_beginning_backslash(tmpkey);
 

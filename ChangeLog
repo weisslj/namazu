@@ -4,6 +4,56 @@
 
 2000-01-06  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* nmz/query.c: Use static struct nmz_query query = {0}
+	instead of Query.
+
+	* nmz/var.c (struct nmz_query Query): Removed.
+
+	* nmz/parser.c: Use get_querytoken() and get_querytokennum()
+	instead of accessing Query.tab[] directly.
+	nmz/query.c: Ditto.
+	nmz/search.c: Ditto.
+	src/output.c: Ditto.
+	src/result.c: Ditto.
+
+	* nmz/query.c: New file.
+	(make_query): Derive from split_query() in wakati.c.
+	(set_phrase_trick): Moved from wakati.c
+	(set_regex_trick): Moved from wakati.c
+	(get_querytokennum): New function.
+	(get_querytoken): New function.
+
+	* nmz/query.h: New file.
+
+	* nmz/search.c (do_search): Turn tf idf off if query contains only
+	one keyword.
+
+	* nmz/hlist.c (get_hlist): Change array opperations.
+
+	* nmz/parser.c (andop): Change a condition style.
+
+	* nmz/libnamazu.h (struct nmz_query): Add new member: int num.
+
+	* nmz/search.c (do_search): Fix wakati bug.
+
+	* nmz/wakati.c (split_query): Abolished.
+
+	* nmz/Makefile.am (pkginclude_HEADERS): Change order.
+	(libnmz_la_SOURCES): Add query.c and query.h
+
+	* nmz/codeconv.c: Remove #include <namazu.h>
+	nmz/field.c: Ditto.
+	nmz/hlist.c: Ditto.
+	nmz/i18n.c: Ditto.
+	nmz/idxname.c: Ditto.
+	nmz/libnamazu.c: Ditto.
+	nmz/parser.c: Ditto.
+	nmz/rcfile.c: Ditto.
+	nmz/re.c: Ditto.
+	nmz/util.c: Ditto.
+	nmz/var.c: Ditto.
+	nmz/wakati.c: Ditto.
+
 	* Makefile.am (EXTRA_DIST): Add INSTALL-ja.
 
 	* INSTALL-ja: New file.

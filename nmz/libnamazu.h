@@ -2,7 +2,7 @@
  * 
  * libnamazu.h - Namazu library api
  *
- * $Id: libnamazu.h,v 1.27 2000-01-06 03:44:29 satoru Exp $
+ * $Id: libnamazu.h,v 1.28 2000-01-06 08:27:29 satoru Exp $
  * 
  */
 
@@ -167,8 +167,9 @@ struct nmz_indices {
 };
 
 struct nmz_query {
-    char str[BUFSIZE];               /* query string */
-    char *tab[QUERY_TOKEN_MAX + 1];  /* table for the query string */
+    int  tokennum;                   /* Number of tokens in the query */
+    char str[BUFSIZE];               /* Query string */
+    char *tab[QUERY_TOKEN_MAX + 1];  /* Token pointers pointed to str */
 };
 
 

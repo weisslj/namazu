@@ -1,6 +1,6 @@
 /*
  * result.c -
- * $Id: result.c,v 1.35 2000-01-05 10:30:51 satoru Exp $
+ * $Id: result.c,v 1.36 2000-01-06 08:27:33 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -129,15 +129,15 @@ emphasize(char *str)
 {
     int i;
 
-    for (i = 0; Query.tab[i] != NULL; i++) {
+    for (i = 0; get_querytoken(i) != NULL; i++) {
 	char *ptr = str;
 	char key[BUFSIZE];
 	int keylen = 0;
 
-	if (isop(Query.tab[i]))
+	if (isop(get_querytoken(i)))
 	    continue;
 
-	strcpy(key, Query.tab[i]);
+	strcpy(key, get_querytoken(i));
 
 	if (strchr(key, '\t')) { /* for phrase search */
 	    nmz_tr(key, "\t", " ");

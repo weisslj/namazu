@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.26 2000-01-06 06:52:38 satoru Exp $
+ * $Id: hlist.c,v 1.27 2000-01-06 08:27:29 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -524,20 +524,20 @@ get_hlist(int index)
 	    hlist.stat = ERR_FATAL;
 	    return hlist;
 	}
-	n = nmz_read_unpackw(Nmz.i, buf, n);
-	malloc_hlist(&hlist, n / 2);
+	n = nmz_read_unpackw(Nmz.i, buf, n) / 2;
+	malloc_hlist(&hlist, n);
 	if (hlist.stat == ERR_FATAL)
 	    return hlist;
 	
-	for (i = 0; i < n; i += 2) {
-	    hlist.data[i/2].docid = *(buf + i) + sum;
-	    sum = hlist.data[i/2].docid;
-	    hlist.data[i/2].score = *(buf + i + 1);
+	for (i = 0; i < n; i ++) {
+	    hlist.data[i].docid = *(buf + i * 2) + sum;
+	    sum = hlist.data[i].docid;
+	    hlist.data[i].score = *(buf + i * 2 + 1);
             if (TfIdf) {
-                hlist.data[i/2].score = (int)(hlist.data[i/2].score * idf) + 1;
+                hlist.data[i].score = (int)(hlist.data[i].score * idf) + 1;
             }
 	}
-        hlist.num = n / 2;
+        hlist.num = n;
 	free(buf);
         hlist = do_date_processing(hlist);
     } 

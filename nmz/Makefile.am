@@ -1,6 +1,6 @@
 # Process this file with automake to produce Makefile.in
 #
-# $Id: Makefile.am,v 1.22 2000-01-03 05:32:04 rug Exp $
+# $Id: Makefile.am,v 1.23 2000-01-06 08:27:28 satoru Exp $
 #
 
 AUTOMAKE_OPTIONS = 1.4 no-dependencies
@@ -14,16 +14,16 @@ DEFS = -DLOCALEDIR=\"$(localedir)\" \
        -DOPT_INDEXDIR=\"$(indexdir)\" \
        @DEFS@
 
-pkginclude_HEADERS = libnamazu.h codeconv.h rcfile.h field.h hlist.h \
-	idxname.h parser.h re.h search.h util.h var.h wakati.h i18n.h \
-	regex.h
+pkginclude_HEADERS = codeconv.h field.h hlist.h i18n.h idxname.h \
+	libnamazu.h rcfile.h parser.h query.h re.h regex.h \
+	search.h util.h var.h wakati.h 
 lib_LTLIBRARIES = libnmz.la
 
-libnmz_la_SOURCES = libnamazu.c libnamazu.h codeconv.c codeconv.h rcfile.c \
-	rcfile.h field.c field.h hlist.c hlist.h \
-	idxname.c idxname.h parser.c parser.h re.c re.h \
+libnmz_la_SOURCES = alias.c alias.h codeconv.c codeconv.h rcfile.c \
+	rcfile.h field.c field.h hlist.c hlist.h i18n.c i18n.h \
+	idxname.c idxname.h libnamazu.c libnamazu.h parser.c parser.h \
+	query.c query.h re.c re.h replace.c replace.h regex.c regex.h \
 	search.c search.h seed.c seed.h util.c util.h var.c var.h \
-	wakati.c wakati.h i18n.c i18n.h regex.c regex.h \
-	alias.c alias.h replace.c replace.h
+	wakati.c wakati.h 
 
 libnmz_la_LDFLAGS = -version-info 1:0:0

@@ -63,7 +63,7 @@ make_fullpathname_field(int n)
 
 
 /*
- * Check a key if field or not
+ * Check the key whether field or not.
  */
 int 
 isfield(const char *key)

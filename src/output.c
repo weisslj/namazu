@@ -19,6 +19,7 @@
 #include "form.h"
 #include "var.h"
 #include "idxname.h"
+#include "query.h"
 
 static int htmlmode    = 0;
 static int cgimode     = 0;
@@ -478,7 +479,7 @@ print_hitnum_all_idx(void)
 
 	if (is_refprint() && !is_countmode() && !is_listmode() && 
 	    !is_quietmode()) {
-	    if (get_idxnum() > 1 && Query.tab[1]) {
+	    if (get_idxnum() > 1 && get_querytokennum() > 1) {
 	        printf(_(" [ TOTAL: %d ]"), get_idx_totalhitnum(idxid));
 	    }
 	    nmz_print("\n");

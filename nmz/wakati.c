@@ -2,7 +2,7 @@
  * 
  * wakati.c -
  * 
- * $Id: wakati.c,v 1.15 2000-01-06 06:52:40 satoru Exp $
+ * $Id: wakati.c,v 1.16 2000-01-06 08:27:30 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -49,9 +49,7 @@
  *
  */
 
-static int detect_char_type(char*);
-static void set_phrase_trick(char*);
-static void set_regex_trick(char*);
+static int detect_char_type(char *c);
 
 static int 
 detect_char_type(char *c)
@@ -64,75 +62,6 @@ detect_char_type(char *c)
         return KANJI;
     }
     return OTHER;
-}
-
-/* 
- * replace duble quotes with spaces and replace internal spaces with TABs
- *{foo bar} is also acceptable 
- */
-static void 
-set_phrase_trick(char *qs)
-{
-    int i, state;
-    char *b = qs, *e;
-
-    for (i = state = 0; *(qs + i); i++) {
-        if ((*(qs + i) == '"' || *(qs + i) == '{') 
-            && (i == 0 || *(qs + i - 1) == ' ')) 
-        {
-            state = 1;
-            b = qs + i + 1;
-        } else if (state && (*(qs + i) == '"' || *(qs + i) == '}') && 
-                   (*(qs + i + 1) == ' ' || *(qs + i + 1) == '\0')) 
-        {
-            state = 0;
-            e = qs + i - 1;
-
-            for (;b <= e; b++) {
-                if (*b == ' ')
-                    *b = '\t';
-            }
-        } 
-    }
-}
-
-/* 
- * replace internal spaces with  
- * very complicated ad hoc routine :-( 
- */
-static void 
-set_regex_trick(char *qs)
-{
-    int i, delim;
-    char *b = qs, *e;
-
-    for (i = delim = 0; *(qs + i); i++) {
-        int field = 0;
-        if ((i == 0 || *(qs + i - 1) == ' ') && isfield(qs + i)) {
-            field = 1;
-            i += strcspn(qs + i, ":") + 1;
-        }
-        if ((field || i == 0 || *(qs + i - 1) == ' ') && 
-            (*(qs + i) == '/' || 
-             (field && (*(qs + i) == '"' || *(qs + i) == '{'))))
-        {
-            delim = *(qs + i);
-            if (delim == '{') {
-                delim = '}';
-            }
-            b = qs + i + 1;
-        } else if (*(qs + i) == delim 
-                   && (*(qs + i + 1) == ' ' || *(qs + i + 1) == '\0')) 
-        {
-            delim = 0;
-            e = qs + i - 1;
-
-            for (;b <= e; b++) {
-                if (*b == ' ')
-                    *b = '';
-            }
-        } 
-    }
 }
 
 /*
@@ -214,70 +143,5 @@ wakati(char *key)
     nmz_debug_printf("wakatied string: [%s]\n", key);
     return 0;
 }
-
-
-/*
- * Split a given query
- */
-int 
-split_query(char *qs)
-{
-    int i, qn;
-
-    set_phrase_trick(qs);
-    set_regex_trick(qs);
-
-    if (strlen(qs) >= BUFSIZE - 1) {
-	return ERR_TOO_LONG_QUERY;
-    }
-
-    strcpy(Query.str, qs);
-
-    /* Count items in query */
-    for (i = 0, qn = 0; *(Query.str + i);) {
-	while (Query.str[i] == ' ')
-	    i++;
-	if (Query.str[i])
-	    qn++;
-	while (Query.str[i] != ' ' &&
-	       Query.str[i] != '\0')
-	    i++;
-    }
-    if (is_debugmode()) {
-	nmz_debug_printf("Query.tabN: %d\n", qn);
-    }
-
-    if (qn == 0) { /* if no item available */
-	return ERR_INVALID_QUERY;
-    }
-
-    /* If too much items in query, return with error */
-    if (qn > QUERY_TOKEN_MAX) {
-	return ERR_TOO_MANY_TOKENS;
-    }
-    /* Assign a pointer to each item and set NULL to the last of table */
-    for (i = 0, qn = 0; Query.str[i];) {
-	while (Query.str[i] == ' ')
-	    i++;
-	if (Query.str[i])
-	    Query.tab[qn++] = &Query.str[i];
-	while (Query.str[i] != ' ' &&
-	       Query.str[i] != '\0')
-	    i++;
-	if (Query.str[i])
-	    Query.str[i++] = '\0';
-    }
-
-    /* Set NULL to the last key item */
-    Query.tab[qn] = (char *) NULL;
-
-    /* Replace  with spaces */
-    for (i = 0; i < qn; i++) {
-	nmz_tr(Query.tab[i], "", " ");
-    }
-    return SUCCESS;
-}
-
-
 
 

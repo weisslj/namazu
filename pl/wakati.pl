@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: wakati.pl,v 1.2 1999-10-11 04:25:19 satoru Exp $
+# $Id: wakati.pl,v 1.3 1999-10-28 08:04:13 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -36,21 +36,21 @@ sub wakatize_japanese ($) {
     # Original of this code was contributed by <furukawa@tcp-ip.or.jp>. 
     # [1997-11-13]
     # And do Okurigana processing. [1998-04-24]
-    if ($var::Opt{'Hiragana'} || $var::Opt{'Okurigana'}){
+    if ($var::Opt{'hiragana'} || $var::Opt{'okurigana'}){
         for (my $ndx = 0; $ndx <= $#tmp; ++$ndx){
 	    $tmp[$ndx] =~ s/(\s)/ $1/g;
 	    $tmp[$ndx] = ' ' . $tmp[$ndx];
-	    if ($var::Opt{'Okurigana'}) {
+	    if ($var::Opt{'okurigana'}) {
 		$tmp[$ndx] =~ s/([^\xa4][\xa1-\xfe])+(\xa4[\xa1-\xf3])+ /$1 /g;
 	    }
-	    if ($var::Opt{'Hiragana'}) {
+	    if ($var::Opt{'hiragana'}) {
 		$tmp[$ndx] =~ s/ (\xa4[\xa1-\xf3])+ //g;
 	    }
         }
     }
 
     # Collect only noun words when -m option is specified.
-    if ($var::Opt{'Morph'}) {
+    if ($var::Opt{'morph'}) {
 	$$content = "";
 	$$content .= shift(@tmp) =~ /(.+ )Ì¾»ì/ ? $1 : "" while @tmp; 
     } else {

@@ -1,3 +1,8 @@
+1999-10-28  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* pl/wakati.pl (wakatize_japanese): s/Okurigana/okurigana/,
+	s/Hiragana/hiragana/, s/Morph/morph/
+
 1999-10-27  Rei FURUKAWA  <furukawa@tcp-ip.or.jp>
 
 	* nmzidx.pl: Fixed lockfile related code

@@ -1,3 +1,7 @@
+2000-12-26  Hideyuki SHIRAI  <shirai@rdmg.mgcs.mei.co.jp>
+
+	* tests/data/en/excel97.xls: Changed to use 'Courier New' font.
+
 2000-12-26  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* filter/powerpoint.pl: Changed to use pptHtml (a component
@@ -6165,4 +6169,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.773 2000-12-26 04:59:01 knok Exp $
+$Id: ChangeLog,v 1.774 2000-12-26 05:48:49 shirai Exp $

@@ -1,6 +1,6 @@
 # 
 # -*- Perl -*-
-# $Id: olertf.pl,v 1.6 2002-03-18 05:18:19 takesako Exp $
+# $Id: olertf.pl,v 1.7 2004-03-09 11:56:00 opengl2772 Exp $
 # 
 # Copyright (C) 2000 Yoshinori.TAKESAKO ,
 #               2000 Jun Kurabe ,
@@ -38,7 +38,8 @@ sub status() {
     open (SAVEERR,">&STDERR");
     open (STDERR,">nul");
     my $const;
-    $const = Win32::OLE::Const->Load("Microsoft Word 10.0 Object Library");
+    $const = Win32::OLE::Const->Load("Microsoft Word 11.0 Object Library");
+    $const = Win32::OLE::Const->Load("Microsoft Word 10.0 Object Library") unless $const;
     $const = Win32::OLE::Const->Load("Microsoft Word 9.0 Object Library") unless $const;
     $const = Win32::OLE::Const->Load("Microsoft Word 8.0 Object Library") unless $const;
     open (STDERR,">&SAVEERR");

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: olepowerpoint.pl,v 1.12 2002-07-24 10:44:02 baba Exp $
+# $Id: olepowerpoint.pl,v 1.13 2004-03-09 11:56:00 opengl2772 Exp $
 # Copyright (C) 1999 Jun Kurabe ,
 #               1999 Ken-ichi Hirose All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -59,7 +59,8 @@ sub status() {
     open (SAVEERR,">&STDERR");
     open (STDERR,">nul");
     my $const;
-    $const = Win32::OLE::Const->Load("Microsoft PowerPoint 10.0 Object Library");
+    $const = Win32::OLE::Const->Load("Microsoft PowerPoint 11.0 Object Library");
+    $const = Win32::OLE::Const->Load("Microsoft PowerPoint 10.0 Object Library") unless $const;
     $const = Win32::OLE::Const->Load("Microsoft PowerPoint 9.0 Object Library") unless $const;
     $const = Win32::OLE::Const->Load("Microsoft PowerPoint 8.0 Object Library") unless $const;
     open (STDERR,">&SAVEERR");
@@ -183,8 +184,9 @@ sub ReadPPT ($$$$) {
     # Redirect stderr to null device, to ignore Error and Exception message.
     open (SAVEERR,">&STDERR");
     open (STDERR,">nul");
-    # Load Office 97/98/2000/XP Constant
-    $office_consts = Win32::OLE::Const->Load("Microsoft Office 10.0 Object Library");
+    # Load Office 97/98/2000/XP/2003 Constant
+    $office_consts = Win32::OLE::Const->Load("Microsoft Office 11.0 Object Library");
+    $office_consts = Win32::OLE::Const->Load("Microsoft Office 10.0 Object Library") unless $office_consts;
     $office_consts = Win32::OLE::Const->Load("Microsoft Office 9.0 Object Library") unless $office_consts;
     $office_consts = Win32::OLE::Const->Load("Microsoft Office 8.0 Object Library") unless $office_consts;
     # 'Visible = false' causes exception but noharm, so we ignore... X-(

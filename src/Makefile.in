@@ -63,7 +63,6 @@ FILE_MMAGIC = @FILE_MMAGIC@
 GROFF = @GROFF@
 INFO = @INFO@
 KAKASI = @KAKASI@
-LEX = @LEX@
 LN_S = @LN_S@
 LYNX = @LYNX@
 MAKEINFO = @MAKEINFO@
@@ -84,7 +83,7 @@ WISH = @WISH@
 ZCAT = @ZCAT@
 
 AUTOMAKE_OPTIONS = no-dependencies
-LIBS = -lm @LEXLIB@
+LIBS = -lm
 
 bin_PROGRAMS = namazu
 bin_SCRIPTS = gcnmz mailutime mknmz gtnmz

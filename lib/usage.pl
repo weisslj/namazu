@@ -1,5 +1,5 @@
 # -*- Perl -*-
-# $Id: usage.pl,v 1.10 1999-09-05 03:50:36 masao Exp $
+# $Id: usage.pl,v 1.11 1999-09-06 01:13:09 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -79,8 +79,8 @@ $var::COPYRIGHT
     -O, --output-dir=dir    インデックスの出力先を指定する
     -T, --template-dir=dir  NMZ.{head,foot,body}.* のディレクトリを指定する
     -L, --lang=lang         言語を設定する ('en' or 'ja')
-    -v, --version           ヴァージョンを表示する
     -q, --quiet             インデックス処理の最中にメッセージを表示しない
+    -v, --version           ヴァージョンを表示する
     -V, --verbose           口やかましいモード
         --debug             デバッグモード
         --help              このヘルプを表示する
@@ -90,42 +90,53 @@ EOFusage
 ## English usage (long)
 ##
 $USAGE_EN = <<EOFusage;
-  mknmz.pl v$var::VERSION -  indexer of Namazu
-  $var::COPYRIGHT
+mknmz.pl v$var::VERSION -  indexer of Namazu
+$var::COPYRIGHT
 
-   Usage: mknmz [options] <target(s)>
-      -a: target all files
-      -c: use ChaSen as Japanese processor
-      -e: exclude files which has robot exclusion
-      -h: treat header part of Mail/News well
-      -k: use KAKASI as Japanese processor
-      -m: use ChaSen as Japanese processor with morphological processing
-      -q: suppress status messages during execution
-      -r: treat man files
-      -u: decode uuencoded part and discard BinHex part
-      -x: do not make summary with structure of HTML's headings
-      -s: turn on the checkpoint mechanism (self exec periodically)
-      -D: do not insert headers such as 'Date:' to summary (default: off)
-      -E: delete symbols on edge of word (default: off)
-      -G: delete Okurigana in word (default: off)
-      -H: ignore words consist of Hiragana only (default: off)
-      -K: delete all symbols (default: off)
-      -L: do not adjust beginning and end of line (default: off)
-      -M: do not do special processing for MHonArc (default: off)
-      -R: do not make the index for regex search (default: off)
-      -U: do not encode URI (default: off)
-      -W: do not make the index for sort by date (default: off)
-      -X: do not make the index for field search (default: off)
-      -Y: do not detect deleted documents (default: off)
-      -Z: do not detect update and deleted documents (default: off)
-      -A: exclude files restricted by .htaccess
-      -l (lang): specify the language ('en' or 'ja', default:en)
-      -I (file): include user defined file in advance of index processing
-      -F (file): load a file which contains list of target files
-      -O (dir) : specify a directory to output the index
-      -T (dir) : specify a directory where NMZ.{head,foot,body}.* are
-      -t (regex): specify a regex for target files
+Usage: mknmz [options] <target(s)>
 
+  Target files:
+    -a, --all                target all files.
+    -e, --robots-txt         exclude files which is excluded by robots.txt.
+    -A, --htaccess           exclude files restricted by .htaccess.
+    -F, --target-list=file   load a file which contains list of target files.
+        --allow=regex        set a regex for file names which will be allowed.
+        --deny=regex         set a regex for file names which will be denied.
+        --exclude=regex      set a regex for pathnames which will be excluded.
+    -r, --replace=code       set a code for replacing URI.
+
+  Morphological Analysis:
+    -c, --use-chasen         use ChaSen for analyzing Japanese.
+    -k, --use-kakasi         use KAKASI for analyzing Japanese.
+    -m, --use-chasen-morph   use ChaSen for collecting only nouns.
+
+  Text Operations:
+    -E, --no-edge-symbol     remove symbols on edge of word.
+    -G, --no-okurigana       remove Okurigana in word.
+    -H, --no-hiragana        ignore words consist of Hiragana only.
+    -K, --no-symbol          remove symbols.
+
+  Summarization:
+    -U, --no-encode-uri      do not encode URI.
+    -x, --no-heading-summary do not make summary with HTML's headings.
+
+  Index Construction:
+        --update=index       set an index for updating.
+    -Y, --no-delete          do not detect removed documents.
+    -Z, --no-update          do not detect update and deleted documents.
+
+  Miscellaneous:
+    -s, --checkpoint         turn on the checkpoint mechanism.
+    -f, --config=file        set a pathname of a config file.
+    -I, --include=file       include your customization file.
+    -O, --output-dir=dir     set a directory to output the index.
+    -T, --template-dir=dir   set a directory having NMZ.{head,foot,body}.*.
+    -L, --lang=lang          set language (ja or en)\n";
+    -q, --quiet              suppress status messages during execution.
+    -v, --version            show the version of namazu and exit.
+    -V, --verbose            be verbose.
+        --debug              be debug mode.
+        --help               show this help and exit.
 EOFusage
 
 1;

@@ -11,7 +11,7 @@
 <body lang="ja">
 <h1>Namazu による全文検索システム</h1>
 <p>
-現在、<!-- FILE --> 0 <!-- FILE --> のファイルがインデックス化され、
+現在、<!-- FILE --> 0 <!-- FILE --> の文書がインデックス化され、
 <!-- KEY --> 0 <!-- KEY --> 個のキーワードが登録されています。
 </p>
 <p>
@@ -21,7 +21,7 @@
 <form method="GET" action="$conf::CGI_ACTION">
 <p>
 <strong>検索式:</strong> 
-<input type="TEXT" name="key" size="40">
+<input type="TEXT" name="query" size="40">
 <input type="SUBMIT" name="submit" value="Search!">
 <input type="HIDDEN" name="whence" value="0">
 </p>

@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.18 1999-09-04 23:16:09 satoru Exp $
+ * $Id: cgi.c,v 1.19 1999-09-06 01:13:10 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -148,8 +148,8 @@ int get_cgi_vars(uchar * query, uchar *subquery)
         if (*qs == '&') {
             qs++;
             continue;
-        } else if (strprefixcasecmp(qs, "key=") == 0) {
-	    qs += strlen("key=");
+        } else if (strprefixcasecmp(qs, "query=") == 0) {
+	    qs += strlen("query=");
 
 	    for (i = 0; *qs && *qs != '&'; qs++, i++) {
                 *(query + i) = *qs;

@@ -1,3 +1,15 @@
+1999-09-06  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* src/namazu.h, src/*.[ch]: Rename names of hlist_data members.
+	
+	* template/NMZ.head.{ja,en}, src/{cgi,form}.c: Rename a CGI
+	variable: key -> query
+	
+	* src/namazu.c: Rename option: --no-replace-uri -> --no-replace
+
+	* src/message.c, lib/usage.pl: Rewrite Englisu usages.
+	
+
 1999-09-05  masao@ulis.ac.jp (Masao Takaku)
 
 	* lib/usage.pl,src/message.c: Fix a typo and obsolete messages.

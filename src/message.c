@@ -2,7 +2,7 @@
  * 
  * messages.c -
  * 
- * $Id: message.c,v 1.13 1999-09-05 03:50:37 masao Exp $
+ * $Id: message.c,v 1.14 1999-09-06 01:13:11 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -66,7 +66,7 @@ void init_message(void)
     -w, --whence=num        表示するリストの先頭番号\n\
     -l, --list              検索結果を URI・パス名のリストで出力\n\
     -s, --short             短いフォーマットで出力\n\
-        --result=ext        結果表示に用いる NMZ.result.ext を指定
+        --result=ext        結果表示に用いる NMZ.result.ext を指定\n\
         --late              検索結果を新しい順にソートする\n\
         --early             検索結果を古い順にソートする\n\
         --sort=method       ソート方法を指定する (score, date, field:name)\n\
@@ -77,7 +77,7 @@ void init_message(void)
     -r, --no-references     参考ヒット数を表示しない\n\
     -H, --page              先の検索結果へのリンクを表示する (ほぼ無意味) \n\
     -F, --form              <form> ... </form> の部分を強制的に表示する\n\
-    -R, --no-replace-uri    URI の置き換えを行わない\n\
+    -R, --no-replace        URI の置き換えを行わない\n\
     -U, --no-encode-uri     URI encode の復元を行わない\n\
     -o, --output=file       指定したファイルに検索結果を出力する\n\
     -f, --config=file       namazu.conf を指定する\n\
@@ -113,27 +113,31 @@ void init_message(void)
         MSG_USAGE = (uchar *)"\
 Search Program of Namazu v%s\n\
 %s\n\n\
-  Usage: namazu [options] <query> [index(s)] \n\
-     -n (num)  : set number of documents shown at once.\n\
-     -w (num)  : set first number of documents shown.\n\
-     -s        : output by short format.\n\
-     -S        : output by more short format (simple listing).\n\
-     -v        : print this help and exit.\n\
-     -f (file) : set pathname of namazu.conf.\n\
-     -h        : output by HTML format.\n\
-     -l        : sort documents in reverse order.\n\
-     -e        : sort documents in normal order.\n\
-     -a        : output all documents.\n\
-     -c        : output only hit conunts\n\
-     -r        : do not display reference hit counts.\n\
-     -q        : do not display extra messages except search results\n\
-     -o (file) : set output file name.\n\
-     -C        : print current configuration.\n\
-     -H        : output further result link (nearly meaningless) .\n\
-     -F        : force <form> ... </form> region to output.\n\
-     -R        : do not replace URI string.\n\
-     -U        : do not decode URI encode when plain text output.\n\
-     -L (lang) : set output language (ja or en)\n";
+Usage: namazu [options] <query> [index(s)] \n\
+    -n, --max=num        set number of documents shown at once.\n\
+    -w, --whence=num     set first number of documents shown in results.\n\
+    -l, --list           print results by listing format.\n\
+    -s, --short          print results by short format.\n\
+        --results=ext    set NMZ.result.ext for printing results.\n\
+        --late           sort documents in late order.\n\
+        --early          sort documents in early order.\n\
+        --sort=method    set a sort method (score, date, field:name)\n\
+        --ascending      sort in ascending order (default: descending)\n\
+    -a, --all            print all results.\n\
+    -c, --count          print only number of hits.\n\
+    -h, --html           print in HTML format.\n\
+    -r, --no-references  do not display reference hit counts.\n\
+    -H, --page           print further result links. (nearly meaningless)\n\
+    -F, --form           force to print <form> ... </form> region.\n\
+    -R, --no-replace     do not replace URI string.\n\
+    -U, --no-encode-uri  do not decode URI when printing in a plain format.\n\
+    -o, --output=file    set output file name.\n\
+    -f, --config=file    set a pathname of a config file.\n\
+    -C, --show-config    print current configuration.\n\
+    -q, --quiet          do not display extra messages except search results.\n\
+    -L, --lang=lang      set language (ja or en)\n\
+    -v, --version        show the version of namazu and exit.\n\
+        --help           show this help and exit\n";
 
         MSG_TOO_LONG_KEY = (uchar *)
             "	<h2>Error!</h2>\n<p>Too long Query.</p>\n";

@@ -1,7 +1,7 @@
 /*
  * result.l -
  * -*- C -*-
- * $Id: result.c,v 1.15 1999-09-05 02:33:55 satoru Exp $
+ * $Id: result.c,v 1.16 1999-09-06 01:13:11 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -89,13 +89,13 @@ void replace_field(hlist_data d, int counter, uchar *field, uchar *result)
     uchar buf[BUFSIZE * 8];  
 
     if (strcmp(field, "namazu::score") == 0) {
-	sprintf(buf, "%d", d.scr);
+	sprintf(buf, "%d", d.score);
 	commas(buf);
     } else if (strcmp(field, "namazu::counter") == 0) {
 	sprintf(buf, "%d", counter);
 	commas(buf);
     } else {
-	get_field_data(d.did, d.fid, field, buf);
+	get_field_data(d.idxid, d.docid, field, buf);
     }
     /* do not emphasize in URI */
     if (strcasecmp(field, "uri") != 0 && HtmlOutput) {
@@ -205,19 +205,19 @@ void print_hlist(HLIST hlist)
 	if (!AllList && (i >= HListWhence + HListMax))
 	    break;
 	if (MoreShortFormat) {
-	    get_field_data(hlist.d[i].did, hlist.d[i].fid, "uri", result);
+	    get_field_data(hlist.d[i].idxid, hlist.d[i].docid, "uri", result);
 	} else {
-	    if (templates[hlist.d[i].did] == NULL) {  /* not loaded */
+	    if (templates[hlist.d[i].idxid] == NULL) {  /* not loaded */
 		uchar fname[BUFSIZE];
 
-		make_fullpathname_result(hlist.d[i].did);
+		make_fullpathname_result(hlist.d[i].idxid);
 		strcpy(fname, NMZ.result);
 		strcat(fname, ".");
 		strcat(fname, Template);  /* usually "normal" */
-		templates[hlist.d[i].did] = readfile(fname);
+		templates[hlist.d[i].idxid] = readfile(fname);
 	    }
 	    compose_result(hlist.d[i], counter, 
-			   templates[hlist.d[i].did],  result);
+			   templates[hlist.d[i].idxid],  result);
 	}
 	fputx(result, stdout);
 	fputx("\n", stdout);

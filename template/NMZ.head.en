@@ -11,7 +11,7 @@
 <body lang="en">
 <h1>Namazu the full text retrieval search system</h1>
 <p>
-This index contains <!-- FILE --> 0 <!-- FILE --> files and
+This index contains <!-- FILE --> 0 <!-- FILE --> documents and
 <!-- KEY --> 0 <!-- KEY --> keywords. 
 </p>
 <p>
@@ -21,7 +21,7 @@ This index contains <!-- FILE --> 0 <!-- FILE --> files and
 <form method="GET" action="$conf::CGI_ACTION">
 <p>
 <strong>Search String:</strong> 
-<input type="TEXT" name="key" size="40">
+<input type="TEXT" name="query" size="40">
 <input type="SUBMIT" name="submit" value="Search!">
 <input type="HIDDEN" name="whence" value="0">
 </p>

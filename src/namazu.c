@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.27 1999-09-04 10:23:45 satoru Exp $
+ * $Id: namazu.c,v 1.28 1999-09-06 01:13:11 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -101,7 +101,7 @@ static struct option long_options[] = {
     {"output",           required_argument, NULL, 'o'},
     {"quiet",            no_argument,       NULL, 'q'},
     {"no-references",    no_argument,       NULL, 'r'},
-    {"no-replace-uri",   no_argument,       NULL, 'R'},
+    {"no-replace",       no_argument,       NULL, 'R'},
     {"short",            no_argument,       NULL, 's'},
     {"no-encode-uri",    no_argument,       NULL, 'U'},
     {"version",          no_argument,       NULL, 'v'},

@@ -13,7 +13,7 @@ void nmz_mergesort(int, int, HLIST, HLIST, int);
 void sort_hlist(HLIST, int);
 void reverse_hlist(HLIST);
 HLIST merge_hlist(HLIST*);
-void set_did_hlist(HLIST, int);
+void set_idxid_hlist(HLIST, int);
 void copy_hlist(HLIST, int, HLIST, int);
 void set_docnum(int);
 void set_sort_field(uchar *);

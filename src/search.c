@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.19 1999-09-04 01:07:52 satoru Exp $
+ * $Id: search.c,v 1.20 1999-09-06 01:13:11 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -330,13 +330,13 @@ HLIST cmp_phrase_hash(int hash_key, HLIST val,
     }
 
     {
-	int fid, sum = 0;
+	int docid, sum = 0;
 	n = read_unpackw(phrase, list, n);
 	for (i = j = v = 0; i < n; i++) {
-	    fid = *(list + i) + sum;
-	    sum = fid;
-	    for (; j < val.n && fid >= val.d[j].fid; j++) {
-		if (fid == val.d[j].fid) {
+	    docid = *(list + i) + sum;
+	    sum = docid;
+	    for (; j < val.n && docid >= val.d[j].docid; j++) {
+		if (docid == val.d[j].docid) {
 		    copy_hlist(val, v++, val, j);
 		}
 	    }
@@ -741,8 +741,9 @@ HLIST search_sub(HLIST hlist, uchar *query, uchar *query_orig, int n)
     init_parser();
     hlist = expr();
 
-    if (hlist.n) /* if hit */
-        set_did_hlist(hlist, n);
+    if (hlist.n) {  /* if hit */
+        set_idxid_hlist(hlist, n);
+    }
     if (!HitCountOnly && !MoreShortFormat && !NoReference && !Quiet) {
         if (Idx.num > 1 && Query.tab[1]) {
             printf(" [ TOTAL: %d ]", hlist.n);

@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.14 1999-09-05 02:33:55 satoru Exp $
+ * $Id: form.c,v 1.15 1999-09-06 01:13:10 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -45,7 +45,7 @@
  ************************************************************/
 
 int cmp_element(uchar*, uchar*);
-int replace_key_value(uchar*, uchar*);
+int replace_query_value(uchar*, uchar*);
 int replace_action(uchar*);
 void delete_str(uchar*, uchar*);
 void get_value(uchar*, uchar*);
@@ -80,14 +80,14 @@ int cmp_element(uchar *s1, uchar *s2)
 
 #define iseuc(c)  ((c) >= 0xa1 && (c) <= 0xfe)
 
-/* replace <input type="text" name="key"  value="hogehoge"> */
-int replace_key_value(uchar *p, uchar *orig_query)
+/* replace <input type="text" name="query"  value="hogehoge"> */
+int replace_query_value(uchar *p, uchar *orig_query)
 {
     uchar query[BUFSIZE];
     
     strcpy(query, orig_query);
 
-    if (!cmp_element(p, (uchar *)"input type=\"text\" name=\"key\"")) {
+    if (!cmp_element(p, (uchar *)"input type=\"text\" name=\"query\"")) {
         for (; *p; p++)
             fputc(*p, stdout);
         printf(" value=\"");
@@ -282,7 +282,7 @@ void treat_tag(uchar *p, uchar *q, uchar *query,
     if (l < BUFSIZE - 1) {
         strncpy(tmp, p, l);
         tmp[l] = '\0';
-        if (!replace_key_value(tmp, query))
+        if (!replace_query_value(tmp, query))
             return;
         if (!replace_action(tmp))
             return;

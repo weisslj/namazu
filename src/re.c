@@ -2,7 +2,7 @@
  * 
  * re.c -
  * 
- * $Id: re.c,v 1.4 1999-09-04 01:07:52 satoru Exp $
+ * $Id: re.c,v 1.5 1999-09-06 01:13:11 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -219,8 +219,8 @@ HLIST regex_grep(uchar *orig_expr, FILE *fp, uchar *field, int field_mode)
                 if (n > size) {
                     realloc_hlist(&val, size += STEP);
                 }
-                val.d[n-1].fid = i;
-                val.d[n-1].scr = 1;  /* score = 1 */
+                val.d[n-1].docid = i;
+                val.d[n-1].score = 1;  /* score = 1 */
                 val.n = n;
             }
 

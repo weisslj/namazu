@@ -90,7 +90,7 @@ void get_field_name(uchar *field, uchar *str)
     apply_field_alias(field);
 }
 
-void get_field_data(int did, int fid, uchar *orig_field, uchar *data) 
+void get_field_data(int idxid, int docid, uchar *orig_field, uchar *data) 
 {
     uchar fname[BUFSIZE];
     uchar *field = orig_field;
@@ -98,8 +98,8 @@ void get_field_data(int did, int fid, uchar *orig_field, uchar *data)
     static int cache_idx = 0, cache_num = 0;
     FILE *fp_field, *fp_field_idx;
     struct field_cache {
-	int did;
-	int fid;
+	int idxid;
+	int docid;
 	uchar field[BUFSIZE];
 	uchar data[BUFSIZE];
     };
@@ -112,7 +112,7 @@ void get_field_data(int did, int fid, uchar *orig_field, uchar *data)
 	if (Debug) {
 	    printf("@@ field cache [%s] hit!\n", field);
 	}
-	if (did == fc[i].did && fid == fc[i].fid &&
+	if (idxid == fc[i].idxid && docid == fc[i].docid &&
 	    strcmp(field, fc[i].field) == 0)
 	{  /* cache hit! */
 	    strcpy(data, fc[i].data);
@@ -121,7 +121,7 @@ void get_field_data(int did, int fid, uchar *orig_field, uchar *data)
     }
 
     /* make a pathname */
-    make_fullpathname_field(did);
+    make_fullpathname_field(idxid);
     strcpy(fname, NMZ.field);
     strcat(fname, field);
     
@@ -140,7 +140,7 @@ void get_field_data(int did, int fid, uchar *orig_field, uchar *data)
        BUFSIZE (1024) because its length is restricted at 
        put_field_index() in mknmz.
      */
-    fseek(fp_field, getidxptr(fp_field_idx, fid), 0);
+    fseek(fp_field, getidxptr(fp_field_idx, docid), 0);
     fgets(data, BUFSIZE, fp_field);
     chomp(data);
 
@@ -152,8 +152,8 @@ void get_field_data(int did, int fid, uchar *orig_field, uchar *data)
     fclose(fp_field_idx);
 
     /* cache */
-    fc[cache_idx].did = did;
-    fc[cache_idx].fid = fid;
+    fc[cache_idx].idxid = idxid;
+    fc[cache_idx].docid = docid;
     strcpy(fc[cache_idx].field, field);
     strcpy(fc[cache_idx].data, data);
     cache_idx = (cache_idx + 1) % FIELD_CACHE_SIZE;

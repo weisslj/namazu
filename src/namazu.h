@@ -19,9 +19,9 @@
 typedef unsigned char uchar;
 
 struct hlist_data {
-    int scr;  /* score */
-    int fid;  /* file ID */
-    int did;  /* database (index) ID */
+    int score;  /* score */
+    int docid;  /* file ID */
+    int idxid;  /* index ID */
     int date; /* file's date */
     int rank; /* ranking data for stable sorting */
     char *field; /* for field-specified search*/

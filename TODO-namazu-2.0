@@ -1,4 +1,4 @@
-$Id: TODO-namazu-2.0,v 1.40 2000-02-24 15:56:09 satoru Exp $
+$Id: TODO-namazu-2.0,v 1.41 2000-02-25 15:24:15 satoru Exp $
 
 検討項目
 
@@ -89,4 +89,5 @@ $Id: TODO-namazu-2.0,v 1.40 2000-02-24 15:56:09 satoru Exp $
   * test suite for releasing
     出荷時の動作確認用のしくみ
   
+
 

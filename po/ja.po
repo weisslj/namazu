@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: namazu 2.0\n"
-"POT-Creation-Date: 1999-12-15 16:42+0900\n"
+"POT-Creation-Date: 1999-12-24 18:02+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>\n"
 "Language-Team: Japanese <satoru-t@is.aist-nara.ac.jp>\n"
@@ -33,44 +33,44 @@ msgstr ""
 "標準の言語: %s\n"
 "スコア計算: %s\n"
 
-#: nmz/util.c:533
+#: nmz/util.c:549
 msgid "Fatal error occered!"
 msgstr "致命的なエラー"
 
-#: nmz/util.c:539
+#: nmz/util.c:555
 msgid "Invalid query"
 msgstr "不正な idxname の指定です"
 
-#: nmz/util.c:542
+#: nmz/util.c:558
 #, fuzzy
 msgid "Too many query tokens"
 msgstr "検索式の項目が多すぎます\n"
 
-#: nmz/util.c:545
+#: nmz/util.c:561
 msgid "Too many words matched. Ignored"
 msgstr "マッチする単語が多すぎるので無視しました"
 
-#: nmz/util.c:548
+#: nmz/util.c:564
 msgid "Too many pages hit. Ignored"
 msgstr "ヒット数が多すぎるので無視しました"
 
-#: nmz/util.c:551
+#: nmz/util.c:567
 msgid "cannot open regex index"
 msgstr "正規表現用インデックスが開けませんでした"
 
-#: nmz/util.c:554
+#: nmz/util.c:570
 msgid "cannot open phrase index"
 msgstr "フレイズ検索用インデックスが開けませんでした"
 
-#: nmz/util.c:557
+#: nmz/util.c:573
 msgid "cannot open this index"
 msgstr "インデックスが開けませんでした"
 
-#: nmz/util.c:560
+#: nmz/util.c:576
 msgid "You don't have a permission to access the index"
 msgstr "インデックスにアクセスする権利がありません"
 
-#: nmz/util.c:563
+#: nmz/util.c:579
 msgid "Unknown error. Report bug!"
 msgstr "不明なエラー。バグ報告してください"
 
@@ -101,16 +101,16 @@ msgstr "\t<strong>ペイジ:</strong> "
 msgid "Current List: %d"
 msgstr "現在のリスト: %d"
 
-#: src/output.c:443
+#: src/output.c:447
 #, c-format
 msgid " [ TOTAL: %d ]"
 msgstr " [ 合計: %d ]"
 
-#: src/output.c:452
+#: src/output.c:456
 msgid "\t<p><strong> Total "
 msgstr "\t<p><strong>検索式にマッチする "
 
-#: src/output.c:459
+#: src/output.c:463
 msgid ""
 "\t documents matching your query.</strong></p>\n"
 "\n"
@@ -118,7 +118,7 @@ msgstr ""
 "\t 個の文書が見つかりました。</strong></p>\n"
 "\n"
 
-#: src/output.c:519
+#: src/output.c:523
 #, c-format
 msgid ""
 "\t<h2>Error!</h2>\n"
@@ -127,15 +127,15 @@ msgstr ""
 "\t<h2>エラー!</h2>\n"
 "<p>%s</p>\n"
 
-#: src/output.c:529
+#: src/output.c:533
 msgid "\t<h2>Results:</h2>\n"
 msgstr "\t<h2>検索結果</h2>\n"
 
-#: src/output.c:536
+#: src/output.c:540
 msgid "References: "
 msgstr "参考ヒット数: "
 
-#: src/output.c:578
+#: src/output.c:582
 msgid "\t<p>No document matching your query.</p>\n"
 msgstr "\t<p>検索式にマッチする文書はありませんでした。</p>\n"
 

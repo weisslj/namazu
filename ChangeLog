@@ -6,6 +6,12 @@
 	* pl/Makefile.am: Likewise.
 	(COMMONDATA): Removed.
 
+1999-12-28  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* pl/wakati.pl (wakatize_japanese_sub): Apply Makoto Fujiwara's
+	patch. [namazu-dev 1070]
+
+
 1999-12-27  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* scripts/mknmz.pl.in: Set autoflush(1) to STDERR.

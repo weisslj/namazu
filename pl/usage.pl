@@ -1,5 +1,5 @@
 # -*- Perl -*-
-# $Id: usage.pl,v 1.2 1999-10-11 04:25:19 satoru Exp $
+# $Id: usage.pl,v 1.3 1999-11-18 13:42:03 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -28,7 +28,7 @@ require "var.pl";
 ## Mini usage
 ##
 $USAGE_MINI = <<EOFusage;
-Usage: mknmz [options] <target(s)>
+Usage: mknmz [options] <target>...
 Try `mknmz --help' for more options.
 EOFusage
 
@@ -36,10 +36,9 @@ EOFusage
 ## Japanese usage (long)
 ##
 $USAGE_JA = <<EOFusage;
-mknmz v$var::VERSION -  全文検索システム Namazu のインデックス作成プログラム
-$var::COPYRIGHT
+mknmz - Namazu のインデックス作成プログラム $var::VERSION
 
-使い方: mknmz [options] <target(s)>
+使い方: mknmz [options] <target>...
 
   対象ファイル:
     -a, --all                すべてのファイルを対象とする
@@ -94,10 +93,9 @@ EOFusage
 ## English usage (long)
 ##
 $USAGE_EN = <<EOFusage;
-mknmz.pl v$var::VERSION -  indexer of Namazu
-$var::COPYRIGHT
+mknmz of Namazu $var::VERSION
 
-Usage: mknmz [options] <target(s)>
+Usage: mknmz [options] <target>...
 
   Target files:
     -a, --all                target all files.
@@ -147,4 +145,23 @@ Usage: mknmz [options] <target(s)>
         --help               show this help and exit.
 EOFusage
 
+##
+## Version information
+##
+$VERSION_INFO = <<EOFversion;
+mknmz of Namazu 1.9.8
+
+Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
+This is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2, or (at your option)
+any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty
+of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+EOFversion
+
 1;
+

@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.37 1999-11-18 02:46:07 satoru Exp $
+ * $Id: namazu.c,v 1.38 1999-11-18 13:42:07 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -66,7 +66,7 @@
 static int stdio2file(char*);
 static int parse_options(int, char**);
 static int namazu_core(char*, char*, char*);
-static void suicide(void);
+static void suicide(int);
 
 /* redirect stdio to specified file */
 static int stdio2file(char * fname)
@@ -208,7 +208,7 @@ static int parse_options(int argc, char **argv)
 	    DecodeURI = 0;
 	    break;
 	case 'v':
-	    printf("namazu v%s\n", VERSION);
+	    show_version();
 	    return DIE_NOERROR;
 	    break;
 	case 'C':
@@ -337,7 +337,7 @@ static int namazu_core(char * query, char *subquery, char *av0)
     return 0;
 }
 
-static void suicide (void)
+static void suicide (int signum)
 {
     diemsg("processing time exceeds a limit: %d", SUICIDE_TIME);
     diewithmsg();
@@ -418,7 +418,7 @@ int main(int argc, char **argv)
 
     if (IsCGI) {
 	/* set a suicide timer */
-	signal(SIGALRM, (void *)suicide);
+	signal(SIGALRM, suicide);
 	alarm(SUICIDE_TIME);
     }
 

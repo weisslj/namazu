@@ -3,5 +3,6 @@
 
 extern void show_long_usage(void);
 extern void show_mini_usage(void);
+extern void show_version(void);
 
 #endif /* _USAGE_H */

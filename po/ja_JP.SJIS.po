@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: namazu 2.0\n"
-"POT-Creation-Date: 1999-11-18 07:02+0900\n"
+"POT-Creation-Date: 1999-11-18 22:21+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>\n"
 "Language-Team: Japanese <satoru-t@is.aist-nara.ac.jp>\n"
@@ -133,10 +133,9 @@ msgstr ""
 #: src/usage.c:44
 #, c-format
 msgid ""
-"Search Program of Namazu v%s\n"
-"%s\n"
+"namazu of Namazu %s\n"
 "\n"
-"Usage: namazu [options] <query> [index ...] \n"
+"Usage: namazu [options] <query> [index]... \n"
 "    -n, --max=num        set number of documents shown at once.\n"
 "    -w, --whence=num     set first number of documents shown in results.\n"
 "    -l, --list           print results by listing format.\n"
@@ -163,9 +162,9 @@ msgid ""
 "    -v, --version        show the version of namazu and exit.\n"
 "        --help           show this help and exit\n"
 msgstr ""
-"\221\123\225\266\214\237\215\365\203\126\203\130\203\145\203\200 Namazu \202\314\214\237\215\365\203\166\203\215\203\117\203\211\203\200 v%s\n"
-"%s\n"
-"\216\147\202\242\225\373: namazu [options] <query> [index(s)] \n"
+"namazu - Namazu \202\314\214\237\215\365\203\166\203\215\203\117\203\211\203\200 %s\n"
+"\n"
+"\216\147\202\242\225\373: namazu [options] <query> [index]...\n"
 "    -n, --max=num           \210\352\223\170\202\311\225\134\216\246\202\267\202\351\214\217\220\224\n"
 "    -w, --whence=num        \225\134\216\246\202\267\202\351\203\212\203\130\203\147\202\314\220\346\223\252\224\324\215\206\n"
 "    -l, --list              \214\237\215\365\214\213\211\312\202\360 URI\201\105\203\160\203\130\226\274\202\314\203\212\203\130\203\147\202\305\217\157\227\315\n"
@@ -191,11 +190,11 @@ msgstr ""
 "    -v, --version           \203\224\203\100\201\133\203\127\203\207\203\223\202\360\225\134\216\246\202\267\202\351\n"
 "        --help              help \202\360\225\134\216\246\202\267\202\351 (\202\261\202\314\225\134\216\246)\n"
 
-#: src/usage.c:80
-msgid "Usage: namazu [options] <query> [index dir(s)]\n"
-msgstr "\216\147\202\242\225\373: namazu [\203\111\203\166\203\126\203\207\203\223] <\214\237\215\365\216\256> [\203\103\203\223\203\146\203\142\203\116\203\130...]\n"
+#: src/usage.c:79
+msgid "Usage: namazu [options] <query> [index]...\n"
+msgstr "\216\147\202\242\225\373: namazu [\203\111\203\166\203\126\203\207\203\223] <\214\237\215\365\216\256> [\203\103\203\223\203\146\203\142\203\116\203\130]...\n"
 
-#: src/usage.c:81
+#: src/usage.c:80
 msgid "Try `namazu --help' for more information.\n"
 msgstr "`namazu --help' \202\305\203\111\203\166\203\126\203\207\203\223\202\314\220\340\226\276\202\252\225\134\216\246\202\263\202\352\202\334\202\267\n"
 

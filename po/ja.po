@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: namazu 2.0\n"
-"POT-Creation-Date: 1999-11-18 07:02+0900\n"
+"POT-Creation-Date: 1999-11-18 22:21+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>\n"
 "Language-Team: Japanese <satoru-t@is.aist-nara.ac.jp>\n"
@@ -133,10 +133,9 @@ msgstr ""
 #: src/usage.c:44
 #, c-format
 msgid ""
-"Search Program of Namazu v%s\n"
-"%s\n"
+"namazu of Namazu %s\n"
 "\n"
-"Usage: namazu [options] <query> [index ...] \n"
+"Usage: namazu [options] <query> [index]... \n"
 "    -n, --max=num        set number of documents shown at once.\n"
 "    -w, --whence=num     set first number of documents shown in results.\n"
 "    -l, --list           print results by listing format.\n"
@@ -163,9 +162,9 @@ msgid ""
 "    -v, --version        show the version of namazu and exit.\n"
 "        --help           show this help and exit\n"
 msgstr ""
-"全文検索システム Namazu の検索プログラム v%s\n"
-"%s\n"
-"使い方: namazu [options] <query> [index(s)] \n"
+"namazu - Namazu の検索プログラム %s\n"
+"\n"
+"使い方: namazu [options] <query> [index]...\n"
 "    -n, --max=num           一度に表示する件数\n"
 "    -w, --whence=num        表示するリストの先頭番号\n"
 "    -l, --list              検索結果を URI・パス名のリストで出力\n"
@@ -191,11 +190,11 @@ msgstr ""
 "    -v, --version           ヴァージョンを表示する\n"
 "        --help              help を表示する (この表示)\n"
 
-#: src/usage.c:80
-msgid "Usage: namazu [options] <query> [index dir(s)]\n"
-msgstr "使い方: namazu [オプション] <検索式> [インデックス...]\n"
+#: src/usage.c:79
+msgid "Usage: namazu [options] <query> [index]...\n"
+msgstr "使い方: namazu [オプション] <検索式> [インデックス]...\n"
 
-#: src/usage.c:81
+#: src/usage.c:80
 msgid "Try `namazu --help' for more information.\n"
 msgstr "`namazu --help' でオプションの説明が表示されます\n"
 

@@ -2,7 +2,7 @@
  * 
  * usage.c -
  * 
- * $Id: usage.c,v 1.8 1999-11-18 02:46:07 satoru Exp $
+ * $Id: usage.c,v 1.9 1999-11-18 13:42:07 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -42,9 +42,8 @@ void show_long_usage(void)
     char buf[BUFSIZE * 4];
     char *usage = (char *)
     N_("\
-Search Program of Namazu v%s\n\
-%s\n\n\
-Usage: namazu [options] <query> [index ...] \n\
+namazu of Namazu %s\n\n\
+Usage: namazu [options] <query> [index]... \n\
     -n, --max=num        set number of documents shown at once.\n\
     -w, --whence=num     set first number of documents shown in results.\n\
     -l, --list           print results by listing format.\n\
@@ -71,14 +70,26 @@ Usage: namazu [options] <query> [index ...] \n\
         --help           show this help and exit\n");
 
     strcpy(buf, _(usage));
-    printf(buf, VERSION, COPYRIGHT);
+    printf(buf, VERSION);
 }
 
 
 void show_mini_usage(void)
 {
-    fputs(_("Usage: namazu [options] <query> [index dir(s)]\n"), stdout);
-    fputs(_("Try `namazu --help' for more information.\n"), stdout);
+    printf(_("Usage: namazu [options] <query> [index]...\n"));
+    printf(_("Try `namazu --help' for more information.\n"));
 }
 
-
+void show_version(void)
+{
+    printf("namazu of Namazu %s\n\n", VERSION);
+    printf("Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.\n");
+    printf("This is free software; you can redistribute it and/or modify\n");
+    printf("it under the terms of the GNU General Public License as published by\n");
+    printf("the Free Software Foundation; either version 2, or (at your option)\n");
+    printf("any later version.\n\n");
+    printf("This program is distributed in the hope that it will be useful,\n");
+    printf("but WITHOUT ANY WARRANTY; without even the implied warranty\n");
+    printf("of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n");
+    printf("GNU General Public License for more details.\n");
+}

@@ -1,5 +1,25 @@
 1999-11-18  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* pl/usage.pl: s/<target(s)>/<target>.../g.
+
+	* src/mknmz.pl.in (load_modules): Add "../pl" and "../filter" into
+	@INC. 
+	
+	* src/mknmz.pl.in: s/show_long_usage/show_usage/g.
+
+	* src/mknmz.pl.in (show_version): New function.
+
+	* pl/usage.pl ($VERSION_INFO): Description for --version.
+
+	* src/mknmz.pl.in ($LANG): Be gloabl.
+
+	* src/mknmz.pl.in (parse_options): Change exit status for
+	$opt_help, $opt_version, $opt_show_config.
+
+	* src/namazu.c (parse_options): Treat 'v' with show_version().
+	
+	* src/usage.c (show_version): New function.
+
 	* acinclude.m4 (AC_PROG_LD): Fix 'ld' problem. [namazu-dev 859]
 	
 	* {src,nmz}/*.h: Add 'extern' keyword for all public functions.

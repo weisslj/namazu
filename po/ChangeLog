@@ -1,3 +1,7 @@
+1999-11-18  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* ja.po: Fix usage and mini usage.
+
 1999-11-17  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* ja.po: Add msgid " (cannot open phrase index)".

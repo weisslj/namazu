@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.76 1999-11-15 13:09:31 kenzo- Exp $
+# $Id: mknmz.pl.in,v 1.77 1999-11-18 13:42:07 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -34,10 +34,10 @@ use File::MMagic;
 use strict;  # be strict since v1.2.0
 use Getopt::Long;
 
-use vars qw($SYSTEM);
+use vars qw($SYSTEM $LANG);
 $SYSTEM = $^O;
 
-my $LANG = "C";                # language of messages
+$LANG = "C";                # language of messages
 my $CCS = "euc";
 my $CONFDIR  = "%CONFDIR%";    # directory where mknmzrc are in.
 my $LIBDIR  = "%LIBDIR%";      # directory where library etc. are in.
@@ -209,6 +209,8 @@ sub init () {
 sub load_modules () {
     unshift @INC, $LIBDIR;
     unshift @INC, $FILTERDIR;
+    unshift @INC, "../pl";
+    unshift @INC, "../filter";
 
     require "var.pl";
     require "conf.pl";
@@ -776,19 +778,19 @@ sub parse_options ()
 	       );
 
     if ($opt_help) {
-	show_long_usage();
-	exit 0;
+	show_usage();
+	exit 1;
     }
 
     if ($opt_version) {
-	print "mknmz v$var::VERSION\n";
-	exit 0;
+	show_version();
+	exit 1;
     }
 
     if ($opt_show_config) {
 	read_config();
 	show_config();
-	exit 0;
+	exit 1;
     }
 
     if (defined $update_index) {
@@ -969,8 +971,9 @@ sub find_target (@) {
 }
 
 
-sub show_long_usage () {
+sub show_usage () {
     util::dprint("lang: $LANG\n");
+
     if (util::islang("ja")) {
 	if ($CCS eq "euc") {
 	    print $usage::USAGE_JA;
@@ -985,6 +988,10 @@ sub show_long_usage () {
 
 sub show_mini_usage () {
     print $usage::USAGE_MINI;
+}
+
+sub show_version () {
+    print $usage::VERSION_INFO;
 }
 
 # check the file -- 0: OK / 1: NG
@@ -1923,7 +1930,7 @@ muda($conf::ON_MEMORY_MAX,
      $conf::KAKASI, $var::Opt{'okurigana'},
      $var::Opt{'hiragana'}, $conf::ROBOTS_EXCLUDE_URLS, $conf::DEFAULT_FILE,
      $conf::HTML_SUFFIX, $usage::USAGE_EN, $usage::USAGE_MINI, 
-     $var::Opt{'noheadabst'}, 
+     $var::Opt{'noheadabst'}, $usage::VERSION_INFO,
      $var::Opt{'noencodeurl'}, $var::Opt{'htaccessexclude'}, 
      $var::RECURSIVE_ACTIONS, $conf::ROBOTS_EXCLUDE_URIS, 
      $conf::ROBOTS_EXCLUDE_URLS, $conf::META_TAGS);

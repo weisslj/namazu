@@ -1,5 +1,12 @@
 2000-02-29  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/namazu-cmd.c (main): Remove #ifdef's around
+	`NAMAZULOCALEDIR'.
+
+	* src/namazu-cgi.c: Likewise.
+
+	* pl/gettext.pl.in: Add `NAMAZULOCALEDIR' handling.
+
 	* filter/man.pl (status): Add -Wall to the groff's argument.
 
 	* TODO: Add some TODOs.

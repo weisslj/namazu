@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu-cmd.c,v 1.9 2000-02-28 21:23:10 kenzo- Exp $
+ * $Id: namazu-cmd.c,v 1.10 2000-02-29 08:37:53 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -266,17 +266,19 @@ main(int argc, char **argv)
 {
     int i = 0;
     char query[BUFSIZE] = "", subquery[BUFSIZE] = "";
+    char *localedir = getenv("NAMAZULOCALEDIR");
 
-#if defined (_WIN32) && !defined (__CYGWIN__)
-	char *localedir;
-	if ((localedir = getenv("NAMAZULOCALEDIR")) != NULL) {
-	    bindtextdomain(PACKAGE, localedir);
-	} else {
-	    bindtextdomain(PACKAGE, LOCALEDIR);
-	}
-#else
-    bindtextdomain(PACKAGE, LOCALEDIR);
-#endif
+    /*
+     * To support a binary package for Windows, we should
+     * allow to change LOCALEDIR with the environment
+     * variable `NAMAZULOCALEDIR' after installation is
+     * done.
+     */
+    if (localedir != NULL) {
+	bindtextdomain(PACKAGE, localedir);
+    } else {
+	bindtextdomain(PACKAGE, LOCALEDIR);
+    }
     textdomain(PACKAGE);
 
     nmz_set_lang("");
@@ -289,7 +291,7 @@ main(int argc, char **argv)
 	 * been same until 1.9.13, there might be a lot of
 	 * people trying to use "namazu" command as CGI. But
 	 * since 1.9.14, they are different and we cannot
-	 * use "namazu" command as CGI any longer.
+	 * use "namazu" command as CGI any longer.  
 	 */
 	printf(MSG_MIME_HEADER);
 	printf("You should use \"namazu.cgi\" instead of \"namazu\" command.");

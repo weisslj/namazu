@@ -65,13 +65,24 @@ sub textdomain
 sub choose_catalog
 {
     my ($language, $domain) = @_;
-    
+
     while (1) {
-	my $catalog =  "@LOCALEDIR@/$language/LC_MESSAGES/$domain.mo";
+	#
+	# To support a binary package for Windows, we should 
+	# allow to change LOCALEDIR with the environment variable
+	# `NAMAZULOCALEDIR' after installation is done.
+	#
+	# NOTE: Windows has a nasty "drive letter" convention.
+	#
+	my $base = "@LOCALEDIR@";
+	if (defined $ENV{NAMAZULOCALEDIR}) {
+	    $base = $ENV{NAMAZULOCALEDIR};
+	}
+	my $catalog =  "$base/$language/LC_MESSAGES/$domain.mo";
 	return $catalog if -f $catalog; # if the catalog file exists.
 
 	# Truncate $language by the following order: 
-        # ja_JP.eucJP -> ja_JP -> ja
+	# ja_JP.eucJP -> ja_JP -> ja
 	unless ($language =~ s/[\._][^\._]+$//) {
 	    return undef;
 	}

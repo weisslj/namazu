@@ -1,6 +1,6 @@
 # File::MMagic
 #
-# $Id: MMagic.pm,v 1.21 2000-03-29 07:49:47 knok Exp $
+# $Id: MMagic.pm,v 1.22 2000-08-09 08:18:28 knok Exp $
 #
 # This program is originated from file.kulp that is a production of The
 # Unix Reconstruction Projct.
@@ -274,7 +274,7 @@ BEGIN {
 	    t => "\t",
 	    f => "\f");
 
-$VERSION = "1.05";
+$VERSION = "1.07";
 undef $dataLoc;
 }
 
@@ -339,11 +339,12 @@ sub new {
 		};
 
     $self->{FILEEXTS} = {
-	     'gz$' => 'application/x-gzip',
-	     'Z$' => 'application/x-compress',
-	     'txt$' => 'text/plain',
-	     'html$' => 'text/html',
-	     'htm$' => 'text/html',
+	     '\.gz$' => 'application/x-gzip',
+	     '\.bz2$' => 'application/x-bzip2',
+	     '\.Z$' => 'application/x-compress',
+	     '\.txt$' => 'text/plain',
+	     '\.html$' => 'text/html',
+	     '\.htm$' => 'text/html',
     };
     bless($self);
     return $self;
@@ -367,7 +368,7 @@ sub addFileExts {
 sub addMagicEntry {
     my $self = shift;
     my $entry = shift;
-    push @{$self->{magic}}, [$entry, -1, []];
+    unshift @{$self->{magic}}, [$entry, -1, []];
     return $self;
 }
 

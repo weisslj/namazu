@@ -1,23 +1,23 @@
-2000-03-29  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+2000-08-09  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
-	* Version 1.05.
+	* MMagic.pm (new): Added '\.' in $self->{FILEEXTS}.
+	(reported by Yasunori Tada. Thanks.)
+	Version 1.07.
+
+2000-03-29  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* MMagic.pm: Removed "\v" from %ESC.
 
-2000-03-23  Ken-ichi Hirose  <kenzo-@tama.or.jp>
+2000-03-23  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* MMagic.pm: Added some entries.
+	(committed by kenzo-. Thanks.)
+
+2000-03-08  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* Version 1.03.
 
-	* MMagic.pm (__DATA__): Add .EXE formats, WinNT/WinCE PE files,
-	and SFX magic entry are application/octet-stream.
-	Add application/x-lha.
-	Add application/x-zip.
-	Add application/x-tar.
-	Add text/x-info.
-	Change application/ichitaro4, application/ichitaro5,
- 	 application/ichitaro6, application/excel,
-	 application/msword.
-	Remove application/powerpoint.
+	* MMagic.pm (addMagicEntry): Changed priority for added entry.
 
 2000-03-03  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 

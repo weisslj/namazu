@@ -7,7 +7,6 @@ Group: Utilities/Text
 Requires: perl >= 5.0, kakasi, nkf
 Source0: @PACKAGE@-@VERSION@.tar.gz
 URL: http://openlab.ring.gr.jp/namazu/
-Packager: Taku Kudoh <taku@TAHOO.ORG>
 BuildRoot: /var/tmp/namazu
 
 %description
@@ -18,26 +17,35 @@ local HDD.  Now, search clients for Mule and Tcl/Tk, JAVA and
 Win32 are available.
 
 %changelog 
+* Thu Aug 26 1999 Ryuji Abe <raeva@t3.rim.or.jp>
+- Delete Packager tag.
+- Clean up at %prep.
+- Use CFLAGS="$RPM_OPT_FLAGS" at %build.
+- Use $RPM_BUILD_ROOT variables at %install.
+- Change configure option at %build and %files for new namazu directory structure.
+
 * Sun May 23 1999 Taku Kudoh <taku@TAHOO.ORG>
 - 
 
 %prep 
 rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/usr/bin
-mkdir -p $RPM_BUILD_ROOT/usr/lib/namazu
 
 %setup
 
 %build
-./configure --bindir=$RPM_BUILD_ROOT/usr/bin --libdir=$RPM_BUILD_ROOT/usr/lib/namazu
+CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=/usr
 make
 
 %install
-make install
+make $RPM_BUILD_ROOT install
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
-%attr(-,root,root) /usr/bin/*
-%attr(-,root,root) /usr/lib/namazu/*
+%defattr(-, root, root)
+
+%doc AUTHORS ChengeLog COMMITTERS COPYING NEWS README README-ja
+/usr/bin/*
+/usr/share/namazu/*
+

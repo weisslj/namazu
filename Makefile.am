@@ -1,7 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 
 @SET_MAKE@
-EXTRA_DIST = README-ja namazu.spec.in
+EXTRA_DIST = README-ja namazu.spec namazu.spec.in
 EXTRA_DIRS = conf doc etc lib lisp filter template tknamazu
 # EXTRA_DIRS = contrib doc lib misc
 SUBDIRS = src
@@ -31,6 +31,3 @@ dist-hook:
 	done
 	rm -f $(distdir)/$(CLEANFILES)
 
-rpm:
-	# put Namazu's tar-ball to a correct directory before do this
-	rpm -ba namazu.spec

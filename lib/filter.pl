@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: filter.pl,v 1.2 1999-05-04 04:42:37 satoru Exp $
+# $Id: filter.pl,v 1.3 1999-06-12 14:29:26 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -27,8 +27,8 @@ use strict;
 require "html.pl";
 
 # Filters
-sub document_filter ($$$$$$\%) {
-    my ($orig_cfile, $title, $contents, $weighted_str, $headings, $fields)
+sub document_filter ($$$$$\%) {
+    my ($orig_cfile, $content, $weighted_str, $headings, $fields)
 	= @_;
 
     my $cfile = $orig_cfile;
@@ -37,34 +37,35 @@ sub document_filter ($$$$$$\%) {
     $cfile =~ s/\.(gz|Z)$//;  # zipped file
     analize_rcs_stamp();
     $mhonarc_opt = 1 if 
-	(!$conf::NoMHonArcOpt && $$contents =~/^$conf::MHONARC_HEADER/);
+	(!$conf::NoMHonArcOpt && $$content =~/^$conf::MHONARC_HEADER/);
     if (html::is_html($cfile)) {
-	mhonarc_filter($contents, $weighted_str) 
+	mhonarc_filter($content, $weighted_str) 
 	    if $mhonarc_opt;
-	html_filter($contents, $weighted_str, $title, $fields, $headings);
+	html_filter($content, $weighted_str, $fields, $headings);
     } elsif ($cfile =~ /rfc\d+\.txt/i ) {
-	rfc_filter($contents, $weighted_str, $title);
+	rfc_filter($content, $weighted_str, $fields);
     } elsif ($conf::ManOpt) {
-	man_filter($contents, $weighted_str, $title);
+	man_filter($content, $weighted_str, $fields);
     }
-    uuencode_filter($contents) if $conf::UuencodeOpt;
+    uuencode_filter($content) if $conf::UuencodeOpt;
     if ($mhonarc_opt  || $conf::MailNewsOpt) {
-	mailnews_filter($contents, $weighted_str, $title, $fields);
-	mailnews_citation_filter($contents, $weighted_str);
+	mailnews_filter($content, $weighted_str, $fields);
+	mailnews_citation_filter($content, $weighted_str);
     }
-    line_adjust_filter($contents) unless $conf::NoLineAdOpt;
+    line_adjust_filter($content) unless $conf::NoLineAdOpt;
     line_adjust_filter($weighted_str) unless $conf::NoLineAdOpt;
-    white_space_adjust_filter($contents);
-    filename_to_title($cfile, $title, $weighted_str) unless $$title;
-    show_filter_debug_info($contents, $weighted_str,
-			   $title, $fields, $headings);
+    white_space_adjust_filter($content);
+    $fields->{'title'} =  filename_to_title($cfile, $weighted_str) 
+	unless $fields->{'title'};
+    show_filter_debug_info($content, $weighted_str,
+			   $fields, $headings);
 }
 
 # Show debug information for filters
-sub show_filter_debug_info ($$$$) {
-    my ($contents, $weighted_str, $title, $fields, $headings) = @_;
-    util::dprint("-- title --\n$$title\n");
-    util::dprint("-- content --\n$$contents\n");
+sub show_filter_debug_info ($$$) {
+    my ($content, $weighted_str, $fields, $headings) = @_;
+    util::dprint("-- title --\n$fields->{'title'}\n");
+    util::dprint("-- content --\n$$content\n");
     util::dprint("-- weighted_str: --\n$$weighted_str\n");
     util::dprint("-- headings --\n$$headings\n");
 }
@@ -80,7 +81,7 @@ sub white_space_adjust_filter ($) {
 
 # ファイル名からタイトルを取得 (単なるテキストファイルの場合)
 sub filename_to_title ($\$\$) {
-    my ($cfile, $title, $weighted_str) = @_;
+    my ($cfile, $weighted_str) = @_;
 
     # for MSWin32's filename using Shift_JIS [1998-09-24]
     if (($namazu::SYSTEM eq "MSWin32") || ($namazu::SYSTEM eq "os2")) {
@@ -97,26 +98,27 @@ sub filename_to_title ($\$\$) {
     my $weight = $conf::Weight{'html'}->{'title'};
     $$weighted_str .= "\x7f$weight\x7f$tmp\x7f/$weight\x7f\n";
 
-    $$title = $filename . $conf::TEXT_TITLE;
+    my $title = $filename . $conf::TEXT_TITLE;
+    return $title
 }
 
 # HTML 用のフィルタ
-sub html_filter ($$$$$) {
-    my ($contents, $weighted_str, $title, $fields, $headings) = @_;
+sub html_filter ($$$$) {
+    my ($content, $weighted_str, $fields, $headings) = @_;
 
-    html::escape_lt_gt($contents);
-    html::get_title($contents, $weighted_str, $title);
-    html::get_author($contents, $fields);
-    html::get_meta_info($contents, $weighted_str);
-    html::get_img_alt($contents);
-    html::get_table_summary($contents);
-    html::get_title_attr($contents);
-    html::normalize_html_element($contents);
-    html::erase_above_body($contents);
-    html::weight_element($contents, $weighted_str, $headings);
-    html::remove_html_elements($contents);
+    html::escape_lt_gt($content);
+    $fields->{'title'} = html::get_title($content, $weighted_str);
+    html::get_author($content, $fields);
+    html::get_meta_info($content, $weighted_str);
+    html::get_img_alt($content);
+    html::get_table_summary($content);
+    html::get_title_attr($content);
+    html::normalize_html_element($content);
+    html::erase_above_body($content);
+    html::weight_element($content, $weighted_str, $headings);
+    html::remove_html_elements($content);
     # それぞれ実体参照の復元
-    html::decode_entity($contents);
+    html::decode_entity($content);
     html::decode_entity($weighted_str);
     html::decode_entity($headings);
 }
@@ -124,32 +126,32 @@ sub html_filter ($$$$$) {
 # MHonArc 用のフィルタ
 # MHonArc v2.1.0 が標準で出力する HTML を想定しています
 sub mhonarc_filter ($$) {
-    my ($contents, $weighted_str) = @_;
+    my ($content, $weighted_str) = @_;
 
     # MHonArc を使うときはこんな感じに処理すると便利
-    $$contents =~ s/<!--X-MsgBody-End-->.*//s;
-    $$contents =~ s/<!--X-TopPNI-->.*<!--X-TopPNI-End-->//s;
-    $$contents =~ s/<!--X-Subject-Header-Begin-->.*<!--X-Subject-Header-End-->//s;
-    $$contents =~ s/<!--X-Head-Body-Sep-Begin-->/\n/;  # ヘッダと本文を区切る
-    $$contents =~ s/^<LI>//gim;   # ヘッダの前に空白をあけたくないから
-    $$contents =~ s!</?EM>!!gi;  # ヘッダの名前をインデックスにいれたくない
-    $$contents =~ s/^\s+//;
+    $$content =~ s/<!--X-MsgBody-End-->.*//s;
+    $$content =~ s/<!--X-TopPNI-->.*<!--X-TopPNI-End-->//s;
+    $$content =~ s/<!--X-Subject-Header-Begin-->.*<!--X-Subject-Header-End-->//s;
+    $$content =~ s/<!--X-Head-Body-Sep-Begin-->/\n/;  # ヘッダと本文を区切る
+    $$content =~ s/^<LI>//gim;   # ヘッダの前に空白をあけたくないから
+    $$content =~ s!</?EM>!!gi;  # ヘッダの名前をインデックスにいれたくない
+    $$content =~ s/^\s+//;
 }
 
 # Mail/News 用のフィルタ
 # 元となるものは古川@ヤマハさんにいただきました
-sub mailnews_filter ($$$\%) {
-    my ($contents, $weighted_str, $title, $fields) = @_;
+sub mailnews_filter ($$\%) {
+    my ($content, $weighted_str, $fields) = @_;
 
     my $boundary = "";
     my $line     = "";
     my $partial  = 0;
 
-    $$contents =~ s/^\s+//;
+    $$content =~ s/^\s+//;
     # 1 行目がヘッダっぽくないファイルは、ヘッダ処理しない
-    return unless $$contents =~ /(^\S+:|^from )/i;
+    return unless $$content =~ /(^\S+:|^from )/i;
 
-    my @tmp = split(/\n/, $$contents);
+    my @tmp = split(/\n/, $$content);
   HEADER_PROCESSING:
     while (@tmp) {
 	$line = shift(@tmp);
@@ -176,14 +178,15 @@ sub mailnews_filter ($$$\%) {
 	    }
  	}
 	if ($line =~ s/^subject:\s*//i){
-	    $$title = $line;
-	    html::encode_entity($title);
-	    # ML 特有の [hogehoge-ML:000] を読み飛ばす。
-	    # のが意図だが、面倒なので、
-	    # 実装上、最初の [...] を読み飛ばす。
+	    # save title
+	    $fields->{'title'} = $line;
+
+	    # skip a ML specific string such as [hogehoge-ML:000]
+	    # To make implementation easy, 
+	    # skip a first [...] string simply
 	    $line =~ s/^\[.*?\]\s*//;
 
-	    # 'Re:' を読み飛ばす。
+	    # skip repetition of 'Re:'
 	    $line =~ s/\bre:\s*//gi;
 
 	    my $weight = $conf::Weight{'html'}->{'title'};
@@ -210,22 +213,22 @@ sub mailnews_filter ($$$\%) {
 	undef $partial;
 	goto HEADER_PROCESSING;
     }
-    $$contents = join("\n", @tmp);
+    $$content = join("\n", @tmp);
     if ($boundary) {
 	# MIME の Multipart  をそれなりに処理する
 	$boundary =~ s/(\W)/\\$1/g;
-	$$contents =~ s/This is multipart message.\n//i;
+	$$content =~ s/This is multipart message.\n//i;
 
 
 	# MIME multipart processing,
 	# modified by Furukawa-san's patch on [1998/08/27]
- 	$$contents =~ s/--$boundary(--)?\n?/\xff/g;
- 	my (@parts) = split(/\xff/, $$contents);
- 	$$contents = '';
- 	foreach $_ (@parts){
+ 	$$content =~ s/--$boundary(--)?\n?/\xff/g;
+ 	my (@parts) = split(/\xff/, $$content);
+ 	$$content = '';
+ 	for $_ (@parts){
  	    if (s/^(.*?\n\n)//s){
  		my ($head) = $1;
- 		$$contents .= $_ if $head =~ m!^content-type:.*text/plain!mi;
+ 		$$content .= $_ if $head =~ m!^content-type:.*text/plain!mi;
  	    }
  	}
     }
@@ -235,12 +238,12 @@ sub mailnews_filter ($$$\%) {
 # また冒頭の名乗るだけの行や、引用部分、◯◯さんは書きましたなどの行は
 # 要約に含まれないようにする (やまだあきらさんのアイディアを頂きました)
 sub mailnews_citation_filter ($$) {
-    my ($contents, $weighted_str) = @_;
+    my ($content, $weighted_str) = @_;
 
     my $omake = "";
-    $$contents =~ s/^\s+//;
-    my @tmp = split(/\n/, $$contents);
-    $$contents = "";
+    $$content =~ s/^\s+//;
+    my @tmp = split(/\n/, $$content);
+    $$content = "";
 
     # 冒頭の名乗り出る部分を処理 (これは最初の 1,2 行めにしかないでしょう)
     for (my $i = 0; $i < 2 && defined($tmp[$i]); $i++) {
@@ -253,23 +256,23 @@ sub mailnews_citation_filter ($$) {
     }
 
     # 引用部分を隔離
-    foreach my $line (@tmp) {
+    for my $line (@tmp) {
 	# 行頭に HTML タグが来た場合は引用処理しない
 	if ($line !~ /^[^>]*</ &&
 	    $line =~ s/^((\S{1,10}>)|(\s*[\>\|\:\#]+\s*))+//) {
 	    $omake .= $line . "\n";
-	    $$contents .= "\n";  # 改行をいれよう
+	    $$content .= "\n";  # 改行をいれよう
 	    next;
 	}
-	$$contents .= $line. "\n";
+	$$content .= $line. "\n";
     }
 	
     # ここでは空行を区切りにした「段落」で処理している
     # 「◯◯さんは△△の記事において□□時頃書きました」の類いを隔離
-    @tmp = split(/\n\n+/, $$contents);
-    $$contents = "";
+    @tmp = split(/\n\n+/, $$content);
+    $$content = "";
     my $i = 0;
-    foreach my $line (@tmp) {
+    for my $line (@tmp) {
 	# 完全に除外するのは無理だと思われます。こんなものかなあ
         # この手のメッセージはせいぜい最初の 5 段落くらいに含まれるかな
 	# また、 5 行より長い段落は処理しない。
@@ -280,7 +283,7 @@ sub mailnews_citation_filter ($$) {
 	    $line = "";
 	    next;
 	}
-	$$contents .= $line. "\n\n";
+	$$content .= $line. "\n\n";
         $i++;
     }
     $$weighted_str .= "\x7f1\x7f$omake\x7f/1\x7f\n";
@@ -290,45 +293,43 @@ sub mailnews_citation_filter ($$) {
 # RFC 用のフィルタ
 # わりと書式はまちまちみたいだからそれなりに
 sub rfc_filter ($$$) {
-    my ($contents, $weighted_str, $title) = @_;
+    my ($content, $weighted_str, $fields) = @_;
 
-    $$contents =~ s/^\s+//s;
-    $$contents =~ s/((.+\n)+)\s+(.*)//;
-    $$title = $3;
-    html::encode_entity($title);
+    $$content =~ s/^\s+//s;
+    $$content =~ s/((.+\n)+)\s+(.*)//;
+    $fields->{'title'} = $3;
     $$weighted_str .= "\x7f1\x7f$1\x7f/1\x7f\n";
     my $weight = $conf::Weight{'html'}->{'title'};
-    $$weighted_str .= "\x7f$weight\x7f$$title\x7f/$weight\x7f\n";
+    $$weighted_str .= "\x7f$weight\x7f$fields->{'title'}\x7f/$weight\x7f\n";
     # summary または Introductionがあればそれを先頭に持ってくる
-#    $$contents =~ s/\A(.+?^(\d+\.\s*)?(Abstract|Introduction)\n\n)//ims;
-    $$contents =~ s/([\s\S]+^(\d+\.\s*)?(Abstract|Introduction)\n\n)//im;
+#    $$content =~ s/\A(.+?^(\d+\.\s*)?(Abstract|Introduction)\n\n)//ims;
+    $$content =~ s/([\s\S]+^(\d+\.\s*)?(Abstract|Introduction)\n\n)//im;
     $$weighted_str .= "\x7f1\x7f$1\x7f/1\x7f\n";
 }
 
 # man 用のフィルタ
 # よくわからないからいいかげんに
 sub man_filter ($$$) {
-    my ($contents, $weighted_str, $title) = @_;
+    my ($content, $weighted_str, $fields) = @_;
     my $name = "";
 
-    $$contents =~ s/^\s+//gs;
+    $$content =~ s/^\s+//gs;
 
-    $$contents =~ /^(.*?)\s*\S*$/m;
-    $$title = "$1";
-    html::encode_entity($title);
+    $$content =~ /^(.*?)\s*\S*$/m;
+    $fields->{'title'} = "$1";
     my $weight = $conf::Weight{'html'}->{'title'};
-    $$weighted_str .= "\x7f$weight\x7f$$title\x7f/$weight\x7f\n";
+    $$weighted_str .= "\x7f$weight\x7f$fields->{'title'}\x7f/$weight\x7f\n";
 
-    if ($$contents =~ /^(?:NAME|名前|名称)\s*\n(.*?)\n\n/ms) {
+    if ($$content =~ /^(?:NAME|名前|名称)\s*\n(.*?)\n\n/ms) {
 	$name = "$1::\n";
 	$weight = $conf::Weight{'html'}->{'h1'};
 	$$weighted_str .= "\x7f$weight\x7f$1\x7f/$weight\x7f\n";
     }
 
-    if ($$contents =~ 
+    if ($$content =~ 
 	s/(.+^(?:DESCRIPTION 解説|DESCRIPTIONS?|SHELL GRAMMAR|INTRODUCTION|【概要】|解説|説明|機能説明|基本機能説明)\s*\n)//ims) 
     {
-	$$contents = $name . $$contents;
+	$$content = $name . $$content;
 	$$weighted_str .= "\x7f1\x7f$1\x7f/1\x7f\n";
     }
 }
@@ -337,9 +338,9 @@ sub man_filter ($$$) {
 # 重ね重ね感謝です。後日 BinHex も追加してもらいました [1997-11-13]
 # 私がいじったことによるバグを修正してくださいました [1998-02-05] Thanks!
 sub uuencode_filter ($) {
-    my ($contents) = @_;
-    my @tmp = split(/\n/, $$contents);
-    $$contents = "";
+    my ($content) = @_;
+    my @tmp = split(/\n/, $$content);
+    $$content = "";
     
     my $uuin = 0;
     while (@tmp) {
@@ -404,7 +405,7 @@ sub uuencode_filter ($) {
             }
         }
         $uuin = 0;
-        $$contents .= $line;
+        $$content .= $line;
     }
 }
 
@@ -418,7 +419,7 @@ sub line_adjust_filter ($) {
     return undef unless defined($$text);
 
     my @tmp = split(/\n/, $$text);
-    foreach my $line (@tmp) {
+    for my $line (@tmp) {
 	$line .= "\n";
 	$line =~ s/^[ \>\|\#\:]+//;
 	$line =~ s/ +$//;

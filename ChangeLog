@@ -5,6 +5,16 @@
 	about major changes from previous version, please see 
 	"manual.html#VERSIONDIFF".
 
+1999-06-12  Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>
+
+	* src/result.l: New file. formatter for search results 
+	made by using lex
+	* src/result.c: New file. made by lex automatically
+	* src/{messages,search,form}.c: lower all HTML elements
+	* lib/NMZ.*.{en,ja}: lower all HTML elements
+	* lib/NMZ.results: New file. a template file for search results
+	* src/regex.[ch]: Reimported sources from Ruby v1.2.5
+	
 1999-05-30  Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>
 
 	* src/namazu.c: Modified it to use GNU getopt.c for parsing

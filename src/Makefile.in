@@ -61,6 +61,7 @@ CHASEN = @CHASEN@
 EXEEXT = @EXEEXT@
 GROFF = @GROFF@
 KAKASI = @KAKASI@
+LEX = @LEX@
 LN_S = @LN_S@
 MAKEINFO = @MAKEINFO@
 NKF = @NKF@
@@ -75,6 +76,7 @@ PERL = @PERL@
 SCORING = @SCORING@
 VERSION = @VERSION@
 ZCAT = @ZCAT@
+LIBS = -lm @LEXLIB@
 
 ##################################################################
 
@@ -83,7 +85,7 @@ exec_prefix = @prefix@/@PACKAGE@
 bin_PROGRAMS = namazu
 bin_SCRIPTS = clnmz gcnmz mailutime mknmz rvnmz vfnmz wdnmz gtnmz
 
-namazu_SOURCES = cgi.c codeconv.c conf.c form.c hlist.c messages.c 	namazu.c output.c parser.c re_match.c regex.c search.c 	seed.c util.c values.c wakati.c
+namazu_SOURCES = cgi.c codeconv.c conf.c form.c hlist.c messages.c 	namazu.c output.c parser.c re_match.c regex.c search.c 	seed.c util.c values.c wakati.c result.l
 
 noinst_HEADERS = namazu.h regex.h util.h
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
@@ -97,15 +99,16 @@ PROGRAMS =  $(bin_PROGRAMS)
 DEFS = @DEFS@ -I. -I$(srcdir) -I..
 CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
-LIBS = @LIBS@
 namazu_OBJECTS =  cgi.o codeconv.o conf.o form.o hlist.o messages.o \
 namazu.o output.o parser.o re_match.o regex.o search.o seed.o util.o \
-values.o wakati.o
+values.o wakati.o result.o
 namazu_LDADD = $(LDADD)
 namazu_DEPENDENCIES = 
 namazu_LDFLAGS = 
 SCRIPTS =  $(bin_SCRIPTS)
 
+LEX_OUTPUT_ROOT = @LEX_OUTPUT_ROOT@
+LEXLIB = @LEXLIB@
 CFLAGS = @CFLAGS@
 COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
@@ -113,7 +116,7 @@ LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(LDFLAGS) -o $@
 HEADERS =  $(noinst_HEADERS)
 
 DIST_COMMON =  Makefile.am Makefile.in clnmz.in gcnmz.in gtnmz.in \
-mailutime.in mknmz.pl.in rvnmz.in vfnmz.in wdnmz.in
+mailutime.in mknmz.pl.in result.c rvnmz.in vfnmz.in wdnmz.in
 
 
 DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
@@ -122,14 +125,14 @@ TAR = tar
 GZIP_ENV = --best
 DEP_FILES =  .deps/cgi.P .deps/codeconv.P .deps/conf.P .deps/form.P \
 .deps/hlist.P .deps/messages.P .deps/namazu.P .deps/output.P \
-.deps/parser.P .deps/re_match.P .deps/regex.P .deps/search.P \
-.deps/seed.P .deps/util.P .deps/values.P .deps/wakati.P
+.deps/parser.P .deps/re_match.P .deps/regex.P .deps/result.P \
+.deps/search.P .deps/seed.P .deps/util.P .deps/values.P .deps/wakati.P
 SOURCES = $(namazu_SOURCES)
 OBJECTS = $(namazu_OBJECTS)
 
 all: all-redirect
 .SUFFIXES:
-.SUFFIXES: .S .c .o .s
+.SUFFIXES: .S .c .l .o .s
 $(srcdir)/Makefile.in: Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
 	cd $(top_srcdir) && $(AUTOMAKE) --gnu src/Makefile
 
@@ -217,6 +220,8 @@ uninstall-binSCRIPTS:
 	list='$(bin_SCRIPTS)'; for p in $$list; do \
 	  rm -f $(DESTDIR)$(bindir)/`echo $$p|sed '$(transform)'`; \
 	done
+.l.c:
+	$(LEX) $(AM_LFLAGS) $(LFLAGS) $< && mv $(LEX_OUTPUT_ROOT).c $@
 
 tags: TAGS
 
@@ -335,6 +340,7 @@ distclean-generic:
 	-rm -f config.cache config.log stamp-h stamp-h[0-9]*
 
 maintainer-clean-generic:
+	-test -z "resultl" || rm -f resultl
 mostlyclean-am:  mostlyclean-binPROGRAMS mostlyclean-compile \
 		mostlyclean-tags mostlyclean-depend mostlyclean-generic
 

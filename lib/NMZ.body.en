@@ -1,91 +1,91 @@
 
-<H2>How to search</H2>
+<h2>How to search</h2>
 
 
-<P>
+<p>
  This search system is case insensitive. You can use asterisk
  character at the end of the word to do forward match search, 
  for instance: "foo*"
-</P>
+</p>
 
-<P>
+<p>
  Separating keywords by spaces is automatically assumed to be
  AND-search that is to find only documents containing all of the
  specified keywords.
-</P>
+</p>
 
-<P>
+<p>
  You can search the word containing symbols like "TCP/IP".
  However, this processing isn't perfect, so you can describe "TCP
  IP" instead of "TCP/IP", but it may cause noisy results.
-</P>
+</p>
 
-<P>
+<p>
  This search system has boolean operators '&amp;', '!', '|'.
  In place of symbols, the word "and", "or", "not", are accepted.
  Each operator must be separated by space.
-</P>
+</p>
 
-<P>
+<p>
  For exapmle (both expressions is same meaning):
-</P>
+</p>
 
-<UL>
-<LI><CODE>( sed | awk ) ! perl &amp; regexp</CODE>
-<LI><CODE>( sed or awk ) not perl and regexp</CODE>
-</UL>
+<ul>
+<li><code>( sed | awk ) ! perl &amp; regexp</code>
+<li><code>( sed or awk ) not perl and regexp</code>
+</ul>
 
-<P>
+<p>
  This sample finds the files which contain "sed" or "awk", and no "perl",
  but include "regexp".
-</P>
+</p>
 
-<P>
+<p>
  You can use nested parenthesises expression for advanced search.
-</P>
+</p>
 
-<P>
+<p>
 By surronding words with double quotation mark '"' or curly brace '{' '}',
 Namazu would recognize it as phrase but it is not perfect precision, so
 it cause wrong hit occasionally.
-</P>
+</p>
 
-<P>
+<p>
  For exapmle (both expressions is same meaning):
-</P>
+</p>
 
-<UL>
-<LI><CODE>"SIMPLE MAIL TRANSFER PROTOCOL"</CODE>
-<LI><CODE>{SIMPLE MAIL TRANSFER PROTOCOL}</CODE>
-</UL>
+<ul>
+<li><code>"SIMPLE MAIL TRANSFER PROTOCOL"</code>
+<li><code>{SIMPLE MAIL TRANSFER PROTOCOL}</code>
+</ul>
 
-<P>Also, Namazu can do "regular expression search", "middle or backward match search" but it's little slow.</P>
+<p>Also, Namazu can do "regular expression search", "middle or backward match search" but it's little slow.</p>
 
-<P>
+<p>
 For exapmle:
-</P>
+</p>
 
-<UL>
-<LI><CODE>*net</CODE> (backward match)
-<LI><CODE>*foo*</CODE>  (middle match)
-<LI><CODE>/(foo|bar)[a-z]+/</CODE> (regular expression)
-<LI><CODE>"rain dance"</CODE> (phrase)
-</UL>
+<ul>
+<li><code>*net</code> (backward match)
+<li><code>*foo*</code>  (middle match)
+<li><code>/(foo|bar)[a-z]+/</code> (regular expression)
+<li><code>"rain dance"</code> (phrase)
+</ul>
 
-<P>You can do 'field specified search' as well if indices are prepared.</P>
+<p>You can do 'field specified search' as well if indices are prepared.</p>
 
-<UL>
-<LI><CODE>+date:/Aug 1998/</CODE> (something dated on 'Aug 1998')
-<LI><CODE>+from:foo@bar.jp</CODE>  (article by foo@bar.jp)
-<LI><CODE>+subject:"internet message"</CODE>  (search a string for Subject:)
-<LI><CODE>+subject:"(mule|xemacs|emacs)"</CODE>  (search a string for Subject: with regex)
-<LI><CODE>+message-id:&lt;199801240555.OAA18737@foo.bar.jp&gt;</CODE>  (Message-Id)
-<LI><CODE>+title:amarok</CODE> (title of document)
-<LI><CODE>+author:foo@bar.jp</CODE>  (author of document)
-<LI><CODE>+url:http://foo.bar.jp/</CODE>  (URL of document)
-</UL>
+<ul>
+<li><code>+date:/Aug 1998/</code> (something dated on 'Aug 1998')
+<li><code>+from:foo@bar.jp</code>  (article by foo@bar.jp)
+<li><code>+subject:"internet message"</code>  (search a string for Subject:)
+<li><code>+subject:"(mule|xemacs|emacs)"</code>  (search a string for Subject: with regex)
+<li><code>+message-id:&lt;199801240555.OAA18737@foo.bar.jp&gt;</code>  (Message-Id)
+<li><code>+title:amarok</code> (title of document)
+<li><code>+author:foo@bar.jp</code>  (author of document)
+<li><code>+url:http://foo.bar.jp/</code>  (URI of document)
+</ul>
 
-<P>
+<p>
  Happy searching!
-</P>
+</p>
 

@@ -109,7 +109,7 @@ extern int LaterOrder;
 extern int FinalHitN;
 extern int ConfLoaded;
 extern int NoReplace;
-extern int DecodeURL;
+extern int DecodeURI;
 extern int IsCGI;
 extern int Logging;
 extern int DbNumber;
@@ -126,7 +126,7 @@ extern uchar *DbNames[];
 extern uchar Lang[];
 extern FILE *Flist, *FlistIndex, *Index, *IndexIndex;
 
-extern uchar BASE_URL[];
+extern uchar BASE_URI[];
 extern uchar NAMAZU_CONF[];
 extern uchar NAMAZURC[];
 
@@ -143,6 +143,7 @@ extern uchar FOOTERFILE[];
 extern uchar LOCKFILE[];
 extern uchar LOCKMSGFILE[];
 extern uchar BODYMSGFILE[];
+extern uchar RESULTFILE[];
 extern uchar SLOG[];
 extern uchar WORDLIST[];
 extern uchar FIELDINFO[];
@@ -180,8 +181,8 @@ HLIST get_hlist();
 HLIST do_date_processing();
 void nmz_mergesort();
 void sort_hlist();
-uchar URLdecode(uchar, uchar);
-void decode_url_string();
+uchar URIdecode(uchar, uchar);
+void decode_uri_string();
 void put_hlist();
 void show_usage();
 HLIST andmerge();
@@ -220,6 +221,7 @@ void split_query();
 int is_field();
 void fputx();
 void codeconv_query();
-int replace_url();
+int replace_uri();
+void apply_field_alias();
 
 #endif /* _NAMAZU_H */

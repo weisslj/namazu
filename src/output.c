@@ -92,14 +92,14 @@ void fputs_with_codeconv(uchar * s, FILE *fp)
 }
 
 /* output string without HTML elements
- * if Win32 or OS/2, output in Shift_JIS encoding */
+ * if system is Win32 or OS/2, output in Shift_JIS encoding */
 void fputs_without_html_tag(uchar * s, FILE *fp)
 {
     int f, i;
     uchar buf[BUFSIZE];
 
     for (f = 0, i = 0; *s && i < BUFSIZE; s++) {
-	if (!strncmp(s, "<BR>", 4)) {
+	if (!strncmp(s, "<br>", 4) && *(s + 4) != '\n') {
 	    buf[i++] = '\n';
 	    s += 3;
 	    continue;

@@ -2,7 +2,7 @@
  * 
  * re_match.c -
  * 
- * $Id: re_match.c,v 1.3 1999-05-14 04:38:51 satoru Exp $
+ * $Id: re_match.c,v 1.4 1999-06-12 14:29:31 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -40,11 +40,38 @@ typedef struct re_pattern_buffer Regexp;
 
 #define STEP 256
 
+/* replace a URI */
+int replace_uri(uchar * s)
+{
+    int n_src, n_dst, i, j;
+    uchar tmp[BUFSIZE];
+    REPLACE list = Replace;
+
+    strcpy(tmp, s);
+
+    while (list.src) {
+	n_src = strlen(list.src->str);
+	n_dst = strlen(list.dst->str);
+
+	if (!strncmp(list.src->str, tmp, n_src)) {
+	    strcpy(s, list.dst->str);
+	    for (i = n_src, j = n_dst; tmp[i]; i++, j++) {
+		s[j] = tmp[i];
+	    }
+	    s[j] = '\0';
+	    return 1;
+	}
+	list.src = list.src->next;
+	list.dst = list.dst->next;
+    }
+    return 0;
+}
+
 HLIST regex_grep(uchar *orig_expr, FILE *fp, uchar *field, int field_mode)
 {
     unsigned char buf[BUFSIZE], expr[BUFSIZE];
     struct re_pattern_buffer *rp;
-    int i, n, size = 0, max, url_mode = 0;
+    int i, n, size = 0, max, uri_mode = 0;
     HLIST val, tmp;
     val.n = 0;
 
@@ -68,8 +95,8 @@ HLIST regex_grep(uchar *orig_expr, FILE *fp, uchar *field, int field_mode)
     if (field_mode) {
         malloc_hlist(&val, size += STEP);
         max = IGNORE_HIT;
-        if (!strcmp(field, "url")) {
-            url_mode = 1;
+        if (!strcmp(field, "uri")) {
+            uri_mode = 1;
         }
     } else {
         max = IGNORE_MATCH;
@@ -86,8 +113,8 @@ HLIST regex_grep(uchar *orig_expr, FILE *fp, uchar *field, int field_mode)
         if (strlen(buf) == 0) {
             continue;
         }
-        if (url_mode) {  /* consider the REPLACE directive in namazu.conf */ 
-            replace_url(buf, 0);
+        if (uri_mode) {  /* consider the REPLACE directive in namazu.conf */ 
+            replace_uri(buf);
         }
         tolower_string(buf);
         if (-1 != re_search(rp, buf, strlen(buf), 0, strlen(buf), 0)) { 

@@ -10,6 +10,7 @@ dnl but WITHOUT ANY WARRANTY, to the extent permitted by law; without
 dnl even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 dnl PARTICULAR PURPOSE.
 
+
 # Do all the work for Automake.  This macro actually does too much --
 # some checks are only needed if your package does certain things.
 # But this isn't really a big deal.
@@ -101,6 +102,15 @@ else
    AC_MSG_RESULT(missing)
 fi
 AC_SUBST($1)])
+
+
+dnl AM_PROG_LEX
+dnl Look for flex, lex or missing, then run AC_PROG_LEX and AC_DECL_YYTEXT
+AC_DEFUN(AM_PROG_LEX,
+[missing_dir=ifelse([$1],,`cd $ac_aux_dir && pwd`,$1)
+AC_CHECK_PROGS(LEX, flex lex, "$missing_dir/missing flex")
+AC_PROG_LEX
+AC_DECL_YYTEXT])
 
 # Like AC_CONFIG_HEADER, but automatically create stamp file.
 

@@ -2,7 +2,7 @@
  * 
  * messages.c -
  * 
- * $Id: messages.c,v 1.4 1999-05-30 10:37:20 satoru Exp $
+ * $Id: messages.c,v 1.5 1999-06-12 14:29:30 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -79,9 +79,9 @@ usage: namazu [options] <query> [index dir(s)] \n\
    -c, --hit-count         ヒット数のみを表示する\n\
    -r, --no-references     参考ヒット数を表示しない\n\
    -H, --page              先の検索結果へのリンクを表示する (ほぼ無意味) \n\
-   -F, --form              <FORM> ... </FORM> の部分を強制的に表示する\n\
-   -R, --no-replace-url    URL の置き換えを行わない\n\
-   -U, --no-encode-url     URL encode の復元を行わない\n\
+   -F, --form              <form> ... </form> の部分を強制的に表示する\n\
+   -R, --no-replace-uri    URI の置き換えを行わない\n\
+   -U, --no-encode-uri     URI encode の復元を行わない\n\
    -o, --output-file=file  指定したファイルに検索結果を出力する\n\
    -f, --config=file       namazu.conf を指定する\n\
    -C, --show-config       コンフィギュレーション内容を表示する\n\
@@ -93,16 +93,16 @@ usage: namazu [options] <query> [index dir(s)] \n\
         /* output messages (Japanese message should be outputed by
            euctojisput function */
         MSG_TOO_LONG_KEY = (uchar *)
-            "	<H2>エラー!</H2>\n<P>検索式が長すぎます。</P>\n";
+            "	<h2>エラー!</h2>\n<p>検索式が長すぎます。</p>\n";
         MSG_TOO_MANY_KEYITEM = (uchar *)
-            "	<H2>エラー!</H2>\n<P>検索式の項目が多すぎます。</P>\n";
+            "	<h2>エラー!</h2>\n<p>検索式の項目が多すぎます。</p>\n";
         MSG_QUERY_STRING_TOO_LONG = (uchar *)"CGIのクエリーが長すぎます";
         MSG_INVALID_QUERY = (uchar *)
-            "	<H2>エラー!</H2>\n<P>検索式が不正です。</P>\n";
-        MSG_RESULT_HEADER = (uchar *)"	<H2>検索結果</H2>\n";
-        MSG_NO_HIT = (uchar *)"	<P>検索式にマッチする文書はありませんでした。</P>\n";
-        MSG_HIT_1 = (uchar *)"	<P><STRONG>検索式にマッチする ";
-        MSG_HIT_2 = (uchar *)"	 個の文書が見つかりました。</STRONG></P>\n\n";
+            "	<h2>エラー!</h2>\n<p>検索式が不正です。</p>\n";
+        MSG_RESULT_HEADER = (uchar *)"	<h2>検索結果</h2>\n";
+        MSG_NO_HIT = (uchar *)"	<p>検索式にマッチする文書はありませんでした。</p>\n";
+        MSG_HIT_1 = (uchar *)"	<p><strong>検索式にマッチする ";
+        MSG_HIT_2 = (uchar *)"	 個の文書が見つかりました。</strong></p>\n\n";
         MSG_TOO_MUCH_HIT = (uchar *)" (ヒット数が多すぎるので無視しました)";
         MSG_TOO_MUCH_MATCH = (uchar *)" (マッチする単語が多すぎるので無視しました)";
         MSG_CANNOT_OPEN_INDEX = (uchar *)" (インデックスが開けませんでした)\n";
@@ -110,7 +110,7 @@ usage: namazu [options] <query> [index dir(s)] \n\
         MSG_CANNOT_OPEN_FIELD_INDEX = (uchar *)" (フィールド検索用インデックスが開けませんでした)";
         MSG_CANNOT_OPEN_PHRASE_INDEX = (uchar *)" (フレーズ検索用インデックスが開けませんでした)";
         MSG_INDEXDIR_ERROR = (uchar *)"INDEXDIR の設定を確認してください\n";
-        MSG_REFERENCE_HEADER = (uchar *)"	<STRONG>参考ヒット数:</STRONG> ";
+        MSG_REFERENCE_HEADER = (uchar *)"	<strong>参考ヒット数:</strong> ";
         MSG_INVALID_DB_NAME = (uchar *)"不正な dbname の指定です";
     } else {
 #if	defined(_WIN32) || defined(__EMX__)
@@ -138,22 +138,22 @@ usage: namazu [options] <query> [index dir(s)] \n\
      -o (file) : set output file name.\n\
      -C        : print current configuration.\n\
      -H        : output further result link (nearly meaningless) .\n\
-     -F        : force <FORM> ... </FORM> region to output.\n\
-     -R        : do not replace URL string.\n\
-     -U        : do not decode URL encode when plain text output.\n\
+     -F        : force <form> ... </form> region to output.\n\
+     -R        : do not replace URI string.\n\
+     -U        : do not decode URI encode when plain text output.\n\
      -L (lang) : set output language (ja or en)\n";
 
         MSG_TOO_LONG_KEY = (uchar *)
-            "	<H2>Error!</H2>\n<P>Too long query.</P>\n";
+            "	<h2>Error!</h2>\n<p>Too long query.</p>\n";
         MSG_TOO_MANY_KEYITEM = (uchar *)
-            "	<H2>Error!</H2>\n<P>Too many queries.</P>\n";
+            "	<h2>Error!</h2>\n<p>Too many queries.</p>\n";
         MSG_QUERY_STRING_TOO_LONG = (uchar *)"Too long CGI query length";
         MSG_INVALID_QUERY = (uchar *)
-            "	<H2>Error!</H2>\n<P>Invalid query.</P>\n";
-        MSG_RESULT_HEADER = (uchar *)"	<H2>Results:</H2>\n";
-        MSG_NO_HIT = (uchar *)"	<P>No match.</P>\n";
-        MSG_HIT_1 = (uchar *)"	<P><STRONG> Total ";
-        MSG_HIT_2 = (uchar *)"	 documents match your query.</STRONG></P>\n\n";
+            "	<h2>Error!</h2>\n<p>Invalid query.</p>\n";
+        MSG_RESULT_HEADER = (uchar *)"	<h2>Results:</h2>\n";
+        MSG_NO_HIT = (uchar *)"	<p>No match.</p>\n";
+        MSG_HIT_1 = (uchar *)"	<p><strong> Total ";
+        MSG_HIT_2 = (uchar *)"	 documents match your query.</strong></p>\n\n";
         MSG_TOO_MUCH_HIT = (uchar *)" (Too many pages. Ignored.)";
         MSG_TOO_MUCH_MATCH = (uchar *)" (Too many words. Ignored.)";
         MSG_CANNOT_OPEN_INDEX = (uchar *)" (cannot open index)\n";

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: html.pl,v 1.4 1999-05-29 08:21:38 satoru Exp $
+# $Id: html.pl,v 1.5 1999-06-12 14:29:27 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -28,22 +28,22 @@ use strict;
 # 単独の < > を実体参照に変換し、保護する
 # この処理は Perl の正規表現置換の仕様により、二重に行います
 sub escape_lt_gt ($) {
-    my ($contents) = @_;
+    my ($content) = @_;
 
-    $$contents =~ s/\s<\s/ &lt; /g;
-    $$contents =~ s/\s>\s/ &gt; /g;
-    $$contents =~ s/\s<\s/ &lt; /g;
-    $$contents =~ s/\s>\s/ &gt; /g;
+    $$content =~ s/\s<\s/ &lt; /g;
+    $$content =~ s/\s>\s/ &gt; /g;
+    $$content =~ s/\s<\s/ &lt; /g;
+    $$content =~ s/\s>\s/ &gt; /g;
 }
 
 sub get_author ($$) {
-    my ($contents, $fields) = @_;
+    my ($content, $fields) = @_;
 
     # <LINK REV=MADE HREF="mailto:ccsatoru@vega.aichi-u.ac.jp">
 
-    if ($$contents =~ m!<LINK\s[^>]*?HREF=([\"\'])mailto:(.*?)\1>!i) { #"
+    if ($$content =~ m!<LINK\s[^>]*?HREF=([\"\'])mailto:(.*?)\1>!i) { #"
 	    $fields->{'author'} = $2;
-    } elsif ($$contents =~ m!.*<ADDRESS[^>]*>([^<]*?)</ADDRESS>!i) {
+    } elsif ($$content =~ m!.*<ADDRESS[^>]*>([^<]*?)</ADDRESS>!i) {
 	my $tmp = $1;
 #	$tmp =~ s/\s//g;
 	if ($tmp =~ /\b([\w\.\-]+\@[\w\.\-]+(?:\.[\w\.\-]+)+)\b/) {
@@ -55,69 +55,71 @@ sub get_author ($$) {
 
 # TITLE を取り出す <TITLE LANG="ja_JP"> などにも考慮しています
 # </TITLE> が二つ以上あっても大丈夫 v1.03
-sub get_title ($$$$) {
-    my ($contents, $weighted_str, $title) = @_;
-    
-    if ($$contents =~ s!<TITLE[^>]*>([^<]+)</TITLE>!!i) {
-	$$title = $1;
+sub get_title ($$$) {
+    my ($content, $weighted_str) = @_;
+    my $title = "";
+    if ($$content =~ s!<TITLE[^>]*>([^<]+)</TITLE>!!i) {
+	$title = $1;
+	$title =~ s/\s+/ /g;
+	$title =~ s/^\s+//;
+	$title =~ s/\s+$//;
 	my $weight = $conf::Weight{'html'}->{'title'};
-	$$weighted_str .= "\x7f$weight\x7f$$title\x7f/$weight\x7f\n";
+	$$weighted_str .= "\x7f$weight\x7f$title\x7f/$weight\x7f\n";
     } else {
-	$$title = $conf::NO_TITLE;
+	$title = $conf::NO_TITLE;
     }
-    $$title =~ s/\s+/ /g;
-    $$title =~ s/^\s+//;
-    $$title =~ s/\s+$//;
+
+    return $title;
 }
 
 # <META NAME="keywords|description" CONTENT="foo bar"> に対応する処理
 sub get_meta_info ($$) {
-    my ($contents, $weighted_str) = @_;
+    my ($content, $weighted_str) = @_;
     
     my $weight = $conf::Weight{'metakey'};
     $$weighted_str .= "\x7f$weight\x7f$3\x7f/$weight\x7f\n" 
-	if $$contents =~ /<META\s+NAME\s*=\s*([\'\"]?) #"
+	if $$content =~ /<META\s+NAME\s*=\s*([\'\"]?) #"
 	    KEYWORDS\1\s+[^>]*CONTENT\s*=\s*([\'\"]?)([^>]*?)\2[^>]*>/ix; #"
     $$weighted_str .= "\x7f$weight\x7f$3\x7f/$weight\x7f\n" 
-	if $$contents =~ /<META\s+NAME\s*=\s*([\'\"]?)DESCRIPTION #"
+	if $$content =~ /<META\s+NAME\s*=\s*([\'\"]?)DESCRIPTION #"
 	    \1\s+[^>]*CONTENT\s*=\s*([\'\"]?)([^>]*?)\2[^>]*>/ix; #"
 }
 
 # <IMG ... ALT="foo"> の foo の取り出し
 # HTML の扱いは厳密ではないです
 sub get_img_alt ($) {
-    my ($contents) = @_;
+    my ($content) = @_;
 
-    $$contents =~ s/<IMG[^>]*\s+ALT\s*=\s*[\"\']?([^\"\']*)[\"\']?[^>]*>/ $1 /gi; #"
+    $$content =~ s/<IMG[^>]*\s+ALT\s*=\s*[\"\']?([^\"\']*)[\"\']?[^>]*>/ $1 /gi; #"
 }
 
-# <TABLE ... SUMMARY="foo"> の foo の取り出し
+# pick up foo of <TABLE ... SUMMARY="foo">
 sub get_table_summary ($) {
-    my ($contents) = @_;
+    my ($content) = @_;
 
-    $$contents =~ s/<TABLE[^>]*\s+SUMMARY\s*=\s*[\"\']?([^\"\']*)[\"\']?[^>]*>/ $1 /gi; #"
+    $$content =~ s/<TABLE[^>]*\s+SUMMARY\s*=\s*[\"\']?([^\"\']*)[\"\']?[^>]*>/ $1 /gi; #"
 }
 
-# <XXX ... TITLE="foo"> の foo の取り出し
+# pick up foo of <XXX ... TITLE="foo">
 sub get_title_attr ($) {
-    my ($contents) = @_;
+    my ($content) = @_;
 
-    $$contents =~ s/<[A-Z]+[^>]*\s+TITLE\s*=\s*[\"\']?([^\"\']*)[\"\']?[^>]*>/ $1 /gi; #"
+    $$content =~ s/<[A-Z]+[^>]*\s+TITLE\s*=\s*[\"\']?([^\"\']*)[\"\']?[^>]*>/ $1 /gi; #"
 }
 
 # <A HREF...> などを <A> に統一 (エレメントをすべて削除)
 sub normalize_html_element ($) {
-    my ($contents) = @_;
+    my ($content) = @_;
 
-    $$contents =~ s/<([!\w]+)\s+[^>]*>/<$1>/g;
+    $$content =~ s/<([!\w]+)\s+[^>]*>/<$1>/g;
 }
 
 # <BODY> より上をすべて削除 (<STYLE> や <SCRIPT> への対処)
 # なぜか MSWin32 の Perl だと (.|\n)* とすると
 sub erase_above_body ($) {
-    my ($contents) = @_;
+    my ($content) = @_;
 
-    $$contents =~ s/^.*<BODY>//is;
+    $$content =~ s/^.*<BODY>//is;
 }
 
 
@@ -129,11 +131,11 @@ sub erase_above_body ($) {
 # 厳密な入れ子処理は行っていません
 # さらに <H[1-6]> については要約作成のために怪しい処理をしている
 sub weight_element ($$$ ) {
-    my ($contents, $weighted_str, $headings) = @_;
+    my ($content, $weighted_str, $headings) = @_;
 
     for my $element (sort keys(%{$conf::Weight{'html'}})) {
 	my $tmp = "";
-	$$contents =~ s!<($element)>(.*?)</$element>!weight_element_sub($1, $2, \$tmp)!gies;
+	$$content =~ s!<($element)>(.*?)</$element>!weight_element_sub($1, $2, \$tmp)!gies;
 	$$headings .= $tmp if $element =~ /^H[1-6]$/i && ! $conf::NoHeadAbstOpt 
 	    && $tmp;
 	my $weight = $element =~ /^H[1-6]$/i && ! $conf::NoHeadAbstOpt ? 
@@ -159,13 +161,13 @@ sub element_space ($) {
 
 # remove all HTML elements. it's not perfect but almost works.
 sub remove_html_elements ($) {
-    my ($contents) = @_;
+    my ($content) = @_;
 
     # remove all comments
-    $$contents =~ s/<!--.*?-->//gs;
+    $$content =~ s/<!--.*?-->//gs;
 
     # remove all elements
-    $$contents =~ s!</?([A-Z]\w*)(?:\s+[A-Z]\w*(?:\s*=\s*(?:(["']).*?\2|[\w-.]+))?)*\s*>!element_space($1)!gsixe;
+    $$content =~ s!</?([A-Z]\w*)(?:\s+[A-Z]\w*(?:\s*=\s*(?:(["']).*?\2|[\w-.]+))?)*\s*>!element_space($1)!gsixe;
 
 }
 
@@ -225,25 +227,25 @@ sub is_html ($) {
 sub parse_robots_txt () {
     if (not -f "$conf::ROBOTS_TXT") {
 	warn "$conf::ROBOTS_TXT does not exists";
-	$conf::ROBOTS_EXCLUDE_URLS="\t";
+	$conf::ROBOTS_EXCLUDE_URIS="\t";
 	return 0;
     }
 
     my $fh_robottxt = util::fopen_or_die($conf::ROBOTS_TXT);
     while(<$fh_robottxt>){
 	/^\s*Disallow:\s*(\S+)/i && do {
-	    my $url = $1;
-	    $url =~ s/\%/%25/g;  # 元から含まれる % は %25 に変更 v1.1.1.2
-	    $url =~ s/([^a-zA-Z0-9\-\_\.\/\:\%])/
+	    my $uri = $1;
+	    $uri =~ s/\%/%25/g;  # 元から含まれる % は %25 に変更 v1.1.1.2
+	    $uri =~ s/([^a-zA-Z0-9\-\_\.\/\:\%])/
 		sprintf("%%%02X",ord($1))/ge;
 	    if (($namazu::SYSTEM eq "MSWin32") || ($namazu::SYSTEM eq "os2")) {
 		# restore '|' for drive letter rule of Win32, OS/2
-		$url =~ s!^/([A-Z])%7C!/$1|!i;
+		$uri =~ s!^/([A-Z])%7C!/$1|!i;
 	    }
-	    $conf::ROBOTS_EXCLUDE_URLS .= "^$conf::HTDOCUMENT_ROOT_URL_PREFIX$url|";
+	    $conf::ROBOTS_EXCLUDE_URIS .= "^$conf::HTDOCUMENT_ROOT_URI_PREFIX$uri|";
 	}
     }
-    chop($conf::ROBOTS_EXCLUDE_URLS);
+    chop($conf::ROBOTS_EXCLUDE_URIS);
 }
 
 

@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.4 1999-05-29 08:21:00 satoru Exp $
+ * $Id: hlist.c,v 1.5 1999-06-12 14:29:29 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -429,72 +429,6 @@ void sort_hlist(HLIST hlist, char *mode)
     free_hlist(work);
 }
 
-
-/* replace a URL */
-int replace_url(uchar * s, int opt)
-{
-    int n_src, n_dst, i, j;
-    uchar tmp[BUFSIZE];
-    REPLACE list = Replace;
-
-    strcpy(tmp, s);
-
-    while (list.src) {
-	n_src = strlen(list.src->str);
-	n_dst = strlen(list.dst->str);
-
-	if (!strncmp(list.src->str, tmp, n_src)) {
-	    strcpy(s, list.dst->str);
-	    for (i = n_src, j = n_dst; tmp[i] && tmp[i] != '>'; i++, j++) {
-		s[j] = tmp[i];
-	    }
-	    s[j++] = tmp[i++];
-	    if (opt && !strncmp(list.src->str, tmp + i, n_src)) {
-		strcpy(s + j, list.dst->str);
-		i += n_src;
-		j += n_dst;
-	    }
-	    for (; tmp[i]; i++, j++)
-		s[j] = tmp[i];
-	    s[j] = '\0';
-	    return 1;
-	}
-	list.src = list.src->next;
-	list.dst = list.dst->next;
-    }
-    return 0;
-}
-
-
-void make_fullpathname_flist(int n)
-{
-    uchar *base;
-
-    base = DbNames[n];
-
-    pathcat(base, FLIST);
-    pathcat(base, FLISTINDEX);
-}
-
-void open_files2(int n)
-{
-    make_fullpathname_flist(n);
-    Flist = fopen(FLIST, "rb");
-    if (Flist == NULL) {
-        error(FLIST);
-    }
-    FlistIndex = fopen(FLISTINDEX, "rb");
-    if (FlistIndex == NULL) {
-        error(FLISTINDEX);
-    }
-}
-
-void filesclose2()
-{
-    fclose(Flist);
-    fclose(FlistIndex);
-}
-
 void erase_size(uchar *s)
 {
     int i;
@@ -505,82 +439,6 @@ void erase_size(uchar *s)
     }
     *(s + i - 1) = '\0';
 }
-
-/* display the hlist */
-void put_hlist(HLIST hlist)
-{
-    int i, j, before_did = -1;
-    uchar buf[BUFSIZE];
-
-    if (hlist.n <= 0 || HListMax == 0)
-	return;
-    for (i = HListWhence; i < hlist.n; i++) {
-	if (!AllList && (i >= HListWhence + HListMax))
-	    break;
-        if (hlist.did[i] != before_did) {
-            if (before_did != -1)
-                filesclose2();
-            open_files2(hlist.did[i]);
-            before_did = hlist.did[i];
-        }
-
-	fseek(Flist,get_index_pointer(FlistIndex, hlist.fid[i]), 0);
-
-        if (Debug) {
-            printf("[[ %d ]]\n", hlist.fid[i]);
-        }
-	for (j = 0;; j++) {
-	    if (!fgets(buf, BUFSIZE, Flist) || *buf == '\n') {
-		if (HtmlOutput)
-		    fputc('\n', stdout);
-		break;
-	    }
-	    if (j == ABSTRACT_LINE && (ShortFormat || MoreShortFormat))
-		continue;
-	    if (j == SCORE_LINE && MoreShortFormat)
-		continue;
-
-	    *(lastc(buf)) = '\0';
-
-            if (MoreShortFormat) {
-                /* erase a message of size (XXX bytes) (stupid processing)*/
-                erase_size(buf);
-            }
-            if (!NoReplace && Replace.src) { /* replace a URL */
-                if (!strncmp("<DD><A HREF=\"", buf, 13)) {
-                    replace_url(&buf[13], 1);
-                } else if (!strncmp("<STRONG><A HREF=\"", buf, 17)) {
-                    replace_url(&buf[17], 0);
-                }
-            }
-            if (!HtmlOutput && DecodeURL && 
-                !strncmp("<DD><A HREF=\"", buf, 13)) {
-                    decode_url_string(&buf[13]);
-            }
-            
-	    if (HtmlOutput) {
-                /* as NMZ.f is encoded with output inteded encoding, 
-                 fputs as is without codeconv and etc processing */
-		fputs(buf, stdout);
-            }
-	    else {
-		jistoeuc(buf);
-		fputs_without_html_tag(buf, stdout);
-	    }
-	    if (j <= 0) {
-                if (!MoreShortFormat) {
-                    printf("%d. ", i + 1);
-                }
-		continue;
-	    }
-	    if (j == SCORE_LINE)
-		printf(" (score: %d)", hlist.scr[i]);
-	    fputc('\n', stdout);
-	}
-    }
-    filesclose2();
-}
-
 
 
 /* 

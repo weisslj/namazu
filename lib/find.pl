@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: find.pl,v 1.2 1999-05-04 04:42:37 satoru Exp $
+# $Id: find.pl,v 1.3 1999-06-12 14:29:26 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -37,7 +37,7 @@ sub find {
     $dont_use_nlink = 1; ## S.Takabayashi added.
     $cwd = cwd();
 
-    foreach $topdir (@target) {
+    for $topdir (@target) {
 	(($topdev,$topino,$topmode,$topnlink) = stat($topdir))
 	  || (warn("Can't stat $topdir: $!\n"), next);
 

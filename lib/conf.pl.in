@@ -1,5 +1,5 @@
 # -*- Perl -*-
-# $Id: conf.pl.in,v 1.5 1999-05-30 10:37:19 satoru Exp $
+# $Id: conf.pl.in,v 1.6 1999-06-12 14:29:26 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -28,14 +28,14 @@ package conf;
 ##
 $VERSION = "@VERSION@";
 $COPYRIGHT = "Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.";
-$NMZ_URL = "http://openlab.ring.gr.jp/namazu/";
+$NMZ_URI = "http://openlab.ring.gr.jp/namazu/";
 
 # Japanese usage
 $USAGE_JA = <<EOFusage;
 mknmz v$VERSION -  全文検索システム Namazu のインデックス作成プログラム
 $COPYRIGHT
 
-使い方: mknmz [options] [URL_PREFIX] <対象dir>
+使い方: mknmz [options] [URI_PREFIX] <対象dir>
 
   対象ファイル:
     -a, --all                すべてのファイルを対象とする
@@ -63,8 +63,7 @@ $COPYRIGHT
     -L, --no-line-adjust  行頭・行末の調整処理を行わない
 
   要約:
-    -U, --no-encode-url       URLのencodeを行わない
-    -D, --no-insert-headers   Date:, From: といったヘッダを要約につけない
+    -U, --no-encode-uri       URIのencodeを行わない
     -x, --no-heading-summary  HTML のヘディングによる要約作成を行わない
 
 
@@ -91,7 +90,7 @@ $USAGE_EN = <<EOFusage;
   mknmz.pl v$VERSION -  indexer of Namazu
   $COPYRIGHT
 
-   Usage: $0 [options] [URL_PREFIX] <target_dir>
+   Usage: $0 [options] [URI_PREFIX] <target_dir>
       -a: target all files
       -c: use ChaSen as Japanese processor
       -e: exclude files which has robot exclusion
@@ -112,7 +111,7 @@ $USAGE_EN = <<EOFusage;
       -M: do not do special processing for MHonArc (default: off)
       -P: do not make the index for phrase search (default: off)
       -R: do not make the index for regex search (default: off)
-      -U: do not encode URL (default: off)
+      -U: do not encode URI (default: off)
       -W: do not make the index for sort by date (default: off)
       -X: do not make the index for field search (default: off)
       -Y: do not detect deleted documents (default: off)
@@ -165,10 +164,10 @@ $LANGUAGE = "@OPT_LANGUAGE@";  # language of messages
 $ADMIN  = '@OPT_ADMIN_EMAIL@'; # admin's email address
 $CGI_ACTION = '@OPT_CGI_LOCATION@/namazu.cgi'; # <FORM> 's ACTION の指定
 
-## Prefix of URL
-$URL_PREFIX = "";
+## Prefix of URI
+$URI_PREFIX = "";
 
-## Files can be omission in URL. e.g. index.html
+## Files can be omission in URI. e.g. index.html
 ## name of the file or files which can be abbreviated.
 ## (specify by regular expression)
 ## e.g. index.html|index.htm|Default.html
@@ -209,11 +208,8 @@ $MHONARC_HEADER = '<\!-- MHonArc v\d\.\d\.\d -->';
 ## (case insensitive)
 $REMAIN_HEADER = "From|Date|Message-ID";
 
-## Mail/News's headers should be inserted in search results
-$SUMMARY_HEADER = "From|Date|Author|Newsgroups";
-
 ## Mail/News's headers for field specified search (NMZ.field.*)
-$SEARCH_FIELD = "Message-Id|Subject|From|Date|Url|Newsgroups|To";
+$SEARCH_FIELD = "message-id|subject|from|date|uri|newsgroups|to|summary|size";
 
 ## Aliases for NMZ.field.*
 %FIELD_ALIASES = ('title' => 'subject', 'author' => 'from');
@@ -228,8 +224,6 @@ $NO_TITLE = "No title in original";    # document has no title
 ##
 $DBNAME     = "NMZ";
 %File = ();
-$File{FINFO}      = "$DBNAME.f";
-$File{FINFOINDEX} = "$DBNAME.fi";
 $File{INDEX}      = "$DBNAME.i";
 $File{INDEXINDEX} = "$DBNAME.ii";
 $File{REGISTRY}    = "$DBNAME.r";
@@ -247,6 +241,7 @@ $File{PHRASE}      = "$DBNAME.p";
 $File{PHRASEINDEX} = "$DBNAME.pi";
 $File{FIELDINFO}   = "$DBNAME.field";
 $File{FLIST}       = "$DBNAME.flist";
+$File{RESULTFILE} = "$DBNAME.result";
 
 $File{BIGENDIAN}  = "$DBNAME.be";
 $File{LITTLEENDIAN}  = "$DBNAME.le";
@@ -259,14 +254,12 @@ $File{TOTALKEYSCOUNT}  = "$DBNAME.keys";
 $File{BODY_MSG_JA} = $File{BODYMSGFILE} . "ja";
 $File{BODY_MSG_EN} = $File{BODYMSGFILE} . "en";
 $File{DATEINDEX_} = $File{DATEINDEX};
-$File{FINFO_} = $File{FINFO};
 $File{INDEX_} = $File{INDEX};
 $File{HEADERFILE_} = $File{HEADERFILE};
 $File{FOOTERFILE_} = $File{FOOTERFILE};
 $File{PHRASE_}     = $File{PHRASE};
 $File{PHRASEINDEX_} = $File{PHRASEINDEX};
 $File{REGISTRY_} = $File{REGISTRY};
-$File{FINFOINDEX_} = $File{FINFOINDEX};
 $File{INDEXINDEX_} = $File{INDEXINDEX};
 $File{WORDLIST_} = $File{WORDLIST};
 $File{FLIST_} = $File{FLIST};
@@ -349,9 +342,9 @@ $SUMMARY_LENGTH = 200;
 ## robots.txt に関する設定
 ##
 $HTDOCUMENT_ROOT = "/usr/local/apache/share/htdocs";
-$HTDOCUMENT_ROOT_URL_PREFIX = "http://www.foo.domain.jp/";
+$HTDOCUMENT_ROOT_URI_PREFIX = "http://www.foo.domain.jp/";
 $ROBOTS_TXT = "$HTDOCUMENT_ROOT/robots.txt";
-$ROBOTS_EXCLUDE_URLS = "";
+$ROBOTS_EXCLUDE_URIS = "";
 
 $INTSIZE = 4;
 
@@ -379,7 +372,7 @@ $HiraganaOpt      = 0;
 $OkuriganaOpt     = 0;
 $NoEdgeSymbolOpt  = 0;
 $NoSymbolOpt      = 0;
-$NoEncodeURL      = 0;
+$NoEncodeURI      = 0;
 $NoRegexIndexOpt = 0;
 $NoInsertHeaderOpt = 0;
 $NoDeleteProcessing = 0;

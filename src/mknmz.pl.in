@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.11 1999-05-30 10:37:20 satoru Exp $
+# $Id: mknmz.pl.in,v 1.12 1999-06-12 14:29:30 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -56,7 +56,7 @@ main();
 sub main () {
 
     my $start_time = time;
-    my $file_segment = do_preparation_processing();
+    my $file_base = do_preparation_processing();
 
     my $swap = 1;
     my $file_count = 0;
@@ -70,9 +70,10 @@ sub main () {
     eval util::include($conf::File{'CHECKPOINT_'}) if $CheckPoint{'continue'};
 
     {
-	my $fh_finfo = finfo_fopen_or_die();
 	my $fh_errorsfile = util::fopen_or_die(">>$conf::File{'ERRORSFILE'}");
 	my $fh_flist = util::fopen_or_die($conf::File{'FLIST_'});
+	my %field_indices = ();
+	get_field_index_base(\%field_indices);
 
 	if ($CheckPoint{'continue'}) {
 	    seek($fh_flist, $flist_ptr, 0);
@@ -83,8 +84,8 @@ sub main () {
 	    $flist_ptr += length;
 	    my $cfile = $_;
 	    chomp $cfile;
-	    my $cfile_size = namazu_core($cfile, $file_count, 
-					 $file_segment, $fh_finfo, $fh_errorsfile);
+	    my $cfile_size = namazu_core($cfile, $file_count, $file_base, 
+				 \%field_indices, $fh_errorsfile);
 	    next unless $cfile_size;
 	    put_registry($cfile);
 
@@ -103,7 +104,7 @@ sub main () {
 	}
     }
     # this should be out of above blocks because of file handler closing.
-    re_exec($flist_ptr, $file_count, $file_segment, $start_time, $total_files_size) 
+    re_exec($flist_ptr, $file_count, $file_base, $start_time, $total_files_size) 
 	if $checkpoint;
 
     if (%KeyIndex) {
@@ -117,7 +118,7 @@ sub main () {
 }
 
 sub re_exec($$$$) {
-    my ($flist_ptr, $file_count, $file_segment, $start_time, $total_files_size) = @_;
+    my ($flist_ptr, $file_count, $file_base, $start_time, $total_files_size) = @_;
 
     # store variables
     {
@@ -129,7 +130,7 @@ sub re_exec($$$$) {
 	\$APPENDMODE = $APPENDMODE;
 	\$flist_ptr = $flist_ptr;
 	\$file_count = $file_count;
-	\$file_segment = $file_segment;
+	\$file_base = $file_base;
 	\$start_time = $start_time;
 	\$total_files_size = $total_files_size;
 	\$\$ = $$;
@@ -146,16 +147,6 @@ sub put_registry ($) {
     my ($filename) = @_;
     my $fh_registry = util::fopen_or_die(">>$conf::File{'REGISTRY_'}");
     print $fh_registry $filename, "\n";
-}
-
-sub finfo_fopen_or_die () {
-    my $fh_finfo;
-	if ($conf::LANGUAGE eq "ja" && ! $conf::USE_NKF_MODULE) {
-	    $fh_finfo = util::fopen_or_die("|$conf::NKF -jZ >>$conf::File{'FINFO_'}");
-	} else {
-	    $fh_finfo = util::fopen_or_die(">>$conf::File{'FINFO_'}");
-	}
-    return $fh_finfo;
 }
 
 
@@ -193,140 +184,196 @@ sub initialize () {
 
 # Core routine
 sub namazu_core ($$$) {
-    my ($cfile, $file_count, $file_segment, $fh_finfo, $fh_errorsfile) = @_;
+    my ($cfile, $file_count, $file_base, $field_indices, 
+	$fh_errorsfile) = @_;
 
     my $headings = "";
-    my $contents = "";
-    my $title    = "";
+    my $content = "";
     my $weighted_str = "";
-    my %fields = ();
+    my %fields;
 
-    my $url = url_decchiagator($cfile);  # Make a URL from a file name
-    my ($cfile_size, $ctrl, $kanji) = load_document(\$cfile, \$contents);
+    my $uri = uri_decchiagator($cfile);  # Make a URI from a file name
+    my ($cfile_size, $ctrl, $kanji) = load_document(\$cfile, \$content);
 
     # Do checking
-    my $err = check_file($cfile, \$contents, $ctrl, $cfile_size);
+    my $err = check_file($cfile, \$content, $ctrl, $cfile_size);
     if ($err) {
-	print $file_count + $file_segment . " $url $err\n" unless $conf::QuietOpt;
+	print $file_count + $file_base . " $uri $err\n" unless $conf::QuietOpt;
 	print $fh_errorsfile "$cfile $err\n"; 
 	return 0;  # return with 0 if error
     }
     if ($conf::RobotExcludeOpt) {
-	if ($url =~ m/$conf::ROBOTS_EXCLUDE_URLS/io) {
+	if ($uri =~ m/$conf::ROBOTS_EXCLUDE_URIS/io) {
 	    $err = "is excluded because of /robots.txt.\n";
-	    print $file_count + $file_segment . " $url $err\n";
+	    print $file_count + $file_base . " $uri $err\n";
 	    print $fh_errorsfile "$cfile $err\n"; 
 	    return 0;  # return with 0 if error
 	} elsif ($cfile =~ /\.($conf::HTML_SUFFIX)$/io &&
-		 $contents =~ /META\s+NAME\s*=\s*([\'\"]?)ROBOTS\1\s+[^>]*
+		 $content =~ /META\s+NAME\s*=\s*([\'\"]?)ROBOTS\1\s+[^>]*
 		 CONTENT\s*=\s*([\'\"]?).*?(NOINDEX|NONE).*?\2[^>]*>/ix)  #"
 	{
 	    $err = "is excluded because of <META> element.";
-	    print $file_count + $file_segment . " $url $err\n" unless $conf::QuietOpt;
+	    print $file_count + $file_base . " $uri $err\n" unless $conf::QuietOpt;
 	    print $fh_errorsfile "$cfile $err\n"; 
 	    return 0;  # return with 0 if error
 	}
     }
-    # Output processing file name as URL
-    print $file_count + $file_segment . " $url\n" unless $conf::QuietOpt;
+    # Output processing file name as URI
+    print $file_count + $file_base . " $uri\n" unless $conf::QuietOpt;
 
-    filter::document_filter($cfile, \$title, \$contents, \$weighted_str,
+    filter::document_filter($cfile, \$content, \$weighted_str,
 		     \$headings, \%fields);
-    make_field_index(\%fields, $cfile, $title, $url);
-
-    put_file_info($url, $title, $cfile_size, \$contents,
-		  \$headings, $cfile, \%fields, $fh_finfo);
-    put_field_index(\%fields) unless $conf::NoFieldIndexOpt;
+    make_field_index(\%fields, $cfile, $uri, \$headings, \$content);
+    put_field_index(\%fields, $field_indices) unless $conf::NoFieldIndexOpt;
 
     put_dateindex($cfile) unless $conf::NoDateIndexOpt;
-    $contents .= $weighted_str;   # add weight info
-    count_words($file_count, $file_segment, \$contents, $kanji);
-    make_phrase_hash($file_count, $file_segment, \$contents)
+    $content .= $weighted_str;   # add weight info
+    count_words($file_count, $file_base, \$content, $kanji);
+    make_phrase_hash($file_count, $file_base, \$content)
 	unless $conf::NoPhraseIndexOpt;
-    $cfile_size;
+
+    return $cfile_size;
 }
 
-# make a URL from a file name
-sub url_decchiagator ($) {
+# make a URI from a file name
+sub uri_decchiagator ($) {
     my ($file) = @_;
     return undef unless defined $file;
 
-    my $url = $file;
+    my $uri = $file;
     # remove a file name if omittable
-    if ($conf::URL_PREFIX && $TARGET_DIR) {
-	$url =~ s!(.*)/($conf::DEFAULT_FILE)$!$1/!o; 
-	$url =~ s!$TARGET_DIR/!$conf::URL_PREFIX!o;
+    if ($conf::URI_PREFIX && $TARGET_DIR) {
+	$uri =~ s!(.*)/($conf::DEFAULT_FILE)$!$1/!o; 
+	$uri =~ s!$TARGET_DIR/!$conf::URI_PREFIX!o;
     }
 
     if (($SYSTEM eq "MSWin32") || ($SYSTEM eq "os2")) {
 	# convert \ to / with consideration for Shift_JIS Kanji code
-#	$url =~ s!([\x81-\x9f\xe0-\xef][\x40-\x7e\x80-\xfc]|[\x01-\x7f])!
+#	$uri =~ s!([\x81-\x9f\xe0-\xef][\x40-\x7e\x80-\xfc]|[\x01-\x7f])!
 #	    $1 eq "\\" ? "/" : $1!gex;
-	$url =~ s#^([A-Z]):#/$1|#i; # ドライヴ部分を /C| のように置き換え
+	$uri =~ s#^([A-Z]):#/$1|#i; # ドライヴ部分を /C| のように置き換え
     }
 
-    unless ($conf::NoEncodeURL) {
+    unless ($conf::NoEncodeURI) {
 	# Escape unsafe characters (not strict)
-	$url =~ s/\%/%25/g;  # Convert original '%' into '%25' v1.1.1.2
-	$url =~ s/([^a-zA-Z0-9~\-\_\.\/\:\%])/
+	$uri =~ s/\%/%25/g;  # Convert original '%' into '%25' v1.1.1.2
+	$uri =~ s/([^a-zA-Z0-9~\-\_\.\/\:\%])/
 	    sprintf("%%%02X",ord($1))/ge;
 	if (($SYSTEM eq "MSWin32") || ($SYSTEM eq "os2")) {
 	    # restore '|' for drive letter rule of Win32, OS/2
-	    $url =~ s!^/([A-Z])%7C!/$1|!i;
+	    $uri =~ s!^/([A-Z])%7C!/$1|!i;
 	}
     }
-    return $url;
+    return $uri;
 }
 
 
+sub get_field_index_base (\%) {
+    my ($field_indices) = @_;
 
-sub make_field_index (\%$$$) {
-    my ($fields, $cfile, $title, $url) = @_;
+    my @keys = split('\|', $conf::SEARCH_FIELD);
+    for my $key (@keys) {
+	$key = lc($key);
+	my $fname    = "$conf::File{'FIELDINFO'}.$key";
+	my $size = 0;
+	$size = -s $fname if -e $fname;
+	$field_indices->{$key} = $size;
+    }
+}
+
+sub make_field_index (\%$$\$\$) {
+    my ($fields, $cfile, $uri, $headings, $content) = @_;
 
     unless (defined($fields->{'date'})) {
 	my $mtime = (stat($cfile))[9];
 	my $date = util::rfc822time($mtime);
 	$fields->{'date'} = $date;
     }
-    unless (defined($fields->{'title'})) {
-	my $tmp = $title;
-	html::decode_entity(\$tmp);  # since $title has been already encoded
-	$fields->{'title'} = $tmp;
+    unless (defined($fields->{'uri'})) {
+	$fields->{'uri'} = $uri;
     }
-    unless (defined($fields->{'url'})) {
-	$fields->{'url'} = $url;
+    unless (defined($fields->{'size'})) {
+	$fields->{'size'} = -s $cfile;
+    }
+    unless (defined($fields->{'summary'})) {
+	$fields->{'summary'} = make_summary($content, $headings, $cfile);
     }
 }
 
-# output the field infomation into NMZ.fileds.* files
-sub put_field_index (\%) {
-    my ($orig_fields) = @_;
+sub make_summary ($$$) {
+    my ($content, $headings, $cfile) = @_;
 
-    my (%fields) = %{$orig_fields};
+    # pick up $conf::SUMMARY_LENGTH bytes string
+    my $tmp = "";
+    if ($$headings ne "") {
+	$$headings =~ s/^\s+//;
+	$$headings =~ s/\s+/ /g;
+	$tmp = $$headings;
+    } else {
+	$tmp = "";
+    }
+
+    my $offset = 0;
+    my $tmplen = 0;
+    while (($tmplen = $conf::SUMMARY_LENGTH + 1 - length($tmp)) > 0
+           && $offset < length($$content))
+    {
+        $tmp .= substr $$content, $offset, $tmplen;
+        $offset += $tmplen;
+        $tmp =~ s/(([\xa1-\xfe]).)/$2 eq "\xa8" ? '': $1/ge;
+        $tmp =~ s/([-=*\#])\1{2,}/$1$1/g;
+    }
+
+    my $summary = substr $tmp, 0, $conf::SUMMARY_LENGTH;
+    my $kanji = $summary =~ tr/\xa1-\xfe/\xa1-\xfe/;
+    $summary .= substr($tmp, $conf::SUMMARY_LENGTH, 1) if $kanji %2;
+
+    $summary =~ s/^\s+//;
+    $summary =~ s/\s+/ /g;   # normalize white spaces
+
+    return $summary;
+}
+
+
+# output the field infomation into NMZ.fields.* files
+sub put_field_index (\%$) {
+    my ($fields, $field_indices) = @_;
+
     my $aliases_regex = 
 	join('|', sort {length($b) <=> length($a)} keys %conf::FIELD_ALIASES);
 
-    foreach my $field (keys %fields) {
+    for my $field (keys %{$fields}) {
 	if ($field =~ /^($aliases_regex)$/o) {
-	    unless (defined($fields{$conf::FIELD_ALIASES{$field}})) {
-		$fields{$conf::FIELD_ALIASES{$field}} = $fields{$field};
+	    unless (defined($fields->{$conf::FIELD_ALIASES{$field}})) {
+		$fields->{$conf::FIELD_ALIASES{$field}} = $fields->{$field};
 	    }
-	    undef $fields{$field};
+	    undef $fields->{$field};
 	}
     }
 
     my @keys = split('\|', $conf::SEARCH_FIELD);
-    foreach my $key (@keys) {
+    for my $key (@keys) {
 	$key = lc($key);
 	my $fname    = "$conf::File{'FIELDINFO'}.$key.$$";
 	my $fh_field = util::fopen_or_die(">>$fname");
-	if (defined($fields{$key})) {
-	    $fields{$key} =~ s/\s+/ /g;
-	    $fields{$key} =~ s/\s+$//;
-	    $fields{$key} =~ s/^\s+//;
-	    print $fh_field $fields{$key}, "\n";
+	my $output = "";
+	if (defined($fields->{$key})) {
+	    $fields->{$key} =~ s/\s+/ /g;
+	    $fields->{$key} =~ s/\s+$//;
+	    $fields->{$key} =~ s/^\s+//;
+	    $output = $fields->{$key} . "\n";
+	    $output = substr $output, 1023;
 	} else {
-	    print $fh_field "\n";
+	    $output = "\n";
+	}
+	print $fh_field $output;
+
+	# put index of field index
+	{
+	    my $fname        = "$conf::File{'FIELDINFO'}.$key.i.$$";
+	    my $fh_field_idx = util::fopen_or_die(">>$fname");
+	    print $fh_field_idx pack("N", $field_indices->{$key});
+	    $field_indices->{$key} += length $output;
 	}
     }
 }
@@ -344,7 +391,7 @@ sub put_dateindex ($) {
 
 # load a document file
 sub load_document ($$) {
-    my ($orig_cfile, $contents) = @_;
+    my ($orig_cfile, $content) = @_;
     my $cfile = $$orig_cfile;
 
     return (0, 0, 0) unless (-f $cfile && -r $cfile);
@@ -398,8 +445,8 @@ sub load_document ($$) {
     }
 
     my $fh_cfile = util::fopen_or_die($filter);
-    $$contents = join("", <$fh_cfile>);
-    $$contents = NKF::nkf("-emXZ1", $$contents) if $conf::USE_NKF_MODULE;
+    $$content = join("", <$fh_cfile>);
+    $$content = NKF::nkf("-emXZ1", $$content) if $conf::USE_NKF_MODULE;
 
     if ($SYSTEM eq "MSWin32" && $shelter_cfile ne "") {
 	unlink $cfile;
@@ -408,29 +455,29 @@ sub load_document ($$) {
 
     # if a zipped file, the size has been changed
     if ($zipped) {
-	$size = length($$contents);
+	$size = length($$content);
 	return ($size, 0, 0) if $size > $conf::FILE_SIZE_LIMIT;
     }
 
     if ($conf::ManOpt) { # processing like col -b (2byte character acceptable)
-	$$contents =~ s/_\x08//g;
-	$$contents =~ s/\x08{1,2}([\x20-\x7e]|[\xa1-\xfe]{2})//g;
+	$$content =~ s/_\x08//g;
+	$$content =~ s/\x08{1,2}([\x20-\x7e]|[\xa1-\xfe]{2})//g;
     }
 
-    $$contents =~ s/[ \t]+/ /g;   # remain LFs v1.03
-    $$contents =~ s/\r\n/\n/g;    # remain LFs is for ChaSen
-    $$contents =~ s/\r/\n/g;      # CR+LF or CR are into LF
+    $$content =~ s/[ \t]+/ /g;   # remain LFs v1.03
+    $$content =~ s/\r\n/\n/g;    # remain LFs is for ChaSen
+    $$content =~ s/\r/\n/g;      # CR+LF or CR are into LF
 
     # Control characters be into space
-    my $ctrl = $$contents =~ tr/\x00-\x09\x0b-\x1f\x7f\xff/    /;
-    my $kanji = $$contents =~ tr/\xa1-\xfe/\xa1-\xfe/;  # Kanji contained?
+    my $ctrl = $$content =~ tr/\x00-\x09\x0b-\x1f\x7f\xff/    /;
+    my $kanji = $$content =~ tr/\xa1-\xfe/\xa1-\xfe/;  # Kanji contained?
 
     return ($size, $ctrl, $kanji);
 }
 
 # 準備
 sub do_preparation_processing () {
-    my $file_segment = 0;
+    my $file_base = 0;
     my $output_dir = "";
     my $target_dir = "";
     my @flist = ();
@@ -446,7 +493,7 @@ sub do_preparation_processing () {
     return 0 if $CheckPoint{'continue'};
 
     @flist = find_target_files($target_dir) unless @flist;
-    ($file_segment, @flist) = do_append_preprocessing(@flist) if -e $conf::File{'REGISTRY'};
+    ($file_base, @flist) = do_append_preprocessing(@flist) if -e $conf::File{'REGISTRY'};
     unless (@flist) { # if @flist is empty
 	print "No files to index.\n";
 	exit;
@@ -454,7 +501,7 @@ sub do_preparation_processing () {
     set_lockfile($conf::File{LOCKFILE2});
     save_flist_to_file(@flist);
 
-    return $file_segment;
+    return $file_base;
 }
 
 sub find_target_files ($) {
@@ -538,9 +585,8 @@ sub do_remain_processing ($$$$) {
 	}
     } else {
 	set_lockfile($conf::File{LOCKFILE});
-	append_finfo() if $APPENDMODE;
-	make_finfo_index();
 	write_body_msg();
+	write_result_file();
 	update_field_index();
 	update_dateindex();
 	update_registry($file_count);
@@ -565,7 +611,7 @@ sub make_headfoot_pages($$) {
 }
 
 sub remove_temporary_files() {
-    $conf::File{'FINFO_'} =~ m!^(.*/)!;
+    $conf::File{'INDEX_'} =~ m!^(.*/)!;
     unlink glob "${1}NMZ.*$$*";
 }
 
@@ -605,14 +651,13 @@ sub parse_options ()
 	       'K|no-symbol'         => \$conf::NoSymbolOpt,
 	       'L|no-line-adjust'    => \$conf::NoLineAdOpt,
 	       'M|no-mhonarc'        => \$conf::NoMHonArcOpt, 
-	       'U|no-encode-url'     => \$conf::NoEncodeURL ,
+	       'U|no-encode-uri'     => \$conf::NoEncodeURI ,
 	       'x|no-heading-summary'=> \$conf::NoHeadAbstOpt,
 	       'e|robots-txt'        => \$conf::RobotExcludeOpt,
 	       'q|quiet'             => \$conf::QuietOpt,
 	       'P|no-phrase-index'   => \$conf::NoPhraseIndexOpt,
 	       'R|no-regex-index'    => \$conf::NoRegexIndexOpt,
 	       'W|no-date-index'     => \$conf::NoDateIndexOpt,
-	       'D|no-insert-headers' => \$conf::NoInsertHeaderOpt,
 	       'X|no-field-index'    => \$conf::NoFieldIndexOpt,
 	       'Y|no-delete'         => \$conf::NoDeleteProcessing,
 	       'Z|no-update'         => \$conf::NoUpdateProcessing,
@@ -695,7 +740,7 @@ sub parse_options ()
     }
 
     if ($#ARGV > 0 || $#ARGV == 0 && $target_loaded) {
-	$conf::URL_PREFIX = $ARGV[0];
+	$conf::URI_PREFIX = $ARGV[0];
 	shift @ARGV;
     }
 
@@ -711,6 +756,10 @@ sub parse_options ()
 	$output_dir =~ s!([\x81-\x9f\xe0-\xef][\x40-\x7e\x80-\xfc]|[\x01-\x7f])!
 	    $1 eq "\\" ? "/" : $1!gex;
     }
+
+    # revert @ARGV
+    @ARGV = @argv;
+
     return ($output_dir, $target_dir, @flist);
 }
 
@@ -768,7 +817,7 @@ sub show_usage () {
 
 # check the file -- 0: OK / 1: NG
 sub check_file ($$$$) {
-    my ($cfile, $contents, $ctrl, $size) = @_;
+    my ($cfile, $content, $ctrl, $size) = @_;
 
     # コントロール文字が全体の 3 % よりも多ければバイナリファイル
     # とみなし、スキップする (-B は問題があるので使わない)
@@ -780,7 +829,7 @@ sub check_file ($$$$) {
     } elsif ($size > $conf::FILE_SIZE_LIMIT) {
 	$msg = "is too LARGE file! skipped.";
     } elsif (!$conf::NoMHonArcOpt && $cfile !~ /($conf::MHONARC_MESSAGE_FILE)$/o 
-	     && $$contents =~ /^$conf::MHONARC_HEADER/o) {
+	     && $$content =~ /^$conf::MHONARC_HEADER/o) {
 	$msg = "is MHonArc's index file! skipped.";
     } else {
 	$msg = "";
@@ -792,8 +841,6 @@ sub check_file ($$$$) {
 
 # Rename *.$$ to each real file name
 sub write_nmz_files () {
-    util::Rename($conf::File{'FINFO_'},      $conf::File{'FINFO'});
-    util::Rename($conf::File{'FINFOINDEX_'}, $conf::File{'FINFOINDEX'});
     util::Rename($conf::File{'INDEX_'},      $conf::File{'INDEX'});
     util::Rename($conf::File{'INDEXINDEX_'}, $conf::File{'INDEXINDEX'});
     util::Rename($conf::File{'WORDLIST_'},   $conf::File{'WORDLIST'});
@@ -805,6 +852,41 @@ sub write_nmz_files () {
 sub write_body_msg () {
     write_message_to_file("$conf::File{'BODYMSGFILE'}.ja", $conf::File{'BODY_MSG_JA'});
     write_message_to_file("$conf::File{'BODYMSGFILE'}.en", $conf::File{'BODY_MSG_EN'});
+}
+
+# output NMZ.result
+sub write_result_file () {
+    my $file = $conf::File{'RESULTFILE'};
+
+    if (-e $file) {
+	return;
+    } 
+
+    $file =~ m!.*/(.*)$!;
+    my $fname = $1;
+    my $template = "";
+    my $buf = "";
+    if ( -e "$LIBDIR2/$fname") {
+	$template = "$LIBDIR2/$fname";
+    } else {
+	$template = "$LIBDIR/$fname";
+    }
+    if (-e $template) {
+	$buf = util::read_file($template);
+    } else {
+	return;
+    }
+
+    # the file must be saved in ISO-2022-JP encoding.
+    my $fh_file;
+    if ($conf::LANGUAGE eq "ja" && !$conf::USE_NKF_MODULE) {
+	$fh_file = util::fopen_or_die("|$conf::NKF -j >$file");
+    } else {
+	$fh_file = util::fopen_or_die(">$file");
+    }
+
+    $buf = NKF::nkf("-j", $buf) if $conf::USE_NKF_MODULE;
+    print $fh_file $buf;
 }
 
 # output NMZ.body and etc.
@@ -868,23 +950,6 @@ sub change_dbnames ($) {
 }
 
 
-# FINFO の追加を行う
-sub append_finfo () {
-    {
-	my $fh_finfo = util::fopen_or_die($conf::File{'FINFO_'});
-	my $fh_finfobase = util::fopen_or_die(">> $conf::File{'FINFO_'}.base");
-
-	# I don't know why this code has a problem.
-	# print $fh_finfobase while <$fh_finfo>;
-
-	while (<$fh_finfo>) {
-	    print $fh_finfobase $_;
-	}
-    }
-    util::Rename("$conf::File{'FINFO_'}.base", "$conf::File{'FINFO_'}");
-}
-
-
 # find 用のルーチン
 sub wanted ($$){
     my ($name, $rarray) = @_;
@@ -897,8 +962,8 @@ sub wanted ($$){
 sub do_append_preprocessing (@) {
     my @flist = @_;
 
-    my $file_segment = 0;
-    ($file_segment, @flist) = set_target_files(@flist);
+    my $file_base = 0;
+    ($file_base, @flist) = set_target_files(@flist);
 
     unless (@flist) { 	# if @flist is empty
 	if ($DeletedFilesCount > 0) {
@@ -915,7 +980,6 @@ sub do_append_preprocessing (@) {
 
     $APPENDMODE = 1;
     # ファイルをコピーして保護する
-    util::cp($conf::File{'FINFO'},     "$conf::File{'FINFO_'}.base");
     util::cp($conf::File{'INDEX'},      $conf::File{'INDEX_'});
     util::cp($conf::File{'DATEINDEX'},  $conf::File{'DATEINDEX_'}) unless -e $conf::File{'DATEINDEX_'}; # preupdated ?
 
@@ -924,7 +988,7 @@ sub do_append_preprocessing (@) {
 	util::cp($conf::File{'PHRASEINDEX'},      $conf::File{'PHRASEINDEX_'});
     }
 
-    return ($file_segment, @flist);
+    return ($file_base, @flist);
 }
 
 # set target files to @flist and return with the regiested files number
@@ -940,7 +1004,7 @@ sub set_target_files() {
     my @overlapped_files;
     grep($_ !~ /^\# / && $mark1{$_}++, @{$rfiles{'name'}});
     $rfiles{'overlapped'} = {}; # prepare an anonymous hash
-    foreach (grep ($mark1{$_}, @found_files)) {
+    for (grep ($mark1{$_}, @found_files)) {
 	$rfiles{'overlapped'}{$_} = 1;
 	push(@overlapped_files, $_);
     };
@@ -971,7 +1035,7 @@ sub set_target_files() {
     unless ($conf::NoDeleteProcessing) {
 	my %mark2;
 	grep($mark2{$_}++, @found_files);
-	foreach (grep($_ !~ /^\# / && ! $mark2{$_} && ! $rfiles{'overlapped'}{$_}
+	for (grep($_ !~ /^\# / && ! $mark2{$_} && ! $rfiles{'overlapped'}{$_}
 		      , @{$rfiles{'name'}})) 
 	{
 	    $rfiles{'deleted'}{$_} = 1;
@@ -1045,19 +1109,24 @@ sub update_registry ($) {
     unlink $conf::File{'REGISTRY_'};
 }
 
-sub update_dateindex() {
+sub update_dateindex () {
     util::Rename($conf::File{'DATEINDEX_'}, $conf::File{'DATEINDEX'});
 }
 
-sub update_field_index() {
-    for my $tmp (<$conf::File{'FIELDINFO'}.*.$$>) {
-	$tmp =~ /((.*)\..*)/;
+sub update_field_index () {
+    update_field_index_sub(glob "$conf::File{'FIELDINFO'}.*.$$");
+    update_field_index_sub(glob "$conf::File{'FIELDINFO'}.*.i.$$");
+}
+
+sub update_field_index_sub () {
+    my @list = @_;
+    for my $tmp (@list) {
+	$tmp =~ /((.*)\.$$)/;
 	my $fname_tmp = $1;
 	my $fname_out = $2;
 
 	{
 	    my $fh_field = util::fopen_or_die(">>$fname_out");
-
 	    my $fh_tmp = util::fopen_or_die($fname_tmp);
 
 	    while (<$fh_tmp>) {
@@ -1073,7 +1142,7 @@ sub pickup_updated_files (\%) {
     my @updated_files = ();
 
     my $i = 0;
-    foreach my $cfile (@{$ref->{'name'}}) {
+    for my $cfile (@{$ref->{'name'}}) {
 	if (defined($ref->{'deleted'}{$cfile})) {
 	    print "$cfile was deleted!\n" unless $conf::QuietOpt;
 	    $ref->{'mtime'}[$i] = -1; # assign the a messing number
@@ -1297,107 +1366,17 @@ sub make_headfoot ($$$) {
     print $fh_file $buf;
 }
 
-
-# FINFO ファイルへファイル情報を書き出し (NMZ.f)
-sub put_file_info ($$$$$$$$) {
-    my ($url, $title, $cfile_size, $contents, $headings, $cfile, $fields, $fh_finfo) = @_;
-
-    my $summary = make_summary($contents, $headings, $cfile, $fields);
-    $title =~ s/\s+/ /g;
-    $title =~ s/^\s+//;
-    $title =~ s/\s+$//;
-    $cfile_size = util::commas($cfile_size);
-    if ($conf::USE_NKF_MODULE && $conf::LANGUAGE eq "ja") {
-	$summary = NKF::nkf("-jZ", $summary);
-	$title   = NKF::nkf("-jZ", $title);
-    }
-
-    # $fh_finfo へ書き出し <DT> の後に改行が欲しいのです
-    print $fh_finfo "<DT>\n<STRONG><A HREF=\"$url\">$title</A></STRONG>\n";
-    print $fh_finfo "<DD>$summary\n";
-    print $fh_finfo "<DD><A HREF=\"$url\">$url</A> size ($cfile_size bytes)<BR><BR>\n";
-    # 最後に空行を入れる(これは重要な仕様)
-    print $fh_finfo "\n";
-}
-
-# 要約を作成する
-# 罫線を削除する処理は古川@ヤマハさんにいただきました v1.2.0
-sub make_summary ($$$$) {
-    my ($contents, $headings, $cfile, $fields) = @_;
-
-    # 頭の $conf::SUMMARY_LENGTH bytes (または $conf::SUMMARY_LENGTH + 1) を取り出し
-    my $tmp = "";
-    if ($$headings ne "") {
-	$$headings =~ s/^\s+//;
-	$$headings =~ s/\s+/ /g;
-	$tmp = $$headings;
-    } else {
-	$tmp = "";
-    }
-
-    my $offset = 0;
-    my $tmplen = 0;
-    while (($tmplen = $conf::SUMMARY_LENGTH + 1 - length($tmp)) > 0
-           && $offset < length($$contents))
-    {
-        $tmp .= substr($$contents, $offset, $tmplen);
-        $offset += $tmplen;
-        $tmp =~ s/(([\xa1-\xfe]).)/$2 eq "\xa8"? '': $1/ge;
-        $tmp =~ s/([-=*\#])\1{2,}/$1$1/g;
-    }
-
-    my $summary = substr($tmp, 0, $conf::SUMMARY_LENGTH);
-    my $kanji = $summary =~ tr/\xa1-\xfe/\xa1-\xfe/;
-    $summary .= substr($tmp, $conf::SUMMARY_LENGTH, 1) if $kanji %2;
-
-    # 含まれる '<' と '>' '&' を実体参照へ変換
-    html::encode_entity(\$summary);
-
-    my $header = "";
-    if ($conf::NoInsertHeaderOpt) { 
-	$header = "";
-    } else {
-	$header = make_summary_header($cfile, $fields);
-    }
-    $summary = $header . $summary if $header;
-    $summary =~ s/^\s+//;
-    $summary =~ s/\s+/ /g;   # ホワイトスペースをまとめる
-    $summary;
-}
-
-sub make_summary_header ($) {
-    my ($cfile, $fields) = @_;
-    my $header = "";
-
-    for my $tmp (keys (%{$fields})) {
-	if (defined($conf::FIELD_ALIASES{$tmp}) && 
-	    defined($fields->{$conf::FIELD_ALIASES{$tmp}})) {
-	    next;
-	}
-	if ($tmp =~ /^($conf::SUMMARY_HEADER)$/io) {
-	    my $field = $tmp;
-	    $field = ucfirst($field);  # Capitalize
-	    $header .= "$field: $fields->{$tmp}\n";
-	}
-    }
-    # Mail/News のヘッダを付加する
-    html::encode_entity(\$header);
-    $header =~ s!(\S+):(.*)\n!<STRONG>$1</STRONG>:<EM>$2</EM><BR>!g 
-	if $header;
-    $header; # return value
-}
-
 # フレーズのハッシュを作成する
 # 2単語の組でひとつのハッシュ値 (0-65535) を生成します
 sub make_phrase_hash ($$$) {
-    my ($file_count, $file_segment, $contents) = @_;
+    my ($file_count, $file_base, $content) = @_;
 
     my %tmp = ();
-    $$contents =~ s!\x7f */? *\d+ *\x7f!!g;  # remove tags of weight
-    my @words = split(/\s+/, $$contents);
+    $$content =~ s!\x7f */? *\d+ *\x7f!!g;  # remove tags of weight
+    my @words = split(/\s+/, $$content);
     @words = grep(!/^$/, @words);   # remove empty words
     my $word_b = $words[0];
-    my $fid = $file_count + $file_segment;
+    my $fid = $file_count + $file_base;
     for my $word (@words) {
 	my $hash = hash($word_b . $word);
 	if (!defined($tmp{$hash})) {
@@ -1488,7 +1467,7 @@ sub hash ($) {
     $word =~ tr/\xa1-\xfea-z0-9//cd; # 記号を捨てる
     for ($i = 0; $word ne ""; $i++) {
 	$hash ^= $Seed[$i % 4][ord($word)];
-        $word = substr($word, 1);
+        $word = substr $word, 1;
 	# $word =~ s/^.//;  is slower
     }
     $hash & 65535;
@@ -1496,29 +1475,29 @@ sub hash ($) {
 
 # 単語の頻度数を数える
 sub count_words ($$$$) {
-    my ($file_count, $file_segment, $contents, $kanji) = @_;
+    my ($file_count, $file_base, $content, $kanji) = @_;
     my (@tmp);
 
     # 小文字に正規化
-    $$contents =~ tr/A-Z/a-z/;
+    $$content =~ tr/A-Z/a-z/;
 
     # わかち書き
     if ($conf::LANGUAGE eq "ja") {
-	wakati::wakatize_japanese($contents) if $kanji;
+	wakati::wakatize_japanese($content) if $kanji;
     }
 
     # 記号を全て削除する -K オプション時
-    $$contents =~ tr/\xa1-\xfea-z0-9/   /c if $conf::NoSymbolOpt;
+    $$content =~ tr/\xa1-\xfea-z0-9/   /c if $conf::NoSymbolOpt;
 
     my $part1 = "";
     my $part2 = "";
-    if ($$contents =~ /\x7f/) {
-	$part1 = substr($$contents, 0, index($$contents, "\x7f"));
-	$part2 = substr($$contents, index($$contents, "\x7f"));
+    if ($$content =~ /\x7f/) {
+	$part1 = substr $$content, 0, index($$content, "\x7f");
+	$part2 = substr $$content, index($$content, "\x7f");
 #	$part1 = $PREMATCH;  # $& and friends are not efficient
 #	$part2 = $MATCH . $POSTMATCH;
     } else {
-	$part1 = $$contents;
+	$part1 = $$content;
 	$part2 = "";
     }
 
@@ -1529,7 +1508,7 @@ sub count_words ($$$$) {
     wordcount_sub($part1, 1, \%word_count);
 
     # 全体のキーインデックスに追加する
-    my $fid = $file_count + $file_segment;
+    my $fid = $file_count + $file_base;
     for my $word (keys(%word_count)) {
 	next if ($word eq "" || length($word) > $conf::WORD_LENG_MAX);
 	$KeyIndex{$word} .= pack("w2", $fid, $word_count{$word});
@@ -1551,7 +1530,7 @@ sub wordcount_sub ($$\%) {
     my @words = split(/\s+/, $text);
     @words = grep(!/^$/, @words);   # 空の語を捨てる
     my @words_ = ();
-    foreach my $word (@words) {
+    for my $word (@words) {
 	if ($conf::NoEdgeSymbolOpt) {
 	    # 両端の記号を削除
 	    $word =~ s/^[^\xa1-\xfea-z_0-9]*(.*?)[^\xa1-\xfea-z_0-9]*$/$1/g;
@@ -1575,7 +1554,7 @@ sub wordcount_sub ($$\%) {
 	    push(@words_, split(/[^\xa1-\xfea-z_0-9]+/, $word))
 		if $word =~ /[^\xa1-\xfea-z_0-9]/;
 	    @words_ = grep(!/^$/, @words_);   # 空の語を捨てる
-	    foreach my $tmp (@words_) {
+	    for my $tmp (@words_) {
 		next if $tmp eq "";
 		$word_count->{$tmp} = 0 unless defined($word_count->{$tmp});
 		$word_count->{$tmp} += $weight;
@@ -1714,28 +1693,6 @@ sub write_index_sub () {
     return $key_count;
 }
 
-# make a FINFOINDEX file
-sub make_finfo_index () {
-    my $fh_finfo = util::fopen_or_die("$conf::File{'FINFO_'}");
-
-    my $fh_finfoindex = util::fopen_or_die(">$conf::File{'FINFOINDEX_'}");
-
-    my $ptr = 0;
-    my $f = 1;
-
-    while (<$fh_finfo>) {
-	print $fh_finfoindex pack("N", $ptr) if $f;
-	if (/^\n$/) { 
-	    $f = 1;
-	} else {
-	    $f = 0;
-	}
-	$ptr += length;
-    }
-}
-
-
-
 # for avoiding "used only once: possible typo at ..." warnings
 
 muda($conf::File{'BODY_MSG_EN'}, $conf::HELPER_EXTENSIONS,
@@ -1745,10 +1702,10 @@ muda($conf::File{'BODY_MSG_EN'}, $conf::HELPER_EXTENSIONS,
      $conf::MailNewsOpt, $conf::NoLineAdOpt, $conf::CHASEN_MORPH,
      $conf::UuencodeOpt, $conf::MHONARC_HEADER, $conf::CHASEN,
      $conf::KAKASI, $conf::OkuriganaOpt, $TARGET_DIR,
-     $conf::HiraganaOpt, $conf::ROBOTS_EXCLUDE_URLS, $conf::DEFAULT_FILE,
+     $conf::HiraganaOpt, $conf::ROBOTS_EXCLUDE_URIS, $conf::DEFAULT_FILE,
      $conf::HTML_SUFFIX, $conf::USAGE_EN, $conf::NoHeadAbstOpt,
-     $conf::SUMMARY_HEADER, $conf::DebugOpt, $conf::NoEncodeURL,
-     $conf::HtaccessExcludeOpt, $conf::URL_PREFIX);
+     $conf::DebugOpt, $conf::NoEncodeURI,
+     $conf::HtaccessExcludeOpt, $conf::URI_PREFIX);
 
 sub muda(@) {}
 

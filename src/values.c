@@ -2,7 +2,7 @@
  * 
  * values.c -
  * 
- * $Id: values.c,v 1.3 1999-05-14 04:38:51 satoru Exp $
+ * $Id: values.c,v 1.4 1999-06-12 14:29:32 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -37,7 +37,7 @@ uchar DEFAULT_DIR[BUFSIZE] = "/home/ccsatoru/NMZ";
 #endif
 
 /* string of HTML 's <BASE HREF="...">  (namazu.conf) */
-uchar BASE_URL[BUFSIZE] = "";
+uchar BASE_URI[BUFSIZE] = "";
 
 /* namazu.conf */
 #ifdef OPT_NAMAZU_CONF
@@ -58,6 +58,7 @@ uchar HEADERFILE[BUFSIZE] = "NMZ.head";
 uchar FOOTERFILE[BUFSIZE] = "NMZ.foot";
 uchar LOCKFILE[BUFSIZE] = "NMZ.lock";
 uchar BODYMSGFILE[BUFSIZE] = "NMZ.body";
+uchar RESULTFILE[BUFSIZE] = "NMZ.result";
 uchar SLOG[BUFSIZE] = "NMZ.slog";
 uchar WORDLIST[BUFSIZE] = "NMZ.w";
 uchar FIELDINFO[BUFSIZE] = "NMZ.field.";  /* followed by field name */
@@ -81,8 +82,8 @@ int ForcePrintForm = 0;		/* if display <FORM> ... </FORM>: 1 */
 int AllList = 0;		/* if dispal all search results: 1 */
 int LaterOrder = 1;		/* if sort by late order: 1 */
 int ConfLoaded = 0;		/* if whould loaded namazu.conf: 1 */
-int NoReplace = 0;		/* if no replace URL: 1 */
-int DecodeURL = 0;		/* if replace URL at plaint text mode: 1 */
+int NoReplace = 0;		/* if no replace URI: 1 */
+int DecodeURI = 0;		/* if replace URI at plaint text mode: 1 */
 int IsCGI = 0;			/* if CGI mode: 1 */
 int Logging = 1;		/* if do logging:  1 */
 int DbNumber = 0;               /* number of databases */

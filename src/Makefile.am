@@ -9,6 +9,7 @@
 ## Thanks to [Ryuji Abe <raeva@t3.rim.or.jp>] for many contribution
 
 @SET_MAKE@
+LIBS = -lm @LEXLIB@
 
 ##################################################################
 ## Directories
@@ -20,7 +21,7 @@ bin_SCRIPTS = clnmz gcnmz mailutime mknmz rvnmz vfnmz wdnmz gtnmz
 
 namazu_SOURCES = cgi.c codeconv.c conf.c form.c hlist.c messages.c \
 	namazu.c output.c parser.c re_match.c regex.c search.c \
-	seed.c util.c values.c wakati.c
+	seed.c util.c values.c wakati.c result.l
 noinst_HEADERS = namazu.h regex.h util.h
 
 ##################################################################

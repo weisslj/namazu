@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.5 1999-05-30 10:37:20 satoru Exp $
+ * $Id: namazu.c,v 1.6 1999-06-12 14:29:30 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -114,10 +114,10 @@ static struct option long_options[] = {
     {"output-file",      required_argument, NULL, 'o'},
     {"quiet",            no_argument,       NULL, 'q'},
     {"no-ref",           no_argument,       NULL, 'r'},
-    {"no-replace-url",   no_argument,       NULL, 'R'},
+    {"no-replace-uri",   no_argument,       NULL, 'R'},
     {"short",            no_argument,       NULL, 's'},
     {"very-short",       no_argument,       NULL, 'S'},
-    {"no-encode-url",    no_argument,       NULL, 'U'},
+    {"no-encode-uri",    no_argument,       NULL, 'U'},
     {"version",          no_argument,       NULL, 'v'},
     {"whence",           required_argument, NULL, 'w'},
     {"help",             no_argument,       NULL, '0'},
@@ -181,7 +181,7 @@ int parse_options(int argc, char **argv)
 	    NoReference = 1;
 	    break;
 	case 'U':
-	    DecodeURL = 0;
+	    DecodeURI = 0;
 	    break;
 	case 'v':
 	    printf("namazu v%s\n", VERSION);
@@ -354,21 +354,18 @@ void expand_dbname_aliases(void)
 void complete_dbnames(void)
 {
     int i;
-    int legacy_dos_fs = 0;
-#if  defined(_WIN32) || defined(__EMX__)
-    legacy_dos_fs = 1;   /* miserable!! */
-#endif
 
     for (i = 0; i < DbNumber; i++) {
- 	if (isalnum(*DbNames[i]) && !(legacy_dos_fs && *(DbNames[i] + 1) == ':')) {
+ 	if (*DbNames[i] == '+' && isalnum(*(DbNames[i] + 1))) {
 	    uchar *tmp;
-	    tmp = (uchar *)malloc(strlen(DEFAULT_DIR) + 1 + strlen(DbNames[i]) + 1);
+	    tmp = (uchar *)malloc(strlen(DEFAULT_DIR) 
+				  + 1 + strlen(DbNames[i]) + 1);
 	    if (tmp == NULL) {
 		error("complete_dbnames: malloc()");
 	    }
 	    strcpy(tmp, DEFAULT_DIR);
 	    strcat(tmp, "/");
-	    strcat(tmp, DbNames[i]);
+	    strcat(tmp, DbNames[i] + 1);  /* +1 means '+' */
 	    free(DbNames[i]);
 	    DbNames[i] = tmp;
 	}
@@ -391,8 +388,8 @@ int main(int argc, char **argv)
     } else {
 	HtmlOutput = 0;		/* in default mode of command line, 
 				 * do not display result by HTML format */
-	DecodeURL = 1;		/* in default mode of command line, 
-				 * decode a URL */
+	DecodeURI = 1;		/* in default mode of command line, 
+				 * decode a URI */
 	HidePageIndex = 1;	/* in default mode of command line, 
 				 * do not diplay page index
 				 */

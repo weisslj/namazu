@@ -2,7 +2,7 @@
  * 
  * conf.c -
  * 
- * $Id: conf.c,v 1.3 1999-05-14 04:38:49 satoru Exp $
+ * $Id: conf.c,v 1.4 1999-06-12 14:29:29 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -40,11 +40,11 @@ void show_configuration()
 
     printf("\
   * DEFAULT_DIR: %s\n\
-  * BASE_URL   : %s\n\
+  * BASE_URI   : %s\n\
   * LOGGING    : %s\n\
   * LANGUAGE   : %s\n\
   * SCORING    : %s\n\
-", DEFAULT_DIR, BASE_URL, Logging ? "ON" : "OFF",
+", DEFAULT_DIR, BASE_URI, Logging ? "ON" : "OFF",
            Lang, TfIdf ? "TFIDF" : "SIMPLE");
 
     {
@@ -147,7 +147,7 @@ void load_namazu_conf(char *av0)
     }
 
     /* I don't know why but GNU-Win32 require this */
-    BASE_URL[0] = '\0';
+    BASE_URI[0] = '\0';
 
     fp = open_conf_file(av0);
     if (fp == NULL)
@@ -160,7 +160,7 @@ void load_namazu_conf(char *av0)
 	    strcpy(DEFAULT_DIR, buf + n);
 	} else if (!strncmp(buf, "BASE\t", 5)) {
 	    for (n = 5; buf[n] == '\t'; n++);
-	    strcpy(BASE_URL, buf + n);
+	    strcpy(BASE_URI, buf + n);
 	} else if (!strncmp(buf, "REPLACE\t", 8)) {
 	    uchar tmp[BUFSIZE];
 	    for (n = 8; buf[n] == '\t'; n++);

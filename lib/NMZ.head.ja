@@ -1,47 +1,47 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN"
         "http://www.w3.org/TR/REC-html40/strict.dtd">
-<HTML>
-<HEAD>
-<LINK REV=MADE HREF="mailto:$conf::ADMIN">
-<TITLE>Namazu the full text retrieval search system</TITLE>
-</HEAD>
-<BODY LANG="ja">
-<H1>Namazu による全文検索システム</H1>
-<P>
+<html>
+<head>
+<link rev=MADE href="mailto:$conf::ADMIN">
+<title>Namazu the full text retrieval search system</title>
+</head>
+<body lang="ja">
+<h1>Namazu による全文検索システム</h1>
+<p>
 現在、<!-- FILE --> 0 <!-- FILE --> のファイルがインデックス化され、
 <!-- KEY --> 0 <!-- KEY --> 個のキーワードが登録されています。
-</P>
-<P>
-<STRONG>インデックスの最終更新日: <!-- DATE --> date <!-- DATE --></STRONG>
-</P>
-<HR>
-<FORM METHOD="GET" ACTION="$conf::CGI_ACTION">
-<P>
-<STRONG>検索式:</STRONG> 
-<INPUT TYPE="TEXT" NAME="key" SIZE="40">
-<INPUT TYPE="SUBMIT" NAME="submit" VALUE="Search!">
-<INPUT TYPE="HIDDEN" NAME="whence" VALUE="0">
-</P>
-<P>
-<STRONG>表示件数:</STRONG>
-<SELECT NAME="max">
-<OPTION VALUE="10">10
-<OPTION SELECTED VALUE="20">20
-<OPTION VALUE="30">30
-<OPTION VALUE="50">50
-<OPTION VALUE="100">100
-</SELECT>
-<STRONG>要約表示:</STRONG>
-<SELECT NAME="format">
-<OPTION SELECTED VALUE="long">ON
-<OPTION VALUE="short">OFF
-</SELECT>
-<STRONG>ソート:</STRONG>
-<SELECT NAME="sort">
-<OPTION SELECTED VALUE="score">score
-<OPTION VALUE="later">in late order
-<OPTION VALUE="earlier">in early order
-</SELECT>
-</P>
-</FORM>
+</p>
+<p>
+<strong>インデックスの最終更新日: <!-- DATE --> date <!-- DATE --></strong>
+</p>
+<hr>
+<form method="GET" action="$conf::CGI_ACTION">
+<p>
+<strong>検索式:</strong> 
+<input type="TEXT" name="key" size="40">
+<input type="SUBMIT" name="submit" value="Search!">
+<input type="HIDDEN" name="whence" value="0">
+</p>
+<p>
+<strong>表示件数:</strong>
+<select name="max">
+<option value="10">10
+<option selected value="20">20
+<option value="30">30
+<option value="50">50
+<option value="100">100
+</select>
+<strong>要約表示:</strong>
+<select name="format">
+<option selected value="long">ON
+<option value="short">OFF
+</select>
+<strong>ソート:</strong>
+<select name="sort">
+<option selected value="score">score
+<option value="later">in late order
+<option value="earlier">in early order
+</select>
+</p>
+</form>
 

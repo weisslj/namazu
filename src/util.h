@@ -3,7 +3,7 @@
   util.h -
 
   $Author: satoru $
-  $Date: 1999-05-01 08:16:02 $
+  $Date: 1999-06-12 14:29:32 $
   created at: Thu Mar  9 11:55:53 JST 1995
 
   Copyright (C) 1993-1998 Yukihiro Matsumoto
@@ -36,7 +36,7 @@ void chop();
 void *memmove();
 #endif
 
-void decode_url_string();
+void decode_uri_string();
 void tolower_string();
 void delete_backslashes();
 int get_unpackw();

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: wakati.pl,v 1.2 1999-05-04 04:42:38 satoru Exp $
+# $Id: wakati.pl,v 1.3 1999-06-12 14:29:27 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -27,9 +27,9 @@ use strict;
 
 # わかち書きによる日本語の単語の区切り出し
 sub wakatize_japanese ($) {
-    my ($contents) = @_;
+    my ($content) = @_;
 
-    my @tmp = wakatize_japanese_sub($contents);
+    my @tmp = wakatize_japanese_sub($content);
 
     # ひらがなだけの語は削除する -H オプション時
     # このコードは古川@ヤマハさんがくださりました。[1997-11-13]
@@ -49,25 +49,25 @@ sub wakatize_japanese ($) {
 
     # 品詞情報を元に名詞のみを登録する -m オプション時
     if ($conf::MorphOpt) {
-	$$contents = "";
-	$$contents .= shift(@tmp) =~ /(.+ )名詞/ ? $1 : "" while @tmp; 
+	$$content = "";
+	$$content .= shift(@tmp) =~ /(.+ )名詞/ ? $1 : "" while @tmp; 
     } else {
-	$$contents = join("\n", @tmp);
+	$$content = join("\n", @tmp);
     }
-    util::dprint("-- wakatized content --\n$$contents\n");
+    util::dprint("-- wakatized content --\n$$content\n");
 }
 
 sub wakatize_japanese_sub ($) {
-    my ($contents) = @_;
+    my ($content) = @_;
     my $str = "";
     my @tmp = ();
 
     if ($conf::WAKATI =~ /^module_(\w+)/) {
 	my $module = $1;
 	if ($module eq "kakasi") {
-	    $str = Text::Kakasi::do_kakasi($$contents);
+	    $str = Text::Kakasi::do_kakasi($$content);
 	} elsif ($module eq "chasen1") {
-	    $str = Text::ChaSen1::sparse_tostr_long($$contents);
+	    $str = Text::ChaSen1::sparse_tostr_long($$content);
 	} else {
 	    die "invalid wakati module: $module\n";
 	}
@@ -78,7 +78,7 @@ sub wakatize_japanese_sub ($) {
 	# IPC::Open2 もあるけど試したらちょっと変でしかも遅かった
 	{
 	    my $fh_wakati = util::fopen_or_die("|$conf::WAKATI > $conf::File{'TMP_WAKATI'}");
-	    print $fh_wakati $$contents;
+	    print $fh_wakati $$content;
 	}
 	{
 	    my $fh_wakati = util::fopen_or_die($conf::File{'TMP_WAKATI'});

@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.5 1999-05-30 10:37:20 satoru Exp $
+ * $Id: cgi.c,v 1.6 1999-06-12 14:29:29 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -140,7 +140,7 @@ int get_cgi_variables(uchar * query, uchar *subquery)
                 *(query + i) = *qs;
 	    }
 	    *(query + i) = '\0';
-            decode_url_string(query);
+            decode_uri_string(query);
 	    if (strlen(query) > QUERY_MAX_LENGTH) {
                 fputs(MSG_MIME_HEADER, stdout);
 		fputx(MSG_TOO_LONG_KEY, stdout);
@@ -153,7 +153,7 @@ int get_cgi_variables(uchar * query, uchar *subquery)
             if (!strncmp(query, "%1B", 3)) {
                 char *agent = getenv("HTTP_USER_AGENT");
                 if (agent && !strncmp(agent, MSIE4MAC, strlen(MSIE4MAC))) {
-                    decode_url_string(query);
+                    decode_uri_string(query);
                 }
             }
 #endif MSIE4MACFIX
@@ -165,7 +165,7 @@ int get_cgi_variables(uchar * query, uchar *subquery)
                 *(subquery + i) = *qs;
 	    }
 	    *(subquery + i) = '\0';
-            decode_url_string(subquery);
+            decode_uri_string(subquery);
 	    if (strlen(subquery) > QUERY_MAX_LENGTH) {
                 fputs(MSG_MIME_HEADER, stdout);
 		fputx(MSG_TOO_LONG_KEY, stdout);
@@ -178,7 +178,7 @@ int get_cgi_variables(uchar * query, uchar *subquery)
             if (!strncmp(subquery, "%1B", 3)) {
                 char *agent = getenv("HTTP_USER_AGENT");
                 if (agent && !strncmp(agent, MSIE4MAC, strlen(MSIE4MAC))) {
-                    decode_url_string(subquery);
+                    decode_uri_string(subquery);
                 }
             }
 #endif MSIE4MACFIX
@@ -235,7 +235,7 @@ int get_cgi_variables(uchar * query, uchar *subquery)
 	    for (i = 0; *qs && *qs != '&' && i <= DBNAMELENG_MAX; i++, qs++)
 		tmp[i] = *qs;
             tmp[i] = '\0';
-            decode_url_string(tmp);
+            decode_uri_string(tmp);
             for (pp = tmp; *pp ;) {
                 uchar name[BUFSIZE], *x;
 
@@ -289,9 +289,9 @@ void cgi_initialize(uchar * query, uchar *subquery)
     } 
 }
 
-/* decde URLencode */
+/* decde URIencode */
 /* c & 0xdf means to uppercase c */
-uchar URLdecode(uchar c, uchar c2)
+uchar URIdecode(uchar c, uchar c2)
 {
 
     c = ((c >= 'A' ? ((c & 0xdf) - 'A') + 10 : (c - '0'))) * 16;

@@ -1,11 +1,11 @@
-<HR>
-<P>
+<hr>
+<p>
 この全文検索システムは
-<STRONG><A HREF="$conf::NMZ_URL">Namazu</A> <!-- VERSION --> v$conf::VERSION <!-- VERSION --></STRONG>
+<strong><a href="$conf::NMZ_URI">Namazu</a> <!-- VERSION --> v$conf::VERSION <!-- VERSION --></strong>
 によって構築されています。
-</P>
-<ADDRESS>
-<A HREF="mailto:$conf::ADMIN">$conf::ADMIN</A>
-</ADDRESS>
-</BODY>
-</HTML>
+</p>
+<address>
+<a href="mailto:$conf::ADMIN">$conf::ADMIN</a>
+</address>
+</body>
+</html>

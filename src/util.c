@@ -123,13 +123,13 @@ void *memmove(void *d, void *s, size_t n)
 
 #endif
 
-/* decoding URL encoded strings */
-void decode_url_string(uchar * s)
+/* decoding URI encoded strings */
+void decode_uri_string(uchar * s)
 {
     int i, j;
     for (i = j = 0; s[i]; i++, j++) {
 	if (s[i] == '%') {
-	    s[j] = URLdecode(s[i + 1], s[i + 2]);
+	    s[j] = URIdecode(s[i + 1], s[i + 2]);
 	    i += 2;
 	} else if (s[i] == '+') {
 	    s[j] = ' ';

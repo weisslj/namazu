@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.3 1999-05-14 04:38:50 satoru Exp $
+ * $Id: form.c,v 1.4 1999-06-12 14:29:29 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -88,17 +88,17 @@ int cmp_element(uchar *s1, uchar *s2)
 
 #define iseuc(c)  ((c) >= 0xa1 && (c) <= 0xfe)
 
-/* replace <INPUT TYPE="TEXT" NAME="key"  VALUE="hogehoge"> */
+/* replace <input type="text" name="key"  value="hogehoge"> */
 int replace_key_value(uchar *p, uchar *orig_query)
 {
     uchar query[BUFSIZE];
     
     strcpy(query, orig_query);
 
-    if (!cmp_element(p, (uchar *)"INPUT TYPE=\"TEXT\" NAME=\"key\"")) {
+    if (!cmp_element(p, (uchar *)"input type=\"text\" name=\"key\"")) {
         for (; *p; p++)
             fputc(*p, stdout);
-        printf(" VALUE=\"");
+        printf(" value=\"");
         fputx(query, stdout); 
         fputs("\"", stdout);
         return 0;
@@ -106,13 +106,13 @@ int replace_key_value(uchar *p, uchar *orig_query)
     return 1;
 }
 
-/* replace <FORM METHOD="GET" ACTION="/somewhere/namazu.cgi"> */
+/* replace <form method="get" action="/somewhere/namazu.cgi"> */
 int replace_action(uchar *p)
 {
-    if (!cmp_element(p, (uchar *)"FORM METHOD=\"GET\"")) {
+    if (!cmp_element(p, (uchar *)"form method=\"get\"")) {
         char *script_name = getenv("SCRIPT_NAME");
         if (script_name) {
-            printf("FORM METHOD=\"GET\" ACTION=\"%s\"", script_name);
+            printf("form method=\"get\" action=\"%s\"", script_name);
             return 0;
         } else {
             return 1;
@@ -141,7 +141,7 @@ void get_value(uchar *s, uchar *v)
 {
     *v = '\0';
     for (; *s; s++) {
-        if (!strncmp(s, "VALUE=\"", 7)) {
+        if (!strncmp(s, "value=\"", 7)) {
             for (s += 7; *s && *s != '"'; s++, v++) {
                 *v = *s;
             }
@@ -155,7 +155,7 @@ void get_select_name(uchar *s, uchar *v)
 {
     *v = '\0';
     for (; *s; s++) {
-        if (!cmp_element(s, (uchar *)"SELECT NAME=\"")) {
+        if (!cmp_element(s, (uchar *)"select name=\"")) {
             s = (uchar *)strchr(s, '"') + 1;
             for (; *s && *s != (uchar)'"'; s++, v++) {
                 *v = *s;
@@ -186,40 +186,40 @@ int select_option(uchar *s, uchar *name, uchar *subquery)
 {
     uchar value[BUFSIZE];
 
-    if (!cmp_element(s, (uchar *)"OPTION")) {
-        delete_str(s, (uchar *)"SELECTED ");
+    if (!cmp_element(s, (uchar *)"option")) {
+        delete_str(s, (uchar *)"selected ");
         fputs(s, stdout);
         get_value(s, value);
         if (!strcmp(name, "format")) {
             if (!strcmp(value, "short") && ShortFormat) {
-                fputs(" SELECTED", stdout);
+                fputs(" selected", stdout);
             } else if (!strcmp(value, "long") && (!ShortFormat)) {
-                fputs(" SELECTED", stdout);
+                fputs(" selected", stdout);
             } 
         } else if (!strcmp(name, "sort")) {
             if (!strcmp(value, "later") && LaterOrder && !ScoreSort) {
-                fputs(" SELECTED", stdout);
+                fputs(" selected", stdout);
             } else if (!strcmp(value, "earlier")  && !LaterOrder && !ScoreSort)
             {
-                fputs(" SELECTED", stdout);
+                fputs(" selected", stdout);
             } else if (!strcmp(value, "score") && ScoreSort) {
-                fputs(" SELECTED", stdout);
+                fputs(" selected", stdout);
             }
         } else if (!strcmp(name, "lang")) {
             if (!strcmp(value, Lang)) {
-                fputs(" SELECTED", stdout);
+                fputs(" selected", stdout);
             }
         } else if (!strcmp(name, "dbname")) {
             if (*DbNames[0] && !str_backward_cmp(value, DbNames[0])) {
-                fputs(" SELECTED", stdout);
+                fputs(" selected", stdout);
             }
         } else if (!strcmp(name, "subquery")) {
             if (!strcmp(value, subquery)) {
-                fputs(" SELECTED", stdout);
+                fputs(" selected", stdout);
             }
         } else if (!strcmp(name, "max")) {
             if (atoi(value) == HListMax) {
-                fputs(" SELECTED", stdout);
+                fputs(" selected", stdout);
             }
         }
         return 0;
@@ -233,11 +233,11 @@ int check_checkbox(uchar *s)
     uchar value[BUFSIZE];
     int i;
 
-    if (!cmp_element(s, (uchar *)"INPUT TYPE=\"CHECKBOX\" NAME=\"dbname\"")) {
+    if (!cmp_element(s, (uchar *)"input type=\"checkbox\" name=\"dbname\"")) {
         uchar *pp;
         int db_count, searched;
 
-        delete_str(s, (uchar *)"CHECKED");
+        delete_str(s, (uchar *)"checked");
         fputs(s, stdout);
         get_value(s, value);
         for (pp = value, db_count = searched = 0 ; *pp ;db_count++) {
@@ -258,7 +258,7 @@ int check_checkbox(uchar *s)
             }
         }
         if (db_count == searched) {
-            printf(" CHECKED");
+            printf(" checked");
         }
         return 0;
     }
@@ -302,21 +302,21 @@ void cat_head_or_foot(uchar * fname, uchar * query, uchar *subquery)
     }
 
     for (p = buf, f = f2 = 0; *p; p++) {
-        if (BASE_URL[0] && !strncmp(p, "\n</HEAD>", 8)) {
-            printf("\n<BASE HREF=\"%s\">", BASE_URL);
+        if (BASE_URI[0] && !strncmp(p, "\n</head>", 8)) {
+            printf("\n<base href=\"%s\">", BASE_URI);
         }
 
         if (!f && *p == '<') {
-            if (!strncmp(p, "</TITLE>", 8)) {
+            if (!strncmp(p, "</title>", 8)) {
                 printf(": &lt;");
                 fputx(query, stdout);
-                printf("&gt;</TITLE>\n");
+                printf("&gt;</title>\n");
                 p = (uchar *)strchr(p, '>');
                 continue;
             }
 
-            if (!IsCGI && !ForcePrintForm && !strncmp(p, "<FORM ",  6)) f2 = 1;
-            if (!IsCGI && !ForcePrintForm && !strncmp(p, "</FORM>", 7)) 
+            if (!IsCGI && !ForcePrintForm && !strncmp(p, "<form ",  6)) f2 = 1;
+            if (!IsCGI && !ForcePrintForm && !strncmp(p, "</form>", 7)) 
             {f2 = 0; p += 6; continue;}
             if (f2) continue;
             /* In case of file's encoding is ISO-2022-JP, 
@@ -342,4 +342,5 @@ void cat_head_or_foot(uchar * fname, uchar * query, uchar *subquery)
     }
     free(buf);
 }
+
 

@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.3 1999-05-14 04:38:51 satoru Exp $
+ * $Id: search.c,v 1.4 1999-06-12 14:29:31 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -562,6 +562,17 @@ HLIST do_regex_search(uchar *orig_expr, HLIST val)
 
 }
 
+void apply_field_alias(uchar *field)
+{
+    if (strcmp(field, "title") == 0) {
+        strcpy(field, "subject");
+    } else if (strcmp(field, "author") == 0) {
+        strcpy(field, "from");
+    } else if (strcmp(field, "path") == 0) {
+        strcpy(field, "uri");
+    } 
+}
+
 void get_field_name(uchar *field, uchar *str)
 {
     uchar *tmp = field;
@@ -577,13 +588,7 @@ void get_field_name(uchar *field, uchar *str)
     }
     *tmp = '\0';
 
-    if (strcmp(field, "title") == 0) {
-        strcpy(field, "subject");
-    } else if (strcmp(field, "author") == 0) {
-        strcpy(field, "from");
-    } else if (strcmp(field, "path") == 0) {
-        strcpy(field, "url");
-    } 
+    apply_field_alias(field);
 }
 
 void get_expr(uchar *expr, uchar *str)
@@ -713,18 +718,18 @@ void print_result1(void)
     fputx(MSG_RESULT_HEADER, stdout);
 
     if (HtmlOutput)
-	fputs("<P>\n", stdout);
+	fputs("<p>\n", stdout);
     else
 	fputc('\n', stdout);
     fputx(MSG_REFERENCE_HEADER, stdout);
     if (DbNumber > 1 && HtmlOutput)
-	fputs("</P>\n", stdout);
+	fputs("</p>\n", stdout);
 }
 
 void print_result2(void)
 {
     if (DbNumber == 1 && HtmlOutput)
-	printf("\n</P>\n");
+	printf("\n</p>\n");
     else
 	fputc('\n', stdout);
 }
@@ -742,24 +747,24 @@ void print_result3(int n)
 void print_result4(HLIST hlist)
 {
     if (HtmlOutput)
-        printf("<DL>\n");
+        printf("<dl>\n");
     
     put_hlist(hlist);
     
     if (HtmlOutput)
-        printf("</DL>\n");
+        printf("</dl>\n");
 
 }
 
 void print_result5(HLIST hlist)
 {
     if (HtmlOutput)
-        printf("<P>\n");
+        printf("<p>\n");
     put_current_extent(hlist.n);
     if (!HidePageIndex)
         put_page_index(hlist.n);
     if (HtmlOutput)
-        printf("</P>\n");
+        printf("</p>\n");
     else
         printf("\n");
 }
@@ -819,7 +824,7 @@ HLIST search_and_print_reference(HLIST hlist, uchar *query,
     if (!HitCountOnly && !MoreShortFormat && !NoReference && !Quiet) {
         if (DbNumber > 1) {
             if (HtmlOutput)
-                printf("<LI><STRONG>%s</STRONG>: ", get_dir_name(DbNames[n]));
+                printf("<li><strong>%s</strong>: ", get_dir_name(DbNames[n]));
             else
                 printf("(%s)", DbNames[n]);
         }
@@ -894,7 +899,7 @@ void search_main(uchar *query)
         if (DbNumber > 1) {
             printf("\n");
             if (HtmlOutput)
-                printf("<UL>\n");
+                printf("<ul>\n");
         }
     }
     for (i = 0; i < DbNumber; i++) {
@@ -904,7 +909,7 @@ void search_main(uchar *query)
     }
     if (!HitCountOnly && !MoreShortFormat && !NoReference && !Quiet) {
         if (DbNumber > 1 && HtmlOutput) {
-            printf("</UL>\n");
+            printf("</ul>\n");
         }
         print_result2();
     }

@@ -1,7 +1,7 @@
 /*
  * result.l -
  * -*- C -*-
- * $Id: result.l,v 1.7 1999-08-23 11:28:10 satoru Exp $
+ * $Id: result.l,v 1.8 1999-08-23 12:37:11 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -84,8 +84,8 @@ void emphasize(uchar *str) {
 	    if (ptr != NULL) {
 		memmove(ptr + 2, ptr, strlen(ptr) + 1);
 		memmove(ptr + 1, ptr + 2, keylen);
-		*ptr = EMPHASIZING_START;
-		*(ptr + keylen + 1) = EMPHASIZING_END;
+		*ptr = EMPHASIZING_START_MARK;
+		*(ptr + keylen + 1) = EMPHASIZING_END_MARK;
 		ptr += 2;
 	    }
 	} while (ptr != NULL);

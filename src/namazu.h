@@ -51,14 +51,17 @@ enum {
     SORT_BY_SCORE = 1,  /* at displaying results time */
     SORT_BY_DATE  = 2,  /* at displaying results time */
 
-    EMPHASIZING_START = '\1',
-    EMPHASIZING_END   = '\2',
+    EMPHASIZING_START_MARK = '\1',
+    EMPHASIZING_END_MARK   = '\2',
 
     STDIN  = 0,		/* stdin's fd */
     STDOUT = 1,		/* stdout's fd */
     STDERR = 2		/* stderr's fd */
 
 };
+
+#define EMPHASIZING_START_ELEMENT "<strong class=\"keyword\">"
+#define EMPHASIZING_END_ELEMENT   "</strong>"
 
 /* data structure for search result */
 struct hlist {

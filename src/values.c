@@ -2,7 +2,7 @@
  * 
  * values.c -
  * 
- * $Id: values.c,v 1.6 1999-08-13 00:16:58 satoru Exp $
+ * $Id: values.c,v 1.7 1999-08-23 12:37:11 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -33,7 +33,7 @@
 #ifdef INDEXDIR
 uchar DEFAULT_DIR[BUFSIZE] = INDEXDIR;
 #else
-uchar DEFAULT_DIR[BUFSIZE] = "/home/ccsatoru/NMZ";
+uchar DEFAULT_DIR[BUFSIZE] = "/usr/local/namazu/index";
 #endif
 
 /* string of HTML 's <BASE HREF="...">  (namazu.conf) */

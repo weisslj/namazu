@@ -149,21 +149,21 @@ void euctojisput(uchar *s, FILE *fp, int entity_encode, int ishtml)
 		set1byte();
 		state = 0;
 	    }
-	    if (c == EMPHASIZING_START) {
+	    if (c == EMPHASIZING_START_MARK) {
 		if (ishtml) {
-		    printf("<strong class=\"keyword\">");
+		    fputs(EMPHASIZING_START_ELEMENT, fp);
 		} else {
-		    printf(" **");
+		    fputs(" **", fp);
 		}
 		if (!(c = (int) *(s++))) {
 		    return;
 		}
 		continue;
-	    } else if (c == EMPHASIZING_END) {
+	    } else if (c == EMPHASIZING_END_MARK) {
 		if (ishtml) {
-		    printf("</strong>");
+		    fputs(EMPHASIZING_END_ELEMENT, fp);
 		} else {
-		    printf("** ");
+		    fputs("** ", fp);
 		}
 		if (!(c = (int) *(s++))) {
 		    return;

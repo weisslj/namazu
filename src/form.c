@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.6 1999-08-23 11:35:46 satoru Exp $
+ * $Id: form.c,v 1.7 1999-08-23 12:37:10 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -313,6 +313,7 @@ void print_headfoot(uchar * fname, uchar * query, uchar *subquery)
 		    fputx(query, stdout);
 		    printf("&gt;");
 		}
+		printf("</title>\n");
                 p = (uchar *)strchr(p, '>');
                 continue;
             }

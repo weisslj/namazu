@@ -5,7 +5,7 @@
 <link rev=MADE href="mailto:$conf::ADMIN">
 <title>Namazu the full text retrieval search system</title>
 <style type="text/css"><!--
- strong.keyword { background: #F099F0; }
+ strong.keyword { color: #ff0000; }
 --></style>
 </head>
 <body lang="ja">

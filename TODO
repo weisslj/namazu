@@ -5,4 +5,5 @@ This is the todo list for Namazu.
   * Make source codes clear.
   * Redesign and reimplement.
   * Implement a distributed network search engine with libnmz.
+  * More improvement of i18n. (codeset independence)
   * Multilingualization.

@@ -2,7 +2,7 @@
 # -*- Perl -*-
 #
 # bnamazu -- search with "namazu" and browse its results with a web browser.
-# $Id: bnamazu.in,v 1.2 1999-12-20 00:18:24 satoru Exp $
+# $Id: bnamazu.in,v 1.3 1999-12-20 23:23:31 satoru Exp $
 # 
 # Copyright (C) 1998 Hajime BABA. All rights reserved.
 #
@@ -45,7 +45,7 @@ sub main {
 
     my $results_html = "";
     if ($browser =~ /netscape/) {
-	# It is impossible to remove a tmpfile immediately after invoking
+	# It is not good to remove a tmpfile immediately after invoking
 	# netscape. Because netscape requires the tmpfile to go back to it.
 	# So, we should remove a previous tmpfile at this time.
 	unlink_previous_netscape_tmpfile();  

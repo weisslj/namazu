@@ -1,7 +1,7 @@
 1999-12-20  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* scripts/bnamazu.in (unlink_previous_netscape_tmpfile): New function.
-	Since it is impossible to remove a tmpfile immediately after
+	Since it is not good to remove a tmpfile immediately after
 	invoking netscape (netscape requires the tmpfile to go back to
 	it). we should remove a previous tmpfile at next bnamazu execution.
 	(main): Use unlink_previous_netscape_tmpfile.

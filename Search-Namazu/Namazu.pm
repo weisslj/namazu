@@ -19,7 +19,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 # 02111-1307, USA
 #
-# $Id: Namazu.pm,v 1.11 2000-11-06 09:38:09 knok Exp $
+# $Id: Namazu.pm,v 1.12 2001-01-17 09:45:52 knok Exp $
 #
 
 package Search::Namazu;
@@ -77,7 +77,7 @@ NMZ_ASCENDSORT NMZ_DESCENDSORT
 NMZ_NOT_SPECIFIED_INDEX NMZ_ERR_INDEX);
 # %EXPORT_TAGS = (all => [qw()]);
 
-$VERSION = '0.11';
+$VERSION = '0.12';
 
 bootstrap Search::Namazu $VERSION;
 
@@ -162,6 +162,7 @@ sub Search {
 # create Search::Namazu::Result object
 
     my @hlists = call_search_main($query);
+    pop @hlists;
 
 # return objects
     return @hlists;

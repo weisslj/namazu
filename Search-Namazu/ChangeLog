@@ -1,3 +1,10 @@
+2001-01-17  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* Namazu.pm: Version 0.12.
+
+	* Namazu.xs: Fixed no-result return bug when query hits only
+	one staff.
+
 2000-11-06  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* Namazu.pm : Fixed bad example code.

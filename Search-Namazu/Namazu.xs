@@ -20,7 +20,7 @@ Namazu.xs
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 # 02111-1307, USA
 
-$Id: Namazu.xs,v 1.11 2000-01-27 03:29:19 satoru Exp $
+$Id: Namazu.xs,v 1.12 2001-01-17 09:45:52 knok Exp $
 
 */
 
@@ -68,25 +68,27 @@ call_search_main(query)
 		hlist = nmz_search(cqstr);
 		for (i = 0; i < hlist.num; i ++) {
 			SV *ohlist = perl_eval_pv("new Search::Namazu::Result", TRUE);
-			SV *tmp;
+			dSP;
 			nmz_get_field_data(hlist.data[i].idxid, hlist.data[i].docid, "uri", result);
+			ENTER;
+			SAVETMPS;
 			PUSHMARK(SP);
-			XPUSHs(ohlist);
-			XPUSHs(sv_2mortal(newSViv(hlist.data[i].score)));
-			XPUSHs(sv_2mortal(newSVpv(result, strlen(result))));
-			XPUSHs(sv_2mortal(newSViv(hlist.data[i].date)));
-			XPUSHs(sv_2mortal(newSViv(hlist.data[i].rank)));
+			PUSHs(ohlist);
+			PUSHs(sv_2mortal(newSViv(hlist.data[i].score)));
+			PUSHs(sv_2mortal(newSVpv(result, strlen(result))));
+			PUSHs(sv_2mortal(newSViv(hlist.data[i].date)));
+			PUSHs(sv_2mortal(newSViv(hlist.data[i].rank)));
 			PUTBACK;
 			perl_call_method("set", G_DISCARD);
-			POPs;
-			POPs;
-			POPs;
-			POPs;
-			POPs;
 			av_push(retar, ohlist);
+			FREETMPS;
+			LEAVE;
 		}
 		nmz_free_hlist(hlist);
-		EXTEND(SP, hlist.num);
+		{ /* workaround for only one result */
+			SV *ohlist = perl_eval_pv("new Search::Namazu::Result", TRUE);
+			XPUSHs(ohlist);
+		}
 		for (i = 0; i < hlist.num; i ++) {
 			XPUSHs(av_pop(retar));
 		}

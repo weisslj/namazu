@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu-cmd.c,v 1.16 2000-12-21 09:21:30 knok Exp $
+ * $Id: namazu-cmd.c,v 1.17 2001-01-20 03:34:50 baba Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -160,6 +160,7 @@ static int
 parse_options(int argc, char **argv)
 {
     int tmp;
+    int opt_show_config = 0;
 
     for (;;) {
         int ch = getopt_long(argc, argv, short_options, long_options, NULL);
@@ -255,17 +256,20 @@ parse_options(int argc, char **argv)
 	    exit(EXIT_SUCCESS);
 	    break;
 	case 'C':
-	    if (load_rcfiles() != SUCCESS) {
-		die(nmz_get_dyingmsg());
-	    }
-	    show_config();
-	    exit(EXIT_SUCCESS);
+	    opt_show_config = 1;
 	    break;
 	case 'o':
 	    stdio2file(optarg);
 	    break;
 	}
     } 
+    if (opt_show_config) {
+	if (load_rcfiles() != SUCCESS) {
+	    die(nmz_get_dyingmsg());
+	}
+	show_config();
+	exit(EXIT_SUCCESS);
+    }
 
     return optind;
 }

@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.79 2001-01-12 05:15:37 baba Exp $
+# $Id: mknmz.in,v 1.80 2001-01-20 03:34:46 baba Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -1052,14 +1052,9 @@ sub parse_options
 	       );
 
     if ($opt_quiet) {
-	# Make STDOUT quiet by redirecting STDOUT to /dev/null.
-	if (-e "/dev/null") {
-	    open(STDOUT, ">/dev/null") || die "/dev/null: $!";
-	} elsif (($SYSTEM eq "MSWin32") || ($SYSTEM eq "os2")) {
-	    open(STDOUT, ">nul") || die "nul: $!";
-	} else {
-	    die "/dev/null or equivalent are needed to enable --quiet.";
-	}
+	# Make STDOUT quiet by redirecting STDOUT to null device.
+	my $devnull = util::devnull();
+	open(STDOUT, ">$devnull") || die "$devnull: $!";
     }
 
     if ($opt_config) {

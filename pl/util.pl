@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.19 2000-12-15 05:46:00 knok Exp $
+# $Id: util.pl,v 1.20 2001-01-20 03:34:42 baba Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -237,6 +237,22 @@ sub systemcmd {
 	system(@args);
     } else {
 	system(@_);
+    }
+}
+
+# Returns a string representation of the null device.
+# We can use File::Spec->devnull() on Perl-5.6, instead.
+sub devnull {
+    if ($mknmz::SYSTEM eq "MSWin32") {
+	return "nul";
+    } elsif ($mknmz::SYSTEM eq "os2") {
+	return "/dev/nul";
+    } elsif ($mknmz::SYSTEM eq "MacOS") {
+	return "Dev:Null";
+    } elsif ($mknmz::SYSTEM eq "VMS") {
+	return "_NLA0:";
+    } else { # Unix
+	return "/dev/null";
     }
 }
 

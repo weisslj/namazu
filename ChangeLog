@@ -1,3 +1,7 @@
+2000-02-20  Kenji Suzuki  <kenji@po.ganseki.ne.jp>
+
+        * filter/hnf.pl: GRP bug fix
+
 2000-02-20  Ryuji Abe <raeva@t3.rim.or.jp>
 
 	* nmz/hlist.c: s/__CYGWIN32__/__CYGWIN__/g.

@@ -1,5 +1,11 @@
 2003-06-25  Yoshinori TAKESAKO  <takesako@namazu.org>
 
+	* nmz/field.c (nmz_free_field_cache): Fixed the bug by 
+	which field_cache was not cleared normally.
+	(Related http://www.namazu.org/ml/namazu-devel-ja/msg02698.html)
+
+2003-06-25  Yoshinori TAKESAKO  <takesako@namazu.org>
+
 	* nmz/wakati.c (nmz_wakati): Fixed the internal bug of nmz_wakati(),
 	when a language environment variable is set as Japanese.
 	Applied the namazu-2.0.12-phrase.patch. (namazu-devel-ja#02820)
@@ -7977,4 +7983,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1030 2003-06-25 06:25:46 takesako Exp $
+$Id: ChangeLog,v 1.1031 2003-06-25 07:58:16 takesako Exp $

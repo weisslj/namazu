@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: field.c,v 1.34 2003-03-21 13:30:12 opengl2772 Exp $
+ * $Id: field.c,v 1.35 2003-06-25 07:58:17 takesako Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -231,7 +231,7 @@ void
 nmz_free_field_cache(void)
 {
        int i;
-       for(i=0; i++; i < cache_num) {
+       for(i = 0; i < cache_num; i++) {
                fc[i].idxid =0;
                fc[i].docid =0;
                strcpy(fc[i].field, "");

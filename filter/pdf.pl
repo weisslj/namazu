@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: pdf.pl,v 1.24 2002-03-15 07:19:09 knok Exp $
+# $Id: pdf.pl,v 1.25 2002-07-24 09:53:03 baba Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -29,6 +29,7 @@ require 'util.pl';
 require 'gfilter.pl';
 
 my $pdfconvpath = undef;
+my $pdfinfopath = undef;
 my $pdfconvver = 0;
 my $pdfconvarg = '';
 
@@ -38,6 +39,7 @@ sub mediatype() {
 
 sub status() {
     $pdfconvpath = util::checkcmd('pdftotext');
+    $pdfinfopath = util::checkcmd('pdfinfo');
     if (defined $pdfconvpath) {
 	my $ret = `$pdfconvpath 2>&1`;
 	if ($ret =~ /^pdftotext\s+version\s+([0-9]+\.[0-9]+)/) {
@@ -109,6 +111,22 @@ sub filter ($$$$$) {
 	unless $fields->{'title'};
     gfilter::show_filter_debug_info($cont, $weighted_str,
 			   $fields, $headings);
+
+    if (defined $pdfinfopath) {
+	my $tmpfile3 = util::tmpnam('NMZ.pdf3');
+	system("$pdfinfopath $cfile > $tmpfile3");
+	my $fh = util::efopen("< $tmpfile3");
+	$$cont = util::readfile($fh);
+	undef $fh;
+	unlink($tmpfile3);
+	if ($$cont =~ /Title: (.*)/) { # or /Subject: (.*)/
+	    $fields->{'title'} = $1;
+	}
+	if ($$cont =~ /Author: (.*)/) {
+	    $fields->{'author'} = $1;
+	}
+    }
+
     return undef;
 }
 

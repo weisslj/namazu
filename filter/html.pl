@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: html.pl,v 1.40 2003-10-07 06:31:15 opengl2772 Exp $
+# $Id: html.pl,v 1.41 2003-10-07 06:38:17 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -101,9 +101,9 @@ sub html_filter ($$$$) {
     html::get_author($contref, $fields);
     html::get_meta_tags($contref, $weighted_str, $fields);
 #    html::get_img_alt($contref);
-    html::get_alt_attr($contref); if "ALT" =~ /^($conf::HTML_ATTRIBUTES)$/io;
-    html::get_table_summary($contref); if "SUMMARY" =~ /^($conf::HTML_ATTRIBUTES)$/io;
-    html::get_title_attr($contref); if "TITLE" =~ /^($conf::HTML_ATTRIBUTES)$/io;
+    html::get_alt_attr($contref) if "ALT" =~ /^($conf::HTML_ATTRIBUTES)$/io;
+    html::get_table_summary($contref) if "SUMMARY" =~ /^($conf::HTML_ATTRIBUTES)$/io;
+    html::get_title_attr($contref) if "TITLE" =~ /^($conf::HTML_ATTRIBUTES)$/io;
     html::normalize_html_element($contref);
     html::erase_above_body($contref);
     html::remove_comments($contref);

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.7 2000-01-06 10:01:56 satoru Exp $
+# $Id: util.pl,v 1.8 2000-01-07 01:29:52 knok Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -49,7 +49,7 @@ sub Rename($$) {
     if (0 == rename($from, $to)) {
 	cdie("rename($from, $to): $!\n");
     }
-    dprint("Renamed: $from, $to\n");
+    dprint(_("Renamed: ")."$from, $to\n");
 }
 
 sub efopen ($) {
@@ -125,7 +125,7 @@ sub readfile ($) {
 	if ($arg =~ /^(IO::File|FileHandle)/) {
 	    $fh = $arg;
 	} else {
-	    warn "$arg: not an IO::File/FileHandle object!\n";
+	    warn "$arg: "._("not an IO::File/FileHandle object!\n");
 	    return '';
 	}
     } else {
@@ -150,7 +150,7 @@ sub filesize($) {
 	if ($arg =~ /^(IO::File|FileHandle)/) {
 	    $fh = $arg;
 	} else {
-	    warn "$arg: not an IO::File/FileHandle object!\n";
+	    warn "$arg: "._("not an IO::File/FileHandle object!\n");
 	    return '';
 	}
     } else {
@@ -215,7 +215,7 @@ sub remove_tmpfiles () {
     push @list, $var::NMZ{'err'}   if -z $var::NMZ{'err'}; # if size == 0
     push @list, $var::NMZ{'lock'}  if -f $var::NMZ{'lock'};
     push @list, $var::NMZ{'lock2'} if -f $var::NMZ{'lock2'};
-    dprint("Remove tmporary files:", @list);
+    dprint(_("Remove tmporary files:"), @list);
     unlink @list;
 }
 
@@ -233,7 +233,7 @@ sub assert($$) {
     my ($bool, $msg) = @_;
 
     if (!$bool) {
-	die "ASSERTION ERROR!: $msg";
+	die _("ASSERTION ERROR!: ")."$msg";
     }
 }
 1;

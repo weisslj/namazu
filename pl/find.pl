@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: find.pl,v 1.3 2000-01-06 10:01:55 satoru Exp $
+# $Id: find.pl,v 1.4 2000-01-07 01:29:52 knok Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -41,7 +41,7 @@ sub find {
 	(($topdev,$topino,$topmode,$topnlink) = stat($topdir))
 	  || (warn("Can't stat $topdir: $!\n"), next);
 
-	if (-d _) { 
+	if (-d $topdir) { 
 	    if (chdir($topdir)) {
 		($dir,$_) = ($topdir,'.');
 		$name = $topdir;
@@ -50,7 +50,7 @@ sub find {
 		finddir($fixtopdir,$topnlink,$rarray);
 	    }
 	    else {
-		warn "Can't cd to $topdir: $!\n";
+		warn _("Can't cd to $topdir: ")."$!\n";
 	    }
 	} else {
 	    unless (($dir,$_) = $topdir =~ m#^(.*/)(.*)$#) {
@@ -118,14 +118,14 @@ sub finddir {
 		## Modified by S.Takabayashi lstat() -> stat()
 		($dev,$ino,$mode,$nlink) = stat($_) unless $nlink;
 		
-		if (-d _) { 
+		if (-d $_) { 
 		    # It really is a directory, so do it recursively.
 		    ## and Symbolic Linked dir, also do it.
 		    $tmp = '..';
 		    if (-l $_) {
 			($dev,$ino,$mode,$nlink) = lstat($_);
 			if ($SymLinks{"$dev $ino"}) {
-			    print "Looped symbolic link detected [$name], skipped.\n";
+			    print _("Looped symbolic link detected ")."[$name],"._(" skipped.\n");
 			    last;
 			}
 			$SymLinks{"$dev $ino"} = 1;

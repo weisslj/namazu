@@ -4,16 +4,16 @@ package conf;
 ## Required softwares
 ##
 
-## Network Kanji Filter nkf v1.62
+## Network Kanji Filter nkf v1.62 or later
 $NKF = "@NKF@"; 
 
 ## KAKASI or ChaSen (to handle Japanese characters)
 $KAKASI = "@KAKASI@ -ieuc -oeuc -w";
 
-## ChaSen 1.51 (simple wakatigaki)
+## ChaSen 1.51 or later (simple wakatigaki)
 $CHASEN = "@CHASEN@ -j -F '\%m '";
 
-## ChaSen 1.51 (with morphological processing)
+## ChaSen 1.51 or later (with morphological processing)
 $CHASEN_MORPH = "@CHASEN@ -j -F '\%m %H\\n'";
 
 ## Default Japanese processer

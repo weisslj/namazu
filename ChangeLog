@@ -9,6 +9,15 @@
 
 	* nmz/libnamazu.h (enum nmz_stat): Add ERR_FIELD_SEARCH_FAILED.
 
+2000-01-07  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* pl/find.pl (find,finddir): Fixed `(-d _)' expression.
+
+	* pl/{util,wakati,find}.pl: Gettextized.
+
+	* pl/conf.pl.in: Modified some comments refering to 
+	required software version.
+
 2000-01-06  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* scripts/mknmz.pl.in: Moved location of requiring gettext.pl.

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: wakati.pl,v 1.5 2000-01-06 10:01:56 satoru Exp $
+# $Id: wakati.pl,v 1.6 2000-01-07 01:29:52 knok Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -56,7 +56,7 @@ sub wakatize_japanese ($) {
     } else {
 	$$content = join("\n", @tmp);
     }
-    util::dprint("-- wakatized content --\n$$content\n");
+    util::dprint(_("-- wakatized content --\n")."$$content\n");
 }
 
 sub wakatize_japanese_sub ($) {
@@ -71,13 +71,13 @@ sub wakatize_japanese_sub ($) {
 	} elsif ($module eq "chasen") {
 	    $str = Text::ChaSen::sparse_tostr_long($$content);
 	} else {
-	    util::cdie("invalid wakati module: $module\n");
+	    util::cdie(_("invalid wakati module: ")."$module\n");
 	}
-        util::dprint("-- wakatized bare content --\n$str\n\n");
+        util::dprint(_("-- wakatized bare content --\n")."$str\n\n");
 	@tmp = split('\n', $str);
     } else {
 	my $tmpfile = util::tmpnam("NMZ.wakati");
-        util::dprint("wakati: using $conf::WAKATI\n");
+        util::dprint(_("wakati: using ")."$conf::WAKATI\n");
 	# Don't use IPC::Open2 because it's not efficent.
 	{
 	    my $fh_wakati = util::efopen("|$conf::WAKATI > $tmpfile");

@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.59 2000-09-05 05:47:45 rug Exp $
+ * $Id: form.c,v 1.60 2001-06-19 08:48:04 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -320,6 +320,7 @@ read_headfoot(const char *fname)
 {
     char *buf, *p, tmpfname[BUFSIZE], suffix[BUFSIZE];
     char *script_name;
+    char *document_name;
 
     if (nmz_choose_msgfile_suffix(fname, suffix) != SUCCESS) {
 	nmz_warn_printf("%s: %s", fname, strerror(errno));
@@ -347,15 +348,25 @@ read_headfoot(const char *fname)
     }
 
     script_name= getenv("SCRIPT_NAME");
+    document_name= getenv("DOCUMENT_NAME");
 
     /* Can't determine script_name */
     if (script_name == NULL) {
 	return buf;
     }
 
+    /* no document_name, set it to script_name */
+    if (document_name == NULL) {
+	document_name = script_name;
+    }
+
     /* Replace {cgi} with a proper namazu.cgi location */
     while ((p = strstr(buf, "{cgi}")) != NULL) {
 	subst(p, "{cgi}", script_name);
+    }
+    /* Replace {doc} with the name of the calling document eg, using SSI */
+    while ((p = strstr(buf, "{doc}")) != NULL) {
+	subst(p, "{doc}", document_name);
     }
 
     return buf;

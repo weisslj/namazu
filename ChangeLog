@@ -3,6 +3,10 @@
 	* scripts/mknmz.in (preload_modules): Changed @INC handling
 	timing.
 
+	* src/form.c: Applied DOCUMENT_NAME patch.
+	(Contributed by Philip S Tellis, thanks!
+	<http://search.namazu.org/ml/namazu-users-en/msg00117.html>)
+
 2001-06-18  Ryuji Abe  <rug@namazu.org>
 
 	* man/Makfile.am (EXTRA_DIST): Added help2man.
@@ -6486,4 +6490,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.826 2001-06-19 04:27:43 knok Exp $
+$Id: ChangeLog,v 1.827 2001-06-19 08:48:03 knok Exp $

@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.11 2000-01-07 10:58:34 satoru Exp $
+ * $Id: rcfile.c,v 1.12 2000-01-07 23:49:41 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -351,12 +351,16 @@ is_valid_argnum(const char *directive, int argnum)
 		errmsg = "too many arguments";
 		return 0;  /* NG */
 	    } else {
-		MUST_NOT_BE_REACHED_HERE();
+		/* MUST NOT be reached here! */
+		assert(0);
+		/* NOTREACHED */
 		return 0;
 	    }
 	}
     }
-    MUST_NOT_BE_REACHED_HERE();
+    /* MUST NOT be reached here! */
+    assert(0);
+    /* NOTREACHED */
     return 0;
 }
 

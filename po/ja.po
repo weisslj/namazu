@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: namazu 2.0\n"
-"POT-Creation-Date: 2000-01-07 11:33+0900\n"
+"POT-Creation-Date: 2000-01-07 21:01+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>\n"
 "Language-Team: Japanese <satoru-t@is.aist-nara.ac.jp>\n"
@@ -13,12 +13,12 @@ msgstr ""
 "Content-Type: text/plain; charset=EUC-JP\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
-#: nmz/rcfile.c:448
+#: nmz/rcfile.c:449
 #, c-format
 msgid "Config:  %s\n"
 msgstr "設定ファイル:  %s\n"
 
-#: nmz/rcfile.c:451
+#: nmz/rcfile.c:452
 #, c-format
 msgid ""
 "Default: %s\n"
@@ -33,61 +33,61 @@ msgstr ""
 "標準の言語: %s\n"
 "スコア計算: %s\n"
 
-#: nmz/util.c:588
+#: nmz/util.c:573
 msgid "Fatal error occered!"
 msgstr "致命的なエラー"
 
-#: nmz/util.c:594
+#: nmz/util.c:579
 msgid "Invalid query"
 msgstr "不正な idxname の指定です"
 
-#: nmz/util.c:597
+#: nmz/util.c:582
 #, fuzzy
 msgid "Too many query tokens"
 msgstr "検索式の項目が多すぎます\n"
 
-#: nmz/util.c:600
+#: nmz/util.c:585
 msgid "Too many words matched. Ignored"
 msgstr "マッチする単語が多すぎるので無視しました"
 
-#: nmz/util.c:603
+#: nmz/util.c:588
 msgid "Too many pages hit. Ignored"
 msgstr "ヒット数が多すぎるので無視しました"
 
-#: nmz/util.c:606
+#: nmz/util.c:591
 msgid "cannot open regex index"
 msgstr "正規表現用インデックスが開けませんでした"
 
-#: nmz/util.c:609
+#: nmz/util.c:594
 msgid "cannot open phrase index"
 msgstr "フレイズ検索用インデックスが開けませんでした"
 
-#: nmz/util.c:612
+#: nmz/util.c:597
 msgid "cannot open field index"
 msgstr "フィールド検索用のインデックスが開けませんでした"
 
-#: nmz/util.c:615
+#: nmz/util.c:600
 msgid "cannot open this index"
 msgstr "インデックスが開けませんでした"
 
-#: nmz/util.c:618
+#: nmz/util.c:603
 msgid "cannot open result format file"
 msgstr "結果出力の書式指定ファイルが開けませんでした"
 
-#: nmz/util.c:621
+#: nmz/util.c:606
 msgid "You don't have a permission to access the index"
 msgstr "インデックスにアクセスする権利がありません"
 
-#: nmz/util.c:624
+#: nmz/util.c:609
 msgid "Unknown error. Report bug!"
 msgstr "不明なエラー。バグ報告してください"
 
-#: nmz/alias.c:102
+#: nmz/alias.c:104
 #, c-format
 msgid "Alias:   \"%s\" -> \"%s\"\n"
 msgstr "別名:   \"%s\" -> \"%s\"\n"
 
-#: nmz/replace.c:216
+#: nmz/replace.c:217
 #, c-format
 msgid "Replace: \"%s\" -> \"%s\"\n"
 msgstr "置換: \"%s\" -> \"%s\"\n"
@@ -100,25 +100,25 @@ msgstr "不正な idxname の指定です"
 msgid "Too long QUERY_STRING"
 msgstr "CGIの QUERY_STRING が長すぎます"
 
-#: src/output.c:422
+#: src/output.c:447
 msgid "\t<strong>Page:</strong> "
 msgstr "\t<strong>ペイジ:</strong> "
 
-#: src/output.c:467
+#: src/output.c:492
 #, c-format
 msgid "Current List: %d"
 msgstr "現在のリスト: %d"
 
-#: src/output.c:515
+#: src/output.c:540
 #, c-format
 msgid " [ TOTAL: %d ]"
 msgstr " [ 合計: %d ]"
 
-#: src/output.c:525
+#: src/output.c:550
 msgid "\t<p><strong> Total "
 msgstr "\t<p><strong>検索式にマッチする "
 
-#: src/output.c:532
+#: src/output.c:557
 msgid ""
 "\t documents matching your query.</strong></p>\n"
 "\n"
@@ -126,7 +126,7 @@ msgstr ""
 "\t 個の文書が見つかりました。</strong></p>\n"
 "\n"
 
-#: src/output.c:587
+#: src/output.c:612
 #, c-format
 msgid ""
 "\t<h2>Error!</h2>\n"
@@ -135,15 +135,15 @@ msgstr ""
 "\t<h2>エラー!</h2>\n"
 "<p>%s</p>\n"
 
-#: src/output.c:617
+#: src/output.c:642
 msgid "\t<h2>Results:</h2>\n"
 msgstr "\t<h2>検索結果</h2>\n"
 
-#: src/output.c:624
+#: src/output.c:649
 msgid "References: "
 msgstr "参考ヒット数: "
 
-#: src/output.c:671
+#: src/output.c:696
 msgid "\t<p>No document matching your query.</p>\n"
 msgstr "\t<p>検索式にマッチする文書はありませんでした。</p>\n"
 

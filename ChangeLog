@@ -1,3 +1,10 @@
+2000-01-08  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* nmz/rcfile.c (is_valid_argnum): Use assert(0) instead of 
+	MUST_NOT_BE_HERE() macro. 
+	
+	* nmz/libnamazu.h: Abolish MUST_NOT_BE_HERE macro().
+
 2000-01-07  Ryuji Abe <raeva@t3.rim.or.jp>
 
 	* nmz/util.c (nmz_strlower): Modified commentations.

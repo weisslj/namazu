@@ -3,29 +3,26 @@
   util.h -
 
   $Author: satoru $
-  $Date: 1999-08-26 04:29:50 $
+  $Date: 1999-08-27 10:05:13 $
   created at: Thu Mar  9 11:55:53 JST 1995
 
   Copyright (C) 1993-1998 Yukihiro Matsumoto
 
-************************************************/
+  Modifications for Namazu 
+  by satoru-t@is.aist-nara.ac.jp
 
-/* 
- *   Some small modifications for Namazu 
- *    by satoru-t@is.aist-nara.ac.jp
- */
+************************************************/
 
 #include "namazu.h"
 
 #ifndef _UTIL_H
 #define _UTIL_H
 
-unsigned long scan_hex();
-unsigned long scan_oct();
-
-/*
- * added by satoru-t@is.aist-nara.ac.jp
- */
+/************************************************************
+ *
+ * Macros
+ *
+ ************************************************************/
 
 #define iskanji1st(c) (((c) >= 0x81 && (c)) <= 0x9f ||\
                       ((c) >= 0xe0 && (c) <= 0xfc))
@@ -35,14 +32,26 @@ unsigned long scan_oct();
 #define ischoon(c) ((int)*(c) == 0xa1 && (int)*(c + 1) == 0xbc)
 #define iseuc(c)  ((c) >= 0xa1 && (c) <= 0xfe)
 
-void *xmalloc(unsigned long);
-void *xrealloc(void*, unsigned long);
-void tr(uchar*, uchar*, uchar*);
-void chomp(uchar*);
+#define is_lang_ja(a) (strcmp((a),"ja") == 0)
+
+
+/************************************************************
+ *
+ * Function declarations
+ *
+ ************************************************************/
 
 #if !defined(HAVE_MEMMOVE)
 void *memmove(void*, void*, size_t);
 #endif
+
+unsigned long scan_hex();
+unsigned long scan_oct();
+
+void *xmalloc(unsigned long);
+void *xrealloc(void*, unsigned long);
+void tr(uchar*, uchar*, uchar*);
+void chomp(uchar*);
 
 void decode_uri(uchar *);
 void strlower();

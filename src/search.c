@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.11 1999-08-27 03:55:26 satoru Exp $
+ * $Id: search.c,v 1.12 1999-08-27 10:05:13 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -145,7 +145,7 @@ HLIST forward_match(uchar * orig_key, int v)
            because treat 'a*' completely is too consuming */
 	if (j > IGNORE_MATCH) {
 	    free_hlist(val);
-	    val.n = TOO_MUCH_MATCH;
+	    val.n = ERR_TOO_MUCH_MATCH;
 	    break;
 	}
 	if (-1 == fseek(Nmz.i, getidxptr(Nmz.ii, i), 0))
@@ -156,13 +156,13 @@ HLIST forward_match(uchar * orig_key, int v)
 	    tmp = get_hlist(i);
 	    if (tmp.n > IGNORE_HIT) {
 		free_hlist(val);
-		val.n = TOO_MUCH_MATCH;
+		val.n = ERR_TOO_MUCH_MATCH;
 		break;
 	    }
 	    val = ormerge(val, tmp);
 	    if (val.n > IGNORE_HIT) {
 		free_hlist(val);
-		val.n = TOO_MUCH_MATCH;
+		val.n = ERR_TOO_MUCH_MATCH;
 		break;
 	    }
 	    if (Debug)
@@ -248,11 +248,11 @@ void print_hit_count (uchar *key, HLIST val)
             uchar *msg = (uchar *)"";
             if (val.n == 0) {
                 msg = (uchar *)": 0 ";
-            } else if (val.n == TOO_MUCH_MATCH) {
-                msg = MSG_TOO_MUCH_MATCH;
-            } else if (val.n == TOO_MUCH_HIT) {
-                msg = MSG_TOO_MUCH_HIT;
-            } else if (val.n == REGEX_SEARCH_FAILED) {
+            } else if (val.n == ERR_TOO_MUCH_MATCH) {
+                msg = MSG_ERR_TOO_MUCH_MATCH;
+            } else if (val.n == ERR_TOO_MUCH_HIT) {
+                msg = MSG_ERR_TOO_MUCH_HIT;
+            } else if (val.n == ERR_REGEX_SEARCH_FAILED) {
                 msg = MSG_CANNOT_OPEN_REGEX_INDEX;
             } 
             fputx(msg, stdout);
@@ -487,7 +487,7 @@ HLIST do_regex_search(uchar *orig_expr, HLIST val)
     fp = fopen(NMZ.w, "rb");
     if (fp == NULL) {
         fprintf(stderr, "%s: cannot open file.\n", NMZ.w);
-        val.n = REGEX_SEARCH_FAILED;  /* cannot open regex index */
+        val.n = ERR_REGEX_SEARCH_FAILED;  /* cannot open regex index */
         return val;
     }
     val = regex_grep(expr, fp, "", 0);
@@ -598,13 +598,13 @@ void print_result1(void)
     else
 	fputc('\n', stdout);
     fputx(MSG_REFERENCE_HEADER, stdout);
-    if (DbNumber > 1 && HtmlOutput)
+    if (Idx.num > 1 && HtmlOutput)
 	fputs("</p>\n", stdout);
 }
 
 void print_result2(void)
 {
-    if (DbNumber == 1 && HtmlOutput)
+    if (Idx.num == 1 && HtmlOutput)
 	printf("\n</p>\n");
     else
 	fputc('\n', stdout);
@@ -697,11 +697,11 @@ uchar *get_dir_name(uchar *path)
 HLIST search_sub(HLIST hlist, uchar *query, uchar *query_orig, int n)
 {
     if (!HitCountOnly && !MoreShortFormat && !NoReference && !Quiet) {
-        if (DbNumber > 1) {
+        if (Idx.num > 1) {
             if (HtmlOutput)
-                printf("<li><strong>%s</strong>: ", get_dir_name(DbNames[n]));
+                printf("<li><strong>%s</strong>: ", get_dir_name(Idx.names[n]));
             else
-                printf("(%s)", DbNames[n]);
+                printf("(%s)", Idx.names[n]);
         }
     }
 
@@ -713,10 +713,10 @@ HLIST search_sub(HLIST hlist, uchar *query, uchar *query_orig, int n)
     }
 
     /* if query contains only one keyword, TfIdf mode will be off */
-    if (KeyItem[1] == NULL && strchr(KeyItem[0], '\t') == NULL)
+    if (Query.tab[1] == NULL && strchr(Query.tab[0], '\t') == NULL)
         TfIdf = 0;
     if (TfIdf) {
-        AllDocumentN = get_file_size(NMZ.t) / sizeof(int);
+	set_docnum(get_file_size(NMZ.t) / sizeof(int));
     }
 
     /* search */
@@ -726,7 +726,7 @@ HLIST search_sub(HLIST hlist, uchar *query, uchar *query_orig, int n)
     if (hlist.n) /* if hit */
         set_did_hlist(hlist, n);
     if (!HitCountOnly && !MoreShortFormat && !NoReference && !Quiet) {
-        if (DbNumber > 1 && KeyItem[1]) {
+        if (Idx.num > 1 && Query.tab[1]) {
             printf(" [ TOTAL: %d ]", hlist.n);
         }
         printf("\n");
@@ -743,7 +743,7 @@ void make_fullpathname_index(int n)
 {
     uchar *base;
 
-    base = DbNames[n];
+    base = Idx.names[n];
 
     pathcat(base, NMZ.i);
     pathcat(base, NMZ.ii);
@@ -818,7 +818,7 @@ int binsearch(uchar *orig_key, int forward_match_mode)
 /* flow of search */
 void search_main(uchar *query)
 {
-    HLIST hlist, tmp[DB_MAX];
+    HLIST hlist, tmp[INDEX_MAX];
     uchar query_orig[BUFSIZE];
     int i;
 
@@ -828,18 +828,18 @@ void search_main(uchar *query)
     if (!HitCountOnly && !MoreShortFormat && !NoReference && !Quiet) {
         print_result1();
 
-        if (DbNumber > 1) {
+        if (Idx.num > 1) {
             printf("\n");
             if (HtmlOutput)
                 printf("<ul>\n");
         }
     }
-    for (i = 0; i < DbNumber; i++) {
+    for (i = 0; i < Idx.num; i++) {
         make_fullpathname_index(i);
         tmp[i] = search_sub(tmp[i], query, query_orig, i);
     }
     if (!HitCountOnly && !MoreShortFormat && !NoReference && !Quiet) {
-        if (DbNumber > 1 && HtmlOutput) {
+        if (Idx.num > 1 && HtmlOutput) {
             printf("</ul>\n");
         }
         print_result2();

@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.9 1999-08-27 01:30:53 satoru Exp $
+ * $Id: cgi.c,v 1.10 1999-08-27 10:05:11 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -97,7 +97,7 @@ int get_cgi_vars(uchar * query, uchar *subquery)
 
     if ((QueryString = (uchar *)getenv("QUERY_STRING"))) {
         content_length = strlen(QueryString);
-        if (content_length > QUERY_STRING_MAX_LENGTH) {
+        if (content_length > CGI_QUERY_MAX) {
             fputs(MSG_MIME_HEADER, stdout);
             fputx(MSG_QUERY_STRING_TOO_LONG, stdout);
             exit(1);
@@ -108,7 +108,7 @@ int get_cgi_vars(uchar * query, uchar *subquery)
     } else {
 	if ((ContentLength = (uchar *)getenv("CONTENT_LENGTH"))) {
 	    content_length = atoi(ContentLength);
-            if (content_length > QUERY_STRING_MAX_LENGTH) {
+            if (content_length > CGI_QUERY_MAX) {
                 fputs(MSG_MIME_HEADER, stdout);
                 fputx(MSG_QUERY_STRING_TOO_LONG, stdout);
                 exit(1);
@@ -125,7 +125,7 @@ int get_cgi_vars(uchar * query, uchar *subquery)
 	}
     }
     qs = QueryString;
-    DbNumber = 0;
+    Idx.num = 0;
 
     /* note that CERN HTTPD would add empty PATH_INFO */
     if (getenv("PATH_INFO")) {
@@ -133,12 +133,12 @@ int get_cgi_vars(uchar * query, uchar *subquery)
         if (strlen(path_info) > 0 && strlen(path_info) < 128) {
             validate_dbname(path_info);
             sprintf(tmp, "%s%s", DEFAULT_DIR, path_info);
-            DbNames[DbNumber] = (uchar *) malloc(strlen(tmp) + 1);
-            if (DbNames[DbNumber] == NULL) {
+            Idx.names[Idx.num] = (uchar *) malloc(strlen(tmp) + 1);
+            if (Idx.names[Idx.num] == NULL) {
                 die("cgi: malloc(dbname)");
             }
-            strcpy(DbNames[DbNumber], tmp);
-            DbNumber++;
+            strcpy(Idx.names[Idx.num], tmp);
+            Idx.num++;
         }
     }
 
@@ -154,7 +154,7 @@ int get_cgi_vars(uchar * query, uchar *subquery)
 	    }
 	    *(query + i) = '\0';
             decode_uri(query);
-	    if (strlen(query) > QUERY_MAX_LENGTH) {
+	    if (strlen(query) > QUERY_MAX) {
                 fputs(MSG_MIME_HEADER, stdout);
 		fputx(MSG_TOO_LONG_KEY, stdout);
 		exit(1);
@@ -179,7 +179,7 @@ int get_cgi_vars(uchar * query, uchar *subquery)
 	    }
 	    *(subquery + i) = '\0';
             decode_uri(subquery);
-	    if (strlen(subquery) > QUERY_MAX_LENGTH) {
+	    if (strlen(subquery) > QUERY_MAX) {
                 fputs(MSG_MIME_HEADER, stdout);
 		fputx(MSG_TOO_LONG_KEY, stdout);
 		exit(1);
@@ -245,8 +245,11 @@ int get_cgi_vars(uchar * query, uchar *subquery)
             uchar *pp;
 
 	    qs += 7;
-	    for (i = 0; *qs && *qs != '&' && i <= DBNAMELENG_MAX; i++, qs++)
+	    for (i = 0; *qs && *qs != '&' && i <= CGI_INDEX_NAME_MAX; 
+		 i++, qs++)
+	    {
 		tmp[i] = *qs;
+	    }
             tmp[i] = '\0';
             decode_uri(tmp);
             for (pp = tmp; *pp ;) {
@@ -260,19 +263,19 @@ int get_cgi_vars(uchar * query, uchar *subquery)
                     strcpy(name, pp);
                     pp += strlen(pp);
                 }
-                if (DbNumber >= DB_MAX) { /* ignore too many indices */
+                if (Idx.num >= INDEX_MAX) { /* ignore too many indices */
                     continue;
                 }
-                DbNames[DbNumber] = (uchar *)
+                Idx.names[Idx.num] = (uchar *)
                     malloc(strlen(DEFAULT_DIR) + 1 + strlen(name) + 1);
-                if (DbNames[DbNumber] == NULL) {
+                if (Idx.names[Idx.num] == NULL) {
                     die("cgi: malloc(dbname)");
                 }
                 validate_dbname(name);
-                strcpy(DbNames[DbNumber], DEFAULT_DIR);
-                strcat(DbNames[DbNumber], "/");
-                strcat(DbNames[DbNumber], name);
-                DbNumber++;
+                strcpy(Idx.names[Idx.num], DEFAULT_DIR);
+                strcat(Idx.names[Idx.num], "/");
+                strcat(Idx.names[Idx.num], name);
+                Idx.num++;
             }
 	    while (*qs && *qs != '&')
 		qs++;
@@ -297,13 +300,13 @@ void init_cgi(uchar * query, uchar *subquery)
 	show_mini_usage();	/* if it is NOT CGI, show usage and exit */
 	exit(1);
     }
-    if (DbNumber == 0) {
-        DbNames[DbNumber] = (uchar *) malloc(strlen(DEFAULT_DIR) + 1);
-        if (DbNames[DbNumber] == NULL) {
+    if (Idx.num == 0) {
+        Idx.names[Idx.num] = (uchar *) malloc(strlen(DEFAULT_DIR) + 1);
+        if (Idx.names[Idx.num] == NULL) {
             die("cgi_initialize: malloc(dbname)");
         }
-        strcpy(DbNames[DbNumber], DEFAULT_DIR);
-        DbNumber++;
+        strcpy(Idx.names[Idx.num], DEFAULT_DIR);
+        Idx.num++;
     } 
 }
 

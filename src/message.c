@@ -2,7 +2,7 @@
  * 
  * messages.c -
  * 
- * $Id: message.c,v 1.3 1999-08-27 03:55:26 satoru Exp $
+ * $Id: message.c,v 1.4 1999-08-27 10:05:12 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -29,6 +29,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "namazu.h"
+#include "util.h"
 
 #ifdef LANGUAGE
 uchar Lang[] = LANGUAGE;
@@ -42,7 +43,7 @@ uchar *COPYRIGHT = (uchar *)
 
 uchar *MSG_USAGE, *MSG_TOO_LONG_KEY, *MSG_TOO_MANY_KEYITEM,
 *MSG_RESULT_HEADER, *MSG_NO_HIT, *MSG_HIT_1, *MSG_HIT_2,
-*MSG_TOO_MUCH_HIT, *MSG_TOO_MUCH_MATCH, *MSG_INDEXDIR_ERROR,
+*MSG_ERR_TOO_MUCH_HIT, *MSG_ERR_TOO_MUCH_MATCH, *MSG_INDEXDIR_ERROR,
 *MSG_REFERENCE_HEADER, *MSG_INVALID_DB_NAME, *MSG_INVALID_QUERY,
 *MSG_CANNOT_OPEN_INDEX, *MSG_CANNOT_OPEN_REGEX_INDEX,
 *MSG_CANNOT_OPEN_PHRASE_INDEX, *MSG_CANNOT_OPEN_FIELD_INDEX,
@@ -95,8 +96,8 @@ Usage: namazu [options] <query> [index dir(s)] \n\
         MSG_NO_HIT = (uchar *)"	<p>検索式にマッチする文書はありませんでした。</p>\n";
         MSG_HIT_1 = (uchar *)"	<p><strong>検索式にマッチする ";
         MSG_HIT_2 = (uchar *)"	 個の文書が見つかりました。</strong></p>\n\n";
-        MSG_TOO_MUCH_HIT = (uchar *)" (ヒット数が多すぎるので無視しました)";
-        MSG_TOO_MUCH_MATCH = (uchar *)" (マッチする単語が多すぎるので無視しました)";
+        MSG_ERR_TOO_MUCH_HIT = (uchar *)" (ヒット数が多すぎるので無視しました)";
+        MSG_ERR_TOO_MUCH_MATCH = (uchar *)" (マッチする単語が多すぎるので無視しました)";
         MSG_CANNOT_OPEN_INDEX = (uchar *)" (インデックスが開けませんでした)\n";
         MSG_CANNOT_OPEN_REGEX_INDEX = (uchar *)" (正規表現用インデックスが開けませんでした)";
         MSG_CANNOT_OPEN_FIELD_INDEX = (uchar *)" (フィールド検索用インデックスが開けませんでした)";
@@ -130,18 +131,18 @@ Usage: namazu [options] <query> [index dir(s)] \n\
      -L (lang) : set output language (ja or en)\n";
 
         MSG_TOO_LONG_KEY = (uchar *)
-            "	<h2>Error!</h2>\n<p>Too long query.</p>\n";
+            "	<h2>Error!</h2>\n<p>Too long Query.</p>\n";
         MSG_TOO_MANY_KEYITEM = (uchar *)
             "	<h2>Error!</h2>\n<p>Too many queries.</p>\n";
         MSG_QUERY_STRING_TOO_LONG = (uchar *)"Too long CGI query length";
         MSG_INVALID_QUERY = (uchar *)
-            "	<h2>Error!</h2>\n<p>Invalid query.</p>\n";
+            "	<h2>Error!</h2>\n<p>Invalid Query.</p>\n";
         MSG_RESULT_HEADER = (uchar *)"	<h2>Results:</h2>\n";
         MSG_NO_HIT = (uchar *)"	<p>No match.</p>\n";
         MSG_HIT_1 = (uchar *)"	<p><strong> Total ";
-        MSG_HIT_2 = (uchar *)"	 documents match your query.</strong></p>\n\n";
-        MSG_TOO_MUCH_HIT = (uchar *)" (Too many pages. Ignored.)";
-        MSG_TOO_MUCH_MATCH = (uchar *)" (Too many words. Ignored.)";
+        MSG_HIT_2 = (uchar *)"	 documents match your Query.</strong></p>\n\n";
+        MSG_ERR_TOO_MUCH_HIT = (uchar *)" (Too many pages. Ignored.)";
+        MSG_ERR_TOO_MUCH_MATCH = (uchar *)" (Too many words. Ignored.)";
         MSG_CANNOT_OPEN_INDEX = (uchar *)" (cannot open index)\n";
         MSG_CANNOT_OPEN_FIELD_INDEX = (uchar *)" (cannot open field index)";
         MSG_CANNOT_OPEN_REGEX_INDEX = (uchar *)" (cannot open regex index)";

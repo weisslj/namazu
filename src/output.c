@@ -35,9 +35,9 @@ void euctojisput(uchar *s, FILE *fp, int entity_encode, int ishtml)
 		set1byte();
 		state = 0;
 	    }
-	    if (c == EMPHASIZING_START_MARK) {
+	    if (c == EM_START_MARK) {
 		if (ishtml) {
-		    fputs(EMPHASIZING_START_ELEMENT, fp);
+		    fputs(EM_START_TAG, fp);
 		} else {
 		    fputs(" **", fp);
 		}
@@ -45,9 +45,9 @@ void euctojisput(uchar *s, FILE *fp, int entity_encode, int ishtml)
 		    return;
 		}
 		continue;
-	    } else if (c == EMPHASIZING_END_MARK) {
+	    } else if (c == EM_END_MARK) {
 		if (ishtml) {
-		    fputs(EMPHASIZING_END_ELEMENT, fp);
+		    fputs(EM_END_TAG, fp);
 		} else {
 		    fputs("** ", fp);
 		}

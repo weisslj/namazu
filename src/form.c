@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.8 1999-08-25 03:44:00 satoru Exp $
+ * $Id: form.c,v 1.9 1999-08-27 10:05:12 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -230,7 +230,7 @@ int select_option(uchar *s, uchar *name, uchar *subquery)
                 fputs(" selected", stdout);
             }
         } else if (!strcmp(name, "dbname")) {
-            if (*DbNames[0] && !str_backward_cmp(value, DbNames[0])) {
+            if (*Idx.names[0] && !str_backward_cmp(value, Idx.names[0])) {
                 fputs(" selected", stdout);
             }
         } else if (!strcmp(name, "subquery")) {
@@ -270,8 +270,8 @@ int check_checkbox(uchar *s)
                 strcpy(name, pp);
                 pp += strlen(pp);
             }
-            for (i = 0; i < DbNumber; i++) {
-                if (!str_backward_cmp(name, DbNames[i])) {
+            for (i = 0; i < Idx.num; i++) {
+                if (!str_backward_cmp(name, Idx.names[i])) {
                     searched++;
                     break;
                 }

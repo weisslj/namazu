@@ -1,8 +1,6 @@
 #ifndef _CODECONV_H
 #define _CODECONV_H
 
-#include "type.h"
-
 #define ASCII "\x1b(B"
 #define NEWJIS_K "\x1b$B"
 

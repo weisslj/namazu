@@ -2,7 +2,7 @@
  * 
  * parser.c -
  * 
- * $Id: parser.c,v 1.4 1999-08-25 03:44:01 satoru Exp $
+ * $Id: parser.c,v 1.5 1999-08-27 10:05:13 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -74,23 +74,23 @@ HLIST factor(int *ignore)
     val.n = 0;
 
     while (1) {
-        if (!KeyItem[Cp])
+        if (!Query.tab[Cp])
             return val;
 
-        if (!strcmp(KeyItem[Cp], LP_STRING)) {
+        if (!strcmp(Query.tab[Cp], LP_STRING)) {
             Cp++;
-            if (KeyItem[Cp] == NULL)
+            if (Query.tab[Cp] == NULL)
                 return val;
             val = expr();
-            if (KeyItem[Cp] == NULL)
+            if (Query.tab[Cp] == NULL)
                 return val;
-            if (!strcmp(KeyItem[Cp], RP_STRING))
+            if (!strcmp(Query.tab[Cp], RP_STRING))
                 Cp++;
             break;
-        } else if (!isoperator(KeyItem[Cp])) {
-            val = do_search(KeyItem[Cp], val);
-            /*  MSG_TOO_MUCH_MATCH;
-                MSG_TOO_MUCH_HIT;  case */
+        } else if (!isoperator(Query.tab[Cp])) {
+            val = do_search(Query.tab[Cp], val);
+            /*  MSG_ERR_TOO_MUCH_MATCH;
+                MSG_ERR_TOO_MUCH_HIT;  case */
             if (val.n < 0) {
                 *ignore = 1;
                 val.n = 0;   /* assign 0 - note that is important */
@@ -107,21 +107,21 @@ HLIST factor(int *ignore)
 
 int andop(void)
 {
-    if (KeyItem[Cp] == NULL)
+    if (Query.tab[Cp] == NULL)
 	return 0;
-    if (!strcmp(KeyItem[Cp], AND_STRING) ||
-	!strcmp(KeyItem[Cp], AND_STRING_ALT)) {
+    if (!strcmp(Query.tab[Cp], AND_STRING) ||
+	!strcmp(Query.tab[Cp], AND_STRING_ALT)) {
 	Cp++;
 	return AND_OP;
     }
-    if (!strcmp(KeyItem[Cp], NOT_STRING) ||
-	!strcmp(KeyItem[Cp], NOT_STRING_ALT)) {
+    if (!strcmp(Query.tab[Cp], NOT_STRING) ||
+	!strcmp(Query.tab[Cp], NOT_STRING_ALT)) {
 	Cp++;
 	return NOT_OP;
     }
-    if (!strcmp(KeyItem[Cp], LP_STRING))
+    if (!strcmp(Query.tab[Cp], LP_STRING))
 	return AND_OP;
-    if (!isoperator(KeyItem[Cp]))
+    if (!isoperator(Query.tab[Cp]))
 	return AND_OP;
     return 0;
 }
@@ -147,10 +147,10 @@ HLIST term(void)
 
 int orop(void)
 {
-    if (KeyItem[Cp] == NULL)
+    if (Query.tab[Cp] == NULL)
 	return 0;
-    if (!strcmp(KeyItem[Cp], OR_STRING) ||
-	!strcmp(KeyItem[Cp], OR_STRING_ALT)) {
+    if (!strcmp(Query.tab[Cp], OR_STRING) ||
+	!strcmp(Query.tab[Cp], OR_STRING_ALT)) {
 	Cp++;
 	return 1;
     }

@@ -1,4 +1,5 @@
 #include <ctype.h>
+#include "namazu.h"
 #include "field.h"
 
 int is_field_safe_character(int c)

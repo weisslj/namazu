@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.16 1999-08-27 03:55:26 satoru Exp $
+ * $Id: namazu.c,v 1.17 1999-08-27 10:05:13 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -195,8 +195,8 @@ int parse_options(int argc, char **argv)
 void free_dbnames(void)
 {
     int i;
-    for (i = 0; i < DbNumber; i++) {
-        free(DbNames[i]);
+    for (i = 0; i < Idx.num; i++) {
+        free(Idx.names[i]);
     }
 }
 
@@ -204,8 +204,8 @@ void make_fullpathname_msg(void)
 {
     uchar *base;
     
-    if (DbNumber == 1) {
-        base = DbNames[0];
+    if (Idx.num == 1) {
+        base = Idx.names[0];
     } else {
         base = DEFAULT_DIR;
     }
@@ -288,14 +288,14 @@ void uniq_dbnames(void)
 {
     int i, j, k;
 
-    for (i = 0; i < DbNumber - 1; i++) {
-        for (j = i + 1; j < DbNumber; j++) {
-            if (!strcmp(DbNames[i], DbNames[j])) {
-                free(DbNames[j]);
-                for (k = j + 1; k < DbNumber; k++) {
-                    DbNames[k - 1] = DbNames[k];
+    for (i = 0; i < Idx.num - 1; i++) {
+        for (j = i + 1; j < Idx.num; j++) {
+            if (!strcmp(Idx.names[i], Idx.names[j])) {
+                free(Idx.names[j]);
+                for (k = j + 1; k < Idx.num; k++) {
+                    Idx.names[k - 1] = Idx.names[k];
                 }
-                DbNumber--;
+                Idx.num--;
                 j--;
             }
         }
@@ -306,16 +306,16 @@ void expand_dbname_aliases(void)
 {
     int i;
 
-    for (i = 0; i < DbNumber; i++) {
+    for (i = 0; i < Idx.num; i++) {
 	ALIAS *list = Alias;
 	while (list) {
-	    if (strcmp(DbNames[i], list->alias) == 0) {
-		free(DbNames[i]);
-		DbNames[i] = (uchar *) malloc(strlen(list->real) + 1);
-		if (DbNames[i] == NULL) {
+	    if (strcmp(Idx.names[i], list->alias) == 0) {
+		free(Idx.names[i]);
+		Idx.names[i] = (uchar *) malloc(strlen(list->real) + 1);
+		if (Idx.names[i] == NULL) {
 		    die("expand_dbname_aliases: malloc()");
 		}
-		strcpy(DbNames[i], list->real);
+		strcpy(Idx.names[i], list->real);
             }
 	    list = list->next;
 	}
@@ -326,19 +326,19 @@ void complete_dbnames(void)
 {
     int i;
 
-    for (i = 0; i < DbNumber; i++) {
- 	if (*DbNames[i] == '+' && isalnum(*(DbNames[i] + 1))) {
+    for (i = 0; i < Idx.num; i++) {
+ 	if (*Idx.names[i] == '+' && isalnum(*(Idx.names[i] + 1))) {
 	    uchar *tmp;
 	    tmp = (uchar *)malloc(strlen(DEFAULT_DIR) 
-				  + 1 + strlen(DbNames[i]) + 1);
+				  + 1 + strlen(Idx.names[i]) + 1);
 	    if (tmp == NULL) {
 		die("complete_dbnames: malloc()");
 	    }
 	    strcpy(tmp, DEFAULT_DIR);
 	    strcat(tmp, "/");
-	    strcat(tmp, DbNames[i] + 1);  /* +1 means '+' */
-	    free(DbNames[i]);
-	    DbNames[i] = tmp;
+	    strcat(tmp, Idx.names[i] + 1);  /* +1 means '+' */
+	    free(Idx.names[i]);
+	    Idx.names[i] = tmp;
 	}
     }
 }
@@ -354,6 +354,8 @@ int main(int argc, char **argv)
     uchar query[BUFSIZE] = "", subquery[BUFSIZE] = "";
 
     setprogname(argv[0]);
+
+    Idx.num = 0;
 
     getenv_namazuconf();
     init_message();
@@ -373,33 +375,31 @@ int main(int argc, char **argv)
 	    show_mini_usage();
 	    exit(1);
 	}
-	if (strlen(argv[i]) > QUERY_MAX_LENGTH) {
+	if (strlen(argv[i]) > QUERY_MAX) {
 	    fputx(MSG_TOO_LONG_KEY, stdout);
 	    return 1;
 	}
         strcpy(query, argv[i++]);
         if (i < argc) {
-            for (DbNumber = 0; i < argc && DbNumber < DB_MAX; i++) {
-                if (strlen(argv[i]) <= DBNAMELENG_MAX) {
-                    DbNames[DbNumber] = 
-                        (uchar *) malloc(strlen(argv[i]) + 1);
-                    if (DbNames[DbNumber] == NULL) {
-                        die("main: malloc(dbname)");
-                    }
-                    strcpy(DbNames[DbNumber], argv[i]);
-                    DbNumber++;
-                }
+            for (Idx.num = 0; i < argc && Idx.num < INDEX_MAX; i++) {
+		Idx.names[Idx.num] = 
+		    (uchar *) malloc(strlen(argv[i]) + 1);
+		if (Idx.names[Idx.num] == NULL) {
+		    die("main: malloc(dbname)");
+		}
+		strcpy(Idx.names[Idx.num], argv[i]);
+		Idx.num++;
             }
         } 
-        if (DbNumber == 0) {
-            DbNumber = 0;
-            DbNames[DbNumber] = 
+        if (Idx.num == 0) {
+            Idx.num = 0;
+            Idx.names[Idx.num] = 
                 (uchar *) malloc(strlen(DEFAULT_DIR) + 1);
-            if (DbNames[DbNumber] == NULL) {
+            if (Idx.names[Idx.num] == NULL) {
                 die("main: malloc(dbname)");
             }
-            strcpy(DbNames[DbNumber], DEFAULT_DIR);
-            DbNumber = 1;
+            strcpy(Idx.names[Idx.num], DEFAULT_DIR);
+            Idx.num = 1;
 	}
     }
     if (IsCGI) {
@@ -411,8 +411,8 @@ int main(int argc, char **argv)
     complete_dbnames();
 
     if (Debug) {
-        for (i = 0; i < DbNumber; i++) {
-            fprintf(stderr, "DbNames[%d]: %s\n", i, DbNames[i]);
+        for (i = 0; i < Idx.num; i++) {
+            fprintf(stderr, "Idx.names[%d]: %s\n", i, Idx.names[i]);
         }
     }
 

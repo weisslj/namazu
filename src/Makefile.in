@@ -103,9 +103,9 @@ libdir = $(pkgdatadir)/lib
 filterdir = $(pkgdatadir)/filter
 templatedir = $(pkgdatadir)/template
 
-namazu_SOURCES = cgi.c codeconv.c conf.c form.c hlist.c message.c 	namazu.c output.c parser.c re.c regex.c search.c 	seed.c util.c values.c wakati.c result.l getopt.c getopt1.c 	field.c usage.c
+namazu_SOURCES = cgi.c codeconv.c conf.c field.c form.c getopt.c 		 getopt1.c hlist.c message.c namazu.c output.c parser.c re.c 		 result.l regex.c search.c seed.c util.c var.c wakati.c usage.c
 
-noinst_HEADERS = namazu.h regex.h util.h getopt.h field.h codeconv.h 		 type.h enum.h variable.h form.h usage.h hlist.h 		 re.h output.h conf.h
+noinst_HEADERS = namazu.h regex.h util.h getopt.h field.h codeconv.h 		 form.h usage.h hlist.h re.h output.h conf.h em.h 		 magic.h critical.h
 
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = ../config.h
@@ -118,11 +118,11 @@ DEFS = @DEFS@ -I. -I$(srcdir) -I..
 CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
 namazu_OBJECTS =  cgi.$(OBJEXT) codeconv.$(OBJEXT) conf.$(OBJEXT) \
-form.$(OBJEXT) hlist.$(OBJEXT) message.$(OBJEXT) namazu.$(OBJEXT) \
-output.$(OBJEXT) parser.$(OBJEXT) re.$(OBJEXT) regex.$(OBJEXT) \
-search.$(OBJEXT) seed.$(OBJEXT) util.$(OBJEXT) values.$(OBJEXT) \
-wakati.$(OBJEXT) result.$(OBJEXT) getopt.$(OBJEXT) getopt1.$(OBJEXT) \
-field.$(OBJEXT) usage.$(OBJEXT)
+field.$(OBJEXT) form.$(OBJEXT) getopt.$(OBJEXT) getopt1.$(OBJEXT) \
+hlist.$(OBJEXT) message.$(OBJEXT) namazu.$(OBJEXT) output.$(OBJEXT) \
+parser.$(OBJEXT) re.$(OBJEXT) result.$(OBJEXT) regex.$(OBJEXT) \
+search.$(OBJEXT) seed.$(OBJEXT) util.$(OBJEXT) var.$(OBJEXT) \
+wakati.$(OBJEXT) usage.$(OBJEXT)
 namazu_LDADD = $(LDADD)
 namazu_DEPENDENCIES = 
 namazu_LDFLAGS = 
@@ -148,7 +148,7 @@ DEP_FILES =  .deps/cgi.P .deps/codeconv.P .deps/conf.P .deps/field.P \
 .deps/form.P .deps/getopt.P .deps/getopt1.P .deps/hlist.P \
 .deps/message.P .deps/namazu.P .deps/output.P .deps/parser.P .deps/re.P \
 .deps/regex.P .deps/result.P .deps/search.P .deps/seed.P .deps/usage.P \
-.deps/util.P .deps/values.P .deps/wakati.P
+.deps/util.P .deps/var.P .deps/wakati.P
 SOURCES = $(namazu_SOURCES)
 OBJECTS = $(namazu_OBJECTS)
 

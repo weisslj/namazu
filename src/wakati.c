@@ -2,7 +2,7 @@
  * 
  * wakati.c -
  * 
- * $Id: wakati.c,v 1.6 1999-08-25 07:09:24 satoru Exp $
+ * $Id: wakati.c,v 1.7 1999-08-27 10:05:14 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -220,20 +220,20 @@ void split_query(uchar *qs)
 	exit(1);
     }
 
-    strcpy(KeyTable, qs);
+    strcpy(Query.str, qs);
 
     /* count items in query */
-    for (i = 0, qn = 0; *(KeyTable + i);) {
-	while (KeyTable[i] == ' ')
+    for (i = 0, qn = 0; *(Query.str + i);) {
+	while (Query.str[i] == ' ')
 	    i++;
-	if (KeyTable[i])
+	if (Query.str[i])
 	    qn++;
-	while (KeyTable[i] != ' ' &&
-	       KeyTable[i] != '\0')
+	while (Query.str[i] != ' ' &&
+	       Query.str[i] != '\0')
 	    i++;
     }
     if (Debug)
-	fprintf(stderr, "KeyItemN: %d\n", qn);
+	fprintf(stderr, "Query.tabN: %d\n", qn);
 
     if (qn == 0) { /* if no item available */
 	fputx(MSG_INVALID_QUERY, stdout);
@@ -241,29 +241,29 @@ void split_query(uchar *qs)
     }
 
     /* if too much items in query, return with error */
-    if (qn > KEY_ITEM_MAX) {
+    if (qn > QUERY_TOKEN_MAX) {
 	fputx(MSG_TOO_MANY_KEYITEM, stdout);
 	exit(1);
     }
     /* assign a pointer to each item and set NULL to the last of table */
-    for (i = 0, qn = 0; KeyTable[i];) {
-	while (KeyTable[i] == ' ')
+    for (i = 0, qn = 0; Query.str[i];) {
+	while (Query.str[i] == ' ')
 	    i++;
-	if (KeyTable[i])
-	    KeyItem[qn++] = &KeyTable[i];
-	while (KeyTable[i] != ' ' &&
-	       KeyTable[i] != '\0')
+	if (Query.str[i])
+	    Query.tab[qn++] = &Query.str[i];
+	while (Query.str[i] != ' ' &&
+	       Query.str[i] != '\0')
 	    i++;
-	if (KeyTable[i])
-	    KeyTable[i++] = '\0';
+	if (Query.str[i])
+	    Query.str[i++] = '\0';
     }
 
     /* set NULL to the last key item */
-    KeyItem[qn] = (uchar *) NULL;
+    Query.tab[qn] = (uchar *) NULL;
 
     /* replace  with spaces */
     for (i = 0; i < qn; i++) {
-	tr(KeyItem[i], "", " ");
+	tr(Query.tab[i], "", " ");
     }
 }
 

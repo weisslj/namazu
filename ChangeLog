@@ -35,6 +35,12 @@
 
 	* lib/html.pl: Remove.
 
+	* src/{type.h,values.c,variable.h,enum.h}: Remove.
+
+	* src/{var.c,var.h,em.h,magic.h,critical.h}: New files.
+
+	* src/*.[ch]: Rearrange many codes.
+	
 	
 1999-08-26  Ryuji Abe <raeva@t3.rim.or.jp>
 

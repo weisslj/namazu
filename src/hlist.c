@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.9 1999-08-27 03:55:26 satoru Exp $
+ * $Id: hlist.c,v 1.10 1999-08-27 10:05:12 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -33,6 +33,8 @@
 #include "namazu.h"
 #include "util.h"
 #include "hlist.h"
+
+static DocNum = 0;  /* Number of documents covered in atarget index */
 
 /************************************************************
  *
@@ -275,14 +277,14 @@ HLIST merge_hlist(HLIST *hlists)
     int i, n;
     HLIST value;
 
-    if (DbNumber == 1) return hlists[0];
-    for(i = n = 0; i < DbNumber; i++) {
+    if (Idx.num == 1) return hlists[0];
+    for(i = n = 0; i < Idx.num; i++) {
         if (hlists[i].n > 0) {
             n += hlists[i].n;
         }
     }
     malloc_hlist(&value, n);
-    for(i = n = 0; i < DbNumber; i++) {
+    for(i = n = 0; i < Idx.num; i++) {
         if (hlists[i].n <= 0) 
             continue;
         memcpy_hlist(value, hlists[i], n);
@@ -347,14 +349,14 @@ HLIST get_hlist(int index)
     get_unpackw(Nmz.i, &n);
 
     if (TfIdf) {
-        idf = log((double)AllDocumentN / (n/2)) / log(2);
+        idf = log((double)DocNum / (n/2)) / log(2);
         if (Debug)
-            fprintf(stderr, "idf: %f (N:%d, n:%d)\n", idf, AllDocumentN, n/2);
+            fprintf(stderr, "idf: %f (N:%d, n:%d)\n", idf, DocNum, n/2);
     }
 
     if (n >= IGNORE_HIT * 2) {  
         /* '* 2' means NMZ.i contains a file-ID and a score. */
-        hlist.n = TOO_MUCH_HIT;
+        hlist.n = ERR_TOO_MUCH_HIT;
     } else {
 	int sum = 0;
 	buf = (int *) malloc(n * sizeof(int)); /* with pelnty margin */
@@ -463,3 +465,9 @@ void reverse_hlist(HLIST hlist)
     }
     free_hlist(tmp);
 }
+
+void set_docnum(int n)
+{
+    DocNum = n;
+}
+

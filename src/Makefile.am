@@ -21,13 +21,12 @@ libdir      = $(pkgdatadir)/lib
 filterdir   = $(pkgdatadir)/filter
 templatedir = $(pkgdatadir)/template
 
-namazu_SOURCES = cgi.c codeconv.c conf.c form.c hlist.c message.c \
-	namazu.c output.c parser.c re.c regex.c search.c \
-	seed.c util.c values.c wakati.c result.l getopt.c getopt1.c \
-	field.c usage.c
+namazu_SOURCES = cgi.c codeconv.c conf.c field.c form.c getopt.c \
+		 getopt1.c hlist.c message.c namazu.c output.c parser.c re.c \
+		 result.l regex.c search.c seed.c util.c var.c wakati.c usage.c
 noinst_HEADERS = namazu.h regex.h util.h getopt.h field.h codeconv.h \
-		 type.h enum.h variable.h form.h usage.h hlist.h \
-		 re.h output.h conf.h
+		 form.h usage.h hlist.h re.h output.h conf.h em.h \
+		 magic.h critical.h
 
 ##################################################################
 

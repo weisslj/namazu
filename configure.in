@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.76 2000-01-11 16:01:43 rug Exp $
+dnl $Id: configure.in,v 1.77 2000-01-13 01:27:47 satoru Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -163,20 +163,6 @@ AC_ARG_WITH(
 AC_MSG_RESULT($admin)
 OPT_ADMIN_EMAIL=$admin
 AC_SUBST(OPT_ADMIN_EMAIL)
-
-dnl *
-dnl * Define a scoring method (default: TFIDF)
-dnl *
-AC_MSG_CHECKING(for a scoring method)
-AC_ARG_WITH(scoring,
-[  --with-scoring=METHOD   set scoring method (SIMPLE or TFIDF) [TFIDF]],
-[case "${withval}" in
-    SIMPLE|TFIDF) scoring="${withval}" ;;
-    *) AC_MSG_ERROR(invalid value ${withval} for --with-scoring) ;;
-esac], [scoring='TFIDF'])
-AC_MSG_RESULT($scoring)
-OPT_SCORING=$scoring
-AC_SUBST(OPT_SCORING)
 
 dnl *
 dnl * Set a directory to install perl modules

@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.85 2001-02-26 08:39:52 baba Exp $
+ * $Id: search.c,v 1.86 2001-03-11 16:02:45 furukawa Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -385,7 +385,7 @@ open_phrase_index_files(FILE **phrase, FILE **phrase_index)
 static NmzResult 
 do_phrase_search(const char *key, NmzResult val)
 {
-    int i, h = 0, ignore = 0;
+    int i, h = 0;
     char *p, tmpkey[BUFSIZE], *words[QUERY_TOKEN_MAX + 1], *prevword = NULL;
     FILE *phrase, *phrase_index;
     struct nmz_hitnumlist *pr_hitnum = NULL; /* phrase hitnum */
@@ -442,13 +442,7 @@ do_phrase_search(const char *key, NmzResult val)
 	} else if (val.num == 0) { /* phrase search is failed halfway */
 	    continue;
 	} else {
-	    if (tmp.stat == ERR_TOO_MUCH_HIT || 
-		val.stat == ERR_TOO_MUCH_HIT) {
-		ignore = 1;
-	    } else {
-		ignore = 0;
-	    }
-	    val = nmz_andmerge(val, tmp, &ignore);
+	    val = nmz_andmerge(val, tmp, 0);
 
 	    strcpy(word_mix, prevword);
 	    strcat(word_mix, word);

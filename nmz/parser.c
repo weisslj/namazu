@@ -2,7 +2,7 @@
  * 
  * parser.c -
  * 
- * $Id: parser.c,v 1.21 2000-01-28 09:40:12 satoru Exp $
+ * $Id: parser.c,v 1.22 2001-03-11 16:02:45 furukawa Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -51,13 +51,13 @@ static int Cp = 0; /* variable that saves current position of parser */
  *
  */
 
-static NmzResult factor(int*);
+static NmzResult factor();
 static int andop(void);
 static NmzResult term(void);
 static int orop(void);
 
 static NmzResult 
-factor(int *ignore)
+factor(void)
 {
     NmzResult val;
     val.num  = 0;
@@ -89,9 +89,8 @@ factor(int *ignore)
 	    if (val.stat == ERR_FATAL)
 	       return val;
             if (val.stat == ERR_TOO_MUCH_MATCH ||
-		val.stat == ERR_TOO_MUCH_MATCH)
+		val.stat == ERR_TOO_MUCH_HIT)
 	    {
-                *ignore = 1;
                 val.num = 0;   /* assign 0 - this is important */
             }
 
@@ -132,25 +131,40 @@ andop(void)
     return 0;
 }
 
+static int
+failedstat(int stat)
+{
+    switch (stat) {
+      case SUCCESS:
+      case ERR_TOO_MUCH_MATCH:
+      case ERR_TOO_MUCH_HIT:
+	return 0;
+      default:
+	return 1;
+    }
+}
+
 static NmzResult 
 term(void)
 {
     NmzResult left, right;
-    int ignore = 0, op;
+    int op;
 
-    left = factor(&ignore);
-    if (left.stat != SUCCESS)
-        return left;
+    left = factor();
+    if (failedstat(left.stat)) {
+	return left;
+    }
+
     while ((op = andop())) {
-	right = factor(&ignore);
-	if (right.stat != SUCCESS)
+	right = factor();
+	if (failedstat(right.stat)){
 	    return right;
-	if (op == AND_OP) {
-	    left = nmz_andmerge(left, right, &ignore);
-	} else if (op == NOT_OP) {
-	    left = nmz_notmerge(left, right, &ignore);
 	}
-	ignore = 0;
+	if (op == AND_OP) {
+	    left = nmz_andmerge(left, right, 0);
+	} else if (op == NOT_OP) {
+	    left = nmz_notmerge(left, right, 0);
+	}
     }
     return left;
 }
@@ -185,15 +199,18 @@ nmz_expr(void)
     NmzResult left, right;
 
     left = term();
-    if (left.stat != SUCCESS)
-        return left;
+    if (failedstat(left.stat)){
+	return left;
+    }
     while (orop()) {
 	right = term();
-	if (right.stat != SUCCESS)
+	if (failedstat(right.stat)){
 	    return right;
+	}
 	left = nmz_ormerge(left, right);
-	if (left.stat != SUCCESS)
+	if (failedstat(left.stat)){
 	    return left;
+	}
     }
     return left;
 }

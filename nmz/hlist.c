@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.50 2001-02-26 08:39:52 baba Exp $
+ * $Id: hlist.c,v 1.51 2001-03-11 16:02:45 furukawa Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -239,22 +239,22 @@ nmz_andmerge(NmzResult left, NmzResult right, int *ignore)
 {
     int i, j, v;
 
-    if (*ignore && left.num > 0) {
+    if (ignore && *ignore && left.num > 0) {
 	nmz_free_hlist(right);
 	return left;
     }
-    if (*ignore && right.num > 0) {
+    if (ignore && *ignore && right.num > 0) {
 	nmz_free_hlist(left);
 	return right;
     }
 
     if (left.stat != SUCCESS || left.num <= 0) {
-	nmz_free_hlist(right);
-	return left;
-    }
-    if (right.stat != SUCCESS || right.num <= 0) {
 	nmz_free_hlist(left);
 	return right;
+    }
+    if (right.stat != SUCCESS || right.num <= 0) {
+	nmz_free_hlist(right);
+	return left;
     }
 
     for (v = 0, i = 0, j = 0; i < left.num; i++) {
@@ -298,11 +298,11 @@ nmz_notmerge(NmzResult left, NmzResult right, int *ignore)
 {
     int i, j, v, f;
 
-    if (*ignore && left.num > 0) {
+    if (ignore && *ignore && left.num > 0) {
 	nmz_free_hlist(right);
 	return left;
     }
-    if (*ignore && right.num > 0) {
+    if (ignore && *ignore && right.num > 0) {
 	nmz_free_hlist(left);
 	return right;
     }

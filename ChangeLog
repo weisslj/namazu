@@ -1,3 +1,6 @@
+2001-03-12  Rei FURUKAWA  <furukawa@tcp-ip.or.jp>
+	* nmz/{hlist,parser,search}.c: modify ERR_TOO_MANY_HIT handling.
+
 2001-02-26  Hajime BABA  <baba@kusastro.kyoto-u.ac.jp>
 
 	* scripts/{lnnmz|adnmz}.in : newly added.
@@ -6406,4 +6409,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.809 2001-02-26 08:47:10 baba Exp $
+$Id: ChangeLog,v 1.810 2001-03-11 16:02:42 furukawa Exp $

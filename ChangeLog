@@ -1,6 +1,10 @@
 1999-11-01  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/Makefile.am (confdir): Use @CONFDIR@.
+	
 	* configure.in (AM_INIT_AUTOMAKE): Change a version number to 1.9.7.
+	Add --with-confdir_DIR option.
+	Fix --with-scoring=METHOD option.
 
 1999-11-01  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 

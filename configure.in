@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.41 1999-11-01 07:23:54 knok Exp $
+dnl $Id: configure.in,v 1.42 1999-11-01 07:54:07 satoru Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -397,16 +397,32 @@ AC_ARG_WITH(scoring,
     *) AC_MSG_ERROR(invalid value ${withval} for --with-scoring) ;;
 esac], [scoring='TFIDF'])
 AC_MSG_RESULT($scoring)
-SCORING=$scoring
+OPT_SCORING=$scoring
 AC_SUBST(OPT_SCORING)
 
+
 dnl *
-dnl * Set default Namazu directories.
-dnl * 
+dnl * set default $prefix at this time for next processing
+dnl *
 test "${prefix}" = NONE && prefix=/usr/local
+
+dnl *
+dnl * set a directory to place configuration files.
+dnl *
+AC_MSG_CHECKING(for a directory to place config files)
+AC_ARG_WITH(
+    CONFDIR,
+    [  --with-confdir=DIR      set a directory to place config files],
+    [CONFDIR=${withval}], [CONFDIR="${prefix}/share/namazu/conf"]
+)
+AC_MSG_RESULT($CONFDIR)
+
+dnl *
+dnl * Set default Namazu path names.
+dnl * 
 pkgdatadir="$prefix/share/namazu"
 AC_DEFINE_UNQUOTED(OPT_INDEXDIR, "${pkgdatadir}/index")
-AC_DEFINE_UNQUOTED(OPT_NAMAZU_CONF, "${pkgdatadir}/lib/namazu.conf")
+AC_DEFINE_UNQUOTED(OPT_NAMAZU_CONF, "$CONFDIR/namazu.conf")
 AC_DEFINE_UNQUOTED(OPT_LANGUAGE, "$OPT_LANGUAGE")
 AC_DEFINE_UNQUOTED(OPT_SCORING, $SCORING)
 AC_DEFINE(MSIE4MACFIX)

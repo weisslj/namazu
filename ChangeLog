@@ -1,3 +1,7 @@
+2004-05-05  Yukio USUDA <usu@namazu.org>
+
+	* filter/zip.pl: Support Archive::Zip perl module.
+
 2004-05-05  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* filter/zip.pl: Fixed typo (htf).
@@ -8838,4 +8842,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1171 2004-05-05 09:32:40 opengl2772 Exp $
+$Id: ChangeLog,v 1.1172 2004-05-05 10:00:00 usu Exp $

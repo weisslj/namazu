@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: zip.pl,v 1.7 2004-05-04 19:51:00 opengl2772 Exp $
+# $Id: zip.pl,v 1.8 2004-05-05 10:00:01 usu Exp $
 #  zip filter for namazu
 #  Copyright (C) 2004 MATSUMURA Namihiko <po-jp@counterghost.net>
 #                2004 Yukio USUDA <usu@namazu.org>
@@ -28,13 +28,15 @@ package zip;
 use strict;
 require 'util.pl';
 
-my $unzippath;
+my $unzippath = undef;
 
 sub mediatype() {
     return ('application/x-zip');
 }
 
 sub status() {
+    return 'yes' if (util::checklib('Compress/Zlib.pm') and
+		     util::checklib('Archive/Zip.pm'));
     $unzippath = util::checkcmd('unzip');
     return 'yes' if (defined $unzippath);
     return 'no';
@@ -75,9 +77,71 @@ sub filter ($$$$$) {
         util::fclose($fh);
     }
 
-    util::vprint("Processing zip file ... (using  '$unzippath')\n");
+    $$contref ="";
+    my $err = undef;
+    if (util::checklib('Archive/Zip.pm')){
+	$err = az_filter($tmpfile, $contref, $weighted_str, $headings, $fields);
+    } else {
+	$err = unzip_filter($tmpfile, $contref, $weighted_str, $headings, $fields);
+    }
+    unlink($tmpfile);
+    return $err;
+}
 
-    $$contref = "";
+sub az_filter ($$$$$) {
+    my ($tmpfile, $contref, $weighted_str, $headings, $fields)
+      = @_;
+
+    util::vprint("Processing zip file ... (using Archive::ZIP module)\n");
+
+    eval 'use Archive::Zip;';
+    my $zip = Archive::Zip->new();
+    my $err = $zip->read( $tmpfile );
+    if ($err != 0) {
+	util::dprint("Archive::Zip: there was a error");
+	return $err;
+    }
+    {
+	my $comment = $zip->zipfileComment();
+	my @filenames = $zip->memberNames();
+	my $tmp = join(" ", @filenames);
+	$$contref = $comment . " " . codeconv::toeuc(\$tmp) . " ";
+    }
+    my @members = $zip->members();
+    my $member;
+    foreach $member (@members){
+	next if (($member->isEncrypted() or $member->isDirectory()));
+
+	my $size = $member->uncompressedSize();
+	my $fname = $member->fileName();
+	if ($size == 0) {
+	    util::dprint("$fname: filesize is 0");
+	} elsif ($size > $conf::FILE_SIZE_MAX) {
+	    util::dprint("$fname: Too large ziped file");
+	} else {
+	    my $con = $zip->contents($member);
+	    if ($con) {
+		my $unzippedname = "unzipped_content";
+		if ($fname =~ /.*(\..*)/){
+		    $unzippedname = $unzippedname . $1;
+		}
+		my $err = zip::nesting_filter($unzippedname, \$con, $weighted_str);
+		if (defined $err) {
+		    util::dprint("filter/zip.pl gets error message \"$err\"");
+		}
+		$$contref .= $con . " ";
+	    }
+	}
+    }
+    return undef;
+}
+
+
+sub unzip_filter ($$$$$) {
+    my ($tmpfile, $contref, $weighted_str, $headings, $fields)
+      = @_;
+
+    util::vprint("Processing zip file ... (using  '$unzippath')\n");
 
     my $status = system("$unzippath -P passwd -qq -t $tmpfile");
     if ($status != 0) {
@@ -148,7 +212,6 @@ sub filter ($$$$$) {
 	    util::fclose($fh);
 	}
     };
-    unlink($tmpfile);
     return undef;
 }
 

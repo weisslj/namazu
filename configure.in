@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.16 1999-08-28 01:29:36 satoru Exp $
+dnl $Id: configure.in,v 1.17 1999-08-28 09:26:15 satoru Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -262,7 +262,9 @@ if test -n "$EMXOS2"; then
 fi
 
 
-dnl Define the scoring method (default: TFIDF)
+dnl *
+dnl * Define a scoring method (default: TFIDF)
+dnl *
 AC_MSG_CHECKING(for SCORING)
 AC_ARG_WITH(scoring,
 [  --with-scoring=METHOD   set scoring method (SIMPLE or TFIDF) [TFIDF]],
@@ -274,11 +276,27 @@ AC_MSG_RESULT($scoring)
 SCORING=$scoring
 AC_SUBST(SCORING)
 
+dnl *
+dnl * Define a test mode (defult: off)
+dnl *
 
-dnl set default Namazu dir
+AC_ARG_ENABLE(test,
+[  --enable-test           enable a test mode [no]],
+[case "${enableval}" in
+   yes)	TEST_MODE=1 ;;
+   no)	TEST_MODE=0 ;;
+   *)	AC_MSG_ERROR(invalid value ${enableval} for --enable-test) ;;
+esac], TEST_MODE=0)
+AC_SUBST(TEST_MODE)
+
+
+
+dnl *
+dnl * Set default Namazu directories.
+dnl * 
 test "${prefix}" = NONE && prefix=/usr/local
-AC_DEFINE_UNQUOTED(INDEXDIR, "${prefix}/${PACKAGE}/index")
-AC_DEFINE_UNQUOTED(OPT_NAMAZU_CONF, "${prefix}/${PACKAGE}/lib/namazu.conf")
+AC_DEFINE_UNQUOTED(INDEXDIR, "${datadir}/${PACKAGE}/index")
+AC_DEFINE_UNQUOTED(OPT_NAMAZU_CONF, "${datadir}/${PACKAGE}/lib/namazu.conf")
 AC_DEFINE_UNQUOTED(LANGUAGE, "$OPT_LANGUAGE")
 AC_DEFINE_UNQUOTED(SCORING, $SCORING)
 AC_DEFINE(MSIE4MACFIX)

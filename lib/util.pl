@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.10 1999-08-28 05:58:02 satoru Exp $
+# $Id: util.pl,v 1.11 1999-08-28 09:26:17 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -73,11 +73,11 @@ sub fopen ($) {
 }
 
 sub dprint (@) {
-    print STDERR "// ", @_ if $var::Opt{Debug};
+    print STDERR '// ', @_ if $var::Opt{Debug};
 } 
 
 sub vprint (@) {
-    print STDERR ":: ", @_ if $var::Opt{Verbose};
+    print STDERR '@@ ', @_ if $var::Opt{verbose} || $var::Opt{Debug};
 } 
 
 
@@ -89,14 +89,6 @@ sub commas ($) {
     # from Mastering Regular Expressions
     $num =~ s<\G((?:^-)?\d{1,3})(?=(?:\d\d\d)+(?!\d))><$1,>g;
     $num;
-}
-
-# Check the size of int
-sub get_int_size () {
-    my ($tmp);
-    $tmp = 0;
-    $tmp = pack("i", $tmp);
-    $var::INTSIZE = length($tmp);
 }
 
 # RFC 822 format without timezone

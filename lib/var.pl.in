@@ -1,5 +1,5 @@
 # -*- CPerl -*-
-# $Id: var.pl.in,v 1.2 1999-08-28 02:43:16 satoru Exp $
+# $Id: var.pl.in,v 1.3 1999-08-28 09:26:17 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -88,8 +88,6 @@ $File{TMP_PI}     = "$DBNAME.tmp_pi";
 
 $File{CHECKPOINT_}     = "$DBNAME.checkpoint";
 
-$INTSIZE = 4;
-$USE_NKF_MODULE   = 0;
 
 ################################################################
 ##
@@ -99,7 +97,7 @@ $USE_NKF_MODULE   = 0;
 $Opt{NoPhraseIndex} = 0;
 $Opt{Debug}         = 0;
 $Opt{Quiet}         = 0;
-$Opt{Verbose}       = 0;
+$Opt{verbose}       = 0;
 $Opt{RobotExclude}  = 0;
 $Opt{NoFieldInfo}   = 0;
 $Opt{NoDateIndex}   = 0;
@@ -120,10 +118,30 @@ $Opt{NoDeleteProcessing} = 0;
 $Opt{NoUpdateProcessing} = 0;
 $Opt{HtaccessExclude} = 0;
 
-%CheckPoint = ("on" => undef, "continue" => undef, "pid" => $$, "fid" => 0);
+################################################################
+##
+## Size of `int'
+##
+
+{
+    my $tmp = 0;
+    $tmp = pack("i", $tmp);
+    $var::INTSIZE = length($tmp);
+}
+
+
+################################################################
+##
+## Misc
+##
+
+$ConfFile = "";
+$INTSIZE = 4;
+$USE_NKF_MODULE   = 0;
+$PREFIX = "";
 
 %REQUIRE_ACTIONS = ();
 %RECURSIVE_ACTIONS = ();
-%supported = ();
+%Supported = ();
 
 1;

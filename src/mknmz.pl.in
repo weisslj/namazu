@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- CPerl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.32 1999-08-28 05:59:23 satoru Exp $
+# $Id: mknmz.pl.in,v 1.33 1999-08-28 09:26:18 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -46,33 +46,22 @@ my $TARGET_DIR = "";
 my $DeletedFilesCount = 0;
 my $UpdatedFilesCount = 0;
 my $APPENDMODE = 0;
-my @Seed = ();
 my %PhraseHash = ();
 my %PhraseHashLast = ();
 my %KeyIndex = ();
 my %KeyIndexLast = ();
 my %CheckPoint = ("on" => undef, "continue" => undef);
-
-$SIG{INT}  = sub {
-    warn "SIGINT caught! removing tmporary files...\n";
-    remove_tmpfiles();
-    remove_lockfile($var::File{LOCKFILE2});
-
-    my $errsize = -s $var::File{ERRORSFILE};
-    unlink $var::File{ERRORSFILE} if $errsize == 0;
-    warn "exit(2)\n";
-    
-    exit 2;
-};
+my $TestMode = @TEST_MODE@;
 
 STDOUT->autoflush(1);
-init();
-
 main();
 sub main () {
+    init();
+    loadmod();
+    readconf();
 
     my $start_time = time;
-    my $file_base = setup();
+    my $file_base = prep();
 
     my $swap = 1;
     my $file_count = 0;
@@ -82,7 +71,7 @@ sub main () {
     my $flist_ptr = 0;
     my $processed_files_size = 0;
 
-    # restore variables
+    # Restore variables
     eval util::readfile($var::File{'CHECKPOINT_'}) if $CheckPoint{'continue'};
 
     {
@@ -119,9 +108,9 @@ sub main () {
 	    }
 	}
     }
-    # this should be out of above blocks because of file handler closing.
-    re_exec($flist_ptr, $file_count, $file_base, $start_time, $total_files_size) 
-	if $checkpoint;
+    # This should be out of above blocks because of file handler closing.
+    re_exec($flist_ptr, $file_count, $file_base, 
+	    $start_time, $total_files_size) if $checkpoint;
 
     if (%KeyIndex) {
 	$key_count = write_index();
@@ -131,6 +120,23 @@ sub main () {
     $key_count = get_total_keys() unless $key_count;
     do_remain_job($total_files_size, $file_count, $key_count, 
 		   $start_time);
+    exit 0;
+}
+
+sub readconf() {
+    my @cand = ("$ENV{HOME}/.mknmzrc", 
+		"$CONFDIR/mknmz.conf");
+    my $conf2 = cwd() . "/../conf/mknmz.conf-dist";  # relative path from cwd
+    unshift @cand, $conf2 if $TestMode;
+
+    for my $conf (@cand) {
+	if (-e $conf) {
+	    util::vprint("conf: $conf\n");
+	    require $conf;
+	    return;
+	}
+    }
+    die "No config file is available.\n";
 }
 
 sub re_exec($$$$) {
@@ -179,47 +185,58 @@ sub init () {
 	$CCS = "euc";
     }
 
-    my $libdir2 = cwd() . "/../lib";  # relative path from cwd
+    $SIG{INT}  = sub {
+	warn "SIGINT caught! removing tmporary files...\n";
+	remove_tmpfiles();
+	remove_lockfile($var::File{LOCKFILE2});
+
+	my $errsize = -s $var::File{ERRORSFILE};
+	unlink $var::File{ERRORSFILE} if $errsize == 0;
+	warn "exit(2)\n";
+    
+	exit 2;
+    };
+}
+
+#
+# Load modules
+#
+sub loadmod () {
+    my $libdir2 = cwd() . "/../lib";        # relative path from cwd
+    unshift @INC, $LIBDIR;
+    unshift @INC, $libdir2 if $TestMode;
+
     my $filterdir2 = cwd() . "/../filter";  # relative path from cwd
-    my $confdir2 = cwd() . "/../conf";  # relative path from cwd
+    unshift @INC, $FILTERDIR;
+    unshift @INC, $filterdir2 if $TestMode;
 
-    unshift @INC, ($libdir2, $LIBDIR, $filterdir2, $FILTERDIR,
-		   $CONFDIR, $confdir2);
-
-    require "mknmz.conf";
-    require "hash.pl";
-    require "hash.pl";
+    require "usage.pl";
+    require "seed.pl";
     require "codeconv.pl";
     require "find.pl";
     require "util.pl";
-#    require "filter.pl";
-    require "html.pl";
     require "wakati.pl";
 
-    util::dprint("@ INC:: @INC\n");  # should be placed after `require "util.pl"'
-
-    @Seed = hash::init_seed();
-    util::get_int_size();
-
-    # check filter modules
-    my @filters = glob "$filterdir2/*.pl";
+    # Check filter modules
+    my @filters = ();
+    @filters = glob "$filterdir2/*.pl" if $TestMode;
     @filters = glob "$FILTERDIR/*.pl" if @filters == 0;
-    for my $module (@filters) {
-	$module =~ s/\Q$filterdir2\E\/(.*).pl$/$1/;
+
+    for my $filter (@filters) {
+	$filter =~ m!(\w+)\.pl$!;
+	my $module = $1;
 	require "$module.pl";
-	util::dprint("$module.pl loaded\n");
+#	print STDERR "\@\@ loaded: $module.pl ($filter)\n" if $TestMode;
 	my (@mtypes, $status, $recursive);
-	eval '@mtypes = '    . $module . "::mediatype();";
-	eval '$status = '    . $module . "::status();";
-	eval '$recursive = ' . $module . "::recursive();";
+	eval "\@mtypes =    ${module}::mediatype();";
+	eval "\$status =    ${module}::status();";
+	eval "\$recursive = ${module}::recursive();";
 	for my $mt (@mtypes) {
-	    $conf::supported{$mt} = $status;
+	    $conf::Supported{$mt} = $status;
 	    $var::REQUIRE_ACTIONS{$mt} = $module;
 	    $var::RECURSIVE_ACTIONS{$mt} = $recursive if ($recursive)
 	}
     }
-
-    # no return values
 }
 
 # Core routine
@@ -266,7 +283,7 @@ sub namazu_core ($$$) {
     }
     # Output processing file name as URL
     print $file_count + $file_base . 
-	" $url :: $mtype\n" unless $var::Opt{Quiet;
+	" $url :: $mtype\n" unless $var::Opt{Quiet};
 
     make_field_index(\%fields, $cfile, $uri, \$headings, \$content);
     put_field_index(\%fields, $field_indices) unless $var::Opt{NoFieldIndex};
@@ -287,9 +304,9 @@ sub generate_uri ($) {
 
     my $uri = $file;
     # remove a file name if omittable
-    if ($conf::URI_PREFIX && $TARGET_DIR) {
+    if ($var::PREFIX && $TARGET_DIR) {
 	$uri =~ s!(.*)/($conf::DEFAULT_FILE)$!$1/!o; 
-	$uri =~ s!$TARGET_DIR/!$conf::URI_PREFIX!o;
+	$uri =~ s!$TARGET_DIR/!$var::PREFIX!o;
     }
 
     if (($SYSTEM eq "MSWin32") || ($SYSTEM eq "os2")) {
@@ -520,7 +537,7 @@ sub load_document ($$$$$\%) {
     return ($size, $ctrl, $kanji, $mtype);
 }
 
-sub setup () {
+sub prep () {
     my $file_base = 0;
     my $output_dir = "";
     my $target_dir = "";
@@ -533,7 +550,7 @@ sub setup () {
     change_dbnames($output_dir);
     check_present_index();
 
-    # if Checkpoint mode, continue
+    # if Checkpoint mode, return
     return 0 if $CheckPoint{'continue'};
 
     @flist = find_target($target_dir) unless @flist;
@@ -541,7 +558,7 @@ sub setup () {
 	if -e $var::File{'REGISTRY'};
     unless (@flist) { # if @flist is empty
 	print "No files to index.\n";
-	exit;
+	exit 0;
     }
     set_lockfile($var::File{LOCKFILE2});
     save_flist(@flist);
@@ -715,6 +732,7 @@ sub parse_options ()
 	       't|allow-regex=s'     => \$conf::ALLOW_REGEX,
 
 	       'v|version'           => \$opt_version,
+	       'V|verbose'           => \$var::Opt{verbose},
 	       'a|all'               => \$opt_all,
 	       'k|use-kakasi'        => \$opt_kakasi,
 	       'c|use-chasen'        => \$opt_chasen,
@@ -726,14 +744,16 @@ sub parse_options ()
 	       '0|help'              => \$opt_help,
 	       );
 
-    if ($opt_version) {
-	print "mknmz v$var::VERSION\n";
-	exit 0;
-    }
     if ($opt_help) {
 	show_long_usage();
 	exit 0;
     }
+
+    if ($opt_version) {
+	print "mknmz v$var::VERSION\n";
+	exit 0;
+    }
+
     if ($opt_all) {
 	$conf::ALLOW_REGEX = ".*";
     }
@@ -773,84 +793,18 @@ sub parse_options ()
 	@argv = grep {! /-S/} @argv;  # remove -S
     }
 
-
     if (@ARGV == 0 && !$target_loaded && $output_dir eq "") {
 	show_mini_usage();
 	exit 1;
     }
-    while (defined($argv[0]) && $argv[0] =~ /^-/) {
-	$conf::TARGET_FILE = ".*" if $argv[0] =~ /a/;
-	$conf::WAKATI = $conf::KAKASI, $var::Opt{Morph} = 0 if $argv[0] =~ /k/;
-	$conf::WAKATI = $conf::CHASEN, $var::Opt{Morph} = 0 if $argv[0] =~ /c/;
-	$conf::WAKATI = $conf::CHASEN_MORPH, $var::Opt{Morph} = 1 if $argv[0] =~ /m/;
-	$var::Opt{Uuencode} = 1 if $argv[0] =~ /u/;
-	$var::Opt{MailNews} = 1 if $argv[0] =~ /h/;
-	if ($argv[0] =~ /r/) {
-	    $var::Opt{Man}      = 1;
-	    $conf::TARGET_FILE = '.*\.\d.*';
-	}
-	$var::Opt{Hiragana} = 1 if $argv[0] =~ /H/;
-	$var::Opt{Okurigana} = 1 if $argv[0] =~ /G/;
-	$var::Opt{NoEdgeSymbol} = 1 if $argv[0] =~ /E/;
-	$var::Opt{NoSymbol} = 1 if $argv[0] =~ /K/;
-	$var::Opt{NoLineAd} = 1 if $argv[0] =~ /L/;
-	$var::Opt{NoMHonArc}  = 1 if $argv[0] =~ /M/;
-	$var::Opt{NoEncodeURL}  = 1 if $argv[0] =~ /U/;
-	$var::Opt{Debug}    = 1 if $argv[0] =~ /d/;
-	$var::Opt{NoHeadAbst}  = 1 if $argv[0] =~ /x/;
-	$var::Opt{RobotExclude} = 1 if $argv[0] =~ /e/;
-	$var::Opt{Quiet} = 1 if $argv[0] =~ /q/;
-	$var::Opt{Verbose} = 1 if $argv[0] =~ /v/;
-	$var::Opt{NoPhraseIndex}  = 1 if $argv[0] =~ /P/;
-	$var::Opt{NoRegexpIndex}  = 1 if $argv[0] =~ /R/;
-	$var::Opt{NoInsertHeader}  = 1 if $argv[0] =~ /D/;
-	$var::Opt{NoDateIndex} = 1 if $argv[0] =~ /W/;
-	$var::Opt{NoFieldInfo} = 1 if $argv[0] =~ /X/;
-	$var::Opt{NoDeleteProcessing} = 1 if $argv[0] =~ /Y/;
-	$var::Opt{NoUpdateProcessing} = 1 if $argv[0] =~ /Z/;
- 	$var::Opt{HtaccessExclude} = 1 if $argv[0] =~ /A/;
- 	$CheckPoint{'on'} = 1 if $argv[0] =~ /s/;
- 	if ($argv[0] =~ /O$/) {
- 	    shift @argv;
-	    $output_dir = $argv[0];
-	    $output_dir =~ s|/*$||;
- 	    print "Index output directory: $argv[0]\n" unless $var::Opt{Quiet};
- 	} elsif ($argv[0] =~ /T$/) {
- 	    shift @argv;
-	    $TEMPLATEDIR = $argv[0];
-	    $TEMPLATEDIR =~ s|/*$||;
- 	} elsif ($argv[0] =~ /I$/) {
-	    shift @argv;
-	    eval util::readfile($argv[0]);
-	    print "Included: $argv[0]\n" unless $var::Opt{Quiet};
-	} elsif ($argv[0] =~ /l$/) { # small letter of 'L'
-	    shift @argv;
-	    $conf::LANGUAGE = $argv[0];
-	} elsif ($argv[0] =~ /F$/) {
-	    shift @argv;
-	    @flist = load_target_list($argv[0]);
-	    print "Loaded: $argv[0]\n" unless $var::Opt{Quiet};
-	    $target_loaded = 1;
-	    $target_dir = cwd();
-	} elsif ($argv[0] =~ /t$/) {
-	    shift @argv;
-	    print "TARGET: $argv[0]\n" unless $var::Opt{Quiet};
-	    $conf::TARGET_FILE = $argv[0];
-	} elsif ($argv[0] =~ /S$/) {  # for checkpoint mechanism
-	    $CheckPoint{'on'}           = 1;
-	    $CheckPoint{'continue'}     = 1;
-	    shift @ARGV;  # remove -S
-	}
-	shift @argv;
-    }
 
-    unless (!$target_loaded || @flist) { # if @flist is empty
+    if ($target_loaded && ! @flist) {
  	print "No files to index.\n";
- 	exit;
+ 	exit 0;
     }
 
     if ($#ARGV > 0 || $#ARGV == 0 && $target_loaded) {
-	$conf::URI_PREFIX = $ARGV[0];
+	$var::PREFIX = $ARGV[0];
 	shift @ARGV;
     }
 
@@ -861,9 +815,11 @@ sub parse_options ()
 
     if ($SYSTEM eq "MSWin32" || $SYSTEM eq "os2") {
 	# convert \ to / with consideration for Shift_JIS Kanji code
-	$target_dir =~ s!([\x81-\x9f\xe0-\xef][\x40-\x7e\x80-\xfc]|[\x01-\x7f])!
+	$target_dir =~ 
+	    s!([\x81-\x9f\xe0-\xef][\x40-\x7e\x80-\xfc]|[\x01-\x7f])!
 	    $1 eq "\\" ? "/" : $1!gex;
-	$output_dir =~ s!([\x81-\x9f\xe0-\xef][\x40-\x7e\x80-\xfc]|[\x01-\x7f])!
+	$output_dir =~ 
+	    s!([\x81-\x9f\xe0-\xef][\x40-\x7e\x80-\xfc]|[\x01-\x7f])!
 	    $1 eq "\\" ? "/" : $1!gex;
     }
 
@@ -915,8 +871,7 @@ sub load_target_list ($) {
 
 
 sub show_long_usage () {
-    require "usage.pl";
-
+    util::dprint("lang: $conf::LANGUAGE\n");
     if ($conf::LANGUAGE eq "ja") {
 	if ($CCS eq "euc") {
 	    print $usage::USAGE_JA;
@@ -930,8 +885,6 @@ sub show_long_usage () {
 }
 
 sub show_mini_usage () {
-    require "usage.pl";
-
     print $usage::USAGE_MINI;
 }
 
@@ -991,9 +944,8 @@ sub write_result_file () {
     my $template = "";
     my $buf = "";
 
-    my $templatedir2 = cwd() . "/../filter";  # relative path from cwd
-    if ( -e "$templatedir2/$fname") {
-	
+    my $templatedir2 = cwd() . "/../template";  # relative path from cwd
+    if ($TestMode && -e "$templatedir2/$fname") {
 	$template = "$templatedir2/$fname";
     } else {
 	$template = "$TEMPLATEDIR/$fname";
@@ -1026,7 +978,7 @@ sub write_message ($$) {
 	$full_path_name =~ m!.*/(.*)$!;
 	$fname = $1;
 	my $templatedir2 = cwd() . "/../filter";  # relative path from cwd
-	if ( -e "$templatedir2/$fname") {
+	if ($TestMode && -e "$templatedir2/$fname") {
 	    $template = "$templatedir2/$fname";
 	} else {
 	    $template = "$LIBDIR/$fname";
@@ -1105,7 +1057,7 @@ sub append_index (@) {
 	    remove_lockfile($var::File{LOCKFILE2});
 	}
 	print "No files to index.\n";
-	exit;
+	exit 0;
     }
 
     $APPENDMODE = 1;
@@ -1454,7 +1406,7 @@ sub make_headfoot ($$$) {
 	my $fname = $1;
 	my $template = "";
 	my $templatedir2 = cwd() . "/../filter";  # relative path from cwd
-	if ( -e "$templatedir2/$fname") {
+	if ($TestMode && -e "$templatedir2/$fname") {
 	    $template = "$templatedir2/$fname";
 	} else {
 	    $template = "$TEMPLATEDIR/$fname";
@@ -1601,7 +1553,7 @@ sub hash ($) {
     $hash = 0;
     $word =~ tr/\xa1-\xfea-z0-9//cd; # 記号を捨てる
     for ($i = 0; $word ne ""; $i++) {
-	$hash ^= $Seed[$i % 4][ord($word)];
+	$hash ^= $seed::Seed[$i & 0x03][ord($word)];
         $word = substr $word, 1;
 	# $word =~ s/^.//;  is slower
     }
@@ -1882,11 +1834,12 @@ muda($var::File{'BODY_MSG_EN'},
      $conf::KAKASI, $var::Opt{Okurigana}, $TARGET_DIR, $var::Opt{Man},
      $var::Opt{Hiragana}, $conf::ROBOTS_EXCLUDE_URLS, $conf::DEFAULT_FILE,
      $conf::HTML_SUFFIX, $usage::USAGE_EN, $usage::USAGE_MINI, 
-     $var::Opt{NoHeadAbst},
+     $var::Opt{NoHeadAbst}, @seed::Seed,
      $var::Opt{Debug}, $var::Opt{NoEncodeURL}, $var::Opt{HtaccessExclude}, 
      $var::RECURSIVE_ACTIONS, $conf::ROBOTS_EXCLUDE_URIS, 
-     $var::Opt{NoInsertHeader}, $var::Opt{NoRegexpIndex}, $var::Opt{NoFieldInfo},
-     $conf::ROBOTS_EXCLUDE_URLS, $conf::supported);
+     $var::Opt{NoInsertHeader}, $var::Opt{NoRegexpIndex}, 
+     $var::Opt{NoFieldInfo},
+     $conf::ROBOTS_EXCLUDE_URLS, $conf::Supported);
 
 
 sub muda(@) {}

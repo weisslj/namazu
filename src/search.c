@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.12 1999-08-27 10:05:13 satoru Exp $
+ * $Id: search.c,v 1.13 1999-08-28 09:26:18 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -296,7 +296,7 @@ int hash(uchar *str)
 
     for (i = j = 0; *str; i++) {
         if (!issymbol(*str)) { /* except symbol */
-            hash ^= Seed[j % 4][(int)*str];
+            hash ^= Seed[j & 0x3][(int)*str];
             j++;
         }
         str++;

@@ -1,5 +1,5 @@
 # -*- CPerl -*-
-# $Id: usage.pl,v 1.3 1999-08-28 02:43:15 satoru Exp $
+# $Id: usage.pl,v 1.4 1999-08-28 09:26:16 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -56,7 +56,7 @@ $var::COPYRIGHT
   フィルタ制御:
     -r, --man          man のファイルを処理する
     -u, --uuencode     uuencode と BinHex の部分を無視する
-    -h, --rfc822       Mail/News のヘッダ部分をそれなりに処理する
+    -h, --rfc822       Mail/News のファイルを処理する
     -M, --no-mhonarc   MHonArc で作成された HTML の処理を行わない
 
   文字列処理:
@@ -81,13 +81,15 @@ $var::COPYRIGHT
 
   その他:
     -s, --checkpoint        チェックポイント機構を作動させる
-    -q, --quiet             インデックス処理の最中にメッセージを表示しない
     -I, --include=file      カスタマイズ用ファイルを読み込む
     -O, --output-dir=dir    インデックスの出力先を指定する
     -T, --template-dir=dir  NMZ.{head,foot,body}.* のディレクトリを指定する
     -l, --lang=lang         言語を設定する ('en' or 'ja')
     -v, --version           ヴァージョンを表示する
-    -0, --help              このヘルプを表示する
+    -q, --quiet             インデックス処理の最中にメッセージを表示しない
+    -V, --verbose           口やかましいモード
+        --debug             デバッグモード
+        --help              このヘルプを表示する
 EOFusage
 
 ##

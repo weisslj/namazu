@@ -1,5 +1,24 @@
 1999-08-28  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/mknmz.pl.in: Add global variable $TestMode for testing.
+	
+	* configure.in: Add --enable-test option for testing.
+	
+	* src/search.c (hash): Modify "j % 4" -> "j & 03"
+
+	* src/mknmz.pl.in (hash): Modify "$i % 4" -> "$i & 03"
+
+	* lib/seed.pl: New file (rename <- seed.pl)
+
+	* lib/hash.pl: Remove   (rename -> seed.pl)
+	
+	* src/mknmz.pl.in: Add `--test' option. [namazu-dev 254]
+	
+	* src/mknmz.pl.in: Add `readconf()' function.
+	
+	* lib/util.pl: Modify `dprint' and `vprint' to print prefix
+	characters everytime.
+	
 	* src/mknmz.pl.in: Print a mediatype at processing time by
 	default.
 	

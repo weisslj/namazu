@@ -13,4 +13,5 @@ EXTRA_DIST  = acrobat3.pdf \
 	      rfc0000.txt \
 	      tex.tex \
 	      word97.doc \
-	      powerpoint97.ppt
+	      powerpoint97.ppt \
+	      postscript.ps

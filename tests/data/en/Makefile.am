@@ -18,4 +18,7 @@ EXTRA_DIST  = acrobat3.pdf \
 	      dvi.dvi \
               namazu-dummy_1.0-1_i386.deb \
               rpm.rpm \
-              oowriter.sxw
+              oowriter.sxw \
+              apachecache.txt \
+              hdml.hdml
+

@@ -34,4 +34,7 @@ EXTRA_DIST  =   acrobat3.pdf \
                 oowriter.sxw \
                 oocalc.sxc \
                 oodraw.sxd \
-                ooimpress.sxi
+                ooimpress.sxi \
+                apchecache.txt \
+                hdml.hdml
+

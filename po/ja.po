@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: namazu 2.0\n"
-"POT-Creation-Date: 1999-11-01 23:04+0900\n"
+"POT-Creation-Date: 1999-11-01 23:26+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>\n"
 "Language-Team: Japanese <satoru-t@is.aist-nara.ac.jp>\n"
@@ -24,7 +24,7 @@ msgstr "CGIの QUERY_STRING が長すぎます"
 #: src/conf.c:470
 #, c-format
 msgid "Config:  %s\n"
-msgstr "設定ファイル:  %s\\n"
+msgstr "設定ファイル:  %s\n"
 
 #: src/conf.c:473
 #, c-format

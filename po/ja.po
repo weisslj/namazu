@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: namazu 2.0\n"
-"POT-Creation-Date: 1999-11-17 21:59+0900\n"
+"POT-Creation-Date: 1999-11-18 07:02+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>\n"
 "Language-Team: Japanese <satoru-t@is.aist-nara.ac.jp>\n"
@@ -99,9 +99,8 @@ msgid " (cannot open regex index)"
 msgstr " (正規表現用インデックスが開けませんでした)"
 
 #: src/output.c:387
-#, fuzzy
 msgid " (cannot open phrase index)"
-msgstr " (インデックスが開けませんでした)\n"
+msgstr " (フレイズ検索用インデックスが開けませんでした)"
 
 #: src/output.c:389
 msgid " (cannot open this index)\n"

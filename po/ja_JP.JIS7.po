@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: namazu 2.0\n"
-"POT-Creation-Date: 1999-11-17 21:59+0900\n"
+"POT-Creation-Date: 1999-11-18 07:02+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>\n"
 "Language-Team: Japanese <satoru-t@is.aist-nara.ac.jp>\n"
@@ -99,9 +99,8 @@ msgid " (cannot open regex index)"
 msgstr " (\033\044\102\100\065\065\054\111\075\070\075\115\121\045\044\045\163\045\107\045\103\045\057\045\071\044\054\063\053\044\061\044\136\044\073\044\163\044\107\044\067\044\077\033\050\102)"
 
 #: src/output.c:387
-#, fuzzy
 msgid " (cannot open phrase index)"
-msgstr " (\033\044\102\045\044\045\163\045\107\045\103\045\057\045\071\044\054\063\053\044\061\044\136\044\073\044\163\044\107\044\067\044\077\033\050\102)\n"
+msgstr " (\033\044\102\045\125\045\154\045\044\045\072\070\041\072\167\115\121\045\044\045\163\045\107\045\103\045\057\045\071\044\054\063\053\044\061\044\136\044\073\044\163\044\107\044\067\044\077\033\050\102)"
 
 #: src/output.c:389
 msgid " (cannot open this index)\n"

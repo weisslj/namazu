@@ -10,10 +10,6 @@ while (<IN>) {
     $c_format = 1 if /^\#, c-format/;
     $c_format = 0 if /^$/;
 
-    if ($c_format == 1 && $c eq "%") {
-	return "%%";
-    }
-
     s/([\xa1-\xfe]+)/\\033\\044\\102$1\\033\\050\\102/g;
     s/([\xa1-\xfe])/escape($1)/ge;
     print OUT;

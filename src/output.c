@@ -294,7 +294,11 @@ static void print_hlist(NmzResult hlist)
 
 	if (templates[hlist.data[i].idxid] == NULL) {  /* not loaded */
 	    if (is_listmode()) {
-		templates[hlist.data[i].idxid] = "${uri}\n";
+		templates[hlist.data[i].idxid] = malloc(BUFSIZE);
+		if (templates[hlist.data[i].idxid] == NULL) {
+		    return;  /* FIXME: error status should be returned */
+		}
+		strcpy(templates[hlist.data[i].idxid], "${uri}");
 	    } else {
 		char fname[BUFSIZE];
 		make_fullpathname_result(hlist.data[i].idxid);
@@ -302,6 +306,9 @@ static void print_hlist(NmzResult hlist)
 		strcat(fname, ".");
 		strcat(fname, get_template());  /* usually "normal" */
 		templates[hlist.data[i].idxid] = nmz_readfile(fname);
+		if (templates[hlist.data[i].idxid] == NULL) {
+		    return;  /* FIXME: error status should be returned */
+		}
 	    }
 	}
 	compose_result(hlist.data[i], counter, 

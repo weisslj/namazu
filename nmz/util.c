@@ -1,5 +1,5 @@
 /*
- * $Id: util.c,v 1.26 1999-12-09 10:41:54 satoru Exp $
+ * $Id: util.c,v 1.27 1999-12-09 22:57:17 satoru Exp $
  *
  * Imported scan_hex(), scan_oct(), xmalloc(), xrealloc() from 
  * Ruby b19's"util.c" and "gc.c". Thanks to Matsumoto-san for consent!
@@ -449,7 +449,7 @@ char *nmz_readfile(char *fname)
     fp = fopen(fname, "rb");
     if (fp == NULL) {
         nmz_warn_printf("can't open %s\n", fname);
-        return 0;
+        return NULL;
     }
     buf = malloc(fstatus.st_size + 1);
     if (buf == NULL) {

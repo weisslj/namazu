@@ -1,3 +1,7 @@
+1999-12-10  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* src/output.c (print_hlist): Fix --list mode bug.
+
 1999-12-09  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* nmz/Makefile.am (libnmz_la_SOURCES): Add seed.h

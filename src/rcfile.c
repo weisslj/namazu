@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.5 2000-01-27 03:05:04 satoru Exp $
+ * $Id: rcfile.c,v 1.6 2000-01-27 08:00:44 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -498,11 +498,12 @@ apply_rc(int lineno, const char *directive, struct nmz_strlist *args)
 	    if (argnum == dtab->argnum ||
 		(dtab->plus && argnum > dtab->argnum)) 
 	    {
-		/* If number of argument is right, apply appropriate func. */
-		if ((*(dtab->func))(directive, args) != SUCCESS) {
-		    return FAILURE;
-		}
-		return SUCCESS;
+		/* 
+		 * If number of argument is correct, apply
+		 * appropriate function and return with its
+		 * return value.
+		 */
+		return dtab->func(directive, args);
 	    } else if (argnum < dtab->argnum) {
 		errmsg = "too few arguments";
 		return FAILURE;

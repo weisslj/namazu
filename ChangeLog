@@ -8,6 +8,10 @@
 
 2000-01-27  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/cgi.c (apply_cgifunc): Simplfy calling pointed function. 
+
+	* src/rcfile.c (apply_rc): Simplfy calling pointed function. 
+
 	* pl/util.pl (cp): Abolished.
 
 	* scripts/mknmz.pl.in: Use File::Copy's copy instead of

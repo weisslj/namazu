@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2000-01-27 16:24+0900\n"
+"POT-Creation-Date: 2000-01-27 17:00+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -127,12 +127,12 @@ msgstr ""
 msgid "\t<p>No document matching your query.</p>\n"
 msgstr ""
 
-#: src/rcfile.c:588
+#: src/rcfile.c:589
 #, c-format
 msgid "Config:  %s\n"
 msgstr ""
 
-#: src/rcfile.c:591
+#: src/rcfile.c:592
 #, c-format
 msgid ""
 "Index:   %s\n"
@@ -322,73 +322,73 @@ msgstr ""
 msgid "wanted: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:1342
+#: scripts/mknmz.pl.in:1344
 msgid ""
 "\n"
 "\n"
 "== found ==\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1343
+#: scripts/mknmz.pl.in:1345
 msgid ""
 "\n"
 "\n"
 "== registered ==\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1344
+#: scripts/mknmz.pl.in:1346
 msgid ""
 "\n"
 "\n"
 "== overlapped  ==\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1345
+#: scripts/mknmz.pl.in:1347
 msgid ""
 "\n"
 "\n"
 "== deleted  ==\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1346
+#: scripts/mknmz.pl.in:1348
 msgid ""
 "\n"
 "\n"
 "== updated ==\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1347
+#: scripts/mknmz.pl.in:1349
 msgid ""
 "\n"
 "\n"
 "== files to index ==\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1371
+#: scripts/mknmz.pl.in:1373
 msgid "## deleted: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:1394
+#: scripts/mknmz.pl.in:1396
 msgid "## indexed: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:1420
+#: scripts/mknmz.pl.in:1422
 msgid "update_field_index: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:1440
+#: scripts/mknmz.pl.in:1442
 msgid "was updated!\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1481
+#: scripts/mknmz.pl.in:1483
 msgid "ERROR: malformed NMZ.r format!\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1682
+#: scripts/mknmz.pl.in:1684
 msgid "doing write_phrase_hash() processing.\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1909
+#: scripts/mknmz.pl.in:1911
 msgid "doing write_index() processing.\n"
 msgstr ""
 

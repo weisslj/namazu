@@ -7,6 +7,8 @@ SUBDIRS = intl po conf filter nmz lib lisp pl src @FILE_MMAGIC@ @TKNAMAZU@
 
 DIST_SUBDIRS = $(SUBDIRS) tknamazu
 
+bin_SCRIPTS = nmz-config
+
 EXTRA_DIST = README-ja namazu.spec.in namazu.spec \
 	     ChangeLog.1 File-MMagic
 

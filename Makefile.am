@@ -2,11 +2,11 @@
 
 @SET_MAKE@
 EXTRA_DIST = README-ja namazu.spec.in
-EXTRA_DIRS = lib
+EXTRA_DIRS = lib filter
 # EXTRA_DIRS = contrib doc lib misc
 SUBDIRS = src
 
-pkgdatadir = @prefix@/@PACKAGE@
+pkgdatadir = @datadir@/@PACKAGE@/@VERSION@
 
 install-data-local:
 	$(mkinstalldirs) $(pkgdatadir)/index

@@ -7,6 +7,11 @@
 	message.h,re.h,search.h,variable.h,conf.h,type.h,wakati.h,enum.h,
 	output.h,usage.h}: New files.
 	* src/{re.c,usage.c,message.c,field.c}: New files.
+	* lib/NMZ.*: Remove files.
+	* template/NMZ.*: New files.
+	* Makefile.am, src/Makefile.am: Change a directory structure for
+	installing.
+	* src/mknmz.pl.in: Fix conflicted parts. (temporary)
 
 1999-08-25 NOKUBI Takatsugu <knok@daionet.gr.jp>
 

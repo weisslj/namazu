@@ -86,11 +86,11 @@ SCORING = @SCORING@
 VERSION = @VERSION@
 ZCAT = @ZCAT@
 EXTRA_DIST = README-ja namazu.spec.in
-EXTRA_DIRS = lib
+EXTRA_DIRS = lib filter
 # EXTRA_DIRS = contrib doc lib misc
 SUBDIRS = src
 
-pkgdatadir = @prefix@/@PACKAGE@
+pkgdatadir = @datadir@/@PACKAGE@/@VERSION@
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = config.h

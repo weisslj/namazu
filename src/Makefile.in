@@ -17,6 +17,7 @@ srcdir = @srcdir@
 top_srcdir = @top_srcdir@
 VPATH = @srcdir@
 prefix = @prefix@
+exec_prefix = @exec_prefix@
 
 bindir = @bindir@
 sbindir = @sbindir@
@@ -90,10 +91,11 @@ LIBS = -lm @LEXLIB@
 
 ##################################################################
 
-exec_prefix = @prefix@/@PACKAGE@
-
 bin_PROGRAMS = namazu
-bin_SCRIPTS = clnmz gcnmz mailutime mknmz rvnmz vfnmz wdnmz gtnmz
+bin_SCRIPTS = clnmz gcnmz mailutime mknmz rvnmz vfnmz gtnmz
+
+filterdir = @datadir@/@PACKAGE@/@VERSION@/filter
+templatedir = @datadir@/@PACKAGE@/@VERSION@/template
 
 namazu_SOURCES = cgi.c codeconv.c conf.c form.c hlist.c message.c 	namazu.c output.c parser.c re.c regex.c search.c 	seed.c util.c values.c wakati.c result.l getopt.c getopt1.c 	field.c usage.c
 
@@ -101,8 +103,7 @@ noinst_HEADERS = namazu.h regex.h util.h getopt.h field.h codeconv.h 		 type.h e
 
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = ../config.h
-CONFIG_CLEAN_FILES =  mknmz.pl wdnmz vfnmz gcnmz gtnmz mailutime clnmz \
-rvnmz
+CONFIG_CLEAN_FILES =  mknmz.pl vfnmz gcnmz gtnmz mailutime clnmz rvnmz
 bin_PROGRAMS =  namazu$(EXEEXT)
 PROGRAMS =  $(bin_PROGRAMS)
 
@@ -127,7 +128,7 @@ LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(LDFLAGS) -o $@
 HEADERS =  $(noinst_HEADERS)
 
 DIST_COMMON =  Makefile.am Makefile.in clnmz.in gcnmz.in gtnmz.in \
-mailutime.in mknmz.pl.in result.c rvnmz.in vfnmz.in wdnmz.in
+mailutime.in mknmz.pl.in result.c rvnmz.in vfnmz.in
 
 
 DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
@@ -153,8 +154,6 @@ Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status $(BUILT_SOURCES)
 	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
 mknmz.pl: $(top_builddir)/config.status mknmz.pl.in
-	cd $(top_builddir) && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
-wdnmz: $(top_builddir)/config.status wdnmz.in
 	cd $(top_builddir) && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
 vfnmz: $(top_builddir)/config.status vfnmz.in
 	cd $(top_builddir) && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
@@ -398,6 +397,8 @@ mostlyclean distclean maintainer-clean
 mknmz: mknmz.pl
 	rm -f $@
 	sed -e 's!%LIBDIR%!$(libdir)!g' \
+	    -e 's!%FILTERDIR%!$(filterdir)!g' \
+	    -e 's!%TEMPLATEDIR%!$(templatedir)!g' \
 	mknmz.pl > $@
 	chmod +x $@
 

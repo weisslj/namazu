@@ -14,10 +14,11 @@ LIBS = -lm @LEXLIB@
 ##################################################################
 ## Directories
 
-exec_prefix =	@prefix@/@PACKAGE@
-
 bin_PROGRAMS = namazu
 bin_SCRIPTS = clnmz gcnmz mailutime mknmz rvnmz vfnmz gtnmz
+
+filterdir   = @datadir@/@PACKAGE@/@VERSION@/filter
+templatedir = @datadir@/@PACKAGE@/@VERSION@/template
 
 namazu_SOURCES = cgi.c codeconv.c conf.c form.c hlist.c message.c \
 	namazu.c output.c parser.c re.c regex.c search.c \
@@ -32,5 +33,8 @@ noinst_HEADERS = namazu.h regex.h util.h getopt.h field.h codeconv.h \
 mknmz: mknmz.pl
 	rm -f $@
 	sed -e 's!%LIBDIR%!$(libdir)!g' \
+	    -e 's!%FILTERDIR%!$(filterdir)!g' \
+	    -e 's!%TEMPLATEDIR%!$(templatedir)!g' \
 	mknmz.pl > $@
 	chmod +x $@
+

@@ -1,6 +1,6 @@
 # File::MMagic
 #
-# $Id: MMagic.pm,v 1.2 1999-08-25 07:36:05 knok Exp $
+# $Id: MMagic.pm,v 1.3 1999-09-05 04:17:56 masao Exp $
 #
 # This program is originated from file.kulp that is a production of The
 # Unix Reconstruction Projct.
@@ -558,7 +558,7 @@ sub checktype_byfilename {
 sub check_binary {
     my ($data) = @_;
     my $len = length($data);
-    my $count = ($data =~ tr/[\x00-\x09\x0b-\x1a\x1c-\x1f]//); # exclude ESC, nl
+    my $count = ($data =~ tr/[\x00-\x08\x0b-\x1a\x1c-\x1f]//); # exclude ESC, nl
     return 1 if ($len <= 0); # no contents
     return 1 if (($count/$len) > 0.1); # binary
     return 0;

@@ -1,5 +1,5 @@
 # -*- Perl -*-
-# $Id: var.pl.in,v 1.13 2003-01-15 10:12:17 knok Exp $
+# $Id: var.pl.in,v 1.14 2003-02-27 10:04:49 knok Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -151,6 +151,12 @@ $USE_NKF_MODULE = 0;
     (
      'file' => 1,
      );
+
+%SupportedArchive = ();
+
+%RECURSIVE_ARCHIVE = ();
+
+%ARCHIVE_REQUIRE_ACTIONS = ();
 
 # Dummy function for gettextization.
 sub N_ {};

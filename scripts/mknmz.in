@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.117 2003-01-15 10:12:19 knok Exp $
+# $Id: mknmz.in,v 1.118 2003-02-27 10:04:50 knok Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -50,6 +50,7 @@ my $LIBDIR        = $PKGDATADIR . "/pl";      # directory where library etc. are
 my $FILTERDIR     = $PKGDATADIR . "/filter";   # directory where filters are in.
 my $TEMPLATEDIR   = $PKGDATADIR . "/template"; # directory where templates are in.
 my $SCHEMEDIR   = $PKGDATADIR . "/scheme"; # directory where scheme handlers are in.
+my $ARCHIVEDIR   = $PKGDATADIR . "/archive"; # directory where archive handlers are in.
 
 my $DeletedFilesCount = 0;
 my $UpdatedFilesCount = 0;
@@ -87,6 +88,7 @@ sub main {
 
     load_rcfiles();
     load_modules();
+    load_archivemodules();
     my ($output_dir, @targets) = parse_options();
     my ($docid_base, $total_files_num) = prep($output_dir, @targets);
 
@@ -182,7 +184,13 @@ sub process_file ($$$$$$) {
     }
 
     if ($var::Opt{'htmlsplit'} && $cfile =~ $conf::HTML_SUFFIX) {
-	my @parts = htmlsplit::split($cfile, "NMZ.partial");
+	my ($contref, $mtime, $mtype) = fetchscheme($cfile);
+	my @parts;
+	if (defined $contref) {
+	    @parts = Namazu::Archive::html::split($contref, $mtime, "NMZ.partial");
+	} else {
+	    @parts = Namazu::Archive::html::splitfile($cfile, "NMZ.partial");
+	}
 	if (@parts > 1) {
 	    my $id = 0;
 	    for my $part (@parts) {
@@ -353,7 +361,7 @@ sub preload_modules () {
 }
 
 sub postload_modules () {
-    require "htmlsplit.pl" || die "unable to require \"htmlsplit.pl\"\n";
+#    require "htmlsplit.pl" || die "unable to require \"htmlsplit.pl\"\n";
 }
 
 sub load_modules () {
@@ -466,6 +474,39 @@ sub load_schemes(@) {
     }
 }
 
+sub load_archivemodules() {
+    unshift @INC, $ARCHIVEDIR;
+    my @archives = ();
+    @archives = glob "$ARCHIVEDIR/*.pl";
+
+    load_archives(@archives);
+}
+
+sub load_archives(@) {
+    my @archives = @_;
+    for my $archive (@archives) {
+	$archive =~ m!([-\w]+)\.pl$!;
+	my $module = $1;
+	require "$archive" || die "unable to require \"$module.pl\"\n";;
+	my (@protocols, $status, $recursive);
+	eval "\@protocols = Namazu::Archive::${module}::archive();";
+	die $@ if $@;
+	eval "\$status = Namazu::Archive::${module}::status();";
+	die $@ if $@;
+	eval "\$recursive = Namazu::Archive::${module}::recursive();";
+	die $@ if $@;
+	eval "Namazu::Archive::${module}::init();";
+
+	for my $sc (@protocols) {
+        next if (defined $var::SupportedArchive{$sc} && 
+                 $var::SupportedArchive{$sc} eq 'yes' && $status eq 'no');
+	    $var::SupportedArchive{$sc} = $status;
+	    $var::RECURSIVE_ARCHIVE{$sc} = $recursive;
+	    $var::ARCHIVE_REQUIRE_ACTIONS{$sc} = $module;
+	}
+    }
+}
+
 # Core routine.
 #
 # FIXME: Too many parameters. They must be cleared.
@@ -492,21 +533,18 @@ sub namazu_core ($$$$$$$$$$) {
     }
     my $scheme;
     my $mtime;
-    $mtime = (stat($cfile))[9] unless util::isurl($cfile);
-    foreach $scheme (keys %var::SupportedScheme) {
-	if ($var::SupportedScheme{$scheme} eq 'yes') {
-	    if ($uri =~ /^$scheme:/) {
-		eval "Namazu::Scheme::${scheme}::fetch(\$uri, \\\$content);";
-		die $@ if $@;
-		eval "\$mtime = Namazu::Scheme::${scheme}::mtime(\$uri);";
-		die $@ if $@;
-	    }
-	}
+    my $mmtype = '';
+    my $contref;
+    ($contref, $mtime, $mmtype) = fetchscheme($uri);
+    if (defined $contref) {
+	$content = $$contref;
+	undef $contref;
     }
+    $mtime = (stat($cfile))[9] unless util::isurl($cfile);
     $fields{'mtime'} = $mtime;
     my ($cfile_size, $text_size, $kanji, $mtype) = 
 	load_document(\$cfile, \$content, \$weighted_str,
-		      \$headings, \%fields);
+		      \$headings, \%fields, $mmtype);
 
     util::dprint(_("after load_document: ")."$uri: $cfile_size, $text_size, $kanji, $mtype\n");
 
@@ -792,8 +830,8 @@ sub put_dateindex ($) {
 
 
 # load a document file
-sub load_document ($$$$\%) {
-    my ($orig_cfile, $contref, $weighted_str, $headings, $fields)
+sub load_document ($$$$\%$) {
+    my ($orig_cfile, $contref, $weighted_str, $headings, $fields, $mmtype)
       = @_;
     my $cfile = $$orig_cfile;
 
@@ -823,7 +861,7 @@ sub load_document ($$$$\%) {
 	$fields->{'size'} = $file_size;
     }
 
-    my ($kanji, $mtype) = apply_filter($orig_cfile, $contref, $weighted_str, $headings, $fields, $shelter_cfile);
+    my ($kanji, $mtype) = apply_filter($orig_cfile, $contref, $weighted_str, $headings, $fields, $shelter_cfile, $mmtype);
 
     if ($SYSTEM eq "MSWin32" && $shelter_cfile ne "") {
 	unlink $cfile;
@@ -836,8 +874,8 @@ sub load_document ($$$$\%) {
     return ($file_size, $text_size, $kanji, $mtype);
 }
 
-sub apply_filter($$$$$$) {
-    my ($orig_cfile, $contref, $weighted_str, $headings, $fields, $shelter_cfile)
+sub apply_filter($$$$$$$) {
+    my ($orig_cfile, $contref, $weighted_str, $headings, $fields, $shelter_cfile, $mmtype)
       = @_;
     my $cfile = $shelter_cfile ne "" ? $shelter_cfile : $$orig_cfile;
 
@@ -847,6 +885,8 @@ sub apply_filter($$$$$$) {
     while (1) {
 	if (defined $MediaType) {
 	    $mtype = $MediaType;
+	} elsif (defined $mmtype) {
+	    $mtype = $mmtype;
 	} else {
 	    my $mtype_n = $Magic->checktype_byfilename($cfile);
 	    my $mtype_c = $Magic->checktype_data($$contref);
@@ -1102,9 +1142,10 @@ sub parse_options
     my $target_list = undef;
     my $index_lang = undef;
 
+
 #    Getopt::Long::Configure('bundling');
     Getopt::Long::config('bundling');
-    GetOptions(
+    my %argopts = (
        	       '0|help'              => \$opt_help,
 	       '1|exclude=s'         => \$conf::EXCLUDE_PATH,
 	       '2|deny=s'            => \$conf::DENY_FILE,
@@ -1112,7 +1153,6 @@ sub parse_options
 	       '4|update=s'          => \$update_index,
 	       '5|mhonarc'           => \$opt_mhonarc,
 	       '6|mtime=s'           => \$var::Opt{'mtime'},
-	       '7|html-split'        => \$var::Opt{'htmlsplit'},
 	       'C|show-config'       => \$opt_show_config,
 	       'E|no-edge-symbol'    => \$var::Opt{'noedgesymbol'},
 	       'F|target-list=s'     => \$target_list,
@@ -1145,6 +1185,20 @@ sub parse_options
 	       'v|version'           => \$opt_version,
 	       'x|no-heading-summary'=> \$var::Opt{'noheadabst'},
 	       );
+    my $mediatype;
+    foreach $mediatype (keys %var::ARCHIVE_REQUIRE_ACTIONS) {
+	my $archive = $var::ARCHIVE_REQUIRE_ACTIONS{$mediatype};
+	if ($var::SupportedArchive{$mediatype} eq 'yes') {
+	    my %ret;
+	    eval "%ret = Namazu::Archive::${archive}::option();";
+	    die $@ if $@;
+	    my $tmp;
+	    foreach $tmp (keys %ret) {
+		$argopts{$tmp} = $ret{$tmp};
+	    }
+	}
+    }
+    GetOptions(%argopts);
 
     if ($opt_quiet) {
 	# Make STDOUT quiet by redirecting STDOUT to null device.
@@ -2440,6 +2494,33 @@ sub decide_type ($$) {
 }
 
 #
+# read file with scheme handler
+#
+
+sub fetchscheme($) {
+    my ($uri) = @_;
+    my ($content, $mtime, $mmtype);
+    my $flag = 0;
+    my $scheme;
+    foreach $scheme (keys %var::SupportedScheme) {
+	if ($var::SupportedScheme{$scheme} eq 'yes') {
+	    if ($uri =~ /^$scheme:/) {
+		$content = '';
+		eval "Namazu::Scheme::${scheme}::fetch(\$uri, \\\$content);";
+		die $@ if $@;
+		eval "\$mtime = Namazu::Scheme::${scheme}::mtime(\$uri);";
+		die $@ if $@;
+		$mmtype = $Magic->checktype_data($content);
+		$flag = 1;
+	    }
+	}
+    }
+    return (\$content, $mtime, $mmtype)
+      if ($flag);
+    return (undef, undef, undef);
+}
+
+#
 # Debugging code for the "negative numbers" problem.
 #
 sub check_records ($$$) {
@@ -2483,6 +2564,7 @@ muda($conf::ON_MEMORY_MAX,
      $conf::ADDRESS, $var::MAILING_ADDRESS,
      $conf::FILE_SIZE_MAX,
      $var::SupportedScheme, $var::RECURSIVE_SCHEME,
+     $var::SupportedArchive, $var::RECURSIVE_ARCHIVE,
      );
 
 sub muda {}

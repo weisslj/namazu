@@ -1242,7 +1242,7 @@ pack .tknmz.input.quit .tknmz.input.search -side right
 
 frame .tknmz.option
 pack .tknmz.option -side top -fill x
-image create photo logo -file "$conf(tknmzhome)/tknamazu.gif"
+image create photo logo -file "$conf(tknmzhome)/tknamazu.xpm"
 button .tknmz.option.logo -image logo -command {HelpView ; Jump {0} }
 pack .tknmz.option.logo -side right
 label .tknmz.option.dlabel -text {Display Count:} -font $conf(WIDGETFONT) -underline 8

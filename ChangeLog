@@ -1,3 +1,9 @@
+2002-02-22  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* nmz/libnamazu.h (MAXPATH): Changed to same value as BUFSIZE.
+	It fix the probrem that namazu/namazu.cgi didn't work
+	when changing BUFSIZE to over 1024.
+
 2002-02-19  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* tests/namazu-10: Fixed the contents of MSG variable.
@@ -7425,4 +7431,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.933 2002-02-19 07:50:29 knok Exp $
+$Id: ChangeLog,v 1.934 2002-02-22 07:33:01 knok Exp $

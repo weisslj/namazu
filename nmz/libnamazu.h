@@ -2,7 +2,7 @@
  * 
  * libnamazu.h - Namazu library api
  *
- * $Id: libnamazu.h,v 1.46 2000-12-18 09:02:06 knok Exp $
+ * $Id: libnamazu.h,v 1.47 2002-02-22 07:33:02 knok Exp $
  * 
  */
 
@@ -169,7 +169,7 @@ struct _NmzResult {
  * NMZ.* files' names.
  */
 struct nmz_names {
-#define MAXPATH 1024
+#define MAXPATH BUFSIZE
     char i[MAXPATH];
     char ii[MAXPATH];
     char head[MAXPATH]; /* followed by a language code */

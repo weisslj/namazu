@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.18 1999-09-03 02:42:58 satoru Exp $
+ * $Id: hlist.c,v 1.19 1999-09-03 09:42:59 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -51,16 +51,20 @@ typedef struct str_num str_num;
  ************************************************************/
 
 void memcpy_hlist(HLIST, HLIST, int);
-void set_date_zero_all(HLIST);
-void prep_field_sort(HLIST);
-int  cmp(const void*, const void*);
+void init_date(HLIST);
+void set_rank(HLIST);
+void field_sort(HLIST);
+int  field_scmp(const void*, const void*);
+int  field_ncmp(const void*, const void*);
+int  date_cmp(const void*, const void*);
+int  score_cmp(const void*, const void*);
 
 void memcpy_hlist(HLIST to, HLIST from, int n)
 {
     memcpy(to.d + n,  from.d,  from.n * sizeof (to.d[0]));
 }
 
-void set_date_zero_all(HLIST hlist)
+void init_date(HLIST hlist)
 {
     int i;
 
@@ -69,19 +73,19 @@ void set_date_zero_all(HLIST hlist)
     }
 }
 
-void prep_field_sort(HLIST hlist) 
+void set_rank(HLIST hlist)
+{
+    int i;
+
+    /* set rankings in descending order */
+    for (i = 0 ; i < hlist.n; i++) {
+        hlist.d[i].rank = hlist.n - i;
+    }
+}
+
+void field_sort(HLIST hlist) 
 {
     int i, numeric = 1;
-    str_num *tab;
-
-    /* I don't know but this conserve previous sorted order
-       at final results in my environment. */
-    reverse_hlist(hlist);
-
-    tab = (str_num *)malloc(hlist.n * sizeof(str_num));
-    if (tab == NULL) {
-	die("void_prep_field_sort");
-    }
 
     for (i = 0; i < hlist.n; i++) {
 	uchar buf[BUFSIZE];
@@ -94,41 +98,103 @@ void prep_field_sort(HLIST hlist)
 	    numeric = 0;
 	}
 
-	tab[i].num = i;
-	tab[i].str = (uchar *)malloc(leng + 1);
-	if (tab[i].str == NULL) {
-	    die("void_prep_field_sort");
+	hlist.d[i].field = (uchar *)malloc(leng + 1);
+	if (hlist.d[i].field == NULL) {
+	    die("void_field_sort");
 	}
-	strcpy(tab[i].str, buf);
+	strcpy(hlist.d[i].field, buf);
     } 
 
     if (numeric == 1) {
+	qsort(hlist.d, hlist.n, sizeof(hlist.d[0]), field_ncmp);
 	for (i = 0; i < hlist.n; i++) {
-	    /* overwrite hlist.date data for field-specified sorting */
-	    hlist.d[i].date = atoi(tab[i].str);
-	    free(tab[i].str);
+	    free(hlist.d[i].field);
 	}
 	
     } else {
-	qsort(tab, hlist.n, sizeof(tab[0]), cmp);
+	qsort(hlist.d, hlist.n, sizeof(hlist.d[0]), field_scmp);
 	for (i = 0; i < hlist.n; i++) {
-	    /* overwrite hlist.date data for field-specified sorting */
-	    hlist.d[tab[i].num].date = i;
-	    free(tab[i].str);
+	    free(hlist.d[i].field);
 	}
     }
-    free(tab);
 }
 
-/* cmp: compare of a pair of str_num data */
-int cmp(const void *p1, const void *p2)
+/* field_scmp: 
+   compare of a pair of hlist.d[].field as string in descending order */
+int field_scmp(const void *p1, const void *p2)
 {
-    str_num *v1, *v2;
-    
-    v1 = (str_num *) p1;
-    v2 = (str_num *) p2;
+    hlist_data *v1, *v2;
+    int r;
 
-    return strcmp(v1->str, v2->str);
+    v1 = (hlist_data *) p1;
+    v2 = (hlist_data *) p2;
+
+    /* NOTE: comparison "a - b" is not safe for NEGATIVE numbers */
+    r = strcmp(v2->field, v1->field);
+    if (r == 0) {
+	return r = v2->rank - v1->rank;
+    } else {
+	return r;
+    }
+}
+
+/* field_ncmp: 
+   compare of a pair of hlist.d[].field as number in descending order */
+int field_ncmp(const void *p1, const void *p2)
+{
+    hlist_data *v1, *v2;
+    int r;
+
+    v1 = (hlist_data *) p1;
+    v2 = (hlist_data *) p2;
+
+    /* NOTE: comparison "a - b" is not safe for NEGATIVE numbers */
+    r = atoi(v2->field) - atoi(v1->field);
+    if (r ==0) {
+	return v2->rank -v1->rank;
+    } else {
+	return r;
+    }
+}
+
+
+/* score_ncmp: 
+   compare of a pair of hlist.d[].score as number in descending order */
+int score_cmp(const void *p1, const void *p2)
+{
+    hlist_data *v1, *v2;
+    int r;
+    
+    v1 = (hlist_data *) p1;
+    v2 = (hlist_data *) p2;
+
+    /* NOTE: comparison "a - b" is not safe for NEGATIVE numbers */
+    r = v2->scr - v1->scr;
+    if (r == 0) {
+	return v2->rank - v1->rank;
+    } else {
+	return r;
+    }
+    /* return (r = v2->scr - v1->scr) ? r : v2->rank - v1->rank; */
+}
+
+/* date_ncmp: 
+   compare of a pair of hlist.d[].date as number in descending order */
+int date_cmp(const void *p1, const void *p2)
+{
+    hlist_data *v1, *v2;
+    int r;
+
+    v1 = (hlist_data *) p1;
+    v2 = (hlist_data *) p2;
+
+    /* NOTE: comparison "a - b" is not safe for NEGATIVE numbers */
+    r = v2->date - v1->date;
+    if (r == 0) {
+	return v2->rank - v1->rank;
+    } else {
+	return r;
+    }
 }
 
 /************************************************************
@@ -346,13 +412,13 @@ HLIST do_date_processing(HLIST hlist)
         if (Debug) {
             fprintf(stderr, "%s: cannot open file.\n", NMZ.t);
         }
-        set_date_zero_all(hlist);
+        init_date(hlist);
         return hlist; /* error */
     }
 
     for (i = 0; i < hlist.n ; i++) {
         if (-1 == fseek(date_index, hlist.d[i].fid * sizeof(hlist.d[i].date), 0)) {
-            set_date_zero_all(hlist);
+            init_date(hlist);
             return hlist; /* error */
         }
         freadx(&hlist.d[i].date, sizeof(hlist.d[i].date), 1, date_index);
@@ -420,74 +486,18 @@ HLIST get_hlist(int index)
 }
 
 
-/* use merge sort a stable sort algorithm 
- * original of this code was contributed by Furukawa-san [1997-11-13]
- */
-
-void nmz_mergesort(int first, int last, HLIST hlist, HLIST work, int mode)
-{
-    int middle;
-    static int i, j, k, p;
-    
-    if (first < last) {
-	middle = (first + last) / 2;
-	nmz_mergesort(first, middle, hlist, work, mode);
-	nmz_mergesort(middle + 1, last, hlist, work, mode);
-	p = 0;
-	for (i = first; i <= middle; i++) {
-	    copy_hlist(work, p, hlist, i);
-	    p++;
-	}
-	i = middle + 1;
-	j = 0;
-	k = first;
-	while (i <= last && j < p) {
-            int bool = 0;
-
-            if (mode == SORT_BY_SCORE) {
-                if (work.d[j].scr >= hlist.d[i].scr) {
-                    bool = 1;
-                }
-            } else if (mode == SORT_BY_DATE){
-                if (work.d[j].date >= hlist.d[i].date) {
-                    bool = 1;
-                }
-            } else if (mode == SORT_BY_FIELD) {
-		/* work.date and hlist.date have pre-sorted field ranks */
-                if (work.d[j].date >= hlist.d[i].date) {
-                    bool = 1;
-                }
-	    }
-	    if (bool) {
-		copy_hlist(hlist, k, work, j);
-		k++;
-		j++;
-	    } else {
-		copy_hlist(hlist, k, hlist, i);
-		k++;
-		i++;
-	    }
-	}
-	while (j < p) {
-	    copy_hlist(hlist, k, work, j);
-	    k++;
-	    j++;
-	}
-    }
-}
-
 /* interface to invoke merge sort function */
 void sort_hlist(HLIST hlist, int mode)
 {
-    HLIST work;
+    set_rank(hlist); /* conserve current order for STABLE sorting */
 
-    malloc_hlist(&work, hlist.n);
     if (mode == SORT_BY_FIELD) {
-	prep_field_sort(hlist);
-    }
-
-    nmz_mergesort(0, hlist.n - 1, hlist, work, mode);
-    free_hlist(work);
+	field_sort(hlist);
+    } else if (mode == SORT_BY_DATE) {
+	qsort(hlist.d, hlist.n, sizeof(hlist.d[0]), date_cmp);
+    } else if (mode == SORT_BY_SCORE) {
+	qsort(hlist.d, hlist.n, sizeof(hlist.d[0]), score_cmp);
+    } 
 }
 
 /* 

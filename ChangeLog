@@ -1,5 +1,10 @@
 1999-09-03  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/hlist.c: Introduce set_rank() for STABLE sorting.
+
+	* src/hlist.c: Abolish nmz_mergesort() and introduce qsort(3) for
+	sorting. 
+	
 	* src/namazu.h, src/hlist.c: Change data structure of HLIST to
 	better one.
 	

@@ -23,6 +23,9 @@ struct hlist_data {
     int fid;  /* file ID */
     int did;  /* database (index) ID */
     int date; /* file's date */
+    int rank; /* ranking data for stable sorting */
+    char *field; /* for field-specified search*/
+
 };
 typedef struct hlist_data hlist_data;
 

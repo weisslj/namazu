@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.73 2003-06-08 13:51:31 opengl2772 Exp $
+ * $Id: cgi.c,v 1.74 2003-11-19 12:58:37 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -228,18 +228,15 @@ get_query_string(void)
         if (script_name == NULL) {
             return NULL;
         }
-#if  defined(_WIN32)
     } else if (!(nmz_strprefixcasecmp(getenv("SERVER_SOFTWARE"), "Microsoft-"))
-            || !(nmz_strprefixcasecmp(getenv("SERVER_SOFTWARE"), "AnWeb"))) {
+            || !(nmz_strprefixcasecmp(getenv("SERVER_SOFTWARE"), "AnWeb"))
+            || !(nmz_strprefixcasecmp(getenv("SERVER_SOFTWARE"), "iPlanet-"))) {
 	query_string = "";
 	script_name = getenv("SCRIPT_NAME");
         if (script_name == NULL) {
             return NULL;
         }
     } else {
-#else
-    } else {
-#endif
 	/* Must not be reached here. */
 	assert(0);
     }

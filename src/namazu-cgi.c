@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu-cgi.c,v 1.23 2003-11-18 18:28:22 opengl2772 Exp $
+ * $Id: namazu-cgi.c,v 1.24 2003-11-19 12:58:37 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -148,11 +148,7 @@ main(int argc, char **argv)
     nmz_set_lang("");
 
     /* Both environment variables are required. */
-#if  defined(_WIN32)
     if (!((getenv("QUERY_STRING") || getenv("SERVER_SOFTWARE"))
-#else
-    if (!(getenv("QUERY_STRING")
-#endif
      && getenv("SCRIPT_NAME"))) {
 	show_version();
 	puts("");

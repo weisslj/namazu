@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.75 2000-09-05 05:47:45 rug Exp $
+ * $Id: output.c,v 1.76 2000-09-13 08:00:26 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -48,6 +48,7 @@
 #include "var.h"
 #include "idxname.h"
 #include "query.h"
+#include "system.h"
 
 static int htmlmode    = 0;
 static int cgimode     = 0;

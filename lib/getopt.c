@@ -71,9 +71,10 @@
 
 #ifdef VMS
 #include <unixlib.h>
+#endif
+
 #if HAVE_STRING_H - 0
 #include <string.h>
-#endif
 #endif
 
 #if defined (WIN32) && !defined (__CYGWIN32__)

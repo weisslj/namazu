@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.102 2002-01-24 06:48:09 knok Exp $
+# $Id: mknmz.in,v 1.103 2002-02-04 05:26:16 makoto Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -1474,7 +1474,7 @@ sub check_file ($$$$$) {
     } elsif ($mtype =~ /^application\/octet-stream/) {
 	$msg = _("may be a BINARY file! skipped.");
     } elsif ($text_size > $conf::TEXT_SIZE_MAX) {
-	$msg = _("is too LARGE a text! skipped.");
+	$msg = _("is larger than your setup after filtered, skipped: ") . 'conf::TEXT_SIZE_MAX (' . $conf::TEXT_SIZE_MAX . ') < '. $text_size ;
     } elsif ($mtype =~ /; x-system=unsupported$/) {
 	$mtype =~ s/; x-system=unsupported$//;
 	$msg = _("Unsupported media type ")."($mtype)"._(" skipped.");

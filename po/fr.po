@@ -555,7 +555,7 @@ msgid "may be a BINARY file! skipped."
 msgstr "sans doute un fichier BINAIRE ! omis."
 
 #: scripts/mknmz.in:1475
-msgid "is too LARGE a text! skipped."
+msgid "is larger than your setup after filtered, skipped: "
 msgstr "est un trop GRAND texte ! omis."
 
 #: scripts/mknmz.in:1478

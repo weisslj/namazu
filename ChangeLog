@@ -1,3 +1,10 @@
+2002-02-04  Makoto Fujiwara  <makoto@.ki.nu>
+
+        * scripts/mknmz.in: Message is changed related to TEXT_SIZE_MAX skipping:
+          http://www.namazu.org/ml/namazu-devel-ja/msg02312.html
+	
+        * po/{es,fr,ja,ja_JP.SJIS}.po: Ditto.
+
 2002-02-04  Ryuji Abe  <rug@namazu.org>
 
 	* nmz/regex.c: Includes support.h.
@@ -7397,4 +7404,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.928 2002-02-04 04:16:35 rug Exp $
+$Id: ChangeLog,v 1.929 2002-02-04 05:26:14 makoto Exp $

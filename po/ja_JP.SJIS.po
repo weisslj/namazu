@@ -542,8 +542,8 @@ msgid "may be a BINARY file! skipped."
 msgstr "はバイナリと思われるので無視します"
 
 #: scripts/mknmz.in:1475
-msgid "is too LARGE a text! skipped."
-msgstr "ファイルが巨大なので無視します"
+msgid "is larger than your setup after filtered, skipped: "
+msgstr "ファイルが設定された制限を越えているので無視します "
 
 #: scripts/mknmz.in:1478
 msgid " skipped."

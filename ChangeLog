@@ -1,6 +1,10 @@
 1999-09-04  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
-	* template/namazu.conf: Rewrite descriptions.
+	* template/namazu.conf-dist: Modify a bit.
+
+	* src/conf.c: Abolish $HOME substitution.
+	
+	* template/namazu.conf-dist: Rewrite descriptions.
 	
 	* src/conf.c: Rewrite an analizer for .namazurc or namazu.conf overall.
 	

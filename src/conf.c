@@ -2,7 +2,7 @@
  * 
  * conf.c -
  * 
- * $Id: conf.c,v 1.10 1999-09-04 08:25:10 satoru Exp $
+ * $Id: conf.c,v 1.11 1999-09-04 09:07:22 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -188,16 +188,6 @@ void replace_home(uchar *str)
 	}
     }
 
-    if (strprefixcmp(tmp, "$HOME") == 0) {
-	char *home;
-	/* checke a home directory */
-	if ((home = getenv("HOME")) != NULL) {
-	    strcpy(tmp, home);
-	    strcat(tmp, str + strlen("$HOME"));
-	    strcpy(str, tmp);
-	    return;
-	}
-    }
     return;
 }
 
@@ -248,7 +238,7 @@ int get_conf_args(uchar *line, uchar *directive, uchar *arg1, uchar *arg2)
 	return 0;
     }
 
-    /* replace $HOME or ~/ */
+    /* replace ~/ */
     replace_home(arg1);
 
     /* skip a delimiter after an arg1 */
@@ -268,7 +258,7 @@ int get_conf_args(uchar *line, uchar *directive, uchar *arg1, uchar *arg2)
 	return 1;
     }
 
-    /* replace $HOME or ~/ */
+    /* replace ~/ */
     replace_home(arg2);
 
     /* skip trailing white spaces after an arg2 */

@@ -33,6 +33,12 @@
 #
 #	* SCORING : Sset a scoring method TFIDF or SIMPLE.
 #
+#
+#   You can use ~/foo notation for representing a pathname of directory 
+#   which lacated under your home directory. e.g., 
+#
+#      INDEX  ~/NMZ
+#
 #INDEX		/usr/local/share/namazu/index
 #REPLACE	/home/foo/public_html/	http://www.hoge.jp/~foo/
 #BASE		file://localhost/home/foo/documents/

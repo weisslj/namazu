@@ -13,7 +13,7 @@ case $LANG in
 esac
 if [ $EXEC = 'no' ]
 then
-        echo "Skip $0" >> $LOG
+        echo "Skipping because of LANG($LANG) does not begin with ja: $0" >> $LOG
         exit 77
 fi
 

@@ -1,7 +1,7 @@
 htmldir = $(pkgdatadir)/doc/ja
 
-html_DATA = namazu.css manual.html nmz.html tips.html tutorial.html
-EXTRA_DIST = $(html_DATA)
+html_DATA  = manual.html nmz.html tips.html tutorial.html
+EXTRA_DIST = namazu.css $(html_DATA)
 
 # htmlint <http://openlab.ring.gr.jp/k16/htmllint/htmllint.html>
 lint: $(html_DATA)

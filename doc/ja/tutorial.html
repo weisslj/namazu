@@ -17,22 +17,22 @@ Namazu 2.0 を初めて使う方のための入門書です。この文書は、2.0
 </p>
 
 <h2>目次</h2>
-
 <ul>
 <li><a href="#mission">本書の目的</a>
-<li><a href="#reference">参照</a>
 <li><a href="#versions">四つの版</a>
 <li><a href="#components">Namazu の構成部品</a>
 <li><a href="#prep-make">準備と make</a>
-<li><a href="#before-make-install">mknmz make install 前の確認</a>
+<li><a href="#japanese">日本語環境での利用</a>
+<li><a href="#before-make-install">make install 前の確認</a>
 <li><a href="#help">help の表示</a>
 <li><a href="#run-mknmz">動作確認 mknmz</a>
 <li><a href="#customize-mknmz">mknmz の調整</a>
 <li><a href="#run-namazu">動作確認 namazu</a>
-<li><a href="#terminology">用語</a>
 <li><a href="#can-do">Namazu でできること</a>
 <li><a href="#can-not-do">できないこと</a>
 <li><a href="#others">その他</a>
+<li><a href="#terminology">用語</a>
+<li><a href="#reference">参照</a>
 </ul>
 
 <h2><a name="mission">本書の目的</a></h2>
@@ -49,41 +49,6 @@ Namazu 2.0 を初めて使う方のための入門書です。この文書は、2.0
 照して下さい。また設置については INSTALL-ja ファイルに説明が
 あります。
 </p>
-
-<h2><a name="reference">参照</a></h2>
-
-<dl>
-<dt>KAKASI 2.3.1
-  <dd>漢字かなまじり文をひらがな文やローマ字文に変換することを目
-  的として作成したプログラムと辞書<br>
-  原作:高橋裕信さん、保守:KAKASI project<br>
-  Namazu ではこれを転じてわかち書き処理に使っている。<br>
-  <a href="http://kakasi.namazu.org/">http://kakasi.namazu.org/</a>
-  <br>
-  <em>
-(これが日本語で表示されない場合、
-<a href="http://www.apache.org/docs/content-negotiation.html">
-content negotiation </a>
-が適切に行なわれていない場合があります。
-Webブラウザの言語の設定に日本語(ja) を追加してください
-       </em> )
-
-<dt>開発・配布元の情報
-  <dd>
-  <a href="http://openlab.ring.gr.jp/namazu/">http://openlab.ring.gr.jp/namazu/</a>
-<dt>良くある質問と答 (FAQ)日本語
-  <dd>
-  <a href="http://openlab.ring.gr.jp/namazu/FAQ.html">http://openlab.ring.gr.jp/namazu/FAQ.html</a>
-<dt>Namazu メイリングリスト
-  <dd>
-  <a href="http://openlab.ring.gr.jp/namazu/ml.html">http://openlab.ring.gr.jp/namazu/ml.html</a>
-<dt>やまだあきらさんの namazu.el (Emacs/Mule client)
-  <dd>
-  <a href="http://arika.org/linux/tools/namazu-el/">http://arika.org/linux/tools/namazu-el/</a>
-<dt>Namazu Beta version
-  <dd>ここの説明で使っている 1.9.14 はここにある<br>
-  <a href="http://openlab.ring.gr.jp/namazu/unstable/">http://openlab.ring.gr.jp/namazu/unstable/</a>
-</dl>
 
 <h2><a name="versions">四つの版</a></h2>
 
@@ -288,7 +253,7 @@ mknmz による索引の作成が遅いだけで、namazu の検索の
 <code>perl Makefile.PL; make; make install</code>
 とするだけだから、問題がないなら入れておいた方がいいと思います。
 <li>
-namazu 1.9.12 以降では ChaSen2 にだけ対応しています。
+namazu 2.0 以降では ChaSen2 にだけ対応しています。
 
 
 <li>「かかし」か「茶筌」か ---- とても大雑巴に言うと<br>
@@ -308,6 +273,19 @@ ranlib -t /usr/local/lib/libchasen.a # ここはシステムに応じて
 を見て下さい。
 </ul>
 
+<h2><a name="japanese">日本語環境での利用</a></h2>
+
+<p>
+Namazu を日本語環境で利用するには<code>環境変数LANG</code>の
+設定が必要です。Windows では ja_JP.SJIS と設定します。UNIX 
+では <code>ja</code>, <code>ja_JP.eucJP</code>,
+<code>ja_JP.EUC</code> などを設定します。
+</p>
+
+<p>
+FIXME: 不親切。 locale を簡単に説明してシステムごとの設定例
+を紹介できないか?
+</p>
 
 <h2><a name="before-make-install">make install 前の確認</a></h2>
 <p>
@@ -325,7 +303,8 @@ cd scripts してから ./mknmz とすると、
 <p>
 例えば
 <code class=command>./mknmz -C  ./mknmz --help ./mknmz -O /tmp ~/Mail</code>
-などを試せます。
+などを試せます。ただし、 make install 前は日本語でのメッセー
+ジ出力は行えません。
 </p>
 
 
@@ -372,6 +351,10 @@ href="manual.html#namazurc">.namazurc</a> の設定で
 namazu/namazu.cgi の実行時に置換する方法をお勧めします。
 </p>
 
+<p>
+mknmz は次のように実行します。
+</p>
+
 <blockquote>
 <p>
 <code class=command><a href="manual.html#mknmz">mknmz</a> [options] 対象ディレクトリ</code>
@@ -379,8 +362,8 @@ namazu/namazu.cgi の実行時に置換する方法をお勧めします。
 </blockquote>
 
 <p>
-と実行します。この場合、インデックスはカレントディレクトリに
-作られます。もし出力先を変更したい時には -O を使います。
+この例では、インデックスはカレントディレクトリに作られます。
+もし出力先を変更したい時には -O を使います。
 </p>
 
 <p>
@@ -389,13 +372,42 @@ namazu/namazu.cgi の実行時に置換する方法をお勧めします。
 <pre>
       mkdir /tmp/index
       mknmz -O /tmp/index \
-      --replace='s#/home/htdocs/software/#http://www.ki.nu/software/#' \
-      /home/htdocs/software
+      --replace='s#/foo/bar/doc/#http://foo.bar.jp/software/#' \
+      /foo/bar/doc
 </pre>
 
 <p>
-のよう実行します。
+のよう実行します。インデックスの作成中に mknmz は次のような
+メッセージを出力します。もし、メッセージが英語で表示されたと
+きは<a href="#japanese">日本語環境での利用</a>を参照してくだ
+さい。
 </p>
+
+<pre>
+
+      6個のファイルがインデックス作成の対象として見つかりました
+      1/6 - /foo/bar/acrobat4.pdf [application/pdf]
+      2/6 - /foo/bar/html.html [text/html]
+      3/6 - /foo/bar/msg00000.html [text/html; x-type=mhonarc]
+      4/6 - /foo/bar/plain.txt [text/plain]
+      5/6 - /foo/bar/rfc0000.txt [text/plain; x-type=rfc]
+      6/6 - /foo/bar/tex.tex [application/x-tex]
+      インデックスを書き出しています...
+      [基本]
+      日付:                Fri Feb 18 14:09:55 2000
+      追加された文書の数:  6
+      サイズ (bytes):      7,301
+      合計の文書数:        6
+      追加キーワード数:    48
+      合計キーワード数:    48
+      わかち書き:          module_kakasi -ieuc -oeuc -w
+      経過時間 (秒):       8
+      ファイル/秒:         0.75
+      システム:            linux
+      Perl:                5.00503
+      Namazu:              2.0
+
+</pre>
 
 <ul>
   <li>結果 (の索引) は (-O で指定した) /tmp/index に
@@ -403,14 +415,14 @@ namazu/namazu.cgi の実行時に置換する方法をお勧めします。
   <li>URI については
 
 <p>
-「<code>/home/htdocs/software/</code> に置いてあるものは
+「<code>/foo/bar/doc/</code> に置いてあるものは
 外から見ると、
-<code>http://www.ki.nu/software/</code> の下に見えるもの
+<code>http://foo.bar.jp/software/</code> の下に見えるもの
 なので、(Perl 語で言うと) 
 s#<em>aaa</em>#<strong>bbb</strong>#
 のように置換してね」という意味になります。
-(上の例では aaa (/home/htdocs/software/)
-            bbb (http://www.ki.nu/) となる。
+(上の例では aaa (/foo/bar/doc/)
+            bbb (http://foo.bar.jp/) となる。
 </p>
 
   <li> (/usr/local/etc/namazu/mknmzrc の $HTML_SUFFIX の設定によって)
@@ -471,7 +483,7 @@ href="manual.html#mknmz-option">mknmz --help</a>とすると得ら
 <pre>
 Config: /home/foobar/.mknmzrc
 System: linux
-Namazu: 1.9.14
+Namazu: 2.0
 Perl:   5.00503
 NKF:    module_nkf
 KAKASI: module_kakasi -ieuc -oeuc -w
@@ -522,27 +534,6 @@ Supported media types:
 とうまくいかないので、 symbolic link の先をそのまま指定する、
 つまり(cd <em>対象ディレクトリ</em>; pwd) として表示されるも
 のを使うのが無難です。</p>
-
-<pre>
-このようなものを試して見る。
-makoto@milano  22:04:47/991121(~)&gt;
-
-(準備中)
-...
-...
-[Base]
-Date: Sun Nov 21 22:26:03 1999
-Added Files: 1,285 files
-Total Files: 1,285 files
-Size: 672,425 bytes
-Added Keywords: 15,672 words
-Total Keywords: 15,672 words
-Perl: 5.00503
-Namazu: 1.9.5
-System: netbsd
-Wakati: /usr/local/bin/kakasi -ieuc -oeuc -w
-Time: 1261 sec.
-</pre>
 
 <h2><a name="run-namazu">動作確認 namazu</a></h2>
 <p>
@@ -616,6 +607,62 @@ DirectoryIndex</td><td> index.html
 <p>
 /usr/local/share/namazu/template
 </p>
+
+<h2><a name="can-do">Namazu でできること</a></h2>
+
+<p>
+<strong>
+ここに書いてあることは「保証」ではありません。
+</strong>
+開発者の希望が書いてあるだけです。
+</p>
+
+<ul>
+<li>一つの計算機の、一つまたは複数のディレクトリの下にある文
+書ファイルを指定して、
+<li>それらの中の単語を調べ、どの文書ファイルにどの単語が含まれているか
+をインデックスに書き出しておく
+<li>使用者が入力した文字列と、上記の単語を比べて、
+その単語が含まれている文書ファイルを表示すること
+<li>上記単語の指定は、単語の一部分でなく単語全体です。
+ですから sys と指定しても system は見つかりません。
+そのような時には sys* や *sys* のように前後に *
+を付けることによって、sys で始まる単語 (sys*)、
+sys を含む単語 (*sys*)、
+sys で終了する単語 (*sys) と入力します。
+<li>以上の操作を設定で英語または日本語の表示とすること
+<li>作られた索引の利用はコマンド行、または 
+cgi-bin が動く HTTP server を Webブラウザを通じて利用する形
+で行なう。
+</ul>
+
+<h2><a name="can-not-do">できないこと</a></h2>
+<ul>
+<li>他の計算機にまで文書ファイルを取りにいって検索すること
+<li>「一日に 100 万回の利用件数がある」というような大規模な構成
+の使い方。
+</ul>
+
+<h2><a name="others">その他</a></h2>
+<dl>
+<dt>対象ファイルについて
+<dd>
+指定した「対象ディレクトリ」の中で、何が検索の対象になるかと
+いう疑問があるとしたら、答えは、<strong>(mknmzrc の)</strong> $ALLOW_FILE, $DENY_FILE の設定。それ
+と -a 選択で決まる。
+
+<dt>mew-1.94b2x と mew-nmz.el
+<dd>
+mew には namazu と連動して
+<ul>
+<li>
+mknmz を起動して必要な検索索引を作り
+<li>
+検索した結果を使って virtual folder を作成する
+</ul>
+機能が contrib/mew-nmz.el にあり、説明は
+contrib/00readme-namazu.jis に書かれています。
+</dl>
 
 <h2><a name="terminology">用語</a></h2>
 <dl>
@@ -701,61 +748,41 @@ perl -MNKF -e ''
 </dl>
 
 
-<h2><a name="can-do">Namazu でできること</a></h2>
+<h2><a name="reference">参照</a></h2>
 
-<p>
-<strong>
-ここに書いてあることは「保証」ではありません。
-</strong>
-開発者の希望が書いてあるだけです。
-</p>
-
-<ul>
-<li>一つの計算機の、一つまたは複数のディレクトリの下にある文
-書ファイルを指定して、
-<li>それらの中の単語を調べ、どの文書ファイルにどの単語が含まれているか
-をインデックスに書き出しておく
-<li>使用者が入力した文字列と、上記の単語を比べて、
-その単語が含まれている文書ファイルを表示すること
-<li>上記単語の指定は、単語の一部分でなく単語全体です。
-ですから sys と指定しても system は見つかりません。
-そのような時には sys* や *sys* のように前後に *
-を付けることによって、sys で始まる単語 (sys*)、
-sys を含む単語 (*sys*)、
-sys で終了する単語 (*sys) と入力します。
-<li>以上の操作を設定で英語または日本語の表示とすること
-<li>作られた索引の利用はコマンド行、または 
-cgi-bin が動く HTTP server を Webブラウザを通じて利用する形
-で行なう。
-</ul>
-
-<h2><a name="can-not-do">できないこと</a></h2>
-<ul>
-<li>他の計算機にまで文書ファイルを取りにいって検索すること
-<li>「一日に 100 万回の利用件数がある」というような大規模な構成
-の使い方。
-</ul>
-
-<h2><a name="others">その他</a></h2>
 <dl>
-<dt>対象ファイルについて
-<dd>
-指定した「対象ディレクトリ」の中で、何が検索の対象になるかと
-いう疑問があるとしたら、答えは、<strong>(mknmzrc の)</strong> $TARGET_FILE, $DENY_FILE の設定。それ
-と -a 選択で決まる。
+<dt>KAKASI 2.3.1
+  <dd>漢字かなまじり文をひらがな文やローマ字文に変換することを目
+  的として作成したプログラムと辞書<br>
+  原作:高橋裕信さん、保守:KAKASI project<br>
+  Namazu ではこれを転じてわかち書き処理に使っている。<br>
+  <a href="http://kakasi.namazu.org/">http://kakasi.namazu.org/</a>
+  <br>
+  <em>
+(これが日本語で表示されない場合、
+<a href="http://www.apache.org/docs/content-negotiation.html">
+content negotiation </a>
+が適切に行なわれていない場合があります。
+Webブラウザの言語の設定に日本語(ja) を追加してください
+       </em> )
 
-<dt>mew-1.94b2x と mew-nmz.el
-<dd>
-mew には namazu と連動して
-<ul>
-<li>
-mknmz を起動して必要な検索索引を作り
-<li>
-検索した結果を使って virtual folder を作成する
-</ul>
-機能が contrib/mew-nmz.el にあり、説明は
-contrib/00readme-namazu.jis に書かれています。
+<dt>開発・配布元の情報
+  <dd>
+  <a href="http://openlab.ring.gr.jp/namazu/">http://openlab.ring.gr.jp/namazu/</a>
+<dt>良くある質問と答 (FAQ)日本語
+  <dd>
+  <a href="http://openlab.ring.gr.jp/namazu/FAQ.html">http://openlab.ring.gr.jp/namazu/FAQ.html</a>
+<dt>Namazu メイリングリスト
+  <dd>
+  <a href="http://openlab.ring.gr.jp/namazu/ml.html">http://openlab.ring.gr.jp/namazu/ml.html</a>
+<dt>やまだあきらさんの namazu.el (Emacs/Mule client)
+  <dd>
+  <a href="http://arika.org/linux/tools/namazu-el/">http://arika.org/linux/tools/namazu-el/</a>
+<dt>Namazu Beta version
+  <dd>ここの説明で使っている 1.9.14 はここにある<br>
+  <a href="http://openlab.ring.gr.jp/namazu/unstable/">http://openlab.ring.gr.jp/namazu/unstable/</a>
 </dl>
+
 
 <hr>
 <p>
@@ -765,7 +792,7 @@ contrib/00readme-namazu.jis に書かれています。
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: tutorial.html,v 1.17 2000-02-15 05:16:43 satoru Exp $
+$Id: tutorial.html,v 1.18 2000-02-18 05:26:31 satoru Exp $
 </div>
 <address>
 developers@namazu.org

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: gfilter.pl,v 1.10 2000-02-06 07:36:40 satoru Exp $
+# $Id: gfilter.pl,v 1.11 2000-02-18 05:26:32 satoru Exp $
 # Copyright (C) 1999 Satoru Takabayashi ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -69,7 +69,7 @@ sub filename_to_title ($$) {
     my $weight = $conf::Weight{'html'}->{'title'};
     $$weighted_str .= "\x7f$weight\x7f$tmp\x7f/$weight\x7f\n";
 
-    my $title = $filename . $conf::TEXT_TITLE;
+    my $title = $filename;
     return $title
 }
 

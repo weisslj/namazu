@@ -8,7 +8,7 @@ SUBDIRS = src
 
 CLEANFILES = lib/conf.pl namazu.spec \
 	     filter/gzip.pl filter/compress.pl filter/man.pl filter/rfc.pl \
-	     filter/bzip2.pl filter/msword.pl 
+	     filter/bzip2.pl filter/msword.pl filter/supported.pl
 
 pkgdatadir = @datadir@/@PACKAGE@/@VERSION@
 

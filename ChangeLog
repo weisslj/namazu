@@ -12,6 +12,13 @@
 	* src/values.c: Set HtmlOutout to 0.
 	* src/message.[ch]: Change a variable MSG_MIME_HEADER to macro.
 	* src/util.c (die): Print program name in error message.
+	* src/configure.in, filter/{man.pl,compress.pl}: Substitute
+	@{GROFF,ZCAT}_PATH@ for @OPT_HELPER_{GROFF,ZCAT}@.
+	* src/configure.in: Add codes to make filter/supported.pl.
+	[namazu-dev 199]
+	* filter/supported.pl: New file.
+	* Makefile.am: Add "supported.pl" into CLEANFILES.
+	
 	
 1999-08-25  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 

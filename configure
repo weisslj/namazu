@@ -2449,7 +2449,7 @@ fi
 if test "$ZCAT" = "no"; then
     echo "configure: warning: zcat not found" 1>&2
 fi
-OPT_HELPER_ZCAT=$ZCAT
+ZCAT_PATH=$ZCAT
 
 
 # Extract the first word of "gzip", so it can be a program name with args.
@@ -2718,11 +2718,45 @@ else
     fi
 fi
 
-OPT_HELPER_MAN="$GROFF -man $GROFF_OPT"
+GROFF_PATH="$GROFF -man $GROFF_OPT"
+
+
+
+
+application_pdf="no"
+application_msword="no"
+application_x_gzip="no"
+application_x_bzip="no"
+application_x_compress="no"
+
+if test "$PDFTOTEXT_PATH" != "no"; then
+    application_pdf="yes"
+fi
+
+if test "$MSWORDVIEW_PATH" != "no"; then
+    application_msword="yes"
+fi
+
+if test "$GZIP_PATH" != "no"; then
+    application_x_gzip="yes"
+fi
+
+if test "$BZIP2_PATH" != "no"; then
+    application_x_bzip2="yes"
+fi
+
+if test "$ZCAT_PATH" != "no"; then
+    application_x_compress="yes"
+fi
+
+
+
+
+
 
 
 echo $ac_n "checking for OPT_CGI_LOCATION""... $ac_c" 1>&6
-echo "configure:2726: checking for OPT_CGI_LOCATION" >&5
+echo "configure:2760: checking for OPT_CGI_LOCATION" >&5
 # Check whether --with-cgi_location or --without-cgi_location was given.
 if test "${with_cgi_location+set}" = set; then
   withval="$with_cgi_location"
@@ -2778,7 +2812,7 @@ fi
 
 webmaster="webmaster@${hostname}${domainname}"
 echo $ac_n "checking for admin's email address""... $ac_c" 1>&6
-echo "configure:2782: checking for admin's email address" >&5
+echo "configure:2816: checking for admin's email address" >&5
 # Check whether --with-admin or --without-admin was given.
 if test "${with_admin+set}" = set; then
   withval="$with_admin"
@@ -2799,7 +2833,7 @@ fi
 
 
 echo $ac_n "checking for SCORING""... $ac_c" 1>&6
-echo "configure:2803: checking for SCORING" >&5
+echo "configure:2837: checking for SCORING" >&5
 # Check whether --with-scoring or --without-scoring was given.
 if test "${with_scoring+set}" = set; then
   withval="$with_scoring"
@@ -2945,7 +2979,7 @@ ac_given_INSTALL="$INSTALL"
 
 trap 'rm -fr `echo "Makefile src/Makefile lib/conf.pl src/mknmz.pl
 filter/gzip.pl filter/compress.pl filter/man.pl filter/rfc.pl
-filter/bzip2.pl filter/msword.pl
+filter/bzip2.pl filter/msword.pl filter/supported.pl
 src/gcnmz src/gtnmz src/mailutime namazu.spec config.h" | sed "s/:[^ ]*//g"` conftest*; exit 1' 1 2 15
 EOF
 cat >> $CONFIG_STATUS <<EOF
@@ -3005,7 +3039,7 @@ s%@KAKASI@%$KAKASI%g
 s%@CHASEN@%$CHASEN%g
 s%@OPT_WAKATI_DEFAULT@%$OPT_WAKATI_DEFAULT%g
 s%@ZCAT@%$ZCAT%g
-s%@OPT_HELPER_ZCAT@%$OPT_HELPER_ZCAT%g
+s%@ZCAT_PATH@%$ZCAT_PATH%g
 s%@GZIP@%$GZIP%g
 s%@GZIP_PATH@%$GZIP_PATH%g
 s%@BZIP2@%$BZIP2%g
@@ -3017,7 +3051,12 @@ s%@MSWORDVIEW_PATH@%$MSWORDVIEW_PATH%g
 s%@LV@%$LV%g
 s%@LV_PATH@%$LV_PATH%g
 s%@GROFF@%$GROFF%g
-s%@OPT_HELPER_MAN@%$OPT_HELPER_MAN%g
+s%@GROFF_PATH@%$GROFF_PATH%g
+s%@application_pdf@%$application_pdf%g
+s%@application_msword@%$application_msword%g
+s%@application_x_gzip@%$application_x_gzip%g
+s%@application_x_bzip2@%$application_x_bzip2%g
+s%@application_x_compress@%$application_x_compress%g
 s%@OPT_CGI_LOCATION@%$OPT_CGI_LOCATION%g
 s%@OPT_ADMIN_EMAIL@%$OPT_ADMIN_EMAIL%g
 s%@SCORING@%$SCORING%g
@@ -3064,7 +3103,7 @@ cat >> $CONFIG_STATUS <<EOF
 
 CONFIG_FILES=\${CONFIG_FILES-"Makefile src/Makefile lib/conf.pl src/mknmz.pl
 filter/gzip.pl filter/compress.pl filter/man.pl filter/rfc.pl
-filter/bzip2.pl filter/msword.pl
+filter/bzip2.pl filter/msword.pl filter/supported.pl
 src/gcnmz src/gtnmz src/mailutime namazu.spec"}
 EOF
 cat >> $CONFIG_STATUS <<\EOF

@@ -1,6 +1,7 @@
 dnl
 dnl configure for Namazu
-dnl 
+dnl $Id: configure.in,v 1.11 1999-08-26 08:04:13 satoru Exp $
+dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
 dnl Modified by Satoru Takabayashi <satoru@isoternet.org> [1998-12-06]
@@ -157,8 +158,8 @@ AC_PATH_PROG(ZCAT, zcat, no)
 if test "$ZCAT" = "no"; then
     AC_MSG_WARN(zcat not found)
 fi
-OPT_HELPER_ZCAT=$ZCAT
-AC_SUBST(OPT_HELPER_ZCAT)
+ZCAT_PATH=$ZCAT
+AC_SUBST(ZCAT_PATH)
 
 AC_PATH_PROG(GZIP, gzip, no)
 if test "$GZIP" = "no"; then
@@ -211,8 +212,45 @@ else
     fi
 fi
 
-OPT_HELPER_MAN="$GROFF -man $GROFF_OPT"
-AC_SUBST(OPT_HELPER_MAN)
+GROFF_PATH="$GROFF -man $GROFF_OPT"
+AC_SUBST(GROFF_PATH)
+
+
+dnl *
+dnl * Make yes/no values for filter/supported.pl
+dnl *
+
+application_pdf="no"
+application_msword="no"
+application_x_gzip="no"
+application_x_bzip="no"
+application_x_compress="no"
+
+if test "$PDFTOTEXT_PATH" != "no"; then
+    application_pdf="yes"
+fi
+
+if test "$MSWORDVIEW_PATH" != "no"; then
+    application_msword="yes"
+fi
+
+if test "$GZIP_PATH" != "no"; then
+    application_x_gzip="yes"
+fi
+
+if test "$BZIP2_PATH" != "no"; then
+    application_x_bzip2="yes"
+fi
+
+if test "$ZCAT_PATH" != "no"; then
+    application_x_compress="yes"
+fi
+
+AC_SUBST(application_pdf)
+AC_SUBST(application_msword)
+AC_SUBST(application_x_gzip)
+AC_SUBST(application_x_bzip2)
+AC_SUBST(application_x_compress)
 
 dnl CGI location
 AC_MSG_CHECKING(for OPT_CGI_LOCATION)
@@ -321,6 +359,6 @@ AM_CONFIG_HEADER(config.h)
 
 AC_OUTPUT([Makefile src/Makefile lib/conf.pl src/mknmz.pl
 filter/gzip.pl filter/compress.pl filter/man.pl filter/rfc.pl
-filter/bzip2.pl filter/msword.pl
+filter/bzip2.pl filter/msword.pl filter/supported.pl
 src/gcnmz src/gtnmz src/mailutime namazu.spec],
 [chmod +x src/gcnmz src/gtnmz src/mailutime]) 

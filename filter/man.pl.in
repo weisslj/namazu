@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: man.pl.in,v 1.2 1999-08-26 06:09:38 knok Exp $
+# $Id: man.pl.in,v 1.3 1999-08-26 08:04:16 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -35,10 +35,10 @@ sub filter ($$$$$$$) {
       = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
-    print "Proccessing man file ... (use '@OPT_HELPER_MAN@')\n"
+    print "Proccessing man file ... (use '@GROFF_PATH@')\n"
       if ($conf::VerboseOpt);
 
-    my $fh = util::fopen_or_die("|@OPT_HELPER_MAN@ > $TMPFILE");
+    my $fh = util::fopen_or_die("|@GROFF_PATH@ > $TMPFILE");
     print $fh $$cont;
     undef $fh;
     $fh = util::fopen_or_die("$TMPFILE");

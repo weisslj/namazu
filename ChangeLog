@@ -1,3 +1,12 @@
+2000-03-01  Ken-ichi Hirose  <kenzo-@tama.or.jp>
+
+	* filter/olepowerpoint.pl (filter): MS Application need \ path
+	separate.
+
+	* filter/olemsword.pl (filter): Likewise.
+
+	* filter/oleexcel.pl (filter): Likewise. And some bug fix.
+
 2000-02-29  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* src/namazu-cmd.c (main): Remove #ifdef's around

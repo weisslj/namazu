@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: oleexcel.pl,v 1.6 2000-02-25 15:32:46 kenzo- Exp $
+# $Id: oleexcel.pl,v 1.7 2000-02-29 19:33:30 kenzo- Exp $
 # Copyright (C) 1999 Jun Kurabe ,
 #               1999 Ken-ichi Hirose All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -65,7 +65,7 @@ sub pre_codeconv() {
 }
 
 sub post_codeconv () {
-    return 0;
+    return 1;
 }
 
 sub add_magic ($) {
@@ -79,6 +79,7 @@ sub filter ($$$$$) {
 
     util::vprint("Processing excel file ...\n");
 
+	$cfile =~ s/\//\\/g;
     $$cont = ReadExcel::ReadExcel($cfile);
 
     gfilter::line_adjust_filter($cont);
@@ -161,7 +162,7 @@ sub ReadExcel {
     die "Cannot open File $fileName" unless ( defined $wb );
 
     $allText = '';
-    $allText .= olemsword::getProperties($wb);
+    $allText .= oleexcel::getProperties($wb);
     $allText .= getSheets($wb);
     $wb->close(0);
     undef $wb;
@@ -180,7 +181,7 @@ sub getSheets{
 	return 1;
     };
 
-    olemsword::enum($wb->Worksheets, $enum_a_sheet);
+    oleexcel::enum($wb->Worksheets, $enum_a_sheet);
 
     return $allText;
 }
@@ -200,7 +201,7 @@ sub getCells {
 	return 1;
     };
 
-    olemsword::enum($ur->Cells, $enum_a_cell);
+    oleexcel::enum($ur->Cells, $enum_a_cell);
     return $allText;
 }
 
@@ -217,7 +218,7 @@ sub getShapes {
 	print "type = ", $obj->{Type}, "\n";
 	if ( $obj->{Type} == $office_consts->{msoGroup} ) { #msoGroup = 6
 #	    print "passed XX\n";
-	    olemsword::enum($obj->GroupItems,\&enum_a_shape);
+	    oleexcel::enum($obj->GroupItems,\&enum_a_shape);
 	} elsif ($obj->{Type} == $office_consts->{msoTextBox} ||
 		 $obj->{Type} == $office_consts->{msoAutoShape} ) { 
 	    if ($obj->{TextFrame} && $obj->TextFrame->{Characters}) {
@@ -230,7 +231,7 @@ sub getShapes {
 	return 1;
     };
 
-    olemsword::enum($sheet->Shapes,\&enum_a_shape);
+    oleexcel::enum($sheet->Shapes,\&enum_a_shape);
     return $allText;
 }
 

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: olemsword.pl,v 1.6 2000-02-25 15:32:46 kenzo- Exp $
+# $Id: olemsword.pl,v 1.7 2000-02-29 19:33:30 kenzo- Exp $
 # Copyright (C) 1999 Jun Kurabe ,
 #               1999 Ken-ichi Hirose All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -66,7 +66,7 @@ sub pre_codeconv() {
 }
 
 sub post_codeconv () {
-    return 0;
+    return 1;
 }
 
 sub add_magic ($) {
@@ -80,6 +80,7 @@ sub filter ($$$$$) {
 
     util::vprint("Processing msword file ...\n");
 
+	$cfile =~ s/\//\\/g;
     $$cont = ReadMSWord::ReadMSWord($cfile);
 
     gfilter::line_adjust_filter($cont);

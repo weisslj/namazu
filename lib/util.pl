@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.13 1999-08-29 02:57:48 satoru Exp $
+# $Id: util.pl,v 1.14 1999-08-30 01:22:01 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -76,7 +76,6 @@ sub dprint (@) {
     if ($var::Opt{Debug}) {
 	for my $str (@_) {
 	    map {print STDERR '// ', $_, "\n"} split "\n", $str;
-	    print "\n" unless $str =~ /\n$/;
 	}
     }
 } 
@@ -85,7 +84,6 @@ sub vprint (@) {
     if ($var::Opt{verbose} || $var::Opt{Debug}) {
 	for my $str (@_) {
 	    map {print STDERR '@@ ', $_, "\n"} split "\n", $str;
-	    print "\n" unless $str =~ /\n$/;
 	}
     }
 } 

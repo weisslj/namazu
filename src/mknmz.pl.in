@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- CPerl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.37 1999-08-29 09:26:11 satoru Exp $
+# $Id: mknmz.pl.in,v 1.38 1999-08-30 01:22:03 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -713,7 +713,7 @@ sub parse_options ()
 	       'O|output-dir=s'      => \$output_dir,
 	       'l|lang=s'            => \$conf::LANGUAGE,
 	       'T|template-dir=s'    => \$TEMPLATEDIR,
-	       't|allow-regex=s'     => \$conf::ALLOW_REGEX,
+	       't|allow=s'           => \$conf::ALLOW_REGEX,
 
 	       'v|version'           => \$opt_version,
 	       'V|verbose'           => \$var::Opt{verbose},
@@ -1385,7 +1385,7 @@ sub make_headfoot ($$$) {
 	$file =~ m!.*/(.*)$!;
 	my $fname = $1;
 	my $template = "";
-	my $templatedir2 = cwd() . "/../filter";  # relative path from cwd
+	my $templatedir2 = cwd() . "/../template";  # relative path from cwd
 	if ($TestMode && -e "$templatedir2/$fname") {
 	    $template = "$templatedir2/$fname";
 	} else {

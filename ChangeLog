@@ -1,3 +1,13 @@
+1999-08-30  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* src/mknmz.pl.in (make_headfoot): Fix $templatedir2.
+	
+	* src/{namazu,message}.c: Rename options: s/--hit-count/--count/
+	s/output-file/output/
+	
+	* lib/util.pl: Remove useless codes from dprint and vprint.
+
+	
 1999-08-29  masao@ulis.ac.jp (Masao Takaku)
 
 	* src/search.c: Ignore TOO_MUCH_HIT word in phrase query.

@@ -1,5 +1,5 @@
 # -*- CPerl -*-
-# $Id: usage.pl,v 1.4 1999-08-28 09:26:16 satoru Exp $
+# $Id: usage.pl,v 1.5 1999-08-30 01:22:01 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -46,7 +46,7 @@ $var::COPYRIGHT
     -e, --robots-txt         ロボットよけされているファイルを除外する
     -A, --htaccess           .htaccess で制限されたファイルを除外する
     -F, --target-list=file   インデックス対象のファイルのリストを読み込む
-    -t, --allow-regex=regex  対象ファイルの正規表現を指定する
+    -t, --allow=regex        対象ファイルの正規表現を指定する
 
   形態素解析:
     -c, --use-chasen        日本語の単語のわかち書きに ChaSen を用いる

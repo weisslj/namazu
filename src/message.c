@@ -2,7 +2,7 @@
  * 
  * messages.c -
  * 
- * $Id: message.c,v 1.5 1999-08-27 10:25:31 satoru Exp $
+ * $Id: message.c,v 1.6 1999-08-30 01:22:03 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -69,13 +69,13 @@ Usage: namazu [options] <query> [index dir(s)] \n\
    -l, --late              新しい順にソートする\n\
    -e, --early             古い順にソートする\n\
    -a, --all               検索結果をすべて表示する\n\
-   -c, --hit-count         ヒット数のみを表示する\n\
+   -c, --count             ヒット数のみを表示する\n\
    -r, --no-references     参考ヒット数を表示しない\n\
    -H, --page              先の検索結果へのリンクを表示する (ほぼ無意味) \n\
    -F, --form              <form> ... </form> の部分を強制的に表示する\n\
    -R, --no-replace-uri    URI の置き換えを行わない\n\
    -U, --no-encode-uri     URI encode の復元を行わない\n\
-   -o, --output-file=file  指定したファイルに検索結果を出力する\n\
+   -o, --output=file       指定したファイルに検索結果を出力する\n\
    -f, --config=file       namazu.conf を指定する\n\
    -C, --show-config       コンフィギュレーション内容を表示する\n\
    -q, --quiet             検索結果以外のメッセージを表示しない\n\

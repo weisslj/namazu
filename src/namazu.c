@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.17 1999-08-27 10:05:13 satoru Exp $
+ * $Id: namazu.c,v 1.18 1999-08-30 01:22:03 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -81,7 +81,7 @@ void set_redirect_stdout_to_file(uchar * fname)
 static const char *short_options = "acCedfFhHlL:n:o:qrRsSUvw0";
 static struct option long_options[] = {
     {"all",              no_argument,       NULL, 'a'},
-    {"hit-count",        no_argument,       NULL, 'c'},
+    {"count",            no_argument,       NULL, 'c'},
     {"show-config",      no_argument,       NULL, 'C'},
     {"early",            no_argument,       NULL, 'e'},
     {"config",           no_argument,       NULL, 'f'},
@@ -91,9 +91,9 @@ static struct option long_options[] = {
     {"late",             no_argument,       NULL, 'l'},
     {"lang",             required_argument, NULL, 'L'},
     {"max",              required_argument, NULL, 'n'},
-    {"output-file",      required_argument, NULL, 'o'},
+    {"output",           required_argument, NULL, 'o'},
     {"quiet",            no_argument,       NULL, 'q'},
-    {"no-ref",           no_argument,       NULL, 'r'},
+    {"no-references",    no_argument,       NULL, 'r'},
     {"no-replace-uri",   no_argument,       NULL, 'R'},
     {"short",            no_argument,       NULL, 's'},
     {"very-short",       no_argument,       NULL, 'S'},

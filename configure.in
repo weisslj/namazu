@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.66 1999-12-19 13:41:09 satoru Exp $
+dnl $Id: configure.in,v 1.67 1999-12-24 07:05:28 rug Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -83,6 +83,9 @@ if test $ac_cv_func_vsnprintf = no && test $ac_cv_func__vsnprintf = no; then
     LIBOBJS="$LIBOBJS vsnprintf.${ac_objext}"
 fi
 
+
+dnl for debugging.
+AM_WITH_CCMALLOC
 
 dnl *
 dnl * Check File::MMagic module wheter to be build or not.

@@ -1,3 +1,9 @@
+1999-12-24  Ryuji Abe <raeva@t3.rim.or.jp>
+
+	* acinclude.m4 (AM_WITH_CCMALLOC): New Macro.
+
+	* configure.in: add AM_WITH_CCMALLOC.
+
 1999-12-23  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* nmz/libnamazu.h: Change QUERY_TOKEN_MAX: 16 -> 32.

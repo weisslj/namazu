@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: util.c,v 1.86 2003-06-08 13:51:30 opengl2772 Exp $
+ * $Id: util.c,v 1.87 2004-02-21 12:16:27 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -457,6 +457,7 @@ nmz_readfile(const char *fname)
     buf = malloc(fstatus.st_size + 1);
     if (buf == NULL) {
 	nmz_set_dyingmsg(nmz_msg("%s: %s", fname, strerror(errno)));
+        fclose(fp);
 	return NULL;
     }
     if (fstatus.st_size != 0 &&
@@ -464,6 +465,7 @@ nmz_readfile(const char *fname)
     {
         nmz_set_dyingmsg(nmz_msg("%s: %s", fname, strerror(errno)));
         free(buf);
+        fclose(fp);
 	return NULL;
     }
     *(buf + fstatus.st_size) = '\0';

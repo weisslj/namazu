@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.39 2004-01-20 09:14:20 opengl2772 Exp $
+ * $Id: rcfile.c,v 1.40 2004-02-21 12:16:28 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2003 Namazu Project All rights reserved.
@@ -723,6 +723,7 @@ load_rcfile(const char *fname)
 	if (parse_rcfile(buf, current_lineno) != SUCCESS) {
 	    nmz_set_dyingmsg(nmz_msg(_("%s:%d: syntax error: %s"),  
 				     fname, current_lineno, errmsg));
+            fclose(fp);
 	    return FAILURE;
 	}
     }

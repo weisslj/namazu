@@ -2,7 +2,7 @@
  * 
  * score.c - scoring-related functions of Namazu
  * 
- * $Id: score.c,v 1.9 2003-06-08 13:51:30 opengl2772 Exp $
+ * $Id: score.c,v 1.10 2004-02-21 12:16:27 opengl2772 Exp $
  * 
  * Copyright (C) 2001 Hajime BABA  All rights reserved.
  * Copyright (C) 2001 Namazu Project All rights reserved.
@@ -126,6 +126,7 @@ get_field_size(int docid, int idxid)
     fp_field_idx = fopen(fname, "rb");
     if (fp_field_idx == NULL) {
         nmz_warn_printf("%s: %s", fname, strerror(errno));
+        fclose(fp_field_idx);
 	return 0;
     }
 
@@ -189,6 +190,7 @@ get_field_uri(char *uri, int docid, int idxid)
     fp_field_idx = fopen(fname, "rb");
     if (fp_field_idx == NULL) {
         nmz_warn_printf("%s: %s", fname, strerror(errno));
+        fclose(fp_field_idx);
 	return;
     }
 

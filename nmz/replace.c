@@ -2,7 +2,7 @@
  * 
  * replace.c - 
  *
- * $Id: replace.c,v 1.19 2003-03-21 13:30:12 opengl2772 Exp $
+ * $Id: replace.c,v 1.20 2004-02-21 12:16:27 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -198,12 +198,15 @@ nmz_add_replace(const char *pat, const char *rep)
     newp->pat = malloc(strlen(pat) + 1);
     if (newp->pat == NULL) {
 	 nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
+         free(newp);
 	 return FAILURE;
     }
 
     newp->rep = malloc(strlen(rep) + 1);
     if (newp->rep == NULL) {
 	 nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
+         free(newp->pat);
+         free(newp);
 	 return FAILURE;
     }
 

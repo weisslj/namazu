@@ -10,6 +10,10 @@
         * nmz/codeconv.[ch]: Added new function nmz_codeconv, 
         nmz_from_to, etc... (This is test version).
 
+        * nmz/{field.c, repace.c, score.c, search.c, util.c}, src/rcfile.c:
+        Forgets to perform free() and fclose() at the time of an error,
+        it corrects.
+
 2004-02-20  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* tests/Makefile.am: Added the file commonfuncs for CGI tests.
@@ -8440,4 +8444,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1100 2004-02-20 20:21:31 opengl2772 Exp $
+$Id: ChangeLog,v 1.1101 2004-02-21 12:16:26 opengl2772 Exp $

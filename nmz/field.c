@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: field.c,v 1.35 2003-06-25 07:58:17 takesako Exp $
+ * $Id: field.c,v 1.36 2004-02-21 12:16:27 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -199,6 +199,7 @@ nmz_get_field_data(int idxid, int docid, const char *field, char *data)
     fp_field_idx = fopen(fname, "rb");
     if (fp_field_idx == NULL) {
         nmz_warn_printf("%s: %s", fname, strerror(errno));
+        fclose(fp_field);
 	return;
     }
 

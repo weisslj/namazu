@@ -1,3 +1,7 @@
+2000-01-13  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* POTFILES.in: Added pl/{util,wakati,find}.pl.
+
 2000-01-10  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* ja.po: Fix an inappropriate message.

@@ -10,3 +10,6 @@ src/namazu.c
 src/output.c
 src/usage.c
 scripts/mknmz.pl.in
+pl/util.pl
+pl/wakati.pl
+pl/find.pl

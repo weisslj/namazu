@@ -3,6 +3,8 @@
         * filter/win32/olepowerpoint.pl: Added file extension for
         PowerPoint slideshow file.
 
+        * doc/ja/tutorial.html: Added GNU make, GNU gettext.
+
 2004-04-08  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * filter/taro7_10.pl (mediatype): Added media type
@@ -8730,4 +8732,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1149 2004-04-10 16:32:12 opengl2772 Exp $
+$Id: ChangeLog,v 1.1150 2004-04-10 17:25:02 opengl2772 Exp $

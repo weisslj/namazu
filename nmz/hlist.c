@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.44 2000-02-20 06:35:02 rug Exp $
+ * $Id: hlist.c,v 1.45 2000-03-12 02:07:06 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -65,6 +65,7 @@ static int  field_scmp(const void*, const void*);
 static int  field_ncmp(const void*, const void*);
 static int  date_cmp(const void*, const void*);
 static int  score_cmp(const void*, const void*);
+static int  intcmp(int v1, int v2);
 
 static void 
 memcpy_hlist(NmzResult to, NmzResult from, int n)
@@ -77,7 +78,7 @@ set_rank(NmzResult hlist)
 {
     int i;
 
-    /* Set rankings in descending order */
+    /* Set rankings in descending order. */
     for (i = 0 ; i < hlist.num; i++) {
         hlist.data[i].rank = hlist.num - i;
     }
@@ -135,8 +136,7 @@ field_scmp(const void *p1, const void *p2)
 
     r = strcmp(v2->field, v1->field);
     if (r == 0) {
-        /* NOTE: comparison "a - b" is not safe for NEGATIVE numbers */
-	r = v2->rank - v1->rank;
+	r = intcmp(v2->rank, v1->rank);
     }
     return r;
 }
@@ -153,10 +153,9 @@ field_ncmp(const void *p1, const void *p2)
     v1 = (struct nmz_data *) p1;
     v2 = (struct nmz_data *) p2;
 
-    /* NOTE: comparison "a - b" is not safe for NEGATIVE numbers */
-    r = atoi(v2->field) - atoi(v1->field);
+    r = intcmp(atoi(v2->field), atoi(v1->field));
     if (r ==0) {
-	r = v2->rank -v1->rank;
+	r = intcmp(v2->rank, v1->rank);
     }
     return r;
 }
@@ -174,10 +173,9 @@ score_cmp(const void *p1, const void *p2)
     v1 = (struct nmz_data *) p1;
     v2 = (struct nmz_data *) p2;
 
-    /* NOTE: comparison "a - b" is not safe for NEGATIVE numbers */
-    r = v2->score - v1->score;
+    r = intcmp(v2->score, v1->score);
     if (r == 0) {
-	r = v2->rank - v1->rank;
+	r = intcmp(v2->rank, v1->rank);
     }
     return r;
     /* Return (r = v2->score - v1->score) ? r : v2->rank - v1->rank; */
@@ -195,12 +193,32 @@ date_cmp(const void *p1, const void *p2)
     v1 = (struct nmz_data *) p1;
     v2 = (struct nmz_data *) p2;
 
-    /* NOTE: comparison "a - b" is not safe for NEGATIVE numbers */
-    r = v2->date - v1->date;
+    r = intcmp(v2->date, v1->date);
     if (r == 0) {
-	r = v2->rank - v1->rank;
+	r = intcmp(v2->rank, v1->rank);
     } 
     return r;
+}
+
+/*
+ * This is a safe routine for comparing two integers.  It
+ * could be simply v1 - v2 but it would produce an incorrect
+ * answer if v2 is large and positive and v1 is large and
+ * negative or vice verse. 
+ *
+ * See page 36 of "The Practice of Programming" by Brian
+ * W. Kernighan and Rob Pike for details.
+ */
+static int
+intcmp(int v1, int v2)
+{
+    if (v1 < v2) {
+	return -1;
+    } else if (v1 == v2) {
+	return 0;
+    } else {
+	return 1;
+    }
 }
 
 /*

@@ -3,14 +3,14 @@
 #
 package conf;  # Don't remove this line!
 
-#---------------------------------------------------------------
+#===================================================================
 #
 # Administrator's email address
 #
 $ADDRESS = '@OPT_ADMIN_EMAIL@';
 
 
-#---------------------------------------------------------------
+#===================================================================
 #
 # Regular Expression Patterns
 #
@@ -88,7 +88,7 @@ $META_TAGS = "keywords|description";
 $NON_SEPARATION_ELEMENTS = 'A|TT|CODE|SAMP|KBD|VAR|B|STRONG|I|EM|CITE|FONT|U|'.
                        'STRIKE|BIG|SMALL|DFN|ABBR|ACRONYM|Q|SUB|SUP|SPAN|BDO';
 
-#---------------------------------------------------------------
+#===================================================================
 # 
 # Critical Numbers
 # 
@@ -164,7 +164,7 @@ $INVALID_LENG = 128;
 $MAX_FIELD_LENGTH = 200;
 
 
-#---------------------------------------------------------------
+#===================================================================
 #
 # Softwares for handling a Japanese text
 #

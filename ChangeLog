@@ -1,3 +1,13 @@
+2000-03-12  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* nmz/hlist.c 	(intcmp): New function.
+	(field_scmp): Use nmz_intcmp().
+	(date_cmp): Likewise.
+	(score_cmp): Likewise.
+	(field_ncmp): Likewise.
+
+	* pl/conf.pl.in: Change border line format.
+
 2000-03-12  Rei FURUKAWA  <furukawa@tcp-ip.or.jp>
 
 	* pl/nmzidx.pl (write_status): Add close.

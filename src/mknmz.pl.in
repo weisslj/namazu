@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.5 1999-05-07 06:14:14 satoru Exp $
+# $Id: mknmz.pl.in,v 1.6 1999-05-14 04:31:38 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -450,7 +450,7 @@ sub do_preparation_processing () {
 	print "No files to index.\n";
 	exit;
     }
-    set_lockfile();
+    set_lockfile($conf::File{LOCKFILE2});
     save_flist_to_file(@flist);
 
     return $file_segment;
@@ -497,20 +497,24 @@ sub require_modules() {
     }
 }
 
-sub set_lockfile () {
+sub set_lockfile ($) {
+    my ($file) = @_;
+
     # make a lock file
-    if (-f $conf::File{LOCKFILE2}) {
-	print "NMZ.lock2 found. Maybe this index is being updated by another process now.\nIf not, you can remove this file.\n";
+    if (-f $file) {
+	print "$file found. Maybe this index is being updated by another process now.\nIf not, you can remove this file.\n";
 	exit 1;
     } else {
-	my $fh_lockfile2 = util::fopen_or_die(">$conf::File{LOCKFILE2}");
-	print $fh_lockfile2 "$$"; # save pid
+	my $fh_lockfile = util::fopen_or_die(">$file");
+	print $fh_lockfile "$$"; # save pid
     }
 }
 
-sub remove_lockfile () {
+sub remove_lockfile ($) {
+    my ($file) = @_;
+
     # remove lock file
-    unlink $conf::File{LOCKFILE2};
+    unlink $file;
 }
 
 # check present index whether it is old type of not
@@ -532,6 +536,7 @@ sub do_remain_processing ($$$$) {
 	    update_registry($file_count);
 	}
     } else {
+	set_lockfile($conf::File{LOCKFILE});
 	append_finfo() if $APPENDMODE;
 	make_finfo_index();
 	write_body_msg();
@@ -540,10 +545,11 @@ sub do_remain_processing ($$$$) {
 	update_registry($file_count);
 	write_nmz_files();
 	make_slog_file();
+	remove_lockfile($conf::File{LOCKFILE});
     }
     make_headfoot_pages($file_count, $key_count);
     put_log($total_files_size, $start_time, $file_count, $key_count);
-    remove_lockfile();
+    remove_lockfile($conf::File{LOCKFILE2});
     remove_temporary_files();
     unlink $conf::File{'FLIST_'};
 }
@@ -747,11 +753,6 @@ sub check_file ($$$$) {
 
 # Rename *.$$ to each real file name
 sub write_nmz_files () {
-    # Set the lock file
-    {
-	my $fh_lockfile = util::fopen_or_die(">>$conf::File{'LOCKFILE'}");
-    }
-
     util::Rename($conf::File{'FINFO_'},      $conf::File{'FINFO'});
     util::Rename($conf::File{'FINFOINDEX_'}, $conf::File{'FINFOINDEX'});
     util::Rename($conf::File{'INDEX_'},      $conf::File{'INDEX'});
@@ -759,9 +760,6 @@ sub write_nmz_files () {
     util::Rename($conf::File{'WORDLIST_'},   $conf::File{'WORDLIST'});
     util::Rename($conf::File{'PHRASE_'},     $conf::File{'PHRASE'});
     util::Rename($conf::File{'PHRASEINDEX_'}, $conf::File{'PHRASEINDEX'});
-
-    # remove the lock file
-    unlink $conf::File{'LOCKFILE'};
 }
 
 # output NMZ.body
@@ -866,11 +864,11 @@ sub do_append_preprocessing (@) {
     unless (@flist) { 	# if @flist is empty
 	if ($DeletedFilesCount > 0) {
 	    make_headfoot_pages(0, 0);
-	    set_lockfile();
+	    set_lockfile($conf::File{LOCKFILE2});
 	    update_dateindex();
 	    update_registry(0);
 	    put_log(0, 0, 0, get_total_keys());
-	    remove_lockfile();
+	    remove_lockfile($conf::File{LOCKFILE2});
 	}
 	print "No files to index.\n";
 	exit;

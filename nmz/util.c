@@ -1,11 +1,12 @@
 /*
- * $Id: util.c,v 1.39 2000-01-07 12:20:11 rug Exp $
+ * $Id: util.c,v 1.40 2000-01-08 01:09:23 satoru Exp $
  *
  * Imported scan_hex(), scan_oct(), xmalloc(), xrealloc() from 
  * Ruby b19's"util.c" and "gc.c". Thanks to Matsumoto-san for consent!
  *
  */
 
+#include <assert.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -559,12 +560,16 @@ nmz_decode_uri(char *str)
     str[j] = '\0';
 }
 
+/*
+ * Returns a string describing the libnmz error code passed
+ * in the argument errnum just like strerror().
+ */
 char *
-nmz_get_errmsg(enum nmz_stat stat)
+nmz_strerror(enum nmz_stat errnum)
 {
-    char *msg = "If you see this message, please report.";
+    char *msg = NULL;
 
-    switch (stat) {
+    switch (errnum) {
     case ERR_FATAL:
 	msg = _("Fatal error occered!");
 	break;
@@ -605,6 +610,8 @@ nmz_get_errmsg(enum nmz_stat stat)
 	msg = _("Unknown error. Report bug!");
 	break;
     } 
+
+    assert(msg != NULL);
 
     return msg;
 }

@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.13 2000-01-07 23:59:33 satoru Exp $
+ * $Id: rcfile.c,v 1.14 2000-01-08 01:09:23 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -22,6 +22,7 @@
  * 
  */
 
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

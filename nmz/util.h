@@ -3,7 +3,7 @@
   util.h -
 
   $Author: satoru $
-  $Date: 2000-01-06 00:32:59 $
+  $Date: 2000-01-08 01:09:24 $
   created at: Thu Mar  9 11:55:53 JST 1995
 
   Copyright (C) 1993-1998 Yukihiro Matsumoto
@@ -73,7 +73,7 @@ extern void nmz_subst ( char *str, const char *pat, const char *rep );
 extern void nmz_cat ( const char *fname );
 extern char * nmz_getenv ( const char *str );
 extern void nmz_decode_uri ( char * str );
-extern char * nmz_get_errmsg ( enum nmz_stat stat );
+extern char * nmz_strerrror ( enum nmz_stat errnumt );
 extern void nmz_print ( const char *str );
 
 #endif /* _UTIL_H */

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: oleexcel.pl,v 1.11 2001-01-27 02:51:29 baba Exp $
+# $Id: oleexcel.pl,v 1.12 2001-11-29 11:47:33 takesako Exp $
 # Copyright (C) 2001 Yoshinori TAKESAKO,
 #               1999 Jun Kurabe ,
 #               1999 Ken-ichi Hirose All rights reserved.
@@ -72,9 +72,9 @@ sub status() {
     open (SAVEERR,">&STDERR");
     open (STDERR,">nul");
     my $const;
-    $const = Win32::OLE::Const->Load("Microsoft Excel 9.0 Object Library");
-    $const = Win32::OLE::Const->Load("Microsoft Excel 8.0 Object Library")
-	unless $const;
+    $const = Win32::OLE::Const->Load("Microsoft Excel 10.0 Object Library");
+    $const = Win32::OLE::Const->Load("Microsoft Excel 9.0 Object Library") unless $const;
+    $const = Win32::OLE::Const->Load("Microsoft Excel 8.0 Object Library") unless $const;
     open (STDERR,">&SAVEERR");
     return 'yes' if (defined $const);
     return 'no';

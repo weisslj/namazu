@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: olemsword.pl,v 1.8 2001-01-26 11:17:31 takesako Exp $
+# $Id: olemsword.pl,v 1.9 2001-11-29 11:47:33 takesako Exp $
 # Copyright (C) 1999 Jun Kurabe ,
 #		1999-2000 Ken-ichi Hirose All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -58,9 +58,9 @@ sub status() {
     open (SAVEERR,">&STDERR");
     open (STDERR,">nul");
     my $const;
-    $const = Win32::OLE::Const->Load("Microsoft Word 9.0 Object Library");
-    $const = Win32::OLE::Const->Load("Microsoft Word 8.0 Object Library")
-	unless $const;
+    $const = Win32::OLE::Const->Load("Microsoft Word 10.0 Object Library");
+    $const = Win32::OLE::Const->Load("Microsoft Word 9.0 Object Library") unless $const;
+    $const = Win32::OLE::Const->Load("Microsoft Word 8.0 Object Library") unless $const;
     open (STDERR,">&SAVEERR");
     return 'yes' if (defined $const);
     return 'no';
@@ -169,9 +169,10 @@ sub ReadMSWord ($$$) {
     # Redirect stderr to null device, to ignore Error and Exception message.
     open (SAVEERR,">&STDERR");
     open (STDERR,">nul");
-    # Load Office 98 Constant
+    # Load Office 97/98/2000/XP Constant
     local $office_consts;
-    $office_consts = Win32::OLE::Const->Load("Microsoft Office 9.0 Object Library");
+    $office_consts = Win32::OLE::Const->Load("Microsoft Office 10.0 Object Library");
+    $office_consts = Win32::OLE::Const->Load("Microsoft Office 9.0 Object Library") unless $office_consts;
     $office_consts = Win32::OLE::Const->Load("Microsoft Office 8.0 Object Library") unless $office_consts;
     # for debug
     # $word->{Visible} = 1;

@@ -1,6 +1,6 @@
 # 
 # -*- Perl -*-
-# $Id: oletaro.pl,v 1.2 2001-01-19 10:42:16 baba Exp $
+# $Id: oletaro.pl,v 1.3 2001-11-29 11:47:33 takesako Exp $
 # 
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -40,9 +40,9 @@ sub status() {
     open (SAVEERR,">&STDERR");
     open (STDERR,">nul");
     my $const;
-    $const = Win32::OLE::Const->Load("Microsoft Word 9.0 Object Library");
-    $const = Win32::OLE::Const->Load("Microsoft Word 8.0 Object Library")
-	unless $const;
+    $const = Win32::OLE::Const->Load("Microsoft Word 10.0 Object Library");
+    $const = Win32::OLE::Const->Load("Microsoft Word 9.0 Object Library") unless $const;
+    $const = Win32::OLE::Const->Load("Microsoft Word 8.0 Object Library") unless $const;
     open (STDERR,">&SAVEERR");
     return 'yes' if (defined $const);
     return 'no';

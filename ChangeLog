@@ -1,3 +1,8 @@
+2000-02-22  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* scripts/mknmz.in (load_filters): Fix post_codeconv() bug.
+	(load_document): Add debug messages.
+
 2000-02-21  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* pl/conf.pl.in ($ALLOW_FILE): Add the pattern for man files and

@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.75 1999-11-14 22:54:00 kenzo- Exp $
+# $Id: mknmz.pl.in,v 1.76 1999-11-15 13:09:31 kenzo- Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -133,8 +133,8 @@ sub main () {
 sub read_config () {
     my (@cand) = ();
     push @cand, $ConfigFile if defined $ConfigFile;
-    push @cand, "$ENV{'HOME'}/.mknmzrc", "$CONFDIR/mknmzrc"
-    	if (define($ENV{'HOME'}));
+    push @cand, "$ENV{'HOME'}/.mknmzrc" if defined $ENV{'HOME'};
+    push @cand, "$CONFDIR/mknmzrc";
 
     for my $conf (@cand) {
 	if (-f $conf) {

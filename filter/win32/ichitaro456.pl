@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: ichitaro456.pl,v 1.8 2004-05-10 06:02:49 opengl2772 Exp $
+# $Id: ichitaro456.pl,v 1.9 2004-05-21 12:08:47 opengl2772 Exp $
 # Copyright (C) 1999 Ken-ichi Hirose,
 #               2000-2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -28,7 +28,6 @@
 package ichitaro456;
 use strict;
 use Cwd;
-use File::Copy;
 require 'util.pl';
 require 'gfilter.pl';
 
@@ -36,7 +35,11 @@ my $ichitaro456 = undef;
 my $doscmd = undef;
 
 sub mediatype() {
-    return ('application/ichitaro4', 'application/ichitaro5', 'application/ichitaro6');
+    return (
+        'application/ichitaro4', 
+        'application/ichitaro5', 
+        'application/ichitaro6'
+    );
 }
 
 sub status() {
@@ -64,44 +67,59 @@ sub pre_codeconv() {
 }
 
 sub post_codeconv () {
-    return 1;
+    return 0;
 }
 
 sub add_magic ($) {
     my ($magic) = @_;
-    $magic->addFileExts('(?i)\\.jsw', 'application/ichitaro4');
-    $magic->addFileExts('(?i)\\.jaw', 'application/ichitaro5');
-    $magic->addFileExts('(?i)\\.jbw', 'application/ichitaro6');
+    $magic->addFileExts('\\.jsw', 'application/ichitaro4');
+    $magic->addFileExts('\\.jaw', 'application/ichitaro5');
+    $magic->addFileExts('\\.jbw', 'application/ichitaro6');
     return;
+}
+
+sub GetExt($) {
+    my ($filename) = @_;
+
+    my $ext = $filename;
+    $ext =~ s!.*/!!g;
+    if ($ext !~ s/^.*(\.[^\.]*)$/$1/) {
+        $ext = "";
+    }
+
+    return $ext;
 }
 
 sub filter ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
       = @_;
-
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
     my $tmpfile = util::tmpnam('NMZjstxt');
-    copy("$cfile", "$tmpfile");
-    my $tmpfile2 = $tmpfile;
-    my $tmpext = $cfile;
-    $tmpext =~ s/^.*(j[sab]w$)/$1/i;
-    $tmpfile2 =~ s/tmp$/$tmpext/;
-    move("$tmpfile", "$tmpfile2");
+    my $ext = GetExt($cfile);
+    $tmpfile =~ s/\.tmp$/$ext/;
+    {
+        my $fh = util::efopen("> $tmpfile");
+        print $fh $$cont;
+        util::fclose($fh);
+    }
 
     util::vprint("Processing ichitaro file ... (using  '$ichitaro456')\n");
 
     my $cwd = getcwd();
     chdir("$var::OUTPUT_DIR");
-    my $fh_cmd = util::efopen("$ichitaro456 -k -s -p NMZjstxt.$tmpext |");
-    chdir("$cwd");
- 
-    $$cont = "";
-    while (<$fh_cmd>) {$$cont .= $_;}
-    util::fclose($fh_cmd);
-    undef $fh_cmd;
+    {
+        my $fh_cmd = util::efopen("$ichitaro456 -k -s -p NMZjstxt$ext |");
 
-    unlink($tmpfile2);
+        $$cont = "";
+        while (<$fh_cmd>) {$$cont .= $_;}
+        util::fclose($fh_cmd);
+    }
+    chdir("$cwd");
+
+    unlink($tmpfile);
+
+    codeconv::toeuc($cont);
 
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);

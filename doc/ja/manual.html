@@ -14,8 +14,9 @@
 <p>
 Namazu の最新情報は <a
 href="http://www.namazu.org/">http://www.namazu.org/</a> か
-ら入手できます。Namazuは <a href="COPYING">GPL2</a> に従った
-フリーソフトウェアです。完全に無保証です。
+ら入手できます。Namazuは <a
+href="http://www.gnu.org/copyleft/gpl.html">GPL2</a> に従っ
+たフリーソフトウェアです。完全に無保証です。
 </p>
 
 <h2>目次</h2>
@@ -34,15 +35,7 @@ href="http://www.namazu.org/">http://www.namazu.org/</a> か
   <li><a href="#namazurc">namazurcの設定</a>
   <li><a href="#default-index">基本インデックス</a>
   </ul>
-<li><a href="#tools">付属ツール</a>
-  <ul>
-  <li><a href="#bnamazu">bnamazu</a>
-  <li><a href="#nmzgrep">nmzgrep</a>
-  <li><a href="#gcnmz">gcnmz</a>
-  <li><a href="#mailutime">mailutime</a>
-  <li><a href="#vfnmz">vfnmz</a>
-  </ul>
-<li><a href="#cgi">CGIとして利用する</a>
+<li><a href="#cgi">namazu.cgi</a>
   <ul>
   <li><a href="#setting">namazu.cgiの設置</a>
   <li><a href="#.namazurc">.namazurc の設定</a>
@@ -51,6 +44,14 @@ href="http://www.namazu.org/">http://www.namazu.org/</a> か
   <li><a href="#form-idxname">インデックスを選択する</a>
   <li><a href="#form-idxnames">複数のインデックスを選択する</a>
   <li><a href="#form-subquery">補助検索式の利用法</a>
+  </ul>
+<li><a href="#tools">付属ツール</a>
+  <ul>
+  <li><a href="#bnamazu">bnamazu</a>
+  <li><a href="#nmzgrep">nmzgrep</a>
+  <li><a href="#gcnmz">gcnmz</a>
+  <li><a href="#mailutime">mailutime</a>
+  <li><a href="#vfnmz">vfnmz</a>
   </ul>
 <li><a href="#query">検索式</a>
   <ul>
@@ -249,7 +250,7 @@ href="http://sourceware.cygnus.com/bzip2/">bzip2</a> コマン
 <dt>ichitaro456.pl
 <dd>一太郎 4, 5, 6 のファイルを扱う
 <dd>必需品: jstxt
-<dd>注意: jstxt は Windows用しか存在しない。FIXME: 入手先は不明
+<dd>注意: jstxt は Windows用のみ存在。FIXME: 入手先は不明
 
 <dt>mailnews.pl
 <dd>Mail/News のファイルを扱う
@@ -416,125 +417,15 @@ href="#form-idxname">インデックスを選択する</a>際に基本イン
 デックスからの相対パスで指定します。
 </p>
 
-<h2><a name="tools">付属ツール</a></h2>
-
-<h3><a name="bnamazu">bnamazu</a></h3>
-
-<p>
-bnamazu は Webブラウザと連携して検索を行うツールです。検索結
-果を Webブラウザ (標準では lynx) に渡して閲覧できます。コマ
-ンド行から次のように実行します。
-</p>
-
-<p>
-<code>% bnamazu [-n] [-b browser] [namazu's options] &lt;query&gt; [index]...</code>
-</p>
-
-<p>
--b オプションで Webブラウザを指定できます。 -n はWebブラウザ
-が netscape のときのみ有効なオプションです。-n を指定すると、
-新しい netscape の新しいウィンドウを開いて検索結果を表示しま
-す。
-</p>
-
-
-<h3><a name="nmzgrep">nmzgrep</a></h3>
-
-<p>
-nmzgrep は namazu コマンドと連携して egrep を実行するツール
-です。検索にヒットした文書に対して、egrepをかけます。egrep 
-を適用することで、そのキーワードがどの行に出現するかがわかり
-ます。コマンド行から次のように実行します。
-</p>
-
-<p>
-<code>% nmzgrep [egrep's options] &lt;pattern&gt; [index]...</code>
-</p>
-
-
-<p>
-たとえば、 ~/Namazu/foobar に置かれているインデックスに対して
-foo で検索し、ヒットした文書に対してさらに egrep をかけるに
-は、次のように実行します。
-</p>
-
-<p>
-<code>% nmzgrep foo ~/Namazu/foobar</code>
-</p>
-
-<h3><a name="gcnmz">gcnmz</a></h3>
-
-<p>
-文書の更新・削除を伴うインデックスの更新を繰り返していくと、
-インデックス内に不要なデータが溜まっていきます。gcnmz はこの
-不要なデータを削除するツールです。コマンド行から次のように実
-行します。
-</p>
-
-<p>
-<code>% gcnmz [options] &lt;target&gt;...</code>
-</p>
-
-<p>
-たとえば、 ~/Namazu/foobar に置かれているインデックスをゴミ掃除
-するなら、次のように実行します。
-</p>
-
-<p>
-<code>% gcnmz ~/Namazu/foobar</code>
-</p>
-
-<h3><a name="mailutime">mailutime</a></h3>
-
-<p>
-mailutime は Mail/News のファイルのタイムスタンプを Date: ヘッ
-ダに合わせるツールです。コマンド行から次のように実行します。
-</p>
-
-<p>
-<code>% mailutime &lt;target&gt;...</code>
-</p>
-
-<p>
-たとえば、 ~/Mail/ml/foobar に置かれているメイルのタイムスタ
-ンプを変更するなら、次のように実行します。
-</p>
-
-<p>
-<code>% mailutime ~/Mail/ml/foobar/*</code>
-</p>
-
-
-<h3><a name="vfnmz">vfnmz</a></h3>
-
-<p>
-vfnmz は検索結果の表示を preview するツールです。コマンド行
-から次のように実行します。
-</p>
-
-<p>
-<code>% vfnmz &lt;index&gt; [NMZ.result.foobar]</code>
-</p>
-
-<p>
-たとえば、 ~/Namazu/foobar に置かれているインデックスを preview 
-するなら、次のように実行します。
-</p>
-
-<p>
-<code>% vfnmz ~/Namazu/foobar &gt; foobar.html</code><br>
-<code>% lynx foobar.html # 出力をブラウザで閲覧する</code>
-</p>
-
-<h2><a name="cgi">CGIとして利用する</a></h2>
+<h2><a name="cgi">namazu.cgi</a></h2>
 
 <h3><a name="setting">namazu.cgiの設置</a></h3>
 
 <p>
 CGIとして Namazuを利用するには、 namazu.cgi を用います。
 namazu.cgi は <code>$(libexecdir)</code> ディレクトリ (通常
-は/usr/local/libexec) にインストールされています。CGI を設置
-したいディレクトリに namazu.cgiをコピーすれば設置完了です。
+は/usr/local/libexec) にインストールされます。CGI を設置した
+いディレクトリに namazu.cgiをコピーすれば設置完了です。
 </p>
 
 <h3><a name=".namazurc">.namazurc の設定</a></h3>
@@ -687,6 +578,116 @@ namazurc の Template指示で指定したディレクトリのものが用いら
       &lt;input type="hidden" name="reference" value="off"&gt;
 </pre>
 
+
+<h2><a name="tools">付属ツール</a></h2>
+
+<h3><a name="bnamazu">bnamazu</a></h3>
+
+<p>
+bnamazu は Webブラウザと連携して検索を行うツールです。検索結
+果を Webブラウザ (標準では lynx) に渡して閲覧できます。コマ
+ンド行から次のように実行します。
+</p>
+
+<p>
+<code>% bnamazu [-n] [-b browser] [namazu's options] &lt;query&gt; [index]...</code>
+</p>
+
+<p>
+-b オプションで Webブラウザを指定できます。 -n はWebブラウザ
+が netscape のときのみ有効なオプションです。-n を指定すると、
+新しい netscape の新しいウィンドウを開いて検索結果を表示しま
+す。
+</p>
+
+
+<h3><a name="nmzgrep">nmzgrep</a></h3>
+
+<p>
+nmzgrep は namazu コマンドと連携して egrep を実行するツール
+です。検索にヒットした文書に対して、egrepをかけます。egrep 
+を適用することで、そのキーワードがどの行に出現するかがわかり
+ます。コマンド行から次のように実行します。
+</p>
+
+<p>
+<code>% nmzgrep [egrep's options] &lt;pattern&gt; [index]...</code>
+</p>
+
+
+<p>
+たとえば、 ~/Namazu/foobar に置かれているインデックスに対して
+foo で検索し、ヒットした文書に対してさらに egrep をかけるに
+は、次のように実行します。
+</p>
+
+<p>
+<code>% nmzgrep foo ~/Namazu/foobar</code>
+</p>
+
+<h3><a name="gcnmz">gcnmz</a></h3>
+
+<p>
+文書の更新・削除を伴うインデックスの更新を繰り返していくと、
+インデックス内に不要なデータが溜まっていきます。gcnmz はこの
+不要なデータを削除するツールです。コマンド行から次のように実
+行します。
+</p>
+
+<p>
+<code>% gcnmz [options] &lt;target&gt;...</code>
+</p>
+
+<p>
+たとえば、 ~/Namazu/foobar に置かれているインデックスをゴミ掃除
+するなら、次のように実行します。
+</p>
+
+<p>
+<code>% gcnmz ~/Namazu/foobar</code>
+</p>
+
+<h3><a name="mailutime">mailutime</a></h3>
+
+<p>
+mailutime は Mail/News のファイルのタイムスタンプを Date: ヘッ
+ダに合わせるツールです。コマンド行から次のように実行します。
+</p>
+
+<p>
+<code>% mailutime &lt;target&gt;...</code>
+</p>
+
+<p>
+たとえば、 ~/Mail/ml/foobar に置かれているメイルのタイムスタ
+ンプを変更するなら、次のように実行します。
+</p>
+
+<p>
+<code>% mailutime ~/Mail/ml/foobar/*</code>
+</p>
+
+
+<h3><a name="vfnmz">vfnmz</a></h3>
+
+<p>
+vfnmz は検索結果の表示を preview するツールです。コマンド行
+から次のように実行します。
+</p>
+
+<p>
+<code>% vfnmz &lt;index&gt; [NMZ.result.foobar]</code>
+</p>
+
+<p>
+たとえば、 ~/Namazu/foobar に置かれているインデックスを preview 
+するなら、次のように実行します。
+</p>
+
+<p>
+<code>% vfnmz ~/Namazu/foobar &gt; foobar.html</code><br>
+<code>% lynx foobar.html # 出力をブラウザで閲覧する</code>
+</p>
 
 <!-- query -->
 <h2><a name="query">検索式</a></h2>
@@ -863,7 +864,7 @@ Tknamazu および namazu.el から検索するときは必ず後者で指定します。
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: manual.html,v 1.17 2000-02-13 04:44:36 satoru Exp $
+$Id: manual.html,v 1.18 2000-02-13 09:12:53 satoru Exp $
 </div>
 <address>
 developers@namazu.org

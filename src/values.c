@@ -2,7 +2,7 @@
  * 
  * values.c -
  * 
- * $Id: values.c,v 1.9 1999-08-26 04:29:50 satoru Exp $
+ * $Id: values.c,v 1.10 1999-08-27 03:55:27 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -49,21 +49,23 @@ uchar NAMAZU_CONF[BUFSIZE] = "/usr/local/namazu/lib/namazu.conf";
 /* namazurc */
 uchar NAMAZURC[BUFSIZE] = "";
 
-/* files which Namazu uses */
-uchar INDEX[BUFSIZE] = "NMZ.i";
-uchar INDEXINDEX[BUFSIZE] = "NMZ.ii";
-uchar HEADERFILE[BUFSIZE] = "NMZ.head";
-uchar FOOTERFILE[BUFSIZE] = "NMZ.foot";
-uchar LOCKFILE[BUFSIZE] = "NMZ.lock";
-uchar BODYMSGFILE[BUFSIZE] = "NMZ.body";
-uchar RESULTFILE[BUFSIZE] = "NMZ.result";
-uchar SLOG[BUFSIZE] = "NMZ.slog";
-uchar WORDLIST[BUFSIZE] = "NMZ.w";
-uchar FIELDINFO[BUFSIZE] = "NMZ.field.";  /* followed by field name */
-uchar DATEINDEX[BUFSIZE] = "NMZ.t"; 
+NMZ_FILES Nmz;  /* NMZ.* files' file pointers */
 
-uchar PHRASE[BUFSIZE] = "NMZ.p";
-uchar PHRASEINDEX[BUFSIZE] = "NMZ.pi";
+NMZ_NAMES NMZ = {  /* NMZ.* files' names */
+    "NMZ.i", 
+    "NMZ.ii",
+    "NMZ.head.",
+    "NMZ.foot.",
+    "NMZ.body.",
+    "NMZ.lock",
+    "NMZ.result",
+    "NMZ.slog",
+    "NMZ.w",
+    "NMZ.field.",
+    "NMZ.t",
+    "NMZ.p",
+    "NMZ.pi"
+};
 
 /* too many global variables */
 int HListMax = 20;		/* max number of search results */
@@ -101,7 +103,6 @@ int AllDocumentN = 0;  /* number of all of documents */
 uchar KeyTable[BUFSIZE];		/* table saving queries */
 uchar *KeyItem[KEY_ITEM_MAX + 1];	/* pointers of items of query */
 uchar *DbNames[DB_MAX + 1];   /* name of databases */
-FILE *Index, *IndexIndex, *Phrase, *PhraseIndex;
 
 REPLACE Replace = { NULL, NULL };
 ALIAS   *Alias   = NULL;

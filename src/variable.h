@@ -60,4 +60,7 @@ extern uchar PHRASEINDEX[];
 extern REPLACE Replace;
 extern ALIAS   *Alias;
 
+NMZ_NAMES NMZ;
+NMZ_FILES Nmz;
+
 #endif /* _VARIABLE_H */

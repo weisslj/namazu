@@ -1,6 +1,7 @@
 #ifndef _TYPE_H
 #define _TYPE_H
 
+#include <stdio.h>
 typedef unsigned char uchar;
 
 
@@ -49,6 +50,34 @@ struct alias {
     struct alias *next;
 };
 typedef struct alias ALIAS;
+
+/* NMZ.* files' names */
+struct nmz_names {
+#define MAXPATH 1024
+    uchar i[MAXPATH];
+    uchar ii[MAXPATH];
+    uchar head[MAXPATH]; /* followed by a language code */
+    uchar foot[MAXPATH]; /* followed by a language code */
+    uchar body[MAXPATH]; /* followed by a language code */
+    uchar lock[MAXPATH];
+    uchar result[MAXPATH];
+    uchar slog[MAXPATH];
+    uchar w[MAXPATH];
+    uchar field[MAXPATH];  /* followed by a field name */
+    uchar t[MAXPATH]; 
+    uchar p[MAXPATH];
+    uchar pi[MAXPATH];
+};
+typedef struct nmz_names NMZ_NAMES;
+
+/* NMZ.* files' file pointers */
+struct nmz_files {
+    FILE *i;
+    FILE *ii;
+    FILE *p;
+    FILE *pi;
+};
+typedef struct nmz_files NMZ_FILES;
 
 #endif /* _TYPE_H */
 

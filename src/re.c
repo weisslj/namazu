@@ -2,7 +2,7 @@
  * 
  * re.c -
  * 
- * $Id: re.c,v 1.1 1999-08-25 04:04:29 satoru Exp $
+ * $Id: re.c,v 1.2 1999-08-27 03:55:26 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -239,8 +239,8 @@ HLIST regex_grep(uchar *orig_expr, FILE *fp, uchar *field, int field_mode)
                     fprintf(stderr, "field: [%d]<%s> id: %d\n", 
                             val.n, buf, i);
                 } else {
-                    fseek(Index, getidxptr(IndexIndex, i), 0);
-                    fgets(buf2, BUFSIZE, Index); /* read and dispose */
+                    fseek(Nmz.i, getidxptr(Nmz.ii, i), 0);
+                    fgets(buf2, BUFSIZE, Nmz.i); /* read and dispose */
                     chomp(buf2);
                     fprintf(stderr, "re: %s, (%d:%s), %d, %d\n", 
                             buf2, i, buf, tmp.n, val.n);

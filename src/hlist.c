@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.8 1999-08-25 03:44:00 satoru Exp $
+ * $Id: hlist.c,v 1.9 1999-08-27 03:55:26 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -299,10 +299,10 @@ HLIST do_date_processing(HLIST hlist)
     FILE *date_index;
     int i;
 
-    date_index = fopen(DATEINDEX, "rb");
+    date_index = fopen(NMZ.t, "rb");
     if (date_index == NULL) {
         if (Debug) {
-            fprintf(stderr, "%s: cannot open file.\n", DATEINDEX);
+            fprintf(stderr, "%s: cannot open file.\n", NMZ.t);
         }
         set_date_zero_all(hlist);
         return hlist; /* error */
@@ -340,11 +340,11 @@ HLIST get_hlist(int index)
     uchar tmp[BUFSIZE];
     hlist.n = 0;
 
-    if (-1 == fseek(Index, getidxptr(IndexIndex, index), 0))
+    if (-1 == fseek(Nmz.i, getidxptr(Nmz.ii, index), 0))
 	return hlist; /* error */
 
-    fgets(tmp, BUFSIZE, Index); /* read and dispose */
-    get_unpackw(Index, &n);
+    fgets(tmp, BUFSIZE, Nmz.i); /* read and dispose */
+    get_unpackw(Nmz.i, &n);
 
     if (TfIdf) {
         idf = log((double)AllDocumentN / (n/2)) / log(2);
@@ -361,7 +361,7 @@ HLIST get_hlist(int index)
 	if (buf == NULL) {
 	    die("get_hlist");
 	}
-	n = read_unpackw(Index, buf, n);
+	n = read_unpackw(Nmz.i, buf, n);
 	malloc_hlist(&hlist, n / 2);
 	
 	for (i = 0; i < n; i += 2) {

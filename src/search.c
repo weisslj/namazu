@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.10 1999-08-25 07:09:24 satoru Exp $
+ * $Id: search.c,v 1.11 1999-08-27 03:55:26 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -89,11 +89,11 @@ void show_status(int l, int r)
 {
     uchar buf[BUFSIZE];
 
-    fseek(Index, getidxptr(IndexIndex, l), 0);
-    fgets(buf, BUFSIZE, Index);
+    fseek(Nmz.i, getidxptr(Nmz.ii, l), 0);
+    fgets(buf, BUFSIZE, Nmz.i);
     fprintf(stderr, "l:%d: %s", l, buf);
-    fseek(Index, getidxptr(IndexIndex, r), 0);
-    fgets(buf, BUFSIZE, Index);
+    fseek(Nmz.i, getidxptr(Nmz.ii, r), 0);
+    fgets(buf, BUFSIZE, Nmz.i);
     fprintf(stderr, "r:%d: %s", r, buf);
 }
 
@@ -113,7 +113,7 @@ int get_file_size (uchar *filename) {
 void lrget(uchar * key, int *l, int *r)
 {
     *l = 0;
-    *r = get_file_size(INDEXINDEX) / sizeof(int) - 1;
+    *r = get_file_size(NMZ.ii) / sizeof(int) - 1;
 
     if (Debug)
 	show_status(*l, *r);
@@ -132,8 +132,8 @@ HLIST forward_match(uchar * orig_key, int v)
     n = strlen(key);
 
     for (i = v; i >= 0; i--) {
-	fseek(Index, getidxptr(IndexIndex, i), 0);
-	fgets(buf, BUFSIZE, Index);
+	fseek(Nmz.i, getidxptr(Nmz.ii, i), 0);
+	fgets(buf, BUFSIZE, Nmz.i);
 	if (strncmp(key, buf, n))
 	    break;
     }
@@ -148,9 +148,9 @@ HLIST forward_match(uchar * orig_key, int v)
 	    val.n = TOO_MUCH_MATCH;
 	    break;
 	}
-	if (-1 == fseek(Index, getidxptr(IndexIndex, i), 0))
+	if (-1 == fseek(Nmz.i, getidxptr(Nmz.ii, i), 0))
 	    break;
-	fgets(buf, BUFSIZE, Index);
+	fgets(buf, BUFSIZE, Nmz.i);
         chomp(buf);
 	if (!strncmp(key, buf, n)) {
 	    tmp = get_hlist(i);
@@ -347,12 +347,12 @@ HLIST cmp_phrase_hash(int hash_key, HLIST val,
 
 int open_phrase_index_files(FILE **phrase, FILE **phrase_index)
 {
-    *phrase = fopen(PHRASE, "rb");
+    *phrase = fopen(NMZ.p, "rb");
     if (*phrase == NULL) {
         return 1;
     }
 
-    *phrase_index = fopen(PHRASEINDEX, "rb");
+    *phrase_index = fopen(NMZ.pi, "rb");
     if (*phrase_index == NULL) {
         return 1;
     }
@@ -484,9 +484,9 @@ HLIST do_regex_search(uchar *orig_expr, HLIST val)
     strcpy(expr, orig_expr);
     do_regex_preprocessing(expr);
 
-    fp = fopen(WORDLIST, "rb");
+    fp = fopen(NMZ.w, "rb");
     if (fp == NULL) {
-        fprintf(stderr, "%s: cannot open file.\n", WORDLIST);
+        fprintf(stderr, "%s: cannot open file.\n", NMZ.w);
         val.n = REGEX_SEARCH_FAILED;  /* cannot open regex index */
         return val;
     }
@@ -512,7 +512,7 @@ HLIST do_field_search(uchar *str, HLIST val)
     get_expr(expr, str);
     do_regex_preprocessing(expr);
 
-    strcpy(file_name, FIELDINFO); /* make pathname */
+    strcpy(file_name, NMZ.field); /* make pathname */
     strcat(file_name, field_name);
 
     fp = fopen(file_name, "rb");
@@ -538,7 +538,7 @@ int check_lockfile(void)
 {
     FILE *lock;
 
-    if ((lock = fopen(LOCKFILE, "rb"))) {
+    if ((lock = fopen(NMZ.lock, "rb"))) {
 	fclose(lock);
         printf("(now be in system maintenance)");
         return 1;
@@ -569,12 +569,12 @@ int open_index_files()
     if (check_lockfile())
         return 1;
     check_byte_order();
-    Index = fopen(INDEX, "rb");
-    if (Index == NULL) {
+    Nmz.i = fopen(NMZ.i, "rb");
+    if (Nmz.i == NULL) {
 	return 1;
     }
-    IndexIndex = fopen(INDEXINDEX, "rb");
-    if (IndexIndex == NULL) {
+    Nmz.ii = fopen(NMZ.ii, "rb");
+    if (Nmz.ii == NULL) {
 	return 1;
     }
     return 0;
@@ -583,8 +583,8 @@ int open_index_files()
 /* closing files at once */
 void close_index_files(void)
 {
-    fclose(Index);
-    fclose(IndexIndex);
+    fclose(Nmz.i);
+    fclose(Nmz.ii);
 }
 
 
@@ -665,7 +665,7 @@ void do_logging(uchar * query, int n)
     t = time(&t);
     time_string = ctime(&t);
 
-    slog = fopen(SLOG, "a");
+    slog = fopen(NMZ.slog, "a");
     if (slog == NULL) {
         if (Debug)
             fprintf(stderr, "NMZ.slog: Permission denied\n");
@@ -716,7 +716,7 @@ HLIST search_sub(HLIST hlist, uchar *query, uchar *query_orig, int n)
     if (KeyItem[1] == NULL && strchr(KeyItem[0], '\t') == NULL)
         TfIdf = 0;
     if (TfIdf) {
-        AllDocumentN = get_file_size(DATEINDEX) / sizeof(int);
+        AllDocumentN = get_file_size(NMZ.t) / sizeof(int);
     }
 
     /* search */
@@ -745,15 +745,15 @@ void make_fullpathname_index(int n)
 
     base = DbNames[n];
 
-    pathcat(base, INDEX);
-    pathcat(base, INDEXINDEX);
-    pathcat(base, WORDLIST);
-    pathcat(base, PHRASE);
-    pathcat(base, PHRASEINDEX);
-    pathcat(base, LOCKFILE);
-    pathcat(base, SLOG);
-    pathcat(base, FIELDINFO);
-    pathcat(base, DATEINDEX);
+    pathcat(base, NMZ.i);
+    pathcat(base, NMZ.ii);
+    pathcat(base, NMZ.w);
+    pathcat(base, NMZ.p);
+    pathcat(base, NMZ.pi);
+    pathcat(base, NMZ.lock);
+    pathcat(base, NMZ.slog);
+    pathcat(base, NMZ.field);
+    pathcat(base, NMZ.t);
 }
 
 
@@ -779,10 +779,10 @@ int binsearch(uchar *orig_key, int forward_match_mode)
     while (r >= l) {
 	x = (l + r) / 2;
 
-	fseek(Index, getidxptr(IndexIndex, x), 0);
+	fseek(Nmz.i, getidxptr(Nmz.ii, x), 0);
 
 	/* over BUFSIZE (maybe 1024) size keyword is nuisance */
-	fgets(buf, BUFSIZE, Index);
+	fgets(buf, BUFSIZE, Nmz.i);
 	if (Debug)
 	    fprintf(stderr, "searching: %s", buf);
 	for (e = 0, i = 0; *(buf + i) != '\n' && *(key + i) != '\0' ; i++) {

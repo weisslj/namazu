@@ -2,7 +2,7 @@
  * 
  * messages.c -
  * 
- * $Id: message.c,v 1.2 1999-08-26 04:29:49 satoru Exp $
+ * $Id: message.c,v 1.3 1999-08-27 03:55:26 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -59,7 +59,7 @@ void init_message(void)
     if (is_lang_ja(Lang)) {
       MSG_USAGE = (uchar *)"%s\n\
 全文検索システム Namazu の検索プログラム v%s\n\n\
-usage: namazu [options] <query> [index dir(s)] \n\
+Usage: namazu [options] <query> [index dir(s)] \n\
    -n, --max=num           一度に表示する件数\n\
    -w, --whence=num        表示するリストの先頭番号\n\
    -s, --short             短いフォーマットで出力\n\
@@ -107,7 +107,7 @@ usage: namazu [options] <query> [index dir(s)] \n\
     } else {
         MSG_USAGE = (uchar *)"%s\n\
   Search Program of Namazu v%s\n\n\
-  usage: namazu [options] <query> [index dir(s)] \n\
+  Usage: namazu [options] <query> [index dir(s)] \n\
      -n (num)  : set number of documents shown at once.\n\
      -w (num)  : set first number of documents shown.\n\
      -s        : output by short format.\n\
@@ -151,12 +151,9 @@ usage: namazu [options] <query> [index dir(s)] \n\
         MSG_REFERENCE_HEADER = (uchar *)"Word count: ";
         MSG_INVALID_DB_NAME = (uchar *)"Invalid dbname.";
     }
-    strcpy(HEADERFILE, "NMZ.head.");
-    strcpy(FOOTERFILE, "NMZ.foot.");
-    strcpy(BODYMSGFILE, "NMZ.body.");
-    strcat(HEADERFILE, Lang);
-    strcat(FOOTERFILE, Lang);
-    strcat(BODYMSGFILE, Lang);
+    strcat(NMZ.head, Lang);
+    strcat(NMZ.foot, Lang);
+    strcat(NMZ.body, Lang);
 }
 
 

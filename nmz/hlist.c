@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.36 2000-01-09 11:28:53 satoru Exp $
+ * $Id: hlist.c,v 1.37 2000-01-09 23:44:55 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -89,7 +89,8 @@ field_sort(NmzResult hlist)
     for (i = 0; i < hlist.num; i++) {
 	char buf[BUFSIZE];
 	int leng;
-	nmz_get_field_data(hlist.data[i].idxid, hlist.data[i].docid, field_for_sort, buf);
+	nmz_get_field_data(hlist.data[i].idxid, 
+			   hlist.data[i].docid, field_for_sort, buf);
 	nmz_chomp(buf);
 	leng = strlen(buf);
 
@@ -118,8 +119,9 @@ field_sort(NmzResult hlist)
     return 0;
 }
 
-/* field_scmp: 
-   compare of a pair of hlist.data[].field as string in descending order */
+/* 
+ * Compare a pair of hlist.data[].field as string in descending order.
+ */
 static int 
 field_scmp(const void *p1, const void *p2)
 {
@@ -137,8 +139,9 @@ field_scmp(const void *p1, const void *p2)
     return r;
 }
 
-/* field_ncmp: 
-   compare of a pair of hlist.data[].field as number in descending order */
+/* 
+ * Compare a pair of hlist.data[].field as number in descending order.
+ */
 static int 
 field_ncmp(const void *p1, const void *p2)
 {
@@ -157,8 +160,9 @@ field_ncmp(const void *p1, const void *p2)
 }
 
 
-/* score_cmp: 
-   compare of a pair of hlist.data[].score as number in descending order */
+/* 
+ * Compare a pair of hlist.data[].score as number in descending order.
+ */
 static int 
 score_cmp(const void *p1, const void *p2)
 {
@@ -177,8 +181,9 @@ score_cmp(const void *p1, const void *p2)
     /* Return (r = v2->score - v1->score) ? r : v2->rank - v1->rank; */
 }
 
-/* date_ncmp: 
-   compare of a pair of hlist.data[].date as number in descending order */
+/* 
+ * Compare a pair of hlist.data[].date as number in descending order.
+ */
 static int 
 date_cmp(const void *p1, const void *p2)
 {
@@ -203,7 +208,7 @@ date_cmp(const void *p1, const void *p2)
  */
 
 /*
- * Merge the left and  right with AND rule
+ * Merge the left and  right with AND rule.
  */
 NmzResult 
 nmz_andmerge(NmzResult left, NmzResult right, int *ignore)
@@ -238,10 +243,12 @@ nmz_andmerge(NmzResult left, NmzResult right, int *ignore)
 
 		nmz_copy_hlist(left, v, left, i);
                 if (TfIdf) {
-                    left.data[v].score = left.data[i].score + right.data[j].score;
+                    left.data[v].score = 
+			left.data[i].score + right.data[j].score;
                 } else {
                     /* Assign a smaller number, left or right*/
-                    left.data[v].score = left.data[i].score < right.data[j].score ?
+                    left.data[v].score = 
+			left.data[i].score < right.data[j].score ?
                         left.data[i].score : right.data[j].score;
                 }
 		v++;
@@ -260,7 +267,7 @@ nmz_andmerge(NmzResult left, NmzResult right, int *ignore)
 
 
 /*
- * Merge the left and  right with NOT rule
+ * Merge the left and  right with NOT rule.
  */
 NmzResult 
 nmz_notmerge(NmzResult left, NmzResult right, int *ignore)
@@ -343,10 +350,12 @@ nmz_ormerge(NmzResult left, NmzResult right)
 	    if (left.data[i].docid == right.data[j].docid) {
 
                 if (TfIdf) {
-                    left.data[i].score = left.data[i].score + right.data[j].score;
+                    left.data[i].score = 
+			left.data[i].score + right.data[j].score;
                 } else {
                     /* Assign a large number, left or right */
-                    left.data[i].score = left.data[i].score > right.data[j].score ?
+                    left.data[i].score = 
+			left.data[i].score > right.data[j].score ?
                         left.data[i].score : right.data[j].score;
                 }
 		j++;
@@ -450,7 +459,7 @@ nmz_merge_hlist(NmzResult *hlists)
 }
 
 /*
- * Get date info from NMZ.t and do the missing number processing
+ * Get date info from NMZ.t and do the missing number processing.
  */
 NmzResult 
 nmz_do_date_processing(NmzResult hlist)
@@ -466,12 +475,15 @@ nmz_do_date_processing(NmzResult hlist)
     }
 
     for (i = 0; i < hlist.num ; i++) {
-        if (-1 == fseek(date_index, hlist.data[i].docid * sizeof(hlist.data[i].date), 0)) {
+        if (-1 == fseek(date_index, 
+			hlist.data[i].docid * sizeof(hlist.data[i].date), 0)) 
+	{
 	    nmz_set_dyingmsg(nmz_msg("%s: %s", NMZ.t, strerror(errno)));
 	    hlist.stat = ERR_FATAL;
             return hlist; /* error */
         }
-        nmz_fread(&hlist.data[i].date, sizeof(hlist.data[i].date), 1, date_index);
+        nmz_fread(&hlist.data[i].date, 
+		  sizeof(hlist.data[i].date), 1, date_index);
 
         if (hlist.data[i].date == -1) {  
             /* The missing number, this document has been deleted */
@@ -490,7 +502,7 @@ nmz_do_date_processing(NmzResult hlist)
 }
 
 /*
- * Get the hit list
+ * Get the hit list.
  */
 NmzResult 
 nmz_get_hlist(int index)
@@ -530,7 +542,7 @@ nmz_get_hlist(int index)
 	if (hlist.stat == ERR_FATAL)
 	    return hlist;
 	
-	for (i = 0; i < n; i ++) {
+	for (i = 0; i < n; i++) {
 	    hlist.data[i].docid = *(buf + i * 2) + sum;
 	    sum = hlist.data[i].docid;
 	    hlist.data[i].score = *(buf + i * 2 + 1);
@@ -547,7 +559,7 @@ nmz_get_hlist(int index)
 
 
 /*
- * Interface to invoke merge sort function
+ * Interface to do appropriate sorting.
  */
 int 
 nmz_sort_hlist(NmzResult hlist, enum nmz_sortmethod method)
@@ -566,7 +578,7 @@ nmz_sort_hlist(NmzResult hlist, enum nmz_sortmethod method)
 }
 
 /* 
- * reverse a given hlist
+ * Reverse the given hlist.
  * original of this routine was contributed by Furukawa-san [1997-11-13]
  */
 int 

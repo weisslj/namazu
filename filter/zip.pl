@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: zip.pl,v 1.1 2004-04-27 15:19:55 usu Exp $
+# $Id: zip.pl,v 1.2 2004-04-29 15:22:41 opengl2772 Exp $
 #  zip filter for namazu
 #  Copyright (C) 2004 MATSUMURA Namihiko <po-jp@counterghost.net>
 #                2004 Namazu Project All rights reserved.
@@ -67,6 +67,7 @@ sub filter ($$$$$) {
     {
 	my $fh = util::efopen("> $tmpfile");
 	print $fh $$contref;
+        util::fclose($fh);
     }
 
     my $tmpdir = util::tmpnam('NMZ.zip_dir');
@@ -74,10 +75,29 @@ sub filter ($$$$$) {
     $tmpdir = mknmz::absolute_path($cwd, $tmpdir);
     rm_r($tmpdir) if (-d $tmpdir);
     mkdir($tmpdir);
+
     util::vprint("Processing zip file ... (using  '$unzippath')\n");
-    system("$unzippath -qq -d $tmpdir $tmpfile");
+
+    system("$unzippath -P passwd -qq -d $tmpdir $tmpfile");
+    my $status = $?;
 
     $$contref = "";
+
+    if ($status != 0) {
+        unlink($tmpfile);
+        rm_r($tmpdir);
+        return 'Unable to convert zip file (maybe copying protection)';
+    }
+
+    my $tmpfile2 = util::tmpnam('NMZ.zip2');
+    system("$unzippath -z -qq $tmpfile > $tmpfile2");
+    $status = $?;
+    if ($status == 0) {
+	my $summary = util::readfile("$tmpfile2");
+        codeconv::toeuc(\$summary);
+	$$contref .= $summary . " ";
+    }
+    unlink($tmpfile2);
 
     my $sub = sub {
 	my $tmpfile = "$File::Find::dir/$_";
@@ -88,12 +108,13 @@ sub filter ($$$$$) {
 	    if (defined $err) {
 		util::dprint("filter/zip.pl gets error message \"$err\"");
 	    }
-	    $$contref .= $con;
+	    $$contref .= $con . " ";
 	    util::fclose($fh);
 	    unlink($tmpfile);
 	}
     };
     find ($sub, $tmpdir);
+    unlink($tmpfile);
     rm_r($tmpdir);
     return undef;
 }
@@ -119,7 +140,7 @@ sub rm_r {
 sub nesting_filter ($$$){
     my ($filename, $contref, $weighted_str) = @_;
     my $err = undef;
-    my $dummy_shelterfname="";
+    my $dummy_shelterfname = "";
     my $headings = "";
     my %fields;
     my $mmtype = undef;

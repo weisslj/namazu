@@ -1,10 +1,10 @@
 #
 # -*- Perl -*-
-# $Id: hnf.pl,v 1.1 2000-01-13 10:56:23 kenji Exp $
+# $Id: hnf.pl,v 1.2 2000-01-29 12:39:15 kenji Exp $
 #
 # HNF Filter for Namazu 2.0
-# version 0.9.5
-# 2000/1/1  Kenji Suzuki <kenji@h14m.org>
+# version 0.9.6
+# 2000/1/28  Kenji Suzuki <kenji@h14m.org>
 #
 # Copyright (C) 1999,2000  Kenji Suzuki, HyperNikkiSystem Project
 # All rights reserved.
@@ -229,7 +229,7 @@ sub get_uri ($$) {
 sub make_summary ($$$$$) {
     my ($contref, $headings, $cfile, $mark, $end) = @_;
 
-    # pick up $conf::SUMMARY_LENGTH bytes string
+    # pick up $conf::MAX_FIELD_LENGTH bytes string
     my $tmp = "";
     if ($$headings ne "") {
         $$headings =~ s/^\s+//;
@@ -252,7 +252,7 @@ sub make_summary ($$$$$) {
     $tmp2 =~ s/^! (.*)$//gm;
     $tmp2 =~ s/^!# (.*)$//gm;
 
-    while (($tmplen = $conf::SUMMARY_LENGTH + 1 - length($tmp)) > 0
+    while (($tmplen = $conf::MAX_FIELD_LENGTH + 1 - length($tmp)) > 0
            && $offset < length($tmp2))
     {
         $tmp .= substr $tmp2, $offset, $tmplen;
@@ -261,9 +261,9 @@ sub make_summary ($$$$$) {
         $tmp =~ s/([-=*\#])\1{2,}/$1$1/g;
     }
 
-    my $summary = substr $tmp, 0, $conf::SUMMARY_LENGTH;
+    my $summary = substr $tmp, 0, $conf::MAX_FIELD_LENGTH;
     my $kanji = $summary =~ tr/\xa1-\xfe/\xa1-\xfe/;
-    $summary .= substr($tmp, $conf::SUMMARY_LENGTH, 1) if $kanji %2;
+    $summary .= substr($tmp, $conf::MAX_FIELD_LENGTH, 1) if $kanji %2;
     $summary =~ s/^\s+//;
     $summary =~ s/\s+/ /g;   # normalize white spaces
 

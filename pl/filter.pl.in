@@ -2,7 +2,7 @@
 # -*- Perl -*-
 # filter.pl - class for filter
 #
-# $Id: filter.pl.in,v 1.1 2004-10-12 16:26:58 opengl2772 Exp $
+# $Id: filter.pl.in,v 1.2 2004-10-12 18:52:50 opengl2772 Exp $
 #
 # Copyright (C) 2004 Yukio USUDA All rights reserved.
 # Copyright (C) 2000-2004 Namazu Project All rights reversed.
@@ -44,6 +44,16 @@ my $filterdir  = $PKGDATADIR . "/filter"; # directory where filters are in.
 
 my $system = $^O;
 
+sub win32_yen_to_slash ($) {
+    my ($rcfileref) = @_;
+
+    if (($system eq "MSWin32") || ($system eq "os2")) {
+        $$rcfileref =~ 
+                s!([\x81-\x9f\xe0-\xef][\x40-\x7e\x80-\xfc]|[\x01-\x7f])!
+                $1 eq "\\" ? "/" : $1!gex;
+    }
+}
+
 sub new {
     my $self = {};
     my $proto = shift @_;
@@ -65,6 +75,7 @@ sub init {
 	if ($filterdir !~ /^[A-Z]:|^\\\\/i && $0 =~ m#^([A-Z]:)(/|\\)#i) {
 	    $filterdir = $1 . $filterdir ;
 	}
+        win32_yen_to_slash(\$filterdir);
     }
 
     #

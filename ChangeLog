@@ -6,6 +6,12 @@
 
 	* configure.in: Also set NMZ_LIBOBJS vsnprintf.lo, not vsnprintf.${ac_objext}.
 
+	* nmz/util.c (_nmz_tolower): Add prefix _.
+
+	* nmz/util.h: Likewise.
+
+	* src/result.c: Likewise.
+
 2000-09-05  Ryuji Abe <rug@namazu.org>
 
 	* acinclude.m4: Do libnmz adaptation.
@@ -5935,4 +5941,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.721 2000-09-06 06:08:42 rug Exp $
+$Id: ChangeLog,v 1.722 2000-09-06 09:02:50 rug Exp $

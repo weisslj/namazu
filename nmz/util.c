@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: util.c,v 1.72 2000-09-05 05:47:43 rug Exp $
+ * $Id: util.c,v 1.73 2000-09-06 09:02:50 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -349,7 +349,7 @@ nmz_isnumstr(const char *str)
  */
 
 int 
-nmz_tolower(int c)
+_nmz_tolower(int c)
 {
     if (c >= 'A' && c <= 'Z') {
 	c = 'a' + c - 'A';
@@ -363,7 +363,7 @@ nmz_strlower(char *str)
 {
     while (*str) {
 	/* Using ascii dependent lower same as mknmz.  */
-        *str = nmz_tolower(*str);
+        *str = _nmz_tolower(*str);
         str++;
     }
 }

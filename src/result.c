@@ -1,5 +1,5 @@
 /*
- * $Id: result.c,v 1.58 2000-09-05 05:47:45 rug Exp $
+ * $Id: result.c,v 1.59 2000-09-06 09:02:51 rug Exp $
  * 
  * Copyright (C) 1989, 1990 Free Software Foundation, Inc.
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
@@ -100,7 +100,7 @@ strcasestr (s1, s2)
     char *s = s1;
 
     for (p2 = s2, i = 0; *s; p2 = s2, i++, s++) {
-	for (p1 = s; *p1 && *p2 && (nmz_tolower(*p1) == nmz_tolower(*p2)); p1++, p2++)
+	for (p1 = s; *p1 && *p2 && (_nmz_tolower(*p1) == _nmz_tolower(*p2)); p1++, p2++)
 	    ;
 	if (!*p2)
 	    break;

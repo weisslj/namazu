@@ -84,6 +84,8 @@ void get_field_data(char *key)
     *(buf + strlen(buf) - 1) = '\0';
     encode_entity(buf);
     strcat(Buf, buf);
+    fclose(fp_field);
+    fclose(fp_field_idx);
 }
 
 /* display the hlist */

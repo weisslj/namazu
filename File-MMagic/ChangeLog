@@ -1,3 +1,18 @@
+2000-03-23  Ken-ichi Hirose  <kenzo-@tama.or.jp>
+
+	* Version 1.03.
+
+	* MMagic.pm (__DATA__): Add .EXE formats, WinNT/WinCE PE files,
+	and SFX magic entry are application/octet-stream.
+	Add application/x-lha.
+	Add application/x-zip.
+	Add application/x-tar.
+	Add text/x-info.
+	Change application/ichitaro4, application/ichitaro5,
+ 	 application/ichitaro6, application/excel,
+	 application/msword.
+	Remove application/powerpoint.
+
 2000-03-03  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* Version 1.02.

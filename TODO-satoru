@@ -1,15 +1,12 @@
-$Id: TODO-satoru,v 1.17 2000-01-27 08:00:41 satoru Exp $
-
+$Id: TODO-satoru,v 1.18 2000-01-27 09:50:11 satoru Exp $
 やるべきことの備忘録 by 高林
+
+手っ取り早く片づける仕事
 
   * src/em.h でハードコーディングしている
       #define EM_START_TAG "<strong class=\"keyword\">"
       #define EM_END_TAG   "</strong>"
     を namazurc で設定可能にする
-
-  * rcfile.c: syntax error のメッセージを gettext化
-
-  * rcfile.c: エラーメッセージに directive名を入れる?
 
   * nmz/libnamazu.c を廃止 (中の関数は適切なファイルに移動する)
 
@@ -22,13 +19,9 @@ $Id: TODO-satoru,v 1.17 2000-01-27 08:00:41 satoru Exp $
   
 書き直すべきコードたち (全部書き直せという話も…)
 
-  * extern 関数を吟味する -> できるだけ減らす (static にする)
-
-  * 一対多の alias に対応する。例: Alias all-ml foo bar baz quux
-    - 今の struct nmz_indices の構造では難しい
-
-  * idxnames.c: インデックスの数の制限を廃止する (リスト構造?)
-    - struct nmz_indices をリスト構造にすべし
+  * search.c: nmz_binsearch() は左端を検索する 
+    prefix_match() は後戻りしない
+    - Programming Pearls のコードが使える
 
   * query.c を書き直す 
     - まともに字句解析すべし
@@ -40,6 +33,15 @@ $Id: TODO-satoru,v 1.17 2000-01-27 08:00:41 satoru Exp $
     - できるだけ汎用的なコードにする
     - 演算子ごとに関数ポインタを評価する?
 
+  * 一対多の alias に対応する。例: Alias all-ml foo bar baz quux
+    - 今の struct nmz_indices の構造では難しい
+
+  * idxnames.c: インデックスの数の制限を廃止する (リスト構造?)
+    - struct nmz_indices をリスト構造にすべし
+
+  * NmzResult(旧HLIST) 関連の処理 -> 戻り値をポインタでもらう
+    NULLポインタでエラーを返す。エラー処理を整理せよ。
+
   * NmzResult と struct nmz_hitnumlist が別々のデータ構造な
     のは変。エラー処理はぐちゃぐちゃ。統合して整理すべし。
 
@@ -50,15 +52,15 @@ $Id: TODO-satoru,v 1.17 2000-01-27 08:00:41 satoru Exp $
       Namazu bar = nmz_create(query_bar);
       foo->add_index(foo, "/where/foo/index/is");
       bar->add_index(foo, "/where/bar/index/is");
+          :
       foo->destroy();
-      foo->destroy();
+      bar->destroy();
 
-   といった感じ
+   といった感じ?
 
   * hlist と名のつく関数の名前を変える
 
-  * NmzResult(旧HLIST) 関連の処理 -> 戻り値をポインタでもらう
-    NULLポインタでエラーを返す。エラー処理をなんとかせよ。
+  * extern 関数を吟味する -> できるだけ減らす (static にする)
 
 
 将来の構想

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2000-01-27 17:00+0900\n"
+"POT-Creation-Date: 2000-01-27 18:40+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -76,73 +76,102 @@ msgstr ""
 msgid "Replace: \"%s\" -> \"%s\"\n"
 msgstr ""
 
-#: src/cgi.c:111 src/cgi.c:121
+#: src/cgi.c:112 src/cgi.c:122
 msgid "Invalid idxname."
 msgstr ""
 
-#: src/cgi.c:207 src/cgi.c:222
+#: src/cgi.c:206
 msgid "Too long QUERY_STRING"
 msgstr ""
 
-#: src/output.c:453
+#: src/output.c:459
 msgid "\t<strong>Page:</strong> "
 msgstr ""
 
-#: src/output.c:498
+#: src/output.c:504
 #, c-format
 msgid "Current List: %d"
 msgstr ""
 
-#: src/output.c:546
+#: src/output.c:552
 #, c-format
 msgid " [ TOTAL: %d ]"
 msgstr ""
 
-#: src/output.c:556
+#: src/output.c:562
 msgid "\t<p><strong> Total "
 msgstr ""
 
-#: src/output.c:563
+#: src/output.c:569
 msgid ""
 "\t documents matching your query.</strong></p>\n"
 "\n"
 msgstr ""
 
-#: src/output.c:619
+#: src/output.c:625
 #, c-format
 msgid ""
 "\t<h2>Error!</h2>\n"
 "<p>%s</p>\n"
 msgstr ""
 
-#: src/output.c:649
+#: src/output.c:655
 msgid "\t<h2>Results:</h2>\n"
 msgstr ""
 
-#: src/output.c:656
+#: src/output.c:662
 msgid "References: "
 msgstr ""
 
-#: src/output.c:703
+#: src/output.c:709
 msgid "\t<p>No document matching your query.</p>\n"
 msgstr ""
 
-#: src/rcfile.c:589
+#. terminator not matched
+#: src/rcfile.c:323
+msgid "can't find string terminator"
+msgstr ""
+
+#: src/rcfile.c:391
+msgid "invalid directive name"
+msgstr ""
+
+#: src/rcfile.c:404
+msgid "can't find arguments"
+msgstr ""
+
+#: src/rcfile.c:507
+msgid "too few arguments"
+msgstr ""
+
+#: src/rcfile.c:510
+msgid "too many arguments"
+msgstr ""
+
+#: src/rcfile.c:520
+msgid "unknown directive"
+msgstr ""
+
+#: src/rcfile.c:575
+#, c-format
+msgid "%s:%d: syntax error: %s"
+msgstr ""
+
+#: src/rcfile.c:588
 #, c-format
 msgid "Config:  %s\n"
 msgstr ""
 
-#: src/rcfile.c:592
+#: src/rcfile.c:591
 #, c-format
 msgid ""
 "Index:   %s\n"
-"Base:    %s\n"
 "Logging: %s\n"
 "Lang:    %s\n"
 "Scoring: %s\n"
 msgstr ""
 
-#: src/usage.c:52
+#: src/usage.c:51
 #, c-format
 msgid ""
 "namazu %s, a search program of Namazu.\n"
@@ -177,11 +206,11 @@ msgid ""
 "Report bugs to <bug-namazu@namazu.org>.\n"
 msgstr ""
 
-#: src/usage.c:91
+#: src/usage.c:89
 msgid "Usage: namazu [options] <query> [index]...\n"
 msgstr ""
 
-#: src/usage.c:92
+#: src/usage.c:90
 msgid "Try `namazu --help' for more information.\n"
 msgstr ""
 

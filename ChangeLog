@@ -8,9 +8,29 @@
 
 2000-01-27  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
-	* src/cgi.c (apply_cgifunc): Simplfy calling pointed function. 
+	* src/output.c (set_emphasis_tags): New function.
 
-	* src/rcfile.c (apply_rc): Simplfy calling pointed function. 
+	* src/rcfile.c (process_rc_emphasistags): New function.
+
+	* conf/namazurc-sample: Messages modified.
+
+	* src/em.h: Removed.
+
+	* src/output.h: Import enum from em.h.
+
+	* src/rcfile.c (process_rc_base): Abolished.
+
+	* src/cgi.c (get_query_string): Remove unnecessary cast.
+
+	* src/rcfile.c: Gettextized.
+
+	* src/usage.c (show_usage): Simplfied.
+
+	* src/cgi.c (get_query_string): Abolish POST method support.
+
+	* src/cgi.c (apply_cgifunc): Simplfy calling a pointed function. 
+
+	* src/rcfile.c (apply_rc): Simplfy calling a pointed function. 
 
 	* pl/util.pl (cp): Abolished.
 

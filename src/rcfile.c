@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.6 2000-01-27 08:00:44 satoru Exp $
+ * $Id: rcfile.c,v 1.7 2000-01-27 09:50:16 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -41,6 +41,7 @@
 #include "replace.h"
 #include "search.h"
 #include "idxname.h"
+#include "output.h"
 
 /*
  * Default directory to place namazurc.
@@ -76,12 +77,12 @@ static enum nmz_stat process_rc_blank ( const char *directive, const struct nmz_
 static enum nmz_stat process_rc_comment(const char *directive, const struct nmz_strlist *args);
 static enum nmz_stat process_rc_debug(const char *directive, const struct nmz_strlist *args);
 static enum nmz_stat process_rc_index(const char *directive, const struct nmz_strlist *args);
-static enum nmz_stat process_rc_base(const char *directive, const struct nmz_strlist *args);
 static enum nmz_stat process_rc_alias(const char *directive, const struct nmz_strlist *args);
 static enum nmz_stat process_rc_replace(const char *directive, const struct nmz_strlist *args);
 static enum nmz_stat process_rc_logging(const char *directive, const struct nmz_strlist *args);
 static enum nmz_stat process_rc_scoring(const char *directive, const struct nmz_strlist *args);
 static enum nmz_stat process_rc_lang(const char *directive, const struct nmz_strlist *args);
+static enum nmz_stat process_rc_emphasistags(const char *directive, const struct nmz_strlist *args);
 
 struct conf_directive {
     char *name;
@@ -92,17 +93,17 @@ struct conf_directive {
 };
 
 static struct conf_directive directive_tab[] = {
-    { "BLANK",   0, 0, process_rc_blank },
-    { "COMMENT", 0, 0, process_rc_comment },
-    { "DEBUG",   1, 0, process_rc_debug },
-    { "INDEX",   1, 0, process_rc_index },
-    { "BASE",    1, 0, process_rc_base },
-    { "ALIAS",   2, 1, process_rc_alias },
-    { "REPLACE", 2, 0, process_rc_replace },
-    { "LOGGING", 1, 0, process_rc_logging },
-    { "SCORING", 1, 0, process_rc_scoring },
-    { "LANG",    1, 0, process_rc_lang },
-    { NULL,      0, 0, NULL }
+    { "BLANK",         0, 0, process_rc_blank },
+    { "COMMENT",       0, 0, process_rc_comment },
+    { "DEBUG",         1, 0, process_rc_debug },
+    { "INDEX",         1, 0, process_rc_index },
+    { "ALIAS",         2, 1, process_rc_alias },
+    { "REPLACE",       2, 0, process_rc_replace },
+    { "LOGGING",       1, 0, process_rc_logging },
+    { "SCORING",       1, 0, process_rc_scoring },
+    { "LANG",          1, 0, process_rc_lang },
+    { "EMPHASISTAGS",  2, 0, process_rc_emphasistags },
+    { NULL,            0, 0, NULL }
 };
 
 
@@ -143,26 +144,15 @@ process_rc_index(const char *directive, const struct nmz_strlist *args)
     return SUCCESS;
 }
 
-static enum nmz_stat
-process_rc_base(const char *directive, const struct nmz_strlist *args)
-{
-/* FIXME: BASE_URI support will be abolished. */
-
-/*      char *arg1 = args->value; */
-/*      strcpy(BASE_URI, arg1); */
-    return SUCCESS;
-}
-
 /*
  * FIXME: one-to-multiple alias should be allowed.
  */
 static enum nmz_stat
 process_rc_alias(const char *directive, const struct nmz_strlist *args)
 {
-    char *arg1, *arg2;
+    char *arg1 = args->value;
+    char *arg2 = args->next->value;
 
-    arg1 = args->value;
-    arg2 = args->next->value;
     if (nmz_add_alias(arg1, arg2) != SUCCESS) {
 	return FAILURE;
     }
@@ -172,10 +162,9 @@ process_rc_alias(const char *directive, const struct nmz_strlist *args)
 static enum nmz_stat
 process_rc_replace(const char *directive, const struct nmz_strlist *args)
 {
-    char *arg1, *arg2;
+    char *arg1 = args->value;
+    char *arg2 = args->next->value;
 
-    arg1 = args->value;
-    arg2 = args->next->value;
     if (nmz_add_replace(arg1, arg2) != SUCCESS) {
 	return FAILURE;
     }
@@ -215,6 +204,16 @@ process_rc_lang(const char *directive, const struct nmz_strlist *args)
     char *arg1 = args->value;
 
     nmz_set_lang(arg1);
+    return SUCCESS;
+}
+
+static enum nmz_stat
+process_rc_emphasistags(const char *directive, const struct nmz_strlist *args)
+{
+    char *arg1 = args->value;
+    char *arg2 = args->next->value;
+
+    set_emphasis_tags(arg1, arg2); /* order: start, end */
     return SUCCESS;
 }
 
@@ -321,7 +320,7 @@ get_rc_arg(const char *line, char *arg)
 	    line += nn;
 	    arg[n] = '\0';
 	    if (*line == '\0') {  /* terminator not matched */
-		errmsg = "can't find string terminator";
+		errmsg = _("can't find string terminator");
 		return 0;
 	    }
 	    if  (*line == '"') {  /* ending */
@@ -389,7 +388,7 @@ get_rc_args(const char *line)
 	char directive[BUFSIZE];
 	n = strspn(line, DIRECTIVE_CHARS);
 	if (n == 0) {
-	    errmsg = "invalid directive name";
+	    errmsg = _("invalid directive name");
 	    return 0;
 	}
 	strncpy(directive, line, n);
@@ -402,7 +401,7 @@ get_rc_args(const char *line)
     n = strspn(line, " \t");    /* skip white spaces */
     line += n;
     if (n == 0) {
-	errmsg = "can't find a delimiter after directive";
+	errmsg = _("can't find arguments");
 	return 0;
     }
 
@@ -505,10 +504,10 @@ apply_rc(int lineno, const char *directive, struct nmz_strlist *args)
 		 */
 		return dtab->func(directive, args);
 	    } else if (argnum < dtab->argnum) {
-		errmsg = "too few arguments";
+		errmsg = _("too few arguments");
 		return FAILURE;
 	    } else if (argnum > dtab->argnum) {
-		errmsg = "too many arguments";
+		errmsg = _("too many arguments");
 		return FAILURE;
 	    } else {
 		assert(0);
@@ -518,7 +517,7 @@ apply_rc(int lineno, const char *directive, struct nmz_strlist *args)
 	}
     }
 
-    errmsg = "unknown directive";
+    errmsg = _("unknown directive");
     return FAILURE;
 }
 
@@ -573,7 +572,7 @@ load_rcfile(const char *argv0)
 
 	nmz_conv_ja_any_to_eucjp(buf);  /* for Shift_JIS encoding */
 	if (parse_rcfile(buf, current_lineno) != SUCCESS) {
-	    nmz_set_dyingmsg(nmz_msg("%s:%d: syntax error: %s.",  
+	    nmz_set_dyingmsg(nmz_msg(_("%s:%d: syntax error: %s"),  
 				     namazurc, current_lineno, errmsg));
 	    return FAILURE;
 	}
@@ -591,17 +590,14 @@ show_rcfile(void)
 
     printf(_("\
 Index:   %s\n\
-Base:    %s\n\
 Logging: %s\n\
 Lang:    %s\n\
 Scoring: %s\n\
-"), nmz_get_defaultidx(), "unsupported", nmz_is_loggingmode() ? "on" : "off",
+"), nmz_get_defaultidx(), nmz_is_loggingmode() ? "on" : "off",
            nmz_get_lang(), nmz_is_tfidfmode() ? "tfidf" : "simple");
 
     nmz_show_aliases();
     nmz_show_replaces();
-
-/* FIXME: BASE_URI support will be abolished. */
 
     /*    exit(0);*/
     return;

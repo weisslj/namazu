@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.58 2000-01-27 03:31:03 satoru Exp $
+ * $Id: output.c,v 1.59 2000-01-27 09:50:16 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -37,7 +37,6 @@
 #include "field.h"
 #include "search.h"
 #include "result.h"
-#include "em.h"
 #include "i18n.h"
 #include "message.h"
 #include "form.h"
@@ -61,6 +60,12 @@ static int maxresult   = 20;  /* max number of search results */
 static int listwhence  = 0;   /* number which beginning of search results */
 		      
 static char template[BUFSIZE]     = "normal"; /* suffix of NMZ.result.* */
+
+/*
+ * They are used for emphasizing keywords in html results. 
+ */ 
+static char emphasis_start_tag[BUFSIZE] = "<strong class=\"keyword\">";
+static char emphasis_end_tag[BUFSIZE]   = "</strong>";
 
 /*
  *
@@ -90,7 +95,8 @@ static void print_range ( NmzResult hlist );
 static void print_errmsg(int errid);
 
 /*
- * Print s to stdout with processing for emphasizing and entity encoding 
+ * Print s to stdout with processing for emphasizing keyword 
+ * and entity encoding.
  */
 static void 
 emprint(char *s, int entity_encode)
@@ -126,10 +132,10 @@ emprint(char *s, int entity_encode)
 	    }
 	}
 	if (*s == EM_START_MARK) {
-	    fputs(EM_START_TAG, stdout);
+	    fputs(emphasis_start_tag, stdout);
 	    continue;
 	} else if (*s == EM_END_MARK) {
-	    fputs(EM_END_TAG, stdout);
+	    fputs(emphasis_end_tag, stdout);
 	    continue;
 	} 
 	if (entity_encode) {
@@ -725,6 +731,13 @@ print_default_page (void) {
 	print_msgfile(NMZ.body);
 	print_headfoot(NMZ.foot, "", "");
     }
+}
+
+void 
+set_emphasis_tags(const char *start_tag, const char *end_tag)
+{
+    strcpy(emphasis_start_tag, start_tag);
+    strcpy(emphasis_end_tag,   end_tag);
 }
 
 void 

@@ -1,5 +1,5 @@
 /*
- * $Id: result.c,v 1.43 2000-01-19 08:34:41 satoru Exp $
+ * $Id: result.c,v 1.44 2000-01-27 09:50:17 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -32,7 +32,6 @@
 #include "output.h"
 #include "re.h"
 #include "result.h"
-#include "em.h"
 #include "codeconv.h"
 #include "replace.h"
 #include "var.h"

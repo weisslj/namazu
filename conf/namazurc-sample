@@ -9,28 +9,39 @@
 #
 #     <List of Directives>
 #
-#       * Index   : Specify a directory which contains index files (NMZ.*).
+#       * Index
+#         - Specify a default directory to search.
 #
-#       * Replace : Replace a URI string for search results.
-#                   Specify TARGET REPLACEMENT.  e.g.,
+#       * Replace
+#         - Replace a URI string in search results.
+#           Specify TARGET REPLACEMENT by regular expression.
+#           You can caputure strings by surrounding them with `(' and `)'
+#           and use them later for backreferences with \1, \2, \3,... \9.
 #
-#                     Replace  /www/  http://www.foobar.jp/
+#           e.g.,
 #
-#                   If you do not want to do the replacement in command
-#                   line use, you can run namazu with -U option.
+#              Replace  /home/foo/public_html/   http://www.foobar.jp/~foo/
+#              Replace  /home/(.*)/public_html/  http://www.foobar.jp/\1/
 #
-#       * Base    : Append <BASE HREF="..."> to a result HTML document.
-#                   This value must be terminated with a '/' or '\' character.
+#           If you do not want to do the replacement processing in 
+#           command line use, you can run namazu with -U option.
 #
-#       * Logging : Set OFF to turn off keyword logging in NMZ.slog. 
-#                   Default: logging ON
+#       * Logging 
+#          - Set OFF to turn off keyword logging in NMZ.slog. 
+#            Default: logging ON
 #
-#	* Lang    : Set a locale code such as `ja_JP.ujis', `ja_JP.sjis', 
-#                   `de', etc.  If you set `de' to this, namazu will use 
-#                   NMZ.(head|foot|body|msg).de for composing a result 
-#                   document and use a proper message catalog for `de'.
+#	* Lang
+#          - Set a locale code such as `ja_JP.ujis', `ja_JP.sjis', 
+#            `de', etc.  If you set `de' to this, namazu will use 
+#            NMZ.(head|foot|body|msg).de for composing a result 
+#            document and use a proper message catalog for `de'.
 #
-#	* Scoring : Set a scoring method TFIDF or SIMPLE.
+#	* Scoring
+#         - Set a scoring method "tfidf" or "simple".
+#
+#       * EmphasisTags
+#         - Set a pair of html elements which is used in
+#           keyword emphasizing in search results.
 #
 #
 #   You can use ~/foo notation for representing a pathname of directory 
@@ -38,9 +49,9 @@
 #
 #      Index  ~/NMZ
 #
-#Index		/usr/local/var/namazu/index
-#Replace	/home/foo/public_html/	http://www.foo.bar.jp/~foo/
-#Base		file://localhost/home/foo/documents/
-#Logging	OFF
-#Lang		ja_JP.JIS7
-#Scoring	TFIDF
+#Index         /usr/local/var/namazu/index
+#Replace       /home/foo/public_html/  http://www.foo.bar.jp/~foo/
+#Logging       off
+#Lang          ja
+#Scoring       tfidf
+#EmphasisTags  "<strong class=\"keyword\">"   "</strong>"

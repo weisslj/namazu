@@ -1,10 +1,19 @@
 #ifndef _OUTPUT_H
 #define _OUTPUT_H
 
-#include "libnamazu.h"  /* for NmzResult struct */
+#include "libnamazu.h"  /* for NmzResult */
+
+/*
+ * Special identifier for keyword emphasizing.
+ */
+enum {
+    EM_START_MARK = 0x01,
+    EM_END_MARK   = 0x02
+};
 
 extern enum nmz_stat print_result ( NmzResult hlist, const char *query, const char *subquery );
 extern void print_default_page ( void );
+extern void set_emphasis_tags(const char *start_tag, const char *end_tag);
 extern void set_htmlmode ( int mode );
 extern int is_htmlmode ( void );
 extern void set_cgimode ( int mode );

@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.52 2000-01-27 08:00:44 satoru Exp $
+ * $Id: cgi.c,v 1.53 2000-01-27 09:50:16 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -29,6 +29,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <ctype.h>
+#include <assert.h>
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
 #endif
@@ -192,12 +193,10 @@ static char *
 get_query_string(void) 
 {
     int contlen;
-    char *script_name    = (char *)"";
-    char *query_string   = (char *)"";
-    char *content_length = (char *)"";
+    char *script_name    = "";
+    char *query_string   = "";
 
-
-    if ((query_string = (char *)getenv("QUERY_STRING"))) {
+    if ((query_string = getenv("QUERY_STRING"))) {
         /* 
 	 * get QUERY_STRING from environmental variables.
 	 */
@@ -207,31 +206,13 @@ get_query_string(void)
             printf(_("Too long QUERY_STRING"));
             exit(EXIT_FAILURE);
         }
-	script_name = (char *)getenv("SCRIPT_NAME");
+	script_name = getenv("SCRIPT_NAME");
         if (script_name == NULL) {
             return NULL;
         }
-    } else {   
-        /* 
-	 * get QUERY_STRING from stdin 
-	 */
-	if ((content_length = (char *)getenv("CONTENT_LENGTH"))) {
-	    contlen = atoi(content_length);
-            if (contlen > CGI_QUERY_MAX) {
-                printf(MSG_MIME_HEADER);
-                printf(_("Too long QUERY_STRING"));
-                exit(EXIT_FAILURE);
-            }
-            query_string = malloc(contlen * sizeof(char) + 1);
-	    if (query_string == NULL) {
-                printf(MSG_MIME_HEADER);
-		printf("query_string(get_cgivar)");
-		exit(EXIT_FAILURE);
-	    }
-	    fread(query_string, sizeof(char), contlen, stdin);
-	} else {
-	    return NULL;
-	}
+    } else {
+	/* Must not be reached here. */
+	assert(0);
     }
     return query_string;
 }

@@ -21,6 +21,8 @@
 
 	* pl/Makefile.am: Fixed for handle gettext.pl.in.
 	(TAGS_DEPENDENCIES): Set.
+	(EXTRA_DIST): Includes correctly files.
+	(CLEANFILES): Added gettext.pl.
 
 	* filter/Makefile.am (TAGS_DEPENDENCIES): Set.
 

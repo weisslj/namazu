@@ -9,7 +9,7 @@ src/namazu.c
 src/output.c
 src/rcfile.c
 src/usage.c
-scripts/mknmz.pl.in
+scripts/mknmz.in
 pl/util.pl
 pl/wakati.pl
 pl/usage.pl

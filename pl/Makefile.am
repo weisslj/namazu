@@ -16,10 +16,21 @@ perllib_DATA = \
 	var.pl \
 	wakati.pl
 
-EXTRA_DIST = $(perllib_DATA)
+EXTRA_DIST = \
+	codeconv.pl \
+	conf.pl \
+	gettext.pl.in \
+	nmzidx.pl \
+	seed.pl \
+	usage.pl \
+	util.pl \
+	var.pl \
+	wakati.pl
+
+CLEANFILES: gettext.pl
 
 gettext.pl: gettext.pl.in Makefile
-	rm -f gettext.pl.in
+	rm -f gettext.pl
 	sed -e 's!@LOCALEDIR@!$(localedir)!g' \
 	gettext.pl.in > gettext.pl
 

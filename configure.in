@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.96 2000-02-02 06:44:04 rug Exp $
+dnl $Id: configure.in,v 1.97 2000-02-02 12:38:21 rug Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -244,10 +244,14 @@ AC_SUBST(OPT_WAKATI_DEFAULT)
 dnl *
 dnl * Preprocessing for tknamazu (FIXME: ugly scripts)
 dnl *
-AC_ARG_WITH(
+AC_ARG_ENABLE(
     tknamazu,
-    [  --with-tknamazu         build namazu with tcl/tk front-end ],
-    [tknamazu=${withval}], [tknamazu='no']
+    [  --enable-tknamazu         build namazu with tcl/tk front-end [default=no]],
+    [case "${enableval}" in
+     yes|no) tknamazu=${enableval};;
+     *)      AC_MSG_ERROR(invalid argument to --enable-tknamazu) ;;
+     esac],
+    [tknamazu='no']
 )
 
 dnl * For determining namazu and mknmz pathnames

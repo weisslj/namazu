@@ -1,7 +1,9 @@
 1999-08-28  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/mknmz.pl.in: Add istext() and codeconv() functions.
+	
 	* src/mknmz.pl.in (load_document): Move a place of codes of code
-	conversion.
+	conversion because its timing was bad.
 
 	* filter/gfilter.pl: New file.
 	

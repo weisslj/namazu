@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- CPerl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.34 1999-08-28 11:32:28 satoru Exp $
+# $Id: mknmz.pl.in,v 1.35 1999-08-28 12:28:28 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -478,17 +478,8 @@ sub load_document ($$$$$\%) {
     }
 
     $$content = util::readfile($cfile);
-    if ($conf::LANGUAGE eq "ja" && ! $var::USE_NKF_MODULE) {
-	my $nkftmp = 'NMZ.nkftmp';
-	my $nh = util::efopen("|$conf::NKF -emXZ1 > $nkftmp");
-	print $nh $$content;
-	undef $nh;
-	$nh = util::efopen("< $nkftmp");
-	$$content = util::readfile($nh);
-	undef $nh;
-	unlink($nkftmp);
-    } else {
-	$$content = NKF::nkf("-emXZ1", $$content);
+    if (istext($content)) {
+	codeconv($content);
     }
 
     # filtering process
@@ -534,6 +525,39 @@ sub load_document ($$$$$\%) {
     my $kanji = $$content =~ tr/\xa1-\xfe/\xa1-\xfe/;  # Kanji contained?
 
     return ($size, $ctrl, $kanji, $mtype);
+}
+
+sub codeconv ($) {
+    my ($cont) = @_;
+
+    if ($conf::LANGUAGE eq "ja" && ! $var::USE_NKF_MODULE) {
+	my $nkftmp = util::tmpname("NMZ.nkf");
+	{
+	    my $nh = util::efopen("|$conf::NKF -emXZ1 > $nkftmp");
+	    print $nh $$cont;
+	}
+	{
+	    my $nh = util::efopen("< $nkftmp");
+	    $$cont = util::readfile($nh);
+	}
+	unlink($nkftmp);
+    } else {
+	$$cont = NKF::nkf("-emXZ1", $$cont);
+    }
+}
+
+sub istext ($) {
+    my ($dataref) = @_;
+
+    my $size = length($$dataref);
+    # count a number of ctrl characters
+    my $ctrl = $$dataref 
+	=~ tr/\x00-\x09\x0b-\x1f\x7f\xff/\x00-\x09\x0b-\x1f\x7f\xff/;
+
+    if (int ($ctrl / $size * 100) > 3) {
+	return 0;
+    }
+    return 1;
 }
 
 sub prep () {

@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.76 2000-09-13 08:00:26 knok Exp $
+ * $Id: output.c,v 1.77 2000-09-14 08:49:28 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -316,13 +316,6 @@ load_nmz_result(const char *basedir)
     buf = nmz_readfile(fname); 
     if (buf == NULL) { /* failed */
 	return NULL;
-    }
-
-    /* In case of suffix isn't equal to lang, we needs code conversion */
-    if (strcmp(lang_suffix, nmz_get_lang()) != 0) {
-	char *new = nmz_codeconv_external(buf); /* new is allocated in nmz_codeconv_external. */
-	free(buf);  /* Then we should free buf's memory */
-	buf = new;
     }
 
     return buf;

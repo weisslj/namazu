@@ -1,3 +1,30 @@
+2000-04-07  Ken-ichi Hirose  <kenzo-@tama.or.jp>
+
+        * filter/msword.pl (filter_doccat): Remove SJIS code path check.
+        All time use temporary file.
+
+        * filter/excel.pl (filter_doccat): Likewise.
+
+        * filter/powerpoint.pl (filter): Likewise.
+
+        * filter/taro.pl (filter): Likewise.
+
+        * filter/wordpro.pl (filter): Likewise.
+
+        * filter/oasys.pl (filter): Likewise.
+
+        * filter/ichitaro456.pl : Move to win32 directory.
+
+        * filter/win32/ichitaro456.pl : Move from filter directory.
+
+        * filter/Makefile.am (filter_DATA): Delete ichitaro456.pl.
+
+        * filter/win32/Makefile.am (filter_DATA): Add ichitaro456.pl.
+
+        * doc/ja/manual.html : Move ichitaro456.pl to Windows section.
+
+        * doc/en/manual.html : Likewise.
+
 2000-04-06  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* doc/ja/tips.html (saving-memory): New section.
@@ -5493,4 +5520,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.676 2000-04-06 01:40:00 satoru Exp $
+$Id: ChangeLog,v 1.677 2000-04-06 19:05:34 kenzo- Exp $

@@ -20,7 +20,6 @@ filter_DATA = bzip2.pl \
 	      gzip.pl \
 	      hnf.pl \
 	      html.pl \
-	      ichitaro456.pl \
 	      mailnews.pl \
 	      man.pl \
 	      mhonarc.pl \

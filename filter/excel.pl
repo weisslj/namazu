@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: excel.pl,v 1.10 2000-04-05 18:09:45 kenzo- Exp $
+# $Id: excel.pl,v 1.11 2000-04-06 19:05:34 kenzo- Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu, 
 #               2000 Namazu Project All rights reserved.
@@ -52,11 +52,11 @@ sub status() {
 	    return 'no';
 	}
     } 
-	} else {
-    $xlconvpath = util::checkcmd('doccat');
-    return 'yes' if defined $xlconvpath;
-    return 'no'; 
-	}
+    } else {
+        $xlconvpath = util::checkcmd('doccat');
+        return 'yes' if defined $xlconvpath;
+        return 'no'; 
+    }
 }
 
 sub recursive() {
@@ -166,21 +166,18 @@ sub filter_doccat ($$$$$) {
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
     my $tmpfile  = util::tmpnam('NMZ.excel');
-    my $tmpfile2 = $cfile;                         
-    if ($cfile =~ /[\x81-\x9f\xe0-\xef][\x40-\x7e\x80-\xfc]|[\x20\xa1-\xdf]/) {
-        $tmpfile2 = util::tmpnam('NMZ.excel2');   
-        copy("$cfile", "$tmpfile2");
-    }
+    my $tmpfile2 = util::tmpnam('NMZ.excel2');   
+    copy("$cfile", "$tmpfile2");
 
     system("$xlconvpath -o e $tmpfile2 > $tmpfile");
 
     {
-    my $fh = util::efopen("< $tmpfile");
-    $$cont = util::readfile($fh);
+        my $fh = util::efopen("< $tmpfile");
+        $$cont = util::readfile($fh);
     }
 
     unlink($tmpfile);
-    unlink("$tmpfile2");
+    unlink($tmpfile2);
 
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);

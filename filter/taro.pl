@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: taro.pl,v 1.3 2000-04-05 18:09:45 kenzo- Exp $
+# $Id: taro.pl,v 1.4 2000-04-06 19:05:34 kenzo- Exp $
 # Copyright (C) 2000 Ken-ichi Hirose, 
 #               2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -66,21 +66,18 @@ sub filter ($$$$$) {
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
     my $tmpfile  = util::tmpnam('NMZ.taro');
-    my $tmpfile2 = $cfile;
-    if ($cfile =~ /[\x81-\x9f\xe0-\xef][\x40-\x7e\x80-\xfc]|[\x20\xa1-\xdf]/) {
-        $tmpfile2 = util::tmpnam('NMZ.taro2');
-        copy("$cfile", "$tmpfile2");
-    }
+    my $tmpfile2 = util::tmpnam('NMZ.taro2');
+    copy("$cfile", "$tmpfile2");
 
     system("$taroconvpath -o e $tmpfile2 > $tmpfile");
 
     {
-    my $fh = util::efopen("< $tmpfile");
-    $$cont = util::readfile($fh);
+        my $fh = util::efopen("< $tmpfile");
+        $$cont = util::readfile($fh);
     }
 
     unlink($tmpfile);
-    unlink("$tmpfile2");
+    unlink($tmpfile2);
 
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);

@@ -11,12 +11,8 @@ else
     rm -f idx2/NMZ.*
 fi
 
-prevpwd=`pwd`
-cd $TARGET
-pwd=`pwd`
-targets=`find $pwd -type f | grep -v CVS | grep -v Makefile | sort`
-cd $prevpwd
 cd ../scripts
+targets=`cat ../tests/idx1/NMZ.field.uri`
 
 for target in $targets; do
    ./mknmz --no-delete -O ../tests/idx2 $target \

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: excel.pl,v 1.7 2000-03-22 21:11:59 kenzo- Exp $
+# $Id: excel.pl,v 1.8 2000-03-29 15:18:01 satoru Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu, 
 #               2000 Namazu Project All rights reserved.
@@ -143,14 +143,16 @@ sub filter_xl ($$$$$) {
     unlink($tmpfile);
     unlink($tmpfile2);
 
+    # Title shoud be removed.
+    # Because xlHtml generate poor <TITLE>/foo/bar/NMZ.excel.tmp</TITLE>.
+    $$cont =~ s!<TITLE>.+</TITLE>!!;
+
     html::html_filter($cont, $weighted_str, $fields, $headings);
 
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($cont);
 
-    # Title shoud be overwritten with the file name.
-    # Because xlHtml generate poor <TITLE>/foo/bar/NMZ.excel.tmp</TITLE>.
     $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str);
     gfilter::show_filter_debug_info($cont, $weighted_str,
 			   $fields, $headings);

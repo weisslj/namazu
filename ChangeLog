@@ -1,5 +1,9 @@
 2000-03-29  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* filter/excel.pl (filter_xl): Fix <TITLE>.+</TITLE> handling.
+
+	* tests/mknmz-2 (targets): Change the way to get target files.
+
 	* filter/mailnews.pl (mailnews_citation_filter): Fix regex.
 
 	* filter/html.pl (remove_html_elements): Likewise.
@@ -5382,4 +5386,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.660 2000-03-29 14:21:49 satoru Exp $
+$Id: ChangeLog,v 1.661 2000-03-29 15:18:01 satoru Exp $

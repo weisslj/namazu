@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: rtf.pl,v 1.11 2004-03-22 06:22:09 opengl2772 Exp $
+# $Id: rtf.pl,v 1.12 2004-05-11 08:27:04 opengl2772 Exp $
 # Copyright (C) 2003-2004 Tadamasa Teranishi All rights reserved.
 #               2003-2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -55,6 +55,7 @@ sub status() {
                     my $major = $1;
                     my $minor = $2 . "000";
                     if ($major >= 1 && substr($minor, 0, 2) >= 42) {
+                        util::fclose($fh_cmd);
                         return 'yes';
                     }
                 }

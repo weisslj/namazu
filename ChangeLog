@@ -5,6 +5,8 @@
 	* filter/taro.pl (mediatype): Added media type
         `application/ichitaro5', etc...
 
+        * filter/rtf.pl: util::fclose() is added.
+
 2004-05-10  SATOH Fumiyasu  <fumiya@samba.gr.jp>
 
 	* filter/doccat.pl: Add new filter.
@@ -8872,4 +8874,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1179 2004-05-11 02:40:16 opengl2772 Exp $
+$Id: ChangeLog,v 1.1180 2004-05-11 08:27:03 opengl2772 Exp $

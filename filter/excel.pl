@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: excel.pl,v 1.3 2000-02-27 22:45:16 satoru Exp $
+# $Id: excel.pl,v 1.4 2000-03-10 08:07:24 satoru Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu, 
 #               2000 Namazu Project All rights reserved.
@@ -65,6 +65,9 @@ sub post_codeconv () {
 }
 
 sub add_magic ($) {
+    my ($magic) = @_;
+
+    $magic->addFileExts('\\.xls$', 'application/excel');
     return;
 }
 
@@ -86,19 +89,39 @@ sub filter ($$$$$) {
 	print $fh $$cont;
     }
 
-    if (util::islang("ja")) {
-	system("$xlconvpath $tmpfile | $utfconvpath -Iu8 -Oej > $tmpfile2");
-    } else {
-	system("$xlconvpath $tmpfile > $tmpfile2");
-    }
+#
+
+    # -m: No encoding for multibyte. It's necessary to
+    # handle a Japanese Excel 5.0 or 95 document correctly.
+    system("$xlconvpath -m $tmpfile > $tmpfile2");
 
     {
 	my $fh = util::efopen("< $tmpfile2");
 	$$cont = util::readfile($fh);
-
-	# Exclude xlHtml's footer becaues it has no good index terms.
-	$$cont =~ s/^<hr><FONT SIZE=-1>Created with.*$//sm;
     }
+
+    # Code conversion for Japanese document.
+    if (util::islang("ja")) {
+	my $encoding = "u8"; # UTF-8
+	# Pattern for xlHtml version 0.2.6.
+	if ($$cont =~ m!^<FONT SIZE=-1><I>Last Updated&nbsp;using Excel 5.0 or 95</I></FONT><br>$!m) 
+	{
+	    $encoding = "s"; # Shift_JIS
+	}
+	{
+	    my $fh = util::efopen("> $tmpfile");
+	    print $fh $$cont;
+	}
+	system("$utfconvpath -I$encoding -Oej $tmpfile > $tmpfile2");
+	{
+	    my $fh = util::efopen("< $tmpfile2");
+	    $$cont = util::readfile($fh);
+	}
+    } 
+
+    # Extract the author and exclude xlHtml's footer at once.
+    $$cont =~ s!^<FONT SIZE=-1><I>Spreadsheet's Author:&nbsp;(.*?)</I></FONT><br>.*!!ms;  # '
+    $fields->{'author'} = $1;
 
     unlink($tmpfile);
     unlink($tmpfile2);
@@ -108,8 +131,10 @@ sub filter ($$$$$) {
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($cont);
-    $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
-      unless $fields->{'title'};
+
+    # Title shoud be overwritten with the file name.
+    # Because xlHtml generate poor <TITLE>/foo/bar/NMZ.excel.tmp</TITLE>.
+    $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str);
     gfilter::show_filter_debug_info($cont, $weighted_str,
 			   $fields, $headings);
     return undef;

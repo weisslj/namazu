@@ -2,6 +2,10 @@
 EXTRA_DIST  =   acrobat3.pdf \
 		acrobat4.pdf \
 		d20000220.hnf \
+		excel5.xls \
+		excel95.xls \
+		excel97.xls \
+		excel98.xls \
 		html.html \
 		taro4.jsw \
 		taro5.jaw \

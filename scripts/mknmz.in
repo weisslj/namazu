@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.44 2000-03-09 13:48:30 satoru Exp $
+# $Id: mknmz.in,v 1.45 2000-03-10 08:07:26 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -2312,15 +2312,21 @@ sub write_index_sub () {
 
 #
 # Decide the media type. 
-# FIXME: I don't know whether it is OK or not. -- satoru
+# FIXME: Very ad hoc. It's just a compromise. -- satoru
 #
 sub decide_type ($$) {
     my ($name, $cont) = @_;
     return $name if (!defined $cont || $name eq $cont);
 
+    util::dprint("decide_type: name: $name, cont: $cont\n");
     if ($cont =~ m!^text/plain! && $name =~ m!^text/plain!) {
 	return $name;
     } elsif ($cont =~ m!^application/octet-stream!) {
+	return $name;
+    } elsif ($cont =~ m!^application/(excel|powerpoint|msword)! &&
+	     $name !~ m!^application/octet-stream!)  {
+	# FIXME: Currently File::MMagic 1.02's checktype_data() 
+	# is unreliable for them.
 	return $name;
     }
 

@@ -1,3 +1,17 @@
+2000-03-10  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* tests/data/ja/Makefile.am (EXTRA_DIST): Add excel5.xls,
+	excel95.xls, excel97.xls and excel98.xls.
+
+	* scripts/mknmz.in (decide_type): Always believe the type detected
+	by checktype_byfilename(). 
+
+	* filter/excel.pl (filter): Add Excel 5 and Excel 95 documents
+	handling. 
+	(add_magic): Use addFileExts() for media type detection.
+
+	* pl/conf.pl.in ($ALLOW_FILE): Add .*\\.xls for Excel document.
+
 2000-03-09  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* scripts/mknmz.in (generate_uri): Handle $fragment.

@@ -40,7 +40,8 @@ filter_DATA = bzip2.pl \
 	      apachecache.pl \
 	      mp3.pl \
 	      macbinary.pl \
-	      applefile.pl
+	      applefile.pl \
+	      pipermail.pl
 
 EXTRA_DIST = $(filter_DATA)
 

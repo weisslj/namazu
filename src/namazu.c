@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.54 1999-12-06 08:51:36 satoru Exp $
+ * $Id: namazu.c,v 1.55 1999-12-06 13:38:39 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -342,7 +342,7 @@ static enum nmz_stat namazu_core(char * query, char *subquery, char *av0)
         }
     }
 
-    print_hit_count();
+    print_hitnum_all_idx(); /* print hit numbers for all index. */
 
     /* result2 */
     if (is_refprint() && !is_countmode() && 

@@ -245,7 +245,7 @@ long getidxptr(FILE * fp, long p)
 
 int issymbol(int c)
 {
-    if (c < 0x80 && !isalnum(c)) {
+    if (c >= 0x00 && c < 0x80 && !isalnum(c)) {
         return 1;
     } else {
 	return 0;

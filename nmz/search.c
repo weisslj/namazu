@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.20 1999-12-06 09:15:15 satoru Exp $
+ * $Id: search.c,v 1.21 1999-12-06 13:38:32 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -89,7 +89,7 @@ static int check_accessfile();
 static void parse_access(char *, char *, char *);
 static struct nmz_hitnum *push_hitnum(struct nmz_hitnum *, int, enum nmz_stat, char *);
 
-static int CurrentIndexNumber = -1;
+static int cur_idxnum = -1;
 
 /* struct nmz_hitnum handling subroutines */
 static struct nmz_hitnum *push_hitnum(struct nmz_hitnum *hn, 
@@ -109,13 +109,15 @@ static struct nmz_hitnum *push_hitnum(struct nmz_hitnum *hn,
     if (prevhnptr != NULL)
 	prevhnptr->next = hnptr;
     hnptr->hitnum = hitnum;
-    hnptr->stat = stat;
-    hnptr->next = NULL;
+    hnptr->stat  = stat;
+    hnptr->phrase = NULL;
+    hnptr->next  = NULL;
     if ((hnptr->word = malloc(strlen(str) +1)) == NULL) {
 	set_dyingmsg("push_hitnum: malloc failed on str");
 	return NULL;
     }
     strcpy(hnptr->word, str);
+
     if (hn == NULL)
 	return hnptr;
     return hn;
@@ -123,11 +125,16 @@ static struct nmz_hitnum *push_hitnum(struct nmz_hitnum *hn,
 
 void free_hitnums(struct nmz_hitnum *hn)
 {
-    if (hn == NULL)
-	return;
-    free(hn->word);
-    free_hitnums(hn->next);
-    free(hn);
+    struct nmz_hitnum *tmp;
+
+    for (; hn != NULL; hn = tmp) {
+	tmp = hn->next;
+	free(hn->word);
+	if (hn->phrase != NULL) { /* it has phrases */
+	    free_hitnums(hn->phrase);
+	}
+	free(hn);
+    }
 }
 
 /* show the status for debug use */
@@ -315,13 +322,14 @@ static int hash(char *str)
 {
     extern int Seed[4][256];
     int hash = 0, i, j;
+    uchar *ustr = (uchar *)str;  /* for 8 bit chars handling */
 
-    for (i = j = 0; *str; i++) {
-        if (!issymbol(*str)) { /* except symbol */
-            hash ^= Seed[j & 0x3][(int)*str];
+    for (i = j = 0; *ustr; i++) {
+        if (!issymbol(*ustr)) { /* except symbol */
+            hash ^= Seed[j & 0x3][*ustr];
             j++;
         }
-        str++;
+        ustr++;
     }
     return (hash & 65535);
 }
@@ -396,6 +404,7 @@ static NmzResult do_phrase_search(char *key, NmzResult val)
     int i, h = 0, ignore = 0;
     char *p, *q, *word_b = 0, word_mix[BUFSIZE];
     FILE *phrase, *phrase_index;
+    struct nmz_hitnum *pr_hitnum = NULL; /* phrase hitnum */
 
     p = key;
     if (strchr(p, '\t') == NULL) {  /* if only one word */
@@ -422,6 +431,12 @@ static NmzResult do_phrase_search(char *key, NmzResult val)
             tmp = do_word_search(p, val);
 	    if (tmp.stat == ERR_FATAL) 
 	        return tmp;
+
+	    pr_hitnum = push_hitnum(pr_hitnum, tmp.num, tmp.stat, p);
+	    if (pr_hitnum == NULL) {
+		tmp.stat = ERR_FATAL;
+		return tmp;
+	    }
 
             if (i == 0) {
                 val = tmp;
@@ -454,8 +469,30 @@ static NmzResult do_phrase_search(char *key, NmzResult val)
         p = q + 1;
     }
 
-    Idx.phrasehit[CurrentIndexNumber] = val.num;
+    /* set phrase hit numbers using phrase member */
+    {
+	struct nmz_hitnum *x;
 
+        /* set dummy */
+	Idx.pr[cur_idxnum] = push_hitnum(Idx.pr[cur_idxnum], 
+						 0, SUCCESS, "");
+	if (Idx.pr[cur_idxnum] == NULL) {
+	    val.stat = ERR_FATAL;
+	    return val;
+	}
+
+	/* get the last element */
+	x = Idx.pr[cur_idxnum];
+	while (1) {
+	    if (x->next == NULL) {
+		break;
+	    }
+	    x = x->next;
+	}
+	x->phrase = pr_hitnum;
+	x->hitnum = val.num;  /* total hit of phrases */
+    }
+    
     fclose(phrase);
     fclose(phrase_index);
 
@@ -714,7 +751,7 @@ static void do_logging(char * query, int n)
 
 static NmzResult search_sub(NmzResult hlist, char *query, char *query_orig, int n)
 {
-    CurrentIndexNumber = n;
+    cur_idxnum = n;
 
     if (check_accessfile() == DENY) {
 	/* if access denied */
@@ -746,7 +783,7 @@ static NmzResult search_sub(NmzResult hlist, char *query, char *query_orig, int 
     if (hlist.stat == SUCCESS && hlist.num > 0) {  /* if hit */
         set_idxid_hlist(hlist, n);
     }
-    Idx.total[CurrentIndexNumber] = hlist.num;
+    Idx.total[cur_idxnum] = hlist.num;
     close_index_files();
 
     if (is_loggingmode()) {
@@ -923,27 +960,17 @@ NmzResult do_search(char *orig_key, NmzResult val)
         val = do_word_search(key, val);
     }
 
-    {
+    if (mode != PHRASE_MODE) {
 	struct nmz_hitnum *prtmp;
-	char tmpkey[BUFSIZE];
 
-	strcpy(tmpkey, orig_key);
-
-	if (mode == PHRASE_MODE) {
-	    tr(tmpkey, "	", " ");
-	}
-
-	fflush(stdout);
-
-	if ((prtmp = push_hitnum(Idx.pr[CurrentIndexNumber], 
-				    val.num, val.stat, tmpkey)) == NULL) 
-	{
+	prtmp = push_hitnum(Idx.pr[cur_idxnum], 
+			    val.num, val.stat, orig_key);
+	if (prtmp == NULL) {
 	    val.stat = ERR_FATAL;
 	    return val;
 	}
-	Idx.pr[CurrentIndexNumber] = prtmp;
+	Idx.pr[cur_idxnum] = prtmp;
     }
 
     return val;
 }
-

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 1999-12-06 17:57+0900\n"
+"POT-Creation-Date: 1999-12-06 22:35+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -69,48 +69,48 @@ msgstr ""
 msgid "Current List: %d"
 msgstr ""
 
-#: src/output.c:527
+#: src/output.c:530
 #, c-format
 msgid " [ TOTAL: %d ]"
 msgstr ""
 
-#: src/output.c:550
+#: src/output.c:565
 msgid " (Too many words matched. Ignored.)"
 msgstr ""
 
-#: src/output.c:552
+#: src/output.c:567
 msgid " (Too many pages hit. Ignored.)"
 msgstr ""
 
-#: src/output.c:554
+#: src/output.c:569
 msgid " (cannot open regex index)"
 msgstr ""
 
-#: src/output.c:556
+#: src/output.c:571
 msgid " (cannot open phrase index)"
 msgstr ""
 
-#: src/output.c:558
+#: src/output.c:573
 msgid " (cannot open this index)\n"
 msgstr ""
 
-#: src/output.c:560
+#: src/output.c:575
 msgid "(You don't have a permission to access the index)"
 msgstr ""
 
-#: src/output.c:570
+#: src/output.c:593
 msgid "\t<h2>Results:</h2>\n"
 msgstr ""
 
-#: src/output.c:577
+#: src/output.c:600
 msgid "References: "
 msgstr ""
 
-#: src/output.c:585
+#: src/output.c:608
 msgid "\t<p><strong> Total "
 msgstr ""
 
-#: src/output.c:592
+#: src/output.c:615
 msgid ""
 "\t documents matching your query.</strong></p>\n"
 "\n"

@@ -2,7 +2,7 @@
  * 
  * libnamazu.h - Namazu library api
  *
- * $Id: libnamazu.h,v 1.20 1999-12-04 09:28:55 satoru Exp $
+ * $Id: libnamazu.h,v 1.21 1999-12-06 13:38:32 satoru Exp $
  * 
  */
 
@@ -148,7 +148,6 @@ struct nmz_indices {
 
     int total[INDEX_MAX + 1];   /* results of total hits */
     struct nmz_hitnum *pr[INDEX_MAX + 1]; /* hitnums of each word */
-    int phrasehit[INDEX_MAX + 1]; /* results of each phrase hits */
 };
 
 struct nmz_query {
@@ -161,7 +160,8 @@ struct nmz_query {
 struct nmz_hitnum {
     char *word;
     int hitnum;
-    enum nmz_stat stat;    /* status code mainly used for error handling */
+    enum nmz_stat stat;        /* status code mainly used for error handling */
+    struct nmz_hitnum *phrase; /* for a result of a phrase search */
     struct nmz_hitnum *next;
 };
 

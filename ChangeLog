@@ -1,5 +1,26 @@
 1999-12-06  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* nmz/search.c (hash): Fix a 8 bit char handling bug.
+
+	* nmz/util.c (issymbol): Fix a 8 bit char handling bug.
+
+	* src/output.c (print_hitnum_each): Add phrase handling.
+
+	* nmz/search.c (push_hitnum): Add phrase handling.
+	(free_hitnums): Add phrase handling.
+	cur_idxnum: Renamed from CurrentIndexNumber.
+	(do_phrase_search): Add phrase handling.
+
+	* nmz/libnamazu.h (nmz_hitnum): Add new member:
+	struct nmz_hitnum *phrase for a result of a phrase search.
+
+	* nmz/libnamazu.h (nmz_indices): Abolish a useless member: 
+	int phrasehit[INDEX_MAX + 1]; 
+
+	* src/output.c (print_hitnum_each): Renamed from
+	print_word_hit_count.
+	(print_hitnum_all_idx): Renamed from print_hit_count.
+
 	* nmz/hlist.c, nmz/idxname.c, nmz/libnamazu.c, nmz/search.c,
 	nmz/util.c, src/cgi.c: Remove unnecessary casts for malloc().
 
@@ -2217,4 +2238,3 @@
 
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
-	

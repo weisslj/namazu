@@ -43,6 +43,6 @@ extern void print_result1(void);
 extern void print_hitnum(int n);
 extern void print_listing(NmzResult hlist);
 extern void print_range(NmzResult hlist);
-extern void print_hit_count();
+extern void print_hitnum_all_idx();
 
 #endif /* _OUTPUT_H */

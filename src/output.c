@@ -46,7 +46,7 @@ static char template[BUFSIZE]     = "normal"; /* suffix of NMZ.result.* */
 
 static void fputs_without_html_tag(char *s, FILE *fp);
 static void emprint(char *s, int entity_encode);
-static void print_word_hit_count(struct nmz_hitnum *pr);
+static void print_hitnum_each(struct nmz_hitnum *pr);
 
 /* print s to stdout with processing for emphasizing and entity encoding  */
 static void emprint(char *s, int entity_encode)
@@ -500,11 +500,12 @@ void print_hlist(NmzResult hlist)
     }
 }
 
-void print_hit_count ()
+void print_hitnum_all_idx(void)
 {
     int i;
     for (i = 0; i < Idx.num; i ++) {
         struct nmz_hitnum *pr = Idx.pr[i];
+
 	if (is_refprint() && !is_countmode() && 
 	    !is_listmode() && !is_quietmode()) 
 	{
@@ -517,10 +518,12 @@ void print_hit_count ()
 		}
 	    }
 	}
+
         while (pr != NULL) {
-	    print_word_hit_count(pr);
+	    print_hitnum_each(pr);
 	    pr = pr->next;
 	}
+
 	if (is_refprint() && !is_countmode() && !is_listmode() && 
 	    !is_quietmode()) {
 	    if (Idx.num > 1 && Query.tab[1]) {
@@ -531,37 +534,57 @@ void print_hit_count ()
     }
 }
 
-static void print_word_hit_count (struct nmz_hitnum *pr)
+static void print_hitnum_each (struct nmz_hitnum *hn)
 {
+    struct nmz_hitnum *hnptr = hn;
+
+    if (hn->phrase != NULL) { /* it has phrases */
+	hnptr = hn->phrase;
+        if (is_refprint() && !is_countmode() && !is_listmode() && 
+	    !is_quietmode())
+	{
+	    print(" { ");
+	}
+    }
+
     if (is_refprint() && !is_countmode() && 
 	!is_listmode() && !is_quietmode()) 
     {
-	char tmp_word[BUFSIZE];
-	strcpy(tmp_word, pr->word);
-	conv_ext(tmp_word);
+	do {
+	    char tmp_word[BUFSIZE];
+	    strcpy(tmp_word, hnptr->word);
+	    conv_ext(tmp_word);
 
-        print(" [ ");
-        print(tmp_word);
-	if (pr->stat == SUCCESS) {
-            printf(": %d", pr->hitnum);
-	} else {
-	    char *msg = "(unknown error)";
-	    if (pr->stat == ERR_TOO_MUCH_MATCH) {
-                msg = _(" (Too many words matched. Ignored.)");
-            } else if (pr->stat == ERR_TOO_MUCH_HIT) {
-                msg = _(" (Too many pages hit. Ignored.)");
-            } else if (pr->stat == ERR_REGEX_SEARCH_FAILED) {
-                msg = _(" (cannot open regex index)");
-            } else if (pr->stat == ERR_PHRASE_SEARCH_FAILED) {
-                msg = _(" (cannot open phrase index)");
-            } else if (pr->stat == ERR_CANNOT_OPEN_INDEX) {
-		msg = _(" (cannot open this index)\n");
-            } else if (pr->stat == ERR_NO_PERMISSION) {
-		msg = _("(You don\'t have a permission to access the index)");
-	    } 
-	    print(_(msg));
-        }
-	print(" ] ");
+	    print(" [ ");
+	    print(tmp_word);
+	    if (hnptr->stat == SUCCESS) {
+		printf(": %d", hnptr->hitnum);
+	    } else {
+		char *msg = "(unknown error)";
+		if (hnptr->stat == ERR_TOO_MUCH_MATCH) {
+		    msg = _(" (Too many words matched. Ignored.)");
+		} else if (hnptr->stat == ERR_TOO_MUCH_HIT) {
+		    msg = _(" (Too many pages hit. Ignored.)");
+		} else if (hnptr->stat == ERR_REGEX_SEARCH_FAILED) {
+		    msg = _(" (cannot open regex index)");
+		} else if (hnptr->stat == ERR_PHRASE_SEARCH_FAILED) {
+		    msg = _(" (cannot open phrase index)");
+		} else if (hnptr->stat == ERR_CANNOT_OPEN_INDEX) {
+		    msg = _(" (cannot open this index)\n");
+		} else if (hnptr->stat == ERR_NO_PERMISSION) {
+		    msg = _("(You don\'t have a permission to access the index)");
+		} 
+		print(_(msg));
+	    }
+	    print(" ] ");
+	    hnptr = hnptr->next;
+	} while (hn->phrase && hnptr != NULL);
+    }
+
+    if (is_refprint() && !is_countmode() && !is_listmode() && 
+	!is_quietmode() &&  hn->phrase != NULL) /* it has phrases */
+    {
+	printf(" :: %d } ", hn->hitnum);
     }
 }
 

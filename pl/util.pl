@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.26 2002-09-23 08:52:33 baba Exp $
+# $Id: util.pl,v 1.27 2003-01-15 10:12:17 knok Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -305,6 +305,11 @@ sub devnull {
     } else { # Unix
 	return "/dev/null";
     }
+}
+
+# check url
+sub isurl ($) {
+    return $_[0] =~ /^[a-z]+:/;
 }
 
 1;

@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.116 2002-11-16 09:19:26 rug Exp $
+# $Id: mknmz.in,v 1.117 2003-01-15 10:12:19 knok Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -49,6 +49,7 @@ my $CONFDIR       = "@CONFDIR@";     # directory where mknmzrc are in.
 my $LIBDIR        = $PKGDATADIR . "/pl";      # directory where library etc. are in.
 my $FILTERDIR     = $PKGDATADIR . "/filter";   # directory where filters are in.
 my $TEMPLATEDIR   = $PKGDATADIR . "/template"; # directory where templates are in.
+my $SCHEMEDIR   = $PKGDATADIR . "/scheme"; # directory where scheme handlers are in.
 
 my $DeletedFilesCount = 0;
 my $UpdatedFilesCount = 0;
@@ -175,7 +176,10 @@ sub process_file ($$$$$$) {
 	$field_indices, $fh_errorsfile, $total_files_num) = @_;
 
     my $processed_num = 0;
-    my $file_size = util::filesize($cfile);
+    my $file_size = 0;
+    if (! $cfile =~ /^[a-z]+:/) {
+	$file_size = util::filesize($cfile);
+    }
 
     if ($var::Opt{'htmlsplit'} && $cfile =~ $conf::HTML_SUFFIX) {
 	my @parts = htmlsplit::split($cfile, "NMZ.partial");
@@ -186,7 +190,7 @@ sub process_file ($$$$$$) {
 			 "$cfile#$part" =~ /$conf::EXCLUDE_PATH/);
 		my $fname = util::tmpnam("NMZ.partial.$id");
 		my $fragment  = defined $part ? $part : undef;
-		my $uri   = generate_uri($cfile, $fragment);
+		my $uri = generate_uri($cfile, $fragment);
 		my $result = namazu_core($fname, 
 					 $docid_count + $processed_num, 
 					 $docid_base, $file_count, 
@@ -430,6 +434,38 @@ sub load_filters (@) {
     }
 }
 
+sub load_schememodules() {
+    unshift @INC, $SCHEMEDIR;
+    my @schemes = ();
+    @schemes = glob "$SCHEMEDIR/*.pl";
+
+    load_schemes(@schemes);
+}
+
+sub load_schemes(@) {
+    my @schemes = @_;
+    for my $scheme (@schemes) {
+	$scheme =~ m!([-\w]+)\.pl$!;
+	my $module = $1;
+	require "$module.pl" || die "unable to require \"$module.pl\"\n";;
+	my (@protocols, $status, $recursive);
+	eval "\@protocols = Namazu::Scheme::${module}::scheme();";
+	die $@ if $@;
+	eval "\$status = Namazu::Scheme::${module}::status();";
+	die $@ if $@;
+	eval "\$recursive = Namazu::Scheme::${module}::recursive();";
+	die $@ if $@;
+	eval "Namazu::Scheme::${module}::init();";
+
+	for my $sc (@protocols) {
+        next if (defined $var::SupportedScheme{$sc} && 
+                 $var::SupportedScheme{$sc} eq 'yes' && $status eq 'no');
+	    $var::SupportedScheme{$sc} = $status;
+	    $var::RECURSIVE_SCHEME{$sc} = $recursive;
+	}
+    }
+}
+
 # Core routine.
 #
 # FIXME: Too many parameters. They must be cleared.
@@ -454,6 +490,20 @@ sub namazu_core ($$$$$$$$$$) {
     unless ($uri) {
 	$uri = generate_uri($cfile);  # Make a URI from a file name.
     }
+    my $scheme;
+    my $mtime;
+    $mtime = (stat($cfile))[9] unless util::isurl($cfile);
+    foreach $scheme (keys %var::SupportedScheme) {
+	if ($var::SupportedScheme{$scheme} eq 'yes') {
+	    if ($uri =~ /^$scheme:/) {
+		eval "Namazu::Scheme::${scheme}::fetch(\$uri, \\\$content);";
+		die $@ if $@;
+		eval "\$mtime = Namazu::Scheme::${scheme}::mtime(\$uri);";
+		die $@ if $@;
+	    }
+	}
+    }
+    $fields{'mtime'} = $mtime;
     my ($cfile_size, $text_size, $kanji, $mtype) = 
 	load_document(\$cfile, \$content, \$weighted_str,
 		      \$headings, \%fields);
@@ -486,7 +536,7 @@ sub namazu_core ($$$$$$$$$$) {
     clean_field_index(\%fields);
     put_field_index(\%fields, $field_indices);
 
-    put_dateindex($cfile);
+    put_dateindex($cfile, $fields{'mtime'});
     $content .= $weighted_str;   # add weights
     $Indexer->init(\$content, $conf::WORD_LENG_MAX, $var::Opt{'nosymbol'});
     $Indexer->noedgesymbol() if ($var::Opt{'noedgesymbol'});
@@ -594,9 +644,10 @@ sub complete_field_info (\%$$\$\$\$) {
 	$fields->{'title'} = gfilter::filename_to_title($cfile, $wsref);
     }
     unless (defined($fields->{'date'})) {
-	my $mtime = (stat($cfile))[9];
+	my $mtime = $fields->{'mtime'};
 	my $date = util::rfc822time($mtime);
 	$fields->{'date'} = $date;
+	$fields->{'mtime'} = $mtime;
     }
     unless (defined($fields->{'uri'})) {
 	$fields->{'uri'} = $uri;
@@ -732,8 +783,8 @@ sub put_field_index (\%$) {
 
 # put the date infomation into NMZ.t file
 sub put_dateindex ($) {
-    my ($cfile) = @_;
-    my $mtime = (stat($cfile))[9];
+    my ($cfile, $mtime) = @_;
+    $mtime = (stat($cfile))[9] unless defined $mtime;
 
     my $fh_dataindex = util::efopen(">>$var::NMZ{'_t'}");
     print $fh_dataindex pack("N", $mtime);
@@ -746,8 +797,7 @@ sub load_document ($$$$\%) {
       = @_;
     my $cfile = $$orig_cfile;
 
-    return (0, 0, 0, 0) unless (-f $cfile && -r $cfile);
-
+    return (0, 0, 0, 0) unless (util::isurl($cfile) || (-f $cfile && -r $cfile));
     my $file_size;
     my $shelter_cfile = "";
 
@@ -770,6 +820,7 @@ sub load_document ($$$$\%) {
 	$$contref = util::readfile($cfile);
     } else {
 	$file_size = length($$contref);
+	$fields->{'size'} = $file_size;
     }
 
     my ($kanji, $mtype) = apply_filter($orig_cfile, $contref, $weighted_str, $headings, $fields, $shelter_cfile);
@@ -1110,6 +1161,7 @@ sub parse_options
       util::dprint("Override indexing language: $util::LANG\n");
     }
     load_filtermodules(); # to make effect $opt_config, $index_lang.
+    load_schememodules();
     postload_modules();
 
     if ($opt_help) {
@@ -1273,6 +1325,7 @@ sub load_target_list ($) {
 sub absolute_path($$) {
     my ($cwd, $path) = @_;
 
+    return $path if (util::isurl($path));
     $path =~ s!^\.$!\./!;
     $path =~ s!^\.[/\\]!$cwd/!;
     if (($SYSTEM eq "MSWin32") || ($SYSTEM eq "os2")) {
@@ -1321,8 +1374,10 @@ sub find_target (@) {
 	    print STDERR "Warning: target contains empty line, skip it\n";
 	    next;
 	}
-	
-	if (-f $target) { # target is a file.
+
+	if (util::isurl($target)) {
+	    add_target($target, \@flist, \%counts);
+	} elsif (-f $target) { # target is a file.
 	    add_target($target, \@flist, \%counts);
 	} elsif (-d $target) { # target is a directory.
 	    my @subtargets = ();
@@ -1385,11 +1440,11 @@ sub add_target ($\@\%) {
 	return;   # skip a file name containing LF/CR/TAB chars.
     }
 
-    return unless -f $target;  # Only file is targeted.
+    return unless util::isurl($target) || -f $target;
 
     $counts_ref->{'possible'}++;
 
-    unless (-r $target) {
+    unless (util::isurl($target) || -r $target) {
         util::vprint(sprintf(_("Unreadable:	%s"), $target));
 	$counts_ref->{'excluded'}++;
 	return;
@@ -1407,7 +1462,7 @@ sub add_target ($\@\%) {
     #
     # Do processing just like find's  --mtime option.
     #
-    if (defined $var::Opt{'mtime'}) {
+    if (defined $var::Opt{'mtime'} && ! util::isurl($_)) {
 	my $mtime = -M $_;
 	if ($var::Opt{'mtime'} < 0) {
 
@@ -1506,9 +1561,9 @@ sub check_file ($$$$$) {
     my ($cfile, $cfile_size, $text_size, $mtype, $uri) = @_;
 
     my $msg = undef;
-    if (! -e $cfile) {
+    if (! util::isurl($cfile) && ! -e $cfile) {
 	$msg = _("does NOT EXIST! skipped.");
-    } elsif (! -r $cfile) {
+    } elsif (! util::isurl($cfile) && ! -r $cfile) {
 	$msg = _("is NOT READABLE! skipped.");
     } elsif ($text_size == 0 || $cfile_size == 0) {
 	$msg = _("is 0 size! skipped.");
@@ -2427,6 +2482,7 @@ muda($conf::ON_MEMORY_MAX,
      $var::RECURSIVE_ACTIONS, $conf::META_TAGS, $var::USE_NKF_MODULE,
      $conf::ADDRESS, $var::MAILING_ADDRESS,
      $conf::FILE_SIZE_MAX,
+     $var::SupportedScheme, $var::RECURSIVE_SCHEME,
      );
 
 sub muda {}

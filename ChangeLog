@@ -1,3 +1,7 @@
+2000-01-13  Kenji Suzuki  <kenji@po.ganseki.ne.jp>
+
+        * filter/hnf.pl: New file.
+
 2000-01-13  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* configure.in: Abolish --with-scoring option.

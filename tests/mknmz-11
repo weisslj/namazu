@@ -14,7 +14,7 @@ else
     rm -f $IDXDIR/NMZ.*
 fi
 
-if test ! -L $TARGET; then
+if test ! -h $TARGET; then
     ln -s `pwd`/data/en $TARGET
 fi
 

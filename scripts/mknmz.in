@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.37 2000-03-01 05:37:14 satoru Exp $
+# $Id: mknmz.in,v 1.38 2000-03-01 06:04:02 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -39,6 +39,8 @@ use File::Copy;
 
 use vars qw($SYSTEM $LANG);
 $SYSTEM = $^O;
+
+my $NAMAZU_INDEX_VERSION = "2.0";
 
 $LANG = "C";                # language of messages
 my $CodingSystem = "euc";
@@ -285,7 +287,7 @@ sub load_modules () {
     }
     
     # Exclude gfilter.pl
-    @filters = grep  $_ !~ m!/gfilter\.pl$! } @filters;
+    @filters = grep { $_ !~ m!/gfilter\.pl$! } @filters;
       
     load_filters(@filters);
 }
@@ -703,7 +705,7 @@ sub prep () {
     $var::OUTPUT_DIR = $output_dir;
 
     require_modules();
-    change_dbnames();
+    change_filenames();
     check_present_index();
 
     # if Checkpoint mode, return
@@ -804,6 +806,7 @@ sub do_remain_job ($$$$) {
 	}
     } else {
 	set_lockfile($var::NMZ{'lock'});
+	write_version();
 	write_body_msg();
 	write_tips_msg();
 	write_result_file();
@@ -960,7 +963,7 @@ sub parse_options ()
 
 	($output_dir, @targets) = parse_options();
 	$output_dir = $update_index;
-	$var::NMZ{'status'} = $orig_status;  # See also change_dbnames()
+	$var::NMZ{'status'} = $orig_status;  # See also change_filenames()
 	return ($output_dir, @targets);
     }
 
@@ -1329,7 +1332,17 @@ sub check_file ($$$$$) {
 
 
 #
-# util::Rename a tmporary file to each real file name.
+# Write NMZ.version file.
+#
+sub write_version() {
+    unless (-f $var::NMZ{'version'}) {
+	my $fh = util::efopen(">$var::NMZ{'version'}");
+	print $fh "Namazu-Index-Version: $NAMAZU_INDEX_VERSION\n";
+    }
+}
+
+#
+# rename each tmporary file to a real file name.
 #
 sub write_nmz_files () {
     util::Rename($var::NMZ{'_i'},   $var::NMZ{'i'});
@@ -1398,7 +1411,9 @@ sub write_message ($) {
 }
 
 
-# Make a file for logging
+#
+# Make the NMZ.slog file for logging.
+#
 sub make_slog_file () {
     {
 	my $fh_slogfile = util::efopen(">>$var::NMZ{'slog'}");
@@ -1407,8 +1422,10 @@ sub make_slog_file () {
 }
 
 
-# concatenate $CURRENTDIR to head of each files
-sub change_dbnames ($) {
+#
+# Concatenate $CURRENTDIR to the head of each file.
+#
+sub change_filenames ($) {
     my $dir = $var::OUTPUT_DIR;
 
     for my $key (sort keys %var::NMZ) {

@@ -1,5 +1,20 @@
 2000-03-01  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* filter/ichitaro456.pl: Removed.
+	
+	* filter/oleexcel.pl: Removed.
+
+	* filter/olemsword.pl: Removed. 
+
+	* filter/olepowerpoint.pl: Removed.
+	
+	* scripts/mknmz.in (write_version): New function.
+	(do_remain_job): Call write_version().
+	(change_filenames): Renamed from change_dbnames().
+	($NAMAZU_INDEX_VERSION): New variable.
+
+	* pl/var.pl.in: Add the entry for NMZ.version file.
+
 	* pl/usage.pl: Remove the description for --ole option.
 
 	* scripts/mknmz.in (pickup_updated_files): Change commnets.

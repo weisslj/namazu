@@ -43,7 +43,7 @@ ABSOLUTELY NO WARRANTY.
   <li><a href="#form">Form settings</a>
   <li><a href="#form-idxname">Selecting an index</a>
   <li><a href="#form-idxnames">Selecting multiple indices</a>
-  <li><a href="#form-subquery">Using sub-query</a>
+  <li><a href="#form-subquery">Using an auxiliary query</a>
   </ul>
 <li><a href="#tools">Included tools</a>
   <ul>
@@ -281,8 +281,8 @@ href="http://www.cs.purdue.edu/homes/trinkle/detex/">detex</a>
 </dl>
 
 <p>
-Filters whose prefix is `ole' are for Windows. You can
-enable them by running mknmz with --ole option.
+A filter whose prefix is `ole' is for Windows. You can
+enable OLE filters by running mknmz with --ole option.
 </p>
 
 <dl>
@@ -408,80 +408,82 @@ be specified by a relative path from the default index. See
 <h3><a name="setting">namazu.cgi installation</a></h3>
 
 <p>
-CGIとして Namazuを利用するには、 namazu.cgi を用います。
-namazu.cgi は <code>$(libexecdir)</code> ディレクトリ (通常
-は/usr/local/libexec) にインストールされます。CGI を設置した
-いディレクトリに namazu.cgiをコピーすれば設置完了です。
+To use Namazu as CGI, you can use namazu.cgi. By default,
+namazu.cgi is installed in <code>$(libexecdir)</code>
+(usually /usr/local/libexec). To install namazu.cgi, you can
+copy namazu.cgi to the directory where you want to install.
 </p>
 
 <h3><a name=".namazurc">.namazurc settings</a></h3>
 
 <p>
-namazu.cgi を設置したディレクトリに .namazurc ファイルを置く
-と、CGIの実行時に設定ファイルとして読み込まれます。日本語で
-表示するには次の設定が必須です。
+.namazurc in the directory where you installed namazu.cgi is
+loaded by namazu.cgi as a configuration file. The following
+setting is neccesary if you want to make namazu.cgi speak
+Japanese.
 </p>
+
 
 <p><code>Lang ja</code></p>
 
 <h3><a name="template">Template files</a></h3>
 
 <p>
-雛形ファイルは HTMLでの結果出力の書式を定義するファイル群で
-す。それぞれの役割は次の通りです。
+Template files are files which customize search
+results. Their roles are as follows:
 </p>
 
 <dl>
 <dt><a href="nmz.html#head">NMZ.head</a>
-<dd>検索結果の冒頭部分
+<dd>Header of search results.
 <dt><a href="nmz.html#foot">NMZ.foot</a>
-<dd>検索結果の末尾部分
+<dd>Footer of search results.
 <dt><a href="nmz.html#body">NMZ.body</a>
-<dd>検索式の説明
+<dd>Description of Namazu's query.
 <dt><a href="nmz.html#tips">NMZ.tips</a>
-<dd>検索のコツ
+<dd>Tips on searching.
 <dt><a href="nmz.html#result">NMZ.result</a>
-<dd>検索結果の表示書式
+<dd>Format of search results.
 </dl>
 
 <p>
-これらのファイルは言語ごとに分かれています。ファイル名の末尾
-が .ja で終わるものが日本語用です。
+They are separeted by languages. For example, a file whose
+suffix is `.ja' is for Japanese. No suffix is for English.
 </p>
 
 <h3><a name="form">Form settings</a></h3>
 
 <p>
-formは NMZ.head に定義されています。CGI変数は次の通りです。
+form is defined in NMZ.head.  CGI variables are as follows:
 </p>
 
 <dl>
 <dt>query
-<dd>検索式の指定です。
+<dd>Just query.
 <dt>max
-<dd>一度に表示する検索結果の件数を指定します。
+<dd>Number of search results.
 <dt>result
-<dd>検索結果の表示形式を指定します。
+<dd>Format of search results.
 <dt>sort
-<dd>ソートの方法を指定します。
+<dd>Method of sorting.
 <dt>idxname
-<dd>検索するインデックス名を指定します。
+<dd>Index to search.
 <dt>subquery
-<dd>補助の検索式を指定します。
+<dd>Auxiliary query.
 <dt>whence
-<dd>検索結果を何件目から表示するかを指定します。
+<dd>Number of the first search result.
 </dl>
 
 <h3><a name="form-idxname">Selecting an index</a></h3>
 
 <p>
-ブラウザからインデックスを選択可能にするには NMZ.head に次の
-ように記述します。
+To select an index by Web browser, you can set NMZ.head as
+follows:
 </p>
 
 <pre>
 
-      &lt;strong&gt;検索対象:&lt;/strong&gt;
+      &lt;strong&gt;Target:&lt;/strong&gt;
       &lt;select name="idxname"&gt;
       &lt;option selected value="foo"&gt;foo
       &lt;option value="bar"&gt;bar
@@ -490,12 +492,12 @@ formは NMZ.head に定義されています。CGI変数は次の通りです。
 </pre>
 
 <p>
-この例では、 foo, bar, baz の中からインデックスを
-選択可能にしています。foo が選ばれた時は<a
-href="#default-index">基本インデックス</a> の下にある 
-foo インデックスを検索します。基本インデックスが 
-/usr/local/var/namazu/index の場合は次のディレクトリ構成にな
-ります。
+In this example, candidates for indices are foo, bar and
+baz. If foo is selected, namazu.cgi searches foo index
+located under the <a href="#default-index">default
+index</a>.  For example, if the default index is
+/usr/local/var/namazu/index, directory structure consists as
+follows:
 </p>
 
 <pre>
@@ -514,13 +516,13 @@ foo インデックスを検索します。基本インデックスが
 
 <h3><a name="form-idxnames">Selecting multiple indices</a></h3>
 <p>
-複数のインデックスを検索するは NMZ.head に checkbox の記述を
-します。
+To search multiple indices at once, you can set checkbox in
+NMZ.head.
 </p>
 
 <pre>
 
-      &lt;strong&gt;対象インデックス&lt;/strong&gt;
+      &lt;strong&gt;Target&lt;/strong&gt;
       &lt;ul&gt;
       &lt;li&gt;&lt;input type="checkbox" name="idxname" value="foo"&gt;foo
       &lt;li&gt;&lt;input type="checkbox" name="idxname" value="bar"&gt;bar
@@ -529,23 +531,26 @@ foo インデックスを検索します。基本インデックスが
 </pre>
 
 <p>
-この例では foo, bar, baz から複数選択して検索できます。検索
-結果に使われる<a href="#template">雛形ファイル</a>は 
-namazurc の Template指示で指定したディレクトリのものが用いら
-れます。Template が指定されていないときは、次の規則に従いま
-す。
-</p>
+In this example, candidates for indices are foo, bar and
+baz.  <a href="#template">Template files</a> which is used
+can be set by the Template directive in namazurc. If
+Tempalte directive is not set, namazu.cgi uses template by
+the following rule:
 
 <ul>
-<li>選択されたインデックスが 1つのとき<br>
-選択されたインデックスの雛形ファイルが用いられる
-<li>選択されたインデックスが複数のとき<br>
-<a href="#default-index">基本インデックス</a>の雛形ファイルが用いられる
+<li>If only one selected index is selected,<br>
+namazu.cgi uses template files in the selected index.
+<li>If multiple indices are selected,<br>
+namazu.cgi uses tempalte files in the <a
+href="#default-index">Default index</a>. 
 </ul>
 
-<h3><a name="form-subquery">Using sub-query</a></h3>
+<h3><a name="form-subquery">Using an auxiliary query</a></h3>
 
 <p>
+You can set an auxiliary query apart from a user-inputing
+query.
+
 利用者が入力する検索式とは別に、補助検索式を設定できます。た
 とえば次の例では、検索対象のペイジを選択可能にしています。検
 索対象の URIを +uri: で制限しているところが要です。
@@ -892,7 +897,7 @@ You must choose the latter with Tkanamzu or namazu.el.
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: manual.html,v 1.8 2000-02-20 03:05:21 satoru Exp $
+$Id: manual.html,v 1.9 2000-02-20 06:18:37 satoru Exp $
 </div>
 <address>
 developers@namazu.org

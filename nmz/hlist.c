@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.55 2001-12-11 09:56:00 knok Exp $
+ * $Id: hlist.c,v 1.56 2001-12-21 05:39:20 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -649,7 +649,7 @@ nmz_set_docnum(int n)
 void 
 nmz_set_sortfield(const char *field)
 {
-    strncpy(field_for_sort, field, BUFSIZE);
+    strncpy(field_for_sort, field, BUFSIZE - 1);
 }
 
 char *

@@ -2,7 +2,7 @@
  * 
  * idxname.c - Idx handling routines.
  *
- * $Id: idxname.c,v 1.27 2001-12-11 09:56:00 knok Exp $
+ * $Id: idxname.c,v 1.28 2001-12-21 05:39:20 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -262,7 +262,7 @@ nmz_push_hitnum(struct nmz_hitnumlist *hn,
 void 
 nmz_set_defaultidx(const char *idx)
 {
-    strncpy(defaultidx, idx, BUFSIZE);
+    strncpy(defaultidx, idx, BUFSIZE - 1);
 }
 
 char *

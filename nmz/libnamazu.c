@@ -2,7 +2,7 @@
  * 
  * libnamazu.c - Namazu library api
  *
- * $Id: libnamazu.c,v 1.37 2001-09-02 08:25:33 rug Exp $
+ * $Id: libnamazu.c,v 1.38 2001-12-21 05:39:20 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -183,7 +183,7 @@ nmz_msg(const char *fmt, ...)
     va_list args;
     
     va_start(args, fmt);
-    vsnprintf(msg, BUFSIZE, fmt, args);
+    vsnprintf(msg, BUFSIZE - 1, fmt, args);
     va_end(args);
 
     return msg;
@@ -201,7 +201,7 @@ nmz_set_dyingmsg_sub(const char *fmt, ...)
     va_list args;
     
     va_start(args, fmt);
-    vsnprintf(dyingmsg, BUFSIZE, fmt, args);
+    vsnprintf(dyingmsg, BUFSIZE - 1, fmt, args);
     va_end(args);
 
     return dyingmsg;

@@ -1,5 +1,7 @@
 2001-12-21  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
+	* nmz/*.c: Fixed some segfault bugs.
+	
 	* src/*.c: Fixed some segfault bugs.
 
 2001-12-18  NOKUBI Takatsugu  <knok@daionet.gr.jp>
@@ -7279,4 +7281,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.905 2001-12-21 03:30:41 knok Exp $
+$Id: ChangeLog,v 1.906 2001-12-21 05:39:19 knok Exp $

@@ -2,7 +2,7 @@
  * 
  * score.c - scoring-related functions of Namazu
  * 
- * $Id: score.c,v 1.6 2001-12-11 09:56:00 knok Exp $
+ * $Id: score.c,v 1.7 2001-12-21 05:39:20 knok Exp $
  * 
  * Copyright (C) 2001 Hajime BABA  All rights reserved.
  * Copyright (C) 2001 Namazu Project All rights reserved.
@@ -114,15 +114,15 @@ get_field_size(int docid, int idxid)
     
     /* Make a pathname */
     make_fullpathname_field(idxid);
-    strncpy(fname, NMZ.field, BUFSIZE);
-    strncat(fname, "size", BUFSIZE - strlen(fname));
+    strncpy(fname, NMZ.field, BUFSIZE - 1);
+    strncat(fname, "size", BUFSIZE - strlen(fname) - 1);
 
     fp_field = fopen(fname, "rb");
     if (fp_field == NULL) {
         nmz_debug_printf("%s: %s", fname, strerror(errno));
         return 0;
     }
-    strncat(fname, ".i", BUFSIZE - strlen(fname));
+    strncat(fname, ".i", BUFSIZE - strlen(fname) - 1);
     fp_field_idx = fopen(fname, "rb");
     if (fp_field_idx == NULL) {
         nmz_warn_printf("%s: %s", fname, strerror(errno));
@@ -151,8 +151,8 @@ get_field_time(int docid, int idxid)
     
     /* Make a pathname */
     make_fullpathname_field(idxid);
-    strncpy(fname, NMZ.t, BUFSIZE);
-    strncat(fname, "\0", BUFSIZE - strlen(fname));
+    strncpy(fname, NMZ.t, BUFSIZE - 1);
+    strncat(fname, "\0", BUFSIZE - strlen(fname) - 1);
 
     fp_field = fopen(fname, "rb");
     if (fp_field == NULL) {
@@ -177,15 +177,15 @@ get_field_uri(char *uri, int docid, int idxid)
     
     /* Make a pathname */
     make_fullpathname_field(idxid);
-    strncpy(fname, NMZ.field, BUFSIZE);
-    strncat(fname, "uri", BUFSIZE - strlen(fname));
+    strncpy(fname, NMZ.field, BUFSIZE - 1);
+    strncat(fname, "uri", BUFSIZE - strlen(fname) - 1);
 
     fp_field = fopen(fname, "rb");
     if (fp_field == NULL) {
         nmz_debug_printf("%s: %s", fname, strerror(errno));
         return;
     }
-    strncat(fname, ".i", BUFSIZE - strlen(fname));
+    strncat(fname, ".i", BUFSIZE - strlen(fname) - 1);
     fp_field_idx = fopen(fname, "rb");
     if (fp_field_idx == NULL) {
         nmz_warn_printf("%s: %s", fname, strerror(errno));

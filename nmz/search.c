@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.87 2001-09-02 05:50:38 rug Exp $
+ * $Id: search.c,v 1.88 2001-12-21 05:39:20 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -113,12 +113,12 @@ show_status(int l, int r)
     char buf[BUFSIZE];
 
     fseek(Nmz.w, nmz_getidxptr(Nmz.wi, l), 0);
-    fgets(buf, BUFSIZE, Nmz.w);
+    fgets(buf, BUFSIZE - 1, Nmz.w);
     nmz_chomp(buf);
 
     nmz_debug_printf("l:%d: %s", l, buf);
     fseek(Nmz.w, nmz_getidxptr(Nmz.wi, r), 0);
-    fgets(buf, BUFSIZE, Nmz.w);
+    fgets(buf, BUFSIZE - 1, Nmz.w);
     nmz_chomp(buf);
 
     nmz_debug_printf("r:%d: %s", r, buf);
@@ -163,13 +163,13 @@ prefix_match(const char *key, int v)
     char buf[BUFSIZE], tmpkey[BUFSIZE];
     val.num  = 0;
 
-    strcpy(tmpkey, key);
+    strncpy(tmpkey, key, BUFSIZE - 1);
     tmpkey[strlen(tmpkey) - 1] = '\0';
     n = strlen(tmpkey);
 
     for (i = v; i >= 0; i--) {
 	fseek(Nmz.w, nmz_getidxptr(Nmz.wi, i), 0);
-	fgets(buf, BUFSIZE, Nmz.w);
+	fgets(buf, BUFSIZE - 1, Nmz.w);
 	if (strncmp(tmpkey, buf, n) != 0) {
 	    break;
 	}
@@ -191,7 +191,7 @@ prefix_match(const char *key, int v)
 	if (-1 == fseek(Nmz.w, nmz_getidxptr(Nmz.wi, i), 0)) {
 	    break;
 	}
-	fgets(buf, BUFSIZE, Nmz.w);
+	fgets(buf, BUFSIZE - 1, Nmz.w);
         nmz_chomp(buf);
 	if (strncmp(tmpkey, buf, n) == 0) {
 	    tmp = nmz_get_hlist(i);
@@ -392,7 +392,7 @@ do_phrase_search(const char *key, NmzResult val)
     FILE *phrase, *phrase_index;
     struct nmz_hitnumlist *pr_hitnum = NULL; /* phrase hitnum */
 
-    strcpy(tmpkey, key);
+    strncpy(tmpkey, key, BUFSIZE - 1);
     p = tmpkey;
     if (strchr(p, '\t') == NULL) {  /* if only one word */
         val = do_word_search(p, val);
@@ -891,7 +891,7 @@ nmz_binsearch(const char *key, int prefix_match_mode)
     int l, r, x, e = 0, i;
     char term[BUFSIZE], tmpkey[BUFSIZE];
 
-    strcpy(tmpkey, key);
+    strncpy(tmpkey, key, BUFSIZE - 1);
     lrget( &l, &r);
 
     if (prefix_match_mode) {  /* truncate a '*' character at the end */
@@ -903,7 +903,7 @@ nmz_binsearch(const char *key, int prefix_match_mode)
 
 	/* Over BUFSIZE (maybe 1024) size keyword is nuisance */
 	fseek(Nmz.w, nmz_getidxptr(Nmz.wi, x), 0);
-	fgets(term, BUFSIZE, Nmz.w);
+	fgets(term, BUFSIZE - 1, Nmz.w);
 	nmz_chomp(term);
 
 	nmz_debug_printf("searching: %s", term);
@@ -1036,7 +1036,7 @@ nmz_do_searching(const char *key, NmzResult val)
     enum nmz_searchmethod mode;
     char tmpkey[BUFSIZE];
 
-    strcpy(tmpkey, key);
+    strncpy(tmpkey, key, BUFSIZE - 1);
 
     nmz_debug_printf("before nmz_strlower: [%s]", tmpkey);
     nmz_strlower(tmpkey);

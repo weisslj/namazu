@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: util.c,v 1.78 2001-12-11 09:56:00 knok Exp $
+ * $Id: util.c,v 1.79 2001-12-21 05:39:20 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -326,10 +326,10 @@ nmz_pathcat(const char *base, char *name)
             break;
         }
     }
-    strncpy(work, base, BUFSIZE);
-    strncat(work, "/", BUFSIZE - strlen(work));
-    strncat(work, name, BUFSIZE - strlen(work));
-    strncpy(name, work, BUFSIZE);
+    strncpy(work, base, BUFSIZE - 1);
+    strncat(work, "/", BUFSIZE - strlen(work) - 1);
+    strncat(work, name, BUFSIZE - strlen(work) - 1);
+    strncpy(name, work, BUFSIZE - 1);
 }
 
 int 

@@ -2,7 +2,7 @@
  * 
  * re.c -
  * 
- * $Id: re.c,v 1.34 2001-12-11 09:56:00 knok Exp $
+ * $Id: re.c,v 1.35 2001-12-21 05:39:20 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -81,7 +81,7 @@ nmz_regex_grep(const char *expr, FILE *fp, const char *field, int field_mode)
     rp->buffer = 0;
     rp->allocated = 0;
     
-    strncpy(tmpexpr, expr, BUFSIZE); /* save orig_expr */
+    strncpy(tmpexpr, expr, BUFSIZE - 1); /* save orig_expr */
     nmz_debug_printf("REGEX: '%s'\n", tmpexpr);
 
     if (field_mode) {
@@ -99,7 +99,7 @@ nmz_regex_grep(const char *expr, FILE *fp, const char *field, int field_mode)
 
     nmz_re_compile_pattern(tmpexpr, strlen(tmpexpr), rp);
 
-    for (i = n = 0; fgets(buf, BUFSIZE, fp); i++) {
+    for (i = n = 0; fgets(buf, BUFSIZE - 1, fp); i++) {
         if (buf[strlen(buf) - 1] != '\n') {  /* too long */
             i--;
             continue;

@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: field.c,v 1.31 2001-12-11 09:56:00 knok Exp $
+ * $Id: field.c,v 1.32 2001-12-21 05:39:20 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -166,7 +166,7 @@ nmz_get_field_data(int idxid, int docid, const char *field, char *data)
 
     strcpy(data, ""); /* For safety. */
 
-    strncpy(tmpfield, field, BUFSIZE);
+    strncpy(tmpfield, field, BUFSIZE - 1);
     apply_field_alias(tmpfield);  /* This would overwrite `tmpfield' */
 
     /* 
@@ -179,15 +179,15 @@ nmz_get_field_data(int idxid, int docid, const char *field, char *data)
 	    strcmp(tmpfield, fc[i].field) == 0)
 	{  /* cache hit! */
 	    nmz_debug_printf("field cache [%s] hit!\n", tmpfield);
-	    strncpy(data, fc[i].data, BUFSIZE);	/* data should be BUFSIZE */
+	    strncpy(data, fc[i].data, BUFSIZE - 1);	/* data length should be BUFSIZE - 1 */
 	    return;
 	}
     }
 
     /* Make a pathname */
     make_fullpathname_field(idxid);
-    strncpy(fname, NMZ.field, BUFSIZE);
-    strncat(fname, tmpfield, BUFSIZE - strlen(fname));
+    strncpy(fname, NMZ.field, BUFSIZE - 1);
+    strncat(fname, tmpfield, BUFSIZE - strlen(fname) - 1);
     
     fp_field = fopen(fname, "rb");
     if (fp_field == NULL) {
@@ -195,7 +195,7 @@ nmz_get_field_data(int idxid, int docid, const char *field, char *data)
 	return;
     }
 
-    strncat(fname, ".i", BUFSIZE - strlen(fname));
+    strncat(fname, ".i", BUFSIZE - strlen(fname) - 1);
     fp_field_idx = fopen(fname, "rb");
     if (fp_field_idx == NULL) {
         nmz_warn_printf("%s: %s", fname, strerror(errno));
@@ -217,8 +217,8 @@ nmz_get_field_data(int idxid, int docid, const char *field, char *data)
     /* Cache */
     fc[cache_idx].idxid = idxid;
     fc[cache_idx].docid = docid;
-    strncpy(fc[cache_idx].field, tmpfield, BUFSIZE);
-    strncpy(fc[cache_idx].data, data, BUFSIZE);
+    strncpy(fc[cache_idx].field, tmpfield, BUFSIZE - 1);
+    strncpy(fc[cache_idx].data, data, BUFSIZE - 1);
     cache_idx = (cache_idx + 1) % FIELD_CACHE_SIZE;
     if (cache_num < FIELD_CACHE_SIZE) {
 	cache_num++;

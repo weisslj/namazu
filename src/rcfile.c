@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.35 2003-03-21 09:46:49 opengl2772 Exp $
+ * $Id: rcfile.c,v 1.36 2003-03-22 18:19:27 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -524,8 +524,7 @@ get_rc_args(const char *line)
     }
 
     while (1) {
-	char arg[BUFSIZE];
-	arg[BUFSIZE - 1] = '\0';
+	char arg[BUFSIZE] = "";
 	n = get_rc_arg(line, arg);
 	if (n == 0) { /* cannot get arg1 */
 	    return NULL;

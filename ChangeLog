@@ -1,3 +1,8 @@
+2003-03-23  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * src/result.c (emphasize): The bug which fails in the copy of
+        a long string is corrected.
+
 2003-03-22  Yukio USUDA <usu@namazu.org>
 
         * filter/taro45.pl: Changed to get file content from $cont.
@@ -23,8 +28,11 @@
 2003-03-21  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* nmz/search.c (do_phrase_search): Bug fix.
+
 	* Bug fix.: buffer overflow.
+
 	* pl/wakati.pl: Bug fix.: -H, -G option.
+
         * filter/rtf.pl: New RTF filter.
 
 2003-03-13  NOKUBI Takatsugu  <knok@daionet.gr.jp>
@@ -7814,4 +7822,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1003 2003-03-22 11:17:11 usu Exp $
+$Id: ChangeLog,v 1.1004 2003-03-22 18:19:27 opengl2772 Exp $

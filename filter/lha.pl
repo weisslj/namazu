@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: lha.pl,v 1.4 2004-05-07 16:51:30 opengl2772 Exp $
+# $Id: lha.pl,v 1.5 2004-05-08 13:09:46 usu Exp $
 #  lha filter for namazu
 #  Copyright (C) 2004 Tadamasa Teranishi,
 #                2004 MATSUMURA Namihiko <po-jp@counterghost.net>,
@@ -149,6 +149,10 @@ sub filter_lha_unix ($$$$$) {
             util::dprint("$fname: filesize is 0");
         } elsif ($size > $conf::FILE_SIZE_MAX) {
             util::dprint("$fname: Too large lhaed file");
+	} elsif ($fname =~ m!^($conf::DENY_FILE)$!i ) {
+	    util::vprint(sprintf(_("Denied:	%s"), codeconv::toeuc(\$fname)));
+	} elsif ($fname !~ m!^($conf::ALLOW_FILE)$!i) {
+	    util::vprint(sprintf(_("Not allowed:	%s"), codeconv::toeuc(\$fname)));
         } else {
             my $tmpfile3 = util::tmpnam('NMZ.lha.file');
             my $status = system("$lhapath -pq2 $tmpfile \"$fname\" > $tmpfile3");

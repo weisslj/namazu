@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: tar.pl,v 1.2 2004-05-07 16:51:30 opengl2772 Exp $
+# $Id: tar.pl,v 1.3 2004-05-08 13:09:46 usu Exp $
 #  tar filter for namazu
 #  Copyright (C) 2004 Tadamasa Teranishi,
 #                2004 Namazu Project All rights reserved.
@@ -94,6 +94,7 @@ sub filter_gtar ($$$$$) {
 
     util::vprint("Processing tar file ... (using  '$tarpath')\n");
 
+    $$contref = "";
     my %files;
     my $tmpfile2 = util::tmpnam('NMZ.tar.list');
     my $status = system("$tarpath tvf $tmpfile > $tmpfile2");
@@ -123,14 +124,16 @@ sub filter_gtar ($$$$$) {
     }
     unlink($tmpfile2);
 
-    $$contref = "";
-
     foreach my $fname (keys %files){
         my $size = $files{$fname};
         if ($size == 0) {
             util::dprint("$fname: filesize is 0");
         } elsif ($size > $conf::FILE_SIZE_MAX) {
             util::dprint("$fname: Too large tared file");
+	} elsif ($fname =~ m!^($conf::DENY_FILE)$!i ) {
+	    util::vprint(sprintf(_("Denied:	%s"), codeconv::toeuc(\$fname)));
+	} elsif ($fname !~ m!^($conf::ALLOW_FILE)$!i) {
+	    util::vprint(sprintf(_("Not allowed:	%s"), codeconv::toeuc(\$fname)));
         } else {
             my $tmpfile3 = util::tmpnam('NMZ.tar.file');
             my $status = system("$tarpath xfO $tmpfile \"$fname\" > $tmpfile3");
@@ -211,6 +214,10 @@ sub filter_archive_tar ($$$$$) {
             util::dprint("$fname: filesize is 0");
         } elsif ($size > $conf::FILE_SIZE_MAX) {
             util::dprint("$fname: Too large tared file");
+	} elsif ($fname =~ m!^($conf::DENY_FILE)$!i ) {
+	    util::vprint(sprintf(_("Denied:	%s"), codeconv::toeuc(\$fname)));
+	} elsif ($fname !~ m!^($conf::ALLOW_FILE)$!i) {
+	    util::vprint(sprintf(_("Not allowed:	%s"), codeconv::toeuc(\$fname)));
         } else {
             my $con = $tar->get_content($fname);
 

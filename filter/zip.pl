@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: zip.pl,v 1.9 2004-05-07 16:51:30 opengl2772 Exp $
+# $Id: zip.pl,v 1.10 2004-05-08 13:09:46 usu Exp $
 #  zip filter for namazu
 #  Copyright (C) 2004 MATSUMURA Namihiko <po-jp@counterghost.net>
 #                2004 Yukio USUDA <usu@namazu.org>
@@ -118,6 +118,10 @@ sub az_filter ($$$$$) {
 	    util::dprint("$fname: filesize is 0");
 	} elsif ($size > $conf::FILE_SIZE_MAX) {
 	    util::dprint("$fname: Too large ziped file");
+	} elsif ($fname =~ m!^($conf::DENY_FILE)$!i ) {
+	    util::vprint(sprintf(_("Denied:	%s"), codeconv::toeuc(\$fname)));
+	} elsif ($fname !~ m!^($conf::ALLOW_FILE)$!i) {
+	    util::vprint(sprintf(_("Not allowed:	%s"), codeconv::toeuc(\$fname)));
 	} else {
 	    my $con = $zip->contents($member);
 	    if ($con) {
@@ -194,6 +198,10 @@ sub unzip_filter ($$$$$) {
 	    util::dprint("$fname: filesize is 0");
 	} elsif ($size > $conf::FILE_SIZE_MAX) {
 	    util::dprint("$fname: Too large ziped file");
+	} elsif ($fname =~ m!^($conf::DENY_FILE)$!i ) {
+	    util::vprint(sprintf(_("Denied:	%s"), codeconv::toeuc(\$fname)));
+	} elsif ($fname !~ m!^($conf::ALLOW_FILE)$!i) {
+	    util::vprint(sprintf(_("Not allowed:	%s"), codeconv::toeuc(\$fname)));
 	} else {
 	    my $con = "";
 	    my $fh = util::efopen("$unzippath -p $tmpfile \"$fname\"|");

@@ -1,4 +1,4 @@
-Overview of Changes in Namazu 2.0.13 - XXXX Y, 2003
+Overview of Changes in Namazu 2.0.13 - August nn, 2003
 
 * Add Polish translations.
   (Contributed by Kryzystof Drewicz.)
@@ -10,6 +10,7 @@ Overview of Changes in Namazu 2.0.13 - XXXX Y, 2003
   (to prevent possibility of remote DoS, reported by sheepman.)
 * Change soname (LTVERSION 7:0:0, lib/libnmz.so.6 -> lib/libnmz.so.7)
 * Support $WAKATI="module_mecab"; in mknmzrc. (experimental)
+* Fix MacOSX compilation problem (getopt.c deviation from gengetopt-2.5)
 * Fix some bugs and possibility of security hole.
 
 Overview of Changes in Namazu 2.0.12 - September 3, 2002

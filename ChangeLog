@@ -1,3 +1,9 @@
+2003-07-15  Makoto Fujiwara  <makoto@ki.nu>
+
+	* configure.in (COPYRIGHT): 2000-2002  -> 2002-2003
+	
+	* NEWS: Add MacOSX getopt fix, add 'August'
+
 2003-07-15  Yoshinori TAKESAKO  <takesako@namazu.org>
 
 	* pl/wakati.pl: Used 'use vars' declaration substitutes for 
@@ -8009,4 +8015,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1035 2003-07-15 04:48:13 takesako Exp $
+$Id: ChangeLog,v 1.1036 2003-07-15 09:46:51 makoto Exp $

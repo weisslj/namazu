@@ -1,5 +1,7 @@
 1999-12-13  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 1.9.12.
+
 	* pl/usage.pl: Use $var::VERSION in version info.
 
 1999-12-12  Ryuji Abe <raeva@t3.rim.or.jp>

@@ -1,7 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: ooo.pl,v 1.8 2004-02-07 08:33:13 usu Exp $
-# Copyright (C) 2003 Namazu Project All rights reserved ,
+# $Id: ooo.pl,v 1.9 2004-03-09 12:53:22 usu Exp $
+# Copyright (C) 2003 Yukio USUDA 
+#               2003,2004 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -27,6 +28,8 @@ require 'util.pl';
 
 my $perlver =$];
 my $utfconvpath = undef;
+my $unzippath = undef;
+my @unzipopts;
 
 sub mediatype() {
     # http://framework.openoffice.org/documentation/mimetypes/mimetypes.html
@@ -37,8 +40,9 @@ sub mediatype() {
 }
 
 sub status() {
-    my $unzippath = util::checkcmd('unzip');
+    $unzippath = util::checkcmd('unzip');
     if (defined $unzippath){
+	@unzipopts = ("-p");
        if (util::islang("ja")) {
            if ($perlver >= 5.008) {
 		$utfconvpath = "none";
@@ -83,25 +87,29 @@ sub add_magic ($) {
 }
 
 sub filter ($$$$$) {
-    my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
+    my ($orig_cfile, $contref, $weighted_str, $headings, $fields)
         = @_;
-    filter_metafile($orig_cfile, $weighted_str, $fields);
-    filter_contentfile($orig_cfile, $cont, $weighted_str, $headings, $fields);
+    filter_metafile($contref, $weighted_str, $fields);
+    filter_contentfile($contref, $weighted_str, $headings, $fields);
     return undef;
 }
 
 sub filter_metafile ($$$) {
-    my ($orig_cfile, $weighted_str, $fields) = @_;
-    my $cfile = defined $orig_cfile ? $$orig_cfile : '';
+    my ($contref, $weighted_str, $fields) = @_;
     my $metafile = 'meta.xml';
-    my $unzippath = util::checkcmd('unzip');
-    my @unzipopts = ('-p');
     my $xml = "";
-    my @cmd = ($unzippath, @unzipopts, $cfile, $metafile);
+    my $tmpfile  = util::tmpnam('NMZ.zip');
+    { 
+	my $fh = util::efopen("> $tmpfile");
+	print $fh $$contref;
+        $fh->close();
+    }
+    my @cmd = ($unzippath, @unzipopts, $tmpfile, $metafile);
     my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
     while (defined(my $line = <$fh_out>)){
         $xml .= $line;
     }
+    unlink $tmpfile;
 
     my $authorname = ooo::get_author(\$xml);
     my $title = ooo::get_title(\$xml);
@@ -126,9 +134,6 @@ sub filter_metafile ($$$) {
         $fields->{'title'} = $title;
         my $weight = $conf::Weight{'html'}->{'title'};
         $$weighted_str .= "\x7f$weight\x7f$title\x7f/$weight\x7f\n";
-    }else{
-        $fields->{'title'} 
-           = gfilter::filename_to_title($cfile, $weighted_str)
     }
     my @weight_str = split(' ',$keywords);
     for my $tmp (@weight_str) {
@@ -138,17 +143,22 @@ sub filter_metafile ($$$) {
 }
 
 sub filter_contentfile ($$$$$) {
-    my ($orig_cfile, $contref, $weighted_str, $headings, $fields) = @_;
-    my $cfile = defined $orig_cfile ? $$orig_cfile : '';
+    my ($contref, $weighted_str, $headings, $fields) = @_;
     my $contentfile = "content.xml";
-    my $unzippath = util::checkcmd('unzip');
-    my @unzipopts = ("-p");
     my $xml = "";
-    my @cmd = ($unzippath, @unzipopts, $cfile, $contentfile);
+    my $tmpfile  = util::tmpnam('NMZ.zip');
+    { 
+	my $fh = util::efopen("> $tmpfile");
+	print $fh $$contref;
+        $fh->close();
+    }
+    my @cmd = ($unzippath, @unzipopts, $tmpfile, $contentfile);
     my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
     while (defined(my $line = <$fh_out>)){
         $xml .= $line;
     }
+    unlink $tmpfile;
+
     ooo::remove_all_tag(\$xml);
     ooo::decode_entity(\$xml);
 

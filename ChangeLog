@@ -1,3 +1,7 @@
+2004-03-09  Yukio USUDA <usu@namazu.org>
+
+	* filter/ooo.pl: Don't use original filename.
+
 2004-03-09  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * filter/win32/ole*.pl: It corresponded to Office 2003.
@@ -8523,4 +8527,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1110 2004-03-09 12:28:09 opengl2772 Exp $
+$Id: ChangeLog,v 1.1111 2004-03-09 12:53:19 usu Exp $

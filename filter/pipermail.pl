@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: pipermail.pl,v 1.8 2004-10-16 14:54:12 opengl2772 Exp $
+# $Id: pipermail.pl,v 1.9 2004-11-19 16:16:02 opengl2772 Exp $
 # Copyright (C) 2004 Namazu Project All rights reserved.
 #
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -83,15 +83,12 @@ sub filter ($$$$$) {
     } 
 
     pipermail_filter($contref, $weighted_str, $fields);
-util::vprint("*after:piper\n" . $$contref . "\n");
     html::html_filter($contref, \$dummy_weighted_str, \%dummy_fields, $headings);
-util::vprint("*after:html\n" . $$contref . "\n");
 
     $$contref =~ s/^\s+//;
     mailnews::uuencode_filter($contref);
     mailnews::mailnews_filter($contref, \$dummy_weighted_str, \%dummy_fields);
     mailnews::mailnews_citation_filter($contref, \$dummy_weighted_str);
-util::vprint("*after:mailnews\n" . $$contref . "\n");
 
     gfilter::line_adjust_filter($contref);
     gfilter::line_adjust_filter($weighted_str);

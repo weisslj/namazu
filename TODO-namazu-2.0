@@ -1,4 +1,4 @@
-$Id: TODO-namazu-2.0,v 1.34 2000-01-28 07:02:16 satoru Exp $
+$Id: TODO-namazu-2.0,v 1.35 2000-01-28 07:36:22 satoru Exp $
 
 検討項目
 
@@ -72,9 +72,6 @@ $Id: TODO-namazu-2.0,v 1.34 2000-01-28 07:02:16 satoru Exp $
 
 藤原のつけ足し (2000/01/10)
  ** mknmz
-  * show index directory when -C requested
-    -C で index: を表示する
-
   * using Find.pm instead of find.pl
     (prune for EXCLUDE directory)
     find.pl の代りに Find.pm を使うようにする。

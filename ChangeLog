@@ -1,5 +1,7 @@
 2000-01-28  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* configure.in: Fix OPT_ADMIN_EMAIL handling bug.
+
 	* scripts/mknmz.pl.in (init): Overwrite $TEMPLATEDIR if
 	../template/NMZ.head exists. This is for executing mknmz in
 	scripts directory.

@@ -6,6 +6,8 @@
  	in order to avoid useless and time-consuming startup.
 	(getProperties): Apply codeconv::shiftjis_to_eucjp().
 
+	* filter/win32/ole{rtf,taro}.pl	(status): Likewise.
+	
 2001-01-16  Hajime BABA  <baba@kusastro.kyoto-u.ac.jp>
 
 	* (somewhere)/.cvsignore: Newly added or modified.
@@ -6305,4 +6307,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.794 2001-01-19 09:55:12 baba Exp $
+$Id: ChangeLog,v 1.795 2001-01-19 10:42:11 baba Exp $

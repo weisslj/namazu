@@ -1,6 +1,6 @@
 # 
 # -*- Perl -*-
-# $Id: olertf.pl,v 1.3 2001-01-12 05:15:31 baba Exp $
+# $Id: olertf.pl,v 1.4 2001-01-19 10:42:16 baba Exp $
 # 
 # Copyright (C) 2000 Yoshinori.TAKESAKO ,
 #               2000 Jun Kurabe ,
@@ -37,9 +37,12 @@ sub mediatype() {
 sub status() {
     open (SAVEERR,">&STDERR");
     open (STDERR,">nul");
-    my $msword = Win32::OLE->new('Word.Application','Quit');
+    my $const;
+    $const = Win32::OLE::Const->Load("Microsoft Word 9.0 Object Library");
+    $const = Win32::OLE::Const->Load("Microsoft Word 8.0 Object Library")
+	unless $const;
     open (STDERR,">&SAVEERR");
-    return 'yes' if (defined $msword);
+    return 'yes' if (defined $const);
     return 'no';
 }
 

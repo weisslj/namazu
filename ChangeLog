@@ -1,5 +1,8 @@
 2000-01-07  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* nmz/rcfile.c (is_valid_argnum): Use nmz_die() instead of
+	set_dyingmsg();
+
 	* nmz/hlist.c (field_sort): Use strerror().
 
 	* nmz/codeconv.c: Use strerror().

@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.9 2000-01-06 10:01:52 satoru Exp $
+ * $Id: rcfile.c,v 1.10 2000-01-07 10:03:45 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -350,12 +350,14 @@ is_valid_argnum(const char *directive, int argnum)
 		errmsg = "too many arguments";
 		return 0;  /* error */
 	    } else {
-		set_dyingmsg("is_valid_argnum[1]: It MUST not be happend! ");
+		nmz_die("is_valid_argnum: It MUST not be happened! %s %d",
+			__FILE__, __LINE__);
 		return 0;
 	    }
 	}
     }
-    set_dyingmsg("is_valid_argnum[2]: It MUST not be happend! ");
+    nmz_die("is_valid_argnum: It MUST not be happened! %s %d",
+		 __FILE__, __LINE__);
     return 0;
 }
 

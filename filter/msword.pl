@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: msword.pl,v 1.37 2003-08-03 04:00:09 opengl2772 Exp $
+# $Id: msword.pl,v 1.38 2004-01-16 13:07:10 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2002 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -34,12 +34,15 @@ my $wordconvpath  = undef;
 my @wordconvopts  = undef;
 my $wvversionpath = undef;
 my $utfconvpath   = undef;
+my $wvsummarypath = undef;
 
 sub mediatype() {
     return ('application/msword');
 }
 
 sub status() {
+    $wvsummarypath = util::checkcmd('wvSummary');
+
     $wordconvpath = util::checkcmd('wvHtml');
     if (defined $wordconvpath) {
 	if (!util::islang("ja")) {
@@ -101,7 +104,12 @@ sub filter_wv ($$$$$) {
     { 
 	my $fh = util::efopen("> $tmpfile");
 	print $fh $$cont;
+        $fh->close();
     }
+
+    # get summary info in all OLE documents.
+    getSummaryInfo($tmpfile, $cont, $weighted_str, $headings, $fields);
+    my $title = $fields->{'title'};
 
     # Check version of word document (greater than word8 or else).
     if (util::islang("ja")) {
@@ -142,6 +150,7 @@ sub filter_wv ($$$$$) {
     } else {
 	my $fh = util::efopen("< $tmpfile2");
 	$$cont = util::readfile($fh);
+        $fh->close();
     }
 
     # Code conversion for Japanese document.
@@ -162,10 +171,14 @@ sub filter_wv ($$$$$) {
     unlink $tmpfile;
     unlink $tmpfile2;
 
+    # Title shoud be removed.
+    $$cont =~ s!<TITLE.*?>.*?</TITLE>!!is if (defined $title);
+
     # Exclude wvHtml's footer because it has no good index terms.
     $$cont =~ s/<!--Section Ends-->.*$//s;
 
     html::html_filter($cont, $weighted_str, $fields, $headings);
+    $fields->{'title'} = $title if (defined $title);
 
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);
@@ -188,6 +201,7 @@ sub filter_doccat ($$$$$) {
     {
 	my $fh = util::efopen("> $tmpfile");
 	print $fh $$cont;
+        $fh->close();
     }
     {
 	my @cmd = ($wordconvpath, @wordconvopts, $tmpfile);
@@ -210,6 +224,117 @@ sub filter_doccat ($$$$$) {
 	unless $fields->{'title'};
     gfilter::show_filter_debug_info($cont, $weighted_str,
 				    $fields, $headings);
+
+    return undef;
+}
+
+sub getSummaryInfo ($$$$$) {
+    my ($cfile, $cont, $weighted_str, $headings, $fields)
+        = @_;
+
+    return undef unless (defined $wvsummarypath);
+
+    my @cmd = ($wvsummarypath, $cfile);
+    my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
+    my $summary = util::readfile($fh_out);
+    my $orgsummary = $summary;
+
+    my $size = util::filesize($fh_out);
+    $fh_out->close();
+    if ($size == 0) {
+        return undef;
+    }
+    if ($size > $conf::TEXT_SIZE_MAX) {
+        return 'Too large word file';
+    }
+
+    # Codepage
+    #   932 : 0x000003a4 : Shift_JIS
+    # 10001 : 0xfffffde9 : x-mac-japanese
+    # 65001 : 0x00002711 : UTF-8
+
+    my $codepage = "000003a4"; # Shift_JIS
+    my $title = undef;
+    my $subject = undef;
+    my $lastauthor = undef;
+    my $author = undef;
+    my $keywords = undef;
+
+    if ($summary =~ /^Codepage is 0x([0-9a-f]*)/m) {
+        $codepage = sprintf("%8.8x", hex($1));
+    }
+
+    if ($codepage eq "fffffde9") { 
+        utf8_to_eucjp(\$summary);
+    } else {
+        codeconv::toeuc(\$summary);
+    }
+
+    if ($summary =~ /^The title is (.*)$/m) {
+        my $orgtitle;
+
+        $title = $1;
+
+        # PowerPoint Only
+#        $orgsummary =~ /^The title is (.*)$/m;
+#        $orgtitle = $1;
+#        undef $title if $orgtitle eq # which has no slide title
+#            "\xbd\xd7\xb2\xc4\xde\x20\xc0\xb2\xc4\xd9\x82\xc8\x82\xb5";
+    }
+    if ($summary =~ /^The subject is (.*)$/m) {
+        $subject = $1;
+    }
+    if ($summary =~ /^The last author was (.*)$/m) {
+        $lastauthor = $1;
+    }
+    if ($summary =~ /^The author is (.*)$/m) {
+        $author = $1;
+    }
+    if ($summary =~ /^The keywords are (.*)$/m) {
+        $keywords = $1;
+    }
+
+    my $weight = $conf::Weight{'html'}->{'title'};
+    if (defined $title) {
+        $$weighted_str .= "\x7f$weight\x7f$title\x7f/$weight\x7f\n";
+    }
+    if (defined $subject) {
+        $$weighted_str .= "\x7f$weight\x7f$subject\x7f/$weight\x7f\n";
+    }
+
+    $fields->{'title'} = $title;
+    $fields->{'title'} = $subject unless (defined $title);
+
+    $fields->{'author'} = $lastauthor;
+    $fields->{'author'} = $author unless (defined $lastauthor);
+
+    if (defined $keywords) {
+        $weight = $conf::Weight{'metakey'};
+        $$weighted_str .= "\x7f$weight\x7f$keywords\x7f/$weight\x7f\n";
+    }
+
+    return undef;
+}
+
+sub utf8_to_eucjp($) {
+    my ($cont) = @_;
+
+    return undef unless (util::islang("ja"));
+    return undef unless (defined $utfconvpath);
+
+    my $tmpfile  = util::tmpnam('NMZ.tmp.utf8');
+    { 
+        my $fh = util::efopen("> $tmpfile");
+        print $fh $$cont;
+        $fh->close();
+    }
+
+    my @cmd = ($utfconvpath, "-Iu8", "-Oej", $tmpfile);
+    my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
+    $$cont = util::readfile($fh_out);
+    codeconv::normalize_eucjp($cont);
+
+    unlink $tmpfile;
 
     return undef;
 }

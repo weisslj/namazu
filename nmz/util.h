@@ -6,18 +6,6 @@
 
 /*
  *
- * Data Structures.
- *
- */
-
-/* Simple string list. */
-struct nmz_strlist {
-    char *value;
-    struct nmz_strlist *next;
-};
-
-/*
- *
  * Macros
  *
  */
@@ -47,8 +35,6 @@ extern char * nmz_readfile ( const char *fname );
 extern char * nmz_getenv ( const char *str );
 extern void nmz_decode_uri ( char * str );
 extern char * nmz_strerror ( enum nmz_stat errnumt );
-extern struct nmz_strlist* nmz_add_strlist(struct nmz_strlist *list, const char *arg);
-extern void nmz_free_strlist(struct nmz_strlist *list);
 extern int nmz_is_file_exists(const char *fname);
 
 #endif /* _UTIL_H */

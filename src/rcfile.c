@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.18 2000-02-05 13:15:06 satoru Exp $
+ * $Id: rcfile.c,v 1.19 2000-02-10 21:03:59 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -76,6 +76,17 @@ struct {
     int num;
 } loaded_rcfiles = { {"", "", ""}, 0 };
 
+/* Forward declaration. */
+
+typedef struct _StrList StrList;
+
+/* Simple string list. */
+struct _StrList {
+    char *value;
+    StrList *next;
+};
+
+
 /*
  *
  * Private functions
@@ -85,29 +96,28 @@ struct {
 static char *getenv_namazurc ( void );
 static int get_rc_arg ( const char *line, char *arg );
 static void replace_home ( char *str );
-static struct nmz_strlist *get_rc_args ( const char *line );
+static StrList * add_strlist(StrList *list, const char *arg);
+static void free_strlist(StrList *list);
+static StrList *get_rc_args ( const char *line );
 static enum nmz_stat parse_rcfile ( const char *line, int lineno );
-static enum nmz_stat apply_rc ( int lineno, const char *directive, struct nmz_strlist *args );
-
-static enum nmz_stat process_rc_blank ( const char *directive, const struct nmz_strlist *args );
-
-static enum nmz_stat process_rc_comment(const char *directive, const struct nmz_strlist *args);
-static enum nmz_stat process_rc_debug(const char *directive, const struct nmz_strlist *args);
-static enum nmz_stat process_rc_index(const char *directive, const struct nmz_strlist *args);
-static enum nmz_stat process_rc_alias(const char *directive, const struct nmz_strlist *args);
-static enum nmz_stat process_rc_replace(const char *directive, const struct nmz_strlist *args);
-static enum nmz_stat process_rc_logging(const char *directive, const struct nmz_strlist *args);
-static enum nmz_stat process_rc_scoring(const char *directive, const struct nmz_strlist *args);
-static enum nmz_stat process_rc_lang(const char *directive, const struct nmz_strlist *args);
-static enum nmz_stat process_rc_emphasistags(const char *directive, const struct nmz_strlist *args);
-static enum nmz_stat process_rc_template(const char *directive, const struct nmz_strlist *args);
+static enum nmz_stat apply_rc ( int lineno, const char *directive, StrList *args );
+static enum nmz_stat process_rc_blank ( const char *directive, const StrList *args );
+static enum nmz_stat process_rc_comment ( const char *directive, const StrList *args );
+static enum nmz_stat process_rc_debug ( const char *directive, const StrList *args );
+static enum nmz_stat process_rc_index ( const char *directive, const StrList *args );
+static enum nmz_stat process_rc_alias ( const char *directive, const StrList *args );
+static enum nmz_stat process_rc_replace ( const char *directive, const StrList *args );
+static enum nmz_stat process_rc_logging ( const char *directive, const StrList *args );
+static enum nmz_stat process_rc_scoring ( const char *directive, const StrList *args );
+static enum nmz_stat process_rc_lang ( const char *directive, const StrList *args );
+static enum nmz_stat process_rc_emphasistags ( const char *directive, const StrList *args );
+static enum nmz_stat process_rc_template ( const char *directive, const StrList *args );
 
 struct conf_directive {
     char *name;
     int  argnum;
     int  plus;   /* argnum or more arguments are required. */
-    enum nmz_stat (*func)(const char *directive,
-			  const struct nmz_strlist *args);
+    enum nmz_stat (*func)(const char *directive, const StrList *args);
 };
 
 static struct conf_directive directive_tab[] = {
@@ -128,21 +138,21 @@ static struct conf_directive directive_tab[] = {
 
 
 static enum nmz_stat
-process_rc_blank(const char *directive, const struct nmz_strlist *args)
+process_rc_blank(const char *directive, const StrList *args)
 {
     /* Do nothing */
     return SUCCESS;
 }
 
 static enum nmz_stat
-process_rc_comment(const char *directive, const struct nmz_strlist *args)
+process_rc_comment(const char *directive, const StrList *args)
 {
     /* Do nothing */
     return SUCCESS;
 }
 
 static enum nmz_stat
-process_rc_debug(const char *directive, const struct nmz_strlist *args)
+process_rc_debug(const char *directive, const StrList *args)
 {
     char *arg1 = args->value;
 
@@ -155,7 +165,7 @@ process_rc_debug(const char *directive, const struct nmz_strlist *args)
 }
 
 static enum nmz_stat
-process_rc_index(const char *directive, const struct nmz_strlist *args)
+process_rc_index(const char *directive, const StrList *args)
 {
     char *arg1 = args->value;
 
@@ -167,7 +177,7 @@ process_rc_index(const char *directive, const struct nmz_strlist *args)
  * FIXME: one-to-multiple alias should be allowed.
  */
 static enum nmz_stat
-process_rc_alias(const char *directive, const struct nmz_strlist *args)
+process_rc_alias(const char *directive, const StrList *args)
 {
     char *arg1 = args->value;
     char *arg2 = args->next->value;
@@ -179,7 +189,7 @@ process_rc_alias(const char *directive, const struct nmz_strlist *args)
 }
 
 static enum nmz_stat
-process_rc_replace(const char *directive, const struct nmz_strlist *args)
+process_rc_replace(const char *directive, const StrList *args)
 {
     char *arg1 = args->value;
     char *arg2 = args->next->value;
@@ -191,7 +201,7 @@ process_rc_replace(const char *directive, const struct nmz_strlist *args)
 }
 
 static enum nmz_stat
-process_rc_logging(const char *directive, const struct nmz_strlist *args)
+process_rc_logging(const char *directive, const StrList *args)
 {
     char *arg1 = args->value;
 
@@ -205,7 +215,7 @@ process_rc_logging(const char *directive, const struct nmz_strlist *args)
 }
 
 static enum nmz_stat
-process_rc_scoring(const char *directive, const struct nmz_strlist *args)
+process_rc_scoring(const char *directive, const StrList *args)
 {
     char *arg1 = args->value;
 
@@ -218,7 +228,7 @@ process_rc_scoring(const char *directive, const struct nmz_strlist *args)
 }
 
 static enum nmz_stat
-process_rc_lang(const char *directive, const struct nmz_strlist *args)
+process_rc_lang(const char *directive, const StrList *args)
 {
     char *arg1 = args->value;
 
@@ -232,7 +242,7 @@ process_rc_lang(const char *directive, const struct nmz_strlist *args)
 }
 
 static enum nmz_stat
-process_rc_emphasistags(const char *directive, const struct nmz_strlist *args)
+process_rc_emphasistags(const char *directive, const StrList *args)
 {
     char *arg1 = args->value;
     char *arg2 = args->next->value;
@@ -242,7 +252,7 @@ process_rc_emphasistags(const char *directive, const struct nmz_strlist *args)
 }
 
 static enum nmz_stat
-process_rc_template(const char *directive, const struct nmz_strlist *args)
+process_rc_template(const char *directive, const StrList *args)
 {
     char *arg1 = args->value;
 
@@ -338,16 +348,64 @@ replace_home(char *str)
     return;
 }
 
+/*
+ * Add a new element to the list and return it.
+ */
+static StrList * 
+add_strlist(StrList *list, const char *arg)
+{
+    StrList *newp;
+
+    newp = malloc(sizeof(StrList));
+    if (newp == NULL) {
+	return NULL;
+    }
+
+    newp->value = malloc(strlen(arg) + 1);
+    if (newp->value == NULL) {
+	 return NULL;
+    }
+    strcpy(newp->value, arg);
+    newp->next = NULL;
+
+    if (list == NULL) {
+	return newp;
+    } else {
+	StrList *ptr = list;
+
+	while (ptr->next != NULL) {
+	    ptr = ptr->next;
+	}
+	assert(ptr->next == NULL);
+	ptr->next = newp;
+	return list;
+    }
+    assert(0);
+    /* NOTREACHED */
+}
+
+static void 
+free_strlist(StrList *list)
+{
+    StrList *next, *ptr;
+
+    for (ptr = list; ptr != NULL; ptr = next) {
+	next = ptr->next;
+	free(ptr->value);
+	free(ptr);
+    }
+}
+
 
 /*
  * Get the directive and the following args and return them as a list.
  *
  * NOTE: the string `line' should be chomped before calling the function.
  */
-static struct nmz_strlist*
+static StrList *
 get_rc_args(const char *line)
 {
-    struct nmz_strlist *list = NULL;
+    StrList *list = NULL;
     int n;
 
     /* Skip white spaces in the beginning of this line */
@@ -355,12 +413,12 @@ get_rc_args(const char *line)
     line += n;
     /* Determine whether or not this line is only a blank */
     if (*line == '\0') {
-	return nmz_add_strlist(list, "BLANK");
+	return add_strlist(list, "BLANK");
     }
 
     /* Determine whether or not this line is only a comment */
     if (*line == '#') {
-	return nmz_add_strlist(list, "COMMENT");
+	return add_strlist(list, "COMMENT");
     }
 
     /* Get a directive name. */
@@ -373,7 +431,7 @@ get_rc_args(const char *line)
 	}
 	strncpy(directive, line, n);
 	directive[n] = '\0';  /* Hey, don't forget this after strncpy()! */
-	list = nmz_add_strlist(list, directive);
+	list = add_strlist(list, directive);
 	line += n;
     }
 
@@ -396,7 +454,7 @@ get_rc_args(const char *line)
 	/* Replace ~/ */
 	replace_home(arg);
 
-	list = nmz_add_strlist(list, arg);
+	list = add_strlist(list, arg);
 
 	/* Skip a delimiter after the arg */
 	n = strspn(line, " \t");    /* skip white spaces */
@@ -414,8 +472,8 @@ get_rc_args(const char *line)
 static enum nmz_stat 
 parse_rcfile(const char *line, int lineno) 
 {
-    struct nmz_strlist *d_args; /* directive + arguments */
-    struct nmz_strlist *args;
+    StrList *d_args; /* directive + arguments */
+    StrList *args;
     char *directive;
 
    /* 
@@ -443,7 +501,7 @@ parse_rcfile(const char *line, int lineno)
 	(strcasecmp(directive, "COMMENT") != 0) &&
 	(strcasecmp(directive, "BLANK") != 0))
     {
-	struct nmz_strlist *ptr;
+	StrList *ptr;
 	int i;
 
 	printf("%4d: Directive:  [%s]\n", lineno, directive);
@@ -454,15 +512,15 @@ parse_rcfile(const char *line, int lineno)
 	}
     }
 
-    nmz_free_strlist(d_args);
+    free_strlist(d_args);
     return SUCCESS;
 }
 
 static enum nmz_stat 
-apply_rc(int lineno, const char *directive, struct nmz_strlist *args)
+apply_rc(int lineno, const char *directive, StrList *args)
 {
     int argnum = 0;
-    struct nmz_strlist *ptr;
+    StrList *ptr;
     struct conf_directive *dtab = directive_tab;
 
     for (ptr = args; ptr != NULL; ptr = ptr->next) {

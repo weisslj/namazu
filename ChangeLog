@@ -1,3 +1,16 @@
+2000-02-11  Ryuji Abe  <raeva@t3.rim.or.jp>
+
+	* nmz/util.h (struct nmz_strlist): Removed.
+
+	* nmz/util.c (nmz_add_strlist): Moved to src/rcfile.c as add_strlist.
+	(nmz_free_strlist): Moved to src/rcfile as free_strlist.
+
+	* src/rcfile.c (StrList): New Type. Use instead of struct nmz_strlist.
+	(add_strlist): Be static.
+	(free_strlist): Likewise.
+
+	* src/rcfile.h: Defined _RCFILE_H.
+
 2000-02-10  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* scripts/mknmz.in (load_target_list): Add Win32 pathname handling.

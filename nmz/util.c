@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: util.c,v 1.58 2000-02-06 22:43:58 rug Exp $
+ * $Id: util.c,v 1.59 2000-02-10 21:03:55 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -522,54 +522,6 @@ nmz_strerror(enum nmz_stat errnum)
     assert(msg != NULL);
 
     return msg;
-}
-
-/*
- * Add a new element to the list and return it.
- */
-struct nmz_strlist* 
-nmz_add_strlist(struct nmz_strlist *list, const char *arg)
-{
-    struct nmz_strlist *newp;
-
-    newp = malloc(sizeof(struct nmz_strlist));
-    if (newp == NULL) {
-	return NULL;
-    }
-
-    newp->value = malloc(strlen(arg) + 1);
-    if (newp->value == NULL) {
-	 return NULL;
-    }
-    strcpy(newp->value, arg);
-    newp->next = NULL;
-
-    if (list == NULL) {
-	return newp;
-    } else {
-	struct nmz_strlist *ptr = list;
-
-	while (ptr->next != NULL) {
-	    ptr = ptr->next;
-	}
-	assert(ptr->next == NULL);
-	ptr->next = newp;
-	return list;
-    }
-    assert(0);
-    /* NOTREACHED */
-}
-
-void 
-nmz_free_strlist(struct nmz_strlist *list)
-{
-    struct nmz_strlist *next, *ptr;
-
-    for (ptr = list; ptr != NULL; ptr = next) {
-	next = ptr->next;
-	free(ptr->value);
-	free(ptr);
-    }
 }
 
 /*

@@ -16,7 +16,11 @@ engine, but also works as personal use such as search system for
 local HDD.  Now, search clients for Mule and Tcl/Tk, JAVA and
 Win32 are available.
 
-%changelog 
+%changelog
+* Tue Oct 12 1999 Ryuji Abe <raeva@t3.rim.or.jp>
+- Fixed correctly executables entry at %files.
+- Added missing /usr/share/locale entry at %files.
+ 
 * Thu Aug 26 1999 Ryuji Abe <raeva@t3.rim.or.jp>
 - Requires perl >= 5.004.
 - Delete Packager tag.
@@ -47,6 +51,10 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-, root, root)
 
 %doc AUTHORS ChangeLog COPYING NEWS README README-ja
-/usr/bin/*
+/usr/bin/namazu
+/usr/bin/*nmz
+/usr/bin/mailutime
+#/usr/share/emacs/site-lisp/*
+/usr/share/locale/*
 /usr/share/namazu/*
 

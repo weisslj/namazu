@@ -10,18 +10,21 @@
 
 (require 'namazu)
 
-(if (boundp 'namazu-view-function-alist)
-    (setq namazu-view-function-alist
-          (append '(("/Mail/\\|/News/" . gnus-nmz-view))
-                  namazu-view-function-alist)))
-
 (defvar gnus-nmz-nnml-spool-regex 
-  (concat (expand-file-name "~/") "Mail/\\([^/]+\\)/\\([0-9]+\\)")
+  (concat (expand-file-name "~/") "Mail/\\(.+\\)/")
   "*検索結果中の Gnus の Mail spool のパターン")
 
 (defvar gnus-nmz-cache-regex 
     (concat (expand-file-name "~/") "News/cache/\\([^/]+\\)/\\([0-9]+\\)")
     "*検索結果中の Gnus の News cache のパターン")
+
+(if (boundp 'namazu-view-function-alist)
+    (setq namazu-view-function-alist
+          (cons (cons (concat gnus-nmz-nnml-spool-regex
+			      "\\|"
+			      gnus-nmz-cache-regex)
+		      'gnus-nmz-view)
+		namazu-view-function-alist)))
 
 (defvar gnus-nmz-with-windows  (featurep 'windows)
   "*nil 以外の値を設定すると、windows.el
@@ -33,10 +36,17 @@
   (let (group id)
     (cond 
      ((string-match gnus-nmz-nnml-spool-regex path)
-      (setq group (format "nnml:%s"(substring path
-                      (match-beginning 1) (match-end 1))))
-      (setq id (format "%s" (substring path
-                                       (match-beginning 2) (match-end 2)))))
+      (setq group (match-string 1 path))
+      ;; replace "/" with "."
+      (let (result (start 0))
+	(while (string-match "/" group start)
+	  (setq result (concat result
+			       (substring group start (match-beginning 0))
+			       "."))
+	  (setq start (match-end 0)))
+	(setq group (concat result (substring group start))))
+      (setq group (format "nnml:%s" group))
+      (setq id (format "%s" (file-name-nondirectory path))))
      ((string-match gnus-nmz-cache-regex path)
       (setq group (format "%s"(substring path
                                          (match-beginning 1) (match-end 1))))

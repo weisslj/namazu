@@ -1,6 +1,7 @@
 /*
- * $Id: result.c,v 1.56 2000-08-20 21:19:34 rug Exp $
+ * $Id: result.c,v 1.57 2000-08-25 09:52:59 rug Exp $
  * 
+ * Copyright (C) 1989, 1990 Free Software Foundation, Inc.
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -40,7 +41,6 @@
 #include "parser.h"
 #include "query.h"
 #include "l10n-ja.h"
-#include "adhoc.h"
 
 static int urireplace  = 1;   /* Replace URI in results as default. */
 static int uridecode   = 1;   /* Decode  URI in results as default. */
@@ -52,6 +52,7 @@ static int uridecode   = 1;   /* Decode  URI in results as default. */
  */
 
 static void commas ( char *str );
+static char *strcasestr ( char *s1, char *s2 );
 static void replace_field ( struct nmz_data d, int counter, const char *field, char *result );
 static void encode_entity ( char *str );
 static void emphasize ( char *str );
@@ -79,6 +80,32 @@ commas(char *numstr)
 	    numstr[n] = ',';
 	}
     }
+}
+
+/* 
+ * Case-insensitive brute force search
+ */
+
+static char *
+strcasestr (s1, s2)
+     char *s1;
+     char *s2;
+{
+    int i;
+    char *p1;
+    char *p2;
+    char *s = s1;
+
+    for (p2 = s2, i = 0; *s; p2 = s2, i++, s++) {
+	for (p1 = s; *p1 && *p2 && (nmz_tolower(*p1) == nmz_tolower(*p2)); p1++, p2++)
+	    ;
+	if (!*p2)
+	    break;
+    }
+    if (!*p2)
+	return s1 + i;
+
+    return 0;
 }
 
 static void 
@@ -179,7 +206,7 @@ emphasize(char *str)
 	keylen = strlen(key);
 
 	do {
-	    ptr = adhoc_strcasestr(ptr, key);
+	    ptr = strcasestr(ptr, key);
 	    if (ptr != NULL) {
 		memmove(ptr + 2, ptr, strlen(ptr) + 1);
 		memmove(ptr + 1, ptr + 2, keylen);

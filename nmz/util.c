@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: util.c,v 1.70 2000-08-20 21:19:33 rug Exp $
+ * $Id: util.c,v 1.71 2000-08-25 09:52:58 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -46,7 +46,6 @@
 #include "i18n.h"
 #include "var.h"
 #include "system.h"
-#include "adhoc.h"
 
 /*
  *
@@ -342,12 +341,26 @@ nmz_isnumstr(const char *str)
     return 1;
 }
 
+/* 
+ * Substitute for tolower(3).
+ */
+
+int 
+nmz_tolower(int c)
+{
+    if (c >= 'A' && c <= 'Z') {
+	c = 'a' + c - 'A';
+	return c;
+    }
+    return c;
+}
+
 void 
 nmz_strlower(char *str)
 {
     while (*str) {
 	/* Using ascii dependent lower same as mknmz.  */
-        *str = adhoc_tolower(*str);
+        *str = nmz_tolower(*str);
         str++;
     }
 }

@@ -1,9 +1,23 @@
-2000-08-25 Ryuji Abe <rug@namazu.org>
+2000-08-25  Ryuji Abe <rug@namazu.org>
 
 	* acinclude.m4: Modified gettext related macros based on 
 	gnome-gettext.m4.
 
-	* lib/Makefile.am: noinst_LIBRAIRES -> noinst_LTLIBRARIES.
+	* lib/adhoc.c: Abolished.
+	(adhoc_tolower): Revert to nmz_tolower and moved to nmz/util.c.
+	(adhoc_strcasestr): Revert to strcasestr and moved to src/result.c. 
+
+	* lib/adhoc.h: Abolished.
+
+	* lib/Makefile.am: Fixed noinst_LIBRAIRES -> noinst_LTLIBRARIES.
+	(noinst_LTLIBRARIES): Removed adhoc.[ch].
+
+	* nmz/util.c (nmz_tolower): Be global symbol.
+	(nmz_strlower): Revert to use nmz_tolower.
+
+	* nmz/util.h: Added prototype of nmz_tolower.
+
+	* src/result.c (emphasize): Revert to use strcasestr.
 
 2000-08-21  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
@@ -5826,4 +5840,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.715 2000-08-25 06:49:45 rug Exp $
+$Id: ChangeLog,v 1.716 2000-08-25 09:52:58 rug Exp $

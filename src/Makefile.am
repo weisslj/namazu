@@ -32,11 +32,11 @@ INCLUDES  = -I.. -I../intl -I../lib -I../nmz
 LDADD = @INTLLIBS@ ../lib/libnmzut.a $(top_srcdir)/nmz/libnmz.la
 
 namazu_SOURCES = cgi.c form.c \
-		 i18n.c namazu.c output.c \
+		 namazu.c output.c \
 		 result.c \
 		 usage.c \
 		 cgi.h em.h form.h \
-		 i18n.h message.h namazu.h output.h \
+		 message.h namazu.h output.h \
 		 result.h \
 		 usage.h
 

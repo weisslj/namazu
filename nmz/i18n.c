@@ -1,6 +1,6 @@
 /*
  * i18n.c -
- * $Id: i18n.c,v 1.2 1999-10-11 04:25:25 satoru Exp $
+ * $Id: i18n.c,v 1.1 1999-11-09 08:34:37 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.

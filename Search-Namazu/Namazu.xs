@@ -20,7 +20,7 @@ Namazu.xs
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 # 02111-1307, USA
 
-$Id: Namazu.xs,v 1.2 1999-11-08 09:17:35 knok Exp $
+$Id: Namazu.xs,v 1.3 1999-11-09 08:34:36 knok Exp $
 
 */
 
@@ -46,9 +46,10 @@ extern "C" {
 }
 #endif
 
-PROTOTYPES: DISABLE
 
 MODULE = Search::Namazu		PACKAGE = Search::Namazu
+
+PROTOTYPES: DISABLE
 
 AV*
 call_search_main(query)
@@ -59,6 +60,7 @@ call_search_main(query)
 		int i;
 		AV *retar;
 		HLIST hlist;
+		char result[BUFSIZE];
 
 	CODE:
 		uniq_idxnames();
@@ -69,18 +71,17 @@ call_search_main(query)
 		retar = newAV();
 		hlist = search_main(qstr);
 		for (i = 0; i < hlist.n; i ++) {
-			HV *stash = sv_stashpv("Search::Namazu::HList", TRUE);
-			SV *stashref = newRV(stash);
+			SV *ohlist = perl_eval_pv("new Seach::Namazu::HList", TRUE);
 			get_field_data(hlist.d[i].idxid, hlist.d[i].docid, "uri", result);
 			PUSHMARK(SP);
-			XPUSHs(stashref);
+			XPUSHs(ohlist);
 			XPUSHs(sv_2mortal(newSViv(hlist.d[i].score)));
-			XPUSHs(sv_2mortal(newSVpv(result)));
+			XPUSHs(sv_2mortal(newSVpv(result, strlen(result))));
 			XPUSHs(sv_2mortal(newSViv(hlist.d[i].date)));
 			XPUSHs(sv_2mortal(newSViv(hlist.d[i].rank)));
 			PUTBACK;
 			perl_call_method("set", G_DISCARD);
-			av_push(retar, stashref);
+			av_push(retar, ohlist);
 		}
 		free_hlist(hlist);
 		RETVAL = retar;
@@ -89,7 +90,7 @@ call_search_main(query)
 		RETVAL
 
 int
-add_nmzindex(index)
+nmz_addindex(index)
 	SV *index
 
 	PREINIT:
@@ -98,6 +99,59 @@ add_nmzindex(index)
 	CODE:
 		tmp = SvPV(index, na);
 		RETVAL = add_index(tmp);
+
+	OUTPUT:
+		RETVAL
+
+void
+nmz_sortbydate()
+	CODE:
+		set_sortbydate();
+
+void
+nmz_sortbyscore()
+	CODE:
+		set_sortbyscore();
+
+void
+nmz_sortbyfield()
+	CODE:
+		set_sortbyfield();
+
+void
+nmz_descendingsort()
+	CODE:
+		set_sort_descending();
+
+void
+nmz_ascendingsort()
+	CODE:
+		set_sort_ascending();
+
+int
+nmz_setconfig(conf)
+	SV *conf
+
+	PREINIT:
+		char *tmp;
+
+	CODE:
+		tmp = SvPV(conf, na);
+		RETVAL = load_conf(tmp);
+
+	OUTPUT:
+		RETVAL
+
+int
+nmz_setlang(lang)
+	SV *lang
+
+	PREINIT:
+		char *tmp;
+
+	CODE:
+		tmp = SvPV(lang, na);
+		RETVAL = set_lang(tmp);
 
 	OUTPUT:
 		RETVAL

@@ -19,7 +19,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 # 02111-1307, USA
 #
-# $Id: Namazu.pm,v 1.2 1999-11-08 09:17:35 knok Exp $
+# $Id: Namazu.pm,v 1.3 1999-11-09 08:34:36 knok Exp $
 #
 
 package Search::Namazu;
@@ -64,7 +64,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 =cut
 
 require Exporter;
-requite DynaLoader;
+require DynaLoader;
 
 @ISA = qw(Exporter DynaLoader);
 
@@ -76,6 +76,15 @@ $VERSION = '0.01';
 bootstrap Search::Namazu $VERSION;
 
 use Carp;
+
+sub NMZ_SORTBYDATE { return 1; }
+sub NMZ_SORTBYSCORE { return 2; }
+sub NMZ_SORTBYFIELD { return 3; }
+sub NMZ_ASCENDSORT { return 16; }
+sub NMZ_DESCENDSORT { return 32; }
+
+sub NMZ_NOT_SPECIFIED_INDEX { return -1; }
+sub NMZ_ERR_INDEX { return -2; }
 
 sub Search {
     my %args = @_;
@@ -109,6 +118,44 @@ sub Search {
 	}
     }
 
+# set paramater
+
+    if ($sortmeth == NMZ_SORTBYDATE) {
+	nmz_sortbydate();
+    } elsif ($sortmeth == NMZ_SORTBYSCORE) {
+	nmz_sortbyscore();
+    } elsif ($sortmeth == NMZ_SORTBYFIELD) {
+	nmz_sortbyfield();
+    } else {
+	nmz_sortbydate();
+    }
+
+    if ($sortord == NMZ_DESCENDSORT) {
+	nmz_descendsort();
+    } elsif ($sortord == NMZ_ASCENDSORT) {
+	nmz_ascendsort();
+    } else {
+	nmz_descendsort();
+    }
+
+    if (defined $config) {
+	if (nmz_setconfig($config))
+	  return ();
+    }
+
+    if (defined $lang) {
+	if (nmz_setlang($lang))
+	  return ();
+    }
+
+# query and get hlist
+
+    if (! defined $query)
+      return ();
+
+# create Search::Namazu::Result object
+
+# return object
     
 }
 

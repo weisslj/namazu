@@ -2,7 +2,7 @@
 ;;
 ;; Mule 上で Namazu を利用した検索を行うための elisp です。
 ;;
-;;  $Id: namazu.el,v 1.6 2000-01-28 09:21:22 miyoshi Exp $
+;;  $Id: namazu.el,v 1.7 2000-01-29 15:49:30 kose Exp $
 
 (defconst namazu-version "namazu.el 1.0.3")
 
@@ -476,7 +476,7 @@ PATH が通っていない場合には適当なプログラム名を指定します。")
                   (directory-files dir)))
          fields file)
     (while (setq file (car fl))
-      (and (string-match "NMZ.field.\\(.*\\)" file)
+      (and (string-match "NMZ.field.\\([^.]+\\)\\'" file)
            (setq fields (append (list (list (format "+%s:"
               (substring file (match-beginning 1) (match-end 1))))) fields)))
       (setq fl (cdr fl)))

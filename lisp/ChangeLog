@@ -1,3 +1,7 @@
+2000-01-24  KOSEKI Yoshinori  <kose@yk.NetLaputa.ne.jp>
+
+	* namazu.el (namazu-make-field-completion-alist): Ignore NMZ.field.`foo'.i.
+
 2000-01-28  MIYOSHI Masanori  <miyoshi@ask.ne.jp>
 
 	* namazu.el: (namazu-font-lock-keywords): Support font-lock for Emacs 19.28. 

@@ -1,3 +1,12 @@
+1999-10-21  Ryuji Abe <raeva@t3.rim.or.jp>
+
+	* configure.in (LIBOBJS): vsnprintf.o was added when neither 
+	  vsnprintf nor _vsnprintf was found.
+	[EMXOS2]: Fixed CFLAGS and LDFLAGS.
+	(AC_OUTPUT): Deleted entry macros/Makefile.
+
+	* src/util.h [HAVE__VSNPRINTF]: Defined vsnprintf as _vsnprintf.
+
 1999-10-19  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* src/libnamazu.{c,h}: Added some setting functions.

@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.37 1999-10-14 10:59:47 rug Exp $
+dnl $Id: configure.in,v 1.38 1999-10-21 01:30:30 rug Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -38,6 +38,11 @@ dnl OS specific.
 AC_EXEEXT
 AC_OBJEXT
 
+if test -n "$EMXOS2"; then
+    CFLAGS="$CFLAGS -Zmtd"
+    LDFLAGS="$LDFLAGS -Zmtd -Zcrtdll -Zsysv-signals -Zbin-files"
+fi
+
 dnl *
 dnl * I18N
 dnl *
@@ -68,8 +73,12 @@ AC_FUNC_MMAP
 AC_FUNC_MEMCMP
 AC_FUNC_VPRINTF
 AC_CHECK_FUNCS(getcwd getwd putenv setenv strdup strspn)
-AC_REPLACE_FUNCS([memmove strcasecmp strncasecmp vsnprintf \
-		strcspn strstr])
+AC_REPLACE_FUNCS([memmove strcasecmp strncasecmp strcspn \
+		strstr])
+AC_CHECK_FUNCS([vsnprintf _vsnprintf])
+if test $ac_cv_func_vsnprintf = no && test $ac_cv_func__vsnprintf = no; then
+    LIBOBJS="$LIBOBJS vsnprintf.${ac_objext}"
+fi
 
 dnl *
 dnl * Checks for external commands
@@ -365,14 +374,6 @@ AC_MSG_RESULT($admin)
 OPT_ADMIN_EMAIL=$admin
 AC_SUBST(OPT_ADMIN_EMAIL)
 
-dnl OS/2 specific
-
-if test -n "$EMXOS2"; then
-    CFLAGS="-O2 -m486 -Zmtd"
-    LDFLAGS="-m486 -Zmtd -Zcrtdll -Zsysv-signals -Zbin-files"
-fi
-
-
 dnl *
 dnl * Define a scoring method (default: TFIDF)
 dnl *
@@ -410,7 +411,6 @@ AC_OUTPUT([Makefile
 	   intl/Makefile 
 	   lib/Makefile
 	   lisp/Makefile
-	   macros/Makefile
 	   pl/Makefile
 	   pl/var.pl
 	   pl/conf.pl

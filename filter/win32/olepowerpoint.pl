@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: olepowerpoint.pl,v 1.11 2002-03-27 05:59:35 takesako Exp $
+# $Id: olepowerpoint.pl,v 1.12 2002-07-24 10:44:02 baba Exp $
 # Copyright (C) 1999 Jun Kurabe ,
 #               1999 Ken-ichi Hirose All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -46,7 +46,8 @@
 #
 
 package olepowerpoint;
-#use strict;
+use strict;
+no strict 'refs';  # for symbolic reference: $fields;
 require 'util.pl';
 require 'gfilter.pl';
 
@@ -119,7 +120,7 @@ sub enum ($$$) {
     die "No Objects or No Function" unless ($enum_objs and $func );
 
     my $e = Win32::OLE::Enum->new($enum_objs);
-    while(($obj = $e->Next)) {
+    while((my $obj = $e->Next)) {
         return 0 if (!&$func($obj, $cont));
     }
     return 1;
@@ -163,6 +164,8 @@ sub getProperties ($$$) {
 
 package ReadPPT;
 
+my $office_consts = undef;
+
 sub ReadPPT ($$$$) {
     my ($cfile, $cont, $fields, $weighted_str) = @_;
 
@@ -181,7 +184,6 @@ sub ReadPPT ($$$$) {
     open (SAVEERR,">&STDERR");
     open (STDERR,">nul");
     # Load Office 97/98/2000/XP Constant
-    local $office_consts;
     $office_consts = Win32::OLE::Const->Load("Microsoft Office 10.0 Object Library");
     $office_consts = Win32::OLE::Const->Load("Microsoft Office 9.0 Object Library") unless $office_consts;
     $office_consts = Win32::OLE::Const->Load("Microsoft Office 8.0 Object Library") unless $office_consts;
@@ -246,6 +248,11 @@ sub getSlides ($$) {
 #$ARGV[0] = cwd().'\\'.$ARGV[0] unless ($ARGV[0] =~ m/^[a-zA-Z]\:[\\\/]/ || $ARGV[0] =~ m/^\/\//);
 #$ARGV[0] =~ s|/|\\|g;
 
-#print ReadPPT::ReadPPT("$ARGV[0]");
+#my $$cont = "";
+#ReadPPT::ReadPPT("$ARGV[0]", $cont, "", "");
+#(my $base = $ARGV[0]) =~ s/\.ppt$//;
+#open(F, "> $base.txt") || die;
+#print F $$cont;
+#close(F);
 
 1;

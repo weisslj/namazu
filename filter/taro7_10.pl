@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: taro7_10.pl,v 1.11 2004-04-08 07:37:30 opengl2772 Exp $
+# $Id: taro7_10.pl,v 1.12 2004-09-07 20:37:36 usu Exp $
 # Copyright (C) 2003 Yukio USUDA
 #               2003 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -37,7 +37,7 @@ sub mediatype() {
 sub status() {
     my $olepath = undef;
     $olepath = util::checklib('OLE/Storage_Lite.pm');
-    return 'no' until $olepath;
+    return 'no' unless $olepath;
 
     return 'yes' if ($perlver >= 5.008);
     my $utfconvpath = undef;

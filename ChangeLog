@@ -1,3 +1,9 @@
+2004-09-08  Yukio USUDA <usu@namazu.org>
+
+	* tests/ja-namazu-1: Bug fix. (new namazu-devel-ja#116,126)
+
+	* filter/taro7_10.pl: Corrected a typo.
+
 2004-09-07  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * scripts/{lnnmz, nmzmerge}.in: When gcnmz was performed to
@@ -9053,4 +9059,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1224 2004-09-07 13:34:53 opengl2772 Exp $
+$Id: ChangeLog,v 1.1225 2004-09-07 20:37:36 usu Exp $

@@ -36,7 +36,9 @@ fi
 
 # Check Jaapanese phrease searching.
 cd ../src
-./namazu '{関数 追加}' ../tests/idx1 | fgrep '[ : 0 ]'
+./namazu '{関数 追加}' ../tests/ja-idx1 | egrep ':: [1-9]' >/dev/null
+test $? -ne 0 && exit 1
+./namazu '{関数 追加}' ../tests/ja-idx1 | egrep ':: 0' >/dev/null
 test $? -ne 0 && exit 0
 
 exit 1

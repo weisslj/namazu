@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mailnews.pl,v 1.9 1999-08-28 11:32:25 satoru Exp $
+# $Id: mailnews.pl,v 1.10 1999-08-29 02:57:46 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -40,8 +40,8 @@ sub recursive() {
     return 0;
 }
 
-sub filter ($$$$$$) {
-    my ($orig_cfile, $cont, $weighted_str, $headings, $fields, $size)
+sub filter ($$$$$) {
+    my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
       = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
@@ -62,17 +62,17 @@ sub filter ($$$$$$) {
 # Mail/News 用のフィルタ
 # 元となるものは古川@ヤマハさんにいただきました
 sub mailnews_filter ($$$) {
-    my ($contents, $weighted_str, $fields) = @_;
+    my ($contref, $weighted_str, $fields) = @_;
 
     my $boundary = "";
     my $line     = "";
     my $partial  = 0;
 
-    $$contents =~ s/^\s+//;
+    $$contref =~ s/^\s+//;
     # 1 行目がヘッダっぽくないファイルは、ヘッダ処理しない
-    return unless $$contents =~ /(^\S+:|^from )/i;
+    return unless $$contref =~ /(^\S+:|^from )/i;
 
-    my @tmp = split(/\n/, $$contents);
+    my @tmp = split(/\n/, $$contref);
   HEADER_PROCESSING:
     while (@tmp) {
 	$line = shift(@tmp);
@@ -134,22 +134,22 @@ sub mailnews_filter ($$$) {
 	undef $partial;
 	goto HEADER_PROCESSING;
     }
-    $$contents = join("\n", @tmp);
+    $$contref = join("\n", @tmp);
     if ($boundary) {
 	# MIME の Multipart  をそれなりに処理する
 	$boundary =~ s/(\W)/\\$1/g;
-	$$contents =~ s/This is multipart message.\n//i;
+	$$contref =~ s/This is multipart message.\n//i;
 
 
 	# MIME multipart processing,
 	# modified by Furukawa-san's patch on [1998/08/27]
- 	$$contents =~ s/--$boundary(--)?\n?/\xff/g;
- 	my (@parts) = split(/\xff/, $$contents);
- 	$$contents = '';
+ 	$$contref =~ s/--$boundary(--)?\n?/\xff/g;
+ 	my (@parts) = split(/\xff/, $$contref);
+ 	$$contref = '';
  	for $_ (@parts){
  	    if (s/^(.*?\n\n)//s){
  		my ($head) = $1;
- 		$$contents .= $_ if $head =~ m!^content-type:.*text/plain!mi;
+ 		$$contref .= $_ if $head =~ m!^content-type:.*text/plain!mi;
  	    }
  	}
     }
@@ -159,12 +159,12 @@ sub mailnews_filter ($$$) {
 # また冒頭の名乗るだけの行や、引用部分、◯◯さんは書きましたなどの行は
 # 要約に含まれないようにする (やまだあきらさんのアイディアを頂きました)
 sub mailnews_citation_filter ($$) {
-    my ($contents, $weighted_str) = @_;
+    my ($contref, $weighted_str) = @_;
 
     my $omake = "";
-    $$contents =~ s/^\s+//;
-    my @tmp = split(/\n/, $$contents);
-    $$contents = "";
+    $$contref =~ s/^\s+//;
+    my @tmp = split(/\n/, $$contref);
+    $$contref = "";
 
     # 冒頭の名乗り出る部分を処理 (これは最初の 1,2 行めにしかないでしょう)
     for (my $i = 0; $i < 2 && defined($tmp[$i]); $i++) {
@@ -182,16 +182,16 @@ sub mailnews_citation_filter ($$) {
 	if ($line !~ /^[^>]*</ &&
 	    $line =~ s/^((\S{1,10}>)|(\s*[\>\|\:\#]+\s*))+//) {
 	    $omake .= $line . "\n";
-	    $$contents .= "\n";  # 改行をいれよう
+	    $$contref .= "\n";  # 改行をいれよう
 	    next;
 	}
-	$$contents .= $line. "\n";
+	$$contref .= $line. "\n";
     }
 	
     # ここでは空行を区切りにした「段落」で処理している
     # 「◯◯さんは△△の記事において□□時頃書きました」の類いを隔離
-    @tmp = split(/\n\n+/, $$contents);
-    $$contents = "";
+    @tmp = split(/\n\n+/, $$contref);
+    $$contref = "";
     my $i = 0;
     for my $line (@tmp) {
 	# 完全に除外するのは無理だと思われます。こんなものかなあ
@@ -204,7 +204,7 @@ sub mailnews_citation_filter ($$) {
 	    $line = "";
 	    next;
 	}
-	$$contents .= $line. "\n\n";
+	$$contref .= $line. "\n\n";
         $i++;
     }
     $$weighted_str .= "\x7f1\x7f$omake\x7f/1\x7f\n";

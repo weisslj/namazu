@@ -1,3 +1,41 @@
+1999-08-29  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* lib/util.pl (readfile): Comment out $conf::FILE_SIZE_LIMIT
+	condition codes.
+	
+	* src/mknmz.pl.in: Abolish use of $size argument and modify size
+	handling to treat a binary file well such as .gz, .pdf, .doc. 
+
+	* filter/*.pl: Abolisu use of $size argument.
+
+	* src/mknmz.pl.in: Abolish use of $ctrl in check_file() and
+	load_document().
+
+	* lib/util.pl (checkcmd): Fix a typo.
+	
+	* filter/mhonarc.pl (mediatype): Fix typos.
+
+	* filter/*.pl: s/\$contents/\$contref/g
+	
+	* src/mknmz.pl.in: Change timing of code conversion.
+	
+	* lib/codeconv.pl: Add eucto() function.
+
+	* src/mknmz.pl.in: Remove codeconv() function.
+	
+	* filter/rfc.pl (rfc_filter): Fix bad use of
+	html::encode_entity()
+	
+	* src/mknmz.pl.in: Remove istext() function.
+
+	* src/mknmz.pl.in (load_document): Use File::check_binary()
+	instead of istext().
+	
+	* filter/html.pl (get_title): Fix.
+
+	* src/mknmz.pl.in (namazu_core): Remove $url.
+	
+	
 1999-08-28  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* src/mknmz.pl.in: Add istext() and codeconv() functions.

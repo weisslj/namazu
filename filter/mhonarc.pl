@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mhonarc.pl,v 1.7 1999-08-28 11:32:25 satoru Exp $
+# $Id: mhonarc.pl,v 1.8 1999-08-29 02:57:46 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -31,7 +31,7 @@ require 'html.pl';
 require 'mailnews.pl';
 
 sub mediatype() {
-    return ('text/hfml; x-type=mhonar');
+    return ('text/html; x-type=mhonarc');
 }
 
 sub status() {
@@ -42,42 +42,42 @@ sub recursive() {
     return 0;
 }
 
-sub filter ($$$$$$) {
-    my ($orig_cfile, $cont, $weighted_str, $headings, $fields, $size)
+sub filter ($$$$$) {
+    my ($orig_cfile, $contref, $weighted_str, $headings, $fields)
       = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
     util::vprint("Processing MHonArc file ...\n");
 
-    mhonarc_filter($cont, $weighted_str, $fields);
-    html::html_filter($cont, $weighted_str, $fields, $headings);
+    mhonarc_filter($contref, $weighted_str, $fields);
+    html::html_filter($contref, $weighted_str, $fields, $headings);
 
-    gfilter::uuencode_filter($cont);
-    mailnews::mailnews_filter($cont, $weighted_str, $fields);
-    mailnews::mailnews_citation_filter($cont, $weighted_str);
+    gfilter::uuencode_filter($contref);
+    mailnews::mailnews_filter($contref, $weighted_str, $fields);
+    mailnews::mailnews_citation_filter($contref, $weighted_str);
 
-    gfilter::line_adjust_filter($cont) unless $var::Opt{NoLineAd};
+    gfilter::line_adjust_filter($contref) unless $var::Opt{NoLineAd};
     gfilter::line_adjust_filter($weighted_str) unless $var::Opt{NoLineAd};
-    gfilter::white_space_adjust_filter($cont);
+    gfilter::white_space_adjust_filter($contref);
     $fields->{title} = gfilter::filename_to_title($cfile, $weighted_str)
       unless $fields->{title};
-    gfilter::show_filter_debug_info($cont, $weighted_str,
+    gfilter::show_filter_debug_info($contref, $weighted_str,
 			   $fields, $headings);
 }
 
 # MHonArc 用のフィルタ
 # MHonArc v2.1.0 が標準で出力する HTML を想定しています
 sub mhonarc_filter ($$) {
-    my ($contents, $weighted_str) = @_;
+    my ($contref, $weighted_str) = @_;
 
     # MHonArc を使うときはこんな感じに処理すると便利
-    $$contents =~ s/<!--X-MsgBody-End-->.*//s;
-    $$contents =~ s/<!--X-TopPNI-->.*<!--X-TopPNI-End-->//s;
-    $$contents =~ s/<!--X-Subject-Header-Begin-->.*<!--X-Subject-Header-End-->//s;
-    $$contents =~ s/<!--X-Head-Body-Sep-Begin-->/\n/;  # ヘッダと本文を区切る
-    $$contents =~ s/^<LI>//gim;   # ヘッダの前に空白をあけたくないから
-    $$contents =~ s!</?EM>!!gi;  # ヘッダの名前をインデックスにいれたくない
-    $$contents =~ s/^\s+//;
+    $$contref =~ s/<!--X-MsgBody-End-->.*//s;
+    $$contref =~ s/<!--X-TopPNI-->.*<!--X-TopPNI-End-->//s;
+    $$contref =~ s/<!--X-Subject-Header-Begin-->.*<!--X-Subject-Header-End-->//s;
+    $$contref =~ s/<!--X-Head-Body-Sep-Begin-->/\n/;  # ヘッダと本文を区切る
+    $$contref =~ s/^<LI>//gim;   # ヘッダの前に空白をあけたくないから
+    $$contref =~ s!</?EM>!!gi;  # ヘッダの名前をインデックスにいれたくない
+    $$contref =~ s/^\s+//;
 }
 
 1;

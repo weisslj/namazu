@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: gzip.pl,v 1.4 1999-08-28 11:32:24 satoru Exp $
+# $Id: gzip.pl,v 1.5 1999-08-29 02:57:45 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -44,8 +44,8 @@ sub recursive() {
     return 1;
 }
 
-sub filter ($$$$$$) {
-    my ($orig_cfile, $cont, $weighted_str, $headings, $fields, $size)
+sub filter ($$$$$) {
+    my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
       = @_;
 
     if (util::checklib('Compress/Zlib.pm')) {
@@ -53,8 +53,6 @@ sub filter ($$$$$$) {
     } else {
 	filter_file($cont);
     }
-
-    $$size = length($$cont);
 }
 
 sub filter_file ($) {

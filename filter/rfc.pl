@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: rfc.pl,v 1.4 1999-08-28 11:32:25 satoru Exp $
+# $Id: rfc.pl,v 1.5 1999-08-29 02:57:47 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -40,8 +40,8 @@ sub recursive() {
     return 0;
 }
 
-sub filter ($$$$$$) {
-    my ($orig_cfile, $cont, $weighted_str, $headings, $fields, $size)
+sub filter ($$$$$) {
+    my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
       = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
@@ -62,20 +62,20 @@ sub filter ($$$$$$) {
 # わりと書式はまちまちみたいだからそれなりに
 
 sub rfc_filter ($$$) {
-    my ($contents, $weighted_str, $fields) = @_;
+    my ($contref, $weighted_str, $fields) = @_;
 
-    $$contents =~ s/^\s+//s;
-    $$contents =~ s/((.+\n)+)\s+(.*)//;
+    $$contref =~ s/^\s+//s;
+    $$contref =~ s/((.+\n)+)\s+(.*)//;
     my $title = $fields->{title};
     $title = $3 if defined $3;
-    html::encode_entity($title);
+    html::encode_entity(\$title);
     $fields->{title} = $title;
     $$weighted_str .= "\x7f1\x7f$1\x7f/1\x7f\n" if defined $1;
     my $weight = $conf::Weight{'html'}->{'title'};
     $$weighted_str .= "\x7f$weight\x7f$title\x7f/$weight\x7f\n";
     # summary または Introductionがあればそれを先頭に持ってくる
-#    $$contents =~ s/\A(.+?^(\d+\.\s*)?(Abstract|Introduction)\n\n)//ims;
-    $$contents =~ s/([\s\S]+^(\d+\.\s*)?(Abstract|Introduction)\n\n)//im;
+#    $$contref =~ s/\A(.+?^(\d+\.\s*)?(Abstract|Introduction)\n\n)//ims;
+    $$contref =~ s/([\s\S]+^(\d+\.\s*)?(Abstract|Introduction)\n\n)//im;
     $$weighted_str .= "\x7f1\x7f$1\x7f/1\x7f\n" if defined $1;
 }
 

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.12 1999-08-28 11:32:27 satoru Exp $
+# $Id: util.pl,v 1.13 1999-08-29 02:57:48 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -74,13 +74,19 @@ sub fopen ($) {
 
 sub dprint (@) {
     if ($var::Opt{Debug}) {
-	map {print STDERR '// ', $_, "\n"} @_;
+	for my $str (@_) {
+	    map {print STDERR '// ', $_, "\n"} split "\n", $str;
+	    print "\n" unless $str =~ /\n$/;
+	}
     }
 } 
 
 sub vprint (@) {
     if ($var::Opt{verbose} || $var::Opt{Debug}) {
-	map {print STDERR '@@ ', $_, "\n"} @_;
+	for my $str (@_) {
+	    map {print STDERR '@@ ', $_, "\n"} split "\n", $str;
+	    print "\n" unless $str =~ /\n$/;
+	}
     }
 } 
 
@@ -129,10 +135,10 @@ sub readfile ($) {
 
     my $cont = "";
     my $size = -s $fh;
-    if ($size > $conf::FILE_SIZE_LIMIT) {
-	warn "$arg: too large!\n";
-	return '';
-    }
+#    if ($size > $conf::FILE_SIZE_LIMIT) {
+#	warn "$arg: too large!\n";
+#	return '';
+#    }
     read $fh, $cont, $size;
 
     return $cont;
@@ -152,7 +158,7 @@ sub checklib ($) {
 sub checkcmd ($) {
     my $cmd = shift;
     for my $dir (split(/:/, $ENV{PATH})) {
-	return "$dir/cmd" if (-x "$dir/$cmd");
+	return "$dir/$cmd" if (-x "$dir/$cmd");
     }
     return undef;
 }

@@ -1,6 +1,6 @@
 #
 # -*- CPerl -*-
-# $Id: gfilter.pl,v 1.1 1999-08-28 11:21:58 satoru Exp $
+# $Id: gfilter.pl,v 1.2 1999-08-29 02:57:45 satoru Exp $
 # Copyright (C) 1999 Satoru Takabayashi ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -26,9 +26,9 @@ package gfilter;
 
 # Show debug information for filters
 sub show_filter_debug_info ($$$$) {
-    my ($contents, $weighted_str, $fields, $headings) = @_;
+    my ($contref, $weighted_str, $fields, $headings) = @_;
     util::dprint("-- title --\n$fields->{title}\n");
-    util::dprint("-- content --\n$$contents\n");
+    util::dprint("-- content --\n$$contref\n");
     util::dprint("-- weighted_str: --\n$$weighted_str\n");
     util::dprint("-- headings --\n$$headings\n");
 }

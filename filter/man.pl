@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: man.pl,v 1.4 1999-08-28 11:32:25 satoru Exp $
+# $Id: man.pl,v 1.5 1999-08-29 02:57:46 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -48,8 +48,8 @@ sub recursive() {
     return 0;
 }
 
-sub filter ($$$$$$) {
-    my ($orig_cfile, $cont, $weighted_str, $headings, $fields, $size)
+sub filter ($$$$$) {
+    my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
       = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
@@ -86,32 +86,32 @@ sub filter ($$$$$$) {
 # man 用のフィルタ
 # よくわからないからいいかげんに
 sub man_filter ($$$) {
-    my ($contents, $weighted_str, $fields) = @_;
+    my ($contref, $weighted_str, $fields) = @_;
     my $name = "";
 
     # processing like col -b (2byte character acceptable)
-    $$contents =~ s/_\x08//g;
-    $$contents =~ s/\x08{1,2}([\x20-\x7e]|[\xa1-\xfe]{2})//g;
+    $$contref =~ s/_\x08//g;
+    $$contref =~ s/\x08{1,2}([\x20-\x7e]|[\xa1-\xfe]{2})//g;
 
-    $$contents =~ s/^\s+//gs;
+    $$contref =~ s/^\s+//gs;
 
-    $$contents =~ /^(.*?)\s*\S*$/m;
+    $$contref =~ /^(.*?)\s*\S*$/m;
     my $title = "$1";
     html::encode_entity(\$title);
     $fields->{title} = $title;
     my $weight = $conf::Weight{'html'}->{'title'};
     $$weighted_str .= "\x7f$weight\x7f$title\x7f/$weight\x7f\n";
 
-    if ($$contents =~ /^(?:NAME|名前|名称)\s*\n(.*?)\n\n/ms) {
+    if ($$contref =~ /^(?:NAME|名前|名称)\s*\n(.*?)\n\n/ms) {
 	$name = "$1::\n";
 	$weight = $conf::Weight{'html'}->{'h1'};
 	$$weighted_str .= "\x7f$weight\x7f$1\x7f/$weight\x7f\n";
     }
 
-    if ($$contents =~ 
+    if ($$contref =~ 
 	s/(.+^(?:DESCRIPTION 解説|DESCRIPTIONS?|SHELL GRAMMAR|INTRODUCTION|【概要】|解説|説明|機能説明|基本機能説明)\s*\n)//ims) 
     {
-	$$contents = $name . $$contents;
+	$$contref = $name . $$contref;
 	$$weighted_str .= "\x7f1\x7f$1\x7f/1\x7f\n";
     }
 }

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: html.pl,v 1.8 1999-08-28 11:32:24 satoru Exp $
+# $Id: html.pl,v 1.9 1999-08-29 02:57:46 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -38,8 +38,8 @@ sub recursive() {
     return 0;
 }
 
-sub filter ($$$$$$) {
-    my ($orig_cfile, $cont, $weighted_str, $headings, $fields, $size)
+sub filter ($$$$$) {
+    my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
       = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
@@ -58,21 +58,21 @@ sub filter ($$$$$$) {
 
 # HTML 用のフィルタ
 sub html_filter ($$$$) {
-    my ($contents, $weighted_str, $fields, $headings) = @_;
+    my ($contref, $weighted_str, $fields, $headings) = @_;
 
-    html::escape_lt_gt($contents);
-    $fields->{title} = html::get_title($contents, $weighted_str);
-    html::get_author($contents, $fields);
-    html::get_meta_info($contents, $weighted_str);
-    html::get_img_alt($contents);
-    html::get_table_summary($contents);
-    html::get_title_attr($contents);
-    html::normalize_html_element($contents);
-    html::erase_above_body($contents);
-    html::weight_element($contents, $weighted_str, $headings);
-    html::remove_html_elements($contents);
+    html::escape_lt_gt($contref);
+    $fields->{title} = html::get_title($contref, $weighted_str);
+    html::get_author($contref, $fields);
+    html::get_meta_info($contref, $weighted_str);
+    html::get_img_alt($contref);
+    html::get_table_summary($contref);
+    html::get_title_attr($contref);
+    html::normalize_html_element($contref);
+    html::erase_above_body($contref);
+    html::weight_element($contref, $weighted_str, $headings);
+    html::remove_html_elements($contref);
     # それぞれ実体参照の復元
-    html::decode_entity($contents);
+    html::decode_entity($contref);
     html::decode_entity($weighted_str);
     html::decode_entity($headings);
 }
@@ -80,22 +80,22 @@ sub html_filter ($$$$) {
 # 単独の < > を実体参照に変換し、保護する
 # この処理は Perl の正規表現置換の仕様により、二重に行います
 sub escape_lt_gt ($) {
-    my ($contents) = @_;
+    my ($contref) = @_;
 
-    $$contents =~ s/\s<\s/ &lt; /g;
-    $$contents =~ s/\s>\s/ &gt; /g;
-    $$contents =~ s/\s<\s/ &lt; /g;
-    $$contents =~ s/\s>\s/ &gt; /g;
+    $$contref =~ s/\s<\s/ &lt; /g;
+    $$contref =~ s/\s>\s/ &gt; /g;
+    $$contref =~ s/\s<\s/ &lt; /g;
+    $$contref =~ s/\s>\s/ &gt; /g;
 }
 
 sub get_author ($$) {
-    my ($contents, $fields) = @_;
+    my ($contref, $fields) = @_;
 
     # <LINK REV=MADE HREF="mailto:ccsatoru@vega.aichi-u.ac.jp">
 
-    if ($$contents =~ m!<LINK\s[^>]*?HREF=([\"\'])mailto:(.*?)\1>!i) { #"
+    if ($$contref =~ m!<LINK\s[^>]*?HREF=([\"\'])mailto:(.*?)\1>!i) { #"
 	    $fields->{'author'} = $2;
-    } elsif ($$contents =~ m!.*<ADDRESS[^>]*>([^<]*?)</ADDRESS>!i) {
+    } elsif ($$contref =~ m!.*<ADDRESS[^>]*>([^<]*?)</ADDRESS>!i) {
 	my $tmp = $1;
 #	$tmp =~ s/\s//g;
 	if ($tmp =~ /\b([\w\.\-]+\@[\w\.\-]+(?:\.[\w\.\-]+)+)\b/) {
@@ -108,16 +108,16 @@ sub get_author ($$) {
 # TITLE を取り出す <TITLE LANG="ja_JP"> などにも考慮しています
 # </TITLE> が二つ以上あっても大丈夫 v1.03
 sub get_title ($$) {
-    my ($contents, $weighted_str) = @_;
+    my ($contref, $weighted_str) = @_;
     my $title = '';
     
-    if ($$contents =~ s!<TITLE[^>]*>([^<]+)</TITLE>!!i) {
+    if ($$contref =~ s!<TITLE[^>]*>([^<]+)</TITLE>!!i) {
 	$title = $1;
 	$title =~ s/\s+/ /g;
 	$title =~ s/^\s+//;
 	$title =~ s/\s+$//;
 	my $weight = $conf::Weight{'html'}->{'title'};
-	$$weighted_str .= "\x7f$weight\x7f$$title\x7f/$weight\x7f\n";
+	$$weighted_str .= "\x7f$weight\x7f$title\x7f/$weight\x7f\n";
     } else {
 	$title = $conf::NO_TITLE;
     }
@@ -127,52 +127,52 @@ sub get_title ($$) {
 
 # <META NAME="keywords|description" CONTENT="foo bar"> に対応する処理
 sub get_meta_info ($$) {
-    my ($contents, $weighted_str) = @_;
+    my ($contref, $weighted_str) = @_;
     
     my $weight = $conf::Weight{'metakey'};
     $$weighted_str .= "\x7f$weight\x7f$3\x7f/$weight\x7f\n" 
-	if $$contents =~ /<META\s+NAME\s*=\s*([\'\"]?) #"
+	if $$contref =~ /<META\s+NAME\s*=\s*([\'\"]?) #"
 	    KEYWORDS\1\s+[^>]*CONTENT\s*=\s*([\'\"]?)([^>]*?)\2[^>]*>/ix; #"
     $$weighted_str .= "\x7f$weight\x7f$3\x7f/$weight\x7f\n" 
-	if $$contents =~ /<META\s+NAME\s*=\s*([\'\"]?)DESCRIPTION #"
+	if $$contref =~ /<META\s+NAME\s*=\s*([\'\"]?)DESCRIPTION #"
 	    \1\s+[^>]*CONTENT\s*=\s*([\'\"]?)([^>]*?)\2[^>]*>/ix; #"
 }
 
 # <IMG ... ALT="foo"> の foo の取り出し
 # HTML の扱いは厳密ではないです
 sub get_img_alt ($) {
-    my ($contents) = @_;
+    my ($contref) = @_;
 
-    $$contents =~ s/<IMG[^>]*\s+ALT\s*=\s*[\"\']?([^\"\']*)[\"\']?[^>]*>/ $1 /gi; #"
+    $$contref =~ s/<IMG[^>]*\s+ALT\s*=\s*[\"\']?([^\"\']*)[\"\']?[^>]*>/ $1 /gi; #"
 }
 
 # <TABLE ... SUMMARY="foo"> の foo の取り出し
 sub get_table_summary ($) {
-    my ($contents) = @_;
+    my ($contref) = @_;
 
-    $$contents =~ s/<TABLE[^>]*\s+SUMMARY\s*=\s*[\"\']?([^\"\']*)[\"\']?[^>]*>/ $1 /gi; #"
+    $$contref =~ s/<TABLE[^>]*\s+SUMMARY\s*=\s*[\"\']?([^\"\']*)[\"\']?[^>]*>/ $1 /gi; #"
 }
 
 # <XXX ... TITLE="foo"> の foo の取り出し
 sub get_title_attr ($) {
-    my ($contents) = @_;
+    my ($contref) = @_;
 
-    $$contents =~ s/<[A-Z]+[^>]*\s+TITLE\s*=\s*[\"\']?([^\"\']*)[\"\']?[^>]*>/ $1 /gi; #"
+    $$contref =~ s/<[A-Z]+[^>]*\s+TITLE\s*=\s*[\"\']?([^\"\']*)[\"\']?[^>]*>/ $1 /gi; #"
 }
 
 # <A HREF...> などを <A> に統一 (エレメントをすべて削除)
 sub normalize_html_element ($) {
-    my ($contents) = @_;
+    my ($contref) = @_;
 
-    $$contents =~ s/<([!\w]+)\s+[^>]*>/<$1>/g;
+    $$contref =~ s/<([!\w]+)\s+[^>]*>/<$1>/g;
 }
 
 # <BODY> より上をすべて削除 (<STYLE> や <SCRIPT> への対処)
 # なぜか MSWin32 の Perl だと (.|\n)* とすると
 sub erase_above_body ($) {
-    my ($contents) = @_;
+    my ($contref) = @_;
 
-    $$contents =~ s/^.*<BODY>//is;
+    $$contref =~ s/^.*<BODY>//is;
 }
 
 
@@ -184,11 +184,11 @@ sub erase_above_body ($) {
 # 厳密な入れ子処理は行っていません
 # さらに <H[1-6]> については要約作成のために怪しい処理をしている
 sub weight_element ($$$ ) {
-    my ($contents, $weighted_str, $headings) = @_;
+    my ($contref, $weighted_str, $headings) = @_;
 
     for my $element (sort keys(%{$conf::Weight{'html'}})) {
 	my $tmp = "";
-	$$contents =~ s!<($element)>(.*?)</$element>!weight_element_sub($1, $2, \$tmp)!gies;
+	$$contref =~ s!<($element)>(.*?)</$element>!weight_element_sub($1, $2, \$tmp)!gies;
 	$$headings .= $tmp if $element =~ /^H[1-6]$/i && ! $var::Opt{NoHeadAbst} 
 	    && $tmp;
 	my $weight = $element =~ /^H[1-6]$/i && ! $var::Opt{NoHeadAbst} ? 
@@ -214,13 +214,13 @@ sub element_space ($) {
 
 # remove all HTML elements. it's not perfect but almost works.
 sub remove_html_elements ($) {
-    my ($contents) = @_;
+    my ($contref) = @_;
 
     # remove all comments
-    $$contents =~ s/<!--.*?-->//gs;
+    $$contref =~ s/<!--.*?-->//gs;
 
     # remove all elements
-    $$contents =~ s!</?([A-Z]\w*)(?:\s+[A-Z]\w*(?:\s*=\s*(?:(["']).*?\2|[\w-.]+))?)*\s*>!element_space($1)!gsixe;
+    $$contref =~ s!</?([A-Z]\w*)(?:\s+[A-Z]\w*(?:\s*=\s*(?:(["']).*?\2|[\w-.]+))?)*\s*>!element_space($1)!gsixe;
 
 }
 

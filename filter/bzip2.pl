@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: bzip2.pl,v 1.4 1999-08-28 11:32:24 satoru Exp $
+# $Id: bzip2.pl,v 1.5 1999-08-29 02:57:45 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -43,8 +43,8 @@ sub recursive() {
     return 1;
 }
 
-sub filter ($$$$$$) {
-    my ($orig_cfile, $cont, $weighted_str, $headings, $fields, $size)
+sub filter ($$$$$) {
+    my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
       = @_;
 
     my $bzip2path = util::checkcmd('bzip2');
@@ -59,7 +59,6 @@ sub filter ($$$$$$) {
     undef $fh;
     unlink($TMPFILE);
 
-    $$size = length($$cont);
 }
 
 1;

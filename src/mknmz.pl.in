@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- CPerl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.35 1999-08-28 12:28:28 satoru Exp $
+# $Id: mknmz.pl.in,v 1.36 1999-08-29 02:57:50 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -56,11 +56,11 @@ my $TestMode = @TEST_MODE@;
 STDOUT->autoflush(1);
 main();
 sub main () {
-    init();
-    loadmod();
-    readconf();
-
     my $start_time = time;
+
+    init();
+    load_modules();
+    read_config();
     my $file_base = prep();
 
     my $swap = 1;
@@ -123,15 +123,15 @@ sub main () {
     exit 0;
 }
 
-sub readconf() {
+sub read_config() {
     my @cand = ("$ENV{HOME}/.mknmzrc", 
 		"$CONFDIR/mknmz.conf");
     my $conf2 = cwd() . "/../conf/mknmz.conf-dist";  # relative path from cwd
-    unshift @cand, $conf2 if $TestMode;
+    push @cand, $conf2 if $TestMode;
 
     for my $conf (@cand) {
 	if (-e $conf) {
-	    util::vprint("conf: $conf\n");
+	    print STDERR "\@\@ conf: $conf\n" if $TestMode;
 	    require $conf;
 	    return;
 	}
@@ -198,10 +198,7 @@ sub init () {
     };
 }
 
-#
-# Load modules
-#
-sub loadmod () {
+sub load_modules () {
     my $libdir2 = cwd() . "/../lib";        # relative path from cwd
     unshift @INC, $LIBDIR;
     unshift @INC, $libdir2 if $TestMode;
@@ -226,7 +223,6 @@ sub loadmod () {
 	$filter =~ m!(\w+)\.pl$!;
 	my $module = $1;
 	require "$module.pl";
-#	print STDERR "\@\@ loaded: $module.pl ($filter)\n" if $TestMode;
 	my (@mtypes, $status, $recursive);
 	eval "\@mtypes =    ${module}::mediatype();";
 	eval "\$status =    ${module}::status();";
@@ -236,6 +232,8 @@ sub loadmod () {
 	    $var::REQUIRE_ACTIONS{$mt} = $module;
 	    $var::RECURSIVE_ACTIONS{$mt} = $recursive if ($recursive)
 	}
+	print STDERR "\@\@ loaded: $module.pl [@mtypes]\n" 
+	    if $TestMode;
     }
 }
 
@@ -251,15 +249,14 @@ sub namazu_core ($$$) {
 
     # temporary
     my $title = "";
-    my $uri   = "";
 
-    my $url = generate_uri($cfile);  # Make a URL from a file name
-    my ($cfile_size, $ctrl, $kanji, $mtype) = 
+    my $uri = generate_uri($cfile);  # Make a URI from a file name
+    my ($cfile_size, $kanji, $mtype) = 
 	load_document(\$cfile, \$title, \$content, \$weighted_str,
 		      \$headings, \%fields);
 
     # Do checking
-    my $err = check_file($cfile, \$content, $ctrl, $cfile_size, $mtype);
+    my $err = check_file($cfile, \$content, $cfile_size, $mtype);
     if ($err) {
 	print $file_count + $file_base . " $uri $err\n" unless $var::Opt{Quiet};
 	print $fh_errorsfile "$cfile $err\n"; 
@@ -281,9 +278,9 @@ sub namazu_core ($$$) {
 	    return 0;  # return with 0 if error
 	}
     }
-    # Output processing file name as URL
+    # Output processing file name as URI
     print $file_count + $file_base . 
-	" $url :: $mtype\n" unless $var::Opt{Quiet};
+	" $uri :: $mtype\n" unless $var::Opt{Quiet};
 
     make_field_index(\%fields, $cfile, $uri, \$headings, \$content);
     put_field_index(\%fields, $field_indices) unless $var::Opt{NoFieldIndex};
@@ -462,10 +459,6 @@ sub load_document ($$$$$\%) {
     my $cfile = $$orig_cfile;
 
     return (0, 0, 0) unless (-f $cfile && -r $cfile);
-    my $zipped = 0;
-    my $size   = -s $cfile; # 非ファイルでも処理できるよう変更する必要あり
-    my $sizeref = \$size;
-    return ($size, 0, 0, 'x-system/x-error') if $size > $conf::FILE_SIZE_LIMIT;
 
     # for handling a filename which contains Shift_JIS code
     my $shelter_cfile = "";
@@ -478,41 +471,39 @@ sub load_document ($$$$$\%) {
     }
 
     $$content = util::readfile($cfile);
-    if (istext($content)) {
-	codeconv($content);
-    }
 
     # filtering process
     my $mm = new File::MMagic;
     my $mtype;
     while (1) {
+	unless(File::MMagic::check_binary($$content)) { # text file
+	    codeconv::toeuc($content);
+	}
+
 	my $mtype_n = $mm->checktype_byfilename($cfile);
 	my $mtype_c = $mm->checktype_contents($$content);
 	$mtype = decide_type($mtype_n, $mtype_c);
+	util::dprint("Detected type: $mtype\n");
 	if (defined $var::REQUIRE_ACTIONS{$mtype}) {
 	    util::vprint("Using $var::REQUIRE_ACTIONS{$mtype}.pl\n");
 	    require $var::REQUIRE_ACTIONS{$mtype}.'.pl';
 	    eval $var::REQUIRE_ACTIONS{$mtype} .
-	      '::filter($orig_cfile, $content, $weighted_str, $headings, $fields, $sizeref);';
+	      '::filter($orig_cfile, $content, $weighted_str, $headings, $fields);';
 	    if ($@) {
 		print STDERR "Faild to call $var::REQUIRE_ACTIONS{$mtype}\n$@\n";
 		$mtype = "x-system/x-error; failed to call $var::REQUIRE_ACTIONS{$mtype}";
 		last;
 	    }
-	    $zipped = 1, next if (defined $var::RECURSIVE_ACTIONS{$mtype});
+	    next if (defined $var::RECURSIVE_ACTIONS{$mtype});
 	}
 	last;
     }
 
+    my $size = length($$content); # masure size at this time
+
     if ($SYSTEM eq "MSWin32" && $shelter_cfile ne "") {
 	unlink $cfile;
 	$cfile = $shelter_cfile;
-    }
-
-    # if a zipped file, the size has been changed
-    if ($zipped) {
-	return ($size, 0, 0, 'x-system/x-error;')
-	    if $size > $conf::FILE_SIZE_LIMIT;
     }
 
     $$content =~ s/[ \t]+/ /g;   # remain LFs v1.03
@@ -521,43 +512,10 @@ sub load_document ($$$$$\%) {
 
 
     # Control characters be into space
-    my $ctrl = $$content =~ tr/\x00-\x09\x0b-\x1f\x7f\xff/    /;
+    $$content =~ tr/\x00-\x09\x0b-\x1f\x7f\xff/    /;
     my $kanji = $$content =~ tr/\xa1-\xfe/\xa1-\xfe/;  # Kanji contained?
 
-    return ($size, $ctrl, $kanji, $mtype);
-}
-
-sub codeconv ($) {
-    my ($cont) = @_;
-
-    if ($conf::LANGUAGE eq "ja" && ! $var::USE_NKF_MODULE) {
-	my $nkftmp = util::tmpname("NMZ.nkf");
-	{
-	    my $nh = util::efopen("|$conf::NKF -emXZ1 > $nkftmp");
-	    print $nh $$cont;
-	}
-	{
-	    my $nh = util::efopen("< $nkftmp");
-	    $$cont = util::readfile($nh);
-	}
-	unlink($nkftmp);
-    } else {
-	$$cont = NKF::nkf("-emXZ1", $$cont);
-    }
-}
-
-sub istext ($) {
-    my ($dataref) = @_;
-
-    my $size = length($$dataref);
-    # count a number of ctrl characters
-    my $ctrl = $$dataref 
-	=~ tr/\x00-\x09\x0b-\x1f\x7f\xff/\x00-\x09\x0b-\x1f\x7f\xff/;
-
-    if (int ($ctrl / $size * 100) > 3) {
-	return 0;
-    }
-    return 1;
+    return ($size, $kanji, $mtype);
 }
 
 sub prep () {
@@ -912,16 +870,12 @@ sub show_mini_usage () {
 }
 
 # check the file -- 0: OK / 1: NG
-sub check_file ($$$$$) {
-    my ($cfile, $content, $ctrl, $size, $mtype) = @_;
+sub check_file ($$$$) {
+    my ($cfile, $content, $size, $mtype) = @_;
 
-    # コントロール文字が全体の 3 % よりも多ければバイナリファイル
-    # とみなし、スキップする (-B は問題があるので使わない)
     my $msg = "";
     if ($size == 0) {
 	$msg = "is 0 size! skipped.";
-#    } elsif (int ($ctrl / $size * 100) > 3) {
-#	$msg = "may be a BINARY file! skipped.";
     } elsif ($mtype =~ /^application\/octet-stream/) {
 	$msg = "may be a BINARY file! skipped.";
     } elsif ($size > $conf::FILE_SIZE_LIMIT) {
@@ -1861,7 +1815,7 @@ muda($var::File{'BODY_MSG_EN'},
      $var::Opt{Debug}, $var::Opt{NoEncodeURL}, $var::Opt{HtaccessExclude}, 
      $var::RECURSIVE_ACTIONS, $conf::ROBOTS_EXCLUDE_URIS, 
      $var::Opt{NoInsertHeader}, $var::Opt{NoRegexpIndex}, 
-     $var::Opt{NoFieldInfo},
+     $var::Opt{NoFieldInfo}, $conf::FILE_SIZE_LIMIT,
      $conf::ROBOTS_EXCLUDE_URLS, $conf::Supported);
 
 

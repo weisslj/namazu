@@ -122,7 +122,7 @@ perllibdir = $(pkgdatadir)/pl
 filterdir = $(pkgdatadir)/filter
 templatedir = $(pkgdatadir)/template
 
-namazu_SOURCES = cgi.c codeconv.c conf.c field.c form.c 		 hlist.c i18n.c namazu.c output.c 		 parser.c re.c result.c search.c seed.c util.c 		 usage.c var.c wakati.c 		 cgi.h codeconv.h conf.h critical.h em.h field.h form.h 		 hlist.h i18n.h magic.h message.h namazu.h output.h 		 parser.h re.h result.h search.h 		 usage.h  util.h wakati.h var.h 
+namazu_SOURCES = cgi.c codeconv.c conf.c field.c form.c 		 hlist.c i18n.c namazu.c output.c 		 parser.c re.c result.c search.c seed.c util.c 		 usage.c var.c wakati.c libnamazu.c 		 cgi.h codeconv.h conf.h critical.h em.h field.h form.h 		 hlist.h i18n.h magic.h message.h namazu.h output.h 		 parser.h re.h result.h search.h 		 usage.h  util.h wakati.h var.h libnamazu.h
 
 
 ##################################################################
@@ -141,7 +141,7 @@ namazu_OBJECTS =  cgi.$(OBJEXT) codeconv.$(OBJEXT) conf.$(OBJEXT) \
 field.$(OBJEXT) form.$(OBJEXT) hlist.$(OBJEXT) i18n.$(OBJEXT) \
 namazu.$(OBJEXT) output.$(OBJEXT) parser.$(OBJEXT) re.$(OBJEXT) \
 result.$(OBJEXT) search.$(OBJEXT) seed.$(OBJEXT) util.$(OBJEXT) \
-usage.$(OBJEXT) var.$(OBJEXT) wakati.$(OBJEXT)
+usage.$(OBJEXT) var.$(OBJEXT) wakati.$(OBJEXT) libnamazu.$(OBJEXT)
 namazu_LDADD = $(LDADD)
 namazu_DEPENDENCIES =  ../lib/libnmzut.a
 namazu_LDFLAGS = 
@@ -295,7 +295,7 @@ distdir: $(DISTFILES)
 	@for file in $(DISTFILES); do \
 	  d=$(srcdir); \
 	  if test -d $$d/$$file; then \
-	    cp -pr $$/$$file $(distdir)/$$file; \
+	    cp -pr $$d/$$file $(distdir)/$$file; \
 	  else \
 	    test -f $(distdir)/$$file \
 	    || ln $$d/$$file $(distdir)/$$file 2> /dev/null \

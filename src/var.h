@@ -16,7 +16,6 @@ extern int NoReplace;
 extern int DecodeURI;
 extern int IsCGI;
 extern int Logging;
-extern int OppositeEndian;
 extern int TfIdf;
 extern int NoReference;
 

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 1999-10-10 22:26+0900\n"
+"POT-Creation-Date: 1999-10-13 17:18+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -42,7 +42,7 @@ msgstr ""
 msgid "Replace: \"%s\" -> \"%s\"\n"
 msgstr ""
 
-#: src/namazu.c:355
+#: src/namazu.c:272
 msgid "\t<p>No document matching your query.</p>\n"
 msgstr ""
 
@@ -90,11 +90,11 @@ msgid ""
 "\n"
 msgstr ""
 
-#: src/search.c:725
+#: src/search.c:708
 msgid "(You don't have a permission to access the index)"
 msgstr ""
 
-#: src/search.c:731
+#: src/search.c:715
 msgid " (cannot open this index)\n"
 msgstr ""
 

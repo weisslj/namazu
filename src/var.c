@@ -2,7 +2,7 @@
  * 
  * values.c -
  * 
- * $Id: var.c,v 1.8 1999-10-11 04:25:30 satoru Exp $
+ * $Id: var.c,v 1.9 1999-10-13 08:19:58 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -64,7 +64,6 @@ int NoReplace = 0;		/* if no replace URI: 1 */
 int DecodeURI = 0;		/* if replace URI at plaint text mode: 1 */
 int IsCGI = 0;			/* if CGI mode: 1 */
 int Logging = 1;		/* if do logging:  1 */
-int OppositeEndian = 0;         /* if opposite byte order: 1 */
 int NoReference = 0;		/* if no display reference: 1  */
 int SortMethod = SORT_BY_SCORE;	/* Method of sorting */
 int SortOrder = DESCENDING;	/* Direction of sorting */

@@ -103,6 +103,36 @@ else
 fi
 AC_SUBST($1)])
 
+# aclocal-include.m4
+# 
+# This macro adds the name macrodir to the set of directories
+# that `aclocal' searches for macros.  
+
+# serial 1
+
+dnl AM_ACLOCAL_INCLUDE(macrodir)
+AC_DEFUN([AM_ACLOCAL_INCLUDE],
+[
+	AM_CONDITIONAL(INSIDE_GNOME_COMMON, test x = y)
+
+	test -n "$ACLOCAL_FLAGS" && ACLOCAL="$ACLOCAL $ACLOCAL_FLAGS"
+
+	for k in $1 ; do ACLOCAL="$ACLOCAL -I $k" ; done
+])
+
+# Define a conditional.
+
+AC_DEFUN(AM_CONDITIONAL,
+[AC_SUBST($1_TRUE)
+AC_SUBST($1_FALSE)
+if $2; then
+  $1_TRUE=
+  $1_FALSE='#'
+else
+  $1_TRUE='#'
+  $1_FALSE=
+fi])
+
 # Macro to add for using GNU gettext.
 # Ulrich Drepper <drepper@cygnus.com>, 1995.
 #

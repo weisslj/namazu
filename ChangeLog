@@ -1,3 +1,13 @@
+1999-10-13  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* src/util.[ch]: Introduce is_little_endian() function.
+	And use it in freadx().
+
+	* src/search.[ch]: Abolish check_byte_order() function.
+
+	* src/var.[ch]: Abolish OppositeEndian variable.
+
+
 1999-10-12  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* src/namazu.c : Moved some functions to libnamazu.c.

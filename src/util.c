@@ -33,6 +33,34 @@ static uchar URIdecode(uchar c, uchar c2)
     return c;
 }
 
+/* reverse byte order */
+static void reverse_byte_order (int *p, int n)
+{
+    int i, j;
+    uchar *c, tmp;
+
+    for (i = 0; i < n; i++) {
+        c = (uchar *)(p + i);
+        for (j = 0; j < (sizeof(int) / 2); j++) {
+            tmp = *(c + j);
+            *(c + j)= *(c + sizeof(int) - 1 - j);
+            *(c + sizeof(int) - 1 - j) = tmp;
+        }
+    }
+}
+
+static int is_little_endian(void)
+{
+    int  n = 1;
+    char *c;
+    
+    c = (char *)&n;
+    if (*c == 1) { /* little endian */
+	return 1;
+    } else {
+	return 0;
+    }
+}
 
 /************************************************************
  *
@@ -186,29 +214,13 @@ uchar *lastc(uchar *str)
     return (str + strlen(str) - 1);
 }
 
-/* reverse byte order */
-void reverse_byte_order (int *p, int n)
-{
-    int i, j;
-    uchar *c, tmp;
-
-    for (i = 0; i < n; i++) {
-        c = (uchar *)(p + i);
-        for (j = 0; j < (sizeof(int) / 2); j++) {
-            tmp = *(c + j);
-            *(c + j)= *(c + sizeof(int) - 1 - j);
-            *(c + sizeof(int) - 1 - j) = tmp;
-        }
-    }
-}
-
 /* fread with endian consideration */
 size_t freadx(void *ptr, size_t size, size_t nmemb, FILE *stream)
 {
     size_t value;
 
     value = fread(ptr, size, nmemb, stream);
-    if (OppositeEndian && size == sizeof(int)) {
+    if (size == sizeof(int) && is_little_endian()) {
         reverse_byte_order(ptr, nmemb);
     }
     return value;

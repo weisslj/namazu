@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.21 1999-10-11 04:25:29 satoru Exp $
+ * $Id: search.c,v 1.22 1999-10-13 08:19:57 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -74,7 +74,6 @@ static void get_expr(uchar*, uchar*);
 static HLIST do_field_search(uchar*, HLIST);
 static void delete_beginning_backslash(uchar*);
 static int check_lockfile(void);
-static void check_byte_order(void);
 static int open_index_files();
 static void close_index_files(void);
 static void do_logging(uchar* , int);
@@ -570,22 +569,6 @@ static int check_lockfile(void)
 }
 
 
-/* checking byte order */
-static void check_byte_order(void)
-{
-    int  n = 1;
-    char *c;
-    
-    OppositeEndian = 0;
-    c = (char *)&n;
-    if (*c) { /* little-endian */
-	OppositeEndian = 1;
-    } 
-    if (OppositeEndian) {
-        debug_printf("OppositeEndian mode\n");
-    }
-}
-
 static void parse_access(uchar *line, uchar *rhost, uchar *raddr)
 {
     /* Skip white spaces */
@@ -654,7 +637,7 @@ static int open_index_files()
 {
     if (check_lockfile())
         return 1;
-    check_byte_order();
+
     Nmz.i = fopen(NMZ.i, "rb");
     if (Nmz.i == NULL) {
 	return 1;
@@ -725,6 +708,7 @@ static HLIST search_sub(HLIST hlist, uchar *query, uchar *query_orig, int n)
 	diemsg(_("(You don\'t have a permission to access the index)"));
 	return hlist;
     }
+
     if (open_index_files()) {
         /* if open failed */
         hlist.n = DIE_HLIST;

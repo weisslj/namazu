@@ -34,11 +34,11 @@ enum {
 
 /* error code */
 enum {
-  DIE_SET_REDIRECT_TO_FILE = -3,
-  DIE_ERROR = -2,
-  DIE_NOERROR = -1,
+    DIE_SET_REDIRECT_TO_FILE = -3,
+    DIE_ERROR = -2,
+    DIE_NOERROR = -1,
 
-  DIE_HLIST = -10
+    DIE_HLIST = -10
 };
 
 #endif /* _MAGIC_H */

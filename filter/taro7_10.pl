@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: taro7_10.pl,v 1.6 2003-07-21 11:39:36 usu Exp $
+# $Id: taro7_10.pl,v 1.7 2003-08-27 15:37:30 usu Exp $
 # Copyright (C) 2003 Yukio USUDA
 #               2003 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -52,26 +52,26 @@ sub pre_codeconv() {
     return 0;
 }
 
-sub post_codeconv () {
+sub post_codeconv() {
     return 0;
 }
 
-sub add_magic ($) {
+sub add_magic($) {
     my ($magic) = @_;
     $magic->addFileExts('(?i)\\.jtd', 'application/x-js-taro');
     $magic->addFileExts('(?i)\\.jfw', 'application/x-js-taro');
     return;
 }
 
-sub filter ($$$$$) {
-    my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
+sub filter($$$$$) {
+    my ($orig_cfile, $contref, $weighted_str, $headings, $fields)
       = @_;
     my $err = undef;
-    $err = taro7_10_filter($orig_cfile, $cont, $weighted_str, $headings, $fields);
+    $err = taro7_10_filter($orig_cfile, $contref, $weighted_str, $headings, $fields);
     return $err;
 }
 
-sub taro7_10_filter ($$$$$) {
+sub taro7_10_filter($$$$$) {
     my ($orig_cfile, $contref, $weighted_str, $headings, $fields)
       = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
@@ -124,8 +124,7 @@ sub taro7_10_filter ($$$$$) {
                     $k += 2;
                 }
                 taro7_10::u16toe(\$authorname);
-                taro7_10::remove_ctlcode(\$authorname);
-                $authorname =~ s/\00//g;
+                $authorname =~ s/\x00//g;
                 codeconv::normalize_eucjp(\$authorname);
                 $fields->{'author'} = $authorname;
             }
@@ -135,7 +134,7 @@ sub taro7_10_filter ($$$$$) {
 
     taro7_10::remove_ctlcodearea(\$tmp);
     taro7_10::u16toe(\$tmp);
-    taro7_10::remove_ctlcode(\$tmp);
+    $tmp =~ s/\x00//g;
     codeconv::normalize_eucjp(\$tmp);
     $$contref = $tmp;
 
@@ -150,66 +149,30 @@ sub taro7_10_filter ($$$$$) {
 }
 
 sub remove_ctlcodearea($){
-  my ($textref) = @_;
-  my $ctl_in  = "\x00\x1c";
-  my $ctl_out = "\x00\x1f";
-  my $tmptext1 = $$textref;
-  my $tmptext2="";
-  my $pos1=0;
-  my $pos2=0;
-  my @incodes;
-  while ($tmptext1 =~ /$ctl_in/sg){
-    push(@incodes, pos($tmptext1)-2);
-  }
-  push(@incodes, length($tmptext1));
-  my $i=1;
-  while (@incodes){
-    $pos2=shift(@incodes) ;
-    my $tmptext3="";
-    $tmptext3=substr($tmptext1, $pos1, $pos2-$pos1);
-    $tmptext3=~s/$ctl_in.*$ctl_out//s;
-    $tmptext3=~s/$ctl_in.*//s;
-    $tmptext2 .= $tmptext3;
-    $i++;
-    $pos1 = $pos2;
-  }
-  $$textref = $tmptext2;
-}
-
-sub remove_ctlcode ($) {
-    my ($eucString) = @_;
-    my $tmp = "";
-    my $i =0;
-    my $eucStringSize = length($$eucString);
-    while ( $i < $eucStringSize -1 ) {
-        my $code1 = unpack("C",substr($$eucString, $i, 1));
-        my $code2 = unpack("C",substr($$eucString, $i+1, 1));
-        my $code = "";
-	if ($code1 == hex("00")){
-            if (($code2 >= hex("20")) and ($code2 <= hex("7f"))) {
-		$code = pack("C", $code2);
-		$i++;
-	    }elsif ($code2 == hex("0a")) {
-		$code = pack("C", $code2);
-		$i++;
-            }
-	}elsif (($code1 == hex("8e"))
-             and ($code2 > hex("a0")) and ($code2 < hex("e0"))) {
-		$code = pack("CC", $code1, $code2);
-		$i++;
-	}elsif (($code1 >= hex("a1")) and ($code1 <= hex("a8"))
-          and ($code2 > hex("a0")) and ($code2 < hex("ff"))) {
-            $code = pack("CC", $code1, $code2);
-            $i++;
-        }elsif (($code1 >= hex("b0")) and ($code1 <= hex("f4"))
-          and ($code2 > hex("a0")) and ($code2 < hex("ff"))) {
-            $code = pack("CC", $code1, $code2);
-            $i++;
-        }
-        $i++;
-        $tmp .= $code;
+    my ($textref) = @_;
+    my $ctl_in  = "\x00\x1c";
+    my $ctl_out = "\x00\x1f";
+    my $tmptext1 = $$textref;
+    my $tmptext2="";
+    my $pos1=0;
+    my $pos2=0;
+    my @incodes;
+    while ($tmptext1 =~ /$ctl_in/sg){
+        push(@incodes, pos($tmptext1)-2);
     }
-    $$eucString = $tmp;
+    push(@incodes, length($tmptext1));
+    my $i=1;
+    while (@incodes){
+        $pos2=shift(@incodes) ;
+        my $tmptext3="";
+        $tmptext3=substr($tmptext1, $pos1, $pos2-$pos1);
+        $tmptext3=~s/$ctl_in.*$ctl_out//s;
+        $tmptext3=~s/$ctl_in.*//s;
+        $tmptext2 .= $tmptext3;
+        $i++;
+        $pos1 = $pos2;
+    }
+    $$textref = $tmptext2;
 }
 
 # convert utf-16 to euc

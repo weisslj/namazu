@@ -35,6 +35,7 @@ EXTRA_DIST  =   acrobat3.pdf \
                 oocalc.sxc \
                 oodraw.sxd \
                 ooimpress.sxi \
-                apchecache.txt \
-                hdml.hdml
-
+	        apachecache.txt \
+	        hdml.hdml \
+		ID3v1.mp3 \
+		ID3v2.mp3

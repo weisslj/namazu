@@ -19,6 +19,8 @@ EXTRA_DIST  = acrobat3.pdf \
               namazu-dummy_1.0-1_i386.deb \
               rpm.rpm \
               oowriter.sxw \
-              apachecache.txt \
-              hdml.hdml
+	      apachecache.txt \
+	      hdml.hdml \
+	      ID3v1.mp3 \
+	      ID3v2.mp3
 

@@ -418,9 +418,9 @@ Lang: ja
 <pre>
 cd namazu-2.0.x ( ... tar.gz 形式を開けた位置)
    してから
-env pkgdatadir=`pwd` script/mknmz (csh/tcsh 等の場合)
+env pkgdatadir=`pwd` scripts/mknmz (csh/tcsh 等の場合)
    または
-pkgdatadir=. script/mknmz (sh/bash 等の場合).
+pkgdatadir=. scripts/mknmz (sh/bash 等の場合).
 </pre>
 とすると、
 (<code>/usr/local/share/namazu</code> でなく)
@@ -441,9 +441,9 @@ setenv pkgdatadir .
 pkgdatadir=.
 export pkgdatadir
    しておいて、
-script/mknmz -C  
-script/mknmz --help 
-script/mknmz -O /tmp ~/Mail</code>
+scripts/mknmz -C  
+scripts/mknmz --help 
+scripts/mknmz -O /tmp ~/Mail</code>
 </pre>
 などが試すと、それぞれ、構成を表示・説明を表示・~/Mail の索引を作成する、
 などを行うことが出来ます。
@@ -904,7 +904,7 @@ perl -MNKF -e ''
 Copyright (C) 2000-2003 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: tutorial.html,v 1.50 2003-08-07 12:18:53 makoto Exp $
+$Id: tutorial.html,v 1.51 2003-08-27 15:37:28 usu Exp $
 </div>
 <address>
 developers@namazu.org

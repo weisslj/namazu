@@ -37,7 +37,8 @@ filter_DATA = bzip2.pl \
 	      deb.pl \
               ooo.pl \
               rtf.pl \
-	      apachecache.pl
+	      apachecache.pl \
+	      mp3.pl
 
 EXTRA_DIST = $(filter_DATA)
 

@@ -1,3 +1,24 @@
+2003-08-28  Yukio USUDA <usu@namazu.org>
+
+	* filter/taro7_10.pl: remove remove_ctlcode().
+
+	* filter/mp3.pl: Merged from STABLE.
+	(namazu-devel-en#54, Contributed by Luc, thanks.)
+
+	* THANKS: Added.
+
+	* tests/data/{en,ja}/ID3v{1,2}.mp3: Added new files for testsuite.
+
+	* tests/data/{en,ja}/Makefile.am: Added ID3v{1,2}.mp3
+
+	* pl/conf.pl.in ($ALLOW_FILES): Added extension of mp3
+
+	* filter/Makefile.am: Added an entry for mp3.pl
+
+	* doc/{en,ja}/manual.html (filter): Added descriptions about mp3
+
+	* doc/{en,ja}/tutorial.html: Fixed typo. 
+
 2003-08-27  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * filter/pdf.pl: Fixed the problem in [n-u-j:03496].
@@ -8137,4 +8158,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1053 2003-08-27 09:55:05 opengl2772 Exp $
+$Id: ChangeLog,v 1.1054 2003-08-27 15:37:26 usu Exp $

@@ -2,7 +2,7 @@
  * 
  * libnamazu.h - Namazu library api
  *
- * $Id: libnamazu.h,v 1.44 2000-05-03 23:56:58 masao Exp $
+ * $Id: libnamazu.h,v 1.45 2000-12-18 08:14:31 knok Exp $
  * 
  */
 
@@ -185,6 +185,7 @@ struct nmz_names {
     char pi[MAXPATH];
     char tips[MAXPATH];
     char access[MAXPATH];
+    char version[MAXPATH];
 };
 
 /* 

@@ -3,6 +3,7 @@
 # Test for gcnmz.
 #
 LOG=`pwd`/test-log
+echo '  *** starting ' $0 >>$LOG
 TARGET=`$srcdir/select-data`
 TMPDATA=`pwd`/tmp-data
 

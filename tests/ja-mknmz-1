@@ -3,6 +3,7 @@
 # Test for Japanese encoding
 #
 LOG=`pwd`/test-log
+echo '  *** starting ' $0 >>$LOG
 TARGET=$srcdir/data/ja-spec
 IDX=ja-idx1
 

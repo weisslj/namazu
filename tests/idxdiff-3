@@ -6,6 +6,7 @@
 # idx6: garbage collected by gcnmz.
 #
 LOG=`pwd`/test-log
+echo '  *** starting ' $0 >>$LOG
 
 cd idx5
 targets=`find . -type f -name 'NMZ.*' -print | \

@@ -3,6 +3,7 @@
 # Test for Japanese encoding handling.
 #
 LOG=`pwd`/test-log
+echo '  *** starting ' $0 >>$LOG
 IDX=`pwd`/ja-idx1
 
 EXEC=no

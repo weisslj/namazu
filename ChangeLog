@@ -1,5 +1,7 @@
 2000-02-15  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/result.c (strcasestr): Do cast for avoiding warning.
+
 	* scripts/mknmz.in (re_exec): Store $total_files_num.
 	(main): Print user-friendly messages. [namazu-dev 1553]
 	(namazu_core): Change a progress messaging format.

@@ -1,5 +1,5 @@
 /*
- * $Id: result.c,v 1.52 2000-02-14 23:31:00 satoru Exp $
+ * $Id: result.c,v 1.53 2000-02-15 05:10:01 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -39,6 +39,7 @@
 #include "var.h"
 #include "parser.h"
 #include "query.h"
+#include "l10n-ja.h"
 
 static int urireplace  = 1;   /* Replace URI in results as default. */
 static int uridecode   = 1;   /* Decode  URI in results as default. */
@@ -98,7 +99,7 @@ strcasestr(const char *haystack, const char *needle)
 
     for (; *haystack != '\0'; haystack++) {
 	if (strncasecmp(haystack, needle, n) == 0) {
-	    return haystack;
+	    return (char *)haystack;  /* cast for avoiding warning. */
 	}
 	if (euc_mode && nmz_iseuc(*haystack)) {
 	    haystack++;

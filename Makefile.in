@@ -60,7 +60,9 @@ BZIP2_PATH = @BZIP2_PATH@
 CC = @CC@
 CHASEN = @CHASEN@
 EXEEXT = @EXEEXT@
+FILE_MMAGIC = @FILE_MMAGIC@
 GROFF = @GROFF@
+GROFF_PATH = @GROFF_PATH@
 GZIP = @GZIP@
 GZIP_PATH = @GZIP_PATH@
 KAKASI = @KAKASI@
@@ -72,10 +74,9 @@ MAKEINFO = @MAKEINFO@
 MSWORDVIEW = @MSWORDVIEW@
 MSWORDVIEW_PATH = @MSWORDVIEW_PATH@
 NKF = @NKF@
+OBJEXT = @OBJEXT@
 OPT_ADMIN_EMAIL = @OPT_ADMIN_EMAIL@
 OPT_CGI_LOCATION = @OPT_CGI_LOCATION@
-OPT_HELPER_MAN = @OPT_HELPER_MAN@
-OPT_HELPER_ZCAT = @OPT_HELPER_ZCAT@
 OPT_LANGUAGE = @OPT_LANGUAGE@
 OPT_WAKATI_DEFAULT = @OPT_WAKATI_DEFAULT@
 PACKAGE = @PACKAGE@
@@ -85,13 +86,19 @@ PERL = @PERL@
 SCORING = @SCORING@
 VERSION = @VERSION@
 ZCAT = @ZCAT@
-EXTRA_DIST = README-ja namazu.spec.in
+ZCAT_PATH = @ZCAT_PATH@
+application_msword = @application_msword@
+application_pdf = @application_pdf@
+application_x_bzip2 = @application_x_bzip2@
+application_x_compress = @application_x_compress@
+application_x_gzip = @application_x_gzip@
+EXTRA_DIST = README-ja namazu.spec namazu.spec.in File-MMagic
 EXTRA_DIRS = conf doc etc lib lisp filter template tknamazu
-# EXTRA_DIRS = contrib doc lib misc
-SUBDIRS = src
+SUBDIRS = src @FILE_MMAGIC@
 
-CLEANFILES = lib/conf.pl namazu.spec 	     filter/gzip.pl filter/compress.pl filter/man.pl filter/rfc.pl 	     filter/bzip2.pl filter/msword.pl 
+CLEANFILES = lib/conf.pl namazu.spec 	     filter/gzip.pl filter/compress.pl filter/man.pl filter/rfc.pl 	     filter/bzip2.pl filter/msword.pl filter/supported.pl 	     File-MMagic/Makefile File-MMagic/pm_to_blib
 
+CLEANDIRS = File-MMagic/blib
 
 pkgdatadir = @datadir@/@PACKAGE@/@VERSION@
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -389,25 +396,22 @@ mostlyclean distclean maintainer-clean
 install-data-local:
 	$(mkinstalldirs) $(pkgdatadir)/index
 	for subdir in $(EXTRA_DIRS); do \
-	  cp -rp $(srcdir)/$$subdir $(pkgdatadir); \
-	  rm -rf $(pkgdatadir)/$$subdir/CVS; \
-	  rm -rf $(pkgdatadir)/$$subdir/*/CVS; \
+	    cp -rp $(srcdir)/$$subdir $(pkgdatadir); \
+	    rm -rf $(pkgdatadir)/$$subdir/CVS; \
+	    rm -rf $(pkgdatadir)/$$subdir/*/CVS; \
 	done
 	cp ChangeLog COPYING NEWS README README-ja THANKS TODO \
 		$(pkgdatadir)/etc
 
 dist-hook:
 	for subdir in $(EXTRA_DIRS); do \
-	  cp -rp $$subdir $(distdir)/$$subdir; \
-	  rm -f $(distdir)/$$subdir/*~; \
-	  rm -f $(distdir)/$$subdir/*.{bak,orig}; \
-	  rm -rf $(distdir)/$$subdir/CVS; \
+	    cp -rp $$subdir $(distdir)/$$subdir; \
+	    rm -f $(distdir)/$$subdir/*~; \
+	    rm -f $(distdir)/$$subdir/*.{bak,orig}; \
+	    rm -rf $(distdir)/$$subdir/CVS; \
 	done
 	rm -f $(distdir)/$(CLEANFILES)
-
-rpm:
-	# put Namazu's tar-ball to a correct directory before do this
-	rpm -ba namazu.spec
+	rm -rf $(distdir)/$(CLEANDIRS)
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

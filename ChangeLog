@@ -24,7 +24,10 @@
 	[namazu-dev 199]
 	* filter/supported.pl: New file.
 	* Makefile.am: Add "supported.pl" into CLEANFILES.
-	
+	* Makefile.am: Add CLEANDIRS entry (additional macro)
+	* Makefile.am: Add "File-MMagic" into EXTRA_DIST
+	* Makefile.am: Add "@FILE_MMAGIC@" into SUBDIRS
+	* configure.in: Add codes to chedk "File::MMagic" module.
 	
 1999-08-25  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 

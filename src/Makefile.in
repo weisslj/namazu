@@ -62,7 +62,9 @@ BZIP2_PATH = @BZIP2_PATH@
 CC = @CC@
 CHASEN = @CHASEN@
 EXEEXT = @EXEEXT@
+FILE_MMAGIC = @FILE_MMAGIC@
 GROFF = @GROFF@
+GROFF_PATH = @GROFF_PATH@
 GZIP = @GZIP@
 GZIP_PATH = @GZIP_PATH@
 KAKASI = @KAKASI@
@@ -74,10 +76,9 @@ MAKEINFO = @MAKEINFO@
 MSWORDVIEW = @MSWORDVIEW@
 MSWORDVIEW_PATH = @MSWORDVIEW_PATH@
 NKF = @NKF@
+OBJEXT = @OBJEXT@
 OPT_ADMIN_EMAIL = @OPT_ADMIN_EMAIL@
 OPT_CGI_LOCATION = @OPT_CGI_LOCATION@
-OPT_HELPER_MAN = @OPT_HELPER_MAN@
-OPT_HELPER_ZCAT = @OPT_HELPER_ZCAT@
 OPT_LANGUAGE = @OPT_LANGUAGE@
 OPT_WAKATI_DEFAULT = @OPT_WAKATI_DEFAULT@
 PACKAGE = @PACKAGE@
@@ -87,6 +88,12 @@ PERL = @PERL@
 SCORING = @SCORING@
 VERSION = @VERSION@
 ZCAT = @ZCAT@
+ZCAT_PATH = @ZCAT_PATH@
+application_msword = @application_msword@
+application_pdf = @application_pdf@
+application_x_bzip2 = @application_x_bzip2@
+application_x_compress = @application_x_compress@
+application_x_gzip = @application_x_gzip@
 LIBS = -lm @LEXLIB@
 
 bin_PROGRAMS = namazu
@@ -111,9 +118,12 @@ PROGRAMS =  $(bin_PROGRAMS)
 DEFS = @DEFS@ -I. -I$(srcdir) -I..
 CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
-namazu_OBJECTS =  cgi.o codeconv.o conf.o form.o hlist.o message.o \
-namazu.o output.o parser.o re.o regex.o search.o seed.o util.o values.o \
-wakati.o result.o getopt.o getopt1.o field.o usage.o
+namazu_OBJECTS =  cgi.$(OBJEXT) codeconv.$(OBJEXT) conf.$(OBJEXT) \
+form.$(OBJEXT) hlist.$(OBJEXT) message.$(OBJEXT) namazu.$(OBJEXT) \
+output.$(OBJEXT) parser.$(OBJEXT) re.$(OBJEXT) regex.$(OBJEXT) \
+search.$(OBJEXT) seed.$(OBJEXT) util.$(OBJEXT) values.$(OBJEXT) \
+wakati.$(OBJEXT) result.$(OBJEXT) getopt.$(OBJEXT) getopt1.$(OBJEXT) \
+field.$(OBJEXT) usage.$(OBJEXT)
 namazu_LDADD = $(LDADD)
 namazu_DEPENDENCIES = 
 namazu_LDFLAGS = 
@@ -145,7 +155,7 @@ OBJECTS = $(namazu_OBJECTS)
 
 all: all-redirect
 .SUFFIXES:
-.SUFFIXES: .S .c .l .o .s
+.SUFFIXES: .S .c .l .o .obj .s
 $(srcdir)/Makefile.in: Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
 	cd $(top_srcdir) && $(AUTOMAKE) --gnu src/Makefile
 
@@ -187,6 +197,11 @@ uninstall-binPROGRAMS:
 	  rm -f $(DESTDIR)$(bindir)/`echo $$p|sed 's/$(EXEEXT)$$//'|sed '$(transform)'|sed 's/$$/$(EXEEXT)/'`; \
 	done
 
+# FIXME: We should only use cygpath when building on Windows,
+# and only if it is available.
+.c.obj:
+	$(COMPILE) -c `cygpath -w $<`
+
 .s.o:
 	$(COMPILE) -c $<
 
@@ -195,6 +210,7 @@ uninstall-binPROGRAMS:
 
 mostlyclean-compile:
 	-rm -f *.o core *.core
+	-rm -f *.$(OBJEXT)
 
 clean-compile:
 

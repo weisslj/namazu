@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.12 1999-08-26 08:42:13 rug Exp $
+dnl $Id: configure.in,v 1.13 1999-08-26 09:22:34 satoru Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -104,7 +104,7 @@ else
 	    fi
     )
     if test "$NKF" = "no"; then
-	AC_MSG_ERROR(NKF (network kanji filter) not found to handle Japanese code)
+	AC_MSG_ERROR(NKF (network kanji filter) not found)
     fi
 
     AC_ARG_WITH(
@@ -252,7 +252,35 @@ AC_SUBST(application_x_gzip)
 AC_SUBST(application_x_bzip2)
 AC_SUBST(application_x_compress)
 
-dnl CGI location
+dnl *
+dnl * Checking File::MMagic module
+dnl *
+
+changequote(<<, >>)
+tmp=`$PERL -nle 'print \$1 if /^\\$VERSION = "([\d\.]+)";\$/' \
+	File-MMagic/MMagic.pm`
+dnl *
+dnl * tmp="10.0"  # for testing
+dnl *
+AC_MSG_CHECKING(for File::MMagic module)
+if $PERL -e "use File::MMagic $tmp" 1>/dev/null 2> /dev/null; then
+    AC_MSG_RESULT(yes)
+    FILE_MMAGIC=""
+else
+    AC_MSG_RESULT(no)
+    AC_MSG_WARN(File::MMagic module not installed. preparing its Makefile.)
+    cd File-MMagic
+    $PERL Makefile.PL
+    cd ..
+    FILE_MMAGIC="File-MMagic"
+fi
+changequote([, ])
+AC_SUBST(FILE_MMAGIC)
+
+
+dnl *
+dnl * CGI location
+dnl *
 AC_MSG_CHECKING(for OPT_CGI_LOCATION)
 AC_ARG_WITH(
         cgi_location,

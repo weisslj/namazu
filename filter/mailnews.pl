@@ -1,8 +1,9 @@
 #
 # -*- Perl -*-
-# $Id: mailnews.pl,v 1.34 2004-09-18 12:30:41 usu Exp $
+# $Id: mailnews.pl,v 1.35 2004-11-21 12:59:58 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
-#               1999 NOKUBI Takatsugu All rights reserved.
+#               1999 NOKUBI Takatsugu ,
+#               2001,2003,2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -115,15 +116,15 @@ sub mailnews_filter ($$$) {
 
 	    my $weight = $conf::Weight{'html'}->{'title'};
 	    $$weighted_str .= "\x7f$weight\x7f$line\x7f/$weight\x7f\n";
-	} elsif ($line =~ s/^content-type:\s*//i) {
-	    if ($line =~ /multipart.*boundary="(.*?)"/i){
-		$boundary = $1;
-		util::dprint("((boundary: $boundary))\n");
-	    } elsif ($line =~ m!message/partial;\s*(.*)!i) {
-		# The Message/Partial subtype routine [1998-10-12]
-		# contributed by Hiroshi Kato <tumibito@mm.rd.nttdata.co.jp>
-		$partial = $1;
-		util::dprint("((partial: $partial))\n");
+        } elsif ($line =~ s/^content-type:\s*//i) {
+            if ($line =~ /multipart.*boundary="(.*?)"/i){
+                $boundary = $1;
+                util::dprint("((boundary: $boundary))\n");
+            } elsif ($line =~ m!message/partial;\s*(.*)!i) {
+                # The Message/Partial subtype routine [1998-10-12]
+                # contributed by Hiroshi Kato <tumibito@mm.rd.nttdata.co.jp>
+                $partial = $1;
+                util::dprint("((partial: $partial))\n");
             } elsif ($line !~ m!text/plain!i) {
                 $$contref = '';
                 return;

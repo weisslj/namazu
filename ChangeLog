@@ -1,5 +1,7 @@
 1999-09-07  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* configure.in (AM_INIT_AUTOMAKE): Change a version number to 1.9.3.
+
 	* src/mknmz.pl.in (wordcount_sub): Improve efficiency a bit.
 	
 	* src/mknmz.pl.in: s/fid/docid/g
@@ -16,6 +18,7 @@
 
 	* src/mknmz.pl.in: Changed to create File::MMagic object once.
 
+	
 1999-09-06  Ryuji Abe <raeva@t3.rim.or.jp>
 
 	* configure.in: Fixed incorrect warnings.

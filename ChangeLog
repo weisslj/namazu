@@ -1,7 +1,7 @@
 2004-08-06  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * filter/pipermail.pl: Correction to the bug of pipermail
-        ( '>' of the JIS code is changed into '&gt;')
+        ( '>' of the JIS code is changed into '&gt;', etc...)
 
 2004-08-04  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
@@ -9007,4 +9007,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1214 2004-08-05 22:57:36 opengl2772 Exp $
+$Id: ChangeLog,v 1.1215 2004-08-06 05:08:23 opengl2772 Exp $

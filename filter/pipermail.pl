@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: pipermail.pl,v 1.4 2004-08-05 22:57:36 opengl2772 Exp $
+# $Id: pipermail.pl,v 1.5 2004-08-06 05:08:23 opengl2772 Exp $
 # Copyright (C) 2004 Namazu Project All rights reserved.
 #
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -113,7 +113,9 @@ sub pipermail_filter ($$$) {
         m!<h1>(.*?)</h1>\s*<b>(.*?)\s*</b>(?:\s*<a\s+.*?href=.*?>(.*?)\s*</a>)?\s*<br>\s*<i>(.*?)</i>!is) {
             {
                 my $title = $1;
+                $title =~ s/&lt;/</g;
                 $title =~ s/&gt;/>/g;
+                $title =~ s/&amp;/&/g;
                 $title = uncommentize($title);
                 codeconv::toeuc(\$title);
 

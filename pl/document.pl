@@ -2,7 +2,7 @@
 # -*- Perl -*-
 # document.pl - class for document
 #
-# $Id: document.pl,v 1.1 2004-09-19 07:18:10 usu Exp $
+# $Id: document.pl,v 1.2 2004-10-12 18:50:05 opengl2772 Exp $
 #
 # Copyright (C) 2004 Yukio USUDA All rights reserved.
 # Copyright (C) 2000-2004 Namazu Project All rights reversed.
@@ -302,22 +302,31 @@ sub _check_content {
 	if ($system eq "MSWin32" 
 	    && $cfile =~ /[\x81-\x9f\xe0-\xef][\x40-\x7e\x80-\xfc]|[\x20\xa1-\xdf]/) 
 	{
-	    $cfile = util::tmpnam("NMZ.win32");
-	    unlink $cfile if (-e $cfile);
-	    copy($self->{'_orig_filename'}, $cfile);
-	}
+	    my $tmpfile = util::tmpnam("NMZ.win32");
+	    unlink $tmpfile if (-e $tmpfile);
+	    copy($self->{'_orig_filename'}, $tmpfile);
 
-	$file_size = util::filesize($cfile); # not only file in feature.
-	if ($file_size > $conf::FILE_SIZE_MAX) {
-	    $self->{'_errmsg'} = 'too big file';
-	    $self->{'_mimetype'} = 'x-system/x-error';
-	}
+  	    $file_size = util::filesize($tmpfile); # not only file in feature.
+	    if ($file_size > $conf::FILE_SIZE_MAX) {
+	        $self->{'_errmsg'} = 'too big file';
+	        $self->{'_mimetype'} = 'x-system/x-error';
+	        unlink $tmpfile;
+                return;
+	    }
 
-	${$self->{'_contentref'}} = util::readfile($cfile);
-	if ($system eq "MSWin32") {
-	    unlink $cfile;
-	}
+	    ${$self->{'_contentref'}} = util::readfile($tmpfile);
 
+	    unlink $tmpfile;
+	} else {
+  	    $file_size = util::filesize($cfile); # not only file in feature.
+	    if ($file_size > $conf::FILE_SIZE_MAX) {
+	        $self->{'_errmsg'} = 'too big file';
+	        $self->{'_mimetype'} = 'x-system/x-error';
+                return;
+	    }
+
+	    ${$self->{'_contentref'}} = util::readfile($cfile);
+        }
     } else {
 	$file_size = length(${$self->{'_contentref'}});
     }

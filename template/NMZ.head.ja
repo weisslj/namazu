@@ -21,9 +21,10 @@
 <form method="GET" action="{cgi}">
 <p>
 <strong>¸¡º÷¼°:</strong> 
-<input type="TEXT" name="query" size="40">
-<input type="SUBMIT" name="submit" value="Search!">
-<input type="HIDDEN" name="whence" value="0">
+<input type="text" name="query" size="40">
+<input type="submit" name="submit" value="Search!">
+<input type="hidden" name="whence" value="0">
+<!-- <input type="hidden" name="idxname" value="foobar"> -->
 <a href="{cgi}">[Help]</a>
 </p>
 <p>

@@ -1,5 +1,8 @@
 1999-09-08  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* template/NMZ.head.{en,ja}: Add a comment:
+	<!-- <input type="hidden" name="idxname" value="foobar"> -->
+
 	* src/mknmz.pl.in, lib/usage.pl: Add -h, --mailnews option for
 	limitting target files to mail/news. (identical with
 	--media-type=message/rfc822 )

@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.22 1999-12-07 09:27:41 rug Exp $
+ * $Id: search.c,v 1.23 1999-12-07 09:45:46 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -876,7 +876,7 @@ int binsearch(char *orig_key, int prefix_match_mode)
 }
 
 /* flow of search */
-NmzResult search_main(char *query)
+NmzResult nmz_search(char *query)
 {
     NmzResult hlist, tmp[INDEX_MAX];
     char query_orig[BUFSIZE];

@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.57 1999-12-07 09:27:43 rug Exp $
+ * $Id: namazu.c,v 1.58 1999-12-07 09:45:49 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -70,11 +70,12 @@
  *
  */
 
-static int stdio2file(char*);
-static int parse_options(int, char**);
-static enum nmz_stat namazu_core(char*, char*, char*);
-static void suicide(int);
-static int ck_atoi (char const *, int*);
+static int ck_atoi ( char const *str, int *out );
+static int stdio2file ( char * fname );
+static int parse_options ( int argc, char **argv );
+static enum nmz_stat namazu_core ( char * query, char *subquery, char *argv0 );
+static void make_fullpathname_msg ( void );
+static void suicide ( int signum );
 
 /* Imported from GNU grep-2.3 [1999-11-08] by satoru-t */
 /* Convert STR to a positive integer, storing the result in *OUT.
@@ -264,7 +265,7 @@ static int parse_options(int argc, char **argv)
 }
 
 /* namazu core routine */
-static enum nmz_stat namazu_core(char * query, char *subquery, char *av0)
+static enum nmz_stat namazu_core(char * query, char *subquery, char *argv0)
 {
     char query_with_subquery[BUFSIZE * 2];
     NmzResult hlist;
@@ -305,7 +306,7 @@ static enum nmz_stat namazu_core(char * query, char *subquery, char *av0)
     }
 
     /* search */
-    hlist = search_main(query_with_subquery);
+    hlist = nmz_search(query_with_subquery);
 
     switch (hlist.stat) {
     case ERR_FATAL:

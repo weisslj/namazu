@@ -1,5 +1,7 @@
 1999-12-07  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* nmz/search.c (nmz_search): Renamed from search_main.
+
 	* nmz/rcfile.c (getenv_namazurc): Moved from libnamazu.c.
 	(load_conf): Remove unnecessary codes: BASE_URI[0] = '\0';
 	(open_conf_file): Call getenv_namazurc at the first.

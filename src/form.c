@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.50 2000-01-28 09:40:20 satoru Exp $
+ * $Id: form.c,v 1.51 2000-01-30 22:18:11 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -63,6 +63,7 @@ static enum nmz_stat select_option ( char *s, const char *name, const char *subq
 static enum nmz_stat check_checkbox ( char *str );
 static void handle_tag ( const char *start, const char *end, const char *query,char *select_name, const char *subquery );
 static char * read_headfoot ( const char *fname );
+static void subst ( char *str, const char *pat, const char *rep );
 
 /* 
  * Compare given two elements
@@ -350,10 +351,33 @@ read_headfoot(const char *fname)
 
     /* Replace {cgi} with a proper namazu.cgi location */
     while ((p = strstr(buf, "{cgi}")) != NULL) {
-	nmz_subst(p, "{cgi}", script_name);
+	subst(p, "{cgi}", script_name);
     }
 
     return buf;
+}
+
+/* 
+ * Substitute pat with rep in str at without memory size consideration.
+ */
+static void 
+subst(char *str, const char *pat, const char *rep)
+{
+    int patlen, replen;
+    patlen = strlen(pat);
+    replen = strlen(rep);
+
+    if (patlen == replen) {
+	memmove(str, rep, replen);
+    } else if (patlen < replen) {
+	/* + 1 for including '\0' */
+	memmove(str + replen, str + patlen, strlen(str) - patlen + 1);
+	memmove(str, rep, replen);
+    } else if (patlen > replen) {
+	memmove(str, rep, replen);
+	/* + 1 for including '\0' */
+	memmove(str + replen, str + patlen, strlen(str) - patlen + 1);
+    }
 }
 
 /*

@@ -1,5 +1,5 @@
 /*
- * $Id: result.c,v 1.47 2000-01-28 09:40:21 satoru Exp $
+ * $Id: result.c,v 1.48 2000-01-30 22:18:12 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -48,12 +48,31 @@ static int uridecode   = 1;   /* Decode  URI in results as default. */
  *
  */
 
+static void commas ( char *str );
 static void replace_field ( struct nmz_data d, int counter, const char *field, char *result );
 static void encode_entity ( char *str );
 static void emphasize ( char *str );
 static int is_urireplace ( void );
 static int is_uridecode ( void );
 
+
+static void 
+commas(char *str)
+{
+    int i, n;
+    int leng = strlen(str);
+
+    n = leng + (leng - 1) / 3;
+    str[n] = '\0';
+    n--;
+    for (i = 0; i < leng; i++, n--) {
+	str[n] = str[leng - 1 - i];
+	if (i % 3 == 2 && n != 0) {
+	    n--;
+	    str[n] = ',';
+	}
+    }
+}
 
 static void 
 replace_field(struct nmz_data d, int counter, 
@@ -67,10 +86,10 @@ replace_field(struct nmz_data d, int counter,
 
     if (strcmp(field, "namazu::score") == 0) {
 	sprintf(buf, "%d", d.score);
-	nmz_commas(buf);
+	commas(buf);
     } else if (strcmp(field, "namazu::counter") == 0) {
 	sprintf(buf, "%d", counter);
-	nmz_commas(buf);
+	commas(buf);
     } else {
 	nmz_get_field_data(d.idxid, d.docid, field, buf);
 	if (strcasecmp(field, "uri") == 0) {
@@ -95,7 +114,7 @@ replace_field(struct nmz_data d, int counter,
 
     /* Insert commas if the buf is a numeric string */
     if (nmz_isnumstr(buf)) {
-	nmz_commas(buf);
+	commas(buf);
     }
 
     strcat(result, buf);

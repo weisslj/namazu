@@ -1,3 +1,12 @@
+2000-01-31  Ryuji Abe  <raeva@t3.rim.or.jp>
+
+	* nmz/util.[ch] (nmz_commas): Moved to src/result.c as commas.
+	(nmz_subst): Moved to src/form.c as subst.
+
+	* src/result.c (commas): Be static.
+
+	* src/form.c (subst): Likewise.
+
 2000-01-29  Kenji Suzuki  <kenji@po.ganseki.ne.jp>
 
 	* filter/hnf.pl: s/SUMMARY_LENGTH/MAX_FIELD_LENGTH/

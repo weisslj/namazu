@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: util.c,v 1.52 2000-01-29 04:58:19 satoru Exp $
+ * $Id: util.c,v 1.53 2000-01-30 22:18:10 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -362,24 +362,6 @@ nmz_isnumstr(const char *str)
 }
 
 void 
-nmz_commas(char *str)
-{
-    int i, n;
-    int leng = strlen(str);
-
-    n = leng + (leng - 1) / 3;
-    str[n] = '\0';
-    n--;
-    for (i = 0; i < leng; i++, n--) {
-	str[n] = str[leng - 1 - i];
-	if (i % 3 == 2 && n != 0) {
-	    n--;
-	    str[n] = ',';
-	}
-    }
-}
-
-void 
 nmz_strlower(char *str)
 {
     while (*str) {
@@ -490,29 +472,6 @@ nmz_readfile(const char *fname)
     *(buf + fstatus.st_size) = '\0';
     fclose(fp);
     return buf;
-}
-
-/* 
- * Substitute pat with rep in str at without memory size consideration.
- */
-void 
-nmz_subst(char *str, const char *pat, const char *rep)
-{
-    int patlen, replen;
-    patlen = strlen(pat);
-    replen = strlen(rep);
-
-    if (patlen == replen) {
-	memmove(str, rep, replen);
-    } else if (patlen < replen) {
-	/* + 1 for including '\0' */
-	memmove(str + replen, str + patlen, strlen(str) - patlen + 1);
-	memmove(str, rep, replen);
-    } else if (patlen > replen) {
-	memmove(str, rep, replen);
-	/* + 1 for including '\0' */
-	memmove(str + replen, str + patlen, strlen(str) - patlen + 1);
-    }
 }
 
 /*
@@ -660,46 +619,4 @@ int nmz_is_file_exists(const char *fname)
     }
 }
 
-/*
- * The following functions are commented as a reminder.  
- */
-
-/*
- * void nmz_delete_backslashes(char *str)
- * {
- *     char *pos = str;
- * 
- *     while (*str) {
- *         if (*str == '\\' && *(str + 1) == '\\') {
- *             *pos = *str;
- *             pos++;
- *             str++;
- *             str++;
- *         } else if (*str == '\\') {
- *             str++;
- *         } else {
- *             *pos = *str;
- *             pos++;
- *             str++;
- *         }
- *     }
- *     *pos = '\0';
- * }
- */
-
-/*
- * int nmz_strsuffixcasecmp(char *str1, char *str2)
- * {
- *     int leng1, leng2;
- * 
- *     leng1 = strlen(str1);
- *     leng2 = strlen(str2);
- * 
- *     if (leng1 > leng2) {
- * 	return strcasecmp(str1 + leng1 - leng2, str2);
- *     } else {					     
- * 	return strcasecmp(str2 + leng2 - leng1, str1);
- *     }
- * }
- */
 

@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.41 2004-04-03 07:16:46 opengl2772 Exp $
+ * $Id: rcfile.c,v 1.42 2004-04-05 08:15:04 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2003 Namazu Project All rights reserved.
@@ -440,6 +440,10 @@ static void
 replace_home(char *str)
 {
     char tmp[BUFSIZE] = "";
+
+    if (str == NULL || *str == '\0') {
+        return;
+    }
 
     strcpy(tmp, str);
     if (nmz_strprefixcmp(tmp, "~/") == 0) {

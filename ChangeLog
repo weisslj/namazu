@@ -2,6 +2,10 @@
 
         * nmz/search.c: very ad hoc.(for OpenBSD)
 
+        * src/rcfile.c (replace_home): The bug which replaces a NULL 
+        character sequence is corrected.
+        (namazu-win32-users-ja#02071)
+
 2004-04-03  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * src/rcfile.c (load_rcfiles): Environment variable It corresponds 
@@ -8707,4 +8711,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1143 2004-04-04 15:32:38 opengl2772 Exp $
+$Id: ChangeLog,v 1.1144 2004-04-05 08:15:03 opengl2772 Exp $

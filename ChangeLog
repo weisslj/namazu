@@ -1,3 +1,20 @@
+2000-01-10  Ryuji Abe  <raeva@t3.rim.or.jp>
+
+	* configure.in: Many Changes. Abolished --with-COMMAND=PATH style
+	options except --with-emacs and --with-perl5.
+	(AC_CHECK_SIZEOF): New macro. checking for int, long, long long.
+	(--with-included-file-mmagic): Use instead of --without-file-mmagic.
+	(AM_CONDITIONAL): New Macro.
+	(--without-tknamazu): Revert to --with-tknamazu, but changed not to
+	be built by default.
+
+	* Makefile.am (SUBDIRS): Added template. if BUILD_FILE_MMAGIC defined,
+	File-MMagic will be built.
+	(DIST_SUBDIRS): Added template.
+	(DISTCLEANFILES): Removed.
+	(DISTCLEANDIRS): LIkewise.
+	(pkgdatadir): Likewise.
+
 2000-01-10  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* nmz/rcfile.c (parse_rcfile): Fix memory leak bug.

@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.130 2004-02-01 09:30:47 opengl2772 Exp $
+# $Id: mknmz.in,v 1.131 2004-02-01 15:01:25 usu Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -1202,6 +1202,7 @@ sub parse_options
 	       'v|version'           => \$opt_version,
 	       'x|no-heading-summary'=> \$var::Opt{'noheadabst'},
 	       'z|check-filesize'    => \$var::Opt{'checkfilesize'},
+	       'decode-base64'       => \$var::Opt{'decodebase64'},
 	       );
     my $mediatype;
     foreach $mediatype (keys %var::ARCHIVE_REQUIRE_ACTIONS) {

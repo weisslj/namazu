@@ -4,6 +4,17 @@
 
 2004-02-01  Yukio USUDA <usu@namazu.org>
 
+	* filter/mailnews.pl(multipart_process, base64_filter, 
+	quotedprint_filter, nesting_filter): Added some subroutines for 
+	decode quoted-printable and base64 encoded bodies within multipart
+	entities. 
+
+	* scripts/mknmz.in: Added '--decode-base64' option.
+
+	* pl/var.pl.in: Added variable $Opt{'decodebase64'}.
+
+	* pl/conf.pl.in: Added entries for mht. 
+
 	* doc/{en,ja}/tutorial.html: Update
 
         * filter/taro7_10.pl: Fixed the problem in [namazu-devel-ja#03621].
@@ -8372,4 +8383,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1090 2004-02-01 09:30:46 opengl2772 Exp $
+$Id: ChangeLog,v 1.1091 2004-02-01 15:01:22 usu Exp $

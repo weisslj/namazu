@@ -1,5 +1,5 @@
 # -*- Perl -*-
-# $Id: var.pl.in,v 1.15 2003-09-23 07:34:21 knok Exp $
+# $Id: var.pl.in,v 1.16 2004-02-01 15:01:24 usu Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -107,6 +107,8 @@ $Opt{'nodelete'} = 0;
 $Opt{'noupdate'} = 0;
 
 $Opt{'checkfilesize'} = 0;
+
+$Opt{'decodebase64'} = 0;
 
 #-----------------------------------------------------------
 #

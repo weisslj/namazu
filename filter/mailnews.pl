@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mailnews.pl,v 1.28 2003-10-07 05:48:56 opengl2772 Exp $
+# $Id: mailnews.pl,v 1.29 2004-02-01 15:01:23 usu Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -28,11 +28,15 @@ use strict;
 require 'util.pl';
 require 'gfilter.pl';
 
+my $has_base64 = undef;
+
 sub mediatype() {
     return ('message/rfc822', 'message/news');
 }
 
 sub status() {
+    $has_base64 = 1 if (util::checklib('MIME/Base64.pm') &&
+			util::checklib('MIME/QuotedPrint.pm'));
     return 'yes';
 }
 
@@ -111,15 +115,15 @@ sub mailnews_filter ($$$) {
 
 	    my $weight = $conf::Weight{'html'}->{'title'};
 	    $$weighted_str .= "\x7f$weight\x7f$line\x7f/$weight\x7f\n";
- 	} elsif ($line =~ s/^content-type:\s*//i) {
-	    if ($line =~ /multipart.*boundary="(.*)"/i){
+	} elsif ($line =~ s/^content-type:\s*//i) {
+	    if ($line =~ /multipart.*boundary="(.*?)"/i){
 		$boundary = $1;
 		util::dprint("((boundary: $boundary))\n");
-  	    } elsif ($line =~ m!message/partial;\s*(.*)!i) {
+	    } elsif ($line =~ m!message/partial;\s*(.*)!i) {
 		# The Message/Partial subtype routine [1998-10-12]
 		# contributed by Hiroshi Kato <tumibito@mm.rd.nttdata.co.jp>
-  		$partial = $1;
-  		util::dprint("((partial: $partial))\n");
+		$partial = $1;
+		util::dprint("((partial: $partial))\n");
             } elsif ($line !~ m!text/plain!i) {
                 $$contref = '';
                 return;
@@ -153,20 +157,66 @@ sub mailnews_filter ($$$) {
 	$boundary =~ s/(\W)/\\$1/g;
 	$$contref =~ s/This is multipart message.\n//i;
 
+	multipart_process($contref, $boundary, $weighted_str, $fields);
 
-	# MIME multipart processing,
-	# modified by Furukawa-san's patch on [1998/08/27]
- 	$$contref =~ s/--$boundary(--)?\n?/\xff/g;
- 	my (@parts) = split(/\xff/, $$contref);
- 	$$contref = '';
- 	for $_ (@parts){
- 	    if (s/^(.*?\n\n)//s){
- 		my ($head) = $1;
- 		$$contref .= $_ if $head =~ m!^content-type:.*text/plain!mi;
- 	    }
- 	}
     }
 }
+
+# Prototype declaration for avoiding
+# "multipart_process() called too early to check prototype at ..." warnings.
+sub multipart_process($$$$);
+
+sub multipart_process ($$$$){
+    my ($contref, $boundary, $weighted_str, $fields) = @_;
+
+    # MIME multipart processing,
+    # modified by Furukawa-san's patch on [1998/08/27]
+    $$contref =~ s/--$boundary(--)?\n?/\xff/g;
+    my (@parts) = split(/\xff/, $$contref);
+    $$contref = '';
+    for $_ (@parts){
+	if (s/^(.*?\n\n)//s){
+	    my ($head) = $1; 
+	    my ($body) .= $_;
+	    my $contenttype = "";
+	    my $cont_encode = "";
+	    if ($head =~ m!^content-type:\s*(\S+?);?\s!mi){
+		$contenttype = lc($1);
+		util::dprint("((Content-Type: $contenttype))\n");
+	    }
+
+	    if ($head =~ m!^content-transfer-encoding:\s*(\S+)$!mi){
+		$cont_encode = lc($1);
+		util::dprint("((Content-Transfer-Encode: $cont_encode))\n");
+	    }
+
+	    # Image data must be including text data.  
+	    if ($contenttype !~ m!image/!){
+		if ($cont_encode =~ m/base64/){
+		    base64_filter(\$body);
+		} elsif ($cont_encode =~ m/quoted-printable/){
+		    quotedprint_filter(\$body);
+		} 
+
+		if ($contenttype =~ m!text/plain!){
+		    $$contref .= $body;
+		} elsif ($contenttype =~ m!multipart/alternative!){
+		    if ($head =~ /boundary="(.*?)"/i){
+			my $boundary2 = $1;
+			util::dprint("((boundary: $boundary2))\n");
+			$boundary2 =~ s/(\W)/\\$1/g;
+			multipart_process(\$body, $boundary2, $weighted_str, $fields);
+			$$contref .= $body;
+		    }
+		} else {
+		    nesting_filter(\$head, \$body, $contenttype, $weighted_str);
+		    $$contref .= $body;
+		}
+	    }
+	}
+    }
+}
+
 
 # Make mail/news citation marks not to be indexed.
 # And a greeting message at the beginning.
@@ -297,5 +347,59 @@ sub uuencode_filter ($) {
     }
 }
 
+sub base64_filter ($){
+    my ($bodyref) = @_;
+    if ($has_base64 && $var::Opt{'decodebase64'}) {
+	eval 'use MIME::Base64 ();';
+	$$bodyref = MIME::Base64::decode($$bodyref);
+    } else {
+	$$bodyref="";
+    }
+}
+
+sub quotedprint_filter ($){
+    my ($bodyref) = @_;
+    if ($has_base64) {
+	eval 'use MIME::QuotedPrint ();';
+	$$bodyref = MIME::QuotedPrint::decode_qp($$bodyref);
+    } else {
+	$$bodyref="";
+    }
+}
+
+sub nesting_filter ($$$$){
+    my ($headref, $bodyref, $mmtype, $weighted_str) = @_;
+    my $err = undef;
+    my $dummy_shelterfname="";
+    my $headings = "";
+    my %fields;
+    my $filename = "";
+    if ($$headref =~ m!^content-disposition:\s*\S+\s*filename="(.+)"!mi){
+	$filename = $1;
+    } elsif ($$headref =~ m!^content-location:\s*(\S+)!mi){
+	$filename = $1;
+    }
+    util::dprint("((Attached filename: $filename))\n");
+
+    if ($mmtype =~ m!application/octet-stream!){
+	$mmtype = undef
+    }
+    my ($kanji, $mtype) = mknmz::apply_filter(\$filename, $bodyref, 
+			$weighted_str, \$headings, \%fields, 
+			$dummy_shelterfname, $mmtype);
+    if ($mtype =~ /; x-system=unsupported$/){
+	$$bodyref = "";
+        $err = $mtype;
+	util::dprint("filter/mailnews.pl gets error message \"$err\"");
+    }elsif ($mtype =~ /; x-error=(.*)$/){
+        $$bodyref = "";
+        $err = $1;
+        util::dprint("filter/mailnews.pl gets error message \"$err\"");
+    }else{
+	gfilter::show_filter_debug_info($bodyref, $weighted_str,
+					\%fields, \$headings);
+    }
+    return $err;
+}
 
 1;

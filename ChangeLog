@@ -1,5 +1,8 @@
 1999-12-09  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* nmz/search.c (binsearch): Chomp term.
+	(show_status): Chomp buf.
+
 	* nmz/util.c (nmz_drintf): Renamed from nmz_debug_printf.
 	(nmz_wprintf): Renamed from nmz_warn_printf.
 	(nmz_die): Modify LF treatment.

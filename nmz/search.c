@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.27 1999-12-09 03:15:15 satoru Exp $
+ * $Id: search.c,v 1.28 1999-12-09 03:46:23 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -145,9 +145,13 @@ static void show_status(int l, int r)
 
     fseek(Nmz.w, getidxptr(Nmz.wi, l), 0);
     fgets(buf, BUFSIZE, Nmz.w);
+    nmz_chomp(buf);
+
     nmz_dprintf("l:%d: %s", l, buf);
     fseek(Nmz.w, getidxptr(Nmz.wi, r), 0);
     fgets(buf, BUFSIZE, Nmz.w);
+    nmz_chomp(buf);
+
     nmz_dprintf("r:%d: %s", r, buf);
 }
 
@@ -835,9 +839,10 @@ int binsearch(char *orig_key, int prefix_match_mode)
 	/* over BUFSIZE (maybe 1024) size keyword is nuisance */
 	fseek(Nmz.w, getidxptr(Nmz.wi, x), 0);
 	fgets(term, BUFSIZE, Nmz.w);
+	nmz_chomp(term);
 
 	nmz_dprintf("searching: %s", term);
-	for (e = 0, i = 0; *(term + i) != '\n' && *(key + i) != '\0' ; i++) {
+	for (e = 0, i = 0; *(term + i) != '\0' && *(key + i) != '\0' ; i++) {
 	    /*
 	     * compare in unsigned. 
 	     * because they could be 8 bit characters (0x80 or upper).
@@ -852,9 +857,9 @@ int binsearch(char *orig_key, int prefix_match_mode)
 	    }
 	}
 
-	if (*(term + i) == '\n' && *(key + i)) {
+	if (*(term + i) == '\0' && *(key + i)) {
 	    e = 1;
-	} else if (! prefix_match_mode && *(term + i) != '\n' 
+	} else if (! prefix_match_mode && *(term + i) != '\0' 
                    && (*(key + i) == '\0')) {
 	    e = -1;
 	}

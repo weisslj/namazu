@@ -60,6 +60,9 @@
 
 	* acinclude.m4 (AM_PATH_LISPDIR): Do not AC_SUBST(emacsdir).
 
+	* scripts/Makefile.am: Revert to verbose configuration process.
+	(TAGS_DEPENDENCIES): Set $(SCRIPTS).
+
 2000-01-28  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* pl/Makefile.am (perllib_DATA): Remove find.pl.

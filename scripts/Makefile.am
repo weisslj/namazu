@@ -24,14 +24,26 @@ templatedir = $(pkgdatadir)/template
 
 ##################################################################
 
-SUFFIXES = .pl
-.pl:
+gcnmz: gcnmz.pl
+	rm -f $@
+	sed -e 's!%LIBDIR%!$(perllibdir)!g' $< > $@.tmp
+	mv $@.tmp $@
+	chmod +x $@
+
+kwnmz: kwnmz.pl
+	rm -f $@
+	sed -e 's!%LIBDIR%!$(perllibdir)!g' $< > $@.tmp
+	mv $@.tmp $@
+	chmod +x $@
+
+mknmz: mknmz.pl
 	rm -f $@
 	sed -e 's!%CONFDIR%!$(confdir)!g' \
 	    -e 's!%LIBDIR%!$(perllibdir)!g' \
 	    -e 's!%FILTERDIR%!$(filterdir)!g' \
-	    -e 's!%TEMPLATEDIR%!$(templatedir)!g' \
-	$< > $@
+	    -e 's!%TEMPLATEDIR%!$(templatedir)!g' $< >$@.tmp 
+	mv $@.tmp $@
 	chmod +x $@
 
 ETAGS_ARGS = $(SCRIPTS) --lang=perl
+TAGS_DEPENDENCIES = $(SCRIPTS)

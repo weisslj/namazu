@@ -1,5 +1,7 @@
 1999-12-09  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/mknmz.pl.in (make_summary): Fix a bug [namazu-dev 965]
+
 	* nmz/search.c (nmz_search): Modify error state handling.
 
 	* nmz/hlist.c (merge_hlist): Set vallue.stat to SUCCESS.

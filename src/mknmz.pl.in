@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.80 1999-12-02 00:05:40 satoru Exp $
+# $Id: mknmz.pl.in,v 1.81 1999-12-09 11:04:22 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -452,11 +452,15 @@ sub make_summary ($$$) {
         $tmp =~ s/([-=*\#])\1{2,}/$1$1/g;
     }
 
-    length($tmp) < $conf::SUMMARY_LENGTH + 1 ?
-        $tmplen = $conf::SUMMARY_LENGTH : $tmplen = length($tmp) - 1;
-    my $summary = substr($tmp, 0, $tmplen);
+    my $summary = substr $tmp, 0, $conf::SUMMARY_LENGTH;
     my $kanji = $summary =~ tr/\xa1-\xfe/\xa1-\xfe/;
-    $summary .= substr($tmp, $tmplen, 1) if $kanji %2;
+    $summary .= substr($tmp, $conf::SUMMARY_LENGTH, 1) if $kanji %2;
+
+#    length($tmp) < $conf::SUMMARY_LENGTH + 1 ?
+#          $tmplen = $conf::SUMMARY_LENGTH : $tmplen = length($tmp) - 1;
+#      my $summary = substr($tmp, 0, $tmplen);
+#      my $kanji = $summary =~ tr/\xa1-\xfe/\xa1-\xfe/;
+#      $summary .= substr($tmp, $tmplen, 1) if $kanji %2;
 
     $summary =~ s/^\s+//;
     $summary =~ s/\s+/ /g;   # normalize white spaces

@@ -17,6 +17,23 @@ cxref: src/namazu
 	    -warn-xref -index-all -xref-all -O cxref \
 	    nmz/*.[ch] src/*.[ch] lib/*.[ch] 1> cxref/warnings 
 
+cxref-latex2e: src/namazu
+	if test ! -d cxref-latex2e; then \
+	    $(mkinstalldirs) cxref-latex2e; \
+	fi
+	cxref -N namazu -latex2e -I . -I src -I nmz -I lib \
+	    -warn-xref -index-all -xref-all -O cxref-latex2e \
+	    nmz/*.[ch] src/*.[ch] lib/*.[ch] 1> cxref-latex2e/warnings 
+
+	# Two passes are needed for accurate cross referencing.
+	cxref -N namazu -latex2e -I . -I src -I nmz -I lib \
+	    -warn-xref -index-all -xref-all -O cxref-latex2e \
+	    nmz/*.[ch] src/*.[ch] lib/*.[ch] 1> cxref-latex2e/warnings 
+
+	cd cxref-latex2e && \
+	platex namazu.tex && \
+	platex namazu.tex # Two passes are needed for referencing.
+
 
 global: HTAGS
 

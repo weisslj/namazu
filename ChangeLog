@@ -1,5 +1,7 @@
 2000-01-04  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* maintMakefile (cxref-latex2e): New rule.
+
 	* autogen.sh (conf_flags): Set --enable-maintainer-mode.
 
 	* acinclude.m4 (AM_WITH_CCMALLOC): Add "-ldl" to LIBS.

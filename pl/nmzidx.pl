@@ -358,7 +358,7 @@ sub new{
     my $mode = @_? shift: 'r';
 
     if ($mode ne 'w'){
-        return undef if -f "$dir/NMZ.lock2";
+        return undef if -f "$dir/NMZ.lock";
         my $fh = new IO::File ">$dir/NMZ.lock2";
         $fh->print($$);
         $fh->close;

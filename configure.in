@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.36 1999-10-14 04:51:42 satoru Exp $
+dnl $Id: configure.in,v 1.37 1999-10-14 10:59:47 rug Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -13,8 +13,6 @@ dnl Process this file with autoconf to produce a configure script.
 AC_INIT(src/cgi.c)
 AC_PREREQ(2.13)               dnl Minimum Autoconf version required.
 AM_INIT_AUTOMAKE(namazu, 1.9.6)
-
-AM_ACLOCAL_INCLUDE(macros)
 
 dnl Namazu's website
 OPT_NMZ_URI="http://openlab.ring.gr.jp/namazu/"
@@ -246,6 +244,16 @@ else
             )
             if test "$ZCAT" = "no"; then
                 AC_MSG_WARN(zcat not found)
+            fi
+            AC_ARG_WITH(
+				netscape,
+				[  --with-netscape=PATH       set netscape location [search path]],
+				AC_MSG_RESULT(using $with_netscape for netscape)
+				NETSCAPE = $with_netscape,
+				[AC_PATH_PROG(NETSCAPE, netscape, no)]
+            )
+            if test "$NETSCAPE" = "no"; then
+            AC_MSG_WARN(netscape not found)
             fi
         fi
     fi

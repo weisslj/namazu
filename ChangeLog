@@ -1,3 +1,15 @@
+1999-10-14  Ryuji Abe <raeva@t3.rim.or.jp>
+
+	* acinclude.m4: Moved all macros previously defined 
+	  macros/gettext.m4, macros/lcmessage.m4, and progtest.m4.
+	
+	* macros: Removed directory and all files.
+	
+	* Makefile.am(SUBDIRS): Removed macros.
+	
+	* configure.in: Added missing netscape configuration routine.
+	(AM_ACLOCAL_INCLUDE): Removed.
+	
 1999-10-14  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* src/util.c (is_little_endian): Use WORDS_BIGENDIAN macro for
@@ -70,9 +82,9 @@
 	
 	* conf/Makefile.am: Modified standard automake style.
 	
-	* filter/Makefile.{am,in}: New File.
+	* filter/Makefile.am: New File.
 	
-	* macros/Makefile.{am,in}, pl/Makefile.{am,in}: Likewise.
+	* macros/Makefile.am, pl/Makefile.am: Likewise.
 	
 	* macros/aclocal-include.m4: New File that derived from gnome-libs-1.0.16.
 	

@@ -1,6 +1,6 @@
-<h2><a name="query-description">Query Description</a></h2>
+<h2><a name="query">Quer</a></h2>
 
-<h3><a name="query-term">One term query</a></h3>
+<h3><a name="query-term">Single term query</a></h3>
 <p>
 The query specifies only one term for retrieving all
 documents which contain the term. e.g., 

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: man.pl,v 1.26 2000-03-15 11:52:03 satoru Exp $
+# $Id: man.pl,v 1.27 2002-02-13 07:39:35 knok Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -30,6 +30,7 @@ require 'gfilter.pl';
 
 my $roffpath = undef;
 my $roffargs = undef;
+my $langenv = '';
 
 sub mediatype() {
     return ('text/x-roff');
@@ -49,10 +50,11 @@ sub status() {
 
     if (util::islang("ja") && $roffpath =~ /\bj?groff$/) {
 	# Check wheter -Tnippon is valid.
+	$langenv = "env LC_ALL=$util::LANG LANGUAGE=$util::LANG";
 	if (($mknmz::SYSTEM eq "MSWin32") || ($mknmz::SYSTEM eq "os2")){
-	    `echo ''| $roffpath -Tnippon 1>nul 2>&1`;
+	    `echo ''| $langenv $roffpath -Tnippon 1>nul 2>&1`;
 	} else {
-	    `echo ''| $roffpath -Tnippon 1>/dev/null 2>&1`;
+	    `echo ''| $langenv $roffpath -Tnippon 1>/dev/null 2>&1`;
 	}
 	if ($? == 0) {
 	    $roffargs = '-Wall -Tnippon' ;
@@ -95,7 +97,7 @@ sub filter ($$$$$) {
 
     {
       util::vprint("Processing man file ... (using '$roffpath -man $roffargs')\n");
-	my $fh = util::efopen("|$roffpath -man $roffargs > $tmpfile");
+	my $fh = util::efopen("|$langenv $roffpath -man $roffargs > $tmpfile");
 
 	# Make groff output one paragraph per one line.
 	# Thanks to Tatsuo SEKINE <tsekine@isoternet.org> for his suggestion.

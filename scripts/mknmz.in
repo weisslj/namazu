@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.103 2002-02-04 05:26:16 makoto Exp $
+# $Id: mknmz.in,v 1.104 2002-02-13 07:39:36 knok Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -1062,13 +1062,13 @@ sub parse_options
     if ($opt_config) {
 	load_rcfile($ConfigFile = $opt_config);
     }
-    load_filtermodules(); # to make effect $opt_config.
-    postload_modules();
 
     if ($index_lang) {
 	$util::LANG = $index_lang;
       util::dprint("Override indexing language: $util::LANG\n");
     }
+    load_filtermodules(); # to make effect $opt_config, $index_lang.
+    postload_modules();
 
     if ($opt_help) {
 	show_usage();

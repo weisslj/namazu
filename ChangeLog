@@ -1,3 +1,15 @@
+2002-02-13  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* scripts/mknmz.in (parse_options): Changed to call 
+	load_filtermodules() after parsing index_lang option.
+
+	* filter/man.pl (status()): s/LAN/LANG/
+
+2002-02-12  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* filter/man.pl: Added $langenv variable for japanized groff.
+	http://search.namazu.org/ml/namazu-devel-ja/msg02332.html
+
 2002-02-04  Makoto Fujiwara  <makoto@.ki.nu>
 
         * scripts/mknmz.in: Message is changed related to TEXT_SIZE_MAX skipping:
@@ -7404,4 +7416,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.929 2002-02-04 05:26:14 makoto Exp $
+$Id: ChangeLog,v 1.930 2002-02-13 07:39:35 knok Exp $

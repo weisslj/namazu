@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: excel.pl,v 1.1 2000-03-01 03:20:21 satoru Exp $
+# $Id: oleexcel.pl,v 1.1 2000-03-06 10:16:55 rug Exp $
 # Copyright (C) 1999 Jun Kurabe ,
 #               1999 Ken-ichi Hirose All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.

@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.41 2000-03-02 11:06:37 satoru Exp $
+# $Id: mknmz.in,v 1.42 2000-03-06 10:16:55 rug Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -351,6 +351,7 @@ sub load_win32modules () {
 	unshift @INC, "../filter/win32";
     } else {
 	@filters = glob "$FILTERDIR/win32/*.pl";
+	unshift @INC, "$FILTERDIR/win32";
     }
 
     load_filters(@filters);

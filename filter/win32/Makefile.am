@@ -4,9 +4,9 @@ AUTOMAKE_OPTIONS = 1.4 no-dependencies
 
 filterdir = $(pkgdatadir)/filter/win32
 
-filter_DATA = msword.pl \
-	     excel.pl \
-	     powerpoint.pl \
+filter_DATA = olemsword.pl \
+	     oleexcel.pl \
+	     olepowerpoint.pl \
 	     ichitaro456.pl
 
 EXTRA_DIST = $(filter_DATA)

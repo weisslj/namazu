@@ -1,8 +1,23 @@
+2000-03-06  Hideyuki SHIRAI  <shirai@rdmg.mgcs.mei.co.jp>
+
+	* scripts/mknmz.in (load_win32modules): 
+
 2000-03-06  Ryuji Abe  <raeva@t3.rim.or.jp>
 
 	* nmz/i18n.c (nmz_set_lang)[HAVE_PUTENV]: Use malloc()
 	instead of realloc() that doesn't works fine anyware.
 	If malloc() failed, return NULL (FIXME).
+
+	* scripts/mknmz.in (load_win32modules): Applied patch
+	from Hideyuki SHIRAI  <shirai@rdmg.mgcs.mei.co.jp> to
+	Get Win32 filters location correctly. 
+
+	* filter/win32/olemsword.pl: File name is added prefix `ole'.
+
+	* filter/win32/oleexcel.pl: Likewise.
+
+	* filter/win32/olepowerpoint.pl: Likewise.
+
 
 2000-03-06  Rei FURUKAWA  <furukawa@tcp-ip.or.jp>
 	* pl/nmzidx.pl: seek & search method.

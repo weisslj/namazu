@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: powerpoint.pl,v 1.1 2000-03-01 03:20:21 satoru Exp $
+# $Id: olemsword.pl,v 1.1 2000-03-06 10:16:55 rug Exp $
 # Copyright (C) 1999 Jun Kurabe ,
 #               1999 Ken-ichi Hirose All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -42,18 +42,18 @@
 # V2.12 1999/11/27 Use Office::OLE::Const to define constant value
 #
 
-package olepowerpoint;
+package olemsword;
 #use strict;
 require 'util.pl';
 require 'gfilter.pl';
 
 sub mediatype() {
-    return ('application/powerpoint');
+    return ('application/msword');
 }
 
 sub status() {
-    my $powerpoint = Win32::OLE->new('PowerPoint.Application','Quit');
-    return 'yes' if (defined $powerpoint);
+    my $msword = Win32::OLE->new('Word.Application','Quit');
+    return 'yes' if (defined $msword);
     return 'no';
 }
 
@@ -78,14 +78,16 @@ sub filter ($$$$$) {
       = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
-    util::vprint("Processing powerpoint file ...\n");
+    util::vprint("Processing msword file ...\n");
 
 	$cfile =~ s/\//\\/g;
-    $$cont = ReadPPT::ReadPPT($cfile);
+    $$cont = ReadMSWord::ReadMSWord($cfile);
 
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($cont);
+    $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
+      unless $fields->{'title'};
     gfilter::show_filter_debug_info($cont, $weighted_str,
 			   $fields, $headings);
     return undef;
@@ -136,73 +138,117 @@ sub getProperties {
     return $allText;
 }
 
-package ReadPPT;
+package ReadMSWord;
 
-sub ReadPPT {
+sub ReadMSWord {
     my $fileName = shift;
 
     # Copy From Win32::OLE Example Program
-    # use existing instance if PowerPoint is already running
-    my $ppt; 
-    eval {$ppt = Win32::OLE->GetActiveObject('PowerPoint.Application')};
-    die "PowerPoint not installed" if $@;
-    unless (defined $ppt) {
-	$ppt = Win32::OLE->new('PowerPoint.Application', sub {$_[0]->Quit;})
-	    or die "Oops, cannot start PowerPoint";
+    # use existing instance if Word is already running
+    my $word; 
+    eval {$word = Win32::OLE->GetActiveObject('Word.Application')};
+    die "MSWord not installed" if $@;
+    unless (defined $word) {
+	$word = Win32::OLE->new('Word.Application', sub {$_[0]->Quit;})
+	    or die "Oops, cannot start Word";
     }
-    #End of Copy From Win32::OLE Example Program
-    # Must set Visible = true 
-    $ppt->{Visible} = 1;
+    # End of Copy From Win32::OLE Example Program
+    # for debug
+    # $word->{Visible} = 1;
 
     # Load Office 98 Constant
     $office_consts = Win32::OLE::Const->Load("Microsoft Office 8.0 Object Library");
 
-    my $prs = $ppt->{Presentations}->Open($fileName);
-    die "Cannot open File $fileName" unless ( defined $prs );
+    my $doc = $word->{Documents}->open($fileName);
+    die "Cannnot open DOC" unless ( defined $doc ) ;
 
     $allText = '';
-    $allText .= olepowerpoint::getProperties($prs);
-    $allText .= getSlides($prs);
-    $prs->close();
-    undef $prs;
-    undef $ppt;
+    $allText .= olemsword::getProperties($doc);
+    $allText .= getParagraphs($doc);
+    $allText .= getFrames($doc);
+    $allText .= getShapes($doc);
+    $allText .= getHeadersFooters($doc);
+    $doc->close(0);
+    undef $doc;
+    undef $word;
 
     return $allText;
 }
 
-sub getSlides {
-    my $prs = shift;
+sub getParagraphs {
+    my $doc = shift;
     my $allText = '';
 
-    my $enum_a_slide = sub {
-	my $slide = shift;
-
-	my $enum_a_headerfooter = sub {
-	    my $obj = shift;
-	    $allText .= $obj->Header->{Text} if ( $obj->{Header} && $obj->Header->{Text} ) ;
-	    $allText .= $obj->Footer->{Text} if ( $obj->{Footer} && $obj->Footer->{Text} ) ;
-	    return 1;
-	};
-
-	sub enum_a_shape {
-	    my $shape = shift;
-	    # Get text whaen TextFrame in Shapes and Text in TextFrame 
-	    if ($shape->{HasTextFrame} && $shape->TextFrame->TextRange) { # 
-		my $p = $shape->TextFrame->TextRange->{Text};
-		$getShapes::allText .= $p;
-		$getShapes::allText .= "\n";
-	    } elsif ( $shape->{Type} == $office_consts->{msoGroup} ) { 
-		olepowerpoint::enum($shape->GroupItems,\&enum_a_shape);
-	    } 
-	    return 1;
-	};
-
-        olepowerpoint::enum($slide->Shapes, \&enum_a_shape);
-        &$enum_a_headerfooter($slide->HeadersFooters);
-        return 1;
+    my $enum_func = sub {
+	my $obj = shift;
+	my $p = $obj->Range->{Text};
+	chop $p;
+	$allText .= $p;
+	$allText .= "\n";
+	return 1;
     };
 
-    olepowerpoint::enum($prs->Slides, $enum_a_slide);
+    olemsword::enum($doc->Paragraphs,$enum_func);
+    return $allText;
+}
+
+sub getShapes {
+    my $doc = shift;
+    my $allText = '';
+    sub enum_a_shape {
+	my $obj = shift;
+	if ($obj->TextFrame->{HasText}) { # 
+	    my $p = $obj->TextFrame->TextRange->{Text};
+	    chop $p;
+	    $getShapes::allText .= $p;
+	    $getShapes::allText .= "\n";
+	} elsif ( $obj->{Type} == $office_consts->{msoGroup} ) { #msoGroup = 6
+	    olemsword::enum($obj->GroupItems,\&enum_a_shape);
+	} 
+	return 1;
+    };
+
+    olemsword::enum($doc->Shapes, \&enum_a_shape);
+    return $allText;
+}
+
+sub getFrames {
+    my $doc = shift;
+    my $allText = '';
+    my $enum_func = sub {
+	my $obj = shift;
+	my $p = $obj->Range->{Text};
+	chop $p;
+	$allText .= $p;
+	$allText .= "\n";
+	return 1;
+    };
+
+    olemsword::enum($doc->Frames, $enum_func);
+    return $allText;
+}
+
+sub getHeadersFooters {
+    my $doc = shift;
+    my $allText = '';
+
+    my $enum_a_section = sub {
+	my $obj = shift;
+	my $enum_a_headerfooter = sub {
+	    my $obj = shift;
+	    my $p = $obj->Range->{Text};
+	    chop $p;
+	    $allText .= $p;
+	    $allText .= "\n";
+	    return 1;
+	};
+
+	olemsword::enum($obj->Headers, $enum_a_headerfooter);
+	olemsword::enum($obj->Footers, $enum_a_headerfooter);
+	return 1;
+    };
+
+    olemsword::enum($doc->Sections,$enum_a_section);
     return $allText;
 }
 
@@ -211,6 +257,6 @@ sub getSlides {
 #$ARGV[0] = cwd().'\\'.$ARGV[0] unless ($ARGV[0] =~ m/^[a-zA-Z]\:[\\\/]/ || $ARGV[0] =~ m/^\/\//);
 #$ARGV[0] =~ s|/|\\|g;
 
-#print ReadPPT::ReadPPT("$ARGV[0]");
+#print ReadMSWord::ReadMSWord("$ARGV[0]");
 
 1;

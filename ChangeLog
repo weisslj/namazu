@@ -1,5 +1,51 @@
 2000-02-26  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* Makefile.am (SUBDIRS): Add test.
+	(DIST_SUBDIRS): Add test.
+	(check): New rule.
+
+	* configure.in (AC_OUTPUT): Add test/Makefile and test/ja/Makefile.
+
+	* test/Makefile.am: New file.
+
+	* test/ja/Makefile.am: New file.
+
+	* test/ja/acrobat3.pdf: New file.
+	
+	* test/ja/acrobat4.pdf: New file.
+	
+	* test/ja/d20000220.hnf: New file.
+	
+	* test/ja/html.html: New file.
+	
+	* test/ja/mail-multipart.txt: New file.
+	
+	* test/ja/mail.txt: New file.
+	
+	* test/ja/man.1: New file.
+	
+	* test/ja/msg00000.html: New file.
+	
+	* test/ja/pdf.pdf: New file.
+	
+	* test/ja/plain.txt: New file.
+	
+	* test/ja/plain.txt.Z: New file.
+	
+	* test/ja/plain.txt.bz2: New file.
+	
+	* test/ja/plain.txt.gz: New file.
+	
+	* test/ja/rfc0000.txt: New file.
+	
+	* test/ja/tex.tex: New file.
+	
+	* test/ja/word6.doc: New file.
+	
+	* test/ja/word95.doc: New file.
+	
+	* test/ja/word98.doc: New file.
+	
 	* filter/bzip2.pl (filter): Fix fatal bug. s/-dc/-c/
 
 	* filter/msword.pl (filter): Fix wvHtml option. (-o was unnecessary)

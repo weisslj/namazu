@@ -7,6 +7,16 @@
 
 1999-09-04  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/namazu.c: Fix lacks of *short_options bug.
+
+	* Makefile.am (dist-hook): Remove "cp namazu.spec $(distdir)"
+	
+	* src/namazu.c: Change a timing of calling load_conf() for calling
+	the function only once.
+	
+	* src/var.[ch], src/conf.c: Change the scope of ConfLoaded to
+	static global in  conf.c.
+	
 	* configure.in (AM_INIT_AUTOMAKE): Change a version number to 1.9.1.
 	
 	* template/namazu.conf-dist: Modify a bit.

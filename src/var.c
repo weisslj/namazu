@@ -2,7 +2,7 @@
  * 
  * values.c -
  * 
- * $Id: var.c,v 1.6 1999-09-04 01:07:52 satoru Exp $
+ * $Id: var.c,v 1.7 1999-09-04 10:23:45 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -61,7 +61,6 @@ int HtmlOutput = 0;		/* if display as HTML: 1 */
 int HidePageIndex = 0;		/* if hide page index: 1 */
 int ForcePrintForm = 0;		/* if display <FORM> ... </FORM>: 1 */
 int AllList = 0;		/* if dispal all search results: 1 */
-int ConfLoaded = 0;		/* if whould loaded namazu.conf: 1 */
 int NoReplace = 0;		/* if no replace URI: 1 */
 int DecodeURI = 0;		/* if replace URI at plaint text mode: 1 */
 int IsCGI = 0;			/* if CGI mode: 1 */

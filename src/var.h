@@ -13,7 +13,6 @@ extern int HidePageIndex;
 extern int ForcePrintForm;
 extern int AllList;
 extern int FinalHitN;
-extern int ConfLoaded;
 extern int NoReplace;
 extern int DecodeURI;
 extern int IsCGI;

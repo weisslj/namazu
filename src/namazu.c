@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.26 1999-09-04 08:25:11 satoru Exp $
+ * $Id: namazu.c,v 1.27 1999-09-04 10:23:45 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -79,7 +79,7 @@ void set_redirect_stdout_to_file(uchar * fname)
 /*
  * Command line options.
  */
-static const char *short_options = "01acCedfFhHlL:n:o:qrRsSUvw";
+static const char *short_options = "01:2345acCedf:FhHlL:n:o:qrRsSUvw:";
 static struct option long_options[] = {
     {"help",             no_argument,       NULL, '0'},
     {"result",           required_argument, NULL, '1'},
@@ -148,6 +148,9 @@ int parse_options(int argc, char **argv)
 	case '5':  /* --ascending */
 	    SortOrder = ASCENDING;
 	    break;
+	case 'f':
+	    strcpy(NAMAZURC, optarg);
+	    break;
 	case 'n':
 	    HListMax = atoi(optarg);
 	    break;
@@ -197,11 +200,8 @@ int parse_options(int argc, char **argv)
 	    exit(0);
 	    break;
 	case 'C':
-	    show_conf();
-	    break;
-	case 'f':
-	    strcpy(NAMAZURC, optarg);
 	    load_conf(argv[0]);
+	    show_conf();
 	    break;
 	case 'L':
 	    strncpy(Lang, optarg, 2);
@@ -379,11 +379,11 @@ int main(int argc, char **argv)
     uchar query[BUFSIZE] = "", subquery[BUFSIZE] = "";
 
     setprogname(argv[0]);
+    getenv_namazuconf();
+    init_message();
 
     Idx.num = 0;
 
-    getenv_namazuconf();
-    init_message();
     if (argc == 1) {
 	load_conf(argv[0]);
 	IsCGI = 1;	/* if no argument, assume this session as CGI */
@@ -393,9 +393,9 @@ int main(int argc, char **argv)
 	DecodeURI = 1;		 /* decode a URI */
 	HidePageIndex = 1;	 /* do not diplay page index */
 
+	i = parse_options(argc, argv); 
 	load_conf(argv[0]);
 
-	i = parse_options(argc, argv); 
 	if (i == argc) {
 	    show_mini_usage();
 	    exit(1);

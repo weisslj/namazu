@@ -2,7 +2,7 @@
  * 
  * conf.c -
  * 
- * $Id: conf.c,v 1.11 1999-09-04 09:07:22 satoru Exp $
+ * $Id: conf.c,v 1.12 1999-09-04 10:23:45 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -34,7 +34,8 @@
 #include "conf.h"
 #include "codeconv.h"
 
-static uchar *errmsg = NULL;
+static uchar *errmsg  = NULL;
+static int ConfLoaded = 0;
 
 /************************************************************
  *
@@ -199,7 +200,6 @@ int get_conf_args(uchar *line, uchar *directive, uchar *arg1, uchar *arg2)
     /* Skip white spaces in the beginning of this line */
     n = strspn(line, " \t");    /* skip white spaces */
     line += n;
-
     /* Determine whether or not this line is only a blank */
     if (*line == '\0') {
 	strcpy(directive, "BLANK");
@@ -380,22 +380,20 @@ void apply_conf(uchar *directive, uchar *arg1, uchar *arg2)
 /* loading configuration file of Namazu */
 void load_conf(char *av0)
 {
-    static int loaded = 0;
     FILE *fp;
     uchar buf[BUFSIZE];
     int lineno = 0;
-    
-    if (loaded) {
-	/* free Replace and Alias */
-    }
 
+    
     /* I don't know why but GNU-Win32 require this */
     BASE_URI[0] = '\0';
 
     fp = open_conf_file(av0);
     if (fp == NULL)
 	return;
-    ConfLoaded = 1;
+
+    ConfLoaded = 1;  /* for show_config() */
+
     while (fgets(buf, BUFSIZE, fp)) {
 	lineno++;
 	chomp(buf);
@@ -407,12 +405,11 @@ void load_conf(char *av0)
 	}
     }
     fclose(fp);
-    loaded = 1;
 }
 
 void show_conf(void)
 {
-    if (ConfLoaded) {
+    if (ConfLoaded == 1) {
 	printf("Config:  %s\n", NAMAZU_CONF);
     }
 

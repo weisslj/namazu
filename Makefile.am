@@ -32,7 +32,6 @@ install-data-local:
 		$(pkgdatadir)/etc
 
 dist-hook:
-	cp namazu.spec $(distdir)
 	for subdir in $(EXTRA_DIRS); do \
 	    cp -rp $$subdir $(distdir)/$$subdir; \
 	    rm -f $(distdir)/$$subdir/*~; \

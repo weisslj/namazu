@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: excel.pl,v 1.9 2000-04-04 22:22:40 kenzo- Exp $
+# $Id: excel.pl,v 1.10 2000-04-05 18:09:45 kenzo- Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu, 
 #               2000 Namazu Project All rights reserved.
@@ -26,6 +26,7 @@
 
 package excel;
 use strict;
+use File::Copy;
 require 'util.pl';
 require 'gfilter.pl';
 require 'html.pl';
@@ -168,7 +169,7 @@ sub filter_doccat ($$$$$) {
     my $tmpfile2 = $cfile;                         
     if ($cfile =~ /[\x81-\x9f\xe0-\xef][\x40-\x7e\x80-\xfc]|[\x20\xa1-\xdf]/) {
         $tmpfile2 = util::tmpnam('NMZ.excel2');   
-        copy($cfile, $tmpfile2);
+        copy("$cfile", "$tmpfile2");
     }
 
     system("$xlconvpath -o e $tmpfile2 > $tmpfile");
@@ -179,7 +180,7 @@ sub filter_doccat ($$$$$) {
     }
 
     unlink($tmpfile);
-    unlink($tmpfile2);
+    unlink("$tmpfile2");
 
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);

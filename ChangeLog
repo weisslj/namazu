@@ -1,3 +1,23 @@
+2000-04-06  Ken-ichi Hirose  <kenzo-@tama.or.jp>
+
+	* filter/msword.pl : Fix forgot use File::Copy for filter_doccat
+        and quote $cfile and $tmpfile2.
+
+	* filter/excel.pl : Likewise.
+
+	* filter/powerpoint.pl : Likewise.
+
+	* filter/taro.pl : Likewise.
+
+	* filter/wordpro.pl : Likewise.
+
+	* filter/oasys.pl : Likewise.
+
+        * filter/ichitaro456.pl (filter): Fix can not erase $tmpfile2
+        because add dummy driveletter for doscmd.
+
+        * doc/ja/manual.html : Add doccat URI and infomation.
+
 2000-04-05  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* filter/Makefile.am (filter_DATA): Remove wordpro.pl and oasys.pl
@@ -20,8 +40,8 @@
 
 2000-04-05  Ken-ichi Hirose  <kenzo-@tama.or.jp>
 
-	* src/form.c (select_option): Fix selected idxname value 
-        mark selected function.
+	* src/form.c (select_option): Fix could not SELECT of idxname with
+        SELECTED.
 
 	* src/cgi.c (get_query_string): Add An httpd server for Win9x
 	handling.
@@ -5463,4 +5483,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.671 2000-04-05 08:53:19 satoru Exp $
+$Id: ChangeLog,v 1.672 2000-04-05 18:09:44 kenzo- Exp $

@@ -1,3 +1,7 @@
+2000-01-07  Ryuji Abe <raeva@t3.rim.or.jp>
+
+	* nmz/util.c (nmz_strlower): Modified commentations.
+
 2000-01-07  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* nmz/codeconv.c: Include <errno.h>

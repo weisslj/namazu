@@ -1,5 +1,5 @@
 /*
- * $Id: util.c,v 1.38 2000-01-07 09:06:20 satoru Exp $
+ * $Id: util.c,v 1.39 2000-01-07 12:20:11 rug Exp $
  *
  * Imported scan_hex(), scan_oct(), xmalloc(), xrealloc() from 
  * Ruby b19's"util.c" and "gc.c". Thanks to Matsumoto-san for consent!
@@ -397,11 +397,7 @@ void
 nmz_strlower(char *str)
 {
     while (*str) {
-	/* 
-	 * Cannot use tolower(3) because of some system's
-	 * poor implementention. maybe locale problem?
-	 * [namazu-dev 1058]
-	 */
+	/* Using ascii dependent lower same as mknmz.  */
         *str = nmz_tolower(*str);
         str++;
     }

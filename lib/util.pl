@@ -1,5 +1,6 @@
 #
 # -*- Perl -*-
+# $Id: util.pl,v 1.2 1999-05-04 04:42:38 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -80,7 +81,7 @@ sub include($) {
 
     my $fh_include = util::fopen_or_die($filename);
     my $code = join('',<$fh_include>);
-    eval $code;
+    return $code;
 }
 
 sub commas ($) {

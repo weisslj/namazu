@@ -261,6 +261,7 @@ $File{TMP_W}      = "$DBNAME.tmp_w";
 $File{TMP_P}      = "$DBNAME.tmp_p";
 $File{TMP_PI}     = "$DBNAME.tmp_pi";
 
+$File{CHECKPOINT_}     = "$DBNAME.checkpoint";
 
 ## 
 ## Size of files indexed at once on memory. (bytes)

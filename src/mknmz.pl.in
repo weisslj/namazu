@@ -1,6 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
+# $Id: mknmz.pl.in,v 1.4 1999-05-04 04:42:38 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -44,6 +45,8 @@ my $APPENDMODE = 0;
 my @Seed = ();
 my %PhraseHash = ();
 my %KeyIndex = ();
+my %CheckPoint = ("on" => undef, "continue" => undef);
+
 
 STDOUT->autoflush(1);                # autoflush STDOUT
 initialize();
@@ -62,18 +65,15 @@ sub main () {
     my $flist_ptr = 0;
     my $processed_files_size = 0;
 
-    $start_time       = $conf::CheckPoint{'start'} if $conf::CheckPoint{'start'};
-    $total_files_size = $conf::CheckPoint{'size'}  if $conf::CheckPoint{'size'};
+    # restore variables
+    eval util::include($conf::File{'CHECKPOINT_'}) if $CheckPoint{'continue'};
 
     {
 	my $fh_finfo = finfo_fopen_or_die();
 	my $fh_errorsfile = util::fopen_or_die(">>$conf::File{'ERRORSFILE'}");
 	my $fh_flist = util::fopen_or_die($conf::File{'FLIST_'});
 
-	if ($conf::CheckPoint{'continue'}) {
-	    $file_count  = $conf::CheckPoint{'file_count'};
-	    $file_segment= $conf::CheckPoint{'file_segment'};
-	    $flist_ptr   = $conf::CheckPoint{'flist_ptr'};
+	if ($CheckPoint{'continue'}) {
 	    seek($fh_flist, $flist_ptr, 0);
 	}
 
@@ -97,7 +97,7 @@ sub main () {
 			unless $conf::NoPhraseIndexOpt;
 		}
 		$processed_files_size = 0;
-		$checkpoint = 1, last if $conf::CheckPoint{'on'} && defined(<$fh_flist>);
+		$checkpoint = 1, last if $CheckPoint{'on'} && defined(<$fh_flist>);
 	    }
 	}
     }
@@ -118,7 +118,24 @@ sub main () {
 sub re_exec($$$$) {
     my ($flist_ptr, $file_count, $file_segment, $start_time, $total_files_size) = @_;
 
-    @ARGV = ("-S", "$$/$flist_ptr/$file_count/$file_segment/$start_time/$total_files_size", @ARGV) ;
+    # store variables
+    {
+	my $fh_checkpoint = util::fopen_or_die(">$conf::File{'CHECKPOINT_'}");
+
+	print $fh_checkpoint <<EOM;
+	\$DeletedFilesCount = $DeletedFilesCount;
+	\$UpdatedFilesCount = $UpdatedFilesCount;
+	\$APPENDMODE = $APPENDMODE;
+	\$flist_ptr = $flist_ptr;
+	\$file_count = $file_count;
+	\$file_segment = $file_segment;
+	\$start_time = $start_time;
+	\$total_files_size = $total_files_size;
+	\$\$ = $$;
+EOM
+    }
+
+    @ARGV = ("-S", @ARGV) ;
     print "Checkpoint reached: re-exec mknmz...\n" unless $conf::QuietOpt;
     util::dprint(join ' ', ("::::", @ARGV, "\n"));
     exec ($0, @ARGV) ;
@@ -424,8 +441,8 @@ sub do_preparation_processing () {
     change_dbnames($output_dir);
     check_present_index();
 
-    # Checkpoint mode - continuation
-    return 0 if $conf::CheckPoint{'continue'};
+    # if Checkpoint mode, continue
+    return 0 if $CheckPoint{'continue'};
 
     @flist = find_target_files($target_dir) unless @flist;
     ($file_segment, @flist) = do_append_preprocessing(@flist) if -e $conf::File{'REGISTRY'};
@@ -514,7 +531,6 @@ sub do_remain_processing ($$$$) {
 	    update_dateindex();
 	    update_registry($file_count);
 	}
-	remove_backup_files();
     } else {
 	append_finfo() if $APPENDMODE;
 	make_finfo_index();
@@ -525,10 +541,10 @@ sub do_remain_processing ($$$$) {
 	write_nmz_files();
 	make_slog_file();
     }
-
     make_headfoot_pages($file_count, $key_count);
     put_log($total_files_size, $start_time, $file_count, $key_count);
     remove_lockfile();
+    remove_temporary_files();
     unlink $conf::File{'FLIST_'};
 }
 
@@ -541,7 +557,7 @@ sub make_headfoot_pages($$) {
     make_headfoot("$conf::File{'FOOTERFILE'}.en", $file_count, $key_count);
 }
 
-sub remove_backup_files() {
+sub remove_temporary_files() {
     $conf::File{'FINFO_'} =~ m!^(.*/)!;
     unlink glob "${1}NMZ.*$$*";
 }
@@ -587,7 +603,7 @@ sub parse_command_line_options ()
 	$conf::NoDeleteProcessing = 1 if $argv[0] =~ /Y/;
 	$conf::NoUpdateProcessing = 1 if $argv[0] =~ /Z/;
  	$conf::HtaccessExcludeOpt = 1 if $argv[0] =~ /A/;
- 	$conf::CheckPoint{'on'} = 1 if $argv[0] =~ /s/;
+ 	$CheckPoint{'on'} = 1 if $argv[0] =~ /s/;
  	if ($argv[0] =~ /O$/) {
  	    shift @argv;
 	    $output_dir = $argv[0];
@@ -599,7 +615,7 @@ sub parse_command_line_options ()
 	    $LIBDIR =~ s|/*$||;
  	} elsif ($argv[0] =~ /I$/) {
 	    shift @argv;
-	    util::include($argv[0]);
+	    eval util::include($argv[0]);
 	    print "Included: $argv[0]\n" unless $conf::QuietOpt;
 	} elsif ($argv[0] =~ /l$/) { # small letter of 'L'
 	    shift @argv;
@@ -615,23 +631,9 @@ sub parse_command_line_options ()
 	    print "TARGET: $argv[0]\n" unless $conf::QuietOpt;
 	    $conf::TARGET_FILE = $argv[0];
 	} elsif ($argv[0] =~ /S$/) {  # for checkpoint mechanism
-	    shift @argv;
-	    # -S option must be first argument
-	    if ($ARGV[0] eq "-S" && $argv[0] =~ m!(-?\d+)/(\d+)/(\d+)/(\d+)/(\d+)/(\d+)!) {
-		$conf::CheckPoint{'pid'}          = $1;
-		$conf::CheckPoint{'flist_ptr'}    = $2;
-		$conf::CheckPoint{'file_count'}   = $3;
-		$conf::CheckPoint{'file_segment'} = $4;
-		$conf::CheckPoint{'start'}        = $5;
-		$conf::CheckPoint{'size'}         = $6;
-		$conf::CheckPoint{'on'}           = 1;
-		$conf::CheckPoint{'continue'}     = 1;
-		$$ = $conf::CheckPoint{'pid'};
-		shift(@ARGV);  # remove '-S'
-		shift(@ARGV);  # remove 'pid/flist_ptr/file_count/start/size'
-	    } else {
-		die "invalid usage of -S option\n";
-	    }
+	    $CheckPoint{'on'}           = 1;
+	    $CheckPoint{'continue'}     = 1;
+	    shift @ARGV;  # remove -S
 	}
 	shift @argv;
     }

@@ -12,7 +12,7 @@
 
 	* src/rcfile.c (process_rc_emphasistags): New function.
 
-	* conf/namazurc-sample: Messages modified.
+	* conf/namazurc-sample: Comments modified.
 
 	* src/em.h: Removed.
 

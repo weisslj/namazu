@@ -1,4 +1,4 @@
-$Id: TODO-satoru,v 1.19 2000-01-27 09:55:58 satoru Exp $
+$Id: TODO-satoru,v 1.20 2000-01-27 11:47:19 satoru Exp $
 やるべきことの備忘録 by 高林
 
 手っ取り早く片づける仕事
@@ -46,7 +46,7 @@ $Id: TODO-satoru,v 1.19 2000-01-27 09:55:58 satoru Exp $
       Namazu foo = nmz_create(query_foo);
       Namazu bar = nmz_create(query_bar);
       foo->add_index(foo, "/where/foo/index/is");
-      bar->add_index(foo, "/where/bar/index/is");
+      bar->add_index(bar, "/where/bar/index/is");
           :
       foo->destroy();
       bar->destroy();

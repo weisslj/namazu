@@ -1,5 +1,9 @@
 1999-12-31  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* HACKING-ja: Attach [namazu-dev 1077] patch.
+
+	* Makefile.am (snapshot): New rule for making snapshot.
+
 	* man/Makefile.am (update-man): Fix mknmz's pathname.
 	Replace " FSF$$" with "Namazu" in man files.
 

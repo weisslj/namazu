@@ -50,6 +50,9 @@ dist-hook:
 	    rm -rf $(distdir)/$$dir; \
 	done
 
+snapshot:
+	$(MAKE) dist distdir=$(PACKAGE)`date +"-%Y-%m-%d"`
+
 
 # For developing use.
 cxref: src/namazu

@@ -33,7 +33,7 @@ EXTRA_DIST = $(filter_DATA)
 ETAGS_ARGS = $(filter_DATA) --lang=perl
 TAGS_DEPENDENCIES = $(filter_DATA)
 
-# To remove Windows specific files installed by Namazu 2.0 or/and 2.0.1
+# To remove Windows specific files installed by Namazu 2.0 and/or 2.0.1
 install-data-local:
 	rm -f $(filterdir)/ole*.pl
 	rm -f $(filterdir)/ichitaro.pl

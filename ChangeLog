@@ -1,3 +1,10 @@
+2001-11-24  Ryuji Abe  <rug@namazu.org>
+
+	* HACKING-ja: Fixed descriptions about GNU gettext
+	and autotools.
+
+	* HACKING: Likewise.
+
 2001-11-23  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* tests/ja-namazu-cgi-1: Applied namazu-devej-ja#02042 patch.
@@ -7154,4 +7161,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.885 2001-11-23 06:08:08 knok Exp $
+$Id: ChangeLog,v 1.886 2001-11-24 03:23:09 rug Exp $

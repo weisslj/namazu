@@ -25,10 +25,10 @@ CVS から入手した Namazu を make するには、あらかじめ以下の
 パッケージがインストールされている必要があります。
 
 	- GNU m4 1.4
-	- GNU autoconf 2.13
-	- GNU automake 1.4
+	- GNU autoconf 2.13 (もしくはそれ以上)
+	- GNU automake 1.4 (もしくはそれ以上)
 	- GNU libtool 1.3 (もしくはそれ以上)
-	- GNU gettext 0.10.35
+	- GNU gettext 0.10.35 (もしくはそれ以上)
 
 いずれも GNU のミラー(e.g. ftp://ftp.ring.gr.jp/pub/GNU) 
 から手に入れることができます。
@@ -49,7 +49,7 @@ CVS からソースを取得したら、まずautogen.sh スクリプトを実行
 
 基本的にはこれの繰り返しです。:)
 
-なお、GNU gettext 0.10.36 以降では Big5 や Shift_JIS な文字列を
+なお、GNU gettext 0.10.37 以降では Big5 や Shift_JIS な文字列を
 '\' でエスケープする必要はなくなりましたが、'\' でエスケープ
 された文字列を含むカタログを処理するためには、環境変数
 OLD_PO_FILE_INPUT および OLD_PO_FILE_OUTPUT を設定する必要が

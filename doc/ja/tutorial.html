@@ -614,8 +614,9 @@ href="manual.html#mknmz-option">mknmz --help</a>とすると得ら
 
       読み込んだ設定ファイル: /home/foobar/.mknmzrc
       システム: linux
-      Namazu: 2.0
+      Namazu: 2.0.13
       Perl: 5.00503
+      File-MMagic: 1.20
       NKF: module_nkf
       KAKASI: module_kakasi -ieuc -oeuc -w
       ChaSen: module_chasen -j -F '%m '
@@ -626,21 +627,40 @@ href="manual.html#mknmz-option">mknmz --help</a>とすると得ら
       LIBDIR: /usr/local/share/namazu/pl
       FILTERDIR: /usr/local/share/namazu/filter
       TEMPLATEDIR: ../template
-      対応メディアタイプ: 
-        application/msword
-        application/pdf
-        application/x-bzip2
-        application/x-compress
-        application/x-gzip
-        application/x-tex
-        message/news
-        message/rfc822
-        text/hnf
-        text/html
-        text/html; x-type=mhonarc
+      対応メディアタイプ:   (27) 
+      未対応メディアタイプ: (5) 必要ツールが $path にないものには (-) を表示 
+        application/excel: excel.pl
+        application/ichitaro5: taro56.pl
+        application/ichitaro6: taro56.pl
+        application/macbinary: macbinary.pl
+        application/msword: msword.pl
+      - application/pdf: pdf.pl
+      - application/postscript: postscript.pl
+        application/powerpoint: powerpoint.pl
+        application/rtf: rtf.pl
+        application/vnd.sun.xml.calc: ooo.pl
+        application/vnd.sun.xml.draw: ooo.pl
+        application/vnd.sun.xml.impress: ooo.pl
+        application/vnd.sun.xml.writer: ooo.pl
+        application/x-apache-cache: apachecache.pl
+        application/x-bzip2: bzip2.pl
+        application/x-compress: compress.pl
+      - application/x-deb: deb.pl
+      - application/x-dvi: dvi.pl
+        application/x-gzip: gzip.pl
+        application/x-js-taro: taro7_10.pl
+        application/x-rpm: rpm.pl
+      - application/x-tex: tex.pl
+        audio/mpeg: mp3.pl
+        message/news: mailnews.pl
+        message/rfc822: mailnews.pl
+        text/hnf: hnf.pl
+        text/html: html.pl
+        text/html; x-type=mhonarc: mhonarc.pl
         text/plain
-        text/plain; x-type=rfc
-        text/x-roff
+        text/plain; x-type=rfc: rfc.pl
+        text/x-hdml: hdml.pl
+        text/x-roff: man.pl
 </pre>
 
 
@@ -902,10 +922,10 @@ perl -MNKF -e ''
 <a href="http://www.namazu.org/">Namazu Homepage</a>
 </p>
 <div class="copyright">
-Copyright (C) 2000-2003 Namazu Project. All rights reserved.
+Copyright (C) 2000-2004 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: tutorial.html,v 1.52 2004-02-01 02:43:07 usu Exp $
+$Id: tutorial.html,v 1.53 2004-03-20 03:10:07 usu Exp $
 </div>
 <address>
 developers@namazu.org

@@ -1,9 +1,9 @@
 #
 # -*- Perl -*-
-# $Id: mp3.pl,v 1.2 2003-08-27 15:37:30 usu Exp $
+# $Id: mp3.pl,v 1.3 2004-03-20 03:10:08 usu Exp $
 # Copyright (C) 2002 Luc@2113.ch ,
 #               2002 2113.ch ,  
-#               2003 Namazu Project All rights reserved ,
+#               2003-2004 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -68,13 +68,6 @@ sub filter($$$$$) {
     util::vprint("Processing mp3 file ... (using MP3::Info module)\n");
 
     my $mp3;
-    my $songname   = "";
-    my $artist     = "";
-    my $album      = "";
-    my $year       = "";
-    my $comment    = "";
-    my $genre      = "";
-    my $track      = "";
 
     my $tmpfile  = util::tmpnam('NMZ.mp3');
     {
@@ -86,27 +79,13 @@ sub filter($$$$$) {
     eval 'use MP3::Info;';
     my $tagref = get_mp3tag($mp3);
 
-    ( 
-          
-        $songname, 
-        $artist, 
-        $album, 
-        $year, 
-        $comment, 
-        $genre, 
-        $track 
-        
-    ) = ( 
-        
-        $tagref->{TITLE}, 
-        $tagref->{ARTIST}, 
-        $tagref->{ALBUM}, 
-        $tagref->{YEAR}, 
-        $tagref->{COMMENT}, 
-        $tagref->{GENRE}, 
-        $tagref->{TRACKNUM}
-          
-    );
+    my $songname = defined $tagref->{TITLE} ? $tagref->{TITLE} : ''; 
+    my $artist = defined $tagref->{ARTIST} ? $tagref->{ARTIST} : ''; 
+    my $album = defined $tagref->{ALBUM} ? $tagref->{ALBUM} : ''; 
+    my $year = defined $tagref->{YEAR} ? $tagref->{YEAR} : ''; 
+    my $comment = defined $tagref->{COMMENT} ? $tagref->{COMMENT} : ''; 
+    my $genre = defined $tagref->{GENRE} ? $tagref->{GENRE} : ''; 
+    my $track = defined $tagref->{TRACKNUM} ? $tagref->{TRACKNUM} : ''; 
         
     $songname =~ s/\0//g ;
     $artist =~ s/\0//g ;

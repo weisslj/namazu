@@ -2,7 +2,7 @@
  * 
  * re.c -
  * 
- * $Id: re.c,v 1.22 2000-01-09 08:08:09 satoru Exp $
+ * $Id: re.c,v 1.23 2000-01-09 08:39:22 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -98,7 +98,7 @@ regex_grep(const char *orig_expr, FILE *fp, const char *field, int field_mode)
             continue;
         }
         if (uri_mode) {  /* consider the REPLACE directive in namazurc */ 
-            replace_uri(buf);
+            nmz_replace_uri(buf);
         }
         nmz_strlower(buf);
         if (-1 != re_search(rp, buf, strlen(buf), 0, strlen(buf), 0)) { 

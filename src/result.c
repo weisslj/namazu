@@ -1,5 +1,5 @@
 /*
- * $Id: result.c,v 1.38 2000-01-07 09:06:23 satoru Exp $
+ * $Id: result.c,v 1.39 2000-01-09 08:39:25 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -75,7 +75,7 @@ replace_field(struct nmz_data d, int counter,
 	get_field_data(d.idxid, d.docid, field, buf);
 	if (strcasecmp(field, "uri") == 0) {
 	    if (is_urireplace()) {
-		replace_uri(buf);
+		nmz_replace_uri(buf);
 	    }
 	    if (is_uridecode()) {
 		nmz_decode_uri(buf);

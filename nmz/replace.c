@@ -2,7 +2,7 @@
  * 
  * replace.c - 
  *
- * $Id: replace.c,v 1.8 2000-01-09 08:08:09 satoru Exp $
+ * $Id: replace.c,v 1.9 2000-01-09 08:39:22 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
@@ -67,7 +67,7 @@ nmz_free_replaces(void)
  * Replace a URI
  */
 int 
-replace_uri(char *uri)
+nmz_replace_uri(char *uri)
 {
     int npat, nrep, i, j;
     char tmp[BUFSIZE];
@@ -166,7 +166,7 @@ replace_uri(char *uri)
 }
 
 enum nmz_stat 
-add_replace(const char *pat, const char *rep)
+nmz_add_replace(const char *pat, const char *rep)
 {
     struct nmz_replace *newp;
     
@@ -209,7 +209,7 @@ add_replace(const char *pat, const char *rep)
 }
 
 void 
-show_replaces(void)
+nmz_show_replaces(void)
 {
     struct nmz_replace *list = replaces;
 

@@ -11,8 +11,8 @@ struct nmz_replace {
 };
 
 extern void nmz_free_replaces ( void );
-extern int replace_uri ( char *uri );
-extern enum nmz_stat add_replace ( const char *pat, const char *rep );
-extern void show_replaces ( void );
+extern int nmz_replace_uri ( char *uri );
+extern enum nmz_stat nmz_add_replace ( const char *pat, const char *rep );
+extern void nmz_show_replaces ( void );
 
 #endif /* _REPLACE_H */

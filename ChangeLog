@@ -1,5 +1,15 @@
 2000-01-09  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* nmz/alias.[ch]: Changed function names.
+	s/add_alias/nmz_add_alias/g
+	s/get_aliases/nmz_get_aliases/g
+	s/show_aliases/nmz_show_aliases/g
+
+	* nmz/replace.[ch]: Changed function names.
+	s/replace_uri/nmz_replace_uri/g
+	s/add_replace/nmz_add_replace/g
+	s/show_replaces/nmz_show_replaces/g
+
 	* nmz/idxname.[ch]: Changed function names.
 	s/add_index/nmz_add_index/g
 	s/get_idxnum/nmz_get_idxnum/g

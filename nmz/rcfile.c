@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.16 2000-01-09 08:08:09 satoru Exp $
+ * $Id: rcfile.c,v 1.17 2000-01-09 08:39:22 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -376,10 +376,10 @@ apply_rc(const char *directive, int lineno,
     } else if (strcasecmp(directive, "BASE") == 0) {
 	strcpy(BASE_URI, arg1);
     } else if (strcasecmp(directive, "REPLACE") == 0) {
-	if (add_replace(arg1, arg2) != SUCCESS)
+	if (nmz_add_replace(arg1, arg2) != SUCCESS)
 	    return FAILURE;
     } else if (strcasecmp(directive, "ALIAS") == 0) {
-	if (add_alias(arg1, arg2) != SUCCESS)
+	if (nmz_add_alias(arg1, arg2) != SUCCESS)
 	    return FAILURE;
     } else if (strcasecmp(directive, "LOGGING") == 0) {
 	if (strcasecmp(arg1, "ON") == 0) {
@@ -458,8 +458,8 @@ Scoring: %s\n\
 "), DEFAULT_INDEX, BASE_URI, nmz_is_loggingmode() ? "on" : "off",
            get_lang(), TfIdf ? "tfidf" : "simple");
 
-    show_aliases();
-    show_replaces();
+    nmz_show_aliases();
+    nmz_show_replaces();
 
     /*    exit(0);*/
     return;

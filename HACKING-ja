@@ -10,8 +10,9 @@ CVS から入手した Namazu を make するには、あらかじめ以下の
 いずれも GNU のミラー(e.g. ftp://ftp.ring.gr.jp/pub/GNU) 
 から手に入れることができます。
 
-また、automake や libtool の パッチを PATCHES.AM および PATCHES.LT
-に置きましたので、必要に応じて当ててください。
+また、automake, gettext, libtool の パッチを PATCHES.AM, 
+PATCHES.GT, PATCHES.LT に置きましたので、必要に応じて
+当ててください。
 
 CVS からソースを取得したら、まずautogen.sh スクリプトを実行して
 ください。

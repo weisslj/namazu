@@ -2,7 +2,7 @@
  * 
  * replace.c - 
  *
- * $Id: replace.c,v 1.7 2000-01-08 09:27:19 satoru Exp $
+ * $Id: replace.c,v 1.8 2000-01-09 08:08:09 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
@@ -46,7 +46,7 @@ static struct nmz_replace *replaces = NULL;
  */
 
 void 
-free_replaces(void)
+nmz_free_replaces(void)
 {
     struct nmz_replace *list, *next;
     list = replaces;

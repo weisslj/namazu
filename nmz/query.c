@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: query.c,v 1.3 2000-01-07 09:33:56 satoru Exp $
+ * $Id: query.c,v 1.4 2000-01-09 08:08:09 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -147,7 +147,7 @@ make_query(const char *querystring)
 	       query.str[i] != '\0')
 	    i++;
     }
-    if (is_debugmode()) {
+    if (nmz_is_debugmode()) {
 	nmz_debug_printf("query.tabN: %d\n", tokennum);
     }
 

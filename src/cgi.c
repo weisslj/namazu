@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.45 2000-01-06 10:02:01 satoru Exp $
+ * $Id: cgi.c,v 1.46 2000-01-09 08:08:13 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -380,20 +380,20 @@ static void
 process_cgi_var_sort(char *value, struct cgiarg *ca)
 {
     if (nmz_strprefixcasecmp(value, "score") == 0) {
-	set_sortmethod(SORT_BY_SCORE);
-	set_sortorder(DESCENDING);
+	nmz_set_sortmethod(SORT_BY_SCORE);
+	nmz_set_sortorder(DESCENDING);
     } if (nmz_strprefixcasecmp(value, "later") == 0) {  /* backward compat. */
-	set_sortmethod(SORT_BY_DATE);
-	set_sortorder(DESCENDING);
+	nmz_set_sortmethod(SORT_BY_DATE);
+	nmz_set_sortorder(DESCENDING);
     } if (nmz_strprefixcasecmp(value, "earlier") == 0) { /* backward compat. */
-	set_sortmethod(SORT_BY_DATE);
-	set_sortorder(ASCENDING);
+	nmz_set_sortmethod(SORT_BY_DATE);
+	nmz_set_sortorder(ASCENDING);
     } else if (nmz_strprefixcasecmp(value, "date:late") == 0) {
-	set_sortmethod(SORT_BY_DATE);
-	set_sortorder(DESCENDING);
+	nmz_set_sortmethod(SORT_BY_DATE);
+	nmz_set_sortorder(DESCENDING);
     } else if (nmz_strprefixcasecmp(value, "date:early") == 0) {
-	set_sortmethod(SORT_BY_DATE);
-	set_sortorder(ASCENDING);
+	nmz_set_sortmethod(SORT_BY_DATE);
+	nmz_set_sortorder(ASCENDING);
     } else if (nmz_strprefixcasecmp(value, "field:") == 0) {
 	int n;
 	char field[BUFSIZE];
@@ -405,12 +405,12 @@ process_cgi_var_sort(char *value, struct cgiarg *ca)
 	set_sortfield(field);
 
 	value += n;
-	set_sortmethod(SORT_BY_FIELD);
+	nmz_set_sortmethod(SORT_BY_FIELD);
 	if (nmz_strprefixcasecmp(value, ":ascending") == 0) {
-	    set_sortorder(ASCENDING);
+	    nmz_set_sortorder(ASCENDING);
 	    value += strlen(":ascending");
 	} else if (nmz_strprefixcasecmp(value, ":descending") == 0) {
-	    set_sortorder(DESCENDING);
+	    nmz_set_sortorder(DESCENDING);
 	    value += strlen(":descending");
 	}
     } 

@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.15 2000-01-08 09:27:19 satoru Exp $
+ * $Id: rcfile.c,v 1.16 2000-01-09 08:08:09 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -297,7 +297,7 @@ parse_rcfile(const char *line, int lineno)
 	return FAILURE; /* error */
     }
 
-    if (is_debugmode() && 
+    if (nmz_is_debugmode() && 
 	(strcasecmp(directive, "COMMENT") != 0) &&
 	(strcasecmp(directive, "BLANK") != 0))
     {
@@ -383,9 +383,9 @@ apply_rc(const char *directive, int lineno,
 	    return FAILURE;
     } else if (strcasecmp(directive, "LOGGING") == 0) {
 	if (strcasecmp(arg1, "ON") == 0) {
-	    set_loggingmode(1);
+	    nmz_set_loggingmode(1);
 	} else if (strcasecmp(arg1, "OFF") == 0) {
-	    set_loggingmode(0);
+	    nmz_set_loggingmode(0);
 	}
     } else if (strcasecmp(directive, "SCORING") == 0) {
 	if (strcasecmp(arg1, "TFIDF") == 0) {
@@ -455,7 +455,7 @@ BASE:    %s\n\
 Logging: %s\n\
 Lang:    %s\n\
 Scoring: %s\n\
-"), DEFAULT_INDEX, BASE_URI, is_loggingmode() ? "on" : "off",
+"), DEFAULT_INDEX, BASE_URI, nmz_is_loggingmode() ? "on" : "off",
            get_lang(), TfIdf ? "tfidf" : "simple");
 
     show_aliases();

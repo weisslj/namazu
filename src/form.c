@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.38 2000-01-08 09:27:23 satoru Exp $
+ * $Id: form.c,v 1.39 2000-01-09 08:08:13 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -361,7 +361,7 @@ read_headfoot(const char *fname)
  */
 
 /* 
- * Pisplay header or footer file. very ad hoc.
+ * Display header or footer file. FIXME: very ad hoc.
  */
 void 
 print_headfoot(const char * fname, const char * query, const char *subquery)

@@ -2,7 +2,7 @@
  * 
  * alias.c - 
  *
- * $Id: alias.c,v 1.8 2000-01-08 09:27:18 satoru Exp $
+ * $Id: alias.c,v 1.9 2000-01-09 08:08:08 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
@@ -73,7 +73,7 @@ add_alias(const char *alias, const char *real)
 }
 
 void 
-free_aliases(void)
+nmz_free_aliases(void)
 {
     struct nmz_alias *list, *next;
     list = aliases;

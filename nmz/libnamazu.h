@@ -2,7 +2,7 @@
  * 
  * libnamazu.h - Namazu library api
  *
- * $Id: libnamazu.h,v 1.33 2000-01-08 09:27:19 satoru Exp $
+ * $Id: libnamazu.h,v 1.34 2000-01-09 08:08:09 satoru Exp $
  * 
  */
 
@@ -17,7 +17,7 @@
  */
 #define nmz_set_dyingmsg(msg) \
     { \
-        if (is_debugmode()) { \
+        if (nmz_is_debugmode()) { \
             nmz_set_dyingmsg_sub("%s:%d: %s", __FILE__, __LINE__, msg);\
         } else { \
             nmz_set_dyingmsg_sub("%s", msg);\
@@ -199,17 +199,15 @@ struct nmz_hitnumlist {
     struct nmz_hitnumlist *next;
 };
 
-extern void free_aliases ( void );
-extern void free_replaces ( void );
-extern void codeconv_query ( char *query );
-extern void set_sortmethod ( enum nmz_sort_method method );
-extern enum nmz_sort_method get_sortmethod ( void );
-extern void set_sortorder ( enum nmz_sort_order order );
-extern enum nmz_sort_order get_sortorder ( void );
-extern void set_debugmode ( int mode );
-extern int is_debugmode ( void );
-extern void set_loggingmode ( int mode );
-extern int is_loggingmode ( void );
+extern void nmz_free_aliases ( void );
+extern void nmz_free_replaces ( void );
+extern void nmz_codeconv_query ( char *query );
+extern void nmz_set_sortmethod ( enum nmz_sort_method method );
+extern void nmz_set_sortorder ( enum nmz_sort_order order );
+extern void nmz_set_debugmode ( int mode );
+extern int  nmz_is_debugmode ( void );
+extern void nmz_set_loggingmode ( int mode );
+extern int  nmz_is_loggingmode ( void );
 extern char *nmz_get_dyingmsg ( void );
 extern char *nmz_set_dyingmsg_sub(const char *fmt, ...);
 extern char *nmz_msg(const char *fmt, ...);

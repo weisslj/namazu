@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.80 2000-01-08 09:27:23 satoru Exp $
+ * $Id: namazu.c,v 1.81 2000-01-09 08:08:13 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -178,27 +178,27 @@ parse_options(int argc, char **argv)
 	    set_template(optarg);
 	    break;
 	case '2':
-	    set_sortmethod(SORT_BY_DATE);
-	    set_sortorder(DESCENDING);
+	    nmz_set_sortmethod(SORT_BY_DATE);
+	    nmz_set_sortorder(DESCENDING);
 	    break;	  
 	case '3':	  
-	    set_sortmethod(SORT_BY_DATE);
-	    set_sortorder(ASCENDING);
+	    nmz_set_sortmethod(SORT_BY_DATE);
+	    nmz_set_sortorder(ASCENDING);
 	    break;
 	case '4':  /* --sort */
 	{
 	    if (strcasecmp(optarg, "score") == 0) {
-		set_sortmethod(SORT_BY_SCORE);
+		nmz_set_sortmethod(SORT_BY_SCORE);
 	    } else if (strcasecmp(optarg, "date") == 0) {
-		set_sortmethod(SORT_BY_DATE);
+		nmz_set_sortmethod(SORT_BY_DATE);
 	    } else if (nmz_strprefixcasecmp(optarg, "field:") == 0) {
-		set_sortmethod(SORT_BY_FIELD);
+		nmz_set_sortmethod(SORT_BY_FIELD);
 		set_sortfield(optarg + strlen("field:"));
 	    }
 	}
 	break;
 	case '5':  /* --ascending */
-	    set_sortorder(ASCENDING);
+	    nmz_set_sortorder(ASCENDING);
 	    break;
 	case 'f':
 	    set_namazurc(optarg);
@@ -216,7 +216,7 @@ parse_options(int argc, char **argv)
 	    set_listwhence(tmp);
 	    break;
 	case 'd':
-	    set_debugmode(1);
+	    nmz_set_debugmode(1);
 	    break;
 	case 's':
 	    set_template("short");
@@ -287,8 +287,8 @@ namazu_core(char * query, char *subquery, const char *argv0)
     /* Make full-pathname of NMZ.{head,foot,msg,body,slog}.?? */
     make_fullpathname_msg();
 
-    codeconv_query(query);
-    codeconv_query(subquery);
+    nmz_codeconv_query(query);
+    nmz_codeconv_query(subquery);
     strcpy(query_with_subquery, query);
     strcat(query_with_subquery, " ");
     strcat(query_with_subquery, subquery);
@@ -297,8 +297,8 @@ namazu_core(char * query, char *subquery, const char *argv0)
     if (*query == '\0') {
 	print_default_page();
 	free_idxnames();
-	free_aliases();
-	free_replaces();
+	nmz_free_aliases();
+	nmz_free_replaces();
 	return FAILURE;
     }
 
@@ -320,8 +320,8 @@ namazu_core(char * query, char *subquery, const char *argv0)
 
     free_hlist(hlist);
     free_idxnames();
-    free_aliases();
-    free_replaces();
+    nmz_free_aliases();
+    nmz_free_replaces();
 
     return SUCCESS;
 }

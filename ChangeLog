@@ -1,5 +1,15 @@
 2000-01-09  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* nmz/libnamazu.[ch]: Changed function names. 
+	s/free_aliases/nmz_free_aliases/g
+	s/free_replaces/nmz_free_replaces/g
+	s/codeconv_query/nmz_codeconv_query/g
+	s/set_sortmethod/nmz_set_sortmethod/g
+	s/set_sortorder/nmz_set_sortorder/g
+	s/set_debugmode/nmz_set_debugmode/g
+	s/is_debugmode/nmz_is_debugmode/g
+	s/set_loggingmode/nmz_set_loggingmode/g
+	
 	* src/usage.c (show_mini_usage): Use fputs() instead of printf()
 	to avoid mojibake in LANG=ja_JP.ISO-2022-JP.
 

@@ -2,7 +2,7 @@
  * 
  * libnamazu.c - Namazu library api
  *
- * $Id: libnamazu.c,v 1.21 2000-01-08 09:27:19 satoru Exp $
+ * $Id: libnamazu.c,v 1.22 2000-01-09 08:08:08 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
@@ -72,7 +72,7 @@ static char dyingmsg[BUFSIZE] = "";
  */
 
 void 
-codeconv_query(char *query)
+nmz_codeconv_query(char *query)
 {
     if (is_lang_ja()) {
         if (conv_ja_any_to_eucjp(query)) {
@@ -82,7 +82,7 @@ codeconv_query(char *query)
 }
 
 void 
-set_sortmethod(enum nmz_sort_method method)
+nmz_set_sortmethod(enum nmz_sort_method method)
 {
     sortmethod = method;
 }
@@ -94,7 +94,7 @@ get_sortmethod(void)
 }
 
 void 
-set_sortorder(enum nmz_sort_order order)
+nmz_set_sortorder(enum nmz_sort_order order)
 {
     sortorder = order;
 }
@@ -106,25 +106,25 @@ get_sortorder(void)
 }
 
 void 
-set_debugmode(int mode)
+nmz_set_debugmode(int mode)
 {
     debugmode = mode;
 }
 
 int 
-is_debugmode(void)
+nmz_is_debugmode(void)
 {
     return debugmode;
 }
 
 void 
-set_loggingmode(int mode)
+nmz_set_loggingmode(int mode)
 {
     loggingmode = mode;
 }
 
 int 
-is_loggingmode(void)
+nmz_is_loggingmode(void)
 {
     return loggingmode;
 }

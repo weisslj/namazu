@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.51 2000-01-08 09:27:20 satoru Exp $
+ * $Id: search.c,v 1.52 2000-01-09 08:08:09 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -137,7 +137,7 @@ lrget(int *l, int *r)
     *l = 0;
     *r = get_file_size(NMZ.ii) / sizeof(int) - 1;
 
-    if (is_debugmode()) {
+    if (nmz_is_debugmode()) {
 	show_status(*l, *r);
     }
 }
@@ -164,7 +164,7 @@ prefix_match(const char *key, int v)
 	    break;
 	}
     }
-    if (is_debugmode()) {
+    if (nmz_is_debugmode()) {
 	v = i;
     }
 
@@ -793,7 +793,7 @@ nmz_search_sub(NmzResult hlist, const char *query, int n)
     set_idx_totalhitnum(cur_idxnum, hlist.num);
     close_index_files();
 
-    if (is_loggingmode()) {
+    if (nmz_is_loggingmode()) {
         do_logging(query, hlist.num);
     }
     return hlist;
@@ -848,7 +848,7 @@ normalize_idxnames(void)
 
     uniq_idxnames();
 
-    if (is_debugmode()) {
+    if (nmz_is_debugmode()) {
 	int i;
         for (i = 0; i < get_idxnum(); i++) {
             nmz_debug_printf("Index name [%d]: %s\n", i, get_idxname(i));

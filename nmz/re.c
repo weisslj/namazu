@@ -2,7 +2,7 @@
  * 
  * re.c -
  * 
- * $Id: re.c,v 1.21 2000-01-06 10:01:52 satoru Exp $
+ * $Id: re.c,v 1.22 2000-01-09 08:08:09 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -141,7 +141,7 @@ regex_grep(const char *orig_expr, FILE *fp, const char *field, int field_mode)
                 val.num = -1;
                 break;
             }
-	    if (is_debugmode()) {
+	    if (nmz_is_debugmode()) {
                 char buf2[BUFSIZE];
 
                 if (field_mode) {

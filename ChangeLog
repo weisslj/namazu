@@ -2,7 +2,10 @@
 
 	* Makefile.am (cxref): New command for using cxref.
 	<http://www.gedanken.demon.co.uk/cxref/>
-	
+	(global): New command for using global.
+	<http://www.tamacom.com/global/>
+	(cxref): A tiny fix.
+
 	* nmz/search.h: Add #include "namazu.h" for NmzResult type.
 
 	* nmz/parser.h: Add #include "namazu.h" for NmzResult type.

@@ -1,5 +1,8 @@
 1999-12-18  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/mknmz.pl.in (parse_options): Do not call read_config() when
+	--config option is specified.
+
 	* conf/namazurc: Rewrited.
 
 	* src/mknmz.pl.in (require_modules): Require Text::ChaSen instead

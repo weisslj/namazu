@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: macbinary.pl,v 1.2 2004-01-09 23:01:43 usu Exp $
+# $Id: macbinary.pl,v 1.3 2004-01-09 23:43:29 usu Exp $
 # Copyright (C) 2003 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -94,6 +94,9 @@ sub filter ($$$$$) {
         $mmtype = 'application/msword';
     }elsif (($filetype_code =~ /(SLD8|PPSS)/) && ($creator_code =~ /^PPT/)){ 
         $mmtype = 'application/powerpoint';
+    }elsif (($filetype_code =~ /(SLD3)/) && ($creator_code =~ /^PPT/)){ 
+        # ppthtml doesn't sopport this file.
+        $mmtype = 'application/powerpoint4';
     }elsif ($filetype_code =~ /^PDF/){
         $mmtype = 'application/pdf';
     }elsif ($filetype_code =~ /^RTF/){

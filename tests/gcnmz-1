@@ -15,14 +15,14 @@ if test -d idx6; then
 fi
 
 # Copy idx4 for testing gcnmz.
-cp -r idx4 idx6
+cp -rp idx4 idx6
 
 
 # Copy docments.
 if test -d tmp-data; then
     rm -rf tmp-data
 fi
-cp -r data tmp-data
+cp -rp data tmp-data
 
 # Remove some documents.
 cd ../tests/tmp-data

@@ -16,7 +16,7 @@ fi
 if test -d tmp-data; then
     rm -rf tmp-data
 fi
-cp -r data tmp-data
+cp -rp data tmp-data
 
 # Simple indexing.
 cd ../scripts 

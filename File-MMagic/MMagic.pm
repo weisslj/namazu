@@ -1,6 +1,6 @@
 # File::MMagic
 #
-# $Id: MMagic.pm,v 1.22 2000-08-09 08:18:28 knok Exp $
+# $Id: MMagic.pm,v 1.23 2000-09-12 08:08:47 knok Exp $
 #
 # This program is originated from file.kulp that is a production of The
 # Unix Reconstruction Projct.
@@ -274,7 +274,7 @@ BEGIN {
 	    t => "\t",
 	    f => "\f");
 
-$VERSION = "1.07";
+$VERSION = "1.08";
 undef $dataLoc;
 }
 
@@ -1488,6 +1488,9 @@ __DATA__
 #0	string		CP		color pointer
 #0	string		BA		bitmap array
 
+# PNG images
+# Suggested by Jamie LeTual.
+0	string		\211PNG		image/png
 
 #------------------------------------------------------------------------------
 # lisp:  file(1) magic for lisp programs

@@ -1,3 +1,7 @@
+2000-09-12  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* File-MMagic: New upstream verison.
+
 2000-09-06  Ryuji Abe <rug@namazu.org>
 
 	* acinclude.m4 (NMZ_FUNC_MEMCMP): Always set NMZ_LIBOBJS suffixes .lo,
@@ -5941,4 +5945,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.722 2000-09-06 09:02:50 rug Exp $
+$Id: ChangeLog,v 1.723 2000-09-12 08:08:46 knok Exp $

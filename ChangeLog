@@ -1,3 +1,7 @@
+2003-07-07  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * filter/*: It is unnecessary. islang() is deleted.
+
 2003-06-25  Yoshinori TAKESAKO  <takesako@namazu.org>
 
 	* nmz/field.c (nmz_free_field_cache): Fixed the bug by 
@@ -7983,4 +7987,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1031 2003-06-25 07:58:16 takesako Exp $
+$Id: ChangeLog,v 1.1032 2003-07-07 13:50:58 opengl2772 Exp $

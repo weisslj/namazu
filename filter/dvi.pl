@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: dvi.pl,v 1.3 2002-09-23 08:52:32 baba Exp $
+# $Id: dvi.pl,v 1.4 2003-07-07 13:50:59 opengl2772 Exp $
 # Copyright (C) 2000 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -94,9 +94,7 @@ sub filter ($$$$$) {
     unlink("$tmpfile.dvi");
 
     # post_codeconv() does not work... (?_?)
-    if (util::islang("ja")) {
-	codeconv::toeuc($cont);
-    }
+    codeconv::toeuc($cont);
 
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);

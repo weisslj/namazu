@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.16 1999-12-04 03:36:49 satoru Exp $
+ * $Id: search.c,v 1.17 1999-12-04 04:37:31 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -87,47 +87,47 @@ static HLIST search_sub(HLIST, char*, char*, int);
 static void make_fullpathname_index(int);
 static int check_accessfile();
 static void parse_access(char *, char *, char *);
-static PHRASERES *push_phraseres(PHRASERES *, int, enum nmz_stat, char *);
+static struct nmz_hitnum *push_hitnum(struct nmz_hitnum *, int, enum nmz_stat, char *);
 
 static int CurrentIndexNumber = -1;
 
-/* PHRASERES handling subroutines */
-static PHRASERES *push_phraseres(PHRASERES *pr, 
+/* struct nmz_hitnum handling subroutines */
+static struct nmz_hitnum *push_hitnum(struct nmz_hitnum *hn, 
 				 int hitnum, 
 				 enum nmz_stat stat,
 				 char *str)
 {
-    PHRASERES *prptr = pr, *prevprptr = pr;
-    while (prptr != NULL) {
-	prevprptr = prptr;
-	prptr = prptr->next;
+    struct nmz_hitnum *hnptr = hn, *prevhnptr = hn;
+    while (hnptr != NULL) {
+	prevhnptr = hnptr;
+	hnptr = hnptr->next;
     }
-    if ((prptr = (PHRASERES *)malloc(sizeof(PHRASERES))) == NULL) {
-	set_dyingmsg("push_phraseres: malloc failed on prptr");
+    if ((hnptr = malloc(sizeof(struct nmz_hitnum))) == NULL) {
+	set_dyingmsg("push_hitnum: malloc failed on hnptr");
 	return NULL;
     }
-    if (prevprptr != NULL)
-	prevprptr->next = prptr;
-    prptr->hitnum = hitnum;
-    prptr->stat = stat;
-    prptr->next = NULL;
-    if ((prptr->word = (char *)malloc(strlen(str) +1)) == NULL) {
-	set_dyingmsg("push_phraseres: malloc failed on str");
+    if (prevhnptr != NULL)
+	prevhnptr->next = hnptr;
+    hnptr->hitnum = hitnum;
+    hnptr->stat = stat;
+    hnptr->next = NULL;
+    if ((hnptr->word = (char *)malloc(strlen(str) +1)) == NULL) {
+	set_dyingmsg("push_hitnum: malloc failed on str");
 	return NULL;
     }
-    strcpy(prptr->word, str);
-    if (pr == NULL)
-	return prptr;
-    return pr;
+    strcpy(hnptr->word, str);
+    if (hn == NULL)
+	return hnptr;
+    return hn;
 }
 
-void free_phraseres(PHRASERES *pr)
+void free_hitnums(struct nmz_hitnum *hn)
 {
-    if (pr == NULL)
+    if (hn == NULL)
 	return;
-    free(pr->word);
-    free_phraseres(pr->next);
-    free(pr);
+    free(hn->word);
+    free_hitnums(hn->next);
+    free(hn);
 }
 
 /* show the status for debug use */
@@ -924,7 +924,7 @@ HLIST do_search(char *orig_key, HLIST val)
     }
 
     {
-	PHRASERES *prtmp;
+	struct nmz_hitnum *prtmp;
 	char tmpkey[BUFSIZE];
 
 	strcpy(tmpkey, orig_key);
@@ -935,7 +935,7 @@ HLIST do_search(char *orig_key, HLIST val)
 
 	fflush(stdout);
 
-	if ((prtmp = push_phraseres(Idx.pr[CurrentIndexNumber], 
+	if ((prtmp = push_hitnum(Idx.pr[CurrentIndexNumber], 
 				    val.num, val.stat, tmpkey)) == NULL) 
 	{
 	    val.stat = ERR_FATAL;

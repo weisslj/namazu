@@ -1,5 +1,12 @@
 1999-12-04  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* nmz/libnamazu.h (struct nmz_data): Renamed from hlist_data.
+
+	* nmz/search.c (push_hitnum): Renamed from push_phraseres.
+	(free_hitnums): Renamed from free_phraseres.
+	
+	* nmz/libnamazu.h (struct nmz_hitnum): Renamed from phraseres.
+
 	* nmz/search.c (do_word_search): set SUCCESS to val.stat.
 
 	* src/output.c (print_hit_count): Abolish special treatments for

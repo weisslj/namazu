@@ -2,7 +2,7 @@
  * 
  * libnamazu.h - Namazu library api
  *
- * $Id: libnamazu.h,v 1.16 1999-12-04 03:36:49 satoru Exp $
+ * $Id: libnamazu.h,v 1.17 1999-12-04 04:37:31 satoru Exp $
  * 
  */
 
@@ -80,20 +80,20 @@ enum nmz_stat {
     ERR_NO_PERMISSION
 };
 
-typedef struct hlist_data {
+struct nmz_data {
     int score;   /* score */
     int docid;   /* document ID */
     int idxid;   /* index ID */
     int date;    /* document's date */
     int rank;    /* ranking data for stable sorting */
     char *field; /* for field-specified search*/
-} HLIST_DATA;
+};
 
 /* data structure for search result */
 typedef struct hlist {
     int num;           /* number of elements in its data */
     enum nmz_stat stat; /* status code mainly used for error handling */
-    HLIST_DATA *data;  /* dynamic array for storing a list of docid etc. */
+    struct nmz_data *data;  /* dynamic array for storing docid, etc. */
 } HLIST;
 
 typedef struct alias {
@@ -143,18 +143,18 @@ typedef struct nmz_files {
 } NMZ_FILES;
 
 typedef struct query {
-    char str[BUFSIZE];              /* query string */
+    char str[BUFSIZE];               /* query string */
     char *tab[QUERY_TOKEN_MAX + 1];  /* table for the query string */
 } QUERY;
 
 
-/* results of phrase search */
-typedef struct phraseres {
+/* hit number of each word */
+struct nmz_hitnum {
+    char *word;
     int hitnum;
     enum nmz_stat stat;    /* status code mainly used for error handling */
-    char *word;
-    struct phraseres *next;
-} PHRASERES;
+    struct nmz_hitnum *next;
+};
 
 /* modes of searching */
 enum nmz_search_mode {
@@ -171,7 +171,7 @@ typedef struct indices {
     char *names[INDEX_MAX + 1]; /* Index names */
 
     int total[INDEX_MAX + 1];   /* results of total hits */
-    PHRASERES *pr[INDEX_MAX + 1]; /* results of each word hits */
+    struct nmz_hitnum *pr[INDEX_MAX + 1]; /* hitnums of each word */
     int phrasehit[INDEX_MAX + 1]; /* results of each phrase hits */
 } INDICES;
 

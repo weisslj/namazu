@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.9 1999-12-04 01:20:37 satoru Exp $
+ * $Id: hlist.c,v 1.10 1999-12-04 04:37:31 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -118,11 +118,11 @@ static int field_sort(HLIST hlist)
    compare of a pair of hlist.data[].field as string in descending order */
 static int field_scmp(const void *p1, const void *p2)
 {
-    HLIST_DATA *v1, *v2;
+    struct nmz_data *v1, *v2;
     int r;
 
-    v1 = (HLIST_DATA *) p1;
-    v2 = (HLIST_DATA *) p2;
+    v1 = (struct nmz_data *) p1;
+    v2 = (struct nmz_data *) p2;
 
     r = strcmp(v2->field, v1->field);
     if (r == 0) {
@@ -136,11 +136,11 @@ static int field_scmp(const void *p1, const void *p2)
    compare of a pair of hlist.data[].field as number in descending order */
 static int field_ncmp(const void *p1, const void *p2)
 {
-    HLIST_DATA *v1, *v2;
+    struct nmz_data *v1, *v2;
     int r;
 
-    v1 = (HLIST_DATA *) p1;
-    v2 = (HLIST_DATA *) p2;
+    v1 = (struct nmz_data *) p1;
+    v2 = (struct nmz_data *) p2;
 
     /* NOTE: comparison "a - b" is not safe for NEGATIVE numbers */
     r = atoi(v2->field) - atoi(v1->field);
@@ -155,11 +155,11 @@ static int field_ncmp(const void *p1, const void *p2)
    compare of a pair of hlist.data[].score as number in descending order */
 static int score_cmp(const void *p1, const void *p2)
 {
-    HLIST_DATA *v1, *v2;
+    struct nmz_data *v1, *v2;
     int r;
     
-    v1 = (HLIST_DATA *) p1;
-    v2 = (HLIST_DATA *) p2;
+    v1 = (struct nmz_data *) p1;
+    v2 = (struct nmz_data *) p2;
 
     /* NOTE: comparison "a - b" is not safe for NEGATIVE numbers */
     r = v2->score - v1->score;
@@ -174,11 +174,11 @@ static int score_cmp(const void *p1, const void *p2)
    compare of a pair of hlist.data[].date as number in descending order */
 static int date_cmp(const void *p1, const void *p2)
 {
-    HLIST_DATA *v1, *v2;
+    struct nmz_data *v1, *v2;
     int r;
 
-    v1 = (HLIST_DATA *) p1;
-    v2 = (HLIST_DATA *) p2;
+    v1 = (struct nmz_data *) p1;
+    v2 = (struct nmz_data *) p2;
 
     /* NOTE: comparison "a - b" is not safe for NEGATIVE numbers */
     r = v2->date - v1->date;
@@ -359,7 +359,7 @@ HLIST ormerge(HLIST left, HLIST right)
 void malloc_hlist(HLIST * hlist, int n)
 {
     if (n <= 0) return;
-    hlist->data = (HLIST_DATA *)malloc(n * sizeof(HLIST_DATA));
+    hlist->data = malloc(n * sizeof(struct nmz_data));
     if (hlist->data == NULL) {
 	 set_dyingmsg("malloc_hlist");
 	 hlist->stat = ERR_FATAL;
@@ -373,7 +373,7 @@ void malloc_hlist(HLIST * hlist, int n)
 void realloc_hlist(HLIST * hlist, int n)
 {
     if (hlist->stat != SUCCESS || n <= 0) return;
-    hlist->data = (HLIST_DATA *) realloc(hlist->data, n * sizeof(HLIST_DATA));
+    hlist->data = realloc(hlist->data, n * sizeof(struct nmz_data));
     if (hlist->data == NULL) {
 	 set_dyingmsg("realloc_hlist");
 	 hlist->stat = ERR_FATAL;

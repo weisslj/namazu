@@ -2,7 +2,7 @@
  * 
  * libnamazu.c - Namazu library api
  *
- * $Id: libnamazu.c,v 1.9 1999-11-23 14:18:34 satoru Exp $
+ * $Id: libnamazu.c,v 1.10 1999-12-04 04:37:31 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
@@ -77,7 +77,7 @@ void free_idxnames(void)
     int i;
     for (i = 0; i < Idx.num; i++) {
         free(Idx.names[i]);
-	free_phraseres(Idx.pr[i]);
+	free_hitnums(Idx.pr[i]);
     }
     Idx.num = 0;
 }

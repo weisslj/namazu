@@ -409,6 +409,7 @@ dist-hook:
 	    rm -f $(distdir)/$$subdir/*~; \
 	    rm -f $(distdir)/$$subdir/*.{bak,orig}; \
 	    rm -rf $(distdir)/$$subdir/CVS; \
+	    rm -rf $(distdir)/$$subdir/*/CVS; \
 	done
 	rm -f $(distdir)/$(CLEANFILES)
 	rm -rf $(distdir)/$(CLEANDIRS)

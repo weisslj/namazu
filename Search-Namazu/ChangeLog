@@ -1,3 +1,8 @@
+1999-12-08  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* Namazu.xs: Adapted to new library symbols (like NmzResult,
+	set_sortmethod... et al.)
+
 1999-11-17  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* Namazu.pm: Added default exported symbols.

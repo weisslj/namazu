@@ -20,7 +20,7 @@ Namazu.xs
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 # 02111-1307, USA
 
-$Id: Namazu.xs,v 1.8 1999-11-16 08:42:35 knok Exp $
+$Id: Namazu.xs,v 1.9 1999-12-08 07:34:19 knok Exp $
 
 */
 
@@ -60,7 +60,7 @@ call_search_main(query)
 		char cqstr[BUFSIZE * 2];
 		int i;
 		AV *retar;
-		HLIST hlist;
+		NmzResult hlist;
 		char result[BUFSIZE];
 
 		uniq_idxnames();
@@ -71,17 +71,17 @@ call_search_main(query)
 		strcpy(cqstr, qstr);
 		codeconv_query(cqstr);
 		retar = newAV();
-		hlist = search_main(cqstr);
-		for (i = 0; i < hlist.n; i ++) {
+		hlist = nmz_search(cqstr);
+		for (i = 0; i < hlist.num; i ++) {
 			SV *ohlist = perl_eval_pv("new Search::Namazu::HList", TRUE);
 			SV *tmp;
-			get_field_data(hlist.d[i].idxid, hlist.d[i].docid, "uri", result);
+			get_field_data(hlist.data[i].idxid, hlist.data[i].docid, "uri", result);
 			PUSHMARK(SP);
 			XPUSHs(ohlist);
-			XPUSHs(sv_2mortal(newSViv(hlist.d[i].score)));
+			XPUSHs(sv_2mortal(newSViv(hlist.data[i].score)));
 			XPUSHs(sv_2mortal(newSVpv(result, strlen(result))));
-			XPUSHs(sv_2mortal(newSViv(hlist.d[i].date)));
-			XPUSHs(sv_2mortal(newSViv(hlist.d[i].rank)));
+			XPUSHs(sv_2mortal(newSViv(hlist.data[i].date)));
+			XPUSHs(sv_2mortal(newSViv(hlist.data[i].rank)));
 			PUTBACK;
 			perl_call_method("set", G_DISCARD);
 			POPs;
@@ -92,8 +92,8 @@ call_search_main(query)
 			av_push(retar, ohlist);
 		}
 		free_hlist(hlist);
-		EXTEND(SP, hlist.n);
-		for (i = 0; i < hlist.n; i ++) {
+		EXTEND(SP, hlist.num);
+		for (i = 0; i < hlist.num; i ++) {
 			XPUSHs(av_pop(retar));
 		}
 		free_idxnames();
@@ -117,27 +117,27 @@ nmz_addindex(index)
 void
 nmz_sortbydate()
 	CODE:
-		set_sortbydate();
+		set_sortmethod(SORT_BY_SCORE);
 
 void
 nmz_sortbyscore()
 	CODE:
-		set_sortbyscore();
+		set_sortmethod(SORT_BY_DATE);
 
 void
 nmz_sortbyfield()
 	CODE:
-		set_sortbyfield();
+		set_sortmethod(SORT_BY_FIELD);
 
 void
 nmz_descendingsort()
 	CODE:
-		set_sort_descending();
+		set_sortorder(ASCENDING);
 
 void
 nmz_ascendingsort()
 	CODE:
-		set_sort_ascending();
+		set_sortorder(DESCENDING);
 
 int
 nmz_setconfig(conf)

@@ -13,9 +13,9 @@ What is Namazu?
    Japanese use.  Now it can handle English and other latin
    languages encoded in ISO-8859-* character sets.  
 
-   We Namazu Project has been trying to internationalize
-   Namazu. At the moment, we have just only gettextized it.
-   There is a lot of things to do. Please help us.
+   We have been trying to internationalize Namazu. At the
+   moment, we have just only gettextized it.  There is a lot
+   of things to do. Please help us.
 
    You can find documentation in the `doc' directory. And
    you can get the latest Namazu information

@@ -3,7 +3,7 @@
   util.h -
 
   $Author: satoru $
-  $Date: 1999-12-09 00:49:21 $
+  $Date: 1999-12-09 03:15:15 $
   created at: Thu Mar  9 11:55:53 JST 1995
 
   Copyright (C) 1993-1998 Yukihiro Matsumoto
@@ -67,8 +67,8 @@ extern long getidxptr ( FILE * fp, long p );
 extern int issymbol ( int c );
 extern void nmz_die ( char *fmt, ... );
 extern void nmz_die_with_msg ( void );
-extern void nmz_warn_printf ( char *fmt, ... );
-extern void nmz_debug_printf ( char *fmt, ... );
+extern void nmz_wprintf ( char *fmt, ... );
+extern void nmz_dprintf ( char *fmt, ... );
 extern void nmz_pathcat ( char *base, char *name );
 extern int isnumstr ( char *str );
 extern void commas ( char *str );
@@ -100,8 +100,8 @@ extern long getidxptr (/* FILE * fp, long p */);
 extern int issymbol (/* int c */);
 extern void nmz_die (/* char *fmt, ... */);
 extern void nmz_die_with_msg (/* void */);
-extern void nmz_warn_printf (/* char *fmt, ... */);
-extern void nmz_debug_printf (/* char *fmt, ... */);
+extern void nmz_wprintf (/* char *fmt, ... */);
+extern void nmz_dprintf (/* char *fmt, ... */);
 extern void nmz_pathcat (/* char *base, char *name */);
 extern int isnumstr (/* char *str */);
 extern void commas (/* char *str */);

@@ -119,7 +119,7 @@ void get_field_data(int idxid, int docid, char *orig_field, char *data)
 	if (idxid == fc[i].idxid && docid == fc[i].docid &&
 	    strcmp(field, fc[i].field) == 0)
 	{  /* cache hit! */
-	    nmz_debug_printf("field cache [%s] hit!\n", field);
+	    nmz_dprintf("field cache [%s] hit!\n", field);
 	    strcpy(data, fc[i].data);
 	    return;
 	}
@@ -132,13 +132,13 @@ void get_field_data(int idxid, int docid, char *orig_field, char *data)
     
     fp_field = fopen(fname, "rb");
     if (fp_field == NULL) {
-        nmz_debug_printf("%s: cannot open file.\n", fname);
+        nmz_dprintf("%s: cannot open file.\n", fname);
     }
 
     strcat(fname, ".i");
     fp_field_idx = fopen(fname, "rb");
     if (fp_field_idx == NULL) {
-        nmz_debug_printf("%s: cannot open file.\n", fname);
+        nmz_dprintf("%s: cannot open file.\n", fname);
     }
 
     /* You can rely on that length of one field is shorter than 

@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.35 1999-12-09 00:49:24 satoru Exp $
+ * $Id: cgi.c,v 1.36 1999-12-09 03:15:23 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -56,27 +56,31 @@
 static int validate_idxname(char* );
 
 static int validate_idxname ( char * idxname );
-static CGIVAR *add_cgivar ( CGIVAR *ptr, char *name, char *value );
-static void free_cgi_vars ( CGIVAR *cv );
+static struct cgivar *add_cgivar ( struct cgivar *ptr, char *name, char *value );
+static void free_cgi_vars ( struct cgivar *cv );
 static char *get_query_string ( void );
-static CGIVAR *get_cgi_vars ( char *qs );
-static int process_cgi_vars ( CGIARG *ca );
-static int apply_cgifunc ( CGIVAR *cv, CGIARG *ca );
-static void process_cgi_var_query ( char *value, CGIARG *ca );
-static void process_cgi_var_subquery ( char *value, CGIARG *ca );
-static void process_cgi_var_format ( char *value, CGIARG *ca );
-static void process_cgi_var_sort ( char *value, CGIARG *ca );
-static void process_cgi_var_max ( char *value, CGIARG *ca );
-static void process_cgi_var_whence ( char *value, CGIARG *ca );
-static void process_cgi_var_lang ( char *value, CGIARG *ca );
-static void process_cgi_var_result ( char *value, CGIARG *ca );
-static void process_cgi_var_reference ( char *value, CGIARG *ca );
-static void process_cgi_var_submit ( char *value, CGIARG *ca );
-static void process_cgi_var_idxname ( char *value, CGIARG *ca );
+static struct cgivar *get_cgi_vars ( char *qs );
+static int process_cgi_vars ( struct cgiarg *ca );
+static int apply_cgifunc ( struct cgivar *cv, struct cgiarg *ca );
+static void process_cgi_var_query ( char *value, struct cgiarg *ca );
+static void process_cgi_var_subquery ( char *value, struct cgiarg *ca );
+static void process_cgi_var_format ( char *value, struct cgiarg *ca );
+static void process_cgi_var_sort ( char *value, struct cgiarg *ca );
+static void process_cgi_var_max ( char *value, struct cgiarg *ca );
+static void process_cgi_var_whence ( char *value, struct cgiarg *ca );
+static void process_cgi_var_lang ( char *value, struct cgiarg *ca );
+static void process_cgi_var_result ( char *value, struct cgiarg *ca );
+static void process_cgi_var_reference ( char *value, struct cgiarg *ca );
+static void process_cgi_var_submit ( char *value, struct cgiarg *ca );
+static void process_cgi_var_idxname ( char *value, struct cgiarg *ca );
 void init_cgi ( char *query, char *subquery );
 
-/* Table for cgi vars and corresponding functions. */
-static CGIVAR_FUNC CgiFuncTab[] = {
+
+/*
+ * Table for cgi vars and corresponding functions. 
+ * This table must be under function prototypes.
+ */
+static struct cgivar_func cgifunctab[] = {
     { "query",     process_cgi_var_query },
     { "key",       process_cgi_var_query },  /* backward comat. */
     { "subquery",  process_cgi_var_subquery },
@@ -92,7 +96,6 @@ static CGIVAR_FUNC CgiFuncTab[] = {
     { "submit",    process_cgi_var_submit },
     { NULL,        NULL }   /* sentry */
 };
-
 
 /* validate idxname (if it contain '/', it's invalid) */
 static int validate_idxname(char * idxname)
@@ -135,11 +138,11 @@ static int validate_idxname(char * idxname)
     return 1;
 }
 
-static CGIVAR *add_cgivar(CGIVAR *ptr, char *name, char *value)
+static struct cgivar *add_cgivar(struct cgivar *ptr, char *name, char *value)
 {
-    CGIVAR *tmp;
+    struct cgivar *tmp;
 
-    tmp = malloc(sizeof(CGIVAR));
+    tmp = malloc(sizeof(struct cgivar));
     if (tmp == NULL) {
 	 printf("add_cgivar_malloc");
 	 return NULL;
@@ -162,7 +165,7 @@ static CGIVAR *add_cgivar(CGIVAR *ptr, char *name, char *value)
     return tmp;
 }
 
-static void free_cgi_vars(CGIVAR *cv)
+static void free_cgi_vars(struct cgivar *cv)
 {
     if (cv == NULL)
 	return;
@@ -219,9 +222,9 @@ static char *get_query_string(void)
     return query_string;
 }
 
-static CGIVAR *get_cgi_vars(char *qs)
+static struct cgivar *get_cgi_vars(char *qs)
 {
-    CGIVAR *cv = NULL; /* SHOULD BE NULL for sentinel! */
+    struct cgivar *cv = NULL; /* SHOULD BE NULL for sentinel! */
 
     while (1) {
 	int len;
@@ -264,10 +267,10 @@ static CGIVAR *get_cgi_vars(char *qs)
     return cv;
 }
 
-static int process_cgi_vars(CGIARG *ca)
+static int process_cgi_vars(struct cgiarg *ca)
 {
     char *qs;
-    CGIVAR *cv;
+    struct cgivar *cv;
 
     qs = get_query_string();
     if (qs == NULL) {
@@ -278,16 +281,16 @@ static int process_cgi_vars(CGIARG *ca)
     for (; cv != NULL; cv = cv->next) {
 	if (!apply_cgifunc(cv, ca)) {
 	    /* message for httpd's error_log */
-	    nmz_warn_printf("unknown cgi var: %s=%s\n", cv->name, cv->value);
+	    nmz_wprintf("unknown cgi var: %s=%s\n", cv->name, cv->value);
 	}
     }
     free_cgi_vars(cv);
     return 0;
 }
 
-static int apply_cgifunc(CGIVAR *cv, CGIARG *ca) 
+static int apply_cgifunc(struct cgivar *cv, struct cgiarg *ca) 
 {
-    CGIVAR_FUNC *cf = CgiFuncTab;
+    struct cgivar_func *cf = cgifunctab;
     int i;
 
     for (i = 0; cf->name != NULL; cf++) {
@@ -299,7 +302,7 @@ static int apply_cgifunc(CGIVAR *cv, CGIARG *ca)
     return 0; /* not applied */
 }
 
-static void process_cgi_var_query(char *value, CGIARG *ca)
+static void process_cgi_var_query(char *value, struct cgiarg *ca)
 {
     if (strlen(value) > QUERY_MAX) {
 	print(MSG_MIME_HEADER);
@@ -320,7 +323,7 @@ static void process_cgi_var_query(char *value, CGIARG *ca)
     strcpy(ca->query, value);
 }
 
-static void process_cgi_var_subquery(char *value, CGIARG *ca)
+static void process_cgi_var_subquery(char *value, struct cgiarg *ca)
 {
     if (strlen(value) > QUERY_MAX) {
 	print(MSG_MIME_HEADER);
@@ -342,7 +345,7 @@ static void process_cgi_var_subquery(char *value, CGIARG *ca)
 }
 
 /* this function is for backward compatibility with 1.3.0.x */
-static void process_cgi_var_format(char *value, CGIARG *ca)
+static void process_cgi_var_format(char *value, struct cgiarg *ca)
 {
     if (strcmp(value, "short") == 0) {
 	set_template("short");
@@ -351,7 +354,7 @@ static void process_cgi_var_format(char *value, CGIARG *ca)
     }
 }
 
-static void process_cgi_var_sort(char *value, CGIARG *ca)
+static void process_cgi_var_sort(char *value, struct cgiarg *ca)
 {
     if (strprefixcasecmp(value, "score") == 0) {
 	set_sortmethod(SORT_BY_SCORE);
@@ -389,7 +392,7 @@ static void process_cgi_var_sort(char *value, CGIARG *ca)
     } 
 }
 
-static void process_cgi_var_max(char *value, CGIARG *ca)
+static void process_cgi_var_max(char *value, struct cgiarg *ca)
 {
     int max;
 
@@ -403,7 +406,7 @@ static void process_cgi_var_max(char *value, CGIARG *ca)
     set_maxresult(max);
 }
 
-static void process_cgi_var_whence(char *value, CGIARG *ca)
+static void process_cgi_var_whence(char *value, struct cgiarg *ca)
 {
     int whence;
 
@@ -414,17 +417,17 @@ static void process_cgi_var_whence(char *value, CGIARG *ca)
     set_listwhence(whence);
 }
 
-static void process_cgi_var_lang(char *value, CGIARG *ca)
+static void process_cgi_var_lang(char *value, struct cgiarg *ca)
 {
     set_lang(value);
 }
 
-static void process_cgi_var_result(char *value, CGIARG *ca)
+static void process_cgi_var_result(char *value, struct cgiarg *ca)
 {
     set_template(value);
 }
 
-static void process_cgi_var_reference(char *value, CGIARG *ca)
+static void process_cgi_var_reference(char *value, struct cgiarg *ca)
 {
     if (strcmp(value, "off") == 0) {
 	set_refprint(0);
@@ -432,12 +435,12 @@ static void process_cgi_var_reference(char *value, CGIARG *ca)
     
 }
 
-static void process_cgi_var_submit(char *value, CGIARG *ca)
+static void process_cgi_var_submit(char *value, struct cgiarg *ca)
 {
     /* do nothing; */
 }
 
-static void process_cgi_var_idxname(char *value, CGIARG *ca)
+static void process_cgi_var_idxname(char *value, struct cgiarg *ca)
 {
     char *pp;
 
@@ -457,7 +460,7 @@ static void process_cgi_var_idxname(char *value, CGIARG *ca)
 	strcat(tmp, "/");
 	strcat(tmp, name);
 	if (add_index(tmp) != SUCCESS) {
-	    nmz_warn_printf("invalid idxname: %s", name);
+	    nmz_wprintf("invalid idxname: %s", name);
 	}
     }
 }
@@ -472,7 +475,7 @@ static void process_cgi_var_idxname(char *value, CGIARG *ca)
  * with no arguments also trhough this function */
 void init_cgi(char *query, char *subquery)
 {
-    CGIARG ca;  /* passed for process_cgi_var_*() functions 
+    struct cgiarg ca;  /* passed for process_cgi_var_*() functions 
 		   for modifying important variables. */
 
     ca.query    = query;
@@ -485,7 +488,7 @@ void init_cgi(char *query, char *subquery)
 
     if (Idx.num == 0) {
 	if (add_index(DEFAULT_INDEX) != SUCCESS) {
-	    nmz_warn_printf("invalid idxname: %s", DEFAULT_INDEX);
+	    nmz_wprintf("invalid idxname: %s", DEFAULT_INDEX);
 	}
     } 
 }

@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.17 1999-12-08 05:46:39 rug Exp $
+ * $Id: hlist.c,v 1.18 1999-12-09 03:15:15 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -40,8 +40,8 @@
 #include "field.h"
 #include "var.h"
 
-static int DocNum = 0;  /* Number of documents covered in atarget index */
-static char Field[BUFSIZE] = "";  /* Field name used with sorting */
+static int document_number = 0;  /* Number of documents covered in a target index */
+static char field_for_sort[BUFSIZE] = "";  /* field_for_sort name used with sorting */
 
 struct str_num {
     char *str;
@@ -85,7 +85,7 @@ static int field_sort(NmzResult hlist)
     for (i = 0; i < hlist.num; i++) {
 	char buf[BUFSIZE];
 	int leng;
-	get_field_data(hlist.data[i].idxid, hlist.data[i].docid, Field, buf);
+	get_field_data(hlist.data[i].idxid, hlist.data[i].docid, field_for_sort, buf);
 	nmz_chomp(buf);
 	leng = strlen(buf);
 
@@ -478,8 +478,8 @@ NmzResult get_hlist(int index)
     nmz_get_unpackw(Nmz.i, &n);
 
     if (TfIdf) {
-        idf = log((double)DocNum / (n/2)) / log(2);
-	nmz_debug_printf("idf: %f (N:%d, n:%d)\n", idf, DocNum, n/2);
+        idf = log((double)document_number / (n/2)) / log(2);
+	nmz_dprintf("idf: %f (N:%d, n:%d)\n", idf, document_number, n/2);
     }
 
     if (n >= IGNORE_HIT * 2) {  
@@ -558,16 +558,16 @@ int reverse_hlist(NmzResult hlist)
 
 void set_docnum(int n)
 {
-    DocNum = n;
+    document_number = n;
 }
 
 void set_sort_field(char *field)
 {
-    strcpy(Field, field);
+    strcpy(field_for_sort, field);
 }
 
 char *get_sort_field(void)
 {
-    return Field;
+    return field_for_sort;
 }
 

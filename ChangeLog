@@ -1,5 +1,17 @@
 1999-12-09  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* nmz/util.c (nmz_drintf): Renamed from nmz_debug_printf.
+	(nmz_wprintf): Renamed from nmz_warn_printf.
+	(nmz_die): Modify LF treatment.
+	(nmz_wprintf): Modify LF treatment.
+	(nmz_dprintf): Modify LF treatment.
+	(nmz_die_with_msg): Modify LF treatment.
+
+	* nmz/hlist.c: Renamed variables: DocNum -> document_number.
+	Field -> field_for_sort.
+	
+	* src/cgi.[ch]: Untypedef: CGIARG, CGIVAR and CGIVAR_FUNC.
+
 	* nmz/replace.c (struct nmz_replace *replaces): Be private.
 
 	* src/output.c (is_countmode): Be private.

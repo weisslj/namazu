@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.35 2000-01-06 10:02:01 satoru Exp $
+ * $Id: form.c,v 1.36 2000-01-06 14:23:05 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -320,14 +320,16 @@ read_headfoot(const char *fname)
     strcpy(tmpfname, fname);
     strcat(tmpfname, suffix);
 
-    buf = nmz_readfile(tmpfname);
+    buf = nmz_readfile(tmpfname); /* buf is allocated in nmz_readfile. */
     if (buf == NULL) { /* failed */
 	return NULL;
     }
 
     /* In case of suffix isn't equal to lang, we needs code conversion */
     if (strcmp(suffix, get_lang()) != 0) {
-	buf = conv_ext(buf);
+	char *new = conv_ext(buf); /* new is allocated in conv_ext. */
+	free(buf);  /* Then we shoul free buf's memory */
+	buf = new;
     }
     
     /* Expand buf memory for replacing {cgi} */
@@ -367,6 +369,7 @@ print_headfoot(const char * fname, const char * query, const char *subquery)
     int f, f2;
 
     buf = read_headfoot(fname);
+
     if (buf == NULL) {
 	return;
     }

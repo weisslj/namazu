@@ -8,6 +8,10 @@
 
 2000-01-06  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/form.c (read_headfoot): Fix a memory leak bug.
+
+	* src/output.c (print_msgfile): Ditto.
+
 	* **/*.c, **/*.pl{,in}: Change copyright notice: 
 	1997-1999 -> 1997-2000
 	

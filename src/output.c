@@ -527,10 +527,12 @@ print_msgfile(const char *fname) {
 	strcpy(tmpfname, fname);
 	strcat(tmpfname, suffix);
 
-	buf = nmz_readfile(tmpfname);
+	buf = nmz_readfile(tmpfname); /* buf is allocated in nmz_readfile. */
 	/* In case of suffix isn't equal to lang, we need code conversion */
 	if (strcmp(suffix, get_lang()) != 0) {
-	    buf = conv_ext(buf);
+	    char *new = conv_ext(buf); /* new is allocated in conv_ext. */
+	    free(buf);  /* Then we shoul free buf's memory */
+	    buf = new;
 	}
 
 	fputs(buf, stdout);

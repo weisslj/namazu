@@ -1,3 +1,7 @@
+1999-12-11  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* src/Makefile.am (bin_SCRIPTS): Add nmzgrep
+
 1999-12-10  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* Namazu: Version 1.9.11 released.

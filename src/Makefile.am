@@ -11,7 +11,7 @@
 AUTOMAKE_OPTIONS = 1.4 no-dependencies
 
 bin_PROGRAMS = namazu
-bin_SCRIPTS  = gcnmz mailutime mknmz gtnmz vfnmz kwnmz
+bin_SCRIPTS  = gcnmz mailutime mknmz gtnmz vfnmz kwnmz nmzgrep
 
 CLEANFILES  = gcnmz mknmz kwnmz
 

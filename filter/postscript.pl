@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: postscript.pl,v 1.1 2000-12-28 07:16:18 knok Exp $
+# $Id: postscript.pl,v 1.2 2000-12-28 10:50:48 baba Exp $
 # Copyright (C) 2000 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -61,12 +61,29 @@ sub add_magic ($) {
 sub filter ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
       = @_;
+    my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
     my $tmpfile = util::tmpnam('NMZ.postscript');
 
     util::vprint("Processing postscript file ... (using  '$postscriptpath')\n");
 
-    my $fh = util::efopen("| $postscriptpath > $tmpfile");
+    my $landscape = 0;
+    my $fh = util::efopen("$cfile");
+    while (<$fh>) {
+	last if (/^%%EndComments$/);
+	$landscape = 1 if (/^%%Orientation: Landscape$/i);
+    }
+    undef $fh;
+
+    if (util::islang("ja")) {
+	if ($landscape) {
+	    $fh = util::efopen("| $postscriptpath -l > $tmpfile");
+	} else {
+	    $fh = util::efopen("| $postscriptpath > $tmpfile");
+	}
+    } else {
+	$fh = util::efopen("| $postscriptpath > $tmpfile");
+    }
     print $fh $$cont;
     undef $fh;
     $fh = util::efopen("$tmpfile");

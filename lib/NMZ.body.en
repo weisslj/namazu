@@ -1,0 +1,91 @@
+
+<H2>How to search</H2>
+
+
+<P>
+ This search system is case insensitive. You can use asterisk
+ character at the end of the word to do forward match search, 
+ for instance: "foo*"
+</P>
+
+<P>
+ Separating keywords by spaces is automatically assumed to be
+ AND-search that is to find only documents containing all of the
+ specified keywords.
+</P>
+
+<P>
+ You can search the word containing symbols like "TCP/IP".
+ However, this processing isn't perfect, so you can describe "TCP
+ IP" instead of "TCP/IP", but it may cause noisy results.
+</P>
+
+<P>
+ This search system has boolean operators '&amp;', '!', '|'.
+ In place of symbols, the word "and", "or", "not", are accepted.
+ Each operator must be separated by space.
+</P>
+
+<P>
+ For exapmle (both expressions is same meaning):
+</P>
+
+<UL>
+<LI><CODE>( sed | awk ) ! perl &amp; regexp</CODE>
+<LI><CODE>( sed or awk ) not perl and regexp</CODE>
+</UL>
+
+<P>
+ This sample finds the files which contain "sed" or "awk", and no "perl",
+ but include "regexp".
+</P>
+
+<P>
+ You can use nested parenthesises expression for advanced search.
+</P>
+
+<P>
+By surronding words with double quotation mark '"' or curly brace '{' '}',
+Namazu would recognize it as phrase but it is not perfect precision, so
+it cause wrong hit occasionally.
+</P>
+
+<P>
+ For exapmle (both expressions is same meaning):
+</P>
+
+<UL>
+<LI><CODE>"SIMPLE MAIL TRANSFER PROTOCOL"</CODE>
+<LI><CODE>{SIMPLE MAIL TRANSFER PROTOCOL}</CODE>
+</UL>
+
+<P>Also, Namazu can do "regular expression search", "middle or backward match search" but it's little slow.</P>
+
+<P>
+For exapmle:
+</P>
+
+<UL>
+<LI><CODE>*net</CODE> (backward match)
+<LI><CODE>*foo*</CODE>  (middle match)
+<LI><CODE>/(foo|bar)[a-z]+/</CODE> (regular expression)
+<LI><CODE>"rain dance"</CODE> (phrase)
+</UL>
+
+<P>You can do 'field specified search' as well if indices are prepared.</P>
+
+<UL>
+<LI><CODE>+date:/Aug 1998/</CODE> (something dated on 'Aug 1998')
+<LI><CODE>+from:foo@bar.jp</CODE>  (article by foo@bar.jp)
+<LI><CODE>+subject:"internet message"</CODE>  (search a string for Subject:)
+<LI><CODE>+subject:"(mule|xemacs|emacs)"</CODE>  (search a string for Subject: with regex)
+<LI><CODE>+message-id:&lt;199801240555.OAA18737@foo.bar.jp&gt;</CODE>  (Message-Id)
+<LI><CODE>+title:amarok</CODE> (title of document)
+<LI><CODE>+author:foo@bar.jp</CODE>  (author of document)
+<LI><CODE>+url:http://foo.bar.jp/</CODE>  (URL of document)
+</UL>
+
+<P>
+ Happy searching!
+</P>
+

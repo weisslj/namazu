@@ -1,0 +1,683 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN"
+        "http://www.w3.org/TR/REC-html40/strict.dtd">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-2022-JP">
+<META NAME="keywords" CONTENT="namazu FAQ">
+<LINK REV=MADE HREF="mailto:ccsatoru@vega.aichi-u.ac.jp">
+<TITLE LANG="ja-JP">Namazu FAQ</TITLE>
+</HEAD>
+<BODY LANG="ja">
+<H1>Namazu FAQ</H1>
+<P>Last Modified: 01/11/1998</P>
+<HR>
+
+<P>
+Namazu に関するよくある質問、ありそうな質問とその答えをまとめた文書です。
+このファイルの最新版は <A HREF="http://openlab.ring.gr.jp/namazu/FAQ.html">http://openlab.ring.gr.jp/namazu/FAQ.html</A> にあります。
+</P>
+
+<H2>目次</H2>
+
+<UL>
+<LI><A HREF="#NAMAZU_GENERAL">Namazu 一般</A>
+  <UL>
+  <LI><A HREF="#BOOK">Namazuの解説書はありますか</A>
+  <LI><A HREF="#FEATURE">他の検索エンジンとはどう違うのですか</A>
+  <LI><A HREF="#RUN_WITH_WIN32">Windows 95/NT で使いたいのですが</A>
+  <LI><A HREF="#RUN_WITH_OS2">OS/2 で使いたいのですが</A>
+  <LI><A HREF="#BUG">バグみたいなのですが</A>
+  <LI><A HREF="#REQUEST">こんな機能があったら嬉しいのですが</A>
+  <LI><A HREF="#COMMERCIAL_USE">商用目的のサイトで利用したいのですが</A>
+  <LI><A HREF="#WHY_FREE_NAMAZU">Namazu はなぜフリーソフトウェアなのですか</A>
+  <LI><A HREF="#NAMAZU_NAME">Namazu の名前の由来は何ですか</A>
+  </UL>
+<LI><A HREF="#ELEMENTALY_QUESTION">初歩的な質問</A>
+  <UL>
+  <LI><A HREF="#TEACHME">動きません、教えてください (質問の仕方)</A>
+  <LI><A HREF="#BEGINNER">超初心者です、何もわかりませんが使いたい
+  のです</A> [New!]
+  <LI><A HREF="#FREEBSD_PERL4">FreeBSDで mknmzが動きません</A>
+  <LI><A HREF="#MAKE_KAKASI">KAKASI の make ができません</A>
+  </UL>
+<LI><A HREF="#NAMAZU_OPERATION">Namazu 動作関連</A>
+  <UL>
+  <LI><A HREF="#MULTIDIRECTORIES">複数のディレクトリをインデックス
+  したい
+  </A> [New!]
+  <LI><A HREF="#CONFIGUREFAILED">configure が途中で終了してしまう
+  </A> [New!]
+<LI><A HREF="#DOESNOTWORKASCGI">CGIとして動きません</A> [New!]
+  <LI><A HREF="#INDEXSCALE">どの程度の規模のインデックスが作れます
+  か?</A> [New!]
+  <LI><A HREF="#NOTENOUGHSPACE">mknmz で Not enough space! で止まって
+  しまいます</A> [New!]
+  <LI><A HREF="#SHERLOCK">Mac OS 8.5 の Sherlock で文字化けしてし
+  まう</A> [New!]
+  <LI><A HREF="#MALFORMED_RESULT">検索されるべき文書が結果に現われない</A> [New!]
+  <LI><A HREF="#TROUBLE_WITH_JPERL">特定の文書でインデックス処理が止まってし
+まう</A>
+  <LI><A HREF="#SH_NO_COMMAND_FOUND">mknmz を実行すると sh: no:
+  command not found と表示されてうまく動きません</A>
+  <LI><A HREF="#MAC_IE">Macintosh の Internet Explorer 4.01 で日本
+  語で検索をかけると結果が化けておかしくなります</A>
+  <LI><A HREF="#JAPANESE_FILENAME">日本語のファイル名に対応しています
+か</A>
+  <LI><A HREF="#OUTOFMEMORY">mknmz で Out of memory! で止まってし
+  まいます</A>
+  <LI><A HREF="#CGI_PROBLEM">CGIとして動かすとわけのわからない文字が大量に表示されるのですが</A>
+  <LI><A HREF="#REGEXP">Makefile の OPT_TARGET_FILE や OPT_DENY_FILE の書き方が分かりません</A>
+  <LI><A HREF="#SUNOS">SunOS4.x + Perl5.003 でインデックスを作ると何か変なんですが</A>
+  <LI><A HREF="#MHONARC">mknmz.pl 中に $MHONARC_INDEX_FILE という指定があったと思いましたが</A>
+  <LI><A HREF="#MHNARC2">MHonArc の作成するインデックス (maillist.html や threads.html) がスキップされないのですが</A>
+  <LI><A HREF="#NMZ">インデックスの名前を変えたいのですが</A> 
+  <LI><A HREF="#EFFICIENCY">インデックス作成の効率は?</A>
+  <LI><A HREF="#MAKE_SMALL_INDEX">インデックスのサイズを小さくしたい</A>
+  <LI><A HREF="#PATHNAME_AND_ENTITY">wget で取得してきたファイルの
+  パス名に '%7E' が含まれて困ります</A>
+  <LI><A HREF="#UNINITIALIZED_VALUE">Use of uninitialized value at 
+  /usr/local/bin/mknmz line xxxx なんてメッセージが表示されます</A>
+  </UL>
+<LI><A HREF="#WIN32">Windows 95/NT 関連</A>
+  <UL>
+  <LI><A HREF="#COMMAND_NOT_FOUND">mknmz の実行中に「コマンドまた
+  はファイル名が違います」と言われます</A>
+  <LI><A HREF="#MSWORD">MS-Wordの文書をインデックスしたいのですが</A>
+  </UL>
+<LI><A HREF="#JAPANESE_PROCESSING">日本語処理関連</A>
+  <UL>
+  <LI><A HREF="#KAKASI_OR_CHASEN">KAKASI と Chasen のどちらを使うべきでしょう</A>
+  <LI><A HREF="#KAKASI_DIC">KAKASI の辞書を拡張したいのですが</A>
+  <LI><A HREF="#JISYO">字書? 辞書?</A>
+  <LI><A HREF="#MHONARC_MIME">MHonArc で処理するときにヘッダの MIME encode をデコードさせたいのですが</A>
+  </UL>
+</UL>
+
+<H2><A NAME="NAMAZU_GENERAL">Namazu 一般</A></H2>
+
+<H3><A NAME="BOOK">Namazuの解説書はありますか</A></H3>
+
+<P>
+<A
+HREF="http://www.kusastro.kyoto-u.ac.jp/%7Ebaba/namazubook/support.html">日本語全文検索システムの構築と活用</A>, 
+<A HREF="http://www.kusastro.kyoto-u.ac.jp/%7Ebaba/">馬場肇</A>著, 
+ソフトバンク刊, 2,800円 (税別)<BR>
+が出版されました。買いませう :-)
+</P>
+
+<H3><A NAME="FEATURE">他の検索エンジンとはどう違うのですか</A></H3>
+<P>
+Namazu はできるかぎり<STRONG>お手軽</STRONG>に使えることを目指しています。
+技術的には決して高度なものではありませんが、
+手軽に使えるという面では割といい線をいっていると思います。
+ただし、別途 KAKASI/ChaSen とその辞書が必要なので使えるディスク容量に余裕がないと使えません。
+詳しくは <A HREF="intro.html">intro.html</A>を参照してください。
+<A HREF="http://openlab.ring.gr.jp/namazu/ml.html">メイリングリスト</A>を開設して比較的活発にメンテナンスが行われているのも特徴といえると思います。
+</P>
+
+<H3><A NAME="RUN_WITH_WIN32">Windows 95/NT で使いたいのですが</A></H3>
+<P>
+Win32版に関する詳しい情報は広瀬さんによる <A HREF="http://www.tama.or.jp/%7Ekenzo-/Namazu/">全文検索システム Namazu for Win32</A>のページを参照してください。
+</P>
+
+<H3><A NAME="RUN_WITH_OS2">OS/2 で使いたいのですが</A></H3>
+<P>
+OS/2版に関する詳しい情報は清水さんによる 
+<A HREF="http://www.dd.iij4u.or.jp/%7Ekshimz/warp/index.html#namazu">Kaz SHIMZ (SHIMIZU Kazuyoshi) presents "NetWarp World"</A>のページを参照してください。
+</P>
+
+
+<H3><A NAME="BUG">バグみたいなのですが</A></H3>
+<P>
+もしも古い Namazu をお使いならば最新のものを試してみてください。
+この FAQもよく読んでみてください。既に解決しているかもしれません。
+そうでなければ<A HREF="mailto:ccsatoru@vega.aichi-u.ac.jp">作者</A>または<A HREF="http://openlab.ring.gr.jp/namazu/ml.html">メイリングリスト</A>の方へご報告ください。
+できるだけ対処したく思っています。
+</P>
+
+
+<H3><A NAME="REQUEST">こんな機能があったら嬉しいのですが</A></H3>
+<P>
+何か良いアイディアがあれば
+<A HREF="mailto:ccsatoru@vega.aichi-u.ac.jp">作者</A>または<A
+HREF="http://openlab.ring.gr.jp/namazu/ml.html">メイ
+リングリスト</A>の方まで要望を提案してください。
+念のため、その前に <A HREF="http://openlab.ring.gr.jp/namazu/ToDo">ToDo</A> に目を通してみてください。
+有用なものであれば取り入れていきたいと思います。
+</P>
+
+<H3><A NAME="COMMERCIAL_USE">商用目的のサイトで利用したいのですが</A></H3>
+<P>
+問題ありません。どうぞご利用ください (Namazuの開発への援助は歓迎し
+ます)。ただし完全に無保証ですのでその点はご了承ください。Namazu の
+ライセンスは <A
+HREF="http://openlab.ring.gr.jp/namazu/COPYING">GPL2</A>
+に従うものとします。
+</P>
+
+
+<H3><A NAME="WHY_FREE_NAMAZU">Namazu はなぜフリーソフトウェアなのですか</A></H3>
+<P>
+フリーソフトウェアの文化に貢献したいと考えるからです。
+ちなみに Namazu の開発環境は
+<A HREF="http://www.linet.gr.jp/%7Ekojima/Plamo/index.html">Plamo Linux</A> + 
+<A HREF="http://www.xfree86.org/">XFree86</A> + 
+<A HREF="http://www.etl.go.jp/%7Emule/MuleJapanese.html">Mule</A> + 
+gcc + 
+<A HREF="http://www.perl.com/">Perl</A> + 
+<A HREF="http://www.apache.or.jp/">Apache</A>
+と OS を含めすべてフリーソフトウェアで揃えられています。
+</P>
+
+<H3><A NAME="NAMAZU_NAME">Namazu の名前の由来は何ですか</A></H3>
+<P>
+特に意味はないです。思いつきで決めました。
+</P>
+
+<H2><A NAME="ELEMENTALY_QUESTION">初歩的な質問</A></H2>
+
+<H3><A NAME="TEACHME">動きません、教えてください (質問の仕方)</A></H3>
+<P>
+質問する前にまずマニュアルとこの FAQ をしっかり読んでください。ど
+うしても分からないときは
+</P>
+
+<UL>
+<LI>問題とその症状を詳しく
+<LI>お使いの OS とそのヴァージョン<BR>
+  <UL>
+  <LI>UNIXなら<BR>
+  <CODE>% uname -a</CODE>  と実行してみてください
+  <LI>Windows なら<BR>
+  Windows 95/98/NT のどれか? NT ならそのヴァージョンは?
+  </UL>
+<LI>Namazu のヴァージョン<BR>
+<CODE>% namazu -v</CODE> と実行してみてください
+<LI>Perl のヴァージョン<BR>
+<CODE>% perl -v</CODE> と実行してみてください
+<LI>C コンパイラの種類とヴァージョン<BR>
+gcc なら <CODE>% gcc -v</CODE> と実行してみてください
+<LI>nkf のヴァージョン<BR>
+<CODE>% nkf -v</CODE> と実行してみてください<BR>
+古い版はメイルの MIME B/Qエンコードの decode が行えません。 v1.62 が必要です。
+<LI>httpd の種類とヴァージョン<BR>
+<CODE>% telnet localhost 80&lt;改行&gt;</CODE><BR>
+<CODE>HEAD / HTTP/1.0&lt;改行&gt;</CODE><BR>
+<CODE>&lt;改行&gt;</CODE><BR>
+のようにして調べることができます。
+</UL>
+
+<P>
+などについて簡潔な文章で書いて<A
+HREF="mailto:ccsatoru@vega.aichi-u.ac.jp">高林</A>または<A
+HREF="http://openlab.ring.gr.jp/namazu/ml.html">メイ
+リングリスト</A>まで報告してください (後者の方が望ましい)。ただし、
+質問しても必ず答えが返ってくるとは限らないのでその辺はご了承くださ
+い (答える義務はありません)。初心者の方 (UNIX, CGI などに) は<a
+href="http://www.kusastro.kyoto-u.ac.jp/%7Ebaba/namazubook/support.html">
+日本語全文検索システムの構築と活用(なまず本)</A>を買って参考にする
+のがよろしいかと思います。
+</P>
+
+<H3><A NAME="BEGINNER">超初心者です、何もわかりませんが使いたいのです</A></H3>
+<P>
+身近に詳しい人を見つけて教えてもらってください。あるいは書籍などで
+自習してください。Namazu以前の初歩的な質問をメイリングリストに送ら
+れても困ります。
+</P>
+
+<H4>森本淳さんのお言葉</H4>
+
+<P>
+我々(?)はあなたのすぐ側には居ないわけですから、<BR>
+「車のウインカーがつきません」<BR>
+「ウインカーレバーを倒してみるのは?」<BR>
+「ok, ウインカーつきました」<BR>
+程度のアドバイスはできると思いますが、
+</P>
+
+<P>
+「車のエンジンがかかりません」というのに対して、
+「ではボンネットを開けて、向かって右の前から２番目にあるバッテリーの緑
+のフタを外して赤いワイヤーを外して接点部の鉛の覆いを外して接点の銅に緑
+青が吹いていたらそれをサンドペーパーでこすって磨いて接点復活剤をかけて
+また組み上げるのがまず１点。次に向かって左３番目の ECU を開けて CPU の
+(以下 120 行省略) 」
+
+みたいな指摘は、超人かアポロ13号の地上指令室でもないかぎり、
+残念ながらできません。
+</P>
+
+<H3><A NAME="FREEBSD_PERL4">FreeBSDで mknmzが動きません</A></H3>
+<P>
+FreeBSD の /usr/bin/perl はヴァージョン 4 という古いもの
+だったと思います。 mknmz の先頭の <CODE>/usr/bin/perl</CODE> を書き替えて
+v5.003 以降の Perl のパスを正しく指定してください。
+</P>
+
+<H3><A NAME="MAKE_KAKASI">KAKASI の make ができません</A></H3>
+<P>
+KAKASI のドキュメントを読んでがんばってください。
+または身近に詳しい人を見つけて教えてもらってください。
+</P>
+
+<H2><A NAME="NAMAZU_OPERATION">Namazu 動作関連</A></H2>
+
+<H3><A NAME="MULTIDIRECTORIES">複数のディレクトリをインデックス
+  したい</A></H3>
+
+<P>
+なお、複数のディレクトリをインデックスしたいときは mknmz に -F オ
+プションを指定して
+</P>
+
+<P>
+/home/hoge/foo/<BR>
+/home/hoge/bar/<BR>
+/home/hoge/baz/
+</P>
+
+<P>
+のようなリストを渡して処理することができます (v1.3.0.0以降)。 / で
+終わる行はそのディレクトリ内のファイルを再帰的に取得します。
+</P>
+
+<P>
+URL を置換したい場合には
+</P>
+
+<P>
+<CODE>% mknmz -F list http://foo.bar.jp/ /home/hoge/</CODE>
+</P>
+
+<P>
+のように実行します (パス名の /home/hoge/ の部分を 
+http://foo.bar.jp/ に置き換える)。
+</P>
+
+
+<H3><A NAME="CONFIGUREFAILED">configure が途中で終了してしまう</A></H3>
+
+<P>
+configure が 'Perl not found' などとエラーメッセージを残して異常終
+了したときは、 configure がソフトウェアの自動検出に失敗したことを
+意味します。 環境変数 $PATH にそのプログラム (この場合は perl) へ
+のパスが通っているか確認してください。
+</P>
+
+<H3><A NAME="DOESNOTWORKASCGI">CGIとして動きません</A></H3>
+
+<P>
+Apache なら srm.conf に
+</P>
+
+<P>
+<CODE>AddHandler cgi-script .cgi</CODE>
+</P>
+
+<P>
+の行を追加すると解決するかもしれません。
+</P>
+
+
+<H3><A NAME="INDEXSCALE">どの程度の規模のインデックスが作れます
+  か?</A></H3>
+
+<P>
+報告のあったもののなかでは 377,874 ファイル、合計 1,349,975,210
+bytes の文書を対象にしたものが最大です。これより規模の大きいインデッ
+クスを作成された方はぜひ<A
+HREF="mailto:ccsatoru@vega.aichi-u.ac.jp">ご連絡</A>ください。
+</P>
+
+
+
+<H3><A NAME="NOTENOUGHSPACE">mknmz で Not enough space! で止まっ
+てしまいます</A></H3>
+
+<P>
+SunOS 5.5.1, Perl 5.004_04 の環境でそのような報告がありました。 
+Perl を v5.005_02 にヴァージョンを上げたところ解決したそうです。が、
+しかし、後日また再発したそうです。
+</P>
+
+<P>
+結局、原因は単なるメモリ不足のようです。
+</P>
+
+<H3><A NAME="SHERLOCK">Mac OS 8.5 の Sherlock で文字化けしてしまう</A></H3>
+
+<P>
+NMZ.head.ja の
+</P>
+
+<P>
+<CODE>
+&lt;META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-2022-JP"&gt;
+</CODE>
+</P>
+
+<P>
+記述を消せば解決するようです。 なお、Namazu v1.3.0.0-beta-11 以降
+では添付する NMZ.head.ja から &lt;META HTTP-EQUIV...&gt; を廃止し
+ました。代わりに HTTPのヘッダに
+</P>
+
+<P>
+<CODE>
+Content-type: text/html; charset=ISO-2022-JP
+</CODE>
+</P>
+
+<P>
+をつけています。
+</P>
+
+
+<H3><A NAME="MALFORMED_RESULT">検索されるべき文書が結果に現われない</A></H3>
+
+<P>
+v1.3.0.0 では文書の更新を反映したインデックスのアップデートが可能
+になっています。ゆえに
+</P>
+
+<P>
+<CODE>
+% mknmz /home/hoge/foo<BR>
+% mknmz /home/hoge/bar<BR>
+% mknmz /home/hoge/baz
+</CODE>
+</P>
+
+<P>
+のように数回に分けて異なるディレクトリのインデックスを作成すると、 
+2回目以降の処理時に mknmz は以前の文書を削除されたものと判断してし
+まいます。これが困る場合には  <A HREF="#MULTIDIRECTORIES">複数のディ
+レクトリをインデックスしたい</A> を参照してください。
+</P>
+
+<P>
+他の原因としては
+</P>
+
+<UL>
+<LI>純粋なバグ
+<LI>太陽の黒点の影響
+<LI>空豆を食べた
+</UL>
+
+<P>
+といったものが考えられます。
+</P>
+
+<H3><A NAME="TROUBLE_WITH_JPERL">特定の文書でインデックス処理が止まってし
+まう</A></H3>
+
+<P>
+Namazu v1.2.0.1 あたりで JPerl 5.004_04 を使っているとそういう現象
+が起こります。新しい Namazu を使ってください。
+</P>
+
+
+<H3><A NAME="SH_NO_COMMAND_FOUND">mknmz を実行すると sh: no:
+  command not found と表示されてうまく動きません</A></H3>
+
+<P>
+Namazu は ./configure の実行時に nkf, kakasi (chasen) のパスを 
+$PATH から検出します。あらかじめ nkf, kakasi (chasen) を $PATH の
+通っているところにインストールしておいてください。
+</P>
+
+<H3><A NAME="MAC_IE">Macintosh の Internet Explorer 4.01 で日本
+  語で検索をかけると結果が化けておかしくなります</A></H3>
+
+<P>
+MSIE 4.01 for Macintosh は、GET メソッドで渡すとき、URL のエンコードが
+一段多いようです。
+本来、「テスト」は <CODE>%1B%24B%25F%259%25H%1B%28B</CODE> とエン
+コードされるべきところが、
+<CODE>%251B%2524B%2525F%25259%2525H%251B%2528B</CODE> のようになっ
+てしまいます。v1.3.0.0 から user agent を確認して対応するようになっ
+ています。
+</P>
+
+<H3><A NAME="JAPANESE_FILENAME">日本語のファイル名に対応していますか</A></H3>
+
+<P>
+v1.2.0.8 以降では Win32, OS/2 ともに日本語のファイル名に対応しまて
+いるはずです。もし問題を見つけたら報告してください。
+</P>
+
+<H3><A NAME="OUTOFMEMORY">mknmz で Out of memory! で止まってしまい
+ます</A></H3>
+<P>
+大きなファイルを処理していると Out of memory! になってしまうことがあります。
+この場合は mknmz の中の <CODE>$FILE_SIZE_LIMIT</CODE> の値を下げると解決すると思われます。
+同じように、たくさんのファイルを処理していると同じように Out of memory! になってしまうかもしれません。
+この場合は mknmz の中の <CODE>$ON_MEMORY_MAX</CODE> の値を下げると解決すると思われます。
+</P>
+
+<P>
+また、v1.2.0 からはフレーズ検索用のインデックスを作成するために以
+前のヴァージョンよりもメモリを多く消費します。フレーズ検索が不要な
+方は mknmz に -P オプションをつけて実行してください。
+</P>
+
+<H3><A NAME="CGI_PROBLEM">CGIとして動かすとわけのわからない文字が大量に表示されるのですが</A></H3>
+<P>
+おそらくそれは CGI として実行されているのではなく、 namazu.cgi の中身がそのまま表示されているのでしょう。 CGI が実行できるようにサーヴァの設定をしてください。
+</P>
+
+
+<H3><A NAME="REGEXP">Makefile の OPT_TARGET_FILE や OPT_DENY_FILE の書き方が分かりません</A></H3>
+<P>
+これは正規表現で指定しています。
+<A HREF="http://www.oreilly.co.jp/BOOK/pperl.htm">プログラミング Perl 改訂版</A> などを参照してください。
+</P>
+
+<H3><A NAME="SUNOS">SunOS4.x + Perl5.003 でインデックスを作ると何か変なんですが</A></H3>
+<P>
+SunOS4.x の memcmp(3) の実装により、 Perl で EUC の日本語文字列を比較する際に
+ unsigned/signed の扱いで問題が発生していたようです。
+この問題は最近の Perl では解決しているそうなので、新しいものを使ってください。
+また、一応 v1.1.1.3 以降の Namazu でも対処するためのコードを入れています。
+</P>
+
+
+<H3><A NAME="MHONARC">mknmz.pl 中に $MHONARC_INDEX_FILE という指定があったと思いましたが</A></H3>
+<P>
+v1.1.1 からは MHonArc v2.1.0 以降ののインデックスファイルを自動認識して除外するようにしました。
+ヘッダを照合して確認しているので古い MHonArc で作ったアーカイヴについては対応していません。
+</P>
+
+<H3><A NAME="MHNARC2">MHonArc の作成するインデックス (maillist.html や threads.html) がスキップされないのですが</A></H3>
+
+<P>
+MHonArc の v2.1.0 より前のヴァージョンのものは自動判別がききません。
+MHonArc のヴァージョンをあげることをお勧めします。
+</P>
+
+<P>
+MHonArcのサイト<BR>
+<A HREF="http://www.oac.uci.edu/indiv/ehood/mhonarc.html">http://www.oac.uci.edu/indiv/ehood/mhonarc.html</A>
+</P>
+
+<H3><A NAME="NMZ">インデックスの名前を変えたいのですが</A></H3>
+<P>
+Namazu はひとつのディレクトリにひとつだけしかインデックスを置けないという仕様になっています。
+ですから、 NMZ.* の名前を変更してもあまりメリットはないと思われます。
+</P>
+
+<H3><A NAME="EFFICIENCY">インデックス作成の効率は?</A></H3>
+
+<H4>加藤@NTT DATAさんの調査</H4>
+
+<UL>
+<LI>計算機: VAIO 505EX/64 (Pentium MMX 233MHz Memory 64MB)
+<LI>データ: Namazu メイリングリストの 1-1075 の記事
+<LI>コマンドとそのオプション： mknmz -a -h (v1.2.1.0-beta-5, KAKASI使用)
+</UL>
+
+<BLOCKQUOTE>
+<P>
+備考: perl,kakasi,nkf はパッケージにあったものを使っています．
+即ち，Linux 側の場合，Plamo-1.0 にあったそのまんまのモノを，
+Windows95 側の場合，広瀬さんのページにあったバイナリーそのまんまのモノ
+を使っています．実は，意外と，コンパイラの性能が速度要因の重要な因子に
+なるので，その点は注意が必要です (それで泣かされたことが何回あったか 
+</P>
+</BLOCKQUOTE>
+
+<DL>
+<DT><A HREF="http://www.linet.gr.jp/%7Ekojima/Plamo/index.html">Plamo Linux</A> 1.0
+  <DD>1回目: 438 sec.
+  <DD>2回目: 460 sec.
+<DT>Windows 95 4.00.950B
+  <DD>1回目: 574 sec.
+  <DD>2回目: 550 sec.
+</DL>
+
+<H4>広瀬@NECエンジニアリングさんの調査</H4>
+
+<UL>
+<LI>計算機: GIGABYTE GA586SGX512 + chipset: SiS5591 + cpu: AMD k6 233MHz + mem: 128MB SDRAM + scsi: TAKRAM DC-390
+<LI>データ: Namazu メイリングリストの 1-1075 の記事
+<LI>コマンドとそのオプション： mknmz -a -h (v1.2.1.0-beta-7, KAKASI使用)
+</UL>
+
+<DL>
+<DT><A HREF="http://www.jp.FreeBSD.ORG/">FreeBSD</A> 2.2.6-RELEASE
+  <DD>1回目: 392 sec.
+  <DD>2回目: 391 sec.
+<DT>Windows 98
+  <DD>1回目: 457 sec.
+  <DD>2回目: 454 sec.
+</DL>
+
+<H2><A NAME="MAKE_SMALL_INDEX">インデックスのサイズを小さくしたい</A></H2>
+
+<P>
+mknmz実行時に
+</P>
+
+<UL>
+<LI>-u: uuencode と BinHex の部分を無視する
+<LI>-H: 平仮名のみの単語は登録しない (ディフォルトでは登録を行う)
+<LI>-G: 送り仮名を削除する (ディフォルトでは含める)
+<LI>-K: 記号はすべて削除する (ディフォルトでは登録を行う)
+<LI>-P: フレーズ検索用のインデックスを作成しない (ディフォルトでは作成する)
+<LI>-R: 正規表現検索用のインデックスを作成しない (ディフォルトでは作成する)
+<LI>-X: フィールド検索用のインデックスを作らない (ディフォルトでは作成する) -- v1.2.1.0 以降
+</UL>
+
+<P>
+といったオプションをつけてください。サイズ、作成時間ともに半分
+以下程度に短縮するものと思われます。
+</P>
+
+
+<H3><A NAME="PATHNAME_AND_ENTITY">wget で取得してきたファイルのパス名に '%7E' が含まれて困ります</A></H3>
+
+<P>
+Namazuはインデックス作成時に、パス名に含まれる記号類を URL風に '
+%xx' としてエンコードして記録します。ゆえにパス名に含まれる '%7Efoo' は
+'%257Efoo' のように '%' の部分が '%25' に変換され、嬉しくない結果となります。
+</P>
+
+<P>
+このような場合は mknmz 実行時に -U オプションをつけてパス名のエン
+コードを行わないようにします。 '%7E' はそのまま '%7E' として記録さ
+れます。
+</P>
+
+<H3><A NAME="UNINITIALIZED_VALUE">Use of uninitialized value at 
+  /usr/local/bin/mknmz line xxxx なんてメッセージが表示されます</A></H3>
+
+<P>
+これは Perl の出力するウォーニングです。特に実害はないと思います。 
+mknmz の一行目から '-w' を取り除くと消えるはずです。Perlのヴァージョ
+ンによってウォーニングが出たりでなかったりします。</P>
+
+
+<H2><A NAME="WIN32">Windows 95/NT 関連</A></H2>
+
+<H3><A NAME="COMMAND_NOT_FOUND">mknmz の実行中に「コマンドまたはファイル名が違います」と言われます</A></H3>
+<P>
+<A HREF="http://spock.vector.co.jp/authors/VA002468/nkf32.htm">nkf32</A>と
+kakasi がパスの通ったところに置かれているか確認してください。
+</P>
+
+<H3><A NAME="MSWORD">MS-Wordの文書をインデックスしたいのですが</A></H3>
+<P>
+Word 98の文書なら
+<A
+HREF="http://www.csn.ul.ie/%7Ecaolan/docs/MSWordView.html">MSWordView,
+MSWord 8 converter for unix</a>で HTMLに変換して扱えるようです。変
+換結果は UTF-8 のエンコーディングで出力されるそうなので<A
+HREF="ftp://ftp.st.ryukoku.ac.jp/pub/utils/code-conv/tcs.shar.Z">tcs</A>
+を用いると良いでしょう。
+</P>
+
+<H2><A NAME="JAPANESE_PROCESSING">日本語処理関連</A></H2>
+
+<H3><A NAME="KAKASI_OR_CHASEN">KAKASI と Chasen のどちらを使うべきでしょう</A></H3>
+<P>
+辞書のメンテナンスが容易なこと、動作が軽いことを考えると KAKASI の方が扱いやすいように思われます。
+もちろん本格的な日本語の処理を行うには ChaSen の方が向いています。
+</P>
+
+
+<H3><A NAME="KAKASI_DIC">KAKASI の辞書を拡張したいのですが</A></H3>
+<P>
+KAKASI付属の kakasidict (テキストファイル) に単語を追加して
+KAKASI の make 時に一緒に作られた mkkanwa というプログラムを使って
+バイナリ形式の辞書に変
+換します。
+出来上がった辞書は kanwadict という名前で
+/usr/local/lib/kakasi あたりにコピーすればよいでしょう。
+</P>
+
+<P>
+フリーのかな漢字変換用辞書については馬場肇@京大さんによる
+<A HREF="http://www.kusastro.kyoto-u.ac.jp/%7Ebaba/dic/free-dic.html">Freely available dictionaries for kana-kanji conversion</a>
+に情報がまとまっています。
+</P>
+
+
+<H3><A NAME="JISYO">字書? 辞書?</A></H3>
+<P>
+一時期、ドキュメントの中で (かな漢字変換用の) 「字書」という表記を使っていましたが、一般的な「辞書」に戻しました。
+深い理由はないです。
+</P>
+
+<H2><A NAME="MHONARC_MIME">MHonArc で処理するときにヘッダの MIME encode をデコードさせたいのですが</A></H2>
+
+<P>
+<A HREF="http://www.oac.uci.edu/indiv/ehood/mhonarc.html">MHonArc</A>
+2.2.0に眞柄さんが作成された<A
+HREF="http://openlab.ring.gr.jp/namazu/contrib/MHonArc-2.2.0-Japanize-Namazu.patch-1.3a.gz">日本語化パッチ</A>をあててください。
+</P>
+
+
+<P>
+あるいは MHonArc 側で nkf を通す方法もありますが、上記の MHonArc の日本語化パッチを適用することをお勧めします。
+</P>
+
+
+<H2>文責</H2>
+
+<UL>
+<LI><STRONG>氏名:</STRONG> 高林 哲 Satoru Takabayashi
+<LI><STRONG>email:</STRONG> <A HREF="mailto:ccsatoru@vega.aichi-u.ac.jp">ccsatoru@vega.aichi-u.ac.jp</A>
+</UL>
+
+<HR>
+<P>
+email: <A HREF="mailto:ccsatoru@vega.aichi-u.ac.jp">ccsatoru@vega.aichi-u.ac.jp</A><BR>
+Namazu のページ: <A HREF="http://openlab.ring.gr.jp/namazu/">http://openlab.ring.gr.jp/namazu/</A>
+</P>
+<ADDRESS>
+ccsatoru@vega.aichi-u.ac.jp
+</ADDRESS>
+</BODY>
+</HTML>

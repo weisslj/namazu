@@ -1,0 +1,2408 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN"
+        "http://www.w3.org/TR/REC-html40/strict.dtd">
+<HTML>
+<HEAD>
+<LINK REV=MADE HREF="mailto:ccsatoru@vega.aichi-u.ac.jp">
+<TITLE>Manual of Namazu</TITLE>
+</HEAD>
+<BODY LANG="ja">
+<H1>全文検索システム Namazu Version 1.3.0.7 説明書</H1>
+<P> Last Modified: 3/15/1999
+</P>
+<HR>
+
+<H2><A NAME="README1ST">はじめに</A></H2>
+
+<P>
+このファイルは主にプログラムの使い方をまとめたマニュアルです。
+ソフトウェアの概要に関するドキュメントは <A HREF="intro.html">intro.html</A> の方を参照してください。
+このプログラムは <A HREF="COPYING">GPL2</A> に従ったフリーソフトウェアです。
+著作権は高林哲が保有します。
+完全に無保証ですので運用は個人の責任で行って下さい。
+バグの発見や Namazu をこんな風に使っています、というような報告を頂けるとありがたいです。
+</P>
+
+
+<H2><A NAME="INDEX">目次</A></H2>
+
+<UL>
+<LI><A HREF="#README1ST">はじめに</A>
+<LI><A HREF="#INDEX">目次</A>
+<LI><A HREF="#LATEST">Namazu の最新情報を得るには</A>
+<LI><A HREF="#VERSIONDIFF">ヴァージョンの違いについて</A>
+<LI><A HREF="#SYSTEM_REQUIREMENTS">動作環境</A>
+  <UL>
+  <LI><A HREF="#NECESSARYSOFT">動作に必要なソフトウェア</A>
+  <LI><A HREF="#USEFULSOFT">あると便利なソフトウェア</A>
+  <LI><A HREF="#HANDLING_JAPANESE">KAKASI/ChaSen について</A>
+  <LI><A HREF="#FREEDIC">フリーの辞書のポインタ集</A>
+  </UL>
+<LI><A HREF="#KNOWNENV">動作の確認されている環境</A>
+  <UL>
+  <LI><A HREF="#ENV_OS">OS</A>
+  <LI><A HREF="#ENV_C">C コンパイラ</A>
+  <LI><A HREF="#ENV_PERL">Perl</A>
+  <LI><A HREF="#ENV_HTTPD">HTTP Server</A>
+  <LI><A HREF="#ON_WIN32">Win32 での動作について</A>
+  <LI><A HREF="#ON_OS2">OS/2 での動作について</A>
+  </UL>
+<LI><A HREF="#INSTALL">インストールの方法</A>
+  <UL>
+  <LI><A HREF="#INSTALL_FROM_SOURCE">ソースからインストールする</A>
+    <UL>
+    <LI><A HREF="#EXTRACT">アーカイヴの展開</A>
+    <LI><A HREF="#CONFIGURE">configure の実行</A>
+    <LI><A HREF="#MAKEFILE">Makefile の編集</A>
+    <LI><A HREF="#MAKE">make</A>
+  </UL>
+  <LI><A HREF="#INSTALL_FROM_BINARY_PACKAGE">バイナリパッケージの場合</A>
+    <UL>
+    <LI><A HREF="#BINARY_PACKAGE_WIN32">Win32 用のバイナリパッケージを用いる</A>
+    </UL>
+  </UL>
+<LI><A HREF="#USAGE">使い方</A>
+  <UL>
+  <LI><A HREF="#USAGE_GENERAL">基本編</A>
+  <LI><A HREF="#USAGE_CGI">CGI として使う</A>
+  <LI><A HREF="#MKNMZ_OPT">mknmz のコマンドラインオプション</A>
+  <LI><A HREF="#PERL_VERSION">Perl 版の検索クライアントを使う</A>
+  <LI><A HREF="#NAMAZU_OPT">namazu のコマンドラインオプション</A>
+  <LI><A HREF="#NAMAZU_CONF">namazu.conf での設定について</A>
+  </UL>
+<LI><A HREF="#SEARCH">実際の検索に役立てる</A>
+  <UL>
+  <LI><A HREF="#SEARCH_ON_COMMAND_LINE">コマンドラインから検索する</A>
+  <LI><A HREF="#SEARCH_ON_CGI">http を通して CGI として検索する</A>
+  <LI><A HREF="#SEARCH_ON_LYNXCGI">http を通さず Lynx から検索する</A>
+  <LI><A HREF="#SEARCH_ON_MULE">Mule から検索する</A>
+  <LI><A HREF="#SEARCH_ON_X">X Window System から検索する</A>
+  <LI><A HREF="#SEARCH_ON_WIN32">Windows 95/NT から検索する</A>
+  <LI><A HREF="#SEARCH_ON_JAVA">Java 版検索クライアントを使う</A>
+  </UL>
+<LI><A HREF="#TIPS">雑多な情報</A>
+  <UL>
+  <LI><A HREF="#NMZ">NMZ.* ファイルの説明</A>
+  <LI><A HREF="#LOG">検索されたキーワードのログ</A>
+  <LI><A HREF="#INDEX_SIZE">作成されるインデックスのサイズ</A>
+  <LI><A HREF="#WHILE_INDEXING">インデックスの更新最中の検索</A>
+  <LI><A HREF="#WHEN_CONFUSED">インデックスの作成/更新に混乱したら</A>
+  <LI><A HREF="#KEYLIST">インデックスに登録されているキーワードを調べるには</A>
+  <LI><A HREF="#BYTE_ORDER">バイトオーダの違いについて</A>
+  <LI><A HREF="#ENGLISH_MSG">英語でメッセージを表示させたい</A>
+  <LI><A HREF="#CUSTOMIZE">カスタマイズ</A>
+  <LI><A HREF="#MAILLIST">メイリングリスト/Newsのアーカイヴの全文検索システムを作成するには</A>
+  <LI><A HREF="#MAN">man の全文検索システムを作成するには</A>
+  <LI><A HREF="#MKNMZ-F">mknmz -F オプションを活用する</A>
+  <LI><A HREF="#ROBOTS-TXT">/robots.txt で指定されたファイルを対象から除外する</A>
+  </UL>
+<LI><A HREF="#FORM">Namazu の用いる &lt;FORM&gt;の形式</A>
+  <UL>
+  <LI><A HREF="#WHYGET">なぜ GET なのか</A>
+  <LI><A HREF="#OUTFORM">結果表示の件数と出力フォーマット</A>
+  <LI><A HREF="#DBNAME">ブラウザからインデックスを指定する方法</A>
+  <LI><A HREF="#MULTIPLE_INDICES">複数のインデックスに検索をかける方法</A>
+  <LI><A HREF="#SUBQUERY">検索対象のURLを制限する方法</A>
+  </UL>
+<LI><A HREF="#IMPLIMENTATION">Namazu の設計と実装</A>
+  <UL>
+  <LI><A HREF="#QUERY">検索式</A>
+  <LI><A HREF="#DIGEST">HTML タグによる文書の要約の作成</A>
+  <LI><A HREF="#TAGSCORING">HTML タグによるスコアの重みづけルール</A>
+  <LI><A HREF="#HTMLTAG">その他 HTML タグの処理</A>
+  <LI><A HREF="#LINE">行頭行末の処理</A>
+  <LI><A HREF="#MAILNEWS">Mail/News の要約作成</A>
+  <LI><A HREF="#CHARSET">文字コードの扱い</A>
+  <LI><A HREF="#HTML">出力する HTML について</A>
+  <LI><A HREF="#ANDOR">アンド/オア検索時のスコア計算</A>
+    <UL>
+    <LI><A HREF="#TFIDF">tf idf法によるスコアの計算</A>
+    <LI><A HREF="#OBSOLETE_SCORING">従来のスコアの計算</A>
+  </UL>
+  <LI><A HREF="#MORPH">ChaSen による品詞情報の利用</A>
+  <LI><A HREF="#SYMBOL">記号を含む単語のインデックス処理</A>
+  <LI><A HREF="#ALGORITHM">Namazu の検索アルゴリズム</A>
+  <LI><A HREF="#REGEXP_SEARCH">正規表現/後方一致/中間一致検索の実装</A>
+  <LI><A HREF="#PHRASE_SEARCH">(あやしげな)フレイズ検索の実装</A>
+  <LI><A HREF="#FIELD_SEARCH">フィールド指定の検索の実装</A>
+  <LI><A HREF="#SORT_BY_DATE">文書の日付による検索結果の新しい順/古い順のソート</A>
+  <LI><A HREF="#WAKATIGAKI">検索時の日本語のわかち書き</A>
+  <LI><A HREF="#PROBLEM">プログラムの問題点</A>
+  </UL>
+<LI><A HREF="#FEATURE">Namazu の仕様</A>
+  <UL>
+  <LI><A HREF="#TECHFEATURE">主な技術仕様</A>
+  <LI><A HREF="#MAINFEATURE">プログラムの主な仕様</A>
+  <LI><A HREF="#HTMLFEATURE">出力する HTML の仕様</A>
+  </UL>
+<LI><A HREF="#TODO">今後の予定</A>
+<LI><A HREF="#THANKS">謝辞</A>
+<LI><A HREF="#COMMENT">最後に</A>
+<LI><A HREF="#BIBLIOGRAPHY">参考文献</A>
+<LI><A HREF="#CHANGELOG">プログラムの履歴</A>
+<LI><A HREF="#AUTHOR">文責</A>
+</UL>
+
+
+
+<H2><A NAME="LATEST">Namazu の最新情報を得るには</A></H2>
+
+<P>
+<A HREF="http://openlab.ring.gr.jp/namazu/">http://openlab.ring.gr.jp/namazu/</A> に Namazu のペイジがあります。
+</P>
+
+<H2><A NAME="VERSIONDIFF">ヴァージョンの違いについて</A></H2>
+
+<P>
+RFCのインデックスが異常に遅かったバグを修正しました。そのほ
+かいくつかの細かいバグを修正しています。詳しくは ChangeLog 
+を参照してください。
+</P>
+
+<P>
+v1.3.0.5 では ChaSen を使ったときに発生するキーワードの重みづけの
+バグを直しました。日本語のわかち書きに ChaSen を使っている方はぜひ 
+v1.3.0.5 にヴァージョンを上げてください。
+</P>
+
+<P>
+v1.3.0.4 では、 NMZ.log の Total Files: の値が変だったバグを修正し
+ました。この変更によって v1.3.0.4 より前のヴァージョンで作ったイン
+デックスを更新すると NMZ.head.{ja,en} の「現在 xxx のファイルがイ
+ンデックス化され」の数値がおかしくなるかもしれません。その場合は添
+付の gtnmz を
+</P>
+
+<PRE>
+    % gtnmz NMZ.r
+</PRE>
+
+<P>
+と実行して得られる数値をNMZ.total に同じ値を書き込み、 
+NMZ.head.{en,ja} の該当位置に埋め込んでください。
+</P>
+
+<P>
+v1.3.0.0 では<A HREF="#UPDATE_INDEX">文書の更新/削除に対応したイン
+デックスのアップデート</A>ができるようになりました。ウェブペイジな
+どを対象とする場合に便利です。ゴミ掃除機の gcnmz (古川@ヤマハさ
+ん作)もあります。
+</P>
+
+<P>
+v1.3.0.0 では<A HREF="#SORT_BY_DATE">文書の日付による検索結果の新しい順/古い順のソート</A>ができるようになりました。
+</P>
+
+<P>
+v1.3.0.0 では<A HREF="#FIELD_SEARCH">フィールド指定の検索</A>
+ができるようになりました。
+Mail/News を検索する際に便利です。
+この機能は v1.3.0.0 で作ったインデックスでなければ使えません
+(NMZ.field.{subject,from,message-id} といったファイルが必要)。
+</P>
+
+<P>
+従来のインデックスも扱うことはできますが、 v1.3.0.0 の新機能を発揮
+するためにもインデックスを作り直すことをお勧めします。
+</P>
+
+<P>
+その他の変更点については <A HREF="./ChangeLog">ChangeLog</A> を参照してください。
+</P>
+
+
+<H2><A NAME="SYSTEM_REQUIREMENTS">動作環境</A></H2>
+
+<UL>
+<LI>UNIX 系の OS
+<LI>Win32 (Windows NT/95)
+<LI>OS/2
+<LI>CGI をサポートした httpd が動いていること (CGI として使う場合)
+<LI>CGI を使える権限を持っていること (CGI として使う場合)
+<LI>メモリは多い方が良い (32 MB程度はないとつらいでしょう)
+<LI>たくさんのディスク容量を使える権限を持っていること<BR>
+(KAKASI の辞書だけでも 2 MB は必要です)
+</UL>
+
+<H3><A NAME="NECESSARYSOFT">動作に必要なソフトウェア</A></H3>
+
+<UL>
+<LI>Perl 5.003 以降 (jperl でも大丈夫のようです)<BR>
+一部の perl では日本語 EUC の文字列のソートが正しく行えないものがあるようです。
+ v1.0.2 からはこの不具合を吸収するルーチンを組み込みました (古川@ヤマハさんにコードを頂きました) 。
+<LI>gcc   (OS 標準の cc では通らないかもしれません)<BR>
+(<A HREF="#PERL_VERSION">Perl 版の検索クライアント</A> を用いる場合には不要です)
+<LI>京都大学の馬場肇さんによるパッチをあてた -w オプションの使える KAKASI<BR>
+または、奈良先端科学技術大学院大学の <A HREF="http://cactus.aist-nara.ac.jp/lab/nlt/chasen.html">ChaSen</A> (v1.51 で確認しています)
+<LI>ネットワーク用漢字コード変換フィルタ  nkf v1.62 (-Z1 オプションの使えるもの) 
+</UL>
+
+<H3><A NAME="USEFULSOFT">あると便利なソフトウェア</A></H3>
+
+<UL>
+<LI><A HREF="http://www.mechatronics.mech.tohoku.ac.jp/%7Ekumagai/bins/kuma/httpdown30.html">httpdown</A>,
+<LI><A HREF="http://www.oac.uci.edu/indiv/ehood/mhonarc.html">MHonArc</A><BR>
+(<A HREF="#MAILLIST">メイリングリスト/Newsのアーカイヴの全文検索システムを作成するには</A>を参照)
+</UL>
+
+
+<H3><A NAME="HANDLING_JAPANESE">KAKASI/ChaSen について</A></H3>
+
+<P>日本語を扱うために KAKASI または ChaSen を必要とします。
+ KAKASI を用いる場合は、京都大学の馬場肇さんが作成された「わかち書きパッチ」をあてた KAKASI でなければなりません。
+FreeBSD の ports に収録されている KAKASI は FreeBSD 2.2.5-RELEASE から「わかち書きパッチ」が当たっているようです。
+
+このパッチは元々 freeWAIS-sf を日本語化するために作成されたもので、馬場さんの <A HREF="http://www.kusastro.kyoto-u.ac.jp/%7Ebaba/wais/">freeWAIS-sf japanization information</A> から情報が手に入ります。
+
+</P>
+
+<P>
+このパッチは 09/02/1997 付けで更新され、 kakasi -Ea -w と実行したときの小さなバグが取れました。
+ Namazu ではこのバグを吸収するルーチンをいれてありますが、 KAKASI 自身を新しくしたほうが良いでしょう。
+
+</P>
+
+<P>
+KAKASI (with wakatigaki mode) を作成するには
+<A
+HREF="ftp://ftp.kusastro.kyoto-u.ac.jp/pub/baba/wais/kakasi-2.2.5.tar.gz">
+kakasi-2.2.5.tar.gz</A>
+ (約 47 KB),  
+<A
+HREF="ftp://ftp.kusastro.kyoto-u.ac.jp/pub/baba/wais/kakasidict.940620.gz">
+kakasi-ext.tar.gz</A> (約 7 KB), 
+<A
+HREF="ftp://ftp.kusastro.kyoto-u.ac.jp/pub/baba/wais/kakasi-ext.tar.gz">
+kakasidict.940620.gz</A> (約 870 KB)
+ の 3 つのファイルを get してソースにパッチをあてた後で make をします。
+実際の手順については KAKASI のドキュメントを参照してください。
+
+</P>
+
+<P>
+ChaSen は奈良先端科学技術大学院大学で開発された本格的な日本語の形態素解析を行うソフトウェアです。
+単純にわかち書き出力をさせる分には KAKASI と比べて品質にそれほど差はないようですが、品詞情報の抽出を行えるためきめの細かい日本語処理を行うことができます。
+ChaSen を使用するには必要なファイルを <A HREF="http://cactus.aist-nara.ac.jp/lab/nlt/chasen.html">http://cactus.aist-nara.ac.jp/lab/nlt/chasen.html</A> から取得してドキュメントに従って make してください。
+
+</P>
+
+<P>
+両者を比べると、処理速度は KAKASI の方が高速です。
+また、展開後の辞書のサイズは ChaSen が 約 7 MB, KAKASI が約 2 MB になります。
+ディフォルトでは KAKASI を用いるものとして設定してあるため、 ChaSen を用いるにはいくつかの注意が必要です。
+ドキュメントをよく読むようにしてください。
+ ChaSen による品詞情報を利用した処理を行う効果については <A HREF="#MORPH">ChaSen による品詞情報の利用</A>を参照してください。
+現在はまだ実験段階です。
+
+</P>
+
+<P>
+日本語のインデックス処理の品質は用いる辞書に依存します。
+ KAKASI の標準の辞書は 10 万語以上の単語が登録されているので、ごく標準的な文章ならば特に不満もなく使えると思われますが、人名、地名、専門用語などについてはどうしても弱くなります。
+この欠点を補うために KAKASI では辞書の強化が比較的容易に行えるようになっており、フリーの専門用語辞書なども出回っているようですから、それらを用いることをお勧めします。
+この辺りの問題点については馬場さんの <A HREF="http://www.kusastro.kyoto-u.ac.jp/%7Ebaba/wais/">freeWAIS-sf japanization information</A> の<A HREF="http://www.kusastro.kyoto-u.ac.jp/%7Ebaba/wais/#limitation">日本語化パッチの問題点</A>の章に詳しいです。
+
+</P>
+
+<H3><A NAME="FREEDIC">フリーの辞書のポインタ集</A></H3>
+
+<P>
+中には条件によって使用制限があるものもあるかもしれません。
+よくドキュメントを読んでから使用した方が良いでしょう。
+
+</P>
+
+<UL>
+<LI><A HREF="http://www.kusastro.kyoto-u.ac.jp/%7Ebaba/dic/free-dic.html">Freely available dictionaries for kana-kanji conversion</A><BR>
+(京大の馬場さんによるリストです。さすがに充実しています)
+<LI><A HREF="http://www.vector.co.jp/vpack/filearea/data/writing/dic/index.html">Vector Software Pack の辞書のカテゴリ</A>
+<LI><A HREF="http://www.ryukyu.ad.jp/%7Eshin/o-dic/">Okinawa dictionary / 沖縄辞書</A>
+<LI><A HREF="ftp://ftp.wg.omron.co.jp/pub/Wnn/dic/">ftp://ftp.wg.omron.co.jp/pub/Wnn/dic/</A>
+</UL>
+
+
+<H2><A NAME="KNOWNENV">動作の確認されている環境</A></H2>
+
+<P>
+過去に一度でも Namazu の動いたことのある環境です。
+もしかしたら Namazu の新しい版では動かないかもしれません…。
+</P>
+
+<H3><A NAME="ENV_OS">OS</A></H3>
+<UL>
+<LI>Linux 2.0.18, 2.0.30, 2.0.32, 2.0.33
+<LI>mklinux DR2.1 update4
+<LI>FreeBSD 2.2.1-RELEASE, FreeBSD 2.2.5-RELEASE, FreeBSD 2.2.6-RELEASE
+<LI>SunOS 4.1.3-JLE1.1.3_U1, sposk 4.1.4-JL 1, 4.1.4-JLE1.1.4, 5.4
+<LI>日本語 Solaris 2.5.1, 2.6
+<LI>IRIX 5.3, 6.2
+<LI>HP-UX 10.20
+<LI>OSF/1 V1.3, V3.2 (on DEC AlphaStation)
+<LI>Digital UNIX 4.0B
+<LI>DG/UX 5.4R2.10
+<LI>BSD/OS 2.1
+<LI>EWS-UX/V (Rel4.2) (NEC EWS4800/360)
+</UL>
+
+<H3><A NAME="ENV_C">C コンパイラ</A></H3>
+<UL>
+<LI>gcc 2.5.8, 2.6.3, 2.7.2, 2.7.2.1, 2.7.2.2, 2.7.2.3, 2.8.1
+</UL>
+
+<H3><A NAME="ENV_PERL">Perl</A></H3>
+<UL>
+<LI>perl 5.003, 5.003 with Japanization Patch 4, 5.004_1, 5.004_03, 5.004_04, 5.005_02
+</UL>
+
+<H3><A NAME="ENV_HTTPD">HTTP Server</A></H3>
+<UL>
+<LI>apache 1.1.3, 1.2.0, 1.2.1, 1.2.4, 1.3b3, 1.3b6, 1.2.0
+<LI>NCSA HTTPd NCSA/1.5.2
+<LI>JavaWebServer 1.0.1
+<LI>CERN httpd 3.0A
+<LI>Netscape-Commerce/1.1
+</UL>
+
+
+
+<P>上記以外の環境で動作に成功された方は<A HREF="mailto:ccsatoru@vega.aichi-u.ac.jp">私</A>の方までぜひ御連絡ください。
+</P>
+
+
+<H3><A NAME="ON_WIN32">Win32 での動作について</A></H3>
+
+<P>
+Win32 で make するのは結構大変です。わざわざ make しなくても
+<A HREF="intro.html#BINARY_PACKAGE_WIN32">Win32 用のバイナリパッケージ</A> を使えば比較的容易に動かすことができます。
+その場合については<A HREF="#BINARY_PACKAGE_WIN32">Win32 用のバイナリパッケージを用いる</A>の項を参照してください。
+</P>
+
+<P>
+ソースから自分で make するにはまず、
+</P>
+
+<UL>
+<LI>Perl for Win32
+<LI><A HREF="http://www.cygnus.com/misc/gnu-win32/">GNU Win32</A> (usertools.exe &amp; cdk.exe)
+<LI><A HREF="http://www.tama.or.jp/%7Ekenzo-/Namazu/kks225w3.exe">kks225w3.exe</A><BR>
+(<A HREF="http://cactus.aist-nara.ac.jp/lab/nlt/chasen.html">ChaSen</A> for Windows95 Version1.0 の対応はやめました)
+<LI><A HREF="http://spock.vector.co.jp/authors/VA002468/">nkf 1.62 for Win32</A>
+</UL>
+
+<P>
+といったソフトウェアを集めてきてインストールする必要があります。
+Perl for Win32 は <A HREF="ftp://ftp.lab.kdd.co.jp/lang/perl/CPAN/CPAN.html">CPAN</A> の ports/win32/ActiveWare/Release/Pw32i315.exe で動作確認しました。
+さらにこれらとは別に日本語 EUC, JIS コード対応のエディタ (Mule for Win32 や秀丸) もあった方が良いでしょう。
+Web Server としては <A HREF="http://www.apache.org/">Apache-1.3b3-win32</A>, 
+<A HREF="http://www.fas.harvard.edu/%7Eglau/httpd/">OMNI HTTPD</A>, <A HREF="http://www.wpi.edu/%7Ezik/fnord/">fnord 1.0.0.23</A>,
+<A HREF="http://www.st.rim.or.jp/%7Enakata/">ANhttpd</A> あたりが使えるようです。
+</P>
+
+<H3><A NAME="ON_OS2">OS/2 での動作について</A></H3>
+
+<P>
+OS/2 への移植は清水@住友林業さんが行ってくれました。動作には
+</P>
+
+<UL>
+<LI><A HREF="http://spock.vector.co.jp/authors/VA002468/nkf2.htm">OS/2版の nkf v1.62</A>
+<LI>emx gcc
+<LI>OS/2 版の Perl5
+<LI><A HREF="http://www.dd.iij4u.or.jp/%7Ekshimz/warp/index.html">OS/2 用パッチ</A>をあてた KAKASI
+</UL>
+
+<P>
+が必要になります。 Makefile は専用の Makefile.OS2 が用意されていますのでこちらをご利用下さい。
+OS/2 での動作については<A HREF="http://www.dd.iij4u.or.jp/%7Ekshimz/warp/index.html">清水さんのウェブペイジ</A> に情報があります。
+</P>
+
+
+
+<H2><A NAME="INSTALL">インストールの方法</A></H2>
+
+<H3><A NAME="INSTALL_FROM_SOURCE">ソースからインストールする</A></H3>
+
+<H4><A NAME="EXTRACT">アーカイヴの展開</A></H4>
+
+<P>まずはアーカイヴを展開します。GNU 版の tar なら</P>
+
+<P><CODE>tar xzvf </CODE><VAR>namazu-xxx.tar.gz</VAR></P>
+
+<P>そうでなければ</P>
+
+<P><CODE>gunzip -c </CODE><VAR>namazu-xxx.tar.gz</VAR><CODE>| tar xvf -</CODE><BR>
+<CODE>zcat </CODE><VAR>namazu-xxx.tar.gz</VAR><CODE> | tar xvf -</CODE></P>
+
+<P>のようにしてファイルを展開してます。</P>
+
+<H4><A NAME="CONFIGURE">configure の実行</A></H4>
+<P>
+v1.2.0 からは configure が添付されました。まず最初に
+</P>
+
+<P><CODE>./configure</CODE></P>
+
+<P>
+のように実行して Makefile を作成します。 Perl, KAKASI/ChaSen, nkf のパスは自動検出します。
+</P>
+
+<P>
+通常は configure の作成した Makefile がそのまま使えますから何も修正しないで make を実行して構いません。編集したい場合は次の項を参照してください。もっとも単純な Namazu のインストール方法は以下の通りです。
+</P>
+
+<P>
+<CODE>./configure</CODE><BR>
+<CODE>make</CODE><BR>
+(必要に応じて root になって)<BR>
+<CODE>make install</CODE><BR>
+</P>
+
+<P>
+
+大抵はこれでうまくいくと思います。何か問題が発生した場合はお使いの
+環境やエラーメッセージなどの詳しいレポートを私の方まで送ってもらえ
+れば対応できるかもしれません。
+
+</P>
+
+
+<H4><A NAME="MAKEFILE">Makefile の編集</A></H4>
+<P>
+v1.1.0 からは Makefile を編集してインストールします (原型は佐藤文優@cij.co.jp さんが作ってくださいました Thanks!)。必要に応じて
+</P>
+
+<P>
+<CODE>
+BASEDIR         = /usr/local<BR>
+CGIDIR          = $(BASEDIR)/etc/httpd/cgi-bin<BR>
+NAMAZUDIR       = $(BASEDIR)/namazu<BR>
+BINDIR_SYS	= $(BASEDIR)/bin<BR>
+BINDIR          = $(NAMAZUDIR)/bin<BR>
+INDEXDIR        = $(NAMAZUDIR)/index<BR>
+DOCDIR          = $(NAMAZUDIR)/doc<BR>
+LIBDIR          = $(NAMAZUDIR)/lib<BR>
+OPT_NAMAZU_CONF = $LIBDIR/namazu.conf<BR>
+OPT_URL_CGIBIN  = /cgi-bin<BR>
+OPT_ADMIN_EMAIL = webmaster@foo.bar.jp<BR>
+<BR>
+OPT_PATH_PERL   = /usr/bin/perl<BR>
+OPT_PATH_NKF    = /usr/local/bin/nkf<BR>
+OPT_PATH_KAKASI = /usr/local/bin/kakasi<BR>
+OPT_PATH_CHASEN = /usr/local/bin/chasen<BR>
+WAKATI          = KAKASI<BR>
+LANG	= ja<BR>
+</CODE>
+</P>
+
+<P>
+あたりを自分のサイトに合わせて変更します。それぞれ
+</P>
+
+<DL>
+<DT><CODE>CGIDIR = $(BASEDIR)/etc/httpd/cgi-bin</CODE>
+    <DD>namazu.cgi をインストールするディレクトリ。
+<DT><CODE>NAMAZUDIR = $(BASEDIR)/namazu</CODE>
+    <DD>Namazu をインストールするディレクトリ。
+<DT><CODE>BINDIR_SYS = $(BASEDIR)/bin</CODE>
+    <DD>Namazu の検索コマンド namazu をインストールするディレクトリ。<BR>
+(検索コマンドだけは /usr/local/bin などにも入れて欲しいです)
+<DT><CODE>BINDIR = $(NAMAZUDIR)/bin</CODE>
+    <DD>Namazu の実行ファイル (namazu, mknmz, wdnmz) をインストールするディレクトリ。
+<DT><CODE>INDEXDIR = $(NAMAZUDIR)/index</CODE>
+    <DD>mknmz によって作成され、namazu.cgi が参照するインデックスを格納するディレクトリ。
+<DT><CODE>DOCDIR = $(NAMAZUDIR)/doc</CODE>
+    <DD>Namazu ドキュメント類 (このファイルなど) を格納するディレクトリ
+<DT><CODE>LIBDIR = $(NAMAZUDIR)/lib</CODE>
+    <DD>Namazu のライブラリなどを格納するディレクトリ
+<DT><CODE>CONTRIBDIR = $(NAMAZUDIR)/contrib</CODE>
+    <DD>contribute して頂いたプログラム類を格納するディレクトリ
+<DT><CODE>OPT_NAMAZU_CONF = $(LIBDIR)/namazu.conf</CODE>
+    <DD><A HREF="#NAMAZU_CONF">namazu.conf</A> (設定ファイル) のパスを指定します。
+<DT><CODE>URL_CGIBIN = /cgi-bin</CODE>
+    <DD>namazu.cgi をアクセスするための相対 URL。この URL に `/namazu.cgi' が付加されて使用される。
+<DT><CODE>OPT_ADMIN_EMAIL = ccsatoru@vega.aichi-u.ac.jp</CODE>
+    <DD>検索エンジン管理者のメイルアドレスを設定します
+<DT><CODE>OPT_PATH_*</CODE>
+    <DD>それぞれのプログラムの場所の指定 (KAKASI と ChaSen はどちらか片方あれば OK です)
+<DT><CODE>WAKATI          = KAKASI</CODE>
+    <DD>日本語の処理に KAKASI を使うという意味です。
+<DT><CODE>LANG         = ja</CODE>
+    <DD>表示メッセージの言語を ja or en で指定します。
+</DL>
+
+<P>
+となっています。 Makefile 自体にコメントをいれているのでそちらも参照してください。
+Makefile で指定できない細かい設定をする場合は直接ソースを修正することになります。
+</P>
+
+<H4><A NAME="MAKE">make</A></H4>
+
+<P>
+make には sed が必要です。また、 Win32 の場合は \bin に GNU-Win32 の sh.exe を置いておく必要があります。 Namazu の make は基本的には
+</P>
+
+<DL>
+<DT>1.ゴミ掃除をする
+    <DD><CODE>make clean</CODE>
+<DT>2.Namazu を作る
+    <DD><CODE>make</CODE>
+<DT>4.Namazu をインストール
+    <DD><CODE>make install</CODE>
+</DL>
+
+<P>
+の手順になります。
+make が成功するとそれぞれ mknmz, wdnmz, namazu* が作成されます。
+make install でインストールされます。
+CGIは make install_cgi でインストールします。
+</P>
+
+<H3><A NAME="INSTALL_FROM_BINARY_PACKAGE">バイナリパッケージの場合</A></H3>
+
+<H4><A NAME="BINARY_PACKAGE_WIN32">Win32 用のバイナリパッケージを用いる</A></H4>
+
+<P>
+Namazu のWin32用のパッケージを広瀬@NECエンジニアリングさんが用意してくださいました。
+また、<A HREF="http://www.tama.or.jp/%7Ekenzo-/Namazu/">全文検索システム Namazu for Win32</A>のホームペイジも作って頂きました。 
+Win32版に関する詳しい情報はそちらを参照してください。
+</P>
+
+<P>
+Namazu の Win32 用バイナリパッケージに含まれる
+namazu.exe および kakasi.exe は GNU-Win32 の gcc で make されています。実行には cygwin.dll が必要ですので、注意してください。 mknmz の方は
+</P>
+
+<P>
+<CODE>perl mknmz</CODE>
+</P>
+
+<P>
+のように perl に実行させます。
+基本的にこのマニュアルの内容は UNIX用に書かれていますが、
+Win32 でもほぼ同じような使い方ができるかと思います。
+ただ、プログラムの性質からして初心者向けではないでしょうから、
+ある程度の知識がある方じゃないと難しいかも知れません。
+</P>
+
+<P> NMZ.head.ja, NMZ.foot.ja を編集するために JIS コード対応のエディ
+タ (Mule for Win32 や秀丸) が必要になります。これらも用意しておい
+てください。</P>
+
+<P>
+Win32の対応についてはどの程度需要があるのか良く分かっていませんので、
+動作報告やご意見などを頂けると助かります。
+</P>
+
+
+<H2><A NAME="USAGE">使い方</A></H2>
+
+<H3><A NAME="USAGE_GENERAL">基本編</A></H3>
+
+<P>
+インデックスを作成するには mknmz の引数にインデックスを作成する元となるファイルのあるディレクトリ名を与えます。
+つまり <VAR>/home/foo/public_html</VAR> を対象とするならば
+</P>
+
+<P><CODE>% mknmz </CODE><VAR>/home/foo/public_html</VAR>
+</P>
+
+<P>
+と実行すれば <VAR>/home/foo/public_html</VAR> 以下の *.html *.txt 
+といったファイル (Makefile の OPT_TARGET_FILE に定義されています)
+ をすべてインデックスして、 mknmz を実行したカレントディレクトリに 
+NMZ.* というファイルを作成します。 mknmz にはいくつかのオプション
+があります。それらについては <A HREF="#MKNMZ_OPT">mknmz のコマンド
+ラインオプション</A> の項で述べます。
+</P>
+
+<P>
+二度目以降は、前回以降に追加/更新/削除されたファイルを抽出してイン
+デックスをアップデートする仕組みになっています。文書の更新/削除の
+検出を抑制するには -Z オプションをつけてください。削除された文書の
+検出のみを抑制するときは -Y オプション用います。
+</P>
+
+
+<P>make で作成された <CODE>namazu</CODE> が検索プログラムです。</P>
+
+<P><CODE>% namazu <CODE>"</CODE><VAR>bar</VAR><CODE>"</CODE>
+ </CODE><VAR>/home/quux/namazu/index</VAR></P>
+
+<P>のように実行すれば、 <VAR>/home/quux/namazu/index</VAR> 
+(これは Makefile の <CODE>INDEXDIR</CODE> で設定したディレクトリの場合は省略できます) 
+にある NMZ.* をもとにキーワード <VAR>bar</VAR> を検索します。 <CODE>namazu</CODE> のコマンドラインオプションは<A HREF="#NAMAZU_OPT">別の項</A>で説明します。
+ディフォルトではコマンドラインから実行した際はプレインなテキストで出力します。
+HTML で出力したい場合には -h オプションを指定します。
+</P>
+
+<P>
+また、
+</P>
+
+<P>
+<CODE>% namazu <CODE> "</CODE><VAR>bar</VAR><CODE>"</CODE> 
+</CODE><VAR>/home/quux/namazu/index/hoge1</VAR> <VAR>/home/quux/namazu/index/hoge2</VAR>
+</P>
+
+<P>
+のように複数のインデックス (hoge1, hoge2) を指定することもできます。
+</P>
+
+
+<H3><A NAME="USAGE_CGI">CGI として使う</A></H3>
+
+<P>
+CGI として動作させる場合は検索対象となるインデックスファイルを Makefie の
+<CODE>INDEXDIR</CODE> で指定したディレクトリ、
+または <A HREF="#NAMAZU_CONF">namazu.conf</A> ファイルで設定した場所にに置く必要があります。
+そうでないと CGI プログラムから参照できないので注意してください。
+</P>
+
+<P>
+ディフォルトでは mknmz によって作成されるインデックスには
+<CODE>&lt;A HREF="/home/quux/public_html/index.html"&gt;</CODE> のように URL が展開されています。
+</P>
+
+<P>
+ローカルのディスクを対象としたときはこれで良いと思いますが、
+WWW 用の検索エンジンを作るときは困ります。
+</P>
+
+<P>
+CGI として用いるために
+<CODE>http://</CODE> から始まる URL を作成するにはいくつかの方法があります。
+一つは</P>
+
+<P>
+<A HREF="#NAMAZU_CONF">namazu.conf</A> に
+</P>
+
+<P>
+<CODE>REPLACE  /home/foo/public_html/  http://foo.bar.jp/%7Efoo/</CODE>
+</P>
+
+<P>
+のように指定しておくことで (各項目は TAB で区切ってください)、
+検索結果の出力時に <CODE>/home/foo/public_html/</CODE> の部分を <CODE>http://foo.bar.jp/%7Efoo/</CODE> に動的に置き換えて出力することができます。この方法ではひとつのインデックスをローカル用と CGI 用と共用できるのが利点です。
+コマンドラインから検索するときには -R オプションを指定することでこの置き換えを行わないようにすることができます。
+</P>
+
+<P>
+別の手法としては
+</P>
+
+<P><CODE>mknmz "</CODE><VAR>http://foo.bar.jp/~quux/</VAR><CODE>" "</CODE><VAR>/home/foo/public_html</VAR><CODE>"</CODE></P>
+
+<P>のように引数に自分の URL を指定する方法もあります。
+これは mknmz がインデックス作成を行う際に対象ディレクトリへ移動し、 <CODE>&amp;find()</CODE> を実行して得られる
+</P>
+
+<P><CODE>./index.html</CODE></P>
+
+<P>というファイル名の頭に <CODE>http://foo.bar.jp/~quux/</CODE> をくっつけて URL を作り出します。
+
+毎回これを入力するのが面倒という場合は、  mknmz のソースの頭の方にある</P>
+
+<P><CODE>$URL_PREFIX = "\t";</CODE></P>
+
+<P>
+の部分を修正して任意の URL を書いておくことです。例えば
+</P>
+
+<P><CODE>$URL_PREFIX =
+"</CODE><VAR>http://foo.bar.jp/~quux/</VAR><CODE>";</CODE></P>
+
+<P>のように設定します。</P>
+
+
+<P>
+末尾がディレクトリで終わる URL の表記をしたい場合もあります。普通
+は index.html は省略できるように設定されているものです。これは 
+Makefile の OPT_DEFAULT_FILE で指定できます
+</P>
+
+<P>
+_default などという名前がディフォルトなのかというと、これは 
+httpdown でファイルを取得したときに末尾がディレクトリの URL のファ
+イルは _default という名前で保存されるからです。
+</P>
+
+<P>
+相対パスの URL を作りたい場合は
+</P>
+
+<P><CODE>mknmz "" </CODE>"<VAR>/home/foo/public_html</VAR><CODE>"</CODE></P>
+
+<P>
+のように URL の指定を "" と null で指定します。
+相対パスで URL を作成した場合は検索結果表示に &lt;BASE HREF="..."&gt; を出力するようにします。
+<A HREF="#NAMAZU_CONF">namazu.conf</A> で <CODE>BASE</CODE> の設定をしてください。
+</P>
+
+<P>
+検索プログラムは (日本語ならば) NMZ.head.ja と NMZ.foot.ja という
+ヘッダとフッタのファイルを参照します。これらは mknmz を実行した際
+にサンプルが作成されますが、必要に応じてメッセージを自分用に書き直
+しておきましょう。特に &lt;TITLE&gt; ... &lt;/TITLE&gt; は変更する
+ことを強くお勧めします。
+</P>
+
+<P>
+この NMZ.head.ja と NMZ.foot.ja にあるファイル数やキーワード数の記
+述されている部分はインデックスを更新した際に、自動的に更新されるよ
+うになっているので、 <CODE>&lt;!-- FILE --&gt;</CODE> といったダミー
+のタグを消さないでください (そんな情報は必要ないというのなら削除し
+ても構いません) 。
+</P>
+
+<P>
+一通りの設定が終わったらブラウザから CGI としてアクセスしてみてください。
+NMZ.head.ja, NMZ.body.ja, NMZ.foot.ja を元にした表示を行います。
+メッセージは自分のサイトに合わせて書き替えてください。
+その際は文字コードを必ず ISO-2022-JP で保存します。
+</P>
+
+<P>
+…というように、書かれたことを読むだけだと難しく感じるかもしれませ
+んが、実際に試してみれば、単純な仕組みであることが理解できるかと思
+います。
+</P>
+
+<H3><A NAME="MKNMZ_OPT">mknmz のコマンドラインオプション</A></H3>
+
+<PRE>
+      -a: すべてのファイルを対象とする
+      -c: 日本語の単語のわかち書きに ChaSen を用いる
+      -e: ロボットよけされているファイルを除外する
+      -h: Mail/News のヘッダ部分をそれなりに処理する
+      -k: 日本語の単語のわかち書きに KAKASI を用いる
+      -m: ChaSen の形態素解析の品詞情報を利用する (名詞のみ登録)
+      -q: インデックス処理の最中にメッセージを表示しない
+      -r: man のファイルを処理する
+      -u: uuencode と BinHex の部分を無視する
+      -x: HTML のヘディングによる要約作成を行わない (文書の先頭から作成)
+      -D: Date:, From: といったヘッダを要約につけない (ディフォルトではつける)
+      -E: 単語の両端の記号は削除する (ディフォルトでは含める)
+      -G: 送り仮名を削除する (ディフォルトでは含める)
+      -H: 平仮名のみの単語は登録しない (ディフォルトでは登録を行う)
+      -K: 記号はすべて削除する (ディフォルトでは登録を行う)
+      -L: 行頭・行末の調整処理を行わない (ディフォルトでは調整を行う)
+      -M: MHonArc で作成された HTML の処理を行わない (ディフォルトでは行う)
+      -P: フレーズ検索用のインデックスを作成しない (ディフォルトでは作成する)
+      -R: 正規表現検索用のインデックスを作成しない (ディフォルトでは作成する)
+      -U: URLのencodeを行わない (ディフォルトでは行う)
+      -W: 日付によるソート用のインデックス作らない (ディフォルトでは作成する)
+      -X: フィールド検索用のインデックスを作らない (ディフォルトでは作成する)
+      -Y: 削除された文書の検出を行わない (ディフォルトでは行う)
+      -Z: 文書の更新/削除を反映しない (ディフォルトでは行う)
+      -A: .htaccess で制限されたファイルを除外する
+      -l (lang): 言語を設定する ('en' or 'ja')
+      -F (file): インデックス対象のファイルのリストを読み込む
+      -I (file): ユーザ定義のファイルをインクルードする
+      -O (dir) : インデックスファイルの出力先を指定する
+      -T (dir) : NMZ.{head,foot,body}.* のディレクトリを指定する
+      -t (regex): 対象ファイルの正規表現を指定する
+
+</PRE>
+
+<P>
+これらのオプションは -am のようにつなげて指定しても -a -m のように別々に指定しても構いません。
+ただし、 -I オプションの後ろにはひとつ空白をあけて次の引数でファイルを指定するようにしてください。
+-k -c -m のいずれかのオプションを省略した場合は Makefile の <CODE>WAKATI</CODE> で指定したものが使われます。
+</P>
+
+<P>-R と -Pオプションはそれぞれ正規表現用インデックスとフレイズ検
+索用インデックスを<STRONG>作成したくない</STRONG>ときに指定します。
+</P>
+
+<P>
+-I オプションに続けてファイルを指定すると、
+mknmz 実行時にそのファイルをインクルード (require) します。
+これは主に変数を上書きするのに役立ちます。 
+</P>
+
+<P>
+-F オプションに続けてファイルを指定すると、
+インデックスのターゲットのリストを読み込ませることができます。
+このリストは一行一ファイルの形式です。たとえば
+</P>
+
+<P>
+<CODE>% find -type f -name '*.html' /foo/bar</CODE>
+</P>
+
+<P>
+のようにして作成してください。なお、 "/foo/bar/baz/" のように最後
+が / で終わる (Win32, OS/2 なら \) 行があったときはその部分を find 
+して展開します。このときは $TARGET_FILE に従ってファイルを拾います 
+(v1.3.0.0以降)。
+</P>
+
+
+<H3><A NAME="PERL_VERSION">Perl 版の検索クライアントを使う</A></H3>
+<P>
+contrib ディレクトリに収録されている Perl版の検索クライアントを使うことによって C のソースをコンパイルすることなしに、検索が行えます。
+コマンドラインからの使い方は C言語版とほぼ同じで、また、
+CGI としても動作しますから、
+プロバイダなどで C コンパイラが使えない環境などで役立つと思います。
+</P>
+
+<P>
+KAKASI を用いずに日本語を分解する機能を持っているので、巨大な辞書を用意する必要がないのも特徴です。
+検索速度は C言語版に比べてほとんど遜色ありません。
+</P>
+
+<H3><A NAME="NAMAZU_OPT">namazu のコマンドラインオプション</A></H3>
+
+<P>
+<CODE>$namazu [options] "query string" [index dir(s)] </CODE>
+</P>
+
+<P>
+のように実行する形になっています。
+<CODE>[index dir(s)]</CODE> は検索対象となるインデックスの置いてあるディレクトリの指定ですが、 Makefile の <CODE>INDEXDIR</CODE> で設定したディレクトリの場合は省略することができます。オプションは以下の通りです。
+</P>
+
+<PRE>
+  usage: namazu [options] &lt;query&gt; [index dir(s)] 
+     -n (num)  : 一度に表示する件数
+     -w (num)  : 表示するリストの先頭番号
+     -s        : 短いフォーマットで出力
+     -S        : もっと短いフォーマット (リスト表示) で出力
+     -v        : usage を表示する (この表示)
+     -f (file) : namazu.conf を指定する
+     -h        : HTML で出力する
+     -l        : 新しい順にソートする
+     -e        : 古い順にソートする
+     -a        : 検索結果をすべて表示する
+     -r        : 参考ヒット数を表示しない
+     -o (file) : 指定したファイルに検索結果を出力する
+     -C        : コンフィギュレーション内容を表示する
+     -H        : 先の検索結果へのリンクを表示する (ほぼ無意味) 
+     -F        : &lt;FORM&gt; ... &lt;/FORM&gt; の部分を強制的に表示する
+     -R        : URL の置き換えを行わない
+     -U        : plain text で出力する時に URL encode の復元を行わない
+     -L (lang) : メッセージの言語を設定する ja または en
+
+</PRE>
+
+<P>
+これらのオプションは必ず -ahs のようにまとめて指定することができます v1.1.2.3。
+</P>
+
+<P>
+コマンドラインから実行したときはディフォルトでプレインなテキストとして検索結果の表示を行います。
+HTML で出力する場合には -h オプションを使います。
+CGI から検索したときは結果が一度に表示できないと下の方に [1] [2] [3] のように先の検索結果へ進むためのリンクが作られますが、
+コマンドラインから実行したときにはこれらの表示は無意味なので、表示しないようになっています。
+この余分な表示を何らかの理由によって強制的に表示させるには -H オプションを使います。
+また、コマンドラインから実行したときはディフォルトで &lt;FORM&gt; ... &lt;/FORM&gt; を表示させないようになっていますが、 -F をつけると強制的に表示させることができます。
+</P>
+
+<P>
+-a オプションは検索結果をすべて表示させます。
+これはコマンドラインから実行したときだけの特別なオプションです。
+CGI として使う場合はすべてを表示することは敢えてできないようにしています。
+</P>
+
+<P>
+検索結果の 21 件目から 40 件目までを表示させたいという場合には 
+<CODE>-n 20 -w 20</CODE> のように指定します。
+-w の値が 21 でないところに注意してください。
+これはちょっと変ですが、今更変更するのもあれなので仕様ということにします:-)。
+</P>
+
+<P>
+-U オプションはコマンドラインから実行して plain text で結果出力する際に URL encode のデコードを行わないためのオプションです。ディフォルトでは行われるようになっています。
+</P>
+
+<H3><A NAME="NAMAZU_CONF">namazu.conf での設定について</A></H3>
+<P>
+namazu.conf および .namazurc ではいくつかの設定が行えます。
+namazu は
+</P>
+
+<OL>
+<LI>namazu を実行したディレクトリにある <CODE>.namazurc</CODE> (CGIのときに便利でしょう)
+<LI>ユーザのホームディレクトリにある <CODE>.namazurc</CODE>
+<LI>Makefile で LIBDIR に指定したディレクトリにある 
+<CODE>namazu.conf</CODE> (通常は /usr/local/namazu/lib/namazu.conf)
+</OL>
+
+<P>
+の順で探して見つかればこれをリソースファイルとして読み込みます。
+</P>
+
+
+<P>
+オリジナルは namazu.conf-dist という名前になっているので、
+これを namazu.conf または .namazurc という名前にコピーして使います。
+オリジナルは残しておいた方が良いでしょう。
+これは主に make 時の設定とは違う環境に合わせるときに用います。
+</P>
+
+<P>
+<STRONG>各項目と値は TAB で区切ります</STRONG>。これは仕様ですので注意してください。設定の意味は以下の通りです。
+</P>
+
+<UL>
+<LI><CODE>INDEX    /usr/local/namazu/index</CODE><BR>
+ディフォルトで参照するインデックスのあるディレクトリ
+<LI><CODE>REPLACE  /home/foo/public_html/   http://www.hoge.jp/%7Efoo/</CODE><BR>
+これは検索結果の出力時に URL の頭の <CODE>/home/foo/public_html/</CODE> の部分を <CODE>http://www.hoge.jp/%7Efoo/</CODE> に置き換えるための設定です。ローカル用に作ったインデックスを CGI 用に使うときに役立ちます。コマンドラインから namazu を実行する際には -R オプションをつけるとこの設定を無効にすることができます。
+<LI><CODE>BASE     file://localhost/home/foo/bar/documents/</CODE><BR>
+&lt;BASE HREF="..."&gt; を検索結果表示の際に出力させるための指定です。
+これは、インデックスを相対パスで作った場合に効果を発揮します。
+末尾を / で終わらせるようにする必要があるので注意してください。
+<LI><CODE>WAKATI  /usr/local/bin/kakasi</CODE><BR>
+わかち書き用プログラムのパスです。 KAKASI または ChaSen の make 時に指定したものでなければなりません。
+<LI><CODE>LOGGING      OFF</CODE><BR>
+検索に使われたキーワードのログを取らないならば OFF を設定してください。ディフォルトではログを取ります。
+<LI><CODE>LANG		ja</CODE><BR>
+メッセージの言語を ja または en で指定します。
+</UL>
+
+<P>
+必要な設定は make 時に行っているので、
+特に変わったことをしようとしない限り、 namazu.conf で設定をする必要はありません。 make 時に -DNOCONF を指定することでこのファイルの参照を抑制することができます。
+</P>
+
+
+<H2><A NAME="SEARCH">実際の検索に役立てる</A></H2>
+
+<H3><A NAME="SEARCH_ON_COMMAND_LINE">コマンドラインから検索する</A></H3>
+<P>
+namazu をコマンドラインから実行した場合、その出力をパイプで less に渡して眺めることができますが、
+せっかくの検索結果を元にリンクを辿っていくことができないのであまり便利ではありません。
+</P>
+
+<P>
+<CODE>namazu -h "keyword" &gt; kekka.html</CODE>
+</P>
+
+<P>
+のように出力を HTML でファイルに書き出してそれをブラウザで読み込めば検索結果のリンクをたどることができます。
+</P>
+
+<P>
+これはちょっと面倒だぞ、という方のために上の処理を自動化してくれるコマンドライン用検索クライアントを馬場肇@京大さんが作ってくださいました。
+これは
+</P>
+
+<P>
+<CODE>bnamazu -b "browser" -d "database" "keyword"</CODE>
+</P>
+
+<P>
+のように実行することで、 <CODE>keyword</CODE> を検索し、その結果をテンポラリファイルに保存してそれを自動的に <CODE>browser</CODE> で指定したブラウザに渡して読み込ませるというツールです。
+<CODE>-b browser</CODE> を省略するとディフォルトでは Netscape Navigator が呼び出されるようになっています。
+</P>
+
+<P>
+<CODE>-d database</CODE> は検索対象とするインデックスのあるディレクトリを指定します。これを省略した場合は <CODE>namazu</CODE> の <CODE>DEFAULT_DIR</CODE> が対象となります。
+</P>
+
+<P>
+これはなかなかセコイようでいて、結構便利なツールです。 Namazu のパッケージを展開したときにできる contrib ディレクトリに入っています。ぜひお試し下さい。
+</P>
+
+<P>
+コマンドラインから使うのもなんだかなあという方は Mule や X, Win32 から使えるそれぞれの検索フロントエンドを使うと便利でしょう。
+または Lynx の lynxcgi の機能を使って http を通さずにローカルの CGI として <CODE>namazu</CODE> を実行して検索することもできます。
+以下の説明を参照してください。
+</P>
+
+<H3><A NAME="SEARCH_ON_CGI">http を通して CGI として検索する</A></H3>
+<P>
+CGI として動作させることで WWW 全文検索エンジンになります。
+インターネットを通して広く公開しても良いですし、イントラネットとして内輪だけで共有する使い方も考えられます。
+普段使い慣れたブラウザで閲覧できるところも利点ですね。
+</P>
+
+<H3><A NAME="SEARCH_ON_LYNXCGI">http を通さず Lynx から検索する</A></H3>
+<P>
+<A HREF="http://lynx.browser.org/">Lynx</A> をお使いの方は lynxcgi の機能を使って
+http を通さずに CGI を実行して検索することができます。これは NMZ.head の
+</P>
+
+<P>
+&lt;FORM&gt; の部分を
+</P>
+
+<P>
+<CODE>&lt;FORM METHOD="POST" ACTION="<STRONG>lynxcgi:</STRONG>//localhost/home/foo/cgi-bin/namazu"&gt;</CODE>
+</P>
+
+<P>
+のように METHOD を POST にして ACTION の部分を <CODE>lynxcgi://localhost/</CODE> の後に 
+namazu の実行ファイルのフルパスを指定しておくことで実現します。同じように 
+<A HREF="lynxcgi.html">lynxcgi.html</A> の ACTION の指定も確認してください。
+</P>
+
+<P>
+以上の準備が整った後は Lynx から <A HREF="lynxcgi.html">lynxcgi.html</A> を読み込むことで検索することができるようになります。
+Lynx は WWW ブラウザですから検索結果のリンクをたどっていくことも容易にできます。これはなかなか便利な使い方だと思います。
+</P>
+
+<P>
+なお、 lynxcgi の機能を使ったときは一度に表示し切れなかった分の検索結果を見ることはできません。これは仕様です。
+</P>
+
+<H3><A NAME="SEARCH_ON_MULE">Mule から検索する</A></H3>
+
+<P>
+Mule から検索できるインタフェース (namazu.el) を
+パッケージに同梱させてもらうことになりました。
+namazu.el を作成してくださった
+まつもとゆきひろさん、やまだあきらさん、馬場肇さんに感謝します。
+</P>
+
+<P>
+Namazu の contrib ディレクトリに入っている namazu.el-xxxxxxxx.xx.gz をどこか適当な場所へ
+ namazu.el という名前で置きます。例えば /home/foo/elisp に置いた場合は <CODE>.emacs</CODE> に
+</P>
+
+<P>
+<CODE>
+(setq load-path (cons (expand-file-name "/home/foo/elisp") load-path))<BR>
+(autoload 'namazu "namazu" nil t)
+</CODE>
+</P>
+
+<P>
+のように記述することで Mule から <CODE>M-x namazu</CODE> で 
+namazu-mode を呼び出すことができるようになります。詳しい説明は 
+<A HREF="http://arika.org/linux/tools/namazu-el/">namazu.el</A>
+のペイジを参照してください。とても便利です。
+</P>
+
+<H3><A NAME="SEARCH_ON_X">X Window System から検索する</A></H3>
+<P>
+広瀬@NECエンジニアリングさんが Tcl/Tk による GUI な検索クライアント Tknamazuを作ってくださいました。
+contrib ディレクトリに tknamazu-XXX.tar.gz という名前でファイルがあります。
+使用するには <A HREF="http://lynx.browser.org/">lynx</A> が必要になります。
+v2.6 などの古いヴァージョンの lynx では問題があるので新しいものを用意する必要があります。
+</P>
+
+<P>
+このツールは非常によくできていて、
+</P>
+
+<UL>
+<LI>検索結果の表示の際に使われたキーワードの部分が赤で表示される
+<LI>リンクを左クリックすると plain text ならそのまま、 HTML なら lynx -dump を通した形でファイルの内容が表示される (このときもキーワード部分は赤くなっていてわかりやすい)、
+右クリックすると Netscape Navigator (変更可能) を立ち上げて表示させることができる
+<LI>lynx -dump で表示させた時などはファイルの中の URL 部分には自動的にリンクが張られる。さらに下方の References を利用すれば Navigator をわざわざ立ち上げる必要もなく簡単なウェブブラウザのように使える
+<LI>検索結果の画面にはいつでも "Back to result" ボタンで戻ることができる
+<LI>複数インデックスの検索に対応している
+</UL>
+
+<P>
+といった特徴があります。
+詳しくは Tknamazu 付属のドキュメントを参照してください。
+また、
+広瀬さんによる
+<A HREF="http://www.tama.or.jp/%7Ekenzo-/Namazu/tknamazu/">Tcl/Tk Namazu client</A>
+のペイジがあるので、こちらを参照すると最新版の情報が手に入ります。
+</P>
+
+<H3><A NAME="SEARCH_ON_WIN32">Windows 95/NT から検索する</A></H3>
+<P>
+私の先輩の<A HREF="http://www.na.rim.or.jp/%7Es_yam/">山下誠二さん</A>が "Search-S for Namazu" という名前の Win32 用の GUI な検索ツールを作ってくださいました。
+</P>
+
+<P>
+実行ファイルのサイズが大きいため Namazu の配布パッケージには含まれていません。
+最新版は <A HREF="http://www.na.rim.or.jp/%7Es_yam/library/search-s.html">山下さんのウェブサイト</A> から取ってくることができます。
+</P>
+
+<P>
+このツールは Delphi で記述されており、ソースも付属しています。
+検索結果は Netscape Navigator および Internet Explorer に渡して表示させることができる他、内部ブラウザで表示することもできます。
+この場合はファイルの中身の表示も含めて単体で動作します。
+</P>
+
+<P>
+広瀬@NECエンジアリングさんによる <A HREF="http://www.tama.or.jp/%7Ekenzo-/Namazu/">Namazu for Win32</A> と組み合わせることによってWin32 環境での手軽な全文検索ツールとして使えると思います。
+</P>
+
+<H3><A NAME="SEARCH_ON_JAVA">Java 版検索クライアントを使う</A></H3>
+<P>
+まつむらのぞみさんによる Java版の検索クライアントが
+contrib ディレクトリに収録されています。
+こちらも GUI な検索ツールとして動作します。
+Java の実行環境を持っている方はぜひお試しください。
+</P>
+
+
+<H2><A NAME="TIPS">雑多な情報</A></H2>
+
+
+<H3><A NAME="NMZ">NMZ.* ファイルの説明</A></H3>
+
+<UL>
+<LI>NMZ.i    : インデックスファイル (転置ファイル, inverted ファイル)
+<LI>NMZ.ii   : インデックスファイル seek 用インデックス
+<LI>NMZ.f    : 文書のリストのファイル (各文書の情報を記録)
+<LI>NMZ.fi   : 文書のリストのファイル seek 用インデックス
+<LI>NMZ.h    : キーワードの先頭 2 byte 用のハッシュテーブル
+<LI>NMZ.r    : インデックスに登録されているファイルのリスト
+<LI>NMZ.head.[a-z]{2} : 検索結果出力用ヘッダファイル
+<LI>NMZ.foot.[a-z]{2} : 検索結果出力用フッタファイル
+<LI>NMZ.body.[a-z]{2} : キーワードが与えられなかったときのメッセージ
+<LI>NMZ.log  : インデックスの更新ログ
+<LI>NMZ.slog : 検索されたキーワードのログ
+<LI>NMZ.lock : 検索時のロックファイル
+<LI>NMZ.lock2: インデックス作成時のロックファイル
+<LI>NMZ.le   : little-endian なインデックスのときに存在
+<LI>NMZ.be   : big-endian なインデックスのときに存在
+<LI>NMZ.w    : 正規表現/中間/後方一致用の単語表
+<LI>NMZ.p    : フレイズ検索用のインデックス
+<LI>NMZ.pi   : フレイズ検索用のインデックスのインデックス
+<LI>NMZ.t    : 文書のタイムスタンプ、欠番の情報を記録
+<LI>NMZ.field.{subject,from,date,message-id,...}   : フィールド検索用のインデックスのインデックス
+</UL>
+
+<P>
+これらの NMZ.* のファイルは httpd から参照されない場所に置いておい
+た方が良いでしょう。NMZ.head.[a-z]{2} と NMZ.foot.[a-z]{2} は検索
+プログラムが表示に用いるヘッダとフッタのファイルです。日本語なら 
+`.ja' 、英語なら `.en' のようなサフィックスがつきます。
+</P>
+
+<P>
+NMZ.rはインデックスに登録された文書のリストを記録しています。単な
+るテキストファイルですが、 NMZ.t との整合性が崩れるとインデックス
+の更新が行えなくなるのでエディタなどで編集することは避けたほうが良
+いでしょう。
+</P>
+
+
+<P>
+NMZ.log はインデックス作成のログを保存します。処理した日付、ファイ
+ルの数、サイズ、追加されたキーワードの数、処理に要した時間が記録さ
+れます。
+</P>
+
+
+<P>
+NMZ.slog は検索されたキーワードのログを取るファイルです。これは 
+mknmz 実行時にサイズ 0 のファイルが作成され、ファイルのパーミッショ
+ンは <CODE>-rw-rw-rw-</CODE> のように設定されます。このままだと他
+のユーザに消されてしまう可能性もあるので、 root 権限を持っている人
+は <CODE>chown nobody</CODE> (httpd のユーザ) のようにしておくと良
+いかもしれません (普通はそんなに気にする必要はないとは思いますが)。
+</P>
+
+<P>
+NMZ.lock は検索にロックをかけるときのファイルです。このファイルが
+あると検索プログラムはそのインデックスに対して検索を行いません。
+</P>
+
+<P>NMZ.h は通常約 256 Kbytes になります</P>
+
+<P>
+Namazu では二度目以降の検索の際に前回に入力されたキーワードと表示
+件数および出力フォーマットの設定が残るような仕組みを実現しています。
+これは NMZ.head の
+</P>
+
+<P><CODE>&lt;INPUT TYPE="TEXT" NAME="key" SIZE="40"&gt;</CODE><BR>
+<CODE>&lt;OPTION VALUE="10"&gt;10</CODE><BR>
+<CODE>&lt;OPTION VALUE="short"&gt;OFF</CODE></P>
+
+<P>
+などの行を見張って適宜書き換えるので、あまりこの辺りはいじらない方
+が良いです。
+</P>
+
+
+<H3><A NAME="LOG">検索されたキーワードのログ</A></H3>
+
+<P>
+NMZ.slog は検索されたキーワードのログを保存します。ログは
+</P>
+
+<P>
+<CODE>検索されたキーワード TAB ヒット数 TAB ホスト名(or IP アドレ
+ス) TAB 日時</CODE>
+</P>
+
+<P>
+のような書式で保存されます。日本語 EUC で保存され、 TAB で区切って
+いるので、後々テキスト処理を施すのも容易でしょう。例えば
+</P>
+
+<P>
+<CODE>% awk '-F\t' '{ print $1 }' NMZ.slog | sort f| uniq -c |
+sort -nr</CODE>
+</P>
+
+<P>
+のようにコマンドラインから実行すれば検索されたキーワードをそれぞれ
+カウントして数字の大きい順に出力することができます。同時に検索され
+たキーワードを比較/分析してサジェスチョン機能を実装することも考え
+られます。
+</P>
+
+
+<H3><A NAME="INDEX_SIZE">作成されるインデックスのサイズ</A></H3>
+
+<P>
+RFC の 1 - 2200 までの約 75 MB 分の英文のテキストファイルをインデッ
+クス化した場合、作成される NMZ.* の合計は約 29 MB になりました。日
+本語の文書の場合は英文のみの場合とくらべて大きめになります。
+</P>
+
+
+<H3><A NAME="WHILE_INDEXING">インデックスの更新最中の検索</A></H3>
+
+<P>
+インデックスを更新している最中に検索をかけてもまず大丈夫ですが、更
+新処理の最後にファイルのリネームを行っているほんの一瞬の間は検索処
+理が行われないように NMZ.lock を置いてロックをかけています。
+</P>
+
+<H3><A NAME="WHEN_CONFUSED">インデックスの作成/更新に混乱したら</A></H3>
+
+<P>
+普通に行っていれば特に問題は起こらないはずですが、 NMZ.* ファイル
+を下手にいじってしまうと更新がうまくいかなくなります。また、インデッ
+クス作成の途中で強制終了などをして中途半端な NMZ.* ファイルの残骸
+が残っていたりすると次にインデックス作成を行う際におかしな動作をす
+る可能性があります。そのようなときはすみやかに NMZ.* をすべて削除
+して最初からインデックス作成をやり直してください。
+</P>
+
+
+<H3><A NAME="KEYLIST">インデックスに登録されているキーワードを調べるには</A></H3>
+
+<P>
+NMZ.i に登録されているキーワードを一覧表示する専用のツールを添付し
+ているのでこれを使います。具体的には
+</P>
+
+<P><CODE>% wdnmz NMZ.i</CODE></P>
+
+<P>のよう実行すれば (先頭の行の <CODE>#!/usr/bin/perl</CODE> を確認しておいてください)、</P>
+
+<P><CODE>単語 TAB その単語が含まれるファイルの数</CODE></P>
+
+<P>
+の書式で標準出力に出力されます。文字コードは日本語 EUC です。例え
+ば
+</P>
+
+<P><CODE>% wdnmz NMZ.i | wc -l</CODE></P>
+
+<P>のように実行すれば登録されている単語の数を確認できますね。
+</P>
+
+
+<H3><A NAME="BYTE_ORDER">バイトオーダの違いについて</A></H3>
+<P>
+v1.1.2 からは別のマシンで作ったバイトオーダの異なるインデックスを
+扱うことができるようになりました。通常に検索するだけならば特にイン
+デックスのバイトオーダの違いを気にする必要はありませんが、インデッ
+クスを更新する際には問題になります。バイトオーダを変換するツールが
+用意されているのでそれを使います(通常はほとんど使う必要はないでしょ
+う)。
+</P>
+
+<P><CODE>% rvnmz Go</CODE></P>
+
+<P>
+と実行するとカレントディレクトリにあるインデックスのバイトオーダを変換することができます。
+</P>
+
+<P>
+little-endian のインデックスの場合は NMZ.le、
+big-endian のインデックスの場合は NMZ.be
+というファイルが目印として置かれています。
+</P>
+
+<H3><A NAME="ENGLISH_MSG">英語でメッセージを表示させたい</A></H3>
+
+<P>
+英語でメッセージを表示させるにはいくつかの方法があります。
+</P>
+
+<OL>
+<LI>Makefile の LANG の指定を en にするとディフォルトの言語が英語になります。
+<LI><CODE>% namazu -L en</CODE><BR>
+のようにコマンドライン引数を渡して実行する
+<LI><A HREF="#NAMAZU_CONF">namazu.conf</A>で設定する
+<LI>CGI 変数で lang=en として渡す<BR>
+<CODE>&lt;INPUT TYPE="HIDDEN" NAME="lang" VALUE="en"&gt;</CODE> とでも指定すれば良いでしょう。
+&lt;SELECT&gt; ... &lt;/SELECT&gt; で選択させることもできます。
+</OL>
+
+<P>
+英語のメッセージは NMZ.*.en に保存されています。
+適宜修正して使ってください。
+また、作者の英語の力は極めてアヤシイのでおかしな表現があったらこっそり報告してくださると助かります :-)。
+</P>
+
+<H3><A NAME="CUSTOMIZE">カスタマイズ</A></H3>
+
+<P>
+Makefile で設定できない細かいカスタマイズについてはソースを直接編集することになります。
+</P>
+
+<P>
+カスタマイズが容易にできるように重要な定数/メッセージの定義をソー
+スの頭の方で行っています。それぞれコメントがついているので、好みに
+応じて変更してください。取り返しの付かない変更を行って後悔しないよ
+うにオリジナルは保存しておいた方が良いでしょう。
+</P>
+
+<P>
+インデックス作成を速く行うには Makefile の 
+<CODE>OPT_ON_MEMORY_MAX</CODE> の値を大きくして make と効果的です。
+これは一度にオンメモリで処理するファイルの合計サイズの値ですので、
+メモリをたくさん積んでいるマシンの場合はそれに合わせて増やすと良い
+でしょう。ディフォルトでは 5 MB 分のファイルをオンメモリで処理する
+ように設定しています。
+</P>
+
+
+<H3><A NAME="MAILLIST">メイリングリスト/Newsのアーカイヴの全文検索システムを作成するには</A></H3>
+
+<P>
+メイリングリストや NetNews のアーカイヴをインデックス化する際には 
+<A
+HREF="http://www.oac.uci.edu/indiv/ehood/mhonarc.html">MHonArc</A> 
+のような HTML 変換コンヴァータを利用してからインデックス作成するこ
+とをお勧めします。これらのコンヴァータを使えば議論のスレッド単位で
+の相互リンクを張ってくれるので文書のクロスリファレンス性も高まりま
+すし、 HTML のタグ付けをすることによってスコアリングの品質も向上し
+ます。このように、素のままのテキストファイルと比べて断然データベー
+スとしての価値が高まるわけです。
+</P>
+
+<P>
+Namazu の配布パッケージの<CODE>contrib/</CODE> のディレクトリに眞
+柄さんが作成された MHonArc 2.2.0用の日本語化パッチ 
+MHonArc-2.2.0-Japanize-Namazu.patch-1.3a.gz が含まれています。
+MHonArcを利用する際はこれをあてると良いでしょう。
+</P>
+
+<P>
+Namazu では Mail/News を意識した<A HREF="#LINE">行頭/行末の処理</A>、
+<A HREF="#MAILNEWS">Mail/News の要約作成</A>を行っています。
+これとは別にインデックス作成時にオプションを指定することで 
+uuencode の部分を無視することもできます。詳しくは<A
+HREF="#MKNMZ_OPT">mknmz のコマンドラインオプション</A>を参照してく
+ださい。
+</P>
+
+
+<P>
+Mail や News の plain なファイルを処理する際は mknmz 実行時に -h 
+とつけると不必要なヘッダを取り除いたり要約に From: と Date: をつけ
+たりといった処理を行うことができます。 (v1.0.4)また、 MIME の 
+Mutipart で添付されたファイルについては text/plain 以外のものを捨
+てる処理をしています。 (v1.1.1)
+</P>
+
+<P>
+また、 MHonArc (v2.1.0) に特化したインデックス処理を行うこともでき
+ます (2.1.0 より古い MHonArc は対応していません)。
+ MHonArc で作成される HTML ファイルに特有の不必要な部分を削除した
+り、要約に From: と Date: をつけたりといったことをしています。また、 
+maillist.html や threads.html といった MHonArc の作成するインデッ
+クスをスキップします。 (v1.0.4)この処理は自動的に行われますが、 
+mknmz 実行時に -M と指定することにより抑制することもできます。
+(v1.1.1)
+</P>
+
+
+<H3><A NAME="MAN">man の全文検索システムを作成するには</A></H3>
+<P>
+mknmz 実行時に <CODE>-r</CODE> オプションをつけると Makefile の
+</P>
+
+<PRE>
+<CODE>OPT_HELPER_MAN		= /usr/bin/jgroff -man -Tnippon</CODE>
+</PRE>
+
+<P>
+で指定したフィルタを通して man のファイルを扱います。mknmz 内でも
+フィルタ処理が行われますが、この処理は割といい加減です。
+</P>
+
+
+<H3><A NAME="MKNMZ-F">mknmz -F オプションを活用する</A></H3>
+
+<P>
+mknmz に -F オプションを指定するとインデックスの対象となるファイル
+のリストを渡すことができます。このとき、 
+</P>
+
+<P>
+/home/hoge/foo/
+</P>
+
+<P>
+のように末尾が / で終わる行があるとそのディレクトリ内のファイルを
+再帰的に取得します。たとえば
+</P>
+
+<P>
+/home/hoge/foo/<BR>
+/home/hoge/bar/<BR>
+/home/hoge/baz/
+</P>
+
+<P>
+のように指定すると /home/hoge/foo, /home/hoge/bar, /home/hoge/baz 
+と3つのディレクトリ以下のファイルを一度にインデックスできます。
+</P>
+
+
+<H3><A NAME="ROBOTS-TXT">/robots.txt で指定されたファイルを対象か
+ら除外する</A></H3>
+
+<P>
+(文書化はまだ不十分です。この説明でわかる方だけ挑戦してください)
+</P>
+
+<P>
+Makefile の
+</P>
+
+<PRE>
+##################################################################
+## Robots.txt
+OPT_HTDOCUMENT_ROOT	= /usr/local/apache/share/htdocs
+OPT_HTDOCUMENT_ROOT_URL_PREFIX	= http://www.foo.domain.jp/
+OPT_ROBOTS_EXCLUDE_URLS	= ''
+</PRE>
+
+<P>
+を設定して mknmz 実行時に -e オプションをつけてください。Disallow 
+ディレクティヴで指定されたファイルは除外されます。この機能は
+<A HREF="mailto:kunito@hal.t.u-tokyo.ac.jp">國頭さん</A>がコードを
+提供してくださいました (Thanks!)。
+</P>
+
+
+<H3><A NAME="HTACCESS">.htaccess で指定されたファイルを対象から除
+外する</A></H3>
+
+<P>
+mknmz に -A オプションを指定して実行してください。 .htaccess内に
+deny か require valid-user, user, group 行が含まれる場合はそのディ
+レクトリ以下をインデックスの対象から除外します。
+</P>
+
+<P>
+この機能は
+<A HREF="mailto:kunito@hal.t.u-tokyo.ac.jp">國頭さん</A>がコードを
+提供してくださいました (Thanks!)。
+</P>
+
+
+<H2><A NAME="FORM">Namazu の用いる &lt;FORM&gt;の形式</A></H2>
+
+<H3><A NAME="WHYGET">なぜ GET なのか</A></H3>
+<P>Namazu では</P>
+
+<P><CODE>&lt;FORM METHOD="GET" ACTION="/cgi-bin/namazu.cgi"&gt;</CODE></P>
+
+<P>
+のように GET メソッドを使って入力データを渡しています。基本的に 
+GET よりも POST の方が信頼性が高く、広く用いられているのですが、検
+索結果のペイジ単位での表示を実現するために GET を使うことにしまし
+た。実際のところ、検索システムという性質からしてブラウザから巨大な
+データが送られてくることはまずないので、問題はないと思われます。
+
+</P>
+
+
+<H3><A NAME="OUTFORM">結果表示の件数と出力フォーマット</A></H3>
+
+<P>ディフォルトで作成される NMZ.head には</P>
+
+<P>
+<CODE>&lt;P&gt;</CODE><BR>
+<CODE>&lt;STRONG&gt;一度に表示する件数:&lt;/STRONG&gt;</CODE><BR>
+<CODE>&lt;SELECT NAME="max"&gt;</CODE><BR>
+<CODE>&lt;OPTION VALUE="10"&gt;10</CODE><BR>
+<CODE>&lt;OPTION SELECTED VALUE="20"&gt;20</CODE><BR>
+<CODE>&lt;OPTION VALUE="30"&gt;30</CODE><BR>
+<CODE>&lt;OPTION VALUE="50"&gt;50</CODE><BR>
+<CODE>&lt;OPTION VALUE="100"&gt;100</CODE><BR>
+<CODE>&lt;/SELECT&gt;</CODE><BR>
+<CODE>&lt;STRONG&gt;文書の要約表示:&lt;/STRONG&gt;</CODE><BR>
+<CODE>&lt;SELECT NAME="format"&gt;</CODE><BR>
+<CODE>&lt;OPTION SELECTED VALUE="long"&gt;ON</CODE><BR>
+<CODE>&lt;OPTION VALUE="short"&gt;OFF</CODE><BR>
+<CODE>&lt;/SELECT&gt;</CODE><BR>
+<CODE>&lt;/P&gt;</CODE><BR>
+</P>
+
+<P>
+のように記述され、ブラウザ側から結果表示の件数と出力フォーマットを
+指定できるようになっていますが、このようにブラウザ側から設定をいじ
+れるようにしておくと検索システムを利用する一般の人には複雑に感じら
+れてしまうかもしれません。また、ごたごたしているのが嫌いという人も
+いるでしょうから、この部分は消してしまっても構いません。
+</P>
+
+
+<H3><A NAME="DBNAME">ブラウザからインデックスを指定する方法</A></H3>
+
+<P>
+ブラウザから複数のインデックスの中からひとつを選べるように設定する
+こともできます。ただし、割とややこしいので仕組みをよく理解している
+人でないと難しいかもしれません。まず初回アクセス用の index.html な
+どを作成します。その <CODE>&lt;FORM&gt;&lt;/FORM&gt;</CODE> の中に
+</P>
+
+<P>
+<CODE>&lt;STRONG&gt;検索対象:&lt;/STRONG&gt;</CODE><BR>
+<CODE>&lt;SELECT NAME="dbname"&gt;</CODE><BR>
+<CODE>&lt;OPTION SELECTED VALUE="</CODE><VAR>foo</VAR><CODE>"&gt;</CODE><VAR>foo</VAR><BR>
+<CODE>&lt;OPTION VALUE="</CODE><VAR>bar</VAR><CODE>"&gt;</CODE><VAR>bar</VAR><BR>
+<CODE>&lt;OPTION VALUE="</CODE><VAR>baz</VAR><CODE>"&gt;</CODE><VAR>baz</VAR><BR>
+<CODE>&lt;/SELECT&gt;</CODE><BR>
+</P>
+
+<P>
+のような記述をいれておくことで、 <VAR>foo, bar, baz</VAR> の中から
+データベースの指定ができるようになります。この選択の要素はいくつあっ
+ても構いません。
+ <VAR>foo</VAR> が選ばれた時は Makefile の <CODE>INDEXDIR</CODE> 
+で定義されたディレクトリの下にある <VAR>foo</VAR> というディレクト
+リにある NMZ.* を元に検索することになります。 
+<CODE>INDEXDIR</CODE> が <CODE>/usr/local/namazu/index</CODE> の場
+合は下のようなディレクトリ構造になります。
+</P>
+
+<PRE>
+        /
+        + usr/
+          + local/
+            + namazu/
+              + index/
+                + <VAR>foo</VAR>/
+                + <VAR>bar</VAR>/
+                + <VAR>baz</VAR>/
+</PRE>
+
+<P>
+また、その <VAR>foo, bar, baz</VAR> にある各 NMZ.head にもそれぞれ
+上のような記述をいれておかなければなりません (SELECTED はつけなく
+ても良いです)。ACTION の指定についてもすべての NMZ.head で同じ物を
+指定しておきます。ディフォルトで作成される NMZ.head にはこのデータ
+ベース指定の設定は記述されていないので、必要のある人は各自で追加し
+てください。
+</P>
+
+<P>
+&lt;INPUT TYPE="HIDDEN" NAME="dbname" VALUE="foo"&gt;
+</P>
+
+<P>
+のように INPUT を HIDDEN 属性にしてこっそり指定しておくこともできます。
+</P>
+
+<H3><A NAME="MULTIPLE_INDICES">複数のインデックスに検索をかける方法</A></H3>
+<P>
+v1.1.2 からは複数のインデックスに検索をかけて結果をマージして出力
+することができるようになりました。&lt;FORM&gt; ... &lt;/FORM&gt; 
+の中に下のような記述を入れてください。注意点は上の<A
+HREF="#DBNAME">ブラウザからインデックスを指定する方法</A>で述べた
+ものと同じです。
+</P>
+
+<P>
+&lt;STRONG&gt;対象インデックス&lt;/STRONG&gt;&lt;BR&gt;<BR>
+&lt;UL&gt;<BR>
+&lt;LI&gt;&lt;INPUT TYPE="CHECKBOX" NAME="dbname"
+	VALUE="foo"   CHECKED&gt;foo<BR>
+&lt;LI&gt;&lt;INPUT TYPE="CHECKBOX" NAME="dbname"
+	VALUE="bar" CHECKED&gt;bar<BR>
+&lt;LI&gt;&lt;INPUT TYPE="CHECKBOX" NAME="dbname"
+	VALUE="baz"   CHECKED&gt;baz<BR>
+&lt;/UL&gt;<BR>
+</P>
+
+<P>
+このように記述しておくことで foo, bar, baz から複数選択して検索す
+ることができます。検索結果に使われる NMZ.head, NMZ.foot は 
+Makefile で INDEXDIR で指定したところにあるものが使われます (また
+は namazu.conf, .namazurc の中で INDEX の項目で指定したディレクト
+リにあるもの)。インデックスの指定がひとつだった場合には個々の 
+NMZ.head, NMZ.foot が使われる点に注意してください。これを回避した
+い場合にはすべての NMZ.head, NMZ.foot を共通にしてしまうことです。
+</P>
+
+
+<H3><A NAME="SUBQUERY">検索対象のURLを制限する方法</A></H3>
+
+<P>
+CGI に subquery の値を渡すことで実現できます。たとえば以下のように
+指定すると良いでしょう。一番下の行は検索結果の「参考ヒット数」の表
+示を抑制するためのおまじまないです。
+</P>
+
+<P>
+&lt;STRONG&gt;検索対象&lt;/STRONG&gt;<BR>
+&lt;SELECT NAME="subquery"&gt;<BR>
+&lt;OPTION VALUE=""&gt;全体<BR>
+&lt;OPTION VALUE="+url:/^http://foo.bar.jp/aaaa//"&gt;aaaaのコーナー<BR>
+&lt;OPTION VALUE="+url:/^http://foo.bar.jp/bbbb//"&gt;bbbbのコーナー<BR>
+&lt;OPTION VALUE="+url:/^http://foo.bar.jp/cccc//"&gt;ccccのコーナー<BR>
+&lt;OPTION VALUE="+url:/^http://foo.bar.jp/dddd//"&gt;ddddのコーナー<BR>
+&lt;/SELECT&gt;<BR>
+&lt;INPUT TYPE="HIDDEN" NAME="reference" VALUE="off"&gt;<BR>
+</P>
+
+<P>
+subquery には +url: 固定ではなく任意の検索式を指定できます。この機
+能は少しややこしいので Namazuに慣れてから挑戦することをお勧めします。
+</P>
+
+
+<H2><A NAME="IMPLIMENTATION">Namazu の設計と実装</A></H2>
+
+<H3><A NAME="QUERY">検索式</A></H3>
+
+<P>
+大文字、小文字の区別はありません。<VAR>foo*</VAR> のように末尾にア
+スタリスクを指定することで前方一致検索が可能です。また、単語をスペー
+ス区切りで並べて書くとアンド検索になります。日本語は KAKASI/ChaSen 
+によって分解され、「日本語情報処理」なら 「日本語」 「情報処理」 
+のように 2 つの単語に分かれてアンド検索されます。日本語の単語の分
+解は完全ではありません。品質は辞書によって決定されます。
+</P>
+
+<P>
+全角 (2 bytes) アルファベット/記号はすべて 1 byte として処理されま
+す。記号を含む検索も可能で <CODE>TCP/IP</CODE> というような単語の
+検索も可能です。ただし、記号の処理は完全ではないので <CODE>TCP
+IP</CODE> のように分けてアンド検索をかけた方が取りこぼしがありませ
+ん (その代わり余計なファイルまでヒットしてしまう可能性もありますが)。
+</P>
+
+<P>
+括弧を含めたアンド検索とオア検索およびノット検索が可能になっており
+検索式に <CODE>&amp; | ! ( )</CODE> を用います。記号の代わりに 
+<CODE>and/or/not</CODE> で指定することも可能です。検索式はひとつづ
+つスペース区切りで入力しなければなりません。たとえば
+</P>
+
+<UL>
+<LI><CODE>( sed | awk ) ! perl &amp; regexp</CODE>
+<LI><CODE>( sed or awk ) not perl and regexp</CODE>
+</UL>
+
+<P>
+のように指定します。
+</P>
+
+
+<P>
+といった検索をすることができます。これは「 sed または awk が含まれ、
+perl は含まれない、そして regexp が含まれる」文書を検索するという
+意味になります。括弧のネストもできるので、さらに複雑な検索式で検索
+することも可能です。
+</P>
+
+<P>フレイズをダブルクォーテーションまたは中括弧 '{' '}' で囲むこと
+でフレイズ検索ができます。ただし、精度は 100%ではありません。とき
+どきはずれます。たとえば</P>
+
+<UL>
+<LI><CODE>"SIMPLE MAIL TRANSFER PROTOCOL"</CODE>
+<LI><CODE>{SIMPLE MAIL TRANSFER PROTOCOL}</CODE>
+</UL>
+
+<P>
+のように指定します。
+</P>
+
+<P>正規表現および中間一致/後方一致の検索も可能です。ただしちょっと
+遅いです。日本語も使えます。</P>
+
+<UL>
+<LI><CODE>*大学</CODE> (後方一致)
+<LI><CODE>*ネット*</CODE>  (中間一致)
+<LI><CODE>/インター?フェ[ーイ]ス/</CODE>  (正規表現)
+<LI><CODE>"静岡県浜松市"</CODE>  (フレイズ)
+</UL>
+
+<P>
+のように指定します。
+</P>
+
+<P>
+フィールド指定の検索を行うことができます (フィールド検索用のインデッ
+クスが作ってあれば) 日本語も使えます。
+</P>
+
+<UL>
+<LI><CODE>+date:/Aug 1998/</CODE> (1998年 8月のもの)
+<LI><CODE>+from:foo@bar.jp</CODE>  (差出人が foo@bar.jp)
+<LI><CODE>+subject:"internet message"</CODE>  (Subject:を文字列で検索)
+<LI><CODE>+subject:{internet message}</CODE>  (上と同じ)
+<LI><CODE>+subject:/(mule|xemacs|emacs)/</CODE>  (Subject:を正規表現で検索)
+<LI><CODE>+message-id:&lt;199801240555.OAA18737@foo.bar.jp&gt;</CODE>  (Message-Id)
+<LI><CODE>+title:amarok</CODE>  (文書のタイトル)
+<LI><CODE>+author:foo@bar.jp</CODE>  (文書の著者)
+<LI><CODE>+url:http://foo.bar.jp/</CODE>  (文書のURL)
+</UL>
+
+<P>
+のように指定します。
+</P>
+
+<H3><A NAME="DIGEST">HTML タグによる文書の要約の作成</A></H3>
+
+<P>
+コンピュータによって文書の要約を作成する技術は自然言語処理の分野でも広く研究されている分野です。
+北陸先端科学技術大学院大学の佐藤理史先生が行っている<A HREF="http://www-sato.jaist.ac.jp:8000/people/sato/jap/research/digesting.html">ネットニュースのダイジェスティング</A>や、ジャストシステムの一太郎に搭載された文書要約機能など、本格的なシステムの例もあります。
+本来、文書の要約を作成する作業は人間でもなかなか難しいものですから、コンピュータに処理させることは相当に大変であろうことが容易に想像できます。
+
+</P>
+
+<P>
+HTML は元々 SGML の一アプリケーションであり、文書の構造を定義する言語ですから、&lt;H[1-6]&gt; タグによって定義される文書のヘディング (見出し) の情報を利用することによって簡単に要約らしきものを作成することができます。
+要約はディフォルトでは 200 文字に設定されていますから、ヘディングだけを集めて足りない部分は文書の先頭から補うようにします。
+また、対象が単なるテキストファイルだった場合には文書の先頭から 200 文字をそのまま使います。
+ Namazu ではこのように単純なアプローチを取っています。
+
+</P>
+
+<P>
+このヘディングの情報を元に要約を作成するという手法は対象となる HTML ファイルに正しく文書の論理構造が定義されていなければ効果を発揮しません。
+ &lt;H[1-6]&gt; を文字サイズの指定に使っているようなペイジではほとんど意味のない要約が作成されてしまうことになります。
+ HTML によって文書の論理構造を定義することの意義が広く浸透すればこの状態も改善されることと思われます。
+
+</P>
+
+
+<H3><A NAME="TAGSCORING">HTML タグによるスコアの重みづけルール</A></H3>
+
+<P>ディフォルトでは</P>
+
+<UL>
+<LI><CODE>&lt;TITLE&gt; 16</CODE>
+<LI><CODE>&lt;H1&gt; 8</CODE>
+<LI><CODE>&lt;H2&gt; 7</CODE>
+<LI><CODE>&lt;H3&gt; 6</CODE>
+<LI><CODE>&lt;H4&gt; 5</CODE>
+<LI><CODE>&lt;H5&gt; 4</CODE>
+<LI><CODE>&lt;H6&gt; 3</CODE>
+<LI><CODE>&lt;A&gt; 4</CODE>
+<LI><CODE>&lt;STRONG&gt;, &lt;EM&gt;, &lt;CODE&gt;, &lt;KBD&gt;, &lt;SAMP&gt;, &lt;CITE&gt;, &lt;VAR&gt; 2</CODE>
+</UL>
+
+<P>のように HTML タグに応じてスコアに重みづけがされています。
+これらの値は mknmz.pl の <CODE>%TAGW</CODE> という連想配列に設定されており、ソースの頭の方で定義されています。
+ &lt;FONT&gt; などの見栄えを指定する物理タグは論理的な意味をもたないためスコアに重みづけをしていません。
+これは Namazu に限った話ではありませんが、論理タグを使わずにいくら &lt;FONT&gt; などのタグを使って見栄えのする (それもすべてのブラウザで通用するわけでもない) ペイジを作ったとしても、検索システムのインデクサから見ると、まったく文書の論理構造のない HTML であるので、まともなスコアリング処理はできません。
+また、ダイジェスト化の処理を行う検索システムでは一切情報が残らないということも起こり得ます。
+私が言うことでもありませんが、 HTML 自体は論理構造を記述し、文書の見栄えを指定するにはスタイルシートを用いるのがスマートな方法だと思います。
+</P>
+
+<P>実際にウェブ・イジを収集して調べてみたところ、想像以上に 
+<CODE>&lt;H[1-6]&gt;</CODE> を文字サイズの指定に使っている人 (本文全体を 
+&lt;H1&gt; で囲んだり) が多いことが判明したので、タグにはさまれる文字列の長さが 128 文字を越える場合は重みづけをするのをやめることとしました。
+この制限は <CODE>$INVALIDLENG</CODE> に定義されています。
+</P>
+
+<P>また <CODE>&lt;META NAME="keywords" CONTENT="</CODE><VAR>foo bar</VAR><CODE>"&gt;</CODE> の <VAR>foo bar</VAR> に対しては 32 のスコアがつきます。
+これは <CODE>$METAKEYW</CODE> という変数に設定されています。
+</P>
+
+
+<H3><A NAME="HTMLTAG">その他 HTML タグの処理</A></H3>
+<P>
+Namazu ではインデックス作成の際に &amp;quot;, &amp;amp;, &amp;lt;, &amp;gt; および &amp;#9-10, &amp;#32-126 の named entity と numbered entity を復号しています。
+ &amp;lt &amp;gt; のようにホワイトスペース区切りで複数指定して最後にセミコロンを打った形式でも大丈夫です。
+内部処理を日本語 EUC で行うため ISO-8859-1 の右半分 (0x80-0xff) の記号は処理できません。
+同じ理由により I18N 拡張された UCS-4 な numbered entity にも対応不可能です。
+また、インデックス作成の際には &lt;IMG&gt; タグの ALT 要素の取り出しを行っています。
+
+</P>
+
+<P>
+インデックス作成の処理は最終的には HTML タグをすべて捨てるのですが、その際、タグによっては単に削除すべきものと空白に変換すべきものとがあります。
+例えば、「これは&lt;STRONG&gt;重要&lt;/STRONG&gt;です」などというように用いられるタグは削除しますが、「This is foo.&lt;BR&gt;That is bar.」のような用いられ方のタグは単純に削除してしまうと foo.That と単語が繋がってしまうため、空白に変換しておきます。
+この設定は mknmz.pl の $NON_SEPARATION_TAGS に定義されています。
+
+</P>
+
+
+
+<H3><A NAME="LINE">行頭行末の処理</A></H3>
+<P>
+行頭/行末の空白/タブ、行頭の &gt; | # : を削除します。
+また、行末が日本語で終わる場合は改行コードを無視します (日本語の単語が行末で分断されてしまうのを防ぐ) 。
+これら処理は特にメイルのファイルをなどを扱う際に効果を発揮します。
+これらのルーチンのアイディアとコードは古川@ヤマハさんがくださいました。
+また、英文ハイフォネーションの復元も行います。
+</P>
+
+<H3><A NAME="MAILNEWS">Mail/News の要約作成</A></H3>
+<P>
+Mail/News のファイルを扱う際は「◯◯@△△と申します」のように自分
+の名前を名乗る行や、引用時の「◯◯さんは△△の記事において□□時頃
+書きました」のような情報、<CODE>&gt; </CODE> などで表される引用部
+分をできるだけ要約に含ませないように処理をしています。これらのメッ
+セージは要約には含まれませんが、検索対象には入るようになっています。
+このアイディアはやまだあきらさんから頂きました。実際にどのように処
+理しているか興味のある方はソースで確認してください。
+</P>
+
+
+<H3><A NAME="CHARSET">文字コードの扱い</A></H3>
+
+<P>
+内部処理を ASCII + 日本語 EUC 、出力を ISO-2022-JP で行っています。
+ JIS X 0201 の右半分 (いわゆる半角カナ) の文字は扱えません。
+また、多言語の処理も行えません。
+
+</P>
+
+<H3><A NAME="HTML">出力する HTML について</A></H3>
+
+<P>
+HTML 4.0 Strict DTD に従った HTML を出力します。
+文法については石川雅康@慶應 W3C さんの作成された jweblint で検証済みです。
+出力する HTML を修正する際には正しい HTML を考慮するようにしましょう。
+あくまでも検索エンジンなのですから、変に装飾にこだわる必要はないように思われます。
+ HTML を記述する上で参考になるものを<A HREF="#BIBLIOGRAPHY">参考文献</A>に挙げているので、それらを参照されることをお勧めします。
+
+</P>
+
+<H3><A NAME="ANDOR">アンド/オア検索時のスコア計算</A></H3>
+
+<H4><A NAME="TFIDF">tf idf法によるスコアの計算</A></H4>
+<P>
+v1.1.2.2からはtf idf法によるスコア計算を実装しました。
+これは与えられたキーワードが2つ以上あるときに用いられます。
+</P>
+
+<P>
+計算式は
+</P>
+
+<UL>
+<LI><CODE>tf = 文書に含まれるキーワードの出現回数</CODE>
+<LI><CODE>N = 全文書数</CODE>
+<LI><CODE>n = キーワードが含まれる文章の数</CODE>
+<LI><CODE>idf = log(N/n)</CODE> (Inverse Document Frequency)
+<LI><CODE>スコア = tf * idf</CODE>
+</UL>
+
+<P>
+のようになっています。これにより多くの文書に含まれるキーワードには
+低いスコアがつき、そのキーワードを含む文書が少ない場合には高いスコ
+アがつくことになります。
+</P>
+
+
+<H4><A NAME="OBSOLETE_SCORING">従来のスコアの計算</A></H4>
+<P>
+A という単語と B という単語をアンドまたはオア検索した場合、それぞ
+れの単語のスコアを元にスコアの再計算を行います。具体的には、アンド
+のときは A と B を比べてスコアの小さい方を、 オアのときは A と B 
+の大きい方を新しいスコアとして採用します。例えば "THE BEATLES" と
+いうキーワードでアンド検索をかけた場合、 "THE" の方のスコアはほと
+んど意味がないため、小さい方のスコアを重視する方針にしました。オア
+検索はその反対の理由によります。
+</P>
+
+
+<H3><A NAME="MORPH">ChaSen による品詞情報の利用</A></H3>
+
+<P>
+ChaSen は文章の形態素解析を行い、形態素単位での品詞情報を抽出する
+ことができます。
+ Namazu ではこれによって得られた品詞から名詞のみを有効とし、他をす
+べて切り捨てる動作をオプションで行えるようになっています。これによっ
+て無駄な単語をインデックスに含むことなく、スリムなインデックスを作
+成することができます。また、検索のキーに与えられた文字列にも同じ処
+理を施します。
+</P>
+
+<P>
+この辺りの処理はまだ暫定的なもので、 ChaSen の形態素解析を最大限に
+発揮できる処理を考えている最中なのですが、現段階でも検索のキーに
+「 Linux で使えるメイル用のソフトウェア」のようなセンテンスが与え
+られた時には "Linux", "メイル", "ソフトウェア" のように不要な品詞
+を省いて名詞のみを取り出してくれますから、それなりに実用的な処理は
+実現していると思います。しかし、例えば「ソフト」を名詞ではなく形容
+詞として判断するなど微妙な問題があるので、品詞情報を利用するのもな
+かなか難しいものがあります。とりあえずは、現在は実験段階ということ
+で、後々対策を考えていきたいと思います。
+</P>
+
+
+<H3><A NAME="SYMBOL">記号を含む単語のインデックス処理</A></H3>
+
+<P>
+記号の処理はなかなか難しい問題です。例えば <CODE>(foo is
+bar.)</CODE> のような文があったときに単純にスペース区切りでインデッ
+クス化してしまうと <CODE>"(foo", "is", "bar.)"</CODE> のように登録
+されてしまい、これでは foo や bar で検索できなくて困ります 
+(<CODE>"bar*"</CODE> とすることで前方一致は引っかかりますが、アル
+ゴリズムの性質上、前方一致以外の部分一致は不可能です) 。
+</P>
+
+<P>
+この問題を回避するためには記号をすべて取り払ってしまえば最も楽なの
+ですが、 <CODE>.emacs, TCP/IP</CODE> といった記号混じりの単語で検
+索したい場合もあります。
+ Namazu ではインデックス化しようとするファイルに 
+<CODE>tcp/ip</CODE> のような文があった場合、 <CODE>"tcp/ip",
+"tcp", "ip"</CODE> のように 3 つに分解してインデックスに登録します。
+ tcp/ip から tcp, ip と取り出して登録してもあまり意味がないように
+思えるかも知れませんが、 s.takabayashi という文に対して 
+s.takabayashi だけでなく takabayashi や s &amp; takabayashi でも検
+索できるようにとの配慮です。
+</P>
+
+<P>
+また、 <CODE>(tcp/ip)</CODE> という文があった場合には 
+<CODE>"(tcp/ip)", "tcp/ip", "tcp", "ip"</CODE> のように 4 つに分解
+します。<CODE>&lt;s.takabayashi&gt;, e-mail:</CODE> のようなもので
+も同じです。さすがに <CODE>((tcp/ip))</CODE> のように入れ子構造に
+なっている場合の処理は行っていないので <CODE>"((tcp/ip))",
+"(tcp/ip)", "tcp", "ip"</CODE> のように処理されます。最初の例の場
+合は <CODE>"(foo", "foo", "is", "bar.)", "bar.", "bar"</CODE> のよ
+うに登録されるため foo でも bar でも検索することができます。
+</P>
+
+<P>
+この手法でもまだ単語の取りこぼしが発生するという点で完全というわけ
+ではないのですが (例えば 
+<CODE>e-mail:ccsatoru@vega.aichi-u.ac.jp</CODE> という文から 
+<CODE>ccsatoru@vega.aichi-u.ac.jp</CODE> を取り出すことはできない) 
+、そんなに悪くないのではないかと思っています。欠点としてはインデッ
+クスのサイズが結構大きくなってしまうことですね。検索の柔軟性を高め
+ようとするとどうしてもゴミが増えてしまいます。
+</P>
+
+<P>
+一般的なアプローチとして、記号や数字を一切無視する、検索する意味の
+ない単語を無視する (助詞などの品詞を捨てる)、ひらがなを無視する、
+短い単語を無視する、頻度の異常に高い単語を無視する、 などといった
+手法によってゴミを減らすことも考えられますが、 Namazu では小中規模
+の全文検索エンジンということでできるだけ多くの単語をインデックスに
+含めるように実装しています。また、 mknmz 実行時に -H, -K といった
+オプションを指定することでひらがなのみからなる単語を無視したり記号
+をすべて削除したりといったこともできます。
+ -m オプションを指定すると ChaSen による品詞情報を利用して名詞のみ
+を登録といった処理も行えます。
+
+</P>
+
+
+<H3><A NAME="ALGORITHM">Namazu の検索アルゴリズム</A></H3>
+
+<P>
+Namazu の検索アルゴリズムは実に稚拙なものなので、あまり堂々と公表
+できるものでもないのですが、内部の仕組みがどうなっているのか知りた
+いという人もいるかもしれないので、簡単に検索アルゴリズムについて説
+明します。興味のない方は読み飛ばしてください。アルゴリズムの専門家
+の方も読まない方が良いでしょう (読んでも笑わないように)。
+</P>
+
+<P>
+英和辞書はペイジをめくる側に A-Z まで各アルファベットから始まる単
+語のそれぞれの範囲が分かるように階段状に印がつけられています。です
+から stupid という単語を調べるときは s から始まる単語の範囲の中だ
+けを調べれば良いことになります。
+</P>
+
+<P>
+Namazu では先頭の 2 オクテット分の範囲をあらかじめ調べてありますか
+ら、 st から始まる単語の範囲だけを調べれば良いわけです。
+ 2 オクテット = 16 bit の組み合わせの種類は 65536 あるのですが、 
+Namazu で扱う実際に有り得る ASCII + 日本語 EUC の 2 オクテットの文
+字コードの並びは約 15,000 です。仮に 10 万語の単語のインデックスが
+あったとして、理想的に単語が分布しているとすれば 100,000 / 15,000
+= 約 6 となり、たった 6 つの中から単語を調べれば良いことになります。
+</P>
+
+<P>
+実際には単語の分布には相当のばらつきがあるので、そうはうまくいかな
+いのですが、悪くても数百程度には範囲を絞ることができると思われます。
+うまくいけばたった 1 つに絞ることもあり得ます。多くの場合はその中
+間くらいでしょう。その絞られた範囲の中で二分探索法を用いて検索しま
+す。
+
+</P>
+
+<P>
+元々、二分探索法は少ない比較回数で検索が可能なアルゴリズムですから、 
+10 万語から検索する場合でも最悪 17 回の比較で検索が可能なのですが、
+その数をもう少し減らそうというのが Namazu のせこいアプローチです。
+</P>
+
+<P>
+本当は正統的なハッシュ法を用いれば、さらに高速な検索も可能なはずな
+のですが、プログラミング技術と実装との折り合いで、今の手法で妥協し
+ています。自分では実用的な速度は達成できたと思っています。
+</P>
+
+<H3><A NAME="REGEXP_SEARCH">正規表現/後方一致/中間一致検索の実装</A></H3>
+<P>
+ひとつ上の項で説明したように Namazuは二分探索を実装しています。
+二分探索ではアルゴリズムの性質上、中間一致や後方一致は不可能ですから、
+別の方法を採るしかありません。
+</P>
+
+<P>
+そこで、古川@ヤマハさんが中間一致、後方一致を実現するためのイ
+ンデックスを考案して pnamazu に実装してくださいました。
+</P>
+
+<P>C版の namazuでもこれを真似して実装を試みましたが、途中で、ある
+ことに気付いて中止しました。それは「最近のマシンは速いから登録単語
+を全数 grep しても十分実用になるだろう」ということです。</P>
+
+<P>この方法ならば正規表現が使えるし、実装もシンプルになるというわ
+けでさっそく試してみたところ、事実、十分実用的な (私のところでは 
+2,3秒くらいです) 速度で検索が可能なことが分かりました。</P>
+
+<P>
+正規表現は <A HREF="http://www.netlab.co.jp/ruby/jp/">Ruby</A> の
+コードを使わせていただいているので (まつもとゆきひろさん Thanks!)、
+日本語も扱えます。たとえば <CODE>/インター?フェ[ーイ]ス/</CODE> と
+いった指定が可能になっています。
+</P>
+
+<P>
+なお、中間一致/後方一致は内部的に正規表現に変換して実現されていま
+す。これらの機能が不要な場合は NMZ.w を削除してください。
+</P>
+
+
+<H3><A NAME="PHRASE_SEARCH">(あやしげな)フレイズ検索の実装</A></H3>
+
+<P>フレイズ検索の実装はかねてからの目標でした。最も問題だったのは
+単純に現状のインデックスの構造の延長上に実装するとインデックスのサ
+イズが巨大になるということでした。良い方法が思いつかずに悩んでいる
+と、古川@ヤマハさんから次のような助言をいただきました。</P>
+
+<P>「フレイズを構成する個々の単語はすべて AND検索でそのファイルに
+存在することが分かっているのだから、調べる必要があるのは単語の並び
+だけである。精度を多少犠牲にして単語をハッシュ値に変換すればサイズ
+は小さくなる。」</P>
+
+<P>なるほど、これはいける、ということで実装したのが Namazu のフレー
+ズ検索です (古川さん Thanks!)。「あやしげな」というのは精度
+が 100% ではないことを意味します。</P>
+
+<P>フレイズは 2語単位で 16 bitのハッシュ値に変換して記録しているの
+で、たとえば "foo bar baz" というフレイズで検索すると</P>
+
+<P>
+...<BR>
+foo bar ...<BR>
+... bar baz
+</P>
+
+<P>のように "foo bar" と "bar baz" の含まれるファイルもヒットして
+しまいます。これはちょっと困ったことですが、少なくとも foo &amp;
+bar &amp; baz で検索するよりは候補を絞れます。</P>
+
+<P>理想的には "foo bar baz" を確実に検索できた方が望ましいのですが、
+インデックスのサイズとの兼ね合いもあるので難しいところです。もっと
+良い方法が見つかれば置き換えたいと思っています。</P>
+
+<P>
+フレイズ用のインデックス NMZ.p のサイズは転置ファイル NMZ.i よりは
+小さくなります。また、これの補助インデックスとして 256KB (int =
+32bitで計算) を必要とします。
+</P>
+
+<P>
+なお、フレイズ検索用インデックスの作成にはメモリを割と消費するので
+注意が必要です。<A HREF="FAQ.html">FAQ</A> の <A
+HREF="FAQ.html#OUTOFMEMORY">mknmz で Out of memory! がでてしまいま
+す</A>を参照してみてください。
+</P>
+
+<H3><A NAME="FIELD_SEARCH">フィールド指定の検索の実装</A></H3>
+
+<P>Mail/News を検索するとき、 <CODE>Subject:</CODE>,
+<CODE>From:</CODE>, などを指定して検索が可能になると特定の人の投稿
+のみを抽出することができたりして何かと便利です。
+</P>
+
+<P>
+そういう要望からフィールド指定の検索を実装することになりました。元々
+は NMZ.i に記録されるスコアの情報に細工して 16bitほどのフィールド
+情報を持たせるという割と凝った方法を考えていたのですが、<A
+HREF="http://openlab.ring.gr.jp/namazu/ml.html">Namazu
+メイリングリスト</A>にてそのことを提案すると、加藤裕@NTTデータさん
+からもっと楽な方法を示唆していただきました。
+ </P>
+
+<P>
+フィールドの情報は NMZ.field.{subject,from,date,message-id,...) と
+いったファイルに記録して、その形式は単なる行指向のテキストファイル
+です。検索時にはこのファイルを正規表現のエンジンで grep して検索を
+行います。
+</P>
+
+<P>
+極めて安易な実装ですが、それなりに使えると思います :-)。
+</P>
+
+<P>
+現在のところ Subject: (Title:) , From: (Author:) , Date:,
+Message-Id:, Url: (Path:), Newsgroups: のフィールドが検索可能です。
+</P>
+
+
+<H3><A NAME="UPDATE_INDEX">文書の更新/削除に対応インデックスの
+アップデート</A></H3>
+
+<P>
+v1.3.0.0 より前のヴァージョンではインデックスは文書の追加しかできず、
+ウェブペイジなど、頻繁に更新される文書を対象とする場合には毎回全体
+のインデックスを作り直さなければならず、不便でした。
+v1.3.0.0 からは文書の更新/削除に対応したインデッックスのアップデー
+トを行うことができます。
+</P>
+
+<P>
+この仕組みは実際にインデックスから登録済の文書を更新/削除するので
+はなく、欠番情報を記録することによって実現されています。つまり、イ
+ンデックスに記録された元の情報はそのままで、単にその文書の IDが欠
+番になるだけです。この情報は NMZ.t に記録され、検索時に参照されま
+す。また、文書の日付情報と共用されています。
+</P>
+
+
+<P>
+文書の更新/削除を含むインデックスの更新を繰り返していくと欠番が増
+えて記録効率が悪くなっていきます。そこで、古川@ヤマハさん作の欠
+番を詰めるツール gcnmz の出番です。使い方は
+</P>
+
+<P>
+<CODE>% gcnmz /doko/soko/NMZ</CODE>
+</P>
+
+<P>
+のようにゴミ掃除対象の NMZ.* ファイルのパスをファイル名の NMZまで
+を指定します (拡張子の前まで)。このツールはまでテストが不十分なの
+で十分注意して使ってください。なお、ゴミ掃除する前の元のファイルは 
+*.BAK として残ります。 *.BAK を復元したいときは
+</P>
+
+<P>
+<CODE>% ls NMZ.*.BAK |perl -nle 's/\.BAK$//;rename("$_.BAK", $_)'</CODE>
+</P>
+
+<P>
+のように実行すると良いでしょう。
+</P>
+
+<P>
+なお、この欠番方式のアイディアは古川竜雄@日本HPさんからいただきま
+した。 1997年の 11月頃の話です。
+</P>
+
+
+<H3><A NAME="SORT_BY_DATE">文書の日付による検索結果の新しい順/古い順のソート</A></H3>
+
+<P>
+v1.3.0.0 からは文書の日付によって検索結果を新しい順/古い順にソート
+することができます。
+
+NMZ.t を参照するので -W オプションをつけてインデックスを作った場合
+にはできません。
+</P>
+
+<P>
+昔の版にあったファイル名に連番が含まれるものを擬似的に新しい順/
+古い順にソートする機能 (検索対象となるインデックスが単一の場合のみ
+有効) はそのまま残っているので -W オプションつきでインデックスを作っ
+たときでもこの機能は有効です。 
+</P>
+
+<P>
+Mail/News の Date: ヘッダに合わせてファイルのタイムスタンプを修正
+するツール mailutime を添付したので必要な人は使ってください。 
+MHonArc を使っている人は -modtime オプションで同じことができます。
+</P>
+
+<H3><A NAME="WAKATIGAKI">検索時の日本語のわかち書き</A></H3>
+
+<P>
+v1.2.0.2 からは検索時に日本語のわかち書きを自前で行うようになりま
+した。これにより KAKASI/ChaSen を呼び出す必要がなくなり、処理速度
+が上がりました。NMZ.i を辞書の代わりに参照して実現しています。文字
+列の左から最長一致で分割しているだけです。
+</P>
+
+<H3><A NAME="PROBLEM">プログラムの問題点</A></H3>
+
+<UL>
+<LI>インデックスファイルはバイナリデータなのでエディタなどで編集できない。
+<LI>インデックス作成に時間が相当かかる。
+<LI>ファイルを丸ごと読み込んで処理を行うため、巨大なファイルを扱うとメモリを大量に消費する。
+<LI>インデクシングの最中にじわじわとプロセスのサイズが膨張してしまうようだ。(そうならないように考慮して設計したはずなのだけど…)
+<LI>インデクサはすべてのファイルをオンメモリで一度に処理できない場合はテンポラリファイルを作成しますが、その辺の効率はあまり良くないです。
+<LI>上と同じ理由により、インデックスの更新 (追加) の効率はあまり良くないです。
+</UL>
+
+
+<H2><A NAME="FEATURE">Namazu の仕様</A></H2>
+
+<H3><A NAME="TECHFEATURE">主な技術仕様</A></H3>
+
+<UL>
+<LI>インデクサを Perl, 検索エンジンを C で記述している
+<LI>検索エンジンは単体で CGI として動作する
+<LI>作成されるインデックスファイルは結構大きい
+<LI>インデックスファイルはバイナリデータ
+<LI>スコアの計算にtf idf法を実装している
+<LI>数十 Mbytes のデータソースを元にインデックス作成した場合の検索速度は Pentium 166 MHz + 64 MB  でおよそ 0.1 秒程度<BR>
+(OS のディスクキャッシュに大きく影響されます)
+<LI>検索アルゴリズムは二分探索にハッシュ的アプローチを組み合わせたもの
+<LI>漢字コード変換ルーチンは佐藤公彦(K.Sato) さんの QKC (Quick KANJI code Converter  C Version 1.0) のソースコードを参考にしています
+</UL>
+
+
+<H3><A NAME="MAINFEATURE">プログラムの主な仕様</A></H3>
+
+<UL>
+<LI>検索式はアンド検索とオア検索およびノット検索をサポートし、括弧も使用可能
+<LI>アスタリスクを用いた前方一致検索が可能 (e.g. <VAR>foo*</VAR>)
+<LI>アスタリスクを用いた中間一致/後方一致検索が可能 (e.g. <VAR>*bar</VAR>)
+<LI>日本語対応の正規表現による検索が可能 (e.g. <VAR>/インター?フェ[ーイ]ス/</VAR>)
+<LI>精度が 100%ではないあやしげなフレイズ検索が可能
+<LI>記号を含む単語の検索が可能 (e.g. <VAR>TCP/IP</VAR>) 
+<LI>文書の日付による検索結果の新しい順/古い順のソートに対応 v1.3.0.0〜
+<LI>文書の更新/削除に対応したインデックスのアップデートに対応 v1.3.0.0〜
+    (v1.3.0.0 より前はインデックスの更新は追加のみをサポート)
+<LI>結果表示はスコアを元にソートされて出力される
+<LI>スコアは HTML タグを考慮して計算される
+<LI><CODE>&lt;META NAME="keywords" CONTENT="</CODE><VAR>foo bar</VAR><CODE>"&gt;</CODE> のキーワードは特にスコアを高く計算
+<LI>インデックス作成の際に <CODE>&lt;IMG&gt;</CODE> タグの ALT エレメントを抽出する
+<LI>インデックス作成の際に実体参照の復元を行う
+<LI>日本語、メイルを考慮した行頭/行末の処理を行う
+<LI>Mail/News のファイルに特化した処理 (ヘッダを捨てるなど) が可能
+<LI>MHonArc で HTML 化したファイルに特化した処理が可能
+<LI>uuencode/BinHex の部分を無視する処理を行うことが可能
+<LI>検索の結果表示の際には HTML のヘディング情報を元に作成した要約を表示する
+<LI>一度に表示する件数と要約表示の有無はブラウザから設定可能
+<LI>複数のデータベースの中から一つを選ぶようにブラウザから指定が可能
+<LI>一度に表示できない分の検索結果は ODIN や AltaVista のようにペイジ単位で表示可能
+<LI>複数のキーワードが指定された場合は各キーワードごとのヒット数を参考値として表示する
+<LI>前回入力されたキーワードが次回の入力欄に残る
+<LI>表示件数と出力フォーマットの設定が次回の入力の際に残る
+<LI>検索されたキーワードのログを取ることが可能
+</UL>
+
+
+<H3><A NAME="HTMLFEATURE">出力する HTML の仕様</A></H3>
+
+<UL>
+<LI>文字コードは ISO-2022-JP (JIS) で出力する
+<LI>ディフォルトでは HTML 4.0 Strict DTD に従った HTML を出力する
+<LI>DOCTYPE と charset の宣言をしている
+<LI>出力する HTML は jweblint で検証済み
+</UL>
+
+
+<H2><A NAME="TODO">今後の予定</A></H2>
+
+<P>
+<A HREF="./ToDo">ToDo</A>ファイルにまとめました。
+</P>
+
+<P>
+将来的には HTML タグを利用したスコアの重みづけ、要約の作成の処理を応用して SGML 文書を対象とした検索システムを作るのも面白そうだと思っています。
+</P>
+
+<H2><A NAME="THANKS">謝辞</A></H2>
+
+<P>
+初期の段階から開発に協力して頂き、数々の助言をくださった馬場肇@京大さん、
+やまだあきらさん、
+たくさんの素敵なコードを追加してくださった古川令@ヤマハさん、
+HTML およびテキスト処理に関していろいろと教えてくださった石川雅康@慶應W3Cさん、
+<A HREF="http://hp.vector.co.jp/authors/VA000501/index.html">QKC</A>
+のコードを引用または参考にすることを承諾してくださった佐藤公彦@東大さん、
+全文検索システムの開発のきっかけとなった httpdown の作者くまがいまさあき@東北大さん、
+Win32 対応用のコードをくださった林卓司@エフエフシーさん、
+広瀬@日本電気エンジニアリングさん、
+Makefile を作成してくださった佐藤文優@cij.co.jp さん、
+Ruby の正規表現のコードを使わせてくださったまつもとゆきひろさん、
+バグ報告/動作報告をしてくださったみなさん、
+Namazu mailing list のみなさん。
+</P>
+
+
+<H2><A NAME="COMMENT">最後に</A></H2>
+
+<P>
+プログラムに改良すべき点を見つけた方はお知らせ頂けるとありがたいです。
+特にバグに関してはできる限り対処していきたいと思っています。
+このささやかな検索システムが情報検索の場面で少しでもお役にたてれば幸いです。
+</P>
+
+<H2><A NAME="BIBLIOGRAPHY">参考文献</A></H2>
+
+<UL>
+<LI>ローラ・リメイ 著 / 武舎広幸 + 久野禎子 + 久野靖 訳, <CITE>HTML 入門 - WWW ページの作成と公開</CITE>, プレンティスホール出版
+<LI>ローラ・リメイ 著 /  武舎広幸 + 久野禎子 + 久野靖 訳, <CITE>続 HTML 入門 - 新機能, CGI. Web の進化</CITE>, プレンティスホール出版
+<LI>ローラ・リメイ 著 /  武舎広幸 + 久野禎子 + 久野靖 訳, <CITE>HTML 入門 第二版 - WWWページの作成と公開</CITE>, プレンティスホール出版
+<LI>馬場肇, <CITE>フリーソフトで構築する全文検索システム - freeWAIS-sf と SFgate を用いた構築例</CITE>, Software Design / 1997年 8月号, (<A HREF="http://www.kusastro.kyoto-u.ac.jp/%7Ebaba/SDarticle/sd1997_08.html">Web 版</A>もあり)
+<LI>馬場肇, <CITE><A HREF="http://www.kusastro.kyoto-u.ac.jp/%7Ebaba/wais/">freeWAIS-sf japanization information</A></CITE>
+<LI>干場信之 + 清兼義弘, <CITE>インターネット / イントラネット対応の検索エンジンを解剖する</CITE>, Software Design / 1997年 4月号
+<LI><CITE>特集、高速全文検索の威力</CITE>, 日経バイト 96年 10月号
+<LI>原田昌紀, <CITE>サーチエンジン徹底活用術</CITE>, オーム社
+<LI><CITE><A HREF="http://www.sony.co.jp/Search/index-j.html">SonyDrive Search Engine</A> の <A HREF="http://www.sony.co.jp/Search/FAQ-j.html">FAQ</A></CITE>
+<LI>石川雅康, <CITE>間違いだらけの Web ページ作り</CITE>, Software Design / 1997 年 7 月号
+<LI>石川雅康, <CITE>HTML の標準化, 国際化, 及び適正化</CITE>, 愛知大学情報処理センター紀要 COM Vol.8 No.2<BR>
+(かなり貴重な文献ですね:-)
+<LI>矢野啓介, <CITE><A HREF="http://www.asahi-net.or.jp/%7Ewq6k-yn/konomac.html">好ましい HTML 文書を書くための方法と考え方</A></CITE>
+<LI>田村健人, <CITE><A HREF="http://www.din.or.jp/%7Etkent/goodhtml.html">「優しい html 」 の書き方</A></CITE>
+<LI>Frangois Yergeau et al., <CITE><A HREF="ftp://ftp.iij.ad.jp/pub/rfc/rfc2070.txt">Internationalization of the Hypertext Markup Language</A> - RFC 2070</CITE>
+<LI>Dave Raggett et al., <CITE><A HREF="http://www.w3.org/TR/REC-html40">HTML 4.0 Specification</A></CITE>
+<LI>長尾真編, <CITE>自然言語処理 / 岩波講座ソフトウェア科学 15</CITE>, 岩波書店
+<LI>William E. Weinmain 著 / 笹木望 監訳, <CITE>CGI ブック</CITE>, インプレス
+<LI>Larry Wall and Randal L. Schwartz 著 / 近藤嘉雪 訳, <CITE>Perl プログラミング</CITE>, ソフトバンク
+<LI>Larry Wall + Tom Christiansen + Randal L. Schwartz / 近藤嘉雪 訳, <CITE>プログラミング Perl 改訂版</CITE>, O'REILLY
+<LI>斎藤靖 + 小山裕司 + 前田薫 + 布施有人, <CITE>新 Perl の国へようこそ Perl5 対応版</CITE>, サイエンス社
+<LI>Jeffrey E.F. Friedal, <CITE>Mastering Regular Expression</CITE>, O'REILLY
+<LI>Robert Sedgewick 著 / 野下浩平 + 星守 + 佐藤創 + 田口東 共訳, <CITE>アルゴリズム C 第一巻 基礎・整列</CITE>, 近代科学社
+<LI>Robert Sedgewick 著 / 野下浩平 + 星守 + 佐藤創 + 田口東 共訳, <CITE>アルゴリズム C 第二巻 探索・文字列・計算幾何</CITE>, 近代科学社
+</UL>
+
+
+<H2><A NAME="CHANGELOG">プログラムの履歴</A></H2>
+
+<P><A HREF="./ChangeLog">ChangeLog</A> を参照してください。
+</P>
+
+
+<H2><A NAME="AUTHOR">文責</A></H2>
+
+<UL>
+<LI><STRONG>氏名：</STRONG> 高林 哲 Satoru Takabayashi
+<LI><STRONG>email：</STRONG> <A HREF="mailto:ccsatoru@vega.aichi-u.ac.jp">ccsatoru@vega.aichi-u.ac.jp</A>
+</UL>
+
+<HR>
+<P>
+email: <A HREF="mailto:ccsatoru@vega.aichi-u.ac.jp">ccsatoru@vega.aichi-u.ac.jp</A><BR>
+<A HREF="http://openlab.ring.gr.jp/namazu/">Namazuのホームペイジへ</A>
+
+</P>
+<ADDRESS> ccsatoru@vega.aichi-u.ac.jp
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,164 @@
+#!/usr/bin/perl
+#
+# bnamazu -- query via "namazu", and browse the result.
+# 
+# Copyright (C) 1998 Hajime BABA. All rights reserved.
+#
+# Modified by Satoru Takabayashi, 1998-02-08.  No right reserved.
+#   * addded option that is for specifying database.
+#   * uncommented one line for removing temporary file.
+#
+# Usage: bnamazu [-h] [-n] [-b browser] [options] [query...]
+#
+#        -h             Show usage.
+#        -n             Open new window when you browse.
+#        -b browser	Specify browser you want to use.
+#                       (default: Netscape)
+#        -d database    Specify database you want to search.
+#                       (default: namazu's DEFAULT_DIR)
+#        Other options without -h, -n, -b and -d are for namazu.
+#        Now available: [-f conf] [-s] [-l] [-e]
+# 
+#
+
+$debug = 1;
+$prog = "bnamazu";
+
+# definitions
+$namazu = "namazu";
+$namazu_opt = "-a -h";				# default option
+
+if (defined($ENV{"BNAMAZUTMPDIR"})) {
+    $tmpdir = $ENV{"BNAMAZUTMPDIR"};
+} elsif (defined($ENV{"TMPDIR"})) {
+    $tmpdir = $ENV{"TMPDIR"};
+} else {
+    $tmpdir = "/tmp";
+}
+$results_html = "$tmpdir/$prog$$.html";
+
+# programs
+$rm = "/bin/rm -f";
+$xterm = "kterm";
+
+# browsers
+$netscape = "netscape";
+$lynx = "lynx";
+$mosaic = "xmosaic";
+$mmm = "mmm";
+$more = "less";
+$default_browser = "netscape";
+
+
+# subroutines
+
+require("getopts.pl");
+
+sub usage {
+    print(stderr "Usage: $prog [-h] [-n] [-b browser] [-d database] [options] [query...]\n");
+    exit 0;
+}
+
+sub parse_options {
+#    Getopts('hb:f:slean:w:');
+    Getopts('hnb:d:f:sle');
+
+    &usage if (defined($opt_h));
+    $newwindow = $opt_n if (defined($opt_n));
+    $browser = $opt_b if (defined($opt_b));
+    $database = $opt_d if (defined($opt_d));
+
+    $namazu_opt .= " -f $opt_f" if (defined($opt_f));
+    $namazu_opt .= " -s" if (defined($opt_s));
+    $namazu_opt .= " -l" if (defined($opt_l));
+    $namazu_opt .= " -e" if (defined($opt_e));
+#    If we include '-a' within $namazu_opt as a default option,
+#    both options '-n' and '-w' are meaningless.
+#    $namazu_opt .= " -a" if (defined($opt_a));
+#    $namazu_opt .= " -n $opt_n" if (defined($opt_n));
+#    $namazu_opt .= " -w $opt_w" if (defined($opt_w));
+}
+
+sub get_query {
+    local($query);
+    if ($#ARGV == -1) {				# no args
+	print("Input query: ");
+	$query = <STDIN>;
+	chop($query);
+    } else {
+	$query = join(" ", @ARGV);
+	$query = "\"$query\"";			# brace with ""
+    }
+    $query;
+}
+    
+sub exec_browser {
+    local($browser, $url) = @_;
+
+    $browser = $default_browser if (! defined($browser));
+    
+    if ($browser =~ /netscape/i) {
+	$netscape_lockfile = "$ENV{\"HOME\"}/.netscape/lock";
+	# if exists symbolic link
+	if ( -l $netscape_lockfile ) {
+	    # browse result to running netscape.
+	    if ($newwindow) {
+		$browse_cmd = "$netscape -noraise -remote 'openURL($url,new-window)'";
+	    } else {
+		$browse_cmd = "$netscape -remote 'openURL($url)'";
+	    }
+	} else {
+	    # invoke new netscape as a background process.
+	    $browse_cmd = "$netscape $url &";
+	}
+    } elsif ($browser =~ /lynx/i) {
+	if ($newwindow) {
+	    # invoke new terminal window as a background process.
+	    $browse_cmd = "$xterm -e $xterm_opt $lynx $url &";
+	} else {
+	    $browse_cmd = "$lynx $url";
+	}
+    } elsif ($browser =~ /mosaic/i) {
+	# This is untested. It doesn't work well probably. (;_;)
+	$browse_cmd = "$mosaic $url";
+    } elsif ($browser =~ /mmm/i) {
+	# This is untested. It doesn't work well probably. (;_;)
+	$browse_cmd = "$mmm $url";
+    } else {
+	# if unknown browser, show raw html... (;_;)
+	$browse_cmd = "$more $url";
+    }
+    # next line is uncomented by Satoru Takabayashi.
+    $browse_cmd .= "; $rm $url";		# mmm... X-(
+
+    # go!
+    print("$browse_cmd\n") if $debug;
+    exec($browse_cmd);
+    
+    # not reached.
+}    
+
+
+# main routine
+sub main {
+    &parse_options();
+    $query = &get_query();
+    
+    # invoke namazu via /bin/sh.
+    $query_cmd = "$namazu $namazu_opt $database $query > $results_html 2> /dev/null";
+    print("$query_cmd\n") if $debug;
+    system($query_cmd);
+    if ($?) {
+	print(stderr "$namazu: unknown error: $?\n");
+	exit 1;
+    }
+	
+    # browse the result !
+    &exec_browser($browser, $results_html);
+}
+
+&main();
+exit 0;						# not reached.
+
+## EOF
+

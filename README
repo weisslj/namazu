@@ -1,0 +1,48 @@
+Thanks for fishing Namazu! 
+(The Japanese word `Namazu' means `catfish' in English)
+
+What is Namazu?
+
+   Namazu is a search engine software intended for easy use.  Not
+   only it works as CGI program for small or medium scale WWW search
+   engine, but also works as personal use such as search system for
+   local HDD.  Now, search clients for Mule and Tcl/Tk, JAVA and
+   Win32 are available.
+
+Background Information
+
+   At the beginning Namazu was made with only intention of
+   Japanese use but now it has been developed to handle English
+   (ASCII charset) and other languages defined in ISO-8859-*.
+
+   I have a desire to distribute Namazu to all over the world but
+   there are many problems on Internationalization. So perhaps
+   using Namazu in non-Japanese environment is currently little
+   difficult. I am trying to improve now!
+
+Notice
+
+   Many documents and comments in source code are written in
+   Japanese. I will translate that into English before long. 
+   If I should get email from someone using Namazu from
+   overseas, my motivation would rise :-).
+
+   For same reason, contributed softwares written in Japanese will
+   translate into English, maybe.
+
+Request for comments
+
+   My English skill is really horrible. If you notice mistakes in my
+   writing, please teach me kindly :-).
+
+
+You can get latest news about Namazu from
+
+  <http://openlab.ring.gr.jp/namazu/>
+
+
+Happy searching!
+
+--
+Satoru Takabayashi
+ccsatoru@vega.aichi-u.ac.jp

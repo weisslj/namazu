@@ -1,0 +1,225 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN"
+        "http://www.w3.org/TR/REC-html40/strict.dtd">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-2022-JP">
+<META NAME="keywords" CONTENT="namazu full text retrieval search engine system 全文 検索 エンジン システム">
+<LINK REV=MADE HREF="mailto:ccsatoru@vega.aichi-u.ac.jp">
+<TITLE>Namazu the full text retrieval search system</TITLE>
+</HEAD>
+<BODY LANG="ja">
+<H1>全文検索システム Namazu</H1>
+<P>Last Modified: 3/15/1999</P>
+
+<!-- ATTENTION_HERE -->
+
+<HR>
+
+<H2>概要</H2>
+
+<P>
+Namazu は手軽に使えることを第一に目指した日本語全文検索システムで
+す。CGI として動作させることにより小中規模の WWW 全文検索システム
+を構築することができるほか、ハードディスク内のファイルを対象とした
+パーソナルな用途にも使えます。現在のところ Mule, Tcl/Tk, JAVA,
+Win32 用の検索ツールが用意されています。
+</P>
+
+<P>
+UNIX, Win32, OS/2 の上で動作可能です。 Win32については
+広瀬@NECエンジニアリングさんによる
+<A HREF="http://www.tama.or.jp/%7Ekenzo-/Namazu/">全文検索システム Namazu for Win32</A>のホームペイジがあります。 
+Win32版に関する詳しい情報はこちらを参照してください。<BR>
+OS/2版に関する詳しい情報は清水さんによる <A HREF="http://www.dd.iij4u.or.jp/%7Ekshimz/warp/namazu.html">OS/2 port of Namazu the full text retrieval search system</A>のペイジを参照してください。
+それぞれのペイジにはバイナリ・パッケージも用意されています。
+</P>
+
+<P>
+Namazu の開発は多くの方たちの協力によって成り立っています。
+オープンな環境で開発を行うための<A HREF="ml.html">メイリングリスト
+</A>
+があります。興味のある方はぜひ参加してください。
+</P>
+
+<P>
+Namazu についての <A HREF="FAQ.html">FAQ</A> (よくある質問とその答
+え) と <A HREF="security.html">セキュリティに関する考察</A>をまと
+めました。
+</P>
+
+<H2>新着情報</H2>
+
+<UL>
+<LI><A HREF="#RELEASE">Version 1.3.0.6 を公開</A> 3/15/1999<BR>
+RFCのインデックスが異常に遅かったバグを修正しました。そのほ
+かいくつかの細かいバグを修正しています。
+<LI>NamazuのWebサイトの URLが変わりました 03/12/1999<BR>
+これからは <A HREF="http://openlab.ring.gr.jp/namazu/">
+http://openlab.ring.gr.jp/namazu/</A>
+が公式の URL になります。
+<LI><A HREF="#RELEASE">Version 1.3.0.0 を公開</A> 10/31/1998<BR>
+v1.3.0.0 では大幅な機能強化を図りました。主な改良点は以下の通りで
+す。
+  <UL>
+  <LI>文書の更新/削除を反映したインデックスのアップデートが可能になりました
+  <LI>ファイルのタイムスタンプによる検索結果の新しい順/古い順のソー
+  トが可能になりました
+  <LI>フィールド指定の検索ができるようになりました
+  </UL>
+詳しくは <A HREF="ChangeLog">ChangeLog</A> を参照してください。<BR>
+(ヴァージョンの表記が変だったので修正しました 11/01/1998)<BR>
+<LI><A HREF="http://www.kusastro.kyoto-u.ac.jp/%7Ebaba/namazubook/support.html">
+日本語全文検索システムの構築と活用</A>,
+ 著者: <A HREF="http://www.kusastro.kyoto-u.ac.jp/%7Ebaba/">馬場肇</A>,
+ ソフトバンク, 2,800円 (税別)<BR>
+が発売されました。買いませう :-) 09/24/1998
+</UL>
+
+
+<H2><A NAME="SPECIFICATION">主な仕様</A></H2>
+
+<P>
+この全文検索システムはインデックス作成の部分を Perl で行い、
+検索部分をC 言語によるプログラムで行う仕組みになっています。
+検索速度は OS のディスクキャッシュの効果が大きく影響してくるので厳密には測定できませんが、
+ Pentium 166 MHz, Memory 64 MB の Linux マシンで数十メガバイトのファイルを元に作成されたインデックスを検索した場合、
+大体 0.1 秒程度で検索が完了します (日本語の分解をしないとき)。
+アルゴリズムの性質上、検索時間はインデックスのサイズにそれほど影響されません (理論的には log 関数の伸びを示します)。
+</P>
+
+
+<P>
+CGI としてだけでなく namazu.el を使って Mule から検索したり
+Tcl/Tk で作られた
+<A HREF="http://www.tama.or.jp/%7Ekenzo-/Namazu/tknamazu/">tknamazu</A>
+という GUI な検索クライアントを用いることができます。
+また、 Win32 の環境では <A HREF="http://www.na.rim.or.jp/%7Es_yam/library/search-s.html">Search-S</A> という GUI な検索クライアントを使うことができます。
+</P>
+
+
+<P>
+検索プログラムはメモリをほんのわずかしか要求しませんし、
+単体で  CGI として機能するので (日本語の分解には KAKASI/ChaSen を呼び出しますが) 、それなりに軽いはずです。
+</P>
+
+<P>
+Mail/News を考慮したインデクシングを行うことが可能なため、特にメイリングリストやニューズの記事の全文検索システムを作るのにも適しています。
+</P>
+
+<P>
+検索はアンド検索とオア検索およびノット検索をサポートしています。
+また、 v1.2.0 からはフレイズ検索および中間一致/後方一致/正規表現による検索も可能になっています。
+検索結果の表示はスコアの高い順にソートされ、 
+<A HREF="http://altavista.digital.com/">AltaVista</A> や <A HREF="http://odin.ingrid.org/">ODIN</A>
+のように要約の表示を行います。要約は HTML のヘディング構造を元に作成されます。また、一ペイジで表示しきれない分についてはペイジ単位 (ディフォルトでは 20 件単位) で表示できるようになっています。
+</P>
+
+<P>
+スコアは単語の出現回数だけではなく <CODE>&lt;TITLE&gt;</CODE> <CODE>&lt;H[1-6]&gt;</CODE> <CODE>&lt;A&gt;</CODE> などの HTML タグによる重みを考慮して計算されます。また、<CODE>&lt;META NAME="keywords" CONTENT="</CODE><VAR>foo bar</VAR><CODE>"&gt;</CODE> にも対応しています。
+</P>
+
+<P>
+インデックス作成の際に &lt;IMG&gt; タグから ALT 要素を取り出す、実体参照を復号する、検索結果の表示に ISO-2022-JP で
+HTML 4.0 Strict DTD に従った HTML を出力するなど、
+ HTML の扱いにはできるだけ配慮しています。また、出力する HTML については石川雅康@慶應 W3C さんの作成された jweblint で検証済みです。
+</P>
+
+
+<P>
+インデックス作成にかかる時間は Pentium 166 MHz + 64 MB の Linux マシンで約 2000 個の合計 25 MB のファイルを処理した場合で約 50 分 (KAKASI を使用)。インデックスの更新は追加のみをサポートしています。
+</P>
+
+<P>
+外部のサーヴァのファイルの取得は他のソフトに任せています。 東北大学のくまがいまさあきさんの作成された <A HREF="http://www.mechatronics.mech.tohoku.ac.jp/%7Ekumagai/bins/kuma/httpdown30.html">httpdown</A> や wget などをお使いください。
+日本語のわかち書きには京都大学の馬場 肇さんがパッチをあてた <A HREF="ftp://ftp.kusastro.kyoto-u.ac.jp/pub/baba/wais/">kakasi-2.2.5</A>, または奈良先端科学技術大学院大学の <A HREF="http://cactus.aist-nara.ac.jp/lab/nlt/chasen.html">ChaSen</A> を利用させていただいております。
+</P>
+
+<P>
+さらに詳しい情報を知りたい方は<A HREF="manual.html">マニュアル</A>を参照してください。
+</P>
+
+
+<H2><A NAME="RELEASE">ダウンロード</A></H2>
+
+<P><A HREF="COPYING">GPL2</A> 
+(<A HREF="http://www.sra.co.jp/public/doc/gnu/gpl-2j.txt">日本語訳</A>)に従ったフリーソフトウェアとして公開します。
+</P>
+
+<H3><A NAME="SOURCE">ソース配布</A></H3>
+
+<UL>
+<LI><A HREF="release/namazu-1.3.0.6.tar.gz">namazu-1.3.0.6.tar.gz</A> (約 330KB)
+</UL>
+
+
+<P>
+こちらは古い (枯れた) ヴァージョン
+</P>
+<UL>
+<LI><A HREF="release/namazu-1.2.0.8.tar.gz">namazu-1.2.0.8.tar.gz</A> (約 290KB)
+<LI><A HREF="release/namazu-1125.tar.gz">namazu-1125.tar.gz</A> (約 180KB)
+<LI><A HREF="release/namazu-1115.tar.gz">namazu-1115.tar.gz</A> (約 96KB)
+<LI><A HREF="release/namazu-104b.tar.gz">namazu-104b.tar.gz</A> (約 62KB)<BR>
+</UL>
+
+<P>
+<A HREF="proto/">ベータ版の置場所</A>
+</P>
+
+
+<H2><A NAME="RELATED_LINKS">関連リンク集</A></H2>
+
+<UL>
+<LI><A HREF="http://www.tama.or.jp/%7Ekenzo-/Namazu/">Namazu the full text retrieval search system for Win32</A><BR>
+(広瀬@NECエンジニアリングさんによる Namazu for Win32 のペイジ)
+<LI><A HREF="http://www.dd.iij4u.or.jp/%7Ekshimz/warp/namazu.html">OS/2 port of Namazu the full text retrieval search system</A><BR>
+(清水@住友林業さんによる Namazu for OS/2 のペイジ)
+<LI><A HREF="http://www.tama.or.jp/%7Ekenzo-/Namazu/tknamazu/">Tcl/Tk Namazu client</A><BR>
+(広瀬@NECエンジニアリングさんによる Tcl/Tk 用検索クライアント tknamazu のペイジ)
+<LI><A HREF="http://arika.org/linux/tools/namazu-el/">Useful Tools: namazu.el</A><BR>
+(やまだあきらさんによる Emacs/Mule 用検索クライアント namazu.elのペイジ)
+<LI><A HREF="http://www.na.rim.or.jp/%7Es_yam/library/search-s.html">search-s Version 0.7.1</A><BR>
+(私の先輩の山下誠二さんによる Win32 用 GUI 検索クライアント Search-s のペイジ)
+<LI><A
+href="http://www.kusastro.kyoto-u.ac.jp/%7Ebaba/namazubook/support.html">
+「日本語全文検索システムの構築と活用(なまず本)」サポートページ</A>
+(馬場肇さんによる Namazuを中心とした日本語全文検索システムの活用本です)
+<LI><A href="http://web.kyoto-inet.or.jp/people/tomoko-y/namazu/">"Namazu_bon" has been published!</A>
+(自称なまず本応援団長のよしだともこさんによるペイジです :-)
+<LI><A HREF="http://www.kusastro.kyoto-u.ac.jp/%7Ebaba/wais/other-system.html">日本語全文検索エンジンソフトウェアのリスト</A><BR>
+(京大の馬場肇さんによる全文検索エンジンソフトウェアのリストと解説です。<A HREF="http://www.kusastro.kyoto-u.ac.jp/%7Ebaba/wais/other-system.html#NAMAZU">Namazuの紹介</A>があります)
+<LI><A HREF="http://www.ingrid.org/w3conf-bof/search.html">日本の Search Engine のリスト</A><BR>
+(いつもお世話になっております。大変便利です)
+<LI><A HREF="http://rodem.ingrid.org:8080/w3conf-bof/w3-search.html">w3-search Mailing List</A><BR>
+(検索エンジンに関するメイリングリストです。過去の記事を読むのも面白いです)
+</UL>
+
+
+<H2><A NAME="HISTORY">歴史</A></H2>
+
+<P>
+<A HREF="history.html">history.html</A> にまとめました。
+</P>
+
+<P>プログラムの履歴に関しては <A HREF="ChangeLog">ChangeLog</A> を参照してください。</P>
+
+
+<H2>文責</H2>
+
+<UL>
+<LI><STRONG>氏名:</STRONG> 高林 哲 Satoru Takabayashi
+<LI><STRONG>email:</STRONG> <A HREF="mailto:ccsatoru@vega.aichi-u.ac.jp">ccsatoru@vega.aichi-u.ac.jp</A>
+</UL>
+
+<HR>
+
+<P>
+email: <A HREF="mailto:ccsatoru@vega.aichi-u.ac.jp">ccsatoru@vega.aichi-u.ac.jp</A><BR>
+<A HREF="http://openlab.ring.gr.jp/namazu/">Namazuのホームペイジへ</A>
+
+</P>
+<ADDRESS>
+ccsatoru@vega.aichi-u.ac.jp
+</ADDRESS>
+</BODY>
+</HTML>

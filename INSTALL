@@ -1,0 +1,31 @@
+The most simple way to make and install is:
+
+In Japanese environment (for handling Japanese with special care)
+
+  % ./configure
+  % make
+  % make install
+
+In non-Japanese environment
+
+  % ./configure --without-japanese # be careful!
+  % make
+  % make install
+
+  If make is a failure, please contact me with a detailed report.
+
+Configure Options
+
+  --prefix=PREFIX         install architecture-independent files in PREFIX
+  --with-cgi-dir=DIR      set CGI directory [/usr/local/etc/httpd/cgi-bin]
+  --with-admin=EMAIL      set webmaster's email address [webmaster@foobar.jp]
+  --with-perl5=PATH       set perl ver.5 interpreter location [search path]
+  --without-japanese      don't treat Japanese code
+  --with-lang=language    set default LANGUAGE code (ja or en) [ja]
+  --with-nkf=PATH         set nkf command location [search path]
+  --with-kakasi=PATH      set kakasi command location [search path]
+  --with-chasen=PATH      set chasen command location [search path]
+
+--
+Satoru Takabayashi
+ccsatoru@vega.aichi-u.ac.jp

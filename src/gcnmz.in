@@ -1,0 +1,649 @@
+#!@PERL@
+# gcnmz.pl - by furukawa@dkv.yamaha.co.jp
+#    small modification by satoru@isoternet.org
+#
+# namazu v1.3/1.4 でできた、無効なエントリのゴミ掃除スクリプト
+#  使い方
+#       perl5 gcnmz.pl [dbname]
+#  dbname としては、データベースの、拡張子の前までを指定する。
+#  無指定時のデフォルトは、'NMZ'
+#  NMZ.h が存在すると v1.3 形式、存在しないと v1.4 形式とみなす
+
+
+# require 'nmztxt.pl';
+
+while (@ARGV && $ARGV[0] =~ s/^\-//){
+    $_ = shift;
+    while (s/^.//){
+        $Quiet = 1 if $& eq 'q';
+    }
+}
+
+push(@ARGV, 'NMZ') if !@ARGV;
+
+# テンポラリファイルの設定
+$TMP_I = "TMP_I.tmp.$$";
+$TMP_O = "TMP_O.tmp.$$";
+
+for (@ARGV){
+    if (&nmztxt::init($_)){
+
+        # 現在無効になっているファイル番号を調べる
+        print STDERR "checking NMZ.t\n" if !$Quiet;
+        if (&nmztxt::dis_list(\%List, 1)){
+            # データベース -> テキストの変換
+            print STDERR "reading NMZ.f, NMZ.fi\n" if !$Quiet;
+            &nmztxt::flist2txt($TMP_I);
+
+            # テキストの加工 --  該当するファイルを削除
+            print STDERR "converting\n" if !$Quiet;
+            &delete_elem($TMP_I, $TMP_O, \%List);
+
+            # データベースに書き戻す
+            print STDERR "writing NMZ.f, NMZ.fi, NMZ.r\n" if !$Quiet;
+            &nmztxt::txt2flist($TMP_O);
+
+
+            # 以下同様に
+
+            # 単語データベース
+            print STDERR "reading NMZ.i\n" if !$Quiet;
+            &nmztxt::word2txt($TMP_I);
+
+            print STDERR "converting\n" if !$Quiet;
+            &delete_hit($TMP_I, $TMP_O, \%List);
+
+            print STDERR "writing NMZ.i, NMZ.ii, NMZ.h, NMZ.w\n" if !$Quiet;
+            &nmztxt::txt2word($TMP_O);
+
+
+            # フレーズデータベース
+            print STDERR "reading NMZ.p, NMZ.pi\n" if !$Quiet;
+            &nmztxt::phrase2txt($TMP_I);
+
+            print STDERR "converting\n" if !$Quiet;
+            &delete_hit($TMP_I, $TMP_O, \%List);
+
+            print STDERR "writing NMZ.p, NMZ.pi\n" if !$Quiet;
+            &nmztxt::txt2phrase($TMP_O);
+
+
+            # NMZ.head に結果を反映
+            print STDERR "editing NMZ.head*\n" if !$Quiet;
+            &nmztxt::nmzhead;
+
+            # NMZ.field.* にも反映
+            print STDERR "editing NMZ.field.*\n" if !$Quiet;
+            &nmztxt::delete_field(\%List);
+
+	    # NMZ.keys と NMZ.total を更新
+	    print STDERR "editing NMZ.keys\n" if !$Quiet;
+	    &nmztxt::nmzkeys;
+	    print STDERR "editing NMZ.total\n" if !$Quiet;
+	    &nmztxt::nmztotal;
+
+            if ($_ = scalar(keys %List)){
+                &nmztxt::log_aopen(*FH, '[Garbage Collection]');
+                print FH "Collected Entry: $_ files\n";
+                &nmztxt::log_close(*FH);
+            }
+
+        }
+        &nmztxt::end;
+    }
+}
+
+unlink($TMP_I);
+unlink($TMP_O);
+
+# おしまい。
+#----------------------------------------------------------------
+sub delete_elem{
+    local($fi, $fo, $ptr) = @_;
+    local(*FI, *FO);
+    my $ndx = 0;
+    local $/ = '';
+
+    if (open(FI, $fi) && open(FO, ">$fo")){
+        while (defined($_ = <FI>)){
+            print FO $_ unless $ptr->{$ndx};
+            ++$ndx;
+        }
+    }
+}
+
+# bug fix by satoru@isoternet.org [10/13/1998]
+sub delete_hit{
+    local($fi, $fo, $ptr) = @_;
+    local(*FI, *FO);
+    my($ndx, $x, @x);
+
+    if (open(FI, $fi) && open(FO, ">$fo")){
+        while (defined($word = <FI>)){
+            chomp $word;
+            next if $word =~ /^$/;
+            while (<FI>){
+                last if /^$/;
+                if (/^\d+/ && !$ptr->{$&}){
+                    print FO ("$word\n"), $word = '' if $word ne '';
+                    print FO;
+                }
+            }
+            print FO "\n" if $word eq '';
+        }
+    }
+}
+
+# ここから下は、nmztxt.pl から cut & paste したものである。
+# 詳細は、nmztxt.pl を参照のこと
+
+package nmztxt;
+
+use strict 'vars';
+use strict 'subs';
+
+my ($DbPath, @WList, $FILE, %DbSize, $KEY, $IntSize, $IntType, $IntFF, @FILE, %FILE, $IntNType, $PackWSub, $IntPackFF);
+
+sub init{
+    local(*FH);
+    $DbPath = $_[0];
+    &set_inttype();
+    return 0 if -f "$DbPath.lock2";
+    open(FH, ">$DbPath.lock2");
+    print FH $$;
+    close(FH);
+    1;
+}
+
+sub end{
+    local(*FH);
+    open(FH, ">$DbPath.lock");
+    close(FH);
+
+    while (defined(my $name = shift(@WList))){
+        if (-f "$name.$$") {
+            rename($name, "$name.BAK");
+            rename("$name.$$", $name);
+        }
+    }
+    unlink "$DbPath.lock";
+    unlink "$DbPath.lock2";
+}
+
+sub flist2txt{
+    my($name) = @_;
+    my($offset, $next, $buf, $wfunc, $tmp);
+    local(*FO);
+    local $/ = "\n";
+
+    $FILE = 0;
+    &openbfile("FLIST_____", "$DbPath.f") or die;
+    &openbfile("FLISTINDEX", "$DbPath.fi") or die;
+    open(FI, "$DbPath.r") or die;
+    $wfunc = &aopenw(*FO, $name) or die;
+
+    $next = &readint('FLISTINDEX');
+    while (defined($tmp = <FI>)){
+        next if $tmp =~ /^\#/;
+        next if $tmp =~ /^\s*$/;
+
+        $tmp = sprintf("%d\n", $FILE++) . $tmp;
+        $offset = $next;
+        $next = $DbSize{'FLIST_____'} if !defined($next = &readint('FLISTINDEX'));
+        read('FLIST_____', $buf, $next - $offset);
+        &$wfunc(*FO, $tmp .  $buf);
+    }
+    close(FI);
+    close(FO);
+    
+    &closefile('FLIST_____');
+    &closefile('FLISTINDEX');
+}
+
+sub word2txt{
+    my($name) = @_;
+    my($wfunc, $n, $fno, $fscore, $tmp, @tmp);
+    local(*FO);
+    local $/ = "\n";
+
+    &openbfile('INDEX', "$DbPath.i");
+    $KEY = 0;
+    if ($wfunc = &aopenw(*FO, $name)){
+        while (defined($tmp = <INDEX>)){
+            print FO $tmp;
+            $n = &readw('INDEX');
+            $n *= $IntSize if $IntType ne 'w';
+            @tmp = &unpackw(&readdb('INDEX', $n));
+
+            while (defined($fno = shift @tmp)
+                   && defined($fscore = shift @tmp)){
+                print FO "$fno $fscore\n";
+            }
+            print FO "\n";
+            last unless defined <INDEX>;
+            ++$KEY;
+        }
+        close(FO);
+    }
+    &closefile('INDEX');
+}
+
+sub phrase2txt{
+    my($name) = @_;
+    my $x = 0;
+    my($n, $buf, $wfunc);
+    local(*FO);
+
+    &openbfile('PHRASE', "$DbPath.p");
+    &openbfile('PHRASEINDEX', "$DbPath.pi");
+    if ($wfunc = &aopenw(*FO, $name)){
+        while ($x < 0x10000){
+            if (&readint('PHRASEINDEX') ne $IntFF
+                && ($n = &readintw('PHRASE'))){
+                $buf = sprintf("%04X\n", $x);
+
+                $n *= $IntSize if $IntType ne 'w';
+                for my $tmp (&unpackw(&readdb('PHRASE', $n))){
+                    $buf .= "$tmp\n";
+                }
+                &$wfunc(*FO, "$buf\n");
+            }
+            $x++;
+        }
+        close(FO);
+    }
+    &closefile('PHRASE');
+}
+
+sub txt2flist{
+    my($name) = @_;
+    my($offset) = 0;
+    local(*FI, *FLIST_____, *FLISTINDEX, *R);
+    local $/ = '';
+
+    $FILE = 0;
+
+    my $rfunc = &aopenr(*FI, $name) or die;
+    &wopen(*FLIST_____, "$DbPath.f");
+    &wopen(*FLISTINDEX, "$DbPath.fi");
+    &wopen(*R, "$DbPath.r");
+
+    while (defined(my $tmp = &$rfunc(*FI))){
+        if ((my ($no, $r, $f) = split(/\n/, $tmp, 3)) == 3){
+            push(@FILE, $no);
+            $FILE{$no} = $FILE;
+            $FILE++;
+            print FLIST_____ $f;
+            print FLISTINDEX pack($IntNType, $offset);
+            print R "$r\n";
+            $offset += length($f);
+        }
+    }
+    close(FLIST_____);
+    close(FLISTINDEX);
+    close(R);
+}
+
+sub txt2word{
+    my($name) = @_;
+    my ($offset, $h) = (0, -1);
+    my ($ii, $hval, $word, $key, $val);
+    my @list;
+    local(*FI, *HASH, *INDEX, *INDEXINDEX, *W);
+    local $/ = '';
+
+    $KEY = 0;
+
+    my $rfunc = &aopenr(*FI, $name) or die;
+    &wopen(*HASH, "$DbPath.h") if $IntType ne 'w';
+    &wopen(*INDEX, "$DbPath.i");
+    &wopen(*INDEXINDEX, "$DbPath.ii");
+    &wopen(*W, "$DbPath.w");
+
+    while (defined(my $tmp = &$rfunc(*FI))){
+        ($word, @list) = split(/\n/, $tmp);
+        if (@list){
+            $word =~ /^./;
+            $hval = ord($word) << 8;
+            $hval |= ord($1) if $word =~ /^.(.)/;
+
+            if ($IntType ne 'w'){
+                $h++, print HASH pack($IntNType, $ii) while $h < $hval;
+            }
+            
+            print INDEXINDEX pack($IntNType, $offset);
+            $ii++;
+            print INDEX "$word\n";
+            print W "$word\n";
+            $offset += length("$word\n");
+
+            my $buf;
+            for my $list (@list){
+                ($key, $val) = split(/\s+/, $list);
+                $key = $FILE{$key} if defined($FILE{$key});
+                $buf .= &packw($key);
+                $buf .= &packw($val);
+            }
+            my $len = length $buf;
+            $len /= $IntSize if $IntType ne 'w';
+            $len = &packw($len);
+
+            print INDEX $len;
+            $offset += length $len;
+
+            print INDEX "$buf\n";
+            $offset += length("$buf\n");
+            ++$KEY;
+        }
+    }
+    if ($IntType ne 'w'){
+        print HASH pack($IntType, $ii) while $h++ < 0x10000;
+        close(HASH);
+    }
+
+    close(INDEX);
+    close(INDEXINDEX);
+    close(W);
+    close(FI);
+}
+
+sub txt2phrase{
+    my($name) = @_;
+    my $offset = 0;
+    my ($x, $hval, @list);
+    local(*FI, *PHRASE, *PHRASEINDEX);
+    local $/ = '';
+
+    my $rfunc = &aopenr(*FI, $name) or die;
+    &wopen(*PHRASE, "$DbPath.p");
+    &wopen(*PHRASEINDEX, "$DbPath.pi");
+
+    while (defined(my $tmp = &$rfunc(*FI))){
+        ($hval, @list) = split(/\n/, $tmp);
+        if (@list){
+            $hval = hex($hval);
+            print PHRASEINDEX $IntPackFF while ++$x < $hval;
+            print PHRASEINDEX pack($IntNType, $offset);
+
+            my $buf;
+            for my $list (@list){
+                $list = $FILE{$list} if defined($FILE{$list});
+                $buf .= &packw($list);
+            }
+            my $len = length $buf;
+            $len /= $IntSize if $IntType ne 'w';
+            $len = &packw($len);
+
+            print PHRASE $len;
+            $offset += length $len;
+
+            print PHRASE $buf;
+            $offset += length $buf;
+
+            $x = $hval;
+        }
+    }
+    print PHRASEINDEX $IntPackFF while ++$x < 0x10000;
+    close(FI);
+    close(PHRASE);
+    close(PHRASEINDEX);
+}
+
+sub nmzhead{
+    my ($file, $key) = ("<!-- FILE -->", "<!-- KEY -->");
+    my ($qfile, $qkey) = (quotemeta($file), quotemeta($key));
+    my (@list) = grep(!/\.BAK$/, glob("$DbPath.head*"));
+    local(*FI, *FO);
+    for my $head (@list){
+        if (&wopen(*FO, $head) && open(FI, $head)){
+            while (<FI>){
+                s/$qfile.*$qfile/$file $FILE $file/ if $FILE;
+                s/$qkey.*$qkey/$key $KEY $key/ if $KEY;
+                print FO;
+            }
+            close(FI);
+            close(FO);
+        }
+    }
+}
+
+sub delete_field{
+    my (@list) = grep(!/\.BAK$/, glob("$DbPath.field.*"));
+    my $dbpath = quotemeta("$DbPath.");
+    for my $list (@list){
+        $list =~ s/^$dbpath//;
+        &delete_line($list, @_);
+    }
+}
+
+sub dis_list{
+    my($ptr, $opt) = @_;
+    my($ndx, $ret, $ref) = (0, 0, ref($ptr));
+    local(*FO);
+
+    if ($opt){
+        &wopen(*FO, "$DbPath.t") || die;
+    }
+    open(FI, "$DbPath.t") || die;
+    binmode(FI);
+    while (defined(my $buf = &readint(*FI))){
+        if ($buf == $IntFF){
+            $ptr->{$ndx} = 1;
+            ++$ret;
+        }elsif ($opt){
+            print FO pack($IntNType, $buf);
+        }
+        ++$ndx;
+    }
+    close(FO);
+    unlink("$DbPath.t.$$") unless ($ret);
+    $ret;
+}
+
+sub delete_int{
+    my($ext, $ptr) = @_;
+    local(*FI, *FO);
+    my $db = "$DbPath.$ext";
+    my $ndx = 0;
+    my $buf;
+
+    if (&wopen(*FO, $db) && open(FI, $db)){
+        binmode(FI);
+        while (read(FI, $buf, $IntSize)){
+            print FO $buf unless $ptr->{$ndx++};
+        }
+        close(FI);
+        close(FO);
+    }
+}
+
+sub delete_line{
+    my($ext, $ptr) = @_;
+    my $db = "$DbPath.$ext";
+    my $ndx = 0;
+    local(*FI, *FO);
+
+    if (&wopen(*FO, $db) && open(FI, $db)){
+        while (defined(my $buf = <FI>)){
+            print FO $buf unless $ptr->{$ndx++};
+        }
+        close(FI);
+        close(FO);
+    }
+}
+
+sub log_aopen{
+    my($fh, $tag) = @_;
+    if (open($fh, ">>$DbPath.log")){
+        print $fh ("\n$tag\nDate: " . localtime($^T) . "\n");
+    }
+}
+
+sub log_close{
+    my($fh) = @_;
+    printf $fh ("Time: %d sec.\n", time - $^T);
+    close($fh);
+}
+
+sub aopenr{
+    my($fi, $name) = @_;
+    $$fi = $name, return \&areada if ref($name) eq 'ARRAY';
+    return \&areadf if open($fi, $name);
+    undef;
+}
+
+sub areada{
+    my($fi) = @_;
+    shift(@$$fi);
+}
+
+sub areadf{
+    my($fi) = @_;
+    <$fi>;
+}
+
+sub wopen{
+    my($fh, $name) = @_;
+    push(@WList, $name);
+    my $ret = open($fh, ">$name.$$");
+    binmode($fh);
+    $ret;
+}
+
+sub aopenw{
+    my($fo, $name) = @_;
+#    $$fo = $name, return \&awritea if ref($name) eq 'ARRAY';
+    return \&awritef if open($fo, ">$name");
+    undef;
+}
+
+sub awritef{
+    my($fo, $buf) = @_;
+    print $fo ($buf);
+}
+
+sub awritea{
+    my($fo, $buf) = @_;
+    push(@$$fo, $buf);
+}
+
+sub readint{
+    my $buf;
+    return undef unless read($_[0], $buf, $IntSize);
+    unpack($IntNType, $buf);
+}
+
+sub readintw{
+    if ($IntType eq 'w'){
+        my $ret = 0;
+        my $c;
+        while (read($_[0], $c, 1)){
+            $c = ord($c);
+            $ret <<= 7;
+            $ret += 0x7f & $c;
+            last unless $c & 0x80;
+        }
+        return $ret;
+    }else{
+        &readint(@_);
+    }
+}
+
+
+sub readdb{
+    my ($fH, $size) = @_;
+    my($buf);
+    read($fH, $buf, $size);
+    $buf;
+}
+
+sub readi{
+    unpack($IntType, &readdb($_[0], $IntSize));
+}
+
+sub readw{
+    my $fh = shift;
+    return &readi($fh) if $IntType ne 'w';
+    my $ret = 0;
+    my $c;
+
+    while (read($fh, $c, 1)){
+        $c = ord($c);
+        $ret = ($ret << 7) | ($c & 0x7f);
+        last unless $c & 0x80;
+    }
+    $ret;
+}
+
+sub set_inttype{
+    unless ($IntType = shift){
+        $IntType = 'I';
+        $IntType = 'N' if -e "$DbPath.be" && ! -e "$DbPath.le";
+        $IntType = 'V' if -e "$DbPath.le" && ! -e "$DbPath.be";
+        $IntType = 'w' unless -e "$DbPath.h";
+    }
+    if ($IntType eq 'w'){
+        $IntNType = 'N';
+        $PackWSub = (pack('w', 128) ne "\x81\x00");
+    }else{
+        $IntNType = $IntType;
+        $PackWSub = 0;
+    }
+    $IntPackFF = pack($IntNType, -1);
+    $IntSize = length($IntPackFF);
+    $IntFF = unpack($IntNType, $IntPackFF);
+}
+
+sub openbfile{
+    my($str, $filename) = @_;
+    if (open($str, $filename)){
+        binmode($str);
+        $DbSize{$str} = (stat($filename))[7];
+    }
+    $DbSize{$str}
+}
+
+sub closefile{
+    my($str) = @_;
+    close($str);
+    delete $DbSize{$str};
+}
+
+sub packw{
+    my $x = shift;
+
+    if ($PackWSub){
+        my $ret = chr($x & 0x7f);
+        $ret = chr(0x80 | ($x & 0x7f)) . $ret while $x >>= 7;
+        $ret;
+    }else{
+        pack($IntType, $x);
+    }
+}
+
+sub unpackw{
+    my $x = shift;
+    if ($PackWSub){
+        my $ret = 0;
+        my @ret = ();
+        while ($x =~ s/^.//s){
+            $ret <<= 7;
+            $ret |= 0x7f & ord($&);
+            push(@ret, $ret), $ret = 0 unless ord($&) & 0x80;
+        }
+        @ret;
+    }else{
+        unpack("$IntType*", $x);
+    }
+}
+
+sub nmzkeys{
+    &wopen(*FO, "$DbPath.keys") || die;
+    print FO $KEY, "\n";
+}
+
+sub nmztotal{
+    &wopen(*FO, "$DbPath.total") || die;
+    print FO $FILE, "\n";
+}
+

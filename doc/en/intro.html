@@ -1,0 +1,175 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML i18n//EN">
+<HTML>
+<HEAD>
+<META NAME="keywords" CONTENT="namazu full text retrieval search engine system">
+<LINK REV=MADE HREF="mailto:ccsatoru@vega.aichi-u.ac.jp">
+<TITLE>Namazu the full text retrieval search system</TITLE>
+</HEAD>
+<BODY LANG="en">
+<H1>Namazu the full text retrieval search system</H1>
+<P>Last Modified: 3/15/1999</P>
+
+<!-- ATTENTION_HERE -->
+
+<HR>
+
+
+<H2>Introduction</H2>
+
+<P>
+Namazu is a search engine software intended for easy use.  Not
+only it works as a CGI program for the small or medium scale WWW
+search engine, but also works as a personal use such as search
+system for local HDDs. Currently, search clients for Mule, Tcl/Tk,
+JAVA and Win32 are available.
+</P>
+
+<P>
+(The Japanese word `Namazu' means `catfish' in English)
+</P>
+
+
+<P>
+Namazu can works on UNIX, Win32 and OS/2 environment.  For Win32,
+<A HREF="http://www.tama.or.jp/%7Ekenzo-/Namazu/">Namazu the full text retrieval search system for Win32</A> has maintained by Hirose-san.<BR> For OS/2, <A
+HREF="http://www.dd.iij4u.or.jp/%7Ekshimz/warp/namazu.html">OS/2
+ port of Namazu the full text retrieval search system</A> has maintained by Shimizu-san.  Each page
+has binary package.
+</P>
+
+
+<P>
+Development of Namazu consists of lots of contributers.
+I operate a mailing list to discusss the development.
+If you are interested in Namazu, please participate in it.
+(but there is basically discussed in Japanese only...)
+</P>
+
+<H2>News!</H2>
+
+<UL>
+<LI><A HREF="#RELEASE">Version 1.3.0.6 released!</A>
+3/15/1999<BR>
+Fixed some bugs.
+<LI>Namazu Web site has been moved! 3/12/1999<BR>
+After this, URL of Namazu Web site is at 
+<A HREF="http://openlab.ring.gr.jp/namazu/">
+http://openlab.ring.gr.jp/namazu/</A>.
+</UL>
+
+<H2><A NAME="CHARACTERISTICS">Characteristics</A></H2>
+
+<P>
+This search engine consists of indexer and search client.
+The former is written in Perl and the latter is in C.
+Indexer makes index in advance for quickly searching.
+It can search almost 100 megabyte documents within one second.
+I think it's not too slow.
+But, of course there is intensive influence of disk cache.
+As a reason of algorism, its performance would not depend on size of index,
+it increase by logarithmic scale.
+</P>
+
+<P>
+By using namazu.el, you can use Namazu on Mule,
+similarly you can search with Namazu on X Window System by using <A HREF="http://www.tama.or.jp/%7Ekenzo-/Namazu/tknamazu/">tknamazu</A> and on Win32 by using <A HREF="http://www.na.rim.or.jp/%7Es_yam/library/search-s.html">Search-S</A>.
+</P>
+
+<P>
+Search client would not require much memory and it singly works as CGI,
+so it's comparatively light I think.
+</P>
+
+<P> As Namazu is designed for Mail/News as well, It's especially
+useful to use Namazu for mailing list or netnews' search system.
+</P>
+
+<P> Namazu supports AND, OR and NOT search.  Result of search will
+be printed in order of score and it has abstract like <A
+HREF="http://altavista.digital.com/">AltaVista</A> or <A
+HREF="http://odin.ingrid.org/">ODIN</A>.  That summary is made by
+structure of HTML's headings.  Besides, if result couldn't print
+on one page, it will automatically be splited and it can be shown
+page by page (in 20 lots by default.)  </P>
+
+<P> The score would not only be calculated by term frequency, but
+also be caluclated by weight of HTML elements.  Furthermore,
+Namazu supports meta information such as <CODE>&lt;META
+NAME="keywords" CONTENT="</CODE><VAR>foo
+bar</VAR><CODE>"&gt;</CODE>.  </P>
+
+<P> Namazu considers how to handle HTML document.  To take `ALT'
+description from &lt;IMG&gt; element, to decode entity sets, and
+to print result in correct HTML 4.0 Strict DTD HTML.</P>
+
+<P>
+Indexing process will take fifty minutes to index 25 MByte files with
+Linux Box has Pentium 166 MHz + 64 MB.
+</P>
+
+<P>
+For more information, read the <A HREF="manual.html">manual</A>.
+</P>
+
+<H2><A NAME="RELEASE">Download</A></H2>
+
+<P> I do distribute Namazu as free software (It is also called
+`open source software') under the terms of <A
+HREF="COPYING">General Public License version 2</A>.  </P>
+
+<H3><A NAME="SOURCE">Source distribution</A></H3>
+
+<UL>
+<LI><A
+HREF="release/namazu-1.3.0.6.tar.gz">
+namazu-1.3.0.6.tar.gz</A> (nearly 330 KB)
+</UL>
+
+<P>
+<A HREF="proto/">Where beta version is.</A>
+</P>
+
+<H2>Related Links</H2>
+
+<P>
+<EM>
+Attention: those pages are mostly written in Japanese.
+</EM>
+</P>
+
+<UL>
+<LI><A HREF="http://www.tama.or.jp/%7Ekenzo-/Namazu/">Namazu the full text retrieval search system for Win32</A><BR>
+(Namazu the full text retrieval search system for Win32 by Hirose-san)
+<LI><A HREF="http://www.dd.iij4u.or.jp/%7Ekshimz/warp/namazu.html">OS/2 port of Namazu the full text retrieval search system</A><BR>
+(OS/2 port of Namazu the full text retrieval search system by Shimizu-san)
+<LI><A HREF="http://www.tama.or.jp/%7Ekenzo-/Namazu/tknamazu/">Tcl/Tk Namazu client</A><BR>
+(Tcl/Tk Namazu client by Hirose-san)
+<LI><A HREF="http://www.na.rim.or.jp/%7Es_yam/library/search-s.html">search-s Version 0.7.1</A><BR>
+(Page of Win32 GUI client named `Search-s' for Namazu by Yamashita-san)
+<LI><A HREF="http://www.kusastro.kyoto-u.ac.jp/%7Ebaba/wais/other-system.html">Lists of the full-text retrieval softwares which can handle japanese properly.</A><BR>
+(No need to comment :-), by Baba-san)
+<LI><A HREF="http://www.ingrid.org/w3conf-bof/search.html">Search Engines in Japan</A><BR>
+(No need to comment :-), by Shimizu-san at ingrid project)
+<LI><A HREF="http://rodem.ingrid.org:8080/w3conf-bof/w3-search.html">w3-search Mailing List</A><BR>
+(Discuss the search engine in Japanese, by Shimizu-san at ingrid project)
+</UL>
+
+
+<H2>Author</H2>
+
+<UL>
+<LI><STRONG>Name:</STRONG> Satoru Takabayashi
+<LI><STRONG>email:</STRONG> <A HREF="mailto:ccsatoru@vega.aichi-u.ac.jp">ccsatoru@vega.aichi-u.ac.jp</A>
+</UL>
+
+<HR>
+
+<P>
+email: <A HREF="mailto:ccsatoru@vega.aichi-u.ac.jp">ccsatoru@vega.aichi-u.ac.jp</A><BR>
+<A HREF="http://openlab.ring.gr.jp/namazu/">Namazu Home page</A>
+</P>
+<ADDRESS>
+ccsatoru@vega.aichi-u.ac.jp
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,393 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML i18n//EN">
+<HTML>
+<HEAD>
+<META NAME="keywords" CONTENT="namazu full text retrieval search engine system">
+<LINK REV=MADE HREF="mailto:ccsatoru@vega.aichi-u.ac.jp">
+<TITLE>Manual of Namazu the full text retrieval search system</TITLE>
+</HEAD>
+<BODY LANG="en">
+<H1>Manual of Namazu Version 1.3.0.7</H1>
+<P>Last Modified: 12/12/1998</P>
+<HR>
+
+<H2>NOTICE:</H2>
+
+<P>
+This file is a manual describing how to use Namazu. If you would
+like to know what is Namazu, see <A
+HREF="intro.html">intro.html</A>. Namazu is a free software
+obeying GPL2. All rights are reserved by Satoru Takabayashi. THE
+SOFTWARE IS PROVIDED AS IS WITHOUT WARRANTY OF ANY KIND. Use this
+software at YOUR OWN RISK. I am looking forward to any BUG reports
+and the idea how to apply Namazu usefully.
+</P>
+
+<P>
+Many documents and comments in source code are written in
+Japanese. I will translate that into English before long.
+
+For same reason, contributed softwares written in Japanese will
+translate into English, maybe.
+</P>
+
+<P>
+Namazu home site: <A
+HREF="http://openlab.ring.gr.jp/namazu/">http://openlab.ring.gr.jp/namazu/</A>
+This is valid until my graduation (March,1999)
+</P>
+
+
+<H2><A NAME="INDEX">Index</A></H2>
+
+<UL>
+<LI><A HREF="#INDEX">Index</A>
+<LI><A HREF="#PREAMBLE">Preamble</A>
+<LI><A HREF="#BACKGROUND_INFO">Background Information</A>
+<LI><A HREF="#SYSTEM_REQUIREMENTS">System requirements</A>
+<LI><A HREF="#KNOWNENV">Known environments that Namazu works</A>
+  <UL>
+  <LI><A HREF="#ENV_OS">OS</A>
+  <LI><A HREF="#ENV_C">C compiler</A>
+  <LI><A HREF="#ENV_PERL">Perl</A>
+  <LI><A HREF="#ENV_HTTPD">HTTP Server</A>
+  </UL>
+<LI><A HREF="#INSTALL">How to install</A>
+  <UL>
+  <LI><A HREF="#INSTALL_FROM_SOURCE">From source</A>
+    <UL>
+    <LI><A HREF="#EXTRACT">Extract the Archive</A>
+    <LI><A HREF="#CONFIGURE">Execute configure</A>
+    </UL>
+  </UL>
+<LI><A HREF="#HOW_TO_USE">How to use Namazu</A>
+  <UL>
+  <LI><A HREF="#MAKING_INDEX">Making Index</A>
+  <LI><A HREF="#SEARCHING">Searching</A>
+  <LI><A HREF="#RUNNING_AS_CGI">Running as CGI</A>
+  </UL>
+<LI><A HREF="#QUERY">Query specification</A>
+</UL>
+
+<H2><A NAME="PREAMBLE">Preamble</A></H2>
+
+<P>
+Unfortunately, this manual is now under construction. If I should
+get email from someone using Namazu from overseas, my motivation
+would rise :-).
+</P>
+
+<P>
+Thanks to <A HREF="mailto:ishiyama.seigo@sse.bch.ntt.co.jp">Seigo
+ISHIYAMA</a> for the help of translation.
+</P>
+
+<H2><A NAME="BACKGROUND_INFO">Background Information</A></H2>
+
+<P>
+   At the beginning Namazu was made with only intention of
+   Japanese use but now has been developing to handle English
+   (ASCII charset) and other languages defined in ISO-8859-*.
+
+   I have a desire to distribute Namazu to all over the world but
+   there are many problems on Internationalization. So perhaps
+   using Namazu in non-Japanese environment is currently little
+   inconvinient. 
+</P>
+
+<H2><A NAME="SYSTEM_REQUIREMENTS">System requirements</A></H2>
+
+<UL>
+<LI>UNIX
+<LI>Win32 (Windows NT/95)
+<LI>OS/2
+<LI>Http server in your host should supports CGI. (For the use as CGI)
+<LI>You need to have a right for using CGI. (For the use as CGI)
+<LI>At least, 32MB of memory are needed for the enough performance.
+</UL>
+
+<H3><A NAME="NECESSARYSOFT">What you should install / What you
+shoul have installed in advance</A></H3>
+
+<UL>
+<LI>Perl 5.003 or later [MUST]
+<LI>gcc (cc is pearhaps not good) [MUST]
+<LI>(for handling Japanese) KAKASI with -w option, or Chasen 1.51 [optional]
+<LI>(for handling Japanese) nkf v1.62 [optional]
+</UL>
+
+
+<H3><A NAME="HANDLING_JAPANESE">About KAKASI/ChaSen</A></H3>
+
+<P>
+You need KAKASI or ChaSen if you want to deal Japanese (If you
+don't want, you don't need of course). KAKASI must be patched that
+-w option is valid. This patch is originally created to Japanize
+freeWAIS-sf by Hajime BABA. For more information, see <A
+HREF="http://www.kusastro.kyoto-u.ac.jp/%7Ebaba/wais/">freeWAIS-sf
+japanization information</A>.
+</P>
+
+
+<H2><A NAME="KNOWNENV">Known environments that Namazu works</A></H2>
+
+<P>
+Some of them are tested only by earlier version of Namazu. It is
+not sure that v1.3.0.0 works well under the conditions.  
+</P>
+
+<H3><A NAME="ENV_OS">OS</A></H3>
+<UL>
+<LI>Linux 2.0.18, 2.0.30, 2.0.32, 2.0.33
+<LI>mklinux DR2.1 update4
+<LI>FreeBSD 2.2.1-RELEASE, FreeBSD 2.2.5-RELEASE, FreeBSD 2.2.6-RELEASE
+<LI>SunOS 4.1.3-JLE1.1.3_U1, sposk 4.1.4-JL 1, 4.1.4-JLE1.1.4, 5.4
+<LI>Japanized Solaris 2.5.1, 2.6
+<LI>IRIX 5.3, 6.2
+<LI>HP-UX 10.20
+<LI>OSF/1 V1.3, V3.2 (on DEC AlphaStation)
+<LI>Digital UNIX 4.0B
+<LI>DG/UX 5.4R2.10
+<LI>BSD/OS 2.1
+<LI>EWS-UX/V (Rel4.2) (NEC EWS4800/360)
+</UL>
+
+<H3><A NAME="ENV_C">C compiler</A></H3>
+<UL>
+<LI>gcc 2.5.8, 2.6.3, 2.7.2, 2.7.2.1, 2.7.2.2, 2.7.2.3, 2.8.1
+</UL>
+
+<H3><A NAME="ENV_PERL">Perl</A></H3>
+<UL>
+<LI>perl 5.003, 5.003 with Japanization Patch 4, 5.004_1, 5.004_03, 5.004_04, 5.005_02
+</UL>
+
+<H3><A NAME="ENV_HTTPD">HTTP Server</A></H3>
+<UL>
+<LI>apache 1.1.3, 1.2.0, 1.2.1, 1.2.4, 1.3b3, 1.3b6, 1.2.0
+<LI>NCSA HTTPd NCSA/1.5.2
+<LI>JavaWebServer 1.0.1
+<LI>CERN httpd 3.0A
+<LI>Netscape-Commerce/1.1
+</UL>
+
+
+<H3><A NAME="ON_WIN32">Prerequisite to install Namazu on
+Win32</A></H3>
+
+<P>
+It is hard to make in Win32. With binary packages of Namazu, you
+do not have to do that. <A
+HREF="intro.html#BINARY_PACKAGE_WIN32">See Win32 Binary
+Package</A>. 
+</P>
+
+<H2><A NAME="INSTALL">How to install</A></H2>
+
+<H3><A NAME="INSTALL_FROM_SOURCE">From source</A></H3>
+
+<H4><A NAME="EXTRACT">Extract the Archive</A></H4>
+
+<P>At first, extract the Archive. with GNU tar:</P>
+
+<P><CODE>tar xzvf </CODE><VAR>namazu-xxx.tar.gz</VAR></P>
+
+<P>If not:</P>
+<P><CODE>gunzip -c </CODE><VAR>namazu-xxx.tar.gz</VAR><CODE>| tar xvf -</CODE><BR>
+<CODE>zcat </CODE><VAR>namazu-xxx.tar.gz</VAR><CODE> | tar xvf -</CODE></P>
+
+<H4><A NAME="CONFIGURE">Execute configure</A></H4>
+<P>
+Then create Makefile.
+</P>
+
+
+<PRE>
+        % ./configure --without-japanese # be careful!
+	% make
+	% su                          # switch the user to root, if needed.
+	% make install
+</PRE>
+
+<P>
+It is enough for most cases. In case of trouble, I might be help
+of you if you report the detail of your environment and error
+message.
+</P>
+
+
+<H2><A NAME="HOW_TO_USE">How to use Namazu</A></H2>
+
+<H3><A NAME="MAKING_INDEX">Making Index</A></H3>
+
+<P>
+Namazu should make the index like a dictionary in advance of
+searching. a command `<CODE>mknmz</CODE>' do this task.
+Basic way is like this:
+</P>
+
+<P>
+<CODE>% mknmz</CODE> <VAR>/target/directory</VAR>
+</P>
+
+<P> You must specify the <VAR>/target/directory</VAR> which
+contains files you want to index.  If <VAR>/target/directory</VAR>
+has subdirectories, `<CODE>mknmz</CODE>'
+recursively traverse them and do indexing.
+</P>
+
+<P> After this processing is finished, `<CODE>mknmz</CODE>' makes
+files named ' NMZ.*' as index in current directory.  </P>
+
+<H3><A NAME="SEARCHING">Searching</A></H3>
+
+<P> A command `<CODE>namazu</CODE>' is a search engine. Basic
+usage is like this: </P>
+
+<P>
+<CODE>% namazu</CODE> "<VAR>query</VAR>" <VAR>/index/directory</VAR> ...
+</P>
+
+<P>
+`<VAR>query</VAR>' can be specified with flexible conditions
+supported by `<CODE>namazu</CODE>'. See the section "<A
+HREF="#QUERY">Query specification</A>" for details.
+</P>
+
+<P>`<VAR>/index/directory</VAR>' that contains index (NMZ.*) what
+you want to search is must be specified at least one.  You can
+enumrate directories to search multiple indices at once.</P>
+
+<H3><A NAME="RUNNING_AS_CGI">Running as CGI</A></H3>
+
+<P>At first, You can copy `<CODE>namazu.cgi</CODE>' to the
+direcotry allowed to run CGI. `<CODE>namazu.cgi</CODE>' search the
+index placed in <CODE>INDEXDIR</CODE> defined in Makefile as
+default index.</P>
+
+<P>And you should edit <CODE>NMZ.(head|foot|msg|body).en</CODE>
+(<CODE>`.en`</CODE> means English message) which contains messages
+of search result pages.  </P>
+
+<P>Then you can edit <CODE>namazu.conf</CODE> (usually in
+<CODE>/usr/local/namazu/lib</CODE> defined as <CODE>LIBDIR</CODE>
+in Makefile) or <CODE>.namazurc</CODE> placed at the same
+directory as <CODE>namazu.cgi</CODE> to adjust URL in the result
+page.  Normally, <CODE>mknmz</CODE> makes index which point to
+local files like <CODE>/home/foo/public_html/baz.html</CODE>, so
+the result page of CGI is must be substituted.  </P>
+
+<P>For example:</P>
+<P>
+<CODE>REPLACE	/home/foo/public_html/	http://www.hoge.jp/%7Efoo/</CODE>
+</P>
+
+<P>
+It means to replace <CODE>/home/foo/public_html/</CODE> with <CODE>http://www.hoge.jp/%7Efoo/</CODE>. They are MUST be separated with TAB characters.
+</P>
+
+<P>
+If `<CODE>namazu.cgi</CODE>' works successfully, you are lucky :-)!
+</P>
+
+
+<H2><A NAME="QUERY">Query specification</A></H2>
+
+<P>
+ This search system is case insensitive. You can use asterisk
+ character at the end of the word to do forward match search, 
+ for instance: "foo*"
+</P>
+
+<P>
+ Separating keywords by spaces is automatically assumed to be
+ AND-search that is to find only documents containing all of the
+ specified keywords.
+</P>
+
+<P>
+ You can search the word containing symbols like "TCP/IP".
+ However, this processing isn't perfect, so you can describe "TCP
+ IP" instead of "TCP/IP", but it may cause noisy results.
+</P>
+
+<P>
+ This search system has boolean operators '&amp;', '!', '|'.
+ In place of symbols, the word "and", "or", "not", are accepted.
+ Each operator must be separated by space.
+</P>
+
+<P>
+ For exapmle (both expressions is same meaning):
+</P>
+
+<UL>
+<LI><CODE>( sed | awk ) ! perl &amp; regexp</CODE>
+<LI><CODE>( sed or awk ) not perl and regexp</CODE>
+</UL>
+
+<P>
+ This sample finds the files which contain "sed" or "awk", and no "perl",
+ but include "regexp".
+</P>
+
+<P>
+ You can use nested parenthesises expression for advanced search.
+</P>
+
+<P>
+By surronding words with double quotation mark '"' or curly brace '{' '}',
+Namazu would recognize it as phrase but it is not perfect precision, so
+it cause wrong hit occasionally.
+</P>
+
+<P>
+ For exapmle (both expressions is same meaning):
+</P>
+
+<UL>
+<LI><CODE>"SIMPLE MAIL TRANSFER PROTOCOL"</CODE>
+<LI><CODE>{SIMPLE MAIL TRANSFER PROTOCOL}</CODE>
+</UL>
+
+<P>Also, Namazu can do "regular expression search", "middle or backward match search" but it's little slow.</P>
+
+<P>
+For exapmle:
+</P>
+
+<UL>
+<LI><CODE>*net</CODE> (backward match)
+<LI><CODE>*foo*</CODE>  (middle match)
+<LI><CODE>/(foo|bar)[a-z]+/</CODE> (regular expression)
+<LI><CODE>"rain dance"</CODE> (phrase)
+</UL>
+
+<P>You can do 'field specified search' as well if indices are prepared.</P>
+
+<UL>
+<LI><CODE>+date:/Aug 1998/</CODE> (something dated on 'Aug 1998')
+<LI><CODE>+from:foo@bar.jp</CODE>  (article by foo@bar.jp)
+<LI><CODE>+subject:"internet message"</CODE>  (search a string for Subject:)
+<LI><CODE>+subject:"(mule|xemacs|emacs)"</CODE>  (search a string for Subject: with regex)
+<LI><CODE>+message-id:&lt;199801240555.OAA18737@foo.bar.jp&gt;</CODE>  (Message-Id)
+<LI><CODE>+title:amarok</CODE> (title of document)
+<LI><CODE>+author:foo@bar.jp</CODE>  (author of document)
+<LI><CODE>+url:http://foo.bar.jp/</CODE>  (URL of document)
+</UL>
+
+<P>
+ Happy searching!
+</P>
+
+
+<HR>
+
+<P>
+email: <A HREF="mailto:ccsatoru@vega.aichi-u.ac.jp">ccsatoru@vega.aichi-u.ac.jp</A><BR>
+<A HREF="http://openlab.ring.gr.jp/namazu/">Namazu Home page</A>
+</P>
+<ADDRESS>
+ccsatoru@vega.aichi-u.ac.jp
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,236 @@
+dnl
+dnl configure for Namazu
+dnl 
+dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998/10/09]
+dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998/12/05]
+dnl Modified by Satoru Takabayashi <satoru@isoternet.org> [1998/12/06]
+dnl Modified by Hajime BABA <baba@kusastro.kyoto-u.ac.jp> [1999/02/02]
+dnl
+
+dnl Process this file with autoconf to produce a configure script.
+AC_INIT(src/cgi.c)
+AM_INIT_AUTOMAKE(namazu, 1.4.0.0-beta-7)
+
+dnl Do you wish?
+dnl PATH=/bin:/usr/bin:/usr/sbin:/usr/local/bin:$PATH
+
+dnl This option requires config.guess, config.sub and install-sh
+dnl AC_CANONICAL_SYSTEM
+
+dnl Checks for programs.
+AC_PROG_CC
+AC_PROG_INSTALL
+AC_PROG_LN_S
+AC_PROG_MAKE_SET
+
+if test -n "$GCC"; then
+    CFLAGS="$CFLAGS -Wall"
+fi
+
+dnl Checks for non-UNIX environment.
+AC_EXEEXT
+
+
+dnl Checks for libraries.
+dnl Replace `main' with a function in -lm:
+if test -z "$MINGW32"; then
+	AC_CHECK_LIB(m, main)
+fi
+
+dnl Checks for header files.
+AC_HEADER_STDC
+AC_CHECK_HEADERS(fcntl.h unistd.h string.h)
+
+dnl Checks for typedefs, structures, and compiler characteristics.
+AC_C_CONST
+AC_TYPE_PID_T
+AC_TYPE_SIZE_T
+
+dnl Checks for library functions.
+AC_FUNC_ALLOCA
+AC_FUNC_MEMCMP
+AC_CHECK_FUNCS(re_comp memmove)
+
+dnl Checks for external commands
+
+AC_ARG_WITH(
+	perl5,
+	[  --with-perl5=PATH       set perl ver.5 interpreter location [search path]],
+	AC_MSG_RESULT(using $with_perl5 for perl5)
+	PERL=$with_perl5,
+	[AC_PATH_PROGS(PERL, perl5 perl, no)]
+)
+if test $PERL = "no" || $PERL -e 'exit ($] >= 5)'; then
+    AC_MSG_ERROR(perl(ver.5) interpreter required)
+fi
+
+AC_ARG_WITH(
+	japanese,
+	[  --without-japanese      don't treat Japanese code],
+	[japanese=${withval}], [japanese='yes']
+)
+
+if test "${japanese}" = "no"; then
+    # --without-japanese
+    OPT_LANGUAGE=en
+    AC_SUBST(OPT_LANGUAGE)
+    OPT_WAKATI_DEFAULT="none"
+else
+    OPT_LANGUAGE=ja
+    AC_ARG_WITH(
+	    lang,
+	    [  --with-lang=language    set default LANGUAGE code (ja or en) [ja]],
+	    OPT_LANGUAGE=$with_lang,
+    )
+    AC_SUBST(OPT_LANGUAGE)
+
+    AC_ARG_WITH(
+	    nkf,
+	    [  --with-nkf=PATH         set nkf command location [search path]],
+	    NKF=$with_nkf
+	    AC_MSG_RESULT(using $with_nkf for nkf),
+	    if test -z "$NKF"; then
+		AC_MSG_CHECKING(for NKF module)
+		if $PERL -MNKF -e '' 1>/dev/null 2> /dev/null; then
+		    NKF=module_nkf
+		    AC_MSG_RESULT(yes)
+		else
+		    AC_MSG_RESULT(no)
+		    [AC_PATH_PROG(NKF,nkf, no)] 
+		fi
+	    fi
+    )
+    if test "$NKF" = "no"; then
+	AC_MSG_ERROR(NKF (network kanji filter) not found to treat Japanese code)
+    fi
+
+    AC_ARG_WITH(
+	    kakasi,
+	    [  --with-kakasi=PATH      set kakasi command location [search path]],
+	    KAKASI=$with_kakasi
+	    AC_MSG_RESULT(using $with_kakasi for kakasi),
+	    if test -z "$KAKASI"; then
+		AC_MSG_CHECKING(for Text::Kakasi module)
+		if $PERL -MText::Kakasi -e '' 1>/dev/null 2> /dev/null; then
+		    KAKASI=module_kakasi
+		    AC_MSG_RESULT(yes)
+		else
+		    AC_MSG_RESULT(no)
+		    [AC_PATH_PROG(KAKASI,kakasi, no)] 
+		fi
+	    fi
+    )
+    AC_ARG_WITH(
+	    chasen,
+	    [  --with-chasen=PATH      set chasen command location [search path]],
+	    CHASEN=$with_chasen
+	    AC_MSG_RESULT(using $with_chasen for chasen),
+	    if test -z "$CHASEN"; then
+		AC_MSG_CHECKING(for Text::ChaSen1 module)
+		if $PERL -MText::ChaSen1 -e '' 1>/dev/null 2> /dev/null; then
+		    CHASEN=module_chasen1
+		    AC_MSG_RESULT(yes)
+		else
+		    AC_MSG_RESULT(no)
+		    [AC_PATH_PROG(CHASEN,chasen, no)] 
+		fi
+	    fi
+    )
+    if test "$KAKASI" = "no" -a "$CHASEN" = "no"; then
+	AC_MSG_ERROR(KAKASI or ChaSen required to treat Japanese code)
+    fi
+
+    AC_MSG_CHECKING(for OPT_WAKATI_DEFAULT)
+    OPT_WAKATI_DEFAULT=
+    if test "$KAKASI" != "no"; then
+	OPT_WAKATI_DEFAULT=KAKASI
+    elif test "$CHASEN" != "no"; then
+	OPT_WAKATI_DEFAULT=CHASEN
+    fi
+    AC_MSG_RESULT($OPT_WAKATI_DEFAULT)
+fi
+AC_SUBST(OPT_WAKATI_DEFAULT)
+
+AC_PATH_PROG(ZCAT, zcat, no)
+if test "$ZCAT" = "no"; then
+    AC_MSG_WARN(zcat not found)
+fi
+OPT_HELPER_ZCAT=$ZCAT
+AC_SUBST(OPT_HELPER_ZCAT)
+
+AC_PATH_PROGS(GROFF, jgroff groff nroff, no)
+if test "$GROFF" = "no"; then
+    AC_MSG_WARN(jgroff(, groff and nroff) not found)
+else
+    # nroff
+    GROFF_OPT=
+    # groff
+    if $GROFF -man -Tascii </dev/null 2>/dev/null; then
+	GROFF_OPT=-Tascii
+    fi
+    # jgroff
+    if $GROFF -man -Tnippon </dev/null 2>/dev/null; then
+	GROFF_OPT=-Tnippon
+    fi
+fi
+
+OPT_HELPER_MAN="$GROFF -man $GROFF_OPT"
+AC_SUBST(OPT_HELPER_MAN)
+
+dnl CGI location
+AC_MSG_CHECKING(for OPT_CGI_LOCATION)
+AC_ARG_WITH(
+        cgi_location,
+	[  --with-cgi-location=DIR      set CGI location [/cgi-bin]],
+	[cgi_location=${withval}], [cgi_location='/cgi-bin']
+)
+AC_MSG_RESULT($cgi_location)
+OPT_CGI_LOCATION=$cgi_location
+AC_SUBST(OPT_CGI_LOCATION)
+
+dnl Define the webmaster's email address
+AC_MSG_CHECKING(for webmaster's email address)
+AC_ARG_WITH(
+	admin,
+	[  --with-admin=EMAIL      set webmaster's email address [webmaster@foobar.jp]],
+	[admin=${withval}], [admin='webmaster@foobar.jp']
+)
+AC_MSG_RESULT($admin)
+OPT_ADMIN_EMAIL=$admin
+AC_SUBST(OPT_ADMIN_EMAIL)
+
+if test -n "$EMXOS2"; then
+    CFLAGS="-O2 -m486 -Zmtd"
+    LDFLAGS="-m486 -Zmtd -Zcrtdll -Zsysv-signals -Zbin-files"
+fi
+
+
+dnl Define the scoring method (default: TFIDF)
+AC_MSG_CHECKING(for SCORING)
+AC_ARG_WITH(scoring,
+[  --with-scoring=METHOD   set scoring method (SIMPLE or TFIDF) [TFIDF]],
+[case "${withval}" in
+    SIMPLE|TFIDF) scoring="${withval}" ;;
+    *) AC_MSG_ERROR(invalid value ${withval} for --with-scoring) ;;
+esac], [scoring='TFIDF'])
+AC_MSG_RESULT($scoring)
+SCORING=$scoring
+AC_SUBST(SCORING)
+
+
+dnl set default Namazu dir
+test "${prefix}" = NONE && prefix=/usr/local
+AC_DEFINE_UNQUOTED(INDEXDIR, "${prefix}/${PACKAGE}/index")
+AC_DEFINE_UNQUOTED(OPT_NAMAZU_CONF, "${prefix}/${PACKAGE}/lib/namazu.conf")
+AC_DEFINE_UNQUOTED(LANGUAGE, "$OPT_LANGUAGE")
+AC_DEFINE_UNQUOTED(SCORING, $SCORING)
+AC_DEFINE(MSIE4MACFIX)
+
+dnl * 
+dnl * Output Files.
+dnl * 
+AM_CONFIG_HEADER(config.h)
+
+AC_OUTPUT([Makefile src/Makefile lib/conf.pl src/mknmz.pl src/wdnmz
+src/vfnmz src/gcnmz src/gtnmz src/mailutime src/clnmz src/rvnmz],
+[chmod +x src/wdnmz src/vfnmz src/gcnmz src/gtnmz src/mailutime src/clnmz src/rvnmz]) 

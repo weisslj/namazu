@@ -1,8 +1,10 @@
 2000-01-25  Ryuji Abe  <raeva@t3.rim.or.jp>
 
-	* nmz/util.h (nmz_iskanji): Moved to wakati.c as iskanji.
+	* nmz/util.h: Removed #include "message.h".
+	(nmz_iskanji): Moved to wakati.c as iskanji.
 	(iskanji1st): Moved to codeconv.c.
 	(iskanji2nd): Likewise.
+	(nmz_strerror): Replaced MSG_TOO_LONG_QUERY -> "Too long query".
 
 	* nmz/codeconv.[ch] (nmz_iskatakana): Moved to wakati.c as
 	iskatakana.

@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: util.c,v 1.48 2000-01-10 20:21:10 rug Exp $
+ * $Id: util.c,v 1.49 2000-01-25 11:02:54 rug Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -41,7 +41,6 @@
 #  include "config.h"
 #endif
 #include "libnamazu.h"
-#include "message.h"
 #include "util.h"
 #include "i18n.h"
 #include "var.h"
@@ -559,7 +558,7 @@ nmz_strerror(enum nmz_stat errnum)
 	msg = _("Fatal error occered!");
 	break;
     case ERR_TOO_LONG_QUERY:
-        msg = _(MSG_TOO_LONG_QUERY);
+        msg = _("Too long query");
 	break;
     case ERR_INVALID_QUERY:
 	msg = _("Invalid query");

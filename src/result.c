@@ -1,5 +1,5 @@
 /*
- * $Id: result.c,v 1.71 2003-03-23 21:12:55 opengl2772 Exp $
+ * $Id: result.c,v 1.72 2003-12-16 16:25:38 opengl2772 Exp $
  * 
  * Copyright (C) 1989, 1990 Free Software Foundation, Inc.
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
@@ -210,8 +210,6 @@ emphasize(char *str)
         int findFlag = 0;
         char *keys;
         char *word;
-        char *lowerString, *lowerPtr;
-        char *startPos, *endPos;
 
 	if (nmz_is_query_op(nmz_get_querytoken(i)))
 	    continue;
@@ -226,13 +224,14 @@ emphasize(char *str)
             nmz_strlower(key);
 
             ptr = str;
-            lowerPtr = lowerString;
             while (*ptr) {
-                lowerString = strdup(str);
-                startPos = endPos = lowerPtr;
+                char *lowerString, *lowerPtr;
+                char *startPos, *endPos;
 
+                lowerString = strdup(str);
                 nmz_strlower(lowerString);
                 lowerPtr = lowerString + (ptr - str);
+                startPos = endPos = lowerPtr;
 
                 findFlag = 0;
                 for (; *lowerPtr; lowerPtr++, ptr++) {

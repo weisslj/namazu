@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.12 2000-01-20 03:54:46 satoru Exp $
+# $Id: mknmz.pl.in,v 1.13 2000-01-27 07:35:20 satoru Exp $
 #
 # Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -33,6 +33,7 @@ use Time::Local;
 use File::MMagic;
 use strict;  # be strict since v1.2.0
 use Getopt::Long;
+use File::Copy;
 
 use vars qw($SYSTEM $LANG);
 $SYSTEM = $^O;
@@ -566,7 +567,7 @@ sub load_document ($$$$\%) {
     {
 	$shelter_cfile = $cfile;
 	$cfile = util::tmpnam("NMZ.win32");
-        util::cp($shelter_cfile, $cfile);
+        copy($shelter_cfile, $cfile);
     }
 
     my $file_size;
@@ -1249,7 +1250,7 @@ sub wanted ($$){
 }
 
 #
-# preparation processing for appending index files
+# Preparation processing for appending index files.
 #
 sub append_index (@) {
     my @flist = @_;
@@ -1272,17 +1273,19 @@ sub append_index (@) {
 
     $APPENDMODE = 1;
     # conserve files by copying
-    util::cp($var::NMZ{'i'},  $var::NMZ{'_i'});
-    util::cp($var::NMZ{'w'},  $var::NMZ{'_w'});
-    util::cp($var::NMZ{'t'},  $var::NMZ{'_t'}) 
+    copy($var::NMZ{'i'},  $var::NMZ{'_i'});
+    copy($var::NMZ{'w'},  $var::NMZ{'_w'});
+    copy($var::NMZ{'t'},  $var::NMZ{'_t'}) 
 	unless -f $var::NMZ{'_t'}; # preupdated ?
-    util::cp($var::NMZ{'p'},  $var::NMZ{'_p'});
-    util::cp($var::NMZ{'pi'}, $var::NMZ{'_pi'});
+    copy($var::NMZ{'p'},  $var::NMZ{'_p'});
+    copy($var::NMZ{'pi'}, $var::NMZ{'_pi'});
 
     return ($file_base, @flist);
 }
 
-# set target files to @flist and return with the regiested files number
+#
+# Set target files to @flist and return with the number of regiested files.
+#
 sub set_target_files() {
     my %rfiles;    # 'rfiles' means 'registered files'
     my @found_files = @_;
@@ -1345,7 +1348,7 @@ sub set_target_files() {
     util::dprint(_("\n\n== updated ==\n"), join("\n", @updated_files), "\n");
     util::dprint(_("\n\n== files to index ==\n"), join("\n", @flist), "\n");
 
-    # update NMZ.t with the missing number infomation and
+    # Update NMZ.t with the missing number infomation and
     # append updated files and deleted files to NMZ.r with leading '# '
     if (@updated_files || @deleted_files) {
 	$DeletedFilesCount = 0;
@@ -1357,7 +1360,7 @@ sub set_target_files() {
 	preupdate_registry(@updated_files, @deleted_files);
     }
 
-    # return with number of registered files and list of files to index
+    # Return with number of registered files and list of files to index.
     return (scalar @{$rfiles{'name'}}, @flist);
 }
 

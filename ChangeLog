@@ -8,6 +8,11 @@
 
 2000-01-27  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* pl/util.pl (cp): Abolished.
+
+	* scripts/mknmz.pl.in: Use File::Copy's copy instead of
+	util::cp. All callers changed.
+
 	* src/namazu-cmd.c (main): Print a help message if invoked as CGI.
 	[namazu-dev 1339]
 

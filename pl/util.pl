@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.8 2000-01-07 01:29:52 knok Exp $
+# $Id: util.pl,v 1.9 2000-01-27 07:35:17 satoru Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -25,20 +25,6 @@
 package util;
 use strict;
 use IO::File;
-
-# Replacement for cp command.  Efficiency is nearly equal to cp command. since v1.1.1
-sub cp ($$) {
-    my ($from, $to) = @_;
-
-    my $fh_from = efopen($from);
-    my $fh_to = efopen(">$to");
-
-    dprint("cp: $from -> $to\n");
-    my $buf = "";
-    while(read ($fh_from, $buf, 16384)) {
-        print $fh_to $buf;
-    }
-}
 
 #  rename() with consideration for OS/2
 sub Rename($$) {

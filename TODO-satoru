@@ -1,4 +1,4 @@
-$Id: TODO-satoru,v 1.15 2000-01-25 23:53:10 satoru Exp $
+$Id: TODO-satoru,v 1.16 2000-01-27 07:35:16 satoru Exp $
 
 やるべきことの備忘録 by 高林
 
@@ -7,35 +7,44 @@ $Id: TODO-satoru,v 1.15 2000-01-25 23:53:10 satoru Exp $
       #define EM_END_TAG   "</strong>"
     を namazurc で設定可能にする
 
-  * mknmz.pl.in: File::Copy を使おう
-
   * rcfile.c: syntax error のメッセージを gettext化
 
   * rcfile.c: エラーメッセージに directive名を入れる?
-
-  * nmz_free_idxnames(), nmz_free_aliases(), nmz_free_hlist()
-    nmz_free_replaces() をまとめて行う関数が欲しい。
-
-  * 一対多の alias に対応する。例: Alias all-ml foo bar baz quux
-    - 今の struct nmz_indices の構造では難しい
-
-  * idxnames.c: インデックスの数の制限を廃止する (リスト構造?)
-    - struct nmz_indices の構造を見直す
 
   * nmz/libnamazu.c を廃止 (中の関数は適切なファイルに移動する)
 
   * nmz/libnamazu.h -> nmz/libnmz.h
 
+  * var.[ch] の扱いはどうすべきか (廃止したいが NMZ は残したい)
+
+  * 文書整備
+
+  
+書き直すべきコードたち (全部書き直せという話も…)
+
   * extern 関数を吟味する -> できるだけ減らす (static にする)
+
+  * 一対多の alias に対応する。例: Alias all-ml foo bar baz quux
+    - 今の struct nmz_indices の構造では難しい
+
+  * query.c を書き直す 
+    - one true awk の lex.c が参考になる
+
+  * parser.c を書き直す
+
+  * idxnames.c: インデックスの数の制限を廃止する (リスト構造?)
+    - struct nmz_indices の構造を見直す
+
+  * NmzResult と struct nmz_hitnumlist が別々のデータ構造な
+    のは変。エラー処理はぐちゃぐちゃ。統合して整備すべし。
+
+  * NmzResult, struct nmz_hitnumlist, struct struct
+    nmz_indices, nmz_query を統合して一つのデータ構造 Namazu にすべし。
 
   * hlist と名のつく関数の名前を変える
 
   * NmzResult(旧HLIST) 関連の処理 -> 戻り値をポインタでもらう
-    NULLポインタでエラーを返す
-
-  * var.[ch] の扱いはどうすべきか (廃止したいが NMZ は残したい)
-
-  * 文書整備
+    NULLポインタでエラーを返す。エラー処理をなんとかせよ。
 
 
 将来の構想

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: excel.pl,v 1.29 2004-10-17 17:42:41 opengl2772 Exp $
+# $Id: excel.pl,v 1.30 2004-10-17 18:17:56 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi,
 #               1999 NOKUBI Takatsugu, 
 #               2000-2004 Namazu Project All rights reserved.
@@ -39,6 +39,9 @@ my $utfconvpath = undef;
 my $convname = undef;
 my $wvsummarypath = undef;
 
+my $nkfversion = 0.00;
+eval '$nkfversion = $NKF::VERSION;';
+
 sub mediatype() {
     return ('application/excel');
 }
@@ -60,8 +63,6 @@ sub status() {
 	        return 'yes';
             }
 
-            my $nkfversion = 0.00;
-            eval '$nkfversion = $NKF::VERSION;';
             if ($nkfversion >= 2.04) {
 		return 'yes';
             }
@@ -355,12 +356,11 @@ sub utf8_to_eucjp($) {
         return undef;
     }
 
-    if ($var::USE_NKF_MODULE) {
-        if ($NKF::VERSION >= 2.04) {
-            $$cont = NKF::nkf("-WemXZ1", $$cont);
-            return undef;
-        }
+    if ($nkfversion >= 2.04) {
+        $$cont = NKF::nkf("-WemXZ1", $$cont);
+        return undef;
     }
+
     return undef unless (defined $utfconvpath);
 
     my $tmpfile  = util::tmpnam('NMZ.tmp.utf8');

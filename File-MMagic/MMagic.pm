@@ -1,11 +1,11 @@
 # File::MMagic
 #
-# $Id: MMagic.pm,v 1.27 2003-03-21 17:49:42 usu Exp $
+# $Id: MMagic.pm,v 1.28 2003-07-31 13:36:26 knok Exp $
 #
 # This program is originated from file.kulp that is a production of The
 # Unix Reconstruction Projct.
 #    <http://language.perl.com/ppt/index.html>
-# Copyright 1999, 2000 NOKUBI Takatsugu <knok@daionet.gr.jp>.
+# Copyright 1999,2000,2001,2002 NOKUBI Takatsugu <knok@daionet.gr.jp>.
 #
 # This product includes software developed by the Apache Group
 # for use in the Apache HTTP server project (http://www.apache.org/).
@@ -114,6 +114,7 @@ File::MMagic - Guess file type
 
   $mm = new File::MMagic; # use internal magic file
   # $mm = File::MMagic::new('/etc/magic'); # use external magic file
+  # $mm = File::MMagic::new('/usr/share/etc/magic'); # if you use Debian
   $res = $mm->checktype_filename("/somewhere/unknown/file");
 
   $fh = new FileHandle "< /somewhere/unknown/file2";
@@ -131,6 +132,70 @@ and/or filehandle.
 
 checktype_filename(), checktype_filehandle() and checktype_contents
 returns string contains file type with MIME mediatype format.
+
+=head1 METHODS
+
+=over 4
+
+=item File::MMagic->new()
+
+=item File::MMagic->new( $filename )
+
+Initializes the module. If no filename is given, the magic numbers
+stored in File::MMagic are used.
+
+=item $mm->addSpecials
+
+If a filetype cannot be determined by magic numbers, extra checks are
+done based on extra regular expressions which can be defined here. The
+first argument should be the filetype, the remaining arguments should
+be one or more regular expressions.
+
+By default, checks are done for message/news, message/rfc822,
+text/html, text/x-roff.
+
+=item $mm->removeSpecials
+
+Removes special regular expressions. Specify one or more filetypes. If
+no filetypes are specified, all special regexps are removed.
+
+Returns a hash containing the removed entries.
+
+=item $mm->addFileExts
+
+If a filetype cannot be determined by magic numbers, extra checks can
+be done based on the file extension (actually, a regexp). Two
+arguments should be geiven: the filename pattern and the corresponding
+filetype.
+
+By default, checks are done for application/x-compress,
+application/x-bzip2, application/x-gzip, text/html, text/plain
+
+=item $mm->removeFileExts
+
+Remove filename pattern checks. Specify one or more patterns. If no
+pattern is specified, all are removed.
+
+Returns a hash containing the removed entries.
+
+=item $mm->addMagicEntry
+
+Add a new magic entry in the object. The format is same as magic(5) file.
+
+  Ex.
+  # Add a entry
+  $mm->addMagicEntry("0\tstring\tabc\ttext/abc");
+  # Add a entry with a sub entry
+  $mm->addMagicEntry("0\tstring\tdef\t");
+  $mm->addMagicEntry(">10\tstring\tghi\ttext/ghi");
+
+=item $mm->readMagicHandle
+
+=item $mm->checktype_filename
+
+=item $mm->checktype_magic
+
+=item $mm->checktype_contents
 
 =head1 COPYRIGHT
 
@@ -241,7 +306,7 @@ use strict;
 use vars qw(
 %TEMPLATES %ESC $VERSION
 $magicFile $checkMagic $followLinks $fileList
-$dataLoc $allowEightbit
+$allowEightbit
 );
 
 BEGIN {
@@ -274,9 +339,8 @@ BEGIN {
 	    t => "\t",
 	    f => "\f");
 
-$VERSION = "1.12";
+$VERSION = "1.20";
 $allowEightbit = 1;
-undef $dataLoc;
 }
 
 sub new {
@@ -289,14 +353,14 @@ sub new {
 	my $fh = *File::MMagic::DATA{IO};
 	binmode($fh);
 	bless $fh, 'FileHandle' if ref $fh ne 'FileHandle';
-	$dataLoc = $fh->tell() if (! defined $dataLoc);
+	my $dataLoc = $fh->tell();
 	$fh->seek($dataLoc, 0);
 	&readMagicHandle($self, $fh);
     } else {
 	my $filename = shift;
 	my $fh = new FileHandle;
-        binmode($fh);
 	if ($fh->open("< $filename")) {
+	    binmode($fh);
 	    &readMagicHandle($self, $fh);
 	} else {
 	    warn __PACKAGE__ . " couldn't load specified file $filename";
@@ -306,6 +370,8 @@ sub new {
 # from the BSD names.h, some tokens for hard-coded checks of
 # different texts.  This isn't rocket science.  It's prone to
 # failure so these checks are only a last resort.
+
+# removSpecials() can be used to remove those afterwards.
     $self->{SPECIALS} = {
 		 "message/rfc822" => [ "^Received:",   
 			     "^>From ",       
@@ -329,13 +395,14 @@ sub new {
 			     "<H1[^>]*>",
 			],
 		 "text/x-roff" => [
-			      "^\\.SH",
-			      "^\\.PP",
-			      "^\\.TH",
-			      "^\\.BR",
-			      "^\\.SS",
-			      "^\\.TP",
-			      "^\\.IR",
+			      '^\\.\\\\"',
+			      "^\\.SH ",
+			      "^\\.PP ",
+			      "^\\.TH ",
+			      "^\\.BR ",
+			      "^\\.SS ",
+			      "^\\.TP ",
+			      "^\\.IR ",
 				   ],
 		};
 
@@ -358,6 +425,17 @@ sub addSpecials {
     return $self;
 }
 
+sub removeSpecials {
+    my $self = shift;
+    # Remove all keys if no arguments given
+    my @mtypes = (@_ or keys %{$self->{SPECIALS}});
+    my %returnmtypes;
+    foreach my $mtype (@mtypes) {
+      $returnmtypes{"$mtype"} = delete $self->{SPECIALS}->{"$mtype"};
+    }
+    return %returnmtypes;
+}
+
 sub addFileExts {
     my $self = shift;
     my $filepat = shift;
@@ -366,9 +444,33 @@ sub addFileExts {
     return $self;
 }
 
+sub removeFileExts {
+    my $self = shift;
+    # Remove all keys if no arguments given
+    my @filepats = (@_ or keys %{$self->{FILEEXTS}}); 
+    my %returnfilepats;
+    foreach my $filepat (@filepats) {
+      $returnfilepats{"$filepat"} = delete $self->{FILEEXTS}->{"$filepat"};
+    }
+    return %returnfilepats;
+}
+
 sub addMagicEntry {
     my $self = shift;
     my $entry = shift;
+    if ($entry =~ /^>/) {
+	$entry =~ s/^>//;
+	my $depth = 1;
+	my $entref = ${${$self->{magic}}[0]}[2];
+	while ($entry =~ /^>/) {
+	    $entry =~ s/^>//;
+	    $depth ++;
+	    $entref = ${${$entref}[0]}[2];
+	}
+	$entry = '>' x $depth . $entry;
+	unshift @{$entref}, [$entry, -1, []];
+	return $self;
+    }
     unshift @{$self->{magic}}, [$entry, -1, []];
     return $self;
 }
@@ -406,9 +508,13 @@ sub checktype_filename {
     }
 
     # 1) check for various special files first
-    if ($followLinks) { stat($file); } else { lstat($file); }
+    if ($^O eq 'MSWin32') {
+	stat($file);
+    } else {
+	if ($followLinks) { stat($file); } else { lstat($file); }
+    }
     if (! -f _  or -z _) {
-	if ( !$followLinks && -l _ ) { 
+	if ( $^O ne 'MSWin32' && !$followLinks && -l _ ) { 
 	    $desc .= " symbolic link to ".readlink($file); 
 	}
 	elsif ( -d _ ) { $desc .= " directory"; }
@@ -427,6 +533,8 @@ sub checktype_filename {
 
 #    $fh = new FileHandle "< $file" or die "$F: $file: $!\n" ;
     $fh = new FileHandle "< $file" or return "x-system/x-error; $file: $!\n" ;
+
+    binmode($fh); # for MSWin32
 
     # 2) check for script
     if (-x $file && -T _) {
@@ -456,6 +564,8 @@ sub checktype_filehandle {
     my $self = shift;
     my ($fh, $desc) = @_;
     my $mtype;
+
+    binmode($fh); # for MSWin32 architecture.
 
     # 3) iterate over each magic entry.
     my $matchFound = 0;
@@ -980,7 +1090,7 @@ sub readMagicEntry {
 
 	    # call ourselves recursively.  will return the depth
 	    # of the entry following the nested group.
-	    if (readMagicEntry($entry->[2], $MF, $depth+1) < $depth ||
+	    if ((readMagicEntry($entry->[2], $MF, $depth+1) || 0) < $depth ||
 		$$MF[0]->eof())
 	    {
 		return;
@@ -1332,7 +1442,7 @@ __DATA__
 #0	string		RIFF		audio/x-msvideo	
 0	string		RIFF
 #					- WAVE format
->8	string		WAVE		audio/x-wav	
+>8	string		WAVE		audio/x-wav
 
 #------------------------------------------------------------------------------
 # c-lang:  file(1) magic for C programs or various scripts
@@ -1521,6 +1631,7 @@ __DATA__
 0	string		Forward\ to 	message/rfc822
 0	string		Pipe\ to 	message/rfc822
 0	string		Return-Path:	message/rfc822
+0	string		Received:	message/rfc822
 0	string		Path:		message/news
 0	string		Xref:		message/news
 0	string		From:		message/rfc822
@@ -1545,6 +1656,9 @@ __DATA__
 # PostScript
 0	string		%!		application/postscript
 0	string		\004%!		application/postscript
+# EPS
+# Jason's support for EPSF <jmaggard@timesdispatch.com>
+47 string  EPSF  image/eps
 
 # Acrobat
 # (due to clamen@cs.cmu.edu)
@@ -1711,12 +1825,25 @@ __DATA__
 >6		string	-				application/x-lha
 
 # ZIP archiver
-0		string	PK				
->30 		string  content				application/vnd.sun.xml.writer
-
 0		string	PK				application/x-zip
 
 # POSIX tar archives
 257		string	ustar\0			application/x-tar
 257		string	ustar\040\040\0	application/x-gtar
 
+# TNEF file
+0		lelong	0x223E9F78	application/ms-tnef
+
+# ARC archiver
+0	lelong&0x8080ffff	0x0000081a	application/x-arc
+0	lelong&0x8080ffff	0x0000091a	application/x-arc
+0	lelong&0x8080ffff	0x0000021a	application/x-arc
+0	lelong&0x8080ffff	0x0000031a	application/x-arc
+0	lelong&0x8080ffff	0x0000041a	application/x-arc
+0	lelong&0x8080ffff	0x0000061a	application/x-arc
+# Zoo archiver
+20	lelong		0xfdc4a7dc	application/x-zoo
+# ARJ archiver (jason@jarthur.Claremont.EDU)
+0	leshort		0xea60		application/x-arj
+# RAR archiver (Greg Roelofs, newt@uchicago.edu)
+0	string		Rar!		application/x-rar

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: oleexcel.pl,v 1.4 2000-02-11 12:54:22 satoru Exp $
+# $Id: oleexcel.pl,v 1.5 2000-02-22 17:04:44 kenzo- Exp $
 # Copyright (C) 1999 Jun Kurabe ,
 #               1999 Ken-ichi Hirose All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -38,12 +38,11 @@
 #                  Merge three program ReadMSWord.pl, ReadExcel.pl, ReadPPT.pl
 # V2.11 1999/11/15  separate file.
 #					modify some functions.
+# V2.12 1999/11/27 Use Office::OLE::Const to define constant value
 #
 
 package oleexcel;
 #use strict;
-use Win32::OLE;
-use Win32::OLE::Enum;
 require 'util.pl';
 require 'gfilter.pl';
 
@@ -80,6 +79,8 @@ sub filter ($$$$$) {
 
     util::vprint("Processing excel file ...\n");
 
+    $$cont = ReadExcel::ReadExcel($cfile);
+
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($cont);
@@ -91,7 +92,11 @@ sub filter ($$$$$) {
 
 # Original of this code was contributed by <jun-krb@mars.dti.ne.jp>. 
 
-sub enum($$) {
+use Win32::OLE;
+use Win32::OLE::Enum;
+use Win32::OLE::Const;
+
+sub enum {
     my $enum_objs = shift;
     my $func = shift;
 
@@ -104,18 +109,18 @@ sub enum($$) {
     return 1;
 }
 
-sub getProperties($) {
+sub getProperties {
     my $doc = shift;
+    my $allText = '';
 
     # get Title
-    $title = $doc->BuiltInDocumentProperties(1)->{Value};
-    $subject = $doc->BuiltInDocumentProperties(2)->{Value};
-    $author = $doc->BuiltInDocumentProperties(3)->{Value};
-    $lastAuthor = $doc->BuiltInDocumentProperties(7)->{Value};
-    $createDate = $doc->BuiltInDocumentProperties(11)->{Value};
-    $editDate = $doc->BuiltInDocumentProperties(13)->{Value};
+    my $title = $doc->BuiltInDocumentProperties(1)->{Value};
+    my u$subject = $doc->BuiltInDocumentProperties(2)->{Value};
+    my $author = $doc->BuiltInDocumentProperties(3)->{Value};
+    my $lastAuthor = $doc->BuiltInDocumentProperties(7)->{Value};
+    my $createDate = $doc->BuiltInDocumentProperties(11)->{Value};
+    my $editDate = $doc->BuiltInDocumentProperties(13)->{Value};
 
-    my $allText = '';
     $allText .= 'Subject: ' . $title . ' ' . $subjext ;
     $allText .= "\n";
     $allText .= 'From: ' . $author . ',' . $lastAuthor;
@@ -129,29 +134,34 @@ sub getProperties($) {
     return $allText;
 }
 
-sub ReadExcel($) {
+package ReadExcel;
+
+sub ReadExcel {
     my $fileName = shift;
 
     # Copy from Win32::OLE Example Program
     # use existing instance if Excel is already running
     my $excel; 
     eval {$excel = Win32::OLE->GetActiveObject('Excel.Application')};
-    die "Excel not installed" if $@;
+    die "MSWord not installed" if $@;
     unless (defined $excel) {
 	$excel = Win32::OLE->new('Excel.Application', sub {$_[0]->Quit;})
-	    or die "Oops, cannot start Excel";
+	    or die "Oops, cannot start Word";
     }
     # End of Copy from Win32::OLE Example Program
     # for debug
     $excel->{Visible} = 1;
+
+    # Load Office 98 Constant
+    $office_consts = Win32::OLE::Const->Load("Microsoft Office 8.0 Object Library");
+
     my $wb = $excel->Workbooks->Open($fileName);
     print $fileName,"\n";
-    print $wb,"\n";
+#    print $wb,"\n";
     die "Cannot open File $fileName" unless ( defined $wb );
 
-    my $allText = '';
     $allText = '';
-    $allText .= oleexcel::getProperties($wb);
+    $allText .= olemsword::getProperties($wb);
     $allText .= getSheets($wb);
     $wb->close(0);
     undef $wb;
@@ -160,59 +170,75 @@ sub ReadExcel($) {
     return $allText;
 }
 
-sub getSheets($) {
+sub getSheets{
     my $wb = shift;
     my $allText = '';
     my $enum_a_sheet = sub {
-		my $obj = shift;
-		$allText .= getCells($obj);
-		$allText .= getShapes($obj);
-		return 1;
+	my $obj = shift;
+	$allText .= getCells($obj);
+	$allText .= getShapes($obj);
+	return 1;
     };
 
-    oleexcel::enum($wb->Worksheets, $enum_a_sheet);
+    olemsword::enum($wb->Worksheets, $enum_a_sheet);
 
     return $allText;
 }
 
-sub getCells($) {
+sub getCells {
     # parameter 
     # sheet: Sheet Object
     # Return Value
     #   Text which is contained in cell on a sheet
     my $sheet = shift;
-    my $allText = '';
     my $ur = $sheet->{UsedRange};
+    my $allText = '';
     my $enum_a_cell = sub {
-		my $cell = shift;
-		$allText .= $cell->{Value};
-		$allText .= "\n";
-		return 1;
-    };
-
-    oleexcel::enum($ur->Cells, $enum_a_cell);
-    return $allText;
-}
-
-sub getShapes($) {
-    my $sheet = shift;
-	my $allText = '';
-
-    sub enum_a_shape($) {
-	my $obj = shift;
-	my $allText = '';
-	if ( $obj->{Type} == 6 ) { #msoShapeGroup = 6
-	    oleexcel::enum($obj->GroupItems,\&enum_a_shape);
-	} elsif ($obj->{Type} == 17 ) { # msoShapeTextBox = 17
-	    my $p = $obj->TextFrame->Characters->{Text};
-	    $allText .= $p;
-	    $allText .= "\n";
-	}
+	my $cell = shift;
+	$allText .= $cell->{Value};
+	$allText .= "\n";
 	return 1;
     };
 
-    oleexcel::enum($sheet->Shapes,\&enum_a_shape);
+    olemsword::enum($ur->Cells, $enum_a_cell);
     return $allText;
 }
+
+sub getShapes {
+    my $sheet = shift;
+    my $allText = '';
+
+    my $depth = 0;
+
+    sub enum_a_shape {
+	my $obj = shift;
+	$getShapes::depth++;
+	print "passed YY $getShapes::depth\n";
+	print "type = ", $obj->{Type}, "\n";
+	if ( $obj->{Type} == $office_consts->{msoGroup} ) { #msoGroup = 6
+#	    print "passed XX\n";
+	    olemsword::enum($obj->GroupItems,\&enum_a_shape);
+	} elsif ($obj->{Type} == $office_consts->{msoTextBox} ||
+		 $obj->{Type} == $office_consts->{msoAutoShape} ) { 
+	    if ($obj->{TextFrame} && $obj->TextFrame->{Characters}) {
+		my $p = $obj->TextFrame->Characters->{Text} ;
+		$getShapes::allText .= $p;
+		$getShapes::allText .= "\n";
+	    }
+	}
+	$getShapes::depth--;
+	return 1;
+    };
+
+    olemsword::enum($sheet->Shapes,\&enum_a_shape);
+    return $allText;
+}
+
+#main
+#use Cwd;
+#$ARGV[0] = cwd().'\\'.$ARGV[0] unless ($ARGV[0] =~ m/^[a-zA-Z]\:[\\\/]/ || $ARGV[0] =~ m/^\/\//);
+#$ARGV[0] =~ s|/|\\|g;
+
+#print ReadExcel::ReadExcel("$ARGV[0]");
 
 1;

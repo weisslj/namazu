@@ -1,3 +1,16 @@
+2000-02-23  Ken-ichi Hirose  <kenzo-@tama.or.jp>
+
+	* filter/ichitaro456.pl (filter): jstxt command line option change.
+
+	* filter/olemsword.pl (ReadMSWord): New original code marge 
+	from Jun Kurabe-san. And few modify.
+
+	* filter/oleexcel.pl (ReadExcel): New original code marge 
+	from Jun Kurabe-san. And few modify.
+
+	* filter/olepowerpoint.pl (ReadPPT): New original code marge 
+	from Jun Kurabe-san. And few modify.
+
 2000-02-22  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* scripts/mknmz.in (check_file): Handle files excluded by

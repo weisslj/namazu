@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: olepowerpoint.pl,v 1.4 2000-02-11 12:54:22 satoru Exp $
+# $Id: olepowerpoint.pl,v 1.5 2000-02-22 17:04:44 kenzo- Exp $
 # Copyright (C) 1999 Jun Kurabe ,
 #               1999 Ken-ichi Hirose All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -39,12 +39,11 @@
 #                  Merge three program ReadMSWord.pl, ReadExcel.pl, ReadPPT.pl
 # V2.11 1999/11/15  separate file.
 #					modify some functions.
+# V2.12 1999/11/27 Use Office::OLE::Const to define constant value
 #
 
 package olepowerpoint;
 #use strict;
-use Win32::OLE;
-use Win32::OLE::Enum;
 require 'util.pl';
 require 'gfilter.pl';
 
@@ -81,6 +80,9 @@ sub filter ($$$$$) {
 
     util::vprint("Processing powerpoint file ...\n");
 
+    $$cont = ReadPPT::ReadPPT($cfile);
+
+
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($cont);
@@ -92,7 +94,11 @@ sub filter ($$$$$) {
 
 # Original of this code was contributed by <jun-krb@mars.dti.ne.jp>. 
 
-sub enum($$) {
+use Win32::OLE;
+use Win32::OLE::Enum;
+use Win32::OLE::Const;
+
+sub enum {
     my $enum_objs = shift;
     my $func = shift;
 
@@ -105,18 +111,18 @@ sub enum($$) {
     return 1;
 }
 
-sub getProperties($) {
+sub getProperties {
     my $doc = shift;
+    my $allText = '';
 
     # get Title
-    $title = $doc->BuiltInDocumentProperties(1)->{Value};
-    $subject = $doc->BuiltInDocumentProperties(2)->{Value};
-    $author = $doc->BuiltInDocumentProperties(3)->{Value};
-    $lastAuthor = $doc->BuiltInDocumentProperties(7)->{Value};
-    $createDate = $doc->BuiltInDocumentProperties(11)->{Value};
-    $editDate = $doc->BuiltInDocumentProperties(13)->{Value};
+    my $title = $doc->BuiltInDocumentProperties(1)->{Value};
+    my $subject = $doc->BuiltInDocumentProperties(2)->{Value};
+    my $author = $doc->BuiltInDocumentProperties(3)->{Value};
+    my $lastAuthor = $doc->BuiltInDocumentProperties(7)->{Value};
+    my $createDate = $doc->BuiltInDocumentProperties(11)->{Value};
+    my $editDate = $doc->BuiltInDocumentProperties(13)->{Value};
 
-    my $allText = '';
     $allText .= 'Subject: ' . $title . ' ' . $subjext ;
     $allText .= "\n";
     $allText .= 'From: ' . $author . ',' . $lastAuthor;
@@ -130,7 +136,9 @@ sub getProperties($) {
     return $allText;
 }
 
-sub ReadPPT($) {
+package ReadPPT;
+
+sub ReadPPT {
     my $fileName = shift;
 
     # Copy From Win32::OLE Example Program
@@ -146,10 +154,12 @@ sub ReadPPT($) {
     # Must set Visible = true 
     $ppt->{Visible} = 1;
 
+    # Load Office 98 Constant
+    $office_consts = Win32::OLE::Const->Load("Microsoft Office 8.0 Object Library");
+
     my $prs = $ppt->{Presentations}->Open($fileName);
     die "Cannot open File $fileName" unless ( defined $prs );
 
-    my $allText = '';
     $allText = '';
     $allText .= olepowerpoint::getProperties($prs);
     $allText .= getSlides($prs);
@@ -160,33 +170,47 @@ sub ReadPPT($) {
     return $allText;
 }
 
-sub getSlides($) {
+sub getSlides {
     my $prs = shift;
     my $allText = '';
 
     my $enum_a_slide = sub {
-		my $slide = shift;
+	my $slide = shift;
 
-		sub enum_a_shape($) {
-		    my $shape = shift;
-			my $allText = '';
+	my $enum_a_headerfooter = sub {
+	    my $obj = shift;
+	    $allText .= $obj->Header->{Text} if ( $obj->{Header} && $obj->Header->{Text} ) ;
+	    $allText .= $obj->Footer->{Text} if ( $obj->{Footer} && $obj->Footer->{Text} ) ;
+	    return 1;
+	};
 
-		    if ($shape->{HasTextFrame}) { # 
-			my $p = $shape->TextFrame->TextRange->{Text};
-			$allText .= $p;
-			$allText .= "\n";
-		    } elsif ( $shape->{Type} == 6 ) { #msoShapeGroup = 6
-			olepowerpoint::enum($shape->GroupItems,\&enum_a_shape);
-		    } 
-		    return 1;
-		};
+	sub enum_a_shape {
+	    my $shape = shift;
+	    # Get text whaen TextFrame in Shapes and Text in TextFrame 
+	    if ($shape->{HasTextFrame} && $shape->TextFrame->TextRange) { # 
+		my $p = $shape->TextFrame->TextRange->{Text};
+		$getShapes::allText .= $p;
+		$getShapes::allText .= "\n";
+	    } elsif ( $shape->{Type} == $office_consts->{msoGroup} ) { 
+		olepowerpoint::enum($shape->GroupItems,\&enum_a_shape);
+	    } 
+	    return 1;
+	};
 
         olepowerpoint::enum($slide->Shapes, \&enum_a_shape);
+        &$enum_a_headerfooter($slide->HeadersFooters);
         return 1;
     };
 
     olepowerpoint::enum($prs->Slides, $enum_a_slide);
     return $allText;
 }
+
+#main
+#use Cwd;
+#$ARGV[0] = cwd().'\\'.$ARGV[0] unless ($ARGV[0] =~ m/^[a-zA-Z]\:[\\\/]/ || $ARGV[0] =~ m/^\/\//);
+#$ARGV[0] =~ s|/|\\|g;
+
+#print ReadPPT::ReadPPT("$ARGV[0]");
 
 1;

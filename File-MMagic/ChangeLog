@@ -1,3 +1,15 @@
+1999-09-08  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* Changed %SPECIALS contents.
+	  (Remove 'Organization:' from news,
+	   add space character on rfc822/news message header,
+	   add "X-Mailer: " on rfc822,
+	   add "X-Newsreader: " on news.)
+
+1999-09-07  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* Changed arguments of magicMatchStr function.
+
 1999-09-06  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* Added excluding character TAB on check_binary() function.

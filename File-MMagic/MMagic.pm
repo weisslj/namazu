@@ -1,6 +1,6 @@
 # File::MMagic
 #
-# $Id: MMagic.pm,v 1.4 1999-09-06 08:15:39 knok Exp $
+# $Id: MMagic.pm,v 1.5 1999-09-08 02:56:43 knok Exp $
 #
 # This program is originated from file.kulp that is a production of The
 # Unix Reconstruction Projct.
@@ -287,11 +287,12 @@ BEGIN {
 				   ],
 		 "message/rfc822" => [ "^Received:",   
 			     "^>From",       
-			     "^Return-Path:",
-			     "^Cc:",         ],
-		 "message/news" => [ "^Newsgroups:", 
-			     "^Path:",       
-			     "^Organization:" ],
+			     "^Return-Path: ",
+			     "^Cc: ",
+			     "^X-Mailer: "],
+		 "message/news" => [ "^Newsgroups: ", 
+			     "^Path: ",       
+			     "^X-Newsreader: "],
 		 "text/html" => [ "<html>",
 			     "<HTML>",
 			     "<head>",
@@ -323,7 +324,7 @@ BEGIN {
 	     '^fyi\d+\.txt$' => 'text/plain; x-type=fyi',
 );
 
-$VERSION = "0.17";
+$VERSION = "0.18dev";
 undef $dataLoc;
 }
 

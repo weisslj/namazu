@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.7 1999-08-23 12:37:10 satoru Exp $
+ * $Id: form.c,v 1.8 1999-08-25 03:44:00 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -37,6 +37,26 @@
 #include <sys/stat.h>
 #include "namazu.h"
 #include "util.h"
+#include "form.h"
+#include "output.h"
+
+/************************************************************
+ *
+ * Private functions
+ *
+ ************************************************************/
+
+uchar *load_headfoot(uchar*);
+int cmp_element(uchar*, uchar*);
+int replace_key_value(uchar*, uchar*);
+int replace_action(uchar*);
+void delete_str(uchar*, uchar*);
+void get_value(uchar*, uchar*);
+void get_select_name(uchar*, uchar*);
+int str_backward_cmp(uchar*, uchar*);
+int select_option(uchar*, uchar*, uchar*);
+int check_checkbox(uchar*);
+void treat_tag(uchar*, uchar*, uchar*, uchar *, uchar *);
 
 /* load the whole of file */
 uchar *load_headfoot(uchar *fname)
@@ -53,10 +73,10 @@ uchar *load_headfoot(uchar *fname)
     }
     buf = (uchar *) malloc(fstatus.st_size + 1);
     if (buf == NULL) {
-	 error("print_headfoot(malloc)");
+	 die("print_headfoot(malloc)");
     }
     if (fread(buf, sizeof(uchar), fstatus.st_size, fp) == 0)
-        error("print_headfoot(fread)");
+        die("print_headfoot(fread)");
     *(buf + fstatus.st_size) = '\0';
     fclose(fp);
     return buf;
@@ -289,8 +309,14 @@ void treat_tag(uchar *p, uchar *q, uchar *query,
     fputs(tmp, stdout);
 }
 
+/************************************************************
+ *
+ * Public functions
+ *
+ ************************************************************/
+
 /* display header or footer file.
- * very foolish
+ * very ad hoc.
  */
 void print_headfoot(uchar * fname, uchar * query, uchar *subquery)
 {
@@ -345,5 +371,8 @@ void print_headfoot(uchar * fname, uchar * query, uchar *subquery)
     }
     free(buf);
 }
+
+
+
 
 

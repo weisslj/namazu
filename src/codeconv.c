@@ -2,7 +2,7 @@
  * 
  * codeconv.c -
  * 
- * $Id: codeconv.c,v 1.3 1999-05-14 04:38:49 satoru Exp $
+ * $Id: codeconv.c,v 1.4 1999-08-25 03:43:59 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -34,16 +34,19 @@
 
 #include <stdio.h>
 #include "namazu.h"
+#include "codeconv.h"
+#include "util.h"
 
-uchar kanji2nd;
-
-#define ESC 0x1b
-#define iskanji1st(c) (((c) >= 0x81 && (c)) <= 0x9f ||\
-                      ((c) >= 0xe0 && (c) <= 0xfc))
-#define iskanji2nd(c) ((c) >= 0x40 && (c) <= 0xfc && (c) != 0x7f)
-#define iseuc(c)  ((c) >= 0xa1 && (c) <= 0xfe)
+static uchar kanji2nd;
 
 
+/************************************************************
+ *
+ * Private functions
+ *
+ ************************************************************/
+
+uchar jmstojis(uchar, uchar);
 uchar jmstojis(uchar c1, uchar c2)
 {
     c1 -= (c1 <= 0x9f) ? 0x70 : 0xb0;
@@ -57,6 +60,12 @@ uchar jmstojis(uchar c1, uchar c2)
     return c1;
 }
 
+
+/************************************************************
+ *
+ * Public functions
+ *
+ ************************************************************/
 
 void jistoeuc(uchar * s)
 {
@@ -286,5 +295,25 @@ void zen2han(uchar * s)
 	q++;
     }
     *(s + q) = '\0';
+}
+
+int iskatakana(uchar *c)
+{
+    if ((((int)*c == 0xa5 && 
+          (int)*(c + 1) >= 0xa0 && (int)*(c + 1) <= 0xff)
+         || ((int)*c == 0xa1 && (int)*(c + 1) == 0xbc))) {  /* '¡¼' */
+        return 1;
+    }
+    return 0;
+}
+
+int ishiragana(uchar *c)
+{
+    if ((((int)*c == 0xa4 && 
+          (int)*(c + 1) >= 0xa0 && (int)*(c + 1) <= 0xff) 
+         || ((int)*c == 0xa1 && (int)*(c + 1) == 0xbc))) {  /* '¡¼' */
+        return 1;
+    }
+    return 0;
 }
 

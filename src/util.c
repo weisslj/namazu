@@ -7,7 +7,31 @@
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <stdarg.h>
 #include "namazu.h"
+
+/************************************************************
+ *
+ * Private functions
+ *
+ ************************************************************/
+
+/* decde URIencode */
+/* c & 0xdf means to uppercase c */
+uchar URIdecode(uchar c, uchar c2)
+{
+
+    c = ((c >= 'A' ? ((c & 0xdf) - 'A') + 10 : (c - '0'))) * 16;
+    c += (c2 >= 'A' ? ((c2 & 0xdf) - 'A') + 10 : (c2 - '0'));
+    return c;
+}
+
+
+/************************************************************
+ *
+ * Public functions
+ *
+ ************************************************************/
 
 unsigned long
 scan_oct(start, len, retlen)
@@ -175,6 +199,22 @@ uchar *lastc(uchar *str)
     return (str + strlen(str) - 1);
 }
 
+/* reverse byte order */
+void reverse_byte_order (int *p, int n)
+{
+    int i, j;
+    uchar *c, tmp;
+
+    for (i = 0; i < n; i++) {
+        c = (uchar *)(p + i);
+        for (j = 0; j < (sizeof(int) / 2); j++) {
+            tmp = *(c + j);
+            *(c + j)= *(c + sizeof(int) - 1 - j);
+            *(c + sizeof(int) - 1 - j) = tmp;
+        }
+    }
+}
+
 /* fread with endian consideration */
 size_t freadx(void *ptr, size_t size, size_t nmemb, FILE *stream)
 {
@@ -187,7 +227,8 @@ size_t freadx(void *ptr, size_t size, size_t nmemb, FILE *stream)
     return value;
 }
 
-int get_unpackw(FILE *fp, int *data) {
+int get_unpackw(FILE *fp, int *data)
+{
     int val = 0, i = 0;
 
     while (1) {
@@ -229,11 +270,11 @@ LIST *add_list(LIST *ptr, uchar *str)
     
     tmp = malloc(sizeof *tmp);
     if (tmp == NULL) {
-	 error("add_list_malloc");
+	 die("add_list_malloc");
     }
     tmp->str = malloc(strlen(str) + 1);
     if (tmp->str == NULL) {
-	 error("add_list_malloc");
+	 die("add_list_malloc");
     }
 
     strcpy(tmp->str, str);
@@ -242,16 +283,15 @@ LIST *add_list(LIST *ptr, uchar *str)
 }
 
 /* case-insensitive brute force search */
+/*
 uchar *strcasestr(uchar *haystack, uchar *needle)
 {
+   
     for (; *haystack != '\0'; haystack++) {
 	uchar *str = haystack;
 	uchar *key = needle;
 	for (; *str != '\0' && *key != '\0' &&
 		 (tolower((int)*key) == tolower((int)*str)); key++, str++) {
-	    /*
-	      printf("// %c %c\n", tolower((int)*key), tolower((int)*str));
-	    */
 	    ;
 	}
 	if (*key == '\0') {
@@ -259,4 +299,92 @@ uchar *strcasestr(uchar *haystack, uchar *needle)
 	}
     }
     return NULL;
+}
+*/
+
+/* case-insensitive brute force search  */
+uchar *strcasestr(uchar *haystack, uchar *needle)
+{
+    int n = strlen(needle);
+
+    for (; *haystack != '\0'; haystack++) {
+	if (strncasecmp(haystack, needle, n) == 0) {
+	    return haystack;
+	} 
+    }
+    return NULL;
+}
+
+/* read index and return with value */
+long getidxptr(FILE * fp, long p)
+{
+    int val;
+
+    fseek(fp, p * sizeof(int), 0);
+    freadx(&val, sizeof(int), 1, fp);
+    return (long) val;
+}
+
+int issymbol(int c)
+{
+    if (c < 0x80 && !isalnum(c)) {
+        return 1;
+    } else {
+	return 0;
+    }
+}
+
+/* error messaging function */
+void die(char *fmt, ...)
+{
+    va_list args;
+    FILE *output;
+
+    fflush(stdout);
+
+    if (IsCGI) {
+        output = stdout;
+    } else {
+        output = stderr;
+    }
+
+    if (HtmlOutput) {
+	fputs(MSG_MIME_HEADER, output);
+    }
+
+    fprintf(output, "ERROR: ");
+
+    va_start(args, fmt);
+    vfprintf(output, fmt, args);
+    va_end(args);
+
+    fprintf(output, "\n");
+
+    exit(2);
+}
+
+size_t strlen2(uchar *str, uchar c)
+{
+    int i;
+
+    for (i = 0; *str && *str != c; i++, str++)
+        ;
+    return i;
+}
+
+void pathcat(uchar *base, uchar *name)
+{
+    uchar work[BUFSIZE];
+    int i;
+
+    for (i = strlen(name) - 1; i >= 0; i--) {
+        if (name[i] == '/') {
+            strcpy(name, name + i + 1);
+            break;
+        }
+    }
+    strcpy(work, base);
+    strcat(work, "/");
+    strcat(work, name);
+    strcpy(name, work);
 }

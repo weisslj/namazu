@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.7 1999-08-23 10:40:53 satoru Exp $
+ * $Id: hlist.c,v 1.8 1999-08-25 03:44:00 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -32,6 +32,40 @@
 #include <math.h>
 #include "namazu.h"
 #include "util.h"
+#include "hlist.h"
+
+/************************************************************
+ *
+ * Private functions
+ *
+ ************************************************************/
+
+void memcpy_hlist(HLIST, HLIST, int);
+void set_date_zero_all(HLIST);
+
+void memcpy_hlist(HLIST to, HLIST from, int n)
+{
+    memcpy(to.fid + n, from.fid, from.n * sizeof (int));
+    memcpy(to.scr + n, from.scr, from.n * sizeof (int));
+    memcpy(to.did + n, from.did, from.n * sizeof (int));
+    memcpy(to.date + n, from.date, from.n * sizeof (int));
+}
+
+void set_date_zero_all(HLIST hlist)
+{
+    int i;
+
+    for (i = 0; i < hlist.n; i++) {
+        hlist.date[i] = 0;
+    }
+}
+
+
+/************************************************************
+ *
+ * Public functions
+ *
+ ************************************************************/
 
 /* merge the left and  right with AND rule */
 HLIST andmerge(HLIST left, HLIST right, int *ignore)
@@ -174,19 +208,19 @@ void malloc_hlist(HLIST * hlist, int n)
     if (n <= 0) return;
     hlist->fid = (int *)malloc(n * sizeof(int));
     if (hlist->fid == NULL) {
-	 error("malloc_hlist");
+	 die("malloc_hlist");
     }
     hlist->scr = (int *)malloc(n * sizeof(int));
     if (hlist->scr == NULL) {
-	 error("malloc_hlist");
+	 die("malloc_hlist");
     }
     hlist->did = (int *)malloc(n * sizeof(int));
     if (hlist->did == NULL) {
-	 error("malloc_hlist");
+	 die("malloc_hlist");
     }
     hlist->date = (int *)malloc(n * sizeof(int));
     if (hlist->date == NULL) {
-	 error("malloc_hlist");
+	 die("malloc_hlist");
     }
 }
 
@@ -195,19 +229,19 @@ void realloc_hlist(HLIST * hlist, int n)
     if (n <= 0) return;
     hlist->fid = (int *) realloc(hlist->fid, n * sizeof(int));
     if (hlist->fid == NULL) {
-	 error("realloc_hlist");
+	 die("realloc_hlist");
     }
     hlist->scr = (int *) realloc(hlist->scr, n * sizeof(int));
     if (hlist->scr == NULL) {
-	 error("realloc_hlist");
+	 die("realloc_hlist");
     }
     hlist->did = (int *) realloc(hlist->did, n * sizeof(int));
     if (hlist->did == NULL) {
-	 error("realloc_hlist");
+	 die("realloc_hlist");
     }
     hlist->date = (int *) realloc(hlist->date, n * sizeof(int));
     if (hlist->date == NULL) {
-	 error("realloc_hlist");
+	 die("realloc_hlist");
     }
 }
 
@@ -226,14 +260,6 @@ void copy_hlist(HLIST to, int n_to, HLIST from, int n_from)
     to.scr[n_to] = from.scr[n_from];
     to.did[n_to] = from.did[n_from];
     to.date[n_to] = from.date[n_from];
-}
-
-void memcpy_hlist(HLIST to, HLIST from, int n)
-{
-    memcpy(to.fid + n, from.fid, from.n * sizeof (int));
-    memcpy(to.scr + n, from.scr, from.n * sizeof (int));
-    memcpy(to.did + n, from.did, from.n * sizeof (int));
-    memcpy(to.date + n, from.date, from.n * sizeof (int));
 }
 
 void set_did_hlist(HLIST hlist, int id)
@@ -265,15 +291,6 @@ HLIST merge_hlist(HLIST *hlists)
     }
     value.n = n;
     return value;
-}
-
-void set_date_zero_all(HLIST hlist)
-{
-    int i;
-
-    for (i = 0; i < hlist.n; i++) {
-        hlist.date[i] = 0;
-    }
 }
 
 /* get date info from NMZ.t and do the missing number processing */
@@ -323,7 +340,7 @@ HLIST get_hlist(int index)
     uchar tmp[BUFSIZE];
     hlist.n = 0;
 
-    if (-1 == fseek(Index, get_index_pointer(IndexIndex, index), 0))
+    if (-1 == fseek(Index, getidxptr(IndexIndex, index), 0))
 	return hlist; /* error */
 
     fgets(tmp, BUFSIZE, Index); /* read and dispose */
@@ -342,7 +359,7 @@ HLIST get_hlist(int index)
 	int sum = 0;
 	buf = (int *) malloc(n * sizeof(int)); /* with pelnty margin */
 	if (buf == NULL) {
-	    error("get_hlist");
+	    die("get_hlist");
 	}
 	n = read_unpackw(Index, buf, n);
 	malloc_hlist(&hlist, n / 2);
@@ -424,18 +441,6 @@ void sort_hlist(HLIST hlist, int mode)
     nmz_mergesort(0, hlist.n - 1, hlist, work, mode);
     free_hlist(work);
 }
-
-void erase_size(uchar *s)
-{
-    int i;
-    for (i = strlen(s) -1; i > 0; i--) {
-        if (!strncmp(s + i, "size", 4)) {
-            break;
-        }
-    }
-    *(s + i - 1) = '\0';
-}
-
 
 /* 
  * reverse the hlist

@@ -1,7 +1,7 @@
 /*
  * result.l -
  * -*- C -*-
- * $Id: result.l,v 1.9 1999-08-23 17:50:18 satoru Exp $
+ * $Id: result.l,v 1.10 1999-08-25 03:44:02 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -25,9 +25,13 @@
  * 
  */
 %{
+#include <string.h>
 #include "namazu.h"
 #include "util.h"
-#include <string.h>
+#include "field.h"
+#include "result.h"
+#include "re.h"
+
 	void get_field_data(char *);
 	static int Fid;
 	static uchar Buf[BUFSIZE * 16];
@@ -39,7 +43,18 @@
 .|\n                           strcat(Buf, yytext);
 %%
 
-void make_fullpathname(int n)
+/************************************************************
+ *
+ * Private functions
+ *
+ ************************************************************/
+
+void make_fullpathname_field(int);
+void encode_entity(uchar*);
+void emphasize(uchar*);
+void get_field_data(char*);
+
+void make_fullpathname_field(int n)
 {
     uchar *base;
 
@@ -72,7 +87,8 @@ void encode_entity(uchar *str)
 }
 
 /* inefficient algorithm but it works */
-void emphasize(uchar *str) {
+void emphasize(uchar *str)
+{
     int i;
 
     for (i = 0; KeyItem[i] != NULL; i++) {
@@ -146,7 +162,7 @@ void get_field_data(char *key)
        BUFSIZE (1024) because its length is restricted at 
        put_field_index() in mknmz.
      */
-    fseek(fp_field, get_index_pointer(fp_field_idx, Fid), 0);
+    fseek(fp_field, getidxptr(fp_field_idx, Fid), 0);
     fgets(buf, BUFSIZE, fp_field);
 
 
@@ -154,7 +170,9 @@ void get_field_data(char *key)
 	replace_uri(buf);
     } else {
 	/* do not emphasize in URI */
-	emphasize(buf);
+	if (HtmlOutput) {
+	    emphasize(buf);
+	}
     }
 
     chomp(buf);
@@ -164,8 +182,14 @@ void get_field_data(char *key)
     fclose(fp_field_idx);
 }
 
+/************************************************************
+ *
+ * Public functions
+ *
+ ************************************************************/
+
 /* display the hlist */
-void put_hlist (HLIST hlist)
+void print_hlist(HLIST hlist)
 {
     int i;
 
@@ -177,14 +201,14 @@ void put_hlist (HLIST hlist)
 	Score   = hlist.scr[i];
 	Counter = i + 1;
 	Fid = hlist.fid[i];
-	make_fullpathname(hlist.did[i]);
+	make_fullpathname_field(hlist.did[i]);
 	if (!AllList && (i >= HListWhence + HListMax))
 	    break;
 	if (MoreShortFormat) {
 	    get_field_data("${uri}");
 	} else {
 	    if ((yyin = fopen(RESULTFILE, "r")) == NULL) {
-		error("put_hlist");
+		die("print_hlist");
 		exit(-1);
 	    }
 	    yylex();

@@ -2,7 +2,7 @@
  * 
  * wakati.c -
  * 
- * $Id: wakati.c,v 1.4 1999-08-23 10:40:54 satoru Exp $
+ * $Id: wakati.c,v 1.5 1999-08-25 03:44:03 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -31,46 +31,105 @@
 #include <ctype.h>
 #include "namazu.h"
 #include "util.h"
-
-#define is_kanji(c)  (iseuc(*(c)) && iseuc(*(c + 1)))
-#define is_choon(c) ((int)*(c) == 0xa1 && (int)*(c + 1) == 0xbc)
-
-int is_katakana(uchar *c)
-{
-    if ((((int)*c == 0xa5 && 
-          (int)*(c + 1) >= 0xa0 && (int)*(c + 1) <= 0xff)
-         || ((int)*c == 0xa1 && (int)*(c + 1) == 0xbc))) {  /* '¡¼' */
-        return 1;
-    }
-    return 0;
-}
-
-int is_hiragana(uchar *c)
-{
-    if ((((int)*c == 0xa4 && 
-          (int)*(c + 1) >= 0xa0 && (int)*(c + 1) <= 0xff) 
-         || ((int)*c == 0xa1 && (int)*(c + 1) == 0xbc))) {  /* '¡¼' */
-        return 1;
-    }
-    return 0;
-}
+#include "field.h"
+#include "codeconv.h"
+#include "search.h"
 
 #define KANJI 1
 #define KATAKANA 2
 #define HIRAGANA 3
 #define OTHER 0
 
-int detect_code_type(uchar *c)
+/************************************************************
+ *
+ * Private functions
+ *
+ ************************************************************/
+
+int detect_char_type(uchar*);
+void set_phrase_trick(uchar*);
+void set_regex_trick(uchar*);
+
+int detect_char_type(uchar *c)
 {
-    if (is_katakana(c)) {
+    if (iskatakana(c)) {
         return KATAKANA;
-    } else if (is_hiragana(c)){
+    } else if (ishiragana(c)){
         return HIRAGANA;
-    } else if (is_kanji(c)) {
+    } else if (iskanji(c)) {
         return KANJI;
     }
     return OTHER;
 }
+
+/* replace duble quotes with spaces and replace internal spaces with TABs
+{foo bar} is also acceptable */
+void set_phrase_trick(uchar *qs)
+{
+    int i, state;
+    uchar *b = qs, *e;
+
+    for (i = state = 0; *(qs + i); i++) {
+        if ((*(qs + i) == '"' || *(qs + i) == '{') 
+            && (i == 0 || *(qs + i - 1) == ' ')) 
+        {
+            state = 1;
+            b = qs + i + 1;
+        } else if (state && (*(qs + i) == '"' || *(qs + i) == '}') && 
+                   (*(qs + i + 1) == ' ' || *(qs + i + 1) == '\0')) 
+        {
+            state = 0;
+            e = qs + i - 1;
+
+            for (;b <= e; b++) {
+                if (*b == ' ')
+                    *b = '\t';
+            }
+        } 
+    }
+}
+
+/* replace internal spaces with \xff */
+/* very complicated ad hoc routine :-( */
+void set_regex_trick(uchar *qs)
+{
+    int i, delim;
+    uchar *b = qs, *e;
+
+    for (i = delim = 0; *(qs + i); i++) {
+        int field = 0;
+        if ((i == 0 || *(qs + i - 1) == ' ') && isfield(qs + i)) {
+            field = 1;
+            i += strlen2(qs + i, ':') + 1;
+        }
+        if ((field || i == 0 || *(qs + i - 1) == ' ') && 
+            (*(qs + i) == '/' || 
+             (field && (*(qs + i) == '"' || *(qs + i) == '{'))))
+        {
+            delim = *(qs + i);
+            if (delim == '{') {
+                delim = '}';
+            }
+            b = qs + i + 1;
+        } else if (*(qs + i) == delim 
+                   && (*(qs + i + 1) == ' ' || *(qs + i + 1) == '\0')) 
+        {
+            delim = 0;
+            e = qs + i - 1;
+
+            for (;b <= e; b++) {
+                if (*b == ' ')
+                    *b = '\xff';
+            }
+        } 
+    }
+}
+
+/************************************************************
+ *
+ * Public functions
+ *
+ ************************************************************/
 
 void wakati(uchar *key)
 {
@@ -78,15 +137,15 @@ void wakati(uchar *key)
     uchar buf[BUFSIZE * 2] = "";
 
     for (i = 0; i < strlen(key); ) {
-        type = detect_code_type(key + i);
+        type = detect_char_type(key + i);
 	if (iseuc(*(key + i))) {
 	    key_leng = 0;
-	    for (j = 0; is_kanji(key + i + j) ;  j += 2)
+	    for (j = 0; iskanji(key + i + j) ;  j += 2)
             {
 		uchar tmp[BUFSIZE];
 
-                if (j == 0 && (is_katakana(key + i + j) ||
-                    is_hiragana(key + i + j))) 
+                if (j == 0 && (iskatakana(key + i + j) ||
+                    ishiragana(key + i + j))) 
                 {
                     /* if beggining character is Katakana or Hiragana */
                     break;
@@ -107,8 +166,8 @@ void wakati(uchar *key)
 	    } else {
                 if (type == HIRAGANA || type == KATAKANA) {
                     for (j =0; ; j += 2) {
-                        if (!((type == HIRAGANA && is_hiragana(key + i + j))
-                            ||(type == KATAKANA && is_katakana(key + i + j)))) 
+                        if (!((type == HIRAGANA && ishiragana(key + i + j))
+                            ||(type == KATAKANA && iskatakana(key + i + j)))) 
                         {
                             break;
                         }
@@ -145,81 +204,8 @@ void wakati(uchar *key)
     }
 }
 
-/* replace duble quotes with spaces and replace internal spaces with TABs
-{foo bar} is also acceptable */
-void set_phrase_trick(uchar *qs)
-{
-    int i, state;
-    uchar *b = qs, *e;
 
-    for (i = state = 0; *(qs + i); i++) {
-        if ((*(qs + i) == '"' || *(qs + i) == '{') 
-            && (i == 0 || *(qs + i - 1) == ' ')) 
-        {
-            state = 1;
-            b = qs + i + 1;
-        } else if (state && (*(qs + i) == '"' || *(qs + i) == '}') && 
-                   (*(qs + i + 1) == ' ' || *(qs + i + 1) == '\0')) 
-        {
-            state = 0;
-            e = qs + i - 1;
-
-            for (;b <= e; b++) {
-                if (*b == ' ')
-                    *b = '\t';
-            }
-        } 
-    }
-}
-
-int strlen2(uchar *str, uchar c)
-{
-    int i;
-
-    for (i = 0; *str && *str != c; i++, str++)
-        ;
-    return i;
-}
-
-/* replace internal spaces with \xff */
-/* very complicated ad hoc routine :-( */
-void set_regex_trick(uchar *qs)
-{
-    int i, delim;
-    uchar *b = qs, *e;
-
-    for (i = delim = 0; *(qs + i); i++) {
-        int field = 0;
-        if ((i == 0 || *(qs + i - 1) == ' ') && is_field(qs + i)) {
-            field = 1;
-            i += strlen2(qs + i, ':') + 1;
-        }
-        if ((field || i == 0 || *(qs + i - 1) == ' ') && 
-            (*(qs + i) == '/' || 
-             (field && (*(qs + i) == '"' || *(qs + i) == '{'))))
-        {
-            delim = *(qs + i);
-            if (delim == '{') {
-                delim = '}';
-            }
-            b = qs + i + 1;
-        } else if (*(qs + i) == delim 
-                   && (*(qs + i + 1) == ' ' || *(qs + i + 1) == '\0')) 
-        {
-            delim = 0;
-            e = qs + i - 1;
-
-            for (;b <= e; b++) {
-                if (*b == ' ')
-                    *b = '\xff';
-            }
-        } 
-    }
-}
-
-
-
-/* split the query */
+/* split a given query */
 void split_query(uchar *qs)
 {
     int i, qn;
@@ -279,14 +265,6 @@ void split_query(uchar *qs)
     }
 }
 
-void codeconv_query(uchar *query)
-{
-    if (is_lang_ja(Lang)) {
-        if (codeconv(query)) {
-            zen2han(query);
-            /* don't invoke external Japanese processor anymore.
-            obsolete_wakati(query, av0);
-	    */
-        }
-    }
-}
+
+
+

@@ -2,7 +2,7 @@
  * 
  * messages.c -
  * 
- * $Id: messages.c,v 1.5 1999-06-12 14:29:30 satoru Exp $
+ * $Id: message.c,v 1.1 1999-08-25 03:44:00 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -56,7 +56,7 @@ uchar *MSG_USAGE, *MSG_TOO_LONG_KEY, *MSG_TOO_MANY_KEYITEM,
   It's treated with special care as Namazu's HTML message.
  */
 
-void initialize_message(void)
+void init_message(void)
 {
     if (is_lang_ja(Lang)) {
 #if	defined(_WIN32) || defined(__EMX__)

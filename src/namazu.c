@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.11 1999-08-23 10:40:53 satoru Exp $
+ * $Id: namazu.c,v 1.12 1999-08-25 03:44:00 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -35,40 +35,14 @@
 #include <unistd.h>
 #include <sys/stat.h>
 #include <signal.h>
-#include "namazu.h"
+
 #include "getopt.h"
-#include <stdarg.h>
-
-
-/* error messaging function */
-void error(char *fmt, ...)
-{
-    va_list args;
-    FILE *output;
-
-    fflush(stdout);
-
-    if (IsCGI) {
-        output = stdout;
-    } else {
-        output = stderr;
-    }
-
-    if (HtmlOutput) {
-	fputs(MSG_MIME_HEADER, output);
-    }
-
-    fprintf(output, "ERROR: ");
-
-    va_start(args, fmt);
-    vfprintf(output, fmt, args);
-    va_end(args);
-
-    fprintf(output, "\n");
-
-    exit(2);
-}
-
+#include "util.h"
+#include "codeconv.h"
+#include "form.h"
+#include "usage.h"
+#include "conf.h"
+#include "namazu.h"
 
 /* output a content of file */
 void cat(uchar *fname)
@@ -84,25 +58,13 @@ void cat(uchar *fname)
 }
 
 
-/* display the usage and version info and exit */
-void show_usage(void)
-{
-    uchar buf[2048];
-    strcpy(buf, MSG_USAGE);
-#if	defined(_WIN32) || defined(__EMX__)
-    euctosjis(buf);
-#endif
-    printf(buf, COPYRIGHT, VERSION);
-}
-
-
 /* redirect stdio to specified file */
 void set_redirect_stdout_to_file(uchar * fname)
 {
     int fd;
 
     if (-1 == (fd = open(fname, O_CREAT | O_TRUNC | O_WRONLY, 00600)))
-	error("stdio2file(cannot open)");
+	die("stdio2file(cannot open)");
     close(STDOUT);
     dup(fd);
     close(STDERR);
@@ -208,15 +170,15 @@ int parse_options(int argc, char **argv)
 	    exit(0);
 	    break;
 	case 'C':
-	    show_configuration();
+	    show_conf();
 	    break;
 	case 'f':
 	    strcpy(NAMAZURC, optarg);
-	    load_namazu_conf(argv[0]);
+	    load_conf(argv[0]);
 	    break;
 	case 'L':
 	    strncpy(Lang, optarg, 2);
-	    initialize_message();
+	    init_message();
 	    break;
 	case 'o':
 	    set_redirect_stdout_to_file(optarg);
@@ -235,24 +197,6 @@ void free_dbnames(void)
     }
 }
 
-void pathcat(uchar *base, uchar name[])
-{
-    uchar work[BUFSIZE];
-    int i;
-
-    for (i = strlen(name) - 1; i >= 0; i--) {
-        if (name[i] == '/') {
-            strcpy(name, name + i + 1);
-            break;
-        }
-    }
-    strcpy(work, base);
-    strcat(work, "/");
-    strcat(work, name);
-    strcpy(name, work);
-}
-
-
 void make_fullpathname_msg(void)
 {
     uchar *base;
@@ -267,6 +211,15 @@ void make_fullpathname_msg(void)
     pathcat(base, FOOTERFILE);
     pathcat(base, LOCKFILE);
     pathcat(base, BODYMSGFILE);
+}
+
+void codeconv_query(uchar *query)
+{
+    if (is_lang_ja(Lang)) {
+        if (codeconv(query)) {
+            zen2han(query);
+        }
+    }
 }
 
 /* namazu core routine */
@@ -357,7 +310,7 @@ void expand_dbname_aliases(void)
 		free(DbNames[i]);
 		DbNames[i] = (uchar *) malloc(strlen(list->real) + 1);
 		if (DbNames[i] == NULL) {
-		    error("expand_dbname_aliases: malloc()");
+		    die("expand_dbname_aliases: malloc()");
 		}
 		strcpy(DbNames[i], list->real);
             }
@@ -376,7 +329,7 @@ void complete_dbnames(void)
 	    tmp = (uchar *)malloc(strlen(DEFAULT_DIR) 
 				  + 1 + strlen(DbNames[i]) + 1);
 	    if (tmp == NULL) {
-		error("complete_dbnames: malloc()");
+		die("complete_dbnames: malloc()");
 	    }
 	    strcpy(tmp, DEFAULT_DIR);
 	    strcat(tmp, "/");
@@ -389,7 +342,7 @@ void complete_dbnames(void)
 
 void suicide ()
 {
-    error("processing time exceeds a limit: %d", SUICIDE_TIME);
+    die("processing time exceeds a limit: %d", SUICIDE_TIME);
 }
 
 int main(int argc, char **argv)
@@ -398,9 +351,9 @@ int main(int argc, char **argv)
     uchar query[BUFSIZE] = "", subquery[BUFSIZE] = "";
 
     getenv_namazuconf();
-    initialize_message();
+    init_message();
     if (argc == 1) {
-	load_namazu_conf(argv[0]);
+	load_conf(argv[0]);
 	IsCGI = 1;	/* if no argument, assume this session as CGI */
 	HtmlOutput = 1;
     } else {
@@ -408,7 +361,7 @@ int main(int argc, char **argv)
 	DecodeURI = 1;		 /* decode a URI */
 	HidePageIndex = 1;	 /* do not diplay page index */
 
-	load_namazu_conf(argv[0]);
+	load_conf(argv[0]);
 
 	i = parse_options(argc, argv); 
 	if (i == argc) {
@@ -426,7 +379,7 @@ int main(int argc, char **argv)
                     DbNames[DbNumber] = 
                         (uchar *) malloc(strlen(argv[i]) + 1);
                     if (DbNames[DbNumber] == NULL) {
-                        error("main: malloc(dbname)");
+                        die("main: malloc(dbname)");
                     }
                     strcpy(DbNames[DbNumber], argv[i]);
                     DbNumber++;
@@ -438,14 +391,14 @@ int main(int argc, char **argv)
             DbNames[DbNumber] = 
                 (uchar *) malloc(strlen(DEFAULT_DIR) + 1);
             if (DbNames[DbNumber] == NULL) {
-                error("main: malloc(dbname)");
+                die("main: malloc(dbname)");
             }
             strcpy(DbNames[DbNumber], DEFAULT_DIR);
             DbNumber = 1;
 	}
     }
     if (IsCGI) {
-	cgi_initialize(query, subquery);
+	init_cgi(query, subquery);
     }
 
     uniq_dbnames();

@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.8 1999-08-23 11:28:11 satoru Exp $
+ * $Id: search.c,v 1.9 1999-08-25 03:44:02 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -36,44 +36,62 @@
 #include <sys/types.h>
 #endif
 #include <sys/stat.h>
+
 #include "namazu.h"
 #include "util.h"
+#include "field.h"
+#include "result.h"
+#include "parser.h"
+#include "hlist.h"
+#include "re.h"
+#include "wakati.h"
+#include "search.h"
 
-/* reverse byte order */
-void reverse_byte_order (int *p, int n)
-{
-    int i, j;
-    uchar *c, tmp;
+/************************************************************
+ *
+ * Private functions
+ *
+ ************************************************************/
 
-    for (i = 0; i < n; i++) {
-        c = (uchar *)(p + i);
-        for (j = 0; j < (sizeof(int) / 2); j++) {
-            tmp = *(c + j);
-            *(c + j)= *(c + sizeof(int) - 1 - j);
-            *(c + sizeof(int) - 1 - j) = tmp;
-        }
-    }
-}
+void show_status(int, int);
+int get_file_size (uchar*);
+void lrget(uchar* , int*, int*);
+HLIST forward_match(uchar* , int);
+int detect_search_mode(uchar*);
+void print_hit_count (uchar*, HLIST);
+HLIST do_word_search(uchar*, HLIST);
+HLIST do_forward_match_search(uchar*, HLIST);
+int hash(uchar*);
+HLIST cmp_phrase_hash(int, HLIST, FILE *, FILE *);
+int open_phrase_index_files(FILE**, FILE**);
+HLIST do_phrase_search(uchar*, HLIST);
+void do_regex_preprocessing(uchar*);
+HLIST do_regex_search(uchar*, HLIST);
+void get_expr(uchar*, uchar*);
+HLIST do_field_search(uchar*, HLIST);
+void delete_beginning_backslash(uchar*);
+int check_lockfile(void);
+void check_byte_order(void);
+int open_index_files();
+void close_index_files(void);
+void print_hitnum(int);
+void print_range(HLIST);
+char *get_env_safely(char*);
+void do_logging(uchar* , int);
+uchar *get_dir_name(uchar*);
+HLIST search_sub(HLIST, uchar*, uchar*, int);
+void make_fullpathname_index(int);
 
-/* read index and return with value */
-long get_index_pointer(FILE * fp, long p)
-{
-    int val;
-
-    fseek(fp, p * sizeof(int), 0);
-    freadx(&val, sizeof(int), 1, fp);
-    return (long) val;
-}
 
 /* show the status for debug use */
 void show_status(int l, int r)
 {
     uchar buf[BUFSIZE];
 
-    fseek(Index, get_index_pointer(IndexIndex, l), 0);
+    fseek(Index, getidxptr(IndexIndex, l), 0);
     fgets(buf, BUFSIZE, Index);
     fprintf(stderr, "l:%d: %s", l, buf);
-    fseek(Index, get_index_pointer(IndexIndex, r), 0);
+    fseek(Index, getidxptr(IndexIndex, r), 0);
     fgets(buf, BUFSIZE, Index);
     fprintf(stderr, "r:%d: %s", r, buf);
 }
@@ -100,58 +118,6 @@ void lrget(uchar * key, int *l, int *r)
 	show_status(*l, *r);
 }
 
-/* main routine of binary search */
-int binsearch(uchar *orig_key, int forward_match_mode)
-{
-    int l, r, x, e = 0, i;
-    uchar buf[BUFSIZE], key[BUFSIZE];
-
-    strcpy(key, orig_key);
-    lrget(key, &l, &r);
-
-    if (forward_match_mode) {  /* truncate a '*' character at the end */
-        *(lastc(key)) = '\0';
-    }
-
-    while (r >= l) {
-	x = (l + r) / 2;
-
-	fseek(Index, get_index_pointer(IndexIndex, x), 0);
-
-	/* over BUFSIZE (maybe 1024) size keyword is nuisance */
-	fgets(buf, BUFSIZE, Index);
-	if (Debug)
-	    fprintf(stderr, "searching: %s", buf);
-	for (e = 0, i = 0; *(buf + i) != '\n' && *(key + i) != '\0' ; i++) {
-	    if (*(buf + i) > *(key + i)) {
-		e = -1;
-		break;
-	    }
-	    if (*(buf + i) < *(key + i)) {
-		e = 1;
-		break;
-	    }
-	}
-
-	if (*(buf + i) == '\n' && *(key + i)) {
-	    e = 1;
-	} else if (! forward_match_mode && *(buf + i) != '\n' 
-                   && (!*(key + i))) {
-	    e = -1;
-	}
-
-	/* if hit, return */
-	if (!e)
-	    return x;
-
-	if (e < 0)
-	    r = x - 1;
-	else
-	    l = x + 1;
-    }
-    return -1;
-}
-
 /* Forward match search */
 HLIST forward_match(uchar * orig_key, int v)
 {
@@ -165,7 +131,7 @@ HLIST forward_match(uchar * orig_key, int v)
     n = strlen(key);
 
     for (i = v; i >= 0; i--) {
-	fseek(Index, get_index_pointer(IndexIndex, i), 0);
+	fseek(Index, getidxptr(IndexIndex, i), 0);
 	fgets(buf, BUFSIZE, Index);
 	if (strncmp(key, buf, n))
 	    break;
@@ -181,7 +147,7 @@ HLIST forward_match(uchar * orig_key, int v)
 	    val.n = TOO_MUCH_MATCH;
 	    break;
 	}
-	if (-1 == fseek(Index, get_index_pointer(IndexIndex, i), 0))
+	if (-1 == fseek(Index, getidxptr(IndexIndex, i), 0))
 	    break;
 	fgets(buf, BUFSIZE, Index);
         chomp(buf);
@@ -208,35 +174,6 @@ HLIST forward_match(uchar * orig_key, int v)
     return val;
 }
 
-int is_field_safe_character(int c) {
-    if ((isalnum(c) || c == (int)'-')) {
-        return 1;
-    } else {
-        return 0;
-    }
-
-}
-/* check a key if field or not */
-int is_field(uchar *key)
-{
-    if (*key == '+') {
-        key++;
-    } else {
-        return 0;
-    }
-    while (*key) {
-        if (! is_field_safe_character(*key)) {
-            break;
-        }
-        key++;
-    }
-    if (isalpha(*(key - 1)) && *key == ':' ) {
-        return 1;
-    }
-    return 0;
-}
-
-
 #define NM 0
 #define FW 1
 #define RE 2
@@ -247,7 +184,7 @@ int is_field(uchar *key)
 int detect_search_mode(uchar *key) {
     if (strlen(key) <= 1)
         return NM;
-    if (is_field(key)) { /* field search */
+    if (isfield(key)) { /* field search */
         if (Debug)
             fprintf(stderr, "do FIELD search\n");
         return FI;
@@ -350,15 +287,6 @@ HLIST do_forward_match_search(uchar *key, HLIST val)
 }
 
 
-int issymbol(uchar c)  
-{
-    if (c < 0x80 && !isalnum(c)) {
-        return 1;
-    } else {
-	return 0;
-    }
-}
-
 /* calculate a value of phase hash */
 int hash(uchar *str)
 {
@@ -376,7 +304,7 @@ int hash(uchar *str)
 }
 
 /* get the phrase hash and compare it with HLIST */
-HLIST compare_phrase_hash(int hash_key, HLIST val, 
+HLIST cmp_phrase_hash(int hash_key, HLIST val, 
                           FILE *phrase, FILE *phrase_index)
 {
     int i, j, v, n, *list;
@@ -385,7 +313,7 @@ HLIST compare_phrase_hash(int hash_key, HLIST val,
     if (val.n == 0) {
         return val;
     }
-    ptr = get_index_pointer(phrase_index, hash_key);
+    ptr = getidxptr(phrase_index, hash_key);
     if (ptr <= 0) {
         val.n = 0;
         return val;
@@ -395,7 +323,7 @@ HLIST compare_phrase_hash(int hash_key, HLIST val,
 
     list = (int *)malloc(n * sizeof(int));
     if (list == NULL) {
-	 error("compare_phrase_hash_malloc");
+	 die("cmp_phrase_hash_malloc");
     }
 
     {
@@ -475,7 +403,7 @@ HLIST do_phrase_search(uchar *key, HLIST val)
 		    strcpy(word_mix, word_b);
 		    strcat(word_mix, p);
 		    h = hash(word_mix);
-		    val = compare_phrase_hash(h, val, phrase, phrase_index);
+		    val = cmp_phrase_hash(h, val, phrase, phrase_index);
 		    if (Debug) {
 			fprintf(stderr, "\nhash:: <%s, %s>: h:%d, val.n:%d\n",
 				word_b, p, h, val.n);
@@ -567,35 +495,6 @@ HLIST do_regex_search(uchar *orig_expr, HLIST val)
 
 }
 
-void apply_field_alias(uchar *field)
-{
-    if (strcmp(field, "title") == 0) {
-        strcpy(field, "subject");
-    } else if (strcmp(field, "author") == 0) {
-        strcpy(field, "from");
-    } else if (strcmp(field, "path") == 0) {
-        strcpy(field, "uri");
-    } 
-}
-
-void get_field_name(uchar *field, uchar *str)
-{
-    uchar *tmp = field;
-
-    str++;  /* ignore beggining '+' mark */
-    while (*str) {
-        if (! is_field_safe_character(*str)) {
-            break;
-        }
-        *tmp = *str;
-        tmp++;
-        str++;
-    }
-    *tmp = '\0';
-
-    apply_field_alias(field);
-}
-
 void get_expr(uchar *expr, uchar *str)
 {
     str = (uchar *)strchr(str, (int)':') + 1;
@@ -632,35 +531,6 @@ void delete_beginning_backslash(uchar *str)
         strcpy(str, str + 1);
     }
 }
-
-HLIST do_search(uchar *orig_key, HLIST val)
-{
-    int mode;
-    uchar key[BUFSIZE];
-
-    strcpy(key, orig_key);
-    strlower(key);
-    mode = detect_search_mode(key);
-    delete_beginning_backslash(key);
-
-    if (mode == FW) {
-        val = do_forward_match_search(key, val);
-    } else  if (mode == RE) {
-        val = do_regex_search(key, val);
-    } else if (mode == PH) {
-        val = do_phrase_search(key, val);
-    } else if (mode == FI) {
-        val = do_field_search(key, val);
-    } else {
-        val = do_word_search(key, val);
-    }
-
-    if (mode != PH) { /* phrase mode print status by itself */
-        print_hit_count(orig_key, val);
-    }
-    return val;
-}
-
 
 /* check the existence of lockfile */
 int check_lockfile(void)
@@ -749,12 +619,12 @@ void print_hitnum(int n)
     fputx(MSG_HIT_2, stdout);
 }
 
-void print_hlist(HLIST hlist)
+void print_listing(HLIST hlist)
 {
     if (HtmlOutput)
         printf("<dl>\n");
     
-    put_hlist(hlist);
+    print_hlist(hlist);
     
     if (HtmlOutput)
         printf("</dl>\n");
@@ -823,8 +693,7 @@ uchar *get_dir_name(uchar *path)
     }
 }
 
-HLIST search_sub(HLIST hlist, uchar *query,
-                                 uchar *query_orig, int n)
+HLIST search_sub(HLIST hlist, uchar *query, uchar *query_orig, int n)
 {
     if (!HitCountOnly && !MoreShortFormat && !NoReference && !Quiet) {
         if (DbNumber > 1) {
@@ -850,7 +719,7 @@ HLIST search_sub(HLIST hlist, uchar *query,
     }
 
     /* search */
-    initialize_parser();
+    init_parser();
     hlist = expr();
 
     if (hlist.n) /* if hit */
@@ -887,6 +756,64 @@ void make_fullpathname_index(int n)
 }
 
 
+/************************************************************
+ *
+ * Public functions
+ *
+ ************************************************************/
+
+/* main routine of binary search */
+int binsearch(uchar *orig_key, int forward_match_mode)
+{
+    int l, r, x, e = 0, i;
+    uchar buf[BUFSIZE], key[BUFSIZE];
+
+    strcpy(key, orig_key);
+    lrget(key, &l, &r);
+
+    if (forward_match_mode) {  /* truncate a '*' character at the end */
+        *(lastc(key)) = '\0';
+    }
+
+    while (r >= l) {
+	x = (l + r) / 2;
+
+	fseek(Index, getidxptr(IndexIndex, x), 0);
+
+	/* over BUFSIZE (maybe 1024) size keyword is nuisance */
+	fgets(buf, BUFSIZE, Index);
+	if (Debug)
+	    fprintf(stderr, "searching: %s", buf);
+	for (e = 0, i = 0; *(buf + i) != '\n' && *(key + i) != '\0' ; i++) {
+	    if (*(buf + i) > *(key + i)) {
+		e = -1;
+		break;
+	    }
+	    if (*(buf + i) < *(key + i)) {
+		e = 1;
+		break;
+	    }
+	}
+
+	if (*(buf + i) == '\n' && *(key + i)) {
+	    e = 1;
+	} else if (! forward_match_mode && *(buf + i) != '\n' 
+                   && (!*(key + i))) {
+	    e = -1;
+	}
+
+	/* if hit, return */
+	if (!e)
+	    return x;
+
+	if (e < 0)
+	    r = x - 1;
+	else
+	    l = x + 1;
+    }
+    return -1;
+}
+
 /* flow of search */
 void search_main(uchar *query)
 {
@@ -918,7 +845,7 @@ void search_main(uchar *query)
     }
 
     hlist = merge_hlist(tmp);
-    if (hlist.n > 0) {
+    if (hlist.n > 0) {       /* HIT!! */
         reverse_hlist(hlist);
         sort_hlist(hlist, SORT_BY_DATE);
         if (! LaterOrder) {  /* early order */
@@ -933,7 +860,7 @@ void search_main(uchar *query)
 	if (HitCountOnly) {
 	    printf("%d\n", hlist.n);
 	} else {
-	    print_hlist(hlist); /* summary listing */
+	    print_listing(hlist); /* summary listing */
 	}
         if (!HitCountOnly && !MoreShortFormat && !Quiet) {
             print_range(hlist);
@@ -949,5 +876,33 @@ void search_main(uchar *query)
 }
 
 
+
+HLIST do_search(uchar *orig_key, HLIST val)
+{
+    int mode;
+    uchar key[BUFSIZE];
+
+    strcpy(key, orig_key);
+    strlower(key);
+    mode = detect_search_mode(key);
+    delete_beginning_backslash(key);
+
+    if (mode == FW) {
+        val = do_forward_match_search(key, val);
+    } else  if (mode == RE) {
+        val = do_regex_search(key, val);
+    } else if (mode == PH) {
+        val = do_phrase_search(key, val);
+    } else if (mode == FI) {
+        val = do_field_search(key, val);
+    } else {
+        val = do_word_search(key, val);
+    }
+
+    if (mode != PH) { /* phrase mode print status by itself */
+        print_hit_count(orig_key, val);
+    }
+    return val;
+}
 
 

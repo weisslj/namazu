@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.7 1999-08-23 11:28:10 satoru Exp $
+ * $Id: cgi.c,v 1.8 1999-08-25 03:43:59 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -32,10 +32,23 @@
 #include <ctype.h>
 #include "namazu.h"
 #include "util.h"
+#include "usage.h"
+#include "message.h"
+#include "cgi.h"
+#include "output.h"
 
 uchar *ScriptName    = (uchar *)"";
 uchar *QueryString   = (uchar *)"";
 uchar *ContentLength = (uchar *)"";
+
+/************************************************************
+ *
+ * Private functions
+ *
+ ************************************************************/
+
+int validate_dbname(uchar* );
+int get_cgi_vars(uchar* , uchar*);
 
 /* validate dbname (if it contain '/', it's invalid) */
 int validate_dbname(uchar * dbname)
@@ -75,8 +88,8 @@ int validate_dbname(uchar * dbname)
 }
 
 
-/*  get CGI variables, very complicated routine */
-int get_cgi_variables(uchar * query, uchar *subquery)
+/*  get CGI vars, very complicated routine */
+int get_cgi_vars(uchar * query, uchar *subquery)
 {
     int i;
     uchar *qs, tmp[BUFSIZE];
@@ -102,7 +115,7 @@ int get_cgi_variables(uchar * query, uchar *subquery)
             }
             QueryString = (uchar *)malloc(content_length * sizeof(uchar) + 1);
 	    if (QueryString == NULL)
-		error("QueryString( get_cgi_variables )");
+		die("QueryString( get_cgi_vars )");
 
 	    fread(QueryString, sizeof(char), content_length, stdin);
 	    HtmlOutput = 1;
@@ -122,7 +135,7 @@ int get_cgi_variables(uchar * query, uchar *subquery)
             sprintf(tmp, "%s%s", DEFAULT_DIR, path_info);
             DbNames[DbNumber] = (uchar *) malloc(strlen(tmp) + 1);
             if (DbNames[DbNumber] == NULL) {
-                error("cgi: malloc(dbname)");
+                die("cgi: malloc(dbname)");
             }
             strcpy(DbNames[DbNumber], tmp);
             DbNumber++;
@@ -222,7 +235,7 @@ int get_cgi_variables(uchar * query, uchar *subquery)
 	    qs += 5;
             strncpy(Lang, qs, 2);
             qs += 2;
-            initialize_message();
+            init_message();
 	    while (*qs && *qs != '&')
 		qs++;
 	} else if (!strncmp(qs, "reference=off", 13)) {
@@ -253,7 +266,7 @@ int get_cgi_variables(uchar * query, uchar *subquery)
                 DbNames[DbNumber] = (uchar *)
                     malloc(strlen(DEFAULT_DIR) + 1 + strlen(name) + 1);
                 if (DbNames[DbNumber] == NULL) {
-                    error("cgi: malloc(dbname)");
+                    die("cgi: malloc(dbname)");
                 }
                 validate_dbname(name);
                 strcpy(DbNames[DbNumber], DEFAULT_DIR);
@@ -270,33 +283,28 @@ int get_cgi_variables(uchar * query, uchar *subquery)
     return 0;
 }
 
+/************************************************************
+ *
+ * Public functions
+ *
+ ************************************************************/
 
 /* initialize CGI mode. actually, to be invoked from commandline
  * with no arguments also trhough this function */
-void cgi_initialize(uchar * query, uchar *subquery)
+void init_cgi(uchar * query, uchar *subquery)
 {
-    if (get_cgi_variables(query, subquery)) {
-	show_usage();	/* if it is NOT CGI, show usage usage */
-	exit(0);
+    if (get_cgi_vars(query, subquery)) {
+	show_usage();	/* if it is NOT CGI, show usage and exit */
+	exit(1);
     }
     if (DbNumber == 0) {
         DbNames[DbNumber] = (uchar *) malloc(strlen(DEFAULT_DIR) + 1);
         if (DbNames[DbNumber] == NULL) {
-            error("cgi_initialize: malloc(dbname)");
+            die("cgi_initialize: malloc(dbname)");
         }
         strcpy(DbNames[DbNumber], DEFAULT_DIR);
         DbNumber++;
     } 
-}
-
-/* decde URIencode */
-/* c & 0xdf means to uppercase c */
-uchar URIdecode(uchar c, uchar c2)
-{
-
-    c = ((c >= 'A' ? ((c & 0xdf) - 'A') + 10 : (c - '0'))) * 16;
-    c += (c2 >= 'A' ? ((c2 & 0xdf) - 'A') + 10 : (c2 - '0'));
-    return c;
 }
 
 

@@ -2,7 +2,7 @@
  * 
  * values.c -
  * 
- * $Id: values.c,v 1.7 1999-08-23 12:37:11 satoru Exp $
+ * $Id: values.c,v 1.8 1999-08-25 03:44:03 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -65,7 +65,7 @@ uchar DATEINDEX[BUFSIZE] = "NMZ.t";
 uchar PHRASE[BUFSIZE] = "NMZ.p";
 uchar PHRASEINDEX[BUFSIZE] = "NMZ.pi";
 
-/* too much global variables */
+/* too many global variables */
 int HListMax = 20;		/* max number of search results */
 int HListWhence = 0;		/* number which beginning of search results */
 int Debug = 0;			/* if debug mode is on: 1 */

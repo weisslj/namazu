@@ -2,7 +2,7 @@
  * 
  * conf.c -
  * 
- * $Id: conf.c,v 1.6 1999-08-23 10:40:52 satoru Exp $
+ * $Id: conf.c,v 1.7 1999-08-25 03:43:59 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -31,45 +31,17 @@
 #include <string.h>
 #include "namazu.h"
 #include "util.h"
+#include "conf.h"
 
-void show_configuration()
-{
-    printf("namazu configurations\n");
-    if (ConfLoaded)
-	printf("configuration file: %s\n", NAMAZU_CONF);
+/************************************************************
+ *
+ * Private functions
+ *
+ ************************************************************/
 
-    printf("\
-  * DEFAULT_DIR: %s\n\
-  * BASE_URI   : %s\n\
-  * LOGGING    : %s\n\
-  * LANGUAGE   : %s\n\
-  * SCORING    : %s\n\
-", DEFAULT_DIR, BASE_URI, Logging ? "ON" : "OFF",
-           Lang, TfIdf ? "TFIDF" : "SIMPLE");
-
-    {
-	REPLACE list = Replace;
-
-	while (list.src) {
-	    printf("  * REPLACE    : \"%s\" -> \"%s\"\n", 
-		   list.src->str, list.dst->str);
-	    list.src = list.src->next;
-	    list.dst = list.dst->next;
-	}
-    }
-    {
-	ALIAS *list = Alias;
-
-	while (list) {
-	    printf("  * ALIAS      : \"%s\" -> \"%s\"\n", 
-		   list->alias, list->real);
-	    list = list->next;
-	}
-    }
-
-    exit(0);
-}
-
+void set_pathname(char*, char*, char*);
+FILE *open_conf_file(char*);
+ALIAS *add_alias(ALIAS*, uchar*, uchar*);
 
 /* change filename in full pathname */
 void set_pathname(char *to, char *o, char *name)
@@ -86,6 +58,31 @@ void set_pathname(char *to, char *o, char *name)
     strcpy(to + i, name);
     return;
 }
+
+ALIAS *add_alias(ALIAS *ptr, uchar *alias, uchar *real)
+{
+    ALIAS *tmp;
+    
+    tmp = malloc(sizeof *tmp);
+    if (tmp == NULL) {
+	 die("add_alias_malloc");
+    }
+    tmp->alias = malloc(strlen(alias) + 1);
+    if (tmp->alias == NULL) {
+	 die("add_alias_malloc");
+    }
+
+    tmp->real = malloc(strlen(real) + 1);
+    if (tmp->alias == NULL) {
+	 die("add_alias_malloc");
+    }
+
+    strcpy(tmp->alias, alias);
+    strcpy(tmp->real, real);
+    tmp->next = ptr;
+    return tmp;
+}
+
 
 /*
  1. current_executing_binary_dir/.namazurc
@@ -129,34 +126,14 @@ FILE *open_conf_file(char *av0)
     return (FILE *) NULL;
 }
 
-ALIAS *add_alias(ALIAS *ptr, uchar *alias, uchar *real)
-{
-    ALIAS *tmp;
-    
-    tmp = malloc(sizeof *tmp);
-    if (tmp == NULL) {
-	 error("add_alias_malloc");
-    }
-    tmp->alias = malloc(strlen(alias) + 1);
-    if (tmp->alias == NULL) {
-	 error("add_alias_malloc");
-    }
-
-    tmp->real = malloc(strlen(real) + 1);
-    if (tmp->alias == NULL) {
-	 error("add_alias_malloc");
-    }
-
-    strcpy(tmp->alias, alias);
-    strcpy(tmp->real, real);
-    tmp->next = ptr;
-    return tmp;
-}
-
-
+/************************************************************
+ *
+ * Public functions
+ *
+ ************************************************************/
 
 /* loading configuration file of Namazu */
-void load_namazu_conf(char *av0)
+void load_conf(char *av0)
 {
     static int loaded = 0;
     FILE *fp;
@@ -218,9 +195,49 @@ void load_namazu_conf(char *av0)
 	} else if (!strncmp(buf, "LANG\t", 5)) {
 	    for (n = 5; buf[n] == '\t'; n++);
 	    strncpy(Lang, &buf[n], 2);
-            initialize_message();
+            init_message();
 	}
     }
     fclose(fp);
     loaded = 1;
 }
+
+void show_conf(void)
+{
+    printf("namazu configurations\n");
+    if (ConfLoaded)
+	printf("configuration file: %s\n", NAMAZU_CONF);
+
+    printf("\
+  * DEFAULT_DIR: %s\n\
+  * BASE_URI   : %s\n\
+  * LOGGING    : %s\n\
+  * LANGUAGE   : %s\n\
+  * SCORING    : %s\n\
+", DEFAULT_DIR, BASE_URI, Logging ? "ON" : "OFF",
+           Lang, TfIdf ? "TFIDF" : "SIMPLE");
+
+    {
+	REPLACE list = Replace;
+
+	while (list.src) {
+	    printf("  * REPLACE    : \"%s\" -> \"%s\"\n", 
+		   list.src->str, list.dst->str);
+	    list.src = list.src->next;
+	    list.dst = list.dst->next;
+	}
+    }
+    {
+	ALIAS *list = Alias;
+
+	while (list) {
+	    printf("  * ALIAS      : \"%s\" -> \"%s\"\n", 
+		   list->alias, list->real);
+	    list = list->next;
+	}
+    }
+
+    exit(0);
+}
+
+

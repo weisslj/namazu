@@ -2,7 +2,7 @@
  * 
  * parser.c -
  * 
- * $Id: parser.c,v 1.3 1999-05-14 04:38:50 satoru Exp $
+ * $Id: parser.c,v 1.4 1999-08-25 03:44:01 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -34,27 +34,26 @@
 #include <stdio.h>
 #include <string.h>
 #include "namazu.h"
-
-/* definitions of operator */
-#define AND_STRING "&"
-#define OR_STRING  "|"
-#define NOT_STRING "!"
-#define LP_STRING  "("
-#define RP_STRING  ")"
-
-/* also acceptable as word since v1.1.1 */
-#define AND_STRING_ALT "and"
-#define OR_STRING_ALT  "or"
-#define NOT_STRING_ALT "not"
-
-#define AND_OP 1
-#define NOT_OP 2
+#include "hlist.h"
+#include "search.h"
+#include "parser.h"
 
 static int Cp = 0; /* variable that saves current position of parser */
 
+/************************************************************
+ *
+ * Private functions
+ *
+ ************************************************************/
+
+int isoperator(uchar*);
+HLIST factor(int*);
+int andop(void);
+HLIST term(void);
+int orop(void);
 
 /* check a character if metacharacter (operator) of not */
-int ismetastring(uchar * c)
+int isoperator(uchar * c)
 {
     if ((!strcmp(c, AND_STRING)) ||
 	(!strcmp(c, AND_STRING_ALT)) ||
@@ -88,7 +87,7 @@ HLIST factor(int *ignore)
             if (!strcmp(KeyItem[Cp], RP_STRING))
                 Cp++;
             break;
-        } else if (!ismetastring(KeyItem[Cp])) {
+        } else if (!isoperator(KeyItem[Cp])) {
             val = do_search(KeyItem[Cp], val);
             /*  MSG_TOO_MUCH_MATCH;
                 MSG_TOO_MUCH_HIT;  case */
@@ -122,7 +121,7 @@ int andop(void)
     }
     if (!strcmp(KeyItem[Cp], LP_STRING))
 	return AND_OP;
-    if (!ismetastring(KeyItem[Cp]))
+    if (!isoperator(KeyItem[Cp]))
 	return AND_OP;
     return 0;
 }
@@ -158,7 +157,14 @@ int orop(void)
     return 0;
 }
 
-HLIST expr()
+
+/************************************************************
+ *
+ * Public functions
+ *
+ ************************************************************/
+
+HLIST expr(void)
 {
     HLIST left, right;
 
@@ -170,7 +176,7 @@ HLIST expr()
     return left;
 }
 
-void initialize_parser(void)
+void init_parser(void)
 {
     Cp = 0;
 }

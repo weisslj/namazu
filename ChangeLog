@@ -1,3 +1,8 @@
+1999-08-26  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* Makefile.am: Add an CLEANFILES entry.
+	* src/{clnmz.in,rvnmz.in,vfnmz.in}: Removed files.
+	
 1999-08-25  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* configure.in, src/Makefile.am, src/wdnmz.in:

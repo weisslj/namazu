@@ -6,6 +6,10 @@ EXTRA_DIRS = lib filter template
 # EXTRA_DIRS = contrib doc lib misc
 SUBDIRS = src
 
+CLEANFILES = lib/conf.pl src/mknmz.pl \
+	     filter/gzip.pl filter/compress.pl filter/man.pl filter/rfc.pl \
+	     filter/bzip2.pl filter/msword.pl namazu.spec
+
 pkgdatadir = @datadir@/@PACKAGE@/@VERSION@
 
 install-data-local:

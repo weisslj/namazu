@@ -1,15 +1,16 @@
 ## Process this file with automake to produce Makefile.in
 
+@SET_MAKE@
 AUTOMAKE_OPTIONS = no-dependencies
 
-tknamazudir = $(pkgdatadir)/tknamazu
+pkgdatadir = @datadir@/@PACKAGE@
 
 bin_SCRIPTS = tknamazu
-tknamazu_DATA = tknamazu.hlp tknamazu.ppm mini-tknamazu.xpm
+pkgdata_DATA = tknamazu.hlp tknamazu.ppm mini-tknamazu.xpm
 
-CLEANFILES = tknamazu.tcl
+CLEANFILES = tknamazu
 
-EXTRA_DIST = README.tknamazu $(tknamazu_DATA)
+EXTRA_DIST = $(pkgdata_DATA)
 
 tknamazu: tknamazu.tcl
 	sed -e 's!%BINDIR%!$(bindir)!g' \

@@ -76,7 +76,6 @@ PACKAGE = @PACKAGE@
 PERL = @PERL@
 TEST_MODE = @TEST_MODE@
 TKNAMAZU = @TKNAMAZU@
-TK_LANGUAGE = @TK_LANGUAGE@
 VERSION = @VERSION@
 WISH = @WISH@
 ZCAT = @ZCAT@
@@ -87,7 +86,7 @@ LIBS = -lm
 bin_PROGRAMS = namazu
 bin_SCRIPTS = gcnmz mailutime mknmz gtnmz
 
-CLEANFILES = mknmz.pl
+CLEANFILES = mknmz
 
 confdir = $(pkgdatadir)/conf
 libdir = $(pkgdatadir)/lib
@@ -131,7 +130,7 @@ mknmz.pl.in
 
 DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
 
-TAR = tar
+TAR = gtar
 GZIP_ENV = --best
 SOURCES = $(namazu_SOURCES)
 OBJECTS = $(namazu_OBJECTS)
@@ -265,7 +264,7 @@ distdir: $(DISTFILES)
 	@for file in $(DISTFILES); do \
 	  d=$(srcdir); \
 	  if test -d $$d/$$file; then \
-	    cp -pr $$d/$$file $(distdir)/$$file; \
+	    cp -pr $$/$$file $(distdir)/$$file; \
 	  else \
 	    test -f $(distdir)/$$file \
 	    || ln $$d/$$file $(distdir)/$$file 2> /dev/null \

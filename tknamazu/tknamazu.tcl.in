@@ -18,10 +18,10 @@
 #                 98/06/05      1.07            kinput widget, man,info bug fix
 #                 98/06/15      1.10            for Namazu 1.2.0
 #                 98/06/22      1.11            manpath bug fix
-#                 99/08/31	1.12		autoconfize
+#                 99/08/31      1.12            autoconf/automakize
 #
 #
-global version; set version "1.12"
+global version; set version "@VERSION@"
 
 
 ################ Evaluation and Initialize items
@@ -45,7 +45,7 @@ set conf(HEIGHT) {20}
 set conf(WIDGETFONT) {-misc-Fixed-Medium-R-Normal-*-*-120-*-*-*-*-*-*}
 set conf(TEXTFONT) {-misc-Fixed-Medium-R-Normal-*-*-120-*-*-*-*-*-*}
 set conf(WIDGETCOLOR) {gray90}
-set conf(LANGUAGE) {@TK_LANGUAGE@}
+set conf(LANGUAGE) {JAPANESE}
 set conf(OPTIONS) {}
 set conf(NMZCONF) {}
 set conf(DATABASES) {}

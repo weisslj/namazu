@@ -1,0 +1,11 @@
+1999-09-07  Ryuji Abe <raeva@t3.rim.or.jp>
+
+	* README.tknamazu: Renamed README.
+	* AUTHORS: New File.
+	* AUTHORS, COPYING, ChangeLog, INSTALL, NEWS: New Files. 
+	* aclocal.m4, configure.in, configure: New Files.
+	* Makefile.am(pkgdatadir): Used instead of tknamazudir. 
+	(pkgdata_DATA): Used instead of tknamazu_DATA.
+	(CLEANFILES): Only tknamazu.
+	* tknamazu.tcl.in(version): Set by configure.
+	(LANGUAGE): Set JAPANESE by default.

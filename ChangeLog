@@ -1,3 +1,22 @@
+1999-09-07  Ryuji Abe <raeva@t3.rim.or.jp>
+
+	* configure.in: Using AC_CONFIG_SUBDIRS macro for tknamazu configuration.
+
+	* src/Makefile.am(CLEANFILES): Only mknmz.
+
+	* tknamazu/README.tknamazu: Renamed README.
+
+	* tknamazu/ChangeLog: New File.
+
+	* tknamazu/AUTHORS, COPYING, ChangeLog, INSTALL, NEWS: New Files. 
+
+	* tknamazu/aclocal.m4, configure.in, configure: New Files.
+
+	* tknamazu/Makefile.am: See tknamazu/ChangeLog.
+
+	* tknamazu/tknamazu.tcl.in: See tknamazu/ChangeLog.
+
+
 1999-09-07  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* configure.in (AM_INIT_AUTOMAKE): Change a version number to 1.9.3.

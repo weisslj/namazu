@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.96 2004-03-28 00:37:19 opengl2772 Exp $
+ * $Id: search.c,v 1.97 2004-04-04 15:32:39 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2003 Namazu Project All rights reserved.
@@ -399,12 +399,14 @@ open_phrase_index_files(FILE **phrase, FILE **phrase_index)
  * FIXME: this function is too long and difficult to understand. (but works)
  */
 static NmzResult 
-do_phrase_search(const char *key, NmzResult val)
+do_phrase_search(const char *key, NmzResult src)
 {
     int i, h = 0;
     char *p, tmpkey[BUFSIZE] = "", *words[QUERY_TOKEN_MAX + 1], *prevword = NULL;
     FILE *phrase, *phrase_index;
     struct nmz_hitnumlist *pr_hitnum = NULL; /* phrase hitnum */
+    /* FIXME: very ad hoc.(for OpenBSD) */
+    NmzResult val = src;
 
     strncpy(tmpkey, key, BUFSIZE - 1);
     p = tmpkey;
@@ -1078,10 +1080,12 @@ nmz_search(const char *query)
 
 
 NmzResult 
-nmz_do_searching(const char *key, NmzResult val)
+nmz_do_searching(const char *key, NmzResult src)
 {
     enum nmz_searchmethod mode;
     char tmpkey[BUFSIZE] = "";
+    /* FIXME: very ad hoc.(for OpenBSD) */
+    NmzResult val = src;
 
     strncpy(tmpkey, key, BUFSIZE - 1);
 

@@ -1,6 +1,10 @@
+2004-04-05  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * nmz/search.c: very ad hoc.(for OpenBSD)
+
 2004-04-03  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
-        * src/rcfiles.c (load_rcfiles): Environment variable It corresponds 
+        * src/rcfile.c (load_rcfiles): Environment variable It corresponds 
         to NAMAZUNORC.
 
         * tests/namazu-cgi-9, tests/Makefile.am: Likewise.
@@ -8703,4 +8707,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1142 2004-04-03 07:16:44 opengl2772 Exp $
+$Id: ChangeLog,v 1.1143 2004-04-04 15:32:38 opengl2772 Exp $

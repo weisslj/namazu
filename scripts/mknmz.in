@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.105 2002-03-15 08:36:16 knok Exp $
+# $Id: mknmz.in,v 1.106 2002-04-01 13:21:15 takesako Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -726,7 +726,8 @@ sub load_document ($$$$\%) {
     {
 	$shelter_cfile = $cfile;
 	$cfile = util::tmpnam("NMZ.win32");
-        copy($shelter_cfile, $cfile);
+	unlink $cfile if (-e $cfile);
+	copy($shelter_cfile, $cfile);
     }
 
     my $file_size;

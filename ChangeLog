@@ -1,3 +1,9 @@
+2002-04-01  Yoshinori TAKESAKO  <takesako@namazu.org>
+
+	* scripts/mknmz.in (load_document): Delete NMZ.win32.tmp file 
+	when this file exists at the time of a copy.
+	Thanks to tsubouchi (namazu-bugs-ja#131).
+
 2002-03-29  Ryuji Abe  <rug@namazu.org>
 
 	* configure.in (LTVERSION): Set 6:0:3.
@@ -7512,4 +7518,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.946 2002-03-29 08:59:46 rug Exp $
+$Id: ChangeLog,v 1.947 2002-04-01 13:21:15 takesako Exp $

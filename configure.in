@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.152 2003-02-27 10:04:47 knok Exp $
+dnl $Id: configure.in,v 1.153 2003-05-13 07:55:03 rug Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -79,7 +79,7 @@ AM_PROG_LIBTOOL
 #   change to C+1:0:0
 # - If the interface is the same as the previous version, change to C:R+1:A
 
-LTVERSION="7:0:4"
+LTVERSION="7:0:0"
 AC_SUBST(LTVERSION)
 
 dnl *

@@ -1,3 +1,8 @@
+2003-05-13  Ryuji Abe  <rug@namazu.org>
+
+	* configure.in (LTVERSION): Set 7:0:0 because libnmz
+	binary compatibility has already been broken.
+
 2003-04-30  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * filter/html.pl: The extraction portions of
@@ -7919,4 +7924,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1019 2003-04-29 19:11:14 opengl2772 Exp $
+$Id: ChangeLog,v 1.1020 2003-05-13 07:55:02 rug Exp $

@@ -29,7 +29,7 @@ DEFS = -DLOCALEDIR=\"$(localedir)\" \
        -DOPT_INDEXDIR=\"$(indexdir)\" \
        @DEFS@
 INCLUDES  = -I.. -I../intl -I../lib -I../nmz
-LDADD = @INTLLIBS@ ../lib/libnmzut.a $(top_srcdir)/nmz/libnmz.la
+LDADD = @INTLLIBS@ $(top_srcdir)/nmz/libnmz.la  ../lib/libnmzut.a 
 
 namazu_SOURCES = cgi.c form.c \
 		 namazu.c output.c \

@@ -1,3 +1,18 @@
+1999-11-14  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* src/Makefile.am (LDADD): Change order to fix a problem on make.
+	[namazu-dev 822]
+
+1999-11-13  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* src/cgi.c (decode_uri): Moved from nmz/util.[ch].
+	
+	* nmz/util.[ch] (decode_uri): Moved to src/cgi.[ch].
+
+	* nmz/idxname.c (add_index): Reindented.
+
+	* nmz/var.h: Abolish *ScriptName, *QueryString, *ContentLength.
+
 1999-11-12  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* acinclude.m4: Fix lispdir related codes to handle $prefix correctly.

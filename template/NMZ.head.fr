@@ -3,7 +3,7 @@
 <html>
 <head>
 <!-- LINK-REV-MADE -->
-<link rev=made href="mailto:@OPT_ADMIN_EMAIL@">
+<link rev=made href="mailto:foobar@namazu.org">
 <!-- LINK-REV-MADE -->
 <title>Namazu est un moteur de recherche textuel</title>
 <style type="text/css"><!--

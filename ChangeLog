@@ -1,3 +1,8 @@
+2000-09-25  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* po/fr.po: Added some messages.
+	(Contributed by Stephane Legrand.)
+
 2000-09-19  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* configure.in, templates/Makefile.am, templates/*.fr: 
@@ -5970,4 +5975,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.729 2000-09-19 09:03:31 knok Exp $
+$Id: ChangeLog,v 1.730 2000-09-25 06:26:29 knok Exp $

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2000-01-20 11:29+0900\n"
+"POT-Creation-Date: 2000-01-20 12:37+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -201,7 +201,7 @@ msgstr ""
 msgid "Detected type: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:609 scripts/mknmz.pl.in:1111
+#: scripts/mknmz.pl.in:609 scripts/mknmz.pl.in:1112
 msgid "Unsupported data type "
 msgstr ""
 
@@ -217,7 +217,7 @@ msgstr ""
 msgid "Faild to call "
 msgstr ""
 
-#: scripts/mknmz.pl.in:665 scripts/mknmz.pl.in:1268
+#: scripts/mknmz.pl.in:665 scripts/mknmz.pl.in:1269
 msgid "No files to index.\n"
 msgstr ""
 
@@ -286,97 +286,105 @@ msgstr ""
 msgid "lang: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:1104
+#: scripts/mknmz.pl.in:1091
+msgid "Usage: mknmz [options] <target>...\n"
+msgstr ""
+
+#: scripts/mknmz.pl.in:1092
+msgid "Try `mknmz --help' for more information.\n"
+msgstr ""
+
+#: scripts/mknmz.pl.in:1105
 msgid "is 0 size! skipped."
 msgstr ""
 
-#: scripts/mknmz.pl.in:1106
+#: scripts/mknmz.pl.in:1107
 msgid "may be a BINARY file! skipped."
 msgstr ""
 
-#: scripts/mknmz.pl.in:1108
+#: scripts/mknmz.pl.in:1109
 msgid "is too LARGE a text! skipped."
 msgstr ""
 
-#: scripts/mknmz.pl.in:1111
+#: scripts/mknmz.pl.in:1112
 msgid " skipped."
 msgstr ""
 
-#: scripts/mknmz.pl.in:1116
+#: scripts/mknmz.pl.in:1117
 msgid "system error occurred! "
 msgstr ""
 
-#: scripts/mknmz.pl.in:1246
+#: scripts/mknmz.pl.in:1247
 msgid "wanted: "
-msgstr ""
-
-#: scripts/mknmz.pl.in:1340
-msgid ""
-"\n"
-"\n"
-"== found ==\n"
 msgstr ""
 
 #: scripts/mknmz.pl.in:1341
 msgid ""
 "\n"
 "\n"
-"== registered ==\n"
+"== found ==\n"
 msgstr ""
 
 #: scripts/mknmz.pl.in:1342
 msgid ""
 "\n"
 "\n"
-"== overlapped  ==\n"
+"== registered ==\n"
 msgstr ""
 
 #: scripts/mknmz.pl.in:1343
 msgid ""
 "\n"
 "\n"
-"== deleted  ==\n"
+"== overlapped  ==\n"
 msgstr ""
 
 #: scripts/mknmz.pl.in:1344
 msgid ""
 "\n"
 "\n"
-"== updated ==\n"
+"== deleted  ==\n"
 msgstr ""
 
 #: scripts/mknmz.pl.in:1345
 msgid ""
 "\n"
 "\n"
+"== updated ==\n"
+msgstr ""
+
+#: scripts/mknmz.pl.in:1346
+msgid ""
+"\n"
+"\n"
 "== files to index ==\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1369
+#: scripts/mknmz.pl.in:1370
 msgid "## deleted: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:1392
+#: scripts/mknmz.pl.in:1393
 msgid "## indexed: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:1418
+#: scripts/mknmz.pl.in:1419
 msgid "update_field_index: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:1438
+#: scripts/mknmz.pl.in:1439
 msgid "was updated!\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1479
+#: scripts/mknmz.pl.in:1480
 msgid "ERROR: malformed NMZ.r format!\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1680
+#: scripts/mknmz.pl.in:1681
 msgid "doing write_phrase_hash() processing.\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1907
+#: scripts/mknmz.pl.in:1908
 msgid "doing write_index() processing.\n"
 msgstr ""
 

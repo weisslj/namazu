@@ -1,5 +1,5 @@
 # -*- Perl -*-
-# $Id: usage.pl,v 1.9 2000-01-06 10:00:25 satoru Exp $
+# $Id: usage.pl,v 1.10 2000-01-20 03:54:43 satoru Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -23,14 +23,6 @@
 
 package usage;
 require "var.pl";
-
-##
-## Mini usage
-##
-$USAGE_MINI = <<EOFusage;
-Usage: mknmz [options] <target>...
-Try `mknmz --help' for more information.
-EOFusage
 
 ##
 ## Japanese usage (long)

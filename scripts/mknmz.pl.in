@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.11 2000-01-20 02:58:11 satoru Exp $
+# $Id: mknmz.pl.in,v 1.12 2000-01-20 03:54:46 satoru Exp $
 #
 # Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -241,7 +241,7 @@ sub load_modules () {
     require "seed.pl" || die "unable to require \"seed.pl\"\n";
 
     @Seed = seed::init();
-    textdomain('namazu');
+    textdomain('namazu', $LANG);
 
     # Check filter modules
     my @filters = ();
@@ -1088,7 +1088,8 @@ sub show_usage () {
 }
 
 sub show_mini_usage () {
-    print $usage::USAGE_MINI;
+    print _("Usage: mknmz [options] <target>...\n");
+    print _("Try `mknmz --help' for more information.\n");
 }
 
 sub show_version () {
@@ -2028,7 +2029,7 @@ muda($conf::ON_MEMORY_MAX,
      $conf::CHASEN_MORPH, $conf::CHASEN,
      $conf::KAKASI, $var::Opt{'okurigana'},
      $var::Opt{'hiragana'}, $conf::ROBOTS_EXCLUDE_URLS, $conf::DEFAULT_FILE,
-     $conf::HTML_SUFFIX, $usage::USAGE_EN, $usage::USAGE_MINI, 
+     $conf::HTML_SUFFIX, $usage::USAGE_EN, 
      $var::Opt{'noheadabst'}, $usage::VERSION_INFO,
      $var::Opt{'noencodeurl'}, $var::Opt{'htaccessexclude'}, 
      $var::RECURSIVE_ACTIONS, $conf::ROBOTS_EXCLUDE_URIS, 

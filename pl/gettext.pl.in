@@ -6,8 +6,9 @@
 # Copyright (C) 1999, 2000 NOKUBI Takatsugu <knok@daionet.gr.jp>
 
 ## --------------------------------------------------------------- ##
-## The `&textdomain (DOMAIN_NAME)' routine reads the given domain  ##
-## into an associative array %_, able to later translate strings.  ##
+## The `&textdomain (DOMAIN_NAME, LANG)' routine reads the given   ##
+## domain into an associative array %_, able to later translate    ##
+## strings.                                                        ##
 ## --------------------------------------------------------------- ##
 
 sub textdomain
@@ -19,10 +20,12 @@ sub textdomain
 
     %_ = ();
 
-    $language = $ENV{"LANG"};
+    $domain   = $_[0];
+    $language = $_[1];
     return if ! $language;
-    $domain = $_[0];
-    $catalog = "%LOCALEDIR%/$language/LC_MESSAGES/$domain.mo";
+
+    $catalog  = choose_catalog($language, $domain);
+    return if ! $catalog;
 
     open (CATALOG, $catalog) || return;
     sysread (CATALOG, $buffer, (stat CATALOG)[7]);
@@ -55,6 +58,22 @@ sub textdomain
 
 	$_{substr ($buffer, $orig_pointer, $orig_length)}
 	    = substr ($buffer, $trans_pointer, $trans_length);
+    }
+}
+
+sub choose_catalog
+{
+    my ($language, $domain) = @_;
+    
+    while (1) {
+	my $catalog =  "%LOCALEDIR%/$language/LC_MESSAGES/$domain.mo";
+	return $catalog if -f $catalog; # if the catalog file exists.
+
+	# Truncate $language by the following order: 
+        # ja_JP.eucJP -> ja_JP -> ja
+	unless ($language =~ s/[\._][^\._]+$//) {
+	    return undef;
+	}
     }
 }
 

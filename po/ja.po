@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: namazu 2.0\n"
-"POT-Creation-Date: 2000-01-20 10:55+0900\n"
+"POT-Creation-Date: 2000-01-20 12:22+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>\n"
 "Language-Team: Japanese <satoru-t@is.aist-nara.ac.jp>\n"
@@ -239,7 +239,7 @@ msgstr "load_document 実行後: "
 msgid "Detected type: "
 msgstr "検出されたタイプ: "
 
-#: scripts/mknmz.pl.in:609 scripts/mknmz.pl.in:1111
+#: scripts/mknmz.pl.in:609 scripts/mknmz.pl.in:1112
 msgid "Unsupported data type "
 msgstr "未サポートのデータタイプ "
 
@@ -255,7 +255,7 @@ msgstr "以下のモジュールが require できません "
 msgid "Faild to call "
 msgstr "呼び出しに失敗 "
 
-#: scripts/mknmz.pl.in:665 scripts/mknmz.pl.in:1268
+#: scripts/mknmz.pl.in:665 scripts/mknmz.pl.in:1269
 msgid "No files to index.\n"
 msgstr "インデックスすべきファイルはありません。\n"
 
@@ -332,82 +332,90 @@ msgstr ""
 msgid "lang: "
 msgstr "言語: "
 
-#: scripts/mknmz.pl.in:1104
+#: scripts/mknmz.pl.in:1091
+msgid "Usage: mknmz [options] <target>...\n"
+msgstr "使い方: mknmz [オプション] <検索式> [インデックス]...\n"
+
+#: scripts/mknmz.pl.in:1092
+msgid "Try `mknmz --help' for more information.\n"
+msgstr "`mknmz --help' でより詳しい情報が表示されます\n"
+
+#: scripts/mknmz.pl.in:1105
 msgid "is 0 size! skipped."
 msgstr "ファイルサイズが 0 なのでスキップします。"
 
-#: scripts/mknmz.pl.in:1106
+#: scripts/mknmz.pl.in:1107
 msgid "may be a BINARY file! skipped."
 msgstr "ファイルがバイナリと思われるのでスキップします。"
 
-#: scripts/mknmz.pl.in:1108
+#: scripts/mknmz.pl.in:1109
 msgid "is too LARGE a text! skipped."
 msgstr "ファイルが巨大なのでスキップします。"
 
-#: scripts/mknmz.pl.in:1111
+#: scripts/mknmz.pl.in:1112
 msgid " skipped."
 msgstr " スキップします。"
 
-#: scripts/mknmz.pl.in:1116
+#: scripts/mknmz.pl.in:1117
 #, fuzzy
 msgid "system error occurred! "
 msgstr "致命的なエラー"
 
-#: scripts/mknmz.pl.in:1246
+#: scripts/mknmz.pl.in:1247
 msgid "wanted: "
 msgstr "wanted: "
-
-#: scripts/mknmz.pl.in:1340
-msgid ""
-"\n"
-"\n"
-"== found ==\n"
-msgstr ""
-"\n"
-"\n"
-"== found ==\n"
 
 #: scripts/mknmz.pl.in:1341
 msgid ""
 "\n"
 "\n"
-"== registered ==\n"
+"== found ==\n"
 msgstr ""
 "\n"
 "\n"
-"== registered ==\n"
+"== found ==\n"
 
 #: scripts/mknmz.pl.in:1342
 msgid ""
 "\n"
 "\n"
-"== overlapped  ==\n"
+"== registered ==\n"
 msgstr ""
 "\n"
 "\n"
-"== overlapped  ==\n"
+"== registered ==\n"
 
 #: scripts/mknmz.pl.in:1343
 msgid ""
 "\n"
 "\n"
-"== deleted  ==\n"
+"== overlapped  ==\n"
 msgstr ""
 "\n"
 "\n"
-"== deleted  ==\n"
+"== overlapped  ==\n"
 
 #: scripts/mknmz.pl.in:1344
 msgid ""
 "\n"
 "\n"
+"== deleted  ==\n"
+msgstr ""
+"\n"
+"\n"
+"== deleted  ==\n"
+
+#: scripts/mknmz.pl.in:1345
+msgid ""
+"\n"
+"\n"
 "== updated ==\n"
 msgstr ""
 "\n"
 "\n"
 "== updated ==\n"
 
-#: scripts/mknmz.pl.in:1345
+#: scripts/mknmz.pl.in:1346
 msgid ""
 "\n"
 "\n"
@@ -417,32 +425,32 @@ msgstr ""
 "\n"
 "== files to index ==\n"
 
-#: scripts/mknmz.pl.in:1369
+#: scripts/mknmz.pl.in:1370
 msgid "## deleted: "
 msgstr "## deleted: "
 
-#: scripts/mknmz.pl.in:1392
+#: scripts/mknmz.pl.in:1393
 msgid "## indexed: "
 msgstr "## indexed: "
 
-#: scripts/mknmz.pl.in:1418
+#: scripts/mknmz.pl.in:1419
 #, fuzzy
 msgid "update_field_index: "
 msgstr "フィールド検索用のインデックスが開けませんでした"
 
-#: scripts/mknmz.pl.in:1438
+#: scripts/mknmz.pl.in:1439
 msgid "was updated!\n"
 msgstr "ファイルは更新されています。\n"
 
-#: scripts/mknmz.pl.in:1479
+#: scripts/mknmz.pl.in:1480
 msgid "ERROR: malformed NMZ.r format!\n"
 msgstr "エラー: NMZ.r が無効な形式です。\n"
 
-#: scripts/mknmz.pl.in:1680
+#: scripts/mknmz.pl.in:1681
 msgid "doing write_phrase_hash() processing.\n"
 msgstr "write_phrase_hash() 実行.\n"
 
-#: scripts/mknmz.pl.in:1907
+#: scripts/mknmz.pl.in:1908
 msgid "doing write_index() processing.\n"
 msgstr "write_index() 実行.\n"
 
@@ -504,6 +512,12 @@ msgstr "循環しているシンボリックリンクを発見 "
 #, fuzzy
 msgid " skipped.\n"
 msgstr " スキップします。"
+
+#, fuzzy
+#~ msgid ""
+#~ "Usage: mknmz [options] <target>...\n"
+#~ "Try `mknmz --help' for more information.);"
+#~ msgstr "`namazu --help' でより詳しい情報が表示されます\n"
 
 #~ msgid ""
 #~ "\t<h2>Error!</h2>\n"

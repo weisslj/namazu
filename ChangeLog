@@ -1,9 +1,13 @@
-2000-01-20  Ryuji Abe  <raeva@t3.rim.or.jp>
-
-	* Makefile.am (COMMON_DIRS): New Variable.
-	(install-data-local): Handled $(COMMON_DIRS), never tknamazu.
-
 2000-01-20  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* scripts/mknmz.pl.in (load_modules): Modify textdomain calling.
+
+	* pl/gettext.pl.in (choose_catalog): New function.
+	(textdomain): Take the second parameter LANG.
+
+	* scripts/mknmz.pl.in (show_mini_usage): gettextized.
+
+	* pl/usage.pl: Remove $USAGE_MINI.
 
 	* scripts/mknmz.pl.in (muda): Add $var::USE_NKF_MODULE.
 
@@ -25,6 +29,11 @@
 	* nmz/Makefile.am (libnmz_la_SOURCES): Remove rcfile.c and rcfile.h.
 
 	* src/Makefile.am (namazu_SOURCES): Add rcfile.c and rcfile.h.
+
+2000-01-20  Ryuji Abe  <raeva@t3.rim.or.jp>
+
+	* Makefile.am (COMMON_DIRS): New Variable.
+	(install-data-local): Handled $(COMMON_DIRS), never tknamazu.
 
 2000-01-19  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 

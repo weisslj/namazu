@@ -22,7 +22,7 @@ ABSOLUTELY NO WARRANTY.
 
 <h2>Table of contents</h2>
 <ul>
-<li><a href="#organization">Namazu organization</a>
+<li><a href="#components">Namazu components</a>
 <li><a href="#mknmz">mknmz command</a>
   <ul>
   <li><a href="#mknmz-option">mknmz's options</a>
@@ -69,49 +69,46 @@ ABSOLUTELY NO WARRANTY.
   </ul>
 </ul>
 
-<h2><a name="organization">Namazu organization</a></h2>
+<h2><a name="components">Namazu components</a></h2>
 
 <p>
-Namazuは全文検索システムです。Namazu はインデックスの作成を
-行う mknmz コマンドと、検索を行う namazuコマンドから構成され
-ています。
+Namazu is a full-text search system. Namazu consists of
+<code>mknmz</code> which creates an index and
+<code>namazu</code> which search the index.
 </p>
 
 <p>
-大量の文書を高速に検索するためには、どの単語がどの文書で使わ
-れているかを記録した索引ファイル (インデックス) をあらかじめ
-作成する必要があります。インデックスはちょうど書籍の索引と似
-ています。
+For searching a great amount of documents quickly, Namazu
+makes an index in advance. The concept of index is just
+similar to an index of book.
 </p>
 
 <p>
-インデックスを作成するには mknmz コマンドを用います。mknmz 
-の引数にインデックス作成の対象とするディレクトリ名を与えます。
-たとえば、 /home/foo/public_html を対象とするなら
-ば
+To make the index, you can use <code>mknmz</code> command
+and specify a target directory as an argument of mknmz. For
+example, you can index documents in /home/foo/public_html by:
 </p>
 
 <p><code>% mknmz</code> /home/foo/public_html
 </p>
 
 <p>
-と実行します。すると、 /home/foo/public_html 以下
-の *.html *.txt といったファイルについて索引づけを行い、
-mknmz を実行したディレクトリに NMZ.* というファイルを作成し
-ます。この NMZ.* ファイルが Namazu のインデックスです。
+Then, documents such as *.html and *.txt in
+/home/foo/public_html are indexed and NMZ.* files are
+created in the directory where you ran mknmz. The NMZ.*
+files are the Namazu index.
 </p>
 
 <p>
-作成されたインデックスに対して検索を行うには
-<code>namazu</code>コマンドを用います。
+To search the created index, you can use <code>namazu</code>
+command. For example:
 </p>
 
-<p><code>% namazu</code> bar
-/home/foo/Namazu/bar</p>
+<p><code>% namazu</code> bar /home/foo/Namazu/bar</p>
 
 <p>
-と実行すれば、/home/foo/Namazu/bar にあるインデック
-スに対してキーワード bar を検索します。
+In this case, you can search the index in 
+/home/foo/Namazu/foobar for the keyword `bar'.
 </p>
 
 
@@ -181,132 +178,125 @@ mknmz を実行したディレクトリに NMZ.* というファイルを作成し
 
 <h3><a name="mknmzrc">mknmzrc settings</a></h3>
 <p>
-mknmzrc および .mknmzrc ではいくつかの設定が行えます。
-mknmz は
+You can configurate mknmz by preparing mknmzrc or .mknmzrf
+file. mknmz load them by the following rule.
 </p>
 
 <ol>
 <li><code>$(sysconfdir)/$(PACKAGE)/mknmzrc</code><br>
-通常は /usr/local/etc/mknmz/mknmzrc
+Usually, /usr/local/etc/mknmz/mknmzrc
 <li>~/.mknmzrc
-<li>-f, --config= オプションで指定した mknmzrc
+<li>file which is specified by -f or --config=FILE option.
 </ol>
 
+
 <p>
-の順で設定ファイルを探して読み込みます。
+At right after installed, sample rcfile is prepared in
+<code>$(sysconfdir)/$(PACKAGE)/mknmzrc-sample</code>. You
+can copy it to <code>$(sysconfdir)/$(PACKAGE)/mknmzrc</code>
+or to ~/.mknmzrc in your home directory to activate it.
 </p>
 
 <p>
-インストール直後の状態では 
-<code>$(sysconfdir)/$(PACKAGE)/mknmzrc-sample</code> という
-サンプルファイルが用意されています。これを 
-<code>$(sysconfdir)/$(PACKAGE)/mknmzrc</code> にコピーする、
-あるいは自分のホームディレクトリに ~/.mknmzrc としてコピーし
-て利用します。
-</p>
-
-<p>
-mknmzrc の設定項目の説明は mknmzrc-sample ファイルにコメント
-として書かれています。
+The settings of mknmzrc are documented in mknmzrc-sample as
+comments.
 </p>
 
 
 <h3><a name="doc-filter">Document filters</a></h3>
 
 <p>
-mknmz は対象ファイルの文書形式を自動で判別して、適切なフィル
-タ処理を行います。たとえば、 HTML文書では &lt;title&gt; の抽
-出や、HTMLタグの除去を行います。この処理は
-<code>$(datadir)/$(PACKAGE)/filter</code> に置かれる文書フィ
-ルタによって行われます。標準で用意されている文書フィルタは次
-の通りです。
+mknmz detects a media type of document and handle the
+document with proper filtering processing. For example, to
+handle an HTML document, mknmz extracts the &lt;title&gt;
+content, removes all HTML elements, and do other proper
+processings. These processings are done by document filters
+in <code>$(datadir)/$(PACKAGE)/filter</code>. The following
+are standard ones which included in Namazu package.
 </p>
 
 <dl>
 <dt>gzip.pl
-<dd>gzipで圧縮されたファイルを扱う<br>
-<dd>必需品: <a href="http://www.gzip.org/">gzip</a> コマンド
-または Compress::Zlib モジュール
+<dd>Handle a gzipped file
+<dd>Requirement: <a href="http://www.gzip.org/">gzip</a>
+command or Compress::Zlib perl module.
 
 <dt>bzip2.pl
-<dd>bzip2で圧縮されたファイルを扱う
-<dd>必需品: <a
+<dd>Handle a bzip2-ed file
+<dd>Requirement: <a
 href="http://sourceware.cygnus.com/bzip2/">bzip2</a> コマン
 ド
 
 <dt>compress.pl
-<dd>compressで圧縮されたファイルを扱う
-<dd>必需品: compressコマンド
+<dd>Handle a compress-ed file.
+<dd>Requirement: compress command.
 
 <dt>hnf.pl
-<dd><a href="http://www.h14m.org/">ハイパー日記システム</a> のファ
-イルを扱う
-<dd>必需品: なし
-<dd>注意: hnf フィルタは特殊。<a
-href="http://www.h14m.org/">Hyper NIKKI System Project</a>か
-ら namazu_for_hns を入手する必要がある
+<dd>Handle a file of <a href="http://www.h14m.org/">Hyper NIKKI System
+Project</a>.
+<dd>Requirement: hnf filter is special. It requires namazu_for_hns
+of <a href="http://www.h14m.org/">Hyper NIKKI System Project</a>.
 
 <dt>html.pl
-<dd>HTML文書を扱う
-<dd>必需品: なし
+<dd>Handle HTML file.
+<dd>Requirement: None
 
 <dt>ichitaro456.pl
-<dd>一太郎 4, 5, 6 のファイルを扱う
-<dd>必需品: <a
+<dd>Handle a file of Ichitaro a Japanese word processor.
+<dd>Requirement: <a
 href="http://www.vector.co.jp/soft/dl/dos/writing/s0013972.html">JSTXT</a>
-<dd>注意: JSTXT
-は Windows用のツールです。
+<dd>Note: JSTXT is a tool for Windows.
 
 <dt>mailnews.pl
-<dd>Mail/News のファイルを扱う
-<dd>必需品: なし
+<dd>Handle a file of Mail/News.
+<dd>Requirement: None
 
 <dt>man.pl
-<dd>man を扱う
-<dd>必需品: nroff, groff, jgroff
-<dd>注意: 日本語の man を扱うには -T nippon に対応した jgroff が必要
+<dd>Handle a man file.
+<dd>Requirement: nroff, groff, jgroff
+<dd>Note: To handle Japanese man, jgroff supporting -T
+nippon is required.
 
 <dt>mhonarc.pl
-<dd>MHonArc のファイルを扱う
-<dd>必需品: なし
+<dd>Handle a <a href="http://www.mhonarc.org/">MHonArc</a> file.
+<dd>Requirement: None
 
 <dt>msword.pl
-<dd>Word文書を扱う
-<dd>必需品: <a href="http://www.wvWare.com/">wvWare</a>, 
+<dd>Handle a Word file.
+<dd>Requirement: <a href="http://www.wvWare.com/">wvWare</a>, 
 <a href="http://www.ff.iij4u.or.jp/~nrt/lv/">lv</a>
 
 <dt>pdf.pl
-<dd>PDFファイルを扱う
-<dd>必需品: <a href="http://www.foolabs.com/xpdf/">xpdf</a>
-に付属の pdftotextコマンド
+<dd>Handle a PDF file.
+<dd>Requirement: pdftotext a part of <a href="http://www.foolabs.com/xpdf/">xpdf</a>.
 
 <dt>rfc.pl
-<dd>RFCのファイルを扱う
-<dd>必需品: なし
+<dd>Handle a RFC file.
+<dd>Requirement: None
 
 <dt>tex.pl
-<dd>TeXのファイルを扱う
-<dd>必需品: <a
+<dd>Handle a TeX file.
+<dd>Requirement: <a
 href="http://www.cs.purdue.edu/homes/trinkle/detex/">detex</a>
 </dl>
 
 <p>
-ole から始まる文書フィルタは Windows専用です。OLEの文書フィ
-ルタを用いるには mknmz を --ole オプションつけて実行します。
+Filters whose prefix is `ole' are for Windows. You can
+enable them by running mknmz with --ole option.
 </p>
 
 <dl>
 <dt>oleexcel.pl
-<dd>Excelのファイルを扱う
-<dd>必需品: Excel
+<dd>Handle an Excel file.
+<dd>Requirement: Excel
 
 <dt>olemsword.pl
-<dd>Word文書を扱う
-<dd>必需品: Word
+<dd>Handle a Word file.
+<dd>Requirement: Word
 
 <dt>olepowerpoint.pl
-<dd>Power Point のファイルを扱う
-<dd>必需品: Power Point
+<dd>Handle a Power Point file.
+<dd>Requirement: Power Point
 </dl>
 
 
@@ -348,78 +338,69 @@ ole から始まる文書フィルタは Windows専用です。OLEの文書フィ
 <!-- namazu-option -->
 
 <p>
-コマンド行引数の <code>[index dir]...</code> に検索対象のイ
-ンデックスを指定します。インデックスの指定を省略すると、<a
-href="#default-index">基本インデックス</a>が検索対象となりま
-す。
+To specify one or more indecies, you can specify them as
+<code>[index dir]...</code>. namazu uses <a
+href="#default-index">Default Index</a> as the targets.
 </p>
 
 <p>
-また、 +foo, +bar のように頭に <code>+</code> 記号をつけると、
-基本インデックスからの相対パスでインデックスを指定できます。
+Also, you can specify the index by a relative path from
+the default index with `+' sign. e.g., +foo, +bar.
 </p>
 
 <p>
-コマンド行から実行したときは標準では質素なテキストとして検索
-結果を出力します。HTML で出力する場合には -h オプションを指
-定します。
+By default, namazu prints search results in a simple
+format. To print in HTML, you can specify -h option.
 </p>
 
 <p>
-検索結果の 21 件目から 40 件目までを表示させたいときは -n 20
--w 20 と指定します。-w の値が 21 でないところに注意してくだ
-さい。
+To print search results from 21 to 40, you can specify -n 20
+-w 20. Note: value of -w is not 21.
 </p>
 
 <h3><a name="namazurc">namazurc settings</a></h3>
 <p>
-namazurc および .namazurc ではいくつかの設定が行えます。
-namazu は
+You can configurate mknmz by preparing mknmzrc or .mknmzrf
+file. mknmz load them by the following rule.
 </p>
 
 <ol>
 <li><code>$(sysconfdir)/$(PACKAGE)/namazurc</code><br>
-通常は /usr/local/etc/namazu/namazurc
+Usually, /usr/local/etc/mknmz/namazurc
 <li>~/.namazurc
-<li>-f, --config= オプションで指定した namazurc
+<li>file which is specified by -f or --config=FILE option.
 </ol>
 
 <p>
-の順で設定ファイルを探して読み込みます。
+At right after installed, sample rcfile is prepared in
+<code>$(sysconfdir)/$(PACKAGE)/namazurc-sample</code>. You
+can copy it to <code>$(sysconfdir)/$(PACKAGE)/namazurc</code>
+or to ~/.namazurc in your home directory to activate it.
 </p>
 
 <p>
-インストール直後の状態では 
-<code>$(sysconfdir)/$(PACKAGE)/namazurc-sample</code> という
-サンプルファイルが用意されています。これを 
-<code>$(sysconfdir)/$(PACKAGE)/namazurc</code> にコピーする、
-あるいは自分のホームディレクトリに ~/.namazurc としてコピー
-して利用します。
-</p>
-
-<p>
-namazurc の設定項目の説明は namazurc-sample ファイルにコメント
-として書かれています。
+The settings of namazurc are documented in namazurc-sample as
+comments.
 </p>
 
 <h3><a name="default-index">Default Index</a></h3>
 
 <p>
-基本インデックスは、検索時にインデックスの指定が省略されたと
-きに検索対象となるインデックスです。基本インデックスは次の規
-則に従います。
+The default index is the index which is used by default.
+The defualt index follow the folloing rules.
 </p>
 
 <ul>
-<li>標準は $(localstatedir)/$(PACKAGE)/index<br>
-通常は /usr/local/var/namazu/index)
-<li><a href="#namazurc">namazurc</a> の Index指示で変更可能
+<li>Basic is $(localstatedir)/$(PACKAGE)/index<br>
+Usually, /usr/local/var/namazu/index)
+<li>Directory which is specified by Index directive of <a
+href="#namazurc">namazurc</a>. 
 </ul>
 
 <p>
-CGI (<a href="#cgi">namazu.cgi</a>) では、<a
-href="#form-idxname">インデックスを選択する</a>際に基本イン
-デックスからの相対パスで指定します。
+In CGI (<a href="#cgi">namazu.cgi</a>), target indices must
+be specified by a relative path from the default index. See
+<a href="#form-idxname">selecting an index</a> for details.
 </p>
 
 <h2><a name="cgi">namazu.cgi</a></h2>
@@ -911,7 +892,7 @@ You must choose the latter with Tkanamzu or namazu.el.
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: manual.html,v 1.7 2000-02-19 08:50:12 satoru Exp $
+$Id: manual.html,v 1.8 2000-02-20 03:05:21 satoru Exp $
 </div>
 <address>
 developers@namazu.org

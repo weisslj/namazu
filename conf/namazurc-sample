@@ -16,7 +16,7 @@
 #         - Replace a URI string in search results.
 #           Specify TARGET REPLACEMENT by regular expression.
 #           You can caputure strings by surrounding them with `(' and `)'
-#           and use them later for backreferences with \1, \2, \3,... \9.
+#           and use them later as backreferences by \1, \2, \3,... \9.
 #
 #           e.g.,
 #

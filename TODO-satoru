@@ -1,12 +1,7 @@
-$Id: TODO-satoru,v 1.18 2000-01-27 09:50:11 satoru Exp $
+$Id: TODO-satoru,v 1.19 2000-01-27 09:55:58 satoru Exp $
 やるべきことの備忘録 by 高林
 
 手っ取り早く片づける仕事
-
-  * src/em.h でハードコーディングしている
-      #define EM_START_TAG "<strong class=\"keyword\">"
-      #define EM_END_TAG   "</strong>"
-    を namazurc で設定可能にする
 
   * nmz/libnamazu.c を廃止 (中の関数は適切なファイルに移動する)
 

@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.70 2002-03-06 06:21:18 knok Exp $
+ * $Id: form.c,v 1.71 2002-09-20 07:25:33 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -479,9 +479,14 @@ print_headfoot(const char * fname, const char * query, const char *subquery)
 	     * the problem occurs if JIS X 208 characters in element 
 	     */
             q = (char *)strchr(p, (int)'>');
-            fputs("<", stdout);
-            handle_tag(p + 1, q - 1, query, name, subquery);
-            fputs(">", stdout);
+	    fputs("<", stdout);
+	    if (*(q-1) != '/') {
+		handle_tag(p + 1, q - 1, query, name, subquery);
+		fputs(">", stdout);
+	    } else {		/* for XHTML */
+		handle_tag(p + 1, q - 2, query, name, subquery);
+		fputs("/>", stdout);
+	    }
             p = q;
         } else {
             if ((strncmp(p, "\033$", 2) == 0)

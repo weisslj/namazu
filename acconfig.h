@@ -6,12 +6,14 @@
  */
 #undef OPT_SCORING
 
-/* Define if you want to fix the bug of MSIE4.x for Macintosh :-( */
+/*
+ *  Define if you want to fix the bug of MSIE4.x for Macintosh :-( 
+ */
 #undef MSIE4MACFIX
 
+#undef COPYRIGHT
 #undef ENABLE_NLS
 #undef HAVE_CATGETS
 #undef HAVE_GETTEXT
 #undef HAVE_LC_MESSAGES
 #undef HAVE_STPCPY
-      

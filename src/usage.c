@@ -2,7 +2,7 @@
  * 
  * usage.c -
  * 
- * $Id: usage.c,v 1.19 2000-01-27 09:50:17 satoru Exp $
+ * $Id: usage.c,v 1.20 2000-01-27 12:51:04 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -47,7 +47,6 @@
 void 
 show_usage(void)
 {
-    char buf[BUFSIZE * 4];
     char *usage = _("\
 namazu %s, a search program of Namazu.\n\n\
 Usage: namazu [options] <query> [index]... \n\
@@ -94,7 +93,7 @@ void
 show_version(void)
 {
     printf("namazu of Namazu %s\n", VERSION);
-    printf("Copyright (C) 1997-2000 Satoru Takabayashi All rights reserved.\n\n");
+    printf("%s\n", COPYRIGHT);
     printf("This is free software; you can redistribute it and/or modify\n");
     printf("it under the terms of the GNU General Public License as published by\n");
     printf("the Free Software Foundation; either version 2, or (at your option)\n");

@@ -1,5 +1,5 @@
 # -*- Perl -*-
-# $Id: var.pl.in,v 1.3 2000-01-06 10:01:56 satoru Exp $
+# $Id: var.pl.in,v 1.4 2000-01-27 12:51:01 satoru Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -29,7 +29,7 @@ package var;
 ##
 
 $VERSION = "@VERSION@";
-$COPYRIGHT = "Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.";
+$COPYRIGHT = "@COPYRIGHT@";
 
 ################################################################
 ##

@@ -8,6 +8,14 @@
 
 2000-01-27  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* pl/var.pl.in: Set $COPYRIGHT to "@COPYRIGHT@".
+
+	* src/usage.c (show_version): Use COPYRIGHT macro.
+
+	* configure.in: Define COPYRIGHT.
+
+	* acconfig.h: Add #undef COPYRIGHT
+
 	* src/output.c (set_emphasis_tags): New function.
 
 	* src/rcfile.c (process_rc_emphasistags): New function.

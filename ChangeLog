@@ -22,6 +22,9 @@
 
 1999-08-31  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* conf/Makefile.am (mknmz.conf-dist): Modify regex for perl to
+	treat %, @ prefixes as well as $.
+	
 	* Makefile.am (EXTRA_DIST): Add namazu.spec.
 	
 	* Makefile.am (DIST_SUBDIRS): Remove File-MMagic because it causes

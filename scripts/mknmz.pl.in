@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.6 2000-01-05 07:18:00 knok Exp $
+# $Id: mknmz.pl.in,v 1.7 2000-01-06 09:57:01 knok Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -230,6 +230,7 @@ sub load_modules () {
     unshift @INC, $FILTERDIR;
     unshift @INC, "../pl";
 
+    require "gettext.pl" || die "unable to require \"gettext.pl\"\n";
     require "var.pl" || die "unable to require \"var.pl\"\n";
     require "conf.pl" || die "unable to require \"conf.pl\"\n";
     require "util.pl" || die "unable to require \"util.pl\"\n";
@@ -238,7 +239,6 @@ sub load_modules () {
     require "find.pl" || die "unable to require \"find.pl\"\n";
     require "wakati.pl" || die "unable to require \"wakati.pl\"\n";
     require "seed.pl" || die "unable to require \"seed.pl\"\n";
-    require "gettext.pl" || die "unable to require \"gettext.pl\"\n";
 
     @Seed = seed::init();
 

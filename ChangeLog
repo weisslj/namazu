@@ -1,3 +1,7 @@
+2000-01-06  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* scripts/mknmz.pl.in: Moved location of requiring gettext.pl.
+
 2000-01-06  Ryuji Abe <raeva@t3.rim.or.jp>
 
 	* acinclude.m4: Removed libtool related macros.

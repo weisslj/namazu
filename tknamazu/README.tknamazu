@@ -16,7 +16,7 @@
     .wintknmzrc         : tknamazu の設定例(for Windows)
     Makefile.W32        : make ファイル(for Windows+cygwin)
     tknamazu.tcl        : プログラム本体
-    tknamazu.xpm        : tknamazu のロゴ
+    tknamazu.ppm        : tknamazu のロゴ
     tknamazu.hlp        : tknamazu のヘルプファイル
     tknamazu.sample     : Unix用 tknamazu 起動ファイルサンプル
     tknamazu.bat.sample : Windows用 tknamazu 起動ファイルサンプル
@@ -75,11 +75,11 @@
      Makefile を使わない(使えない)場合は archive を適当な所に
     展開してください。 /usr/local/namazu の下あたりが無難かも知れません。
      Unix の方は tknamazu.sample から tknamazu を作り path の通っている所に
-    置いて tknamazu の中にある TKNMZPATH を tknamazu.tcl と tknamazu.xpm の
+    置いて tknamazu の中にある TKNMZPATH を tknamazu.tcl と tknamazu.ppm の
     ある directory に設定してください。
      Windows の方は tknamazu.bat.sample から tknamazu.bat を作り path の
     通っている所に置いて tknamazu.bat の中にある TKNMZPATH を tknamazu.tcl 
-    と tknamazu.xpm のある directory に設定してください。
+    と tknamazu.ppm のある directory に設定してください。
 
 4.著作権及び転載について
 

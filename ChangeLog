@@ -1,3 +1,15 @@
+1999-09-01  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+ 	* tknamazu/{Makefile.am,README.tknamazu}:
+	s/tknamazu.xpm/tknamazu.ppm/g
+	
+	* tknamazu/tknamazu.tcl.in: Use .ppm instead of .xpm
+
+	* tknamazu/tknamazu.ppm: New file.
+	
+	* tknamazu/tknamazu.xpm: Removed.
+
+
 1999-08-31  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* lib/wakati.pm: Fix `tmpname' function name typo.

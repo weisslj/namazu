@@ -4,7 +4,7 @@ AUTOMAKE_OPTIONS = no-dependencies
 tknamazudir = @pkgdatadir@/tknamazu
 
 bin_SCRIPTS = tknamazu
-tknamazu_DATA = tknamazu.hlp tknamazu.xpm mini-tknamazu.xpm
+tknamazu_DATA = tknamazu.hlp tknamazu.ppm mini-tknamazu.xpm
 
 CLEANFILES = tknamazu.tcl
 

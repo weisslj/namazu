@@ -2,10 +2,10 @@
  * 
  * re.c -
  * 
- * $Id: re.c,v 1.33 2001-09-02 08:25:33 rug Exp $
+ * $Id: re.c,v 1.34 2001-12-11 09:56:00 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000 Namazu Project All rights reserved.
+ * Copyright (C) 2000,2001 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -81,7 +81,7 @@ nmz_regex_grep(const char *expr, FILE *fp, const char *field, int field_mode)
     rp->buffer = 0;
     rp->allocated = 0;
     
-    strcpy(tmpexpr, expr); /* save orig_expr */
+    strncpy(tmpexpr, expr, BUFSIZE); /* save orig_expr */
     nmz_debug_printf("REGEX: '%s'\n", tmpexpr);
 
     if (field_mode) {

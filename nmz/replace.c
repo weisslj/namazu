@@ -2,10 +2,10 @@
  * 
  * replace.c - 
  *
- * $Id: replace.c,v 1.16 2001-09-02 08:25:33 rug Exp $
+ * $Id: replace.c,v 1.17 2001-12-11 09:56:00 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000 Namazu Project All rights reserved.
+ * Copyright (C) 2000,2001 Namazu Project All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
@@ -88,7 +88,7 @@ nmz_replace_uri(char *uri)
     struct nmz_replace *list = replaces;
     int is_regex_matching = 0;
 
-    strcpy(tmp, uri);
+    strncpy(tmp, uri, BUFSIZE);
 
     while (list) {
 	struct re_registers regs;
@@ -113,7 +113,7 @@ nmz_replace_uri(char *uri)
 	     * string substitution.
 	     */
 	    is_regex_matching = 1;
-	    for (i = j = 0; subst[i]; i++) {
+	    for (i = j = 0; subst[i] && j < BUFSIZE; i++) {
 		/* I scans through RHS of sed-style substitution.
 		 * j points at the string being built.
 		 */
@@ -154,8 +154,9 @@ nmz_replace_uri(char *uri)
 		 * concatenated to the end of the resulting string.
 		 */
 		repl[j] = 0;
-		strcpy(uri, repl);
-		strcpy(uri + j, tmp + mlen);
+		strncpy(uri, repl, BUFSIZE);
+		strncpy(uri + j, tmp + mlen,
+			BUFSIZE - (j + strlen(tmp + mlen)));
 	    }
 	    nmz_re_free_registers (&regs);
 	}
@@ -169,7 +170,7 @@ nmz_replace_uri(char *uri)
 
 	if (strncmp(list->pat, tmp, npat) == 0) {
 	    strcpy(uri, list->rep);
-	    for (i = npat, j = nrep; tmp[i]; i++, j++) {
+	    for (i = npat, j = nrep; tmp[i] && j < BUFSIZE ; i++, j++) {
 		uri[j] = tmp[i];
 	    }
 	    uri[j] = '\0';

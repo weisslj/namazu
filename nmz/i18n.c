@@ -1,6 +1,6 @@
 /*
  * i18n.c -
- * $Id: i18n.c,v 1.27 2001-09-02 08:25:33 rug Exp $
+ * $Id: i18n.c,v 1.28 2001-12-11 09:56:00 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -165,10 +165,10 @@ nmz_choose_msgfile_suffix(const char *pfname,  char *lang_suffix)
     int baselen;
     char fname[BUFSIZE];
 
-    strcpy(fname, pfname);
+    strncpy(fname, pfname, BUFSIZE);
     baselen = strlen(fname);
-    strcat(fname, ".");
-    strcat(fname, nmz_get_lang());
+    strncat(fname, ".", BUFSIZE + strlen(fname));
+    strncat(fname, nmz_get_lang(), BUFSIZE + strlen(fname));
 
     /* 
      * Trial example:
@@ -185,7 +185,7 @@ nmz_choose_msgfile_suffix(const char *pfname,  char *lang_suffix)
 	if (fp != NULL) { /* fopen success */
 	    nmz_debug_printf("choose_msgfile: %s open SUCCESS.\n", fname);
 	    fclose(fp);
-	    strcpy(lang_suffix, fname + baselen);
+	    strncpy(lang_suffix, fname + baselen, BUFSIZE); /* is shuold be BUFSIZE */
 	    return SUCCESS;
 	}
 	nmz_debug_printf("choose_msgfile: %s open failed.\n", fname);

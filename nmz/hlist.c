@@ -2,10 +2,10 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.54 2001-09-08 07:51:54 takesako Exp $
+ * $Id: hlist.c,v 1.55 2001-12-11 09:56:00 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000 Namazu Project All rights reserved.
+ * Copyright (C) 2000,2001 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -649,7 +649,7 @@ nmz_set_docnum(int n)
 void 
 nmz_set_sortfield(const char *field)
 {
-    strcpy(field_for_sort, field);
+    strncpy(field_for_sort, field, BUFSIZE);
 }
 
 char *

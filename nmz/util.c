@@ -1,9 +1,9 @@
 /*
  * 
- * $Id: util.c,v 1.77 2001-09-02 08:25:33 rug Exp $
+ * $Id: util.c,v 1.78 2001-12-11 09:56:00 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000 Namazu Project All rights reserved.
+ * Copyright (C) 2000,2001 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -326,10 +326,10 @@ nmz_pathcat(const char *base, char *name)
             break;
         }
     }
-    strcpy(work, base);
-    strcat(work, "/");
-    strcat(work, name);
-    strcpy(name, work);
+    strncpy(work, base, BUFSIZE);
+    strncat(work, "/", BUFSIZE - strlen(work));
+    strncat(work, name, BUFSIZE - strlen(work));
+    strncpy(name, work, BUFSIZE);
 }
 
 int 

@@ -1,9 +1,9 @@
 /*
  * 
- * $Id: field.c,v 1.30 2001-09-02 08:25:33 rug Exp $
+ * $Id: field.c,v 1.31 2001-12-11 09:56:00 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000 Namazu Project All rights reserved.
+ * Copyright (C) 2000,2001 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -130,15 +130,17 @@ nmz_get_field_name(const char *fieldpat)
 {
     static char field_name[BUFSIZE]; /* storing field name */
     char *tmp = field_name;
+    int count = 0;
 
     fieldpat++;  /* ignore beggining '+' mark */
-    while (*fieldpat) {
+    while (*fieldpat && count < BUFSIZE - 1) {
         if (! is_field_safe_char(*fieldpat)) {
             break;
         }
         *tmp = *fieldpat;
         tmp++;
         fieldpat++;
+	count++;
     }
     *tmp = '\0';
 
@@ -164,7 +166,7 @@ nmz_get_field_data(int idxid, int docid, const char *field, char *data)
 
     strcpy(data, ""); /* For safety. */
 
-    strcpy(tmpfield, field);
+    strncpy(tmpfield, field, BUFSIZE);
     apply_field_alias(tmpfield);  /* This would overwrite `tmpfield' */
 
     /* 
@@ -177,15 +179,15 @@ nmz_get_field_data(int idxid, int docid, const char *field, char *data)
 	    strcmp(tmpfield, fc[i].field) == 0)
 	{  /* cache hit! */
 	    nmz_debug_printf("field cache [%s] hit!\n", tmpfield);
-	    strcpy(data, fc[i].data);
+	    strncpy(data, fc[i].data, BUFSIZE);	/* data should be BUFSIZE */
 	    return;
 	}
     }
 
     /* Make a pathname */
     make_fullpathname_field(idxid);
-    strcpy(fname, NMZ.field);
-    strcat(fname, tmpfield);
+    strncpy(fname, NMZ.field, BUFSIZE);
+    strncat(fname, tmpfield, BUFSIZE - strlen(fname));
     
     fp_field = fopen(fname, "rb");
     if (fp_field == NULL) {
@@ -193,7 +195,7 @@ nmz_get_field_data(int idxid, int docid, const char *field, char *data)
 	return;
     }
 
-    strcat(fname, ".i");
+    strncat(fname, ".i", BUFSIZE - strlen(fname));
     fp_field_idx = fopen(fname, "rb");
     if (fp_field_idx == NULL) {
         nmz_warn_printf("%s: %s", fname, strerror(errno));
@@ -215,8 +217,8 @@ nmz_get_field_data(int idxid, int docid, const char *field, char *data)
     /* Cache */
     fc[cache_idx].idxid = idxid;
     fc[cache_idx].docid = docid;
-    strcpy(fc[cache_idx].field, tmpfield);
-    strcpy(fc[cache_idx].data, data);
+    strncpy(fc[cache_idx].field, tmpfield, BUFSIZE);
+    strncpy(fc[cache_idx].data, data, BUFSIZE);
     cache_idx = (cache_idx + 1) % FIELD_CACHE_SIZE;
     if (cache_num < FIELD_CACHE_SIZE) {
 	cache_num++;

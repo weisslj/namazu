@@ -1,3 +1,19 @@
+2001-12-11  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* nmz/field.c: Fixed possibility of buffer overflow.
+
+	* nmz/hlist.c: Ditto.
+
+	* nmz/i18n.c: Ditto.
+
+	* nmz/idxname.c: Ditto.
+
+	* nmz/re.c: Ditto.
+
+	* nmz/replace.c: Ditto.
+
+	* nmz/util.c: Ditto.
+
 2001-12-05  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* src/output.c (puts_entitize): Added a new function.
@@ -7232,4 +7248,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.898 2001-12-05 08:33:07 knok Exp $
+$Id: ChangeLog,v 1.899 2001-12-11 09:55:59 knok Exp $

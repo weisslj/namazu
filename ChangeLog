@@ -1,17 +1,15 @@
 2000-02-19  Ken-ichi Hirose  <kenzo-@tama.or.jp>
 
-	* nmz/hlist.c: Change include point and defined HAVE_UNISTD_H 
-	for unistd.h.
+	* nmz/hlist.c: Change the include point of unistd.h and surround
+	it with #if defined HAVE_UNISTD_H.
 
-	* nmz/libnamazu.c: Change include point and defined HAVE_UNISTD_H 
-	for unistd.h.
+	* nmz/libnamazu.c: Likewise.
 
-	* nmz/search.c: Change include point and defined HAVE_UNISTD_H 
-	for unistd.h.
+	* nmz/search.c: Likewise.
 
-	* src/cgi.c (get_query_string): Add iregal function for MS servers.
+	* src/cgi.c (get_query_string): Add #ifdef for MS servers.
 
-	* src/namazu-cgi.c (main): Add iregal function for MS servers.
+	* src/namazu-cgi.c (main): Add #ifdef for MS servers.
 
 2000-02-18  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 

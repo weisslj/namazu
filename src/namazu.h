@@ -12,11 +12,7 @@ enum {
 			      processing time exceeds this */
 };
 
-/* error code */
-enum {
-    DIE_ERROR   = -2,
-    DIE_NOERROR = -1
-};
+extern int main(int argc, char **argv);
 
 
 #endif /* _NAMAZU_H */

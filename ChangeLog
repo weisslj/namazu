@@ -1,5 +1,8 @@
 2000-01-08  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/namazu.h (main): Abolish unused enums DIE_ERROR and
+	DIE_NOERROR.
+
 	* nmz/util.c (nmz_strerror): Renamed from nmz_get_errnmsg().
 	(nmz_strerror): Use assert().
 	All callers changed.	

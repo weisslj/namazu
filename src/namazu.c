@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.78 2000-01-08 03:07:01 satoru Exp $
+ * $Id: namazu.c,v 1.79 2000-01-08 03:12:06 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -65,7 +65,7 @@
 #include "var.h"
 #include "result.h"
 #include "system.h"
-
+#include "namazu.h"
 
 /*
  *
@@ -86,9 +86,7 @@ static void suicide ( int signum );
 /* Convert STR to a positive integer, storing the result in *OUT.
    If STR is not a valid integer, return -1 (otherwise 0). */
 static int
-ck_atoi (str, out)
-     char const *str;
-     int *out;
+ck_atoi (char const *str, int *out)
 {
     char const *p;
     for (p = str; *p; p++)
@@ -105,7 +103,10 @@ ck_atoi (str, out)
 static void
 stdio2file(const char * fname)
 {
-/*   int fd;
+/*
+ *   Old bad routine.
+ *
+ *   int fd;
  *   if (-1 == (fd = open(fname, O_CREAT | O_TRUNC | O_WRONLY, 00600))) {
  *	nmz_die("%s", strerror(errno));
  *	return 1;
@@ -346,6 +347,12 @@ suicide (int signum)
 {
     nmz_die("processing time exceeds a limit: %d", SUICIDE_TIME);
 }
+
+/*
+ *
+ * Public functions
+ *
+ */
 
 int 
 main(int argc, char **argv)

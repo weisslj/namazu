@@ -2,7 +2,7 @@
  * 
  * wakati.c -
  * 
- * $Id: wakati.c,v 1.28 2003-06-25 06:25:48 takesako Exp $
+ * $Id: wakati.c,v 1.29 2004-12-27 15:56:07 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -127,7 +127,7 @@ nmz_wakati(char *key)
 
     nmz_debug_printf("wakati original: [%s].\n", key);
 
-    for (i = 0; i < strlen(key); ) {
+    for (i = 0; i < (int)strlen(key); ) {
         type = detect_char_type(key + i);
 	if (nmz_iseuc(*(key + i))) {
 	    key_leng = 0;

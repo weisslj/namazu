@@ -1,5 +1,8 @@
 1999-09-07  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* lib/seed.pl, src/mknmz.pl.in: Change @Seed handling.
+	accesing @seed::Seed is slower than accessing @Seed directly.
+	
 	* Makefile.am (CLEANFILES): Remove lib/var.pl lib/conf.pl entries.
 	
 

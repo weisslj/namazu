@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.62 1999-09-06 03:22:01 satoru Exp $
+# $Id: mknmz.pl.in,v 1.63 1999-09-07 00:59:00 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -54,6 +54,7 @@ my $TestMode   = @TEST_MODE@;
 my $ConfigFile = undef;
 
 my $ReplaceCode  = undef;  # perl code for transforming URI
+my @Seed = ();
 
 STDOUT->autoflush(1);
 main();
@@ -203,10 +204,11 @@ sub load_modules () {
     require "conf.pl";
     require "util.pl";
     require "usage.pl";
-    require "seed.pl";
     require "codeconv.pl";
     require "find.pl";
     require "wakati.pl";
+    require "seed.pl";
+    @Seed = seed::init();
 
     # Check filter modules
     my @filters = ();
@@ -1602,7 +1604,7 @@ sub hash ($) {
     $hash = 0;
     $word =~ tr/\xa1-\xfea-z0-9//cd; # Remove symbols
     for ($i = 0; $word ne ""; $i++) {
-	$hash ^= $seed::Seed[$i & 0x03][ord($word)];
+	$hash ^= $Seed[$i & 0x03][ord($word)];
         $word = substr $word, 1;
 	# $word =~ s/^.//;  is slower
     }
@@ -1872,7 +1874,7 @@ muda($conf::SEARCH_FIELD, $conf::ON_MEMORY_MAX,
      $conf::KAKASI, $var::Opt{'okurigana'},
      $var::Opt{'hiragana'}, $conf::ROBOTS_EXCLUDE_URLS, $conf::DEFAULT_FILE,
      $conf::HTML_SUFFIX, $usage::USAGE_EN, $usage::USAGE_MINI, 
-     $var::Opt{'noheadabst'}, @seed::Seed,
+     $var::Opt{'noheadabst'}, 
      $var::Opt{'debug'}, $var::Opt{'noencodeurl'}, $var::Opt{'htaccessexclude'}, 
      $var::RECURSIVE_ACTIONS, $conf::ROBOTS_EXCLUDE_URIS, 
      $conf::ROBOTS_EXCLUDE_URLS);

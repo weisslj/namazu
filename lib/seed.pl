@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: seed.pl,v 1.1 1999-08-28 09:40:03 satoru Exp $
+# $Id: seed.pl,v 1.2 1999-09-07 00:58:59 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -26,7 +26,9 @@ package seed;
 #
 # Dr. Knuth's ``hash'' (from UNIX MAGAZINE May, 1998)
 #
-@Seed =([
+sub init () {
+    return (
+	 [
 	  3852, 26205, 51350, 2876, 47217, 47194, 55549, 43312, 
 	  63689, 40984, 62703, 10954, 13108, 60460, 41680, 32277, 
 	  51887, 28590, 17502, 57168, 37798, 27466, 13800, 12816, 
@@ -163,4 +165,6 @@ package seed;
 	  51770, 17655, 11744, 32966, 48622, 23162, 46352, 65423
 	  ]
 	    );
+}
+
 1;

@@ -1,6 +1,6 @@
 /*
  * i18n.c -
- * $Id: i18n.c,v 1.17 2000-01-28 09:40:12 satoru Exp $
+ * $Id: i18n.c,v 1.18 2000-01-29 07:09:25 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -72,36 +72,41 @@ nmz_set_lang(const char *lang)
 	} else if ((lang = getenv("LANG")) != NULL) {
 	    strcpy(Lang, lang);
 	} else {
-	    strcpy(Lang, "C");
+	    /* No locale is set as an envornment variable. */
+	    return Lang;
 	}
     } 
 
+    /* 
+     * Set enviromental variables for gettext() only if LANG is not set.
+     */
+    if (getenv("LANG") == NULL) {
 #if HAVE_SETENV || HAVE_PUTENV
 # if HAVE_SETENV
-    setenv("LC_ALL", Lang, 1);
-    setenv("LC_MESSAGES", Lang, 1);
-    setenv("LANG", Lang, 1);
+	setenv("LC_ALL", Lang, 1);
+	setenv("LC_MESSAGES", Lang, 1);
+	setenv("LANG", Lang, 1);
 # else
-    {
-	char *buf;
+	{
+	    char *buf;
 
-	buf = malloc(BUFSIZE);
-	sprintf(buf, "LC_ALL=%s", Lang);
-	putenv(buf);
+	    buf = malloc(BUFSIZE);
+	    sprintf(buf, "LC_ALL=%s", Lang);
+	    putenv(buf);
 
-	buf = malloc(BUFSIZE);
-	sprintf(buf, "LC_MESSAGES=%s", Lang);
-	putenv(buf);
+	    buf = malloc(BUFSIZE);
+	    sprintf(buf, "LC_MESSAGES=%s", Lang);
+	    putenv(buf);
 
-	buf = malloc(BUFSIZE);
-	sprintf(buf, "LANG=%s", Lang);
-	putenv(buf);
+	    buf = malloc(BUFSIZE);
+	    sprintf(buf, "LANG=%s", Lang);
+	    putenv(buf);
 
+	}
+# endif /* HAVE_SETENV */
+#endif /* HAVE_SETENV */
     }
-# endif
-#endif
 
-    /* Set enviromental variables for gettext() */
 #ifdef HAVE_SETLOCALE
     /* Set locale via LC_ALL.  */
     setlocale (LC_ALL, "");

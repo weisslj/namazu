@@ -1,11 +1,9 @@
-$Id: TODO-satoru,v 1.23 2000-01-29 02:33:39 satoru Exp $
+$Id: TODO-satoru,v 1.24 2000-01-29 07:09:22 satoru Exp $
 やるべきことの備忘録 by 高林
 
 手っ取り早く片づける仕事
 
   * namazurc の Lang 問題を解決 setenv の関連
-
-  * namazu コマンドの namazurc を読み込む処理を修正する [namazu-dev 1378]
 
   * nmz/libnamazu.c を廃止 (中の関数は適切なファイルに移動する)
 

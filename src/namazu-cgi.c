@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu-cgi.c,v 1.8 2000-01-29 06:25:07 satoru Exp $
+ * $Id: namazu-cgi.c,v 1.9 2000-01-29 07:09:27 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -138,10 +138,6 @@ main(int argc, char **argv)
 
     init_cgi(query, subquery);
 
-    if (load_rcfiles() != SUCCESS) {
-	die(nmz_get_dyingmsg());
-    }
-
     {
 	/*
 	 * Load .namazurc located in the directory
@@ -152,6 +148,10 @@ main(int argc, char **argv)
 	if (nmz_is_file_exists(fname)) {
 	    set_namazurc(fname);
 	}
+    }
+
+    if (load_rcfiles() != SUCCESS) {
+	die(nmz_get_dyingmsg());
     }
 
     if (namazu_core(query, subquery) == ERR_FATAL) {

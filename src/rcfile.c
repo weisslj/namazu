@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.14 2000-01-29 06:25:08 satoru Exp $
+ * $Id: rcfile.c,v 1.15 2000-01-29 07:09:28 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -221,7 +221,12 @@ process_rc_lang(const char *directive, const struct nmz_strlist *args)
 {
     char *arg1 = args->value;
 
-    nmz_set_lang(arg1);
+    /*
+     * It works if environment variable LANG is not set.
+     */
+    if (getenv("LANG") == NULL) {
+	nmz_set_lang(arg1);
+    }
     return SUCCESS;
 }
 

@@ -1,5 +1,15 @@
 2000-01-29  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* conf/namazurc-sample: Modify comments.
+
+	* src/namazu-cgi.c (main): Fix load_rcfiles() timing bug.
+
+	* src/rcfile.c (process_rc_lang): It workd only if LANG is not
+	set. 
+
+	* nmz/i18n.c (nmz_set_lang): Set enviromental variables for
+	gettext() only if LANG is not set. 
+
 	* src/rcfile.c (show_config): Modify display formats.
 
 	* src/output.c (get_emphasis_tag_start): New function.

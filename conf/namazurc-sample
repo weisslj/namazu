@@ -31,10 +31,15 @@
 #            Default: logging ON
 #
 #	* Lang
-#          - Set a locale code such as `ja_JP.ujis', `ja_JP.sjis', 
-#            `de', etc.  If you set `de' to this, namazu will use 
-#            NMZ.(head|foot|body|msg).de for composing a result 
-#            document and use a proper message catalog for `de'.
+#          - Set a locale code such as `ja_JP.eucJP', `ja_JP.SJIS', 
+#            `de', etc.  This directive works only if environment 
+#            variable LANG is not set because the directive is mainly 
+#            intended for CGI use.  On the shell, You can set 
+#            environemtnt variable LANG instead of using the directive.
+#
+#            If you set `de' to it, namazu.cgi use 
+#            NMZ.(head|foot|body|msg|tips).de for displaying results 
+#            and use a proper message catalog for `de'.
 #
 #	* Scoring
 #         - Set a scoring method "tfidf" or "simple".

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2000-01-29 15:25+0900\n"
+"POT-Creation-Date: 2000-01-29 15:51+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -118,41 +118,41 @@ msgid "\t<p>No document matching your query.</p>\n"
 msgstr ""
 
 #. terminator not matched
-#: src/rcfile.c:297
+#: src/rcfile.c:300
 msgid "can't find string terminator"
 msgstr ""
 
-#: src/rcfile.c:365
+#: src/rcfile.c:368
 msgid "invalid directive name"
 msgstr ""
 
-#: src/rcfile.c:378
+#: src/rcfile.c:381
 msgid "can't find arguments"
 msgstr ""
 
-#: src/rcfile.c:481
+#: src/rcfile.c:484
 msgid "too few arguments"
 msgstr ""
 
-#: src/rcfile.c:484
+#: src/rcfile.c:487
 msgid "too many arguments"
 msgstr ""
 
-#: src/rcfile.c:494
+#: src/rcfile.c:497
 msgid "unknown directive"
 msgstr ""
 
-#: src/rcfile.c:629
+#: src/rcfile.c:632
 #, c-format
 msgid "%s:%d: syntax error: %s"
 msgstr ""
 
-#: src/rcfile.c:649
+#: src/rcfile.c:652
 #, c-format
 msgid "Loaded rcfile: %s\n"
 msgstr ""
 
-#: src/rcfile.c:654
+#: src/rcfile.c:657
 #, c-format
 msgid ""
 "Index:        %s\n"
@@ -163,12 +163,12 @@ msgid ""
 "EmphasisTags: %s\t%s\n"
 msgstr ""
 
-#: src/rcfile.c:671
+#: src/rcfile.c:674
 #, c-format
 msgid "Alias:   %-20s\t%s\n"
 msgstr ""
 
-#: src/rcfile.c:681
+#: src/rcfile.c:684
 #, c-format
 msgid "Replace: %-20s\t%s\n"
 msgstr ""

@@ -1,7 +1,9 @@
-$Id: TODO-satoru,v 1.27 2000-02-19 04:12:14 satoru Exp $
+$Id: TODO-satoru,v 1.28 2000-02-26 15:45:27 satoru Exp $
 やるべきことの備忘録 by 高林
 
 手っ取り早く片づける仕事
+
+  * filter/man.pl: -Tnippon の判定を動的にできないか?
 
   * nmz/libnamazu.c を廃止 (中の関数は適切なファイルに移動する)
 

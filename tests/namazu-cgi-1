@@ -9,8 +9,9 @@ pwd=`pwd`
 tmprc="../src/.namazurc"
 echo "Index $pwd" > $tmprc
 
-export SCRIPT_NAME='namazu.cgi'
-export QUERY_STRING='query=namazu&idxname=tmp1'
+SCRIPT_NAME='namazu.cgi'
+QUERY_STRING='query=namazu&idxname=tmp1'
+export SCRIPT_NAME QUERY_STRING
 
 cd ../src
 hitnum=`./namazu.cgi | perl -ne 'print $1 if /<!-- HIT -->(\d+)<!-- HIT -->/'`

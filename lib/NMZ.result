@@ -1,0 +1,5 @@
+<dt><strong><a href="${uri}">${title}</a></strong>
+<dd><strong>Author</strong>: <em>${author}</em><br>
+<strong>Date</strong>: <em>${date}</em><br>
+${summary}
+<dd><a href="${uri}">${uri}</a> ${size} bytes<br><br>

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mailnews.pl,v 1.14 1999-08-31 10:17:49 knok Exp $
+# $Id: mailnews.pl,v 1.15 1999-08-31 14:36:09 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -53,6 +53,7 @@ sub filter ($$$$$) {
 
     uuencode_filter($cont);
     mailnews_filter($cont, $weighted_str, $fields);
+    mailnews_citation_filter($cont, $weighted_str);
 
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);

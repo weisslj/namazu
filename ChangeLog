@@ -22,6 +22,9 @@
 
 1999-08-31  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* filter/mailnews.pl (filter): Add mailnews_citation_filter()
+	process. (this fix an awful bug...)
+	
 	* conf/Makefile.am (mknmz.conf-dist): Modify regex for perl to
 	treat %, @ prefixes as well as $.
 	

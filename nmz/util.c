@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: util.c,v 1.46 2000-01-10 08:26:50 satoru Exp $
+ * $Id: util.c,v 1.47 2000-01-10 12:20:31 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -600,16 +600,6 @@ nmz_strerror(enum nmz_stat errnum)
 
     return msg;
 }
-
-/*
- * FIXME: Tell me if you know more better function name (or better way).
- * Perhaps this function is not necessary.
- */
-void 
-nmz_print(const char *str) {
-    fputs(str, stdout);
-}
-
 
 struct nmz_strlist* 
 nmz_push_strlist(struct nmz_strlist *list, const char *arg)

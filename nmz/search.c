@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.57 2000-01-10 10:32:12 satoru Exp $
+ * $Id: search.c,v 1.58 2000-01-10 12:20:31 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -71,7 +71,7 @@ static void show_status ( int l, int r );
 static int get_file_size ( const char *fname );
 static void lrget ( int *l, int *r );
 static NmzResult prefix_match ( const char * key, int v );
-static enum nmz_search_mode detect_search_mode ( const char *key );
+static enum nmz_searchmethod detect_search_mode ( const char *key );
 static NmzResult do_word_search ( const char *key, NmzResult val );
 static NmzResult do_prefix_match_search ( const char *key, NmzResult val );
 static int hash ( const char *str );
@@ -83,10 +83,10 @@ static NmzResult do_regex_search ( const char *expr, NmzResult val );
 static void get_regex_part ( char *expr, const char *str );
 static NmzResult do_field_search ( const char *fieldpat, NmzResult val );
 static void delete_beginning_backslash ( char *str );
-static int check_lockfile ( void );
+static int is_locked ( void );
 static enum nmz_perm parse_access ( const char *line, const char *rhost, const char *raddr );
 static enum nmz_perm check_access ( void );
-static int open_index_files ( void );
+static enum nmz_stat open_index_files ( void );
 static void close_index_files ( void );
 static void do_logging ( const char * query, int n );
 static NmzResult nmz_search_sub ( NmzResult hlist, const char *query, int n );
@@ -211,7 +211,7 @@ prefix_match(const char *key, int v)
 /*
  * Detect search mode
  */
-static enum nmz_search_mode 
+static enum nmz_searchmethod 
 detect_search_mode(const char *key) {
     if (strlen(key) <= 1)
         return WORD_MODE;
@@ -555,7 +555,7 @@ do_regex_search(const char *expr, NmzResult val)
         val.stat = ERR_REGEX_SEARCH_FAILED;  /* cannot open regex index */
         return val;
     }
-    val = regex_grep(tmpexpr, fp, "", 0);
+    val = nmz_regex_grep(tmpexpr, fp, "", 0);
     fclose(fp);
     return val;
 
@@ -591,7 +591,7 @@ do_field_search(const char *fieldpat, NmzResult val)
         val.stat = ERR_FIELD_SEARCH_FAILED;
         return val;
     }
-    val = regex_grep(expr, fp, field_name, 1); /* last argument must be 1 */
+    val = nmz_regex_grep(expr, fp, field_name, 1); /* last argument must be 1 */
     fclose(fp);
     return val;
 }
@@ -605,16 +605,15 @@ delete_beginning_backslash(char *str)
 }
 
 /*
- * Check the existence of lockfile
+ * Check the existence of lockfile.
  */
 static int 
-check_lockfile(void)
+is_locked(void)
 {
     FILE *lock;
 
     if ((lock = fopen(NMZ.lock, "rb"))) {
 	fclose(lock);
-        nmz_print("(now be in system maintenance)");
         return 1;
     }
     return 0;
@@ -691,30 +690,35 @@ check_access(void)
 /*
  * Opening files at once
  */
-static int 
-open_index_files()
+enum nmz_stat
+open_index_files(void)
 {
-    if (check_lockfile())
-        return 1;
+    if (is_locked()) {
+        return FAILURE;
+    }
 
     Nmz.i = fopen(NMZ.i, "rb");
     if (Nmz.i == NULL) {
-	return 1;
+        nmz_debug_printf("%s: %s", NMZ.i, strerror(errno));
+	return FAILURE;
     }
     Nmz.ii = fopen(NMZ.ii, "rb");
     if (Nmz.ii == NULL) {
-	return 1;
+        nmz_debug_printf("%s: %s", NMZ.ii, strerror(errno));
+	return FAILURE;
     }
     Nmz.w = fopen(NMZ.w, "rb");
     if (Nmz.w == NULL) {
-	return 1;
+        nmz_debug_printf("%s: %s", NMZ.w, strerror(errno));
+	return FAILURE;
     }
     Nmz.wi = fopen(NMZ.wi, "rb");
     if (Nmz.wi == NULL) {
-	return 1;
+        nmz_debug_printf("%s: %s", NMZ.wi, strerror(errno));
+	return FAILURE;
     }
 
-    return 0;
+    return SUCCESS;
 }
 
 /*
@@ -771,7 +775,7 @@ nmz_search_sub(NmzResult hlist, const char *query, int n)
 	return hlist;
     }
 
-    if (open_index_files()) {
+    if (open_index_files() != SUCCESS) {
         /* If open failed */
         hlist.stat = ERR_CANNOT_OPEN_INDEX;
         return hlist;
@@ -1011,7 +1015,7 @@ nmz_search(const char *query)
 NmzResult 
 nmz_do_searching(const char *key, NmzResult val)
 {
-    enum nmz_search_mode mode;
+    enum nmz_searchmethod mode;
     char tmpkey[BUFSIZE];
 
     strcpy(tmpkey, key);

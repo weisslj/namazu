@@ -2,7 +2,7 @@
  * 
  * idxname.c - Idx handling routines.
  *
- * $Id: idxname.c,v 1.20 2000-01-10 08:43:45 satoru Exp $
+ * $Id: idxname.c,v 1.21 2000-01-10 12:20:30 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
@@ -38,6 +38,7 @@
 #include "alias.h"
 #include "var.h"
 #include "idxname.h"
+#include "util.h"
 
 static struct nmz_indices indices = {0}; /* Initialize member `num' with 0 */
 

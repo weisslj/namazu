@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.43 2000-01-09 11:28:59 satoru Exp $
+ * $Id: form.c,v 1.44 2000-01-10 12:20:35 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -103,9 +103,9 @@ replace_query_value(const char *p, const char *query)
 
         for (; *p; p++)
             fputc(*p, stdout);
-        nmz_print(" value=\"");
-        nmz_print(converted); 
-        nmz_print("\"");
+        print(" value=\"");
+        print(converted); 
+        print("\"");
 
 	free(converted);
         return SUCCESS;
@@ -276,7 +276,7 @@ check_checkbox(char *str)
             }
         }
         if (db_count == searched) {
-            nmz_print(" checked");
+            print(" checked");
         }
         return SUCCESS;
     }
@@ -384,12 +384,12 @@ print_headfoot(const char * fname, const char * query, const char *subquery)
             if (nmz_strprefixcasecmp(p, "</title>") == 0) {
 		if (*query != '\0') {
 		    char *converted = nmz_conv_ext(query);
-		    nmz_print(": &lt;");
-		    nmz_print(converted);
-		    nmz_print("&gt;");
+		    print(": &lt;");
+		    print(converted);
+		    print("&gt;");
 		    free(converted);
 		}
-		nmz_print("</title>\n");
+		print("</title>\n");
                 p = (char *)strchr(p, '>');
                 continue;
             }

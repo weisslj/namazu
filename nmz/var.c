@@ -2,7 +2,7 @@
  * 
  * var.c -
  * 
- * $Id: var.c,v 1.16 2000-01-06 10:01:53 satoru Exp $
+ * $Id: var.c,v 1.17 2000-01-10 12:20:32 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -33,17 +33,17 @@
 #include "re.h"
 
 /*
- * String of HTML 's <BASE HREF="...">  (namazu.conf)
+ * String of HTML 's <base href="...">  (namazu.conf)
  */
 char BASE_URI[BUFSIZE] = "";
 
 /*
- * Default directory to place indices
+ * Default directory to place indices.
  */
 char DEFAULT_INDEX[BUFSIZE] = OPT_INDEXDIR;
 
 /*
- * Default directory to place config files
+ * Default directory to place namazurc.
  */
 char CONFDIR[BUFSIZE] = OPT_CONFDIR;
 
@@ -55,7 +55,7 @@ int TfIdf = OPT_SCORING;   /* switch of TfIdf mode */
 int TfIdf = 1;
 #endif
 
-struct nmz_files Nmz;  /* NMZ.* files' file pointers */
+struct nmz_files Nmz;     /* NMZ.* files' file pointers */
 struct nmz_names NMZ = {  /* NMZ.* files' names */
     "NMZ.i", 
     "NMZ.ii",

@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.49 2000-01-10 08:26:54 satoru Exp $
+ * $Id: cgi.c,v 1.50 2000-01-10 12:20:35 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -106,9 +106,9 @@ validate_idxname(const char * idxname)
 #endif
 
     if (*idxname == '\0' || *idxname == '/' || (win32 && *idxname == '\\')) {
-        nmz_print(MSG_MIME_HEADER);
+        print(MSG_MIME_HEADER);
 	printf("%s : ", idxname);
-        nmz_print(_("Invalid idxname."));
+        print(_("Invalid idxname."));
         exit(EXIT_FAILURE);
     }
     while (*idxname) {
@@ -116,9 +116,9 @@ validate_idxname(const char * idxname)
 	    strcmp("..", idxname) == 0 ||
             (win32 && nmz_strprefixcasecmp("..\\", idxname) == 0)) 
         {
-            nmz_print(MSG_MIME_HEADER);
+            print(MSG_MIME_HEADER);
 	    printf("%s : ", idxname);
-            nmz_print(_("Invalid idxname."));
+            print(_("Invalid idxname."));
             exit(EXIT_FAILURE);
         }
 	/* Skip until next '/' */
@@ -322,7 +322,7 @@ static void
 process_cgi_var_query(char *value, struct cgiarg *ca)
 {
     if (strlen(value) > QUERY_MAX) {
-	nmz_print(MSG_MIME_HEADER);
+	print(MSG_MIME_HEADER);
 	html_print(_(MSG_TOO_LONG_QUERY));
 	exit(EXIT_FAILURE);
     }
@@ -344,7 +344,7 @@ static void
 process_cgi_var_subquery(char *value, struct cgiarg *ca)
 {
     if (strlen(value) > QUERY_MAX) {
-	nmz_print(MSG_MIME_HEADER);
+	print(MSG_MIME_HEADER);
 	html_print(_(MSG_TOO_LONG_QUERY));
 	exit(EXIT_FAILURE);
     }

@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.37 2000-01-09 23:44:55 satoru Exp $
+ * $Id: hlist.c,v 1.38 2000-01-10 12:20:30 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -43,12 +43,6 @@
 
 static int document_number = 0;  /* Number of documents covered in a target index */
 static char field_for_sort[BUFSIZE] = "";  /* field_for_sort name used with sorting */
-
-struct str_num {
-    char *str;
-    int   num;
-};
-typedef struct str_num str_num;
 
 /*
  *

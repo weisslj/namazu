@@ -2,7 +2,7 @@
  * 
  * libnamazu.h - Namazu library api
  *
- * $Id: libnamazu.h,v 1.36 2000-01-10 08:26:50 satoru Exp $
+ * $Id: libnamazu.h,v 1.37 2000-01-10 12:20:30 satoru Exp $
  * 
  */
 
@@ -89,7 +89,7 @@ enum nmz_stat {
 /* 
  * Modes of searching.
  */
-enum nmz_search_mode {
+enum nmz_searchmethod {
     WORD_MODE,
     PREFIX_MODE,
     REGEX_MODE,
@@ -130,7 +130,7 @@ struct nmz_data {
 };
 
 /* 
- * Data structure for search result 
+ * Data structure for search result.
  */
 typedef struct nmz_result {
     int num;           /* number of elements in its data */
@@ -140,7 +140,7 @@ typedef struct nmz_result {
 
 
 /* 
- * NMZ.* files' names 
+ * NMZ.* files' names.
  */
 struct nmz_names {
 #define MAXPATH 1024
@@ -198,14 +198,6 @@ struct nmz_hitnumlist {
     enum nmz_stat stat;        /* status code mainly used for error handling */
     struct nmz_hitnumlist *phrase; /* for a result of a phrase search */
     struct nmz_hitnumlist *next;
-};
-
-/*
- * Simple string list.
- */
-struct nmz_strlist {
-    char *value;
-    struct nmz_strlist *next;
 };
 
 extern void nmz_free_aliases ( void );

@@ -1,5 +1,27 @@
 2000-01-10  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* nmz/idxname.c: Inclued "util.h".
+
+	* nmz/rcfile.h: Inclued "util.h".
+
+	* nmz/search.c (open_index_files): Cleaned up.
+	(is_locked): Renamed from check_lockfile().
+
+	* src/output.c (print): New function derived from nmz_print().
+
+	* nmz/util.c (nmz_print): Abolished.
+
+	* nmz/re.c (nmz_regex_grep): prefix nmz added.
+
+	* nmz/hlist.c (struct str_num): Abolished.
+
+	* nmz/libnamazu.h (enum nmz_searchmethod): Renamed from enum
+	nmz_searchmethod. 
+
+	* nmz/rcfile.c (get_rc_args): Be static.
+
+	* nmz/util.h (struct nmz_strlist): Moved from libnamazh.h
+
 	* src/namazu.c (parse_options): Call nmz_load_rcfile() in 'f' option.
 
 	* nmz/search.c (nmz_search): Fix error state handling.

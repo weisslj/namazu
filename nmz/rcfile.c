@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.22 2000-01-10 09:31:44 satoru Exp $
+ * $Id: rcfile.c,v 1.23 2000-01-10 12:20:31 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -344,7 +344,7 @@ replace_home(char *str)
  *
  * NOTE: the string `line' should be chomped before calling the function.
  */
-struct nmz_strlist*
+static struct nmz_strlist*
 get_rc_args(const char *line)
 {
     struct nmz_strlist *list = NULL;
@@ -441,7 +441,7 @@ parse_rcfile(const char *line, int lineno)
 	struct nmz_strlist *ptr;
 	int i;
 
-	printf("%4d: Directive: [%s]\n", lineno, directive);
+	printf("%4d: Directive:  [%s]\n", lineno, directive);
 
 	for (ptr = args, i = 1 ; ptr != NULL; i++) {
 	    printf("      Argument %d: [%s]\n", i, ptr->value);

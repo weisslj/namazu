@@ -2,7 +2,7 @@
  * 
  * re.c -
  * 
- * $Id: re.c,v 1.25 2000-01-09 13:00:38 satoru Exp $
+ * $Id: re.c,v 1.26 2000-01-10 12:20:31 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -52,9 +52,9 @@
  * FIXME: Dirty coding...
  */
 NmzResult 
-regex_grep(const char *orig_expr, FILE *fp, const char *field, int field_mode)
+nmz_regex_grep(const char *expr, FILE *fp, const char *field, int field_mode)
 {
-    char buf[BUFSIZE], expr[BUFSIZE];
+    char buf[BUFSIZE], tmpexpr[BUFSIZE];
     struct re_pattern_buffer *rp;
     int i, n, size = 0, max, uri_mode = 0;
     NmzResult val, tmp;
@@ -70,8 +70,8 @@ regex_grep(const char *orig_expr, FILE *fp, const char *field, int field_mode)
     rp->buffer = 0;
     rp->allocated = 0;
     
-    strcpy(expr, orig_expr); /* save orig_expr */
-    nmz_debug_printf("REGEX: '%s'\n", expr);
+    strcpy(tmpexpr, expr); /* save orig_expr */
+    nmz_debug_printf("REGEX: '%s'\n", tmpexpr);
 
     if (field_mode) {
         nmz_malloc_hlist(&val, size += STEP);
@@ -86,7 +86,7 @@ regex_grep(const char *orig_expr, FILE *fp, const char *field, int field_mode)
         max = IGNORE_MATCH;
     }
 
-    nmz_re_compile_pattern(expr, strlen(expr), rp);
+    nmz_re_compile_pattern(tmpexpr, strlen(tmpexpr), rp);
 
     for (i = n = 0; fgets(buf, BUFSIZE, fp); i++) {
         if (buf[strlen(buf) - 1] != '\n') {  /* too long */

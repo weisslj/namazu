@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: util.c,v 1.60 2000-02-20 01:41:35 satoru Exp $
+ * $Id: util.c,v 1.61 2000-02-20 13:49:09 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -343,7 +343,11 @@ nmz_isnumstr(const char *str)
     }
 
     for (p = str; *p != '\0'; p++) {
-	if (! isdigit((int)*p)) {
+	/*
+	 * FIXME: We cannot use isdigit() because it doesn't
+	 * work on a poor system. [namazu-dev 1718] 
+	 */
+	if (! (*p >= '0' && *p <= '9')) {
 	    return 0;
 	}
     }

@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.67 2001-12-17 06:06:22 knok Exp $
+ * $Id: cgi.c,v 1.68 2001-12-21 03:30:41 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -491,18 +491,21 @@ process_cgi_var_idxname(char *value, struct cgiarg *ca)
 
 	if ((x = (char *)strchr(pp, (int)','))) {
 	    *x = '\0';
-	    strcpy(name, pp);
+	    strncpy(name, pp, BUFSIZE);
+	    name[BUFSIZE - 1] - '\0';
 	    pp = x + 1;
 	} else {
-	    strcpy(name, pp);
+	    strncpy(name, pp, BUFSIZE);
+	    name[BUFSIZE - 1] - '\0';
 	    pp += strlen(pp);
 	}
 	validate_idxname(name);
 	remove_ending_slashes(name);
 
-	strcpy(tmp, nmz_get_defaultidx());
-	strcat(tmp, "/");
-	strcat(tmp, name);
+	strncpy(tmp, nmz_get_defaultidx(), BUFSIZE);
+	strncat(tmp, "/", BUFSIZE - strlen(tmp));
+	strncat(tmp, name, BUFSIZE - strlen(tmp));
+	tmp[BUFSIZE -1] = '\0';
 	if (nmz_add_index(tmp) != SUCCESS) {
 	    nmz_warn_printf("invalid idxname: %s", name);
 	}

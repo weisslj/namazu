@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.68 2001-12-12 09:54:48 knok Exp $
+ * $Id: form.c,v 1.69 2001-12-21 03:30:41 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -223,7 +223,7 @@ select_option(char *s, const char *name, const char *subquery)
 
 		p = value + strlen("field:");
 		n = strspn(p, FIELD_SAFE_CHARS);
-		if (n > BUFSIZE) n = BUFSIZE;
+		if (n >= BUFSIZE) n = BUFSIZE - 1;
 		strncpy(field, p, n);
 		field[n] = '\0'; /* Hey, don't forget this after strncpy()! */
 		p += n;
@@ -285,10 +285,10 @@ check_checkbox(char *str)
             char name[BUFSIZE], *x;
             if ((x = (char *)strchr(pp, (int)','))) {
                 *x = '\0';
-                strncpy(name, pp, BUFSIZE);
+                strncpy(name, pp, BUFSIZE - 1);
                 pp = x + 1;
             } else {
-                strncpy(name, pp, BUFSIZE);
+                strncpy(name, pp, BUFSIZE - 1);
                 pp += strlen(pp);
             }
             for (i = 0; i < nmz_get_idxnum(); i++) {
@@ -345,8 +345,8 @@ read_headfoot(const char *fname)
 	nmz_warn_printf("%s: %s", fname, strerror(errno));
 	return NULL;
     } 
-    strncpy(tmpfname, fname, BUFSIZE);
-    strncat(tmpfname, suffix, BUFSIZE);
+    strncpy(tmpfname, fname, BUFSIZE - 1);
+    strncat(tmpfname, suffix, BUFSIZE - strlen(tmpfname) - 1);
 
     buf = nmz_readfile(tmpfname); /* buf is allocated in nmz_readfile. */
     if (buf == NULL) { /* failed */

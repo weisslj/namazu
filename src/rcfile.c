@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.33 2001-12-04 09:11:08 knok Exp $
+ * $Id: rcfile.c,v 1.34 2001-12-21 03:30:41 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -371,7 +371,7 @@ get_rc_arg(const char *line, char *arg)
     *arg = '\0';
     if (*line != '"') {
 	int n = strcspn(line, " \t");
-	if (n > BUFSIZE) n = BUFSIZE;
+	if (n >= BUFSIZE) n = BUFSIZE - 1;
 	strncpy(arg, line, n);
 	arg[n] = '\0';     /* Hey, don't forget this after strncpy()! */
 	return n;
@@ -381,7 +381,7 @@ get_rc_arg(const char *line, char *arg)
 	n = 1;
 	do {
 	    int nn = strcspn(line, "\"\\");
-	    if (nn > (BUFSIZE - strlen(arg))) nn = BUFSIZE - strlen(arg);
+	    if (nn >= (BUFSIZE - strlen(arg))) nn = BUFSIZE - strlen(arg) - 1;
 	    strncat(arg, line, nn);
 	    n += nn;
 	    line += nn;
@@ -415,10 +415,10 @@ replace_home(char *str)
 	char *home;
 	/* Checke a home directory */
 	if ((home = getenv("HOME")) != NULL) {
-	    strncpy(tmp, home, BUFSIZE);
-	    strncat(tmp, "/", BUFSIZE - strlen(tmp));
-	    strncat(tmp, str + strlen("~/"), BUFSIZE - strlen(tmp));
-	    strncpy(str, tmp, BUFSIZE);
+	    strncpy(tmp, home, BUFSIZE - 1);
+	    strncat(tmp, "/", BUFSIZE - strlen(tmp) - 1);
+	    strncat(tmp, str + strlen("~/"), BUFSIZE - strlen(tmp) - 1);
+	    strncpy(str, tmp, BUFSIZE - 1);
 	    return;
 	}
     }
@@ -507,7 +507,7 @@ get_rc_args(const char *line)
 	    errmsg = _("invalid directive name");
 	    return 0;
 	}
-	if (n > BUFSIZE) n = BUFSIZE;
+	if (n >= BUFSIZE) n = BUFSIZE - 1;
 	strncpy(directive, line, n);
 	directive[n] = '\0';  /* Hey, don't forget this after strncpy()! */
 	list = add_strlist(list, directive);
@@ -663,7 +663,7 @@ load_rcfile(const char *fname)
 	return FAILURE;
     }
 
-    while (fgets(buf, BUFSIZE, fp) != NULL) {
+    while (fgets(buf, BUFSIZE - 1, fp) != NULL) {
 	int current_lineno = lineno;
 	
 	do {
@@ -673,7 +673,7 @@ load_rcfile(const char *fname)
 		int remaining;
 		
 		buf[strlen(buf) - 1] = '\0'; /* Remove ending \ */
-		remaining = BUFSIZE - strlen(buf);
+		remaining = BUFSIZE - strlen(buf) - 1;
 		if (fgets(buf + strlen(buf), remaining, fp) == NULL) {
 		    nmz_chomp(buf);
 		    break;
@@ -738,9 +738,9 @@ load_rcfiles(void)
 	    }
 	} else {
 	    char fname[BUFSIZE];
-	    strncpy(fname, namazurcdir, BUFSIZE);
+	    strncpy(fname, namazurcdir, BUFSIZE - 1);
 	    strncat(fname, "/namazurc",
-		    BUFSIZE - strlen(fname));
+		    BUFSIZE - strlen(fname) - 1);
 	    /* 
 	 * Load the file only if it exists.
 	 */
@@ -759,9 +759,9 @@ load_rcfiles(void)
 	char *home = getenv("HOME");
 	if (home != NULL) {
 	    char fname[BUFSIZE];
-	    strncpy(fname, home, BUFSIZE);
+	    strncpy(fname, home, BUFSIZE - 1);
 	    strncat(fname, "/.namazurc",
-		    BUFSIZE - strlen(fname));
+		    BUFSIZE - strlen(fname) - 1);
 	    /* 
 	     * Load the file only if it exists.
 	     */

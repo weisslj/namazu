@@ -1,5 +1,5 @@
 /*
- * $Id: result.c,v 1.63 2001-12-04 09:11:08 knok Exp $
+ * $Id: result.c,v 1.64 2001-12-21 03:30:41 knok Exp $
  * 
  * Copyright (C) 1989, 1990 Free Software Foundation, Inc.
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
@@ -180,19 +180,19 @@ encode_entity(char *str)
     int i;
     char tmp[BUFSIZE];
 
-    strncpy(tmp, str, BUFSIZE);
+    strncpy(tmp, str, BUFSIZE - 1);
     strcpy(str, "");
     for (i = 0; tmp[i]; i++) {
 	if (tmp[i] == '<') {
-	    strncat(str, "&lt;", BUFSIZE - strlen(str));
+	    strncat(str, "&lt;", BUFSIZE - strlen(str) - 1);
 	} else if (tmp[i] == '>') {
-	    strncat(str, "&gt;", BUFSIZE - strlen(str));
+	    strncat(str, "&gt;", BUFSIZE - strlen(str) - 1);
 	} else if (tmp[i] == '&') {
-	    strncat(str, "&amp;", BUFSIZE - strlen(str));
+	    strncat(str, "&amp;", BUFSIZE - strlen(str) - 1);
 	} else if (tmp[i] == '"') {
-	    strncat(str, "&quot;", BUFSIZE - strlen(str));
+	    strncat(str, "&quot;", BUFSIZE - strlen(str) - 1);
 	} else {
-	    if (strlen(str) < BUFSIZE)
+	    if (strlen(str) < BUFSIZE - 1)
 		strncat(str, tmp + i, 1);
 	}
     }
@@ -214,7 +214,7 @@ emphasize(char *str)
 	if (nmz_is_query_op(nmz_get_querytoken(i)))
 	    continue;
 
-	strncpy(key, nmz_get_querytoken(i), BUFSIZE);
+	strncpy(key, nmz_get_querytoken(i), BUFSIZE - 1);
 
 	if (strchr(key, '\t')) { /* for phrase search */
 	    nmz_tr(key, "\t", " ");
@@ -275,8 +275,8 @@ compose_result(struct nmz_data d, int counter,
 
     strcpy(r, "\t");  /* '\t' has an important role cf. html_print() */
 
-    strncpy(achars, FIELD_SAFE_CHARS, BUFSIZE);
-    strncat(achars, ":", BUFSIZE - strlen(achars));  /* for namazu::score, namazu::counter */
+    strncpy(achars, FIELD_SAFE_CHARS, BUFSIZE - 1);
+    strncat(achars, ":", BUFSIZE - strlen(achars) - 1);  /* for namazu::score, namazu::counter */
 
     do {
 	char *pp;
@@ -297,7 +297,7 @@ compose_result(struct nmz_data d, int counter,
 		p += 2;
 	    }
 	} else {
-	    strncat(r, p, BUFSIZE);
+	    strncat(r, p, BUFSIZE - strlen(r) - 1);
 	    break;
 	}
     } while (1);

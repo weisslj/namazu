@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.89 2001-12-05 08:33:08 knok Exp $
+ * $Id: output.c,v 1.90 2001-12-21 03:30:41 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -309,15 +309,15 @@ load_nmz_result(const char *basedir)
     char fname[BUFSIZE], lang_suffix[BUFSIZE], *buf;
 
     nmz_pathcat(basedir, NMZ.result);
-    strcpy(fname, NMZ.result);
-    strcat(fname, ".");
-    strcat(fname, get_templatesuffix());  /* usually "normal" */
+    strncpy(fname, NMZ.result, BUFSIZE - 1);
+    strncat(fname, ".", BUFSIZE - strlen(fname) - 1);
+    strncat(fname, get_templatesuffix(), BUFSIZE - strlen(fname) - 1);  /* usually "normal" */
 
     if (nmz_choose_msgfile_suffix(fname, lang_suffix) != SUCCESS) {
 	nmz_warn_printf("%s: %s", fname, strerror(errno));
 	return NULL;
     } 
-    strcat(fname, lang_suffix);
+    strncat(fname, lang_suffix, BUFSIZE - strlen(fname) - 1);
 
     /* buf is allocated in nmz_readfile. */
     buf = nmz_readfile(fname); 
@@ -633,8 +633,8 @@ print_msgfile(const char *fname) {
     if (nmz_choose_msgfile_suffix(fname, suffix) == SUCCESS) {
 	char *buf;
 
-	strcpy(tmpfname, fname);
-	strcat(tmpfname, suffix);
+	strncpy(tmpfname, fname, BUFSIZE - 1);
+	strncat(tmpfname, suffix, BUFSIZE - strlen(tmpfname) - 1);
 
 	buf = nmz_readfile(tmpfname); /* buf is allocated in nmz_readfile. */
 	if (buf == NULL) {
@@ -679,7 +679,7 @@ print_errmsg(int errid)
 {
     char *errmsg = nmz_strerror(errid);
     char buf[BUFSIZE];
-    sprintf(buf, _("	<h2>Error!</h2>\n<p>%s</p>\n"), errmsg);
+    snprintf(buf, BUFSIZE - 1, _("	<h2>Error!</h2>\n<p>%s</p>\n"), errmsg);
     html_print(buf);
 }
 
@@ -817,8 +817,8 @@ puts_entitize(char *str)
 void 
 set_emphasis_tags(const char *start_tag, const char *end_tag)
 {
-    strncpy(emphasis_start_tag, start_tag, BUFSIZE);
-    strncpy(emphasis_end_tag,   end_tag, BUFSIZE);
+    strncpy(emphasis_start_tag, start_tag, BUFSIZE - 1);
+    strncpy(emphasis_end_tag,   end_tag, BUFSIZE - 1);
 }
 
 char *
@@ -836,7 +836,7 @@ get_emphasis_tag_end(void)
 void
 set_contenttype(const char *str)
 {
-    strncpy(contenttype, str, BUFSIZE);
+    strncpy(contenttype, str, BUFSIZE - 1);
 }
 
 void 

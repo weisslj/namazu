@@ -234,15 +234,14 @@ mknmz は対象ファイルの文書形式を自動で判別して、適切なフィル
 <dt>bzip2.pl
 <dd>bzip2で圧縮されたファイルを扱う
 <dd>必需品: <a
-href="http://sources.redhat.com/bzip2/">bzip2</a> コマン
-ド
+href="http://sources.redhat.com/bzip2/">bzip2</a> コマンド
 
 <dt>compress.pl
 <dd>compressで圧縮されたファイルを扱う
 <dd>必需品: compressコマンド
 
 <dt>excel.pl
-<dd>Excel文書を扱う
+<dd>Microsoft Excel文書を扱う
 <dd>必需品: <a href="http://www.xlhtml.org/">xlHtml</a>, 
 <a href="http://www.ff.iij4u.or.jp/~nrt/lv/">lv</a> (Excel 97/98文書の場合)
 <dd>代替品: <a href="http://www.dehenken.co.jp/products/doccat/">doccat</a>
@@ -274,7 +273,7 @@ href="http://www.h14m.org/">ハイパー日記システム・プロジェクト</a>か
 <dd>必需品: なし
 
 <dt>msword.pl
-<dd>Word文書を扱う (日本語版は Word 97, 98, 2000)
+<dd>Microsoft Word文書を扱う (日本語版は Word 97, 98, 2000)
 <dd>必需品: <a href="http://wvWare.sourceforge.net/">wvWare</a>, 
 <a href="http://www.ff.iij4u.or.jp/~nrt/lv/">lv</a>
 <dd>代替品: <a href="http://www.dehenken.co.jp/products/doccat/">doccat</a>
@@ -284,10 +283,11 @@ href="http://www.h14m.org/">ハイパー日記システム・プロジェクト</a>か
 <dd>必需品: <a href="http://www.dehenken.co.jp/products/doccat/">doccat</a>
 
 <dt>pdf.pl
-<dd>PDFファイルを扱う
+<dd>PDF 文書を扱う
 <dd>必需品: <a href="http://www.foolabs.com/xpdf/">xpdf</a>
-に付属の pdftotextコマンド
-(日本語を扱う場合、--with-japaneseでconfigureされたものが必要)
+(バージョン 0.91 を推奨)に付属の pdftotextコマンド
+<dd>注意: 日本語の PDF 文書を扱う場合、--enable-japanese で configure 
+されたものが必要
 
 <dt>rfc.pl
 <dd>RFCのファイルを扱う
@@ -299,7 +299,7 @@ href="http://www.h14m.org/">ハイパー日記システム・プロジェクト</a>か
 href="http://www.cs.purdue.edu/homes/trinkle/detex/">detex</a>
 
 <dt>powerpoint.pl
-<dd>PowerPoint 97, 2000 の文書を扱う
+<dd>Microsoft PowerPoint 97, 2000文書を扱う
 <dd>必需品: <a href="http://www.dehenken.co.jp/products/doccat/">doccat</a>
 
 <dt>taro.pl
@@ -319,22 +319,22 @@ href="http://www.cs.purdue.edu/homes/trinkle/detex/">detex</a>
 <dl>
 
 <dt>ichitaro456.pl
-<dd>一太郎 4, 5, 6 のファイルを扱う
-<dd>必需品: <a href="http://www.vector.co.jp/soft/dl/dos/writing/s0013972.html">
+<dd>一太郎 4, 5, 6 の文書を扱う
+<dd>必需品: <a href="http://www.vector.co.jp/soft/dos/writing/s0013972.html">
 JSTXT</a>
-<dd>注意: jstxt.exe は Windows用のツールです。
+<dd>注意: JSTXT は MS-DOS用のツールです。
 
 <dt>oleexcel.pl
-<dd>Excelのファイルを扱う
-<dd>必需品: Excel
+<dd>Microsoft Excel文書を扱う
+<dd>必需品: Microsoft Excel 97
 
 <dt>olemsword.pl
-<dd>Word文書を扱う
-<dd>必需品: Word
+<dd>Microsoft Word文書を扱う
+<dd>必需品: Microsoft Word 97 もしくは 98
 
 <dt>olepowerpoint.pl
-<dd>Power Point のファイルを扱う
-<dd>必需品: Power Point
+<dd>Microsoft PowerPoint文書を扱う
+<dd>必需品: Microsoft PowerPoint 97
 </dl>
 
 
@@ -646,8 +646,9 @@ CGI変数 langを用いるときは .namazurc に Lang の設定をしては
 
 <p>
 bnamazu は Webブラウザと連携して検索を行うツールです。検索結
-果を Webブラウザ (標準では lynx) に渡して閲覧できます。コマ
-ンド行から次のように実行します。
+果を Webブラウザ (標準では 
+<a href="http://www.lynx.browser.org/">lynx</a> ) に渡して
+閲覧できます。コマンド行から次のように実行します。
 </p>
 
 <p>
@@ -945,7 +946,7 @@ Tknamazu および namazu.el から検索するときは必ず後者で指定します。
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: manual.html,v 1.51 2000-10-12 05:51:19 knok Exp $
+$Id: manual.html,v 1.52 2000-10-12 08:03:37 rug Exp $
 </div>
 <address>
 developers@namazu.org

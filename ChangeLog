@@ -1,5 +1,16 @@
 2000-01-07  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/output.c (print_errmsg): Prototyped.
+
+	* nmz/search.c (normalize_idxnames): Prototyped.
+
+	* nmz/query.c: Include "query.h"
+
+	* nmz/var.h: Remove prototypes of unused variable.
+
+	* nmz/search.c (open_phrase_index_files): Use strerror().
+	Include <errno.h>
+
 	* src/output.c (print_msgfile): Use strerror().
 	Include <errno.h>
 	Add copyright notice.

@@ -10,7 +10,5 @@ extern char CONFDIR[];
 
 extern struct nmz_names NMZ;
 extern struct nmz_files Nmz;
-extern struct nmz_indices   Idx;
-extern struct nmz_query     Query;
 
 #endif /* _VARIABLE_H */

@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.47 2000-01-07 09:06:20 satoru Exp $
+ * $Id: search.c,v 1.48 2000-01-07 09:33:56 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -23,6 +23,7 @@
  * 
  */
 
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -91,21 +92,7 @@ static void do_logging ( const char * query, int n );
 static NmzResult nmz_search_sub ( NmzResult hlist, const char *query, int n );
 static void make_fullpathname_index ( int n );
 static void remove_quotes(char *str);
-
-void 
-free_hitnums(struct nmz_hitnumlist *hn)
-{
-    struct nmz_hitnumlist *tmp;
-
-    for (; hn != NULL; hn = tmp) {
-	tmp = hn->next;
-	free(hn->word);
-	if (hn->phrase != NULL) { /* it has phrases */
-	    free_hitnums(hn->phrase);
-	}
-	free(hn);
-    }
-}
+static void normalize_idxnames(void);
 
 /*
  * Show the status for debug use
@@ -370,13 +357,13 @@ open_phrase_index_files(FILE **phrase, FILE **phrase_index)
 {
     *phrase = fopen(NMZ.p, "rb");
     if (*phrase == NULL) {
-        nmz_debug_printf("%s: cannot open file.\n", NMZ.p);
+        nmz_debug_printf("%s: %s", NMZ.p, strerror(errno));
         return 1;
     }
 
     *phrase_index = fopen(NMZ.pi, "rb");
     if (*phrase_index == NULL) {
-        nmz_debug_printf("%s: cannot open file.\n", NMZ.pi);
+        nmz_debug_printf("%s: %s", NMZ.pi, strerror(errno));
         return 1;
     }
     return 0;
@@ -899,7 +886,8 @@ binsearch(const char *key, int prefix_match_mode)
 	nmz_chomp(term);
 
 	nmz_debug_printf("searching: %s", term);
-	for (e = 0, i = 0; *(term + i) != '\0' && *(tmpkey + i) != '\0' ; i++) {
+	for (e = 0, i = 0; *(term + i) != '\0' && *(tmpkey + i) != '\0' ; i++)
+	{
 	    /*
 	     * compare in unsigned. 
 	     * because they could be 8 bit characters (0x80 or upper).
@@ -1082,3 +1070,19 @@ do_search(const char *key, NmzResult val)
 
     return val;
 }
+
+void 
+free_hitnums(struct nmz_hitnumlist *hn)
+{
+    struct nmz_hitnumlist *tmp;
+
+    for (; hn != NULL; hn = tmp) {
+	tmp = hn->next;
+	free(hn->word);
+	if (hn->phrase != NULL) { /* it has phrases */
+	    free_hitnums(hn->phrase);
+	}
+	free(hn);
+    }
+}
+

@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.45 2000-01-07 09:06:23 satoru Exp $
+ * $Id: output.c,v 1.46 2000-01-07 09:33:59 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -87,6 +87,7 @@ static void print_hitnum_all_idx ( void );
 static void print_hitnum ( int n );
 static void print_msgfile ( const char *fname );
 static void print_range ( NmzResult hlist );
+static void print_errmsg(int errid);
 
 /*
  * Print s to stdout with processing for emphasizing and entity encoding 

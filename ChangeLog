@@ -1,3 +1,8 @@
+2002-09-03  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* tests/namazu-cgi-8: Added an another XSS checking.
+	(Reported by HANAI Akira, thank you)
+
 2002-09-02  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* tests/*: Added log markings.
@@ -7632,4 +7637,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.972 2002-09-02 05:23:38 knok Exp $
+$Id: ChangeLog,v 1.973 2002-09-03 04:48:47 knok Exp $

@@ -20,7 +20,7 @@ DIST_SUBDIRS = conf doc etc filter intl po nmz lib pl src lisp man scripts \
 bin_SCRIPTS = nmz-config
 
 etcdir     = $(pkgdatadir)/etc
-etc_DATA   = README-ja INSTALL-ja namazu.spec.in namazu.spec \
+etc_DATA   = README-es README-ja INSTALL-ja namazu.spec.in namazu.spec \
 	     CREDITS ChangeLog.1 
 
 EXTRA_DIST = $(etc_DATA) maintMakefile

@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.8 2000-02-11 09:44:22 satoru Exp $
+# $Id: mknmz.in,v 1.9 2000-02-11 12:54:26 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -70,7 +70,6 @@ sub main () {
     my $start_time = time;
 
     init();
-    setup_magic();
     load_modules();
     my ($output_dir, @targets) = parse_options();
     load_rcfiles();
@@ -295,16 +294,20 @@ sub load_filters (@) {
 	my $module = $1;
 	require "$module.pl" || die "unable to require \"$module.pl\"\n";;
 	my (@mtypes, $status, $recursive, $pre_codeconv, $post_codeconv);
+
 	eval "\@mtypes =    ${module}::mediatype();";
 	die $@ if $@;  # eval error
 	eval "\$status =    ${module}::status();";
-	die $@ if $@;  # eval error
+	die $@ if $@;
 	eval "\$recursive = ${module}::recursive();";
-	die $@ if $@;  # eval error
+	die $@ if $@;
 	eval "\$pre_codeconv  = ${module}::pre_codeconv();";
-	die $@ if $@;  # eval error
+	die $@ if $@;
 	eval "\$post_codeconv  = ${module}::post_codeconv();";
-	die $@ if $@;  # eval error
+	die $@ if $@;
+	eval "\$post_codeconv  = ${module}::add_magic(\$Magic);";
+	die $@ if $@;
+
 	for my $mt (@mtypes) {
 	    $var::Supported{$mt} = $status;
 	    $var::REQUIRE_ACTIONS{$mt} = $module;
@@ -465,7 +468,7 @@ sub complete_field_info (\%$$\$\$\$) {
 	$fields->{'summary'} = make_summary($contref, $headings, $cfile);
     }
     unless (defined($fields->{'from'}) || defined($fields->{'author'})) {
-	$fields->{'from'} = "(unknown)";
+	$fields->{'from'} = _("unknown");
     }
 }
 
@@ -2069,23 +2072,6 @@ sub write_index_sub () {
     %KeyIndexLast = ();
 
     return $key_count;
-}
-
-sub setup_magic () {
-    $Magic->addSpecials("text/plain; x-type=rfc",
-			"^Network Working Group",
-			"^Request [fF]or Comments",
-			"^Obsoletes:",
-			"^Category:",
-			"^Updates:");
-    $Magic->addFileExts('^rfc\d+\.txt$', 'text/plain; x-type=rfc');
-    $Magic->addFileExts('^draft-(\w*-)+-\d+\.txt$', 'text/plain; x-type=internet-draft');
-    $Magic->addFileExts('^fyi\d+\.txt$' => 'text/plain; x-type=fyi');
-    $Magic->addMagicEntry('0	string		\<!--\ MHonArc		text/html; x-type=mhonarc');
-
-    $Magic->addSpecials("application/x-tex",
-	"^\\\\document(style|class)");
-    $Magic->addFileExts('\\.tex$', 'application/x-tex');
 }
 
 # decide file type from diffrent type ditection

@@ -1,5 +1,18 @@
 2000-02-11  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* scripts/mknmz.in (complete_field_info): Gettextize "unknown".
+	(setup_magic): Abolished.
+
+	* filter/tex.pl (add_magic): Add a magic entry.
+
+	* filter/mhonarc.pl (add_magic): Add a magic entry.
+
+	* filter/rfc.pl (add_magic): Add a magic entry.
+
+	* filter/rfc.pl (rfc_filter): Get the author name.
+
+	* filter/*.pl: Add add_magic() function.
+	
 	* scripts/mknmz.in (parse_options): Gettextize a message.
 	(load_document): Fix the serious bug reported in [namazu-dev 1526].
 

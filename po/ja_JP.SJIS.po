@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: namazu 2.0\n"
-"POT-Creation-Date: 2000-02-11 17:07+0900\n"
+"POT-Creation-Date: 2000-02-11 21:53+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>\n"
 "Language-Team: Japanese <satoru-t@is.aist-nara.ac.jp>\n"
@@ -257,39 +257,43 @@ msgstr "使い方: namazu [オプション] <検索式> [インデックス]...\n"
 msgid "Try `namazu --help' for more information.\n"
 msgstr "`namazu --help' でより詳しい情報が表\示されます\n"
 
-#: scripts/mknmz.in:106
+#: scripts/mknmz.in:105
 msgid "target file: "
 msgstr "対象ファイル: "
 
-#: scripts/mknmz.in:159
+#: scripts/mknmz.in:158
 msgid "Reading rcfile: "
 msgstr "rc ファイルの読み込み中: "
 
-#: scripts/mknmz.in:193
+#: scripts/mknmz.in:192
 msgid "Checkpoint reached: re-exec mknmz...\n"
 msgstr "チェックポイントに到達しました。mknmz を再実行します...\n"
 
-#: scripts/mknmz.in:333
+#: scripts/mknmz.in:336
 msgid "after load_document: "
 msgstr "load_document 実行後: "
 
-#: scripts/mknmz.in:620
+#: scripts/mknmz.in:471
+msgid "unknown"
+msgstr ""
+
+#: scripts/mknmz.in:623
 msgid "Detected type: "
 msgstr "検出されたタイプ: "
 
-#: scripts/mknmz.in:632 scripts/mknmz.in:1185
+#: scripts/mknmz.in:633 scripts/mknmz.in:1185
 msgid "Unsupported data type "
 msgstr "未サポートのデータタイプ "
 
-#: scripts/mknmz.in:637
+#: scripts/mknmz.in:638
 msgid "Using "
 msgstr "以下のモジュールを使用 "
 
-#: scripts/mknmz.in:639
+#: scripts/mknmz.in:640
 msgid "unable to require "
 msgstr "以下のモジュールが require できません "
 
-#: scripts/mknmz.in:649
+#: scripts/mknmz.in:650
 msgid "Faild to call "
 msgstr "呼び出しに失敗 "
 

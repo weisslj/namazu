@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: pdf.pl,v 1.16 2000-02-06 07:36:42 satoru Exp $
+# $Id: pdf.pl,v 1.17 2000-02-11 12:54:22 satoru Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -48,6 +48,10 @@ sub pre_codeconv() {
 
 sub post_codeconv () {
     return 1;
+}
+
+sub add_magic ($) {
+    return;
 }
 
 sub filter ($$$$$) {

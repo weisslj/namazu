@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: rfc.pl,v 1.13 2000-02-06 07:36:42 satoru Exp $
+# $Id: rfc.pl,v 1.14 2000-02-11 12:54:22 satoru Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -48,6 +48,22 @@ sub post_codeconv () {
     return 0;
 }
 
+sub add_magic ($) {
+    my ($magic) = @_;
+
+    $magic->addSpecials("text/plain; x-type=rfc",
+			"^Network Working Group",
+			"^Request [fF]or Comments",
+			"^Obsoletes:",
+			"^Category:",
+			"^Updates:");
+    $magic->addFileExts('^rfc\d+\.txt$', 'text/plain; x-type=rfc');
+    $magic->addFileExts('^draft-(\w*-)+-\d+\.txt$', 'text/plain; x-type=internet-draft');
+    $magic->addFileExts('^fyi\d+\.txt$' => 'text/plain; x-type=fyi');
+
+    return;
+}
+
 sub filter ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
       = @_;
@@ -65,19 +81,30 @@ sub filter ($$$$$) {
     return undef;
 }
 
-# It's a halway filter because of fuzziness.
+# It's not perfect because of fuzziness in RFC documents.
 sub rfc_filter ($$$) {
     my ($contref, $weighted_str, $fields) = @_;
 
     $$contref =~ s/^\s+//s;
-    $$contref =~ s/((.+\n)+)\s+(.*)//;
-    my $title = $fields->{'title'};
-    $title = $3 if defined $3;
-    html::encode_entity(\$title);
-    $fields->{'title'} = $title;
-    $$weighted_str .= "\x7f1\x7f$1\x7f/1\x7f\n" if defined $1;
-    my $weight = $conf::Weight{'html'}->{'title'};
-    $$weighted_str .= "\x7f$weight\x7f$title\x7f/$weight\x7f\n";
+
+    # Get an author name first.
+    if ($$contref =~ /^Network Working Group\s+(\S.*\S)\s*$/m) {
+	print "// $1\n";
+	$fields->{'author'} = $1;
+    }
+
+    # Handle the header.
+    if ($$contref =~ s/((.+\n)+)\s+(.*)//) {
+	$$weighted_str .= "\x7f1\x7f$1\x7f/1\x7f\n" if defined $1;
+
+	# Get the title.
+	my $title = $3 if defined $3;
+        html::encode_entity(\$title);
+	$fields->{'title'} = $title;
+
+	my $weight = $conf::Weight{'html'}->{'title'};
+	$$weighted_str .= "\x7f$weight\x7f$title\x7f/$weight\x7f\n";
+    }
 
     # Get Summary or Introduction and put it at the beginning 
     # for summarization.

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: tex.pl,v 1.3 2000-02-06 07:36:42 satoru Exp $
+# $Id: tex.pl,v 1.4 2000-02-11 12:54:22 satoru Exp $
 # Copyright (C) 1999 Satoru Takabayashi ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -47,6 +47,17 @@ sub pre_codeconv() {
 
 sub post_codeconv () {
     return 0;
+}
+
+sub add_magic ($) {
+    my ($magic) = @_;
+
+    $magic->addSpecials("application/x-tex",
+			"^\\\\document(style|class)",
+			"^\\\\begin{document}",
+			"^\\\\section{[^}]+}");
+    $magic->addFileExts('\\.tex$', 'application/x-tex');
+    return;
 }
 
 sub filter ($$$$$) {

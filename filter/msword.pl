@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: msword.pl,v 1.13 2000-02-11 09:44:19 satoru Exp $
+# $Id: msword.pl,v 1.14 2000-02-11 12:54:21 satoru Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -50,6 +50,10 @@ sub pre_codeconv() {
 
 sub post_codeconv () {
     return 0;
+}
+
+sub add_magic ($) {
+    return;
 }
 
 sub filter ($$$$$) {

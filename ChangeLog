@@ -1,3 +1,10 @@
+2003-07-15  Yoshinori TAKESAKO  <takesako@namazu.org>
+
+	* doc/{en,ja}/tutorial.html: Added the description about MeCab.
+	MeCab is yet another part-of-speech and morphological analyzer 
+	which developed based on ChaSen. See the following for details.
+	http://cl.aist-nara.ac.jp/~taku-ku/software/mecab/
+
 2003-07-15  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* nmz/version.h.in: Added a new file for getting version API.
@@ -31,6 +38,10 @@
 	Syntax: "module_mecab" means using perl binding module of MeCab.
 	MeCab is Yet Another Part-of-Speech and Morphological Analyzer.
 	http://cl.aist-nara.ac.jp/~taku-ku/software/mecab/
+
+2003-07-11  Yukio USUDA <usu@namazu.org>
+
+	* doc/{en,ja}/tutorial.html: Update
 
 2003-07-09  Makoto Fujiwara  <makoto@ki.nu>
 
@@ -8026,4 +8037,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1038 2003-07-15 10:13:19 knok Exp $
+$Id: ChangeLog,v 1.1039 2003-07-16 05:08:39 takesako Exp $

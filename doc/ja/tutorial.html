@@ -116,8 +116,8 @@ CGIとして利用する。(C言語で書かれている)
 <th>その他</th>
 </tr>
 <tr><td>Perl</td><td>Perl 言語処理系
-<td>○</td><td>5.6.1</td><td>&gt;= 5.004</td>
-<td>perl-5.6.1.tar.gz</td>
+<td>○</td><td>5.8.0</td><td>&gt;= 5.004</td>
+<td>perl5.005_03.tar.gz</td>
 <td>Larry Wall
 GNU CPAN</td>
 <td> 
@@ -128,25 +128,26 @@ CPAN</a></td>
 
 <tr><td>nkf</td><td>Network Kanji Filter 漢字コード 
 変換系</td>
-  <td>○</td><td>1.92</td><td>1.71</td>
+  <td>○</td><td>2.0.2</td><td>&gt;= 1.71</td>
   <td rowspan=2>
-  <a href="ftp://ftp.ie.u-ryukyu.ac.jp/pub/software/kono/nkf171.shar">nkf171.shar</a></td>
-  <td rowspan=2>河野眞治</td>
+  <a href="http://www01.tcp-ip.or.jp/%7Efurukawa/nkf_utf8/nkf202.tar.gz">nkf202.tar.gz</a></td>
+  <td rowspan=2>河野眞治<br>
+  <a href="http://www01.tcp-ip.or.jp/%7Efurukawa/">古川令</a><br></td>
   <td rowspan=2>
-  <a href="ftp://ftp.ie.u-ryukyu.ac.jp/pub/software/kono/">琉球大学</a></td>
-  <td rowspan=2>1.90, 1.92 は問題があるので 1.71 を使う(脚注参照)</td>
+  <a href="http://www01.tcp-ip.or.jp/%7Efurukawa/nkf_utf8/">nkf_utf8</a></td>
+  <td rowspan=2>1.90, 1.92 は問題があるので最新版もしくは 1.71 を使う(脚注参照)</td>
   </tr>
 
 <tr><td>NKF</td><td>nkf Perl モジュール化</td>
-  <td>▲</td><td>1.92</td><td>1.71</td>
+  <td>▲</td><td>2.0.2</td><td>&gt;= 1.71</td>
 
   </tr>
 
 <tr>
  <td><a href="http://kakasi.namazu.org/index.html">KAKASI</a></td>
- <td>日本語・ ローマ字 変換系<td>△</td><td>2.3.3</td><td>&gt;= 2.x</td>
- <td><a href="http://kakasi.namazu.org/stable/kakasi-2.3.3.tar.gz">
- kakasi-2.3.3.tar.gz</a></td>
+ <td>日本語・ ローマ字 変換系<td>△</td><td>2.3.4</td><td>&gt;= 2.x</td>
+ <td><a href="http://kakasi.namazu.org/stable/kakasi-2.3.4.tar.gz">
+ kakasi-2.3.4.tar.gz</a></td>
  <td>
  <a href="http://kakasi.namazu.org/">KAKASI Project</a></td>
  <td>
@@ -157,11 +158,12 @@ CPAN</a></td>
 <tr>
   <td><a href="http://www.daionet.gr.jp/~knok/kakasi/">Text::Kakasi</a></td>
   <td>KAKASI Perl モジュール化<td>▲</td>
-  <td>1.05</td><td>&lt;=</td>
+  <td>2.04</td><td>&gt;= 1.05</td>
   <td>
-  <a href="http://www.daionet.gr.jp/~knok/kakasi/Text-Kakasi-1.04.tar.gz">Text-Kakasi-1.05.tar.gz</a></td>
-  <td><a href="http://www.daionet.gr.jp/~knok/kakasi/">野首貴嗣</a></td>
-  <td><a href="http://www.daionet.gr.jp/~knok/kakasi/">Text::Kakasi</a>
+  <a href="http://search.cpan.org/CPAN/authors/id/D/DA/DANKOGAI/Text-Kakasi-2.04.tar.gz">Text-Kakasi-2.04.tar.gz</a></td>
+  <td><a href="http://www.daionet.gr.jp/~knok/kakasi/">野首貴嗣</a><br>
+  <a href="http://search.cpan.org/dist/Text-Kakasi/">小飼弾</a><br></td>
+  <td><a href="http://search.cpan.org/dist/Text-Kakasi/">CPAN dist</a>
   </td>
   <td><br></td>
   </tr>
@@ -170,8 +172,8 @@ CPAN</a></td>
   <td>Chasen</td>
   <td>(茶筌) -- 日本語 形態素 解析器</td>
   <td>△</td>
-  <td>2.2.8</td><td>&gt;= 2.02</td><td>
-  <a href="http://chasen.aist-nara.ac.jp/stable/chasen/chasen-2.2.8.tar.gz">chasen-2.2.8.tar.gz</a>
+  <td>2.3.1</td><td>&gt;= 2.02</td><td>
+  <a href="http://chasen.aist-nara.ac.jp/stable/chasen/chasen-2.3.1.tar.gz">chasen-2.3.1.tar.gz</a>
   </td><td>
   <a href="http://chasen.aist-nara.ac.jp/">奈良先端科学技術大学院大学</a>
   </td><td>
@@ -187,18 +189,45 @@ CPAN</a></td>
   <td>1.03</td><td>&lt;=</td><td>
   <a href="http://www.daionet.gr.jp/~knok/chasen/Text-ChaSen-1.03.tar.gz">
   Text-ChaSen-1.03.tar.gz</a></td>
-  <td align=CENTER>
+  <td>
   <a href="http://www.daionet.gr.jp/~knok/chasen/">
   野首貴嗣</a></td>
   <td><a href="http://www.daionet.gr.jp/~knok/chasen/">Text::ChaSen</a></td>
   <td><br></td>
 </tr>
 
+<tr>
+  <td><a href="http://cl.aist-nara.ac.jp/~taku-ku/software/mecab/">MeCab</a></td>
+  <td>(和布蕪) -- 日本語 形態素解析器</td>
+  <td>△</td>
+  <td>0.76</td><td>&gt;= 0.6</td><td>
+  <a href="http://cl.aist-nara.ac.jp/~taku-ku/software/mecab/src/mecab-0.76.tar.gz">
+  mecab-0.76.tar.gz</a></td>
+  <td>
+  <a href="http://cl.aist-nara.ac.jp/~taku-ku/software/mecab/">
+  工藤 拓</a></td>
+  <td><a href="http://cl.aist-nara.ac.jp/~taku-ku/software/mecab/src/">MeCab</a></td>
+  <td>※ experimental support</td>
+</tr>
+
+<tr>
+  <td><a href="http://cl.aist-nara.ac.jp/~taku-ku/software/mecab/bindings.html">mecab-perl</a></td>
+  <td>MeCab Perl モジュール化</td>
+  <td>▲</td>
+  <td>0.76</td><td>&gt;= 0.76</td><td>
+  <a href="http://cl.aist-nara.ac.jp/~taku-ku/software/mecab/bindings/mecab-perl-0.76.tar.gz">
+  mecab-perl-0.76.tar.gz</a></td>
+  <td>
+  <a href="http://cl.aist-nara.ac.jp/~taku-ku/software/mecab/bindings.html">
+  工藤 拓</a></td>
+  <td><a href="http://cl.aist-nara.ac.jp/~taku-ku/software/mecab/bindings/">MeCab</a></td>
+  <td>※ experimental support</td>
+</tr>
 
 <tr><td>
 <a href="http://search.cpan.org/search?mode=module&amp;query=MMagic">File::MMagic</a>
 </td><td>File 種別</td>
-<td>×</td><td>1.13</td><td>&gt;= 1.12</td>
+<td>×</td><td>1.19</td><td>&gt;= 1.12</td>
 <td>File-MMagic-1.12.tar.gz
 <td>
   <a href="http://www.daionet.gr.jp/~knok/">
@@ -218,9 +247,11 @@ KAKASI/ChaSen のどちらかが必要という意味。
 <table cellspacing=0 cellpadding=3 border=1>
 <tr><td>両方用意しておいた場合</td><td>
 (無指定ではわかち書きに KAKASI を使うが、茶筌も
--c オプションをするだけで使用できる)</tr>
+-c オプションをするだけで使用できる)</td>
+</tr>
 <tr><td>片方しか用意していない場合</td><td>
-./configure の時点でどちらを使うかが選ばれます。</tr>
+./configure の時点で KAKASI/ChaSen のどちらを使うかが選ばれます。</td>
+</tr>
 </table>
 
 <li>
@@ -232,6 +263,17 @@ Perl モジュール化で、2.0 の高速化機能を生かすために必要です。
 インストールは <code>perl Makefile.PL; make; make install</code>
 と実行するだけです。
 問題がなければ入れておいた方がいいでしょう。
+
+<li>
+※ MeCabを使用する場合 (Namazu 2.0.13 から実験的にサポート)<br>
+現在は、mknmz の設定ファイル mknmzrc をカスタマイズして使用する必要があります。
+コマンドライン版の mecab を使用する場合は、
+$WAKATI = "mecab -O wakati";
+Perlモジュール版 MeCab を使用する場合は、
+$WAKATI = "module_mecab";
+と書く必要があります。
+ただし、MeCab は現在開発段階にあり、仕様そのものが不安定です。御了承ください。
+
 <li>
 namazu 2.0 以降では ChaSen2 にだけ対応しています。
 
@@ -260,8 +302,7 @@ namazu を ./configure する時に、
 <li>nkf-1.90, 1.92 は
 <a href="http://www.namazu.org/ml/namazu-devel-ja/msg01599.html">
 全角空白の取扱いに問題</a>
-があります。1.71 を使うか
-修正して使うかして下さい。
+があります。最新版を使うか 1.71 を使うかして下さい。
 </ul>
 
 <h2><a name="japanese">日本語環境での利用</a></h2>
@@ -732,6 +773,12 @@ contrib/00readme-namazu.jis に書かれています。
 <dd>「日本語形態素解析器」であるが、KAKASIと同様に「わかち書き」
 (正確には日本語の単語の切出し)に使っている。
 
+<dt>
+<a href="http://cl.aist-nara.ac.jp/~taku-ku/software/mecab/">MeCab (和布蕪)</a>
+<dd>MeCab は、ChaSenを基に開発された高速な形態素解析器です。
+現在 ChaSen とは独立に、工藤さんがフルスクラッチから開発しています。
+解析精度は ChaSen と変わらないにもかかわらず、ChaSen より高速に動作します。
+
 <dt>わかち書き
 <dd>
 日本語 は (英語 と 違って)単語 の 区切り に 空白 を 書いたり は しない。
@@ -826,7 +873,7 @@ perl -MNKF -e ''
   <a href="http://arika.org/linux/tools/namazu-el/">http://arika.org/linux/tools/namazu-el/</a>
 -->
 <dt>Namazu開発版
-  <dd><a href="http://www.namazu.org/unstable/">http://www.namazu.org/unstable/</a>
+  <dd><a href="http://www.namazu.org/development.html">http://www.namazu.org/development.html</a>
 </dl>
 
 
@@ -835,10 +882,10 @@ perl -MNKF -e ''
 <a href="http://www.namazu.org/">Namazu Homepage</a>
 </p>
 <div class="copyright">
-Copyright (C) 2000,2001 Namazu Project. All rights reserved.
+Copyright (C) 2000-2003 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: tutorial.html,v 1.46 2002-01-16 05:13:05 knok Exp $
+$Id: tutorial.html,v 1.47 2003-07-16 05:08:41 takesako Exp $
 </div>
 <address>
 developers@namazu.org

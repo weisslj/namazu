@@ -120,8 +120,8 @@ You need the following softwares to build Namazu 2.0.
 <th>Others</th>
 </tr>
 <tr><td>Perl</td><td>Perl Language
-<td>Required</td><td>5.6.1</td><td> &gt;= 5.004</td>
-<td>perl-5.6.1.tar.gz</td>
+<td>Required</td><td>5.8.0</td><td> &gt;= 5.004</td>
+<td>perl5.005_03.tar.gz</td>
 <td>Larry Wall
 GNU CPAN</td>
 <td> 
@@ -131,25 +131,26 @@ CPAN</a></td>
 </tr>
 
 <tr><td>nkf</td><td>Network Kanji Filter </td>
-  <td>for Japanese processing only</td><td>1.92</td><td>1.71</td>
+  <td>for Japanese processing only</td><td>2.0.2</td><td>&gt;= 1.71</td>
   <td rowspan=2>
-  <a href="ftp://ftp.ie.u-ryukyu.ac.jp/pub/software/kono/nkf171.shar">nkf171.shar</a></td>
-  <td rowspan=2>Shinji Kono</td>
+  <a href="http://www01.tcp-ip.or.jp/%7Efurukawa/nkf_utf8/nkf202.tar.gz">nkf202.tar.gz</a></td>
+  <td rowspan=2>Shinji Kono<br>
+  <a href="http://www01.tcp-ip.or.jp/%7Efurukawa/">Rei FURUKAWA</a><br></td>
   <td rowspan=2>
-  <a href="ftp://ftp.ie.u-ryukyu.ac.jp/pub/software/kono/">University of Ryukuyus</a></td>
+  <a href="http://www01.tcp-ip.or.jp/%7Efurukawa/nkf_utf8/">nkf_utf8</a></td>
   <td rowspan=2>avoid using version 1.90, 1.92 (See notes)</td>
   </tr>
 
 <tr><td>NKF</td><td>nkf Perl Module</td>
-  <td>for Japanese processing only. ++</td><td>1.92</td><td>1.71</td>
+  <td>for Japanese processing only. ++</td><td>2.0.2</td><td>&gt;= 1.71</td>
   </tr>
 
 <tr>
  <td><a href="http://kakasi.namazu.org/index.html">KAKASI</a></td>
  <td>Japanese/Romaji Conversion<td>for Japanese processing
- only. **</td><td>2.3.3</td><td>&gt;= 2.x</td>
- <td><a href="http://kakasi.namazu.org/stable/kakasi-2.3.3.tar.gz">
- kakasi-2.3.3.tar.gz</a></td>
+ only. **</td><td>2.3.4</td><td>&gt;= 2.x</td>
+ <td><a href="http://kakasi.namazu.org/stable/kakasi-2.3.4.tar.gz">
+ kakasi-2.3.4.tar.gz</a></td>
  <td>
  <a href="http://kakasi.namazu.org/">KAKASI Project</a></td>
  <td>
@@ -160,11 +161,12 @@ CPAN</a></td>
 <tr>
   <td><a href="http://www.daionet.gr.jp/~knok/kakasi/">Text::Kakasi</a></td>
   <td>KAKASI Perl Module<td>for Japanese processing only. ++</td>
-  <td>1.05</td><td>&lt;=</td>
+  <td>2.04</td><td>&gt;= 1.05</td>
   <td>
-  <a href="http://www.daionet.gr.jp/~knok/kakasi/Text-Kakasi-1.04.tar.gz">Text-Kakasi-1.05.tar.gz</a></td>
-  <td><a href="http://www.daionet.gr.jp/~knok/kakasi/">NOKUBI Takatsugu</a></td>
-  <td><a href="http://www.daionet.gr.jp/~knok/kakasi/">Text::Kakasi</a>
+  <a href="http://search.cpan.org/CPAN/authors/id/D/DA/DANKOGAI/Text-Kakasi-2.04.tar.gz">Text-Kakasi-2.04.tar.gz</a></td>
+  <td><a href="http://www.daionet.gr.jp/~knok/kakasi/">NOKUBI Takatsugu</a><br>
+  <a href="http://search.cpan.org/dist/Text-Kakasi/">Dan Kogai</a><br></td>
+  <td><a href="http://search.cpan.org/dist/Text-Kakasi/">CPAN dist</a>
   </td>
   <td><br></td>
   </tr>
@@ -173,8 +175,8 @@ CPAN</a></td>
   <td>ChaSen</td>
   <td>(ChaSen) -- Japanese Morphology Analyzer</td>
   <td>for Japanese processing only. **</td>
-  <td>2.2.8</td><td>&gt;= 2.0x</td><td>
-  <a href="http://chasen.aist-nara.ac.jp/stable/chasen/chasen-2.2.8.tar.gz">chasen-2.2.8.tar.gz</a>
+  <td>2.3.1</td><td>&gt;= 2.0x</td><td>
+  <a href="http://chasen.aist-nara.ac.jp/stable/chasen/chasen-2.3.1.tar.gz">chasen-2.3.1.tar.gz</a>
   </td><td>
   <a href="http://chasen.aist-nara.ac.jp/">Nara Institute of Science and Technology </a>
   </td><td>
@@ -197,11 +199,38 @@ CPAN</a></td>
   <td><br></td>
 </tr>
 
+<tr>
+  <td><a href="http://cl.aist-nara.ac.jp/~taku-ku/software/mecab/">MeCab</a></td>
+  <td>Yet Another Japanese Morphology Analyzer</td>
+  <td>for Japanese processing only. **</td>
+  <td>0.76</td><td>&gt;= 0.6</td><td>
+  <a href="http://cl.aist-nara.ac.jp/~taku-ku/software/mecab/src/mecab-0.76.tar.gz">
+  mecab-0.76.tar.gz</a></td>
+  <td>
+  <a href="http://cl.aist-nara.ac.jp/~taku-ku/software/mecab/">
+  Taku Kudo</a></td>
+  <td><a href="http://cl.aist-nara.ac.jp/~taku-ku/software/mecab/src/">MeCab</a></td>
+  <td>*** experimental support</td>
+</tr>
+
+<tr>
+  <td><a href="http://cl.aist-nara.ac.jp/~taku-ku/software/mecab/bindings.html">mecab-perl</a></td>
+  <td>MeCab Perl Module</td>
+  <td>for Japanese processing only. ++</td>
+  <td>0.76</td><td>&gt;= 0.76</td><td>
+  <a href="http://cl.aist-nara.ac.jp/~taku-ku/software/mecab/bindings/mecab-perl-0.76.tar.gz">
+  mecab-perl-0.76.tar.gz</a></td>
+  <td>
+  <a href="http://cl.aist-nara.ac.jp/~taku-ku/software/mecab/bindings.html">
+  Taku Kudo</a></td>
+  <td><a href="http://cl.aist-nara.ac.jp/~taku-ku/software/mecab/bindings/">MeCab</a></td>
+  <td>*** experimental support</td>
+</tr>
 
 <tr><td>
 <a href="http://search.cpan.org/search?mode=module&amp;query=MMagic">File::MMagic</a>
 </td><td>File Type</td>
-<td>Included</td><td>1.13</td><td>&gt;= 1.12</td>
+<td>Included</td><td>1.19</td><td>&gt;= 1.12</td>
 <td>File-MMagic-1.12.tar.gz
 <td>
   <a href="http://www.daionet.gr.jp/~knok/">
@@ -244,6 +273,15 @@ For segmentation, KAKASI is used by default, however, ChaSen can be used by spec
 When executing ./configure, Namazu selects which one to use.</tr>
 </table>
 
+<li>using MeCab (***), it supports experimentally above Namazu 2.0.13.<br>
+It is necessary to customize mknmzrc.
+If you want to use MeCab of command line version,
+write it as $WAKATI = "mecab -O wakati"; .
+And, if you want to use MeCab of Perl module version,
+write it as $WAKATI = "module_mecab"; .
+However, MeCab is in a development stage now 
+and its specification is unstable. 
+
 <li>
 Namazu 2.0x requires ChaSen 2.x.
 The older version of ChaSen 1.x will not work with Namazu 2.0.x.
@@ -265,10 +303,7 @@ manually.
 visible when you run ./configure through $PATH variable. If you add those
 packages later, you have to start over from ./configure.
 <li>nkf-1.90, 1.92 has problem in handling two bytes space character.
-Use 1.71 or 
-<a href="http://www.namazu.org/ml/namazu-devel-ja/msg01599.html">
-patch</a>
-should be applied. 
+Use 1.71 or latest version. 
 </ul>
 
 
@@ -742,6 +777,12 @@ are coded in contrib/mew-nmz.el, and you can find further information in contrib
 <a href="http://chasen.aist-nara.ac.jp/">ChaSen</a>
 <dd>Japanese morphological analyzer. Namazu uses this as a segmentation tool. 
 
+<dt>
+<a href="http://cl.aist-nara.ac.jp/~taku-ku/software/mecab/">MeCab</a>
+<dd>MeCab is yet another part-of-speech and morphological analyzer which developed based on ChaSen.
+Mr. Kudo is developing from the full scratch, independently of ChaSen.
+Although analysis accuracy does not change with ChaSen, it operates at high-speed than ChaSen.
+
 <dt>Segmentation
 <dd>
 Unlike English, Japanese will not put spaces between words. Plain Japanese texts will first be preprocessed so that words are segmented and spaces are put in between. This is called segmentation.
@@ -842,7 +883,7 @@ modules will be used.
   <a href="http://arika.org/linux/tools/namazu-el/">http://arika.org/linux/tools/namazu-el/</a>
 -->
 <dt>Namazu Development version
-  <dd><a href="http://www.namazu.org/unstable/">http://www.namazu.org/unstable/</a>
+  <dd><a href="http://www.namazu.org/development.html">http://www.namazu.org/development.html</a>
 </dl>
 
 
@@ -851,10 +892,10 @@ modules will be used.
 <a href="http://www.namazu.org/">Namazu Homepage</a>
 </p>
 <div class="copyright">
-Copyright (C) 2000,2001 Namazu Project. All rights reserved.
+Copyright (C) 2000-2003 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: tutorial.html,v 1.11 2001-08-08 09:05:44 knok Exp $
+$Id: tutorial.html,v 1.12 2003-07-16 05:08:40 takesako Exp $
 </div>
 <address>
 developers@namazu.org

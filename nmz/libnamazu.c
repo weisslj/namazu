@@ -2,7 +2,7 @@
  * 
  * libnamazu.c - Namazu library api
  *
- * $Id: libnamazu.c,v 1.43 2003-07-17 09:49:59 knok Exp $
+ * $Id: libnamazu.c,v 1.44 2003-07-26 08:25:13 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2003 Namazu Project All rights reserved.
@@ -98,12 +98,6 @@ nmz_free_internal(void)
     nmz_free_aliases();
     nmz_free_replaces();
     nmz_free_field_cache();
-}
-
-char *
-nmz_get_version(void)
-{
-    return((char *)NMZ_VERSION);
 }
 
 void 

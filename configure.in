@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.155 2003-07-15 10:13:19 knok Exp $
+dnl $Id: configure.in,v 1.156 2003-07-26 08:25:13 knok Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -405,7 +405,6 @@ AC_OUTPUT([Makefile
 	   lisp/Makefile
 	   man/Makefile 
 	   nmz/Makefile
-	   nmz/nmzversion.h
 	   pl/Makefile
 	   pl/var.pl
 	   pl/conf.pl

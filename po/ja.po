@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: namazu 2.0\n"
-"POT-Creation-Date: 2000-02-22 22:36+0900\n"
+"POT-Creation-Date: 2000-02-23 22:00+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>\n"
 "Language-Team: Japanese <satoru-t@is.aist-nara.ac.jp>\n"
@@ -210,6 +210,7 @@ msgid ""
 "    -C, --show-config    print current configuration.\n"
 "    -q, --quiet          do not display extra messages except search "
 "results.\n"
+"    -d, --debug          be debug mode.\n"
 "    -v, --version        show the version of namazu and exit.\n"
 "        --help           show this help and exit\n"
 "\n"
@@ -239,16 +240,17 @@ msgstr ""
 "    -f, --config=FILE       設定ファイルを指定する\n"
 "    -C, --show-config       設定を表示する\n"
 "    -q, --quiet             検索結果以外のメッセージを表示しない\n"
+"    -d, --debug             デバッグモード\n"
 "    -v, --version           ヴァージョンを表示する\n"
 "        --help              このヘルプを表示する\n"
 "\n"
 "バグ報告は <%s> へどうぞ\n"
 
-#: src/usage.c:88
+#: src/usage.c:89
 msgid "Usage: namazu [options] <query> [index]...\n"
 msgstr "使い方: namazu [オプション] <検索式> [インデックス]...\n"
 
-#: src/usage.c:89
+#: src/usage.c:90
 msgid "Try `namazu --help' for more information.\n"
 msgstr "`namazu --help' でより詳しい情報が表示されます\n"
 
@@ -662,11 +664,11 @@ msgstr "Perl:"
 msgid "Namazu:"
 msgstr "Namazu:"
 
-#: scripts/mknmz.in:1874
+#: scripts/mknmz.in:1876
 msgid "doing write_phrase_hash() processing.\n"
 msgstr "write_phrase_hash() 実行.\n"
 
-#: scripts/mknmz.in:2101
+#: scripts/mknmz.in:2103
 msgid "doing write_index() processing.\n"
 msgstr "write_index() 実行.\n"
 

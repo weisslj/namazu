@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2000-02-23 17:26+0900\n"
+"POT-Creation-Date: 2000-02-23 22:00+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -201,17 +201,18 @@ msgid ""
 "    -C, --show-config    print current configuration.\n"
 "    -q, --quiet          do not display extra messages except search "
 "results.\n"
+"    -d, --debug          be debug mode.\n"
 "    -v, --version        show the version of namazu and exit.\n"
 "        --help           show this help and exit\n"
 "\n"
 "Report bugs to <%s>.\n"
 msgstr ""
 
-#: src/usage.c:88
+#: src/usage.c:89
 msgid "Usage: namazu [options] <query> [index]...\n"
 msgstr ""
 
-#: src/usage.c:89
+#: src/usage.c:90
 msgid "Try `namazu --help' for more information.\n"
 msgstr ""
 

@@ -1,5 +1,9 @@
 2000-02-23  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* conf/namazurc-sample: Rewrite comments.
+
+	* src/usage.c (show_usage): Add a message for --debug option.
+
 	* scripts/mknmz.in (make_headfoot): Add <!-- LINK-REV-MADE -->
 	handlings. 
 

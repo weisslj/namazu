@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.12 1999-12-04 07:32:23 satoru Exp $
+ * $Id: hlist.c,v 1.13 1999-12-04 09:28:54 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -521,7 +521,7 @@ int sort_hlist(NmzResult hlist, enum nmz_sort_method mode)
     set_rank(hlist); /* conserve current order for STABLE sorting */
 
     if (mode == SORT_BY_FIELD) {
-	if (field_sort(hlist) == FAILURE)
+	if (field_sort(hlist) != SUCCESS)
 	    return FAILURE;
     } else if (mode == SORT_BY_DATE) {
 	qsort(hlist.data, hlist.num, sizeof(hlist.data[0]), date_cmp);

@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.52 1999-12-04 07:32:26 satoru Exp $
+ * $Id: namazu.c,v 1.53 1999-12-04 09:28:59 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -245,7 +245,7 @@ static int parse_options(int argc, char **argv)
 	    exit(EXIT_SUCCESS);
 	    break;
 	case 'C':
-	    if (load_conf(argv[0]))
+	    if (load_conf(argv[0]) != SUCCESS)
 		diewithmsg();
 	    show_conf();
 	    exit(EXIT_SUCCESS);
@@ -412,7 +412,7 @@ int main(int argc, char **argv)
     Idx.num = 0;
 
     if (argc == 1) { /* if no argument, assume this session as CGI */
-	if (load_conf(argv[0]))
+	if (load_conf(argv[0]) != SUCCESS)
 	    diewithmsg();
 	set_cgimode(1);
 	set_htmlmode(1);
@@ -423,7 +423,7 @@ int main(int argc, char **argv)
 	set_formprint(0);	 /* do not print "<form> ... </form>" */
 
 	i = parse_options(argc, argv); 
-	if (load_conf(argv[0]))
+	if (load_conf(argv[0]) != SUCCESS)
 	    diewithmsg();
 
 	if (i == argc) {
@@ -456,9 +456,9 @@ int main(int argc, char **argv)
     }
 
     uniq_idxnames();
-    if (expand_idxname_aliases() == FAILURE)
+    if (expand_idxname_aliases() != SUCCESS)
         diewithmsg();
-    if (complete_idxnames() == FAILURE)
+    if (complete_idxnames() != SUCCESS)
         diewithmsg();
 
     if (is_debugmode()) {
@@ -474,7 +474,7 @@ int main(int argc, char **argv)
     }
 
     ret = namazu_core(query, subquery, argv[0]);
-    if (ret == FAILURE)
+    if (ret != SUCCESS)
         diewithmsg();
     return ret;
 }

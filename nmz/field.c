@@ -11,6 +11,7 @@
 #include "util.h"
 #include "re.h"
 #include "var.h"
+#include "replace.h"
 
 /*
  *

@@ -2,7 +2,7 @@
  * 
  * conf.c -
  * 
- * $Id: conf.c,v 1.9 1999-12-04 07:32:22 satoru Exp $
+ * $Id: conf.c,v 1.10 1999-12-04 09:28:54 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -40,6 +40,8 @@
 #include "codeconv.h"
 #include "i18n.h"
 #include "var.h"
+#include "alias.h"
+#include "replace.h"
 
 static char *errmsg  = NULL;
 static int ConfLoaded = 0;
@@ -52,14 +54,12 @@ static int ConfLoaded = 0;
 
 static void set_pathname(char*, char*, char*);
 static FILE *open_conf_file(char*);
-static struct nmz_alias *add_alias(struct nmz_alias*, char*, char*);
-static struct nmz_replace *add_replace(int, struct nmz_replace*, char*, char*);
-static int parse_conf(char *, int);
 static int get_conf_args(char*, char*, char*, char*);
 static int get_conf_arg(char*, char*);
 static void replace_home(char *);
-static int apply_conf(char*, int, char*, char*);
-static int check_argnum(char*, int);
+static enum nmz_stat parse_conf(char *, int);
+static enum nmz_stat apply_conf(char*, int, char*, char*);
+static int is_valid_argnum(char*, int);
 
 /* change filename in full pathname */
 static void set_pathname(char *to, char *o, char *name)
@@ -76,74 +76,6 @@ static void set_pathname(char *to, char *o, char *name)
     strcpy(to + i, name);
     return;
 }
-
-static struct nmz_alias *add_alias(struct nmz_alias *ptr, char *alias, char *real)
-{
-    struct nmz_alias *tmp;
-    
-    tmp = malloc(sizeof(struct nmz_alias));
-    if (tmp == NULL) {
-	 set_dyingmsg("add_alias_malloc");
-	 return NULL;
-    }
-    tmp->alias = malloc(strlen(alias) + 1);
-    if (tmp->alias == NULL) {
-	 set_dyingmsg("add_alias_malloc");
-	 return NULL;
-    }
-
-    tmp->real = malloc(strlen(real) + 1);
-    if (tmp->real == NULL) {
-	 set_dyingmsg("add_alias_malloc");
-	 return NULL;
-    }
-
-    strcpy(tmp->alias, alias);
-    strcpy(tmp->real, real);
-    tmp->next = ptr;
-    return tmp;
-}
-
-static struct nmz_replace *add_replace(int lineno, struct nmz_replace *ptr, char *pat, char *rep)
-{
-    struct nmz_replace *tmp;
-    
-    tmp = malloc(sizeof(struct nmz_replace));
-    if (tmp == NULL) {
-	 set_dyingmsg("add_replace_malloc");
-	 return NULL;
-    }
-
-    tmp->pat = malloc(strlen(pat) + 1);
-    if (tmp->pat == NULL) {
-	 set_dyingmsg("add_replace_malloc");
-	 return NULL;
-    }
-
-    tmp->rep = malloc(strlen(rep) + 1);
-    if (tmp->rep == NULL) {
-	 set_dyingmsg("add_replace_malloc");
-	 return NULL;
-    }
-
-    tmp->pat_re = ALLOC(REGEX);
-    MEMZERO((char *)tmp->pat_re, REGEX, 1);
-    tmp->pat_re->buffer = 0;
-    tmp->pat_re->allocated = 0;
-
-    strcpy(tmp->pat, pat);
-    strcpy(tmp->rep, rep);
-
-    if (re_compile_pattern (tmp->pat, strlen (tmp->pat), tmp->pat_re)) {
-	/* re_comp fails; set NULL to pat_re  */
-	re_free_pattern(tmp->pat_re);
-	tmp->pat_re = NULL;
-    }
-    
-    tmp->next = ptr;
-    return tmp;
-}
-
 
 /*
  1. current_executing_binary_dir/.namazurc
@@ -246,7 +178,8 @@ static void replace_home(char *str)
 }
 
 
-static int get_conf_args(char *line, char *directive, char *arg1, char *arg2)
+static int get_conf_args(char *line, char *directive, 
+				   char *arg1, char *arg2)
 {
     int n;
 
@@ -326,7 +259,7 @@ static int get_conf_args(char *line, char *directive, char *arg1, char *arg2)
     }
 }
 
-static int parse_conf(char *line, int lineno) 
+static enum nmz_stat parse_conf(char *line, int lineno) 
 {
     char directive[BUFSIZE] = "";
     char arg1[BUFSIZE] = "";
@@ -335,7 +268,7 @@ static int parse_conf(char *line, int lineno)
 
     argnum = get_conf_args(line, directive, arg1, arg2);
     if (errmsg != NULL) { 
-	return 1; /* error */
+	return FAILURE; /* error */
     }
 
     if (is_debugmode() && 
@@ -352,16 +285,16 @@ static int parse_conf(char *line, int lineno)
 	print("\n");
     }
 
-    if (check_argnum(directive, argnum) != 0) {
-	return 1; /* error */
+    if (!is_valid_argnum(directive, argnum)) {
+	return FAILURE; /* error */
     }
 
-    if (apply_conf(directive, lineno, arg1, arg2))
-        return 1;
-    return 0;
+    if (apply_conf(directive, lineno, arg1, arg2) != SUCCESS)
+        return FAILURE;
+    return SUCCESS;
 }
 
-static int check_argnum(char *directive, int argnum)
+static int is_valid_argnum(char *directive, int argnum)
 {
     struct conf_directive {
 	char *name;
@@ -372,8 +305,8 @@ static int check_argnum(char *directive, int argnum)
 	{"COMMENT", 0},
 	{"INDEX", 1},
 	{"BASE", 1},
-	{"struct nmz_replace", 2},
-	{"struct nmz_alias", 2},
+	{"ALIAS", 2},
+	{"REPLACE", 2},
 	{"LOGGING", 1},
 	{"SCORING", 1},
 	{"LANG", 1},
@@ -383,24 +316,25 @@ static int check_argnum(char *directive, int argnum)
     for (i = 0; dtab[i].name != NULL; i++) {
 	if (strcasecmp(dtab[i].name, directive) == 0) {
 	    if (argnum == dtab[i].argnum) {
-		return 0;  /* OK */
+		return 1;  /* OK */
 	    } else if (argnum < dtab[i].argnum) {
 		errmsg = "too few arguments";
-		return 1;  /* error */
+		return 0;  /* error */
 	    } else if (argnum > dtab[i].argnum) {
 		errmsg = "too many arguments";
-		return 1;  /* error */
+		return 0;  /* error */
 	    } else {
-		set_dyingmsg("check_argnum[1]: It MUST not be happend! ");
-		return 1;
+		set_dyingmsg("is_valid_argnum[1]: It MUST not be happend! ");
+		return 0;
 	    }
 	}
     }
-    set_dyingmsg("check_argnum[2]: It MUST not be happend! ");
-    return 1;
+    set_dyingmsg("is_valid_argnum[2]: It MUST not be happend! ");
+    return 0;
 }
 
-static int apply_conf(char *directive, int lineno, char *arg1, char *arg2)
+static enum nmz_stat apply_conf(char *directive, int lineno, 
+				char *arg1, char *arg2)
 {
     if (strcasecmp(directive, "COMMENT") == 0) {
 	;  /* only a comment */
@@ -408,14 +342,12 @@ static int apply_conf(char *directive, int lineno, char *arg1, char *arg2)
 	strcpy(DEFAULT_INDEX, arg1);
     } else if (strcasecmp(directive, "BASE") == 0) {
 	strcpy(BASE_URI, arg1);
-    } else if (strcasecmp(directive, "struct nmz_replace") == 0) {
-	Replace = add_replace(lineno, Replace, arg1, arg2);
-	if (Replace == NULL)
-	  return 1;
-    } else if (strcasecmp(directive, "struct nmz_alias") == 0) {
-	Alias = add_alias(Alias, arg1, arg2);
-	if (Alias == NULL)
-	  return 1;
+    } else if (strcasecmp(directive, "REPLACE") == 0) {
+	if (add_replace(arg1, arg2) != SUCCESS)
+	    return FAILURE;
+    } else if (strcasecmp(directive, "ALIAS") == 0) {
+	if (add_alias(arg1, arg2) != SUCCESS)
+	    return FAILURE;
     } else if (strcasecmp(directive, "LOGGING") == 0) {
 	if (strcasecmp(arg1, "ON") == 0) {
 	    set_loggingmode(1);
@@ -441,7 +373,7 @@ static int apply_conf(char *directive, int lineno, char *arg1, char *arg2)
  */
 
 /* loading configuration file of Namazu */
-int load_conf(char *av0)
+enum nmz_stat load_conf(char *av0)
 {
     FILE *fp;
     char buf[BUFSIZE];
@@ -453,7 +385,7 @@ int load_conf(char *av0)
 
     fp = open_conf_file(av0);
     if (fp == NULL)
-	return 0;
+	return FAILURE;
 
     ConfLoaded = 1;  /* for show_config() */
 
@@ -461,12 +393,12 @@ int load_conf(char *av0)
 	lineno++;
 	chomp(buf);
 	conv_ja_any_to_eucjp(buf);  /* for Shift_JIS encoding */
-	if (parse_conf(buf, lineno))
-	    return 1;
+	if (parse_conf(buf, lineno) != SUCCESS)
+	    return FAILURE;
 	if (errmsg != NULL) { /* error occurred */
 	    set_dyingmsg("%s:%d: syntax error: %s.\n",  
 		   NAMAZURC, lineno, errmsg);
-	    return 1;
+	    return FAILURE;
 	}
     }
     fclose(fp);
@@ -488,24 +420,8 @@ Scoring: %s\n\
 "), DEFAULT_INDEX, BASE_URI, is_loggingmode() ? "on" : "off",
            get_lang(), TfIdf ? "tfidf" : "simple");
 
-    {
-	struct nmz_alias *list = Alias;
-
-	while (list) {
-	    printf(_("Alias:   \"%s\" -> \"%s\"\n"), 
-		   list->alias, list->real);
-	    list = list->next;
-	}
-    }
-    {
-	struct nmz_replace *list = Replace;
-
-	while (list) {
-	    printf(_("Replace: \"%s\" -> \"%s\"\n"), 
-		   list->pat, list->rep);
-	    list = list->next;
-	}
-    }
+    show_aliases();
+    show_replaces();
 
     /*    exit(0);*/
     return;

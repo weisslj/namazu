@@ -2,7 +2,7 @@
  * 
  * re.c -
  * 
- * $Id: re.c,v 1.9 1999-12-04 07:32:23 satoru Exp $
+ * $Id: re.c,v 1.10 1999-12-04 09:28:55 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -48,109 +48,10 @@
  *
  */
 
-/* replace a URI */
-int replace_uri(char *uri)
-{
-    int npat, nrep, i, j;
-    char tmp[BUFSIZE];
-    struct nmz_replace *list = Replace;
-    int is_regex_matching = 0;
-
-    strcpy(tmp, uri);
-
-    while (list) {
-	struct re_registers regs;
-	int mlen;
-	REGEX *re;
-
-	re = list->pat_re;
-	regs.allocated = 0;
-
-	if (re == NULL) {
-	    /* Compiled regex is no available, we will apply the straight
-	     * string substitution.
-	     */
-	    is_regex_matching = 0;
-	} else if (0 < (mlen = re_match (re, tmp, strlen (tmp), 0, &regs))) {
-	    /* We got a match.  Try to replace the string. */
-	    char repl[BUFSIZE];
-	    char *subst = list->rep;
-	    /* Assume we are doing regexp match for now; if any of the
-	     * substitution fails, we will switch back to the straight
-	     * string substitution.
-	     */
-	    is_regex_matching = 1;
-	    for (i = j = 0; subst[i]; i++) {
-		/* i scans through RHS of sed-style substitution.
-		 * j points at the string being built.
-		 */
-		if ((subst[i] == '\\') &&
-		    ('0' <= subst[++i]) &&
-		    (subst[i] <= '9')) 
-		{
-		    /* A backslash followed by a digit---regexp substitution.
-		     * Note that a backslash followed by anything else is
-		     * silently dropped (including a \\ sequence) and is
-		     * passed on to the else clause.
-		     */
-		    int regno = subst[i] - '0';
-		    int ct;
-		    if (re->re_nsub <= regno) {
-			/* Oops; this is a bad substitution.  Just give up
-			 * and use straight string substitution for backward
-			 * compatibility.
-			 */
-			is_regex_matching = 0;
-			break;
-		    }
-		    for (ct = regs.beg[regno]; ct < regs.end[regno]; ct++)
-			repl[j++] = tmp[ct];
-		} else {
-		    /* Either ordinary character, 
-		     * or an unrecognized \ sequence.
-		     * Just copy it.
-		     */
-		    repl[j++] = subst[i];
-		}
-	    }
-	    if (is_regex_matching) {
-		/* Good.  Regexp substitution worked and we now have a good
-		 * string in repl.
-		 * The part that matched and being replaced is 0 to mlen-1
-		 * in tmp; tmp[mlen] through the end of it should be
-		 * concatenated to the end of the resulting string.
-		 */
-		repl[j] = 0;
-		strcpy(uri, repl);
-		strcpy(uri + j, tmp + mlen);
-	    }
-	    re_free_registers (&regs);
-	}
-	if (is_regex_matching) {
-	    return 0;
-	}
-	/* Otherwise, we fall back to string substitution */
-
-	npat = strlen(list->pat);
-	nrep = strlen(list->rep);
-
-	if (strncmp(list->pat, tmp, npat) == 0) {
-	    strcpy(uri, list->rep);
-	    for (i = npat, j = nrep; tmp[i]; i++, j++) {
-		uri[j] = tmp[i];
-	    }
-	    uri[j] = '\0';
-	    return 1;
-	}
-	list = list->next;
-    }
-    return 0;
-}
-
 NmzResult regex_grep(char *orig_expr, FILE *fp, char *field, int field_mode)
 {
     char buf[BUFSIZE], expr[BUFSIZE];
-    REGEX *rp;
+    struct re_pattern_buffer *rp;
     int i, n, size = 0, max, uri_mode = 0;
     NmzResult val, tmp;
     val.num = 0;
@@ -160,8 +61,8 @@ NmzResult regex_grep(char *orig_expr, FILE *fp, char *field, int field_mode)
     } else {
         re_mbcinit(MBCTYPE_ASCII);
     }
-    rp = ALLOC(REGEX);
-    MEMZERO((char *)rp, REGEX, 1);
+    rp = ALLOC(struct re_pattern_buffer);
+    MEMZERO((char *)rp, struct re_pattern_buffer, 1);
     rp->buffer = 0;
     rp->allocated = 0;
     
@@ -192,7 +93,7 @@ NmzResult regex_grep(char *orig_expr, FILE *fp, char *field, int field_mode)
         if (strlen(buf) == 0) {
             continue;
         }
-        if (uri_mode) {  /* consider the struct nmz_replace directive in namazurc */ 
+        if (uri_mode) {  /* consider the REPLACE directive in namazurc */ 
             replace_uri(buf);
         }
         strlower(buf);

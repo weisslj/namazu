@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.30 1999-11-23 22:46:38 satoru Exp $
+ * $Id: cgi.c,v 1.31 1999-12-04 09:28:59 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -457,7 +457,10 @@ static void process_cgi_var_idxname(char *value, CGIARG *ca)
 	strcpy(tmp, DEFAULT_INDEX);
 	strcat(tmp, "/");
 	strcat(tmp, name);
-	add_index(tmp);
+	if (add_index(tmp) == -1) {
+	    
+	    ;
+	}
     }
 }
 

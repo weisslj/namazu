@@ -2,7 +2,7 @@
  * 
  * libnamazu.c - Namazu library api
  *
- * $Id: libnamazu.c,v 1.11 1999-12-04 07:32:23 satoru Exp $
+ * $Id: libnamazu.c,v 1.12 1999-12-04 09:28:55 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
@@ -59,6 +59,7 @@
 #include "i18n.h"
 #include "regex.h"
 #include "var.h"
+#include "alias.h"
 
 static enum nmz_sort_method  sortmethod  = SORT_BY_SCORE;
 static enum nmz_sort_order   sortorder   = DESCENDING;
@@ -80,37 +81,6 @@ void free_idxnames(void)
 	free_hitnums(Idx.pr[i]);
     }
     Idx.num = 0;
-}
-
-void free_aliases(void)
-{
-    struct nmz_alias *list, *next;
-    list = Alias;
-
-    while (list) {
-	next = list->next;
-	free(list->alias);
-	free(list->real);
-	free(list);
-	list = next;
-    }
-}
-
-void free_replaces(void)
-{
-    struct nmz_replace *list, *next;
-    list = Replace;
-
-    while (list) {
-	next = list->next;
-	free(list->pat);
-	free(list->rep);
-	if (list->pat_re != NULL) {
-	    re_free_pattern(list->pat_re);
-	}
-	free(list);
-	list = next;
-    }
 }
 
 void make_fullpathname_msg(void)
@@ -177,7 +147,7 @@ int expand_idxname_aliases(void)
     int i;
 
     for (i = 0; i < Idx.num; i++) {
-	struct nmz_alias *list = Alias;
+	struct nmz_alias *list = get_aliases();
 	while (list) {
 	    if (strcmp(Idx.names[i], list->alias) == 0) {
 		free(Idx.names[i]);

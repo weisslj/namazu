@@ -2,7 +2,7 @@
  * 
  * libnamazu.h - Namazu library api
  *
- * $Id: libnamazu.h,v 1.19 1999-12-04 07:32:23 satoru Exp $
+ * $Id: libnamazu.h,v 1.20 1999-12-04 09:28:55 satoru Exp $
  * 
  */
 
@@ -18,7 +18,7 @@
  */
 
 enum {
-    /* Size of general buffers. This should be larger than QUERY_MAX */
+    /* Size of general buffers. This MUST be larger than QUERY_MAX */
     BUFSIZE = 1024,        
 
     QUERY_TOKEN_MAX =  16, /* Max number of tokens in a query */
@@ -54,8 +54,8 @@ typedef unsigned char uchar;
 
 /* status code for error handling */
 enum nmz_stat {
+    FAILURE = -1,
     SUCCESS,
-    FAILURE,
     ERR_FATAL,
     ERR_TOO_LONG_QUERY,
     ERR_INVALID_QUERY,
@@ -68,8 +68,8 @@ enum nmz_stat {
     ERR_NO_PERMISSION
 };
 
-/* methods of searching */
-enum nmz_search_method {
+/* modes of searching */
+enum nmz_search_mode {
     WORD_MODE,
     PREFIX_MODE,
     REGEX_MODE,
@@ -79,7 +79,7 @@ enum nmz_search_method {
 };
 
 
-/* modes of sorting */
+/* methods of sorting */
 enum nmz_sort_method {
     SORT_BY_SCORE,  /* at displaying results time */
     SORT_BY_DATE,   /* at displaying results time */
@@ -110,21 +110,6 @@ typedef struct nmz_result {
     struct nmz_data *data;  /* dynamic array for storing docid, etc. */
 } NmzResult;
 
-
-struct nmz_alias {
-    char *alias;
-    char *real;
-    struct nmz_alias *next;
-};
-
-typedef struct re_pattern_buffer REGEX;
-
-struct nmz_replace {
-    char  *pat;  /* pattern */
-    char  *rep;  /* replacement */
-    REGEX  *pat_re; /* compiled regex of the pattern */
-    struct nmz_replace *next;
-};
 
 /* NMZ.* files' names */
 struct nmz_names {

@@ -1,5 +1,13 @@
 1999-12-04  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* nmz/Makefile.am (libnmz_la_SOURCES): Add {alias,replace}.[ch].
+	
+	* nmz/replace.[ch]: New file.
+
+	* nmz/alias.[ch]: New file.
+	
+	* nmz/conf.c (is_valid_argnum): Renamed from check_argnum.
+
 	* nmz/libnamazu.h (enum nmz_sort_mode): Add tag.
 	(enum nmz_sort_order): Add tag.
 	(enum nmz_search_method): Add tag.

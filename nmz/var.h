@@ -9,9 +9,6 @@ extern char BASE_URI[];
 extern char CONFDIR[];
 extern char NAMAZURC[];
 
-extern struct nmz_replace *Replace;
-extern struct nmz_alias   *Alias;
-
 extern struct nmz_names NMZ;
 extern struct nmz_files Nmz;
 extern struct nmz_indices   Idx;

@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.18 1999-12-04 04:50:10 satoru Exp $
+ * $Id: search.c,v 1.19 1999-12-04 09:28:55 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -874,12 +874,12 @@ NmzResult search_main(char *query)
 
     if (hlist.stat == SUCCESS && hlist.num > 0) { /* HIT!! */
 	/* sort by date at first*/
-        if (sort_hlist(hlist, SORT_BY_DATE) == FAILURE) {
+        if (sort_hlist(hlist, SORT_BY_DATE) != SUCCESS) {
 	    hlist.stat = ERR_FATAL;
 	    return hlist;
 	}
 	if (get_sortmethod() != SORT_BY_DATE) {
-	    if (sort_hlist(hlist, get_sortmethod()) == FAILURE) {
+	    if (sort_hlist(hlist, get_sortmethod()) != SUCCESS) {
 	        hlist.stat = ERR_FATAL;
 		return hlist;
 	    }

@@ -1,5 +1,5 @@
-#ifndef _NmzResult_H
-#define _NmzResult_H
+#ifndef _HLIST_H
+#define _HLIST_H
 
 #include "libnamazu.h"  /* for NmzResult and enum nmz_* */
 
@@ -21,4 +21,4 @@ extern void set_docnum(int);
 extern void set_sort_field(char *);
 extern char *get_sort_field(void);
 
-#endif /* _NmzResult_H */
+#endif /* _HLIST_H */

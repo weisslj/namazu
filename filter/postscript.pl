@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: postscript.pl,v 1.4 2001-01-04 01:57:58 baba Exp $
+# $Id: postscript.pl,v 1.5 2001-08-20 13:31:56 baba Exp $
 # Copyright (C) 2000 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -91,7 +91,7 @@ sub filter ($$$$$) {
     unless ($? == 0) {
 	unlink($tmpfile);
 	unlink($tmpfile2);
-	return "Unable to convert postscript file ($postscriptpath error occured)";
+	return "Unable to convert postscript file ($postscriptpath error occurred)";
     }
 
     $fh = util::efopen("$tmpfile2");
@@ -100,7 +100,7 @@ sub filter ($$$$$) {
 	undef $fh;
 	unlink($tmpfile);
 	unlink($tmpfile2);
-	return "Unable to convert postscript file ($postscriptpath error occured)";
+	return "Unable to convert postscript file ($postscriptpath error occurred)";
     }
     if ($size > $conf::FILE_SIZE_MAX) {
 	undef $fh;

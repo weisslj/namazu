@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: util.c,v 1.75 2000-12-18 09:02:06 knok Exp $
+ * $Id: util.c,v 1.76 2001-08-20 13:31:58 baba Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -488,7 +488,7 @@ nmz_strerror(enum nmz_stat errnum)
 
     switch (errnum) {
     case ERR_FATAL:
-	msg = _("Fatal error occured!");
+	msg = _("Fatal error occurred!");
 	break;
     case ERR_TOO_LONG_QUERY:
         msg = _("Too long query");

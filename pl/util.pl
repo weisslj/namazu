@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.23 2001-08-08 09:05:49 knok Exp $
+# $Id: util.pl,v 1.24 2001-08-20 13:31:58 baba Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -209,7 +209,7 @@ sub remove_tmpfiles () {
     push @list, $var::NMZ{'err'}   if -z $var::NMZ{'err'}; # if size == 0
     push @list, $var::NMZ{'lock'}  if -f $var::NMZ{'lock'};
     push @list, $var::NMZ{'lock2'} if -f $var::NMZ{'lock2'};
-    dprint(_("Remove tmporary files:"), @list);
+    dprint(_("Remove temporary files:"), @list);
     unlink @list;
 }
 

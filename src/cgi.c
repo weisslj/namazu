@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.61 2000-12-21 09:21:30 knok Exp $
+ * $Id: cgi.c,v 1.62 2001-08-20 13:32:02 baba Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -263,7 +263,7 @@ get_cgi_vars(const char *querystring)
 	cv = add_cgivar(cv, name, value);
 
 	if (cv == NULL) {
-	    fprintf(stderr, "an error occured at add_cgivar.\n");
+	    fprintf(stderr, "an error occurred at add_cgivar.\n");
 	    exit(EXIT_FAILURE);
 	}
 

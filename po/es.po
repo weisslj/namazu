@@ -14,7 +14,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: nmz/util.c:491
-msgid "Fatal error occured!"
+msgid "Fatal error occurred!"
 msgstr "¡Ocurrió un error fatal!"
 
 #: nmz/util.c:494
@@ -352,7 +352,7 @@ msgid "unable to require "
 msgstr "imposible adquirir "
 
 #: scripts/mknmz.in:807
-msgid "Faild to call "
+msgid "Failed to call "
 msgstr "Falló la llamada "
 
 #: scripts/mknmz.in:859
@@ -618,7 +618,7 @@ msgstr ""
 msgid ""
 "\n"
 "\n"
-"== overlapped docunumets ==\n"
+"== overlapped documents ==\n"
 msgstr ""
 "\n"
 "\n"
@@ -757,7 +757,7 @@ msgid "not an IO::File/FileHandle object!\n"
 msgstr "no es un objeto IO::File/FileHandle!\n"
 
 #: pl/util.pl:212
-msgid "Remove tmporary files:"
+msgid "Remove temporary files:"
 msgstr "Borra los ficheros temporales:"
 
 #: pl/util.pl:256
@@ -816,7 +816,7 @@ msgid ""
 "  -c, --use-chasen         use ChaSen for analyzing Japanese.\n"
 "  -k, --use-kakasi         use KAKASI for analyzing Japanese.\n"
 "  -m, --use-chasen-noun    use ChaSen for extracting only nouns.\n"
-"  -L, --indexing-lang=LANG index with language specific proccessing.\n"
+"  -L, --indexing-lang=LANG index with language specific processing.\n"
 "\n"
 "Text Operations:\n"
 "  -E, --no-edge-symbol     remove symbols on edge of word.\n"

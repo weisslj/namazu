@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.89 2001-08-20 10:59:34 takesako Exp $
+# $Id: mknmz.in,v 1.90 2001-08-20 13:32:01 baba Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -804,7 +804,7 @@ sub load_document ($$$$\%) {
 	    }
 
 	    if ($@) {
-		util::vprint(_("Faild to call ")."$var::REQUIRE_ACTIONS{$mtype}\n$@\n");
+		util::vprint(_("Failed to call ")."$var::REQUIRE_ACTIONS{$mtype}\n$@\n");
 		return ($file_size, $file_size, 0, "$mtype; x-error=$@");
 	    }
 
@@ -1507,7 +1507,7 @@ sub write_version() {
 }
 
 #
-# rename each tmporary file to a real file name.
+# rename each temporary file to a real file name.
 #
 sub write_nmz_files () {
     util::Rename($var::NMZ{'_i'},   $var::NMZ{'i'});
@@ -1713,7 +1713,7 @@ sub set_target_files() {
 
     util::dprint(_("\n\n== found files ==\n"), join("\n", @found_files), "\n");
     util::dprint(_("\n\n== registered documents ==\n"), join("\n", @{$rdocs{'name'}}), "\n");
-    util::dprint(_("\n\n== overlapped docunumets ==\n"), join("\n", @overlapped_files), "\n");
+    util::dprint(_("\n\n== overlapped documents ==\n"), join("\n", @overlapped_files), "\n");
     util::dprint(_("\n\n== deleted documents ==\n"), join("\n", @deleted_documents), "\n");
     util::dprint(_("\n\n== updated documents ==\n"), join("\n", @updated_documents), "\n");
     util::dprint(_("\n\n== files to index ==\n"), join("\n", @flist), "\n");
@@ -2443,7 +2443,7 @@ sub check_records ($$$) {
     my ($recref, $baserecref, $step) = @_;
     dump_record($baserecref, $step);
     dump_record($recref, $step);
-    print STDERR "The \x22negative number\x22 probrem occured.\n";
+    print STDERR "The \x22negative number\x22 probrem occurred.\n";
     exit(1);
 }
 

@@ -2,7 +2,7 @@
 #
 # Test for namazu.cgi with NMZ.access.
 #
-# NOTE: If error occured, consult idx1/NMZ.access.
+# NOTE: If error occurred, consult idx1/NMZ.access.
 #
 LOG=`pwd`/test-log
 

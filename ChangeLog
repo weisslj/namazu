@@ -1,5 +1,9 @@
 2000-01-28  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* template/Makefile.am (template_DATA): Add
+	NMZ.result.{normal,short}.ja 
+	(EXTRA_DIST): Simplified.
+
 	* configure.in (COPYRIGHT): Add "Copyright (C) 1997-1999 Satoru
 	Takabayashi All rights reserved.\n"
 

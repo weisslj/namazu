@@ -1,3 +1,7 @@
+2001-05-23  Ryuji Abe  <rug@namazu.org>
+
+	* acconfig.h: Put back.
+
 2001-05-20  Ryuji Abe  <rug@namazu.org>
 
 	* acinclude.m4: Removed GNU gettext 0.10.35 related macros.
@@ -6460,4 +6464,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.821 2001-05-20 09:03:56 rug Exp $
+$Id: ChangeLog,v 1.822 2001-05-23 01:51:28 rug Exp $

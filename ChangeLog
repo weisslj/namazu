@@ -14,8 +14,12 @@
 
 	* src/mknmz.pl.in: Add filesize check before reading file.
 
+
 1999-08-31  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* tknamazu/{Makefile.am,README.tknamazu}:
+	s/tknamazu.gif/tknamazu.xpm/g
+	
 	* tknamazu/tknamazu.tcl.in: Use .xpm instead of .gif
 
 	* tknamazu/tknamazu.xpm: New file.

@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.46 2000-05-03 23:56:58 masao Exp $
+ * $Id: hlist.c,v 1.47 2000-05-08 23:38:42 masao Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -552,7 +552,7 @@ nmz_get_hlist(int index)
 	nmz_debug_printf("idf: %f (N:%d, n:%d)\n", idf, document_number, n/2);
     }
 
-    if (n >= nmz_get_maxhit() * 2) {  
+    if (n > nmz_get_maxhit() * 2) {  
         /* '* 2' means NMZ.i contains a file-ID and a score. */
         hlist.stat = ERR_TOO_MUCH_HIT;
     } else {

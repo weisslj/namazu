@@ -1,3 +1,19 @@
+2000-05-09  Masao Takaku  <masao@ulis.ac.jp>
+
+	* tests/Makefile.am (TESTS): Add namazu-9.
+
+	* tests/namazu-9: New file.
+
+	* nmz/hlist.c (nmz_get_hlist): Change condition to ignore hits
+	(MaxHit).
+
+	* src/rcfiles.c (process_rc_maxhit): Remove check for arg1.
+
+	* src/rcfiles.c (process_rc_maxmatch): Likewise.
+
+	* conf/namazurc-sample: Add comments for MaxHit and MaxMatch
+	directives.
+
 2000-05-07  Ryuji Abe <raeva@t3.rim.or.jp>
 
 	* configure.in (LTVERSION): Changed 3:2:0 to 4:2:1.
@@ -5643,4 +5659,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.690 2000-05-07 04:51:29 rug Exp $
+$Id: ChangeLog,v 1.691 2000-05-08 23:38:41 masao Exp $

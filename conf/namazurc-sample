@@ -78,3 +78,15 @@
 ##
 #EmphasisTags  "<strong class=\"keyword\">"   "</strong>"
 
+##
+## MaxHit: Set the maximum number of pages. If pages matched more than
+## this, its results will be ignore.
+##
+#MaxHit	10000
+
+##
+## MaxMatch: Set the maximum number of words. If words matched (with
+## prefix-, inside-, suffix-matching query or regex query) more than
+## this, its results will be ignored.
+##
+#MaxMatch	1000

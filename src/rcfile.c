@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.25 2000-05-04 00:49:52 masao Exp $
+ * $Id: rcfile.c,v 1.26 2000-05-08 23:38:43 masao Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -271,9 +271,6 @@ process_rc_maxhit(const char *directive, const StrList *args)
 {
     int arg1 = atoi(args->value);
 
-    if (arg1 <= 0) {
-	return FAILURE;
-    }
     nmz_set_maxhit(arg1);
     return SUCCESS;
 }
@@ -283,9 +280,6 @@ process_rc_maxmatch(const char *directive, const StrList *args)
 {
     int arg1 = atoi(args->value);
 
-    if (arg1 <= 0) {
-	return FAILURE;
-    }
     nmz_set_maxmatch(arg1);
     return SUCCESS;
 }

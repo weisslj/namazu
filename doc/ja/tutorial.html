@@ -74,17 +74,16 @@ Webブラウザの言語の設定に日本語(ja) を追加してください
 <dt>良くある質問と答 (FAQ)日本語
   <dd>
   <a href="http://openlab.ring.gr.jp/namazu/FAQ.html">http://openlab.ring.gr.jp/namazu/FAQ.html</a>
-<dt>Namazu メイリング・リスト
+<dt>Namazu メイリングリスト
   <dd>
   <a href="http://openlab.ring.gr.jp/namazu/ml.html">http://openlab.ring.gr.jp/namazu/ml.html</a>
 <dt>やまだあきらさんの namazu.el (Emacs/Mule client)
   <dd>
   <a href="http://arika.org/linux/tools/namazu-el/">http://arika.org/linux/tools/namazu-el/</a>
-<dt>Namazu Beta version (proto)
+<dt>Namazu Beta version
   <dd>ここの説明で使っている 1.9.14 はここにある<br>
-  現在は proto と unstable は同じもの
   <br>
-  <a href="http://openlab.ring.gr.jp/namazu/proto/">http://openlab.ring.gr.jp/namazu/proto/</a>
+  <a href="http://openlab.ring.gr.jp/namazu/unstable/">http://openlab.ring.gr.jp/namazu/unstable/</a>
 </dl>
 
 <h2><a name="versions">四つの版</a></h2>
@@ -258,12 +257,12 @@ BSD make を使う場合は
 <tr><td colspan=9>当然、次のものも必要です。</tr>
 <tr><td>Namazu</td><td>Namazu本体</td>
 <td>○</td><td>1.9.14</td><td>&lt;=</td>
-<td><a href="http://openlab.ring.gr.jp/namazu/proto/namazu-1.9.14.tar.gz">
+<td><a href="http://openlab.ring.gr.jp/namazu/unstable/namazu-1.9.14.tar.gz">
 namazu-1.9.14.tar.gz</a></td>
 <td>
-<a href="http://openlab.ring.gr.jp/namazu/">Project Namazu</a>
+<a href="http://openlab.ring.gr.jp/namazu/">Namazu Project</a>
 <td>
-<a href="http://openlab.ring.gr.jp/namazu/proto/">namazu/proto/</a></td>
+<a href="http://openlab.ring.gr.jp/namazu/unstable/">namazu/unstable/</a></td>
 <td><br></td>
 </tr>
 </table>
@@ -429,7 +428,7 @@ s#<em>aaa</em>#<strong>bbb</strong>#
   <li> (/usr/local/etc/namazu/mknmzrc の $HTML_SUFFIX の設定によって)
      *.html *.html.ja *.phtml *.html *.asp *.cgi などだけを調べ、メー
       ルのようなものは調べない。
-  <li>手軽にメールなどを調べるなら -a を付けておく
+  <li>手軽にメイルなどを調べるなら -a を付けておく
 </ul>
 
 
@@ -442,35 +441,25 @@ s#<em>aaa</em>#<strong>bbb</strong>#
 
 <h2><a name="customize-mknmz">mknmz の調整</a></h2>
 <pre>
-メール
+メイル
 HTML
 その他の形式 (Re: filter)
 他の Web
 </pre>
 
 <p>
-Namazu は元々は HTML 形式のものを処理するように考えられ
-ていますが、実際には様々な形式を取扱うことが出来ます。
-<a href="../../filter/">filter/</a>
-というディレクトリに手がかりが、また
-説明書の中の 
-<a href="manual.html#doc-filter">文書フィルタ</a>
-の部分に詳しい説明があります。
+Namazu は元々は HTML 形式のものを処理するように考えられてい
+ますが、実際には様々な形式を取扱うことが出来ます。
+/usr/local/share/namazu/filter というディレクトリに手がかり
+が、また説明書の中の <a href="manual.html#doc-filter">文書フィ
+ルタ</a> の部分に詳しい説明があります。
 </p>
 
 <dl>
-<dt>メール
-  <dd>検索対象に調整が必要です。一例を書きますと ~/.mknmz-Mail の中
-  に、次のように書いておいて<br>
-<code class=rc>
-package conf;<br>
-undef($EXCLUDE_REGEX);<br>
-$DENY_REGEX = '\..*';<br>
-<br>
-$ALLOW_REGEX = '.*';<br>
-$HTML_SUFFIX = '.*';<br>
-</code>
-<code class=command>mknmz -f ~/.mknmz-Mail </code>と起動するという方法があります。
+<dt>MH形式のメイル
+  <dd>mknmz に -a オプションをつけて実行します。<br>
+<code class=command>% mknmz -a ~/Mail/foobar</code>
+
 
 <dt>MHonArc
 <dd>これは HTML 形式ですし、Namazu にこの形式に対応した処理が含ま
@@ -486,9 +475,9 @@ $HTML_SUFFIX = '.*';<br>
 </dl>
 
 <p>
-mknmz のコマンド行引数は、<a href="man/mknmz">mknmz
---help</a>とすると得られます。また-C を付けると、その時の構
-成を表示してくれます。
+mknmz のコマンド行引数は、<a
+href="manual.html#mknmz-option">mknmz --help</a>とすると得ら
+れます。また-C を付けると、その時の構成を表示してくれます。
 </p>
 
 <pre>
@@ -572,7 +561,7 @@ Time: 1261 sec.
 さまざまな設定は<code> <a
 href="manual.html#namazurc">namazurc</a></code> 
 に書くことが出来ます。namazurc の設定例は 配布の中の 
-<code>lib/namazurc-dist</code> にあります。
+<code>/usr/local/etc/namazu/namazurc-dist</code> にあります。
 </p>
 
 <p>初めはコマンド行で <code>/usr/local/namazu/bin 検索文字列</code>
@@ -620,7 +609,7 @@ Options
 
 <tr><td>
 DirectoryIndex</td><td> index.html
-</td><td> URI が directory を指している時に探すファイル名
+</td><td> URI がディレクトリを指している時に探すファイル名
 </td></tr>
 
 </table>
@@ -760,13 +749,10 @@ cgi-bin が動く HTTP server を Webブラウザを通じて利用する形で行ないます。
 <dl>
 <dt>対象ファイルについて
 <dd>
-指定した「検索 directory 」の中で、
-何が検索の対象になるかという疑問があるとしたら、答えは、
-<a href="target.shtml">
-<strong>(conf.pl の中か
-~/.mknmzrc の)</strong>
-$TARGET_FILE, $DENY_FILE の設定。それと
--a 選択で決まる</a>。
+指定した「対象ディレクトリ」の中で、何が検索の対象になるかと
+いう疑問があるとしたら、答えは、<strong>(conf.pl の中か~
+/.mknmzrc の)</strong> $TARGET_FILE, $DENY_FILE の設定。それ
+と -a 選択で決まる。
 
 <dt>mew-1.94b2x と mew-nmz.el
 <dd>
@@ -790,7 +776,7 @@ contrib/00readme-namazu.jis</a> に書いてあります。
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: tutorial.html,v 1.13 2000-02-14 14:25:38 satoru Exp $
+$Id: tutorial.html,v 1.14 2000-02-14 23:13:20 satoru Exp $
 </div>
 <address>
 developers@namazu.org

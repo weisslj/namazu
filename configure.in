@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.157 2003-08-01 08:18:10 opengl2772 Exp $
+dnl $Id: configure.in,v 1.158 2004-02-05 10:55:59 opengl2772 Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -36,7 +36,7 @@ dnl *
 dnl * Namazu Copyright.
 dnl * 
 COPYRIGHT="Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.\n\
-Copyright (C) 2000-2003 Namazu Project All rights reserved."
+Copyright (C) 2000-2004 Namazu Project All rights reserved."
 AC_SUBST(COPYRIGHT)
 AC_DEFINE_UNQUOTED(COPYRIGHT, "$COPYRIGHT", [Namazu Copyright])
 
@@ -104,7 +104,7 @@ AM_CONDITIONAL(WIN32, test x$win32 = xyes)
 
 dnl Checks for header files.
 AC_HEADER_STDC
-AC_CHECK_HEADERS(fcntl.h limits.h malloc.h unistd.h string.h stdlib.h)
+AC_CHECK_HEADERS(fcntl.h limits.h malloc.h unistd.h string.h stdlib.h sys/timeb.h sys/time.h)
 
 AC_C_BIGENDIAN
 
@@ -127,11 +127,21 @@ AC_SUBST(LTALLOCA)
 AC_FUNC_MMAP
 NMZ_FUNC_MEMCMP
 AC_FUNC_VPRINTF
-AC_CHECK_FUNCS(getcwd getwd putenv setenv strdup strspn)
+AC_CHECK_FUNCS(getcwd getwd putenv setenv strdup strspn gettimeofday ftime)
 AC_REPLACE_FUNCS(strstr)
 NMZ_REPLACE_FUNCS([memmove memset strcspn strerror])
 if test -z "$MINGW32"; then
     NMZ_REPLACE_FUNCS([strcasecmp strncasecmp vsnprintf])
+fi
+
+AC_CACHE_CHECK([if gettimeofday takes tz argument],namazu_cv_HAVE_GETTIMEOFDAY_TZ,[
+AC_TRY_RUN([
+#include <sys/time.h>
+#include <unistd.h>
+main() { struct timeval tv; exit(gettimeofday(&tv, NULL));}],
+           namazu_cv_HAVE_GETTIMEOFDAY_TZ=yes,namazu_cv_HAVE_GETTIMEOFDAY_TZ=no,namazu_cv_HAVE_GETTIMEOFDAY_TZ=cross)])
+if test x"$namazu_cv_HAVE_GETTIMEOFDAY_TZ" = x"yes"; then
+    AC_DEFINE(HAVE_GETTIMEOFDAY_TZ, 1, [ ])
 fi
 
 dnl for debugging.
@@ -432,6 +442,7 @@ AC_OUTPUT([Makefile
 	   tests/data/emphasize/Makefile
 	   tests/data/dup-field/Makefile
 	   tests/data/ja-mac/Makefile
+	   tests/data/ja-appl90/Makefile
 	  ],
 	  [chmod +x nmz-config \
 		    scripts/bnamazu \

@@ -1,3 +1,20 @@
+2004-02-05  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * filter/applefile.pl: Added a new file. AppleFile filter.
+
+        * filter/Makefile.am: Added an entry for applefile.pl
+
+	* tests/{ja-mknmz-3, ja-namazu-3}: Added 2 new test scripts 
+        for applefile.
+
+        * tests/Makefile.am: Added an entry for ja-mknmz-3, ja-namazu-3.
+
+        * tests/data/ja-appl90/*: Added new file for testsuite. 
+
+        * tests/data/Makefile.am: Added an entry for ja-appl90.
+
+        * configuer.in: Added an entry for ja-appl90.
+
 2004-02-03  Yukio USUDA <usu@namazu.org>
 
         * pl/usage.pl, po/*: Update messages.
@@ -8387,4 +8404,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1092 2004-02-03 14:14:44 usu Exp $
+$Id: ChangeLog,v 1.1093 2004-02-05 10:55:59 opengl2772 Exp $

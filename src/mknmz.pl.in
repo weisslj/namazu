@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- CPerl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.40 1999-08-30 03:47:48 satoru Exp $
+# $Id: mknmz.pl.in,v 1.41 1999-08-30 06:47:25 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -85,9 +85,9 @@ sub main () {
 	}
 
 	# Process target files one by one
-	while (<$fh_flist>) {
+	while (defined(my $line = <$fh_flist>)) {
 	    $flist_ptr += length;
-	    my $cfile = $_;
+	    my $cfile = $line;
 	    chomp $cfile;
 	    my $cfile_size = namazu_core($cfile, $file_count, $file_base, 
 				 \%field_indices, $fh_errorsfile);
@@ -1167,8 +1167,8 @@ sub update_registry ($) {
     {
 	my $fh_registry = util::efopen(">>$var::NMZ{r}");
 	my $fh_registry_ = util::efopen($var::NMZ{_r});
-	while (<$fh_registry_>) {
-	    print $fh_registry $_;
+	while (defined(my $line = <$fh_registry_>)) {
+	    print $fh_registry $line;
 	}
 	if ($file_count > 0) {
 	    print $fh_registry "## indexed: " . util::rfc822time(time()) . "\n\n";
@@ -1197,8 +1197,8 @@ sub update_field_index_sub () {
 	    my $fh_field = util::efopen(">>$fname_out");
 	    my $fh_tmp = util::efopen($fname_tmp);
 
-	    while (<$fh_tmp>) {
-		print $fh_field $_;
+	    while (defined(my $line = <$fh_tmp>)) {
+		print $fh_field $line;
 	    }
 	}
 	unlink $fname_tmp;
@@ -1250,12 +1250,11 @@ sub load_registry () {
 
     my $i = 0;
     my %mark;
-    while (<$fh_registry>) {
-	my $line = $_;
+    while (defined(my $line = <$fh_registry>)) {
 	chomp($line);
-	next if /^\s*$/; # an empty line
-	next if /^##/; # a comment
-	if (/^\#\s+(.*)/) {  # deleted document
+	next if $line =~ /^\s*$/; # an empty line
+	next if $line =~ /^##/; # a comment
+	if ($line =~ /^\#\s+(.*)/) {  # deleted document
 	    my $tmp = $1;
 	    # remove previous registration
 	    if (defined($mark{$tmp})) {
@@ -1276,49 +1275,53 @@ sub load_registry () {
 }
 
 sub get_total_keys() {
-    return get_number_from_file($var::NMZ{keys});
+    my $keys = get_status("keys");
+    $keys = 0 unless defined $keys;
+    return $keys;
 }
 
 sub get_total_files() {
-    return get_number_from_file($var::NMZ{total});
+    my $files = get_status("files");
+    $files = 0 unless defined $files;
+    return $files;
 }
 
-sub get_number_from_file ($) {
-    my ($file) = @_;
+sub get_status($) {
+    my ($key) = @_;
 
-    return 0 unless -f $file;
+    my $fh = util::fopen($var::NMZ{status});
+    return undef unless defined $fh;
 
-    my $fh = util::efopen($file);
-    my $number = "";
-    $number = <$fh>;
-    chomp $number;
-    $number =~ s/,//g;
-
-    if ($number eq "") {
-	return 0;
-    } else {
-	return $number;
+    while (defined(my $line = <$fh>)) {
+	if ($line =~ /^$key\s+(.*)$/) {
+	    util::dprint("status: $key = $1");
+	    return $1;
+	}
     }
+    return undef;
 }
 
 sub put_total_files($) {
     my ($number) = @_;
-    put_number_to_file($var::NMZ{total}, $number);
+    $number =~ s/,//g;
+    put_status("files", $number);
 }
 
 sub put_total_keys($) {
     my ($number) = @_;
-    put_number_to_file($var::NMZ{keys}, $number);
-}
-
-sub put_number_to_file ($$) {
-    my ($file, $number) = @_;
     $number =~ s/,//g;
-
-    my $fh = util::efopen(">$file");
-    print $fh $number, "\n";
+    put_status("keys", $number);
 }
 
+sub put_status($$) {
+    my ($key, $value) = @_;
+
+    # remove NMZ.status file if the file has a previous value.
+    unlink $var::NMZ{status} if defined get_status($key);
+
+    my $fh = util::efopen(">> $var::NMZ{status}");
+    print $fh "$key $value\n";
+}
 
 # do logging
 sub put_log ($$$$) {
@@ -1727,8 +1730,8 @@ sub write_index_sub () {
     my $fh_index = util::fopen($var::NMZ{_i});
     if ($fh_index) {
       FOO:
-	while (<$fh_index>) {
-	    my $current_word = $_;
+	while (defined(my $line = <$fh_index>)) {
+	    my $current_word = $line;
 	    chop $current_word;
 
 	    my $baseleng = get_unpackw($fh_index);

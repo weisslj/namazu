@@ -1,5 +1,5 @@
 # -*- CPerl -*-
-# $Id: var.pl.in,v 1.4 1999-08-30 03:13:19 satoru Exp $
+# $Id: var.pl.in,v 1.5 1999-08-30 06:47:24 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -60,8 +60,7 @@ $NMZ{result} = "$DBNAME.result";
 
 $NMZ{t} = "$DBNAME.t";
 
-$NMZ{total} = "$DBNAME.total";
-$NMZ{keys}  = "$DBNAME.keys";
+$NMZ{status} = "$DBNAME.status";
 
 $NMZ{_t} = $NMZ{t};
 $NMZ{_i} = $NMZ{i};

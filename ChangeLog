@@ -8,6 +8,12 @@
 	
 1999-08-30  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/mknmz.pl.in: Remove all codes like "while (<$fh>)"
+	because of its deanger. ($_ is a global value)
+	
+	* src/mknmz.pl.in, lib/var.pl: Abolish NMZ.{total,keys} and
+	instead introduce NMZ.status for their values.
+	
 	* src/mknmz.pl.in (put_registry): Fix a variable name typo.
 	
 	* filter/*.pl: Change timing of dosing util::tmpnam()

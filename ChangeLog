@@ -1,3 +1,7 @@
+2003-03-21  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * filter/rtf.pl: New RTF filter.
+
 2003-03-13  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
         * filter/{taro56,taro7_10}.pl: New Ichitaro filters.
@@ -7785,4 +7789,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.996 2003-03-13 09:56:19 knok Exp $
+$Id: ChangeLog,v 1.997 2003-03-20 14:40:54 opengl2772 Exp $

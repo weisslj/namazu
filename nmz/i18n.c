@@ -1,6 +1,6 @@
 /*
  * i18n.c -
- * $Id: i18n.c,v 1.30 2001-12-21 05:39:20 knok Exp $
+ * $Id: i18n.c,v 1.31 2002-10-31 10:24:15 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -121,8 +121,10 @@ nmz_set_lang(const char *lang)
 #else
 # ifdef HAVE_PUTENV
 	{
-	    static char *store;
+	    static char *store = NULL;
 
+	    if (store != NULL)
+		free(store);
 	    store = (char *)malloc(strlen(lang) + 6); /* do *not* free */
 	    if (store == NULL)
 		return NULL; /* FIXME: should be fatal error */

@@ -3,7 +3,7 @@
 # nmzidx.pl - subroutines for accessing Namazu index files (NMZ.*)
 #         by furukawa@tcp-ip.or.jp
 #
-# $Id: nmzidx.pl,v 1.13 2001-01-10 16:59:45 furukawa Exp $
+# $Id: nmzidx.pl,v 1.14 2002-10-31 10:24:16 knok Exp $
 #
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -637,10 +637,10 @@ sub write_status{
     my $in = shift;
 
     my $key = undef;
-    $key = $self->{'word'}->{'size'} if defined $self->{'word'};
+    $key = comma($self->{'word'}->{'size'}) if defined $self->{'word'};
 
     my $file = undef;
-    $file = $self->{'flist'}->{'valid'} if defined $self->{'flist'};
+    $file = comma($self->{'flist'}->{'valid'}) if defined $self->{'flist'};
 
     if ($self->{'mode'} =~ /w/i){
         my $fi = &nmzlib::open_db($in, 'status');
@@ -700,5 +700,17 @@ sub log_close{
         $self->{'log'}->print("\n");
         $self->{'log'}->close;
     }
+}
+
+
+# copy from util.pl
+sub commas ($) {
+    my ($num) = @_;
+
+    $num = "0" if ($num eq "");
+#    1 while $num =~ s/(.*\d)(\d\d\d)/$1,$2/;
+    # from Mastering Regular Expressions
+    $num =~ s<\G((?:^-)?\d{1,3})(?=(?:\d\d\d)+(?!\d))><$1,>g;
+    $num;
 }
 1;

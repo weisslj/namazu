@@ -8,6 +8,13 @@
 
 	* THANKS: Added.
 
+	* scripts/mknmz.in (check_file): Fixed a typo (s/after/before/).
+	(Reported by HAGA Nobuaki, thank you.)
+
+	* scripts/nmzidx.pl (comma): Added a new function.
+
+	* nmz/i18n.c (nmz_set_lang): Fixed unfree memory allocation bug.
+
 2002-10-04  Ryuji Abe  <rug@namazu.org>
 
 	* template/Makefile.am (template_DATA): Added polish translations.
@@ -7728,4 +7735,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.985 2002-10-31 08:51:00 knok Exp $
+$Id: ChangeLog,v 1.986 2002-10-31 10:24:15 knok Exp $

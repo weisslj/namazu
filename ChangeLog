@@ -1,10 +1,9 @@
-<<<<<<< ChangeLog
+1999-08-25  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
-			       ChangeLog for Namazu
-
-	This file describes Namazu's change history. If you want to know
-	about major changes from previous version, please see 
-	"manual.html#VERSIONDIFF".
+	* src/*.[ch]: Rerrange C coding styles.
+	* src/{cgi.h,field.h,hlist.h,parser.h,result.h,codeconv.h,form.h,
+	message.h,re.h,search.h,variable.h,conf.h,type.h,wakati.h,enum.h,
+	output.h,usage.h}: New files.
 
 1999-08-25 NOKUBI Takatsugu <knok@daionet.gr.jp>
 

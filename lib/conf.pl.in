@@ -1,5 +1,6 @@
-# -*- Perl -*-
-# $Id: conf.pl.in,v 1.7 1999-08-25 00:40:17 knok Exp $
+<<<<<<< conf.pl.in
+# -*- CPerl -*-
+# $Id: conf.pl.in,v 1.8 1999-08-25 03:45:26 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #

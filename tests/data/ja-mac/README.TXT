@@ -12,9 +12,18 @@ acrobat4.pdf
 excel98.xls
 word98.doc
 
+excel2001.htm       .... Excel 2001 for Mac 出力の HTML 形式
 excel2001.xls       .... Excel 2001 for Mac 出力の Excel 2001 形式
+excel5-2001.xls     .... Excel 2001 for Mac 出力の
+                         Excel 97-2001 および 5.0/95 ブック形式
+excel95.xls         .... Excel 2001 for Mac 出力の Excel 5.0/95 ブック形式
 powerpoint2001.ppt  .... PowerPoint 2001 for Mac 出力の PowerPoint 2001 形式
+powerpoint2001.rtf  .... PowerPoint 2001 for Mac 出力の RTF 形式
+powerpoint4_0.ppt   .... PowerPoint 2001 for Mac 出力の PowerPoint 4.0 形式
+word.txt            .... Word 2001 for Mac 出力の TEXT 形式
 word2001.doc        .... Word 2001 for Mac 出力の Word 2001 形式
+word2001.htm        .... Word 2001 for Mac 出力の HTML 形式
+word2001.rtf        .... Word 2001 for Mac 出力の RTF 形式
 word95.doc          .... Word 2001 for Mac 出力の Word 6.0/95 形式
 
 [[[ MacBinaryIII sample ]]]

@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- CPerl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.23 1999-08-27 01:30:54 satoru Exp $
+# $Id: mknmz.pl.in,v 1.24 1999-08-27 01:33:01 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -906,7 +906,7 @@ sub show_long_usage () {
 }
 
 sub show_mini_usage () {
-    print "Usage: mknmz [options] [URI_PREFIX] <target_dir>\n";
+    print "Usage: mknmz [options] [URI prefix] <target(s)>\n";
     print "Try `mknmz --help' for more options.\n";
 }
 

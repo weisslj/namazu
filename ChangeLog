@@ -1,5 +1,7 @@
 1999-12-15  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/mknmz.pl.in: Apply Fujiwara-san's patch. [namazu-dev 1016]
+
 	* src/Makefile.am (noinst_PROGRAMS): New variable: namazu.cgi
 	(namazu_cgi_SOURCES): New variable: $(namazu_SOURCES)
 	(namazu_cgi_LDFLAGS): New variable defining: -static

@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.81 1999-12-09 11:04:22 satoru Exp $
+# $Id: mknmz.pl.in,v 1.82 1999-12-15 07:40:14 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -68,8 +68,9 @@ sub main () {
     init();
     setup_magic();
     load_modules();
+    my ($output_dir, @targets) = parse_options();
     read_config();
-    my $file_base = prep();
+    my $file_base = prep($output_dir, @targets);
     load_olemodules() if ($var::Opt{'ole'});
 
     my $swap = 1;
@@ -133,18 +134,21 @@ sub main () {
 
 sub read_config () {
     my (@cand) = ();
-    push @cand, $ConfigFile if defined $ConfigFile;
-    push @cand, "$ENV{'HOME'}/.mknmzrc" if defined $ENV{'HOME'};
+    push @cand, "$CONFDIR/mknmz.conf" ;
     push @cand, "$CONFDIR/mknmzrc";
+    push @cand, "$ENV{'HOME'}/.mknmzrc";
+    push @cand, $ConfigFile if defined $ConfigFile;
 
+    print STDERR "Reading config file: " ;
     for my $conf (@cand) {
 	if (-f $conf) {
 	    util::vprint("conf: $conf\n");
 	    do $conf;
 	    $ConfigFile = $conf;
-	    return;
+	    print STDERR " $conf";
 	}
     }
+    print STDERR "\n"
 }
 
 sub re_exec($$$$) {
@@ -620,11 +624,10 @@ sub load_document ($$$$\%) {
 
 sub prep () {
     my $file_base = 0;
-    my $output_dir = "";
-    my @targets = ();
+    my $output_dir = shift @_ ;
+    my @targets = @_ ;
     my @flist = ();
 
-    ($output_dir, @targets) = parse_options();
     $var::OUTPUT_DIR = $output_dir;
 
     require_modules();

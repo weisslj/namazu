@@ -1,6 +1,6 @@
 htmldir = $(pkgdatadir)/doc/en
 
-html_DATA = manual.html nmz.html tutorial.html
+html_DATA = manual.html nmz.html tutorial.html tips.html
 EXTRA_DIST = $(html_DATA)
 
 # htmlint <http://openlab.ring.gr.jp/k16/htmllint/htmllint.html>

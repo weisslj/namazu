@@ -1,3 +1,11 @@
+2000-04-02  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* doc/en/Makefile.am (html_DATA): Add tips.html.
+
+	* doc/en/tips.html: New file. Thanks to
+	Kaoru Yamamoto <kaoru-ya@is.aist-nara.ac.jp> for translation of
+	the document. 
+
 2000-03-29  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* filter/excel.pl (filter_xl): Fix <TITLE>.+</TITLE> handling.
@@ -5386,4 +5394,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.661 2000-03-29 15:18:01 satoru Exp $
+$Id: ChangeLog,v 1.662 2000-04-01 16:41:35 satoru Exp $

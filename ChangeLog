@@ -1,5 +1,8 @@
 1999-09-05  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* lib/var.pl.in: Replace $NMZ{log} with $NMZ{'log'} 
+	[namazu-dev 346]
+	
 	* src/field.c (get_field_data): Implement a simple cache
 	mechanism.
 

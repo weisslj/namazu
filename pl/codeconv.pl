@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: codeconv.pl,v 1.10 2000-03-16 15:06:59 satoru Exp $
+# $Id: codeconv.pl,v 1.11 2000-03-17 03:10:28 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -114,7 +114,6 @@ sub toeuc ($) {
 
     if (util::islang("ja")) {
 	my $nkf_opt = "-emXZ1";
-	$nkf_opt = $opt if defined $opt;
 
 	if ($var::USE_NKF_MODULE) {
 	    $$contref = NKF::nkf($nkf_opt, $$contref);

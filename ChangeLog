@@ -3,6 +3,7 @@
 	* scripts/mknmz.in (generate_uri): Use
 	codeconv::shiftjis_to_eucjp() for $file and codeconv::toeuc() for
 	$fragment. 
+	(generate_uri): Add checking of "if defined $fragment".
 
 	* pl/codeconv.pl (shiftjis_to_eucjp): Check util::islang("ja").
 

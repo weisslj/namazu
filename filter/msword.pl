@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: msword.pl,v 1.34 2002-11-12 07:23:51 knok Exp $
+# $Id: msword.pl,v 1.35 2002-11-12 07:27:38 knok Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2002 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -111,7 +111,7 @@ sub filter_wv ($$$$$) {
 	my @cmd = ($wvversionpath, $tmpfile);
 	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
 	my $result = util::readfile($fh_out);
-	if ($result =~ /^Version: (word\d+),/i) {
+	if ($result =~ /^Version: (word\d+)(?:,| )/i) {
 	    $docversion = $1;
 	    # Only word8 format is supported for Japanese.
 	    $supported = 1 if ($docversion =~ /^word8$/);

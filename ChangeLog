@@ -2,6 +2,7 @@
 
 	* filter/msword.pl (filter_wv): Fixed convert error bug on Japanese
 	environment.
+	 Adapted to wvWare 0.7.4. (Reported by GOO, thank you)
 
 2002-11-07  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
@@ -7744,4 +7745,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.988 2002-11-12 07:23:51 knok Exp $
+$Id: ChangeLog,v 1.989 2002-11-12 07:27:37 knok Exp $

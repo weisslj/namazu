@@ -1,4 +1,8 @@
-Overview of Changes in Namazu 2.0.3 - Apl 05, 2000
+Overview of Changes in Namazu 2.0.4 - Apr 10, 2000
+
+* Fix a doccat related bug. 
+
+Overview of Changes in Namazu 2.0.3 - Apr 05, 2000
 
 * Fix a non-critical security hole: An arbitrary HTML tag in a query
   is printed as it is in search results.

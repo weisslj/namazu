@@ -1,3 +1,7 @@
+1999-11-19  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* man/Makefile.am (update-man): s/-N/--no-info/g for clarity.
+
 1999-11-18  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* man/Makefile.am: Remove clean: command.

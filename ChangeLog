@@ -1,5 +1,9 @@
 2000-01-19  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 1.9.13.
+
+	* Namazu: Version 1.9.12 released.
+
 	* src/usage.c (show_usage): s/no-encode-uri/no-decode-uri/
 
 	* src/namazu.c (parse_options): Insert set_uridecode(0) at proper

@@ -1,12 +1,10 @@
-$Id: TODO-satoru,v 1.3 2000-01-07 01:37:46 satoru Exp $
+$Id: TODO-satoru,v 1.4 2000-01-07 02:33:36 satoru Exp $
 
 やるべきことの備忘録 by 高林
 
   * 一対多の alias に対応する。例: Alias all-ml foo bar baz quux
 
   * rcfile.c を function pointer を使って書き直す
-
-  * output.c (print_hlist): エラーを返すべし
 
   * File::Copy を使おう - mknmz
 

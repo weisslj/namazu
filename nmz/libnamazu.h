@@ -2,7 +2,7 @@
  * 
  * libnamazu.h - Namazu library api
  *
- * $Id: libnamazu.h,v 1.29 2000-01-07 01:21:56 satoru Exp $
+ * $Id: libnamazu.h,v 1.30 2000-01-07 02:33:37 satoru Exp $
  * 
  */
 
@@ -68,7 +68,8 @@ enum nmz_stat {
     ERR_PHRASE_SEARCH_FAILED,
     ERR_FIELD_SEARCH_FAILED,
     ERR_CANNOT_OPEN_INDEX,
-    ERR_NO_PERMISSION
+    ERR_NO_PERMISSION,
+    ERR_CANNOT_OPEN_RESULT_FORMAT_FILE
 };
 
 /* 

@@ -54,13 +54,13 @@ static int is_countmode ( void );
 static int is_listmode ( void );
 static int is_quietmode ( void );
 static int is_refprint ( void );
-static void print_hlist ( NmzResult hlist );
+static enum nmz_stat print_hlist ( NmzResult hlist );
+static enum nmz_stat print_listing ( NmzResult hlist );
 static void print_query ( const char * qs, int w );
 static void print_page_index ( int n );
 static void print_current_range ( int listmax );
 static void print_hitnum_all_idx ( void );
 static void print_hitnum ( int n );
-static void print_listing ( NmzResult hlist );
 static void print_msgfile ( const char *fname );
 static void print_range ( NmzResult hlist );
 
@@ -286,9 +286,19 @@ is_refprint(void)
 }
 
 /*
- * Display the hlist
+ * Display one searched document according to NMZ.result.* file.
+ * e.g.,
+ * 
+ *   <dt>1. <strong><a href="/foo/gunzip.1.gz">GZIP(1)</a></strong> (score: xx)
+ *   <dd><strong>Author</strong>: <em>(unknown)</em>
+ *   <dd><strong>Date</strong>: <em>Thu, 09 Apr 1998 12:59:59</em>
+ *   <dd>gzip, gunzip, zcat - compress or expand files:: Gzip
+ *   reduces the size of the named files using Lempel-Ziv
+ *   coding (LZ77). Whenever possible, each file is replaced
+ *   by one with the extension .gz, while 
+ *   <dd><a href="/foo/gunzip.1.gz">/foo/gunzip.1.gz</a> (5,410 bytes)<br><br>
  */
-static void 
+static enum nmz_stat
 print_hlist(NmzResult hlist)
 {
     int i;
@@ -297,7 +307,7 @@ print_hlist(NmzResult hlist)
     char result[BUFSIZE * 128];
 
     if (hlist.num <= 0 || get_maxresult() == 0) {
-	return;
+	return SUCCESS; /* No document searched but success. */
     }
 
     /* Set NULL to all templates[] */
@@ -317,7 +327,7 @@ print_hlist(NmzResult hlist)
 	    if (is_listmode()) {
 		templates[hlist.data[i].idxid] = malloc(BUFSIZE);
 		if (templates[hlist.data[i].idxid] == NULL) {
-		    return;  /* FIXME: error status should be returned */
+		    nmz_die("print_hlist: memory exhausted");
 		}
 		strcpy(templates[hlist.data[i].idxid], "${uri}");
 	    } else {
@@ -328,7 +338,7 @@ print_hlist(NmzResult hlist)
 		strcat(fname, get_template());  /* usually "normal" */
 		templates[hlist.data[i].idxid] = nmz_readfile(fname);
 		if (templates[hlist.data[i].idxid] == NULL) {
-		    return;  /* FIXME: error status should be returned */
+		    return ERR_CANNOT_OPEN_RESULT_FORMAT_FILE;
 		}
 	    }
 	}
@@ -351,6 +361,28 @@ print_hlist(NmzResult hlist)
 	    free(templates[i]);
 	}
     }
+
+    return SUCCESS;
+}
+
+static enum nmz_stat 
+print_listing(NmzResult hlist)
+{
+    enum nmz_stat ret;
+
+    if (is_htmlmode()) {
+        nmz_print("<dl>\n");
+    }
+
+    ret = print_hlist(hlist);
+    if (ret != SUCCESS) {
+	return ret;
+    }
+    
+    if (is_htmlmode()) {
+        nmz_print("</dl>\n");
+    }
+    return SUCCESS;
 }
 
 /*
@@ -500,20 +532,6 @@ print_hitnum(int n)
     html_print(_("	 documents matching your query.</strong></p>\n\n"));
 }
 
-static void 
-print_listing(NmzResult hlist)
-{
-    if (is_htmlmode()) {
-        nmz_print("<dl>\n");
-    }
-    
-    print_hlist(hlist);
-    
-    if (is_htmlmode()) {
-        nmz_print("</dl>\n");
-    }
-}
-
 /* 
  * Output contents of a message file such as NMZ.tips or NMZ.body. 
  */
@@ -559,11 +577,22 @@ print_range(NmzResult hlist)
 }
 
 /*
+ * Print the error message specified by errid while outputing the results.
+ */
+static void
+print_errmsg(int errid)
+{
+    char *errmsg = nmz_get_errmsg(errid);
+    char buf[BUFSIZE];
+    sprintf(buf, _("	<h2>Error!</h2>\n<p>%s</p>\n"), errmsg);
+    html_print(buf);
+}
+
+/*
  *
  * Public functions
  *
  */
-
 enum nmz_stat 
 print_result(NmzResult hlist, const char *query, const char *subquery)
 {
@@ -577,11 +606,7 @@ print_result(NmzResult hlist, const char *query, const char *subquery)
     }
 
     if (hlist.stat != SUCCESS) {
-	char *errmsg = nmz_get_errmsg(hlist.stat);
-	char buf[BUFSIZE];
-	sprintf(buf, _("	<h2>Error!</h2>\n<p>%s</p>\n"), errmsg);
-
-	html_print(buf);
+	print_errmsg(hlist.stat);
 	return FAILURE;
     }
 
@@ -629,7 +654,12 @@ print_result(NmzResult hlist, const char *query, const char *subquery)
 	if (is_countmode()) {
 	    printf("%d\n", hlist.num);
 	} else {
-	    print_listing(hlist); /* summary listing */
+	    enum nmz_stat ret = print_listing(hlist);
+
+	    if (ret != SUCCESS) { /* summary listing */
+		print_errmsg(ret);
+		return ret;
+	    }
 	}
         if (!is_countmode() && !is_listmode() && !is_quietmode()) {
             print_range(hlist);

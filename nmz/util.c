@@ -1,5 +1,5 @@
 /*
- * $Id: util.c,v 1.36 2000-01-07 01:21:56 satoru Exp $
+ * $Id: util.c,v 1.37 2000-01-07 02:33:37 satoru Exp $
  *
  * Imported scan_hex(), scan_oct(), xmalloc(), xrealloc() from 
  * Ruby b19's"util.c" and "gc.c". Thanks to Matsumoto-san for consent!
@@ -490,7 +490,7 @@ nmz_readfile(const char *fname)
     stat(fname, &fstatus);
     fp = fopen(fname, "rb");
     if (fp == NULL) {
-        nmz_warn_printf("can't open %s\n", fname);
+        nmz_warn_printf("cannot open %s\n", fname);
         return NULL;
     }
     buf = malloc(fstatus.st_size + 1);
@@ -545,7 +545,7 @@ nmz_cat(const char *fname)
 	}
 	fclose(fp);
     }
-    nmz_warn_printf("can't open %s\n", fname);
+    nmz_warn_printf("cannot open %s\n", fname);
 }
 
 /*
@@ -613,6 +613,9 @@ nmz_get_errmsg(enum nmz_stat stat)
 	break;
     case ERR_CANNOT_OPEN_INDEX:
 	msg = _("cannot open this index");
+	break;
+    case ERR_CANNOT_OPEN_RESULT_FORMAT_FILE:
+	msg = _("cannot open result format file");
 	break;
     case ERR_NO_PERMISSION:
 	msg = _("You don\'t have a permission to access the index");

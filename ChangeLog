@@ -1,5 +1,15 @@
 2000-01-07  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/output.c (print_listing): Return error status.
+	(print_hlist): Ditto.
+	(print_errmsg): New function.
+
+	* nmz/util.c (nmz_get_errmsg): Handle 
+	ERR_CANNOT_OPEN_RESULT_FORMAT_ FILE. 
+	
+	* nmz/libnamazu.h (enum nmz_stat): Add
+	ERR_CANNOT_OPEN_RESULT_FORMAT_ FILE. 
+
 	* src/namazu.c (main): Do not call expand_idxname_aliases(),
 	complete_idxnames() and uniq_idxnames(). They are called in
 	normalize_idxnames(). 

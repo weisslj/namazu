@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: namazu 2.0\n"
-"POT-Creation-Date: 2000-01-07 10:33+0900\n"
+"POT-Creation-Date: 2000-01-07 11:33+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>\n"
 "Language-Team: Japanese <satoru-t@is.aist-nara.ac.jp>\n"
@@ -71,10 +71,14 @@ msgid "cannot open this index"
 msgstr "\203\103\203\223\203\146\203\142\203\116\203\130\202\252\212\112\202\257\202\334\202\271\202\361\202\305\202\265\202\275"
 
 #: nmz/util.c:618
+msgid "cannot open result format file"
+msgstr "\214\213\211\312\217\157\227\315\202\314\217\221\216\256\216\167\222\350\203\164\203\100\203\103\203\213\202\252\212\112\202\257\202\334\202\271\202\361\202\305\202\265\202\275"
+
+#: nmz/util.c:621
 msgid "You don't have a permission to access the index"
 msgstr "\203\103\203\223\203\146\203\142\203\116\203\130\202\311\203\101\203\116\203\132\203\130\202\267\202\351\214\240\227\230\202\252\202\240\202\350\202\334\202\271\202\361"
 
-#: nmz/util.c:621
+#: nmz/util.c:624
 msgid "Unknown error. Report bug!"
 msgstr "\225\163\226\276\202\310\203\107\203\211\201\133\201\102\203\157\203\117\225\361\215\220\202\265\202\304\202\255\202\276\202\263\202\242"
 
@@ -96,25 +100,25 @@ msgstr "\225\163\220\263\202\310 idxname \202\314\216\167\222\350\202\305\202\26
 msgid "Too long QUERY_STRING"
 msgstr "CGI\202\314 QUERY_STRING \202\252\222\267\202\267\202\254\202\334\202\267"
 
-#: src/output.c:390
+#: src/output.c:422
 msgid "\t<strong>Page:</strong> "
 msgstr "\t<strong>\203\171\203\103\203\127:</strong> "
 
-#: src/output.c:435
+#: src/output.c:467
 #, c-format
 msgid "Current List: %d"
 msgstr "\214\273\215\335\202\314\203\212\203\130\203\147: %d"
 
-#: src/output.c:483
+#: src/output.c:515
 #, c-format
 msgid " [ TOTAL: %d ]"
 msgstr " [ \215\207\214\166: %d ]"
 
-#: src/output.c:493
+#: src/output.c:525
 msgid "\t<p><strong> Total "
 msgstr "\t<p><strong>\214\237\215\365\216\256\202\311\203\175\203\142\203\140\202\267\202\351 "
 
-#: src/output.c:500
+#: src/output.c:532
 msgid ""
 "\t documents matching your query.</strong></p>\n"
 "\n"
@@ -122,7 +126,7 @@ msgstr ""
 "\t \214\302\202\314\225\266\217\221\202\252\214\251\202\302\202\251\202\350\202\334\202\265\202\275\201\102</strong></p>\n"
 "\n"
 
-#: src/output.c:582
+#: src/output.c:587
 #, c-format
 msgid ""
 "\t<h2>Error!</h2>\n"
@@ -131,15 +135,15 @@ msgstr ""
 "\t<h2>\203\107\203\211\201\133!</h2>\n"
 "<p>%s</p>\n"
 
-#: src/output.c:592
+#: src/output.c:617
 msgid "\t<h2>Results:</h2>\n"
 msgstr "\t<h2>\214\237\215\365\214\213\211\312</h2>\n"
 
-#: src/output.c:599
+#: src/output.c:624
 msgid "References: "
 msgstr "\216\121\215\154\203\161\203\142\203\147\220\224: "
 
-#: src/output.c:641
+#: src/output.c:671
 msgid "\t<p>No document matching your query.</p>\n"
 msgstr "\t<p>\214\237\215\365\216\256\202\311\203\175\203\142\203\140\202\267\202\351\225\266\217\221\202\315\202\240\202\350\202\334\202\271\202\361\202\305\202\265\202\275\201\102</p>\n"
 

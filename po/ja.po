@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: namazu 2.0\n"
-"POT-Creation-Date: 2000-01-07 10:33+0900\n"
+"POT-Creation-Date: 2000-01-07 11:33+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>\n"
 "Language-Team: Japanese <satoru-t@is.aist-nara.ac.jp>\n"
@@ -71,10 +71,14 @@ msgid "cannot open this index"
 msgstr "インデックスが開けませんでした"
 
 #: nmz/util.c:618
+msgid "cannot open result format file"
+msgstr "結果出力の書式指定ファイルが開けませんでした"
+
+#: nmz/util.c:621
 msgid "You don't have a permission to access the index"
 msgstr "インデックスにアクセスする権利がありません"
 
-#: nmz/util.c:621
+#: nmz/util.c:624
 msgid "Unknown error. Report bug!"
 msgstr "不明なエラー。バグ報告してください"
 
@@ -96,25 +100,25 @@ msgstr "不正な idxname の指定です"
 msgid "Too long QUERY_STRING"
 msgstr "CGIの QUERY_STRING が長すぎます"
 
-#: src/output.c:390
+#: src/output.c:422
 msgid "\t<strong>Page:</strong> "
 msgstr "\t<strong>ペイジ:</strong> "
 
-#: src/output.c:435
+#: src/output.c:467
 #, c-format
 msgid "Current List: %d"
 msgstr "現在のリスト: %d"
 
-#: src/output.c:483
+#: src/output.c:515
 #, c-format
 msgid " [ TOTAL: %d ]"
 msgstr " [ 合計: %d ]"
 
-#: src/output.c:493
+#: src/output.c:525
 msgid "\t<p><strong> Total "
 msgstr "\t<p><strong>検索式にマッチする "
 
-#: src/output.c:500
+#: src/output.c:532
 msgid ""
 "\t documents matching your query.</strong></p>\n"
 "\n"
@@ -122,7 +126,7 @@ msgstr ""
 "\t 個の文書が見つかりました。</strong></p>\n"
 "\n"
 
-#: src/output.c:582
+#: src/output.c:587
 #, c-format
 msgid ""
 "\t<h2>Error!</h2>\n"
@@ -131,15 +135,15 @@ msgstr ""
 "\t<h2>エラー!</h2>\n"
 "<p>%s</p>\n"
 
-#: src/output.c:592
+#: src/output.c:617
 msgid "\t<h2>Results:</h2>\n"
 msgstr "\t<h2>検索結果</h2>\n"
 
-#: src/output.c:599
+#: src/output.c:624
 msgid "References: "
 msgstr "参考ヒット数: "
 
-#: src/output.c:641
+#: src/output.c:671
 msgid "\t<p>No document matching your query.</p>\n"
 msgstr "\t<p>検索式にマッチする文書はありませんでした。</p>\n"
 

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2000-01-07 10:33+0900\n"
+"POT-Creation-Date: 2000-01-07 11:33+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -66,10 +66,14 @@ msgid "cannot open this index"
 msgstr ""
 
 #: nmz/util.c:618
-msgid "You don't have a permission to access the index"
+msgid "cannot open result format file"
 msgstr ""
 
 #: nmz/util.c:621
+msgid "You don't have a permission to access the index"
+msgstr ""
+
+#: nmz/util.c:624
 msgid "Unknown error. Report bug!"
 msgstr ""
 
@@ -91,46 +95,46 @@ msgstr ""
 msgid "Too long QUERY_STRING"
 msgstr ""
 
-#: src/output.c:390
+#: src/output.c:422
 msgid "\t<strong>Page:</strong> "
 msgstr ""
 
-#: src/output.c:435
+#: src/output.c:467
 #, c-format
 msgid "Current List: %d"
 msgstr ""
 
-#: src/output.c:483
+#: src/output.c:515
 #, c-format
 msgid " [ TOTAL: %d ]"
 msgstr ""
 
-#: src/output.c:493
+#: src/output.c:525
 msgid "\t<p><strong> Total "
 msgstr ""
 
-#: src/output.c:500
+#: src/output.c:532
 msgid ""
 "\t documents matching your query.</strong></p>\n"
 "\n"
 msgstr ""
 
-#: src/output.c:582
+#: src/output.c:587
 #, c-format
 msgid ""
 "\t<h2>Error!</h2>\n"
 "<p>%s</p>\n"
 msgstr ""
 
-#: src/output.c:592
+#: src/output.c:617
 msgid "\t<h2>Results:</h2>\n"
 msgstr ""
 
-#: src/output.c:599
+#: src/output.c:624
 msgid "References: "
 msgstr ""
 
-#: src/output.c:641
+#: src/output.c:671
 msgid "\t<p>No document matching your query.</p>\n"
 msgstr ""
 

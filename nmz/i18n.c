@@ -1,6 +1,6 @@
 /*
  * i18n.c -
- * $Id: i18n.c,v 1.8 1999-12-12 13:18:14 rug Exp $
+ * $Id: i18n.c,v 1.9 1999-12-31 03:33:57 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -31,6 +31,7 @@
 #include "namazu.h"
 #include "libnamazu.h"
 #include "util.h"
+#include "i18n.h"
 #ifdef HAVE_LOCALE_H
 # include <locale.h>
 #endif

@@ -1,5 +1,7 @@
 1999-12-31  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* nmz/i18n.c: Include "i18n.h"
+
 	* filter/tex.pl (filter): Use \title{foo}, \author{bar},
 	\begin{abstract} ... \end{abstract} information if available.
 

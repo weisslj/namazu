@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.48 1999-08-31 04:51:25 knok Exp $
+# $Id: mknmz.pl.in,v 1.49 1999-08-31 09:30:10 knok Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -496,10 +496,6 @@ sub load_document ($$$$\%) {
     my $mm = new File::MMagic;
     my $mtype;
     while (1) {
-#	unless(File::MMagic::check_binary($$content)) { # text file
-#	    codeconv::toeuc($content);
-#	}
-
 	my $mtype_n = $mm->checktype_byfilename($cfile);
 	my $mtype_c = $mm->checktype_contents($$content);
 	$mtype = decide_type($mtype_n, $mtype_c);
@@ -507,6 +503,10 @@ sub load_document ($$$$\%) {
 	    codeconv::toeuc($content);
 	}
 	util::dprint("Detected type: $mtype\n");
+	if (! defined $conf::Supported{$mtype} || $conf::Supported{$mtype} ne 'yes') {
+	    util::vprint("Unsupported data type $mtype\n");
+	    return ($file_size, $file_size, 0, "$mtype; x-system=unsupported");
+	}
 	if (defined $var::REQUIRE_ACTIONS{$mtype}) {
 	    util::vprint("Using $var::REQUIRE_ACTIONS{$mtype}.pl\n");
 	    require $var::REQUIRE_ACTIONS{$mtype}.'.pl';
@@ -924,10 +924,11 @@ sub check_file ($$$) {
 	$msg = "may be a BINARY file! skipped.";
     } elsif ($text_size > $conf::TEXT_SIZE_MAX) {
 	$msg = "is too a LARGE text! skipped.";
+    } elsif ($mtype =~ /; x-system=unsupported$/) {
+	$mtype =~ s/; x-system=unsupported$//;
+	$msg = "Unsupported data type ($mtype) skipped.";
     } elsif ($mtype =~ /^x-system/) {
 	$msg = "system error occurred! ($mtype) skipped.";
-    } else {
-	$msg = "";
     }
 
     return $msg;

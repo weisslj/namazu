@@ -1,9 +1,5 @@
 1999-08-31  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
-	* src/result.l: Fix obsolete variable names.
-	
-	* src/result.c: Removed.
-
 	* lib/wakati.pm: Fix `tmpname' function name typo.
 
 	* lib/var.pl, src/mknmz.pl.in: Add %REQUIRE_CODECONV variable.
@@ -18,6 +14,7 @@
 
 	* src/mknmz.pl.in: Add filesize check before reading file.
 
+	* src/mknmz.pl.in: Add %Supported check.
 
 1999-08-31  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 

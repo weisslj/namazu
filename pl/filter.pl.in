@@ -2,7 +2,7 @@
 # -*- Perl -*-
 # filter.pl - class for filter
 #
-# $Id: filter.pl,v 1.1 2004-09-19 07:18:10 usu Exp $
+# $Id: filter.pl.in,v 1.1 2004-10-12 16:26:58 opengl2772 Exp $
 #
 # Copyright (C) 2004 Yukio USUDA All rights reserved.
 # Copyright (C) 2000-2004 Namazu Project All rights reversed.
@@ -39,7 +39,7 @@ my %REQUIRE_PRE_CODECONV = ('text/plain' => 1,);
 my %REQUIRE_POST_CODECONV = ('text/plain' => 0,);
 my %Supported = ('text/plain' => "yes",);
 
-my $PKGDATADIR = $ENV{'pkgdatadir'} || "/usr/local/share/namazu";
+my $PKGDATADIR = $ENV{'pkgdatadir'} || "@pkgdatadir@";
 my $filterdir  = $PKGDATADIR . "/filter"; # directory where filters are in.
 
 my $system = $^O;

@@ -2,7 +2,7 @@
 
 AUTOMAKE_OPTIONS = 1.4 no-dependencies
 
-localedir   = $(prefix)/$(DATADIRNAME)/locale
+localedir  = $(prefix)/$(DATADIRNAME)/locale
 perllibdir = $(pkgdatadir)/pl
 
 perllib_DATA = \
@@ -19,8 +19,8 @@ perllib_DATA = \
 	wakati.pl \
 	indexer.pl \
 	time.pl \
-        document.pl \
-        filter.pl
+	document.pl \
+	filter.pl
 
 # Slightly different from perllib_DATA because of *.in files.
 EXTRA_DIST = $\
@@ -37,15 +37,21 @@ EXTRA_DIST = $\
 	wakati.pl \
 	indexer.pl \
 	time.pl \
-        document.pl \
-        filter.pl
+	document.pl \
+	filter.pl.in
 
-CLEANFILES = gettext.pl
+CLEANFILES = gettext.pl filter.pl
 
 gettext.pl: gettext.pl.in Makefile
 	rm -f gettext.pl
 	sed -e 's!@LOCALEDIR@!$(localedir)!g' \
 	$(srcdir)/gettext.pl.in > gettext.pl
+
+filter.pl: filter.pl.in Makefile
+	rm -f filter.pl
+	sed -e 's!@pkgdatadir@!$(pkgdatadir)!g' \
+	$(srcdir)/filter.pl.in > filter.pl.tmp
+	mv filter.pl.tmp filter.pl
 
 ETAGS_ARGS = $(perllib_DATA) --lang=perl
 TAGS_DEPENDENCIES = $(perllib_DATA)

@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.69 2000-08-03 01:21:12 satoru Exp $
+# $Id: mknmz.in,v 1.70 2000-08-08 04:25:38 knok Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -727,6 +727,7 @@ sub load_document ($$$$\%) {
 
     # Filtering process.
     my $mtype;
+    my $called_dt = 0;
     while (1) {
 	if (defined $MediaType) {
 	    $mtype = $MediaType;
@@ -748,7 +749,12 @@ sub load_document ($$$$\%) {
 		    $mtype_m !~ 
 		    /^(text\/html|text\/plain|application\/octet-stream)$/);
 	    $mtype_c = 'text/plain' unless defined $mtype_c;
-	    $mtype = decide_type($mtype_n, $mtype_c);
+	    if ($called_dt) {
+		$mtype = $mtype_c;
+	    } else {
+		$mtype = decide_type($mtype_n, $mtype_c);
+		$called_dt = 1;
+	    }
 	}
 	util::dprint(_("Detected type: ")."$mtype\n");
 

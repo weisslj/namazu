@@ -136,6 +136,7 @@ mknmz を実行したディレクトリに NMZ.* というファイルを作成し
           --exclude=regex      除外するパス名の正規表現を指定する
       -M, --meta               HTMLの metaタグをフィールド指定検索に用いる
       -r, --replace=code       URIを置換するためのコードを指定する
+      -o, --ole                OLEの文書フィルタを用いる (Windows環境のみ)
           --mtime=int          変更日制限 (int が 負で最近、正で古いものだけ、
                                例: -50 で 50 日以内、50 で 50 日より古いものだけ)
     
@@ -311,9 +312,9 @@ ole から始まる文書フィルタは Windows専用です。OLEの文書フィ
     使い方: namazu [options] &lt;query&gt; [index]...
         -n, --max=num           一度に表示する件数
         -w, --whence=num        表示する検索結果の先頭番号
-        -l, --list              検索結果を URI・パス名をリストで出力
-        -s, --short             短いフォーマットで出力
-            --result=ext        結果表示に用いる NMZ.result.ext を指定
+        -l, --list              検索結果を URI・パス名をリストで出力する
+        -s, --short             短い書式で出力する
+            --result=ext        結果表示に用いる NMZ.result.ext を指定する
             --late              検索結果を新しい順にソートする
             --early             検索結果を古い順にソートする
             --sort=method       ソート方法を指定する (score, date, field:name)
@@ -831,9 +832,9 @@ href="#query-phrase"> フレイズ検索</a>します。分割は不適切に
 
 <li>記号を含む語の検索ができます。例: <code>TCP/IP</code>。
 ただし、記号の処理は完全ではないので <code>TCP and IP</code> 
-のように分割して<a href="#query-and">AND検索</a>をかけた方が
-取りこぼしがありません (その代わり余計なファイルまでヒットし
-てしまう可能性があります)。
+のように分割して<a href="#query-and">AND検索</a>をかけた方が取りこ
+ぼしがありません (その代わり余計なファイルまでヒットしてしま
+う可能性があります)。
 
 <li>中間一致・後方一致、正規表現、フィールド指定の検索には少
 し時間がかかります。
@@ -859,7 +860,7 @@ Tknamazu および namazu.el から検索するときは必ず後者で指定します。
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: manual.html,v 1.14 2000-02-06 14:20:39 satoru Exp $
+$Id: manual.html,v 1.15 2000-02-06 14:33:48 satoru Exp $
 </div>
 <address>
 developers@namazu.org

@@ -1,0 +1,25 @@
+#! /bin/sh
+#
+# Test for cross-site scripting vulnerability 
+#
+LOG=`pwd`/test-log
+echo '  *** starting ' $0 >>$LOG
+. ./commonfuncs
+
+pwd=`pwd`
+tmprc="$pwd/../src/.namazurc"
+echo "Index $pwd" > $tmprc
+duprcs
+
+SCRIPT_NAME='namazu.cgi'
+QUERY_STRING='query=%09%09"><script>xss&idxname=idx1'
+export SCRIPT_NAME QUERY_STRING
+
+cd ../src
+xss=`./namazu.cgi | perl -ne 'print 1 if /<script>xss/'`
+rm -f $tmprc
+
+test -n "$xss" && echo "xss check: query=%09 FAIL" >> $LOG
+test -n "$xss" && exit 1
+echo "xss check: query=%09 PASS" >> $LOG
+exit 0

@@ -16,7 +16,7 @@ TESTS =	mknmz-1 mknmz-2 mknmz-3 mknmz-4 mknmz-5 \
 	namazu-11 namazu-12 \
 	namazu-cgi-1 namazu-cgi-2 namazu-cgi-3 namazu-cgi-4 \
 	namazu-cgi-5 namazu-cgi-6 namazu-cgi-7 namazu-cgi-8 \
-	namazu-cgi-9 namazu-cgi-10 \
+	namazu-cgi-9 namazu-cgi-10 namazu-cgi-11 \
 	ja-mknmz-1 ja-mknmz-2 ja-mknmz-3 \
 	ja-namazu-cgi-1 \
 	ja-namazu-1 ja-namazu-2 ja-namazu-3

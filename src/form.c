@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.75 2004-08-08 11:44:52 opengl2772 Exp $
+ * $Id: form.c,v 1.76 2004-12-15 03:13:15 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -113,6 +113,8 @@ cmp_element(const char *s1, const char *s2)
 static enum nmz_stat
 replace_query_value(const char *p, const char *query)
 {
+    char *query_external = NULL;
+
     if (cmp_element(p, (char *)"input type=\"text\" name=\"query\"") == 0) {
 	char *converted;
 
@@ -133,12 +135,17 @@ replace_query_value(const char *p, const char *query)
 	    die("%s", strerror(errno));
 	}
 
+        query_external = converted;
+        while(*query_external == '\t') {
+            query_external++;
+        }
+
         for (; *p; p++)
             fputc(*p, stdout);
 
 	if (strcmp(query, "")) {
             printf(" value=\"");
-            html_print(converted);  /* for treating <>&" chars in the query. */
+            html_print(query_external);  /* for treating <>&" chars in the query. */
             printf("\"");
         }
 
@@ -508,10 +515,16 @@ print_headfoot(const char * fname, const char * query, const char *subquery)
             if (nmz_strprefixcasecmp(p, "</title>") == 0) {
 		if (*query != '\0') {
 		    char *converted = nmz_codeconv_external(query);
-		    printf(": &lt;");
-		    html_print(converted);
-		    printf("&gt;");
-		    free(converted);
+                    if (converted) {
+                        char *query_external = converted;
+                        while(*query_external == '\t') {
+                            query_external++;
+                        }
+                        printf(": &lt;");
+                        html_print(query_external);
+                        printf("&gt;");
+                        free(converted);
+                    }
 		}
 		printf("</title>\n");
                 p = (char *)strchr(p, '>');

@@ -1,3 +1,8 @@
+2000-02-12  Toshiaki Tanaka  <toshiaki@ksj1.kansai-sc.toshiba.co.jp>
+
+	* namazu.el: Customization support. Add namazu-index-history,
+	namazu-keyword-history for easy searching.
+
 2000-02-06  Hideyuki SHIRAI  <shirai@rdmg.mgcs.mei.co.jp>
 
 	* namazu.el: (namazu-view-file, namazu-view-msg): New functions, viewer for file and viewer for message.

@@ -2,7 +2,7 @@
 ;;
 ;; Mule $B>e$G(B Namazu $B$rMxMQ$7$?8!:w$r9T$&$?$a$N(B elisp $B$G$9!#(B
 ;;
-;;  $Id: namazu.el,v 1.9 2000-02-06 06:45:05 shirai Exp $
+;;  $Id: namazu.el,v 1.10 2000-02-13 07:24:15 shirai Exp $
 
 (defconst namazu-version "namazu.el 1.0.3")
 
@@ -88,23 +88,49 @@
 ;; $B$"$/$^$G(B at your own risk $B$G$4MxMQ2<$5$$!#(B
 ;;
 
-(defvar namazu-command "namazu"
+;; CUSTOM emulation derived from BBDB and APEL.
+(eval-and-compile
+  (condition-case ()
+      (require 'custom)
+    (error nil))
+  (if (and (featurep 'custom) (fboundp 'custom-declare-variable))
+      nil ;; We've got what we needed
+    ;; We have the old custom-library, hack around it!
+    (defmacro defgroup (&rest args)
+      nil)
+    (defmacro defcustom (var value doc &rest args) 
+      (` (defvar (, var) (, value) (, doc))))
+    (defmacro defface (var value doc &rest args)
+      (` (make-face (, var))))
+    (defmacro define-widget (&rest args)
+      nil)))
+
+(defgroup namazu nil
+  "Namazu front-end for Emacs."
+  :group 'external)
+
+(defcustom namazu-command "namazu"
   "*Namazu $B$N8!:wMQ%W%m%0%i%`L>$G$9!#(B
 $BDL>o$O(B namazu $B$J$I$G$7$g$&$,!"$=$&$G$O$J$$>l9g$d(B
-PATH $B$,DL$C$F$$$J$$>l9g$K$OE,Ev$J%W%m%0%i%`L>$r;XDj$7$^$9!#(B")
+PATH $B$,DL$C$F$$$J$$>l9g$K$OE,Ev$J%W%m%0%i%`L>$r;XDj$7$^$9!#(B"
+  :type 'string
+  :group 'namazu)
 
-(defvar namazu-argument '("-H")
-  "*Namazu $B$N8!:wMQ%W%m%0%i%`$r5/F0$9$k:]$K;XDj$9$k0z?t$G$9!#(B")
+(defcustom namazu-search-num 30
+  "*Namazu $B$N8!:w7k2L$r0lEY$KI=<($9$k7o?t$G$9!#(B"
+  :type 'integer
+  :group 'namazu)
 
-(defvar namazu-search-num 30
-  "*Namazu $B$N8!:w7k2L$r0lEY$KI=<($9$k7o?t$G$9!#(B")
-
-(defvar namazu-default-dir nil
+(defcustom namazu-default-dir nil
   "*Namazu $B$,;2>H$9$k%$%s%G%C%/%9$NCV$$$F$"$k%G%#%l%/%H%jL>$G$9!#(B
 $BFC$K;XDj$7$J$1$l$P%G%U%)%k%H$N%$%s%G%C%/%9$r;2>H$7$^$9!#(B
-$BJ#?t$N%$%s%G%C%/%9$r;XDj$9$k>l9g$K$O$=$l$>$l$r6uGr$G6h@Z$C$F$/$@$5$$!#(B")
+$BJ#?t$N%$%s%G%C%/%9$r;XDj$9$k>l9g$K$O$=$l$>$l$r6uGr$G6h@Z$C$F$/$@$5$$!#(B"
+  :type '(choice
+	  (item :tag "Auto" :value nil)
+	  (directory :tag "Default Index"))
+  :group 'namazu)
 
-(defvar namazu-dir-alist nil
+(defcustom namazu-dir-alist nil
   "*$B%$%s%G%C%/%9$,CV$$$F$"$k%G%#%l%/%H%j$K(B
 $B%7%s%\%j%C%/$JL>A0$r$D$1$k$?$a$N(B alist $B$G$9!#(B
   '((\"Namazu\" . \"/usr/doc/namazu/index /var/lib/namazu/index\")
@@ -112,42 +138,67 @@ PATH $B$,DL$C$F$$$J$$>l9g$K$OE,Ev$J%W%m%0%i%`L>$r;XDj$7$^$9!#(B")
 $B$J$I$N$h$&$K@_Dj$7$F$*$/$H!"8D!9$N%$%s%G%C%/%9%U%!%$%k$N$"$k(B
 $B%G%#%l%/%H%jL>$r;XDj$9$kBe$o$j$K(B Namazu $B$d(B Ruby $B$H$$$C$?(B
 $B$$$o$PJLL>$r;XDj$9$k$3$H$,$G$-$^$9!#(B
-$BJ#?t$N%$%s%G%C%/%9$r;XDj$9$k>l9g$K$O$=$l$>$l$r6uGr$G6h@Z$C$F$/$@$5$$!#(B")
+$BJ#?t$N%$%s%G%C%/%9$r;XDj$9$k>l9g$K$O$=$l$>$l$r6uGr$G6h@Z$C$F$/$@$5$$!#(B"
+  :type '(repeat (cons :format "%v"
+		       (string :tag "Alias")
+		       (string :tag "Index path")))
+  :group 'namazu)
 
-(defvar namazu-always-query-index-directory nil
+(defcustom namazu-always-query-index-directory nil
   "*nil $B0J30$NCM$r@_Dj$9$k$H!"?tCM0z?t$,$J$$$H$-$K(B
 $B%$%s%G%C%/%9%U%!%$%k$r;XDj$G$-!"?tCM0z?t$,$"$k$H$-$K(B
 $B%G%U%)%k%H$N%$%s%G%C%/%9$r;2>H$9$k$h$&$K$J$j$^$9!#(B
 $B>o$K%$%s%G%C%/%9%U%!%$%k$r;XDj$7$F8!:w$r9T$$$?$$(B
-$B>l9g$J$I$KJXMx$+$b$7$l$^$;$s!#(B")
+$B>l9g$J$I$KJXMx$+$b$7$l$^$;$s!#(B"
+  :type 'boolean
+  :group 'namazu)
 
-(defvar namazu-auto-turn-page nil
-  "*nil $B0J30$NCM$r@_Dj$9$k$H!"<+F0E*$K%Z!<%8$a$/$j$r$7$^$9!#(B")
+(defcustom namazu-auto-turn-page nil
+  "*nil $B0J30$NCM$r@_Dj$9$k$H!"<+F0E*$K%Z!<%8$a$/$j$r$7$^$9!#(B"
+  :type 'boolean
+  :group 'namazu)
 
-(defvar namazu-mode-hook nil
-  "*Namazu $B%b!<%I$r:n@.$9$k%?%$%_%s%0$G8F$P$l$k(B hook $B$G$9!#(B")
+(defcustom namazu-mode-hook nil
+  "*Namazu $B%b!<%I$r:n@.$9$k%?%$%_%s%0$G8F$P$l$k(B hook $B$G$9!#(B"
+  :type 'hook
+  :group 'namazu)
 
-(defvar namazu-display-hook nil
-  "*Namazu $B$N=PNO$rI=<($9$k$H$-$K8F$P$l$k(B hook $B$G$9!#(B")
+(defcustom namazu-display-hook nil
+  "*Namazu $B$N=PNO$rI=<($9$k$H$-$K8F$P$l$k(B hook $B$G$9!#(B"
+  :type 'hook
+  :group 'namazu)
 
-(defvar namazu-url-regex "^\\(https?://\\|ftp://\\)"
-  "*URL $B$H8+$J$9%U%!%$%kL>$N%Q%?!<%s$r@_Dj$7$^$9!#(B")
+(defcustom namazu-url-regex "^\\(https?://\\|ftp://\\)"
+  "*URL $B$H8+$J$9%U%!%$%kL>$N%Q%?!<%s$r@_Dj$7$^$9!#(B"
+  :type 'regexp
+  :group 'namazu)
 
-(defvar namazu-view-function-alist
+(defcustom namazu-view-function-alist
   '(("[^/]+\\.s?html?" . namazu-browse-url)
     ("/Mail\\|News/.*/[1-9][0-9]*$" . namazu-view-msg)
     ("man/man" . namazu-man)
     ;; ("/usr/local/info/\\|\\.info" . namazu-info) ;; $BL$:n@.(B
     ("." . namazu-view-file))
-  "*$B%U%!%$%kL>$N%Q%?!<%s$H$=$l$KBP1~$9$k1\Mw4X?t$r@_Dj$7$^$9!#(B")
+  "*$B%U%!%$%kL>$N%Q%?!<%s$H$=$l$KBP1~$9$k1\Mw4X?t$r@_Dj$7$^$9!#(B"
+      :type '(repeat (cons :format "%v"
+			   (regexp :tag "Filename Regexp")
+			   (symbol :tag "Function Name")))
+      :group 'namazu)
 
-(defvar namazu-view-other-window nil
-  "*If non-nil, make an other window when namazu-view.")
-(defvar namazu-view-other-frame nil
-  "*If non-nil, make an other frame when namazu-view.")
+(defcustom namazu-view-other-window nil
+  "*If non-nil, make an other window when namazu-view."
+  :type 'boolean
+  :group 'namazu)
 
-(defvar namazu-msg-visible-field (list "subject" "from" "to" "newsgroups" "date")
-  "*Visible header list for namazu-view-msg.")
+(defcustom namazu-view-other-frame nil
+  "*If non-nil, make an other frame when namazu-view."
+  :type 'boolean
+  :group 'namazu)
+
+(defcustom namazu-msg-visible-field (list "subject" "from" "to" "newsgroups" "date")
+  "*Visible header list for namazu-view-msg."
+  :type '(repeat (string :tag "Header"))
+  :group 'namazu)
 
 (defvar namazu-cs-write
   (if (memq system-type '(OS/2 emx windows-nt))
@@ -168,13 +219,17 @@ PATH $B$,DL$C$F$$$J$$>l9g$K$OE,Ev$J%W%m%0%i%`L>$r;XDj$7$^$9!#(B")
 	"/usr/local/namazu/lib/namazurc") ;obsolete?
   "*Search path for a Namazu configuration file.")
 
+(defvar namazu-argument "-H"
+  "*Namazu $B$N8!:wMQ%W%m%0%i%`$r5/F0$9$k:]$K;XDj$9$k0z?t$G$9!#(B")
+
 ;;
 ;; $B$3$3$+$i@h$r$$$8$C$F!"AGE($K$J$C$?$i65$($F$/$@$5$$$M!#(B
 ;;
 
 (defvar namazu-fill-prefix "\t")
 (defvar namazu-header-prefix "   ")
-(defvar namazu-history nil)
+(defvar namazu-index-history '(""))
+(defvar namazu-keyword-history '(""))
 (defvar namazu-mode-map nil)
 (defvar namazu-minibuffer-map nil)
 (defvar namazu-minibuffer-field-map nil)
@@ -212,16 +267,17 @@ PATH $B$,DL$C$F$$$J$$>l9g$K$OE,Ev$J%W%m%0%i%`L>$r;XDj$7$^$9!#(B")
     0
     (if (or (and (not namazu-always-query-index-directory) current-prefix-arg)
 	    (and namazu-always-query-index-directory (not current-prefix-arg)))
-	(read-from-minibuffer "Namazu index directory: "
-			      nil namazu-minibuffer-map)
+	(read-from-minibuffer "Namazu index directory: " nil
+			      namazu-minibuffer-map nil 'namazu-index-history)
       nil)
-    (read-from-minibuffer "Enter Keyword: "
-			  (car namazu-history)
-			  namazu-minibuffer-field-map nil 'namazu-history)))
+    (read-from-minibuffer "Enter Keyword: " nil
+			  namazu-minibuffer-field-map nil 'namazu-keyword-history)))
   (let ((buffer (get-buffer-create namazu-buffer))
 	(dir (or namazu-dir
-		 (and namazu-default-dir
-		      (expand-file-name namazu-default-dir))))
+		 (progn
+		   (or namazu-default-dir
+		       (setq namazu-default-dir (namazu-get-default-index-dir)))
+		   (expand-file-name namazu-default-dir))))
 	(arg-list (if (listp namazu-argument)
 		      namazu-argument (list namazu-argument))))
     (setq arg-list (append
@@ -303,22 +359,23 @@ PATH $B$,DL$C$F$$$J$$>l9g$K$OE,Ev$J%W%m%0%i%`L>$r;XDj$7$^$9!#(B")
    (list
     (save-excursion
       (read-from-minibuffer "Enter Keyword: "
-         (car namazu-history) namazu-minibuffer-field-map nil
-            'namazu-history))))
+			    (cons (car namazu-keyword-history) 1)
+			    namazu-minibuffer-field-map
+			    nil 'namazu-keyword-history))))
   (namazu 0 namazu-last-dir key))
 
 (defun namazu-next-page ()
   "$B<!$N%Z!<%8$N8!:w7k2L$X0\F0$7$^$9!#(B"
   (interactive)
   (if (< namazu-current-page namazu-max-page)
-      (namazu (+ 1 namazu-current-page) namazu-last-dir (car namazu-history))
+      (namazu (+ 1 namazu-current-page) namazu-last-dir (car namazu-keyword-history))
     t))
 
 (defun namazu-prev-page ()
   "$BA0$N%Z!<%8$N8!:w7k2L$X0\F0$7$^$9!#(B"
   (interactive)
   (if (> namazu-current-page 0)
-      (namazu (+ -1 namazu-current-page) namazu-last-dir (car namazu-history))
+      (namazu (+ -1 namazu-current-page) namazu-last-dir (car namazu-keyword-history))
     t))
 
 (defun namazu-dir-complete ()
@@ -460,7 +517,8 @@ PATH $B$,DL$C$F$$$J$$>l9g$K$OE,Ev$J%W%m%0%i%`L>$r;XDj$7$^$9!#(B")
 (defun namazu-make-field-completion-alist (namazu-dir)
   "make \'+files:\' completion alist."
   (let* ((dir (if (null namazu-dir)
-                   namazu-default-dir
+		  (or namazu-default-dir
+		      (setq namazu-default-dir (namazu-get-default-index-dir)))
                  (or (cdr (assoc namazu-dir namazu-dir-alist))
                      namazu-dir)))
          (fl (and dir
@@ -874,8 +932,5 @@ mouse $B$N??$sCf$N%\%?%s$r2!$9$H!"2!$7$?0LCV$K$h$C$F!"(B\"$BJ8>O$r;2>H(B\"$
     (list namazu-output-url-pattern    3 'grey40)))
   (add-hook 'namazu-display-hook
 	    'hilit-rehighlight-buffer-quietly)))
-
-(or namazu-default-dir
-    (setq namazu-default-dir (namazu-get-default-index-dir)))
 
 ;; end here.

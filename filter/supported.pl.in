@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: supported.pl,v 1.1 1999-08-26 08:01:55 satoru Exp $
+# $Id: supported.pl.in,v 1.1 1999-08-26 08:44:43 satoru Exp $
 #
 # Copyright (C) 1999 Satoru Takabayashi ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -33,9 +33,9 @@ my %supported =
      "message/news"              => "yes",
 
      # The following documents need external filters.
-     "application/pdf"           => "yes",
-     "application/msword"        => "yes",
-     "application/x-gzip"        => "yes",
-     "application/x-bzip2"       => "yes",
-     "application/x-compress"    => "yes",
+     "application/pdf"           => "@application_pdf@",
+     "application/msword"        => "@application_msword@",
+     "application/x-gzip"        => "@application_x_gzip@",
+     "application/x-bzip2"       => "@application_x_bzip2@",
+     "application/x-compress"    => "@application_x_compress@",
     );

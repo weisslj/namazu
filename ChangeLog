@@ -1,3 +1,7 @@
+2003-04-10  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* tests/data/ja-spec/Makefile.am (EXTRA_DIST): Fixed a typo.
+
 2003-03-30  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* tests/ja-namazu-1: Added a new test for checking Japanese
@@ -7864,4 +7868,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1012 2003-03-30 06:10:03 knok Exp $
+$Id: ChangeLog,v 1.1013 2003-04-10 08:13:19 knok Exp $

@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.23 2000-02-23 08:26:03 satoru Exp $
+ * $Id: rcfile.c,v 1.24 2000-05-03 23:56:59 masao Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -114,6 +114,8 @@ static enum nmz_stat process_rc_scoring ( const char *directive, const StrList *
 static enum nmz_stat process_rc_lang ( const char *directive, const StrList *args );
 static enum nmz_stat process_rc_emphasistags ( const char *directive, const StrList *args );
 static enum nmz_stat process_rc_template ( const char *directive, const StrList *args );
+static enum nmz_stat process_rc_maxhit ( const char *directive, const StrList *args );
+static enum nmz_stat process_rc_maxmatch ( const char *directive, const StrList *args );
 
 struct conf_directive {
     char *name;
@@ -134,6 +136,8 @@ static struct conf_directive directive_tab[] = {
     { "LANG",          1, 0, process_rc_lang },
     { "EMPHASISTAGS",  2, 0, process_rc_emphasistags },
     { "TEMPLATE",      1, 0, process_rc_template },
+    { "MAXHIT",        1, 0, process_rc_maxhit },
+    { "MAXMATCH",      1, 0, process_rc_maxmatch },
     { NULL,            0, 0, NULL }
 };
 
@@ -259,6 +263,30 @@ process_rc_template(const char *directive, const StrList *args)
     char *arg1 = args->value;
 
     set_templatedir(arg1);
+    return SUCCESS;
+}
+
+static enum nmz_stat
+process_rc_maxhit(const char *directive, const StrList *args)
+{
+    int arg1 = atoi(args->value);
+
+    if (arg1 <= 0) {
+	return FAILURE;
+    }
+    nmz_set_maxhit(arg1);
+    return SUCCESS;
+}
+
+static enum nmz_stat
+process_rc_maxmatch(const char *directive, const StrList *args)
+{
+    int arg1 = atoi(args->value);
+
+    if (arg1 <= 0) {
+	return FAILURE;
+    }
+    nmz_set_maxmatch(arg1);
     return SUCCESS;
 }
 
@@ -724,10 +752,13 @@ Logging:      %s\n\
 Lang:         %s\n\
 Scoring:      %s\n\
 Template:     %s\n\
+MaxHit:       %d\n\
+MaxMatch:     %d\n\
 EmphasisTags: %s\t%s\n\
 "), nmz_get_defaultidx(), nmz_is_loggingmode() ? "on" : "off",
            nmz_get_lang(), nmz_is_tfidfmode() ? "tfidf" : "simple",
 	   get_templatedir(), 
+	   nmz_get_maxhit(), nmz_get_maxmatch(),
 	   get_emphasis_tag_start(), get_emphasis_tag_end()
 	   );
 

@@ -1,3 +1,20 @@
+2000-05-01  Masao Takaku  <masao@ulis.ac.jp>
+
+	* src/rcfile.c (process_rc_maxhit): New function.
+	(process_rc_maxmatch): Likewise.
+
+	* nmz/libnamazu.h (IGNORE_HIT): Abolished.
+	(IGNORE_MATCH): Likewise.
+	
+	* nmz/{hlist,re,search}.c: Call nmz_get_maxhit() instead of using
+	IGNORE_HIT.
+	Call nmz_get_maxmatch() instead of using IGNORE_MATCH.
+
+	* nmz/libnamazu.c (nmz_set_maxhit): New function.
+	(nmz_get_maxhit): Likewise.
+	(nmz_set_maxmatch): Likewise.
+	(nmz_get_maxmatch): Likewise.
+
 2000-04-26  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* scripts/mknmz.in (load_registry): Simplified. Completely rewritten.
@@ -5615,4 +5632,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.687 2000-04-26 02:30:50 satoru Exp $
+$Id: ChangeLog,v 1.688 2000-05-03 23:56:57 masao Exp $

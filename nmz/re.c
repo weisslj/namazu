@@ -2,7 +2,7 @@
  * 
  * re.c -
  * 
- * $Id: re.c,v 1.29 2000-02-13 17:34:53 rug Exp $
+ * $Id: re.c,v 1.30 2000-05-03 23:56:58 masao Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -79,12 +79,12 @@ nmz_regex_grep(const char *expr, FILE *fp, const char *field, int field_mode)
 	if (val.stat == ERR_FATAL)
 	    return val;
 	val.num = 0; /* set 0 for no matching case */
-        max = IGNORE_HIT;
+        max = nmz_get_maxhit();
         if (strcmp(field, "uri") == 0) {
             uri_mode = 1;
         }
     } else {
-        max = IGNORE_MATCH;
+        max = nmz_get_maxmatch();
     }
 
     nmz_re_compile_pattern(tmpexpr, strlen(tmpexpr), rp);
@@ -115,7 +115,7 @@ nmz_regex_grep(const char *expr, FILE *fp, const char *field, int field_mode)
                 tmp = nmz_get_hlist(i);
 		if (tmp.stat == ERR_FATAL)
 		    return tmp;
-                if (tmp.num > IGNORE_HIT) {
+                if (tmp.num > nmz_get_maxhit()) {
                     nmz_free_hlist(val);
                     val.stat = ERR_TOO_MUCH_HIT;
                     val.num = 0;
@@ -137,7 +137,7 @@ nmz_regex_grep(const char *expr, FILE *fp, const char *field, int field_mode)
 		if (val.stat == ERR_FATAL)
 		    return val;
             } 
-            if (val.num > IGNORE_HIT) {
+            if (val.num > nmz_get_maxhit()) {
                 nmz_free_hlist(val);
                 val.num = -1;
                 break;

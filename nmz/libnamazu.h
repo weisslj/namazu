@@ -2,7 +2,7 @@
  * 
  * libnamazu.h - Namazu library api
  *
- * $Id: libnamazu.h,v 1.43 2000-03-03 03:36:20 satoru Exp $
+ * $Id: libnamazu.h,v 1.44 2000-05-03 23:56:58 masao Exp $
  * 
  */
 
@@ -58,9 +58,6 @@ enum {
 
     QUERY_TOKEN_MAX =  32, /* Max number of tokens in the query. */
     QUERY_MAX       = 256, /* Max length of the query. */
-
-    IGNORE_HIT    = 10000, /* Ignore if pages matched more than this. */
-    IGNORE_MATCH  = 1000,  /* Ignore if words matched more than this. */
 
     INDEX_MAX = 64        /* Max number of databases */
 };
@@ -234,6 +231,10 @@ extern void nmz_set_sortmethod ( enum nmz_sortmethod method );
 extern enum nmz_sortmethod nmz_get_sortmethod(void);
 extern void nmz_set_sortorder ( enum nmz_sortorder order );
 extern enum nmz_sortorder nmz_get_sortorder(void);
+extern void nmz_set_maxhit ( int max );
+extern int nmz_get_maxhit ( void );
+extern void nmz_set_maxmatch ( int max );
+extern int nmz_get_maxmatch ( void );
 extern void nmz_set_debugmode ( int mode );
 extern int  nmz_is_debugmode ( void );
 extern void nmz_set_loggingmode ( int mode );

@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.74 2000-04-05 07:07:54 satoru Exp $
+ * $Id: search.c,v 1.75 2000-05-03 23:56:58 masao Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -178,7 +178,7 @@ prefix_match(const char *key, int v)
 	 * Return if too much word would be hit
          * because treat 'a*' completely is too consuming 
 	 */
-	if (j > IGNORE_MATCH) {
+	if (j > nmz_get_maxmatch()) {
 	    nmz_free_hlist(val);
 	    val.stat = ERR_TOO_MUCH_MATCH;
 	    break;
@@ -192,7 +192,7 @@ prefix_match(const char *key, int v)
 	    tmp = nmz_get_hlist(i);
 	    if (tmp.stat == ERR_FATAL)
 	        return tmp;
-	    if (tmp.num > IGNORE_HIT) {
+	    if (tmp.num > nmz_get_maxhit()) {
 		nmz_free_hlist(val);
 		val.stat = ERR_TOO_MUCH_MATCH;
 		break;
@@ -200,7 +200,7 @@ prefix_match(const char *key, int v)
 	    val = nmz_ormerge(val, tmp);
 	    if (val.stat == ERR_FATAL)
 	        return val;
-	    if (val.num > IGNORE_HIT) {
+	    if (val.num > nmz_get_maxhit()) {
 		nmz_free_hlist(val);
 		val.stat = ERR_TOO_MUCH_MATCH;
 		break;

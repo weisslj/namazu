@@ -2,7 +2,7 @@
  * 
  * libnamazu.c - Namazu library api
  *
- * $Id: libnamazu.c,v 1.33 2000-02-20 06:35:02 rug Exp $
+ * $Id: libnamazu.c,v 1.34 2000-05-03 23:56:58 masao Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -61,6 +61,8 @@
 
 static enum nmz_sortmethod  sortmethod  = SORT_BY_SCORE;
 static enum nmz_sortorder   sortorder   = DESCENDING;
+static int  maxhit      = 10000;  /* Ignore if pages matched more than this. */
+static int  maxmatch    = 1000;   /* Ignore if words matched more than this. */
 static int  debugmode   = 0;
 static int  loggingmode = 1;   /* do logging with NMZ.slog */
 static char dyingmsg[BUFSIZE] = "";
@@ -106,6 +108,30 @@ enum nmz_sortorder
 nmz_get_sortorder(void)
 {
     return sortorder;
+}
+
+void
+nmz_set_maxhit(int max)
+{
+    maxhit = max;
+}
+
+int
+nmz_get_maxhit(void)
+{
+    return maxhit;
+}
+
+void
+nmz_set_maxmatch(int max)
+{
+    maxmatch = max;
+}
+
+int
+nmz_get_maxmatch(void)
+{
+    return maxmatch;
 }
 
 void 

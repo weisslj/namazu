@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.128 2004-01-30 14:22:15 opengl2772 Exp $
+# $Id: mknmz.in,v 1.129 2004-01-30 16:41:29 opengl2772 Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -685,7 +685,7 @@ sub complete_field_info (\%$$\$\$\$) {
     my ($fields, $cfile, $uri, $headings, $contref, $wsref) = @_;
 
     for my $field (keys %{$fields}) {
-        if ($fields->{$field} =~ /^\s*$/) {
+        if (!defined($fields->{$field}) or $fields->{$field} =~ /^\s*$/) {
             delete $fields->{$field};
         }
     }

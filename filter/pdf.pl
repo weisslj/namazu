@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: pdf.pl,v 1.31 2003-08-27 09:55:06 opengl2772 Exp $
+# $Id: pdf.pl,v 1.32 2004-01-30 16:41:28 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -130,19 +130,19 @@ sub filter ($$$$$) {
 	if ($result =~ /Title:\s+(.*)/) { # or /Subject:\s+(.*)/
 	    $fields->{'title'} = $1;
             if ($fields->{'title'} =~ /<unicode>/) {
-                $fields->{'title'} = undef;
+                delete $fields->{'title'};
             }
-            elsif ($fields->{'title'} =~ /^ *$/) {
-                $fields->{'title'} = undef;
+            elsif ($fields->{'title'} =~ /^\s*$/) {
+                delete $fields->{'title'};
             }
 	}
 	if ($result =~ /Author:\s+(.*)/) {
 	    $fields->{'author'} = $1;
             if ($fields->{'author'} =~ /<unicode>/) {
-                $fields->{'author'} = undef;
+                delete $fields->{'author'};
             }
-            elsif ($fields->{'author'} =~ /^ *$/) {
-                $fields->{'author'} = undef;
+            elsif ($fields->{'author'} =~ /^\s*$/) {
+                delete $fields->{'author'};
             }
 	}
     }

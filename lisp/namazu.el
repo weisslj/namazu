@@ -2,7 +2,7 @@
 ;;
 ;; Mule $B>e$G(B Namazu $B$rMxMQ$7$?8!:w$r9T$&$?$a$N(B elisp $B$G$9!#(B
 ;;
-;;  $Id: namazu.el,v 1.4 2000-01-26 03:28:16 shirai Exp $
+;;  $Id: namazu.el,v 1.5 2000-01-26 13:48:18 shirai Exp $
 
 (defconst namazu-version "namazu.el 1.0.3")
 
@@ -181,10 +181,10 @@ PATH $B$,DL$C$F$$$J$$>l9g$K$OE,Ev$J%W%m%0%i%`L>$r;XDj$7$^$9!#(B")
   (format "^%s\\([^:]+:.*\\)$" namazu-header-prefix)
   "$B8!:w7k2L$NCf$N(B From$B!"(BDate $B%X%C%@$r<($9%Q%?!<%s(B")
 (defvar namazu-output-url-pattern
-  "^\\(/.*\\|\\([a-z]+\\):[^ ]*\\) \\(\\(size\\|([0-9-]+\\) ([^)]*)\\)"
+  "^\\(\\(~?/\\|[a-z]+:\\)[^ ]+\\) \\(.*\\)$"
   "$B8!:w7k2L$NCf$N%I%-%e%a%s%H$N:_=h(B(URL)$B$r<($99T$N%Q%?!<%s(B")
 (defvar namazu-output-current-list-pattern
-  "^Current List: [0-9]+ $B!A(B [0-9]+$"
+  "^Current List: [0-9]+ - [0-9]+$"
   "$B8!:w7k2L$NCf$N$I$NItJ,$r1\MwCf$+$r<($99T$N%Q%?!<%s(B")
 (defvar namazu-output-pages-pattern
   "^Page: \\(\\[[0-9]+\\]\\)*\\[\\([0-9]+\\)\\]$"
@@ -259,7 +259,7 @@ PATH $B$,DL$C$F$$$J$$>l9g$K$OE,Ev$J%W%m%0%i%`L>$r;XDj$7$^$9!#(B")
       (re-search-forward "^$" nil t)
       (forward-line -1)
       ;; there is URL or file name
-      (if (or (looking-at "/") (looking-at "[a-z]+:/"))
+      (if (looking-at namazu-output-url-pattern)
 	  (forward-line -1))
       ;; there is description
       (if (> (point) start-point)
@@ -595,7 +595,7 @@ mouse $B$N??$sCf$N%\%?%s$r2!$9$H!"2!$7$?0LCV$K$h$C$F!"(B\"$BJ8>O$r;2>H(B\"$
 	    (namazu-browse-url url)
 	  (let ((ext '("" ".gz" ".Z" "bz2")) 
 		(fl namazu-view-function-alist)
-		(file url) (name "") path done)
+		(file (expand-file-name url)) (name "") path done)
 	    (and (string-match "\\(.*\\)\\(#.*\\)$" url)
 		 (setq file (substring url (match-beginning 1) (match-end 1)))
 		 (setq name (substring url (match-beginning 2) (match-end 2))))

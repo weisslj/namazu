@@ -1,3 +1,8 @@
+2000-01-25  Hideyuki SHIRAI  <shirai@rdmg.mgcs.mei.co.jp>
+
+	* namazu.el (namazu-output-url-pattern): Sync up Namazu Ver.2.0, again ^^;
+	Support 'REPLACE /home/hoge ~/' in ~/.namazurc.
+
 2000-01-25  Hideyuki SHIRAI <shirai@rdmg.mgcs.mei.co.jp>
 
 	* namazu.el (namazu-version): namazu.el 1.0.3

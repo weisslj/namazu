@@ -31,6 +31,8 @@
 
 1999-12-07  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/namazu.c: s/debug_printf/nmz_debug_printf/g.
+
 	* nmz/search.c (nmz_search): Renamed from search_main.
 
 	* nmz/rcfile.c (getenv_namazurc): Moved from libnamazu.c.

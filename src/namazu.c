@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.58 1999-12-07 09:45:49 satoru Exp $
+ * $Id: namazu.c,v 1.59 1999-12-07 13:21:09 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -293,9 +293,9 @@ static enum nmz_stat namazu_core(char * query, char *subquery, char *argv0)
 	return FAILURE;
     }
 
-    debug_printf(" -n: %d\n", get_maxresult());
-    debug_printf(" -w: %d\n", get_listwhence());
-    debug_printf("query: [%s]\n", query);
+    nmz_debug_printf(" -n: %d\n", get_maxresult());
+    nmz_debug_printf(" -w: %d\n", get_listwhence());
+    nmz_debug_printf("query: [%s]\n", query);
 
     if (is_htmlmode() && is_cgimode()) {
 	print(MSG_MIME_HEADER);
@@ -477,7 +477,7 @@ int main(int argc, char **argv)
 
     if (is_debugmode()) {
         for (i = 0; i < Idx.num; i++) {
-            debug_printf("Idx.names[%d]: %s\n", i, Idx.names[i]);
+            nmz_debug_printf("Idx.names[%d]: %s\n", i, Idx.names[i]);
         }
     }
 

@@ -2,7 +2,7 @@
  * 
  * messages.c -
  * 
- * $Id: message.c,v 1.7 1999-09-01 02:26:38 satoru Exp $
+ * $Id: message.c,v 1.8 1999-09-01 07:24:12 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -58,31 +58,32 @@ uchar *MSG_USAGE, *MSG_TOO_LONG_KEY, *MSG_TOO_MANY_KEYITEM,
 void init_message(void)
 {
     if (is_lang_ja(Lang)) {
-      MSG_USAGE = (uchar *)"%s\n\
-全文検索システム Namazu の検索プログラム v%s\n\n\
-Usage: namazu [options] <query> [index dir(s)] \n\
-   -n, --max=num           一度に表示する件数\n\
-   -w, --whence=num        表示するリストの先頭番号\n\
-   -l, --list              検索結果を URI・パス名のリストで出力\n\
-   -s, --short             短いフォーマットで出力\n\
-       --result=ext        結果表示に用いる NMZ.result.ext を指定
-       --late              検索結果を新しい順にソートする\n\
-       --early             検索結果を古い順にソートする\n\
-   -a, --all               検索結果をすべて表示する\n\
-   -c, --count             ヒット数のみを表示する\n\
-   -h, --html              HTML で出力する\n\
-   -r, --no-references     参考ヒット数を表示しない\n\
-   -H, --page              先の検索結果へのリンクを表示する (ほぼ無意味) \n\
-   -F, --form              <form> ... </form> の部分を強制的に表示する\n\
-   -R, --no-replace-uri    URI の置き換えを行わない\n\
-   -U, --no-encode-uri     URI encode の復元を行わない\n\
-   -o, --output=file       指定したファイルに検索結果を出力する\n\
-   -f, --config=file       namazu.conf を指定する\n\
-   -C, --show-config       コンフィギュレーション内容を表示する\n\
-   -q, --quiet             検索結果以外のメッセージを表示しない\n\
-   -L, --lang=lang         メッセージの言語を設定する ja または en\n\
-   -v, --version           ヴァージョンを表示する\n\
-       --help              help を表示する (この表示)\n";
+      MSG_USAGE = (uchar *)"\
+全文検索システム Namazu の検索プログラム v%s\n\
+%s\n\n\
+使い方: namazu [options] <query> [index(s)] \n\
+    -n, --max=num           一度に表示する件数\n\
+    -w, --whence=num        表示するリストの先頭番号\n\
+    -l, --list              検索結果を URI・パス名のリストで出力\n\
+    -s, --short             短いフォーマットで出力\n\
+        --result=ext        結果表示に用いる NMZ.result.ext を指定
+        --late              検索結果を新しい順にソートする\n\
+        --early             検索結果を古い順にソートする\n\
+    -a, --all               検索結果をすべて表示する\n\
+    -c, --count             ヒット数のみを表示する\n\
+    -h, --html              HTML で出力する\n\
+    -r, --no-references     参考ヒット数を表示しない\n\
+    -H, --page              先の検索結果へのリンクを表示する (ほぼ無意味) \n\
+    -F, --form              <form> ... </form> の部分を強制的に表示する\n\
+    -R, --no-replace-uri    URI の置き換えを行わない\n\
+    -U, --no-encode-uri     URI encode の復元を行わない\n\
+    -o, --output=file       指定したファイルに検索結果を出力する\n\
+    -f, --config=file       namazu.conf を指定する\n\
+    -C, --show-config       コンフィギュレーション内容を表示する\n\
+    -q, --quiet             検索結果以外のメッセージを表示しない\n\
+    -L, --lang=lang         メッセージの言語を設定する ja または en\n\
+    -v, --version           ヴァージョンを表示する\n\
+        --help              help を表示する (この表示)\n";
 
         /* output messages (Japanese message should be outputed by
            euctojisput function */
@@ -107,9 +108,10 @@ Usage: namazu [options] <query> [index dir(s)] \n\
         MSG_REFERENCE_HEADER = (uchar *)"	<strong>参考ヒット数:</strong> ";
         MSG_INVALID_DB_NAME = (uchar *)"不正な dbname の指定です";
     } else {
-        MSG_USAGE = (uchar *)"%s\n\
-  Search Program of Namazu v%s\n\n\
-  Usage: namazu [options] <query> [index dir(s)] \n\
+        MSG_USAGE = (uchar *)"\
+Search Program of Namazu v%s\n\
+%s\n\n\
+  Usage: namazu [options] <query> [index(s)] \n\
      -n (num)  : set number of documents shown at once.\n\
      -w (num)  : set first number of documents shown.\n\
      -s        : output by short format.\n\

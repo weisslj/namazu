@@ -1,5 +1,7 @@
 1999-09-01  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/{usage,message}.c: Modify namazu's usages.
+	
 	* src/conf.c (show_conf): Modify messages.
 
 	* src/mknmz.pl.in, lib/var.pl.in: Rename an variable:

@@ -18,7 +18,7 @@ void show_long_usage(void)
 #if	defined(_WIN32) || defined(__EMX__)
     euctosjis(buf);
 #endif
-    printf(buf, COPYRIGHT, VERSION);
+    printf(buf, VERSION, COPYRIGHT);
 }
 
 

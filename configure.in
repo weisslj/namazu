@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.47 1999-11-01 14:13:13 satoru Exp $
+dnl $Id: configure.in,v 1.48 1999-11-02 08:49:26 satoru Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -9,17 +9,17 @@ dnl Modified by Hajime BABA <baba@kusastro.kyoto-u.ac.jp> [1999-02-02]
 dnl Modified by NOKUBI Takatsugu <knok@daionet.gr.jp> [1999/06/22]
 dnl
 
-dnl Process this file with autoconf to produce a configure script.
+dnl *
+dnl * Process this file with autoconf to produce a configure script.
+dnl *
 AC_INIT(src/cgi.c)
 AC_PREREQ(2.13)               dnl Minimum Autoconf version required.
 AM_INIT_AUTOMAKE(namazu, 1.9.7)
 
-dnl libtool
+dnl *
+dnl * libtool
+dnl *
 AM_PROG_LIBTOOL
-
-dnl Namazu's website
-OPT_NMZ_URI="http://openlab.ring.gr.jp/namazu/"
-AC_SUBST(OPT_NMZ_URI)
 
 dnl This option requires config.guess, config.sub and install-sh
 dnl AC_CANONICAL_SYSTEM
@@ -82,6 +82,11 @@ AC_CHECK_FUNCS([vsnprintf _vsnprintf])
 if test $ac_cv_func_vsnprintf = no && test $ac_cv_func__vsnprintf = no; then
     LIBOBJS="$LIBOBJS vsnprintf.${ac_objext}"
 fi
+
+dnl *
+dnl * Check for Emacs and where to install .elc files.
+dnl *
+AM_PATH_LISPDIR
 
 dnl *
 dnl * Checks for external commands
@@ -275,54 +280,53 @@ AC_CONFIG_SUBDIRS($TKNAMAZU)
 
 
 dnl *
-dnl * Checking File::MMagic module
+dnl * Set a directory to install perl modules
 dnl *
-
+ADDITIONAL_INC="."  # default (dummy)
 AC_ARG_WITH(
-	file-mmagic,
-	[  --without-file-mmagic   do not build file-mmagic perl module ],
-	[file_mmagic=${withval}], [file_mmagic='yes']
+	pmdir,
+	[  --with-pmdir=DIR        perl modules are in DIR [guessed]],
+	[PMDIR=${withval}], [PMDIR='']
+)
+test "$PMDIR" && ADDITIONAL_INC="$PMDIR"
+AC_SUBST(ADDITIONAL_INC)
+
+dnl *
+dnl * Check File::MMagic module
+dnl *
+AC_ARG_WITH(
+    file-mmagic,
+    [  --without-file-mmagic   do not build file-mmagic perl module ],
+    [file_mmagic=${withval}], [file_mmagic='yes']
 )
 
 if test "${file_mmagic}" = "no"; then
     FILE_MMAGIC=""
-	ADDITIONAL_INC="."  # dummy
 else
-	changequote(<<, >>)
-	tmp=`$PERL -nle 'print \$1 if /^\\$VERSION = \"([\d\.]+)\";\$/' \
-		File-MMagic/MMagic.pm`
-	# tmp="10.0"  # for testing
-	AC_MSG_CHECKING(for File::MMagic module)
+    changequote(<<, >>)
+    tmp=`$PERL -nle 'print \$1 if /^\\$VERSION = \"([\d\.]+)\";\$/' \
+    	File-MMagic/MMagic.pm`
+    # tmp="10.0"  # for testing
+    AC_MSG_CHECKING(for File::MMagic module)
 
-	FILE_MMAGIC=""
-	ADDITIONAL_INC="."  # dummy
-
-	if test "$prefix" != "$ac_default_prefix"; then
-	    FILE_MMAGIC_DIR="$prefix/share/namazu/perl5"
-	    ADDITIONAL_INC="$FILE_MMAGIC_DIR"
-	fi
-
-	if $PERL -e "use File::MMagic $tmp" 1>/dev/null 2> /dev/null; then
-	    AC_MSG_RESULT(yes)
-	else
-	    AC_MSG_RESULT(no)
-	    AC_MSG_WARN(File::MMagic module not installed. preparing its Makefile.)
-	    cd File-MMagic
-	    if test "$prefix" != "$ac_default_prefix"; then
-	        $PERL Makefile.PL LIB=$FILE_MMAGIC_DIR
-	    else
-	        $PERL Makefile.PL
-	    fi
-	    cd ..
-	    FILE_MMAGIC="File-MMagic"
-	fi
-	changequote([, ])
+    FILE_MMAGIC=""
+    if $PERL -e "use File::MMagic $tmp" 1>/dev/null 2> /dev/null; then
+        AC_MSG_RESULT(yes)
+    else
+        AC_MSG_RESULT(no)
+        AC_MSG_WARN(File::MMagic module not installed. preparing its Makefile.)
+        cd File-MMagic
+        if test -z "$PMDIR"; then
+            $PERL Makefile.PL
+        else
+            $PERL Makefile.PL LIB=$PMDIR
+        fi
+        cd ..
+        FILE_MMAGIC="File-MMagic"
+    fi
+    changequote([, ])
 fi
 AC_SUBST(FILE_MMAGIC)
-AC_SUBST(ADDITIONAL_INC)
-
-dnl Check for Emacs and where to install .elc files.
-AM_PATH_LISPDIR
 
 dnl *
 dnl * Define the admin's email address
@@ -420,6 +424,12 @@ dnl *
 AC_DEFINE_UNQUOTED(OPT_LANGUAGE, "$OPT_LANGUAGE")
 AC_DEFINE_UNQUOTED(OPT_SCORING, $OPT_SCORING)
 AC_DEFINE(MSIE4MACFIX)
+
+dnl *
+dnl * Namazu's website URL
+dnl * 
+OPT_NMZ_URI="http://openlab.ring.gr.jp/namazu/"
+AC_SUBST(OPT_NMZ_URI)
 
 dnl * 
 dnl * Output Files.

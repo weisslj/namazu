@@ -1,3 +1,11 @@
+1999-11-02  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* acinclude.m4: Import AM_PATH_LISPDIR macro from Lookup
+	<http://openlab.ring.gr.jp/lookup/>
+	And modify a message a little bit.
+
+	* configure.in: Add --with-pmdir=DIR option. [namazu-dev 582]
+
 1999-11-02  Ryuji Abe  <raeva@t3.rim.or.jp>
 
 	* acinclude.m4: Added libtool related macros from kakasi-2.3.1.

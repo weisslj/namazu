@@ -1,3 +1,7 @@
+2001-12-17  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* src/cgi.c (get_query_string): Added CR to error message.
+
 2001-12-12  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* nmz/i18n.c (nmz_choose_msgfile_suffix): Fixed some bad expressions.
@@ -7259,4 +7263,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.901 2001-12-12 09:54:47 knok Exp $
+$Id: ChangeLog,v 1.902 2001-12-17 06:06:22 knok Exp $

@@ -1,7 +1,7 @@
 /*
  * result.l -
  * -*- C -*-
- * $Id: result.l,v 1.18 1999-09-02 07:05:48 satoru Exp $
+ * $Id: result.l,v 1.19 1999-09-02 08:51:49 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -32,16 +32,15 @@
 #include "output.h"
 #include "re.h"
 #include "result.h"
-#include "em.h"
 
-	void replace_field(uchar *);
-	static int Fid, Did;
+	void get_field_data(char *);
+	static int Fid;
 	static uchar Buf[BUFSIZE * 16];
 	static int Score, Counter;
 %}
 
 %%
-\$\{([-_a-zA-Z]+|namazu::[-_a-zA-Z]+)\} 	       replace_field(yytext);
+\$\{([-_a-zA-Z]+|namazu::[-_a-zA-Z]+)\} 	       get_field_data(yytext);
 .|\n                           strcat(Buf, yytext);
 %%
 
@@ -51,53 +50,19 @@
  *
  ************************************************************/
 
-void make_fullpathname_result(int);
+void make_fullpathname_field(int);
 void encode_entity(uchar*);
 void emphasize(uchar*);
+void get_field_data(char*);
 
-void replace_field(uchar *key) 
-{
-    uchar field[BUFSIZE];
-    /* 8 is length of '&quot;' + 2 (for emphasizing). 
-       It's a consideration for buffer overflow (overkill?) */
-    uchar buf[BUFSIZE * 8];  
-
-    /* Remove '{$' and '}' */
-    strcpy(field, key + 2);
-    *(field + strlen(field) - 1) = '\0';
-
-    if (strcmp(field, "namazu::score") == 0) {
-	sprintf(buf, "%d", Score);
-	commas(buf);
-    } else if (strcmp(field, "namazu::counter") == 0) {
-	sprintf(buf, "%d", Counter);
-	commas(buf);
-    } else {
-	get_field_data(Did, Fid, field, buf);
-    }
-    /* do not emphasize in URI */
-    if (strcmp(field, "uri") != 0 && HtmlOutput) {
-	emphasize(buf);
-    }
-    if (HtmlOutput) {
-	encode_entity(buf);
-    }
-
-    /* Insert commas if the buf is a numeric string */
-    if (isnumstr(buf))
-    {
-	commas(buf);
-    }
-
-    strcat(Buf, buf);
-}
-
-void make_fullpathname_result(int n)
+void make_fullpathname_field(int n)
 {
     uchar *base;
 
-    base = Idx.names[n];
-    pathcat(base, NMZ.result);
+    base = DbNames[n];
+
+    pathcat(base, FIELDINFO);
+    pathcat(base, RESULTFILE);
 }
 
 void encode_entity(uchar *str)
@@ -127,12 +92,12 @@ void emphasize(uchar *str)
 {
     int i;
 
-    for (i = 0; Query.tab[i] != NULL; i++) {
+    for (i = 0; KeyItem[i] != NULL; i++) {
 	uchar *ptr = str;
 	uchar key[BUFSIZE];
 	int keylen = 0;
 
-	strcpy(key, Query.tab[i]);
+	strcpy(key, KeyItem[i]);
 
 	if (strchr(key, '\t')) { /* for phrase search */
 	    tr(key, "\t", " ");
@@ -147,12 +112,75 @@ void emphasize(uchar *str)
 	    if (ptr != NULL) {
 		memmove(ptr + 2, ptr, strlen(ptr) + 1);
 		memmove(ptr + 1, ptr + 2, keylen);
-		*ptr = EM_START_MARK;
-		*(ptr + keylen + 1) = EM_END_MARK;
+		*ptr = EMPHASIZING_START_MARK;
+		*(ptr + keylen + 1) = EMPHASIZING_END_MARK;
 		ptr += 2;
 	    }
 	} while (ptr != NULL);
     }
+}
+
+void get_field_data(char *key) 
+{
+    uchar field[BUFSIZE], file_name[BUFSIZE];
+    FILE *fp_field, *fp_field_idx;
+
+    /* 8 is length of '&quot;' + 2 (for emphasizing). 
+       It's a consideration for buffer overflow (overkill?) */
+    uchar buf[BUFSIZE * 8];  
+
+    strcpy(field, key + 2);
+    *(field + strlen(field) - 1) = '\0';
+    apply_field_alias(field);
+
+    if (strcmp(field, "namazu::score") == 0) {
+	sprintf(buf, "%d", Score);
+	strcat(Buf, buf);
+	return;
+    } else if (strcmp(field, "namazu::counter") == 0) {
+	sprintf(buf, "%d", Counter);
+	strcat(Buf, buf);
+	return;
+    }
+
+
+    /* make a pathname */
+    strcpy(file_name, FIELDINFO);
+    strcat(file_name, field);
+    
+    fp_field = fopen(file_name, "rb");
+    if (fp_field == NULL) {
+        fprintf(stderr, "%s: cannot open file.\n", file_name);
+    }
+
+    strcat(file_name, ".i");
+    fp_field_idx = fopen(file_name, "rb");
+    if (fp_field_idx == NULL) {
+        fprintf(stderr, "%s: cannot open file.\n", file_name);
+    }
+
+    /* You can rely on that length of one field is shorter than 
+       BUFSIZE (1024) because its length is restricted at 
+       put_field_index() in mknmz.
+     */
+    fseek(fp_field, getidxptr(fp_field_idx, Fid), 0);
+    fgets(buf, BUFSIZE, fp_field);
+
+
+    if (!strcmp(field, "uri")) {
+	replace_uri(buf);
+    } else {
+	/* do not emphasize in URI */
+	if (HtmlOutput) {
+	    emphasize(buf);
+	}
+    }
+
+    chomp(buf);
+    encode_entity(buf);
+    strcat(Buf, buf);
+    fclose(fp_field);
+    fclose(fp_field_idx);
 }
 
 /************************************************************
@@ -166,29 +194,22 @@ void print_hlist(HLIST hlist)
 {
     int i;
 
-    if (hlist.n <= 0 || HListMax == 0) {
+    if (hlist.n <= 0 || HListMax == 0)
 	return;
-    }
 
     for (i = HListWhence; i < hlist.n; i++) {
-	char template[BUFSIZE];
 	strcpy(Buf, "\t");  /* '\t' has an important role cf. fputx() */
 	Score   = hlist.scr[i];
 	Counter = i + 1;
 	Fid = hlist.fid[i];
-	Did = hlist.did[i];
-	make_fullpathname_result(Did);
-	strcpy(template, NMZ.result);
-	strcat(template, ".");
-	strcat(template, Template);  /* usually "normal" */
-
+	make_fullpathname_field(hlist.did[i]);
 	if (!AllList && (i >= HListWhence + HListMax))
 	    break;
 	if (MoreShortFormat) {
-	    get_field_data(Did, Fid, "${uri}", Buf);
+	    get_field_data("${uri}");
 	} else {
-	    if ((yyin = fopen(template, "r")) == NULL) {
-		die("print_hlist: %s", template);
+	    if ((yyin = fopen(RESULTFILE, "r")) == NULL) {
+		die("print_hlist");
 		exit(-1);
 	    }
 	    yylex();

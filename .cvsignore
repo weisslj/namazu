@@ -5,3 +5,13 @@ config.h.in
 config.log
 config.status
 configure
+ABOUT-NLS
+COPYING
+INSTALL
+config.guess
+config.sub
+install-sh
+ltconfig
+ltmain.sh
+missing
+mkinstalldirs

@@ -15,6 +15,7 @@
 
 <ul>
 <li><a href="#indexing">Fast indexing</a>
+<li><a href="#saving-memory">Saving memory at indexing</a>
 <li><a href="#weight">Score weighting by HTML elements</a>
 <li><a href="#html">HTML processing</a>
 <li><a href="#line-adjustment">Line Adjustment</a>
@@ -69,6 +70,37 @@ Namazu is effective when you use a fast computer that has <br>
 fast CPU + large memory + fast HDD . Do not forget to change
 $ON_MEMORY_MAX.
 </ul>
+
+<h2><a name="saving-memory">Saving memory at indexing</a></h2>
+
+<p>
+Indexing takes a lot of memory. If you encounter "Out of
+memory!" error at runtime of mknmz, the following
+precautions can be considered.
+</p>
+
+<ul>
+<li>Use --checkpoint option for mknmz<br>
+
+mknmz limits the amounts of documents processed in memory
+through $ON_MEMORY_MAX in mknmzrc. And mknmz writes
+temporary files when the size of loaded documents reaches
+the value.
+
+Using --checckpoint option makes mknmz re-exec itself at
+this time. As a result, the size of mknmz's process
+decreases considerably. Use top command to see behavior if
+you are curious.
+
+
+<li>Decrease the value of $ON_MEMORY_MAX in mknmzrc<br>
+
+
+By default, <code>$ON_MEMORY_MAX</code> is set to 5
+MB. This value assumes your machine has 64 MB memory. If your
+machine have less memory, decrease this.
+</ul>
+
 
 <h2><a name="weight">Score weighting by HTML elements</a></h2>
 
@@ -235,7 +267,7 @@ garbage by gcnmz.
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: tips.html,v 1.1 2000-04-01 16:41:35 satoru Exp $
+$Id: tips.html,v 1.2 2000-04-06 01:40:00 satoru Exp $
 </div>
 <address>
 developers@namazu.org

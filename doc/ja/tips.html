@@ -14,6 +14,7 @@
 <h2>目次</h2>
 <ul>
 <li><a href="#indexing">インデックス作成の高速化</a>
+<li><a href="#saving-memory">メモリを節約したインデックス作成</a>
 <li><a href="#weight">HTML要素によるスコアの重みづけ</a>
 <li><a href="#html">HTMLの処理</a>
 <li><a href="#line-adjustment">行頭行末の処理</a>
@@ -61,6 +62,35 @@ GBくらい積んだ計算機を使っているなら、この値に 100 MB を設定
 な HDDを積んだ計算機を使うと効果的です。$ON_MEMORY_MAX の変
 更をお忘れなく。
 </ul>
+
+<h2><a name="saving-memory">メモリを節約したインデックス作成</a></h2>
+
+<p>
+インデックス作成にはたくさんメモリを必要とします。mknmz の実
+行時に Out of memory! というエラーが発生する場合には、次の対
+策が考えられます。
+</p>
+
+<ul>
+<li>mknmz に --checkpoint オプションを指定する<br>
+
+mknmz は mknmzrc の $ON_MEMORY_MAX の値で、一度にメモリに読
+み込む文書ファイルの量を制限しています。そして、読み込んだ文
+書ファイルの量が $ON_MEMORY_MAX に達するたびに、作業ファイル
+を書き出します。
+
+--checkpoint を指定すると、mknmz はこのときに自分自身を exec 
+し直します。結果として mknmz のプロセスはぐっと小さくなりま
+す。興味のある方は挙動を top で眺めてください。
+
+<li>mknmzrc の $ON_MEMORY_MAX の値を小さくする<br>
+
+標準では、mknmz は 5 MB に設定されています。この値はおおよそ
+メモリを 64 MB 程度積んだ計算機を想定しています。 64 MB より
+少ないメモリしか持たない計算機で mknmz を実行する場合は 
+mknmzrc の $ON_MEMORY_MAX の値を小さくするといいでしょう。
+</ul>
+
 
 <h2><a name="weight">HTML要素によるスコアの重みづけ</a></h2>
 
@@ -219,7 +249,7 @@ foo bar ...<br>
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: tips.html,v 1.7 2000-02-25 14:04:36 satoru Exp $
+$Id: tips.html,v 1.8 2000-04-06 01:40:01 satoru Exp $
 </div>
 <address>
 developers@namazu.org

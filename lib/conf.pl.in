@@ -28,8 +28,6 @@ $LANGUAGE = "@OPT_LANGUAGE@";  # language of messages
 $ADMIN  = '@OPT_ADMIN_EMAIL@'; # admin's email address
 $CGI_ACTION = '@OPT_CGI_LOCATION@/namazu.cgi'; # <FORM> 's ACTION ¤Î»ØÄê
 
-$URI_PREFIX = "";
-
 ## Files can be omission in URI. e.g. index.html
 ## name of the file or files which can be abbreviated.
 ## (specify by regular expression)

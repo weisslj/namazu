@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mhonarc.pl,v 1.12 1999-08-31 10:17:49 knok Exp $
+# $Id: mhonarc.pl,v 1.13 1999-09-02 00:05:39 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -52,6 +52,12 @@ sub filter ($$$$$) {
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
     util::vprint("Processing MHonArc file ...\n");
+
+    unless ($cfile =~ /($conf::MHONARC_MESSAGE_FILE)$/o) 
+    {
+	return "is MHonArc's index file! skipped."; # error
+    } 
+    
 
     mhonarc_filter($contref, $weighted_str, $fields);
     html::html_filter($contref, $weighted_str, $fields, $headings);

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: ooo.pl,v 1.6 2003-07-21 11:39:36 usu Exp $
+# $Id: ooo.pl,v 1.7 2003-09-06 08:26:37 usu Exp $
 # Copyright (C) 2003 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -34,7 +34,10 @@ my $utfconvpath = undef;
 
 sub mediatype() {
     # http://framework.openoffice.org/documentation/mimetypes/mimetypes.html
-    return ('application/vnd.sun.xml.writer');
+    return ('application/vnd.sun.xml.writer',
+            'application/vnd.sun.xml.calc',
+            'application/vnd.sun.xml.impress',
+            'application/vnd.sun.xml.draw');
 }
 
 sub status() {
@@ -73,9 +76,10 @@ sub post_codeconv () {
 
 sub add_magic ($) {
     my ($magic) = @_;
-    $magic->addMagicEntry('30	string	content.xml	application/vnd.sun.xml.writer');
-    $magic->addMagicEntry('30   string  mimetypeapplication/vnd.sun.xml application/vnd.sun.xml.writer');
     $magic->addFileExts('\\.sxw', 'application/vnd.sun.xml.writer');
+    $magic->addFileExts('\\.sxc', 'application/vnd.sun.xml.calc');
+    $magic->addFileExts('\\.sxi', 'application/vnd.sun.xml.impress');
+    $magic->addFileExts('\\.sxd', 'application/vnd.sun.xml.draw');
     return;
 }
 

@@ -44,6 +44,7 @@ href="http://www.gnu.org/copyleft/gpl.html">GPL2</a> に従っ
   <li><a href="#form-idxname">インデックスを選択する</a>
   <li><a href="#form-idxnames">複数のインデックスを選択する</a>
   <li><a href="#form-subquery">補助検索式の利用法</a>
+  <li><a href="#form-lang">検索結果の言語を選択する</a>
   </ul>
 <li><a href="#tools">付属ツール</a>
   <ul>
@@ -490,13 +491,17 @@ formは NMZ.head に定義されています。CGI変数は次の通りです。
 <dd>補助の検索式を指定します。
 <dt>whence
 <dd>検索結果を何件目から表示するかを指定します。
+<dt>reference
+<dd>参考ヒット数を表示するかを指定します。
+<dt>lang
+<dd>検索結果を表示する言語を指定します。
 </dl>
 
 <h3><a name="form-idxname">インデックスを選択する</a></h3>
 
 <p>
-Webブラウザからインデックスを選択可能にするには NMZ.head に
-次のように記述します。
+Webブラウザからインデックスを選択できるようにするには 
+NMZ.head に次のように記述します。
 </p>
 
 <pre>
@@ -582,6 +587,26 @@ namazurc の Template指示で指定したディレクトリのものが用いら
       &lt;option value="+uri:/^http://foo.bar.jp/quux//"&gt;quuxのペイジ
       &lt;/select&gt;
       &lt;input type="hidden" name="reference" value="off"&gt;
+</pre>
+
+
+<h3><a name="form-lang">検索結果の言語を選択する</a></h3>
+
+<p>
+Webブラウザから検索結果の言語を選択できるようにするには CGI 
+変数 lang を用いて NMZ.head に次のように設定します。 
+.namazurc で Lang が設定されていると、そちらが優先されます。
+CGI変数 langを用いるときは .namazurc に Lang の設定をしては
+いけません。
+</p>
+
+<pre>
+
+      &lt;strong&gt;言語:&lt;/strong&gt;
+      &lt;select name="lang"&gt;
+      &lt;option selected value="ja"&gt;日本語
+      &lt;option value=""&gt;英語
+      &lt;/select&gt;
 </pre>
 
 
@@ -890,7 +915,7 @@ Tknamazu および namazu.el から検索するときは必ず後者で指定します。
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: manual.html,v 1.31 2000-02-22 13:16:23 satoru Exp $
+$Id: manual.html,v 1.32 2000-02-25 13:31:39 satoru Exp $
 </div>
 <address>
 developers@namazu.org

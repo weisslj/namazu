@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: util.c,v 1.63 2000-02-25 07:45:32 satoru Exp $
+ * $Id: util.c,v 1.64 2000-02-25 13:31:40 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -183,12 +183,11 @@ nmz_tr(char *str, const char *lstr, const char *rstr)
 void 
 nmz_chomp(char *str)
 {
-    int i;
-    for (i = strlen(str) - 1; i >= 0; i--) {
-	if (*(str + i) == '\n' || *(str + i) == '\r'
-            || *(str + i) == ' ' || *(str + i) == '\t') 
-	{
-	    *(str + i) = '\0';
+    char *p = str + strlen(str) - 1;
+
+    for (; p >= str; p--) {
+	if (*p == '\n' || *p == '\r' || *p == ' ' || *p == '\t') {
+	    *p = '\0';
 	} else {
 	    break;
 	}

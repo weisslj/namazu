@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.31 2000-02-23 02:56:59 satoru Exp $
+# $Id: mknmz.in,v 1.32 2000-02-25 13:31:42 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -61,8 +61,8 @@ my $MediaType  = undef;
 my $ReplaceCode  = undef;  # perl code for transforming URI
 my @Seed = ();
 my @LoadedRcfiles = ();
-
 my $Magic = new File::MMagic;
+
 
 STDOUT->autoflush(1);
 STDERR->autoflush(1);
@@ -453,8 +453,27 @@ sub complete_field_info (\%$$\$\$\$) {
 	$fields->{'summary'} = make_summary($contref, $headings, $cfile);
     }
     unless (defined($fields->{'from'}) || defined($fields->{'author'})) {
-	$fields->{'from'} = _("unknown");
+	$fields->{'from'} = getmsg("unknown");
     }
+}
+
+#
+# Currently, messages for NMZ.* files should be encoded in
+# EUC-JP currently. We cannot use gettext.pl for the messsage
+# because gettext.pl may use Shift_JIS encoded messages.
+# So, we should use the function instead of gettext().
+#
+# FIXME: Ad hoc impl.  getmsg() is effective only for "unknown".
+#
+sub getmsg($) {
+    my ($msg) = @_;
+
+    if (util::islang("ja")) {
+	if ($msg eq "unknown") {
+	    return "итлю";
+	}
+    }
+    return $msg;
 }
 
 sub make_summary ($$$) {
@@ -1155,9 +1174,18 @@ sub add_target ($\@\%) {
 	print STDERR "Warning: $target contains LF/CR chars, skip it\n";
 	return;   # skip a file name containing LF/CR chars.
     }
-    return unless -f $target && -r $target;
+
+    return unless -f $target;  # Only file is targeted.
 
     $counts_ref->{'possible'}++;
+
+    unless (-r $target) {
+        util::vprint(sprintf(_("Unreadable:	%s"), $target));
+	$counts_ref->{'excluded'}++;
+	return;
+    }
+
+
     if (defined $conf::EXCLUDE_PATH && 
 	$target =~ /$conf::EXCLUDE_PATH/ ) 
     {

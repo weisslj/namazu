@@ -72,9 +72,9 @@ ABSOLUTELY NO WARRANTY.
 <h2><a name="components">Namazu components</a></h2>
 
 <p>
-Namazu is a full-text search system. Namazu consists of
-<code>mknmz</code> which creates an index and
-<code>namazu</code> which search the index.
+Namazu is a full-text search engine. Namazu has an index maker,
+<code>mknmz</code> command, and a text searcher, <code>namazu</code>
+command.
 </p>
 
 <p>
@@ -84,31 +84,33 @@ similar to an index of book.
 </p>
 
 <p>
-To make the index, you can use <code>mknmz</code> command
-and specify a target directory as an argument of mknmz. For
-example, you can index documents in /home/foo/public_html by:
+<code>mknmz</code> command makes the index. The target
+directory for indexing is given as an argument for
+<code>mknmz</code>. For example, if the target directory is
+/home/foo/public_html, then type
 </p>
+
 
 <p><code>% mknmz</code> /home/foo/public_html
 </p>
 
 <p>
-Then, documents such as *.html and *.txt in
+Then, documents such as *.html and *.txt under
 /home/foo/public_html are indexed and NMZ.* files are
-created in the directory where you ran mknmz. The NMZ.*
-files are the Namazu index.
+created in the directory you run mknmz. NMZ.* files are the
+Namazu's index.
 </p>
 
 <p>
-To search the created index, you can use <code>namazu</code>
-command. For example:
+<code>namazu</code> command searches the created index. For
+example: 
 </p>
 
 <p><code>% namazu</code> bar /home/foo/Namazu/foobar</p>
 
 <p>
-In this case, you can search the index in 
-/home/foo/Namazu/foobar for the keyword `bar'.
+The above searches a keyword "bar" for the index under
+/home/foo/Namazu/bar.
 </p>
 
 
@@ -178,8 +180,9 @@ In this case, you can search the index in
 
 <h3><a name="mknmzrc">mknmzrc settings</a></h3>
 <p>
-You can configurate mknmz by preparing mknmzrc or .mknmzrf
-file. mknmz load them by the following rule.
+Various setting is possible in <code>mknmzrc</code> or
+<code>.mknmzrc</code>.  <code>mknmzrc</code> reads
+configuration files normally in the order of
 </p>
 
 <ol>
@@ -191,28 +194,27 @@ Usually, /usr/local/etc/mknmz/mknmzrc
 
 
 <p>
-At right after installed, sample rcfile is prepared in
-<code>$(sysconfdir)/$(PACKAGE)/mknmzrc-sample</code>. You
-can copy it to <code>$(sysconfdir)/$(PACKAGE)/mknmzrc</code>
-or to ~/.mknmzrc in your home directory to activate it.
+Installation prepares a sample configuration file
+<code>$(sysconfdir)/$(PACKAGE)/mknmzrc-sample</code>. You can copy
+this to <code>$(sysconfdir)/$(PACKAGE)/mknmzrc</code> or to
+<code>~/.mknmzrc</code> in your home directory.
 </p>
 
 <p>
-The settings of mknmzrc are documented in mknmzrc-sample as
-comments.
+The setting details are given as comments in
+<code>mknmzrc-sample</code>.
 </p>
 
 
 <h3><a name="doc-filter">Document filters</a></h3>
 
 <p>
-mknmz detects a media type of a document and handle the
-document with proper filtering processing. For example, to
-handle an HTML document, mknmz extracts the &lt;title&gt;
-content, removes all HTML elements, and do other proper
-processings. These processings are done by document filters
-in <code>$(datadir)/$(PACKAGE)/filter</code>. The following
-are standard ones which included in Namazu package.
+<code>mknmz</code> automatically identifies target file types and
+performs appropriate document filering. For HTML documents, filtering
+includes extraction of &lt;title&gt; or deletion of HTML tags. These
+filtering are taken care by document filters in
+<code>$(datadir)/$(PACKAGE)/filter</code>. The standard document
+fileters are described below.
 </p>
 
 <dl>
@@ -280,8 +282,9 @@ href="http://www.cs.purdue.edu/homes/trinkle/detex/">detex</a>
 </dl>
 
 <p>
-A filter whose prefix is `ole' is for Windows. You can
-enable OLE filters by running mknmz with --ole option.
+Document filters prefixed by ole is for Windows only. To use
+OLE documents filters, run <code>mknmz</code> with --ole
+option.
 </p>
 
 <dl>
@@ -337,30 +340,35 @@ enable OLE filters by running mknmz with --ole option.
 <!-- namazu-option -->
 
 <p>
-To specify one or more indecies, you can specify them as
-<code>[index dir]...</code>. namazu uses <a
-href="#default-index">Default Index</a> as the target.
+You can specify one or more target indices in a command-line
+argument <code>[index dir]...</code>. If omitted, the <a
+href="#default-index">Default index</a> will be treated as
+the target index.
 </p>
 
 <p>
-Also, you can specify the index by a relative path from
-the default index with `+' sign. e.g., +foo, +bar.
+By prefixing <code>+</code> such as +foo or +bar, you can
+specify a target index as a relative path from the default
+index.
 </p>
 
 <p>
-By default, namazu prints search results in a simple
-format. To print in HTML, you can specify -h option.
+When executed from a command line, Namazu outputs query
+results in simple text format. -h option is required to
+display query results in HTML format.
 </p>
 
 <p>
-To print search results from 21 to 40, you can specify -n 20
--w 20. Note: value of -w is not 21.
+If you want to display query results from 21st hits to 40th
+hits, type -n 20 -w 20 in a command line option. Note -w is
+not 21 in this example.
 </p>
 
 <h3><a name="namazurc">namazurc settings</a></h3>
 <p>
-You can configurate mknmz by preparing mknmzrc or .mknmzrf
-file. mknmz load them by the following rule.
+Various setting is possible in <code>mknmzrc</code> or
+<code>.mknmzrc</code>.  namazu reads configuration files
+normally in the order of
 </p>
 
 <ol>
@@ -371,35 +379,35 @@ file. mknmz load them by the following rule.
 </ol>
 
 <p>
-At right after installed, sample rcfile is prepared in
-<code>$(sysconfdir)/$(PACKAGE)/namazurc-sample</code>. You
-can copy it to <code>$(sysconfdir)/$(PACKAGE)/namazurc</code>
-or to ~/.namazurc in your home directory to activate it.
+Installation prepares a sample configuration file
+<code>$(sysconfdir)/$(PACKAGE)/namazurc-sample</code>. You can copy
+this to <code>$(sysconfdir)/$(PACKAGE)/namazurc</code> or to
+<code>~/.namazurc</code> in your home directory.
 </p>
 
 <p>
-The settings of namazurc are documented in namazurc-sample as
-comments.
+The setting details are given as comments in
+<code>namazurc-sample</code>.
 </p>
 
 <h3><a name="default-index">Default Index</a></h3>
 
 <p>
-The default index is the index which is used by default.
-The defualt index follow the folloing rules.
+Default index is the index which is used by default.
+Defualt index follows the rules described bellow.
 </p>
 
 <ul>
-<li>Basic is $(localstatedir)/$(PACKAGE)/index<br>
+<li>The default is $(localstatedir)/$(PACKAGE)/index<br>
 Usually, /usr/local/var/namazu/index)
 <li>Directory which is specified by Index directive of <a
 href="#namazurc">namazurc</a>. 
 </ul>
 
 <p>
-In CGI (<a href="#cgi">namazu.cgi</a>), target indices must
-be specified by a relative path from the default index. See
-<a href="#form-idxname">selecting an index</a> for details.
+In CGI(<a href="#cgi">namazu.cgi</a>), the <a href="#form-idxname">
+index selection</a> is given as a relative path from the default
+index.
 </p>
 
 <h2><a name="cgi">namazu.cgi</a></h2>
@@ -407,19 +415,19 @@ be specified by a relative path from the default index. See
 <h3><a name="setting">namazu.cgi installation</a></h3>
 
 <p>
-To use Namazu as CGI, you can use namazu.cgi. By default,
-namazu.cgi is installed in <code>$(libexecdir)</code>
-(usually /usr/local/libexec). To install namazu.cgi, you can
-copy namazu.cgi to the directory where you want to install.
+<code>namazu.cgi</code> is CGI for Namazu.  namazu.cgi is
+installed in <code>$(libexecdir)</code> directory (usually
+/usr/local/libexec). If you copy namazu.cgi into a CGI
+directory of your system, installation is done!
 </p>
 
 <h3><a name=".namazurc">.namazurc settings</a></h3>
 
 <p>
-.namazurc in the directory where you installed namazu.cgi is
-loaded by namazu.cgi as a configuration file. The following
-setting is neccesary if you want to make namazu.cgi speak
-Japanese.
+If you have <code>.namazurc file</code> in the directory namazu.cgi is
+stored, <code>.namazurc file</code> will be treated as the CGI
+congifuration file. To display Japanese, you need the following
+settings.
 </p>
 
 
@@ -428,8 +436,8 @@ Japanese.
 <h3><a name="template">Template files</a></h3>
 
 <p>
-Template files customize search results. Their roles are as
-follows:
+Template files define display styles of query results in
+HTML format. The details are described below.
 </p>
 
 <dl>
@@ -446,8 +454,8 @@ follows:
 </dl>
 
 <p>
-They are separeted by languages. For example, a file whose
-suffix is `.ja' is for Japanese. No suffix is for English.
+These files are prepared for each language. Files suffixed by
+<code>.ja</code> are for Japanese.
 </p>
 
 <h3><a name="form">Form settings</a></h3>
@@ -458,26 +466,30 @@ form is defined in NMZ.head.  CGI variables are as follows:
 
 <dl>
 <dt>query
-<dd>Just query.
+<dd>specify a query expression.
 <dt>max
-<dd>Number of search results.
+<dd>specify the maximum number of query results to display at once.
 <dt>result
-<dd>Format of search results.
+<dd>specify the display style of query results.
 <dt>sort
-<dd>Method of sorting.
+<dd>specify the sorting routine.
 <dt>idxname
-<dd>Index to search.
+<dd>specify the name of index to search.
 <dt>subquery
-<dd>Auxiliary query.
+<dd>specify the sub-query expression.
 <dt>whence
-<dd>Number of the first search result.
+<dd>specify where you wish to display query results.
+<dt>reference
+<dd>specify wheter reference hit counts is desplayed or not.
+<dt>lang
+<dd>specify language of search results.
 </dl>
+
 
 <h3><a name="form-idxname">Selecting an index</a></h3>
 
 <p>
-To select an index by Web browser, you can set NMZ.head as
-follows:
+To select an index from the browser, NMZ.head needs the following.
 </p>
 
 <pre>
@@ -491,12 +503,11 @@ follows:
 </pre>
 
 <p>
-In this example, candidates for indices are foo, bar and
-baz. If foo is selected, namazu.cgi searches foo index
-located under the <a href="#default-index">default
-index</a>.  For example, if the default index is
-/usr/local/var/namazu/index, directory structure consists as
-follows:
+In the above example, you can select a single index from foo, bar, or
+baz. When foo is selected, Namazu searches the foo index under the <a
+href="#default-index">default index</a>. In case the default index
+is <code>/usr/local/var/namazu/index</code>, we will have directories
+as follows.
 </p>
 
 <pre>
@@ -515,8 +526,7 @@ follows:
 
 <h3><a name="form-idxnames">Selecting multiple indices</a></h3>
 <p>
-To search multiple indices at once, you can set checkbox in
-NMZ.head.
+For selecting multiple indices, NMZ.head need a checkbox.
 </p>
 
 <pre>
@@ -530,18 +540,17 @@ NMZ.head.
 </pre>
 
 <p>
-In this example, candidates for indices are foo, bar and
-baz.  <a href="#template">Template files</a> can be set by
-the Template directive in namazurc. If Tempalte directive is
-not set, namazu.cgi uses template fiels by the following
-rule:
+In the above example, you can select multiple indecies from foo, bar,
+and/or baz. The template file specified in Template directive in
+<code>namazurc</code> is used in searching. If no file is given in
+Template directive, the following rules apply.
+</p>
 
 <ul>
-<li>If only one index is selected,<br>
-namazu.cgi uses template files in the selected index.
-<li>If multiple indices are selected,<br>
-namazu.cgi uses tempalte files in the <a
-href="#default-index">Default index</a>. 
+<li>When a single index is selected<br>
+the template file for the selected index is used.
+<li>When multiple indecies are selected<br>
+the template file for the <a href="#default-index">default index</a> is used.
 </ul>
 
 <h3><a name="form-subquery">Using an auxiliary query</a></h3>
@@ -565,15 +574,38 @@ pages by URI.
       &lt;input type="hidden" name="reference" value="off"&gt;
 </pre>
 
+<h3><a name="form-lang">Selecting language of search results</a></h3>
+
+<p>
+To select language of search results by Web browser, you can
+set NMZ.head with CGI variable <code>lang</code> as follows:
+</p>
+
+<pre>
+
+      &lt;strong&gt;Language:&lt;/strong&gt;
+      &lt;select name="lang"&gt;
+      &lt;option selected value="ja"&gt;Japanese
+      &lt;option value=""&gt;English
+      &lt;/select&gt;
+</pre>
+
+
+<p>
+NOTE: Lang directive in .namazurc has precedence over CGI
+variable lang. So you must not set Lang directive in
+.namazurc if you want to use CGI variable lang.
+</p>
 
 <h2><a name="tools">Included tools</a></h2>
 
 <h3><a name="bnamazu">bnamazu</a></h3>
 
 <p>
-bnamazu searches with namazu and browse its results with a
-Web browser. Search results are passed to Web browser (default:
-lynx). Usage:
+<code>bnamazu</code> is a search tool operates with Web
+browsers. The query results are passed to a Web browser
+(default: lynx) for users to browse. The command line
+options are as follows.
 </p>
 
 <p>
@@ -581,9 +613,8 @@ lynx). Usage:
 </p>
 
 <p>
-You can specify your favorite Web browser with -b option. -n
-option is effective only if Web browser is netscape.  If -n
-is specified, new window is opned for displaying the search
+-b option specifies a Web browser. -n option is valid only when using
+netscape. -n option opens a new netscape window to display query
 results.
 </p>
 
@@ -591,9 +622,10 @@ results.
 <h3><a name="nmzgrep">nmzgrep</a></h3>
 
 <p>
-nmzgrep is a tool to search Namazu-indexed documents for a
-given pattern and print lines matching the pattern using
-egrep. Usage:
+nmzgrep is an search tool operates with <code>egrep</code>
+command. nmzgrep executes egrep for retrieved documents. By applying
+egrep, you can find line numbers the keyword is found. The command
+line options are as follows.
 </p>
 
 <p>
@@ -613,9 +645,10 @@ apply egrep to searched documents, you can do as follows:
 <h3><a name="gcnmz">gcnmz</a></h3>
 
 <p>
-Updating an index may produce garbage data in the index if
-documents were deleted or updated.  gcnmz removes the
-garbage data.  Usage:
+When you repeat updates of indecies caused by addition and/or
+deleteion of documents, garbage will be created in index
+files. <code>gcnmz</code> is a tool for garbage collection. The
+command line options are as follows.
 </p>
 
 <p>
@@ -623,8 +656,7 @@ garbage data.  Usage:
 </p>
 
 <p>
-For example, to clean up ~/Namazu/foobar index, you can do
-as follows:
+To run garbage collection for indecies in ~/Namazu/foobar, type
 </p>
 
 <p>
@@ -634,8 +666,9 @@ as follows:
 <h3><a name="mailutime">mailutime</a></h3>
 
 <p>
-mailutime is a tool to adjust a time-stamp of Mail/News file
-with its Date: header. Usage:
+<code>mailutime</code> is a tool to set timestamps of
+Mail/News files to Date: header. The command line options
+are as follows.
 </p>
 
 <p>
@@ -643,8 +676,7 @@ with its Date: header. Usage:
 </p>
 
 <p>
-For example, to adjust timestamps of files in
-~/Mail/ml/foobar, you can do as follows:
+To change time stamps of emails stored in ~/Mail/ml/foobar, type
 </p>
 
 <p>
@@ -655,7 +687,8 @@ For example, to adjust timestamps of files in
 <h3><a name="vfnmz">vfnmz</a></h3>
 
 <p>
-vfnmz is a tool to preview search results. Usage:
+vfnmz is a tool to preview search results. The command line
+options are as follows. 
 </p>
 
 <p>
@@ -663,8 +696,7 @@ vfnmz is a tool to preview search results. Usage:
 </p>
 
 <p>
-For example, to preview search results of ~/Namazu/foobar
-index, you can do as follows:
+To preview indecies stored in ~/Mail/ml/foobar, type
 </p>
 
 <p>
@@ -886,7 +918,7 @@ You must choose the latter with Tkanamzu or namazu.el.
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: manual.html,v 1.14 2000-02-22 13:16:22 satoru Exp $
+$Id: manual.html,v 1.15 2000-02-25 13:31:38 satoru Exp $
 </div>
 <address>
 developers@namazu.org

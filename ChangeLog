@@ -1,11 +1,22 @@
-2000-02-25  Ryuji Abe  <raeva@t3.rim.or.jp>
-
-	* configure.in (LTVERSION): Set 3:1:0.
-
 2000-02-25  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* doc/en/manual.html: Rewritten.
+
+	* scripts/mknmz.in (getmsg): New function.
+	(complete_field_info): Use getmsg() for "unknown".
+	[namazu-devel-ja:00022]
+	
+	* nmz/util.c (nmz_chomp): Rewritten. [namazu-devel-ja:00018]
+
+	* scripts/mknmz.in (add_target): Add a message for an unreadable
+	file. 
 
 	* pl/usage.pl: Add description of --show-config option.
 	[namazu-dev 1812]
+
+2000-02-25  Ryuji Abe  <raeva@t3.rim.or.jp>
+
+	* configure.in (LTVERSION): Set 3:1:0.
 
 2000-02-23  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 

@@ -1,9 +1,9 @@
 What is Namazu?
 
    Namazu is a search engine software intended for easy use.
-   Not only it works as CGI program for a small or medium
+   Not only it works as a CGI program for a small or medium
    scale Web search engine, but also works as a personal use
-   search system for your a pile of emails.
+   search system for your pile of emails.
 
    Namazu is a free software under the terms of GPL2. Namazu
    is developed by Namazu Project. See `CREDITS' for more
@@ -18,7 +18,7 @@ What is Namazu?
    of things to do. Please help us.
 
    You can find documentation in the `doc' directory. And
-   you can get the latest Namazu information
-   at <http://http://www.namazu.org/>.
+   you can get the latest Namazu information at
+   <http://http://www.namazu.org/>.
 
 NOTE: Japanese word `Namazu' means `catfish' in English.

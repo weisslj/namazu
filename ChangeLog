@@ -1,3 +1,9 @@
+2000-10-02  Ryuji Abe <rug@namazu.org>
+
+	* acinclude.m4: Revert gettext related macros to enable
+	--with-included-gettext because of Solaris gettext problem.
+	(Solaris message catalog is not supported by pl/gettext.pl)
+
 2000-09-30  Rei FURUKAWA  <furukawa@tcp-ip.or.jp>
 
 	* scripts/kwnmz.in: Changed to delete unnecessary hash keys.
@@ -5988,4 +5994,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.733 2000-09-30 13:40:20 furukawa Exp $
+$Id: ChangeLog,v 1.734 2000-10-02 11:34:54 rug Exp $

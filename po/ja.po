@@ -127,7 +127,7 @@ msgstr "文字列の終端が見つかりません"
 
 #: src/rcfile.c:431
 msgid "invalid directive name"
-msgstr "不正なディレクティヴです"
+msgstr "不正な指示子です"
 
 #: src/rcfile.c:444
 msgid "can't find arguments"
@@ -143,7 +143,7 @@ msgstr "引数が多すぎます"
 
 #: src/rcfile.c:560
 msgid "unknown directive"
-msgstr "不明なディレクティヴです"
+msgstr "不明な指示子です"
 
 #: src/rcfile.c:611
 #, c-format
@@ -323,7 +323,7 @@ msgid ""
 msgstr ""
 "ファイルを発見しました\n"
 "このインデックスは他のプロセスによって更新されている可能性があります\n"
-"そうでなければ、このファイルを削除して下さい\n"
+"そうでなければ、このファイルを削除してください\n"
 
 #: scripts/mknmz.in:785
 msgid "Present index is old type. it's unsupported.\n"

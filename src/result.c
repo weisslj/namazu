@@ -1,5 +1,5 @@
 /*
- * $Id: result.c,v 1.53 2000-02-15 05:10:01 satoru Exp $
+ * $Id: result.c,v 1.54 2000-02-20 01:41:38 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -148,7 +148,7 @@ replace_field(struct nmz_data d, int counter,
     }
 
 
-    /* Insert commas if the buf is a numeric string */
+    /* Insert commas if the buf is a numeric string. */
     if (nmz_isnumstr(buf)) {
 	commas(buf);
     }

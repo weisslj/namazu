@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: util.c,v 1.59 2000-02-10 21:03:55 rug Exp $
+ * $Id: util.c,v 1.60 2000-02-20 01:41:35 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -336,18 +336,18 @@ nmz_pathcat(const char *base, char *name)
 int 
 nmz_isnumstr(const char *str)
 {
-    int i, nonnum = 0;
+    const char *p;
 
     if (strlen(str) > 10) {  /* Too large number */
 	return 0;
     }
 
-    for (i = 0; str[i] != '\0'; i++) {
-	if (! isdigit((int)str[i])) {
-	    nonnum = 1;
+    for (p = str; *p != '\0'; p++) {
+	if (! isdigit((int)*p)) {
 	    return 0;
 	}
     }
+
     return 1;
 }
 

@@ -10,11 +10,11 @@
 
 AUTOMAKE_OPTIONS = 1.4 no-dependencies
 
-bin_SCRIPTS    = bnamazu gcnmz kwnmz mailutime mknmz nmzgrep rfnmz vfnmz lnnmz adnmz
+bin_SCRIPTS    = bnamazu gcnmz kwnmz mailutime mknmz nmzgrep rfnmz vfnmz lnnmz adnmz nmzmerge
 noinst_SCRIPTS = gtnmz
 
-EXTRA_DIST = gcnmz.in kwnmz.in mknmz.in
-CLEANFILES  = gcnmz mknmz kwnmz
+EXTRA_DIST = gcnmz.in kwnmz.in mknmz.in nmzmerge.in
+CLEANFILES  = gcnmz mknmz kwnmz nmzmerge
 
 localedir   = $(prefix)/$(DATADIRNAME)/locale
 confdir     = $(sysconfdir)/$(PACKAGE)
@@ -36,6 +36,13 @@ kwnmz: kwnmz.in Makefile
 	    -e 's!@PERLLIBDIR@!$(perllibdir)!g' $(srcdir)/kwnmz.in > kwnmz.tmp
 	mv kwnmz.tmp kwnmz
 	chmod +x kwnmz
+
+nmzmerge: nmzmerge.in Makefile
+	rm -f nmzmerge
+	sed -e 's!%PERL%!$(PERL)!g' \
+	    -e 's!@PERLLIBDIR@!$(perllibdir)!g' $(srcdir)/nmzmerge.in > nmzmerge.tmp
+	mv nmzmerge.tmp nmzmerge
+	chmod +x nmzmerge
 
 mknmz: mknmz.in Makefile
 	rm -f mknmz

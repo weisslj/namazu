@@ -1,5 +1,8 @@
 2000-01-23  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/rcfile.c (process_rc_lang): Call nmz_set_lang only if
+	environmental variable LANG is not set. [namazu-dev 1277]
+
 	* src/rcfile.c (show_rcfile): Follow Fujiwara's sugesstion.
 	[namazu-dev 1298]
 

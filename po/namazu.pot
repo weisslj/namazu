@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2000-01-23 21:10+0900\n"
+"POT-Creation-Date: 2000-01-23 22:04+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -123,12 +123,12 @@ msgstr ""
 msgid "\t<p>No document matching your query.</p>\n"
 msgstr ""
 
-#: src/rcfile.c:580
+#: src/rcfile.c:590
 #, c-format
 msgid "Config:  %s\n"
 msgstr ""
 
-#: src/rcfile.c:583
+#: src/rcfile.c:593
 #, c-format
 msgid ""
 "Index:   %s\n"

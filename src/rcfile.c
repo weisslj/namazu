@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.2 2000-01-23 12:16:43 satoru Exp $
+ * $Id: rcfile.c,v 1.3 2000-01-23 13:05:30 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -82,6 +82,14 @@ static enum nmz_stat process_rc_replace(const char *directive, const struct nmz_
 static enum nmz_stat process_rc_logging(const char *directive, const struct nmz_strlist *args);
 static enum nmz_stat process_rc_scoring(const char *directive, const struct nmz_strlist *args);
 static enum nmz_stat process_rc_lang(const char *directive, const struct nmz_strlist *args);
+
+struct conf_directive {
+    char *name;
+    int  argnum;
+    int  plus;   /* argnum or more arguments are required. */
+    enum nmz_stat (*func)(const char *directive,
+			  const struct nmz_strlist *args);
+};
 
 struct conf_directive directive_tab[] = {
     { "BLANK",   0, 0, process_rc_blank },
@@ -206,7 +214,9 @@ process_rc_lang(const char *directive, const struct nmz_strlist *args)
 {
     char *arg1 = args->value;
 
-    nmz_set_lang(arg1);
+    if (getenv("LANG") == NULL) { /* Environmental variable LANG is not set */
+	nmz_set_lang(arg1);
+    }
     return SUCCESS;
 }
 

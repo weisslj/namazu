@@ -1,10 +1,10 @@
 #
 # -*- Perl -*-
-# $Id: hnf.pl,v 1.5 2000-02-19 12:57:02 kenji Exp $
+# $Id: hnf.pl,v 1.6 2000-02-20 14:32:44 kenji Exp $
 #
 # HNF Filter for Namazu 2.0
-# version 0.9.8
-# 2000/2/18  Kenji Suzuki <kenji@h14m.org>
+# version 0.9.9
+# 2000/2/19  Kenji Suzuki <kenji@h14m.org>
 #
 # Copyright (C) 1999,2000  Kenji Suzuki, HyperNikkiSystem Project
 # All rights reserved.
@@ -255,10 +255,10 @@ sub make_summary ($$$$$) {
     my $offset = 0;
     my $tmplen = 0;
     my $tmp2 = $$contref;
-    $tmp2 =~ s/\ncommand_OK\n.*//s;	# remove below of command_OK
-    $tmp2 =~ s/\ncommand_NG\n.*//s;	# remove below of command_NG
     # hiding GRP section
     $tmp2 =~ s/\ncommand_GRP (.*?)\ncommand_/\ncommand_/gs if $hnf::grp_hide;
+    $tmp2 =~ s/\ncommand_OK\n.*//s;	# remove below of command_OK
+    $tmp2 =~ s/\ncommand_NG\n.*//s;	# remove below of command_NG
     $tmp2 =~ s/command_CAT CAT (.*)//gm;
     $tmp2 =~ s/command_[A-Z]+//g;
     $tmp2 =~ s/^! (.*)$//gm;

@@ -1,3 +1,17 @@
+2000-01-05  Ryuji Abe <raeva@t3.rim.or.jp>
+
+	* configure.in (AC_OUTPUT): Added template/Makefile.
+
+	* template/Makefile.am: New file.
+
+	* template/NMZ.body.ja: EUC-JP encoded. Replaced from ja_JP.JIS7 file.
+
+	* template/NMZ.foot.ja.in: Likewise.
+
+	* template/NMZ.head.ja.in: Likewise.
+
+	* template/NMZ.tips.ja: Likewise.
+
 2000-01-05  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* nmz/util.c (nmz_subst): Make parameter(s) be const.

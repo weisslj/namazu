@@ -1,3 +1,8 @@
+2002-01-16  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* doc/ja/tutorial.html: Fixed invalid relative path.
+	(Reported by yokoi, thanks.)
+
 2002-01-12  Ryuji Abe  <rug@namazu.org>
 
 	* configure.in: If the platform is MinGW, do not check functions
@@ -7360,4 +7365,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.919 2002-01-12 10:56:24 rug Exp $
+$Id: ChangeLog,v 1.920 2002-01-16 05:13:04 knok Exp $

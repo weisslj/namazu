@@ -1,3 +1,11 @@
+2000-04-07  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.0.4.
+
+	* doc/en/manual.html: Documentation changed.
+
+	* doc/ja/manual.html: Likewise.
+
 2000-04-07  Ken-ichi Hirose  <kenzo-@tama.or.jp>
 
         * filter/msword.pl (filter_doccat): Remove SJIS code path check.
@@ -5520,4 +5528,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.677 2000-04-06 19:05:34 kenzo- Exp $
+$Id: ChangeLog,v 1.678 2000-04-07 00:20:55 satoru Exp $

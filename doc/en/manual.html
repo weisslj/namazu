@@ -191,8 +191,12 @@ configuration files normally in the order of
 <li><code>$(sysconfdir)/$(PACKAGE)/mknmzrc</code><br>
 Usually, /usr/local/etc/mknmz/mknmzrc
 <li>~/.mknmzrc
-<li>file which is specified by -f or --config=FILE option.
+<li>file which is specified by -f or --config=FILE --option.
 </ol>
+
+<p>
+If more than one configuration files are found, they all are loaded.
+</p>
 
 
 <p>
@@ -391,8 +395,15 @@ normally in the order of
 <li><code>$(sysconfdir)/$(PACKAGE)/namazurc</code><br>
 (Usually, /usr/local/etc/mknmz/namazurc
 <li>~/.namazurc
-<li>file which is specified by -f or --config=FILE option.
+<li>file which is specified by -f or --config=FILE --option.<br>
+(In case of CGI, it is .namazurc in the directory namazu.cgi
+is stored)
 </ol>
+
+<p>
+If more than one configuration files are found, they all are loaded.
+</p>
+
 
 <p>
 Installation prepares a sample configuration file
@@ -934,7 +945,7 @@ You must choose the latter with Tkanamzu or namazu.el.
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: manual.html,v 1.30 2000-04-07 00:04:03 satoru Exp $
+$Id: manual.html,v 1.31 2000-04-07 00:20:55 satoru Exp $
 </div>
 <address>
 developers@namazu.org

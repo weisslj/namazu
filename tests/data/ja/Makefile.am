@@ -19,4 +19,5 @@ EXTRA_DIST  =   acrobat3.pdf \
 		word6.doc \
 		word95.doc \
 		word97.doc \
-		word98.doc 
+		word98.doc \
+		word2000.doc 

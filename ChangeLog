@@ -1,3 +1,7 @@
+2002-09-04  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* template/Makefile.am (template_DATA): Added *.de files.
+
 2002-09-03  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* nmz/util.c (nmz_warn_printf): Fixed potential XSS issue.
@@ -7639,4 +7643,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.974 2002-09-03 04:56:51 knok Exp $
+$Id: ChangeLog,v 1.975 2002-09-04 04:36:07 knok Exp $

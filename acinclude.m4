@@ -514,7 +514,7 @@ fi], [AC_MSG_RESULT(no)])
 ## instead of LIBOBJS.
 
 AC_DEFUN(NMZ_REPLACE_FUNCS,
-[AC_CHECK_FUNCS([$1], , [NMZ_LIBOBJS="$NMZ_LIBOBJS ${ac_func}.${ac_objext}"])
+[AC_CHECK_FUNCS([$1], , [NMZ_LIBOBJS="$NMZ_LIBOBJS ${ac_func}.lo"])
 AC_SUBST(NMZ_LIBOBJS)dnl
 ])
 
@@ -559,7 +559,7 @@ changequote([, ])dnl
    nmz_cv_func_memcmp_working=no,
    nmz_cv_func_memcmp_working=no)])
 test $nmz_cv_func_memcmp_working = no \
-  && NMZ_LIBOBJS="$NMZ_LIBOBJS memcmp.$ac_objext"
+  && NMZ_LIBOBJS="$NMZ_LIBOBJS memcmp.lo"
 AC_SUBST(NMZ_LIBOBJS)dnl
 ])
 

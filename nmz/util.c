@@ -312,7 +312,7 @@ void diewithmsg()
 }
 
 /* warning messaging function */
-void wprintf(char *fmt, ...)
+void warnf(char *fmt, ...)
 {
     va_list args;
 
@@ -489,7 +489,7 @@ uchar *readfile(uchar *fname)
     stat(fname, &fstatus);
     fp = fopen(fname, "rb");
     if (fp == NULL) {
-        wprintf("can't open %s\n", fname);
+        warnf("can't open %s\n", fname);
         return 0;
     }
     buf = (uchar *) malloc(fstatus.st_size + 1);
@@ -538,7 +538,7 @@ void cat(uchar *fname)
 	}
 	fclose(fp);
     }
-    wprintf("can't open %s\n", fname);
+    warnf("can't open %s\n", fname);
 }
 
 char *safe_getenv(char *s)

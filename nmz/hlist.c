@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.1 1999-11-08 05:06:04 knok Exp $
+ * $Id: hlist.c,v 1.2 1999-11-14 22:54:02 kenzo- Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -412,7 +412,7 @@ HLIST do_date_processing(HLIST hlist)
 
     date_index = fopen(NMZ.t, "rb");
     if (date_index == NULL) {
-	wprintf("%s: cannot open file.\n", NMZ.t);
+	warnf("%s: cannot open file.\n", NMZ.t);
         init_date(hlist);
         return hlist; /* error */
     }

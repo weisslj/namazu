@@ -1,3 +1,12 @@
+1999-11-15  Ken-ichi Hirose  <kenzo-@tama.or.jp>
+
+	* src/cgi.c nmz/{util.h util.c search.c hlist.c}:
+	rename function wprintf to warnf. because it collide win32api.
+
+	* src/namazu.c : implentation alarm function for win32.
+
+	* mknmz.pl.in : fixed to ENV{'HOME'} for Windows.
+
 1999-11-14  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* nmz/search.c (search_main): Handle errors occured at search_sub().

@@ -2,8 +2,8 @@
 
   util.h -
 
-  $Author: satoru $
-  $Date: 1999-11-14 13:55:02 $
+  $Author: kenzo- $
+  $Date: 1999-11-14 22:54:02 $
   created at: Thu Mar  9 11:55:53 JST 1995
 
   Copyright (C) 1993-1998 Yukihiro Matsumoto
@@ -62,7 +62,7 @@ int issymbol(int);
 void die(char*, ...);
 void diemsg(char*, ...);
 void diewithmsg();
-void wprintf(char*, ...);
+void warnf(char*, ...);
 void debug_printf(char*, ...);
 void pathcat(uchar*, uchar*);
 

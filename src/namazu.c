@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.34 1999-11-14 13:55:05 satoru Exp $
+ * $Id: namazu.c,v 1.35 1999-11-14 22:54:00 kenzo- Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -34,6 +34,13 @@
 #include <unistd.h>
 #include <sys/stat.h>
 #include <signal.h>
+
+#if defined (WIN32) && !defined (__CYGWIN32__)
+/* It's not Unix, really.  See?  Capital letters.  */
+#include <windows.h>
+#define alarm(sec)	SetTimer(NULL,1,((sec)*1000),NULL)
+#define	SIGALRM	14	/* alarm clock */
+#endif
 
 #include "namazu.h"
 #include "libnamazu.h"

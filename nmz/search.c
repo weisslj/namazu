@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.3 1999-11-14 13:55:01 satoru Exp $
+ * $Id: search.c,v 1.4 1999-11-14 22:54:02 kenzo- Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -683,7 +683,7 @@ static void do_logging(uchar * query, int n)
 
     slog = fopen(NMZ.slog, "a");
     if (slog == NULL) {
-	wprintf("%s: Permission denied\n", NMZ.slog);
+	warnf("%s: Permission denied\n", NMZ.slog);
 	return;
     }
     rhost = safe_getenv("REMOTE_HOST");

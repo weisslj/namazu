@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.21 1999-11-14 13:55:05 satoru Exp $
+ * $Id: cgi.c,v 1.22 1999-11-14 22:54:00 kenzo- Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -273,7 +273,7 @@ static int process_cgi_vars(CGIARG *ca)
     for (; cv != NULL; cv = cv->next) {
 	if (!apply_cgifunc(cv, ca)) {
 	    /* message for httpd's error_log */
-	    wprintf("unkown cgi var: %s=%s\n", cv->name, cv->value);
+	    warnf("unkown cgi var: %s=%s\n", cv->name, cv->value);
 	}
     }
     free_cgi_vars(cv);

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: rfc.pl,v 1.7 1999-08-31 04:51:21 knok Exp $
+# $Id: rfc.pl,v 1.8 1999-08-31 10:17:50 knok Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -60,6 +60,7 @@ sub filter ($$$$$) {
       unless $fields->{title};
     gfilter::show_filter_debug_info($cont, $weighted_str,
 			   $fields, $headings);
+    return undef;
 }
 
 # RFC 用のフィルタ

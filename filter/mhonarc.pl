@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mhonarc.pl,v 1.11 1999-08-31 04:51:21 knok Exp $
+# $Id: mhonarc.pl,v 1.12 1999-08-31 10:17:49 knok Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -67,6 +67,7 @@ sub filter ($$$$$) {
       unless $fields->{title};
     gfilter::show_filter_debug_info($contref, $weighted_str,
 			   $fields, $headings);
+    return undef;
 }
 
 # MHonArc 用のフィルタ

@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.49 1999-08-31 09:30:10 knok Exp $
+# $Id: mknmz.pl.in,v 1.50 1999-08-31 10:17:51 knok Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -510,12 +510,15 @@ sub load_document ($$$$\%) {
 	if (defined $var::REQUIRE_ACTIONS{$mtype}) {
 	    util::vprint("Using $var::REQUIRE_ACTIONS{$mtype}.pl\n");
 	    require $var::REQUIRE_ACTIONS{$mtype}.'.pl';
-	    eval $var::REQUIRE_ACTIONS{$mtype} .
+	    my $err = undef;
+	    eval '$err = ' . $var::REQUIRE_ACTIONS{$mtype} .
 	      '::filter($orig_cfile, $content, $weighted_str, $headings, $fields);';
+	    if ($err) {
+		return ($file_size, $file_size, 0, "$mtype; x-error=$err");
+	    }
 	    if ($@) {
-		print STDERR "Faild to call $var::REQUIRE_ACTIONS{$mtype}\n$@\n";
-		$mtype = "x-system/x-error; failed to call $var::REQUIRE_ACTIONS{$mtype}";
-		last;
+		util::vprint("Faild to call $var::REQUIRE_ACTIONS{$mtype}\n$@\n");
+		return ($file_size, $file_size, 0, "$mtype; x-error=$@");
 	    }
 	    next if (defined $var::RECURSIVE_ACTIONS{$mtype});
 	}
@@ -927,6 +930,9 @@ sub check_file ($$$) {
     } elsif ($mtype =~ /; x-system=unsupported$/) {
 	$mtype =~ s/; x-system=unsupported$//;
 	$msg = "Unsupported data type ($mtype) skipped.";
+    } elsif ($mtype =~ /; x-error=.*$/) {
+	$mtype =~ s/^.*; x-error=(.*)$/$1/;
+	$msg = $mtype;
     } elsif ($mtype =~ /^x-system/) {
 	$msg = "system error occurred! ($mtype) skipped.";
     }

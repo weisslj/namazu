@@ -16,6 +16,9 @@
 
 	* src/mknmz.pl.in: Add %Supported check.
 
+	* filter/*.pl, src/mknmz.pl.in: Add return value on filter::filter()
+	functions.
+
 1999-08-31  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* lib/var.pl.in: Remove serveal media types into %REQUIRE_CODECONV.

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: bzip2.pl,v 1.7 1999-08-31 04:51:20 knok Exp $
+# $Id: bzip2.pl,v 1.8 1999-08-31 10:17:48 knok Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -51,6 +51,7 @@ sub filter ($$$$$) {
 
     my $tmpfile = util::tmpnam('NMZ.bzip2');
     my $bzip2path = util::checkcmd('bzip2');
+    return "Unable to execute bzip2" unless (-x $bzip2path);
 
     util::vprint("Processing bzip2 file ... (using  '$bzip2path')\n");
 
@@ -61,7 +62,7 @@ sub filter ($$$$$) {
     $$cont = util::readfile($fh);
     undef $fh;
     unlink($tmpfile);
-
+    return undef;
 }
 
 1;

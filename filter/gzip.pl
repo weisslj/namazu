@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: gzip.pl,v 1.7 1999-08-31 04:51:20 knok Exp $
+# $Id: gzip.pl,v 1.8 1999-08-31 10:17:49 knok Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -49,12 +49,14 @@ sub codeconv() {
 sub filter ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
       = @_;
+    my $err = undef;
 
     if (util::checklib('Compress/Zlib.pm')) {
-	filter_xs($cont);
+	$err = filter_xs($cont);
     } else {
-	filter_file($cont);
+	$err = filter_file($cont);
     }
+    return $err;
 }
 
 sub filter_file ($) {
@@ -62,6 +64,7 @@ sub filter_file ($) {
 
     my $tmpfile = util::tmpnam('NMZ.gzip');
     my $gzippath = util::checkcmd('gzip');
+    return "Unable to execute gzip" unless (-x $gzippath);
     my $fh = util::efopen("|$gzippath -cd > $tmpfile");
 
     util::vprint("Processing gzip file ... (using  '$gzippath')\n");
@@ -72,7 +75,7 @@ sub filter_file ($) {
     $$contref = util::readfile($fh);
     $fh->close();
     unlink($tmpfile);
-    return;
+    return undef;
 }
 
 sub filter_xs ($) {
@@ -98,11 +101,11 @@ sub filter_xs ($) {
     if ($stat == Z_OK() or $stat == Z_STREAM_END()) {
 	$$contref = $inf;
     } else {
-	warn 'Bad compressed data.';
 	$$contref = '';
+	return 'Bad compressed data.';
     }
 
-    return;
+    return undef;
 }
 
 1;

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: man.pl,v 1.8 1999-08-31 04:51:20 knok Exp $
+# $Id: man.pl,v 1.9 1999-08-31 10:17:49 knok Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -59,6 +59,7 @@ sub filter ($$$$$) {
     my $roffpath = util::checkcmd('jgroff');
     $roffpath = util::checkcmd('groff') unless (defined $roffpath);
     $roffpath = util::checkcmd('nroff') unless (defined $roffpath);
+    return "Unable to execute nroff/groff/jgroff" unless (-x $roffpath);
 
     my $roffargs;
     $roffargs = '-Tnippon' if ($roffpath =~ /jgroff$/);
@@ -85,6 +86,7 @@ sub filter ($$$$$) {
       unless $fields->{title};
     gfilter::show_filter_debug_info($cont, $weighted_str,
 			   $fields, $headings);
+    return undef;
 }
 
 # man 用のフィルタ

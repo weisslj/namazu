@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: pdf.pl,v 1.8 1999-08-31 04:51:21 knok Exp $
+# $Id: pdf.pl,v 1.9 1999-08-31 10:17:50 knok Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -54,6 +54,7 @@ sub filter ($$$$$) {
     my $tmpfile = util::tmpnam('NMZ.pdf');
     my $tmpfile2 = util::tmpnam('NMZ.pdf2');
     my $pdfconvpath = util::checkcmd('pdftotext');
+    return "Unable to execute pdf-converter" unless (-x $pdfconvpath);
     util::vprint("Processing pdf file ... (using  '$pdfconvpath')\n");
 
     my $fh = util::efopen("> $tmpfile");
@@ -61,7 +62,9 @@ sub filter ($$$$$) {
     undef $fh;
 
     system("$pdfconvpath -q -eucjp $tmpfile $tmpfile2");
-    
+    return 'Unable to convert pdf file (maybe copying protection)'
+      unless (-e $tmpfile2);
+
     $fh = util::efopen("< $tmpfile2");
     $$cont = util::readfile($fh);
     undef $fh;
@@ -75,6 +78,7 @@ sub filter ($$$$$) {
       unless $fields->{title};
     gfilter::show_filter_debug_info($cont, $weighted_str,
 			   $fields, $headings);
+    return undef;
 }
 
 1;

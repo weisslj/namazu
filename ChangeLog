@@ -1,5 +1,12 @@
 2000-03-16  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* doc/en/Makefile.am (html_DATA): Add tutorial.html
+
+	* doc/en/tutorial.html: New file. Thanks to
+	kaoru-ya@is.aist-nara.ac.jp for translation of the document.
+
+	* filter/excel.pl (filter): Trivial fix.
+
 	* pl/conf.pl.in: Change comments.
 
 	* scripts/mknmz.in (load_rcfile): Remove $ConfigFile = $rcfile;

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: excel.pl,v 1.5 2000-03-15 06:53:50 satoru Exp $
+# $Id: excel.pl,v 1.6 2000-03-16 13:17:10 satoru Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu, 
 #               2000 Namazu Project All rights reserved.
@@ -80,7 +80,7 @@ sub filter ($$$$$) {
     my $tmpfile2 = util::tmpnam('NMZ.excel2');
 
 
-    util::vprint("Processing ms-excel file ... (using  '$xlconvpath', '$utfconvpath')\n");
+    util::vprint("Processing ms-excel file ... (using  '$xlconvpath')\n");
 
     {
 	my $fh = util::efopen("> $tmpfile");

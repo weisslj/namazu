@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.95 2001-09-18 09:34:50 knok Exp $
+# $Id: mknmz.in,v 1.96 2001-09-19 07:37:59 knok Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -347,7 +347,7 @@ sub preload_modules () {
     if (defined $ENV{'top_srcdir'}) {      ## for VPATH ;make check
 	$srcdir = $ENV{'top_srcdir'} .'/';}
     unshift @INC, $srcdir. "/pl" if defined $srcdir;	# FIXME: remove the workaround for   (util.pl)
-    unshift @INC, $srcdir. "/filter" if defined $srcdir;# test suites.
+#    unshift @INC, $srcdir. "/filter" if defined $srcdir;# test suites.
     unshift @INC, $ENV{'top_builddir'} . '/pl' if defined $ENV{'top_builddir'};
 
     require "conf.pl" || die "unable to require \"conf.pl\"\n";

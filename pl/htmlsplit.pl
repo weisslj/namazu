@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: htmlsplit.pl,v 1.11 2001-09-18 06:53:40 knok Exp $
+# $Id: htmlsplit.pl,v 1.12 2001-09-19 07:37:59 knok Exp $
 #
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -24,7 +24,7 @@
 
 package htmlsplit;
 require "util.pl";
-require "html.pl";
+#require "html.pl"; # don't need it because it sould be already loaded by load_filtermodules()
 
 use strict;
 

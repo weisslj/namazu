@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: doccat.pl,v 1.3 2004-05-11 08:31:24 opengl2772 Exp $
+# $Id: doccat.pl,v 1.4 2004-05-11 09:31:12 fumiya Exp $
 # Copyright (C) 2001 SATOH Fumiyasu,
 #               2001,2004 Namazu Project. All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -59,10 +59,9 @@ sub mediatype() {
 	    application/x-lotus-wordpro
 	    application/oasys
 	));
-        if ($info =~ /TF Library *: *Version *: *(\d*)\.(\d*)/i) {
-            my $major = $1;
-            my $minor = $2 . "000";
-            if ($major >= 1 && substr($minor, 0, 2) >= 42) {
+        if ($info =~ /TF Library *: *Version *: *(\d+\.\d+)/i) {
+            my $ver = $1;
+            if ($ver >= 1.42) {
 	        push(@type, 'application/rtf');
             }
         }

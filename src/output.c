@@ -44,9 +44,9 @@ static char template[BUFSIZE]     = "normal"; /* suffix of NMZ.result.* */
  *
  */
 
-static void fputs_without_html_tag(char* , FILE*);
-static void emprint(char*, int);
-static void print_word_hit_count (char *key, int hitnum);
+static void fputs_without_html_tag(char *s, FILE *fp);
+static void emprint(char *s, int entity_encode);
+static void print_word_hit_count(PHRASERES *pr);
 
 /* print s to stdout with processing for emphasizing and entity encoding  */
 static void emprint(char *s, int entity_encode)
@@ -455,7 +455,7 @@ void print_hlist(HLIST hlist)
     /* prepare large memory for replace_field() and conv_ext() */
     char result[BUFSIZE * 128];
 
-    if (hlist.n <= 0 || get_maxresult() == 0) {
+    if (hlist.num <= 0 || get_maxresult() == 0) {
 	return;
     }
 
@@ -464,7 +464,7 @@ void print_hlist(HLIST hlist)
 	templates[i] = NULL;
     }
 
-    for (i = get_listwhence(); i < hlist.n; i++) {
+    for (i = get_listwhence(); i < hlist.num; i++) {
 	int counter;
 
 	counter = i + 1;
@@ -472,19 +472,20 @@ void print_hlist(HLIST hlist)
 	if (!is_allresult() && (i >= get_listwhence() + get_maxresult()))
 	    break;
 	if (is_listmode()) {
-	    get_field_data(hlist.d[i].idxid, hlist.d[i].docid, "uri", result);
+	    get_field_data(hlist.data[i].idxid, hlist.data[i].docid, 
+			   "uri", result);
 	} else {
-	    if (templates[hlist.d[i].idxid] == NULL) {  /* not loaded */
+	    if (templates[hlist.data[i].idxid] == NULL) {  /* not loaded */
 		char fname[BUFSIZE];
 
-		make_fullpathname_result(hlist.d[i].idxid);
+		make_fullpathname_result(hlist.data[i].idxid);
 		strcpy(fname, NMZ.result);
 		strcat(fname, ".");
 		strcat(fname, get_template());  /* usually "normal" */
-		templates[hlist.d[i].idxid] = readfile(fname);
+		templates[hlist.data[i].idxid] = readfile(fname);
 	    }
-	    compose_result(hlist.d[i], counter, 
-			   templates[hlist.d[i].idxid],  result);
+	    compose_result(hlist.data[i], counter, 
+			   templates[hlist.data[i].idxid],  result);
 	}
 	conv_ext(result);
 	html_print(result);
@@ -522,7 +523,7 @@ void print_hit_count ()
 	    print(" { ");
 	}
         while (pr != NULL) {
-	    print_word_hit_count(pr->word, pr->hitnum);
+	    print_word_hit_count(pr);
 	    pr = pr->next;
 	}
 	if (is_refprint() && !is_countmode() && !is_listmode() && 
@@ -540,33 +541,35 @@ void print_hit_count ()
     }
 }
 
-static void print_word_hit_count (char *key, int hitnum)
+static void print_word_hit_count (PHRASERES *pr)
 {
     if (is_refprint() && !is_countmode() && 
-	!is_listmode() && !is_quietmode()) {
-	char tmp_key[BUFSIZE];
-	strcpy(tmp_key, key);
-	conv_ext(tmp_key);
+	!is_listmode() && !is_quietmode()) 
+    {
+	char tmp_word[BUFSIZE];
+	strcpy(tmp_word, pr->word);
+	conv_ext(tmp_word);
 
         print(" [ ");
-        print(tmp_key);
-        if (hitnum > 0) {
-            printf(": %d", hitnum);
+        print(tmp_word);
+        if (pr->hitnum > 0) {
+            printf(": %d", pr->hitnum);
         } else { 
             char *msg = (char *)"";
-            if (hitnum == 0) {
+
+            if (pr->stat == 0) {
                 msg = (char *)": 0 ";
-            } else if (hitnum == ERR_TOO_MUCH_MATCH) {
+            } else if (pr->stat == ERR_TOO_MUCH_MATCH) {
                 msg = _(" (Too many words matched. Ignored.)");
-            } else if (hitnum == ERR_TOO_MUCH_HIT) {
+            } else if (pr->stat == ERR_TOO_MUCH_HIT) {
                 msg = _(" (Too many pages hit. Ignored.)");
-            } else if (hitnum == ERR_REGEX_SEARCH_FAILED) {
+            } else if (pr->stat == ERR_REGEX_SEARCH_FAILED) {
                 msg = _(" (cannot open regex index)");
-            } else if (hitnum == ERR_PHRASE_SEARCH_FAILED) {
+            } else if (pr->stat == ERR_PHRASE_SEARCH_FAILED) {
                 msg = _(" (cannot open phrase index)");
-            } else if (hitnum == ERR_CANNOT_OPEN_INDEX) {
+            } else if (pr->stat == ERR_CANNOT_OPEN_INDEX) {
 		msg = _(" (cannot open this index)\n");
-            } else if (hitnum == ERR_NO_PERMISSION) {
+            } else if (pr->stat == ERR_NO_PERMISSION) {
 		msg = _("(You don\'t have a permission to access the index)");
 	    }
             print(_(msg));
@@ -619,9 +622,9 @@ void print_range(HLIST hlist)
 {
     if (is_htmlmode())
         print("<p>\n");
-    put_current_range(hlist.n);
+    put_current_range(hlist.num);
     if (is_pageindex()) {
-        put_page_index(hlist.n);
+        put_page_index(hlist.num);
     }
     if (is_htmlmode()) {
         print("</p>\n");

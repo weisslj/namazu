@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.13 1999-11-23 14:18:35 satoru Exp $
+ * $Id: search.c,v 1.14 1999-12-04 01:20:38 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -167,7 +167,7 @@ static HLIST prefix_match(char * orig_key, int v)
     int i, j, n;
     HLIST tmp, val;
     char buf[BUFSIZE], key[BUFSIZE];
-    val.n = 0;
+    val.num = 0;
 
     strcpy(key, orig_key);
     *(lastc(key))= '\0';
@@ -201,7 +201,7 @@ static HLIST prefix_match(char * orig_key, int v)
 	    tmp = get_hlist(i);
 	    if (tmp.stat == ERR_FATAL)
 	        return tmp;
-	    if (tmp.n > IGNORE_HIT) {
+	    if (tmp.num > IGNORE_HIT) {
 		free_hlist(val);
 		val.stat = ERR_TOO_MUCH_MATCH;
 		break;
@@ -209,12 +209,12 @@ static HLIST prefix_match(char * orig_key, int v)
 	    val = ormerge(val, tmp);
 	    if (val.stat == ERR_FATAL)
 	        return val;
-	    if (val.n > IGNORE_HIT) {
+	    if (val.num > IGNORE_HIT) {
 		free_hlist(val);
 		val.stat = ERR_TOO_MUCH_MATCH;
 		break;
 	    }
-	    debug_printf("fw: %s, %d, %d\n", buf, tmp.n, val.n);
+	    debug_printf("fw: %s, %d, %d\n", buf, tmp.num, val.num);
 	} else
 	    break;
     }
@@ -282,8 +282,8 @@ static HLIST do_word_search(char *key, HLIST val)
 	if (val.stat == ERR_FATAL)
 	    return val;
     } else {
-        val.n = 0;  /* no hit */
-	val.d = NULL;
+        val.num = 0;  /* no hit */
+	val.data = NULL;
     }
     return val;
 }
@@ -298,8 +298,8 @@ static HLIST do_prefix_match_search(char *key, HLIST val)
 	if (val.stat == ERR_FATAL)
 	    return val;
     } else {
-        val.n = 0;  /* no hit */
-	val.d = NULL;
+        val.num = 0;  /* no hit */
+	val.data = NULL;
     }
     return val;
 }
@@ -328,13 +328,13 @@ static HLIST cmp_phrase_hash(int hash_key, HLIST val,
     int i, j, v, n, *list;
     long ptr;
 
-    if (val.n == 0) {
+    if (val.num == 0) {
         return val;
     }
     ptr = getidxptr(phrase_index, hash_key);
     if (ptr <= 0) {
 	free_hlist(val);
-        val.n = 0;
+        val.num = 0;
         return val;
     }
     fseek(phrase, ptr, 0);
@@ -353,8 +353,8 @@ static HLIST cmp_phrase_hash(int hash_key, HLIST val,
 	for (i = j = v = 0; i < n; i++) {
 	    docid = *(list + i) + sum;
 	    sum = docid;
-	    for (; j < val.n && docid >= val.d[j].docid; j++) {
-		if (docid == val.d[j].docid) {
+	    for (; j < val.num && docid >= val.data[j].docid; j++) {
+		if (docid == val.data[j].docid) {
 		    copy_hlist(val, v++, val, j);
 		}
 	    }
@@ -363,7 +363,7 @@ static HLIST cmp_phrase_hash(int hash_key, HLIST val,
     if (v == 0) {
 	free_hlist(val);
     }
-    val.n = v;
+    val.num = v;
     free(list);
     return val;
 }
@@ -420,7 +420,7 @@ static HLIST do_phrase_search(char *key, HLIST val)
 	    if (tmp.stat == ERR_FATAL) 
 	        return tmp;
 	    if ((prtmp = push_phraseres(
-		Idx.pr[CurrentIndexNumber], tmp.n, p)) == NULL) 
+		Idx.pr[CurrentIndexNumber], tmp.num, p)) == NULL) 
 	    {
 		tmp.stat = ERR_FATAL;
 		return tmp;
@@ -442,9 +442,9 @@ static HLIST do_phrase_search(char *key, HLIST val)
 		strcat(word_mix, p);
 		h = hash(word_mix);
 		val = cmp_phrase_hash(h, val, phrase, phrase_index);
-		debug_printf("\nhash:: <%s, %s>: h:%d, val.n:%d\n",
-			     word_b, p, h, val.n);
-		if (val.n == 0) {
+		debug_printf("\nhash:: <%s, %s>: h:%d, val.num:%d\n",
+			     word_b, p, h, val.num);
+		if (val.num == 0) {
 		    break;
 		} else if (val.stat == ERR_FATAL) {
 		    return val;
@@ -458,7 +458,7 @@ static HLIST do_phrase_search(char *key, HLIST val)
         p = q + 1;
     }
 
-    Idx.phrasehit[CurrentIndexNumber] = val.n;
+    Idx.phrasehit[CurrentIndexNumber] = val.num;
 
     fclose(phrase);
     fclose(phrase_index);
@@ -747,14 +747,14 @@ static HLIST search_sub(HLIST hlist, char *query, char *query_orig, int n)
         return hlist;
     }
 
-    if (hlist.n == SUCCESS && hlist.n > 0) {  /* if hit */
+    if (hlist.stat == SUCCESS && hlist.num > 0) {  /* if hit */
         set_idxid_hlist(hlist, n);
     }
-    Idx.total[CurrentIndexNumber] = hlist.n;
+    Idx.total[CurrentIndexNumber] = hlist.num;
     close_index_files();
 
     if (is_loggingmode()) {
-        do_logging(query_orig, hlist.n);
+        do_logging(query_orig, hlist.num);
     }
     return hlist;
 }
@@ -849,8 +849,6 @@ HLIST search_main(char *query)
     char query_orig[BUFSIZE];
     int i, ret;
 
-    hlist.stat = SUCCESS;
-
     if (strlen(query) > QUERY_MAX) {
 	hlist.stat = ERR_TOO_LONG_QUERY;
 	return hlist;
@@ -870,7 +868,7 @@ HLIST search_main(char *query)
 
 	if (tmp[i].stat != SUCCESS) {/* ERROR occured */
 	    PHRASERES *prtmp;
-	    if ((prtmp = push_phraseres(Idx.pr[i], tmp[i].n, "")) == NULL) 
+	    if ((prtmp = push_phraseres(Idx.pr[i], tmp[i].num, "")) == NULL) 
 	    {
 		hlist.stat = ERR_FATAL;
 		return hlist;
@@ -879,15 +877,16 @@ HLIST search_main(char *query)
 	}
 
 	if (tmp[i].stat == ERR_FATAL) {
-	    hlist.d = NULL;
+	    hlist.data = NULL;
 	    hlist.stat = ERR_FATAL;
 	    return hlist; /* need freeing memory? */
 	}
     }
 
+
     hlist = merge_hlist(tmp);
 
-    if (hlist.stat == SUCCESS && hlist.n > 0) { /* HIT!! */
+    if (hlist.stat == SUCCESS && hlist.num > 0) { /* HIT!! */
 	/* sort by date at first*/
         if (sort_hlist(hlist, SORT_BY_DATE) == FAILURE) {
 	    hlist.stat = ERR_FATAL;
@@ -917,6 +916,8 @@ HLIST do_search(char *orig_key, HLIST val)
     int mode;
     char key[BUFSIZE];
 
+    val.stat = SUCCESS;
+
     strcpy(key, orig_key);
     strlower(key);
     mode = detect_search_mode(key);
@@ -942,7 +943,7 @@ HLIST do_search(char *orig_key, HLIST val)
     if (mode != PHRASE_MODE) { /* phrase mode print status by itself */
 	PHRASERES *prtmp;
 	if ((prtmp = push_phraseres(Idx.pr[CurrentIndexNumber], 
-				    val.n, orig_key)) == NULL) 
+				    val.num, orig_key)) == NULL) 
 	{
 	    val.stat = ERR_FATAL;
 	    return val;

@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.49 1999-12-03 07:53:51 masao Exp $
+ * $Id: namazu.c,v 1.50 1999-12-04 01:20:40 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -246,7 +246,7 @@ static int parse_options(int argc, char **argv)
 	    break;
 	case 'C':
 	    if (load_conf(argv[0]))
-	      return FAILURE;
+		diewithmsg();
 	    show_conf();
 	    exit(EXIT_SUCCESS);
 	    break;
@@ -255,7 +255,7 @@ static int parse_options(int argc, char **argv)
 	    break;
 	case 'o':
 	    if (stdio2file(optarg))
-	      return FAILURE;
+		diewithmsg();
 	    break;
 	}
     } 
@@ -320,6 +320,8 @@ static int namazu_core(char * query, char *subquery, char *av0)
 	html_print(_("	<h2>Error!</h2>\n<p>Too many query tokens.</p>\n"));
 	return FAILURE;
 	break;
+    default:
+	break;
     }
 
     /* result1:  <h2>Results:</h2>, References:  */
@@ -350,12 +352,12 @@ static int namazu_core(char * query, char *subquery, char *av0)
 	}
     }
 
-    if (hlist.n > 0) {
+    if (hlist.num > 0) {
         if (!is_countmode() && !is_listmode() && !is_quietmode()) {
-            print_hitnum(hlist.n);  /* <!-- HIT -->%d<!-- HIT --> */
+            print_hitnum(hlist.num);  /* <!-- HIT -->%d<!-- HIT --> */
         }
 	if (is_countmode()) {
-	    printf("%d\n", hlist.n);
+	    printf("%d\n", hlist.num);
 	} else {
 	    print_listing(hlist); /* summary listing */
 	}
@@ -416,8 +418,6 @@ int main(int argc, char **argv)
 	set_formprint(0);	 /* do not print "<form> ... </form>" */
 
 	i = parse_options(argc, argv); 
-	if (i == FAILURE)
-	    diewithmsg();
 	if (load_conf(argv[0]))
 	    diewithmsg();
 

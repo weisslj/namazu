@@ -2,7 +2,7 @@
  * 
  * parser.c -
  * 
- * $Id: parser.c,v 1.6 1999-12-03 07:53:50 masao Exp $
+ * $Id: parser.c,v 1.7 1999-12-04 01:20:37 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -58,11 +58,10 @@ static int orop(void);
 static HLIST factor(int *ignore)
 {
     HLIST val;
-    val.n    = 0;
-    val.stat = SUCCESS;
+    val.num = 0;
 
     while (1) {
-        if (Query.tab[Cp] == 0) {
+        if (Query.tab[Cp] == NULL) {
             return val;
 	}
 
@@ -82,11 +81,11 @@ static HLIST factor(int *ignore)
             val = do_search(Query.tab[Cp], val);
 	    if (val.stat == ERR_FATAL)
 	       return val;
-            /*  ERR_TOO_MUCH_MATCH;
-                ERR_TOO_MUCH_HIT;  case */
-            if (val.n < 0) {
+            if (val.stat == ERR_TOO_MUCH_MATCH ||
+		val.stat == ERR_TOO_MUCH_MATCH)
+	    {
                 *ignore = 1;
-                val.n = 0;   /* assign 0 - note that is important */
+                val.num = 0;   /* assign 0 - this is important */
             }
 
             Cp++;

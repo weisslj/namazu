@@ -2,7 +2,7 @@
  * 
  * re.c -
  * 
- * $Id: re.c,v 1.6 1999-11-23 14:18:34 satoru Exp $
+ * $Id: re.c,v 1.7 1999-12-04 01:20:37 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -153,7 +153,7 @@ HLIST regex_grep(char *orig_expr, FILE *fp, char *field, int field_mode)
     REGEX *rp;
     int i, n, size = 0, max, uri_mode = 0;
     HLIST val, tmp;
-    val.n = 0;
+    val.num = 0;
 
     if (is_lang_ja()) {
         re_mbcinit(MBCTYPE_EUC);
@@ -172,7 +172,7 @@ HLIST regex_grep(char *orig_expr, FILE *fp, char *field, int field_mode)
         malloc_hlist(&val, size += STEP);
 	if (val.stat == ERR_FATAL)
 	    return val;
-	val.n = 0; /* set 0 for no matching case */
+	val.num = 0; /* set 0 for no matching case */
         max = IGNORE_HIT;
         if (strcmp(field, "uri") == 0) {
             uri_mode = 1;
@@ -201,16 +201,16 @@ HLIST regex_grep(char *orig_expr, FILE *fp, char *field, int field_mode)
             n++;
             if (n > max) {
                 free_hlist(val);
-                val.n = -1;
+                val.num = -1;
                 break;
             }
             if (!field_mode) {
                 tmp = get_hlist(i);
 		if (tmp.stat == ERR_FATAL)
 		    return tmp;
-                if (tmp.n > IGNORE_HIT) {
+                if (tmp.num > IGNORE_HIT) {
                     free_hlist(val);
-                    val.n = -1;
+                    val.num = -1;
                     break;
                 }
             } else {
@@ -219,9 +219,9 @@ HLIST regex_grep(char *orig_expr, FILE *fp, char *field, int field_mode)
 		    if (val.stat == ERR_FATAL)
 		        return val;
                 }
-                val.d[n-1].docid = i;
-                val.d[n-1].score = 1;  /* score = 1 */
-                val.n = n;
+                val.data[n-1].docid = i;
+                val.data[n-1].score = 1;  /* score = 1 */
+                val.num = n;
             }
 
             if (!field_mode) {
@@ -229,9 +229,9 @@ HLIST regex_grep(char *orig_expr, FILE *fp, char *field, int field_mode)
 		if (val.stat == ERR_FATAL)
 		    return val;
             } 
-            if (val.n > IGNORE_HIT) {
+            if (val.num > IGNORE_HIT) {
                 free_hlist(val);
-                val.n = -1;
+                val.num = -1;
                 break;
             }
 	    if (is_debugmode()) {
@@ -239,13 +239,13 @@ HLIST regex_grep(char *orig_expr, FILE *fp, char *field, int field_mode)
 
                 if (field_mode) {
                     debug_printf("field: [%d]<%s> id: %d\n", 
-                            val.n, buf, i);
+                            val.num, buf, i);
                 } else {
                     fseek(Nmz.w, getidxptr(Nmz.wi, i), 0);
                     fgets(buf2, BUFSIZE, Nmz.w);
                     chomp(buf2);
                     debug_printf("re: %s, (%d:%s), %d, %d\n", 
-                            buf2, i, buf, tmp.n, val.n);
+                            buf2, i, buf, tmp.num, val.num);
                 }
 	    }
         }

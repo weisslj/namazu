@@ -1,3 +1,15 @@
+1999-12-04  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* nmz/libnamazu.h: Rearrange enum definitions.
+	
+	* nmz/hlist.c (malloc_hlist): Set hlist->stat = SUCCESS.
+
+	* src/output.c (print_hit_count): Use pr->stat instead of hitnum.
+
+	* nmz/libnamazu.h (struct hlist): Change names of member: 
+	n -> num
+	d -> data
+
 1999-12-03  Masao Takaku  <masao@ulis.ac.jp>
 
 	* src/namazu.c: Don't print a form element at non-cgimode.

@@ -2,7 +2,7 @@
  * 
  * libnamazu.h - Namazu library api
  *
- * $Id: libnamazu.h,v 1.13 1999-11-23 14:18:34 satoru Exp $
+ * $Id: libnamazu.h,v 1.14 1999-12-04 01:20:37 satoru Exp $
  * 
  */
 
@@ -54,14 +54,19 @@ enum {
     DESCENDING     /* Direction of sorting */
 };
 
-/* for error handling */
-enum {
-    SUCCESS = 0,
-    FAILURE = -1
-};
+/*
+ *
+ * Data Structures
+ *
+ */
+
+typedef unsigned char uchar;
+
 
 /* for error handling */
-enum {
+enum nmz_err {
+    SUCCESS,
+    FAILURE,
     ERR_FATAL,
     ERR_TOO_LONG_QUERY,
     ERR_INVALID_QUERY,
@@ -74,30 +79,20 @@ enum {
     ERR_NO_PERMISSION
 };
 
-
-/*
- *
- * Data Structures
- *
- */
-
-typedef unsigned char uchar;
-
 typedef struct hlist_data {
     int score;   /* score */
     int docid;   /* document ID */
     int idxid;   /* index ID */
     int date;    /* document's date */
     int rank;    /* ranking data for stable sorting */
-    int stat;    /* status code mainly used for error handling */
     char *field; /* for field-specified search*/
 } HLIST_DATA;
 
 /* data structure for search result */
 typedef struct hlist {
-    int n;
-    int stat;    /* status code mainly used for error handling */
-    HLIST_DATA *d;
+    int num;           /* number of elements in its data */
+    enum nmz_err stat; /* status code mainly used for error handling */
+    HLIST_DATA *data;  /* dynamic array for storing a list of docid etc. */
 } HLIST;
 
 typedef struct alias {
@@ -151,19 +146,32 @@ typedef struct query {
     char *tab[QUERY_TOKEN_MAX + 1];  /* table for the query string */
 } QUERY;
 
+
 /* results of phrase search */
 typedef struct phraseres {
     int hitnum;
+    enum nmz_err stat;    /* status code mainly used for error handling */
     char *word;
     struct phraseres *next;
 } PHRASERES;
+
+/* modes of searching */
+enum search_mode {
+    WORD_MODE,
+    PREFIX_MODE,
+    REGEX_MODE,
+    PHRASE_MODE,
+    FIELD_MODE,
+
+    ERROR_MODE = -1
+};
 
 typedef struct indices {
     int num;                 /* Number of indices */
     char *names[INDEX_MAX + 1]; /* Index names */
 
-    int total[INDEX_MAX + 1]; /* results of total hits */
-    int mode[INDEX_MAX + 1]; /* search mode */
+    int total[INDEX_MAX + 1];   /* results of total hits */
+    enum search_mode mode[INDEX_MAX + 1];
     PHRASERES *pr[INDEX_MAX + 1]; /* results of each word hits */
     int phrasehit[INDEX_MAX + 1]; /* results of each phrase hits */
 } INDICES;

@@ -1,9 +1,12 @@
 2000-02-19  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* pl/usage.pl ($USAGE): Modify description for --mtime.
+
 	* scripts/mknmz.in: Change a variable name:
 	s/$CCS/$CodingSystem/.
 	(add_target): New function.
 	(find_target): Use add_target().
+	(add_target): Handle --mtime option precisely. [namazu-dev 1679]
 
 	* scripts/mknmz.in (load_rcfiles): Use @LoadedRcfiles.
 	(show_config): Gettextized.

@@ -1,3 +1,7 @@
+2002-09-08  Ryuji Abe  <rug@namazu.org>
+
+	* filter/msword.pl: Corrected copyright notice.
+
 2002-09-07  Hajime BABA  <baba@plain.isas.ac.jp>
 
 	* script/mknmz.in: Fixed the bug of FILE_SIZE restriction.
@@ -7647,4 +7651,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.976 2002-09-06 18:42:22 baba Exp $
+$Id: ChangeLog,v 1.977 2002-09-08 09:36:27 rug Exp $

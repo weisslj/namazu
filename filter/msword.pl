@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: msword.pl,v 1.31 2002-08-26 02:55:26 baba Exp $
+# $Id: msword.pl,v 1.32 2002-09-08 09:36:28 rug Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi All rights reserved.
-# Copyright (C) 2000 Satoru Takabayashi Namazu Project All rights reserved.
+# Copyright (C) 2000-2002 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify

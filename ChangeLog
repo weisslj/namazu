@@ -19,7 +19,8 @@
 
 2000-02-01  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
-	* configure.in: Fix File-MMagic $srcdir problem [namazu-dev 1424].
+	* configure.in: Apply Imperfect fix to File-MMagic $srcdir problem
+	[namazu-dev 1424].
 
 	* pl/Makefile.am (CLEANFILES): Abolished.
 

@@ -1,10 +1,11 @@
 #! %PERL%
 # -*- Perl -*-
 #
-# $Id: kwnmz.in,v 1.2 2000-01-30 23:32:36 rug Exp $
+# $Id: kwnmz.in,v 1.3 2000-09-30 13:39:36 furukawa Exp $
 #
 # kwnmz - program to make NMZ.field.keywords
 #         by furukawa@tcp-ip.or.jp
+# modified by osamu2001@livedoor.com
 #
 
 push(@INC, '@PERLLIBDIR@');
@@ -89,9 +90,14 @@ sub kwnmz{
         my $word;
         my %list_i;
 
+        my $word_number = 0;
+        my $word_hit_number = 0;
         my $lim = $nmzi->open_flist->{'size'} * $rate;
         my $wh = $nmzi->open_word;
+        exit 1 unless $wh->{'size'};
+
         while (defined $wh->read(\$word, \%list_i)){
+            print "$word_hit_number/$word_number\n" unless ++$word_number % 10000;
             next if defined($judge) && !&$judge($word);
             my $hit = scalar keys %list_i;
 
@@ -103,12 +109,22 @@ sub kwnmz{
             # no documents containing this term.
             next if $hit <= 1;
 
+            ++$word_hit_number;
             $hit = log($hit);
             for my $fileno (keys %list_i){
                 $tfidf[$fileno]{$word} = $list_i{$fileno} / $hit;
+                if (scalar(keys %{$tfidf[$fileno]}) > ($num << 1)){
+                    my @sorted_words = sort{
+                        $tfidf[$fileno]->{$b} <=> $tfidf[$fileno]->{$a}
+                        or $a cmp $b} keys %{$tfidf[$fileno]};
+                    for my $i ($num..$#sorted_words){
+                        delete $tfidf[$fileno]{$sorted_words[$i]};
+                    }
+                }
             }
         }
     }
+    print "NMZ.w search finished!\n";
 
     {
         my $fi;
@@ -116,7 +132,6 @@ sub kwnmz{
         $fi = $nmzi->open_field('keywords') if $meta;
         for my $tmp (@tfidf){
             my $keywords;
-#            $keywords = $fi->{'keywords'}->{'body'}->getline if defined $fi->{'keywords'}->{'body'};
             $keywords = $fi->{'keywords'}->getline if defined $fi->{'keywords'};
             if (!defined($keywords) || $keywords =~ /^ /){
                 my $cnt = 0;
@@ -143,17 +158,12 @@ sub usage{
          "  -m, --no-meta       do not protect meta tag field.\n" .
          "  -n num              number of keyword per file. (default: 10)\n" .
          "\n" .
-         "  -l max_length       max_length. (default: 16)\n" .
-         "  -r max_rate         max_rate. (default: 0.5)\n" .
+         "  -l MAX_LENGTH       set MAX_LENGTH of valid word. (default: 16)\n" .
+         "  -r MAX_RATE         set MAX_RATE (hit/total). (default: 0.5)\n" .
          "\n" .
-         "  -e pattern          pattern for ascii word.\n" .
+         "  -e PATTERN          set PATTERN for ascii words which should be allowed.\n" .
          "  -E                  same as '-e /^[\da-z_]{3}/'\n" .
-         "  -j pattern          pattern for non-ascii word.\n" .
-         "  -J                  same as '-j /(^(\\xa5.){3})|(^([\\xb0-\\xf4].){2})/'\n" .
-         "\n" .
-         "    do not use the term if \n" .
-         "         (length) > (max_length)\n" .
-         "      or (hit number) > (total file number) * (max_rate)\n".
-         "      or fail matching pattern.\n"
+         "  -j PATTERN          set PATTERN for non-ascii words which should be allowed.\n" .
+         "  -J                  same as '-j /(^(\\xa5.){3})|(^([\\xb0-\\xf4].){2})/'\n"
          );
 }

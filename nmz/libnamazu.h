@@ -2,7 +2,7 @@
  * 
  * libnamazu.h - Namazu library api
  *
- * $Id: libnamazu.h,v 1.39 2000-01-20 11:38:27 satoru Exp $
+ * $Id: libnamazu.h,v 1.40 2000-02-01 04:38:28 rug Exp $
  * 
  */
 
@@ -220,7 +220,6 @@ struct nmz_hitnumlist {
 
 extern void nmz_free_aliases ( void );
 extern void nmz_free_replaces ( void );
-extern void nmz_codeconv_query ( char *query );
 extern void nmz_set_sortmethod ( enum nmz_sortmethod method );
 extern enum nmz_sortmethod nmz_get_sortmethod(void);
 extern void nmz_set_sortorder ( enum nmz_sortorder order );

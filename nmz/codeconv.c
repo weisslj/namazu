@@ -2,7 +2,7 @@
  * 
  * codeconv.c -
  * 
- * $Id: codeconv.c,v 1.22 2000-01-28 09:40:11 satoru Exp $
+ * $Id: codeconv.c,v 1.23 2000-02-01 04:38:27 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -456,3 +456,14 @@ nmz_conv_ext (const char *str) {
     }
     return (char *)tmp;
 }
+
+void 
+nmz_codeconv_query(char *query)
+{
+    if (nmz_is_lang_ja()) {
+        if (nmz_conv_ja_any_to_eucjp(query)) {
+            nmz_zen2han(query);
+        }
+    }
+}
+

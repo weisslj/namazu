@@ -1,5 +1,7 @@
 2000-02-11  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* filter/rfc.pl (pre_codeconv): Return 1.
+
 	* scripts/mknmz.in (complete_field_info): Gettextize "unknown".
 	(setup_magic): Abolished.
 

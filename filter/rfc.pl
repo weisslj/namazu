@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: rfc.pl,v 1.14 2000-02-11 12:54:22 satoru Exp $
+# $Id: rfc.pl,v 1.15 2000-02-11 13:15:56 satoru Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -41,7 +41,7 @@ sub recursive() {
 }
 
 sub pre_codeconv() {
-    return 0; # Need for tranrated document?
+    return 1;
 }
 
 sub post_codeconv () {
@@ -89,7 +89,6 @@ sub rfc_filter ($$$) {
 
     # Get an author name first.
     if ($$contref =~ /^Network Working Group\s+(\S.*\S)\s*$/m) {
-	print "// $1\n";
 	$fields->{'author'} = $1;
     }
 

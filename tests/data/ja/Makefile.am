@@ -31,6 +31,7 @@ EXTRA_DIST  =   acrobat3.pdf \
 		postscript.ps \
 	        dvi.dvi \
                 rtf.rtf \
+                rpm.rpm \
                 oowriter.sxw \
                 oocalc.sxc \
                 oodraw.sxd \

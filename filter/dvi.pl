@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: dvi.pl,v 1.4 2003-07-07 13:50:59 opengl2772 Exp $
+# $Id: dvi.pl,v 1.5 2003-09-02 14:45:07 usu Exp $
 # Copyright (C) 2000 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -36,7 +36,17 @@ sub mediatype() {
 }
 
 sub status() {
-    $dviconvpath = util::checkcmd('dvi2tty');
+    if (util::islang("ja")) {
+        $dviconvpath = util::checkcmd('jdvi2tty');
+        unless (defined $dviconvpath) {
+            $dviconvpath = util::checkcmd('dvi2tty');
+            return 'no' unless (defined $dviconvpath);
+            my $err = system("$dviconvpath -J");
+            return 'no' if ($err == 1792);
+        }
+    } else {
+        $dviconvpath = util::checkcmd('dvi2tty');
+    }
     $envpath = util::checkcmd('env');
     @env = ($envpath, "DVI2TTY=");
     return 'no' unless (defined $dviconvpath && defined $envpath);
@@ -67,10 +77,14 @@ sub filter ($$$$$) {
     util::vprint("Processing dvi file ... (using '$dviconvpath')\n");
 
     if (util::islang("ja")) {
-	# -J option: dvi2tty-5.1 for Debian
-	@dviconvopts = ("-q", "-J");
+        # -J option: dvi2tty-5.1 for Debian
+        if ($dviconvpath =~ /jdvi2tty/){
+            @dviconvopts = ("-q");
+        }else {
+            @dviconvopts = ("-q", "-J");
+        }
     } else {
-	@dviconvopts = ("-q");
+        @dviconvopts = ("-q");
     }
 
     my $tmpfile = util::tmpnam('NMZ.dvi');
@@ -83,6 +97,7 @@ sub filter ($$$$$) {
 	my @cmd = (@env, $dviconvpath, @dviconvopts, "$tmpfile.dvi");
 	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
 	my $size = util::filesize($fh_out);
+        unlink("$tmpfile.dvi");
 	if ($size == 0) {
 	    return "Unable to convert file ($dviconvpath error occurred)";
 	}
@@ -91,7 +106,7 @@ sub filter ($$$$$) {
 	} 
 	$$cont = util::readfile($fh_out);
     }
-    unlink("$tmpfile.dvi");
+    #unlink("$tmpfile.dvi");
 
     # post_codeconv() does not work... (?_?)
     codeconv::toeuc($cont);

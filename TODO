@@ -1,34 +1,8 @@
-			       To do list for Namazu
+This is the todo list for Namazu.
 
-Near future
-
-	* Make filters for hypermail, fml and etc.
-	* Make a tool to merge index
-
-	
-Far future
-
-	* Add a feature to display suggestion in the search result by
-	  analyzing statistics of NMZ.slog
-	* Support XML and Unicode
-	* Add a feature to make index compress
-	* Redesign and reimplement
-
-	
-I want help!
-
-	* Make document filters for TeX, PS and etc.
-	* Port to Macitosh and other non-UNIX systems
-	
-	
-It is challenging
-
-	* Improve efficiency of appeding index
-
-	
-It is too challenging ;-)
-
-	* Implement the distributed network search engine
-	* Multilingualization
-
-	
+  * Make a tool to merge indices.
+  * Support UTF-8 and XML.
+  * Make source codes clear.
+  * Redesign and reimplement.
+  * Implement a distributed network search engine with libnmz.
+  * Multilingualization.

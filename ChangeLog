@@ -1,3 +1,7 @@
+2000-01-21  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* TODO: Edit it.
+
 2000-01-20  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* src/namazu.c (namazu_core): Use nmz_free_internal() instead of

@@ -7,6 +7,7 @@ TMP=`pwd`/tmp
 IDX=`pwd`/idx8
 echo '  *** starting ' $0 >>$LOG
 
+MSG0='No document matching your query.'
 MSG1='Too many documents hit. Ignored'
 MSG2='Too many words matched. Ignored'
 
@@ -32,6 +33,7 @@ echo "MaxHit 1" > $TMP
 ./namazu -f $TMP 'foo' $IDX | grep "$MSG1" > /dev/null && exit 1
 ./namazu -f $TMP 'bar' $IDX | grep "$MSG1" > /dev/null || exit 1
 ./namazu -f $TMP 'baz' $IDX | grep "$MSG1" > /dev/null || exit 1
+./namazu -f $TMP 'foo and bzz' $IDX | grep "$MSG0" > /dev/null || exit 1
 
 echo "MaxHit 2" > $TMP
 ./namazu -f $TMP 'foo' $IDX | grep "$MSG1" > /dev/null && exit 1

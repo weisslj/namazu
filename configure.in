@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.73 2000-01-10 18:38:40 rug Exp $
+dnl $Id: configure.in,v 1.74 2000-01-10 20:21:08 rug Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -356,7 +356,9 @@ AC_OUTPUT([Makefile
 	   src/Makefile
 	   template/Makefile
 	   template/NMZ.head
+	   template/NMZ.foot
 	   template/NMZ.head.ja
+	   template/NMZ.foot.ja
 	  ],
 	  [chmod +x nmz-config \
 		    scripts/gtnmz \

@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: util.c,v 1.47 2000-01-10 12:20:31 satoru Exp $
+ * $Id: util.c,v 1.48 2000-01-10 20:21:10 rug Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -407,7 +407,7 @@ nmz_strcasestr(const char *haystack, const char *needle)
 	if (strncasecmp(haystack, needle, n) == 0) {
 	    return (char *)haystack;
 	}
-	if (euc_mode && iseuc(*haystack)) {
+	if (euc_mode && nmz_iseuc(*haystack)) {
 	    haystack++;
 	}
     }

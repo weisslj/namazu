@@ -4,6 +4,7 @@
 #include <stdio.h>     /* for FILE struct */
 #include "libnamazu.h" /* for enum nmz_stat struct */
 
+/* FIXME: Will be moved.  */
 #ifdef HAVE__VSNPRINTF
 #define vsnprintf(str,n,format,ap) _vsnprintf(str,n,format,ap)
 #endif /* HAVE__VSNPRINTF */
@@ -32,13 +33,8 @@ struct nmz_strlist {
 #define iskanji2nd(c) (((uchar)(c) >= 0x40 && \
                        (uchar)(c) <= 0xfc && \
                        (uchar)(c) != 0x7f))
-#define iseuc(c)  ((uchar)(c) >= 0xa1 && (uchar)(c) <= 0xfe)
-#ifndef iskanji /* for jperl */
-#define iskanji(c)  (iseuc(*(c)) && iseuc(*(c + 1)))
-#endif
-#define ischoon(c) ((uchar)*(c) == 0xa1 && \
-                    (uchar)*(c + 1) == 0xbc)
-#define iseuc(c)  ((uchar)(c) >= 0xa1 && (uchar)(c) <= 0xfe)
+#define nmz_iseuc(c)  ((uchar)(c) >= 0xa1 && (uchar)(c) <= 0xfe)
+#define nmz_iskanji(c)  (nmz_iseuc(*(c)) && nmz_iseuc(*(c + 1)))
 
 
 extern unsigned long nmz_scan_oct ( char *start, int len, int *retlen );

@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.58 2000-01-10 12:20:31 satoru Exp $
+ * $Id: search.c,v 1.59 2000-01-10 20:21:10 rug Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -527,7 +527,7 @@ do_regex_preprocessing(char *expr)
         exprp = expr;
         /* Escape meta characters */
         while (*exprp) {
-            if (!isalnum(*exprp) && !iseuc(*exprp)) {
+            if (!isalnum(*exprp) && !nmz_iseuc(*exprp)) {
                 *bufp = '\\';
                 bufp++;
             }

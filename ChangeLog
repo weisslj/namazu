@@ -1,3 +1,18 @@
+2000-01-11  Ryuji Abe  <raeva@t3.rim.or.jp>
+
+	* nmz/util.h: Added prefix macro difinitions.
+	s/iseuc/nmz_iseuc/g.
+	s/iskanji/nmz_iskanji/g.
+	(ischoon): Removed unused macro.
+
+	* nmz/codeconv.c: Likewise.
+
+	* nmz/search.c: Likewise.
+
+	* nmz/util.c: Likewise.
+
+	* nmz/wakati.c: Likewise.
+
 2000-01-10  Ryuji Abe  <raeva@t3.rim.or.jp>
 
 	* configure.in: Many Changes. Abolished --with-COMMAND=PATH style

@@ -2,7 +2,7 @@
  * 
  * wakati.c -
  * 
- * $Id: wakati.c,v 1.21 2000-01-09 11:28:55 satoru Exp $
+ * $Id: wakati.c,v 1.22 2000-01-10 20:21:10 rug Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -58,7 +58,7 @@ detect_char_type(char *c)
         return KATAKANA;
     } else if (nmz_ishiragana(c)){
         return HIRAGANA;
-    } else if (iskanji(c)) {
+    } else if (nmz_iskanji(c)) {
         return KANJI;
     }
     return OTHER;
@@ -80,9 +80,9 @@ nmz_wakati(char *key)
 
     for (i = 0; i < strlen(key); ) {
         type = detect_char_type(key + i);
-	if (iseuc(*(key + i))) {
+	if (nmz_iseuc(*(key + i))) {
 	    key_leng = 0;
-	    for (j = 0; iskanji(key + i + j) ;  j += 2) {
+	    for (j = 0; nmz_iskanji(key + i + j) ;  j += 2) {
 		char tmp[BUFSIZE];
 
                 if (j == 0 && (nmz_iskatakana(key + i + j) ||
@@ -123,7 +123,7 @@ nmz_wakati(char *key)
                 }
 	    }
 	} else {
-            while(*(key + i) && !iseuc(*(key + i))) {
+            while(*(key + i) && !nmz_iseuc(*(key + i))) {
                 /* As an initial attempt always success, 
                    outer 'for loop' can avoid infinite loop */
                 strncat(buf, key + i, 1);

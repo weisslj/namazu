@@ -2,7 +2,7 @@
  * 
  * codeconv.c -
  * 
- * $Id: codeconv.c,v 1.18 2000-01-09 11:28:53 satoru Exp $
+ * $Id: codeconv.c,v 1.19 2000-01-10 20:21:10 rug Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -218,12 +218,12 @@ euctosjis(uchar *s)
 	return;
 
     while (1) {
-	if (iseuc(c)) {
+	if (nmz_iseuc(c)) {
 	    if (!(c2 = *(s + j++))) {
 		*(s + i++) = c;
 		return;
 	    }
-	    if (iseuc(c2)) {
+	    if (nmz_iseuc(c2)) {
 		c = jistojms(c & 0x7f, c2 & 0x7f);
 		*(s + i++) = c;
 		*(s + i++) = kanji2nd;
@@ -267,7 +267,7 @@ euctojis(uchar *p)
 	    }
 	    *p = c;
 	    p++;
-	} else if (iseuc(c)) {
+	} else if (nmz_iseuc(c)) {
 	    if (!(c2 = (int) *(s++))) {
 		*p = c;
 		p++;
@@ -277,7 +277,7 @@ euctojis(uchar *p)
 		*p = ESC; p++; *p = '$'; p++; *p = 'B'; p++;
 		state = 1;
 	    }
-	    if (iseuc(c2)) {
+	    if (nmz_iseuc(c2)) {
 		*p = c & 0x7f;
 		p++;
 		*p = c2 & 0x7f;

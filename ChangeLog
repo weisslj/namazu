@@ -1,5 +1,7 @@
 2000-02-15  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+  	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 1.9.15.
+
   	* Namazu: Version 1.9.14 released.
 
 	* src/result.c (strcasestr): Do cast for avoiding warning.

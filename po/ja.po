@@ -130,7 +130,7 @@ msgid ""
 "<p>"
 msgstr ""
 "\t<h2>¥¨¥é¡¼!</h2>\n"
-"<p>%s</p>\n"
+"<p>"
 
 #: src/output.c:945
 msgid "</p>"

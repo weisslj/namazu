@@ -1,10 +1,8 @@
-# $Id: Makefile.am,v 1.11 2000-08-25 09:52:58 rug Exp $ 
+# $Id: Makefile.am,v 1.12 2000-09-05 05:47:42 rug Exp $ 
 AUTOMAKE_OPTIONS = 1.4 no-dependencies
 
-EXTRA_DIST = alloca.c memcmp.c strcspn.c vsnprintf.c memmove.c strncasecmp.c \
-	     memset.c strcasecmp.c strstr.c system.h easy-vsnprintf.c
+EXTRA_DIST = alloca.c strstr.c
 
-noinst_LTLIBRARIES = libnmzut.la
-libnmzut_la_SOURCES = getopt.c getopt1.c getopt.h
-libnmzut_la_LIBADD = @LIBOBJS@  
-libnmzut_la_LDFLAGS = -static
+noinst_LIBRARIES = libnmzut.a
+libnmzut_a_SOURCES = getopt.c getopt1.c getopt.h
+libnmzut_a_LIBADD = @LIBOBJS@

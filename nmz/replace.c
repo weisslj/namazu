@@ -2,7 +2,7 @@
  * 
  * replace.c - 
  *
- * $Id: replace.c,v 1.14 2000-02-05 13:15:04 satoru Exp $
+ * $Id: replace.c,v 1.15 2000-09-05 05:47:42 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -27,6 +27,12 @@
  * 
  */
 
+#ifdef HAVE_CONFIG_H
+#  include "config.h"
+#endif
+#ifdef HAVE_SUPPORT_H
+#  include "support.h"
+#endif
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

@@ -31,7 +31,11 @@
 # endif
 #endif
 
-#undef strcspn
+#ifdef HAVE_SUPPORT_H
+# include "support.h"
+#else
+# undef strcspn
+#endif
 
 /* Return the length of the maximum initial segment of S
    which contains no characters from REJECT.  */

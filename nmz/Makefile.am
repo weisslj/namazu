@@ -1,9 +1,12 @@
 # Process this file with automake to produce Makefile.in
 #
-# $Id: Makefile.am,v 1.32 2000-08-20 21:19:33 rug Exp $
+# $Id: Makefile.am,v 1.33 2000-09-05 05:47:42 rug Exp $
 #
 
 AUTOMAKE_OPTIONS = 1.4 no-dependencies
+
+EXTRA_DIST = memcmp.c memmove.c memset.c strcasecmp.c strncasecmp.c \
+	     strcspn.c strerror.c vsnprintf.c system.h support.h
 
 localedir   = $(prefix)/$(DATADIRNAME)/locale
 confdir     = $(sysconfdir)/$(PACKAGE)
@@ -12,6 +15,7 @@ indexdir    = $(localstatedir)/$(PACKAGE)/index
 DEFS = -DLOCALEDIR=\"$(localedir)\" \
        -DOPT_CONFDIR=\"$(confdir)\" \
        -DOPT_INDEXDIR=\"$(indexdir)\" \
+       -DHAVE_SUPPORT_H \
        @DEFS@
 INCLUDES = -I$(srcdir) -I.. -I$(srcdir)/../lib -I$(srcdir)/../src \
 	-I$(srcdir)/../intl -I$(srcdir)/../nmz
@@ -28,7 +32,7 @@ libnmz_la_SOURCES = alias.c alias.h codeconv.c codeconv.h \
 	regex.c regex.h search.c search.h seed.c seed.h util.c util.h \
 	var.c var.h wakati.c wakati.h 
 
-libnmz_la_LIBADD = @INTLLIBS@ $(top_builddir)/lib/libnmzut.la
+libnmz_la_LIBADD = @INTLLIBS@ @NMZ_LIBOBJS@
 libnmz_la_LDFLAGS = -version-info $(LTVERSION)
 
 ##Bug in automake: Can't use `if MAINTAINER_MODE'

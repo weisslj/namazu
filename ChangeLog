@@ -1,3 +1,80 @@
+2000-09-05  Ryuji Abe <rug@namazu.org>
+
+	* acinclude.m4: Do libnmz adaptation.
+	(NMZ_FUNC_MEMCMP): Modified Jim Meyering's jm_FUNC_MEMCMP.
+	(NMZ_REPLACE_FUNCS): Similar to AC_REPLACE_FUNCS but set NMZ_LIBOBJS
+	instead of LIBOBJS.
+
+	* configure.in (NMZ_FUNC_MEMCMP): Use instead of AC_FUNC_MEMCMP.
+	(NMZ_REPLACE_FUNCS): Added libnmz support functions (e.g. strcspn.c).
+	(AC_REPLACE_FUNCS): Still Entries strstr.c.
+
+	* lib/Makefile.am: Revert not to build libtool library. 
+	(EXTRA_DIST): Only strstr.c and alloca.c.
+
+	* lib/easy-vsnprintf.c: Removed.
+
+	* nmz/Makefile.am (EXTRA_DIST): Added libnmz support functions.
+	(libnmz_la_LIBADD): Added NMZ_LIBOBJS.
+	(DEFS): Added -DHAVE_SUPPORT_H.
+
+	* nmz/memcmp.c: Moved from lib.
+	(_nmz_memcmp): Renamed from rpl_memcmp.
+
+	* nmz/support.h: New File. For the purpose of symbol mangling.
+
+	* nmz/memmove.c: Moved from lib. Includes "support.h".
+
+	* nmz/memset.c: Likewise.
+
+	* nmz/strcasecmp.c: Likewise.
+
+	* nmz/strncasecmp.c: Likewise.
+
+	* nmz/strcspn.c: Likewise.
+
+	* nmz/strerror.c: Likewise.
+	(perror): Removed.
+
+	* nmz/vsnprintf.c: Moved from lib.
+	(snprintf): Likewise.
+
+	* nmz/regex.c: Includes "support.h".
+
+	* nmz/re.c: Likewise.
+
+	* nmz/replace.c: Likewise.
+
+	* nmz/libnamazu.c: Likewise.
+
+	* nmz/field.c: Likewise.
+
+	* nmz/search.c: Likewise.
+
+	* nmz/codeconv.c: Likewise.
+
+	* nmz/query.c: Likewise.
+
+	* nmz/hlist.c: Likewise.
+
+	* nmz/idxname.c: Likewise.
+
+	* nmz/util.c: Likewise.
+
+	* nmz/alias.c: Likewise.
+
+	* src/form.c: Likewise.
+
+	* src/output.c: Likewise.
+
+	* src/result.c: Likewise.
+
+	* src/rcfile.c: Likewise.
+
+	* src/namazu-cmd.c: Likewise.
+
+	* src/Makefile.am (DEFS): Added -DHAVE_SUPPORT_H.
+
 2000-09-01  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* scripts/mknmz.in (prep): Added "Looking for indexing files..."
@@ -5850,4 +5927,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.718 2000-09-01 07:29:27 knok Exp $
+$Id: ChangeLog,v 1.719 2000-09-05 05:47:41 rug Exp $

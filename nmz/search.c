@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.77 2000-08-20 21:19:33 rug Exp $
+ * $Id: search.c,v 1.78 2000-09-05 05:47:42 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -37,6 +37,9 @@
 
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
+#endif
+#ifdef HAVE_SUPPORT_H
+#  include "support.h"
 #endif
 #if defined (HAVE_UNISTD_H)
 #include <unistd.h>

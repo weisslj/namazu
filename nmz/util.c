@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: util.c,v 1.71 2000-08-25 09:52:58 rug Exp $
+ * $Id: util.c,v 1.72 2000-09-05 05:47:43 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -40,6 +40,9 @@
 #include <sys/stat.h>
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
+#endif
+#ifdef HAVE_SUPPORT_H
+#  include "support.h"
 #endif
 #include "libnamazu.h"
 #include "util.h"

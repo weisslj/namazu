@@ -23,6 +23,11 @@
 /* UTF-8 extension added Jan 16 1999 by Yoshida Masato  <yoshidam@tau.bekkoame.ne.jp> */
 
 #include "config.h"
+
+#ifdef HAVE_SUPPORT_H
+# include "support.h"
+#endif
+
 #ifdef RUBY_PLATFORM
 # define RUBY
 #endif

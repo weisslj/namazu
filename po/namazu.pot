@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2000-09-01 16:15+0900\n"
+"POT-Creation-Date: 2000-09-05 14:23+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -14,59 +14,59 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: ENCODING\n"
 
-#: nmz/util.c:488
+#: nmz/util.c:491
 msgid "Fatal error occured!"
 msgstr ""
 
-#: nmz/util.c:491
+#: nmz/util.c:494
 msgid "Too long query"
 msgstr ""
 
-#: nmz/util.c:494
+#: nmz/util.c:497
 msgid "Invalid query"
 msgstr ""
 
-#: nmz/util.c:497
+#: nmz/util.c:500
 msgid "Too many query tokens"
 msgstr ""
 
-#: nmz/util.c:500
+#: nmz/util.c:503
 msgid "Too many words matched. Ignored"
 msgstr ""
 
-#: nmz/util.c:503
+#: nmz/util.c:506
 msgid "Too many documents hit. Ignored"
 msgstr ""
 
-#: nmz/util.c:506
+#: nmz/util.c:509
 msgid "can't open the regex index"
 msgstr ""
 
-#: nmz/util.c:509
+#: nmz/util.c:512
 msgid "can't open the phrase index"
 msgstr ""
 
-#: nmz/util.c:512
+#: nmz/util.c:515
 msgid "can't open the field index"
 msgstr ""
 
-#: nmz/util.c:515
+#: nmz/util.c:518
 msgid "can't open the index"
 msgstr ""
 
-#: nmz/util.c:518
+#: nmz/util.c:521
 msgid "can't open the result format file"
 msgstr ""
 
-#: nmz/util.c:521
+#: nmz/util.c:524
 msgid "You don't have a permission to access the index"
 msgstr ""
 
-#: nmz/util.c:524
+#: nmz/util.c:527
 msgid "The index is locked for maintenance"
 msgstr ""
 
-#: nmz/util.c:527
+#: nmz/util.c:530
 msgid "Unknown error. Report bug!"
 msgstr ""
 
@@ -78,95 +78,95 @@ msgstr ""
 msgid "Too long QUERY_STRING"
 msgstr ""
 
-#: src/output.c:490
+#: src/output.c:493
 msgid "\t<strong>Page:</strong> "
 msgstr ""
 
-#: src/output.c:535
+#: src/output.c:538
 #, c-format
 msgid "Current List: %d"
 msgstr ""
 
-#: src/output.c:583
+#: src/output.c:586
 #, c-format
 msgid " [ TOTAL: %d ]"
 msgstr ""
 
-#: src/output.c:593
+#: src/output.c:596
 msgid "\t<p><strong> Total "
 msgstr ""
 
-#: src/output.c:600
+#: src/output.c:603
 msgid ""
 "\t documents matching your query.</strong></p>\n"
 "\n"
 msgstr ""
 
-#: src/output.c:659
+#: src/output.c:662
 #, c-format
 msgid ""
 "\t<h2>Error!</h2>\n"
 "<p>%s</p>\n"
 msgstr ""
 
-#: src/output.c:689
+#: src/output.c:692
 msgid "\t<h2>Results:</h2>\n"
 msgstr ""
 
-#: src/output.c:696
+#: src/output.c:699
 msgid "References: "
 msgstr ""
 
-#: src/output.c:743
+#: src/output.c:746
 msgid "\t<p>No document matching your query.</p>\n"
 msgstr ""
 
-#: src/output.c:941
+#: src/output.c:944
 msgid ""
 "<h2>Error</h2>\n"
 "<p>"
 msgstr ""
 
-#: src/output.c:945
+#: src/output.c:948
 msgid "</p>"
 msgstr ""
 
 #. terminator not matched
-#: src/rcfile.c:337
+#: src/rcfile.c:340
 msgid "can't find string terminator"
 msgstr ""
 
-#: src/rcfile.c:453
+#: src/rcfile.c:456
 msgid "invalid directive name"
 msgstr ""
 
-#: src/rcfile.c:466
+#: src/rcfile.c:469
 msgid "can't find arguments"
 msgstr ""
 
-#: src/rcfile.c:569
+#: src/rcfile.c:572
 msgid "too few arguments"
 msgstr ""
 
-#: src/rcfile.c:572
+#: src/rcfile.c:575
 msgid "too many arguments"
 msgstr ""
 
-#: src/rcfile.c:582
+#: src/rcfile.c:585
 msgid "unknown directive"
 msgstr ""
 
-#: src/rcfile.c:633
+#: src/rcfile.c:636
 #, c-format
 msgid "%s:%d: syntax error: %s"
 msgstr ""
 
-#: src/rcfile.c:738
+#: src/rcfile.c:741
 #, c-format
 msgid "Loaded rcfile: %s\n"
 msgstr ""
 
-#: src/rcfile.c:743
+#: src/rcfile.c:746
 #, c-format
 msgid ""
 "Index:        %s\n"
@@ -179,12 +179,12 @@ msgid ""
 "EmphasisTags: %s\t%s\n"
 msgstr ""
 
-#: src/rcfile.c:763
+#: src/rcfile.c:766
 #, c-format
 msgid "Alias:   %-20s\t%s\n"
 msgstr ""
 
-#: src/rcfile.c:773
+#: src/rcfile.c:776
 #, c-format
 msgid "Replace: %-20s\t%s\n"
 msgstr ""

@@ -1,4 +1,6 @@
-/* Copyright (C) 1991, 1992, 1995, 1996, 1997 Free Software Foundation, Inc.
+/* Compare at most N characters of two strings without taking care for
+   the case.
+   Copyright (C) 1992, 1996, 1997 Free Software Foundation, Inc.
 
    NOTE: The canonical source of this file is maintained with the GNU C Library.
    Bugs can be reported to bug-glibc@prep.ai.mit.edu.
@@ -22,15 +24,19 @@
 # include <config.h>
 #endif
 
-#include <ctype.h>
+#ifdef HAVE_SUPPORT_H
+# include "support.h"
+#endif
+
 #include <string.h>
+#include <ctype.h>
 
 #ifndef weak_alias
-# define __strcasecmp strcasecmp
+# define __strncasecmp strncasecmp
 # define TOLOWER(Ch) tolower (Ch)
 #else
 # ifdef USE_IN_EXTENDED_LOCALE_MODEL
-#  define __strcasecmp __strcasecmp_l
+#  define __strncasecmp __strncasecmp_l
 #  define TOLOWER(Ch) __tolower_l ((Ch), loc)
 # else
 #  define TOLOWER(Ch) tolower (Ch)
@@ -45,33 +51,34 @@
 # define LOCALE_PARAM_DECL
 #endif
 
-/* Compare S1 and S2, ignoring case, returning less than, equal to or
-   greater than zero if S1 is lexicographically less than,
-   equal to or greater than S2.  */
+/* Compare no more than N characters of S1 and S2,
+   ignoring case, returning less than, equal to or
+   greater than zero if S1 is lexicographically less
+   than, equal to or greater than S2.  */
 int
-__strcasecmp (s1, s2 LOCALE_PARAM)
+__strncasecmp (s1, s2, n LOCALE_PARAM)
      const char *s1;
      const char *s2;
+     size_t n;
      LOCALE_PARAM_DECL
 {
   const unsigned char *p1 = (const unsigned char *) s1;
   const unsigned char *p2 = (const unsigned char *) s2;
   unsigned char c1, c2;
 
-  if (p1 == p2)
+  if (p1 == p2 || n == 0)
     return 0;
 
   do
     {
       c1 = TOLOWER (*p1++);
       c2 = TOLOWER (*p2++);
-      if (c1 == '\0')
-	break;
-    }
-  while (c1 == c2);
+      if (c1 == '\0' || c1 != c2)
+	return c1 - c2;
+    } while (--n > 0);
 
   return c1 - c2;
 }
-#ifndef __strcasecmp
-weak_alias (__strcasecmp, strcasecmp)
+#ifndef __strncasecmp
+weak_alias (__strncasecmp, strncasecmp)
 #endif

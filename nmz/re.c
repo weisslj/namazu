@@ -2,7 +2,7 @@
  * 
  * re.c -
  * 
- * $Id: re.c,v 1.31 2000-06-08 14:19:49 furukawa Exp $
+ * $Id: re.c,v 1.32 2000-09-05 05:47:42 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -31,6 +31,9 @@
 #include <string.h>
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
+#endif
+#ifdef HAVE_SUPPORT_H
+#  include "support.h"
 #endif
 #include "libnamazu.h"
 #include "regex.h"

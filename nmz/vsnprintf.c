@@ -24,6 +24,14 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#ifdef HAVE_CONFIG_H
+# include <config.h>
+#endif
+
+#ifdef HAVE_SUPPORT_H
+# include "support.h"
+#endif
+
 #include <sys/param.h>
 #include <sys/types.h>
 #include <sys/mman.h>
@@ -36,6 +44,10 @@
 #include <varargs.h>
 #endif
 #include <setjmp.h>
+
+#ifdef HAVE_SUPPORT_H
+# include "support.h"
+#endif
 
 #ifndef roundup
 #define roundup(x, y) ((((x)+((y)-1))/(y))*(y))
@@ -130,28 +142,4 @@ vsnprintf(str, n, fmt, ap)
 	(void) sigaction(SIGSEGV, &osa, NULL);
 	return (ret);
 }
-
-int
-#if __STDC__
-snprintf(char *str, size_t n, char const *fmt, ...)
-#else
-snprintf(str, n, fmt, va_alist)
-	char *str;
-	size_t n;
-	char *fmt;
-	va_dcl
-#endif
-{
-	va_list ap;
-#if __STDC__
-	va_start(ap, fmt);
-#else
-	va_start(ap);
-#endif
-
-	return (vsnprintf(str, n, fmt, ap));
-	va_end(ap);
-}
-
-
 

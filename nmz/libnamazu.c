@@ -2,7 +2,7 @@
  * 
  * libnamazu.c - Namazu library api
  *
- * $Id: libnamazu.c,v 1.34 2000-05-03 23:56:58 masao Exp $
+ * $Id: libnamazu.c,v 1.35 2000-09-05 05:47:42 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -39,6 +39,9 @@
 
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
+#endif
+#ifdef HAVE_SUPPORT_H
+#  include "support.h"
 #endif
 #if defined (HAVE_UNISTD_H)
 #include <unistd.h>

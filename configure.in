@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.128 2000-05-07 04:51:29 rug Exp $
+dnl $Id: configure.in,v 1.129 2000-09-05 05:47:42 rug Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -124,17 +124,14 @@ AC_TYPE_SIZE_T
 dnl Checks for library functions.
 AC_FUNC_ALLOCA
 AC_FUNC_MMAP
-AC_FUNC_MEMCMP
+NMZ_FUNC_MEMCMP
 AC_FUNC_VPRINTF
 AC_CHECK_FUNCS(getcwd getwd putenv setenv strdup strspn)
-AC_REPLACE_FUNCS([memmove strcasecmp strncasecmp strcspn strerror strstr])
+AC_REPLACE_FUNCS(strstr)
+NMZ_REPLACE_FUNCS([memmove memset strcasecmp strncasecmp strcspn strerror])
 AC_CHECK_FUNCS([vsnprintf _vsnprintf __vsnprintf])
-if test $ac_cv_func_vsnprintf = no; then
-    if test $ac_cv_func__vsnprintf = yes || test $ac_cv_func__vsnprintf = yes; then
-	LIBOBJS="$LIBOBJS easy-vsnprintf.${ac_objext}"
-    else
-	LIBOBJS="$LIBOBJS vsnprintf.${ac_objext}"
-    fi
+if test $ac_cv_func_vsnprintf = no && test $ac_cv_func__vsnprintf = no && test $ac_cv_func__vsnprintf = no; then
+    NMZ_LIBOBJS="$NMZ_LIBOBJS vsnprintf.${ac_objext}"
 fi
 
 dnl for debugging.

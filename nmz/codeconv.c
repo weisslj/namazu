@@ -2,7 +2,7 @@
  * 
  * codeconv.c -
  * 
- * $Id: codeconv.c,v 1.28 2000-08-20 21:19:33 rug Exp $
+ * $Id: codeconv.c,v 1.29 2000-09-05 05:47:42 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -38,6 +38,9 @@
 #include <string.h>
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
+#endif
+#ifdef HAVE_SUPPORT_H
+#  include "support.h"
 #endif
 #include "libnamazu.h"
 #include "codeconv.h"

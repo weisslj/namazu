@@ -7,6 +7,10 @@
 # include <config.h>
 #endif
 
+#ifdef HAVE_SUPPORT_H
+# include "support.h"
+#endif
+
 void *
 memmove (dest, source, length)
      char *dest;

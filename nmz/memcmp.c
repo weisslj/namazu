@@ -1,3 +1,4 @@
+/* libnmz adaptation by Ryuji Abe <rug@namazu.org> */
 /* Copyright (C) 1991, 1993, 1995, 1997, 1998 Free Software Foundation, Inc.
    Contributed by Torbjorn Granlund (tege@sics.se).
 
@@ -318,7 +319,7 @@ memcmp_not_common_alignment (long int srcp1, long int srcp2, size_t len)
 }
 
 int
-rpl_memcmp (const void *s1, const void *s2, size_t len)
+_nmz_memcmp (const void *s1, const void *s2, size_t len)
 {
   op_t a0;
   op_t b0;

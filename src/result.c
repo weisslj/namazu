@@ -1,5 +1,5 @@
 /*
- * $Id: result.c,v 1.57 2000-08-25 09:52:59 rug Exp $
+ * $Id: result.c,v 1.58 2000-09-05 05:47:45 rug Exp $
  * 
  * Copyright (C) 1989, 1990 Free Software Foundation, Inc.
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
@@ -27,6 +27,9 @@
 #include <stdlib.h>
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
+#endif
+#ifdef HAVE_SUPPORT_H
+#  include "support.h"
 #endif
 #include "namazu.h"
 #include "i18n.h"

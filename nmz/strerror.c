@@ -23,6 +23,10 @@
 #include "config.h"
 #endif
 
+#ifdef HAVE_SUPPORT_H
+# include "support.h"
+#endif
+
 #include <stdio.h>
 #include <errno.h>
 
@@ -50,22 +54,4 @@ strerror(errnum)
         return sys_errlist[errnum];
 
     return "Unknown error";
-}
-
-
-/*
- * perror() described in ISO 9899: 1990.
- */
-void
-perror(message)
-    const char *message;
-{
-    if (message != NULL)
-	fprintf(stderr, "%s: ", message);
-
-    if (0 < errno && errno <= sys_nerr) {
-        fputs(sys_errlist[errno], stderr);
-	fputc('\n', stderr);
-    } else
-	fputs("Unknown error\n", stderr);
 }

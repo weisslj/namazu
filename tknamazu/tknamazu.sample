@@ -1,0 +1,6 @@
+#!/bin/sh
+
+TKNMZPATH=/usr/local/namazu/bin
+export TKNMZPATH
+
+exec /usr/local/bin/wish4.2jp ${TKNMZPATH}/tknamazu.tcl

@@ -1,0 +1,8 @@
+@echo off
+
+rem "=" の両端にスペースを入れてはいけません。 
+rem tknamazu.tcl のあるディレクトリを指定してください。
+SET TKNMZPATH=c:/usr/local/namazu/bin
+
+a:\tcl\bin\wish42 %TKNMZPATH%/tknamazu.tcl
+rem a:\tcl\bin\wish81 %TKNMZPATH%/tknamazu.tcl

@@ -58,7 +58,7 @@ automake
 echo "Running autoconf ..."
 autoconf
 
-conf_flags="" #--enable-maintainer-mode
-echo Running $./configure $conf_flags "$@" ...
-./configure $conf_flags "$@"
-echo "Now type 'make' to compile TkNamazu."
+#conf_flags="" #--enable-maintainer-mode
+#echo Running $./configure $conf_flags "$@" ...
+#./configure $conf_flags "$@"
+#echo "Now type 'make' to compile TkNamazu."

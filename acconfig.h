@@ -1,9 +1,3 @@
-/* Define the pathname of the default index directory */
-#undef OPT_INDEXDIR
-
-/* Define the pathname of the config directory */
-#undef OPT_CONFDIR
-
 /* 
  * Scoring method
  *    * SIMPLE :  score is simply calculated by term frequency

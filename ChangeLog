@@ -2,7 +2,10 @@
 
 	* nmz-config.in: New File.
 	* Makefile.am (bin_SCRIPTS): Entry nmz-config.
-	* configure.in (AC_OUTPUT): Added nmz-config.
+	* configure.in: Removed OPT_INDEXDIR and OPT_CONFDIR related code.
+	(AC_OUTPUT): Added nmz-config.
+	* acconfig.h: Removed OPT_INDEXDIR and OPT_CONFDIR.
+	* src/Makefile.am (DEFS): Defined -DOPT_INDEXDIR and -DOPT_CONFDIR. 
 
 1999-11-03  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 

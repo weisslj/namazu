@@ -17,7 +17,10 @@ CLEANFILES  = gcnmz mknmz kwnmz
 
 localedir = $(datadir)/locale
 INCLUDES  = -I.. -I../intl -I../lib -I../nmz
-DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
+DEFS = -DLOCALEDIR=\"$(localedir)\" \
+       -DOPT_INDEXDIR=\"${localstatedir}/${PACKAGE}/index\" \
+       -DOPT_CONFDIR=\"${sysconfdir}/${PACKAGE}\" \
+       @DEFS@
 LDADD = @INTLLIBS@ ../lib/libnmzut.a $(top_srcdir)/nmz/libnmz.la
 
 confdir     = $(sysconfdir)/$(PACKAGE)

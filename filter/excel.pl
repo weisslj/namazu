@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: excel.pl,v 1.24 2004-05-23 17:36:49 opengl2772 Exp $
+# $Id: excel.pl,v 1.25 2004-05-23 18:45:02 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi,
 #               1999 NOKUBI Takatsugu, 
 #               2000-2004 Namazu Project All rights reserved.
@@ -140,37 +140,13 @@ sub filter_xl ($$$$$) {
 
     # Code conversion for Japanese document.
     if (util::islang("ja")) {
-	my $encoding = "u8"; # UTF-8
 	# Pattern for xlHtml version 0.2.6.
 	if ($$cont =~ m!^<FONT SIZE="?-1"?><I>Last Updated(&nbsp;using| with) Excel 5.0 or 95</I></FONT><br>$!m) 
 	{
-	    $encoding = "s"; # Shift_JIS
-	}
-	{
-	    my $fh = util::efopen("> $tmpfile");
-	    print $fh $$cont;
-            util::fclose($fh);
-	}
-	{
-	    my @cmd = ($utfconvpath, "-I$encoding", "-Oej", $tmpfile);
-	    my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
-	    my $size = util::filesize($fh_out);
-	    if ($size == 0) {
-                util::fclose($fh_out);
-                util::fclose($fh_err);
-                unlink $tmpfile;
-		return "Unable to convert file ($xlconvpath error occurred)";
-	    }
-	    if ($size > $conf::TEXT_SIZE_MAX) {
-                util::fclose($fh_out);
-                util::fclose($fh_err);
-                unlink $tmpfile;
-		return 'Too large excel file';
-	    }
-	    $$cont = util::readfile($fh_out);
-            util::fclose($fh_out);
-            util::fclose($fh_err);
+            $$cont = codeconv::shiftjis_to_eucjp($$cont);
             codeconv::normalize_eucjp($cont);
+	} else {
+            utf8_to_eucjp($cont);
 	}
     } 
 

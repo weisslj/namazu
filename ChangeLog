@@ -1,3 +1,7 @@
+2004-05-24  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * filter/{excel, powerpoint}.pl: The source code was arranged.
+
 2004-05-23  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * pl/{htmlsplit, wakati}.pl: util::fclose() is added.
@@ -6,7 +10,7 @@
 
         * tests/data/ja/visio2002.vsd: Add new file.
 
-        * filter/{msword, excel, powerpoint}.pl (utf8_to_euc): 
+        * filter/{msword, excel, powerpoint}.pl (utf8_to_eucjp): 
         Support of "NKF::nkf()".
 
 2004-05-22  Yukio USUDA <usu@namazu.org>
@@ -8931,4 +8935,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1195 2004-05-23 17:36:48 opengl2772 Exp $
+$Id: ChangeLog,v 1.1196 2004-05-23 18:45:01 opengl2772 Exp $

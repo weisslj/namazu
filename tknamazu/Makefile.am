@@ -1,7 +1,8 @@
 ## Process this file with automake to produce Makefile.in
 
 AUTOMAKE_OPTIONS = no-dependencies
-tknamazudir = @pkgdatadir@/tknamazu
+
+tknamazudir = $(pkgdatadir)/tknamazu
 
 bin_SCRIPTS = tknamazu
 tknamazu_DATA = tknamazu.hlp tknamazu.ppm mini-tknamazu.xpm

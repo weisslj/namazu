@@ -7,6 +7,9 @@
 
 1999-09-04  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* tknamazu/Makefile.am (tknamazudir):
+	s/@pkgdatadir@/$(pkgdatadir)$/ [namazu-dev 340]
+	
 	* src/mknmz.pl.in (put_log_to_logfile): Replace
 	$var::NMZ{log} with $var::NMZ{'log'} [namazu-dev 339]
 	

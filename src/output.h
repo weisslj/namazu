@@ -3,7 +3,7 @@
 
 #include "libnamazu.h"  /* for NmzResult struct */
 
-extern enum nmz_stat print_result ( NmzResult hlist, char *query, char *subquery );
+extern enum nmz_stat print_result ( NmzResult hlist, const char *query, const char *subquery );
 extern void print_default_page ( void );
 extern void set_htmlmode ( int mode );
 extern int is_htmlmode ( void );

@@ -3,7 +3,7 @@
   util.h -
 
   $Author: satoru $
-  $Date: 2000-01-05 10:30:46 $
+  $Date: 2000-01-06 00:32:59 $
   created at: Thu Mar  9 11:55:53 JST 1995
 
   Copyright (C) 1993-1998 Yukihiro Matsumoto
@@ -50,11 +50,11 @@ extern unsigned long scan_hex ( char *start, int len, int *retlen );
 extern void * xmalloc ( unsigned long size );
 extern void * xrealloc ( void *ptr, unsigned long size );
 extern void nmz_tr ( char *str, const char *lstr, const char *rstr );
-extern void nmz_chomp ( char * s );
+extern void nmz_chomp ( char * str );
 extern size_t nmz_fread ( void *ptr, size_t size, size_t nmemb, FILE *stream );
 extern int nmz_get_unpackw ( FILE *fp, int *data );
 extern int nmz_read_unpackw ( FILE *fp, int *buf, int size );
-extern long nmz_getidxptr ( FILE * fp, long p );
+extern long nmz_getidxptr ( FILE * fp, long point );
 extern int nmz_issymbol ( int c );
 extern void nmz_die ( const char *fmt, ... );
 extern void nmz_die_with_msg ( void );
@@ -69,11 +69,11 @@ extern int nmz_strprefixcasecmp ( const char *str1, const char *str2 );
 extern int nmz_strprefixcmp ( const char *str1, const char *str2 );
 extern int nmz_strsuffixcmp ( const char *str1, const char *str2 );
 extern char * nmz_readfile ( const char *fname );
-extern void nmz_subst ( char *p, const char *pat, const char *rep );
+extern void nmz_subst ( char *str, const char *pat, const char *rep );
 extern void nmz_cat ( const char *fname );
-extern char * nmz_getenv ( const char *s );
-extern void nmz_decode_uri ( char * s );
+extern char * nmz_getenv ( const char *str );
+extern void nmz_decode_uri ( char * str );
 extern char * nmz_get_errmsg ( enum nmz_stat stat );
-extern void nmz_print ( const char *s );
+extern void nmz_print ( const char *str );
 
 #endif /* _UTIL_H */

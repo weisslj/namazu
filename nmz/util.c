@@ -1,5 +1,5 @@
 /*
- * $Id: util.c,v 1.33 2000-01-05 10:30:45 satoru Exp $
+ * $Id: util.c,v 1.34 2000-01-06 00:32:59 satoru Exp $
  *
  * Imported scan_hex(), scan_oct(), xmalloc(), xrealloc() from 
  * Ruby b19's"util.c" and "gc.c". Thanks to Matsumoto-san for consent!
@@ -166,16 +166,16 @@ nmz_tr(char *str, const char *lstr, const char *rstr)
 }
 
 /* 
- * Delete ending LF and spaces of string.
+ * Delete ending LF, CR and spaces of string.
  */
 void 
-nmz_chomp(char * s)
+nmz_chomp(char * str)
 {
     int i;
-    for (i = strlen(s) - 1; i >= 0; i--) {
-	if (*(s + i) == '\n' || *(s + i) == '\r'
-            || *(s + i) == ' ' || *(s + i) == '\t') {
-	    *(s + i) = '\0';
+    for (i = strlen(str) - 1; i >= 0; i--) {
+	if (*(str + i) == '\n' || *(str + i) == '\r'
+            || *(str + i) == ' ' || *(str + i) == '\t') {
+	    *(str + i) = '\0';
 	} else {
 	    break;
 	}
@@ -241,14 +241,14 @@ nmz_read_unpackw(FILE *fp, int *buf, int size) {
 }
 
 /* 
- * Read index and return with value.
+ * Read an index and return its value which is a pointer to another file.
  */
 long 
-nmz_getidxptr(FILE * fp, long p)
+nmz_getidxptr(FILE * fp, long point)
 {
     int val;
 
-    fseek(fp, p * sizeof(int), 0);
+    fseek(fp, point * sizeof(int), 0);
     nmz_fread(&val, sizeof(int), 1, fp);
     return (long) val;
 }
@@ -563,20 +563,20 @@ nmz_getenv(const char *s)
  * Decoding URI encoded strings
  */
 void 
-nmz_decode_uri(char * s)
+nmz_decode_uri(char *str)
 {
     int i, j;
-    for (i = j = 0; s[i]; i++, j++) {
-	if (s[i] == '%') {
-	    s[j] = decode_uri_sub(s[i + 1], s[i + 2]);
+    for (i = j = 0; str[i]; i++, j++) {
+	if (str[i] == '%') {
+	    str[j] = decode_uri_sub(str[i + 1], str[i + 2]);
 	    i += 2;
-	} else if (s[i] == '+') {
-	    s[j] = ' ';
+	} else if (str[i] == '+') {
+	    str[j] = ' ';
 	} else {
-	    s[j] = s[i];
+	    str[j] = str[i];
 	}
     }
-    s[j] = '\0';
+    str[j] = '\0';
 }
 
 char *
@@ -625,10 +625,11 @@ nmz_get_errmsg(enum nmz_stat stat)
 
 /*
  * FIXME: Tell me if you know more better function name (or better way).
+ * Perhaps this function is not necessary.
  */
 void 
-nmz_print(const char *s) {
-    fputs(s, stdout);
+nmz_print(const char *str) {
+    fputs(str, stdout);
 }
 
 

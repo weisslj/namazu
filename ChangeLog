@@ -1,3 +1,31 @@
+2000-01-06  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* nmz/util.c (nmz_decode_uri): Chage a parameter name.
+	(nmz_chomp): Ditto.
+	(nmz_print): Ditto.
+	(nmz_getidxptr): Ditto.
+
+	* nmz/search.c (lrget): Remove a unused paramter.
+	(get_regex_part): Renamed from get_expr.
+	(do_prefix_match_search): Make parameter(s) be const.
+	(prefix_match): Ditto.
+	(detect_search_mode): Ditto.
+	(do_field_search): Ditto.
+	(do_regex_search): Ditto.
+	(get_file_size): Ditto.
+	(do_word_search): Ditto.
+	(hash): Ditto.
+
+	* nmz/field.c (get_field_name): Make parameter(s) be const.
+	(get_field_data): Ditto.
+
+	* src/output.c (print_result): Make parameter(s) be const.
+	(fputs_without_html_tag): Ditto.
+
+	* src/namazu.c (stdio2file): Make parameter(s) be const.
+
+	* src/form.c (check_checkbox): Change a parameter name.
+
 2000-01-05  Ryuji Abe <raeva@t3.rim.or.jp>
 
 	* configure.in (AC_OUTPUT): Added template/Makefile.

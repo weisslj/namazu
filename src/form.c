@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.32 2000-01-05 10:30:50 satoru Exp $
+ * $Id: form.c,v 1.33 2000-01-06 00:33:02 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -57,7 +57,7 @@ static void delete_str ( char *s, char *d );
 static void get_value ( const char *s, char *value );
 static void get_select_name ( const char *s, char *value );
 static enum nmz_stat select_option ( char *s, const char *name, const char *subquery );
-static enum nmz_stat check_checkbox ( char *s );
+static enum nmz_stat check_checkbox ( char *str );
 static void handle_tag ( const char *start, const char *end, const char *query,char *select_name, const char *subquery );
 static char * read_headfoot ( const char *fname );
 
@@ -242,18 +242,18 @@ select_option(char *s, const char *name, const char *subquery)
  * Mark CHECKBOX of idxname with CHECKED 
  */
 static enum nmz_stat
-check_checkbox(char *s)
+check_checkbox(char *str)
 {
     char value[BUFSIZE];
     int i;
 
-    if (cmp_element(s, "input type=\"checkbox\" name=\"idxname\"") == 0) {
+    if (cmp_element(str, "input type=\"checkbox\" name=\"idxname\"") == 0) {
         char *pp;
         int db_count, searched;
 
-        delete_str(s, (char *)"checked");
-        fputs(s, stdout);
-        get_value(s, value);
+        delete_str(str, (char *)"checked");
+        fputs(str, stdout);
+        get_value(str, value);
         for (pp = value, db_count = searched = 0 ; *pp ;db_count++) {
             char name[BUFSIZE], *x;
             if ((x = (char *)strchr(pp, (int)','))) {

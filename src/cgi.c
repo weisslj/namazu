@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.42 2000-01-05 10:30:50 satoru Exp $
+ * $Id: cgi.c,v 1.43 2000-01-06 00:33:02 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -58,7 +58,7 @@ static void remove_ending_slashes ( char *str );
 static struct cgivar * add_cgivar ( struct cgivar *ptr, const char *name, char *value );
 static void free_cgi_vars ( struct cgivar *cv );
 static char * get_query_string ( void );
-static struct cgivar * get_cgi_vars ( char *qs );
+static struct cgivar * get_cgi_vars ( const char *qs );
 static int process_cgi_vars ( struct cgiarg *ca );
 static int apply_cgifunc ( const struct cgivar *cv, struct cgiarg *ca );
 static void process_cgi_var_query ( char *value, struct cgiarg *ca );
@@ -237,35 +237,35 @@ get_query_string(void)
 }
 
 static struct cgivar *
-get_cgi_vars(char *qs)
+get_cgi_vars(const char *querystring)
 {
     struct cgivar *cv = NULL; /* SHOULD BE NULL for sentinel! */
 
     while (1) {
 	int len;
-	char *tmp;
+	const char *tmp;
 	char name[BUFSIZE];
 	char value[BUFSIZE];
 
-	tmp = strchr(qs, '=');
+	tmp = strchr(querystring, '=');
 	if (tmp == NULL) {
 	    break;
 	}
-	len = tmp - qs;
-	strncpy(name, qs, len);
+	len = tmp - querystring;
+	strncpy(name, querystring, len);
 	*(name + len) = '\0';
-	qs += len;
+	querystring += len;
 
-	qs++;
-	tmp = strchr(qs, '&');
+	querystring++;
+	tmp = strchr(querystring, '&');
 	if (tmp == NULL) {
-	    tmp = qs + strlen(qs);  /* last point: '\0' */
+	    tmp = querystring + strlen(querystring);  /* last point: '\0' */
 	}
-	len = tmp - qs;
-	strncpy(value, qs, len);
+	len = tmp - querystring;
+	strncpy(value, querystring, len);
 	*(value + len) = '\0';
 	nmz_decode_uri(value);
-	qs += len;
+	querystring += len;
 
 	cv = add_cgivar(cv, name, value);
 
@@ -274,10 +274,10 @@ get_cgi_vars(char *qs)
 	    exit(EXIT_FAILURE);
 	}
 
-	if (*qs == '\0') {
+	if (*querystring == '\0') {
 	    break;
 	}
-	qs++;
+	querystring++;
     }
     return cv;
 }

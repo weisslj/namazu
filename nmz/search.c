@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.39 2000-01-05 10:30:45 satoru Exp $
+ * $Id: search.c,v 1.40 2000-01-06 00:32:59 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -68,29 +68,30 @@ static int cur_idxnum = -1;
 static struct nmz_hitnum *push_hitnum ( struct nmz_hitnum *hn, int hitnum, enum nmz_stat stat, const char *str );
 void free_hitnums ( struct nmz_hitnum *hn );
 static void show_status ( int l, int r );
-static int get_file_size ( char *filename );
-static void lrget ( char * key, int *l, int *r );
-static NmzResult prefix_match ( char * orig_key, int v );
-static enum nmz_search_mode detect_search_mode ( char *key );
-static NmzResult do_word_search ( char *key, NmzResult val );
-static NmzResult do_prefix_match_search ( char *key, NmzResult val );
-static int hash ( char *str );
+static int get_file_size ( const char *fname );
+static void lrget ( int *l, int *r );
+static NmzResult prefix_match ( const char * key, int v );
+static enum nmz_search_mode detect_search_mode ( const char *key );
+static NmzResult do_word_search ( const char *key, NmzResult val );
+static NmzResult do_prefix_match_search ( const char *key, NmzResult val );
+static int hash ( const char *str );
 static NmzResult cmp_phrase_hash ( int hash_key, NmzResult val, FILE *phrase, FILE *phrase_index );
 static int open_phrase_index_files ( FILE **phrase, FILE **phrase_index );
-static NmzResult do_phrase_search ( char *key, NmzResult val );
+static NmzResult do_phrase_search ( const char *key, NmzResult val );
 static void do_regex_preprocessing ( char *expr );
-static NmzResult do_regex_search ( char *orig_expr, NmzResult val );
-static void get_expr ( char *expr, char *str );
-static NmzResult do_field_search ( char *str, NmzResult val );
+static NmzResult do_regex_search ( const char *expr, NmzResult val );
+static void get_regex_part ( char *expr, const char *str );
+static NmzResult do_field_search ( const char *fieldpat, NmzResult val );
 static void delete_beginning_backslash ( char *str );
 static int check_lockfile ( void );
-static enum nmz_perm parse_access ( char *line, char *rhost, char *raddr );
+static enum nmz_perm parse_access ( const char *line, const char *rhost, const char *raddr );
 static enum nmz_perm check_access ( void );
 static int open_index_files ( void );
 static void close_index_files ( void );
 static void do_logging ( const char * query, int n );
 static NmzResult nmz_search_sub ( NmzResult hlist, const char *query, int n );
 static void make_fullpathname_index ( int n );
+static void remove_quotes(char *str);
 
 /*
  * Struct nmz_hitnum handling subroutines
@@ -163,15 +164,15 @@ show_status(int l, int r)
 }
 
 /*
- * Get size of file
+ * Get the size of the file fname.
  */
 static int 
-get_file_size (char *filename) 
+get_file_size (const char *fname) 
 {
     struct stat st;
 
-    stat(filename, &st);
-    nmz_debug_printf("size of %s: %d\n", filename, (int)st.st_size);
+    stat(fname, &st);
+    nmz_debug_printf("size of %s: %d\n", fname, (int)st.st_size);
     return ((int)(st.st_size));
 }
 
@@ -180,7 +181,7 @@ get_file_size (char *filename)
  * Get the left and right value of search range
  */
 static void 
-lrget(char * key, int *l, int *r)
+lrget(int *l, int *r)
 {
     *l = 0;
     *r = get_file_size(NMZ.ii) / sizeof(int) - 1;
@@ -194,21 +195,21 @@ lrget(char * key, int *l, int *r)
  * Prefix match search
  */
 static NmzResult 
-prefix_match(char * orig_key, int v)
+prefix_match(const char *key, int v)
 {
     int i, j, n;
     NmzResult tmp, val;
-    char buf[BUFSIZE], key[BUFSIZE];
+    char buf[BUFSIZE], tmpkey[BUFSIZE];
     val.num  = 0;
 
-    strcpy(key, orig_key);
-    key[strlen(key) - 1] = '\0';
-    n = strlen(key);
+    strcpy(tmpkey, key);
+    tmpkey[strlen(tmpkey) - 1] = '\0';
+    n = strlen(tmpkey);
 
     for (i = v; i >= 0; i--) {
 	fseek(Nmz.w, nmz_getidxptr(Nmz.wi, i), 0);
 	fgets(buf, BUFSIZE, Nmz.w);
-	if (strncmp(key, buf, n) != 0) {
+	if (strncmp(tmpkey, buf, n) != 0) {
 	    break;
 	}
     }
@@ -229,7 +230,7 @@ prefix_match(char * orig_key, int v)
 	}
 	fgets(buf, BUFSIZE, Nmz.w);
         nmz_chomp(buf);
-	if (strncmp(key, buf, n) == 0) {
+	if (strncmp(tmpkey, buf, n) == 0) {
 	    tmp = get_hlist(i);
 	    if (tmp.stat == ERR_FATAL)
 	        return tmp;
@@ -258,7 +259,7 @@ prefix_match(char * orig_key, int v)
  * Detect search mode
  */
 static enum nmz_search_mode 
-detect_search_mode(char *key) {
+detect_search_mode(const char *key) {
     if (strlen(key) <= 1)
         return WORD_MODE;
     if (isfield(key)) { /* field search */
@@ -282,22 +283,8 @@ detect_search_mode(char *key) {
     } else if (*key == '*') {
 	nmz_debug_printf("do REGEX (SUFFIX_MATCH) search\n");
 	return REGEX_MODE;    /* suffix match  (treated as regex)*/
-    } else if ((*key == '"' && key[strlen(key) - 1] == '"') 
-          || (*key == '{' && key[strlen(key) - 1] == '}')) 
-    {
-        /* Remove the delimiter at begging and end of string */
-        strcpy(key, key + 1); 
-        key[strlen(key) - 1]= '\0';
-    } 
-    
-    /* Normal or phrase */
-
-    /* If under Japanese mode, do wakatigaki */
-    if (is_lang_ja()) {
-        if (wakati(key))
-	  return ERROR_MODE;
     }
-
+    
     if (strchr(key, '\t')) {
 	nmz_debug_printf("do PHRASE search\n");
 	return PHRASE_MODE;
@@ -308,7 +295,7 @@ detect_search_mode(char *key) {
 }
 
 static NmzResult 
-do_word_search(char *key, NmzResult val)
+do_word_search(const char *key, NmzResult val)
 {
     int v;
 
@@ -326,7 +313,7 @@ do_word_search(char *key, NmzResult val)
 }
 
 static NmzResult 
-do_prefix_match_search(char *key, NmzResult val)
+do_prefix_match_search(const char *key, NmzResult val)
 {
     int v;
 
@@ -346,10 +333,10 @@ do_prefix_match_search(char *key, NmzResult val)
 
 
 /*
- * Calculate a value of phase hash
+ * Calculate the hash value of the string str.
  */
 static int 
-hash(char *str)
+hash(const char *str)
 {
     int hash = 0, i, j;
     uchar *ustr = (uchar *)str;  /* for 8 bit chars handling */
@@ -433,17 +420,18 @@ open_phrase_index_files(FILE **phrase, FILE **phrase_index)
 
 
 /*
- * FIXME: this function is too long and difficult to understand
+ * FIXME: this function is too long and difficult to understand. (but works)
  */
 static NmzResult 
-do_phrase_search(char *key, NmzResult val)
+do_phrase_search(const char *key, NmzResult val)
 {
     int i, h = 0, ignore = 0;
-    char *p, *words[QUERY_TOKEN_MAX + 1], *prevword = NULL;
+    char *p, tmpkey[BUFSIZE], *words[QUERY_TOKEN_MAX + 1], *prevword = NULL;
     FILE *phrase, *phrase_index;
     struct nmz_hitnum *pr_hitnum = NULL; /* phrase hitnum */
 
-    p = key;
+    strcpy(tmpkey, key);
+    p = tmpkey;
     if (strchr(p, '\t') == NULL) {  /* if only one word */
         val = do_word_search(p, val);
         return val;
@@ -594,13 +582,13 @@ do_regex_preprocessing(char *expr)
 }
 
 static NmzResult 
-do_regex_search(char *orig_expr, NmzResult val)
+do_regex_search(const char *expr, NmzResult val)
 {
     FILE *fp;
-    char expr[BUFSIZE * 2]; /* because of escaping meta characters */
+    char tmpexpr[BUFSIZE * 2]; /* because of escaping meta characters */
 
-    strcpy(expr, orig_expr);
-    do_regex_preprocessing(expr);
+    strcpy(tmpexpr, expr);
+    do_regex_preprocessing(tmpexpr);
 
     fp = fopen(NMZ.w, "rb");
     if (fp == NULL) {
@@ -608,28 +596,32 @@ do_regex_search(char *orig_expr, NmzResult val)
         val.stat = ERR_REGEX_SEARCH_FAILED;  /* cannot open regex index */
         return val;
     }
-    val = regex_grep(expr, fp, "", 0);
+    val = regex_grep(tmpexpr, fp, "", 0);
     fclose(fp);
     return val;
 
 }
 
+/*
+ * Get a regular expression part from the string str like "from:/foobar/"
+ * and set the expr to "/foobar/".
+ */
 static void 
-get_expr(char *expr, char *str)
+get_regex_part(char *expr, const char *str)
 {
     str = (char *)strchr(str, (int)':') + 1;
     strcpy(expr, str);
 }
 
 static NmzResult 
-do_field_search(char *str, NmzResult val)
+do_field_search(const char *fieldpat, NmzResult val)
 {
     char expr[BUFSIZE * 2], /* because of escaping meta characters */
         field_name[BUFSIZE], file_name[BUFSIZE];
     FILE *fp;
 
-    get_field_name(field_name, str);
-    get_expr(expr, str);
+    get_field_name(field_name, fieldpat);
+    get_regex_part(expr, fieldpat);
     do_regex_preprocessing(expr);
 
     strcpy(file_name, NMZ.field); /* make pathname */
@@ -672,7 +664,7 @@ check_lockfile(void)
 
 
 static enum nmz_perm 
-parse_access(char *line, char *rhost, char *raddr)
+parse_access(const char *line, const char *rhost, const char *raddr)
 {
     enum nmz_perm perm = ALLOW;
 
@@ -874,6 +866,19 @@ make_fullpathname_index(int n)
     nmz_pathcat(base, NMZ.access);
 }
 
+/*
+ * Remove quotation marks at begging and end of string.
+ */
+static 
+void remove_quotes(char *str) 
+{
+    if ((*str == '"' && str[strlen(str) - 1] == '"') 
+	|| (*str == '{' && str[strlen(str) - 1] == '}')) 
+    {
+	strcpy(str, str + 1); 
+	str[strlen(str) - 1]= '\0';
+    } 
+}
 
 /*
  *
@@ -891,7 +896,7 @@ binsearch(const char *key, int prefix_match_mode)
     char term[BUFSIZE], tmpkey[BUFSIZE];
 
     strcpy(tmpkey, key);
-    lrget(tmpkey, &l, &r);
+    lrget( &l, &r);
 
     if (prefix_match_mode) {  /* truncate a '*' character at the end */
         tmpkey[strlen(tmpkey) - 1] = '\0';
@@ -1040,6 +1045,18 @@ do_search(const char *key, NmzResult val)
 	val.stat = ERR_FATAL;
 	return val;
     }
+
+    if (mode == WORD_MODE || mode == PHRASE_MODE) {
+	remove_quotes(tmpkey);
+	/* If under Japanese mode, do wakatigaki (word segmentation)*/
+	if (is_lang_ja()) {
+	    if (wakati(tmpkey)) {
+		val.stat = ERR_FATAL;
+		return val;
+	    }
+	}
+    }
+
     delete_beginning_backslash(tmpkey);
 
     if (mode == PREFIX_MODE) {

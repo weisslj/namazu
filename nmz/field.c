@@ -86,18 +86,18 @@ isfield(const char *key)
 }
 
 void 
-get_field_name(char *field, char *str)
+get_field_name(char *field, const char *fieldpat)
 {
     char *tmp = field;
 
-    str++;  /* ignore beggining '+' mark */
-    while (*str) {
-        if (! is_field_safe_char(*str)) {
+    fieldpat++;  /* ignore beggining '+' mark */
+    while (*fieldpat) {
+        if (! is_field_safe_char(*fieldpat)) {
             break;
         }
-        *tmp = *str;
+        *tmp = *fieldpat;
         tmp++;
-        str++;
+        fieldpat++;
     }
     *tmp = '\0';
 
@@ -105,10 +105,10 @@ get_field_name(char *field, char *str)
 }
 
 void 
-get_field_data(int idxid, int docid, const char *orig_field, char *data) 
+get_field_data(int idxid, int docid, const char *field, char *data) 
 {
     char fname[BUFSIZE];
-    char field[BUFSIZE];
+    char tmpfield[BUFSIZE];
     int i;
     static int cache_idx = 0, cache_num = 0;
     FILE *fp_field, *fp_field_idx;
@@ -120,15 +120,19 @@ get_field_data(int idxid, int docid, const char *orig_field, char *data)
     };
     static struct field_cache fc[FIELD_CACHE_SIZE];
 
-    strcpy(field, orig_field);
-    apply_field_alias(field);  /* This would overwrite `field' */
+    strcpy(tmpfield, field);
+    apply_field_alias(tmpfield);  /* This would overwrite `tmpfield' */
 
-    /* Consult caches */
+    /* 
+     * Consult caches.
+     * Caching is intended to reduce rereading same data from a disk drive.
+     * It works well with this kind of format: <a href="${uri}">${uri}</a>.
+     */
     for (i = 0; i < cache_num; i++) {
 	if (idxid == fc[i].idxid && docid == fc[i].docid &&
-	    strcmp(field, fc[i].field) == 0)
+	    strcmp(tmpfield, fc[i].field) == 0)
 	{  /* cache hit! */
-	    nmz_debug_printf("field cache [%s] hit!\n", field);
+	    nmz_debug_printf("field cache [%s] hit!\n", tmpfield);
 	    strcpy(data, fc[i].data);
 	    return;
 	}
@@ -137,7 +141,7 @@ get_field_data(int idxid, int docid, const char *orig_field, char *data)
     /* Make a pathname */
     make_fullpathname_field(idxid);
     strcpy(fname, NMZ.field);
-    strcat(fname, field);
+    strcat(fname, tmpfield);
     
     fp_field = fopen(fname, "rb");
     if (fp_field == NULL) {
@@ -165,7 +169,7 @@ get_field_data(int idxid, int docid, const char *orig_field, char *data)
     /* Cache */
     fc[cache_idx].idxid = idxid;
     fc[cache_idx].docid = docid;
-    strcpy(fc[cache_idx].field, field);
+    strcpy(fc[cache_idx].field, tmpfield);
     strcpy(fc[cache_idx].data, data);
     cache_idx = (cache_idx + 1) % FIELD_CACHE_SIZE;
     if (cache_num < FIELD_CACHE_SIZE) {

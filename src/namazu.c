@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.71 2000-01-05 10:30:51 satoru Exp $
+ * $Id: namazu.c,v 1.72 2000-01-06 00:33:02 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -73,9 +73,9 @@
  */
 
 static int ck_atoi ( char const *str, int *out );
-static int stdio2file ( char * fname );
+static int stdio2file ( const char * fname );
 static int parse_options ( int argc, char **argv );
-static enum nmz_stat namazu_core ( char * query, char *subquery, char *argv0 );
+static enum nmz_stat namazu_core ( char * query, char *subquery, const char *argv0 );
 static void make_fullpathname_msg ( void );
 static void suicide ( int signum );
 
@@ -102,7 +102,7 @@ ck_atoi (str, out)
  * Redirect stdio to specified file
  */
 static int 
-stdio2file(char * fname)
+stdio2file(const char * fname)
 {
 /*   int fd;
  *   if (-1 == (fd = open(fname, O_CREAT | O_TRUNC | O_WRONLY, 00600))) {
@@ -278,7 +278,7 @@ parse_options(int argc, char **argv)
  * Namazu core routine
  */
 static enum nmz_stat 
-namazu_core(char * query, char *subquery, char *argv0)
+namazu_core(char * query, char *subquery, const char *argv0)
 {
     char query_with_subquery[BUFSIZE * 2];
     NmzResult hlist;

@@ -44,7 +44,7 @@ static char template[BUFSIZE]     = "normal"; /* suffix of NMZ.result.* */
  */
 
 static void emprint ( char *str, int entity_encode );
-static void fputs_without_html_tag ( char *str, FILE *fp );
+static void fputs_without_html_tag ( const char *str, FILE *fp );
 static void make_fullpathname_result ( int n );
 static void print_hitnum_each ( struct nmz_hitnum *hn );
 static int is_allresult ( void );
@@ -129,63 +129,63 @@ emprint(char *s, int entity_encode)
  * Output string without HTML elements
  */
 static void 
-fputs_without_html_tag(char *s, FILE *fp)
+fputs_without_html_tag(const char *str, FILE *fp)
 {
     int f, i;
     char buf[BUFSIZE];
 
-    for (f = 0, i = 0; *s && i < BUFSIZE; s++) {
+    for (f = 0, i = 0; *str && i < BUFSIZE; str++) {
 
 	/* Iso-2022-jp handling */
-	if ((strncmp(s, "\033$", 2) == 0)
-	    && (*(s + 2) == 'B' || *(s + 2) == '@')) 
+	if ((strncmp(str, "\033$", 2) == 0)
+	    && (*(str + 2) == 'B' || *(str + 2) == '@')) 
 	{
 	    char *p;
 
-	    strncpy(buf + i, s, 3);
+	    strncpy(buf + i, str, 3);
 	    i += 3;
-	    s += 3;
-	    p = strstr(s, "\033(");
+	    str += 3;
+	    p = strstr(str, "\033(");
 	    if (p == NULL) {   /* non-terminating jis x 0208 */
-		strcpy(buf + i, s);
+		strcpy(buf + i, str);
 		return; 
 	    }
 	    if (*(p + 2) == 'J' || *(p + 2) == 'B' || *(p + 2) == 'H') {
-		int len = p - s + 3;
-		strncpy(buf + i, s, len);
+		int len = p - str + 3;
+		strncpy(buf + i, str, len);
 		i += len;
-		s += len;
+		str += len;
 	    } else {  /* unknown charset designation */
-		strcpy(buf + i, s);
+		strcpy(buf + i, str);
 		return;
 	    }
 	}
 
-	if (strncasecmp(s, "<br>", 4) == 0&& *(s + 4) != '\n') {
+	if (strncasecmp(str, "<br>", 4) == 0&& *(str + 4) != '\n') {
 	    buf[i++] = '\n';
-	    s += 3;
+	    str += 3;
 	    continue;
 	}
-	if (*s == '<') {
+	if (*str == '<') {
 	    f = 1;
 	    continue;
 	}
-	if (*s == '>') {
+	if (*str == '>') {
 	    f = 0;
 	    continue;
 	}
 	if (f == 0) {
-	    if (strncmp(s, "&lt;", 4) == 0) {
+	    if (strncmp(str, "&lt;", 4) == 0) {
 		buf[i++] = '<';
-		s += 3;
-	    } else if (strncmp(s, "&gt;", 4) == 0) {
+		str += 3;
+	    } else if (strncmp(str, "&gt;", 4) == 0) {
 		buf[i++] = '>';
-		s += 3;
-	    } else if (strncmp(s, "&amp;", 5) == 0) {
+		str += 3;
+	    } else if (strncmp(str, "&amp;", 5) == 0) {
 		buf[i++] = '&';
-		s += 4;
+		str += 4;
 	    } else {
-		buf[i++] = *s;
+		buf[i++] = *str;
 	    }
 	}
     }
@@ -561,7 +561,7 @@ print_range(NmzResult hlist)
  */
 
 enum nmz_stat 
-print_result(NmzResult hlist, char *query, char *subquery)
+print_result(NmzResult hlist, const char *query, const char *subquery)
 {
 
     if (is_htmlmode() && is_cgimode()) {

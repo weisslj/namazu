@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.79 2000-12-18 09:16:11 knok Exp $
+ * $Id: search.c,v 1.80 2000-12-18 09:25:13 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -772,7 +772,7 @@ do_logging(const char *query, int n)
 static NmzResult 
 nmz_search_sub(NmzResult hlist, const char *query, int n)
 {
-    nmz_stat nstat;
+    enum nmz_stat nstat;
     cur_idxnum = n;
 
     if (check_access() != ALLOW) { /* if access denied */

@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.6 1999-06-12 14:29:30 satoru Exp $
+ * $Id: namazu.c,v 1.7 1999-06-13 06:54:52 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -98,7 +98,7 @@ void set_redirect_stdout_to_file(uchar * fname)
 /*
  * Command line options.
  */
-static const char *short_options = "acCefFhHlL:n:o:qrRsSUvw0";
+static const char *short_options = "acCedfFhHlL:n:o:qrRsSUvw0";
 static struct option long_options[] = {
     {"all",              no_argument,       NULL, 'a'},
     {"hit-count",        no_argument,       NULL, 'c'},
@@ -121,6 +121,7 @@ static struct option long_options[] = {
     {"version",          no_argument,       NULL, 'v'},
     {"whence",           required_argument, NULL, 'w'},
     {"help",             no_argument,       NULL, '0'},
+    {"debug",            no_argument,       NULL, 'd'},
     {NULL, 0, NULL, 0}
 };
 

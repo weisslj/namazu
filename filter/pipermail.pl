@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: pipermail.pl,v 1.6 2004-08-06 14:11:39 opengl2772 Exp $
+# $Id: pipermail.pl,v 1.7 2004-10-12 09:14:15 opengl2772 Exp $
 # Copyright (C) 2004 Namazu Project All rights reserved.
 #
 #     This is free software with ABSOLUTELY NO WARRANTY.

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: olevisio.pl,v 1.1 2004-08-31 16:47:46 opengl2772 Exp $
+# $Id: olevisio.pl,v 1.2 2004-10-10 16:38:43 opengl2772 Exp $
 # Copyright (C) 2004 Tadamasa Teranishi,
 #               2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -143,6 +143,7 @@ sub ReadDocument ($$$$$) {
     my $tmpfile = util::tmpnam('NMZ.olevisio') . $ext;
     {
         my $fh = util::efopen("> $tmpfile");
+        binmode($fh);
         print $fh $$cont;
         util::fclose($fh);
     }

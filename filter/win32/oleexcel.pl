@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: oleexcel.pl,v 1.20 2004-05-23 10:51:39 opengl2772 Exp $
+# $Id: oleexcel.pl,v 1.21 2004-10-10 16:38:43 opengl2772 Exp $
 # Copyright (C) 2001 Yoshinori TAKESAKO,
 #               1999 Jun Kurabe,
 #               1999 Ken-ichi Hirose,
@@ -201,6 +201,7 @@ sub ReadDocument ($$$$$) {
     my $tmpfile = util::tmpnam('NMZ.oleexcel') . $ext;
     {
         my $fh = util::efopen("> $tmpfile");
+        binmode($fh);
         print $fh $$cont;
         util::fclose($fh);
     }

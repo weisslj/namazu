@@ -1,5 +1,8 @@
 1999-12-16  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/mknmz.pl.in (read_config): Remove "mknmz.conf";
+	(read_config): Modify a message slightly.
+
 	* filter/gfilter.pl (show_filter_debug_info): Fix a warning.
 	"Use of uninitialized value at ../filter/gfilter.pl line 30"
 

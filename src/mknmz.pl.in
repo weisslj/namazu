@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.85 1999-12-16 07:27:33 satoru Exp $
+# $Id: mknmz.pl.in,v 1.86 1999-12-16 07:31:10 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -134,12 +134,11 @@ sub main () {
 
 sub read_config () {
     my (@cand) = ();
-    push @cand, "$CONFDIR/mknmz.conf" ;
     push @cand, "$CONFDIR/mknmzrc";
     push @cand, "$ENV{'HOME'}/.mknmzrc";
     push @cand, $ConfigFile if defined $ConfigFile;
 
-    print STDERR "Reading config file: " ;
+    print STDERR "Reading rcfile: " ;
     for my $conf (@cand) {
 	if (-f $conf) {
 	    util::vprint("conf: $conf\n");

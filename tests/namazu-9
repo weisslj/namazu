@@ -13,6 +13,7 @@ MSG2='Too many words matched. Ignored'
 unset LANG
 unset LANGUAGE
 unset LC_ALL
+unset LC_MESSAGES
 
 cd ../src
 

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: namazu 2.0\n"
-"POT-Creation-Date: 2000-02-18 12:39+0900\n"
+"POT-Creation-Date: 2000-02-18 13:32+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>\n"
 "Language-Team: Japanese <satoru-t@is.aist-nara.ac.jp>\n"
@@ -412,7 +412,7 @@ msgstr "  潜在: %d, 不許可: %d, 拒絶: %d, 除外: %d"
 #: scripts/mknmz.in:1227
 #, c-format
 msgid "  MTIME too old: %d, MTIME too new: %d"
-msgstr "msgid \"  MTIME 古すぎ: %d, MTIME 新しすぎ: %d"
+msgstr "  MTIME 古すぎ: %d, MTIME 新しすぎ: %d"
 
 #: scripts/mknmz.in:1242
 msgid "lang: "

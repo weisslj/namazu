@@ -1,5 +1,5 @@
---- gettext-0.10.35/po/Makefile.in.in.orig	1999/10/11 04:25:20
-+++ gettext-0.10.35/po/Makefile.in.in	1999/12/21 14:04:53
+--- gettext-0.10.35/po/Makefile.in.in.orig	Wed Apr 29 10:53:09 1998
++++ gettext-0.10.35/po/Makefile.in.in	Sat Feb  5 13:37:58 2000
 @@ -82,10 +82,10 @@
  
  all: all-@USE_NLS@

@@ -1,3 +1,8 @@
+2001-10-30  Ryuji Abe  <rug@namazu.org>
+
+	* configure.in: Moved changequote([, ]) before AC_MSG_CHECKING.
+	(Contributed by Akira TAGOH, thanks.)
+
 2001-10-21  Hajime BABA <hajime.baba@nao.ac.jp>
 
 	* filter/pdf.pl: Added -raw option to pdftotext.
@@ -7100,4 +7105,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.881 2001-10-21 13:34:27 baba Exp $
+$Id: ChangeLog,v 1.882 2001-10-30 11:30:37 rug Exp $

@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.94 2004-02-21 12:16:27 opengl2772 Exp $
+ * $Id: search.c,v 1.95 2004-03-08 10:06:03 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2003 Namazu Project All rights reserved.
@@ -388,7 +388,7 @@ open_phrase_index_files(FILE **phrase, FILE **phrase_index)
     *phrase_index = fopen(NMZ.pi, "rb");
     if (*phrase_index == NULL) {
         nmz_debug_printf("%s: %s", NMZ.pi, strerror(errno));
-        fclose(phrase);
+        fclose(*phrase);
         return 1;
     }
     return 0;

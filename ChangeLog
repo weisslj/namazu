@@ -1,3 +1,10 @@
+2004-03-08  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * nmz/search.c: Bug fix: fclose().
+
+        * pl/gettext.pl.in: The processing for the character sequence 
+        containing '$' was added.
+
 2004-03-07  Yukio USUDA <usu@namazu.org>
 
         * scripts/mknmz.in(main): Added TESTS_ENVIRONMENT checking.
@@ -8510,4 +8517,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1107 2004-03-07 09:47:16 usu Exp $
+$Id: ChangeLog,v 1.1108 2004-03-08 10:06:02 opengl2772 Exp $

@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.59 2000-03-21 21:38:06 satoru Exp $
+# $Id: mknmz.in,v 1.60 2000-03-22 12:21:05 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -722,7 +722,12 @@ sub load_document ($$$$\%) {
 	if (defined $MediaType) {
 	    $mtype = $MediaType;
 	} else {
-	    my $mtype_n = $Magic->checktype_byfilename($cfile);
+	    my $mtype_n;
+	    if ($shelter_cfile ne "") {
+		$mtype_n = $Magic->checktype_byfilename($shelter_cfile);
+	    } else {
+		$mtype_n = $Magic->checktype_byfilename($cfile);
+	    }
 	    my $mtype_c = $Magic->checktype_data($$contref);
 	    my $mtype_m;
 	    $mtype_m = $Magic->checktype_magic($$contref) 

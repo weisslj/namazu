@@ -1,7 +1,7 @@
 /*
  * result.l -
  * -*- C -*-
- * $Id: result.l,v 1.4 1999-06-13 06:54:53 satoru Exp $
+ * $Id: result.l,v 1.5 1999-07-06 12:36:24 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -30,10 +30,11 @@
 	void get_field_data(char *);
 	static int Fid;
 	static uchar Buf[BUFSIZE * 16];
+	static int Score, Counter;
 %}
 
 %%
-\$\{[-_a-zA-Z]+\} 	       get_field_data(yytext);
+\$\{([-_a-zA-Z]+|namazu::[-_a-zA-Z]+)\} 	       get_field_data(yytext);
 .|\n                           strcat(Buf, yytext);
 %%
 
@@ -81,6 +82,17 @@ void get_field_data(char *key)
     *(field + strlen(field) - 1) = '\0';
     apply_field_alias(field);
 
+    if (strcmp(field, "namazu::score") == 0) {
+	sprintf(buf, "%d", Score);
+	strcat(Buf, buf);
+	return;
+    } else if (strcmp(field, "namazu::counter") == 0) {
+	sprintf(buf, "%d", Counter);
+	strcat(Buf, buf);
+	return;
+    }
+
+
     strcpy(file_name, FIELDINFO); /* make pathname */
     strcat(file_name, field);
     
@@ -122,16 +134,22 @@ void put_hlist(HLIST hlist)
 
     for (i = HListWhence; i < hlist.n; i++) {
 	strcpy(Buf, "\t");  /* '\t' has an important role cf. fputx() */
+	Score   = hlist.scr[i];
+	Counter = i + 1;
 	Fid = hlist.fid[i];
 	make_fullpathname(hlist.did[i]);
 	if (!AllList && (i >= HListWhence + HListMax))
 	    break;
-	if ((yyin = fopen(RESULTFILE, "r")) == NULL) {
-	    error("put_hlist");
-	    exit(-1);
+	if (MoreShortFormat) {
+	    get_field_data("${uri}");
+	} else {
+	    if ((yyin = fopen(RESULTFILE, "r")) == NULL) {
+		error("put_hlist");
+		exit(-1);
+	    }
+	    yylex();
+	    fclose(yyin);
 	}
-	yylex();
-	fclose(yyin);
 	fputx(Buf, stdout);
 	fputx("\n", stdout);
     }

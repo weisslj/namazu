@@ -5,6 +5,13 @@
 	about major changes from previous version, please see 
 	"manual.html#VERSIONDIFF".
 
+1999-07-06  masao@ulis.ac.jp (Masao Takaku)
+
+	* mknmz.pl: Fix --checkpoint, --include, --target-list
+	related bugs.
+	* Makefile.am, src/Makefile.am: Fix lib directory and
+	add getopt.[ch]
+	
 1999-06-12  Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>
 
 	* src/result.l: New file. formatter for search results 

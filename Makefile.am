@@ -9,9 +9,9 @@ SUBDIRS = src
 pkgdatadir = @prefix@/@PACKAGE@
 
 install-data-local:
-	$(mkinstalldirs) $(DESTDIR)$(libdir)/index
+	$(mkinstalldirs) $(pkgdatadir)/index
 	for subdir in $(EXTRA_DIRS); do \
-	  cp -rp $(srcdir)/$$subdir $(DESTDIR)$(libdir); \
+	  cp -rp $(srcdir)/$$subdir $(pkgdatadir); \
 	done
 
 dist-hook:

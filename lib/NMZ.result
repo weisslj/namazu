@@ -1,4 +1,4 @@
-<dt><strong><a href="${uri}">${title}</a></strong>
+<dt>${namazu::counter}. <strong><a href="${uri}">${title}</a></strong> (score: ${namazu::score})
 <dd><strong>Author</strong>: <em>${author}</em><br>
 <strong>Date</strong>: <em>${date}</em><br>
 ${summary}

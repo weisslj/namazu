@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.14 1999-06-16 07:14:24 knok Exp $
+# $Id: mknmz.pl.in,v 1.15 1999-07-06 12:36:23 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -711,16 +711,15 @@ sub parse_options ()
 	$conf::ALLOW_REGEX = '.*\.\d.*';
     }
     if ($opt_include) {
-	shift @argv;
-	eval util::include($argv[0]);
-        util::dprint("Included: $argv[0]\n") unless $conf::QuietOpt;
+	eval util::include($opt_include);
+        util::dprint("Included: $opt_include\n") unless $conf::QuietOpt;
     }
     if ($opt_target_list) {
 	if ($CheckPoint{'continue'}) {
 	    @flist = ("dummy");
 	} else {
-	    @flist = load_target_list($argv[0]);
-	    util::dprint("Loaded: $argv[0]\n") unless $conf::QuietOpt;
+	    @flist = load_target_list($opt_target_list);
+	    util::dprint("Loaded: $opt_target_list\n") unless $conf::QuietOpt;
 	}
 	$target_loaded = 1;
 	$target_dir = cwd();
@@ -728,7 +727,7 @@ sub parse_options ()
     if ($opt_checkpoint_sub) {
 	$CheckPoint{'on'}           = 1;
 	$CheckPoint{'continue'}     = 1;
-	@argv = grep {! /-S/} @ARGV;  # remove -S
+	@argv = grep {! /-S/} @argv;  # remove -S
     }
 
 

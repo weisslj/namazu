@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.33 2004-10-20 14:48:37 opengl2772 Exp $
+# $Id: util.pl,v 1.34 2004-10-21 13:09:22 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -410,6 +410,23 @@ sub syscmd(%)
 	foreach my $arg (@args) {
 #	    $arg =~ s!/!\\!g;
 	}
+        if ($args[0] =~ m/\.bat$/i) {
+            my $conts = util::readfile($args[0], "t");
+            if ($conts =~ m/^\@rem\s=\s'--\*-Perl-\*--/i) {
+                @args = ("perl", @args);
+            } else {
+                my $comspec = "cmd";
+                $comspec = $ENV{'COMSPEC'} if (defined $ENV{'COMSPEC'});
+                if ($comspec =~ m/command\.com$/i) {
+                    $comspec = pltests::checkcmd('win95cmd.exe');
+                    unless (defined $comspec) {
+                        cdie 'win95cmd.exe not found.';
+                    }
+                    $ENV{'COMSPEC'} = $comspec;
+                }
+                @args = ($comspec, "/c", @args);
+            }
+        }
     }
 
     my $fh_out = undef;
@@ -447,6 +464,8 @@ sub syscmd(%)
                 delete $ENV{$key};
             }
         }
+
+        dprint(_("Invoked: ") . join(' ', @args));
 
         # Use an indirect object: see Perl Cookbook Recipe 16.2 in detail.
         $status = system { $args[0] } @args;

@@ -13,7 +13,7 @@
 
 	* filter/oasys.pl : Likewise.
 
-        * filter/ichitaro456.pl (filter): Fix can not erase $tmpfile2
+        * filter/ichitaro456.pl (filter): Fix  $tmpfile2 handling
         because add dummy driveletter for doscmd.
 
         * doc/ja/manual.html : Add doccat URI and infomation.
@@ -21,6 +21,8 @@
         * doc/en/manual.html : Likewise.
 
 2000-04-05  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* Namazu: Version 2.0.3 released.
 
 	* filter/Makefile.am (filter_DATA): Remove wordpro.pl and oasys.pl
 	temporarily because they were not tested enough.
@@ -5485,4 +5487,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.673 2000-04-05 18:15:36 kenzo- Exp $
+$Id: ChangeLog,v 1.674 2000-04-05 21:43:47 satoru Exp $

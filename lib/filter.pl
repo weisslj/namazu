@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: filter.pl,v 1.6 1999-08-27 01:30:52 satoru Exp $
+# $Id: filter.pl,v 1.7 1999-08-27 18:22:36 knok Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -27,7 +27,7 @@ use strict;
 require "html.pl";
 
 # Show debug information for filters
-sub show_filter_debug_info ($$$$$) {
+sub show_filter_debug_info ($$$$) {
     my ($contents, $weighted_str, $fields, $headings) = @_;
     dprint("-- title --\n$fields->{title}\n");
     dprint("-- content --\n$$contents\n");
@@ -45,7 +45,7 @@ sub white_space_adjust_filter ($) {
 }
 
 # ファイル名からタイトルを取得 (単なるテキストファイルの場合)
-sub filename_to_title ($$$) {
+sub filename_to_title ($$) {
     my ($cfile, $weighted_str) = @_;
 
     # for MSWin32's filename using Shift_JIS [1998-09-24]

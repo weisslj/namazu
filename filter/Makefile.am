@@ -40,5 +40,7 @@ ETAGS_ARGS = $(filter_DATA) --lang=perl
 TAGS_DEPENDENCIES = $(filter_DATA)
 
 # To remove Windows specific files installed by Namazu 2.0 and/or 2.0.1
+# and old gfilter.pl (Namazu 2.0.7 or earlier).
 install-data-local:
 	rm -f $(filterdir)/ole*.pl
+	rm -f $(filterdir)/gfilter.pl

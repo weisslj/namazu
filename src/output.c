@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.86 2001-11-25 11:46:07 takesako Exp $
+ * $Id: output.c,v 1.87 2001-11-29 10:16:01 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -586,7 +586,9 @@ print_hitnum_all_idx(void)
 			idxname =  nmz_get_idxname(idxid) 
 			    + strlen(nmz_get_defaultidx()) + 1;
 		    }
-		    printf("<li><strong>%s</strong>: ", idxname);
+		    printf("<li><strong>");
+		    emprint(idxname, 1);
+		    printf("</strong>: ");
 		} else {
 		    printf("(%s)", nmz_get_idxname(idxid));
 		}

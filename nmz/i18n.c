@@ -1,6 +1,6 @@
 /*
  * i18n.c -
- * $Id: i18n.c,v 1.23 2000-03-06 07:32:55 rug Exp $
+ * $Id: i18n.c,v 1.24 2000-03-06 08:56:55 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -102,6 +102,8 @@ nmz_set_lang(const char *lang)
 	    static char *store;
 
 	    store = (char *)malloc(strlen(lang) + 6); /* do *not* free */
+	    if (store == NULL)
+		return NULL; /* FIXME: should be fatal error */
 	    strcpy(store, "LANG=");
 	    strcat(store, lang);
 	    putenv(store);

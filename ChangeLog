@@ -2,6 +2,7 @@
 
 	* nmz/i18n.c (nmz_set_lang)[HAVE_PUTENV]: Use malloc()
 	instead of realloc() that doesn't works fine anyware.
+	If malloc() failed, return NULL (FIXME).
 
 2000-03-06  Rei FURUKAWA  <furukawa@tcp-ip.or.jp>
 	* pl/nmzidx.pl: seek & search method.

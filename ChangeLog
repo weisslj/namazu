@@ -1,5 +1,23 @@
-Thu Dec 28 22:16:08 2000  Hajime BABA  <baba@kusastro.kyoto-u.ac.jp>
+2001-01-02  Hajime BABA  <baba@kusastro.kyoto-u.ac.jp>
 
+	* tests/data/en/tex.tex: Fixed preamble: jarticle -> article
+
+	* filter/win32/Makefile.am: Added an entry for olertf.pl
+
+	* filter/dvi.pl: Added a new file.
+
+	* tests/data/{en,ja}/dvi.dvi: Added new files for testsuite.
+
+	* filter/rpm.pl: Added a new file.
+	
+	* tests/data/{en,ja}/rpm.rpm: Added new files for testsuite.
+
+	* filter/deb.pl: Added a new file.  NOTE: no testsuite is added.
+	
+	* filter/Makefile.am: Added entries for dvi.pl, rpm.pl and deb.pl
+
+	* pl/conf.pl.in: Addes entries for DVI, RPM and DEB.
+	
 2000-12-28  Hajime BABA  <baba@kusastro.kyoto-u.ac.jp>
 
 	* configure.in, pl/conf.pl.in: Improved the notations of
@@ -6200,4 +6218,4 @@ Thu Dec 28 22:16:08 2000  Hajime BABA  <baba@kusastro.kyoto-u.ac.jp>
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.782 2000-12-28 13:18:34 baba Exp $
+$Id: ChangeLog,v 1.783 2001-01-02 08:06:50 baba Exp $

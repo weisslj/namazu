@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: man.pl.in,v 1.1 1999-08-25 00:40:16 knok Exp $
+# $Id: man.pl.in,v 1.2 1999-08-26 06:09:38 knok Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -28,10 +28,10 @@ use strict;
 require 'util.pl';
 require 'filter.pl';
 
-my $TMPFILE = 'NMZ.mantmp';
+my $TMPFILE = util::tmpnam('NMZ.man');
 
 sub filter ($$$$$$$) {
-    my ($orig_cfile, $title, $cont, $weighted_str, $headings, $fields, $size)
+    my ($orig_cfile, $cont, $weighted_str, $headings, $fields, $size)
       = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
@@ -46,20 +46,21 @@ sub filter ($$$$$$$) {
     undef $fh;
     unlink($TMPFILE);
 
-    man_filter($cont, $weighted_str, $title);
+    man_filter($cont, $weighted_str, $fields);
 
     filter::line_adjust_filter($cont) unless $conf::NoLineAdOpt;
     filter::line_adjust_filter($weighted_str) unless $conf::NoLineAdOpt;
     filter::white_space_adjust_filter($cont);
-    filter::filename_to_title($cfile, $title, $weighted_str) unless $$title;
+    $fields->{title} = filter::filename_to_title($cfile, $weighted_str)
+      unless $fields->{title};
     filter::show_filter_debug_info($cont, $weighted_str,
-			   $title, $fields, $headings);
+			   $fields, $headings);
 }
 
 # man 用のフィルタ
 # よくわからないからいいかげんに
 sub man_filter ($$$) {
-    my ($contents, $weighted_str, $title) = @_;
+    my ($contents, $weighted_str, $fields) = @_;
     my $name = "";
 
     # processing like col -b (2byte character acceptable)
@@ -69,10 +70,11 @@ sub man_filter ($$$) {
     $$contents =~ s/^\s+//gs;
 
     $$contents =~ /^(.*?)\s*\S*$/m;
-    $$title = "$1";
-    html::encode_entity($title);
+    my $title = "$1";
+    html::encode_entity(\$title);
+    $fields->{title} = $title;
     my $weight = $conf::Weight{'html'}->{'title'};
-    $$weighted_str .= "\x7f$weight\x7f$$title\x7f/$weight\x7f\n";
+    $$weighted_str .= "\x7f$weight\x7f$title\x7f/$weight\x7f\n";
 
     if ($$contents =~ /^(?:NAME|名前|名称)\s*\n(.*?)\n\n/ms) {
 	$name = "$1::\n";

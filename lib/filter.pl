@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: filter.pl,v 1.4 1999-08-25 00:40:17 knok Exp $
+# $Id: filter.pl,v 1.5 1999-08-26 06:09:40 knok Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -28,8 +28,8 @@ require "html.pl";
 
 # Show debug information for filters
 sub show_filter_debug_info ($$$$$) {
-    my ($contents, $weighted_str, $title, $fields, $headings) = @_;
-    util::dprint("-- title --\n$$title\n");
+    my ($contents, $weighted_str, $fields, $headings) = @_;
+    util::dprint("-- title --\n$fields->{title}\n");
     util::dprint("-- content --\n$$contents\n");
     util::dprint("-- weighted_str: --\n$$weighted_str\n");
     util::dprint("-- headings --\n$$headings\n");
@@ -46,7 +46,7 @@ sub white_space_adjust_filter ($) {
 
 # ファイル名からタイトルを取得 (単なるテキストファイルの場合)
 sub filename_to_title ($$$) {
-    my ($cfile, $title, $weighted_str) = @_;
+    my ($cfile, $weighted_str) = @_;
 
     # for MSWin32's filename using Shift_JIS [1998-09-24]
     if (($namazu::SYSTEM eq "MSWin32") || ($namazu::SYSTEM eq "os2")) {

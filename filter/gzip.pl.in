@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: gzip.pl.in,v 1.1 1999-08-25 00:40:15 knok Exp $
+# $Id: gzip.pl.in,v 1.2 1999-08-26 06:09:38 knok Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -27,10 +27,10 @@ package gzip;
 use strict;
 require 'util.pl';
 
-my $TMPFILE = 'NMZ.gztmp';
+my $TMPFILE = util::tmpnam('NMZ.gzip');
 
 sub filter ($$$$$$$) {
-    my ($orig_cfile, $title, $cont, $weighted_str, $headings, $fields, $size)
+    my ($orig_cfile, $cont, $weighted_str, $headings, $fields, $size)
       = @_;
 
     if (util::checklib('Compress/Zlib.pm')) {

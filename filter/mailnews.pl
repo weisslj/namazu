@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mailnews.pl,v 1.1 1999-08-25 00:40:16 knok Exp $
+# $Id: mailnews.pl,v 1.2 1999-08-26 06:09:38 knok Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -29,7 +29,7 @@ require 'util.pl';
 require 'filter.pl';
 
 sub filter ($$$$$$$) {
-    my ($orig_cfile, $title, $cont, $weighted_str, $headings, $fields, $size)
+    my ($orig_cfile, $cont, $weighted_str, $headings, $fields, $size)
       = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
@@ -37,20 +37,21 @@ sub filter ($$$$$$$) {
       if ($conf::VerboseOpt);
 
     filter::uuencode_filter($cont);
-    mailnews_filter($cont, $weighted_str, $title);
+    mailnews_filter($cont, $weighted_str, $fields);
 
     filter::line_adjust_filter($cont) unless $conf::NoLineAdOpt;
     filter::line_adjust_filter($weighted_str) unless $conf::NoLineAdOpt;
     filter::white_space_adjust_filter($cont);
-    filter::filename_to_title($cfile, $title, $weighted_str) unless $$title;
+    $fields->{title} = filter::filename_to_title($cfile, $weighted_str)
+      unless $fields->{title};
     filter::show_filter_debug_info($cont, $weighted_str,
-			   $title, $fields, $headings);
+			   $fields, $headings);
 }
 
 # Mail/News 用のフィルタ
 # 元となるものは古川@ヤマハさんにいただきました
 sub mailnews_filter ($$$\%) {
-    my ($contents, $weighted_str, $title, $fields) = @_;
+    my ($contents, $weighted_str, $fields) = @_;
 
     my $boundary = "";
     my $line     = "";
@@ -87,8 +88,9 @@ sub mailnews_filter ($$$\%) {
 	    }
  	}
 	if ($line =~ s/^subject:\s*//i){
-	    $$title = $line;
-	    html::encode_entity($title);
+	    my $title = $line;
+	    html::encode_entity(\$title);
+	    $fields->{title} = $title;
 	    # ML 特有の [hogehoge-ML:000] を読み飛ばす。
 	    # のが意図だが、面倒なので、
 	    # 実装上、最初の [...] を読み飛ばす。

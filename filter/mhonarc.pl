@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mhonarc.pl,v 1.1 1999-08-25 00:40:16 knok Exp $
+# $Id: mhonarc.pl,v 1.2 1999-08-26 06:09:38 knok Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -31,26 +31,27 @@ require 'html.pl';
 require 'mailnews.pl';
 
 sub filter ($$$$$$$) {
-    my ($orig_cfile, $title, $cont, $weighted_str, $headings, $fields, $size)
+    my ($orig_cfile, $cont, $weighted_str, $headings, $fields, $size)
       = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
     print "Proccessing MHonArc file ...\n"
       if ($conf::VerboseOpt);
 
-    mhonarc_filter($cont, $weighted_str, $title);
-    html::html_filter($cont, $weighted_str, $title, $fields, $headings);
+    mhonarc_filter($cont, $weighted_str, $fields);
+    html::html_filter($cont, $weighted_str, $fields, $headings);
 
     filter::uuencode_filter($cont);
-    mailnews::mailnews_filter($cont, $weighted_str, $title, $fileds);
+    mailnews::mailnews_filter($cont, $weighted_str, $fileds);
     mailnews::mailnews_citation_filter($cont, $weighted_str);
 
     filter::line_adjust_filter($cont) unless $conf::NoLineAdOpt;
     filter::line_adjust_filter($weighted_str) unless $conf::NoLineAdOpt;
     filter::white_space_adjust_filter($cont);
-    filter::filename_to_title($cfile, $title, $weighted_str) unless $$title;
+    $fields->{title} = filter::filename_to_title($cfile, $weighted_str)
+      unless $fields->{title};
     filter::show_filter_debug_info($cont, $weighted_str,
-			   $title, $fields, $headings);
+			   $fields, $headings);
 }
 
 # MHonArc 用のフィルタ

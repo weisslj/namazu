@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: html.pl,v 1.1 1999-08-25 00:40:15 knok Exp $
+# $Id: html.pl,v 1.2 1999-08-26 06:09:38 knok Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -27,29 +27,30 @@ use strict;
 require 'filter.pl';
 
 sub filter ($$$$$$$) {
-    my ($orig_cfile, $title, $cont, $weighted_str, $headings, $fields, $size)
+    my ($orig_cfile, $cont, $weighted_str, $headings, $fields, $size)
       = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
     print "Proccessing html file ...\n"
       if ($conf::VerboseOpt);
 
-    html_filter($cont, $weighted_str, $title);
+    html_filter($cont, $weighted_str, $fields, $headings);
     
     filter::line_adjust_filter($cont) unless $conf::NoLineAdOpt;
     filter::line_adjust_filter($weighted_str) unless $conf::NoLineAdOpt;
     filter::white_space_adjust_filter($cont);
-    filter::filename_to_title($cfile, $title, $weighted_str) unless $$title;
+    $fields->{title} = filter::filename_to_title($cfile, $weighted_str)
+      unless $fields->{title};
     filter::show_filter_debug_info($cont, $weighted_str,
-			   $title, $fields, $headings);
+			   $fields, $headings);
 }
 
 # HTML 用のフィルタ
 sub html_filter ($$$$$) {
-    my ($contents, $weighted_str, $title, $fields, $headings) = @_;
+    my ($contents, $weighted_str, $fields, $headings) = @_;
 
     html::escape_lt_gt($contents);
-    html::get_title($contents, $weighted_str, $title);
+    $fields->{title} = html::get_title($contents, $weighted_str);
     html::get_author($contents, $fields);
     html::get_meta_info($contents, $weighted_str);
     html::get_img_alt($contents);
@@ -95,19 +96,22 @@ sub get_author ($$) {
 
 # TITLE を取り出す <TITLE LANG="ja_JP"> などにも考慮しています
 # </TITLE> が二つ以上あっても大丈夫 v1.03
-sub get_title ($$$$) {
-    my ($contents, $weighted_str, $title) = @_;
+sub get_title ($$) {
+    my ($contents, $weighted_str) = @_;
+    my $title = '';
     
     if ($$contents =~ s!<TITLE[^>]*>([^<]+)</TITLE>!!i) {
-	$$title = $1;
+	$title = $1;
+	$title =~ s/\s+/ /g;
+	$title =~ s/^\s+//;
+	$title =~ s/\s+$//;
 	my $weight = $conf::Weight{'html'}->{'title'};
 	$$weighted_str .= "\x7f$weight\x7f$$title\x7f/$weight\x7f\n";
     } else {
-	$$title = $conf::NO_TITLE;
+	$title = $conf::NO_TITLE;
     }
-    $$title =~ s/\s+/ /g;
-    $$title =~ s/^\s+//;
-    $$title =~ s/\s+$//;
+
+    return $title;
 }
 
 # <META NAME="keywords|description" CONTENT="foo bar"> に対応する処理

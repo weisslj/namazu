@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: msword.pl.in,v 1.1 1999-08-25 00:40:16 knok Exp $
+# $Id: msword.pl.in,v 1.2 1999-08-26 06:09:38 knok Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -29,11 +29,11 @@ require 'util.pl';
 require 'filter.pl';
 require 'html.pl';
 
-my $TMPFILE = 'NMZ.wordtmp';
-my $TMPFILE2 = 'NMZ.wordtmp2';
+my $TMPFILE = util::tmpnam('NMZ.word');
+my $TMPFILE2 = itil::tmpnam('NMZ.word2');
 
 sub filter ($$$$$$$) {
-    my ($orig_cfile, $title, $cont, $weighted_str, $headings, $fields, $size)
+    my ($orig_cfile, $cont, $weighted_str, $headings, $fields, $size)
       = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
@@ -51,14 +51,15 @@ sub filter ($$$$$$$) {
     unlink($TMPFILE);
     unlink($TMPFILE2);
 
-    html::html_filter($cont, $weighted_str, $title, $fields, $headings);
+    html::html_filter($cont, $weighted_str, $fields, $headings);
 
     filter::line_adjust_filter($cont) unless $conf::NoLineAdOpt;
     filter::line_adjust_filter($weighted_str) unless $conf::NoLineAdOpt;
     filter::white_space_adjust_filter($cont);
-    filter::filename_to_title($cfile, $title, $weighted_str) unless $$title;
+    $fields->{title} = filter::filename_to_title($cfile, $weighted_str)
+      unless $fields->{title};
     filter::show_filter_debug_info($cont, $weighted_str,
-			   $title, $fields, $headings);
+			   $fields, $headings);
 }
 
 1;

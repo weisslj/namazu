@@ -1,3 +1,7 @@
+1999-08-26  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* filter/*, lib/filter.pl, src/mknmz.pl.in: Fix $title probrem.
+
 1999-08-26  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* Makefile.am: Add an CLEANFILES entry.

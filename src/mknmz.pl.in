@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- CPerl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.21 1999-08-25 10:21:48 satoru Exp $
+# $Id: mknmz.pl.in,v 1.22 1999-08-26 06:09:42 knok Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -450,7 +450,7 @@ sub load_document ($$$$$\%) {
 	      if ($conf::VerboseOpt);
 	    require $conf::REQUIRE_ACTIONS{$mtype}.'.pl';
 	    eval $conf::REQUIRE_ACTIONS{$mtype} .
-	      '::filter($orig_cfile, $title ,$content, $weighted_str, $headings, $fields, $sizeref);';
+	      '::filter($orig_cfile, $content, $weighted_str, $headings, $fields, $sizeref);';
 	    if ($@) {
 		print STDERR "Faild to call $conf::REQUIRE_ACTIONS{$mtype}\n$@\n";
 		$mtype = "x-system/x-error; failed to call $conf::REQUIRE_ACTIONS{$mtype}";

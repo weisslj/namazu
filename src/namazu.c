@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.21 1999-09-01 07:54:21 satoru Exp $
+ * $Id: namazu.c,v 1.22 1999-09-02 00:14:49 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -309,7 +309,7 @@ void uniq_idxnames(void)
     }
 }
 
-void expand_dbname_aliases(void)
+void expand_idxname_aliases(void)
 {
     int i;
 
@@ -320,7 +320,7 @@ void expand_dbname_aliases(void)
 		free(Idx.names[i]);
 		Idx.names[i] = (uchar *) malloc(strlen(list->real) + 1);
 		if (Idx.names[i] == NULL) {
-		    die("expand_dbname_aliases: malloc()");
+		    die("expand_idxname_aliases: malloc()");
 		}
 		strcpy(Idx.names[i], list->real);
             }
@@ -392,7 +392,7 @@ int main(int argc, char **argv)
 		Idx.names[Idx.num] = 
 		    (uchar *) malloc(strlen(argv[i]) + 1);
 		if (Idx.names[Idx.num] == NULL) {
-		    die("main: malloc(dbname)");
+		    die("main: malloc(idxname)");
 		}
 		strcpy(Idx.names[Idx.num], argv[i]);
 		Idx.num++;
@@ -403,7 +403,7 @@ int main(int argc, char **argv)
             Idx.names[Idx.num] = 
                 (uchar *) malloc(strlen(DEFAULT_INDEX) + 1);
             if (Idx.names[Idx.num] == NULL) {
-                die("main: malloc(dbname)");
+                die("main: malloc(idxname)");
             }
             strcpy(Idx.names[Idx.num], DEFAULT_INDEX);
             Idx.num = 1;
@@ -414,7 +414,7 @@ int main(int argc, char **argv)
     }
 
     uniq_idxnames();
-    expand_dbname_aliases();
+    expand_idxname_aliases();
     complete_idxnames();
 
     if (Debug) {

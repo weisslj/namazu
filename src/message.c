@@ -2,7 +2,7 @@
  * 
  * messages.c -
  * 
- * $Id: message.c,v 1.9 1999-09-01 07:54:21 satoru Exp $
+ * $Id: message.c,v 1.10 1999-09-02 00:14:48 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -106,7 +106,7 @@ void init_message(void)
         MSG_CANNOT_OPEN_PHRASE_INDEX = (uchar *)" (フレーズ検索用インデックスが開けませんでした)";
         MSG_INDEXDIR_ERROR = (uchar *)"INDEXDIR の設定を確認してください\n";
         MSG_REFERENCE_HEADER = (uchar *)"	<strong>参考ヒット数:</strong> ";
-        MSG_INVALID_DB_NAME = (uchar *)"不正な dbname の指定です";
+        MSG_INVALID_DB_NAME = (uchar *)"不正な idxname の指定です";
     } else {
         MSG_USAGE = (uchar *)"\
 Search Program of Namazu v%s\n\
@@ -153,7 +153,7 @@ Search Program of Namazu v%s\n\
         MSG_INDEXDIR_ERROR = (uchar *)
             "To Administrator:\nCheck the definition of INDEXDIR.\n";
         MSG_REFERENCE_HEADER = (uchar *)"Word count: ";
-        MSG_INVALID_DB_NAME = (uchar *)"Invalid dbname.";
+        MSG_INVALID_DB_NAME = (uchar *)"Invalid idxname.";
     }
     strcpy(NMZ.head, "NMZ.head.");
     strcpy(NMZ.foot, "NMZ.foot.");

@@ -1,5 +1,9 @@
 1999-09-02  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/formc.c: Make all string comparisons case insensitive.
+	
+	* template/*, src/*.c: s/dbname/idxname/g
+	
 	* lib/mhonarc.pl: Implement detection codes for MHonArc's index
 	files such as maillist.hml or threads.html.
 

@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.13 1999-09-01 07:54:20 satoru Exp $
+ * $Id: cgi.c,v 1.14 1999-09-02 00:14:48 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -47,42 +47,42 @@ uchar *ContentLength = (uchar *)"";
  *
  ************************************************************/
 
-int validate_dbname(uchar* );
+int validate_idxname(uchar* );
 int get_cgi_vars(uchar* , uchar*);
 
-/* validate dbname (if it contain '/', it's invalid) */
-int validate_dbname(uchar * dbname)
+/* validate idxname (if it contain '/', it's invalid) */
+int validate_idxname(uchar * idxname)
 {
     int win32 = 0;
 #if  defined(_WIN32) || defined(__EMX__)
     win32 = 1;
 #endif
 
-    if (*dbname == '\0' || *dbname == '/' || (win32 && *dbname == '\\')) {
+    if (*idxname == '\0' || *idxname == '/' || (win32 && *idxname == '\\')) {
         fputs(MSG_MIME_HEADER, stdout);
         fputx(MSG_INVALID_DB_NAME, stdout);
         exit(1);
     }
-    while (*dbname) {
-        if (strncmp("../", dbname, 3) == 0 ||
-	    strcmp("..", dbname) == 0 ||
-            (win32 && strncmp("..\\", dbname, 3) == 0)) 
+    while (*idxname) {
+        if (strncmp("../", idxname, 3) == 0 ||
+	    strcmp("..", idxname) == 0 ||
+            (win32 && strncmp("..\\", idxname, 3) == 0)) 
         {
             fputs(MSG_MIME_HEADER, stdout);
             fputx(MSG_INVALID_DB_NAME, stdout);
             exit(1);
         }
 	/* Skip until next '/' */
-	while (*dbname && *dbname != '/' && !(win32 && *dbname == '\\'))
-	  dbname++;
+	while (*idxname && *idxname != '/' && !(win32 && *idxname == '\\'))
+	  idxname++;
 	/* Skip '/' */
-	if (*dbname)
-	  dbname++;
+	if (*idxname)
+	  idxname++;
     }
-    dbname--;  /* remove ending slashed */
-    while (*dbname == '/' || (win32 && *dbname == '\\')) {
-        *dbname = '\0';
-        dbname--;
+    idxname--;  /* remove ending slashed */
+    while (*idxname == '/' || (win32 && *idxname == '\\')) {
+        *idxname = '\0';
+        idxname--;
     }
     return 1;
 }
@@ -131,11 +131,11 @@ int get_cgi_vars(uchar * query, uchar *subquery)
     if (getenv("PATH_INFO")) {
         uchar *path_info = (uchar *)getenv("PATH_INFO");
         if (strlen(path_info) > 0 && strlen(path_info) < 128) {
-            validate_dbname(path_info);
+            validate_idxname(path_info);
             sprintf(tmp, "%s%s", DEFAULT_INDEX, path_info);
             Idx.names[Idx.num] = (uchar *) malloc(strlen(tmp) + 1);
             if (Idx.names[Idx.num] == NULL) {
-                die("cgi: malloc(dbname)");
+                die("cgi: malloc(idxname)");
             }
             strcpy(Idx.names[Idx.num], tmp);
             Idx.num++;
@@ -255,7 +255,7 @@ int get_cgi_vars(uchar * query, uchar *subquery)
 	} else if (!strncmp(qs, "reference=off", 13)) {
             NoReference = 1;
             qs += 13;
-	} else if (!strncmp(qs, "dbname=", 7)) {
+	} else if (!strncmp(qs, "idxname=", 7)) {
             uchar *pp;
 
 	    qs += 7;
@@ -283,9 +283,9 @@ int get_cgi_vars(uchar * query, uchar *subquery)
                 Idx.names[Idx.num] = (uchar *)
                     malloc(strlen(DEFAULT_INDEX) + 1 + strlen(name) + 1);
                 if (Idx.names[Idx.num] == NULL) {
-                    die("cgi: malloc(dbname)");
+                    die("cgi: malloc(idxname)");
                 }
-                validate_dbname(name);
+                validate_idxname(name);
                 strcpy(Idx.names[Idx.num], DEFAULT_INDEX);
                 strcat(Idx.names[Idx.num], "/");
                 strcat(Idx.names[Idx.num], name);
@@ -317,7 +317,7 @@ void init_cgi(uchar * query, uchar *subquery)
     if (Idx.num == 0) {
         Idx.names[Idx.num] = (uchar *) malloc(strlen(DEFAULT_INDEX) + 1);
         if (Idx.names[Idx.num] == NULL) {
-            die("cgi_initialize: malloc(dbname)");
+            die("cgi_initialize: malloc(idxname)");
         }
         strcpy(Idx.names[Idx.num], DEFAULT_INDEX);
         Idx.num++;

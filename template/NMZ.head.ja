@@ -50,9 +50,9 @@
 <p>
 <strong>¸¡º÷ÂÐ¾Ý:</strong>
 <ul>
-<li><input type="checkbox" name="dbname" value="foo" checked>foo 
-<li><input type="checkbox" name="dbname" value="bar">bar
-<li><input type="checkbox" name="dbname" value="bar">baz
+<li><input type="checkbox" name="idxname" value="foo" checked>foo 
+<li><input type="checkbox" name="idxname" value="bar">bar
+<li><input type="checkbox" name="idxname" value="bar">baz
 </ul>
 </p>
 -->

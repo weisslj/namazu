@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.50 2000-03-16 12:29:43 satoru Exp $
+# $Id: mknmz.in,v 1.51 2000-03-16 15:04:46 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -496,7 +496,9 @@ sub generate_uri (@) {
 
     for my $tmp ($file, $fragment) {
 	next unless defined $tmp;
-        codeconv::toeuc(\$tmp, "-e");
+	if (($mknmz::SYSTEM eq "MSWin32") || ($mknmz::SYSTEM eq "os2")) {
+	    $tmp = codeconv::shiftjis_to_eucjp($tmp);
+	}
 
 	unless ($var::Opt{'noencodeuri'}) {
 	    # Escape unsafe characters (not strict)

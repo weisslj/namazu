@@ -1,3 +1,10 @@
+2000-03-17  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* scripts/mknmz.in (generate_uri): Use codeconv::shiftjis_to_eucjp
+	instead of codeconv::toeuc(). [namazu-devel-ja: 00219]
+
+	* filter/gfilter.pl (filename_to_title): Call codeconv::toeuc.
+
 2000-03-16  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* doc/en/Makefile.am (html_DATA): Add tutorial.html

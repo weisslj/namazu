@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: codeconv.pl,v 1.8 2000-03-16 12:29:42 satoru Exp $
+# $Id: codeconv.pl,v 1.9 2000-03-16 15:04:44 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -100,7 +100,9 @@ sub etos($$) {
 
 sub eucjp_to_shiftjis ($) {
     my ($str) = @_;
-    $str =~ s/([\xa1-\xfe])([\xa1-\xfe])/etos($1, $2)/ge;
+    if (util::islang("ja")) {
+	$str =~ s/([\xa1-\xfe])([\xa1-\xfe])/etos($1, $2)/ge;
+    }
     return $str;
 }
 

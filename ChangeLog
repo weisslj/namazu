@@ -2,6 +2,9 @@
 
 	* filter/pdf.pl (codeconv): Fix a bug: Require code
 	conversion. [namazu 1371].
+	(codeconv): Fix a bug: Do not require code conversion [namazu
+	1374]
+	(filter): Do code conversion in it.
 
 2000-02-05  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 

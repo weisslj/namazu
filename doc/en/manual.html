@@ -224,10 +224,14 @@ filters are described below.
 </p>
 
 <dl>
-<dt>gzip.pl
-<dd>Handles a gzipped file
-<dd>Requirement: <a href="http://www.gzip.org/">gzip</a>
-command or Compress::Zlib perl module.
+<dt>apachecache.pl
+<dd>Handles an Apache's cache file.
+<dd>Requirement: None
+<dd>Note: --replace=apachecache::replacecode option replaces to original URI 
+
+<dt>applefile.pl
+<dd>Handles an AppleSingle file.
+<dd>Requirement: None
 
 <dt>bzip2.pl
 <dd>Handles a bzip2-ed file
@@ -258,18 +262,38 @@ href="http://sources.redhat.com/bzip2/">bzip2</a> command.
 <dd>Suggested software:<a href="http://www.ff.iij4u.or.jp/~nrt/lv/">lv</a>
 (only for Japanese documents)
 
+<dt>gnumeric.pl
+<dd>Handles a Gnumeric file.
+<dd>Requirement: <a href="http://www.gzip.org/">gzip</a>
+command or Compress::Zlib perl module.
+
+<dt>gzip.pl
+<dd>Handles a gzipped file
+<dd>Requirement: <a href="http://www.gzip.org/">gzip</a>
+command or Compress::Zlib perl module.
+
+<dt>hdml.pl
+<dd>Handles a HDML file.
+<dd>Requirement: None
+
 <dt>hnf.pl
 <dd>Handles a file of <a href="http://www.h14m.org/">Hyper NIKKI System
 Project</a>.
 <dd>Requirement: the hnf filter is special:  it requires namazu_for_hns
 of <a href="http://www.h14m.org/">Hyper NIKKI System Project</a>.
 
-<dt>hdml.pl
-<dd>Handles a HDML file.
-<dd>Requirement: None
-
 <dt>html.pl
 <dd>Handles a HTML file.
+<dd>Requirement: None
+
+<dt>koffice.pl
+<dd>Handles a KOffice KWord, KSpread, KPresenter, Kivio file.
+<dd>Requirement: <a
+href="http://www.info-zip.org/pub/infozip/UnZip.html">unzip</a>,
+<a href="http://www.ff.iij4u.or.jp/~nrt/lv/">lv</a>(only for Japanese documents)
+
+<dt>macbinary.pl
+<dd>Handles a MacBinary I,II,III file.
 <dd>Requirement: None
 
 <dt>mailnews.pl
@@ -291,12 +315,25 @@ are required.(perl5.8 contains them.)
 <dd>Handles a <a href="http://www.mhonarc.org/">MHonArc</a> file.
 <dd>Requirement: None
 
+<dt>mp3.pl
+<dd>Handles an MP3 file's ID3 Tag
+<dd>Requirement: <a
+href="http://sourceforge.net/projects/pudge/">MP3::Info perl module.</a>
+(version 1.01 or later are suggested).
+
 <dt>msword.pl
 <dd>Handles a Microsoft Word file.
 <dd>Requirement: <a href="http://wvWare.sourceforge.net/">wvWare</a>
 <!--
 <dd>Alternate command: <a href="http://www.dehenken.co.jp/products/doccat/">doccat</a>
 -->
+<dd>Suggested software:<a href="http://www.ff.iij4u.or.jp/~nrt/lv/">lv</a>
+(only for Japanese documents)
+
+<dt>ooo.pl
+<dd>Handles an OpenOffice.org Writer, Calc, Impress, Draw file.
+<dd>Requirement: <a
+href="http://www.info-zip.org/pub/infozip/UnZip.html">unzip</a>
 <dd>Suggested software:<a href="http://www.ff.iij4u.or.jp/~nrt/lv/">lv</a>
 (only for Japanese documents)
 
@@ -327,6 +364,10 @@ are required.(perl5.8 contains them.)
 <dd>Handles an RPM package.
 <dd>Requirement: <a href="http://www.rpm.org/">rpm</a>
 
+<dt>rtf.pl
+<dd>Handles a Microsoft Word file.
+<dd>Requirement: <a href="http://www.45.free.net/~vitus/ice/misc/rtf2html.tar.gz">rtf2html</a>
+
 <!--
 <dt>taro.pl
 <dd>Handle a file of Ichitaro a Japanese word processor version 9 and 10.
@@ -340,43 +381,20 @@ are required.(perl5.8 contains them.)
 <dt>taro7_10.pl
 <dd>Handles a file of Ichitaro, a Japanese word processor, versions 7 through 13.
 <dd>Requirement: <a href="http://www.onicos.com/staff/iz/release/">unicode.pl</a>,
-<a href="http://search.cpan.org/~kwitknr/OLE-Storage_Lite-0.11/">OLE-Storage_Lite  perl module</a>,
-<a href="http://search.cpan.org/~eryq/IO-stringy-2.108/">IO-stringy perl module.</a>
+<a href="http://search.cpan.org/~kwitknr/OLE-Storage_Lite-0.13/">OLE-Storage_Lite  perl module</a>,
+<a href="http://search.cpan.org/~eryq/IO-stringy-2.109/">IO-stringy perl module.</a>
 
 <dt>tex.pl
 <dd>Handles a TeX file.
 <dd>Requirement: <a
 href="http://www.cs.purdue.edu/homes/trinkle/detex/">detex</a>
 
-<dt>rtf.pl
-<dd>Handles a Microsoft Word file.
-<dd>Requirement: <a href="http://www.45.free.net/~vitus/ice/misc/rtf2html.tar.gz">rtf2html</a>
-
-<dt>ooo.pl
-<dd>Handles an OpenOffice.org Writer,Calc,Impress,Draw file.
+<dt>zip.pl
+<dd>Handles a Zip archive files.
 <dd>Requirement: <a
 href="http://www.info-zip.org/pub/infozip/UnZip.html">unzip</a>
-<dd>Suggested software:<a href="http://www.ff.iij4u.or.jp/~nrt/lv/">lv</a>
-(only for Japanese documents)
-
-<dt>apachecache.pl
-<dd>Handles an Apache's cache file.
-<dd>Requirement: None
-<dd>Note: --replace=apachecache::replacecode option replaces to original URI 
-
-<dt>mp3.pl
-<dd>Handles an MP3 file's ID3 Tag
-<dd>Requirement: <a
-href="http://sourceforge.net/projects/pudge/">MP3::Info perl module.</a>
-(version 1.01 or later are suggested).
-
-<dt>macbinary.pl
-<dd>Handles a MacBinary I,II,III file.
-<dd>Requirement: None
-
-<dt>applefile.pl
-<dd>Handles an AppleSingle file.
-<dd>Requirement: None
+<dd>Alternative: Compress::Zlib perl module, 
+<a href="http://search.cpan.org/~nedkonz/Archive-Zip-1.13/">Archive::Zip perl module</a>.
 
 </dl>
 
@@ -1046,7 +1064,7 @@ You must choose the latter with Tkanamzu or namazu.el.
 Copyright (C) 2000-2004 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: manual.html,v 1.63 2004-08-04 03:14:27 opengl2772 Exp $
+$Id: manual.html,v 1.64 2004-09-20 02:35:32 usu Exp $
 </div>
 <address>
 developers@namazu.org

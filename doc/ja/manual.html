@@ -239,10 +239,15 @@ mknmz は対象ファイルの文書形式を自動で判別して、適切なフィル
 </p>
 
 <dl>
-<dt>gzip.pl
-<dd>gzipで圧縮されたファイルを扱う
-<dd>必需品: <a href="http://www.gzip.org/">gzip</a> コマンド
-または Compress::Zlib モジュール
+<dt>apachecache.pl
+<dd>Apacheのキャッシュファイルを扱う
+<dd>必需品: なし
+<dd>注意: 元のURIへ置き換える場合は mknmzに次のオプションを使用、
+ --replace=apachecache::replacecode
+
+<dt>applefile.pl
+<dd>AppleSingle ファイルを扱う
+<dd>必需品: なし
 
 <dt>bzip2.pl
 <dd>bzip2で圧縮されたファイルを扱う
@@ -268,6 +273,20 @@ href="http://sources.redhat.com/bzip2/">bzip2</a> コマンド
 (<a href="http://wvWare.sourceforge.net/">wvWare</a> に付属の wvSummaryコマンド)
 <dd>代替品: <a href="http://www.dehenken.co.jp/products/doccat/">doccat</a>
 
+<dt>gnumeric.pl
+<dd>Gnumericの文書を扱う
+<dd>必需品: <a href="http://www.gzip.org/">gzip</a> コマンド
+または Compress::Zlib モジュール
+
+<dt>gzip.pl
+<dd>gzipで圧縮されたファイルを扱う
+<dd>必需品: <a href="http://www.gzip.org/">gzip</a> コマンド
+または Compress::Zlib モジュール
+
+<dt>hdml.pl
+<dd>HDML文書を扱う
+<dd>必需品: なし
+
 <dt>hnf.pl
 <dd><a href="http://www.h14m.org/">ハイパー日記システム</a> のファ
 イルを扱う
@@ -275,21 +294,27 @@ href="http://sources.redhat.com/bzip2/">bzip2</a> コマンド
 href="http://www.h14m.org/">ハイパー日記システム・プロジェクト</a>か
 ら Namazu for hns を入手する必要がある
 
-<dt>hdml.pl
-<dd>HDML文書を扱う
-<dd>必需品: なし
-
 <dt>html.pl
 <dd>HTML文書を扱う
 <dd>必需品: なし
 
-<dt>mailnews.pl
-<dd>Mail/News のファイル、mhtmlファイルを扱う
+<dt>koffice.pl
+<dd>KOffice の KWord, KSpread, KPresenter, Kivio 文書を扱う
+<dd>必需品: <a
+href="http://www.info-zip.org/pub/infozip/UnZip.html">unzip</a>,
+<a href="http://www.ff.iij4u.or.jp/~nrt/lv/">lv</a>
+
+<dt>macbinary.pl
+<dd>MacBinary I,II,III ファイルを扱う
 <dd>必需品: なし
-<dd>注意: mhtmlファイル、E-mailに添付されたBase64でエンコードされた部分
+
+<dt>mailnews.pl
+<dd>Mail/News のファイル、mhtml ファイルを扱う
+<dd>必需品: なし
+<dd>注意: mhtml ファイル、E-mail に添付された Base64 でエンコードされた部分
 を扱うには
 <a href="http://search.cpan.org/dist/MIME-Base64/">MIME::Base64, MIME::QuotedPrint</a>
-が必要(Perl5.8では標準で組込済)。利用する際には mknmzに次のオプションを使用、
+が必要(Perl5.8では標準で組込済)。利用する際には mknmz に次のオプションを使用、
 --decode=base64 
 
 <dt>man.pl
@@ -303,6 +328,11 @@ href="http://www.h14m.org/">ハイパー日記システム・プロジェクト</a>か
 <dd><a href="http://www.mhonarc.org/">MHonArc</a> のファイルを扱う
 <dd>必需品: なし
 
+<dt>mp3.pl
+<dd>MP3ファイルのID3タグ内データを扱う
+<dd>必需品: <a
+href="http://sourceforge.net/projects/pudge/">MP3::Info モジュール</a>(バージョン 1.01 以上)
+
 <dt>msword.pl
 <dd>Microsoft Word文書を扱う (日本語版は Word 97, 98, 2000, 2002(XP), 2003)
 <dd>必需品: <a href="http://wvWare.sourceforge.net/">wvWare</a>, 
@@ -313,6 +343,16 @@ href="http://www.h14m.org/">ハイパー日記システム・プロジェクト</a>か
 <dt>oasys.pl
 <dd>OASYS V6/V7文書を扱う
 <dd>必需品: <a href="http://www.dehenken.co.jp/products/doccat/">doccat</a>
+-->
+
+<dt>ooo.pl
+<dd>OpenOffice.org の Writer, Calc, Impress, Draw 文書を扱う
+<dd>必需品: <a
+href="http://www.info-zip.org/pub/infozip/UnZip.html">unzip</a>,
+<a href="http://www.ff.iij4u.or.jp/~nrt/lv/">lv</a> (Perlのバージョンが5.8以上であれば lv は不要)
+<!--
+<dd>代替品: lvのかわりに<a href="http://www.onicos.com/staff/iz/release/">unicode.pl</a>
+も利用可
 -->
 
 <dt>pdf.pl
@@ -343,6 +383,11 @@ href="http://softpark.jplaza.com/software/freesoft.html">ps2textコマンド</a>
 <dd>RPMパッケージを扱う
 <dd>必需品: <a href="http://www.rpm.org/">rpm</a>
 
+<dt>rtf.pl
+<dd>RTF (Rich Text Format) 形式の文書を扱う
+<dd>必需品: <a href="http://www.45.free.net/~vitus/ice/misc/rtf2html.tar.gz">rtf2html</a>
+<dd>代替品: <a href="http://www.dehenken.co.jp/products/doccat/">doccat</a>
+
 <dt>taro.pl
 <dd>一太郎 (バージョン 7 〜 13)の文書を扱う
 <dd>必需品: <a href="http://www.dehenken.co.jp/products/doccat/">doccat</a>
@@ -354,8 +399,8 @@ href="http://softpark.jplaza.com/software/freesoft.html">ps2textコマンド</a>
 <dt>taro7_10.pl
 <dd>一太郎 (バージョン 7 〜 13)の文書を扱う
 <dd>必需品: <a href="http://www.onicos.com/staff/iz/release/">unicode.pl</a> (Perlのバージョンが5.8以上であれば不要),
-<a href="http://search.cpan.org/~kwitknr/OLE-Storage_Lite-0.11/">OLE-Storage_Lite モジュール</a>,
-<a href="http://search.cpan.org/~eryq/IO-stringy-2.108/">IO-stringy モジュール</a>
+<a href="http://search.cpan.org/~kwitknr/OLE-Storage_Lite-0.13/">OLE-Storage_Lite モジュール</a>,
+<a href="http://search.cpan.org/~eryq/IO-stringy-2.109/">IO-stringy モジュール</a>
 
 <dt>tex.pl
 <dd>TeXのファイルを扱う
@@ -368,39 +413,12 @@ href="http://www.cs.purdue.edu/homes/trinkle/detex/">detex</a>
 <dd>必需品: <a href="http://www.dehenken.co.jp/products/doccat/">doccat</a>
 -->
 
-<dt>rtf.pl
-<dd>RTF (Rich Text Format) 形式の文書を扱う
-<dd>必需品: <a href="http://www.45.free.net/~vitus/ice/misc/rtf2html.tar.gz">rtf2html</a>
-<dd>代替品: <a href="http://www.dehenken.co.jp/products/doccat/">doccat</a>
-
-<dt>ooo.pl
-<dd>OpenOffice.orgのWriter,Calc,Impress,Draw文書を扱う
+<dt>zip.pl
+<dd>zip圧縮ファイルを扱う
 <dd>必需品: <a
-href="http://www.info-zip.org/pub/infozip/UnZip.html">unzip</a>,
-<a href="http://www.ff.iij4u.or.jp/~nrt/lv/">lv</a>
-<!--
-<dd>代替品: lvのかわりに<a href="http://www.onicos.com/staff/iz/release/">unicode.pl</a>
-も利用可
--->
-<dt>apachecache.pl
-<dd>Apacheのキャッシュファイルを扱う
-<dd>必需品: なし
-<dd>注意: 元のURIへ置き換える場合は mknmzに次のオプションを使用、
- --replace=apachecache::replacecode
-
-<dt>mp3.pl
-<dd>MP3ファイルのID3タグ内データを扱う
-<dd>必需品: <a
-href="http://sourceforge.net/projects/pudge/">MP3::Info モジュール</a>(バージョン 1.01 以上)
-
-<dt>macbinary.pl
-<dd>MacBinary I,II,III ファイルを扱う
-<dd>必需品: なし
-
-<dt>applefile.pl
-<dd>AppleSingle ファイルを扱う
-<dd>必需品: なし
-
+href="http://www.info-zip.org/pub/infozip/UnZip.html">unzip</a> コマンド
+<dd>代替品: Compress::Zlibモジュール, 
+<a href="http://search.cpan.org/~nedkonz/Archive-Zip-1.13/">Archive::Zipモジュール</a>
 </dl>
 
 <p>
@@ -1154,7 +1172,7 @@ Tknamazu および namazu.el から検索するときは必ず後者で指定します。
 Copyright (C) 2000-2004 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: manual.html,v 1.85 2004-08-04 03:14:27 opengl2772 Exp $
+$Id: manual.html,v 1.86 2004-09-20 02:35:32 usu Exp $
 </div>
 <address>
 developers@namazu.org

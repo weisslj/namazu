@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- CPerl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.18 1999-08-23 01:52:59 satoru Exp $
+# $Id: mknmz.pl.in,v 1.19 1999-08-23 03:06:27 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -50,8 +50,19 @@ my %KeyIndex = ();
 my %KeyIndexLast = ();
 my %CheckPoint = ("on" => undef, "continue" => undef);
 
+$SIG{INT}  = sub {
+    warn "SIGINT caught! removing tmporary files...\n";
+    remove_temporary_files();
+    remove_lockfile($conf::File{LOCKFILE2});
 
-STDOUT->autoflush(1);                # autoflush STDOUT
+    my $errsize = -s $conf::File{ERRORSFILE};
+    unlink $conf::File{ERRORSFILE} if $errsize == 0;
+    warn "exit(2)\n";
+    
+    exit 2;
+};
+
+STDOUT->autoflush(1);
 initialize();
 
 main();
@@ -568,7 +579,7 @@ sub remove_lockfile ($) {
     my ($file) = @_;
 
     # remove lock file
-    unlink $file;
+    unlink $file if -e $file;
 }
 
 # check present index whether it is old type of not

@@ -8,6 +8,7 @@
 1999-08-23  Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>
 
 	* src/namazu.c: Implement a suicide code.
+	* src/mknmz.pl.in: Implement a signal handler for SIGINT.
 
 1999-08-13  Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>
 

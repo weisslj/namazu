@@ -2,7 +2,7 @@
  * 
  * idxname.c - Idx handling routines.
  *
- * $Id: idxname.c,v 1.1 1999-10-13 08:30:42 knok Exp $
+ * $Id: idxname.c,v 1.2 1999-10-13 09:27:20 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
@@ -37,7 +37,8 @@ int add_index(uchar *idxname)
   int newidxnum = Idx.num;
   if (newidxnum >= INDEX_MAX)
     return ERR_INDEX_MAX;
-  if ((Idx.names[newidxnum] = malloc(strlen(idxname) + 1) == NULL))
+  Idx.names[newidxnum] = (uchar *) malloc(strlen(idxname) + 1);
+  if (Idx.names[newidxnum] == NULL)
     return ERR_MALLOC;
   strcpy(Idx.names[newidxnum], idxname);
   Idx.pr[newidxnum] = NULL;

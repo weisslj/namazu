@@ -2,7 +2,7 @@
  * 
  * idxname.h - header files for Idx handling.
  *
- * $Id: idxname.h,v 1.7 2000-01-09 08:31:37 satoru Exp $
+ * $Id: idxname.h,v 1.8 2000-01-13 01:13:22 satoru Exp $
  * 
  * 
  */
@@ -22,5 +22,7 @@ extern void nmz_set_idx_totalhitnum(int id, int hitnum);
 extern struct nmz_hitnumlist *nmz_get_idx_hitnumlist(int id);
 extern void nmz_set_idx_hitnumlist(int id, struct nmz_hitnumlist *hnlist);
 extern struct nmz_hitnumlist *nmz_push_hitnum ( struct nmz_hitnumlist *hn, const char *str, int hitnum, enum nmz_stat stat );
+extern void nmz_set_defaultidx(const char *idx);
+extern char *nmz_get_defaultidx(void);
 
 #endif /* _IDXNAME_H */

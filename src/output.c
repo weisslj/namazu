@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.55 2000-01-10 12:20:35 satoru Exp $
+ * $Id: output.c,v 1.56 2000-01-13 01:13:26 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -519,8 +519,8 @@ print_hitnum_all_idx(void)
 		    char *idxname = nmz_get_idxname(idxid);
 		    if (is_cgimode()) {
 			/* For hiding a full pathname of an index */
-			idxname = 
-			    nmz_get_idxname(idxid) + strlen(DEFAULT_INDEX) + 1;
+			idxname =  nmz_get_idxname(idxid) 
+			    + strlen(nmz_get_defaultidx()) + 1;
 		    }
 		    printf("<li><strong>%s</strong>: ", idxname);
 		} else {
@@ -819,7 +819,7 @@ get_listwhence(void)
 
 
 void 
-set_template(char *tmpl)
+set_template(const char *tmpl)
 {
     strcpy(template, tmpl);
 }

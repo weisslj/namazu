@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.59 2000-01-10 20:21:10 rug Exp $
+ * $Id: search.c,v 1.60 2000-01-13 01:13:22 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -58,7 +58,7 @@
 
 enum nmz_perm { ALLOW, DENY };
 static int cur_idxnum = -1;
-
+static int tfidfmode  = 1;
 
 /*
  *
@@ -781,9 +781,7 @@ nmz_search_sub(NmzResult hlist, const char *query, int n)
         return hlist;
     }
 
-    if (TfIdf) {
-	nmz_set_docnum(get_file_size(NMZ.t) / sizeof(int));
-    }
+    nmz_set_docnum(get_file_size(NMZ.t) / sizeof(int));
 
     nmz_init_parser();
     hlist = nmz_expr(); /* Do searching! */
@@ -1043,13 +1041,6 @@ nmz_do_searching(const char *key, NmzResult val)
 	}
     }
 
-    /* 
-     * If query contains only one keyword, turn TfIdf mode off.
-     * This processing MUST be done after nmz_wakati(tmpkey).
-     */
-    if (nmz_get_querytokennum() == 1 && strchr(nmz_get_querytoken(0), '\t') == NULL)
-        TfIdf = 0;
-
     delete_beginning_backslash(tmpkey);
 
     if (mode == PREFIX_MODE) {
@@ -1091,5 +1082,17 @@ nmz_free_hitnums(struct nmz_hitnumlist *hn)
 	}
 	free(hn);
     }
+}
+
+void
+nmz_set_tfidfmode(int mode)
+{
+    tfidfmode = mode;
+}
+
+int
+nmz_is_tfidfmode(void)
+{
+    return tfidfmode;
 }
 

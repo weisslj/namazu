@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2000-01-11 08:06+0900\n"
+"POT-Creation-Date: 2000-01-13 10:13+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -14,12 +14,12 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: ENCODING\n"
 
-#: nmz/rcfile.c:567
+#: nmz/rcfile.c:576
 #, c-format
 msgid "Config:  %s\n"
 msgstr ""
 
-#: nmz/rcfile.c:570
+#: nmz/rcfile.c:579
 #, c-format
 msgid ""
 "Default: %s\n"
@@ -179,4 +179,203 @@ msgstr ""
 
 #: src/usage.c:92
 msgid "Try `namazu --help' for more information.\n"
+msgstr ""
+
+#: scripts/mknmz.pl.in:104
+msgid "target file: "
+msgstr ""
+
+#: scripts/mknmz.pl.in:146
+msgid "Reading rcfile: "
+msgstr ""
+
+#: scripts/mknmz.pl.in:180
+msgid "Checkpoint reached: re-exec mknmz...\n"
+msgstr ""
+
+#: scripts/mknmz.pl.in:313
+msgid "after load_document: "
+msgstr ""
+
+#: scripts/mknmz.pl.in:607
+msgid "Detected type: "
+msgstr ""
+
+#: scripts/mknmz.pl.in:609 scripts/mknmz.pl.in:1111
+msgid "Unsupported data type "
+msgstr ""
+
+#: scripts/mknmz.pl.in:613
+msgid "Using "
+msgstr ""
+
+#: scripts/mknmz.pl.in:615
+msgid "unable to require "
+msgstr ""
+
+#: scripts/mknmz.pl.in:623
+msgid "Faild to call "
+msgstr ""
+
+#: scripts/mknmz.pl.in:665 scripts/mknmz.pl.in:1275
+msgid "No files to index.\n"
+msgstr ""
+
+#: scripts/mknmz.pl.in:685
+msgid "code conversion: using NKF module\n"
+msgstr ""
+
+#: scripts/mknmz.pl.in:690
+msgid "wakati: using Text::Kakasi module\n"
+msgstr ""
+
+#: scripts/mknmz.pl.in:695
+msgid "wakati: using Text::ChaSen module\n"
+msgstr ""
+
+#: scripts/mknmz.pl.in:709
+msgid ""
+"found. Maybe this index is being updated by another process now.\n"
+"If not, you can remove this file.\n"
+msgstr ""
+
+#: scripts/mknmz.pl.in:738
+msgid "Present index is old type. it's unsupported.\n"
+msgstr ""
+
+#: scripts/mknmz.pl.in:888
+msgid "Inherited argv: "
+msgstr ""
+
+#: scripts/mknmz.pl.in:892
+msgid "Inherited cwd: "
+msgstr ""
+
+#: scripts/mknmz.pl.in:933
+msgid "Loaded: "
+msgstr ""
+
+#: scripts/mknmz.pl.in:948
+msgid "Invalid replace: "
+msgstr ""
+
+#: scripts/mknmz.pl.in:950
+msgid "Replace: "
+msgstr ""
+
+#: scripts/mknmz.pl.in:959
+msgid "invalid output directory\n"
+msgstr ""
+
+#: scripts/mknmz.pl.in:1048
+msgid " findfiles starting: "
+msgstr ""
+
+#: scripts/mknmz.pl.in:1066
+msgid " findfiles    ended: "
+msgstr ""
+
+#: scripts/mknmz.pl.in:1067
+#, c-format
+msgid ""
+" find_target: Scanned : (%d), Files: (%d), Elapsed: (%d), Files/sec: "
+"(%.1f).\n"
+msgstr ""
+
+#: scripts/mknmz.pl.in:1076
+msgid "lang: "
+msgstr ""
+
+#: scripts/mknmz.pl.in:1104
+msgid "is 0 size! skipped."
+msgstr ""
+
+#: scripts/mknmz.pl.in:1106
+msgid "may be a BINARY file! skipped."
+msgstr ""
+
+#: scripts/mknmz.pl.in:1108
+msgid "is too LARGE a text! skipped."
+msgstr ""
+
+#: scripts/mknmz.pl.in:1111
+msgid " skipped."
+msgstr ""
+
+#: scripts/mknmz.pl.in:1116
+msgid "system error occurred! "
+msgstr ""
+
+#: scripts/mknmz.pl.in:1253
+msgid "wanted: "
+msgstr ""
+
+#: scripts/mknmz.pl.in:1347
+msgid ""
+"\n"
+"\n"
+"== found ==\n"
+msgstr ""
+
+#: scripts/mknmz.pl.in:1348
+msgid ""
+"\n"
+"\n"
+"== registered ==\n"
+msgstr ""
+
+#: scripts/mknmz.pl.in:1349
+msgid ""
+"\n"
+"\n"
+"== overlapped  ==\n"
+msgstr ""
+
+#: scripts/mknmz.pl.in:1350
+msgid ""
+"\n"
+"\n"
+"== deleted  ==\n"
+msgstr ""
+
+#: scripts/mknmz.pl.in:1351
+msgid ""
+"\n"
+"\n"
+"== updated ==\n"
+msgstr ""
+
+#: scripts/mknmz.pl.in:1352
+msgid ""
+"\n"
+"\n"
+"== files to index ==\n"
+msgstr ""
+
+#: scripts/mknmz.pl.in:1376
+msgid "## deleted: "
+msgstr ""
+
+#: scripts/mknmz.pl.in:1399
+msgid "## indexed: "
+msgstr ""
+
+#: scripts/mknmz.pl.in:1425
+msgid "update_field_index: "
+msgstr ""
+
+#: scripts/mknmz.pl.in:1445
+msgid "was updated!\n"
+msgstr ""
+
+#: scripts/mknmz.pl.in:1486
+msgid "ERROR: malformed NMZ.r format!\n"
+msgstr ""
+
+#: scripts/mknmz.pl.in:1694
+msgid "doing write_phrase_hash() processing.\n"
+msgstr ""
+
+#: scripts/mknmz.pl.in:1921
+msgid "doing write_index() processing.\n"
 msgstr ""

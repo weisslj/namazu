@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.25 2000-01-10 13:19:11 satoru Exp $
+ * $Id: rcfile.c,v 1.26 2000-01-13 01:13:22 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -39,10 +39,18 @@
 #include "var.h"
 #include "alias.h"
 #include "replace.h"
+#include "search.h"
+#include "idxname.h"
+
+/*
+ * Default directory to place namazurc.
+ */
+static char *namazurcdir = OPT_CONFDIR;
 
 static char *errmsg  = NULL;
-static int rcfile_is_loaded = 0;
 static char namazurc[BUFSIZE] = "";
+static int  rcfile_is_loaded = 0;
+
 
 /*
  *
@@ -119,16 +127,17 @@ process_rc_index(const char *directive, const struct nmz_strlist *args)
 {
     char *arg1 = args->value;
 
-    strcpy(DEFAULT_INDEX, arg1);
+    nmz_set_defaultidx(arg1);
     return SUCCESS;
 }
 
 static enum nmz_stat
 process_rc_base(const char *directive, const struct nmz_strlist *args)
 {
-    char *arg1 = args->value;
+/* FIXME: BASE_URI support will be abolished. */
 
-    strcpy(BASE_URI, arg1);
+/*      char *arg1 = args->value; */
+/*      strcpy(BASE_URI, arg1); */
     return SUCCESS;
 }
 
@@ -181,9 +190,9 @@ process_rc_scoring(const char *directive, const struct nmz_strlist *args)
     char *arg1 = args->value;
 
     if (strcasecmp(arg1, "TFIDF") == 0) {
-	TfIdf = 1;
+	nmz_set_tfidfmode(1);
     } else if (strcasecmp(arg1, "SIMPLE") == 0) {
-	TfIdf = 0;
+	nmz_set_tfidfmode(0);
     }
     return SUCCESS;
 }
@@ -271,7 +280,7 @@ open_rcfile(const char *argv0)
     }
 
     /* Check the defalut */
-    strcpy(fname, CONFDIR);
+    strcpy(fname, namazurcdir);
     strcat(fname, "/namazurc");
     if ((fp = fopen(fname, "rb"))) {
 	strcpy(namazurc, fname);
@@ -573,11 +582,13 @@ BASE:    %s\n\
 Logging: %s\n\
 Lang:    %s\n\
 Scoring: %s\n\
-"), DEFAULT_INDEX, BASE_URI, nmz_is_loggingmode() ? "on" : "off",
-           nmz_get_lang(), TfIdf ? "tfidf" : "simple");
+"), nmz_get_defaultidx(), "unsupported", nmz_is_loggingmode() ? "on" : "off",
+           nmz_get_lang(), nmz_is_tfidfmode() ? "tfidf" : "simple");
 
     nmz_show_aliases();
     nmz_show_replaces();
+
+/* FIXME: BASE_URI support will be abolished. */
 
     /*    exit(0);*/
     return;

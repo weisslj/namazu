@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.38 2000-01-10 12:20:30 satoru Exp $
+ * $Id: hlist.c,v 1.39 2000-01-13 01:13:21 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -40,7 +40,8 @@
 #include "field.h"
 #include "var.h"
 #include "idxname.h"
-
+#include "search.h"
+#include "query.h"
 static int document_number = 0;  /* Number of documents covered in a target index */
 static char field_for_sort[BUFSIZE] = "";  /* field_for_sort name used with sorting */
 
@@ -236,7 +237,7 @@ nmz_andmerge(NmzResult left, NmzResult right, int *ignore)
 	    if (left.data[i].docid == right.data[j].docid) {
 
 		nmz_copy_hlist(left, v, left, i);
-                if (TfIdf) {
+                if (nmz_is_tfidfmode()) {
                     left.data[v].score = 
 			left.data[i].score + right.data[j].score;
                 } else {
@@ -343,7 +344,7 @@ nmz_ormerge(NmzResult left, NmzResult right)
 	for (; left.data[i].docid >= right.data[j].docid && j < right.num; j++) {
 	    if (left.data[i].docid == right.data[j].docid) {
 
-                if (TfIdf) {
+                if (nmz_is_tfidfmode()) {
                     left.data[i].score = 
 			left.data[i].score + right.data[j].score;
                 } else {
@@ -504,6 +505,8 @@ nmz_get_hlist(int index)
     int n, *buf, i;
     NmzResult hlist;
     double idf = 0;
+    int use_tfidf = 0;
+
     hlist.num  = 0;
     hlist.stat = SUCCESS;
 
@@ -514,7 +517,12 @@ nmz_get_hlist(int index)
 
     nmz_get_unpackw(Nmz.i, &n);
 
-    if (TfIdf) {
+    if (nmz_is_tfidfmode() &&
+	(nmz_get_querytokennum() > 1
+	 /* 0th token is a phrase. */
+	 || strchr(nmz_get_querytoken(0), '\t') != NULL)) 
+    {
+	use_tfidf = 1;
         idf = log((double)document_number / (n/2)) / log(2);
 	nmz_debug_printf("idf: %f (N:%d, n:%d)\n", idf, document_number, n/2);
     }
@@ -540,7 +548,7 @@ nmz_get_hlist(int index)
 	    hlist.data[i].docid = *(buf + i * 2) + sum;
 	    sum = hlist.data[i].docid;
 	    hlist.data[i].score = *(buf + i * 2 + 1);
-            if (TfIdf) {
+            if (use_tfidf) {
                 hlist.data[i].score = (int)(hlist.data[i].score * idf) + 1;
             }
 	}

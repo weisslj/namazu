@@ -1,3 +1,26 @@
+2000-01-13  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* nmz/hlist.c (nmz_get_hlist): Modify the way to handle tfidf.
+
+	* nmz/search.c (nmz_do_searching): Abolish tfidf handling in the func.
+
+	* nmz/idxname.c (nmz_set_defaultidx): New function.
+	(nmz_get_defaultidx): Ditto.
+
+	* nmz/rcfile.c (namazurcdir): Move from var.c.
+
+	* nmz/search.c (nmz_set_tfidfmode): New function.
+	(nmz_is_tfidfmode): Ditto.
+	(nmz_search_sub): Do not check nmz_is_tfidfmode() to call
+	nmz_set_docnum(). 
+
+	* nmz/var.c (TfIdf): Abolished. All users changed.
+	(CONFDIR): Abolished. All users changed.
+	(BASE_URI): Abolished. All users changed.
+	(DEFAULT_INDEX): Abolished. All users changed.
+
+	* src/output.c (set_template): Make parameter(s) be const.
+
 2000-01-12  Ryuji Abe  <raeva@t3.rim.or.jp>
 
 	* po/POTFILES.in: Added scripts/mknmz.pl.in.

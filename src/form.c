@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.44 2000-01-10 12:20:35 satoru Exp $
+ * $Id: form.c,v 1.45 2000-01-13 01:13:25 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -268,7 +268,8 @@ check_checkbox(char *str)
             }
             for (i = 0; i < nmz_get_idxnum(); i++) {
                 if (strcmp(name, 
-			   nmz_get_idxname(i) + strlen(DEFAULT_INDEX) + 1) == 0) 
+			   nmz_get_idxname(i) + 
+			   strlen(nmz_get_defaultidx()) + 1) == 0) 
 		{
                     searched++;
                     break;
@@ -376,9 +377,10 @@ print_headfoot(const char * fname, const char * query, const char *subquery)
     }
 
     for (p = buf, f = f2 = 0; *p; p++) {
-        if (BASE_URI[0] && (nmz_strprefixcasecmp(p, "\n</head>") == 0)) {
-            printf("\n<base href=\"%s\">", BASE_URI);
-        }
+/* FIXME: BASE_URI support will be abolished. */
+/*          if (BASE_URI[0] && (nmz_strprefixcasecmp(p, "\n</head>") == 0)) { */
+/*              printf("\n<base href=\"%s\">", BASE_URI); */
+/*          } */
 
         if (f == 0 && *p == '<') {
             if (nmz_strprefixcasecmp(p, "</title>") == 0) {

@@ -2,7 +2,7 @@
  * 
  * idxname.c - Idx handling routines.
  *
- * $Id: idxname.c,v 1.21 2000-01-10 12:20:30 satoru Exp $
+ * $Id: idxname.c,v 1.22 2000-01-13 01:13:21 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
@@ -41,6 +41,12 @@
 #include "util.h"
 
 static struct nmz_indices indices = {0}; /* Initialize member `num' with 0 */
+
+/*
+ * Default directory to place index. This setting can be
+ * changed with nmz_set_defaultidx().
+ */
+static char defaultidx[BUFSIZE] = OPT_INDEXDIR;
 
 /*
  *
@@ -129,7 +135,7 @@ nmz_expand_idxname_aliases(void)
 
 /*
  * Complete an abbreviated index name to completed one.
- * e.g.,  +foobar -> (DEFAULT_INDEX)/foobar
+ * e.g.,  +foobar -> (defaultidx)/foobar
  */
 int 
 nmz_complete_idxnames(void)
@@ -139,13 +145,13 @@ nmz_complete_idxnames(void)
     for (i = 0; i < indices.num; i++) {
  	if (*indices.names[i] == '+' && isalnum(*(indices.names[i] + 1))) {
 	    char *tmp;
-	    tmp = malloc(strlen(DEFAULT_INDEX) 
+	    tmp = malloc(strlen(defaultidx) 
 				  + 1 + strlen(indices.names[i]) + 1);
 	    if (tmp == NULL) {
 		nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
 		return FAILURE;
 	    }
-	    strcpy(tmp, DEFAULT_INDEX);
+	    strcpy(tmp, defaultidx);
 	    strcat(tmp, "/");
 	    strcat(tmp, indices.names[i] + 1);  /* +1 means '+' */
 	    free(indices.names[i]);
@@ -243,3 +249,14 @@ nmz_push_hitnum(struct nmz_hitnumlist *hn,
 }
 
 
+void 
+nmz_set_defaultidx(const char *idx)
+{
+    strcpy(defaultidx, idx);
+}
+
+char *
+nmz_get_defaultidx(void)
+{
+    return defaultidx;
+}

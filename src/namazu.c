@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.87 2000-01-10 10:38:17 satoru Exp $
+ * $Id: namazu.c,v 1.88 2000-01-13 01:13:26 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -337,7 +337,8 @@ make_fullpathname_msg(void)
     if (nmz_get_idxnum() == 1) {
         base = nmz_get_idxname(0);
     } else {
-        base = DEFAULT_INDEX;
+	/* Multiple indices are targeted. */
+        base = nmz_get_defaultidx();
     }
     
     nmz_pathcat(base, NMZ.head);
@@ -434,7 +435,8 @@ main(int argc, char **argv)
             }
         } 
         if (nmz_get_idxnum() == 0) {
-	    if (nmz_add_index(DEFAULT_INDEX) != SUCCESS) {
+	    /* Use defaultidx for taget. */
+	    if (nmz_add_index(nmz_get_defaultidx()) != SUCCESS) {
 		die("invalid idxname: %s", argv[i]);
 	    }
 	}

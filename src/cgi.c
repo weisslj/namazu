@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.50 2000-01-10 12:20:35 satoru Exp $
+ * $Id: cgi.c,v 1.51 2000-01-13 01:13:25 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -488,7 +488,7 @@ process_cgi_var_idxname(char *value, struct cgiarg *ca)
 	validate_idxname(name);
 	remove_ending_slashes(name);
 
-	strcpy(tmp, DEFAULT_INDEX);
+	strcpy(tmp, nmz_get_defaultidx());
 	strcat(tmp, "/");
 	strcat(tmp, name);
 	if (nmz_add_index(tmp) != SUCCESS) {
@@ -520,8 +520,9 @@ init_cgi(char *query, char *subquery)
     }
 
     if (nmz_get_idxnum() == 0) {
-	if (nmz_add_index(DEFAULT_INDEX) != SUCCESS) {
-	    nmz_warn_printf("invalid idxname: %s", DEFAULT_INDEX);
+	/* Use defaultidx for taget. */
+	if (nmz_add_index(nmz_get_defaultidx()) != SUCCESS) {
+	    nmz_warn_printf("invalid idxname: %s", nmz_get_defaultidx());
 	}
     } 
 }

@@ -103,7 +103,7 @@ libdir = $(pkgdatadir)/lib
 filterdir = $(pkgdatadir)/filter
 templatedir = $(pkgdatadir)/template
 
-namazu_SOURCES = cgi.c codeconv.c conf.c field.c form.c getopt.c 		 getopt1.c hlist.c message.c namazu.c output.c parser.c re.c 		 result.l regex.c search.c seed.c util.c var.c wakati.c usage.c
+namazu_SOURCES = cgi.c codeconv.c conf.c field.c form.c getopt.c 		 getopt1.c hlist.c message.c namazu.c output.c parser.c re.c 		 result.l regex.c search.c seed.c util.c usage.c var.c wakati.c
 
 noinst_HEADERS = namazu.h regex.h util.h getopt.h field.h codeconv.h 		 form.h usage.h hlist.h re.h output.h conf.h em.h 		 magic.h critical.h
 
@@ -121,8 +121,8 @@ namazu_OBJECTS =  cgi.$(OBJEXT) codeconv.$(OBJEXT) conf.$(OBJEXT) \
 field.$(OBJEXT) form.$(OBJEXT) getopt.$(OBJEXT) getopt1.$(OBJEXT) \
 hlist.$(OBJEXT) message.$(OBJEXT) namazu.$(OBJEXT) output.$(OBJEXT) \
 parser.$(OBJEXT) re.$(OBJEXT) result.$(OBJEXT) regex.$(OBJEXT) \
-search.$(OBJEXT) seed.$(OBJEXT) util.$(OBJEXT) var.$(OBJEXT) \
-wakati.$(OBJEXT) usage.$(OBJEXT)
+search.$(OBJEXT) seed.$(OBJEXT) util.$(OBJEXT) usage.$(OBJEXT) \
+var.$(OBJEXT) wakati.$(OBJEXT)
 namazu_LDADD = $(LDADD)
 namazu_DEPENDENCIES = 
 namazu_LDFLAGS = 

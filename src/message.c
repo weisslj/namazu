@@ -2,7 +2,7 @@
  * 
  * messages.c -
  * 
- * $Id: message.c,v 1.4 1999-08-27 10:05:12 satoru Exp $
+ * $Id: message.c,v 1.5 1999-08-27 10:25:31 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -152,6 +152,9 @@ Usage: namazu [options] <query> [index dir(s)] \n\
         MSG_REFERENCE_HEADER = (uchar *)"Word count: ";
         MSG_INVALID_DB_NAME = (uchar *)"Invalid dbname.";
     }
+    strcpy(NMZ.head, "NMZ.head.");
+    strcpy(NMZ.foot, "NMZ.foot.");
+    strcpy(NMZ.body, "NMZ.body.");
     strcat(NMZ.head, Lang);
     strcat(NMZ.foot, Lang);
     strcat(NMZ.body, Lang);

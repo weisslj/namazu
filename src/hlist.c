@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.10 1999-08-27 10:05:12 satoru Exp $
+ * $Id: hlist.c,v 1.11 1999-08-27 10:25:31 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -34,7 +34,7 @@
 #include "util.h"
 #include "hlist.h"
 
-static DocNum = 0;  /* Number of documents covered in atarget index */
+static int DocNum = 0;  /* Number of documents covered in atarget index */
 
 /************************************************************
  *

@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.127 2004-01-23 16:44:46 opengl2772 Exp $
+# $Id: mknmz.in,v 1.128 2004-01-30 14:22:15 opengl2772 Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -684,6 +684,12 @@ sub get_field_index_base (\%) {
 sub complete_field_info (\%$$\$\$\$) {
     my ($fields, $cfile, $uri, $headings, $contref, $wsref) = @_;
 
+    for my $field (keys %{$fields}) {
+        if ($fields->{$field} =~ /^\s*$/) {
+            delete $fields->{$field};
+        }
+    }
+
     unless (defined($fields->{'title'})) {
 	$fields->{'title'} = gfilter::filename_to_title($cfile, $wsref);
     }
@@ -808,9 +814,8 @@ sub put_field_index (\%$) {
 	    # Remove a garbage Kanji 1st char at the end.
 	    $output = codeconv::chomp_eucjp($output);
 
-            my $data;
-            ($data) = split(/\x00|\n/, $output);
-            $output = $data . "\n";
+            $output =~ s/\n.*$//s;
+            $output .= "\n";
 	} else {
 	    $output = "\n";
 	}
@@ -942,6 +947,10 @@ sub apply_filter($$$$$$$) {
 		  '::filter($orig_cfile, $contref, $weighted_str, $headings, $fields);';
 	    }
 	    if ($err) {
+		if ($err =~ m/; x-system=unsupported$/) {
+		    return (0, $err);
+		}
+
 		return (0, "$mtype; x-error=$err");
 	    }
 
@@ -1635,7 +1644,15 @@ sub check_file ($$$$$) {
     my ($cfile, $cfile_size, $text_size, $mtype, $uri) = @_;
 
     my $msg = undef;
-    if (! util::isurl($cfile) && ! -e $cfile) {
+    if ($mtype =~ /; x-system=unsupported$/) {
+	$mtype =~ s/; x-system=unsupported$//;
+	$msg = _("Unsupported media type ")."($mtype)"._(" skipped.");
+    } elsif ($mtype =~ /; x-error=.*$/) {
+	$mtype =~ s/^.*; x-error=(.*)$/$1/;
+	$msg = $mtype;
+    } elsif ($mtype =~ /^x-system/) {
+	$msg = _("system error occurred! ")."($mtype)"._(" skipped.");
+    } elsif (! util::isurl($cfile) && ! -e $cfile) {
 	$msg = _("does NOT EXIST! skipped.");
     } elsif (! util::isurl($cfile) && ! -r $cfile) {
 	$msg = _("is NOT READABLE! skipped.");
@@ -1647,14 +1664,6 @@ sub check_file ($$$$$) {
 	$msg = _("is larger than your setup before filtered, skipped: ") . 'conf::FILE_SIZE_MAX (' . $conf::FILE_SIZE_MAX . ') < '. $cfile_size ;
     } elsif ($text_size > $conf::TEXT_SIZE_MAX) {
 	$msg = _("is larger than your setup after filtered, skipped: ") . 'conf::TEXT_SIZE_MAX (' . $conf::TEXT_SIZE_MAX . ') < '. $text_size ;
-    } elsif ($mtype =~ /; x-system=unsupported$/) {
-	$mtype =~ s/; x-system=unsupported$//;
-	$msg = _("Unsupported media type ")."($mtype)"._(" skipped.");
-    } elsif ($mtype =~ /; x-error=.*$/) {
-	$mtype =~ s/^.*; x-error=(.*)$/$1/;
-	$msg = $mtype;
-    } elsif ($mtype =~ /^x-system/) {
-	$msg = _("system error occurred! ")."($mtype)".(" skipped.");
     } 
 
     return $msg;

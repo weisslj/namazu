@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: macbinary.pl,v 1.3 2004-01-09 23:43:29 usu Exp $
+# $Id: macbinary.pl,v 1.4 2004-01-30 14:22:14 opengl2772 Exp $
 # Copyright (C) 2003 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -110,11 +110,16 @@ sub filter ($$$$$) {
     my ($kanji, $mtype) = mknmz::apply_filter($orig_cfile, \$datafork,
                         $weighted_str, $headings, $fields, 
                         $dummy_shelterfilename, $mmtype);
-    if (($mtype =~ /; x-system=unsupported$/) ||
-        ($mtype =~ /; x-error=.*$/)){
+    if ($mtype =~ /; x-system=unsupported$/){
         $$contref = "";
         $err = "filter/macbinary.pl gets error from other filter";
         util::dprint($err);
+        $err = $mtype;
+    }elsif ($mtype =~ /; x-error=(.*)$/){
+        $$contref = "";
+        $err = "filter/macbinary.pl gets error from other filter";
+        util::dprint($err);
+        $err = $1;
     }else{
         $$contref = $datafork;
         gfilter::show_filter_debug_info($contref, $weighted_str,

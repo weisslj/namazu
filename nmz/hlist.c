@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.62 2004-01-20 09:22:25 opengl2772 Exp $
+ * $Id: hlist.c,v 1.63 2004-01-30 14:22:18 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -134,6 +134,7 @@ field_sort(NmzResult hlist)
 
     for (i = 0; i < hlist.num; i++) {
 	free(hlist.data[i].field);
+	hlist.data[i].field = NULL;
     }
     return 0;
 }

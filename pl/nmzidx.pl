@@ -3,7 +3,7 @@
 # nmzidx.pl - subroutines for accessing Namazu index files (NMZ.*)
 #         by furukawa@tcp-ip.or.jp
 #
-# $Id: nmzidx.pl,v 1.16 2004-01-23 16:44:46 opengl2772 Exp $
+# $Id: nmzidx.pl,v 1.17 2004-01-30 14:22:16 opengl2772 Exp $
 #
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -143,7 +143,8 @@ sub putline{
     if (@_){
         my $output;
 
-        ($output) = split(/\x00|\n/, shift);
+        $output = shift;
+        $output =~ s/\n.*$//s;
         $output .= "\n";
 
         $self->{'index'}->print(pack('N', $self->{'body'}->tell));

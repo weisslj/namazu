@@ -1,3 +1,19 @@
+2004-01-30  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * filter/macbinary.pl, script/mknmz.in(check_file): 
+        The order of evaluation of an error is changed.
+
+        * script/mknmz.in(put_field_index): Deletion of '\n' and the
+        nul character.
+
+        * pl/nmzidx.pl: Deletion of '\n' and the nul character.
+
+        * pl/gfilter.pl(white_space_adjust_filter): When $$text is not 
+        defined, it corrects so that a return may be performed.
+
+        * nmz/hlist.c: After free() It corrects so that NULL may be 
+        substituted.
+
 2004-01-26  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * filter/msword.pl: The bug which disregards the second session
@@ -8328,4 +8344,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1082 2004-01-26 13:45:56 opengl2772 Exp $
+$Id: ChangeLog,v 1.1083 2004-01-30 14:22:13 opengl2772 Exp $

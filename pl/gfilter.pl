@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: gfilter.pl,v 1.2 2001-09-21 08:12:03 knok Exp $
+# $Id: gfilter.pl,v 1.3 2004-01-30 14:22:16 opengl2772 Exp $
 # Copyright (C) 1999 Satoru Takabayashi ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -37,6 +37,7 @@ sub show_filter_debug_info ($$$$) {
 # Adjust white spaces
 sub white_space_adjust_filter ($) {
     my ($text) = @_;
+    return undef unless defined($$text);
 
     $$text =~ s/[ \t]+/ /g;
     $$text =~ s/\r\n/\n/g;

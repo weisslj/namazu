@@ -1,8 +1,9 @@
 #
 # -*- Perl -*-
-# $Id: zip.pl,v 1.5 2004-05-02 00:12:52 usu Exp $
+# $Id: zip.pl,v 1.6 2004-05-04 06:08:47 usu Exp $
 #  zip filter for namazu
 #  Copyright (C) 2004 MATSUMURA Namihiko <po-jp@counterghost.net>
+#                2004 Yukio USUDA <usu@namazu.org>
 #                2004 Namazu Project All rights reserved.
 #
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -25,8 +26,6 @@
 
 package zip;
 use strict;
-use File::Find;
-use Cwd;
 require 'util.pl';
 
 my $unzippath;
@@ -63,31 +62,30 @@ sub filter ($$$$$) {
     my ($orig_cfile, $contref, $weighted_str, $headings, $fields)
       = @_;
 
-    my $tmpfile = util::tmpnam('NMZ.zip');
+    my $depth = 0;
+    my $tmpfile;
+    do {
+	$tmpfile = util::tmpnam('NMZ.zip' . substr("000$depth", -1, 4));
+	$depth++;
+    } while ( -f $tmpfile);
+
     {
 	my $fh = util::efopen("> $tmpfile");
 	print $fh $$contref;
         util::fclose($fh);
     }
 
-    my $tmpdir = util::tmpnam('NMZ.zip_dir');
-    my $cwd = cwd();
-    $tmpdir = mknmz::absolute_path($cwd, $tmpdir);
-    rm_r($tmpdir) if (-d $tmpdir);
-    mkdir($tmpdir);
-
     util::vprint("Processing zip file ... (using  '$unzippath')\n");
 
     $$contref = "";
 
-    my $status = system("$unzippath -P passwd -qq -d $tmpdir $tmpfile");
+    my $status = system("$unzippath -P passwd -qq -t $tmpfile");
     if ($status != 0) {
         unlink($tmpfile);
-        rm_r($tmpdir);
         return 'Unable to convert zip file (maybe copying protection)';
     }
 
-    my $tmpfile2 = util::tmpnam('NMZ.zip2');
+    my $tmpfile2 = util::tmpnam('NMZ.zip_comment');
     $status = system("$unzippath -z -qq $tmpfile > $tmpfile2");
     if ($status == 0) {
 	my $summary = util::readfile("$tmpfile2");
@@ -96,62 +94,62 @@ sub filter ($$$$$) {
     }
     unlink($tmpfile2);
 
-    my @files = ();
-    my $findfiles = sub {
-	my $tmpfile = "$File::Find::dir/$_";
-	if (-f $tmpfile) {
-	    my $size = util::filesize($tmpfile);
-	    if ($size == 0) {
-		util::dprint("filesize is 0");
-	    } elsif ($size > $conf::FILE_SIZE_MAX) {
-		util::dprint("Too large ziped file");
-	    } else {
-		push @files, $tmpfile;
+    my %files;
+    my $filenames;
+    $status = system("$unzippath -Z $tmpfile > $tmpfile2");
+    if ($status == 0) {
+	my $filelist = util::readfile("$tmpfile2");
+	while ($filelist =~/\n\S+\s+	# permission
+			\S+\s+		# version
+			(\S+)\s+	# filesystem
+			(\d+)\s+	# filesize
+			\S+\s+		#
+			\S+\s+		#
+			\S+\s+		# day-month-year
+			\S+\s+		# hour:min
+			(.+)/gx){	# filename
+	    my $filename = $3;
+	    $files{$filename} = $2;
+	    my $filesystem = $1;
+	    # The unzip output japanese filename incorrectly when filesystem
+	    # attribute is 'fat' or 'hpfs'.
+	    if ($filesystem =~ /unx|nft/) {
+		$filename = './' . $filename;
+		codeconv::toeuc(\$filename);
+		$filename = gfilter::filename_to_title($filename, $weighted_str);
+		$filenames .= $filename . " ";
 	    }
-	    codeconv::toeuc(\$tmpfile);
-	    $tmpfile = gfilter::filename_to_title($tmpfile, $weighted_str);
-	    $$contref .= $tmpfile . " ";
-	} elsif (-d $tmpfile) {
-	    chmod(0755, $tmpfile);
+	}
+    }
+    $$contref .= $filenames . " ";
+
+    my $fname;
+    foreach $fname (keys %files){
+	my $size = $files{$fname};
+	if ($size == 0) {
+	    util::dprint("$fname: filesize is 0");
+	} elsif ($size > $conf::FILE_SIZE_MAX) {
+	    util::dprint("$fname: Too large ziped file");
+	} else {
+	    my $con = "";
+	    my $fh = util::efopen("$unzippath -p $tmpfile \"$fname\"|");
+	    while (defined(my $line = <$fh>)){
+		$con .= $line;
+	    }
+	    my $unzippedname = "unzipped_content";
+	    if ($fname =~ /.*(\..*)/){
+		$unzippedname = $unzippedname . $1;
+	    }
+	    my $err = zip::nesting_filter($unzippedname, \$con, $weighted_str);
+	    if (defined $err) {
+		util::dprint("filter/zip.pl gets error message \"$err\"");
+	    }
+	    $$contref .= $con . " ";
+	    util::fclose($fh);
 	}
     };
-
-    find ($findfiles, $tmpdir);
     unlink($tmpfile);
-
-    foreach my $tmpfile (@files) {
-	my $fh = util::efopen("$tmpfile");
-	my $con = util::readfile($fh);
-	my $err = zip::nesting_filter($tmpfile, \$con, $weighted_str);
-	if (defined $err) {
-	    util::dprint("filter/zip.pl gets error message \"$err\"");
-	}
-	$$contref .= $con . " ";
-	util::fclose($fh);
-	unlink($tmpfile);
-    }
-
-    rm_r($tmpdir);
     return undef;
-}
-
-sub rm_r {
-    my ($targetdir) = @_;
-    my @dirs;
-    my $sub = sub {
-	my $tmpfile = "$File::Find::dir/$_";
-	if (-f $tmpfile) {
-	    unlink($tmpfile);
-	} elsif (-d $tmpfile) {
-	    chmod(0755, $tmpfile);
-	    unshift @dirs, $tmpfile
-	}
-    };
-    find($sub, $targetdir);
-    foreach (@dirs) {
-	rmdir $_;
-    }
-    rmdir $targetdir;
 }
 
 sub nesting_filter ($$$){

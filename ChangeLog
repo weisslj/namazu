@@ -1,3 +1,8 @@
+2004-05-04  Yukio USUDA <usu@namazu.org>
+
+	* filter/zip.pl: Redesign the filter module to unzip archived files
+	one by one.(Workaround for unsupported charcter in filename.)
+
 2004-05-03  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * namazu.spec.in: RedHat software namazu.spec was taken in.
@@ -8824,4 +8829,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1167 2004-05-03 21:28:08 opengl2772 Exp $
+$Id: ChangeLog,v 1.1168 2004-05-04 06:08:46 usu Exp $

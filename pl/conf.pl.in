@@ -24,17 +24,15 @@ $WAKATI  = $@OPT_WAKATI_DEFAULT@;
 ## Default Values
 ##
 
-$LANGUAGE = "@OPT_LANGUAGE@";  # language of messages
-
 ## Files can be omission in URI. e.g. index.html
 ## name of the file or files which can be abbreviated.
 ## (specify by regular expression)
 ## e.g. index.html|index.htm|Default.html
-## it's useful to use Namazu as WWW search engine.
+## it's useful to use Namazu as a WWW search engine.
 $DEFAULT_FILE = "index.html";
 
 ## Target files' regex. (case insensitive)
-## Do *not* use '$' and '^' regular expression meta charactors.
+## Do *not* use '$' and '^' regular expression meta characters.
 ## That will be automatically added by mknmz.
 $ALLOW_REGEX = '.*\.html?|.*\.txt|.*_default|.*\.pdf|.*\.doc';
 
@@ -42,7 +40,7 @@ $ALLOW_REGEX = '.*\.html?|.*\.txt|.*_default|.*\.pdf|.*\.doc';
 ## this regular expression describes the names of the files which
 ## you do *not* want to index (case insensitive). this setting is
 ## effective when mknmz runs with -a option.
-## Do *not* use '$' and '^' regular expression meta charactors.
+## Do *not* use '$' and '^' regular expression meta characters.
 ## that will be automatically appended by mknmz.pl.
 ##
 $DENY_REGEX = '.*\.gif|.*\.(jpg|jpeg)|.*\.tar\.gz|core|.*\.bak|.*~|\..*|\x23.*|NMZ\..*';

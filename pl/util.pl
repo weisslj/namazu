@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.2 1999-10-11 04:25:19 satoru Exp $
+# $Id: util.pl,v 1.3 1999-11-03 05:12:13 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -209,6 +209,16 @@ sub remove_tmpfiles () {
     push @list, $var::NMZ{'lock2'} if -f $var::NMZ{'lock2'};
     dprint("Remove tmporary files:", @list);
     unlink @list;
+}
+
+sub islang($) {
+    my ($lang) = @_;
+
+    if ($lang =~ /^$mknmz::LANG/) {  # prefix matching
+	return 1;
+    } else {
+	return 0;
+    }
 }
 
 1;

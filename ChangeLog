@@ -1,5 +1,13 @@
 1999-11-03  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/mknmz.pl.in (init): Implement $LNAG handling.
+
+	* src/mknmz.pl.in, pl/codeconv.pl: Use util::islang().
+
+	* pl/util.pl (islang): New subroutine.
+
+	* pl/conf.pl.in: Set $LANGUAGE to "C".
+
 	* configure.in: Abolish --with-japanese and --with-lang=LANG.
 	Change order of --with-* options and reindent.
 

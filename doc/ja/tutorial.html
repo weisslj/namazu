@@ -9,18 +9,6 @@
 <body>
 <a name="INDEX"></a>
 <h2>Namazu 2.0 tutorial</h2>
-Namazu 2.0 を初めて使う方のための情報を用意して見ました。
-<p>
-この文章は、2.0 が Release の形で公開されたことを前提として
-書いています。公開される前にこの文章をお読みになる場合、
-<ul>
-<li>cvs または snapshot 版の入手
-<li>m4 1.4, automake, autoconf, libtool の設置
-<li>./autogen.sh の実行
-</ul>
-が必要になります。それらについては 
-<a href="diary.shtml">cvs 版について</a>も参照して下さい。
-
 <h3>目次</h3>
   <ul>
   <li><a href="#MISSION">本文の目的</a>
@@ -50,9 +38,9 @@ Namazu 2.0 を初めて使う方のための情報を用意して見ました。
 を対象に、Namazu を使い始める時の困難が少しでも少なくな
 るようにという目的で書かれています。
 Namazu の全ての機能については、
-<a href="doc/ja/manual.html">説明書</a> がありますので、そちらを
+<a href="manual.html">説明書</a> がありますので、そちらを
 参照して下さい。また設置についても
-<a href="../../INSTALL.ja">別途説明</a>
+<a href="../../INSTALL-ja">別途説明</a>
 があります。
 
 <!-- ----------------------------------------------------- -->
@@ -119,7 +107,7 @@ Namazu の版には(大きく分けて) 1.3 以前, 1.4, 1.9, 2.0 の四つがあり
   <dd>今回公開されたもの
 <dt>2.0-current
   <dd>次の版に向けて開発の続いているもの
-<a href="http://openlab.ring.gr.jp/namazu/development.html.ja">
+<a href="http://openlab.ring.gr.jp/namazu/development.html">
 2.0-current </a> は CVS で取得出来ます。
 </dl>
 
@@ -197,7 +185,7 @@ CPAN</a></td>
   </tr>
 <!--------------------- K A K A S I ------------------------->
 <tr bgcolor="#80B080">
- <td><a href="http://kakasi.namazu.org/index.html.ja">kakasi</a></td>
+ <td><a href="http://kakasi.namazu.org/index.html">kakasi</a></td>
  <td>日本語・ <nobr>ローマ字</nobr> 変換系<td>△</td><td>2.3.1</td><td><=</td>
  <td><a href="ftp://kakasi.namazu.org/pub/kakasi/kakasi-2.3.1.tar.gz">
  kakasi-2.3.1.tar.gz</a></td>
@@ -331,7 +319,7 @@ ranlib -t /usr/local/lib/libchasen.a
 とする必要があります。
 
 <li>×となっている File-MMagiz は通常同梱されていて自動で入ります。
-<li> namazu 自体の ./configure については <a href="../../INSTALL.ja">INSTALL.ja</a>
+<li> namazu 自体の ./configure については <a href="../../INSTALL-ja">INSTALL-ja</a>
 を見て下さい。
 </ul>
 
@@ -374,7 +362,7 @@ cd scripts してから ./mknmz とすると、
 
 は覚えておくといいと思います。 
 上にも書きましたが、全ての機能については別の
-<a href="doc/ja/manual.html">説明書</a> がありますので、そちらを
+<a href="manual.html">説明書</a> がありますので、そちらを
 参照して下さい。
 
 <!-------------------------------------------------------------->
@@ -541,7 +529,7 @@ Supported media types:
 
 <h4>conf.pl</h4>
 namazu-1.9.5/lib/conf.pl が設置される先の
-<tt><a href="conf.pl">/usr/local/share/namazu/lib/conf.pl</a></tt> 
+<tt><a href="../../pl/conf.pl">/usr/local/share/namazu/lib/conf.pl</a></tt> 
 に定義されている<a href="conf.pl.shtml">変数</a>は
 ~/.mknmzrc の中に設定変更を書くことが出来る。
 (以前は
@@ -572,7 +560,7 @@ Time: 1261 sec.
 <!-------------------------->
 <h3><a href="#INDEX" name="RUN_NAMAZU">【動作確認 namazu】</a></h3>
 さまざまな設定は<tt>
-<a href="http://openlab.ring.gr.jp/namazu/manual.html.ja#NAMAZU_CONF">
+<a href="http://openlab.ring.gr.jp/namazu/manual.html#NAMAZU_CONF">
 /usr/local/share/namazu/conf/namazu.conf</a></tt>
 に書くことが出来ます。
 namazu.conf の設定例は 配布の中の <tt>lib/namazu.conf-dist</tt> に
@@ -668,7 +656,7 @@ Namazu は<pre>
 <dd>二つ以上の検索索引を作っておいて、それらの中をまとめて
 検索する機能
 
-<a href="http://openlab.ring.gr.jp/namazu/manual.html.ja#MULTIPLE_INDICES ">説明書の中に実現方法</a>が書いてある。
+<a href="http://openlab.ring.gr.jp/namazu/manual.html#MULTIPLE_INDICES ">説明書の中に実現方法</a>が書いてある。
 
 <dt>フレーズ検索
 <dd>
@@ -702,7 +690,7 @@ Namazu の動作を make 時から変更したいというような時に、その
 設定が書ける。
 説明は次のところにある。
 
-<a href="http://openlab.ring.gr.jp/namazu/manual.html.ja#NAMAZU_CONF        ">http://openlab.ring.gr.jp/namazu/manual.html.ja#NAMAZU_CONF</a>
+<a href="http://openlab.ring.gr.jp/namazu/manual.html#NAMAZU_CONF        ">http://openlab.ring.gr.jp/namazu/manual.html.ja#NAMAZU_CONF</a>
 <tt>
 INDEX, REPLACE, BASE, WAKATI, LOGGING OFF, LANG ja
 </tt>

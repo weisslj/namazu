@@ -1,3 +1,7 @@
+2000-03-23  Ken-ichi Hirose  <kenzo-@tama.or.jp>
+
+	* filter/ichitaro456.pl (status): Fixed check doscmd and jstxt.exe.
+
 2000-03-23  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* filter/gzip.pl, compress.pl, bzip2.pl (filter_file): 
@@ -5359,4 +5363,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.655 2000-03-23 10:41:04 knok Exp $
+$Id: ChangeLog,v 1.656 2000-03-23 14:53:35 kenzo- Exp $

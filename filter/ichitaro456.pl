@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: ichitaro456.pl,v 1.10 2000-03-22 21:10:52 kenzo- Exp $
+# $Id: ichitaro456.pl,v 1.11 2000-03-23 14:53:35 kenzo- Exp $
 # Copyright (C) 1999 Ken-ichi Hirose,
 #               2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -32,6 +32,7 @@ require 'util.pl';
 require 'gfilter.pl';
 
 my $ichitaro456 = undef;
+my $doscmd = undef;
 
 sub mediatype() {
     return ('application/ichitaro4', 'application/ichitaro5', 'application/ichitaro6');
@@ -39,10 +40,17 @@ sub mediatype() {
 
 sub status() {
     $ichitaro456 = util::checkcmd('jstxt.exe');
-    return 'yes' if (defined $ichitaro456 && $mknmz::SYSTEM eq "MSWin32");
-	my $doscmd = util::checkcmd('doscmd');
-	$ichitaro456 = "$doscmd $ichitaro456", return 'yes'
-     if (defined $doscmd);
+    if (defined $ichitaro456) {
+    if ($mknmz::SYSTEM eq "MSWin32") {
+        return 'yes';
+    } else {
+    $doscmd = util::checkcmd('doscmd');
+    if (defined $doscmd) {
+        $ichitaro456 = "$doscmd $ichitaro456";
+        return 'yes';
+    }
+    }
+    }
     return 'no';
 }
 

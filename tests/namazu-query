@@ -6,7 +6,6 @@ LOG=`pwd`/test-log
 IDX=`pwd`/idx8
 TMP=`pwd`/tmp
 
-
 cd ../src
 
 M0="$TMP.0"      # no hit
@@ -44,6 +43,40 @@ cmp $TMP $M1 || exit 1 # error if not matched
 cmp $TMP $M12 || exit 1
 
 #
+# Check PHRASE searching.
+# Matches: 1.txt 2.txt
+#
+./namazu -l '"bar baz"' $IDX | sort > $TMP
+cmp $TMP $M12 || exit 1
+
+# isomorphism
+./namazu -l '{bar baz}' $IDX | sort > $TMP
+cmp $TMP $M12 || exit 1
+
+
+#
+# Check PHRASE searching.
+# Matches: 1.txt
+#
+./namazu -l '"foo bar baz qux quux"' $IDX | sort > $TMP
+cmp $TMP $M1 || exit 1
+
+#
+# Check PHRASE searching.
+# Matches: no hit
+#
+./namazu -l '"bar foo"' $IDX | sort > $TMP
+cmp $TMP $M0 || exit 1
+
+#
+# Check PHRASE searching.
+# Matches: no hit
+#
+./namazu -l '"foo bar qux"' $IDX | sort > $TMP
+cmp $TMP $M0 || exit 1
+
+
+#
 # Check WORD searching.
 # Matches: 1.txt 2.txt 3.txt
 #
@@ -51,39 +84,60 @@ cmp $TMP $M12 || exit 1
 cmp $TMP $M123 || exit 1
 
 #
-# Check prefix searching.
+# Check PREFIX searching.
 # Matches: 1.txt
 #
 ./namazu -l 'f*' $IDX | sort > $TMP
 cmp $TMP $M1 || exit 1
 
 #
-# Check suffix searching.
+# Check SUFFIX searching.
 # Matches: 3.txt
 #
 ./namazu -l '*ult' $IDX | sort > $TMP
 cmp $TMP $M3 || exit 1
 
 #
-# Check substring searching.
+# Check SUBSTRING searching.
 # Matches: 1.txt and 2.txt 3.txt
 #
 ./namazu -l '*u*' $IDX | sort > $TMP
 cmp $TMP $M123 || exit 1
 
 #
-# Check regex searching.
+# Check REGEX searching.
 # Matches: 2.txt 3.txt
 #
 ./namazu -l '/c.*e/' $IDX | sort > $TMP
 cmp $TMP $M23 || exit 1
 
 #
-# Check regex searching.
+# Check REGEX searching.
 # Matches: 1.txt 2.txt 3.txt
 #
 ./namazu -l '/(foo|corge|grault)/' $IDX | sort > $TMP
 cmp $TMP $M123 || exit 1
+
+#
+# Check FIELD-specified searching.
+# Matches: 1.txt
+#
+./namazu -l '+subject:foo' $IDX | sort > $TMP
+cmp $TMP $M1 || exit 1
+
+#
+# Check FIELD-specified searching.
+# Matches: 1.txt 2.txt 3.txt
+#
+./namazu -l '+to:test@namazu.org' $IDX | sort > $TMP
+cmp $TMP $M123 || exit 1
+
+#
+# Check FIELD-specified searching with REGEX.
+# Matches: 2.txt 3.txt
+#
+./namazu -l '+from:/test@(bar|baz).namazu.org/' $IDX | sort > $TMP
+cmp $TMP $M23 || exit 1
 
 #
 # Check AND searching.
@@ -92,9 +146,11 @@ cmp $TMP $M123 || exit 1
 ./namazu -l 'foo bar' $IDX | sort > $TMP
 cmp $TMP $M1 || exit 1
 
+# isomorphism
 ./namazu -l 'foo & bar' $IDX | sort > $TMP
 cmp $TMP $M1 || exit 1
 
+# isomorphism
 ./namazu -l 'foo and bar' $IDX | sort > $TMP
 cmp $TMP $M1 || exit 1
 
@@ -105,6 +161,7 @@ cmp $TMP $M1 || exit 1
 ./namazu -l 'foo or bar' $IDX | sort > $TMP
 cmp $TMP $M12 || exit 1
 
+# isomorphism
 ./namazu -l 'foo | bar' $IDX | sort > $TMP
 cmp $TMP $M12 || exit 1
 
@@ -115,6 +172,7 @@ cmp $TMP $M12 || exit 1
 ./namazu -l 'bar not foo' $IDX | sort > $TMP
 cmp $TMP $M2 || exit 1
 
+# isomorphism
 ./namazu -l 'bar ! foo' $IDX | sort > $TMP
 cmp $TMP $M2 || exit 1
 

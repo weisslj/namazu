@@ -2,7 +2,7 @@
  * 
  * codeconv.c -
  * 
- * $Id: codeconv.c,v 1.8 1999-11-23 14:18:33 satoru Exp $
+ * $Id: codeconv.c,v 1.9 2000-01-04 02:04:36 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -59,7 +59,8 @@ static void sjistoeuc(uchar *);
 static void euctosjis(uchar *);
 static void euctojis(uchar *);
 
-static uchar jmstojis(uchar c1, uchar c2)
+static uchar 
+jmstojis(uchar c1, uchar c2)
 {
     c1 -= (c1 <= 0x9f) ? 0x70 : 0xb0;
     c1 <<= 1;
@@ -73,7 +74,8 @@ static uchar jmstojis(uchar c1, uchar c2)
 }
 
 
-static void jistoeuc(uchar * s)
+static void 
+jistoeuc(uchar * s)
 {
     uchar c, c2;
     int state, i = 0, j = 0;
@@ -157,7 +159,8 @@ static void jistoeuc(uchar * s)
     }
 }
 
-static void sjistoeuc(uchar * s)
+static void 
+sjistoeuc(uchar * s)
 {
     uchar c, c2;
     int i = 0, j = 0;
@@ -187,7 +190,8 @@ static void sjistoeuc(uchar * s)
     }
 }
 
-static uchar jistojms(uchar c1, uchar c2)
+static uchar 
+jistojms(uchar c1, uchar c2)
 {
     if (c1 & 1) {
 	c1 = (c1 >> 1) + 0x71;
@@ -204,7 +208,8 @@ static uchar jistojms(uchar c1, uchar c2)
     return c1;
 }
 
-static void euctosjis(uchar *s)
+static void 
+euctosjis(uchar *s)
 {
     uchar c, c2;
     int i = 0, j = 0;
@@ -237,7 +242,8 @@ static void euctosjis(uchar *s)
  * NOTES: This function give no consideration for buffer overflow, 
  * so you should prepare enough memory for `p'.
  */
-static void euctojis(uchar *p)
+static void 
+euctojis(uchar *p)
 {
     int c, c2, state = 0;
     uchar *alloc, *s;
@@ -316,7 +322,8 @@ static void euctojis(uchar *p)
  * and convert "in" into EUC-JP
  * Supported encodings: EUC-JP, ISO-2022-JP, Shift_JIS
  */
-int conv_ja_any_to_eucjp(char *s)
+int 
+conv_ja_any_to_eucjp(char *s)
 {
     int i, m, n, f;
     uchar *in;
@@ -355,7 +362,8 @@ int conv_ja_any_to_eucjp(char *s)
  */
 static char Z2H[] = 
 "\0 \0\0,.\0:;?!\0\0'`\0^~_\0\0\0\0\0\0\0\0\0\0\0\0/\\\0\0|\0\0`'\"\"()\0\0[]{}<>\0\0\0\0\0\0\0\0+-\0\0\0=\0<>\0\0\0\0\0\0\0'\"\0\\$\0\0%#&*@";
-void zen2han(char *str)
+void 
+zen2han(char *str)
 {
     int p = 0, q = 0, r;
     uchar *s;
@@ -387,7 +395,8 @@ void zen2han(char *str)
     *(s + q) = '\0';
 }
 
-int iskatakana(char *chr)
+int 
+iskatakana(char *chr)
 {
     uchar *c;
     c = (uchar *)chr;
@@ -405,7 +414,8 @@ int iskatakana(char *chr)
     return 0;
 }
 
-int ishiragana(char *chr)
+int 
+ishiragana(char *chr)
 {
     uchar *c;
     c = (uchar *)chr;
@@ -433,7 +443,8 @@ int ishiragana(char *chr)
  * so you should prepare enough memory for `str'.
  *
  */
-char *conv_ext (char *str) {
+char *
+conv_ext (char *str) {
     char *lang = get_lang();
     if (strcmp(lang, "japanese") == 0) {   /* EUC-JP */
 	;

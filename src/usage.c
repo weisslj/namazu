@@ -2,7 +2,7 @@
  * 
  * usage.c -
  * 
- * $Id: usage.c,v 1.13 1999-11-19 02:58:21 satoru Exp $
+ * $Id: usage.c,v 1.14 2000-01-04 02:04:41 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -42,7 +42,8 @@
  */
 
 /* display the usage and version info and exit */
-void show_usage(void)
+void 
+show_usage(void)
 {
     char buf[BUFSIZE * 4];
     char *usage = (char *)
@@ -82,13 +83,15 @@ Report bugs to <bug-namazu@namazu.org>.\n\
 }
 
 
-void show_mini_usage(void)
+void 
+show_mini_usage(void)
 {
     printf(_("Usage: namazu [options] <query> [index]...\n"));
     printf(_("Try `namazu --help' for more information.\n"));
 }
 
-void show_version(void)
+void 
+show_version(void)
 {
     printf("namazu of Namazu %s\n", VERSION);
     printf("Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.\n\n");

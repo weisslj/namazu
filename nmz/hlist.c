@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.22 1999-12-12 13:18:14 rug Exp $
+ * $Id: hlist.c,v 1.23 2000-01-04 02:04:36 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -63,12 +63,14 @@ static int  field_ncmp(const void*, const void*);
 static int  date_cmp(const void*, const void*);
 static int  score_cmp(const void*, const void*);
 
-static void memcpy_hlist(NmzResult to, NmzResult from, int n)
+static void 
+memcpy_hlist(NmzResult to, NmzResult from, int n)
 {
     memcpy(to.data + n,  from.data,  from.num * sizeof (to.data[0]));
 }
 
-static void set_rank(NmzResult hlist)
+static void 
+set_rank(NmzResult hlist)
 {
     int i;
 
@@ -78,7 +80,8 @@ static void set_rank(NmzResult hlist)
     }
 }
 
-static int field_sort(NmzResult hlist) 
+static int 
+field_sort(NmzResult hlist) 
 {
     int i, numeric = 1;
 
@@ -116,7 +119,8 @@ static int field_sort(NmzResult hlist)
 
 /* field_scmp: 
    compare of a pair of hlist.data[].field as string in descending order */
-static int field_scmp(const void *p1, const void *p2)
+static int 
+field_scmp(const void *p1, const void *p2)
 {
     struct nmz_data *v1, *v2;
     int r;
@@ -134,7 +138,8 @@ static int field_scmp(const void *p1, const void *p2)
 
 /* field_ncmp: 
    compare of a pair of hlist.data[].field as number in descending order */
-static int field_ncmp(const void *p1, const void *p2)
+static int 
+field_ncmp(const void *p1, const void *p2)
 {
     struct nmz_data *v1, *v2;
     int r;
@@ -153,7 +158,8 @@ static int field_ncmp(const void *p1, const void *p2)
 
 /* score_cmp: 
    compare of a pair of hlist.data[].score as number in descending order */
-static int score_cmp(const void *p1, const void *p2)
+static int 
+score_cmp(const void *p1, const void *p2)
 {
     struct nmz_data *v1, *v2;
     int r;
@@ -172,7 +178,8 @@ static int score_cmp(const void *p1, const void *p2)
 
 /* date_ncmp: 
    compare of a pair of hlist.data[].date as number in descending order */
-static int date_cmp(const void *p1, const void *p2)
+static int 
+date_cmp(const void *p1, const void *p2)
 {
     struct nmz_data *v1, *v2;
     int r;
@@ -195,7 +202,8 @@ static int date_cmp(const void *p1, const void *p2)
  */
 
 /* merge the left and  right with AND rule */
-NmzResult andmerge(NmzResult left, NmzResult right, int *ignore)
+NmzResult 
+andmerge(NmzResult left, NmzResult right, int *ignore)
 {
     int i, j, v;
 
@@ -249,7 +257,8 @@ NmzResult andmerge(NmzResult left, NmzResult right, int *ignore)
 
 
 /* merge the left and  right with NOT rule */
-NmzResult notmerge(NmzResult left, NmzResult right, int *ignore)
+NmzResult 
+notmerge(NmzResult left, NmzResult right, int *ignore)
 {
     int i, j, v, f;
 
@@ -297,7 +306,8 @@ NmzResult notmerge(NmzResult left, NmzResult right, int *ignore)
 /*
  * merge the left and  right with OR rule
  */
-NmzResult ormerge(NmzResult left, NmzResult right)
+NmzResult 
+ormerge(NmzResult left, NmzResult right)
 {
     int i, j, v, n;
     NmzResult val;
@@ -356,7 +366,8 @@ NmzResult ormerge(NmzResult left, NmzResult right)
     return val;
 }
 
-void malloc_hlist(NmzResult * hlist, int n)
+void 
+malloc_hlist(NmzResult * hlist, int n)
 {
     if (n <= 0) return;
     hlist->data = malloc(n * sizeof(struct nmz_data));
@@ -370,7 +381,8 @@ void malloc_hlist(NmzResult * hlist, int n)
     hlist->stat = SUCCESS;
 }
 
-void realloc_hlist(NmzResult * hlist, int n)
+void 
+realloc_hlist(NmzResult * hlist, int n)
 {
     if (hlist->stat != SUCCESS || n <= 0) return;
     hlist->data = realloc(hlist->data, n * sizeof(struct nmz_data));
@@ -380,18 +392,21 @@ void realloc_hlist(NmzResult * hlist, int n)
     }
 }
 
-void free_hlist(NmzResult hlist)
+void 
+free_hlist(NmzResult hlist)
 {
     if (hlist.stat != SUCCESS || hlist.num <= 0) return;
     free(hlist.data);
 }
 
-void copy_hlist(NmzResult to, int n_to, NmzResult from, int n_from)
+void 
+copy_hlist(NmzResult to, int n_to, NmzResult from, int n_from)
 {
     to.data[n_to] = from.data[n_from];
 }
 
-void set_idxid_hlist(NmzResult hlist, int id)
+void 
+set_idxid_hlist(NmzResult hlist, int id)
 {
     int i;
     for (i = 0; i < hlist.num; i++) {
@@ -399,7 +414,8 @@ void set_idxid_hlist(NmzResult hlist, int id)
     }
 }
 
-NmzResult merge_hlist(NmzResult *hlists)
+NmzResult 
+merge_hlist(NmzResult *hlists)
 {
     int i, n;
     NmzResult value;
@@ -429,7 +445,8 @@ NmzResult merge_hlist(NmzResult *hlists)
 }
 
 /* get date info from NMZ.t and do the missing number processing */
-NmzResult do_date_processing(NmzResult hlist)
+NmzResult 
+do_date_processing(NmzResult hlist)
 {
     FILE *date_index;
     int i;
@@ -466,7 +483,8 @@ NmzResult do_date_processing(NmzResult hlist)
 }
 
 /* get the hit list */
-NmzResult get_hlist(int index)
+NmzResult 
+get_hlist(int index)
 {
     int n, *buf, i;
     NmzResult hlist;
@@ -520,7 +538,8 @@ NmzResult get_hlist(int index)
 
 
 /* interface to invoke merge sort function */
-int sort_hlist(NmzResult hlist, enum nmz_sort_method mode)
+int 
+sort_hlist(NmzResult hlist, enum nmz_sort_method mode)
 {
     set_rank(hlist); /* conserve current order for STABLE sorting */
 
@@ -539,7 +558,8 @@ int sort_hlist(NmzResult hlist, enum nmz_sort_method mode)
  * reverse a given hlist
  * original of this routine was contributed by Furukawa-san [1997-11-13]
  */
-int reverse_hlist(NmzResult hlist)
+int 
+reverse_hlist(NmzResult hlist)
 {
     int m, n;
     NmzResult tmp;
@@ -560,17 +580,20 @@ int reverse_hlist(NmzResult hlist)
     return 0;
 }
 
-void set_docnum(int n)
+void 
+set_docnum(int n)
 {
     document_number = n;
 }
 
-void set_sortfield(char *field)
+void 
+set_sortfield(char *field)
 {
     strcpy(field_for_sort, field);
 }
 
-char *get_sortfield(void)
+char *
+get_sortfield(void)
 {
     return field_for_sort;
 }

@@ -2,7 +2,7 @@
  * 
  * re.c -
  * 
- * $Id: re.c,v 1.17 1999-12-12 13:18:14 rug Exp $
+ * $Id: re.c,v 1.18 2000-01-04 02:04:37 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -48,7 +48,8 @@
  *
  */
 
-NmzResult regex_grep(char *orig_expr, FILE *fp, char *field, int field_mode)
+NmzResult 
+regex_grep(char *orig_expr, FILE *fp, char *field, int field_mode)
 {
     char buf[BUFSIZE], expr[BUFSIZE];
     struct re_pattern_buffer *rp;

@@ -1,6 +1,6 @@
 /*
  * result.c -
- * $Id: result.c,v 1.33 1999-12-19 09:51:27 satoru Exp $
+ * $Id: result.c,v 1.34 2000-01-04 02:04:41 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -54,7 +54,8 @@ static int is_urireplace(void);
 static int is_uridecode(void);
 
 
-static void replace_field(struct nmz_data d, int counter, 
+static void 
+replace_field(struct nmz_data d, int counter, 
 			  char *field, char *result)
 {
     /* 8 is length of '&quot;' + 2 (for emphasizing). 
@@ -94,7 +95,8 @@ static void replace_field(struct nmz_data d, int counter,
     strcat(result, buf);
 }
 
-static void encode_entity(char *str)
+static void 
+encode_entity(char *str)
 {
     int i;
     char tmp[BUFSIZE];
@@ -117,7 +119,8 @@ static void encode_entity(char *str)
 }
 
 /* inefficient algorithm but it works */
-static void emphasize(char *str)
+static void 
+emphasize(char *str)
 {
     int i;
 
@@ -152,12 +155,14 @@ static void emphasize(char *str)
     }
 }
 
-static int is_urireplace(void)
+static int 
+is_urireplace(void)
 {
     return urireplace;
 }
 
-static int is_uridecode(void)
+static int 
+is_uridecode(void)
 {
     return uridecode;
 }
@@ -167,7 +172,8 @@ static int is_uridecode(void)
  *
  */
 
-void compose_result(struct nmz_data d, int counter, 
+void 
+compose_result(struct nmz_data d, int counter, 
 			   char *template, char *r)
 {
     char *p = template;
@@ -203,12 +209,14 @@ void compose_result(struct nmz_data d, int counter,
     } while (1);
 }
 
-void set_urireplace(int mode)
+void 
+set_urireplace(int mode)
 {
     urireplace = mode;
 }
 
-void set_uridecode(int mode)
+void 
+set_uridecode(int mode)
 {
     uridecode = mode;
 }

@@ -1,6 +1,6 @@
 /*
  * i18n.c -
- * $Id: i18n.c,v 1.9 1999-12-31 03:33:57 satoru Exp $
+ * $Id: i18n.c,v 1.10 2000-01-04 02:04:36 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -44,7 +44,8 @@ static char Lang[BUFSIZE] = "C";
  *
  */
 
-int is_lang_ja(void)
+int 
+is_lang_ja(void)
 {
     if (strcmp(Lang, "japanese")) {
 	return 1;
@@ -58,7 +59,8 @@ int is_lang_ja(void)
     return 0;
 }
 
-char *set_lang(char *lang)
+char *
+set_lang(char *lang)
 {
     if (*lang != '\0') {  /* given lang is explicitly specified */
 	strcpy(Lang, lang);
@@ -108,7 +110,8 @@ char *set_lang(char *lang)
     return Lang;
 }
 
-char *get_lang(void) 
+char *
+get_lang(void) 
 {
     return Lang;
 }
@@ -120,7 +123,8 @@ char *get_lang(void)
  * should pass `fname' as a temporary variable. Don't pass a
  * critical variable directly.  
  */
-char *choose_msgfile(char *fname)
+char *
+choose_msgfile(char *fname)
 {
     FILE *fp;
     int base_leng;

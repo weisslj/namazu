@@ -1,5 +1,5 @@
 /*
- * $Id: util.c,v 1.30 1999-12-20 23:38:55 satoru Exp $
+ * $Id: util.c,v 1.31 2000-01-04 02:04:37 satoru Exp $
  *
  * Imported scan_hex(), scan_oct(), xmalloc(), xrealloc() from 
  * Ruby b19's"util.c" and "gc.c". Thanks to Matsumoto-san for consent!
@@ -37,7 +37,8 @@ static char decode_uri_sub(char c1, char c2);
 static int nmz_tolower(int c);
 
 /* reverse byte order */
-static void reverse_byte_order (void *p, int n, int size)
+static void 
+reverse_byte_order (void *p, int n, int size)
 {
     int i, j;
     char *pp, tmp;
@@ -53,7 +54,8 @@ static void reverse_byte_order (void *p, int n, int size)
     }
 }
 
-static char decode_uri_sub(char c1, char c2)
+static char 
+decode_uri_sub(char c1, char c2)
 {
     char c;
 
@@ -63,7 +65,8 @@ static char decode_uri_sub(char c1, char c2)
 }
 
 /* substitute for tolower(3) */
-static int nmz_tolower(int c)
+static int 
+nmz_tolower(int c)
 {
     if (c >= 'A' && c <= 'Z') {
 	c = 'a' + c - 'A';
@@ -146,7 +149,8 @@ xrealloc(ptr, size)
 
 
 
-void nmz_tr(char *str, char *lstr, char *rstr)
+void 
+nmz_tr(char *str, char *lstr, char *rstr)
 {
     while (*str) {
 	char *idx = strchr(lstr, *str);
@@ -158,7 +162,8 @@ void nmz_tr(char *str, char *lstr, char *rstr)
 }
 
 /* delete ending LF and spaces of string*/
-void nmz_chomp(char * s)
+void 
+nmz_chomp(char * s)
 {
     int i;
     for (i = strlen(s) - 1; i >= 0; i--) {
@@ -173,7 +178,8 @@ void nmz_chomp(char * s)
 
 
 /* fread with endian consideration */
-size_t nmz_fread(void *ptr, size_t size, size_t nmemb, FILE *stream)
+size_t 
+nmz_fread(void *ptr, size_t size, size_t nmemb, FILE *stream)
 {
     size_t value;
 
@@ -185,7 +191,8 @@ size_t nmz_fread(void *ptr, size_t size, size_t nmemb, FILE *stream)
     return value;
 }
 
-int nmz_get_unpackw(FILE *fp, int *data)
+int 
+nmz_get_unpackw(FILE *fp, int *data)
 {
     int val = 0, i = 0;
 
@@ -207,7 +214,8 @@ int nmz_get_unpackw(FILE *fp, int *data)
     }
 }
 
-int nmz_read_unpackw(FILE *fp, int *buf, int size) {
+int 
+nmz_read_unpackw(FILE *fp, int *buf, int size) {
     int i = 0,  n = 0;
     
     while (i < size) {
@@ -223,7 +231,8 @@ int nmz_read_unpackw(FILE *fp, int *buf, int size) {
 }
 
 /* read index and return with value */
-long nmz_getidxptr(FILE * fp, long p)
+long 
+nmz_getidxptr(FILE * fp, long p)
 {
     int val;
 
@@ -232,7 +241,8 @@ long nmz_getidxptr(FILE * fp, long p)
     return (long) val;
 }
 
-int nmz_issymbol(int c)
+int 
+nmz_issymbol(int c)
 {
     if (c >= 0x00 && c < 0x80 && !isalnum(c)) {
         return 1;
@@ -242,7 +252,8 @@ int nmz_issymbol(int c)
 }
 
 /* error messaging function */
-void nmz_die(char *fmt, ...)
+void 
+nmz_die(char *fmt, ...)
 {
     va_list args;
 
@@ -262,7 +273,8 @@ void nmz_die(char *fmt, ...)
     exit(EXIT_FAILURE);
 }
 
-void nmz_die_with_msg()
+void 
+nmz_die_with_msg()
 {
     char *msg;
     fflush(stdout);
@@ -280,7 +292,8 @@ void nmz_die_with_msg()
 }
 
 /* warning messaging function */
-void nmz_warn_printf(char *fmt, ...)
+void 
+nmz_warn_printf(char *fmt, ...)
 {
     va_list args;
 
@@ -300,7 +313,8 @@ void nmz_warn_printf(char *fmt, ...)
 }
 
 /* debug messaging function */
-void nmz_debug_printf(char *fmt, ...)
+void 
+nmz_debug_printf(char *fmt, ...)
 {
     va_list args;
 
@@ -323,7 +337,8 @@ void nmz_debug_printf(char *fmt, ...)
     fflush(stderr);
 }
 
-void nmz_pathcat(char *base, char *name)
+void 
+nmz_pathcat(char *base, char *name)
 {
     char work[BUFSIZE];
     int i;
@@ -340,7 +355,8 @@ void nmz_pathcat(char *base, char *name)
     strcpy(name, work);
 }
 
-int nmz_isnumstr(char *str)
+int 
+nmz_isnumstr(char *str)
 {
     int i, nonnum = 0;
 
@@ -357,7 +373,8 @@ int nmz_isnumstr(char *str)
     return 1;
 }
 
-void nmz_commas(char *str)
+void 
+nmz_commas(char *str)
 {
     int i, n;
     int leng = strlen(str);
@@ -374,7 +391,8 @@ void nmz_commas(char *str)
     }
 }
 
-void nmz_strlower(char *str)
+void 
+nmz_strlower(char *str)
 {
     while (*str) {
 	/* 
@@ -391,7 +409,8 @@ void nmz_strlower(char *str)
  * case-insensitive brute force search  
  * (with consideration for EUC encoding schemes)
  */
-char *nmz_strcasestr(char *haystack, char *needle)
+char *
+nmz_strcasestr(char *haystack, char *needle)
 {
     int n = strlen(needle);
     int euc_mode = 0;
@@ -412,7 +431,8 @@ char *nmz_strcasestr(char *haystack, char *needle)
 }
 
 
-int nmz_strprefixcasecmp(char *str1, char *str2)
+int 
+nmz_strprefixcasecmp(char *str1, char *str2)
 {
     int leng1, leng2;
 
@@ -426,7 +446,8 @@ int nmz_strprefixcasecmp(char *str1, char *str2)
     }
 }
 
-int nmz_strprefixcmp(char *str1, char *str2)
+int 
+nmz_strprefixcmp(char *str1, char *str2)
 {
     int leng1, leng2;
 
@@ -440,7 +461,8 @@ int nmz_strprefixcmp(char *str1, char *str2)
     }
 }
 
-int nmz_strsuffixcmp(char *str1, char *str2)
+int 
+nmz_strsuffixcmp(char *str1, char *str2)
 {
     int leng1, leng2;
 
@@ -455,7 +477,8 @@ int nmz_strsuffixcmp(char *str1, char *str2)
 }
 
 /* load the whole of file */
-char *nmz_readfile(char *fname)
+char *
+nmz_readfile(char *fname)
 {
     char *buf;
     FILE *fp;
@@ -482,7 +505,8 @@ char *nmz_readfile(char *fname)
 }
 
 /* subst: substitute pat with rep at without memory size consideration */
-void nmz_subst(char *p, char *pat, char *rep)
+void 
+nmz_subst(char *p, char *pat, char *rep)
 {
     int patlen, replen;
     patlen = strlen(pat);
@@ -502,7 +526,8 @@ void nmz_subst(char *p, char *pat, char *rep)
 }
 
 /* output contents of file */
-void nmz_cat(char *fname)
+void 
+nmz_cat(char *fname)
 {
     char buf[BUFSIZE];
     FILE *fp;
@@ -517,14 +542,16 @@ void nmz_cat(char *fname)
 }
 
 /* safe version of getenv.  */
-char *nmz_getenv(char *s)
+char *
+nmz_getenv(char *s)
 {
     char *cp;
     return (cp = getenv(s)) ? cp : "";
 }
 
 /* decoding URI encoded strings */
-void nmz_decode_uri(char * s)
+void 
+nmz_decode_uri(char * s)
 {
     int i, j;
     for (i = j = 0; s[i]; i++, j++) {
@@ -540,7 +567,8 @@ void nmz_decode_uri(char * s)
     s[j] = '\0';
 }
 
-char *nmz_get_errmsg(enum nmz_stat stat)
+char *
+nmz_get_errmsg(enum nmz_stat stat)
 {
     char *msg = "If you see this message, please report.";
 
@@ -584,7 +612,8 @@ char *nmz_get_errmsg(enum nmz_stat stat)
 }
 
 /* FIXME: Tell me if you know more better function name (or better way). */
-void nmz_print(char *s) {
+void 
+nmz_print(char *s) {
     fputs(s, stdout);
 }
 

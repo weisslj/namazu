@@ -2,7 +2,7 @@
  * 
  * alias.c - 
  *
- * $Id: alias.c,v 1.2 1999-12-09 02:44:51 satoru Exp $
+ * $Id: alias.c,v 1.3 2000-01-04 02:04:36 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
@@ -40,7 +40,8 @@ static struct nmz_alias  *aliases  = NULL;
  *
  */
 
-enum nmz_stat add_alias(char *alias, char *real)
+enum nmz_stat 
+add_alias(char *alias, char *real)
 {
     struct nmz_alias *newp;
 
@@ -68,7 +69,8 @@ enum nmz_stat add_alias(char *alias, char *real)
     return SUCCESS;
 }
 
-void free_aliases(void)
+void 
+free_aliases(void)
 {
     struct nmz_alias *list, *next;
     list = aliases;
@@ -83,12 +85,14 @@ void free_aliases(void)
 }
 
 /* it's very dangerous to use! */
-struct nmz_alias *get_aliases(void)
+struct nmz_alias *
+get_aliases(void)
 {
     return aliases;
 }
 
-void show_aliases(void)
+void 
+show_aliases(void)
 {
     struct nmz_alias *list = aliases;
 

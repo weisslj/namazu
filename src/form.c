@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.28 1999-12-12 14:09:07 rug Exp $
+ * $Id: form.c,v 1.29 2000-01-04 02:04:41 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -65,7 +65,8 @@ static void handle_tag(char*, char*, char*, char *, char *);
  * some measure of containing LF or redundant spaces are acceptable.
  * igonore cases
  */
-static int cmp_element(char *s1, char *s2)
+static int 
+cmp_element(char *s1, char *s2)
 {
     for (; *s1 && *s2; s1++, s2++) {
         if (*s2 == ' ') {
@@ -86,7 +87,8 @@ static int cmp_element(char *s1, char *s2)
 }
 
 /* replace <input type="text" name="query"  value="hogehoge"> */
-static int replace_query_value(char *p, char *query)
+static int 
+replace_query_value(char *p, char *query)
 {
     char tmp_query[BUFSIZE];
     
@@ -105,7 +107,8 @@ static int replace_query_value(char *p, char *query)
 }
 
 /* delete string (case insensitive) */
-static void delete_str(char *s, char *d)
+static void 
+delete_str(char *s, char *d)
 {
     int l;
     char *tmp;
@@ -120,7 +123,8 @@ static void delete_str(char *s, char *d)
     nmz_chomp(s);
 }
 
-static void get_value(char *s, char *v)
+static void 
+get_value(char *s, char *v)
 {
     *v = '\0';
     for (; *s; s++) {
@@ -135,7 +139,8 @@ static void get_value(char *s, char *v)
     }
 }
 
-static void get_select_name(char *s, char *v)
+static void 
+get_select_name(char *s, char *v)
 {
     *v = '\0';
     for (; *s; s++) {
@@ -150,7 +155,8 @@ static void get_select_name(char *s, char *v)
     }
 }
 
-static int select_option(char *s, char *name, char *subquery)
+static int 
+select_option(char *s, char *name, char *subquery)
 {
     char value[BUFSIZE];
 
@@ -226,7 +232,8 @@ static int select_option(char *s, char *name, char *subquery)
 }
 
 /* mark CHECKBOX of idxname with CHECKED */
-static int check_checkbox(char *s)
+static int 
+check_checkbox(char *s)
 {
     char value[BUFSIZE];
     int i;
@@ -266,7 +273,8 @@ static int check_checkbox(char *s)
 }
 
 /* handle an HTML tag */
-static void handle_tag(char *p, char *q, char *query, 
+static void 
+handle_tag(char *p, char *q, char *query, 
                char *select_name, char *subquery)
 {
     char tmp[BUFSIZE];
@@ -287,7 +295,8 @@ static void handle_tag(char *p, char *q, char *query,
     fputs(tmp, stdout);
 }
 
-static char *read_headfoot(char *fname) 
+static char *
+read_headfoot(char *fname) 
 {
     char *buf, *p, tmp_fname[BUFSIZE];
     char *script_name;
@@ -334,7 +343,8 @@ static char *read_headfoot(char *fname)
  * display header or footer file.
  * very ad hoc.
  */
-void print_headfoot(char * fname, char * query, char *subquery)
+void 
+print_headfoot(char * fname, char * query, char *subquery)
 {
     char *buf, *p, *q, name[BUFSIZE] = "";
     int f, f2;

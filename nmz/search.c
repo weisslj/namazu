@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.37 1999-12-24 09:01:28 satoru Exp $
+ * $Id: search.c,v 1.38 2000-01-04 02:04:37 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -93,7 +93,8 @@ static NmzResult nmz_search_sub ( NmzResult hlist, char *query, char *query_orig
 static void make_fullpathname_index ( int n );
 
 /* struct nmz_hitnum handling subroutines */
-static struct nmz_hitnum *push_hitnum(struct nmz_hitnum *hn, 
+static struct nmz_hitnum *
+push_hitnum(struct nmz_hitnum *hn, 
 				 int hitnum, 
 				 enum nmz_stat stat,
 				 char *str)
@@ -124,7 +125,8 @@ static struct nmz_hitnum *push_hitnum(struct nmz_hitnum *hn,
     return hn;
 }
 
-void free_hitnums(struct nmz_hitnum *hn)
+void 
+free_hitnums(struct nmz_hitnum *hn)
 {
     struct nmz_hitnum *tmp;
 
@@ -139,7 +141,8 @@ void free_hitnums(struct nmz_hitnum *hn)
 }
 
 /* show the status for debug use */
-static void show_status(int l, int r)
+static void 
+show_status(int l, int r)
 {
     char buf[BUFSIZE];
 
@@ -156,7 +159,8 @@ static void show_status(int l, int r)
 }
 
 /* get size of file */
-static int get_file_size (char *filename) 
+static int 
+get_file_size (char *filename) 
 {
     struct stat st;
 
@@ -167,7 +171,8 @@ static int get_file_size (char *filename)
 
 
 /* get the left and right value of search range */
-static void lrget(char * key, int *l, int *r)
+static void 
+lrget(char * key, int *l, int *r)
 {
     *l = 0;
     *r = get_file_size(NMZ.ii) / sizeof(int) - 1;
@@ -178,7 +183,8 @@ static void lrget(char * key, int *l, int *r)
 }
 
 /* Prefix match search */
-static NmzResult prefix_match(char * orig_key, int v)
+static NmzResult 
+prefix_match(char * orig_key, int v)
 {
     int i, j, n;
     NmzResult tmp, val;
@@ -239,7 +245,8 @@ static NmzResult prefix_match(char * orig_key, int v)
 }
 
 /* detect search mode */
-static enum nmz_search_mode detect_search_mode(char *key) {
+static enum nmz_search_mode 
+detect_search_mode(char *key) {
     if (strlen(key) <= 1)
         return WORD_MODE;
     if (isfield(key)) { /* field search */
@@ -288,7 +295,8 @@ static enum nmz_search_mode detect_search_mode(char *key) {
     }
 }
 
-static NmzResult do_word_search(char *key, NmzResult val)
+static NmzResult 
+do_word_search(char *key, NmzResult val)
 {
     int v;
 
@@ -305,7 +313,8 @@ static NmzResult do_word_search(char *key, NmzResult val)
     return val;
 }
 
-static NmzResult do_prefix_match_search(char *key, NmzResult val)
+static NmzResult 
+do_prefix_match_search(char *key, NmzResult val)
 {
     int v;
 
@@ -325,7 +334,8 @@ static NmzResult do_prefix_match_search(char *key, NmzResult val)
 
 
 /* calculate a value of phase hash */
-static int hash(char *str)
+static int 
+hash(char *str)
 {
     int hash = 0, i, j;
     uchar *ustr = (uchar *)str;  /* for 8 bit chars handling */
@@ -341,7 +351,8 @@ static int hash(char *str)
 }
 
 /* get the phrase hash and compare it with NmzResult */
-static NmzResult cmp_phrase_hash(int hash_key, NmzResult val, 
+static NmzResult 
+cmp_phrase_hash(int hash_key, NmzResult val, 
                           FILE *phrase, FILE *phrase_index)
 {
     int i, j, v, n, *list;
@@ -387,7 +398,8 @@ static NmzResult cmp_phrase_hash(int hash_key, NmzResult val,
     return val;
 }
 
-static int open_phrase_index_files(FILE **phrase, FILE **phrase_index)
+static int 
+open_phrase_index_files(FILE **phrase, FILE **phrase_index)
 {
     *phrase = fopen(NMZ.p, "rb");
     if (*phrase == NULL) {
@@ -405,7 +417,8 @@ static int open_phrase_index_files(FILE **phrase, FILE **phrase_index)
 
 
 /* FIXME: this function is too long and difficult to understand */
-static NmzResult do_phrase_search(char *key, NmzResult val)
+static NmzResult 
+do_phrase_search(char *key, NmzResult val)
 {
     int i, h = 0, ignore = 0;
     char *p, *words[QUERY_TOKEN_MAX + 1], *prevword = NULL;
@@ -514,7 +527,8 @@ static NmzResult do_phrase_search(char *key, NmzResult val)
     return val;
 }
 
-static void do_regex_preprocessing(char *expr)
+static void 
+do_regex_preprocessing(char *expr)
 {
     if (*expr == '*' && expr[strlen(expr) - 1] != '*') {
         /* if suffix match such as '*bar', enforce it into regex */
@@ -561,7 +575,8 @@ static void do_regex_preprocessing(char *expr)
     }
 }
 
-static NmzResult do_regex_search(char *orig_expr, NmzResult val)
+static NmzResult 
+do_regex_search(char *orig_expr, NmzResult val)
 {
     FILE *fp;
     char expr[BUFSIZE * 2]; /* because of escaping meta characters */
@@ -581,13 +596,15 @@ static NmzResult do_regex_search(char *orig_expr, NmzResult val)
 
 }
 
-static void get_expr(char *expr, char *str)
+static void 
+get_expr(char *expr, char *str)
 {
     str = (char *)strchr(str, (int)':') + 1;
     strcpy(expr, str);
 }
 
-static NmzResult do_field_search(char *str, NmzResult val)
+static NmzResult 
+do_field_search(char *str, NmzResult val)
 {
     char expr[BUFSIZE * 2], /* because of escaping meta characters */
         field_name[BUFSIZE], file_name[BUFSIZE];
@@ -611,7 +628,8 @@ static NmzResult do_field_search(char *str, NmzResult val)
     return val;
 }
 
-static void delete_beginning_backslash(char *str)
+static void 
+delete_beginning_backslash(char *str)
 {
     if (*str == '\\') {
         strcpy(str, str + 1);
@@ -619,7 +637,8 @@ static void delete_beginning_backslash(char *str)
 }
 
 /* check the existence of lockfile */
-static int check_lockfile(void)
+static int 
+check_lockfile(void)
 {
     FILE *lock;
 
@@ -632,7 +651,8 @@ static int check_lockfile(void)
 }
 
 
-static enum nmz_perm parse_access(char *line, char *rhost, char *raddr)
+static enum nmz_perm 
+parse_access(char *line, char *rhost, char *raddr)
 {
     enum nmz_perm perm = ALLOW;
 
@@ -671,7 +691,8 @@ static enum nmz_perm parse_access(char *line, char *rhost, char *raddr)
     return perm;
 }
 
-static enum nmz_perm check_access(void)
+static enum nmz_perm 
+check_access(void)
 {
     char buf[BUFSIZE];
     char *rhost, *raddr;
@@ -698,7 +719,8 @@ static enum nmz_perm check_access(void)
 }
 
 /* opening files at once */
-static int open_index_files()
+static int 
+open_index_files()
 {
     if (check_lockfile())
         return 1;
@@ -724,7 +746,8 @@ static int open_index_files()
 }
 
 /* closing files at once */
-static void close_index_files(void)
+static void 
+close_index_files(void)
 {
     fclose(Nmz.i);
     fclose(Nmz.ii);
@@ -736,7 +759,8 @@ static void close_index_files(void)
 /* do logging, separated with TAB characters 
    it does not consider a LOCK mechanism!
 */
-static void do_logging(char * query, int n)
+static void 
+do_logging(char * query, int n)
 {
     FILE *slog;
     char *rhost;
@@ -762,7 +786,8 @@ static void do_logging(char * query, int n)
     fclose(slog);
 }
 
-static NmzResult nmz_search_sub(NmzResult hlist, char *query, char *query_orig, int n)
+static NmzResult 
+nmz_search_sub(NmzResult hlist, char *query, char *query_orig, int n)
 {
     cur_idxnum = n;
 
@@ -804,7 +829,8 @@ static NmzResult nmz_search_sub(NmzResult hlist, char *query, char *query_orig, 
     return hlist;
 }
 
-static void make_fullpathname_index(int n)
+static void 
+make_fullpathname_index(int n)
 {
     char *base;
 
@@ -831,7 +857,8 @@ static void make_fullpathname_index(int n)
  */
 
 /* main routine of binary search */
-int binsearch(char *orig_key, int prefix_match_mode)
+int 
+binsearch(char *orig_key, int prefix_match_mode)
 {
     int l, r, x, e = 0, i;
     char term[BUFSIZE], key[BUFSIZE];
@@ -889,7 +916,8 @@ int binsearch(char *orig_key, int prefix_match_mode)
 }
 
 /* flow of search */
-NmzResult nmz_search(char *query)
+NmzResult 
+nmz_search(char *query)
 {
     NmzResult hlist, tmp[INDEX_MAX];
     char query_orig[BUFSIZE];
@@ -966,7 +994,8 @@ NmzResult nmz_search(char *query)
 
 
 
-NmzResult do_search(char *orig_key, NmzResult val)
+NmzResult 
+do_search(char *orig_key, NmzResult val)
 {
     enum nmz_search_mode mode;
     char key[BUFSIZE];

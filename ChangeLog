@@ -1,3 +1,7 @@
+2000-01-04  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* {nmz,src}/*.c: Change C style (function definition).
+
 2000-01-03  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* pl/Makefile.am (gettext.pl): Remove "chmod +x $@"

@@ -2,7 +2,7 @@
  * 
  * parser.c -
  * 
- * $Id: parser.c,v 1.8 1999-12-04 04:50:10 satoru Exp $
+ * $Id: parser.c,v 1.9 2000-01-04 02:04:37 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -55,7 +55,8 @@ static int andop(void);
 static NmzResult term(void);
 static int orop(void);
 
-static NmzResult factor(int *ignore)
+static NmzResult 
+factor(int *ignore)
 {
     NmzResult val;
     val.num = 0;
@@ -97,7 +98,8 @@ static NmzResult factor(int *ignore)
     return val;
 }
 
-static int andop(void)
+static int 
+andop(void)
 {
     if (Query.tab[Cp] == NULL)
 	return 0;
@@ -120,7 +122,8 @@ static int andop(void)
     return 0;
 }
 
-static NmzResult term(void)
+static NmzResult 
+term(void)
 {
     NmzResult left, right;
     int ignore = 0, op;
@@ -143,7 +146,8 @@ static NmzResult term(void)
 }
 
 
-static int orop(void)
+static int 
+orop(void)
 {
     if (Query.tab[Cp] == NULL)
 	return 0;
@@ -163,7 +167,8 @@ static int orop(void)
  *
  */
 
-NmzResult expr(void)
+NmzResult 
+expr(void)
 {
     NmzResult left, right;
 
@@ -181,13 +186,15 @@ NmzResult expr(void)
     return left;
 }
 
-void init_parser(void)
+void 
+init_parser(void)
 {
     Cp = 0;
 }
 
 /* check a character if metacharacter (operator) of not */
-int isop(char * c)
+int 
+isop(char * c)
 {
     if ((strcmp(c, AND_STRING) == 0 ) ||
 	(strcmp(c, AND_STRING_ALT) == 0 ) ||

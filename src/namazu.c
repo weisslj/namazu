@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.67 1999-12-12 13:18:17 rug Exp $
+ * $Id: namazu.c,v 1.68 2000-01-04 02:04:41 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -85,17 +85,18 @@ ck_atoi (str, out)
      char const *str;
      int *out;
 {
-  char const *p;
-  for (p = str; *p; p++)
-    if (*p < '0' || *p > '9')
-      return -1;
+    char const *p;
+    for (p = str; *p; p++)
+	if (*p < '0' || *p > '9')
+	    return -1;
 
-  *out = atoi (optarg);
-  return 0;
+    *out = atoi (optarg);
+    return 0;
 }
 
 /* redirect stdio to specified file */
-static int stdio2file(char * fname)
+static int 
+stdio2file(char * fname)
 {
 /*   int fd;
  *   if (-1 == (fd = open(fname, O_CREAT | O_TRUNC | O_WRONLY, 00600))) {
@@ -149,7 +150,8 @@ static struct option long_options[] = {
 };
 
 /* parse command line options */
-static int parse_options(int argc, char **argv)
+static int 
+parse_options(int argc, char **argv)
 {
     int tmp;
 
@@ -265,7 +267,8 @@ static int parse_options(int argc, char **argv)
 }
 
 /* namazu core routine */
-static enum nmz_stat namazu_core(char * query, char *subquery, char *argv0)
+static enum nmz_stat 
+namazu_core(char * query, char *subquery, char *argv0)
 {
     char query_with_subquery[BUFSIZE * 2];
     NmzResult hlist;
@@ -312,7 +315,8 @@ static enum nmz_stat namazu_core(char * query, char *subquery, char *argv0)
     return SUCCESS;
 }
 
-static void make_fullpathname_msg(void)
+static void 
+make_fullpathname_msg(void)
 {
     char *base;
     
@@ -329,12 +333,14 @@ static void make_fullpathname_msg(void)
     nmz_pathcat(base, NMZ.tips);
 }
 
-static void suicide (int signum)
+static void 
+suicide (int signum)
 {
     nmz_die("processing time exceeds a limit: %d", SUICIDE_TIME);
 }
 
-int main(int argc, char **argv)
+int 
+main(int argc, char **argv)
 {
     int i = 0;
     int ret;

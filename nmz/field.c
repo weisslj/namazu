@@ -23,7 +23,8 @@ static void apply_field_alias ( char *field );
 static int is_field_safe_char ( int c );
 static void make_fullpathname_field ( int n );
 
-static void apply_field_alias(char *field)
+static void 
+apply_field_alias(char *field)
 {
     if (strcmp(field, "title") == 0) {
         strcpy(field, "subject");
@@ -34,7 +35,8 @@ static void apply_field_alias(char *field)
     } 
 }
 
-static int is_field_safe_char(int c)
+static int 
+is_field_safe_char(int c)
 {
     if ((strchr(FIELD_SAFE_CHARS, c) != NULL)) {
         return 1;
@@ -44,7 +46,8 @@ static int is_field_safe_char(int c)
 
 }
 
-static void make_fullpathname_field(int n)
+static void 
+make_fullpathname_field(int n)
 {
     char *base;
 
@@ -60,7 +63,8 @@ static void make_fullpathname_field(int n)
 
 
 /* check a key if field or not */
-int isfield(char *key)
+int 
+isfield(char *key)
 {
     if (*key == '+') {
         key++;
@@ -79,7 +83,8 @@ int isfield(char *key)
     return 0;
 }
 
-void get_field_name(char *field, char *str)
+void 
+get_field_name(char *field, char *str)
 {
     char *tmp = field;
 
@@ -97,7 +102,8 @@ void get_field_name(char *field, char *str)
     apply_field_alias(field);
 }
 
-void get_field_data(int idxid, int docid, char *orig_field, char *data) 
+void 
+get_field_data(int idxid, int docid, char *orig_field, char *data) 
 {
     char fname[BUFSIZE];
     char *field = orig_field;

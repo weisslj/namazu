@@ -2,7 +2,7 @@
  * 
  * conf.c -
  * 
- * $Id: rcfile.c,v 1.5 1999-12-12 14:09:04 rug Exp $
+ * $Id: rcfile.c,v 1.6 2000-01-04 02:04:37 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -67,7 +67,8 @@ static enum nmz_stat apply_rc ( char *directive, int lineno, char *arg1, char *a
  * get an environmental variable of NAMAZUCONFPATH
  * contributed by Shimizu-san [1998-02-27]
  */
-static void getenv_namazurc(void)
+static void 
+getenv_namazurc(void)
 {
     char *env_namazu_conf;
 
@@ -80,7 +81,8 @@ static void getenv_namazurc(void)
 }
 
 /* change filename in full pathname */
-static void set_pathname(char *to, char *o, char *name)
+static void 
+set_pathname(char *to, char *o, char *name)
 {
     int i;
 
@@ -100,7 +102,8 @@ static void set_pathname(char *to, char *o, char *name)
  2. ${HOME}/.namazurc
  3. DEFAULT_NAMAZURC (SYSCONFDIR/namazurc)
  */
-static FILE *open_rcfile(char *argv0)
+static FILE *
+open_rcfile(char *argv0)
 {
     FILE *fp;
     char fname[BUFSIZE], *home;
@@ -141,7 +144,8 @@ static FILE *open_rcfile(char *argv0)
     return (FILE *) NULL;
 }
 
-static int get_rc_arg(char *line, char *arg)
+static int 
+get_rc_arg(char *line, char *arg)
 {
     *arg = '\0';
     if (*line != '"') {
@@ -177,7 +181,8 @@ static int get_rc_arg(char *line, char *arg)
     }
 }
 
-static void replace_home(char *str)
+static void 
+replace_home(char *str)
 {
     char tmp[BUFSIZE];
 
@@ -198,7 +203,8 @@ static void replace_home(char *str)
 }
 
 
-static int get_rc_args(char *line, char *directive, 
+static int 
+get_rc_args(char *line, char *directive, 
 				   char *arg1, char *arg2)
 {
     int n;
@@ -279,7 +285,8 @@ static int get_rc_args(char *line, char *directive,
     }
 }
 
-static enum nmz_stat parse_rcfile(char *line, int lineno) 
+static enum nmz_stat 
+parse_rcfile(char *line, int lineno) 
 {
     char directive[BUFSIZE] = "";
     char arg1[BUFSIZE] = "";
@@ -314,7 +321,8 @@ static enum nmz_stat parse_rcfile(char *line, int lineno)
     return SUCCESS;
 }
 
-static int is_valid_argnum(char *directive, int argnum)
+static int 
+is_valid_argnum(char *directive, int argnum)
 {
     struct conf_directive {
 	char *name;
@@ -353,7 +361,8 @@ static int is_valid_argnum(char *directive, int argnum)
     return 0;
 }
 
-static enum nmz_stat apply_rc(char *directive, int lineno, 
+static enum nmz_stat 
+apply_rc(char *directive, int lineno, 
 				char *arg1, char *arg2)
 {
     if (strcasecmp(directive, "COMMENT") == 0) {
@@ -392,7 +401,8 @@ static enum nmz_stat apply_rc(char *directive, int lineno,
  *
  */
 
-char *set_namazurc(char *arg)
+char *
+set_namazurc(char *arg)
 {
     return strcpy(namazurc, arg);
 }
@@ -401,7 +411,8 @@ char *set_namazurc(char *arg)
  * load rcfile of namazu 
  * FIXME: Taking argv0 argument is dirty spec.
  */
-enum nmz_stat load_rcfile(char *argv0)
+enum nmz_stat 
+load_rcfile(char *argv0)
 {
     FILE *fp;
     char buf[BUFSIZE];
@@ -429,7 +440,8 @@ enum nmz_stat load_rcfile(char *argv0)
     return SUCCESS;
 }
 
-void show_rcfile(void)
+void 
+show_rcfile(void)
 {
     if (rcfile_is_loaded == 1) {
 	printf(_("Config:  %s\n"), namazurc);

@@ -64,7 +64,8 @@ static void print_msgfile ( char *fname );
 static void print_range ( NmzResult hlist );
 
 /* print s to stdout with processing for emphasizing and entity encoding  */
-static void emprint(char *s, int entity_encode)
+static void 
+emprint(char *s, int entity_encode)
 {
     int i;
     for (i = 0; *s && i < BUFSIZE; s++) {
@@ -123,7 +124,8 @@ static void emprint(char *s, int entity_encode)
 }
 
 /* output string without HTML elements */
-static void fputs_without_html_tag(char * s, FILE *fp)
+static void 
+fputs_without_html_tag(char * s, FILE *fp)
 {
     int f, i;
     char buf[BUFSIZE];
@@ -188,7 +190,8 @@ static void fputs_without_html_tag(char * s, FILE *fp)
 }
 
 
-static void make_fullpathname_result(int n)
+static void 
+make_fullpathname_result(int n)
 {
     char *base;
 
@@ -196,7 +199,8 @@ static void make_fullpathname_result(int n)
     nmz_pathcat(base, NMZ.result);
 }
 
-static void print_hitnum_each (struct nmz_hitnum *hn)
+static void 
+print_hitnum_each (struct nmz_hitnum *hn)
 {
     struct nmz_hitnum *hnptr = hn;
 
@@ -237,38 +241,45 @@ static void print_hitnum_each (struct nmz_hitnum *hn)
     }
 }
 
-static int is_allresult(void)
+static int 
+is_allresult(void)
 {
     return allresult;
 }
 
-static int is_pageindex(void)
+static int 
+is_pageindex(void)
 {
     return pageindex;
 }
 
-static int is_countmode(void)
+static int 
+is_countmode(void)
 {
     return countmode;
 }
 
-static int is_listmode(void)
+static int 
+is_listmode(void)
 {
     return listmode;
 }
 
-static int is_quietmode(void)
+static int 
+is_quietmode(void)
 {
     return quietmode;
 }
 
-static int is_refprint(void)
+static int 
+is_refprint(void)
 {
     return refprint;
 }
 
 /* display the hlist */
-static void print_hlist(NmzResult hlist)
+static void 
+print_hlist(NmzResult hlist)
 {
     int i;
     char *templates[INDEX_MAX];
@@ -329,7 +340,8 @@ static void print_hlist(NmzResult hlist)
 /*
  * for pageindex
  */
-static void print_query(char * qs, int w)
+static void 
+print_query(char * qs, int w)
 {
     int foo = 0;
     while (*qs) {
@@ -347,7 +359,8 @@ static void print_query(char * qs, int w)
 }
 
 /* displayin page index */
-static void print_page_index(int n)
+static void 
+print_page_index(int n)
 {
     int i, max, whence;
     char *qs; /* QUERY_STRING */
@@ -388,7 +401,8 @@ static void print_page_index(int n)
 }
 
 /* output current range */
-static void print_current_range(int listmax)
+static void 
+print_current_range(int listmax)
 {
     int max, whence;
 
@@ -413,7 +427,8 @@ static void print_current_range(int listmax)
     }
 }
 
-static void print_hitnum_all_idx(void)
+static void 
+print_hitnum_all_idx(void)
 {
     int i;
     for (i = 0; i < Idx.num; i ++) {
@@ -451,7 +466,8 @@ static void print_hitnum_all_idx(void)
     }
 }
 
-static void print_hitnum(int n)
+static void 
+print_hitnum(int n)
 {
     html_print(_("	<p><strong> Total "));
     if (is_htmlmode()) {
@@ -463,7 +479,8 @@ static void print_hitnum(int n)
     html_print(_("	 documents matching your query.</strong></p>\n\n"));
 }
 
-static void print_listing(NmzResult hlist)
+static void 
+print_listing(NmzResult hlist)
 {
     if (is_htmlmode()) {
         nmz_print("<dl>\n");
@@ -477,7 +494,8 @@ static void print_listing(NmzResult hlist)
 }
 
 /* display message file such as NMZ.tips or NMZ.body. */
-static void print_msgfile(char *fname) {
+static void 
+print_msgfile(char *fname) {
     char tmp_fname[BUFSIZE];
 
     strcpy(tmp_fname, fname);
@@ -485,7 +503,8 @@ static void print_msgfile(char *fname) {
     nmz_cat(tmp_fname);
 }
 
-static void print_range(NmzResult hlist)
+static void 
+print_range(NmzResult hlist)
 {
     if (is_htmlmode())
         nmz_print("<p>\n");
@@ -506,7 +525,8 @@ static void print_range(NmzResult hlist)
  *
  */
 
-enum nmz_stat print_result(NmzResult hlist, char *query, char *subquery)
+enum nmz_stat 
+print_result(NmzResult hlist, char *query, char *subquery)
 {
 
     if (is_htmlmode() && is_cgimode()) {
@@ -594,7 +614,8 @@ enum nmz_stat print_result(NmzResult hlist, char *query, char *subquery)
 }
 
 /* Print default page: NMZ.{head,body,foot} */
-void print_default_page (void) {
+void 
+print_default_page (void) {
     if (is_htmlmode()) {
 	nmz_print(MSG_MIME_HEADER);
 	print_headfoot(NMZ.head, "", "");
@@ -603,100 +624,119 @@ void print_default_page (void) {
     }
 }
 
-void set_htmlmode(int mode)
+void 
+set_htmlmode(int mode)
 {
     htmlmode = mode;
 }
 
-int is_htmlmode(void)
+int 
+is_htmlmode(void)
 {
     return htmlmode;
 }
 
-void set_cgimode(int mode)
+void 
+set_cgimode(int mode)
 {
     cgimode = mode;
 }
 
-int is_cgimode(void)
+int 
+is_cgimode(void)
 {
     return cgimode;
 }
 
-void set_quietmode(int mode)
+void 
+set_quietmode(int mode)
 {
     quietmode = mode;
 }
 
-void set_countmode(int mode)
+void 
+set_countmode(int mode)
 {
     countmode = mode;
 }
 
-void set_listmode(int mode)
+void 
+set_listmode(int mode)
 {
     listmode = mode;
 }
 
-void set_allresult(int mode)
+void 
+set_allresult(int mode)
 {
     allresult = mode;
 }
 
-void set_pageindex(int mode)
+void 
+set_pageindex(int mode)
 {
     pageindex = mode;
 }
 
-void set_formprint(int mode)
+void 
+set_formprint(int mode)
 {
     formprint = mode;
 }
 
-int is_formprint(void)
+int 
+is_formprint(void)
 {
     return formprint;
 }
 
-void set_refprint(int mode)
+void 
+set_refprint(int mode)
 {
     refprint = mode;
 }
 
-void set_maxresult(int num)
+void 
+set_maxresult(int num)
 {
     maxresult = num;
 }
 
-int get_maxresult(void)
+int 
+get_maxresult(void)
 {
     return maxresult;
 }
 
-void set_listwhence(int num)
+void 
+set_listwhence(int num)
 {
     listwhence = num;
 }
 
-int get_listwhence(void)
+int 
+get_listwhence(void)
 {
     return listwhence;
 }
 
 
-void set_template(char *tmpl)
+void 
+set_template(char *tmpl)
 {
     strcpy(template, tmpl);
 }
 
-char *get_template(void)
+char *
+get_template(void)
 {
     return template;
 }
 
 
 /* fputs Namazu version, it works with considereation of mode */
-void html_print(char *str)
+void 
+html_print(char *str)
 {
     char buf[BUFSIZE * 16];
     int is_nmz_html = 0;

@@ -2,7 +2,7 @@
  * 
  * libnamazu.c - Namazu library api
  *
- * $Id: libnamazu.c,v 1.14 1999-12-07 09:14:01 satoru Exp $
+ * $Id: libnamazu.c,v 1.15 2000-01-04 02:04:36 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
@@ -72,7 +72,8 @@ static char dyingmsg[BUFSIZE] = "Initialized";
  *
  */
 
-void free_idxnames(void)
+void 
+free_idxnames(void)
 {
     int i;
     for (i = 0; i < Idx.num; i++) {
@@ -82,7 +83,8 @@ void free_idxnames(void)
     Idx.num = 0;
 }
 
-void codeconv_query(char *query)
+void 
+codeconv_query(char *query)
 {
     if (is_lang_ja()) {
         if (conv_ja_any_to_eucjp(query)) {
@@ -91,7 +93,8 @@ void codeconv_query(char *query)
     }
 }
 
-void uniq_idxnames(void)
+void 
+uniq_idxnames(void)
 {
     int i, j, k;
 
@@ -109,7 +112,8 @@ void uniq_idxnames(void)
     }
 }
 
-int expand_idxname_aliases(void)
+int 
+expand_idxname_aliases(void)
 {
     int i;
 
@@ -131,7 +135,8 @@ int expand_idxname_aliases(void)
     return 0;
 }
 
-int complete_idxnames(void)
+int 
+complete_idxnames(void)
 {
     int i;
 
@@ -154,48 +159,57 @@ int complete_idxnames(void)
     return 0;
 }
 
-void set_sortmethod(enum nmz_sort_method method)
+void 
+set_sortmethod(enum nmz_sort_method method)
 {
     sortmethod = method;
 }
 
-enum nmz_sort_method get_sortmethod(void)
+enum nmz_sort_method 
+get_sortmethod(void)
 {
     return sortmethod;
 }
 
-void set_sortorder(enum nmz_sort_order order)
+void 
+set_sortorder(enum nmz_sort_order order)
 {
     sortorder = order;
 }
 
-enum nmz_sort_order get_sortorder(void)
+enum nmz_sort_order 
+get_sortorder(void)
 {
     return sortorder;
 }
 
-void set_debugmode(int mode)
+void 
+set_debugmode(int mode)
 {
     debugmode = mode;
 }
 
-int is_debugmode(void)
+int 
+is_debugmode(void)
 {
     return debugmode;
 }
 
-void set_loggingmode(int mode)
+void 
+set_loggingmode(int mode)
 {
     loggingmode = mode;
 }
 
-int is_loggingmode(void)
+int 
+is_loggingmode(void)
 {
     return loggingmode;
 }
 
 
-void set_dyingmsg(char *fmt, ...)
+void 
+set_dyingmsg(char *fmt, ...)
 {
     va_list args;
 
@@ -205,7 +219,8 @@ void set_dyingmsg(char *fmt, ...)
 
 }
 
-char *get_dyingmsg(void)
+char *
+get_dyingmsg(void)
 {
     return dyingmsg;
 }

@@ -2,7 +2,7 @@
  * 
  * wakati.c -
  * 
- * $Id: wakati.c,v 1.12 1999-12-09 08:12:27 satoru Exp $
+ * $Id: wakati.c,v 1.13 2000-01-04 02:04:37 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -54,7 +54,8 @@ static int detect_char_type(char*);
 static void set_phrase_trick(char*);
 static void set_regex_trick(char*);
 
-static int detect_char_type(char *c)
+static int 
+detect_char_type(char *c)
 {
     if (iskatakana(c)) {
         return KATAKANA;
@@ -70,7 +71,8 @@ static int detect_char_type(char *c)
  * replace duble quotes with spaces and replace internal spaces with TABs
  *{foo bar} is also acceptable 
  */
-static void set_phrase_trick(char *qs)
+static void 
+set_phrase_trick(char *qs)
 {
     int i, state;
     char *b = qs, *e;
@@ -99,7 +101,8 @@ static void set_phrase_trick(char *qs)
  * replace internal spaces with  
  * very complicated ad hoc routine :-( 
  */
-static void set_regex_trick(char *qs)
+static void 
+set_regex_trick(char *qs)
 {
     int i, delim;
     char *b = qs, *e;
@@ -139,7 +142,8 @@ static void set_regex_trick(char *qs)
  *
  */
 
-int wakati(char *key)
+int 
+wakati(char *key)
 {
     int i, j, key_leng, type;
     char buf[BUFSIZE * 2] = "";
@@ -214,7 +218,8 @@ int wakati(char *key)
 
 
 /* split a given query */
-int split_query(char *qs)
+int 
+split_query(char *qs)
 {
     int i, qn;
 

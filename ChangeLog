@@ -1,5 +1,10 @@
 2000-01-07  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* nmz/hlist.c (field_sort): Use strerror().
+
+	* nmz/codeconv.c: Use strerror().
+	(conv_ext): Ditto.
+
 	* nmz/field.c (get_field_data): Use nmz_warn_printf() instead of
 	nmz_debug_printf() and use strerror().
 	Include <errno.h>

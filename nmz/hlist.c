@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.29 2000-01-07 09:06:19 satoru Exp $
+ * $Id: hlist.c,v 1.30 2000-01-07 09:58:11 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -99,7 +99,7 @@ field_sort(NmzResult hlist)
 
 	hlist.data[i].field = malloc(leng + 1);
 	if (hlist.data[i].field == NULL) {
-	    set_dyingmsg("int_field_sort");
+	    set_dyingmsg("field_sort: %s", strerror(errno));
 	    return FAILURE;
 	}
 	strcpy(hlist.data[i].field, buf);
@@ -520,7 +520,7 @@ get_hlist(int index)
 	int sum = 0;
 	buf = malloc(n * sizeof(int)); /* with pelnty margin */
 	if (buf == NULL) {
-	    set_dyingmsg("get_hlist");
+	    set_dyingmsg("get_hlist: %s", strerror(errno));
 	    hlist.data = NULL;
 	    hlist.stat = ERR_FATAL;
 	    return hlist;

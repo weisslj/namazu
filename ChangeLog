@@ -1,3 +1,7 @@
+2003-01-09  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+	* tests/data/ja-mac/*: Added new file for testsuite.
+
 2003-12-20  Yukio USUDA <usu@namazu.org>
 
         * tests/ja-*: Changed exit code not to display
@@ -8237,4 +8241,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1068 2003-12-20 03:49:43 usu Exp $
+$Id: ChangeLog,v 1.1069 2004-01-08 14:48:09 opengl2772 Exp $

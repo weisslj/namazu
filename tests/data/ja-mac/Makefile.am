@@ -9,4 +9,8 @@ EXTRA_DIST  =   README.TXT \
 		simpletext.txt \
 		textedit.rtf \
 		word6.doc \
-		word98.doc
+		word98.doc \
+		excel2001.xls \
+		powerpoint2001.ppt \
+		word2001.doc \
+		word95.doc

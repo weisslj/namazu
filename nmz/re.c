@@ -2,7 +2,7 @@
  * 
  * re.c -
  * 
- * $Id: re.c,v 1.30 2000-05-03 23:56:58 masao Exp $
+ * $Id: re.c,v 1.31 2000-06-08 14:19:49 furukawa Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -59,6 +59,7 @@ nmz_regex_grep(const char *expr, FILE *fp, const char *field, int field_mode)
     struct re_pattern_buffer *rp;
     int i, n, size = 0, max, uri_mode = 0;
     NmzResult val, tmp;
+    val.stat = SUCCESS;
     val.num = 0;
 
     if (nmz_is_lang_ja()) {

@@ -3,7 +3,6 @@
 # Test for entity encoding
 #
 LOG=`pwd`/test-log
-TARGET=`pwd`/data/dup-field
 IDX=idx20
 echo '  *** starting ' $0 >>$LOG
 

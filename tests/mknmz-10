@@ -20,8 +20,8 @@ else
 fi
 
 pwd=`pwd`
-tmprc="$pwd/tmp.mknmzrc"
-echo '$conf::ALLOW_FILE=".*\\.txt"' > $tmprc
+tmprc="$pwd/tmp.mknmzrc-mknmz10"
+echo '$conf::ALLOW_FILE=".*\\.txt";' > $tmprc
 
 ../scripts/mknmz -f $tmprc -O                    idx12 $TARGET >> $LOG 2>&1
 ../scripts/mknmz -f $tmprc --allow='.*\.html' -O idx13 $TARGET >> $LOG 2>&1

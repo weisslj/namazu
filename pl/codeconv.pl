@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: codeconv.pl,v 1.19 2004-03-10 13:14:37 opengl2772 Exp $
+# $Id: codeconv.pl,v 1.20 2004-05-16 22:45:47 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -140,10 +140,12 @@ sub toeuc ($) {
 	    {
 		my $nh = util::efopen("|$conf::NKF $nkf_opt > $nkftmp");
 		print $nh $$contref;
+                util::fclose($nh);
 	    }
 	    {
 		my $nh = util::efopen("< $nkftmp");
 		$$contref = util::readfile($nh);
+                util::fclose($nh);
 	    }
 	    unlink($nkftmp);
 	}
@@ -181,7 +183,7 @@ sub eucjp_zen2han_ascii ($) {
     }
     $str;
 }
- 
+
 sub normalize_eucjp ($) {
     my ($contref) = @_;
     if (util::islang("ja")) {

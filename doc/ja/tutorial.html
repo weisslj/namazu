@@ -1,39 +1,58 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
 <html> 
 <head>
+<meta name="ROBOTS" content="NOINDEX,NOFOLLOW">
+<link rel=stylesheet href="namazu.css">
+<link rev=made href="mailto:developers@namazu.org">
 <title>NetBSD/Namazu 2.0 tutorial</title>
-<meta     name = "Keywords" content = "Namazu,install,kasasi,chasen,インストール,全文検索"
->
 </head>
-<!--------------------------><a name="BEGIN">
-<!--------------------------><a name="REF">
 <body>
+<h1>Namazu 2.0 tutorial</h1>
+
+<p>
+Namazu 2.0 を初めて使う方のための情報を用意しました。この文
+章は、2.0 が Release の形で公開されたことを前提として書いて
+います。公開される前にこの文章をお読みになる場合、
+</p>
+
+<ul>
+<li>cvs または snapshot 版の入手
+<li>m4 1.4, automake, autoconf, libtool の設置
+<li>./autogen.sh の実行
+</ul>
+
+<p>
+が必要になります。それらについては 
+<a href="diary.shtml">cvs 版について</a>も参照して下さい。
+</p>
+
+<h2>目次</h2>
+
 <a name="INDEX"></a>
 <h2>Namazu 2.0 tutorial</h2>
 <h3>目次</h3>
   <ul>
-  <li><a href="#MISSION">本文の目的</a>
-  <li><a href="#REFERENCE">参照</a>
-  <li><a href="#VERSIONS">四つの版</a>
-  <li><a href="#COMPONENTS">Namazu の構成部品</a>
-  <li><a href="#PREP_MAKE">準備と make</a>
-  <li><a href="#BEFORE_MAKE_INSTALL">mknmz make install 前の確認</a>
-  <li><a href="#HELP">help を表示</a>
-  <li><a href="#RUN_MKNMZ">動作確認 mknmz</a>
-
-  <li><a href="#RUN_NAMAZU">動作確認 namazu</a>
-  <li><a href="#TERMINOLOGY">用語</a>
-  <li><a href="#CAN_DO">Namazu で出来ること</a>
-  <li><a href="#CAN_NOT_DO">Namazu で出来ないこと</a>
-  <li><a href="#OTHERS">その他
+  <li><a href="#mission">本文の目的</a>
+  <li><a href="#reference">参照</a>
+  <li><a href="#versions">四つの版</a>
+  <li><a href="#components">Namazu の構成部品</a>
+  <li><a href="#prep-make">準備と make</a>
+  <li><a href="#before-make-install">mknmz make install 前の確認</a>
+  <li><a href="#help">help を表示</a>
+  <li><a href="#run-mknmz">動作確認 mknmz</a>
+  <li><a href="#run-namazu">動作確認 namazu</a>
+  <li><a href="#terminology">用語</a>
+  <li><a href="#can-do">Namazu で出来ること</a>
+  <li><a href="#can-not-do">Namazu で出来ないこと</a>
+  <li><a href="#others">その他</a>
   </ul>
 
-<!-- ----------------------------------------------------- -->
-<a name="MISSION"></a>
-<h3><a href="#INDEX">本文の目的</a></h3>
+<h2><a name="mission">本文の目的</a></h2>
 
 <ul>
-<li> Namazu-2.0 を初めて設置する方
-<li> Namazu を初めて使う方、Namazu-2.0 を初めて使う方
+<li>Namazu-2.0 を初めて設置する方
+<li>Namazu を初めて使う方、Namazu-2.0 を初めて使う方
 </ul>
 を対象に、Namazu を使い始める時の困難が少しでも少なくな
 るようにという目的で書かれています。
@@ -43,14 +62,13 @@ Namazu の全ての機能については、
 <a href="../../INSTALL-ja">別途説明</a>
 があります。
 
-<!-- ----------------------------------------------------- -->
-<a name="REFERENCE"></a>
-<h3><a href="#INDEX">【参照】</A></h3>
+<h2><a name="reference">【参照】</a></h2>
+
 <dl>
 <dt>Kakasi 2.3.1
   <dd>高橋裕信さんの作られた kakasi-2.2.5 を野首さん・馬場さんが修正して
   namazu 用などに使いやすくしたもの<br>
-  <a href="http://kakasi.namazu.org/        ">http://kakasi.namazu.org/</a>
+  <a href="http://kakasi.namazu.org/">http://kakasi.namazu.org/</a>
   <br>
   <font color="#226644">
 (これが日本語で表示されない場合、
@@ -62,29 +80,27 @@ content negotiation </a>
 
 <dt>開発配布元・高林さんからの情報
   <dd>
-  <a href="http://openlab.ring.gr.jp/namazu/          ">http://openlab.ring.gr.jp/namazu/</a>
+  <a href="http://openlab.ring.gr.jp/namazu/">http://openlab.ring.gr.jp/namazu/</a>
 <dt> その中にある説明書
   <dd>
-  <a href="http://openlab.ring.gr.jp/namazu/manual.html          ">http://openlab.ring.gr.jp/namazu/manual.html</a>
+  <a href="http://openlab.ring.gr.jp/namazu/manual.html">http://openlab.ring.gr.jp/namazu/manual.html</a>
 <dt>(同じく)良くある質問と答 (FAQ)日本語
   <dd>
-  <a href="http://openlab.ring.gr.jp/namazu/FAQ.html          ">http://openlab.ring.gr.jp/namazu/FAQ.html</a>
+  <a href="http://openlab.ring.gr.jp/namazu/FAQ.html">http://openlab.ring.gr.jp/namazu/FAQ.html</a>
 <dt>Namazu メイリング・リスト
   <dd>
-  <a href="http://openlab.ring.gr.jp/namazu/ml.html          ">http://openlab.ring.gr.jp/namazu/ml.html</a>
+  <a href="http://openlab.ring.gr.jp/namazu/ml.html">http://openlab.ring.gr.jp/namazu/ml.html</a>
 <dt>やまだあきらさんの namazu.el (Emacs/Mule client)
   <dd>
-  <a href="http://arika.org/linux/tools/namazu-el/          ">http://arika.org/linux/tools/namazu-el/</a>
+  <a href="http://arika.org/linux/tools/namazu-el/">http://arika.org/linux/tools/namazu-el/</a>
 <dt>Namazu Beta version (proto)
   <dd>ここの説明で使っている 1.9.14 はここにある<br>
   現在は proto と unstable は同じもの
   <br>
-  <a href="http://openlab.ring.gr.jp/namazu/proto/          ">http://openlab.ring.gr.jp/namazu/proto/</a>
+  <a href="http://openlab.ring.gr.jp/namazu/proto/">http://openlab.ring.gr.jp/namazu/proto/</a>
 </dl>
 
-<!-- ----------------------------------------------------- -->
-<a name="VERSIONS"></a>
-<h3><a href="#INDEX">四つの版</a></h3>
+<h2><a name="versions">四つの版</a></h2>
 Namazu の版には(大きく分けて) 1.3 以前, 1.4, 1.9, 2.0 の四つがあり
 ます。
 <dl>
@@ -111,9 +127,7 @@ Namazu の版には(大きく分けて) 1.3 以前, 1.4, 1.9, 2.0 の四つがあり
 2.0-current </a> は CVS で取得出来ます。
 </dl>
 
-<!-- ----------------------------------------------------- -->
-<a name="COMPONENTS"></a>
-<h3><a href="#INDEX">Namazu の構成部品</a></h3> 
+<h2><a name="components">Namazu の構成部品</a></h2> 
 
 namazu は大きく分けて次の二つから出来ています。 
 <ul>
@@ -126,22 +140,25 @@ namazu は大きく分けて次の二つから出来ています。
 実際に文字列を入力して検索する<br> 
 例えば、cgi-bin として動かす時に使う。 
 あるいは操作行 (command line) から使うことも出来る。 ( c で書いてある)
-<font size=-1> 
 <p>
+<font size=-1> 
 1.9.13 からは、この操作行用 (namazu) と cgi-bin 
 用 (namazu.cgi)が 「外部からの攻撃を受けないように」 
 との理由で別物になっている。
 namazu という名前のものを namazu.cgi という名前で写したり、名前を
 変更して 使ってしまっては、
 その意味がない。</font>
+</p>
 </ul> 
+<p>
 実際には、後者には、
  <A href="variation.shtml">いろいろな変種 (variation) </a>
 が用意されていますが、ここではこまかいことは省略します。
-<p>
-<!----------------------------------- P R E P A R A T I O N  ----------------------><a name="MAKE"></a>
-<a name="PREP_MAKE"></a>
-<h3><a href="#INDEX">準備と make</a></h3>
+</p>
+
+<a name="make"></a>
+<a name="prep-make"></a>
+<h2><a href="#index">準備と make</a></h2>
 2.0 の版を作るために次のものが必要になります。
 (お名前の敬称は略させていただきます。ごめんなさい)
 <table cellspacing=0 cellpadding=3 border=1>
@@ -154,11 +171,10 @@ namazu という名前のものを namazu.cgi という名前で写したり、名前を
 <th>入手先(例)</th>
 <th>その他</th>
 </tr>
-<!-- ---------------- P e r l ---------------------------------- -->
-<tr><td>Perl</td><td>Perl <nobr>言語処理系</nobr>
+<tr><td>Perl</td><td>Perl 言語処理系
 <td>○</td><td>5.005_03</td><td>5.004</td>
 <td>perl-5.005_03.tar.gz</td>
-<td><nobr>Larry Wall</nobr>
+<td>Larry Wall
 GNU CPAN</td>
 <td> 
 <a href="ftp://ftp.lab.kdd.co.jp/lang/perl/CPAN/authors/id/GBARR/">
@@ -166,96 +182,93 @@ CPAN</a></td>
  <td><br></td>
 </tr>
 
-<!-- --------------- n k f ------------------------------- -->
-<tr bgcolor="E0E0A0"><td>nkf</td><td>Network Kanji Filter <nobr>漢字コード</nobr> 
-<nobr>変換系</nobr></td>
+<tr bgcolor="#E0E0A0"><td>nkf</td><td>Network Kanji Filter 漢字コード 
+変換系</td>
   <td>○</td><td>1.9</td><td><a href="nkf.shtml">1.71</a></td>
   <td rowspan=2>
-  <a href="ftp://ftp.ie.u-ryukyu.ac.jp/pub/software/kono/nkf171.shar   ">nkf171.shar</a></td>
-  <td rowspan=2><nobr>河野眞治</nobr></td>
+  <a href="ftp://ftp.ie.u-ryukyu.ac.jp/pub/software/kono/nkf171.shar">nkf171.shar</a></td>
+  <td rowspan=2>河野眞治</td>
   <td rowspan=2>
   <a href="ftp://ftp.ie.u-ryukyu.ac.jp/pub/software/kono/">琉球大学</a></td>
   <td><br></td>
   </tr>
 
-<!-- -------------- N K F  ------------------------------ -->
-<tr bgcolor="E0E0A0"><td>NKF</td><td>nkf <nobr>Perl 部品化</nobr></td>
+<tr bgcolor="#E0E0A0"><td>NKF</td><td>nkf Perl 部品化</td>
   <td>▲</td><td>1.9</td><td>1.71</td>
   <td><br></td>
   </tr>
-<!--------------------- K A K A S I ------------------------->
+
 <tr bgcolor="#80B080">
  <td><a href="http://kakasi.namazu.org/index.html">kakasi</a></td>
- <td>日本語・ <nobr>ローマ字</nobr> 変換系<td>△</td><td>2.3.1</td><td><=</td>
+ <td>日本語・ <nobr>ローマ字</nobr> 変換系<td>△</td><td>2.3.1</td><td>&gt;=</td>
  <td><a href="ftp://kakasi.namazu.org/pub/kakasi/kakasi-2.3.1.tar.gz">
  kakasi-2.3.1.tar.gz</a></td>
  <td rowspan=2>
- <a href="http://www.daionet.gr.jp/~knok/"><nobr>野首貴嗣</nobr></a></td>
+ <a href="http://www.daionet.gr.jp/~knok/">野首貴嗣</a></td>
  <td rowspan=2>
  <a href="ftp://kakasi.namazu.org/pub/kakasi/">namazu.org</a>
   <td><br></td>
  </tr>
-<!--------------------- T e x t :: K A K A S I ------------------------->
+
 <tr bgcolor="#80B080">
   <td><a href="http://www.daionet.gr.jp/~knok/kakasi">Text::Kakasi</a></td>
-  <td>Kakasi <nobr>Perl 部品化</nobr><td>▲</td>
-  <td>1.00</td><td><=</td>
+  <td>Kakasi Perl 部品化<td>▲</td>
+  <td>1.00</td><td>&lt;=</td>
   <td>
   <a href="http://www.daionet.gr.jp/~knok/kakasi/Text-Kakasi-1.00.tar.gz">Text-Kakasi-1.00.tar.gz</a>
   </td>
   <td><br></td>
   </tr>
 
-<!--------------------- C H A S E N 2 ----------------------------->
 <tr bgcolor="#COE0C0">
   <td>Chasen</td>
-  <td>(茶筌) -- <nobr>日本語</nobr> <nobr>形態素</nobr> <nobr>解析器</nobr></td>
+  <td>(茶筌) -- 日本語 形態素 解析器</td>
   <td>△</td>
-  <td>2.02</td><td><=</td><td>
-  <a href=" ftp://ftp.aist-nara.ac.jp/pub/lab/nlp/tools/chasen/chasen-sys2.02-ipadic2.1.tar.gz ">chasen-sys2.02 -ipadic2.1.tar.gz</a>
+  <td>2.02</td><td>&lt;=</td><td>
+  <a href="ftp://ftp.aist-nara.ac.jp/pub/lab/nlp/tools/chasen/chasen-sys2.02-ipadic2.1.tar.gz">chasen-sys2.02 -ipadic2.1.tar.gz</a>
   </td><td>
-  <a href="http://cactus.aist-nara.ac.jp/lab/nlt/chasen.html        ">奈良先端大学</a> |
+  <a href="http://cactus.aist-nara.ac.jp/lab/nlt/chasen.html">奈良先端大学</a> |
   <a href="ftp://ftp.aist-nara.ac.jp/pub/lab/nlp/tools/chasen/">ftp://</a>
   </td><td>
-  <a href="http://cactus.aist-nara.ac.jp/lab/nlt/chasen/distribution.html        ">配布方針</a></td>
+  <a href="http://cactus.aist-nara.ac.jp/lab/nlt/chasen/distribution.html">配布方針</a></td>
   <td>
   2.02 以前では libchasen.a について下記参照
   </tr>
-<!--------------------- Text-Chasen-2 ----------------------------->
+
 <tr bgcolor="#COE0C0">
   <td>Text::ChaSen</td>
-  <td>ChaSen <nobr>Perl 部品化</nobr></td>
+  <td>ChaSen Perl 部品化</td>
   <td>▲</td>
-  <td>0.20</td><td><=</td><td>
+  <td>0.20</td><td>&lt;=</td><td>
   <a href="http://www.daionet.gr.jp/~knok/chasen/Text-ChaSen-0.20.tar.gz">
   Text-ChaSen-0.20.tar.gz</a></td>
   <td align=CENTER>
   <a href="http://www.daionet.gr.jp/~knok/chasen/">
-  <nobr>野首貴嗣</nobr></a></td>
-  <td><a href="http://www.daionet.gr.jp/~knok/chasen/        ">Text::ChaSen</a></td>
+  野首貴嗣</a></td>
+  <td><a href="http://www.daionet.gr.jp/~knok/chasen/">Text::ChaSen</a></td>
   <td><br></td>
 </tr>
-<!-- ------------------- g e t t e x t -----------------------  -->
+
 <tr bgcolor="#E0E0E0"><td>gettext</td><td>Message localization</td>
-<td>○</td><td>0.10.35</td><td><=</td>
+<td>○</td><td>0.10.35</td><td>&lt;=</td>
 <td><a href="ftp://ftp.iij.ad.jp/pub/GNU/gettext/">
 gettext-0.10.35.tar.gz</a></td>
-<td>FSF</td><td><a href="ftp://ftp.iij.ad.jp/pub/GNU/gettext/">GNU</td>
+<td>FSF</td><td><a href="ftp://ftp.iij.ad.jp/pub/GNU/gettext/">GNU</a></td>
 <td>
 BSD make を使う場合は 
 <a href="../../PATCHES.GT">PATCHES.GT</a>
 を当てておく
 </td>
 <td>
-<!-- ------------------- File-MMagic -------------------- -->
+
 <tr><td>
-<a href="http://search.cpan.org/search?mode=module&query=MMagic">File-MMagic</a>
+<a href="http://search.cpan.org/search?mode=module&amp;query=MMagic">File-MMagic</a>
 </td><td>File 種別</td>
-<td>×</td><td>0.19</td><td><=</td>
+<td>×</td><td>0.19</td><td>&lt;=</td>
 <td>File-MMagic-0.19
 <td>
   <a href="http://www.daionet.gr.jp/~knok/">
-  <nobr>野首貴嗣</nobr></a></td>
+  野首貴嗣</a></td>
 </td>
 <td align=CENTER>
 <a href="http://search.cpan.org/search?dist=File-MMagic">CPAN dist</a>
@@ -263,17 +276,17 @@ BSD make を使う場合は
 通常同梱されているので別途設置は不要
 </td>
 </tr>
-<!-- ------------------- N a m a z u -------------------------  -->
+
 <tr bgcolor="#ffffff"><td colspan=9>当然、次のものも必要です。
 </td></tr>
 <tr><td>Namazu</td><td>Namazu本体</td>
-<td>○</td><td>1.9.14</td><td><=</td>
+<td>○</td><td>1.9.14</td><td>&lt;=</td>
 <td><a href="http://openlab.ring.gr.jp/namazu/proto/namazu-1.9.14.tar.gz">
 namazu-1.9.14.tar.gz</a></td>
 <td>
 <a href="http://openlab.ring.gr.jp/namazu/">Project Namazu</a>
 <td>
-<a href="http://openlab.ring.gr.jp/namazu/proto/        ">namazu/proto/</a></td>
+<a href="http://openlab.ring.gr.jp/namazu/proto/">namazu/proto/</a></td>
 <td><br></td>
 </tr>
 </table>
@@ -291,13 +304,13 @@ kakasi/ChaSen のどちらかが必要という意味。
 </table>
 
 <li>
-▲ は <nobr>Perl 部品化</nobr>で、1.9/2.0 の機能を生かすには必要で
+▲ は Perl 部品化で、1.9/2.0 の機能を生かすには必要で
 す。しかし、なくても動くことは動きます。
 その場合には一つの譜毎にわかち書きの外部 process を起動するので、
 遅くなります。その場合でも、
 mknmz による索引の作成が遅いだけで、namazu の検索の
 速度には関係ありません。でも、入れるのは 
-<tt><nobr>perl Makefile.PL; make; make install</tt></nobr>
+<code>perl Makefile.PL; make; make install</code>
 とするだけだから、問題がないなら入れておいた方がいいと思います。
 <li>
 namazu 1.9.12 以降では Chasen2 にだけ対応しています。
@@ -323,9 +336,10 @@ ranlib -t /usr/local/lib/libchasen.a
 を見て下さい。
 </ul>
 
-<!-------------------------------------------------------------->
-<a name="BEFORE_MAKE_INSTALL"></a>
-<h3><a href="#INDEX">mknmz make install 前の確認</a></h3>
+
+
+<a name="before-make-install"></a>
+<h2><a href="#index">mknmz make install 前の確認</a></h2>
 もし make install する前に mknmz を試して見たいという時には
 cd scripts してから ./mknmz とすると、
 <font color="#226644">(/usr/local/share/namazu でなく)</font>
@@ -336,42 +350,43 @@ cd scripts してから ./mknmz とすると、
 で分るはずです)。</font>
 <br>
 例えば
-<nobr><tt>
-./mknmz -C  ./mknmz --help ./mknmz -O /tmp ~/Mail</tt></nobr>
+<code>
+./mknmz -C  ./mknmz --help ./mknmz -O /tmp ~/Mail</code>
 などを試せます。
 
-<!-------------------------------------------------------------->
-<a name="HELP"></a>
-<h3><a href="#INDEX">help の表示</a></h3>
+
+<a name="help"></a>
+<h2><a href="#index">help の表示</a></h2>
 以上 mknmz と namazu の二つの使い方は引数無で起動するととても簡単な説明が、
 --help と入力すると長い説明が表示されます。また -C を付けると
 その時の構成を表示します。この三つ
 
-  <center><table cellspacing=0 cellpadding=3 border>
+<div align=center>
+<table cellspacing=0 cellpadding=3 border>
   <caption>操作行で説明などを得る方法</caption>
   <tr><th rowspan=2>引数</th>           <th rowspan=2>意味</th><th rowspan=2>その他に引数を付けると</th>
     <th colspan=2>実行例</th>
   <tr>                                                         <td>mknmz<td> namazu
   <tr><td>無</td> <td>とても簡単な説明<td>(他の引数・選択は付けられない)
     <td><td>
-  <tr><td><tt>--help</tt></td><td>詳しい説明 <td>(他の引数・選択は無視される)
+  <tr><td><code>--help</code></td><td>詳しい説明 <td>(他の引数・選択は無視される)
     <td><a href="mknmz-1.9.12--help">*</a>    <td><a href="namazu-1.9.12--help">*</a>
-  <tr><td><tt>-C </tt>   </td><td>その時の構成<td> (他の引数・選択も意味がある)
+  <tr><td><code>-C </code>   </td><td>その時の構成<td> (他の引数・選択も意味がある)
     <td><a href="mknmz-1.9.12-C">*</a>    <td><a href="namazu-1.9.12-C">*</a>
-  </table></center>
+  </table>
+</div>
 
 は覚えておくといいと思います。 
 上にも書きましたが、全ての機能については別の
 <a href="manual.html">説明書</a> がありますので、そちらを
 参照して下さい。
 
-<!-------------------------------------------------------------->
-<a name="RUN_MKNMZ"></a>
-<h3><a href="#INDEX">動作確認 mknmz</a></h3>
+<h2><a name="run-mknmz">動作確認 mknmz</a></h2>
+<p>
 さて、組立たばかりのものを使って、まずは索引を作ります。
 <font color="#224466">
 (もし make install の前に試したいなら、上の
-<a href="#BEFORE_MAKE_INSTALL">
+<a href="#before-make-install">
 【mknmz make install 前の確認】</a>を見て下さい。)</font>
 <br>
 これには次のようにします。1.4.0.8 からは少し書式が変っていて
@@ -381,37 +396,52 @@ URL の置換は
 (但し namazu で表示する時にも REPLACE が出来ます。
 mknmz では --replace を指定しないで実行し、
 namazu の実行時に
-<a href="#NAMAZURC">.namazurc</a> の方で調整する。という方法です。
+<a href="#namazurc">.namazurc</a> の方で調整する。という方法です。
 高林さんは、その方をすすめるようにすると書いています)
+</p>
+
   <blockquote>
-  <tt><a href="man/mknmz">mknmz</a> [options] <i>検索 directory</i></tt>
+  <code><a href="man/mknmz">mknmz</a> [options] <i>検索 directory</i></code>
   </blockquote>
+
+<p>
 とします。
 この場合、結果の検索索引(index) 
 はカレント・ディレクトリに作られます。
 もし出力先を変更したい時には -O を使います。
+</p>
+
 <p>
-例えば<blockquote><tt>
+例えば
+</p>
+<blockquote><code>
   mkdir /tmp/index<br>
   cd /home/htdocs/software<br>
   mknmz -O /tmp/index \<br>
   --replace='s#<font color="#226644">/home/htdocs/software/</font>#<font color="#555500">http://www.ki.nu/software/</font>#'
- <font color="#FF0000">.</font></tt></blockquote>
+ <font color="#FF0000">.</font></code></blockquote>
+
+<p>
 などとして見ます。(最後の<font color="#FF0000">ピリオド</font>にも注目) <br>
 この例は
+</p>
+
 <ul>
   <li>結果 (の索引) は (-O で指定した) /tmp/index に
-  <li>検索対象は<tt>現案内(current directory)</tt> (これが<font color="#FF0000">ピリオド</font>)
+  <li>検索対象は<code>現案内(current directory)</code> (これが<font color="#FF0000">ピリオド</font>)
   <li>URL については
+
+<p>
 「<font color="#226644">/home/htdocs/software/</font> に置いてあるものは
 外から見ると、
 <font color="#555500">
 http://www.ki.nu/software/</font> の下に見えるもの
 なので、(Perl 語で言うと) 
-<tt>s#<font color="#226644">aaa</font>#<font color="#555500">bbb</font># 
+<code>s#<font color="#226644">aaa</font>#<font color="#555500">bbb</font>#</code>
 のように変換してね」という意味になります。
 (上の例では aaa (/home/htdocs/software/)
-            bbb ( http://www.ki.nu/) となる。
+            bbb (http://www.ki.nu/) となる。
+</p>
 
   <li> (<font color="#226644"  size=-1>/usr/local/share/namazu/conf.pl 
       の $HTML_SUFFIX の設定によって</font>)
@@ -419,10 +449,16 @@ http://www.ki.nu/software/</font> の下に見えるもの
       ルのようなものは調べない。
   <li>手軽にメールなどを調べるなら -a を付けておく
 </ul>
+
+<p>
 実行の最初の方に次のように表示されますが、
+</p>
+
 <pre>
  find_target: Scanned : (1267), Files: (1265), Elapsed: (8), Files/sec: (158.1).
 </pre>
+
+<p>
  find_target という処理の中で、1267 個の譜が見つかったが、
 $DENY_REGEX
 $EXCLUDE_REGEX 
@@ -434,20 +470,20 @@ $HTML_SUFFIX
 という意味になります。Scanned/Files の差が自分の意図
 と違っている場合は、上記 四変数を調べた方がいいでしょう。
 (これらの変数は、通常 
-<a href="#MKNMZRC">.mknmzrc</a> 
+<a href="#mknmzrc">.mknmzrc</a> 
 に設定します。)
-<p>
+</p>
 
 
-<!--------------------------><a name="USING_MKNMZ">
+<a name="using-mknmz">using-mknmz</a>
 
 <hr>
 <font color="#226644">この色の情報はまだ以前の情報のままですので
-あまり、意味がありません。
+あまり、意味がありません。</font>
+
 <hr>
 
-<a name="CUSTOMIZE_MKNMZ"></a>
-<h3><a href="#INDEX">mknmz の調整</a></h3>
+<h2><a name="customize-mknmz">mknmz の調整</a></h2>
 <pre>
 メール
 HTML
@@ -455,10 +491,12 @@ HTML
 他の Web
 </pre>
 
+<p>
 mknmz の操作行での選択は、
-<a href="man/mknmz">
-mknmz --help </a>とすると得られます。また
+<a href="man/mknmz">mknmz --help</a>とすると得られます。また
 -C を付けると、その時の構成を表示してくれます。
+</p>
+
 <pre>
 Config: /home/makoto/.mknmzrc
 System: netbsd
@@ -486,22 +524,9 @@ Supported media types:
   text/plain; x-type=rfc
   text/x-roff
 </pre>
-<!--
 
-    -a, --all                すべてのファイルを対象とする
-    -e, --robots-txt         ロボットよけされているファイルを除外する
-    -t, --media-type=mtype   対象ファイルの文書形式を指定する
-    -h, --mailnews           --media-type='message/rfc822' と同じ
-        --mhonarc            --media-type='text/html; x-type=mhonarc' と同じ
-    -A, --htaccess           .htaccess で制限されたファイルを除外する
-    -F, --target-list=file   インデックス対象のファイルのリストを読み込む
-        --allow=regex        対象ファイル名の正規表現を指定する
-        --deny=regex         除外するファイル名の正規表現を指定する
-        --exclude=regex      除外するパス名の正規表現を指定する
-    -M, --meta               HTMLの metaタグをフィールド指定検索に用いる
-    -r, --replace=code       URIを置換するためのコードを指定する
--->
-<h4>検索を作る対象について</h4>
+
+<h3>検索をする対象について</h3>
 
 <table cellspacing=0 cellpadding=3 border>
 <tr><th>短縮形</th><th>本名</th><th>説明</th>
@@ -527,7 +552,7 @@ Supported media types:
 </ul>
 </font>
 
-<h4>conf.pl</h4>
+<h3>conf.pl</h3>
 namazu-1.9.5/lib/conf.pl が設置される先の
 <tt><a href="../../pl/conf.pl">/usr/local/share/namazu/lib/conf.pl</a></tt> 
 に定義されている<a href="conf.pl.shtml">変数</a>は
@@ -538,7 +563,7 @@ namazu-1.9.5/lib/conf.pl が設置される先の
 
 
 <pre>このようなものを試して見る。
-makoto@milano  22:04:47/991121(~)> 
+makoto@milano  22:04:47/991121(~)&gt;
 
 (準備中)
 ...
@@ -557,27 +582,25 @@ Wakati: /usr/local/bin/kakasi -ieuc -oeuc -w
 Time: 1261 sec.
 </pre>
 
-<!-------------------------->
-<h3><a href="#INDEX" name="RUN_NAMAZU">【動作確認 namazu】</a></h3>
-さまざまな設定は<tt>
-<a href="http://openlab.ring.gr.jp/namazu/manual.html#NAMAZU_CONF">
-/usr/local/share/namazu/conf/namazu.conf</a></tt>
+<h2><a href="#index" name="run-namazu">【動作確認 namazu】</a></h2>
+さまざまな設定は<code>
+<a href="http://openlab.ring.gr.jp/namazu/manual.html.ja#NAMAZU_CONF">
+/usr/local/share/namazu/conf/namazu.conf</a></code>
 に書くことが出来ます。
-namazu.conf の設定例は 配布の中の <tt>lib/namazu.conf-dist</tt> に
+namazu.conf の設定例は 配布の中の <code>lib/namazu.conf-dist</code> に
 あります。
 <p>初めは操作行で <pre>
 /usr/local/namazu/bin 検索文字列</pre>
 を試すのが手軽です。
 <p>
 無指定では、namazu は
-<tt>/usr/local/share/namazu/index/</tt> に検索索引を見に行きます。
+<code>/usr/local/share/namazu/index/</code> に検索索引を見に行きます。
 <p>詳しい説明は manual があります。
 <a href="doc/ja/manual.html">
 <p>
 Web で cgi を実行出来るようにするには、いくつかの条件があるかも知
 れない。<a href="http://www.apache.org/">apache</a> の場合
 <a href="http://www.apache.org/docs/">設定</a>として
-<tt>
 <table cellspacing=0 cellpadding=3 border>
 <tr><td>
 ScriptAlias</td><td> /cgi-bin/ /usr/local/apache/cgi-bin/
@@ -607,17 +630,16 @@ DirectoryIndex</td><td> index.html
 </td></tr>
 
 </table>
-</tt>
+</code>
 などが関係して来る。(管理者)と書いてあるもの以外は .htaccess にも
 書ける(ただし apache の設置時にそれを禁止することも出来るので不可の場合もある)
 
 <p>
-<h4>型紙(template)のこと</h4>
+<h3>型紙(template)のこと</h3>
 /usr/local/share/namazu/template/
 <p>
-<!-------------------------->
-<a name="TERMINOLOGY"></a>
-<h3><a href="#INDEX">【用語】</a></h3>
+
+<h2><a name="terminology">【用語】</a></h2>
 <dl>
 <dt><a href="http://kakasi.namazu.org/">Kakasi</a>
 <dd>本来は「漢字で書かれたもの」を「ひらがな・カタカナ・roma-ji 」
@@ -656,13 +678,13 @@ Namazu は<pre>
 <dd>二つ以上の検索索引を作っておいて、それらの中をまとめて
 検索する機能
 
-<a href="http://openlab.ring.gr.jp/namazu/manual.html#MULTIPLE_INDICES ">説明書の中に実現方法</a>が書いてある。
+<a href="http://openlab.ring.gr.jp/namazu/manual.html.ja#MULTIPLE_INDICES">説明書の中に実現方法</a>が書いてある。
 
 <dt>フレーズ検索
 <dd>
 Namazu の検索の基本は単語の組合せである。
 "単語 and 組合せ" と(順を逆にした)
-"組合せ and 単語" は区別しない。これを "単語 組合せ"という
+"組合せ and 単語" は区別しない。これを"単語 組合せ"という
 文字列がそのままの順で出現するものを探す機能のこと。
 <dt>conf.pl
 <dd>
@@ -690,10 +712,10 @@ Namazu の動作を make 時から変更したいというような時に、その
 設定が書ける。
 説明は次のところにある。
 
-<a href="http://openlab.ring.gr.jp/namazu/manual.html#NAMAZU_CONF        ">http://openlab.ring.gr.jp/namazu/manual.html.ja#NAMAZU_CONF</a>
-<tt>
+<a href="http://openlab.ring.gr.jp/namazu/manual.html.ja#NAMAZU_CONF">http://openlab.ring.gr.jp/namazu/manual.html.ja#NAMAZU_CONF</a>
+<code>
 INDEX, REPLACE, BASE, WAKATI, LOGGING OFF, LANG ja
-</tt>
+</code>
 の設定が出来る。
 <dt>Perl 部品化 ( Perl module)
 <dd> program を単体としてではなく、 Perl の部品として起動
@@ -717,8 +739,7 @@ perl -MNKF -e ''
 </dl>
 
 
-<a name="CAN_DO"></a>
-<h3><a href="#INDEX">Namazu で出来ること</a></h3>
+<h2><a name="can-do">Namazu で出来ること</a></h2>
 <font color="Red">
 ここに書いてあることは「保証」ではありません。
 </font>
@@ -743,15 +764,14 @@ cgi-bin が動く HTTP server を
 閲覧系を通じて利用する形で行ないます。
 </ul>
 
-<a name="CAN_NOT_DO"></a>
-<h3><a href="#INDEX">出来ないこと</a></h3>
+<h2><a name="can-not-do">出来ないこと</a></h2>
 <ul>
 <li>他の機械にまで内容を取りに行って検索すること
 <li>「一日に 100 万回の利用回数がある」というような大規模な構成
 の使い方。
 </ul>
-<a name="OTHERS"></a>
-<h3><a href="#INDEX">【その他】</a></h3>
+
+<h2><a name="others">【その他】</a></h2>
 <dl>
 <dt>対象譜について
 <dd>
@@ -775,7 +795,6 @@ mknmz を起動して必要な検索索引を作り
 機能が contrib/mew-nmz.el にあり、説明は
 <a href="00readme-namazu.jis">
 contrib/00readme-namazu.jis</a> に書いてあります。
-
 </dl>
 
 </body>

@@ -6,6 +6,8 @@
         character sequence is corrected.
         (namazu-win32-users-ja#02071)
 
+        * tests/namazu-cgi-9: STDERR message It was made to output to $LOG.
+
 2004-04-03  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * src/rcfile.c (load_rcfiles): Environment variable It corresponds 
@@ -8711,4 +8713,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1144 2004-04-05 08:15:03 opengl2772 Exp $
+$Id: ChangeLog,v 1.1145 2004-04-05 08:46:44 opengl2772 Exp $

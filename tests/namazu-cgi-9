@@ -53,8 +53,8 @@ env NAMAZUNORC='SYSCONFIG' ./namazu.cgi >> $LOG 2>&1
 test $? -ne 0 && exit 1
 
 # long LANG environment variable
-LANG='ja_JP.eucJP-l'`perl -e 'print "o" x 2048'`'ong'
-export LANG
+LANG='ja_JP.eucJP-l'`perl -e 'print "o" x 2048'`'ong' >> $LOG 2>&1
+export LANG >> $LOG 2>&1
 ./namazu.cgi >> $LOG 2>&1
 test $? -ne 0 && exit 1
 

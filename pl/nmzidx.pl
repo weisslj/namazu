@@ -3,7 +3,7 @@
 # nmzidx.pl - subroutines for accessing Namazu index files (NMZ.*)
 #         by furukawa@tcp-ip.or.jp
 #
-# $Id: nmzidx.pl,v 1.12 2000-06-15 14:03:17 furukawa Exp $
+# $Id: nmzidx.pl,v 1.13 2001-01-10 16:59:45 furukawa Exp $
 #
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -220,6 +220,7 @@ sub new{
     $self->{'field'}->open_all($par);
     $self->{'offset'} = 0;
     $self->{'size'} = (-s $self->{'t'}) / length(pack('N', 0));
+    $self->{'valid'} = $self->{'size'};
     return $self;
 }
 
@@ -253,6 +254,7 @@ sub read{
         chomp $line;
         $list->{'field'}->{$key} = $line;
     }
+    --$self->{'valid'} if defined($list->{'t'}) && $list->{'t'} == -1;
     ++$self->{'offset'};
     return $list->{'t'}
 }
@@ -271,6 +273,8 @@ sub write{
     for my $key (keys %$field){
         $field->{$key}->putline($list->{'field'}->{$key} . "\n")
     }
+    ++$self->{'valid'} if $list->{'t'} != -1;
+    ++$self->{'size'};
     ++$self->{'offset'};
 }
 
@@ -351,6 +355,7 @@ sub write{
             $ndx = $key;
         }
         $self->{'i'}->putlist(@tmp);
+        ++$self->{'size'};
         ++$self->{'offset'};
     }
 }
@@ -630,14 +635,19 @@ sub remove_tmpdb{
 sub write_status{
     my $self = shift;
     my $in = shift;
-    my $key = $self->{'word'}->{'offset'};
-    my $file = $self->{'flist'}->{'offset'};
+
+    my $key = undef;
+    $key = $self->{'word'}->{'size'} if defined $self->{'word'};
+
+    my $file = undef;
+    $file = $self->{'flist'}->{'valid'} if defined $self->{'flist'};
+
     if ($self->{'mode'} =~ /w/i){
         my $fi = &nmzlib::open_db($in, 'status');
         my $fo = &nmzlib::open_db($self, 'status');
         while (defined(my $line = $fi->getline)){
-            $line = "files $file\n" if $line =~ /^files /;
-            $line = "keys $key\n" if $line =~ /^keys /;
+            $line = "files $file\n" if $line =~ /^files / && defined $file;
+            $line = "keys $key\n" if $line =~ /^keys / && defined $key;
             $fo->print($line);
         }
         $fi->close;
@@ -650,8 +660,8 @@ sub write_status{
                 $fo = &nmzlib::open_db($self, $1);
 
                 while (defined(my $line = $fi->getline)){
-                    $line =~ s/(\<\!-- FILE --\>).*?\1/$1 $file $1/;
-                    $line =~ s/(\<\!-- KEY --\>).*?\1/$1 $key $1/;
+                    $line =~ s/(\<\!-- FILE --\>).*?\1/$1 $file $1/ if defined $file;
+                    $line =~ s/(\<\!-- KEY --\>).*?\1/$1 $key $1/ if defined $key;
                     $fo->print($line);
                 }
                 $fi->close;
@@ -667,20 +677,27 @@ sub log_open{
     my $tag = shift;
     my $path = $self->{'dir'} . "/NMZ.log";
     my $fh = new IO::File ">>$path";
+    $self->{'log'} = $fh;
     if (defined $fh){
         binmode $fh;
         $fh->print("$tag\n") if defined $tag;
-        $fh->print("Date: " . localtime($^T) . "\n");
+        $self->log_putline("Date:",  localtime($^T) . "");
     }
-    return $self->{'log'} = $fh;
+    return $self->{'log'};
+}
+
+sub log_putline{
+    my $self = shift;
+    $self->{'log'}->printf("%-20s %s\n", @_);
 }
 
 sub log_close{
     my $self = shift;
     if (defined $self->{'log'}){
-        $self->{'log'}->print("Perl: $]\n");
-        $self->{'log'}->print("System: $^O\n");
-        $self->{'log'}->printf("Time: %d sec.\n\n", time - $^T);
+        $self->log_putline("Perl:", $]);
+        $self->log_putline("System:", $^O);
+        $self->log_putline("Time (sec):", (time - $^T));
+        $self->{'log'}->print("\n");
         $self->{'log'}->close;
     }
 }

@@ -22,6 +22,8 @@
 
 1999-08-31  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* Makefile.am (EXTRA_DIST): Add namazu.spec.
+	
 	* Makefile.am (DIST_SUBDIRS): Remove File-MMagic because it causes
 	error at "make dist" time.
 	

@@ -140,6 +140,17 @@ then
 	exit 1
 fi
 
+# check "idxname" with invalid path
+QUERY_STRING='query=namazu&idxname=idx1&idxname=/<S>strike</S>'
+export QUERY_STRING 
+
+RESULT=`./namazu.cgi 2>&1 | grep '<S>' | wc -l`
+if [ $RESULT -ne 0 ]
+then
+	echo $RESULT >> $LOG
+	exit 1
+fi
+
 # check "dbname"
 QUERY_STRING='query=namazu&dbname=idx1&dbname="<S>strike</S>'
 export QUERY_STRING 

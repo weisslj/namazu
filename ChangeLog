@@ -1,3 +1,9 @@
+2001-12-12  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* tests/namazu-cgi-9: Added a new test script.
+
+	* tests/namazu-cgi-8: Added an another idxname checking.
+
 2001-12-11  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* nmz/field.c: Fixed possibility of buffer overflow.
@@ -7248,4 +7254,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.899 2001-12-11 09:55:59 knok Exp $
+$Id: ChangeLog,v 1.900 2001-12-12 08:17:09 knok Exp $

@@ -415,20 +415,39 @@ Lang: ja
 <h2><a name="before-make-install">make install 前の確認</a></h2>
 <p>
 もし make install する前に mknmz を試してみたいという時には
-cd scripts してから ./mknmz と実行すると、
+<pre>
+cd namazu-2.0.x ( ... tar.gz 形式を開けた位置)
+   してから
+env pkgdatadir=`pwd` script/mknmz (csh/tcsh 等の場合)
+   または
+pkgdatadir=. script/mknmz (sh/bash 等の場合).
+</pre>
+とすると、
 (<code>/usr/local/share/namazu</code> でなく)
-すぐ隣にある ../pl/*.pl を参照します。
+すぐ隣にある pl,filter,template 等を参照します。
 </p>
 
 <p class=note>
-(この辺の事情は mknmz の中の load_module() の中の @INC の文字の辺
-で分るはずです)。</p>
+(この辺の事情は mknmz 等の中の変数 $PKGDATADIR の文字列付近を見ると
+少し分ります。)
+/p>
 
 <p>
-例えば
-<code class=command>./mknmz -C  ./mknmz --help ./mknmz -O /tmp ~/Mail</code>
-などを試せます。ただし、 make install 前は日本語でのメッセー
-ジ出力は行えません。
+同じようにして、
+<code class=command>
+<pre>
+setenv pkgdatadir .
+   または 
+pkgdatadir=.
+export pkgdatadir
+   しておいて、
+script/mknmz -C  
+script/mknmz --help 
+script/mknmz -O /tmp ~/Mail</code>
+</pre>
+などが試すと、それぞれ、構成を表示・説明を表示・~/Mail の索引を作成する、
+などを行うことが出来ます。
+ただし、 make install 前は日本語でのメッセージ出力は行えません。
 </p>
 
 
@@ -885,7 +904,7 @@ perl -MNKF -e ''
 Copyright (C) 2000-2003 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: tutorial.html,v 1.47 2003-07-16 05:08:41 takesako Exp $
+$Id: tutorial.html,v 1.48 2003-08-03 12:30:18 makoto Exp $
 </div>
 <address>
 developers@namazu.org

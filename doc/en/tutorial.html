@@ -415,22 +415,28 @@ Lang: ja
 <h2><a name="before-make-install">Test before "make install"</a></h2>
 <p>
 If you wish to test <code>mknmz</code> before <code>make
-install</code>, do <code>cd scripts</code> and
-<code>./mknmz</code>. This will refer adjacent
-<code>../pl/*.pl</code>. (not
-<code>/usr/local/share/namazu</code>).
+install</code>, do <br>
+<code>cd namazu-2.0.x</code>   ( ... where you have unpacked *.tar.gz)<br>
+<code>env pkgdatadir=`pwd` script/mknmz</code> (in case csh/tcsh)<br>
+or<br>
+<code>pkgdatadir=. script/mknmz</code> (in case with sh/bash).<br>
+
+These will refer adjacent
+<code>pl,filter,template</code> etc, not exisiting stuff under
+<code>/usr/local/share/namazu</code> etc).
 </p>
 
 <p class=note>
-(To know more about this, see @INC of load_module() in mknmz.)
+(To know more about this, see $PKGDATADIR variable in mknmz etc.)
 </p>
 
 <p>
-You can, for example, try 
+You may try following examples for the first time to see
+the configuration, help, and to generate indexes for ~/Mail stuff,
+respectively.
 </p>
 
 <pre>
-
     ./mknmz -C
     ./mknmz --help
     ./mknmz -O /tmp ~/Mail
@@ -895,7 +901,7 @@ modules will be used.
 Copyright (C) 2000-2003 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: tutorial.html,v 1.12 2003-07-16 05:08:40 takesako Exp $
+$Id: tutorial.html,v 1.13 2003-08-03 12:30:17 makoto Exp $
 </div>
 <address>
 developers@namazu.org

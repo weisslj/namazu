@@ -1,3 +1,9 @@
+1999-12-19  Makoto Fujiwara <makoto@ki.nu>
+	* src/mknmz.pl.in (find_target): add to show Elapsed time,
+	if -V, print start and end time.
+	
+	* AUTHORS: add my address
+	
 1999-12-18  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* src/mknmz.pl.in (parse_options): Do not call read_config() when

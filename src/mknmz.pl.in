@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.90 1999-12-18 04:57:11 satoru Exp $
+# $Id: mknmz.pl.in,v 1.91 1999-12-18 08:51:39 makoto Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -1015,6 +1015,8 @@ sub find_target (@) {
     # traverse directories
     # this routine is not efficent but I prefer reliable logic.
     my @flist = ();
+    my $start = time();
+    util::vprint (" findfiles starting: ". localtime($start). "\n");
     while (@targets) {
 	my $target = shift @targets;
 	if (-d $target) { # target is a directory
@@ -1030,7 +1032,11 @@ sub find_target (@) {
     # uniq @flist
     my %mark = ();
     @flist = grep {$mark{$_}++; $mark{$_} == 1} @flist;
-
+    my $elapsed = time() - $start ;
+    if ($elapsed == 0 ) { $elapsed = 1 }
+    util::vprint(" findfiles    ended: ", localtime(time()). "\n" );
+    printf(" find_target: Files: (%d), Elapsed: (%d), Files/sec: (%.1f).\n", 
+           $#flist, $elapsed, $#flist/$elapsed ) unless $var::Opt{'quiet'};
     return @flist;
 }
 

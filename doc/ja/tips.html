@@ -8,11 +8,12 @@
 <title>Namazu tips</title>
 </head>
 <body lang="ja">
-<h1>Namazuのちょっと役立つ情報</h1>
+<h1>Namazuの豆知識</h1>
 <hr>
 
 <h2>目次</h2>
 <ul>
+<li><a href="#indexing">インデックス作成の高速化</a>
 <li><a href="#weight">HTML要素によるスコアの重みづけ</a>
 <li><a href="#html">HTMLの処理</a>
 <li><a href="#line-adjustment">行頭行末の処理</a>
@@ -24,9 +25,48 @@
 スの更新</a>
 </ul>
 
+<h2><a name="indexing">インデックス作成の高速化</a></h2>
+
+<ul>
+<li>Perlモジュールを利用する<br>
+NKF, KAKASI (または ChaSen) をそれぞれコマンドとして呼び出し
+たときと較べて 1.5倍 - 2倍くらい速くなります。
+  <ul>
+  <li><a href="ftp://ftp.ie.u-ryukyu.ac.jp/pub/software/kono/nkf171.shar">NKF</a>
+  <li><a href="http://www.daionet.gr.jp/~knok/kakasi/">Text::Kakasi</a>
+  <li><a href="http://www.daionet.gr.jp/~knok/chasen/"> Text::ChaSen1</a>
+  </ul>
+
+<li><code>--media-type=mtype</code> オプションを指定する<br>
+mknmz は File-MMagic モジュールを使って文書形式の自動判別を
+行います。対象ファイルの文書形式があらかじめわかっているなら
+--media-type=mtype を指定することで自動判別の処理を停止できます。
+1,2割くらい速くなります。<br>
+
+対象ファイルが Mail/News なら --media-type=message/rfc822 を
+指定する代わりに --mailnews を指定できます。同じく MHonArc
+なら --mhonarc で代用できます。
+
+<li>mknmzrc の <code>$conf::ON_MEMORY_MAX</code> の値を大き
+くする<br> 
+
+標準では 5 MBに設定されています。mknmz はこの値に従って、メ
+モリ上で処理する文書ファイルの量を制限しています。メモリを 1
+GBくらい積んだ計算機を使っているなら、この値に 100 MB を設定
+しても大丈夫でしょう。作業ファイルへの書き出し回数が減ります。
+
+<li>高速な計算機を使う<br> 高速な CPU + 大量のメモリ + 高速
+な HDDを積んだ計算機を使うと効果的です。$conf::ON_MEMORY_MAX 
+の変更をお忘れなく。
+</ul>
+
 <h2><a name="weight">HTML要素によるスコアの重みづけ</a></h2>
 
-<p>標準では</p>
+<p>
+標準では次の規則に従って重みづけを行います。この値は経験的に
+求めたものです。理論的な根拠はありません。
+</p>
+
 
 <ul>
 <li><code>&lt;title&gt; 16</code>
@@ -39,11 +79,6 @@
 <li><code>&lt;a&gt; 4</code>
 <li><code>&lt;strong&gt;, &lt;EM&gt;, &lt;CODE&gt;, &lt;KBD&gt;, &lt;SAMP&gt;, &lt;CITE&gt;, &lt;VAR&gt; 2</code>
 </ul>
-
-<p>
-と HTML要素に応じて重みづけされます。この値は経験的に求めた
-ものです。理論的な根拠はありません。
-</p>
 
 <p>また <code>&lt;meta name="keywords"
 content="</code><var>foo bar</var><code>"&gt;</code> の 
@@ -181,7 +216,7 @@ foo bar ...<br>
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: tips.html,v 1.1 2000-02-13 09:12:53 satoru Exp $
+$Id: tips.html,v 1.2 2000-02-15 05:03:20 satoru Exp $
 </div>
 <address>
 developers@namazu.org

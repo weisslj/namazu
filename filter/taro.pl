@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: taro.pl,v 1.5 2001-04-13 04:50:53 knok Exp $
+# $Id: taro.pl,v 1.6 2001-04-13 05:53:41 knok Exp $
 # Copyright (C) 2000 Ken-ichi Hirose, 
 #               2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -56,7 +56,9 @@ sub post_codeconv () {
 sub add_magic ($) {
     my ($magic) = @_;
 
+   # Ichitaro 6, 7
     $magic->addFileExts('\\.j[bf]w', 'application/x-js-taro');
+   # Ichitaro 8, 9, 10
     $magic->addFileExts('\\.jt[dt]', 'application/x-js-taro');
     return;
 }

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: oasys.pl,v 1.4 2001-04-13 04:50:53 knok Exp $
+# $Id: oasys.pl,v 1.5 2001-04-13 05:53:41 knok Exp $
 # Copyright (C) 2000 Ken-ichi Hirose, 
 #               2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -56,7 +56,7 @@ sub post_codeconv () {
 sub add_magic ($) {
     my ($magic) = @_;
 
-    $magic->addFileExts('\\.oa[23]', 'application/oasys');
+    $magic->addFileExts('\\.oa[23]$', 'application/oasys');
     return;
 }
 

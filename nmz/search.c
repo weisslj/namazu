@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.24 1999-12-08 05:46:40 rug Exp $
+ * $Id: search.c,v 1.25 1999-12-09 00:49:20 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -53,9 +53,11 @@
 #include "i18n.h"
 #include "codeconv.h"
 #include "var.h"
+#include "seed.h"
 
+enum nmz_perm { ALLOW, DENY };
+static int cur_idxnum = -1;
 
-enum { ALLOW, DENY } perm;
 
 /*
  *
@@ -63,33 +65,32 @@ enum { ALLOW, DENY } perm;
  *
  */
 
-static void show_status(int, int);
-static int get_file_size (char*);
-static void lrget(char* , int*, int*);
-static NmzResult prefix_match(char* , int);
-static enum nmz_search_mode detect_search_mode(char*);
-static NmzResult do_word_search(char*, NmzResult);
-static NmzResult do_prefix_match_search(char*, NmzResult);
-static int hash(char*);
-static NmzResult cmp_phrase_hash(int, NmzResult, FILE *, FILE *);
-static int open_phrase_index_files(FILE**, FILE**);
-static NmzResult do_phrase_search(char*, NmzResult);
-static void do_regex_preprocessing(char*);
-static NmzResult do_regex_search(char*, NmzResult);
-static void get_expr(char*, char*);
-static NmzResult do_field_search(char*, NmzResult);
-static void delete_beginning_backslash(char*);
-static int check_lockfile(void);
-static int open_index_files();
-static void close_index_files(void);
-static void do_logging(char* , int);
-static NmzResult search_sub(NmzResult, char*, char*, int);
-static void make_fullpathname_index(int);
-static int check_accessfile();
-static void parse_access(char *, char *, char *);
-static struct nmz_hitnum *push_hitnum(struct nmz_hitnum *, int, enum nmz_stat, char *);
-
-static int cur_idxnum = -1;
+static struct nmz_hitnum *push_hitnum ( struct nmz_hitnum *hn, int hitnum, enum nmz_stat stat, char *str );
+void free_hitnums ( struct nmz_hitnum *hn );
+static void show_status ( int l, int r );
+static int get_file_size ( char *filename );
+static void lrget ( char * key, int *l, int *r );
+static NmzResult prefix_match ( char * orig_key, int v );
+static enum nmz_search_mode detect_search_mode ( char *key );
+static NmzResult do_word_search ( char *key, NmzResult val );
+static NmzResult do_prefix_match_search ( char *key, NmzResult val );
+static int hash ( char *str );
+static NmzResult cmp_phrase_hash ( int hash_key, NmzResult val, FILE *phrase, FILE *phrase_index );
+static int open_phrase_index_files ( FILE **phrase, FILE **phrase_index );
+static NmzResult do_phrase_search ( char *key, NmzResult val );
+static void do_regex_preprocessing ( char *expr );
+static NmzResult do_regex_search ( char *orig_expr, NmzResult val );
+static void get_expr ( char *expr, char *str );
+static NmzResult do_field_search ( char *str, NmzResult val );
+static void delete_beginning_backslash ( char *str );
+static int check_lockfile ( void );
+static enum nmz_perm parse_access ( char *line, char *rhost, char *raddr );
+static int is_access_ok ( void );
+static int open_index_files ( void );
+static void close_index_files ( void );
+static void do_logging ( char * query, int n );
+static NmzResult search_sub ( NmzResult hlist, char *query, char *query_orig, int n );
+static void make_fullpathname_index ( int n );
 
 /* struct nmz_hitnum handling subroutines */
 static struct nmz_hitnum *push_hitnum(struct nmz_hitnum *hn, 
@@ -320,13 +321,12 @@ static NmzResult do_prefix_match_search(char *key, NmzResult val)
 /* calculate a value of phase hash */
 static int hash(char *str)
 {
-    extern int Seed[4][256];
     int hash = 0, i, j;
     uchar *ustr = (uchar *)str;  /* for 8 bit chars handling */
 
     for (i = j = 0; *ustr; i++) {
         if (!issymbol(*ustr)) { /* except symbol */
-            hash ^= Seed[j & 0x3][*ustr];
+            hash ^= nmz_seed[j & 0x3][*ustr];
             j++;
         }
         ustr++;
@@ -617,14 +617,16 @@ static int check_lockfile(void)
 }
 
 
-static void parse_access(char *line, char *rhost, char *raddr)
+static enum nmz_perm parse_access(char *line, char *rhost, char *raddr)
 {
+    enum nmz_perm perm = ALLOW;
+
     /* Skip white spaces */
     line += strspn(line, " \t");
 
     if (*line == '\0' || *line == '#') {
 	/* Ignore blank line or comment line */
-        return;
+        return perm;
     }
     if (strprefixcasecmp(line, "allow") == 0) {
 	line += strlen("allow");
@@ -651,19 +653,15 @@ static void parse_access(char *line, char *rhost, char *raddr)
 	    perm = DENY;
 	}
     }
+    return perm;
 }
 
-/*
- * If Access is OK: return 0;
- * else Access is not OK: return 1;
- */
-static int check_accessfile(void)
+static int is_access_ok(void)
 {
     char buf[BUFSIZE];
     char *rhost, *raddr;
     FILE *fp;
-
-    perm = ALLOW;
+    enum nmz_perm perm = ALLOW;
     
     rhost = safe_getenv("REMOTE_HOST");
     raddr = safe_getenv("REMOTE_ADDR");
@@ -678,7 +676,7 @@ static int check_accessfile(void)
     }
     while (fgets(buf, BUFSIZE, fp)) {
 	nmz_chomp(buf);
-	parse_access(buf, rhost, raddr);
+	perm = parse_access(buf, rhost, raddr);
     }
     fclose(fp);
     return perm;
@@ -753,7 +751,7 @@ static NmzResult search_sub(NmzResult hlist, char *query, char *query_orig, int 
 {
     cur_idxnum = n;
 
-    if (check_accessfile() == DENY) {
+    if (!is_access_ok()) {
 	/* if access denied */
 	hlist.stat = ERR_NO_PERMISSION;
 	return hlist;

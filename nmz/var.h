@@ -7,7 +7,6 @@ extern char DEFAULT_INDEX[];
 
 extern char BASE_URI[];
 extern char CONFDIR[];
-extern char NAMAZURC[];
 
 extern struct nmz_names NMZ;
 extern struct nmz_files Nmz;

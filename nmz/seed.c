@@ -1,10 +1,10 @@
 /*
  *
- * Dr. Knuth's ``hash'' (from UNIX MAGAZINE May, 1998)
+ * Reference: Dr. Knuth's ``hash'' (from UNIX MAGAZINE May, 1998)
  *
  */
 
-int Seed[4][256] = 
+int nmz_seed[4][256] = 
 {
     {
 	3852, 26205, 51350, 2876, 47217, 47194, 55549, 43312, 

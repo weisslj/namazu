@@ -30,9 +30,6 @@ static int pageindex   = 0;   /* print "Page: [1][2][3][4][5][6][7][8]" */
 static int formprint   = 1;   /* print "<form> ... </form>" at cgimode */
 static int refprint    = 1;   /* print "References:  [ foo: 123 ]" */
 		      
-static int urireplace  = 1;   /* replace URI in results */
-static int uridecode   = 0;   /* decode URI in results */
-
 static int maxresult = 20;  /* max number of search results */
 static int listwhence  = 0;   /* number which beginning of search results */
 		      
@@ -44,9 +41,10 @@ static char template[BUFSIZE]     = "normal"; /* suffix of NMZ.result.* */
  *
  */
 
-static void fputs_without_html_tag(char *s, FILE *fp);
-static void emprint(char *s, int entity_encode);
-static void print_hitnum_each(struct nmz_hitnum *pr);
+static void emprint ( char *s, int entity_encode );
+static void fputs_without_html_tag ( char * s, FILE *fp );
+static void make_fullpathname_result ( int n );
+static void print_hitnum_each ( struct nmz_hitnum *hn );
 
 /* print s to stdout with processing for emphasizing and entity encoding  */
 static void emprint(char *s, int entity_encode)
@@ -173,6 +171,67 @@ static void fputs_without_html_tag(char * s, FILE *fp)
 }
 
 
+static void make_fullpathname_result(int n)
+{
+    char *base;
+
+    base = Idx.names[n];
+    nmz_pathcat(base, NMZ.result);
+}
+
+static void print_hitnum_each (struct nmz_hitnum *hn)
+{
+    struct nmz_hitnum *hnptr = hn;
+
+    if (hn->phrase != NULL) { /* it has phrases */
+	hnptr = hn->phrase;
+        if (is_refprint() && !is_countmode() && !is_listmode() && 
+	    !is_quietmode())
+	{
+	    print(" { ");
+	}
+    }
+
+    if (is_refprint() && !is_countmode() && 
+	!is_listmode() && !is_quietmode()) 
+    {
+	do {
+	    char tmp_word[BUFSIZE];
+	    strcpy(tmp_word, hnptr->word);
+	    conv_ext(tmp_word);
+
+	    print(" [ ");
+	    print(tmp_word);
+	    if (hnptr->stat == SUCCESS) {
+		printf(": %d", hnptr->hitnum);
+	    } else {
+		char *msg = "(unknown error)";
+		if (hnptr->stat == ERR_TOO_MUCH_MATCH) {
+		    msg = _(" (Too many words matched. Ignored.)");
+		} else if (hnptr->stat == ERR_TOO_MUCH_HIT) {
+		    msg = _(" (Too many pages hit. Ignored.)");
+		} else if (hnptr->stat == ERR_REGEX_SEARCH_FAILED) {
+		    msg = _(" (cannot open regex index)");
+		} else if (hnptr->stat == ERR_PHRASE_SEARCH_FAILED) {
+		    msg = _(" (cannot open phrase index)");
+		} else if (hnptr->stat == ERR_CANNOT_OPEN_INDEX) {
+		    msg = _(" (cannot open this index)\n");
+		} else if (hnptr->stat == ERR_NO_PERMISSION) {
+		    msg = _("(You don\'t have a permission to access the index)");
+		} 
+		print(_(msg));
+	    }
+	    print(" ] ");
+	    hnptr = hnptr->next;
+	} while (hn->phrase && hnptr != NULL);
+    }
+
+    if (is_refprint() && !is_countmode() && !is_listmode() && 
+	!is_quietmode() &&  hn->phrase != NULL) /* it has phrases */
+    {
+	printf(" :: %d } ", hn->hitnum);
+    }
+}
 
 /*
  *
@@ -268,26 +327,6 @@ void set_refprint(int mode)
 int is_refprint(void)
 {
     return refprint;
-}
-
-void set_urireplace(int mode)
-{
-    urireplace = mode;
-}
-
-int is_urireplace(void)
-{
-    return urireplace;
-}
-
-void set_uridecode(int mode)
-{
-    uridecode = mode;
-}
-
-int is_uridecode(void)
-{
-    return uridecode;
 }
 
 void set_maxresult(int num)
@@ -471,22 +510,21 @@ void print_hlist(NmzResult hlist)
 
 	if (!is_allresult() && (i >= get_listwhence() + get_maxresult()))
 	    break;
-	if (is_listmode()) {
-	    get_field_data(hlist.data[i].idxid, hlist.data[i].docid, 
-			   "uri", result);
-	} else {
-	    if (templates[hlist.data[i].idxid] == NULL) {  /* not loaded */
-		char fname[BUFSIZE];
 
+	if (templates[hlist.data[i].idxid] == NULL) {  /* not loaded */
+	    if (is_listmode()) {
+		templates[hlist.data[i].idxid] = "${uri}\n";
+	    } else {
+		char fname[BUFSIZE];
 		make_fullpathname_result(hlist.data[i].idxid);
 		strcpy(fname, NMZ.result);
 		strcat(fname, ".");
 		strcat(fname, get_template());  /* usually "normal" */
 		templates[hlist.data[i].idxid] = nmz_readfile(fname);
 	    }
-	    compose_result(hlist.data[i], counter, 
-			   templates[hlist.data[i].idxid],  result);
 	}
+	compose_result(hlist.data[i], counter, 
+		       templates[hlist.data[i].idxid],  result);
 	conv_ext(result);
 	html_print(result);
 	print("\n");
@@ -531,60 +569,6 @@ void print_hitnum_all_idx(void)
 	    }
 	    print("\n");
 	}
-    }
-}
-
-static void print_hitnum_each (struct nmz_hitnum *hn)
-{
-    struct nmz_hitnum *hnptr = hn;
-
-    if (hn->phrase != NULL) { /* it has phrases */
-	hnptr = hn->phrase;
-        if (is_refprint() && !is_countmode() && !is_listmode() && 
-	    !is_quietmode())
-	{
-	    print(" { ");
-	}
-    }
-
-    if (is_refprint() && !is_countmode() && 
-	!is_listmode() && !is_quietmode()) 
-    {
-	do {
-	    char tmp_word[BUFSIZE];
-	    strcpy(tmp_word, hnptr->word);
-	    conv_ext(tmp_word);
-
-	    print(" [ ");
-	    print(tmp_word);
-	    if (hnptr->stat == SUCCESS) {
-		printf(": %d", hnptr->hitnum);
-	    } else {
-		char *msg = "(unknown error)";
-		if (hnptr->stat == ERR_TOO_MUCH_MATCH) {
-		    msg = _(" (Too many words matched. Ignored.)");
-		} else if (hnptr->stat == ERR_TOO_MUCH_HIT) {
-		    msg = _(" (Too many pages hit. Ignored.)");
-		} else if (hnptr->stat == ERR_REGEX_SEARCH_FAILED) {
-		    msg = _(" (cannot open regex index)");
-		} else if (hnptr->stat == ERR_PHRASE_SEARCH_FAILED) {
-		    msg = _(" (cannot open phrase index)");
-		} else if (hnptr->stat == ERR_CANNOT_OPEN_INDEX) {
-		    msg = _(" (cannot open this index)\n");
-		} else if (hnptr->stat == ERR_NO_PERMISSION) {
-		    msg = _("(You don\'t have a permission to access the index)");
-		} 
-		print(_(msg));
-	    }
-	    print(" ] ");
-	    hnptr = hnptr->next;
-	} while (hn->phrase && hnptr != NULL);
-    }
-
-    if (is_refprint() && !is_countmode() && !is_listmode() && 
-	!is_quietmode() &&  hn->phrase != NULL) /* it has phrases */
-    {
-	printf(" :: %d } ", hn->hitnum);
     }
 }
 

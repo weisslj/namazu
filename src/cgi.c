@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.34 1999-12-07 09:27:43 rug Exp $
+ * $Id: cgi.c,v 1.35 1999-12-09 00:49:24 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -44,6 +44,7 @@
 #include "i18n.h"
 #include "idxname.h"
 #include "var.h"
+#include "util.h"
 #include "system.h"
 
 /*
@@ -54,27 +55,25 @@
 
 static int validate_idxname(char* );
 
-static CGIVAR *add_cgivar(CGIVAR*, char*, char*);
-static CGIVAR *get_cgi_vars(char*);
-static char *get_query_string(void);
-static int process_cgi_vars(CGIARG*);
-static int apply_cgifunc(CGIVAR*, CGIARG*);
-static void free_cgi_vars(CGIVAR*);
-
-static void decode_uri(char*);
-static char decode_uri_sub(char, char);
-
-static void process_cgi_var_query(char*, CGIARG*);
-static void process_cgi_var_subquery(char*, CGIARG*);
-static void process_cgi_var_format(char*, CGIARG*);
-static void process_cgi_var_sort(char*, CGIARG*);
-static void process_cgi_var_max(char*, CGIARG*);
-static void process_cgi_var_whence(char*, CGIARG*);
-static void process_cgi_var_lang(char*, CGIARG*);
-static void process_cgi_var_result(char*, CGIARG*);
-static void process_cgi_var_reference(char*, CGIARG*);
-static void process_cgi_var_idxname(char*, CGIARG*);
-static void process_cgi_var_submit(char*, CGIARG*);
+static int validate_idxname ( char * idxname );
+static CGIVAR *add_cgivar ( CGIVAR *ptr, char *name, char *value );
+static void free_cgi_vars ( CGIVAR *cv );
+static char *get_query_string ( void );
+static CGIVAR *get_cgi_vars ( char *qs );
+static int process_cgi_vars ( CGIARG *ca );
+static int apply_cgifunc ( CGIVAR *cv, CGIARG *ca );
+static void process_cgi_var_query ( char *value, CGIARG *ca );
+static void process_cgi_var_subquery ( char *value, CGIARG *ca );
+static void process_cgi_var_format ( char *value, CGIARG *ca );
+static void process_cgi_var_sort ( char *value, CGIARG *ca );
+static void process_cgi_var_max ( char *value, CGIARG *ca );
+static void process_cgi_var_whence ( char *value, CGIARG *ca );
+static void process_cgi_var_lang ( char *value, CGIARG *ca );
+static void process_cgi_var_result ( char *value, CGIARG *ca );
+static void process_cgi_var_reference ( char *value, CGIARG *ca );
+static void process_cgi_var_submit ( char *value, CGIARG *ca );
+static void process_cgi_var_idxname ( char *value, CGIARG *ca );
+void init_cgi ( char *query, char *subquery );
 
 /* Table for cgi vars and corresponding functions. */
 static CGIVAR_FUNC CgiFuncTab[] = {
@@ -462,33 +461,6 @@ static void process_cgi_var_idxname(char *value, CGIARG *ca)
 	}
     }
 }
-
-/* decoding URI encoded strings */
-static void decode_uri(char * s)
-{
-    int i, j;
-    for (i = j = 0; s[i]; i++, j++) {
-	if (s[i] == '%') {
-	    s[j] = decode_uri_sub(s[i + 1], s[i + 2]);
-	    i += 2;
-	} else if (s[i] == '+') {
-	    s[j] = ' ';
-	} else {
-	    s[j] = s[i];
-	}
-    }
-    s[j] = '\0';
-}
-
-static char decode_uri_sub(char c1, char c2)
-{
-    char c;
-
-    c =  ((c1 >= 'A' ? (toupper(c1) - 'A') + 10 : (c1 - '0'))) * 16;
-    c += ( c2 >= 'A' ? (toupper(c2) - 'A') + 10 : (c2 - '0'));
-    return c;
-}
-
 
 /*
  *

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 1999-12-08 18:54+0900\n"
+"POT-Creation-Date: 1999-12-09 09:45+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,11 +29,11 @@ msgid ""
 "Scoring: %s\n"
 msgstr ""
 
-#: src/cgi.c:109 src/cgi.c:119
+#: src/cgi.c:108 src/cgi.c:118
 msgid "Invalid idxname."
 msgstr ""
 
-#: src/cgi.c:191 src/cgi.c:206
+#: src/cgi.c:190 src/cgi.c:205
 msgid "Too long QUERY_STRING"
 msgstr ""
 
@@ -60,57 +60,57 @@ msgstr ""
 msgid "\t<p>No document matching your query.</p>\n"
 msgstr ""
 
-#: src/output.c:355
+#: src/output.c:210
+msgid " (Too many words matched. Ignored.)"
+msgstr ""
+
+#: src/output.c:212
+msgid " (Too many pages hit. Ignored.)"
+msgstr ""
+
+#: src/output.c:214
+msgid " (cannot open regex index)"
+msgstr ""
+
+#: src/output.c:216
+msgid " (cannot open phrase index)"
+msgstr ""
+
+#: src/output.c:218
+msgid " (cannot open this index)\n"
+msgstr ""
+
+#: src/output.c:220
+msgid "(You don't have a permission to access the index)"
+msgstr ""
+
+#: src/output.c:394
 msgid "\t<strong>Page:</strong> "
 msgstr ""
 
-#: src/output.c:397
+#: src/output.c:436
 #, c-format
 msgid "Current List: %d"
 msgstr ""
 
-#: src/output.c:530
+#: src/output.c:568
 #, c-format
 msgid " [ TOTAL: %d ]"
 msgstr ""
 
-#: src/output.c:565
-msgid " (Too many words matched. Ignored.)"
-msgstr ""
-
-#: src/output.c:567
-msgid " (Too many pages hit. Ignored.)"
-msgstr ""
-
-#: src/output.c:569
-msgid " (cannot open regex index)"
-msgstr ""
-
-#: src/output.c:571
-msgid " (cannot open phrase index)"
-msgstr ""
-
-#: src/output.c:573
-msgid " (cannot open this index)\n"
-msgstr ""
-
-#: src/output.c:575
-msgid "(You don't have a permission to access the index)"
-msgstr ""
-
-#: src/output.c:593
+#: src/output.c:577
 msgid "\t<h2>Results:</h2>\n"
 msgstr ""
 
-#: src/output.c:600
+#: src/output.c:584
 msgid "References: "
 msgstr ""
 
-#: src/output.c:608
+#: src/output.c:592
 msgid "\t<p><strong> Total "
 msgstr ""
 
-#: src/output.c:615
+#: src/output.c:599
 msgid ""
 "\t documents matching your query.</strong></p>\n"
 "\n"

@@ -1,6 +1,6 @@
 /*
  * result.c -
- * $Id: result.c,v 1.27 1999-12-08 05:46:42 rug Exp $
+ * $Id: result.c,v 1.28 1999-12-09 00:49:25 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -38,6 +38,8 @@
 #include "var.h"
 #include "parser.h"
 
+static int urireplace  = 1;   /* replace URI in results */
+static int uridecode   = 0;   /* decode URI in results */
 
 /*
  *
@@ -65,17 +67,25 @@ static void replace_field(struct nmz_data d, int counter,
 	commas(buf);
     } else {
 	get_field_data(d.idxid, d.docid, field, buf);
+	if (strcasecmp(field, "uri") == 0) {
+	    if (is_urireplace()) {
+		replace_uri(buf);
+	    }
+	    if (is_uridecode()) {
+		decode_uri(buf);
+	    }
+	}
     }
 
     /* do not emphasize in URI */
     if (strcasecmp(field, "uri") != 0 && is_htmlmode()) {
 	emphasize(buf);
     }
+
     encode_entity(buf);
 
     /* Insert commas if the buf is a numeric string */
-    if (isnumstr(buf))
-    {
+    if (isnumstr(buf)) {
 	commas(buf);
     }
 
@@ -140,15 +150,11 @@ static void emphasize(char *str)
     }
 }
 
-/* public functions */
-
-void make_fullpathname_result(int n)
-{
-    char *base;
-
-    base = Idx.names[n];
-    nmz_pathcat(base, NMZ.result);
-}
+/*
+ *
+ * Public functions 
+ *
+ */
 
 void compose_result(struct nmz_data d, int counter, 
 			   char *template, char *r)
@@ -186,3 +192,22 @@ void compose_result(struct nmz_data d, int counter,
     } while (1);
 }
 
+void set_urireplace(int mode)
+{
+    urireplace = mode;
+}
+
+int is_urireplace(void)
+{
+    return urireplace;
+}
+
+void set_uridecode(int mode)
+{
+    uridecode = mode;
+}
+
+int is_uridecode(void)
+{
+    return uridecode;
+}

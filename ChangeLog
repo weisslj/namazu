@@ -1,3 +1,30 @@
+1999-12-09  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* nmz/seed.h: New file.
+
+	* nmz/seed.c (nmz_seed): Renamed from Seed.
+
+	* nmz/util.c (decode_uri): Moved from cgi.c.
+	(decode_uri_sub): Moved from cgi.c.
+
+	* src/output.c (print_hlist): Modify is_listmode handling.
+
+	* src/result.c (is_urireplace): Moved from output.c
+	(set_urireplace): Moved from output.c
+	(is_uridecode): Moved from output.c
+	(set_uridecode): Moved from output.c
+	
+	* src/output.c (make_fullpathname_result): Moved from result.c.
+
+	* nmz/field.c (get_field_data): Call decode_uri() if necessary.
+
+	* nmz/search.c (is_access_ok): Renamed from check_accessfile.
+	(enum nmz_perm): Add tag "nmz_perm".
+	(parse_access): Be nmz_perm type instead of void.
+
+	* nmz/var.h: Remove "extern char NAMAZURC[]".
+
+
 1999-12-08  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* Makefile.am (cxref): New command for using cxref.

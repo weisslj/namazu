@@ -1,5 +1,5 @@
 /*
- * $Id: util.c,v 1.21 1999-12-08 08:09:29 satoru Exp $
+ * $Id: util.c,v 1.22 1999-12-09 00:49:21 satoru Exp $
  *
  * Imported scan_hex(), scan_oct(), xmalloc(), xrealloc() from 
  * Ruby b19's"util.c" and "gc.c". Thanks to Matsumoto-san for consent!
@@ -49,6 +49,15 @@ static void reverse_byte_order (void *p, int n, int size)
             *(c + size - 1 - j) = tmp;
         }
     }
+}
+
+static char decode_uri_sub(char c1, char c2)
+{
+    char c;
+
+    c =  ((c1 >= 'A' ? (toupper(c1) - 'A') + 10 : (c1 - '0'))) * 16;
+    c += ( c2 >= 'A' ? (toupper(c2) - 'A') + 10 : (c2 - '0'));
+    return c;
 }
 
 /*
@@ -488,6 +497,23 @@ char *safe_getenv(char *s)
 
 void print(char *s) {
     fputs(s, stdout);
+}
+
+/* decoding URI encoded strings */
+void decode_uri(char * s)
+{
+    int i, j;
+    for (i = j = 0; s[i]; i++, j++) {
+	if (s[i] == '%') {
+	    s[j] = decode_uri_sub(s[i + 1], s[i + 2]);
+	    i += 2;
+	} else if (s[i] == '+') {
+	    s[j] = ' ';
+	} else {
+	    s[j] = s[i];
+	}
+    }
+    s[j] = '\0';
 }
 
 

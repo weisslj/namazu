@@ -148,10 +148,6 @@ void get_field_data(int idxid, int docid, char *orig_field, char *data)
     fgets(data, BUFSIZE, fp_field);
     nmz_chomp(data);
 
-    if (strcmp(field, "uri") == 0) {
-	replace_uri(data);
-    } 
-
     fclose(fp_field);
     fclose(fp_field_idx);
 

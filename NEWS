@@ -9,8 +9,8 @@ Overview of Changes in Namazu 2.0.7 - Sep 12, 2001
   current directory. (Only Win32 Platforms)
 * Fixed the AND query bug that namazu ignores
   the keywords which don't match at all.
-* Lookup both environment variables of 
-  SCRIPT_NAME and DOCUMENT_URI. (namazu.cgi)
+* Lookup both environment variables of SCRIPT_NAME
+  and DOCUMENT_URI (instead of DOCUMENT_NAME). (namazu.cgi)
 * More portability improvements.
 
 Overview of Changes in Namazu 2.0.6 - Aug 10, 2001

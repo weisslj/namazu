@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.62 2000-01-28 08:40:05 satoru Exp $
+ * $Id: output.c,v 1.63 2000-01-28 08:46:10 satoru Exp $
  * 
  * Copyright (C) 2000 Namazu Project All rights reserved..
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -410,18 +410,22 @@ print_hlist(NmzResult hlist)
 	} else {
 	    int idxid = hlist.data[i].idxid;
 	    /*
-	     * If user-specified templatedir is not set and 
-	     * NMZ.result is not loaded, load NMZ.result and cache it in
-	     * template_caches[].
+	     * If user-specified templatedir is not set. and 
 	     */
-	    if (template == NULL && template_caches[idxid] == NULL) {
-		char *basedir = nmz_get_idxname(idxid);
-		template_caches[idxid] = load_nmz_result(basedir);
+	    if (template == NULL) {
+		/* 
+		 * If NMZ.result is not cached, load NMZ.result and cache it in
+		 * template_caches[].
+		 */ 
 		if (template_caches[idxid] == NULL) {
-		    return ERR_CANNOT_OPEN_RESULT_FORMAT_FILE;
-		}
+		    char *basedir = nmz_get_idxname(idxid);
+		    template_caches[idxid] = load_nmz_result(basedir);
+		    if (template_caches[idxid] == NULL) {
+			return ERR_CANNOT_OPEN_RESULT_FORMAT_FILE;
+		    }
+		} 
+		template = template_caches[idxid];
 	    }
-	    template = template_caches[idxid];
 	}
 
 	compose_result(hlist.data[i], counter, template,  result);

@@ -1,5 +1,7 @@
 2000-01-28  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/output.c (print_hlist): Fix a bug.
+
 	* template/NMZ.result.normal.ja: New file.
 
 	* template/NMZ.result.short.ja: Ditto.

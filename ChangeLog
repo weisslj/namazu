@@ -1,3 +1,9 @@
+2000-03-06  Rei FURUKAWA  <furukawa@tcp-ip.or.jp>
+	* pl/nmzidx.pl: seek & search method.
+	(log_open): use binmode.
+
+	* scripts/gcnmz.in: --verbose and --quiet option.
+
 2000-03-04  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* pl/htmlsplit.pl (split): Change the pattern for <a name=...>.

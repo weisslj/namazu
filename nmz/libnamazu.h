@@ -2,7 +2,7 @@
  * 
  * libnamazu.h - Namazu library api
  *
- * $Id: libnamazu.h,v 1.21 1999-12-06 13:38:32 satoru Exp $
+ * $Id: libnamazu.h,v 1.22 1999-12-07 08:21:36 satoru Exp $
  * 
  */
 
@@ -81,9 +81,9 @@ enum nmz_search_mode {
 
 /* methods of sorting */
 enum nmz_sort_method {
-    SORT_BY_SCORE,  /* at displaying results time */
-    SORT_BY_DATE,   /* at displaying results time */
-    SORT_BY_FIELD   /* at displaying results time */
+    SORT_BY_SCORE,
+    SORT_BY_DATE,
+    SORT_BY_FIELD
 };
 
 /* orders of sorting */
@@ -107,7 +107,7 @@ struct nmz_data {
 typedef struct nmz_result {
     int num;           /* number of elements in its data */
     enum nmz_stat stat; /* status code mainly used for error handling */
-    struct nmz_data *data;  /* dynamic array for storing docid, etc. */
+    struct nmz_data *data;  /* dynamic array for storing nmz_data's. */
 } NmzResult;
 
 

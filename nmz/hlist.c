@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.14 1999-12-06 09:15:15 satoru Exp $
+ * $Id: hlist.c,v 1.15 1999-12-07 08:21:36 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -40,7 +40,7 @@
 #include "field.h"
 #include "var.h"
 
-static int DocNum = 0;  /* Number of documents covered in atarget index */
+static int DocNum = 0;  /* Number of documents covered in a target index */
 static char Field[BUFSIZE] = "";  /* Field name used with sorting */
 
 struct str_num {

@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.39 2000-01-09 08:08:13 satoru Exp $
+ * $Id: form.c,v 1.40 2000-01-09 08:22:36 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -179,21 +179,21 @@ select_option(char *s, const char *name, const char *subquery)
             }
         } else if (strcasecmp(name, "sort") == 0) {
             if ((strcasecmp(value, "date:late") == 0) && 
-		get_sortmethod() == SORT_BY_DATE &&
-		get_sortorder()  == DESCENDING) 
+		nmz_get_sortmethod() == SORT_BY_DATE &&
+		nmz_get_sortorder()  == DESCENDING) 
 	    {
                 fputs(" selected", stdout);
             } else if ((strcasecmp(value, "date:early") == 0) && 
-		       get_sortmethod() == SORT_BY_DATE &&
-		       get_sortorder()  == ASCENDING)
+		       nmz_get_sortmethod() == SORT_BY_DATE &&
+		       nmz_get_sortorder()  == ASCENDING)
             {
                 fputs(" selected", stdout);
             } else if ((strcasecmp(value, "score") == 0) && 
-		       get_sortmethod() == SORT_BY_SCORE) 
+		       nmz_get_sortmethod() == SORT_BY_SCORE) 
 	    {
                 fputs(" selected", stdout);
             } else if ((nmz_strprefixcasecmp(value, "field:") == 0) && 
-		       get_sortmethod() == SORT_BY_FIELD) 
+		       nmz_get_sortmethod() == SORT_BY_FIELD) 
 	    {
 		char *p;
 		int n, order = DESCENDING;
@@ -212,7 +212,7 @@ select_option(char *s, const char *name, const char *subquery)
 		}
 
 		if (strcmp(field, get_sortfield()) == 0 && 
-		    get_sortorder() == order)
+		    nmz_get_sortorder() == order)
 		{
 		    fputs(" selected", stdout);
 		}

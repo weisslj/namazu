@@ -2,7 +2,7 @@
  * 
  * parser.c -
  * 
- * $Id: parser.c,v 1.13 2000-01-06 10:01:52 satoru Exp $
+ * $Id: parser.c,v 1.14 2000-01-09 08:22:33 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -79,7 +79,7 @@ factor(int *ignore)
                 Cp++;
             break;
         } else if (!isop(get_querytoken(Cp))) {
-            val = do_search(get_querytoken(Cp), val);
+            val = nmz_do_searching(get_querytoken(Cp), val);
 	    if (val.stat == ERR_FATAL)
 	       return val;
             if (val.stat == ERR_TOO_MUCH_MATCH ||

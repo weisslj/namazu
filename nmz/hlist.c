@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.32 2000-01-08 09:27:19 satoru Exp $
+ * $Id: hlist.c,v 1.33 2000-01-09 08:22:32 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -550,16 +550,16 @@ get_hlist(int index)
  * Interface to invoke merge sort function
  */
 int 
-sort_hlist(NmzResult hlist, enum nmz_sort_method mode)
+sort_hlist(NmzResult hlist, enum nmz_sortmethod method)
 {
     set_rank(hlist); /* conserve current order for STABLE sorting */
 
-    if (mode == SORT_BY_FIELD) {
+    if (method == SORT_BY_FIELD) {
 	if (field_sort(hlist) != SUCCESS)
 	    return FAILURE;
-    } else if (mode == SORT_BY_DATE) {
+    } else if (method == SORT_BY_DATE) {
 	qsort(hlist.data, hlist.num, sizeof(hlist.data[0]), date_cmp);
-    } else if (mode == SORT_BY_SCORE) {
+    } else if (method == SORT_BY_SCORE) {
 	qsort(hlist.data, hlist.num, sizeof(hlist.data[0]), score_cmp);
     } 
     return 0;

@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.52 2000-01-09 08:08:09 satoru Exp $
+ * $Id: search.c,v 1.53 2000-01-09 08:22:33 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -66,7 +66,7 @@ static int cur_idxnum = -1;
  *
  */
 
-void free_hitnums ( struct nmz_hitnumlist *hn );
+void nmz_free_hitnums ( struct nmz_hitnumlist *hn );
 static void show_status ( int l, int r );
 static int get_file_size ( const char *fname );
 static void lrget ( int *l, int *r );
@@ -250,7 +250,7 @@ do_word_search(const char *key, NmzResult val)
 {
     int v;
 
-    if ((v = binsearch(key, 0)) != -1) {
+    if ((v = nmz_binsearch(key, 0)) != -1) {
         /* If found, get list */
         val = get_hlist(v);
 	if (val.stat == ERR_FATAL)
@@ -268,7 +268,7 @@ do_prefix_match_search(const char *key, NmzResult val)
 {
     int v;
 
-    if ((v = binsearch(key, 1)) != -1) { /* 2nd argument must be 1  */
+    if ((v = nmz_binsearch(key, 1)) != -1) { /* 2nd argument must be 1  */
         /* If found, do foward match */
         val = prefix_match(key, v);
 	if (val.stat == ERR_FATAL)
@@ -867,7 +867,7 @@ normalize_idxnames(void)
  * Main routine of binary search
  */
 int 
-binsearch(const char *key, int prefix_match_mode)
+nmz_binsearch(const char *key, int prefix_match_mode)
 {
     int l, r, x, e = 0, i;
     char term[BUFSIZE], tmpkey[BUFSIZE];
@@ -991,13 +991,13 @@ nmz_search(const char *query)
 	    hlist.stat = ERR_FATAL;
 	    return hlist;
 	}
-	if (get_sortmethod() != SORT_BY_DATE) {
-	    if (sort_hlist(hlist, get_sortmethod()) != SUCCESS) {
+	if (nmz_get_sortmethod() != SORT_BY_DATE) {
+	    if (sort_hlist(hlist, nmz_get_sortmethod()) != SUCCESS) {
 	        hlist.stat = ERR_FATAL;
 		return hlist;
 	    }
 	}
-        if (get_sortorder() == ASCENDING) {  /* default is descending */
+        if (nmz_get_sortorder() == ASCENDING) {  /* default is descending */
 	    if (reverse_hlist(hlist)) {
 	        hlist.stat = ERR_FATAL;
 		return hlist; 
@@ -1011,7 +1011,7 @@ nmz_search(const char *query)
 
 
 NmzResult 
-do_search(const char *key, NmzResult val)
+nmz_do_searching(const char *key, NmzResult val)
 {
     enum nmz_search_mode mode;
     char tmpkey[BUFSIZE];
@@ -1077,7 +1077,7 @@ do_search(const char *key, NmzResult val)
 }
 
 void 
-free_hitnums(struct nmz_hitnumlist *hn)
+nmz_free_hitnums(struct nmz_hitnumlist *hn)
 {
     struct nmz_hitnumlist *tmp;
 
@@ -1085,7 +1085,7 @@ free_hitnums(struct nmz_hitnumlist *hn)
 	tmp = hn->next;
 	free(hn->word);
 	if (hn->phrase != NULL) { /* it has phrases */
-	    free_hitnums(hn->phrase);
+	    nmz_free_hitnums(hn->phrase);
 	}
 	free(hn);
     }

@@ -1,5 +1,15 @@
 2000-01-09  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* nmz/searc.[ch]: Changed function names. 
+	s/free_hitnums/nmz_free_hitnums/g
+	s/binsearch/nmz_binsearch/g
+	s/do_search/nmz_do_searching/g
+
+	* nmz/hlist.c (sort_hlist): Change a parameter name.
+
+	* nmz/libnamazu.h (enum nmz_sortmethod): Renamed.
+	(enum nmz_sortorder): Renamed.
+
 	* nmz/libnamazu.[ch]: Changed function names. 
 	s/free_aliases/nmz_free_aliases/g
 	s/free_replaces/nmz_free_replaces/g
@@ -9,7 +19,9 @@
 	s/set_debugmode/nmz_set_debugmode/g
 	s/is_debugmode/nmz_is_debugmode/g
 	s/set_loggingmode/nmz_set_loggingmode/g
-	
+	s/get_sortorder/nmz_get_sortorder/g
+	s/get_sortmethod/nmz_get_sortmethod/g
+
 	* src/usage.c (show_mini_usage): Use fputs() instead of printf()
 	to avoid mojibake in LANG=ja_JP.ISO-2022-JP.
 

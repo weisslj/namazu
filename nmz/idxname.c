@@ -2,7 +2,7 @@
  * 
  * idxname.c - Idx handling routines.
  *
- * $Id: idxname.c,v 1.15 2000-01-08 09:27:19 satoru Exp $
+ * $Id: idxname.c,v 1.16 2000-01-09 08:22:33 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
@@ -69,7 +69,7 @@ free_idxnames(void)
     int i;
     for (i = 0; i < indices.num; i++) {
         free(indices.names[i]);
-	free_hitnums(indices.hitnumlists[i]);
+	nmz_free_hitnums(indices.hitnumlists[i]);
     }
     indices.num = 0;
 }

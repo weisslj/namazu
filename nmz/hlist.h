@@ -14,7 +14,7 @@ extern void set_idxid_hlist ( NmzResult hlist, int id );
 extern NmzResult merge_hlist ( NmzResult *hlists );
 extern NmzResult do_date_processing ( NmzResult hlist );
 extern NmzResult get_hlist ( int index );
-extern int sort_hlist ( NmzResult hlist, enum nmz_sort_method mode );
+extern int sort_hlist ( NmzResult hlist, enum nmz_sortmethod mode );
 extern int reverse_hlist ( NmzResult hlist );
 extern void set_docnum ( int n );
 extern void set_sortfield ( const char *field );

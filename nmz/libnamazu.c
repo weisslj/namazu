@@ -2,7 +2,7 @@
  * 
  * libnamazu.c - Namazu library api
  *
- * $Id: libnamazu.c,v 1.22 2000-01-09 08:08:08 satoru Exp $
+ * $Id: libnamazu.c,v 1.23 2000-01-09 08:22:33 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
@@ -58,8 +58,8 @@
 #include "var.h"
 #include "alias.h"
 
-static enum nmz_sort_method  sortmethod  = SORT_BY_SCORE;
-static enum nmz_sort_order   sortorder   = DESCENDING;
+static enum nmz_sortmethod  sortmethod  = SORT_BY_SCORE;
+static enum nmz_sortorder   sortorder   = DESCENDING;
 static int  debugmode   = 0;
 static int  loggingmode = 1;   /* do logging with NMZ.slog */
 static char dyingmsg[BUFSIZE] = "";
@@ -82,25 +82,25 @@ nmz_codeconv_query(char *query)
 }
 
 void 
-nmz_set_sortmethod(enum nmz_sort_method method)
+nmz_set_sortmethod(enum nmz_sortmethod method)
 {
     sortmethod = method;
 }
 
-enum nmz_sort_method 
-get_sortmethod(void)
+enum nmz_sortmethod 
+nmz_get_sortmethod(void)
 {
     return sortmethod;
 }
 
 void 
-nmz_set_sortorder(enum nmz_sort_order order)
+nmz_set_sortorder(enum nmz_sortorder order)
 {
     sortorder = order;
 }
 
-enum nmz_sort_order 
-get_sortorder(void)
+enum nmz_sortorder 
+nmz_get_sortorder(void)
 {
     return sortorder;
 }

@@ -2,7 +2,7 @@
  * 
  * libnamazu.h - Namazu library api
  *
- * $Id: libnamazu.h,v 1.34 2000-01-09 08:08:09 satoru Exp $
+ * $Id: libnamazu.h,v 1.35 2000-01-09 08:22:33 satoru Exp $
  * 
  */
 
@@ -101,7 +101,7 @@ enum nmz_search_mode {
 /* 
  * Methods of sorting.
  */
-enum nmz_sort_method {
+enum nmz_sortmethod {
     SORT_BY_SCORE,
     SORT_BY_DATE,
     SORT_BY_FIELD
@@ -110,7 +110,7 @@ enum nmz_sort_method {
 /* 
  * Orders of sorting.
  */
-enum nmz_sort_order {
+enum nmz_sortorder {
     ASCENDING,
     DESCENDING
 };
@@ -202,8 +202,10 @@ struct nmz_hitnumlist {
 extern void nmz_free_aliases ( void );
 extern void nmz_free_replaces ( void );
 extern void nmz_codeconv_query ( char *query );
-extern void nmz_set_sortmethod ( enum nmz_sort_method method );
-extern void nmz_set_sortorder ( enum nmz_sort_order order );
+extern void nmz_set_sortmethod ( enum nmz_sortmethod method );
+extern enum nmz_sortmethod nmz_get_sortmethod(void);
+extern void nmz_set_sortorder ( enum nmz_sortorder order );
+extern enum nmz_sortorder nmz_get_sortorder(void);
 extern void nmz_set_debugmode ( int mode );
 extern int  nmz_is_debugmode ( void );
 extern void nmz_set_loggingmode ( int mode );

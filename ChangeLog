@@ -1,3 +1,26 @@
+2000-04-05  Ken-ichi Hirose  <kenzo-@tama.or.jp>
+
+	* src/form.c (select_option): Fixed selected idxname value 
+        mark selected function.
+
+	* src/cgi.c (get_query_string): Add An httpd server for Win9x.
+
+	* filter/msword.pl (filter_doccat): Fixed multi-byte path.
+
+	* filter/excel.pl (filter_doccat): Likewise.
+
+	* filter/powerpoint.pl (filter): Likewise.
+
+	* filter/ichitaro456.pl (filter): Likewise.
+
+	* filter/taro.pl (filter): Likewise.
+
+	* filter/Makefile.am : Add wordpro.pl, oasys.pl.
+
+	* filter/wordpro.pl : Newfile.
+
+	* filter/oasys.pl : Newfile.
+
 2000-04-04  Masao Takaku  <masao@ulis.ac.jp>
 
 	* src/form.c (print_headfoot): Avoid printing unencoded HTML tags
@@ -3364,7 +3387,7 @@
 	* pl/util.pl: Fix checkcmd function problem for Win32 and OS2.
 
 	* File-MMagic/MMagic.pm: Fix new function problem. 
-    Added binmode($fh) for Win32 and OS2.
+        Added binmode($fh) for Win32 and OS2.
 
 1999-11-19  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
@@ -3760,7 +3783,7 @@
 	* configure.in: Added --without-file-mmagic option.
 
 	* configure.in: change --with-tknamazu option 
-      to --without-tknamazu.
+        to --without-tknamazu.
 
 	* src/usage.c: erase euctosjis(buf) for _WIN32 and __EMX__.
 
@@ -5410,4 +5433,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.665 2000-04-04 07:38:59 masao Exp $
+$Id: ChangeLog,v 1.666 2000-04-04 22:22:39 kenzo- Exp $

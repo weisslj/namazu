@@ -29,6 +29,8 @@ filter_DATA = bzip2.pl \
 	     powerpoint.pl \
 	     taro.pl \
 	     ichitaro456.pl \
+	     wordpro.pl \
+	     oasys.pl \
 	     hnf.pl
 
 EXTRA_DIST = $(filter_DATA)

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: msword.pl,v 1.21 2000-03-22 21:11:59 kenzo- Exp $
+# $Id: msword.pl,v 1.22 2000-04-04 22:22:40 kenzo- Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -157,15 +157,21 @@ sub filter_doccat ($$$$$) {
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
  
     my $tmpfile  = util::tmpnam('NMZ.word');
+    my $tmpfile2 = $cfile;                         
+    if ($cfile =~ /[\x81-\x9f\xe0-\xef][\x40-\x7e\x80-\xfc]|[\x20\xa1-\xdf]/) {
+        $tmpfile2 = util::tmpnam('NMZ.word2');   
+        copy($cfile, $tmpfile2);
+    }
 
-	system("$wordconvpath -o e $cfile > $tmpfile");
+    system("$wordconvpath -o e $tmpfile2 > $tmpfile");
 
     {
     my $fh = util::efopen("< $tmpfile");
     $$cont = util::readfile($fh);
-	}
+    }
 
     unlink($tmpfile);
+    unlink($tmpfile2);
 
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);

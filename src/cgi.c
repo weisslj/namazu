@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.59 2000-03-03 03:36:21 satoru Exp $
+ * $Id: cgi.c,v 1.60 2000-04-04 22:22:40 kenzo- Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -212,7 +212,8 @@ get_query_string(void)
             return NULL;
         }
 #if  defined(_WIN32)
-    } else if (!(nmz_strprefixcasecmp(getenv("SERVER_SOFTWARE"), "Microsoft-"))) {
+    } else if (!(nmz_strprefixcasecmp(getenv("SERVER_SOFTWARE"), "Microsoft-"))
+            || !(nmz_strprefixcasecmp(getenv("SERVER_SOFTWARE"), "AnWeb"))) {
 	query_string = "";
 	script_name = getenv("SCRIPT_NAME");
         if (script_name == NULL) {

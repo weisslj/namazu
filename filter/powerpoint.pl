@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: powerpoint.pl,v 1.1 2000-03-22 21:10:52 kenzo- Exp $
+# $Id: powerpoint.pl,v 1.2 2000-04-04 22:22:40 kenzo- Exp $
 # Copyright (C) 2000 Ken-ichi Hirose, 
 #               2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -31,7 +31,7 @@ require 'gfilter.pl';
 my $pptconvpath  = undef;
 
 sub mediatype() {
-    return ('application/ms-powerpoint');
+    return ('application/powerpoint');
 }
 
 sub status() {
@@ -65,8 +65,13 @@ sub filter ($$$$$) {
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
     my $tmpfile  = util::tmpnam('NMZ.powerpoint');
+    my $tmpfile2 = $cfile;
+    if ($cfile =~ /[\x81-\x9f\xe0-\xef][\x40-\x7e\x80-\xfc]|[\x20\xa1-\xdf]/) {
+        $tmpfile2 = util::tmpnam('NMZ.powerpoint2');
+        copy($cfile, $tmpfile2);
+    }  
 
-    system("$pptconvpath -o e $cfile > $tmpfile");
+    system("$pptconvpath -o e $tmpfile2 > $tmpfile");
 
     {
     my $fh = util::efopen("< $tmpfile");
@@ -74,6 +79,7 @@ sub filter ($$$$$) {
     }
 
     unlink($tmpfile);
+    unlink($tmpfile2);
 
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);

@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.55 2000-04-04 07:38:59 masao Exp $
+ * $Id: form.c,v 1.56 2000-04-04 22:22:40 kenzo- Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -226,7 +226,7 @@ select_option(char *s, const char *name, const char *subquery)
                 fputs(" selected", stdout);
             }
         } else if (strcasecmp(name, "idxname") == 0) {
-            if (nmz_get_idxnum() >= 1 && nmz_strsuffixcmp(value, nmz_get_idxname(0))) {
+            if (nmz_get_idxnum() >= 1 && nmz_strsuffixcmp(value, nmz_get_idxname(0)) == 0) {
                 fputs(" selected", stdout);
             }
         } else if (strcasecmp(name, "subquery") == 0) {

@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "POT-Creation-Date: 2000-04-17 09:49+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Jose Juan Zapater Vera <jzapater@ayto-alcaniz.es>\n"
+"Last-Translator: Jose Juan Zapater Vera <compi@arrakis.es>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
@@ -303,7 +303,7 @@ msgstr "Usa: namazu [opciones] <consulta> [índice]...\n"
 
 #: src/usage.c:90
 msgid "Try `namazu --help' for more information.\n"
-msgstr "Intenta `namazu --ayuda para más información.\n"
+msgstr "Intenta `namazu --help para más información.\n"
 
 #: scripts/mknmz.in:94
 msgid " files are found to be indexed.\n"
@@ -540,7 +540,7 @@ msgstr "Uso: mknmz [opciones] <destino>...\n"
 
 #: scripts/mknmz.in:1399
 msgid "Try `mknmz --help' for more information.\n"
-msgstr "Intenta `mknmz --ayuda para más información.\n"
+msgstr "Intenta `mknmz --help para más información.\n"
 
 #: scripts/mknmz.in:1414
 msgid "does NOT EXIST! skipped."
@@ -866,7 +866,7 @@ msgstr "Formato no soportado: "
 #~ "results.\n"
 #~ "    -d, --debug          be debug mode.\n"
 #~ "    -v, --version        show the version of namazu and exit.\n"
-#~ "        --ayuda          show this help and exit\n"
+#~ "        --help          show this help and exit\n"
 #~ "\n"
 #~ "Report bugs to <%s>.\n"
 #~ msgstr ""

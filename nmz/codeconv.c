@@ -2,7 +2,7 @@
  * 
  * codeconv.c -
  * 
- * $Id: codeconv.c,v 1.11 2000-01-05 08:49:58 satoru Exp $
+ * $Id: codeconv.c,v 1.12 2000-01-06 06:52:38 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -37,7 +37,6 @@
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
 #endif
-#include "namazu.h"
 #include "libnamazu.h"
 #include "codeconv.h"
 #include "util.h"

@@ -1,6 +1,6 @@
 /*
  * i18n.c -
- * $Id: i18n.c,v 1.12 2000-01-05 10:30:43 satoru Exp $
+ * $Id: i18n.c,v 1.13 2000-01-06 06:52:38 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -28,7 +28,6 @@
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
 #endif
-#include "namazu.h"
 #include "libnamazu.h"
 #include "util.h"
 #include "i18n.h"

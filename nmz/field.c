@@ -4,7 +4,6 @@
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
 #endif
-#include "namazu.h"
 #include "libnamazu.h"
 #include "field.h"
 #include "result.h"

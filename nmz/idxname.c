@@ -2,7 +2,7 @@
  * 
  * idxname.c - Idx handling routines.
  *
- * $Id: idxname.c,v 1.9 2000-01-06 03:44:28 satoru Exp $
+ * $Id: idxname.c,v 1.10 2000-01-06 06:52:38 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
@@ -32,7 +32,6 @@
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
 #endif
-#include "namazu.h"
 #include "libnamazu.h"
 #include "search.h"
 #include "alias.h"

@@ -2,7 +2,7 @@
  * 
  * wakati.c -
  * 
- * $Id: wakati.c,v 1.14 2000-01-05 10:30:46 satoru Exp $
+ * $Id: wakati.c,v 1.15 2000-01-06 06:52:40 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -31,7 +31,6 @@
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
 #endif
-#include "namazu.h"
 #include "libnamazu.h"
 #include "message.h"
 #include "util.h"

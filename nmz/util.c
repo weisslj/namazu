@@ -1,5 +1,5 @@
 /*
- * $Id: util.c,v 1.34 2000-01-06 00:32:59 satoru Exp $
+ * $Id: util.c,v 1.35 2000-01-06 06:52:39 satoru Exp $
  *
  * Imported scan_hex(), scan_oct(), xmalloc(), xrealloc() from 
  * Ruby b19's"util.c" and "gc.c". Thanks to Matsumoto-san for consent!
@@ -18,7 +18,6 @@
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
 #endif
-#include "namazu.h"
 #include "libnamazu.h"
 #include "message.h"
 #include "util.h"

@@ -1,8 +1,6 @@
 /*
  * 
- * search.c -
- * 
- * $Id: search.c,v 1.41 2000-01-06 03:44:29 satoru Exp $
+ * $Id: search.c,v 1.42 2000-01-06 06:52:39 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -39,7 +37,6 @@
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
 #endif
-#include "namazu.h"
 #include "libnamazu.h"
 #include "util.h"
 #include "field.h"

@@ -1,5 +1,7 @@
+# Note that this is NOT a relocatable package
 %define	ver	0.19
-%define rel	1
+%define  RELEASE 1
+%define  rel     %{?CUSTOM_RELEASE} %{!?CUSTOM_RELEASE:%RELEASE}
 
 Summary: file command like perl5 module
 Name: perl-File-MMagic
@@ -33,18 +35,22 @@ make
 rm -rf $RPM_BUILD_ROOT
 eval `perl '-V:installarchlib'`
 mkdir -p $RPM_BUILD_ROOT/$installarchlib
-make PREFIX=$RPM_BUILD_ROOT/usr install
+make PREFIX=$RPM_BUILD_ROOT/usr \
+   INSTALLMAN3DIR=$RPM_BUILD_ROOT/`dirname $installarchlib`/man/man3 install
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root)
-/usr/lib/perl5/site_perl/File/MMagic.pm
-/usr/lib/perl5/site_perl/*-linux/auto/File/MMagic
-/usr/lib/perl5/man/man3/File::MMagic.3
+/usr/lib/perl5/site_perl/*/*-linux/File/MMagic.pm
+/usr/lib/perl5/site_perl/*/*-linux/auto/File/MMagic
+/usr/lib/perl5/*/man/man3/File::MMagic.3
 
 %changelog
+* Sat Dec 11 1999 Ryuji Abe <raeva@t3.rim.or.jp>
+- Rebuild for RHL-6.1.
+
 * Thu Dec 02 1999 Ryuji Abe <raeva@t3.rim.or.jp>
 - Specified Obsoletes: File-MMagic.
 

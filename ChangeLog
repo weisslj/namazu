@@ -1,5 +1,10 @@
 2001-09-13  Yoshinori TAKESAKO  <takesako@namazu.org>
 
+	* templete/NMZ.head{|.es|.fr|.ja}: Replaced method="get" into 
+	method="GET" (upper case).
+
+2001-09-13  Yoshinori TAKESAKO  <takesako@namazu.org>
+
 	* src/output.c (print_page_index): Fixed the bug on Lotus Domino 
 	Server R5.06a, that namazu.cgi outputs inaccurate page links.
 
@@ -7027,4 +7032,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.866 2001-09-13 05:43:32 takesako Exp $
+$Id: ChangeLog,v 1.867 2001-09-13 06:57:15 takesako Exp $

@@ -32,7 +32,7 @@
 <strong>インデックスの最終更新日: <!-- DATE --> date <!-- DATE --></strong>
 </p>
 <hr>
-<form method="get" action="{cgi}">
+<form method="GET" action="{cgi}">
 <p>
 <strong>検索式:</strong> 
 <input type="text" name="query" size="40">

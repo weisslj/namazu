@@ -32,7 +32,7 @@ This index contains <!-- FILE --> 0 <!-- FILE --> documents and
 <strong>Last modified: <!-- DATE --> date <!-- DATE --></strong>
 </p>
 <hr>
-<form method="get" action="{cgi}">
+<form method="GET" action="{cgi}">
 <p>
 <strong>Query:</strong> 
 <input type="text" name="query" size="40">

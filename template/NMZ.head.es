@@ -32,7 +32,7 @@ Este índice contiene <!-- FILE --> 0 <!-- FILE --> documentos y
 <strong>Ultima modificación: <!-- DATE --> date <!-- DATE --></strong>
 </p>
 <hr>
-<form method="get" action="{cgi}">
+<form method="GET" action="{cgi}">
 <p>
 <strong>Cadena de Búsqueda:</strong> 
 <input type="text" name="query" size="40">

@@ -2,14 +2,15 @@
         "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
-<meta name="robots" content="noindex,nofollow">
+<meta name="ROBOTS" content="NOINDEX,NOFOLLOW">
 <link rel=stylesheet href="namazu.css">
 <link rev=made href="mailto:developers@namazu.org">
 <title>Manual of Namazu</title>
 </head>
 <body lang="ja">
 <h1>全文検索システム Namazu 説明書</h1>
-<p> Last Modified: 2000-01-31
+<p>
+Last Modified: 
 </p>
 <hr>
 
@@ -21,7 +22,6 @@ href="http://www.namazu.org/">http://www.namazu.org/</a> か
 </p>
 
 <h2>目次</h2>
-
 <ul>
 <li><a href="#organization">Namazuの基本構成</a>
 <li><a href="#mknmz">mknmzコマンド</a>
@@ -44,10 +44,13 @@ href="http://www.namazu.org/">http://www.namazu.org/</a> か
   </ul>
 <li><a href="#cgi">CGIとして利用する</a>
   <ul>
-  <li><a href="#form">結果表示の件数と出力フォーマット</a>
-  <li><a href="#idxname">ブラウザからインデックスを指定する方法</a>
-  <li><a href="#multiple-indices">複数のインデックスに検索をかける方法</a>
-  <li><a href="#subquery">検索対象のURIを制限する方法</a>
+  <li><a href="#setting">namazu.cgiの設置</a>
+  <li><a href="#.namazurc">.namazurc の設定</a>
+  <li><a href="#template">雛形ファイル</a>
+  <li><a href="#form">formの設定</a>
+  <li><a href="#form-idxname">インデックスを選択する</a>
+  <li><a href="#form-idxnames">複数のインデックスを検索する</a>
+  <li><a href="#form-subquery">補助検索式の利用法</a>
   </ul>
 <li><a href="#query">検索式</a>
   <ul>
@@ -95,7 +98,6 @@ Namazuは全文検索システムです。Namazu はインデックスの作成を
 mknmz を実行したディレクトリに NMZ.* というファイルを作成し
 ます。この NMZ.* ファイルが Namazu のインデックスです。
 </p>
-
 
 <p>
 作成されたインデックスに対して検索を行うには
@@ -415,7 +417,7 @@ vfnmz は検索結果の表示を preview するツールです。コマンド行
 </p>
 
 <p>
-<code>% vfnmz ~/NMZ/foobar > foobar.html</code>
+<code>% vfnmz ~/NMZ/foobar &gt; foobar.html</code>
 <code>% lynx foobar.html # 出力をブラウザで閲覧する</code>
 </p>
 
@@ -430,11 +432,49 @@ namazu.cgi は $(libexecdir) ディレクトリ (通常は
 たいディレクトリに namazu.cgiをコピーすれば設置完了です。
 </p>
 
-
-<h3><a name="form">formの設定項目</a></h3>
+<h3><a name=".namazurc">.namazurc の設定</a></h3>
 
 <p>
-form で指定できる項目は次の通りです。
+namazu.cgi を設置したディレクトリに .namazurc ファイルを置く
+と、CGIの実行時に設定ファイルとして読み込まれます。日本語で
+表示するには次の設定が必須です。
+</p>
+
+<p>
+<code>Lang ja</code>
+</p>
+
+<h3><a name="template">雛形ファイル</a></h3>
+
+<p>
+HTML での結果出力には NMZ.head, NMZ.foot, NMZ.body,
+NMZ.tips, NMZ.result ファイルが表示形式の雛形として用いられ
+ます。
+</p>
+
+<p>
+これらのファイルは言語ごとに分かれています。ファイル名の末尾
+が .ja で終わるファイルが日本語用です。それぞれの役割は次の
+通りです。
+</p>
+
+<dl>
+<dt><a href="nmz.html#head">NMZ.head</a>
+<dd>検索結果の冒頭部分
+<dt><a href="nmz.html#foot">NMZ.foot</a>
+<dd>検索結果の末尾部分
+<dt><a href="nmz.html#body">NMZ.body</a>
+<dd>検索式の説明
+<dt><a href="nmz.html#tips">NMZ.tips</a>
+<dd>検索のコツ
+<dt><a href="nmz.html#result">NMZ.result</a>
+<dd>検索結果の表示書式
+</dl>
+
+<h3><a name="form">formの設定</a></h3>
+
+<p>
+formは NMZ.head に定義されています。CGI変数は次の通りです。
 </p>
 
 <dl>
@@ -455,11 +495,11 @@ form で指定できる項目は次の通りです。
 <dd>検索結果を何件目から表示するかを指定します。
 </dl>
 
-<h3><a name="idxname">ブラウザからインデックスを指定する方法</a></h3>
+<h3><a name="form-idxname">インデックスを選択する</a></h3>
 
 <p>
-ブラウザからインデックスを選択可能にするには NMZ.head に次の
-ように記述します。
+ブラウザからインデックスを選択するには NMZ.head に次のように
+記述します。
 </p>
 
 <p>
@@ -477,7 +517,7 @@ form で指定できる項目は次の通りです。
 の <code>Index</code> で設定されたディレクトリの下にある 
 <var>foo</var> インデックスを検索します。<code>Index</code> 
 が <code>/usr/local/var/namazu/index</code> の場合は次のよう
-なディレクトリ構造になります。
+なディレクトリ構成になります。
 </p>
 
 <pre>
@@ -485,18 +525,18 @@ form で指定できる項目は次の通りです。
         + usr/
           + local/
             + var/
-	      + namazu/
-		+ index/
-		  + <var>foo</var>/
-		  + <var>bar</var>/
-		  + <var>baz</var>/
+              + namazu/
+                + index/
+                  + <var>foo</var>/
+                  + <var>bar</var>/
+                  + <var>baz</var>/
 </pre>
 
 
-<h3><a name="multiple-indices">複数のインデックスに検索をかける方法</a></h3>
+<h3><a name="form-idxnames">複数のインデックスを検索する</a></h3>
 <p>
-&lt;form&gt; ... &lt;/FORM&gt; 
-の中に下のような記述を入れてください。
+複数のインデックスを検索するは NMZ.head に checkbox の記述を
+します。
 </p>
 
 <p>
@@ -512,39 +552,29 @@ form で指定できる項目は次の通りです。
 </p>
 
 <p>
-このように記述しておくことで foo, bar, baz から複数選択して
-検索できます。検索結果に使われる NMZ.head, NMZ.foot は 
-namazurc の Index で指定したディレクトリにあるものが使われま
-す (または namazurc の中で INDEX の項目で指定したディレクト
-リにあるもの)。インデックスの指定がひとつだった場合には個々
-の NMZ.head, NMZ.foot が使われる点に注意してください。これを
-回避したい場合にはすべての NMZ.head, NMZ.foot を共通にしてし
-まうことです。
+この例では foo, bar, baz から複数選択して検索できます。検索
+結果に使われる雛形ファイルは namazurc の Template で指定した
+ディレクトリのものが用いられます。
 </p>
 
-
-<h3><a name="subquery">検索対象のURIを制限する方法</a></h3>
+<h3><a name="form-subquery">補助検索式の利用法</a></h3>
 
 <p>
-CGI に subquery の値を渡すことで実現できます。たとえば以下のように
-指定すると良いでしょう。一番下の行は検索結果の「参考ヒット数」の表
-示を抑制するためのおまじまないです。
+利用者が入力する検索式とは別に、補助検索式を設定できます。た
+とえば次の例では、検索対象のペイジを選択可能にしています。検
+索対象のURIを +uri: で制限しているところが要です。
 </p>
 
 <p>
 &lt;strong&gt;検索対象&lt;/STRONG&gt;<br>
 &lt;select name="subquery"&gt;<br>
 &lt;option value=""&gt;全体<br>
-&lt;option value="+uri:/^http://foo.bar.jp/aaaa//"&gt;aaaaのコーナー<br>
-&lt;option value="+uri:/^http://foo.bar.jp/bbbb//"&gt;bbbbのコーナー<br>
-&lt;option value="+uri:/^http://foo.bar.jp/cccc//"&gt;ccccのコーナー<br>
-&lt;option value="+uri:/^http://foo.bar.jp/dddd//"&gt;ddddのコーナー<br>
+&lt;option value="+uri:/^http://foo.bar.jp/foo//"&gt;fooのペイジ<br>
+&lt;option value="+uri:/^http://foo.bar.jp/bar//"&gt;barのペイジ<br>
+&lt;option value="+uri:/^http://foo.bar.jp/baz//"&gt;bazのペイジ<br>
+&lt;option value="+uri:/^http://foo.bar.jp/quux//"&gt;quuxのペイジ<br>
 &lt;/select&gt;<br>
 &lt;input type="hidden" name="reference" value="off"&gt;<br>
-</p>
-
-<p>
-subquery には +URI: 固定ではなく任意の検索式を指定できます。
 </p>
 
 
@@ -686,8 +716,8 @@ href="http://www.perl.com/">Perl</a>とほぼ同じです。 例:
 はしません。
 
 <li>日本語の複合語は形態素単位に分割し、それらを<a
-href="#phrase"> フレイズ検索</a>します。分割は不適切に行なわ
-れることがあります。
+href="#query-phrase"> フレイズ検索</a>します。分割は不適切に
+行なわれることがあります。
 
 <li>JIS X 0208 (いわゆる全角文字) の英数字と記号の一部 
 (ASCIIと重複しているもの) は ASCII (いわゆる半角文字) として
@@ -695,9 +725,9 @@ href="#phrase"> フレイズ検索</a>します。分割は不適切に行なわ
 
 <li>記号を含む語の検索ができます。例: <code>TCP/IP</code>。
 ただし、記号の処理は完全ではないので <code>TCP and IP</code> 
-のように分割して<a href="#and">AND検索</a>をかけた方が取りこ
-ぼしがありません (その代わり余計なファイルまでヒットしてしま
-う可能性があります)。
+のように分割して<a href="#query-and">AND検索</a>をかけた方が
+取りこぼしがありません (その代わり余計なファイルまでヒットし
+てしまう可能性があります)。
 
 <li>中間一致・後方一致、正規表現、フィールド指定の検索には少
 し時間がかかります。
@@ -723,7 +753,7 @@ Tknamazu および namazu.el から検索するときは必ず後者で指定します。
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: manual.html,v 1.6 2000-02-01 07:41:06 satoru Exp $
+$Id: manual.html,v 1.7 2000-02-01 09:52:50 satoru Exp $
 </div>
 <address>
 developers@namazu.org

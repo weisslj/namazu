@@ -2,6 +2,7 @@
         "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
+<meta name="ROBOTS" content="NOINDEX,NOFOLLOW">
 <link rel=stylesheet href="namazu.css">
 <link rev=made href="mailto:developers@namazu.org">
 <title>Specification of NMZ.* files</title>
@@ -27,11 +28,11 @@
 <li><a href="#field-i">NMZ.field.{subject,from,date,message-id,...}.i</a>
 <li><a href="#access">NMZ.access</a>
 <li><a href="#status">NMZ.status</a>
-<li><a href="#result">NMZ.result.{normal,short,...}{,.$LANG}</a>
-<li><a href="#head">NMZ.head{,.$LANG}</a>
-<li><a href="#foot">NMZ.foot{,.$LANG}</a>
-<li><a href="#body">NMZ.body{,.$LANG}</a>
-<li><a href="#tips">NMZ.tips{,.$LANG}</a>
+<li><a href="#result">NMZ.result</a>
+<li><a href="#head">NMZ.head</a>
+<li><a href="#foot">NMZ.foot</a>
+<li><a href="#body">NMZ.body</a>
+<li><a href="#tips">NMZ.tips</a>
 <li><a href="#log">NMZ.log</a>
 <li><a href="#lock">NMZ.lock</a>
 <li><a href="#lock2">NMZ.lock2</a>
@@ -297,7 +298,7 @@ Webサーヴァが Apache の場合、ホスト名・ドメイン名によるアク
 <p>インデックスを更新するために必要なデータを保存する。</p>
 
 
-<h2><a name="result">NMZ.result.{normal,short,...}{,.$LANG}</a></h2>
+<h2><a name="result">NMZ.result</a></h2>
 <p>検索結果の書式を指定するファイル</p>
 
 <h3>解説</h3>
@@ -315,35 +316,59 @@ ${フィールドの名前} の部分はそのフィールドの内容に置き換
 いる。利用者は自由に NMZ.result.* を作成できる。
 </p>
 
-<h2><a name="head">NMZ.head{,.$LANG}</a></h2>
-<p>検索結果出力用ヘッダファイル</p>
+<h2><a name="head">NMZ.head</a></h2>
+
+<p>
+検索結果の冒頭部分。
+</p>
 
 
-<h2><a name="foot">NMZ.foot{,.$LANG}</a></h2>
-<p>検索結果出力用フッタファイル</p>
+<h2><a name="foot">NMZ.foot</a></h2>
+
+<p>
+検索結果の末尾部分。
+</p>
 
 
-<h2><a name="body">NMZ.body{,.$LANG}</a></h2>
-<p>キーワードが与えられなかったときに表示するメッセージ</p>
+<h2><a name="body">NMZ.body</a></h2> 
 
-<h2><a name="tips">NMZ.tips{,.$LANG}</a></h2>
-<p>検索して何もヒットしなかったときに表示するメッセージ</p>
+<p>
+検索式の説明。キーワードが与えられなかったときに表示される。
+</p>
+
+<h2><a name="tips">NMZ.tips</a></h2> 
+
+<p>
+検索のコツ。検索に何もヒットしなかったときに表示される。
+</p>
 
 
 <h2><a name="log">NMZ.log</a></h2>
-<p>インデックスの更新ログ</p>
+
+<p>
+インデックスの更新ログ。
+</p>
 
 
 <h2><a name="lock">NMZ.lock</a></h2>
-<p>検索時のロックファイル</p>
+
+<p>
+検索時のロックファイル。
+</p>
 
 
 <h2><a name="lock2">NMZ.lock2</a></h2>
-<p>インデックス作成時のロックファイル</p>
+
+<p>
+インデックス作成時のロックファイル。
+</p>
 
 
-<h2><a name="slog">NMZ.slog</a></h2>
-<p>検索されたキーワードのログ</p>
+<h2><a name="slog">NMZ.slog</a></h2> 
+
+<p>
+検索されたキーワードのログ。
+</p>
 
 <h3>注意点</h3>
 <ul>
@@ -358,7 +383,7 @@ ${フィールドの名前} の部分はそのフィールドの内容に置き換
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: nmz.html,v 1.3 2000-01-31 01:32:33 satoru Exp $
+$Id: nmz.html,v 1.4 2000-02-01 09:52:50 satoru Exp $
 </div>
 <address>
 developers@namazu.org

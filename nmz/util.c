@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: util.c,v 1.62 2000-02-21 04:20:39 satoru Exp $
+ * $Id: util.c,v 1.63 2000-02-25 07:45:32 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -178,15 +178,16 @@ nmz_tr(char *str, const char *lstr, const char *rstr)
 }
 
 /* 
- * Delete ending LF, CR and spaces of string.
+ * Delete ending white spaces in the str.
  */
 void 
-nmz_chomp(char * str)
+nmz_chomp(char *str)
 {
     int i;
     for (i = strlen(str) - 1; i >= 0; i--) {
 	if (*(str + i) == '\n' || *(str + i) == '\r'
-            || *(str + i) == ' ' || *(str + i) == '\t') {
+            || *(str + i) == ' ' || *(str + i) == '\t') 
+	{
 	    *(str + i) = '\0';
 	} else {
 	    break;

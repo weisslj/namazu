@@ -85,15 +85,15 @@ Namazuは全文検索システムです。Namazu はインデックスの作成を
 <p>
 インデックスを作成するには mknmz コマンドを用います。mknmz 
 の引数にインデックス作成の対象とするディレクトリ名を与えます。
-たとえば、 <var>/home/foo/public_html</var> を対象とするなら
+たとえば、 /home/foo/public_html を対象とするなら
 ば
 </p>
 
-<p><code>% mknmz</code> <var>/home/foo/public_html</var>
+<p><code>% mknmz</code> /home/foo/public_html
 </p>
 
 <p>
-と実行します。すると、 <var>/home/foo/public_html</var> 以下
+と実行します。すると、 /home/foo/public_html 以下
 の *.html *.txt といったファイルについて索引づけを行い、
 mknmz を実行したディレクトリに NMZ.* というファイルを作成し
 ます。この NMZ.* ファイルが Namazu のインデックスです。
@@ -104,12 +104,12 @@ mknmz を実行したディレクトリに NMZ.* というファイルを作成し
 <code>namazu</code>コマンドを用います。
 </p>
 
-<p><code>% namazu</code> <var>bar</var>
-<var>/home/foo/NMZ/bar</var></p>
+<p><code>% namazu</code> bar
+/home/foo/NMZ/bar</p>
 
 <p>
-と実行すれば、/home/foo/NMZ/bar にあるインデックスに対してキー
-ワード <var>bar</var> を検索します。
+と実行すれば、/home/foo/NMZ/bar にあるインデック
+スに対してキーワード bar を検索します。
 </p>
 
 
@@ -184,7 +184,7 @@ mknmz は
 </p>
 
 <ol>
-<li>$(sysconfdir)/$(PACKAGE)/mknmzrc<br>
+<li><code>$(sysconfdir)/$(PACKAGE)/mknmzrc</code><br>
 通常は /usr/local/etc/mknmz/mknmzrc
 <li>~/.mknmzrc
 <li>-f, --config= オプションで指定した mknmzrc
@@ -196,10 +196,11 @@ mknmz は
 
 <p>
 インストール直後の状態では 
-<code>$(sysconfdir)/$(PACKAGE)/mknmzrc-sample</code> というサンプルファイ
-ルが用意されています。これを 
-<code>$(sysconfdir)/$(PACKAGE)/mknmzrc</code> にコピーする、あるいは自分
-のホームディレクトリに ~/.mknmzrc としてコピーして利用します。
+<code>$(sysconfdir)/$(PACKAGE)/mknmzrc-sample</code> という
+サンプルファイルが用意されています。これを 
+<code>$(sysconfdir)/$(PACKAGE)/mknmzrc</code> にコピーする、
+あるいは自分のホームディレクトリに ~/.mknmzrc としてコピーし
+て利用します。
 </p>
 
 <p>
@@ -344,9 +345,8 @@ href="#default-index">基本インデックス</a>が検索対象となりま
 </p>
 
 <p>
-また、 <code>+foo</code>, <code>+bar</code> のように頭に
-<code>+</code> 記号をつけると、基本インデックスからの相対パ
-スでインデックスを指定できます。
+また、 +foo, +bar のように頭に <code>+</code> 記号をつけると、
+基本インデックスからの相対パスでインデックスを指定できます。
 </p>
 
 <p>
@@ -356,9 +356,9 @@ href="#default-index">基本インデックス</a>が検索対象となりま
 </p>
 
 <p>
-検索結果の 21 件目から 40 件目までを表示させたいときは 
-<code>-n 20 -w 20</code> と指定します。-w の値が 21 でないと
-ころに注意してください。
+検索結果の 21 件目から 40 件目までを表示させたいときは -n 20
+-w 20 と指定します。-w の値が 21 でないところに注意してくだ
+さい。
 </p>
 
 <h3><a name="namazurc">namazurcの設定</a></h3>
@@ -410,13 +410,6 @@ namazurc の設定項目の説明は namazurc-sample ファイルにコメント
 CGI (<a href="#cgi">namazu.cgi</a>) では、<a
 href="#form-idxname">インデックスを選択する</a>際に基本イン
 デックスからの相対パスで指定します。
-</p>
-
-<p>
-FIXME: 基本インデックスという言葉は適切だろうか? 英語なら
-default index だけど、デフォルトというカタカナ語はできれば使
-いたくない。(カタカナ語はできるだけ避けたい - インデックスを
-索引とするかも迷うところ)
 </p>
 
 <h2><a name="tools">付属ツール</a></h2>
@@ -516,7 +509,7 @@ vfnmz は検索結果の表示を preview するツールです。コマンド行
 </p>
 
 <p>
-<code>vfnmz &lt;index&gt; [NMZ.result.foobar]</code>
+<code>% vfnmz &lt;index&gt; [NMZ.result.foobar]</code>
 </p>
 
 <p>
@@ -535,9 +528,9 @@ vfnmz は検索結果の表示を preview するツールです。コマンド行
 
 <p>
 CGIとして Namazuを利用するには、 namazu.cgi を用います。
-namazu.cgi は $(libexecdir) ディレクトリ (通常は
-/usr/local/libexec) にインストールされています。CGI を設置し
-たいディレクトリに namazu.cgiをコピーすれば設置完了です。
+namazu.cgi は <code>$(libexecdir)</code> ディレクトリ (通常
+は/usr/local/libexec) にインストールされています。CGI を設置
+したいディレクトリに namazu.cgiをコピーすれば設置完了です。
 </p>
 
 <h3><a name=".namazurc">.namazurc の設定</a></h3>
@@ -545,11 +538,7 @@ namazu.cgi は $(libexecdir) ディレクトリ (通常は
 <p>
 namazu.cgi を設置したディレクトリに .namazurc ファイルを置く
 と、CGIの実行時に設定ファイルとして読み込まれます。日本語で
-表示するには次の設定が必須です。
-</p>
-
-<p>
-<code>Lang ja</code>
+表示するには <code>Lang ja</code>の設定が必須です。
 </p>
 
 <h3><a name="template">雛形ファイル</a></h3>
@@ -608,34 +597,36 @@ formは NMZ.head に定義されています。CGI変数は次の通りです。
 記述します。
 </p>
 
-<p>
-<code>&lt;strong&gt;検索対象:&lt;/STRONG&gt;</code><br>
-<code>&lt;select name="idxname"&gt;</code><br>
-<code>&lt;option selected value="</code><var>foo</var><code>"&gt;</code><var>foo</var><br>
-<code>&lt;option value="</code><var>bar</var><code>"&gt;</code><var>bar</var><br>
-<code>&lt;option value="</code><var>baz</var><code>"&gt;</code><var>baz</var><br>
-<code>&lt;/select&gt;</code><br>
-</p>
+<pre>
+
+      &lt;strong&gt;検索対象:&lt;/strong&gt;
+      &lt;select name="idxname"&gt;
+      &lt;option selected value="foo"&gt;foo
+      &lt;option value="bar"&gt;bar
+      &lt;option value="baz"&gt;baz
+      &lt;/select&gt;
+</pre>
 
 <p>
-この例では、 <var>foo, bar, baz</var> の中からインデックスを
-選択可能にしています。<var>foo</var> が選ばれた時は<a
+この例では、 foo, bar, baz の中からインデックスを
+選択可能にしています。foo が選ばれた時は<a
 href="#default-index">基本インデックス</a> の下にある 
-<var>foo</var> インデックスを検索します。基本インデックスが 
-<code>/usr/local/var/namazu/index</code> の場合は次のディレ
-クトリ構成になります。
+foo インデックスを検索します。基本インデックスが 
+/usr/local/var/namazu/index の場合は次のディレクトリ構成にな
+ります。
 </p>
 
 <pre>
-        /
-        + usr/
-          + local/
-            + var/
-              + namazu/
-                + index/
-                  + <var>foo</var>/
-                  + <var>bar</var>/
-                  + <var>baz</var>/
+
+       /
+       + usr/
+         + local/
+           + var/
+             + namazu/
+               + index/
+                 + foo/
+                 + bar/
+                 + baz/
 </pre>
 
 
@@ -645,17 +636,15 @@ href="#default-index">基本インデックス</a> の下にある
 します。
 </p>
 
-<p>
-&lt;strong&gt;対象インデックス&lt;/STRONG&gt;&lt;BR&gt;<br>
-&lt;ul&gt;<br>
-&lt;li&gt;&lt;input type="checkbox" name="idxname"
-        value="foo"   checked&gt;foo<br>
-&lt;li&gt;&lt;input type="checkbox" name="idxname"
-        value="bar" checked&gt;bar<br>
-&lt;li&gt;&lt;input type="checkbox" name="idxname"
-        value="baz"   checked&gt;baz<br>
-&lt;/ul&gt;<br>
-</p>
+<pre>
+
+      &lt;strong&gt;対象インデックス&lt;/strong&gt;
+      &lt;ul&gt;
+      &lt;li&gt;&lt;input type="checkbox" name="idxname" value="foo"&gt;foo
+      &lt;li&gt;&lt;input type="checkbox" name="idxname" value="bar"&gt;bar
+      &lt;li&gt;&lt;input type="checkbox" name="idxname" value="baz"&gt;baz
+      &lt;/ul&gt;
+</pre>
 
 <p>
 この例では foo, bar, baz から複数選択して検索できます。検索
@@ -665,12 +654,12 @@ namazurc の Template指令で指定したディレクトリのものが用いら
 す。
 </p>
 
-<dl>
-<dt>選択されたインデックスが 1つのとき
-<dd>選択されたインデックスの雛形ファイルが用いられる
-<dt>選択されたインデックスが複数のとき
-<dd><a href="#default-index">基本インデックス</a>の雛形ファイルが用いられる
-</dl>
+<ul>
+<li>選択されたインデックスが 1つのとき<br>
+選択されたインデックスの雛形ファイルが用いられる
+<li>選択されたインデックスが複数のとき<br>
+<a href="#default-index">基本インデックス</a>の雛形ファイルが用いられる
+</ul>
 
 <h3><a name="form-subquery">補助検索式の利用法</a></h3>
 
@@ -680,17 +669,18 @@ namazurc の Template指令で指定したディレクトリのものが用いら
 索対象の URIを +uri: で制限しているところが要です。
 </p>
 
-<p>
-&lt;strong&gt;検索対象&lt;/STRONG&gt;<br>
-&lt;select name="subquery"&gt;<br>
-&lt;option value=""&gt;全体<br>
-&lt;option value="+uri:/^http://foo.bar.jp/foo//"&gt;fooのペイジ<br>
-&lt;option value="+uri:/^http://foo.bar.jp/bar//"&gt;barのペイジ<br>
-&lt;option value="+uri:/^http://foo.bar.jp/baz//"&gt;bazのペイジ<br>
-&lt;option value="+uri:/^http://foo.bar.jp/quux//"&gt;quuxのペイジ<br>
-&lt;/select&gt;<br>
-&lt;input type="hidden" name="reference" value="off"&gt;<br>
-</p>
+<pre>
+
+      &lt;strong&gt;検索対象&lt;/strong&gt;
+      &lt;select name="subquery"&gt;
+      &lt;option value=""&gt;全体
+      &lt;option value="+uri:/^http://foo.bar.jp/foo//"&gt;fooのペイジ
+      &lt;option value="+uri:/^http://foo.bar.jp/bar//"&gt;barのペイジ
+      &lt;option value="+uri:/^http://foo.bar.jp/baz//"&gt;bazのペイジ
+      &lt;option value="+uri:/^http://foo.bar.jp/quux//"&gt;quuxのペイジ
+      &lt;/select&gt;
+      &lt;input type="hidden" name="reference" value="off"&gt;
+</pre>
 
 
 <!-- query -->
@@ -868,7 +858,7 @@ Tknamazu および namazu.el から検索するときは必ず後者で指定します。
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: manual.html,v 1.12 2000-02-06 09:43:43 satoru Exp $
+$Id: manual.html,v 1.13 2000-02-06 10:26:28 satoru Exp $
 </div>
 <address>
 developers@namazu.org

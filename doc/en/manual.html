@@ -127,18 +127,18 @@ mknmz を実行したディレクトリに NMZ.* というファイルを作成し
     Target files:
       -a, --all                target all files.
       -e, --robots-txt         exclude files which is excluded by robots.txt.
-      -t, --media-type=mtype   set a media type for all target files explicitly.
+      -t, --media-type=MTYPE   set the media type for all target files to MTYPE.
       -h, --mailnews           same as --media-type='message/rfc822'
           --mhonarc            same as --media-type='text/html; x-type=mhonarc'
       -A, --htaccess           exclude files restricted by .htaccess.
-      -F, --target-list=file   load a file which contains list of target files.
-          --allow=regex        set a regex for file names which will be allowed.
-          --deny=regex         set a regex for file names which will be denied.
-          --exclude=regex      set a regex for pathnames which will be excluded.
+      -F, --target-list=FILE   load FILE which contains a list of target files.
+          --allow=PATTERN      set PATTERN for file names which will be allowed.
+          --deny=PATTERN       set PATTERN for file names which will be denied.
+          --exclude=PATTERN    set PATTERN for pathnames which will be excluded.
       -M, --meta               handle HTML meta tags for field-specified search.
-      -r, --replace=code       set a code for replacing URI.
+      -r, --replace=CODE       set CODE for replacing URI.
       -o, --ole                use OLE document filters. (works on Windows only)
-          --mtime=int          limit by date, ( minus number for recent, i.e.,
+          --mtime=NUM          limit by date, (minus NUM for recent, i.e.,
                                -50 for recent 50 days, 50 for older than 50.)
     
     Morphological Analysis:
@@ -157,16 +157,16 @@ mknmz を実行したディレクトリに NMZ.* というファイルを作成し
       -x, --no-heading-summary do not make summary with HTML's headings.
     
     Index Construction:
-          --update=index       set an index for updating.
+          --update=INDEX       set INDEX for updating.
       -Y, --no-delete          do not detect removed documents.
       -Z, --no-update          do not detect update and deleted documents.
     
     Miscellaneous:
       -s, --checkpoint         turn on the checkpoint mechanism.
-      -f, --config=file        set a pathname of a config file.
-      -I, --include=file       include your customization file.
-      -O, --output-dir=dir     set a directory to output the index.
-      -T, --template-dir=dir   set a directory having NMZ.{head,foot,body}.*.
+      -f, --config=FILE        set the config file to FILE.
+      -I, --include=FILE       include your customization FILE.
+      -O, --output-dir=DIR     set DIR to output the index.
+      -T, --template-dir=DIR   set DIR having NMZ.{head,foot,body}.*.
       -q, --quiet              suppress status messages during execution.
       -v, --version            show the version of namazu and exit.
       -V, --verbose            be verbose.
@@ -315,17 +315,17 @@ ole から始まる文書フィルタは Windows専用です。OLEの文書フィ
 
 <!-- namazu-option -->
 <pre>
-    namazu 1.9.14, a search program of Namazu.
+    namazu 1.9.15, a search program of Namazu.
     
     Usage: namazu [options] &lt;query&gt; [index]... 
-        -n, --max=num        set number of documents shown at once.
-        -w, --whence=num     set first number of documents shown in results.
+        -n, --max=NUM        set number of documents shown to NUM.
+        -w, --whence=NUM     set first number of documents shown to NUM.
         -l, --list           print results by listing format.
         -s, --short          print results by short format.
-            --results=ext    set NMZ.result.ext for printing results.
+            --results=EXT    set NMZ.result.EXT for printing results.
             --late           sort documents in late order.
             --early          sort documents in early order.
-            --sort=method    set a sort method (score, date, field:name)
+            --sort=METHOD    set a sort METHOD (score, date, field:name)
             --ascending      sort in ascending order (default: descending)
         -a, --all            print all results.
         -c, --count          print only number of hits.
@@ -335,8 +335,8 @@ ole から始まる文書フィルタは Windows専用です。OLEの文書フィ
         -F, --form           force to print &lt;form&gt; ... &lt;/form&gt; region.
         -R, --no-replace     do not replace URI string.
         -U, --no-decode-uri  do not decode URI when printing in a plain format.
-        -o, --output=file    set output file name.
-        -f, --config=file    set a pathname of a config file.
+        -o, --output=FILE    set the output file name to FILE.
+        -f, --config=FILE    set the config file name to FILE.
         -C, --show-config    print current configuration.
         -q, --quiet          do not display extra messages except search results.
         -v, --version        show the version of namazu and exit.
@@ -890,7 +890,7 @@ You must choose the latter with Tkanamzu or namazu.el.
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: manual.html,v 1.4 2000-02-15 07:08:16 satoru Exp $
+$Id: manual.html,v 1.5 2000-02-16 12:57:39 satoru Exp $
 </div>
 <address>
 developers@namazu.org

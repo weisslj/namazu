@@ -1,5 +1,13 @@
 2000-02-16  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/usage.c (show_usage): Change usage. [namazu-dev 1632]
+
+	* pl/usage.pl: Likewise.
+
+	* nmz/i18n.h: Include libnamazu.h
+
+	* nmz/query.c: Include codeconv.h
+
 	* Makefile.am (SUBDIRS): Add doc and etc.
 	(DIST_SUBDIRS): Likewise.
 	(etc_DATA): New variable.

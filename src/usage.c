@@ -2,7 +2,7 @@
  * 
  * usage.c -
  * 
- * $Id: usage.c,v 1.24 2000-01-29 02:33:45 satoru Exp $
+ * $Id: usage.c,v 1.25 2000-02-16 12:57:48 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -51,14 +51,14 @@ show_usage(void)
     char *usage = _("\
 namazu %s, a search program of Namazu.\n\n\
 Usage: namazu [options] <query> [index]... \n\
-    -n, --max=num        set number of documents shown at once.\n\
-    -w, --whence=num     set first number of documents shown in results.\n\
+    -n, --max=NUM        set number of documents shown to NUM.\n\
+    -w, --whence=NUM     set first number of documents shown to NUM.\n\
     -l, --list           print results by listing format.\n\
     -s, --short          print results by short format.\n\
-        --results=ext    set NMZ.result.ext for printing results.\n\
+        --results=EXT    set NMZ.result.EXT for printing results.\n\
         --late           sort documents in late order.\n\
         --early          sort documents in early order.\n\
-        --sort=method    set a sort method (score, date, field:name)\n\
+        --sort=METHOD    set a sort METHOD (score, date, field:name)\n\
         --ascending      sort in ascending order (default: descending)\n\
     -a, --all            print all results.\n\
     -c, --count          print only number of hits.\n\
@@ -68,8 +68,8 @@ Usage: namazu [options] <query> [index]... \n\
     -F, --form           force to print <form> ... </form> region.\n\
     -R, --no-replace     do not replace URI string.\n\
     -U, --no-decode-uri  do not decode URI when printing in a plain format.\n\
-    -o, --output=file    set output file name.\n\
-    -f, --config=file    set a pathname of a config file.\n\
+    -o, --output=FILE    set the output file name to FILE.\n\
+    -f, --config=FILE    set the config file name to FILE.\n\
     -C, --show-config    print current configuration.\n\
     -q, --quiet          do not display extra messages except search results.\n\
     -v, --version        show the version of namazu and exit.\n\

@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: query.c,v 1.9 2000-01-28 09:40:12 satoru Exp $
+ * $Id: query.c,v 1.10 2000-02-16 12:57:44 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -34,6 +34,7 @@
 #include "var.h"
 #include "field.h"
 #include "query.h"
+#include "codeconv.h"
 
 static struct nmz_query query = {0}; /* Initialize member `tokennum' with 0 */
 

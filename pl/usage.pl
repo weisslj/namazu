@@ -1,5 +1,5 @@
 # -*- Perl -*-
-# $Id: usage.pl,v 1.17 2000-02-06 09:38:02 satoru Exp $
+# $Id: usage.pl,v 1.18 2000-02-16 12:57:45 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -41,18 +41,18 @@ Usage: mknmz [options] <target>...\n\
 Target files:\n\
   -a, --all                target all files.\n\
   -e, --robots-txt         exclude files which is excluded by robots.txt.\n\
-  -t, --media-type=mtype   set a media type for all target files explicitly.\n\
+  -t, --media-type=MTYPE   set the media type for all target files to MTYPE.\n\
   -h, --mailnews           same as --media-type='message/rfc822'\n\
       --mhonarc            same as --media-type='text/html; x-type=mhonarc'\n\
   -A, --htaccess           exclude files restricted by .htaccess.\n\
-  -F, --target-list=file   load a file which contains list of target files.\n\
-      --allow=regex        set a regex for file names which will be allowed.\n\
-      --deny=regex         set a regex for file names which will be denied.\n\
-      --exclude=regex      set a regex for pathnames which will be excluded.\n\
+  -F, --target-list=FILE   load FILE which contains a list of target files.\n\
+      --allow=PATTERN      set PATTERN for file names which will be allowed.\n\
+      --deny=PATTERN       set PATTERN for file names which will be denied.\n\
+      --exclude=PATTERN    set PATTERN for pathnames which will be excluded.\n\
   -M, --meta               handle HTML meta tags for field-specified search.\n\
-  -r, --replace=code       set a code for replacing URI.\n\
+  -r, --replace=CODE       set CODE for replacing URI.\n\
   -o, --ole                use OLE document filters. (works on Windows only)\n\
-      --mtime=int          limit by date, ( minus number for recent, i.e.,\n\
+      --mtime=NUM          limit by date, (minus NUM for recent, i.e.,\n\
                            -50 for recent 50 days, 50 for older than 50.)\n\
 \n\
 Morphological Analysis:\n\
@@ -71,16 +71,16 @@ Summarization:\n\
   -x, --no-heading-summary do not make summary with HTML's headings.\n\
 \n\
 Index Construction:\n\
-      --update=index       set an index for updating.\n\
+      --update=INDEX       set INDEX for updating.\n\
   -Y, --no-delete          do not detect removed documents.\n\
   -Z, --no-update          do not detect update and deleted documents.\n\
 \n\
 Miscellaneous:\n\
   -s, --checkpoint         turn on the checkpoint mechanism.\n\
-  -f, --config=file        set a pathname of a config file.\n\
-  -I, --include=file       include your customization file.\n\
-  -O, --output-dir=dir     set a directory to output the index.\n\
-  -T, --template-dir=dir   set a directory having NMZ.{head,foot,body}.*.\n\
+  -f, --config=FILE        set the config file to FILE.\n\
+  -I, --include=FILE       include your customization FILE.\n\
+  -O, --output-dir=DIR     set DIR to output the index.\n\
+  -T, --template-dir=DIR   set DIR having NMZ.{head,foot,body}.*.\n\
   -q, --quiet              suppress status messages during execution.\n\
   -v, --version            show the version of namazu and exit.\n\
   -V, --verbose            be verbose.\n\

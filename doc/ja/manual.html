@@ -127,18 +127,18 @@ mknmz を実行したディレクトリに NMZ.* というファイルを作成し
     対象ファイル:
       -a, --all                すべてのファイルを対象とする
       -e, --robots-txt         ロボットよけされているファイルを除外する
-      -t, --media-type=mtype   対象ファイルの文書形式を指定する
+      -t, --media-type=MTYPE   対象ファイルの文書形式を指定する
       -h, --mailnews           --media-type='message/rfc822' と同じ
           --mhonarc            --media-type='text/html; x-type=mhonarc' と同じ
       -A, --htaccess           .htaccess で制限されたファイルを除外する
-      -F, --target-list=file   インデックス対象のファイルのリストを読み込む
-          --allow=regex        対象ファイル名の正規表現を指定する
-          --deny=regex         除外するファイル名の正規表現を指定する
-          --exclude=regex      除外するパス名の正規表現を指定する
+      -F, --target-list=FILE   インデックス対象のファイルのリストを読み込む
+          --allow=PATTERN      対象ファイル名の正規表現を指定する
+          --deny=PATTERN       除外するファイル名の正規表現を指定する
+          --exclude=PATTERN    除外するパス名の正規表現を指定する
       -M, --meta               HTMLの metaタグをフィールド指定検索に用いる
-      -r, --replace=code       URIを置換するためのコードを指定する
+      -r, --replace=CODE       URIを置換するためのコードを指定する
       -o, --ole                OLEの文書フィルタを用いる (Windows環境のみ)
-          --mtime=int          変更日制限 (int が 負で最近、正で古いものだけ、
+          --mtime=INT          変更日制限 (int が 負で最近、正で古いものだけ、
                                例: -50 で 50 日以内、50 で 50 日より古いものだけ)
     
     形態素解析:
@@ -158,16 +158,16 @@ mknmz を実行したディレクトリに NMZ.* というファイルを作成し
     
     
     インデックス作成:
-          --update=index        更新するインデックスを指定する
+          --update=INDEX        更新するインデックスを指定する
       -Y, --no-delete           削除された文書の検出を行わない
       -Z, --no-update           文書の更新・削除を反映しない
     
     その他:
       -s, --checkpoint        チェックポイント機構を作動させる
-      -f, --config=file       設定ファイルを指定する
-      -I, --include=file      カスタマイズ用ファイルを読み込む
-      -O, --output-dir=dir    インデックスの出力先を指定する
-      -T, --template-dir=dir  NMZ.{head,foot,body}.* のディレクトリを指定する
+      -f, --config=FILE       設定ファイルを指定する
+      -I, --include=FILE      カスタマイズ用ファイルを読み込む
+      -O, --output-dir=DIR    インデックスの出力先を指定する
+      -T, --template-dir=DIR  NMZ.{head,foot,body}.* のディレクトリを指定する
       -q, --quiet             インデックス処理の最中にメッセージを表示しない
       -v, --version           ヴァージョンを表示する
       -V, --verbose           口やかましいモード
@@ -316,17 +316,17 @@ ole から始まる文書フィルタは Windows専用です。OLEの文書フィ
 
 <!-- namazu-option -->
 <pre>
-    namazu 1.9.14, Namazu の検索プログラム
+    namazu 1.9.15, Namazu の検索プログラム
     
     使い方: namazu [options] &lt;query&gt; [index]...
-        -n, --max=num           一度に表示する件数
-        -w, --whence=num        表示する検索結果の先頭番号
+        -n, --max=NUM           一度に表示する件数
+        -w, --whence=NUM        表示する検索結果の先頭番号
         -l, --list              検索結果を URI・パス名をリストで出力する
         -s, --short             短い書式で出力する
-            --result=ext        結果表示に用いる NMZ.result.ext を指定する
+            --result=EXT        結果表示に用いる NMZ.result.EXT を指定する
             --late              検索結果を新しい順にソートする
             --early             検索結果を古い順にソートする
-            --sort=method       ソート方法を指定する (score, date, field:name)
+            --sort=METHOD       ソート方法を指定する (score, date, field:name)
             --ascending         ソートの方向を昇順にする (標準は降順)
         -a, --all               検索結果をすべて表示する
         -c, --count             ヒット数のみを表示する
@@ -336,8 +336,8 @@ ole から始まる文書フィルタは Windows専用です。OLEの文書フィ
         -F, --form              &lt;form&gt; ... &lt;/form&gt; の部分を強制的に表示する
         -R, --no-replace        URI の置き換えを行わない
         -U, --no-decode-uri     URI encode の復元を行わない
-        -o, --output=file       指定したファイルに検索結果を出力する
-        -f, --config=file       設定ファイルを指定する
+        -o, --output=FILE       指定したファイルに検索結果を出力する
+        -f, --config=FILE       設定ファイルを指定する
         -C, --show-config       設定を表示する
         -q, --quiet             検索結果以外のメッセージを表示しない
         -v, --version           ヴァージョンを表示する
@@ -869,7 +869,7 @@ Tknamazu および namazu.el から検索するときは必ず後者で指定します。
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: manual.html,v 1.21 2000-02-15 07:08:18 satoru Exp $
+$Id: manual.html,v 1.22 2000-02-16 12:57:41 satoru Exp $
 </div>
 <address>
 developers@namazu.org

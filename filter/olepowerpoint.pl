@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: olepowerpoint.pl,v 1.1 1999-11-14 22:59:48 kenzo- Exp $
+# $Id: olepowerpoint.pl,v 1.2 1999-11-21 19:59:01 kenzo- Exp $
 # Copyright (C) 1999 Jun Kurabe ,
 #               1999 Ken-ichi Hirose All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -53,7 +53,7 @@ sub mediatype() {
 }
 
 sub status() {
-    my $powerpoint = Win32::OLE->GetActiveObject('PowerPoint.Application');
+    my $powerpoint = Win32::OLE->new('PowerPoint.Application','Quit');
     return 'yes' if (defined $powerpoint);
     return 'no';
 }
@@ -72,9 +72,6 @@ sub filter ($$$$$) {
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
     util::vprint("Processing powerpoint file ...\n");
-
-    mailnews_filter($cont, $weighted_str, $fields);
-    mailnews_citation_filter($cont, $weighted_str);
 
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);
@@ -164,6 +161,7 @@ sub getSlides($) {
 
 		sub enum_a_shape($) {
 		    my $shape = shift;
+			my $allText = '';
 
 		    if ($shape->{HasTextFrame}) { # 
 			my $p = $shape->TextFrame->TextRange->{Text};
@@ -183,4 +181,4 @@ sub getSlides($) {
     return $allText;
 }
 
-1
+1;

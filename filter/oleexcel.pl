@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: oleexcel.pl,v 1.1 1999-11-14 22:59:48 kenzo- Exp $
+# $Id: oleexcel.pl,v 1.2 1999-11-21 19:59:01 kenzo- Exp $
 # Copyright (C) 1999 Jun Kurabe ,
 #               1999 Ken-ichi Hirose All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -52,7 +52,7 @@ sub mediatype() {
 }
 
 sub status() {
-    my $excel = Win32::OLE->GetActiveObject('Excel.Application');
+    my $excel = Win32::OLE->new('Excel.Application','Quit');
     return 'yes' if (defined $excel);
     return 'no';
 }
@@ -71,9 +71,6 @@ sub filter ($$$$$) {
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
     util::vprint("Processing excel file ...\n");
-
-    mailnews_filter($cont, $weighted_str, $fields);
-    mailnews_citation_filter($cont, $weighted_str);
 
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);
@@ -123,8 +120,6 @@ sub getProperties($) {
 
     return $allText;
 }
-
-package ReadExcel;
 
 sub ReadExcel($) {
     my $fileName = shift;
@@ -197,6 +192,7 @@ sub getShapes($) {
 
     sub enum_a_shape($) {
 	my $obj = shift;
+	my $allText = '';
 	if ( $obj->{Type} == 6 ) { #msoShapeGroup = 6
 	    oleexcel::enum($obj->GroupItems,\&enum_a_shape);
 	} elsif ($obj->{Type} == 17 ) { # msoShapeTextBox = 17
@@ -211,4 +207,4 @@ sub getShapes($) {
     return $allText;
 }
 
-1
+1;

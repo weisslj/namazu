@@ -1,3 +1,12 @@
+1999-11-22  Ken-ichi Hirose  <kenzo-@tama.or.jp>
+
+	* src/mknmz.pl.in: Add ole option and load_olemodule function.
+
+	* pl/util.pl: Fix checkcmd function problem for Win32 and OS2.
+
+	* File-MMagic/MMagic.pm: Fix new function problem. 
+    Added binmode($fh) for Win32 and OS2.
+
 1999-11-19  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* nmz/var.c: Abolish global values:

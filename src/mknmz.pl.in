@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.77 1999-11-18 13:42:07 satoru Exp $
+# $Id: mknmz.pl.in,v 1.78 1999-11-21 19:58:52 kenzo- Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -69,6 +69,7 @@ sub main () {
     setup_magic();
     load_modules();
     my $file_base = prep();
+    load_olemodules() if ($var::Opt{'ole'});
     read_config();
 
     my $swap = 1;
@@ -185,8 +186,17 @@ sub init () {
     $SYSTEM = $^O;
     if (($SYSTEM eq "MSWin32") || ($SYSTEM eq "os2")) {
 	$CCS = "sjis";
-	if ($LIBDIR !~ /^[A-Z]:/i && $0 =~ m#^([A-Z]:)(/|\\)#i) {
+	if ($CONFDIR !~ /^[A-Z]:|^\\\\/i && $0 =~ m#^([A-Z]:)(/|\\)#i) {
+	    $CONFDIR = $1 . $CONFDIR ;
+	}
+	if ($LIBDIR !~ /^[A-Z]:|^\\\\/i && $0 =~ m#^([A-Z]:)(/|\\)#i) {
 	    $LIBDIR = $1 . $LIBDIR ;
+	}
+	if ($FILTERDIR !~ /^[A-Z]:|^\\\\/i && $0 =~ m#^([A-Z]:)(/|\\)#i) {
+	    $FILTERDIR = $1 . $FILTERDIR ;
+	}
+	if ($TEMPLATEDIR !~ /^[A-Z]:|^\\\\/i && $0 =~ m#^([A-Z]:)(/|\\)#i) {
+	    $TEMPLATEDIR = $1 . $TEMPLATEDIR ;
 	}
     } else {
 	$CCS = "euc";
@@ -212,14 +222,14 @@ sub load_modules () {
     unshift @INC, "../pl";
     unshift @INC, "../filter";
 
-    require "var.pl";
-    require "conf.pl";
-    require "util.pl";
-    require "usage.pl";
-    require "codeconv.pl";
-    require "find.pl";
-    require "wakati.pl";
-    require "seed.pl";
+    require "var.pl" || die "unable to require \"var.pl\"\n";
+    require "conf.pl" || die "unable to require \"conf.pl\"\n";
+    require "util.pl" || die "unable to require \"util.pl\"\n";
+    require "usage.pl" || die "unable to require \"usage.pl\"\n";
+    require "codeconv.pl" || die "unable to require \"codeconv.pl\"\n";
+    require "find.pl" || die "unable to require \"find.pl\"\n";
+    require "wakati.pl" || die "unable to require \"wakati.pl\"\n";
+    require "seed.pl" || die "unable to require \"seed.pl\"\n";
     @Seed = seed::init();
 
     # Check filter modules
@@ -230,7 +240,32 @@ sub load_modules () {
 	$filter =~ m!(\w+)\.pl$!;
 	my $module = $1;
 	next if ($module eq 'gfilter'); # skip gfilter (not for filtering)
-	require "$module.pl";
+	next if ($module =~ /^ole/i);
+	require "$module.pl" || die "unable to require \"$module.pl\"\n";;
+	my (@mtypes, $status, $recursive, $codeconv);
+	eval "\@mtypes =    ${module}::mediatype();";
+	eval "\$status =    ${module}::status();";
+	eval "\$recursive = ${module}::recursive();";
+	eval "\$codeconv  = ${module}::codeconv();";
+	for my $mt (@mtypes) {
+	    $var::Supported{$mt} = $status;
+	    $var::REQUIRE_ACTIONS{$mt} = $module;
+	    $var::RECURSIVE_ACTIONS{$mt} = $recursive if ($recursive);
+	    $var::REQUIRE_CODECONV{$mt} = $codeconv if ($codeconv);
+	}
+    }
+}
+
+sub load_olemodules () {
+    # Check filter modules
+    my @filters = ();
+    @filters = glob "$FILTERDIR/ole*.pl" if @filters == 0;
+
+    for my $filter (@filters) {
+	$filter =~ m!(\w+)\.pl$!;
+	my $module = $1;
+	next if ($module eq 'gfilter'); # skip gfilter (not for filtering)
+	require "$module.pl" || die "unable to require \"$module.pl\"\n";;
 	my (@mtypes, $status, $recursive, $codeconv);
 	eval "\@mtypes =    ${module}::mediatype();";
 	eval "\$status =    ${module}::status();";
@@ -546,7 +581,8 @@ sub load_document ($$$$\%) {
 	}
 	if (defined $var::REQUIRE_ACTIONS{$mtype}) {
 	    util::vprint("Using $var::REQUIRE_ACTIONS{$mtype}.pl\n");
-	    require $var::REQUIRE_ACTIONS{$mtype}.'.pl';
+	    require $var::REQUIRE_ACTIONS{$mtype}.'.pl'
+	        || die "unable to require \"$var::REQUIRE_ACTIONS{$mtype}.pl\"\n";
 	    my $err = undef;
 	    eval '$err = ' . $var::REQUIRE_ACTIONS{$mtype} .
 	      '::filter($orig_cfile, $contref, $weighted_str, $headings, $fields);';
@@ -615,17 +651,17 @@ sub save_flist(@) {
 
 sub require_modules() {
     if (util::islang("ja") && $conf::NKF =~ /^module_nkf/) {
-	require NKF;
+	require NKF || die "unable to require \"NKF\"\n";
         util::dprint("code conversion: using NKF module\n");
 	$var::USE_NKF_MODULE = 1;
     }
     if (util::islang("ja") && $conf::WAKATI =~ /^module_kakasi/) {
-	require Text::Kakasi;
+	require Text::Kakasi || die "unable to require \"Text::Kakasi\"\n";
         util::dprint("wakati: using Text::Kakasi module\n");
 	my $res = Text::Kakasi::getopt_argv('kakasi', '-ieuc', '-oeuc', '-w');
     }
     if (util::islang("ja") && $conf::WAKATI =~ /^module_chasen1/) {
-	require Text::ChaSen1;
+	require Text::ChaSen1 || die "unable to require \"Text::ChaSen1\"\n";
         util::dprint("wakati: using Text::ChaSen1 module\n");
 	my @arg = ('-j', '-F', '%m ');
 	@arg    = ('-j', '-F', '%m %H\\n') if $var::Opt{'morph'};
@@ -768,6 +804,7 @@ sub parse_options ()
 	       'h|mailnews'          => \$opt_mailnews,
 	       'k|use-kakasi'        => \$opt_kakasi,
 	       'm|use-chasen-morph'  => \$opt_chasen_morph,
+	       'o|ole'               => \$var::Opt{'ole'},
 	       'q|quiet'             => \$var::Opt{'quiet'},
 	       'r|replace=s'         => \$ReplaceCode,
 	       's|checkpoint'        => \$CheckPoint{'on'},
@@ -788,6 +825,7 @@ sub parse_options ()
     }
 
     if ($opt_show_config) {
+    load_olemodules() if ($var::Opt{'ole'});
 	read_config();
 	show_config();
 	exit 1;

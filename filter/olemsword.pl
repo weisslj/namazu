@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: olemsword.pl,v 1.1 1999-11-14 22:59:48 kenzo- Exp $
+# $Id: olemsword.pl,v 1.2 1999-11-21 19:59:01 kenzo- Exp $
 # Copyright (C) 1999 Jun Kurabe ,
 #               1999 Ken-ichi Hirose All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -53,7 +53,7 @@ sub mediatype() {
 }
 
 sub status() {
-    my $msword = Win32::OLE->GetActiveObject('Word.Application');
+    my $msword = Win32::OLE->new('Word.Application','Quit');
     return 'yes' if (defined $msword);
     return 'no';
 }
@@ -73,12 +73,15 @@ sub filter ($$$$$) {
 
     util::vprint("Processing msword file ...\n");
 
-    mailnews_filter($cont, $weighted_str, $fields);
-    mailnews_citation_filter($cont, $weighted_str);
+    $$cont = olemsword::ReadMSWord($cfile);
+
+	olemsword::getProperties($cfile);
 
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($cont);
+    $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
+      unless $fields->{'title'};
     gfilter::show_filter_debug_info($cont, $weighted_str,
 			   $fields, $headings);
     return undef;
@@ -180,6 +183,7 @@ sub getShapes($) {
     my $allText = '';
     sub enum_a_shape($) {
 		my $obj = shift;
+		my $allText = '';
 		if ($obj->TextFrame->{HasText}) { # 
 		    my $p = $obj->TextFrame->TextRange->{Text};
 		    chop $p;
@@ -235,4 +239,4 @@ sub getHeadersFooters($) {
     return $allText;
 }
 
-1
+1;

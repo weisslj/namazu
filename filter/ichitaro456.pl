@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: ichitaro456.pl,v 1.1 1999-11-14 22:59:48 kenzo- Exp $
+# $Id: ichitaro456.pl,v 1.2 1999-11-21 19:59:01 kenzo- Exp $
 # Copyright (C) 1999 Ken-ichi Hirose All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -25,7 +25,7 @@
 #
 
 package ichitaro456;
-#use strict;
+use strict;
 require 'util.pl';
 require 'gfilter.pl';
 

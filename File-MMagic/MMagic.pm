@@ -1,6 +1,6 @@
 # File::MMagic
 #
-# $Id: MMagic.pm,v 1.9 1999-11-17 07:42:58 baba Exp $
+# $Id: MMagic.pm,v 1.10 1999-11-21 19:58:54 kenzo- Exp $
 #
 # This program is originated from file.kulp that is a production of The
 # Unix Reconstruction Projct.
@@ -118,7 +118,7 @@ File::MMagic - Guess file type
   $fh = new FileHandle "< /somewhere/unknown/file2";
   $res = $mm->checktype_filehandle($fh);
 
-  $fh->read($data, 8192);
+  $fh->read($data, 0x8564);
   $res = $mm->checktype_contents($data);
 
 =head1 ABSTRACT
@@ -286,6 +286,7 @@ sub new {
     $self->{magic} = [];
     if (! @_) {
 	my $fh = *File::MMagic::DATA{IO};
+	binmode($fh);
 	bless $fh, 'FileHandle' if ref $fh ne 'FileHandle';
 	$dataLoc = $fh->tell() if (! defined $dataLoc);
 	$fh->seek($dataLoc, 0);
@@ -294,6 +295,7 @@ sub new {
 	my $filename = shift;
 	my $fh = new FileHandle;
 	if ($fh->open("< $filename")) {
+		binmode($fh);
 	    &readMagicHandle($self, $fh);
 	} else {
 	    warn __PACKAGE__ . " couldn't load specified file $filename";
@@ -489,7 +491,7 @@ sub checktype_filehandle {
     if (!$matchFound) {
 	my $data;
 	$fh->seek(0,0);
-	$fh->read($data, 8192);
+	$fh->read($data, 0x8564);
 	$mtype = checktype_data($self, $data);
     }
 
@@ -556,7 +558,7 @@ sub checktype_data {
     return undef if (length($data) <= 0);
 
     # truncate data
-    $data = substr($data, 0, 8192);
+    $data = substr($data, 0, 0x8564);
 
     if (check_binary($data)) {
 	$mtype = "application/octet-stream";
@@ -1517,7 +1519,7 @@ __DATA__
 #
 
 0	string		\376\067\0\043			application/msword
-0	string		\320\317\021\340\241\261	application/msword
+#0	string		\320\317\021\340\241\261	application/msword
 0	string		\333\245-\0\0\0			application/msword
 
 
@@ -1594,3 +1596,27 @@ __DATA__
 #						DL file version 1 , medium format (160x100, 4 images/screen)
 0	byte		1			video/unknown
 0	byte		2			video/unknown
+
+#------------------------------------------------------------------------------
+# ichitaro456: file(1) magic for Just System Word Processor Ichitaro
+#
+# Contributor kenzo-:
+# Reversed-engineered JS Ichitaro magic numbers
+#
+
+0	string		\104\117\0\103
+>43	 byte		0x14		application/ichitaro4
+>43	 byte		0x15		application/ichitaro5
+>43	 byte		0x16		application/ichitaro6
+
+#------------------------------------------------------------------------------
+# office97: file(1) magic for MicroSoft Office files
+#
+# Contributor kenzo-:
+# Reversed-engineered MS Office magic numbers
+#
+
+0	string		\320\317\021\340\241\261\032\341
+>48	byte		0x1B		application/excel
+>64 byte		0x00		application/powerpoint
+>64 byte		0x01		application/msword

@@ -1,4 +1,4 @@
-Summary: Nmazu is a search engine intented for easy use
+Summary: Namazu is a search engine intented for easy use
 Name: namazu
 Version: @VERSION@
 Release: 1
@@ -37,7 +37,7 @@ CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=/usr
 make
 
 %install
-make $RPM_BUILD_ROOT install
+make $RPM_BUILD_ROOT/usr install
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -45,7 +45,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-, root, root)
 
-%doc AUTHORS ChengeLog COMMITTERS COPYING NEWS README README-ja
+%doc AUTHORS ChangeLog COMMITTERS COPYING NEWS README README-ja
 /usr/bin/*
 /usr/share/namazu/*
 

@@ -50,7 +50,7 @@ cxref-latex2e: src/namazu
 update:
 	./make_sjis_po
 	cd doc && make update-doc
-	cd man && make update-man
+#	cd man && make update-man
 
 
 global: HTAGS
@@ -58,5 +58,10 @@ global: HTAGS
 HTAGS: GTAGS
 	htags
 
-GTAGS: src/namazu
-	gtags
+# comment out by default because GTAGS support is already included
+# in automake 1.5.
+#
+# GTAGS:
+# 	here=`CDPATH=: && cd $(top_builddir) && pwd` \
+# 	  && cd $(top_srcdir) \
+# 	  && gtags -i $(GTAGS_ARGS) $$here

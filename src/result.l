@@ -1,7 +1,7 @@
 /*
  * result.l -
  * -*- C -*-
- * $Id: result.l,v 1.11 1999-08-25 07:09:24 satoru Exp $
+ * $Id: result.l,v 1.12 1999-08-31 08:38:00 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -32,6 +32,7 @@
 #include "output.h"
 #include "re.h"
 #include "result.h"
+#include "em.h"
 
 	void get_field_data(char *);
 	static int Fid;
@@ -59,10 +60,10 @@ void make_fullpathname_field(int n)
 {
     uchar *base;
 
-    base = DbNames[n];
+    base = Idx.names[n];
 
-    pathcat(base, FIELDINFO);
-    pathcat(base, RESULTFILE);
+    pathcat(base, NMZ.field);
+    pathcat(base, NMZ.result);
 }
 
 void encode_entity(uchar *str)
@@ -92,12 +93,12 @@ void emphasize(uchar *str)
 {
     int i;
 
-    for (i = 0; KeyItem[i] != NULL; i++) {
+    for (i = 0; Query.tab[i] != NULL; i++) {
 	uchar *ptr = str;
 	uchar key[BUFSIZE];
 	int keylen = 0;
 
-	strcpy(key, KeyItem[i]);
+	strcpy(key, Query.tab[i]);
 
 	if (strchr(key, '\t')) { /* for phrase search */
 	    tr(key, "\t", " ");
@@ -112,8 +113,8 @@ void emphasize(uchar *str)
 	    if (ptr != NULL) {
 		memmove(ptr + 2, ptr, strlen(ptr) + 1);
 		memmove(ptr + 1, ptr + 2, keylen);
-		*ptr = EMPHASIZING_START_MARK;
-		*(ptr + keylen + 1) = EMPHASIZING_END_MARK;
+		*ptr = EM_START_MARK;
+		*(ptr + keylen + 1) = EM_END_MARK;
 		ptr += 2;
 	    }
 	} while (ptr != NULL);
@@ -145,7 +146,7 @@ void get_field_data(char *key)
 
 
     /* make a pathname */
-    strcpy(file_name, FIELDINFO);
+    strcpy(file_name, NMZ.field);
     strcat(file_name, field);
     
     fp_field = fopen(file_name, "rb");
@@ -208,7 +209,7 @@ void print_hlist(HLIST hlist)
 	if (MoreShortFormat) {
 	    get_field_data("${uri}");
 	} else {
-	    if ((yyin = fopen(RESULTFILE, "r")) == NULL) {
+	    if ((yyin = fopen(NMZ.result, "r")) == NULL) {
 		die("print_hlist");
 		exit(-1);
 	    }

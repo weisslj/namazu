@@ -1,3 +1,9 @@
+2000-03-22  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* scripts/mknmz.in (fncmp): Abolished.
+	(find_target): Employ schwartzian transform to speed up 
+	sorting. [n-u-j:00124] 
+
 2000-03-20  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* filter/mailnews.pl (filter): Apply Katsuhiro Ueno's patch
@@ -5307,4 +5313,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.648 2000-03-20 14:24:14 satoru Exp $
+$Id: ChangeLog,v 1.649 2000-03-21 20:15:43 satoru Exp $

@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.57 2000-03-20 12:11:23 masao Exp $
+# $Id: mknmz.in,v 1.58 2000-03-21 20:15:43 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -1262,7 +1262,10 @@ sub find_target (@) {
     @flist = grep {$mark{$_}++; $mark{$_} == 1} @flist;
 
     # Sort file names with consideration for numbers.
-    @flist = sort fncmp @flist;
+    @flist = map  { $_->[0] }
+	     sort { $a->[1] cmp $b->[1] } 
+	     map  { my $orig = $_; s/(\d+)/sprintf("%08d", $1)/ge; 
+		    [ $orig, $_ ] } @flist;
 
     my $elapsed = time() - $start ;
     $elapsed += 1 ;   # to round up and avoid 0 
@@ -1374,15 +1377,6 @@ sub report_find_target ($$%) {
     util::vprint(sprintf(_("  MTIME too old: %d, MTIME too new: %d"),
 			 $counts{'too_old'}, 
 			 $counts{'too_new'}));
-}
-
-# Original of this code was contributed by <furukawa@tcp-ip.or.jp>. 
-sub fncmp {
-    my ($x, $y) = ($a, $b);
-
-    $x =~ s/(\d+)/sprintf("%08d", $1)/ge;
-    $y =~ s/(\d+)/sprintf("%08d", $1)/ge;
-    $x cmp $y;
 }
 
 sub show_usage () {

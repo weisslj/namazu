@@ -9,6 +9,7 @@
 #include <ctype.h>
 #include <stdarg.h>
 #include "namazu.h"
+#include "util.h"
 
 /************************************************************
  *
@@ -101,11 +102,13 @@ xrealloc(ptr, size)
 
 
 
-void tr(uchar *str, uchar f, uchar t)
+void tr(uchar *str, uchar *lstr, uchar *rstr)
 {
     while (*str) {
-        if (*str == f)
-            *str = t;
+	uchar *idx = strchr(lstr, *str);
+	if (idx != NULL) { /* found */
+	    *str = *(idx - lstr + rstr);
+	}
         str++;
     }
 }
@@ -116,10 +119,11 @@ void chomp(uchar * s)
     int i;
     for (i = strlen(s) - 1; i >= 0; i--) {
 	if (*(s + i) == '\n' || *(s + i) == '\r'
-            || *(s + i) == ' ' || *(s + i) == '\t')
+            || *(s + i) == ' ' || *(s + i) == '\t') {
 	    *(s + i) = '\0';
-	else
+	} else {
 	    break;
+	}
     }
 }
 
@@ -138,8 +142,9 @@ void *memmove(void *d, void *s, size_t n)
     } else {
         for (i = n - 1; ; i--) {
             *((char *)d + i) = *((char *)s + i);
-            if (i == 0)
+            if (i == 0) {
                 break;
+	    }
         }
     }
     return d;
@@ -363,7 +368,7 @@ void die(char *fmt, ...)
     exit(2);
 }
 
-size_t strlen2(uchar *str, uchar c)
+size_t strlen2(uchar *str, int c)
 {
     int i;
 

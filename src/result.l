@@ -1,7 +1,7 @@
 /*
  * result.l -
  * -*- C -*-
- * $Id: result.l,v 1.10 1999-08-25 03:44:02 satoru Exp $
+ * $Id: result.l,v 1.11 1999-08-25 07:09:24 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -29,8 +29,9 @@
 #include "namazu.h"
 #include "util.h"
 #include "field.h"
-#include "result.h"
+#include "output.h"
 #include "re.h"
+#include "result.h"
 
 	void get_field_data(char *);
 	static int Fid;
@@ -99,7 +100,7 @@ void emphasize(uchar *str)
 	strcpy(key, KeyItem[i]);
 
 	if (strchr(key, '\t')) { /* for phrase search */
-	    tr(key, '\t', ' ');
+	    tr(key, "\t", " ");
 	    strcpy(key, key + 1); 
 	    *(lastc(key)) = '\0';
 	}

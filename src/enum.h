@@ -26,8 +26,8 @@ enum {
     SORT_BY_SCORE = 1,  /* at displaying results time */
     SORT_BY_DATE  = 2,  /* at displaying results time */
 
-    EMPHASIZING_START_MARK = '\1',
-    EMPHASIZING_END_MARK   = '\2',
+    EMPHASIZING_START_MARK = 0x01,
+    EMPHASIZING_END_MARK   = 0x02,
 
     STDIN  = 0,		/* stdin's fd */
     STDOUT = 1,		/* stdout's fd */

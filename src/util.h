@@ -3,7 +3,7 @@
   util.h -
 
   $Author: satoru $
-  $Date: 1999-08-25 03:44:02 $
+  $Date: 1999-08-25 07:09:24 $
   created at: Thu Mar  9 11:55:53 JST 1995
 
   Copyright (C) 1993-1998 Yukihiro Matsumoto
@@ -35,13 +35,13 @@ unsigned long scan_oct();
 #define ischoon(c) ((int)*(c) == 0xa1 && (int)*(c + 1) == 0xbc)
 #define iseuc(c)  ((c) >= 0xa1 && (c) <= 0xfe)
 
-void *xrealloc();
-void *xmalloc();
-void tr();
-void chomp();
+void *xmalloc(unsigned long);
+void *xrealloc(void*, unsigned long);
+void tr(uchar*, uchar*, uchar*);
+void chomp(uchar*);
 
 #if !defined(HAVE_MEMMOVE)
-void *memmove();
+void *memmove(void*, void*, size_t);
 #endif
 
 void decode_uri(uchar *);
@@ -57,7 +57,7 @@ LIST *add_list();
 long getidxptr(FILE* , long);
 int issymbol(int);
 void die(char*, ...);
-size_t strlen2(uchar, uchar);
+size_t strlen2(uchar *, int);
 void pathcat(uchar*, uchar*);
 
 #endif /* _UTIL_H */

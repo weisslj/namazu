@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.9 1999-08-25 03:44:02 satoru Exp $
+ * $Id: search.c,v 1.10 1999-08-25 07:09:24 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -45,6 +45,7 @@
 #include "hlist.h"
 #include "re.h"
 #include "wakati.h"
+#include "output.h"
 #include "search.h"
 
 /************************************************************

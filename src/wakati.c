@@ -2,7 +2,7 @@
  * 
  * wakati.c -
  * 
- * $Id: wakati.c,v 1.5 1999-08-25 03:44:03 satoru Exp $
+ * $Id: wakati.c,v 1.6 1999-08-25 07:09:24 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -34,6 +34,8 @@
 #include "field.h"
 #include "codeconv.h"
 #include "search.h"
+#include "output.h"
+#include "wakati.h"
 
 #define KANJI 1
 #define KATAKANA 2
@@ -89,7 +91,7 @@ void set_phrase_trick(uchar *qs)
     }
 }
 
-/* replace internal spaces with \xff */
+/* replace internal spaces with  */
 /* very complicated ad hoc routine :-( */
 void set_regex_trick(uchar *qs)
 {
@@ -119,7 +121,7 @@ void set_regex_trick(uchar *qs)
 
             for (;b <= e; b++) {
                 if (*b == ' ')
-                    *b = '\xff';
+                    *b = '';
             }
         } 
     }
@@ -259,9 +261,9 @@ void split_query(uchar *qs)
     /* set NULL to the last key item */
     KeyItem[qn] = (uchar *) NULL;
 
-    /* replace \xff with spaces */
+    /* replace  with spaces */
     for (i = 0; i < qn; i++) {
-	tr(KeyItem[i], '\xff', ' ');
+	tr(KeyItem[i], "", " ");
     }
 }
 

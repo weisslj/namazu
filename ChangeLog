@@ -4,6 +4,8 @@
 
         * pl/filter/win32/ole*.pl: updated. (namazu-devel-ja#04369)
 
+        * tests/data/ja/visio2002.vsd: Add new file.
+
 2004-05-22  Yukio USUDA <usu@namazu.org>
 
 	* scripts/mknmz.in(load_filters): Changed selecting same mediatype
@@ -8926,4 +8928,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1193 2004-05-23 10:51:38 opengl2772 Exp $
+$Id: ChangeLog,v 1.1194 2004-05-23 12:28:02 opengl2772 Exp $

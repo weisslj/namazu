@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.98 2001-09-21 08:12:03 knok Exp $
+# $Id: mknmz.in,v 1.99 2001-10-18 11:06:07 makoto Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -2363,7 +2363,7 @@ sub write_index_sub () {
 		if ($current_word eq $words[$cnt]) {
 		    my $last_docid = get_last_docid($baserecord, 2);
 		    my $adjrecord = adjust_first_docid($record, $last_docid);
-		    check_records(\$record, \$baserecord, 1) unless defined $record; # namazu-bugs-ja#31
+		    check_records(\$record, \$baserecord, 2) unless defined $record; # namazu-bugs-ja#31
 		    $record = $adjrecord;
 		    $leng = length($record);  # re-measure
 		    my $tmp = pack("w", $leng + $baseleng);
@@ -2451,13 +2451,13 @@ sub decide_type ($$) {
 }
 
 #
-# Debugging code for the "negative numbers" probrem.
+# Debugging code for the "negative numbers" problem.
 #
 sub check_records ($$$) {
     my ($recref, $baserecref, $step) = @_;
     dump_record($baserecref, $step);
     dump_record($recref, $step);
-    print STDERR "The \x22negative number\x22 probrem occurred.\n";
+    print STDERR "The \x22negative number\x22 problem occurred.\n";
     exit(1);
 }
 

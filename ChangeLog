@@ -1,3 +1,8 @@
+2001-10-18  Makoto Fujiwara  <makoto@ki.nu>
+
+	* scripts/mknmz.in:  Fix typo and duplicated step number
+	for check_records/dump_record.
+
 2001-09-27  Rei FURUKAWA  <furukawa@tcp-ip.or.jp>
 
 	* tests/namazu-9: Add a test for AND query bug.
@@ -7091,4 +7096,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.879 2001-09-26 15:47:48 furukawa Exp $
+$Id: ChangeLog,v 1.880 2001-10-18 11:09:39 makoto Exp $

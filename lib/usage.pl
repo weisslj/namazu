@@ -1,5 +1,5 @@
 # -*- CPerl -*-
-# $Id: usage.pl,v 1.2 1999-08-28 01:29:38 satoru Exp $
+# $Id: usage.pl,v 1.3 1999-08-28 02:43:15 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -22,79 +22,80 @@
 #
 
 package usage;
+require "var.pl";
 
 ##
 ## Mini usage
 ##
 $USAGE_MINI = <<EOFusage;
 Usage: mknmz [options] [prefix] <target(s)>
-Try `mknmz --help' for more options.\n"
+Try `mknmz --help' for more options.
 EOFusage
 
 ##
 ## Japanese usage (long)
 ##
 $USAGE_JA = <<EOFusage;
-mknmz v$VERSION -  $BA4J88!:w%7%9%F%`(B Namazu $B$N%$%s%G%C%/%9:n@.%W%m%0%i%`(B
-$COPYRIGHT
+mknmz v$var::VERSION -  Á´Ê¸¸¡º÷¥·¥¹¥Æ¥à Namazu ¤Î¥¤¥ó¥Ç¥Ã¥¯¥¹ºîÀ®¥×¥í¥°¥é¥à
+$var::COPYRIGHT
 
-$B;H$$J}(B: mknmz [options] [prefix] <target(s)>
+»È¤¤Êý: mknmz [options] [prefix] <target(s)>
 
-  $BBP>]%U%!%$%k(B:
-    -a, --all                $B$9$Y$F$N%U%!%$%k$rBP>]$H$9$k(B
-    -e, --robots-txt         $B%m%\%C%H$h$1$5$l$F$$$k%U%!%$%k$r=|30$9$k(B
-    -A, --htaccess           .htaccess $B$G@)8B$5$l$?%U%!%$%k$r=|30$9$k(B
-    -F, --target-list=file   $B%$%s%G%C%/%9BP>]$N%U%!%$%k$N%j%9%H$rFI$_9~$`(B
-    -t, --allow-regex=regex  $BBP>]%U%!%$%k$N@55,I=8=$r;XDj$9$k(B
+  ÂÐ¾Ý¥Õ¥¡¥¤¥ë:
+    -a, --all                ¤¹¤Ù¤Æ¤Î¥Õ¥¡¥¤¥ë¤òÂÐ¾Ý¤È¤¹¤ë
+    -e, --robots-txt         ¥í¥Ü¥Ã¥È¤è¤±¤µ¤ì¤Æ¤¤¤ë¥Õ¥¡¥¤¥ë¤ò½ü³°¤¹¤ë
+    -A, --htaccess           .htaccess ¤ÇÀ©¸Â¤µ¤ì¤¿¥Õ¥¡¥¤¥ë¤ò½ü³°¤¹¤ë
+    -F, --target-list=file   ¥¤¥ó¥Ç¥Ã¥¯¥¹ÂÐ¾Ý¤Î¥Õ¥¡¥¤¥ë¤Î¥ê¥¹¥È¤òÆÉ¤ß¹þ¤à
+    -t, --allow-regex=regex  ÂÐ¾Ý¥Õ¥¡¥¤¥ë¤ÎÀµµ¬É½¸½¤ò»ØÄê¤¹¤ë
 
-  $B7ABVAG2r@O(B:
-    -c, --use-chasen        $BF|K\8l$NC18l$N$o$+$A=q$-$K(B ChaSen $B$rMQ$$$k(B
-    -k, --use-kakasi        $BF|K\8l$NC18l$N$o$+$A=q$-$K(B KAKASI $B$rMQ$$$k(B
-    -m, --use-chasen-morph  $BL>;l$N$_$rCj=P$9$k(B
+  ·ÁÂÖÁÇ²òÀÏ:
+    -c, --use-chasen        ÆüËÜ¸ì¤ÎÃ±¸ì¤Î¤ï¤«¤Á½ñ¤­¤Ë ChaSen ¤òÍÑ¤¤¤ë
+    -k, --use-kakasi        ÆüËÜ¸ì¤ÎÃ±¸ì¤Î¤ï¤«¤Á½ñ¤­¤Ë KAKASI ¤òÍÑ¤¤¤ë
+    -m, --use-chasen-morph  Ì¾»ì¤Î¤ß¤òÃê½Ð¤¹¤ë
 
-  $B%U%#%k%?@)8f(B:
-    -r, --man          man $B$N%U%!%$%k$r=hM}$9$k(B
-    -u, --uuencode     uuencode $B$H(B BinHex $B$NItJ,$rL5;k$9$k(B
-    -h, --rfc822       Mail/News $B$N%X%C%@ItJ,$r$=$l$J$j$K=hM}$9$k(B
-    -M, --no-mhonarc   MHonArc $B$G:n@.$5$l$?(B HTML $B$N=hM}$r9T$o$J$$(B
+  ¥Õ¥£¥ë¥¿À©¸æ:
+    -r, --man          man ¤Î¥Õ¥¡¥¤¥ë¤ò½èÍý¤¹¤ë
+    -u, --uuencode     uuencode ¤È BinHex ¤ÎÉôÊ¬¤òÌµ»ë¤¹¤ë
+    -h, --rfc822       Mail/News ¤Î¥Ø¥Ã¥ÀÉôÊ¬¤ò¤½¤ì¤Ê¤ê¤Ë½èÍý¤¹¤ë
+    -M, --no-mhonarc   MHonArc ¤ÇºîÀ®¤µ¤ì¤¿ HTML ¤Î½èÍý¤ò¹Ô¤ï¤Ê¤¤
 
-  $BJ8;zNs=hM}(B:
-    -E, --no-edge-symbol  $BC18l$NN>C<$N5-9f$O:o=|$9$k(B
-    -G, --no-okurigana    $BAw$j2>L>$r:o=|$9$k(B
-    -H, --no-hiragana     $BJ?2>L>$N$_$NC18l$OEPO?$7$J$$(B
-    -K, --no-symbol       $B5-9f$r$9$Y$F:o=|$9$k(B
-    -L, --no-line-adjust  $B9TF,!&9TKv$ND4@0=hM}$r9T$o$J$$(B
+  Ê¸»úÎó½èÍý:
+    -E, --no-edge-symbol  Ã±¸ì¤ÎÎ¾Ã¼¤Îµ­¹æ¤Ïºï½ü¤¹¤ë
+    -G, --no-okurigana    Á÷¤ê²¾Ì¾¤òºï½ü¤¹¤ë
+    -H, --no-hiragana     Ê¿²¾Ì¾¤Î¤ß¤ÎÃ±¸ì¤ÏÅÐÏ¿¤·¤Ê¤¤
+    -K, --no-symbol       µ­¹æ¤ò¤¹¤Ù¤Æºï½ü¤¹¤ë
+    -L, --no-line-adjust  ¹ÔÆ¬¡¦¹ÔËö¤ÎÄ´À°½èÍý¤ò¹Ô¤ï¤Ê¤¤
 
-  $BMWLs(B:
-    -U, --no-encode-uri       URI$B$N(Bencode$B$r9T$o$J$$(B
-    -x, --no-heading-summary  HTML $B$N%X%G%#%s%0$K$h$kMWLs:n@.$r9T$o$J$$(B
+  Í×Ìó:
+    -U, --no-encode-uri       URI¤Îencode¤ò¹Ô¤ï¤Ê¤¤
+    -x, --no-heading-summary  HTML ¤Î¥Ø¥Ç¥£¥ó¥°¤Ë¤è¤ëÍ×ÌóºîÀ®¤ò¹Ô¤ï¤Ê¤¤
 
 
-  $B%$%s%G%C%/%9:n@.(B:
-    -P, --no-heading-summary  $B%U%l!<%:8!:wMQ$N%$%s%G%C%/%9$r:n@.$7$J$$(B
-    -R, --no-regex-index      $B@55,I=8=8!:wMQ$N%$%s%G%C%/%9$r:n@.$7$J$$(B
-    -W, --no-date-index       $BF|IU$K$h$k%=!<%HMQ$N%$%s%G%C%/%9:n@.$7$J$$(B
-    -X, --no-field-index      $B%U%#!<%k%I8!:wMQ$N%$%s%G%C%/%9$r:n@.$7$J$$(B
-    -Y, --no-delete           $B:o=|$5$l$?J8=q$N8!=P$r9T$o$J$$(B
-    -Z, --no-update           $BJ8=q$N99?7(B/$B:o=|$rH?1G$7$J$$(B
+  ¥¤¥ó¥Ç¥Ã¥¯¥¹ºîÀ®:
+    -P, --no-heading-summary  ¥Õ¥ì¡¼¥º¸¡º÷ÍÑ¤Î¥¤¥ó¥Ç¥Ã¥¯¥¹¤òºîÀ®¤·¤Ê¤¤
+    -R, --no-regex-index      Àµµ¬É½¸½¸¡º÷ÍÑ¤Î¥¤¥ó¥Ç¥Ã¥¯¥¹¤òºîÀ®¤·¤Ê¤¤
+    -W, --no-date-index       ÆüÉÕ¤Ë¤è¤ë¥½¡¼¥ÈÍÑ¤Î¥¤¥ó¥Ç¥Ã¥¯¥¹ºîÀ®¤·¤Ê¤¤
+    -X, --no-field-index      ¥Õ¥£¡¼¥ë¥É¸¡º÷ÍÑ¤Î¥¤¥ó¥Ç¥Ã¥¯¥¹¤òºîÀ®¤·¤Ê¤¤
+    -Y, --no-delete           ºï½ü¤µ¤ì¤¿Ê¸½ñ¤Î¸¡½Ð¤ò¹Ô¤ï¤Ê¤¤
+    -Z, --no-update           Ê¸½ñ¤Î¹¹¿·/ºï½ü¤òÈ¿±Ç¤·¤Ê¤¤
 
-  $B$=$NB>(B:
-    -s, --checkpoint        $B%A%'%C%/%]%$%s%H5!9=$r:nF0$5$;$k(B
-    -q, --quiet             $B%$%s%G%C%/%9=hM}$N:GCf$K%a%C%;!<%8$rI=<($7$J$$(B
-    -I, --include=file      $B%+%9%?%^%$%:MQ%U%!%$%k$rFI$_9~$`(B
-    -O, --output-dir=dir    $B%$%s%G%C%/%9$N=PNO@h$r;XDj$9$k(B
-    -T, --template-dir=dir  NMZ.{head,foot,body}.* $B$N%G%#%l%/%H%j$r;XDj$9$k(B
-    -l, --lang=lang         $B8@8l$r@_Dj$9$k(B ('en' or 'ja')
-    -v, --version           $B%t%!!<%8%g%s$rI=<($9$k(B
-    -0, --help              $B$3$N%X%k%W$rI=<($9$k(B
+  ¤½¤ÎÂ¾:
+    -s, --checkpoint        ¥Á¥§¥Ã¥¯¥Ý¥¤¥ó¥Èµ¡¹½¤òºîÆ°¤µ¤»¤ë
+    -q, --quiet             ¥¤¥ó¥Ç¥Ã¥¯¥¹½èÍý¤ÎºÇÃæ¤Ë¥á¥Ã¥»¡¼¥¸¤òÉ½¼¨¤·¤Ê¤¤
+    -I, --include=file      ¥«¥¹¥¿¥Þ¥¤¥ºÍÑ¥Õ¥¡¥¤¥ë¤òÆÉ¤ß¹þ¤à
+    -O, --output-dir=dir    ¥¤¥ó¥Ç¥Ã¥¯¥¹¤Î½ÐÎÏÀè¤ò»ØÄê¤¹¤ë
+    -T, --template-dir=dir  NMZ.{head,foot,body}.* ¤Î¥Ç¥£¥ì¥¯¥È¥ê¤ò»ØÄê¤¹¤ë
+    -l, --lang=lang         ¸À¸ì¤òÀßÄê¤¹¤ë ('en' or 'ja')
+    -v, --version           ¥ô¥¡¡¼¥¸¥ç¥ó¤òÉ½¼¨¤¹¤ë
+    -0, --help              ¤³¤Î¥Ø¥ë¥×¤òÉ½¼¨¤¹¤ë
 EOFusage
 
 ##
 ## English usage (long)
 ##
 $USAGE_EN = <<EOFusage;
-  mknmz.pl v$VERSION -  indexer of Namazu
-  $COPYRIGHT
+  mknmz.pl v$var::VERSION -  indexer of Namazu
+  $var::COPYRIGHT
 
    Usage: mknmz [options] [prefix] <target(s)>
       -a: target all files

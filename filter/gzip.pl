@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: gzip.pl,v 1.1 1999-08-28 00:46:50 satoru Exp $
+# $Id: gzip.pl,v 1.2 1999-08-28 02:43:11 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -59,10 +59,12 @@ sub filter ($$$$$$$) {
 
 sub filter_file ($) {
     my ($contref) = @_;
-    my $fh = util::efopen("|@GZIP_PATH@ -cd > $TMPFILE");
 
-    print "Proccessing gzip file ... (use '@GZIP_PATH@')\n"
-      if ($conf::VerboseOpt);
+    my $gzippath = util::checkcmd('gzip');
+    my $fh = util::efopen("|$gzippath -cd > $TMPFILE");
+
+    print "Proccessing gzip file ... (use '$gzippath')\n"
+      if ($var::Opt{Verbose});
 
     print $fh $$contref;
     undef $fh;
@@ -77,7 +79,7 @@ sub filter_xs ($) {
     my ($contref) = @_;
 
     print "Proccessing gzip file ... (use Compress::Zlib)\n"
-      if ($conf::VerboseOpt);
+      if ($var::Opt{Verbose});
 
     eval 'use Compress::Zlib;';
 

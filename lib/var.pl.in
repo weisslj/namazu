@@ -1,5 +1,5 @@
 # -*- CPerl -*-
-# $Id: var.pl.in,v 1.1 1999-08-28 01:02:44 satoru Exp $
+# $Id: var.pl.in,v 1.2 1999-08-28 02:43:16 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -96,29 +96,29 @@ $USE_NKF_MODULE   = 0;
 ## Options
 ##
 
-$NoPhraseIndexOpt = 0;
-$DebugOpt         = 0;
-$QuietOpt         = 0;
-$VerboseOpt       = 0;
-$RobotExcludeOpt  = 0;
-$NoFieldInfoOpt   = 0;
-$NoDateIndexOpt   = 0;
-$ManOpt           = 0;
-$NoMHonArcOpt     = 0;
-$UuencodeOpt      = 0;
-$MailNewsOpt      = 0;
-$NoLineAdOpt      = 0;
-$NoHeadAbstOpt    = 0;
-$HiraganaOpt      = 0;
-$OkuriganaOpt     = 0;
-$NoEdgeSymbolOpt  = 0;
-$NoSymbolOpt      = 0;
-$NoEncodeURI      = 0;
-$NoRegexIndexOpt = 0;
-$NoInsertHeaderOpt = 0;
-$NoDeleteProcessing = 0;
-$NoUpdateProcessing = 0;
-$HtaccessExcludeOpt = 0;
+$Opt{NoPhraseIndex} = 0;
+$Opt{Debug}         = 0;
+$Opt{Quiet}         = 0;
+$Opt{Verbose}       = 0;
+$Opt{RobotExclude}  = 0;
+$Opt{NoFieldInfo}   = 0;
+$Opt{NoDateIndex}   = 0;
+$Opt{Man}           = 0;
+$Opt{NoMHonArc}     = 0;
+$Opt{Uuencode}      = 0;
+$Opt{MailNews}      = 0;
+$Opt{NoLineAd}      = 0;
+$Opt{NoHeadAbst}    = 0;
+$Opt{Hiragana}      = 0;
+$Opt{Okurigana}     = 0;
+$Opt{NoEdgeSymbol}  = 0;
+$Opt{NoSymbol}      = 0;
+$Opt{NoEncodeURI}      = 0;
+$Opt{NoRegexIndex} = 0;
+$Opt{NoInsertHeader} = 0;
+$Opt{NoDeleteProcessing} = 0;
+$Opt{NoUpdateProcessing} = 0;
+$Opt{HtaccessExclude} = 0;
 
 %CheckPoint = ("on" => undef, "continue" => undef, "pid" => $$, "fid" => 0);
 

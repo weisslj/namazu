@@ -54,24 +54,14 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-BZIP2 = @BZIP2@
-BZIP2_PATH = @BZIP2_PATH@
 CC = @CC@
 CHASEN = @CHASEN@
 EXEEXT = @EXEEXT@
 FILE_MMAGIC = @FILE_MMAGIC@
-GROFF = @GROFF@
-GROFF_PATH = @GROFF_PATH@
-GZIP = @GZIP@
-GZIP_PATH = @GZIP_PATH@
 KAKASI = @KAKASI@
 LEX = @LEX@
 LN_S = @LN_S@
-LV = @LV@
-LV_PATH = @LV_PATH@
 MAKEINFO = @MAKEINFO@
-MSWORDVIEW = @MSWORDVIEW@
-MSWORDVIEW_PATH = @MSWORDVIEW_PATH@
 NKF = @NKF@
 OBJEXT = @OBJEXT@
 OPT_ADMIN_EMAIL = @OPT_ADMIN_EMAIL@
@@ -79,18 +69,9 @@ OPT_CGI_LOCATION = @OPT_CGI_LOCATION@
 OPT_LANGUAGE = @OPT_LANGUAGE@
 OPT_WAKATI_DEFAULT = @OPT_WAKATI_DEFAULT@
 PACKAGE = @PACKAGE@
-PDFTOTEXT = @PDFTOTEXT@
-PDFTOTEXT_PATH = @PDFTOTEXT_PATH@
 PERL = @PERL@
 SCORING = @SCORING@
 VERSION = @VERSION@
-ZCAT = @ZCAT@
-ZCAT_PATH = @ZCAT_PATH@
-application_msword = @application_msword@
-application_pdf = @application_pdf@
-application_x_bzip2 = @application_x_bzip2@
-application_x_compress = @application_x_compress@
-application_x_gzip = @application_x_gzip@
 LIBS = -lm @LEXLIB@
 
 bin_PROGRAMS = namazu
@@ -99,6 +80,7 @@ bin_SCRIPTS = gcnmz mailutime mknmz gtnmz
 CLEANFILES = mknmz.pl $(bin_SCRIPTS)
 
 pkgdatadir = @datadir@/@PACKAGE@
+confdir = $(pkgdatadir)/conf
 libdir = $(pkgdatadir)/lib
 filterdir = $(pkgdatadir)/filter
 templatedir = $(pkgdatadir)/template
@@ -406,7 +388,8 @@ mostlyclean distclean maintainer-clean
 
 mknmz: mknmz.pl
 	rm -f $@
-	sed -e 's!%LIBDIR%!$(libdir)!g' \
+	sed -e 's!%CONFDIR%!$(confdir)!g' \
+	    -e 's!%LIBDIR%!$(libdir)!g' \
 	    -e 's!%FILTERDIR%!$(filterdir)!g' \
 	    -e 's!%TEMPLATEDIR%!$(templatedir)!g' \
 	mknmz.pl > $@

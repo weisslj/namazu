@@ -1,33 +1,47 @@
 1999-08-28  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
-	* src/*.[ch]: Rename HLIST_MAXMAX -> RESULT_MAX.
+	* lib/usage.pl: Convert ISO-2022-JP -> EUC-JP
 
-	* filter/util.pl: Restore `package util' [namazu-dev 254]
+	* filter/pdf.pf: Remove @PDFTOTEXT_PATH@.
 
-	* **/*.pl{,.in}: Restore prefix `util::'
+	* filter/gzip.pl: Remove @GZIP_PATH@.
+	
+	* ChangeLog: Change order to place a latest log on the top. 
+	
+	* Makefile.am (install-data-local): Add codes to creat configs
+	file if no config files exist. 
+	* src/{mknmz.pl.in,Makefile.am}: Add codes to handle CONFDIR.
 
-	* filter/mhonarc.pl: Fix a typo.
+	* **/*.pl{,.in}: Move non-config variables from conf:: to var::.
 
-	* filter/html.pl: Fix html_filter() arguments.
-
-	* filter/mailnews.pl: Fix mailnews_filter arguments.
-
-	* filter/msword.pl.in: Fix status();
-
-	* filter/rfc.pl.in: Fix rfc_filter();
-
-	* configure.in: Remove filter command detection codes.
-
-	* lib/namazu.conf-dist: Remove.
-
-	* lib/var.pl.in: New file.
-
-	* configure.in: Modify AC_OUTPUT.
-
-	* conf/mknmz.conf-dist.in: New file.
+	* lib/conf.pl.in: Remove
 
 	* **/*.pl{,.in}: s/foreach /for /g;
 
+	* conf/mknmz.conf-dist.in: New file.
+
+	* configure.in: Modify AC_OUTPUT.
+
+	* lib/var.pl.in: New file.
+
+	* lib/namazu.conf-dist: Remove.
+
+	* configure.in: Remove filter command detection codes.
+
+	* filter/rfc.pl.in: Fix rfc_filter();
+
+	* filter/msword.pl.in: Fix status();
+
+	* filter/mailnews.pl: Fix mailnews_filter arguments.
+
+	* filter/html.pl: Fix html_filter() arguments.
+
+	* filter/mhonarc.pl: Fix a typo.
+
+	* **/*.pl{,.in}: Restore prefix `util::'
+
+	* src/*.[ch]: Rename HLIST_MAXMAX -> RESULT_MAX.
+	
 	
 1999-08-27  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
@@ -40,41 +54,37 @@
 	
 1999-08-27  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
-	* Makefile.am, src/Makefile.am: Change packagedir (omit @VERSION@)
-	[namazu-dev 192]
+	* src/mknmz.pl.in: Silence warnings.
+	
+	* src/*.[ch]: Rearrange many codes.
 
-	* src/mknmz.pl: Rename some functions
+	* src/{var.c,var.h,em.h,magic.h,critical.h}: New files.
 
-	* lib/util.pl: Rename some functions
+	* src/{type.h,values.c,variable.h,enum.h}: Remove.
 
-	* lib/util.pl: Remove `package util'
+	* lib/html.pl: Remove.
 
-	* src/mknmz.pl.in, filter/*, lib/*: s/util:://g
+	* Makefile.am: Add AUTOMAKE_OPTIONS = no-dependencies
 
-	* src/mknmz.pl.in: Add show_mini_usage();
-
-	* src/namazu.c: Add show_mini_usage();
+	* src/*.[ch]: Rename variables for NMZ.* files.
 
 	* mknmz, namazu: Change behavior when no arguments are given to
 	show simple messages like "Try `namazu --help' for more options."
 	by using show_mini_usage().
 
-	* ChangeLog: Change a format into double-spaced.
+	* src/mknmz.pl.in: Add show_mini_usage();
 
-	* src/*.[ch]: Rename variables for NMZ.* files.
+	* src/mknmz.pl.in, filter/*, lib/*: s/util:://g
 
-	* Makefile.am: Add AUTOMAKE_OPTIONS = no-dependencies
+	* lib/util.pl: Remove `package util'
 
-	* lib/html.pl: Remove.
+	* lib/util.pl: Rename some functions
 
-	* src/{type.h,values.c,variable.h,enum.h}: Remove.
+	* src/mknmz.pl: Rename some functions
 
-	* src/{var.c,var.h,em.h,magic.h,critical.h}: New files.
+	* Makefile.am, src/Makefile.am: Change packagedir (omit @VERSION@)
+	[namazu-dev 192]
 
-	* src/*.[ch]: Rearrange many codes.
-
-	* src/mknmz.pl.in: Silence warnings.
-	
 	
 1999-08-26  Ryuji Abe <raeva@t3.rim.or.jp>
 
@@ -92,69 +102,70 @@
 	
 1999-08-26  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
-	* Makefile.am: Add an CLEANFILES entry.
+	* src/configure.in: Add codes to make filter/supported.pl.
+	[namazu-dev 199]
 
-	* src/{clnmz.in,rvnmz.in,vfnmz.in}: Removed files.
+	* configure.in: Add codes to detect Compress::Zlib module.
+	
+	* src/Makefile.am: Add "libdir" macro.
 
-	* src/Makefile.am: Add an CLEANFILES entry.
+	* Makefile.am: Change dist-hook: to remove CVS directories.
 
-	* configure.in: Modify AC_OUTPUT according to removed files.
+	* configure.in: Add codes to chedk "File::MMagic" module.
 
-	* Makefile.am: Modify install-data-local and dist-hook.
+	* Makefile.am: Add "@FILE_MMAGIC@" into SUBDIRS
 
-	* src/values.c: Set HtmlOutout to 0.
+	* Makefile.am: Add "File-MMagic" into EXTRA_DIST
 
-	* src/message.[ch]: Change a variable MSG_MIME_HEADER to macro.
+	* Makefile.am: Add CLEANDIRS entry (additional macro)
 
-	* src/util.c (die): Print program name in error message.
+	* Makefile.am: Add "supported.pl" into CLEANFILES.
+
+	* filter/supported.pl: New file.
 
 	* src/configure.in, filter/{man.pl,compress.pl}: Substitute
 	@{GROFF,ZCAT}_PATH@ for @OPT_HELPER_{GROFF,ZCAT}@.
 
-	* src/configure.in: Add codes to make filter/supported.pl.
-	[namazu-dev 199]
+	* src/util.c (die): Print program name in error message.
 
-	* filter/supported.pl: New file.
+	* src/message.[ch]: Change a variable MSG_MIME_HEADER to macro.
 
-	* Makefile.am: Add "supported.pl" into CLEANFILES.
+	* src/values.c: Set HtmlOutout to 0.
 
-	* Makefile.am: Add CLEANDIRS entry (additional macro)
+	* Makefile.am: Modify install-data-local and dist-hook.
 
-	* Makefile.am: Add "File-MMagic" into EXTRA_DIST
+	* configure.in: Modify AC_OUTPUT according to removed files.
 
-	* Makefile.am: Add "@FILE_MMAGIC@" into SUBDIRS
+	* src/Makefile.am: Add an CLEANFILES entry.
 
-	* configure.in: Add codes to chedk "File::MMagic" module.
+	* src/{clnmz.in,rvnmz.in,vfnmz.in}: Removed files.
 
-	* Makefile.am: Change dist-hook: to remove CVS directories.
+	* Makefile.am: Add an CLEANFILES entry.
 
-	* src/Makefile.am: Add "libdir" macro.
-
-	* configure.in: Add codes to detect Compress::Zlib module.
-	
 
 1999-08-25  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
-	* configure.in, src/Makefile.am, src/wdnmz.in:
-	Remove wdnmz.in
+	* Makefile.am, src/Makefile.am: Change a directory structure for
+	installing.
 
-	* src/*.[ch]: Rerrange C coding styles.
+		* src/mknmz.pl.in: Fix conflicted parts. (temporary)
+
+* template/NMZ.*: New files.
+
+	* lib/NMZ.*: Remove files.
+
+	* src/{re.c,usage.c,message.c,field.c}: New files.
 
 	* src/{cgi.h,field.h,hlist.h,parser.h,result.h,codeconv.h,form.h,
 	message.h,re.h,search.h,variable.h,conf.h,type.h,wakati.h,enum.h,
 	output.h,usage.h}: New files.
 
-	* src/{re.c,usage.c,message.c,field.c}: New files.
+	* src/*.[ch]: Rerrange C coding styles.
 
-	* lib/NMZ.*: Remove files.
+	* configure.in, src/Makefile.am, src/wdnmz.in:
+	Remove wdnmz.in
 
-	* template/NMZ.*: New files.
-
-	* Makefile.am, src/Makefile.am: Change a directory structure for
-	installing.
-
-	* src/mknmz.pl.in: Fix conflicted parts. (temporary)
-
+	
 1999-08-25 NOKUBI Takatsugu <knok@daionet.gr.jp>
 
 	* ChangeLog: merge conflicted parts.

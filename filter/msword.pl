@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: msword.pl,v 1.1 1999-08-28 00:46:51 satoru Exp $
+# $Id: msword.pl,v 1.2 1999-08-28 02:43:12 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -56,7 +56,7 @@ sub filter ($$$$$$$) {
     my $utfconvpath = util::checkcmd('lv');
 
     print "Proccessing ms-word file ... (use '$wordconvpath', '$utfconvpath')\n"
-      if ($conf::VerboseOpt);
+      if ($var::Opt{Verbose});
 
     my $fh = util::efopen("> $TMPFILE");
     print $fh $$cont;
@@ -71,8 +71,8 @@ sub filter ($$$$$$$) {
 
     html::html_filter($cont, $weighted_str, $fields, $headings);
 
-    filter::line_adjust_filter($cont) unless $conf::NoLineAdOpt;
-    filter::line_adjust_filter($weighted_str) unless $conf::NoLineAdOpt;
+    filter::line_adjust_filter($cont) unless $var::Opt{NoLineAd};
+    filter::line_adjust_filter($weighted_str) unless $var::Opt{NoLineAd};
     filter::white_space_adjust_filter($cont);
     $fields->{title} = filter::filename_to_title($cfile, $weighted_str)
       unless $fields->{title};

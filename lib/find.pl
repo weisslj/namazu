@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: find.pl,v 1.3 1999-06-12 14:29:26 satoru Exp $
+# $Id: find.pl,v 1.4 1999-08-28 02:43:15 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -87,7 +87,7 @@ sub finddir {
 
     ## Check .htaccess
     ## Added by G.Kunito <kunito@hal.t.u-tokyo.ac.jp>
-    if( $conf::HtaccessExcludeOpt && 
+    if( $var::Opt{HtaccessExclude} && 
        ( -f ".htaccess" ) && html::parse_htaccess() ){
 	printf ("%s is exclude because of .htaccess\n", cwd());
 	return(0);

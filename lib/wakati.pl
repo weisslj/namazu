@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: wakati.pl,v 1.5 1999-08-28 00:07:41 satoru Exp $
+# $Id: wakati.pl,v 1.6 1999-08-28 02:43:16 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -34,21 +34,21 @@ sub wakatize_japanese ($) {
     # ひらがなだけの語は削除する -H オプション時
     # このコードは古川@ヤマハさんがくださりました。[1997-11-13]
     # 送り仮名についても対応 (古川さんのコードより) [1998-04-24]
-    if ($conf::HiraganaOpt || $conf::OkuriganaOpt){
+    if ($var::Opt{Hiragana} || $var::Opt{Okurigana}){
         for (my $ndx = 0; $ndx <= $#tmp; ++$ndx){
 	    $tmp[$ndx] =~ s/(\s)/ $1/g;
 	    $tmp[$ndx] = ' ' . $tmp[$ndx];
-	    if ($conf::OkuriganaOpt) {
+	    if ($var::Opt{Okurigana}) {
 		$tmp[$ndx] =~ s/([^\xa4][\xa1-\xfe])+(\xa4[\xa1-\xf3])+ /$1 /g;
 	    }
-	    if ($conf::HiraganaOpt) {
+	    if ($var::Opt{Hiragana}) {
 		$tmp[$ndx] =~ s/ (\xa4[\xa1-\xf3])+ //g;
 	    }
         }
     }
 
     # 品詞情報を元に名詞のみを登録する -m オプション時
-    if ($conf::MorphOpt) {
+    if ($var::Opt{Morph}) {
 	$$content = "";
 	$$content .= shift(@tmp) =~ /(.+ )名詞/ ? $1 : "" while @tmp; 
     } else {
@@ -77,15 +77,15 @@ sub wakatize_japanese_sub ($) {
         util::dprint("// wakati: using $conf::WAKATI\n");
 	# IPC::Open2 もあるけど試したらちょっと変でしかも遅かった
 	{
-	    my $fh_wakati = util::efopen("|$conf::WAKATI > $conf::File{'TMP_WAKATI'}");
+	    my $fh_wakati = util::efopen("|$conf::WAKATI > $var::File{'TMP_WAKATI'}");
 	    print $fh_wakati $$content;
 	}
 	{
-	    my $fh_wakati = util::efopen($conf::File{'TMP_WAKATI'});
+	    my $fh_wakati = util::efopen($var::File{'TMP_WAKATI'});
 	    @tmp = <$fh_wakati>;
 	    chomp @tmp;
 	}
-	unlink $conf::File{TMP_WAKATI};
+	unlink $var::File{TMP_WAKATI};
     }
 
     return @tmp;

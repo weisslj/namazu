@@ -7,7 +7,7 @@ EXTRA_DIST = README-ja namazu.spec namazu.spec.in File-MMagic
 EXTRA_DIRS = conf doc etc lib lisp filter template tknamazu
 SUBDIRS = src @FILE_MMAGIC@
 
-CLEANFILES = lib/conf.pl namazu.spec \
+CLEANFILES = namazu.spec \
 	     filter/gzip.pl filter/compress.pl filter/man.pl filter/rfc.pl \
 	     filter/bzip2.pl filter/msword.pl filter/supported.pl \
 	     File-MMagic/Makefile File-MMagic/pm_to_blib \
@@ -25,6 +25,10 @@ install-data-local:
 	done
 	cp ChangeLog COPYING NEWS README README-ja THANKS TODO \
 		$(pkgdatadir)/etc
+	test ! -f $(pkgdatadir)/conf/namazu.conf && \
+	cp $(pkgdatadir)/conf/namazu.conf-dist $(pkgdatadir)/conf/namazu.conf
+	test ! -f $(pkgdatadir)/conf/mknmz.conf && \
+	cp $(pkgdatadir)/conf/mknmz.conf-dist $(pkgdatadir)/conf/mknmz.conf
 
 dist-hook:
 	for subdir in $(EXTRA_DIRS); do \

@@ -17,6 +17,7 @@ bin_SCRIPTS = gcnmz mailutime mknmz gtnmz
 CLEANFILES = mknmz.pl $(bin_SCRIPTS)
 
 pkgdatadir  = @datadir@/@PACKAGE@
+confdir     = $(pkgdatadir)/conf
 libdir      = $(pkgdatadir)/lib
 filterdir   = $(pkgdatadir)/filter
 templatedir = $(pkgdatadir)/template
@@ -32,7 +33,8 @@ noinst_HEADERS = namazu.h regex.h util.h getopt.h field.h codeconv.h \
 
 mknmz: mknmz.pl
 	rm -f $@
-	sed -e 's!%LIBDIR%!$(libdir)!g' \
+	sed -e 's!%CONFDIR%!$(confdir)!g' \
+	    -e 's!%LIBDIR%!$(libdir)!g' \
 	    -e 's!%FILTERDIR%!$(filterdir)!g' \
 	    -e 's!%TEMPLATEDIR%!$(templatedir)!g' \
 	mknmz.pl > $@

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: html.pl,v 1.5 1999-08-28 00:07:39 satoru Exp $
+# $Id: html.pl,v 1.6 1999-08-28 02:43:12 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -44,12 +44,12 @@ sub filter ($$$$$$$) {
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
     print "Proccessing html file ...\n"
-      if ($conf::VerboseOpt);
+      if ($var::Opt{Verbose});
 
     html_filter($cont, $weighted_str, $fields, $headings);
     
-    filter::line_adjust_filter($cont) unless $conf::NoLineAdOpt;
-    filter::line_adjust_filter($weighted_str) unless $conf::NoLineAdOpt;
+    filter::line_adjust_filter($cont) unless $var::Opt{NoLineAd};
+    filter::line_adjust_filter($weighted_str) unless $var::Opt{NoLineAd};
     filter::white_space_adjust_filter($cont);
     $fields->{title} = filter::filename_to_title($cfile, $weighted_str)
       unless $fields->{title};
@@ -190,9 +190,9 @@ sub weight_element ($$$ ) {
     for my $element (sort keys(%{$conf::Weight{'html'}})) {
 	my $tmp = "";
 	$$contents =~ s!<($element)>(.*?)</$element>!weight_element_sub($1, $2, \$tmp)!gies;
-	$$headings .= $tmp if $element =~ /^H[1-6]$/i && ! $conf::NoHeadAbstOpt 
+	$$headings .= $tmp if $element =~ /^H[1-6]$/i && ! $var::Opt{NoHeadAbst} 
 	    && $tmp;
-	my $weight = $element =~ /^H[1-6]$/i && ! $conf::NoHeadAbstOpt ? 
+	my $weight = $element =~ /^H[1-6]$/i && ! $var::Opt{NoHeadAbst} ? 
 	    $conf::Weight{'html'}->{$element} : $conf::Weight{'html'}->{$element} - 1;
 	$$weighted_str .= "\x7f$weight\x7f$tmp\x7f/$weight\x7f\n" if $tmp;
     }
@@ -204,7 +204,7 @@ sub weight_element_sub ($$$) {
     my $space = element_space($element);
     $text =~ s/<[^>]*>//g;
     $$tmp .= "$text " if (length($text)) < $conf::INVALID_LENG;
-    $element =~ /^H[1-6]$/i && ! $conf::NoHeadAbstOpt  ? " " : "$space$text$space";
+    $element =~ /^H[1-6]$/i && ! $var::Opt{NoHeadAbst}  ? " " : "$space$text$space";
 }
 
 

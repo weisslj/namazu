@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: compress.pl,v 1.1 1999-08-28 00:46:50 satoru Exp $
+# $Id: compress.pl,v 1.2 1999-08-28 02:43:11 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -50,7 +50,7 @@ sub filter ($$$$$$) {
     my $zcatpath = util::checkcmd('zcat');
 
     print "Proccessing compress file ... (use '$zcatpath')\n"
-      if ($conf::VerboseOpt);
+      if ($var::Opt{Verbose});
 
     my $fh = util::efopen("|$zcatpath > $TMPFILE");
     print $fh $$cont;

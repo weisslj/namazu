@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.8 1999-08-28 01:29:39 satoru Exp $
+# $Id: util.pl,v 1.9 1999-08-28 02:43:15 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -73,7 +73,7 @@ sub fopen ($) {
 }
 
 sub dprint (@) {
-    print STDERR @_ if $conf::DebugOpt;
+    print STDERR @_ if $var::Opt{Debug};
 } 
 
 sub commas ($) {
@@ -91,7 +91,7 @@ sub get_int_size () {
     my ($tmp);
     $tmp = 0;
     $tmp = pack("i", $tmp);
-    $conf::INTSIZE = length($tmp);
+    $var::INTSIZE = length($tmp);
 }
 
 # RFC 822 format without timezone

@@ -7,11 +7,12 @@
 
 
 1999-05-14  Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>
-	* Fixed lockfile related code in mknmz.pl (subtle problem)
+	* src/mknmz.pl: Fixed lockfile related code (subtle problem)
+	* lib/html.pl: Modified parse_robots_txt a little bit
 
 	
 1999-05-07  Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>
-	* mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
+	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 	
 

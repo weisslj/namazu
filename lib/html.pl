@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: html.pl,v 1.2 1999-05-04 04:42:38 satoru Exp $
+# $Id: html.pl,v 1.3 1999-05-18 09:59:50 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -231,7 +231,7 @@ sub parse_robots_txt () {
 
     my $fh_robottxt = util::fopen_or_die($conf::ROBOTS_TXT);
     while(<$fh_robottxt>){
-	/^Disallow:\s*(\S+)/i && do {
+	/^\s*Disallow:\s*(\S+)/i && do {
 	    my $url = $1;
 	    $url =~ s/\%/%25/g;  # 元から含まれる % は %25 に変更 v1.1.1.2
 	    $url =~ s/([^a-zA-Z0-9\-\_\.\/\:\%])/

@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.6 1999-05-14 04:31:38 satoru Exp $
+# $Id: mknmz.pl.in,v 1.7 1999-05-18 09:59:51 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -810,7 +810,7 @@ sub make_slog_file () {
 }
 
 
-# 作成する各ファイルの頭に $CURRENTDIR をくっつける
+# concatenate $CURRENTDIR to head of each files
 sub change_dbnames ($) {
     my ($current_dir) = @_;
 

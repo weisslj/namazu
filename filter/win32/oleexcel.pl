@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: oleexcel.pl,v 1.13 2002-03-18 05:18:19 takesako Exp $
+# $Id: oleexcel.pl,v 1.14 2002-03-27 05:59:35 takesako Exp $
 # Copyright (C) 2001 Yoshinori TAKESAKO,
 #               1999 Jun Kurabe ,
 #               1999 Ken-ichi Hirose All rights reserved.
@@ -51,6 +51,7 @@ use strict;
 require 'util.pl';
 require 'gfilter.pl';
 
+use Win32;
 use Win32::OLE qw(in with);
 use Win32::OLE::Const 'Microsoft Excel';
 
@@ -127,11 +128,23 @@ sub getProperties ($$$) {
 
     my $keyword = $cfile->BuiltInDocumentProperties('keywords')->{Value};
     $keyword = codeconv::shiftjis_to_eucjp($keyword);
-    my $weight = $conf::Weight{'metakey'};
+    $weight = $conf::Weight{'metakey'};
     $$weighted_str .= "\x7f$weight\x7f$keyword\x7f/$weight\x7f\n";
 
     return undef;
 }
+
+sub Win32_FullPath ($) {
+    # c:/hoge/hoge.xls -> c:\hoge\hoge.xls
+    my $file = shift;
+    if ($] ge 5.006) {
+	$file = Win32::GetFullPathName($file);
+    }
+    $file =~ s|/|\\|g;
+    return $file;
+}
+
+my $Count = 0;
 
 sub filter ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields) = @_;
@@ -141,15 +154,10 @@ sub filter ($$$$$) {
     util::vprint("Processing excel file ...\n");
 
     # make temporary file name
-    my $tmpfile0 = util::tmpnam('NMZ.xls0');
-    my $tmpfile1 = util::tmpnam('NMZ.xls1');
-    my $tmpfile2 = util::tmpnam('NMZ.xls2');
-
-    # c:/hoge/hoge.xls -> c:\hoge\hoge.xls
-    $fileName =~ s|/|\\|g;
-    $tmpfile0 =~ s|/|\\|g;
-    $tmpfile1 =~ s|/|\\|g;
-    $tmpfile2 =~ s|/|\\|g;
+    my $tmpfile0 = util::tmpnam("NMZ.xls.$Count.0");
+    my $tmpfile1 = util::tmpnam("NMZ.xls.$Count.1");
+    my $tmpfile2 = util::tmpnam("NMZ.xls.$Count.2");
+    $Count++;
 
     # use existing instance if Excel is already running.
     # my $excel;
@@ -168,12 +176,12 @@ sub filter ($$$$$) {
     # Open the excel workbooks.
     # In order to skip password-protected file, send a dummy password.
     my $Book = $excel->Workbooks->Open({
-	'FileName'			=> $fileName,
-	'ReadOnly'			=> 1,
-	'IgnoreReadOnlyRecommended'	=> 1,
-	'Updatelinks'			=> 0,
-	'WriteResPassword'		=> 'dummy password',
-	'Password'			=> 'dummy password'
+	'FileName'                  => &Win32_FullPath($fileName),
+	'ReadOnly'                  => 1,
+	'IgnoreReadOnlyRecommended' => 1,
+	'Updatelinks'               => 0,
+	'WriteResPassword'          => 'dummy password',
+	'Password'                  => 'dummy password'
     });
     return "$fileName: cannot open file\n" unless (defined $Book);
 
@@ -194,9 +202,9 @@ sub filter ($$$$$) {
 
 	# SaveAs xlText FileFormat
 	my $ret = $sheet->SaveAs({
-	    FileName		=>	$tmpfile,	# 
-	    FileFormat		=>	xlText,		# 
-	    CreateBackup	=>	0		# False
+	    'FileName'     => &Win32_FullPath($tmpfile),
+	    'FileFormat'   => xlText,  # xlText
+	    'CreateBackup' => 0        # False
 	});
 
 	# print this sheetName

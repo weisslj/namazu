@@ -1,3 +1,13 @@
+2002-03-27  Yoshinori TAKESAKO  <takesako@namazu.org>
+
+	* filter/win32/oleexcel.pl: 
+	Fixed the bug which Win32 OLE filter doesn't create index 
+	by MS Excel 2002. (namazu-win32-users-ja#01204)
+	(Reported by yonezawa, thanks.)
+
+	* filter/win32/ole{msword,excel,powerpoint}.pl: 
+	Fixed the defined $weight variable doubly.
+
 2002-03-26  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* nmz/libnamazu.{c,h}: Added nmz_{set,is}_output_warn_to_file().
@@ -7489,4 +7499,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.942 2002-03-26 10:49:45 knok Exp $
+$Id: ChangeLog,v 1.943 2002-03-27 05:59:34 takesako Exp $

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: olepowerpoint.pl,v 1.10 2002-03-18 05:18:19 takesako Exp $
+# $Id: olepowerpoint.pl,v 1.11 2002-03-27 05:59:35 takesako Exp $
 # Copyright (C) 1999 Jun Kurabe ,
 #               1999 Ken-ichi Hirose All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -155,7 +155,7 @@ sub getProperties ($$$) {
 
     my $keyword = $cfile->BuiltInDocumentProperties('keywords')->{Value};
     $keyword = codeconv::shiftjis_to_eucjp($keyword);
-    my $weight = $conf::Weight{'metakey'};
+    $weight = $conf::Weight{'metakey'};
     $$weighted_str .= "\x7f$weight\x7f$keyword\x7f/$weight\x7f\n";
 
     return undef;

@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu-cmd.c,v 1.21 2004-04-01 18:11:53 opengl2772 Exp $
+ * $Id: namazu-cmd.c,v 1.22 2004-04-27 05:26:12 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -185,7 +185,10 @@ parse_options(int argc, char **argv)
 	    show_usage();
 	    exit(EXIT_SUCCESS);
 	    break;
-	case '1':
+	case '1':  /* --result */
+            if (nmz_optarg == NULL) {
+                die("%s: invalid argument for -1 --result", nmz_optarg);
+            }
 	    set_templatesuffix(nmz_optarg);
 	    break;
 	case '2':
@@ -198,6 +201,9 @@ parse_options(int argc, char **argv)
 	    break;
 	case '4':  /* --sort */
 	{
+            if (nmz_optarg == NULL) {
+                die("%s: invalid argument for -4 --sort", nmz_optarg);
+            }
 	    if (strcasecmp(nmz_optarg, "score") == 0) {
 		nmz_set_sortmethod(SORT_BY_SCORE);
 	    } else if (strcasecmp(nmz_optarg, "date") == 0) {
@@ -205,13 +211,18 @@ parse_options(int argc, char **argv)
 	    } else if (nmz_strprefixcasecmp(nmz_optarg, "field:") == 0) {
 		nmz_set_sortmethod(SORT_BY_FIELD);
 		nmz_set_sortfield(nmz_optarg + strlen("field:"));
-	    }
+            } else {
+                die("%s: invalid argument for -4 --sort", nmz_optarg);
+            }
 	}
 	break;
 	case '5':  /* --ascending */
 	    nmz_set_sortorder(ASCENDING);
 	    break;
-	case 'f':
+	case 'f':  /* --config */
+            if (nmz_optarg == NULL) {
+                die("%s: invalid argument for -f --config", nmz_optarg);
+            }
 	    set_namazurc(nmz_optarg);
 	    break;
 	case 'n':
@@ -271,7 +282,10 @@ parse_options(int argc, char **argv)
 	case 'C':
 	    opt_show_config = 1;
 	    break;
-	case 'o':
+	case 'o':  /* --output */
+            if (nmz_optarg == NULL) {
+                die("%s: invalid argument for -o --output", nmz_optarg);
+            }
 	    stdio2file(nmz_optarg);
 	    break;
 	}

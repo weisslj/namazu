@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.97 2000-02-02 12:38:21 rug Exp $
+dnl $Id: configure.in,v 1.98 2000-02-02 13:27:32 satoru Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -296,7 +296,31 @@ else
     file_mmagic=yes
 fi
 if test "${file_mmagic}" = "yes"; then
-    AC_MSG_ERROR(you need to install included File-MMagic at first.)
+    AC_MSG_ERROR([you need to install the included File-MMagic first
+The simplest way to install File-MMagic is:
+
+  % cd File-MMagic
+  % perl Makefile.PL
+  % make
+  % su
+  # make install
+
+ Then, simply run configure again.
+  % cd ..
+  % ./configure
+
+Or you can install File-MMagic to your home directory by the following way:
+
+  % cd File-MMagic
+  % perl Makefile.PL LIB=$HOME/lib INSTALLMAN3DIR=$HOME/man
+  % make
+  % make install
+
+ Then, run configure again with --with-pmdir=DIR option.
+  % cd ..
+  % ./configure --with-pmdir=$HOME/lib
+])
+
 fi
 
 dnl *

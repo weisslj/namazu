@@ -1,3 +1,7 @@
+2000-10-10  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* File-MMagic/*: New upstream (1.09).
+
 2000-10-10  Ryuji Abe  <rug@namazu.org>
 
 	* NEWS: Updated for new release.
@@ -6027,4 +6031,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.742 2000-10-10 08:40:48 rug Exp $
+$Id: ChangeLog,v 1.743 2000-10-10 10:38:46 knok Exp $

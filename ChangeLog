@@ -1,5 +1,10 @@
 2001-12-12  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
+	* nmz/i18n.c (nmz_choose_msgfile_suffix): Fixed some bad expressions.
+	(nmz_choose_msgfile_suffix): Fixed buffer overflow.
+
+	* src/form.c (read_headfoot): Changed to call realloc once.
+
 	* tests/namazu-cgi-9: Added a new test script.
 
 	* tests/namazu-cgi-8: Added an another idxname checking.
@@ -7254,4 +7259,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.900 2001-12-12 08:17:09 knok Exp $
+$Id: ChangeLog,v 1.901 2001-12-12 09:54:47 knok Exp $

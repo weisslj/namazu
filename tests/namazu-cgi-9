@@ -54,3 +54,5 @@ LANG='ja_JP.eucJP-l'`perl -e 'print "o" x 2048'`'ong'
 export LANG
 ./namazu.cgi >> $LOG
 test $? -ne 0 && exit 1
+
+exit 0

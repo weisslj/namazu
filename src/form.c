@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.67 2001-12-04 09:11:08 knok Exp $
+ * $Id: form.c,v 1.68 2001-12-12 09:54:48 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -378,8 +378,8 @@ read_headfoot(const char *fname)
 	    if (*s == '?') {*s = 0; break;}
     }
 
-    /* Expand buf memory for replacing {cgi} */
-    buf = (char *)realloc(buf, strlen(buf) + strlen(script_name) + 1);
+    /* Expand buf memory for replacing {cgi} and {doc} */
+    buf = (char *)realloc(buf, strlen(buf) + strlen(script_name) + strlen(document_name) + 2);
     if (buf == NULL) {
         return NULL;
     }
@@ -387,11 +387,6 @@ read_headfoot(const char *fname)
     /* Replace {cgi} with a proper namazu.cgi location */
     while ((p = strstr(buf, "{cgi}")) != NULL) {
 	subst(p, "{cgi}", script_name);
-    }
-
-    buf = (char *)realloc(buf, strlen(buf) + strlen(document_name) + 1);
-    if (buf == NULL) {
-        return NULL;
     }
 
     /* Replace {doc} with the name of the calling document eg, using SSI */

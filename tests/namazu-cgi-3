@@ -8,7 +8,7 @@ LOG=`pwd`/test-log
 
 pwd=`pwd`
 
-tmprc="../src/.namazurc"
+tmprc="$pwd/../src/.namazurc"
 echo "Index $pwd" > $tmprc
 echo "Template $pwd/idx1" >> $tmprc
 

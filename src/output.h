@@ -8,7 +8,6 @@ extern void print_default_page ( void );
 extern void set_htmlmode ( int mode );
 extern int is_htmlmode ( void );
 extern void set_cgimode ( int mode );
-extern int is_cgimode ( void );
 extern void set_quietmode ( int mode );
 extern void set_countmode ( int mode );
 extern void set_listmode ( int mode );

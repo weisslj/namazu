@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.57 2000-01-27 03:05:04 satoru Exp $
+ * $Id: output.c,v 1.58 2000-01-27 03:31:03 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -308,6 +308,12 @@ static int
 is_refprint(void)
 {
     return refprint;
+}
+
+static int 
+is_cgimode(void)
+{
+    return cgimode;
 }
 
 /*
@@ -737,12 +743,6 @@ void
 set_cgimode(int mode)
 {
     cgimode = mode;
-}
-
-int 
-is_cgimode(void)
-{
-    return cgimode;
 }
 
 void 

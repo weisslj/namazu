@@ -1,6 +1,6 @@
 # File::MMagic
 #
-# $Id: MMagic.pm,v 1.16 2000-02-28 08:36:42 knok Exp $
+# $Id: MMagic.pm,v 1.17 2000-02-29 04:34:18 knok Exp $
 #
 # This program is originated from file.kulp that is a production of The
 # Unix Reconstruction Projct.
@@ -275,7 +275,7 @@ BEGIN {
 	    f => "\f",
 	    v => "\v" );
 
-$VERSION = "0.20.5";
+$VERSION = "0.20.6";
 undef $dataLoc;
 }
 
@@ -464,9 +464,11 @@ sub checktype_filehandle {
 	# check if the m-th magic entry matches
 	# if it does, then $desc will contain an updated description
 	if (magicMatch($self->{magic}->[$m],\$desc,$fh)) {
-	    $matchFound = 1;
-	    $mtype = $desc;
-	    last;
+	    if (defined $desc && $desc ne '') {
+		$matchFound = 1;
+		$mtype = $desc;
+		last;
+	    }
 	}
 
 	# read another entry from the magic file if we've exhausted

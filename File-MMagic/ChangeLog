@@ -1,3 +1,7 @@
+2000-02-29  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* MMagic.pm (checktype_filehandle): Fixed to work multiple subtests.
+
 2000-02-28  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* MMagic.pm: Changed URI for Namzu Project.

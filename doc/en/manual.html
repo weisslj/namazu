@@ -238,6 +238,16 @@ href="http://sources.redhat.com/bzip2/">bzip2</a> command.
 <dd>Handle a compress-ed file.
 <dd>Requirement: compress command.
 
+<dt>deb.pl
+<dd>Handle a deb package.
+<dd>Requirement: dpkg command.
+
+<dt>dvi.pl
+<dd>Handle a dvi file.
+<dd>Requirement: dvi2tty
+<dd>Suggested software: nkf
+(it only needs for Japanese documents)
+
 <dt>excel.pl
 <dd>Handle an Micosoft Excel file.
 <dd>Requirement: <a href="http://www.xlHtml.org/">xlHtml</a>
@@ -252,6 +262,10 @@ href="http://sources.redhat.com/bzip2/">bzip2</a> command.
 Project</a>.
 <dd>Requirement: hnf filter is special. It requires namazu_for_hns
 of <a href="http://www.h14m.org/">Hyper NIKKI System Project</a>.
+
+<dt>hdml.pl
+<dd>Handle a HDML file.
+<dd>Requirement: None
 
 <dt>html.pl
 <dd>Handle a HTML file.
@@ -283,28 +297,39 @@ of <a href="http://www.h14m.org/">Hyper NIKKI System Project</a>.
 <dt>pdf.pl
 <dd>Handle a PDF file.
 <dd>Requirement: pdftotext, a part of <a href="http://www.foolabs.com/xpdf/">xpdf</a>
-(version 0.91 is suggested).
+(version 0.91 or later are suggested).
+
+<dt>postscript.pl
+<dd>Handle a PostScript file.
+<dd>Requirement: ps2ascii
+
+<dt>powerpoint.pl
+<dd>Handle an Micosoft PowerPoint file.
+<dd>Requirement: pptHtml, a part of <a href="http://www.xlHtml.org/">xlHtml</a>
+<!--
+<dd>Alternate command: <a href="http://www.dehenken.co.jp/products/doccat/">doccat</a>
+-->
+<dd>Suggested software:<a href="http://www.ff.iij4u.or.jp/~nrt/lv/">lv</a>
+(it only needs for Japanese documents)
 
 <dt>rfc.pl
 <dd>Handle a RFC file.
 <dd>Requirement: None
 
-<dt>tex.pl
-<dd>Handle a TeX file.
-<dd>Requirement: <a
-href="http://www.cs.purdue.edu/homes/trinkle/detex/">detex</a>
-
-<!--
-<dt>powerpoint.pl
-<dd>Handle a Microsoft PowerPoint file.
-<dd>Requirement: <a href="http://www.dehenken.co.jp/products/doccat/">doccat</a>
--->
+<dt>rpm.pl
+<dd>Handle a RPM package.
+<dd>Requirement: <a href="http://www.rpm.org/">rpm</a>
 
 <!--
 <dt>taro.pl
 <dd>Handle a file of Ichitaro a Japanese word processor version 9 and 10.
 <dd>Requirement: <a href="http://www.dehenken.co.jp/products/doccat/">doccat</a>
 -->
+
+<dt>tex.pl
+<dd>Handle a TeX file.
+<dd>Requirement: <a
+href="http://www.cs.purdue.edu/homes/trinkle/detex/">detex</a>
 
 </dl>
 
@@ -975,7 +1000,7 @@ You must choose the latter with Tkanamzu or namazu.el.
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: manual.html,v 1.38 2001-01-27 02:38:10 baba Exp $
+$Id: manual.html,v 1.39 2001-01-27 08:49:40 rug Exp $
 </div>
 <address>
 developers@namazu.org

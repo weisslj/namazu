@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.66 2001-09-13 05:43:32 takesako Exp $
+ * $Id: form.c,v 1.67 2001-12-04 09:11:08 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -154,8 +154,9 @@ delete_str(char *s, char *d)
 static void 
 get_value(const char *s, char *value)
 {
+    int limit = BUFSIZE;
     *value = '\0';
-    for (; *s; s++) {
+    for (; *s && (limit > 0); s++, limit --) {
         if (nmz_strprefixcasecmp(s, "value=\"") == 0) {
             for (s += strlen("value=\""); *s && *s != '"'; s++, value++) 
 	    {
@@ -222,6 +223,7 @@ select_option(char *s, const char *name, const char *subquery)
 
 		p = value + strlen("field:");
 		n = strspn(p, FIELD_SAFE_CHARS);
+		if (n > BUFSIZE) n = BUFSIZE;
 		strncpy(field, p, n);
 		field[n] = '\0'; /* Hey, don't forget this after strncpy()! */
 		p += n;
@@ -283,10 +285,10 @@ check_checkbox(char *str)
             char name[BUFSIZE], *x;
             if ((x = (char *)strchr(pp, (int)','))) {
                 *x = '\0';
-                strcpy(name, pp);
+                strncpy(name, pp, BUFSIZE);
                 pp = x + 1;
             } else {
-                strcpy(name, pp);
+                strncpy(name, pp, BUFSIZE);
                 pp += strlen(pp);
             }
             for (i = 0; i < nmz_get_idxnum(); i++) {
@@ -343,8 +345,8 @@ read_headfoot(const char *fname)
 	nmz_warn_printf("%s: %s", fname, strerror(errno));
 	return NULL;
     } 
-    strcpy(tmpfname, fname);
-    strcat(tmpfname, suffix);
+    strncpy(tmpfname, fname, BUFSIZE);
+    strncat(tmpfname, suffix, BUFSIZE);
 
     buf = nmz_readfile(tmpfname); /* buf is allocated in nmz_readfile. */
     if (buf == NULL) { /* failed */
@@ -358,12 +360,6 @@ read_headfoot(const char *fname)
 	buf = new;
     }
     
-    /* Expand buf memory for replacing {cgi} */
-    buf = (char *)realloc(buf, strlen(buf) + BUFSIZE);
-    if (buf == NULL) {
-        return NULL;
-    }
-
     script_name= getenv("SCRIPT_NAME");
     document_name= getenv("DOCUMENT_URI");
 
@@ -382,10 +378,22 @@ read_headfoot(const char *fname)
 	    if (*s == '?') {*s = 0; break;}
     }
 
+    /* Expand buf memory for replacing {cgi} */
+    buf = (char *)realloc(buf, strlen(buf) + strlen(script_name) + 1);
+    if (buf == NULL) {
+        return NULL;
+    }
+
     /* Replace {cgi} with a proper namazu.cgi location */
     while ((p = strstr(buf, "{cgi}")) != NULL) {
 	subst(p, "{cgi}", script_name);
     }
+
+    buf = (char *)realloc(buf, strlen(buf) + strlen(document_name) + 1);
+    if (buf == NULL) {
+        return NULL;
+    }
+
     /* Replace {doc} with the name of the calling document eg, using SSI */
     while ((p = strstr(buf, "{doc}")) != NULL) {
 	subst(p, "{doc}", document_name);

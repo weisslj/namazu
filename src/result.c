@@ -1,5 +1,5 @@
 /*
- * $Id: result.c,v 1.62 2001-09-02 08:25:35 rug Exp $
+ * $Id: result.c,v 1.63 2001-12-04 09:11:08 knok Exp $
  * 
  * Copyright (C) 1989, 1990 Free Software Foundation, Inc.
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
@@ -180,19 +180,20 @@ encode_entity(char *str)
     int i;
     char tmp[BUFSIZE];
 
-    strcpy(tmp, str);
+    strncpy(tmp, str, BUFSIZE);
     strcpy(str, "");
     for (i = 0; tmp[i]; i++) {
 	if (tmp[i] == '<') {
-	    strcat(str, "&lt;");
+	    strncat(str, "&lt;", BUFSIZE - strlen(str));
 	} else if (tmp[i] == '>') {
-	    strcat(str, "&gt;");
+	    strncat(str, "&gt;", BUFSIZE - strlen(str));
 	} else if (tmp[i] == '&') {
-	    strcat(str, "&amp;");
+	    strncat(str, "&amp;", BUFSIZE - strlen(str));
 	} else if (tmp[i] == '"') {
-	    strcat(str, "&quot;");
+	    strncat(str, "&quot;", BUFSIZE - strlen(str));
 	} else {
-	    strncat(str, tmp + i, 1);
+	    if (strlen(str) < BUFSIZE)
+		strncat(str, tmp + i, 1);
 	}
     }
 }
@@ -213,11 +214,11 @@ emphasize(char *str)
 	if (nmz_is_query_op(nmz_get_querytoken(i)))
 	    continue;
 
-	strcpy(key, nmz_get_querytoken(i));
+	strncpy(key, nmz_get_querytoken(i), BUFSIZE);
 
 	if (strchr(key, '\t')) { /* for phrase search */
 	    nmz_tr(key, "\t", " ");
-	    strcpy(key, key + 1); 
+	    strncpy(key, key + 1, BUFSIZE - strlen(key)); 
 	    key[strlen(key) - 1] = '\0';
 	}
 
@@ -274,8 +275,8 @@ compose_result(struct nmz_data d, int counter,
 
     strcpy(r, "\t");  /* '\t' has an important role cf. html_print() */
 
-    strcpy(achars, FIELD_SAFE_CHARS);
-    strcat(achars, ":");  /* for namazu::score, namazu::counter */
+    strncpy(achars, FIELD_SAFE_CHARS, BUFSIZE);
+    strncat(achars, ":", BUFSIZE - strlen(achars));  /* for namazu::score, namazu::counter */
 
     do {
 	char *pp;
@@ -296,7 +297,7 @@ compose_result(struct nmz_data d, int counter,
 		p += 2;
 	    }
 	} else {
-	    strcat(r, p);
+	    strncat(r, p, BUFSIZE);
 	    break;
 	}
     } while (1);

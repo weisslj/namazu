@@ -3,6 +3,7 @@
 	* configure.in (LTVERSION): Set 7:0:4.
 
 	* nmz/field.{c,h}: Added a new function nmz_free_field_cache().
+	(Contributed by Youichi Iwakiri, thank you)
 
 	* nmz/libnamazu.{c,h}: Ditto.
 
@@ -7759,4 +7760,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.991 2002-11-15 09:01:48 knok Exp $
+$Id: ChangeLog,v 1.992 2002-11-15 09:18:28 knok Exp $

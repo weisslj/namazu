@@ -8,6 +8,15 @@
 
 1999-12-19  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* configure.in (AC_OUTPUT): Add bnamazu.
+
+	* scripts/Makefile.am (bin_SCRIPTS): Add bnamazu.
+
+	* scripts/bnamazu.in: New file. Actually, it is revival.
+
+	* src/output.c (print_hitnum_all_idx): Fix a bug which occuered
+	only if -h option is specified and multiple indices are specified.
+
 	* src/result.c (is_urireplace): Prepare its prototype declaration.
 	(is_uridecode): Prepare its prototype declaration.
 	

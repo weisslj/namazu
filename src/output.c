@@ -424,8 +424,12 @@ static void print_hitnum_all_idx(void)
 	{
 	    if (Idx.num > 1) {
 	        if (is_htmlmode()) {
-		    printf("<li><strong>%s</strong>: ",
-			   Idx.names[i] + strlen(DEFAULT_INDEX) + 1);
+		    char *idxname = Idx.names[i];
+		    if (is_cgimode()) {
+			/* for hiding a full pathname of an index */
+			idxname = Idx.names[i] + strlen(DEFAULT_INDEX) + 1;
+		    }
+		    printf("<li><strong>%s</strong>: ", idxname);
 		} else {
 		    printf("(%s)", Idx.names[i]);
 		}

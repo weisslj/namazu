@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.60 1999-12-08 05:46:42 rug Exp $
+ * $Id: namazu.c,v 1.61 1999-12-09 02:30:58 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -50,7 +50,6 @@
 #include "getopt.h"
 #include "util.h"
 #include "codeconv.h"
-#include "form.h"
 #include "usage.h"
 #include "rcfile.h"
 #include "output.h"
@@ -61,6 +60,7 @@
 #include "i18n.h"
 #include "message.h"
 #include "var.h"
+#include "result.h"
 #include "system.h"
 
 
@@ -281,12 +281,7 @@ static enum nmz_stat namazu_core(char * query, char *subquery, char *argv0)
 
     /* if query is null, show NMZ.head,body,foot and exit with error */
     if (*query == '\0') {
-        if (is_htmlmode()) {
-            print(MSG_MIME_HEADER);
-            print_headfoot(NMZ.head, query, subquery);
-            print_msgfile(NMZ.body);
-            print_headfoot(NMZ.foot, query, subquery);
-        }
+	print_default_page();
 	free_idxnames();
 	free_aliases();
 	free_replaces();
@@ -297,92 +292,12 @@ static enum nmz_stat namazu_core(char * query, char *subquery, char *argv0)
     nmz_debug_printf(" -w: %d\n", get_listwhence());
     nmz_debug_printf("query: [%s]\n", query);
 
-    if (is_htmlmode() && is_cgimode()) {
-	print(MSG_MIME_HEADER);
-    }
-
-    if (is_htmlmode()) {
-	print_headfoot(NMZ.head, query, subquery);
-    }
-
     /* search */
     hlist = nmz_search(query_with_subquery);
 
-    switch (hlist.stat) {
-    case ERR_FATAL:
-	/* this should not happen... */
-	html_print(_("	<h2>Error!</h2>\n<p>Fatal error occered!</p>\n"));
+    /* result printing */
+    if (print_result(hlist, query, subquery) != SUCCESS) {
 	return FAILURE;
-	break;
-    case ERR_TOO_LONG_QUERY:
-        html_print(_(MSG_TOO_LONG_QUERY));
-	return FAILURE;
-	break;
-    case ERR_INVALID_QUERY:
-	html_print(_("	<h2>Error!</h2>\n<p>Invalid query.</p>\n"));
-	return FAILURE;
-	break;
-    case ERR_TOO_MANY_TOKENS:
-	html_print(_("	<h2>Error!</h2>\n<p>Too many query tokens.</p>\n"));
-	return FAILURE;
-	break;
-    default:
-	break;
-    }
-
-    /* result1:  <h2>Results:</h2>, References:  */
-    if (is_refprint() && !is_countmode() && 
-	!is_listmode() && !is_quietmode()) 
-    {
-        print_result1();
-
-        if (Idx.num > 1) {
-            print("\n");
-            if (is_htmlmode())
-                print("<ul>\n");
-        }
-    }
-
-    print_hitnum_all_idx(); /* print hit numbers for all index. */
-
-    /* result2 */
-    if (is_refprint() && !is_countmode() && 
-	!is_listmode() && !is_quietmode()) {
-        if (Idx.num > 1 && is_htmlmode()) {
-            print("</ul>\n");
-        }
-	if (Idx.num == 1 && is_htmlmode()) {
-	    print("\n</p>\n");
-	} else {
-	    fputc('\n', stdout);
-	}
-    }
-
-    if (hlist.num > 0) {
-        if (!is_countmode() && !is_listmode() && !is_quietmode()) {
-            print_hitnum(hlist.num);  /* <!-- HIT -->%d<!-- HIT --> */
-        }
-	if (is_countmode()) {
-	    printf("%d\n", hlist.num);
-	} else {
-	    print_listing(hlist); /* summary listing */
-	}
-        if (!is_countmode() && !is_listmode() && !is_quietmode()) {
-            print_range(hlist);
-        }
-    } else {
-        if (is_countmode()) {
-            print("0\n");
-        } else if (!is_listmode()) {
-            html_print(_("	<p>No document matching your query.</p>\n"));
-	    if (is_htmlmode()) {
-		print_msgfile(NMZ.tips);
-	    }
-        }
-    }
-
-    if (is_htmlmode()) {
-	print_headfoot(NMZ.foot, query, subquery);
     }
 
     free_hlist(hlist);

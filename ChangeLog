@@ -1,12 +1,23 @@
 1999-12-09  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* nmz/rcfile.c (load_rcfile): Fix a bug occurred when no rcfile exists.
+
+	* nmz/search.c (check_access): Renamed from is_access_ok. (undo)
+
+	* src/output.c (print_default_page): New function.
+
+	* src/output.c (print_result): New function.
+
+	* src/namazu.c (namazu_core): Move all output processings to 
+	output.c's print_result().
+	
 	* src/output.c: Rename functions:
 		s/put_query/print_query/
 		s/put_page_index/print_page_index/
 		s/put_query/print_query/
 		s/put_current_range/print_current_range/
 		s/put_page_index/print_page_index/
-	
+
 	* Makefile.am (cxref): Change a dependency: stamp-h -> src/namazu
 	(GTAGS): Change a dependency: stamp-h -> src/namazu
 

@@ -2,7 +2,7 @@
  * 
  * conf.c -
  * 
- * $Id: rcfile.c,v 1.2 1999-12-08 05:46:39 rug Exp $
+ * $Id: rcfile.c,v 1.3 1999-12-09 02:30:55 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -409,7 +409,7 @@ enum nmz_stat load_rcfile(char *argv0)
 
     fp = open_rcfile(argv0);
     if (fp == NULL)
-	return FAILURE;
+	return SUCCESS; /* no rcfile exists */
 
     rcfile_is_loaded = 1;  /* for show_rcfile() */
 
@@ -426,7 +426,7 @@ enum nmz_stat load_rcfile(char *argv0)
 	}
     }
     fclose(fp);
-    return 0;
+    return SUCCESS;
 }
 
 void show_rcfile(void)

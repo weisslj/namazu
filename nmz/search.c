@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.25 1999-12-09 00:49:20 satoru Exp $
+ * $Id: search.c,v 1.26 1999-12-09 02:30:55 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -85,7 +85,7 @@ static NmzResult do_field_search ( char *str, NmzResult val );
 static void delete_beginning_backslash ( char *str );
 static int check_lockfile ( void );
 static enum nmz_perm parse_access ( char *line, char *rhost, char *raddr );
-static int is_access_ok ( void );
+static enum nmz_perm check_access ( void );
 static int open_index_files ( void );
 static void close_index_files ( void );
 static void do_logging ( char * query, int n );
@@ -656,7 +656,7 @@ static enum nmz_perm parse_access(char *line, char *rhost, char *raddr)
     return perm;
 }
 
-static int is_access_ok(void)
+static enum nmz_perm check_access(void)
 {
     char buf[BUFSIZE];
     char *rhost, *raddr;
@@ -751,7 +751,7 @@ static NmzResult search_sub(NmzResult hlist, char *query, char *query_orig, int 
 {
     cur_idxnum = n;
 
-    if (!is_access_ok()) {
+    if (check_access() != ALLOW) {
 	/* if access denied */
 	hlist.stat = ERR_NO_PERMISSION;
 	return hlist;

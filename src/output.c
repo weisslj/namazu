@@ -15,6 +15,8 @@
 #include "result.h"
 #include "em.h"
 #include "i18n.h"
+#include "message.h"
+#include "form.h"
 #include "var.h"
 
 
@@ -394,6 +396,116 @@ static void print_current_range(int listmax)
  *
  */
 
+enum nmz_stat print_result(NmzResult hlist, char *query, char *subquery)
+{
+
+    if (is_htmlmode() && is_cgimode()) {
+	print(MSG_MIME_HEADER);
+    }
+
+    if (is_htmlmode()) {
+	print_headfoot(NMZ.head, query, subquery);
+    }
+
+    switch (hlist.stat) {
+    case ERR_FATAL:
+	/* this should not happen... */
+	html_print(_("	<h2>Error!</h2>\n<p>Fatal error occered!</p>\n"));
+	return FAILURE;
+	break;
+    case ERR_TOO_LONG_QUERY:
+        html_print(_(MSG_TOO_LONG_QUERY));
+	return FAILURE;
+	break;
+    case ERR_INVALID_QUERY:
+	html_print(_("	<h2>Error!</h2>\n<p>Invalid query.</p>\n"));
+	return FAILURE;
+	break;
+    case ERR_TOO_MANY_TOKENS:
+	html_print(_("	<h2>Error!</h2>\n<p>Too many query tokens.</p>\n"));
+	return FAILURE;
+	break;
+    default:
+	break;
+    }
+
+    /* result1:  <h2>Results:</h2>, References:  */
+    if (is_refprint() && !is_countmode() && 
+	!is_listmode() && !is_quietmode()) 
+    {
+	html_print(_("	<h2>Results:</h2>\n"));
+
+	if (is_htmlmode()) {
+	    fputs("<p>\n", stdout);
+	} else {
+	    fputc('\n', stdout);
+	}
+	print(_("References: "));
+	if (Idx.num > 1 && is_htmlmode()) {
+	    fputs("</p>\n", stdout);
+	}
+
+        if (Idx.num > 1) {
+            print("\n");
+            if (is_htmlmode())
+                print("<ul>\n");
+        }
+    }
+
+    print_hitnum_all_idx(); /* print hit numbers for all index. */
+
+    if (is_refprint() && !is_countmode() && 
+	!is_listmode() && !is_quietmode()) {
+        if (Idx.num > 1 && is_htmlmode()) {
+            print("</ul>\n");
+        }
+	if (Idx.num == 1 && is_htmlmode()) {
+	    print("\n</p>\n");
+	} else {
+	    fputc('\n', stdout);
+	}
+    }
+
+    if (hlist.num > 0) {
+        if (!is_countmode() && !is_listmode() && !is_quietmode()) {
+            print_hitnum(hlist.num);  /* <!-- HIT -->%d<!-- HIT --> */
+        }
+	if (is_countmode()) {
+	    printf("%d\n", hlist.num);
+	} else {
+	    print_listing(hlist); /* summary listing */
+	}
+        if (!is_countmode() && !is_listmode() && !is_quietmode()) {
+            print_range(hlist);
+        }
+    } else {
+        if (is_countmode()) {
+            print("0\n");
+        } else if (!is_listmode()) {
+            html_print(_("	<p>No document matching your query.</p>\n"));
+	    if (is_htmlmode()) {
+		print_msgfile(NMZ.tips);
+	    }
+        }
+    }
+
+    if (is_htmlmode()) {
+	print_headfoot(NMZ.foot, query, subquery);
+    }
+
+    return SUCCESS;
+}
+
+/* Print default page: NMZ.{head,body,foot} */
+void print_default_page (void) {
+    if (is_htmlmode()) {
+	print(MSG_MIME_HEADER);
+	print_headfoot(NMZ.head, "", "");
+	print_msgfile(NMZ.body);
+	print_headfoot(NMZ.foot, "", "");
+    }
+}
+
 void set_htmlmode(int mode)
 {
     htmlmode = mode;
@@ -578,20 +690,6 @@ void print_hitnum_all_idx(void)
     }
 }
 
-void print_result1(void)
-{
-    html_print(_("	<h2>Results:</h2>\n"));
-
-    if (is_htmlmode()) {
-	fputs("<p>\n", stdout);
-    } else {
-	fputc('\n', stdout);
-    }
-    print(_("References: "));
-    if (Idx.num > 1 && is_htmlmode()) {
-	fputs("</p>\n", stdout);
-    }
-}
 
 void print_hitnum(int n)
 {

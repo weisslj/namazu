@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 1999-12-09 10:29+0900\n"
+"POT-Creation-Date: 1999-12-09 11:12+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -37,80 +37,80 @@ msgstr ""
 msgid "Too long QUERY_STRING"
 msgstr ""
 
+#: src/output.c:218
+msgid " (Too many words matched. Ignored.)"
+msgstr ""
+
+#: src/output.c:220
+msgid " (Too many pages hit. Ignored.)"
+msgstr ""
+
+#: src/output.c:222
+msgid " (cannot open regex index)"
+msgstr ""
+
+#: src/output.c:224
+msgid " (cannot open phrase index)"
+msgstr ""
+
+#: src/output.c:226
+msgid " (cannot open this index)\n"
+msgstr ""
+
+#: src/output.c:228
+msgid "(You don't have a permission to access the index)"
+msgstr ""
+
+#: src/output.c:336
+msgid "\t<strong>Page:</strong> "
+msgstr ""
+
+#: src/output.c:378
+#, c-format
+msgid "Current List: %d"
+msgstr ""
+
 #. this should not happen...
-#: src/namazu.c:314
+#: src/output.c:413
 msgid ""
 "\t<h2>Error!</h2>\n"
 "<p>Fatal error occered!</p>\n"
 msgstr ""
 
-#: src/namazu.c:322
+#: src/output.c:421
 msgid ""
 "\t<h2>Error!</h2>\n"
 "<p>Invalid query.</p>\n"
 msgstr ""
 
-#: src/namazu.c:326
+#: src/output.c:425
 msgid ""
 "\t<h2>Error!</h2>\n"
 "<p>Too many query tokens.</p>\n"
 msgstr ""
 
-#: src/namazu.c:377
+#: src/output.c:436
+msgid "\t<h2>Results:</h2>\n"
+msgstr ""
+
+#: src/output.c:443
+msgid "References: "
+msgstr ""
+
+#: src/output.c:485
 msgid "\t<p>No document matching your query.</p>\n"
 msgstr ""
 
-#: src/output.c:216
-msgid " (Too many words matched. Ignored.)"
-msgstr ""
-
-#: src/output.c:218
-msgid " (Too many pages hit. Ignored.)"
-msgstr ""
-
-#: src/output.c:220
-msgid " (cannot open regex index)"
-msgstr ""
-
-#: src/output.c:222
-msgid " (cannot open phrase index)"
-msgstr ""
-
-#: src/output.c:224
-msgid " (cannot open this index)\n"
-msgstr ""
-
-#: src/output.c:226
-msgid "(You don't have a permission to access the index)"
-msgstr ""
-
-#: src/output.c:334
-msgid "\t<strong>Page:</strong> "
-msgstr ""
-
-#: src/output.c:376
-#, c-format
-msgid "Current List: %d"
-msgstr ""
-
-#: src/output.c:574
+#: src/output.c:686
 #, c-format
 msgid " [ TOTAL: %d ]"
 msgstr ""
 
-#: src/output.c:583
-msgid "\t<h2>Results:</h2>\n"
-msgstr ""
-
-#: src/output.c:590
-msgid "References: "
-msgstr ""
-
-#: src/output.c:598
+#: src/output.c:696
 msgid "\t<p><strong> Total "
 msgstr ""
 
-#: src/output.c:605
+#: src/output.c:703
 msgid ""
 "\t documents matching your query.</strong></p>\n"
 "\n"

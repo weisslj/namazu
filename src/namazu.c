@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.69 2000-01-05 08:05:44 satoru Exp $
+ * $Id: namazu.c,v 1.70 2000-01-05 08:50:01 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -273,7 +273,7 @@ namazu_core(char * query, char *subquery, char *argv0)
     char query_with_subquery[BUFSIZE * 2];
     NmzResult hlist;
 
-    /* make full-pathname of NMZ.{head,foot,msg,body,slog}.?? */
+    /* Make full-pathname of NMZ.{head,foot,msg,body,slog}.?? */
     make_fullpathname_msg();
 
     codeconv_query(query);
@@ -282,7 +282,7 @@ namazu_core(char * query, char *subquery, char *argv0)
     strcat(query_with_subquery, " ");
     strcat(query_with_subquery, subquery);
 
-    /* if query is null, show NMZ.head,body,foot and exit with error */
+    /* If query is null, show NMZ.head,body,foot and exit with error */
     if (*query == '\0') {
 	print_default_page();
 	free_idxnames();
@@ -295,7 +295,7 @@ namazu_core(char * query, char *subquery, char *argv0)
     nmz_debug_printf(" -w: %d\n", get_listwhence());
     nmz_debug_printf("query: [%s]\n", query);
 
-    /* search */
+    /* Search */
     hlist = nmz_search(query_with_subquery);
 
     if (hlist.stat == ERR_FATAL) {

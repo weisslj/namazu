@@ -1,5 +1,7 @@
 2000-01-05  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* nmz/codeconv.c: Fix ja_JP.JIS7 bug.
+
 	* template/NMZ.*.ja_JP.JIS7: Renamed to NMZ.*.ja
 	and converted its character encoding to EUC-JP.
 	

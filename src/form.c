@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.30 2000-01-05 08:05:44 satoru Exp $
+ * $Id: form.c,v 1.31 2000-01-05 08:50:01 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -353,8 +353,7 @@ read_headfoot(const char *fname)
  */
 
 /* 
- * display header or footer file.
- * very ad hoc.
+ * Pisplay header or footer file. very ad hoc.
  */
 void 
 print_headfoot(const char * fname, const char * query, const char *subquery)
@@ -402,8 +401,10 @@ print_headfoot(const char * fname, const char * query, const char *subquery)
 		continue;
 	    }
 
-            /* In case of file's encoding is ISO-2022-JP, 
-               the problem occurs if JIS X 208 characters in element */
+            /* 
+	     * In case of file's encoding is ISO-2022-JP, 
+	     * the problem occurs if JIS X 208 characters in element 
+	     */
             q = (char *)strchr(p, (int)'>');
             fputs("<", stdout);
             handle_tag(p + 1, q - 1, query, name, subquery);

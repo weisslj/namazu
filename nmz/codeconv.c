@@ -2,7 +2,7 @@
  * 
  * codeconv.c -
  * 
- * $Id: codeconv.c,v 1.10 2000-01-05 08:05:39 satoru Exp $
+ * $Id: codeconv.c,v 1.11 2000-01-05 08:49:58 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -453,23 +453,16 @@ conv_ext (const char *str) {
     }
 
     lang = get_lang();
-    if (strcasecmp(lang, "japanese") == 0) {   /* EUC-JP */
+    if (strcasecmp(lang, "japanese") == 0 || 
+	strcasecmp(lang, "ja") == 0 || 
+	strcasecmp(lang, "ja_JP.EUC") == 0 || 
+	strcasecmp(lang, "ja_JP.ujis") == 0 ||
+	strcasecmp(lang, "ja_JP.eucJP") == 0)  /* EUC-JP */
+    {
 	;
-    } else if (strcasecmp(lang, "ja") == 0) {  /* EUC-JP */
-	;
-    } else if (strcasecmp(lang, "ja_JP.EUC") == 0) {  /* EUC-JP */
-	;
-    } else if (strcasecmp(lang, "ja_JP.ujis") == 0) {  /* EUC-JP */
-	;
-    } else if (strcasecmp(lang, "ja_JP.eucJP") == 0) {  /* EUC-JP */
-	;
-    } else if (strcasecmp(lang, "ja_JP.sjis") == 0) { /* Shift_JIS */
-	euctosjis((uchar *)tmp);
     } else if (strcasecmp(lang, "ja_JP.SJIS") == 0) { /* Shift_JIS */
 	euctosjis((uchar *)tmp);
-    } else if (strcasecmp(lang, "ja_JP.JIS7") == 0) { /* ISO-2022-JP */
-	euctojis((uchar *)tmp);
-    } else if (strcasecmp(lang, "ja_JP.iso-2022-jp") == 0) { /* ISO-2022-JP */
+    } else if (strcasecmp(lang, "ja_JP.ISO-2022-JP") == 0) { /* ISO-2022-JP */
 	/*
 	 * Prepare enough memory for ISO-2022-JP encoding.
 	 * FIXME: It's not space-efficient. In the future, 

@@ -4,7 +4,7 @@
 # nmzgrep - search namazu-indexed documents for a given pattern and 
 #           print lines matching the pattern.
 # 
-# $Id: nmzgrep.in,v 1.1 1999-12-10 09:11:25 satoru Exp $
+# $Id: nmzgrep.in,v 1.2 1999-12-11 01:13:50 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -46,7 +46,8 @@ if (@ARGV == 0) {
 
 my $pattern = shift @ARGV;
 my @indices = @ARGV;
-my $command = "namazu -alR $pattern @indices | xargs egrep @opts $pattern";
+my $command = "namazu -alR $pattern @indices |\
+               xargs egrep @opts $pattern /dev/null";
 
 my $fh = new FileHandle;
 $fh->open("$command |");

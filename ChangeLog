@@ -1,5 +1,7 @@
 1999-12-11  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/nmzgrep: Put /dev/null to egrep's argument.
+
 	* src/Makefile.am (bin_SCRIPTS): Add nmzgrep
 
 1999-12-10  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>

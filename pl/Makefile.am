@@ -8,7 +8,6 @@ perllibdir = $(pkgdatadir)/pl
 perllib_DATA = \
 	codeconv.pl \
 	conf.pl \
-	find.pl \
 	gettext.pl \
 	nmzidx.pl \
 	seed.pl \
@@ -17,17 +16,7 @@ perllib_DATA = \
 	var.pl \
 	wakati.pl
 
-EXTRA_DIST = \
-	codeconv.pl \
-	conf.pl.in \
-	find.pl \
-	gettext.pl.in \
-	nmzidx.pl \
-	seed.pl \
-	usage.pl \
-	util.pl \
-	var.pl.in \
-	wakati.pl
+EXTRA_DIST = $(perllib_DATA)
 
 gettext.pl: gettext.pl.in
 	rm -f @

@@ -1,5 +1,23 @@
 2000-01-28  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* pl/Makefile.am (perllib_DATA): Remove find.pl.
+	(EXTRA_DIST): Simplified.
+
+	* scripts/mknmz.pl.in (put_log): Getteztized.
+	s/Files/Documents/g.
+
+	* pl/gettext.pl (N_): New function.
+
+	* scripts/mknmz.pl.in (find_target): Change a message.
+	(load_modules): Do not require find.pl.
+
+	* pl/find.pl: Removed.
+
+	* scripts/mknmz.pl.in (find_target): Use File::Find's find()
+	instead of one in pl/find.pl.
+	(wanted): Abolished and transformed to $wanted_closure in
+	find_target().
+
 	* template/Makefile.am (template_DATA): Add
 	NMZ.result.{normal,short}.ja 
 	(EXTRA_DIST): Simplified.

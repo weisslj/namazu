@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.17 2000-01-28 09:40:19 satoru Exp $
+# $Id: mknmz.pl.in,v 1.18 2000-01-28 12:39:10 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -30,8 +30,9 @@ require 5.004;
 use lib "@ADDITIONAL_INC@";
 use Cwd;
 use IO::File;
-use Time::Local;
+use File::Find;
 use File::MMagic;
+use Time::Local;
 use strict;  # be strict since v1.2.0
 use Getopt::Long;
 use File::Copy;
@@ -61,7 +62,6 @@ my $ReplaceCode  = undef;  # perl code for transforming URI
 my @Seed = ();
 
 my $Magic = new File::MMagic;
-my $scanned = 0 ; # total number scanned by find_targets()
 
 STDOUT->autoflush(1);
 STDERR->autoflush(1);
@@ -241,7 +241,6 @@ sub load_modules () {
     require "util.pl" || die "unable to require \"util.pl\"\n";
     require "usage.pl" || die "unable to require \"usage.pl\"\n";
     require "codeconv.pl" || die "unable to require \"codeconv.pl\"\n";
-    require "find.pl" || die "unable to require \"find.pl\"\n";
     require "wakati.pl" || die "unable to require \"wakati.pl\"\n";
     require "seed.pl" || die "unable to require \"seed.pl\"\n";
 
@@ -1056,7 +1055,40 @@ sub find_target (@) {
 	if (-d $target) { # target is a directory
 	    my $cwd = cwd();
 	    chdir $target;
-	    find::findfiles(\@flist);
+
+	    #
+	    # wanted routine for File::Find's find().
+	    #
+	    my $wanted_closure = sub {
+		my $fname = "$File::Find::dir/$_";
+
+		if ($fname =~ /[\n\r]/) {
+		    $fname =~ s/[\n\r]//g;
+		    print "Warning: $fname contains LF/CR chars, skip it\n";
+		    return;   # skip a file name containing LF/CR chars.
+		}
+		return unless -f $fname && -r $fname;
+
+		return if defined $conf::EXCLUDE_REGEX && 
+		          $fname =~ /$conf::EXCLUDE_REGEX/;
+
+		if (defined $conf::MTIME) {
+		    my ($dev,$ino,$mode,$nlink,$uid,$gid) = lstat($fname);
+		    return if ($conf::MTIME < 0 && (int(-C _) 
+						    > $conf::MTIME)); 
+		    return if ($conf::MTIME > 0 && (int(-C _) 
+						    < $conf::MTIME));
+		}
+
+		if ($fname !~ m!^.*/(($conf::DENY_REGEX)(\.gz|\.Z)?)$!i &&
+		    $fname =~ m!^.*/(($conf::ALLOW_REGEX)(\.gz|\.Z|\?.*)?)$!i)
+		{
+		    push(@flist, $fname);
+		    util::dprint(_("wanted: ") . "$fname\n");
+		}
+	    };
+
+	    find($wanted_closure, cwd());
 	    chdir $cwd;
 	} else {
 	    push(@flist, $target);
@@ -1068,9 +1100,8 @@ sub find_target (@) {
     @flist = grep {$mark{$_}++; $mark{$_} == 1} @flist;
     my $elapsed = time() - $start ;
     $elapsed += 1 ;   # to round up and avoid 0 
-    util::vprint(_(" findfiles    ended: "). localtime(time()). "\n" );
-    printf(_(" find_target: Scanned : (%d), Files: (%d), Elapsed: (%d), Files/sec: (%.1f).\n"), 
-           $mknmz::scanned, 
+    util::vprint(_("findfiles    ended: "). localtime(time()). "\n" );
+    printf(_("Target Files: %d (Scan Performance: Elapsed Sec.: %d, Files/sec: %.1f)\n"), 
 	   $#flist + 1, $elapsed, 
 	   ($#flist + 1 ) /$elapsed ) unless $var::Opt{'quiet'};
     return @flist;
@@ -1226,32 +1257,6 @@ sub change_dbnames ($) {
     }
 }
 
-
-# for "find"
-sub wanted ($$){
-    my ($name, $rarray) = @_;
-    my ($dev,$ino,$mode,$nlink,$uid,$gid ) ;
-
-    if ($name =~ /[\n\r]/) {
-	$name =~ s/[\n\r]//g;
-	print " ** Warning: $name contains LF/CR chars, skipping.\n";
-	return ;    # skip a file name containing LF/CR chars.
-	}
-    $mknmz::scanned++;
-    return if(defined $conf::EXCLUDE_REGEX && $name =~ /$conf::EXCLUDE_REGEX/);
-    if ( defined $conf::MTIME ) {
-	(($dev,$ino,$mode,$nlink,$uid,$gid) = lstat($name));
-	return if ( $conf::MTIME < 0 &&  (int(-C _) > $conf::MTIME )  ); 
-	return if ( $conf::MTIME > 0 &&  (int(-C _) < $conf::MTIME )  );  }
-
-    if ($name !~ m!^.*/(($conf::DENY_REGEX)(\.gz|\.Z)?)$!i &&
-	$name =~ m!^.*/(($conf::ALLOW_REGEX)(\.gz|\.Z|\?.*)?)$!i && 
-	-f $name && -r $name)
-    {
-	push(@{$rarray}, $name);
-	util::dprint(_("wanted: ")."$name\n");
-    }
-}
 
 #
 # Preparation processing for appending index files.
@@ -1564,25 +1569,55 @@ sub put_log ($$$$) {
     $total_files_size        = util::commas($total_files_size);
     $total_keys_count       = util::commas($total_keys_count);
 
-    my $logmsg = "[Base]\n";
-    $logmsg = "[Append]\n" if $APPENDMODE;
-    $logmsg .= "Date: $date\n" if $date;
-    $logmsg .= "Added Files: $added_files_count files\n" if $added_files_count;
-    $logmsg .= "Deleted Files: $deleted_files_count files\n" if $deleted_files_count;
-    $logmsg .= "Updated Files: $updated_files_count files\n" if $updated_files_count;
-    $logmsg .= "Total Files: $total_files_count files\n" if $total_files_count;
-    $logmsg .= "Size: $total_files_size bytes\n" if $total_files_size;
-    $logmsg .= "Added Keywords: $added_keys_count words\n" if $added_keys_count;
-    $logmsg .= "Total Keywords: $total_keys_count words\n" if $total_keys_count;
-    $logmsg .= "Perl: $]\n" if $];   # '$]' has a perl version
-    $logmsg .= "Namazu: $var::VERSION\n" if $var::VERSION;
-    $logmsg .= "System: $SYSTEM\n" if $SYSTEM;
-    $logmsg .= "Wakati: $conf::WAKATI\n" if $conf::WAKATI;
-    $logmsg .= "Time: $processtime sec.\n"if $processtime;
-    $logmsg .= "\n";
+    my @logmsgs = ();
+    if ($APPENDMODE) {
+	push @logmsgs, N_("[Append]");
+    } else {
+	push @logmsgs, N_("[Base]");
+    }
+    push @logmsgs, N_("Date:"), "$date" if $date;
+    push @logmsgs, N_("Added Documents:"), "$added_files_count" 
+	if $added_files_count;
+    push @logmsgs, N_("Deleted Documents:"), "$deleted_files_count" 
+	if $deleted_files_count;
+    push @logmsgs, N_("Updated Documents:"), "$updated_files_count" 
+	if $updated_files_count;
+    push @logmsgs, N_("Size (bytes):"), "$total_files_size"
+	if $total_files_size;
+    push @logmsgs, N_("Total Documents:"), "$total_files_count" 
+	if $total_files_count;
+    push @logmsgs, N_("Added Keywords:"), "$added_keys_count" 
+	if $added_keys_count;
+    push @logmsgs, N_("Total Keywords:"), "$total_keys_count" 
+	if $total_keys_count;
+    push @logmsgs, N_("Wakati:"), "$conf::WAKATI" if $conf::WAKATI;
+    push @logmsgs, N_("Time (sec):"), "$processtime" if $processtime;
+    push @logmsgs, N_("File/Sec:"), 
+        (($added_files_count + $updated_files_count) / $processtime) 
+	    if $processtime;
+    push @logmsgs, N_("System:"), "$SYSTEM" if $SYSTEM;
+    push @logmsgs, N_("Perl:"),   "$]" if $];   # '$]' has a perl version
+    push @logmsgs, N_("Namazu:"), "$var::VERSION" if $var::VERSION;
 
-    print $logmsg unless $var::Opt{'quiet'};
-    put_log_to_logfile($logmsg);
+    my $log_for_file = "";
+
+    unless ($var::Opt{'quiet'}) {
+	my $msg = shift @logmsgs;	# [Base] or [Append]
+	# To stdout, use gettext.
+	print _($msg), "\n";
+	# To log file, do not use gettext.
+	$log_for_file = $msg . "\n";
+	while (@logmsgs) {
+	    my $field = shift @logmsgs;
+	    my $value = shift @logmsgs;
+	    printf "%-20s %s\n", _($field), "$value";
+	    $log_for_file .= sprintf "%-20s %s\n", $field, "$value";
+	}
+	print "\n";
+	$log_for_file .= "\n";
+    }
+
+    put_log_to_logfile($log_for_file);
     put_total_files($total_files_count);
     put_total_keys($total_keys_count);
 

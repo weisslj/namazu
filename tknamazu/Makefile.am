@@ -1,9 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-@SET_MAKE@
 AUTOMAKE_OPTIONS = 1.4 no-dependencies
-
-pkgdatadir = @datadir@/@PACKAGE@
 
 ext_namazu=@NAMAZU@
 ext_mknmz=@MKNMZ@

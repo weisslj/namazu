@@ -1,3 +1,11 @@
+1999-12-19  Ryuji Abe  <raeva@t3.rim.or.jp>
+
+	* Makefile.am: Removed unnessesary `@SET_MAKE@'.
+
+	* src/Makefile.am (templatedir): Removed.
+
+	* scripts/Makefile.am (tags): Currently, target inserted as comment.
+
 1999-12-19  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* src/result.c (is_urireplace): Prepare its prototype declaration.

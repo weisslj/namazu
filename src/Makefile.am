@@ -16,7 +16,6 @@ noinst_PROGRAMS = namazu.cgi
 localedir   = $(datadir)/locale
 confdir     = $(sysconfdir)/$(PACKAGE)
 indexdir    = $(localstatedir)/$(PACKAGE)/index
-templatedir = $(pkgdatadir)/template
 
 ##################################################################
 

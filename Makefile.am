@@ -1,6 +1,5 @@
 ## Process this file with automake to produce Makefile.in
 
-@SET_MAKE@
 AUTOMAKE_OPTIONS = 1.4 no-dependencies
 
 SUBDIRS = intl po conf filter nmz lib pl src lisp man scripts \

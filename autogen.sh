@@ -69,6 +69,7 @@ autoconf
 
 ( cd tknamazu; ./autogen.sh )
 
+echo "Configuring Namazu."
 conf_flags="" #--enable-maintainer-mode
 echo Running $./configure $conf_flags "$@" ...
 ./configure $conf_flags "$@"

@@ -1,3 +1,7 @@
+1999-11-05  Ryuji Abe <raeva@t3.rim.or.jp>
+
+	* nmz-config.in: Changed @includedir@ to @pkgincludedir@
+ 
 1999-11-05  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* nmz/Makefile.am: Changed `include_HEADERS' to `pkginclude_HEADERS'.

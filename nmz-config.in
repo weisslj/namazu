@@ -65,8 +65,8 @@ while test $# -gt 0; do
 	;;
 
     --cflags)
-        if test @includedir@ != /usr/include ; then
-          includes=-I@includedir@
+        if test @pkgincludedir@ != /usr/include ; then
+          includes=-I@pkgincludedir@
         fi
         echo $includes
        	;;

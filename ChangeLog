@@ -1,27 +1,30 @@
-
-			       ChangeLog for Namazu
-
-	This file describes Namazu's change history. If you want to know
-	about major changes from previous version, please see 
-	"manual.html#VERSIONDIFF".
-
 1999-08-23  Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>
 
-	* src/namazu.c: Implement a suicide code.
-	* src/mknmz.pl.in: Implement a signal handler for SIGINT.
+	* src/namazu.c: Implement a suicide code.  * src/mknmz.pl.in:
+	Implement a signal handler for SIGINT.
+
+	* src/mknmz.pl.in: Implement a signal handler for SIGINT (mknmz)
+
+	* src/{hlist.c,result.l,output.c}, lib/NMZ.result: Implement a
+	keyword emphasizing in HTML mode. (rough implementation)
+
 
 1999-08-13  Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>
 
 	* src/mknmz.pl.in: Change index formats of NMZ.[ip] to compress
 	them.
+
 	* src/search.c, src/hlist.c: Support new formats.
 	  - NOTE: an old index format is no longer supported.
+
 	* lib/NMZ.result: Modify a little bit.
+
 	* src/conf.c, src/namazu.c: Modify LIST implementations a bit.
 
 1999-08-12  masao@ulis.ac.jp (Masao Takaku)
 
 	* src/search.c: Fix TfIdf scoring bug.
+
 	* src/namazu.h, src/values.c: Delete NMZ.{f,fi} related code.
 	
 1999-07-22  Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>
@@ -33,13 +36,16 @@
 1999-07-09  masao@ulis.ac.jp (Masao Takaku)
 
 	* mknmz.pl.in: Fix field_indices bug occurred at re-exec
+
 	* mknmz.pl.in: Fix -k and -c options bug
+
 	* src/Makefile.am: Added getopt.c, getopt1.c, getotp.h entries 
 
 1999-07-06  masao@ulis.ac.jp (Masao Takaku)
 
 	* mknmz.pl: Fix --checkpoint, --include, --target-list
 	related bugs.
+
 	* Makefile.am, src/Makefile.am: Fix lib directory and
 	add getopt.[ch]
 	
@@ -47,32 +53,43 @@
 
 	* src/result.l: New file. formatter for search results 
 	made by using lex
+
 	* src/result.c: New file. made by lex automatically
+
 	* src/{messages,search,form}.c: lower all HTML elements
+
 	* lib/NMZ.*.{en,ja}: lower all HTML elements
+
 	* lib/NMZ.results: New file. a template file for search results
+
 	* src/regex.[ch]: Reimported sources from Ruby v1.2.5
 	
 1999-05-30  Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>
 
 	* src/namazu.c: Modified it to use GNU getopt.c for parsing
 	command line options and to support long-name options.
+
 	* src/getopt.[ch], src/getopt1.c: GNU getopt.c added.
 	
 1999-05-29  Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>
 
 	* lib/conf.pl.in: Modified a usage message in Japanese vastly.
+
 	* src/mknmz.pl: Modified command line option parsing codes
 	using Getopt::Long module.
+
 	* src/cgi.c: Fixed validate_dbname() bug and
 	  - [MAEDA Atusi <maeda@is.uec.ac.jp>] - patch
+
 	* src/hlist.c: Fixed put_hlist bug
 	  - [MAEDA Atusi <maeda@is.uec.ac.jp>] - report
+
 	* src/namazu.c: Modified command line option parsing codes
 	
 1999-05-14  Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>
 
 	* src/mknmz.pl: Fixed lockfile related code (subtle problem)
+
 	* lib/html.pl: Modified parse_robots_txt a little bit
 
 	

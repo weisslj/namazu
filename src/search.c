@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.6 1999-08-13 15:36:02 satoru Exp $
+ * $Id: search.c,v 1.7 1999-08-23 10:40:53 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -184,7 +184,7 @@ HLIST forward_match(uchar * orig_key, int v)
 	if (-1 == fseek(Index, get_index_pointer(IndexIndex, i), 0))
 	    break;
 	fgets(buf, BUFSIZE, Index);
-        chop(buf);
+        chomp(buf);
 	if (!strncmp(key, buf, n)) {
 	    tmp = get_hlist(i);
 	    if (tmp.n > IGNORE_HIT) {
@@ -739,7 +739,7 @@ void print_result2(void)
 	fputc('\n', stdout);
 }
 
-void print_result3(int n)
+void print_hitnum(int n)
 {
     fputx(MSG_HIT_1, stdout);
     if (HtmlOutput)
@@ -749,7 +749,7 @@ void print_result3(int n)
     fputx(MSG_HIT_2, stdout);
 }
 
-void print_result4(HLIST hlist)
+void print_hlist(HLIST hlist)
 {
     if (HtmlOutput)
         printf("<dl>\n");
@@ -761,11 +761,11 @@ void print_result4(HLIST hlist)
 
 }
 
-void print_result5(HLIST hlist)
+void print_range(HLIST hlist)
 {
     if (HtmlOutput)
         printf("<p>\n");
-    put_current_extent(hlist.n);
+    put_current_range(hlist.n);
     if (!HidePageIndex)
         put_page_index(hlist.n);
     if (HtmlOutput)
@@ -823,7 +823,7 @@ uchar *get_dir_name(uchar *path)
     }
 }
 
-HLIST search_and_print_reference(HLIST hlist, uchar *query,
+HLIST search_sub(HLIST hlist, uchar *query,
                                  uchar *query_orig, int n)
 {
     if (!HitCountOnly && !MoreShortFormat && !NoReference && !Quiet) {
@@ -908,8 +908,7 @@ void search_main(uchar *query)
     }
     for (i = 0; i < DbNumber; i++) {
         make_fullpathname_index(i);
-        tmp[i] = search_and_print_reference(tmp[i], query, 
-                                            query_orig, i);
+        tmp[i] = search_sub(tmp[i], query, query_orig, i);
     }
     if (!HitCountOnly && !MoreShortFormat && !NoReference && !Quiet) {
         if (DbNumber > 1 && HtmlOutput) {
@@ -921,23 +920,23 @@ void search_main(uchar *query)
     hlist = merge_hlist(tmp);
     if (hlist.n > 0) {
         reverse_hlist(hlist);
-        sort_hlist(hlist, "date");  /* sort by date */
+        sort_hlist(hlist, SORT_BY_DATE);
         if (! LaterOrder) {  /* early order */
             reverse_hlist(hlist);
         }
         if (ScoreSort) {
-            sort_hlist(hlist, "score"); /* sort by score */
+            sort_hlist(hlist, SORT_BY_SCORE);
         }
         if (!HitCountOnly && !MoreShortFormat && !Quiet) {
-            print_result3(hlist.n);  /* <!-- HIT -->%d<!-- HIT --> */
+            print_hitnum(hlist.n);  /* <!-- HIT -->%d<!-- HIT --> */
         }
 	if (HitCountOnly) {
 	    printf("%d\n", hlist.n);
 	} else {
-	    print_result4(hlist); /* summary listing */
+	    print_hlist(hlist); /* summary listing */
 	}
         if (!HitCountOnly && !MoreShortFormat && !Quiet) {
-            print_result5(hlist);
+            print_range(hlist);
         }
     } else {
         if (HitCountOnly) {

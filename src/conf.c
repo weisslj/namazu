@@ -2,7 +2,7 @@
  * 
  * conf.c -
  * 
- * $Id: conf.c,v 1.5 1999-08-13 00:16:58 satoru Exp $
+ * $Id: conf.c,v 1.6 1999-08-23 10:40:52 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -179,7 +179,7 @@ void load_namazu_conf(char *av0)
 	return;
     ConfLoaded = 1;
     while (fgets(buf, BUFSIZE, fp)) {
-	chop(buf);
+	chomp(buf);
 	if (!strncmp(buf, "INDEX\t", 6)) {
 	    for (n = 6; buf[n] == '\t'; n++);
 	    strcpy(DEFAULT_DIR, buf + n);

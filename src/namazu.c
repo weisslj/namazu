@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.10 1999-08-23 03:47:53 satoru Exp $
+ * $Id: namazu.c,v 1.11 1999-08-23 10:40:53 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -276,8 +276,9 @@ void namazu_core(uchar * query, uchar *subquery, uchar *av0)
 
     /* make full-pathname of NMZ.{head,foot,msg,body,slog}.?? */
     make_fullpathname_msg();
-    codeconv_query(query); /* code conversion */
-    codeconv_query(subquery); /* code conversion */
+
+    codeconv_query(query);
+    codeconv_query(subquery);
     strcpy(query_with_subquery, query);
     strcat(query_with_subquery, " ");
     strcat(query_with_subquery, subquery);
@@ -286,9 +287,9 @@ void namazu_core(uchar * query, uchar *subquery, uchar *av0)
     if (*query == '\0') {
         if (HtmlOutput) {
             fputs(MSG_MIME_HEADER, stdout);
-            cat_head_or_foot(HEADERFILE, query, subquery);
+            print_headfoot(HEADERFILE, query, subquery);
             cat(BODYMSGFILE);
-            cat_head_or_foot(FOOTERFILE, query, subquery);
+            print_headfoot(FOOTERFILE, query, subquery);
         }
 	exit(1);
     }
@@ -302,12 +303,12 @@ void namazu_core(uchar * query, uchar *subquery, uchar *av0)
     if (HtmlOutput && IsCGI)
 	fputs(MSG_MIME_HEADER, stdout);
     if (HtmlOutput)
-	cat_head_or_foot(HEADERFILE, query, subquery);
+	print_headfoot(HEADERFILE, query, subquery);
 
     search_main(query_with_subquery);
 
     if (HtmlOutput)
-	cat_head_or_foot(FOOTERFILE, query, subquery);
+	print_headfoot(FOOTERFILE, query, subquery);
     free_dbnames();
 }
 

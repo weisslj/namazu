@@ -60,7 +60,7 @@ void put_page_index(int n)
 }
 
 /* output current range */
-void put_current_extent(int listmax)
+void put_current_range(int listmax)
 {
     if (HtmlOutput)
 	printf("<STRONG>Current List: %d", HListWhence + 1);
@@ -132,7 +132,7 @@ void fputs_without_html_tag(uchar * s, FILE *fp)
 }
 
 
-void euctojisput(uchar *s, FILE *fp, int mode)
+void euctojisput(uchar *s, FILE *fp, int entity_encode, int ishtml)
 {
     int c, c2, state = 0, non_ja;
 
@@ -149,7 +149,28 @@ void euctojisput(uchar *s, FILE *fp, int mode)
 		set1byte();
 		state = 0;
 	    }
-	    if (mode) {
+	    if (c == EMPHASIZING_START) {
+		if (ishtml) {
+		    printf("<strong class=\"keyword\">");
+		} else {
+		    printf(" **");
+		}
+		if (!(c = (int) *(s++))) {
+		    return;
+		}
+		continue;
+	    } else if (c == EMPHASIZING_END) {
+		if (ishtml) {
+		    printf("</strong>");
+		} else {
+		    printf("** ");
+		}
+		if (!(c = (int) *(s++))) {
+		    return;
+		}
+		continue;
+	    } 
+	    if (entity_encode) {
 		/* < > & " are converted to entities like &lt; */
 		if (c == '<')
 		    printf("&lt;");
@@ -161,8 +182,9 @@ void euctojisput(uchar *s, FILE *fp, int mode)
 		    printf("&quot;");
 		else
 		    fputc(c, fp);
-	    } else
+	    } else {
 		fputc(c, fp);
+	    }
 	} else if (iseuc(c)) {
 	    if (!(c2 = (int) *(s++))) {
 		fputc(c, fp);
@@ -199,22 +221,22 @@ void euctojisput(uchar *s, FILE *fp, int mode)
 /* fputs Namazu version, it works with considereation of mode */
 void fputx(uchar *str, FILE *fp)
 {
-    uchar buf[BUFSIZE];
-    int is_html = 0;
+    uchar buf[BUFSIZE * 16];
+    int ishtml = 0;
 
     if ((int)*str == (int)'\t') {
-        is_html = 1;
+        ishtml = 1;
     }
 
-    strcpy(buf, str + is_html);
+    strcpy(buf, str + ishtml);
     if (HtmlOutput) {
         /* if string is Namazu's HTML message, it will be printed as is,
            if not, it will be printed with entity conversion */
-        euctojisput(buf, fp, ! is_html);
+        euctojisput(buf, fp, ! ishtml, ishtml);
     } else {
         /* if string is Namazu's HTML message, it will be printed without 
            HTML tag, if not, it will be printed as is */
-        if (is_html) {
+        if (ishtml) {
             fputs_without_html_tag(buf, fp);
         } else {
             fputs_with_codeconv(buf, fp);

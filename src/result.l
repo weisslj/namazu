@@ -1,7 +1,7 @@
 /*
  * result.l -
  * -*- C -*-
- * $Id: result.l,v 1.5 1999-07-06 12:36:24 satoru Exp $
+ * $Id: result.l,v 1.6 1999-08-23 10:40:53 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -57,16 +57,37 @@ void encode_entity(uchar *str)
     strcpy(str, "");
     for (i = 0; tmp[i]; i++) {
 	if (tmp[i] == '<') {
-	    strcat(str, "&lt;");
+	    strcat(str, "&lt;");   /* " */
 	} else if (tmp[i] == '>') {
-	    strcat(str, "&gt;");
+	    strcat(str, "&gt;");   /* " */
 	} else if (tmp[i] == '&') {
-	    strcat(str, "&amp;"); 
+	    strcat(str, "&amp;");  /* " */
 	} else if (tmp[i] == '"') {
-	    strcat(str, "&quot;");
+	    strcat(str, "&quot;"); /* " */
 	} else {
 	    strncat(str, tmp + i, 1);
 	}
+    }
+}
+
+/* inefficient algorithm but it works */
+void emphasize(uchar *str) {
+    int i;
+
+    for (i = 0; KeyItem[i] != NULL; i++) {
+	uchar *ptr = str;
+	int keylen = strlen(KeyItem[i]);
+
+	do {
+	    ptr = strstr(ptr, KeyItem[i]);
+	    if (ptr != NULL) {
+		memmove(ptr + 2, ptr, strlen(ptr) + 1);
+		memmove(ptr + 1, ptr + 2, keylen);
+		*ptr = EMPHASIZING_START;
+		*(ptr + keylen + 1) = EMPHASIZING_END;
+		ptr += 2;
+	    }
+	} while (ptr != NULL);
     }
 }
 
@@ -75,8 +96,9 @@ void get_field_data(char *key)
     uchar field[BUFSIZE], file_name[BUFSIZE];
     FILE *fp_field, *fp_field_idx;
 
-    /* 6 is length of '&quot;'. It's a consideration for buffer overflow */
-    uchar buf[BUFSIZE * 6];  
+    /* 8 is length of '&quot;' + 2 (for emphasizing). 
+       It's a consideration for buffer overflow (overkill?) */
+    uchar buf[BUFSIZE * 8];  
 
     strcpy(field, key + 2);
     *(field + strlen(field) - 1) = '\0';
@@ -93,7 +115,8 @@ void get_field_data(char *key)
     }
 
 
-    strcpy(file_name, FIELDINFO); /* make pathname */
+    /* make a pathname */
+    strcpy(file_name, FIELDINFO);
     strcat(file_name, field);
     
     fp_field = fopen(file_name, "rb");
@@ -114,10 +137,15 @@ void get_field_data(char *key)
     fseek(fp_field, get_index_pointer(fp_field_idx, Fid), 0);
     fgets(buf, BUFSIZE, fp_field);
 
+
     if (!strcmp(field, "uri")) {
 	replace_uri(buf);
+    } else {
+	/* do not emphasize in URI */
+	emphasize(buf);
     }
-    *(buf + strlen(buf) - 1) = '\0';
+
+    chomp(buf);
     encode_entity(buf);
     strcat(Buf, buf);
     fclose(fp_field);
@@ -125,7 +153,7 @@ void get_field_data(char *key)
 }
 
 /* display the hlist */
-void put_hlist(HLIST hlist)
+void put_hlist (HLIST hlist)
 {
     int i;
 

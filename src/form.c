@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.4 1999-06-12 14:29:29 satoru Exp $
+ * $Id: form.c,v 1.5 1999-08-23 10:40:52 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -53,10 +53,10 @@ uchar *load_headfoot(uchar *fname)
     }
     buf = (uchar *) malloc(fstatus.st_size + 1);
     if (buf == NULL) {
-	 error("cat_head_or_foot(malloc)");
+	 error("print_headfoot(malloc)");
     }
     if (fread(buf, sizeof(uchar), fstatus.st_size, fp) == 0)
-        error("cat_head_or_foot(fread)");
+        error("print_headfoot(fread)");
     *(buf + fstatus.st_size) = '\0';
     fclose(fp);
     return buf;
@@ -134,7 +134,7 @@ void delete_str(uchar *s, uchar *d)
             tmp--;
         }
     }
-    chop(s);
+    chomp(s);
 }
 
 void get_value(uchar *s, uchar *v)
@@ -292,7 +292,7 @@ void treat_tag(uchar *p, uchar *q, uchar *query,
 /* display header or footer file.
  * very foolish
  */
-void cat_head_or_foot(uchar * fname, uchar * query, uchar *subquery)
+void print_headfoot(uchar * fname, uchar * query, uchar *subquery)
 {
     uchar *buf, *p, *q, name[BUFSIZE] = "";
     int f, f2;

@@ -48,10 +48,15 @@ enum {
     SUICIDE_TIME = 60,  /* namazu will suicide when its
 			   processing time exceeds this */
 
+    SORT_BY_SCORE = 1,  /* at displaying results time */
+    SORT_BY_DATE  = 2,  /* at displaying results time */
+
+    EMPHASIZING_START = '\1',
+    EMPHASIZING_END   = '\2',
+
     STDIN  = 0,		/* stdin's fd */
     STDOUT = 1,		/* stdout's fd */
     STDERR = 2		/* stderr's fd */
-
 
 };
 
@@ -186,7 +191,7 @@ int ismetastring();
 void fputs_without_html_tag();
 void fputs_with_codeconv();
 void put_body_msg();
-void cat_head_or_foot();
+void print_headfoot();
 long get_index_pointer();
 int binsearch();
 void malloc_hlist();
@@ -217,7 +222,7 @@ void reverse_hlist();
 void initialize_parser();
 void queryput();
 void put_page_index();
-void put_current_extent();
+void put_current_range();
 void search_main();
 int codeconv();
 int get_cgi_variables();

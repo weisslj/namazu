@@ -2,7 +2,7 @@
  * 
  * re_match.c -
  * 
- * $Id: re_match.c,v 1.5 1999-07-11 12:05:44 satoru Exp $
+ * $Id: re_match.c,v 1.6 1999-08-23 10:40:53 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -234,7 +234,7 @@ HLIST regex_grep(uchar *orig_expr, FILE *fp, uchar *field, int field_mode)
                 } else {
                     fseek(Index, get_index_pointer(IndexIndex, i), 0);
                     fgets(buf2, BUFSIZE, Index); /* read and dispose */
-                    chop(buf2);
+                    chomp(buf2);
                     fprintf(stderr, "re: %s, (%d:%s), %d, %d\n", 
                             buf2, i, buf, tmp.n, val.n);
                 }

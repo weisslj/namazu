@@ -87,7 +87,7 @@ void tr(uchar *str, uchar f, uchar t)
 }
 
 /* delete ending LF and spaces of string*/
-void chop(uchar * s)
+void chomp(uchar * s)
 {
     int i;
     for (i = strlen(s) - 1; i >= 0; i--) {

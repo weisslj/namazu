@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.6 1999-08-13 15:36:02 satoru Exp $
+ * $Id: hlist.c,v 1.7 1999-08-23 10:40:53 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -367,9 +367,6 @@ HLIST get_hlist(int index)
  * original of this code was contributed by Furukawa-san [1997-11-13]
  */
 
-#define SORT_BY_SCORE 1
-#define SORT_BY_DATE 2
-
 void nmz_mergesort(int first, int last, HLIST hlist, HLIST work, int mode)
 {
     int middle;
@@ -419,16 +416,12 @@ void nmz_mergesort(int first, int last, HLIST hlist, HLIST work, int mode)
 
 
 /* interface to invoke merge sort function */
-void sort_hlist(HLIST hlist, char *mode)
+void sort_hlist(HLIST hlist, int mode)
 {
     HLIST work;
     malloc_hlist(&work, hlist.n);
 
-    if (! strcmp(mode, "score")) {
-        nmz_mergesort(0, hlist.n - 1, hlist, work, SORT_BY_SCORE);
-    } else if (! strcmp(mode, "date")) {
-        nmz_mergesort(0, hlist.n - 1, hlist, work, SORT_BY_DATE);
-    }
+    nmz_mergesort(0, hlist.n - 1, hlist, work, mode);
     free_hlist(work);
 }
 

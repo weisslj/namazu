@@ -2,7 +2,7 @@
  * 
  * wakati.c -
  * 
- * $Id: wakati.c,v 1.3 1999-05-14 04:38:52 satoru Exp $
+ * $Id: wakati.c,v 1.4 1999-08-23 10:40:54 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -132,7 +132,7 @@ void wakati(uchar *key)
             strcat(buf, "\t");
 	}
     }
-    chop(buf);
+    chomp(buf);
 
     if (strlen(buf) <= BUFSIZE) {
 	strcpy(key, buf);

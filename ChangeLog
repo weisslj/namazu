@@ -1,3 +1,8 @@
+2002-01-11  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* src/namazu.h: Added a notice about customizing CGI_QUERY_MAX value.
+	(KF <dotslash@snosoft.com> was noticed me the probrem, thanks)
+
 2002-01-10  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* filter/powerpoint.pl: Adopted to new convert programs.
@@ -7333,4 +7338,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.916 2002-01-10 10:48:34 knok Exp $
+$Id: ChangeLog,v 1.917 2002-01-11 01:44:53 knok Exp $

@@ -28,11 +28,11 @@ templatedir = $(pkgdatadir)/template
 namazu_SOURCES = cgi.c codeconv.c conf.c field.c form.c \
 		 hlist.c i18n.c namazu.c output.c \
 		 parser.c re.c result.c search.c seed.c util.c \
-		 usage.c var.c wakati.c \
+		 usage.c var.c wakati.c libnamazu.c \
 		 cgi.h codeconv.h conf.h critical.h em.h field.h form.h \
 		 hlist.h i18n.h magic.h message.h namazu.h output.h \
 		 parser.h re.h result.h search.h \
-		 usage.h  util.h wakati.h var.h 
+		 usage.h  util.h wakati.h var.h libnamazu.h
 
 ##################################################################
 

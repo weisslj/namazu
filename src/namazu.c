@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.29 1999-10-11 04:25:26 satoru Exp $
+ * $Id: namazu.c,v 1.30 1999-10-12 07:28:11 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -36,6 +36,7 @@
 #include <signal.h>
 
 #include "namazu.h"
+#include "libnamazu.h"
 #include "getopt.h"
 #include "util.h"
 #include "codeconv.h"
@@ -47,23 +48,6 @@
 #include "cgi.h"
 #include "hlist.h"
 #include "i18n.h"
-
-/* redirect stdio to specified file */
-int set_redirect_stdout_to_file(uchar * fname)
-{
-    int fd;
-
-    if (-1 == (fd = open(fname, O_CREAT | O_TRUNC | O_WRONLY, 00600))) {
-	diemsg("stdio2file(cannot open)");
-	return 1;
-    }
-    close(STDOUT);
-    dup(fd);
-    close(STDERR);
-    dup(fd);
-    close(fd);
-    return 0;
-}
 
 /*
  * Command line options.
@@ -206,73 +190,6 @@ int parse_options(int argc, char **argv)
     return optind;
 }
 
-void free_idxnames(void)
-{
-    int i;
-    for (i = 0; i < Idx.num; i++) {
-        free(Idx.names[i]);
-	free_phraseres(Idx.pr[i]);
-    }
-    Idx.num = 0;
-}
-
-void free_aliases(void)
-{
-    ALIAS *list, *next;
-    list = Alias;
-
-    while (list) {
-	next = list->next;
-	free(list->alias);
-	free(list->real);
-	free(list);
-	list = next;
-    }
-}
-
-void free_replaces(void)
-{
-    REPLACE *list, *next;
-    list = Replace;
-
-    while (list) {
-	next = list->next;
-	free(list->pat);
-	free(list->rep);
-	if (list->pat_re != NULL) {
-	    re_free_pattern(list->pat_re);
-	}
-	free(list);
-	list = next;
-    }
-}
-
-void make_fullpathname_msg(void)
-{
-    uchar *base;
-    
-    if (Idx.num == 1) {
-        base = Idx.names[0];
-    } else {
-        base = DEFAULT_INDEX;
-    }
-    
-    pathcat(base, NMZ.head);
-    pathcat(base, NMZ.foot);
-    pathcat(base, NMZ.body);
-    pathcat(base, NMZ.lock);
-    pathcat(base, NMZ.tips);
-}
-
-void codeconv_query(uchar *query)
-{
-    if (is_lang_ja()) {
-        if (conv_ja_any_to_eucjp(query)) {
-            zen2han(query);
-        }
-    }
-}
-
 /* namazu core routine */
 int namazu_core(uchar * query, uchar *subquery, uchar *av0)
 {
@@ -368,85 +285,6 @@ int namazu_core(uchar * query, uchar *subquery, uchar *av0)
     free_aliases();
     free_replaces();
 
-    return 0;
-}
-
-
-/* get an environmental variable of NAMAZUCONFPATH
- * original by Shimizu-san [1998-02-27]
- */
-void getenv_namazuconf(void)
-{
-    uchar *env_namazu_conf;
-
-    env_namazu_conf = (uchar*)getenv("NAMAZUCONFPATH");
-    if (env_namazu_conf == NULL)
-        env_namazu_conf = (uchar*)getenv("NAMAZUCONF");
-
-    if (env_namazu_conf != NULL)
-        strcpy(NAMAZURC, env_namazu_conf);
-}
-
-void uniq_idxnames(void)
-{
-    int i, j, k;
-
-    for (i = 0; i < Idx.num - 1; i++) {
-        for (j = i + 1; j < Idx.num; j++) {
-            if (strcmp(Idx.names[i], Idx.names[j]) == 0) {
-                free(Idx.names[j]);
-                for (k = j + 1; k < Idx.num; k++) {
-                    Idx.names[k - 1] = Idx.names[k];
-                }
-                Idx.num--;
-                j--;
-            }
-        }
-    }
-}
-
-int expand_idxname_aliases(void)
-{
-    int i;
-
-    for (i = 0; i < Idx.num; i++) {
-	ALIAS *list = Alias;
-	while (list) {
-	    if (strcmp(Idx.names[i], list->alias) == 0) {
-		free(Idx.names[i]);
-		Idx.names[i] = (uchar *) malloc(strlen(list->real) + 1);
-		if (Idx.names[i] == NULL) {
-		    diemsg("expand_idxname_aliases: malloc()");
-		    return DIE_ERROR;
-		}
-		strcpy(Idx.names[i], list->real);
-            }
-	    list = list->next;
-	}
-    }
-    return 0;
-}
-
-int complete_idxnames(void)
-{
-    int i;
-
-    for (i = 0; i < Idx.num; i++) {
- 	if (*Idx.names[i] == '+' && isalnum(*(Idx.names[i] + 1))) {
-	    uchar *tmp;
-	    tmp = (uchar *)malloc(strlen(DEFAULT_INDEX) 
-				  + 1 + strlen(Idx.names[i]) + 1);
-	    if (tmp == NULL) {
-		diemsg("complete_idxnames: malloc()");
-		return DIE_ERROR;
-	    }
-	    strcpy(tmp, DEFAULT_INDEX);
-	    strcat(tmp, "/");
-	    strcat(tmp, Idx.names[i] + 1);  /* +1 means '+' */
-	    free(Idx.names[i]);
-	    Idx.names[i] = tmp;
-	}
-    }
     return 0;
 }
 

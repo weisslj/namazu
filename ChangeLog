@@ -1,3 +1,7 @@
+2002-03-29  Ryuji Abe  <rug@namazu.org>
+
+	* configure.in (LTVERSION): Set 6:0:3.
+
 2002-03-29  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* tests/namazu-cgi-8: Removed checking of "result" CGI value.
@@ -7508,4 +7512,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.945 2002-03-29 07:40:26 knok Exp $
+$Id: ChangeLog,v 1.946 2002-03-29 08:59:46 rug Exp $

@@ -152,7 +152,7 @@ case-insensitive pattern matching in any time.
 
 <li>Japanese phrases are forced to be segmented into
 morphemes automatically and are handled them as <a
-href="#phrase">phrase searching</a>. This processing
+href="#query-phrase">phrase searching</a>. This processing
 causes invalid segmentation occasionally.
 
 

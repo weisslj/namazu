@@ -1,3 +1,10 @@
+2002-03-18  Yoshinori TAKESAKO  <takesako@namazu.org>
+
+	* filter/win32/ole{msword,taro,rtf,excel,powerpoint}.pl: 
+	Fixed the bug which OLE filter doesn't create index of title 
+	and keywords of property. (namazu-bugs-ja#86,#120)
+	(Patch contributed by Shohei TAKASHIRO, thanks)
+
 2002-03-15  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* filter/compress.pl: Removed SIGPIPE trapping routine
@@ -7464,4 +7471,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.939 2002-03-15 08:36:15 knok Exp $
+$Id: ChangeLog,v 1.940 2002-03-18 05:18:18 takesako Exp $

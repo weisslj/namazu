@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: olemsword.pl,v 1.9 2001-11-29 11:47:33 takesako Exp $
+# $Id: olemsword.pl,v 1.10 2002-03-18 05:18:19 takesako Exp $
 # Copyright (C) 1999 Jun Kurabe ,
 #		1999-2000 Ken-ichi Hirose All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -93,7 +93,7 @@ sub filter ($$$$$) {
 
     $cfile =~ s/\//\\/g;
     $$cont = "";
-    ReadMSWord::ReadMSWord($cfile, $cont, $fields);
+    ReadMSWord::ReadMSWord($cfile, $cont, $fields, $weighted_str);
     $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
     gfilter::line_adjust_filter($cont);
@@ -124,8 +124,8 @@ sub enum ($$$) {
     return 1;
 }
 
-sub getProperties ($$) {
-    my ($cfile, $fields) = @_;
+sub getProperties ($$$) {
+    my ($cfile, $fields, $weighted_str) = @_;
 
     # See VBA online help using Microsoft Word in detail.
     # Topic item: 'DocumentProperty Object'.
@@ -135,6 +135,9 @@ sub getProperties ($$) {
 	unless (defined $title);
     $fields->{'title'} = codeconv::shiftjis_to_eucjp($title)
 	if (defined $title);
+
+    my $weight = $conf::Weight{'html'}->{'title'};
+    $$weighted_str .= "\x7f$weight\x7f$fields->{'title'}\x7f/$weight\x7f\n";
 
     my $author = $cfile->BuiltInDocumentProperties('Last Author')->{Value};
     $author = $cfile->BuiltInDocumentProperties('Author')->{Value}
@@ -147,14 +150,19 @@ sub getProperties ($$) {
 #	unless (defined $date);
 #    $fields->{'date'} = codeconv::shiftjis_to_eucjp($date) if (defined $date);
 
+    my $keyword = $cfile->BuiltInDocumentProperties('keywords')->{Value};
+    $keyword = codeconv::shiftjis_to_eucjp($keyword);
+    my $weight = $conf::Weight{'metakey'};
+    $$weighted_str .= "\x7f$weight\x7f$keyword\x7f/$weight\x7f\n";
+
     return undef;
 }
 
 package ReadMSWord;
 
 my $word;
-sub ReadMSWord ($$$) {
-    my ($cfile, $cont, $fields) = @_;
+sub ReadMSWord ($$$$) {
+    my ($cfile, $cont, $fields, $weighted_str) = @_;
 
     # Copy From Win32::OLE Example Program
     # use existing instance if Word is already running
@@ -187,7 +195,7 @@ sub ReadMSWord ($$$) {
 	});
     die "Cannot open File $cfile" unless (defined $doc) ;
 
-    olemsword::getProperties($doc, $fields);
+    olemsword::getProperties($doc, $fields, $weighted_str);
     getParagraphs($doc, $cont);
     getFrames($doc, $cont);
     getShapes($doc, $cont);

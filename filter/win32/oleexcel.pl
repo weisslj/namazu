@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: oleexcel.pl,v 1.12 2001-11-29 11:47:33 takesako Exp $
+# $Id: oleexcel.pl,v 1.13 2002-03-18 05:18:19 takesako Exp $
 # Copyright (C) 2001 Yoshinori TAKESAKO,
 #               1999 Jun Kurabe ,
 #               1999 Ken-ichi Hirose All rights reserved.
@@ -98,8 +98,8 @@ sub add_magic ($) {
     return;
 }
 
-sub getProperties ($$) {
-    my ($cfile, $fields) = @_;
+sub getProperties ($$$) {
+    my ($cfile, $fields, $weighted_str) = @_;
 
     # See VBA online help using Microsoft Excel in detail.
     # Topic item: 'DocumentProperty Object'.
@@ -109,6 +109,9 @@ sub getProperties ($$) {
 	unless (defined $title);
     $fields->{'title'} = codeconv::shiftjis_to_eucjp($title)
 	if (defined $title);
+
+    my $weight = $conf::Weight{'html'}->{'title'};
+    $$weighted_str .= "\x7f$weight\x7f$fields->{'title'}\x7f/$weight\x7f\n";
 
     my $author = $cfile->BuiltInDocumentProperties('Last Author')->{Value};
     $author = $cfile->BuiltInDocumentProperties('Author')->{Value}
@@ -121,6 +124,11 @@ sub getProperties ($$) {
     #    unless (defined $date);
     # $fields->{'date'} = codeconv::shiftjis_to_eucjp($date)
     #     if (defined $date);
+
+    my $keyword = $cfile->BuiltInDocumentProperties('keywords')->{Value};
+    $keyword = codeconv::shiftjis_to_eucjp($keyword);
+    my $weight = $conf::Weight{'metakey'};
+    $$weighted_str .= "\x7f$weight\x7f$keyword\x7f/$weight\x7f\n";
 
     return undef;
 }
@@ -170,7 +178,7 @@ sub filter ($$$$$) {
     return "$fileName: cannot open file\n" unless (defined $Book);
 
     # get some properties
-    getProperties($Book, $fields);
+    getProperties($Book, $fields, $weighted_str);
 
     # FileHandle for temporary file 1,2
     local (*FH1, *FH2);

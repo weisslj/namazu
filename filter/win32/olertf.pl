@@ -1,6 +1,6 @@
 # 
 # -*- Perl -*-
-# $Id: olertf.pl,v 1.5 2001-11-29 11:47:33 takesako Exp $
+# $Id: olertf.pl,v 1.6 2002-03-18 05:18:19 takesako Exp $
 # 
 # Copyright (C) 2000 Yoshinori.TAKESAKO ,
 #               2000 Jun Kurabe ,
@@ -73,7 +73,7 @@ sub filter ($$$$$) {
 
     $cfile =~ s/\//\\/g;
     $$cont = "";
-    ReadMSWord::ReadMSWord($cfile, $cont, $fields);
+    ReadMSWord::ReadMSWord($cfile, $cont, $fields, $weighted_str);
     $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
     gfilter::line_adjust_filter($cont);

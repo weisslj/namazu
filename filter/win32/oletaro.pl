@@ -1,6 +1,6 @@
 # 
 # -*- Perl -*-
-# $Id: oletaro.pl,v 1.3 2001-11-29 11:47:33 takesako Exp $
+# $Id: oletaro.pl,v 1.4 2002-03-18 05:18:19 takesako Exp $
 # 
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -78,7 +78,7 @@ sub filter ($$$$$) {
 
     $cfile =~ s/\//\\/g;
     $$cont = "";
-    ReadMSWord::ReadMSWord($cfile, $cont, $fields);
+    ReadMSWord::ReadMSWord($cfile, $cont, $fields, $weighted_str);
     $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
     gfilter::line_adjust_filter($cont);

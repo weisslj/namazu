@@ -1,5 +1,7 @@
 2000-01-10  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/namazu.c (parse_options): Call nmz_load_rcfile() in 'f' option.
+
 	* nmz/search.c (nmz_search): Fix error state handling.
 	(do_prefix_match_search): Fix serious bug. (cannot catch too much
 	match). 

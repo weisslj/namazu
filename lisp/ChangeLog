@@ -1,3 +1,16 @@
+2000-01-25  Hideyuki SHIRAI <shirai@rdmg.mgcs.mei.co.jp>
+
+	* namazu.el (namazu-version): namazu.el 1.0.3
+	(namazu-url-regex): New variable for external file access.
+	(namazu-browse-url): Give priority "browse-url" to "browse-url-browser-function".
+	(namazu-output-url-pattern): Sync up Namazu Ver.2.0.
+	(namazu-escape-key): Abolish, no escape for search key.
+	
+2000-01-20  MIYOSHI Masanori <miyoshi@ask.ne.jp>
+
+	* namazu.el: Support Emacs 19.28, again.
+	(namazu-font-lock-keywords): Set mouse-face for url-pattern.
+
 1999-09-30  Ryuji Abe <raeva@t3.rim.or.jp>
 
 	* Makefile.am: New File.

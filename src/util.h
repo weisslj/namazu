@@ -3,7 +3,7 @@
   util.h -
 
   $Author: satoru $
-  $Date: 1999-08-25 07:09:24 $
+  $Date: 1999-08-26 04:29:50 $
   created at: Thu Mar  9 11:55:53 JST 1995
 
   Copyright (C) 1993-1998 Yukihiro Matsumoto
@@ -59,6 +59,7 @@ int issymbol(int);
 void die(char*, ...);
 size_t strlen2(uchar *, int);
 void pathcat(uchar*, uchar*);
+void setprogname(char *);
 
 #endif /* _UTIL_H */
 

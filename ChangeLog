@@ -5,6 +5,9 @@
 	* src/Makefile.am: Add an CLEANFILES entry.
 	* configure.in: Modify AC_OUTPUT according to removed files.
 	* Makefile.am: Modify install-data-local and dist-hook.
+	* src/values.c: Set HtmlOutout to 0.
+	* src/message.[ch]: Change a variable MSG_MIME_HEADER to macro.
+	* src/util.c (die): Print program name in error message.
 	
 1999-08-25  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 

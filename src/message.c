@@ -2,7 +2,7 @@
  * 
  * messages.c -
  * 
- * $Id: message.c,v 1.1 1999-08-25 03:44:00 satoru Exp $
+ * $Id: message.c,v 1.2 1999-08-26 04:29:49 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -29,8 +29,6 @@
 #include <stdio.h>
 #include <string.h>
 #include "namazu.h"
-
-uchar *MSG_MIME_HEADER;
 
 #ifdef LANGUAGE
 uchar Lang[] = LANGUAGE;
@@ -59,12 +57,6 @@ uchar *MSG_USAGE, *MSG_TOO_LONG_KEY, *MSG_TOO_MANY_KEYITEM,
 void init_message(void)
 {
     if (is_lang_ja(Lang)) {
-#if	defined(_WIN32) || defined(__EMX__)
-        MSG_MIME_HEADER = (uchar *)"Content-type: text/html; charset=ISO-2022-JP\n\n";
-#else
-        MSG_MIME_HEADER = (uchar *)"Content-type: text/html; charset=ISO-2022-JP\r\n\r\n";
-#endif
-
       MSG_USAGE = (uchar *)"%s\n\
 全文検索システム Namazu の検索プログラム v%s\n\n\
 usage: namazu [options] <query> [index dir(s)] \n\
@@ -113,12 +105,6 @@ usage: namazu [options] <query> [index dir(s)] \n\
         MSG_REFERENCE_HEADER = (uchar *)"	<strong>参考ヒット数:</strong> ";
         MSG_INVALID_DB_NAME = (uchar *)"不正な dbname の指定です";
     } else {
-#if	defined(_WIN32) || defined(__EMX__)
-        MSG_MIME_HEADER = (uchar *)"Content-type: text/html\n\n";
-#else
-        MSG_MIME_HEADER = (uchar *)"Content-type: text/html\r\n\r\n";
-#endif
-
         MSG_USAGE = (uchar *)"%s\n\
   Search Program of Namazu v%s\n\n\
   usage: namazu [options] <query> [index dir(s)] \n\

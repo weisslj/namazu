@@ -11,6 +11,8 @@
 #include "namazu.h"
 #include "util.h"
 
+static char *progname = NULL;
+
 /************************************************************
  *
  * Private functions
@@ -357,7 +359,9 @@ void die(char *fmt, ...)
 	fputs(MSG_MIME_HEADER, output);
     }
 
-    fprintf(output, "ERROR: ");
+    if (progname != NULL) {
+	fprintf(output, "%s: ", progname);
+    }
 
     va_start(args, fmt);
     vfprintf(output, fmt, args);
@@ -392,4 +396,9 @@ void pathcat(uchar *base, uchar *name)
     strcat(work, "/");
     strcat(work, name);
     strcpy(name, work);
+}
+
+void setprogname(char *argv0)
+{
+    progname = argv0;
 }

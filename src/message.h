@@ -1,6 +1,12 @@
 #ifndef _MESSAGE_H
 #define _MESSAGE_H
 
+#if defined(_WIN32) || defined(__EMX__)
+    #define MSG_MIME_HEADER  "Content-type: text/html\n\n"
+#else
+    #define MSG_MIME_HEADER  "Content-type: text/html\r\n\r\n"
+#endif
+
 extern uchar *COPYRIGHT;
 extern uchar *MSG_USAGE;
 extern uchar *MSG_TOO_LONG_KEY;
@@ -17,7 +23,6 @@ extern uchar *MSG_REFERENCE_HEADER;
 extern uchar *MSG_INVALID_DB_NAME;
 extern uchar *MSG_INVALID_QUERY;
 extern uchar *MSG_CANNOT_OPEN_INDEX;
-extern uchar *MSG_MIME_HEADER;
 extern uchar *MSG_CANNOT_OPEN_REGEX_INDEX;
 extern uchar *MSG_CANNOT_OPEN_PHRASE_INDEX;
 extern uchar *MSG_CANNOT_OPEN_FIELD_INDEX;

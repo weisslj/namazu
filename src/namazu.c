@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.13 1999-08-25 07:09:23 satoru Exp $
+ * $Id: namazu.c,v 1.14 1999-08-26 04:29:50 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -352,6 +352,8 @@ int main(int argc, char **argv)
 {
     int i = 0;
     uchar query[BUFSIZE] = "", subquery[BUFSIZE] = "";
+
+    setprogname(argv[0]);
 
     getenv_namazuconf();
     init_message();

@@ -2,7 +2,7 @@
  * 
  * values.c -
  * 
- * $Id: values.c,v 1.8 1999-08-25 03:44:03 satoru Exp $
+ * $Id: values.c,v 1.9 1999-08-26 04:29:50 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -74,7 +74,7 @@ int MoreShortFormat = 0;        /* if more short format mode: 1  */
 int Quiet = 0;                  /* if quiet mode: 1  */
 int HitCountOnly = 0;
 int ScoreSort = 1;		/* if sort by score: 1 */
-int HtmlOutput = 1;		/* if display as HTML: 1 */
+int HtmlOutput = 0;		/* if display as HTML: 1 */
 int HidePageIndex = 0;		/* if hide page index: 1 */
 int ForcePrintForm = 0;		/* if display <FORM> ... </FORM>: 1 */
 int AllList = 0;		/* if dispal all search results: 1 */

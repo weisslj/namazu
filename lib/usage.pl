@@ -1,5 +1,5 @@
 # -*- CPerl -*-
-# $Id: usage.pl,v 1.1 1999-08-28 01:03:12 satoru Exp $
+# $Id: usage.pl,v 1.2 1999-08-28 01:29:38 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -23,7 +23,17 @@
 
 package usage;
 
-# Japanese usage
+##
+## Mini usage
+##
+$USAGE_MINI = <<EOFusage;
+Usage: mknmz [options] [prefix] <target(s)>
+Try `mknmz --help' for more options.\n"
+EOFusage
+
+##
+## Japanese usage (long)
+##
 $USAGE_JA = <<EOFusage;
 mknmz v$VERSION -  全文検索システム Namazu のインデックス作成プログラム
 $COPYRIGHT
@@ -79,6 +89,9 @@ $COPYRIGHT
     -0, --help              このヘルプを表示する
 EOFusage
 
+##
+## English usage (long)
+##
 $USAGE_EN = <<EOFusage;
   mknmz.pl v$VERSION -  indexer of Namazu
   $COPYRIGHT

@@ -18,7 +18,17 @@
 
 	* configure.in: Remove filter command detection codes.
 
+	* lib/namazu.conf-dist: Remove.
 
+	* lib/var.pl.in: New file.
+
+	* configure.in: Modify AC_OUTPUT.
+
+	* conf/mknmz.conf-dist.in: New file.
+
+	* **/*.pl{,.in}: s/foreach /for /g;
+
+	
 1999-08-27  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* lib/util.pl: Add checkcmd function.

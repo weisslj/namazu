@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mailnews.pl,v 1.5 1999-08-28 00:07:39 satoru Exp $
+# $Id: mailnews.pl,v 1.6 1999-08-28 01:29:37 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -147,7 +147,7 @@ sub mailnews_filter ($$$) {
  	$$contents =~ s/--$boundary(--)?\n?/\xff/g;
  	my (@parts) = split(/\xff/, $$contents);
  	$$contents = '';
- 	foreach $_ (@parts){
+ 	for $_ (@parts){
  	    if (s/^(.*?\n\n)//s){
  		my ($head) = $1;
  		$$contents .= $_ if $head =~ m!^content-type:.*text/plain!mi;
@@ -178,7 +178,7 @@ sub mailnews_citation_filter ($$) {
     }
 
     # 引用部分を隔離
-    foreach my $line (@tmp) {
+    for my $line (@tmp) {
 	# 行頭に HTML タグが来た場合は引用処理しない
 	if ($line !~ /^[^>]*</ &&
 	    $line =~ s/^((\S{1,10}>)|(\s*[\>\|\:\#]+\s*))+//) {
@@ -194,7 +194,7 @@ sub mailnews_citation_filter ($$) {
     @tmp = split(/\n\n+/, $$contents);
     $$contents = "";
     my $i = 0;
-    foreach my $line (@tmp) {
+    for my $line (@tmp) {
 	# 完全に除外するのは無理だと思われます。こんなものかなあ
         # この手のメッセージはせいぜい最初の 5 段落くらいに含まれるかな
 	# また、 5 行より長い段落は処理しない。

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.7 1999-08-28 00:07:41 satoru Exp $
+# $Id: util.pl,v 1.8 1999-08-28 01:29:39 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -150,7 +150,7 @@ sub checklib ($) {
 # checkcmd ... check command path
 sub checkcmd ($) {
     my $cmd = shift;
-    foreach my $dir (split(/:/, $ENV{PATH})) {
+    for my $dir (split(/:/, $ENV{PATH})) {
 	return "$dir/cmd" if (-x "$dir/$cmd");
     }
     return undef;

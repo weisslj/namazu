@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.15 1999-08-28 00:34:20 satoru Exp $
+dnl $Id: configure.in,v 1.16 1999-08-28 01:29:36 satoru Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -288,6 +288,7 @@ dnl * Output Files.
 dnl * 
 AM_CONFIG_HEADER(config.h)
 
-AC_OUTPUT([Makefile src/Makefile lib/conf.pl src/mknmz.pl
+AC_OUTPUT([Makefile src/Makefile lib/var.pl 
+conf/mknmz.conf-dist src/mknmz.pl
 src/gcnmz src/gtnmz src/mailutime namazu.spec],
 [chmod +x src/gcnmz src/gtnmz src/mailutime]) 

@@ -10,7 +10,8 @@ SUBDIRS = src @FILE_MMAGIC@
 CLEANFILES = lib/conf.pl namazu.spec \
 	     filter/gzip.pl filter/compress.pl filter/man.pl filter/rfc.pl \
 	     filter/bzip2.pl filter/msword.pl filter/supported.pl \
-	     File-MMagic/Makefile File-MMagic/pm_to_blib
+	     File-MMagic/Makefile File-MMagic/pm_to_blib \
+	     conf/mknmz.conf-dist lib/var.pl
 CLEANDIRS  = File-MMagic/blib
 
 pkgdatadir = @datadir@/@PACKAGE@

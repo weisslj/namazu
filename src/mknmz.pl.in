@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- CPerl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.29 1999-08-28 00:07:43 satoru Exp $
+# $Id: mknmz.pl.in,v 1.30 1999-08-28 01:29:40 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -180,7 +180,7 @@ sub init () {
 
     my $libdir2 = cwd() . "/../lib";  # relative path from cwd
     my $filterdir2 = cwd() . "/../filter";  # relative path from cwd
-    push @INC, $libdir2, $LIBDIR, $filterdir2, $FILTERDIR;
+    @INC = $libdir2, $LIBDIR, $filterdir2, $FILTERDIR, @INC;
 
     require "conf.pl";
     require "hash.pl";
@@ -911,21 +911,24 @@ sub load_target_list ($) {
 
 
 sub show_long_usage () {
+    require "usage.pl";
+
     if ($conf::LANGUAGE eq "ja") {
 	if ($CCS eq "euc") {
-	    print $conf::USAGE_JA;
+	    print $usage::USAGE_JA;
 	} elsif ($CCS eq "sjis") {
-	    my $msg = codeconv::eucjp_to_shiftjis($conf::USAGE_JA);
+	    my $msg = codeconv::eucjp_to_shiftjis($usage::USAGE_JA);
 	    print $msg;
 	}
     } else {
-	print $conf::USAGE_EN;
+	print $usage::USAGE_EN;
     }
 }
 
 sub show_mini_usage () {
-    print "Usage: mknmz [options] [prefix] <target(s)>\n";
-    print "Try `mknmz --help' for more options.\n";
+    require "usage.pl";
+
+    print $usage::USAGE_MINI;
 }
 
 # check the file -- 0: OK / 1: NG
@@ -1874,7 +1877,7 @@ muda($conf::File{'BODY_MSG_EN'},
      $conf::UuencodeOpt, $conf::MHONARC_HEADER, $conf::CHASEN,
      $conf::KAKASI, $conf::OkuriganaOpt, $TARGET_DIR, $conf::ManOpt,
      $conf::HiraganaOpt, $conf::ROBOTS_EXCLUDE_URLS, $conf::DEFAULT_FILE,
-     $conf::HTML_SUFFIX, $conf::USAGE_EN, $conf::NoHeadAbstOpt,
+     $conf::HTML_SUFFIX, $usage::USAGE_EN, $conf::NoHeadAbstOpt,
      $conf::DebugOpt, $conf::NoEncodeURL, $conf::HtaccessExcludeOpt, 
      $conf::RECURSIVE_ACTIONS, $conf::ROBOTS_EXCLUDE_URIS, 
      $conf::NoInsertHeaderOpt, $conf::NoRegexpIndexOpt, $conf::NoFieldInfoOpt,

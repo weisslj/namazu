@@ -2677,7 +2677,8 @@ done
 ac_given_srcdir=$srcdir
 ac_given_INSTALL="$INSTALL"
 
-trap 'rm -fr `echo "Makefile src/Makefile lib/conf.pl src/mknmz.pl
+trap 'rm -fr `echo "Makefile src/Makefile lib/var.pl 
+conf/mknmz.conf-dist src/mknmz.pl
 src/gcnmz src/gtnmz src/mailutime namazu.spec config.h" | sed "s/:[^ ]*//g"` conftest*; exit 1' 1 2 15
 EOF
 cat >> $CONFIG_STATUS <<EOF
@@ -2782,7 +2783,8 @@ EOF
 
 cat >> $CONFIG_STATUS <<EOF
 
-CONFIG_FILES=\${CONFIG_FILES-"Makefile src/Makefile lib/conf.pl src/mknmz.pl
+CONFIG_FILES=\${CONFIG_FILES-"Makefile src/Makefile lib/var.pl 
+conf/mknmz.conf-dist src/mknmz.pl
 src/gcnmz src/gtnmz src/mailutime namazu.spec"}
 EOF
 cat >> $CONFIG_STATUS <<\EOF

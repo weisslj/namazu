@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.21 2001-01-27 02:14:48 baba Exp $
+# $Id: util.pl,v 1.22 2001-06-21 06:21:33 rug Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
-# Copyright (C) 2000 Namazu Project All rights reserved.
+# Copyright (C) 2000,2001 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -26,6 +26,10 @@
 package util;
 use strict;
 use IO::File;
+
+use vars qw($LANG_MSG $LANG);
+$LANG_MSG = "C";           # language of messages
+$LANG = "C";               # language of text processing
 
 #  rename() with consideration for OS/2
 sub Rename($$) {
@@ -209,10 +213,36 @@ sub remove_tmpfiles () {
     unlink @list;
 }
 
+sub set_lang () {
+    for my $cand (("LANGUAGE", "LC_ALL", "LC_MESSAGES", "LANG")) {
+	if (defined($ENV{$cand})) {
+	    $LANG_MSG = $ENV{$cand};
+	    last;
+	}
+    }
+    for my $cand (("LC_ALL", "LC_CTYPE", "LANG")) {
+	if (defined($ENV{$cand})) {
+	    $LANG = $ENV{$cand};
+	    last;
+	}
+    }
+    # print "LANG: $LANG\n";
+}
+
+sub islang_msg($) {
+    my ($lang) = @_;
+
+    if ($LANG_MSG =~ /^$lang/) {  # prefix matching
+	return 1;
+    } else {
+	return 0;
+    }
+}
+
 sub islang($) {
     my ($lang) = @_;
 
-    if ($mknmz::LANG =~ /^$lang/) {  # prefix matching
+    if ($LANG =~ /^$lang/) {  # prefix matching
 	return 1;
     } else {
 	return 0;

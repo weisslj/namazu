@@ -20,6 +20,7 @@
 
 extern char *nmz_set_lang ( const char *lang );
 extern char *nmz_get_lang ( void );
+extern char *nmz_get_lang_ctype ( void );
 extern enum nmz_stat nmz_choose_msgfile_suffix ( const char *pfname, char *lang_suffix );
 
 #endif /* _I18N_H */

@@ -1,3 +1,24 @@
+2001-06-21  Ryuji Abe  <rug@namazu.org>
+
+	* pl/util.pl (LANG): Moved from scripts/mknmz.in.
+	(LANG_MSG): New variable for i18n of output message.
+	(set_lang): New function. Both LANG and LANG_MSG are
+	set by this function.
+	(is_lang_msg): New function.
+
+	* scripts/mknmz.in: Now LC_CTYPE can be recognized.
+
+	* nmz/i18n.c (get_lang_by_category): New function.
+	(nmz_get_lang): Returns get_lang_by_category("LC_MESSAGES").
+	(nmz_get_lang_ctype): New function. Returns
+	get_lang_by_category("LC_CTYPE").
+
+	* nmz/l10n-ja.c (is_lang_ja): Use nmz_get_lang_ctype()
+	instread of nmz_get_lang().
+
+	* configure.in (LTVERSION): Set "5:0:2".
+	(AM_INIT_AUTOMAKE): Bumped version number to 2.0.6pre1.
+	
 2001-06-19  Ryuji Abe  <rug@namazu.org>
 
 	* THANKS: Updated.
@@ -6507,4 +6528,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.830 2001-06-19 10:22:43 rug Exp $
+$Id: ChangeLog,v 1.831 2001-06-21 06:21:32 rug Exp $

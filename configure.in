@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.135 2001-05-20 09:03:56 rug Exp $
+dnl $Id: configure.in,v 1.136 2001-06-21 06:21:32 rug Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -27,10 +27,10 @@ dnl *
 #   change to C+1:0:0
 # - If the interface is the same as the previous version, change to C:R+1:A
 
-LTVERSION="4:2:1"
+LTVERSION="5:0:2"
 AC_SUBST(LTVERSION)
 
-AM_INIT_AUTOMAKE(namazu, 2.0.5)
+AM_INIT_AUTOMAKE(namazu, 2.0.6pre1)
 AM_MAINTAINER_MODE
 
 dnl *
@@ -50,7 +50,7 @@ dnl *
 dnl * Namazu Copyright.
 dnl * 
 COPYRIGHT="Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.\n\
-Copyright (C) 2000 Namazu Project All rights reserved."
+Copyright (C) 2000,2001 Namazu Project All rights reserved."
 AC_SUBST(COPYRIGHT)
 AC_DEFINE_UNQUOTED(COPYRIGHT, "$COPYRIGHT", [Namazu Copyright])
 

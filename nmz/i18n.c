@@ -1,6 +1,6 @@
 /*
  * i18n.c -
- * $Id: i18n.c,v 1.25 2001-06-15 08:24:30 rug Exp $
+ * $Id: i18n.c,v 1.26 2001-06-21 06:21:32 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -43,6 +43,7 @@
  */
 
 static const char *guess_category_value ( const char *categoryname );
+static char *get_lang_by_category ( const char *categoryname );
 
 
 /* The following is (partly) taken from the gettext package.
@@ -82,6 +83,17 @@ guess_category_value (const char *categoryname)
 	return retval;
 
     return NULL;
+}
+
+static char *
+get_lang_by_category(const char *categoryname) 
+{
+    char *lang;
+    lang = (char *)guess_category_value(categoryname);
+    if (lang == NULL)
+	return "C";
+    else
+	return lang;
 }
 
 /*
@@ -124,14 +136,15 @@ nmz_set_lang(const char *lang)
 }
 
 char *
-nmz_get_lang(void) 
+nmz_get_lang(void)
 {
-    char *lang;
-    lang = (char *)guess_category_value("LC_MESSAGES");
-    if (lang == NULL)
-	return "C";
-    else
-	return lang;
+    return get_lang_by_category("LC_MESSAGES");
+}
+
+char *
+nmz_get_lang_ctype(void)
+{
+    return get_lang_by_category("LC_CTYPE");
 }
 
 /*

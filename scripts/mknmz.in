@@ -1,10 +1,10 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.84 2001-06-19 04:27:43 knok Exp $
+# $Id: mknmz.in,v 1.85 2001-06-21 06:21:33 rug Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
-# Copyright (C) 2000 Namazu Project All rights reserved.
+# Copyright (C) 2000,2001 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -38,12 +38,11 @@ use Getopt::Long;
 use File::Copy;
 use DirHandle;
 
-use vars qw($SYSTEM $LANG);
+use vars qw($SYSTEM);
 $SYSTEM = $^O;
 
 my $NAMAZU_INDEX_VERSION = "2.0";
 
-$LANG = "C";                # language of messages
 my $CodingSystem = "euc";
 my $CONFDIR       = "@CONFDIR@";     # directory where mknmzrc are in.
 my $LIBDIR        = "@PERLLIBDIR@";      # directory where library etc. are in.
@@ -78,6 +77,11 @@ sub main {
 
     # At first, loading pl/conf.pl to prevent overriding some variables.
     preload_modules();
+
+    # set LANG and bind textdomain
+    util::set_lang();
+    textdomain('namazu', $util::LANG_MSG);
+
     # To support Windows. Since they have nasty drive letter convention,
     # it is necessary to change mknmzrc dynamically with env. variable.
     load_rcfile($ENV{'MKNMZRC'}) if defined $ENV{'MKNMZRC'};
@@ -320,15 +324,6 @@ sub init () {
 	$CodingSystem = "euc";
     }
 
-    # set LANG
-    for my $cand (("LANGUAGE", "LC_ALL", "LC_MESSAGES", "LANG")) {
-	if (defined($ENV{$cand})) {
-	    $LANG = $ENV{$cand};
-	    last;
-	}
-    }
-    # print "LANG: $LANG\n";
-
     $SIG{'INT'}  = sub {
 	util::cdie("SIGINT caught! Aborted.\n");
     };
@@ -364,7 +359,6 @@ sub load_modules () {
     require "seed.pl" || die "unable to require \"seed.pl\"\n";
 
     @Seed = seed::init();
-    textdomain('namazu', $LANG);
 }
 
 sub load_filtermodules () {
@@ -610,7 +604,7 @@ sub complete_field_info (\%$$\$\$\$) {
 sub getmsg($) {
     my ($msg) = @_;
 
-    if (util::islang("ja")) {
+    if (util::islang_msg("ja")) {
 	if ($msg eq "unknown") {
 	    return "итлю";
 	}
@@ -1199,7 +1193,8 @@ sub show_config () {
     print _("KAKASI: ") . "$conf::KAKASI\n" if $conf::KAKASI;
     print _("ChaSen: ") . "$conf::CHASEN\n" if $conf::CHASEN;
     print _("Wakati: ") . "$conf::WAKATI\n" if $conf::WAKATI;
-    print _("Lang: ") . "$LANG\n";
+    print _("Lang_Msg: ") . "$util::LANG_MSG\n";
+    print _("Lang: ") . "$util::LANG\n";
     print _("Coding System: ") . "$CodingSystem\n";
     print _("CONFDIR: ") . "$CONFDIR\n";
     print _("LIBDIR: ") . "$LIBDIR\n";
@@ -1441,7 +1436,8 @@ sub report_find_target ($$%) {
 }
 
 sub show_usage () {
-    util::dprint(_("lang: ")."$LANG\n");
+    util::dprint(_("lang_msg: ")."$util::LANG_MSG\n");
+    util::dprint(_("lang: ")."$util::LANG\n");
 
     # To know why we should do this, see usage.pl.
     my $usage = $usage::USAGE;

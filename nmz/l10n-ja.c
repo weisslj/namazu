@@ -1,9 +1,9 @@
 /*
  * l10n-ja.c -
- * $Id: l10n-ja.c,v 1.1 2000-02-13 17:34:53 rug Exp $
+ * $Id: l10n-ja.c,v 1.2 2001-06-21 06:21:32 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000 Namazu Project All rights reserved.
+ * Copyright (C) 2000,2001 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -46,7 +46,7 @@ nmz_is_lang_ja(void)
 {
     const char *lang;
 
-    lang = nmz_get_lang();
+    lang = nmz_get_lang_ctype();
     if (strcmp(lang, "japanese")) {
 	return 1; /* TRUE */
     } 

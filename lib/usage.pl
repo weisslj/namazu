@@ -1,5 +1,5 @@
 # -*- Perl -*-
-# $Id: usage.pl,v 1.9 1999-08-31 04:01:05 satoru Exp $
+# $Id: usage.pl,v 1.10 1999-09-05 03:50:36 masao Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -69,7 +69,6 @@ $var::COPYRIGHT
 
   インデックス作成:
         --update=index        更新するインデックスを指定する
-    -P, --no-heading-summary  フレーズ検索用のインデックスを作成しない
     -Y, --no-delete           削除された文書の検出を行わない
     -Z, --no-update           文書の更新/削除を反映しない
 
@@ -113,7 +112,6 @@ $USAGE_EN = <<EOFusage;
       -K: delete all symbols (default: off)
       -L: do not adjust beginning and end of line (default: off)
       -M: do not do special processing for MHonArc (default: off)
-      -P: do not make the index for phrase search (default: off)
       -R: do not make the index for regex search (default: off)
       -U: do not encode URI (default: off)
       -W: do not make the index for sort by date (default: off)

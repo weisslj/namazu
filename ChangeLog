@@ -1,3 +1,7 @@
+1999-09-05  masao@ulis.ac.jp (Masao Takaku)
+
+	* lib/usage.pl,src/message.c: Fix a typo and obsolete messages.
+
 1999-09-05  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* **/*.pl{,.in}: Change all notations for representing hash value:

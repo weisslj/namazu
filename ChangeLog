@@ -9,6 +9,8 @@
 
 	* po/*: Update messages.
 
+	* doc/{en,ja}/manual.html: Update mknmz help message.
+
 2004-03-17  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* scripts/mknmz.in(process_file): Fixed typo 
@@ -8595,4 +8597,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1122 2004-03-17 12:27:49 usu Exp $
+$Id: ChangeLog,v 1.1123 2004-03-17 12:37:30 usu Exp $

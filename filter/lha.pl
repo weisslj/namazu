@@ -1,8 +1,9 @@
 #
 # -*- Perl -*-
-# $Id: zip.pl,v 1.3 2004-04-29 19:35:13 opengl2772 Exp $
-#  zip filter for namazu
-#  Copyright (C) 2004 MATSUMURA Namihiko <po-jp@counterghost.net>
+# $Id: lha.pl,v 1.1 2004-04-29 19:35:13 opengl2772 Exp $
+#  lha filter for namazu
+#  Copyright (C) 2004 Tadamasa Teranishi,
+#                2004 MATSUMURA Namihiko <po-jp@counterghost.net>,
 #                2004 Namazu Project All rights reserved.
 #
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -23,21 +24,21 @@
 #  02111-1307, USA
 #
 
-package zip;
+package lha;
 use strict;
 use File::Find;
 use Cwd;
 require 'util.pl';
 
-my $unzippath;
+my $lhapath;
 
 sub mediatype() {
-    return ('application/x-zip');
+    return ('application/x-lha');
 }
 
 sub status() {
-    $unzippath = util::checkcmd('unzip');
-    return 'yes' if (defined $unzippath);
+    $lhapath = util::checkcmd('lha');
+    return 'yes' if (defined $lhapath);
     return 'no';
 }
 
@@ -55,7 +56,21 @@ sub post_codeconv () {
 
 sub add_magic ($) {
     my ($magic) = @_;
-    $magic->addFileExts('\\.zip', 'application/x-zip');
+
+    $magic->addMagicEntry("2\tstring\t-lh0-\tapplication/x-lha");
+    $magic->addMagicEntry("2\tstring\t-lh1-\tapplication/x-lha");
+    $magic->addMagicEntry("2\tstring\t-lh2-\tapplication/x-lha");
+    $magic->addMagicEntry("2\tstring\t-lh3-\tapplication/x-lha");
+    $magic->addMagicEntry("2\tstring\t-lh4-\tapplication/x-lha");
+    $magic->addMagicEntry("2\tstring\t-lh5-\tapplication/x-lha");
+    $magic->addMagicEntry("2\tstring\t-lh6-\tapplication/x-lha");
+    $magic->addMagicEntry("2\tstring\t-lh7-\tapplication/x-lha");
+    $magic->addMagicEntry("2\tstring\t-lhd-\tapplication/x-lha");
+    $magic->addMagicEntry("2\tstring\t-lzs-\tapplication/x-lha");
+    $magic->addMagicEntry("2\tstring\t-lz4-\tapplication/x-lha");
+    $magic->addMagicEntry("2\tstring\t-lz5-\tapplication/x-lha");
+
+    $magic->addFileExts('\\.lzh', 'application/x-lha');
     return;
 }
 
@@ -63,47 +78,38 @@ sub filter ($$$$$) {
     my ($orig_cfile, $contref, $weighted_str, $headings, $fields)
       = @_;
 
-    my $tmpfile = util::tmpnam('NMZ.zip');
+    my $tmpfile = util::tmpnam('NMZ.lha');
     {
 	my $fh = util::efopen("> $tmpfile");
 	print $fh $$contref;
         util::fclose($fh);
     }
 
-    my $tmpdir = util::tmpnam('NMZ.zip_dir');
+    my $tmpdir = util::tmpnam('NMZ.lha_dir');
     my $cwd = cwd();
     $tmpdir = mknmz::absolute_path($cwd, $tmpdir);
     rm_r($tmpdir) if (-d $tmpdir);
     mkdir($tmpdir);
 
-    util::vprint("Processing zip file ... (using  '$unzippath')\n");
+    util::vprint("Processing lha file ... (using  '$lhapath')\n");
 
     $$contref = "";
 
-    my $status = system("$unzippath -P passwd -qq -d $tmpdir $tmpfile");
+    my $status = system("$lhapath -xq2w=$tmpdir $tmpfile");
     if ($status != 0) {
         unlink($tmpfile);
         rm_r($tmpdir);
-        return 'Unable to convert zip file (maybe copying protection)';
+        return "Unable to convert lha file ($lhapath error occurred).";
     }
-
-    my $tmpfile2 = util::tmpnam('NMZ.zip2');
-    $status = system("$unzippath -z -qq $tmpfile > $tmpfile2");
-    if ($status == 0) {
-	my $summary = util::readfile("$tmpfile2");
-        codeconv::toeuc(\$summary);
-	$$contref .= $summary . " ";
-    }
-    unlink($tmpfile2);
 
     my $sub = sub {
 	my $tmpfile = "$File::Find::dir/$_";
 	if (-f $tmpfile) {
 	    my $fh = util::efopen("$tmpfile");
 	    my $con = util::readfile($fh);
-	    my $err = zip::nesting_filter($tmpfile, \$con, $weighted_str);
+	    my $err = lha::nesting_filter($tmpfile, \$con, $weighted_str);
 	    if (defined $err) {
-		util::dprint("filter/zip.pl gets error message \"$err\"");
+		util::dprint("filter/lha.pl gets error message \"$err\"");
 	    }
 	    $$contref .= $con . " ";
 	    util::fclose($fh);

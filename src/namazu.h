@@ -76,6 +76,7 @@ struct nmz_names {
     uchar result[MAXPATH];
     uchar slog[MAXPATH];
     uchar w[MAXPATH];
+    uchar wi[MAXPATH];
     uchar field[MAXPATH];  /* followed by a field name */
     uchar t[MAXPATH]; 
     uchar p[MAXPATH];
@@ -89,6 +90,8 @@ struct nmz_files {
     FILE *ii;
     FILE *p;
     FILE *pi;
+    FILE *w;
+    FILE *wi;
 };
 typedef struct nmz_files NMZ_FILES;
 

@@ -1,5 +1,14 @@
 1999-09-01  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/mknmz.pl.in, lib/var.pl.in, src/{hlist,search}.c:
+	Implement codes to integrate NMZ.i and NMZ.w. [namazu-dev 294]
+
+	* lib/util.pl (remove_tmpfiles): Add a condition to return if
+	$var::Opt{debug} in the beginning of the function;
+	
+	* src/search.c: s/forward_match/prefix_match/g;
+	s/backward_match/suffix_match/g;
+	
 	* src/mknmz.pl.in (load_document): Fix stupid bugs which I made
 	yesterday. (I forgot preceding `$' mark for ref values)
 

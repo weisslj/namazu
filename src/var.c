@@ -2,7 +2,7 @@
  * 
  * values.c -
  * 
- * $Id: var.c,v 1.1 1999-08-27 10:02:17 satoru Exp $
+ * $Id: var.c,v 1.2 1999-09-01 01:11:23 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -93,6 +93,7 @@ NMZ_NAMES NMZ = {  /* NMZ.* files' names */
     "NMZ.result",
     "NMZ.slog",
     "NMZ.w",
+    "NMZ.wi",
     "NMZ.field.",
     "NMZ.t",
     "NMZ.p",

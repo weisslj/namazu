@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.14 1999-08-29 07:59:12 masao Exp $
+ * $Id: search.c,v 1.15 1999-09-01 01:11:23 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -57,11 +57,11 @@
 void show_status(int, int);
 int get_file_size (uchar*);
 void lrget(uchar* , int*, int*);
-HLIST forward_match(uchar* , int);
+HLIST prefix_match(uchar* , int);
 int detect_search_mode(uchar*);
 void print_hit_count (uchar*, HLIST);
 HLIST do_word_search(uchar*, HLIST);
-HLIST do_forward_match_search(uchar*, HLIST);
+HLIST do_prefix_match_search(uchar*, HLIST);
 int hash(uchar*);
 HLIST cmp_phrase_hash(int, HLIST, FILE *, FILE *);
 int open_phrase_index_files(FILE**, FILE**);
@@ -89,11 +89,11 @@ void show_status(int l, int r)
 {
     uchar buf[BUFSIZE];
 
-    fseek(Nmz.i, getidxptr(Nmz.ii, l), 0);
-    fgets(buf, BUFSIZE, Nmz.i);
+    fseek(Nmz.w, getidxptr(Nmz.wi, l), 0);
+    fgets(buf, BUFSIZE, Nmz.w);
     fprintf(stderr, "l:%d: %s", l, buf);
-    fseek(Nmz.i, getidxptr(Nmz.ii, r), 0);
-    fgets(buf, BUFSIZE, Nmz.i);
+    fseek(Nmz.w, getidxptr(Nmz.wi, r), 0);
+    fgets(buf, BUFSIZE, Nmz.w);
     fprintf(stderr, "r:%d: %s", r, buf);
 }
 
@@ -119,8 +119,8 @@ void lrget(uchar * key, int *l, int *r)
 	show_status(*l, *r);
 }
 
-/* Forward match search */
-HLIST forward_match(uchar * orig_key, int v)
+/* Prefix match search */
+HLIST prefix_match(uchar * orig_key, int v)
 {
     int i, j, n;
     HLIST tmp, val;
@@ -132,10 +132,11 @@ HLIST forward_match(uchar * orig_key, int v)
     n = strlen(key);
 
     for (i = v; i >= 0; i--) {
-	fseek(Nmz.i, getidxptr(Nmz.ii, i), 0);
-	fgets(buf, BUFSIZE, Nmz.i);
-	if (strncmp(key, buf, n))
+	fseek(Nmz.w, getidxptr(Nmz.wi, i), 0);
+	fgets(buf, BUFSIZE, Nmz.w);
+	if (strncmp(key, buf, n) != 0) {
 	    break;
+	}
     }
     if (Debug)
 	v = i;
@@ -148,11 +149,12 @@ HLIST forward_match(uchar * orig_key, int v)
 	    val.n = ERR_TOO_MUCH_MATCH;
 	    break;
 	}
-	if (-1 == fseek(Nmz.i, getidxptr(Nmz.ii, i), 0))
+	if (-1 == fseek(Nmz.w, getidxptr(Nmz.wi, i), 0)) {
 	    break;
-	fgets(buf, BUFSIZE, Nmz.i);
+	}
+	fgets(buf, BUFSIZE, Nmz.w);
         chomp(buf);
-	if (!strncmp(key, buf, n)) {
+	if (strncmp(key, buf, n) == 0) {
 	    tmp = get_hlist(i);
 	    if (tmp.n > IGNORE_HIT) {
 		free_hlist(val);
@@ -205,12 +207,12 @@ int detect_search_mode(uchar *key) {
         && *(key + strlen(key) - 2) != '\\')
     {
         if (Debug)
-            fprintf(stderr, "do FORWARD_MATCH search\n");
-	return FW;    /* forward match search */
+            fprintf(stderr, "do PREFIX_MATCH search\n");
+	return FW;    /* prefix match search */
     } else if (*key == '*') {
         if (Debug)
-            fprintf(stderr, "do REGEX (BACKWARD_MATCH) search\n");
-	return RE;    /* backward match  (treated as regex)*/
+            fprintf(stderr, "do REGEX (SUFFIX_MATCH) search\n");
+	return RE;    /* suffix match  (treated as regex)*/
     } else if ((*key == '"' && *(lastc(key)) == '"') 
           || (*key == '{' && *(lastc(key)) == '}')) 
     {
@@ -274,13 +276,13 @@ HLIST do_word_search(uchar *key, HLIST val)
     return val;
 }
 
-HLIST do_forward_match_search(uchar *key, HLIST val)
+HLIST do_prefix_match_search(uchar *key, HLIST val)
 {
     int v;
 
     if ((v = binsearch(key, 1)) != -1) { /* 2nd argument must be 1  */
         /* if found, do foward match */
-        val = forward_match(key, v);
+        val = prefix_match(key, v);
     } else {
         val.n = 0;  /* no hit */
     }
@@ -438,11 +440,11 @@ HLIST do_phrase_search(uchar *key, HLIST val)
 void do_regex_preprocessing(uchar *expr)
 {
     if (*expr == '*' && *(lastc(expr)) != '*') {
-        /* if backward match such as '*bar', enforce it into regex */
+        /* if suffix match such as '*bar', enforce it into regex */
         strcpy(expr, expr + 1);
         strcat(expr, "$");
     } else if (*expr != '*' && *(lastc(expr)) == '*') {
-        /* if forward match such as 'bar*', enforce it into regex */
+        /* if prefix match such as 'bar*', enforce it into regex */
         *(lastc(expr)) = '.';
         strcat(expr, "*");
     } else if (*expr == '*' && *(lastc(expr)) == '*') {
@@ -582,6 +584,15 @@ int open_index_files()
     if (Nmz.ii == NULL) {
 	return 1;
     }
+    Nmz.w = fopen(NMZ.w, "rb");
+    if (Nmz.w == NULL) {
+	return 1;
+    }
+    Nmz.wi = fopen(NMZ.wi, "rb");
+    if (Nmz.wi == NULL) {
+	return 1;
+    }
+
     return 0;
 }
 
@@ -590,6 +601,8 @@ void close_index_files(void)
 {
     fclose(Nmz.i);
     fclose(Nmz.ii);
+    fclose(Nmz.w);
+    fclose(Nmz.wi);
 }
 
 
@@ -753,6 +766,7 @@ void make_fullpathname_index(int n)
     pathcat(base, NMZ.i);
     pathcat(base, NMZ.ii);
     pathcat(base, NMZ.w);
+    pathcat(base, NMZ.wi);
     pathcat(base, NMZ.p);
     pathcat(base, NMZ.pi);
     pathcat(base, NMZ.lock);
@@ -769,53 +783,55 @@ void make_fullpathname_index(int n)
  ************************************************************/
 
 /* main routine of binary search */
-int binsearch(uchar *orig_key, int forward_match_mode)
+int binsearch(uchar *orig_key, int prefix_match_mode)
 {
     int l, r, x, e = 0, i;
-    uchar buf[BUFSIZE], key[BUFSIZE];
+    uchar term[BUFSIZE], key[BUFSIZE];
 
     strcpy(key, orig_key);
     lrget(key, &l, &r);
 
-    if (forward_match_mode) {  /* truncate a '*' character at the end */
+    if (prefix_match_mode) {  /* truncate a '*' character at the end */
         *(lastc(key)) = '\0';
     }
 
     while (r >= l) {
 	x = (l + r) / 2;
 
-	fseek(Nmz.i, getidxptr(Nmz.ii, x), 0);
-
 	/* over BUFSIZE (maybe 1024) size keyword is nuisance */
-	fgets(buf, BUFSIZE, Nmz.i);
+	fseek(Nmz.w, getidxptr(Nmz.wi, x), 0);
+	fgets(term, BUFSIZE, Nmz.w);
+
 	if (Debug)
-	    fprintf(stderr, "searching: %s", buf);
-	for (e = 0, i = 0; *(buf + i) != '\n' && *(key + i) != '\0' ; i++) {
-	    if (*(buf + i) > *(key + i)) {
+	    fprintf(stderr, "searching: %s", term);
+	for (e = 0, i = 0; *(term + i) != '\n' && *(key + i) != '\0' ; i++) {
+	    if (*(term + i) > *(key + i)) {
 		e = -1;
 		break;
 	    }
-	    if (*(buf + i) < *(key + i)) {
+	    if (*(term + i) < *(key + i)) {
 		e = 1;
 		break;
 	    }
 	}
 
-	if (*(buf + i) == '\n' && *(key + i)) {
+	if (*(term + i) == '\n' && *(key + i)) {
 	    e = 1;
-	} else if (! forward_match_mode && *(buf + i) != '\n' 
+	} else if (! prefix_match_mode && *(term + i) != '\n' 
                    && (!*(key + i))) {
 	    e = -1;
 	}
 
 	/* if hit, return */
-	if (!e)
+	if (!e) {
 	    return x;
+	}
 
-	if (e < 0)
+	if (e < 0) {
 	    r = x - 1;
-	else
+	} else {
 	    l = x + 1;
+	}
     }
     return -1;
 }
@@ -894,7 +910,7 @@ HLIST do_search(uchar *orig_key, HLIST val)
     delete_beginning_backslash(key);
 
     if (mode == FW) {
-        val = do_forward_match_search(key, val);
+        val = do_prefix_match_search(key, val);
     } else  if (mode == RE) {
         val = do_regex_search(key, val);
     } else if (mode == PH) {

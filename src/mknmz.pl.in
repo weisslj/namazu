@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.52 1999-08-31 23:53:09 satoru Exp $
+# $Id: mknmz.pl.in,v 1.53 1999-09-01 01:11:23 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -941,10 +941,11 @@ sub check_file ($$$) {
 
 # util::Rename *.$$ to each real file name
 sub write_nmz_files () {
-    util::Rename($var::NMZ{_i},      $var::NMZ{i});
+    util::Rename($var::NMZ{_i},   $var::NMZ{i});
     util::Rename($var::NMZ{_ii}, $var::NMZ{ii});
-    util::Rename($var::NMZ{_w},   $var::NMZ{w});
-    util::Rename($var::NMZ{_p},     $var::NMZ{p});
+    util::Rename($var::NMZ{_w},  $var::NMZ{w});
+    util::Rename($var::NMZ{_wi}, $var::NMZ{wi});
+    util::Rename($var::NMZ{_p},  $var::NMZ{p});
     util::Rename($var::NMZ{_pi}, $var::NMZ{pi});
 }
 
@@ -1721,7 +1722,8 @@ sub get_unpackw ($) {
     my $val = 0;
     while (1) {
 	my $tmp = getc($fh);
-        util::cdie("fatal error occurred in get_unpackw\n") unless defined $tmp;
+        util::cdie("fatal error occurred in get_unpackw\n") 
+	    unless defined $tmp;
 	$tmp = ord($tmp);
 
 	if ($tmp < 128) {
@@ -1762,26 +1764,28 @@ sub write_index_sub () {
     my @words = sort keys(%KeyIndex);
     return 0 if $#words == -1;
 
-    util::dprint("doing write_index() processing.\n");
-    my $fh_indexindex = util::efopen(">$var::NMZ{_ii}");
-    my $fh_tmp_i = util::efopen(">$var::NMZ{__i}");
-    my $fh_tmp_w = util::efopen(">$var::NMZ{__w}");
-
     my $cnt = 0;
-    my $ptr = 0;
+    my $ptr_i = 0;
+    my $ptr_w = 0;
     my $key_count = 0;
     my $baserecord = "";
 
-    my $fh_index = util::fopen($var::NMZ{_i});
-    if ($fh_index) {
-      FOO:
-	while (defined(my $line = <$fh_index>)) {
-	    my $current_word = $line;
-	    chop $current_word;
+    util::dprint("doing write_index() processing.\n");
+    my $fh_tmp_i  = util::efopen(">$var::NMZ{__i}");
+    my $fh_tmp_w  = util::efopen(">$var::NMZ{__w}");
+    my $fh_i      = util::fopen($var::NMZ{_i});
+    my $fh_ii     = util::efopen(">$var::NMZ{_ii}");
+    my $fh_w      = util::fopen($var::NMZ{_w});
+    my $fh_wi = util::efopen(">$var::NMZ{_wi}");
 
-	    my $baseleng = get_unpackw($fh_index);
-	    read($fh_index, $baserecord, $baseleng);
-	    <$fh_index>;
+    if ($fh_w) {
+      FOO:
+	while (defined(my $line = <$fh_w>)) {
+	    chop $line;
+	    my $current_word = $line;
+
+	    my $baseleng = get_unpackw($fh_i);
+	    read($fh_i, $baserecord, $baseleng);
 
  	    for (; $cnt < @words; $cnt++) {
 		last unless $words[$cnt] le $current_word;
@@ -1794,31 +1798,40 @@ sub write_index_sub () {
 		    $leng = length($record);  # re-measure
 		    my $tmp = pack("w", $leng + $baseleng);
 
-		    my $data = "$current_word\n$tmp$baserecord$record\n";
-		    print $fh_tmp_w "$current_word\n";
-		    print $fh_tmp_i $data;
-		    print $fh_indexindex pack("N", $ptr);
-		    $ptr += length($data);
+		    my $data_i = "$tmp$baserecord$record";
+		    my $data_w = "$current_word\n";
+		    print $fh_tmp_i $data_i;
+		    print $fh_tmp_w $data_w;
+		    print $fh_ii pack("N", $ptr_i);
+		    print $fh_wi pack("N", $ptr_w);
+		    $ptr_i += length($data_i);
+		    $ptr_w += length($data_w);
 		    $key_count++;
 
 		    $cnt++;
 		    next FOO;
 		} else {
 		    my $tmp = pack("w", $leng);
-		    my $data = "$words[$cnt]\n$tmp$record\n";
-		    print $fh_tmp_w "$words[$cnt]\n";
-		    print $fh_tmp_i $data;
-		    print $fh_indexindex pack("N", $ptr);
-		    $ptr += length($data);
+		    my $data_i = "$tmp$record";
+		    my $data_w = "$words[$cnt]\n";
+		    print $fh_tmp_i $data_i;
+		    print $fh_tmp_w $data_w;
+		    print $fh_ii pack("N", $ptr_i);
+		    print $fh_wi pack("N", $ptr_w);
+		    $ptr_i += length($data_i);
+		    $ptr_w += length($data_w);
 		    $key_count++;
 		}
 	    }
 	    my $tmp  = pack("w", $baseleng);
-	    my $data = "$current_word\n$tmp$baserecord\n";
-	    print $fh_tmp_w "$current_word\n";
-	    print $fh_tmp_i $data;
-	    print $fh_indexindex pack("N", $ptr);
-	    $ptr += length($data);
+	    my $data_i = "$tmp$baserecord";
+	    my $data_w = "$current_word\n";
+	    print $fh_tmp_i $data_i;
+	    print $fh_tmp_w $data_w;
+	    print $fh_ii pack("N", $ptr_i);
+	    print $fh_wi pack("N", $ptr_w);
+	    $ptr_i += length($data_i);
+	    $ptr_w += length($data_w);
 	    $key_count++;
 	}
     }
@@ -1827,11 +1840,14 @@ sub write_index_sub () {
 	my $tmp = pack("w", $leng);
 	my $record = $KeyIndex{$words[$cnt]};
 
-	my $data = "$words[$cnt]\n$tmp$record\n";
-	print $fh_tmp_w "$words[$cnt]\n";
-	print $fh_tmp_i $data;
-	print $fh_indexindex pack("N", $ptr);
-	$ptr += length($data);
+	my $data_i = "$tmp$record";
+	my $data_w = "$words[$cnt]\n";
+	print $fh_tmp_i $data_i;
+	print $fh_tmp_w $data_w;
+	print $fh_ii pack("N", $ptr_i);
+	print $fh_wi pack("N", $ptr_w);
+	$ptr_i += length($data_i);
+	$ptr_w += length($data_w);
 	$key_count++;
 	$cnt++;
     }

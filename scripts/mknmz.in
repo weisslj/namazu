@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.141 2004-07-22 18:51:29 opengl2772 Exp $
+# $Id: mknmz.in,v 1.142 2004-07-22 19:08:56 opengl2772 Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -2099,14 +2099,14 @@ sub load_sizefield() {
 
 sub get_total_keys() {
     my $keys = get_status("keys");
-    $keys =~ s/,//g;
+    $keys =~ s/,//g if (defined $keys);
     $keys = 0 unless defined $keys;
     return $keys;
 }
 
 sub get_total_files() {
     my $files = get_status("files");
-    $files =~ s/,//g;
+    $files =~ s/,//g if (defined $files);
     $files = 0 unless defined $files;
     return $files;
 }

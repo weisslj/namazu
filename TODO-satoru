@@ -1,6 +1,8 @@
-$Id: TODO-satoru,v 1.5 2000-01-08 10:11:43 satoru Exp $
+$Id: TODO-satoru,v 1.6 2000-01-08 14:12:52 satoru Exp $
 
 やるべきことの備忘録 by 高林
+
+  * conv_query() を nmz_search() から呼ぶようにする。
 
   * 一対多の alias に対応する。例: Alias all-ml foo bar baz quux
 

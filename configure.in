@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.121 2000-03-20 14:24:15 satoru Exp $
+dnl $Id: configure.in,v 1.122 2000-03-28 10:53:12 satoru Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -204,7 +204,7 @@ ADDITIONAL_INC="."  # default (dummy)
 AC_ARG_WITH(
     pmdir,
     [  --with-pmdir=DIR        perl modules are in DIR [guessed]],
-    [PMDIR=${withval}], [PMDIR='']
+    [PMDIR=${withval}], [PMDIR='.']
 )
 test "$PMDIR" && ADDITIONAL_INC="$PMDIR"
 AC_SUBST(ADDITIONAL_INC)

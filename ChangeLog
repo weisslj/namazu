@@ -1,3 +1,7 @@
+2000-03-28  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* configure.in: Set default PMDIR to `.' instead of `'.
+
 2000-03-23  Ken-ichi Hirose  <kenzo-@tama.or.jp>
 
 	* filter/ichitaro456.pl (status): Fixed check doscmd and jstxt.exe.
@@ -5363,4 +5367,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.656 2000-03-23 14:53:35 kenzo- Exp $
+$Id: ChangeLog,v 1.657 2000-03-28 10:53:11 satoru Exp $

@@ -10,6 +10,13 @@
 
 1999-11-08  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
+	* src/namazu.h : Modified to include libnamazu.h.
+
+	* nmz/libnamazu.h, src/namazu.h: Moved some definitions from 
+	namazu.h to libnamazu.h.
+
+	* nmz/util.h: Removed including namazu.h.
+
 	* src/Makefile.am: Fixed conflicts.
 
 1999-11-06  Ryuji Abe  <raeva@t3.rim.or.jp>

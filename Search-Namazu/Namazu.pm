@@ -19,7 +19,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 # 02111-1307, USA
 #
-# $Id: Namazu.pm,v 1.1 1999-10-29 05:09:52 knok Exp $
+# $Id: Namazu.pm,v 1.2 1999-11-08 09:17:35 knok Exp $
 #
 
 package Search::Namazu;
@@ -104,7 +104,7 @@ sub Search {
 	@indices = ($index);
     }
     for my $idx (@indices) {
-	if (add_index($idx) < 0) {
+	if (add_nmzindex($idx) < 0) {
 	    return NMZ_ERR_INDEX;
 	}
     }

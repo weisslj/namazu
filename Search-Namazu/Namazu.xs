@@ -20,7 +20,7 @@ Namazu.xs
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 # 02111-1307, USA
 
-$Id: Namazu.xs,v 1.1 1999-10-29 05:09:52 knok Exp $
+$Id: Namazu.xs,v 1.2 1999-11-08 09:17:35 knok Exp $
 
 */
 
@@ -32,6 +32,16 @@ extern "C" {
 #include "XSUB.h"
 
 #include "libnamazu.h"
+#include "codeconv.h"
+#include "conf.h"
+#include "field.h"
+#include "hlist.h"
+#include "idxname.h"
+#include "parser.h"
+#include "re.h"
+#include "search.h"
+#include "util.h"
+#include "wakati.h"
 #ifdef __cplusplus
 }
 #endif
@@ -79,10 +89,15 @@ call_search_main(query)
 		RETVAL
 
 int
-add_index(index)
+add_nmzindex(index)
 	SV *index
 
 	PREINIT:
+		char *tmp;
 
 	CODE:
-		
+		tmp = SvPV(index, na);
+		RETVAL = add_index(tmp);
+
+	OUTPUT:
+		RETVAL

@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "namazu.h"
+#include "libnamazu.h"
 #include "field.h"
 #include "result.h"
 #include "util.h"

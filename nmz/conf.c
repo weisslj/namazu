@@ -2,7 +2,7 @@
  * 
  * conf.c -
  * 
- * $Id: conf.c,v 1.1 1999-11-08 05:06:04 knok Exp $
+ * $Id: conf.c,v 1.2 1999-11-08 09:17:36 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -29,6 +29,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "namazu.h"
+#include "libnamazu.h"
 #include "util.h"
 #include "conf.h"
 #include "regex.h"

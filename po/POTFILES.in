@@ -2,6 +2,7 @@ nmz/conf.c
 nmz/search.c
 nmz/wakati.c
 src/cgi.c
+src/form.c
 src/namazu.c
 src/output.c
 src/usage.c

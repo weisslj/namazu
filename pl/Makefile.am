@@ -2,6 +2,7 @@
 
 AUTOMAKE_OPTIONS = 1.4 no-dependencies
 
+localedir   = $(datadir)/locale
 perllibdir = $(pkgdatadir)/pl
 
 perllib_DATA = \
@@ -25,5 +26,11 @@ EXTRA_DIST = \
 	util.pl \
 	var.pl.in \
 	wakati.pl
+
+gettext.pl: gettext.pl.in
+	rm -f @
+	sed -e 's!%LOCALEDIR%!$(localedir)!g' \
+	$gettext.pl.in > $@
+	chmod +x $@
 
 ETAGS_ARGS = $(perllib_DATA) --lang=perl

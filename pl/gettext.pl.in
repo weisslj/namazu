@@ -22,7 +22,7 @@ sub textdomain
     $language = $ENV{"LANG"};
     return if ! $language;
     $domain = $_[0];
-    $catalog = "@prefix@/share/locale/$language/LC_MESSAGES/$domain.mo";
+    $catalog = "%LOCALEDIR%/$language/LC_MESSAGES/$domain.mo";
 
     open (CATALOG, $catalog) || return;
     sysread (CATALOG, $buffer, (stat CATALOG)[7]);

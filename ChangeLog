@@ -1,3 +1,11 @@
+2000-01-03  Ryuji Abe <raeva@t3.rim.or.jp>
+
+	* pl/Makefile.am (localedir): Set $(datadir)/locale.
+	(gettext.pl): Generated when make all.
+
+	* pl/gettext/pl.in: Changed $(localedir) from 
+	@prefix@/share/locale to %LOCALEDIR%.
+
 2000-01-03  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* pl/gettext.pl.in: Added new file.

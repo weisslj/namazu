@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: gzip.pl,v 1.8 1999-08-31 10:17:49 knok Exp $
+# $Id: gzip.pl,v 1.9 1999-09-01 08:41:55 knok Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -34,7 +34,7 @@ sub mediatype() {
 sub status() {
     return 'yes' if (util::checklib('Compress/Zlib.pm'));
     my $gzippath = util::checkcmd('gzip');
-    return 'yes' unless (defined $gzippath);
+    return 'yes' if (defined $gzippath);
     return 'no';
 }
 

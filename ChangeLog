@@ -1,3 +1,9 @@
+2000-01-31  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* template/NMZ.body.ja: Change anchor names.
+
+	* template/NMZ.body: Ditto.
+
 2000-01-31  Ryuji Abe  <raeva@t3.rim.or.jp>
 
 	* nmz/util.[ch] (nmz_commas): Moved to src/result.c as commas.

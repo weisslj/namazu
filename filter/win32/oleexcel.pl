@@ -1,7 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: oleexcel.pl,v 1.9 2001-01-19 09:55:17 baba Exp $
-# Copyright (C) 1999 Jun Kurabe ,
+# $Id: oleexcel.pl,v 1.10 2001-01-26 11:17:31 takesako Exp $
+# Copyright (C) 2001 Yoshinori TAKESAKO,
+#               1999 Jun Kurabe ,
 #               1999 Ken-ichi Hirose All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -27,26 +28,41 @@
 #    You may distribute under the terms of either the GNU General Public
 #    License or the Artistic License, as specified in the README(Win32::OLE) file.
 #
-# Created by Jun Kurabe
-# E-Mail: jun-krb@mars.dti.ne.jp
+# Created by Jun Kurabe <jun-krb@mars.dti.ne.jp>
 # V1.00 1999/10/30
 # V1.01 1999/11/03 Add getFrames by Jun Kurabe
 # V1.02 1999/11/03 Change getProperties of check TextFrame statement
-# V2.00 1999/11/06 Change Program Structure
-#		   Get Text From Grouped Shape Items
+# V2.00 1999/11/06 Change Program Structure 
+#		  Get Text From Grouped Shape Items
 # V2.10 1999/11/09 Change Name
-#		   Merge three program ReadMSWord.pl, ReadExcel.pl, ReadPPT.pl
-# V2.11 1999/11/15 separate file.
-#		   modify some functions.
+#		  Merge three program ReadMSWord.pl, ReadExcel.pl, ReadPPT.pl
+# V2.11 1999/11/15  separate file. modify some functions.
 # V2.12 1999/11/27 Use Office::OLE::Const to define constant value
-# V2.13 2000/05/16 Optimize for Namazu filter ...
-# V2.14 2000/10/28 contribute patch by Yoshinori.TAKESAKO-san.
-#
+# V3.00 2001/01/12 New OLE Excel filter written by <takesako@ddt.or.jp>
+# V3.01 2001/01/13 Changed overall program structure.
+# V3.02 2001/01/14 Skipped password-protected file.
+# V3.03 2001/01/16 The using memory size was reduced.
+# V3.04 2001/01/20 Moved Excel application destructor to END block
+# V3.05 2001/01/21 Do not pop-up over-write dialog message
+# V3.06 2001/01/24 Convert kanji code of document properties to euc-jp code
 
 package oleexcel;
 #use strict;
 require 'util.pl';
 require 'gfilter.pl';
+
+use Win32::OLE qw(in with);
+use Win32::OLE::Const 'Microsoft Excel';
+
+# for Excel application start only one time
+my $excel;
+
+# Excel appliation destructor
+END {
+    util::vprint("Excel->Quit\n");
+    $excel->Quit if defined $excel;
+    undef $excel;
+}
 
 sub mediatype() {
     return ('application/excel');
@@ -55,12 +71,9 @@ sub mediatype() {
 sub status() {
     open (SAVEERR,">&STDERR");
     open (STDERR,">nul");
-    my $const;
-    $const = Win32::OLE::Const->Load("Microsoft Excel 9.0 Object Library");
-    $const = Win32::OLE::Const->Load("Microsoft Excel 8.0 Object Library")
-	unless $const;
+    my $excel = Win32::OLE->new('Excel.Application','Quit');
     open (STDERR,">&SAVEERR");
-    return 'yes' if (defined $const);
+    return 'yes' if (defined $excel);
     return 'no';
 }
 
@@ -78,48 +91,8 @@ sub post_codeconv () {
 
 sub add_magic ($) {
     my ($magic) = @_;
-
     $magic->addFileExts('\\.xls$', 'application/excel');
     return;
-}
-
-sub filter ($$$$$) {
-    my ($orig_cfile, $cont, $weighted_str, $headings, $fields) = @_;
-    my $cfile = defined $orig_cfile ? $$orig_cfile : '';
-
-    util::vprint("Processing excel file ... (using  'Win32::OLE->new Excel.Application')\n");
-
-    $cfile =~ s/\//\\/g;
-    $$cont = "";
-    ReadExcel::ReadExcel($cfile, $cont, $fields);
-    $cfile = defined $orig_cfile ? $$orig_cfile : '';
-
-    gfilter::line_adjust_filter($cont);
-    gfilter::line_adjust_filter($weighted_str);
-    gfilter::white_space_adjust_filter($cont);
-    $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
-	unless $fields->{'title'};
-    gfilter::show_filter_debug_info($cont, $weighted_str, $fields, $headings);
-    return undef;
-}
-
-
-# Original of this code was contributed by <jun-krb@mars.dti.ne.jp>.
-
-use Win32::OLE;
-use Win32::OLE::Enum;
-use Win32::OLE::Const;
-
-sub enum ($$$) {
-    my ($enum_objs, $func, $cont) = @_;
-
-    die "No Objects or No Function" unless ($enum_objs and $func);
-
-    my $e = Win32::OLE::Enum->new($enum_objs);
-    while(($obj = $e->Next)) {
-	return 0 if (!&$func($obj, $cont));
-    }
-    return 1;
 }
 
 sub getProperties ($$) {
@@ -140,137 +113,144 @@ sub getProperties ($$) {
     $fields->{'author'} = codeconv::shiftjis_to_eucjp($author)
 	if (defined $author);
 
-#    my $date = $cfile->BuiltInDocumentProperties('Last Save Time')->{Value};
-#    $date = $cfile->BuiltInDocumentProperties('Creation Date')->{Value}
-#	unless (defined $date);
-#    $fields->{'date'} = codeconv::shiftjis_to_eucjp($date) if (defined $date);
+    # my $date = $cfile->BuiltInDocumentProperties('Last Save Time')->{Value};
+    # $date = $cfile->BuiltInDocumentProperties('Creation Date')->{Value}
+    #    unless (defined $date);
+    # $fields->{'date'} = codeconv::shiftjis_to_eucjp($date)
+    #     if (defined $date);
 
     return undef;
 }
 
-package ReadExcel;
+sub filter ($$$$$) {
+    my ($orig_cfile, $cont, $weighted_str, $headings, $fields) = @_;
+    my $cfile = defined $orig_cfile ? $$orig_cfile : '';
+    my $fileName = $cfile;
 
-sub ReadExcel ($$$) {
-    my ($cfile, $cont, $fields) = @_;
+    util::vprint("Processing excel file ...\n");
 
-    # Copy from Win32::OLE Example Program
-    # use existing instance if Excel is already running
-    my $excel;
+    # make temporary file name
+    my $tmpfile0 = util::tmpnam('NMZ.xls0');
+    my $tmpfile1 = util::tmpnam('NMZ.xls1');
+    my $tmpfile2 = util::tmpnam('NMZ.xls2');
+
+    # c:/hoge/hoge.xls -> c:\hoge\hoge.xls
+    $fileName =~ s|/|\\|g;
+    $tmpfile0 =~ s|/|\\|g;
+    $tmpfile1 =~ s|/|\\|g;
+    $tmpfile2 =~ s|/|\\|g;
+
+    # use existing instance if Excel is already running.
+    # my $excel;
     eval {$excel = Win32::OLE->GetActiveObject('Excel.Application')};
-    die "Excel not installed" if $@;
+    die "MSExcel not installed" if $@;
     unless (defined $excel) {
 	$excel = Win32::OLE->new('Excel.Application', sub {$_[0]->Quit;})
 	    or die "Oops, cannot start Excel";
     }
-    # End of Copy from Win32::OLE Example Program
 
-    # Redirect stderr to null device, to ignore Error and Exception message.
-    open (SAVEERR,">&STDERR");
-    open (STDERR,">nul");
-    # Load Office 98 Constant
-    local $office_consts;
-    $office_consts = Win32::OLE::Const->Load("Microsoft Office 9.0 Object Library");
-    $office_consts = Win32::OLE::Const->Load("Microsoft Office 8.0 Object Library") unless $office_consts;
-    # for debug
-    # $excel->{Visible} = 1;
-    # Restore stderr device usually.
-    open (STDERR,">&SAVEERR");
+    $Win32::OLE::Warn = 0;
+    $excel->{Visible} = 0;
+    $excel->{DisplayAlerts} = 0;
+    $excel->{EnableEvents} = 0;
 
-    my $wb = $excel->Workbooks->Open({
-	'FileName' => $cfile,
-	'UpdateLinks' => 0,
-	'ReadOnly' => 1,
-	'Password' => 'dummy password',
-	'WriteResPassword' => 'dummy password',
-	'IgnoreReadOnlyRecommended' => 1,
+    # Open the excel workbooks.
+    # In order to skip password-protected file, send a dummy password.
+    my $Book = $excel->Workbooks->Open({
+	'FileName'			=> $fileName,
+	'ReadOnly'			=> 1,
+	'IgnoreReadOnlyRecommended'	=> 1,
+	'Updatelinks'			=> 0,
+	'WriteResPassword'		=> 'dummy password',
+	'Password'			=> 'dummy password'
+    });
+    return "$fileName: cannot open file\n" unless (defined $Book);
+
+    # get some properties
+    getProperties($Book, $fields);
+
+    # FileHandle for temporary file 1,2
+    local (*FH1, *FH2);
+
+    # for exchanging SaveAs temporary file 0 or 1
+    my $unlink_list;
+    my $tmpfile = $tmpfile0;
+
+    # for each All Sheets in the WorkBook
+    foreach my $sheet (in $Book->Sheets) {
+	# Get this sheetName
+	my $sheetName = $sheet->Name;
+
+	# SaveAs xlText FileFormat
+	my $ret = $sheet->SaveAs({
+	    FileName		=>	$tmpfile,	# 
+	    FileFormat		=>	xlText,		# 
+	    CreateBackup	=>	0		# False
 	});
-    die "Cannot open File $cfile" unless (defined $wb);
-    # print $cfile,"\n";
-    # print $wb,"\n";
 
-    oleexcel::getProperties($wb, $fields);
-    getSheets($wb, $cont);
+	# print this sheetName
+	open (FH2, ">>$tmpfile2") or return("$tmpfile2: $!\n");
+	print FH2 "$sheetName\n";
+	util::vprint("Processing sheet: $sheetName");
 
-    $wb->close(0);
-    undef $wb;
-    undef $excel;
-
-    return undef;
-}
-
-sub getSheets ($$) {
-    my ($wb, $cont) = @_;
-
-    my $enum_a_sheet = sub {
-	my $obj = shift;
-	getCells($obj, $cont);
-	getShapes($obj, $cont);
-	return 1;
-    };
-
-    oleexcel::enum($wb->Worksheets, $enum_a_sheet, $cont);
-    return undef;
-}
-
-sub getCells ($$) {
-    # parameter
-    # sheet: Sheet Object
-    # Return Value
-    #	Text which is contained in cell on a sheet
-    my ($sheet, $cont) = @_;
-
-    # In order to avoid too much index time, restrict 100x100 cells.
-    my $tmpur = $sheet->{UsedRange};
-    my $tmprc = ($tmpur->Rows->Count	>100 ? 100 : $tmpur->Rows->Count);
-    my $tmpcc = ($tmpur->Columns->Count >100 ? 100 : $tmpur->Columns->Count);
-    my $ur = $sheet->Range(
-			   $sheet->Cells($tmpur->Rows->Row, $tmpur->Columns->Column),
-			   $sheet->Cells($tmpur->Rows($tmprc)->Row, $tmpur->Columns($tmpcc)->Column)
-			   );
-
-    my $enum_a_cell = sub {
-	my $cell = shift;
-	my $p = $cell->{Value};
-	$$cont .= "$p\n" if (defined $p);
-	return 1;
-    };
-
-    oleexcel::enum($ur->Cells, $enum_a_cell, $cont);
-    return undef;
-}
-
-sub getShapes ($$) {
-    my ($sheet, $cont) = @_;
-    my $depth = 0;
-
-    sub enum_a_shape {
-	my ($obj, $cont) = @_;
-	$getShapes::depth++;
-	# print "passed YY $getShapes::depth\n";
-	# print "type = ", $obj->{Type}, "\n";
-	if ( $obj->{Type} == $office_consts->{msoGroup} ) { #msoGroup = 6
-	    # print "passed XX\n";
-	    oleexcel::enum($obj->GroupItems, \&enum_a_shape, $cont);
-	    } elsif ($obj->{Type} == $office_consts->{msoTextBox} ||
-		     $obj->{Type} == $office_consts->{msoAutoShape} ) {
-		if ($obj->{TextFrame} && $obj->TextFrame->{Characters}) {
-		    my $p = $obj->TextFrame->Characters->{Text} ;
-		    $$cont .= "$p\n" if (defined $p);
-		}
+	# if SaveAs method is successful then unescape form xlText file-format.
+	if (defined $ret) {
+	    open (FH1, "<$tmpfile") or return("$tmpfile: $!\n");
+	    binmode(FH1);
+	    local ($/) = "\r\n";
+	    while (my $text = <FH1>) {
+		chomp($text);
+		chomp($text);
+		$text =~ s/^"//m;
+		$text =~ s/"$//m;
+		$text =~ s/\t+$//m;
+		$text =~ s/\t"/\t/gm;
+		$text =~ s/"\t/\t/gm;
+		$text =~ s/""/"/gm;
+		$text =~ s/\s+/ /gm; # for Adjust white spaces
+		print FH2 $text, "\n" if ($text ne '');
 	    }
-	$getShapes::depth--;
-	return 1;
-    };
+	    close(FH1);
 
-    oleexcel::enum($sheet->Shapes,\&enum_a_shape, $cont);
+	    # unlink old temporary file
+	    unlink $unlink_list if defined $unlink_list;
+	    $unlink_list = $tmpfile;
+
+	    # exchange SaveAs temporary file 0 or 1
+	    $tmpfile = ($tmpfile eq $tmpfile0) ? $tmpfile1 : $tmpfile0;
+	}
+	close(FH2);
+    }
+
+    $Book->Close(0);
+    undef $Book;
+    # undef $excel;
+
+    # read all text from temporary file 2
+    my $fh2 = util::efopen("< $tmpfile2");
+    $$cont = util::readfile($fh2);
+    undef $fh2;
+
+    # unlink temporary file 0,1,2
+    unlink $tmpfile0, $tmpfile1, $tmpfile2;
+
+    # TEXT_SIZE_MAX
+    my $text_size_max = 1000000;
+    $text_size_max = $conf::TEXT_SIZE_MAX if defined $conf::TEXT_SIZE_MAX;
+    if (length($$cont) > $text_size_max) {
+	util::vprint("text size is too LARGE! Cut down on test size: $text_size_max bytes");
+	$$cont = substr($$cont, 0, $text_size_max);
+	$$cont =~ s/\n.*$//m;
+    }
+
+    # gfilter::line_adjust_filter($cont);
+    gfilter::line_adjust_filter($weighted_str);
+    # gfilter::white_space_adjust_filter($cont);
+    $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
+	unless $fields->{'title'};
+    gfilter::show_filter_debug_info($cont, $weighted_str, $fields, $headings);
+
     return undef;
 }
-
-#main
-#use Cwd;
-#$ARGV[0] = cwd().'\\'.$ARGV[0] unless ($ARGV[0] =~ m/^[a-zA-Z]\:[\\\/]/ || $ARGV[0] =~ m/^\/\//);
-#$ARGV[0] =~ s|/|\\|g;
-
-#print ReadExcel::ReadExcel("$ARGV[0]");
 
 1;

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: olemsword.pl,v 1.7 2001-01-19 09:55:17 baba Exp $
+# $Id: olemsword.pl,v 1.8 2001-01-26 11:17:31 takesako Exp $
 # Copyright (C) 1999 Jun Kurabe ,
 #		1999-2000 Ken-ichi Hirose All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -42,6 +42,7 @@
 # V2.12 1999/11/27 Use Office::OLE::Const to define constant value
 # V2.13 2000/04/27 Optimize for Namazu filter ...
 # V2.14 2000/10/28 contribute patch by Yoshinori.TAKESAKO-san.
+# V2.15 2000/01/26 Use existing instance if Word is already running.
 #
 
 package olemsword;
@@ -151,16 +152,16 @@ sub getProperties ($$) {
 
 package ReadMSWord;
 
+my $word;
 sub ReadMSWord ($$$) {
     my ($cfile, $cont, $fields) = @_;
 
     # Copy From Win32::OLE Example Program
     # use existing instance if Word is already running
-    my $word;
     eval {$word = Win32::OLE->GetActiveObject('Word.Application')};
     die "MSWord not installed" if $@;
     unless (defined $word) {
-	$word = Win32::OLE->new('Word.Application', sub {$_[0]->Quit(0);})
+	$word = Win32::OLE->new('Word.Application')
 	    or die "Oops, cannot start Word";
     }
     # End of Copy From Win32::OLE Example Program
@@ -193,9 +194,16 @@ sub ReadMSWord ($$$) {
 
     $doc->close(0);
     undef $doc;
-    undef $word;
 
     return undef;
+}
+
+END {
+    if (defined $word) {
+	util::vprint("Word->Quit\n");
+	$word->Quit;
+	undef $word;
+    }
 }
 
 sub getParagraphs ($$) {

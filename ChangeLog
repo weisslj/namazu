@@ -1,3 +1,20 @@
+2000-02-26  Ken-ichi Hirose  <kenzo-@tama.or.jp>
+
+        * filter/olemsword.pl (enum): Change $enum_func to $func.
+        And change or to and.
+        (getProperties): fix $editDate by BuiltInDocumentProperties.
+        And fix typo.
+
+        * filter/oleexcel.pl (enum): Change $enum_func to $func.
+        And change or to and.
+        (getProperties): fix $editDate by BuiltInDocumentProperties.
+        And fix typo.
+
+        * filter/olepowerpoint.pl (enum): Change $enum_func to $func.
+        And change or to and.
+        (getProperties): fix $editDate by BuiltInDocumentProperties.
+        And fix typo.
+
 2000-02-25  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* pl/conf.pl.in: Change comments.

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: oleexcel.pl,v 1.5 2000-02-22 17:04:44 kenzo- Exp $
+# $Id: oleexcel.pl,v 1.6 2000-02-25 15:32:46 kenzo- Exp $
 # Copyright (C) 1999 Jun Kurabe ,
 #               1999 Ken-ichi Hirose All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -100,7 +100,7 @@ sub enum {
     my $enum_objs = shift;
     my $func = shift;
 
-    die "No Objects or No Function" unless ($enum_objs or $enum_func );
+    die "No Objects or No Function" unless ($enum_objs and $func );
 
     my $e = Win32::OLE::Enum->new($enum_objs);
     while(($obj = $e->Next)) {
@@ -115,13 +115,13 @@ sub getProperties {
 
     # get Title
     my $title = $doc->BuiltInDocumentProperties(1)->{Value};
-    my u$subject = $doc->BuiltInDocumentProperties(2)->{Value};
+    my $subject = $doc->BuiltInDocumentProperties(2)->{Value};
     my $author = $doc->BuiltInDocumentProperties(3)->{Value};
     my $lastAuthor = $doc->BuiltInDocumentProperties(7)->{Value};
     my $createDate = $doc->BuiltInDocumentProperties(11)->{Value};
-    my $editDate = $doc->BuiltInDocumentProperties(13)->{Value};
+    my $editDate = $doc->BuiltInDocumentProperties(12)->{Value};
 
-    $allText .= 'Subject: ' . $title . ' ' . $subjext ;
+    $allText .= 'Subject: ' . $title . ' ' . $subject ;
     $allText .= "\n";
     $allText .= 'From: ' . $author . ',' . $lastAuthor;
     $allText .= "\n";

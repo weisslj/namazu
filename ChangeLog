@@ -1,3 +1,7 @@
+2000-02-13  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* filter/tex.pl (add_magic): Fix regex.
+
 2000-02-13  Ryuji Abe <raeva@t3.rim.or.jp>
 
 	* configure.in (AC_CHECK_HEADERS): Added search.h.

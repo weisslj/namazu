@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: man.pl,v 1.19 2000-02-11 16:46:31 satoru Exp $
+# $Id: man.pl,v 1.20 2000-02-13 04:44:37 satoru Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -102,7 +102,7 @@ sub filter ($$$$$) {
     return undef;
 }
 
-# This is halfway.
+# This is not perfect but works not bad.
 sub man_filter ($$$) {
     my ($contref, $weighted_str, $fields) = @_;
     my $name = "";

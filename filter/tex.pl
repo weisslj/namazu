@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: tex.pl,v 1.4 2000-02-11 12:54:22 satoru Exp $
+# $Id: tex.pl,v 1.5 2000-02-13 04:44:37 satoru Exp $
 # Copyright (C) 1999 Satoru Takabayashi ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -54,8 +54,8 @@ sub add_magic ($) {
 
     $magic->addSpecials("application/x-tex",
 			"^\\\\document(style|class)",
-			"^\\\\begin{document}",
-			"^\\\\section{[^}]+}");
+			"^\\\\begin\\{document\\}",
+			"^\\\\section\\{[^}]+\\}");
     $magic->addFileExts('\\.tex$', 'application/x-tex');
     return;
 }

@@ -1,5 +1,10 @@
 1999-10-14  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/util.c (is_little_endian): Use WORDS_BIGENDIAN macro for
+	determinig an endian type.
+	
+	* configure.in: Add AC_C_BIGENDIAN.
+
 	* po/ja.po: Modify the usage message a bit.
 
 	* src/usage.c (show_long_usage): Modify the usage message a bit.

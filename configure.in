@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.35 1999-10-12 08:39:21 rug Exp $
+dnl $Id: configure.in,v 1.36 1999-10-14 04:51:42 satoru Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -55,6 +55,8 @@ fi
 dnl Checks for header files.
 AC_HEADER_STDC
 AC_CHECK_HEADERS(fcntl.h limits.h malloc.h unistd.h string.h)
+
+AC_C_BIGENDIAN
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST

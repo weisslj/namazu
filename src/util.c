@@ -51,6 +51,13 @@ static void reverse_byte_order (int *p, int n)
 
 static int is_little_endian(void)
 {
+#ifdef WORDS_BIGENDIAN
+    return 0;     /* big-endian */
+#else
+    return 1;     /* little-endian */
+#endif
+
+/*
     int  n = 1;
     char *c;
     
@@ -60,6 +67,7 @@ static int is_little_endian(void)
     } else {
 	return 0;
     }
+*/
 }
 
 /************************************************************

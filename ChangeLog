@@ -1,3 +1,8 @@
+2004-05-02  Yukio USUDA <usu@namazu.org>
+
+	* filter/zip.pl(filter): Added array @files in consideration on the
+	behavior of File::Find on relative path.
+
 2004-05-01  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * scripts/mknmz.in: Fix a warning. 'Value of <HANDLE> construct
@@ -8812,4 +8817,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1164 2004-05-01 23:12:50 opengl2772 Exp $
+$Id: ChangeLog,v 1.1165 2004-05-02 00:12:51 usu Exp $

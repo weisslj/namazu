@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: zip.pl,v 1.4 2004-05-01 08:36:20 usu Exp $
+# $Id: zip.pl,v 1.5 2004-05-02 00:12:52 usu Exp $
 #  zip filter for namazu
 #  Copyright (C) 2004 MATSUMURA Namihiko <po-jp@counterghost.net>
 #                2004 Namazu Project All rights reserved.
@@ -96,7 +96,8 @@ sub filter ($$$$$) {
     }
     unlink($tmpfile2);
 
-    my $sub = sub {
+    my @files = ();
+    my $findfiles = sub {
 	my $tmpfile = "$File::Find::dir/$_";
 	if (-f $tmpfile) {
 	    my $size = util::filesize($tmpfile);
@@ -105,25 +106,31 @@ sub filter ($$$$$) {
 	    } elsif ($size > $conf::FILE_SIZE_MAX) {
 		util::dprint("Too large ziped file");
 	    } else {
-		my $fh = util::efopen("$tmpfile");
-		my $con = util::readfile($fh);
-		my $err = zip::nesting_filter($tmpfile, \$con, $weighted_str);
-		if (defined $err) {
-		    util::dprint("filter/zip.pl gets error message \"$err\"");
-		}
-		$$contref .= $con . " ";
-		util::fclose($fh);
+		push @files, $tmpfile;
 	    }
 	    codeconv::toeuc(\$tmpfile);
 	    $tmpfile = gfilter::filename_to_title($tmpfile, $weighted_str);
-	    $$contref .= $tmpfile . "\n";
-	    unlink($tmpfile);
+	    $$contref .= $tmpfile . " ";
 	} elsif (-d $tmpfile) {
 	    chmod(0755, $tmpfile);
 	}
     };
-    find ($sub, $tmpdir);
+
+    find ($findfiles, $tmpdir);
     unlink($tmpfile);
+
+    foreach my $tmpfile (@files) {
+	my $fh = util::efopen("$tmpfile");
+	my $con = util::readfile($fh);
+	my $err = zip::nesting_filter($tmpfile, \$con, $weighted_str);
+	if (defined $err) {
+	    util::dprint("filter/zip.pl gets error message \"$err\"");
+	}
+	$$contref .= $con . " ";
+	util::fclose($fh);
+	unlink($tmpfile);
+    }
+
     rm_r($tmpdir);
     return undef;
 }

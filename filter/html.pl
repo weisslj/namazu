@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: html.pl,v 1.10 1999-08-30 03:13:18 satoru Exp $
+# $Id: html.pl,v 1.11 1999-08-30 07:25:41 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -47,8 +47,8 @@ sub filter ($$$$$) {
 
     html_filter($cont, $weighted_str, $fields, $headings);
     
-    gfilter::line_adjust_filter($cont) unless $var::Opt{NoLineAd};
-    gfilter::line_adjust_filter($weighted_str) unless $var::Opt{NoLineAd};
+    gfilter::line_adjust_filter($cont);
+    gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($cont);
     $fields->{title} = gfilter::filename_to_title($cfile, $weighted_str)
       unless $fields->{title};

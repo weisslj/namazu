@@ -382,9 +382,9 @@ install-data-local:
 	done
 	cp ChangeLog COPYING NEWS README README-ja THANKS TODO \
 		$(pkgdatadir)/etc
-	test ! -f $(pkgdatadir)/conf/namazu.conf && \
+	-test ! -f $(pkgdatadir)/conf/namazu.conf && \
 	cp $(pkgdatadir)/conf/namazu.conf-dist $(pkgdatadir)/conf/namazu.conf
-	test ! -f $(pkgdatadir)/conf/mknmz.conf && \
+	-test ! -f $(pkgdatadir)/conf/mknmz.conf && \
 	cp $(pkgdatadir)/conf/mknmz.conf-dist $(pkgdatadir)/conf/mknmz.conf
 
 dist-hook:

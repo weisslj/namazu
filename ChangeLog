@@ -8,6 +8,24 @@
 	
 1999-08-30  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/mknmz.pl.in, lib/usage.pl: Abolish the following options and
+	  remove their codes.
+	    -R, --no-regex-index
+	    -W, --no-date-index
+	    -X, --no-field-index
+	    -M, --no-mhonarc
+	    -L, --no-line-adjust
+	    -h, --rfc822   (dummy option alives)
+	    -u, --uuencode (dummy option alives)
+	    -r, --man
+
+	* src/mknmz.pl.in, lib/usage.pl: Change the option letter for 
+	`--lang=s': `-l' -> `-L'
+
+	* filter/*.pl: s/ unless \$var::Opt{NoLineAd};/;/
+	
+	* **/*.pl{,.in}: Lower all keys of %var::Opt.
+	
 	* src/mknmz.pl.in: Remove all codes like "while (<$fh>)"
 	because of its deanger. ($_ is a global value)
 	

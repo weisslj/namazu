@@ -1,5 +1,5 @@
 # -*- CPerl -*-
-# $Id: var.pl.in,v 1.5 1999-08-30 06:47:24 satoru Exp $
+# $Id: var.pl.in,v 1.6 1999-08-30 07:25:44 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -38,45 +38,45 @@ $NMZ_URI = "http://openlab.ring.gr.jp/namazu/";
 ## Names of Index files
 ##
 
-$DBNAME     = "NMZ";
+my $base      = "NMZ";
+
 %NMZ = ();
-$NMZ{i}      = "$DBNAME.i";
-$NMZ{ii} = "$DBNAME.ii";
-$NMZ{r}    = "$DBNAME.r";
-$NMZ{head} = "$DBNAME.head";
-$NMZ{foot} = "$DBNAME.foot";
-$NMZ{log}    = "$DBNAME.log";
-$NMZ{slog}   = "$DBNAME.slog";
-$NMZ{lock}   = "$DBNAME.lock";
-$NMZ{lock2}  = "$DBNAME.lock2";
-$NMZ{msg} = "$DBNAME.msg";
-$NMZ{body} = "$DBNAME.body";
-$NMZ{err} = "$DBNAME.err";
-$NMZ{w}    = "$DBNAME.w";
-$NMZ{p}      = "$DBNAME.p";
-$NMZ{pi} = "$DBNAME.pi";
-$NMZ{field}   = "$DBNAME.field";
-$NMZ{result} = "$DBNAME.result";
+$NMZ{i}      = "$base.i";
+$NMZ{ii}     = "$base.ii";
+$NMZ{r}      = "$base.r";
+$NMZ{head}   = "$base.head";
+$NMZ{foot}   = "$base.foot";
+$NMZ{log}    = "$base.log";
+$NMZ{slog}   = "$base.slog";
+$NMZ{lock}   = "$base.lock";
+$NMZ{lock2}  = "$base.lock2";
+$NMZ{msg}    = "$base.msg";
+$NMZ{body}   = "$base.body";
+$NMZ{err}    = "$base.err";
+$NMZ{w}      = "$base.w";
+$NMZ{p}      = "$base.p";
+$NMZ{pi}     = "$base.pi";
+$NMZ{field}  = "$base.field";
+$NMZ{result} = "$base.result";
 
-$NMZ{t} = "$DBNAME.t";
+$NMZ{t}      = "$base.t";
+$NMZ{status} = "$base.status";
 
-$NMZ{status} = "$DBNAME.status";
-
-$NMZ{_t} = $NMZ{t};
-$NMZ{_i} = $NMZ{i};
-$NMZ{_p}     = $NMZ{p};
+$NMZ{_t}  = $NMZ{t};
+$NMZ{_i}  = $NMZ{i};
+$NMZ{_p}  = $NMZ{p};
 $NMZ{_pi} = $NMZ{pi};
-$NMZ{_r} = $NMZ{r};
+$NMZ{_r}  = $NMZ{r};
 $NMZ{_ii} = $NMZ{ii};
-$NMZ{_w} = $NMZ{w};
+$NMZ{_w}  = $NMZ{w};
 
-$NMZ{_flist}       = "$DBNAME.flist";
-$NMZ{_checkpoint}     = "$DBNAME.checkpoint";
+$NMZ{_flist}       = "$base.flist";
+$NMZ{_checkpoint}  = "$base.checkpoint";
 
-$NMZ{__i}      = "$DBNAME.tmp_i";
-$NMZ{__w}      = "$DBNAME.tmp_w";
-$NMZ{__p}      = "$DBNAME.tmp_p";
-$NMZ{__pi}     = "$DBNAME.tmp_pi";
+$NMZ{__i}      = "$base.tmp_i";
+$NMZ{__w}      = "$base.tmp_w";
+$NMZ{__p}      = "$base.tmp_p";
+$NMZ{__pi}     = "$base.tmp_pi";
 
 
 $OUTPUT_DIR = "";
@@ -86,29 +86,23 @@ $OUTPUT_DIR = "";
 ## Options
 ##
 
-$Opt{NoPhraseIndex} = 0;
-$Opt{Debug}         = 0;
-$Opt{Quiet}         = 0;
+$Opt{debug}         = 0;
+$Opt{quiet}         = 0;
 $Opt{verbose}       = 0;
-$Opt{RobotExclude}  = 0;
-$Opt{NoFieldInfo}   = 0;
-$Opt{NoDateIndex}   = 0;
-$Opt{Man}           = 0;
-$Opt{NoMHonArc}     = 0;
-$Opt{Uuencode}      = 0;
-$Opt{MailNews}      = 0;
-$Opt{NoLineAd}      = 0;
-$Opt{NoHeadAbst}    = 0;
-$Opt{Hiragana}      = 0;
-$Opt{Okurigana}     = 0;
-$Opt{NoEdgeSymbol}  = 0;
-$Opt{NoSymbol}      = 0;
-$Opt{NoEncodeURI}      = 0;
-$Opt{NoRegexIndex} = 0;
-$Opt{NoInsertHeader} = 0;
-$Opt{NoDeleteProcessing} = 0;
-$Opt{NoUpdateProcessing} = 0;
-$Opt{HtaccessExclude} = 0;
+
+$Opt{robotexclude}    = 0;
+$Opt{htaccessexclude} = 0;
+
+$Opt{uuencode}      = 0;
+$Opt{noheadabst}    = 0;
+$Opt{hiragana}      = 0;
+$Opt{okurigana}     = 0;
+$Opt{noedgesymbol}  = 0;
+$Opt{nosymbol}      = 0;
+$Opt{noencodeuri}   = 0;
+
+$Opt{nodelete} = 0;
+$Opt{noupdate} = 0;
 
 ################################################################
 ##

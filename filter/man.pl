@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: man.pl,v 1.6 1999-08-30 03:47:45 satoru Exp $
+# $Id: man.pl,v 1.7 1999-08-30 07:25:42 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -73,8 +73,8 @@ sub filter ($$$$$) {
 
     man_filter($cont, $weighted_str, $fields);
 
-    gfilter::line_adjust_filter($cont) unless $var::Opt{NoLineAd};
-    gfilter::line_adjust_filter($weighted_str) unless $var::Opt{NoLineAd};
+    gfilter::line_adjust_filter($cont);
+    gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($cont);
     $fields->{title} = gfilter::filename_to_title($cfile, $weighted_str)
       unless $fields->{title};

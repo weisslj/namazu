@@ -1,5 +1,5 @@
 # -*- CPerl -*-
-# $Id: usage.pl,v 1.5 1999-08-30 01:22:01 satoru Exp $
+# $Id: usage.pl,v 1.6 1999-08-30 07:25:44 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -53,18 +53,11 @@ $var::COPYRIGHT
     -k, --use-kakasi        日本語の単語のわかち書きに KAKASI を用いる
     -m, --use-chasen-morph  名詞のみを抽出する
 
-  フィルタ制御:
-    -r, --man          man のファイルを処理する
-    -u, --uuencode     uuencode と BinHex の部分を無視する
-    -h, --rfc822       Mail/News のファイルを処理する
-    -M, --no-mhonarc   MHonArc で作成された HTML の処理を行わない
-
   文字列処理:
     -E, --no-edge-symbol  単語の両端の記号は削除する
     -G, --no-okurigana    送り仮名を削除する
     -H, --no-hiragana     平仮名のみの単語は登録しない
     -K, --no-symbol       記号をすべて削除する
-    -L, --no-line-adjust  行頭・行末の調整処理を行わない
 
   要約:
     -U, --no-encode-uri       URIのencodeを行わない
@@ -73,9 +66,6 @@ $var::COPYRIGHT
 
   インデックス作成:
     -P, --no-heading-summary  フレーズ検索用のインデックスを作成しない
-    -R, --no-regex-index      正規表現検索用のインデックスを作成しない
-    -W, --no-date-index       日付によるソート用のインデックス作成しない
-    -X, --no-field-index      フィールド検索用のインデックスを作成しない
     -Y, --no-delete           削除された文書の検出を行わない
     -Z, --no-update           文書の更新/削除を反映しない
 
@@ -84,7 +74,7 @@ $var::COPYRIGHT
     -I, --include=file      カスタマイズ用ファイルを読み込む
     -O, --output-dir=dir    インデックスの出力先を指定する
     -T, --template-dir=dir  NMZ.{head,foot,body}.* のディレクトリを指定する
-    -l, --lang=lang         言語を設定する ('en' or 'ja')
+    -L, --lang=lang         言語を設定する ('en' or 'ja')
     -v, --version           ヴァージョンを表示する
     -q, --quiet             インデックス処理の最中にメッセージを表示しない
     -V, --verbose           口やかましいモード

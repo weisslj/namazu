@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- CPerl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.41 1999-08-30 06:47:25 satoru Exp $
+# $Id: mknmz.pl.in,v 1.42 1999-08-30 07:25:46 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -99,9 +99,8 @@ sub main () {
 	    $file_count++;
 	    if ($processed_files_size > $conf::ON_MEMORY_MAX) {
 		if (%KeyIndex) {
-	    $key_count = write_index();
-		    write_phrase_hash()
-			unless $var::Opt{NoPhraseIndex};
+		    $key_count = write_index();
+		    write_phrase_hash();
 		}
 		$processed_files_size = 0;
 		$checkpoint = 1, last if $CheckPoint{'on'} && defined(<$fh_flist>);
@@ -114,7 +113,7 @@ sub main () {
 
     if (%KeyIndex) {
 	$key_count = write_index();
-	write_phrase_hash() unless $var::Opt{NoPhraseIndex};
+	write_phrase_hash();
     }
 
     $key_count = get_total_keys() unless $key_count;
@@ -160,7 +159,7 @@ EOM
     }
 
     @ARGV = ("-S", @ARGV) ;
-    print "Checkpoint reached: re-exec mknmz...\n" unless $var::Opt{Quiet};
+    print "Checkpoint reached: re-exec mknmz...\n" unless $var::Opt{quiet};
     util::dprint(join ' ', ("::::", @ARGV, "\n"));
     exec ($0, @ARGV) ;
 }
@@ -258,11 +257,11 @@ sub namazu_core ($$$) {
     # Do checking
     my $err = check_file($cfile, \$content, $cfile_size, $mtype);
     if ($err) {
-	print $file_count + $file_base . " $uri $err\n" unless $var::Opt{Quiet};
+	print $file_count + $file_base . " $uri $err\n" unless $var::Opt{quiet};
 	print $fh_errorsfile "$cfile $err\n"; 
 	return 0;  # return with 0 if error
     }
-    if ($var::Opt{RobotExclude}) {
+    if ($var::Opt{robotexclude}) {
 	if ($uri =~ m/$conf::ROBOTS_EXCLUDE_URIS/io) {
 	    $err = "is excluded because of /robots.txt.\n";
 	    print $file_count + $file_base . " $uri $err\n";
@@ -273,23 +272,22 @@ sub namazu_core ($$$) {
 		 CONTENT\s*=\s*([\'\"]?).*?(NOINDEX|NONE).*?\2[^>]*>/ix)  #"
 	{
 	    $err = "is excluded because of <META> element.";
-	    print $file_count + $file_base . " $uri $err\n" unless $var::Opt{Quiet};
+	    print $file_count + $file_base . " $uri $err\n" unless $var::Opt{quiet};
 	    print $fh_errorsfile "$cfile $err\n"; 
 	    return 0;  # return with 0 if error
 	}
     }
     # Output processing file name as URI
     print $file_count + $file_base . 
-	" $uri :: $mtype\n" unless $var::Opt{Quiet};
+	" $uri [$mtype]\n" unless $var::Opt{quiet};
 
     make_field_index(\%fields, $cfile, $uri, \$headings, \$content);
-    put_field_index(\%fields, $field_indices) unless $var::Opt{NoFieldIndex};
+    put_field_index(\%fields, $field_indices);
 
-    put_dateindex($cfile) unless $var::Opt{NoDateIndex};
+    put_dateindex($cfile);
     $content .= $weighted_str;   # add weight info
     count_words($file_count, $file_base, \$content, $kanji);
-    make_phrase_hash($file_count, $file_base, \$content)
-	unless $var::Opt{NoPhraseIndex};
+    make_phrase_hash($file_count, $file_base, \$content);
 
     return $cfile_size;
 }
@@ -313,7 +311,7 @@ sub generate_uri ($) {
 	$uri =~ s#^([A-Z]):#/$1|#i; # converting a drive part like: /C|
     }
 
-    unless ($var::Opt{NoEncodeURI}) {
+    unless ($var::Opt{noencodeuri}) {
 	# Escape unsafe characters (not strict)
 	$uri =~ s/\%/%25/g;  # Convert original '%' into '%25' v1.1.1.2
 	$uri =~ s/([^a-zA-Z0-9~\-\_\.\/\:\%])/
@@ -555,7 +553,7 @@ sub find_target ($) {
     my ($target_dir) = @_;
     my @flist = ();
 
-    html::parse_robots_txt() if ($var::Opt{RobotExclude});
+    html::parse_robots_txt() if ($var::Opt{robotexclude});
     my $current_dir = cwd();
     chdir $target_dir || die "$target_dir: $!\n";
     find::findfiles(\@flist);
@@ -587,7 +585,7 @@ sub require_modules() {
 	require Text::ChaSen1;
         util::dprint("wakati: using Text::ChaSen1 module\n");
 	my @arg = ('-j', '-F', '%m ');
-	@arg    = ('-j', '-F', '%m %H\\n') if $var::Opt{Morph};
+	@arg    = ('-j', '-F', '%m %H\\n') if $var::Opt{morph};
 	my $res = Text::ChaSen1::getopt_argv('chasen-perl', @arg);
     }
 }
@@ -675,13 +673,13 @@ sub parse_options ()
     my @flist = ();
     my @argv = @ARGV;
 
+    my $opt_dummy = 0;
     my $opt_version = 0;
     my $opt_help = 0;
     my $opt_all = 0;
     my $opt_chasen = 0;
     my $opt_chasen_morph = 0;
     my $opt_kakasi = 0;
-    my $opt_man = 0;
     my $opt_include = 0;
     my $opt_target_list = 0;
     my $opt_target_regex = 0;
@@ -689,29 +687,21 @@ sub parse_options ()
     
 #    Getopt::Long::Configure('bundling');
     Getopt::Long::config('bundling');
-    GetOptions('u|uuencode'          => \$var::Opt{Uuencode},
-	       'h|rfc822'            => \$var::Opt{MailNews},
-	       'H|no-hiragana'       => \$var::Opt{Hiragana},
-	       'G|no-okurigana'      => \$var::Opt{Okurigana},
-	       'E|no-edge-symbol'    => \$var::Opt{NoEdgeSymbol},
-	       'K|no-symbol'         => \$var::Opt{NoSymbol},
-	       'L|no-line-adjust'    => \$var::Opt{NoLineAd},
-	       'M|no-mhonarc'        => \$var::Opt{NoMHonArc}, 
-	       'U|no-encode-uri'     => \$var::Opt{NoEncodeURI} ,
-	       'x|no-heading-summary'=> \$var::Opt{NoHeadAbst},
-	       'e|robots-txt'        => \$var::Opt{RobotExclude},
-	       'q|quiet'             => \$var::Opt{Quiet},
-	       'P|no-phrase-index'   => \$var::Opt{NoPhraseIndex},
-	       'R|no-regex-index'    => \$var::Opt{NoRegexIndex},
-	       'W|no-date-index'     => \$var::Opt{NoDateIndex},
-	       'X|no-field-index'    => \$var::Opt{NoFieldIndex},
-	       'Y|no-delete'         => \$var::Opt{NoDeleteProcessing},
-	       'Z|no-update'         => \$var::Opt{NoUpdateProcessing},
-	       'A|htacces'           => \$var::Opt{HtaccessExclude},
-	       'd|debug'             => \$var::Opt{Debug},
+    GetOptions('H|no-hiragana'       => \$var::Opt{hiragana},
+	       'G|no-okurigana'      => \$var::Opt{okurigana},
+	       'E|no-edge-symbol'    => \$var::Opt{noedgesymbol},
+	       'K|no-symbol'         => \$var::Opt{nosymbol},
+	       'U|no-encode-uri'     => \$var::Opt{noencodeuri} ,
+	       'x|no-heading-summary'=> \$var::Opt{noheadabst},
+	       'e|robots-txt'        => \$var::Opt{robotexclude},
+	       'q|quiet'             => \$var::Opt{quiet},
+	       'Y|no-delete'         => \$var::Opt{nodelete},
+	       'Z|no-update'         => \$var::Opt{noupdate},
+	       'A|htacces'           => \$var::Opt{htaccessexclude},
+	       'd|debug'             => \$var::Opt{debug},
 	       's|checkpoint'        => \$CheckPoint{'on'},
 	       'O|output-dir=s'      => \$output_dir,
-	       'l|lang=s'            => \$conf::LANGUAGE,
+	       'L|lang=s'            => \$conf::LANGUAGE,
 	       'T|template-dir=s'    => \$TEMPLATEDIR,
 	       't|allow=s'           => \$conf::ALLOW_REGEX,
 
@@ -721,11 +711,12 @@ sub parse_options ()
 	       'k|use-kakasi'        => \$opt_kakasi,
 	       'c|use-chasen'        => \$opt_chasen,
 	       'm|use-chasen-morph'  => \$opt_chasen_morph,
-	       'r|man'               => \$opt_man,
 	       'I|include=s'         => \$opt_include,
 	       'F|target-list=s'     => \$opt_target_list,
 	       'S|checkpoint-sub'    => \$opt_checkpoint_sub,
 	       '0|help'              => \$opt_help,
+	       'h|rfc822'            => \$opt_dummy, # for backward compat.
+	       'u|uuencode'          => \$opt_dummy, # for backward compat.
 	       );
 
     if ($opt_help) {
@@ -743,30 +734,26 @@ sub parse_options ()
     }
     if ($opt_chasen) {
 	$conf::WAKATI = $conf::CHASEN;
-	$var::Opt{Morph} = 0;
+	$var::Opt{morph} = 0;
     }
     if ($opt_chasen_morph) {
 	$conf::WAKATI = $conf::CHASEN_MORPH;
-	$var::Opt{Morph} = 1;
+	$var::Opt{morph} = 1;
     }
     if ($opt_kakasi) {
 	$conf::WAKATI = $conf::KAKASI;
-	$var::Opt{Morph} = 0;
-    }
-    if ($opt_man) {
-	$var::Opt{Man}      = 1;
-	$conf::ALLOW_REGEX = '.*\.\d.*';
+	$var::Opt{morph} = 0;
     }
     if ($opt_include) {
 	eval util::readfile($opt_include);
-        util::dprint("Included: $opt_include\n") unless $var::Opt{Quiet};
+        util::dprint("Included: $opt_include\n") unless $var::Opt{quiet};
     }
     if ($opt_target_list) {
 	if ($CheckPoint{'continue'}) {
 	    @flist = ("dummy");
 	} else {
 	    @flist = load_target_list($opt_target_list);
-	    util::dprint("Loaded: $opt_target_list\n") unless $var::Opt{Quiet};
+	    util::dprint("Loaded: $opt_target_list\n") unless $var::Opt{quiet};
 	}
 	$target_loaded = 1;
 	$target_dir = cwd();
@@ -885,8 +872,7 @@ sub check_file ($$$$) {
 	$msg = "is too LARGE file! skipped.";
     } elsif ($mtype =~ /^x-system/) {
 	$msg = "system error occurred! ($mtype) skipped.";
-    } elsif (!$var::Opt{NoMHonArc} && $cfile !~ /($conf::MHONARC_MESSAGE_FILE)$/o 
-	     && $$content =~ /^$conf::MHONARC_HEADER/o) {
+    } elsif ($$content =~ /^$conf::MHONARC_HEADER/o) {
 	$msg = "is MHonArc's index file! skipped.";
     } else {
 	$msg = "";
@@ -1008,7 +994,7 @@ sub change_dbnames ($) {
 	}
     }
 
-    if ($var::Opt{Debug}) {
+    if ($var::Opt{debug}) {
 	for my $key (sort keys %var::NMZ) {
 	    util::dprint("NMZ: $var::NMZ{$key}\n");
 	}
@@ -1051,10 +1037,8 @@ sub append_index (@) {
     util::cp($var::NMZ{i},      $var::NMZ{_i});
     util::cp($var::NMZ{t},  $var::NMZ{_t}) unless -f $var::NMZ{_t}; # preupdated ?
 
-    unless ($var::Opt{NoPhraseIndex}) {
-	util::cp($var::NMZ{p},      $var::NMZ{_p});
-	util::cp($var::NMZ{pi},      $var::NMZ{_pi});
-    }
+    util::cp($var::NMZ{p},      $var::NMZ{_p});
+    util::cp($var::NMZ{pi},      $var::NMZ{_pi});
 
     return ($file_base, @flist);
 }
@@ -1079,7 +1063,7 @@ sub set_target_files() {
     # pick up not overlapped files which are files to index
     my @flist = grep(! $mark1{$_}, @found_files);
 	 
-    if ($var::Opt{NoUpdateProcessing}) {
+    if ($var::Opt{noupdate}) {
 	return (scalar @{$rfiles{'name'}}, @flist);
     };
 
@@ -1100,7 +1084,7 @@ sub set_target_files() {
     # pick up deleted files and do marking
     # (registered in the NMZ.r but not existent in the filesystem)
     my @deleted_files;
-    unless ($var::Opt{NoDeleteProcessing}) {
+    unless ($var::Opt{nodelete}) {
 	my %mark2;
 	grep($mark2{$_}++, @found_files);
 	for (grep($_ !~ /^\# / && ! $mark2{$_} && ! $rfiles{'overlapped'}{$_}
@@ -1212,7 +1196,7 @@ sub pickup_updated_files (\%) {
     my $i = 0;
     for my $cfile (@{$ref->{'name'}}) {
 	if (defined($ref->{'deleted'}{$cfile})) {
-	    print "$cfile was deleted!\n" unless $var::Opt{Quiet};
+	    print "$cfile was deleted!\n" unless $var::Opt{quiet};
 	    $ref->{'mtime'}[$i] = -1; # assign the a messing number
 	} elsif (defined($ref->{'overlapped'}{$cfile})) {
 	    my $cfile_mtime = (stat($cfile))[9];
@@ -1220,7 +1204,7 @@ sub pickup_updated_files (\%) {
 
 	    if ($rfile_mtime < $cfile_mtime) {
 		# this file is updated!
-		print "$cfile was updated!\n" unless $var::Opt{Quiet};
+		print "$cfile was updated!\n" unless $var::Opt{quiet};
 		$ref->{'mtime'}[$i] = -1; # assign the messing number
 		push(@updated_files, $cfile);
 	    }
@@ -1360,7 +1344,7 @@ sub put_log ($$$$) {
     $logmsg .= "Time: $processtime sec.\n"if $processtime;
     $logmsg .= "\n";
 
-    print $logmsg unless $var::Opt{Quiet};
+    print $logmsg unless $var::Opt{quiet};
     put_log_to_logfile($logmsg);
     put_total_files($total_files_count);
     put_total_keys($total_keys_count);
@@ -1563,7 +1547,7 @@ sub count_words ($$$$) {
     }
 
     # 記号を全て削除する -K オプション時
-    $$content =~ tr/\xa1-\xfea-z0-9/   /c if $var::Opt{NoSymbol};
+    $$content =~ tr/\xa1-\xfea-z0-9/   /c if $var::Opt{nosymbol};
 
     my $part1 = "";
     my $part2 = "";
@@ -1611,13 +1595,13 @@ sub wordcount_sub ($$\%) {
     @words = grep !/^$/, @words;   # remove empty words
     my @words_ = ();
     for my $word (@words) {
-	if ($var::Opt{NoEdgeSymbol}) {
+	if ($var::Opt{noedgesymbol}) {
 	    # remove symbols at both ends
 	    $word =~ s/^[^\xa1-\xfea-z_0-9]*(.*?)[^\xa1-\xfea-z_0-9]*$/$1/g;
 	}
 	$word_count->{$word} = 0 unless defined($word_count->{$word});
 	$word_count->{$word} += $weight;
-	unless ($var::Opt{NoSymbol}) {
+	unless ($var::Opt{nosymbol}) {
 	    if ($word =~ /^[^\xa1-\xfea-z_0-9](.+)[^\xa1-\xfea-z_0-9]$/) {
 		$word_count->{$1} = 0 unless defined($word_count->{$1});
 		$word_count->{$1} += $weight;
@@ -1720,7 +1704,7 @@ sub write_index_sub () {
     util::dprint("doing write_index() processing.\n");
     my $fh_indexindex = util::efopen(">$var::NMZ{_ii}");
     my $fh_tmp_i = util::efopen(">$var::NMZ{__i}");
-    my $fh_tmp_w = util::efopen(">$var::NMZ{__w}") unless $var::Opt{NoRegexIndex};
+    my $fh_tmp_w = util::efopen(">$var::NMZ{__w}");
 
     my $cnt = 0;
     my $ptr = 0;
@@ -1750,8 +1734,7 @@ sub write_index_sub () {
 		    my $tmp = pack("w", $leng + $baseleng);
 
 		    my $data = "$current_word\n$tmp$baserecord$record\n";
-		    print $fh_tmp_w "$current_word\n"
-			unless $var::Opt{NoRegexIndex};
+		    print $fh_tmp_w "$current_word\n";
 		    print $fh_tmp_i $data;
 		    print $fh_indexindex pack("N", $ptr);
 		    $ptr += length($data);
@@ -1762,8 +1745,7 @@ sub write_index_sub () {
 		} else {
 		    my $tmp = pack("w", $leng);
 		    my $data = "$words[$cnt]\n$tmp$record\n";
-		    print $fh_tmp_w "$words[$cnt]\n"
-			unless ($var::Opt{NoRegexIndex});
+		    print $fh_tmp_w "$words[$cnt]\n";
 		    print $fh_tmp_i $data;
 		    print $fh_indexindex pack("N", $ptr);
 		    $ptr += length($data);
@@ -1772,8 +1754,7 @@ sub write_index_sub () {
 	    }
 	    my $tmp  = pack("w", $baseleng);
 	    my $data = "$current_word\n$tmp$baserecord\n";
-	    print $fh_tmp_w "$current_word\n"
-		unless $var::Opt{NoRegexIndex};
+	    print $fh_tmp_w "$current_word\n";
 	    print $fh_tmp_i $data;
 	    print $fh_indexindex pack("N", $ptr);
 	    $ptr += length($data);
@@ -1786,8 +1767,7 @@ sub write_index_sub () {
 	my $record = $KeyIndex{$words[$cnt]};
 
 	my $data = "$words[$cnt]\n$tmp$record\n";
-	print $fh_tmp_w "$words[$cnt]\n"
-	    unless $var::Opt{NoRegexIndex};
+	print $fh_tmp_w "$words[$cnt]\n";
 	print $fh_tmp_i $data;
 	print $fh_indexindex pack("N", $ptr);
 	$ptr += length($data);
@@ -1817,16 +1797,15 @@ sub decide_type ($$) {
 muda($conf::SEARCH_FIELD, $conf::ON_MEMORY_MAX,
      $conf::WORD_LENG_MAX,
      $conf::MHONARC_MESSAGE_FILE, $conf::DENY_REGEX, $var::INTSIZE,
-     $var::Opt{MailNews}, $var::Opt{NoLineAd}, $conf::CHASEN_MORPH,
-     $var::Opt{Uuencode}, $conf::MHONARC_HEADER, $conf::CHASEN,
-     $conf::KAKASI, $var::Opt{Okurigana}, $TARGET_DIR, $var::Opt{Man},
-     $var::Opt{Hiragana}, $conf::ROBOTS_EXCLUDE_URLS, $conf::DEFAULT_FILE,
+     $conf::CHASEN_MORPH,
+     $var::Opt{uuencode}, $conf::MHONARC_HEADER, $conf::CHASEN,
+     $conf::KAKASI, $var::Opt{okurigana}, $TARGET_DIR,
+     $var::Opt{hiragana}, $conf::ROBOTS_EXCLUDE_URLS, $conf::DEFAULT_FILE,
      $conf::HTML_SUFFIX, $usage::USAGE_EN, $usage::USAGE_MINI, 
-     $var::Opt{NoHeadAbst}, @seed::Seed, $var::OUTPUT_DIR,
-     $var::Opt{Debug}, $var::Opt{NoEncodeURL}, $var::Opt{HtaccessExclude}, 
+     $var::Opt{noheadabst}, @seed::Seed, $var::OUTPUT_DIR,
+     $var::Opt{debug}, $var::Opt{noencodeurl}, $var::Opt{htaccessexclude}, 
      $var::RECURSIVE_ACTIONS, $conf::ROBOTS_EXCLUDE_URIS, 
-     $var::Opt{NoInsertHeader}, $var::Opt{NoRegexpIndex}, 
-     $var::Opt{NoFieldInfo}, $conf::FILE_SIZE_LIMIT,
+     $conf::FILE_SIZE_LIMIT,
      $conf::ROBOTS_EXCLUDE_URLS, $conf::Supported);
 
 

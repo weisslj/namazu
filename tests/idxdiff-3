@@ -8,7 +8,7 @@
 LOG=`pwd`/test-log
 
 cd idx5
-targets=`find . -type f -name 'NMZ.*' | \
+targets=`find . -type f -name 'NMZ.*' -print | \
               egrep -v "NMZ\.(log|r|slog|status|err)$"`  # Exclude them.
 cd ..
 

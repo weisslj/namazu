@@ -27,7 +27,7 @@ prevdocnum=`perl -lne 'print $1 if /^files (\d+)/' ../tests/idx7/NMZ.status`
 
 # Update some documents. Add `xyzzy' to each document.
 cd $TMPDATA
-find . -type f | egrep '(plain|mail)\.txt$' | \
+find . -type f -print | egrep '(plain|mail)\.txt$' | \
     perl -nle 'system "echo xyzzy >> $_"'
 cd ../
 

@@ -1,3 +1,7 @@
+2000-09-14  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* tests/* : Added '-print' argument to all find command.
+
 2000-09-13  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* src/output.c: Changed to include system.h.
@@ -5949,4 +5953,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.724 2000-09-13 08:00:26 knok Exp $
+$Id: ChangeLog,v 1.725 2000-09-14 05:49:01 knok Exp $

@@ -28,7 +28,7 @@ cp -rp $TARGET tmp-data
 
 # Remove some documents.
 cd $TMPDATA
-find . -type f -name '*.txt' | xargs rm -f
+find . -type f -name '*.txt' -print | xargs rm -f
 cd ../
 
 

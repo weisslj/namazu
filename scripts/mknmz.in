@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.126 2003-10-21 05:53:48 makoto Exp $
+# $Id: mknmz.in,v 1.127 2004-01-23 16:44:46 opengl2772 Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -808,7 +808,9 @@ sub put_field_index (\%$) {
 	    # Remove a garbage Kanji 1st char at the end.
 	    $output = codeconv::chomp_eucjp($output);
 
-	    $output .= "\n";
+            my $data;
+            ($data) = split(/\x00|\n/, $output);
+            $output = $data . "\n";
 	} else {
 	    $output = "\n";
 	}
@@ -1065,7 +1067,7 @@ sub remove_lockfile ($) {
 
 # check present index whether it is old type of not
 sub check_present_index () {
-    if (-f $var::NMZ{'i'} && ! -f "$var::NMZ{'result'}.normal") 
+    if (-f $var::NMZ{'i'} && ! -f "$var::NMZ{'wi'}") 
     {
 	util::cdie(_("Present index is old type. it's unsupported.\n"));
     }

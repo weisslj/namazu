@@ -2,7 +2,7 @@
 # -*- Perl -*-
 # indexer.pl - class for indexing
 #
-# $Id: indexer.pl,v 1.2 2002-11-16 09:19:26 rug Exp $
+# $Id: indexer.pl,v 1.3 2004-01-23 16:44:46 opengl2772 Exp $
 #
 # Copyright (C) 2002 Namazu Project All rights reversed.
 #
@@ -85,6 +85,9 @@ sub count_words {
 sub _wordcount_sub {
     my $self = shift @_;
     my ($text, $weight, $word_count) = @_;
+
+    # Remove all symbols when -K option is specified.
+    $text =~ tr/\xa1-\xfea-z0-9/   /c if $self->{'_nosymbol'};
 
     # Count frequencies of words in a current document.
     # Handle symbols as follows.

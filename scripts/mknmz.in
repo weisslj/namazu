@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.9 2000-02-11 12:54:26 satoru Exp $
+# $Id: mknmz.in,v 1.10 2000-02-11 16:46:34 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -150,22 +150,19 @@ sub main () {
 # 
 sub load_rcfiles () {
     my (@cand) = ();
-    my (@vprint) = (); # only for neat output when vprint requested.
     push @cand, "$CONFDIR/mknmzrc";
     push @cand, "$ENV{'HOME'}/.mknmzrc";
     push @cand, $ConfigFile if defined $ConfigFile;
 
-    print STDERR _("Reading rcfile: ") ;
+    util::vprint(_("Reading rcfile: "));
     for my $conf (@cand) {
 	if (-f $conf) {
-	    push(@vprint,"conf: $conf\n");
 	    do $conf;
 	    $ConfigFile = $conf;
-	    print STDERR " $conf";
+	    util::vprint(" $conf");
 	}
     }
-    print STDERR "\n" ;
-    util::vprint(@vprint);
+    util::vprint("\n");
 }
 
 sub re_exec($$$$) {
@@ -561,8 +558,8 @@ sub put_field_index (\%$) {
 	    $field_indices->{$lkey} += length $output;
 	}
     }
-}
 
+}
 
 # put the date infomation into NMZ.t file
 sub put_dateindex ($) {
@@ -1079,7 +1076,7 @@ sub find_target (@) {
     my $cwd = cwd();
     @targets = map { absolute_path($cwd, $_) } @targets;
 
-    # convert \ to / with consideration for Shift_JIS encoding
+    # Convert \ to / with consideration for Shift_JIS encoding.
     if (($SYSTEM eq "MSWin32") || ($SYSTEM eq "os2")) {
 	grep {
 	    $_ =~ s!([\x81-\x9f\xe0-\xef][\x40-\x7e\x80-\xfc]|[\x01-\x7f])!
@@ -1087,8 +1084,8 @@ sub find_target (@) {
 	} @targets;
     }
 
-    # traverse directories
-    # this routine is not efficent but I prefer reliable logic.
+    # Traverse directories.
+    # This routine is not efficent but I prefer reliable logic.
     my @flist = ();
     my $start = time();
     util::vprint (_(" findfiles starting: "). localtime($start). "\n");
@@ -1099,7 +1096,7 @@ sub find_target (@) {
 	    chdir $target;
 
 	    #
-	    # wanted routine for File::Find's find().
+	    # Wanted routine for File::Find's find().
 	    #
 	    my $wanted_closure = sub {
 		my $fname = "$File::Find::dir/$_";
@@ -1140,15 +1137,28 @@ sub find_target (@) {
     # uniq @flist
     my %mark = ();
     @flist = grep {$mark{$_}++; $mark{$_} == 1} @flist;
+
+    # Sort file names with consideration for numbers.
+    @flist = sort fncmp @flist;
+
     my $elapsed = time() - $start ;
     $elapsed += 1 ;   # to round up and avoid 0 
     util::vprint(_("findfiles    ended: "). localtime(time()). "\n" );
-    printf(_("Target Files: %d (Scan Performance: Elapsed Sec.: %d, Files/sec: %.1f)\n"), 
+    util::vprint(sprintf(_("Target Files: %d (Scan Performance: Elapsed Sec.: %d, Files/sec: %.1f)\n"), 
 	   $#flist + 1, $elapsed, 
-	   ($#flist + 1 ) /$elapsed ) unless $var::Opt{'quiet'};
+	   ($#flist + 1 ) /$elapsed ));
+
     return @flist;
 }
 
+# Original of this code was contributed by <furukawa@tcp-ip.or.jp>. 
+sub fncmp {
+    my ($x, $y) = ($a, $b);
+
+    $x =~ s/(\d+)/sprintf("%08d", $1)/ge;
+    $y =~ s/(\d+)/sprintf("%08d", $1)/ge;
+    $x cmp $y;
+}
 
 sub show_usage () {
     util::dprint(_("lang: ")."$LANG\n");
@@ -1174,7 +1184,11 @@ sub check_file ($$$$) {
     my ($cfile, $cfile_size, $text_size, $mtype) = @_;
 
     my $msg = undef;
-    if ($text_size == 0 || $cfile_size == 0) {
+    if (! -e $cfile) {
+	$msg = _("does NOT EXIST! skipped.");
+    } elsif (! -r $cfile) {
+	$msg = _("is NOT READABLE! skipped.");
+    } elsif ($text_size == 0 || $cfile_size == 0) {
 	$msg = _("is 0 size! skipped.");
     } elsif ($mtype =~ /^application\/octet-stream/) {
 	$msg = _("may be a BINARY file! skipped.");

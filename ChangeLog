@@ -1,3 +1,18 @@
+2000-02-12  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* scripts/mknmz.in (find_target): Sort file names with
+	consideration for numbers.
+	(check_file): Add -e and -r checking.
+	(load_rcfiles): Be quiet.
+	(find_target): Be quiet.
+
+	* filter/rfc.pl (rfc_filter): Do not use encode_entity().
+
+	* filter/man.pl (man_filter): Do not use encode_entity().
+
+	* filter/mailnews.pl (mailnews_filter): Do not use encode_entity().
+	(mailnews_filter): Change "if" conditions order.
+
 2000-02-11  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* test/html.html: New file.

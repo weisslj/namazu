@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: man.pl,v 1.18 2000-02-11 12:54:21 satoru Exp $
+# $Id: man.pl,v 1.19 2000-02-11 16:46:31 satoru Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -115,7 +115,6 @@ sub man_filter ($$$) {
 
     $$contref =~ /^(.*?)\s*\S*$/m;
     my $title = "$1";
-    html::encode_entity(\$title);
     $fields->{'title'} = $title;
     my $weight = $conf::Weight{'html'}->{'title'};
     $$weighted_str .= "\x7f$weight\x7f$title\x7f/$weight\x7f\n";

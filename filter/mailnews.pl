@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mailnews.pl,v 1.22 2000-02-11 12:54:21 satoru Exp $
+# $Id: mailnews.pl,v 1.23 2000-02-11 16:46:30 satoru Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -88,7 +88,7 @@ sub mailnews_filter ($$$) {
     while (@tmp) {
 	$line = shift @tmp;
 	last if ($line =~ /^$/);  # if an empty line, header is over
-	# connect the two lines if next line has leading spaces
+	# Connect the two lines if next line has leading spaces
 	while (defined($tmp[0]) && $tmp[0] =~ /^\s+/) {
 	    # if connection is Japanese character, remove spaces
 	    # from Furukawa-san's idea [1998-09-22]
@@ -97,22 +97,10 @@ sub mailnews_filter ($$$) {
 	    $nextline =~ s/^\s+([\xa1-\xfe])/$1/;
 	    $line .= $nextline;
 	}
-	# keep field info
-	if ($line =~ /^(\S+):\s(.*)/i) {
-	    my $name = $1;
-	    my $value = $2;
-	    $fields->{lc($name)} = $value;
-	    if ($name =~ /^($conf::REMAIN_HEADER)$/io) {
-		# keep some fields specified REMAIN_HEADER for search keyword
-		my $weight = $conf::Weight{'headers'};
-		$$weighted_str .= 
-		    "\x7f$weight\x7f$value\x7f/$weight\x7f\n";
-	    }
- 	}
+
+	# Handle fields.
 	if ($line =~ s/^subject:\s*//i){
-	    my $title = $line;
-	    html::encode_entity(\$title);
-	    $fields->{'title'} = $title;
+	    $fields->{'title'} = $line;
 	    # Skip [foobar-ML:000] for a typical mailing list subject.
 	    # Practically skip first [...] for simple implementation.
 	    $line =~ s/^\[.*?\]\s*//;
@@ -122,7 +110,17 @@ sub mailnews_filter ($$$) {
 
 	    my $weight = $conf::Weight{'html'}->{'title'};
 	    $$weighted_str .= "\x7f$weight\x7f$line\x7f/$weight\x7f\n";
-	} elsif ($line =~ s/^content-type:\s*//i) {
+	} elsif ($line =~ /^(\S+):\s(.*)/i) {
+	    my $name = $1;
+	    my $value = $2;
+	    $fields->{lc($name)} = $value;
+	    if ($name =~ /^($conf::REMAIN_HEADER)$/io) {
+		# keep some fields specified REMAIN_HEADER for search keyword
+		my $weight = $conf::Weight{'headers'};
+		$$weighted_str .= 
+		    "\x7f$weight\x7f$value\x7f/$weight\x7f\n";
+	    }
+ 	} elsif ($line =~ s/^content-type:\s*//i) {
 	    if ($line =~ /multipart.*boundary="(.*)"/i){
 		$boundary = $1;
 		util::dprint("((boundary: $boundary))\n");

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: rfc.pl,v 1.16 2000-02-11 13:18:46 satoru Exp $
+# $Id: rfc.pl,v 1.17 2000-02-11 16:46:31 satoru Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -98,7 +98,6 @@ sub rfc_filter ($$$) {
 
 	# Get the title.
 	my $title = $3 if defined $3;
-        html::encode_entity(\$title);
 	$fields->{'title'} = $title;
 
 	my $weight = $conf::Weight{'html'}->{'title'};

@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.110 2002-09-06 18:42:22 baba Exp $
+# $Id: mknmz.in,v 1.111 2002-09-24 09:43:24 knok Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -739,6 +739,24 @@ sub load_document ($$$$\%) {
     $$contref = util::readfile($cfile);
 #    $file_size = length($$contref);
 
+    my ($kanji, $mtype) = apply_filter($orig_cfile, $contref, $weighted_str, $headings, $fields, $shelter_cfile);
+
+    if ($SYSTEM eq "MSWin32" && $shelter_cfile ne "") {
+	unlink $cfile;
+	$cfile = $shelter_cfile;
+    }
+
+    # Measure the text size at this time.
+    my $text_size = length($$contref) + length($$weighted_str); 
+
+    return ($file_size, $text_size, $kanji, $mtype);
+}
+
+sub apply_filter($$$$$$) {
+    my ($orig_cfile, $contref, $weighted_str, $headings, $fields, $shelter_cfile)
+      = @_;
+    my $cfile = $shelter_cfile ne "" ? $shelter_cfile : $$orig_cfile;
+
     # Filtering process.
     my $mtype;
     my $called_dt = 0;
@@ -746,12 +764,7 @@ sub load_document ($$$$\%) {
 	if (defined $MediaType) {
 	    $mtype = $MediaType;
 	} else {
-	    my $mtype_n;
-	    if ($shelter_cfile ne "") {
-		$mtype_n = $Magic->checktype_byfilename($shelter_cfile);
-	    } else {
-		$mtype_n = $Magic->checktype_byfilename($cfile);
-	    }
+	    my $mtype_n = $Magic->checktype_byfilename($cfile);
 	    my $mtype_c = $Magic->checktype_data($$contref);
 	    my $mtype_m;
 	    $mtype_m = $Magic->checktype_magic($$contref) 
@@ -782,7 +795,7 @@ sub load_document ($$$$\%) {
 	    $var::Supported{$mtype} ne 'yes') 
 	{
 	    util::vprint(_("Unsupported media type ")."$mtype\n");
-	    return ($file_size, $file_size, 0, "$mtype; x-system=unsupported");
+	    return (0, "$mtype; x-system=unsupported");
 	}
 
 	if ($var::REQUIRE_ACTIONS{$mtype}) {
@@ -797,12 +810,12 @@ sub load_document ($$$$\%) {
 		  '::filter($orig_cfile, $contref, $weighted_str, $headings, $fields);';
 	    }
 	    if ($err) {
-		return ($file_size, $file_size, 0, "$mtype; x-error=$err");
+		return (0, "$mtype; x-error=$err");
 	    }
 
 	    if ($@) {
 		util::vprint(_("Failed to call ")."$var::REQUIRE_ACTIONS{$mtype}\n$@\n");
-		return ($file_size, $file_size, 0, "$mtype; x-error=$@");
+		return (0, "$mtype; x-error=$@");
 	    }
 
 	    # Post code conversion.
@@ -816,18 +829,10 @@ sub load_document ($$$$\%) {
 	last;
     }
 
-    # Measure the text size at this time.
-    my $text_size = length($$contref) + length($$weighted_str); 
-
-    if ($SYSTEM eq "MSWin32" && $shelter_cfile ne "") {
-	unlink $cfile;
-	$cfile = $shelter_cfile;
-    }
-
     my $kanji = $$contref =~ tr/\xa1-\xfe/\xa1-\xfe/;  # Kanji contained?
     $kanji += $$weighted_str =~ tr/\xa1-\xfe/\xa1-\xfe/;
 
-    return ($file_size, $text_size, $kanji, $mtype);
+    return ($kanji, $mtype);
 }
 
 sub codeconv_document ($) {

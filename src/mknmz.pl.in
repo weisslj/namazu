@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.65 1999-09-07 05:50:16 knok Exp $
+# $Id: mknmz.pl.in,v 1.66 1999-09-07 07:41:43 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -1363,13 +1363,13 @@ sub get_status($) {
 
 sub put_total_files($) {
     my ($number) = @_;
-    $number =~ s/,//g;
+    $number =~ tr/,//d;
     put_status("files", $number);
 }
 
 sub put_total_keys($) {
     my ($number) = @_;
-    $number =~ s/,//g;
+    $number =~ tr/,//d;
     put_status("keys", $number);
 }
 
@@ -1508,9 +1508,10 @@ sub make_phrase_hash ($$$) {
 
     my %tmp = ();
     $$content =~ s!\x7f */? *\d+ *\x7f!!g;  # remove tags of weight
+    $$content =~ tr/\xa1-\xfea-z0-9 \n//cd; # remove all symbols
     my @words = split(/\s+/, $$content);
     @words = grep {$_ ne ""} @words;   # remove empty words
-    my $word_b = $words[0];
+    my $word_b = shift @words;
     my $docid = $file_count + $file_base;
     for my $word (@words) {
 	my $hash = hash($word_b . $word);
@@ -1600,16 +1601,14 @@ sub write_phrase_hash_sub () {
 # Dr. Knuth's  ``hash'' from (UNIX MAGAZINE May 1998)
 sub hash ($) {
     my ($word) = @_;
-    my ($i, $hash);
 
-    $hash = 0;
-    $word =~ tr/\xa1-\xfea-z0-9//cd; # Remove symbols
-    for ($i = 0; $word ne ""; $i++) {
+    my $hash = 0;
+    for (my $i = 0; $word ne ""; $i++) {
 	$hash ^= $Seed[$i & 0x03][ord($word)];
         $word = substr $word, 1;
 	# $word =~ s/^.//;  is slower
     }
-    $hash & 65535;
+    return $hash & 65535;
 }
 
 # Count frequencies of words.

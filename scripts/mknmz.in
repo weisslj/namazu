@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.100 2001-11-06 05:28:36 rug Exp $
+# $Id: mknmz.in,v 1.101 2001-11-25 09:29:55 rug Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -82,10 +82,6 @@ sub main {
     # set LANG and bind textdomain
     util::set_lang();
     textdomain('namazu', $util::LANG_MSG);
-
-    # To support Windows. Since they have nasty drive letter convention,
-    # it is necessary to change mknmzrc dynamically with env. variable.
-    load_rcfile($ENV{'MKNMZRC'}) if defined $ENV{'MKNMZRC'};
 
     load_rcfiles();
     load_modules();
@@ -232,6 +228,10 @@ sub process_file ($$$$$$) {
 # 
 sub load_rcfiles () {
     my (@cand) = ();
+
+    # To support Windows. Since they have nasty drive letter convention,
+    # it is necessary to change mknmzrc dynamically with env. variable.
+    push @cand, $ENV{'MKNMZRC'} if defined $ENV{'MKNMZRC'};
     push @cand, "$CONFDIR/mknmzrc";
     push @cand, "$ENV{'HOME'}/.mknmzrc";
 

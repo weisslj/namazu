@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.22 2000-02-19 12:39:07 satoru Exp $
+# $Id: mknmz.in,v 1.23 2000-02-20 13:13:05 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -1311,7 +1311,9 @@ sub check_file ($$$$) {
 }
 
 
-# util::Rename *.$$ to each real file name
+#
+# util::Rename a tmporary file to each real file name.
+#
 sub write_nmz_files () {
     util::Rename($var::NMZ{'_i'},   $var::NMZ{'i'});
     util::Rename($var::NMZ{'_ii'}, $var::NMZ{'ii'});
@@ -1567,9 +1569,9 @@ sub update_dateindex () {
 }
 
 sub update_field_index () {
-    my @list = glob "$var::NMZ{'field'}.*.$$.tmp";
+    my @list = glob "$var::NMZ{'field'}.*.tmp";
     for my $tmp (@list) {
-	if ($tmp =~ m!((^.*/NMZ\.field\.[^\.]+(?:\.i)?)\.$$\.tmp)!) {
+	if ($tmp =~ m!((^.*/NMZ\.field\.[^\.]+(?:\.i)?)\.tmp)!) {
 	    my $fname_tmp = $1;
 	    my $fname_out = $2;
 	    {

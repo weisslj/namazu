@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.11 2000-01-28 09:40:16 satoru Exp $
+# $Id: util.pl,v 1.12 2000-02-20 13:13:04 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -179,8 +179,9 @@ sub tmpnam ($) {
     my ($base) = @_;
     cdie("util::tmpnam: Set \$var::OUTPUT_DIR first!\n") 
 	if $var::OUTPUT_DIR eq "";
-    dprint("tmpnam: $var::OUTPUT_DIR/$base.$$.tmp\n");
-    return "$var::OUTPUT_DIR/$base.$$.tmp";
+    my $tmpnam = "$var::OUTPUT_DIR/$base.tmp";
+    dprint("tmpnam: $tmpnam\n");
+    return $tmpnam;
 }
 
 # cdie ... clean files before die
@@ -198,7 +199,7 @@ sub remove_tmpfiles () {
     return unless defined $var::OUTPUT_DIR;
     return if $var::Opt{'debug'};
 
-    my @list = glob "$var::OUTPUT_DIR/NMZ.*.$$.tmp";
+    my @list = glob "$var::OUTPUT_DIR/NMZ.*.tmp";
     push @list, $var::NMZ{'err'}   if -z $var::NMZ{'err'}; # if size == 0
     push @list, $var::NMZ{'lock'}  if -f $var::NMZ{'lock'};
     push @list, $var::NMZ{'lock2'} if -f $var::NMZ{'lock2'};

@@ -157,6 +157,7 @@ mknmz を実行したディレクトリに NMZ.* というファイルを作成し
       -G, --no-okurigana    送り仮名を削除する
       -H, --no-hiragana     平仮名のみの単語は登録しない
       -K, --no-symbol       記号をすべて削除する
+          --decode-base64   添付されたBase64エンコード部分をデコードする 
     
     要約:
       -U, --no-encode-uri       URIのencodeを行わない
@@ -276,8 +277,13 @@ href="http://www.h14m.org/">ハイパー日記システム・プロジェクト</a>か
 <dd>必需品: なし
 
 <dt>mailnews.pl
-<dd>Mail/News のファイルを扱う
+<dd>Mail/News のファイル、mhtmlファイルを扱う
 <dd>必需品: なし
+<dd>注意: mhtmlファイル、E-mailに添付されたBase64でエンコードされた部分
+を扱うには
+<a href="http://search.cpan.org/dist/MIME-Base64/">MIME::Base64, MIME::QuotedPrint</a>
+が必要(Perl5.8では標準で組込済)。利用する際には mknmzに次のオプションを使用、
+--decode=base64 
 
 <dt>man.pl
 <dd>man を扱う
@@ -340,7 +346,7 @@ href="http://softpark.jplaza.com/software/freesoft.html">ps2textコマンド</a>
 
 <dt>taro7_10.pl
 <dd>一太郎 (バージョン 7 〜 13)の文書を扱う
-<dd>必需品: <a href="http://www.onicos.com/staff/iz/release/">unicode.pl</a>,
+<dd>必需品: <a href="http://www.onicos.com/staff/iz/release/">unicode.pl</a> (Perlのバージョンが5.8以上であれば不要),
 <a href="http://search.cpan.org/~kwitknr/OLE-Storage_Lite-0.11/">OLE-Storage_Lite モジュール</a>,
 <a href="http://search.cpan.org/~eryq/IO-stringy-2.108/">IO-stringy モジュール</a>
 
@@ -1116,7 +1122,7 @@ Tknamazu および namazu.el から検索するときは必ず後者で指定します。
 Copyright (C) 2000-2004 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: manual.html,v 1.76 2004-02-11 07:55:09 opengl2772 Exp $
+$Id: manual.html,v 1.77 2004-02-22 03:02:34 usu Exp $
 </div>
 <address>
 developers@namazu.org

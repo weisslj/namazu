@@ -153,6 +153,7 @@ The above searches a keyword "bar" for the index under
       -G, --no-okurigana       remove Okurigana in word.
       -H, --no-hiragana        ignore words consist of Hiragana only.
       -K, --no-symbol          remove symbols.
+          --decode-base64      decode base64 bodies within multipart entities.
     
     Summarization:
       -U, --no-encode-uri      do not encode URI.
@@ -274,8 +275,13 @@ of <a href="http://www.h14m.org/">Hyper NIKKI System Project</a>.
 <dd>Requirement: None
 
 <dt>mailnews.pl
-<dd>Handle a file of Mail/News.
+<dd>Handle a file of Mail/News and MHTML file.
 <dd>Requirement: None
+<dd>Note: To handle MHTML file and Attached base64 bodies,
+<a href="http://search.cpan.org/dist/MIME-Base64/">MIME::Base64 and MIME::QuotedPrint</a>
+are required.(perl5.8 contains them.)  
+ --decode-base64 option is requied when handle a MHTML file or
+ base64-encoded bodies. 
 
 <dt>man.pl
 <dd>Handle a man file.
@@ -1042,7 +1048,7 @@ You must choose the latter with Tkanamzu or namazu.el.
 Copyright (C) 2000-2004 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: manual.html,v 1.54 2004-02-11 07:55:10 opengl2772 Exp $
+$Id: manual.html,v 1.55 2004-02-22 03:02:33 usu Exp $
 </div>
 <address>
 developers@namazu.org

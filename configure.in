@@ -189,12 +189,63 @@ AC_MSG_RESULT($cgi_location)
 OPT_CGI_LOCATION=$cgi_location
 AC_SUBST(OPT_CGI_LOCATION)
 
-dnl Define the webmaster's email address
-AC_MSG_CHECKING(for webmaster's email address)
+dnl *
+dnl * Define the admin's email address
+dnl * 
+
+dnl *
+dnl *  following code is imported from Apache's buildinfo.sh
+dnl * 
+dnl *  buildinfo.sh -- Determine Build Information
+dnl *  Written by Ralf S. Engelschall <rse@apache.org>
+dnl *
+dnl *  determine hostname and domainname
+dnl *
+
+changequote(<<, >>)
+#
+#   determine hostname and domainname
+#
+hostname="`uname -n 2>/dev/null |\
+           awk '{ printf("%s", $1); }'`"
+if test "x$hostname" = "x"; then
+    hostname="`hostname 2>/dev/null |\
+               awk '{ printf("%s", $1); }'`"
+    if test "x$hostname" = "x"; then
+        hostname='unknown'
+    fi
+fi
+case $hostname in
+    *.* )
+        domainname=".`echo $hostname | cut -d. -f2-`"
+        hostname="`echo $hostname | cut -d. -f1`"
+        ;;
+esac
+if test "x$domainname" = "x"; then
+    if test -f /etc/resolv.conf; then
+        domainname="`egrep '^[ 	]*domain' /etc/resolv.conf | head -1 |\
+                     sed -e 's/.*domain//' \
+                         -e 's/^[ 	]*//' -e 's/^ *//' -e 's/^	*//' \
+                         -e 's/^\.//' -e 's/^/./' |\
+                     awk '{ printf("%s", $1); }'`"
+        if test "x$domainname" = "x"; then
+            domainname="`egrep '^[ 	]*search' /etc/resolv.conf | head -1 |\
+                         sed -e 's/.*search//' \
+                             -e 's/^[ 	]*//' -e 's/^ *//' -e 's/^	*//' \
+                             -e 's/ .*//' -e 's/	.*//' \
+                             -e 's/^\.//' -e 's/^/./' |\
+                         awk '{ printf("%s", $1); }'`"
+        fi
+    fi
+fi
+changequote([, ])
+
+webmaster="webmaster@${hostname}${domainname}"
+AC_MSG_CHECKING(for admin's email address)
 AC_ARG_WITH(
 	admin,
-	[  --with-admin=EMAIL      set webmaster's email address [webmaster@foobar.jp]],
-	[admin=${withval}], [admin='webmaster@foobar.jp']
+	[  --with-admin=EMAIL      set admin's email address [guessed]],
+	[admin=${withval}], [admin=$webmaster]
 )
 AC_MSG_RESULT($admin)
 OPT_ADMIN_EMAIL=$admin

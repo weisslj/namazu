@@ -26,7 +26,7 @@ ac_help="$ac_help
 ac_help="$ac_help
   --with-cgi-location=DIR      set CGI location [/cgi-bin]"
 ac_help="$ac_help
-  --with-admin=EMAIL      set webmaster's email address [webmaster@foobar.jp]"
+  --with-admin=EMAIL      set admin's email address [guessed]"
 ac_help="$ac_help
   --with-scoring=METHOD   set scoring method (SIMPLE or TFIDF) [TFIDF]"
 
@@ -2526,14 +2526,55 @@ echo "$ac_t""$cgi_location" 1>&6
 OPT_CGI_LOCATION=$cgi_location
 
 
-echo $ac_n "checking for webmaster's email address""... $ac_c" 1>&6
-echo "configure:2531: checking for webmaster's email address" >&5
+
+
+
+#
+#   determine hostname and domainname
+#
+hostname="`uname -n 2>/dev/null |\
+           awk '{ printf("%s", $1); }'`"
+if test "x$hostname" = "x"; then
+    hostname="`hostname 2>/dev/null |\
+               awk '{ printf("%s", $1); }'`"
+    if test "x$hostname" = "x"; then
+        hostname='unknown'
+    fi
+fi
+case $hostname in
+    *.* )
+        domainname=".`echo $hostname | cut -d. -f2-`"
+        hostname="`echo $hostname | cut -d. -f1`"
+        ;;
+esac
+if test "x$domainname" = "x"; then
+    if test -f /etc/resolv.conf; then
+        domainname="`egrep '^[ 	]*domain' /etc/resolv.conf | head -1 |\
+                     sed -e 's/.*domain//' \
+                         -e 's/^[ 	]*//' -e 's/^ *//' -e 's/^	*//' \
+                         -e 's/^\.//' -e 's/^/./' |\
+                     awk '{ printf("%s", $1); }'`"
+        if test "x$domainname" = "x"; then
+            domainname="`egrep '^[ 	]*search' /etc/resolv.conf | head -1 |\
+                         sed -e 's/.*search//' \
+                             -e 's/^[ 	]*//' -e 's/^ *//' -e 's/^	*//' \
+                             -e 's/ .*//' -e 's/	.*//' \
+                             -e 's/^\.//' -e 's/^/./' |\
+                         awk '{ printf("%s", $1); }'`"
+        fi
+    fi
+fi
+
+
+webmaster="webmaster@${hostname}${domainname}"
+echo $ac_n "checking for admin's email address""... $ac_c" 1>&6
+echo "configure:2572: checking for admin's email address" >&5
 # Check whether --with-admin or --without-admin was given.
 if test "${with_admin+set}" = set; then
   withval="$with_admin"
   admin=${withval}
 else
-  admin='webmaster@foobar.jp'
+  admin=$webmaster
 
 fi
 
@@ -2548,7 +2589,7 @@ fi
 
 
 echo $ac_n "checking for SCORING""... $ac_c" 1>&6
-echo "configure:2552: checking for SCORING" >&5
+echo "configure:2593: checking for SCORING" >&5
 # Check whether --with-scoring or --without-scoring was given.
 if test "${with_scoring+set}" = set; then
   withval="$with_scoring"

@@ -5,6 +5,12 @@
 	about major changes from previous version, please see 
 	"manual.html#VERSIONDIFF".
 
+1999-07-22  Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>
+
+	* configure.in: Add a feature to determine admin's email address
+	automatically: imported the code from Apache's buildinfo.sh
+	
+
 1999-07-09  masao@ulis.ac.jp (Masao Takaku)
 
 	* mknmz.pl.in: Fix field_indices bug occurred at re-exec

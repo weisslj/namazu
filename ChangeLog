@@ -12,15 +12,8 @@
 	* nmz/Makefile.am (add-prefix): Convert regex-ruby.[ch] to
 	regex.[ch] with adding nmz prefix to extern functions.
 
-	* nmz/add-prefix.pl: New file.
-	
-	* nmz/get-extern-funcs.pl: New file.
-
-	* nmz/regex.[ch]: Generated from regex-ruby.[ch] with make
-	add-prefix. Add prefix to all extern functions. All callers
-	changed. 
-	
-	* nmz/regex-ruby.[ch]: Imported from source Ruby 1.4.3.
+	* nmz/regex.[ch]: Generated from Ruby 1.4.3's regex.[ch].
+	Add prefix to all extern functions. All callers	changed. 
 	
 	* nmz/hlist.[ch]: Changed function names.
 	s/andmerge/nmz_andmerge/g

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: namazu 2.0\n"
-"POT-Creation-Date: 1999-12-09 19:23+0900\n"
+"POT-Creation-Date: 1999-12-09 20:11+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>\n"
 "Language-Team: Japanese <satoru-t@is.aist-nara.ac.jp>\n"
@@ -119,12 +119,12 @@ msgstr ""
 "\n"
 
 #: src/output.c:512
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "\t<h2>Error!</h2>\n"
 "<p>%s</p>\n"
 msgstr ""
-"\t<h2>\033\044\102\045\050\045\151\041\074\033\050\102!</h2>\n"
+"\t<h2>\033\044\102%%\050%%\151\041\074\033\050\102!</h2>\n"
 "<p>%s</p>\n"
 
 #: src/output.c:522

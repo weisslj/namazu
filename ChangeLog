@@ -1,5 +1,9 @@
 1999-12-09  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* nmz/Makefile.am (libnmz_la_SOURCES): Add seed.h
+
+	* configure.in (AM_INIT_AUTOMAKE): Change a version number to 1.9.9.
+
 	* src/mknmz.pl.in (make_summary): Fix a bug [namazu-dev 965]
 
 	* nmz/search.c (nmz_search): Modify error state handling.

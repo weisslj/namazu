@@ -196,7 +196,7 @@ size_t freadx(void *ptr, size_t size, size_t nmemb, FILE *stream)
     return value;
 }
 
-int get_unpackw(FILE *fp, int *data)
+int nmz_get_unpackw(FILE *fp, int *data)
 {
     int val = 0, i = 0;
 
@@ -218,11 +218,11 @@ int get_unpackw(FILE *fp, int *data)
     }
 }
 
-int read_unpackw(FILE *fp, int *buf, int size) {
+int nmz_read_unpackw(FILE *fp, int *buf, int size) {
     int i = 0,  n = 0;
     
     while (i < size) {
-	int tmp = get_unpackw(fp, &buf[n]);
+	int tmp = nmz_get_unpackw(fp, &buf[n]);
 	n++;
 	if (tmp == 0) {  /* error */
 	    break;
@@ -253,7 +253,7 @@ int issymbol(int c)
 }
 
 /* error messaging function */
-void die(char *fmt, ...)
+void nmz_die(char *fmt, ...)
 {
     va_list args;
 
@@ -270,7 +270,7 @@ void die(char *fmt, ...)
     exit(EXIT_FAILURE);
 }
 
-void diewithmsg()
+void nmz_die_with_msg()
 {
     fflush(stdout);
     fflush(stderr);
@@ -283,7 +283,7 @@ void diewithmsg()
 }
 
 /* warning messaging function */
-void warnf(char *fmt, ...)
+void nmz_warn_printf(char *fmt, ...)
 {
     va_list args;
 
@@ -299,7 +299,7 @@ void warnf(char *fmt, ...)
 }
 
 /* debug messaging function */
-void debug_printf(char *fmt, ...)
+void nmz_debug_printf(char *fmt, ...)
 {
     va_list args;
 
@@ -460,7 +460,7 @@ char *readfile(char *fname)
     stat(fname, &fstatus);
     fp = fopen(fname, "rb");
     if (fp == NULL) {
-        warnf("can't open %s\n", fname);
+        nmz_warn_printf("can't open %s\n", fname);
         return 0;
     }
     buf = malloc(fstatus.st_size + 1);
@@ -509,7 +509,7 @@ void cat(char *fname)
 	}
 	fclose(fp);
     }
-    warnf("can't open %s\n", fname);
+    nmz_warn_printf("can't open %s\n", fname);
 }
 
 char *safe_getenv(char *s)

@@ -1,6 +1,6 @@
 /*
  * i18n.c -
- * $Id: i18n.c,v 1.4 1999-11-19 02:58:15 satoru Exp $
+ * $Id: i18n.c,v 1.5 1999-12-07 09:27:41 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -141,11 +141,11 @@ char *choose_msgfile(char *fname)
 
 	fp = fopen(fname, "rb");
 	if (fp != NULL) { /* fopen success */
-	    debug_printf("choose_msgfile: %s open SUCCESS.\n", fname);
+	    nmz_debug_printf("choose_msgfile: %s open SUCCESS.\n", fname);
 	    fclose(fp);
 	    return fname;
 	}
-	debug_printf("choose_msgfile: %s open failed.\n", fname);
+	nmz_debug_printf("choose_msgfile: %s open failed.\n", fname);
 
 	for (i = strlen(fname) - 1;  i >= 0; i--) {
 	    if (fname[i] == '.' ||

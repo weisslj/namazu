@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.33 1999-12-06 09:15:18 satoru Exp $
+ * $Id: cgi.c,v 1.34 1999-12-07 09:27:43 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -279,7 +279,7 @@ static int process_cgi_vars(CGIARG *ca)
     for (; cv != NULL; cv = cv->next) {
 	if (!apply_cgifunc(cv, ca)) {
 	    /* message for httpd's error_log */
-	    warnf("unknown cgi var: %s=%s\n", cv->name, cv->value);
+	    nmz_warn_printf("unknown cgi var: %s=%s\n", cv->name, cv->value);
 	}
     }
     free_cgi_vars(cv);
@@ -458,7 +458,7 @@ static void process_cgi_var_idxname(char *value, CGIARG *ca)
 	strcat(tmp, "/");
 	strcat(tmp, name);
 	if (add_index(tmp) != SUCCESS) {
-	    warnf("invalid idxname: %s", name);
+	    nmz_warn_printf("invalid idxname: %s", name);
 	}
     }
 }
@@ -513,7 +513,7 @@ void init_cgi(char *query, char *subquery)
 
     if (Idx.num == 0) {
 	if (add_index(DEFAULT_INDEX) != SUCCESS) {
-	    warnf("invalid idxname: %s", DEFAULT_INDEX);
+	    nmz_warn_printf("invalid idxname: %s", DEFAULT_INDEX);
 	}
     } 
 }

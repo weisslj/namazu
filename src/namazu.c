@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.56 1999-12-07 09:14:04 satoru Exp $
+ * $Id: namazu.c,v 1.57 1999-12-07 09:27:43 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -193,13 +193,13 @@ static int parse_options(int argc, char **argv)
 	    break;
 	case 'n':
 	    if (ck_atoi(optarg, &tmp)) {
-		die("%s: invalid argument for -n, --max", optarg);
+		nmz_die("%s: invalid argument for -n, --max", optarg);
 	    }
 	    set_maxresult(tmp);
 	    break;
 	case 'w':
 	    if (ck_atoi(optarg, &tmp)) {
-		die("%s: invalid argument for -w, --whence", optarg);
+		nmz_die("%s: invalid argument for -w, --whence", optarg);
 	    }
 	    set_listwhence(tmp);
 	    break;
@@ -246,7 +246,7 @@ static int parse_options(int argc, char **argv)
 	    break;
 	case 'C':
 	    if (load_rcfile(argv[0]) != SUCCESS)
-		diewithmsg();
+		nmz_die_with_msg();
 	    show_rcfile();
 	    exit(EXIT_SUCCESS);
 	    break;
@@ -255,7 +255,7 @@ static int parse_options(int argc, char **argv)
 	    break;
 	case 'o':
 	    if (stdio2file(optarg))
-		diewithmsg();
+		nmz_die_with_msg();
 	    break;
 	}
     } 
@@ -411,7 +411,7 @@ static void make_fullpathname_msg(void)
 
 static void suicide (int signum)
 {
-    die("processing time exceeds a limit: %d", SUICIDE_TIME);
+    nmz_die("processing time exceeds a limit: %d", SUICIDE_TIME);
 }
 
 int main(int argc, char **argv)
@@ -428,7 +428,7 @@ int main(int argc, char **argv)
 
     if (argc == 1) { /* if no argument, assume this session as CGI */
 	if (load_rcfile(argv[0]) != SUCCESS)
-	    diewithmsg();
+	    nmz_die_with_msg();
 	set_cgimode(1);
 	set_htmlmode(1);
     } else {
@@ -439,7 +439,7 @@ int main(int argc, char **argv)
 
 	i = parse_options(argc, argv); 
 	if (load_rcfile(argv[0]) != SUCCESS)
-	    diewithmsg();
+	    nmz_die_with_msg();
 
 	if (i == argc) {
 	    show_mini_usage();
@@ -454,13 +454,13 @@ int main(int argc, char **argv)
 	    int curidx = getidxnum();
             for (curidx = 0; i < argc && curidx < INDEX_MAX; i++) {
 	        if (add_index(argv[i]) != SUCCESS) {
-		    die("invalid idxname: %s", argv[i]);
+		    nmz_die("invalid idxname: %s", argv[i]);
 		}
             }
         } 
         if (getidxnum() == 0) {
 	    if (add_index(DEFAULT_INDEX) != SUCCESS) {
-		die("invalid idxname: %s", argv[i]);
+		nmz_die("invalid idxname: %s", argv[i]);
 	    }
 	}
     }
@@ -470,9 +470,9 @@ int main(int argc, char **argv)
 
     uniq_idxnames();
     if (expand_idxname_aliases() != SUCCESS)
-        diewithmsg();
+        nmz_die_with_msg();
     if (complete_idxnames() != SUCCESS)
-        diewithmsg();
+        nmz_die_with_msg();
 
     if (is_debugmode()) {
         for (i = 0; i < Idx.num; i++) {
@@ -488,6 +488,6 @@ int main(int argc, char **argv)
 
     ret = namazu_core(query, subquery, argv[0]);
     if (ret != SUCCESS)
-        diewithmsg();
+        nmz_die_with_msg();
     return ret;
 }

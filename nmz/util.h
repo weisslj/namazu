@@ -2,8 +2,8 @@
 
   util.h -
 
-  $Author: satoru $
-  $Date: 1999-11-23 09:46:18 $
+  $Author: rug $
+  $Date: 1999-12-07 09:27:41 $
   created at: Thu Mar  9 11:55:53 JST 1995
 
   Copyright (C) 1993-1998 Yukihiro Matsumoto
@@ -59,19 +59,17 @@ extern void chomp(char*);
 
 extern void strlower();
 extern void delete_backslashes();
-extern int get_unpackw();
-extern int read_unpackw(FILE *, int *, int);
+extern int nmz_get_unpackw();
+extern int nmz_read_unpackw(FILE *, int *, int);
 
 extern char *lastc();
 size_t freadx();
 extern long getidxptr(FILE* , long);
 extern int issymbol(int);
-#ifndef die /* for perl XSUB... */
-extern void die(char*, ...);
-#endif
-extern void diewithmsg();
-extern void warnf(char*, ...);
-extern void debug_printf(char*, ...);
+extern void nmz_die(char*, ...);
+extern void nmz_die_with_msg();
+extern void nmz_warn_printf(char*, ...);
+extern void nmz_debug_printf(char*, ...);
 extern void pathcat(char*, char*);
 
 extern int  isnumstr(char *);

@@ -2,7 +2,7 @@
  * 
  * wakati.c -
  * 
- * $Id: wakati.c,v 1.8 1999-11-23 12:58:32 satoru Exp $
+ * $Id: wakati.c,v 1.9 1999-12-07 09:27:42 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -144,7 +144,7 @@ int wakati(char *key)
     int i, j, key_leng, type;
     char buf[BUFSIZE * 2] = "";
 
-    debug_printf("wakati original: [%s].\n", key);
+    nmz_debug_printf("wakati original: [%s].\n", key);
 
     for (i = 0; i < strlen(key); ) {
         type = detect_char_type(key + i);
@@ -208,7 +208,7 @@ int wakati(char *key)
 	set_dyingmsg("wakatigaki processing failed.\n");
 	return 1; 
     }
-    debug_printf("wakatied string: [%s]\n", key);
+    nmz_debug_printf("wakatied string: [%s]\n", key);
     return 0;
 }
 
@@ -238,7 +238,7 @@ int split_query(char *qs)
 	    i++;
     }
     if (is_debugmode()) {
-	debug_printf("Query.tabN: %d\n", qn);
+	nmz_debug_printf("Query.tabN: %d\n", qn);
     }
 
     if (qn == 0) { /* if no item available */

@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.15 1999-12-07 08:21:36 satoru Exp $
+ * $Id: hlist.c,v 1.16 1999-12-07 09:27:41 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -40,7 +40,7 @@
 #include "field.h"
 #include "var.h"
 
-static int DocNum = 0;  /* Number of documents covered in a target index */
+static int DocNum = 0;  /* Number of documents covered in atarget index */
 static char Field[BUFSIZE] = "";  /* Field name used with sorting */
 
 struct str_num {
@@ -475,11 +475,11 @@ NmzResult get_hlist(int index)
 	return hlist; /* error */
     }
 
-    get_unpackw(Nmz.i, &n);
+    nmz_get_unpackw(Nmz.i, &n);
 
     if (TfIdf) {
         idf = log((double)DocNum / (n/2)) / log(2);
-	debug_printf("idf: %f (N:%d, n:%d)\n", idf, DocNum, n/2);
+	nmz_debug_printf("idf: %f (N:%d, n:%d)\n", idf, DocNum, n/2);
     }
 
     if (n >= IGNORE_HIT * 2) {  
@@ -494,7 +494,7 @@ NmzResult get_hlist(int index)
 	    hlist.stat = ERR_FATAL;
 	    return hlist;
 	}
-	n = read_unpackw(Nmz.i, buf, n);
+	n = nmz_read_unpackw(Nmz.i, buf, n);
 	malloc_hlist(&hlist, n / 2);
 	if (hlist.stat == ERR_FATAL)
 	    return hlist;

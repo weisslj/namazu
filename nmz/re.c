@@ -2,7 +2,7 @@
  * 
  * re.c -
  * 
- * $Id: re.c,v 1.10 1999-12-04 09:28:55 satoru Exp $
+ * $Id: re.c,v 1.11 1999-12-07 09:27:41 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -67,7 +67,7 @@ NmzResult regex_grep(char *orig_expr, FILE *fp, char *field, int field_mode)
     rp->allocated = 0;
     
     strcpy(expr, orig_expr); /* save orig_expr */
-    debug_printf("REGEX: '%s'\n", expr);
+    nmz_debug_printf("REGEX: '%s'\n", expr);
 
     if (field_mode) {
         malloc_hlist(&val, size += STEP);
@@ -139,13 +139,13 @@ NmzResult regex_grep(char *orig_expr, FILE *fp, char *field, int field_mode)
                 char buf2[BUFSIZE];
 
                 if (field_mode) {
-                    debug_printf("field: [%d]<%s> id: %d\n", 
+                    nmz_debug_printf("field: [%d]<%s> id: %d\n", 
                             val.num, buf, i);
                 } else {
                     fseek(Nmz.w, getidxptr(Nmz.wi, i), 0);
                     fgets(buf2, BUFSIZE, Nmz.w);
                     chomp(buf2);
-                    debug_printf("re: %s, (%d:%s), %d, %d\n", 
+                    nmz_debug_printf("re: %s, (%d:%s), %d, %d\n", 
                             buf2, i, buf, tmp.num, val.num);
                 }
 	    }

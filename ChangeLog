@@ -1,5 +1,7 @@
 2000-12-20  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
+	* tests/namazu-cgi-5 (LANG): Added new test case.
+
 	* scripts/mknmz.in (main): Changed to call load_modules()
 	before when load_rcfiles() is called.
 	(fixed namazu-win32-users-ja#00396 probrem)
@@ -6139,4 +6141,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.766 2000-12-20 01:06:48 knok Exp $
+$Id: ChangeLog,v 1.767 2000-12-20 09:24:22 knok Exp $

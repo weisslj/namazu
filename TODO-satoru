@@ -1,9 +1,7 @@
-$Id: TODO-satoru,v 1.24 2000-01-29 07:09:22 satoru Exp $
+$Id: TODO-satoru,v 1.25 2000-01-29 13:30:13 satoru Exp $
 やるべきことの備忘録 by 高林
 
 手っ取り早く片づける仕事
-
-  * namazurc の Lang 問題を解決 setenv の関連
 
   * nmz/libnamazu.c を廃止 (中の関数は適切なファイルに移動する)
 
@@ -16,7 +14,7 @@ $Id: TODO-satoru,v 1.24 2000-01-29 07:09:22 satoru Exp $
   
 書き直すべきコードたち (全部書き直せという話も…)
 
-  * search.c: nmz_binsearch() は左端を検索する 
+  * search.c: nmz_binsearch() を左端を検索するようにする
     prefix_match() は後戻りしない
     - Programming Pearls のコードが使える
 
@@ -24,6 +22,7 @@ $Id: TODO-satoru,v 1.24 2000-01-29 07:09:22 satoru Exp $
     - まともに字句解析すべし
     - データ構造はリストがよかろう
     - one true awk の lex.c が参考になる
+    - queryの「かっこ」の前後にスペースをいれなくても OK にする [namazu 1229]
 
   * parser.c を書き直す
     - query.c でまともに字句解析されたデータ構造 (リスト) を扱う

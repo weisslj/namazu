@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.56 2000-01-28 09:40:20 satoru Exp $
+ * $Id: cgi.c,v 1.57 2000-01-29 13:30:14 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -508,5 +508,3 @@ init_cgi(char *query, char *subquery)
 	}
     } 
 }
-
-

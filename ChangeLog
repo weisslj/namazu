@@ -4,6 +4,11 @@
 
 2000-01-29  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/namazu-cmd.c (main): Fix default index bug. 
+	[namazu-dev 1398]
+
+	* src/namazu-cgi.c (main): Ditto.
+
 	* conf/namazurc-sample: Modify comments.
 
 	* src/namazu-cgi.c (main): Fix load_rcfiles() timing bug.

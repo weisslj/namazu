@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu-cmd.c,v 1.7 2000-01-29 04:58:25 satoru Exp $
+ * $Id: namazu-cmd.c,v 1.8 2000-01-29 13:30:15 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -310,16 +310,22 @@ main(int argc, char **argv)
 		}
             }
         } 
-        if (nmz_get_idxnum() == 0) {
-	    /* Use defaultidx for taget. */
-	    if (nmz_add_index(nmz_get_defaultidx()) != SUCCESS) {
-		die("invalid idxname: %s", argv[i]);
-	    }
-	}
     }
 
     if (load_rcfiles() != SUCCESS) {
 	die(nmz_get_dyingmsg());
+    }
+
+    /* 
+     * If no index is explicitly specified, search the default index.
+     * NOTE: This processing must be place after load_rcfiles().
+     *       Because default index can be set in namazurc.
+     */
+    if (nmz_get_idxnum() == 0) {
+	/* Use defaultidx for the taget index. */
+	if (nmz_add_index(nmz_get_defaultidx()) != SUCCESS) {
+	    die("invalid idxname: %s", argv[i]);
+	}
     }
 
     if (namazu_core(query, subquery) == ERR_FATAL) {

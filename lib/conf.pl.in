@@ -1,5 +1,5 @@
 # -*- CPerl -*-
-# $Id: conf.pl.in,v 1.10 1999-08-27 01:30:52 satoru Exp $
+# $Id: conf.pl.in,v 1.11 1999-08-27 07:01:12 knok Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -384,24 +384,8 @@ $HtaccessExcludeOpt = 0;
 
 #
 
-%REQUIRE_ACTIONS = (
-		    'text/x-roff' => 'man',
-		    'text/plain; x-type=rfc' => 'rfc',
-		    'text/html' => 'html',
-		    'text/html; x-type=mhonarc' => 'mhonarc',
-		    'message/rfc822' => 'mailnews',
-		    'message/news' => 'mailnews',
-		    'application/pdf' => 'pdf',
-		    'application/msword' => 'msword',
-		    'application/x-gzip' => 'gzip',
-		    'application/x-bzip2' => 'bzip2',
-		    'application/x-compress' => 'compress',
-);
-
-%RECURSIVE_ACTIONS = (
-		      'application/x-gzip' => 1,
-		      'application/x-bzip2' => 1,
-		      'application/x-compress' => 1,
-);
+%REQUIRE_ACTIONS = ();
+%RECURSIVE_ACTIONS = ();
+%supported = ();
 
 1;

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mailnews.pl,v 1.3 1999-08-27 01:30:50 satoru Exp $
+# $Id: mailnews.pl,v 1.4 1999-08-27 07:01:10 knok Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -27,6 +27,18 @@ package mailnews;
 use strict;
 require 'util.pl';
 require 'filter.pl';
+
+sub mediatype() {
+    return ('message/rfc822', 'message/news');
+}
+
+sub status() {
+    return 'yes';
+}
+
+sub recursive() {
+    return 0;
+}
 
 sub filter ($$$$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields, $size)

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: html.pl,v 1.3 1999-08-27 01:30:50 satoru Exp $
+# $Id: html.pl,v 1.4 1999-08-27 07:01:09 knok Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -25,6 +25,18 @@
 package html;
 use strict;
 require 'filter.pl';
+
+sub mediatype() {
+    return ('text/html');
+}
+
+sub status() {
+    return 'yes';
+}
+
+sub recursive() {
+    return 0;
+}
 
 sub filter ($$$$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields, $size)

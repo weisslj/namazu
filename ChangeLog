@@ -1,3 +1,9 @@
+1999-08-27  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* lib/util.pl: Add checkcmd function.
+	* filter/*.pl, src/mknmz.pl.in: Implement dynamic command ditection.
+	* lib/conf.pl.in: Add %supported variable.
+
 1999-08-27  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* Makefile.am, src/Makefile.am: Change packagedir (omit @VERSION@)

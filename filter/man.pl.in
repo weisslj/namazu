@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: man.pl.in,v 1.4 1999-08-27 01:30:50 satoru Exp $
+# $Id: man.pl.in,v 1.5 1999-08-27 07:01:10 knok Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -30,15 +30,42 @@ require 'filter.pl';
 
 my $TMPFILE = tmpnam('NMZ.man');
 
+sub mediatype() {
+    return ('text/x-roff');
+}
+
+sub status() {
+    my $roffpath = checkcmd('jgroff');
+    return 'yes' if (defined $roffpath);
+    $roffpath = checkcmd('groff');
+    return 'yes' if (defined $roffpath);
+    $roffpath = checkcmd('nroff');
+    return 'yes' if (defined $roffpath);
+    return 'no';
+}
+
+sub recursive() {
+    return 0;
+}
+
 sub filter ($$$$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields, $size)
       = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
-    print "Proccessing man file ... (use '@GROFF_PATH@')\n"
+    my $roffpath = checkcmd('jgroff');
+    $roffpath = checkcmd('groff') unless (defined $roffpath);
+    $roffpath = checkcmd('nroff') unless (defined $roffpath);
+
+    my $roffargs;
+    $roffargs = '-Tnippon' if ($roffpath =~ /jgroff$/);
+    $roffargs = '-Tascii' if ($roffpath =~ /groff$/);
+    $roffargs = '' if ($roffpath =~ /nroff$/);
+
+    print "Proccessing man file ... (use '$roffpath')\n"
       if ($conf::VerboseOpt);
 
-    my $fh = efopen("|@GROFF_PATH@ > $TMPFILE");
+    my $fh = efopen("|$roffpath -man $roffargs > $TMPFILE");
     print $fh $$cont;
     undef $fh;
     $fh = efopen("$TMPFILE");

@@ -8,27 +8,27 @@
 /* symbol mangling for libnmz.  */
 
 #ifndef HAVE_MEMMOVE
-#define memmove nmz_memmove
+#define memmove _nmz_memmove
 #endif
 
 #ifndef HAVE_MEMSET
-#define memset nmz_memset
+#define memset _nmz_memset
 #endif
 
 #ifndef HAVE_STRCASECMP
-#define strcasecmp nmz_strcasecmp
+#define strcasecmp _nmz_strcasecmp
 #endif
 
 #ifndef HAVE_STRNCASECMP
-#define strncasecmp nmz_strncasecmp
+#define strncasecmp _nmz_strncasecmp
 #endif
 
 #ifndef HAVE_STRCSPN
-#define strcspn nmz_strcspn
+#define strcspn _nmz_strcspn
 #endif
 
 #ifndef HAVE_STRERROR
-#define strerror nmz_strerror
+#define strerror _nmz_strerror
 #endif
 
 #ifndef HAVE_VSNPRINTF
@@ -38,7 +38,7 @@
 #  ifdef HAVE___VSNPRINTF
 #  define vsnprintf __vsnprintf
 #  else
-#  define vsnprintf nmz_vsnprintf
+#  define vsnprintf _nmz_vsnprintf
 #  endif
 # endif
 #endif

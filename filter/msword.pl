@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: msword.pl,v 1.36 2003-07-21 11:39:36 usu Exp $
+# $Id: msword.pl,v 1.37 2003-08-03 04:00:09 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2002 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -26,7 +26,6 @@
 package msword;
 use strict;
 use File::Basename;
-use File::Copy;
 require 'util.pl';
 require 'gfilter.pl';
 require 'html.pl';

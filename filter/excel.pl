@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: excel.pl,v 1.17 2003-07-21 11:39:36 usu Exp $
+# $Id: excel.pl,v 1.18 2003-08-03 04:00:09 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu, 
 #               2000 Namazu Project All rights reserved.
@@ -27,7 +27,6 @@
 package excel;
 use strict;
 use File::Basename;
-use File::Copy;
 require 'util.pl';
 require 'gfilter.pl';
 require 'html.pl';

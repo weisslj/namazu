@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: taro.pl,v 1.8 2002-09-23 08:52:32 baba Exp $
+# $Id: taro.pl,v 1.9 2003-08-03 04:00:09 opengl2772 Exp $
 # Copyright (C) 2000 Ken-ichi Hirose, 
 #               2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -25,7 +25,6 @@
 
 package taro;
 use strict;
-use File::Copy;
 require 'util.pl';
 require 'gfilter.pl';
 

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: powerpoint.pl,v 1.9 2003-07-21 11:39:36 usu Exp $
+# $Id: powerpoint.pl,v 1.10 2003-08-03 04:00:09 opengl2772 Exp $
 # Copyright (C) 2000 Ken-ichi Hirose, 
 #               2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -26,7 +26,6 @@
 package powerpoint;
 use strict;
 use File::Basename;
-use File::Copy;
 require 'util.pl';
 require 'gfilter.pl';
 require 'html.pl';

@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.115 2002-11-14 10:13:51 knok Exp $
+# $Id: mknmz.in,v 1.116 2002-11-16 09:19:26 rug Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -488,13 +488,12 @@ sub namazu_core ($$$$$$$$$$) {
 
     put_dateindex($cfile);
     $content .= $weighted_str;   # add weights
-    my $indexer = $Indexer;
-    $indexer->init(\$content, $conf::WORD_LENG_MAX, $var::Opt{'nosymbol'});
-    $indexer->noedgesymbol() if ($var::Opt{'noedgesymbol'});
+    $Indexer->init(\$content, $conf::WORD_LENG_MAX, $var::Opt{'nosymbol'});
+    $Indexer->noedgesymbol() if ($var::Opt{'noedgesymbol'});
     do_wakatigaki(\$content, $kanji);
     $content =~ tr/A-Z/a-z/; # Normalize
-    $indexer->count_words();
-    add_key($indexer, $docid_count, $docid_base);
+    $Indexer->count_words();
+    add_key($Indexer, $docid_count, $docid_base);
     make_phrase_hash($docid_count, $docid_base, \$content);
 
     # assertion

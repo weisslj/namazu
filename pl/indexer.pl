@@ -2,7 +2,7 @@
 # -*- Perl -*-
 # indexer.pl - class for indexing
 #
-# $Id: indexer.pl,v 1.1 2002-11-14 10:13:51 knok Exp $
+# $Id: indexer.pl,v 1.2 2002-11-16 09:19:26 rug Exp $
 #
 # Copyright (C) 2002 Namazu Project All rights reversed.
 #
@@ -28,7 +28,7 @@ sub new {
     my $self = {};
     my $proto = shift @_;
     my $class = ref($proto) || $proto;
-    bless($self);
+    bless($self, $class);
 
     $self->init(@_);
     return $self;
@@ -36,21 +36,21 @@ sub new {
 
 sub init {
     my $self = shift @_;
-    $self->{'KeyIndex'} = {};
-    $self->{'content'} = shift @_;
-    $self->{'conf::WORD_LENG_MAX'} = shift @_;
-    $self->{'conf::nosymbol'} = shift @_;
-    $self->{'hook::word'} = undef;
+    $self->{'_keyindex'} = {};
+    $self->{'_content'} = shift @_;
+    $self->{'_word_leng_max'} = shift @_;
+    $self->{'_nosymbol'} = shift @_;
+    $self->{'_hook_word'} = undef;
 }
 
 sub get_keyindex {
     my $self = shift @_;
-    return $self->{'KeyIndex'};
+    return $self->{'_keyindex'};
 }
 
 sub word_hook {
     my $self = shift @_;
-    $self->{'hook::word'} = shift @_;
+    $self->{'_hook_word'} = shift @_;
 }
 
 sub noedgesymbol {
@@ -61,7 +61,7 @@ sub noedgesymbol {
 sub count_words {
     my $self = shift @_;
 
-    my $contref = $self->{'content'};
+    my $contref = $self->{'_content'};
 
     my $part1 = "";
     my $part2 = "";
@@ -76,13 +76,13 @@ sub count_words {
     }
 
     # do scoring
-    my $word_count = $self->{'KeyIndex'};
+    my $word_count = $self->{'_keyindex'};
     $part2 =~ s!\x7f *(\d+) *\x7f([^\x7f]*)\x7f */ *\d+ *\x7f!
-        $self->wordcount_sub($2, $1, $word_count)!ge;
-    $self->wordcount_sub($part1, 1, $word_count);
+        $self->_wordcount_sub($2, $1, $word_count)!ge;
+    $self->_wordcount_sub($part1, 1, $word_count);
 }
 
-sub wordcount_sub {
+sub _wordcount_sub {
     my $self = shift @_;
     my ($text, $weight, $word_count) = @_;
 
@@ -98,24 +98,24 @@ sub wordcount_sub {
 
     my @words = split /\s+/, $text;
     for my $word (@words) {
-        next if ($word eq "" || length($word) > $self->{'conf::WORD_LENG_MAX'});
-	if (defined $self->{'hook::word'}) {
-	    $word = &{$self->{'hook::word'}}($word);
+        next if ($word eq "" || length($word) > $self->{'_word_leng_max'});
+	if (defined $self->{'_hook_word'}) {
+	    $word = &{$self->{'_hook_word'}}($word);
 	}
         $word_count->{$word} = 0 unless defined($word_count->{$word});
         $word_count->{$word} += $weight;
-        unless ($self->{'option::nosymbol'}) {
-	    $self->splitsymbol($word, $weight);
+        unless ($self->{'_nosymbol'}) {
+	    $self->_splitsymbol($word, $weight);
         }
     }
     return "";
 }
 
-sub splitsymbol {
+sub _splitsymbol {
     my $self = shift @_;
     my $word = shift @_;
     my $weight = shift @_;
-    my $word_count = $self->{'KeyIndex'};
+    my $word_count = $self->{'_keyindex'};
     if ($word =~ /^[^\xa1-\xfea-z_0-9](.+)[^\xa1-\xfea-z_0-9]$/) {
 	$word_count->{$1} = 0 unless defined($word_count->{$1});
 	$word_count->{$1} += $weight;

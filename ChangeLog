@@ -1,3 +1,15 @@
+2002-11-16  Ryuji Abe  <rug@namazu.org>
+
+	* pl/indexer.pl: Renamed data member names (from KeyIndex,
+	content, conf::WORD_LENG_MAX, conf::nosymbol, hook::word to
+	_keyindex, _content, _word_leng_max,_nosymbol,_hook_word).
+	(new): Do bless $self, $class.
+	(_wordcount_sub, _splitsymbol): Renamed from wordcount_sub
+	and splitsymbol. These are private methods.
+
+	* scripts/mknmz.in (namazu_core): Removed $indexer. Use
+	$Indexer instead.
+
 2002-11-15  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* configure.in (LTVERSION): Set 7:0:4.
@@ -7760,4 +7772,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.992 2002-11-15 09:18:28 knok Exp $
+$Id: ChangeLog,v 1.993 2002-11-16 09:19:25 rug Exp $

@@ -1,7 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: ichitaro456.pl,v 1.2 2000-03-15 11:52:03 satoru Exp $
-# Copyright (C) 1999 Ken-ichi Hirose All rights reserved.
+# $Id: taro.pl,v 1.1 2000-03-22 21:10:52 kenzo- Exp $
+# Copyright (C) 2000 Ken-ichi Hirose, 
+#               2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -21,24 +22,22 @@
 #
 #  This file must be encoded in EUC-JP encoding
 #
-#  You need "jstxt.exe" command.
-#
 
-package ichitaro456;
+package taro;
 use strict;
 require 'util.pl';
 require 'gfilter.pl';
 
-my $ichitaro456 = undef;
+my $taroconvpath  = undef;
 
 sub mediatype() {
-    return ('application/ichitaro4', 'application/ichitaro5', 'application/ichitaro6');
+    return ('application/x-js-taro');
 }
 
 sub status() {
-    $ichitaro456 = util::checkcmd('jstxt');
-    return 'yes' if (defined $ichitaro456);
-    return 'no';
+    $taroconvpath = util::checkcmd('doccat');
+    return 'yes' if defined $taroconvpath;
+    return 'no'; 
 }
 
 sub recursive() {
@@ -50,14 +49,13 @@ sub pre_codeconv() {
 }
 
 sub post_codeconv () {
-    return 1;
+    return 0;
 }
 
 sub add_magic ($) {
     my ($magic) = @_;
-    $magic->addFileExts('(?i)\\.jsw', 'application/ichitaro4');
-    $magic->addFileExts('(?i)\\.jaw', 'application/ichitaro5');
-    $magic->addFileExts('(?i)\\.jbw', 'application/ichitaro6');
+
+    $magic->addFileExts('(?i)\\.jtd', 'application/x-js-taro');
     return;
 }
 
@@ -66,14 +64,15 @@ sub filter ($$$$$) {
       = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
-    my $tmpfile  = util::tmpnam('NMZ.jstxt');
+    my $tmpfile  = util::tmpnam('NMZ.taro');
 
-    util::vprint("Processing ichitaro file ... (using  '$ichitaro456')\n");
+    system("$taroconvpath -o e $cfile > $tmpfile");
 
-    system("$ichitaro456 -k -s -p $$orig_cfile > $tmpfile");
+    {
     my $fh = util::efopen("< $tmpfile");
     $$cont = util::readfile($fh);
-    undef $fh;
+    }
+
     unlink($tmpfile);
 
     gfilter::line_adjust_filter($cont);
@@ -82,7 +81,7 @@ sub filter ($$$$$) {
     $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
       unless $fields->{'title'};
     gfilter::show_filter_debug_info($cont, $weighted_str,
-			   $fields, $headings);
+               $fields, $headings);
     return undef;
 }
 

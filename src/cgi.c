@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.48 2000-01-09 11:28:59 satoru Exp $
+ * $Id: cgi.c,v 1.49 2000-01-10 08:26:54 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -308,9 +308,8 @@ static int
 apply_cgifunc(const struct cgivar *cv, struct cgiarg *ca) 
 {
     struct cgivar_func *cf = cgifunctab;
-    int i;
 
-    for (i = 0; cf->name != NULL; cf++) {
+    for (; cf->name != NULL; cf++) {
 	if (strcmp(cv->name, cf->name) == 0) {
 	    (*(cf->func))(cv->value, ca);
 	    return 1;  /* applied */

@@ -1,3 +1,31 @@
+2000-01-10  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* nmz/parser.c (factor): Handle an invalid query as error.
+
+	* nmz/rcfile.c (process_rc_blank): New function.
+	(process_rc_comment): Ditto.
+	(process_rc_debug): Ditto.
+	(process_rc_index): Ditto.
+	(process_rc_base): Ditto.
+	(process_rc_alias): Ditto.
+	(process_rc_replace): Ditto.
+	(process_rc_logging): Ditto.
+	(process_rc_scoring): Ditto.
+	(process_rc_lang): Ditto.
+	(is_valid_argnum): Abolished.
+	(parse_rcfile): Modified.
+	(apply_rc): Ditto.
+
+	* src/cgi.c (apply_cgifunc): Remove unused variable i.
+
+	* nmz/util.c (free_strlist): New function.
+	(push_strlist): New function.
+
+	* nmz/libnamazu.h (struct nmz_strlist): New data structure.
+
+	* src/namazu.c (main): Remove debug codes.
+	(main): Change parse_options() calling position.
+
 2000-01-09  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* configure.in (ALL_LINGUAS): Remove ja_JP.ISO-2022-JP.

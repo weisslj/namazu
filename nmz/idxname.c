@@ -2,7 +2,7 @@
  * 
  * idxname.c - Idx handling routines.
  *
- * $Id: idxname.c,v 1.18 2000-01-09 08:39:22 satoru Exp $
+ * $Id: idxname.c,v 1.19 2000-01-10 08:26:50 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
@@ -237,4 +237,5 @@ nmz_push_hitnum(struct nmz_hitnumlist *hn,
 	return hnptr;
     return hn;
 }
+
 

@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.85 2000-01-10 01:10:48 satoru Exp $
+ * $Id: namazu.c,v 1.86 2000-01-10 08:26:54 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -407,15 +407,16 @@ main(int argc, char **argv)
 	set_refprint(1);
 	set_uridecode(1);	 /* Decode a URI */
 
-	i = parse_options(argc, argv); 
 	if (nmz_load_rcfile(argv[0]) != SUCCESS) {
 	    die(nmz_get_dyingmsg());
 	}
 
+	i = parse_options(argc, argv); 
 	if (i == argc) {
 	    show_mini_usage();
 	    exit(EXIT_FAILURE);
 	}
+
 	if (strlen(argv[i]) > QUERY_MAX) {
 	    html_print(_(MSG_TOO_LONG_QUERY));
 	    return 1;

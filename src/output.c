@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.53 2000-01-09 11:28:59 satoru Exp $
+ * $Id: output.c,v 1.54 2000-01-10 08:26:54 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -411,7 +411,7 @@ print_listing(NmzResult hlist)
 }
 
 /*
- * for pageindex
+ * For page_index().
  */
 static void 
 print_query(const char * qs, int w)
@@ -432,7 +432,7 @@ print_query(const char * qs, int w)
 }
 
 /*
- * Displayin page index
+ * Displayi page index.
  */
 static void 
 print_page_index(int n)

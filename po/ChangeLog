@@ -1,3 +1,7 @@
+2000-01-10  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* ja.po: Fix an inappropriate message.
+
 2000-01-09  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* make_iso-2022-jp_po.in: Removed.

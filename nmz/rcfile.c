@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.19 2000-01-09 11:28:54 satoru Exp $
+ * $Id: rcfile.c,v 1.20 2000-01-10 08:26:50 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -51,14 +51,151 @@ static char namazurc[BUFSIZE] = "";
  */
 
 static void getenv_namazurc ( void );
-static void set_pathname ( char *to, const char *o, const char *name );
+static void set_pathname(char *dest, const char *command, const char *name);
 static FILE *open_rcfile ( const char *argv0 );
 static int get_rc_arg ( const char *line, char *arg );
 static void replace_home ( char *str );
-static int get_rc_args ( const char *line, char *directive, char *arg1, char *arg2 );
+static struct nmz_strlist *get_rc_args ( const char *line );
 static enum nmz_stat parse_rcfile ( const char *line, int lineno );
-static int is_valid_argnum ( const char *directive, int argnum );
-static enum nmz_stat apply_rc ( const char *directive, int lineno, const char *arg1, const char *arg2 );
+static enum nmz_stat apply_rc ( int lineno, const char *directive, struct nmz_strlist *args );
+
+static enum nmz_stat process_rc_blank ( const char *directive, const struct nmz_strlist *args );
+
+static enum nmz_stat process_rc_comment(const char *directive, const struct nmz_strlist *args);
+static enum nmz_stat process_rc_debug(const char *directive, const struct nmz_strlist *args);
+static enum nmz_stat process_rc_index(const char *directive, const struct nmz_strlist *args);
+static enum nmz_stat process_rc_base(const char *directive, const struct nmz_strlist *args);
+static enum nmz_stat process_rc_alias(const char *directive, const struct nmz_strlist *args);
+static enum nmz_stat process_rc_replace(const char *directive, const struct nmz_strlist *args);
+static enum nmz_stat process_rc_logging(const char *directive, const struct nmz_strlist *args);
+static enum nmz_stat process_rc_scoring(const char *directive, const struct nmz_strlist *args);
+static enum nmz_stat process_rc_lang(const char *directive, const struct nmz_strlist *args);
+
+struct conf_directive directive_tab[] = {
+    { "BLANK",   0, 0, process_rc_blank },
+    { "COMMENT", 0, 0, process_rc_comment },
+    { "DEBUG",   1, 0, process_rc_debug },
+    { "INDEX",   1, 0, process_rc_index },
+    { "BASE",    1, 0, process_rc_base },
+    { "ALIAS",   2, 1, process_rc_alias },
+    { "REPLACE", 2, 0, process_rc_replace },
+    { "LOGGING", 1, 0, process_rc_logging },
+    { "SCORING", 1, 0, process_rc_scoring },
+    { "LANG",    1, 0, process_rc_lang },
+    { NULL,      0, 0, NULL }
+};
+
+
+
+static enum nmz_stat
+process_rc_blank(const char *directive, const struct nmz_strlist *args)
+{
+    /* Do nothing */
+    return SUCCESS;
+}
+
+static enum nmz_stat
+process_rc_comment(const char *directive, const struct nmz_strlist *args)
+{
+    /* Do nothing */
+    return SUCCESS;
+}
+
+static enum nmz_stat
+process_rc_debug(const char *directive, const struct nmz_strlist *args)
+{
+    char *arg1 = args->value;
+
+    if (strcasecmp(arg1, "ON") == 0) {
+	nmz_set_debugmode(1);
+    } else if (strcasecmp(arg1, "OFF") == 0) {
+	nmz_set_debugmode(0);
+    }
+    return SUCCESS;
+}
+
+static enum nmz_stat
+process_rc_index(const char *directive, const struct nmz_strlist *args)
+{
+    char *arg1 = args->value;
+
+    strcpy(DEFAULT_INDEX, arg1);
+    return SUCCESS;
+}
+
+static enum nmz_stat
+process_rc_base(const char *directive, const struct nmz_strlist *args)
+{
+    char *arg1 = args->value;
+
+    strcpy(BASE_URI, arg1);
+    return SUCCESS;
+}
+
+/*
+ * FIXME: one-to-multiple alias should be allowed.
+ */
+static enum nmz_stat
+process_rc_alias(const char *directive, const struct nmz_strlist *args)
+{
+    char *arg1, *arg2;
+
+    arg1 = args->value;
+    arg2 = args->next->value;
+    if (nmz_add_alias(arg1, arg2) != SUCCESS) {
+	return FAILURE;
+    }
+    return SUCCESS;
+}
+
+static enum nmz_stat
+process_rc_replace(const char *directive, const struct nmz_strlist *args)
+{
+    char *arg1, *arg2;
+
+    arg1 = args->value;
+    arg2 = args->next->value;
+    if (nmz_add_replace(arg1, arg2) != SUCCESS) {
+	return FAILURE;
+    }
+    return SUCCESS;
+}
+
+static enum nmz_stat
+process_rc_logging(const char *directive, const struct nmz_strlist *args)
+{
+    char *arg1 = args->value;
+
+    if (strcasecmp(arg1, "ON") == 0) {
+	nmz_set_loggingmode(1);
+    } else if (strcasecmp(arg1, "OFF") == 0) {
+	nmz_set_loggingmode(0);
+    }
+
+    return SUCCESS;
+}
+
+static enum nmz_stat
+process_rc_scoring(const char *directive, const struct nmz_strlist *args)
+{
+    char *arg1 = args->value;
+
+    if (strcasecmp(arg1, "TFIDF") == 0) {
+	TfIdf = 1;
+    } else if (strcasecmp(arg1, "SIMPLE") == 0) {
+	TfIdf = 0;
+    }
+    return SUCCESS;
+}
+
+static enum nmz_stat
+process_rc_lang(const char *directive, const struct nmz_strlist *args)
+{
+    char *arg1 = args->value;
+
+    nmz_set_lang(arg1);
+    return SUCCESS;
+}
 
 /* 
  * Get an environmental variable of NAMAZUCONFPATH
@@ -78,21 +215,21 @@ getenv_namazurc(void)
 }
 
 /*
- * Change filename in full pathname
+ * Make the pathname `dest' by conjuncting `command' and `name'.
  */
 static void 
-set_pathname(char *to, const char *orig, const char *name)
+set_pathname(char *dest, const char *command, const char *name)
 {
     int i;
 
-    strcpy(to, orig);
-    for (i = strlen(to) - 1; i > 0; i--) {
-	if (to[i] == '/') {
+    strcpy(dest, command);
+    for (i = strlen(dest) - 1; i > 0; i--) {
+	if (dest[i] == '/') {
 	    i++;
 	    break;
 	}
     }
-    strcpy(to + i, name);
+    strcpy(dest + i, name);
     return;
 }
 
@@ -202,10 +339,15 @@ replace_home(char *str)
 }
 
 
-static int 
-get_rc_args(const char *line, char *directive, 
-	    char *arg1, char *arg2)
+/*
+ * Get the directive and the following args and return them as a list.
+ *
+ * NOTE: the string `line' should be chomped.
+ */
+struct nmz_strlist*
+get_rc_args(const char *line)
 {
+    struct nmz_strlist *list = NULL;
     int n;
 
     /* Skip white spaces in the beginning of this line */
@@ -213,25 +355,27 @@ get_rc_args(const char *line, char *directive,
     line += n;
     /* Determine whether or not this line is only a blank */
     if (*line == '\0') {
-	strcpy(directive, "BLANK");
-	return 0;
+	return nmz_push_strlist(list, "BLANK");
     }
 
     /* Determine whether or not this line is only a comment */
     if (*line == '#') {
-	strcpy(directive, "COMMENT");
-	return 0;
+	return nmz_push_strlist(list, "COMMENT");
     }
 
-    /* Get a directive name */
-    n = strspn(line, DIRECTIVE_CHARS);
-    if (n == 0) {
-	errmsg = "invalid directive name";
-	return 0;
+    /* Get a directive name. */
+    {
+	char directive[BUFSIZE];
+	n = strspn(line, DIRECTIVE_CHARS);
+	if (n == 0) {
+	    errmsg = "invalid directive name";
+	    return 0;
+	}
+	strncpy(directive, line, n);
+	directive[n] = '\0';  /* Hey, don't forget this after strncpy()! */
+	list = nmz_push_strlist(list, directive);
+	line += n;
     }
-    strncpy(directive, line, n);
-    directive[n] = '\0';        /* Hey, don't forget this after strncpy()! */
-    line += n;
 
     /* Skip a delimiter after a directive */
     n = strspn(line, " \t");    /* skip white spaces */
@@ -241,162 +385,114 @@ get_rc_args(const char *line, char *directive,
 	return 0;
     }
 
-    /* Get arg1 */
-    n = get_rc_arg(line, arg1);
-    line += n;
+    while (1) {
+	char arg[BUFSIZE];
+	n = get_rc_arg(line, arg);
+	if (n == 0) { /* cannot get arg1 */
+	    return NULL;
+	}
+	line += n;
 
-    if (n == 0) { /* cannot get arg1 */
-	return 0;
+	/* Replace ~/ */
+	replace_home(arg);
+
+	list = nmz_push_strlist(list, arg);
+
+	/* Skip a delimiter after the arg */
+	n = strspn(line, " \t");    /* skip white spaces */
+	line += n;
+
+	if (*line == '\0' || *line == '#') {  /* allow comment at the ending */
+	    /* This line has only one argument (arg) */
+	    break;
+	}
     }
 
-    /* Replace ~/ */
-    replace_home(arg1);
-
-    /* Skip a delimiter after an arg1 */
-    n = strspn(line, " \t");    /* skip white spaces */
-    line += n;
-
-    if (*line == '\0' || *line == '#') {  /* allow comment at the ending */
-        /* This line has only one argument (arg1) */
-	return 1;
-    }
-
-    /* Get arg2 */
-    n = get_rc_arg(line, arg2);
-    line += n;
-
-    if (n == 0) { /* cannot get arg2 */
-	return 1;
-    }
-
-    /* Replace ~/ */
-    replace_home(arg2);
-
-    /* Skip trailing white spaces after an arg2 */
-    n = strspn(line, " \t");    /* skip white spaces */
-    line += n;
-
-    if (*line != '\0' || *line != '#') {  /* allow comment at the ending */
-	return 2;
-    } else {
-	errmsg = "trailing garbages exist";
-	return 0;
-    }
+    return list;
 }
 
 static enum nmz_stat 
 parse_rcfile(const char *line, int lineno) 
 {
-    char directive[BUFSIZE] = "";
-    char arg1[BUFSIZE] = "";
-    char arg2[BUFSIZE] = "";
-    int argnum = 0;
+    struct nmz_strlist *args;
+    char *directive;
 
-    argnum = get_rc_args(line, directive, arg1, arg2);
-    if (errmsg != NULL) { 
+    args = get_rc_args(line);
+    if (args == NULL) { 
 	return FAILURE; /* error */
     }
+    directive = args->value; /* the first arg is a directive. */
+    args = args->next;
 
-    if (nmz_is_debugmode() && 
+    if (apply_rc(lineno, directive, args) != SUCCESS) {
+        return FAILURE;
+    }
+
+    /* 
+     * NOTE: Cannot turn is_debugmode() on with -d option because
+     * rcfile is loaded before command line options are parsed.
+     * But we can set debugmode by setting "Debug on" in the TOP of 
+     * namazurc.
+     */
+    if (nmz_is_debugmode() &&
 	(strcasecmp(directive, "COMMENT") != 0) &&
 	(strcasecmp(directive, "BLANK") != 0))
     {
-	printf("%d: DIRECTIVE: [%s]\n", lineno, directive);
-	if (argnum >= 1) {
-	    printf("    ARG1: [%s]\n", arg1);
+	struct nmz_strlist *ptr;
+	int i;
+
+	printf("%4d: Directive: [%s]\n", lineno, directive);
+
+	ptr = args->next; /* Skip the directive. */
+	for (i = 1 ; ptr != NULL; i++) {
+	    printf("      Argument %d: [%s]\n", i, ptr->value);
+	    ptr = ptr->next;
 	}
-	if (argnum == 2) {
-	    printf("    ARG2: [%s]\n", arg2);
-	}
-	nmz_print("\n");
     }
 
-    if (!is_valid_argnum(directive, argnum)) {
-	return FAILURE; /* error */
-    }
-
-    if (apply_rc(directive, lineno, arg1, arg2) != SUCCESS)
-        return FAILURE;
     return SUCCESS;
 }
 
-static int 
-is_valid_argnum(const char *directive, int argnum)
+static enum nmz_stat 
+apply_rc(int lineno, const char *directive, struct nmz_strlist *args)
 {
-    struct conf_directive {
-	char *name;
-	int argnum;
-    };
-    struct conf_directive dtab[] = {
-	{ "BLANK",   0 },
-	{ "COMMENT", 0 },
-	{ "INDEX",   1 },
-	{ "BASE",    1 },
-	{ "ALIAS",   2 },
-	{ "REPLACE", 2 },
-	{ "LOGGING", 1 },
-	{ "SCORING", 1 },
-	{ "LANG",    1 },
-	{ NULL,      0 }
-    };
-    int i;
+    int argnum = 0;
+    struct nmz_strlist *ptr;
+    struct conf_directive *dtab = directive_tab;
 
-    for (i = 0; dtab[i].name != NULL; i++) {
-	if (strcasecmp(dtab[i].name, directive) == 0) {
-	    if (argnum == dtab[i].argnum) {
-		return 1;  /* OK */
-	    } else if (argnum < dtab[i].argnum) {
+    for (ptr = args; ptr != NULL; ptr = ptr->next) {
+	argnum++;
+    }
+
+    for (; dtab->name != NULL;  dtab++) {
+	if (strcasecmp(dtab->name, directive) == 0) {
+	    /* 
+	     * Check whether the number of argument is right.
+	     */
+	    if (argnum == dtab->argnum ||
+		(dtab->plus && argnum > dtab->argnum)) 
+	    {
+		/* If number of argument is right, apply appropriate func. */
+		if ((*(dtab->func))(directive, args) != SUCCESS) {
+		    return FAILURE;
+		}
+		return SUCCESS;
+	    } else if (argnum < dtab->argnum) {
 		errmsg = "too few arguments";
-		return 0;  /* NG */
-	    } else if (argnum > dtab[i].argnum) {
+		return FAILURE;
+	    } else if (argnum > dtab->argnum) {
 		errmsg = "too many arguments";
-		return 0;  /* NG */
+		return FAILURE;
 	    } else {
 		assert(0);
 		/* NOTREACHED */
-		return 0;
+		return FAILURE;
 	    }
 	}
     }
-    errmsg = "unknown directive";
-    return 0;
-}
 
-/*
- * FIXME: This processing should be rewritten with function pointers.
- */
-static enum nmz_stat 
-apply_rc(const char *directive, int lineno, 
-	 const char *arg1, const char *arg2)
-{
-    if (strcasecmp(directive, "COMMENT") == 0) {
-	;  /* only a comment */
-    } else if (strcasecmp(directive, "INDEX") == 0) {
-	strcpy(DEFAULT_INDEX, arg1);
-    } else if (strcasecmp(directive, "BASE") == 0) {
-	strcpy(BASE_URI, arg1);
-    } else if (strcasecmp(directive, "REPLACE") == 0) {
-	if (nmz_add_replace(arg1, arg2) != SUCCESS)
-	    return FAILURE;
-    } else if (strcasecmp(directive, "ALIAS") == 0) {
-	if (nmz_add_alias(arg1, arg2) != SUCCESS)
-	    return FAILURE;
-    } else if (strcasecmp(directive, "LOGGING") == 0) {
-	if (strcasecmp(arg1, "ON") == 0) {
-	    nmz_set_loggingmode(1);
-	} else if (strcasecmp(arg1, "OFF") == 0) {
-	    nmz_set_loggingmode(0);
-	}
-    } else if (strcasecmp(directive, "SCORING") == 0) {
-	if (strcasecmp(arg1, "TFIDF") == 0) {
-	    TfIdf = 1;
-	} else if (strcasecmp(arg1, "SIMPLE") == 0) {
-	    TfIdf = 0;
-	}
-    } else if (strcasecmp(directive, "LANG") == 0) {
-	nmz_set_lang(arg1);
-    }
-    return 0;
+    errmsg = "unknown directive";
+    return FAILURE;
 }
 
 /*
@@ -412,8 +508,8 @@ nmz_set_namazurc(const char *arg)
 }
 
 /* 
- * load rcfile of namazu 
- * FIXME: Taking argv0 argument is dirty spec.
+ * Load rcfile of namazu 
+ * FIXME: Taking the argv0 parameter is dirty spec.
  */
 enum nmz_stat 
 nmz_load_rcfile(const char *argv0)

@@ -2,7 +2,7 @@
  * 
  * libnamazu.h - Namazu library api
  *
- * $Id: libnamazu.h,v 1.35 2000-01-09 08:22:33 satoru Exp $
+ * $Id: libnamazu.h,v 1.36 2000-01-10 08:26:50 satoru Exp $
  * 
  */
 
@@ -56,6 +56,7 @@ enum {
     STDOUT = 1,		/* stdout's fd */
     STDERR = 2		/* stderr's fd */
 };
+
 
 /*
  *
@@ -197,6 +198,14 @@ struct nmz_hitnumlist {
     enum nmz_stat stat;        /* status code mainly used for error handling */
     struct nmz_hitnumlist *phrase; /* for a result of a phrase search */
     struct nmz_hitnumlist *next;
+};
+
+/*
+ * Simple string list.
+ */
+struct nmz_strlist {
+    char *value;
+    struct nmz_strlist *next;
 };
 
 extern void nmz_free_aliases ( void );

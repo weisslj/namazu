@@ -39,7 +39,7 @@ msgstr "致命的なエラー"
 
 #: nmz/util.c:565
 msgid "Invalid query"
-msgstr "不正な idxname の指定です"
+msgstr "不正な検索式です"
 
 #: nmz/util.c:568
 #, fuzzy

@@ -2,7 +2,7 @@
  * 
  * parser.c -
  * 
- * $Id: parser.c,v 1.16 2000-01-09 11:28:54 satoru Exp $
+ * $Id: parser.c,v 1.17 2000-01-10 08:26:50 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -68,13 +68,18 @@ factor(int *ignore)
 
         if (strcmp(nmz_get_querytoken(Cp), LP_STRING) == 0) {
             Cp++;
-            if (nmz_get_querytoken(Cp) == NULL)
+            if (nmz_get_querytoken(Cp) == NULL) {
+		val.stat = ERR_INVALID_QUERY;
+		nmz_set_dyingmsg("foobar");
                 return val;
+	    }
             val = nmz_expr();
 	    if (val.stat == ERR_FATAL)
 	        return val;
-            if (nmz_get_querytoken(Cp) == NULL)
+            if (nmz_get_querytoken(Cp) == NULL) {
+		val.stat = ERR_INVALID_QUERY;
                 return val;
+	    }
             if (strcmp(nmz_get_querytoken(Cp), RP_STRING) == 0)
                 Cp++;
             break;
@@ -92,6 +97,7 @@ factor(int *ignore)
             Cp++;
             break;
         } else {
+	    val.stat = ERR_INVALID_QUERY;
             Cp++;
         }
     }
@@ -193,7 +199,7 @@ nmz_init_parser(void)
 }
 
 /*
- * Check a character if metacharacter (operator) of not
+ * Check the character `c' whether metacharacter (operator) of not.
  */
 int 
 nmz_is_query_op(const char * c)

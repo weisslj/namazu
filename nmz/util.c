@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: util.c,v 1.45 2000-01-09 13:00:40 satoru Exp $
+ * $Id: util.c,v 1.46 2000-01-10 08:26:50 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -609,6 +609,53 @@ void
 nmz_print(const char *str) {
     fputs(str, stdout);
 }
+
+
+struct nmz_strlist* 
+nmz_push_strlist(struct nmz_strlist *list, const char *arg)
+{
+    struct nmz_strlist *newelem;
+
+    newelem = malloc(sizeof(struct nmz_strlist));
+    if (newelem == NULL) {
+	return NULL;
+    }
+
+    newelem->value = malloc(strlen(arg) + 1);
+    if (newelem->value == NULL) {
+	 return NULL;
+    }
+    strcpy(newelem->value, arg);
+    newelem->next = NULL;
+
+    if (list == NULL) {
+	return newelem;
+    } else {
+	struct nmz_strlist *prev = NULL,  *ptr = list;
+	while (ptr != NULL) {
+	    prev = ptr;
+	    ptr  = ptr->next;
+	}
+	assert(prev != NULL);
+	prev->next = newelem;
+	return list;
+    }
+    assert(0);
+    /* NOTREACHED */
+}
+
+void 
+nmz_free_strlist(struct nmz_strlist *list)
+{
+    struct nmz_strlist *next, *ptr;
+
+    for (ptr = list; ptr != NULL; ptr = next) {
+	next = ptr->next;
+	free(ptr->value);
+	free(ptr);
+    }
+}
+
 
 /*
  * The following functions are commented as a reminder.  

@@ -1,5 +1,5 @@
 ## Process this file with automake to produce Makefile.in
-EXTRA_DIST  = acrobat3.pdf \
+EXTRA_DIST  = acrobat5.pdf \
 	      excel97.xls \
 	      html.html \
 	      mail-multipart.txt \

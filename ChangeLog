@@ -1,3 +1,12 @@
+2003-07-14  Makoto Fujiwara  <makoto@ki.nu>
+
+        * lib/getopt.c: char *optarg = NULL; required to compile
+        on MacOS X 10.1..10.2.6. The Original was imported from
+        gengetopt-2.5. One line change from that file. See following:
+        X-ML-Name: namazu-devel-ja, X-Mail-Count: 03060
+        (For some comment lines are added, the actual diff is not 
+        one line.)
+	
 2003-07-13  Yoshinori TAKESAKO  <takesako@namazu.org>
 
 	* pl/wakati.pl: Support $WAKATI="module_mecab"; in mknmzrc.
@@ -7994,4 +8003,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1033 2003-07-13 10:17:59 takesako Exp $
+$Id: ChangeLog,v 1.1034 2003-07-14 13:41:17 makoto Exp $

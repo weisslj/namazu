@@ -110,7 +110,14 @@
    Also, when `ordering' is RETURN_IN_ORDER,
    each non-option ARGV-element is returned here.  */
 
-char *optarg;
+char *optarg = NULL;  
+  /* 
+  Above initialization is required to avoid following problem on MacOS X 10.1,10.2.6
+  (This is the only difference from gengetopt-2.5. ... 2003/07/14 ... )
+  ld: multiple definitions of symbol _getopt
+  /usr/lib/libm.dylib(getopt.So) definition of _getopt
+  ../lib/libnmzut.a(getopt.o) definition of _getopt in section (__TEXT,__text)
+  */
 
 /* Index in ARGV of the next element to be scanned.
    This is used for communication to and from the caller

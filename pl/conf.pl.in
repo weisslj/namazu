@@ -32,7 +32,7 @@ $ALLOW_FILE =	".*\\.(?:$HTML_SUFFIX)|.*\\.txt" . # HTML, plain text
 		"|.*\\.tex|.*\\.dvi" .   	   # TeX, DVI
 		"|.*\\.rpm|.*\\.deb" .   	   # RPM, DEB
 		"|.*\\.doc|.*\\.xls|.*\\.ppt" .	   # Word, Excel, PowerPoint
-		"|.*\\.j[sab]w" .                  # Ichitaro 4, 5, 6
+		"|.*\\.j[sabf]w|.*\\.jtd" .        # Ichitaro 4, 5, 6, 7, 8
 		"|\\d+|[-\\w]+\\.[1-9n]";          # Mail/News, man
 
 #

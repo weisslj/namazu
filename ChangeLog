@@ -23,8 +23,6 @@
 
 	* nmz/magic.h: Abolished.  (integrated to libnamazu.h)
 
-1999-11-23  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
-
 	* src/namazu.h: Import some named constans from libnamazu.h.
 	    PAGE_MAX,RESULT_MAX,CGI_QUERY_MAX,CGI_INDEX_NAME_MAX
 	    CGI_RESULT_NAME_MAX,SUICIDE_TIME

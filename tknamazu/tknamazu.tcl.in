@@ -1,8 +1,8 @@
-#!@WISH@
+#! @WISH@
 #
 # tknamazu.tcl - Tcl/Tk front-end for Namazu.
 #
-# $Id: tknamazu.tcl.in,v 1.10 2000-02-19 00:57:04 kenzo- Exp $
+# $Id: tknamazu.tcl.in,v 1.11 2000-02-19 23:58:50 kenzo- Exp $
 #
 # Copyright (C) 1998-2000 Ken-ichi Hirose. All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -23,13 +23,13 @@
 #  02111-1307, USA
 #
 
-global version;set version "@VERSION@"
+global version; set version "@VERSION@"
 global conf
 global inside
 global siteurl
 
-regsub -all {\\} $argv0 {/} conf(basedir)
-regsub {^(.*)/.*$} $conf(basedir) {\1} conf(basedir)
+regsub -all {\\} $argv0 {/} conf(argv0)
+regsub {^(.*)/.*$} $conf(argv0) {\1} conf(basedir)
 
 ################ Evaluation and Initialize items
 proc SetDefaultResources {} {
@@ -48,7 +48,7 @@ proc SetDefaultResources {} {
 	set conf(MKNMZ) {%MKNMZ%}
 	set conf(INDEXOUTPUTDIR) {@INDEXDIR@}
 	set conf(WIDTH) {80}
-	set conf(HEIGHT) {20}
+	set conf(HEIGHT) {21}
 	set conf(LANG) {}
 	set conf(WIDGETFONT) {-misc-Fixed-Medium-R-Normal-*-*-120-*-*-*-*-*-*}
 	set conf(TEXTFONT) {-misc-Fixed-Medium-R-Normal-*-*-120-*-*-*-*-*-*}
@@ -60,12 +60,12 @@ proc SetDefaultResources {} {
 	set conf(LINKCOLOR) {blue}
 	set conf(REFERENCECOLOR) {green3}
 	set conf(OPTIONS) {}
-	set conf(NMZCONF) {}
+	set conf(NAMAZURC) {}
 	set conf(INDEXES) {@INDEXDIR@}
 	set conf(MKLOCATION) {./}
 	set conf(MKOPTIONS) {}
 	set conf(WDLOCATION) {./NMZ.i}
-	set conf(SMARTJUMP) {1}
+	set conf(SMARTBROWSE) {1}
 	set conf(HEADERWIPE) {ON}
 	set conf(LOCALSITES) {}
 	set conf(THOUGHTFULFIND) {0}
@@ -88,7 +88,7 @@ proc LoadResources {} {
 	    puts "I can not read resource file ... (T_T)\n"
 	} else {
 	    foreach line [split [read $input] \n] {
-	        if [regexp {^([^#][0-9A-Z]*)	+(.*)$} $line match item value] {
+	        if [regexp {^([^#][0-9A-Z]*)( |	)+(.*)$} $line match item dummy value] {
 	            set conf($item) "$value"
 	        }
 	    }
@@ -106,15 +106,15 @@ proc LoadResources {} {
 	    }
 	}
 	
-	if {  [catch {open "$env(TKNMZRC)"} input] \
-	   && [catch {open "$env(TKNMZRC)/.tknamazurc"} input] \
+	if {  [catch {open "$env(TKNAMAZURC)"} input] \
+	   && [catch {open "$env(TKNMZRC)"} input] \
 	   && [catch {open "$env(TKNMZRC)/.tknmzrc"} input] \
 	   && [catch {open "$env(HOME)/.tknamazurc"} input] \
 	   && [catch {open "$env(HOME)/.tknmzrc"} input]} {
 	    catch {close $input}
 	} else {
 	    foreach line [split [read $input] \n] {
-	        if [regexp {^([^#][0-9A-Z]*)	+(.*)$} $line match item value] {
+	        if [regexp {^([^#][0-9A-Z]*)( |	)+(.*)$} $line match item dummy value] {
 	            set conf($item) "$value"
 	        }
 	    }
@@ -413,15 +413,15 @@ proc Exec { searchword } {
         bind .tknmz.result.scroll <Key-8> {ShortCutJump 8}
         bind .tknmz.result.scroll <Key-9> {ShortCutJump 9}
     } else {
-        bind .tknmz.result.scroll <Key-1> {ShortCutBrowse 1}
-        bind .tknmz.result.scroll <Key-2> {ShortCutBrowse 2}
-        bind .tknmz.result.scroll <Key-3> {ShortCutBrowse 3}
-        bind .tknmz.result.scroll <Key-4> {ShortCutBrowse 4}
-        bind .tknmz.result.scroll <Key-5> {ShortCutBrowse 5}
-        bind .tknmz.result.scroll <Key-6> {ShortCutBrowse 6}
-        bind .tknmz.result.scroll <Key-7> {ShortCutBrowse 7}
-        bind .tknmz.result.scroll <Key-8> {ShortCutBrowse 8}
-        bind .tknmz.result.scroll <Key-9> {ShortCutBrowse 9}
+        bind .tknmz.result.scroll <Key-1> {ShortCutReference 1}
+        bind .tknmz.result.scroll <Key-2> {ShortCutReference 2}
+        bind .tknmz.result.scroll <Key-3> {ShortCutReference 3}
+        bind .tknmz.result.scroll <Key-4> {ShortCutReference 4}
+        bind .tknmz.result.scroll <Key-5> {ShortCutReference 5}
+        bind .tknmz.result.scroll <Key-6> {ShortCutReference 6}
+        bind .tknmz.result.scroll <Key-7> {ShortCutReference 7}
+        bind .tknmz.result.scroll <Key-8> {ShortCutReference 8}
+        bind .tknmz.result.scroll <Key-9> {ShortCutReference 9}
     }
 
     $log config -cursor {}
@@ -497,15 +497,15 @@ proc Viewer { url offset } {
         }
     }
 
-    bind .tknmz.result.scroll <Key-1> {ShortCutBrowse 1}
-    bind .tknmz.result.scroll <Key-2> {ShortCutBrowse 2}
-    bind .tknmz.result.scroll <Key-3> {ShortCutBrowse 3}
-    bind .tknmz.result.scroll <Key-4> {ShortCutBrowse 4}
-    bind .tknmz.result.scroll <Key-5> {ShortCutBrowse 5}
-    bind .tknmz.result.scroll <Key-6> {ShortCutBrowse 6}
-    bind .tknmz.result.scroll <Key-7> {ShortCutBrowse 7}
-    bind .tknmz.result.scroll <Key-8> {ShortCutBrowse 8}
-    bind .tknmz.result.scroll <Key-9> {ShortCutBrowse 9}
+    bind .tknmz.result.scroll <Key-1> {ShortCutReference 1}
+    bind .tknmz.result.scroll <Key-2> {ShortCutReference 2}
+    bind .tknmz.result.scroll <Key-3> {ShortCutReference 3}
+    bind .tknmz.result.scroll <Key-4> {ShortCutReference 4}
+    bind .tknmz.result.scroll <Key-5> {ShortCutReference 5}
+    bind .tknmz.result.scroll <Key-6> {ShortCutReference 6}
+    bind .tknmz.result.scroll <Key-7> {ShortCutReference 7}
+    bind .tknmz.result.scroll <Key-8> {ShortCutReference 8}
+    bind .tknmz.result.scroll <Key-9> {ShortCutReference 9}
 }
 
 proc URLViewer { url } {
@@ -605,15 +605,15 @@ proc InfoViewer { url node } {
     RichEditControl
     Mark $inside(keyword)
 
-    bind .tknmz.result.scroll <Key-1> {ShortCutBrowse 1}
-    bind .tknmz.result.scroll <Key-2> {ShortCutBrowse 2}
-    bind .tknmz.result.scroll <Key-3> {ShortCutBrowse 3}
-    bind .tknmz.result.scroll <Key-4> {ShortCutBrowse 4}
-    bind .tknmz.result.scroll <Key-5> {ShortCutBrowse 5}
-    bind .tknmz.result.scroll <Key-6> {ShortCutBrowse 6}
-    bind .tknmz.result.scroll <Key-7> {ShortCutBrowse 7}
-    bind .tknmz.result.scroll <Key-8> {ShortCutBrowse 8}
-    bind .tknmz.result.scroll <Key-9> {ShortCutBrowse 9}
+    bind .tknmz.result.scroll <Key-1> {ShortCutReference 1}
+    bind .tknmz.result.scroll <Key-2> {ShortCutReference 2}
+    bind .tknmz.result.scroll <Key-3> {ShortCutReference 3}
+    bind .tknmz.result.scroll <Key-4> {ShortCutReference 4}
+    bind .tknmz.result.scroll <Key-5> {ShortCutReference 5}
+    bind .tknmz.result.scroll <Key-6> {ShortCutReference 6}
+    bind .tknmz.result.scroll <Key-7> {ShortCutReference 7}
+    bind .tknmz.result.scroll <Key-8> {ShortCutReference 8}
+    bind .tknmz.result.scroll <Key-9> {ShortCutReference 9}
 }
 
 proc ManViewer { url } {
@@ -670,15 +670,15 @@ proc ManViewer { url } {
     RichEditControl
     Mark $inside(keyword)
 
-    bind .tknmz.result.scroll <Key-1> {ShortCutBrowse 1}
-    bind .tknmz.result.scroll <Key-2> {ShortCutBrowse 2}
-    bind .tknmz.result.scroll <Key-3> {ShortCutBrowse 3}
-    bind .tknmz.result.scroll <Key-4> {ShortCutBrowse 4}
-    bind .tknmz.result.scroll <Key-5> {ShortCutBrowse 5}
-    bind .tknmz.result.scroll <Key-6> {ShortCutBrowse 6}
-    bind .tknmz.result.scroll <Key-7> {ShortCutBrowse 7}
-    bind .tknmz.result.scroll <Key-8> {ShortCutBrowse 8}
-    bind .tknmz.result.scroll <Key-9> {ShortCutBrowse 9}
+    bind .tknmz.result.scroll <Key-1> {ShortCutReference 1}
+    bind .tknmz.result.scroll <Key-2> {ShortCutReference 2}
+    bind .tknmz.result.scroll <Key-3> {ShortCutReference 3}
+    bind .tknmz.result.scroll <Key-4> {ShortCutReference 4}
+    bind .tknmz.result.scroll <Key-5> {ShortCutReference 5}
+    bind .tknmz.result.scroll <Key-6> {ShortCutReference 6}
+    bind .tknmz.result.scroll <Key-7> {ShortCutReference 7}
+    bind .tknmz.result.scroll <Key-8> {ShortCutReference 8}
+    bind .tknmz.result.scroll <Key-9> {ShortCutReference 9}
 }
 
 proc RichEditControl {} {
@@ -804,7 +804,7 @@ proc Jump { ref } {
     $log tag raise references
     $log see $cur
 
-    if {$conf(SMARTJUMP) != 0} {
+    if {$conf(SMARTBROWSE) != 0} {
         regsub {^([0-9]+)\.[0-9]+} $cur {\1} refx
         set localsite {}
         if {$conf(LOCALSITES) != ""} {
@@ -812,7 +812,7 @@ proc Jump { ref } {
                 append localsite "|$sites"
             }
         }
-        switch $conf(SMARTJUMP)  {
+        switch $conf(SMARTBROWSE)  {
             {1} {
                 set cur [$log search -regexp -- \
                 "file://|http://localhost|http://127.0.0.1$localsite" $refx.0 end]
@@ -837,7 +837,7 @@ proc Jump { ref } {
     update
 }
 
-proc ShortCutBrowse { i } {
+proc ShortCutReference { i } {
     global log
 
     if {[$log tag ranges kicker$i] != ""} {
@@ -906,9 +906,9 @@ proc MakeOptions {} {
         }
     }
 
-    if {$conf(NMZCONF) != ""} {
-        regsub -all { \-f [^ ]+} $conf(OPTIONS) {} conf(OPTIONS)
-        append conf(OPTIONS) " --config=$conf(NMZCONF)"
+    if {$conf(NAMAZURC) != ""} {
+        regsub -all { \-\-config\=[^ ]+} $conf(OPTIONS) {} conf(OPTIONS)
+        append conf(OPTIONS) " --config=$conf(NAMAZURC)"
     }
 
     if {$conf(INDEXOUTPUTDIR) != ""} {
@@ -1076,7 +1076,7 @@ proc MakeNamazuIndexLuncher {} {
 
     menu .tknmz.file.menu.selnmzidx
     wm title .tknmz.file.menu ""
-    foreach nmzidx [array names conf] {
+    foreach nmzidx [lsort [array names conf]] {
         if [regexp {^INDEXES([0-9]+)$|^DATABASES([0-9]+)$} $nmzidx ] {
             regexp {^([^ ]+) +(.*)$} $conf($nmzidx) match title value
             .tknmz.file.menu.selnmzidx add check -label $title \
@@ -1101,7 +1101,7 @@ proc MakeBookMarkLuncher {} {
 
     menu .tknmz.go.menu.selbookmark
     wm title .tknmz.go.menu ""
-    foreach bookmark [array names conf] {
+    foreach bookmark [lsort [array names conf]] {
         if [regexp {^BOOKMARKS([0-9]+)$} $bookmark ] {
             regexp {^([^ ]+) +(.*)$} $conf($bookmark) match title value
             .tknmz.go.menu.selbookmark add command -label $title \
@@ -1123,7 +1123,7 @@ proc MakeNamazuSiteSelector {} {
     global conf siteurl nmzsite nmzsites
 
     set nmzsites {commandline}
-    foreach nmzsite [array names conf] {
+    foreach nmzsite [lsort [array names conf]] {
         if [regexp {^NAMAZUSITES([0-9]+)$} $nmzsite ] {
             regexp {^([^ ]+) +(.*)$} $conf($nmzsite) match title value
             lappend nmzsites $title
@@ -1154,7 +1154,7 @@ proc ClearAll {} {
 proc AddNamazuIndex {} {
     global conf selnmzidx
 
-    set openlocation [tk_getOpenFile -filetypes {{NMZ.i {.i}} {ALL {*}}}]
+    set openlocation [tk_getOpenFile -filetypes {{NMZ.i} {ALL {*}}}]
     if {$openlocation == ""} {
         return
     }
@@ -1176,7 +1176,7 @@ proc AddNamazuIndex {} {
 proc LoadConf {} {
     global conf
 
-    set conf(NMZCONF) [tk_getOpenFile -filetypes {{NAMAZU {.conf}} {ALL {*}}}]
+    set conf(NAMAZURC) [tk_getOpenFile -filetypes {{ALL {*}}}]
 }
 
 proc SetAuthorization {} {
@@ -1258,10 +1258,9 @@ proc FindWord {} {
         focus .prompt.entry.entry
         return
     } else {
-        toplevel .prompt -borderwidth 10
+        toplevel .prompt
         wm title .prompt "TkNamazu find dialog"
         wm iconname .prompt "tknamazu"
-        wm transient .prompt [winfo toplevel [winfo parent .prompt]]
         set x [expr [winfo screenwidth .prompt]/2 - [winfo reqwidth .prompt]/2]
         set y [expr [winfo screenheight .prompt]/2 - [winfo reqheight .prompt]/2]
         wm geom .prompt +$x+$y
@@ -1412,16 +1411,16 @@ proc FindWord {} {
 
 proc LoadTknmzrc {} {
     global log conf selnmzidx
-    set tknmzrc [tk_getOpenFile -filetypes {{ALL {*}}}]
+    set tknamazurc [tk_getOpenFile -filetypes {{ALL {*}}}]
 
-    if [catch {open "$tknmzrc"} input] {
+    if [catch {open "$tknamazurc"} input] {
         catch {close($input)}
         return
     } else {
         $log config -state normal
         $log delete 1.0 end
         foreach line [split [read $input] \n] {
-            if [regexp {^([^#][0-9A-Z]*)	+(.*)$} $line match item value] {
+            if [regexp {^([^#][0-9A-Z]*)( |	)+(.*)$} $line match item dummy value] {
                 $log insert end "$item : $value\n"
             }
         }
@@ -1430,13 +1429,13 @@ proc LoadTknmzrc {} {
         update
     } 
 
-    set answer [DialogBox .loadtknmzrc {Make sure} \
+    set answer [DialogBox .loadtknamazurc {Make sure} \
         "Are you load this parameters? " question 1 {Yes} {No} ]
     if {$answer == 1} {
         return
     }
 
-    if [catch {open "$tknmzrc"} input] {
+    if [catch {open "$tknamazurc"} input] {
             $log insert end $input
             catch {close $input}
             return
@@ -1449,7 +1448,7 @@ proc LoadTknmzrc {} {
         }
 
         foreach line [split [read $input] \n] {
-            if [regexp {^([^#][0-9A-Z]*)	+(.*)$} $line match item value] {
+            if [regexp {^([^#][0-9A-Z]*)( |	)+(.*)$} $line match item dummy value] {
                 set conf($item) "$value"
             }
         }
@@ -1469,8 +1468,8 @@ proc DisplayConfiguration {} {
     $log delete 1.0 end
     $log insert end "# TkNamazu version $version\n"
     $log insert end "# Date : [clock format [clock seconds]]\n"
-    foreach item  [lsort [array names conf]]  {
-        $log insert end "$item		$conf($item)\n"
+    foreach item [lsort [array names conf]]  {
+        $log insert end "$item: $conf($item)\n"
     }
     $log config -relief raised -state disabled
     update
@@ -1729,6 +1728,9 @@ proc PopupMenu { x y } {
     .popupmenu add separator
     .popupmenu add command -label {External Browser or Viewer} -underline 1 \
         -command {Kick $inside(urlforext) {} {}} -font $conf(WIDGETFONT)
+    .popupmenu add command -label {Other TkNamazu} -underline 1 \
+        -command {catch {open "|$conf(argv0) $inside(urlforext)"}} \
+        -font $conf(WIDGETFONT)
     .popupmenu add separator
     .popupmenu add command -label {Quit} -underline 0 \
        -command {Quit} -font $conf(WIDGETFONT)
@@ -1772,23 +1774,23 @@ proc PopupMenu2 { x y } {
         -command {ShortCutJump 9} -font $conf(WIDGETFONT)
     } else {
     .popupmenu2 add command -label {1} -underline 0 \
-        -command {ShortCutBrowse 1} -font $conf(WIDGETFONT)
+        -command {ShortCutReference 1} -font $conf(WIDGETFONT)
     .popupmenu2 add command -label {2} -underline 0 \
-        -command {ShortCutBrowse 2} -font $conf(WIDGETFONT)
+        -command {ShortCutReference 2} -font $conf(WIDGETFONT)
     .popupmenu2 add command -label {3} -underline 0 \
-        -command {ShortCutBrowse 3} -font $conf(WIDGETFONT)
+        -command {ShortCutReference 3} -font $conf(WIDGETFONT)
     .popupmenu2 add command -label {4} -underline 0 \
-        -command {ShortCutBrowse 4} -font $conf(WIDGETFONT)
+        -command {ShortCutReference 4} -font $conf(WIDGETFONT)
     .popupmenu2 add command -label {5} -underline 0 \
-        -command {ShortCutBrowse 5} -font $conf(WIDGETFONT)
+        -command {ShortCutReference 5} -font $conf(WIDGETFONT)
     .popupmenu2 add command -label {6} -underline 0 \
-        -command {ShortCutBrowse 6} -font $conf(WIDGETFONT)
+        -command {ShortCutReference 6} -font $conf(WIDGETFONT)
     .popupmenu2 add command -label {7} -underline 0 \
-        -command {ShortCutBrowse 7} -font $conf(WIDGETFONT)
+        -command {ShortCutReference 7} -font $conf(WIDGETFONT)
     .popupmenu2 add command -label {8} -underline 0 \
-        -command {ShortCutBrowse 8} -font $conf(WIDGETFONT)
+        -command {ShortCutReference 8} -font $conf(WIDGETFONT)
     .popupmenu2 add command -label {9} -underline 0 \
-        -command {ShortCutBrowse 9} -font $conf(WIDGETFONT)
+        -command {ShortCutReference 9} -font $conf(WIDGETFONT)
     }
     .popupmenu2 add separator
     .popupmenu2 add command -label {To Top} -underline 3 \
@@ -1817,15 +1819,50 @@ proc PopupMenu2 { x y } {
 }
 
 proc Quit {} {
-    global conf
+    global conf inside answer
 
-    after 100 {grab .quit}
-    set answer [DialogBox .quit {Quit?} "Really? ;-( " question 1 {Yes} {No} ]
-    if {$answer == 0} {
-        grab release .quit
-	    destroy .tknmz
-        exit
+    if [winfo exists .quit] {
+        raise .quit 
+        return
+    } else {
+        toplevel .quit
+        wm title .quit "TkNamazu Quit dialog"
+        wm iconname .quit "tknamazu"
+	    wm protocol .quit WM_DELETE_WINDOW { }
+        set x [expr [winfo screenwidth .quit]/2 - [winfo reqwidth .quit]/2]
+        set y [expr [winfo screenheight .quit]/2 - [winfo reqheight .quit]/2]
+        wm geom .quit +$x+$y
+	    after 100 {grab .quit}
     }
+
+    label .quit.msg -borderwidth 10 -text {Really? ;-(}
+
+    frame .quit.buttons -bd 10
+    button .quit.buttons.yes -text Yes -command {set answer 1} \
+        -underline 0
+    button .quit.buttons.no -text No -command {set answer 0} \
+        -underline 0
+    pack .quit.buttons.no .quit.buttons.yes -side right
+
+    pack .quit.msg .quit.buttons -side top -fill x
+
+    SetColor {.quit}
+    
+    while 1 {
+        focus .quit.buttons.no
+        tkwait variable answer
+	    if {$answer == 1} {
+	        grab release .quit
+		    destroy .tknmz
+	        exit
+	    } else {
+            break
+        }
+	}
+    focus .tknmz.result.scroll
+    catch {destroy .quit}
+
+    Mark $inside(keyword)
 }
 
 proc HelpView {} {
@@ -1833,9 +1870,18 @@ proc HelpView {} {
 
     $log config -cursor watch
     update idletasks
+
     set conf(viewer) {lynx}
-    Viewer "$conf(tknmzhome)/tknamazu.hlp.$conf(language)" {}
-    Mark {TKNAMAZU <TAB>}
+
+    if {[file exists $conf(tknmzhome)/tknamazu.hlp.$conf(LANG)]} {
+	    Viewer "$conf(tknmzhome)/tknamazu.hlp.$conf(LANG)" {}
+    } elseif {[file exists $conf(tknmzhome)/tknamazu.hlp.$conf(language)]} {
+	    Viewer "$conf(tknmzhome)/tknamazu.hlp.$conf(language)" {}
+    } elseif {[file exists $conf(tknmzhome)/tknamazu.hlp.en]} {
+	    Viewer "$conf(tknmzhome)/tknamazu.hlp.en" {}
+	}
+
+    Mark {TKNAMAZU}
     $log config -cursor {}
     update
 
@@ -2158,84 +2204,6 @@ proc DirectoryExplorer {} {
     regsub {^(.*/).*} $conf(MKLOCATION) {\1} conf(MKLOCATION)
 }
 
-proc WdnmzHelper {} {
-    global wdlog wdbut conf
-
-    if [winfo exists .tkwdnmz] {
-        raise .tkwdnmz
-        focus .tkwdnmz.input.location
-        return
-    } else {
-        toplevel .tkwdnmz
-        wm title .tkwdnmz "TkNamazu wdnmz"
-        wm iconname .tkwdnmz "tknamazu"
-    }
-
-    frame .tkwdnmz.input -borderwidth 1
-    pack .tkwdnmz.input -side top -fill x
-    label .tkwdnmz.input.l -text {Location:} -padx 0 -font $conf(WIDGETFONT)
-    entry .tkwdnmz.input.location -width 20 -font $conf(WIDGETFONT) \
-        -relief sunken -textvariable conf(WDLOCATION)
-    pack .tkwdnmz.input.l -side left
-    pack .tkwdnmz.input.location -side left -fill x -expand true
-    set wdbut [button .tkwdnmz.input.execute -text {Execute} -font $conf(WIDGETFONT) \
-        -underline 1 -command {ExecWdnmz}]
-    button .tkwdnmz.input.browse -text {Browse} -font $conf(WIDGETFONT) \
-        -underline 0 -command {set conf(WDLOCATION) [tk_getOpenFile \
-        -filetypes {{NMZ.i {.i}} {ALL {*}}}]}
-    pack .tkwdnmz.input.browse .tkwdnmz.input.execute -side right
-
-    bind .tkwdnmz.input.location <Return> {ExecWdnmz}
-    bind .tkwdnmz.input.location <Control-c> {Break}
-    bind .tkwdnmz <Alt-x> {focus .tkwdnmz.input.execute ; break}
-    bind .tkwdnmz <Alt-b> {focus .tkwdnmz.input.browse ; break}
-    bind .tkwdnmz <Button-3> {PopupMenu %X %Y}
-
-    frame .tkwdnmz.result
-    pack .tkwdnmz.result -side top -fill both -expand true
-    set wdlog [text .tkwdnmz.result.log \
-        -width [expr $conf(WIDTH) / 2] -height $conf(HEIGHT) -font $conf(WIDGETFONT) \
-        -borderwidth 2 -relief sunken -setgrid true -state normal \
-        -yscrollcommand {.tkwdnmz.result.scroll set}]
-    scrollbar .tkwdnmz.result.scroll -command {.tkwdnmz.result.log yview}
-    pack .tkwdnmz.result.scroll -side right -fill y
-    pack .tkwdnmz.result.log -side left -fill both -expand true
-    focus .tkwdnmz.input.location
-
-    SetColor {.tkwdnmz}
-}
-
-proc ExecWdnmz {} {
-    global wdlog wdinput wdbut conf
-
-    MakeOptions
-    $wdlog delete 1.0 end
-    if [catch {open "|$conf(WDNMZ) \"$conf(WDLOCATION)\""} wdinput] {
-        $wdlog insert end "$wdinput\n"
-    } else {
-        fileevent $wdinput readable {
-            if [eof $wdinput] {
-                BreakWdnmz
-            } else {
-                gets $wdinput wdline
-                $wdlog insert end "$wdline\n"
-                $wdlog see end
-                update
-            }
-        }
-        set conf(commandline) "$conf(WDNMZ) $conf(WDLOCATION)"
-        $wdlog insert end "%$conf(commandline)\n"
-        $wdbut config -text {Stop} -command {BreakWdnmz}
-    }
-}
-
-proc BreakWdnmz {} {
-    global wdinput wdbut
-
-    catch {close $wdinput}
-    $wdbut config -text {Execute} -command {ExecWdnmz}
-}
-
 proc MainWidget {} {
 global conf inside version log but
 
@@ -2244,7 +2212,6 @@ toplevel .tknmz -class TkNamazu
 wm minsize .tknmz 40 5
 wm title .tknmz "TkNamazu version $version"
 wm iconname .tknmz "tknamazu"
-catch {selection clear}
 
 frame .tknmz.menubar
 pack .tknmz.menubar -side top -fill x
@@ -2258,7 +2225,7 @@ pack .tknmz.menubar -side top -fill x
     .tknmz.file.menu add command -label {Save As} -underline 2 \
         -font $conf(WIDGETFONT) -command {SaveFile}
     .tknmz.file.menu add separator
-    .tknmz.file.menu add command -label {Load namazu.conf} -underline 0 \
+    .tknmz.file.menu add command -label {Load namazurc} -underline 0 \
         -font $conf(WIDGETFONT) -command {LoadConf}
     .tknmz.file.menu add separator
     .tknmz.file.menu add cascade -label {Select Index} -underline 0 \
@@ -2288,10 +2255,10 @@ pack .tknmz.menubar -side top -fill x
     .tknmz.edit.menu add separator
     .tknmz.edit.menu add command -label {Display configuration} -underline 0 \
         -font $conf(WIDGETFONT) -command {DisplayConfiguration}
-    .tknmz.edit.menu add command -label {Load tknmzrc} -underline 0 \
+    .tknmz.edit.menu add command -label {Load tknamazurc} -underline 0 \
         -font $conf(WIDGETFONT) -command {LoadTknmzrc}
-    .tknmz.edit.menu add command -label {Option} -underline 0 \
-        -font $conf(WIDGETFONT) -command {SetResources}
+#    .tknmz.edit.menu add command -label {Option} -underline 0 \
+#        -font $conf(WIDGETFONT) -command {SetResources}
 
     menubutton .tknmz.go -text {Go} -menu .tknmz.go.menu -underline 0 \
         -font $conf(WIDGETFONT)
@@ -2314,23 +2281,23 @@ pack .tknmz.menubar -side top -fill x
     .tknmz.mknmz.menu add command -label {Execute mknmz} -underline 0 \
         -font $conf(WIDGETFONT) -command {MknmzHelper}
 
-    menubutton .tknmz.utilities -text {Utilities} -menu .tknmz.utilities.menu -underline 1 \
-        -font $conf(WIDGETFONT)
-    menu .tknmz.utilities.menu -tearoff no
-    .tknmz.utilities.menu add command -label {Execute clnmz} -underline 8 \
-        -font $conf(WIDGETFONT) -command {ClnmzHelper}
-    .tknmz.utilities.menu add command -label {Execute gcnmz} -underline 8 \
-        -font $conf(WIDGETFONT) -command {GcnmzHelper}
-    .tknmz.utilities.menu add command -label {Execute mailutime} -underline 8 \
-        -font $conf(WIDGETFONT) -command {MailutimeHelper}
-    .tknmz.utilities.menu add command -label {Execute rvnmz} -underline 8 \
-        -font $conf(WIDGETFONT) -command {RvnmzHelper}
-    .tknmz.utilities.menu add command -label {Execute vfnmz} -underline 8 \
-        -font $conf(WIDGETFONT) -command {VfnmzHelper}
-    .tknmz.utilities.menu add command -label {Execute wdnmz} -underline 8 \
-        -font $conf(WIDGETFONT) -command {WdnmzHelper}
+#    menubutton .tknmz.utilities -text {Utilities} -menu .tknmz.utilities.menu -underline 1 \
+#        -font $conf(WIDGETFONT)
+#    menu .tknmz.utilities.menu -tearoff no
+#    .tknmz.utilities.menu add command -label {Execute clnmz} -underline 8 \
+#        -font $conf(WIDGETFONT) -command {ClnmzHelper}
+#    .tknmz.utilities.menu add command -label {Execute gcnmz} -underline 8 \
+#        -font $conf(WIDGETFONT) -command {GcnmzHelper}
+#    .tknmz.utilities.menu add command -label {Execute mailutime} -underline 8 \
+#        -font $conf(WIDGETFONT) -command {MailutimeHelper}
+#    .tknmz.utilities.menu add command -label {Execute rvnmz} -underline 8 \
+#        -font $conf(WIDGETFONT) -command {RvnmzHelper}
+#    .tknmz.utilities.menu add command -label {Execute vfnmz} -underline 8 \
+#        -font $conf(WIDGETFONT) -command {VfnmzHelper}
+#    .tknmz.utilities.menu add command -label {Execute wdnmz} -underline 8 \
+#        -font $conf(WIDGETFONT) -command {WdnmzHelper}
 
-    pack .tknmz.file .tknmz.edit .tknmz.go .tknmz.mknmz .tknmz.utilities \
+    pack .tknmz.file .tknmz.edit .tknmz.go .tknmz.mknmz \
         -side left -in .tknmz.menubar
 
     menubutton .tknmz.help -text {Help} -menu .tknmz.help.menu -underline 0 \
@@ -2408,7 +2375,7 @@ pack .tknmz.optionbar.options.opt2 -side bottom -fill x
 
     label .tknmz.optionbar.options.opt2.smartbrowselabel -text {SmartBrowse:} \
      -font $conf(WIDGETFONT) -underline 5
-    tk_optionMenu .tknmz.optionbar.options.opt2.smartbrowse conf(SMARTJUMP) 0 1 2
+    tk_optionMenu .tknmz.optionbar.options.opt2.smartbrowse conf(SMARTBROWSE) 0 1 2
 
     pack .tknmz.optionbar.options.opt2.smartbrowselabel .tknmz.optionbar.options.opt2.smartbrowse \
      -side left -fill x
@@ -2491,18 +2458,27 @@ LoadResources
 Initialization
 
 MainWidget
-
-SetColor {.tknmz}
-HelpView
-focus .tknmz.keyword
-
 MainKeyBind
+SetColor {.tknmz}
+
+if {$argc > 0} {
+    if {[file exists [lindex $argv 1]]} {
+		Browse [lindex $argv 1]
+	} else {
+        MessageBox info ok {Error occurred} {[lindex $argv 1]: File not found.}
+	}
+} else {
+	HelpView
+}
+
+catch {selection clear}
+focus .tknmz.keyword
 
 if {$tk_version < 4.0} {
     puts \
 "Warning: the script are based on Tk 8.1a2.  You have
 Tk $tk_version, so script may not work.
 
-Please see <URL:http://sunscript.sun.com/TclTkCore/>
+Please see <URL:http://www.scriptics.com/>
 "
 }

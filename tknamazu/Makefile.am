@@ -6,7 +6,7 @@ ext_namazu=@NAMAZU@
 ext_mknmz=@MKNMZ@
 
 bin_SCRIPTS = tknamazu
-pkgdata_DATA = tknamazu.hlp.en tknamazu.hlp.ja \
+pkgdata_DATA = tknamazu.hlp.en tknamazu.hlp.ja tknamazu.hlp.ja_JP.SJIS \
 	tknamazu_icon.ppm tknamazu_logo.ppm mini-tknamazu.xpm mini-tknamazu.ico \
 	tknamazurc
 

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: html.pl,v 1.30 2000-05-23 02:59:31 masao Exp $
+# $Id: html.pl,v 1.31 2000-05-24 13:27:53 masao Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -292,11 +292,12 @@ sub decode_entity ($) {
     return unless defined($$text);
 
     $$text =~ s/&#(\d{2,3})[;\s]/decode_numbered_entity($1)/ge;
+    $$text =~ s/&#x([\da-f]+)[;\s]/decode_numbered_entity(hex($1))/gei;
     $$text =~ s/&quot[;\s]/\"/g; #"
     $$text =~ s/&amp[;\s]/&/g;
     $$text =~ s/&lt[;\s]/</g;
     $$text =~ s/&gt[;\s]/>/g;
-    $$text =~ s/&nbsp/ /g; ## special handling v1.1.2.1
+    $$text =~ s/&nbsp[;\s]/ /g;
 }
 
 

@@ -1,3 +1,8 @@
+2000-05-24  Masao Takaku  <masao@ulis.ac.jp>
+
+	* filter/html.pl (decode_entity): Fix &nbsp; handling.
+	Add "&#x[\da-f];" handling.
+
 2000-05-23  Masao Takaku  <masao@ulis.ac.jp>
 
 	* filter/html.pl (html_filter): Fix namazu-bugs-ja#15. Call
@@ -5690,4 +5695,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.697 2000-05-23 02:59:31 masao Exp $
+$Id: ChangeLog,v 1.698 2000-05-24 13:27:53 masao Exp $

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: ooo.pl,v 1.2 2003-03-26 10:53:03 usu Exp $
+# $Id: ooo.pl,v 1.3 2003-03-27 14:07:55 usu Exp $
 # Copyright (C) 2003 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -73,6 +73,7 @@ sub post_codeconv () {
 
 sub add_magic ($) {
     my ($magic) = @_;
+    $magic->addMagicEntry('30	string	content.xml	application/vnd.sun.xml.writer');
     $magic->addFileExts('\\.sxw', 'application/vnd.sun.xml.writer');
     return;
 }

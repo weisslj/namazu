@@ -1,5 +1,5 @@
 /*
- * $Id: util.c,v 1.40 2000-01-08 01:09:23 satoru Exp $
+ * $Id: util.c,v 1.41 2000-01-08 03:06:59 satoru Exp $
  *
  * Imported scan_hex(), scan_oct(), xmalloc(), xrealloc() from 
  * Ruby b19's"util.c" and "gc.c". Thanks to Matsumoto-san for consent!
@@ -265,7 +265,7 @@ nmz_issymbol(int c)
 }
 
 /* 
- * Error messaging function.
+ * Print an error message and die.
  */
 void 
 nmz_die(const char *fmt, ...)
@@ -277,11 +277,23 @@ nmz_die(const char *fmt, ...)
 
     fprintf(stderr, "%s: ", PACKAGE);
 
+    /*
+     * Print a message specified by function parameters.
+     */
     va_start(args, fmt);
     vfprintf(stderr, fmt, args);
     va_end(args);
 
-    fprintf(stderr, "%s", get_dyingmsg());
+    {
+	/*
+	 * Print a message of error which occurred in libnmz
+	 * if the message exsits.
+	 */
+	char *msg = get_dyingmsg();
+	if (strcmp(msg, "")) {  /* msg ne "" */
+	    fprintf(stderr, ": %s", get_dyingmsg());
+	}
+    }
 
     if (fmt[strlen(fmt) - 1] != '\n') {
 	printf("\n");

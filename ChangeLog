@@ -3,6 +3,7 @@
 	* nmz/util.c (nmz_strerror): Renamed from nmz_get_errnmsg().
 	(nmz_strerror): Use assert().
 	All callers changed.	
+	(nmz_die): Modified a bit.
 
 	* nmz/rcfile.c (is_valid_argnum): Use assert(0) instead of 
 	MUST_NOT_BE_HERE() macro. 

@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.47 2000-01-08 01:09:25 satoru Exp $
+ * $Id: output.c,v 1.48 2000-01-08 03:07:02 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -259,7 +259,7 @@ print_hitnum_each (struct nmz_hitnumlist *hn)
 	    if (hnptr->stat == SUCCESS) {
 		printf(": %d", hnptr->hitnum);
 	    } else {
-		char *errmsg = nmz_strerrror(hnptr->stat);
+		char *errmsg = nmz_strerror(hnptr->stat);
 		printf(" (%s) ", errmsg);
 	    }
 	    nmz_print(" ] ");
@@ -607,7 +607,7 @@ print_range(NmzResult hlist)
 static void
 print_errmsg(int errid)
 {
-    char *errmsg = nmz_strerrror(errid);
+    char *errmsg = nmz_strerror(errid);
     char buf[BUFSIZE];
     sprintf(buf, _("	<h2>Error!</h2>\n<p>%s</p>\n"), errmsg);
     html_print(buf);

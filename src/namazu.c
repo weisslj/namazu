@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.77 2000-01-07 10:58:36 satoru Exp $
+ * $Id: namazu.c,v 1.78 2000-01-08 03:07:01 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -126,32 +126,32 @@ stdio2file(const char * fname)
  */
 static const char *short_options = "01:2345acCedf:FhHlL:n:o:qrRsSUvw:";
 static struct option long_options[] = {
-    {"help",             no_argument,       NULL, '0'},
-    {"result",           required_argument, NULL, '1'},
-    {"late",             no_argument,       NULL, '2'},
-    {"early",            no_argument,       NULL, '3'},
-    {"sort",             required_argument, NULL, '4'},
-    {"ascending",        no_argument,       NULL, '5'},
-    {"all",              no_argument,       NULL, 'a'},
-    {"count",            no_argument,       NULL, 'c'},
-    {"show-config",      no_argument,       NULL, 'C'},
-    {"debug",            no_argument,       NULL, 'd'},
-    {"config",           required_argument, NULL, 'f'},
-    {"form",             no_argument,       NULL, 'F'},
-    {"html",             no_argument,       NULL, 'h'},
-    {"page",             no_argument,       NULL, 'H'},
-    {"list",             no_argument,       NULL, 'l'},
-    {"lang",             required_argument, NULL, 'L'},
-    {"max",              required_argument, NULL, 'n'},
-    {"output",           required_argument, NULL, 'o'},
-    {"quiet",            no_argument,       NULL, 'q'},
-    {"no-references",    no_argument,       NULL, 'r'},
-    {"no-replace",       no_argument,       NULL, 'R'},
-    {"short",            no_argument,       NULL, 's'},
-    {"no-encode-uri",    no_argument,       NULL, 'U'},
-    {"version",          no_argument,       NULL, 'v'},
-    {"whence",           required_argument, NULL, 'w'},
-    {NULL, 0, NULL, 0}
+    { "help",             no_argument,       NULL, '0' },
+    { "result",           required_argument, NULL, '1' },
+    { "late",             no_argument,       NULL, '2' },
+    { "early",            no_argument,       NULL, '3' },
+    { "sort",             required_argument, NULL, '4' },
+    { "ascending",        no_argument,       NULL, '5' },
+    { "all",              no_argument,       NULL, 'a' },
+    { "count",            no_argument,       NULL, 'c' },
+    { "show-config",      no_argument,       NULL, 'C' },
+    { "debug",            no_argument,       NULL, 'd' },
+    { "config",           required_argument, NULL, 'f' },
+    { "form",             no_argument,       NULL, 'F' },
+    { "html",             no_argument,       NULL, 'h' },
+    { "page",             no_argument,       NULL, 'H' },
+    { "list",             no_argument,       NULL, 'l' },
+    { "lang",             required_argument, NULL, 'L' },
+    { "max",              required_argument, NULL, 'n' },
+    { "output",           required_argument, NULL, 'o' },
+    { "quiet",            no_argument,       NULL, 'q' },
+    { "no-references",    no_argument,       NULL, 'r' },
+    { "no-replace",       no_argument,       NULL, 'R' },
+    { "short",            no_argument,       NULL, 's' },
+    { "no-encode-uri",    no_argument,       NULL, 'U' },
+    { "version",          no_argument,       NULL, 'v' },
+    { "whence",           required_argument, NULL, 'w' },
+    { NULL, 0, NULL, 0 }
 };
 
 /*

@@ -5,13 +5,24 @@
 	about major changes from previous version, please see 
 	"manual.html#VERSIONDIFF".
 
+1999-05-29  Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>
 
+	* src/mknmz.pl: Modified command line option parsing codes
+	  using	Getopt::Long module.
+	* src/cgi.c: Fixed validate_dbname() bug and
+	  - [MAEDA Atusi <maeda@is.uec.ac.jp>] - patch
+	* src/hlist.c: Fixed put_hlist bug
+	  - [MAEDA Atusi <maeda@is.uec.ac.jp>] - report
+	* src/namazu.c: Modified command line option parsing codes
+	
 1999-05-14  Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>
+
 	* src/mknmz.pl: Fixed lockfile related code (subtle problem)
 	* lib/html.pl: Modified parse_robots_txt a little bit
 
 	
 1999-05-07  Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>
+
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 	

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: html.pl,v 1.3 1999-05-18 09:59:50 satoru Exp $
+# $Id: html.pl,v 1.4 1999-05-29 08:21:38 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -266,7 +266,7 @@ sub parse_htaccess () {
     while(<$fh>) {
 	s/^\#.*$//;
 	/^\s*$/ && next;
-	/^\s*deny\s+|require\s+(valid-user|usr|group)([^\w]+|$)/i && do {
+	/^\s*deny\s+|require\s+(valid-user|user|group)([^\w]+|$)/i && do {
 	    $r=1;
 	    last;
 	};

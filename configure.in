@@ -1,15 +1,15 @@
 dnl
 dnl configure for Namazu
 dnl 
-dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998/10/09]
-dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998/12/05]
-dnl Modified by Satoru Takabayashi <satoru@isoternet.org> [1998/12/06]
-dnl Modified by Hajime BABA <baba@kusastro.kyoto-u.ac.jp> [1999/02/02]
+dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
+dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
+dnl Modified by Satoru Takabayashi <satoru@isoternet.org> [1998-12-06]
+dnl Modified by Hajime BABA <baba@kusastro.kyoto-u.ac.jp> [1999-02-02]
 dnl
 
 dnl Process this file with autoconf to produce a configure script.
 AC_INIT(src/cgi.c)
-AM_INIT_AUTOMAKE(namazu, 1.4.0.0-beta-8)
+AM_INIT_AUTOMAKE(namazu, 1.9)
 
 dnl Do you wish?
 dnl PATH=/bin:/usr/bin:/usr/sbin:/usr/local/bin:$PATH

@@ -95,7 +95,7 @@ $USAGE_EN = <<EOFusage;
       -L: do not adjust beginning and end of line (default: off)
       -M: do not do special processing for MHonArc (default: off)
       -P: do not make the index for phrase search (default: off)
-      -R: do not make the index for regexp search (default: off)
+      -R: do not make the index for regex search (default: off)
       -U: do not encode URL (default: off)
       -W: do not make the index for sort by date (default: off)
       -X: do not make the index for field search (default: off)
@@ -364,7 +364,7 @@ $OkuriganaOpt     = 0;
 $NoEdgeSymbolOpt  = 0;
 $NoSymbolOpt      = 0;
 $NoEncodeURL      = 0;
-$NoRegexpIndexOpt = 0;
+$NoRegexIndexOpt = 0;
 $NoInsertHeaderOpt = 0;
 $NoDeleteProcessing = 0;
 $NoUpdateProcessing = 0;

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: html.pl,v 1.24 2000-02-11 12:54:21 satoru Exp $
+# $Id: html.pl,v 1.25 2000-02-16 07:35:30 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -286,16 +286,6 @@ sub encode_entity ($) {
     $$tmp =~ s/</&lt;/g;
     $$tmp =~ s/>/&gt;/g;
     $$tmp;
-}
-
-# determine wheter the target file is html or not
-sub is_html ($) {
-    my ($cfile) = @_;
-
-    return ($cfile =~ /\.($conf::HTML_SUFFIX)$/io || 
-    $cfile =~ /($conf::DEFAULT_FILE)$/o || 
-    $cfile =~ /\?/ || 
-    $cfile =~ /($conf::CGI_DIR)/io);
 }
 
 # Handle robots.txt

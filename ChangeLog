@@ -1,5 +1,9 @@
 2000-02-16  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* pl/conf.pl.in (ALLOW_REGEX): Include $HTML_SUFFIX.
+
+	* filter/html.pl (is_html): Abolished. [namazu-dev 1628]
+
 	* scripts/mknmz.in (namazu_core): Fix progress messaging
 	bug. [namazu-dev 1621] 
 

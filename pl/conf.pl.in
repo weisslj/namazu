@@ -39,10 +39,13 @@ $WAKATI  = $@OPT_WAKATI_DEFAULT@;
 # it's useful to use Namazu as a WWW search engine.
 $DEFAULT_FILE = "index.html";
 
+# HTML extentions such as .htm, .html, .shtml, .phtml, .html.en, .html.ja, .asp
+$HTML_SUFFIX = 'html?|[ps]html|html\.[a-z]{2}|asp|cgi';
+
 # Target files' regex. (case insensitive)
 # Do *not* use '$' and '^' regular expression meta characters.
 # That will be automatically added by mknmz.
-$ALLOW_REGEX = '.*\.html?|.*\.txt|.*_default|.*\.pdf|.*\.doc|.*\.tex';
+$ALLOW_REGEX = ".*\.(?:$HTML_SUFFIX)|.*\.txt|.*_default|.*\.pdf|.*\.doc|.*\.tex";
 
 # Non-Target files' regex
 # this regular expression describes the names of the files which
@@ -55,9 +58,6 @@ $DENY_REGEX = '.*\.gif|.*\.png|.*\.(jpg|jpeg)|.*\.tar\.gz|core|.*\.bak|.*~|\..*|
 
 # Pathnames which match this regex will be excluded.
 $EXCLUDE_REGEX = undef;
-
-# HTML extentions like .htm, .html, .shtml, .phtml, .html.en, .html.ja, .asp
-$HTML_SUFFIX = 'html?|[ps]html|html\.[a-z]{2}|asp|cgi';
 
 # Place where CGI prgrams is in. e.g. /cgi-bin/, /htbin/
 $CGI_DIR = '/(cgi-bin|htbin)/';

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: powerpoint.pl,v 1.19 2004-07-26 12:38:49 opengl2772 Exp $
+# $Id: powerpoint.pl,v 1.20 2004-08-03 15:13:11 opengl2772 Exp $
 # Copyright (C) 2000 Ken-ichi Hirose, 
 #               2000-2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -30,6 +30,7 @@ require 'util.pl';
 require 'gfilter.pl';
 require 'html.pl';
 
+my $perlver = $];
 my $pptconvpath = undef;
 my @pptconvopts = undef;
 my $utfconvpath = undef;
@@ -49,6 +50,10 @@ sub status() {
 	if (!util::islang("ja")) {
 	    return 'yes';
 	} else {
+            if ($perlver >= 5.008) {
+                return 'yes';
+            }
+
 	    $utfconvpath = util::checkcmd('lv');
 	    if (defined $utfconvpath) {
 		return 'yes';
@@ -312,6 +317,14 @@ sub utf8_to_eucjp($) {
     my ($cont) = @_;
 
     return undef unless (util::islang("ja"));
+
+    if ($perlver >= 5.008){
+        eval 'use Encode qw/from_to Unicode JP/;';
+        Encode::from_to($$cont, "utf-8" ,"euc-jp");
+        codeconv::normalize_eucjp($cont);
+        return undef;
+    }
+
     if ($var::USE_NKF_MODULE) {
         if ($NKF::VERSION >= 2.04) {
             $$cont = NKF::nkf("-WemXZ1", $$cont);

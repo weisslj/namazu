@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: msword.pl,v 1.47 2004-07-26 12:11:26 opengl2772 Exp $
+# $Id: msword.pl,v 1.48 2004-08-03 15:13:11 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi All rights reserved.
 #               2000-2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -30,6 +30,7 @@ require 'util.pl';
 require 'gfilter.pl';
 require 'html.pl';
 
+my $perlver = $];
 my $wordconvpath  = undef;
 my @wordconvopts  = undef;
 my $wvversionpath = undef;
@@ -58,7 +59,8 @@ sub status() {
                 if (!util::islang("ja")) {
                     return 'yes';
                 } else {
-                    if (defined $wvversionpath && defined $utfconvpath) {
+                    if (defined $wvversionpath
+                    && (defined $utfconvpath || $perlver >= 5.008)) {
                         return 'yes';
                     }
                 }
@@ -71,7 +73,8 @@ sub status() {
         if (!util::islang("ja")) {
 	    return 'yes';
         } else {
-            if (defined $wvversionpath && defined $utfconvpath) {
+            if (defined $wvversionpath
+            && (defined $utfconvpath || $perlver >= 5.008)) {
                 return 'yes';
             }
         }
@@ -455,6 +458,14 @@ sub utf8_to_eucjp($) {
     my ($cont) = @_;
 
     return undef unless (util::islang("ja"));
+
+    if ($perlver >= 5.008){
+        eval 'use Encode qw/from_to Unicode JP/;';
+        Encode::from_to($$cont, "utf-8" ,"euc-jp");
+        codeconv::normalize_eucjp($cont);
+        return undef;
+    }
+
     if ($var::USE_NKF_MODULE) {
         if ($NKF::VERSION >= 2.04) {
             $$cont = NKF::nkf("-WemXZ1", $$cont);

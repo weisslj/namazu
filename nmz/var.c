@@ -2,7 +2,7 @@
  * 
  * var.c -
  * 
- * $Id: var.c,v 1.21 2000-12-18 08:14:31 knok Exp $
+ * $Id: var.c,v 1.22 2002-03-26 10:49:46 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -51,6 +51,7 @@ struct nmz_names NMZ = {  /* NMZ.* files' names */
     "NMZ.pi",
     "NMZ.tips",
     "NMZ.access",
-    "NMZ.version"
+    "NMZ.version",
+    "NMZ.warnlog"
 };
 

@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu-cgi.c,v 1.20 2001-09-02 08:25:35 rug Exp $
+ * $Id: namazu-cgi.c,v 1.21 2002-03-26 10:49:47 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -189,6 +189,8 @@ main(int argc, char **argv)
     if (load_rcfiles() != SUCCESS) {
 	die(nmz_get_dyingmsg());
     }
+
+    nmz_set_output_warn_to_file(1);
 
     /*
      * NOTE: This processing must be place after load_rcfiles().

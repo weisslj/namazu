@@ -2,7 +2,7 @@
  * 
  * libnamazu.c - Namazu library api
  *
- * $Id: libnamazu.c,v 1.38 2001-12-21 05:39:20 knok Exp $
+ * $Id: libnamazu.c,v 1.39 2002-03-26 10:49:46 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -76,6 +76,7 @@ static int  maxmatch    = 1000;   /* Ignore if words matched more than this. */
 static int  debugmode   = 0;
 static int  loggingmode = 1;   /* do logging with NMZ.slog */
 static char dyingmsg[BUFSIZE] = "";
+static int  output_warn_to_file = 0; /* output warning to file or stderr */
 
 
 /*
@@ -168,6 +169,17 @@ nmz_is_loggingmode(void)
     return loggingmode;
 }
 
+void
+nmz_set_output_warn_to_file(int mode)
+{
+    output_warn_to_file = mode;
+}
+
+int
+nmz_is_output_warn_to_file(void)
+{
+    return output_warn_to_file;
+}
 /*
  * This function is used for formating a string with printf
  * notation and store the string in the static variable

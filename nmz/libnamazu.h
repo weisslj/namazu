@@ -2,7 +2,7 @@
  * 
  * libnamazu.h - Namazu library api
  *
- * $Id: libnamazu.h,v 1.47 2002-02-22 07:33:02 knok Exp $
+ * $Id: libnamazu.h,v 1.48 2002-03-26 10:49:46 knok Exp $
  * 
  */
 
@@ -187,6 +187,7 @@ struct nmz_names {
     char tips[MAXPATH];
     char access[MAXPATH];
     char version[MAXPATH];
+    char warnlog[MAXPATH];
 };
 
 /* 
@@ -241,6 +242,8 @@ extern void nmz_set_debugmode ( int mode );
 extern int  nmz_is_debugmode ( void );
 extern void nmz_set_loggingmode ( int mode );
 extern int  nmz_is_loggingmode ( void );
+extern void nmz_set_output_warn_to_file ( int mode );
+extern int  nmz_is_output_warn_to_file ( void );
 extern char *nmz_get_dyingmsg ( void );
 extern char *nmz_set_dyingmsg_sub(const char *fmt, ...);
 extern char *nmz_msg(const char *fmt, ...);

@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.89 2002-02-08 08:26:50 makoto Exp $
+ * $Id: search.c,v 1.90 2002-03-26 10:49:46 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -826,6 +826,7 @@ make_fullpathname_index(int n)
     nmz_pathcat(base, NMZ.field);
     nmz_pathcat(base, NMZ.t);
     nmz_pathcat(base, NMZ.access);
+    nmz_pathcat(base, NMZ.warnlog);
 }
 
 /*

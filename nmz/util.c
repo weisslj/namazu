@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: util.c,v 1.82 2002-02-08 08:26:50 makoto Exp $
+ * $Id: util.c,v 1.83 2002-03-26 10:49:46 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -267,20 +267,36 @@ void
 nmz_warn_printf(const char *fmt, ...)
 {
     va_list args;
+    FILE *fp;
 
-    fflush(stdout);
+    if (!nmz_is_loggingmode())
+	return;
+    if (nmz_is_output_warn_to_file()) {
+	fp = fopen(NMZ.warnlog, "a+");
+	if (fp == NULL) {
+	    fprintf(stderr, "Can't open %s.\n", NMZ.warnlog);
+	    return;
+	}
+    } else {
+	fp = stderr;
+    }
 
-    fprintf(stderr, "%s: ", PACKAGE);
+    fflush(fp);
+
+    fprintf(fp, "%s: ", PACKAGE);
 
     va_start(args, fmt);
-    vfprintf(stderr, fmt, args);
+    vfprintf(fp, fmt, args);
     va_end(args);
 
     if (fmt[strlen(fmt) - 1] != '\n') {
-	fprintf(stderr, "\n");
+	fprintf(fp, "\n");
     }
 
-    fflush(stderr);
+    fflush(fp);
+
+    if (fp != stderr)
+	fclose(fp);
 }
 
 /* 

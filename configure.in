@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.122 2000-03-28 10:53:12 satoru Exp $
+dnl $Id: configure.in,v 1.123 2000-03-28 13:16:16 satoru Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -305,46 +305,59 @@ fi
 AC_CONFIG_SUBDIRS($TKNAMAZU)
 AM_CONDITIONAL(BUILD_TKNAMAZU, test x$tknamazu = xyes)
 
-changequote(<<, >>)
-tmp=`$PERL -nle 'print \$1 if /^\\$VERSION = \"([\d\.]+)\";\$/' \
-    $srcdir/File-MMagic/MMagic.pm`
-# tmp="10.0"  # for testing
-AC_MSG_CHECKING(for File::MMagic perl module)
-changequote([, ])
 
-if $PERL -e "use lib '$PMDIR'; use File::MMagic $tmp;"; then
-    AC_MSG_RESULT(yes)
-    file_mmagic=no
-else
-    AC_MSG_RESULT(no)
-    file_mmagic=yes
-fi
-if test "${file_mmagic}" = "yes"; then
-    AC_MSG_ERROR([you need to install the included File-MMagic first
-The simplest way to install File-MMagic is:
+dnl * 
+dnl * File::MMagic checking
+dnl * 
 
-  % cd File-MMagic
-  % perl Makefile.PL
-  % make
-  % su
-  # make install
+AC_ARG_ENABLE(
+    file_mmagic_checking,
+    [  --disable-file-mmagic-checking  do not check existence of File::MMagic],
+    enable_file_mmagic_checking=no,
+    enable_file_mmagic_checking=yes)
 
- Then, simply run configure again.
-  % cd ..
-  % ./configure
+if test "$enable_file_mmagic_checking" = "yes"; then
+    changequote(<<, >>)
+    tmp=`$PERL -nle 'print \$1 if /^\\$VERSION = \"([\d\.]+)\";\$/' \
+	$srcdir/File-MMagic/MMagic.pm`
+    # tmp="10.0"  # for testing
+    AC_MSG_CHECKING(for File::MMagic perl module)
+    changequote([, ])
 
-Or you can install File-MMagic to your home directory by the following way:
+    if $PERL -e "use lib '$PMDIR'; use File::MMagic $tmp;"; then
+	AC_MSG_RESULT(yes)
+	file_mmagic=no
+    else
+	AC_MSG_RESULT(no)
+	file_mmagic=yes
+    fi
+    if test "${file_mmagic}" = "yes"; then
+	AC_MSG_ERROR([you need to install the included File-MMagic first
+    The simplest way to install File-MMagic is:
 
-  % cd File-MMagic
-  % perl Makefile.PL LIB=$HOME/lib INSTALLMAN3DIR=$HOME/man
-  % make
-  % make install
+      % cd File-MMagic
+      % perl Makefile.PL
+      % make
+      % su
+      # make install
 
- Then, run configure again with --with-pmdir=DIR option.
-  % cd ..
-  % ./configure --with-pmdir=$HOME/lib
-])
+     Then, simply run configure again.
+      % cd ..
+      % ./configure
 
+    Or you can install File-MMagic to your home directory by the following way:
+
+      % cd File-MMagic
+      % perl Makefile.PL LIB=$HOME/lib INSTALLMAN3DIR=$HOME/man
+      % make
+      % make install
+
+     Then, run configure again with --with-pmdir=DIR option.
+      % cd ..
+      % ./configure --with-pmdir=$HOME/lib
+    ])
+
+    fi
 fi
 
 dnl *

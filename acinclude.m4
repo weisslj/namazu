@@ -972,7 +972,7 @@ AC_ARG_WITH(ccmalloc,
   AC_MSG_RESULT(yes)
   AC_DEFINE(WITH_CCMALLOC,1,
             [Define if using the ccmalloc debugging malloc package])
-  LIBS="$LIBS -lccmalloc"
+  LIBS="$LIBS -lccmalloc -ldl"
   LDFLAGS="$LDFLAGS -g"
 else
   AC_MSG_RESULT(no)

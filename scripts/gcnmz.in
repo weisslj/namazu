@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 #
-# $Id: gcnmz.in,v 1.3 2000-01-31 08:56:48 satoru Exp $
+# $Id: gcnmz.in,v 1.4 2000-01-31 10:48:38 satoru Exp $
 #
 # gcnmz.pl - by furukawa@tcp-ip.or.jp
 #
@@ -29,7 +29,7 @@ if (@ARGV){
         &gcnmz($argv, $backup) if -d $argv;
     }
 }else{
-    &gcnmz('.', $backup);
+    &usage;
 }
 
 sub gcnmz{

@@ -1,5 +1,7 @@
 2000-01-31  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* scripts/gcnmz.in: Show usage if no arguments are specified.
+
 	* src/result.c (replace_field): Fix html handling bug.
 	[namazu-dev 1414] 
 

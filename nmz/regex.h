@@ -193,7 +193,7 @@ typedef struct
 #ifdef __STDC__
 
 extern char *nmz_re_compile_pattern (const char *, int, struct re_pattern_buffer *);
-void nmz_re_free_pattern (struct re_pattern_buffer *);
+extern void nmz_re_free_pattern (struct re_pattern_buffer *);
 /* Is this really advertised?  */
 extern int nmz_re_adjust_startpos (struct re_pattern_buffer *, const char*, int, int, int);
 extern void nmz_re_compile_fastmap (struct re_pattern_buffer *);
@@ -214,7 +214,7 @@ extern int re_exec (const char *);
 #else /* !__STDC__ */
 
 extern char *nmz_re_compile_pattern ();
-void re_free_regexp ();
+extern void nmz_re_free_pattern ();
 /* Is this really advertised? */
 extern int nmz_re_adjust_startpos ();
 extern void nmz_re_compile_fastmap ();

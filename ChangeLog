@@ -1,3 +1,7 @@
+2004-10-05  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+	* nmz/regrex.h: Correction of prototype declaration.
+
 2004-10-02  Yukio USUDA <usu@namazu.org>
 
 	* pl/nmzegrep.in: Bug fix.
@@ -19,6 +23,8 @@
 
         * pl/gfilter.pl(filename_to_title): get keywords from a file name.
         Added codeconv::normalize_eucjp().
+
+	* tests/data/en/acrobat3.pdf: remove.
 
 2004-09-30  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
@@ -9130,4 +9136,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1236 2004-10-02 12:57:29 usu Exp $
+$Id: ChangeLog,v 1.1237 2004-10-05 13:57:19 opengl2772 Exp $

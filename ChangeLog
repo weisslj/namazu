@@ -1,3 +1,7 @@
+2000-01-09  Ryuji Abe <raeva@t3.rim.or.jp>
+
+	* po/make_iso-2022-jp_po.in: Replace % -> %% before convert charset.
+
 2000-01-08  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* nmz/rcfile.c (load_rcfile): Fix bug.

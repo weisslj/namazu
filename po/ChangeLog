@@ -1,3 +1,8 @@
+2000-05-02  Masao Takaku  <masao@ulis.ac.jp>
+
+	* ja.po: Fix an inappropriate message.
+	Add some translations.
+
 2000-02-26  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* POTFILES.in: Add filter/msword.pl

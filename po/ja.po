@@ -390,7 +390,7 @@ msgstr "Perl: "
 
 #: scripts/mknmz.in:1162
 msgid "NKF: "
-msgstr ""
+msgstr "NKF: "
 
 #: scripts/mknmz.in:1163
 msgid "KAKASI: "
@@ -398,7 +398,7 @@ msgstr "KAKASI: "
 
 #: scripts/mknmz.in:1164
 msgid "ChaSen: "
-msgstr "ChaSen: "
+msgstr "茶筌: "
 
 #: scripts/mknmz.in:1165
 msgid "Wakati: "
@@ -500,7 +500,7 @@ msgstr "言語: "
 
 #: scripts/mknmz.in:1398
 msgid "Usage: mknmz [options] <target>...\n"
-msgstr "使い方: mknmz [オプション] <検索式> [インデックス]...\n"
+msgstr "使い方: mknmz [オプション] <対象>...\n"
 
 #: scripts/mknmz.in:1399
 msgid "Try `mknmz --help' for more information.\n"
@@ -708,7 +708,7 @@ msgstr "ASSERTION ERROR!: "
 
 #: pl/wakati.pl:60
 msgid "-- wakatized content --\n"
-msgstr "-- wakatized content --\n"
+msgstr "-- わかち書きされた内容 --\n"
 
 #: pl/wakati.pl:75
 msgid "invalid wakati module: "
@@ -720,7 +720,7 @@ msgstr "-- wakatized bare content --\n"
 
 #: pl/wakati.pl:81
 msgid "wakati: using "
-msgstr "wakati: 以下を利用 "
+msgstr "わかち書きには以下を利用: "
 
 #: pl/usage.pl:37
 #, c-format
@@ -791,7 +791,7 @@ msgid ""
 msgstr ""
 "mknmz %s, Namazu のインデックス作成プログラム \n"
 "\n"
-"使い方: mknmz [options] <target>...\n"
+"使い方: mknmz [オプション] <対象>...\n"
 "\n"
 "対象ファイル:\n"
 "  -a, --all                すべてのファイルを対象とする\n"

@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.124 2003-09-23 07:34:22 knok Exp $
+# $Id: mknmz.in,v 1.125 2003-10-21 03:41:59 makoto Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -1358,11 +1358,17 @@ sub show_config () {
     print _("FILTERDIR: ") . "$FILTERDIR\n";
     print _("TEMPLATEDIR: ") . "$TEMPLATEDIR\n";
 
-    my @supported = sort grep { $var::Supported{$_} eq "yes" }
-    keys %var::Supported;
-    print _("Supported media types: \n");
-    for my $mtype (@supported) {
-        print "  $mtype";
+    my @all_types =     keys %var::Supported;
+    my @supported = sort grep { $var::Supported{$_} eq "yes" } @all_types;
+
+    my $num_supported = @supported;
+    my $num_unsupported = @all_types - @supported;
+    print _("Supported media types: ($num_supported)\n");
+    print _("Unsupported types:     ($num_unsupported) marked with minus (-) probably missing application in your \$path.\n");
+    for my $mtype (sort keys %var::Supported) {
+	my $yn = $var::Supported{$mtype};
+	if ($yn eq 'yes') { $yn = ' ' } else {$yn = '-'};
+	print "$yn $mtype";
         if ($var::REQUIRE_ACTIONS{$mtype}){
             print ": $var::REQUIRE_ACTIONS{$mtype}.pl";
         }

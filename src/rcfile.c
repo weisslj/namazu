@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.30 2000-11-17 08:08:55 knok Exp $
+ * $Id: rcfile.c,v 1.31 2001-02-26 08:39:54 baba Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -48,6 +48,7 @@
 #include "search.h"
 #include "idxname.h"
 #include "output.h"
+#include "score.h"
 
 /*
  * Default directory to place namazurc.
@@ -114,6 +115,9 @@ static enum nmz_stat process_rc_alias ( const char *directive, const StrList *ar
 static enum nmz_stat process_rc_replace ( const char *directive, const StrList *args );
 static enum nmz_stat process_rc_logging ( const char *directive, const StrList *args );
 static enum nmz_stat process_rc_scoring ( const char *directive, const StrList *args );
+static enum nmz_stat process_rc_doclength ( const char *directive, const StrList *args );
+static enum nmz_stat process_rc_freshness ( const char *directive, const StrList *args );
+static enum nmz_stat process_rc_urilength ( const char *directive, const StrList *args );
 static enum nmz_stat process_rc_lang ( const char *directive, const StrList *args );
 static enum nmz_stat process_rc_emphasistags ( const char *directive, const StrList *args );
 static enum nmz_stat process_rc_template ( const char *directive, const StrList *args );
@@ -137,6 +141,9 @@ static struct conf_directive directive_tab[] = {
     { "REPLACE",       2, 0, process_rc_replace },
     { "LOGGING",       1, 0, process_rc_logging },
     { "SCORING",       1, 0, process_rc_scoring },
+    { "SCORE_DOCLENGTH", 1, 0, process_rc_doclength },
+    { "SCORE_FRESHNESS", 1, 0, process_rc_freshness },
+    { "SCORE_URILENGTH", 1, 0, process_rc_urilength },
     { "LANG",          1, 0, process_rc_lang },
     { "EMPHASISTAGS",  2, 0, process_rc_emphasistags },
     { "TEMPLATE",      1, 0, process_rc_template },
@@ -230,11 +237,34 @@ process_rc_scoring(const char *directive, const StrList *args)
 {
     char *arg1 = args->value;
 
-    if (strcasecmp(arg1, "TFIDF") == 0) {
-	nmz_set_tfidfmode(1);
-    } else if (strcasecmp(arg1, "SIMPLE") == 0) {
-	nmz_set_tfidfmode(0);
-    }
+    nmz_set_scoring(arg1);
+    return SUCCESS;
+}
+
+static enum nmz_stat
+process_rc_doclength(const char *directive, const StrList *args)
+{
+    char *arg1 = args->value;
+
+    nmz_set_doclength(arg1);
+    return SUCCESS;
+}
+
+static enum nmz_stat
+process_rc_freshness(const char *directive, const StrList *args)
+{
+    char *arg1 = args->value;
+
+    nmz_set_freshness(arg1);
+    return SUCCESS;
+}
+
+static enum nmz_stat
+process_rc_urilength(const char *directive, const StrList *args)
+{
+    char *arg1 = args->value;
+
+    nmz_set_urilength(arg1);
     return SUCCESS;
 }
 

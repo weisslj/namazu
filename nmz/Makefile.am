@@ -1,6 +1,6 @@
 # Process this file with automake to produce Makefile.in
 #
-# $Id: Makefile.am,v 1.35 2000-10-04 09:21:20 rug Exp $
+# $Id: Makefile.am,v 1.36 2001-02-26 08:39:52 baba Exp $
 #
 
 AUTOMAKE_OPTIONS = 1.4 no-dependencies
@@ -30,7 +30,7 @@ libnmz_la_SOURCES = alias.c alias.h codeconv.c codeconv.h \
 	idxname.c idxname.h libnamazu.c libnamazu.h l10n-ja.c l10n-ja.h \
 	parser.c parser.h query.c query.h re.c re.h replace.c replace.h \
 	regex.c regex.h search.c search.h seed.c seed.h util.c util.h \
-	var.c var.h wakati.c wakati.h 
+	var.c var.h wakati.c wakati.h score.c score.h
 
 libnmz_la_DEPENDENCIES = @NMZ_LIBOBJS@
 libnmz_la_LIBADD = @NMZ_LIBOBJS@

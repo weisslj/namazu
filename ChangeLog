@@ -1,3 +1,16 @@
+2001-02-26  Hajime BABA  <baba@kusastro.kyoto-u.ac.jp>
+
+	* nmz/score.[ch]: newly added.
+	
+	* nmz/Makefile.am: changed for score.[ch]
+
+	* nmz/hlist.[ch] : added nmz_get_docnum(), use nmz_is_tfidfmode().
+	
+	* nmz/search.[ch] : added nmz_recompute_score(), 
+	moved nmz_set_tfidfmode() and nmz_is_tfidfmode() to score.c.
+
+	* src/rcfile.c : changed for score directive.
+
 2001-02-07  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* filter/hdml.pl : Fixed bad name space (s/html/hdml).
@@ -6387,4 +6400,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.807 2001-02-07 10:13:52 knok Exp $
+$Id: ChangeLog,v 1.808 2001-02-26 08:39:49 baba Exp $

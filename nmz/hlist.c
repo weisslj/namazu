@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.49 2000-09-05 05:47:42 rug Exp $
+ * $Id: hlist.c,v 1.50 2001-02-26 08:39:52 baba Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -52,6 +52,7 @@
 #include "idxname.h"
 #include "search.h"
 #include "query.h"
+#include "score.h"
 static int document_number = 0;  /* Number of documents covered in a target index */
 static char field_for_sort[BUFSIZE] = "";  /* field_for_sort name used with sorting */
 
@@ -532,8 +533,7 @@ nmz_get_hlist(int index)
 {
     int n, *buf, i;
     NmzResult hlist;
-    double idf = 0;
-    int use_tfidf = 0;
+    double idf = 1.0;
 
     hlist.num  = 0;
     hlist.stat = SUCCESS;
@@ -550,7 +550,6 @@ nmz_get_hlist(int index)
 	 /* 0th token is a phrase. */
 	 || strchr(nmz_get_querytoken(0), '\t') != NULL)) 
     {
-	use_tfidf = 1;
         idf = log((double)document_number / (n/2)) / log(2);
 	nmz_debug_printf("idf: %f (N:%d, n:%d)\n", idf, document_number, n/2);
     }
@@ -576,9 +575,9 @@ nmz_get_hlist(int index)
 	    hlist.data[i].docid = *(buf + i * 2) + sum;
 	    sum = hlist.data[i].docid;
 	    hlist.data[i].score = *(buf + i * 2 + 1);
-            if (use_tfidf) {
-                hlist.data[i].score = (int)(hlist.data[i].score * idf) + 1;
-            }
+	    if (nmz_is_tfidfmode()) {
+		hlist.data[i].score = (int)(hlist.data[i].score * idf) + 1;
+	    }
 	}
         hlist.num = n;
 	free(buf);
@@ -651,3 +650,8 @@ nmz_get_sortfield(void)
     return field_for_sort;
 }
 
+int
+nmz_get_docnum()
+{
+    return document_number;
+}

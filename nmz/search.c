@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.84 2001-01-27 02:18:18 baba Exp $
+ * $Id: search.c,v 1.85 2001-02-26 08:39:52 baba Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -62,10 +62,10 @@
 #include "seed.h"
 #include "idxname.h"
 #include "query.h"
+#include "score.h"
 
 enum nmz_perm { ALLOW, DENY };
 static int cur_idxnum = -1;
-static int tfidfmode  = 1;
 
 /*
  *
@@ -1006,6 +1006,9 @@ nmz_search(const char *query)
 
     hlist = nmz_merge_hlist(tmp);
 
+    /* score recomputation */
+    nmz_recompute_score(&hlist);
+
     if (hlist.stat == SUCCESS && hlist.num > 0) { /* HIT!! */
 	/* Sort by date at first*/
         if (nmz_sort_hlist(hlist, SORT_BY_DATE) != SUCCESS) {
@@ -1103,17 +1106,5 @@ nmz_free_hitnums(struct nmz_hitnumlist *hn)
 	}
 	free(hn);
     }
-}
-
-void
-nmz_set_tfidfmode(int mode)
-{
-    tfidfmode = mode;
-}
-
-int
-nmz_is_tfidfmode(void)
-{
-    return tfidfmode;
 }
 

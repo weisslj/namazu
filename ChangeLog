@@ -1,5 +1,9 @@
 2000-02-28  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* tests/data/ja/Makefile.am (EXTRA_DIST): Remove pdf.pdf.
+
+	* tests/data/ja/pdf.pdf: Removed.
+
 	* tests/data/ja/ichitaro4.jsw: New file.
 
 	* tests/data/ja/ichitaro5.jaw: Likewise.

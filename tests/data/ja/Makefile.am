@@ -10,7 +10,6 @@ EXTRA_DIST  =   acrobat3.pdf \
 		mail.txt \
 		man.1 \
 		msg00000.html \
-		pdf.pdf \
 		plain.txt \
 		plain.txt.Z \
 		plain.txt.bz2 \

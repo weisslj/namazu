@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.60 2000-03-22 12:21:05 satoru Exp $
+# $Id: mknmz.in,v 1.61 2000-03-29 14:21:50 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -69,7 +69,7 @@ my $Magic = new File::MMagic;
 STDOUT->autoflush(1);
 STDERR->autoflush(1);
 main();
-sub main () {
+sub main {
     my $start_time = time;
 
     init();
@@ -948,7 +948,7 @@ sub make_headfoot_pages($$) {
 }
 
 # Parse command line options.
-sub parse_options ()
+sub parse_options
 {
     if (@ARGV == 0) {
 	show_mini_usage();
@@ -2382,5 +2382,5 @@ muda($conf::ON_MEMORY_MAX,
      $conf::FILE_SIZE_MAX,
      );
 
-sub muda(@) {}
+sub muda {}
 

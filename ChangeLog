@@ -1,3 +1,14 @@
+2000-03-29  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* filter/mailnews.pl (mailnews_citation_filter): Fix regex.
+
+	* filter/html.pl (remove_html_elements): Likewise.
+
+	* scripts/mknmz.in (muda): Remove prototypes to avoid warning with
+	perl 5.6.0
+	(main): Likewise.
+	(parse_options): Likewise.
+	
 2000-03-28  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* configure.in: Add --disable-file-mmagic-checking.
@@ -5371,4 +5382,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.659 2000-03-28 13:16:16 satoru Exp $
+$Id: ChangeLog,v 1.660 2000-03-29 14:21:49 satoru Exp $

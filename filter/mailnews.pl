@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mailnews.pl,v 1.25 2000-03-20 14:24:15 satoru Exp $
+# $Id: mailnews.pl,v 1.26 2000-03-29 14:21:49 satoru Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -209,7 +209,7 @@ sub mailnews_citation_filter ($$) {
         # Process only first five paragrahs.
 	# And don't handle the paragrah which has five or longer lines.
 	# Hmm, this regex looks very hairly.
-	if ($i < 5 && ($line =~ tr/\n/\n/) <= 5 && $line =~ /(^\s*(Date:|Subject:|Message-ID:|From:|件名|差出人|日時))|(^.+(返事です|reply\s*です|曰く|いわく|書きました|言いました|話で|wrote|said|writes|says)(.{0,2})?\s*$)|(^.*In .*(article|message))|(<\S+\@([\w-.]\.)+\w+>)/im) {
+	if ($i < 5 && ($line =~ tr/\n/\n/) <= 5 && $line =~ /(^\s*(Date:|Subject:|Message-ID:|From:|件名|差出人|日時))|(^.+(返事です|reply\s*です|曰く|いわく|書きました|言いました|話で|wrote|said|writes|says)(.{0,2})?\s*$)|(^.*In .*(article|message))|(<\S+\@([\w\-.]\.)+\w+>)/im) {
 	    util::dprint("\n\n<<<<$line>>>>\n\n");
 	    $omake .= $line . "\n";
 	    $line = "";

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: html.pl,v 1.28 2000-02-29 04:25:33 satoru Exp $
+# $Id: html.pl,v 1.29 2000-03-29 14:21:49 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -267,7 +267,7 @@ sub remove_html_elements ($) {
     $$contref =~ s/<!--.*?-->//gs;
 
     # remove all elements
-    $$contref =~ s!</?([A-Z]\w*)(?:\s+[A-Z]\w*(?:\s*=\s*(?:(["']).*?\2|[\w-.]+))?)*\s*>!element_space($1)!gsixe;
+    $$contref =~ s!</?([A-Z]\w*)(?:\s+[A-Z]\w*(?:\s*=\s*(?:(["']).*?\2|[\w\-.]+))?)*\s*>!element_space($1)!gsixe;
 
 }
 

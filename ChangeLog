@@ -1,3 +1,7 @@
+2000-01-19  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* src/result.c (replace_field): Fix the bug [namazu-dev 1250].
+
 2000-01-18  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* configure.in: Restore AC_SUBST(OPT_NMZ_URI).

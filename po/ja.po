@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: namazu 2.0\n"
-"POT-Creation-Date: 2000-01-14 13:41+0900\n"
+"POT-Creation-Date: 2000-01-19 09:20+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>\n"
 "Language-Team: Japanese <satoru-t@is.aist-nara.ac.jp>\n"
@@ -13,12 +13,12 @@ msgstr ""
 "Content-Type: text/plain; charset=EUC-JP\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
-#: nmz/rcfile.c:576
+#: nmz/rcfile.c:580
 #, c-format
 msgid "Config:  %s\n"
 msgstr "設定ファイル:  %s\n"
 
-#: nmz/rcfile.c:579
+#: nmz/rcfile.c:583
 #, c-format
 msgid ""
 "Default: %s\n"
@@ -255,7 +255,7 @@ msgstr "以下のモジュールが require できません "
 msgid "Faild to call "
 msgstr "呼び出しに失敗 "
 
-#: scripts/mknmz.pl.in:665 scripts/mknmz.pl.in:1275
+#: scripts/mknmz.pl.in:665 scripts/mknmz.pl.in:1268
 msgid "No files to index.\n"
 msgstr "インデックスすべきファイルはありません。\n"
 
@@ -353,11 +353,11 @@ msgstr " スキップします。"
 msgid "system error occurred! "
 msgstr "致命的なエラー"
 
-#: scripts/mknmz.pl.in:1253
+#: scripts/mknmz.pl.in:1246
 msgid "wanted: "
 msgstr "wanted: "
 
-#: scripts/mknmz.pl.in:1347
+#: scripts/mknmz.pl.in:1340
 msgid ""
 "\n"
 "\n"
@@ -367,7 +367,7 @@ msgstr ""
 "\n"
 "== found ==\n"
 
-#: scripts/mknmz.pl.in:1348
+#: scripts/mknmz.pl.in:1341
 msgid ""
 "\n"
 "\n"
@@ -377,7 +377,7 @@ msgstr ""
 "\n"
 "== registered ==\n"
 
-#: scripts/mknmz.pl.in:1349
+#: scripts/mknmz.pl.in:1342
 msgid ""
 "\n"
 "\n"
@@ -387,7 +387,7 @@ msgstr ""
 "\n"
 "== overlapped  ==\n"
 
-#: scripts/mknmz.pl.in:1350
+#: scripts/mknmz.pl.in:1343
 msgid ""
 "\n"
 "\n"
@@ -397,7 +397,7 @@ msgstr ""
 "\n"
 "== deleted  ==\n"
 
-#: scripts/mknmz.pl.in:1351
+#: scripts/mknmz.pl.in:1344
 msgid ""
 "\n"
 "\n"
@@ -407,7 +407,7 @@ msgstr ""
 "\n"
 "== updated ==\n"
 
-#: scripts/mknmz.pl.in:1352
+#: scripts/mknmz.pl.in:1345
 msgid ""
 "\n"
 "\n"
@@ -417,32 +417,32 @@ msgstr ""
 "\n"
 "== files to index ==\n"
 
-#: scripts/mknmz.pl.in:1376
+#: scripts/mknmz.pl.in:1369
 msgid "## deleted: "
 msgstr "## deleted: "
 
-#: scripts/mknmz.pl.in:1399
+#: scripts/mknmz.pl.in:1392
 msgid "## indexed: "
 msgstr "## indexed: "
 
-#: scripts/mknmz.pl.in:1425
+#: scripts/mknmz.pl.in:1418
 #, fuzzy
 msgid "update_field_index: "
 msgstr "フィールド検索用のインデックスが開けませんでした"
 
-#: scripts/mknmz.pl.in:1445
+#: scripts/mknmz.pl.in:1438
 msgid "was updated!\n"
 msgstr "ファイルは更新されています。\n"
 
-#: scripts/mknmz.pl.in:1486
+#: scripts/mknmz.pl.in:1479
 msgid "ERROR: malformed NMZ.r format!\n"
 msgstr "エラー: NMZ.r が無効な形式です。\n"
 
-#: scripts/mknmz.pl.in:1694
+#: scripts/mknmz.pl.in:1680
 msgid "doing write_phrase_hash() processing.\n"
 msgstr "write_phrase_hash() 実行.\n"
 
-#: scripts/mknmz.pl.in:1921
+#: scripts/mknmz.pl.in:1907
 msgid "doing write_index() processing.\n"
 msgstr "write_index() 実行.\n"
 

@@ -1,5 +1,5 @@
 /*
- * $Id: result.c,v 1.41 2000-01-09 11:29:00 satoru Exp $
+ * $Id: result.c,v 1.42 2000-01-19 08:15:37 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -83,12 +83,15 @@ replace_field(struct nmz_data d, int counter,
 	}
     }
 
-    /* Do not emphasize in URI */
+    /* 
+     * Do not emphasize keywords in URI.
+     * And do not encode entity in URI.
+     */
     if (strcasecmp(field, "uri") != 0 && is_htmlmode()) {
 	emphasize(buf);
+	encode_entity(buf);
     }
 
-    encode_entity(buf);
 
     /* Insert commas if the buf is a numeric string */
     if (nmz_isnumstr(buf)) {

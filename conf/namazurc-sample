@@ -39,7 +39,7 @@
 #      Index  ~/NMZ
 #
 #Index		/usr/local/var/namazu/index
-#Replace	/home/foo/public_html/	http://www.hoge.jp/~foo/
+#Replace	/home/foo/public_html/	http://www.foo.bar.jp/~foo/
 #Base		file://localhost/home/foo/documents/
 #Logging	OFF
 #Lang		ja_JP.JIS7

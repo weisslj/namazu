@@ -69,6 +69,8 @@
 
 	* templade/Makefile.am (EXTRA_DIST): Fixed wrong entries.
 
+	* src/rcfile.c: Include <errno.h>.
+
 2000-01-28  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* pl/Makefile.am (perllib_DATA): Remove find.pl.

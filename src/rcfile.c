@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.15 2000-01-29 07:09:28 satoru Exp $
+ * $Id: rcfile.c,v 1.16 2000-01-29 10:04:58 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -27,6 +27,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
 #endif

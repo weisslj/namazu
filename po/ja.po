@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: namazu 2.0\n"
-"POT-Creation-Date: 2000-01-29 16:12+0900\n"
+"POT-Creation-Date: 2000-01-29 19:06+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>\n"
 "Language-Team: Japanese <satoru-t@is.aist-nara.ac.jp>\n"
@@ -121,41 +121,41 @@ msgid "\t<p>No document matching your query.</p>\n"
 msgstr "\t<p>検索式にマッチする文書はありませんでした。</p>\n"
 
 #. terminator not matched
-#: src/rcfile.c:302
+#: src/rcfile.c:303
 msgid "can't find string terminator"
 msgstr "文字列の終端が見つかりません"
 
-#: src/rcfile.c:370
+#: src/rcfile.c:371
 msgid "invalid directive name"
 msgstr "不正なディレクティヴです"
 
-#: src/rcfile.c:383
+#: src/rcfile.c:384
 msgid "can't find arguments"
 msgstr "引数が見つかりません"
 
-#: src/rcfile.c:486
+#: src/rcfile.c:487
 msgid "too few arguments"
 msgstr "引数が足りません"
 
-#: src/rcfile.c:489
+#: src/rcfile.c:490
 msgid "too many arguments"
 msgstr "引数が多すぎます"
 
-#: src/rcfile.c:499
+#: src/rcfile.c:500
 msgid "unknown directive"
 msgstr "不明なディレクティヴです"
 
-#: src/rcfile.c:634
+#: src/rcfile.c:635
 #, c-format
 msgid "%s:%d: syntax error: %s"
 msgstr "%s:%d: 構文エラー: %s"
 
-#: src/rcfile.c:654
+#: src/rcfile.c:655
 #, c-format
 msgid "Loaded rcfile: %s\n"
 msgstr "読み込んだ設定ファイル: %s\n"
 
-#: src/rcfile.c:659
+#: src/rcfile.c:660
 #, c-format
 msgid ""
 "Index:        %s\n"
@@ -172,12 +172,12 @@ msgstr ""
 "テンプレート (Template): %s\n"
 "強調タグ (EmphasisTags): %s\t%s\n"
 
-#: src/rcfile.c:676
+#: src/rcfile.c:677
 #, c-format
 msgid "Alias:   %-20s\t%s\n"
 msgstr "別名 (Alias):   %-20s\t%s\n"
 
-#: src/rcfile.c:686
+#: src/rcfile.c:687
 #, c-format
 msgid "Replace: %-20s\t%s\n"
 msgstr "置換 (Replace): %-20s\t%s\n"
@@ -208,8 +208,7 @@ msgid ""
 "    -o, --output=file    set output file name.\n"
 "    -f, --config=file    set a pathname of a config file.\n"
 "    -C, --show-config    print current configuration.\n"
-"    -q, --quiet          do not display extra messages except search "
-"results.\n"
+"    -q, --quiet          do not display extra messages except search results.\n"
 "    -v, --version        show the version of namazu and exit.\n"
 "        --help           show this help and exit\n"
 "\n"
@@ -315,9 +314,7 @@ msgstr ""
 
 #: scripts/mknmz.pl.in:753
 msgid "Present index is old type. it's unsupported.\n"
-msgstr ""
-"すでに存在するインデックスは古い形式のものです。今はサポートされていません。"
-"\n"
+msgstr "すでに存在するインデックスは古い形式のものです。今はサポートされていません。\n"
 
 #: scripts/mknmz.pl.in:902
 msgid "Inherited argv: "
@@ -357,8 +354,7 @@ msgstr " findfiles 終了: "
 
 #: scripts/mknmz.pl.in:1114
 #, c-format
-msgid ""
-"Target Files: %d (Scan Performance: Elapsed Sec.: %d, Files/sec: %.1f)\n"
+msgid "Target Files: %d (Scan Performance: Elapsed Sec.: %d, Files/sec: %.1f)\n"
 msgstr "対象ファイル数: %d (走査性能: 経過秒: %d, ファイル/秒: %.1f)\n"
 
 #: scripts/mknmz.pl.in:1122
@@ -587,19 +583,15 @@ msgid ""
 "Target files:\n"
 "  -a, --all                target all files.\n"
 "  -e, --robots-txt         exclude files which is excluded by robots.txt.\n"
-"  -t, --media-type=mtype   set a media type for all target files "
-"explicitly.\n"
+"  -t, --media-type=mtype   set a media type for all target files explicitly.\n"
 "  -h, --mailnews           same as --media-type='message/rfc822'\n"
 "      --mhonarc            same as --media-type='text/html; x-type=mhonarc'\n"
 "  -A, --htaccess           exclude files restricted by .htaccess.\n"
 "  -F, --target-list=file   load a file which contains list of target files.\n"
-"      --allow=regex        set a regex for file names which will be "
-"allowed.\n"
+"      --allow=regex        set a regex for file names which will be allowed.\n"
 "      --deny=regex         set a regex for file names which will be denied.\n"
-"      --exclude=regex      set a regex for pathnames which will be "
-"excluded.\n"
-"  -M, --meta               handle HTML meta tags for field-specified "
-"search.\n"
+"      --exclude=regex      set a regex for pathnames which will be excluded.\n"
+"  -M, --meta               handle HTML meta tags for field-specified search.\n"
 "  -r, --replace=code       set a code for replacing URI.\n"
 "      --mtime=int          limit by date, ( minus number for recent, i.e.,\n"
 "                           -50 for recent 50 days, 50 for older than 50.)\n"
@@ -656,8 +648,7 @@ msgstr ""
 "  -M, --meta               HTMLの metaタグをフィールド指定検索に用いる\n"
 "  -r, --replace=code       URIを置換するためのコードを指定する\n"
 "      --mtime=int          変更日制限 (int が 負で最近、正で古いものだけ、\n"
-"                           例。-50 で 50 日以内、50 で 50 "
-"日より古いものだけ)\n"
+"                           例。-50 で 50 日以内、50 で 50 日より古いものだけ)\n"
 "\n"
 "形態素解析:\n"
 "  -c, --use-chasen        日本語の単語のわかち書きに ChaSen を用いる\n"

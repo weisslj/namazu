@@ -4,6 +4,8 @@
 
 1999-11-12  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
+	* Search-Namazu/Namazu.xs: Fixed to work.
+
 	* nmz/util.h: Added #ifndef condition to iskanji definition
 	for jperl.
 

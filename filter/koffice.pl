@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: koffice.pl,v 1.9 2004-10-16 14:54:12 opengl2772 Exp $
+# $Id: koffice.pl,v 1.10 2004-10-20 10:01:18 opengl2772 Exp $
 # Copyright (C) 2004 Yukio USUDA 
 #               2004 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -24,12 +24,12 @@
 
 package koffice;
 use strict;
+use English;
 require 'util.pl';
 
 my $utfconvpath = undef;
 my $unzippath = undef;
 my @unzipopts;
-my $perlver = $];
 
 sub mediatype () {
     #http://www.iana.org/assignments/media-types/application/
@@ -44,7 +44,7 @@ sub status () {
     if (defined $unzippath){
 	@unzipopts = ('-p');
         if (util::islang("ja")) {
-           if ($perlver >= 5.008) {
+           if ($English::PERL_VERSION >= 5.008) {
 		$utfconvpath = "none";
 		return 'yes';
 	   }
@@ -256,7 +256,7 @@ sub utoe($) {
         }
         util::fclose($fh);
         unlink $tmpfile;
-    }elsif ($perlver >= 5.008){
+    }elsif ($English::PERL_VERSION >= 5.008){
         eval 'use Encode qw/from_to Unicode JP/;';
         Encode::from_to($$tmp, "utf-8" ,"euc-jp");
     }

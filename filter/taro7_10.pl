@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: taro7_10.pl,v 1.12 2004-09-07 20:37:36 usu Exp $
+# $Id: taro7_10.pl,v 1.13 2004-10-20 10:01:18 opengl2772 Exp $
 # Copyright (C) 2003 Yukio USUDA
 #               2003 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -23,10 +23,10 @@
 
 package taro7_10;
 use strict;
+use English;
 require 'util.pl';
 require 'gfilter.pl';
 
-my $perlver =$];
 
 sub mediatype() {
     return (
@@ -39,7 +39,7 @@ sub status() {
     $olepath = util::checklib('OLE/Storage_Lite.pm');
     return 'no' unless $olepath;
 
-    return 'yes' if ($perlver >= 5.008);
+    return 'yes' if ($English::PERL_VERSION >= 5.008);
     my $utfconvpath = undef;
     $utfconvpath = util::checklib('unicode.pl');
     return 'yes' if $utfconvpath;
@@ -192,7 +192,7 @@ sub remove_ctlcodearea($){
 # require Perl5.8 or unicode.pl
 sub u16toe($) {
     my ($tmp) = @_;
-    if ($perlver >= 5.008){
+    if ($English::PERL_VERSION >= 5.008){
         eval 'use Encode qw/from_to Unicode JP/;';
         Encode::from_to($$tmp, "UTF-16BE" ,"euc-jp");
     }else{

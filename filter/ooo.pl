@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: ooo.pl,v 1.12 2004-10-16 14:54:12 opengl2772 Exp $
+# $Id: ooo.pl,v 1.13 2004-10-20 10:01:18 opengl2772 Exp $
 # Copyright (C) 2003 Yukio USUDA 
 #               2003,2004 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -24,9 +24,9 @@
 
 package ooo;
 use strict;
+use English;
 require 'util.pl';
 
-my $perlver =$];
 my $utfconvpath = undef;
 my $unzippath = undef;
 my @unzipopts;
@@ -44,7 +44,7 @@ sub status() {
     if (defined $unzippath){
 	@unzipopts = ("-p");
        if (util::islang("ja")) {
-           if ($perlver >= 5.008) {
+           if ($English::PERL_VERSION >= 5.008) {
 		$utfconvpath = "none";
 		return 'yes';
 	   }
@@ -236,7 +236,7 @@ sub utoe ($) {
         }
         util::fclose($fh);
         unlink $tmpfile;
-    }elsif ($perlver >= 5.008){
+    }elsif ($English::PERL_VERSION >= 5.008){
         eval 'use Encode qw/from_to Unicode JP/;';
         Encode::from_to($$tmp, "utf-8" ,"euc-jp");
     }else{

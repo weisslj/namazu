@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: powerpoint.pl,v 1.23 2004-10-17 18:17:56 opengl2772 Exp $
+# $Id: powerpoint.pl,v 1.24 2004-10-20 10:01:18 opengl2772 Exp $
 # Copyright (C) 2000 Ken-ichi Hirose, 
 #               2000-2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -25,13 +25,13 @@
 
 package powerpoint;
 use strict;
+use English;
 use File::Basename;
 require 'util.pl';
 require 'gfilter.pl';
 require 'html.pl';
 eval 'require NKF;';
 
-my $perlver = $];
 my $pptconvpath = undef;
 my @pptconvopts = undef;
 my $utfconvpath = undef;
@@ -58,7 +58,7 @@ sub status() {
 	if (!util::islang("ja")) {
 	    return 'yes';
 	} else {
-            if ($perlver >= 5.008) {
+            if ($English::PERL_VERSION >= 5.008) {
                 return 'yes';
             }
 
@@ -346,7 +346,7 @@ sub utf8_to_eucjp($) {
 
     return undef unless (util::islang("ja"));
 
-    if ($perlver >= 5.008){
+    if ($English::PERL_VERSION >= 5.008){
         eval 'use Encode qw/from_to Unicode JP/;';
         Encode::from_to($$cont, "utf-8" ,"euc-jp");
         codeconv::normalize_eucjp($cont);

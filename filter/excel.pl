@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: excel.pl,v 1.30 2004-10-17 18:17:56 opengl2772 Exp $
+# $Id: excel.pl,v 1.31 2004-10-20 10:01:18 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi,
 #               1999 NOKUBI Takatsugu, 
 #               2000-2004 Namazu Project All rights reserved.
@@ -26,13 +26,13 @@
 
 package excel;
 use strict;
+use English;
 use File::Basename;
 require 'util.pl';
 require 'gfilter.pl';
 require 'html.pl';
 eval 'require NKF;';
 
-my $perlver = $];
 my $xlconvpath  = undef;
 my @xlconvopts  = undef;
 my $utfconvpath = undef;
@@ -59,7 +59,7 @@ sub status() {
 	if (!util::islang("ja")) {
 	    return 'yes';
 	} else {
-            if ($perlver >= 5.008) {
+            if ($English::PERL_VERSION >= 5.008) {
 	        return 'yes';
             }
 
@@ -349,7 +349,7 @@ sub utf8_to_eucjp($) {
 
     return undef unless (util::islang("ja"));
 
-    if ($perlver >= 5.008){
+    if ($English::PERL_VERSION >= 5.008){
         eval 'use Encode qw/from_to Unicode JP/;';
         Encode::from_to($$cont, "utf-8" ,"euc-jp");
         codeconv::normalize_eucjp($cont);

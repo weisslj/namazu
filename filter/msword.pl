@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: msword.pl,v 1.53 2004-10-17 18:17:56 opengl2772 Exp $
+# $Id: msword.pl,v 1.54 2004-10-20 10:01:18 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi,
 #               2000-2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -25,13 +25,13 @@
 
 package msword;
 use strict;
+use English;
 use File::Basename;
 require 'util.pl';
 require 'gfilter.pl';
 require 'html.pl';
 eval 'require NKF;';
 
-my $perlver = $];
 my $wordconvpath  = undef;
 my @wordconvopts  = undef;
 my $wvversionpath = undef;
@@ -74,7 +74,7 @@ sub status() {
                 } else {
                     $utfconvpath   = util::checkcmd('lv');
                     if (defined $wvversionpath
-                    && (defined $utfconvpath || $perlver >= 5.008
+                    && (defined $utfconvpath || $English::PERL_VERSION >= 5.008
                         || $nkfversion >= 2.04)) {
                         return 'yes';
                     }
@@ -90,7 +90,7 @@ sub status() {
         } else {
             $utfconvpath   = util::checkcmd('lv');
             if (defined $wvversionpath
-            && (defined $utfconvpath || $perlver >= 5.008
+            && (defined $utfconvpath || $English::PERL_VERSION >= 5.008
                 || $nkfversion >= 2.04)) {
                 return 'yes';
             }
@@ -496,7 +496,7 @@ sub utf8_to_eucjp($) {
 
     return undef unless (util::islang("ja"));
 
-    if ($perlver >= 5.008){
+    if ($English::PERL_VERSION >= 5.008){
         eval 'use Encode qw/from_to Unicode JP/;';
         Encode::from_to($$cont, "utf-8" ,"euc-jp");
         codeconv::normalize_eucjp($cont);

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: oleexcel.pl,v 1.22 2004-10-11 08:53:31 opengl2772 Exp $
+# $Id: oleexcel.pl,v 1.23 2004-10-20 10:01:18 opengl2772 Exp $
 # Copyright (C) 2001 Yoshinori TAKESAKO,
 #               1999 Jun Kurabe,
 #               1999 Ken-ichi Hirose,
@@ -49,6 +49,7 @@
 
 package oleexcel;
 use strict;
+use English;
 require 'util.pl';
 require 'gfilter.pl';
 
@@ -154,7 +155,7 @@ sub getProperties ($$$) {
 sub Win32_FullPath ($) {
     # c:/hoge/hoge.xls -> c:\hoge\hoge.xls
     my $file = shift;
-    if ($] ge 5.006) {
+    if ($English::Perl_VERSION >= 5.006) {
 	$file = Win32::GetFullPathName($file);
     }
     $file =~ s|/|\\|g;

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: lha.pl,v 1.8 2004-10-16 14:54:12 opengl2772 Exp $
+# $Id: lha.pl,v 1.9 2004-10-20 10:01:18 opengl2772 Exp $
 #  lha filter for namazu
 #  Copyright (C) 2004 Tadamasa Teranishi,
 #                2004 MATSUMURA Namihiko <po-jp@counterghost.net>,
@@ -26,18 +26,17 @@
 
 package lha;
 use strict;
+use English;
 require 'util.pl';
 
 my $lhapath = undef;
-
-my $SYSTEM = $^O;
 
 sub mediatype() {
     return ('application/x-lha');
 }
 
 sub status() {
-    return 'no' if ($SYSTEM =~ /^(?:MSWin32|os2)$/i);
+    return 'no' if ($English::OSNAME =~ /^(?:MSWin32|os2)$/i);
 
     # Only LHa for UNIX.
     $lhapath = util::checkcmd('lha');
@@ -83,7 +82,7 @@ sub filter ($$$$$) {
         = @_;
     my $err = undef;
 
-    if ($SYSTEM =~ /^(?:MSWin32|os2)$/i) {
+    if ($English::OSNAME =~ /^(?:MSWin32|os2)$/i) {
 #        $err = filter_lha_msdos($orig_cfile, $cont, $weighted_str, $headings, $fields);
     } else {
         $err = filter_lha_unix($orig_cfile, $cont, $weighted_str, $headings, $fields);

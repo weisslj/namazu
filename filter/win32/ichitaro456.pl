@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: ichitaro456.pl,v 1.11 2004-10-11 08:53:31 opengl2772 Exp $
+# $Id: ichitaro456.pl,v 1.12 2004-10-20 10:01:18 opengl2772 Exp $
 # Copyright (C) 1999 Ken-ichi Hirose,
 #               2000-2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -27,6 +27,7 @@
 
 package ichitaro456;
 use strict;
+use English;
 use Cwd;
 require 'util.pl';
 require 'gfilter.pl';
@@ -45,7 +46,7 @@ sub mediatype() {
 sub status() {
     $ichitaro456 = util::checkcmd('jstxt.exe');
     if (defined $ichitaro456) {
-        if ($mknmz::SYSTEM eq "MSWin32") {
+        if ($English::OSNAME eq "MSWin32") {
             return 'yes';
         } else {
             $doscmd = util::checkcmd('doscmd');

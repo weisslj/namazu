@@ -97,6 +97,5 @@
 
 ##
 ## ContentType: Set "Content-Type" header output. If you want to
-## specify the charset paramater or use non-HTML template files,
-## set it suitably.
-#ContentType	"text/html; charset=iso-2022-jp"
+## use non-HTML template files, set it suitably.
+#ContentType	"text/x-hdml"

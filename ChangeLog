@@ -1,6 +1,10 @@
 2000-12-20  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
-	* tests/namazu-cgi-5 (LANG): Added new test case.
+	* tests/namazu-10: Added a new test case.
+	(for incompatible index detection)
+
+	* tests/namazu-cgi-5: Added a new test case.
+	(for "ContentType" directive)
 
 	* scripts/mknmz.in (main): Changed to call load_modules()
 	before when load_rcfiles() is called.
@@ -6141,4 +6145,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.767 2000-12-20 09:24:22 knok Exp $
+$Id: ChangeLog,v 1.768 2000-12-20 10:09:21 knok Exp $

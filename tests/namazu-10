@@ -1,0 +1,22 @@
+#! /bin/sh
+#
+# Test for index version check.
+#
+LOG=`pwd`/test-log
+IDX=`pwd`/idx8
+
+MSG='The index should be old format.'
+
+# To make messages English
+LANG= ; export LANG
+unset LANGUAGE
+unset LC_ALL
+unset LC_MESSAGES
+
+mv $IDX/NMZ.wi $IDX/NMZ.wi.org
+
+../src/namazu 'namazu' $IDX | grep "$MSG" > /dev/null || exit 1
+
+mv $IDX/NMZ.wi.org $IDX/NMZ.wi
+
+exit 0

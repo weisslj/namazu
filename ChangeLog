@@ -1,5 +1,9 @@
 2000-01-04  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* filter/man.pl (filter): Make groff output one paragraph per one
+	 line.  Thanks to Tatsuo SEKINE <tsekine@isoternet.org> for
+	 his suggestion.
+
 	* maintMakefile (cxref-latex2e): New rule.
 
 	* autogen.sh (conf_flags): Set --enable-maintainer-mode.

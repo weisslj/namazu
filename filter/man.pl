@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: man.pl,v 1.13 1999-12-27 13:05:27 satoru Exp $
+# $Id: man.pl,v 1.14 2000-01-04 09:46:54 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -68,13 +68,21 @@ sub filter ($$$$$) {
 
     util::vprint("Processing man file ... (using  '$roffpath')\n");
 
-    my $fh = util::efopen("|$roffpath -man $roffargs > $tmpfile");
-    print $fh $$cont;
-    undef $fh;
-    $fh = util::efopen("$tmpfile");
-    $$cont = util::readfile($fh);
-    undef $fh;
-    unlink($tmpfile);
+    {
+	my $fh = util::efopen("|$roffpath -man $roffargs > $tmpfile");
+
+	# Make groff output one paragraph per one line.
+	# Thanks to Tatsuo SEKINE <tsekine@isoternet.org> for his suggestion.
+	print $fh ".ll 100i\n";
+
+	print $fh $$cont;
+    }
+    {
+	my $fh = util::efopen("$tmpfile");
+	$$cont = util::readfile($fh);
+	unlink($tmpfile);
+    }
+
     codeconv::toeuc($cont);
 
     man_filter($cont, $weighted_str, $fields);

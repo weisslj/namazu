@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: powerpoint.pl,v 1.21 2004-10-16 14:54:12 opengl2772 Exp $
+# $Id: powerpoint.pl,v 1.22 2004-10-17 17:42:41 opengl2772 Exp $
 # Copyright (C) 2000 Ken-ichi Hirose, 
 #               2000-2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -29,6 +29,7 @@ use File::Basename;
 require 'util.pl';
 require 'gfilter.pl';
 require 'html.pl';
+eval 'require NKF;';
 
 my $perlver = $];
 my $pptconvpath = undef;
@@ -55,6 +56,12 @@ sub status() {
 	    return 'yes';
 	} else {
             if ($perlver >= 5.008) {
+                return 'yes';
+            }
+
+            my $nkfversion = 0.00;
+            eval '$nkfversion = $NKF::VERSION;';
+            if ($nkfversion >= 2.04) {
                 return 'yes';
             }
 

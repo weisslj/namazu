@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: msword.pl,v 1.51 2004-10-16 14:54:12 opengl2772 Exp $
+# $Id: msword.pl,v 1.52 2004-10-17 17:42:41 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi,
 #               2000-2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -29,6 +29,7 @@ use File::Basename;
 require 'util.pl';
 require 'gfilter.pl';
 require 'html.pl';
+eval 'require NKF;';
 
 my $perlver = $];
 my $wordconvpath  = undef;
@@ -68,9 +69,12 @@ sub status() {
                 if (!util::islang("ja")) {
                     return 'yes';
                 } else {
+                    my $nkfversion = 0.00;
+                    eval '$nkfversion = $NKF::VERSION;';
                     $utfconvpath   = util::checkcmd('lv');
                     if (defined $wvversionpath
-                    && (defined $utfconvpath || $perlver >= 5.008)) {
+                    && (defined $utfconvpath || $perlver >= 5.008
+                        || $nkfversion >= 2.04)) {
                         return 'yes';
                     }
                 }
@@ -83,9 +87,12 @@ sub status() {
         if (!util::islang("ja")) {
 	    return 'yes';
         } else {
+            my $nkfversion = 0.00;
+            eval '$nkfversion = $NKF::VERSION;';
             $utfconvpath   = util::checkcmd('lv');
             if (defined $wvversionpath
-            && (defined $utfconvpath || $perlver >= 5.008)) {
+            && (defined $utfconvpath || $perlver >= 5.008
+                || $nkfversion >= 2.04)) {
                 return 'yes';
             }
         }

@@ -5,14 +5,21 @@
 <meta name="ROBOTS" content="NOINDEX,NOFOLLOW">
 <link rel=stylesheet href="namazu.css">
 <link rev=made href="mailto:developers@namazu.org">
-<title>NetBSD/Namazu 2.0 tutorial</title>
+<title>Namazu 2.0 tutorial</title>
 </head>
 <body>
 <h1>Namazu 2.0入門</h1>
+<hr>
+
+<p>
+Namazu 2.0 を初めて使う方のための入門書です。この文書は、2.0 
+が公開されたことを前提として書かれています。
+</p>
+
 <h2>目次</h2>
 
 <ul>
-<li><a href="#mission">本文の目的</a>
+<li><a href="#mission">本書の目的</a>
 <li><a href="#reference">参照</a>
 <li><a href="#versions">四つの版</a>
 <li><a href="#components">Namazu の構成部品</a>
@@ -28,7 +35,7 @@
 <li><a href="#others">その他</a>
 </ul>
 
-<h2><a name="mission">本文の目的</a></h2>
+<h2><a name="mission">本書の目的</a></h2>
 
 <ul>
 <li>Namazu-2.0 を初めて設置する方
@@ -36,24 +43,21 @@
 </ul>
 
 <p>
-を対象に、Namazu を使い始める時の困難が少しでも少なくな
-るようにという目的で書かれています。
-Namazu の全ての機能については、
-<a href="manual.html">説明書</a> がありますので、そちらを
-参照して下さい。また設置についても
-<a href="../../INSTALL-ja">別途説明</a>
-があります。
+を対象に、Namazu を使い始める時の困難を少しでも減らせるよう
+にという目的で書かれています。Namazu の全ての機能については、
+<a href="manual.html">説明書</a> がありますので、そちらを参
+照して下さい。また設置については INSTALL-ja ファイルに説明が
+あります。
 </p>
 
 <h2><a name="reference">参照</a></h2>
 
 <dl>
 <dt>Kakasi 2.3.1
-  <dd>
-漢字かなまじり文をひらがな文やローマ字文に変換することを目
-的として作成したプログラムと辞書<br>
-原作:高橋裕信さん、保守:Kakasi project<br>
-Namazu ではこれを転じてわかち書き処理に使っている。<br>
+  <dd>漢字かなまじり文をひらがな文やローマ字文に変換することを目
+  的として作成したプログラムと辞書<br>
+  原作:高橋裕信さん、保守:Kakasi project<br>
+  Namazu ではこれを転じてわかち書き処理に使っている。<br>
   <a href="http://kakasi.namazu.org/">http://kakasi.namazu.org/</a>
   <br>
   <em>
@@ -61,16 +65,13 @@ Namazu ではこれを転じてわかち書き処理に使っている。<br>
 <a href="http://www.apache.org/docs/content-negotiation.html">
 content negotiation </a>
 が適切に行なわれていない場合があります。
-閲覧系の言語の設定に日本語(ja) を追加して見て下さい
+Webブラウザの言語の設定に日本語(ja) を追加してください
        </em> )
 
-<dt>開発配布元・高林さんからの情報
+<dt>開発・配布元の情報
   <dd>
   <a href="http://openlab.ring.gr.jp/namazu/">http://openlab.ring.gr.jp/namazu/</a>
-<dt> その中にある説明書
-  <dd>
-  <a href="http://openlab.ring.gr.jp/namazu/manual.html">http://openlab.ring.gr.jp/namazu/manual.html</a>
-<dt>(同じく)良くある質問と答 (FAQ)日本語
+<dt>良くある質問と答 (FAQ)日本語
   <dd>
   <a href="http://openlab.ring.gr.jp/namazu/FAQ.html">http://openlab.ring.gr.jp/namazu/FAQ.html</a>
 <dt>Namazu メイリング・リスト
@@ -89,8 +90,8 @@ content negotiation </a>
 <h2><a name="versions">四つの版</a></h2>
 
 <p>
-Namazu の版には(大きく分けて) 1.3 以前, 1.4, 1.9, 2.0 の四つがあり
-ます。
+Namazu の版には(大きく分けて) 1.3 以前, 1.4, 1.9, 2.0 の 4つ
+があります。
 </p>
 
 <dl>
@@ -104,60 +105,47 @@ Namazu の版には(大きく分けて) 1.3 以前, 1.4, 1.9, 2.0 の四つがあり
 1.3.0.11 が最新
 <dt>1.4 
   <dd>Perl 部品を使った高速化が入った。<br>
-  1.4.0.8 が最新
+  ベータ版 (1.4.0.0-beta-8) で開発が中断した
 <dt>1.9
 <dd>2.0 への開発中のものを時折まとめて公開したもの。<br>
 1.9.12 以前のものには外部からファイル操作をされる可能性があります。
-最新 1.9.13
 <dt>2.0
   <dd>今回公開されたもの
 <dt>2.0-current
   <dd>次の版に向けて開発の続いているもの
 <a href="http://openlab.ring.gr.jp/namazu/development.html">
-2.0-current </a> は CVS で取得出来ます。
+current</a> は CVS で取得出来ます。
 </dl>
 
 <h2><a name="components">Namazu の構成部品</a></h2> 
 
 <p>
-namazu は大きく分けて次の二つから出来ています。 
+Namazu は大きく分けて次の二つから構成されています。 
 </p>
 <ul>
 <li>mknmz<br> 
-検索索引(index) を予め作る( perl で書いてある)。 
-通常の使い方としては、cron などで定期的に実行させる。 (mew-nmz.el の
-場合、Emacs から起動してくれる) <br> 
-無指定では 結果の検索索引はカレント・ディレクトリに出来る。 
+検索索引(index) を予め作る。 (perl で書かれている)
 
- <li>namazu <br> 
+<li>namazu <br> 
 実際に文字列を入力して検索する<br> 
-例えば、cgi-bin として動かす時に使う。 
-あるいは操作行 (command line) から使うことも出来る。 ( c で書いてある)
-<br>
-<p class=note>
-1.9.13 からは、この操作行用 (namazu) と cgi-bin 
-用 (namazu.cgi)が 「外部からの攻撃を受けないように」 
-との理由で別物になっている。
-namazu という名前のものを namazu.cgi という名前で写したり、名前を
-変更して 使ってしまっては、
-その意味がありません。
-</p>
+コマンド行から利用する。 (C言語で書かれている)
+
+<li>namazu.cgi<br>
+CGIとして利用する。(C言語で書かれている)
 </ul> 
-<p>
-実際には、後者には、いろいろな変種が用意されていますが、ここではこまかいことは省略します。
-</p>
 
 <h2><a name="prep-make">準備と make</a></h2>
 <p>
-2.0 の版を作るために次のものが必要になります。
-(お名前の敬称は略させていただきます。ごめんなさい)
+2.0 の版を作るために次のソフトウェアが必要になります。(お名
+前の敬称は略させていただきます。ごめんなさい)
 </p>
+
 <table cellspacing=0 cellpadding=3 border=1>
 <tr>
 <th>名称</th><th>説明</th>
 <th>必須</th>
 <th>最新版</th><th>必要な版</th>
-<th>譜名</th>
+<th>ファイル名</th>
 <th>作成・配布</th>
 <th>入手先(例)</th>
 <th>その他</th>
@@ -186,13 +174,12 @@ CPAN</a></td>
 
 <tr><td>NKF</td><td>nkf Perl 部品化</td>
   <td>▲</td><td>1.9</td><td>1.71</td>
-  <td>1.9 を使うと不具合があるという報告がある</td>
-
+  <td><br></td>
   </tr>
 
 <tr>
  <td><a href="http://kakasi.namazu.org/index.html">kakasi</a></td>
- <td>日本語・ ローマ字 変換系<td>△</td><td>2.3.1</td><td>&lt;=</td>
+ <td>日本語・ ローマ字 変換系<td>△</td><td>2.3.1</td><td>&gt;=</td>
  <td><a href="ftp://kakasi.namazu.org/pub/kakasi/kakasi-2.3.1.tar.gz">
  kakasi-2.3.1.tar.gz</a></td>
  <td rowspan=2>
@@ -288,7 +275,7 @@ kakasi/ChaSen のどちらかが必要という意味。
 <table cellspacing=0 cellpadding=3>
 <tr><td>両方用意しておいた場合</td><td>
 (無指定ではわかち書きに kakasi を使うが、茶筌も
--c とするだけで操作行で指定出来るようになります。)
+-c とするだけでコマンド行で指定出来るようになります。)
 <tr><td>片方しか用意していない場合</td><td>
 ./configure の時点でどちらを使うかが選ばれ、決められます。
 </table>
@@ -296,11 +283,11 @@ kakasi/ChaSen のどちらかが必要という意味。
 <li>
 ▲ は Perl 部品化で、1.9/2.0 の機能を生かすには必要で
 す。しかし、なくても動くことは動きます。
-その場合には一つの譜毎にわかち書きの外部 process を起動するので、
+その場合には一つのファイル毎にわかち書きの外部 process を起動するので、
 遅くなります。その場合でも、
 mknmz による索引の作成が遅いだけで、namazu の検索の
 速度には関係ありません。でも、入れるのは 
-<code class=command>perl Makefile.PL; make; make install</code>
+<code>perl Makefile.PL; make; make install</code>
 とするだけだから、問題がないなら入れておいた方がいいと思います。
 <li>
 namazu 1.9.12 以降では Chasen2 にだけ対応しています。
@@ -326,8 +313,8 @@ ranlib -t /usr/local/lib/libchasen.a
 を見て下さい。
 </ul>
 
-<h2><a name="before-make-install">make install する前に試す</a></h2>
 
+<h2><a name="before-make-install">make install 前の確認</a></h2>
 <p>
 もし make install する前に mknmz を試して見たいという時には
 cd scripts してから ./mknmz とすると、
@@ -336,34 +323,34 @@ cd scripts してから ./mknmz とすると、
 照します。
 </p>
 
-<p>
-< class=note>
+<p class=note>
 (この辺の事情は mknmz の中の load_module() の中の @INC の文字の辺
 で分るはずです)。</p>
-<br>
+
+<p>
 例えば
-<code command>./mknmz -C  ./mknmz --help ./mknmz -O /tmp ~/Mail</code>
+<code class=command>./mknmz -C  ./mknmz --help ./mknmz -O /tmp ~/Mail</code>
 などを試せます。
 </p>
 
 
 <h2><a name="help">help の表示</a></h2>
 <p>
-以上 mknmz と namazu の二つの使い方は引数無で起動するととても簡単な説明が、
---help と入力すると長い説明が表示されます。また -C を付けると
-その時の構成を表示します。この三つ
+以上 mknmz と namazu の二つの使い方は引数無しで起動するとと
+ても簡単な説明が、--help と入力すると長い説明が表示されます。
+また -C を付けるとその時の構成を表示します。この三つ
 </p>
 
 <table cellspacing=0 cellpadding=3>
-  <caption>操作行で説明などを得る方法</caption>
+  <caption>コマンド行で説明などを得る方法</caption>
   <tr><th rowspan=2>引数</th>           <th rowspan=2>意味</th><th rowspan=2>その他に引数を付けると</th>
     <th colspan=2>実行例</th>
   <tr>                                                         <td>mknmz<td> namazu
   <tr><td>無</td> <td>とても簡単な説明<td>(他の引数・選択は付けられない)
     <td><td>
-  <tr><td><code command>--help</code></td><td>詳しい説明 <td>(他の引数・選択は無視される)
-    <td><a href="manual.html#mknmz-option">*</a>    <td><a href="manual.html#namazu-option">*</a>
-  <tr><td><code command>-C </code>   </td><td>その時の構成<td> (他の引数・選択も意味がある)
+  <tr><td><code>--help</code></td><td>詳しい説明 <td>(他の引数・選択は無視される)
+     <td><a href="manual.html#mknmz-option">*</a>    <td><a href="manual.html#namazu-option">*</a>
+  <tr><td><code>-C </code>   </td><td>その時の構成<td> (他の引数・選択も意味がある)
     <td><a href="mknmz-1.9.12-C">*</a>    <td><a href="namazu-1.9.12-C">*</a>
   </table>
 
@@ -384,7 +371,7 @@ cd scripts してから ./mknmz とすると、
 mknmz make install 前の確認</a>を見て下さい。)</strong>
 <br>
 これには次のようにします。1.4.0.8 からは少し書式が変っていて
-URL の置換は 
+URI の置換は 
 <a href="replace.shtml">--replace を使って明示的に指定する</a>
 ようになりました。
 (但し namazu で表示する時にも REPLACE が出来ます。
@@ -396,15 +383,13 @@ namazu の実行時に
 
 <blockquote>
 <p>
-<code command><a href="man/mknmz">mknmz</a> [options] <i>検索 directory</i></code>
+<code class=command><a href="man/mknmz">mknmz</a> [options] 対象ディレクトリ</code>
 </p>
 </blockquote>
 
 <p>
-とします。
-この場合、結果の検索索引(index) 
-はカレント・ディレクトリに作られます。
-もし出力先を変更したい時には -O を使います。
+と実行します。この場合、インデックスはカレントディレクトリに
+作られます。もし出力先を変更したい時には -O を使います。
 </p>
 
 <p>
@@ -427,8 +412,8 @@ namazu の実行時に
 
 <ul>
   <li>結果 (の索引) は (-O で指定した) /tmp/index に
-  <li>検索対象は<code>現案内(current directory)</code> (これが<strong>ピリオド</strong>)
-  <li>URL については
+  <li>検索対象は<code>カレントディレクトリ</code> (これが<strong>ピリオド</strong>)
+  <li>URI については
 
 <p>
 「<code>/home/htdocs/software/</code> に置いてあるものは
@@ -441,39 +426,12 @@ s#<em>aaa</em>#<strong>bbb</strong>#
             bbb (http://www.ki.nu/) となる。
 </p>
 
-  <li> (/usr/local/share/namazu/conf.pl の $HTML_SUFFIX の設定によって)
+  <li> (/usr/local/etc/namazu/mknmzrc の $HTML_SUFFIX の設定によって)
      *.html *.html.ja *.phtml *.html *.asp *.cgi などだけを調べ、メー
       ルのようなものは調べない。
   <li>手軽にメールなどを調べるなら -a を付けておく
 </ul>
 
-<p>
-実行の最初の方に次のように表示されますが、
-</p>
-
-<pre>
- find_target: Scanned : (1267), Files: (1265), Elapsed: (8), Files/sec: (158.1).
-</pre>
-
-<p>
- find_target という処理の中で、1267 個の譜が見つかったが、
-$DENY_REGEX
-$EXCLUDE_REGEX 
-$ALLOW_REGEX 
-$HTML_SUFFIX
-などの設定により、そのうち 1265 を処理する。この部分にかかった秒数
-は 8, 
-一秒に 158 個の割合で譜を調べた。
-という意味になります。Scanned/Files の差が自分の意図
-と違っている場合は、上記 四変数を調べた方がいいでしょう。
-(これらの変数は、通常 
-<a href="manual.html#mknmzrc">.mknmzrc</a> に設定します。)
-</p>
-
-
-<p>
-<a name="using-mknmz">using-mknmz</a>
-</p>
 
 
 <hr>
@@ -482,9 +440,15 @@ $HTML_SUFFIX
 あまり、意味がありません。</em>
 </p>
 
-<hr>
-
 <h2><a name="customize-mknmz">mknmz の調整</a></h2>
+<pre>
+メール
+HTML
+その他の形式 (Re: filter)
+他の Web
+</pre>
+
+<p>
 Namazu は元々は HTML 形式のものを処理するように考えられ
 ていますが、実際には様々な形式を取扱うことが出来ます。
 <a href="../../filter/">filter/</a>
@@ -492,8 +456,9 @@ Namazu は元々は HTML 形式のものを処理するように考えられ
 説明書の中の 
 <a href="manual.html#doc-filter">文書フィルタ</a>
 の部分に詳しい説明があります。
+</p>
+
 <dl>
-<!-- ------------------------------------------- -->
 <dt>メール
   <dd>検索対象に調整が必要です。一例を書きますと ~/.mknmz-Mail の中
   に、次のように書いておいて<br>
@@ -505,50 +470,52 @@ $DENY_REGEX = '\..*';<br>
 $ALLOW_REGEX = '.*';<br>
 $HTML_SUFFIX = '.*';<br>
 </code>
-<code command>mknmz -f ~/.mknmz-Mail </code>と起動するという方法があります。
-<!-- ------------------------------------------- -->
+<code class=command>mknmz -f ~/.mknmz-Mail </code>と起動するという方法があります。
+
 <dt>MHonArc
 <dd>これは HTML 形式ですし、Namazu にこの形式に対応した処理が含ま
 れています。
-<!-- ------------------------------------------- -->
+
 <dt>hnf
   <dd> hnf 用の .mknmzrc と起動手続が
 <a href="http://www.h14m.org/">ハイパー日記 Project</a> から入手出
 来ます。
-<!-- ------------------------------------------- -->
 <dt>  他の Web
   <dd>これは Namazu 単独では出来ません。他にその内容を転送してくる
 しくみ (httpdown, wget など)と組合せて使います。
 </dl>
 
 <p>
-mknmz の操作行での選択は、
-<a href="manual.html#mknmz-option">mknmz --help</a>
-とすると得られます。また
--C を付けると、その時の構成を表示してくれます。その一例は次のよう
-になっています。
+mknmz のコマンド行引数は、<a href="man/mknmz">mknmz
+--help</a>とすると得られます。また-C を付けると、その時の構
+成を表示してくれます。
 </p>
+
 <pre>
-Config: /home/makoto/.mknmzrc
-System: netbsd
-Namazu: 1.9.5
+Config: /home/foobar/.mknmzrc
+System: linux
+Namazu: 1.9.14
 Perl:   5.00503
 NKF:    module_nkf
-KAKASI: /usr/local/bin/kakasi -ieuc -oeuc -w
-ChaSen: module_chasen1 -j -F '%m '
-Wakati: /usr/local/bin/kakasi -ieuc -oeuc -w
-Lang:   ja
+KAKASI: module_kakasi -ieuc -oeuc -w
+ChaSen: module_chasen -j -F '%m '
+Wakati: module_kakasi -ieuc -oeuc -w
+Lang:   ja_JP.ujis
 CCS:    euc
-CONFDIR:     /usr/local/share/namazu/conf
-LIBDIR:      /usr/local/share/namazu/lib
+CONFDIR:     /usr/local/etc/namazu
+LIBDIR:      /usr/local/share/namazu/pl
 FILTERDIR:   /usr/local/share/namazu/filter
 TEMPLATEDIR: /usr/local/share/namazu/template
 Supported media types: 
+  application/msword
+  application/pdf
   application/x-bzip2
   application/x-compress
   application/x-gzip
+  application/x-tex
   message/news
   message/rfc822
+  text/hnf
   text/html
   text/html; x-type=mhonarc
   text/plain
@@ -557,7 +524,7 @@ Supported media types:
 </pre>
 
 
-<h3>検索をする対象について</h3>
+<h3>検索対象について</h3>
 
 <table cellspacing=0 cellpadding=3>
 <tr><th>短縮形</th><th>本名</th><th>説明</th>
@@ -574,31 +541,13 @@ Supported media types:
 
 
 <p>
-現在の版(少なくとも 1.9.5) では
-</p>
+現在の版(少なくとも 1.9.5) では<em>対象ディレクトリ</em>に 
+symbolic link があるとうまくいかないので、 symbolic link の
+先をそのまま指定する、つまり(cd <em>対象ディレクトリ</em>;
+pwd) として表示されるものを使うのが無難です。</p>
 
-<ul>
-<li>
-<i>検索 directory</i>に symbolic link があるとうまく行かな
-いので、シンボリック・リンクの先をそのまま指定する、つまり
-(cd <i>検索 directory</i>; pwd) 
-として表示されるものを使うのが無難
-</ul>
-
-<h3>conf.pl</h3>
-<p>namazu-1.9.5/lib/conf.pl が設置される先の
-<code>
-<a href="/usr/local/share/namazu/lib/conf.pl">
-/usr/local/share/namazu/lib/conf.pl</a></code> 
-に定義されている<a href="conf.pl.shtml">変数</a>は
-~/.mknmzrc の中に設定変更を書くことが出来る。
-(以前は
--I filename と指定した filename の中に書く
-方法だけしかなかった)
-</p>
-
-
-<pre>このようなものを試して見る。
+<pre>
+このようなものを試して見る。
 makoto@milano  22:04:47/991121(~)&gt;
 
 (準備中)
@@ -620,15 +569,13 @@ Time: 1261 sec.
 
 <h2><a name="run-namazu">動作確認 namazu</a></h2>
 <p>
-さまざまな設定は<code>
-<a href="http://openlab.ring.gr.jp/namazu/manual.html.ja#NAMAZU_CONF">
-/usr/local/share/namazu/conf/namazu.conf</a></code>
-に書くことが出来ます。
-namazu.conf の設定例は 配布の中の <code>lib/namazu.conf-dist</code> に
-あります。
+さまざまな設定は<code> <a
+href="manual.html#namazurc">namazurc</a></code> 
+に書くことが出来ます。namazurc の設定例は 配布の中の 
+<code>lib/namazurc-dist</code> にあります。
 </p>
 
-<p>初めは操作行で <code command>/usr/local/namazu/bin 検索文字列</code>
+<p>初めはコマンド行で <code>/usr/local/namazu/bin 検索文字列</code>
 を試すのが手軽です。
 </p>
 
@@ -639,7 +586,7 @@ namazu.conf の設定例は 配布の中の <code>lib/namazu.conf-dist</code> に
 </p>
 
 <p>
-詳しい説明は <a href="manual.html">manual</a> があります。
+詳しい説明は <a href="doc/ja/manual.html">manual</a> があります。
 </p>
 
 <p>
@@ -673,7 +620,7 @@ Options
 
 <tr><td>
 DirectoryIndex</td><td> index.html
-</td><td> URL が directory を指している時に探す譜名
+</td><td> URI が directory を指している時に探すファイル名
 </td></tr>
 
 </table>
@@ -729,63 +676,48 @@ Namazu は<pre>
 
 <a href="http://openlab.ring.gr.jp/namazu/manual.html.ja#MULTIPLE_INDICES">説明書の中に実現方法</a>が書いてある。
 
-<dt>フレーズ検索
+<dt>フレイズ検索
 <dd>
 Namazu の検索の基本は単語の組合せである。
 "単語 and 組合せ" と(順を逆にした)
 "組合せ and 単語" は区別しない。これを"単語 組合せ"という
 文字列がそのままの順で出現するものを探す機能のこと。
-<dt>conf.pl
+<dt>namazu.conf, conf.pl
 <dd>
-1.4 以前は
-<pre>
-mknmz の実行時の設定が書いてあったが、1.9 では
-  1. ~/.mknmzrc
-  2. @datadir@/namazu/conf/mknmz.conf
-
-の優先順位で mknmz の設定ファイルを読み込む
-mknmz --config=/somewhere/mknmz.conf のような方法で設定ファ
-イルを読ませることは出来ない。
-</pre>
-<a href="conf.pl">
-conf.pl</a> 
-はまだ残っているが、これは ~/.mknmzrc で
-<a href="conf.pl.shtml">
-変更したいようなもの</a>の設定がしてある
-<dt>mknmz.conf (/usr/local/share/namazu/conf/mknmz.conf)
+1.4 以前では、 namazu, mknmz の設定はそれぞれ namazu.conf,
+conf.pl で行ったが 2.0 では namazurc, mknmzrc に変更された。
+<dt>mknmzrc (/usr/local/etc/namazu/mknmzrc)
 <dd>mknmz の基本設定を行なう。
 
-<dt>namazu.conf  (/usr/local/share/namazu/conf/namazu.conf)
+<dt>namazurc  (/usr/local/etc/namazu/namazurc)
 <dd>
 Namazu の動作を make 時から変更したいというような時に、その
 設定が書ける。
-説明は次のところにある。
+詳しくは<a href="manual.html#namazurc">説明書</a>そ参照のこ
+と。
 
-<a href="http://openlab.ring.gr.jp/namazu/manual.html.ja#NAMAZU_CONF">http://openlab.ring.gr.jp/namazu/manual.html.ja#NAMAZU_CONF</a>
-<code class=rc>
-INDEX, REPLACE, BASE, WAKATI, LOGGING OFF, LANG ja
-</code>
+<code>Index, Replace, Base, Logging, Lang, Template</code>
 の設定が出来る。
-<dt>Perl 部品化 ( Perl module)
+<dt>Perl 部品化 (Perl module)
 <dd> program を単体としてではなく、 Perl の部品として起動
 出来るしくみ<br>
 nkf, kakasi, chasen などは以前は  Namazu から外部 process として呼出さ
 れるようになっていた。この場合、process を別に起動するということで
 時間がかかる。
 現在では、これらの perl 部品が用意されて、
-perl から部品(module)として呼出されるように出来る。
+perl から部品 (module)として呼出されるように出来る。
 そうすると process を起動しないで済む分、実行速度が有利になる。
 <br>この機能は Namazu-1.3 以前では提供されていない。 
 1.4 以降の機能である。
+Namazu に必要な Perl の部品が入っているかどうかは
 
 <pre>
-Namazu に必要な Perl の部品が入っているかどうかは
 perl -MText::Kakasi -e ''
 perl -MText::ChaSen -e ''
 perl -MNKF -e ''
-のように入力した時に、何も表示されなければ良い。
 </pre>
 
+のように入力した時に、何も表示されなければ良い。
 </dl>
 
 
@@ -799,12 +731,12 @@ perl -MNKF -e ''
 </p>
 
 <ul>
-<li>一つの機械の、一つまたは複数の案内(directory)
-の下にある譜を指定して、
-<li>それらの中の単語を調べ、どの譜にどの単語が含まれているか
-を「索引(index)」に書き出しておく
+<li>一つの計算機の、一つまたは複数のディレクトリの下にある文
+書ファイルを指定して、
+<li>それらの中の単語を調べ、どの文書ファイルにどの単語が含まれているか
+をインデックスに書き出しておく
 <li>使用者が入力した文字列と、上記の単語を比べて、
-その単語が含まれている譜を(HMTL の形式で)表示すること
+その単語が含まれている文書ファイルを(HMTL の形式で)表示すること
 <li>上記単語の指定は、単語の一部分でなく単語全体です。
 ですから sys と指定しても system は見つかりません。
 そのような時には sys* や *sys* のように前後に *
@@ -813,21 +745,20 @@ sys を含む単語 (*sys*)、
 sys で終了する単語 (*sys) と入力します。
 <li>以上の操作を設定で英語または日本語の表示とすること
 <li>通常索引の作成は Unix に準じる OS
-<li>作られた索引の利用は Unix の操作行、または 
-cgi-bin が動く HTTP server を 
-閲覧系を通じて利用する形で行ないます。
+<li>作られた索引の利用は Unix のコマンド行、または 
+cgi-bin が動く HTTP server を Webブラウザを通じて利用する形で行ないます。
 </ul>
 
 <h2><a name="can-not-do">出来ないこと</a></h2>
 <ul>
-<li>他の機械にまで内容を取りに行って検索すること
+<li>他の計算機にまで内容を取りに行って検索すること
 <li>「一日に 100 万回の利用回数がある」というような大規模な構成
 の使い方。
 </ul>
 
 <h2><a name="others">その他</a></h2>
 <dl>
-<dt>対象譜について
+<dt>対象ファイルについて
 <dd>
 指定した「検索 directory 」の中で、
 何が検索の対象になるかという疑問があるとしたら、答えは、
@@ -859,7 +790,7 @@ contrib/00readme-namazu.jis</a> に書いてあります。
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: tutorial.html,v 1.12 2000-02-14 13:22:59 makoto Exp $
+$Id: tutorial.html,v 1.13 2000-02-14 14:25:38 satoru Exp $
 </div>
 <address>
 developers@namazu.org

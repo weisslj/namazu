@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.71 1999-11-03 05:12:14 satoru Exp $
+# $Id: mknmz.pl.in,v 1.72 1999-11-04 04:10:38 masao Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -793,6 +793,7 @@ sub parse_options ()
     }
 
     if (defined $update_index) {
+	my $orig_status = $var::NMZ{'status'};
 	$var::NMZ{'status'} = "$update_index/$var::NMZ{'status'}";
 
 	my $argv = get_status("argv");
@@ -805,6 +806,7 @@ sub parse_options ()
 
 	($output_dir, @targets) = parse_options();
 	$output_dir = $update_index;
+	$var::NMZ{'status'} = $orig_status;  # See also change_dbnames()
 	return ($output_dir, @targets);
     }
 

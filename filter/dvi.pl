@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: dvi.pl,v 1.8 2004-05-21 11:58:37 opengl2772 Exp $
+# $Id: dvi.pl,v 1.9 2004-05-21 12:49:14 opengl2772 Exp $
 # Copyright (C) 2000,2004 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -41,7 +41,8 @@ sub status() {
         unless (defined $dviconvpath) {
             $dviconvpath = util::checkcmd('dvi2tty');
             return 'no' unless (defined $dviconvpath);
-            my $err = system("$dviconvpath -J 2> /dev/null");
+            my $devnull = util::devnull();
+            my $err = system("$dviconvpath -J 2> $devnull");
             return 'no' if ($err == 1792);
         }
     } else {

@@ -5,6 +5,8 @@
         * filter/win32/ichitaro456.pl: Changed not to use 'post codeconv'.
         Since it was not used, File::Copy was deleted.
 
+	* filter/dvi.pl: Use util::devnull().
+
 2004-05-16  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * pl/codeconv.pl: util::fclose() is added.
@@ -8908,4 +8910,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1189 2004-05-21 12:08:46 opengl2772 Exp $
+$Id: ChangeLog,v 1.1190 2004-05-21 12:49:14 opengl2772 Exp $

@@ -6,6 +6,8 @@
 
 	* nmz/search.c (remove_quotes): Added braces.
 
+	* doc/{en,ja}/manual.html: Added some comments for ole{taro,rtf}.pl
+
 2001-01-26  Yoshinori TAKESAKO  <takesako@ddt.or.jp>
 
 	* filter/win32/oleexcel.pl: Changed overall program structure. 
@@ -6353,4 +6355,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.800 2001-01-27 02:18:15 baba Exp $
+$Id: ChangeLog,v 1.801 2001-01-27 02:38:07 baba Exp $

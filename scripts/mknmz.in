@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.49 2000-03-15 06:53:52 satoru Exp $
+# $Id: mknmz.in,v 1.50 2000-03-16 12:29:43 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -72,8 +72,6 @@ main();
 sub main () {
     my $start_time = time;
 
-    load_rcfile($ENV{'MKNMZRC'}) if (defined $ENV{'MKNMZRC'} &&
-									 -f $ENV{'MKNMZRC'});
     init();
     load_modules();
     my ($output_dir, @targets) = parse_options();
@@ -231,25 +229,24 @@ sub load_rcfiles () {
 }
 
 sub load_rcfile ($) {
-	my ($rcfile) = @_;
+    my ($rcfile) = @_;
     if ($SYSTEM eq "MSWin32" || $SYSTEM eq "os2") {
 	# convert \ to / with consideration for Shift_JIS Kanji code
 	$rcfile =~ 
 		s!([\x81-\x9f\xe0-\xef][\x40-\x7e\x80-\xfc]|[\x01-\x7f])!
 	    $1 eq "\\" ? "/" : $1!gex;
     }
-	return if (grep {m/^$rcfile$/} @LoadedRcfiles);
+    return if (grep {m/^$rcfile$/} @LoadedRcfiles);
     do $rcfile;
-    $ConfigFile = $rcfile;
     push @LoadedRcfiles, $rcfile;
-	$CONFDIR = $conf::CONFDIR
-	 if (defined $conf::CONFDIR && -d $conf::CONFDIR);
-	$LIBDIR = $conf::LIBDIR
-	 if (defined $conf::LIBDIR && -d $conf::LIBDIR);
-	$FILTERDIR = $conf::FILTERDIR
-	 if (defined $conf::FILTERDIR && -d $conf::FILTERDIR);
-	$TEMPLATEDIR = $conf::TEMPLATEDIR
-	 if (defined $conf::TEMPLATEDIR && -d $conf::TEMPLATEDIR);
+
+    # Dirty workaround.
+    $LIBDIR = $conf::LIBDIR
+	if (defined $conf::LIBDIR && -d $conf::LIBDIR);
+    $FILTERDIR = $conf::FILTERDIR
+	if (defined $conf::FILTERDIR && -d $conf::FILTERDIR);
+    $TEMPLATEDIR = $conf::TEMPLATEDIR
+	if (defined $conf::TEMPLATEDIR && -d $conf::TEMPLATEDIR);
 }
 
 sub re_exec($$$$$$$$) {
@@ -326,6 +323,10 @@ sub init () {
 
     # For executing mknmz in scripts directory
     $TEMPLATEDIR = "../template" if -f "../template/NMZ.head";
+
+    # To support Windows. Since they have nasty drive letter convention,
+    # it is necessary to change mknmzrc dynamically with env. variable.
+    load_rcfile($ENV{'MKNMZRC'}) if defined $ENV{'MKNMZRC'};
 }
 
 sub load_modules () {
@@ -495,7 +496,7 @@ sub generate_uri (@) {
 
     for my $tmp ($file, $fragment) {
 	next unless defined $tmp;
-        codeconv::toeuc(\$tmp);
+        codeconv::toeuc(\$tmp, "-e");
 
 	unless ($var::Opt{'noencodeuri'}) {
 	    # Escape unsafe characters (not strict)

@@ -1,3 +1,13 @@
+2000-03-16  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* scripts/mknmz.in (load_rcfile): Remove $ConfigFile = $rcfile;
+	(generate_uri): Add "-e" to codeconv::toeuc().
+	(init): Call load_rcfile($ENV{'MKNMZRC'}) in the funcion.
+	(main): Do not call load_rcfile($ENV{'MKNMZRC'}) in the funcion.
+
+	* pl/codeconv.pl (toeuc): Introduce 2nd parameter for nkf's options.
+	[namazu-devel-ja: 00214]
+	
 2000-03-15  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* scripts/mknmz.in: Apply Hideyuki SHIRAI patch.

@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.69 2000-02-16 13:14:11 satoru Exp $
+ * $Id: search.c,v 1.70 2000-02-19 00:51:24 kenzo- Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -30,11 +30,6 @@
 #include <errno.h>
 #include <ctype.h>
 #include <time.h>
-#if defined (WIN32) && !defined (__CYGWIN32__)
-#include <io.h>
-#else
-#include <unistd.h>
-#endif
 #ifdef __EMX__
 #include <sys/types.h>
 #endif
@@ -42,6 +37,13 @@
 
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
+#endif
+#if defined (HAVE_UNISTD_H)
+#include <unistd.h>
+#else
+# if defined (_WIN32) && !defined (__CYGWIN32__)
+# include <io.h>
+# endif
 #endif
 #include "libnamazu.h"
 #include "util.h"

@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu-cgi.c,v 1.11 2000-02-16 13:14:14 satoru Exp $
+ * $Id: namazu-cgi.c,v 1.12 2000-02-19 00:51:25 kenzo- Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -116,7 +116,12 @@ main(int argc, char **argv)
     nmz_set_lang("");
 
     /* Both environment variables are required. */
-    if (!(getenv("QUERY_STRING") && getenv("SCRIPT_NAME"))) {
+#if  defined(_WIN32)
+    if (!((getenv("QUERY_STRING") || getenv("SERVER_SOFTWARE"))
+#else
+    if (!(getenv("QUERY_STRING")
+#endif
+     && getenv("SCRIPT_NAME"))) {
 	die("environment variable QUERY_STRING and SCRIPT_NAME are required");
     }
 

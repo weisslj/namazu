@@ -1,5 +1,7 @@
 2000-02-15  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+  	* Namazu: Version 1.9.14 released.
+
 	* src/result.c (strcasestr): Do cast for avoiding warning.
 
 	* scripts/mknmz.in (re_exec): Store $total_files_num.

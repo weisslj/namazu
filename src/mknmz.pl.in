@@ -510,6 +510,10 @@ sub do_remain_processing ($$$$) {
 
     if ($file_count == 0) {
 	# No files are indexed
+	if ($DeletedFilesCount > 0) {
+	    update_dateindex();
+	    update_registry($file_count);
+	}
 	remove_backup_files();
     } else {
 	append_finfo() if $APPENDMODE;
@@ -538,16 +542,7 @@ sub make_headfoot_pages($$) {
 }
 
 sub remove_backup_files() {
-    unlink "$conf::File{'FINFO_'}.base";
-    unlink $conf::File{'FINFO_'};
-    unlink $conf::File{'INDEX_'};
-    unlink "$conf::File{'HEADERFILE_'}.ja";
-    unlink "$conf::File{'FOOTERFILE_'}.ja";
-    unlink "$conf::File{'HEADERFILE_'}.en";
-    unlink "$conf::File{'FOOTERFILE_'}.en";
-    unlink $conf::File{'PHRASE_'};
-    unlink $conf::File{'PHRASEINDEX_'};
-    unlink $conf::File{'DATEINDEX_'};
+    unlink glob "NMZ.*$$*";
 }
 
 # parse comannd line options

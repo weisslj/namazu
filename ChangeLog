@@ -6,6 +6,9 @@
 	"manual.html#VERSIONDIFF".
 
 
+	* Fixed NMZ.[tr].PID bug  [namazu 598]
+	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
+
 v1.4.0.0-beta-7
         [1999-04-18]
 

@@ -2338,7 +2338,7 @@ test -n "$WISH" || WISH="no"
 fi
 
     if test "$WISH" = "no"; then
-        echo "configure: warning: *** wish not found\" 1>&2
+        echo "configure: warning: *** wish not found: tknamazu will not be built because ***" 1>&2
         TKNAMAZU=""
     else
         # Check whether --with-lynx or --without-lynx was given.
@@ -2387,7 +2387,7 @@ fi
 fi
 
         if test "$LYNX" = "no"; then
-            echo "configure: warning: *** lynx not found\" 1>&2
+            echo "configure: warning: *** lynx not found: tknamazu will not be built ***" 1>&2
             TKNAMAZU=""
         else
             TKNAMAZU="tknamazu"
@@ -2447,7 +2447,7 @@ test -n "$GROFF" || GROFF="no"
 fi
 
 if test "$GROFF" = "no"; then
-    echo "configure: warning: *** groff not found\" 1>&2
+    echo "configure: warning: *** groff not found: tknamazu cannot browse man pages ***" 1>&2
 fi
 # Check whether --with-info or --without-info was given.
 if test "${with_info+set}" = set; then
@@ -2495,7 +2495,7 @@ fi
 fi
 
 if test "$INFO" = "no"; then
-    echo "configure: warning: *** info not found\" 1>&2
+    echo "configure: warning: *** info not found: tknamazu cannot browse info files ***" 1>&2
 fi
 # Check whether --with-zcat or --without-zcat was given.
 if test "${with_zcat+set}" = set; then

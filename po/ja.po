@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: namazu 2.0\n"
-"POT-Creation-Date: 2000-01-29 14:30+0900\n"
+"POT-Creation-Date: 2000-01-29 15:25+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>\n"
 "Language-Team: Japanese <satoru-t@is.aist-nara.ac.jp>\n"
@@ -121,70 +121,66 @@ msgid "\t<p>No document matching your query.</p>\n"
 msgstr "\t<p>検索式にマッチする文書はありませんでした。</p>\n"
 
 #. terminator not matched
-#: src/rcfile.c:289
+#: src/rcfile.c:297
 msgid "can't find string terminator"
 msgstr "文字列の終端が見つかりません"
 
-#: src/rcfile.c:357
+#: src/rcfile.c:365
 msgid "invalid directive name"
 msgstr "不正なディレクティヴです"
 
-#: src/rcfile.c:370
+#: src/rcfile.c:378
 msgid "can't find arguments"
 msgstr "引数が見つかりません"
 
-#: src/rcfile.c:473
+#: src/rcfile.c:481
 msgid "too few arguments"
 msgstr "引数が足りません"
 
-#: src/rcfile.c:476
+#: src/rcfile.c:484
 msgid "too many arguments"
 msgstr "引数が多すぎます"
 
-#: src/rcfile.c:486
+#: src/rcfile.c:494
 msgid "unknown directive"
 msgstr "不明なディレクティヴです"
 
-#: src/rcfile.c:621
+#: src/rcfile.c:629
 #, c-format
 msgid "%s:%d: syntax error: %s"
 msgstr "%s:%d: 構文エラー: %s"
 
-#: src/rcfile.c:641
+#: src/rcfile.c:649
 #, c-format
 msgid "Loaded rcfile: %s\n"
 msgstr "読み込んだ設定ファイル: %s\n"
 
-#: src/rcfile.c:646
-#, c-format
+#: src/rcfile.c:654
+#, fuzzy, c-format
 msgid ""
-"Index:    %s\n"
-"Logging:  %s\n"
-"Lang:     %s\n"
-"Scoring:  %s\n"
-"Template: %s\n"
-"EmphasisTags:\n"
-"    start: %s\n"
-"    end:   %s\n"
+"Index:        %s\n"
+"Logging:      %s\n"
+"Lang:         %s\n"
+"Scoring:      %s\n"
+"Template:     %s\n"
+"EmphasisTags: %s\t%s\n"
 msgstr ""
 "インデックス (Index):    %s\n"
 "ログの記録 (Logging):    %s\n"
 "使用する言語 (Lang):     %s\n"
 "スコア計算 (Scoring):    %s\n"
 "テンプレート (Template): %s\n"
-"強調タグ (EmphasisTags): \n"
-"    始まり: %s\n"
-"    終わり: %s\n"
+"強調タグ (EmphasisTags): %s\t%s\n"
 
-#: src/rcfile.c:665
+#: src/rcfile.c:671
 #, c-format
-msgid "Alias: %-10s\t%s\n"
-msgstr "別名 (Alias): %-10s     %s\n"
+msgid "Alias:   %-20s\t%s\n"
+msgstr "別名 (Alias):   %-20s\t%s\n"
 
-#: src/rcfile.c:675
+#: src/rcfile.c:681
 #, c-format
-msgid "Replace: %-10s\t%s\n"
-msgstr "置換 (Replace): %-10s   %s\n"
+msgid "Replace: %-20s\t%s\n"
+msgstr "置換 (Replace): %-20s\t%s\n"
 
 #: src/usage.c:51
 #, c-format

@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu-cgi.c,v 1.7 2000-01-29 04:58:24 satoru Exp $
+ * $Id: namazu-cgi.c,v 1.8 2000-01-29 06:25:07 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -145,12 +145,12 @@ main(int argc, char **argv)
     {
 	/*
 	 * Load .namazurc located in the directory
-	 * where namazu.cgi command is.
+	 * where namazu.cgi command is if it exists.
 	 */
 	char fname[BUFSIZE];
 	combine_pathname(fname, argv[0], ".namazurc");
 	if (nmz_is_file_exists(fname)) {
-	    load_rcfile(fname);
+	    set_namazurc(fname);
 	}
     }
 

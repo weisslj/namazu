@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.13 2000-01-29 05:36:08 satoru Exp $
+ * $Id: rcfile.c,v 1.14 2000-01-29 06:25:08 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -61,6 +61,14 @@ static char *errmsg  = NULL;
  * Storing loaded rcfile names for show_config().
  *
  * 3 is the max number of rcfiles may be loaded.
+ *
+ *  1. $(sysconfdir)/$(PACKAGE)/namazurc
+ *     - This can be overriden by environmentl variable NAMAZURC.
+ *
+ *  2.  ~/.namazurc
+ *
+ *  3. user-specified namazurc set by namazu --config=file option.
+ * 
  */
 struct {
     char fnames[3][BUFSIZE];
@@ -640,18 +648,16 @@ show_config(void)
 	for (i =0; i < loaded_rcfiles.num; i++) {
 	    printf(_("Loaded rcfile: %s\n"), loaded_rcfiles.fnames[i]);
 	}
-	printf("--------------------------------------------------------------\n");
+	printf("--\n");
     }
 
     printf(_("\
-Index:    %s\n\
-Logging:  %s\n\
-Lang:     %s\n\
-Scoring:  %s\n\
-Template: %s\n\
-EmphasisTags:\n\
-    start: %s\n\
-    end:   %s\n\
+Index:        %s\n\
+Logging:      %s\n\
+Lang:         %s\n\
+Scoring:      %s\n\
+Template:     %s\n\
+EmphasisTags: %s\t%s\n\
 "), nmz_get_defaultidx(), nmz_is_loggingmode() ? "on" : "off",
            nmz_get_lang(), nmz_is_tfidfmode() ? "tfidf" : "simple",
 	   get_templatedir(), 
@@ -662,7 +668,7 @@ EmphasisTags:\n\
     {
 	struct nmz_alias *list = nmz_get_aliases();
 	while (list) {
-	    printf(_("Alias: %-10s\t%s\n"), 
+	    printf(_("Alias:   %-20s\t%s\n"), 
 		   list->alias, list->real);
 	    list = list->next;
 	}
@@ -672,7 +678,7 @@ EmphasisTags:\n\
     {
 	struct nmz_replace *list = nmz_get_replaces();
 	while (list) {
-	    printf(_("Replace: %-10s\t%s\n"), 
+	    printf(_("Replace: %-20s\t%s\n"), 
 		   list->pat, list->rep);
 	    list = list->next;
 	}

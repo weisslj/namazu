@@ -1,13 +1,14 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN"
-        "http://www.w3.org/TR/REC-html40/strict.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
-<link rev=MADE href="mailto:satoru-t@is.aist-nara.ac.jp">
+<link rel=stylesheet href="namazu.css">
+<link rev=made href="mailto:developers@namazu.org">
 <title>Specification of NMZ.* files</title>
 </head>
 <body lang="ja">
 <h1>NMZ.* ファイルの仕様</h1>
-<p> Last Modified: 1999-09-15
+<p>Last Modified: 2000-01-30
 </p>
 <hr>
 
@@ -24,13 +25,13 @@
 <li><a href="#t">NMZ.t</a>
 <li><a href="#field">NMZ.field.{subject,from,date,message-id,...}</a>
 <li><a href="#field-i">NMZ.field.{subject,from,date,message-id,...}.i</a>
-<li><a href="#result">NMZ.result.{normal,short}</a>
 <li><a href="#access">NMZ.access</a>
 <li><a href="#status">NMZ.status</a>
-<li><a href="#head">NMZ.head.[a-z]{2}</a>
-<li><a href="#foot">NMZ.foot.[a-z]{2}</a>
-<li><a href="#body">NMZ.body.[a-z]{2}</a>
-<li><a href="#tips">NMZ.tips.[a-z]{2}</a>
+<li><a href="#result">NMZ.result.{normal,short,...}{,.$LANG}</a>
+<li><a href="#head">NMZ.head{,.$LANG}</a>
+<li><a href="#foot">NMZ.foot{,.$LANG}</a>
+<li><a href="#body">NMZ.body{,.$LANG}</a>
+<li><a href="#tips">NMZ.tips{,.$LANG}</a>
 <li><a href="#log">NMZ.log</a>
 <li><a href="#lock">NMZ.lock</a>
 <li><a href="#lock2">NMZ.lock2</a>
@@ -248,19 +249,6 @@ NMZ.ii をseekできる。 (行番号 = 文書ID)
 <li>すべてバイナリデータ (pack 'N')
 </ul>
 
-<h2><a name="result">NMZ.result.{normal,short}</a></h2>
-<p>検索結果の書式を指定するファイル</p>
-
-<h3>解説</h3>
-
-<p>
-${フィールドの名前} の部分はそのフィールドの内容に置き換
-えられる。つまり、 ${title} なら NMZ.field.title の内容
-に置き換わる。${namazu::counter}, ${namazu::score} は特
-別な意味を持つ。それぞれ、検索結果の番号、スコアに置き換
-わる。
-</p>
-
 <h2><a name="access">NMZ.access</a></h2>
 <p>アクセスを制限するための設定ファイル</p>
 
@@ -309,18 +297,36 @@ Webサーヴァが Apache の場合、ホスト名・ドメイン名によるアク
 <p>インデックスを更新するために必要なデータを保存する。</p>
 
 
-<h2><a name="head">NMZ.head.[a-z]{2}</a></h2>
+<h2><a name="result">NMZ.result.{normal,short,...}{,.$LANG}</a></h2>
+<p>検索結果の書式を指定するファイル</p>
+
+<h3>解説</h3>
+
+<p>
+${フィールドの名前} の部分はそのフィールドの内容に置き換
+えられる。つまり、 ${title} なら NMZ.field.title の内容
+に置き換わる。${namazu::counter}, ${namazu::score} は特
+別な意味を持つ。それぞれ、検索結果の番号、スコアに置き換
+わる。
+</p>
+
+<p>
+標準では NMZ.result.normal と NMZ.result.shortが 用意されて
+いる。利用者は自由に NMZ.result.* を作成できる。
+</p>
+
+<h2><a name="head">NMZ.head{,.$LANG}</a></h2>
 <p>検索結果出力用ヘッダファイル</p>
 
 
-<h2><a name="foot">NMZ.foot.[a-z]{2}</a></h2>
+<h2><a name="foot">NMZ.foot{,.$LANG}</a></h2>
 <p>検索結果出力用フッタファイル</p>
 
 
-<h2><a name="body">NMZ.body.[a-z]{2}</a></h2>
+<h2><a name="body">NMZ.body{,.$LANG}</a></h2>
 <p>キーワードが与えられなかったときに表示するメッセージ</p>
 
-<h2><a name="tips">NMZ.tips.[a-z]{2}</a></h2>
+<h2><a name="tips">NMZ.tips{,.$LANG}</a></h2>
 <p>検索して何もヒットしなかったときに表示するメッセージ</p>
 
 
@@ -346,12 +352,16 @@ Webサーヴァが Apache の場合、ホスト名・ドメイン名によるアク
 
 <hr>
 <p>
-email: <a href="mailto:satoru-t@is.aist-nara.ac.jp">satoru-t@is.aist-nara.ac.jp</a><br>
-<a href="http://openlab.ring.gr.jp/namazu/">Namazuの 
-homepage へ</a>
-
+<a href="http://www.namazu.org/">Namazu Homepage</a>
 </p>
-<address> satoru-t@is.aist-nara.ac.jp
+<div class="copyright">
+Copyright (C) 2000 Namazu Project. All rights reserved.
+</div>
+<div class="id">
+$Id: nmz.html,v 1.3 2000-01-31 01:32:33 satoru Exp $
+</div>
+<address>
+developers@namazu.org
 </address>
 </body>
 </html>

@@ -3,7 +3,7 @@
 # nmzidx.pl - subroutines for accessing Namazu index files (NMZ.*)
 #         by furukawa@tcp-ip.or.jp
 #
-# $Id: nmzidx.pl,v 1.11 2000-03-15 07:28:24 satoru Exp $
+# $Id: nmzidx.pl,v 1.12 2000-06-15 14:03:17 furukawa Exp $
 #
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -96,7 +96,7 @@ sub seek{
     }
     return $offset if $offset == $self->{'offset'};
     return -1 if ($offset < 0 || $offset > $self->{'size'});
-    $self->{'offfset'} = $offset;
+    $self->{'offset'} = $offset;
     $self->{'index'}->seek($offset * length(pack('N', 0)), 0);
 
     if ($self->{'ext'} ne 'p'){

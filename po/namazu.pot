@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 1999-10-14 13:47+0900\n"
+"POT-Creation-Date: 1999-10-27 00:50-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -42,7 +42,7 @@ msgstr ""
 msgid "Replace: \"%s\" -> \"%s\"\n"
 msgstr ""
 
-#: src/namazu.c:273
+#: src/namazu.c:290
 msgid "\t<p>No document matching your query.</p>\n"
 msgstr ""
 
@@ -132,12 +132,12 @@ msgid ""
 "        --help           show this help and exit\n"
 msgstr ""
 
-#: src/usage.c:83
+#: src/usage.c:80
 msgid "Usage: namazu [options] <query> [index dir(s)]\n"
 msgstr ""
 
-#: src/usage.c:84
-msgid "Try `namazu --help' for more options.\n"
+#: src/usage.c:81
+msgid "Try `namazu --help' for more information.\n"
 msgstr ""
 
 #. if no item available

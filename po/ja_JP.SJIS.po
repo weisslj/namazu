@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: namazu 2.0\n"
-"POT-Creation-Date: 1999-10-14 13:47+0900\n"
+"POT-Creation-Date: 1999-10-27 00:50-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>\n"
 "Language-Team: Japanese <satoru-t@is.aist-nara.ac.jp>\n"
@@ -46,7 +46,7 @@ msgstr "\225\312\226\274:   \"%s\" -> \"%s\"\n"
 msgid "Replace: \"%s\" -> \"%s\"\n"
 msgstr "\222\165\212\267: \"%s\" -> \"%s\"\n"
 
-#: src/namazu.c:273
+#: src/namazu.c:290
 msgid "\t<p>No document matching your query.</p>\n"
 msgstr "\t<p>\214\237\215\365\216\256\202\311\203\175\203\142\203\140\202\267\202\351\225\266\217\221\202\315\202\240\202\350\202\334\202\271\202\361\202\305\202\265\202\275\201\102</p>\n"
 
@@ -165,12 +165,12 @@ msgstr ""
 "    -v, --version           \203\224\203\100\201\133\203\127\203\207\203\223\202\360\225\134\216\246\202\267\202\351\n"
 "        --help              help \202\360\225\134\216\246\202\267\202\351 (\202\261\202\314\225\134\216\246)\n"
 
-#: src/usage.c:83
+#: src/usage.c:80
 msgid "Usage: namazu [options] <query> [index dir(s)]\n"
 msgstr "\216\147\202\242\225\373: namazu [\203\111\203\166\203\126\203\207\203\223] <\214\237\215\365\216\256> [\203\103\203\223\203\146\203\142\203\116\203\130...]\n"
 
-#: src/usage.c:84
-msgid "Try `namazu --help' for more options.\n"
+#: src/usage.c:81
+msgid "Try `namazu --help' for more information.\n"
 msgstr "`namazu --help' \202\305\203\111\203\166\203\126\203\207\203\223\202\314\220\340\226\276\202\252\225\134\216\246\202\263\202\352\202\334\202\267\n"
 
 #. if no item available

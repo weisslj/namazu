@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: namazu 2.0\n"
-"POT-Creation-Date: 1999-10-14 13:47+0900\n"
+"POT-Creation-Date: 1999-10-27 00:50-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>\n"
 "Language-Team: Japanese <satoru-t@is.aist-nara.ac.jp>\n"
@@ -46,7 +46,7 @@ msgstr "別名:   \"%s\" -> \"%s\"\n"
 msgid "Replace: \"%s\" -> \"%s\"\n"
 msgstr "置換: \"%s\" -> \"%s\"\n"
 
-#: src/namazu.c:273
+#: src/namazu.c:290
 msgid "\t<p>No document matching your query.</p>\n"
 msgstr "\t<p>検索式にマッチする文書はありませんでした。</p>\n"
 
@@ -165,12 +165,12 @@ msgstr ""
 "    -v, --version           ヴァージョンを表示する\n"
 "        --help              help を表示する (この表示)\n"
 
-#: src/usage.c:83
+#: src/usage.c:80
 msgid "Usage: namazu [options] <query> [index dir(s)]\n"
 msgstr "使い方: namazu [オプション] <検索式> [インデックス...]\n"
 
-#: src/usage.c:84
-msgid "Try `namazu --help' for more options.\n"
+#: src/usage.c:81
+msgid "Try `namazu --help' for more information.\n"
 msgstr "`namazu --help' でオプションの説明が表示されます\n"
 
 #. if no item available

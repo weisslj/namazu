@@ -2,7 +2,7 @@
  * 
  * usage.c -
  * 
- * $Id: usage.c,v 1.6 1999-10-24 18:29:47 kenzo- Exp $
+ * $Id: usage.c,v 1.7 1999-10-27 07:54:40 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -78,7 +78,7 @@ Usage: namazu [options] <query> [index ...] \n\
 void show_mini_usage(void)
 {
     fputs(_("Usage: namazu [options] <query> [index dir(s)]\n"), stdout);
-    fputs(_("Try `namazu --help' for more options.\n"), stdout);
+    fputs(_("Try `namazu --help' for more information.\n"), stdout);
 }
 
 

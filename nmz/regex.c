@@ -85,7 +85,9 @@ void *nmz_xrealloc _((void*,size_t));
 void xfree _((void*));
 #endif
 
-/* for using in libnamazu */
+/* for using libnamazu */
+#include <stdlib.h>
+#include "util.h"
 #define xfree free
 
 /* Make alloca work the best possible way.  */
@@ -173,7 +175,9 @@ static void store_jump _((char*, int, char*));
 static void insert_jump _((int, char*, char*, char*));
 static void store_jump_n _((char*, int, char*, unsigned));
 static void insert_jump_n _((int, char*, char*, char*, unsigned));
+#if 0
 static void insert_op _((int, char*, char*));
+#endif
 static void insert_op_2 _((int, char*, char*, int, int));
 static int memcmp_translate _((unsigned char*, unsigned char*, int));
 
@@ -374,13 +378,15 @@ enum regexpcode
     duplicate,   /* Match a duplicate of something remembered.
 		    Followed by one byte containing the index of the memory 
                     register.  */
+#if 0
     fail,        /* always fails. */
+#endif
     wordchar,    /* Matches any word-constituent character.  */
     notwordchar, /* Matches any char that is not a word-constituent.  */
     wordbeg,	 /* Succeeds if at word beginning.  */
     wordend,	 /* Succeeds if at word end.  */
     wordbound,   /* Succeeds if at a word boundary.  */
-    notwordbound,/* Succeeds if not at a word boundary.  */
+    notwordbound /* Succeeds if not at a word boundary.  */
   };
 
 
@@ -465,7 +471,7 @@ nmz_re_set_syntax(syntax)
       int n = mbclen(c) - 1;						\
       c &= (1<<(BYTEWIDTH-2-n)) - 1;					\
       while (n--) {							\
-	c = c << 6 | *p++ & ((1<<6)-1);					\
+	c = c << 6 | (*p++ & ((1<<6)-1));				\
       }									\
     }									\
     else {								\
@@ -500,31 +506,38 @@ utf8_firstbyte(c)
 #endif
 }
 
+#if 0
 static void
 print_mbc(c)
      unsigned int c;
 {
   if (current_mbctype == MBCTYPE_UTF8) {
     if (c < 0x80)
-      printf("%c", c);
+      printf("%c", (int)c);
     else if (c <= 0x7ff)
-      printf("%c%c", utf8_firstbyte(c), c&0x3f);
+      printf("%c%c", (int)utf8_firstbyte(c), (int)(c & 0x3f));
     else if (c <= 0xffff)
-      printf("%c%c%c", utf8_firstbyte(c), (c>>6)&0x3f, c&0x3f);
+      printf("%c%c%c", (int)utf8_firstbyte(c), (int)((c >> 6) & 0x3f),
+	     (int)(c & 0x3f));
     else if (c <= 0x1fffff) 
-      printf("%c%c%c%c", utf8_firstbyte(c), (c>>12)&0x3f, (c>>6)&0x3f, c&0x3f);
+      printf("%c%c%c%c", (int)utf8_firstbyte(c), (int)((c >> 12) & 0x3f),
+	     (int)((c >> 6) & 0x3f), (int)(c & 0x3f));
     else if (c <= 0x3ffffff)
-      printf("%c%c%c%c%c", utf8_firstbyte(c), (c>>18)&0x3f, (c>>12)&0x3f, (c>>6)&0x3f, c&0x3f);
+      printf("%c%c%c%c%c", (int)utf8_firstbyte(c), (int)((c >> 18) & 0x3f),
+	     (int)((c >> 12) & 0x3f), (int)((c >> 6) & 0x3f), (int)(c & 0x3f));
     else if (c <= 0x7fffffff)
-      printf("%c%c%c%c%c%c", utf8_firstbyte(c), (c>>24)&0x3f, (c>>18)&0x3f, (c>>12)&0x3f, (c>>6)&0x3f, c&0x3f);
+      printf("%c%c%c%c%c%c", (int)utf8_firstbyte(c), (int)((c >> 24) & 0x3f),
+	     (int)((c >> 18) & 0x3f), (int)((c >> 12) & 0x3f),
+	     (int)((c >> 6) & 0x3f), (int)(c & 0x3f));
   }
   else if (c < 0xff) {
-    printf("\\%o", c);
+    printf("\\%o", (int)c);
   }
   else {
-    printf("%c%c", c>>BYTEWIDTH, c&0xff);
+    printf("%c%c", (int)(c >> BYTEWIDTH), (int)(c &0xff));
   }
 }
+#endif
 
 /* If the buffer isn't allocated when it comes in, use this.  */
 #define INIT_BUF_SIZE  28
@@ -723,6 +736,7 @@ is_in_list(c, b)
   return 0;
 }
 
+#if 0
 static void
 print_partial_compiled_pattern(start, end)
     unsigned char *start;
@@ -977,6 +991,7 @@ print_compiled_pattern(bufp)
 
   print_partial_compiled_pattern(buffer, buffer + bufp->used);
 }
+#endif
 
 static char*
 calculate_must_string(start, end)
@@ -1188,7 +1203,7 @@ nmz_re_compile_pattern(pattern, size, bufp)
   register const char *p = pattern;
   const char *nextp;
   const char *pend = pattern + size;
-  register unsigned int c, c1;
+  register unsigned int c, c1 = 0;
   const char *p0;
   int numlen;
 #define ERROR_MSG_MAX_SIZE 200
@@ -1250,7 +1265,9 @@ nmz_re_compile_pattern(pattern, size, bufp)
   int *stackb = stacka;
   int *stackp = stackb;
   int *stacke = stackb + 40;
+#if 0
   int *stackt;
+#endif
 
   /* Counts ('s as they are encountered.  Remembered for the matching ),
      where it becomes the register number to put in the stop_memory
@@ -1488,8 +1505,8 @@ nmz_re_compile_pattern(pattern, size, bufp)
 	  case 'W':
 	    for (c = 0; c < (1 << BYTEWIDTH); c++) {
 	      if (SYNTAX(c) != Sword &&
-		  (current_mbctype && !re_mbctab[c] ||
-		  !current_mbctype && SYNTAX(c) != Sword2))
+		  ((current_mbctype && !re_mbctab[c]) ||
+		  (!current_mbctype && SYNTAX(c) != Sword2)))
 		SET_LIST_BIT(c);
 	    }
 	    had_char_class = 1;
@@ -2566,6 +2583,7 @@ insert_jump_n(op, from, to, current_end, n)
 
    If you call this function, you must zero out pending_exact.  */
 
+#if 0
 static void
 insert_op(op, there, current_end)
      int op;
@@ -2579,6 +2597,7 @@ insert_op(op, there, current_end)
 
   there[0] = (char)op;
 }
+#endif
 
 
 /* Open up space at location THERE, and insert operation OP followed by

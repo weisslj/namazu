@@ -1,5 +1,11 @@
 2002-01-18  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
+	* nmz/util.[ch] (nmz_scan_*) : Adopted type of function argument
+	for nmz/regex.c.
+
+	* nmz/regex.c: Applied silencing some warnings patch.
+	(Contributed by Takahiro Kambe, thanks.)
+
 	* nmz/regex*: Imported latest source from Ruby 1.6.6.
 
 	* lib/getopt*: Imported latest sources from GNU gengetopt-2.5.
@@ -7376,4 +7382,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.923 2002-01-18 05:44:28 knok Exp $
+$Id: ChangeLog,v 1.924 2002-01-18 07:41:26 knok Exp $

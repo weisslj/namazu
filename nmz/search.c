@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.28 1999-12-09 03:46:23 satoru Exp $
+ * $Id: search.c,v 1.29 1999-12-09 08:12:26 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -147,12 +147,12 @@ static void show_status(int l, int r)
     fgets(buf, BUFSIZE, Nmz.w);
     nmz_chomp(buf);
 
-    nmz_dprintf("l:%d: %s", l, buf);
+    nmz_debug_printf("l:%d: %s", l, buf);
     fseek(Nmz.w, getidxptr(Nmz.wi, r), 0);
     fgets(buf, BUFSIZE, Nmz.w);
     nmz_chomp(buf);
 
-    nmz_dprintf("r:%d: %s", r, buf);
+    nmz_debug_printf("r:%d: %s", r, buf);
 }
 
 /* get size of file */
@@ -161,7 +161,7 @@ static int get_file_size (char *filename)
     struct stat st;
 
     stat(filename, &st);
-    nmz_dprintf("size of %s: %d\n", filename, (int)st.st_size);
+    nmz_debug_printf("size of %s: %d\n", filename, (int)st.st_size);
     return ((int)(st.st_size));
 }
 
@@ -230,11 +230,11 @@ static NmzResult prefix_match(char * orig_key, int v)
 		val.stat = ERR_TOO_MUCH_MATCH;
 		break;
 	    }
-	    nmz_dprintf("fw: %s, %d, %d\n", buf, tmp.num, val.num);
+	    nmz_debug_printf("fw: %s, %d, %d\n", buf, tmp.num, val.num);
 	} else
 	    break;
     }
-    nmz_dprintf("range: %d - %d\n", v + 1, i - 1);
+    nmz_debug_printf("range: %d - %d\n", v + 1, i - 1);
     return val;
 }
 
@@ -243,25 +243,25 @@ static enum nmz_search_mode detect_search_mode(char *key) {
     if (strlen(key) <= 1)
         return WORD_MODE;
     if (isfield(key)) { /* field search */
-	nmz_dprintf("do FIELD search\n");
+	nmz_debug_printf("do FIELD search\n");
         return FIELD_MODE;
     }
     if (*key == '/' && *(lastc(key)) == '/') {
-	nmz_dprintf("do REGEX search\n");
+	nmz_debug_printf("do REGEX search\n");
 	return REGEX_MODE;    /* regex match */
     } else if (*key == '*' 
                && *(lastc(key)) == '*'
                && *(key + strlen(key) - 2) != '\\' ) 
     {
-	nmz_dprintf("do REGEX (INTERNAL_MATCH) search\n");
+	nmz_debug_printf("do REGEX (INTERNAL_MATCH) search\n");
 	return REGEX_MODE;    /* internal match search (treated as regex) */
     } else if (*(lastc(key)) == '*'
         && *(key + strlen(key) - 2) != '\\')
     {
-	nmz_dprintf("do PREFIX_MATCH search\n");
+	nmz_debug_printf("do PREFIX_MATCH search\n");
 	return PREFIX_MODE;    /* prefix match search */
     } else if (*key == '*') {
-	nmz_dprintf("do REGEX (SUFFIX_MATCH) search\n");
+	nmz_debug_printf("do REGEX (SUFFIX_MATCH) search\n");
 	return REGEX_MODE;    /* suffix match  (treated as regex)*/
     } else if ((*key == '"' && *(lastc(key)) == '"') 
           || (*key == '{' && *(lastc(key)) == '}')) 
@@ -280,10 +280,10 @@ static enum nmz_search_mode detect_search_mode(char *key) {
     }
 
     if (strchr(key, '\t')) {
-	nmz_dprintf("do PHRASE search\n");
+	nmz_debug_printf("do PHRASE search\n");
 	return PHRASE_MODE;
     } else {
-	nmz_dprintf("do WORD search\n");
+	nmz_debug_printf("do WORD search\n");
         return WORD_MODE;
     }
 }
@@ -389,13 +389,13 @@ static int open_phrase_index_files(FILE **phrase, FILE **phrase_index)
 {
     *phrase = fopen(NMZ.p, "rb");
     if (*phrase == NULL) {
-        nmz_dprintf("%s: cannot open file.\n", NMZ.p);
+        nmz_debug_printf("%s: cannot open file.\n", NMZ.p);
         return 1;
     }
 
     *phrase_index = fopen(NMZ.pi, "rb");
     if (*phrase_index == NULL) {
-        nmz_dprintf("%s: cannot open file.\n", NMZ.pi);
+        nmz_debug_printf("%s: cannot open file.\n", NMZ.pi);
         return 1;
     }
     return 0;
@@ -457,7 +457,7 @@ static NmzResult do_phrase_search(char *key, NmzResult val)
 		strcat(word_mix, p);
 		h = hash(word_mix);
 		val = cmp_phrase_hash(h, val, phrase, phrase_index);
-		nmz_dprintf("\nhash:: <%s, %s>: h:%d, val.num:%d\n",
+		nmz_debug_printf("\nhash:: <%s, %s>: h:%d, val.num:%d\n",
 			     word_b, p, h, val.num);
 		if (val.num == 0) {
 		    break;
@@ -560,7 +560,7 @@ static NmzResult do_regex_search(char *orig_expr, NmzResult val)
 
     fp = fopen(NMZ.w, "rb");
     if (fp == NULL) {
-        nmz_dprintf("%s: cannot open file.\n", NMZ.w);
+        nmz_debug_printf("%s: cannot open file.\n", NMZ.w);
         val.stat = ERR_REGEX_SEARCH_FAILED;  /* cannot open regex index */
         return val;
     }
@@ -737,7 +737,7 @@ static void do_logging(char * query, int n)
 
     slog = fopen(NMZ.slog, "a");
     if (slog == NULL) {
-	nmz_wprintf("%s: Permission denied\n", NMZ.slog);
+	nmz_warn_printf("%s: Permission denied\n", NMZ.slog);
 	return;
     }
     rhost = safe_getenv("REMOTE_HOST");
@@ -841,7 +841,7 @@ int binsearch(char *orig_key, int prefix_match_mode)
 	fgets(term, BUFSIZE, Nmz.w);
 	nmz_chomp(term);
 
-	nmz_dprintf("searching: %s", term);
+	nmz_debug_printf("searching: %s", term);
 	for (e = 0, i = 0; *(term + i) != '\0' && *(key + i) != '\0' ; i++) {
 	    /*
 	     * compare in unsigned. 

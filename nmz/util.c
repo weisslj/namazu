@@ -1,5 +1,5 @@
 /*
- * $Id: util.c,v 1.23 1999-12-09 03:15:15 satoru Exp $
+ * $Id: util.c,v 1.24 1999-12-09 08:12:26 satoru Exp $
  *
  * Imported scan_hex(), scan_oct(), xmalloc(), xrealloc() from 
  * Ruby b19's"util.c" and "gc.c". Thanks to Matsumoto-san for consent!
@@ -282,7 +282,7 @@ void nmz_die_with_msg()
 }
 
 /* warning messaging function */
-void nmz_wprintf(char *fmt, ...)
+void nmz_warn_printf(char *fmt, ...)
 {
     va_list args;
 
@@ -302,7 +302,7 @@ void nmz_wprintf(char *fmt, ...)
 }
 
 /* debug messaging function */
-void nmz_dprintf(char *fmt, ...)
+void nmz_debug_printf(char *fmt, ...)
 {
     va_list args;
 
@@ -453,7 +453,7 @@ char *nmz_readfile(char *fname)
     stat(fname, &fstatus);
     fp = fopen(fname, "rb");
     if (fp == NULL) {
-        nmz_wprintf("can't open %s\n", fname);
+        nmz_warn_printf("can't open %s\n", fname);
         return 0;
     }
     buf = malloc(fstatus.st_size + 1);
@@ -502,7 +502,7 @@ void nmz_cat(char *fname)
 	}
 	fclose(fp);
     }
-    nmz_wprintf("can't open %s\n", fname);
+    nmz_warn_printf("can't open %s\n", fname);
 }
 
 char *safe_getenv(char *s)

@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.18 1999-12-09 03:15:15 satoru Exp $
+ * $Id: hlist.c,v 1.19 1999-12-09 08:12:26 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -479,7 +479,7 @@ NmzResult get_hlist(int index)
 
     if (TfIdf) {
         idf = log((double)document_number / (n/2)) / log(2);
-	nmz_dprintf("idf: %f (N:%d, n:%d)\n", idf, document_number, n/2);
+	nmz_debug_printf("idf: %f (N:%d, n:%d)\n", idf, document_number, n/2);
     }
 
     if (n >= IGNORE_HIT * 2) {  

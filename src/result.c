@@ -1,6 +1,6 @@
 /*
  * result.c -
- * $Id: result.c,v 1.24 1999-11-23 09:50:37 satoru Exp $
+ * $Id: result.c,v 1.25 1999-12-03 07:53:52 masao Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -36,6 +36,7 @@
 #include "em.h"
 #include "codeconv.h"
 #include "var.h"
+#include "parser.h"
 
 
 /*
@@ -112,6 +113,9 @@ static void emphasize(char *str)
 	char *ptr = str;
 	char key[BUFSIZE];
 	int keylen = 0;
+
+	if (isop(Query.tab[i]))
+	    continue;
 
 	strcpy(key, Query.tab[i]);
 

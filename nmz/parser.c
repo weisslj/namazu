@@ -2,7 +2,7 @@
  * 
  * parser.c -
  * 
- * $Id: parser.c,v 1.5 1999-11-23 14:18:34 satoru Exp $
+ * $Id: parser.c,v 1.6 1999-12-03 07:53:50 masao Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -50,27 +50,10 @@ static int Cp = 0; /* variable that saves current position of parser */
  *
  */
 
-static int isop(char*);
 static HLIST factor(int*);
 static int andop(void);
 static HLIST term(void);
 static int orop(void);
-
-/* check a character if metacharacter (operator) of not */
-static int isop(char * c)
-{
-    if ((strcmp(c, AND_STRING) == 0 ) ||
-	(strcmp(c, AND_STRING_ALT) == 0 ) ||
-	(strcmp(c, OR_STRING) == 0 ) ||
-	(strcmp(c, OR_STRING_ALT) == 0 ) ||
-	(strcmp(c, NOT_STRING) == 0 ) ||
-	(strcmp(c, NOT_STRING_ALT) == 0 ) ||
-	(strcmp(c, LP_STRING) == 0 ) ||
-	(strcmp(c, RP_STRING) == 0 ))
-	return 1;
-    return 0;
-}
-
 
 static HLIST factor(int *ignore)
 {
@@ -203,3 +186,20 @@ void init_parser(void)
 {
     Cp = 0;
 }
+
+/* check a character if metacharacter (operator) of not */
+int isop(char * c)
+{
+    if ((strcmp(c, AND_STRING) == 0 ) ||
+	(strcmp(c, AND_STRING_ALT) == 0 ) ||
+	(strcmp(c, OR_STRING) == 0 ) ||
+	(strcmp(c, OR_STRING_ALT) == 0 ) ||
+	(strcmp(c, NOT_STRING) == 0 ) ||
+	(strcmp(c, NOT_STRING_ALT) == 0 ) ||
+	(strcmp(c, LP_STRING) == 0 ) ||
+	(strcmp(c, RP_STRING) == 0 ))
+	return 1;
+    return 0;
+}
+
+

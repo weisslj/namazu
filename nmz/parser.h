@@ -18,5 +18,6 @@
 
 extern void init_parser(void);
 extern HLIST expr(void);
+extern int isop(char *);
 
 #endif /* _PARSER_H */

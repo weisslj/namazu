@@ -1,3 +1,10 @@
+1999-12-03  Masao Takaku  <masao@ulis.ac.jp>
+
+	* src/namazu.c: Don't print a form element at non-cgimode.
+
+	* nmz/parser.[ch], src/result.c (emphasize): Don't emphasize
+	with operator strings (&,|,!,and,or,not).
+
 1999-12-02  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* src/mknmz.pl.in (parse_options): Modify "config=s" handling.
@@ -283,6 +290,10 @@
 
 	* nmz/util.h: Added #ifndef condition to iskanji definition
 	for jperl.
+
+1999-11-11  Masao Takaku  <masao@ulis.ac.jp>
+
+	* nmz/regex.[ch]: Removed.
 
 1999-11-10  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 

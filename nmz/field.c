@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: field.c,v 1.32 2001-12-21 05:39:20 knok Exp $
+ * $Id: field.c,v 1.33 2002-11-15 09:01:48 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -49,6 +49,13 @@
 #include "idxname.h"
 
 /*
+ * Private variables
+ */
+
+static int cache_idx = 0, cache_num = 0;
+static struct field_cache fc[FIELD_CACHE_SIZE];
+
+/*
  *
  * Private functions
  *
@@ -57,6 +64,7 @@
 static void apply_field_alias ( char *field );
 static int is_field_safe_char ( int c );
 static void make_fullpathname_field ( int n );
+
 
 static void 
 apply_field_alias(char *field)
@@ -154,15 +162,7 @@ nmz_get_field_data(int idxid, int docid, const char *field, char *data)
     char fname[BUFSIZE];
     char tmpfield[BUFSIZE];
     int i;
-    static int cache_idx = 0, cache_num = 0;
     FILE *fp_field, *fp_field_idx;
-    struct field_cache {
-	int idxid;
-	int docid;
-	char field[BUFSIZE];
-	char data[BUFSIZE];
-    };
-    static struct field_cache fc[FIELD_CACHE_SIZE];
 
     strcpy(data, ""); /* For safety. */
 
@@ -225,4 +225,15 @@ nmz_get_field_data(int idxid, int docid, const char *field, char *data)
     }
 }
 
-
+void
+nmz_free_field_cache(void)
+{
+       int i;
+       for(i=0; i++; i < cache_num) {
+               fc[i].idxid =0;
+               fc[i].docid =0;
+               strcpy(fc[i].field, "");
+               strcpy(fc[i].data, "");
+       }
+       cache_num = 0;
+}

@@ -2,7 +2,7 @@
  * 
  * libnamazu.c - Namazu library api
  *
- * $Id: libnamazu.c,v 1.39 2002-03-26 10:49:46 knok Exp $
+ * $Id: libnamazu.c,v 1.40 2002-11-15 09:01:48 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -62,6 +62,7 @@
 #include "codeconv.h"
 #include "search.h"
 #include "hlist.h"
+#include "field.h"
 #include "i18n.h"
 #include "regex.h"
 #include "var.h"
@@ -95,6 +96,7 @@ nmz_free_internal(void)
     nmz_free_idxnames();
     nmz_free_aliases();
     nmz_free_replaces();
+    nmz_free_field_cache();
 }
 
 void 

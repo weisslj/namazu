@@ -2,7 +2,7 @@
  * 
  * libnamazu.h - Namazu library api
  *
- * $Id: libnamazu.h,v 1.48 2002-03-26 10:49:46 knok Exp $
+ * $Id: libnamazu.h,v 1.49 2002-11-15 09:01:48 knok Exp $
  * 
  */
 
@@ -226,6 +226,16 @@ struct nmz_hitnumlist {
     enum nmz_stat stat;        /* status code mainly used for error handling */
     struct nmz_hitnumlist *phrase; /* for a result of a phrase search */
     struct nmz_hitnumlist *next;
+};
+
+/*
+ * Field cache information
+ */
+struct field_cache {
+    int idxid;
+    int docid;
+    char field[BUFSIZE];
+    char data[BUFSIZE];
 };
 
 extern void nmz_free_aliases ( void );

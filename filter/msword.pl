@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: msword.pl,v 1.49 2004-08-15 04:07:41 opengl2772 Exp $
+# $Id: msword.pl,v 1.50 2004-09-12 04:35:42 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi,
 #               2000-2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -215,7 +215,7 @@ sub filter_wvWare ($$$$$) {
         $$cont =~ s!<TITLE.*?>.*?</TITLE>!!is;
 
         # div name shoud be removed.
-        $$cont =~ s!(<div(?:\s[A-Z]+\w*(?:=(?:".*?"|'.*?'|[^\s>]*))?)*)\s+name=(?:".*?"|'.*?'|[^\s>]*)(\s[A-Z]+\w*(?:=(?:".*?"|'.*?'|[^\s>]*))?\s*>)!$1$2!igs;
+        $$cont =~ s!(<div(?:\s[A-Z]+\w*(?:=(?:"(?:\\"|[^"])*"|'(?:\\'|[^'])*'|[^\s>]*))?)*)\s+name=(?:"(?:\\"|[^"])*"|'(?:\\'|[^'])*'|[^\s>]*)(\s[A-Z]+\w*(?:=(?:"(?:\\"|[^"])*"|'(?:\\'|[^'])*'|[^\s>]*))?\s*>)!$1$2!igs;
 
         codeconv::normalize_eucjp($cont);
     }
@@ -281,7 +281,7 @@ sub filter_wvHtml ($$$$$) {
         $$cont =~ s!<TITLE.*?>.*?</TITLE>!!is;
 
         # div name shoud be removed.
-        $$cont =~ s!(<div(?:\s[A-Z]+\w*(?:=(?:".*?"|'.*?'|[^\s>]*))?)*)\s+name=(?:".*?"|'.*?'|[^\s>]*)(\s[A-Z]+\w*(?:=(?:".*?"|'.*?'|[^\s>]*))?\s*>)!$1$2!igs;
+        $$cont =~ s!(<div(?:\s[A-Z]+\w*(?:=(?:"(?:\\"|[^"])*"|'(?:\\'|[^'])*'|[^\s>]*))?)*)\s+name=(?:"(?:\\"|[^"])*"|'(?:\\'|[^'])*'|[^\s>]*)(\s[A-Z]+\w*(?:=(?:"(?:\\"|[^"])*"|'(?:\\'|[^'])*'|[^\s>]*))?\s*>)!$1$2!igs;
 
         utf8_to_eucjp($cont);
     }

@@ -5,6 +5,15 @@
 # select-data returns data/en or data/ja depending on environment.
 LOG=`pwd`/test-log
 TARGET=`$srcdir/select-data`
+
+# help
+echo '  *** mknmz --help' >>$LOG
+../scripts/mknmz --help >> $LOG
+
+# show-config
+echo '  *** mknmz -C' >>$LOG
+../scripts/mknmz -C >> $LOG
+
 echo '  *** starting ' $0 >>$LOG
 
 if test ! -d idx1; then

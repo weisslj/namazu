@@ -1,3 +1,8 @@
+2004-02-21  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * tests/{mknmz-1, namazu-1}: Added. mknmz --help, -C, 
+        namazu --help, -C.
+
 2004-02-20  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* tests/Makefile.am: Added the file commonfuncs for CGI tests.
@@ -8428,4 +8433,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1097 2004-02-20 05:08:33 knok Exp $
+$Id: ChangeLog,v 1.1098 2004-02-20 18:49:01 opengl2772 Exp $

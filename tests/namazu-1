@@ -3,6 +3,15 @@
 # Test for namazu.
 #
 LOG=`pwd`/test-log
+
+# help
+echo '  *** namazu --help' >>$LOG
+(cd ../src; ./namazu --help >> $LOG)
+
+# show-config
+echo '  *** namazu -C' >>$LOG
+(cd ../src; ./namazu -C >> $LOG)
+
 echo '  *** starting ' $0 >>$LOG
 
 docnum=`perl -lne 'print $1 if /^files (\d+)/' idx1/NMZ.status`

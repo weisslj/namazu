@@ -2,7 +2,7 @@
  * 
  * parser.c -
  * 
- * $Id: parser.c,v 1.18 2000-01-10 09:07:47 satoru Exp $
+ * $Id: parser.c,v 1.19 2000-01-10 10:32:12 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -59,8 +59,8 @@ static NmzResult
 factor(int *ignore)
 {
     NmzResult val;
-    val.num = 0;
-
+    val.num  = 0;
+    val.stat = SUCCESS;
     while (1) {
 	char *token = nmz_get_querytoken(Cp);
         if (token == NULL) {
@@ -71,11 +71,10 @@ factor(int *ignore)
             Cp++;
             if (nmz_get_querytoken(Cp) == NULL) {
 		val.stat = ERR_INVALID_QUERY;
-		nmz_set_dyingmsg("foobar");
                 return val;
 	    }
             val = nmz_expr();
-	    if (val.stat == ERR_FATAL)
+	    if (val.stat != SUCCESS)
 	        return val;
             if (nmz_get_querytoken(Cp) == NULL) {
 		val.stat = ERR_INVALID_QUERY;
@@ -98,8 +97,9 @@ factor(int *ignore)
             Cp++;
             break;
         } else {
-	    val.stat = ERR_INVALID_QUERY;
             Cp++;
+	    val.stat = ERR_INVALID_QUERY;
+	    return val;
         }
     }
     return val;
@@ -138,11 +138,11 @@ term(void)
     int ignore = 0, op;
 
     left = factor(&ignore);
-    if (left.stat == ERR_FATAL)
+    if (left.stat != SUCCESS)
         return left;
     while ((op = andop())) {
 	right = factor(&ignore);
-	if (right.stat == ERR_FATAL)
+	if (right.stat != SUCCESS)
 	    return right;
 	if (op == AND_OP) {
 	    left = nmz_andmerge(left, right, &ignore);
@@ -184,14 +184,14 @@ nmz_expr(void)
     NmzResult left, right;
 
     left = term();
-    if (left.stat == ERR_FATAL)
+    if (left.stat != SUCCESS)
         return left;
     while (orop()) {
 	right = term();
-	if (right.stat == ERR_FATAL)
+	if (right.stat != SUCCESS)
 	    return right;
 	left = nmz_ormerge(left, right);
-	if (left.stat == ERR_FATAL)
+	if (left.stat != SUCCESS)
 	    return left;
     }
     return left;

@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.56 2000-01-09 11:28:55 satoru Exp $
+ * $Id: search.c,v 1.57 2000-01-10 10:32:12 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -169,8 +169,10 @@ prefix_match(const char *key, int v)
     }
 
     for (j = 0, i++;; i++, j++) {
-	/* Return if too much word would be hit
-           because treat 'a*' completely is too consuming */
+	/* 
+	 * Return if too much word would be hit
+         * because treat 'a*' completely is too consuming 
+	 */
 	if (j > IGNORE_MATCH) {
 	    nmz_free_hlist(val);
 	    val.stat = ERR_TOO_MUCH_MATCH;
@@ -271,9 +273,8 @@ do_prefix_match_search(const char *key, NmzResult val)
     if ((v = nmz_binsearch(key, 1)) != -1) { /* 2nd argument must be 1  */
         /* If found, do foward match */
         val = prefix_match(key, v);
-	if (val.stat == ERR_FATAL)
+	if (val.stat != SUCCESS)
 	    return val;
-	val.stat = SUCCESS;
     } else {
         val.num  = 0;  /* no hit */
 	val.stat = SUCCESS; /* no hit but success */
@@ -961,16 +962,13 @@ nmz_search(const char *query)
 		/* 
 		 * Save the error state for later error messaging.
 		 */
-		struct nmz_hitnumlist *cur;
-		cur = nmz_get_idx_hitnumlist(cur_idxnum);
-		if (cur == NULL) { /* error occured */
-		    cur = nmz_push_hitnum(cur, "", 0, tmp[i].stat);
-		    nmz_set_idx_hitnumlist(cur_idxnum, cur);
-		}
+		struct nmz_hitnumlist *cur = NULL;
+		cur = nmz_push_hitnum(cur, "", 0, tmp[i].stat);
 		if (cur == NULL) {
 		    hlist.stat = ERR_FATAL;
 		    return hlist;
 		}
+		nmz_set_idx_hitnumlist(cur_idxnum, cur);
 	    }
 
 	    /*

@@ -1,5 +1,9 @@
 2000-01-10  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* nmz/search.c (nmz_search): Fix error state handling.
+	(do_prefix_match_search): Fix serious bug. (cannot catch too much
+	match). 
+
 	* nmz/rcfile.c (nmz_load_rcfile): Handle a line ending with `\' to
 	concatenate the next line.
 	(parse_rcfile): Fix bug.

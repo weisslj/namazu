@@ -1,3 +1,9 @@
+2001-09-15  Kenji Suzuki <kenji@po.ganseki.ne.jp>
+
+	* filter/mhonarc.pl: Fixed case sensitive tag handling bug.
+	http://www.namazu.org/ml/namazu-devel-ja/msg01798.html
+	Reported by Kazuhiko, thanks.
+
 2001-09-13  Yoshinori TAKESAKO  <takesako@namazu.org>
 
 	* templete/NMZ.head{|.es|.fr|.ja}: Replaced method="get" into 
@@ -7032,4 +7038,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.867 2001-09-13 06:57:15 takesako Exp $
+$Id: ChangeLog,v 1.868 2001-09-15 00:45:28 kenji Exp $

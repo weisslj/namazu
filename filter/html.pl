@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: html.pl,v 1.32 2001-01-13 09:16:04 kenji Exp $
+# $Id: html.pl,v 1.33 2002-02-25 10:27:58 knok Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -99,6 +99,7 @@ sub html_filter ($$$$) {
     html::get_title_attr($contref);
     html::normalize_html_element($contref);
     html::erase_above_body($contref);
+    html::remove_comments($contref);
     html::weight_element($contref, $weighted_str, $headings);
     html::remove_html_elements($contref);
     # restore entities of each content.
@@ -226,6 +227,14 @@ sub erase_above_body ($) {
 }
 
 
+# remove all comments. it's not perfect but almost works.
+sub remove_comments ($) {
+    my ($contref) = @_;
+
+    # remove all comments
+    $$contref =~ s/<!--.*?-->//gs;
+}
+
 # Weight a score of a keyword in a given text using %conf::Weight hash.
 # This process make the text be surround by temporary tags 
 # \x7fXX\x7f and \x7f/XX\x7f. XX represents score.
@@ -265,9 +274,6 @@ sub element_space ($) {
 # remove all HTML elements. it's not perfect but almost works.
 sub remove_html_elements ($) {
     my ($contref) = @_;
-
-    # remove all comments
-    $$contref =~ s/<!--.*?-->//gs;
 
     # remove all elements
     $$contref =~ s!</?([A-Z]\w*)(?:\s+[A-Z]\w*(?:\s*=\s*(?:(["']).*?\2|[\w\-.]+))?)*\s*>!element_space($1)!gsixe;

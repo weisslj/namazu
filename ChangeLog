@@ -1,3 +1,8 @@
+2002-02-25  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* filter/html.pl (remove_comments): Added a new function.
+	(Patch contributed by Hamatani, Chihiro, thanks)
+
 2002-02-22  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* nmz/libnamazu.h (MAXPATH): Changed to same value as BUFSIZE.
@@ -7431,4 +7436,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.934 2002-02-22 07:33:01 knok Exp $
+$Id: ChangeLog,v 1.935 2002-02-25 10:27:57 knok Exp $

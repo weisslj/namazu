@@ -1,5 +1,9 @@
 2000-04-05  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* configure.in (AC_OUTPUT): Add tests/data/html-split/Makefile.
+
+	* tests/data/html-split/Makefile.am (EXTRA_DIST): New file.
+
 	* tests/data/Makefile.am: Add html-split.
 
 	* nmz/query.c (set_regex_trick): Change notation of array
@@ -5456,4 +5460,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.669 2000-04-05 07:52:46 satoru Exp $
+$Id: ChangeLog,v 1.670 2000-04-05 07:57:56 satoru Exp $

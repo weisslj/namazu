@@ -1,6 +1,6 @@
 # Process this file with automake to produce Makefile.in
 #
-# $Id: Makefile.am,v 1.36 2001-02-26 08:39:52 baba Exp $
+# $Id: Makefile.am,v 1.37 2001-08-20 07:52:31 rug Exp $
 #
 
 AUTOMAKE_OPTIONS = 1.4 no-dependencies
@@ -22,7 +22,7 @@ INCLUDES = -I$(srcdir) -I.. -I$(srcdir)/../lib -I$(srcdir)/../src \
 
 pkginclude_HEADERS = codeconv.h field.h hlist.h i18n.h idxname.h \
 	libnamazu.h l10n-ja.h parser.h query.h re.h regex.h \
-	search.h util.h var.h wakati.h 
+	search.h score.h util.h var.h wakati.h 
 lib_LTLIBRARIES = libnmz.la
 
 libnmz_la_SOURCES = alias.c alias.h codeconv.c codeconv.h \

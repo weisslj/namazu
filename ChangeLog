@@ -1,3 +1,7 @@
+2001-08-20  Ryuji Abe  <rug@namazu.org>
+
+	* nmz/Makefile.am (pkginclude_HEADERS): Never forget score.h!
+
 2001-08-16  Ryuji Abe  <rug@namazu.org>
 
 	* nmz/l10n-ja.c (nmz_is_lang_ja): Fixed to return correct value.
@@ -6896,4 +6900,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.847 2001-08-16 10:16:22 rug Exp $
+$Id: ChangeLog,v 1.848 2001-08-20 07:52:30 rug Exp $

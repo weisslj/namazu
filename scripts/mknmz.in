@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.47 2000-03-12 20:20:53 kenzo- Exp $
+# $Id: mknmz.in,v 1.48 2000-03-13 15:32:02 kenzo- Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -220,18 +220,25 @@ sub load_rcfiles () {
     push @cand, "$ENV{'HOME'}/.mknmzrc";
     push @cand, $ConfigFile if defined $ConfigFile;
 
-#    util::vprint(_("Reading rcfile: "));
+    util::vprint(_("Reading rcfile: "));
     for my $rcfile (@cand) {
 	if (-f $rcfile) {
 		load_rcfile ($rcfile);
-#	    util::vprint(" $rcfile");
+	    util::vprint(" $rcfile");
 	}
     }
-#    util::vprint("\n");
+    util::vprint("\n");
 }
 
 sub load_rcfile ($) {
 	my ($rcfile) = @_;
+    if ($SYSTEM eq "MSWin32" || $SYSTEM eq "os2") {
+	# convert \ to / with consideration for Shift_JIS Kanji code
+	$rcfile =~ 
+		s!([\x81-\x9f\xe0-\xef][\x40-\x7e\x80-\xfc]|[\x01-\x7f])!
+	    $1 eq "\\" ? "/" : $1!gex;
+    }
+	return if (grep {m/^$rcfile$/} @LoadedRcfiles);
     do $rcfile;
     $ConfigFile = $rcfile;
     push @LoadedRcfiles, $rcfile;

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: man.pl,v 1.23 2000-02-29 06:10:16 satoru Exp $
+# $Id: man.pl,v 1.24 2000-03-13 15:32:05 kenzo- Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -46,19 +46,22 @@ sub status() {
     unless (defined $roffpath) {
 	return 'no';
     }
-
-    if (util::islang("ja") && $roffpath =~ /\bj?groff$/) {
-	# Check wheter -Tnippon is valid.
-	`echo ''| $roffpath -Tnippon 1>/dev/null 2>&1`;
-	if ($? == 0) {
-	    $roffargs = '-Wall -Tnippon' ;
-	} else {
+    if (util::islang("ja") && $roffpath =~ /\bj?groff(\.exe)?$/) {
+	if (($mknmz::SYSTEM eq "MSWin32") || ($mknmz::SYSTEM eq "os2")){
 	    $roffargs = '-Wall -Tascii';
+	} else {
+	    # Check wheter -Tnippon is valid.
+	    `echo ''| $roffpath -Tnippon 1>/dev/null 2>&1`;
+	    if ($? == 0) {
+		$roffargs = '-Wall -Tnippon' ;
+	    } else {
+		$roffargs = '-Wall -Tascii';
+	    }
 	}
 	# print "// $roffargs\n";
-    } elsif ($roffpath =~ /\bj?groff$/) {
+    } elsif ($roffpath =~ /\bj?groff(\.exe)?$/) {
 	$roffargs = '-Tascii';
-    } elsif ($roffpath =~ /nroff$/) {
+    } elsif ($roffpath =~ /nroff(\.exe)?$/) {
 	$roffargs = '';
     } else {
 	die;

@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: util.c,v 1.66 2000-03-12 02:07:06 satoru Exp $
+ * $Id: util.c,v 1.67 2000-03-13 15:32:03 kenzo- Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -320,9 +320,13 @@ nmz_pathcat(const char *base, char *name)
 {
     char work[BUFSIZE];
     int i;
+    int win32 = 0;
+#if  defined(_WIN32) || defined(__EMX__)
+    win32 = 1;
+#endif
 
     for (i = strlen(name) - 1; i >= 0; i--) {
-        if (name[i] == '/') {
+        if (name[i] == '/' || (win32 && name[i] == '\\')) {
             strcpy(name, name + i + 1);
             break;
         }

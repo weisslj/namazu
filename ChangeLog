@@ -1,4 +1,18 @@
-2000-03-13  ken-ichi Hirose  <kenzo-@tama.or.jp>
+2000-03-14  Ken-ichi Hirose  <kenzo-@tama.or.jp>
+
+	* scripts/mknmz.in (load_rcfile): Fix reread same file bug.
+
+	* filter/win32/oleexcel.pl (ReadExcel): commentout $excel->{Visible}.
+	And some print line.
+
+	* nmz/util.c (nmz_pathcat): Add (win32 && name[i] == '\\').
+
+	* src/namazu-cgi.c (combine_pathname): Add (win32 && dest[i] == '\\').
+
+	* filter/man.pl (status): Add file extention regex for win 
+	by Hideyuki SHIRAI <shirai@rdmg.mgcs.mei.co.jp>.
+
+2000-03-13  Ken-ichi Hirose  <kenzo-@tama.or.jp>
 
 	* scripts/mknmz.in (load_rcfiles): separate load_rcfile() function.
 	(main): Add load_rcfile($ENV{'MKNMZRC'}).

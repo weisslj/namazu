@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: oleexcel.pl,v 1.1 2000-03-06 10:16:55 rug Exp $
+# $Id: oleexcel.pl,v 1.2 2000-03-13 15:32:03 kenzo- Exp $
 # Copyright (C) 1999 Jun Kurabe ,
 #               1999 Ken-ichi Hirose All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -151,14 +151,14 @@ sub ReadExcel {
     }
     # End of Copy from Win32::OLE Example Program
     # for debug
-    $excel->{Visible} = 1;
+    # $excel->{Visible} = 1;
 
     # Load Office 98 Constant
     $office_consts = Win32::OLE::Const->Load("Microsoft Office 8.0 Object Library");
 
     my $wb = $excel->Workbooks->Open($fileName);
-    print $fileName,"\n";
-#    print $wb,"\n";
+	# print $fileName,"\n";
+	# print $wb,"\n";
     die "Cannot open File $fileName" unless ( defined $wb );
 
     $allText = '';
@@ -214,10 +214,10 @@ sub getShapes {
     sub enum_a_shape {
 	my $obj = shift;
 	$getShapes::depth++;
-	print "passed YY $getShapes::depth\n";
-	print "type = ", $obj->{Type}, "\n";
+	# print "passed YY $getShapes::depth\n";
+	# print "type = ", $obj->{Type}, "\n";
 	if ( $obj->{Type} == $office_consts->{msoGroup} ) { #msoGroup = 6
-#	    print "passed XX\n";
+	# print "passed XX\n";
 	    oleexcel::enum($obj->GroupItems,\&enum_a_shape);
 	} elsif ($obj->{Type} == $office_consts->{msoTextBox} ||
 		 $obj->{Type} == $office_consts->{msoAutoShape} ) { 

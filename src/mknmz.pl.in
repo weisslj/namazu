@@ -542,7 +542,8 @@ sub make_headfoot_pages($$) {
 }
 
 sub remove_backup_files() {
-    unlink glob "NMZ.*$$*";
+    $conf::File{'FINFO_'} =~ m!^(.*/)!;
+    unlink glob "${1}NMZ.*$$*";
 }
 
 # parse comannd line options

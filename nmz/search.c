@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.7 1999-11-19 02:09:12 satoru Exp $
+ * $Id: search.c,v 1.8 1999-11-19 02:58:16 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -36,7 +36,11 @@
 #endif
 #include <sys/stat.h>
 
+#ifdef HAVE_CONFIG_H
+#  include "config.h"
+#endif
 #include "namazu.h"
+#include "libnamazu.h"
 #include "util.h"
 #include "field.h"
 #include "result.h"
@@ -48,6 +52,8 @@
 #include "search.h"
 #include "i18n.h"
 #include "codeconv.h"
+#include "var.h"
+#include "magic.h"
 
 enum { ALLOW, DENY } perm;
 

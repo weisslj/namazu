@@ -2,7 +2,7 @@
  * 
  * usage.c -
  * 
- * $Id: usage.c,v 1.12 1999-11-19 02:09:16 satoru Exp $
+ * $Id: usage.c,v 1.13 1999-11-19 02:58:21 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -25,10 +25,15 @@
  * 
  */
 #include <stdio.h>
+#ifdef HAVE_CONFIG_H
+#  include "config.h"
+#endif
 #include "namazu.h"
+#include "libnamazu.h"
 #include "codeconv.h"
 #include "message.h"
 #include "usage.h"
+#include "i18n.h"
 
 /*
  *

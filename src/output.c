@@ -2,7 +2,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#ifdef HAVE_CONFIG_H
+#  include "config.h"
+#endif
 #include "namazu.h"
+#include "libnamazu.h"
 #include "codeconv.h"
 #include "output.h"
 #include "util.h"
@@ -11,6 +15,8 @@
 #include "result.h"
 #include "em.h"
 #include "i18n.h"
+#include "var.h"
+#include "magic.h"
 
 /*
  *

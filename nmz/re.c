@@ -2,7 +2,7 @@
  * 
  * re.c -
  * 
- * $Id: re.c,v 1.3 1999-11-19 02:09:11 satoru Exp $
+ * $Id: re.c,v 1.4 1999-11-19 02:58:16 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -28,12 +28,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "regex.h"
+#ifdef HAVE_CONFIG_H
+#  include "config.h"
+#endif
 #include "namazu.h"
+#include "libnamazu.h"
+#include "regex.h"
 #include "util.h"
 #include "hlist.h"
 #include "re.h"
 #include "i18n.h"
+#include "var.h"
+#include "magic.h"
 
 #define STEP 256
 

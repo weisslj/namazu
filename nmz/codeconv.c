@@ -2,7 +2,7 @@
  * 
  * codeconv.c -
  * 
- * $Id: codeconv.c,v 1.4 1999-11-19 02:09:10 satoru Exp $
+ * $Id: codeconv.c,v 1.5 1999-11-19 02:58:15 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -34,11 +34,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#ifdef HAVE_CONFIG_H
+#  include "config.h"
+#endif
 #include "namazu.h"
 #include "libnamazu.h"
 #include "codeconv.h"
 #include "util.h"
 #include "i18n.h"
+#include "magic.h"
 
 static uchar kanji2nd;
 

@@ -1,6 +1,8 @@
 #ifndef _RE_H
 #define _RE_H
 
+#include "libnamazu.h" /* for HLIST struct */
+
 #define ALLOC_N(type,n) (type*)xmalloc(sizeof(type)*(n))
 #define ALLOC(type) (type*)xmalloc(sizeof(type))
 #define MEMZERO(p,type,n) memset((p), 0, sizeof(type)*(n))

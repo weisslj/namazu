@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.19 1999-11-19 02:09:15 satoru Exp $
+ * $Id: form.c,v 1.20 1999-11-19 02:58:20 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -30,7 +30,11 @@
 #include <string.h>
 #include <ctype.h>
 #include <unistd.h>
+#ifdef HAVE_CONFIG_H
+#  include "config.h"
+#endif
 #include "namazu.h"
+#include "libnamazu.h"
 #include "util.h"
 #include "form.h"
 #include "output.h"
@@ -38,6 +42,8 @@
 #include "hlist.h"
 #include "codeconv.h"
 #include "i18n.h"
+#include "var.h"
+#include "magic.h"
 
 /*
  *
@@ -78,8 +84,6 @@ static int cmp_element(char *s1, char *s2)
         return 1;
     }
 }
-
-#define iseuc(c)  ((c) >= 0xa1 && (c) <= 0xfe)
 
 /* replace <input type="text" name="query"  value="hogehoge"> */
 static int replace_query_value(char *p, char *query)

@@ -1,5 +1,12 @@
 1999-11-19  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* **/*.c: Include "config.h" by themselves.
+	Avoid nesting include files.
+
+	* lib/i18n.h: Define gettext related macros.
+	
+	* src/namazu.h: Be empty to avoid nesting include files
+
 	* **/*.[ch]: Abolish hairy lines for comments like:
 	/******************************************************
 

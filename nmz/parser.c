@@ -2,7 +2,7 @@
  * 
  * parser.c -
  * 
- * $Id: parser.c,v 1.3 1999-11-19 02:09:11 satoru Exp $
+ * $Id: parser.c,v 1.4 1999-11-19 02:58:16 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -32,10 +32,16 @@
 
 #include <stdio.h>
 #include <string.h>
+#ifdef HAVE_CONFIG_H
+#  include "config.h"
+#endif
 #include "namazu.h"
+#include "libnamazu.h"
 #include "hlist.h"
 #include "search.h"
 #include "parser.h"
+#include "var.h"
+#include "magic.h"
 
 static int Cp = 0; /* variable that saves current position of parser */
 

@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.5 1999-11-19 02:09:11 satoru Exp $
+ * $Id: hlist.c,v 1.6 1999-11-19 02:58:15 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -30,10 +30,16 @@
 #include <string.h>
 #include <unistd.h>
 #include <math.h>
+#ifdef HAVE_CONFIG_H
+#  include "config.h"
+#endif
 #include "namazu.h"
+#include "libnamazu.h"
 #include "util.h"
 #include "hlist.h"
 #include "field.h"
+#include "var.h"
+#include "magic.h"
 
 static int DocNum = 0;  /* Number of documents covered in atarget index */
 static char Field[BUFSIZE] = "";  /* Field name used with sorting */

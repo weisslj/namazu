@@ -1,6 +1,8 @@
 #ifndef _OUTPUT_H
 #define _OUTPUT_H
 
+#include "libnamazu.h"  /* for HLIST struct */
+
 extern void html_print(char*);
 extern void put_current_range(int);
 extern void put_page_index(int);

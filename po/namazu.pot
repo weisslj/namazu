@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 1999-11-19 11:03+0900\n"
+"POT-Creation-Date: 1999-11-19 11:50+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -14,12 +14,12 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: ENCODING\n"
 
-#: nmz/conf.c:471
+#: nmz/conf.c:475
 #, c-format
 msgid "Config:  %s\n"
 msgstr ""
 
-#: nmz/conf.c:474
+#: nmz/conf.c:478
 #, c-format
 msgid ""
 "Default: %s\n"
@@ -29,98 +29,98 @@ msgid ""
 "Scoring: %s\n"
 msgstr ""
 
-#: nmz/conf.c:487
+#: nmz/conf.c:491
 #, c-format
 msgid "Alias:   \"%s\" -> \"%s\"\n"
 msgstr ""
 
-#: nmz/conf.c:496
+#: nmz/conf.c:500
 #, c-format
 msgid "Replace: \"%s\" -> \"%s\"\n"
 msgstr ""
 
 #. if no item available
-#: nmz/wakati.c:237
+#: nmz/wakati.c:244
 msgid ""
 "\t<h2>Error!</h2>\n"
 "<p>Invalid query.</p>\n"
 msgstr ""
 
-#: nmz/wakati.c:243
+#: nmz/wakati.c:250
 msgid ""
 "\t<h2>Error!</h2>\n"
 "<p>Too many query tokens.</p>\n"
 msgstr ""
 
-#: src/cgi.c:103 src/cgi.c:113
+#: src/cgi.c:109 src/cgi.c:119
 msgid "Invalid idxname."
 msgstr ""
 
-#: src/cgi.c:185 src/cgi.c:200
+#: src/cgi.c:191 src/cgi.c:206
 msgid "Too long QUERY_STRING"
 msgstr ""
 
-#: src/namazu.c:321
+#: src/namazu.c:327
 msgid "\t<p>No document matching your query.</p>\n"
 msgstr ""
 
-#: src/output.c:188
+#: src/output.c:194
 msgid "\t<strong>Page:</strong> "
 msgstr ""
 
-#: src/output.c:222
+#: src/output.c:228
 #, c-format
 msgid "Current List: %d"
 msgstr ""
 
-#: src/output.c:358
+#: src/output.c:364
 #, c-format
 msgid " [ TOTAL: %d ]"
 msgstr ""
 
-#: src/output.c:381
+#: src/output.c:387
 msgid " (Too many words matched. Ignored.)"
 msgstr ""
 
-#: src/output.c:383
+#: src/output.c:389
 msgid " (Too many pages hit. Ignored.)"
 msgstr ""
 
-#: src/output.c:385
+#: src/output.c:391
 msgid " (cannot open regex index)"
 msgstr ""
 
-#: src/output.c:387
+#: src/output.c:393
 msgid " (cannot open phrase index)"
 msgstr ""
 
-#: src/output.c:389
+#: src/output.c:395
 msgid " (cannot open this index)\n"
 msgstr ""
 
-#: src/output.c:391
+#: src/output.c:397
 msgid "(You don't have a permission to access the index)"
 msgstr ""
 
-#: src/output.c:401
+#: src/output.c:407
 msgid "\t<h2>Results:</h2>\n"
 msgstr ""
 
-#: src/output.c:408
+#: src/output.c:414
 msgid "References: "
 msgstr ""
 
-#: src/output.c:416
+#: src/output.c:422
 msgid "\t<p><strong> Total "
 msgstr ""
 
-#: src/output.c:423
+#: src/output.c:429
 msgid ""
 "\t documents matching your query.</strong></p>\n"
 "\n"
 msgstr ""
 
-#: src/usage.c:44
+#: src/usage.c:49
 #, c-format
 msgid ""
 "namazu %s, a search program of Namazu.\n"
@@ -155,10 +155,10 @@ msgid ""
 "Report bugs to <bug-namazu@namazu.org>.\n"
 msgstr ""
 
-#: src/usage.c:82
+#: src/usage.c:87
 msgid "Usage: namazu [options] <query> [index]...\n"
 msgstr ""
 
-#: src/usage.c:83
+#: src/usage.c:88
 msgid "Try `namazu --help' for more information.\n"
 msgstr ""

@@ -2,7 +2,7 @@
  * 
  * libnamazu.c - Namazu library api
  *
- * $Id: libnamazu.c,v 1.4 1999-11-18 02:46:00 satoru Exp $
+ * $Id: libnamazu.c,v 1.5 1999-11-19 02:58:16 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
@@ -36,6 +36,13 @@
 #include <sys/stat.h>
 #include <signal.h>
 
+#ifdef HAVE_CONFIG_H
+#  include "config.h"
+#endif
+#include "namazu.h"
+#ifdef HAVE_CONFIG_H
+#  include "config.h"
+#endif
 #include "namazu.h"
 #include "libnamazu.h"
 #include "getopt.h"
@@ -50,6 +57,8 @@
 #include "hlist.h"
 #include "i18n.h"
 #include "regex.h"
+#include "var.h"
+#include "magic.h"
 
 void free_idxnames(void)
 {

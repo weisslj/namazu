@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.40 1999-11-19 02:09:16 satoru Exp $
+ * $Id: namazu.c,v 1.41 1999-11-19 02:58:21 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -42,6 +42,9 @@
 #define	SIGALRM	14	/* alarm clock */
 #endif
 
+#ifdef HAVE_CONFIG_H
+#  include "config.h"
+#endif
 #include "namazu.h"
 #include "libnamazu.h"
 #include "getopt.h"
@@ -56,6 +59,9 @@
 #include "hlist.h"
 #include "idxname.h"
 #include "i18n.h"
+#include "message.h"
+#include "var.h"
+#include "magic.h"
 
 /*
  *

@@ -2,19 +2,15 @@
  * 
  * libnamazu.h - Namazu library api
  *
- * $Id: libnamazu.h,v 1.8 1999-11-19 02:09:11 satoru Exp $
+ * $Id: libnamazu.h,v 1.9 1999-11-19 02:58:16 satoru Exp $
  * 
  */
 
 #ifndef _LIBNAMAZU_H
 #define _LIBNAMAZU_H
 
-#include "critical.h"
-#include "magic.h"
-#include "regex.h"
-
 #include <stdio.h>  /* for FILE struct */
-
+#include "critical.h"  /* for INDEX_MAX */
 
 /*
  *
@@ -121,8 +117,6 @@ struct indices {
     int phrasehit[INDEX_MAX + 1]; /* results of each phrase hits */
 };
 typedef struct indices INDICES;
-
-#include "var.h"
 
 extern void free_idxnames(void);
 extern void free_aliases(void);

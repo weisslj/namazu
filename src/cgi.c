@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.25 1999-11-19 02:09:15 satoru Exp $
+ * $Id: cgi.c,v 1.26 1999-11-19 02:58:20 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -29,7 +29,11 @@
 #include <string.h>
 #include <unistd.h>
 #include <ctype.h>
+#ifdef HAVE_CONFIG_H
+#  include "config.h"
+#endif
 #include "namazu.h"
+#include "libnamazu.h"
 #include "util.h"
 #include "usage.h"
 #include "message.h"
@@ -39,6 +43,8 @@
 #include "hlist.h"
 #include "i18n.h"
 #include "idxname.h"
+#include "magic.h"
+#include "var.h"
 
 /*
  *
@@ -331,7 +337,7 @@ static void process_cgi_var_subquery(char *value, CGIARG *ca)
 	    decode_uri(value);
 	}
     }
-#endif MSIE4MACFIX
+#endif /* MSIE4MACFIX */
 
     strcpy(ca->subquery, value);
 }

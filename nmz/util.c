@@ -12,8 +12,15 @@
 #include <sys/types.h>
 #endif
 #include <sys/stat.h>
+#ifdef HAVE_CONFIG_H
+#  include "config.h"
+#endif
 #include "namazu.h"
+#include "libnamazu.h"
+#include "message.h"
 #include "util.h"
+#include "i18n.h"
+#include "var.h"
 
 /*
  *

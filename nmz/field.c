@@ -1,12 +1,16 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>
+#ifdef HAVE_CONFIG_H
+#  include "config.h"
+#endif
 #include "namazu.h"
 #include "libnamazu.h"
 #include "field.h"
 #include "result.h"
 #include "util.h"
 #include "re.h"
+#include "var.h"
 
 /*
  *

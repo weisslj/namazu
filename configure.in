@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.48 1999-11-02 08:49:26 satoru Exp $
+dnl $Id: configure.in,v 1.49 1999-11-02 09:27:11 satoru Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -321,6 +321,12 @@ else
         else
             $PERL Makefile.PL LIB=$PMDIR
         fi
+
+	# To prevent to remove Makefile when doing 'make clean'
+	grep -v '^	-mv Makefile Makefile\.old \$(DEV_NULL)' \
+	Makefile > Makefile.tmp
+	mv Makefile.tmp Makefile
+
         cd ..
         FILE_MMAGIC="File-MMagic"
     fi

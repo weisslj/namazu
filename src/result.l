@@ -106,6 +106,7 @@ void put_hlist(HLIST hlist)
 		exit(-1);
 	}
 	yylex();
+	fclose(yyin);
 	fputx(Buf, stdout);
 	fputx("\n", stdout);
     }

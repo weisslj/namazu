@@ -1,5 +1,13 @@
 2000-02-05  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* nmz/replace.c (nmz_add_replace): Change behavior: Add new
+	element to the end of list.
+
+	* nmz/alias.c (nmz_add_alias): Ditto.
+
+	* nmz/util.c (nmz_add_strlist): Renamed from nmz_push_strlist.
+	(nmz_add_strlist): Simplified.
+
 	* scripts/mknmz.in (put_log): Fix commas() causing bug.
 
 2000-02-04  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mailnews.pl,v 1.19 2000-01-06 10:01:49 satoru Exp $
+# $Id: mailnews.pl,v 1.20 2000-02-05 13:15:02 satoru Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -78,7 +78,7 @@ sub mailnews_filter ($$$) {
     my @tmp = split(/\n/, $$contref);
   HEADER_PROCESSING:
     while (@tmp) {
-	$line = shift(@tmp);
+	$line = shift @tmp;
 	last if ($line =~ /^$/);  # if an empty line, header is over
 	# connect the two lines if next line has leading spaces
 	while (defined($tmp[0]) && $tmp[0] =~ /^\s+/) {
@@ -137,8 +137,9 @@ sub mailnews_filter ($$$) {
 	goto HEADER_PROCESSING;
     }
     $$contref = join("\n", @tmp);
+
+    # Handle MIME multipart message.
     if ($boundary) {
-	# Handle a multipart message of MIME
 	$boundary =~ s/(\W)/\\$1/g;
 	$$contref =~ s/This is multipart message.\n//i;
 

@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: util.c,v 1.56 2000-02-02 04:11:26 rug Exp $
+ * $Id: util.c,v 1.57 2000-02-05 13:15:04 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -534,33 +534,36 @@ nmz_strerror(enum nmz_stat errnum)
     return msg;
 }
 
+/*
+ * Add a new element to the list and return it.
+ */
 struct nmz_strlist* 
-nmz_push_strlist(struct nmz_strlist *list, const char *arg)
+nmz_add_strlist(struct nmz_strlist *list, const char *arg)
 {
-    struct nmz_strlist *newelem;
+    struct nmz_strlist *newp;
 
-    newelem = malloc(sizeof(struct nmz_strlist));
-    if (newelem == NULL) {
+    newp = malloc(sizeof(struct nmz_strlist));
+    if (newp == NULL) {
 	return NULL;
     }
 
-    newelem->value = malloc(strlen(arg) + 1);
-    if (newelem->value == NULL) {
+    newp->value = malloc(strlen(arg) + 1);
+    if (newp->value == NULL) {
 	 return NULL;
     }
-    strcpy(newelem->value, arg);
-    newelem->next = NULL;
+    strcpy(newp->value, arg);
+    newp->next = NULL;
 
     if (list == NULL) {
-	return newelem;
+	return newp;
     } else {
-	struct nmz_strlist *prev = NULL,  *ptr = list;
-	while (ptr != NULL) {
-	    prev = ptr;
-	    ptr  = ptr->next;
+	struct nmz_strlist *ptr = list;
+
+	while (ptr->next != NULL) {
+	    ptr = ptr->next;
 	}
-	assert(prev != NULL);
-	prev->next = newelem;
+	assert(ptr->next == NULL);
+	ptr->next = newp;
 	return list;
     }
     assert(0);

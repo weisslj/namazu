@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.17 2000-02-01 06:36:01 rug Exp $
+ * $Id: rcfile.c,v 1.18 2000-02-05 13:15:06 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -355,12 +355,12 @@ get_rc_args(const char *line)
     line += n;
     /* Determine whether or not this line is only a blank */
     if (*line == '\0') {
-	return nmz_push_strlist(list, "BLANK");
+	return nmz_add_strlist(list, "BLANK");
     }
 
     /* Determine whether or not this line is only a comment */
     if (*line == '#') {
-	return nmz_push_strlist(list, "COMMENT");
+	return nmz_add_strlist(list, "COMMENT");
     }
 
     /* Get a directive name. */
@@ -373,7 +373,7 @@ get_rc_args(const char *line)
 	}
 	strncpy(directive, line, n);
 	directive[n] = '\0';  /* Hey, don't forget this after strncpy()! */
-	list = nmz_push_strlist(list, directive);
+	list = nmz_add_strlist(list, directive);
 	line += n;
     }
 
@@ -396,7 +396,7 @@ get_rc_args(const char *line)
 	/* Replace ~/ */
 	replace_home(arg);
 
-	list = nmz_push_strlist(list, arg);
+	list = nmz_add_strlist(list, arg);
 
 	/* Skip a delimiter after the arg */
 	n = strspn(line, " \t");    /* skip white spaces */

@@ -2,7 +2,7 @@
  * 
  * replace.c - 
  *
- * $Id: replace.c,v 1.13 2000-01-29 04:58:18 satoru Exp $
+ * $Id: replace.c,v 1.14 2000-02-05 13:15:04 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -30,6 +30,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 #include <errno.h>
 #include "replace.h"
 #include "libnamazu.h"
@@ -167,6 +168,9 @@ nmz_replace_uri(char *uri)
     return 0;
 }
 
+/* 
+ * Add a new element to the end of `replaces' list.
+ */ 
 enum nmz_stat 
 nmz_add_replace(const char *pat, const char *rep)
 {
@@ -203,9 +207,19 @@ nmz_add_replace(const char *pat, const char *rep)
 	nmz_re_free_pattern(newp->pat_re);
 	newp->pat_re = NULL;
     }
-    
-    newp->next = replaces;
-    replaces = newp;
+
+    newp->next = NULL;
+    if (replaces == NULL) {
+	replaces = newp;
+    } else {
+	struct nmz_replace *ptr = replaces;
+
+	while (ptr->next != NULL) {
+	    ptr  = ptr->next;
+	}
+	assert(ptr->next == NULL);
+	ptr->next = newp;
+    }
 
     return SUCCESS;
 }

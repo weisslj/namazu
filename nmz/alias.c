@@ -2,7 +2,7 @@
  * 
  * alias.c - 
  *
- * $Id: alias.c,v 1.13 2000-01-29 04:58:18 satoru Exp $
+ * $Id: alias.c,v 1.14 2000-02-05 13:15:04 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -31,6 +31,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
+#include <assert.h>
 #include "alias.h"
 #include "util.h"
 #include "libnamazu.h"
@@ -44,6 +45,9 @@ static struct nmz_alias  *aliases  = NULL;
  *
  */
 
+/* 
+ * Add a new element to the end of `aliases' list.
+ */ 
 enum nmz_stat 
 nmz_add_alias(const char *alias, const char *real)
 {
@@ -68,8 +72,20 @@ nmz_add_alias(const char *alias, const char *real)
 
     strcpy(newp->alias, alias);
     strcpy(newp->real, real);
-    newp->next = aliases;
-    aliases = newp;
+
+    newp->next = NULL;
+    if (aliases == NULL) {
+	aliases = newp;
+    } else {
+	struct nmz_alias *ptr = aliases;
+
+	while (ptr->next != NULL) {
+	    ptr  = ptr->next;
+	}
+	assert(ptr->next == NULL);
+	ptr->next = newp;
+    }
+
     return SUCCESS;
 }
 

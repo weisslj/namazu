@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: hdml.pl,v 1.5 2001-02-07 10:13:53 knok Exp $
+# $Id: hdml.pl,v 1.6 2001-02-07 10:23:10 knok Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -104,7 +104,7 @@ sub get_title ($$) {
     my ($contref, $weighted_str) = @_;
     my $title = '';
     
-    if ($$contref =~ s!<[A-Z]+[^>]*\s+TITLE\s*=\s*[\"\']?([^\"\']*)[\"\']?[^>]*>! $1 !i) {
+    if ($$contref =~ s!<[A-Z]+[^>]*\s+TITLE\s*=\s*[\"\']?([^\"\'>]*)[\"\']?[^>]*>! $1 !i) {
 	$title = $1;
 	$title =~ s/\s+/ /g;
 	$title =~ s/^\s+//;

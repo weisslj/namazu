@@ -2,8 +2,8 @@
 
   util.h -
 
-  $Author: kenzo- $
-  $Date: 1999-11-14 22:54:02 $
+  $Author: knok $
+  $Date: 1999-11-15 09:24:39 $
   created at: Thu Mar  9 11:55:53 JST 1995
 
   Copyright (C) 1993-1998 Yukihiro Matsumoto
@@ -59,7 +59,9 @@ uchar *lastc();
 size_t freadx();
 long getidxptr(FILE* , long);
 int issymbol(int);
+#ifndef die /* for perl XSUB... */
 void die(char*, ...);
+#endif
 void diemsg(char*, ...);
 void diewithmsg();
 void warnf(char*, ...);

@@ -1,6 +1,6 @@
 # File::MMagic
 #
-# $Id: MMagic.pm,v 1.7 1999-10-11 04:24:59 satoru Exp $
+# $Id: MMagic.pm,v 1.8 1999-11-15 09:24:32 knok Exp $
 #
 # This program is originated from file.kulp that is a production of The
 # Unix Reconstruction Projct.
@@ -274,7 +274,7 @@ BEGIN {
 	    f => "\f",
 	    v => "\v" );
 
-$VERSION = "0.18.2";
+$VERSION = "0.18.3";
 undef $dataLoc;
 }
 
@@ -290,6 +290,14 @@ sub new {
 	$dataLoc = $fh->tell() if (! defined $dataLoc);
 	$fh->seek($dataLoc, 0);
 	&readMagicHandle($self, $fh);
+    } else {
+	my $filename = shift;
+	my $fh = new FileHandle;
+	if ($fh->open("< $filename")) {
+	    &readMagicHandle($slef, $fh);
+	} else {
+	    warn __PACKAGE__ . " couldn't load specified file $filename";
+	}
     }
 
 # from the BSD names.h, some tokens for hard-coded checks of

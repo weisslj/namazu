@@ -1,3 +1,9 @@
+1999-11-15  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* File-MMagic/* : New upstream version.
+
+	* nmz/util.h: Added a workaround for compiling perl XSUB.
+
 1999-11-15  Ken-ichi Hirose  <kenzo-@tama.or.jp>
 
 	* src/cgi.c nmz/{util.h util.c search.c hlist.c}:

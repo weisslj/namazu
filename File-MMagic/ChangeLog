@@ -1,3 +1,9 @@
+1999-11-15  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* MMagic.pm (new): Changed to handle specified filename for
+	magic file.
+	(Thanks for Mr. Philippe Chiasson.)
+
 1999-10-27  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* Added 'AUTHOR' and 'ABSTRACT' paramaters on Makefile.PL.

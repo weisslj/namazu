@@ -1,3 +1,10 @@
+2000-04-04  Masao Takaku  <masao@ulis.ac.jp>
+
+	* src/form.c (print_headfoot): Avoid printing unencoded HTML tags
+	in query.
+
+	* src/output.c (print_hitnum_each): Likewise.
+
 2000-04-04  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* tests/data/html-split/html-split.html: New file.
@@ -215,7 +222,6 @@
 
 2000-03-13  Ken-ichi Hirose  <kenzo-@tama.or.jp>
 
->>>>>>> 1.631
 	* scripts/mknmz.in (load_rcfiles): separate load_rcfile() function.
 	(main): Add load_rcfile($ENV{'MKNMZRC'}).
 
@@ -5404,4 +5410,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.664 2000-04-04 07:35:48 satoru Exp $
+$Id: ChangeLog,v 1.665 2000-04-04 07:38:59 masao Exp $

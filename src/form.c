@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.54 2000-03-04 11:11:39 satoru Exp $
+ * $Id: form.c,v 1.55 2000-04-04 07:38:59 masao Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -408,7 +408,7 @@ print_headfoot(const char * fname, const char * query, const char *subquery)
 		if (*query != '\0') {
 		    char *converted = nmz_codeconv_external(query);
 		    printf(": &lt;");
-		    printf(converted);
+		    html_print(converted);
 		    printf("&gt;");
 		    free(converted);
 		}

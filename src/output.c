@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.70 2000-03-04 11:11:39 satoru Exp $
+ * $Id: output.c,v 1.71 2000-04-04 07:38:59 masao Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -228,7 +228,7 @@ print_hitnum_each (struct nmz_hitnumlist *hn)
 	    }
 
 	    printf(" [ ");
-	    printf(converted);
+	    html_print(converted);
 	    free(converted);
 
 	    if (hnptr->stat == SUCCESS) {

@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.88 2001-08-12 06:11:03 rug Exp $
+# $Id: mknmz.in,v 1.89 2001-08-20 10:59:34 takesako Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -1152,7 +1152,7 @@ sub parse_options
     if ($opt_checkpoint_sub) {
 	$CheckPoint{'on'}           = 1;
 	$CheckPoint{'continue'}     = 1;
-	@argv = grep {! /-S/} @argv;  # remove -S
+	@argv = grep {! /^-S$/} @argv;  # remove -S
     }
 
     if (defined $ReplaceCode) {

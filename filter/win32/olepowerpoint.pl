@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: olepowerpoint.pl,v 1.17 2004-10-10 16:38:43 opengl2772 Exp $
+# $Id: olepowerpoint.pl,v 1.18 2004-10-11 08:53:31 opengl2772 Exp $
 # Copyright (C) 1999 Jun Kurabe,
 #               1999 Ken-ichi Hirose,
 #               2004 Namazu Project All rights reserved.
@@ -199,7 +199,6 @@ sub ReadDocument ($$$$) {
     my $tmpfile = util::tmpnam('NMZ.olepowerpoint') . $ext;
     {
         my $fh = util::efopen("> $tmpfile");
-        binmode($fh);
         print $fh $$cont;
         util::fclose($fh);
     }

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: ichitaro456.pl,v 1.10 2004-10-10 16:38:43 opengl2772 Exp $
+# $Id: ichitaro456.pl,v 1.11 2004-10-11 08:53:31 opengl2772 Exp $
 # Copyright (C) 1999 Ken-ichi Hirose,
 #               2000-2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -100,7 +100,6 @@ sub filter ($$$$$) {
     $tmpfile =~ s/\.tmp$/$ext/;
     {
         my $fh = util::efopen("> $tmpfile");
-        binmode($fh);
         print $fh $$cont;
         util::fclose($fh);
     }

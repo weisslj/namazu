@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: oleexcel.pl,v 1.14 2002-03-27 05:59:35 takesako Exp $
+# $Id: oleexcel.pl,v 1.15 2002-03-27 12:55:17 takesako Exp $
 # Copyright (C) 2001 Yoshinori TAKESAKO,
 #               1999 Jun Kurabe ,
 #               1999 Ken-ichi Hirose All rights reserved.
@@ -201,7 +201,8 @@ sub filter ($$$$$) {
 	my $sheetName = $sheet->Name;
 
 	# SaveAs xlText FileFormat
-	my $ret = $sheet->SaveAs({
+	$sheet->Select;
+	my $ret = $excel->ActiveWorkbook->SaveAs({
 	    'FileName'     => &Win32_FullPath($tmpfile),
 	    'FileFormat'   => xlText,  # xlText
 	    'CreateBackup' => 0        # False

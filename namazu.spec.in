@@ -4,7 +4,7 @@ Version: @VERSION@
 Release: 1
 Copyright: GPL
 Group: Utilities/Text
-Requires: perl >= 5.0, kakasi, nkf
+Requires: perl >= 5.004, kakasi, nkf
 Source0: @PACKAGE@-@VERSION@.tar.gz
 URL: http://openlab.ring.gr.jp/namazu/
 BuildRoot: /var/tmp/namazu
@@ -18,6 +18,7 @@ Win32 are available.
 
 %changelog 
 * Thu Aug 26 1999 Ryuji Abe <raeva@t3.rim.or.jp>
+- Requires perl >= 5.004.
 - Delete Packager tag.
 - Clean up at %prep.
 - Use CFLAGS="$RPM_OPT_FLAGS" at %build.
@@ -37,7 +38,7 @@ CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=/usr
 make
 
 %install
-make $RPM_BUILD_ROOT/usr install
+make prefix=$RPM_BUILD_ROOT/usr install
 
 %clean
 rm -rf $RPM_BUILD_ROOT

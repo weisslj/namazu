@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.64 1999-09-07 03:04:33 satoru Exp $
+# $Id: mknmz.pl.in,v 1.65 1999-09-07 05:50:16 knok Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -55,6 +55,8 @@ my $ConfigFile = undef;
 
 my $ReplaceCode  = undef;  # perl code for transforming URI
 my @Seed = ();
+
+my $Magic = new File::MMagic;
 
 STDOUT->autoflush(1);
 main();
@@ -498,11 +500,10 @@ sub load_document ($$$$\%) {
 #    $file_size = length($$contref);
 
     # filtering process
-    my $mm = new File::MMagic;
     my $mtype;
     while (1) {
-	my $mtype_n = $mm->checktype_byfilename($cfile);
-	my $mtype_c = $mm->checktype_contents($$contref);
+	my $mtype_n = $Magic->checktype_byfilename($cfile);
+	my $mtype_c = $Magic->checktype_contents($$contref);
 	$mtype = decide_type($mtype_n, $mtype_c);
 	if (defined $var::REQUIRE_CODECONV{$mtype}) {
 	      codeconv::toeuc($contref);

@@ -10,7 +10,11 @@
 	accesing @seed::Seed is slower than accessing @Seed directly.
 	
 	* Makefile.am (CLEANFILES): Remove lib/var.pl lib/conf.pl entries.
-	
+
+
+1999-09-07  NOKUBI Takatsugu <knok@daionet.gr.jp>
+
+	* src/mknmz.pl.in: Changed to create File::MMagic object once.
 
 1999-09-06  Ryuji Abe <raeva@t3.rim.or.jp>
 

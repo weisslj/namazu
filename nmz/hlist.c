@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.61 2003-12-02 18:27:27 opengl2772 Exp $
+ * $Id: hlist.c,v 1.62 2004-01-20 09:22:25 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -361,6 +361,10 @@ nmz_ormerge(NmzResult left, NmzResult right)
     int i, j, v, n;
     NmzResult val;
 
+    val.num  = 0;
+    val.data = NULL;
+    val.stat = SUCCESS;
+
     if ((left.stat  != SUCCESS || left.num <= 0) && 
 	(right.stat != SUCCESS || right.num <= 0)) 
     {
@@ -383,8 +387,10 @@ nmz_ormerge(NmzResult left, NmzResult right)
         return val;
 
     for (v = 0, i = 0, j = 0; i < left.num; i++) {
-	for (; left.data[i].docid >= right.data[j].docid && j < right.num; j++) {
-	    if (left.data[i].docid == right.data[j].docid) {
+	for (; j < right.num; j++) {
+	    if (left.data[i].docid < right.data[j].docid) {
+                break;
+            } else if (left.data[i].docid == right.data[j].docid) {
 
                 if (nmz_is_tfidfmode()) {
                     left.data[i].score = 
@@ -471,6 +477,10 @@ nmz_merge_hlist(NmzResult *hlists)
     int i, n;
     NmzResult value;
 
+    value.num  = 0;
+    value.data = NULL;
+    value.stat = SUCCESS;
+
     if (nmz_get_idxnum() == 1) {
 	return hlists[0];
     }
@@ -517,6 +527,7 @@ nmz_do_date_processing(NmzResult hlist)
 	{
 	    nmz_set_dyingmsg(nmz_msg("%s: %s", NMZ.t, strerror(errno)));
 	    hlist.stat = ERR_FATAL;
+            fclose(date_index);
             return hlist; /* error */
         }
         nmz_fread(&hlist.data[i].date, 
@@ -647,6 +658,10 @@ nmz_reverse_hlist(NmzResult hlist)
 {
     int m, n;
     NmzResult tmp;
+
+    tmp.num  = 0;
+    tmp.data = NULL;
+    tmp.stat = SUCCESS;
 
     nmz_malloc_hlist(&tmp, 1);
     if (tmp.stat == ERR_FATAL)

@@ -18,7 +18,7 @@ This tutorial is for users who begin using Namazu 2.0.
 <h2>Table of Contents</h2>
 <ul>
 <li><a href="#mission">Mission</a>
-<li><a href="#versions">Development versions</a>
+<li><a href="#versions">History of development</a>
 <li><a href="#components">Namazu components</a>
 <li><a href="#prep-make">Preparation and <code>make</code></a>
 <li><a href="#japanese">Japanese environment</a>
@@ -31,7 +31,7 @@ This tutorial is for users who begin using Namazu 2.0.
 <li><a href="#can-not-do">What you cannot do with Namazu</a>
 <li><a href="#others">Others</a>
 <li><a href="#terminology">Terminology</a>
-<li><a href="#reference">Reference</a>
+<li><a href="#reference">References</a>
 </ul>
 
 <h2><a name="mission">Mission</a></h2>
@@ -48,13 +48,13 @@ This tutorial is written for
 <p>
 in order to reduce the workload when using Namazu. Please refer <a
 href="manual.html">manual</a> to learn all features in Namazu. Also,
-installation guide is given in INSTALL-ja file.
+installation guide is given in INSTALL file.
 </p>
 
-<h2><a name="versions">Development versions</a></h2>
+<h2><a name="versions">History of development</a></h2>
 
 <p>
-Change Log for Namazu development from 1.3.0.x through 2.0 is as follows.
+History of Namazu development from 1.3.0.x through 2.0 is as follows.
 </p>
 
 <dl>
@@ -62,13 +62,13 @@ Change Log for Namazu development from 1.3.0.x through 2.0 is as follows.
 <dd> 
 
 Old stable version. Recommend to use 1.3.0.11, since the versions
-1.3.0.10 or earlier may create junk files from outside. (??)
+1.3.0.10 or earlier may create junk files from outside. 
 <br>
 1.3.0.11 is the most current version.
 <dt>1.3.1.0
   <dd> Development version. Introduce a check point function (-s
-option: mknmz periodically(??) "exec" itself to prevent the
-explosion(??) of processes.) However, this version was not released to
+option: mknmz periodically "exec" itself to prevent the
+explosion of process.) However, this version was not released to
 the public and the development was transferred to 1.4.0.0.
 <dt>1.4.0.0
   <dd> Development version. Improve performance using Perl modules<br>
@@ -76,7 +76,6 @@ However, this version was not released to the public and the
 development was transferred to 1.9.x
 <dt>1.9.x 
   <dd>Development version.  In-progress versions that are released during the development of version 2.0 <br> since the versions
-1.9.12  or earlier may create junk files from outside. (??)
 
 <dt>2.0
   <dd>New stable version.
@@ -97,7 +96,7 @@ Create index before searching. (written in perl)
 
 <li>namazu <br> 
 Search documents based on the created index. <br>
-Use it form the command line. (written in C)
+Use it on the command line. (written in C)
 
 <li>namazu.cgi<br>
 Search documents based on the created index. <br>
@@ -108,13 +107,12 @@ Use it as CGI. (written in C)
 <p>
 
 You need the following softwares to build Namazu 2.0.
-(Titles for software developers are omitted here.)
 </p>
 
 <table cellspacing=0 cellpadding=3 border=1>
 <tr>
 <th>Name</th><th>Description</th>
-<th>Mandate</th>
+<th>Status</th>
 <th>Current Version</th><th>Required Version</th>
 <th>File name</th>
 <th>Development and Distribution</th>
@@ -122,7 +120,7 @@ You need the following softwares to build Namazu 2.0.
 <th>Others</th>
 </tr>
 <tr><td>Perl</td><td>Perl Language
-<td>[ok]</td><td>5.005_03</td><td>5.004</td>
+<td>Required</td><td>5.005_03</td><td>5.004</td>
 <td>perl-5.005_03.tar.gz</td>
 <td>Larry Wall
 GNU CPAN</td>
@@ -133,7 +131,7 @@ CPAN</a></td>
 </tr>
 
 <tr><td>nkf</td><td>Network Kanji Filter </td>
-  <td>[ok]</td><td>1.9</td><td>1.71</td>
+  <td>for Japanese processing only</td><td>1.9</td><td>1.71</td>
   <td rowspan=2>
   <a href="ftp://ftp.ie.u-ryukyu.ac.jp/pub/software/kono/nkf171.shar">nkf171.shar</a></td>
   <td rowspan=2>Shinji Kono</td>
@@ -143,13 +141,14 @@ CPAN</a></td>
   </tr>
 
 <tr><td>NKF</td><td>nkf Perl Module</td>
-  <td>@@</td><td>1.9</td><td>1.71</td>
+  <td>for Japanese processing only. ++</td><td>1.9</td><td>1.71</td>
   <td><br></td>
   </tr>
 
 <tr>
  <td><a href="http://kakasi.namazu.org/index.html">KAKASI</a></td>
- <td>Japanese/Romaji Conversion<td>%%</td><td>2.3.1</td><td>&lt;=</td>
+ <td>Japanese/Romaji Conversion<td>for Japanese processing
+ only. **</td><td>2.3.1</td><td>&lt;=</td>
  <td><a href="ftp://kakasi.namazu.org/pub/kakasi/kakasi-2.3.1.tar.gz">
  kakasi-2.3.1.tar.gz</a></td>
  <td>
@@ -161,7 +160,7 @@ CPAN</a></td>
 
 <tr>
   <td><a href="http://www.daionet.gr.jp/~knok/kakasi/">Text::Kakasi</a></td>
-  <td>KAKASI Perl Module<td>@@</td>
+  <td>KAKASI Perl Module<td>for Japanese processing only. ++</td>
   <td>1.01</td><td>&lt;=</td>
   <td>
   <a href="http://www.daionet.gr.jp/~knok/kakasi/Text-Kakasi-1.01.tar.gz">Text-Kakasi-1.01.tar.gz</a></td>
@@ -174,7 +173,7 @@ CPAN</a></td>
 <tr>
   <td>ChaSen</td>
   <td>(ChaSen) -- Japanese Morphology Analyzer</td>
-  <td>%%</td>
+  <td>for Japanese processing only. **</td>
   <td>2.02</td><td>&lt;=</td><td>
   <a href="ftp://ftp.aist-nara.ac.jp/pub/lab/nlp/tools/chasen/chasen-sys2.02-ipadic2.1.tar.gz">chasen-sys2.02 -ipadic2.1.tar.gz</a>
   </td><td>
@@ -189,7 +188,7 @@ CPAN</a></td>
 <tr>
   <td>Text::ChaSen</td>
   <td>ChaSen Perl Module</td>
-  <td>@@</td>
+  <td>for Japanese processing only. ++</td>
   <td>0.20</td><td>&lt;=</td><td>
   <a href="http://www.daionet.gr.jp/~knok/chasen/Text-ChaSen-0.20.tar.gz">
   Text-ChaSen-0.20.tar.gz</a></td>
@@ -204,7 +203,7 @@ CPAN</a></td>
 <tr><td>
 <a href="http://search.cpan.org/search?mode=module&amp;query=MMagic">File::MMagic</a>
 </td><td>File Type</td>
-<td>[included]</td><td>0.20</td><td>&lt;=</td>
+<td>Included</td><td>0.20</td><td>&lt;=</td>
 <td>File-MMagic-0.20.tar.gz
 <td>
   <a href="http://www.daionet.gr.jp/~knok/">
@@ -218,8 +217,12 @@ This is packaged in Namazu distribution.
 </table>
 
 <ul>
+<li>nkf, KAKASI, ChaSen, NKF, Text::Kakasi and Text::ChanSen
+are required only if you want to use Namazu for handling
+Japanese documents. If not, you have not to have them.
+
 <li>
-%% means that you need either KAKASI ot ChaSen for Japanese processing.
+** means that you need either KAKASI ot ChaSen for Japanese processing.
 <table cellspacing=0 cellpadding=3 border=1>
 <tr><td>If you have both ...</td><td>
 For segmentation, KAKASI is used by default, however, ChaSen can be used by specifying -c option.
@@ -228,7 +231,7 @@ When executing ./configure, Namazu selects which one to use.
 </table>
 
 <li>
-@@ means Perl modules, and is required if you use new
+++ means Perl modules, and is required if you use new
 functions introduced in Namazu 2.0. But, Namazu works
 without. In this case, the speed to create index will be
 slow, since the external segmentation process is
@@ -251,20 +254,20 @@ ranlib /usr/local/lib/libchasen.a # depending on your system
 </pre>
 manually.
 
-<li>File::MMagic indicated by [included] is packaged in namazu distribution.
-<li>Please refer to INSTALL-ja for ./configure in namazu distribution.
+<li>File::MMagic indicated by [included] is packaged in Namazu distribution.
+<li>Please refer to INSTALL for ./configure in namazu distribution.
 </ul>
 
 <h2><a name="japanese">Japanese Environment</a></h2>
 
 <p>
-You will need to set up <code> setenv LANG </code> to use
-Namazu 2.0 under Japanese environment. For Windows, LANG is
-set to ja_JP.SJIS. For Unix, LANG is set to <code>ja</code>,
-<code>ja_JP.eucJP</code>, <code>ja_JP.EUC</code>, or
-<code>ja_JP.ujis</code>. The appropriate LANG will depends
-on your system. If you have no clues, just set LANG to
-<code>ja</code>.
+You will need to set up <code>LANG</code> environment
+variable to use Namazu 2.0 under Japanese environment. For
+Windows, LANG is set to ja_JP.SJIS. For Unix, LANG is set to
+<code>ja</code>, <code>ja_JP.eucJP</code>,
+<code>ja_JP.EUC</code>, or <code>ja_JP.ujis</code>. The
+appropriate LANG will depends on your system. If you have no
+clues, just set LANG to <code>ja</code>.
 </p>
 
 
@@ -282,11 +285,15 @@ install</code>, do <code>cd scripts</code> and
 </p>
 
 <p>
-You can, for example, try <code class=command>./mknmz -C
-./mknmz --help ./mknmz -O /tmp ~/Mail</code> Note that no
-Japanese message is displayed before <code>make
-install</code>.
+You can, for example, try 
 </p>
+
+<pre>
+
+    ./mknmz -C
+    ./mknmz --help
+    ./mknmz -O /tmp ~/Mail
+</pre> 
 
 
 <h2><a name="help">Help Menu</a></h2>
@@ -295,8 +302,8 @@ If you just type <code>mknmz</code> or <code>namazu</code>
 with no argument, a short usage will be displayed. If you
 feed <code>--help</code> as an argument, a long usage will
 be displayed. The option <code>-C</code> will display the
-contents of organization(???) at the time of query.  Useful
-to remember these 3 option usages.
+configurations at the time.  Useful to remember these 3
+option usages.
 </p>
 
 <table cellspacing=0 cellpadding=3 border=1>
@@ -306,7 +313,7 @@ to remember these 3 option usages.
   <tr><td>None</td> <td>Short Usage<td>Cannot add any argument
     </td></tr>
   <tr><td><code>--help</code></td><td>Long Usage <td>Ignores other arguments</td></tr>
-  <tr><td><code>-C </code>   </td><td>Contents of the time<td> Other arguments will have meanings.</td></tr>
+  <tr><td><code>-C </code>   </td><td>Configurations<td> Other arguments will have meanings.</td></tr>
   </table>
 
 <h2><a name="run-mknmz">Running mknmz</a></h2>
@@ -319,7 +326,7 @@ First, create index.
 mknmz make install</a>)</strong>
 <br>
 Format are changed slightly from versions 1.4.0.8.
-URI replacement is dealt wirh by specifying 
+URI replacement is dealt with by specifying 
 --replace option.
 
 URI replacement can be done during namazu/namazu.cgi
@@ -341,7 +348,7 @@ Run mknmz as follows.
 
 <p>
 The above example creates index in the current directory. 
-Use <code>-O</code> option to redirect output.
+Use <code>-O</code> option to specify the output directory.
 </p>
 
 <p>
@@ -363,20 +370,20 @@ please refer to <a href="#japanese">Japanese Envirnment</a>.
 <pre>
 
     14 files are found to be indexed.
-    1/14 - /home/satoru/cvs/namazu/tests/data/en/acrobat3.pdf [application/pdf]
-    2/14 - /home/satoru/cvs/namazu/tests/data/en/excel97.xls [application/excel]
-    3/14 - /home/satoru/cvs/namazu/tests/data/en/html.html [text/html]
-    4/14 - /home/satoru/cvs/namazu/tests/data/en/mail-multipart.txt [message/rfc822]
-    5/14 - /home/satoru/cvs/namazu/tests/data/en/mail.txt [message/rfc822]
-    6/14 - /home/satoru/cvs/namazu/tests/data/en/man.1 [text/x-roff]
-    7/14 - /home/satoru/cvs/namazu/tests/data/en/msg00000.html [text/html; x-type=mhonarc]
-    8/14 - /home/satoru/cvs/namazu/tests/data/en/plain.txt [text/plain]
-    9/14 - /home/satoru/cvs/namazu/tests/data/en/plain.txt.Z [text/plain]
-    10/14 - /home/satoru/cvs/namazu/tests/data/en/plain.txt.bz2 [text/plain]
-    11/14 - /home/satoru/cvs/namazu/tests/data/en/plain.txt.gz [text/plain]
-    12/14 - /home/satoru/cvs/namazu/tests/data/en/rfc0000.txt [text/plain; x-type=rfc]
-    13/14 - /home/satoru/cvs/namazu/tests/data/en/tex.tex [application/x-tex]
-    14/14 - /home/satoru/cvs/namazu/tests/data/en/word97.doc [application/msword]
+    1/14 - /foo/bar/acrobat3.pdf [application/pdf]
+    2/14 - /foo/bar/excel97.xls [application/excel]
+    3/14 - /foo/bar/html.html [text/html]
+    4/14 - /foo/bar/mail-multipart.txt [message/rfc822]
+    5/14 - /foo/bar/mail.txt [message/rfc822]
+    6/14 - /foo/bar/man.1 [text/x-roff]
+    7/14 - /foo/bar/msg00000.html [text/html; x-type=mhonarc]
+    8/14 - /foo/bar/plain.txt [text/plain]
+    9/14 - /foo/bar/plain.txt.Z [text/plain]
+    10/14 - /foo/bar/plain.txt.bz2 [text/plain]
+    11/14 - /foo/bar/plain.txt.gz [text/plain]
+    12/14 - /foo/bar/rfc0000.txt [text/plain; x-type=rfc]
+    13/14 - /foo/bar/tex.tex [application/x-tex]
+    14/14 - /foo/bar/word97.doc [application/msword]
     Writing index files...
     [Base]
     Date:                Thu Mar 16 22:14:01 2000
@@ -395,7 +402,7 @@ please refer to <a href="#japanese">Japanese Envirnment</a>.
 
 <ul>
   <li>Result (Index) will be in /tmp/index (specified in -O)
-  <li>search targer is <code>/foo/bar/doc</code>
+  <li>Target documents are <code>/foo/bar/doc</code>
   <li>For URI 
 
 <p>
@@ -420,7 +427,7 @@ documents, Namazu can now deal with various document styles.
 You will find useful scripts in
 /usr/local/share/namazu/filter, and detailed explanation
 will be found in <a href="manual.html#doc-filter">Document
-Filter</a> in Namazu manual.
+filters</a> in Namazu manual.
 </p>
 
 <dl>
@@ -440,13 +447,15 @@ Filter</a> in Namazu manual.
 </dl>
 
 <p>
-For mknmz command-line arguments, you get usage information from <a
-href="manual.html#mknmz-option">mknmz --help</a>. With -C option, you get the contents of the time.
+For mknmz command-line arguments, you get usage information
+from <a href="manual.html#mknmz-option">mknmz
+--help</a>. With -C option, you get the configurations of the
+time.
 </p>
 
 <pre>
 
-    Loaded rcfile: /home/satoru/.mknmzrc
+    Loaded rcfile: /home/foobar/.mknmzrc
     System: linux
     Namazu: 2.0.2
     Perl: 5.00503
@@ -483,11 +492,11 @@ href="manual.html#mknmz-option">mknmz --help</a>. With -C option, you get the co
 
 <table cellspacing=0 cellpadding=3>
 <tr><th>short name</th><th>long name</th><th>description</th>
-<tr><td>-F</td><td>--target-list=file</td><td>read in list of target files for index creation</td>
-<tr><td>-t</td><td>--media-type=mtype</td><td>specify the document format of target files
+<tr><td>-F</td><td>--target-list=FILE</td><td>read in list of target files for index creation</td>
+<tr><td>-t</td><td>--media-type=MTYPE</td><td>specify the document format of target files
 <tr><td></td><td>--allow=PATTERN  </td><td>specify the regular expression of target file names.
 <tr><td></td><td>--deny=PATTERN   </td><td>specify the regular expression of to-be-excluded file names.
-<tr><td></td><td>--exclude=PATTERN</td><td>specify the regular expression of to-be-excluded path name.
+<tr><td></td><td>--exclude=PATTERN</td><td>specify the regular expression of to-be-excluded path names.
 
 </table>
 
@@ -502,7 +511,7 @@ The current version cannot cope with symbolic link in the
 <p>To search documents, do
 </p>
 <pre>
-      % namazu string-to-search index
+      % namazu query index
 </pre>
 
 <p> 
@@ -522,7 +531,7 @@ distribution package.
 To use CGI on the web, you need to do various configuration.
 For <a
 href="http://www.apache.org/">Apache</a> (<a
-href="http://www.apache.org/docs/">Configuration</a>
+href="http://www.apache.org/docs/">Configuration</a>)
 </p>
 
 <table cellspacing=0 cellpadding=3>
@@ -585,7 +594,7 @@ and display the files that the word is found.
 
 <li>
 In this example, the word is specyfied not in part but in
-all.  Hence, if the word is "sys", "system" cannot be found.
+exact.  Hence, if the word is "sys", "system" cannot be found.
 If you wish to include "system", you can use "*", in our
 case, "sys*", "*sys*".  Note that "sys*" stands for strings
 beginning with "sys", "*sys*" stands for strings "sys" is
@@ -599,7 +608,7 @@ by cgi-bin executable HTTP server by Web browser.
 <h2><a name="can-not-do">What you cannot do with Namazu</a></h2>
 <ul>
 <li>Search files in other machines.
-<li>Use for a HTTP server that has 1000000 hits per day
+<li>Use for a HTTP server that has 1,000,000 hits per day.
 </ul>
 
 <h2><a name="others">Others</a></h2>
@@ -612,7 +621,8 @@ specified "target directory" will depend on the
 directives, or -a, --allow, --deny, --exclude command-line
 options.
 
-For <dt>mew-1.94b2x and mew-nmz.el <dd>,  
+<dt>For mew-1.94b2x and mew-nmz.el,  
+<dd>
 mew works in combination with namazu; the features such as 
 <ul> 
 <li> invoke mknmz to create necessary index
@@ -645,15 +655,15 @@ Unlike English, Japanese will not put spaces between words. Plain Japanese texts
 
 Namazu prepares index of words in prior to the search
 request, and upon request, Namazu searches the document
-based on the prepared index. This "prepared reference"is
-called index. In Namazu, NMZ.* are prepared references.
+based on the prepared index. This "prepared index" is called
+index. In Namazu, NMZ.* are the index.
 
-<dt>Index(Verb)
-<dd>Create index explained above. Use mknmz
+<dt>Index (verb)
+<dd>Create index explained above. Use mknmz.
 <dt>Several Index
 <dd>Functions to create more than 1 index and search the document in all.
 
-<dt>Phrase Search
+<dt>Phrase searching
 <dd>
 The basic of Namazu search is the combination of words.
 "foo and bar" and "bar and foo" (reverse order) are treated
@@ -668,11 +678,12 @@ namazu.conf, conf.pl respectively. In Version 2.0, this is changed to
 namazurc, mknmzrc respectively.
 
 <dt>mknmzrc (/usr/local/etc/namazu/mknmzrc)
-<dd>basic configuration for mknmz 
+<dd>Basic configuration for mknmz.
 
 <dt>namazurc  (/usr/local/etc/namazu/namazurc)
 <dd>
-Configure this if you wish to change the behaviour of Namazu.
+Configure this if you wish to change the behaviour of namazu
+and/or namazu.cgi.
 You can configure
 <code>Index, Replace, Base, Logging, Lang, Template</code>
 For further detail, see 
@@ -680,8 +691,12 @@ For further detail, see
 
 <dt>Perl module
 <dd>
-In the old versions, NKF, KAKASI or ChaSen are called from Namazu as external processes.
-In this case, processes are invoked for each file, and the execution will be slow. In the current version, these become perl modules and called as Perl modules. By doing so, the execution speed becomes faster since no external process will be invoked.
+In the old versions, NKF, KAKASI or ChaSen are called from
+Namazu as external processes.  In this case, processes are
+invoked for each file, and the execution will be slow. In
+the current version, these become perl modules. By doing so,
+the execution speed becomes faster since no external process
+will be invoked.
 
 <br>
 This features are not offered in Namazu-1.3 or earlier. This
@@ -697,7 +712,7 @@ displayed.  If you then do ./configure in namazu, these Perl
 modules will be used.
 </dl>
 
-<h2><a name="reference">Reference</a></h2>
+<h2><a name="reference">References</a></h2>
 
 <dl>
 <dt>KAKASI 2.3.1
@@ -733,7 +748,7 @@ modules will be used.
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: tutorial.html,v 1.1 2000-03-16 13:20:36 satoru Exp $
+$Id: tutorial.html,v 1.2 2000-03-16 14:40:36 satoru Exp $
 </div>
 <address>
 developers@namazu.org

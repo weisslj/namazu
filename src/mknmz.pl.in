@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.16 1999-07-08 23:54:39 satoru Exp $
+# $Id: mknmz.pl.in,v 1.17 1999-08-13 15:36:02 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -45,7 +45,9 @@ my $UpdatedFilesCount = 0;
 my $APPENDMODE = 0;
 my @Seed = ();
 my %PhraseHash = ();
+my %PhraseHashLast = ();
 my %KeyIndex = ();
+my %KeyIndexLast = ();
 my %CheckPoint = ("on" => undef, "continue" => undef);
 
 
@@ -1370,7 +1372,7 @@ sub make_headfoot ($$$) {
     print $fh_file $buf;
 }
 
-# フレーズのハッシュを作成する
+# make phrase hashes for NMZ.p
 # 2単語の組でひとつのハッシュ値 (0-65535) を生成します
 sub make_phrase_hash ($$$) {
     my ($file_count, $file_base, $content) = @_;
@@ -1385,8 +1387,10 @@ sub make_phrase_hash ($$$) {
 	my $hash = hash($word_b . $word);
 	if (!defined($tmp{$hash})) {
 	    $tmp{$hash} = 1;
-	    $PhraseHash{$hash} .= pack("w", $fid);
+	    $PhraseHashLast{$hash} = 0 unless defined $PhraseHashLast{$hash};
+	    $PhraseHash{$hash} .= pack("w", $fid - $PhraseHashLast{$hash});
 	    util::dprint("<$word_b, $word> $hash\n");
+	    $PhraseHashLast{$hash} = $fid;
 	}
 	$word_b = $word;
     }
@@ -1433,23 +1437,24 @@ sub write_phrase_hash_sub () {
 	if (defined($PhraseHash{$i})) {
 	    if ($baserecord eq "") {
 		print $fh_tmp_pi pack("N", $ptr);
-		my $n2 = length($PhraseHash{$i});
 		my $record = $PhraseHash{$i};
+		my $n2 = length($record);
 		my $data = pack("w", $n2) . $record;
 		print $fh_tmp_p $data;
 		$ptr += length($data);
 	    } else {
 		print $fh_tmp_pi pack("N", $ptr);
-		my $n2 = length($PhraseHash{$i});
-		$n2 += $baseleng;
 		my $record = $PhraseHash{$i};
+		my $last_fid = get_last_fid($baserecord, 1);
+		$record = adjust_first_fid($record, $last_fid);
+		my $n2 = length($record) + $baseleng;
 		my $data = pack("w", $n2) .  $baserecord . $record;
 		print $fh_tmp_p $data;
 		$ptr += length($data);
 	    }
 	} else {
 	    if ($baserecord eq "") {
-		# 要素を持たない場合は 0xffffffff にしておく
+		# if $baserecord has no data, set to 0xffffffff
 		print $fh_tmp_pi pack("N", 0xffffffff);
 	    } else {
 		print $fh_tmp_pi pack("N", $ptr);
@@ -1460,6 +1465,7 @@ sub write_phrase_hash_sub () {
 	}
     }
     %PhraseHash = ();
+    %PhraseHashLast = ();
 }
 
 # Dr. Knuth's  ``hash'' from (UNIX MAGAZINE May 1998)
@@ -1511,15 +1517,19 @@ sub count_words ($$$$) {
 	wordcount_sub($2, $1, \%word_count)!ge;
     wordcount_sub($part1, 1, \%word_count);
 
-    # 全体のキーインデックスに追加する
+    # Add them to whole index
     my $fid = $file_count + $file_base;
     for my $word (keys(%word_count)) {
 	next if ($word eq "" || length($word) > $conf::WORD_LENG_MAX);
-	$KeyIndex{$word} .= pack("w2", $fid, $word_count{$word});
+	$KeyIndexLast{$word} = 0 unless defined $KeyIndexLast{$word};
+	$KeyIndex{$word} .= pack("w2", 
+				 $fid - $KeyIndexLast{$word}, 
+				 $word_count{$word});
+	$KeyIndexLast{$word} = $fid;
     }
 }
 
-# 単語を数えるサブルーチン スコアの重みづけも行う
+# count words and do score weighting
 sub wordcount_sub ($$\%) {
     my ($text, $weight, $word_count) = @_;
 
@@ -1531,12 +1541,12 @@ sub wordcount_sub ($$\%) {
     # 入れ子処理は行わない
     # ただし -K オプション指定時は記号はすべて削除している
 
-    my @words = split(/\s+/, $text);
-    @words = grep(!/^$/, @words);   # 空の語を捨てる
+    my @words = split /\s+/, $text;
+    @words = grep !/^$/, @words;   # remove empty words
     my @words_ = ();
     for my $word (@words) {
 	if ($conf::NoEdgeSymbolOpt) {
-	    # 両端の記号を削除
+	    # remove symbols at both ends
 	    $word =~ s/^[^\xa1-\xfea-z_0-9]*(.*?)[^\xa1-\xfea-z_0-9]*$/$1/g;
 	}
 	$word_count->{$word} = 0 unless defined($word_count->{$word});
@@ -1557,7 +1567,7 @@ sub wordcount_sub ($$\%) {
 	    }
 	    push(@words_, split(/[^\xa1-\xfea-z_0-9]+/, $word))
 		if $word =~ /[^\xa1-\xfea-z_0-9]/;
-	    @words_ = grep(!/^$/, @words_);   # 空の語を捨てる
+	    @words_ = grep !/^$/, @words_;   # remove empty words
 	    for my $tmp (@words_) {
 		next if $tmp eq "";
 		$word_count->{$tmp} = 0 unless defined($word_count->{$tmp});
@@ -1584,7 +1594,7 @@ sub wordcount_sub ($$\%) {
 #     $ord1 <=> $ord2;
 # }
 
-# INDEX ファイルへ書き出し & マージする (複雑)
+# make NMZ.i and NMZ.ii file. this processing is rather complex.
 sub write_index () {
     my $key_count = write_index_sub();
     util::Rename($conf::File{'TMP_I'}, $conf::File{'INDEX_'});
@@ -1614,6 +1624,29 @@ sub get_unpackw ($) {
     }
 }
 
+sub get_last_fid ($$) {
+    my ($record, $step) = @_;
+    my (@data) = unpack 'w*', $record;
+
+    my $sum = 0;
+    for (my $i = 0; $i < @data; $i += $step) {
+	$sum += $data[$i];
+    }
+    my $leng = @data / $step;
+    return $sum;
+}
+
+sub adjust_first_fid ($$) {
+    my ($record, $last_fid) = @_;
+    my (@data) = unpack 'w*', $record;
+
+    my $val = $data[0];
+    $data[0] = $data[0] - $last_fid;
+    my $adjusted = $val - $last_fid;
+    $record = pack 'w*', @data;
+    return $record;
+}
+
 sub write_index_sub () {
     my @words = sort keys(%KeyIndex);
     return 0 if $#words == -1;
@@ -1639,12 +1672,15 @@ sub write_index_sub () {
 	    read($fh_index, $baserecord, $baseleng);
 	    <$fh_index>;
 
- 	    for (; $cnt <= $#words; $cnt++) {
+ 	    for (; $cnt < @words; $cnt++) {
 		last unless $words[$cnt] le $current_word;
-		my $leng = length($KeyIndex{$words[$cnt]});
 		my $record = $KeyIndex{$words[$cnt]};
+		my $leng = length($record);
 
 		if ($current_word eq $words[$cnt]) {
+		    my $last_fid = get_last_fid($baserecord, 2);
+		    $record = adjust_first_fid($record, $last_fid);
+		    $leng = length($record);  # re-measure
 		    my $tmp = pack("w", $leng + $baseleng);
 
 		    my $data = "$current_word\n$tmp$baserecord$record\n";
@@ -1678,7 +1714,7 @@ sub write_index_sub () {
 	    $key_count++;
 	}
     }
-    while ($cnt <= $#words) {
+    while ($cnt < @words) {
 	my $leng = length($KeyIndex{$words[$cnt]});
 	my $tmp = pack("w", $leng);
 	my $record = $KeyIndex{$words[$cnt]};
@@ -1693,6 +1729,7 @@ sub write_index_sub () {
 	$cnt++;
     }
     %KeyIndex = ();
+    %KeyIndexLast = ();
 
     return $key_count;
 }

@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.5 1999-06-12 14:29:29 satoru Exp $
+ * $Id: hlist.c,v 1.6 1999-08-13 15:36:02 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -339,14 +339,17 @@ HLIST get_hlist(int index)
         /* '* 2' means NMZ.i contains a file-ID and a score. */
         hlist.n = TOO_MUCH_HIT;
     } else {
+	int sum = 0;
 	buf = (int *) malloc(n * sizeof(int)); /* with pelnty margin */
 	if (buf == NULL) {
 	    error("get_hlist");
 	}
 	n = read_unpackw(Index, buf, n);
 	malloc_hlist(&hlist, n / 2);
+	
 	for (i = 0; i < n; i += 2) {
-	    hlist.fid[i / 2] = *(buf + i);
+	    hlist.fid[i / 2] = *(buf + i) + sum;
+	    sum = hlist.fid[i / 2];
 	    hlist.scr[i / 2] = *(buf + i + 1);
             if (TfIdf) {
                 hlist.scr[i / 2] = (int)(hlist.scr[i / 2] * idf) + 1;

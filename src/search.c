@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.5 1999-08-12 06:59:39 masao Exp $
+ * $Id: search.c,v 1.6 1999-08-13 15:36:02 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -398,13 +398,18 @@ HLIST compare_phrase_hash(int hash_key, HLIST val,
 	 error("compare_phrase_hash_malloc");
     }
 
-    n = read_unpackw(phrase, list, n);
-    for (i = j = v = 0; i < n; i++) {
-        for (; j < val.n && *(list + i) >= val.fid[j]; j++) {
-            if (*(list + i) == val.fid[j]) {
-                copy_hlist(val, v++, val, j);
-            }
-        }
+    {
+	int fid, sum = 0;
+	n = read_unpackw(phrase, list, n);
+	for (i = j = v = 0; i < n; i++) {
+	    fid = *(list + i) + sum;
+	    sum = fid;
+	    for (; j < val.n && fid >= val.fid[j]; j++) {
+		if (fid == val.fid[j]) {
+		    copy_hlist(val, v++, val, j);
+		}
+	    }
+	}
     }
     val.n = v;
     free(list);

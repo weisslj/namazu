@@ -1,7 +1,7 @@
 /*
  * result.l -
  * -*- C -*-
- * $Id: result.l,v 1.16 1999-09-01 02:43:49 satoru Exp $
+ * $Id: result.l,v 1.17 1999-09-02 02:54:10 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -34,14 +34,14 @@
 #include "result.h"
 #include "em.h"
 
-	void get_field_data(char *);
-	static int Fid;
+	void replace_field(uchar *);
+	static int Fid, Did;
 	static uchar Buf[BUFSIZE * 16];
 	static int Score, Counter;
 %}
 
 %%
-\$\{([-_a-zA-Z]+|namazu::[-_a-zA-Z]+)\} 	       get_field_data(yytext);
+\$\{([-_a-zA-Z]+|namazu::[-_a-zA-Z]+)\} 	       replace_field(yytext);
 .|\n                           strcat(Buf, yytext);
 %%
 
@@ -51,18 +51,45 @@
  *
  ************************************************************/
 
-void make_fullpathname_field(int);
+void make_fullpathname_result(int);
 void encode_entity(uchar*);
 void emphasize(uchar*);
-void get_field_data(char*);
 
-void make_fullpathname_field(int n)
+void replace_field(uchar *key) 
+{
+    uchar field[BUFSIZE];
+    /* 8 is length of '&quot;' + 2 (for emphasizing). 
+       It's a consideration for buffer overflow (overkill?) */
+    uchar buf[BUFSIZE * 8];  
+
+    /* Remove '{$' and '}' */
+    strcpy(field, key + 2);
+    *(field + strlen(field) - 1) = '\0';
+
+    if (strcmp(field, "namazu::score") == 0) {
+	sprintf(buf, "%d", Score);
+	commas(buf);
+    } else if (strcmp(field, "namazu::counter") == 0) {
+	sprintf(buf, "%d", Counter);
+	commas(buf);
+    } else {
+	get_field_data(Did, Fid, field, buf);
+    }
+    /* do not emphasize in URI */
+    if (strcmp(field, "uri") != 0 && HtmlOutput) {
+	emphasize(buf);
+    }
+    if (HtmlOutput) {
+	encode_entity(buf);
+    }
+    strcat(Buf, buf);
+}
+
+void make_fullpathname_result(int n)
 {
     uchar *base;
 
     base = Idx.names[n];
-
-    pathcat(base, NMZ.field);
     pathcat(base, NMZ.result);
 }
 
@@ -121,74 +148,6 @@ void emphasize(uchar *str)
     }
 }
 
-void get_field_data(char *key) 
-{
-    uchar field[BUFSIZE], file_name[BUFSIZE];
-    FILE *fp_field, *fp_field_idx;
-
-    /* 8 is length of '&quot;' + 2 (for emphasizing). 
-       It's a consideration for buffer overflow (overkill?) */
-    uchar buf[BUFSIZE * 8];  
-
-    strcpy(field, key + 2);
-    *(field + strlen(field) - 1) = '\0';
-    apply_field_alias(field);
-
-    if (strcmp(field, "namazu::score") == 0) {
-	sprintf(buf, "%d", Score);
-	strcat(Buf, buf);
-	return;
-    } else if (strcmp(field, "namazu::counter") == 0) {
-	sprintf(buf, "%d", Counter);
-	strcat(Buf, buf);
-	return;
-    }
-
-
-    /* make a pathname */
-    strcpy(file_name, NMZ.field);
-    strcat(file_name, field);
-    
-    fp_field = fopen(file_name, "rb");
-    if (fp_field == NULL) {
-        fprintf(stderr, "%s: cannot open file.\n", file_name);
-    }
-
-    strcat(file_name, ".i");
-    fp_field_idx = fopen(file_name, "rb");
-    if (fp_field_idx == NULL) {
-        fprintf(stderr, "%s: cannot open file.\n", file_name);
-    }
-
-    /* You can rely on that length of one field is shorter than 
-       BUFSIZE (1024) because its length is restricted at 
-       put_field_index() in mknmz.
-     */
-    fseek(fp_field, getidxptr(fp_field_idx, Fid), 0);
-    fgets(buf, BUFSIZE, fp_field);
-    chomp(buf);
-
-    /* Insert commas if the field is a numeric string */
-    if (isnumstr(buf))
-    {
-	commas(buf);
-    }
-
-    if (!strcmp(field, "uri")) {
-	replace_uri(buf);
-    } else {
-	/* do not emphasize in URI */
-	if (HtmlOutput) {
-	    emphasize(buf);
-	}
-    }
-
-    encode_entity(buf);
-    strcat(Buf, buf);
-    fclose(fp_field);
-    fclose(fp_field_idx);
-}
-
 /************************************************************
  *
  * Public functions
@@ -210,7 +169,8 @@ void print_hlist(HLIST hlist)
 	Score   = hlist.scr[i];
 	Counter = i + 1;
 	Fid = hlist.fid[i];
-	make_fullpathname_field(hlist.did[i]);
+	Did = hlist.did[i];
+	make_fullpathname_result(Did);
 	strcpy(template, NMZ.result);
 	strcat(template, ".");
 	strcat(template, Template);  /* usually "normal" */
@@ -218,7 +178,7 @@ void print_hlist(HLIST hlist)
 	if (!AllList && (i >= HListWhence + HListMax))
 	    break;
 	if (MoreShortFormat) {
-	    get_field_data("${uri}");
+	    get_field_data(Did, Fid, "${uri}", Buf);
 	} else {
 	    if ((yyin = fopen(template, "r")) == NULL) {
 		die("print_hlist: %s", template);

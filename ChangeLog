@@ -1,5 +1,13 @@
 1999-09-02  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/*.[chl]: Implement namazu --sort=field:title option.
+	
+	* src/util.[ch]: Implement the following functions:
+		int strprefixcmp(uchar *, uchar *);
+		int strsuffixcmp(uchar *, uchar *);
+		int strprefixcasecmp(uchar *, uchar *);
+		int strsuffixcasecmp(uchar *, uchar *);
+	
 	* src/formc.c: Make all string comparisons case insensitive.
 	
 	* template/*, src/*.c: s/dbname/idxname/g

@@ -15,6 +15,10 @@ enum {
 
     SORT_BY_SCORE = 1,  /* at displaying results time */
     SORT_BY_DATE  = 2,  /* at displaying results time */
+    SORT_BY_FIELD = 3,  /* at displaying results time */
+
+    ASCENDING  = 0,     /* Direction of sorting */
+    DESCENDING = 1,     /* Direction of sorting */
 
     ERR_TOO_MUCH_MATCH       = -1,
     ERR_TOO_MUCH_HIT         = -2,

@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.10 1999-09-02 00:14:48 satoru Exp $
+ * $Id: form.c,v 1.11 1999-09-02 02:54:09 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -53,7 +53,6 @@ int replace_action(uchar*);
 void delete_str(uchar*, uchar*);
 void get_value(uchar*, uchar*);
 void get_select_name(uchar*, uchar*);
-int str_backward_cmp(uchar*, uchar*);
 int select_option(uchar*, uchar*, uchar*);
 int check_checkbox(uchar*);
 void treat_tag(uchar*, uchar*, uchar*, uchar *, uchar *);
@@ -186,22 +185,6 @@ void get_select_name(uchar *s, uchar *v)
     }
 }
 
-int str_backward_cmp(uchar *str1, uchar *str2)
-{
-    uchar *p, *q;
-
-    p = str1 + strlen(str1) -1;
-    q = str2 + strlen(str2) -1;
-
-    for (; p >= str1 && q >= str2; p--, q--) {
-        if (*p != *q) {
-            return 1;
-        }
-    }
-    return 0;
-}
-
-
 int select_option(uchar *s, uchar *name, uchar *subquery)
 {
     uchar value[BUFSIZE];
@@ -217,12 +200,19 @@ int select_option(uchar *s, uchar *name, uchar *subquery)
                 fputs(" selected", stdout);
             } 
         } else if (!strcasecmp(name, "sort")) {
-            if (!strcasecmp(value, "later") && LaterOrder && !ScoreSort) {
+            if (!strcasecmp(value, "later") && 
+		SortMethod    == SORT_BY_DATE &&
+		SortDirection == DESCENDING) 
+	    {
                 fputs(" selected", stdout);
-            } else if (!strcasecmp(value, "earlier")  && !LaterOrder && !ScoreSort)
+            } else if (!strcasecmp(value, "earlier")  && 
+		SortMethod    == SORT_BY_DATE &&
+		SortDirection == ASCENDING)
             {
                 fputs(" selected", stdout);
-            } else if (!strcasecmp(value, "score") && ScoreSort) {
+            } else if (!strcasecmp(value, "score") && 
+		       SortMethod  == SORT_BY_SCORE) 
+	    {
                 fputs(" selected", stdout);
             }
         } else if (!strcasecmp(name, "lang")) {
@@ -230,7 +220,7 @@ int select_option(uchar *s, uchar *name, uchar *subquery)
                 fputs(" selected", stdout);
             }
         } else if (!strcasecmp(name, "idxname")) {
-            if (*Idx.names[0] && !str_backward_cmp(value, Idx.names[0])) {
+            if (*Idx.names[0] && strsuffixcmp(value, Idx.names[0]) == 0) {
                 fputs(" selected", stdout);
             }
         } else if (!strcasecmp(name, "subquery")) {
@@ -271,7 +261,7 @@ int check_checkbox(uchar *s)
                 pp += strlen(pp);
             }
             for (i = 0; i < Idx.num; i++) {
-                if (!str_backward_cmp(name, Idx.names[i])) {
+                if (strsuffixcmp(name, Idx.names[i]) == 0) {
                     searched++;
                     break;
                 }

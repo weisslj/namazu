@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.22 1999-09-02 00:14:49 satoru Exp $
+ * $Id: namazu.c,v 1.23 1999-09-02 02:54:10 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -36,6 +36,7 @@
 #include <sys/stat.h>
 #include <signal.h>
 
+#include "namazu.h"
 #include "getopt.h"
 #include "util.h"
 #include "codeconv.h"
@@ -45,7 +46,7 @@
 #include "output.h"
 #include "search.h"
 #include "cgi.h"
-#include "namazu.h"
+#include "hlist.h"
 
 /* output a content of file */
 void cat(uchar *fname)
@@ -84,6 +85,8 @@ static struct option long_options[] = {
     {"result",           required_argument, NULL, '1'},
     {"late",             no_argument,       NULL, '2'},
     {"early",            no_argument,       NULL, '3'},
+    {"sort",             required_argument, NULL, '4'},
+    {"reverse",          no_argument, NULL, '5'},
     {"all",              no_argument,       NULL, 'a'},
     {"count",            no_argument,       NULL, 'c'},
     {"show-config",      no_argument,       NULL, 'C'},
@@ -92,6 +95,7 @@ static struct option long_options[] = {
     {"form",             no_argument,       NULL, 'F'},
     {"html",             no_argument,       NULL, 'h'},
     {"page",             no_argument,       NULL, 'H'},
+    {"list",             no_argument,       NULL, 'l'},
     {"lang",             required_argument, NULL, 'L'},
     {"max",              required_argument, NULL, 'n'},
     {"output",           required_argument, NULL, 'o'},
@@ -99,7 +103,6 @@ static struct option long_options[] = {
     {"no-references",    no_argument,       NULL, 'r'},
     {"no-replace-uri",   no_argument,       NULL, 'R'},
     {"short",            no_argument,       NULL, 's'},
-    {"very-short",       no_argument,       NULL, 'S'},
     {"no-encode-uri",    no_argument,       NULL, 'U'},
     {"version",          no_argument,       NULL, 'v'},
     {"whence",           required_argument, NULL, 'w'},
@@ -115,6 +118,36 @@ int parse_options(int argc, char **argv)
             break;
 	}
 	switch (ch) {
+	case '0':
+	    show_long_usage();
+	    exit(0);
+	    break;
+	case '1':
+	    strcpy(Template, optarg);
+	    break;
+	case '2':
+	    SortMethod    = SORT_BY_DATE;
+	    SortDirection = DESCENDING;
+	    break;	  
+	case '3':	  
+	    SortMethod    = SORT_BY_DATE;
+	    SortDirection = ASCENDING;
+	    break;
+	case '4':  /* --sort */
+	{
+	    if (strcasecmp(optarg, "score") == 0) {
+		SortMethod = SORT_BY_SCORE;
+	    } else if (strcasecmp(optarg, "date") == 0) {
+		SortMethod    = SORT_BY_DATE;
+	    } else if (strprefixcasecmp(optarg, "field:") == 0) {
+		SortMethod    = SORT_BY_FIELD;
+		set_sort_field(optarg + 6);
+	    }
+	}
+	break;
+	case '5':  /* --reverse */
+	    SortDirection = ASCENDING;
+	    break;
 	case 'n':
 	    HListMax = atoi(optarg);
 	    break;
@@ -150,14 +183,6 @@ int parse_options(int argc, char **argv)
 	case 'a':
 	    AllList = 1;
 	    break;
-	case '2':
-	    LaterOrder = 1;
-	    ScoreSort = 0;
-	    break;
-	case '3':
-	    LaterOrder = 0;
-	    ScoreSort = 0;
-	    break;
 	case 'R':
 	    NoReplace = 1;
 	    break;
@@ -170,13 +195,6 @@ int parse_options(int argc, char **argv)
 	case 'v':
 	    printf("namazu v%s\n", VERSION);
 	    exit(0);
-	    break;
-	case '0':
-	    show_long_usage();
-	    exit(0);
-	    break;
-	case '1':
-	    strcpy(Template, optarg);
 	    break;
 	case 'C':
 	    show_conf();

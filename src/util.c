@@ -289,39 +289,6 @@ LIST *add_list(LIST *ptr, uchar *str)
     return tmp;
 }
 
-/* case-insensitive brute force search */
-/*
-uchar *strcasestr(uchar *haystack, uchar *needle)
-{
-   
-    for (; *haystack != '\0'; haystack++) {
-	uchar *str = haystack;
-	uchar *key = needle;
-	for (; *str != '\0' && *key != '\0' &&
-		 (tolower((int)*key) == tolower((int)*str)); key++, str++) {
-	    ;
-	}
-	if (*key == '\0') {
-	    return haystack;
-	}
-    }
-    return NULL;
-}
-*/
-
-/* case-insensitive brute force search  */
-uchar *strcasestr(uchar *haystack, uchar *needle)
-{
-    int n = strlen(needle);
-
-    for (; *haystack != '\0'; haystack++) {
-	if (strncasecmp(haystack, needle, n) == 0) {
-	    return haystack;
-	} 
-    }
-    return NULL;
-}
-
 /* read index and return with value */
 long getidxptr(FILE * fp, long p)
 {
@@ -434,6 +401,76 @@ void commas(char *str)
 	    n--;
 	    str[n] = ',';
 	}
+    }
+}
+
+/* case-insensitive brute force search  */
+uchar *strcasestr(uchar *haystack, uchar *needle)
+{
+    int n = strlen(needle);
+
+    for (; *haystack != '\0'; haystack++) {
+	if (strncasecmp(haystack, needle, n) == 0) {
+	    return haystack;
+	} 
+    }
+    return NULL;
+}
+
+
+int strprefixcasecmp(uchar *str1, uchar *str2)
+{
+    int leng1, leng2;
+
+    leng1 = strlen(str1);
+    leng2 = strlen(str2);
+
+    if (leng1 > leng2) {
+	return strncasecmp(str1, str2, leng2);
+    } else {
+	return strncasecmp(str2, str1, leng1);
+    }
+}
+
+int strsuffixcasecmp(uchar *str1, uchar *str2)
+{
+    int leng1, leng2;
+
+    leng1 = strlen(str1);
+    leng2 = strlen(str2);
+
+    if (leng1 > leng2) {
+	return strcasecmp(str1 + leng1 - leng2, str2);
+    } else {					     
+	return strcasecmp(str2 + leng2 - leng1, str1);
+    }
+}
+
+int strprefixcmp(uchar *str1, uchar *str2)
+{
+    int leng1, leng2;
+
+    leng1 = strlen(str1);
+    leng2 = strlen(str2);
+
+    if (leng1 > leng2) {
+	return strncmp(str1, str2, leng2);
+    } else {
+	return strncmp(str2, str1, leng1);
+    }
+}
+
+int strsuffixcmp(uchar *str1, uchar *str2)
+{
+    int leng1, leng2;
+
+    leng1 = strlen(str1);
+    leng2 = strlen(str2);
+
+    if (leng1 > leng2) {
+	return strcmp(str1 + leng1 - leng2, str2);
+    } else {					     
+	return strcmp(str2 + leng2 - leng1, str1);
     }
 }
 

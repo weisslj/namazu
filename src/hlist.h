@@ -16,5 +16,6 @@ HLIST merge_hlist(HLIST*);
 void set_did_hlist(HLIST, int);
 void copy_hlist(HLIST, int, HLIST, int);
 void set_docnum(int);
+void set_sort_field(uchar *);
 
 #endif /* _HLIST_H */

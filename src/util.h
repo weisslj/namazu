@@ -3,7 +3,7 @@
   util.h -
 
   $Author: satoru $
-  $Date: 1999-08-31 09:15:54 $
+  $Date: 1999-09-02 02:54:11 $
   created at: Thu Mar  9 11:55:53 JST 1995
 
   Copyright (C) 1993-1998 Yukihiro Matsumoto
@@ -58,7 +58,6 @@ void strlower();
 void delete_backslashes();
 int get_unpackw();
 int read_unpackw(FILE *, int *, int);
-uchar *strcasestr(uchar *, uchar *);
 
 uchar *lastc();
 size_t freadx();
@@ -72,6 +71,12 @@ void setprogname(char *);
 
 int  isnumstr(char *);
 void commas(char *);
+
+uchar *strcasestr(uchar *, uchar *);
+int strprefixcmp(uchar *, uchar *);
+int strsuffixcmp(uchar *, uchar *);
+int strprefixcasecmp(uchar *, uchar *);
+int strsuffixcasecmp(uchar *, uchar *);
 
 #endif /* _UTIL_H */
 

@@ -8,12 +8,10 @@ extern int ShortFormat;
 extern int MoreShortFormat;
 extern int Quiet;
 extern int HitCountOnly;
-extern int ScoreSort;
 extern int HtmlOutput;
 extern int HidePageIndex;
 extern int ForcePrintForm;
 extern int AllList;
-extern int LaterOrder;
 extern int FinalHitN;
 extern int ConfLoaded;
 extern int NoReplace;
@@ -23,6 +21,9 @@ extern int Logging;
 extern int OppositeEndian;
 extern int TfIdf;
 extern int NoReference;
+
+extern int SortMethod;
+extern int SortDirection;
 
 extern uchar DEFAULT_INDEX[];
 extern uchar Lang[];

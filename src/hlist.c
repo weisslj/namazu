@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.14 1999-09-01 07:54:20 satoru Exp $
+ * $Id: hlist.c,v 1.15 1999-09-02 02:54:10 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -33,8 +33,10 @@
 #include "namazu.h"
 #include "util.h"
 #include "hlist.h"
+#include "field.h"
 
 static int DocNum = 0;  /* Number of documents covered in atarget index */
+static uchar Field[BUFSIZE] = "";  /* Field name used with sorting */
 
 /************************************************************
  *
@@ -413,7 +415,14 @@ void nmz_mergesort(int first, int last, HLIST hlist, HLIST work, int mode)
                 if (work.date[j] >= hlist.date[i]) {
                     bool = 1;
                 }
-            }
+            } else if (mode == SORT_BY_FIELD) {
+		uchar str1[BUFSIZE], str2[BUFSIZE];
+		get_field_data(work.did[j],   work.fid[j], Field, str1);
+		get_field_data(hlist.did[i], hlist.fid[i], Field, str2);
+		if (strcmp(str1, str2) > 0) {
+		    bool = 1;
+		}
+	    }
 	    if (bool) {
 		copy_hlist(hlist, k, work, j);
 		k++;
@@ -468,5 +477,10 @@ void reverse_hlist(HLIST hlist)
 void set_docnum(int n)
 {
     DocNum = n;
+}
+
+void set_sort_field(uchar *field)
+{
+    strcpy(Field, field);
 }
 

@@ -2,7 +2,7 @@
  * 
  * messages.c -
  * 
- * $Id: message.c,v 1.10 1999-09-02 00:14:48 satoru Exp $
+ * $Id: message.c,v 1.11 1999-09-02 02:54:10 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -69,6 +69,8 @@ void init_message(void)
         --result=ext        結果表示に用いる NMZ.result.ext を指定
         --late              検索結果を新しい順にソートする\n\
         --early             検索結果を古い順にソートする\n\
+        --short=method      ソート方法を指定する (score, date, field:name)\n\
+        --reverse           ソートの方向を逆 (昇順) にする (標準は降順)\n\
     -a, --all               検索結果をすべて表示する\n\
     -c, --count             ヒット数のみを表示する\n\
     -h, --html              HTML で出力する\n\

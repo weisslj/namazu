@@ -2,7 +2,7 @@
  * 
  * values.c -
  * 
- * $Id: var.c,v 1.4 1999-09-01 07:54:21 satoru Exp $
+ * $Id: var.c,v 1.5 1999-09-02 02:54:11 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -57,12 +57,10 @@ int ShortFormat = 0;		/* if no display summary: 1  */
 int MoreShortFormat = 0;        /* if more short format mode: 1  */
 int Quiet = 0;                  /* if quiet mode: 1  */
 int HitCountOnly = 0;
-int ScoreSort = 1;		/* if sort by score: 1 */
 int HtmlOutput = 0;		/* if display as HTML: 1 */
 int HidePageIndex = 0;		/* if hide page index: 1 */
 int ForcePrintForm = 0;		/* if display <FORM> ... </FORM>: 1 */
 int AllList = 0;		/* if dispal all search results: 1 */
-int LaterOrder = 1;		/* if sort by late order: 1 */
 int ConfLoaded = 0;		/* if whould loaded namazu.conf: 1 */
 int NoReplace = 0;		/* if no replace URI: 1 */
 int DecodeURI = 0;		/* if replace URI at plaint text mode: 1 */
@@ -70,6 +68,9 @@ int IsCGI = 0;			/* if CGI mode: 1 */
 int Logging = 1;		/* if do logging:  1 */
 int OppositeEndian = 0;         /* if opposite byte order: 1 */
 int NoReference = 0;		/* if no display reference: 1  */
+int SortMethod = SORT_BY_SCORE;	/* Method of sorting */
+int SortDirection = DESCENDING;	/* Direction of sorting */
+
 
 #ifdef OPT_SCORING
 #define TFIDF  1

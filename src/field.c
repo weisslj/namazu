@@ -121,12 +121,6 @@ void get_field_data(int did, int fid, uchar *field, uchar *data)
     fgets(data, BUFSIZE, fp_field);
     chomp(data);
 
-    /* Insert commas if the field is a numeric string */
-    if (isnumstr(data))
-    {
-	commas(data);
-    }
-
     if (strcmp(field, "uri") == 0) {
 	replace_uri(data);
     } 

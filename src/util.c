@@ -370,7 +370,7 @@ void setprogname(char *argv0)
     progname = argv0;
 }
 
-int  isnumstr(char *str)
+int isnumstr(char *str)
 {
     int i, nonnum = 0;
 
@@ -379,7 +379,7 @@ int  isnumstr(char *str)
     }
 
     for (i = 0; str[i] != '\0'; i++) {
-	if (!isdigit(str[i])) {
+	if (! isdigit(str[i])) {
 	    nonnum = 1;
 	    return 0;
 	}

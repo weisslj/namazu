@@ -1,7 +1,7 @@
 /*
  * result.l -
  * -*- C -*-
- * $Id: result.l,v 1.17 1999-09-02 02:54:10 satoru Exp $
+ * $Id: result.l,v 1.18 1999-09-02 07:05:48 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -82,6 +82,13 @@ void replace_field(uchar *key)
     if (HtmlOutput) {
 	encode_entity(buf);
     }
+
+    /* Insert commas if the buf is a numeric string */
+    if (isnumstr(buf))
+    {
+	commas(buf);
+    }
+
     strcat(Buf, buf);
 }
 

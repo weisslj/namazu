@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.15 1999-09-02 02:54:10 satoru Exp $
+ * $Id: hlist.c,v 1.16 1999-09-02 07:05:48 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -38,6 +38,12 @@
 static int DocNum = 0;  /* Number of documents covered in atarget index */
 static uchar Field[BUFSIZE] = "";  /* Field name used with sorting */
 
+struct str_num {
+    uchar *str;
+    int   num;
+};
+typedef struct str_num str_num;
+
 /************************************************************
  *
  * Private functions
@@ -46,6 +52,8 @@ static uchar Field[BUFSIZE] = "";  /* Field name used with sorting */
 
 void memcpy_hlist(HLIST, HLIST, int);
 void set_date_zero_all(HLIST);
+void prep_field_sort(HLIST);
+int  cmp(const void*, const void*);
 
 void memcpy_hlist(HLIST to, HLIST from, int n)
 {
@@ -64,6 +72,63 @@ void set_date_zero_all(HLIST hlist)
     }
 }
 
+void prep_field_sort(HLIST hlist) 
+{
+    int i, numeric = 1;
+    str_num *tab;
+
+    tab = (str_num *)malloc(hlist.n * sizeof(str_num));
+    if (tab == NULL) {
+	die("void_prep_field_sort");
+    }
+
+    for (i = 0; i < hlist.n; i++) {
+	uchar buf[BUFSIZE];
+	int leng;
+	get_field_data(hlist.did[i], hlist.fid[i], Field, buf);
+	chomp(buf);
+	leng = strlen(buf);
+
+	if (numeric == 1 && ! isnumstr(buf)) {
+	    numeric = 0;
+	}
+
+	tab[i].num = i;
+	tab[i].str = (uchar *)malloc(leng + 1);
+	if (tab[i].str == NULL) {
+	    die("void_prep_field_sort");
+	}
+	strcpy(tab[i].str, buf);
+    } 
+
+    if (numeric == 1) {
+	for (i = 0; i < hlist.n; i++) {
+	    /* overwrite hlist.date data for field-specified sorting */
+	    hlist.date[i] = atoi(tab[i].str);
+	    free(tab[i].str);
+	}
+	
+    } else {
+	qsort(tab, hlist.n, sizeof(tab[0]), cmp);
+	for (i = 0; i < hlist.n; i++) {
+	    /* overwrite hlist.date data for field-specified sorting */
+	    hlist.date[tab[i].num] = i;
+	    free(tab[i].str);
+	}
+    }
+    free(tab);
+}
+
+/* cmp: compare of a pair of str_num data */
+int cmp(const void *p1, const void *p2)
+{
+    str_num *v1, *v2;
+    
+    v1 = (str_num *) p1;
+    v2 = (str_num *) p2;
+
+    return strcmp(v1->str, v2->str);
+}
 
 /************************************************************
  *
@@ -416,12 +481,10 @@ void nmz_mergesort(int first, int last, HLIST hlist, HLIST work, int mode)
                     bool = 1;
                 }
             } else if (mode == SORT_BY_FIELD) {
-		uchar str1[BUFSIZE], str2[BUFSIZE];
-		get_field_data(work.did[j],   work.fid[j], Field, str1);
-		get_field_data(hlist.did[i], hlist.fid[i], Field, str2);
-		if (strcmp(str1, str2) > 0) {
-		    bool = 1;
-		}
+		/* work.date and hlist.date have pre-sorted field ranks */
+                if (work.date[j] >= hlist.date[i]) {
+                    bool = 1;
+                }
 	    }
 	    if (bool) {
 		copy_hlist(hlist, k, work, j);
@@ -441,19 +504,22 @@ void nmz_mergesort(int first, int last, HLIST hlist, HLIST work, int mode)
     }
 }
 
-
 /* interface to invoke merge sort function */
 void sort_hlist(HLIST hlist, int mode)
 {
     HLIST work;
 
     malloc_hlist(&work, hlist.n);
+    if (mode == SORT_BY_FIELD) {
+	prep_field_sort(hlist);
+    }
+
     nmz_mergesort(0, hlist.n - 1, hlist, work, mode);
     free_hlist(work);
 }
 
 /* 
- * reverse the hlist
+ * reverse a given hlist
  * original of this routine was contributed by Furukawa-san [1997-11-13]
  */
 void reverse_hlist(HLIST hlist)

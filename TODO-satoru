@@ -1,15 +1,22 @@
-$Id: TODO-satoru,v 1.6 2000-01-08 14:12:52 satoru Exp $
+$Id: TODO-satoru,v 1.7 2000-01-09 13:31:50 satoru Exp $
 
 やるべきことの備忘録 by 高林
+
+  * rcfile.c: syntax error のメッセージを gettext化
+
+  * rcfile.c: \ で改行を escape 可能にする
+
+  * rcfile.c: デバッグモードを namazurc で設定可能にする
+
+  * rcfile.c: function pointer を使って書き直す
+
+  * parser.c: Cp は変数名が不適切
 
   * conv_query() を nmz_search() から呼ぶようにする。
 
   * 一対多の alias に対応する。例: Alias all-ml foo bar baz quux
 
-  * rcfile.c を function pointer を使って書き直す
-    \ で改行を escape 可能にする
-
-  * File::Copy を使おう - mknmz
+  * mknmz.pl.in: File::Copy を使おう
 
   * nmz/libnamazu.c を廃止 (中の関数は適切なファイルに移動する)
 

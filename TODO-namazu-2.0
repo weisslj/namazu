@@ -1,4 +1,4 @@
-$Id: TODO-namazu-2.0,v 1.29 2000-01-08 10:11:43 satoru Exp $
+$Id: TODO-namazu-2.0,v 1.30 2000-01-09 13:31:50 satoru Exp $
 
 検討項目
 
@@ -18,8 +18,6 @@ $Id: TODO-namazu-2.0,v 1.29 2000-01-08 10:11:43 satoru Exp $
   * --with-admin=EMAIL を廃止し、 mknmzrc で設定可能にする
 
   * mknmz の gettext化 (野首さん担当)
-
-  * prefix "nmz" を徹底する
 
   * まともな libraryとして整備する
 

@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.80 2000-12-18 09:25:13 knok Exp $
+ * $Id: search.c,v 1.81 2000-12-18 09:56:38 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -719,7 +719,7 @@ open_index_files(void)
     Nmz.wi = fopen(NMZ.wi, "rb");
     if (Nmz.wi == NULL) {
         nmz_debug_printf("%s: %s", NMZ.wi, strerror(errno));
-	return FAILURE;
+	return ERR_OLD_INDEX_FORMAT;
     }
 
     return SUCCESS;

@@ -3,7 +3,7 @@
   util.h -
 
   $Author: rug $
-  $Date: 1999-12-08 05:46:40 $
+  $Date: 1999-12-08 06:57:24 $
   created at: Thu Mar  9 11:55:53 JST 1995
 
   Copyright (C) 1993-1998 Yukihiro Matsumoto
@@ -58,7 +58,6 @@ extern void nmz_tr(char*, char*, char*);
 extern void nmz_chomp(char*);
 
 extern void strlower();
-extern void delete_backslashes();
 extern int nmz_get_unpackw();
 extern int nmz_read_unpackw(FILE *, int *, int);
 
@@ -79,7 +78,6 @@ extern char *strcasestr(char *, char *);
 extern int strprefixcmp(char *, char *);
 extern int strsuffixcmp(char *, char *);
 extern int strprefixcasecmp(char *, char *);
-extern int strsuffixcasecmp(char *, char *);
 extern char *nmz_readfile(char*);
 extern void nmz_subst(char*, char*, char*);
 extern void nmz_cat(char*);
@@ -87,7 +85,6 @@ extern void nmz_cat(char*);
 extern char *safe_getenv(char *s);
 
 extern void print(char*);
-extern void wprint(char*);
 
 #endif /* _UTIL_H */
 

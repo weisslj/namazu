@@ -156,27 +156,6 @@ void strlower(char *str)
     }
 }
 
-void delete_backslashes(char *str)
-{
-    char *pos = str;
-
-    while (*str) {
-        if (*str == '\\' && *(str + 1) == '\\') {
-            *pos = *str;
-            pos++;
-            str++;
-            str++;
-        } else if (*str == '\\') {
-            str++;
-        } else {
-            *pos = *str;
-            pos++;
-            str++;
-        }
-    }
-    *pos = '\0';
-}
-
 /* return with pointer to character at the end of string */
 char *lastc(char *str)
 {
@@ -408,20 +387,6 @@ int strprefixcasecmp(char *str1, char *str2)
     }
 }
 
-int strsuffixcasecmp(char *str1, char *str2)
-{
-    int leng1, leng2;
-
-    leng1 = strlen(str1);
-    leng2 = strlen(str2);
-
-    if (leng1 > leng2) {
-	return strcasecmp(str1 + leng1 - leng2, str2);
-    } else {					     
-	return strcasecmp(str2 + leng2 - leng1, str1);
-    }
-}
-
 int strprefixcmp(char *str1, char *str2)
 {
     int leng1, leng2;
@@ -520,12 +485,5 @@ char *safe_getenv(char *s)
 
 void print(char *s) {
     fputs(s, stdout);
-}
-
-void wprint(char *s) {
-    fflush(stdout);
-    fprintf(stderr, "%s: ", PACKAGE);
-    fputs(s, stderr);
-    fflush(stderr);
 }
 

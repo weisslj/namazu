@@ -1,6 +1,9 @@
 1999-12-08  Ryuji Abe  <raeva@t3.rim.or.jp>
 
-	* nmz/util.c (nmz_pathcat): s/pathcat/nmz_pathcat/g.
+	* nmz/util.[ch] (wprint): Removed.
+	(delete_backslashes): Likewise.
+	(strsuffixcasecmp): Likewise.
+	(nmz_pathcat): s/pathcat/nmz_pathcat/g.
 	(nmz_tr): s/tr/nmz_tr/g.
 	(nmz_chomp): s/chomp/nmz_chomp/g.
 	(nmz_cat): s/cat/nmz_cat/g.

@@ -1,3 +1,8 @@
+1999-12-24  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* scripts/bnamazu.in (main): Fix space-containing-argument bug.
+	(cannot treat a phrase search query)
+
 1999-12-24  Ryuji Abe <raeva@t3.rim.or.jp>
 
 	* acinclude.m4 (AM_WITH_CCMALLOC): New Macro.

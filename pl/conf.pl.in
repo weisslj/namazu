@@ -93,6 +93,12 @@ $META_TAGS = "keywords|description";
 $NON_SEPARATION_ELEMENTS = 'A|TT|CODE|SAMP|KBD|VAR|B|STRONG|I|EM|CITE|FONT|U|'.
                        'STRIKE|BIG|SMALL|DFN|ABBR|ACRONYM|Q|SUB|SUP|SPAN|BDO';
 
+#
+# This pattern specifies attribute of a HTML tag which should be
+# searchable.
+#
+$HTML_ATTRIBUTES = 'ALT|SUMMARY|TITLE';
+
 #===================================================================
 # 
 # Critical Numbers

@@ -1,3 +1,7 @@
+2001-08-22  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* scripts/mknmz.in (dump_record($$)): Fixed a typo.
+
 2001-08-20  Hajime BABA <hajime.baba@nao.ac.jp>
 
 	* doc/ja/manual.html: Added explanation of lnnmz and adnmz.
@@ -6917,4 +6921,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.851 2001-08-20 13:43:43 baba Exp $
+$Id: ChangeLog,v 1.852 2001-08-22 06:18:08 knok Exp $

@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.90 2001-08-20 13:32:01 baba Exp $
+# $Id: mknmz.in,v 1.91 2001-08-22 06:18:09 knok Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -2451,7 +2451,7 @@ sub dump_record($$) {
     my ($recref, $step) = @_;
     my (@data) = unpack 'w*', $$recref;
     print STDERR "dump record data to NMZ.bug.info (step: $step)...";
-    my $fh_info = util::ofopen(">> NMZ.bug.info");
+    my $fh_info = util::fopen(">> NMZ.bug.info");
     print $fh_info "dumped record data (step: $step)...";
     foreach (@data) {
 	print $fh_info sprintf(" %08x", $_);

@@ -2,6 +2,9 @@
 
 	* tests/namazu-cgi-8: Fixed a minor bug.
 
+	* configure.in: Revert to use AM_PROG_LIBTOOL. (workaround
+	for earlier version of automake.)
+
 2001-12-28  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* doc/ja/manual.html: s!/usr/local/etc/mknmz/!/usr/local/etc/namazu/!
@@ -7314,4 +7317,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.913 2002-01-04 04:50:08 rug Exp $
+$Id: ChangeLog,v 1.914 2002-01-04 05:36:13 rug Exp $

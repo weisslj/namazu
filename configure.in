@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.144 2001-10-30 11:30:37 rug Exp $
+dnl $Id: configure.in,v 1.145 2002-01-04 05:36:14 rug Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -69,7 +69,7 @@ fi
 dnl *
 dnl * libtool
 dnl *
-AC_PROG_LIBTOOL
+AM_PROG_LIBTOOL
 
 # Before making a release, the LTVERSION string should be modified.
 # The string is of the form C:R:A.

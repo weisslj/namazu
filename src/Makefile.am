@@ -14,7 +14,7 @@ LIBS = -lm
 bin_PROGRAMS = namazu
 bin_SCRIPTS = gcnmz mailutime mknmz gtnmz
 
-CLEANFILES = mknmz.pl $(bin_SCRIPTS)
+CLEANFILES = mknmz.pl
 
 confdir     = $(pkgdatadir)/conf
 libdir      = $(pkgdatadir)/lib

@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.75 2000-01-07 01:37:50 satoru Exp $
+ * $Id: namazu.c,v 1.76 2000-01-07 09:06:23 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -25,6 +25,7 @@
  * 
  */
 
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
@@ -106,7 +107,7 @@ stdio2file(const char * fname)
 {
 /*   int fd;
  *   if (-1 == (fd = open(fname, O_CREAT | O_TRUNC | O_WRONLY, 00600))) {
- *	set_dyingmsg("stdio2file(cannot open)");
+ *	set_dyingmsg("stdio2file: %s", strerror(errno));
  *	return 1;
  *    }
  *    close(STDOUT);
@@ -116,7 +117,7 @@ stdio2file(const char * fname)
  *    close(fd);
  */
     if (freopen(fname, "wb", stdout) == NULL) {
-	set_dyingmsg("stdio2file(cannot open)");
+	set_dyingmsg("stdio2file: %s", strerror(errno));
 	return 1;
     }
     return 0;

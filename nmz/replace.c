@@ -2,7 +2,7 @@
  * 
  * replace.c - 
  *
- * $Id: replace.c,v 1.5 2000-01-06 10:01:53 satoru Exp $
+ * $Id: replace.c,v 1.6 2000-01-07 09:06:20 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
@@ -29,6 +29,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
 #include "replace.h"
 #include "libnamazu.h"
 #include "i18n.h"
@@ -171,19 +172,19 @@ add_replace(const char *pat, const char *rep)
     
     newp = malloc(sizeof(struct nmz_replace));
     if (newp == NULL) {
-	 set_dyingmsg("add_replace_malloc");
+	 set_dyingmsg("add_replace: %s", strerror(errno));
 	 return FAILURE;
     }
 
     newp->pat = malloc(strlen(pat) + 1);
     if (newp->pat == NULL) {
-	 set_dyingmsg("add_replace_malloc");
+	 set_dyingmsg("add_replace: %s", strerror(errno));
 	 return FAILURE;
     }
 
     newp->rep = malloc(strlen(rep) + 1);
     if (newp->rep == NULL) {
-	 set_dyingmsg("add_replace_malloc");
+	 set_dyingmsg("add_replace: %s", strerror(errno));
 	 return FAILURE;
     }
 

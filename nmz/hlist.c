@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.28 2000-01-06 10:01:51 satoru Exp $
+ * $Id: hlist.c,v 1.29 2000-01-07 09:06:19 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -30,6 +30,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <math.h>
+#include <errno.h>
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
 #endif
@@ -376,7 +377,7 @@ malloc_hlist(NmzResult * hlist, int n)
     if (n <= 0) return;
     hlist->data = malloc(n * sizeof(struct nmz_data));
     if (hlist->data == NULL) {
-	 set_dyingmsg("malloc_hlist");
+	 set_dyingmsg("malloc_hlist: %s", strerror(errno));
 	 hlist->stat = ERR_FATAL;
 	 return;
     }
@@ -459,14 +460,14 @@ do_date_processing(NmzResult hlist)
 
     date_index = fopen(NMZ.t, "rb");
     if (date_index == NULL) {
-	set_dyingmsg("%s: cannot open file.\n", NMZ.t);
+	set_dyingmsg("do_date_processing: %s: %s", NMZ.t, strerror(errno));
 	hlist.stat = ERR_FATAL;
         return hlist; /* error */
     }
 
     for (i = 0; i < hlist.num ; i++) {
         if (-1 == fseek(date_index, hlist.data[i].docid * sizeof(hlist.data[i].date), 0)) {
-	    set_dyingmsg("%s: cannot open file.\n", NMZ.t);
+	    set_dyingmsg("do_date_processing: %s: %s", NMZ.t, strerror(errno));
 	    hlist.stat = ERR_FATAL;
             return hlist; /* error */
         }

@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.36 2000-01-06 14:23:05 satoru Exp $
+ * $Id: form.c,v 1.37 2000-01-07 09:06:23 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -25,6 +25,7 @@
  * 
  */
 
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -314,7 +315,7 @@ read_headfoot(const char *fname)
     char *script_name;
 
     if (choose_msgfile_suffix(fname, suffix) != SUCCESS) {
-	nmz_warn_printf("read_headfoot: cannot open %s", fname);
+	nmz_warn_printf("%s: %s", fname, strerror(errno));
 	return NULL;
     } 
     strcpy(tmpfname, fname);

@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.46 2000-01-07 01:37:47 satoru Exp $
+ * $Id: search.c,v 1.47 2000-01-07 09:06:20 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -26,6 +26,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
 #include <ctype.h>
 #include <time.h>
 #include <unistd.h>
@@ -338,7 +339,7 @@ cmp_phrase_hash(int hash_key, NmzResult val,
 
     list = malloc(n * sizeof(int));
     if (list == NULL) {
-	 set_dyingmsg("cmp_phrase_hash_malloc");
+	 set_dyingmsg("cmp_phrase_hash: %s", strerror(errno));
 	 val.stat = ERR_FATAL;
 	 return val;
     }

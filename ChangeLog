@@ -1,5 +1,43 @@
 2000-01-07  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/output.c (print_msgfile): Use strerror().
+	Include <errno.h>
+	Add copyright notice.
+
+	* src/form.c (read_headfoot): Use strerrnor().
+	Include <errno.h>
+
+	* src/namazu.c (stdio2file): Use strerror().
+	Include <errno.h>
+
+	* nmz/hlist.c (do_date_processing): Use strerror().
+	(malloc_hlist): Use strerror().
+	Include <errno.h>
+
+	* nmz/idxname.c (expand_idxname_aliases): Use strerror().
+	(complete_idxnames): Ditto.
+	(push_hitnum): Ditto.
+	Include <errno.h>
+	
+	* nmz/search.c (cmp_phrase_hash): Use strerror().
+	Include <errno.h>
+
+	* nmz/replace.c (add_replace): Use strerror().
+	Include <errno.h>
+
+	* nmz/alias.c (add_alias): Use strerror().
+	Include <string.h>
+	Include <errno.h>
+
+	* configure.in (AC_REPLACE_FUNCS): Add strerror.
+
+	* lib/strerror.c: Imported from NDTPD-2.3.6.
+	<http://www.sra.co.jp/people/m-kasahr/ndtpd/>
+	
+	* nmz/util.c (nmz_cat): Abolished.
+	Include <errno.h>
+	(nmz_readfile): Use strerror().
+
 	* src/output.c (print_listing): Return error status.
 	(print_hlist): Ditto.
 	(print_errmsg): New function.

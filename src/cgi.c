@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.69 2001-12-21 08:44:50 knok Exp $
+ * $Id: cgi.c,v 1.70 2002-02-19 07:40:26 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -218,9 +218,7 @@ get_query_string(void)
 	 */
         contlen = strlen(query_string);
         if (contlen > CGI_QUERY_MAX) {
-	    printf("%s text/html" CRLF CRLF, MSG_MIME_HEADER);
-            printf("%s\n", _("Too long QUERY_STRING"));
-            exit(EXIT_FAILURE);
+	    die("%s", _("Too long QUERY_STRING"));
         }
 	script_name = getenv("SCRIPT_NAME");
         if (script_name == NULL) {

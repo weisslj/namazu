@@ -1,5 +1,8 @@
 2002-02-19  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
+	* src/cgi.c (get_query_string): Fixed invalid content-type
+	output error message.
+
 	* scripts/mailutime.in (main): Added MHonArc file support.
 
 2002-02-13  NOKUBI Takatsugu  <knok@daionet.gr.jp>
@@ -7420,4 +7423,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.931 2002-02-19 01:27:56 knok Exp $
+$Id: ChangeLog,v 1.932 2002-02-19 07:40:24 knok Exp $

@@ -3,7 +3,7 @@
 <html>
 <head>
 <link rev=made href="mailto:@OPT_ADMIN_EMAIL@">
-<title>Namazu the full text retrieval search system</title>
+<title>Namazu a full text retrieval search system</title>
 <style type="text/css"><!--
   strong.keyword { color: Red; }
   p.example      { text-indent: 1em; 
@@ -58,8 +58,8 @@
 <option selected value="score">スコア
 <option value="date:late">日付 (新しい順)
 <option value="date:early">日付 (古い順)
-<option value="field:title:ascending">題名 (昇順)
-<option value="field:title:descending">題名 (降順)
+<option value="field:subject:ascending">題名 (昇順)
+<option value="field:subject:descending">題名 (降順)
 <option value="field:from:ascending">著者 (昇順)
 <option value="field:from:descending">著者 (降順)
 <option value="field:size:ascending">サイズ (昇順)

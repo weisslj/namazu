@@ -1,6 +1,10 @@
+1999-12-15  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* template/NMZ.head{,.ja_JP.JIS7}.in: s/field:title/field:subject/g
+
 1999-12-14  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
-	* nmz/search.c (do_phrase_search): Don't interrupt phrase search
+	* nmz/search.c (do_phrase_search): Don't interrupt main loop
 	halfway for storing hitnums of all words consist the phrase.
 
 	* src/output.c: Set pageindex to 1 as default. [namazu-dev 1001]

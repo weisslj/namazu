@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.61 2000-03-29 14:21:50 satoru Exp $
+# $Id: mknmz.in,v 1.62 2000-04-25 02:33:47 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -171,7 +171,7 @@ sub process_file ($$$$$$) {
 	    my $id = 0;
 	    for my $part (@parts) {
 		my $fname = util::tmpnam("NMZ.partial.$id");
-		my $fragment  = $part ? $part : undef;
+		my $fragment  = defined $part ? $part : undef;
 		my $uri   = generate_uri($cfile, $fragment);
 		my $result = namazu_core($fname, 
 					 $docid_count + $processed_num, 

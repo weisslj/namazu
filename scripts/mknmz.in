@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.96 2001-09-19 07:37:59 knok Exp $
+# $Id: mknmz.in,v 1.97 2001-09-19 09:10:15 knok Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -347,7 +347,7 @@ sub preload_modules () {
     if (defined $ENV{'top_srcdir'}) {      ## for VPATH ;make check
 	$srcdir = $ENV{'top_srcdir'} .'/';}
     unshift @INC, $srcdir. "/pl" if defined $srcdir;	# FIXME: remove the workaround for   (util.pl)
-#    unshift @INC, $srcdir. "/filter" if defined $srcdir;# test suites.
+    unshift @INC, $srcdir. "/filter" if defined $srcdir;# test suites.
     unshift @INC, $ENV{'top_builddir'} . '/pl' if defined $ENV{'top_builddir'};
 
     require "conf.pl" || die "unable to require \"conf.pl\"\n";
@@ -382,14 +382,20 @@ sub load_filtermodules () {
     my @filters = ();
     my $srcfilterdir = undef;  # for make check in VPATH environment
     if (defined($ENV{'top_srcdir'})) {
-	$srcfilterdir = $ENV{'top_srcdir'}.'/filter';}
+	$srcfilterdir = $ENV{'top_srcdir'}.'/filter';
+    }
     if (defined $srcfilterdir) { # to ease developing
-	@filters = glob "$srcfilterdir/*.pl";
-	unshift @INC, "$srcfilterdir";
+	if ($FILTERDIR eq '@FILTERDIR@') {
+	    @filters = glob "$srcfilterdir/*.pl";
+	    unshift @INC, "$srcfilterdir";
+	} else {
+	    @filters = glob "$FILTERDIR/*.pl";
+	    require "$srcfilterdir/gfilter.pl";
+	}
     } else {
 	@filters = glob "$FILTERDIR/*.pl";
     }
-    
+
     # Exclude gfilter.pl
     @filters = grep { $_ !~ m!/gfilter\.pl$! } @filters;
       

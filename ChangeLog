@@ -2,6 +2,8 @@
 
 	* scripts/mknmz.in (preload_modules): Commented out
 	excessive unshift @INC.
+	(preload_modules): Reverted the above.
+	(load_filtermodules): Load gfilter.pl when it is in test scripts.
 
 	* pl/htmlsplit.pl: Removed excessive require "html.pl".
 
@@ -7079,4 +7081,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.876 2001-09-19 07:37:58 knok Exp $
+$Id: ChangeLog,v 1.877 2001-09-19 09:10:15 knok Exp $

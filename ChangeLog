@@ -1,3 +1,34 @@
+1999-12-07  Ryuji Abe  <raeva@t3.rim.or.jp>
+
+	* util.[ch] (nmz_debug_printf): s/debug_printf/nmz_debug_printf/g.
+	(nmz_warn_printf): s/warnf/nmz_warn_printf/g.
+	(nmz_get_unpackw): s/get_unpackw/nmz_get_unpackw/g.
+	(nmz_read_unpackw): s/read_unpackw/nmz_read_unpackw/g.
+	(nmz_die): s/die/nmz_die/g.
+	(nmz_die_with_msg): s/diewithmsg/nmz_die_with_msg/g.
+
+	* nmz/search.c (nmz_debug_printf): Likewise.
+	(nmz_warn_printf): Likewise.
+	(nmz_get_unpackw): Likewise.
+	(nmz_read_unpackw): Likewise.
+	
+	* nmz/i18n.c (nmz_debug_printf): Likewise.
+	
+	* nmz/field.c (nmz_debug_printf): Likewise.
+	
+	* nmz/hlist.c (nmz_debug_printf): Likewise.
+	(nmz_get_unpackw): Likewise.
+	(nmz_read_unpackw): Likewise.
+	
+	* nmz/re.c (nmz_debug_printf): Likewise.
+	
+	* nmz/wakati.c (nmz_debug_printf): Likewise.
+
+	* src/namazu.c (nmz_die): Likewise.
+	(nmz_die_with_msg): Likewise.
+
+	* src/cgi.c (nmz_warn_printf): Likewise.
+
 1999-12-07  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* nmz/search.c (nmz_search): Renamed from search_main.

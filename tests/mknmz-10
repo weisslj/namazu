@@ -1,0 +1,33 @@
+#! /bin/sh
+#
+# Test for priority of mknmzrc and command line option.
+#
+
+LOG=`pwd`/test-log
+TARGET=`./select-data`
+
+if test ! -d idx12; then
+    mkdir idx12
+else
+    rm -f idx12/NMZ.*
+fi
+
+if test ! -d idx13; then
+    mkdir idx13
+else
+    rm -f idx13/NMZ.*
+fi
+
+export HOME=`pwd`
+tmprc="$HOME/.mknmzrc"
+echo '$conf::ALLOW_FILE=".*\\.txt"' > $tmprc
+
+cd ../scripts
+./mknmz -O ../tests/idx12 $TARGET >> $LOG 2>&1
+./mknmz --allow='.*\.html' -O ../tests/idx13 $TARGET >> $LOG 2>&1
+rm $tmprc
+grep -v '\.txt' ../tests/idx12/NMZ.field.uri >> $LOG && exit 1
+grep '\.txt' ../tests/idx12/NMZ.field.uri >> $LOG || exit $?
+grep -v '\.html' ../tests/idx13/NMZ.field.uri >> $LOG && exit 1
+grep '\.html' ../tests/idx13/NMZ.field.uri >> $LOG
+exit $?

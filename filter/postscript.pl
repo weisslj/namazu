@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: postscript.pl,v 1.5 2001-08-20 13:31:56 baba Exp $
+# $Id: postscript.pl,v 1.6 2002-04-09 07:04:03 knok Exp $
 # Copyright (C) 2000 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -86,7 +86,7 @@ sub filter ($$$$$) {
 	    system("$postscriptpath -q $tmpfile > $tmpfile2");
 	}
     } else {
-	system("$postscriptpath -q $tmpfile > $tmpfile2");
+	system("$postscriptpath $tmpfile > $tmpfile2");
     }
     unless ($? == 0) {
 	unlink($tmpfile);

@@ -1,3 +1,8 @@
+2002-04-09  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* filter/postscript.pl (filter): Fixed excessive argument on
+	ps2ascii, closes: bugs-en#15.
+
 2002-04-01  Yoshinori TAKESAKO  <takesako@namazu.org>
 
 	* scripts/mknmz.in (load_document): Delete NMZ.win32.tmp file 
@@ -7518,4 +7523,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.947 2002-04-01 13:21:15 takesako Exp $
+$Id: ChangeLog,v 1.948 2002-04-09 07:04:02 knok Exp $

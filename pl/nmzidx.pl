@@ -418,6 +418,15 @@ sub replace_db{
     unlink $lock;
 }
 
+sub remove_tmpdb{
+    my $self = shift;
+
+    for my $path (keys %{$self->{'dblist'}}){
+        $self->{'dblist'}->{$path}->close;
+        unlink "$path.$$.tmp";
+    }
+}
+
 sub write_status{
     my $self = shift;
     my $in = shift;

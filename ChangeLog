@@ -1,3 +1,8 @@
+2000-02-12  Rei FURUKAWA  <furukawa@tcp-ip.or.jp>
+
+	* pl/nmzidx.pl: Add new function remove_tmpdb().
+	* scripts/gcnmz.in: Check NMZ.t before processing.
+
 2000-02-12  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* scripts/mknmz.in (find_target): Sort file names with
@@ -2502,7 +2507,7 @@
 
 	* File-MMagic/Makefile.PL: Added AUTOHR and ABSTRACT paramaters.
 
-1999-10-26  Rei FURUKAWA  <furukawa@tcp-ip.or.up>
+1999-10-26  Rei FURUKAWA  <furukawa@tcp-ip.or.jp>
 
 	* pl/nmzidx.pl, src/gcnmz.pl.in: Close unused file handles.
 
@@ -3100,7 +3105,7 @@
 	
 	* configure.in (AM_INIT_AUTOMAKE): Change a version number to 1.9.5.
 
-1999-09-19  Rei FURUKAWA  <furukawa@tcp-ip.or.up>
+1999-09-19  Rei FURUKAWA  <furukawa@tcp-ip.or.jp>
 
 	* lib/nmzidx.pl: Replace nmzdb -> nmzidx,
 

@@ -10,5 +10,6 @@ LANG= ; export LANG
 unset LANGUAGE
 unset LC_ALL
 unset LC_MESSAGES
+unset LC_CTYPE
 
 ../src/namazu nonexistant `perl -e 'print "x"x3000'` | grep "^No document match" > /dev/null || exit 1

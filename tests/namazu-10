@@ -13,6 +13,7 @@ LANG= ; export LANG
 unset LANGUAGE
 unset LC_ALL
 unset LC_MESSAGES
+unset LC_CTYPE
 
 mv $IDX/NMZ.wi $IDX/NMZ.wi.org
 

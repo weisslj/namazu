@@ -15,6 +15,7 @@ LANG= ; export LANG
 unset LANGUAGE
 unset LC_ALL
 unset LC_MESSAGES
+unset LC_CTYPE
 
 SCRIPT_NAME='namazu.cgi'
 export SCRIPT_NAME

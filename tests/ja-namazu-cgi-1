@@ -23,6 +23,7 @@ fi
 unset LANGUAGE
 unset LC_ALL
 unset LC_MESSAGES
+unset LC_CTYPE
 unset LANG
 
 pwd=`pwd`
@@ -31,6 +32,7 @@ echo "Index $pwd" > $tmprc
 echo "Lang ja" >> $tmprc
 duprcs
 
+HOME="$pwd/../src"
 SCRIPT_NAME='namazu.cgi'
 QUERY_STRING='query=³¤&idxname=ja-idx1'
 export SCRIPT_NAME QUERY_STRING

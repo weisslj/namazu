@@ -56,7 +56,7 @@ A CGI interface for Namazu.
 - Rebuilt for 7.1 beta
 - more macros
 - fix dependencies
-- exclude unnessesary ja_JP.SJIS catalog.
+- exclude unnecessary ja_JP.SJIS catalog.
 
 * Thu Oct 26 2000 Ryuji Abe <rug@namazu.org>
 - Requires perl-File-MMagic >= 1.09.
@@ -79,7 +79,7 @@ A CGI interface for Namazu.
 - Delete package entries elisp and cgi.
 
 * Wed Feb 02 2000 Ryuji Abe <raeva@t3.rim.or.jp>
-- Apapted for namazu-current.
+- Adapted for namazu-current.
 - Changed group Utilities/Text -> Applications/Text.
 
 * Thu Dec 30 1999 Ryuji Abe <raeva@t3.rim.or.jp>

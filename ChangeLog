@@ -1,3 +1,12 @@
+2001-01-10  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* pl/htmlsplit.pl (split): Changed to recognize html anchor
+	more suitably.
+	Thanks to Tomoyasu Mizuno (namazu-users-ja#01385).
+
+	* tests/mknmz-11: Changed from 'test -L' to 'test -L' for more
+	interoperability.
+
 2001-01-04  Hajime BABA  <baba@kusastro.kyoto-u.ac.jp>
 
 	* filter/win32/ole{msword,excel,powerpoint}.pl: Applied some patches
@@ -6242,4 +6251,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.785 2001-01-04 07:21:45 baba Exp $
+$Id: ChangeLog,v 1.786 2001-01-10 06:13:30 knok Exp $

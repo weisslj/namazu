@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: htmlsplit.pl,v 1.7 2000-04-25 06:20:41 satoru Exp $
+# $Id: htmlsplit.pl,v 1.8 2001-01-10 06:13:30 knok Exp $
 #
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -75,7 +75,7 @@ sub split ($$) {
     $cont =~ s {
                 \G(.+?)                                      # 1
 	        (<h([1-6])>)?\s*                             # 2, 3
-                <a\s[^>]*name=([a-zA-Z0-9-\.]+|              # 4,
+                <a\s[^>]*\s+name=([a-zA-Z0-9-\.]+|           # 4,
                 (["']).+?\5)[^>]*>(.*?)</a>                  # 5,6
                 \s*(</h\3>)?                                 # 7
              } {

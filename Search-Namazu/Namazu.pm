@@ -19,7 +19,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 # 02111-1307, USA
 #
-# $Id: Namazu.pm,v 1.7 1999-12-08 07:34:19 knok Exp $
+# $Id: Namazu.pm,v 1.8 2000-01-24 05:35:23 knok Exp $
 #
 
 package Search::Namazu;
@@ -77,7 +77,7 @@ NMZ_ASCENDSORT NMZ_DESCENDSORT
 NMZ_NOT_SPECIFIED_INDEX NMZ_ERR_INDEX);
 # %EXPORT_TAGS = (all => [qw()]);
 
-$VERSION = '0.02';
+$VERSION = '0.10';
 
 bootstrap Search::Namazu $VERSION;
 
@@ -97,15 +97,10 @@ sub Search {
     my $index = $args{'index'};
     my $sortmeth = $args{'sortMethod'};
     my $sortord = $args{'sortOrder'};
-    my $config = $args{'config'};
     my $lang = $args{'lang'};
     my $query = $args{'query'};
 
-# initialize libnamazu... (not implemented yet.)
-
-    if (defined $config) {
-	load_conf($config);
-    }
+# initialize
 
     if (! defined $index) {
 	return NMZ_NOT_SPECIFIED_INDEX;
@@ -170,7 +165,7 @@ sub Search {
     return @hlists;
 }
 
-package Search::Namazu::HList;
+package Search::Namazu::Result;
 
 sub new {
     my $self = {};

@@ -1,3 +1,8 @@
+2000-01-24  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* Version 0.20.
+	* Namazu.{pm,xs}: Adapted to new library symbols (nmz_ prefix).
+
 1999-12-08  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* Namazu.xs: Adapted to new library symbols (like NmzResult,

@@ -20,7 +20,7 @@ Namazu.xs
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 # 02111-1307, USA
 
-$Id: Namazu.xs,v 1.9 1999-12-08 07:34:19 knok Exp $
+$Id: Namazu.xs,v 1.10 2000-01-24 05:35:23 knok Exp $
 
 */
 
@@ -33,7 +33,6 @@ extern "C" {
 
 #include "libnamazu.h"
 #include "codeconv.h"
-#include "conf.h"
 #include "field.h"
 #include "hlist.h"
 #include "idxname.h"
@@ -63,19 +62,19 @@ call_search_main(query)
 		NmzResult hlist;
 		char result[BUFSIZE];
 
-		uniq_idxnames();
-		expand_idxname_aliases();
-		complete_idxnames();
+		nmz_uniq_idxnames();
+		nmz_expand_idxname_aliases();
+		nmz_complete_idxnames();
 
 		qstr = SvPV(query, na);
 		strcpy(cqstr, qstr);
-		codeconv_query(cqstr);
+		nmz_codeconv_query(cqstr);
 		retar = newAV();
 		hlist = nmz_search(cqstr);
 		for (i = 0; i < hlist.num; i ++) {
-			SV *ohlist = perl_eval_pv("new Search::Namazu::HList", TRUE);
+			SV *ohlist = perl_eval_pv("new Search::Namazu::Result", TRUE);
 			SV *tmp;
-			get_field_data(hlist.data[i].idxid, hlist.data[i].docid, "uri", result);
+			nmz_get_field_data(hlist.data[i].idxid, hlist.data[i].docid, "uri", result);
 			PUSHMARK(SP);
 			XPUSHs(ohlist);
 			XPUSHs(sv_2mortal(newSViv(hlist.data[i].score)));
@@ -91,14 +90,12 @@ call_search_main(query)
 			POPs;
 			av_push(retar, ohlist);
 		}
-		free_hlist(hlist);
+		nmz_free_hlist(hlist);
 		EXTEND(SP, hlist.num);
 		for (i = 0; i < hlist.num; i ++) {
 			XPUSHs(av_pop(retar));
 		}
-		free_idxnames();
-		free_aliases();
-		free_replaces();
+		nmz_free_internal();
 
 int
 nmz_addindex(index)
@@ -109,7 +106,7 @@ nmz_addindex(index)
 
 	CODE:
 		tmp = SvPV(index, na);
-		RETVAL = add_index(tmp);
+		RETVAL = nmz_add_index(tmp);
 
 	OUTPUT:
 		RETVAL
@@ -117,41 +114,27 @@ nmz_addindex(index)
 void
 nmz_sortbydate()
 	CODE:
-		set_sortmethod(SORT_BY_SCORE);
+		nmz_set_sortmethod(SORT_BY_SCORE);
 
 void
 nmz_sortbyscore()
 	CODE:
-		set_sortmethod(SORT_BY_DATE);
+		nmz_set_sortmethod(SORT_BY_DATE);
 
 void
 nmz_sortbyfield()
 	CODE:
-		set_sortmethod(SORT_BY_FIELD);
+		nmz_set_sortmethod(SORT_BY_FIELD);
 
 void
 nmz_descendingsort()
 	CODE:
-		set_sortorder(ASCENDING);
+		nmz_set_sortorder(ASCENDING);
 
 void
 nmz_ascendingsort()
 	CODE:
-		set_sortorder(DESCENDING);
-
-int
-nmz_setconfig(conf)
-	SV *conf
-
-	PREINIT:
-		char *tmp;
-
-	CODE:
-		tmp = SvPV(conf, na);
-		RETVAL = load_conf(tmp);
-
-	OUTPUT:
-		RETVAL
+		nmz_set_sortorder(DESCENDING);
 
 int
 nmz_setlang(lang)
@@ -162,7 +145,7 @@ nmz_setlang(lang)
 
 	CODE:
 		tmp = SvPV(lang, na);
-		RETVAL = set_lang(tmp);
+		RETVAL = nmz_set_lang(tmp);
 
 	OUTPUT:
 		RETVAL

@@ -8,7 +8,6 @@ EXTRA_DIST  =   acrobat3.pdf \
 		man.1 \
 		msg00000.html \
 		pdf.pdf \
-		pdf.txt \
 		plain.txt \
 		plain.txt.Z \
 		plain.txt.bz2 \

@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.76 2000-01-07 09:06:23 satoru Exp $
+ * $Id: namazu.c,v 1.77 2000-01-07 10:58:36 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -74,7 +74,7 @@
  */
 
 static int ck_atoi ( char const *str, int *out );
-static int stdio2file ( const char * fname );
+static void stdio2file ( const char * fname );
 static int parse_options ( int argc, char **argv );
 static enum nmz_stat namazu_core ( char * query, char *subquery, const char *argv0 );
 static void make_fullpathname_msg ( void );
@@ -102,12 +102,12 @@ ck_atoi (str, out)
 /*
  * Redirect stdio to specified file
  */
-static int 
+static void
 stdio2file(const char * fname)
 {
 /*   int fd;
  *   if (-1 == (fd = open(fname, O_CREAT | O_TRUNC | O_WRONLY, 00600))) {
- *	set_dyingmsg("stdio2file: %s", strerror(errno));
+ *	nmz_die("%s", strerror(errno));
  *	return 1;
  *    }
  *    close(STDOUT);
@@ -117,10 +117,8 @@ stdio2file(const char * fname)
  *    close(fd);
  */
     if (freopen(fname, "wb", stdout) == NULL) {
-	set_dyingmsg("stdio2file: %s", strerror(errno));
-	return 1;
+	nmz_die("%s", strerror(errno));
     }
-    return 0;
 }
 
 /*
@@ -266,8 +264,7 @@ parse_options(int argc, char **argv)
 	    set_lang(optarg);
 	    break;
 	case 'o':
-	    if (stdio2file(optarg))
-		nmz_die("parse_options");
+	    stdio2file(optarg);
 	    break;
 	}
     } 

@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.49 2000-01-07 09:40:55 satoru Exp $
+ * $Id: search.c,v 1.50 2000-01-07 10:58:34 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -92,7 +92,7 @@ static void do_logging ( const char * query, int n );
 static NmzResult nmz_search_sub ( NmzResult hlist, const char *query, int n );
 static void make_fullpathname_index ( int n );
 static void remove_quotes(char *str);
-static void normalize_idxnames(void);
+static enum nmz_stat normalize_idxnames(void);
 
 /*
  * Show the status for debug use
@@ -837,13 +837,15 @@ void remove_quotes(char *str)
 /*
  * Normalize index names. Expand aliases and complete abbreviated names.
  */
-static void 
+static enum nmz_stat
 normalize_idxnames(void)
 {
-    if (expand_idxname_aliases() != SUCCESS)
-        nmz_die("normalize_idxnames");
-    if (complete_idxnames() != SUCCESS)
-        nmz_die("normalize_idxnames");
+    if (expand_idxname_aliases() != SUCCESS) {
+	return FAILURE;
+    }
+    if (complete_idxnames() != SUCCESS) {
+        return FAILURE;
+    }
 
     uniq_idxnames();
 
@@ -853,6 +855,7 @@ normalize_idxnames(void)
             nmz_debug_printf("Index name [%d]: %s\n", i, get_idxname(i));
         }
     }
+    return SUCCESS;
 }
 
 /*
@@ -924,7 +927,7 @@ binsearch(const char *key, int prefix_match_mode)
 }
 
 /*
- * Flow of search
+ * Flow of searching.
  */
 NmzResult 
 nmz_search(const char *query)
@@ -932,7 +935,10 @@ nmz_search(const char *query)
     NmzResult hlist, tmp[INDEX_MAX];
     int i, ret;
 
-    normalize_idxnames();
+    if (normalize_idxnames() != SUCCESS) {
+	hlist.stat = ERR_FATAL;
+	return hlist;
+    }
 
     ret = make_query(query);
     if (ret != SUCCESS) {

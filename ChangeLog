@@ -1,5 +1,12 @@
 2000-01-07  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* nmz/hlist.c (realloc_hlist): Use strerror().
+
+	* nmz/search.c (normalize_idxnames): Make it not call nmz_die().
+	(nmz_search): Check a return value of normalize_idxnames().
+
+	* src/namazu.c (stdio2file): Die if freopen() failed.
+
 	* nmz/rcfile.c (is_valid_argnum): Use nmz_die() instead of
 	set_dyingmsg();
 

@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.30 2000-01-07 09:58:11 satoru Exp $
+ * $Id: hlist.c,v 1.31 2000-01-07 10:58:33 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -392,7 +392,7 @@ realloc_hlist(NmzResult * hlist, int n)
     if (hlist->stat != SUCCESS || n <= 0) return;
     hlist->data = realloc(hlist->data, n * sizeof(struct nmz_data));
     if (hlist->data == NULL) {
-	 set_dyingmsg("realloc_hlist");
+	 set_dyingmsg("realloc_hlist: %s", strerror(errno));
 	 hlist->stat = ERR_FATAL;
     }
 }

@@ -2,7 +2,7 @@
  * 
  * idxname.c - Idx handling routines.
  *
- * $Id: idxname.c,v 1.13 2000-01-07 09:06:20 satoru Exp $
+ * $Id: idxname.c,v 1.14 2000-01-07 10:58:33 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
@@ -112,7 +112,8 @@ expand_idxname_aliases(void)
 		free(indices.names[i]);
 		indices.names[i] = malloc(strlen(list->real) + 1);
 		if (indices.names[i] == NULL) {
-		    set_dyingmsg("expand_idxname_aliases: %s", strerror(errno));
+		    set_dyingmsg("expand_idxname_aliases: %s", 
+				 strerror(errno));
 		    return FAILURE;
 		}
 		strcpy(indices.names[i], list->real);

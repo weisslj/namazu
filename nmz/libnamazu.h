@@ -2,18 +2,32 @@
  * 
  * libnamazu.h - Namazu library api
  *
- * $Id: libnamazu.h,v 1.30 2000-01-07 02:33:37 satoru Exp $
+ * $Id: libnamazu.h,v 1.31 2000-01-07 10:58:33 satoru Exp $
  * 
  */
 
 #ifndef _LIBNAMAZU_H
 #define _LIBNAMAZU_H
 
-#include <stdio.h>     /* for FILE struct */
+#include <stdio.h>   /* for FILE struct */
+#include <stdlib.h>  /* for abort() in MUST_NOT_BE_REACHED() macro. */
+
 
 /*
  *
- * Critical values
+ * Usefull macro.
+ *
+ */
+#define MUST_NOT_BE_REACHED_HERE() \
+    {\
+        fprintf(stderr, "%s: %s:%d: MUST NOT BE REACHED HERE! Report bug!\n",\
+                PACKAGE, __FILE__, __LINE__);\
+        abort();\
+    }
+
+/*
+ *
+ * Critical values.
  *
  */
 
@@ -33,7 +47,7 @@ enum {
 
 /*
  *
- * Magic Numbers
+ * Magic Numbers.
  *
  */
 
@@ -46,7 +60,7 @@ enum {
 
 /*
  *
- * Data Structures
+ * Data Structures.
  *
  */
 

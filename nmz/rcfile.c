@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.10 2000-01-07 10:03:45 satoru Exp $
+ * $Id: rcfile.c,v 1.11 2000-01-07 10:58:34 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -339,25 +339,24 @@ is_valid_argnum(const char *directive, int argnum)
 	{NULL, 0}
     };
     int i;
+
     for (i = 0; dtab[i].name != NULL; i++) {
 	if (strcasecmp(dtab[i].name, directive) == 0) {
 	    if (argnum == dtab[i].argnum) {
 		return 1;  /* OK */
 	    } else if (argnum < dtab[i].argnum) {
 		errmsg = "too few arguments";
-		return 0;  /* error */
+		return 0;  /* NG */
 	    } else if (argnum > dtab[i].argnum) {
 		errmsg = "too many arguments";
-		return 0;  /* error */
+		return 0;  /* NG */
 	    } else {
-		nmz_die("is_valid_argnum: It MUST not be happened! %s %d",
-			__FILE__, __LINE__);
+		MUST_NOT_BE_REACHED_HERE();
 		return 0;
 	    }
 	}
     }
-    nmz_die("is_valid_argnum: It MUST not be happened! %s %d",
-		 __FILE__, __LINE__);
+    MUST_NOT_BE_REACHED_HERE();
     return 0;
 }
 

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: rtf.pl,v 1.15 2004-11-19 16:28:51 opengl2772 Exp $
+# $Id: rtf.pl,v 1.16 2004-11-24 15:03:12 opengl2772 Exp $
 # Copyright (C) 2003-2004 Tadamasa Teranishi All rights reserved.
 #               2003-2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -47,7 +47,7 @@ sub status() {
     #
     $rtfconvpath = util::checkcmd('rtf2html');
     if (defined $rtfconvpath) {
-	@rtfconvopts = ();
+        @rtfconvopts = ();
         return 'yes';
     }
     else {
@@ -107,7 +107,7 @@ sub add_magic ($) {
 
 sub filter ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
-	= @_;
+        = @_;
     my $err = undef;
 
     $convname = basename($rtfconvpath) unless (defined $convname);
@@ -134,7 +134,7 @@ sub filter_rtf2html ($$$$$) {
     my $tmpfile = util::tmpnam('NMZ.rtf');
     util::writefile($tmpfile, $cont);
     {
-	my @cmd = ($rtfconvpath, @rtfconvopts, $tmpfile);
+        my @cmd = ($rtfconvpath, @rtfconvopts, $tmpfile);
         my $fh_out = IO::File->new_tmpfile();
         my $status = util::syscmd(
             command => \@cmd,
@@ -143,17 +143,17 @@ sub filter_rtf2html ($$$$$) {
                 "stderr" => "/dev/null",
             },
         );
-	my $size = util::filesize($fh_out);
-	if ($size == 0) {
+        my $size = util::filesize($fh_out);
+        if ($size == 0) {
             util::fclose($fh_out);
             unlink $tmpfile;
-	    return "Unable to convert file ($rtfconvpath error occurred).";
-	}
-	if ($size > $conf::TEXT_SIZE_MAX) {
+            return "Unable to convert file ($rtfconvpath error occurred).";
+        }
+        if ($size > $conf::TEXT_SIZE_MAX) {
             util::fclose($fh_out);
             unlink $tmpfile;
-	    return 'Too large rtf file.';
-	}
+            return 'Too large rtf file.';
+        }
         $$cont = util::readfile($fh_out, "t");
         util::fclose($fh_out);
     }
@@ -170,15 +170,15 @@ sub filter_rtf2html ($$$$$) {
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($cont);
     $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
-	unless $fields->{'title'};
+        unless $fields->{'title'};
     gfilter::show_filter_debug_info($cont, $weighted_str,
-				    $fields, $headings);
+                                    $fields, $headings);
     return undef;
 }
 
 sub filter_doccat ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
-	= @_;
+        = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
     
     util::vprint("Processing rtf file ... (using  '$rtfconvpath')\n");
@@ -186,7 +186,7 @@ sub filter_doccat ($$$$$) {
     my $tmpfile = util::tmpnam('NMZ.rtf');
     util::writefile($tmpfile, $cont);
     {
-	my @cmd = ($rtfconvpath, @rtfconvopts, $tmpfile);
+        my @cmd = ($rtfconvpath, @rtfconvopts, $tmpfile);
         my $fh_out = IO::File->new_tmpfile();
         my $status = util::syscmd(
             command => \@cmd,
@@ -195,17 +195,17 @@ sub filter_doccat ($$$$$) {
                 "stderr" => "/dev/null",
             },
         );
-	my $size = util::filesize($fh_out);
-	if ($size == 0) {
+        my $size = util::filesize($fh_out);
+        if ($size == 0) {
             util::fclose($fh_out);
             unlink $tmpfile;
-	    return "Unable to convert file ($rtfconvpath error occurred).";
-	}
-	if ($size > $conf::TEXT_SIZE_MAX) {
+            return "Unable to convert file ($rtfconvpath error occurred).";
+        }
+        if ($size > $conf::TEXT_SIZE_MAX) {
             util::fclose($fh_out);
             unlink $tmpfile;
-	    return 'Too large rtf file.';
-	}
+            return 'Too large rtf file.';
+        }
         $$cont = util::readfile($fh_out, "t");
         util::fclose($fh_out);
     }
@@ -215,9 +215,9 @@ sub filter_doccat ($$$$$) {
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($cont);
     $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
-	unless $fields->{'title'};
+        unless $fields->{'title'};
     gfilter::show_filter_debug_info($cont, $weighted_str,
-				    $fields, $headings);
+                                    $fields, $headings);
 
     return undef;
 }

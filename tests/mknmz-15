@@ -5,7 +5,8 @@
 LOG=`pwd`/test-log
 TARGET=$srcdir/data/dup-field
 IDX=idx18
-CONF=`pwd`/tmp.mknmzrc
+pwd=`pwd`
+tmprc="$pwd/tmp.mknmzrc-mknmz15"
 echo '  *** starting ' $0 >>$LOG
 
 if test ! -d $IDX; then
@@ -14,11 +15,12 @@ else
     rm -f $IDX/NMZ.*
 fi
 
-echo 'package conf;' > $CONF
-echo '$SEARCH_FIELD = "keywords|message-id|subject|from|date|uri|newsgroups|to|summary|size";' >> $CONF
-echo '$META_TAGS = "keywords|description";' >> $CONF
+echo 'package conf;' > $tmprc
+echo '$SEARCH_FIELD = "keywords|message-id|subject|from|date|uri|newsgroups|to|summary|size";' >> $tmprc
+echo '$META_TAGS = "keywords|description";' >> $tmprc
 
-../scripts/mknmz --meta -f $CONF -O $IDX $TARGET >> $LOG 2>&1
+../scripts/mknmz --meta -f $tmprc -O $IDX $TARGET >> $LOG 2>&1
+rm -f $tmprc
 
 COUNT=`egrep 'test' $IDX/NMZ.field.keywords|wc -l`
 

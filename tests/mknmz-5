@@ -33,7 +33,6 @@ find . -type f -print | egrep '(plain|mail)\.txt$' | \
 cd ../
 
 # Update the index.
-
 ../scripts/mknmz --update=idx7 >> $LOG
 test "$?" != "0" && exit 1  # error if not success
 

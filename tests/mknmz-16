@@ -3,7 +3,6 @@
 # Test for DOCUMENT_NAME variable
 #
 LOG=`pwd`/test-log
-TARGET=`pwd`/data/dup-field
 IDX=idx19
 echo '  *** starting ' $0 >>$LOG
 

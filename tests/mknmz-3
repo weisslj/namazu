@@ -13,11 +13,12 @@ else
 fi
 
 pwd=`pwd`
-tmprc="$pwd/mknmzrc"
-echo '$conf::ON_MEMORY_MAX=0' > $tmprc
+tmprc="$pwd/tmp.mknmzrc-mknmz3"
+echo '$conf::ON_MEMORY_MAX=0;' > $tmprc
 
 # Simple indexing
 ../scripts/mknmz --checkpoint -f $tmprc -O idx3 $TARGET >> $LOG
+status=$?
 rm -f $tmprc
 
-exit $?
+exit $status

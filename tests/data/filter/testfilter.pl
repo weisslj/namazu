@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: testfilter.pl,v 1.2 2001-04-03 09:32:23 knok Exp $
+# $Id: testfilter.pl,v 1.3 2004-09-06 11:40:09 opengl2772 Exp $
 # Copyright (C) 2000 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -51,7 +51,7 @@ sub post_codeconv () {
 
 sub add_magic ($) {
     my $magic = shift @_;
-    $magic->addMagicEntry("0\tNamazu-Filter-Text:\tx-test/x-test");
+    $magic->addMagicEntry("0\tstring\tNamazu-Filter-Test:\tx-test/x-test");
     return;
 }
 
@@ -75,6 +75,8 @@ sub test_filter {
 	my $title = $1 if defined $3;
 	$fields->{'title'} = $title;
     }
+
+    $fields->{'author'} = "foo";
 }
 
 1;

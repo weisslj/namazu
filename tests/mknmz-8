@@ -38,7 +38,7 @@ test $docnum != $origdocnum && exit 1  # error if not equal
 rm $TMPDATA/2.html
 
 # Update the index with --html-split option.
-../scripts//mknmz --update=idx10 >> $LOG
+../scripts/mknmz --update=idx10 >> $LOG
 test "$?" != "0" && exit 1  # error if not success
 docnum=`../scripts/gtnmz idx10/NMZ.r`
 docnum2=`expr $docnum + $docnum`

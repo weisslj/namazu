@@ -1,10 +1,10 @@
 #
 # -*- Perl -*-
-# $Id: mhonarc.pl,v 1.29 2004-10-16 14:54:12 opengl2772 Exp $
+# $Id: mhonarc.pl,v 1.30 2004-11-19 17:57:19 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
-#               1999 NOKUBI Takatsugu,
-#               2002 Earl Hood
-#               All rights reserved.
+#               1999 NOKUBI Takatsugu ,
+#               2002 Earl Hood ,
+#               2000-2004 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify

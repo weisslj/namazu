@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: olepowerpoint.pl,v 1.13 2004-03-09 11:56:00 opengl2772 Exp $
+# $Id: olepowerpoint.pl,v 1.14 2004-04-10 16:32:13 opengl2772 Exp $
 # Copyright (C) 1999 Jun Kurabe ,
 #               1999 Ken-ichi Hirose All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -83,7 +83,7 @@ sub post_codeconv () {
 sub add_magic ($) {
     my ($magic) = @_;
 
-    $magic->addFileExts('\\.ppt$', 'application/powerpoint');
+    $magic->addFileExts('\\.pp[st]$', 'application/powerpoint');
     return;
 }
 

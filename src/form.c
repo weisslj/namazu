@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.5 1999-08-23 10:40:52 satoru Exp $
+ * $Id: form.c,v 1.6 1999-08-23 11:35:46 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -308,9 +308,11 @@ void print_headfoot(uchar * fname, uchar * query, uchar *subquery)
 
         if (!f && *p == '<') {
             if (!strncmp(p, "</title>", 8)) {
-                printf(": &lt;");
-                fputx(query, stdout);
-                printf("&gt;</title>\n");
+		if (*query != '\0') {
+		    printf(": &lt;");
+		    fputx(query, stdout);
+		    printf("&gt;");
+		}
                 p = (uchar *)strchr(p, '>');
                 continue;
             }

@@ -8,6 +8,9 @@
 	* src/{hlist.c,result.l,output.c}, lib/NMZ.result: Implement a
 	keyword emphasizing in HTML mode. (rough implementation)
 
+	* src/form.c: Modified not to display ugly '<>' in a title of
+	  HTML.
+
 
 1999-08-13  Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>
 

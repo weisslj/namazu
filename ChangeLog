@@ -1,6 +1,9 @@
 2004-05-11  SATOH Fumiyasu  <fumiya@samba.gr.jp>
 
 	* filter/{doccat,rtf}.pl: Fix the version comparison routine.
+	* filter/doccat.pl:
+	    + Fix a typo.
+	    + Add some util::dprint() lines for debug.
 
 2004-05-10  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
@@ -8878,4 +8881,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1181 2004-05-11 09:31:11 fumiya Exp $
+$Id: ChangeLog,v 1.1182 2004-05-11 09:56:20 fumiya Exp $

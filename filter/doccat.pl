@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: doccat.pl,v 1.4 2004-05-11 09:31:12 fumiya Exp $
+# $Id: doccat.pl,v 1.5 2004-05-11 09:56:20 fumiya Exp $
 # Copyright (C) 2001 SATOH Fumiyasu,
 #               2001,2004 Namazu Project. All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -9,7 +9,7 @@
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation; either versions 2, or (at your option)
 #  any later version.
-# 
+#
 #  This program is distributed in the hope that it will be useful
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -64,12 +64,18 @@ sub mediatype() {
             if ($ver >= 1.42) {
 	        push(@type, 'application/rtf');
             }
-        }
+        } else {
+	    util::dprint("filter/doccat.pl: No RTF support (TF library version < 1.42)");
+	}
+    } else {
+	util::dprint("filter/doccat.pl: No valid license for DocCat");
     }
 
     # Optional supported media types
     if ($info =~ /PDF Lic.* flag: 0/i) {
 	push(@type, 'application/pdf');
+    } else {
+	util::dprint("filter/doccat.pl: No valid license for DocCat PDF option");
     }
 
     return @type;
@@ -90,7 +96,7 @@ sub status() {
         }
         util::fclose($fh_cmd);
     }
-    return 'no'; 
+    return 'no';
 }
 
 sub recursive() {
@@ -172,7 +178,7 @@ sub filter ($$$$$) {
         if ($size > $conf::TEXT_SIZE_MAX) {
             unlink($tmpfile);
             unlink($tmpfile2);
-            return 'Too large taro file.';
+            return 'Too large doccat file.';
         }
     }
 

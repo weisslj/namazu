@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2000-02-16 21:53+0900\n"
+"POT-Creation-Date: 2000-02-16 22:14+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -74,85 +74,85 @@ msgstr ""
 msgid "Too long QUERY_STRING"
 msgstr ""
 
-#: src/output.c:516
+#: src/output.c:517
 msgid "\t<strong>Page:</strong> "
 msgstr ""
 
-#: src/output.c:561
+#: src/output.c:562
 #, c-format
 msgid "Current List: %d"
 msgstr ""
 
-#: src/output.c:609
+#: src/output.c:610
 #, c-format
 msgid " [ TOTAL: %d ]"
 msgstr ""
 
-#: src/output.c:619
+#: src/output.c:620
 msgid "\t<p><strong> Total "
 msgstr ""
 
-#: src/output.c:626
+#: src/output.c:627
 msgid ""
 "\t documents matching your query.</strong></p>\n"
 "\n"
 msgstr ""
 
-#: src/output.c:682
+#: src/output.c:683
 #, c-format
 msgid ""
 "\t<h2>Error!</h2>\n"
 "<p>%s</p>\n"
 msgstr ""
 
-#: src/output.c:712
+#: src/output.c:713
 msgid "\t<h2>Results:</h2>\n"
 msgstr ""
 
-#: src/output.c:719
+#: src/output.c:720
 msgid "References: "
 msgstr ""
 
-#: src/output.c:766
+#: src/output.c:767
 msgid "\t<p>No document matching your query.</p>\n"
 msgstr ""
 
 #. terminator not matched
-#: src/rcfile.c:313
+#: src/rcfile.c:315
 msgid "can't find string terminator"
 msgstr ""
 
-#: src/rcfile.c:429
+#: src/rcfile.c:431
 msgid "invalid directive name"
 msgstr ""
 
-#: src/rcfile.c:442
+#: src/rcfile.c:444
 msgid "can't find arguments"
 msgstr ""
 
-#: src/rcfile.c:545
+#: src/rcfile.c:547
 msgid "too few arguments"
 msgstr ""
 
-#: src/rcfile.c:548
+#: src/rcfile.c:550
 msgid "too many arguments"
 msgstr ""
 
-#: src/rcfile.c:558
+#: src/rcfile.c:560
 msgid "unknown directive"
 msgstr ""
 
-#: src/rcfile.c:693
+#: src/rcfile.c:611
 #, c-format
 msgid "%s:%d: syntax error: %s"
 msgstr ""
 
-#: src/rcfile.c:713
+#: src/rcfile.c:716
 #, c-format
 msgid "Loaded rcfile: %s\n"
 msgstr ""
 
-#: src/rcfile.c:718
+#: src/rcfile.c:721
 #, c-format
 msgid ""
 "Index:        %s\n"
@@ -163,12 +163,12 @@ msgid ""
 "EmphasisTags: %s\t%s\n"
 msgstr ""
 
-#: src/rcfile.c:735
+#: src/rcfile.c:738
 #, c-format
 msgid "Alias:   %-20s\t%s\n"
 msgstr ""
 
-#: src/rcfile.c:745
+#: src/rcfile.c:748
 #, c-format
 msgid "Replace: %-20s\t%s\n"
 msgstr ""

@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.67 2000-02-03 09:51:12 satoru Exp $
+ * $Id: output.c,v 1.68 2000-02-16 13:14:15 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -84,6 +84,7 @@ static int is_countmode ( void );
 static int is_listmode ( void );
 static int is_quietmode ( void );
 static int is_refprint ( void );
+static int is_cgimode ( void );
 static enum nmz_stat print_hlist ( NmzResult hlist );
 static enum nmz_stat print_listing ( NmzResult hlist );
 static void print_query ( const char * qs, int w );

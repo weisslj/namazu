@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.68 2000-02-14 21:30:31 kenzo- Exp $
+ * $Id: search.c,v 1.69 2000-02-16 13:14:11 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -693,7 +693,7 @@ check_access(void)
 /*
  * Opening files at once
  */
-enum nmz_stat
+static enum nmz_stat
 open_index_files(void)
 {
     if (is_locked()) {

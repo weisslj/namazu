@@ -2,7 +2,7 @@
  * 
  * codeconv.c -
  * 
- * $Id: codeconv.c,v 1.25 2000-02-13 17:34:53 rug Exp $
+ * $Id: codeconv.c,v 1.26 2000-02-16 13:14:11 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -69,12 +69,13 @@ static uchar kanji2nd;
  *
  */
 
-static uchar jmstojis(uchar, uchar);
-static uchar jistojms(uchar, uchar);
-static void jistoeuc(uchar*);
-static void sjistoeuc(uchar *);
-static void euctosjis(uchar *);
-static void euctojis(uchar *);
+static uchar jmstojis ( uchar c1, uchar c2 );
+static void jistoeuc ( uchar * s );
+static void sjistoeuc ( uchar * s );
+static uchar jistojms ( uchar c1, uchar c2 );
+static void euctosjis ( uchar *s );
+static void euctojis ( uchar *p );
+static void zen2han ( char *str );
 
 static uchar 
 jmstojis(uchar c1, uchar c2)
@@ -329,6 +330,48 @@ euctojis(uchar *p)
 
 
 /*
+ * Converting 2 bytes Alnum and Symbol into 1 byte one.
+ * This code was contributed by Akira Yamada <akira@linux.or.jp> [1997-09-28]
+ */
+static char Z2H[] = 
+"\0 \0\0,.\0:;?!\0\0'`\0^~_\0\0\0\0\0\0\0\0\0\0\0\0/\\\0\0|\0\0`'\"\"()\0\0[]{}<>\0\0\0\0\0\0\0\0+-\0\0\0=\0<>\0\0\0\0\0\0\0'\"\0\\$\0\0%#&*@";
+
+static void 
+zen2han(char *str)
+{
+    int p = 0, q = 0, r;
+    uchar *s;
+    
+    s = (uchar *)str;
+
+    while (*(s + p)) {
+	if (*(s + p) == 0xa1) {
+	    r = *(s + p + 1) - 0xa0;
+	    if (r <= sizeof(Z2H) && Z2H[r] != '\0') {
+		p++;
+		*(s + p) = Z2H[r];
+	    } else {
+		*(s + q) = *(s + p);
+		q++;
+		p++;
+	    }
+	} else if (*(s + p) == 0xa3) {
+	    p++;
+	    *(s + p) = *(s + p) - 128;
+	} else if (*(s + p) & 0x80) {
+	    *(s + q) = *(s + p);
+	    p++;
+	    q++;
+	}
+	*(s + q) = *(s + p);
+	p++;
+	q++;
+    }
+    *(s + q) = '\0';
+}
+
+
+/*
  *
  * Public functions
  *
@@ -419,52 +462,12 @@ nmz_codeconv_external (const char *str) {
     return (char *)tmp;
 }
 
-/*
- * Converting 2 bytes Alnum and Symbol into 1 byte one.
- * This code was contributed by Akira Yamada <akira@linux.or.jp> [1997-09-28]
- */
-static char Z2H[] = 
-"\0 \0\0,.\0:;?!\0\0'`\0^~_\0\0\0\0\0\0\0\0\0\0\0\0/\\\0\0|\0\0`'\"\"()\0\0[]{}<>\0\0\0\0\0\0\0\0+-\0\0\0=\0<>\0\0\0\0\0\0\0'\"\0\\$\0\0%#&*@";
-void 
-nmz_zen2han(char *str)
-{
-    int p = 0, q = 0, r;
-    uchar *s;
-    
-    s = (uchar *)str;
-
-    while (*(s + p)) {
-	if (*(s + p) == 0xa1) {
-	    r = *(s + p + 1) - 0xa0;
-	    if (r <= sizeof(Z2H) && Z2H[r] != '\0') {
-		p++;
-		*(s + p) = Z2H[r];
-	    } else {
-		*(s + q) = *(s + p);
-		q++;
-		p++;
-	    }
-	} else if (*(s + p) == 0xa3) {
-	    p++;
-	    *(s + p) = *(s + p) - 128;
-	} else if (*(s + p) & 0x80) {
-	    *(s + q) = *(s + p);
-	    p++;
-	    q++;
-	}
-	*(s + q) = *(s + p);
-	p++;
-	q++;
-    }
-    *(s + q) = '\0';
-}
-
 void 
 nmz_codeconv_query(char *query)
 {
     if (nmz_is_lang_ja()) {
         if (nmz_codeconv_internal(query)) {
-            nmz_zen2han(query);
+            zen2han(query);
         }
     }
 }

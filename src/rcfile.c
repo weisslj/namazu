@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.20 2000-02-13 17:34:55 rug Exp $
+ * $Id: rcfile.c,v 1.21 2000-02-16 13:14:15 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -71,7 +71,7 @@ static char *errmsg  = NULL;
  *  3. user-specified namazurc set by namazu --config=file option.
  * 
  */
-struct {
+static struct {
     char fnames[3][BUFSIZE];
     int num;
 } loaded_rcfiles = { {"", "", ""}, 0 };
@@ -101,6 +101,8 @@ static void free_strlist(StrList *list);
 static StrList *get_rc_args ( const char *line );
 static enum nmz_stat parse_rcfile ( const char *line, int lineno );
 static enum nmz_stat apply_rc ( int lineno, const char *directive, StrList *args );
+static void add_loaded_rcfile( const char *fname );
+static enum nmz_stat load_rcfile( const char *fname );
 static enum nmz_stat process_rc_blank ( const char *directive, const StrList *args );
 static enum nmz_stat process_rc_comment ( const char *directive, const StrList *args );
 static enum nmz_stat process_rc_debug ( const char *directive, const StrList *args );
@@ -560,11 +562,63 @@ apply_rc(int lineno, const char *directive, StrList *args)
 }
 
 static void 
-add_loaded_rcfile(const char *fname) {
+add_loaded_rcfile(const char *fname) 
+{
     int no = loaded_rcfiles.num;
 
     strcpy(loaded_rcfiles.fnames[no], fname);
     loaded_rcfiles.num++;
+}
+
+/* 
+ * Load the namazurc specified with fname.
+ */
+static enum nmz_stat 
+load_rcfile(const char *fname)
+{
+    FILE *fp;
+    char buf[BUFSIZE];
+    int lineno = 1;
+
+    fp = fopen(fname, "rb");
+    if (fp == NULL) { /* open failed */
+	nmz_set_dyingmsg(nmz_msg("%s: %s", fname, strerror(errno)));
+	return FAILURE;
+    }
+
+    while (fgets(buf, BUFSIZE, fp) != NULL) {
+	int current_lineno = lineno;
+	
+	do {
+	    lineno++;
+	    nmz_chomp(buf);
+	    if (buf[strlen(buf) - 1] == '\\') { /* ending with \ */
+		int remaining;
+		
+		buf[strlen(buf) - 1] = '\0'; /* Remove ending \ */
+		remaining = BUFSIZE - strlen(buf);
+		if (fgets(buf + strlen(buf), remaining, fp) == NULL) {
+		    nmz_chomp(buf);
+		    break;
+		}
+	    } else {
+		break;
+	    }
+	} while (1);
+
+	nmz_codeconv_internal(buf);  /* for Shift_JIS encoding */
+	if (parse_rcfile(buf, current_lineno) != SUCCESS) {
+	    nmz_set_dyingmsg(nmz_msg(_("%s:%d: syntax error: %s"),  
+				     fname, current_lineno, errmsg));
+	    return FAILURE;
+	}
+    }
+    fclose(fp);
+
+    add_loaded_rcfile(fname); /* For show_config() */
+    nmz_debug_printf("load_rcfile: %s loaded\n", fname);
+
+    return SUCCESS;
 }
 
 
@@ -648,57 +702,6 @@ load_rcfiles(void)
 	    return FAILURE;
 	}
     }
-
-    return SUCCESS;
-}
-
-/* 
- * Load the namazurc specified with fname.
- */
-enum nmz_stat 
-load_rcfile(const char *fname)
-{
-    FILE *fp;
-    char buf[BUFSIZE];
-    int lineno = 1;
-
-    fp = fopen(fname, "rb");
-    if (fp == NULL) { /* open failed */
-	nmz_set_dyingmsg(nmz_msg("%s: %s", fname, strerror(errno)));
-	return FAILURE;
-    }
-
-    while (fgets(buf, BUFSIZE, fp) != NULL) {
-	int current_lineno = lineno;
-	
-	do {
-	    lineno++;
-	    nmz_chomp(buf);
-	    if (buf[strlen(buf) - 1] == '\\') { /* ending with \ */
-		int remaining;
-		
-		buf[strlen(buf) - 1] = '\0'; /* Remove ending \ */
-		remaining = BUFSIZE - strlen(buf);
-		if (fgets(buf + strlen(buf), remaining, fp) == NULL) {
-		    nmz_chomp(buf);
-		    break;
-		}
-	    } else {
-		break;
-	    }
-	} while (1);
-
-	nmz_codeconv_internal(buf);  /* for Shift_JIS encoding */
-	if (parse_rcfile(buf, current_lineno) != SUCCESS) {
-	    nmz_set_dyingmsg(nmz_msg(_("%s:%d: syntax error: %s"),  
-				     fname, current_lineno, errmsg));
-	    return FAILURE;
-	}
-    }
-    fclose(fp);
-
-    add_loaded_rcfile(fname); /* For show_config() */
-    nmz_debug_printf("load_rcfile: %s loaded\n", fname);
 
     return SUCCESS;
 }

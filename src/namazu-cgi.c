@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu-cgi.c,v 1.10 2000-01-29 13:30:15 satoru Exp $
+ * $Id: namazu-cgi.c,v 1.11 2000-02-16 13:14:14 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -72,6 +72,7 @@
  */
 
 static void suicide ( int signum );
+static void combine_pathname( char *dest, const char *command, const char *name );
 
 static void 
 suicide (int signum)

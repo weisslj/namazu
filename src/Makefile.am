@@ -24,7 +24,7 @@ DEFS = -DLOCALEDIR=\"$(localedir)\" \
 INCLUDES  = -I.. -I$(srcdir)/../intl -I$(srcdir)/../lib -I$(srcdir)/../nmz
 LDADD = @INTLLIBS@ $(top_builddir)/nmz/libnmz.la $(top_builddir)/lib/libnmzut.a 
 
-common_SOURCES = em.h form.c form.h message.h \
+common_SOURCES = form.c form.h message.h \
 		 namazu.c namazu.h output.c output.h rcfile.c rcfile.h \
 		 result.c result.h usage.c usage.h
 

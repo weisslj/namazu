@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: htmlsplit.pl,v 1.9 2001-01-10 08:42:52 knok Exp $
+# $Id: htmlsplit.pl,v 1.10 2001-09-17 13:49:03 knok Exp $
 #
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -72,6 +72,7 @@ sub split ($$) {
 
     my $id = 0;
 #    $cont =~ s/(<a\s[^>]*href=(["']))#(.+?)(\2[^>]*>)/$1$3.html$4/gi; #'
+    $cont =~ s#(<a[^>]*\s+)name=(["'])\2([^>]*>(.*?)</a>)#$1$4/sgi; #'
     $cont =~ s {
                 \G(.+?)                                      # 1
 	        (<h([1-6])>)?\s*                             # 2, 3
@@ -130,6 +131,9 @@ sub write_partial_file($$$$$$) {
     my $orig_title    = $info_ref->{'title'};
     my $prev_name     = $info_ref->{'name'};
     my $prev_anchored = $info_ref->{'anchored'};
+
+    $prev_name        =~ s#\n\r##sg;
+    $prev_name        =~ s#\n##sg;
 
     html::remove_html_elements(\$prev_anchored);
     $prev_anchored =~ s/^\s+//;

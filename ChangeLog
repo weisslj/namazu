@@ -1,3 +1,9 @@
+2003-06-25  Yoshinori TAKESAKO  <takesako@namazu.org>
+
+	* nmz/wakati.c (nmz_wakati): Fixed the internal bug of nmz_wakati(),
+	when a language environment variable is set as Japanese.
+	Applied the namazu-2.0.12-phrase.patch. (namazu-devel-ja#02820)
+
 2003-06-16  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * nmz/hlist.c (nmz_get_hlist): The bug which is mistaken
@@ -7971,4 +7977,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1029 2003-06-16 14:31:38 opengl2772 Exp $
+$Id: ChangeLog,v 1.1030 2003-06-25 06:25:46 takesako Exp $

@@ -2,7 +2,7 @@
  * 
  * wakati.c -
  * 
- * $Id: wakati.c,v 1.27 2001-09-02 08:25:33 rug Exp $
+ * $Id: wakati.c,v 1.28 2003-06-25 06:25:48 takesako Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -175,9 +175,13 @@ nmz_wakati(char *key)
             while(*(key + i) && !nmz_iseuc(*(key + i))) {
                 /* As an initial attempt always success, 
                    outer 'for loop' can avoid infinite loop */
+                if (*(key + i) == '\t') {
+                    nmz_chomp(buf);
+                }
                 strncat(buf, key + i, 1);
                 i++;
             }
+            nmz_chomp(buf);
             strcat(buf, "\t");
 	}
     }

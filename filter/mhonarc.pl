@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mhonarc.pl,v 1.21 2000-02-16 10:22:05 satoru Exp $
+# $Id: mhonarc.pl,v 1.22 2000-02-16 10:32:18 satoru Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -31,9 +31,9 @@ require 'html.pl';
 require 'mailnews.pl';
 
 #
-# This pattern specifies MHonArc's header for identification.
+# This pattern specifies MHonArc's file names.
 #
-my $MHONARC_HEADER = '<\!-- MHonArc v\d\.\d\.\d -->';
+my $MHONARC_MESSAGE_FILE = 'msg\d{5}\.html(?:\.gz)?';
 
 sub mediatype() {
     return ('text/html; x-type=mhonarc');

@@ -1,8 +1,8 @@
 2000-02-16  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
-	* filter/mhonarc.pl (MHONARC_HEADER): Moved from conf.pl.in.
+	* filter/mhonarc.pl (MHONARC_MESSAGE_FILE): Moved from conf.pl.in.
 
-	* pl/conf.pl.in (MHONARC_MESSAGE_FILE): Abolished.
+	* pl/conf.pl.in (MHONARC_HEADER): Abolished.
 
 	* pl/var.pl.in (PREFIX): Abolished.
 	(NO_TITLE): Moved from conf.pl.in and gettextized.

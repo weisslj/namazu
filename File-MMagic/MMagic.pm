@@ -1,6 +1,6 @@
 # File::MMagic
 #
-# $Id: MMagic.pm,v 1.24 2000-10-10 10:38:46 knok Exp $
+# $Id: MMagic.pm,v 1.25 2001-02-09 01:08:44 knok Exp $
 #
 # This program is originated from file.kulp that is a production of The
 # Unix Reconstruction Projct.
@@ -241,7 +241,7 @@ use strict;
 use vars qw(
 %TEMPLATES %ESC $VERSION
 $magicFile $checkMagic $followLinks $fileList
-$dataLoc
+$dataLoc $allowEightbit
 );
 
 BEGIN {
@@ -274,7 +274,8 @@ BEGIN {
 	    t => "\t",
 	    f => "\f");
 
-$VERSION = "1.09";
+$VERSION = "1.11";
+$allowEightbit = 1;
 undef $dataLoc;
 }
 
@@ -555,9 +556,8 @@ sub checktype_data {
     # truncate data
     $data = substr($data, 0, 0x8564);
 
-    if (check_binary($data)) {
-	$mtype = "application/octet-stream";
-    } else {
+    # at first, check SPECIALS
+    {
 	# in BSD's version, there's an effort to search from
 	# more specific to less, but I don't do that.
 	my ($token, %val);
@@ -570,6 +570,7 @@ sub checktype_data {
 		$val{$type} = pos($tdata);
 	    }
 	}
+
 	# search latest match
 	if (%val) {
 	    my @skeys = sort { $val{$a} <=> $val{$b} } keys %val;
@@ -578,6 +579,9 @@ sub checktype_data {
 	
       ALLDONE:
 #	$mtype = 'text/plain' if (! defined $mtype);
+    }
+    if (! defined $mtype && check_binary($data)) {
+	$mtype = "application/octet-stream";
     }
 	
 #    $mtype = 'text/plain' if (! defined $mtype);
@@ -604,12 +608,17 @@ sub checktype_byfilename {
 sub check_binary {
     my ($data) = @_;
     my $len = length($data);
-    my $count = ($data =~ tr/[\x00-\x08\x0b-\x0c\x0e-\x1a\x1c-\x1f]//); # exclude TAB, ESC, nl, cr
-    return 1 if ($len <= 0); # no contents
-    return 1 if (($count/$len) > 0.1); # binary
+    if ($allowEightbit) {
+	my $count = ($data =~ tr/[\x00-\x08\x0b-\x0c\x0e-\x1a\x1c-\x1f]//); # exclude TAB, ESC, nl, cr
+        return 1 if ($len <= 0); # no contents
+        return 1 if (($count/$len) > 0.1); # binary
+    } else {
+	my $count = ($data =~ tr/[\x00-\x08\x0b-\x0c\x0e-\x1a\x1c-\x1f\x80-\xff]//); # exclude TAB, ESC, nl, cr
+        return 1 if ($len <= 0); # no contents
+        return 1 if (($count/$len) > 0.3); # binary
+    }
     return 0;
 }
-
 
 sub check_magic {
     my $self = shift @_;

@@ -1,6 +1,8 @@
 1999-12-16  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* src/mknmz.pl.in (find_target): Uniq @flist. [namazu-dev 1020]
+	(find_target): Fix a syntax mistake.
+	(check_file): Fix "is 0 size! skipped." condition. [namazu-dev 1023]
 
 1999-12-15  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 

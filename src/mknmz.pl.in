@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.83 1999-12-15 23:54:23 satoru Exp $
+# $Id: mknmz.pl.in,v 1.84 1999-12-16 07:02:36 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -299,8 +299,10 @@ sub namazu_core ($$$) {
 	load_document(\$cfile, \$content, \$weighted_str,
 		      \$headings, \%fields);
 
+    util::dprint("after load_document: $uri: $cfile_size, $text_size, $kanji, $mtype\n");
+
     # check if the file is acceptable.
-    my $err = check_file($cfile, $text_size, $mtype);
+    my $err = check_file($cfile, $cfile_size, $text_size, $mtype);
     if (defined $err) {
 	print $file_count + $file_base . " $uri $err\n" unless $var::Opt{'quiet'};
 	print $fh_errorsfile "$cfile $err\n"; 
@@ -570,9 +572,12 @@ sub load_document ($$$$\%) {
 	    my $mtype_c = $Magic->checktype_data($$contref);
 	    my $mtype_m;
 	    $mtype_m = $Magic->checktype_magic($$contref) 
-	      if ((! defined $mtype_c) || $mtype_c =~ /^(text\/html|text\/plain|application\/octet-stream)$/);
+	      if ((! defined $mtype_c) ||
+		  $mtype_c =~ 
+		  /^(text\/html|text\/plain|application\/octet-stream)$/);
 	    $mtype_c = $mtype_m if (defined $mtype_m && 
-				    $mtype_m !~ /^(text\/html|text\/plain|application\/octet-stream)$/);
+				    $mtype_m !~ 
+				    /^(text\/html|text\/plain|application\/octet-stream)$/);
 	    $mtype_c = 'text/plain' unless defined $mtype_c;
 	    $mtype = decide_type($mtype_n, $mtype_c);
 	}
@@ -608,7 +613,7 @@ sub load_document ($$$$\%) {
 	last;
     }
 
-    # masure text size at this time
+    # measure text size at this time
     my $text_size = length($$contref) + length($$weighted_str); 
 
     if ($SYSTEM eq "MSWin32" && $shelter_cfile ne "") {
@@ -1021,7 +1026,7 @@ sub find_target (@) {
     }
 
     # uniq @flist
-    my %mark = {};
+    my %mark = ();
     @flist = grep {$mark{$_}++; $mark{$_} == 1} @flist;
 
     return @flist;
@@ -1052,11 +1057,11 @@ sub show_version () {
 }
 
 # check the file -- 0: OK / 1: NG
-sub check_file ($$$) {
-    my ($cfile, $text_size, $mtype) = @_;
+sub check_file ($$$$) {
+    my ($cfile, $cfile_size, $text_size, $mtype) = @_;
 
     my $msg = undef;
-    if ($text_size == 0) {
+    if ($text_size == 0 || $cfile_size == 0) {
 	$msg = "is 0 size! skipped.";
     } elsif ($mtype =~ /^application\/octet-stream/) {
 	$msg = "may be a BINARY file! skipped.";

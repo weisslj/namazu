@@ -45,7 +45,9 @@
   * Word文書, PDF用のフィルタを用意した
     - mswordview, pdftotext が必要
 
-  * namazu.conf / .namazur において区切り文字に空白文字を使
+  * namazu.conf を namazurc に名前を変えた
+
+  * namazurc において区切り文字に空白文字を使
     えるようにした (TABじゃなければダメという仕様は廃止)
 
   * 何もヒットしなかったときに NMZ.tips を表示するようにした
@@ -66,7 +68,7 @@
     - ja.po, ja_JP.SJIS.po, ja_JP.JIS7.po を用意しています
 
   * library化
-    - 進行中
+    - とりあえず library の形になったが、まだまだ改良が必要
 
   * mknmz のソースコードを整理した
     - mknmz を分割した
@@ -78,8 +80,6 @@
 
   * namazu のソースコードを整理した
     - プロトタイプ宣言を徹底した
-    - namazu.h を分割した
-    - HLISTのデータ構造を変えた
     - nmz_mergesort() を廃して qsort を導入した [namazu-dev 334]
     - 名前付け規則を見直した
     - コメントをすべて英訳した

@@ -15,7 +15,7 @@ targets=`find $pwd -type f | grep -v CVS | grep -v Makefile | sort`
 cd ../../scripts
 for target in $targets; do
    ./mknmz --no-delete -O ../tests/idx2 $target \
-	>>../tests/test-log
+	>> $LOG
     test "$?" != "0" && exit 1  # error if not success
 done;
 

@@ -16,8 +16,7 @@ echo '$conf::ON_MEMORY_MAX=0' > $tmprc
 
 # Simple indexing
 cd ../scripts 
-./mknmz --checkpoint -f $tmprc -O ../tests/idx3 ../tests/data > \
-    ../tests/test-log
+./mknmz --checkpoint -f $tmprc -O ../tests/idx3 ../tests/data >> $LOG
 rm -f $tmprc
 
 exit $?

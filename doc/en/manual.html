@@ -2,397 +2,898 @@
         "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
-<meta name="robots" content="noindex,nofollow">
-<link rev=made href="mailto:satoru-t@is.aist-nara.ac.jp">
-<title>Manual of Namazu the full text retrieval search system</title>
+<meta name="ROBOTS" content="NOINDEX,NOFOLLOW">
+<link rel=stylesheet href="namazu.css">
+<link rev=made href="mailto:developers@namazu.org">
+<title>Manual of Namazu</title>
 </head>
-<body lang="en">
-<h1>Manual of Namazu Version 1.3.0.10</h1>
-<p>Last Modified: 1998-08-31</p>
+<body lang="ja">
+<h1>Manual of Namazu</h1>
 <hr>
 
-<h2>NOTICE:</h2>
-
 <p>
-This file is a manual describing how to use Namazu. If you would
-like to know what is Namazu, see <a
-href="intro.html">intro.html</a>. Namazu is a free software
-obeying GPL2. All rights are reserved by Satoru Takabayashi. THE
-SOFTWARE IS PROVIDED AS IS WITHOUT WARRANTY OF ANY KIND. Use this
-software at YOUR OWN RISK. I am looking forward to any BUG reports
-and the idea how to apply Namazu usefully.
+You can get the latest news about Namazu at <a
+href="http://www.namazu.org/">http://www.namazu.org/</a>.
+
+Namazu is a free software under the terms of <a
+href="http://www.gnu.org/copyleft/gpl.html">GPL2</a> with
+ABSOLUTELY NO WARRANTY.
 </p>
 
-<p>
-Many documents and comments in source code are written in
-Japanese. I will translate that into English before long.
-
-For same reason, contributed softwares written in Japanese will
-translate into English, maybe.
-</p>
-
-<p>
-Namazu home site: <a
-href="http://openlab.ring.gr.jp/namazu/">http://openlab.ring.gr.jp/namazu/</a>
-This is valid until my graduation (March,1999)
-</p>
-
-
-<h2><a name="INDEX">Index</a></h2>
-
+<h2>Table of contents</h2>
 <ul>
-<li><a href="#INDEX">Index</a>
-<li><a href="#PREAMBLE">Preamble</a>
-<li><a href="#BACKGROUND_INFO">Background Information</a>
-<li><a href="#SYSTEM_REQUIREMENTS">System requirements</a>
-<li><a href="#KNOWNENV">Known environments that Namazu works</a>
+<li><a href="#organization">Namazu organization</a>
+<li><a href="#mknmz">mknmz command</a>
   <ul>
-  <li><a href="#ENV_OS">OS</a>
-  <li><a href="#ENV_C">C compiler</a>
-  <li><a href="#ENV_PERL">Perl</a>
-  <li><a href="#ENV_HTTPD">HTTP Server</a>
+  <li><a href="#mknmz-option">mknmz's options</a>
+  <li><a href="#mknmzrc">mknmzrc settings</a>
+  <li><a href="#doc-filter">Document filters</a>
   </ul>
-<li><a href="#INSTALL">How to install</a>
+<li><a href="#namazu">namazu command</a>
   <ul>
-  <li><a href="#INSTALL_FROM_SOURCE">From source</a>
-    <ul>
-    <li><a href="#EXTRACT">Extract the Archive</a>
-    <li><a href="#CONFIGURE">Execute configure</a>
-    </ul>
+  <li><a href="#namazu-option">namazu's options</a>
+  <li><a href="#namazurc">namazurc settings</a>
+  <li><a href="#default-index">Default Index</a>
   </ul>
-<li><a href="#HOW_TO_USE">How to use Namazu</a>
+<li><a href="#cgi">namazu.cgi</a>
   <ul>
-  <li><a href="#MAKING_INDEX">Making Index</a>
-  <li><a href="#SEARCHING">Searching</a>
-  <li><a href="#RUNNING_AS_CGI">Running as CGI</a>
+  <li><a href="#setting">namazu.cgi installation</a>
+  <li><a href="#.namazurc">.namazurc settings</a>
+  <li><a href="#template">Template files</a>
+  <li><a href="#form">Form settings</a>
+  <li><a href="#form-idxname">Selecting an index</a>
+  <li><a href="#form-idxnames">Selecting multiple indices</a>
+  <li><a href="#form-subquery">Using sub-query</a>
   </ul>
-<li><a href="#QUERY">Query specification</a>
+<li><a href="#tools">Included tools</a>
+  <ul>
+  <li><a href="#bnamazu">bnamazu</a>
+  <li><a href="#nmzgrep">nmzgrep</a>
+  <li><a href="#gcnmz">gcnmz</a>
+  <li><a href="#mailutime">mailutime</a>
+  <li><a href="#vfnmz">vfnmz</a>
+  </ul>
+<li><a href="#query">Query</a>
+  <ul>
+  <li><a href="#query-term">Single term query</a>
+  <li><a href="#query-and">AND query</a>
+  <li><a href="#query-or">OR query</a>
+  <li><a href="#query-not">NOT query</a>
+  <li><a href="#query-grouping">Grouping</a>
+  <li><a href="#query-phrase">Phrase searching</a>
+  <li><a href="#query-substring">Substring matching</a>
+  <li><a href="#query-regex">Regular expressions</a>
+  <li><a href="#query-field">Field-specified searching</a>
+  <li><a href="#query-notes">Notes</a>
+  </ul>
 </ul>
 
-<h2><a name="PREAMBLE">Preamble</a></h2>
+<h2><a name="organization">Namazu organization</a></h2>
 
 <p>
-Unfortunately, this manual is now under construction. If I should
-get email from someone using Namazu from overseas, my motivation
-would rise :-).
+Namazuは全文検索システムです。Namazu はインデックスの作成を
+行う mknmz コマンドと、検索を行う namazuコマンドから構成され
+ています。
 </p>
 
 <p>
-Thanks to <a href="mailto:ishiyama.seigo@sse.bch.ntt.co.jp">Seigo
-ISHIYAMA</a> for the help of translation.
+大量の文書を高速に検索するためには、どの単語がどの文書で使わ
+れているかを記録した索引ファイル (インデックス) をあらかじめ
+作成する必要があります。インデックスはちょうど書籍の索引と似
+ています。
 </p>
-
-<h2><a name="BACKGROUND_INFO">Background Information</a></h2>
 
 <p>
-   At the beginning Namazu was made with only intention of
-   Japanese use but now has been developing to handle English
-   (ASCII charset) and other languages defined in ISO-8859-*.
-
-   I have a desire to distribute Namazu to all over the world but
-   there are many problems on Internationalization. So perhaps
-   using Namazu in non-Japanese environment is currently little
-   inconvinient. 
+インデックスを作成するには mknmz コマンドを用います。mknmz 
+の引数にインデックス作成の対象とするディレクトリ名を与えます。
+たとえば、 /home/foo/public_html を対象とするなら
+ば
 </p>
 
-<h2><a name="SYSTEM_REQUIREMENTS">System requirements</a></h2>
+<p><code>% mknmz</code> /home/foo/public_html
+</p>
+
+<p>
+と実行します。すると、 /home/foo/public_html 以下
+の *.html *.txt といったファイルについて索引づけを行い、
+mknmz を実行したディレクトリに NMZ.* というファイルを作成し
+ます。この NMZ.* ファイルが Namazu のインデックスです。
+</p>
+
+<p>
+作成されたインデックスに対して検索を行うには
+<code>namazu</code>コマンドを用います。
+</p>
+
+<p><code>% namazu</code> bar
+/home/foo/Namazu/bar</p>
+
+<p>
+と実行すれば、/home/foo/Namazu/bar にあるインデック
+スに対してキーワード bar を検索します。
+</p>
+
+
+<h2><a name="mknmz">mknmz command</a></h2>
+
+<h3><a name="mknmz-option">mknmz's options</a></h3>
+
+<!-- mknmz-option -->
+<pre>
+    mknmz 1.9.15, an indexer of Namazu.
+    
+    Usage: mknmz [options] &lt;target&gt;...
+    
+    Target files:
+      -a, --all                target all files.
+      -e, --robots-txt         exclude files which is excluded by robots.txt.
+      -t, --media-type=mtype   set a media type for all target files explicitly.
+      -h, --mailnews           same as --media-type='message/rfc822'
+          --mhonarc            same as --media-type='text/html; x-type=mhonarc'
+      -A, --htaccess           exclude files restricted by .htaccess.
+      -F, --target-list=file   load a file which contains list of target files.
+          --allow=regex        set a regex for file names which will be allowed.
+          --deny=regex         set a regex for file names which will be denied.
+          --exclude=regex      set a regex for pathnames which will be excluded.
+      -M, --meta               handle HTML meta tags for field-specified search.
+      -r, --replace=code       set a code for replacing URI.
+      -o, --ole                use OLE document filters. (works on Windows only)
+          --mtime=int          limit by date, ( minus number for recent, i.e.,
+                               -50 for recent 50 days, 50 for older than 50.)
+    
+    Morphological Analysis:
+      -c, --use-chasen         use ChaSen for analyzing Japanese.
+      -k, --use-kakasi         use KAKASI for analyzing Japanese.
+      -m, --use-chasen-noun    use ChaSen for extracting only nouns.
+    
+    Text Operations:
+      -E, --no-edge-symbol     remove symbols on edge of word.
+      -G, --no-okurigana       remove Okurigana in word.
+      -H, --no-hiragana        ignore words consist of Hiragana only.
+      -K, --no-symbol          remove symbols.
+    
+    Summarization:
+      -U, --no-encode-uri      do not encode URI.
+      -x, --no-heading-summary do not make summary with HTML's headings.
+    
+    Index Construction:
+          --update=index       set an index for updating.
+      -Y, --no-delete          do not detect removed documents.
+      -Z, --no-update          do not detect update and deleted documents.
+    
+    Miscellaneous:
+      -s, --checkpoint         turn on the checkpoint mechanism.
+      -f, --config=file        set a pathname of a config file.
+      -I, --include=file       include your customization file.
+      -O, --output-dir=dir     set a directory to output the index.
+      -T, --template-dir=dir   set a directory having NMZ.{head,foot,body}.*.
+      -q, --quiet              suppress status messages during execution.
+      -v, --version            show the version of namazu and exit.
+      -V, --verbose            be verbose.
+          --debug              be debug mode.
+          --help               show this help and exit.
+    
+    Report bugs to &lt;bug-namazu@namazu.org&gt;.
+</pre>
+<!-- mknmz-option -->
+
+
+<h3><a name="mknmzrc">mknmzrc settings</a></h3>
+<p>
+mknmzrc および .mknmzrc ではいくつかの設定が行えます。
+mknmz は
+</p>
+
+<ol>
+<li><code>$(sysconfdir)/$(PACKAGE)/mknmzrc</code><br>
+通常は /usr/local/etc/mknmz/mknmzrc
+<li>~/.mknmzrc
+<li>-f, --config= オプションで指定した mknmzrc
+</ol>
+
+<p>
+の順で設定ファイルを探して読み込みます。
+</p>
+
+<p>
+インストール直後の状態では 
+<code>$(sysconfdir)/$(PACKAGE)/mknmzrc-sample</code> という
+サンプルファイルが用意されています。これを 
+<code>$(sysconfdir)/$(PACKAGE)/mknmzrc</code> にコピーする、
+あるいは自分のホームディレクトリに ~/.mknmzrc としてコピーし
+て利用します。
+</p>
+
+<p>
+mknmzrc の設定項目の説明は mknmzrc-sample ファイルにコメント
+として書かれています。
+</p>
+
+
+<h3><a name="doc-filter">Document filters</a></h3>
+
+<p>
+mknmz は対象ファイルの文書形式を自動で判別して、適切なフィル
+タ処理を行います。たとえば、 HTML文書では &lt;title&gt; の抽
+出や、HTMLタグの除去を行います。この処理は
+<code>$(datadir)/$(PACKAGE)/filter</code> に置かれる文書フィ
+ルタによって行われます。標準で用意されている文書フィルタは次
+の通りです。
+</p>
+
+<dl>
+<dt>gzip.pl
+<dd>gzipで圧縮されたファイルを扱う<br>
+<dd>必需品: <a href="http://www.gzip.org/">gzip</a> コマンド
+または Compress::Zlib モジュール
+
+<dt>bzip2.pl
+<dd>bzip2で圧縮されたファイルを扱う
+<dd>必需品: <a
+href="http://sourceware.cygnus.com/bzip2/">bzip2</a> コマン
+ド
+
+<dt>compress.pl
+<dd>compressで圧縮されたファイルを扱う
+<dd>必需品: compressコマンド
+
+<dt>hnf.pl
+<dd><a href="http://www.h14m.org/">ハイパー日記システム</a> のファ
+イルを扱う
+<dd>必需品: なし
+<dd>注意: hnf フィルタは特殊。<a
+href="http://www.h14m.org/">Hyper NIKKI System Project</a>か
+ら namazu_for_hns を入手する必要がある
+
+<dt>html.pl
+<dd>HTML文書を扱う
+<dd>必需品: なし
+
+<dt>ichitaro456.pl
+<dd>一太郎 4, 5, 6 のファイルを扱う
+<dd>必需品: <a
+href="http://www.vector.co.jp/soft/dl/dos/writing/s0013972.html">JSTXT</a>
+<dd>注意: JSTXT
+は Windows用のツールです。
+
+<dt>mailnews.pl
+<dd>Mail/News のファイルを扱う
+<dd>必需品: なし
+
+<dt>man.pl
+<dd>man を扱う
+<dd>必需品: nroff, groff, jgroff
+<dd>注意: 日本語の man を扱うには -T nippon に対応した jgroff が必要
+
+<dt>mhonarc.pl
+<dd>MHonArc のファイルを扱う
+<dd>必需品: なし
+
+<dt>msword.pl
+<dd>Word文書を扱う
+<dd>必需品: <a href="http://www.wvWare.com/">wvWare</a>, 
+<a href="http://www.ff.iij4u.or.jp/~nrt/lv/">lv</a>
+
+<dt>pdf.pl
+<dd>PDFファイルを扱う
+<dd>必需品: <a href="http://www.foolabs.com/xpdf/">xpdf</a>
+に付属の pdftotextコマンド
+
+<dt>rfc.pl
+<dd>RFCのファイルを扱う
+<dd>必需品: なし
+
+<dt>tex.pl
+<dd>TeXのファイルを扱う
+<dd>必需品: <a
+href="http://www.cs.purdue.edu/homes/trinkle/detex/">detex</a>
+</dl>
+
+<p>
+ole から始まる文書フィルタは Windows専用です。OLEの文書フィ
+ルタを用いるには mknmz を --ole オプションつけて実行します。
+</p>
+
+<dl>
+<dt>oleexcel.pl
+<dd>Excelのファイルを扱う
+<dd>必需品: Excel
+
+<dt>olemsword.pl
+<dd>Word文書を扱う
+<dd>必需品: Word
+
+<dt>olepowerpoint.pl
+<dd>Power Point のファイルを扱う
+<dd>必需品: Power Point
+</dl>
+
+
+<h2><a name="namazu">namazu command</a></h2>
+
+<h3><a name="namazu-option">namazu's options</a></h3>
+
+<!-- namazu-option -->
+<pre>
+    namazu 1.9.14, a search program of Namazu.
+    
+    Usage: namazu [options] &lt;query&gt; [index]... 
+        -n, --max=num        set number of documents shown at once.
+        -w, --whence=num     set first number of documents shown in results.
+        -l, --list           print results by listing format.
+        -s, --short          print results by short format.
+            --results=ext    set NMZ.result.ext for printing results.
+            --late           sort documents in late order.
+            --early          sort documents in early order.
+            --sort=method    set a sort method (score, date, field:name)
+            --ascending      sort in ascending order (default: descending)
+        -a, --all            print all results.
+        -c, --count          print only number of hits.
+        -h, --html           print in HTML format.
+        -r, --no-references  do not display reference hit counts.
+        -H, --page           print further result links. (nearly meaningless)
+        -F, --form           force to print &lt;form&gt; ... &lt;/form&gt; region.
+        -R, --no-replace     do not replace URI string.
+        -U, --no-decode-uri  do not decode URI when printing in a plain format.
+        -o, --output=file    set output file name.
+        -f, --config=file    set a pathname of a config file.
+        -C, --show-config    print current configuration.
+        -q, --quiet          do not display extra messages except search results.
+        -v, --version        show the version of namazu and exit.
+            --help           show this help and exit
+    
+    Report bugs to &lt;bug-namazu@namazu.org&gt;.
+</pre>
+<!-- namazu-option -->
+
+<p>
+コマンド行引数の <code>[index dir]...</code> に検索対象のイ
+ンデックスを指定します。インデックスの指定を省略すると、<a
+href="#default-index">基本インデックス</a>が検索対象となりま
+す。
+</p>
+
+<p>
+また、 +foo, +bar のように頭に <code>+</code> 記号をつけると、
+基本インデックスからの相対パスでインデックスを指定できます。
+</p>
+
+<p>
+コマンド行から実行したときは標準では質素なテキストとして検索
+結果を出力します。HTML で出力する場合には -h オプションを指
+定します。
+</p>
+
+<p>
+検索結果の 21 件目から 40 件目までを表示させたいときは -n 20
+-w 20 と指定します。-w の値が 21 でないところに注意してくだ
+さい。
+</p>
+
+<h3><a name="namazurc">namazurc settings</a></h3>
+<p>
+namazurc および .namazurc ではいくつかの設定が行えます。
+namazu は
+</p>
+
+<ol>
+<li><code>$(sysconfdir)/$(PACKAGE)/namazurc</code><br>
+通常は /usr/local/etc/namazu/namazurc
+<li>~/.namazurc
+<li>-f, --config= オプションで指定した namazurc
+</ol>
+
+<p>
+の順で設定ファイルを探して読み込みます。
+</p>
+
+<p>
+インストール直後の状態では 
+<code>$(sysconfdir)/$(PACKAGE)/namazurc-sample</code> という
+サンプルファイルが用意されています。これを 
+<code>$(sysconfdir)/$(PACKAGE)/namazurc</code> にコピーする、
+あるいは自分のホームディレクトリに ~/.namazurc としてコピー
+して利用します。
+</p>
+
+<p>
+namazurc の設定項目の説明は namazurc-sample ファイルにコメント
+として書かれています。
+</p>
+
+<h3><a name="default-index">Default Index</a></h3>
+
+<p>
+基本インデックスは、検索時にインデックスの指定が省略されたと
+きに検索対象となるインデックスです。基本インデックスは次の規
+則に従います。
+</p>
 
 <ul>
-<li>UNIX
-<li>Win32 (Windows NT/95)
-<li>OS/2
-<li>Http server in your host should supports CGI. (For the use as CGI)
-<li>You need to have a right for using CGI. (For the use as CGI)
-<li>At least, 32MB of memory are needed for the enough performance.
+<li>標準は $(localstatedir)/$(PACKAGE)/index<br>
+通常は /usr/local/var/namazu/index)
+<li><a href="#namazurc">namazurc</a> の Index指示で変更可能
 </ul>
-
-<h3><a name="NECESSARYSOFT">What you should install / What you
-shoul have installed in advance</a></h3>
-
-<ul>
-<li>Perl 5.003 or later [MUST]
-<li>gcc (cc is pearhaps not good) [MUST]
-<li>(for handling Japanese) KAKASI with -w option, or Chasen 1.51 [optional]
-<li>(for handling Japanese) nkf v1.62 [optional]
-</ul>
-
-
-<h3><a name="HANDLING_JAPANESE">About KAKASI/ChaSen</a></h3>
 
 <p>
-You need KAKASI or ChaSen if you want to deal Japanese (If you
-don't want, you don't need of course). KAKASI must be patched that
--w option is valid. This patch is originally created to Japanize
-freeWAIS-sf by Hajime BABA. For more information, see <a
-href="http://www.kusastro.kyoto-u.ac.jp/~baba/wais/">freeWAIS-sf
-japanization information</a>.
+CGI (<a href="#cgi">namazu.cgi</a>) では、<a
+href="#form-idxname">インデックスを選択する</a>際に基本イン
+デックスからの相対パスで指定します。
 </p>
 
+<h2><a name="cgi">namazu.cgi</a></h2>
 
-<h2><a name="KNOWNENV">Known environments that Namazu works</a></h2>
+<h3><a name="setting">namazu.cgi installation</a></h3>
 
 <p>
-Some of them are tested only by earlier version of Namazu. It is
-not sure that v1.3.0.0 works well under the conditions.  
+CGIとして Namazuを利用するには、 namazu.cgi を用います。
+namazu.cgi は <code>$(libexecdir)</code> ディレクトリ (通常
+は/usr/local/libexec) にインストールされます。CGI を設置した
+いディレクトリに namazu.cgiをコピーすれば設置完了です。
 </p>
 
-<h3><a name="ENV_OS">OS</a></h3>
-<ul>
-<li>Linux 2.0.18, 2.0.30, 2.0.32, 2.0.33
-<li>mklinux DR2.1 update4
-<li>FreeBSD 2.2.1-RELEASE, FreeBSD 2.2.5-RELEASE, FreeBSD 2.2.6-RELEASE
-<li>SunOS 4.1.3-JLE1.1.3_U1, sposk 4.1.4-JL 1, 4.1.4-JLE1.1.4, 5.4
-<li>Japanized Solaris 2.5.1, 2.6
-<li>IRIX 5.3, 6.2
-<li>HP-UX 10.20
-<li>OSF/1 V1.3, V3.2 (on DEC AlphaStation)
-<li>Digital UNIX 4.0B
-<li>DG/UX 5.4R2.10
-<li>BSD/OS 2.1
-<li>EWS-UX/V (Rel4.2) (NEC EWS4800/360)
-</ul>
-
-<h3><a name="ENV_C">C compiler</a></h3>
-<ul>
-<li>gcc 2.5.8, 2.6.3, 2.7.2, 2.7.2.1, 2.7.2.2, 2.7.2.3, 2.8.1
-</ul>
-
-<h3><a name="ENV_PERL">Perl</a></h3>
-<ul>
-<li>perl 5.003, 5.003 with Japanization Patch 4, 5.004_1, 5.004_03, 5.004_04, 5.005_02
-</ul>
-
-<h3><a name="ENV_HTTPD">HTTP Server</a></h3>
-<ul>
-<li>apache 1.1.3, 1.2.0, 1.2.1, 1.2.4, 1.3b3, 1.3b6, 1.2.0
-<li>NCSA HTTPd NCSA/1.5.2
-<li>JavaWebServer 1.0.1
-<li>CERN httpd 3.0A
-<li>Netscape-Commerce/1.1
-</ul>
-
-
-<h3><a name="ON_WIN32">Prerequisite to install Namazu on
-Win32</a></h3>
+<h3><a name=".namazurc">.namazurc settings</a></h3>
 
 <p>
-It is hard to make in Win32. With binary packages of Namazu, you
-do not have to do that. <a
-href="intro.html#BINARY_PACKAGE_WIN32">See Win32 Binary
-Package</a>. 
+namazu.cgi を設置したディレクトリに .namazurc ファイルを置く
+と、CGIの実行時に設定ファイルとして読み込まれます。日本語で
+表示するには次の設定が必須です。
 </p>
 
-<h2><a name="INSTALL">How to install</a></h2>
+<p><code>Lang ja</code></p>
 
-<h3><a name="INSTALL_FROM_SOURCE">From source</a></h3>
+<h3><a name="template">Template files</a></h3>
 
-<h4><a name="EXTRACT">Extract the Archive</a></h4>
-
-<p>At first, extract the Archive. with GNU tar:</p>
-
-<p><code>tar xzvf </code><var>namazu-xxx.tar.gz</var></p>
-
-<p>If not:</p>
-<p><code>gunzip -c </code><var>namazu-xxx.tar.gz</var><code>| tar xvf -</code><br>
-<code>zcat </code><var>namazu-xxx.tar.gz</var><code> | tar xvf -</code></p>
-
-<h4><a name="CONFIGURE">Execute configure</a></h4>
 <p>
-Then create Makefile.
+雛形ファイルは HTMLでの結果出力の書式を定義するファイル群で
+す。それぞれの役割は次の通りです。
 </p>
 
+<dl>
+<dt><a href="nmz.html#head">NMZ.head</a>
+<dd>検索結果の冒頭部分
+<dt><a href="nmz.html#foot">NMZ.foot</a>
+<dd>検索結果の末尾部分
+<dt><a href="nmz.html#body">NMZ.body</a>
+<dd>検索式の説明
+<dt><a href="nmz.html#tips">NMZ.tips</a>
+<dd>検索のコツ
+<dt><a href="nmz.html#result">NMZ.result</a>
+<dd>検索結果の表示書式
+</dl>
+
+<p>
+これらのファイルは言語ごとに分かれています。ファイル名の末尾
+が .ja で終わるものが日本語用です。
+</p>
+
+<h3><a name="form">Form settings</a></h3>
+
+<p>
+formは NMZ.head に定義されています。CGI変数は次の通りです。
+</p>
+
+<dl>
+<dt>query
+<dd>検索式の指定です。
+<dt>max
+<dd>一度に表示する検索結果の件数を指定します。
+<dt>result
+<dd>検索結果の表示形式を指定します。
+<dt>sort
+<dd>ソートの方法を指定します。
+<dt>idxname
+<dd>検索するインデックス名を指定します。
+<dt>subquery
+<dd>補助の検索式を指定します。
+<dt>whence
+<dd>検索結果を何件目から表示するかを指定します。
+</dl>
+
+<h3><a name="form-idxname">Selecting an index</a></h3>
+
+<p>
+ブラウザからインデックスを選択可能にするには NMZ.head に次の
+ように記述します。
+</p>
 
 <pre>
-        % ./configure --without-japanese # be careful!
-        % make
-        % su                          # switch the user to root, if needed.
-        % make install
+
+      &lt;strong&gt;検索対象:&lt;/strong&gt;
+      &lt;select name="idxname"&gt;
+      &lt;option selected value="foo"&gt;foo
+      &lt;option value="bar"&gt;bar
+      &lt;option value="baz"&gt;baz
+      &lt;/select&gt;
 </pre>
 
 <p>
-It is enough for most cases. In case of trouble, I might be help
-of you if you report the detail of your environment and error
-message.
+この例では、 foo, bar, baz の中からインデックスを
+選択可能にしています。foo が選ばれた時は<a
+href="#default-index">基本インデックス</a> の下にある 
+foo インデックスを検索します。基本インデックスが 
+/usr/local/var/namazu/index の場合は次のディレクトリ構成にな
+ります。
 </p>
 
+<pre>
 
-<h2><a name="HOW_TO_USE">How to use Namazu</a></h2>
+       /
+       + usr/
+         + local/
+           + var/
+             + namazu/
+               + index/
+                 + foo/
+                 + bar/
+                 + baz/
+</pre>
 
-<h3><a name="MAKING_INDEX">Making Index</a></h3>
+
+<h3><a name="form-idxnames">Selecting multiple indices</a></h3>
+<p>
+複数のインデックスを検索するは NMZ.head に checkbox の記述を
+します。
+</p>
+
+<pre>
+
+      &lt;strong&gt;対象インデックス&lt;/strong&gt;
+      &lt;ul&gt;
+      &lt;li&gt;&lt;input type="checkbox" name="idxname" value="foo"&gt;foo
+      &lt;li&gt;&lt;input type="checkbox" name="idxname" value="bar"&gt;bar
+      &lt;li&gt;&lt;input type="checkbox" name="idxname" value="baz"&gt;baz
+      &lt;/ul&gt;
+</pre>
 
 <p>
-Namazu should make the index like a dictionary in advance of
-searching. a command `<code>mknmz</code>' do this task.
-Basic way is like this:
-</p>
-
-<p>
-<code>% mknmz</code> <var>/target/directory</var>
-</p>
-
-<p> You must specify the <var>/target/directory</var> which
-contains files you want to index.  If <var>/target/directory</var>
-has subdirectories, `<code>mknmz</code>'
-recursively traverse them and do indexing.
-</p>
-
-<p> After this processing is finished, `<code>mknmz</code>' makes
-files named ' NMZ.*' as index in current directory.  </p>
-
-<h3><a name="SEARCHING">Searching</a></h3>
-
-<p> A command `<code>namazu</code>' is a search engine. Basic
-usage is like this: </p>
-
-<p>
-<code>% namazu</code> "<var>query</var>" <var>/index/directory</var> ...
-</p>
-
-<p>
-`<var>query</var>' can be specified with flexible conditions
-supported by `<code>namazu</code>'. See the section "<a
-href="#QUERY">Query specification</a>" for details.
-</p>
-
-<p>`<var>/index/directory</var>' that contains index (NMZ.*) what
-you want to search is must be specified at least one.  You can
-enumrate directories to search multiple indices at once.</p>
-
-<h3><a name="RUNNING_AS_CGI">Running as CGI</a></h3>
-
-<p>At first, You can copy `<code>namazu.cgi</code>' to the
-direcotry allowed to run CGI. `<code>namazu.cgi</code>' search the
-index placed in <code>INDEXDIR</code> defined in Makefile as
-default index.</p>
-
-<p>And you should edit <code>NMZ.(head|foot|msg|body).en</code>
-(<code>`.en`</code> means English message) which contains messages
-of search result pages.  </p>
-
-<p>Then you can edit <code>namazu.conf</code> (usually in
-<code>/usr/local/namazu/lib</code> defined as <code>LIBDIR</code>
-in Makefile) or <code>.namazurc</code> placed at the same
-directory as <code>namazu.cgi</code> to adjust URL in the result
-page.  Normally, <code>mknmz</code> makes index which point to
-local files like <code>/home/foo/public_html/baz.html</code>, so
-the result page of CGI is must be substituted.  </p>
-
-<p>For example:</p>
-<p>
-<code>REPLACE   /home/foo/public_html/  http://www.hoge.jp/~foo/</code>
-</p>
-
-<p>
-It means to replace <code>/home/foo/public_html/</code> with <code>http://www.hoge.jp/~foo/</code>. They are MUST be separated with TAB characters.
-</p>
-
-<p>
-If `<code>namazu.cgi</code>' works successfully, you are lucky :-)!
-</p>
-
-
-<h2><a name="QUERY">Query specification</a></h2>
-
-<p>
- This search system is case insensitive. You can use asterisk
- character at the end of the word to do forward match search, 
- for instance: "foo*"
-</p>
-
-<p>
- Separating keywords by spaces is automatically assumed to be
- AND-search that is to find only documents containing all of the
- specified keywords.
-</p>
-
-<p>
- You can search the word containing symbols like "TCP/IP".
- However, this processing isn't perfect, so you can describe "TCP
- IP" instead of "TCP/IP", but it may cause noisy results.
-</p>
-
-<p>
- This search system has boolean operators '&amp;', '!', '|'.
- In place of symbols, the word "and", "or", "not", are accepted.
- Each operator must be separated by space.
-</p>
-
-<p>
- For exapmle (both expressions is same meaning):
+この例では foo, bar, baz から複数選択して検索できます。検索
+結果に使われる<a href="#template">雛形ファイル</a>は 
+namazurc の Template指示で指定したディレクトリのものが用いら
+れます。Template が指定されていないときは、次の規則に従いま
+す。
 </p>
 
 <ul>
-<li><code>( sed | awk ) ! perl &amp; regexp</code>
-<li><code>( sed or awk ) not perl and regexp</code>
+<li>選択されたインデックスが 1つのとき<br>
+選択されたインデックスの雛形ファイルが用いられる
+<li>選択されたインデックスが複数のとき<br>
+<a href="#default-index">基本インデックス</a>の雛形ファイルが用いられる
 </ul>
 
+<h3><a name="form-subquery">Using sub-query</a></h3>
+
 <p>
- This sample finds the files which contain "sed" or "awk", and no "perl",
- but include "regexp".
+利用者が入力する検索式とは別に、補助検索式を設定できます。た
+とえば次の例では、検索対象のペイジを選択可能にしています。検
+索対象の URIを +uri: で制限しているところが要です。
+</p>
+
+<pre>
+
+      &lt;strong&gt;検索対象&lt;/strong&gt;
+      &lt;select name="subquery"&gt;
+      &lt;option value=""&gt;全体
+      &lt;option value="+uri:/^http://foo.bar.jp/foo//"&gt;fooのペイジ
+      &lt;option value="+uri:/^http://foo.bar.jp/bar//"&gt;barのペイジ
+      &lt;option value="+uri:/^http://foo.bar.jp/baz//"&gt;bazのペイジ
+      &lt;option value="+uri:/^http://foo.bar.jp/quux//"&gt;quuxのペイジ
+      &lt;/select&gt;
+      &lt;input type="hidden" name="reference" value="off"&gt;
+</pre>
+
+
+<h2><a name="tools">Included tools</a></h2>
+
+<h3><a name="bnamazu">bnamazu</a></h3>
+
+<p>
+bnamazu は Webブラウザと連携して検索を行うツールです。検索結
+果を Webブラウザ (標準では lynx) に渡して閲覧できます。コマ
+ンド行から次のように実行します。
 </p>
 
 <p>
- You can use nested parenthesises expression for advanced search.
+<code>% bnamazu [-n] [-b browser] [namazu's options] &lt;query&gt; [index]...</code>
 </p>
 
 <p>
-By surronding words with double quotation mark '"' or curly brace '{' '}',
-Namazu would recognize it as phrase but it is not perfect precision, so
-it cause wrong hit occasionally.
+-b オプションで Webブラウザを指定できます。 -n はWebブラウザ
+が netscape のときのみ有効なオプションです。-n を指定すると、
+新しい netscape の新しいウィンドウを開いて検索結果を表示しま
+す。
+</p>
+
+
+<h3><a name="nmzgrep">nmzgrep</a></h3>
+
+<p>
+nmzgrep は namazu コマンドと連携して egrep を実行するツール
+です。検索にヒットした文書に対して、egrepをかけます。egrep 
+を適用することで、そのキーワードがどの行に出現するかがわかり
+ます。コマンド行から次のように実行します。
 </p>
 
 <p>
- For exapmle (both expressions is same meaning):
+<code>% nmzgrep [egrep's options] &lt;pattern&gt; [index]...</code>
+</p>
+
+
+<p>
+たとえば、 ~/Namazu/foobar に置かれているインデックスに対して
+foo で検索し、ヒットした文書に対してさらに egrep をかけるに
+は、次のように実行します。
+</p>
+
+<p>
+<code>% nmzgrep foo ~/Namazu/foobar</code>
+</p>
+
+<h3><a name="gcnmz">gcnmz</a></h3>
+
+<p>
+文書の更新・削除を伴うインデックスの更新を繰り返していくと、
+インデックス内に不要なデータが溜まっていきます。gcnmz はこの
+不要なデータを削除するツールです。コマンド行から次のように実
+行します。
+</p>
+
+<p>
+<code>% gcnmz [options] &lt;target&gt;...</code>
+</p>
+
+<p>
+たとえば、 ~/Namazu/foobar に置かれているインデックスをゴミ掃除
+するなら、次のように実行します。
+</p>
+
+<p>
+<code>% gcnmz ~/Namazu/foobar</code>
+</p>
+
+<h3><a name="mailutime">mailutime</a></h3>
+
+<p>
+mailutime は Mail/News のファイルのタイムスタンプを Date: ヘッ
+ダに合わせるツールです。コマンド行から次のように実行します。
+</p>
+
+<p>
+<code>% mailutime &lt;target&gt;...</code>
+</p>
+
+<p>
+たとえば、 ~/Mail/ml/foobar に置かれているメイルのタイムスタ
+ンプを変更するなら、次のように実行します。
+</p>
+
+<p>
+<code>% mailutime ~/Mail/ml/foobar/*</code>
+</p>
+
+
+<h3><a name="vfnmz">vfnmz</a></h3>
+
+<p>
+vfnmz は検索結果の表示を preview するツールです。コマンド行
+から次のように実行します。
+</p>
+
+<p>
+<code>% vfnmz &lt;index&gt; [NMZ.result.foobar]</code>
+</p>
+
+<p>
+たとえば、 ~/Namazu/foobar に置かれているインデックスを preview 
+するなら、次のように実行します。
+</p>
+
+<p>
+<code>% vfnmz ~/Namazu/foobar &gt; foobar.html</code><br>
+<code>% lynx foobar.html # 出力をブラウザで閲覧する</code>
+</p>
+
+<!-- query -->
+<h2><a name="query">Query</a></h2>
+
+<h3><a name="query-term">Single term query</a></h3>
+<p>
+The query specifies only one term for retrieving all
+documents which contain the term. e.g., 
+</p>
+
+<p class="example">
+namazu
+</p>
+
+<h3><a name="query-and">AND query</a></h3> 
+
+<p>
+The query specifies two or more terms for retrieving all
+documents which contain both terms. You can insert the
+<code class="operator">and</code> operator between the terms to do AND
+query. e.g., 
+</p>
+
+<p class="example">
+Linux and Netscape
+</p>
+
+<p>
+You can ommit the <code class="operator">and</code> operator.  Terms which is
+separated by one ore more spaces is assumed to be AND query.
+</p>
+
+<h3><a name="query-or">OR query</a></h3>
+<p>
+The query specifies two or more terms for retrieving all
+documents which contain either term. You can insert the
+<code class="operator">or</code> operator between the terms to do OR query.
+e.g.,
+</p>
+
+<p class="example">
+Linux or FreeBSD
+</p>
+
+<h3><a name="query-not">NOT query</a></h3>
+<p>
+The query specifies two or more terms for retrieving all
+documents which contain a first term but does't contain the
+following terms. You can insert the <code class="operator">not</code>
+operator between the terms to do NOT query.  e.g.,
+</p>
+
+<p class="example">
+Linux not UNIX
+</p>
+
+
+<h3><a name="query-grouping">Grouping</a></h3>
+<p>
+You can group queries by surrounding them by
+parentheses. the parentheses should be separated by one ore
+more spaces. e.g., 
+</p>
+
+<p class="example">
+( Linux or FreeBSD ) and Netscape not Windows
+</p>
+
+<h3><a name="query-phrase">Phrase searching</a></h3>
+<p>
+You can search a phrase which consists of two or more terms
+by surrounding them with double quotes like
+<code class="operator">"..."</code> or with braces like <code class="operator">{...}</code>.
+You must choose the latter with Tkanamzu or namazu.el.
+In Namazu, precision of phrase searching is not 100 %,
+so it cause wrong results occasionally. e.g.,
+</p>
+
+<p class="example">
+{GNU Emacs}
+</p>
+
+<!-- foo
+<p>
+You must choose the latter with Tkanamzu or namazu.el.
+</p>
+-->
+
+<h3><a name="query-substring">Substring matching</a></h3>
+<p>
+The are three types of substring matching searching.
+</p>
+
+<dl> 
+<dt>Prefix matching
+<dd><code class="example">inter*</code> (terms which begin with <code>inter</code>)
+<dt>Inside matching
+<dd><code class="example">*text*</code> (terms which contain <code>text</code>) 
+<dt>Suffix matching
+<dd><code class="example">*net</code> (terms which terminated
+with <code>net</code>)
+</dl>
+
+
+<h3><a name="query-regex">Regular expressions</a></h3>
+
+<p>
+You can use regular expressions for pattern matching. The
+regular expressions must be surrounded by slashes like
+<code class="operator">/.../</code>. Namazu uses codes of <a
+href="http://www.netlab.co.jp/ruby/">Ruby</a> for the
+regular expressions engine. It offers generally <a
+href="http://www.perl.com/">Perl</a> compatible flavor.
+e.g.,
+</p>
+
+<p class="example">
+/pro(gram|blem)s?/
+</p>
+
+
+<h3><a name="query-field">Field-specified searching</a></h3>
+<p>
+You can limit your search to specific fields such as
+<code>Subject:</code>, <code>From:</code>,
+<code>Message-Id:</code>. It's especially convenient for
+Mail/News documents. e.g.,
 </p>
 
 <ul>
-<li><code>"SIMPLE MAIL TRANSFER PROTOCOL"</code>
-<li><code>{SIMPLE MAIL TRANSFER PROTOCOL}</code>
+<li><code class="example">+subject:Linux</code><br>
+(Retrieving all documents which contain <code>Linux</code>
+in a <code>Subject:</code> field)
+
+<li><code class="example">+subject:"GNU Emacs"</code><br>
+(Retrieving all documents which contain <code>GNU Emacs</code>
+in a <code>Subject:</code> field)
+
+<li><code class="example">+from:foo@bar.jp</code><br>
+(Retrieving all documents which contain <code>foo@bar.jp</code>
+in a <code>From:</code> field)
+
+
+<li><code class="example">+message-id:&lt;199801240555.OAA18737@foo.bar.jp&gt;</code><br>
+(Retrieving a certain document which contains specified
+<code>Message-Id:</code>)
 </ul>
 
-<p>Also, Namazu can do "regular expression search", "middle or backward match search" but it's little slow.</p>
-
-<p>
-For exapmle:
-</p>
+<h3><a name="query-notes">Notes</a></h3>
 
 <ul>
-<li><code>*net</code> (backward match)
-<li><code>*foo*</code>  (middle match)
-<li><code>/(foo|bar)[a-z]+/</code> (regular expression)
-<li><code>"rain dance"</code> (phrase)
+<li>In any queries, Namazu ignores case distinctions of
+alphabet characters. In other words, Namazu does
+case-insensitive pattern matching in any time.
+
+
+<li>Japanese phrases are forced to be segmented into
+morphemes automatically and are handled them as <a
+href="#phrase">phrase searching</a>. This processing
+causes invalid segmentation occasionally.
+
+
+<li>Alphabet, numbers or a part of symbols (duplicated in
+ASCII) characters which defined in JIS X 0208 (Japanese
+Industrial Standards) are handled as ASCII characters.
+
+<li>Namazu can handle a term which contains symbols like
+<code>TCP/IP</code>.  Since this handling isn't complete,
+you can describe <code>TCP and IP</code> instead of
+<code>TCP/IP</code>, but it may cause noisy results.
+
+
+<li>Substring matching and field-specified searching takes
+more time than other methods.
+
+<li>If you want to use <code class="operator">and</code>,
+<code class="operator">or</code> or <code
+class="operator">not</code> simply as terms, you can
+surround them respectively with double quotes like <code
+class="operator">"..."</code> or braces like <code
+class="operator">{...}</code>. 
+
+<!-- foo
+You must choose the latter with Tkanamzu or namazu.el.
+-->
+
 </ul>
 
-<p>You can do 'field specified search' as well if indices are prepared.</p>
-
-<ul>
-<li><code>+date:/Aug 1998/</code> (something dated on 'Aug 1998')
-<li><code>+from:foo@bar.jp</code>  (article by foo@bar.jp)
-<li><code>+subject:"internet message"</code>  (search a string for Subject:)
-<li><code>+subject:"(mule|xemacs|emacs)"</code>  (search a string for Subject: with regex)
-<li><code>+message-id:&lt;199801240555.OAA18737@foo.bar.jp&gt;</code>  (Message-Id)
-<li><code>+title:amarok</code> (title of document)
-<li><code>+author:foo@bar.jp</code>  (author of document)
-<li><code>+url:http://foo.bar.jp/</code>  (URL of document)
-</ul>
-
-<p>
- Happy searching!
-</p>
-
+<!-- query -->
 
 <hr>
 <p>
-<a href="http://openlab.ring.gr.jp/namazu/">Namazu Homepage</a>
+<a href="http://www.namazu.org/">Namazu Homepage</a>
 </p>
 <div class="copyright">
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: manual.html,v 1.3 2000-02-01 07:41:05 satoru Exp $
+$Id: manual.html,v 1.4 2000-02-15 07:08:16 satoru Exp $
 </div>
 <address>
-webmaster@namazu.org
+developers@namazu.org
 </address>
 </body>
 </html>

@@ -7,9 +7,9 @@ use NKF;
 # Get a list of directory names. 
 # NOTE: the directory name corresponds to its language codes.
 #
-#my @langs = grep { -d $_ && $_ ne "CVS" } glob '*';
+my @langs = grep { -d $_ && $_ ne "CVS" } glob '*';
 
-my @langs = qw(ja);
+#my @langs = qw(ja);
 
 for my $lang (@langs) {
     #

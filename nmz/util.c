@@ -21,18 +21,21 @@
  *
  ************************************************************/
 
+static void reverse_byte_order (int*, int, int);
+static int is_little_endian(void);
+
 /* reverse byte order */
-static void reverse_byte_order (int *p, int n)
+static void reverse_byte_order (int *p, int n, int size)
 {
     int i, j;
     char *c, tmp;
 
     for (i = 0; i < n; i++) {
         c = (char *)(p + i);
-        for (j = 0; j < (sizeof(int) / 2); j++) {
+        for (j = 0; j < (size / 2); j++) {
             tmp = *(c + j);
-            *(c + j)= *(c + sizeof(int) - 1 - j);
-            *(c + sizeof(int) - 1 - j) = tmp;
+            *(c + j)= *(c + size - 1 - j);
+            *(c + size - 1 - j) = tmp;
         }
     }
 }
@@ -199,8 +202,8 @@ size_t freadx(void *ptr, size_t size, size_t nmemb, FILE *stream)
     size_t value;
 
     value = fread(ptr, size, nmemb, stream);
-    if (size == sizeof(int) && is_little_endian()) {
-        reverse_byte_order(ptr, nmemb);
+    if (is_little_endian()) {
+        reverse_byte_order(ptr, nmemb, size);
     }
     return value;
 }

@@ -1,5 +1,8 @@
 1999-11-18  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* nmz/util.c (reverse_byte_order): Be type dependent.
+	(freadx): Be type dependent.
+
 	* nmz/libnamazu.h: Add #include <stdio.h> for FILE struct used in
 	this file.
 

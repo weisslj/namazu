@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- CPerl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.28 1999-08-27 13:42:08 satoru Exp $
+# $Id: mknmz.pl.in,v 1.29 1999-08-28 00:07:43 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -82,11 +82,11 @@ sub main () {
     my $processed_files_size = 0;
 
     # restore variables
-    eval readfile($conf::File{'CHECKPOINT_'}) if $CheckPoint{'continue'};
+    eval util::readfile($conf::File{'CHECKPOINT_'}) if $CheckPoint{'continue'};
 
     {
-	my $fh_errorsfile = efopen(">>$conf::File{'ERRORSFILE'}");
-	my $fh_flist = efopen($conf::File{'FLIST_'});
+	my $fh_errorsfile = util::efopen(">>$conf::File{'ERRORSFILE'}");
+	my $fh_flist = util::efopen($conf::File{'FLIST_'});
 	my %field_indices = ();
 	get_field_index_base(\%field_indices);
 
@@ -137,7 +137,7 @@ sub re_exec($$$$) {
 
     # store variables
     {
-	my $fh_checkpoint = efopen(">$conf::File{'CHECKPOINT_'}");
+	my $fh_checkpoint = util::efopen(">$conf::File{'CHECKPOINT_'}");
 
 	print $fh_checkpoint <<EOM;
 	\$DeletedFilesCount = $DeletedFilesCount;
@@ -154,13 +154,13 @@ EOM
 
     @ARGV = ("-S", @ARGV) ;
     print "Checkpoint reached: re-exec mknmz...\n" unless $conf::QuietOpt;
-    dprint(join ' ', ("::::", @ARGV, "\n"));
+    util::dprint(join ' ', ("::::", @ARGV, "\n"));
     exec ($0, @ARGV) ;
 }
 
 sub put_registry ($) {
     my ($filename) = @_;
-    my $fh_registry = efopen(">>$conf::File{'REGISTRY_'}");
+    my $fh_registry = util::efopen(">>$conf::File{'REGISTRY_'}");
     print $fh_registry $filename, "\n";
 }
 
@@ -188,24 +188,27 @@ sub init () {
     require "codeconv.pl";
     require "find.pl";
     require "util.pl";
-    require "filter.pl";
+#    require "filter.pl";
     require "html.pl";
     require "wakati.pl";
 
-    dprint("@ INC:: @INC\n");  # should be placed after `require "util.pl"'
+    util::dprint("@ INC:: @INC\n");  # should be placed after `require "util.pl"'
 
     @Seed = hash::init_seed();
-    get_int_size();
+    util::get_int_size();
 
     # check filter modules
-    foreach my $module (<$filterdir2/*.pl>) {
+    my @filters = glob "$filterdir2/*.pl";
+    @filters = glob "$FILTERDIR/*.pl" if @filters == 0;
+    for my $module (@filters) {
 	$module =~ s/\Q$filterdir2\E\/(.*).pl$/$1/;
 	require "$module.pl";
+	util::dprint("// $module.pl loaded\n");
 	my (@mtypes, $status, $recursive);
-	eval '@mtypes = ' . "$module::mediatype();";
-	eval '$status = ' . "$module::status();";
-	eval '$recursive = ' . "$module::recursive();";
-	foreach my $mt (@mtypes) {
+	eval '@mtypes = '    . $module . "::mediatype();";
+	eval '$status = '    . $module . "::status();";
+	eval '$recursive = ' . $module . "::recursive();";
+	for my $mt (@mtypes) {
 	    $conf::supported{$mt} = $status;
 	    $conf::REQUIRE_ACTIONS{$mt} = $module;
 	    $conf::RECURSIVE_ACTIONS{$mt} = $recursive if ($recursive)
@@ -325,7 +328,7 @@ sub make_field_index (\%$$\$\$) {
 
     unless (defined($fields->{'date'})) {
 	my $mtime = (stat($cfile))[9];
-	my $date = rfc822time($mtime);
+	my $date = util::rfc822time($mtime);
 	$fields->{'date'} = $date;
     }
     unless (defined($fields->{'uri'})) {
@@ -394,7 +397,7 @@ sub put_field_index (\%$) {
     for my $key (@keys) {
 	$key = lc($key);
 	my $fname    = "$conf::File{'FIELDINFO'}.$key.$$";
-	my $fh_field = efopen(">>$fname");
+	my $fh_field = util::efopen(">>$fname");
 	my $output = "";
 	if (defined($fields->{$key})) {
 	    $fields->{$key} =~ s/\s+/ /g;
@@ -412,7 +415,7 @@ sub put_field_index (\%$) {
 	# put index of field index
 	{
 	    my $fname        = "$conf::File{'FIELDINFO'}.$key.i.$$";
-	    my $fh_field_idx = efopen(">>$fname");
+	    my $fh_field_idx = util::efopen(">>$fname");
 	    print $fh_field_idx pack("N", $field_indices->{$key});
 	    $field_indices->{$key} += length $output;
 	}
@@ -425,7 +428,7 @@ sub put_dateindex ($) {
     my ($cfile) = @_;
     my $mtime = (stat($cfile))[9];
 
-    my $fh_dataindex = efopen(">>$conf::File{'DATEINDEX_'}");
+    my $fh_dataindex = util::efopen(">>$conf::File{'DATEINDEX_'}");
     print $fh_dataindex pack("N", $mtime);
 }
 
@@ -449,11 +452,11 @@ sub load_document ($$$$$\%) {
     {
 	$shelter_cfile = $cfile;
 	$cfile = $conf::File{'TMP_WAKATI'};
-        cp($shelter_cfile,$cfile);
+        util::cp($shelter_cfile,$cfile);
     }
 
     # filtering process
-    my $fh_cfile = efopen($cfile);
+    my $fh_cfile = util::efopen($cfile);
     $$content = join('', <$fh_cfile>);
     my $mm = new File::MMagic;
     my $mtype;
@@ -479,11 +482,11 @@ sub load_document ($$$$$\%) {
 
     if ($conf::LANGUAGE eq "ja" && ! $conf::USE_NKF_MODULE) {
 	my $nkftmp = 'NMZ.nkftmp';
-	my $nh = efopen("|$conf::NKF -emXZ1 > $nkftmp");
+	my $nh = util::efopen("|$conf::NKF -emXZ1 > $nkftmp");
 	print $nh $$content;
 	undef $nh;
-	$nh = efopen("< $nkftmp");
-	$$content = readfile($nh);
+	$nh = util::efopen("< $nkftmp");
+	$$content = util::readfile($nh);
 	undef $nh;
 	unlink($nkftmp);
     } else {
@@ -559,24 +562,24 @@ sub save_flist(@) {
     my @flist = @_;
     return if (@flist == 0);
 
-    my $fh_flist = efopen(">$conf::File{'FLIST_'}");
+    my $fh_flist = util::efopen(">$conf::File{'FLIST_'}");
     print $fh_flist join("\n", @flist), "\n";
 }
 
 sub require_modules() {
     if ($conf::LANGUAGE eq "ja" && $conf::NKF =~ /^module_nkf/) {
 	require NKF;
-        dprint("// code conversion: using NKF module\n");
+        util::dprint("// code conversion: using NKF module\n");
 	$conf::USE_NKF_MODULE = 1;
     }
     if ($conf::LANGUAGE eq "ja" && $conf::WAKATI =~ /^module_kakasi/) {
 	require Text::Kakasi;
-        dprint("// wakati: using Text::Kakasi module\n");
+        util::dprint("// wakati: using Text::Kakasi module\n");
 	my $res = Text::Kakasi::getopt_argv('kakasi', '-ieuc', '-oeuc', '-w');
     }
     if ($conf::LANGUAGE eq "ja" && $conf::WAKATI =~ /^module_chasen1/) {
 	require Text::ChaSen1;
-        dprint("// wakati: using Text::ChaSen1 module\n");
+        util::dprint("// wakati: using Text::ChaSen1 module\n");
 	my @arg = ('-j', '-F', '%m ');
 	@arg    = ('-j', '-F', '%m %H\\n') if $conf::MorphOpt;
 	my $res = Text::ChaSen1::getopt_argv('chasen-perl', @arg);
@@ -591,7 +594,7 @@ sub set_lockfile ($) {
 	print "$file found. Maybe this index is being updated by another process now.\nIf not, you can remove this file.\n";
 	exit 1;
     } else {
-	my $fh_lockfile = efopen(">$file");
+	my $fh_lockfile = util::efopen(">$file");
 	print $fh_lockfile "$$"; # save pid
     }
 }
@@ -747,15 +750,15 @@ sub parse_options ()
 	$conf::ALLOW_REGEX = '.*\.\d.*';
     }
     if ($opt_include) {
-	eval readfile($opt_include);
-        dprint("Included: $opt_include\n") unless $conf::QuietOpt;
+	eval util::readfile($opt_include);
+        util::dprint("Included: $opt_include\n") unless $conf::QuietOpt;
     }
     if ($opt_target_list) {
 	if ($CheckPoint{'continue'}) {
 	    @flist = ("dummy");
 	} else {
 	    @flist = load_target_list($opt_target_list);
-	    dprint("Loaded: $opt_target_list\n") unless $conf::QuietOpt;
+	    util::dprint("Loaded: $opt_target_list\n") unless $conf::QuietOpt;
 	}
 	$target_loaded = 1;
 	$target_dir = cwd();
@@ -814,7 +817,7 @@ sub parse_options ()
 	    $TEMPLATEDIR =~ s|/*$||;
  	} elsif ($argv[0] =~ /I$/) {
 	    shift @argv;
-	    eval readfile($argv[0]);
+	    eval util::readfile($argv[0]);
 	    print "Included: $argv[0]\n" unless $conf::QuietOpt;
 	} elsif ($argv[0] =~ /l$/) { # small letter of 'L'
 	    shift @argv;
@@ -874,7 +877,7 @@ sub load_target_list ($) {
     my $cwd = cwd();
 
     {
-	my $fh_tlist = efopen($file);
+	my $fh_tlist = util::efopen($file);
 	@flist = <$fh_tlist>;
 	chomp @flist; 
     }
@@ -921,7 +924,7 @@ sub show_long_usage () {
 }
 
 sub show_mini_usage () {
-    print "Usage: mknmz [options] [URI prefix] <target(s)>\n";
+    print "Usage: mknmz [options] [prefix] <target(s)>\n";
     print "Try `mknmz --help' for more options.\n";
 }
 
@@ -953,13 +956,13 @@ sub check_file ($$$$$) {
 }
 
 
-# Rename *.$$ to each real file name
+# util::Rename *.$$ to each real file name
 sub write_nmz_files () {
-    Rename($conf::File{'INDEX_'},      $conf::File{'INDEX'});
-    Rename($conf::File{'INDEXINDEX_'}, $conf::File{'INDEXINDEX'});
-    Rename($conf::File{'WORDLIST_'},   $conf::File{'WORDLIST'});
-    Rename($conf::File{'PHRASE_'},     $conf::File{'PHRASE'});
-    Rename($conf::File{'PHRASEINDEX_'}, $conf::File{'PHRASEINDEX'});
+    util::Rename($conf::File{'INDEX_'},      $conf::File{'INDEX'});
+    util::Rename($conf::File{'INDEXINDEX_'}, $conf::File{'INDEXINDEX'});
+    util::Rename($conf::File{'WORDLIST_'},   $conf::File{'WORDLIST'});
+    util::Rename($conf::File{'PHRASE_'},     $conf::File{'PHRASE'});
+    util::Rename($conf::File{'PHRASEINDEX_'}, $conf::File{'PHRASEINDEX'});
 }
 
 # output NMZ.body
@@ -989,7 +992,7 @@ sub write_result_file () {
 	$template = "$TEMPLATEDIR/$fname";
     }
     if (-e $template) {
-	$buf = readfile($template);
+	$buf = util::readfile($template);
     } else {
 	return;
     }
@@ -997,9 +1000,9 @@ sub write_result_file () {
     # the file must be saved in ISO-2022-JP encoding.
     my $fh_file;
     if ($conf::LANGUAGE eq "ja" && !$conf::USE_NKF_MODULE) {
-	$fh_file = efopen("|$conf::NKF -j >$file");
+	$fh_file = util::efopen("|$conf::NKF -j >$file");
     } else {
-	$fh_file = efopen(">$file");
+	$fh_file = util::efopen(">$file");
     }
 
     $buf = NKF::nkf("-j", $buf) if $conf::USE_NKF_MODULE;
@@ -1022,12 +1025,12 @@ sub write_message ($$) {
 	    $template = "$LIBDIR/$fname";
 	}
 	if (-e $template) {
-	    my $buf = readfile($template);
+	    my $buf = util::readfile($template);
 	    my $fh_output;
 	    if ($conf::LANGUAGE eq "ja" && !$conf::USE_NKF_MODULE) {
-		$fh_output = efopen("|$conf::NKF -j >$full_path_name");
+		$fh_output = util::efopen("|$conf::NKF -j >$full_path_name");
 	    } else {
-		$fh_output = efopen(">$full_path_name");
+		$fh_output = util::efopen(">$full_path_name");
 	    }
 	    $buf =~ s/"/\\"/g;
 	    $buf =~ s/\@/\\@/g;
@@ -1043,7 +1046,7 @@ sub write_message ($$) {
 # Make a file for logging
 sub make_slog_file () {
     {
-	my $fh_slogfile = efopen(">>$conf::File{'SLOGFILE'}");
+	my $fh_slogfile = util::efopen(">>$conf::File{'SLOGFILE'}");
     }
     chmod 0666, $conf::File{'SLOGFILE'};
 }
@@ -1100,12 +1103,12 @@ sub append_index (@) {
 
     $APPENDMODE = 1;
     # ファイルをコピーして保護する
-    cp($conf::File{'INDEX'},      $conf::File{'INDEX_'});
-    cp($conf::File{'DATEINDEX'},  $conf::File{'DATEINDEX_'}) unless -e $conf::File{'DATEINDEX_'}; # preupdated ?
+    util::cp($conf::File{'INDEX'},      $conf::File{'INDEX_'});
+    util::cp($conf::File{'DATEINDEX'},  $conf::File{'DATEINDEX_'}) unless -e $conf::File{'DATEINDEX_'}; # preupdated ?
 
     unless ($conf::NoPhraseIndexOpt) {
-	cp($conf::File{'PHRASE'},      $conf::File{'PHRASE_'});
-	cp($conf::File{'PHRASEINDEX'},      $conf::File{'PHRASEINDEX_'});
+	util::cp($conf::File{'PHRASE'},      $conf::File{'PHRASE_'});
+	util::cp($conf::File{'PHRASEINDEX'},      $conf::File{'PHRASEINDEX_'});
     }
 
     return ($file_base, @flist);
@@ -1143,8 +1146,8 @@ sub set_target_files() {
     };
 
     if ($#{$rfiles{'name'}} != $#{$rfiles{'mtime'}}) {
-	dprint("\n\n== registered ==\n", join("\n", @{$rfiles{'name'}}));
-	dprint("\n\n== mtimes ==\n", join("\n", @{$rfiles{'mtime'}}));
+	util::dprint("\n\n== registered ==\n", join("\n", @{$rfiles{'name'}}));
+	util::dprint("\n\n== mtimes ==\n", join("\n", @{$rfiles{'mtime'}}));
 	die "NMZ.r ($#{$rfiles{'name'}}) and NMZ.t ($#{$rfiles{'mtime'}})"
 	    . "are not consistent!\n";
     }
@@ -1171,12 +1174,12 @@ sub set_target_files() {
 	push(@flist, @updated_files);
     }
 
-    dprint("\n\n== found ==\n", join("\n", @found_files), "\n");
-    dprint("\n\n== registered ==\n", join("\n", @{$rfiles{'name'}}), "\n");
-    dprint("\n\n== overlapped  ==\n", join("\n", @overlapped_files), "\n");
-    dprint("\n\n== deleted  ==\n", join("\n", @deleted_files), "\n");
-    dprint("\n\n== updated ==\n", join("\n", @updated_files), "\n");
-    dprint("\n\n== files to index ==\n", join("\n", @flist), "\n");
+    util::dprint("\n\n== found ==\n", join("\n", @found_files), "\n");
+    util::dprint("\n\n== registered ==\n", join("\n", @{$rfiles{'name'}}), "\n");
+    util::dprint("\n\n== overlapped  ==\n", join("\n", @overlapped_files), "\n");
+    util::dprint("\n\n== deleted  ==\n", join("\n", @deleted_files), "\n");
+    util::dprint("\n\n== updated ==\n", join("\n", @updated_files), "\n");
+    util::dprint("\n\n== files to index ==\n", join("\n", @flist), "\n");
 
     # update NMZ.t with the missing number infomation and
     # append updated files and deleted files to NMZ.r with leading '# '
@@ -1197,10 +1200,10 @@ sub set_target_files() {
 sub preupdate_registry(@) {
     my (@list) = @_;
 
-    my $fh_registry = efopen(">$conf::File{'REGISTRY_'}");
+    my $fh_registry = util::efopen(">$conf::File{'REGISTRY_'}");
     @list = grep(s/(.*)/\# $1\n/, @list);
     print $fh_registry @list;
-    print $fh_registry "## deleted: " . rfc822time(time()) . "\n\n";
+    print $fh_registry "## deleted: " . util::rfc822time(time()) . "\n\n";
 }
 
 sub preupdate_dateindex(@) {
@@ -1208,7 +1211,7 @@ sub preupdate_dateindex(@) {
 
     # Since rewriting the entire file, it is not efficient, 
     # but simple and reliable. this would be revised in the future.
-    my $fh_dateindex = efopen(">$conf::File{'DATEINDEX_'}");
+    my $fh_dateindex = util::efopen(">$conf::File{'DATEINDEX_'}");
 #    print "\nupdate_dateindex\n", join("\n", @mtimes), "\n\n";
     print $fh_dateindex pack("N*", @mtimes);
 }
@@ -1217,20 +1220,20 @@ sub update_registry ($) {
     my ($file_count) = @_;
 
     {
-	my $fh_registry = efopen(">>$conf::File{'REGISTRY'}");
-	my $fh_registry_ = efopen($conf::File{'REGISTRY_'});
+	my $fh_registry = util::efopen(">>$conf::File{'REGISTRY'}");
+	my $fh_registry_ = util::efopen($conf::File{'REGISTRY_'});
 	while (<$fh_registry_>) {
 	    print $fh_registry $_;
 	}
 	if ($file_count > 0) {
-	    print $fh_registry "## indexed: " . rfc822time(time()) . "\n\n";
+	    print $fh_registry "## indexed: " . util::rfc822time(time()) . "\n\n";
 	}
     }
     unlink $conf::File{'REGISTRY_'};
 }
 
 sub update_dateindex () {
-    Rename($conf::File{'DATEINDEX_'}, $conf::File{'DATEINDEX'});
+    util::Rename($conf::File{'DATEINDEX_'}, $conf::File{'DATEINDEX'});
 }
 
 sub update_field_index () {
@@ -1246,8 +1249,8 @@ sub update_field_index_sub () {
 	my $fname_out = $2;
 
 	{
-	    my $fh_field = efopen(">>$fname_out");
-	    my $fh_tmp = efopen($fname_tmp);
+	    my $fh_field = util::efopen(">>$fname_out");
+	    my $fh_tmp = util::efopen($fname_tmp);
 
 	    while (<$fh_tmp>) {
 		print $fh_field $_;
@@ -1284,7 +1287,7 @@ sub pickup_updated_files (\%) {
 }
 
 sub load_dateindex() {
-    my $fh_dateindex = efopen($conf::File{'DATEINDEX'});
+    my $fh_dateindex = util::efopen($conf::File{'DATEINDEX'});
 
     my $size = (stat($conf::File{'DATEINDEX'}))[7];
     my $buf  = "";
@@ -1298,7 +1301,7 @@ sub load_dateindex() {
 sub load_registry () {
     my @list = ();
 
-    my $fh_registry = efopen($conf::File{'REGISTRY'});
+    my $fh_registry = util::efopen($conf::File{'REGISTRY'});
 
     my $i = 0;
     my %mark;
@@ -1340,7 +1343,7 @@ sub get_number_from_file ($) {
 
     return 0 unless -f $file;
 
-    my $fh = efopen($file);
+    my $fh = util::efopen($file);
     my $number = "";
     $number = <$fh>;
     chomp $number;
@@ -1367,7 +1370,7 @@ sub put_number_to_file ($$) {
     my ($file, $number) = @_;
     $number =~ s/,//g;
 
-    my $fh = efopen(">$file");
+    my $fh = util::efopen(">$file");
     print $fh $number, "\n";
 }
 
@@ -1378,18 +1381,18 @@ sub put_log ($$$$) {
 
     my $argv = join(' ', map {"'$_'"} @ARGV);
     my $date = localtime;
-    my $added_files_count   = commas($file_count - $UpdatedFilesCount);
-    my $deleted_files_count = commas($DeletedFilesCount);
-    my $updated_files_count = commas($UpdatedFilesCount);
-    my $total_files_count   = commas(get_total_files() + $file_count 
+    my $added_files_count   = util::commas($file_count - $UpdatedFilesCount);
+    my $deleted_files_count = util::commas($DeletedFilesCount);
+    my $updated_files_count = util::commas($UpdatedFilesCount);
+    my $total_files_count   = util::commas(get_total_files() + $file_count 
 					   - $DeletedFilesCount - $UpdatedFilesCount);
     my $added_keys_count    = 0;
-    $added_keys_count       = commas($total_keys_count - get_total_keys());
+    $added_keys_count       = util::commas($total_keys_count - get_total_keys());
 
     my $processtime         = time - $start_time;
     $processtime            = 0 if $start_time == 0;
-    $total_files_size        = commas($total_files_size);
-    $total_keys_count       = commas($total_keys_count);
+    $total_files_size        = util::commas($total_files_size);
+    $total_keys_count       = util::commas($total_keys_count);
 
     my $logmsg = "[Base]\n";
     $logmsg = "[Append]\n" if $APPENDMODE;
@@ -1417,7 +1420,7 @@ sub put_log ($$$$) {
 
 sub put_log_to_logfile ($) {
     my ($logmsg) = @_;
-    my $fh_logfile = efopen(">>$conf::File{'LOGFILE'}");
+    my $fh_logfile = util::efopen(">>$conf::File{'LOGFILE'}");
     print $fh_logfile $logmsg;
 }
 
@@ -1438,7 +1441,7 @@ sub make_headfoot ($$$) {
     my $buf   = "";
 
     if (-e $file) {
-	$buf = readfile($file);
+	$buf = util::readfile($file);
     } else {
 	$file =~ m!.*/(.*)$!;
 	my $fname = $1;
@@ -1450,7 +1453,7 @@ sub make_headfoot ($$$) {
 	    $template = "$TEMPLATEDIR/$fname";
 	}
 	if (-e $template) {
-	    $buf = readfile($template);
+	    $buf = util::readfile($template);
 	} else {
 	    return;
 	}
@@ -1462,13 +1465,13 @@ sub make_headfoot ($$$) {
     # the file must be saved in ISO-2022-JP encoding.
     my $fh_file;
     if ($conf::LANGUAGE eq "ja" && !$conf::USE_NKF_MODULE) {
-	$fh_file = efopen("|$conf::NKF -j >$file");
+	$fh_file = util::efopen("|$conf::NKF -j >$file");
     } else {
-	$fh_file = efopen(">$file");
+	$fh_file = util::efopen(">$file");
     }
 
     if ($buf =~ /(<!-- FILE -->)\s*(.*)\s*(<!-- FILE -->)/) {
-	my $total_files_count = commas(get_total_files() + $file_count 
+	my $total_files_count = util::commas(get_total_files() + $file_count 
 				   - $DeletedFilesCount - $UpdatedFilesCount);
 	$buf =~ s/(<!-- FILE -->)(.*)(<!-- FILE -->)/$1 $total_files_count $3/;
 
@@ -1477,7 +1480,7 @@ sub make_headfoot ($$$) {
 	my $tmp = $2;
 	$tmp =~ tr/,//d;
 	$tmp = $key_count;
-	$tmp = commas($tmp);
+	$tmp = util::commas($tmp);
 	$buf =~ s/(<!-- KEY -->)(.*)(<!-- KEY -->)/$1 $tmp $3/;
     }
     $buf =~ s#(<!-- DATE -->)(.*)(<!-- DATE -->)#$1 $year-$month-$day $3#g;
@@ -1504,7 +1507,7 @@ sub make_phrase_hash ($$$) {
 	    $tmp{$hash} = 1;
 	    $PhraseHashLast{$hash} = 0 unless defined $PhraseHashLast{$hash};
 	    $PhraseHash{$hash} .= pack("w", $fid - $PhraseHashLast{$hash});
-	    dprint("<$word_b, $word> $hash\n");
+	    util::dprint("<$word_b, $word> $hash\n");
 	    $PhraseHashLast{$hash} = $fid;
 	}
 	$word_b = $word;
@@ -1514,23 +1517,23 @@ sub make_phrase_hash ($$$) {
 # NMZ.p, NMZ.pi ファイルへ書き出し & マージする (複雑)
 sub write_phrase_hash () {
     write_phrase_hash_sub();
-    Rename($conf::File{'TMP_P'}, $conf::File{'PHRASE_'});
-    Rename($conf::File{'TMP_PI'}, $conf::File{'PHRASEINDEX_'});
+    util::Rename($conf::File{'TMP_P'}, $conf::File{'PHRASE_'});
+    util::Rename($conf::File{'TMP_PI'}, $conf::File{'PHRASEINDEX_'});
 }
 
 sub write_phrase_hash_sub () {
     my $opened = 0;
 
     return 0 if %PhraseHash eq "0";
-    dprint("// doing write_phrase_hash() processing.\n");
+    util::dprint("// doing write_phrase_hash() processing.\n");
 
-    my $fh_tmp_pi = efopen(">$conf::File{'TMP_PI'}");
-    my $fh_tmp_p  = efopen(">$conf::File{'TMP_P'}");
+    my $fh_tmp_pi = util::efopen(">$conf::File{'TMP_PI'}");
+    my $fh_tmp_p  = util::efopen(">$conf::File{'TMP_P'}");
 
-    my $fh_phrase = fopen($conf::File{'PHRASE_'});
+    my $fh_phrase = util::fopen($conf::File{'PHRASE_'});
     my $fh_phraseindex;
     if ($fh_phrase) {
-	$fh_phraseindex = efopen($conf::File{'PHRASEINDEX_'});
+	$fh_phraseindex = util::efopen($conf::File{'PHRASEINDEX_'});
 	$opened = 1;
     }
 	
@@ -1650,9 +1653,9 @@ sub wordcount_sub ($$\%) {
 
     # カレントファイルの単語の出現回数を調べる
     # 記号をそれなりに処理する
-    # tcp/ip なら tcp/ip, tcp, ip と 3 つに分解される
-    # (tcp/ip) なら (tcp/ip), tcp/ip, tcp, ip の 4 つなる
-    # ((tcpi/ip)) なら ((tcp/ip)), (tcp/ip), tcp, ip の 4 つになる
+    # tutil::cp/ip なら tutil::cp/ip, tutil::cp, ip と 3 つに分解される
+    # (tutil::cp/ip) なら (tutil::cp/ip), tutil::cp/ip, tutil::cp, ip の 4 つなる
+    # ((tutil::cpi/ip)) なら ((tutil::cp/ip)), (tutil::cp/ip), tutil::cp, ip の 4 つになる
     # 入れ子処理は行わない
     # ただし -K オプション指定時は記号はすべて削除している
 
@@ -1712,8 +1715,8 @@ sub wordcount_sub ($$\%) {
 # make NMZ.i and NMZ.ii file. this processing is rather complex.
 sub write_index () {
     my $key_count = write_index_sub();
-    Rename($conf::File{'TMP_I'}, $conf::File{'INDEX_'});
-    Rename($conf::File{'TMP_W'}, $conf::File{'WORDLIST_'});
+    util::Rename($conf::File{'TMP_I'}, $conf::File{'INDEX_'});
+    util::Rename($conf::File{'TMP_W'}, $conf::File{'WORDLIST_'});
 
     return $key_count;
 }
@@ -1766,17 +1769,17 @@ sub write_index_sub () {
     my @words = sort keys(%KeyIndex);
     return 0 if $#words == -1;
 
-    dprint("// doing write_index() processing.\n");
-    my $fh_indexindex = efopen(">$conf::File{'INDEXINDEX_'}");
-    my $fh_tmp_i = efopen(">$conf::File{'TMP_I'}");
-    my $fh_tmp_w = efopen(">$conf::File{'TMP_W'}") unless $conf::NoRegexIndexOpt;
+    util::dprint("// doing write_index() processing.\n");
+    my $fh_indexindex = util::efopen(">$conf::File{'INDEXINDEX_'}");
+    my $fh_tmp_i = util::efopen(">$conf::File{'TMP_I'}");
+    my $fh_tmp_w = util::efopen(">$conf::File{'TMP_W'}") unless $conf::NoRegexIndexOpt;
 
     my $cnt = 0;
     my $ptr = 0;
     my $key_count = 0;
     my $baserecord = "";
 
-    my $fh_index = fopen($conf::File{'INDEX_'});
+    my $fh_index = util::fopen($conf::File{'INDEX_'});
     if ($fh_index) {
       FOO:
 	while (<$fh_index>) {
@@ -1875,8 +1878,7 @@ muda($conf::File{'BODY_MSG_EN'},
      $conf::DebugOpt, $conf::NoEncodeURL, $conf::HtaccessExcludeOpt, 
      $conf::RECURSIVE_ACTIONS, $conf::ROBOTS_EXCLUDE_URIS, 
      $conf::NoInsertHeaderOpt, $conf::NoRegexpIndexOpt, $conf::NoFieldInfoOpt,
-     $conf::ROBOTS_EXCLUDE_URLS, $module::recursive, $module::mediatype,
-     $module::status, $conf::supported);
+     $conf::ROBOTS_EXCLUDE_URLS, $conf::supported);
 
 
 sub muda(@) {}

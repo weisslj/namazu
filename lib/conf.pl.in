@@ -1,5 +1,5 @@
 # -*- CPerl -*-
-# $Id: conf.pl.in,v 1.11 1999-08-27 07:01:12 knok Exp $
+# $Id: conf.pl.in,v 1.12 1999-08-28 00:07:41 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -35,7 +35,7 @@ $USAGE_JA = <<EOFusage;
 mknmz v$VERSION -  全文検索システム Namazu のインデックス作成プログラム
 $COPYRIGHT
 
-使い方: mknmz [options] [URI prefix] <target(s)>
+使い方: mknmz [options] [prefix] <target(s)>
 
   対象ファイル:
     -a, --all                すべてのファイルを対象とする
@@ -90,7 +90,7 @@ $USAGE_EN = <<EOFusage;
   mknmz.pl v$VERSION -  indexer of Namazu
   $COPYRIGHT
 
-   Usage: mknmz [options] [URI prefix] <target(s)>
+   Usage: mknmz [options] [prefix] <target(s)>
       -a: target all files
       -c: use ChaSen as Japanese processor
       -e: exclude files which has robot exclusion

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: man.pl.in,v 1.5 1999-08-27 07:01:10 knok Exp $
+# $Id: man.pl.in,v 1.6 1999-08-28 00:07:39 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -28,18 +28,18 @@ use strict;
 require 'util.pl';
 require 'filter.pl';
 
-my $TMPFILE = tmpnam('NMZ.man');
+my $TMPFILE = util::tmpnam('NMZ.man');
 
 sub mediatype() {
     return ('text/x-roff');
 }
 
 sub status() {
-    my $roffpath = checkcmd('jgroff');
+    my $roffpath = util::checkcmd('jgroff');
     return 'yes' if (defined $roffpath);
-    $roffpath = checkcmd('groff');
+    $roffpath = util::checkcmd('groff');
     return 'yes' if (defined $roffpath);
-    $roffpath = checkcmd('nroff');
+    $roffpath = util::checkcmd('nroff');
     return 'yes' if (defined $roffpath);
     return 'no';
 }
@@ -53,9 +53,9 @@ sub filter ($$$$$$$) {
       = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
-    my $roffpath = checkcmd('jgroff');
-    $roffpath = checkcmd('groff') unless (defined $roffpath);
-    $roffpath = checkcmd('nroff') unless (defined $roffpath);
+    my $roffpath = util::checkcmd('jgroff');
+    $roffpath = util::checkcmd('groff') unless (defined $roffpath);
+    $roffpath = util::checkcmd('nroff') unless (defined $roffpath);
 
     my $roffargs;
     $roffargs = '-Tnippon' if ($roffpath =~ /jgroff$/);
@@ -65,11 +65,11 @@ sub filter ($$$$$$$) {
     print "Proccessing man file ... (use '$roffpath')\n"
       if ($conf::VerboseOpt);
 
-    my $fh = efopen("|$roffpath -man $roffargs > $TMPFILE");
+    my $fh = util::efopen("|$roffpath -man $roffargs > $TMPFILE");
     print $fh $$cont;
     undef $fh;
-    $fh = efopen("$TMPFILE");
-    $$cont = readfile($fh);
+    $fh = util::efopen("$TMPFILE");
+    $$cont = util::readfile($fh);
     undef $fh;
     unlink($TMPFILE);
 

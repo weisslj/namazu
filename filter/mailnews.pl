@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mailnews.pl,v 1.4 1999-08-27 07:01:10 knok Exp $
+# $Id: mailnews.pl,v 1.5 1999-08-28 00:07:39 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -26,7 +26,7 @@
 package mailnews;
 use strict;
 require 'util.pl';
-require 'filter.pl';
+#require 'filter.pl';
 
 sub mediatype() {
     return ('message/rfc822', 'message/news');
@@ -62,7 +62,7 @@ sub filter ($$$$$$$) {
 
 # Mail/News 用のフィルタ
 # 元となるものは古川@ヤマハさんにいただきました
-sub mailnews_filter ($$$\%) {
+sub mailnews_filter ($$$) {
     my ($contents, $weighted_str, $fields) = @_;
 
     my $boundary = "";
@@ -116,12 +116,12 @@ sub mailnews_filter ($$$\%) {
 	} elsif ($line =~ s/^content-type:\s*//i) {
 	    if ($line =~ /multipart.*boundary="(.*)"/i){
 		$boundary = $1;
-		dprint("((boundary: $boundary))\n");
+		util::dprint("((boundary: $boundary))\n");
   	    } elsif ($line =~ m!message/partial;\s*(.*)!i) {
 		# The Message/Partial subtype routine [1998-10-12]
 		# contributed by Hiroshi Kato <tumibito@mm.rd.nttdata.co.jp>
   		$partial = $1;
-  		dprint("((partial: $partial))\n");
+  		util::dprint("((partial: $partial))\n");
 	    }
 	} 
     }
@@ -171,7 +171,7 @@ sub mailnews_citation_filter ($$) {
     for (my $i = 0; $i < 2 && defined($tmp[$i]); $i++) {
 	if ($tmp[$i] =~ /(^\s*((([\xa1-\xfe][\xa1-\xfe]){1,8}|([\x21-\x7e]{1,16}))\s*(。|．|\.|，|,|、|\@|＠|の)\s*){0,2}\s*(([\xa1-\xfe][\xa1-\xfe]){1,8}|([\x21-\x7e]{1,16}))\s*(です|と申します|ともうします|といいます)(.{0,2})?\s*$)/) {
 	    # デバッグ情報から検索するには perl -n00e 'print if /^<<<</'
-	    dprint("\n\n<<<<$tmp[$i]>>>>\n\n");
+	    util::dprint("\n\n<<<<$tmp[$i]>>>>\n\n");
 	    $omake .= $tmp[$i] . "\n";
 	    $tmp[$i] = "";
         }
@@ -200,7 +200,7 @@ sub mailnews_citation_filter ($$) {
 	# また、 5 行より長い段落は処理しない。
 	# それにしてもなんという hairy 正規表現だろう…
 	if ($i < 5 && ($line =~ tr/\n/\n/) <= 5 && $line =~ /(^\s*(Date:|Subject:|Message-ID:|From:|件名|差出人|日時))|(^.+(返事です|reply\s*です|曰く|いわく|書きました|言いました|話で|wrote|said|writes|says)(.{0,2})?\s*$)|(^.*In .*(article|message))|(<\S+\@([\w-.]\.)+\w+>)/im) {
-	    dprint("\n\n<<<<$line>>>>\n\n");
+	    util::dprint("\n\n<<<<$line>>>>\n\n");
 	    $omake .= $line . "\n";
 	    $line = "";
 	    next;

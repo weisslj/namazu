@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.6 1999-08-27 07:01:12 knok Exp $
+# $Id: util.pl,v 1.7 1999-08-28 00:07:41 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -22,6 +22,7 @@
 #  This file must be encoded in EUC-JP encoding
 #
 
+package util;
 use strict;
 use IO::File;
 

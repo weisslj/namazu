@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: gzip.pl.in,v 1.4 1999-08-27 07:01:09 knok Exp $
+# $Id: gzip.pl.in,v 1.5 1999-08-28 00:07:39 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -27,15 +27,15 @@ package gzip;
 use strict;
 require 'util.pl';
 
-my $TMPFILE = tmpnam('NMZ.gzip');
+my $TMPFILE = util::tmpnam('NMZ.gzip');
 
 sub mediatype() {
     return ('application/x-gzip');
 }
 
 sub status() {
-    return 'yes' if (checklib('Compress/Zlib.pm'));
-    my $gzippath = checkcmd('gzip');
+    return 'yes' if (util::checklib('Compress/Zlib.pm'));
+    my $gzippath = util::checkcmd('gzip');
     return 'yes' unless (defined $gzippath);
     return 'no';
 }
@@ -48,7 +48,7 @@ sub filter ($$$$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields, $size)
       = @_;
 
-    if (checklib('Compress/Zlib.pm')) {
+    if (util::checklib('Compress/Zlib.pm')) {
 	filter_xs($cont);
     } else {
 	filter_file($cont);
@@ -59,15 +59,15 @@ sub filter ($$$$$$$) {
 
 sub filter_file ($) {
     my ($contref) = @_;
-    my $fh = efopen("|@GZIP_PATH@ -cd > $TMPFILE");
+    my $fh = util::efopen("|@GZIP_PATH@ -cd > $TMPFILE");
 
     print "Proccessing gzip file ... (use '@GZIP_PATH@')\n"
       if ($conf::VerboseOpt);
 
     print $fh $$contref;
     undef $fh;
-    $fh = efopen("$TMPFILE");
-    $$contref = readfile($fh);
+    $fh = util::efopen("$TMPFILE");
+    $$contref = util::readfile($fh);
     $fh->close();
     unlink($TMPFILE);
     return;

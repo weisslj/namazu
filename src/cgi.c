@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.10 1999-08-27 10:05:11 satoru Exp $
+ * $Id: cgi.c,v 1.11 1999-08-28 00:07:42 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -220,8 +220,8 @@ int get_cgi_vars(uchar * query, uchar *subquery)
 	    sscanf(qs, "%d", &HListMax);
 	    if (HListMax < 0)
 		HListMax = 0;
-	    if (HListMax > HLIST_MAX_MAX)
-		HListMax = HLIST_MAX_MAX;
+	    if (HListMax > RESULT_MAX)
+		HListMax = RESULT_MAX;
 	    while (*qs && *qs != '&')
 		qs++;
 	} else if (!strncmp(qs, "whence=", 7)) {

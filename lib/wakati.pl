@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: wakati.pl,v 1.4 1999-08-27 01:30:52 satoru Exp $
+# $Id: wakati.pl,v 1.5 1999-08-28 00:07:41 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -54,7 +54,7 @@ sub wakatize_japanese ($) {
     } else {
 	$$content = join("\n", @tmp);
     }
-    dprint("-- wakatized content --\n$$content\n");
+    util::dprint("-- wakatized content --\n$$content\n");
 }
 
 sub wakatize_japanese_sub ($) {
@@ -71,17 +71,17 @@ sub wakatize_japanese_sub ($) {
 	} else {
 	    die "invalid wakati module: $module\n";
 	}
-        dprint("-- wakatized bare content --\n$str\n\n");
+        util::dprint("-- wakatized bare content --\n$str\n\n");
 	@tmp = split('\n', $str);
     } else {
-        dprint("// wakati: using $conf::WAKATI\n");
+        util::dprint("// wakati: using $conf::WAKATI\n");
 	# IPC::Open2 もあるけど試したらちょっと変でしかも遅かった
 	{
-	    my $fh_wakati = efopen("|$conf::WAKATI > $conf::File{'TMP_WAKATI'}");
+	    my $fh_wakati = util::efopen("|$conf::WAKATI > $conf::File{'TMP_WAKATI'}");
 	    print $fh_wakati $$content;
 	}
 	{
-	    my $fh_wakati = efopen($conf::File{'TMP_WAKATI'});
+	    my $fh_wakati = util::efopen($conf::File{'TMP_WAKATI'});
 	    @tmp = <$fh_wakati>;
 	    chomp @tmp;
 	}

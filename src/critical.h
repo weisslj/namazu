@@ -16,7 +16,7 @@ enum {
 
     IGNORE_HIT    = 10000, /* Ignore if pages matched more than this */
     IGNORE_MATCH  = 1000,  /* Ignore if words matched more than this */
-    HLIST_MAX_MAX = 100,   /* Max number of result displays at once */
+    RESULT_MAX = 100,   /* Max number of result displays at once */
 
     INDEX_MAX = 64,        /* Max number of databases */
 

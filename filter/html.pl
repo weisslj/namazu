@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: html.pl,v 1.4 1999-08-27 07:01:09 knok Exp $
+# $Id: html.pl,v 1.5 1999-08-28 00:07:39 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -24,7 +24,7 @@
 
 package html;
 use strict;
-require 'filter.pl';
+#require 'filter.pl';
 
 sub mediatype() {
     return ('text/html');
@@ -58,7 +58,7 @@ sub filter ($$$$$$$) {
 }
 
 # HTML 用のフィルタ
-sub html_filter ($$$$$) {
+sub html_filter ($$$$) {
     my ($contents, $weighted_str, $fields, $headings) = @_;
 
     html::escape_lt_gt($contents);
@@ -285,7 +285,7 @@ sub parse_robots_txt () {
 	return 0;
     }
 
-    my $fh_robottxt = efopen($conf::ROBOTS_TXT);
+    my $fh_robottxt = util::efopen($conf::ROBOTS_TXT);
     while(<$fh_robottxt>){
 	/^Disallow:\s*(\S+)/i && do {
 	    my $url = $1;
@@ -317,7 +317,7 @@ sub parse_htaccess () {
     my $r = 0;
     my $CWD;
 
-    my $fh = fopen(".htaccess") or 
+    my $fh = util::fopen(".htaccess") or 
 	$err = $!,  $CWD = cwd() , die "$CWD/.htaccess : $err\n";
     while(<$fh>) {
 	s/^\#.*$//;

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mhonarc.pl,v 1.3 1999-08-27 07:01:10 knok Exp $
+# $Id: mhonarc.pl,v 1.4 1999-08-28 00:07:39 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -26,7 +26,7 @@
 package mhonarc;
 use strict;
 require 'util.pl';
-require 'filter.pl';
+#require 'filter.pl';
 require 'html.pl';
 require 'mailnews.pl';
 
@@ -54,7 +54,7 @@ sub filter ($$$$$$$) {
     html::html_filter($cont, $weighted_str, $fields, $headings);
 
     filter::uuencode_filter($cont);
-    mailnews::mailnews_filter($cont, $weighted_str, $fileds);
+    mailnews::mailnews_filter($cont, $weighted_str, $fields);
     mailnews::mailnews_citation_filter($cont, $weighted_str);
 
     filter::line_adjust_filter($cont) unless $conf::NoLineAdOpt;

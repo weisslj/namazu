@@ -1,3 +1,22 @@
+1999-08-28  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* src/*.[ch]: Rename HLIST_MAXMAX -> RESULT_MAX.
+
+	* filter/util.pl: Restore `package util' [namazu-dev 254]
+
+	* **/*.pl{,.in}: Restore prefix `util::'
+
+	* filter/mhonarc.pl: Fix a typo.
+
+	* filter/html.pl: Fix html_filter() arguments.
+
+	* filter/mailnews.pl: Fix mailnews_filter arguments.
+
+	* filter/msword.pl: Fix status();
+
+	* filter/rfc.pl: Fix rfc_filter();
+
+
 1999-08-27  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* lib/util.pl: Add checkcmd function.

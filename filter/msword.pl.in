@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: msword.pl.in,v 1.4 1999-08-27 07:01:10 knok Exp $
+# $Id: msword.pl.in,v 1.5 1999-08-28 00:07:39 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -29,16 +29,16 @@ require 'util.pl';
 require 'filter.pl';
 require 'html.pl';
 
-my $TMPFILE = tmpnam('NMZ.word');
-my $TMPFILE2 = itil::tmpnam('NMZ.word2');
+my $TMPFILE = util::tmpnam('NMZ.word');
+my $TMPFILE2 = itil::util::tmpnam('NMZ.word2');
 
 sub mediatype() {
     return ('application/msword');
 }
 
 sub status() {
-    my $wordconvpath = checkcmd('mswordview');
-    my $utfconvpath = checkcmd('lv');
+    my $wordconvpath = util::checkcmd('mswordview');
+    my $utfconvpath = util::checkcmd('lv');
     return 'yes' if (defined $wordconvpath && defined utfconvpath);
     return 'no';
 }
@@ -52,19 +52,19 @@ sub filter ($$$$$$$) {
       = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
-    my $wordconvpath = checkcmd('mswordview');
-    my $utfconvpath = checkcmd('lv');
+    my $wordconvpath = util::checkcmd('mswordview');
+    my $utfconvpath = util::checkcmd('lv');
 
     print "Proccessing ms-word file ... (use '$wordconvpath', '$utfconvpath')\n"
       if ($conf::VerboseOpt);
 
-    my $fh = efopen("> $TMPFILE");
+    my $fh = util::efopen("> $TMPFILE");
     print $fh $$cont;
     undef $fh;
 
     system("$wordconvpath -o - $TMPFILE | $utfconvpath -Iu8 -Oej > $TMPFILE2");
-    $fh = efopen("< $TMPFILE2");
-    $$cont = readfile($fh);
+    $fh = util::efopen("< $TMPFILE2");
+    $$cont = util::readfile($fh);
     undef $fh;
     unlink($TMPFILE);
     unlink($TMPFILE2);

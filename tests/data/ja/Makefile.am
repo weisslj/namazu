@@ -5,7 +5,7 @@ EXTRA_DIST  =   acrobat3.pdf \
 		html.html \
 		taro4.jsw \
 		taro5.jaw \
-		taro6.jaw \
+		taro6.jbw \
 		mail-multipart.txt \
 		mail.txt \
 		man.1 \

@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.162 2004-09-30 12:34:54 opengl2772 Exp $
+dnl $Id: configure.in,v 1.163 2004-12-27 15:24:53 opengl2772 Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -265,14 +265,25 @@ else
     AC_PATH_PROG(CHASEN,chasen, no)
 fi
 
+AC_MSG_CHECKING(for MeCab perl module)
+if $PERL -e "use lib '$PMDIR'; use MeCab;" >/dev/null 2>&1; then
+    MECAB=module_mecab
+    AC_MSG_RESULT(yes)
+else
+    AC_MSG_RESULT(no)
+    AC_PATH_PROG(MECAB,mecab, no)
+fi
+
 AC_MSG_CHECKING(for default wakatigaki processor)
 OPT_WAKATI_DEFAULT=none
 if test "$KAKASI" != "no"; then
     OPT_WAKATI_DEFAULT=KAKASI
 elif test "$CHASEN" != "no"; then
     OPT_WAKATI_DEFAULT=CHASEN
+elif test "$MECAB" != "no"; then
+    OPT_WAKATI_DEFAULT=MECAB
 else
-    AC_MSG_WARN(KAKASI or ChaSen are required to handle Japanese)
+    AC_MSG_WARN(KAKASI or ChaSen or MeCab are required to handle Japanese)
 fi
 AC_MSG_RESULT($OPT_WAKATI_DEFAULT)
 AC_SUBST(OPT_WAKATI_DEFAULT)
@@ -289,9 +300,15 @@ else
     DO_CHASEN="$CHASEN -j -F '\%m '"
     DO_CHASEN_NOUN="$CHASEN -j -F '\%m %H\\\\n'"
 fi
+if test "$MECAB" = "no"; then
+    DO_MECAB="no"
+else
+    DO_MECAB="$MECAB -Owakati -b 8192"
+fi
 AC_SUBST(DO_KAKASI)
 AC_SUBST(DO_CHASEN)
 AC_SUBST(DO_CHASEN_NOUN)
+AC_SUBST(DO_MECAB)
 
 dnl *
 dnl * Preprocessing for tknamazu (FIXME: ugly scripts)

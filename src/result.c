@@ -1,5 +1,5 @@
 /*
- * $Id: result.c,v 1.55 2000-06-21 11:16:29 masao Exp $
+ * $Id: result.c,v 1.56 2000-08-20 21:19:34 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -40,6 +40,7 @@
 #include "parser.h"
 #include "query.h"
 #include "l10n-ja.h"
+#include "adhoc.h"
 
 static int urireplace  = 1;   /* Replace URI in results as default. */
 static int uridecode   = 1;   /* Decode  URI in results as default. */
@@ -51,7 +52,6 @@ static int uridecode   = 1;   /* Decode  URI in results as default. */
  */
 
 static void commas ( char *str );
-static char * strcasestr ( const char *haystack, const char *needle );
 static void replace_field ( struct nmz_data d, int counter, const char *field, char *result );
 static void encode_entity ( char *str );
 static void emphasize ( char *str );
@@ -81,33 +81,6 @@ commas(char *numstr)
     }
 }
 
-/* 
- * Case-insensitive brute force search
- * with consideration for EUC encoding schemes.
- *
- * FIXME: EUC-JP dependent.
- */
-static char *
-strcasestr(const char *haystack, const char *needle)
-{
-    int n = strlen(needle);
-    int euc_mode = 0;
-
-    if (nmz_is_lang_ja()) {
-	euc_mode = 1;
-    }
-
-    for (; *haystack != '\0'; haystack++) {
-	if (nmz_strncasecmp(haystack, needle, n) == 0) {
-	    return (char *)haystack;  /* cast for avoiding warning. */
-	}
-	if (euc_mode && nmz_iseuc(*haystack)) {
-	    haystack++;
-	}
-    }
-    return NULL;
-}
-
 static void 
 replace_field(struct nmz_data d, int counter, 
 			  const char *field, char *result)
@@ -126,7 +99,7 @@ replace_field(struct nmz_data d, int counter,
 	commas(buf);
     } else {
 	nmz_get_field_data(d.idxid, d.docid, field, buf);
-	if (nmz_strcasecmp(field, "uri") == 0) {
+	if (strcasecmp(field, "uri") == 0) {
 	    if (is_urireplace()) {
 		nmz_replace_uri(buf);
 	    }
@@ -140,7 +113,7 @@ replace_field(struct nmz_data d, int counter,
      * Do not emphasize keywords in URI.
      * And do not encode entity in URI.
      */
-    if (nmz_strcasecmp(field, "uri") != 0) {
+    if (strcasecmp(field, "uri") != 0) {
 	if (is_htmlmode()) {
 	    emphasize(buf);
 	}
@@ -206,7 +179,7 @@ emphasize(char *str)
 	keylen = strlen(key);
 
 	do {
-	    ptr = strcasestr(ptr, key);
+	    ptr = adhoc_strcasestr(ptr, key);
 	    if (ptr != NULL) {
 		memmove(ptr + 2, ptr, strlen(ptr) + 1);
 		memmove(ptr + 1, ptr + 2, keylen);

@@ -1,19 +1,20 @@
 # Process this file with automake to produce Makefile.in
 #
-# $Id: Makefile.am,v 1.31 2000-06-28 10:58:02 knok Exp $
+# $Id: Makefile.am,v 1.32 2000-08-20 21:19:33 rug Exp $
 #
 
 AUTOMAKE_OPTIONS = 1.4 no-dependencies
 
-INCLUDES = -I$(srcdir) -I.. -I$(srcdir)/../lib -I$(srcdir)/../src \
-	-I$(srcdir)/../intl -I$(srcdir)/../nmz
 localedir   = $(prefix)/$(DATADIRNAME)/locale
 confdir     = $(sysconfdir)/$(PACKAGE)
 indexdir    = $(localstatedir)/$(PACKAGE)/index
+
 DEFS = -DLOCALEDIR=\"$(localedir)\" \
        -DOPT_CONFDIR=\"$(confdir)\" \
        -DOPT_INDEXDIR=\"$(indexdir)\" \
        @DEFS@
+INCLUDES = -I$(srcdir) -I.. -I$(srcdir)/../lib -I$(srcdir)/../src \
+	-I$(srcdir)/../intl -I$(srcdir)/../nmz
 
 pkginclude_HEADERS = codeconv.h field.h hlist.h i18n.h idxname.h \
 	libnamazu.h l10n-ja.h parser.h query.h re.h regex.h \
@@ -27,6 +28,7 @@ libnmz_la_SOURCES = alias.c alias.h codeconv.c codeconv.h \
 	regex.c regex.h search.c search.h seed.c seed.h util.c util.h \
 	var.c var.h wakati.c wakati.h 
 
+libnmz_la_LIBADD = @INTLLIBS@ $(top_builddir)/lib/libnmzut.la
 libnmz_la_LDFLAGS = -version-info $(LTVERSION)
 
 ##Bug in automake: Can't use `if MAINTAINER_MODE'

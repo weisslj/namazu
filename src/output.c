@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.73 2000-06-21 11:16:29 masao Exp $
+ * $Id: output.c,v 1.74 2000-08-20 21:19:34 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -168,7 +168,7 @@ fputs_without_html_tag(const char *str, FILE *fp)
 	    }
 	}
 
-	if (nmz_strncasecmp(str, "<br>", 4) == 0&& *(str + 4) != '\n') {
+	if (strncasecmp(str, "<br>", 4) == 0&& *(str + 4) != '\n') {
 	    buf[i++] = '\n';
 	    str += 3;
 	    continue;

@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: util.c,v 1.69 2000-06-21 11:16:27 masao Exp $
+ * $Id: util.c,v 1.70 2000-08-20 21:19:33 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -46,6 +46,7 @@
 #include "i18n.h"
 #include "var.h"
 #include "system.h"
+#include "adhoc.h"
 
 /*
  *
@@ -55,7 +56,6 @@
 
 static void reverse_byte_order (void*, int, int);
 static char decode_uri_sub(char c1, char c2);
-static int nmz_tolower(int c);
 
 /* 
  * Reverse byte order. It's type independent.
@@ -84,19 +84,6 @@ decode_uri_sub(char c1, char c2)
 
     c =  ((c1 >= 'A' ? (toupper(c1) - 'A') + 10 : (c1 - '0'))) * 16;
     c += ( c2 >= 'A' ? (toupper(c2) - 'A') + 10 : (c2 - '0'));
-    return c;
-}
-
-/* 
- * Substitute for tolower(3).
- */
-static int 
-nmz_tolower(int c)
-{
-    if (c >= 'A' && c <= 'Z') {
-	c = 'a' + c - 'A';
-	return c;
-    }
     return c;
 }
 
@@ -360,49 +347,9 @@ nmz_strlower(char *str)
 {
     while (*str) {
 	/* Using ascii dependent lower same as mknmz.  */
-        *str = nmz_tolower(*str);
+        *str = adhoc_tolower(*str);
         str++;
     }
-}
-
-int
-nmz_strcasecmp(const char *str1, const char *str2)
-{
-    int c1, c2;
-    char *p1 = str1;
-    char *p2 = str2;
-
-    if (str1 == str2)
-	return 0;
-
-    do {
-	c1 = nmz_tolower(*p1++);
-	c2 = nmz_tolower(*p2++);
-	if (c1 == '\0' || c2 == '\0')
-	    break;
-    } while (c1 == c2);
-    
-    return c1 - c2;
-}
-
-int
-nmz_strncasecmp(const char *str1, const char *str2, int n)
-{
-    int c1, c2;
-    char *p1 = str1;
-    char *p2 = str2;
-    
-    if (p1 == p2 || n == 0)
-	return 0;
-
-    do {
-	c1 = nmz_tolower(*p1++);
-	c2 = nmz_tolower(*p2++);
-	if (c1 == '\0' || c2 == '\0')
-	    break;
-    } while (c1 == c2 && --n > 0);
-    
-    return c1 - c2;
 }
 
 int 

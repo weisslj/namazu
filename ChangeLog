@@ -1,3 +1,47 @@
+2000-08-21  Ryuji Abe  <rug@namazu.org>
+
+	* Makefile.am (SUBDIRS): Changed order (Entering lib before nmz).
+	(DIST_SUBDIRS): Likewise.
+
+	* lib/adhoc.c: New file.
+	(adhoc_tolower): New function.
+	(adhoc_strcasestr): New function.
+
+	* lib/adhoc.h: Likewise.
+
+	* lib/Makefile.am (noinst_LIBRARIES): Built libnmzut.la.
+	(libnmzut_la_SOURCES): Use instead of libnmzut_a_SOURCES. Added adhoc.[ch].
+	(libnmzut_la_LIBADD): Use instead of libnmzut_a_LIBADD.
+	(libnmzut_la_LDFLAGS): Set -static.
+	(AUTOMAKE_OPTIONS): Set 1.4.
+
+	* nmz/Makefile.am (libnmz_la_LIBADD): Linked libnmz with libnmzut and
+	libintl correctly.
+
+	* src/Makefile.am (LDADD): Linked libnmzut.la instead of libnmzut.a.
+
+	* nmz/util.c (nmz_strlower): Use adhoc_tolower() instead of nmz_tolower().
+	(nmz_tolower): Abolished.
+	(nmz_strcasecmp): Likewise.
+	(nmz_strncasecmp): Likewise.
+
+	* src/result.c (emphasize): Use adhoc_strcasestr() instead of strcasestr().
+	(strcasestr): Abolished.
+
+	* nmz/codeconv.c: Revert nmz_strcasecmp() to strcasecmp().
+
+	* nmz/search.c: Likewise.
+
+	* src/form.c: Likewise.
+
+	* src/namazu-cmd.c: Likewise.
+
+	* src/rcfile.c: Likewise.
+
+	* src/result.c: Likewise.
+
+	* src/output.c: Revert nmz_strncasecmp() to strncasecmp().
+
 2000-08-10  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* scripts/mknmz.in: Added checking routine for the "negative numbers"
@@ -5767,4 +5811,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.711 2000-08-10 07:05:24 knok Exp $
+$Id: ChangeLog,v 1.712 2000-08-20 21:19:33 rug Exp $

@@ -1,3 +1,13 @@
+2000-02-23  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* scripts/mknmz.in (make_headfoot): Add <!-- LINK-REV-MADE -->
+	handlings. 
+
+	* template/NMZ.head.in: Add <!-- LINK-REV-MADE --> marks. 
+	[namazu-dev 1787] 
+
+	* template/NMZ.head.ja.in: Likewise.
+
 2000-02-23  Ken-ichi Hirose  <kenzo-@tama.or.jp>
 
 	* filter/ichitaro456.pl (filter): jstxt command line option change.

@@ -2,7 +2,9 @@
         "http://www.w3.org/TR/REC-html40/strict.dtd">
 <html>
 <head>
+<!-- LINK-REV-MADE -->
 <link rev=made href="mailto:@OPT_ADMIN_EMAIL@">
+<!-- LINK-REV-MADE -->
 <title>Namazu a full text retrieval search system</title>
 <style type="text/css"><!--
   strong.keyword { color: Red; }

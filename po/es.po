@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Namazu 2.0.6pre1\n"
-"POT-Creation-Date: 2004-02-01 17:53+0900\n"
+"POT-Creation-Date: 2004-02-02 22:00+0900\n"
 "PO-Revision-Date: 2001-06-26 16:55+0900\n"
 "Last-Translator: Jose Juan Zapater Vera <compi@arrakis.es>\n"
 "Language-Team: Spanish <es@li.org>\n"
@@ -241,8 +241,8 @@ msgstr ""
 "  -t, --media-type=MTYPE   pone el tipo de formato para todos los ficheros "
 "destino a MTYPE.\n"
 "  -h, --mailnews           lo mismo que --media-type='message/rfc822'\n"
-"      --mhonarc            lo mismo que --media-type='text/html; "
-"x-type=mhonarc'\n"
+"      --mhonarc            lo mismo que --media-type='text/html; x-"
+"type=mhonarc'\n"
 "  -F, --target-list=FILE   carga FILE el cuál contiene una lista de los "
 "ficheros destino.\n"
 "      --allow=PATTERN      pone la PATTERN para los nombres de ficheros para "
@@ -338,7 +338,8 @@ msgstr "después de cargar_documento: "
 msgid "Detected type: "
 msgstr "Tipo detectado: "
 
-#: scripts/mknmz.in:934 scripts/mknmz.in:1649
+#. ;
+#: scripts/mknmz.in:934 scripts/mknmz.in:1650
 msgid "Unsupported media type "
 msgstr "Tipo de fichero no soportado "
 
@@ -359,7 +360,7 @@ msgstr "Falló la llamada "
 msgid "Looking for indexing files...\n"
 msgstr "Escribiendo los ficheros de índices..."
 
-#: scripts/mknmz.in:1007 scripts/mknmz.in:1808
+#: scripts/mknmz.in:1007 scripts/mknmz.in:1809
 msgid "No files to index.\n"
 msgstr "No hay ficheros a indexar.\n"
 
@@ -388,228 +389,228 @@ msgstr ""
 msgid "Present index is old type. it's unsupported.\n"
 msgstr "El índice actual es de un tipo antiguo. No es soportado.\n"
 
-#: scripts/mknmz.in:1256
+#: scripts/mknmz.in:1257
 msgid "No such index: "
 msgstr "No es un índice: "
 
-#: scripts/mknmz.in:1265
+#: scripts/mknmz.in:1266
 msgid "Inherited argv: "
 msgstr "argv heredado: "
 
-#: scripts/mknmz.in:1269
+#: scripts/mknmz.in:1270
 msgid "Inherited cwd: "
 msgstr "cwd heredado: "
 
-#: scripts/mknmz.in:1307
+#: scripts/mknmz.in:1308
 msgid "Loaded: "
 msgstr "Cargado: "
 
-#: scripts/mknmz.in:1322
+#: scripts/mknmz.in:1323
 msgid "Invalid replace: "
 msgstr "Lugar inválido: "
 
-#: scripts/mknmz.in:1324
+#: scripts/mknmz.in:1325
 msgid "Replace: "
 msgstr "Reemplazar: "
 
-#: scripts/mknmz.in:1333
+#: scripts/mknmz.in:1334
 msgid "invalid output directory\n"
 msgstr "directorio de salida no válido\n"
 
-#: scripts/mknmz.in:1356
+#: scripts/mknmz.in:1357
 msgid "Loaded rcfile: "
 msgstr "Fichero rc cargado: "
 
-#: scripts/mknmz.in:1357
+#: scripts/mknmz.in:1358
 msgid "System: "
 msgstr "Sistama: "
 
-#: scripts/mknmz.in:1358
+#: scripts/mknmz.in:1359
 msgid "Namazu: "
 msgstr "Namazu: "
 
-#: scripts/mknmz.in:1359
+#: scripts/mknmz.in:1360
 msgid "Perl: "
 msgstr "Perl: "
 
-#: scripts/mknmz.in:1360
+#: scripts/mknmz.in:1361
 msgid "File-MMagic: "
 msgstr ""
 
-#: scripts/mknmz.in:1361
+#: scripts/mknmz.in:1362
 msgid "NKF: "
 msgstr "NKF: "
 
-#: scripts/mknmz.in:1362
+#: scripts/mknmz.in:1363
 msgid "KAKASI: "
 msgstr "KAKASI: "
 
-#: scripts/mknmz.in:1363
+#: scripts/mknmz.in:1364
 msgid "ChaSen: "
 msgstr "ChaSen: "
 
-#: scripts/mknmz.in:1364
+#: scripts/mknmz.in:1365
 msgid "Wakati: "
 msgstr "Wakati: "
 
-#: scripts/mknmz.in:1365
+#: scripts/mknmz.in:1366
 #, fuzzy
 msgid "Lang_Msg: "
 msgstr "Lenguaje: "
 
-#: scripts/mknmz.in:1366
+#: scripts/mknmz.in:1367
 msgid "Lang: "
 msgstr "Lenguaje: "
 
-#: scripts/mknmz.in:1367
+#: scripts/mknmz.in:1368
 msgid "Coding System: "
 msgstr "Sistema de codificación: "
 
-#: scripts/mknmz.in:1368
+#: scripts/mknmz.in:1369
 msgid "CONFDIR: "
 msgstr "Directorio de configuración: "
 
-#: scripts/mknmz.in:1369
+#: scripts/mknmz.in:1370
 msgid "LIBDIR: "
 msgstr "LIBDIR: "
 
-#: scripts/mknmz.in:1370
+#: scripts/mknmz.in:1371
 msgid "FILTERDIR: "
 msgstr ""
 
-#: scripts/mknmz.in:1371
+#: scripts/mknmz.in:1372
 msgid "TEMPLATEDIR: "
 msgstr ""
 
-#: scripts/mknmz.in:1378
+#: scripts/mknmz.in:1379
 #, fuzzy
 msgid "Supported media types:   "
 msgstr "Tipos de formato soportados: \n"
 
-#: scripts/mknmz.in:1379
+#: scripts/mknmz.in:1380
 #, fuzzy
 msgid "Unsupported media types: "
 msgstr "Tipo de fichero no soportado "
 
-#: scripts/mknmz.in:1379
+#: scripts/mknmz.in:1380
 msgid "marked with minus (-) probably missing application in your \\$path.\n"
 msgstr ""
 
-#: scripts/mknmz.in:1452
+#: scripts/mknmz.in:1453
 msgid "find_target starting: "
 msgstr "comenzando find_target: "
 
-#: scripts/mknmz.in:1494
+#: scripts/mknmz.in:1495
 msgid "unsupported target: "
 msgstr "destino no soportado: "
 
-#: scripts/mknmz.in:1531
+#: scripts/mknmz.in:1532
 #, c-format
 msgid "Unreadable:\t%s"
 msgstr "No leible:\t%s"
 
-#: scripts/mknmz.in:1540
+#: scripts/mknmz.in:1541
 #, c-format
 msgid "Excluded:\t%s"
 msgstr "Excluido:\t%s"
 
-#: scripts/mknmz.in:1554 scripts/mknmz.in:1568
+#: scripts/mknmz.in:1555 scripts/mknmz.in:1569
 #, c-format
 msgid "Too old:\t%s"
 msgstr "Demasiado antiguo:\t%s"
 
-#: scripts/mknmz.in:1561 scripts/mknmz.in:1571
+#: scripts/mknmz.in:1562 scripts/mknmz.in:1572
 #, c-format
 msgid "Too new:\t%s"
 msgstr "Demasiado nuevo:\t%s"
 
-#: scripts/mknmz.in:1588
+#: scripts/mknmz.in:1589
 #, c-format
 msgid "Denied:\t%s"
 msgstr "Denegado:\t%s"
 
-#: scripts/mknmz.in:1593
+#: scripts/mknmz.in:1594
 #, c-format
 msgid "Not allowed:\t%s"
 msgstr "No permitido:\t%s"
 
-#: scripts/mknmz.in:1597
+#: scripts/mknmz.in:1598
 #, c-format
 msgid "Targeted:\t%s"
 msgstr "Destino:\t%s"
 
-#: scripts/mknmz.in:1606
+#: scripts/mknmz.in:1607
 msgid "find_target finished: "
 msgstr "find_target terminado: "
 
-#: scripts/mknmz.in:1607
+#: scripts/mknmz.in:1608
 #, c-format
 msgid "Target Files: %d (Scan Performance: Elapsed Sec.: %d, Files/sec: %.1f)"
 msgstr ""
 "Ficheros Destino: %d (Rendimiento de escaneo: Consumo Seg: %d, Ficheros/seg: "
 "%.1f)"
 
-#: scripts/mknmz.in:1610
+#: scripts/mknmz.in:1611
 #, c-format
 msgid "  Possible: %d, Not allowed: %d, Denied: %d, Excluded: %d"
 msgstr " Posibles: %d, No permitidos: %d, Denegados: %d, Excluídos: %d"
 
-#: scripts/mknmz.in:1615
+#: scripts/mknmz.in:1616
 #, c-format
 msgid "  MTIME too old: %d, MTIME too new: %d"
 msgstr "  MTIME demasiado antiguo: %d, MTIME demasiado nuevo: %d"
 
-#: scripts/mknmz.in:1621
+#: scripts/mknmz.in:1622
 #, fuzzy
 msgid "lang_msg: "
 msgstr "lenguaje: "
 
-#: scripts/mknmz.in:1622
+#: scripts/mknmz.in:1623
 msgid "lang: "
 msgstr "lenguaje: "
 
-#: scripts/mknmz.in:1632
+#: scripts/mknmz.in:1633
 msgid "Usage: mknmz [options] <target>...\n"
 msgstr "Uso: mknmz [opciones] <destino>...\n"
 
-#: scripts/mknmz.in:1633
+#: scripts/mknmz.in:1634
 msgid "Try `mknmz --help' for more information.\n"
 msgstr "Intenta `mknmz --help para más información.\n"
 
-#: scripts/mknmz.in:1649 scripts/mknmz.in:1654
+#: scripts/mknmz.in:1650 scripts/mknmz.in:1655
 msgid " skipped."
 msgstr " ignorados."
 
-#: scripts/mknmz.in:1654
+#: scripts/mknmz.in:1655
 msgid "system error occurred! "
 msgstr "ocurrió un error de sistema! "
 
-#: scripts/mknmz.in:1656
+#: scripts/mknmz.in:1657
 msgid "does NOT EXIST! skipped."
 msgstr "NO EXISTE! ignorado."
 
-#: scripts/mknmz.in:1658
+#: scripts/mknmz.in:1659
 msgid "is NOT READABLE! skipped."
 msgstr "no es LEIBLE! ignorado."
 
-#: scripts/mknmz.in:1660
+#: scripts/mknmz.in:1661
 msgid "is 0 size! skipped."
 msgstr " tiene tamaño 0! ignorado."
 
-#: scripts/mknmz.in:1662
+#: scripts/mknmz.in:1663
 msgid "may be a BINARY file! skipped."
 msgstr "puede no ser un fichero BINARIO! ignorado."
 
-#: scripts/mknmz.in:1664
+#: scripts/mknmz.in:1665
 #, fuzzy
 msgid "is larger than your setup before filtered, skipped: "
 msgstr "es un texto demasiado LARGO! ignorado."
 
-#: scripts/mknmz.in:1666
+#: scripts/mknmz.in:1667
 msgid "is larger than your setup after filtered, skipped: "
 msgstr "es un texto demasiado LARGO! ignorado."
 
-#: scripts/mknmz.in:1893
+#: scripts/mknmz.in:1894
 #, fuzzy
 msgid ""
 "\n"
@@ -620,7 +621,7 @@ msgstr ""
 "\n"
 "== encontrados ==\n"
 
-#: scripts/mknmz.in:1894
+#: scripts/mknmz.in:1895
 #, fuzzy
 msgid ""
 "\n"
@@ -631,7 +632,7 @@ msgstr ""
 "\n"
 "== registrados ==\n"
 
-#: scripts/mknmz.in:1895
+#: scripts/mknmz.in:1896
 #, fuzzy
 msgid ""
 "\n"
@@ -642,7 +643,7 @@ msgstr ""
 "\n"
 "== superpuestos ==\n"
 
-#: scripts/mknmz.in:1896
+#: scripts/mknmz.in:1897
 #, fuzzy
 msgid ""
 "\n"
@@ -653,7 +654,7 @@ msgstr ""
 "\n"
 "== borrados ==\n"
 
-#: scripts/mknmz.in:1897
+#: scripts/mknmz.in:1898
 #, fuzzy
 msgid ""
 "\n"
@@ -664,7 +665,7 @@ msgstr ""
 "\n"
 "== actualizados ==\n"
 
-#: scripts/mknmz.in:1898
+#: scripts/mknmz.in:1899
 msgid ""
 "\n"
 "\n"
@@ -674,95 +675,95 @@ msgstr ""
 "\n"
 "== ficheros a indexar ==\n"
 
-#: scripts/mknmz.in:1922
+#: scripts/mknmz.in:1923
 msgid "## deleted: "
 msgstr "## borrados: "
 
-#: scripts/mknmz.in:1945
+#: scripts/mknmz.in:1946
 msgid "## indexed: "
 msgstr "## indexados: "
 
-#: scripts/mknmz.in:1971
+#: scripts/mknmz.in:1972
 msgid "update_field_index: "
 msgstr ""
 
-#: scripts/mknmz.in:1986
+#: scripts/mknmz.in:1987
 msgid "was deleted!\n"
 msgstr "fueron borrados!\n"
 
-#: scripts/mknmz.in:2003
+#: scripts/mknmz.in:2004
 msgid "was updated!\n"
 msgstr "fueron actulizados!\n"
 
-#: scripts/mknmz.in:2144
+#: scripts/mknmz.in:2145
 msgid "[Append]"
 msgstr "[Añadido]"
 
-#: scripts/mknmz.in:2146
+#: scripts/mknmz.in:2147
 msgid "[Base]"
 msgstr "[Base]"
 
-#: scripts/mknmz.in:2148
+#: scripts/mknmz.in:2149
 msgid "Date:"
 msgstr "Fecha:"
 
-#: scripts/mknmz.in:2149
+#: scripts/mknmz.in:2150
 msgid "Added Documents:"
 msgstr "Documentos Añadidos:"
 
-#: scripts/mknmz.in:2151
+#: scripts/mknmz.in:2152
 msgid "Deleted Documents:"
 msgstr "Documentos Borrados:"
 
-#: scripts/mknmz.in:2153
+#: scripts/mknmz.in:2154
 msgid "Updated Documents:"
 msgstr "Documentos Actualizados:"
 
-#: scripts/mknmz.in:2155
+#: scripts/mknmz.in:2156
 msgid "Size (bytes):"
 msgstr "Tamaño (bytes):"
 
-#: scripts/mknmz.in:2157
+#: scripts/mknmz.in:2158
 msgid "Total Documents:"
 msgstr "Total de Documentos:"
 
-#: scripts/mknmz.in:2159
+#: scripts/mknmz.in:2160
 msgid "Added Keywords:"
 msgstr "Palabras clave Añadidas:"
 
-#: scripts/mknmz.in:2161
+#: scripts/mknmz.in:2162
 msgid "Total Keywords:"
 msgstr "Total de Palabras clave:"
 
-#: scripts/mknmz.in:2163
+#: scripts/mknmz.in:2164
 msgid "Wakati:"
 msgstr "Wakati:"
 
-#: scripts/mknmz.in:2164
+#: scripts/mknmz.in:2165
 msgid "Time (sec):"
 msgstr "Tiempo (seg):"
 
-#: scripts/mknmz.in:2166
+#: scripts/mknmz.in:2167
 msgid "File/Sec:"
 msgstr "Ficheros/Seg:"
 
-#: scripts/mknmz.in:2169
+#: scripts/mknmz.in:2170
 msgid "System:"
 msgstr "Sistema:"
 
-#: scripts/mknmz.in:2170
+#: scripts/mknmz.in:2171
 msgid "Perl:"
 msgstr "Perl:"
 
-#: scripts/mknmz.in:2171
+#: scripts/mknmz.in:2172
 msgid "Namazu:"
 msgstr "Namazu:"
 
-#: scripts/mknmz.in:2297
+#: scripts/mknmz.in:2298
 msgid "doing write_phrase_hash() processing.\n"
 msgstr "haciendo el proceso de write_phrase_hash().\n"
 
-#: scripts/mknmz.in:2437
+#: scripts/mknmz.in:2438
 msgid "doing write_index() processing.\n"
 msgstr "Haciendo el proceso de write_index().\n"
 
@@ -845,6 +846,7 @@ msgid ""
 "  -G, --no-okurigana       remove Okurigana in word.\n"
 "  -H, --no-hiragana        ignore words consist of Hiragana only.\n"
 "  -K, --no-symbol          remove symbols.\n"
+"      --decode-base64      decode base64 bodies within multipart entities.\n"
 "\n"
 "Summarization:\n"
 "  -U, --no-encode-uri      do not encode URI.\n"
@@ -871,7 +873,7 @@ msgid ""
 "Report bugs to <%s>.\n"
 msgstr ""
 
-#: pl/var.pl.in:129
+#: pl/var.pl.in:131
 msgid "No title in original"
 msgstr "No hay título en el original"
 
@@ -903,10 +905,12 @@ msgstr "Formato no soportado: "
 #~ "    -c, --count          print only number of hits.\n"
 #~ "    -h, --html           print in HTML format.\n"
 #~ "    -r, --no-references  do not display reference hit counts.\n"
-#~ "    -H, --page           print further result links. (nearly meaningless)\n"
+#~ "    -H, --page           print further result links. (nearly "
+#~ "meaningless)\n"
 #~ "    -F, --form           force to print <form> ... </form> region.\n"
 #~ "    -R, --no-replace     do not replace URI string.\n"
-#~ "    -U, --no-decode-uri  do not decode URI when printing in a plain format.\n"
+#~ "    -U, --no-decode-uri  do not decode URI when printing in a plain "
+#~ "format.\n"
 #~ "    -o, --output=FILE    set the output file name to FILE.\n"
 #~ "    -f, --config=FILE    set the config file name to FILE.\n"
 #~ "    -C, --show-config    print current configuration.\n"
@@ -926,7 +930,8 @@ msgstr "Formato no soportado: "
 #~ "NUM.\n"
 #~ "    -l, --list           imprime el resultado en formato lista.\n"
 #~ "    -s, --short          imprime los resultados en formato corto.\n"
-#~ "        --results=EXT    pone NMZ.result.EXT para imprimir los resultados.\n"
+#~ "        --results=EXT    pone NMZ.result.EXT para imprimir los "
+#~ "resultados.\n"
 #~ "        --late           ordena los documentos por fecha antigua.\n"
 #~ "        --early          ordena los docuemtnos por últimas fechas.\n"
 #~ "        --sort=METODO    pone el METODO de ordenación a (score, date, "
@@ -938,8 +943,10 @@ msgstr "Formato no soportado: "
 #~ "    -h, --html           imprime en formato HTML.\n"
 #~ "    -r, --no-references  no visualiza el número de documentos que "
 #~ "coinciden.\n"
-#~ "    -H, --page           print further result links. (nearly meaningless)\n"
-#~ "    -F, --form           fuerza a imprimir una región <form> ... </form>.\n"
+#~ "    -H, --page           print further result links. (nearly "
+#~ "meaningless)\n"
+#~ "    -F, --form           fuerza a imprimir una región <form> ... </"
+#~ "form>.\n"
 #~ "    -R, --no-replace     no reemplaza la cadena URI.\n"
 #~ "    -U, --no-decode-uri  no decodifica la URI cuando imprime en formato "
 #~ "plano.\n"

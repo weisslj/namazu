@@ -1,5 +1,5 @@
 # -*- Perl -*-
-# $Id: usage.pl,v 1.27 2001-08-20 13:31:58 baba Exp $
+# $Id: usage.pl,v 1.28 2004-02-03 14:14:46 usu Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -66,6 +66,7 @@ Text Operations:\n\
   -G, --no-okurigana       remove Okurigana in word.\n\
   -H, --no-hiragana        ignore words consist of Hiragana only.\n\
   -K, --no-symbol          remove symbols.\n\
+      --decode-base64      decode base64 bodies within multipart entities.\n\
 \n\
 Summarization:\n\
   -U, --no-encode-uri      do not encode URI.\n\

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mailnews.pl,v 1.29 2004-02-01 15:01:23 usu Exp $
+# $Id: mailnews.pl,v 1.30 2004-02-03 14:14:45 usu Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -190,7 +190,7 @@ sub multipart_process ($$$$){
 		util::dprint("((Content-Transfer-Encode: $cont_encode))\n");
 	    }
 
-	    # Image data must be including text data.  
+	    # Image data must not be including text data.  
 	    if ($contenttype !~ m!image/!){
 		if ($cont_encode =~ m/base64/){
 		    base64_filter(\$body);

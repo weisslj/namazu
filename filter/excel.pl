@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: excel.pl,v 1.14 2002-01-10 10:48:35 knok Exp $
+# $Id: excel.pl,v 1.15 2002-07-31 07:27:31 knok Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu, 
 #               2000 Namazu Project All rights reserved.
@@ -125,7 +125,7 @@ sub filter_xl ($$$$$) {
     if (util::islang("ja")) {
 	my $encoding = "u8"; # UTF-8
 	# Pattern for xlHtml version 0.2.6.
-	if ($$cont =~ m!^<FONT SIZE=-1><I>Last Updated&nbsp;using Excel 5.0 or 95</I></FONT><br>$!m) 
+	if ($$cont =~ m!^<FONT SIZE="?-1"?><I>Last Updated(&nbsp;using| with) Excel 5.0 or 95</I></FONT><br>$!m) 
 	{
 	    $encoding = "s"; # Shift_JIS
 	}
@@ -141,7 +141,7 @@ sub filter_xl ($$$$$) {
     } 
 
     # Extract the author and exclude xlHtml's footer at once.
-    $$cont =~ s!^<FONT SIZE=-1><I>Spreadsheet's Author:&nbsp;(.*?)</I></FONT><br>.*!!ms;  # '
+    $$cont =~ s!^<FONT SIZE="?-1"?><I>Spreadsheet's Author:&nbsp;(.*?)</I></FONT><br>.*!!ms;  # '
     $fields->{'author'} = $1;
 
     unlink($tmpfile);

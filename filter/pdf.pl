@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: pdf.pl,v 1.27 2002-07-26 15:23:27 baba Exp $
+# $Id: pdf.pl,v 1.28 2002-07-29 08:17:36 knok Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -119,13 +119,13 @@ sub filter ($$$$$) {
 	system("$pdfinfopath $tmpfile");
 	open(STDOUT, ">&SAVEOUT");
 	my $fh = util::efopen("< $tmpfile3");
-	$$cont = util::readfile($fh);
+	my $cont2 = util::readfile($fh);
 	undef $fh;
 	unlink($tmpfile3);
-	if ($$cont =~ /Title: (.*)/) { # or /Subject: (.*)/
+	if ($cont2 =~ /Title: (.*)/) { # or /Subject: (.*)/
 	    $fields->{'title'} = $1;
 	}
-	if ($$cont =~ /Author: (.*)/) {
+	if ($cont2 =~ /Author: (.*)/) {
 	    $fields->{'author'} = $1;
 	}
     }

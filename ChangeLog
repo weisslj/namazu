@@ -1,3 +1,7 @@
+2002-07-29  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* filter/pdf.pl (filter): Fixed overriding $$cont by pdfinfo.
+
 2002-07-26  Hajime BABA  <baba@plain.isas.ac.jp>
 
         * filter/pdf.pl: Fixed wrong redirection of stdout.
@@ -7593,4 +7597,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.963 2002-07-26 15:23:26 baba Exp $
+$Id: ChangeLog,v 1.964 2002-07-29 08:17:35 knok Exp $

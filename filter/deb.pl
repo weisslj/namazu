@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: deb.pl,v 1.5 2001-06-24 09:36:35 rug Exp $
+# $Id: deb.pl,v 1.6 2002-03-25 07:56:15 knok Exp $
 # Copyright (C) 2000 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -68,7 +68,7 @@ sub filter ($$$$$) {
     util::vprint("Processing deb file ... (using  '$dpkgpath')\n");
 
     #FIXME: needed more smart solutions.
-    system("env LC_ALL=$util::LANG LANGUAGE=$util::LANG $dpkgpath --info $cfile > $tmpfile");
+    util::systemcmd("env LC_ALL=$util::LANG LANGUAGE=$util::LANG $dpkgpath --info " . quotemeta($cfile) . " > $tmpfile");
 
     my $fh = util::efopen("$tmpfile");
     my $size = util::filesize($fh);

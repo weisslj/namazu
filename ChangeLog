@@ -1,3 +1,9 @@
+2002-03-25  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* filter/{deb,rpm}.pl: Fixed escape special shell characters handling
+	for security.
+	(Reported by Luc, thanks)
+
 2002-03-18  Yoshinori TAKESAKO  <takesako@namazu.org>
 
 	* filter/win32/ole{msword,taro,rtf,excel,powerpoint}.pl: 
@@ -7471,4 +7477,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.940 2002-03-18 05:18:18 takesako Exp $
+$Id: ChangeLog,v 1.941 2002-03-25 07:56:14 knok Exp $

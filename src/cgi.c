@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.64 2001-09-02 08:25:35 rug Exp $
+ * $Id: cgi.c,v 1.65 2001-12-04 04:40:10 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -122,7 +122,8 @@ validate_idxname(const char * idxname)
 
     if (*idxname == '\0' || *idxname == '/' || (win32 && *idxname == '\\')) {
         printf("%s text/html" CRLF CRLF, MSG_MIME_HEADER);
-	printf("%s : ", idxname);
+	emprint(idxname, 1);
+	printf(" : ");
         printf(_("Invalid idxname."));
         exit(EXIT_FAILURE);
     }
@@ -132,7 +133,8 @@ validate_idxname(const char * idxname)
             (win32 && nmz_strprefixcasecmp("..\\", idxname) == 0)) 
         {
 	    printf("%s text/html" CRLF CRLF, MSG_MIME_HEADER);
-	    printf("%s : ", idxname);
+	    emprint(idxname, 1);
+	    printf(" : ");
             printf(_("Invalid idxname."));
             exit(EXIT_FAILURE);
         }
@@ -258,6 +260,10 @@ get_cgi_vars(const char *querystring)
 	    break;
 	}
 	len = tmp - querystring;
+	if (len >= BUFSIZE) {
+	    len = BUFSIZE - 1;
+	    nmz_warn_printf("%s", "truncating a CGI paramater name.\n");
+	}
 	strncpy(name, querystring, len);
 	*(name + len) = '\0';
 	querystring += len;
@@ -268,6 +274,10 @@ get_cgi_vars(const char *querystring)
 	    tmp = querystring + strlen(querystring);  /* last point: '\0' */
 	}
 	len = tmp - querystring;
+	if (len >= BUFSIZE) {
+	    len = BUFSIZE - 1;
+	    nmz_warn_printf("%s", "truncating a CGI paramater value.\n");
+	}
 	strncpy(value, querystring, len);
 	*(value + len) = '\0';
 	nmz_decode_uri(value);

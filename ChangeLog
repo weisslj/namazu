@@ -1,3 +1,11 @@
+2001-12-04  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* src/output.[ch] (emprint): Changed to public.
+
+	* src/cgi.c (validate_idxname): Fixed another cross-site scripting
+	vulnerability.
+	(cgi_get_vars): Fixed possibility of buffer overflow.
+
 2001-11-30  Yoshinori TAKESAKO  <takesako@namazu.org>
 
 	* Makefile.am (install-data-local): Fixed The bug which is not 
@@ -7214,4 +7222,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.895 2001-11-30 11:07:20 takesako Exp $
+$Id: ChangeLog,v 1.896 2001-12-04 04:40:09 knok Exp $

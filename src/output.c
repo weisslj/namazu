@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.87 2001-11-29 10:16:01 knok Exp $
+ * $Id: output.c,v 1.88 2001-12-04 04:40:10 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -86,7 +86,6 @@ char contenttype[BUFSIZE] = "text/html";
  *
  */
 
-static void emprint ( char *str, int entity_encode );
 static void fputs_without_html_tag ( const char *str, FILE *fp );
 static char *load_nmz_result(const char *basedir);
 static void print_hitnum_each ( struct nmz_hitnumlist *hn );
@@ -112,7 +111,7 @@ static void print_errmsg(int errid);
  * Print s to stdout with processing for emphasizing keyword 
  * and entity encoding.
  */
-static void 
+void 
 emprint(char *s, int entity_encode)
 {
     int i;

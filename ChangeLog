@@ -1,3 +1,9 @@
+2000-04-24  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* template/NMZ.head.ja: Change <!DOCTYPE ...>
+	
+	* template/NMZ.head.en: Likewise.
+
 2000-04-17  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* configure.in (ALL_LINGUAS): Add "es". (Spanish)
@@ -5577,4 +5583,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.682 2000-04-17 01:23:33 satoru Exp $
+$Id: ChangeLog,v 1.683 2000-04-23 16:46:05 satoru Exp $

@@ -42,11 +42,14 @@
 
 <h3>Structure</h3>
 
+For each word, the pair of [documentID containing that word][score]
+is stored sequencially, making the record for the word.
+The record is of variable length, the byte count of each data part
+is placed in front of them.
 <pre>
-
-    [number of documents word1 is found * 2][documentID][score][documentID][score]...
-    [number of documents word2 is found * 2][documentID][score][documentID][score]...
-    [number of documents word3 is found * 2][documentID][score][documentID][score]...
+    [data length for word1][documentID][score][documentID][score]...
+    [data length for word2][documentID][score][documentID][score]...
+    [data length for word3][documentID][score][documentID][score]...
        :
 </pre>
 
@@ -163,9 +166,13 @@ search is inaccurate, it usually works fine.
 
 <pre>
 
-    [number of documents including hash value \x0000][documentID including hash value \x0000]...
-    [number of documents including hash value \x0000][documentID including hash value \x0001]...
-    [number of documents including hash value \x0000][documentID including hash value \xffff]...
+                    |<------            data byte count (1)  ------->|
+[data byte count(1)][documentID including hash value \x0000]...
+                    |<------            data byte count (2)     ------->|
+[data byte count(2)][documentID including hash value \x0001]...
+...
+[data byte count(n)][documentID including hash value \xffff]...
+
 </pre>
 
 
@@ -401,7 +408,7 @@ Log file for searched keywords.
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: nmz.html,v 1.12 2001-08-08 09:05:44 knok Exp $
+$Id: nmz.html,v 1.13 2003-07-08 23:51:20 makoto Exp $
 </div>
 <address>
 developers@namazu.org

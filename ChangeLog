@@ -1,5 +1,7 @@
 1999-12-15  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* nmz/Makefile.am (libnmz_la_LDFLAGS): Set -version-info to 0:1:0
+
 	* src/message.h (MSG_MIME_HEADER): Reindented to column 1.
 
 	* src/mknmz.pl.in: Apply Fujiwara-san's patch. [namazu-dev 1016]

@@ -1,6 +1,6 @@
 # Process this file with automake to produce Makefile.in
 #
-# $Id: Makefile.am,v 1.20 1999-12-09 12:03:18 satoru Exp $
+# $Id: Makefile.am,v 1.21 1999-12-15 09:17:28 satoru Exp $
 #
 
 AUTOMAKE_OPTIONS = no-dependencies
@@ -26,4 +26,4 @@ libnmz_la_SOURCES = libnamazu.c libnamazu.h codeconv.c codeconv.h rcfile.c \
 	wakati.c wakati.h i18n.c i18n.h regex.c regex.h \
 	alias.c alias.h replace.c replace.h
 
-libnmz_la_LDFLAGS = -version-info 0:0:0
+libnmz_la_LDFLAGS = -version-info 0:1:0

@@ -1,5 +1,11 @@
 2000-01-20  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* configure.in: Fix --with-pmdir handling.
+
+	* nmz/query.c (nmz_make_query): Call nmz_codeconv_query().
+
+	* src/namazu.c (namazu_core): Do not call nmz_codeconv_query().
+
 	* src/rcfile.ch (set_namazurc): Remove prefix "nmz_" and all
 	callers changed.
 	(load_rcfile): Ditto.

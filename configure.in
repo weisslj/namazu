@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.82 2000-01-19 09:33:21 satoru Exp $
+dnl $Id: configure.in,v 1.83 2000-01-20 02:54:40 satoru Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -298,7 +298,7 @@ if test "${file_mmagic}" = "yes"; then
     if test -z "$PMDIR"; then
 	$PERL Makefile.PL
     else
-	$PERL Makefile.PL LIB=$PMDIR
+	$PERL Makefile.PL LIB=$PMDIR INSTALLMAN3DIR=$PMDIR/man
     fi
 
     # To prevent to remove Makefile when doing 'make clean'

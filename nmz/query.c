@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: query.c,v 1.6 2000-01-10 08:43:45 satoru Exp $
+ * $Id: query.c,v 1.7 2000-01-20 02:54:42 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -136,10 +136,13 @@ nmz_make_query(const char *querystring)
     }
 
     strcpy(query.str, querystring);
+    /* Normalize the query.str encoding for searching. */
+    nmz_codeconv_query(query.str);
+
     set_phrase_trick(query.str);
     set_regex_trick(query.str);
 
-    /* Count number of tokens in querystring */
+    /* Count number of tokens in querystring. */
     for (i = 0, tokennum = 0; *(query.str + i);) {
 	while (query.str[i] == ' ')
 	    i++;
@@ -178,7 +181,7 @@ nmz_make_query(const char *querystring)
     /* Set NULL to the last key table. */
     query.tab[tokennum] = (char *) NULL;
 
-    /* Replace  with spaces. */
+    /* Replace  with spaces (restore). */
     for (i = 0; i < tokennum; i++) {
 	nmz_tr(query.tab[i], "", " ");
     }

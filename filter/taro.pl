@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: taro.pl,v 1.4 2000-04-06 19:05:34 kenzo- Exp $
+# $Id: taro.pl,v 1.5 2001-04-13 04:50:53 knok Exp $
 # Copyright (C) 2000 Ken-ichi Hirose, 
 #               2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -56,7 +56,8 @@ sub post_codeconv () {
 sub add_magic ($) {
     my ($magic) = @_;
 
-    $magic->addFileExts('(?i)\\.jtd', 'application/x-js-taro');
+    $magic->addFileExts('\\.j[bf]w', 'application/x-js-taro');
+    $magic->addFileExts('\\.jt[dt]', 'application/x-js-taro');
     return;
 }
 

@@ -1,3 +1,7 @@
+2004-07-22  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+	* filter/pipermail.pl: It corresponds to author, date, and title.
+
 2004-07-21  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* template/NMZ.result.*: The addition of </dd>, </dt>.
@@ -8957,4 +8961,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1201 2004-07-20 18:19:02 opengl2772 Exp $
+$Id: ChangeLog,v 1.1202 2004-07-21 16:34:39 opengl2772 Exp $

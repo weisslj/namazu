@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: pipermail.pl,v 1.1 2004-07-20 08:29:56 opengl2772 Exp $
+# $Id: pipermail.pl,v 1.2 2004-07-21 16:34:39 opengl2772 Exp $
 # Copyright (C) 2004 Namazu Project All rights reserved.
 #
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -63,30 +63,34 @@ sub filter ($$$$$) {
     my ($orig_cfile, $contref, $weighted_str, $headings, $fields)
       = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
+    my $dummy_weighted_str;
+    my %dummy_fields = ();
 
     util::vprint("Processing pipermail file ...\n");
 
+    if ($$contref !~ m/<!--beginarticle-->/s ||
+    $$contref !~ m/<!--endarticle-->/s) {
+        return $$orig_cfile . " is not a Pipermail message file! skipped."; # error
+    }
+
     unless ($cfile =~ /($PIPERMAIL_MESSAGE_FILE)$/o) 
     {
-	return "is Pipermail's index file! skipped."; # error
+        return $$orig_cfile . " is not a Pipermail message file! skipped."; # error
     } 
-    
+
     pipermail_filter($contref, $weighted_str, $fields);
-    html::html_filter($contref, $weighted_str, $fields, $headings);
+    html::html_filter($contref, \$dummy_weighted_str, \%dummy_fields, $headings);
 
     $$contref =~ s/^\s+//;
     mailnews::uuencode_filter($contref);
-    mailnews::mailnews_filter($contref, $weighted_str, $fields);
-    mailnews::mailnews_citation_filter($contref, $weighted_str);
-
-#    undef $$fields{'from'};
-    undef $$fields{'author'};
+    mailnews::mailnews_filter($contref, \$dummy_weighted_str, \%dummy_fields);
+    mailnews::mailnews_citation_filter($contref, \$dummy_weighted_str);
 
     gfilter::line_adjust_filter($contref);
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($contref);
     gfilter::show_filter_debug_info($contref, $weighted_str,
-			   $fields, $headings);
+                           $fields, $headings);
     return undef;
 }
 
@@ -94,13 +98,104 @@ sub filter ($$$$$) {
 sub pipermail_filter ($$$) {
     my ($contref, $weighted_str, $fields) = @_;
 
+    # Strip off end-matter
     $$contref =~ s/<!--endarticle-->.*//s;
-    if ($$contref =~ s/<H1>(.*)<!--beginarticle-->//s) {
-        my $from = $1;
-        if ($from =~ m/<b>([^<]*)<\/b>/is) {
-            $$fields{'from'} = $1;
+
+    my $pos = index($$contref, '<!--beginarticle-->');
+    if ($pos > 0) {
+        my $head = substr($$contref, 0, $pos);
+
+        util::vprint("Looking at header: " . $head . "\n");
+        if ($head =~ 
+        m!<h1>(.*?)</h1>\s*<b>(.*?)\s*</b>(?:\s*<a href=.*?>(.*?)\s*</a>)?\s*<br>\s*<i>(.*?)</i>!is) {
+            {
+                my $title = uncommentize($1);
+                codeconv::toeuc(\$title);
+
+                1  while ($title =~ s/\A\s*(re|sv|fwd|fw|aw)[\[\]\d]*[:>-]+\s*//i);
+                $title =~ s/\A\s*\[[^\]]+\]\s*//;
+                1  while ($title =~ s/\A\s*(re|sv|fwd|fw|aw)[\[\]\d]*[:>-]+\s*//i);
+                html::decode_entity(\$title);
+                $fields->{'title'} = $title;
+
+                my $weight = $conf::Weight{'html'}->{'title'};
+                $$weighted_str .= "\x7f$weight\x7f$title\x7f/$weight\x7f\n";
+            }
+
+            {
+                my $from = $2;
+                if (defined $3) {
+                    my $email = $3;
+#                    $email =~ s/ at /@/s;    # no spam
+                    $from .= " <$email>";
+                }
+                html::decode_entity(\$from);
+                codeconv::toeuc(\$from);
+                $fields->{'from'} = $from;
+            }
+
+            {
+                my $date = $4;
+                html::decode_entity(\$date);
+                my $err = time_to_rfc822time(\$date);
+                $fields->{'date'} = $date unless(defined $err);
+            }
         }
     }
+
+    $$contref =~ s/<head>(.*)?<\/head>//si;
+    $$contref =~ s/<h1>.*<!--beginarticle-->//si;
+}
+
+sub uncommentize {
+    my($txt) = $_[0];
+    $txt =~ s/&#(\d+);/pack("C",$1)/ge;
+    $txt;
+}
+
+my %wday_names = (
+    "Sun" => 0, "Mon" => 1, "Tue" => 2, "Wed" => 3, 
+    "Thu" => 4, "Fri" => 5, "Sat" => 6
+);
+my %month_names = (
+    "Jan" =>  0, "Feb" =>  1, "Mar" =>  2, "Apr" =>  3,
+    "May" =>  4, "Jun" =>  5, "Jul" =>  6, "Aug" =>  7,
+    "Sep" =>  8, "Oct" =>  9, "Nov" => 10, "Dec" => 11
+);
+my $re_wday  =  join '|', keys %wday_names;
+my $re_month =  join '|', keys %month_names;
+my $re_day   =  '(?:0?[1-9]|[12][0-9]|3[01])';
+my $re_year  =  '(?:\d{4}|\d{2})';  # allow 2 digit fomrat
+my $re_hour  =  '(?:[01][0-9]|2[0-3])';
+my $re_min   =  '(?:[0-5][0-9])';
+my $re_sec   =  '(?:[0-5][0-9])';
+
+sub time_to_rfc822time ($) {
+    my ($conf) = @_;
+
+    if ($$conf =~ /
+        ^\s*
+        ($re_wday)\s+                         # a day of the week
+        ($re_month)\s+                        # name of month
+        ($re_day)\s+                          # a day of the month
+        ($re_hour):($re_min):($re_sec)\s+     # HH:MM:SS
+        (?:([^\s]*)\s+)?                      # (timezone)
+        (\d{4})\s*                            # year
+        /x)
+    {
+        my ($week, $month, $day, $hour, $min, $sec, $timezone, $year) =
+            ($1, $2, $3, $4, $5, $6, $7, $8);
+
+        $timezone = gettimezone() unless(defined $timezone);
+        $timezone = time::normalize_rfc822timezone($timezone);
+
+        $$conf = sprintf("%s, %2.2d %s %d %2.2d:%2.2d:%2.2d %s\n",
+            $week, $day, $month, $year, $hour, $min, $sec, $timezone);
+
+        return undef;
+    }
+
+    return "Illegal format.";
 }
 
 1;

@@ -1,3 +1,7 @@
+2000-01-28  Ryuji Abe  <raeva@t3.rim.or.jp>
+
+	* src/Makefile.am (noinst_PROGRAMS): Changed libexec_PROGRAMS.
+
 2000-01-28  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* src/usage.c (show_usage): Use MAILING_ADDRESS macro.

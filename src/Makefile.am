@@ -11,7 +11,7 @@
 AUTOMAKE_OPTIONS = 1.4 no-dependencies
 
 bin_PROGRAMS = namazu
-noinst_PROGRAMS = namazu.cgi
+libexec_PROGRAMS = namazu.cgi
 
 localedir   = $(datadir)/locale
 confdir     = $(sysconfdir)/$(PACKAGE)

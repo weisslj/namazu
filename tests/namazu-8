@@ -3,6 +3,7 @@
 # Test for namazu.  Searching an updated index created with --html-split.
 #
 LOG=`pwd`/test-log
+echo '  *** starting ' $0 >>$LOG
 
 # `amarok' should be found.
 cd ../src

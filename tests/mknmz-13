@@ -5,6 +5,7 @@
 LOG=`pwd`/test-log
 SRCIDXDIR=idx1
 IDXDIR=idx16
+echo '  *** starting ' $0 >>$LOG
 
 if test ! -d $IDXDIR; then
     mkdir $IDXDIR

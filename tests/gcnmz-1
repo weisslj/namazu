@@ -3,7 +3,7 @@
 # Test for gcnmz.
 #
 LOG=`pwd`/test-log
-TARGET=`./select-data`
+TARGET=`$srcdir/select-data`
 TMPDATA=`pwd`/tmp-data
 
 if test ! -d idx5; then

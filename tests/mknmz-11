@@ -4,8 +4,14 @@
 #
 
 LOG=`pwd`/test-log
-TARGET=`pwd`/data/symlink
+DATA=`pwd`/data
+TARGET=$DATA/symlink
 IDXDIR=idx14
+echo '  *** starting ' $0 >>$LOG
+
+if test ! -d $DATA; then
+   mkdir $DATA
+fi
 
 if test ! -d $IDXDIR; then
     mkdir $IDXDIR
@@ -14,12 +20,12 @@ else
 fi
 
 if test ! -h $TARGET; then
-    ln -s `pwd`/data/en $TARGET
+    ln -s ../$srcdir/data/en $TARGET
 fi
-TXTCOUNT=`ls ./data/symlink/*.txt|wc -l`
+TXTCOUNT=`ls $TARGET/*.txt|wc -l`
 
-cd ../scripts
-./mknmz --allow='.*.txt' -O ../tests/$IDXDIR $TARGET >> $LOG 2>&1
-RESULTCOUNT=`wc -l < ../tests/$IDXDIR/NMZ.field.uri`
+
+../scripts/mknmz --allow='.*.txt' -O $IDXDIR $TARGET >> $LOG 2>&1
+RESULTCOUNT=`wc -l < $IDXDIR/NMZ.field.uri`
 test $TXTCOUNT -eq $RESULTCOUNT
 exit $?

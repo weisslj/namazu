@@ -3,8 +3,9 @@
 # Test for updating documents in an index.
 #
 LOG=`pwd`/test-log
-TARGET=`./select-data`
+TARGET=`$srcdir/select-data`
 TMPDATA=`pwd`/tmp-data
+echo '  *** starting ' $0 >>$LOG
 
 if test ! -d idx7; then
     mkdir idx7
@@ -19,11 +20,11 @@ fi
 cp -rp $TARGET tmp-data
 
 # Simple indexing.
-cd ../scripts 
-./mknmz -O ../tests/idx7 $TMPDATA >> $LOG
+
+../scripts/mknmz -O idx7 $TMPDATA >> $LOG
 test "$?" != "0" && exit 1  # error if not success
 
-prevdocnum=`perl -lne 'print $1 if /^files (\d+)/' ../tests/idx7/NMZ.status`
+prevdocnum=`perl -lne 'print $1 if /^files (\d+)/' idx7/NMZ.status`
 
 # Update some documents. Add `xyzzy' to each document.
 cd $TMPDATA
@@ -32,11 +33,11 @@ find . -type f -print | egrep '(plain|mail)\.txt$' | \
 cd ../
 
 # Update the index.
-cd ../scripts 
-./mknmz --update=../tests/idx7 >> $LOG
+
+../scripts/mknmz --update=idx7 >> $LOG
 test "$?" != "0" && exit 1  # error if not success
 
-postdocnum=`perl -lne 'print $1 if /^files (\d+)/' ../tests/idx7/NMZ.status`
+postdocnum=`perl -lne 'print $1 if /^files (\d+)/' idx7/NMZ.status`
 
 echo "predocnum:" $prevdocnum, "postdocnum:" $postdocnum >> $LOG
 test $prevdocnum != $postdocnum && exit 1  # error if prev != post

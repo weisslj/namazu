@@ -1,12 +1,15 @@
 #! %PERL% -w
 # -*- Perl -*-
 #
-# $Id: gcnmz.in,v 1.8 2000-03-15 07:28:24 satoru Exp $
+# $Id: gcnmz.in,v 1.9 2001-09-16 12:29:14 makoto Exp $
 #
 # gcnmz.pl - by furukawa@tcp-ip.or.jp
 #
 
-push(@INC, '../pl');
+my $pldir = '';
+if ( $ENV{'srcdir'} ) {
+    $pldir = $ENV{'srcdir'}.'/' }; #  VPATH for make check
+push(@INC, $pldir."../pl");
 push(@INC, '@PERLLIBDIR@');
 require 'nmzidx.pl';
 

@@ -3,7 +3,7 @@
 # Test for DOCUMENT_NAME variable
 #
 LOG=`pwd`/test-log
-
+echo '  *** starting ' $0 >>$LOG
 pwd=`pwd`
 tmprc=".namazurc"
 echo "Index $pwd/idx19" > $tmprc

@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.91 2001-08-22 06:18:09 knok Exp $
+# $Id: mknmz.in,v 1.92 2001-09-16 12:29:14 makoto Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -334,13 +334,20 @@ sub init () {
     };
 
     # For executing mknmz in scripts directory
-    $TEMPLATEDIR = "../template" if -f "../template/NMZ.head";
+    my $srcdir = '';
+    if (defined($ENV{'srcdir'})) {      ## for VPATH ;make check
+	$srcdir = $ENV{'srcdir'}.'/';}
+    my $tempdir = $srcdir . "../template";
+    $TEMPLATEDIR = $tempdir if -f $tempdir."/NMZ.head";
 }
 
 sub preload_modules () { 
     unshift @INC, $LIBDIR;
-    unshift @INC, "../pl";	# FIXME: remove the workaround for 
-    unshift @INC, "../filter";	# test suites.
+    my $srcdir;
+    if (defined($ENV{'srcdir'})) {      ## for VPATH ;make check
+	$srcdir = $ENV{'srcdir'} .'/';}
+    unshift @INC, $srcdir. "../pl";	# FIXME: remove the workaround for   (util.pl)
+    unshift @INC, $srcdir. "../filter";	# test suites.
 
     require "conf.pl" || die "unable to require \"conf.pl\"\n";
     require "util.pl" || die "unable to require \"util.pl\"\n";
@@ -372,9 +379,12 @@ sub load_filtermodules () {
 
     # Check filter modules
     my @filters = ();
-    if (-f "../filter/gfilter.pl") { # to ease developing
-	@filters = (glob("../filter/*.pl"), glob("$FILTERDIR/*.pl"));
-	unshift @INC, "../filter";
+    my $srcfilterdir = '';  # for make check in VPATH environment
+    if (defined($ENV{'srcdir'})) {
+	$srcfilterdir = $ENV{'srcdir'}.'/../filter';}
+    if (-f "$srcfilterdir/gfilter.pl") { # to ease developing
+	@filters = (glob("$srcfilterdir/*.pl"), glob("$FILTERDIR/*.pl"));
+	unshift @INC, "$srcfilterdir/filter";
     } else {
 	@filters = glob "$FILTERDIR/*.pl";
     }

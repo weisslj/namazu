@@ -5,6 +5,7 @@
 # NOTE: If error occurred, consult idx1/NMZ.access.
 #
 LOG=`pwd`/test-log
+echo '  *** starting ' $0 >>$LOG
 
 pwd=`pwd`
 

@@ -4,6 +4,7 @@
 #
 LOG=`pwd`/test-log
 IDX=`pwd`/idx17
+echo '  *** starting ' $0 >>$LOG
 
 # To make messages English
 LANG= ; export LANG

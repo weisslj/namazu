@@ -2,8 +2,10 @@
 #
 # Test for simple indexing.
 #
+# select-data returns data/en or data/ja depending on environment.
 LOG=`pwd`/test-log
-TARGET=`./select-data`
+TARGET=`$srcdir/select-data`
+echo '  *** starting ' $0 >>$LOG
 
 if test ! -d idx1; then
     mkdir idx1
@@ -12,6 +14,5 @@ else
 fi
 
 # Simple indexing.
-cd ../scripts 
-./mknmz -O ../tests/idx1 $TARGET >> $LOG
+../scripts/mknmz  -O idx1 $TARGET >> $LOG
 exit $?

@@ -3,6 +3,7 @@
 # Test for namazu.
 #
 LOG=`pwd`/test-log
+echo '  *** starting ' $0 >>$LOG
 
 docnum=`perl -lne 'print $1 if /^files (\d+)/' idx1/NMZ.status`
 

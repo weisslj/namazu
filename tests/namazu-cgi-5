@@ -3,7 +3,7 @@
 # Test for namazu.cgi with "ContentType" directive.
 #
 LOG=`pwd`/test-log
-
+echo '  *** starting ' $0 >>$LOG
 pwd=`pwd`
 
 tmprc=".namazurc"

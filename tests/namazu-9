@@ -5,6 +5,7 @@
 LOG=`pwd`/test-log
 TMP=`pwd`/tmp
 IDX=`pwd`/idx8
+echo '  *** starting ' $0 >>$LOG
 
 MSG1='Too many documents hit. Ignored'
 MSG2='Too many words matched. Ignored'

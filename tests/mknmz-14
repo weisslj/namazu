@@ -3,8 +3,9 @@
 # Test for emphasized keyword.
 #
 LOG=`pwd`/test-log
-TARGET=`pwd`/data/emphasize
+TARGET=$srcdir/data/emphasize
 IDX=idx17
+echo '  *** starting ' $0 >>$LOG
 
 if test ! -d $IDX; then
     mkdir $IDX
@@ -13,6 +14,5 @@ else
 fi
 
 # Simple indexing.
-cd ../scripts
-./mknmz -O ../tests/$IDX $TARGET >> $LOG
+../scripts/mknmz -O $IDX $TARGET >> $LOG
 exit $?

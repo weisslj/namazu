@@ -5,8 +5,8 @@
 # They should be escaped not printed in unescaped.
 #
 LOG=`pwd`/test-log
-
 pwd=`pwd`
+echo '  *** starting ' $0 >>$LOG
 
 tmprc="$pwd/../src/.namazurc"
 echo "Index $pwd" > $tmprc

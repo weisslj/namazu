@@ -3,7 +3,8 @@
 # Make an index for testing query operations.
 #
 LOG=`pwd`/test-log
-TARGET=`pwd`/data/query
+TARGET=$srcdir/data/query
+echo '  *** starting ' $0 >>$LOG
 
 if test ! -d idx8; then
     mkdir idx8
@@ -12,6 +13,5 @@ else
 fi
 
 # Simple indexing.
-cd ../scripts 
-./mknmz -O ../tests/idx8 $TARGET >> $LOG
+../scripts/mknmz -O idx8 $TARGET >> $LOG
 exit $?

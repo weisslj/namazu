@@ -4,7 +4,8 @@
 #
 
 LOG=`pwd`/test-log
-TARGET=`./select-data`
+TARGET=`$srcdir/select-data`
+echo '  *** starting ' $0 >>$LOG
 
 if test ! -d idx11; then
     mkdir idx11
@@ -12,18 +13,17 @@ else
     rm -f idx11/NMZ.*
 fi
 
-cd ../scripts
-./mknmz -O ../tests/idx11 $TARGET >> $LOG 2>&1 &
+../scripts/mknmz -O idx11 $TARGET >> $LOG 2>&1 &
 
 i=20
 while test $i -gt 0
 do {
     i=`expr $i - 1`
-    if test -r ../tests/idx11/NMZ.lock2
+    if test -r idx11/NMZ.lock2
     then {
-        kill -TERM `cat ../tests/idx11/NMZ.lock2`
+        kill -TERM `cat idx11/NMZ.lock2`
         wait
-        grep '^\[Base\]' ../tests/idx11/NMZ.log >> $LOG && exit 0
+        grep '^\[Base\]' idx11/NMZ.log >> $LOG && exit 0
         exit 1
     }
     fi

@@ -4,6 +4,7 @@
 #
 
 base=`pwd`/data
+base=$srcdir/data
 
 for lang in "$LC_ALL" "$LC_CTYPE" "$LANG"; do
     cand=`echo "$lang" | perl -nle 'print $1 if /^(..)/'`

@@ -3,7 +3,7 @@
 # Test for idxname CGI paramater
 #
 LOG=`pwd`/test-log
-
+echo '  *** starting ' $0 >>$LOG
 pwd=`pwd`
 tmprc=".namazurc"
 echo "Index $pwd/idx16" > $tmprc

@@ -3,7 +3,7 @@
 # Test for Japanese encoding
 #
 LOG=`pwd`/test-log
-TARGET=`pwd`/data/ja-spec
+TARGET=$srcdir/data/ja-spec
 IDX=ja-idx1
 
 EXEC=no
@@ -24,6 +24,5 @@ else
     rm -f $IDX/NMZ.*
 fi
 
-cd ../scripts
-./mknmz -O ../tests/$IDX $TARGET >> $LOG
+../scripts/mknmz -O $IDX $TARGET >> $LOG
 exit $?

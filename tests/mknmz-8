@@ -3,7 +3,8 @@
 # Test for mknmz's --html-split option with updating.
 #
 LOG=`pwd`/test-log
-TARGET=`pwd`/data/html-split
+TARGET=$srcdir/data/html-split
+echo '  *** starting ' $0 >>$LOG
 
 if test ! -d idx10; then
     mkdir idx10
@@ -19,40 +20,36 @@ fi
 cp -rp $TARGET tmp-data
 
 # Index with --html-split option.
-cd ../scripts 
-./mknmz --html-split -O ../tests/idx10 $TMPDATA >> $LOG
+../scripts/mknmz --html-split -O idx10 $TMPDATA >> $LOG
 test "$?" != "0" && exit 1  # error if not success
-origdocnum=`./gtnmz ../tests/idx10/NMZ.r`
+origdocnum=`../scripts/gtnmz idx10/NMZ.r`
 
 # Update 1.html.
 perl -i -pe s/xyzzy// $TMPDATA/1.html
 echo amarok >> $TMPDATA/1.html
 
 # Update the index with --html-split option.
-cd ../scripts 
-./mknmz --update=../tests/idx10 >> $LOG
+../scripts/mknmz --update=idx10 >> $LOG
 test "$?" != "0" && exit 1  # error if not success
-docnum=`./gtnmz ../tests/idx10/NMZ.r`
+docnum=`../scripts/gtnmz idx10/NMZ.r`
 test $docnum != $origdocnum && exit 1  # error if not equal
 
 # Remove 2.html.
 rm $TMPDATA/2.html
 
 # Update the index with --html-split option.
-cd ../scripts 
-./mknmz --update=../tests/idx10 >> $LOG
+../scripts//mknmz --update=idx10 >> $LOG
 test "$?" != "0" && exit 1  # error if not success
-docnum=`./gtnmz ../tests/idx10/NMZ.r`
+docnum=`../scripts/gtnmz idx10/NMZ.r`
 docnum2=`expr $docnum + $docnum`
 test $docnum2 != $origdocnum && exit 1  # error if not equal
 
 # Nothing changed.
 
 # Update the index with --html-split option.
-cd ../scripts 
-./mknmz --update=../tests/idx10 >> $LOG
+../scripts/mknmz --update=idx10 >> $LOG
 test "$?" != "0" && exit 1  # error if not success
-docnum=`./gtnmz ../tests/idx10/NMZ.r`
+docnum=`../scripts/gtnmz idx10/NMZ.r`
 docnum2=`expr $docnum + $docnum`
 test $docnum2 != $origdocnum && exit 1  # error if not equal
 

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: pdf.pl,v 1.19 2000-03-15 06:53:50 satoru Exp $
+# $Id: pdf.pl,v 1.20 2000-04-14 00:11:12 satoru Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -83,7 +83,7 @@ sub filter ($$$$$) {
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($cont);
     $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
-      unless $fields->{'title'};
+	unless $fields->{'title'};
     gfilter::show_filter_debug_info($cont, $weighted_str,
 			   $fields, $headings);
     return undef;

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: excel.pl,v 1.11 2000-04-06 19:05:34 kenzo- Exp $
+# $Id: excel.pl,v 1.12 2000-04-14 00:11:12 satoru Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu, 
 #               2000 Namazu Project All rights reserved.
@@ -42,16 +42,16 @@ sub status() {
     $xlconvpath = util::checkcmd('xlHtml');
 #    return 'no' unless defined $xlconvpath;
     if (defined $xlconvpath) {
-    if (!util::islang("ja")) {
-	return 'yes';
-    } else {
-	$utfconvpath = util::checkcmd('lv');
-	if (defined $utfconvpath) {
+	if (!util::islang("ja")) {
 	    return 'yes';
 	} else {
-	    return 'no';
-	}
-    } 
+	    $utfconvpath = util::checkcmd('lv');
+	    if (defined $utfconvpath) {
+		return 'yes';
+	    } else {
+		return 'no';
+	    }
+	} 
     } else {
         $xlconvpath = util::checkcmd('doccat');
         return 'yes' if defined $xlconvpath;
@@ -183,7 +183,7 @@ sub filter_doccat ($$$$$) {
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($cont);
     $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
-      unless $fields->{'title'};
+	unless $fields->{'title'};
     gfilter::show_filter_debug_info($cont, $weighted_str,
                $fields, $headings);
     return undef;

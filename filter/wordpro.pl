@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: wordpro.pl,v 1.3 2000-04-06 19:05:34 kenzo- Exp $
+# $Id: wordpro.pl,v 1.4 2000-04-14 00:11:12 satoru Exp $
 # Copyright (C) 2000 Ken-ichi Hirose, 
 #               2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -83,7 +83,7 @@ sub filter ($$$$$) {
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($cont);
     $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
-      unless $fields->{'title'};
+	unless $fields->{'title'};
     gfilter::show_filter_debug_info($cont, $weighted_str,
                $fields, $headings);
     return undef;

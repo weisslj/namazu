@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: msword.pl,v 1.24 2000-04-06 19:05:34 kenzo- Exp $
+# $Id: msword.pl,v 1.25 2000-04-14 00:11:12 satoru Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -42,17 +42,17 @@ sub status() {
     $wordconvpath = util::checkcmd('wvHtml');
 #    return 'no' unless defined $wordconvpath;
     if (defined $wordconvpath) {
-    if (!util::islang("ja")) {
-	return 'yes';
-    } else {
-	$utfconvpath   = util::checkcmd('lv');
-        $wvversionpath = util::checkcmd('wvVersion');
-	if ((defined $utfconvpath) && (defined $wvversionpath)) {
+	if (!util::islang("ja")) {
 	    return 'yes';
 	} else {
-	    return 'no';
+	    $utfconvpath   = util::checkcmd('lv');
+	    $wvversionpath = util::checkcmd('wvVersion');
+	    if ((defined $utfconvpath) && (defined $wvversionpath)) {
+		return 'yes';
+	    } else {
+		return 'no';
+	    }
 	}
-    }
     } else {
         $wordconvpath = util::checkcmd('doccat');
         return 'yes' if defined $wordconvpath;
@@ -175,7 +175,7 @@ sub filter_doccat ($$$$$) {
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($cont);
     $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
-      unless $fields->{'title'};
+	unless $fields->{'title'};
     gfilter::show_filter_debug_info($cont, $weighted_str,
                $fields, $headings);
     return undef;

@@ -1,7 +1,7 @@
 #
 # -*- Perl -*-
-# $Id: msword.pl,v 1.48 2004-08-03 15:13:11 opengl2772 Exp $
-# Copyright (C) 1997-2000 Satoru Takabayashi All rights reserved.
+# $Id: msword.pl,v 1.49 2004-08-15 04:07:41 opengl2772 Exp $
+# Copyright (C) 1997-2000 Satoru Takabayashi,
 #               2000-2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -44,7 +44,6 @@ sub mediatype() {
 sub status() {
     $wvsummarypath = util::checkcmd('wvSummary');
     $wvversionpath = util::checkcmd('wvVersion');
-    $utfconvpath   = util::checkcmd('lv');
 
     $wordconvpath = util::checkcmd('wvWare');
     if (defined $wordconvpath) {
@@ -54,11 +53,12 @@ sub status() {
         util::fclose($fh_out);
         util::fclose($fh_err);
 
-        if ($version =~ s/wvWare (\d\.\d)\.(\d)/$1$2/) {
+        if ($version =~ s/wvWare (\d\.\d)\.(\d).*/$1$2/) {
             if ($version >= 0.75) {
                 if (!util::islang("ja")) {
                     return 'yes';
                 } else {
+                    $utfconvpath   = util::checkcmd('lv');
                     if (defined $wvversionpath
                     && (defined $utfconvpath || $perlver >= 5.008)) {
                         return 'yes';
@@ -73,6 +73,7 @@ sub status() {
         if (!util::islang("ja")) {
 	    return 'yes';
         } else {
+            $utfconvpath   = util::checkcmd('lv');
             if (defined $wvversionpath
             && (defined $utfconvpath || $perlver >= 5.008)) {
                 return 'yes';
@@ -107,9 +108,7 @@ sub filter ($$$$$) {
 	= @_;
     my $err = undef;
 
-    if (basename($wordconvpath) =~ /wvWare/i) {
-        $err = filter_wv($orig_cfile, $cont, $weighted_str, $headings, $fields);
-    } elsif (basename($wordconvpath) =~ /wvhtml/i) {
+    if (basename($wordconvpath) =~ /(?:wvWare|wvHtml)/i) {
         $err = filter_wv($orig_cfile, $cont, $weighted_str, $headings, $fields);
     } else { 
         $err = filter_doccat($orig_cfile, $cont, $weighted_str, $headings, $fields);
@@ -121,7 +120,6 @@ sub filter_wv ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
 	= @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
-    my $docversion = "unknown";
     my $err = undef;
 
     util::vprint("Processing ms-word file ... (using  '$wordconvpath')\n");
@@ -133,33 +131,28 @@ sub filter_wv ($$$$$) {
         util::fclose($fh);
     }
 
+    # Check version of word document (greater than word7,8 or else).
+    if (util::islang("ja")) {
+        my $docversion = getDocumentVersion($tmpfile);
+	if ($docversion !~ /^word[78]$/) {
+            unlink $tmpfile;
+	    return _("Unsupported format: ") . $docversion;
+	}
+    }
+
     # get summary info in all OLE documents.
     getSummaryInfo($tmpfile, $cont, $weighted_str, $headings, $fields);
     my $title = $fields->{'title'};
 
-    # Check version of word document (greater than word7,8 or else).
-    if (util::islang("ja")) {
-        $docversion = getDocumentVersion($tmpfile);
-	if ($docversion !~ /^word[78]$/) {
-            unlink $tmpfile;
-	    return _("Unsupported format: ") .  $docversion;
-	}
-    }
 
-
-    if (basename($wordconvpath) =~ /wvhtml/i) {
-        $err = filter_wvHtml($tmpfile, $cont, $weighted_str, $headings, $fields);
-    } else {
+    if (basename($wordconvpath) =~ /wvWare/i) {
         $err = filter_wvWare($tmpfile, $cont, $weighted_str, $headings, $fields);
+    } else {
+        $err = filter_wvHtml($tmpfile, $cont, $weighted_str, $headings, $fields);
     }
     unlink $tmpfile;
     return $err if (defined $err);
 
-
-    # Title shoud be removed.
-    $$cont =~ s!<TITLE.*?>.*?</TITLE>!!is
-        if ((defined $title) or
-        (util::islang("ja") && $docversion =~ /^word7$/));
 
     # Exclude wvHtml's footer because it has no good index terms.
     $$cont =~ s/(.*)<!--Section Ends-->.*$/$1/s;
@@ -203,23 +196,29 @@ sub filter_wvWare ($$$$$) {
     if ($size == 0) {
         util::fclose($fh_out);
         util::fclose($fh_err);
+        unlink($tmpfile2);
         return "Unable to convert file ($wordconvpath error occurred).";
     }
     if ($size > $conf::TEXT_SIZE_MAX) {
         util::fclose($fh_out);
         util::fclose($fh_err);
+        unlink($tmpfile2);
         return 'Too large word file.';
     }
     $$cont = util::readfile($fh_out);
     util::fclose($fh_out);
     util::fclose($fh_err);
+    unlink($tmpfile2);
 
     if (util::islang("ja")) {
+        # Title shoud be removed.
+        $$cont =~ s!<TITLE.*?>.*?</TITLE>!!is;
+
         # div name shoud be removed.
         $$cont =~ s!(<div(?:\s[A-Z]+\w*(?:=(?:".*?"|'.*?'|[^\s>]*))?)*)\s+name=(?:".*?"|'.*?'|[^\s>]*)(\s[A-Z]+\w*(?:=(?:".*?"|'.*?'|[^\s>]*))?\s*>)!$1$2!igs;
-    }
 
-    codeconv::normalize_eucjp($cont);
+        codeconv::normalize_eucjp($cont);
+    }
 
     return undef;
 }
@@ -227,11 +226,6 @@ sub filter_wvWare ($$$$$) {
 sub filter_wvHtml ($$$$$) {
     my ($cfile, $cont, $weighted_str, $headings, $fields)
 	= @_;
-    my $docversion = "unknown";
-
-    if (util::islang("ja")) {
-        $docversion = getDocumentVersion($cfile);
-    }
 
     # Check version of wvWare (greater than 0.7 or else).
     my $tmpfile2 = util::tmpnam('NMZ.word2');
@@ -247,8 +241,9 @@ sub filter_wvHtml ($$$$$) {
             @wordconvopts = ("--targetdir=$tpath");
 	} else {
             if (util::islang("ja")) {
-                return _("Unsupported format: ") .  $docversion
-                    if ($docversion =~ /^word7$/);
+                my $docversion = getDocumentVersion($cfile);
+                return _("Unsupported format: ") . $docversion
+                    if ($docversion =~ /^word7$/i);
             }
 
 	    $ofile = $tmpfile2;
@@ -258,24 +253,22 @@ sub filter_wvHtml ($$$$$) {
 
     my @cmd = ($wordconvpath, @wordconvopts, $cfile, $ofile);
     my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
-    my $size = util::filesize($fh_out);
-    if ($size == 0) {
-        util::fclose($fh_out);
-        util::fclose($fh_err);
-        unlink $tmpfile2;
-        return "Unable to convert file ($wordconvpath error occurred).";
-    }
-    if ($size > $conf::TEXT_SIZE_MAX) {
-        util::fclose($fh_out);
-        util::fclose($fh_err);
-        unlink $tmpfile2;
-        return 'Too large word file.';
-    }
     util::fclose($fh_out);
     util::fclose($fh_err);
     unless (-e $tmpfile2) {
 	return "Unable to convert file ($wordconvpath error occurred).";
-    } else {
+    }
+    my $size = util::filesize($tmpfile2);
+    if ($size == 0) {
+        unlink $tmpfile2;
+        return "Unable to convert file ($wordconvpath error occurred).";
+    }
+    if ($size > $conf::TEXT_SIZE_MAX) {
+        unlink $tmpfile2;
+        return 'Too large word file.';
+    }
+
+    {
 	my $fh = util::efopen("< $tmpfile2");
 	$$cont = util::readfile($fh);
         util::fclose($fh);
@@ -284,10 +277,8 @@ sub filter_wvHtml ($$$$$) {
 
     # Code conversion for Japanese document.
     if (util::islang("ja")) {
-        if ($docversion =~ /^word7$/) {
-            # Title shoud be removed.
-            $$cont =~ s!<TITLE.*?>.*?</TITLE>!!is;
-        }
+        # Title shoud be removed.
+        $$cont =~ s!<TITLE.*?>.*?</TITLE>!!is;
 
         # div name shoud be removed.
         $$cont =~ s!(<div(?:\s[A-Z]+\w*(?:=(?:".*?"|'.*?'|[^\s>]*))?)*)\s+name=(?:".*?"|'.*?'|[^\s>]*)(\s[A-Z]+\w*(?:=(?:".*?"|'.*?'|[^\s>]*))?\s*>)!$1$2!igs;

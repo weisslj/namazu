@@ -1,3 +1,7 @@
+2004-04-13  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * NEWS: updated.
+
 2004-04-11  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * filter/win32/olepowerpoint.pl: Added file extension for
@@ -8732,4 +8736,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1150 2004-04-10 17:25:02 opengl2772 Exp $
+$Id: ChangeLog,v 1.1151 2004-04-13 13:01:39 opengl2772 Exp $

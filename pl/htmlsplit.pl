@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: htmlsplit.pl,v 1.10 2001-09-17 13:49:03 knok Exp $
+# $Id: htmlsplit.pl,v 1.11 2001-09-18 06:53:40 knok Exp $
 #
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -72,7 +72,7 @@ sub split ($$) {
 
     my $id = 0;
 #    $cont =~ s/(<a\s[^>]*href=(["']))#(.+?)(\2[^>]*>)/$1$3.html$4/gi; #'
-    $cont =~ s#(<a[^>]*\s+)name=(["'])\2([^>]*>(.*?)</a>)#$1$4/sgi; #'
+    $cont =~ s#(<a[^>]*\s+)name=(["'])\2([^>]*>(.*?)</a>)#$1$4#sgi; #'
     $cont =~ s {
                 \G(.+?)                                      # 1
 	        (<h([1-6])>)?\s*                             # 2, 3

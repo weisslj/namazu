@@ -1,3 +1,8 @@
+2001-09-18  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* pl/htmlsplit.pl: Fixed a syntax error.
+
+
 2001-09-17  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* pl/htmlsplit.pl: Applied the following patch:
@@ -7063,4 +7068,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.872 2001-09-17 13:49:03 knok Exp $
+$Id: ChangeLog,v 1.873 2001-09-18 06:53:39 knok Exp $

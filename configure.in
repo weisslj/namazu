@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.137 2001-06-25 04:20:25 rug Exp $
+dnl $Id: configure.in,v 1.138 2001-06-25 10:31:08 rug Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -30,7 +30,7 @@ dnl *
 LTVERSION="5:0:2"
 AC_SUBST(LTVERSION)
 
-AM_INIT_AUTOMAKE(namazu, 2.0.6pre1)
+AM_INIT_AUTOMAKE(namazu, 2.1.0)
 AM_MAINTAINER_MODE
 
 dnl *

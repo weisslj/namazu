@@ -1,7 +1,20 @@
-Overview of Changes in Namazu 2.0.6 (draft) - Dec 15, 2000
+Overview of Changes in Namazu 2.1.0 (draft) - Jun 25, 2001
 
+[currently same as stable-2-0 branch]
 * Fix path delimter probrem on Windows environment.
  (namazu-win32-ja#00411)
+* Fix ignore $FILTERDIR specification.
+  (namazu-bugs-ja#45)
+* Fix locale related environment variables handlings.
+* Fix ERR_TOO_MANY_HIT handlings and total documents counting. 
+* Add more scoring(ranking) methods.
+  DOCLENGTH, FRESHNESS, URILENGTH
+* Add helper scripts lnnmz, adnmz and nmzmerge.
+* Add more document filters.
+  deb, dvi, hdml, postscript, rpm
+* Improve Win32 OLE filters.
+* Include File::MMagic 1.12.
+* Many improvements and bugfixes.
 
 Overview of Changes in Namazu 2.0.5 - Oct 10, 2000
 

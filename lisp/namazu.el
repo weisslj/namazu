@@ -2,9 +2,9 @@
 ;;
 ;; Mule $B>e$G(B Namazu $B$rMxMQ$7$?8!:w$r9T$&$?$a$N(B elisp $B$G$9!#(B
 ;;
-;;  $Id: namazu.el,v 1.2 1999-09-04 14:06:18 kose Exp $
+;;  $Id: namazu.el,v 1.3 1999-09-08 02:26:20 kose Exp $
 
-(defconst namazu-version "namazu.el 1.0.1")
+(defconst namazu-version "namazu.el 1.0.2")
 
 ;; Namazu $B$K$h$k8!:w7k2L$,;X$9%I%-%e%a%s%H(B($BN`(B)$B$,(B
 ;; $B%m!<%+%k%G%#%9%/>e$K$"$k>l9g$K$O$=$l$rD>@\;2>H$7!"(B
@@ -149,7 +149,7 @@ PATH $B$,DL$C$F$$$J$$>l9g$K$OE,Ev$J%W%m%0%i%`L>$r;XDj$7$^$9!#(B")
       "*$B%U%!%$%kL>$N%Q%?!<%s$H$=$l$KBP1~$9$k1\Mw4X?t$r@_Dj$7$^$9!#(B")
 
 (defvar namazu-cs
-  (if (eq system-type 'windows-nt)
+  (if (memq system-type '(OS/2 emx windows-nt))
       (if (> emacs-major-version 19) 'sjis-dos '*sjis*dos)
     (if (> emacs-major-version 19) 'euc-jp '*euc-japan*))
   "*OS $B$NFbIt%3!<%I$H0[$J$j!"$+$DF0$+$J$$>l9g$KJQ99$7$F$_$F$/$@$5$$!#(B")
@@ -163,6 +163,7 @@ PATH $B$,DL$C$F$$$J$$>l9g$K$OE,Ev$J%W%m%0%i%`L>$r;XDj$7$^$9!#(B")
 (defvar namazu-history nil)
 (defvar namazu-mode-map nil)
 (defvar namazu-minibuffer-map nil)
+(defvar namazu-minibuffer-field-map nil)
 (defvar namazu-buffer "*namazu*")
 (defvar namazu-last-dir nil
   "$B8=:_$N8!:w$G;2>H$7$F$$$k%$%s%G%C%/%9$N:_=h(B")
@@ -201,7 +202,7 @@ PATH $B$,DL$C$F$$$J$$>l9g$K$OE,Ev$J%W%m%0%i%`L>$r;XDj$7$^$9!#(B")
 			      nil namazu-minibuffer-map)
       nil)
     (read-from-minibuffer "Enter Keyword: "
-			  (car namazu-history) nil nil 'namazu-history)))
+       (car namazu-history) namazu-minibuffer-field-map nil 'namazu-history)))
   (let ((buffer (get-buffer-create namazu-buffer))
 	(dir (or namazu-dir
 		 (and namazu-default-dir
@@ -296,8 +297,10 @@ PATH $B$,DL$C$F$$$J$$>l9g$K$OE,Ev$J%W%m%0%i%`L>$r;XDj$7$^$9!#(B")
   "$B8=:_$N8!:w%-!<$rJQ99$7$?>e$G:F8!:w$7$^$9!#(B"
   (interactive
    (list
-    (read-from-minibuffer "Enter Keyword: "
-			  (car namazu-history) nil nil 'namazu-history)))
+    (save-excursion
+      (read-from-minibuffer "Enter Keyword: "
+         (car namazu-history) namazu-minibuffer-field-map nil 
+            'namazu-history))))
   (namazu 0 namazu-last-dir key))
 
 (defun namazu-next-page ()
@@ -419,6 +422,53 @@ PATH $B$,DL$C$F$$$J$$>l9g$K$OE,Ev$J%W%m%0%i%`L>$r;XDj$7$^$9!#(B")
 			       (substring dir (match-beginning 3)))))
 	   (setq alist (cdr alist)))))
   dir)
+
+(defun namazu-field-complete ()
+  "+to:field $B$NJd40$r$7$^$9!#(B"
+  (interactive)
+  (goto-char (point-max))
+  (let ((p (point)) 
+        (alist (namazu-make-field-completion-alist namazu-last-dir))
+        (completion-buffer "*Competions*")
+        word start result)
+    (save-excursion
+      (skip-chars-backward "^\n+")
+      (backward-char 1)
+      (setq start (point))
+      (setq word (buffer-substring start p)))
+    (setq result (try-completion word alist))
+    (cond
+     ((eq result t)
+      (ding))
+     ((eq result nil)
+      (ding))
+     ((string= result word)
+      (with-output-to-temp-buffer completion-buffer
+        (display-completion-list
+         (all-completions word alist))))
+     (t
+      (delete-region start p)
+      (insert result)
+      (if (eq t (try-completion result alist))
+          ()
+        (ding))))))
+
+(defun namazu-make-field-completion-alist (namazu-dir)
+  "make \'+files:\' completion alist."
+  (let* ((dir (expand-file-name 
+               (if (null namazu-dir)
+                   namazu-default-dir
+                 (or (cdr (assoc namazu-dir namazu-dir-alist))
+                     namazu-dir))))
+         (fl (and (file-exists-p dir)
+                  (directory-files dir)))
+         fields file)
+    (while (setq file (car fl))
+      (and (string-match "NMZ.field.\\(.*\\)" file)
+           (setq fields (append (list (list (format "+%s:"
+              (substring file (match-beginning 1) (match-end 1))))) fields)))
+      (setq fl (cdr fl)))
+    fields))
 
 (defun namazu-mode ()
   "Namazu $B$N8!:w7k2L$r1\Mw$9$k$?$a$N%b!<%I$G$9!#(B
@@ -620,6 +670,12 @@ mouse $B$N??$sCf$N%\%?%s$r2!$9$H!"2!$7$?0LCV$K$h$C$F!"(B\"$BJ8>O$r;2>H(B\"$
   (let ((map (copy-keymap minibuffer-local-map)))
     (define-key map "\t" 'namazu-dir-complete)
     (setq namazu-minibuffer-map map)))
+
+(if namazu-minibuffer-field-map
+    nil
+  (let ((map (copy-keymap minibuffer-local-map)))
+    (define-key map "\t" 'namazu-field-complete)
+    (setq namazu-minibuffer-field-map map)))
 
 (cond
  ((featurep 'font-lock)

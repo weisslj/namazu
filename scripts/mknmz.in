@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.136 2004-03-28 02:11:50 opengl2772 Exp $
+# $Id: mknmz.in,v 1.137 2004-04-08 08:33:40 opengl2772 Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -77,6 +77,13 @@ STDERR->autoflush(1);
 main();
 sub main {
     my $start_time = time;
+
+    if ($] == 5.008001) {
+        unless (defined $ENV{PERL_HASH_SEED} && $ENV{PERL_HASH_SEED} eq 0) {
+            print "Run mknmz with the environment variable PERL_HASH_SEED=0\n";
+            exit 1;
+        }
+    }
 
     init();
 

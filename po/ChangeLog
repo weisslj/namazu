@@ -1,3 +1,9 @@
+2004-03-04  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* Makefile.in.in: Imported from gettext 0.14.
+
+	* remove-potcdate.sin: Ditto.
+
 2004-02-01  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* ja.po: Update messages.

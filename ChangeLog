@@ -1,3 +1,38 @@
+2004-03-04  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* acconfig.h: Removed.
+
+	* po/Makevers: Added a new file.
+
+	* HACKING*: Adapted to new autotools.
+
+	* autogen.sh: Adapted to new autotools.
+
+	* configure.in: Adapted to new gettext.
+
+	* Makefile.am: Ditto.
+
+	* m4/*: Imported from gettext 0.14.
+
+	* configure.in: Adapted to new autotools.
+
+	* Makefile.am (EXTRA_DIST): Addrd config.rpath and mkinstalldirs.
+
+	* config.rpath: Imported file from gettext 0.14.
+
+	* mkinstalldirs: Ditto.
+
+	* ABOUT-NLS: Ditto.
+
+	* src/Makefile.am (LDADD): s/@INTLLIBS@/@LTLIBINTL@/
+
+	* scripts/mknmz.in (show_usage): Removed a workaround about 
+	  xgettext bug.
+
+	* pl/usage.pl: Ditto.
+
+	* pl/wakati.pl (wakatize_japanese): Removed raw EUC-JP string.
+
 2004-02-24  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * pl/wakati.pl: Bug fix: --no-okurigana
@@ -8458,4 +8493,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1104 2004-02-23 16:25:42 opengl2772 Exp $
+$Id: ChangeLog,v 1.1105 2004-03-04 10:44:17 knok Exp $

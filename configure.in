@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.158 2004-02-05 10:55:59 opengl2772 Exp $
+dnl $Id: configure.in,v 1.159 2004-03-04 10:44:17 knok Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -12,11 +12,11 @@ dnl
 dnl *
 dnl * Process this file with autoconf to produce a configure script.
 dnl *
-AC_INIT(src/cgi.c)
-AC_PREREQ(2.13)               dnl Minimum Autoconf version required.
+AC_INIT(namazu, 2.0.13pre8)
+AC_PREREQ(2.50)               dnl Minimum Autoconf version required.
 
 
-AM_INIT_AUTOMAKE(namazu, 2.1.0)
+AM_INIT_AUTOMAKE
 AM_MAINTAINER_MODE
 
 dnl *
@@ -45,7 +45,7 @@ dnl Checks for programs.
 AC_PROG_CC
 AC_PROG_INSTALL
 AC_PROG_LN_S
-AC_PROG_RANLIB
+AC_PROG_LIBTOOL
 AC_PROG_MAKE_SET
 
 if test -n "$GCC"; then
@@ -86,7 +86,12 @@ dnl *
 dnl * I18N
 dnl *
 ALL_LINGUAS="ja ja_JP.SJIS es fr"
-AM_GNU_GETTEXT
+AM_GNU_GETTEXT([external])
+AM_LC_MESSAGES
+
+dnl For latest gettext
+DATADIRNAME=share
+AC_SUBST(DATADIRNAME)
 
 dnl Checks for libraries.
 dnl Replace `main' with a function in -lm:
@@ -104,7 +109,7 @@ AM_CONDITIONAL(WIN32, test x$win32 = xyes)
 
 dnl Checks for header files.
 AC_HEADER_STDC
-AC_CHECK_HEADERS(fcntl.h limits.h malloc.h unistd.h string.h stdlib.h sys/timeb.h sys/time.h)
+AC_CHECK_HEADERS(fcntl.h limits.h malloc.h unistd.h string.h stdlib.h sys/timeb.h sys/time.h locale.h)
 
 AC_C_BIGENDIAN
 
@@ -127,7 +132,7 @@ AC_SUBST(LTALLOCA)
 AC_FUNC_MMAP
 NMZ_FUNC_MEMCMP
 AC_FUNC_VPRINTF
-AC_CHECK_FUNCS(getcwd getwd putenv setenv strdup strspn gettimeofday ftime)
+AC_CHECK_FUNCS(getcwd getwd putenv setenv strdup strspn gettimeofday ftime setlocale)
 AC_REPLACE_FUNCS(strstr)
 NMZ_REPLACE_FUNCS([memmove memset strcspn strerror])
 if test -z "$MINGW32"; then
@@ -321,11 +326,8 @@ if test "${tknamazu}" != "no"; then
     fi
 fi
 if test "${tknamazu}" = "yes"; then
-    TKNAMAZU="tknamazu"
-else
-    TKNAMAZU=""
+    AC_CONFIG_SUBDIRS(tknamazu)
 fi
-AC_CONFIG_SUBDIRS($TKNAMAZU)
 AM_CONDITIONAL(BUILD_TKNAMAZU, test x$tknamazu = xyes)
 
 
@@ -410,7 +412,7 @@ AC_OUTPUT([Makefile
 	   etc/Makefile
 	   filter/Makefile
 	   filter/win32/Makefile
-	   intl/Makefile 
+	   m4/Makefile 
 	   lib/Makefile
 	   lisp/Makefile
 	   man/Makefile 
@@ -418,7 +420,7 @@ AC_OUTPUT([Makefile
 	   pl/Makefile
 	   pl/var.pl
 	   pl/conf.pl
-	   po/Makefile.in 
+	   po/Makefile.in
 	   scripts/Makefile 
 	   scripts/bnamazu
 	   scripts/gtnmz

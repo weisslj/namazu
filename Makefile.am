@@ -10,10 +10,10 @@ BUILT_TKNAMAZU =
 DIST_TKNAMAZU = tknamazu
 endif
 
-SUBDIRS = conf doc etc filter intl po lib nmz pl src lisp scripts man \
+SUBDIRS = m4 conf doc etc filter po lib nmz pl src lisp scripts man \
 	  tests template contrib scheme archive $(BUILT_TKNAMAZU)
 
-DIST_SUBDIRS = conf doc etc filter intl po lib nmz pl src lisp scripts man \
+DIST_SUBDIRS = m4 conf doc etc filter po lib nmz pl src lisp scripts man \
 	  tests template contrib scheme archive $(BUILT_TKNAMAZU)
 
 
@@ -24,7 +24,8 @@ etc_DATA   = AUTHORS ChangeLog ChangeLog.1 CREDITS COPYING INSTALL \
 	     INSTALL-ja README README-es README-ja NEWS THANKS TODO \
 	     HACKING HACKING-ja
 
-EXTRA_DIST = $(etc_DATA) maintMakefile namazu.spec namazu.spec.in
+EXTRA_DIST = $(etc_DATA) maintMakefile namazu.spec namazu.spec.in \
+	     config.rpath mkinstalldirs
 
 
 EXTRA_DIRS = $(DIST_TKNAMAZU) File-MMagic
@@ -45,3 +46,5 @@ dist-hook:
 
 ##Bug in automake: Can't use `if MAINTAINER_MODE'
 @MAINTAINER_MODE_TRUE@include $(srcdir)/maintMakefile
+
+ACLOCAL_AMFLAGS = -I m4

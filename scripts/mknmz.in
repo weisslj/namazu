@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.131 2004-02-01 15:01:25 usu Exp $
+# $Id: mknmz.in,v 1.132 2004-03-04 10:44:24 knok Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -1622,9 +1622,7 @@ sub show_usage () {
     util::dprint(_("lang_msg: ")."$util::LANG_MSG\n");
     util::dprint(_("lang: ")."$util::LANG\n");
 
-    # To know why we should do this, see usage.pl.
     my $usage = $usage::USAGE;
-    $usage =~ s/\n\n/\n/g; 
     $usage = _($usage);
     printf "$usage", $var::VERSION, $var::MAILING_ADDRESS;
 }

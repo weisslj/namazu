@@ -1,5 +1,5 @@
 # -*- Perl -*-
-# $Id: usage.pl,v 1.28 2004-02-03 14:14:46 usu Exp $
+# $Id: usage.pl,v 1.29 2004-03-04 10:44:21 knok Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -31,66 +31,66 @@ sub N_ {
 }
 
 #
-# To deceive xgettext, add fake "\n\" at the end of each line.
-# This "\n\" is handled in mknmz's show_usage().
+# Fake "\n\" was removed because gettext 0.13 supports perl string.
+# (2004/03/04 knok)
 #
-$USAGE = N_("mknmz %s, an indexer of Namazu.\n\
-\n\
-Usage: mknmz [options] <target>...\n\
-\n\
-Target files:\n\
-  -a, --all                target all files.\n\
-  -t, --media-type=MTYPE   set the media type for all target files to MTYPE.\n\
-  -h, --mailnews           same as --media-type='message/rfc822'\n\
-      --mhonarc            same as --media-type='text/html; x-type=mhonarc'\n\
-  -F, --target-list=FILE   load FILE which contains a list of target files.\n\
-      --allow=PATTERN      set PATTERN for file names which should be allowed.\n\
-      --deny=PATTERN       set PATTERN for file names which should be denied.\n\
-      --exclude=PATTERN    set PATTERN for pathnames which should be excluded.\n\
-  -e, --robots             exclude HTML files containing\n\
-                           <meta name=\"ROBOTS\" content=\"NOINDEX\">\n\
-  -M, --meta               handle HTML meta tags for field-specified search.\n\
-  -r, --replace=CODE       set CODE for replacing URI.\n\
-      --html-split         split an HTML file with <a name=\"...\"> anchors.\n\
-      --mtime=NUM          limit by mtime just like find(1)'s -mtime option.\n\
-                           e.g., -50 for recent 50 days, +50 for older than 50.\n\
-\n\
-Morphological Analysis:\n\
-  -c, --use-chasen         use ChaSen for analyzing Japanese.\n\
-  -k, --use-kakasi         use KAKASI for analyzing Japanese.\n\
-  -m, --use-chasen-noun    use ChaSen for extracting only nouns.\n\
-  -L, --indexing-lang=LANG index with language specific processing.\n\
-\n\
-Text Operations:\n\
-  -E, --no-edge-symbol     remove symbols on edge of word.\n\
-  -G, --no-okurigana       remove Okurigana in word.\n\
-  -H, --no-hiragana        ignore words consist of Hiragana only.\n\
-  -K, --no-symbol          remove symbols.\n\
-      --decode-base64      decode base64 bodies within multipart entities.\n\
-\n\
-Summarization:\n\
-  -U, --no-encode-uri      do not encode URI.\n\
-  -x, --no-heading-summary do not make summary with HTML's headings.\n\
-\n\
-Index Construction:\n\
-      --update=INDEX       set INDEX for updating.\n\
-  -Y, --no-delete          do not detect removed documents.\n\
-  -Z, --no-update          do not detect update and deleted documents.\n\
-\n\
-Miscellaneous:\n\
-  -s, --checkpoint         turn on the checkpoint mechanism.\n\
-  -C, --show-config        show the current configuration.\n\
-  -f, --config=FILE        use FILE as a config file.\n\
-  -I, --include=FILE       include your customization FILE.\n\
-  -O, --output-dir=DIR     set DIR to output the index.\n\
-  -T, --template-dir=DIR   set DIR having NMZ.{head,foot,body}.*.\n\
-  -q, --quiet              suppress status messages during execution.\n\
-  -v, --version            show the version of namazu and exit.\n\
-  -V, --verbose            be verbose.\n\
-      --debug              be debug mode.\n\
-      --help               show this help and exit.\n\
-\n\
-Report bugs to <%s>.\n\
+$USAGE = N_("mknmz %s, an indexer of Namazu.
+
+Usage: mknmz [options] <target>...
+
+Target files:
+  -a, --all                target all files.
+  -t, --media-type=MTYPE   set the media type for all target files to MTYPE.
+  -h, --mailnews           same as --media-type='message/rfc822'
+      --mhonarc            same as --media-type='text/html; x-type=mhonarc'
+  -F, --target-list=FILE   load FILE which contains a list of target files.
+      --allow=PATTERN      set PATTERN for file names which should be allowed.
+      --deny=PATTERN       set PATTERN for file names which should be denied.
+      --exclude=PATTERN    set PATTERN for pathnames which should be excluded.
+  -e, --robots             exclude HTML files containing
+                           <meta name=\"ROBOTS\" content=\"NOINDEX\">
+  -M, --meta               handle HTML meta tags for field-specified search.
+  -r, --replace=CODE       set CODE for replacing URI.
+      --html-split         split an HTML file with <a name=\"...\"> anchors.
+      --mtime=NUM          limit by mtime just like find(1)'s -mtime option.
+                           e.g., -50 for recent 50 days, +50 for older than 50.
+
+Morphological Analysis:
+  -c, --use-chasen         use ChaSen for analyzing Japanese.
+  -k, --use-kakasi         use KAKASI for analyzing Japanese.
+  -m, --use-chasen-noun    use ChaSen for extracting only nouns.
+  -L, --indexing-lang=LANG index with language specific processing.
+
+Text Operations:
+  -E, --no-edge-symbol     remove symbols on edge of word.
+  -G, --no-okurigana       remove Okurigana in word.
+  -H, --no-hiragana        ignore words consist of Hiragana only.
+  -K, --no-symbol          remove symbols.
+      --decode-base64      decode base64 bodies within multipart entities.
+
+Summarization:
+  -U, --no-encode-uri      do not encode URI.
+  -x, --no-heading-summary do not make summary with HTML's headings.
+
+Index Construction:
+      --update=INDEX       set INDEX for updating.
+  -Y, --no-delete          do not detect removed documents.
+  -Z, --no-update          do not detect update and deleted documents.
+
+Miscellaneous:
+  -s, --checkpoint         turn on the checkpoint mechanism.
+  -C, --show-config        show the current configuration.
+  -f, --config=FILE        use FILE as a config file.
+  -I, --include=FILE       include your customization FILE.
+  -O, --output-dir=DIR     set DIR to output the index.
+  -T, --template-dir=DIR   set DIR having NMZ.{head,foot,body}.*.
+  -q, --quiet              suppress status messages during execution.
+  -v, --version            show the version of namazu and exit.
+  -V, --verbose            be verbose.
+      --debug              be debug mode.
+      --help               show this help and exit.
+
+Report bugs to <%s>.
 ");
 
 ##

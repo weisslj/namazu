@@ -24,9 +24,9 @@ If you want to build Namazu via CVS, you need to install
 the following packages:
 
 	- GNU m4 1.4
-	- GNU autoconf 2.13 (or later)
-	- GNU automake 1.4 (or later)
-	- GNU libtool 1.3 (or later)
-	- GNU gettext 0.10.35 (or later)
+	- GNU autoconf 2.50 (or later)
+	- GNU automake 1.6 (or later)
+	- GNU libtool 1.4 (or later)
+	- GNU gettext 0.13 (or later)
 
 After check out, run ./autogen.sh at top of the source tree.

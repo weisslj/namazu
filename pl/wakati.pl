@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: wakati.pl,v 1.13 2004-02-23 16:25:43 opengl2772 Exp $
+# $Id: wakati.pl,v 1.14 2004-03-04 10:44:21 knok Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -54,7 +54,8 @@ sub wakatize_japanese ($) {
     # Collect only noun words when -m option is specified.
     if ($var::Opt{'noun'}) {
 	$$content = "";
-	$$content .= shift(@tmp) =~ /(.+ )Ì¾»ì/ ? $1 : "" while @tmp; 
+	$$content .= shift(@tmp) =~ /(.+ )\xcc\xbe\xbb\xec/ ? $1 : "" while @tmp; 
+	# noun (meisi) in Japanese "cc be bb ec"
     } else {
 	$$content = join("\n", @tmp);
     }

@@ -23,7 +23,7 @@ DEFS = -DLOCALEDIR=\"$(localedir)\" \
        -DHAVE_SUPPORT_H \
        @DEFS@
 INCLUDES  = -I.. -I$(top_builddir)/intl -I$(srcdir)/../lib -I$(srcdir)/../nmz
-LDADD = @INTLLIBS@ $(top_builddir)/nmz/libnmz.la $(top_builddir)/lib/libnmzut.a 
+LDADD = @LTLIBINTL@ $(top_builddir)/nmz/libnmz.la $(top_builddir)/lib/libnmzut.a 
 
 common_sources = form.c form.h message.h \
 		 namazu.c namazu.h output.c output.h rcfile.c rcfile.h \

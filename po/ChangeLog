@@ -1,3 +1,7 @@
+2000-01-29  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* POTFILES.in: Add pl/usage.pl
+
 2000-01-28  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* POTFILES.in: Remove pl/find.pl

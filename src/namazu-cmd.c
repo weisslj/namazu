@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu-cmd.c,v 1.5 2000-01-28 09:40:21 satoru Exp $
+ * $Id: namazu-cmd.c,v 1.6 2000-01-29 02:33:45 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -254,9 +254,6 @@ parse_options(int argc, char **argv)
 	    }
 	    show_rcfile();
 	    exit(EXIT_SUCCESS);
-	    break;
-	case 'L':
-	    nmz_set_lang(optarg);
 	    break;
 	case 'o':
 	    stdio2file(optarg);

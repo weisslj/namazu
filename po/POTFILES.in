@@ -12,3 +12,4 @@ src/usage.c
 scripts/mknmz.pl.in
 pl/util.pl
 pl/wakati.pl
+pl/usage.pl

@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.18 2000-01-28 12:39:10 satoru Exp $
+# $Id: mknmz.pl.in,v 1.19 2000-01-29 02:33:44 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -835,7 +835,6 @@ sub parse_options ()
 	       'H|no-hiragana'       => \$var::Opt{'hiragana'},
 	       'I|include=s'         => \$include_file,
 	       'K|no-symbol'         => \$var::Opt{'nosymbol'},
-	       'L|lang=s'            => \$LANG,
 	       'M|meta'              => \$var::Opt{'meta'},
 	       'O|output-dir=s'      => \$output_dir,
 	       'S|checkpoint-sub'    => \$opt_checkpoint_sub,
@@ -1111,16 +1110,11 @@ sub find_target (@) {
 sub show_usage () {
     util::dprint(_("lang: ")."$LANG\n");
 
-    if (util::islang("ja")) {
-	if ($CCS eq "euc") {
-	    print $usage::USAGE_JA;
-	} elsif ($CCS eq "sjis") {
-	    my $msg = codeconv::eucjp_to_shiftjis($usage::USAGE_JA);
-	    print $msg;
-	}
-    } else {
-	print $usage::USAGE_EN;
-    }
+    # To know why we should do this, see usage.pl.
+    my $usage = $usage::USAGE;
+    $usage =~ s/\n\n/\n/g; 
+    $usage = _($usage);
+    printf "$usage", $var::VERSION, $var::MAILING_ADDRESS;
 }
 
 sub show_mini_usage () {
@@ -2073,12 +2067,12 @@ muda($conf::ON_MEMORY_MAX,
      $conf::CHASEN_MORPH, $conf::CHASEN,
      $conf::KAKASI, $var::Opt{'okurigana'},
      $var::Opt{'hiragana'}, $conf::ROBOTS_EXCLUDE_URLS, $conf::DEFAULT_FILE,
-     $conf::HTML_SUFFIX, $usage::USAGE_EN, 
+     $conf::HTML_SUFFIX, $usage::USAGE, 
      $var::Opt{'noheadabst'}, $usage::VERSION_INFO,
      $var::Opt{'noencodeurl'}, $var::Opt{'htaccessexclude'}, 
      $var::RECURSIVE_ACTIONS, $conf::ROBOTS_EXCLUDE_URIS, 
      $conf::ROBOTS_EXCLUDE_URLS, $conf::META_TAGS, $var::USE_NKF_MODULE,
-     $conf::ADDRESS
+     $conf::ADDRESS, $var::MAILING_ADDRESS
      );
 
 sub muda(@) {}

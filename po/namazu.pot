@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2000-01-28 21:37+0900\n"
+"POT-Creation-Date: 2000-01-29 11:31+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -199,18 +199,17 @@ msgid ""
 "    -C, --show-config    print current configuration.\n"
 "    -q, --quiet          do not display extra messages except search "
 "results.\n"
-"    -L, --lang=lang      set language (ja or en)\n"
 "    -v, --version        show the version of namazu and exit.\n"
 "        --help           show this help and exit\n"
 "\n"
 "Report bugs to <%s>.\n"
 msgstr ""
 
-#: src/usage.c:89
+#: src/usage.c:88
 msgid "Usage: namazu [options] <query> [index]...\n"
 msgstr ""
 
-#: src/usage.c:90
+#: src/usage.c:89
 msgid "Try `namazu --help' for more information.\n"
 msgstr ""
 
@@ -234,7 +233,7 @@ msgstr ""
 msgid "Detected type: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:613 scripts/mknmz.pl.in:1148
+#: scripts/mknmz.pl.in:613 scripts/mknmz.pl.in:1141
 msgid "Unsupported data type "
 msgstr ""
 
@@ -250,7 +249,7 @@ msgstr ""
 msgid "Faild to call "
 msgstr ""
 
-#: scripts/mknmz.pl.in:669 scripts/mknmz.pl.in:1279
+#: scripts/mknmz.pl.in:669 scripts/mknmz.pl.in:1272
 msgid "No files to index.\n"
 msgstr ""
 
@@ -276,211 +275,211 @@ msgstr ""
 msgid "Present index is old type. it's unsupported.\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:892
+#: scripts/mknmz.pl.in:891
 msgid "Inherited argv: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:896
+#: scripts/mknmz.pl.in:895
 msgid "Inherited cwd: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:937
+#: scripts/mknmz.pl.in:936
 msgid "Loaded: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:952
+#: scripts/mknmz.pl.in:951
 msgid "Invalid replace: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:954
+#: scripts/mknmz.pl.in:953
 msgid "Replace: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:963
+#: scripts/mknmz.pl.in:962
 msgid "invalid output directory\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1052
+#: scripts/mknmz.pl.in:1051
 msgid " findfiles starting: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:1087
+#: scripts/mknmz.pl.in:1086
 msgid "wanted: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:1103
+#: scripts/mknmz.pl.in:1102
 msgid "findfiles    ended: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:1104
+#: scripts/mknmz.pl.in:1103
 #, c-format
 msgid ""
 "Target Files: %d (Scan Performance: Elapsed Sec.: %d, Files/sec: %.1f)\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1112
+#: scripts/mknmz.pl.in:1111
 msgid "lang: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:1127
+#: scripts/mknmz.pl.in:1120
 msgid "Usage: mknmz [options] <target>...\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1128
+#: scripts/mknmz.pl.in:1121
 msgid "Try `mknmz --help' for more information.\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1141
+#: scripts/mknmz.pl.in:1134
 msgid "is 0 size! skipped."
 msgstr ""
 
-#: scripts/mknmz.pl.in:1143
+#: scripts/mknmz.pl.in:1136
 msgid "may be a BINARY file! skipped."
 msgstr ""
 
-#: scripts/mknmz.pl.in:1145
+#: scripts/mknmz.pl.in:1138
 msgid "is too LARGE a text! skipped."
 msgstr ""
 
-#: scripts/mknmz.pl.in:1148
+#: scripts/mknmz.pl.in:1141
 msgid " skipped."
 msgstr ""
 
-#: scripts/mknmz.pl.in:1153
+#: scripts/mknmz.pl.in:1146
 msgid "system error occurred! "
 msgstr ""
 
-#: scripts/mknmz.pl.in:1353
+#: scripts/mknmz.pl.in:1346
 msgid ""
 "\n"
 "\n"
 "== found ==\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1354
+#: scripts/mknmz.pl.in:1347
 msgid ""
 "\n"
 "\n"
 "== registered ==\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1355
+#: scripts/mknmz.pl.in:1348
 msgid ""
 "\n"
 "\n"
 "== overlapped  ==\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1356
+#: scripts/mknmz.pl.in:1349
 msgid ""
 "\n"
 "\n"
 "== deleted  ==\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1357
+#: scripts/mknmz.pl.in:1350
 msgid ""
 "\n"
 "\n"
 "== updated ==\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1358
+#: scripts/mknmz.pl.in:1351
 msgid ""
 "\n"
 "\n"
 "== files to index ==\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1382
+#: scripts/mknmz.pl.in:1375
 msgid "## deleted: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:1405
+#: scripts/mknmz.pl.in:1398
 msgid "## indexed: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:1431
+#: scripts/mknmz.pl.in:1424
 msgid "update_field_index: "
 msgstr ""
 
-#: scripts/mknmz.pl.in:1451
+#: scripts/mknmz.pl.in:1444
 msgid "was updated!\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1492
+#: scripts/mknmz.pl.in:1485
 msgid "ERROR: malformed NMZ.r format!\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1574
+#: scripts/mknmz.pl.in:1567
 msgid "[Append]"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1576
+#: scripts/mknmz.pl.in:1569
 msgid "[Base]"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1578
+#: scripts/mknmz.pl.in:1571
 msgid "Date:"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1579
+#: scripts/mknmz.pl.in:1572
 msgid "Added Documents:"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1581
+#: scripts/mknmz.pl.in:1574
 msgid "Deleted Documents:"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1583
+#: scripts/mknmz.pl.in:1576
 msgid "Updated Documents:"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1585
+#: scripts/mknmz.pl.in:1578
 msgid "Size (bytes):"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1587
+#: scripts/mknmz.pl.in:1580
 msgid "Total Documents:"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1589
+#: scripts/mknmz.pl.in:1582
 msgid "Added Keywords:"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1591
+#: scripts/mknmz.pl.in:1584
 msgid "Total Keywords:"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1593
+#: scripts/mknmz.pl.in:1586
 msgid "Wakati:"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1594
+#: scripts/mknmz.pl.in:1587
 msgid "Time (sec):"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1595
+#: scripts/mknmz.pl.in:1588
 msgid "File/Sec:"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1598
+#: scripts/mknmz.pl.in:1591
 msgid "System:"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1599
+#: scripts/mknmz.pl.in:1592
 msgid "Perl:"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1600
+#: scripts/mknmz.pl.in:1593
 msgid "Namazu:"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1725
+#: scripts/mknmz.pl.in:1718
 msgid "doing write_phrase_hash() processing.\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1952
+#: scripts/mknmz.pl.in:1945
 msgid "doing write_index() processing.\n"
 msgstr ""
 
@@ -514,4 +513,66 @@ msgstr ""
 
 #: pl/wakati.pl:81
 msgid "wakati: using "
+msgstr ""
+
+#: pl/usage.pl:37
+#, c-format
+msgid ""
+"mknmz %s, an indexer of Namazu.\n"
+"\n"
+"Usage: mknmz [options] <target>...\n"
+"\n"
+"Target files:\n"
+"  -a, --all                target all files.\n"
+"  -e, --robots-txt         exclude files which is excluded by robots.txt.\n"
+"  -t, --media-type=mtype   set a media type for all target files "
+"explicitly.\n"
+"  -h, --mailnews           same as --media-type='message/rfc822'\n"
+"      --mhonarc            same as --media-type='text/html; x-type=mhonarc'\n"
+"  -A, --htaccess           exclude files restricted by .htaccess.\n"
+"  -F, --target-list=file   load a file which contains list of target files.\n"
+"      --allow=regex        set a regex for file names which will be "
+"allowed.\n"
+"      --deny=regex         set a regex for file names which will be denied.\n"
+"      --exclude=regex      set a regex for pathnames which will be "
+"excluded.\n"
+"  -M, --meta               handle HTML meta tags for field-specified "
+"search.\n"
+"  -r, --replace=code       set a code for replacing URI.\n"
+"      --mtime=int          limit by date, ( minus number for recent, i.e.,\n"
+"                           -50 for recent 50 days, 50 for older than 50.)\n"
+"\n"
+"Morphological Analysis:\n"
+"  -c, --use-chasen         use ChaSen for analyzing Japanese.\n"
+"  -k, --use-kakasi         use KAKASI for analyzing Japanese.\n"
+"  -m, --use-chasen-morph   use ChaSen for collecting only nouns.\n"
+"\n"
+"Text Operations:\n"
+"  -E, --no-edge-symbol     remove symbols on edge of word.\n"
+"  -G, --no-okurigana       remove Okurigana in word.\n"
+"  -H, --no-hiragana        ignore words consist of Hiragana only.\n"
+"  -K, --no-symbol          remove symbols.\n"
+"\n"
+"Summarization:\n"
+"  -U, --no-encode-uri      do not encode URI.\n"
+"  -x, --no-heading-summary do not make summary with HTML's headings.\n"
+"\n"
+"Index Construction:\n"
+"      --update=index       set an index for updating.\n"
+"  -Y, --no-delete          do not detect removed documents.\n"
+"  -Z, --no-update          do not detect update and deleted documents.\n"
+"\n"
+"Miscellaneous:\n"
+"  -s, --checkpoint         turn on the checkpoint mechanism.\n"
+"  -f, --config=file        set a pathname of a config file.\n"
+"  -I, --include=file       include your customization file.\n"
+"  -O, --output-dir=dir     set a directory to output the index.\n"
+"  -T, --template-dir=dir   set a directory having NMZ.{head,foot,body}.*.\n"
+"  -q, --quiet              suppress status messages during execution.\n"
+"  -v, --version            show the version of namazu and exit.\n"
+"  -V, --verbose            be verbose.\n"
+"      --debug              be debug mode.\n"
+"      --help               show this help and exit.\n"
+"\n"
+"Report bugs to <%s>.\n"
 msgstr ""

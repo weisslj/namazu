@@ -2,7 +2,7 @@
  * 
  * usage.c -
  * 
- * $Id: usage.c,v 1.23 2000-01-28 09:40:22 satoru Exp $
+ * $Id: usage.c,v 1.24 2000-01-29 02:33:45 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -72,7 +72,6 @@ Usage: namazu [options] <query> [index]... \n\
     -f, --config=file    set a pathname of a config file.\n\
     -C, --show-config    print current configuration.\n\
     -q, --quiet          do not display extra messages except search results.\n\
-    -L, --lang=lang      set language (ja or en)\n\
     -v, --version        show the version of namazu and exit.\n\
         --help           show this help and exit\n\
 \n\

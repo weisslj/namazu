@@ -1,3 +1,15 @@
+2000-01-29  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* scripts/mknmz.pl.in (show_usage): Gettextized.
+
+	* pl/usage.pl: Gettextized.
+
+	* scripts/mknmz.pl.in (parse_options): Abolish --lang option.
+
+	* src/namazu-cmd.c (parse_options): Abolish --lang option.
+
+	* src/usage.c (show_usage): Ditto.
+
 2000-01-29  Ryuji Abe  <raeva@t3.rim.or.jp>
 
 	* acinclude.m4 (AM_PATH_LISPDIR): Do not AC_SUBST(emacsdir).
@@ -10,7 +22,7 @@
 	* scripts/mknmz.pl.in (put_log): Getteztized.
 	s/Files/Documents/g.
 
-	* pl/gettext.pl (N_): New function.
+	* pl/gettext.pl.in (N_): New function.
 
 	* scripts/mknmz.pl.in (find_target): Change a message.
 	(load_modules): Do not require find.pl.

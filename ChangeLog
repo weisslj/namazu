@@ -1,3 +1,7 @@
+2004-03-20  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* nmz/util.c (nmz_decode_uri): Added terminator check.
+
 2004-03-20  Yukio USUDA <usu@namazu.org>
 
 	* filter/mp3.pl: Fix a warning. "Use of uninitialized value."
@@ -8615,4 +8619,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1126 2004-03-20 03:10:05 usu Exp $
+$Id: ChangeLog,v 1.1127 2004-03-20 13:46:11 knok Exp $

@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: util.c,v 1.87 2004-02-21 12:16:27 opengl2772 Exp $
+ * $Id: util.c,v 1.88 2004-03-20 13:46:11 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -492,8 +492,10 @@ nmz_decode_uri(char *str)
     int i, j;
     for (i = j = 0; str[i]; i++, j++) {
 	if (str[i] == '%') {
-	    str[j] = decode_uri_sub(str[i + 1], str[i + 2]);
-	    i += 2;
+	    if (str[i+1] != 0 && str[i+2] != 0) {
+		str[j] = decode_uri_sub(str[i + 1], str[i + 2]);
+		i += 2;
+	    }
 	} else if (str[i] == '+') {
 	    str[j] = ' ';
 	} else {

@@ -5,6 +5,10 @@
 	about major changes from previous version, please see 
 	"manual.html#VERSIONDIFF".
 
+1999-08-13  Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>
+
+	* src/conf.c, src/namazu.c: Modify LIST implementations a bit.
+
 1999-08-12  masao@ulis.ac.jp (Masao Takaku)
 
 	* src/search.c: Fix TfIdf scoring bug.

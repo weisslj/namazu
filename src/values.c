@@ -2,7 +2,7 @@
  * 
  * values.c -
  * 
- * $Id: values.c,v 1.5 1999-08-12 06:59:39 masao Exp $
+ * $Id: values.c,v 1.6 1999-08-13 00:16:58 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -98,10 +98,10 @@ int TfIdf = 1;
 
 int AllDocumentN = 0;  /* number of all of documents */
 
-uchar KeyTable[BUFSIZE];		/* table which saving query */
+uchar KeyTable[BUFSIZE];		/* table saving queries */
 uchar *KeyItem[KEY_ITEM_MAX + 1];	/* pointers of items of query */
 uchar *DbNames[DB_MAX + 1];   /* name of databases */
 FILE *Index, *IndexIndex, *Phrase, *PhraseIndex;
 
 REPLACE Replace = { NULL, NULL };
-ALIAS   Alias   = { NULL, NULL };
+ALIAS   *Alias   = NULL;

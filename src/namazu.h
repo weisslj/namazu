@@ -11,7 +11,6 @@
 
 typedef unsigned char uchar;	/* unsigned char to uchar */
 
-
 #define ESC 0x1b
 #define ASCII "\x1b(B"
 #define NEWJIS_K "\x1b$B"
@@ -30,37 +29,53 @@ typedef unsigned char uchar;	/* unsigned char to uchar */
 
 #define is_lang_ja(a) (!strcmp(a,"ja"))
 
-#define TOO_MUCH_MATCH -1
-#define TOO_MUCH_HIT -2
-#define REGEX_SEARCH_FAILED -3
-#define PHRASE_SEARCH_FAILED -4
+enum {
+    TOO_MUCH_MATCH = -1,
+    TOO_MUCH_HIT = -2,
+    REGEX_SEARCH_FAILED = -3,
+    PHRASE_SEARCH_FAILED = -4,
 
+    KEY_ITEM_MAX =  16,	 /* Max number of tokens in a query */
+    PAGE_MAX = 20,	 /* Max number of result pages */
+    IGNORE_HIT = 10000,	 /* Igreno if pages matched more than this */
+    IGNORE_MATCH = 1000, /* Ignore if words matched more than this */
+    HLIST_MAX_MAX = 100, /* Max number of result displays at once */
+    DB_MAX = 64,         /* Max number of databases */
+    QUERY_STRING_MAX_LENGTH = 1024, /* Max length of a CGI query */
+    DBNAMELENG_MAX = 256,
+    QUERY_MAX_LENGTH = 256,
 
-#define KEY_ITEM_MAX   16	/* 検索式の項目の最大数 */
-#define SCORE_LINE      1	/* スコア表示をする行の番号 */
-#define ABSTRACT_LINE   2	/* 文書の頭の方(要約)を表示する行の番号 */
-#define PAGE_MAX       20	/* 検索結果出力のページの最大数 */
-#define IGNORE_HIT  10000	/* ヒットした項目がこれより多いと無視する */
-#define IGNORE_MATCH 1000	/* これより単語が多くマッチしたら無視する */
-#define HLIST_MAX_MAX  100	/* 一度につきの結果表示の最大数の最大数 */
-#define DB_MAX          64       /* データベースの最大数 */
-#define QUERY_STRING_MAX_LENGTH 1024 /* CGIのクエリーの最大長 */
-#define DBNAMELENG_MAX 256
-#define QUERY_MAX_LENGTH 256
-
-#define STDIN 0			/* 標準入力の fd */
-#define STDOUT 1		/* 標準出力の fd */
-#define STDERR 2		/* 標準エラー出力の fd */
+    STDIN  = 0,		/* stdin's fd */
+    STDOUT = 1,		/* stdout's fd */
+    STDERR = 2		/* stderr's fd */
+};
 
 /* data structure for search result */
 struct hlist {
     int n;
-    int *scr;
-    int *fid;
-    int *did;
-    int *date;
+    int *scr;  /* score */
+    int *fid;  /* file ID */
+    int *did;  /* database (index) ID */
+    int *date; /* file's date */
 };
 typedef struct hlist HLIST;
+
+struct replace_elem {
+    struct replace_elem *next;
+    uchar *src;
+    uchar *dst;
+    /* The following fields are NULL if this is a traditional
+     * string substitution
+     */
+    struct re_pattern_buffer *src_exp;
+    struct subst_elem {
+	enum { literal, regex_regno } subst_type;
+	union {
+	    uchar *literal_string;
+	    int regex_regno;
+        } u;
+    };
+};
 
 struct list {
     uchar *str;
@@ -75,13 +90,14 @@ struct replace {
 typedef struct replace REPLACE;
 
 struct alias {
-    LIST *alias;
-    LIST *real;
+    uchar *alias;
+    uchar *real;
+    struct alias *next;
 };
 typedef struct alias ALIAS;
 
 
-/* メッセージ */
+/* messages */
 extern uchar *MSG_USAGE, *MSG_TOO_LONG_KEY, *MSG_TOO_MANY_KEYITEM,
 *MSG_QUERY_STRING_TOO_LONG, *MSG_RESULT_HEADER, *MSG_NO_HIT, *MSG_HIT_1, 
 *MSG_HIT_2, *MSG_TOO_MUCH_HIT, *MSG_TOO_MUCH_MATCH, *MSG_INDEXDIR_ERROR,
@@ -92,7 +108,7 @@ extern uchar *MSG_USAGE, *MSG_TOO_LONG_KEY, *MSG_TOO_MANY_KEYITEM,
 /* extern uchar *VERSION; */
 extern uchar *COPYRIGHT;
 
-/* グローバル変数 */
+/* global variables */
 extern int HListMax;
 extern int HListWhence;
 extern int Debug;
@@ -151,9 +167,9 @@ extern uchar PHRASE[];
 extern uchar PHRASEINDEX[];
 
 extern REPLACE Replace;
-extern ALIAS   Alias;
+extern ALIAS   *Alias;
 
-/* 関数 */
+/* functions */
 uchar jmstojis(uchar, uchar);
 void jistoeuc();
 void sjistoeuc();

@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.7 1999-06-13 06:54:52 satoru Exp $
+ * $Id: namazu.c,v 1.8 1999-08-13 00:16:58 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -193,7 +193,6 @@ int parse_options(int argc, char **argv)
 	    exit(0);
 	    break;
 	case 'C':
-	    load_namazu_conf(argv[0]);
 	    show_configuration();
 	    break;
 	case 'f':
@@ -336,18 +335,17 @@ void expand_dbname_aliases(void)
     int i;
 
     for (i = 0; i < DbNumber; i++) {
-	ALIAS list = Alias;
-	while (list.alias) {
-	    if (!strcmp(DbNames[i], list.alias->str)) {
+	ALIAS *list = Alias;
+	while (list) {
+	    if (strcmp(DbNames[i], list->alias) == 0) {
 		free(DbNames[i]);
-		DbNames[i] = (uchar *) malloc(strlen(list.real->str) + 1);
+		DbNames[i] = (uchar *) malloc(strlen(list->real) + 1);
 		if (DbNames[i] == NULL) {
 		    error("expand_dbname_aliases: malloc()");
 		}
-		strcpy(DbNames[i], list.real->str);
+		strcpy(DbNames[i], list->real);
             }
-	    list.alias = list.alias->next;
-	    list.real  = list.real->next;
+	    list = list->next;
 	}
     }
 }
@@ -394,8 +392,9 @@ int main(int argc, char **argv)
 	HidePageIndex = 1;	/* in default mode of command line, 
 				 * do not diplay page index
 				 */
+
 	load_namazu_conf(argv[0]);
-        /* parse commad line options */
+
 	i = parse_options(argc, argv); 
 	if (i == argc) {
 	    show_usage();

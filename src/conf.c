@@ -2,7 +2,7 @@
  * 
  * conf.c -
  * 
- * $Id: conf.c,v 1.4 1999-06-12 14:29:29 satoru Exp $
+ * $Id: conf.c,v 1.5 1999-08-13 00:16:58 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -58,13 +58,12 @@ void show_configuration()
 	}
     }
     {
-	ALIAS list = Alias;
+	ALIAS *list = Alias;
 
-	while (list.alias) {
+	while (list) {
 	    printf("  * ALIAS      : \"%s\" -> \"%s\"\n", 
-		   list.alias->str, list.real->str);
-	    list.alias = list.alias->next;
-	    list.real  = list.real->next;
+		   list->alias, list->real);
+	    list = list->next;
 	}
     }
 
@@ -130,6 +129,32 @@ FILE *open_conf_file(char *av0)
     return (FILE *) NULL;
 }
 
+ALIAS *add_alias(ALIAS *ptr, uchar *alias, uchar *real)
+{
+    ALIAS *tmp;
+    
+    tmp = malloc(sizeof *tmp);
+    if (tmp == NULL) {
+	 error("add_alias_malloc");
+    }
+    tmp->alias = malloc(strlen(alias) + 1);
+    if (tmp->alias == NULL) {
+	 error("add_alias_malloc");
+    }
+
+    tmp->real = malloc(strlen(real) + 1);
+    if (tmp->alias == NULL) {
+	 error("add_alias_malloc");
+    }
+
+    strcpy(tmp->alias, alias);
+    strcpy(tmp->real, real);
+    tmp->next = ptr;
+    return tmp;
+}
+
+
+
 /* loading configuration file of Namazu */
 void load_namazu_conf(char *av0)
 {
@@ -178,9 +203,8 @@ void load_namazu_conf(char *av0)
 		tmp[i] = buf[n];
 	    }
 	    tmp[i] = '\0';
-	    Alias.alias = add_list(Alias.alias, tmp);
 	    for (; buf[n] == '\t'; n++);
-	    Alias.real = add_list(Alias.real, buf + n);
+	    Alias = add_alias(Alias, tmp, buf + n);
 	} else if (!strncmp(buf, "LOGGING\t", 8)) {
 	    for (n = 8; buf[n] == '\t'; n++);
 	    if (!strncmp(&buf[n], "OFF", 3))

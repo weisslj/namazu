@@ -1,12 +1,12 @@
 #
 # -*- Perl -*-
-# $Id: hnf.pl,v 1.8 2000-10-14 11:36:17 kenji Exp $
+# $Id: hnf.pl,v 1.9 2001-01-14 13:38:35 kenji Exp $
 #
-# HNF Filter for Namazu 2.0
-# version 0.9.12
-# 2000/10/14  Kenji Suzuki <kenji@h14m.org>
+# hnf filter for Namazu 2.0
+# version 0.9.14
+# 2001/1/14  Kenji Suzuki <kenji@h14m.org>
 #
-# Copyright (C) 1999,2000  Kenji Suzuki, HyperNikkiSystem Project
+# Copyright (C) 1999-2001  Kenji Suzuki, HyperNikkiSystem Project
 # All rights reserved.
 #
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -214,28 +214,34 @@ sub get_uri ($$) {
     my ($cfile, $fields) = @_;
 
     my ($uri);
+    my (%param);
     if ($cfile =~ /^(.*)\/d(\d\d\d\d*)([0-1]\d)([0-3])(\d)\.hnf$/) {
-      my $year = $2;
-      my $month = $3;
-      my $day = $4 . $5;
-      my $hiday = $4;
-      my $abc;
-      if ($day < 11) {
-        $abc = "a";
+      $param{'year'} = $2;
+      $param{'month'} = $3;
+      $param{'day'} = $4 . $5;
+      $param{'hiday'} = $4;
+      if ($param{'day'} < 11) {
+        $param{'abc'} = "a";
       }
-      elsif ($day < 21) {
-        $abc = "b";
-      }
-      else {
-        $abc = "c";
-      }
-      if ($hnf::hns_version >= 2) {
-        $uri = "?$year$month$abc#$year$month$day"; # for hns-2.00 or later
+      elsif ($param{'day'} < 21) {
+        $param{'abc'} = "b";
       }
       else {
-        $uri = "?$year$month$hiday#$year$month$day"; # for hns-1.x
+        $param{'abc'} = "c";
       }
-      $uri = $hnf::diary_uri . $uri . "0";
+      if ($hnf::link_templ) {
+	$uri = $hnf::link_templ;
+      }
+      elsif ($hnf::hns_version >= 2) {
+        $uri = '?%year%month%abc#%year%month%day0'; # for hns-2.00 or later
+      }
+      else {
+        $uri = '?%year%month%hiday#%year%month%day0'; # for hns-1.x
+      }
+      $uri =~ s/%%/\34/g;
+      $uri =~ s/%{?([a-z]+)}?/$param{$1}/g;
+      $uri =~ s/\34/%/g;
+      $uri = $hnf::diary_uri . $uri;
       $uri =~ s/%7E/~/i;
     }
     $fields->{'uri'} = $uri;
@@ -261,8 +267,10 @@ sub make_summary ($$$$$) {
     my $tmp2 = $$contref;
 
     # hiding GRP section
-    while ($tmp2 =~ /\ncommand_GRP /) {
-        $tmp2 =~ s/\ncommand_GRP .*?\ncommand_/\ncommand_/gs if $hnf::grp_hide;
+    if ($hnf::grp_hide) {
+        while ($tmp2 =~ /\ncommand_GRP /) {
+            $tmp2 =~ s/\ncommand_GRP .*?\ncommand_/\ncommand_/gs;
+        }
     }
 
     $tmp2 =~ s/\ncommand_OK\n.*//s;	# remove below of command_OK

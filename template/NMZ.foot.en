@@ -1,7 +1,7 @@
 <hr>
 <p>
 This search system is powered by 
-<strong><a href="$conf::NMZ_URI">Namazu</a> <!-- VERSION --> v$conf::VERSION <!-- VERSION --></strong>
+<strong><a href="$var::NMZ_URI">Namazu</a> <!-- VERSION --> v$var::VERSION <!-- VERSION --></strong>
 </p>
 <address>
 <a href="mailto:$conf::ADMIN">$conf::ADMIN</a>

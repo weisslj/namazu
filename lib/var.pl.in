@@ -1,5 +1,5 @@
 # -*- CPerl -*-
-# $Id: var.pl.in,v 1.3 1999-08-28 09:26:17 satoru Exp $
+# $Id: var.pl.in,v 1.4 1999-08-30 03:13:19 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -39,55 +39,48 @@ $NMZ_URI = "http://openlab.ring.gr.jp/namazu/";
 ##
 
 $DBNAME     = "NMZ";
-%File = ();
-$File{INDEX}      = "$DBNAME.i";
-$File{INDEXINDEX} = "$DBNAME.ii";
-$File{REGISTRY}    = "$DBNAME.r";
-$File{HEADERFILE} = "$DBNAME.head";
-$File{FOOTERFILE} = "$DBNAME.foot";
-$File{LOGFILE}    = "$DBNAME.log";
-$File{SLOGFILE}   = "$DBNAME.slog";
-$File{LOCKFILE}   = "$DBNAME.lock";
-$File{LOCKFILE2}  = "$DBNAME.lock2";
-$File{LOCKMSGFILE} = "$DBNAME.msg";
-$File{BODYMSGFILE} = "$DBNAME.body";
-$File{ERRORSFILE} = "$DBNAME.err";
-$File{WORDLIST}    = "$DBNAME.w";
-$File{PHRASE}      = "$DBNAME.p";
-$File{PHRASEINDEX} = "$DBNAME.pi";
-$File{FIELDINFO}   = "$DBNAME.field";
-$File{FLIST}       = "$DBNAME.flist";
-$File{RESULTFILE} = "$DBNAME.result";
+%NMZ = ();
+$NMZ{i}      = "$DBNAME.i";
+$NMZ{ii} = "$DBNAME.ii";
+$NMZ{r}    = "$DBNAME.r";
+$NMZ{head} = "$DBNAME.head";
+$NMZ{foot} = "$DBNAME.foot";
+$NMZ{log}    = "$DBNAME.log";
+$NMZ{slog}   = "$DBNAME.slog";
+$NMZ{lock}   = "$DBNAME.lock";
+$NMZ{lock2}  = "$DBNAME.lock2";
+$NMZ{msg} = "$DBNAME.msg";
+$NMZ{body} = "$DBNAME.body";
+$NMZ{err} = "$DBNAME.err";
+$NMZ{w}    = "$DBNAME.w";
+$NMZ{p}      = "$DBNAME.p";
+$NMZ{pi} = "$DBNAME.pi";
+$NMZ{field}   = "$DBNAME.field";
+$NMZ{result} = "$DBNAME.result";
 
-$File{BIGENDIAN}  = "$DBNAME.be";
-$File{LITTLEENDIAN}  = "$DBNAME.le";
+$NMZ{t} = "$DBNAME.t";
 
-$File{DATEINDEX} = "$DBNAME.t";
+$NMZ{total} = "$DBNAME.total";
+$NMZ{keys}  = "$DBNAME.keys";
 
-$File{TOTALFILESCOUNT} = "$DBNAME.total";
-$File{TOTALKEYSCOUNT}  = "$DBNAME.keys";
+$NMZ{_t} = $NMZ{t};
+$NMZ{_i} = $NMZ{i};
+$NMZ{_p}     = $NMZ{p};
+$NMZ{_pi} = $NMZ{pi};
+$NMZ{_r} = $NMZ{r};
+$NMZ{_ii} = $NMZ{ii};
+$NMZ{_w} = $NMZ{w};
 
-$File{BODY_MSG_JA} = $File{BODYMSGFILE} . "ja";
-$File{BODY_MSG_EN} = $File{BODYMSGFILE} . "en";
-$File{DATEINDEX_} = $File{DATEINDEX};
-$File{INDEX_} = $File{INDEX};
-$File{HEADERFILE_} = $File{HEADERFILE};
-$File{FOOTERFILE_} = $File{FOOTERFILE};
-$File{PHRASE_}     = $File{PHRASE};
-$File{PHRASEINDEX_} = $File{PHRASEINDEX};
-$File{REGISTRY_} = $File{REGISTRY};
-$File{INDEXINDEX_} = $File{INDEXINDEX};
-$File{WORDLIST_} = $File{WORDLIST};
-$File{FLIST_} = $File{FLIST};
+$NMZ{_flist}       = "$DBNAME.flist";
+$NMZ{_checkpoint}     = "$DBNAME.checkpoint";
 
-$File{TMP_WAKATI} = "$DBNAME.wkc";
-$File{TMP_I}      = "$DBNAME.tmp_i";
-$File{TMP_W}      = "$DBNAME.tmp_w";
-$File{TMP_P}      = "$DBNAME.tmp_p";
-$File{TMP_PI}     = "$DBNAME.tmp_pi";
+$NMZ{__i}      = "$DBNAME.tmp_i";
+$NMZ{__w}      = "$DBNAME.tmp_w";
+$NMZ{__p}      = "$DBNAME.tmp_p";
+$NMZ{__pi}     = "$DBNAME.tmp_pi";
 
-$File{CHECKPOINT_}     = "$DBNAME.checkpoint";
 
+$OUTPUT_DIR = "";
 
 ################################################################
 ##

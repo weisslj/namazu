@@ -1,6 +1,6 @@
 #
 # -*- CPerl -*-
-# $Id: gfilter.pl,v 1.2 1999-08-29 02:57:45 satoru Exp $
+# $Id: gfilter.pl,v 1.3 1999-08-30 03:13:17 satoru Exp $
 # Copyright (C) 1999 Satoru Takabayashi ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -47,7 +47,7 @@ sub filename_to_title ($$) {
     my ($cfile, $weighted_str) = @_;
 
     # for MSWin32's filename using Shift_JIS [1998-09-24]
-    if (($namazu::SYSTEM eq "MSWin32") || ($namazu::SYSTEM eq "os2")) {
+    if (($mknmz::SYSTEM eq "MSWin32") || ($mknmz::SYSTEM eq "os2")) {
 	$cfile = codeconv::shiftjis_to_eucjp($cfile);
     }
     

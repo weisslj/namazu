@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: html.pl,v 1.9 1999-08-29 02:57:46 satoru Exp $
+# $Id: html.pl,v 1.10 1999-08-30 03:13:18 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -291,7 +291,7 @@ sub parse_robots_txt () {
 	    $url =~ s/\%/%25/g;  # 元から含まれる % は %25 に変更 v1.1.1.2
 	    $url =~ s/([^a-zA-Z0-9\-\_\.\/\:\%])/
 		sprintf("%%%02X",ord($1))/ge;
-	    if (($namazu::SYSTEM eq "MSWin32") || ($namazu::SYSTEM eq "os2")) {
+	    if (($mknmz::SYSTEM eq "MSWin32") || ($mknmz::SYSTEM eq "os2")) {
 		# restore '|' for drive letter rule of Win32, OS/2
 		$url =~ s!^/([A-Z])%7C!/$1|!i;
 	    }

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: find.pl,v 1.4 1999-08-28 02:43:15 satoru Exp $
+# $Id: find.pl,v 1.5 1999-08-30 03:13:19 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -45,7 +45,7 @@ sub find {
 	    if (chdir($topdir)) {
 		($dir,$_) = ($topdir,'.');
 		$name = $topdir;
-		namazu::wanted($name,$rarray);
+		mknmz::wanted($name,$rarray);
 		($fixtopdir = $topdir) =~ s!/$!! ;
 		finddir($fixtopdir,$topnlink,$rarray);
 	    }
@@ -57,7 +57,7 @@ sub find {
 		($dir,$_) = ('.', $topdir);
 	    }
 	    $name = $topdir;
-	    chdir $dir && namazu::wanted($name,$rarray);
+	    chdir $dir && mknmz::wanted($name,$rarray);
 	}
 	chdir $cwd;
     }
@@ -109,7 +109,7 @@ sub finddir {
 	for (@filenames) {
 	    $name = "$dir/$_";
 	    $nlink = 0;
-	    namazu::wanted($name,$rarray);
+	    mknmz::wanted($name,$rarray);
 	}
     }
     else {                    # This dir has subdirectories.
@@ -117,7 +117,7 @@ sub finddir {
 	for (@filenames) {
 	    $nlink = $prune = 0;
 	    $name = "$dir/$_";
-	    namazu::wanted($name,$rarray);
+	    mknmz::wanted($name,$rarray);
 	    if ($subcount > 0 || $dont_use_nlink) {    # Seen all the subdirs?
 
 		# Get link count and check for directoriness.

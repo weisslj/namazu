@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- CPerl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.38 1999-08-30 01:22:03 satoru Exp $
+# $Id: mknmz.pl.in,v 1.39 1999-08-30 03:13:20 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -24,7 +24,7 @@
 #  This file must be encoded in EUC-JP encoding
 #
 
-package namazu;
+package mknmz;
 require 5.004;
 use Cwd;
 use IO::File;
@@ -72,11 +72,11 @@ sub main () {
     my $processed_files_size = 0;
 
     # Restore variables
-    eval util::readfile($var::File{'CHECKPOINT_'}) if $CheckPoint{'continue'};
+    eval util::readfile($var::NMZ{_checkpoint}) if $CheckPoint{'continue'};
 
     {
-	my $fh_errorsfile = util::efopen(">>$var::File{'ERRORSFILE'}");
-	my $fh_flist = util::efopen($var::File{'FLIST_'});
+	my $fh_errorsfile = util::efopen(">>$var::NMZ{err}");
+	my $fh_flist = util::efopen($var::NMZ{_flist});
 	my %field_indices = ();
 	get_field_index_base(\%field_indices);
 
@@ -130,7 +130,7 @@ sub read_config() {
     push @cand, $conf2 if $TestMode;
 
     for my $conf (@cand) {
-	if (-e $conf) {
+	if (-f $conf) {
 	    print STDERR "\@\@ conf: $conf\n" if $TestMode;
 	    require $conf;
 	    return;
@@ -144,7 +144,7 @@ sub re_exec($$$$) {
 
     # store variables
     {
-	my $fh_checkpoint = util::efopen(">$var::File{'CHECKPOINT_'}");
+	my $fh_checkpoint = util::efopen(">$var::NMZ{_checkpoint}");
 
 	print $fh_checkpoint <<EOM;
 	\$DeletedFilesCount = $DeletedFilesCount;
@@ -167,7 +167,7 @@ EOM
 
 sub put_registry ($) {
     my ($filename) = @_;
-    my $fh_registry = util::efopen(">>$var::File{'REGISTRY_'}");
+    my $fh_registry = util::efopen(">>$var::NMZ{r}");
     print $fh_registry $filename, "\n";
 }
 
@@ -188,10 +188,10 @@ sub init () {
     $SIG{INT}  = sub {
 	warn "SIGINT caught! removing tmporary files...\n";
 	remove_tmpfiles();
-	remove_lockfile($var::File{LOCKFILE2});
+	remove_lockfile($var::NMZ{lock2});
 
-	my $errsize = -s $var::File{ERRORSFILE};
-	unlink $var::File{ERRORSFILE} if $errsize == 0;
+	my $errsize = -s $var::NMZ{err};
+	unlink $var::NMZ{err} if $errsize == 0;
 	warn "exit(2)\n";
     
 	exit 2;
@@ -333,11 +333,11 @@ sub get_field_index_base (\%) {
     my @keys = split('\|', $conf::SEARCH_FIELD);
     for my $key (@keys) {
 	$key = lc($key);
-	my $fname    = "$var::File{'FIELDINFO'}.$key";
-	my $tmp_fname = "$var::File{'FIELDINFO'}.$key.$$";
+	my $fname    = "$var::NMZ{field}.$key";
+	my $tmp_fname = "$var::NMZ{field}.$key.$$";
 	my $size = 0;
-	$size = -s $fname if -e $fname;
-	$size += -s $tmp_fname if -e $tmp_fname;
+	$size = -s $fname if -f $fname;
+	$size += -s $tmp_fname if -f $tmp_fname;
 	$field_indices->{$key} = $size;
     }
 }
@@ -418,7 +418,7 @@ sub put_field_index (\%$) {
     my @keys = split('\|', $conf::SEARCH_FIELD);
     for my $key (@keys) {
 	$key = lc($key);
-	my $fname    = "$var::File{'FIELDINFO'}.$key.$$";
+	my $fname    = "$var::NMZ{field}.$key.$$";
 	my $fh_field = util::efopen(">>$fname");
 	my $output = "";
 	if (defined($fields->{$key})) {
@@ -436,7 +436,7 @@ sub put_field_index (\%$) {
 
 	# put index of field index
 	{
-	    my $fname        = "$var::File{'FIELDINFO'}.$key.i.$$";
+	    my $fname        = "$var::NMZ{field}.$key.i.$$";
 	    my $fh_field_idx = util::efopen(">>$fname");
 	    print $fh_field_idx pack("N", $field_indices->{$key});
 	    $field_indices->{$key} += length $output;
@@ -450,7 +450,7 @@ sub put_dateindex ($) {
     my ($cfile) = @_;
     my $mtime = (stat($cfile))[9];
 
-    my $fh_dataindex = util::efopen(">>$var::File{'DATEINDEX_'}");
+    my $fh_dataindex = util::efopen(">>$var::NMZ{_t}");
     print $fh_dataindex pack("N", $mtime);
 }
 
@@ -469,8 +469,8 @@ sub load_document ($$$$$\%) {
 	&& $cfile =~ /[\x81-\x9f\xe0-\xef][\x40-\x7e\x80-\xfc]|[\x20\xa1-\xdf]/) 
     {
 	$shelter_cfile = $cfile;
-	$cfile = $var::File{'TMP_WAKATI'};
-        util::cp($shelter_cfile,$cfile);
+	$cfile = util::tmpnam("NMZ.win32");
+        util::cp($shelter_cfile, $cfile);
     }
 
     $$content = util::readfile($cfile);
@@ -529,9 +529,10 @@ sub prep () {
 
     ($output_dir, $target_dir, @flist) = parse_options();
     $TARGET_DIR = $target_dir;
+    $var::OUTPUT_DIR = $output_dir;
 
     require_modules();
-    change_dbnames($output_dir);
+    change_dbnames();
     check_present_index();
 
     # if Checkpoint mode, return
@@ -539,12 +540,12 @@ sub prep () {
 
     @flist = find_target($target_dir) unless @flist;
     ($file_base, @flist) = append_index(@flist) 
-	if -e $var::File{'REGISTRY'};
+	if -f $var::NMZ{r};
     unless (@flist) { # if @flist is empty
 	print "No files to index.\n";
 	exit 0;
     }
-    set_lockfile($var::File{LOCKFILE2});
+    set_lockfile($var::NMZ{lock2});
     save_flist(@flist);
 
     return $file_base;
@@ -567,7 +568,7 @@ sub save_flist(@) {
     my @flist = @_;
     return if (@flist == 0);
 
-    my $fh_flist = util::efopen(">$var::File{'FLIST_'}");
+    my $fh_flist = util::efopen(">$var::NMZ{_flist}");
     print $fh_flist join("\n", @flist), "\n";
 }
 
@@ -608,12 +609,12 @@ sub remove_lockfile ($) {
     my ($file) = @_;
 
     # remove lock file
-    unlink $file if -e $file;
+    unlink $file if -f $file;
 }
 
 # check present index whether it is old type of not
 sub check_present_index () {
-    if (-f $var::File{'LITTLEENDIAN'} || -f $var::File{'BIGENDIAN'}) 
+    if (-f $var::NMZ{i} && ! -f $var::NMZ{result}) 
     {
 	die "!!ERROR!!\nPresent index is old type. it's unsupported.\n";
     }
@@ -630,7 +631,7 @@ sub do_remain_job ($$$$) {
 	    update_registry($file_count);
 	}
     } else {
-	set_lockfile($var::File{LOCKFILE});
+	set_lockfile($var::NMZ{lock});
 	write_body_msg();
 	write_result_file();
 	update_field_index();
@@ -638,27 +639,26 @@ sub do_remain_job ($$$$) {
 	update_registry($file_count);
 	write_nmz_files();
 	make_slog_file();
-	remove_lockfile($var::File{LOCKFILE});
+	remove_lockfile($var::NMZ{lock});
     }
     make_headfoot_pages($file_count, $key_count);
     put_log($total_files_size, $start_time, $file_count, $key_count);
-    remove_lockfile($var::File{LOCKFILE2});
+    remove_lockfile($var::NMZ{lock2});
     remove_tmpfiles();
-    unlink $var::File{'FLIST_'};
+    unlink $var::NMZ{_flist};
 }
 
 sub make_headfoot_pages($$) {
     my ($file_count, $key_count) = @_;
 
-    make_headfoot("$var::File{'HEADERFILE'}.ja", $file_count, $key_count);
-    make_headfoot("$var::File{'FOOTERFILE'}.ja", $file_count, $key_count);
-    make_headfoot("$var::File{'HEADERFILE'}.en", $file_count, $key_count);
-    make_headfoot("$var::File{'FOOTERFILE'}.en", $file_count, $key_count);
+    make_headfoot("$var::NMZ{head}.ja", $file_count, $key_count);
+    make_headfoot("$var::NMZ{foot}.ja", $file_count, $key_count);
+    make_headfoot("$var::NMZ{head}.en", $file_count, $key_count);
+    make_headfoot("$var::NMZ{foot}.en", $file_count, $key_count);
 }
 
 sub remove_tmpfiles() {
-    $var::File{'INDEX_'} =~ m!^(.*/)!;
-    unlink glob "${1}NMZ.*$$*";
+    unlink glob "$var::OUTPUT_DIR/NMZ.*.$$.tmp";
 }
 
 # parse comannd line options
@@ -898,24 +898,24 @@ sub check_file ($$$$) {
 
 # util::Rename *.$$ to each real file name
 sub write_nmz_files () {
-    util::Rename($var::File{'INDEX_'},      $var::File{'INDEX'});
-    util::Rename($var::File{'INDEXINDEX_'}, $var::File{'INDEXINDEX'});
-    util::Rename($var::File{'WORDLIST_'},   $var::File{'WORDLIST'});
-    util::Rename($var::File{'PHRASE_'},     $var::File{'PHRASE'});
-    util::Rename($var::File{'PHRASEINDEX_'}, $var::File{'PHRASEINDEX'});
+    util::Rename($var::NMZ{_i},      $var::NMZ{i});
+    util::Rename($var::NMZ{_ii}, $var::NMZ{ii});
+    util::Rename($var::NMZ{_w},   $var::NMZ{w});
+    util::Rename($var::NMZ{_p},     $var::NMZ{p});
+    util::Rename($var::NMZ{_pi}, $var::NMZ{pi});
 }
 
 # output NMZ.body
 sub write_body_msg () {
-    write_message("$var::File{'BODYMSGFILE'}.ja", $var::File{'BODY_MSG_JA'});
-    write_message("$var::File{'BODYMSGFILE'}.en", $var::File{'BODY_MSG_EN'});
+    write_message("$var::NMZ{body}.ja");
+    write_message("$var::NMZ{body}.en");
 }
 
 # output NMZ.result
 sub write_result_file () {
-    my $file = $var::File{'RESULTFILE'};
+    my $file = $var::NMZ{result};
 
-    if (-e $file) {
+    if (-f $file) {
 	return;
     } 
 
@@ -925,12 +925,12 @@ sub write_result_file () {
     my $buf = "";
 
     my $templatedir2 = cwd() . "/../template";  # relative path from cwd
-    if ($TestMode && -e "$templatedir2/$fname") {
+    if ($TestMode && -f "$templatedir2/$fname") {
 	$template = "$templatedir2/$fname";
     } else {
 	$template = "$TEMPLATEDIR/$fname";
     }
-    if (-e $template) {
+    if (-f $template) {
 	$buf = util::readfile($template);
     } else {
 	return;
@@ -949,27 +949,28 @@ sub write_result_file () {
 }
 
 # write NMZ.body and etc.
-sub write_message ($$) {
-    my ($full_path_name, $msg) = @_;
+sub write_message ($) {
+    my ($msgfile) = @_;
 
-    if (! -e $full_path_name) {
+    if (! -f $msgfile) {
 	my ($template, $fname);
 	
-	$full_path_name =~ m!.*/(.*)$!;
+	$msgfile =~ m!.*/(.*)$!;
 	$fname = $1;
+
 	my $templatedir2 = cwd() . "/../template";  # relative path from cwd
-	if ($TestMode && -e "$templatedir2/$fname") {
+	if ($TestMode && -f "$templatedir2/$fname") {
 	    $template = "$templatedir2/$fname";
 	} else {
 	    $template = "$LIBDIR/$fname";
 	}
-	if (-e $template) {
+	if (-f $template) {
 	    my $buf = util::readfile($template);
 	    my $fh_output;
 	    if ($conf::LANGUAGE eq "ja" && !$var::USE_NKF_MODULE) {
-		$fh_output = util::efopen("|$conf::NKF -j >$full_path_name");
+		$fh_output = util::efopen("|$conf::NKF -j >$msgfile");
 	    } else {
-		$fh_output = util::efopen(">$full_path_name");
+		$fh_output = util::efopen(">$msgfile");
 	    }
 	    $buf =~ s/"/\\"/g;
 	    $buf =~ s/\@/\\@/g;
@@ -985,26 +986,31 @@ sub write_message ($$) {
 # Make a file for logging
 sub make_slog_file () {
     {
-	my $fh_slogfile = util::efopen(">>$var::File{'SLOGFILE'}");
+	my $fh_slogfile = util::efopen(">>$var::NMZ{slog}");
     }
-    chmod 0666, $var::File{'SLOGFILE'};
+    chmod 0666, $var::NMZ{slog};
 }
 
 
 # concatenate $CURRENTDIR to head of each files
 sub change_dbnames ($) {
-    my ($current_dir) = @_;
+    my $dir = $var::OUTPUT_DIR;
 
-    for my $key (sort keys %var::File) {
-	next if $key =~ /^TMP/;  # exclude temporary file
-	next if $key =~ /_$/;    # exclude temporary file
-	$var::File{$key} = "$current_dir/$var::File{$key}";
+    for my $key (sort keys %var::NMZ) {
+	next if $key =~ /^_/;    # exclude temporary file
+	$var::NMZ{$key} = "$dir/$var::NMZ{$key}";
     }
 
     # temporary files
-    for my $key (sort keys %var::File) {
-	if ($key =~ /^TMP/ || $key =~ /_$/) {
-	    $var::File{$key} = "$current_dir/$var::File{$key}.$$";
+    for my $key (sort keys %var::NMZ) {
+	if ($key =~ /^_/) {
+	    $var::NMZ{$key} = util::tmpnam($var::NMZ{$key});
+	}
+    }
+
+    if ($var::Opt{Debug}) {
+	for my $key (sort keys %var::NMZ) {
+	    util::dprint("NMZ: $var::NMZ{$key}\n");
 	}
     }
 }
@@ -1030,11 +1036,11 @@ sub append_index (@) {
     unless (@flist) { 	# if @flist is empty
 	if ($DeletedFilesCount > 0) {
 	    make_headfoot_pages(0, 0);
-	    set_lockfile($var::File{LOCKFILE2});
+	    set_lockfile($var::NMZ{lock2});
 	    update_dateindex();
 	    update_registry(0);
 	    put_log(0, 0, 0, get_total_keys());
-	    remove_lockfile($var::File{LOCKFILE2});
+	    remove_lockfile($var::NMZ{lock2});
 	}
 	print "No files to index.\n";
 	exit 0;
@@ -1042,12 +1048,12 @@ sub append_index (@) {
 
     $APPENDMODE = 1;
     # ファイルをコピーして保護する
-    util::cp($var::File{'INDEX'},      $var::File{'INDEX_'});
-    util::cp($var::File{'DATEINDEX'},  $var::File{'DATEINDEX_'}) unless -e $var::File{'DATEINDEX_'}; # preupdated ?
+    util::cp($var::NMZ{i},      $var::NMZ{_i});
+    util::cp($var::NMZ{t},  $var::NMZ{_t}) unless -f $var::NMZ{_t}; # preupdated ?
 
     unless ($var::Opt{NoPhraseIndex}) {
-	util::cp($var::File{'PHRASE'},      $var::File{'PHRASE_'});
-	util::cp($var::File{'PHRASEINDEX'},      $var::File{'PHRASEINDEX_'});
+	util::cp($var::NMZ{p},      $var::NMZ{_p});
+	util::cp($var::NMZ{pi},      $var::NMZ{_pi});
     }
 
     return ($file_base, @flist);
@@ -1139,7 +1145,7 @@ sub set_target_files() {
 sub preupdate_registry(@) {
     my (@list) = @_;
 
-    my $fh_registry = util::efopen(">$var::File{'REGISTRY_'}");
+    my $fh_registry = util::efopen(">$var::NMZ{r}");
     @list = grep(s/(.*)/\# $1\n/, @list);
     print $fh_registry @list;
     print $fh_registry "## deleted: " . util::rfc822time(time()) . "\n\n";
@@ -1150,7 +1156,7 @@ sub preupdate_dateindex(@) {
 
     # Since rewriting the entire file, it is not efficient, 
     # but simple and reliable. this would be revised in the future.
-    my $fh_dateindex = util::efopen(">$var::File{'DATEINDEX_'}");
+    my $fh_dateindex = util::efopen(">$var::NMZ{_t}");
 #    print "\nupdate_dateindex\n", join("\n", @mtimes), "\n\n";
     print $fh_dateindex pack("N*", @mtimes);
 }
@@ -1159,8 +1165,8 @@ sub update_registry ($) {
     my ($file_count) = @_;
 
     {
-	my $fh_registry = util::efopen(">>$var::File{'REGISTRY'}");
-	my $fh_registry_ = util::efopen($var::File{'REGISTRY_'});
+	my $fh_registry = util::efopen(">>$var::NMZ{r}");
+	my $fh_registry_ = util::efopen($var::NMZ{r});
 	while (<$fh_registry_>) {
 	    print $fh_registry $_;
 	}
@@ -1168,16 +1174,16 @@ sub update_registry ($) {
 	    print $fh_registry "## indexed: " . util::rfc822time(time()) . "\n\n";
 	}
     }
-    unlink $var::File{'REGISTRY_'};
+    unlink $var::NMZ{r};
 }
 
 sub update_dateindex () {
-    util::Rename($var::File{'DATEINDEX_'}, $var::File{'DATEINDEX'});
+    util::Rename($var::NMZ{_t}, $var::NMZ{t});
 }
 
 sub update_field_index () {
-    update_field_index_sub(glob "$var::File{'FIELDINFO'}.*.$$");
-    update_field_index_sub(glob "$var::File{'FIELDINFO'}.*.i.$$");
+    update_field_index_sub(glob "$var::NMZ{field}.*.$$");
+    update_field_index_sub(glob "$var::NMZ{field}.*.i.$$");
 }
 
 sub update_field_index_sub () {
@@ -1226,9 +1232,9 @@ sub pickup_updated_files (\%) {
 }
 
 sub load_dateindex() {
-    my $fh_dateindex = util::efopen($var::File{'DATEINDEX'});
+    my $fh_dateindex = util::efopen($var::NMZ{t});
 
-    my $size = (stat($var::File{'DATEINDEX'}))[7];
+    my $size = -s $var::NMZ{t};
     my $buf  = "";
     read($fh_dateindex, $buf, $size);
     my @list = unpack("N*", $buf);  # load date index
@@ -1240,7 +1246,7 @@ sub load_dateindex() {
 sub load_registry () {
     my @list = ();
 
-    my $fh_registry = util::efopen($var::File{'REGISTRY'});
+    my $fh_registry = util::efopen($var::NMZ{r});
 
     my $i = 0;
     my %mark;
@@ -1270,11 +1276,11 @@ sub load_registry () {
 }
 
 sub get_total_keys() {
-    return get_number_from_file($var::File{'TOTALKEYSCOUNT'});
+    return get_number_from_file($var::NMZ{keys});
 }
 
 sub get_total_files() {
-    return get_number_from_file($var::File{'TOTALFILESCOUNT'});
+    return get_number_from_file($var::NMZ{total});
 }
 
 sub get_number_from_file ($) {
@@ -1297,12 +1303,12 @@ sub get_number_from_file ($) {
 
 sub put_total_files($) {
     my ($number) = @_;
-    put_number_to_file($var::File{'TOTALFILESCOUNT'}, $number);
+    put_number_to_file($var::NMZ{total}, $number);
 }
 
 sub put_total_keys($) {
     my ($number) = @_;
-    put_number_to_file($var::File{'TOTALKEYSCOUNT'}, $number);
+    put_number_to_file($var::NMZ{keys}, $number);
 }
 
 sub put_number_to_file ($$) {
@@ -1359,7 +1365,7 @@ sub put_log ($$$$) {
 
 sub put_log_to_logfile ($) {
     my ($logmsg) = @_;
-    my $fh_logfile = util::efopen(">>$var::File{'LOGFILE'}");
+    my $fh_logfile = util::efopen(">>$var::NMZ{log}");
     print $fh_logfile $logmsg;
 }
 
@@ -1379,19 +1385,19 @@ sub make_headfoot ($$$) {
     my $year  = get_year();
     my $buf   = "";
 
-    if (-e $file) {
+    if (-f $file) {
 	$buf = util::readfile($file);
     } else {
 	$file =~ m!.*/(.*)$!;
 	my $fname = $1;
 	my $template = "";
 	my $templatedir2 = cwd() . "/../template";  # relative path from cwd
-	if ($TestMode && -e "$templatedir2/$fname") {
+	if ($TestMode && -f "$templatedir2/$fname") {
 	    $template = "$templatedir2/$fname";
 	} else {
 	    $template = "$TEMPLATEDIR/$fname";
 	}
-	if (-e $template) {
+	if (-f $template) {
 	    $buf = util::readfile($template);
 	} else {
 	    return;
@@ -1456,8 +1462,8 @@ sub make_phrase_hash ($$$) {
 # NMZ.p, NMZ.pi ファイルへ書き出し & マージする (複雑)
 sub write_phrase_hash () {
     write_phrase_hash_sub();
-    util::Rename($var::File{'TMP_P'}, $var::File{'PHRASE_'});
-    util::Rename($var::File{'TMP_PI'}, $var::File{'PHRASEINDEX_'});
+    util::Rename($var::NMZ{__p}, $var::NMZ{_p});
+    util::Rename($var::NMZ{__pi}, $var::NMZ{_pi});
 }
 
 sub write_phrase_hash_sub () {
@@ -1466,13 +1472,13 @@ sub write_phrase_hash_sub () {
     return 0 if %PhraseHash eq "0";
     util::dprint("doing write_phrase_hash() processing.\n");
 
-    my $fh_tmp_pi = util::efopen(">$var::File{'TMP_PI'}");
-    my $fh_tmp_p  = util::efopen(">$var::File{'TMP_P'}");
+    my $fh_tmp_pi = util::efopen(">$var::NMZ{__pi}");
+    my $fh_tmp_p  = util::efopen(">$var::NMZ{__p}");
 
-    my $fh_phrase = util::fopen($var::File{'PHRASE_'});
+    my $fh_phrase = util::fopen($var::NMZ{_p});
     my $fh_phraseindex;
     if ($fh_phrase) {
-	$fh_phraseindex = util::efopen($var::File{'PHRASEINDEX_'});
+	$fh_phraseindex = util::efopen($var::NMZ{_pi});
 	$opened = 1;
     }
 	
@@ -1654,8 +1660,8 @@ sub wordcount_sub ($$\%) {
 # make NMZ.i and NMZ.ii file. this processing is rather complex.
 sub write_index () {
     my $key_count = write_index_sub();
-    util::Rename($var::File{'TMP_I'}, $var::File{'INDEX_'});
-    util::Rename($var::File{'TMP_W'}, $var::File{'WORDLIST_'});
+    util::Rename($var::NMZ{__i}, $var::NMZ{_i});
+    util::Rename($var::NMZ{__w}, $var::NMZ{_w});
 
     return $key_count;
 }
@@ -1709,16 +1715,16 @@ sub write_index_sub () {
     return 0 if $#words == -1;
 
     util::dprint("doing write_index() processing.\n");
-    my $fh_indexindex = util::efopen(">$var::File{'INDEXINDEX_'}");
-    my $fh_tmp_i = util::efopen(">$var::File{'TMP_I'}");
-    my $fh_tmp_w = util::efopen(">$var::File{'TMP_W'}") unless $var::Opt{NoRegexIndex};
+    my $fh_indexindex = util::efopen(">$var::NMZ{_ii}");
+    my $fh_tmp_i = util::efopen(">$var::NMZ{__i}");
+    my $fh_tmp_w = util::efopen(">$var::NMZ{__w}") unless $var::Opt{NoRegexIndex};
 
     my $cnt = 0;
     my $ptr = 0;
     my $key_count = 0;
     my $baserecord = "";
 
-    my $fh_index = util::fopen($var::File{'INDEX_'});
+    my $fh_index = util::fopen($var::NMZ{_i});
     if ($fh_index) {
       FOO:
 	while (<$fh_index>) {
@@ -1805,16 +1811,15 @@ sub decide_type ($$) {
 
 # for avoiding "used only once: possible typo at ..." warnings
 
-muda($var::File{'BODY_MSG_EN'},
-     $conf::SEARCH_FIELD, $conf::ON_MEMORY_MAX,
-     $var::File{'BODY_MSG_JA'}, $conf::WORD_LENG_MAX,
+muda($conf::SEARCH_FIELD, $conf::ON_MEMORY_MAX,
+     $conf::WORD_LENG_MAX,
      $conf::MHONARC_MESSAGE_FILE, $conf::DENY_REGEX, $var::INTSIZE,
      $var::Opt{MailNews}, $var::Opt{NoLineAd}, $conf::CHASEN_MORPH,
      $var::Opt{Uuencode}, $conf::MHONARC_HEADER, $conf::CHASEN,
      $conf::KAKASI, $var::Opt{Okurigana}, $TARGET_DIR, $var::Opt{Man},
      $var::Opt{Hiragana}, $conf::ROBOTS_EXCLUDE_URLS, $conf::DEFAULT_FILE,
      $conf::HTML_SUFFIX, $usage::USAGE_EN, $usage::USAGE_MINI, 
-     $var::Opt{NoHeadAbst}, @seed::Seed,
+     $var::Opt{NoHeadAbst}, @seed::Seed, $var::OUTPUT_DIR,
      $var::Opt{Debug}, $var::Opt{NoEncodeURL}, $var::Opt{HtaccessExclude}, 
      $var::RECURSIVE_ACTIONS, $conf::ROBOTS_EXCLUDE_URIS, 
      $var::Opt{NoInsertHeader}, $var::Opt{NoRegexpIndex}, 

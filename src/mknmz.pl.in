@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.7 1999-05-18 09:59:51 satoru Exp $
+# $Id: mknmz.pl.in,v 1.8 1999-05-22 17:10:13 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -1252,7 +1252,7 @@ sub make_headfoot ($$$) {
 	$buf =~ s/(<!-- KEY -->)(.*)(<!-- KEY -->)/$1 $tmp $3/;
     }
     $buf =~ s#(<!-- DATE -->)(.*)(<!-- DATE -->)#$1 $year-$month-$day $3#g;
-    $buf =~ s/(<!-- VERSION -->)(.*)(<!-- VERSION -->)/$1 $conf::VERSION $3/g;
+    $buf =~ s/(<!-- VERSION -->)(.*)(<!-- VERSION -->)/$1 v$conf::VERSION $3/g;
 
     $buf = NKF::nkf("-j", $buf) if $conf::USE_NKF_MODULE;
     print $fh_file $buf;

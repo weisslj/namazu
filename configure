@@ -14,7 +14,7 @@ ac_default_prefix=/usr/local
 ac_help="$ac_help
   --with-perl5=PATH       set perl ver.5 interpreter location [search path]"
 ac_help="$ac_help
-  --without-japanese      don't treat Japanese code"
+  --without-japanese      don't handle Japanese code"
 ac_help="$ac_help
   --with-lang=language    set default LANGUAGE code (ja or en) [ja]"
 ac_help="$ac_help
@@ -2105,7 +2105,7 @@ fi
 fi
 
     if test "$NKF" = "no"; then
-	{ echo "configure: error: NKF (network kanji filter) not found to treat Japanese code" 1>&2; exit 1; }
+	{ echo "configure: error: NKF (network kanji filter) not found to handle Japanese code" 1>&2; exit 1; }
     fi
 
     # Check whether --with-kakasi or --without-kakasi was given.
@@ -2219,7 +2219,7 @@ fi
 fi
 
     if test "$KAKASI" = "no" -a "$CHASEN" = "no"; then
-	{ echo "configure: error: KAKASI or ChaSen required to treat Japanese code" 1>&2; exit 1; }
+	{ echo "configure: error: KAKASI or ChaSen required to handle Japanese code" 1>&2; exit 1; }
     fi
 
     echo $ac_n "checking for OPT_WAKATI_DEFAULT""... $ac_c" 1>&6
@@ -2517,7 +2517,7 @@ ac_given_srcdir=$srcdir
 ac_given_INSTALL="$INSTALL"
 
 trap 'rm -fr `echo "Makefile src/Makefile lib/conf.pl src/mknmz.pl src/wdnmz
-src/vfnmz src/gcnmz src/gtnmz src/mailutime src/clnmz src/rvnmz config.h" | sed "s/:[^ ]*//g"` conftest*; exit 1' 1 2 15
+src/vfnmz src/gcnmz src/gtnmz src/mailutime src/clnmz src/rvnmz namazu.spec config.h" | sed "s/:[^ ]*//g"` conftest*; exit 1' 1 2 15
 EOF
 cat >> $CONFIG_STATUS <<EOF
 
@@ -2621,7 +2621,7 @@ EOF
 cat >> $CONFIG_STATUS <<EOF
 
 CONFIG_FILES=\${CONFIG_FILES-"Makefile src/Makefile lib/conf.pl src/mknmz.pl src/wdnmz
-src/vfnmz src/gcnmz src/gtnmz src/mailutime src/clnmz src/rvnmz"}
+src/vfnmz src/gcnmz src/gtnmz src/mailutime src/clnmz src/rvnmz namazu.spec"}
 EOF
 cat >> $CONFIG_STATUS <<\EOF
 for ac_file in .. $CONFIG_FILES; do if test "x$ac_file" != x..; then

@@ -74,7 +74,7 @@ PERL = @PERL@
 SCORING = @SCORING@
 VERSION = @VERSION@
 ZCAT = @ZCAT@
-EXTRA_DIST = README-ja
+EXTRA_DIST = README-ja namazu.spec.in
 EXTRA_DIRS = lib
 # EXTRA_DIRS = contrib doc lib misc
 SUBDIRS = src
@@ -83,10 +83,11 @@ pkgdatadir = @prefix@/@PACKAGE@
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = config.h
-CONFIG_CLEAN_FILES = 
+CONFIG_CLEAN_FILES =  namazu.spec
 DIST_COMMON =  README ./stamp-h.in AUTHORS COPYING ChangeLog INSTALL \
 Makefile.am Makefile.in NEWS THANKS TODO acconfig.h aclocal.m4 \
-config.h.in configure configure.in install-sh missing mkinstalldirs
+config.h.in configure configure.in install-sh missing mkinstalldirs \
+namazu.spec.in
 
 
 DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
@@ -96,9 +97,9 @@ GZIP_ENV = --best
 all: all-redirect
 .SUFFIXES:
 $(srcdir)/Makefile.in: Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
-	cd $(top_srcdir) && $(AUTOMAKE) --gnu --include-deps Makefile
+	cd $(top_srcdir) && $(AUTOMAKE) --gnu Makefile
 
-Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
+Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status $(BUILT_SOURCES)
 	cd $(top_builddir) \
 	  && CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
@@ -137,6 +138,8 @@ distclean-hdr:
 	-rm -f config.h
 
 maintainer-clean-hdr:
+namazu.spec: $(top_builddir)/config.status namazu.spec.in
+	cd $(top_builddir) && CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
 # This directory's subdirectories are mostly independent; you can cd
 # into them and run `make' without going through this Makefile.
@@ -265,10 +268,15 @@ distdir: $(DISTFILES)
 	-rm -rf $(distdir)
 	mkdir $(distdir)
 	-chmod 777 $(distdir)
+	here=`cd $(top_builddir) && pwd`; \
+	top_distdir=`cd $(distdir) && pwd`; \
+	distdir=`cd $(distdir) && pwd`; \
+	cd $(top_srcdir) \
+	  && $(AUTOMAKE) --include-deps --build-dir=$$here --srcdir-name=$(top_srcdir) --output-dir=$$top_distdir --gnu Makefile
 	@for file in $(DISTFILES); do \
 	  d=$(srcdir); \
 	  if test -d $$d/$$file; then \
-	    cp -pr $$/$$file $(distdir)/$$file; \
+	    cp -pr $$d/$$file $(distdir)/$$file; \
 	  else \
 	    test -f $(distdir)/$$file \
 	    || ln $$d/$$file $(distdir)/$$file 2> /dev/null \
@@ -364,9 +372,9 @@ mostlyclean distclean maintainer-clean
 @SET_MAKE@
 
 install-data-local:
-	$(mkinstalldirs) $(DESTDIR)$(pkgdatadir)/index
+	$(mkinstalldirs) $(DESTDIR)$(libdir)/index
 	for subdir in $(EXTRA_DIRS); do \
-	  cp -rp $(srcdir)/$$subdir $(DESTDIR)$(pkgdatadir); \
+	  cp -rp $(srcdir)/$$subdir $(DESTDIR)$(libdir); \
 	done
 
 dist-hook:
@@ -377,6 +385,10 @@ dist-hook:
 	  rm -rf $(distdir)/$$subdir/CVS; \
 	done
 	rm -f $(distdir)/lib/conf.pl
+
+rpm:
+	# put Namazu's tar-ball to a correct directory before do this
+	rpm -ba namazu.spec
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

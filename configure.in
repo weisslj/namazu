@@ -66,7 +66,7 @@ fi
 
 AC_ARG_WITH(
 	japanese,
-	[  --without-japanese      don't treat Japanese code],
+	[  --without-japanese      don't handle Japanese code],
 	[japanese=${withval}], [japanese='yes']
 )
 
@@ -101,7 +101,7 @@ else
 	    fi
     )
     if test "$NKF" = "no"; then
-	AC_MSG_ERROR(NKF (network kanji filter) not found to treat Japanese code)
+	AC_MSG_ERROR(NKF (network kanji filter) not found to handle Japanese code)
     fi
 
     AC_ARG_WITH(
@@ -137,7 +137,7 @@ else
 	    fi
     )
     if test "$KAKASI" = "no" -a "$CHASEN" = "no"; then
-	AC_MSG_ERROR(KAKASI or ChaSen required to treat Japanese code)
+	AC_MSG_ERROR(KAKASI or ChaSen required to handle Japanese code)
     fi
 
     AC_MSG_CHECKING(for OPT_WAKATI_DEFAULT)
@@ -232,5 +232,5 @@ dnl *
 AM_CONFIG_HEADER(config.h)
 
 AC_OUTPUT([Makefile src/Makefile lib/conf.pl src/mknmz.pl src/wdnmz
-src/vfnmz src/gcnmz src/gtnmz src/mailutime src/clnmz src/rvnmz],
+src/vfnmz src/gcnmz src/gtnmz src/mailutime src/clnmz src/rvnmz namazu.spec],
 [chmod +x src/wdnmz src/vfnmz src/gcnmz src/gtnmz src/mailutime src/clnmz src/rvnmz]) 

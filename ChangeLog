@@ -1,5 +1,7 @@
 1999-11-19  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* pl/usage.pl (USAGE_MINI): s/options/information/.
+
 	* **/*.c: Include "config.h" by themselves.
 	Avoid nesting include files.
 

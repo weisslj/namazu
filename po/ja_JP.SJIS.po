@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: namazu 2.0\n"
-"POT-Creation-Date: 1999-11-19 10:40+0900\n"
+"POT-Creation-Date: 1999-11-19 12:46+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>\n"
 "Language-Team: Japanese <satoru-t@is.aist-nara.ac.jp>\n"
@@ -13,12 +13,12 @@ msgstr ""
 "Content-Type: text/plain; charset=Shift_JIS\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
-#: nmz/conf.c:471
+#: nmz/conf.c:475
 #, c-format
 msgid "Config:  %s\n"
 msgstr "\220\335\222\350\203\164\203\100\203\103\203\213:  %s\n"
 
-#: nmz/conf.c:474
+#: nmz/conf.c:478
 #, c-format
 msgid ""
 "Default: %s\n"
@@ -33,18 +33,18 @@ msgstr ""
 "\225\127\217\200\202\314\214\276\214\352: %s\n"
 "\203\130\203\122\203\101\214\166\216\132: %s\n"
 
-#: nmz/conf.c:487
+#: nmz/conf.c:491
 #, c-format
 msgid "Alias:   \"%s\" -> \"%s\"\n"
 msgstr "\225\312\226\274:   \"%s\" -> \"%s\"\n"
 
-#: nmz/conf.c:496
+#: nmz/conf.c:500
 #, c-format
 msgid "Replace: \"%s\" -> \"%s\"\n"
 msgstr "\222\165\212\267: \"%s\" -> \"%s\"\n"
 
 #. if no item available
-#: nmz/wakati.c:233
+#: nmz/wakati.c:244
 msgid ""
 "\t<h2>Error!</h2>\n"
 "<p>Invalid query.</p>\n"
@@ -52,7 +52,7 @@ msgstr ""
 "\t<h2>\203\107\203\211\201\133!</h2>\n"
 "<p>\214\237\215\365\216\256\202\252\225\163\220\263\202\305\202\267\201\102</p>\n"
 
-#: nmz/wakati.c:239
+#: nmz/wakati.c:250
 msgid ""
 "\t<h2>Error!</h2>\n"
 "<p>Too many query tokens.</p>\n"
@@ -60,69 +60,69 @@ msgstr ""
 "\t<h2>\203\107\203\211\201\133!</h2>\n"
 "<p>\214\237\215\365\216\256\202\314\215\200\226\332\202\252\221\275\202\267\202\254\202\334\202\267\201\102</p>\n"
 
-#: src/cgi.c:103 src/cgi.c:113
+#: src/cgi.c:109 src/cgi.c:119
 msgid "Invalid idxname."
 msgstr "\225\163\220\263\202\310 idxname \202\314\216\167\222\350\202\305\202\267"
 
-#: src/cgi.c:185 src/cgi.c:200
+#: src/cgi.c:191 src/cgi.c:206
 msgid "Too long QUERY_STRING"
 msgstr "CGI\202\314 QUERY_STRING \202\252\222\267\202\267\202\254\202\334\202\267"
 
-#: src/namazu.c:321
+#: src/namazu.c:327
 msgid "\t<p>No document matching your query.</p>\n"
 msgstr "\t<p>\214\237\215\365\216\256\202\311\203\175\203\142\203\140\202\267\202\351\225\266\217\221\202\315\202\240\202\350\202\334\202\271\202\361\202\305\202\265\202\275\201\102</p>\n"
 
-#: src/output.c:188
+#: src/output.c:194
 msgid "\t<strong>Page:</strong> "
 msgstr "\t<strong>\203\171\203\103\203\127:</strong> "
 
-#: src/output.c:222
+#: src/output.c:228
 #, c-format
 msgid "Current List: %d"
 msgstr "\214\273\215\335\202\314\203\212\203\130\203\147: %d"
 
-#: src/output.c:358
+#: src/output.c:364
 #, c-format
 msgid " [ TOTAL: %d ]"
 msgstr " [ \215\207\214\166: %d ]"
 
-#: src/output.c:381
+#: src/output.c:387
 msgid " (Too many words matched. Ignored.)"
 msgstr " (\203\175\203\142\203\140\202\267\202\351\222\120\214\352\202\252\221\275\202\267\202\254\202\351\202\314\202\305\226\263\216\213\202\265\202\334\202\265\202\275)"
 
-#: src/output.c:383
+#: src/output.c:389
 msgid " (Too many pages hit. Ignored.)"
 msgstr " (\203\161\203\142\203\147\220\224\202\252\221\275\202\267\202\254\202\351\202\314\202\305\226\263\216\213\202\265\202\334\202\265\202\275)"
 
-#: src/output.c:385
+#: src/output.c:391
 msgid " (cannot open regex index)"
 msgstr " (\220\263\213\113\225\134\214\273\227\160\203\103\203\223\203\146\203\142\203\116\203\130\202\252\212\112\202\257\202\334\202\271\202\361\202\305\202\265\202\275)"
 
-#: src/output.c:387
+#: src/output.c:393
 msgid " (cannot open phrase index)"
 msgstr " (\203\164\203\214\203\103\203\131\214\237\215\365\227\160\203\103\203\223\203\146\203\142\203\116\203\130\202\252\212\112\202\257\202\334\202\271\202\361\202\305\202\265\202\275)"
 
-#: src/output.c:389
+#: src/output.c:395
 msgid " (cannot open this index)\n"
 msgstr " (\203\103\203\223\203\146\203\142\203\116\203\130\202\252\212\112\202\257\202\334\202\271\202\361\202\305\202\265\202\275)\n"
 
-#: src/output.c:391
+#: src/output.c:397
 msgid "(You don't have a permission to access the index)"
 msgstr "\201\151\203\103\203\223\203\146\203\142\203\116\203\130\202\311\203\101\203\116\203\132\203\130\202\267\202\351\214\240\227\230\202\252\202\240\202\350\202\334\202\271\202\361\201\152"
 
-#: src/output.c:401
+#: src/output.c:407
 msgid "\t<h2>Results:</h2>\n"
 msgstr "\t<h2>\214\237\215\365\214\213\211\312</h2>\n"
 
-#: src/output.c:408
+#: src/output.c:414
 msgid "References: "
 msgstr "\216\121\215\154\203\161\203\142\203\147\220\224: "
 
-#: src/output.c:416
+#: src/output.c:422
 msgid "\t<p><strong> Total "
 msgstr "\t<p><strong>\214\237\215\365\216\256\202\311\203\175\203\142\203\140\202\267\202\351 "
 
-#: src/output.c:423
+#: src/output.c:429
 msgid ""
 "\t documents matching your query.</strong></p>\n"
 "\n"
@@ -130,8 +130,8 @@ msgstr ""
 "\t \214\302\202\314\225\266\217\221\202\252\214\251\202\302\202\251\202\350\202\334\202\265\202\275\201\102</strong></p>\n"
 "\n"
 
-#: src/usage.c:44
-#, fuzzy, c-format
+#: src/usage.c:49
+#, c-format
 msgid ""
 "namazu %s, a search program of Namazu.\n"
 "\n"
@@ -194,13 +194,13 @@ msgstr ""
 "\n"
 "\203\157\203\117\225\361\215\220\202\315 <bug-namazu@namazu.org> \202\326\202\307\202\244\202\274\n"
 
-#: src/usage.c:82
+#: src/usage.c:87
 msgid "Usage: namazu [options] <query> [index]...\n"
 msgstr "\216\147\202\242\225\373: namazu [\203\111\203\166\203\126\203\207\203\223] <\214\237\215\365\216\256> [\203\103\203\223\203\146\203\142\203\116\203\130]...\n"
 
-#: src/usage.c:83
+#: src/usage.c:88
 msgid "Try `namazu --help' for more information.\n"
-msgstr "`namazu --help' \202\305\203\111\203\166\203\126\203\207\203\223\202\314\220\340\226\276\202\252\225\134\216\246\202\263\202\352\202\334\202\267\n"
+msgstr "`namazu --help' \202\305\202\346\202\350\217\332\202\265\202\242\217\356\225\361\202\252\202\252\225\134\216\246\202\263\202\352\202\334\202\267\n"
 
 #~ msgid ""
 #~ "\t<h2>Error!</h2>\n"

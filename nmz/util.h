@@ -2,8 +2,8 @@
 
   util.h -
 
-  $Author: rug $
-  $Date: 1999-12-12 14:09:04 $
+  $Author: satoru $
+  $Date: 1999-12-15 03:53:13 $
   created at: Thu Mar  9 11:55:53 JST 1995
 
   Copyright (C) 1993-1998 Yukihiro Matsumoto
@@ -16,7 +16,8 @@
 #ifndef _UTIL_H
 #define _UTIL_H
 
-#include <stdio.h> /* for FILE struct */
+#include <stdio.h>     /* for FILE struct */
+#include "libnamazu.h" /* for enum nmz_stat struct */
 
 #ifdef HAVE__VSNPRINTF
 #define vsnprintf(str,n,format,ap) _vsnprintf(str,n,format,ap)

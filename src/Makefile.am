@@ -11,6 +11,8 @@
 AUTOMAKE_OPTIONS = 1.4 no-dependencies
 
 bin_PROGRAMS = namazu
+noinst_PROGRAMS = namazu.cgi
+
 bin_SCRIPTS  = gcnmz mailutime mknmz gtnmz vfnmz kwnmz nmzgrep
 
 CLEANFILES  = gcnmz mknmz kwnmz
@@ -39,6 +41,9 @@ namazu_SOURCES = cgi.c form.c \
 		 message.h namazu.h output.h \
 		 result.h \
 		 usage.h
+
+namazu_cgi_SOURCES = $(namazu_SOURCES)
+namazu_cgi_LDFLAGS = -static
 
 SUFFIXES = .pl
 .pl:

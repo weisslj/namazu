@@ -1,5 +1,12 @@
 1999-12-15  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/Makefile.am (noinst_PROGRAMS): New variable: namazu.cgi
+	(namazu_cgi_SOURCES): New variable: $(namazu_SOURCES)
+	(namazu_cgi_LDFLAGS): New variable defining: -static
+	for supporting to make a static-linked namazu.cgi executable.
+
+	* nmz/util.h: Include libnamazu.h for resolving "enum nmz_stat".
+
 	* template/NMZ.head{,.ja_JP.JIS7}.in: s/field:title/field:subject/g
 
 1999-12-14  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>

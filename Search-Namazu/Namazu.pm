@@ -19,7 +19,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 # 02111-1307, USA
 #
-# $Id: Namazu.pm,v 1.5 1999-11-10 08:48:41 knok Exp $
+# $Id: Namazu.pm,v 1.6 1999-11-17 09:23:54 knok Exp $
 #
 
 package Search::Namazu;
@@ -68,7 +68,9 @@ require DynaLoader;
 
 @ISA = qw(Exporter DynaLoader);
 
-@EXPORT_OK = qw();
+@EXPORT = qw(NMZ_SORTBYDATE NMZ_SORTBYSCORE NMZ_SORTBYFIELD
+NMZ_ASCENDSORT NMZ_DESCENDSORT
+NMZ_NOT_SPECIFIED_INDEX NMZ_ERR_INDEX);
 # %EXPORT_TAGS = (all => [qw()]);
 
 $VERSION = '0.01';

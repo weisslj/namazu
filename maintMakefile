@@ -1,16 +1,16 @@
 ## for MAINTAINERS.
 
-CREDITS: AUTHORS ../namazu-web/webmasters
-	@echo Namazu Project > $@
-	@echo >> $@
-	@echo Developers >> $@
-	@echo >> $@
-	@perl -ne 'next if /^\x23/; print "  * $$_"' AUTHORS  >> $@
-	@echo >> $@
-	@echo Webpage Maintainers >> $@
-	@echo >> $@
+update-credits: AUTHORS ../namazu-web/webmasters
+	@echo Namazu Project > CREDITS
+	@echo >> CREDITS
+	@echo Developers >> CREDITS
+	@echo >> CREDITS
+	@perl -ne 'next if /^\x23/; print "  * $$_"' AUTHORS  >> CREDITS
+	@echo >> CREDITS
+	@echo Webpage Maintainers >> CREDITS
+	@echo >> CREDITS
 	@perl -ne 'next if /^\x23/; print "  * $$_"' \
-		../namazu-web/webmasters >> $@
+		../namazu-web/webmasters >> CREDITS
 
 snapshot:
 	$(MAKE) dist distdir=$(PACKAGE)`date +"-%Y-%m-%d"`

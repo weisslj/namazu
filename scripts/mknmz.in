@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.93 2001-09-17 02:06:52 shirai Exp $
+# $Id: mknmz.in,v 1.94 2001-09-18 08:52:19 knok Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -379,12 +379,12 @@ sub load_filtermodules () {
 
     # Check filter modules
     my @filters = ();
-    my $srcfilterdir = '';  # for make check in VPATH environment
-    if (defined($ENV{'srcdir'})) {
-	$srcfilterdir = $ENV{'srcdir'}.'/../filter';}
-    if (-f "$srcfilterdir/gfilter.pl") { # to ease developing
-	@filters = (glob("$srcfilterdir/*.pl"), glob("$FILTERDIR/*.pl"));
-	unshift @INC, "$srcfilterdir/filter";
+    my $srcfilterdir = undef;  # for make check in VPATH environment
+    if (defined($ENV{'top_srcdir'})) {
+	$srcfilterdir = $ENV{'top_srcdir'}.'/filter';}
+    if (defined $srcfilterdir) { # to ease developing
+	@filters = glob "$srcfilterdir/*.pl";
+	unshift @INC, "$srcfilterdir";
     } else {
 	@filters = glob "$FILTERDIR/*.pl";
     }

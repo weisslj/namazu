@@ -1,3 +1,24 @@
+2000-03-01  Ryuji Abe  <raeva@t3.rim.or.jp>
+
+	* configure.in (AM_CONDITIONAL): Define WIN32 if target
+	platform is Win32.
+	(AC_OUTPUT): Added filter/OLE/Makefile.
+
+	* filter/Makefile.am (DIST_SUBDIRS): Added win32.
+	(SUBDIRS): Add win32 if target platform is Win32.
+	(filter_DATA): Added excel.pl.
+
+	* filter/win32/Makefile.am: New File.
+
+	* fiiter/win32/msword.pl: Moved from filter/olemsword.pl.
+
+	* filter/win32/excel.pl: Moved from filter/oleexcel.pl.
+
+	* filter/win32/powerpoint.pl: Moved from filter/olepowerpoint.pl.
+
+	* filter/win32/ichitaro456.pl: Moved from filter/ichitaro456.pl.
+
+
 2000-03-01  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
   	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.0.2

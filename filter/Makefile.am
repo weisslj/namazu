@@ -2,10 +2,20 @@
 
 AUTOMAKE_OPTIONS = 1.4 no-dependencies
 
+if WIN32
+win32 = win32
+else
+win32 = 
+endif
+
+SUBDIRS = $(win32)
+DIST_SUBDIRS = win32
+
 filterdir = $(pkgdatadir)/filter
 
 filter_DATA = bzip2.pl \
 	     compress.pl \
+	     excel.pl \
 	     gfilter.pl \
 	     gzip.pl \
 	     html.pl \
@@ -15,11 +25,6 @@ filter_DATA = bzip2.pl \
 	     msword.pl \
 	     pdf.pl \
 	     rfc.pl \
-	     msword.pl \
-	     olemsword.pl \
-	     oleexcel.pl \
-	     olepowerpoint.pl \
-	     ichitaro456.pl \
 	     tex.pl \
 	     hnf.pl
 

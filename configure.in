@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.115 2000-02-29 23:51:26 satoru Exp $
+dnl $Id: configure.in,v 1.116 2000-03-01 04:44:52 rug Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -94,8 +94,16 @@ AM_GNU_GETTEXT
 dnl Checks for libraries.
 dnl Replace `main' with a function in -lm:
 if test -z "$MINGW32"; then
-	AC_CHECK_LIB(m, main)
+    AC_CHECK_LIB(m, main)
 fi
+
+dnl is win32 platform?
+if test "$CYGWIN" = yes || test "$MINGW32" = yes; then
+    win32=yes
+else
+    win32=no
+fi
+AM_CONDITIONAL(WIN32, test x$win32 = xyes)
 
 dnl Checks for header files.
 AC_HEADER_STDC
@@ -365,6 +373,7 @@ AC_OUTPUT([Makefile
 	   doc/ja/Makefile
 	   etc/Makefile
 	   filter/Makefile
+	   filter/win32/Makefile
 	   intl/Makefile 
 	   lib/Makefile
 	   lisp/Makefile

@@ -2,7 +2,7 @@
  * 
  * codeconv.c -
  * 
- * $Id: codeconv.c,v 1.19 2000-01-10 20:21:10 rug Exp $
+ * $Id: codeconv.c,v 1.20 2000-01-25 03:40:14 rug Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -44,6 +44,21 @@
 #include "i18n.h"
 
 static uchar kanji2nd;
+
+
+/*
+ *
+ * Macros
+ *
+ */
+
+#define iskanji1st(c) (((uchar)(c) >= 0x81 && \
+                       (uchar)(c)) <= 0x9f || \
+                       ((uchar)(c) >= 0xe0 && \
+                       (uchar)(c) <= 0xfc))
+#define iskanji2nd(c) (((uchar)(c) >= 0x40 && \
+                       (uchar)(c) <= 0xfc && \
+                       (uchar)(c) != 0x7f))
 
 
 /*
@@ -394,43 +409,6 @@ nmz_zen2han(char *str)
 	q++;
     }
     *(s + q) = '\0';
-}
-
-int 
-nmz_iskatakana(const char *chr)
-{
-    uchar *c;
-    c = (uchar *)chr;
-
-    if ((*c == 0xa5) &&
-	(*(c + 1) >= 0xa0) && (*(c + 1) <= 0xff))
-    {
-	return 1;
-    } else if ((*c == 0xa1) && (*(c + 1) == 0xbc)) { /* choon */ 
-        return 1;
-    } else {
-	;
-    }
-
-    return 0;
-}
-
-int 
-nmz_ishiragana(const char *chr)
-{
-    uchar *c;
-    c = (uchar *)chr;
-
-    if ((*c == 0xa4) &&
-	(*(c + 1) >= 0xa0) && (*(c + 1) <= 0xff))
-    {
-	return 1;
-    } else if ((*c == 0xa1) && (*(c + 1) == 0xbc)) { /* choon */ 
-        return 1;
-    } else {
-	;
-    }
-    return 0;
 }
 
 /*

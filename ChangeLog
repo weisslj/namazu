@@ -1,3 +1,16 @@
+2000-01-25  Ryuji Abe  <raeva@t3.rim.or.jp>
+
+	* nmz/util.h (nmz_iskanji): Moved to wakati.c as iskanji.
+	(iskanji1st): Moved to codeconv.c.
+	(iskanji2nd): Likewise.
+
+	* nmz/codeconv.[ch] (nmz_iskatakana): Moved to wakati.c as
+	iskatakana.
+	(nmz_ishiragana): Moved to wakati.c as ishiragana.
+
+	* nmz/wakati.c (iskatakana): Private function.
+	(ishiragana): Likewise.
+
 2000-01-23  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* src/rcfile.c (process_rc_lang): Call nmz_set_lang only if

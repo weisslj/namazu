@@ -2,7 +2,7 @@
  * 
  * wakati.c -
  * 
- * $Id: wakati.c,v 1.23 2000-01-13 18:33:02 rug Exp $
+ * $Id: wakati.c,v 1.24 2000-01-25 03:40:14 rug Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -33,12 +33,16 @@
 #endif
 #include "libnamazu.h"
 #include "util.h"
-#include "field.h"
-#include "codeconv.h"
 #include "search.h"
 #include "wakati.h"
-#include "i18n.h"
-#include "var.h"
+
+/*
+ *
+ * Macros
+ *
+ */
+
+#define iskanji(c)  (nmz_iseuc(*(c)) && nmz_iseuc(*(c + 1)))
 
 
 /*
@@ -48,19 +52,59 @@
  */
 
 static int detect_char_type(char *c);
+static int iskatakana(const char *chr);
+static int ishiragana(const char *chr);
 
 static int 
 detect_char_type(char *c)
 {
-    if (nmz_iskatakana(c)) {
+    if (iskatakana(c)) {
         return KATAKANA;
-    } else if (nmz_ishiragana(c)){
+    } else if (ishiragana(c)){
         return HIRAGANA;
-    } else if (nmz_iskanji(c)) {
+    } else if (iskanji(c)) {
         return KANJI;
     }
     return OTHER;
 }
+
+static int 
+iskatakana(const char *chr)
+{
+    uchar *c;
+    c = (uchar *)chr;
+
+    if ((*c == 0xa5) &&
+	(*(c + 1) >= 0xa0) && (*(c + 1) <= 0xff))
+    {
+	return 1;
+    } else if ((*c == 0xa1) && (*(c + 1) == 0xbc)) { /* choon */ 
+        return 1;
+    } else {
+	;
+    }
+
+    return 0;
+}
+
+static int 
+ishiragana(const char *chr)
+{
+    uchar *c;
+    c = (uchar *)chr;
+
+    if ((*c == 0xa4) &&
+	(*(c + 1) >= 0xa0) && (*(c + 1) <= 0xff))
+    {
+	return 1;
+    } else if ((*c == 0xa1) && (*(c + 1) == 0xbc)) { /* choon */ 
+        return 1;
+    } else {
+	;
+    }
+    return 0;
+}
+
 
 /*
  *
@@ -80,11 +124,11 @@ nmz_wakati(char *key)
         type = detect_char_type(key + i);
 	if (nmz_iseuc(*(key + i))) {
 	    key_leng = 0;
-	    for (j = 0; nmz_iskanji(key + i + j) ;  j += 2) {
+	    for (j = 0; iskanji(key + i + j) ;  j += 2) {
 		char tmp[BUFSIZE];
 
-                if (j == 0 && (nmz_iskatakana(key + i + j) ||
-                    nmz_ishiragana(key + i + j))) 
+                if (j == 0 && (iskatakana(key + i + j) ||
+                    ishiragana(key + i + j))) 
                 {
                     /* If beggining character is Katakana or Hiragana */
                     break;
@@ -105,8 +149,8 @@ nmz_wakati(char *key)
 	    } else {
                 if (type == HIRAGANA || type == KATAKANA) {
                     for (j =0; ; j += 2) {
-                        if (!((type == HIRAGANA && nmz_ishiragana(key + i + j))
-                            ||(type == KATAKANA && nmz_iskatakana(key + i + j)))) 
+                        if (!((type == HIRAGANA && ishiragana(key + i + j))
+                            ||(type == KATAKANA && iskatakana(key + i + j)))) 
                         {
                             break;
                         }

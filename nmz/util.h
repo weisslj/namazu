@@ -21,15 +21,8 @@ struct nmz_strlist {
  * Macros
  *
  */
-#define iskanji1st(c) (((uchar)(c) >= 0x81 && \
-                       (uchar)(c)) <= 0x9f || \
-                       ((uchar)(c) >= 0xe0 && \
-                       (uchar)(c) <= 0xfc))
-#define iskanji2nd(c) (((uchar)(c) >= 0x40 && \
-                       (uchar)(c) <= 0xfc && \
-                       (uchar)(c) != 0x7f))
+
 #define nmz_iseuc(c)  ((uchar)(c) >= 0xa1 && (uchar)(c) <= 0xfe)
-#define nmz_iskanji(c)  (nmz_iseuc(*(c)) && nmz_iseuc(*(c + 1)))
 
 
 extern unsigned long nmz_scan_oct ( char *start, int len, int *retlen );

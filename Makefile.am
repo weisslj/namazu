@@ -15,7 +15,7 @@ EXTRA_DIST = README-ja namazu.spec.in namazu.spec \
 EXTRA_DIRS = doc etc lib lisp filter template
 
 CLEANFILES = File-MMagic/Makefile File-MMagic/pm_to_blib \
-	     conf/mknmz.conf-dist lib/var.pl lib/conf.pl
+	     conf/mknmz.conf-dist
 CLEANDIRS  = File-MMagic/blib
 
 pkgdatadir = @datadir@/@PACKAGE@

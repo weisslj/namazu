@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.16 2000-03-15 11:52:04 satoru Exp $
+# $Id: util.pl,v 1.17 2000-12-15 05:22:19 knok Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -226,4 +226,18 @@ sub assert($$) {
 	die _("ASSERTION ERROR!: ")."$msg";
     }
 }
+
+sub systemcmd() {
+    if ($SYSTEM eq "MSWin32" || $SYSTEM eq "os2") {
+	my @args = ();
+	foreach my $tmp (@_) {
+	    $tmp =~ s!/!\\!g;
+	    push @args, $tmp;
+	}
+	system(@args);
+    } else {
+	system(@_);
+    }
+}
+
 1;

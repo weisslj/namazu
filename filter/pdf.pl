@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: pdf.pl,v 1.37 2004-11-19 16:28:51 opengl2772 Exp $
+# $Id: pdf.pl,v 1.38 2004-11-24 17:48:15 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu ,
 #               2000-2004 Namazu Project All rights reserved.
@@ -46,7 +46,7 @@ sub status() {
     if (defined $pdfconvpath) {
         my @cmd = ("$pdfconvpath");
         my $result = "";
-	my $status = util::syscmd(
+        my $status = util::syscmd(
             command => \@cmd,
             option => {
                 "stdout" => "/dev/null",
@@ -55,18 +55,18 @@ sub status() {
                 "mode_stderr" => 'wt',
             },
         );
-	if ($result =~ /^pdftotext\s+version\s+([0-9]+\.[0-9]+)/) {
-	    $pdfconvver = $1;
-	}
-	if (util::islang("ja")) {
-	    if ($pdfconvver >= 1.00) {
-		@pdfconvopts = ('-q', '-raw', '-enc', 'EUC-JP');
-	    } else {
-		@pdfconvopts = ('-q', '-raw', '-eucjp');
-	    }
-	} else {
-	    @pdfconvopts = ('-q', '-raw');
-	}
+        if ($result =~ /^pdftotext\s+version\s+([0-9]+\.[0-9]+)/) {
+            $pdfconvver = $1;
+        }
+        if (util::islang("ja")) {
+            if ($pdfconvver >= 1.00) {
+                @pdfconvopts = ('-q', '-raw', '-enc', 'EUC-JP');
+            } else {
+                @pdfconvopts = ('-q', '-raw', '-eucjp');
+            }
+        } else {
+            @pdfconvopts = ('-q', '-raw');
+        }
         if (defined $pdfinfopath) {
             my @cmd = ("$pdfinfopath");
             my $result = "";
@@ -88,11 +88,11 @@ sub status() {
                 } else {
                     @pdfinfoopts = ();
                 }
-	    } else {
+            } else {
                 @pdfinfoopts = ();
             }
         }
-	return 'yes';
+        return 'yes';
     }
     return 'no';
 }
@@ -123,8 +123,8 @@ sub filter ($$$$$) {
     my $tmpfile = util::tmpnam('NMZ.pdf');
     my $tmpfile2 = util::tmpnam('NMZ.pdf2');
     {
-	my $fh = util::efopen("> $tmpfile");
-	print $fh $$cont;
+        my $fh = util::efopen("> $tmpfile");
+        print $fh $$cont;
         util::fclose($fh);
     }
     my @cmd = ($pdfconvpath, @pdfconvopts, $tmpfile, $tmpfile2);
@@ -136,25 +136,25 @@ sub filter ($$$$$) {
         },
     );
     unless (-e $tmpfile2) {
-	unlink $tmpfile;
-	return 'Unable to convert pdf file (maybe copying protection)';
+        unlink $tmpfile;
+        return 'Unable to convert pdf file (maybe copying protection)';
     }
     {
-	my $fh = util::efopen("< $tmpfile2");
-	my $size = util::filesize($fh);
-	if ($size == 0) {
+        my $fh = util::efopen("< $tmpfile2");
+        my $size = util::filesize($fh);
+        if ($size == 0) {
             util::fclose($fh);
-	    unlink $tmpfile;
-	    unlink $tmpfile2;
-	    return "Unable to convert file ($pdfconvpath error occurred)";
-	}
-	if ($size > $conf::TEXT_SIZE_MAX) {
+            unlink $tmpfile;
+            unlink $tmpfile2;
+            return "Unable to convert file ($pdfconvpath error occurred)";
+        }
+        if ($size > $conf::TEXT_SIZE_MAX) {
             util::fclose($fh);
-	    unlink $tmpfile;
-	    unlink $tmpfile2;
-	    return 'Too large pdf file';
-	}
-	$$cont = util::readfile($fh, "t");
+            unlink $tmpfile;
+            unlink $tmpfile2;
+            return 'Too large pdf file';
+        }
+        $$cont = util::readfile($fh, "t");
         util::fclose($fh);
     }
 

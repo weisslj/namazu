@@ -61,6 +61,8 @@ GNU General Public License version 2</a> に
   <li><a href="#adnmz">adnmz</a></li>
   <li><a href="#kwnmz">kwnmz</a></li>
   <li><a href="#nmzmerge">nmzmerge</a></li>
+  <li><a href="#nmzegrep">nmzegrep</a></li>
+  <li><a href="#nmzcat">nmzcat</a></li>
   </ul>
 </li>
 <li><a href="#query">検索式</a>
@@ -986,6 +988,55 @@ nmzmerge は 2 つのインデックスを 1 つにまとめるコマンドです。
 <code>% nmzmerge ~/Namazu/nfl ~/Namazu/afc ~/Namazu/nfc</code><br>
 </p>
 
+<h3><a name="nmzegrep">nmzegrep</a></h3>
+
+<p>
+nmzegrep は namazu コマンド、mknmz の文書フィルタと連携して egrep 
+を実行するツールです。検索にヒットした文書に対して、egrepをかけます。
+egrep を適用することで、そのキーワードがどの行に出現するかがわかり
+ます。コマンド行から次のように実行します。
+</p>
+
+<p>
+<code>% nmzegrep [egrep's options] &lt;pattern&gt; [index]...</code>
+</p>
+
+
+<p>
+たとえば、 ~/Namazu/foobar に置かれているインデックスに対して
+foo で検索し、ヒットした文書に対してさらに egrep をかけるに
+は、次のように実行します。
+</p>
+
+<p>
+<code>% nmzegrep foo ~/Namazu/foobar</code>
+</p>
+
+<p>
+注意：nmzgrep は検索でヒットした文書ファイルを直接 egrep にかけていますが、
+nmzegrep では、検索でヒットした文書ファイルを mknmz の文書フィルタに通した
+後で egrep をかけます。テキストファイル以外に対しても egrep がかけられます
+が、mknmz の文書フィルタを呼び出すため nmzgrep よりも処理に時間がかかります。
+</p>
+
+<h3><a name="nmzcat">nmzcat</a></h3>
+
+<p>
+nmzcat は mknmz の文書フィルタと連携して 文書ファイルからテキストを
+抽出するツールです。mknmz が文書ファイルからどのような情報を抽出しているか
+を確認することができます。コマンド行から次のように実行します。
+</p>
+
+<p>
+<code>% nmzcat &lt;対象ファイル&gt;...</code>
+</p>
+
+<p>
+注意：nmzcat は、文書ファイルを mknmz の文書フィルタに通しています。
+扱うことができるのは、mknmz で対応可能になっている形式のファイルのみです。
+mknmz の文書フィルタを呼び出すため多少処理に時間がかかります。
+</p>
+
 
 <!-- query -->
 <h2><a name="query">検索式</a></h2>
@@ -1172,7 +1223,7 @@ Tknamazu および namazu.el から検索するときは必ず後者で指定します。
 Copyright (C) 2000-2004 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: manual.html,v 1.87 2004-09-20 13:08:37 usu Exp $
+$Id: manual.html,v 1.88 2004-10-01 16:43:15 usu Exp $
 </div>
 <address>
 developers@namazu.org

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: zip.pl,v 1.11 2004-09-18 12:30:41 usu Exp $
+# $Id: zip.pl,v 1.12 2004-10-01 16:43:16 usu Exp $
 #  zip filter for namazu
 #  Copyright (C) 2004 MATSUMURA Namihiko <po-jp@counterghost.net>
 #                2004 Yukio USUDA <usu@namazu.org>
@@ -105,7 +105,8 @@ sub az_filter ($$$$$) {
 	my $comment = $zip->zipfileComment();
 	my @filenames = $zip->memberNames();
 	my $tmp = join(" ", @filenames);
-	$$contref = $comment . " " . codeconv::toeuc(\$tmp) . " ";
+	codeconv::toeuc(\$tmp);
+	$$contref = $comment . " " . $tmp . " ";
     }
     my @members = $zip->members();
     my $member;
@@ -119,9 +120,11 @@ sub az_filter ($$$$$) {
 	} elsif ($size > $conf::FILE_SIZE_MAX) {
 	    util::dprint("$fname: Too large ziped file");
 	} elsif ($fname =~ m!^($conf::DENY_FILE)$!i ) {
-	    util::vprint(sprintf(_("Denied:	%s"), codeconv::toeuc(\$fname)));
+	    codeconv::toeuc(\$fname);
+	    util::vprint(sprintf(_("Denied:	%s"), $fname));
 	} elsif ($fname !~ m!^($conf::ALLOW_FILE)$!i) {
-	    util::vprint(sprintf(_("Not allowed:	%s"), codeconv::toeuc(\$fname)));
+	    codeconv::toeuc(\$fname);
+	    util::vprint(sprintf(_("Not allowed:	%s"), $fname));
 	} else {
 	    my $con = $zip->contents($member);
 	    if ($con) {
@@ -199,9 +202,11 @@ sub unzip_filter ($$$$$) {
 	} elsif ($size > $conf::FILE_SIZE_MAX) {
 	    util::dprint("$fname: Too large ziped file");
 	} elsif ($fname =~ m!^($conf::DENY_FILE)$!i ) {
-	    util::vprint(sprintf(_("Denied:	%s"), codeconv::toeuc(\$fname)));
+	    codeconv::toeuc(\$fname);
+	    util::vprint(sprintf(_("Denied:	%s"), $fname));
 	} elsif ($fname !~ m!^($conf::ALLOW_FILE)$!i) {
-	    util::vprint(sprintf(_("Not allowed:	%s"), codeconv::toeuc(\$fname)));
+	    codeconv::toeuc(\$fname);
+	    util::vprint(sprintf(_("Not allowed:	%s"), $fname));
 	} else {
 	    my $con = "";
 	    my $fh = util::efopen("$unzippath -p $tmpfile \"$fname\"|");

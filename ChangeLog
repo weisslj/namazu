@@ -1,3 +1,11 @@
+2004-10-02  Yukio USUDA <usu@namazu.org>
+
+	* pl/nmzegrep.in: Bug fix.
+
+	* filter/zip.pl: Bug fix.
+
+	* doc/ja/manual.html: Added explanation of nmzcat and nmzegrep.
+
 2004-10-01  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * pl/codeconv.pl(eucjp_han2zen_kana, eucjp_zen2han_ascii): Change the
@@ -9122,4 +9130,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1234 2004-10-01 03:44:27 opengl2772 Exp $
+$Id: ChangeLog,v 1.1235 2004-10-01 16:43:15 usu Exp $

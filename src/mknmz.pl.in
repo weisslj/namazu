@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.57 1999-09-03 00:55:32 satoru Exp $
+# $Id: mknmz.pl.in,v 1.58 1999-09-03 01:50:52 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -270,7 +270,7 @@ sub namazu_core ($$$) {
     print $file_count + $file_base . 
 	" $uri [$mtype]\n" unless $var::Opt{quiet};
 
-    make_field_index(\%fields, $cfile, $uri, \$headings, \$content);
+    complete_field_info(\%fields, $cfile, $uri, \$headings, \$content);
     put_field_index(\%fields, $field_indices);
 
     put_dateindex($cfile);
@@ -355,7 +355,7 @@ sub get_field_index_base (\%) {
     }
 }
 
-sub make_field_index (\%$$\$\$) {
+sub complete_field_info (\%$$\$\$) {
     my ($fields, $cfile, $uri, $headings, $content) = @_;
 
     unless (defined($fields->{'date'})) {
@@ -372,7 +372,7 @@ sub make_field_index (\%$$\$\$) {
     unless (defined($fields->{'summary'})) {
 	$fields->{'summary'} = make_summary($content, $headings, $cfile);
     }
-    unless (defined($fields->{'from'})) {
+    unless (defined($fields->{'from'}) || defined($fields->{'author'})) {
 	$fields->{'from'} = "(unknown)";
     }
 }
@@ -420,6 +420,7 @@ sub put_field_index (\%$) {
 	join('|', sort {length($b) <=> length($a)} keys %conf::FIELD_ALIASES);
 
     for my $field (keys %{$fields}) {
+        util::dprint("Field: $field: $fields->{$field}\n");
 	if ($field =~ /^($aliases_regex)$/o) {
 	    unless (defined($fields->{$conf::FIELD_ALIASES{$field}})) {
 		$fields->{$conf::FIELD_ALIASES{$field}} = $fields->{$field};
@@ -623,7 +624,7 @@ sub remove_lockfile ($) {
 
 # check present index whether it is old type of not
 sub check_present_index () {
-    if (-f $var::NMZ{i} && ! -f $var::NMZ{result}) 
+    if (-f $var::NMZ{i} && ! -f "$var::NMZ{result}.normal") 
     {
 	util::cdie("Present index is old type. it's unsupported.\n");
     }
@@ -1106,12 +1107,13 @@ sub append_index (@) {
     }
 
     $APPENDMODE = 1;
-    # ファイルをコピーして保護する
-    util::cp($var::NMZ{i},      $var::NMZ{_i});
-    util::cp($var::NMZ{t},  $var::NMZ{_t}) unless -f $var::NMZ{_t}; # preupdated ?
-
-    util::cp($var::NMZ{p},      $var::NMZ{_p});
-    util::cp($var::NMZ{pi},      $var::NMZ{_pi});
+    # conserve files by copying
+    util::cp($var::NMZ{i},  $var::NMZ{_i});
+    util::cp($var::NMZ{w},  $var::NMZ{_w});
+    util::cp($var::NMZ{t},  $var::NMZ{_t}) 
+	unless -f $var::NMZ{_t}; # preupdated ?
+    util::cp($var::NMZ{p},  $var::NMZ{_p});
+    util::cp($var::NMZ{pi}, $var::NMZ{_pi});
 
     return ($file_base, @flist);
 }
@@ -1347,7 +1349,7 @@ sub get_status($) {
 
     while (defined(my $line = <$fh>)) {
 	if ($line =~ /^$key\s+(.*)$/) {
-	    util::dprint("status: $key = $1");
+	    util::dprint("status: $key = $1\n");
 	    return $1;
 	}
     }

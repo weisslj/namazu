@@ -5,21 +5,29 @@ AUTOMAKE_OPTIONS = 1.4 no-dependencies
 if BUILD_FILE_MMAGIC
 FILE_MMAGIC = File-MMagic
 else
-FILE_MMAGIC=
+FILE_MMAGIC =
+endif
+
+if BUILD_TKNAMAZU
+BUILT_TKNAMAZU = tknamazu
+DIST_TKNAMAZU =
+else
+BUILT_TKNAMAZU =
+DIST_TKNAMAZU = tknamazu
 endif
 
 SUBDIRS = intl po conf filter nmz lib pl src lisp man scripts \
-	  template $(FILE_MMAGIC) @TKNAMAZU@
+	  template $(FILE_MMAGIC) $(BUILT_TKNAMAZU)
 
-DIST_SUBDIRS = intl po conf filter nmz lib pl src lisp man \
-		template scripts tknamazu
+DIST_SUBDIRS = intl po conf filter nmz lib pl src lisp man scripts \
+	  template $(BUILT_TKNAMAZU)
 
 bin_SCRIPTS = nmz-config
 
-EXTRA_DIST = README-ja INSTALL-ja namazu.spec.in namazu.spec pxgettext \
-	     ChangeLog.1 maintMakefile File-MMagic 
+EXTRA_DIST = README-ja INSTALL-ja namazu.spec.in namazu.spec \
+	     ChangeLog.1 maintMakefile File-MMagic
 
-EXTRA_DIRS = doc etc template
+EXTRA_DIRS = doc etc $(DIST_TKNAMAZU)
 
 install-data-local:
 	$(mkinstalldirs) $(localstatedir)/$(PACKAGE)/index
@@ -38,6 +46,8 @@ dist-hook:
 	    cp -rp $$subdir $(distdir)/$$subdir; \
 	    rm -f $(distdir)/$$subdir/*~; \
 	    rm -f $(distdir)/$$subdir/*.{bak,orig}; \
+	    rm -f $(distdir)/$$subdir/.cvsignore; \
+	    rm -f $(distdir)/$$subdir/autogen.sh; \
 	    rm -rf $(distdir)/$$subdir/CVS; \
 	    rm -rf $(distdir)/$$subdir/*/CVS; \
 	done

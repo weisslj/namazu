@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.77 2000-01-13 01:27:47 satoru Exp $
+dnl $Id: configure.in,v 1.78 2000-01-15 18:13:36 rug Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -92,15 +92,6 @@ fi
 
 dnl for debugging.
 AM_WITH_CCMALLOC
-
-dnl *
-dnl * Check tknamazu wheter to be build or not.
-dnl *
-AC_ARG_WITH(
-    tknamazu,
-    [  --with-tknamazu         build namazu with tcl/tk front-end ],
-    [tknamazu=${withval}], [tknamazu='no']
-)
 
 dnl *
 dnl * Define the admin's email address
@@ -233,31 +224,40 @@ AC_MSG_RESULT($OPT_WAKATI_DEFAULT)
 AC_SUBST(OPT_WAKATI_DEFAULT)
 
 dnl *
-dnl * Preprocessing for tknamazu
-dnl * (FIXME: ugly scripts)
+dnl * Preprocessing for tknamazu (FIXME: ugly scripts)
 dnl *
+AC_ARG_WITH(
+    tknamazu,
+    [  --with-tknamazu         build namazu with tcl/tk front-end ],
+    [tknamazu=${withval}], [tknamazu='no']
+)
 
 dnl * For determining namazu and mknmz pathnames
 ac_cv_path_NAMAZU="$bindir/namazu"
 ac_cv_path_MKNMZ="$bindir/mknmz"
 
-TKNAMAZU=""
 if test "${tknamazu}" != "no"; then
     AC_PATH_PROGS(WISH, wish8.0jp wish4.2jp wish8.2 wish8.1 wish, no)
     if test "$WISH" = "no"; then
 	AC_MSG_WARN(wish not found: tknamazu will not be built)
+	tknamazu=no
     else
 	AC_PATH_PROG(LYNX, lynx, no)
 	if test "$LYNX" = "no"; then
 	    AC_MSG_WARN(lynx not found: tknamazu will not be built)
+	    tknamazu=no
         else
-            TKNAMAZU="tknamazu"
+	    tknamazu=yes
 	fi
     fi
 fi
-AC_SUBST(TKNAMAZU)
+if test "${tknamazu}" = "yes"; then
+    TKNAMAZU="tknamazu"
+else
+    TKNAMAZU=""
+fi
 AC_CONFIG_SUBDIRS($TKNAMAZU)
-dnl FIXME: tknamazu/Makefile always be generated. 
+AM_CONDITIONAL(BUILD_TKNAMAZU, test x$tknamazu = xyes)
 
 dnl *
 dnl * Preprocessing for File::MMagic

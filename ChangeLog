@@ -1,3 +1,17 @@
+2000-01-16  Ryuji Abe  <raeva@t3.rim.or.jp>
+
+	* configure.in: Use BUILD_TKNAMAZU conditional instead of 
+	AC_SUBST(TKNAMAZU).
+
+	* Makefile.am: Likewise.
+	(BUILT_TKNAMAZU): Set tknamazu if BUILD_TKNAMAZU.
+	(DIST_TKNAMAZU): Set tknamazu if not BUILD_TKNAMAZU.
+	(SUBDIRS): Use $(BUILT_NAMAZU) instead of tknamazu.
+	(DIST_SUBDIRS): Likewise. Forgotten scripts has added.
+	(EXTRA_DIST): Remove pxgettext.
+	(EXTRA_DIRS): Removed template and added $(DIST_TKNAMAZU).
+	(dist-hook): Remove .cvsignore and autogen.sh if exist.
+
 2000-01-14  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* pl/find.pl : More gettextize.

@@ -10,7 +10,7 @@ DIST_SUBDIRS = $(SUBDIRS) tknamazu
 bin_SCRIPTS = nmz-config
 
 EXTRA_DIST = README-ja namazu.spec.in namazu.spec pxgettext \
-	     ChangeLog.1 File-MMagic
+	     ChangeLog.1 maintMakefile File-MMagic
 
 EXTRA_DIRS = doc etc template
 
@@ -50,29 +50,5 @@ dist-hook:
 	    rm -rf $(distdir)/$$dir; \
 	done
 
-snapshot:
-	$(MAKE) dist distdir=$(PACKAGE)`date +"-%Y-%m-%d"`
-
-
-# For developing use.
-cxref: src/namazu
-	if test ! -d cxref; then \
-	    $(mkinstalldirs) cxref; \
-	fi
-	cxref -N namazu -html20-src -I . -I src -I nmz -I lib \
-	    -warn-xref -index-all -xref-all -O cxref \
-	    nmz/*.[ch] src/*.[ch] lib/*.[ch] 1> cxref/warnings 
-
-	# Two passes are needed for accurate cross referencing.
-	cxref -N namazu -html20-src -I . -I src -I nmz -I lib \
-	    -warn-xref -index-all -xref-all -O cxref \
-	    nmz/*.[ch] src/*.[ch] lib/*.[ch] 1> cxref/warnings 
-
-
-global: HTAGS
-
-HTAGS: GTAGS
-	htags
-
-GTAGS: src/namazu
-	gtags
+##Bug in automake: Can't use `if MAINTAINER_MODE'
+@MAINTAINER_MODE_TRUE@include $(srcdir)/maintMakefile

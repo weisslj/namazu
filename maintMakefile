@@ -1,0 +1,27 @@
+## for MAINTAINERS.
+
+snapshot:
+	$(MAKE) dist distdir=$(PACKAGE)`date +"-%Y-%m-%d"`
+
+
+cxref: src/namazu
+	if test ! -d cxref; then \
+	    $(mkinstalldirs) cxref; \
+	fi
+	cxref -N namazu -html20-src -I . -I src -I nmz -I lib \
+	    -warn-xref -index-all -xref-all -O cxref \
+	    nmz/*.[ch] src/*.[ch] lib/*.[ch] 1> cxref/warnings 
+
+	# Two passes are needed for accurate cross referencing.
+	cxref -N namazu -html20-src -I . -I src -I nmz -I lib \
+	    -warn-xref -index-all -xref-all -O cxref \
+	    nmz/*.[ch] src/*.[ch] lib/*.[ch] 1> cxref/warnings 
+
+
+global: HTAGS
+
+HTAGS: GTAGS
+	htags
+
+GTAGS: src/namazu
+	gtags

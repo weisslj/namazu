@@ -2,6 +2,11 @@
 
 	* configure.in (AM_MAINTAINER_MODE): Enabled maintainer mode.
 
+	* maintMakefile: New file. Some targets (snapshot, cxref, 
+	global, HTAGS, and GTAGS) moved from Makefile.
+
+	* Makefile.am (EXTRA_DIST): Added maintMakefile.
+
 2000-01-04  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* {nmz,src}/*.c: Change C style (function definition).

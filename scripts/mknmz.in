@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.52 2000-03-16 15:11:28 satoru Exp $
+# $Id: mknmz.in,v 1.53 2000-03-16 16:12:50 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -494,13 +494,15 @@ sub generate_uri (@) {
 	$file =~ s#^([A-Z]):#/$1|#i; # converting a drive part like: /C|
     }
 
-    for my $tmp ($file, $fragment) {
-	next unless defined $tmp;
-	if (($SYSTEM eq "MSWin32") || ($SYSTEM eq "os2")) {
-	    $tmp = codeconv::shiftjis_to_eucjp($tmp);
-	}
+    if (($SYSTEM eq "MSWin32") || ($SYSTEM eq "os2")) {
+	$file = codeconv::shiftjis_to_eucjp($file);
+    }
+    codeconv::toeuc(\$fragment);
 
-	unless ($var::Opt{'noencodeuri'}) {
+    unless ($var::Opt{'noencodeuri'}) {
+	for my $tmp ($file, $fragment) {
+	    next unless defined $tmp;
+
 	    # Escape unsafe characters (not strict)
 	    $tmp =~ s/\%/%25/g;  # Convert original '%' into '%25' v1.1.1.2
 	    $tmp =~ s/([^a-zA-Z0-9~\-\_\.\/\:\%])/

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: codeconv.pl,v 1.24 2004-10-16 14:54:12 opengl2772 Exp $
+# $Id: codeconv.pl,v 1.25 2005-01-12 14:07:45 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -181,7 +181,7 @@ sub eucjp_zen2han_ascii ($) {
                 "\x00","\x00","\x00","\x00","\x00","\x00","\x00","\x00",
                 "\x24","\x00","\x00","\x25","\x23","\x26","\x2A","\x40",
                 "\x00","\x00","\x00","\x00","\x00","\x00","\x00","\x00"
-            )[unpack("C", $1 & "\x5F")];
+            )[unpack("C", $1) - unpack("C", "\xa0")];
             $tmp = $kigou unless ($kigou eq "\x00");
         }
         $tmp;

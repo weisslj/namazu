@@ -8,6 +8,10 @@
 	* src/var.[ch]: Abolish OppositeEndian variable.
 
 
+1999-10-13  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* src/idxname.{c,h}: Added.
+
 1999-10-12  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* src/namazu.c : Moved some functions to libnamazu.c.

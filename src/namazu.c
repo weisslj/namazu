@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.30 1999-10-12 07:28:11 knok Exp $
+ * $Id: namazu.c,v 1.31 1999-10-13 08:30:43 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -47,6 +47,7 @@
 #include "search.h"
 #include "cgi.h"
 #include "hlist.h"
+#include "idxname.h"
 #include "i18n.h"
 
 /*
@@ -336,26 +337,19 @@ int main(int argc, char **argv)
 	}
         strcpy(query, argv[i++]);
         if (i < argc) {
-            for (Idx.num = 0; i < argc && Idx.num < INDEX_MAX; i++) {
-		Idx.names[Idx.num] = 
-		    (uchar *) malloc(strlen(argv[i]) + 1);
-		if (Idx.names[Idx.num] == NULL) {
+	    int curidx = getidxnum();
+            for (curidx = 0; i < argc && curidx < INDEX_MAX; i++) {
+	        curidx = add_index(argv[i]);
+		if (curidx == ERR_MALLOC) {
 		    die("main: malloc(idxname)");
+		    break;
+		} else if (curidx == ERR_INDEX_MAX) {
+		    break;
 		}
-		Idx.pr[Idx.num] = NULL;
-		strcpy(Idx.names[Idx.num], argv[i]);
-		Idx.num++;
             }
         } 
-        if (Idx.num == 0) {
-            Idx.num = 0;
-            Idx.names[Idx.num] = 
-                (uchar *) malloc(strlen(DEFAULT_INDEX) + 1);
-            if (Idx.names[Idx.num] == NULL) {
-                die("main: malloc(idxname)");
-            }
-            strcpy(Idx.names[Idx.num], DEFAULT_INDEX);
-            Idx.num = 1;
+        if (getidxnum() == 0) {
+	    add_index(DEFAULT_INDEX);
 	}
     }
     if (IsCGI) {

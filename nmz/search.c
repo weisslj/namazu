@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.15 1999-12-04 02:16:26 satoru Exp $
+ * $Id: search.c,v 1.16 1999-12-04 03:36:49 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -67,7 +67,7 @@ static void show_status(int, int);
 static int get_file_size (char*);
 static void lrget(char* , int*, int*);
 static HLIST prefix_match(char* , int);
-static int detect_search_mode(char*);
+static enum nmz_search_mode detect_search_mode(char*);
 static HLIST do_word_search(char*, HLIST);
 static HLIST do_prefix_match_search(char*, HLIST);
 static int hash(char*);
@@ -227,7 +227,7 @@ static HLIST prefix_match(char * orig_key, int v)
 }
 
 /* detect search mode */
-static int detect_search_mode(char *key) {
+static enum nmz_search_mode detect_search_mode(char *key) {
     if (strlen(key) <= 1)
         return WORD_MODE;
     if (isfield(key)) { /* field search */
@@ -286,7 +286,8 @@ static HLIST do_word_search(char *key, HLIST val)
 	if (val.stat == ERR_FATAL)
 	    return val;
     } else {
-        val.num = 0;  /* no hit */
+        val.num  = 0;  /* no hit */
+	val.stat = SUCCESS; /* no hit but success */
 	val.data = NULL;
     }
     return val;
@@ -399,7 +400,6 @@ static HLIST do_phrase_search(char *key, HLIST val)
     p = key;
     if (strchr(p, '\t') == NULL) {  /* if only one word */
         val = do_word_search(p, val);
-	Idx.mode[CurrentIndexNumber] = WORD_MODE;
         return val;
     }
 
@@ -418,18 +418,10 @@ static HLIST do_phrase_search(char *key, HLIST val)
 	}
         if (strlen(p) > 0) {
             HLIST tmp;
-	    PHRASERES *prtmp;
 
             tmp = do_word_search(p, val);
 	    if (tmp.stat == ERR_FATAL) 
 	        return tmp;
-	    if ((prtmp = push_phraseres(
-		Idx.pr[CurrentIndexNumber], tmp.num, tmp.stat, p)) == NULL) 
-	    {
-		tmp.stat = ERR_FATAL;
-		return tmp;
-	    }
-	    Idx.pr[CurrentIndexNumber] = prtmp;
 
             if (i == 0) {
                 val = tmp;
@@ -907,10 +899,8 @@ HLIST search_main(char *query)
 
 HLIST do_search(char *orig_key, HLIST val)
 {
-    int mode;
+    enum nmz_search_mode mode;
     char key[BUFSIZE];
-
-    val.stat = SUCCESS;
 
     strcpy(key, orig_key);
     strlower(key);
@@ -919,7 +909,6 @@ HLIST do_search(char *orig_key, HLIST val)
 	val.stat = ERR_FATAL;
 	return val;
     }
-    Idx.mode[CurrentIndexNumber] = mode;
     delete_beginning_backslash(key);
 
     if (mode == PREFIX_MODE) {
@@ -934,10 +923,20 @@ HLIST do_search(char *orig_key, HLIST val)
         val = do_word_search(key, val);
     }
 
-    if (mode != PHRASE_MODE) { /* phrase mode print status by itself */
+    {
 	PHRASERES *prtmp;
+	char tmpkey[BUFSIZE];
+
+	strcpy(tmpkey, orig_key);
+
+	if (mode == PHRASE_MODE) {
+	    tr(tmpkey, "	", " ");
+	}
+
+	fflush(stdout);
+
 	if ((prtmp = push_phraseres(Idx.pr[CurrentIndexNumber], 
-				    val.num, val.stat, orig_key)) == NULL) 
+				    val.num, val.stat, tmpkey)) == NULL) 
 	{
 	    val.stat = ERR_FATAL;
 	    return val;

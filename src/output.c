@@ -517,19 +517,9 @@ void print_hit_count ()
 		}
 	    }
 	}
-        if (is_refprint() && !is_countmode() && !is_listmode() && 
-	    !is_quietmode() && Idx.mode[i] == PHRASE_MODE) 
-	{
-	    print(" { ");
-	}
         while (pr != NULL) {
 	    print_word_hit_count(pr);
 	    pr = pr->next;
-	}
-	if (is_refprint() && !is_countmode() && !is_listmode() && 
-	    !is_quietmode() && Idx.mode[i] == PHRASE_MODE) 
-	{
-	    printf(" :: %d } ", Idx.phrasehit[i]);
 	}
 	if (is_refprint() && !is_countmode() && !is_listmode() && 
 	    !is_quietmode()) {

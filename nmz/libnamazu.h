@@ -2,7 +2,7 @@
  * 
  * libnamazu.h - Namazu library api
  *
- * $Id: libnamazu.h,v 1.15 1999-12-04 02:16:26 satoru Exp $
+ * $Id: libnamazu.h,v 1.16 1999-12-04 03:36:49 satoru Exp $
  * 
  */
 
@@ -18,7 +18,8 @@
  */
 
 enum {
-    BUFSIZE = 1024,        /* Size of general buffers */
+    /* Size of general buffers. This should be larger than QUERY_MAX */
+    BUFSIZE = 1024,        
 
     QUERY_TOKEN_MAX =  16, /* Max number of tokens in a query */
     QUERY_MAX       = 256, /* Max length of an IR query */
@@ -156,14 +157,13 @@ typedef struct phraseres {
 } PHRASERES;
 
 /* modes of searching */
-enum search_mode {
+enum nmz_search_mode {
     WORD_MODE,
     PREFIX_MODE,
     REGEX_MODE,
     PHRASE_MODE,
     FIELD_MODE,
-
-    ERROR_MODE = -1
+    ERROR_MODE
 };
 
 typedef struct indices {
@@ -171,7 +171,6 @@ typedef struct indices {
     char *names[INDEX_MAX + 1]; /* Index names */
 
     int total[INDEX_MAX + 1];   /* results of total hits */
-    enum search_mode mode[INDEX_MAX + 1];
     PHRASERES *pr[INDEX_MAX + 1]; /* results of each word hits */
     int phrasehit[INDEX_MAX + 1]; /* results of each phrase hits */
 } INDICES;

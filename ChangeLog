@@ -1,5 +1,17 @@
 1999-12-04  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* nmz/search.c (do_word_search): set SUCCESS to val.stat.
+
+	* src/output.c (print_hit_count): Abolish special treatments for
+	phrase search. 
+
+	* nmz/libnamazu.h (struct indices): Abolish a "mode" member;
+
+	* nmz/search.c (do_phrase_search): Don't call push_phraseres.
+	(do_search): Call push_phraseres anytime.
+
+	* nmz/libnamazu.h (enum search_mode): Unset ERROR_MODE.
+
 	* nmz/search.c (push_phraseres): Take `stat' parameter.
 	(search_main): 	Remove "if (tmp[i].stat != SUCCESS) { ... }"
 	

@@ -1,6 +1,6 @@
 /*
  * i18n.c -
- * $Id: i18n.c,v 1.20 2000-02-13 17:34:53 rug Exp $
+ * $Id: i18n.c,v 1.21 2000-02-14 05:05:34 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -94,7 +94,20 @@ nmz_set_lang(const char *lang)
 
     env = guess_category_value("LC_MESSAGES");
     if (env == NULL && *lang != '\0') {
+#ifdef HAVE_SETENV
 	setenv("LANG", lang, 1);
+#else
+# ifdef HAVE_PUTENV
+	{
+	    static char *store;
+
+	    store = (char *)realloc(store, strlen(lang) + 6); /* do *not* free */
+	    strcpy(store, "LANG=");
+	    strcat(store, lang);
+	    putenv(store);
+	}
+# endif
+#endif
     }
 
 #ifdef HAVE_SETLOCALE

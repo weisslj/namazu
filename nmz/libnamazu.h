@@ -2,7 +2,7 @@
  * 
  * libnamazu.h - Namazu library api
  *
- * $Id: libnamazu.h,v 1.50 2003-04-18 13:04:43 knok Exp $
+ * $Id: libnamazu.h,v 1.51 2003-07-15 10:13:19 knok Exp $
  * 
  */
 
@@ -260,6 +260,11 @@ extern char *nmz_get_dyingmsg ( void );
 extern char *nmz_set_dyingmsg_sub(const char *fmt, ...);
 extern char *nmz_msg(const char *fmt, ...);
 extern void nmz_free_internal(void);
+
+/* since v2.0.13 */
+#include "nmzversion.h"
+extern char *nmz_version();
+extern char *nmz_ltversion();
 
 #ifdef __cplusplus
 }

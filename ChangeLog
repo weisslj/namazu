@@ -1,3 +1,9 @@
+2003-07-15  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* nmz/version.h.in: Added a new file for getting version API.
+
+	* nmz/nmzversion.h.in: Ditto.
+
 2003-07-15  Makoto Fujiwara  <makoto@ki.nu>
 
 	* configure.in (COPYRIGHT): 2000-2002  -> 2002-2003
@@ -8020,4 +8026,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1037 2003-07-15 09:58:29 makoto Exp $
+$Id: ChangeLog,v 1.1038 2003-07-15 10:13:19 knok Exp $

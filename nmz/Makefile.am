@@ -1,12 +1,13 @@
 # Process this file with automake to produce Makefile.in
 #
-# $Id: Makefile.am,v 1.40 2001-09-10 03:24:38 rug Exp $
+# $Id: Makefile.am,v 1.41 2003-07-15 10:13:19 knok Exp $
 #
 
 AUTOMAKE_OPTIONS = 1.4 no-dependencies
 
 EXTRA_DIST = alloca.c memcmp.c memmove.c memset.c strcasecmp.c strncasecmp.c \
-	     strcspn.c strerror.c vsnprintf.c system.h support.h
+	     strcspn.c strerror.c vsnprintf.c system.h support.h \
+	     nmzversion.h.in
 
 localedir   = $(prefix)/$(DATADIRNAME)/locale
 confdir     = $(sysconfdir)/$(PACKAGE)
@@ -22,7 +23,7 @@ INCLUDES = -I$(srcdir) -I.. -I$(srcdir)/../lib -I$(srcdir)/../src \
 
 pkginclude_HEADERS = codeconv.h field.h hlist.h i18n.h idxname.h \
 	libnamazu.h l10n-ja.h parser.h query.h re.h regex.h \
-	search.h score.h util.h var.h wakati.h 
+	search.h score.h util.h var.h wakati.h nmzversion.h
 lib_LTLIBRARIES = libnmz.la
 
 libnmz_la_SOURCES = alias.c alias.h codeconv.c codeconv.h \
@@ -30,7 +31,7 @@ libnmz_la_SOURCES = alias.c alias.h codeconv.c codeconv.h \
 	idxname.c idxname.h libnamazu.c libnamazu.h l10n-ja.c l10n-ja.h \
 	parser.c parser.h query.c query.h re.c re.h replace.c replace.h \
 	regex.c regex.h search.c search.h seed.c seed.h util.c util.h \
-	var.c var.h wakati.c wakati.h score.c score.h
+	var.c var.h wakati.c wakati.h score.c score.h nmzversion.h
 
 libnmz_la_DEPENDENCIES = @NMZ_LIBOBJS@
 libnmz_la_LIBADD = @NMZ_LIBOBJS@

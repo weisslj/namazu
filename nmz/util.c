@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: util.c,v 1.67 2000-03-13 15:32:03 kenzo- Exp $
+ * $Id: util.c,v 1.68 2000-05-10 06:40:23 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -433,7 +433,9 @@ nmz_readfile(const char *fname)
 	nmz_set_dyingmsg(nmz_msg("%s: %s", fname, strerror(errno)));
 	return NULL;
     }
-    if (fread(buf, sizeof(char), fstatus.st_size, fp) == 0) {
+    if (fstatus.st_size != 0 &&
+	fread(buf, sizeof(char), fstatus.st_size, fp) == 0) 
+    {
         nmz_set_dyingmsg(nmz_msg("%s: %s", fname, strerror(errno)));
 	return NULL;
     }

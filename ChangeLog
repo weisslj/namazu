@@ -1,3 +1,11 @@
+2000-05-10  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* nmz/util.c (nmz_readfile): Fix namazu-bugs-ja#18 by applying
+	kuriyama@FreeBSD.org's patch. 
+
+	* filter/gfilter.pl (white_space_adjust_filter): Fix
+	namazu-bugs-ja#17 Don't replace	"[\x7f\xff]" with a space. 
+
 2000-05-09  Masao Takaku  <masao@ulis.ac.jp>
 
 	* tests/Makefile.am (TESTS): Add namazu-9.
@@ -5659,4 +5667,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.691 2000-05-08 23:38:41 masao Exp $
+$Id: ChangeLog,v 1.692 2000-05-10 06:40:22 satoru Exp $

@@ -2,13 +2,13 @@ Overview of Changes in Namazu 2.0 - Feb 20, 2000
 
 * NLS support using GNU gettext is added.
 * Using GNU automake-1.4.
-* The configure script determine hostname and domainname.
+* The configure script determines host name and domain name.
 * Namazu core search engine library is provided.
 * Using GNU libtool-1.3.3.
 * Perl XSUB module support for mknmz is added.
 * New index structure has no compatibility with previous one.
 * Index size is reduced by about 50%.
-* Updating index become more easier. 
+* Updating index becomes more easier. 
 * namazu and namazu.cgi are separated.
 * Using File::MMagic perl module for file type detection.
 * New filters are added. MS Word, PDF, TeX, etc.

@@ -1,4 +1,4 @@
-$Id: TODO-namazu-2.0,v 1.30 2000-01-09 13:31:50 satoru Exp $
+$Id: TODO-namazu-2.0,v 1.31 2000-01-10 05:33:57 makoto Exp $
 
 検討項目
 
@@ -76,3 +76,48 @@ $Id: TODO-namazu-2.0,v 1.30 2000-01-09 13:31:50 satoru Exp $
 
   * 頑丈かつ単純な美しく保守のしやすいコードを目指そう :-)
 
+藤原のつけ足し (2000/01/10)
+ ** mknmz
+  * show index directory when -C requested
+    -C で index: を表示する
+
+  * using Find.pm instead of find.pl
+    (prune for EXCLUDE directory)
+    find.pl の代りに Find.pm を使うようにする。
+    いまは \@flist を wanted に渡しているが Find.pm だと
+    出来ないので、少しだけ面倒
+
+ ** mknmz/namazu 
+  * .mknmzrc / .namazurc clean up (multiple or single file)
+    設定を複数で出来るのか、一つだけで設定するのかをはっきりさせる
+
+ ** Manual
+  * manual (document)
+    (provide NMZ.* as well = mknmz "document" in package ) ?
+  
+    package may contain the result of mknmz "document",
+    this feature is only allowed with this type of application
+   (nothing required other than this package).
+  
+    Or may include mknmz-doc target in Makefile 
+  
+    This does not fit the existing manual.html version, for
+    it is the large one file, thus either
+    (1) support <A NAME="XXYY"> tag 
+    or
+    (2) fragment manual file
+  
+ ** Make
+  * BSD make (distclean,clean,dist) -- automake related
+    make clean, make dist に -i を付けなくてもいいようにする
+    (ただし、namazu の問題でなく automake の問題のはず)
+
+  * test suite for releasing
+    出荷時の動作確認用のしくみ
+  
+  * test in place feature 
+    test before make install with looking the library just
+    made (not looking the old installed  version)
+    make install する前に「動くかな」と確認出来るようにする
+    現状は /usr/local/share/namazu/* の下を見てしまうので完全
+    ではない

@@ -55,6 +55,8 @@
 <ul>
 <li>Words are sorted in ascending order. (list of words are recorded in "NMZ.w")
 <li>DocumentID are sorted in ascending order --INPORTANT.
+<li>DocumentID are stored by only gaps.<br>
+ e.g., 1, 5, 29, 34 -&gt; 1, 4, 24, 15
 <li>Characters in JIS X 0208 are recored in EUC-JP.
 <li>Data is stored in "pack 'w'" format.
 </ul>
@@ -85,7 +87,7 @@
 
 <p>
 A simple line-oriented text. Sorted in ascending order. You can seek
-NMZ.ii by line number. (Note: line number = documentID)
+NMZ.ii by line number. (Note: line number = wordID)
 </p>
 
 <p>
@@ -166,6 +168,8 @@ search is incomplete, it usually works fine.
 
 <ul>
 <li>DocumentID are sorted in ascending order. -- IMPORTANT
+<li>DocumentID are stored by only gaps.<br>
+ e.g., 1, 5, 29, 34 -&gt; 1, 4, 24, 15
 <li>All data is stored in "pack 'w'".
 </ul>
 
@@ -392,7 +396,7 @@ Log file for searched keywords.
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: nmz.html,v 1.5 2000-02-27 22:45:16 satoru Exp $
+$Id: nmz.html,v 1.6 2000-03-18 01:28:04 satoru Exp $
 </div>
 <address>
 developers@namazu.org

@@ -55,6 +55,8 @@
 <ul>
 <li>単語の並びは昇順 (単語の一覧表は NMZ.w に記録されている)
 <li>文書IDは小さい順に並ぶ --重要
+<li>文書IDは差分だけを記録する。<br>
+例: 1, 5, 29, 34 -> 1, 4, 24, 15
 <li>JIS X 0208の文字はEUC-JPで記録される
 <li>データはすべて pack 'w' で保存される
 </ul>
@@ -85,7 +87,7 @@
 
 <p>
 単なる行指向のテキスト。昇順に並ぶ。行番号をもとに 
-NMZ.ii をseekできる。 (行番号 = 文書ID)
+NMZ.ii をseekできる。 (行番号 = 単語ID)
 </p>
 
 <p>
@@ -165,6 +167,8 @@ NMZ.ii をseekできる。 (行番号 = 文書ID)
 
 <ul>
 <li>文書IDは小さい順に並ぶ --重要
+<li>文書IDは差分だけを記録する。<br>
+例: 1, 5, 29, 34 -> 1, 4, 24, 15
 <li>データはすべて pack 'w' で保存される
 </ul>
 
@@ -391,7 +395,7 @@ ${フィールドの名前} の部分はそのフィールドの内容に置き換
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: nmz.html,v 1.7 2000-02-19 14:06:54 satoru Exp $
+$Id: nmz.html,v 1.8 2000-03-18 01:28:04 satoru Exp $
 </div>
 <address>
 developers@namazu.org

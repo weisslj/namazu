@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.64 2004-03-26 17:37:38 opengl2772 Exp $
+ * $Id: hlist.c,v 1.65 2004-04-01 15:36:01 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -455,6 +455,8 @@ nmz_free_hlist(NmzResult hlist)
 {
     if (hlist.stat != SUCCESS || hlist.num <= 0) return;
     free(hlist.data);
+    hlist.data = NULL;
+    hlist.num = 0;
 }
 
 void 

@@ -19,7 +19,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 # 02111-1307, USA
 #
-# $Id: Namazu.pm,v 1.10 2000-08-25 04:04:07 knok Exp $
+# $Id: Namazu.pm,v 1.11 2000-11-06 09:38:09 knok Exp $
 #
 
 package Search::Namazu;
@@ -36,7 +36,7 @@ Search::Namazu - Namazu library module for perl
 				query => 'foo');
 
   foreach my $hlist (@hlists) {
-      print ($self->score, $self->uri, $self->date, $self->rank);
+      print ($hlist->score, $hlist->uri, $hlist->date, $hlist->rank);
   }
 
 =head1 DESCRIPTION

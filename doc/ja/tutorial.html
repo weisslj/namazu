@@ -1,5 +1,5 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-        "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
 <html> 
 <head>
 <meta name="ROBOTS" content="NOINDEX,NOFOLLOW">
@@ -54,6 +54,8 @@ Namazu 2.0 を初めて使う方のための情報を用意しました。この文
 <li>Namazu-2.0 を初めて設置する方
 <li>Namazu を初めて使う方、Namazu-2.0 を初めて使う方
 </ul>
+
+<p>
 を対象に、Namazu を使い始める時の困難が少しでも少なくな
 るようにという目的で書かれています。
 Namazu の全ての機能については、
@@ -61,6 +63,7 @@ Namazu の全ての機能については、
 参照して下さい。また設置についても
 <a href="../../INSTALL-ja">別途説明</a>
 があります。
+</p>
 
 <h2><a name="reference">【参照】</a></h2>
 
@@ -101,14 +104,18 @@ content negotiation </a>
 </dl>
 
 <h2><a name="versions">四つの版</a></h2>
+
+<p>
 Namazu の版には(大きく分けて) 1.3 以前, 1.4, 1.9, 2.0 の四つがあり
 ます。
+</p>
+
 <dl>
 <dt> 1.3
 <dd> 
 一番多く使われている。<br>
 1.3.0.10 以前のものは
-外部からファイル操作をされる可能性があるので、
+外部からゴミのファイルを作られる可能性があるので、
 その心配がある時には 1.3.0.11 に更新した方がいい。
 <br>
 1.3.0.11 が最新
@@ -129,7 +136,9 @@ Namazu の版には(大きく分けて) 1.3 以前, 1.4, 1.9, 2.0 の四つがあり
 
 <h2><a name="components">Namazu の構成部品</a></h2> 
 
+<p>
 namazu は大きく分けて次の二つから出来ています。 
+</p>
 <ul>
 <li>mknmz<br> 
 検索索引(index) を予め作る( perl で書いてある)。 
@@ -151,14 +160,14 @@ namazu という名前のものを namazu.cgi という名前で写したり、名前を
 </p>
 </ul> 
 <p>
-実際には、後者には、
- <A href="variation.shtml">いろいろな変種 (variation) </a>
-が用意されていますが、ここではこまかいことは省略します。
+実際には、後者には、いろいろな変種が用意されていますが、ここではこまかいことは省略します。
 </p>
 
 <h2><a name="prep-make">準備と make</a></h2>
+<p>
 2.0 の版を作るために次のものが必要になります。
 (お名前の敬称は略させていただきます。ごめんなさい)
+</p>
 <table cellspacing=0 cellpadding=3 border=1>
 <tr>
 <th>名称</th><th>説明</th>
@@ -334,26 +343,31 @@ ranlib -t /usr/local/lib/libchasen.a
 
 
 <h2><a name="before-make-install">mknmz make install 前の確認</a></h2>
+<p>
 もし make install する前に mknmz を試して見たいという時には
 cd scripts してから ./mknmz とすると、
 (<code>/usr/local/share/namazu</code> でなく)
 すぐ隣にある ../pl/*.pl を参
 照します。
+</p>
 
+<p>
 <strong>
 (この辺の事情は mknmz の中の load_module() の中の @INC の文字の辺
 で分るはずです)。</strong>
 <br>
 例えば
-<code>
-./mknmz -C  ./mknmz --help ./mknmz -O /tmp ~/Mail</code>
+<code>./mknmz -C  ./mknmz --help ./mknmz -O /tmp ~/Mail</code>
 などを試せます。
+</p>
 
 
 <h2><a name="help">help の表示</a></h2>
+<p>
 以上 mknmz と namazu の二つの使い方は引数無で起動するととても簡単な説明が、
 --help と入力すると長い説明が表示されます。また -C を付けると
 その時の構成を表示します。この三つ
+</p>
 
 <table cellspacing=0 cellpadding=3>
   <caption>操作行で説明などを得る方法</caption>
@@ -368,10 +382,12 @@ cd scripts してから ./mknmz とすると、
     <td><a href="mknmz-1.9.12-C">*</a>    <td><a href="namazu-1.9.12-C">*</a>
   </table>
 
+<p>
 は覚えておくといいと思います。 
 上にも書きましたが、全ての機能については別の
 <a href="manual.html">説明書</a> がありますので、そちらを
 参照して下さい。
+</p>
 
 <h2><a name="run-mknmz">動作確認 mknmz</a></h2>
 <p>
@@ -393,9 +409,11 @@ namazu の実行時に
 高林さんは、その方をすすめるようにすると書いています)
 </p>
 
-  <blockquote>
-  <code><a href="man/mknmz">mknmz</a> [options] <i>検索 directory</i></code>
-  </blockquote>
+<blockquote>
+<p>
+<code><a href="man/mknmz">mknmz</a> [options] <i>検索 directory</i></code>
+</p>
+</blockquote>
 
 <p>
 とします。
@@ -408,11 +426,13 @@ namazu の実行時に
 例えば
 </p>
 <blockquote>
+<p>
   mkdir /tmp/index<br>
   cd /home/htdocs/software<br>
   mknmz -O /tmp/index \<br>
   --replace='s#<strong>/home/htdocs/software/</strong>#<strong>http://www.ki.nu/software/</strong>#'
 <strong>.</strong>
+</p>
 </blockquote>
 
 <p>
@@ -466,11 +486,16 @@ $HTML_SUFFIX
 </p>
 
 
+<p>
 <a name="using-mknmz">using-mknmz</a>
+</p>
+
 
 <hr>
+<p>
 <em>この色の情報はまだ以前の情報のままですので
 あまり、意味がありません。</em>
+</p>
 
 <hr>
 
@@ -533,7 +558,10 @@ Supported media types:
 </table>
 
 
+<p>
 現在の版(少なくとも 1.9.5) では
+</p>
+
 <ul>
 <li>
 <i>検索 directory</i>に symbolic link があるとうまく行かな
@@ -543,13 +571,16 @@ Supported media types:
 </ul>
 
 <h3>conf.pl</h3>
-namazu-1.9.5/lib/conf.pl が設置される先の
-<tt><a href="../../pl/conf.pl">/usr/local/share/namazu/lib/conf.pl</a></tt> 
+<p>namazu-1.9.5/lib/conf.pl が設置される先の
+<code>
+<a href="/usr/local/share/namazu/lib/conf.pl">
+/usr/local/share/namazu/lib/conf.pl</a></code> 
 に定義されている<a href="conf.pl.shtml">変数</a>は
 ~/.mknmzrc の中に設定変更を書くことが出来る。
 (以前は
 -I filename と指定した filename の中に書く
 方法だけしかなかった)
+</p>
 
 
 <pre>このようなものを試して見る。
@@ -573,14 +604,18 @@ Time: 1261 sec.
 </pre>
 
 <h2><a name="run-namazu">【動作確認 namazu】</a></h2>
+<p>
 さまざまな設定は<code>
 <a href="http://openlab.ring.gr.jp/namazu/manual.html.ja#NAMAZU_CONF">
 /usr/local/share/namazu/conf/namazu.conf</a></code>
 に書くことが出来ます。
 namazu.conf の設定例は 配布の中の <code>lib/namazu.conf-dist</code> に
 あります。
+</p>
+
 <p>初めは操作行で <code>/usr/local/namazu/bin 検索文字列</code>
 を試すのが手軽です。
+</p>
 
 <p>
 無指定では、namazu は
@@ -627,8 +662,11 @@ DirectoryIndex</td><td> index.html
 </td></tr>
 
 </table>
+
+<p>
 などが関係して来る。(管理者)と書いてあるもの以外は .htaccess にも
 書ける(ただし apache の設置時にそれを禁止することも出来るので不可の場合もある)
+</p>
 
 <h3>型紙(template)のこと</h3>
 <p>
@@ -737,10 +775,14 @@ perl -MNKF -e ''
 
 
 <h2><a name="can-do">Namazu で出来ること</a></h2>
+
+<p>
 <strong>
 ここに書いてあることは「保証」ではありません。
 </strong>
 開発者の希望が書いてあるだけです。
+</p>
+
 <ul>
 <li>一つの機械の、一つまたは複数の案内(directory)
 の下にある譜を指定して、
@@ -802,7 +844,7 @@ contrib/00readme-namazu.jis</a> に書いてあります。
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: tutorial.html,v 1.4 2000-02-13 13:31:21 satoru Exp $
+$Id: tutorial.html,v 1.5 2000-02-13 13:42:54 satoru Exp $
 </div>
 <address>
 developers@namazu.org

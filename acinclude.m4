@@ -655,7 +655,6 @@ changequote([,])dnl
       ;;
   ld*)
     ac_prog=ld
-    test -z "$LD" && LD="$ac_dir/$ac_prog"
     ;;
   "")
     # If it fails, then pretend we aren't using GCC.

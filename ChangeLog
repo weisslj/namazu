@@ -1,5 +1,7 @@
 1999-11-18  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* acinclude.m4 (AC_PROG_LD): Fix 'ld' problem. [namazu-dev 859]
+	
 	* {src,nmz}/*.h: Add 'extern' keyword for all public functions.
 	
 	* nmz/util.c (reverse_byte_order): Be type dependent.

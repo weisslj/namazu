@@ -1,3 +1,8 @@
+1999-09-05  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* src/cgi.c (get_cgi_vars): Fix a bug: can't sort by score at CGI.
+
+	
 1999-09-04  masao@ulis.ac.jp (Masao Takaku)
 
 	* src/mknmz.pl.in: Fix syntax error in perl5.004.
@@ -635,9 +640,9 @@
 	* Makefile.am, src/Makefile.am: Change a directory structure for
 	installing.
 
-		* src/mknmz.pl.in: Fix conflicted parts. (temporary)
+	* src/mknmz.pl.in: Fix conflicted parts. (temporary)
 
-* template/NMZ.*: New files.
+	* template/NMZ.*: New files.
 
 	* lib/NMZ.*: Remove files.
 

@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.17 1999-09-04 08:25:10 satoru Exp $
+ * $Id: cgi.c,v 1.18 1999-09-04 23:16:09 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -205,7 +205,7 @@ int get_cgi_vars(uchar * query, uchar *subquery)
 	} else if (strprefixcasecmp(qs, "sort=") == 0) {
 	    qs += strlen("sort=");
 	    if (strprefixcasecmp(qs, "score") == 0) {
-		SortMethod    = SORT_BY_DATE;
+		SortMethod    = SORT_BY_SCORE;
 		SortOrder = DESCENDING;
 		qs += strlen("score");
 	    } else if (strprefixcasecmp(qs, "date%3Alate") == 0) {

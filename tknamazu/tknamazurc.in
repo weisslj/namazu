@@ -1,0 +1,71 @@
+#
+# Tcl / Tk Namazu client configuration file
+#
+#
+# このファイルは HOME で規定されるディレクトリもしくは TKNMZPATH で規定
+# される tknamazu.tcl と同じディレクトリに置いておいてください。
+#
+# 各項目は大文字で、項目と値の間は１つ以上の<TAB>で区切ってください。
+# 行頭に # を書けばコメント扱になります。
+
+
+# 外部閲覧用の Web Browser を full path で指定してください。
+EXTBROWSER		@NETSCAPE@
+
+# manual を検索する path をスペースで区切って列挙してください。
+MANPATH			/usr/local/man/ /usr/man/ /usr/share/man /usr/bin/man /usr/man /usr/X11R6/man /usr/openwin/man
+
+# info の処理の後に通したい filter のある所を full path で指定してください。
+# filter という位置づけの為、shell のパイプを使います。コマンドの最初に "| " を
+# 必ず入れてください。
+GNUINFOFILTER		
+
+# デフォルトの横幅を char 単位で規定してください。
+WIDTH			80
+
+# デフォルトの高さを char 単位で規定してください。
+HEIGHT			20
+
+# menu bar 等の font を指定してください。
+WIDGETFONT		-misc-Fixed-Medium-R-Normal-*-*-120-*-*-*-*-*-*
+
+# 結果を表示するテキスト画面の font を指定してください。
+TEXTFONT		-misc-Fixed-Medium-R-Normal-*-*-120-*-*-*-*-*-*
+
+# menu bar 等の色を指定してください。
+WIDGETCOLOR		gray90
+
+# Namazu のコマンドラインオプションを規定してください。
+OPTIONS			
+
+# namazu.conf のある場所を full path で指定してください。
+NMZCONF			
+
+# mknmz をスタートさせるデフォルトディレクトリを full path で規定してください。
+MKLOCATION		./
+
+# mknmz のコマンドラインオプションを規定してください。
+MKOPTIONS		
+
+# mknmz で作られる NMZ.* の出力先を規定したい時に入力してください。
+# 但し namazu-112 以降の機能です。
+DBOUTPUTDIR		/usr/local/namazu/index
+
+# NMZ.* のある場所をコマンドラインから規定したい時に入力してください。
+# namazu-112 以降を使用して複数の場所を指定する時は<SPACE>で区切ってください。
+#DATABASES		/usr/local/namazu/index /usr/home/kenzo-/public_html/teleport/projects /usr/home/kenzo-/public_html/webauto/web_site
+
+# NMZ.* のある場所を DataBase Selecter に設定します。
+# 以下の例を参考にしてください ^^;;;
+#DATABASES1		main /usr/local/namazu/index
+#DATABASES2		public /usr/home/kenzo-/data/txt /usr/home/kenzo-/data/html
+#DATABASES3		rfc /usr/home/kenzo-/data/rfc
+#DATABASES4		svp /usr/home/kenzo-/common/svp-bin
+#DATABASES5		neec /usr/home/kenzo-/public_html/wget
+#DATABASES6		webauto /usr/home/kenzo-/public_html/webauto/web_site
+#DATABASES7		teleport /usr/home/kenzo-/public_html/teleport/projects
+
+# 頻繁にアクセスする file や URL を登録することができます。
+# 一つ目は title を、その後ろに<SPACE>で区切って full path のファイル名や
+# URL を書いて下さい。
+#BOOKMARKS1		Namazu-intro /usr/local/namazu/doc/intro.html

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: postscript.pl,v 1.14 2004-11-21 12:59:58 opengl2772 Exp $
+# $Id: postscript.pl,v 1.15 2004-11-24 16:25:56 opengl2772 Exp $
 # Copyright (C) 2000,2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -35,9 +35,9 @@ sub mediatype() {
 
 sub status() {
     if (util::islang("ja")) {
-	$psconvpath = util::checkcmd('ps2text');
+        $psconvpath = util::checkcmd('ps2text');
     } else {
-	$psconvpath = util::checkcmd('ps2ascii');
+        $psconvpath = util::checkcmd('ps2ascii');
     }
     return 'no' unless (defined $psconvpath);
     return 'yes';
@@ -68,24 +68,24 @@ sub filter ($$$$$) {
 
     my $tmpfile = util::tmpnam('NMZ.postscript');
     {
-	my $fh = util::efopen("> $tmpfile");
-	print $fh $$cont;
+        my $fh = util::efopen("> $tmpfile");
+        print $fh $$cont;
         util::fclose($fh);
     }
     {
-	my $landscape = 0;
-	my $fh = util::efopen("< $tmpfile");
-	while (<$fh>) {
-	    last if (/^%%EndComments$/);
-	    $landscape = 1 if (/^%%Orientation: Landscape$/i);
-	}
+        my $landscape = 0;
+        my $fh = util::efopen("< $tmpfile");
+        while (<$fh>) {
+            last if (/^%%EndComments$/);
+            $landscape = 1 if (/^%%Orientation: Landscape$/i);
+        }
         util::fclose($fh);
-	undef $fh;
-	if (util::islang("ja") && $landscape) {
-	    @psconvopts = ("-l");
-	} else {
-	    @psconvopts = ();
-	}
+        undef $fh;
+        if (util::islang("ja") && $landscape) {
+            @psconvopts = ("-l");
+        } else {
+            @psconvopts = ();
+        }
     }
     {
         my %env = (
@@ -103,18 +103,18 @@ sub filter ($$$$$) {
             env => \%env,
         );
 
-	my $size = util::filesize($fh_out);
-	if ($size == 0) {
+        my $size = util::filesize($fh_out);
+        if ($size == 0) {
             util::fclose($fh_out);
             unlink $tmpfile;
-	    return "Unable to convert postscript file ($psconvpath error occurred)";
-	}
-	if ($size > $conf::TEXT_SIZE_MAX) {
+            return "Unable to convert postscript file ($psconvpath error occurred)";
+        }
+        if ($size > $conf::TEXT_SIZE_MAX) {
             util::fclose($fh_out);
             unlink $tmpfile;
-	    return 'Too large postscript file';
-	}
-	$$cont = util::readfile($fh_out, "t");
+            return 'Too large postscript file';
+        }
+        $$cont = util::readfile($fh_out, "t");
         util::fclose($fh_out);
     }
     unlink $tmpfile;
@@ -125,9 +125,9 @@ sub filter ($$$$$) {
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($cont);
     $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
-	unless $fields->{'title'};
+        unless $fields->{'title'};
     gfilter::show_filter_debug_info($cont, $weighted_str,
-				    $fields, $headings);
+                                    $fields, $headings);
 
     return undef;
 }

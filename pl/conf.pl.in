@@ -185,22 +185,24 @@ $MAX_FIELD_LENGTH = 200;
 #
 
 #
-# Network Kanji Filter nkf v1.62 or later
+# Network Kanji Filter nkf v1.71 or later
 #
 $NKF = "@NKF@"; 
 
 #
-# KAKASI
+# KAKASI 2.x or later
+# Text::Kakasi 1.05 or later
 #
 $KAKASI = "@DO_KAKASI@";
 
 #
-# ChaSen 1.51 or later (simple wakatigaki)
+# ChaSen 2.02 or later (simple wakatigaki)
+# Text::ChaSen 1.03
 #
 $CHASEN = "@DO_CHASEN@";
 
 #
-# ChaSen 1.51 or later (with noun words extraction)
+# ChaSen 2.02 or later (with noun words extraction)
 #
 $CHASEN_NOUN = "@DO_CHASEN_NOUN@";
 

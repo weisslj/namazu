@@ -36,21 +36,13 @@ void euctojisput(uchar *s, FILE *fp, int entity_encode, int ishtml)
 		state = 0;
 	    }
 	    if (c == EM_START_MARK) {
-		if (ishtml) {
-		    fputs(EM_START_TAG, fp);
-		} else {
-		    fputs(" **", fp);
-		}
+		fputs(EM_START_TAG, fp);
 		if (!(c = (int) *(s++))) {
 		    return;
 		}
 		continue;
 	    } else if (c == EM_END_MARK) {
-		if (ishtml) {
-		    fputs(EM_END_TAG, fp);
-		} else {
-		    fputs("** ", fp);
-		}
+		fputs(EM_END_TAG, fp);
 		if (!(c = (int) *(s++))) {
 		    return;
 		}
@@ -126,7 +118,7 @@ void fputs_without_html_tag(uchar * s, FILE *fp)
     uchar buf[BUFSIZE];
 
     for (f = 0, i = 0; *s && i < BUFSIZE; s++) {
-	if (!strncmp(s, "<br>", 4) && *(s + 4) != '\n') {
+	if (strncasecmp(s, "<br>", 4) == 0&& *(s + 4) != '\n') {
 	    buf[i++] = '\n';
 	    s += 3;
 	    continue;
@@ -140,13 +132,13 @@ void fputs_without_html_tag(uchar * s, FILE *fp)
 	    continue;
 	}
 	if (!f) {
-	    if (!strncmp(s, "&lt;", 4)) {
+	    if (strncmp(s, "&lt;", 4) == 0) {
 		buf[i++] = '<';
 		s += 3;
-	    } else if (!strncmp(s, "&gt;", 4)) {
+	    } else if (strncmp(s, "&gt;", 4) == 0) {
 		buf[i++] = '>';
 		s += 3;
-	    } else if (!strncmp(s, "&amp;", 5)) {
+	    } else if (strncmp(s, "&amp;", 5) == 0) {
 		buf[i++] = '&';
 		s += 4;
 	    } else {

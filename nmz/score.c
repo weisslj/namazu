@@ -2,7 +2,7 @@
  * 
  * score.c - scoring-related functions of Namazu
  * 
- * $Id: score.c,v 1.3 2001-02-28 08:20:16 baba Exp $
+ * $Id: score.c,v 1.4 2001-09-02 05:50:38 rug Exp $
  * 
  * Copyright (C) 2001 Hajime BABA  All rights reserved.
  * Copyright (C) 2001 Namazu Project All rights reserved.
@@ -41,13 +41,15 @@
 #ifdef HAVE_SUPPORT_H
 #  include "support.h"
 #endif
-#if defined (HAVE_UNISTD_H)
+
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #else
-# if defined (_WIN32) && !defined (__CYGWIN__)
+# ifdef _WIN32
 # include <io.h>
 # endif
 #endif
+
 #include "libnamazu.h"
 #include "util.h"
 #include "hlist.h"

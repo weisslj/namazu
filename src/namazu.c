@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.102 2000-03-04 11:11:39 satoru Exp $
+ * $Id: namazu.c,v 1.103 2001-09-02 05:50:39 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -32,13 +32,21 @@
 #include <fcntl.h>
 #include <ctype.h>
 #include <string.h>
-#include <unistd.h>
 #include <sys/stat.h>
 #include <signal.h>
 
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
 #endif
+
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#else
+# ifdef _WIN32
+# include <io.h>
+# endif
+#endif
+
 #include "namazu.h"
 #include "libnamazu.h"
 #include "util.h"

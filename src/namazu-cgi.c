@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu-cgi.c,v 1.18 2001-08-08 09:05:51 knok Exp $
+ * $Id: namazu-cgi.c,v 1.19 2001-09-02 05:50:39 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -32,7 +32,6 @@
 #include <fcntl.h>
 #include <ctype.h>
 #include <string.h>
-#include <unistd.h>
 #include <sys/stat.h>
 #include <signal.h>
 #include <stdarg.h>
@@ -49,6 +48,15 @@
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
 #endif
+
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#else
+# ifdef _WIN32
+# include <io.h>
+# endif
+#endif
+
 #include "namazu.h"
 #include "libnamazu.h"
 #include "util.h"

@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.86 2001-03-11 16:02:45 furukawa Exp $
+ * $Id: search.c,v 1.87 2001-09-02 05:50:38 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -41,13 +41,15 @@
 #ifdef HAVE_SUPPORT_H
 #  include "support.h"
 #endif
-#if defined (HAVE_UNISTD_H)
+
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #else
-# if defined (_WIN32) && !defined (__CYGWIN__)
+# ifdef _WIN32
 # include <io.h>
 # endif
 #endif
+
 #include "libnamazu.h"
 #include "util.h"
 #include "field.h"

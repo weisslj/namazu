@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.62 2001-08-08 09:05:51 knok Exp $
+ * $Id: form.c,v 1.63 2001-09-02 05:50:39 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -31,13 +31,21 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#include <unistd.h>
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
 #endif
 #ifdef HAVE_SUPPORT_H
 #  include "support.h"
 #endif
+
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#else
+# ifdef _WIN32
+# include <io.h>
+# endif
+#endif
+
 #include "namazu.h"
 #include "libnamazu.h"
 #include "util.h"

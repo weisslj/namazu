@@ -1,5 +1,5 @@
 /*
- * $Id: result.c,v 1.72 2003-12-16 16:25:38 opengl2772 Exp $
+ * $Id: result.c,v 1.73 2004-01-20 09:58:28 opengl2772 Exp $
  * 
  * Copyright (C) 1989, 1990 Free Software Foundation, Inc.
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
@@ -134,7 +134,7 @@ replace_field(struct nmz_data d, int counter,
      * 8 is length of '&quot;' + 2 (for emphasizing). 
      * It's a consideration for buffer overflow (overkill?) 
      */
-    char buf[BUFSIZE * 8];  
+    char buf[BUFSIZE * 8] = "";
 
     if (strcmp(field, "namazu::score") == 0) {
 	sprintf(buf, "%d", d.score);
@@ -358,7 +358,7 @@ compose_result(struct nmz_data d, int counter,
 	    pp += 2;  /* skip "${" */
 	    n = strspn(pp, achars);
 	    if (n > 0 && pp[n] == '}') {
-		char field[BUFSIZE];
+		char field[BUFSIZE] = "";
 		
 		strncpy(field, pp, n);
 		field[n] = '\0';

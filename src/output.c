@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.95 2003-03-23 17:53:16 opengl2772 Exp $
+ * $Id: output.c,v 1.96 2004-01-20 09:58:28 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -117,7 +117,7 @@ static void
 emprint(char *s, int entity_encode)
 {
     int i;
-    for (i = 0; *s && i < BUFSIZE * 16; s++) {
+    for (i = 0; i < BUFSIZE * 16 && *s; s++) {
 	if (*s == EM_START_MARK) {
 	    fputs(emphasis_start_tag, stdout);
 	    continue;
@@ -154,7 +154,7 @@ unhtml_buffer(char *ostr) {
     int len;
     len = strlen(ostr) + 1;
     str = ostr;
-    for (f = 0, i = 0; *str && i < BUFSIZE; str++) {
+    for (f = 0, i = 0; i < BUFSIZE && *str; str++) {
 
 	/* Iso-2022-jp handling */
 	if ((strncmp(str, "\033$", 2) == 0)
@@ -216,6 +216,7 @@ unhtml_buffer(char *ostr) {
     strncpy(ostr, buf, len);
     ostr[len - 1] = '\0';
 }
+
 static void 
 fputs_without_html_tag(const char *str, FILE *fp)
 {
@@ -388,7 +389,7 @@ print_hlist(NmzResult hlist)
 	 * Prepare large memory for replace_field() for safety.
 	 * FIXME: static memory allocation may cause buffer overflow.
 	 */
-	char result[BUFSIZE * 128];
+	char result[BUFSIZE * 128] = "";
 	int counter;
 	char *template = the_template;
 
@@ -696,7 +697,7 @@ static void
 print_errmsg(int errid)
 {
     char *errmsg = nmz_strerror(errid);
-    char buf[BUFSIZE];
+    char buf[BUFSIZE] = "";
     snprintf(buf, BUFSIZE - 1, _("	<h2>Error!</h2>\n<p>%s</p>\n"), errmsg);
     html_print(buf);
 }

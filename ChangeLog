@@ -1,3 +1,13 @@
+2004-01-20  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * src/{form.c, output.c, rcfile.c, result.c}: Safety was taken 
+        into consideration.
+
+        * nmz/{hlist.c, parser.c, re.c, search.c}: Safety was taken into 
+        consideration.
+
+        * nmz/hlist.c: Bug fix: fclose(fp).
+
 2004-01-17  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * tests/ja-namazu-2: '-a' option was added in order to 
@@ -8296,4 +8306,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1078 2004-01-17 09:13:05 opengl2772 Exp $
+$Id: ChangeLog,v 1.1079 2004-01-20 09:58:27 opengl2772 Exp $

@@ -8,6 +8,9 @@
 	
 1999-08-30  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* Makefile.am (install-data-local): Remove codes creating
+	namazu.conf and mknmz.conf.
+	
 	* src/mknmz.pl.in lib/util.pl: Move remove_tmpfiles from
 	src/mknmz.pl.in to lib/util.pl. And modify it.
 	

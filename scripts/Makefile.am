@@ -28,14 +28,14 @@ templatedir = $(pkgdatadir)/template
 gcnmz: gcnmz.in Makefile
 	rm -f gcnmz
 	sed -e 's!%PERL%!$(PERL)!g' \
-	    -e 's!@PERLLIBDIR@!$(perllibdir)!g' gcnmz.in > gcnmz.tmp
+	    -e 's!@PERLLIBDIR@!$(perllibdir)!g' $(srcdir)/gcnmz.in > gcnmz.tmp
 	mv gcnmz.tmp gcnmz
 	chmod +x gcnmz
 
 kwnmz: kwnmz.in Makefile
 	rm -f kwnmz
 	sed -e 's!%PERL%!$(PERL)!g' \
-	    -e 's!@PERLLIBDIR@!$(perllibdir)!g' kwnmz.in > kwnmz.tmp
+	    -e 's!@PERLLIBDIR@!$(perllibdir)!g' $(srcdir)/kwnmz.in > kwnmz.tmp
 	mv kwnmz.tmp kwnmz
 	chmod +x kwnmz
 
@@ -46,7 +46,7 @@ mknmz: mknmz.in Makefile
 	    -e 's!@CONFDIR@!$(confdir)!g' \
 	    -e 's!@PERLLIBDIR@!$(perllibdir)!g' \
 	    -e 's!@FILTERDIR@!$(filterdir)!g' \
-	    -e 's!@TEMPLATEDIR@!$(templatedir)!g' mknmz.in >mknmz.tmp 
+	    -e 's!@TEMPLATEDIR@!$(templatedir)!g' $(srcdir)/mknmz.in >mknmz.tmp 
 	mv mknmz.tmp mknmz
 	chmod +x mknmz
 

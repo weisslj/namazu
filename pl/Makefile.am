@@ -27,12 +27,10 @@ EXTRA_DIST = \
 	var.pl \
 	wakati.pl
 
-CLEANFILES: gettext.pl
-
 gettext.pl: gettext.pl.in Makefile
 	rm -f gettext.pl
 	sed -e 's!@LOCALEDIR@!$(localedir)!g' \
-	gettext.pl.in > gettext.pl
+	$(srcdir)/gettext.pl.in > gettext.pl
 
 ETAGS_ARGS = $(perllib_DATA) --lang=perl
 TAGS_DEPENDENCIES = $(perllib_DATA)

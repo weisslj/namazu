@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.94 2000-02-01 03:01:53 satoru Exp $
+dnl $Id: configure.in,v 1.95 2000-02-01 11:24:13 satoru Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -290,7 +290,7 @@ AC_MSG_RESULT($file_mmagic)
 if test "${file_mmagic}" != "yes"; then
     changequote(<<, >>)
     tmp=`$PERL -nle 'print \$1 if /^\\$VERSION = \"([\d\.]+)\";\$/' \
-	File-MMagic/MMagic.pm`
+	$srcdir/File-MMagic/MMagic.pm`
     # tmp="10.0"  # for testing
     AC_MSG_CHECKING(for File::MMagic perl module)
     changequote([, ])
@@ -305,7 +305,8 @@ if test "${file_mmagic}" != "yes"; then
 fi
 if test "${file_mmagic}" = "yes"; then
     AC_MSG_WARN(File::MMagic module not installed. preparing its Makefile.)
-    cd File-MMagic
+    pwd=`pwd`
+    cd $srcdir/File-MMagic
     if test -z "$PMDIR"; then
 	$PERL Makefile.PL
     else
@@ -316,7 +317,7 @@ if test "${file_mmagic}" = "yes"; then
     grep -v '^	-mv Makefile Makefile\.old \$(DEV_NULL)' Makefile > Makefile.tmp
     mv Makefile.tmp Makefile
 
-    cd ..
+    cd $pwd
 fi
 AM_CONDITIONAL(BUILD_FILE_MMAGIC, test x$file_mmagic = xyes)
 

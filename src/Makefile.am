@@ -21,8 +21,8 @@ DEFS = -DLOCALEDIR=\"$(localedir)\" \
        -DOPT_CONFDIR=\"$(confdir)\" \
        -DOPT_INDEXDIR=\"$(indexdir)\" \
        @DEFS@
-INCLUDES  = -I.. -I../intl -I../lib -I../nmz
-LDADD = @INTLLIBS@ $(top_srcdir)/nmz/libnmz.la  ../lib/libnmzut.a 
+INCLUDES  = -I.. -I$(srcdir)/../intl -I$(srcdir)/../lib -I$(srcdir)/../nmz
+LDADD = @INTLLIBS@ $(top_builddir)/nmz/libnmz.la $(top_builddir)/lib/libnmzut.a 
 
 common_SOURCES = em.h form.c form.h message.h \
 		 namazu.c namazu.h output.c output.h rcfile.c rcfile.h \

@@ -1,3 +1,8 @@
+2003-03-22  Yukio USUDA <usu@namazu.org>
+
+        * filter/ooo.pl: Added alternative method (utilize lv) 
+          for convert utf8 to eucjp
+
 2003-03-24  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * src/result.c: Change to nmz_strlower from tolower.
@@ -7835,4 +7840,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1007 2003-03-23 21:12:55 opengl2772 Exp $
+$Id: ChangeLog,v 1.1008 2003-03-26 10:53:02 usu Exp $

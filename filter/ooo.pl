@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: ooo.pl,v 1.1 2003-03-21 17:49:43 usu Exp $
+# $Id: ooo.pl,v 1.2 2003-03-26 10:53:03 usu Exp $
 # Copyright (C) 2003 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -30,6 +30,7 @@ $perlver =~ s/\.//;
 $perlver =~ m/^(\d\d\d\d)\d*$/;
 $perlver = 0; 
 #$perlver = $1;
+my $utfconvpath = undef;
 
 sub mediatype() {
     # http://framework.openoffice.org/documentation/mimetypes/mimetypes.html
@@ -41,9 +42,14 @@ sub status() {
     if (defined $unzippath){
         if (util::islang("ja")) {
            return 'yes' if ($perlver >= 5008);
-           my $utfconvpath = util::checklib('unicode.pl');
+           $utfconvpath = util::checkcmd('lv');
            if ($utfconvpath){ 
                return 'yes';
+           }else{
+               $utfconvpath = util::checklib('unicode.pl');
+               if ($utfconvpath){ 
+                   return 'yes';
+               }
            }
            return 'no'; 
         } else {
@@ -86,8 +92,8 @@ sub filter_metafile ($$$) {
     my $unzipopts = ('-p');
     my $xml = "";
     my $fh = util::efopen("$unzippath $unzipopts $$orig_cfile $metafile|");
-    while (<$fh>){
-        $xml .= $_;
+    while (defined(my $line = <$fh>)){
+        $xml .= $line;
     }
 
     my $authorname = ooo::get_author(\$xml);
@@ -128,8 +134,8 @@ sub filter_contentfile ($$$$$) {
     my $unzipopts = ("-p");
     my $xml = "";
     my $fh = util::efopen("$unzippath $unzipopts $$orig_cfile $contentfile|");
-    while (<$fh>){
-        $xml .= $_;
+    while (defined(my $line = <$fh>)){
+        $xml .= $line;
     }
     ooo::remove_all_tag(\$xml);
     ooo::decode_entity(\$xml);
@@ -182,7 +188,20 @@ sub remove_all_tag ($) {
 # require Perl5.8 or unicode.pl
 sub utoe ($) {
     my ($tmp) = @_;
-    if ($perlver >= 5008){
+    if ($utfconvpath =~ /lv/){
+        my $tmpfile  = util::tmpnam('NMZ.ooo');
+	{
+	    my $fh = util::efopen("> $tmpfile");
+	    print $fh $$tmp;
+	}
+        my $cmd = ($utfconvpath . " -Iu8 " . "-Oej " . $tmpfile . " |");
+        $$tmp = "";
+        my $fh = util::efopen($cmd);
+        while (defined(my $line = <$fh>)){
+            $$tmp .= $line;
+        }
+        unlink $tmpfile;
+    }elsif ($perlver >= 5008){
         eval 'use Encode;';
         Encode::from_to($$tmp, "utf-8" ,"euc-jp");
     }else{

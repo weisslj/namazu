@@ -1,11 +1,11 @@
 # Process this file with automake to produce Makefile.in
 #
-# $Id: Makefile.am,v 1.3 1999-11-01 16:52:35 rug Exp $
+# $Id: Makefile.am,v 1.4 1999-11-02 08:56:24 satoru Exp $
 #
 
 AUTOMAKE_OPTIONS = no-dependencies
 
-INCLUDES = -I. -I../lib -I../src
+INCLUDES = -I../lib -I../src -I../intl
 
 include_HEADERS = libnamazu.h
 lib_LTLIBRARIES = libnmz.la

@@ -1,5 +1,7 @@
 1999-11-02  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* nmz/Makefile.am (INCLUDES): Add "-I../intl" and remove "-I.".
+
 	* acinclude.m4: Import AM_PATH_LISPDIR macro from Lookup
 	<http://openlab.ring.gr.jp/lookup/>
 	And modify a message a little bit.

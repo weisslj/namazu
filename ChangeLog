@@ -1,3 +1,14 @@
+2001-09-08  Yoshinori TAKESAKO  <takesako@namazu.org>
+
+	* nmz/hlist.c (nmz_andmerge): Fixed the bug of searching on AND 
+	query. That namazu displayed the excessive results, when 
+	there are the words which don't match or hit at all. 
+
+2001-09-03  Makoto Fujiwara  <makoto@u.ki.nu>
+
+	* doc/{en,ja}/manual.html: Use generic name for
+	--help output (2.0.6 -> 2.0.x)
+
 2001-09-03  Ryuji Abe  <rug@namazu.org>
 
 	* nmz/Makefile.am (DEFS): Added -DNO_ALLOCA. We don't
@@ -6974,4 +6985,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.859 2001-09-03 05:17:38 rug Exp $
+$Id: ChangeLog,v 1.860 2001-09-08 07:51:53 takesako Exp $

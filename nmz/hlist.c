@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.53 2001-09-02 08:25:33 rug Exp $
+ * $Id: hlist.c,v 1.54 2001-09-08 07:51:54 takesako Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -246,22 +246,23 @@ nmz_andmerge(NmzResult left, NmzResult right, int *ignore)
 {
     int i, j, v;
 
-    if (ignore && *ignore && left.num > 0) {
-	nmz_free_hlist(right);
-	return left;
-    }
-    if (ignore && *ignore && right.num > 0) {
+    if (left.stat == ERR_TOO_MUCH_MATCH || left.stat == ERR_TOO_MUCH_HIT) {
 	nmz_free_hlist(left);
 	return right;
     }
 
-    if (left.stat != SUCCESS || left.num <= 0) {
-	nmz_free_hlist(left);
-	return right;
-    }
-    if (right.stat != SUCCESS || right.num <= 0) {
+    if (right.stat == ERR_TOO_MUCH_MATCH || right.stat == ERR_TOO_MUCH_HIT) {
 	nmz_free_hlist(right);
 	return left;
+    }
+
+    if (left.stat != SUCCESS || left.num <= 0) {
+	nmz_free_hlist(right);
+	return left;
+    }
+    if (right.stat != SUCCESS || right.num <= 0) {
+	nmz_free_hlist(left);
+	return right;
     }
 
     for (v = 0, i = 0, j = 0; i < left.num; i++) {

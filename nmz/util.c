@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: util.c,v 1.83 2002-03-26 10:49:46 knok Exp $
+ * $Id: util.c,v 1.84 2002-07-26 14:28:05 baba Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -104,7 +104,7 @@ decode_uri_sub(char c1, char c2)
 unsigned long
 nmz_scan_oct(const char *start, int len, int *retlen)
 {
-    register char *s = start;
+    register const char *s = start;
     register unsigned long retval = 0;
 
     while (len-- && *s >= '0' && *s <= '7') {
@@ -120,7 +120,7 @@ unsigned long
 nmz_scan_hex(const char *start, int len, int *retlen)
 {
     static char hexdigit[] = "0123456789abcdef0123456789ABCDEFx";
-    register char *s = start;
+    register const char *s = start;
     register unsigned long retval = 0;
     char *tmp;
 

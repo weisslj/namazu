@@ -1,3 +1,8 @@
+2002-07-26  Hajime BABA  <baba@plain.isas.ac.jp>
+
+	* nmz/util.c: Fixed the following warnings:
+	'initialization discards qualifiers from pointer target type'
+
 2002-07-25  Hajime BABA  <baba@plain.isas.ac.jp>
 
 	* filter/pdf.pl: Fixed the problem in [n-d-j:02587],
@@ -7584,4 +7589,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.961 2002-07-25 14:11:36 baba Exp $
+$Id: ChangeLog,v 1.962 2002-07-26 14:28:04 baba Exp $

@@ -1,6 +1,6 @@
 # File::MMagic Makefile.PL 
 #
-# $Id: Makefile.PL,v 1.10 2000-02-28 06:13:19 knok Exp $
+# $Id: Makefile.PL,v 1.11 2000-02-28 06:16:45 knok Exp $
 
 use ExtUtils::MakeMaker;
 

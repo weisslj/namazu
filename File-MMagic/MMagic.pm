@@ -1,6 +1,6 @@
 # File::MMagic
 #
-# $Id: MMagic.pm,v 1.13 2000-02-28 06:13:19 knok Exp $
+# $Id: MMagic.pm,v 1.14 2000-02-28 06:16:45 knok Exp $
 #
 # This program is originated from file.kulp that is a production of The
 # Unix Reconstruction Projct.
@@ -275,7 +275,7 @@ BEGIN {
 	    f => "\f",
 	    v => "\v" );
 
-$VERSION = "0.20.3";
+$VERSION = "0.20.4";
 undef $dataLoc;
 }
 
@@ -361,7 +361,7 @@ sub addFileExts {
     my $self = shift;
     my $filepat = shift;
     my $mtype = shift;
-    $self->{FILEXTS}->{"$filepat"} = $mtype;
+    $self->{FILEEXTS}->{"$filepat"} = $mtype;
     return $self;
 }
 

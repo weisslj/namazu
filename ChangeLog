@@ -1,3 +1,9 @@
+2000-01-27  Ryuji Abe  <raeva@t3.rim.or.jp>
+
+	* lib/alloca.c: New file (taken from GNU grep-2.4).
+
+	* lib/Makefile.am (EXTRA_DIST): Added alloca.c.
+
 2000-01-27  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* src/output.c (is_cgimode): Be static.

@@ -1,7 +1,16 @@
+2000-02-15  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* src/result.c (strcasestr): Clean up.
+	(commas): Add comments.
+
+	* ChangeLog: s/Likewise/Likewise/g for consistency.
+
 2000-02-15  Ken-ichi Hirose  <kenzo-@tama.or.jp>
 
 	* nmz/hlist.c: Select unistd.h or io.h for MSVC++. 
+
 	* nmz/libnamazu.c: Select unistd.h or io.h for MSVC++. 
+
 	* nmz/search.c: Select unistd.h or io.h for MSVC++. 
 
 	* pl/gettext.pl.in: Set binmode for CATALOG.
@@ -59,7 +68,9 @@
         * test/d20000220.hnf: New file.
 
 2000-02-13  Makoto Fujiwara <makoto@ki.nu>
+
 	* doc/ja/tutorial.html: New file.
+
 	* doc/ja/tutorial.html: ahref adjustment.
 	
 2000-02-13  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
@@ -193,7 +204,7 @@
 	Add new hash variable: REQUIRE_POST_CODECONV. 
 
 	* scripts/mknmz.in (load_olemodules): Simpified.
-	(load_modules): Ditto.
+	(load_modules): Likewise.
 	(load_filters): New function.
 
 	* filter/pdf.pl (filter): Do not code conversion in it.
@@ -214,7 +225,7 @@
 	* nmz/replace.c (nmz_add_replace): Change behavior: Add new
 	element to the end of list.
 
-	* nmz/alias.c (nmz_add_alias): Ditto.
+	* nmz/alias.c (nmz_add_alias): Likewise.
 
 	* nmz/util.c (nmz_add_strlist): Renamed from nmz_push_strlist.
 	(nmz_add_strlist): Simplified.
@@ -277,11 +288,11 @@
 	* nmz/Makefile.am: Applied Motoyuki Kasahara's patch. [namazu-dev
 	1424]
 
-	* scripts/Makefile.am: Ditto.
+	* scripts/Makefile.am: Likewise.
 
-	* pl/Makefile.am: Ditto.
+	* pl/Makefile.am: Likewise.
 
-	* src/Makefile.am: Ditto.
+	* src/Makefile.am: Likewise.
 	
 	* configure.in: Applied Motoyuki Kasahara's patch. [namazu-dev
 	1418]
@@ -297,7 +308,7 @@
 
 	* scripts/vfnmz.in: Change usage message.
 
-	* scripts/gcnmz.in (usage): Ditto.
+	* scripts/gcnmz.in (usage): Likewise.
 
 	* scripts/mknmz.pl (parse_options): Change option name:
 	s/--use-chasen-morph/--use-chasen-noun/. All related variables are
@@ -307,7 +318,7 @@
 
 	* template/NMZ.body.ja: Change anchor names.
 
-	* template/NMZ.body: Ditto.
+	* template/NMZ.body: Likewise.
 
 2000-01-31  Ryuji Abe  <raeva@t3.rim.or.jp>
 
@@ -348,7 +359,7 @@
 	* src/namazu-cmd.c (main): Fix default index bug. 
 	[namazu-dev 1398]
 
-	* src/namazu-cgi.c (main): Ditto.
+	* src/namazu-cgi.c (main): Likewise.
 
 	* conf/namazurc-sample: Modify comments.
 
@@ -363,7 +374,7 @@
 	* src/rcfile.c (show_config): Modify display formats.
 
 	* src/output.c (get_emphasis_tag_start): New function.
-	(get_emphasis_tag_end): Ditto.
+	(get_emphasis_tag_end): Likewise.
 
 	* nmz/replace.c (nmz_show_replaces): Abolished.
 	(nmz_get_replaces): New function.
@@ -387,7 +398,7 @@
 	
 	* src/namazu-cmd.c (main): Change timing of loding rcfile.
 
-	* src/namazu-cgi.c (main): Ditto.
+	* src/namazu-cgi.c (main): Likewise.
 
 	* nmz/util.c (nmz_is_file_exists): New function.
 
@@ -404,7 +415,7 @@
 
 	* src/namazu-cmd.c (parse_options): Abolish --lang option.
 
-	* src/usage.c (show_usage): Ditto.
+	* src/usage.c (show_usage): Likewise.
 
 2000-01-29  Ryuji Abe  <raeva@t3.rim.or.jp>
 
@@ -454,7 +465,7 @@
 
 	* template/NMZ.result.normal.ja: New file.
 
-	* template/NMZ.result.short.ja: Ditto.
+	* template/NMZ.result.short.ja: Likewise.
 
 	* src/output.c (load_nmz_result): New function.
 	(load_nmz_result): Handle lang suffix such as ".ja".
@@ -473,7 +484,7 @@
 
 	* template/NMZ.foot.ja.in: Add <!-- ADDRESS --> marks.
 
-	* template/NMZ.foot.in: Ditto.
+	* template/NMZ.foot.in: Likewise.
 
 	* pl/conf.pl.in: Add $ADDRESS and change commenting style.
 
@@ -482,7 +493,7 @@
 	* src/rcfile.c (process_rc_template): New function.
 
 	* src/namazu.c (get_templatedir): New function.
-	(set_templatedir): Ditto.
+	(set_templatedir): Likewise.
 	(make_fullpathname_msg): Use templatedir.
 
 	* src/result.c (compose_result): Be const 3rd parameter.
@@ -568,13 +579,13 @@
 
 	* src/namazu-cmd.c: New file derived from namazu.c
 
-	* src/namazu-cgi.c: Ditto.
+	* src/namazu-cgi.c: Likewise.
 
 	* src/namazui.c (suicide): Removed.
-	(main): Ditto.
-	(parse_options): Ditto.
-	(ck_atoi): Ditto.
-	(stdio2file): Ditto.
+	(main): Likewise.
+	(parse_options): Likewise.
+	(ck_atoi): Likewise.
+	(stdio2file): Likewise.
 
 	* src/namazu.c (main): Change position of calling nmz_set_lang()
 	and load_rcfile().
@@ -658,12 +669,12 @@
 
 	* src/rcfile.ch (set_namazurc): Remove prefix "nmz_" and all
 	callers changed.
-	(load_rcfile): Ditto.
-	(show_rcfile): Ditto.
+	(load_rcfile): Likewise.
+	(show_rcfile): Likewise.
 
 	* src/rcfile.c: Moved from ../nmz directory.
 
-	* src/rcfile.h: Ditto.
+	* src/rcfile.h: Likewise.
 	
 	* nmz/Makefile.am (libnmz_la_SOURCES): Remove rcfile.c and rcfile.h.
 
@@ -684,7 +695,7 @@
 
 	* src/namazu.c (parse_options): Insert set_uridecode(0) at proper
 	positions.
-	(main): Ditto.
+	(main): Likewise.
 	long_options[]: s/no-encode-uri/no-decode-uri/
 
 	* src/result.c (replace_field): Fix the bug [namazu-dev 1250].
@@ -702,7 +713,7 @@
 
 	* scripts/mknmz.pl.in (write_message): Do not convert character
 	encoding. (Fix the bug reported in [namazu-dev 1209])
-	(make_headfoot): Ditto.
+	(make_headfoot): Likewise.
 
 2000-01-16  Ryuji Abe  <raeva@t3.rim.or.jp>
 
@@ -750,12 +761,12 @@
 	* nmz/search.c (nmz_do_searching): Abolish tfidf handling in the func.
 
 	* nmz/idxname.c (nmz_set_defaultidx): New function.
-	(nmz_get_defaultidx): Ditto.
+	(nmz_get_defaultidx): Likewise.
 
 	* nmz/rcfile.c (namazurcdir): Move from var.c.
 
 	* nmz/search.c (nmz_set_tfidfmode): New function.
-	(nmz_is_tfidfmode): Ditto.
+	(nmz_is_tfidfmode): Likewise.
 	(nmz_search_sub): Do not check nmz_is_tfidfmode() to call
 	nmz_set_docnum(). 
 
@@ -861,26 +872,26 @@
 	(parse_rcfile): Fix bug.
 
 	* nmz/parser.c (factor): Use temporary variable to simplify codes.
-	(andop): Ditto.
-	(orop): Ditto.
+	(andop): Likewise.
+	(orop): Likewise.
 
 	* nmz/idxname.c (nmz_add_index): Add warning message.
 
 	* nmz/parser.c (factor): Handle an invalid query as error.
 
 	* nmz/rcfile.c (process_rc_blank): New function.
-	(process_rc_comment): Ditto.
-	(process_rc_debug): Ditto.
-	(process_rc_index): Ditto.
-	(process_rc_base): Ditto.
-	(process_rc_alias): Ditto.
-	(process_rc_replace): Ditto.
-	(process_rc_logging): Ditto.
-	(process_rc_scoring): Ditto.
-	(process_rc_lang): Ditto.
+	(process_rc_comment): Likewise.
+	(process_rc_debug): Likewise.
+	(process_rc_index): Likewise.
+	(process_rc_base): Likewise.
+	(process_rc_alias): Likewise.
+	(process_rc_replace): Likewise.
+	(process_rc_logging): Likewise.
+	(process_rc_scoring): Likewise.
+	(process_rc_lang): Likewise.
 	(is_valid_argnum): Abolished.
 	(parse_rcfile): Modified.
-	(apply_rc): Ditto.
+	(apply_rc): Likewise.
 
 	* src/cgi.c (apply_cgifunc): Remove unused variable i.
 
@@ -902,7 +913,7 @@
 	* nmz/maintMakefile: New file.
 
 	* nmz/re.h (ALLOC_N): Use nmz_xmalloc() instead of xmalloc()
-	(ALLOC): Ditto.
+	(ALLOC): Likewise.
 	
 	* nmz/util.c: Changed function names.
 	s/xrealloc/nmz_xrealloc/g
@@ -1072,7 +1083,7 @@
 	* nmz/hlist.c (field_sort): Use strerror().
 
 	* nmz/codeconv.c: Use strerror().
-	(conv_ext): Ditto.
+	(conv_ext): Likewise.
 
 	* nmz/field.c (get_field_data): Use nmz_warn_printf() instead of
 	nmz_debug_printf() and use strerror().
@@ -1110,8 +1121,8 @@
 	Include <errno.h>
 
 	* nmz/idxname.c (expand_idxname_aliases): Use strerror().
-	(complete_idxnames): Ditto.
-	(push_hitnum): Ditto.
+	(complete_idxnames): Likewise.
+	(push_hitnum): Likewise.
 	Include <errno.h>
 	
 	* nmz/search.c (cmp_phrase_hash): Use strerror().
@@ -1134,7 +1145,7 @@
 	(nmz_readfile): Use strerror().
 
 	* src/output.c (print_listing): Return error status.
-	(print_hlist): Ditto.
+	(print_hlist): Likewise.
 	(print_errmsg): New function.
 
 	* nmz/util.c (nmz_get_errmsg): Handle 
@@ -1180,7 +1191,7 @@
 
 	* src/form.c (read_headfoot): Fix a memory leak bug.
 
-	* src/output.c (print_msgfile): Ditto.
+	* src/output.c (print_msgfile): Likewise.
 
 	* **/*.c, **/*.pl{,in}: Change copyright notice: 
 	1997-1999 -> 1997-2000
@@ -1194,10 +1205,10 @@
 
 	* nmz/parser.c: Use get_querytoken() and get_querytokennum()
 	instead of accessing Query.tab[] directly.
-	nmz/query.c: Ditto.
-	nmz/search.c: Ditto.
-	src/output.c: Ditto.
-	src/result.c: Ditto.
+	nmz/query.c: Likewise.
+	nmz/search.c: Likewise.
+	src/output.c: Likewise.
+	src/result.c: Likewise.
 
 	* nmz/query.c: New file.
 	(make_query): Derive from split_query() in wakati.c.
@@ -1225,17 +1236,17 @@
 	(libnmz_la_SOURCES): Add query.c and query.h
 
 	* nmz/codeconv.c: Remove #include <namazu.h>
-	nmz/field.c: Ditto.
-	nmz/hlist.c: Ditto.
-	nmz/i18n.c: Ditto.
-	nmz/idxname.c: Ditto.
-	nmz/libnamazu.c: Ditto.
-	nmz/parser.c: Ditto.
-	nmz/rcfile.c: Ditto.
-	nmz/re.c: Ditto.
-	nmz/util.c: Ditto.
-	nmz/var.c: Ditto.
-	nmz/wakati.c: Ditto.
+	nmz/field.c: Likewise.
+	nmz/hlist.c: Likewise.
+	nmz/i18n.c: Likewise.
+	nmz/idxname.c: Likewise.
+	nmz/libnamazu.c: Likewise.
+	nmz/parser.c: Likewise.
+	nmz/rcfile.c: Likewise.
+	nmz/re.c: Likewise.
+	nmz/util.c: Likewise.
+	nmz/var.c: Likewise.
+	nmz/wakati.c: Likewise.
 
 	* Makefile.am (EXTRA_DIST): Add INSTALL-ja.
 
@@ -1251,13 +1262,13 @@
 
 	* nmz/search.c (do_phrase_search): Use get_idx_hitnumlist() and
 	set_idx_hitnumlist(). 
-	(nmz_search): Ditto.
-	(do_search): Ditto.
+	(nmz_search): Likewise.
+	(do_search): Likewise.
 
 	* nmz/idxname.c (free_idxnames): Moved from libnamazu.c
-	(uniq_idxnames): Ditto.
-	(expand_idxname_aliases): Ditto.
-	(complete_idxnames): Ditto.
+	(uniq_idxnames): Likewise.
+	(expand_idxname_aliases): Likewise.
+	(complete_idxnames): Likewise.
 	(get_idxnum): Renamed from getidxnum.
 	(set_idx_totalhitnum): New function.
 	(get_idx_totalhitnum): New function.
@@ -1269,26 +1280,26 @@
 	* nmz/libnamazu.h (struct nmz_hitnumlist): Renamed from nmz_hitnum
 
 	* nmz/util.c (nmz_decode_uri): Chage a parameter name.
-	(nmz_chomp): Ditto.
-	(nmz_print): Ditto.
-	(nmz_getidxptr): Ditto.
+	(nmz_chomp): Likewise.
+	(nmz_print): Likewise.
+	(nmz_getidxptr): Likewise.
 
 	* nmz/search.c (lrget): Remove a unused paramter.
 	(get_regex_part): Renamed from get_expr.
 	(do_prefix_match_search): Make parameter(s) be const.
-	(prefix_match): Ditto.
-	(detect_search_mode): Ditto.
-	(do_field_search): Ditto.
-	(do_regex_search): Ditto.
-	(get_file_size): Ditto.
-	(do_word_search): Ditto.
-	(hash): Ditto.
+	(prefix_match): Likewise.
+	(detect_search_mode): Likewise.
+	(do_field_search): Likewise.
+	(do_regex_search): Likewise.
+	(get_file_size): Likewise.
+	(do_word_search): Likewise.
+	(hash): Likewise.
 
 	* nmz/field.c (get_field_name): Make parameter(s) be const.
-	(get_field_data): Ditto.
+	(get_field_data): Likewise.
 
 	* src/output.c (print_result): Make parameter(s) be const.
-	(fputs_without_html_tag): Ditto.
+	(fputs_without_html_tag): Likewise.
 
 	* src/namazu.c (stdio2file): Make parameter(s) be const.
 
@@ -1313,18 +1324,18 @@
 	* nmz/util.c (nmz_subst): Make parameter(s) be const.
 
 	* nmz/search.c (do_search): Make parameter(s) be const.
-	(nmz_search): Ditto.
-	(binsearch): Ditto.
-	(do_logging): Ditto.
-	(push_hitnum): Ditto.
+	(nmz_search): Likewise.
+	(binsearch): Likewise.
+	(do_logging): Likewise.
+	(push_hitnum): Likewise.
 
 	* nmz/rcfile.c (set_namazurc): Make parameter(s) be const.
-	(load_rcfile): Ditto.
-	(set_pathname): Ditto.
-	(open_rcfile): Ditto.
-	(get_rc_arg): Ditto.
-	(get_rc_args): Ditto.
-	(parse_rcfile): Ditto.
+	(load_rcfile): Likewise.
+	(set_pathname): Likewise.
+	(open_rcfile): Likewise.
+	(get_rc_arg): Likewise.
+	(get_rc_args): Likewise.
+	(parse_rcfile): Likewise.
 
 	* nmz/re.c (regex_grep): Make parameter(s) be const.
 
@@ -1339,7 +1350,7 @@
 	* nmz/i18n.c (set_lang): Make parameter(s) be const.
 
 	* nmz/field.c (get_field_data): Make parameter(s) be const.
-	* nmz/field.c (isfield): Ditto.
+	* nmz/field.c (isfield): Likewise.
 
 	* nmz/replace.c (add_replace): Make parameter(s) be const.
 
@@ -1350,8 +1361,8 @@
 	* src/output.c (html_print): Make parameter(s) be const.
 
 	* src/cgi.c (validate_idxname): Make parameter(s) be const.
-	(add_cgivar): Ditto.
-	(apply_cgifunc): Ditto.
+	(add_cgivar): Likewise.
+	(apply_cgifunc): Likewise.
 
 	* src/cgi.c (remove_ending_slashes): New function.
 	
@@ -1371,22 +1382,22 @@
 	(nmz_die_with_msg): Abolished.	All callers changed.
 
 	* nmz/util.c (nmz_strprefixcasecmp): Make parameter(s) be const.
-	(nmz_strprefixcmp): Ditto.
-	(nmz_strsuffixcmp): Ditto.
-	(nmz_readfile): Ditto.
-	(nmz_cat): Ditto.
-	(nmz_getenv): Ditto.
+	(nmz_strprefixcmp): Likewise.
+	(nmz_strsuffixcmp): Likewise.
+	(nmz_readfile): Likewise.
+	(nmz_cat): Likewise.
+	(nmz_getenv): Likewise.
 
 	* src/form.c (replace_query_value): Make parameter(s) be const.
-	(cmp_element): Ditto.
-	(print_headfoot): Ditto.
-	(read_headfoot): Ditto.
-	(get_value): Ditto.
-	(get_select_name): Ditto.
-	(select_option): Ditto.
+	(cmp_element): Likewise.
+	(print_headfoot): Likewise.
+	(read_headfoot): Likewise.
+	(get_value): Likewise.
+	(get_select_name): Likewise.
+	(select_option): Likewise.
 
 	* nmz/codeconv.c (iskatakana): Make parameter(s) be const.
-	(ishiragana): Ditto.
+	(ishiragana): Likewise.
 
 	* nmz/codeconv.c (conv_ext): Returun a pointer of converted string.
 	All callers changed.
@@ -1482,7 +1493,7 @@
 
 	* scripts/mknmz.pl.in (put_field_index): Use MAX_FIELD_LENGTH to
 	limit a field string.
-	(make_summary): Ditto.
+	(make_summary): Likewise.
 
 	* pl/conf.pl.in: s/SUMMARY_LENGTH/MAX_FIELD_LENGTH/
 	Add comments on MAX_FIELD_LENGTH.

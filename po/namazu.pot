@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2000-02-14 05:46+0900\n"
+"POT-Creation-Date: 2000-02-15 08:31+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -199,7 +199,8 @@ msgid ""
 "    -o, --output=file    set output file name.\n"
 "    -f, --config=file    set a pathname of a config file.\n"
 "    -C, --show-config    print current configuration.\n"
-"    -q, --quiet          do not display extra messages except search results.\n"
+"    -q, --quiet          do not display extra messages except search "
+"results.\n"
 "    -v, --version        show the version of namazu and exit.\n"
 "        --help           show this help and exit\n"
 "\n"
@@ -238,7 +239,7 @@ msgstr ""
 msgid "Detected type: "
 msgstr ""
 
-#: scripts/mknmz.in:630 scripts/mknmz.in:1199
+#: scripts/mknmz.in:630 scripts/mknmz.in:1201
 msgid "Unsupported data type "
 msgstr ""
 
@@ -254,7 +255,7 @@ msgstr ""
 msgid "Faild to call "
 msgstr ""
 
-#: scripts/mknmz.in:696 scripts/mknmz.in:1330
+#: scripts/mknmz.in:696 scripts/mknmz.in:1332
 msgid "No files to index.\n"
 msgstr ""
 
@@ -308,194 +309,195 @@ msgstr ""
 msgid "invalid output directory\n"
 msgstr ""
 
-#: scripts/mknmz.in:1091
+#: scripts/mknmz.in:1093
 msgid " findfiles starting: "
 msgstr ""
 
-#: scripts/mknmz.in:1126
+#: scripts/mknmz.in:1128
 msgid "wanted: "
 msgstr ""
 
-#: scripts/mknmz.in:1146
+#: scripts/mknmz.in:1148
 msgid "findfiles    ended: "
 msgstr ""
 
-#: scripts/mknmz.in:1147
+#: scripts/mknmz.in:1149
 #, c-format
-msgid "Target Files: %d (Scan Performance: Elapsed Sec.: %d, Files/sec: %.1f)\n"
+msgid ""
+"Target Files: %d (Scan Performance: Elapsed Sec.: %d, Files/sec: %.1f)\n"
 msgstr ""
 
-#: scripts/mknmz.in:1164
+#: scripts/mknmz.in:1166
 msgid "lang: "
 msgstr ""
 
-#: scripts/mknmz.in:1174
+#: scripts/mknmz.in:1176
 msgid "Usage: mknmz [options] <target>...\n"
 msgstr ""
 
-#: scripts/mknmz.in:1175
+#: scripts/mknmz.in:1177
 msgid "Try `mknmz --help' for more information.\n"
 msgstr ""
 
-#: scripts/mknmz.in:1188
+#: scripts/mknmz.in:1190
 msgid "does NOT EXIST! skipped."
 msgstr ""
 
-#: scripts/mknmz.in:1190
+#: scripts/mknmz.in:1192
 msgid "is NOT READABLE! skipped."
 msgstr ""
 
-#: scripts/mknmz.in:1192
+#: scripts/mknmz.in:1194
 msgid "is 0 size! skipped."
 msgstr ""
 
-#: scripts/mknmz.in:1194
+#: scripts/mknmz.in:1196
 msgid "may be a BINARY file! skipped."
 msgstr ""
 
-#: scripts/mknmz.in:1196
+#: scripts/mknmz.in:1198
 msgid "is too LARGE a text! skipped."
 msgstr ""
 
-#: scripts/mknmz.in:1199
+#: scripts/mknmz.in:1201
 msgid " skipped."
 msgstr ""
 
-#: scripts/mknmz.in:1204
+#: scripts/mknmz.in:1206
 msgid "system error occurred! "
-msgstr ""
-
-#: scripts/mknmz.in:1404
-msgid ""
-"\n"
-"\n"
-"== found ==\n"
-msgstr ""
-
-#: scripts/mknmz.in:1405
-msgid ""
-"\n"
-"\n"
-"== registered ==\n"
 msgstr ""
 
 #: scripts/mknmz.in:1406
 msgid ""
 "\n"
 "\n"
-"== overlapped  ==\n"
+"== found ==\n"
 msgstr ""
 
 #: scripts/mknmz.in:1407
 msgid ""
 "\n"
 "\n"
-"== deleted  ==\n"
+"== registered ==\n"
 msgstr ""
 
 #: scripts/mknmz.in:1408
 msgid ""
 "\n"
 "\n"
-"== updated ==\n"
+"== overlapped  ==\n"
 msgstr ""
 
 #: scripts/mknmz.in:1409
 msgid ""
 "\n"
 "\n"
+"== deleted  ==\n"
+msgstr ""
+
+#: scripts/mknmz.in:1410
+msgid ""
+"\n"
+"\n"
+"== updated ==\n"
+msgstr ""
+
+#: scripts/mknmz.in:1411
+msgid ""
+"\n"
+"\n"
 "== files to index ==\n"
 msgstr ""
 
-#: scripts/mknmz.in:1433
+#: scripts/mknmz.in:1435
 msgid "## deleted: "
 msgstr ""
 
-#: scripts/mknmz.in:1456
+#: scripts/mknmz.in:1458
 msgid "## indexed: "
 msgstr ""
 
-#: scripts/mknmz.in:1482
+#: scripts/mknmz.in:1484
 msgid "update_field_index: "
 msgstr ""
 
-#: scripts/mknmz.in:1502
+#: scripts/mknmz.in:1504
 msgid "was updated!\n"
 msgstr ""
 
-#: scripts/mknmz.in:1543
+#: scripts/mknmz.in:1545
 msgid "ERROR: malformed NMZ.r format!\n"
 msgstr ""
 
-#: scripts/mknmz.in:1625
+#: scripts/mknmz.in:1627
 msgid "[Append]"
 msgstr ""
 
-#: scripts/mknmz.in:1627
+#: scripts/mknmz.in:1629
 msgid "[Base]"
 msgstr ""
 
-#: scripts/mknmz.in:1629
+#: scripts/mknmz.in:1631
 msgid "Date:"
 msgstr ""
 
-#: scripts/mknmz.in:1630
+#: scripts/mknmz.in:1632
 msgid "Added Documents:"
 msgstr ""
 
-#: scripts/mknmz.in:1632
+#: scripts/mknmz.in:1634
 msgid "Deleted Documents:"
 msgstr ""
 
-#: scripts/mknmz.in:1634
+#: scripts/mknmz.in:1636
 msgid "Updated Documents:"
 msgstr ""
 
-#: scripts/mknmz.in:1636
+#: scripts/mknmz.in:1638
 msgid "Size (bytes):"
 msgstr ""
 
-#: scripts/mknmz.in:1638
+#: scripts/mknmz.in:1640
 msgid "Total Documents:"
 msgstr ""
 
-#: scripts/mknmz.in:1640
+#: scripts/mknmz.in:1642
 msgid "Added Keywords:"
 msgstr ""
 
-#: scripts/mknmz.in:1642
+#: scripts/mknmz.in:1644
 msgid "Total Keywords:"
 msgstr ""
 
-#: scripts/mknmz.in:1644
+#: scripts/mknmz.in:1646
 msgid "Wakati:"
 msgstr ""
 
-#: scripts/mknmz.in:1645
+#: scripts/mknmz.in:1647
 msgid "Time (sec):"
 msgstr ""
 
-#: scripts/mknmz.in:1647
+#: scripts/mknmz.in:1649
 msgid "File/Sec:"
 msgstr ""
 
-#: scripts/mknmz.in:1650
+#: scripts/mknmz.in:1652
 msgid "System:"
 msgstr ""
 
-#: scripts/mknmz.in:1651
+#: scripts/mknmz.in:1653
 msgid "Perl:"
 msgstr ""
 
-#: scripts/mknmz.in:1652
+#: scripts/mknmz.in:1654
 msgid "Namazu:"
 msgstr ""
 
-#: scripts/mknmz.in:1777
+#: scripts/mknmz.in:1779
 msgid "doing write_phrase_hash() processing.\n"
 msgstr ""
 
-#: scripts/mknmz.in:2004
+#: scripts/mknmz.in:2006
 msgid "doing write_index() processing.\n"
 msgstr ""
 
@@ -541,17 +543,22 @@ msgid ""
 "Target files:\n"
 "  -a, --all                target all files.\n"
 "  -e, --robots-txt         exclude files which is excluded by robots.txt.\n"
-"  -t, --media-type=mtype   set a media type for all target files explicitly.\n"
+"  -t, --media-type=mtype   set a media type for all target files "
+"explicitly.\n"
 "  -h, --mailnews           same as --media-type='message/rfc822'\n"
 "      --mhonarc            same as --media-type='text/html; x-type=mhonarc'\n"
 "  -A, --htaccess           exclude files restricted by .htaccess.\n"
 "  -F, --target-list=file   load a file which contains list of target files.\n"
-"      --allow=regex        set a regex for file names which will be allowed.\n"
+"      --allow=regex        set a regex for file names which will be "
+"allowed.\n"
 "      --deny=regex         set a regex for file names which will be denied.\n"
-"      --exclude=regex      set a regex for pathnames which will be excluded.\n"
-"  -M, --meta               handle HTML meta tags for field-specified search.\n"
+"      --exclude=regex      set a regex for pathnames which will be "
+"excluded.\n"
+"  -M, --meta               handle HTML meta tags for field-specified "
+"search.\n"
 "  -r, --replace=code       set a code for replacing URI.\n"
-"  -o, --ole                use OLE document filters. (works on Windows only)\n"
+"  -o, --ole                use OLE document filters. (works on Windows "
+"only)\n"
 "      --mtime=int          limit by date, ( minus number for recent, i.e.,\n"
 "                           -50 for recent 50 days, 50 for older than 50.)\n"
 "\n"

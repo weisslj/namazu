@@ -1,5 +1,5 @@
 /*
- * $Id: result.c,v 1.51 2000-02-06 22:43:59 rug Exp $
+ * $Id: result.c,v 1.52 2000-02-14 23:31:00 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -58,27 +58,33 @@ static int is_urireplace ( void );
 static int is_uridecode ( void );
 
 
+/*
+ * Add commas to numstr without overflow checking.
+ * Be careful with the function!
+ */
 static void 
-commas(char *str)
+commas(char *numstr)
 {
     int i, n;
-    int leng = strlen(str);
+    int leng = strlen(numstr);
 
     n = leng + (leng - 1) / 3;
-    str[n] = '\0';
+    numstr[n] = '\0';
     n--;
     for (i = 0; i < leng; i++, n--) {
-	str[n] = str[leng - 1 - i];
+	numstr[n] = numstr[leng - 1 - i];
 	if (i % 3 == 2 && n != 0) {
 	    n--;
-	    str[n] = ',';
+	    numstr[n] = ',';
 	}
     }
 }
 
 /* 
- * Case-insensitive brute force search.
- * (with consideration for EUC encoding schemes)
+ * Case-insensitive brute force search
+ * with consideration for EUC encoding schemes.
+ *
+ * FIXME: EUC-JP dependent.
  */
 static char *
 strcasestr(const char *haystack, const char *needle)
@@ -92,7 +98,7 @@ strcasestr(const char *haystack, const char *needle)
 
     for (; *haystack != '\0'; haystack++) {
 	if (strncasecmp(haystack, needle, n) == 0) {
-	    return (char *)haystack;
+	    return haystack;
 	}
 	if (euc_mode && nmz_iseuc(*haystack)) {
 	    haystack++;

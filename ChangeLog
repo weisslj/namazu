@@ -1,5 +1,7 @@
 2000-03-12  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* tests/namazu-nasty-cases: Improve assertion mechanism.
+
 	* configure.in (AC_OUTPUT): Add tests/data/query/Makefile.
 
 	* tests/Makefile.am (TESTS): Add mknmz-6 and namazu-query

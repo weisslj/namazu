@@ -7,11 +7,6 @@ LOG=`pwd`/test-log
 cd ../src
 
 perl << 'TEST'  >> $LOG
-	sub assert {
-	    my ($bool) = @_;
-	    die if ! $bool;
-	}
-
 	my $QUERY_MAX = 256;
 	my $BUFSIZE   = 1024;
 	for my $num (0 .. 3, $QUERY_MAX - 5 .. $QUERY_MAX + 5,
@@ -23,12 +18,18 @@ perl << 'TEST'  >> $LOG
 		my $result = `$cmd 2>&1`;
 		print "$num: $?\n";
 		print "$result\n";
+
+		my $assert = sub {
+		    my ($code) = @_;
+		    die "assert failed: $code" if ! eval $code;
+		};
+
 		if ($num == 0) {
-			assert ($result eq "");
+			&$assert('$result eq ""');
 		} elsif ($num <= 256) {
-			assert ($result eq "0\n");
+			&$assert('$result eq "0\n"');
 		} elsif ($num > 256) {
-			assert ($result =~ /^namazu: /);
+			&$assert('$result =~ /^namazu: /');
 		}
 	}
 TEST

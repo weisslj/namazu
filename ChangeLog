@@ -1,5 +1,13 @@
 2000-02-15  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* scripts/mknmz.in (re_exec): Store $total_files_num.
+	(main): Print user-friendly messages. [namazu-dev 1553]
+	(namazu_core): Change a progress messaging format.
+	(parse_options): Change --quiet option handling. All "unless
+	$var::Opt{'quiet'}" are removed. [namazu-dev 1604]
+
+	* pl/var.pl: Abolish $Opt{'quiet'};
+
 	* src/result.c (strcasestr): Clean up.
 	(commas): Add comments.
 

@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.11 2000-02-14 21:30:33 kenzo- Exp $
+# $Id: mknmz.in,v 1.12 2000-02-15 03:06:32 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -73,7 +73,7 @@ sub main () {
     load_modules();
     my ($output_dir, @targets) = parse_options();
     load_rcfiles();
-    my $file_base = prep($output_dir, @targets);
+    my ($file_base, $total_files_num) = prep($output_dir, @targets);
     load_olemodules() if ($var::Opt{'ole'});
 
     my $swap = 1;
@@ -84,8 +84,12 @@ sub main () {
     my $flist_ptr = 0;
     my $processed_files_size = 0;
 
-    # Restore variables
-    eval util::readfile($var::NMZ{'_checkpoint'}) if $CheckPoint{'continue'};
+    if ($CheckPoint{'continue'}) {
+	# Restore variables
+	eval util::readfile($var::NMZ{'_checkpoint'}) ;
+    } else {
+	print $total_files_num . _(" files are found to be indexed.\n");
+    }
 
     {
 	my $fh_errorsfile = util::efopen(">>$var::NMZ{'err'}");
@@ -105,8 +109,11 @@ sub main () {
 	    util::dprint(_("target file: ")."$cfile\n");
 
 	    my $cfile_size = namazu_core($cfile, $file_count, $file_base, 
-				 \%field_indices, $fh_errorsfile);
-	    next unless $cfile_size;
+			 \%field_indices, $fh_errorsfile, $total_files_num);
+	    if ($cfile_size == 0) {
+		$total_files_num--;
+		next;
+	    }
 	    put_registry($cfile);
 
 	    $total_files_size     += $cfile_size;
@@ -115,7 +122,9 @@ sub main () {
 	    if ($processed_files_size > $conf::ON_MEMORY_MAX) {
 		if (%KeyIndex) {
 		    $key_count = write_index();
+		    print _("Writing index files..."); 
 		    write_phrase_hash();
+		    print "\n";
 		}
 		$processed_files_size = 0;
 		$checkpoint = 1, last if $CheckPoint{'on'} && defined(<$fh_flist>);
@@ -124,11 +133,13 @@ sub main () {
     }
     # This should be out of above blocks because of file handler closing.
     re_exec($flist_ptr, $file_count, $file_base, 
-	    $start_time, $total_files_size) if $checkpoint;
+	    $start_time, $total_files_size, $total_files_num) if $checkpoint;
 
     if (%KeyIndex) {
 	$key_count = write_index();
+	print _("Writing index files...");
 	write_phrase_hash();
+	print "\n";
     }
 
     $key_count = get_total_keys() unless $key_count;
@@ -165,8 +176,9 @@ sub load_rcfiles () {
     util::vprint("\n");
 }
 
-sub re_exec($$$$) {
-    my ($flist_ptr, $file_count, $file_base, $start_time, $total_files_size) = @_;
+sub re_exec($$$$$$) {
+    my ($flist_ptr, $file_count, $file_base, 
+	$start_time, $total_files_size, $total_files_num) = @_;
 
     # store variables
     {
@@ -181,12 +193,13 @@ sub re_exec($$$$) {
 	\$file_base = $file_base;
 	\$start_time = $start_time;
 	\$total_files_size = $total_files_size;
+	\$total_files_num = $total_files_num;
 	\$\$ = $$;
 EOM
     }
 
     @ARGV = ("-S", @ARGV) ;
-    print _("Checkpoint reached: re-exec mknmz...\n") unless $var::Opt{'quiet'};
+    print _("Checkpoint reached: re-exec mknmz...\n");
     util::dprint(join ' ', ("::::", @ARGV, "\n"));
     exec ($0, @ARGV) ;
 }
@@ -316,14 +329,15 @@ sub load_filters (@) {
 }
 
 # Core routine
-sub namazu_core ($$$) {
+sub namazu_core ($$$$$$) {
     my ($cfile, $file_count, $file_base, $field_indices, 
-	$fh_errorsfile) = @_;
+	$fh_errorsfile, $total_files_num) = @_;
 
     my $headings = "";
     my $content = "";
     my $weighted_str = "";
     my %fields;
+    my $msg_prefix = $file_count + $file_base + 1 . "/$total_files_num - ";
 
     my $uri = generate_uri($cfile);  # Make a URI from a file name
     my ($cfile_size, $text_size, $kanji, $mtype) = 
@@ -335,7 +349,7 @@ sub namazu_core ($$$) {
     # check if the file is acceptable.
     my $err = check_file($cfile, $cfile_size, $text_size, $mtype);
     if (defined $err) {
-	print $file_count + $file_base . " $uri $err\n" unless $var::Opt{'quiet'};
+	print $msg_prefix . "$uri $err\n";
 	print $fh_errorsfile "$cfile $err\n"; 
 	return 0;  # return 0 if error
     }
@@ -343,15 +357,13 @@ sub namazu_core ($$$) {
     # check if the file should be excluded.
     $err = isexcluded($cfile, $uri, \$content);
     if (defined $err) {
-	print $file_count + $file_base . 
-	    " $uri $err\n" unless $var::Opt{'quiet'};
+	print $msg_prefix . "$uri $err\n";
 	print $fh_errorsfile "$cfile $err\n"; 
 	return 0;  # return 0 if error
     }
 
-    # Output processing file name as URI
-    print $file_count + $file_base . 
-	" $uri [$mtype]\n" unless $var::Opt{'quiet'};
+    # Print processing file name as URI.
+    print $msg_prefix . "$uri [$mtype]\n";
 
     complete_field_info(\%fields, $cfile, $uri, 
 			\$headings, \$content, \$weighted_str);
@@ -686,7 +698,7 @@ sub prep () {
     check_present_index();
 
     # if Checkpoint mode, return
-    return 0 if $CheckPoint{'continue'};
+    return (0, 0) if $CheckPoint{'continue'};
 
     check_lockfile($var::NMZ{'lock2'});
     @flist = find_target(@targets);
@@ -698,8 +710,9 @@ sub prep () {
     }
     set_lockfile($var::NMZ{'lock2'});
     save_flist(@flist);
+    my $total_files_num = @flist;
 
-    return $file_base;
+    return ($file_base, $total_files_num);
 }
 
 sub save_flist(@) {
@@ -813,7 +826,7 @@ sub make_headfoot_pages($$) {
     }
 }
 
-# parse comannd line options
+# Parse command line options.
 sub parse_options ()
 {
     if (@ARGV == 0) {
@@ -838,6 +851,7 @@ sub parse_options ()
     my $opt_mailnews = 0;
     my $opt_mhonarc = 0;
 
+    my $opt_quiet = undef;
     my $opt_config = undef;
     my $output_dir = undef;
     my $update_index = undef;
@@ -879,7 +893,7 @@ sub parse_options ()
 	       'k|use-kakasi'        => \$opt_kakasi,
 	       'm|use-chasen-noun'   => \$opt_chasen_noun,
 	       'o|ole'               => \$var::Opt{'ole'},
-	       'q|quiet'             => \$var::Opt{'quiet'},
+	       'q|quiet'             => \$opt_quiet,
 	       'r|replace=s'         => \$ReplaceCode,
 	       's|checkpoint'        => \$CheckPoint{'on'},
 	       't|media-type=s'      => \$MediaType,
@@ -887,6 +901,17 @@ sub parse_options ()
 	       'v|version'           => \$opt_version,
 	       'x|no-heading-summary'=> \$var::Opt{'noheadabst'},
 	       );
+
+    if ($opt_quiet) {
+	# Make STDOUT quiet by redirecting STDOUT to /dev/null.
+	if (-e "/dev/null") {
+	    open(STDOUT, ">/dev/null") || die "/dev/null: $!";
+	} elsif (($SYSTEM eq "MSWin32") || ($SYSTEM eq "os2")) {
+	    open(STDOUT, ">nul") || die "nul: $!";
+	} else {
+	    die "/dev/null or equivalent are needed to enable --quiet.";
+	}
+    }
 
     if ($opt_config) {
 	$ConfigFile = $opt_config;
@@ -1493,7 +1518,7 @@ sub pickup_updated_files (\%) {
     my $i = 0;
     for my $cfile (@{$ref->{'name'}}) {
 	if (defined($ref->{'deleted'}{$cfile})) {
-	    print "$cfile was deleted!\n" unless $var::Opt{'quiet'};
+	    print "$cfile was deleted!\n";
 	    $ref->{'mtime'}[$i] = -1; # assign the a messing number
 	} elsif (defined($ref->{'overlapped'}{$cfile})) {
 	    my $cfile_mtime = (stat($cfile))[9];
@@ -1501,7 +1526,7 @@ sub pickup_updated_files (\%) {
 
 	    if ($rfile_mtime < $cfile_mtime) {
 		# this file is updated!
-		print "$cfile "._("was updated!\n") unless $var::Opt{'quiet'};
+		print "$cfile "._("was updated!\n");
 		$ref->{'mtime'}[$i] = -1; # assign the messing number
 		push(@updated_files, $cfile);
 	    }
@@ -1655,21 +1680,19 @@ sub put_log ($$$$) {
 
     my $log_for_file = "";
 
-    unless ($var::Opt{'quiet'}) {
-	my $msg = shift @logmsgs;	# [Base] or [Append]
-	# To stdout, use gettext.
-	print _($msg), "\n";
-	# To log file, do not use gettext.
-	$log_for_file = $msg . "\n";
-	while (@logmsgs) {
-	    my $field = shift @logmsgs;
-	    my $value = shift @logmsgs;
-	    printf "%-20s %s\n", _($field), "$value";
-	    $log_for_file .= sprintf "%-20s %s\n", $field, "$value";
-	}
-	print "\n";
-	$log_for_file .= "\n";
+    my $msg = shift @logmsgs;	# [Base] or [Append]
+    # To stdout, use gettext.
+    print _($msg), "\n";
+    # To log file, do not use gettext.
+    $log_for_file = $msg . "\n";
+    while (@logmsgs) {
+	my $field = shift @logmsgs;
+	my $value = shift @logmsgs;
+	printf "%-20s %s\n", _($field), "$value";
+	$log_for_file .= sprintf "%-20s %s\n", $field, "$value";
     }
+    print "\n";
+    $log_for_file .= "\n";
 
     put_log_to_logfile($log_for_file);
     put_total_files($total_files_count);

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: namazu 2.0\n"
-"POT-Creation-Date: 1999-11-18 22:21+0900\n"
+"POT-Creation-Date: 1999-11-19 10:25+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>\n"
 "Language-Team: Japanese <satoru-t@is.aist-nara.ac.jp>\n"
@@ -161,6 +161,8 @@ msgid ""
 "    -L, --lang=lang      set language (ja or en)\n"
 "    -v, --version        show the version of namazu and exit.\n"
 "        --help           show this help and exit\n"
+"\n"
+"Report bugs to <bug-namazu@namazu.org>.\n"
 msgstr ""
 "namazu - Namazu の検索プログラム %s\n"
 "\n"
@@ -189,12 +191,14 @@ msgstr ""
 "    -L, --lang=lang         メッセージの言語を設定する ja または en\n"
 "    -v, --version           ヴァージョンを表示する\n"
 "        --help              help を表示する (この表示)\n"
+"\n"
+"バグ報告は <bug-namazu@namazu.org> へどうぞ\n"
 
-#: src/usage.c:79
+#: src/usage.c:82
 msgid "Usage: namazu [options] <query> [index]...\n"
 msgstr "使い方: namazu [オプション] <検索式> [インデックス]...\n"
 
-#: src/usage.c:80
+#: src/usage.c:83
 msgid "Try `namazu --help' for more information.\n"
 msgstr "`namazu --help' でオプションの説明が表示されます\n"
 

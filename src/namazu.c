@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.38 1999-11-18 13:42:07 satoru Exp $
+ * $Id: namazu.c,v 1.39 1999-11-19 01:32:50 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -132,7 +132,7 @@ static int parse_options(int argc, char **argv)
 	}
 	switch (ch) {
 	case '0':
-	    show_long_usage();
+	    show_usage();
 	    return DIE_NOERROR;
 	    break;
 	case '1':

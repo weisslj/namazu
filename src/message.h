@@ -7,9 +7,6 @@
     #define MSG_MIME_HEADER  "Content-type: text/html\r\n\r\n"
 #endif
 
-#define COPYRIGHT \
-"Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved."
-
 
 /*
  * beggening '	' (tab) means those string contains HTML tag.

@@ -1,6 +1,7 @@
 2000-01-03  Ryuji Abe <raeva@t3.rim.or.jp>
 
 	* acinclude.m4 (AM_WITH_CCMALLOC): Tiny Fix.
+	(AM_PATH_LISPDIR): s/lookup/namazu/g.
 
 	* nmz/Makefile.am (AUTOMAKE_OPTIONS): Set 1.4.
 	(libnmz_la_LDFLAGS): Set -version-info 1:0:0 for 

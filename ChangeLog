@@ -67,6 +67,8 @@
 
 	* configure.in (AM_PATH_LISPDIR): Likewise.
 
+	* templade/Makefile.am (EXTRA_DIST): Fixed wrong entries.
+
 2000-01-28  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* pl/Makefile.am (perllib_DATA): Remove find.pl.

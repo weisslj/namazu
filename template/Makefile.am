@@ -18,4 +18,16 @@ template_DATA = \
 	NMZ.tips \
 	NMZ.tips.ja
 
-EXTRA_DIST = $(template_DATA)
+EXTRA_DIST = \
+	NMZ.body \
+	NMZ.body.ja \
+	NMZ.foot.in \
+	NMZ.foot.ja.in \
+	NMZ.head.in \
+	NMZ.head.ja.in \
+	NMZ.result.normal \
+	NMZ.result.short \
+	NMZ.result.normal.ja \
+	NMZ.result.short.ja \
+	NMZ.tips \
+	NMZ.tips.ja

@@ -2,7 +2,7 @@
 ;;
 ;; Mule $B>e$G(B Namazu $B$rMxMQ$7$?8!:w$r9T$&$?$a$N(B elisp $B$G$9!#(B
 ;;
-;;  $Id: namazu.el,v 1.5 2000-01-26 13:48:18 shirai Exp $
+;;  $Id: namazu.el,v 1.6 2000-01-28 09:21:22 miyoshi Exp $
 
 (defconst namazu-version "namazu.el 1.0.3")
 
@@ -156,6 +156,15 @@ PATH $B$,DL$C$F$$$J$$>l9g$K$OE,Ev$J%W%m%0%i%`L>$r;XDj$7$^$9!#(B")
       (if (> emacs-major-version 19) 'sjis-dos '*sjis*dos)
     (if (> emacs-major-version 19) 'euc-jp '*euc-japan*))
   "*OS $B$NFbIt%3!<%I$H0[$J$j!"$+$DF0$+$J$$>l9g$KJQ99$7$F$_$F$/$@$5$$!#(B")
+
+(defvar namazu-config-file-path
+  (list (getenv "NAMAZUCONFPATH")
+	(getenv "NAMAZUCONF")		; obsolete?
+	"./.namazurc"
+	"~/.namazurc"
+	"/usr/local/etc/namazu/namazurc"
+	"/usr/local/namazu/lib/namazurc") ;obsolete?
+  "*Search path for a Namazu configuration file.")
 
 ;;
 ;; $B$3$3$+$i@h$r$$$8$C$F!"AGE($K$J$C$?$i65$($F$/$@$5$$$M!#(B
@@ -431,14 +440,14 @@ PATH $B$,DL$C$F$$$J$$>l9g$K$OE,Ev$J%W%m%0%i%`L>$r;XDj$7$^$9!#(B")
   (goto-char (point-max))
   (let ((p (point)) 
         (alist (namazu-make-field-completion-alist namazu-last-dir))
-        (completion-buffer "*Competions*")
+        (completion-buffer "*Completions*")
         word start result)
     (save-excursion
-      (skip-chars-backward "^\n+")
-      (backward-char 1)
-      (setq start (point))
-      (setq word (buffer-substring start p)))
-    (setq result (try-completion word alist))
+      (if (re-search-backward "\\+[^ \t]*" nil t)
+	  (progn
+	    (setq start (match-beginning 0))
+	    (setq word (match-string 0))
+	    (setq result (try-completion word alist)))))
     (cond
      ((eq result t)
       (ding))
@@ -457,12 +466,13 @@ PATH $B$,DL$C$F$$$J$$>l9g$K$OE,Ev$J%W%m%0%i%`L>$r;XDj$7$^$9!#(B")
 
 (defun namazu-make-field-completion-alist (namazu-dir)
   "make \'+files:\' completion alist."
-  (let* ((dir (expand-file-name 
-               (if (null namazu-dir)
+  (let* ((dir (if (null namazu-dir)
                    namazu-default-dir
                  (or (cdr (assoc namazu-dir namazu-dir-alist))
-                     namazu-dir))))
-         (fl (and (file-exists-p dir)
+                     namazu-dir)))
+         (fl (and dir
+		  (setq dir (expand-file-name dir))
+		  (file-exists-p dir)
                   (directory-files dir)))
          fields file)
     (while (setq file (car fl))
@@ -471,6 +481,74 @@ PATH $B$,DL$C$F$$$J$$>l9g$K$OE,Ev$J%W%m%0%i%`L>$r;XDj$7$^$9!#(B")
               (substring file (match-beginning 1) (match-end 1))))) fields)))
       (setq fl (cdr fl)))
     fields))
+
+(defun namazu-search-config-file ()
+  "Search namazu-config-file-path for a Namazu configuration file.
+Return the abosolute file name of the configuration.  When the file is
+not found, return nil "
+  (let ((config-file-list namazu-config-file-path) config-file)
+    (setq config-file-list (delq nil config-file-list))
+    (if (catch 'found
+	  (while config-file-list
+	    (setq config-file (expand-file-name (car config-file-list)))
+	    (and (file-exists-p config-file)
+		 (throw 'found t))
+	    (setq config-file-list (cdr config-file-list))))
+	config-file
+      nil)))
+
+(defun namazu-read-config-file (file)
+  "Read a namazu configuration file and return an alist of directive
+and value(s) pairs.
+FILE indicates the absolute file name of the configuration file. FILE
+must exists."
+  (let* (conf-alist
+	 (buffer (get-file-buffer file))
+	 (buffer-already-there-p buffer))
+    (or buffer-already-there-p
+	(setq buffer (find-file-noselect file)))
+    (unwind-protect
+	(save-excursion
+	  (set-buffer buffer)
+	  (goto-char (point-min))
+	  (let (directive value1 value2)
+	    (while (re-search-forward "\\(^[ \t]*\\(INDEX\\|BASE\\|\
+LOGGING\\|LANG\\|SCORING\\)[ \t]+\\([^ \t\n#]+\\)\\)\\|\
+\\(^[ \t]*\\(REPLACE\\)[ \t]+\\([^ \t\n#]+\\)[ \t]+\\([^ \t\n#]+\\)\\)" nil t)
+	      (cond ((match-string 1)   ; only 1 value
+		     (setq directive (match-string 2))
+		     (setq value1 (match-string 3))
+		     (setq conf-alist
+			   (delete (assoc directive conf-alist) conf-alist))
+		     (setq conf-alist
+			   (cons (cons directive value1) conf-alist)))
+		    ((match-string 4)	; 2 values
+		     (setq directive (match-string 5))
+		     (setq value1 (match-string 6))
+		     (setq value2 (match-string 7))
+		     (setq conf-alist
+			   (delete (assoc directive conf-alist) conf-alist))
+		     (setq conf-alist
+			   (cons (list directive value1 value2)
+				 conf-alist)))))))
+      (if (not buffer-already-there-p)
+	  (kill-buffer buffer)))
+    conf-alist))
+
+(defun namazu-get-default-index-dir ()
+  "Get a Namazu default index directory from a Namazu configuration file.
+Return \"/usr/local/namazu/index\" if the configuration file is not
+found."
+  (let (config-file conf-alist cell dir)
+    (setq config-file (namazu-search-config-file))
+    (if config-file
+	(progn
+	  (setq conf-alist (namazu-read-config-file config-file))
+	  (setq cell (assoc "INDEX" conf-alist))
+	  (and cell
+	       (setq dir (cdr cell)))
+	  dir)
+      "/usr/local/namazu/index")))
 
 (defun namazu-mode ()
   "Namazu $B$N8!:w7k2L$r1\Mw$9$k$?$a$N%b!<%I$G$9!#(B
@@ -576,6 +654,14 @@ mouse $B$N??$sCf$N%\%?%s$r2!$9$H!"2!$7$?0LCV$K$h$C$F!"(B\"$BJ8>O$r;2>H(B\"$
   (or (fboundp 'event-point)
       (defun event-point (event)
 	(posn-point (event-start event)))))
+
+(eval-and-compile
+  (or (fboundp 'match-string)
+      (defun match-string (num &optional string)
+	(if (match-beginning num)
+	    (if string
+		(substring string (match-beginning num) (match-end num))
+	      (buffer-substring (match-beginning num) (match-end num)))))))
 
 (defun namazu-view ()
   "$B%]%$%s%H$,0LCV$9$k9`L\$r%V%i%&%:$7$^$9!#(B"
@@ -690,32 +776,48 @@ mouse $B$N??$sCf$N%\%?%s$r2!$9$H!"2!$7$?0LCV$K$h$C$F!"(B\"$BJ8>O$r;2>H(B\"$
       (setq font-lock-variable-name-face font-lock-type-face))
   (or (boundp 'font-lock-reference-face)
       (setq font-lock-reference-face font-lock-function-name-face))
-  (defvar namazu-font-lock-keywords
-    (list
-     (list namazu-output-title-pattern         1 'font-lock-comment-face)
-     (list namazu-output-title-pattern         2 'font-lock-keyword-face)
-     (list namazu-output-title-pattern         3 'font-lock-reference-face)
-     (list namazu-output-header-pattern        1 'font-lock-variable-name-face)
-     (list namazu-output-url-pattern
-	   1 '(progn (set-text-properties (match-beginning 1) (match-end 1)
-					  '(mouse-face highlight))
-		     'font-lock-function-name-face))
-     (list namazu-output-url-pattern           3 'font-lock-type-face)
-     (list namazu-output-current-list-pattern  0 'font-lock-comment-face)
-     (list namazu-output-pages-pattern         0 'font-lock-comment-face))
-    "Namazu $B$G$N8!:w7k2L$K$*2=>Q$r$9$k$?$a$N@_Dj$G$9(B. ")
-    (if (boundp 'font-lock-defaults)
+  (if (boundp 'font-lock-defaults)
+      (progn
+	(defvar namazu-font-lock-keywords
+	  (list
+	   (list namazu-output-title-pattern
+		 '(1 font-lock-comment-face)
+		 '(2 font-lock-keyword-face)
+		 '(3 font-lock-reference-face))
+	   (list namazu-output-header-pattern
+		 1 'font-lock-variable-name-face)
+	   (list namazu-output-url-pattern
+		 '(1 (progn
+		       (set-text-properties (match-beginning 1) (match-end 1)
+					    '(mouse-face highlight))
+		       font-lock-function-name-face))
+		 '(3 font-lock-type-face))
+	   (list namazu-output-current-list-pattern
+		 0 'font-lock-comment-face)
+	   (list namazu-output-pages-pattern 0 'font-lock-comment-face))
+	  "Namazu $B$G$N8!:w7k2L$K$*2=>Q$r$9$k$?$a$N@_Dj$G$9(B. ")
 	(add-hook
 	 'namazu-display-hook
 	 (lambda ()
 	   (make-local-variable 'font-lock-defaults)
 	   (setq font-lock-defaults
 		 '((namazu-font-lock-keywords) t))
-	   (font-lock-mode 1)))
-      (add-hook 'namazu-display-hook
-		(lambda ()
-		  (setq font-lock-keywords namazu-font-lock-keywords)
-		  (font-lock-mode 1)))))
+	   (font-lock-mode 1))))
+    (defvar namazu-font-lock-keywords
+      (list
+       (list namazu-output-title-pattern 1 'font-lock-comment-face)
+       (list namazu-output-title-pattern 2 'font-lock-keyword-face)
+       (list namazu-output-title-pattern 3 'font-lock-reference-face)
+       (list namazu-output-header-pattern 1 'font-lock-variable-name-face)
+       (list namazu-output-url-pattern 1 'font-lock-function-name-face)
+       (list namazu-output-url-pattern 3 'font-lock-type-face)
+       (list namazu-output-current-list-pattern  0 'font-lock-comment-face)
+       (list namazu-output-pages-pattern 0 'font-lock-comment-face))
+      "Namazu $B$G$N8!:w7k2L$K$*2=>Q$r$9$k$?$a$N@_Dj$G$9(B. ")
+    (add-hook 'namazu-display-hook
+	      (lambda ()
+		(setq font-lock-keywords namazu-font-lock-keywords)
+		(font-lock-mode 1)))))
  ((featurep 'hilit19)
   (hilit-set-mode-patterns
    'namazu-mode
@@ -728,5 +830,8 @@ mouse $B$N??$sCf$N%\%?%s$r2!$9$H!"2!$7$?0LCV$K$h$C$F!"(B\"$BJ8>O$r;2>H(B\"$
     (list namazu-output-url-pattern    3 'grey40)))
   (add-hook 'namazu-display-hook
 	    'hilit-rehighlight-buffer-quietly)))
+
+(or namazu-default-dir
+    (setq namazu-default-dir (namazu-get-default-index-dir)))
 
 ;; end here.

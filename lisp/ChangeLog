@@ -1,3 +1,16 @@
+2000-01-28  MIYOSHI Masanori  <miyoshi@ask.ne.jp>
+
+	* namazu.el: (namazu-font-lock-keywords): Support font-lock for Emacs 19.28. 
+	(namazu-config-file-path): New variable for configuration file.
+	(namazu-make-field-completion-alist): Avoid error when namazu-default-dir is nil.
+	(namazu-field-complete): Avoid completion error at beginning of buffer.
+	(namazu-field-complete): Correct typo.
+	(match-string): Supplemental definition of match-string.
+	(namazu-search-config-file): New function. Search Namazu configuration file.
+	(namazu-read-config-file): New function. Read Namazu configuration file.
+	(namazu-get-default-index-dir): New function. Get default value for namazu-default-dir.
+	(namazu-default-dir): Get default value from configuration file.
+
 2000-01-25  Hideyuki SHIRAI  <shirai@rdmg.mgcs.mei.co.jp>
 
 	* namazu.el (namazu-output-url-pattern): Sync up Namazu Ver.2.0, again ^^;

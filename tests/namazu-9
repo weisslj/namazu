@@ -10,7 +10,7 @@ MSG1='Too many documents hit. Ignored'
 MSG2='Too many words matched. Ignored'
 
 # To make messages English
-unset LANG
+LANG= ; export LANG
 unset LANGUAGE
 unset LC_ALL
 unset LC_MESSAGES

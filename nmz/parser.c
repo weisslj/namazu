@@ -2,7 +2,7 @@
  * 
  * parser.c -
  * 
- * $Id: parser.c,v 1.23 2001-09-02 08:25:33 rug Exp $
+ * $Id: parser.c,v 1.24 2004-01-20 09:14:21 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -57,7 +57,7 @@ static int Cp = 0; /* variable that saves current position of parser */
  *
  */
 
-static NmzResult factor();
+static NmzResult factor(void);
 static int andop(void);
 static NmzResult term(void);
 static int orop(void);
@@ -66,8 +66,11 @@ static NmzResult
 factor(void)
 {
     NmzResult val;
+
     val.num  = 0;
+    val.data = NULL;
     val.stat = SUCCESS;
+
     while (1) {
 	char *token = nmz_get_querytoken(Cp);
         if (token == NULL) {
@@ -153,8 +156,15 @@ failedstat(int stat)
 static NmzResult 
 term(void)
 {
-    NmzResult left, right;
     int op;
+    NmzResult left, right;
+
+    left.num  = 0;
+    left.data = NULL;
+    left.stat = SUCCESS;
+    right.num  = 0;
+    right.data = NULL;
+    right.stat = SUCCESS;
 
     left = factor();
     if (failedstat(left.stat)) {
@@ -203,6 +213,13 @@ NmzResult
 nmz_expr(void)
 {
     NmzResult left, right;
+
+    left.num  = 0;
+    left.data = NULL;
+    left.stat = SUCCESS;
+    right.num  = 0;
+    right.data = NULL;
+    right.stat = SUCCESS;
 
     left = term();
     if (failedstat(left.stat)){

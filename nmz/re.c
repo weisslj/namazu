@@ -2,7 +2,7 @@
  * 
  * re.c -
  * 
- * $Id: re.c,v 1.36 2003-03-21 13:30:12 opengl2772 Exp $
+ * $Id: re.c,v 1.37 2004-01-20 09:14:21 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -68,8 +68,13 @@ nmz_regex_grep(const char *expr, FILE *fp, const char *field, int field_mode)
     struct re_pattern_buffer *rp;
     int i, n, size = 0, max, uri_mode = 0;
     NmzResult val, tmp;
+
+    val.num  = 0;
+    val.data = NULL;
     val.stat = SUCCESS;
-    val.num = 0;
+    tmp.num  = 0;
+    tmp.data = NULL;
+    tmp.stat = SUCCESS;
 
     if (nmz_is_lang_ja()) {
         nmz_re_mbcinit(MBCTYPE_EUC);

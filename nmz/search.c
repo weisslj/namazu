@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.92 2003-04-18 13:04:43 knok Exp $
+ * $Id: search.c,v 1.93 2004-01-20 09:14:21 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2003 Namazu Project All rights reserved.
@@ -159,9 +159,15 @@ static NmzResult
 prefix_match(const char *key, int v)
 {
     int i, j, n;
-    NmzResult tmp, val;
     char buf[BUFSIZE], tmpkey[BUFSIZE];
+    NmzResult val, tmp;
+
     val.num  = 0;
+    val.data = NULL;
+    val.stat = SUCCESS;
+    tmp.num  = 0;
+    tmp.data = NULL;
+    tmp.stat = SUCCESS;
 
     strncpy(tmpkey, key, BUFSIZE - 1);
     tmpkey[strlen(tmpkey) - 1] = '\0';
@@ -438,6 +444,10 @@ do_phrase_search(const char *key, NmzResult val)
     for (i = 0; words[i] != NULL; i++) {
 	char *word, word_mix[BUFSIZE];
 	NmzResult tmp;
+
+        tmp.num  = 0;
+        tmp.data = NULL;
+        tmp.stat = SUCCESS;
 
         word = words[i];
 	tmp = do_word_search(word, val);
@@ -962,8 +972,17 @@ nmz_binsearch(const char *key, int prefix_match_mode)
 NmzResult 
 nmz_search(const char *query)
 {
-    NmzResult hlist, tmp[INDEX_MAX];
     int i, ret;
+    NmzResult hlist, tmp[INDEX_MAX];
+
+    hlist.num  = 0;
+    hlist.data = NULL;
+    hlist.stat = SUCCESS;
+    for (i = 0; i < INDEX_MAX; i++) {
+        tmp[i].num  = 0;
+        tmp[i].data = NULL;
+        tmp[i].stat = SUCCESS;
+    }
 
     if (normalize_idxnames() != SUCCESS) {
 	hlist.stat = ERR_FATAL;

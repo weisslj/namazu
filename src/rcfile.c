@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.38 2003-06-08 13:51:31 opengl2772 Exp $
+ * $Id: rcfile.c,v 1.39 2004-01-20 09:14:20 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2003 Namazu Project All rights reserved.
@@ -686,7 +686,7 @@ static enum nmz_stat
 load_rcfile(const char *fname)
 {
     FILE *fp;
-    char buf[BUFSIZE];
+    char buf[BUFSIZE] = "";
     int lineno = 1;
 
     fp = fopen(fname, "rb");

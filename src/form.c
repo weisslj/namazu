@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.72 2003-03-21 09:46:49 opengl2772 Exp $
+ * $Id: form.c,v 1.73 2004-01-20 09:14:20 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -187,7 +187,7 @@ get_select_name(const char *s, char *value)
 static enum nmz_stat
 select_option(char *s, const char *name, const char *subquery)
 {
-    char value[BUFSIZE];
+    char value[BUFSIZE] = "";
 
     if (cmp_element(s, (char *)"option") == 0) {
 	if(strcmp(nmz_getenv("QUERY_STRING"), "")) {
@@ -269,7 +269,7 @@ select_option(char *s, const char *name, const char *subquery)
 static enum nmz_stat
 check_checkbox(char *str)
 {
-    char value[BUFSIZE];
+    char value[BUFSIZE] = "";
     int i;
 
     if (cmp_element(str, "input type=\"checkbox\" name=\"idxname\"") == 0) {

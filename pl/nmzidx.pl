@@ -15,10 +15,10 @@ sub open_db{
     my $ext = shift;
     my $path = $par->{'dir'} . "/NMZ.$ext";
     my $fh;
-    if ($par->{'mode'} eq 'w'){
-        $fh = new IO::File "$path.$$.tmp", $par->{'mode'};
+    if ($par->{'mode'} =~ /w/i){
+        $fh = new IO::File "$path.$$.tmp", "w";
     }else{
-        $fh = new IO::File $path;
+        $fh = new IO::File $path, "r";
     }
     $par->{'dblist'}->{$path} = $fh, binmode $fh if defined $fh;
     return $fh;
@@ -44,14 +44,18 @@ sub new{
     bless $self, $class;
     my $par = shift;
     my $ext = shift;
-    my $fh = &nmzlib::open_db($par, $ext);
-    $self->{'body'} = $fh if defined $fh;
+    my $fhb = &nmzlib::open_db($par, $ext);
+
+    $self->{'dir'} = $par->{'dir'};
+    $self->{'mode'} = $par->{'mode'};
+
+    $self->{'body'} = $fhb if defined $fhb;
     $self->{'ext'} = $ext;
     $ext .= ($ext =~ /^field/)? '.i': 'i';
-    $fh = &nmzlib::open_db($par, $ext);
-    $self->{'index'} = $fh if defined $fh;
+    my $fhi = &nmzlib::open_db($par, $ext);
+    $self->{'index'} = $fhi if defined $fhi;
     $self->{'offset'} = 0;
-    if ($par->{'mode'} ne 'w' and defined($self->{'index'})){
+    if (defined($self->{'index'})){
         $self->{'size'} = (-s $self->{'index'}) / length(pack('N', 0));
     }
     return $self;
@@ -93,7 +97,6 @@ sub seek{
 sub getline{
     my $self = shift;
     return undef unless defined $self->{'body'};
-#    return undef if $self->{'offset'} >= $self->{'size'};
     ++$self->{'offset'};
     return $self->{'body'}->getline;
 }
@@ -177,6 +180,11 @@ sub close{
     }
 }
 
+sub seek{
+    my $self = shift;
+    $self->seek(@_);
+}
+
 
 package nmzflist;
 sub new{
@@ -185,8 +193,12 @@ sub new{
     my $par = shift;
     bless $self, $class;
 
+    $self->{'dir'} = $par->{'dir'};
+    $self->{'mode'} = $par->{'mode'};
+
     $self->{'t'} = &nmzlib::open_db($par, 't');
-    $self->{'r'} = &nmzlib::open_db($par, 'r');
+    $self->{'r'} = &nmzlib::open_db($par, 'r') unless $par->{'mode'} =~ /s/i;
+
     $self->{'field'} = new nmzfield;
     $self->{'field'}->open_all($par);
     $self->{'offset'} = 0;
@@ -197,7 +209,7 @@ sub new{
 sub close{
     my $self = shift;
     $self->{'t'}->close;
-    $self->{'r'}->close;
+    $self->{'r'}->close if defined $self->{'r'};
     $self->{'field'}->close;
 }
 
@@ -210,23 +222,22 @@ sub read{
     $fh->read(my $pindex, length pack('N', 0));
     $list->{'t'} = ($pindex eq pack('N', -1))? -1: unpack('N', $pindex);
 
-    $fh = $self->{'r'};
-    $list->{'r'} = $fh->getline;
-    $list->{'r'} = $fh->getline while (defined($list->{'r'}) && $list->{'r'} =~ /^[\#\r\n]/);
-
-    if (defined $list->{'r'}){
-        chomp $list->{'r'};
-        my $field = $self->{'field'};
-        for my $key (keys %$field){
-            $fh = $field->{$key};
-            my $line = $fh->getline;
-            $line = '' unless defined $line;
-            chomp $line;
-            $list->{'field'}->{$key} = $line;
-        }
-        ++$self->{'offset'};
+    if (defined(my $fh = $self->{'r'})){
+        $list->{'r'} = $fh->getline;
+        $list->{'r'} = $fh->getline while (defined($list->{'r'}) && $list->{'r'} =~ /^[\#\r\n]/);
+        chomp $list->{'r'} if defined $list->{'r'};
     }
-    return $list->{'r'}
+
+    my $field = $self->{'field'};
+    for my $key (keys %$field){
+        $fh = $field->{$key};
+        my $line = $fh->getline;
+        $line = '' unless defined $line;
+        chomp $line;
+        $list->{'field'}->{$key} = $line;
+    }
+    ++$self->{'offset'};
+    return $list->{'t'}
 }
 
 sub write{
@@ -246,6 +257,27 @@ sub write{
     ++$self->{'offset'};
 }
 
+sub seek{
+    my $self = shift;
+    my $offset = @_? shift: 0;
+    my $whence = @_? shift: 0;
+
+    $self->{'t'}->seek($offset * length pack('N', 0), $whence);
+
+    my $field = $self->{'field'};
+    for my $key (keys %$field){
+        $field->{$key}->seek($offset, $whence);
+    }
+    if ($whence == 0){
+        $self->{'offset'} = $offset;
+    }elsif ($whence == 1){
+        $self->{'offset'} += $offset;
+    }elsif ($whence == 2){
+        $self->{'offset'} = $offset + $self->{'size'};
+    }
+    return $self->{'offset'};
+}
+
 
 package nmzword;
 sub new{
@@ -253,6 +285,9 @@ sub new{
     my $par = shift;
     my $self = {};
     bless $self, $class;
+
+    $self->{'dir'} = $par->{'dir'};
+    $self->{'mode'} = $par->{'mode'};
 
     $self->{'i'} = new nmzfile($par, 'i');
     $self->{'w'} = new nmzfile($par, 'w');
@@ -303,16 +338,123 @@ sub write{
     }
 }
 
+sub seek{
+    my $self = shift;
+
+    my $offset_i = $self->{'i'}->seek(@_);
+    my $offset_w = $self->{'w'}->seek(@_);
+
+    if ($offset_i == $offset_w){
+        return $self->{'offset'} = $offset_i;
+    }else{
+        return -1;
+    }
+}
+
+sub getword{
+    my $self = shift;
+    my $number = shift;
+    $self->seek($number, 0);
+    my $buf = $self->{'w'}->getline;
+    chomp $buf;
+    return $buf;
+}
+
+sub _search_{
+    my $self = shift;
+    my $keyword = shift;
+    my $l = 0;
+    my $r = $self->{'size'} - 1;
+    my $ptr = (@_ && ref($_[0]) eq 'SCALAR')? shift: undef;
+    $r = $$ptr if defined($ptr) && $$ptr >= 0;
+
+    if (defined $self->{'cache'}->{'search'}->{$keyword}){
+        $$ptr = $self->{'cache'}->{'search'}->{$keyword} if defined $ptr;
+        return $self->{'cache'}->{'search'}->{$keyword};
+    }
+
+    my $x;
+    while ($x = ($l + $r) >> 1, $l < $r){
+        my $buf = $self->getword($x);
+        if ($buf eq $keyword){
+            $$ptr = $self->{'cache'}->{'search'}->{$keyword} = $x if defined $ptr;
+            return $x;
+        }
+        if ($buf ge $keyword){
+            $r = $x;
+        }else{
+            $l = $x + 1;
+        }
+    }
+    $$ptr = $x if defined $ptr;
+    return $self->{'cache'}->{'search'}->{$keyword} = -1;
+}
+
+sub wakati{
+    my $self = shift;
+    my $keyword = shift;
+    my $opt = @_? shift: '';
+    my $buf;
+
+    my $r = -1;
+    my $x;
+    my $post = '';
+    my $pat = ($opt =~ /b/)? '.': '..';
+    while (1){
+        $x = $self->_search_($keyword, \$r);
+        last if $x >= 0 || $keyword !~ s/($pat)$//;
+        $post = $1 . $post;
+    }
+    return ($keyword, $post);
+}
+
+sub forward{
+    my $self = shift;
+    my $word = shift;
+    my $keyword = shift;
+    my $buf;
+
+    my $x = $self->_search_($keyword);
+
+    $keyword = quotemeta($keyword);
+    @$word = ();
+    while (($buf = $self->getword($x)) =~ /^$keyword/){
+        $self->{'cache'}->{'search'}->{$buf} = $x++;
+        push(@$word, $buf);
+    }
+    return @$word;
+}
+
+sub search{
+    my $self = shift;
+    my $list = shift;
+    my $keyword = shift;
+    my $word;
+
+    if ((my $x = $self->_search_($keyword)) >= 0){
+        $self->seek($x, 0);
+        return $self->read(\$word, $list);
+    }else{
+        return undef;
+    }
+}
+
 package nmzphrase;
+@nmzphrase::Seed = ();
+
 sub new{
     my $class = shift;
     my $par = shift;
     my $self = {};
     bless $self, $class;
 
+    $self->{'dir'} = $par->{'dir'};
+    $self->{'mode'} = $par->{'mode'};
+
     $self->{'p'} = new nmzfile($par, 'p');
     $self->{'offset'} = 0;
     $self->{'size'} = 0x10000;
+    $self->init_seed if $self->{'mode'} =~ /s/i;
     return $self;
 }
 
@@ -350,6 +492,40 @@ sub write{
     ++$self->{'offset'};
 }
 
+sub seek{
+    my $self = shift;
+    return $self->{'offset'} = $self->{'p'}->seek(@_);
+}
+
+sub search{
+    my $self = shift;
+    my $list = shift;
+    my $phrase = shift;
+    $phrase .= shift if @_;
+
+    my $hash = 0;
+    my $i = 0;
+    while ($phrase =~ m/([\xa1-\xfea-z\d])/g){
+        $hash ^= $nmzphrase::Seed[($i++) & 3][ord($1)];
+    }
+    $self->seek($hash & 0xffff);
+
+    %$list = ();
+    my @tmp = ();
+    if ($self->read(\@tmp)){
+        for my $x (@tmp){
+            $list->{$x} = 1;
+        }
+    }
+    return scalar @tmp;
+}
+
+
+sub init_seed{
+    return if scalar @nmzphrase::Seed;
+    require 'seed.pl';
+    @nmzphrase::Seed = &seed::init;
+}
 
 package nmzidx;
 sub new{
@@ -357,7 +533,7 @@ sub new{
     my $dir = @_? shift: '.';
     my $mode = @_? shift: 'r';
 
-    if ($mode ne 'w'){
+    if ($mode =~ /[RS]/){
         return undef if -f "$dir/NMZ.lock";
         if (defined(my $fh = new IO::File ">$dir/NMZ.lock2")){
             $fh->print($$);
@@ -375,7 +551,7 @@ sub new{
 
 sub close{
     my $self = shift;
-    unlink ($self->{'dir'} . "/NMZ.lock2") if $self->{'mode'} ne 'w';
+    unlink ($self->{'dir'} . "/NMZ.lock2") if $self->{'mode'} =~ /[RS]/;
 }
 
 sub open_field{
@@ -407,15 +583,22 @@ sub replace_db{
     my $self = shift;
     my $bak = @_? shift : 0;
     my $lock = $self->{'dir'} . "/NMZ.lock";
-    my $fh = new IO::File($lock, 'w');
-    $fh->close;
+
+    if ($self->{'mode'} =~ /W/){
+        my $fh = new IO::File($lock, 'w');
+        $fh->close;
+    }
 
     for my $path (keys %{$self->{'dblist'}}){
         $self->{'dblist'}->{$path}->close;
-        rename $path, "$path.BAK" if $bak;
+        if ($bak){
+            unlink "$path.BAK" if (-f $path) && (-f "$path.BAK");
+            rename $path, "$path.BAK";
+        }
+        unlink $path if (-f "$path.$$.tmp") && (-f $path);
         rename "$path.$$.tmp", $path;
     }
-    unlink $lock;
+    unlink $lock if $self->{'mode'} =~ /W/;
 }
 
 sub remove_tmpdb{
@@ -432,19 +615,17 @@ sub write_status{
     my $in = shift;
     my $key = $self->{'word'}->{'offset'};
     my $file = $self->{'flist'}->{'offset'};
-    if ($self->{'mode'} eq 'w'){
+    if ($self->{'mode'} =~ /w/i){
         my $fi = &nmzlib::open_db($in, 'status');
         my $fo = &nmzlib::open_db($self, 'status');
         while (defined(my $line = $fi->getline)){
-            $line = "files $file\n" if $line =~ /^files /;
-            $line = "keys $key\n" if $line =~ /^keys /;
+            $line = "file $file\n" if $line =~ /^file /;
+            $line = "key $key\n" if $line =~ /^key /;
             $fo->print($line);
         }
         my $dh = new DirHandle($in->{'dir'});
         while (defined(my $ent = $dh->read)){
-	    next if $ent =~ /\.(BAK|tmp)$/;
-            if ($ent =~ /^NMZ\.(head(?:\.[-\w\.]+)?)$/){
-		# print "// $ent\n";
+            if ($ent =~ /^NMZ\.(head\.[^\.]+)$/){
                 $fi = &nmzlib::open_db($in, $1);
                 $fo = &nmzlib::open_db($self, $1);
 
@@ -465,6 +646,7 @@ sub log_open{
     my $path = $self->{'dir'} . "/NMZ.log";
     my $fh = new IO::File ">>$path";
     if (defined $fh){
+        binmode $fh;
         $fh->print("$tag\n") if defined $tag;
         $fh->print("Date: " . localtime($^T) . "\n");
     }

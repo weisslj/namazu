@@ -12,6 +12,7 @@ PROGRAM = alltests.pl pltests.pl \
 	mknmz-14.pl mknmz-15.pl mknmz-16.pl mknmz-17.pl mknmz-18.pl \
 	gcnmz-1.pl idxdiff-1.pl idxdiff-3.pl \
 	namazu-1.pl namazu-2.pl namazu-3.pl namazu-4.pl \
+	namazu-5.pl namazu-6.pl \
 	namazu-7.pl namazu-8.pl namazu-9.pl \
 	namazu-10.pl namazu-11.pl namazu-12.pl \
 	namazu-cgi-1.pl namazu-cgi-2.pl \
@@ -29,6 +30,7 @@ EXTRA_DIST = README-ja.txt pltests.pl.in \
 	mknmz-16.pl.in mknmz-17.pl.in mknmz-18.pl.in \
 	gcnmz-1.pl.in idxdiff-1.pl.in idxdiff-3.pl.in \
 	namazu-1.pl.in namazu-2.pl.in namazu-3.pl.in namazu-4.pl.in \
+	namazu-5.pl.in namazu-6.pl.in \
 	namazu-7.pl.in namazu-8.pl.in namazu-9.pl.in \
 	namazu-10.pl.in namazu-11.pl.in namazu-12.pl.in \
 	namazu-cgi-1.pl.in namazu-cgi-2.pl.in \
@@ -170,6 +172,16 @@ namazu-3.pl: namazu-3.pl.in pltests.pl.in Makefile
 	chmod +x $@
 
 namazu-4.pl: namazu-4.pl.in pltests.pl.in Makefile
+	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	mv $@.tmp $@
+	chmod +x $@
+
+namazu-5.pl: namazu-5.pl.in pltests.pl.in Makefile
+	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	mv $@.tmp $@
+	chmod +x $@
+
+namazu-6.pl: namazu-6.pl.in pltests.pl.in Makefile
 	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
 	mv $@.tmp $@
 	chmod +x $@

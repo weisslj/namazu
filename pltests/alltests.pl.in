@@ -1,6 +1,6 @@
 #!%PERL% -w
 #
-# $Id: alltests.pl.in,v 1.1 2004-09-30 12:34:54 opengl2772 Exp $
+# $Id: alltests.pl.in,v 1.2 2004-10-09 13:34:07 usu Exp $
 # Copyright (C) 2004 Tadamasa Teranishi
 #               2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -37,6 +37,7 @@ my @TESTS = (
     'mknmz-16.pl', 'mknmz-17.pl', 'mknmz-18.pl',
     'idxdiff-1.pl', 'idxdiff-3.pl',
     'namazu-1.pl', 'namazu-2.pl', 'namazu-3.pl', 'namazu-4.pl',
+    'namazu-5.pl', 'namazu-6.pl', 
     'namazu-7.pl', 'namazu-8.pl', 'namazu-9.pl', 
     'namazu-10.pl', 'namazu-11.pl', 'namazu-12.pl',
     'namazu-cgi-1.pl', 'namazu-cgi-2.pl', 

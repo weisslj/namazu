@@ -3,7 +3,7 @@
 # nmzidx.pl - subroutines for accessing Namazu index files (NMZ.*)
 #         by furukawa@tcp-ip.or.jp
 #
-# $Id: nmzidx.pl,v 1.17 2004-01-30 14:22:16 opengl2772 Exp $
+# $Id: nmzidx.pl,v 1.18 2004-07-22 18:15:54 opengl2772 Exp $
 #
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -643,10 +643,12 @@ sub write_status{
     my $in = shift;
 
     my $key = undef;
-    $key = comma($self->{'word'}->{'size'}) if defined $self->{'word'};
+    $key = $self->{'word'}->{'size'} if defined $self->{'word'};
+    my $key_comma = comma($key);
 
     my $file = undef;
-    $file = comma($self->{'flist'}->{'valid'}) if defined $self->{'flist'};
+    $file = $self->{'flist'}->{'valid'} if defined $self->{'flist'};
+    my $file_comma = comma($file);
 
     if ($self->{'mode'} =~ /w/i){
         my $fi = &nmzlib::open_db($in, 'status');
@@ -666,8 +668,8 @@ sub write_status{
                 $fo = &nmzlib::open_db($self, $1);
 
                 while (defined(my $line = $fi->getline)){
-                    $line =~ s/(\<\!-- FILE --\>).*?\1/$1 $file $1/ if defined $file;
-                    $line =~ s/(\<\!-- KEY --\>).*?\1/$1 $key $1/ if defined $key;
+                    $line =~ s/(\<\!-- FILE --\>).*?\1/$1 $file_comma $1/ if defined $file_comma;
+                    $line =~ s/(\<\!-- KEY --\>).*?\1/$1 $key_comma $1/ if defined $key_comma;
                     $fo->print($line);
                 }
                 $fi->close;

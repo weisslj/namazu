@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: wakati.pl,v 1.11 2003-07-13 10:18:02 takesako Exp $
+# $Id: wakati.pl,v 1.12 2003-07-15 04:48:15 takesako Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -73,7 +73,7 @@ sub wakatize_japanese_sub ($) {
 	} elsif ($module eq "chasen") {
 	    $str = Text::ChaSen::sparse_tostr_long($$content);
 	} elsif ($module eq "mecab") {
-	    our $t;
+	    use vars qw($t);
 	    if (!defined $t) {
 		require MeCab;
 		import MeCab;

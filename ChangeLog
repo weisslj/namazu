@@ -1,3 +1,10 @@
+1999-11-23  Ryuji Abe  <raeva@t3.rim.or.jp>
+
+	* man/Makefile.am (EXTRA_DIST): Man pages are now available.
+	
+	* nmz/util.c (is_little_endian): Removed.
+	(freadx): Filled #ifndef WORDS_BIGENDIAN...#endif. 
+
 1999-11-22  Ken-ichi Hirose  <kenzo-@tama.or.jp>
 
 	* src/mknmz.pl.in: Add ole option and load_olemodule function.

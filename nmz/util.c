@@ -30,7 +30,6 @@
  */
 
 static void reverse_byte_order (int*, int, int);
-static int is_little_endian(void);
 
 /* reverse byte order */
 static void reverse_byte_order (int *p, int n, int size)
@@ -46,27 +45,6 @@ static void reverse_byte_order (int *p, int n, int size)
             *(c + size - 1 - j) = tmp;
         }
     }
-}
-
-static int is_little_endian(void)
-{
-#ifdef WORDS_BIGENDIAN
-    return 0;     /* big-endian */
-#else
-    return 1;     /* little-endian */
-#endif
-
-/*
-    int  n = 1;
-    char *c;
-    
-    c = (char *)&n;
-    if (*c == 1) {
-	return 1;
-    } else {
-	return 0;
-    }
-*/
 }
 
 /*
@@ -210,9 +188,10 @@ size_t freadx(void *ptr, size_t size, size_t nmemb, FILE *stream)
     size_t value;
 
     value = fread(ptr, size, nmemb, stream);
-    if (is_little_endian()) {
-        reverse_byte_order(ptr, nmemb, size);
-    }
+/* FIXME: Please tell me if you know more better way. */
+#ifndef WORDS_BIGENDIAN
+    reverse_byte_order(ptr, nmemb, size);
+#endif
     return value;
 }
 

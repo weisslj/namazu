@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.13 1999-06-12 14:37:51 satoru Exp $
+# $Id: mknmz.pl.in,v 1.14 1999-06-16 07:14:24 knok Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -675,6 +675,7 @@ sub parse_options ()
 	       '0|help'              => \$opt_help,
 	       'a|all'               => \$opt_all,
 	       'k|use-kakasi'        => \$opt_kakasi,
+	       'c|use-chasen'        => \$opt_chasen,
 	       'm|use-chasen-morph'  => \$opt_chasen_morph,
 	       'r|man'               => \$opt_man,
 	       'I|include=s'         => \$opt_include,

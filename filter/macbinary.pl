@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: macbinary.pl,v 1.4 2004-01-30 14:22:14 opengl2772 Exp $
+# $Id: macbinary.pl,v 1.5 2004-09-18 12:30:41 usu Exp $
 # Copyright (C) 2003 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -25,6 +25,7 @@
 package macbinary;
 use strict;
 require 'util.pl';
+require 'document.pl';
 
 sub mediatype () {
     return ('application/macbinary');
@@ -107,9 +108,19 @@ sub filter ($$$$$) {
     
     my $dummy_shelterfilename="";
     my $err = undef;
-    my ($kanji, $mtype) = mknmz::apply_filter($orig_cfile, \$datafork,
-                        $weighted_str, $headings, $fields, 
-                        $dummy_shelterfilename, $mmtype);
+    my $mtype;
+    {
+	my $uri;
+	my $Document = undef;
+	$Document = mknmz::document->new();
+	$Document->init_doc($uri, $$orig_cfile, \$datafork, $mmtype);
+	$$contref = ${$Document->get_filtered_contentref()};
+	$mtype = $Document->get_mimetype();
+	$$weighted_str = $Document->get_weighted_str();
+	$$headings = $Document->get_headings();
+	%$fields = $Document->get_fields();
+    }
+
     if ($mtype =~ /; x-system=unsupported$/){
         $$contref = "";
         $err = "filter/macbinary.pl gets error from other filter";
@@ -121,7 +132,6 @@ sub filter ($$$$$) {
         util::dprint($err);
         $err = $1;
     }else{
-        $$contref = $datafork;
         gfilter::show_filter_debug_info($contref, $weighted_str,
                         $fields, $headings);
     }

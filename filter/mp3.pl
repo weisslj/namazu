@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mp3.pl,v 1.6 2004-05-08 13:19:48 usu Exp $
+# $Id: mp3.pl,v 1.7 2004-09-18 12:30:41 usu Exp $
 # Copyright (C) 2002 Luc@2113.ch ,
 #               2002 2113.ch ,  
 #               2003-2004 Namazu Project All rights reserved ,
@@ -132,6 +132,7 @@ sub filter($$$$$) {
     gfilter::show_filter_debug_info($contref, $weighted_str,
 			   $fields, $headings);
 
+    unlink $tmpfile;
     return undef;
 }
 

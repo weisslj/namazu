@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: zip.pl,v 1.10 2004-05-08 13:09:46 usu Exp $
+# $Id: zip.pl,v 1.11 2004-09-18 12:30:41 usu Exp $
 #  zip filter for namazu
 #  Copyright (C) 2004 MATSUMURA Namihiko <po-jp@counterghost.net>
 #                2004 Yukio USUDA <usu@namazu.org>
@@ -231,9 +231,18 @@ sub nesting_filter ($$$){
     my %fields;
     my $mmtype = undef;
 
-    my ($kanji, $mtype) = mknmz::apply_filter(\$filename, $contref, 
-			$weighted_str, \$headings, \%fields, 
-			$dummy_shelterfname, $mmtype);
+    my $mtype;
+    {
+	my $uri;
+	my $Document = undef;
+	$Document = mknmz::document->new();
+	$Document->init_doc($uri, $filename, $contref, $mmtype);
+	$$contref = ${$Document->get_filtered_contentref()};
+	$mtype = $Document->get_mimetype();
+	$$weighted_str = $Document->get_weighted_str();
+	$headings = $Document->get_headings();
+	%fields = $Document->get_fields();
+    }
 
     if ($mtype =~ /; x-system=unsupported$/){
 	$$contref = "";

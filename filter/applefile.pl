@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: applefile.pl,v 1.3 2004-02-22 10:59:00 opengl2772 Exp $
+# $Id: applefile.pl,v 1.4 2004-09-18 12:30:41 usu Exp $
 # Copyright (C) 2004 Tadamasa Teranishi All rights reserved ,
 # Copyright (C) 2004 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -118,9 +118,18 @@ sub filter ($$$$$) {
     
     my $dummy_shelterfilename = "";
     my $err = undef;
-    my ($kanji, $mtype) = mknmz::apply_filter($orig_cfile, \$datafork,
-                        $weighted_str, $headings, $fields, 
-                        $dummy_shelterfilename, $mmtype);
+    my $mtype;
+    {
+	my $uri;
+	my $Document = undef;
+	$Document = mknmz::document->new();
+	$Document->init_doc($uri, $$orig_cfile, \$datafork, $mmtype);
+	$$contref = ${$Document->get_filtered_contentref()};
+	$mtype = $Document->get_mimetype();
+	$$weighted_str = $Document->get_weighted_str();
+	$$headings = $Document->get_headings();
+	%$fields = $Document->get_fields();
+    }
     if ($mtype =~ /; x-system=unsupported$/) {
         $$contref = "";
         $err = "filter/macbinary.pl gets error from other filter";
@@ -132,7 +141,6 @@ sub filter ($$$$$) {
         util::dprint($err);
         $err = $1;
     } else {
-        $$contref = $datafork;
         gfilter::show_filter_debug_info($contref, $weighted_str,
                         $fields, $headings);
     }

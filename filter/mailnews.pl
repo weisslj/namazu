@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mailnews.pl,v 1.33 2004-07-22 09:49:59 opengl2772 Exp $
+# $Id: mailnews.pl,v 1.34 2004-09-18 12:30:41 usu Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -411,9 +411,18 @@ sub nesting_filter ($$$$){
 	$mmtype = undef;
     #}
 
-    my ($kanji, $mtype) = mknmz::apply_filter(\$filename, $bodyref, 
-			$weighted_str, \$headings, \%fields, 
-			$dummy_shelterfname, $mmtype);
+    my $mtype;
+    {
+	my $uri;
+	my $Document = undef;
+	$Document = mknmz::document->new();
+	$Document->init_doc($uri, $filename, $bodyref, $mmtype);
+	$$bodyref = ${$Document->get_filtered_contentref()};
+	$mtype = $Document->get_mimetype();
+	$$weighted_str = $Document->get_weighted_str();
+	$$headref = $Document->get_headings();
+	%fields = $Document->get_fields();
+    }
     if ($mtype =~ /; x-system=unsupported$/){
 	$$bodyref = "";
         $err = $mtype;

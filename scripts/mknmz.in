@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.142 2004-07-22 19:08:56 opengl2772 Exp $
+# $Id: mknmz.in,v 1.143 2004-09-18 12:30:41 usu Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -48,7 +48,6 @@ my $CodingSystem = "euc";
 my $PKGDATADIR    = $ENV{'pkgdatadir'} || "@pkgdatadir@";
 my $CONFDIR       = "@CONFDIR@";     # directory where mknmzrc are in.
 my $LIBDIR        = $PKGDATADIR . "/pl";      # directory where library etc. are in.
-my $FILTERDIR     = $PKGDATADIR . "/filter";   # directory where filters are in.
 my $TEMPLATEDIR   = $PKGDATADIR . "/template"; # directory where templates are in.
 my $SCHEMEDIR   = $PKGDATADIR . "/scheme"; # directory where scheme handlers are in.
 my $ARCHIVEDIR   = $PKGDATADIR . "/archive"; # directory where archive handlers are in.
@@ -67,8 +66,8 @@ my $MediaType  = undef;
 my $ReplaceCode  = undef;  # perl code for transforming URI
 my @Seed = ();
 my @LoadedRcfiles = ();
-my $Magic = new File::MMagic;
 my $Indexer = undef;
+my $Document = undef;
 
 my $ReceiveTERM = 0;
 
@@ -288,8 +287,6 @@ sub load_rcfile ($) {
     # Dirty workaround.
     $LIBDIR = $conf::LIBDIR
 	if (defined $conf::LIBDIR && -d $conf::LIBDIR);
-    $FILTERDIR = $conf::FILTERDIR
-	if (defined $conf::FILTERDIR && -d $conf::FILTERDIR);
     $TEMPLATEDIR = $conf::TEMPLATEDIR
 	if (defined $conf::TEMPLATEDIR && -d $conf::TEMPLATEDIR);
 }
@@ -343,9 +340,6 @@ sub init () {
 	if ($LIBDIR !~ /^[A-Z]:|^\\\\/i && $0 =~ m#^([A-Z]:)(/|\\)#i) {
 	    $LIBDIR = $1 . $LIBDIR ;
 	}
-	if ($FILTERDIR !~ /^[A-Z]:|^\\\\/i && $0 =~ m#^([A-Z]:)(/|\\)#i) {
-	    $FILTERDIR = $1 . $FILTERDIR ;
-	}
 	if ($TEMPLATEDIR !~ /^[A-Z]:|^\\\\/i && $0 =~ m#^([A-Z]:)(/|\\)#i) {
 	    $TEMPLATEDIR = $1 . $TEMPLATEDIR ;
 	}
@@ -385,72 +379,14 @@ sub load_modules () {
     require "seed.pl" || die "unable to require \"seed.pl\"\n";
     require "gfilter.pl" || die "unable to require \"gfilter.pl\"\n";
     require "indexer.pl" || die "unable to require \"indexer.pl\"\n";
+    require "document.pl" || die "unable to require \"document.pl\"\n";
 
     $Indexer = new mknmz::indexer;
 
+    $Document = mknmz::document->new();
+    # $Document->init(); # must initialize in parse_option();
+
     @Seed = seed::init();
-}
-
-sub load_filtermodules () {
-    unshift @INC, $FILTERDIR;
-
-    # Check filter modules
-    my @filters = ();
-    @filters = glob "$FILTERDIR/*.pl";
-
-    #
-    # Windows modules must be check only when Active Perl environment.
-    # Because OLE filters use Win32::OLE module.
-    #
-    if ($SYSTEM eq "MSWin32"){
-	@filters = (@filters, glob "$FILTERDIR/win32/*.pl");
-	unshift @INC, "$FILTERDIR/win32";
-    }
-    load_filters(@filters);
-}
-
-sub load_filters (@) {
-    my @filters = @_;
- 
-    my $mediatype;
-    foreach $mediatype (keys %conf::USE_FILTERS){
-        my $filter;
-        foreach $filter (@{$conf::USE_FILTERS{$mediatype}}){
-	    $filter = "$FILTERDIR/$filter";
-	    my $exists = grep {m!$filter!} @filters;
-	    next if ($exists == 0);
-            $filter =~ m!([-\w]+)\.pl$!;
-            my $module = $1;
-            next if (defined $var::Supported{$mediatype} &&
-                     $var::Supported{$mediatype} eq 'yes');
-            require "$module.pl" || die "unable to require \"$module.pl\"\n";;
-            my (@mtypes, $status, $recursive, $pre_codeconv, $post_codeconv);
-
-            eval "\@mtypes =    ${module}::mediatype();";
-            die $@ if $@;  # eval error
-            eval "\$status =    ${module}::status();";
-            die $@ if $@;
-            eval "\$recursive = ${module}::recursive();";
-            die $@ if $@;
-            eval "\$pre_codeconv  = ${module}::pre_codeconv();";
-            die $@ if $@;
-            eval "\$post_codeconv  = ${module}::post_codeconv();";
-            die $@ if $@;
-            eval "${module}::add_magic(\$Magic);";
-            die $@ if $@;
-
-	    $exists = grep {/$mediatype/} @mtypes;
-	    next if ($exists == 0);
-
-	    next if (defined $var::Supported{$mediatype} &&
-		    $var::Supported{$mediatype} eq 'yes');
-	    $var::Supported{$mediatype} = $status;
-	    $var::REQUIRE_ACTIONS{$mediatype} = $module;
-	    $var::RECURSIVE_ACTIONS{$mediatype} = $recursive;
-	    $var::REQUIRE_PRE_CODECONV{$mediatype} = $pre_codeconv;
-	    $var::REQUIRE_POST_CODECONV{$mediatype} = $post_codeconv;
-	}
-    }
 }
 
 sub load_schememodules() {
@@ -528,7 +464,7 @@ sub namazu_core ($$$$$$$$$$) {
 	$uri, $part_id, $part_num) = @_;
 
     my $headings = "";
-    my $content = "";
+    my $contref;
     my $weighted_str = "";
     my %fields;
     my $msg_prefix;
@@ -542,26 +478,38 @@ sub namazu_core ($$$$$$$$$$) {
     unless ($uri) {
 	$uri = generate_uri($cfile);  # Make a URI from a file name.
     }
-    my $scheme;
     my $mtime;
     my $mmtype = '';
-    my $contref;
     ($contref, $mtime, $mmtype) = fetchscheme($uri);
-    if (defined $contref) {
-	$content = $$contref;
-	undef $contref;
+    unless (defined $contref) {
+	$$contref = "";
     }
-    $mtime = (stat($cfile))[9] unless util::isurl($cfile);
-    $fields{'mtime'} = $mtime;
-    my ($cfile_size, $text_size, $kanji, $mtype) = 
-	load_document(\$cfile, \$content, \$weighted_str,
-		      \$headings, \%fields, $mmtype);
+
+    my ($cfile_size, $text_size, $kanji, $mtype);
+    unless (util::isurl($cfile) || (-f $cfile && -r $cfile)){
+	($cfile_size, $text_size, $kanji, $mtype) = (0, 0, 0, 0);
+    } else {
+	$Document->init_doc($uri, $cfile, $contref, $mtype);
+	$contref= $Document->get_filtered_contentref();
+
+	$weighted_str = $Document->get_weighted_str();
+	$headings = $Document->get_headings();
+	%fields = $Document->get_fields();
+
+	$cfile_size = $Document->get_file_size();
+	$fields{'size'} = $cfile_size;
+	$fields{'mtime'} = $Document->get_mtime();
+
+	$kanji = $Document->is_contain_kanji();
+	$text_size = $Document->get_text_size();
+	$mtype = $Document->get_mimetype();
+    }
 
     util::dprint(_("after load_document: ")."$uri: $cfile_size, $text_size, $kanji, $mtype\n");
 
-    # Check if the file is acceptable.
-    my $err = check_file($cfile, $cfile_size, $text_size, $mtype, $uri);
-    if (defined $err) {
+    my $err = undef;
+    if ($$contref eq "") {
+	$err = $Document->get_errmsg();
 	if (($SYSTEM eq "MSWin32") || ($SYSTEM eq "os2")) {
 	    my $uri2 = codeconv::eucjp_to_shiftjis($uri);
 	    print $msg_prefix . "$uri2 $err\n";
@@ -587,21 +535,21 @@ sub namazu_core ($$$$$$$$$$) {
     $fields{'filename'} = $filename;
 
     complete_field_info(\%fields, $cfile, $uri, 
-			\$headings, \$content, \$weighted_str);
+			\$headings, $contref, \$weighted_str);
     clean_field_index(\%fields);
     put_field_index(\%fields, $field_indices);
 
     put_dateindex($cfile, $fields{'mtime'});
-    $content .= " $filename ";
-    $content .= $weighted_str;   # add weights
-    $Indexer->init(\$content, $conf::WORD_LENG_MAX, $var::Opt{'nosymbol'});
+    $$contref .= " $filename ";
+    $$contref .= $weighted_str;   # add weights
+    $Indexer->init($contref, $conf::WORD_LENG_MAX, $var::Opt{'nosymbol'});
     $Indexer->noedgesymbol() if ($var::Opt{'noedgesymbol'});
-    $content =~ tr/\x00-\x08\x0b-\x0c\x0e-\x1a/ /; # Remove control char.
-    do_wakatigaki(\$content, $kanji);
-    $content =~ tr/A-Z/a-z/; # Normalize
+    $$contref =~ tr/\x00-\x08\x0b-\x0c\x0e-\x1a/ /; # Remove control char.
+    do_wakatigaki($contref, $kanji);
+    $$contref =~ tr/A-Z/a-z/; # Normalize
     $Indexer->count_words();
     add_key($Indexer, $docid_count, $docid_base);
-    make_phrase_hash($docid_count, $docid_base, \$content);
+    make_phrase_hash($docid_count, $docid_base, $contref);
 
     # assertion
     util::assert($cfile_size != 0, 
@@ -860,148 +808,6 @@ sub put_dateindex ($) {
     print $fh_dataindex pack("N", $mtime);
 }
 
-
-# load a document file
-sub load_document ($$$$\%$) {
-    my ($orig_cfile, $contref, $weighted_str, $headings, $fields, $mmtype)
-      = @_;
-    my $cfile = $$orig_cfile;
-
-    return (0, 0, 0, 0) unless (util::isurl($cfile) || (-f $cfile && -r $cfile));
-    my $file_size;
-    my $shelter_cfile = "";
-
-    if ($$contref eq "") {
-    # for handling a filename which contains Shift_JIS code
-	if ($SYSTEM eq "MSWin32" 
-	    && $cfile =~ /[\x81-\x9f\xe0-\xef][\x40-\x7e\x80-\xfc]|[\x20\xa1-\xdf]/) 
-	{
-	    $shelter_cfile = $cfile;
-	    $cfile = util::tmpnam("NMZ.win32");
-	    unlink $cfile if (-e $cfile);
-	    copy($shelter_cfile, $cfile);
-	}
-
-	$file_size = util::filesize($cfile); # not only file in feature.
-	if ($file_size > $conf::FILE_SIZE_MAX) {
-	    return ($file_size, $file_size, 0, 'x-system/x-error');
-	}
-
-	$$contref = util::readfile($cfile);
-    } else {
-	$file_size = length($$contref);
-	$fields->{'size'} = $file_size;
-    }
-
-    my ($kanji, $mtype) = apply_filter($orig_cfile, $contref, $weighted_str, $headings, $fields, $shelter_cfile, $mmtype);
-
-    if ($SYSTEM eq "MSWin32" && $shelter_cfile ne "") {
-	unlink $cfile;
-	$cfile = $shelter_cfile;
-    }
-
-    # Measure the text size at this time.
-    my $text_size = length($$contref) + length($$weighted_str); 
-
-    return ($file_size, $text_size, $kanji, $mtype);
-}
-
-sub apply_filter($$$$$$$) {
-    my ($orig_cfile, $contref, $weighted_str, $headings, $fields, $shelter_cfile, $mmtype)
-      = @_;
-    my $cfile = $shelter_cfile ne "" ? $shelter_cfile : $$orig_cfile;
-
-    # Filtering process.
-    my $mtype;
-    my $called_dt = 0;
-    while (1) {
-	if (defined $MediaType) {
-	    $mtype = $MediaType;
-	} elsif (defined $mmtype) {
-	    $mtype = $mmtype;
-	} else {
-	    my $mtype_n = $Magic->checktype_byfilename($cfile);
-	    my $mtype_c = $Magic->checktype_data($$contref);
-	    my $mtype_m;
-	    $mtype_m = $Magic->checktype_magic($$contref) 
-	      if ((! defined $mtype_c) ||
-		  $mtype_c =~ 
-		  /^(text\/html|text\/plain|application\/octet-stream)$/);
-	    $mtype_c = $mtype_m 
-		if (defined $mtype_m && 
-		    $mtype_m !~ 
-		    /^(text\/html|text\/plain|application\/octet-stream)$/);
-	    $mtype_c = 'text/plain' unless defined $mtype_c;
-	    if ($called_dt) {
-		$mtype = $mtype_c;
-	    } else {
-		$mtype = decide_type($mtype_n, $mtype_c);
-		$called_dt = 1;
-	    }
-	}
-	util::dprint(_("Detected type: ")."$mtype\n");
-
-	# Pre code conversion.
-	if ($var::REQUIRE_PRE_CODECONV{$mtype}) {
-	    util::dprint("pre_codeconv\n");
-	    codeconv_document($contref);
-	}
-
-	if (! $var::Supported{$mtype} || 
-	    $var::Supported{$mtype} ne 'yes') 
-	{
-	    util::vprint(_("Unsupported media type ")."$mtype\n");
-	    return (0, "$mtype; x-system=unsupported");
-	}
-
-	if ($var::REQUIRE_ACTIONS{$mtype}) {
-	    util::vprint(_("Using ")."$var::REQUIRE_ACTIONS{$mtype}.pl\n");
-	    require $var::REQUIRE_ACTIONS{$mtype}.'.pl'
-	        || die _("unable to require ") . 
-		    "\"$var::REQUIRE_ACTIONS{$mtype}.pl\"\n";
-	    my $err = undef;
-	    {
-		local $SIG{'PIPE'} = \&trapintr;
-		eval '$err = ' . $var::REQUIRE_ACTIONS{$mtype} .
-		  '::filter($orig_cfile, $contref, $weighted_str, $headings, $fields);';
-	    }
-	    if ($err) {
-		if ($err =~ m/; x-system=unsupported$/) {
-		    return (0, $err);
-		}
-
-		return (0, "$mtype; x-error=$err");
-	    }
-
-	    if ($@) {
-		util::vprint(_("Failed to call ")."$var::REQUIRE_ACTIONS{$mtype}\n$@\n");
-		return (0, "$mtype; x-error=$@");
-	    }
-
-	    # Post code conversion.
-	    if ($var::REQUIRE_POST_CODECONV{$mtype}) {
-	        util::dprint("post_codeconv\n");
-		codeconv_document($contref);
-	    }
-
-	    next if ($var::RECURSIVE_ACTIONS{$mtype});
-	}
-	last;
-    }
-
-    my $kanji = $$contref =~ tr/\xa1-\xfe/\xa1-\xfe/;  # Kanji contained?
-    $kanji += $$weighted_str =~ tr/\xa1-\xfe/\xa1-\xfe/;
-
-    return ($kanji, $mtype);
-}
-
-sub codeconv_document ($) {
-    my ($textref) = @_;
-    codeconv::toeuc($textref);
-    $$textref =~ s/\r\n/\n/g;
-    $$textref =~ s/\r/\n/g;
-}
-
 sub prep () {
     my $docid_base = 0;
     my $output_dir = shift @_ ;
@@ -1248,6 +1054,8 @@ sub parse_options
     if ($opt_config) {
 	load_rcfile($ConfigFile = $opt_config);
     }
+    $Document->init();
+
     foreach my $key (keys %opt_conf){
 	if (defined ($opt_conf{$key})) { 
 	     ${*{$conf::{$key}}{SCALAR}} = $opt_conf{$key};
@@ -1258,7 +1066,6 @@ sub parse_options
 	$util::LANG = $index_lang;
       util::dprint("Override indexing language: $util::LANG\n");
     }
-    load_filtermodules(); # to make effect $opt_config, $index_lang.
     load_schememodules();
     postload_modules();
 
@@ -1379,11 +1186,13 @@ sub parse_options
 }
 
 sub show_config () {
+    my $filter = $Document->get_filter();
+
     print _("Loaded rcfile: ") . "@LoadedRcfiles\n" if @LoadedRcfiles;
     print _("System: ") . "$SYSTEM\n" if $SYSTEM;
     print _("Namazu: ") . "$var::VERSION\n" if $var::VERSION;
     print _("Perl: ") . "$]\n" if $];   # '$]' has a perl version
-    print _("File-MMagic: ") . "$File::MMagic::VERSION\n" if $File::MMagic::VERSION;
+    print _("File-MMagic: ") . $Document->get_info('mmagic_ver') . "\n";
     print _("NKF: ") . "$conf::NKF\n" if $conf::NKF;
     print _("KAKASI: ") . "$conf::KAKASI\n" if $conf::KAKASI;
     print _("ChaSen: ") . "$conf::CHASEN\n" if $conf::CHASEN;
@@ -1393,25 +1202,10 @@ sub show_config () {
     print _("Coding System: ") . "$CodingSystem\n";
     print _("CONFDIR: ") . "$CONFDIR\n";
     print _("LIBDIR: ") . "$LIBDIR\n";
-    print _("FILTERDIR: ") . "$FILTERDIR\n";
+    print _("FILTERDIR: ") . $filter->get_info('filter_dir') ."\n";
     print _("TEMPLATEDIR: ") . "$TEMPLATEDIR\n";
 
-    my @all_types =     keys %var::Supported;
-    my @supported = sort grep { $var::Supported{$_} eq "yes" } @all_types;
-
-    my $num_supported = @supported;
-    my $num_unsupported = @all_types - @supported;
-    print _("Supported media types:   ") . "($num_supported)\n";
-    print _("Unsupported media types: ") . "($num_unsupported) " . _("marked with minus (-) probably missing application in your \$path.\n");
-    for my $mtype (sort keys %var::Supported) {
-	my $yn = $var::Supported{$mtype};
-	if ($yn eq 'yes') { $yn = ' ' } else {$yn = '-'};
-	print "$yn $mtype";
-        if ($var::REQUIRE_ACTIONS{$mtype}){
-            print ": $var::REQUIRE_ACTIONS{$mtype}.pl";
-        }
-        print "\n";
-    }
+    print $filter->get_info('supported_list') ."\n";
 }
 
 sub load_target_list ($) {
@@ -1662,39 +1456,6 @@ sub show_mini_usage () {
 sub show_version () {
     print $usage::VERSION_INFO;
 }
-
-#
-# check the file. No $msg is good.
-#
-sub check_file ($$$$$) {
-    my ($cfile, $cfile_size, $text_size, $mtype, $uri) = @_;
-
-    my $msg = undef;
-    if ($mtype =~ /; x-system=unsupported$/) {
-	$mtype =~ s/; x-system=unsupported$//;
-	$msg = _("Unsupported media type ")."($mtype)"._(" skipped.");
-    } elsif ($mtype =~ /; x-error=.*$/) {
-	$mtype =~ s/^.*; x-error=(.*)$/$1/;
-	$msg = $mtype;
-    } elsif ($mtype =~ /^x-system/) {
-	$msg = _("system error occurred! ")."($mtype)"._(" skipped.");
-    } elsif (! util::isurl($cfile) && ! -e $cfile) {
-	$msg = _("does NOT EXIST! skipped.");
-    } elsif (! util::isurl($cfile) && ! -r $cfile) {
-	$msg = _("is NOT READABLE! skipped.");
-    } elsif ($text_size == 0 || $cfile_size == 0) {
-	$msg = _("is 0 size! skipped.");
-    } elsif ($mtype =~ /^application\/octet-stream/) {
-	$msg = _("may be a BINARY file! skipped.");
-    } elsif ($cfile_size > $conf::FILE_SIZE_MAX) {
-	$msg = _("is larger than your setup before filtered, skipped: ") . 'conf::FILE_SIZE_MAX (' . $conf::FILE_SIZE_MAX . ') < '. $cfile_size ;
-    } elsif ($text_size > $conf::TEXT_SIZE_MAX) {
-	$msg = _("is larger than your setup after filtered, skipped: ") . 'conf::TEXT_SIZE_MAX (' . $conf::TEXT_SIZE_MAX . ') < '. $text_size ;
-    } 
-
-    return $msg;
-}
-
 
 #
 # Write NMZ.version file.
@@ -2562,39 +2323,10 @@ sub write_index_sub () {
 }
 
 #
-# Decide the media type. 
-# FIXME: Very ad hoc. It's just a compromise. -- satoru
-#
-sub decide_type ($$) {
-    my ($name, $cont) = @_;
-    return $name if (!defined $cont || $name eq $cont);
-
-    util::dprint("decide_type: name: $name, cont: $cont\n");
-    if ($cont =~ m!^text/plain! && $name =~ m!^text/plain!) {
-	return $name;
-    } elsif ($cont =~ m!^application/octet-stream! &&
-             $name !~ m!^text/!) {
-	return $name;
-    } elsif ($cont =~ m!^application/(excel|powerpoint|msword)! &&
-	     $name !~ m!^application/octet-stream!)  {
-	# FIXME: Currently File::MMagic 1.02's checktype_data() 
-	# is unreliable for them.
-	return $name;
-    } elsif ($cont =~ m!^application/x-zip! &&
-             $name =~ m!^application/!) {
-        # zip format is used other applications e.g. OpenOffice.
-        # It is necessary to add to check extention.
-        return $name;
-    }
-
-    return $cont;
-}
-
-#
 # read file with scheme handler
 #
 
-sub fetchscheme($) {
+sub fetchscheme ($) {
     my ($uri) = @_;
     my ($content, $mtime, $mmtype);
     my $flag = 0;
@@ -2607,7 +2339,8 @@ sub fetchscheme($) {
 		die $@ if $@;
 		eval "\$mtime = Namazu::Scheme::${scheme}::mtime(\$uri);";
 		die $@ if $@;
-		$mmtype = $Magic->checktype_data($content);
+		my $mmagic = $Document->get_mmagic();
+		$mmtype = $mmagic->checktype_data($content);
 		$flag = 1;
 	    }
 	}
@@ -2650,17 +2383,15 @@ sub trapintr {
 # For avoiding "used only once: possible typo at ..." warnings.
 #
 muda($conf::ON_MEMORY_MAX,
-     $conf::WORD_LENG_MAX, $conf::TEXT_SIZE_MAX,
+     $conf::WORD_LENG_MAX,
      $conf::DENY_FILE, $var::INTSIZE,
      $conf::CHASEN_NOUN, $conf::CHASEN,
      $conf::KAKASI, $var::Opt{'okurigana'},
      $var::Opt{'hiragana'}, $conf::DIRECTORY_INDEX,
      $usage::USAGE, $var::Opt{'noheadabst'}, $usage::VERSION_INFO,
      $var::Opt{'noencodeurl'}, $conf::HTML_SUFFIX,
-     $var::RECURSIVE_ACTIONS, $conf::META_TAGS, $var::USE_NKF_MODULE,
+     $conf::META_TAGS, $var::USE_NKF_MODULE,
      $conf::ADDRESS, $var::MAILING_ADDRESS,
-     $conf::FILE_SIZE_MAX,
-     $conf::USE_FILTERS,
      $var::SupportedScheme, $var::RECURSIVE_SCHEME,
      $var::SupportedArchive, $var::RECURSIVE_ARCHIVE,
      );

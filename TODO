@@ -3,17 +3,12 @@
 
 Near future
 
-	* Add the alias feature for indices
-	* Add long name command-line options to mknmz and namazu
-	* Apply mknmz's -I option usefuly
 	* Make filters for hypermail, fml and etc.
 	* Make a tool to merge index
-	* Add a feature to exclude files restricted by `.htaccess'
 
 	
 Far future
 
-	* Change a format of NMZ.f. (do not save as HTML)
 	* Add a feature to display suggestion in the search result by
 	  analyzing statistics of NMZ.slog
 	* Support XML and Unicode
@@ -23,9 +18,7 @@ Far future
 	
 I want help!
 
-	* Write manpages
-	* Make document filters for TeX, PS, PDF, WORD and etc
-	* Make Binary package for several PC-UNIXs
+	* Make document filters for TeX, PS and etc.
 	* Port to Macitosh and other non-UNIX systems
 	
 	
@@ -37,6 +30,6 @@ It is challenging
 It is too challenging ;-)
 
 	* Implement the distributed network search engine
-	* Multilingualization/Internationalization
+	* Multilingualization
 
 	

@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.43 2000-01-06 00:33:02 satoru Exp $
+ * $Id: cgi.c,v 1.44 2000-01-06 03:44:32 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -520,7 +520,7 @@ init_cgi(char *query, char *subquery)
 	exit(EXIT_FAILURE);
     }
 
-    if (Idx.num == 0) {
+    if (get_idxnum() == 0) {
 	if (add_index(DEFAULT_INDEX) != SUCCESS) {
 	    nmz_warn_printf("invalid idxname: %s", DEFAULT_INDEX);
 	}

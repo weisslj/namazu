@@ -18,7 +18,7 @@
 #include "message.h"
 #include "form.h"
 #include "var.h"
-
+#include "idxname.h"
 
 static int htmlmode    = 0;
 static int cgimode     = 0;
@@ -46,7 +46,7 @@ static char template[BUFSIZE]     = "normal"; /* suffix of NMZ.result.* */
 static void emprint ( char *str, int entity_encode );
 static void fputs_without_html_tag ( const char *str, FILE *fp );
 static void make_fullpathname_result ( int n );
-static void print_hitnum_each ( struct nmz_hitnum *hn );
+static void print_hitnum_each ( struct nmz_hitnumlist *hn );
 static int is_allresult ( void );
 static int is_pageindex ( void );
 static int is_countmode ( void );
@@ -199,14 +199,14 @@ make_fullpathname_result(int n)
 {
     char *base;
 
-    base = Idx.names[n];
+    base = get_idxname(n);
     nmz_pathcat(base, NMZ.result);
 }
 
 static void 
-print_hitnum_each (struct nmz_hitnum *hn)
+print_hitnum_each (struct nmz_hitnumlist *hn)
 {
-    struct nmz_hitnum *hnptr = hn;
+    struct nmz_hitnumlist *hnptr = hn;
 
     if (hn->phrase != NULL) { /* it has phrases */
 	hnptr = hn->phrase;
@@ -300,7 +300,7 @@ print_hlist(NmzResult hlist)
     }
 
     /* Set NULL to all templates[] */
-    for (i = 0; i < Idx.num; i++) {
+    for (i = 0; i < get_idxnum(); i++) {
 	templates[i] = NULL;
     }
 
@@ -345,7 +345,7 @@ print_hlist(NmzResult hlist)
     }
 
     /* Free all templates[] */
-    for (i = 0; i < Idx.num; i++) {
+    for (i = 0; i < get_idxnum(); i++) {
 	if (templates[i] != NULL) {
 	    free(templates[i]);
 	}
@@ -449,36 +449,37 @@ print_current_range(int listmax)
 static void 
 print_hitnum_all_idx(void)
 {
-    int i;
-    for (i = 0; i < Idx.num; i ++) {
-        struct nmz_hitnum *pr = Idx.pr[i];
+    int idxid;
+    for (idxid = 0; idxid < get_idxnum(); idxid ++) {
+        struct nmz_hitnumlist *hnlist = get_idx_hitnumlist(idxid);
 
 	if (is_refprint() && !is_countmode() && 
 	    !is_listmode() && !is_quietmode()) 
 	{
-	    if (Idx.num > 1) {
+	    if (get_idxnum() > 1) {
 	        if (is_htmlmode()) {
-		    char *idxname = Idx.names[i];
+		    char *idxname = get_idxname(idxid);
 		    if (is_cgimode()) {
 			/* For hiding a full pathname of an index */
-			idxname = Idx.names[i] + strlen(DEFAULT_INDEX) + 1;
+			idxname = 
+			    get_idxname(idxid) + strlen(DEFAULT_INDEX) + 1;
 		    }
 		    printf("<li><strong>%s</strong>: ", idxname);
 		} else {
-		    printf("(%s)", Idx.names[i]);
+		    printf("(%s)", get_idxname(idxid));
 		}
 	    }
 	}
 
-        while (pr != NULL) {
-	    print_hitnum_each(pr);
-	    pr = pr->next;
+        while (hnlist != NULL) {
+	    print_hitnum_each(hnlist);
+	    hnlist = hnlist->next;
 	}
 
 	if (is_refprint() && !is_countmode() && !is_listmode() && 
 	    !is_quietmode()) {
-	    if (Idx.num > 1 && Query.tab[1]) {
-	        printf(_(" [ TOTAL: %d ]"), Idx.total[i]);
+	    if (get_idxnum() > 1 && Query.tab[1]) {
+	        printf(_(" [ TOTAL: %d ]"), get_idx_totalhitnum(idxid));
 	    }
 	    nmz_print("\n");
 	}
@@ -593,11 +594,11 @@ print_result(NmzResult hlist, const char *query, const char *subquery)
 	    fputc('\n', stdout);
 	}
 	nmz_print(_("References: "));
-	if (Idx.num > 1 && is_htmlmode()) {
+	if (get_idxnum() > 1 && is_htmlmode()) {
 	    fputs("</p>\n", stdout);
 	}
 
-        if (Idx.num > 1) {
+        if (get_idxnum() > 1) {
             nmz_print("\n");
             if (is_htmlmode())
                 nmz_print("<ul>\n");
@@ -608,10 +609,10 @@ print_result(NmzResult hlist, const char *query, const char *subquery)
 
     if (is_refprint() && !is_countmode() && 
 	!is_listmode() && !is_quietmode()) {
-        if (Idx.num > 1 && is_htmlmode()) {
+        if (get_idxnum() > 1 && is_htmlmode()) {
             nmz_print("</ul>\n");
         }
-	if (Idx.num == 1 && is_htmlmode()) {
+	if (get_idxnum() == 1 && is_htmlmode()) {
 	    nmz_print("\n</p>\n");
 	} else {
 	    fputc('\n', stdout);

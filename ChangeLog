@@ -1,5 +1,31 @@
 2000-01-06  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* nmz/libnamazu.h (struct nmz_indices): Change member names.
+
+	* nmz/idxname.c: Use static struct nmz_indices indices = {0}
+	instead of Idx.
+
+	* nmz/var.c (struct nmz_indices Idx): Removed.
+
+	* nmz/search.c (do_phrase_search): Use get_idx_hitnumlist() and
+	set_idx_hitnumlist(). 
+	(nmz_search): Ditto.
+	(do_search): Ditto.
+
+	* nmz/idxname.c (free_idxnames): Moved from libnamazu.c
+	(uniq_idxnames): Ditto.
+	(expand_idxname_aliases): Ditto.
+	(complete_idxnames): Ditto.
+	(get_idxnum): Renamed from getidxnum.
+	(set_idx_totalhitnum): New function.
+	(get_idx_totalhitnum): New function.
+	(get_idx_hitnumlist): New function.
+	(push_hitnum): Moved from search.c and change parameter order.
+
+	* src/namazu.c (main): Call set_refprint(1). bug fix.
+
+	* nmz/libnamazu.h (struct nmz_hitnumlist): Renamed from nmz_hitnum
+
 	* nmz/util.c (nmz_decode_uri): Chage a parameter name.
 	(nmz_chomp): Ditto.
 	(nmz_print): Ditto.

@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.40 2000-01-06 00:32:59 satoru Exp $
+ * $Id: search.c,v 1.41 2000-01-06 03:44:29 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -54,6 +54,7 @@
 #include "codeconv.h"
 #include "var.h"
 #include "seed.h"
+#include "idxname.h"
 
 enum nmz_perm { ALLOW, DENY };
 static int cur_idxnum = -1;
@@ -65,8 +66,7 @@ static int cur_idxnum = -1;
  *
  */
 
-static struct nmz_hitnum *push_hitnum ( struct nmz_hitnum *hn, int hitnum, enum nmz_stat stat, const char *str );
-void free_hitnums ( struct nmz_hitnum *hn );
+void free_hitnums ( struct nmz_hitnumlist *hn );
 static void show_status ( int l, int r );
 static int get_file_size ( const char *fname );
 static void lrget ( int *l, int *r );
@@ -93,45 +93,10 @@ static NmzResult nmz_search_sub ( NmzResult hlist, const char *query, int n );
 static void make_fullpathname_index ( int n );
 static void remove_quotes(char *str);
 
-/*
- * Struct nmz_hitnum handling subroutines
- */
-static struct nmz_hitnum *
-push_hitnum(struct nmz_hitnum *hn, 
-	    int hitnum, 
-	    enum nmz_stat stat,
-	    const char *str)
-{
-    struct nmz_hitnum *hnptr = hn, *prevhnptr = hn;
-    while (hnptr != NULL) {
-	prevhnptr = hnptr;
-	hnptr = hnptr->next;
-    }
-    if ((hnptr = malloc(sizeof(struct nmz_hitnum))) == NULL) {
-	set_dyingmsg("push_hitnum: malloc failed on hnptr");
-	return NULL;
-    }
-    if (prevhnptr != NULL)
-	prevhnptr->next = hnptr;
-    hnptr->hitnum = hitnum;
-    hnptr->stat  = stat;
-    hnptr->phrase = NULL;
-    hnptr->next  = NULL;
-    if ((hnptr->word = malloc(strlen(str) +1)) == NULL) {
-	set_dyingmsg("push_hitnum: malloc failed on str");
-	return NULL;
-    }
-    strcpy(hnptr->word, str);
-
-    if (hn == NULL)
-	return hnptr;
-    return hn;
-}
-
 void 
-free_hitnums(struct nmz_hitnum *hn)
+free_hitnums(struct nmz_hitnumlist *hn)
 {
-    struct nmz_hitnum *tmp;
+    struct nmz_hitnumlist *tmp;
 
     for (; hn != NULL; hn = tmp) {
 	tmp = hn->next;
@@ -428,7 +393,7 @@ do_phrase_search(const char *key, NmzResult val)
     int i, h = 0, ignore = 0;
     char *p, tmpkey[BUFSIZE], *words[QUERY_TOKEN_MAX + 1], *prevword = NULL;
     FILE *phrase, *phrase_index;
-    struct nmz_hitnum *pr_hitnum = NULL; /* phrase hitnum */
+    struct nmz_hitnumlist *pr_hitnum = NULL; /* phrase hitnum */
 
     strcpy(tmpkey, key);
     p = tmpkey;
@@ -471,7 +436,7 @@ do_phrase_search(const char *key, NmzResult val)
 	if (tmp.stat == ERR_FATAL) 
 	    return tmp;
 
-	pr_hitnum = push_hitnum(pr_hitnum, tmp.num, tmp.stat, word);
+	pr_hitnum = push_hitnum(pr_hitnum, word, tmp.num, tmp.stat);
 	if (pr_hitnum == NULL) {
 	    tmp.stat = ERR_FATAL;
 	    return tmp;
@@ -505,26 +470,33 @@ do_phrase_search(const char *key, NmzResult val)
 
     /* Set phrase hit numbers using phrase member */
     {
-	struct nmz_hitnum *x;
+	struct nmz_hitnumlist *cur, *tmp;
 
-        /* Set dummy */
-	Idx.pr[cur_idxnum] = push_hitnum(Idx.pr[cur_idxnum], 
-						 0, SUCCESS, "");
-	if (Idx.pr[cur_idxnum] == NULL) {
+	/* Get current hitnum list */
+	cur = get_idx_hitnumlist(cur_idxnum);
+
+        /* Push dummy element */
+	cur = push_hitnum(cur, "", 0, SUCCESS);
+	if (cur == NULL) {
 	    val.stat = ERR_FATAL;
 	    return val;
 	}
+	set_idx_hitnumlist(cur_idxnum, cur);
 
 	/* Get the last element */
-	x = Idx.pr[cur_idxnum];
+	tmp = cur;
 	while (1) {
-	    if (x->next == NULL) {
+	    if (tmp->next == NULL) {
 		break;
 	    }
-	    x = x->next;
+	    tmp = tmp->next;
 	}
-	x->phrase = pr_hitnum;
-	x->hitnum = val.num;  /* total hit of phrases */
+
+	/* 
+	 * Then store phrase information.
+	 */
+	tmp->phrase = pr_hitnum;
+	tmp->hitnum = val.num;  /* total hit of phrases */
     }
     
     fclose(phrase);
@@ -837,7 +809,7 @@ nmz_search_sub(NmzResult hlist, const char *query, int n)
     if (hlist.stat == SUCCESS && hlist.num > 0) {  /* if hit */
         set_idxid_hlist(hlist, n);
     }
-    Idx.total[cur_idxnum] = hlist.num;
+    set_idx_totalhitnum(cur_idxnum, hlist.num);
     close_index_files();
 
     if (is_loggingmode()) {
@@ -851,7 +823,7 @@ make_fullpathname_index(int n)
 {
     char *base;
 
-    base = Idx.names[n];
+    base = get_idxname(n);
 
     nmz_pathcat(base, NMZ.i);
     nmz_pathcat(base, NMZ.ii);
@@ -970,7 +942,7 @@ nmz_search(const char *query)
 	return hlist;
     }
 
-    for (i = 0; i < Idx.num; i++) {
+    for (i = 0; i < get_idxnum(); i++) {
         make_fullpathname_index(i);
         tmp[i] = nmz_search_sub(tmp[i], query, i);
 
@@ -982,20 +954,27 @@ nmz_search(const char *query)
 		return hlist; /* FIXME: need freeing memory? */
 	    }
 
-	    /* Set Idx.pr to an error state for later error messaging */
-	    if (Idx.pr[cur_idxnum] == NULL) {
-		Idx.pr[cur_idxnum] = push_hitnum(Idx.pr[cur_idxnum], 
-						 0, tmp[i].stat, "");
+	    /* 
+	     * Save the error state for later error messaging.
+	     */
+	    {
+		struct nmz_hitnumlist *cur;
+		cur = get_idx_hitnumlist(cur_idxnum);
+		if (cur == NULL) { /* error occured */
+		    cur = push_hitnum(cur, "", 0, tmp[i].stat);
+		    set_idx_hitnumlist(cur_idxnum, cur);
+		}
+		if (cur == NULL) {
+		    hlist.stat = ERR_FATAL;
+		    return hlist;
+		}
 	    }
 
-	    if (Idx.pr[cur_idxnum] == NULL) {
-		hlist.stat = ERR_FATAL;
-		return hlist;
-	    }
 	    /*
 	     * Reset state with SUCCESS. Because at this time, 
 	     * trivial errors such as ERR_TOO_MUCH_MATCH are 
-	     * recorded in Idx.pr[].
+	     * recorded in cur->stat.
+	     * FIXME: Very acrobatic logic.
 	     */
 	    tmp[i].stat = SUCCESS; 
 	}
@@ -1072,15 +1051,14 @@ do_search(const char *key, NmzResult val)
     }
 
     if (mode != PHRASE_MODE) {
-	struct nmz_hitnum *prtmp;
-
-	prtmp = push_hitnum(Idx.pr[cur_idxnum], 
-			    val.num, val.stat, key);
-	if (prtmp == NULL) {
+	struct nmz_hitnumlist *cur;
+	cur = get_idx_hitnumlist(cur_idxnum);
+	cur = push_hitnum(cur, key, val.num, val.stat);
+	if (cur == NULL) {
 	    val.stat = ERR_FATAL;
 	    return val;
 	}
-	Idx.pr[cur_idxnum] = prtmp;
+	set_idx_hitnumlist(cur_idxnum, cur);
     }
 
     return val;

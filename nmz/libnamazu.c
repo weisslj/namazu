@@ -2,7 +2,7 @@
  * 
  * libnamazu.c - Namazu library api
  *
- * $Id: libnamazu.c,v 1.17 2000-01-05 10:30:44 satoru Exp $
+ * $Id: libnamazu.c,v 1.18 2000-01-06 03:44:29 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
@@ -73,17 +73,6 @@ static char dyingmsg[BUFSIZE] = "";
  */
 
 void 
-free_idxnames(void)
-{
-    int i;
-    for (i = 0; i < Idx.num; i++) {
-        free(Idx.names[i]);
-	free_hitnums(Idx.pr[i]);
-    }
-    Idx.num = 0;
-}
-
-void 
 codeconv_query(char *query)
 {
     if (is_lang_ja()) {
@@ -91,72 +80,6 @@ codeconv_query(char *query)
             zen2han(query);
         }
     }
-}
-
-void 
-uniq_idxnames(void)
-{
-    int i, j, k;
-
-    for (i = 0; i < Idx.num - 1; i++) {
-        for (j = i + 1; j < Idx.num; j++) {
-            if (strcmp(Idx.names[i], Idx.names[j]) == 0) {
-                free(Idx.names[j]);
-                for (k = j + 1; k < Idx.num; k++) {
-                    Idx.names[k - 1] = Idx.names[k];
-                }
-                Idx.num--;
-                j--;
-            }
-        }
-    }
-}
-
-int 
-expand_idxname_aliases(void)
-{
-    int i;
-
-    for (i = 0; i < Idx.num; i++) {
-	struct nmz_alias *list = get_aliases();
-	while (list) {
-	    if (strcmp(Idx.names[i], list->alias) == 0) {
-		free(Idx.names[i]);
-		Idx.names[i] = malloc(strlen(list->real) + 1);
-		if (Idx.names[i] == NULL) {
-		    set_dyingmsg("expand_idxname_aliases: malloc()");
-		    return FAILURE;
-		}
-		strcpy(Idx.names[i], list->real);
-            }
-	    list = list->next;
-	}
-    }
-    return 0;
-}
-
-int 
-complete_idxnames(void)
-{
-    int i;
-
-    for (i = 0; i < Idx.num; i++) {
- 	if (*Idx.names[i] == '+' && isalnum(*(Idx.names[i] + 1))) {
-	    char *tmp;
-	    tmp = malloc(strlen(DEFAULT_INDEX) 
-				  + 1 + strlen(Idx.names[i]) + 1);
-	    if (tmp == NULL) {
-		set_dyingmsg("complete_idxnames: malloc()");
-		return FAILURE;
-	    }
-	    strcpy(tmp, DEFAULT_INDEX);
-	    strcat(tmp, "/");
-	    strcat(tmp, Idx.names[i] + 1);  /* +1 means '+' */
-	    free(Idx.names[i]);
-	    Idx.names[i] = tmp;
-	}
-    }
-    return 0;
 }
 
 void 

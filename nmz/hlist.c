@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.24 2000-01-05 10:30:43 satoru Exp $
+ * $Id: hlist.c,v 1.25 2000-01-06 03:44:28 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -39,6 +39,7 @@
 #include "hlist.h"
 #include "field.h"
 #include "var.h"
+#include "idxname.h"
 
 static int document_number = 0;  /* Number of documents covered in a target index */
 static char field_for_sort[BUFSIZE] = "";  /* field_for_sort name used with sorting */
@@ -424,11 +425,11 @@ merge_hlist(NmzResult *hlists)
     int i, n;
     NmzResult value;
 
-    if (Idx.num == 1) {
+    if (get_idxnum() == 1) {
 	return hlists[0];
     }
 
-    for(i = n = 0; i < Idx.num; i++) {
+    for(i = n = 0; i < get_idxnum(); i++) {
         if (hlists[i].stat == SUCCESS && hlists[i].num > 0) {
             n += hlists[i].num;
         }
@@ -436,7 +437,7 @@ merge_hlist(NmzResult *hlists)
     malloc_hlist(&value, n);
     if (value.stat == ERR_FATAL)
         return value;
-    for(i = n = 0; i < Idx.num; i++) {
+    for(i = n = 0; i < get_idxnum(); i++) {
         if (hlists[i].stat != SUCCESS || hlists[i].num <= 0) 
             continue;
         memcpy_hlist(value, hlists[i], n);

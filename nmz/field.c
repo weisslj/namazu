@@ -12,6 +12,7 @@
 #include "re.h"
 #include "var.h"
 #include "replace.h"
+#include "idxname.h"
 
 /*
  *
@@ -51,7 +52,7 @@ make_fullpathname_field(int n)
 {
     char *base;
 
-    base = Idx.names[n];
+    base = get_idxname(n);
     nmz_pathcat(base, NMZ.field);
 }
 

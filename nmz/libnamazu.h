@@ -2,7 +2,7 @@
  * 
  * libnamazu.h - Namazu library api
  *
- * $Id: libnamazu.h,v 1.26 2000-01-05 10:30:44 satoru Exp $
+ * $Id: libnamazu.h,v 1.27 2000-01-06 03:44:29 satoru Exp $
  * 
  */
 
@@ -52,7 +52,9 @@ enum {
 
 typedef unsigned char uchar;
 
-/* status code for error handling */
+/* 
+ * Status code for error handling.
+ */
 enum nmz_stat {
     FAILURE = -1,
     SUCCESS,
@@ -68,7 +70,9 @@ enum nmz_stat {
     ERR_NO_PERMISSION
 };
 
-/* modes of searching */
+/* 
+ * Modes of searching.
+ */
 enum nmz_search_mode {
     WORD_MODE,
     PREFIX_MODE,
@@ -79,21 +83,27 @@ enum nmz_search_mode {
 };
 
 
-/* methods of sorting */
+/* 
+ * Methods of sorting.
+ */
 enum nmz_sort_method {
     SORT_BY_SCORE,
     SORT_BY_DATE,
     SORT_BY_FIELD
 };
 
-/* orders of sorting */
+/* 
+ * Orders of sorting.
+ */
 enum nmz_sort_order {
     ASCENDING,
     DESCENDING
 };
 
 
-/* data structure for each hit document */
+/* 
+ * Data structure for each hit document.
+ */
 struct nmz_data {
     int score;
     int docid;   /* document ID */
@@ -103,7 +113,9 @@ struct nmz_data {
     char *field; /* field's contents for field-specified search */
 };
 
-/* data structure for search result */
+/* 
+ * Data structure for search result 
+ */
 typedef struct nmz_result {
     int num;           /* number of elements in its data */
     enum nmz_stat stat; /* status code mainly used for error handling */
@@ -111,7 +123,9 @@ typedef struct nmz_result {
 } NmzResult;
 
 
-/* NMZ.* files' names */
+/* 
+ * NMZ.* files' names 
+ */
 struct nmz_names {
 #define MAXPATH 1024
     char i[MAXPATH];
@@ -132,7 +146,9 @@ struct nmz_names {
     char access[MAXPATH];
 };
 
-/* NMZ.* files' file pointers */
+/* 
+ * NMZ.* files' file pointers 
+ */
 struct nmz_files {
     FILE *i;
     FILE *ii;
@@ -143,11 +159,11 @@ struct nmz_files {
 };
 
 struct nmz_indices {
-    int num;                 /* Number of indices */
+    int num;                    /* Number of indices */
     char *names[INDEX_MAX + 1]; /* Index names */
-
-    int total[INDEX_MAX + 1];   /* results of total hits */
-    struct nmz_hitnum *pr[INDEX_MAX + 1]; /* hitnums of each word */
+    struct nmz_hitnumlist 
+    *hitnumlists[INDEX_MAX + 1];       /* hitnum list of each index */
+    int totalhitnums[INDEX_MAX + 1];   /* total hit number of each index */
 };
 
 struct nmz_query {
@@ -156,22 +172,20 @@ struct nmz_query {
 };
 
 
-/* hit number of each word */
-struct nmz_hitnum {
+/* 
+ * List containig hit numbers of each index word by word.
+ */
+struct nmz_hitnumlist {
     char *word;
     int hitnum;
     enum nmz_stat stat;        /* status code mainly used for error handling */
-    struct nmz_hitnum *phrase; /* for a result of a phrase search */
-    struct nmz_hitnum *next;
+    struct nmz_hitnumlist *phrase; /* for a result of a phrase search */
+    struct nmz_hitnumlist *next;
 };
 
-extern void free_idxnames ( void );
 extern void free_aliases ( void );
 extern void free_replaces ( void );
 extern void codeconv_query ( char *query );
-extern void uniq_idxnames ( void );
-extern int expand_idxname_aliases ( void );
-extern int complete_idxnames ( void );
 extern void set_sortmethod ( enum nmz_sort_method method );
 extern enum nmz_sort_method get_sortmethod ( void );
 extern void set_sortorder ( enum nmz_sort_order order );

@@ -2,7 +2,7 @@
  * 
  * var.c -
  * 
- * $Id: var.c,v 1.12 2000-01-05 10:30:46 satoru Exp $
+ * $Id: var.c,v 1.13 2000-01-06 03:44:29 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -76,6 +76,5 @@ struct nmz_names NMZ = {  /* NMZ.* files' names */
     "NMZ.access"
 };
 
-struct nmz_indices Idx;
 struct nmz_query Query;
 

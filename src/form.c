@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.33 2000-01-06 00:33:02 satoru Exp $
+ * $Id: form.c,v 1.34 2000-01-06 03:44:33 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -43,6 +43,7 @@
 #include "codeconv.h"
 #include "i18n.h"
 #include "var.h"
+#include "idxname.h"
 
 
 /*
@@ -221,7 +222,7 @@ select_option(char *s, const char *name, const char *subquery)
                 fputs(" selected", stdout);
             }
         } else if (strcasecmp(name, "idxname") == 0) {
-            if (*Idx.names[0] && nmz_strsuffixcmp(value, Idx.names[0]) == 0) {
+            if (get_idxnum() >= 1 && nmz_strsuffixcmp(value, get_idxname(0))) {
                 fputs(" selected", stdout);
             }
         } else if (strcasecmp(name, "subquery") == 0) {
@@ -264,9 +265,9 @@ check_checkbox(char *str)
                 strcpy(name, pp);
                 pp += strlen(pp);
             }
-            for (i = 0; i < Idx.num; i++) {
+            for (i = 0; i < get_idxnum(); i++) {
                 if (strcmp(name, 
-			   Idx.names[i] + strlen(DEFAULT_INDEX) + 1) == 0) 
+			   get_idxname(i) + strlen(DEFAULT_INDEX) + 1) == 0) 
 		{
                     searched++;
                     break;

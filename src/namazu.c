@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.45 1999-11-23 09:50:37 satoru Exp $
+ * $Id: namazu.c,v 1.46 1999-11-23 11:58:52 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -74,6 +74,24 @@ static int stdio2file(char*);
 static int parse_options(int, char**);
 static int namazu_core(char*, char*, char*);
 static void suicide(int);
+static int ck_atoi (char const *, int*);
+
+/* Imported from GNU grep-2.3 [1999-11-08] by satoru-t */
+/* Convert STR to a positive integer, storing the result in *OUT.
+   If STR is not a valid integer, return -1 (otherwise 0). */
+static int
+ck_atoi (str, out)
+     char const *str;
+     int *out;
+{
+  char const *p;
+  for (p = str; *p; p++)
+    if (*p < '0' || *p > '9')
+      return -1;
+
+  *out = atoi (optarg);
+  return 0;
+}
 
 /* redirect stdio to specified file */
 static int stdio2file(char * fname)
@@ -132,6 +150,8 @@ static struct option long_options[] = {
 /* parse command line options */
 static int parse_options(int argc, char **argv)
 {
+    int tmp;
+
     for (;;) {
         int ch = getopt_long(argc, argv, short_options, long_options, NULL);
         if (ch == EOF) {
@@ -172,10 +192,16 @@ static int parse_options(int argc, char **argv)
 	    set_namazurc(optarg);
 	    break;
 	case 'n':
-	    set_maxresult(atoi(optarg));
+	    if (ck_atoi(optarg, &tmp)) {
+		die("%s: invalid argument for -n, --max", optarg);
+	    }
+	    set_maxresult(tmp);
 	    break;
 	case 'w':
-	    set_listwhence(atoi(optarg));
+	    if (ck_atoi(optarg, &tmp)) {
+		die("%s: invalid argument for -w, --whence", optarg);
+	    }
+	    set_listwhence(tmp);
 	    break;
 	case 'd':
 	    set_debugmode(1);
@@ -349,8 +375,7 @@ static int namazu_core(char * query, char *subquery, char *av0)
 
 static void suicide (int signum)
 {
-    set_dyingmsg("processing time exceeds a limit: %d", SUICIDE_TIME);
-    diewithmsg();
+    die("processing time exceeds a limit: %d", SUICIDE_TIME);
 }
 
 int main(int argc, char **argv)

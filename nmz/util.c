@@ -256,24 +256,26 @@ void die(char *fmt, ...)
 {
     va_list args;
 
-    va_start(args, fmt);
-
-    set_dyingmsg(fmt, args);
-    va_end(args);
-
-    diewithmsg();
-
-    exit(2);
-}
-
-void diewithmsg()
-{
+    fflush(stdout);
     fflush(stderr);
 
     fprintf(stderr, "%s: ", PACKAGE);
 
-    fprintf(stderr, "%s", get_dyingmsg());
+    va_start(args, fmt);
+    vfprintf(stderr, fmt, args);
+    va_end(args);
+    fprintf(stderr, "\n");
 
+    exit(1);
+}
+
+void diewithmsg()
+{
+    fflush(stdout);
+    fflush(stderr);
+
+    fprintf(stderr, "%s: ", PACKAGE);
+    fprintf(stderr, "%s", get_dyingmsg());
     fprintf(stderr, "\n");
 
     exit(2);

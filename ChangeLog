@@ -1,5 +1,9 @@
 1999-11-23  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/namazu.c: Use ck_atoi() for -n and -w option.
+	
+	* nmz/util.c (die): Be independent from diewithmsg.
+
 	* {src,nmz}/*.[ch]: Clean up global variables. 
 	                             (to be continued...)
 	

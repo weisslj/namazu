@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: zip.pl,v 1.6 2004-05-04 06:08:47 usu Exp $
+# $Id: zip.pl,v 1.7 2004-05-04 19:51:00 opengl2772 Exp $
 #  zip filter for namazu
 #  Copyright (C) 2004 MATSUMURA Namihiko <po-jp@counterghost.net>
 #                2004 Yukio USUDA <usu@namazu.org>
@@ -95,7 +95,7 @@ sub filter ($$$$$) {
     unlink($tmpfile2);
 
     my %files;
-    my $filenames;
+    my $filenames = undef;
     $status = system("$unzippath -Z $tmpfile > $tmpfile2");
     if ($status == 0) {
 	my $filelist = util::readfile("$tmpfile2");
@@ -113,7 +113,7 @@ sub filter ($$$$$) {
 	    my $filesystem = $1;
 	    # The unzip output japanese filename incorrectly when filesystem
 	    # attribute is 'fat' or 'hpfs'.
-	    if ($filesystem =~ /unx|nft/) {
+	    if ($filesystem =~ /unx|ntf/) {
 		$filename = './' . $filename;
 		codeconv::toeuc(\$filename);
 		$filename = gfilter::filename_to_title($filename, $weighted_str);
@@ -121,7 +121,7 @@ sub filter ($$$$$) {
 	    }
 	}
     }
-    $$contref .= $filenames . " ";
+    $$contref .= $filenames . " " if (defined $filenames);
 
     my $fname;
     foreach $fname (keys %files){

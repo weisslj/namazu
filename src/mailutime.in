@@ -3,7 +3,7 @@
 #
 # mailutime - a tool to unify a file time stamp with 
 #             RFC 822 'Date:' field in a mail.
-# $Id: mailutime.in,v 1.4 1999-12-11 01:20:01 satoru Exp $
+# $Id: mailutime.in,v 1.5 1999-12-11 01:21:50 satoru Exp $
 #
 # Version 1.0.2    [12/12/1998]
 #
@@ -14,7 +14,7 @@
 #
 # RECOMMENDED USAGE:
 #
-#   % find . -type f ~/Mail/ml/hoge |xargs mailutime
+#   % find . -type f ~/Mail/ml/foo |xargs mailutime
 #
 #   It is very useful way to modify time stamps for all files in a
 #   specified mailbox (MH format).

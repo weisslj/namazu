@@ -1,3 +1,9 @@
+2002-11-14  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* Refactoring: indexing routines are splitted out into pl/indexer.pl.
+
+	* pl/indexer.pl: Added a new file.
+
 2002-11-12  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* filter/msword.pl (filter_wv): Fixed convert error bug on Japanese
@@ -7745,4 +7751,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.989 2002-11-12 07:27:37 knok Exp $
+$Id: ChangeLog,v 1.990 2002-11-14 10:13:50 knok Exp $

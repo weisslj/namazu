@@ -16,7 +16,8 @@ perllib_DATA = \
 	usage.pl \
 	util.pl \
 	var.pl \
-	wakati.pl
+	wakati.pl \
+	indexer.pl
 
 # Slightly different from perllib_DATA because of *.in files.
 EXTRA_DIST = $\
@@ -30,7 +31,8 @@ EXTRA_DIST = $\
 	usage.pl \
 	util.pl \
 	var.pl \
-	wakati.pl
+	wakati.pl \
+	indexer.pl
 
 CLEANFILES = gettext.pl
 

@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.114 2002-10-31 10:24:17 knok Exp $
+# $Id: mknmz.in,v 1.115 2002-11-14 10:13:51 knok Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -65,6 +65,7 @@ my $ReplaceCode  = undef;  # perl code for transforming URI
 my @Seed = ();
 my @LoadedRcfiles = ();
 my $Magic = new File::MMagic;
+my $Indexer = undef;
 
 my $ReceiveTERM = 0;
 
@@ -358,6 +359,9 @@ sub load_modules () {
     require "wakati.pl" || die "unable to require \"wakati.pl\"\n";
     require "seed.pl" || die "unable to require \"seed.pl\"\n";
     require "gfilter.pl" || die "unable to require \"gfilter.pl\"\n";
+    require "indexer.pl" || die "unable to require \"indexer.pl\"\n";
+
+    $Indexer = new mknmz::indexer;
 
     @Seed = seed::init();
 }
@@ -484,8 +488,13 @@ sub namazu_core ($$$$$$$$$$) {
 
     put_dateindex($cfile);
     $content .= $weighted_str;   # add weights
-    normalize_content(\$content, $kanji);
-    count_words($docid_count, $docid_base, \$content);
+    my $indexer = $Indexer;
+    $indexer->init(\$content, $conf::WORD_LENG_MAX, $var::Opt{'nosymbol'});
+    $indexer->noedgesymbol() if ($var::Opt{'noedgesymbol'});
+    do_wakatigaki(\$content, $kanji);
+    $content =~ tr/A-Z/a-z/; # Normalize
+    $indexer->count_words();
+    add_key($indexer, $docid_count, $docid_base);
     make_phrase_hash($docid_count, $docid_base, \$content);
 
     # assertion
@@ -493,6 +502,22 @@ sub namazu_core ($$$$$$$$$$) {
 		 "cfile_size == 0 at the end of namazu_core.");
 
     return $cfile_size;
+}
+
+sub add_key($$$) {
+    my $indexer = shift @_;
+    my $docid_count = shift @_;
+    my $docid_base = shift @_;
+    my $keyref = $indexer->get_keyindex();
+    my $docid = $docid_count + $docid_base;
+    for my $word (keys(%$keyref)) {
+	next if ($word eq "" || length($word) > $conf::WORD_LENG_MAX);
+	$KeyIndexLast{$word} = 0 unless defined $KeyIndexLast{$word};
+	$KeyIndex{$word} .= pack("w2", 
+				 $docid - $KeyIndexLast{$word}, 
+				 $keyref->{$word});
+	$KeyIndexLast{$word} = $docid;
+    }
 }
 
 #
@@ -2184,107 +2209,13 @@ sub hash ($) {
     return $hash & 65535;
 }
 
-# Nomalization
-sub normalize_content($$) {
+sub do_wakatigaki ($$) {
     my ($contref, $kanji) = @_;
-    
-    # Normalize into small letter.
-    $$contref =~ tr/A-Z/a-z/;
 
     # Do wakatigaki if necessary.
     if (util::islang("ja")) {
 	wakati::wakatize_japanese($contref) if $kanji;
     }
-
-    # Remove all symbols when -K option is specified.
-    $$contref =~ tr/\xa1-\xfea-z0-9/   /c if $var::Opt{'nosymbol'};
-}
-
-# Count frequencies of words.
-sub count_words ($$$) {
-    my ($docid_count, $docid_base, $contref) = @_;
-    my (@tmp);
-
-    my $part1 = "";
-    my $part2 = "";
-    if ($$contref =~ /\x7f/) {
-	$part1 = substr $$contref, 0, index($$contref, "\x7f");
-	$part2 = substr $$contref, index($$contref, "\x7f");
-#	$part1 = $PREMATCH;  # $& and friends are not efficient
-#	$part2 = $MATCH . $POSTMATCH;
-    } else {
-	$part1 = $$contref;
-	$part2 = "";
-    }
-
-    # do scoring
-    my %word_count = ();
-    $part2 =~ s!\x7f *(\d+) *\x7f([^\x7f]*)\x7f */ *\d+ *\x7f!
-	wordcount_sub($2, $1, \%word_count)!ge;
-    wordcount_sub($part1, 1, \%word_count);
-
-    # Add them to whole index
-    my $docid = $docid_count + $docid_base;
-    for my $word (keys(%word_count)) {
-	next if ($word eq "" || length($word) > $conf::WORD_LENG_MAX);
-	$KeyIndexLast{$word} = 0 unless defined $KeyIndexLast{$word};
-	$KeyIndex{$word} .= pack("w2", 
-				 $docid - $KeyIndexLast{$word}, 
-				 $word_count{$word});
-	$KeyIndexLast{$word} = $docid;
-    }
-}
-
-#
-# Count words and do score weighting
-#
-sub wordcount_sub ($$\%) {
-    my ($text, $weight, $word_count) = @_;
-
-    # Count frequencies of words in a current document.
-    # Handle symbols as follows.
-    #
-    # tcp/ip      ->  tcp/ip,     tcp,      ip
-    # (tcp/ip)    ->  (tcp/ip),   tcp/ip,   tcp, ip
-    # ((tcpi/ip)) ->  ((tcp/ip)), (tcp/ip), tcp
-    #
-    # Don't do processing for nested symbols.
-    # NOTE: When -K is specified, all symbols are already removed.
-
-    my @words = split /\s+/, $text;
-    for my $word (@words) {
-	next if ($word eq "" || length($word) > $conf::WORD_LENG_MAX);
-	if ($var::Opt{'noedgesymbol'}) {
-	    # remove symbols at both ends
-	    $word =~ s/^[^\xa1-\xfea-z_0-9]*(.*?)[^\xa1-\xfea-z_0-9]*$/$1/g;
-	}
-	$word_count->{$word} = 0 unless defined($word_count->{$word});
-	$word_count->{$word} += $weight;
-	unless ($var::Opt{'nosymbol'}) {
-	    if ($word =~ /^[^\xa1-\xfea-z_0-9](.+)[^\xa1-\xfea-z_0-9]$/) {
-		$word_count->{$1} = 0 unless defined($word_count->{$1});
-		$word_count->{$1} += $weight;
-		next unless $1 =~ /[^\xa1-\xfea-z_0-9]/;
-	    } elsif ($word =~ /^[^\xa1-\xfea-z_0-9](.+)/) {
-		$word_count->{$1} = 0 unless defined($word_count->{$1});
-		$word_count->{$1} += $weight;
-		next unless $1 =~ /[^\xa1-\xfea-z_0-9]/;
-	    } elsif ($word =~ /(.+)[^\xa1-\xfea-z_0-9]$/) {
-		$word_count->{$1} = 0 unless defined($word_count->{$1});
-		$word_count->{$1} += $weight;
-		next unless $1 =~ /[^\xa1-\xfea-z_0-9]/;
-	    }
-	    my @words_ = split(/[^\xa1-\xfea-z_0-9]+/, $word)
-		if $word =~ /[^\xa1-\xfea-z_0-9]/;
-	    for my $tmp (@words_) {
-		next if $tmp eq "";
-		$word_count->{$tmp} = 0 unless defined($word_count->{$tmp});
-		$word_count->{$tmp} += $weight;
-	    }
-	    @words_ = ();
-	}
-    }
-    return "";
 }
 
 # Construct NMZ.i and NMZ.ii file. this processing is rather complex.

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: html.pl,v 1.44 2004-11-19 16:42:36 opengl2772 Exp $
+# $Id: html.pl,v 1.45 2004-11-26 11:08:02 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -151,7 +151,7 @@ sub get_author ($$) {
         $fields->{'author'} = $3;
     } elsif ($$contref =~ m!<LINK\s[^>]*?HREF=([\"\']?)mailto:(.*?)\1\s*>!i) {
         $fields->{'author'} = $2;
-    } elsif ($$contref =~ m!.*<ADDRESS[^>]*>(.*?)</ADDRESS>!is) {
+    } elsif ($$contref =~ m!<ADDRESS[^>]*>(.*?)</ADDRESS>!is) {
 	my $tmp = $1;
 #	$tmp =~ s/\s//g;
 	if ($tmp =~ /\b([\w\.\-]+\@[\w\.\-]+(?:\.[\w\.\-]+)+)\b/) {

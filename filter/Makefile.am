@@ -14,24 +14,22 @@ DIST_SUBDIRS = win32
 filterdir = $(pkgdatadir)/filter
 
 filter_DATA = bzip2.pl \
-	     compress.pl \
-	     excel.pl \
-	     gfilter.pl \
-	     gzip.pl \
-	     html.pl \
-	     mailnews.pl \
-	     man.pl \
-	     mhonarc.pl \
-	     msword.pl \
-	     pdf.pl \
-	     rfc.pl \
-	     tex.pl \
-	     powerpoint.pl \
-	     taro.pl \
-	     ichitaro456.pl \
-	     wordpro.pl \
-	     oasys.pl \
-	     hnf.pl
+	      compress.pl \
+	      excel.pl \
+	      gfilter.pl \
+	      gzip.pl \
+	      hnf.pl \
+	      html.pl \
+	      ichitaro456.pl \
+	      mailnews.pl \
+	      man.pl \
+	      mhonarc.pl \
+	      msword.pl \
+	      pdf.pl \
+	      rfc.pl \
+	      tex.pl \
+	      powerpoint.pl \
+	      taro.pl
 
 EXTRA_DIST = $(filter_DATA)
 

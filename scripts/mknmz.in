@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.4 2000-02-05 04:23:22 satoru Exp $
+# $Id: mknmz.in,v 1.5 2000-02-06 07:36:46 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -261,51 +261,56 @@ sub load_modules () {
     # Check filter modules
     my @filters = ();
     if (-f "../filter/gfilter.pl") { # to ease developing
-	@filters = glob "../filter/*.pl" if @filters == 0;
+	@filters = glob "../filter/*.pl";
 	unshift @INC, "../filter";
     } else {
-	@filters = glob "$FILTERDIR/*.pl" if @filters == 0;
+	@filters = glob "$FILTERDIR/*.pl";
     }
-    for my $filter (@filters) {
-	$filter =~ m!([-\w]+)\.pl$!;
-	my $module = $1;
-	next if ($module eq 'gfilter'); # skip gfilter (not for filtering)
-	next if ($module =~ /^ole/i);
-	require "$module.pl" || die "unable to require \"$module.pl\"\n";;
-	my (@mtypes, $status, $recursive, $codeconv);
-	eval "\@mtypes =    ${module}::mediatype();";
-	eval "\$status =    ${module}::status();";
-	eval "\$recursive = ${module}::recursive();";
-	eval "\$codeconv  = ${module}::codeconv();";
-	for my $mt (@mtypes) {
-	    $var::Supported{$mt} = $status;
-	    $var::REQUIRE_ACTIONS{$mt} = $module;
-	    $var::RECURSIVE_ACTIONS{$mt} = $recursive if ($recursive);
-	    $var::REQUIRE_CODECONV{$mt} = $codeconv if ($codeconv);
-	}
-    }
+    
+    # Exclude gfilter.pl and ole*.pl files.
+    @filters = grep 
+    { $_ !~ m!/gfilter\.pl$! && $_ !~ m!/ole[^/]+\.pl! } @filters;
+      
+    load_filters(@filters);
 }
 
 sub load_olemodules () {
     # Check filter modules
     my @filters = ();
-    @filters = glob "$FILTERDIR/ole*.pl" if @filters == 0;
+    if (-f "../filter/gfilter.pl") { # to ease developing
+	@filters = glob "../filter/ole*.pl";
+	unshift @INC, "../filter";
+    } else {
+	@filters = glob "$FILTERDIR/ole*.pl";
+    }
 
+    load_filters(@filters);
+}
+
+sub load_filters (@) {
+    my @filters = @_;
+   
     for my $filter (@filters) {
-	$filter =~ m!(\w+)\.pl$!;
+	$filter =~ m!([-\w]+)\.pl$!;
 	my $module = $1;
-	next if ($module eq 'gfilter'); # skip gfilter (not for filtering)
 	require "$module.pl" || die "unable to require \"$module.pl\"\n";;
-	my (@mtypes, $status, $recursive, $codeconv);
+	my (@mtypes, $status, $recursive, $pre_codeconv, $post_codeconv);
 	eval "\@mtypes =    ${module}::mediatype();";
+	die $@ if $@;  # eval error
 	eval "\$status =    ${module}::status();";
+	die $@ if $@;  # eval error
 	eval "\$recursive = ${module}::recursive();";
-	eval "\$codeconv  = ${module}::codeconv();";
+	die $@ if $@;  # eval error
+	eval "\$pre_codeconv  = ${module}::pre_codeconv();";
+	die $@ if $@;  # eval error
+	eval "\$post_codeconv  = ${module}::post_codeconv();";
+	die $@ if $@;  # eval error
 	for my $mt (@mtypes) {
 	    $var::Supported{$mt} = $status;
 	    $var::REQUIRE_ACTIONS{$mt} = $module;
-	    $var::RECURSIVE_ACTIONS{$mt} = $recursive if ($recursive);
-	    $var::REQUIRE_CODECONV{$mt} = $codeconv if ($codeconv);
+	    $var::RECURSIVE_ACTIONS{$mt} = $recursive;
+	    $var::REQUIRE_PRE_CODECONV{$mt} = $pre_codeconv;
+	    $var::REQUIRE_POST_CODECONV{$mt} = $post_codeconv;
 	}
     }
 }
@@ -605,40 +610,54 @@ sub load_document ($$$$\%) {
 	      if ((! defined $mtype_c) ||
 		  $mtype_c =~ 
 		  /^(text\/html|text\/plain|application\/octet-stream)$/);
-	    $mtype_c = $mtype_m if (defined $mtype_m && 
-				    $mtype_m !~ 
-				    /^(text\/html|text\/plain|application\/octet-stream)$/);
+	    $mtype_c = $mtype_m 
+		if (defined $mtype_m && 
+		    $mtype_m !~ 
+		    /^(text\/html|text\/plain|application\/octet-stream)$/);
 	    $mtype_c = 'text/plain' unless defined $mtype_c;
 	    $mtype = decide_type($mtype_n, $mtype_c);
 	}
-	if (defined $var::REQUIRE_CODECONV{$mtype}) {
-	      codeconv::toeuc($contref);
-	      $$contref =~ s/[ \t]+/ /g;   # remain LFs v1.03
-	      $$contref =~ s/\r\n/\n/g;    # remain LFs for ChaSen
-	      $$contref =~ s/\r/\n/g;      # CR+LF or CR are into LF
-	      # Control characters be into space
-	      $$contref =~ tr/\x00-\x09\x0b-\x1f\x7f\xff/    /;
-	}
 	util::dprint(_("Detected type: ")."$mtype\n");
-	if (! defined $var::Supported{$mtype} || $var::Supported{$mtype} ne 'yes') {
+
+	# Pre code conversion.
+	if ($var::REQUIRE_PRE_CODECONV{$mtype}) {
+	    print "pre codeconv\n";
+	    codeconv::toeuc($contref);
+	    gfilter::white_space_adjust_filter($contref);
+	}
+
+	if (! $var::Supported{$mtype} || 
+	    $var::Supported{$mtype} ne 'yes') 
+	{
 	    util::vprint(_("Unsupported data type ")."$mtype\n");
 	    return ($file_size, $file_size, 0, "$mtype; x-system=unsupported");
 	}
-	if (defined $var::REQUIRE_ACTIONS{$mtype}) {
+
+	if ($var::REQUIRE_ACTIONS{$mtype}) {
 	    util::vprint(_("Using ")."$var::REQUIRE_ACTIONS{$mtype}.pl\n");
 	    require $var::REQUIRE_ACTIONS{$mtype}.'.pl'
-	        || die _("unable to require ")."\"$var::REQUIRE_ACTIONS{$mtype}.pl\"\n";
+	        || die _("unable to require ") . 
+		    "\"$var::REQUIRE_ACTIONS{$mtype}.pl\"\n";
 	    my $err = undef;
 	    eval '$err = ' . $var::REQUIRE_ACTIONS{$mtype} .
 	      '::filter($orig_cfile, $contref, $weighted_str, $headings, $fields);';
 	    if ($err) {
 		return ($file_size, $file_size, 0, "$mtype; x-error=$err");
 	    }
+
 	    if ($@) {
 		util::vprint(_("Faild to call ")."$var::REQUIRE_ACTIONS{$mtype}\n$@\n");
 		return ($file_size, $file_size, 0, "$mtype; x-error=$@");
 	    }
-	    next if (defined $var::RECURSIVE_ACTIONS{$mtype});
+
+	    # Post code conversion.
+	    if ($var::REQUIRE_POST_CODECONV{$mtype}) {
+		print "post codeconv\n";
+	    	codeconv::toeuc($contref);
+	    	gfilter::white_space_adjust_filter($contref);
+	    }
+
+	    next if ($var::RECURSIVE_ACTIONS{$mtype});
 	}
 	last;
     }

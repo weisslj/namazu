@@ -1,5 +1,26 @@
 2000-02-06  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* scripts/mknmz.in (load_document): Handle pre and post code
+	conversion. [namazu-dev 1469]
+
+	* filter/gfilter.pl (white_space_adjust_filter): Add CR/LF and
+	control characters handlings.
+
+	* pl/var.pl.in: Rename a hash variable:
+	s/REQUIRE_CODECONV/REQUIRE_PRE_CODECONV/. 
+	Add new hash variable: REQUIRE_POST_CODECONV. 
+
+	* scripts/mknmz.in (load_olemodules): Simpified.
+	(load_modules): Ditto.
+	(load_filters): New function.
+
+	* filter/pdf.pl (filter): Do not code conversion in it.
+	(post_codeconv): Require code conversion after filtering has done.
+
+	* filter/*.pl: Add new function post_codeconv().
+
+	* filter/*.pl: Rename a function name: s/codeconv/pre_codeconv/g
+
 	* filter/pdf.pl (codeconv): Fix a bug: Require code
 	conversion. [namazu 1371].
 	(codeconv): Fix a bug: Do not require code conversion [namazu

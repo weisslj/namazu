@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: hnf.pl,v 1.2 2000-01-29 12:39:15 kenji Exp $
+# $Id: hnf.pl,v 1.3 2000-02-06 07:36:40 satoru Exp $
 #
 # HNF Filter for Namazu 2.0
 # version 0.9.6
@@ -48,8 +48,12 @@ sub recursive() {
     return 0;
 }
 
-sub codeconv() {
+sub pre_codeconv() {
     return 1;
+}
+
+sub post_codeconv () {
+    return 0;
 }
 
 sub filter ($$$$$) {

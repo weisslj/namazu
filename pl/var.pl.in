@@ -1,5 +1,5 @@
 # -*- Perl -*-
-# $Id: var.pl.in,v 1.8 2000-01-28 09:40:16 satoru Exp $
+# $Id: var.pl.in,v 1.9 2000-02-06 07:36:44 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -130,9 +130,13 @@ $PREFIX = "";
 
 %REQUIRE_ACTIONS = ();
 %RECURSIVE_ACTIONS = ();
-%REQUIRE_CODECONV = 
+%REQUIRE_PRE_CODECONV = 
     (
      'text/plain' => 1,
+     );
+%REQUIRE_POST_CODECONV = 
+    (
+     'text/plain' => 0,
      );
 %Supported = 
     (

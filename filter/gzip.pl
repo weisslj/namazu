@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: gzip.pl,v 1.10 2000-01-06 10:01:48 satoru Exp $
+# $Id: gzip.pl,v 1.11 2000-02-06 07:36:40 satoru Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -42,7 +42,11 @@ sub recursive() {
     return 1;
 }
 
-sub codeconv() {
+sub pre_codeconv() {
+    return 0;
+}
+
+sub post_codeconv () {
     return 0;
 }
 

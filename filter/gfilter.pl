@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: gfilter.pl,v 1.9 1999-12-16 07:27:31 satoru Exp $
+# $Id: gfilter.pl,v 1.10 2000-02-06 07:36:40 satoru Exp $
 # Copyright (C) 1999 Satoru Takabayashi ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -37,10 +37,16 @@ sub show_filter_debug_info ($$$$) {
 # Adjust white spaces
 sub white_space_adjust_filter ($) {
     my ($text) = @_;
+
+    $$text =~ s/[ \t]+/ /g;
+    $$text =~ s/\r\n/\n/g;
+    $$text =~ s/\r/\n/g;
+    $$text =~ s/\n+/\n/g;
     $$text =~ s/^ +//gm;
     $$text =~ s/ +$//gm;
     $$text =~ s/ +/ /g;
-    $$text =~ s/\n+/\n/g;
+    # Control characters be into space
+    $$text =~ tr/\x00-\x09\x0b-\x1f\x7f\xff/    /;
 }
 
 # get a title from a file name.

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: tex.pl,v 1.2 1999-12-31 02:07:55 satoru Exp $
+# $Id: tex.pl,v 1.3 2000-02-06 07:36:42 satoru Exp $
 # Copyright (C) 1999 Satoru Takabayashi ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -41,8 +41,12 @@ sub recursive() {
     return 0;
 }
 
-sub codeconv() {
+sub pre_codeconv() {
     return 1;
+}
+
+sub post_codeconv () {
+    return 0;
 }
 
 sub filter ($$$$$) {

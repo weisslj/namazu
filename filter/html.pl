@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: html.pl,v 1.22 2000-01-28 09:40:10 satoru Exp $
+# $Id: html.pl,v 1.23 2000-02-06 07:36:41 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -39,8 +39,12 @@ sub recursive() {
     return 0;
 }
 
-sub codeconv() {
+sub pre_codeconv() {
     return 1;
+}
+
+sub post_codeconv () {
+    return 0;
 }
 
 sub filter ($$$$$) {

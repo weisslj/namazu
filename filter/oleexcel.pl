@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: oleexcel.pl,v 1.2 1999-11-21 19:59:01 kenzo- Exp $
+# $Id: oleexcel.pl,v 1.3 2000-02-06 07:36:41 satoru Exp $
 # Copyright (C) 1999 Jun Kurabe ,
 #               1999 Ken-ichi Hirose All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -61,7 +61,11 @@ sub recursive() {
     return 0;
 }
 
-sub codeconv() {
+sub pre_codeconv() {
+    return 0;
+}
+
+sub post_codeconv () {
     return 0;
 }
 

@@ -1,3 +1,8 @@
+2000-01-23  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* src/rcfile.c (show_rcfile): Follow Fujiwara's sugesstion.
+	[namazu-dev 1298]
+
 2000-01-22  Masao Takaku  <masao@ulis.ac.jp>
 
 	* nmz/search.c (parse_access): Fix a bug [namazu-dev 1290].

@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.1 2000-01-20 02:35:26 satoru Exp $
+ * $Id: rcfile.c,v 1.2 2000-01-23 12:16:43 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -581,8 +581,8 @@ show_rcfile(void)
     }
 
     printf(_("\
-Default: %s\n\
-BASE:    %s\n\
+Index:   %s\n\
+Base:    %s\n\
 Logging: %s\n\
 Lang:    %s\n\
 Scoring: %s\n\

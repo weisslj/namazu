@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: namazu 2.0\n"
-"POT-Creation-Date: 2000-01-20 12:22+0900\n"
+"POT-Creation-Date: 2000-01-23 21:10+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>\n"
 "Language-Team: Japanese <satoru-t@is.aist-nara.ac.jp>\n"
@@ -135,17 +135,17 @@ msgstr "設定ファイル:  %s\n"
 #: src/rcfile.c:583
 #, c-format
 msgid ""
-"Default: %s\n"
-"BASE:    %s\n"
+"Index:   %s\n"
+"Base:    %s\n"
 "Logging: %s\n"
 "Lang:    %s\n"
 "Scoring: %s\n"
 msgstr ""
-"標準のインデックス: %s\n"
-"<BASE>タグ: %s\n"
-"ログの記録: %s\n"
-"標準の言語: %s\n"
-"スコア計算: %s\n"
+"インデックス (Index): %s\n"
+"<BASE>タグ (Base):    %s\n"
+"ログの記録 (Logging): %s\n"
+"使用する言語 (Lang):  %s\n"
+"スコア計算 (Scoring): %s\n"
 
 #: src/usage.c:52
 #, c-format

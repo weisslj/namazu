@@ -1,4 +1,4 @@
-$Id: TODO-namazu-2.0,v 1.37 2000-01-30 03:37:35 satoru Exp $
+$Id: TODO-namazu-2.0,v 1.38 2000-02-04 12:47:23 satoru Exp $
 
 検討項目
 
@@ -9,6 +9,8 @@ $Id: TODO-namazu-2.0,v 1.37 2000-01-30 03:37:35 satoru Exp $
 
 
 即急に取り組むべき課題
+
+  * wvWare への対応 [namazu-dev 1221]
 
   * まともな libraryとして整備する
 

@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- CPerl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.20 1999-08-25 00:40:19 knok Exp $
+# $Id: mknmz.pl.in,v 1.21 1999-08-25 10:21:48 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -37,8 +37,9 @@ use vars qw($SYSTEM);
 $SYSTEM = $^O;
 
 my $CCS = "euc";
-my $LIBDIR  = "%LIBDIR%";      # directory where library and etc are in.
-my $LIBDIR2 = "";
+my $LIBDIR  = "%LIBDIR%";      # directory where library etc. are in.
+my $FILTERDIR  = "%FILTERDIR%";      # directory where filters are in.
+my $TEMPLATEDIR  = "%TEMPLATEDIR%";      # directory where templates are in.
 my $TARGET_DIR = "";
 
 my $DeletedFilesCount = 0;
@@ -177,8 +178,10 @@ sub initialize () {
 	$CCS = "euc";
     }
 
-    $LIBDIR2 = cwd() . "/../lib";  # relative path from cwd
-    @INC = ($LIBDIR2, $LIBDIR, @INC);
+    my $libdir2 = cwd() . "/../lib";  # relative path from cwd
+    my $filterdir2 = cwd() . "/../filter";  # relative path from cwd
+    push @INC, $libdir2, $LIBDIR, $filterdir2, $FILTERDIR;
+    print "@ INC:: @INC\n";
 
     require "conf.pl";
     require "hash.pl";
@@ -206,13 +209,17 @@ sub namazu_core ($$$) {
     my $weighted_str = "";
     my %fields;
 
+    # temporary
+    my $title = "";
+    my $uri   = "";
+
     my $url = url_decchiagator($cfile);  # Make a URL from a file name
     my ($cfile_size, $ctrl, $kanji, $mtype) = 
-      load_document(\$cfile, \$title, \$contents, \$weighted_str,
-		     \$headings, \%fields);
+	load_document(\$cfile, \$title, \$content, \$weighted_str,
+		      \$headings, \%fields);
 
     # Do checking
-    my $err = check_file($cfile, \$contents, $ctrl, $cfile_size, $mtype);
+    my $err = check_file($cfile, \$content, $ctrl, $cfile_size, $mtype);
     if ($err) {
 	print $file_count + $file_base . " $uri $err\n" unless $conf::QuietOpt;
 	print $fh_errorsfile "$cfile $err\n"; 
@@ -235,13 +242,10 @@ sub namazu_core ($$$) {
 	}
     }
     # Output processing file name as URL
-    print $file_count + $file_segment . " $url".($conf::VerboseOpt ? ":$mtype" : '') ."\n" unless $conf::QuietOpt;
+    print $file_count + $file_base . " $url".($conf::VerboseOpt ? ":$mtype" : '') ."\n" unless $conf::QuietOpt;
 
-    make_field_info(\%fields, $cfile, $title, $url);
-
-    put_file_info($url, $title, $cfile_size, \$contents,
-		  \$headings, $cfile, \%fields, $fh_finfo);
-    put_field_info(\%fields) unless $conf::NoFieldInfoOpt;
+    make_field_index(\%fields, $cfile, $uri, \$headings, \$content);
+    put_field_index(\%fields, $field_indices) unless $conf::NoFieldIndexOpt;
 
     put_dateindex($cfile) unless $conf::NoDateIndexOpt;
     $content .= $weighted_str;   # add weight info
@@ -412,7 +416,7 @@ sub put_dateindex ($) {
 
 # load a document file
 sub load_document ($$$$$\%) {
-    my ($orig_cfile, $title, $contents, $weighted_str, $headings, $fields)
+    my ($orig_cfile, $title, $content, $weighted_str, $headings, $fields)
       = @_;
     my $cfile = $$orig_cfile;
 
@@ -434,19 +438,19 @@ sub load_document ($$$$$\%) {
 
     # filtering process
     my $fh_cfile = util::fopen_or_die($cfile);
-    $$contents = join('', <$fh_cfile>);
+    $$content = join('', <$fh_cfile>);
     my $mm = new File::MMagic;
     my $mtype;
     while (1) {
 	my $mtype_n = $mm->checktype_byfilename($cfile);
-	my $mtype_c = $mm->checktype_contents($$contents);
+	my $mtype_c = $mm->checktype_content($$content);
 	$mtype = decide_type($mtype_n, $mtype_c);
 	if (defined $conf::REQUIRE_ACTIONS{$mtype}) {
 	    print "Using $conf::REQUIRE_ACTIONS{$mtype}.pl\n"
 	      if ($conf::VerboseOpt);
 	    require $conf::REQUIRE_ACTIONS{$mtype}.'.pl';
 	    eval $conf::REQUIRE_ACTIONS{$mtype} .
-	      '::filter($orig_cfile, $title ,$contents, $weighted_str, $headings, $fields, $sizeref);';
+	      '::filter($orig_cfile, $title ,$content, $weighted_str, $headings, $fields, $sizeref);';
 	    if ($@) {
 		print STDERR "Faild to call $conf::REQUIRE_ACTIONS{$mtype}\n$@\n";
 		$mtype = "x-system/x-error; failed to call $conf::REQUIRE_ACTIONS{$mtype}";
@@ -460,14 +464,14 @@ sub load_document ($$$$$\%) {
     if ($conf::LANGUAGE eq "ja" && ! $conf::USE_NKF_MODULE) {
 	my $nkftmp = 'NMZ.nkftmp';
 	my $nh = util::fopen_or_die("|$conf::NKF -emXZ1 > $nkftmp");
-	print $nh $$contents;
+	print $nh $$content;
 	undef $nh;
 	$nh = util::fopen_or_die("< $nkftmp");
-	$$contents = util::readfile($nh);
+	$$content = util::readfile($nh);
 	undef $nh;
 	unlink($nkftmp);
     } else {
-	$$contents = NKF::nkf("-emXZ1", $$contents);
+	$$content = NKF::nkf("-emXZ1", $$content);
     }
 
     if ($SYSTEM eq "MSWin32" && $shelter_cfile ne "") {
@@ -481,14 +485,14 @@ sub load_document ($$$$$\%) {
 	  if $size > $conf::FILE_SIZE_LIMIT;
     }
 
-    $$contents =~ s/[ \t]+/ /g;   # remain LFs v1.03
-    $$contents =~ s/\r\n/\n/g;    # remain LFs is for ChaSen
-    $$contents =~ s/\r/\n/g;      # CR+LF or CR are into LF
+    $$content =~ s/[ \t]+/ /g;   # remain LFs v1.03
+    $$content =~ s/\r\n/\n/g;    # remain LFs is for ChaSen
+    $$content =~ s/\r/\n/g;      # CR+LF or CR are into LF
 
 
     # Control characters be into space
-    my $ctrl = $$contents =~ tr/\x00-\x09\x0b-\x1f\x7f\xff/    /;
-    my $kanji = $$contents =~ tr/\xa1-\xfe/\xa1-\xfe/;  # Kanji contained?
+    my $ctrl = $$content =~ tr/\x00-\x09\x0b-\x1f\x7f\xff/    /;
+    my $kanji = $$content =~ tr/\xa1-\xfe/\xa1-\xfe/;  # Kanji contained?
 
     return ($size, $ctrl, $kanji, $mtype);
 }
@@ -684,7 +688,7 @@ sub parse_options ()
 	       's|checkpoint'        => \$CheckPoint{'on'},
 	       'O|output-dir=s'      => \$output_dir,
 	       'l|lang=s'            => \$conf::LANGUAGE,
-	       'T|template-dir=s'    => \$LIBDIR,
+	       'T|template-dir=s'    => \$TEMPLATEDIR,
 	       't|allow-regex=s'     => \$conf::ALLOW_REGEX,
 
 	       'v|version'           => \$opt_version,
@@ -750,6 +754,7 @@ sub parse_options ()
     if (@ARGV == 0 && !$target_loaded && $output_dir eq "") {
 	show_usage();
 	exit 1;
+    }
     while (defined($argv[0]) && $argv[0] =~ /^-/) {
 	$conf::TARGET_FILE = ".*" if $argv[0] =~ /a/;
 	$conf::WAKATI = $conf::KAKASI, $conf::MorphOpt = 0 if $argv[0] =~ /k/;
@@ -789,8 +794,8 @@ sub parse_options ()
  	    print "Index output directory: $argv[0]\n" unless $conf::QuietOpt;
  	} elsif ($argv[0] =~ /T$/) {
  	    shift @argv;
-	    $LIBDIR = $argv[0];
-	    $LIBDIR =~ s|/*$||;
+	    $TEMPLATEDIR = $argv[0];
+	    $TEMPLATEDIR =~ s|/*$||;
  	} elsif ($argv[0] =~ /I$/) {
 	    shift @argv;
 	    eval util::include($argv[0]);
@@ -845,6 +850,7 @@ sub parse_options ()
     return ($output_dir, $target_dir, @flist);
 }
 
+
 sub load_target_list ($) {
     my ($file) = @_;
     my @flist = ();
@@ -884,6 +890,7 @@ sub load_target_list ($) {
     return @flist;
 }
 
+
 sub show_usage () {
     if ($conf::LANGUAGE eq "ja") {
 	if ($CCS eq "euc") {
@@ -899,7 +906,7 @@ sub show_usage () {
 
 # check the file -- 0: OK / 1: NG
 sub check_file ($$$$$) {
-    my ($cfile, $contents, $ctrl, $size, $mtype) = @_;
+    my ($cfile, $content, $ctrl, $size, $mtype) = @_;
 
     # コントロール文字が全体の 3 % よりも多ければバイナリファイル
     # とみなし、スキップする (-B は問題があるので使わない)
@@ -952,13 +959,16 @@ sub write_result_file () {
     my $fname = $1;
     my $template = "";
     my $buf = "";
-    if ( -e "$LIBDIR2/$fname") {
-	$template = "$LIBDIR2/$fname";
+
+    my $templatedir2 = cwd() . "/../filter";  # relative path from cwd
+    if ( -e "$templatedir2/$fname") {
+	
+	$template = "$templatedir2/$fname";
     } else {
-	$template = "$LIBDIR/$fname";
+	$template = "$TEMPLATEDIR/$fname";
     }
     if (-e $template) {
-	$buf = util::read_file($template);
+	$buf = util::readfile($template);
     } else {
 	return;
     }
@@ -984,13 +994,14 @@ sub write_message_to_file ($$) {
 	
 	$full_path_name =~ m!.*/(.*)$!;
 	$fname = $1;
-	if ( -e "$LIBDIR2/$fname") {
-	    $template = "$LIBDIR2/$fname";
+	my $templatedir2 = cwd() . "/../filter";  # relative path from cwd
+	if ( -e "$templatedir2/$fname") {
+	    $template = "$templatedir2/$fname";
 	} else {
 	    $template = "$LIBDIR/$fname";
 	}
 	if (-e $template) {
-	    my $buf = util::read_file($template);
+	    my $buf = util::readfile($template);
 	    my $fh_output;
 	    if ($conf::LANGUAGE eq "ja" && !$conf::USE_NKF_MODULE) {
 		$fh_output = util::fopen_or_die("|$conf::NKF -j >$full_path_name");
@@ -1404,18 +1415,19 @@ sub make_headfoot ($$$) {
     my $buf   = "";
 
     if (-e $file) {
-	$buf = util::read_file($file);
+	$buf = util::readfile($file);
     } else {
 	$file =~ m!.*/(.*)$!;
 	my $fname = $1;
 	my $template = "";
-	if ( -e "$LIBDIR2/$fname") {
-	    $template = "$LIBDIR2/$fname";
+	my $templatedir2 = cwd() . "/../filter";  # relative path from cwd
+	if ( -e "$templatedir2/$fname") {
+	    $template = "$templatedir2/$fname";
 	} else {
-	    $template = "$LIBDIR/$fname";
+	    $template = "$TEMPLATEDIR/$fname";
 	}
 	if (-e $template) {
-	    $buf = util::read_file($template);
+	    $buf = util::readfile($template);
 	} else {
 	    return;
 	}
@@ -1858,8 +1870,10 @@ muda($conf::File{'BODY_MSG_EN'},
      $conf::KAKASI, $conf::OkuriganaOpt, $TARGET_DIR, $conf::ManOpt,
      $conf::HiraganaOpt, $conf::ROBOTS_EXCLUDE_URLS, $conf::DEFAULT_FILE,
      $conf::HTML_SUFFIX, $conf::USAGE_EN, $conf::NoHeadAbstOpt,
-     $conf::SUMMARY_HEADER, $conf::DebugOpt, $conf::NoEncodeURL,
-     $conf::HtaccessExcludeOpt, $conf::URL_PREFIX, $conf::RECURSIVE_ACTIONS);
+     $conf::DebugOpt, $conf::NoEncodeURL, $conf::HtaccessExcludeOpt, 
+     $conf::RECURSIVE_ACTIONS, $conf::ROBOTS_EXCLUDE_URIS, 
+     $conf::NoInsertHeaderOpt, $conf::NoRegexpIndexOpt, $conf::NoFieldInfoOpt,
+     $conf::ROBOTS_EXCLUDE_URLS);
 
 sub muda(@) {}
 

@@ -33,6 +33,8 @@
 
 	* Makefile.am: Add AUTOMAKE_OPTIONS = no-dependencies
 
+	* lib/html.pl: Remove.
+
 	
 1999-08-26  Ryuji Abe <raeva@t3.rim.or.jp>
 

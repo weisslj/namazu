@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.35 1999-12-14 12:25:31 satoru Exp $
+ * $Id: search.c,v 1.36 1999-12-20 23:38:55 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -970,7 +970,11 @@ NmzResult do_search(char *orig_key, NmzResult val)
     char key[BUFSIZE];
 
     strcpy(key, orig_key);
+
+    nmz_debug_printf("before nmz_strlower: [%s]", key);
     nmz_strlower(key);
+    nmz_debug_printf("after nmz_strlower:  [%s]", key);
+
     mode = detect_search_mode(key);
     if (mode == ERROR_MODE) {
 	val.stat = ERR_FATAL;

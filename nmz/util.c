@@ -1,5 +1,5 @@
 /*
- * $Id: util.c,v 1.29 1999-12-12 14:09:04 rug Exp $
+ * $Id: util.c,v 1.30 1999-12-20 23:38:55 satoru Exp $
  *
  * Imported scan_hex(), scan_oct(), xmalloc(), xrealloc() from 
  * Ruby b19's"util.c" and "gc.c". Thanks to Matsumoto-san for consent!
@@ -33,6 +33,8 @@
  */
 
 static void reverse_byte_order (void*, int, int);
+static char decode_uri_sub(char c1, char c2);
+static int nmz_tolower(int c);
 
 /* reverse byte order */
 static void reverse_byte_order (void *p, int n, int size)
@@ -57,6 +59,16 @@ static char decode_uri_sub(char c1, char c2)
 
     c =  ((c1 >= 'A' ? (toupper(c1) - 'A') + 10 : (c1 - '0'))) * 16;
     c += ( c2 >= 'A' ? (toupper(c2) - 'A') + 10 : (c2 - '0'));
+    return c;
+}
+
+/* substitute for tolower(3) */
+static int nmz_tolower(int c)
+{
+    if (c >= 'A' && c <= 'Z') {
+	c = 'a' + c - 'A';
+	return c;
+    }
     return c;
 }
 
@@ -362,11 +374,15 @@ void nmz_commas(char *str)
     }
 }
 
-
 void nmz_strlower(char *str)
 {
     while (*str) {
-        *str = tolower(*str);
+	/* 
+	 * Cannot use tolower(3) because of some system's
+	 * poor implementention. maybe locale problem?
+	 * [namazu-dev 1058]
+	 */
+        *str = nmz_tolower(*str);
         str++;
     }
 }

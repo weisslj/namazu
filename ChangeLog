@@ -1,3 +1,10 @@
+1999-12-21  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* nmz/util.c (nmz_tolower): New function. substitute for tolower(3).
+	(nmz_strlower): Use nmz_tolower instead of tolower(3) because of
+	some system's poor implementation. maybe locale problem?
+	[namazu-dev 1058] 
+
 1999-12-20  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* scripts/bnamazu.in (unlink_previous_netscape_tmpfile): New function.

@@ -2,7 +2,7 @@
  * 
  * re.c -
  * 
- * $Id: re.c,v 1.11 1999-12-07 09:27:41 rug Exp $
+ * $Id: re.c,v 1.12 1999-12-08 05:46:40 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -144,7 +144,7 @@ NmzResult regex_grep(char *orig_expr, FILE *fp, char *field, int field_mode)
                 } else {
                     fseek(Nmz.w, getidxptr(Nmz.wi, i), 0);
                     fgets(buf2, BUFSIZE, Nmz.w);
-                    chomp(buf2);
+                    nmz_chomp(buf2);
                     nmz_debug_printf("re: %s, (%d:%s), %d, %d\n", 
                             buf2, i, buf, tmp.num, val.num);
                 }

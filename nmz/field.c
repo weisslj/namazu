@@ -37,7 +37,7 @@ static void make_fullpathname_field(int n)
     char *base;
 
     base = Idx.names[n];
-    pathcat(base, NMZ.field);
+    nmz_pathcat(base, NMZ.field);
 }
 
 /*
@@ -146,7 +146,7 @@ void get_field_data(int idxid, int docid, char *orig_field, char *data)
      */
     fseek(fp_field, getidxptr(fp_field_idx, docid), 0);
     fgets(data, BUFSIZE, fp_field);
-    chomp(data);
+    nmz_chomp(data);
 
     if (strcmp(field, "uri") == 0) {
 	replace_uri(data);

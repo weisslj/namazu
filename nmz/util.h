@@ -3,7 +3,7 @@
   util.h -
 
   $Author: rug $
-  $Date: 1999-12-07 09:27:41 $
+  $Date: 1999-12-08 05:46:40 $
   created at: Thu Mar  9 11:55:53 JST 1995
 
   Copyright (C) 1993-1998 Yukihiro Matsumoto
@@ -54,8 +54,8 @@ extern unsigned long scan_oct();
 
 extern void *xmalloc(unsigned long);
 extern void *xrealloc(void*, unsigned long);
-extern void tr(char*, char*, char*);
-extern void chomp(char*);
+extern void nmz_tr(char*, char*, char*);
+extern void nmz_chomp(char*);
 
 extern void strlower();
 extern void delete_backslashes();
@@ -70,7 +70,7 @@ extern void nmz_die(char*, ...);
 extern void nmz_die_with_msg();
 extern void nmz_warn_printf(char*, ...);
 extern void nmz_debug_printf(char*, ...);
-extern void pathcat(char*, char*);
+extern void nmz_pathcat(char*, char*);
 
 extern int  isnumstr(char *);
 extern void commas(char *);
@@ -80,9 +80,9 @@ extern int strprefixcmp(char *, char *);
 extern int strsuffixcmp(char *, char *);
 extern int strprefixcasecmp(char *, char *);
 extern int strsuffixcasecmp(char *, char *);
-extern char *readfile(char*);
-extern void subst(char*, char*, char*);
-extern void cat(char*);
+extern char *nmz_readfile(char*);
+extern void nmz_subst(char*, char*, char*);
+extern void nmz_cat(char*);
 
 extern char *safe_getenv(char *s);
 

@@ -122,7 +122,7 @@ xrealloc(ptr, size)
 
 
 
-void tr(char *str, char *lstr, char *rstr)
+void nmz_tr(char *str, char *lstr, char *rstr)
 {
     while (*str) {
 	char *idx = strchr(lstr, *str);
@@ -134,7 +134,7 @@ void tr(char *str, char *lstr, char *rstr)
 }
 
 /* delete ending LF and spaces of string*/
-void chomp(char * s)
+void nmz_chomp(char * s)
 {
     int i;
     for (i = strlen(s) - 1; i >= 0; i--) {
@@ -318,7 +318,7 @@ void nmz_debug_printf(char *fmt, ...)
     fflush(stderr);
 }
 
-void pathcat(char *base, char *name)
+void nmz_pathcat(char *base, char *name)
 {
     char work[BUFSIZE];
     int i;
@@ -451,7 +451,7 @@ int strsuffixcmp(char *str1, char *str2)
 }
 
 /* load the whole of file */
-char *readfile(char *fname)
+char *nmz_readfile(char *fname)
 {
     char *buf;
     FILE *fp;
@@ -478,7 +478,7 @@ char *readfile(char *fname)
 }
 
 /* subst: substitute pat with rep at without memory size consideration */
-void subst(char *p, char *pat, char *rep)
+void nmz_subst(char *p, char *pat, char *rep)
 {
     int patlen, replen;
     patlen = strlen(pat);
@@ -498,7 +498,7 @@ void subst(char *p, char *pat, char *rep)
 }
 
 /* output contents of file */
-void cat(char *fname)
+void nmz_cat(char *fname)
 {
     char buf[BUFSIZE];
     FILE *fp;

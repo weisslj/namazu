@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.59 1999-12-07 13:21:09 satoru Exp $
+ * $Id: namazu.c,v 1.60 1999-12-08 05:46:42 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -403,11 +403,11 @@ static void make_fullpathname_msg(void)
         base = DEFAULT_INDEX;
     }
     
-    pathcat(base, NMZ.head);
-    pathcat(base, NMZ.foot);
-    pathcat(base, NMZ.body);
-    pathcat(base, NMZ.lock);
-    pathcat(base, NMZ.tips);
+    nmz_pathcat(base, NMZ.head);
+    nmz_pathcat(base, NMZ.foot);
+    nmz_pathcat(base, NMZ.body);
+    nmz_pathcat(base, NMZ.lock);
+    nmz_pathcat(base, NMZ.tips);
 }
 
 static void suicide (int signum)

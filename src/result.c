@@ -1,6 +1,6 @@
 /*
  * result.c -
- * $Id: result.c,v 1.26 1999-12-04 07:32:26 satoru Exp $
+ * $Id: result.c,v 1.27 1999-12-08 05:46:42 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -120,7 +120,7 @@ static void emphasize(char *str)
 	strcpy(key, Query.tab[i]);
 
 	if (strchr(key, '\t')) { /* for phrase search */
-	    tr(key, "\t", " ");
+	    nmz_tr(key, "\t", " ");
 	    strcpy(key, key + 1); 
 	    *(lastc(key)) = '\0';
 	}
@@ -147,7 +147,7 @@ void make_fullpathname_result(int n)
     char *base;
 
     base = Idx.names[n];
-    pathcat(base, NMZ.result);
+    nmz_pathcat(base, NMZ.result);
 }
 
 void compose_result(struct nmz_data d, int counter, 

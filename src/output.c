@@ -444,7 +444,7 @@ void print_msgfile(char *fname) {
 
     strcpy(tmp_fname, fname);
     choose_msgfile(tmp_fname);
-    cat(tmp_fname);
+    nmz_cat(tmp_fname);
 }
 
 /* display the hlist */
@@ -482,7 +482,7 @@ void print_hlist(NmzResult hlist)
 		strcpy(fname, NMZ.result);
 		strcat(fname, ".");
 		strcat(fname, get_template());  /* usually "normal" */
-		templates[hlist.data[i].idxid] = readfile(fname);
+		templates[hlist.data[i].idxid] = nmz_readfile(fname);
 	    }
 	    compose_result(hlist.data[i], counter, 
 			   templates[hlist.data[i].idxid],  result);

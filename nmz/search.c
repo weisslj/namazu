@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.23 1999-12-07 09:45:46 satoru Exp $
+ * $Id: search.c,v 1.24 1999-12-08 05:46:40 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -207,7 +207,7 @@ static NmzResult prefix_match(char * orig_key, int v)
 	    break;
 	}
 	fgets(buf, BUFSIZE, Nmz.w);
-        chomp(buf);
+        nmz_chomp(buf);
 	if (strncmp(key, buf, n) == 0) {
 	    tmp = get_hlist(i);
 	    if (tmp.stat == ERR_FATAL)
@@ -677,7 +677,7 @@ static int check_accessfile(void)
 	return perm;
     }
     while (fgets(buf, BUFSIZE, fp)) {
-	chomp(buf);
+	nmz_chomp(buf);
 	parse_access(buf, rhost, raddr);
     }
     fclose(fp);
@@ -798,17 +798,17 @@ static void make_fullpathname_index(int n)
 
     base = Idx.names[n];
 
-    pathcat(base, NMZ.i);
-    pathcat(base, NMZ.ii);
-    pathcat(base, NMZ.w);
-    pathcat(base, NMZ.wi);
-    pathcat(base, NMZ.p);
-    pathcat(base, NMZ.pi);
-    pathcat(base, NMZ.lock);
-    pathcat(base, NMZ.slog);
-    pathcat(base, NMZ.field);
-    pathcat(base, NMZ.t);
-    pathcat(base, NMZ.access);
+    nmz_pathcat(base, NMZ.i);
+    nmz_pathcat(base, NMZ.ii);
+    nmz_pathcat(base, NMZ.w);
+    nmz_pathcat(base, NMZ.wi);
+    nmz_pathcat(base, NMZ.p);
+    nmz_pathcat(base, NMZ.pi);
+    nmz_pathcat(base, NMZ.lock);
+    nmz_pathcat(base, NMZ.slog);
+    nmz_pathcat(base, NMZ.field);
+    nmz_pathcat(base, NMZ.t);
+    nmz_pathcat(base, NMZ.access);
 }
 
 

@@ -2,7 +2,7 @@
  * 
  * conf.c -
  * 
- * $Id: rcfile.c,v 1.1 1999-12-07 12:57:02 satoru Exp $
+ * $Id: rcfile.c,v 1.2 1999-12-08 05:46:39 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -415,7 +415,7 @@ enum nmz_stat load_rcfile(char *argv0)
 
     while (fgets(buf, BUFSIZE, fp)) {
 	lineno++;
-	chomp(buf);
+	nmz_chomp(buf);
 	conv_ja_any_to_eucjp(buf);  /* for Shift_JIS encoding */
 	if (parse_rcfile(buf, lineno) != SUCCESS)
 	    return FAILURE;

@@ -1,3 +1,36 @@
+1999-12-08  Ryuji Abe  <raeva@t3.rim.or.jp>
+
+	* nmz/util.c (nmz_pathcat): s/pathcat/nmz_pathcat/g.
+	(nmz_tr): s/tr/nmz_tr/g.
+	(nmz_chomp): s/chomp/nmz_chomp/g.
+	(nmz_cat): s/cat/nmz_cat/g.
+	(nmz_subst): s/subst/nmz_subst/g.
+	(nmz_readfile): s/readfile/nmz_readfile/g.
+	
+	* nmz/search.c (nmz_pathcat): Likewise.
+	(nmz_chomp): Likewise.
+	
+	* nmz/field.c (nmz_pathcat): Likewise.
+	(nmz_chomp): Likewise.
+	
+	* nmz/hlist.c (nmz_chomp): Likewise.
+	
+	* nmz/rcfile.c (nmz_chomp): Likewise.
+	
+	* nmz/re.c (nmz_chomp): Likewise.
+	
+	* nmz/wakati.c (nmz_chomp): Likewise.
+	
+	* src/form.c (nmz_chomp): Likewise.
+	(nmz_subst): Likewise.
+	(nmz_readfile): Likewise.
+	
+	* src/output.c (nmz_cat): Likewise.
+	(nmz_readfile): Likewise.
+	
+	* src/result.c (nmz_pathcat): Likewise.
+	(nmz_tr): Likewise.
+
 1999-12-07  Ryuji Abe  <raeva@t3.rim.or.jp>
 
 	* util.[ch] (nmz_debug_printf): s/debug_printf/nmz_debug_printf/g.

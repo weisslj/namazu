@@ -2,7 +2,7 @@
  * 
  * wakati.c -
  * 
- * $Id: wakati.c,v 1.9 1999-12-07 09:27:42 rug Exp $
+ * $Id: wakati.c,v 1.10 1999-12-08 05:46:40 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -200,7 +200,7 @@ int wakati(char *key)
             strcat(buf, "\t");
 	}
     }
-    chomp(buf);
+    nmz_chomp(buf);
 
     if (strlen(buf) <= BUFSIZE) {
 	strcpy(key, buf);
@@ -267,7 +267,7 @@ int split_query(char *qs)
 
     /* replace  with spaces */
     for (i = 0; i < qn; i++) {
-	tr(Query.tab[i], "", " ");
+	nmz_tr(Query.tab[i], "", " ");
     }
     return SUCCESS;
 }

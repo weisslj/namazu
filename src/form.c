@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.24 1999-11-23 22:46:38 satoru Exp $
+ * $Id: form.c,v 1.25 1999-12-08 05:46:42 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -117,7 +117,7 @@ static void delete_str(char *s, char *d)
             tmp--;
         }
     }
-    chomp(s);
+    nmz_chomp(s);
 }
 
 static void get_value(char *s, char *v)
@@ -295,9 +295,9 @@ static char *read_headfoot(char *fname)
     strcpy(tmp_fname, fname);
     choose_msgfile(tmp_fname);
 
-    buf = readfile(tmp_fname);
+    buf = nmz_readfile(tmp_fname);
     if (buf == NULL) { /* failed */
-	buf = readfile(fname); /* retry with plain fname */
+	buf = nmz_readfile(fname); /* retry with plain fname */
 	if (buf == NULL) {
 	    return NULL;
 	}
@@ -318,7 +318,7 @@ static char *read_headfoot(char *fname)
 
     /* replace {cgi} with a proper namazu.cgi location */
     while ((p = strstr(buf, "{cgi}")) != NULL) {
-	subst(p, "{cgi}", script_name);
+	nmz_subst(p, "{cgi}", script_name);
     }
     
     return buf;

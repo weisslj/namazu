@@ -1,0 +1,18 @@
+#! /bin/sh
+#
+# Check whether tmp1 and tmp3 indices are same.
+#
+# tmp1: simply indexed.
+# tmp3: indexed with --checkpoint and $ON_MEMORY_MAX is 0.
+#
+
+cd tmp1
+targets=`find . -type f -name 'NMZ.*' | \
+              egrep -v "NMZ\.(log|r|slog|status)$"`  # Exclude them.
+cd ..
+
+for target in $targets; do
+    diff "tmp1/$target" "tmp3/$target"
+    test "$?" != "0" && exit 1  # error if not success
+done
+exit 0

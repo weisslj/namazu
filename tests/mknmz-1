@@ -1,0 +1,15 @@
+#! /bin/sh
+#
+# Test for simple indexing.
+#
+
+if test ! -d tmp1; then
+    mkdir tmp1
+else
+    rm -f tmp1/NMZ.*
+fi
+
+# Simple indexing
+cd ../scripts 
+./mknmz -O ../tests/tmp1 ../tests/data > ../tests/test-log
+exit $?

@@ -1,50 +1,75 @@
 2000-02-26  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
-	* Makefile.am (SUBDIRS): Add test.
-	(DIST_SUBDIRS): Add test.
+	* tests/idxdiff-1: New file.
+
+	* tests/idxdiff-2: New file.
+	
+	* tests/mknmz-1: New file.
+	
+	* tests/mknmz-2: New file.
+	
+	* tests/mknmz-3: New file.
+	
+	* tests/namazu-1: New file.
+	
+	* tests/namazu-2: New file.
+	
+	* tests/namazu-cgi-1: New file.
+	
+	* tests/namazu-cgi-2: New file.
+	
+	* tests/Makefile.am (TESTS): New variable.
+
+	* Makefile.am: Abolish `check' target.
+
+	* Makefile.am (SUBDIRS): Add tests.
+	(DIST_SUBDIRS): Likewise.
 	(check): New rule.
 
-	* configure.in (AC_OUTPUT): Add test/Makefile and test/ja/Makefile.
+	* configure.in (AC_OUTPUT): Add tests/Makefile,
+	tests/data/Makefile and tests/ja/Makefile.
 
-	* test/Makefile.am: New file.
+	* tests/Makefile.am: New file.
 
-	* test/ja/Makefile.am: New file.
+	* tests/data/Makefile.am: New file.
 
-	* test/ja/acrobat3.pdf: New file.
+	* tests/data/ja/Makefile.am: New file.
+
+	* tests/data/ja/acrobat3.pdf: New file.
 	
-	* test/ja/acrobat4.pdf: New file.
+	* tests/data/ja/acrobat4.pdf: New file.
 	
-	* test/ja/d20000220.hnf: New file.
+	* tests/data/ja/d20000220.hnf: New file.
 	
-	* test/ja/html.html: New file.
+	* tests/data/ja/html.html: New file.
 	
-	* test/ja/mail-multipart.txt: New file.
+	* tests/data/ja/mail-multipart.txt: New file.
 	
-	* test/ja/mail.txt: New file.
+	* tests/data/ja/mail.txt: New file.
 	
-	* test/ja/man.1: New file.
+	* tests/data/ja/man.1: New file.
 	
-	* test/ja/msg00000.html: New file.
+	* tests/data/ja/msg00000.html: New file.
 	
-	* test/ja/pdf.pdf: New file.
+	* tests/data/ja/pdf.pdf: New file.
 	
-	* test/ja/plain.txt: New file.
+	* tests/data/ja/plain.txt: New file.
 	
-	* test/ja/plain.txt.Z: New file.
+	* tests/data/ja/plain.txt.Z: New file.
 	
-	* test/ja/plain.txt.bz2: New file.
+	* tests/data/ja/plain.txt.bz2: New file.
 	
-	* test/ja/plain.txt.gz: New file.
+	* tests/data/ja/plain.txt.gz: New file.
 	
-	* test/ja/rfc0000.txt: New file.
+	* tests/data/ja/rfc0000.txt: New file.
 	
-	* test/ja/tex.tex: New file.
+	* tests/data/ja/tex.tex: New file.
 	
-	* test/ja/word6.doc: New file.
+	* tests/data/ja/word6.doc: New file.
 	
-	* test/ja/word95.doc: New file.
+	* tests/data/ja/word95.doc: New file.
 	
-	* test/ja/word98.doc: New file.
+	* tests/data/ja/word98.doc: New file.
 	
 	* filter/bzip2.pl (filter): Fix fatal bug. s/-dc/-c/
 

@@ -11,10 +11,10 @@ DIST_TKNAMAZU = tknamazu
 endif
 
 SUBDIRS = conf doc etc filter intl po nmz lib pl src lisp man scripts \
-	  test template $(BUILT_TKNAMAZU)
+	  tests template $(BUILT_TKNAMAZU)
 
 DIST_SUBDIRS = conf doc etc filter intl po nmz lib pl src lisp man scripts \
-	  test template $(BUILT_TKNAMAZU)
+	  tests template $(BUILT_TKNAMAZU)
 
 
 bin_SCRIPTS = nmz-config
@@ -41,12 +41,6 @@ dist-hook:
 	    rm -rf $(distdir)/$$subdir/CVS; \
 	    rm -rf $(distdir)/$$subdir/*/CVS; \
 	done
-
-check:
-	test ! -d tmp && mkdir tmp
-	cd scripts && ./mknmz -O ../tmp ../test && cd ..
-	cd src && ./namazu namazu ../tmp && cd ..
-	rm -rf tmp
 
 ##Bug in automake: Can't use `if MAINTAINER_MODE'
 @MAINTAINER_MODE_TRUE@include $(srcdir)/maintMakefile

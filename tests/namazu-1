@@ -1,0 +1,18 @@
+#! /bin/sh
+#
+# Test for namazu.
+#
+
+docnum=`perl -lne 'print $1 if /^files (\d+)/' tmp1/NMZ.status`
+
+# Check simple searching.
+cd ../src
+./namazu namazu ../tests/tmp1 >> ../tests/test-log
+test "$?" != "0" && exit 1  # error if not success
+
+# Check the number of retrieved documents.
+cd ../src
+hitnum=`./namazu -c namazu ../tests/tmp1`
+test "$docnum" != "$hitnum" && exit 1  # error if not matched
+
+exit 0

@@ -1,0 +1,24 @@
+#! /bin/sh
+#
+# Test for namazu.cgi. Two indices are searched at once.
+#
+
+docnum=`perl -lne 'print $1 if /^files (\d+)/' "tmp1/NMZ.status"`
+docnum=`expr $docnum + $docnum`
+
+pwd=`pwd`
+
+tmprc="../src/.namazurc"
+echo "Index $pwd" > $tmprc
+echo "Template $pwd/tmp1" >> $tmprc
+
+export SCRIPT_NAME='namazu.cgi'
+export QUERY_STRING='query=namazu&idxname=tmp1&idxname=tmp2'
+
+cd ../src
+hitnum=`./namazu.cgi | perl -ne 'print $1 if /<!-- HIT -->(\d+)<!-- HIT -->/'`
+rm -f $tmprc
+
+#echo $docnum $hitnum
+test "$docnum" != "$hitnum" && exit 1  # error if not matched
+exit 0

@@ -31,6 +31,9 @@ Requires: %name = %{PACKAGE_VERSION}
 Libraries and include files of Namazu.
 
 %changelog
+* Thu Nov 04 1999 Ryuji Abe <raeva@t3.rim.or.jp>
+- Added nmz-config in devel package.
+
 * Wed Nov 03 1999 Ryuji Abe <raeva@t3.rim.or.jp>
 - Use our definite macros, ver, rel, prefix, sysconfdir, and localstatedir.
 - If configure not found, use autogen.sh.
@@ -103,6 +106,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(-, root, root)
+%{prefix}/bin/nmz-config
 %{prefix}/include/libnamazu.h
 %{prefix}/lib/libnmz.so
 %{prefix}/lib/libnmz.la

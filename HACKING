@@ -1,7 +1,7 @@
 
 CVS Access
 
-You can also check out the very version via Anonymous CVS.
+You can also check out the very newest version via Anonymous CVS.
 Here's now:
 
 % cvs -d :pserver:guest@cvs.namazu.org:/storage/cvsroot login
@@ -10,7 +10,7 @@ CVS password: guest
 
 Namazu has been branched into the stable version (2.0.x) and
 the development version (2.1.x) on 2001-06-25. If You want to
-check out the stable version, type the following information:
+check out the stable version, type the following information instead:
 
 % cvs -d :pserver:guest@cvs.namazu.org:/storage/cvsroot login
 CVS password: guest
@@ -29,4 +29,4 @@ the following packages:
 	- GNU libtool 1.3 (or later)
 	- GNU gettext 0.10.35 (or later)
 
-After check out, run autogen.sh at top of the source tree.
+After check out, run ./autogen.sh at top of the source tree.

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: taro7_10.pl,v 1.9 2004-01-24 04:03:01 usu Exp $
+# $Id: taro7_10.pl,v 1.10 2004-02-01 01:41:31 usu Exp $
 # Copyright (C) 2003 Yukio USUDA
 #               2003 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -156,7 +156,6 @@ sub getcontent($) {
     }
     u16toe(\$content);
     $content =~ s/[\x00\x0E\x0c]//g;
-    $content =~ s/\xa1\xa1//g;
     return $content;
 }
 

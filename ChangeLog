@@ -1,3 +1,7 @@
+1999-11-08  Ryuji Abe  <raeva@t3.rim.or.jp>
+
+	* nmz/Makefile.am (DEFS): Same as src/Makefile.am.
+
 1999-11-08  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* src/Makefile.am: Fixed conflicts.

@@ -31,6 +31,10 @@ Requires: %name = %{PACKAGE_VERSION}
 Libraries and include files of Namazu.
 
 %changelog
+* Mon Nov 08 1999 Ryuji Abe <raeva@t3.rim.or.jp>
+- Changed includedir %{prefix}/include/namazu.
+- Bug fix at configure section.
+
 * Thu Nov 04 1999 Ryuji Abe <raeva@t3.rim.or.jp>
 - Added nmz-config in devel package.
 
@@ -59,7 +63,7 @@ Libraries and include files of Namazu.
 %setup
 
 %build
-if [! -f configure]; then
+if [ ! -f configure ]; then
 CFLAGS="$RPM_OPT_FLAGS" ./autogen.sh \
 	--prefix=%prefix \
 	--sysconfdir=%sysconfdir \
@@ -107,7 +111,7 @@ rm -rf $RPM_BUILD_ROOT
 %files devel
 %defattr(-, root, root)
 %{prefix}/bin/nmz-config
-%{prefix}/include/libnamazu.h
+%{prefix}/include/namazu/*.h
 %{prefix}/lib/libnmz.so
 %{prefix}/lib/libnmz.la
 %{prefix}/lib/libnmz.a

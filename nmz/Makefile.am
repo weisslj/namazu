@@ -1,14 +1,18 @@
 # Process this file with automake to produce Makefile.in
 #
-# $Id: Makefile.am,v 1.6 1999-11-08 05:06:03 knok Exp $
+# $Id: Makefile.am,v 1.7 1999-11-08 05:43:37 rug Exp $
 #
 
 AUTOMAKE_OPTIONS = no-dependencies
 
+localedir   = $(datadir)/locale
+confdir     = $(sysconfdir)/$(PACKAGE)
+indexdir    = $(localstatedir)/$(PACKAGE)/index
+
 INCLUDES = -I.. -I../lib -I../src -I../intl
 DEFS = -DLOCALEDIR=\"$(localedir)\" \
-       -DOPT_INDEXDIR=\"${localstatedir}/${PACKAGE}/index\" \
-       -DOPT_CONFDIR=\"${sysconfdir}/${PACKAGE}\" \
+       -DOPT_CONFDIR=\"$(confdir)\" \
+       -DOPT_INDEXDIR=\"$(indexdir)\" \
        @DEFS@
 
 pkginclude_HEADERS = libnamazu.h codeconv.h conf.h critical.h field.h hlist.h \

@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.36 2000-02-29 04:25:34 satoru Exp $
+# $Id: mknmz.in,v 1.37 2000-03-01 05:37:14 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -75,7 +75,6 @@ sub main () {
     my ($output_dir, @targets) = parse_options();
     load_rcfiles();
     my ($file_base, $total_files_num) = prep($output_dir, @targets);
-    load_olemodules() if ($var::Opt{'ole'});
 
     my $swap = 1;
     my $file_count = 0;
@@ -270,6 +269,12 @@ sub load_modules () {
     @Seed = seed::init();
     textdomain('namazu', $LANG);
 
+    #
+    # Windows modules must be loaded first.
+    # Because OLE filters have low precedence over normal ones.
+    #
+    load_win32modules() if $SYSTEM eq "MSWin32";
+
     # Check filter modules
     my @filters = ();
     if (-f "../filter/gfilter.pl") { # to ease developing
@@ -279,21 +284,20 @@ sub load_modules () {
 	@filters = glob "$FILTERDIR/*.pl";
     }
     
-    # Exclude gfilter.pl and ole*.pl files.
-    @filters = grep 
-    { $_ !~ m!/gfilter\.pl$! && $_ !~ m!/ole[^/]+\.pl! } @filters;
+    # Exclude gfilter.pl
+    @filters = grep  $_ !~ m!/gfilter\.pl$! } @filters;
       
     load_filters(@filters);
 }
 
-sub load_olemodules () {
+sub load_win32modules () {
     # Check filter modules
     my @filters = ();
-    if (-f "../filter/gfilter.pl") { # to ease developing
-	@filters = glob "../filter/ole*.pl";
-	unshift @INC, "../filter";
+    if (-f "../filter/win32/olemsword.pl") { # to ease developing
+	@filters = glob "../filter/win32/*.pl";
+	unshift @INC, "../filter/win32";
     } else {
-	@filters = glob "$FILTERDIR/ole*.pl";
+	@filters = glob "$FILTERDIR/win32/*.pl";
     }
 
     load_filters(@filters);
@@ -896,7 +900,6 @@ sub parse_options ()
 	       'h|mailnews'          => \$opt_mailnews,
 	       'k|use-kakasi'        => \$opt_kakasi,
 	       'm|use-chasen-noun'   => \$opt_chasen_noun,
-	       'o|ole'               => \$var::Opt{'ole'},
 	       'q|quiet'             => \$opt_quiet,
 	       'r|replace=s'         => \$ReplaceCode,
 	       's|checkpoint'        => \$CheckPoint{'on'},
@@ -1611,15 +1614,15 @@ sub pickup_updated_files (\%) {
     for my $cfile (@{$ref->{'name'}}) {
 	if (defined($ref->{'deleted'}{$cfile})) {
 	    print "$cfile was deleted!\n";
-	    $ref->{'mtime'}[$i] = -1; # assign the a messing number
+	    $ref->{'mtime'}[$i] = -1; # Assign the missing number.
 	} elsif (defined($ref->{'overlapped'}{$cfile})) {
 	    my $cfile_mtime = (stat($cfile))[9];
 	    my $rfile_mtime = $ref->{'mtime'}[$i];
 
 	    if ($rfile_mtime < $cfile_mtime) {
-		# this file is updated!
-		print "$cfile "._("was updated!\n");
-		$ref->{'mtime'}[$i] = -1; # assign the messing number
+		# The file is updated!
+		print "$cfile " . _("was updated!\n");
+		$ref->{'mtime'}[$i] = -1; # Assign the missing number.
 		push(@updated_files, $cfile);
 	    }
 	}

@@ -1,3 +1,14 @@
+2000-03-01  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* pl/usage.pl: Remove the description for --ole option.
+
+	* scripts/mknmz.in (pickup_updated_files): Change commnets.
+	(main): Do't call load_olemodules() no longer.
+	(load_win32modules): Renamed from load_olemodules().
+	(load_modules): Call load_win32modules().
+	(load_modules): Abolish ole*.pl excluding.
+	(parse_options): Abolish --ole option.
+
 2000-03-01  Ryuji Abe  <raeva@t3.rim.or.jp>
 
 	* configure.in (AM_CONDITIONAL): Define WIN32 if target

@@ -1,5 +1,5 @@
 # -*- Perl -*-
-# $Id: usage.pl,v 1.23 2000-02-27 15:09:06 satoru Exp $
+# $Id: usage.pl,v 1.24 2000-03-01 05:37:13 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -51,7 +51,6 @@ Target files:\n\
                            <meta name=\"ROBOTS\" content=\"NOINDEX\">\n\
   -M, --meta               handle HTML meta tags for field-specified search.\n\
   -r, --replace=CODE       set CODE for replacing URI.\n\
-  -o, --ole                use OLE document filters. (works on Windows only)\n\
       --mtime=NUM          limit by mtime just like find(1)'s -mtime option.\n\
                            e.g., -50 for recent 50 days, +50 for older than 50.\n\
 \n\

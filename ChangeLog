@@ -2,6 +2,7 @@
 
 	* scripts/mknmz.in (check_file): Handle files excluded by
 	robots.txt. [namazu 1477]
+	(check_file): Abolish the above feature.
 
 	* filter/html.pl (parse_robots_txt): Change message.
 

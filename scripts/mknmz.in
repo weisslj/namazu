@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.29 2000-02-22 13:16:29 satoru Exp $
+# $Id: mknmz.in,v 1.30 2000-02-22 13:53:00 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -1294,9 +1294,12 @@ sub check_file ($$$$$) {
 	$msg = $mtype;
     } elsif ($mtype =~ /^x-system/) {
 	$msg = _("system error occurred! ")."($mtype)".(" skipped.");
-    } elsif ($uri =~ m/^$conf::ROBOTS_EXCLUDE_URIS/o) {
-	$msg = _("is excluded because of /robots.txt! skipped.");
-    }
+    } 
+
+# FIXME: should be removed.
+# elsif ($uri =~ m/^$conf::ROBOTS_EXCLUDE_URIS/o) {
+#	$msg = _("is excluded because of /robots.txt! skipped.");
+#    }
 
     return $msg;
 }
@@ -2200,7 +2203,7 @@ sub decide_type ($$) {
 #
 # For avoiding "used only once: possible typo at ..." warnings.
 #
-muda($conf::ON_MEMORY_MAX, $conf::ROBOTS_EXCLUDE_URIS,
+muda($conf::ON_MEMORY_MAX,
      $conf::WORD_LENG_MAX, $conf::TEXT_SIZE_MAX,
      $conf::DENY_FILE, $var::INTSIZE,
      $conf::CHASEN_NOUN, $conf::CHASEN,

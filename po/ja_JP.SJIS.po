@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: namazu 2.0\n"
-"POT-Creation-Date: 2000-02-22 21:55+0900\n"
+"POT-Creation-Date: 2000-02-22 22:36+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>\n"
 "Language-Team: Japanese <satoru-t@is.aist-nara.ac.jp>\n"
@@ -306,7 +306,7 @@ msgstr "以下のモジュールが require できません "
 msgid "Faild to call "
 msgstr "呼び出しに失敗 "
 
-#: scripts/mknmz.in:693 scripts/mknmz.in:1426
+#: scripts/mknmz.in:693 scripts/mknmz.in:1429
 msgid "No files to index.\n"
 msgstr "インデックスすべきファイルはありません。\n"
 
@@ -540,62 +540,57 @@ msgstr " スキップします。"
 msgid "system error occurred! "
 msgstr "致命的なエラー"
 
-#: scripts/mknmz.in:1298
-#, fuzzy
-msgid "is excluded because of /robots.txt! skipped."
-msgstr " は .htaccess によって除外されます。\n"
-
-#: scripts/mknmz.in:1500
-msgid ""
-"\n"
-"\n"
-"== found ==\n"
-msgstr ""
-"\n"
-"\n"
-"== found ==\n"
-
-#: scripts/mknmz.in:1501
-msgid ""
-"\n"
-"\n"
-"== registered ==\n"
-msgstr ""
-"\n"
-"\n"
-"== registered ==\n"
-
-#: scripts/mknmz.in:1502
-msgid ""
-"\n"
-"\n"
-"== overlapped  ==\n"
-msgstr ""
-"\n"
-"\n"
-"== overlapped  ==\n"
-
 #: scripts/mknmz.in:1503
 msgid ""
 "\n"
 "\n"
-"== deleted  ==\n"
+"== found ==\n"
 msgstr ""
 "\n"
 "\n"
-"== deleted  ==\n"
+"== found ==\n"
 
 #: scripts/mknmz.in:1504
 msgid ""
 "\n"
 "\n"
+"== registered ==\n"
+msgstr ""
+"\n"
+"\n"
+"== registered ==\n"
+
+#: scripts/mknmz.in:1505
+msgid ""
+"\n"
+"\n"
+"== overlapped  ==\n"
+msgstr ""
+"\n"
+"\n"
+"== overlapped  ==\n"
+
+#: scripts/mknmz.in:1506
+msgid ""
+"\n"
+"\n"
+"== deleted  ==\n"
+msgstr ""
+"\n"
+"\n"
+"== deleted  ==\n"
+
+#: scripts/mknmz.in:1507
+msgid ""
+"\n"
+"\n"
 "== updated ==\n"
 msgstr ""
 "\n"
 "\n"
 "== updated ==\n"
 
-#: scripts/mknmz.in:1505
+#: scripts/mknmz.in:1508
 msgid ""
 "\n"
 "\n"
@@ -605,102 +600,102 @@ msgstr ""
 "\n"
 "== files to index ==\n"
 
-#: scripts/mknmz.in:1529
+#: scripts/mknmz.in:1532
 msgid "## deleted: "
 msgstr "## deleted: "
 
-#: scripts/mknmz.in:1552
+#: scripts/mknmz.in:1555
 msgid "## indexed: "
 msgstr "## indexed: "
 
-#: scripts/mknmz.in:1578
+#: scripts/mknmz.in:1581
 #, fuzzy
 msgid "update_field_index: "
 msgstr "フィールド検索用のインデックスが開けませんでした"
 
-#: scripts/mknmz.in:1598
+#: scripts/mknmz.in:1601
 msgid "was updated!\n"
 msgstr "ファイルは更新されています。\n"
 
-#: scripts/mknmz.in:1639
+#: scripts/mknmz.in:1642
 msgid "ERROR: malformed NMZ.r format!\n"
 msgstr "エラー: NMZ.r が無効な形式です。\n"
 
-#: scripts/mknmz.in:1721
+#: scripts/mknmz.in:1724
 msgid "[Append]"
 msgstr ""
 
-#: scripts/mknmz.in:1723
+#: scripts/mknmz.in:1726
 msgid "[Base]"
 msgstr ""
 
-#: scripts/mknmz.in:1725
+#: scripts/mknmz.in:1728
 #, fuzzy
 msgid "Date:"
 msgstr "wanted: "
 
-#: scripts/mknmz.in:1726
+#: scripts/mknmz.in:1729
 #, fuzzy
 msgid "Added Documents:"
 msgstr "load_document 実行後: "
 
-#: scripts/mknmz.in:1728
+#: scripts/mknmz.in:1731
 #, fuzzy
 msgid "Deleted Documents:"
 msgstr "load_document 実行後: "
 
-#: scripts/mknmz.in:1730
+#: scripts/mknmz.in:1733
 #, fuzzy
 msgid "Updated Documents:"
 msgstr "load_document 実行後: "
 
-#: scripts/mknmz.in:1732
+#: scripts/mknmz.in:1735
 msgid "Size (bytes):"
 msgstr ""
 
-#: scripts/mknmz.in:1734
+#: scripts/mknmz.in:1737
 #, fuzzy
 msgid "Total Documents:"
 msgstr "load_document 実行後: "
 
-#: scripts/mknmz.in:1736
+#: scripts/mknmz.in:1739
 msgid "Added Keywords:"
 msgstr ""
 
-#: scripts/mknmz.in:1738
+#: scripts/mknmz.in:1741
 msgid "Total Keywords:"
 msgstr ""
 
-#: scripts/mknmz.in:1740
+#: scripts/mknmz.in:1743
 #, fuzzy
 msgid "Wakati:"
 msgstr "wakati: 以下を利用 "
 
-#: scripts/mknmz.in:1741
+#: scripts/mknmz.in:1744
 msgid "Time (sec):"
 msgstr ""
 
-#: scripts/mknmz.in:1743
+#: scripts/mknmz.in:1746
 msgid "File/Sec:"
 msgstr ""
 
-#: scripts/mknmz.in:1746
+#: scripts/mknmz.in:1749
 msgid "System:"
 msgstr ""
 
-#: scripts/mknmz.in:1747
+#: scripts/mknmz.in:1750
 msgid "Perl:"
 msgstr ""
 
-#: scripts/mknmz.in:1748
+#: scripts/mknmz.in:1751
 msgid "Namazu:"
 msgstr ""
 
-#: scripts/mknmz.in:1871
+#: scripts/mknmz.in:1874
 msgid "doing write_phrase_hash() processing.\n"
 msgstr "write_phrase_hash() 実行.\n"
 
-#: scripts/mknmz.in:2098
+#: scripts/mknmz.in:2101
 msgid "doing write_index() processing.\n"
 msgstr "write_index() 実行.\n"
 
@@ -812,6 +807,10 @@ msgstr ""
 #, fuzzy
 msgid "is excluded because of <meta name=\"robots\" ...>"
 msgstr " は .htaccess によって除外されます。\n"
+
+#, fuzzy
+#~ msgid "is excluded because of /robots.txt! skipped."
+#~ msgstr " は .htaccess によって除外されます。\n"
 
 #~ msgid "wanted: "
 #~ msgstr "wanted: "

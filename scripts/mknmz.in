@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.77 2000-11-16 10:41:20 knok Exp $
+# $Id: mknmz.in,v 1.78 2000-12-20 01:06:48 knok Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -75,12 +75,12 @@ sub main {
     my $start_time = time;
 
     init();
-    load_modules();
 
     # To support Windows. Since they have nasty drive letter convention,
     # it is necessary to change mknmzrc dynamically with env. variable.
     load_rcfile($ENV{'MKNMZRC'}) if defined $ENV{'MKNMZRC'};
 
+    load_modules();
     load_rcfiles();
     my ($output_dir, @targets) = parse_options();
     my ($docid_base, $total_files_num) = prep($output_dir, @targets);

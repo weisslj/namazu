@@ -3,7 +3,7 @@
 # nmzidx.pl - subroutines for accessing Namazu index files (NMZ.*)
 #         by furukawa@tcp-ip.or.jp
 #
-# $Id: nmzidx.pl,v 1.18 2004-07-22 18:15:54 opengl2772 Exp $
+# $Id: nmzidx.pl,v 1.19 2004-09-06 14:25:19 opengl2772 Exp $
 #
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -225,14 +225,16 @@ sub new{
     $self->{'field'} = new nmzfield;
     $self->{'field'}->open_all($par);
     $self->{'offset'} = 0;
-    $self->{'size'} = (-s $self->{'t'}) / length(pack('N', 0));
-    $self->{'valid'} = $self->{'size'};
+    if (defined $self->{'t'}) {
+        $self->{'size'} = (-s $self->{'t'}) / length(pack('N', 0));
+        $self->{'valid'} = $self->{'size'};
+    }
     return $self;
 }
 
 sub close{
     my $self = shift;
-    $self->{'t'}->close;
+    $self->{'t'}->close if defined $self->{'t'};
     $self->{'r'}->close if defined $self->{'r'};
     $self->{'field'}->close;
 }

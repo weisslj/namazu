@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 #
-# $Id: gcnmz.in,v 1.10 2001-11-06 05:28:36 rug Exp $
+# $Id: gcnmz.in,v 1.11 2004-09-06 14:25:19 opengl2772 Exp $
 #
 # gcnmz.pl - by furukawa@tcp-ip.or.jp
 #
@@ -61,12 +61,18 @@ sub gcnmz{
     my $nmzi = new nmzidx($dir);
     defined($nmzi) or die("NMZ.lock2 found. Maybe this index is being updated by another process now.");
 
+    my $nmzfi = $nmzi->open_flist;
+    unless (defined $nmzfi->{'t'}) {
+        $nmzfi->close;
+        $nmzi->close;
+        return;
+    }
+
     my $gcflag = 0;
     my $nmzo = new nmzidx($dir, 'w');
 
     my $file_num = 0;
     my %list;
-    my $nmzfi = $nmzi->open_flist;
     my $nmzfo = $nmzo->open_flist;
     my $file_total = $nmzfi->{'size'};
     &eprint("processing NMZ.{t,r,field}\n");

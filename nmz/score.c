@@ -2,7 +2,7 @@
  * 
  * score.c - scoring-related functions of Namazu
  * 
- * $Id: score.c,v 1.7 2001-12-21 05:39:20 knok Exp $
+ * $Id: score.c,v 1.8 2003-03-21 13:30:12 opengl2772 Exp $
  * 
  * Copyright (C) 2001 Hajime BABA  All rights reserved.
  * Copyright (C) 2001 Namazu Project All rights reserved.
@@ -109,7 +109,7 @@ static int
 get_field_size(int docid, int idxid)
 {
     FILE *fp_field, *fp_field_idx;
-    char fname[BUFSIZE], buf[BUFSIZE];
+    char fname[BUFSIZE] = "", buf[BUFSIZE]; 
     int size;
     
     /* Make a pathname */
@@ -146,7 +146,7 @@ static int
 get_field_time(int docid, int idxid)
 {
     FILE *fp_field;
-    char fname[BUFSIZE];
+    char fname[BUFSIZE] = "";
     unsigned int t;
     
     /* Make a pathname */
@@ -173,7 +173,7 @@ static void
 get_field_uri(char *uri, int docid, int idxid)
 {
     FILE *fp_field, *fp_field_idx;
-    char fname[BUFSIZE], buf[BUFSIZE];
+    char fname[BUFSIZE] = "", buf[BUFSIZE];
     
     /* Make a pathname */
     make_fullpathname_field(idxid);

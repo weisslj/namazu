@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.90 2002-03-26 10:49:46 knok Exp $
+ * $Id: search.c,v 1.91 2003-03-21 13:30:12 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -388,7 +388,7 @@ static NmzResult
 do_phrase_search(const char *key, NmzResult val)
 {
     int i, h = 0;
-    char *p, tmpkey[BUFSIZE], *words[QUERY_TOKEN_MAX + 1], *prevword = NULL;
+    char *p, tmpkey[BUFSIZE] = "", *words[QUERY_TOKEN_MAX + 1], *prevword = NULL;
     FILE *phrase, *phrase_index;
     struct nmz_hitnumlist *pr_hitnum = NULL; /* phrase hitnum */
 
@@ -410,6 +410,10 @@ do_phrase_search(const char *key, NmzResult val)
     for (i = 0; ;) {
 	char *q;
 
+	if (*p == '\t') {
+	    p++;
+	    continue;
+	}
 	if (strlen(p) > 0) {
 	    words[i] = p;
 	    i++;
@@ -890,7 +894,7 @@ int
 nmz_binsearch(const char *key, int prefix_match_mode)
 {
     int l, r, x, e = 0, i;
-    char term[BUFSIZE], tmpkey[BUFSIZE];
+    char term[BUFSIZE], tmpkey[BUFSIZE] = "";
 
     strncpy(tmpkey, key, BUFSIZE - 1);
     lrget( &l, &r);
@@ -1035,7 +1039,7 @@ NmzResult
 nmz_do_searching(const char *key, NmzResult val)
 {
     enum nmz_searchmethod mode;
-    char tmpkey[BUFSIZE];
+    char tmpkey[BUFSIZE] = "";
 
     strncpy(tmpkey, key, BUFSIZE - 1);
 

@@ -2,7 +2,7 @@
  * 
  * replace.c - 
  *
- * $Id: replace.c,v 1.18 2001-12-21 05:39:20 knok Exp $
+ * $Id: replace.c,v 1.19 2003-03-21 13:30:12 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -84,7 +84,7 @@ int
 nmz_replace_uri(char *uri)
 {
     int npat, nrep, i, j;
-    char tmp[BUFSIZE];
+    char tmp[BUFSIZE] = "";
     struct nmz_replace *list = replaces;
     int is_regex_matching = 0;
 

@@ -2,7 +2,7 @@
  * 
  * re.c -
  * 
- * $Id: re.c,v 1.35 2001-12-21 05:39:20 knok Exp $
+ * $Id: re.c,v 1.36 2003-03-21 13:30:12 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -64,7 +64,7 @@
 NmzResult 
 nmz_regex_grep(const char *expr, FILE *fp, const char *field, int field_mode)
 {
-    char buf[BUFSIZE], tmpexpr[BUFSIZE];
+    char buf[BUFSIZE], tmpexpr[BUFSIZE] = "";
     struct re_pattern_buffer *rp;
     int i, n, size = 0, max, uri_mode = 0;
     NmzResult val, tmp;

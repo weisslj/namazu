@@ -2,7 +2,7 @@
  * 
  * idxname.c - Idx handling routines.
  *
- * $Id: idxname.c,v 1.28 2001-12-21 05:39:20 knok Exp $
+ * $Id: idxname.c,v 1.29 2003-03-21 13:30:12 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -263,6 +263,7 @@ void
 nmz_set_defaultidx(const char *idx)
 {
     strncpy(defaultidx, idx, BUFSIZE - 1);
+    defaultidx[BUFSIZE - 1] = '\0';
 }
 
 char *

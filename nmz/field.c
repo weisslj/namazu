@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: field.c,v 1.33 2002-11-15 09:01:48 knok Exp $
+ * $Id: field.c,v 1.34 2003-03-21 13:30:12 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -159,8 +159,8 @@ nmz_get_field_name(const char *fieldpat)
 void 
 nmz_get_field_data(int idxid, int docid, const char *field, char *data) 
 {
-    char fname[BUFSIZE];
-    char tmpfield[BUFSIZE];
+    char fname[BUFSIZE] = "";
+    char tmpfield[BUFSIZE] = "";
     int i;
     FILE *fp_field, *fp_field_idx;
 
@@ -218,7 +218,9 @@ nmz_get_field_data(int idxid, int docid, const char *field, char *data)
     fc[cache_idx].idxid = idxid;
     fc[cache_idx].docid = docid;
     strncpy(fc[cache_idx].field, tmpfield, BUFSIZE - 1);
+    fc[cache_idx].field[BUFSIZE - 1] = '\0';
     strncpy(fc[cache_idx].data, data, BUFSIZE - 1);
+    fc[cache_idx].data[BUFSIZE - 1] = '\0';
     cache_idx = (cache_idx + 1) % FIELD_CACHE_SIZE;
     if (cache_num < FIELD_CACHE_SIZE) {
 	cache_num++;

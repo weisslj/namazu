@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: msword.pl,v 1.38 2004-01-16 13:07:10 opengl2772 Exp $
+# $Id: msword.pl,v 1.39 2004-01-26 13:45:57 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2002 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -175,7 +175,7 @@ sub filter_wv ($$$$$) {
     $$cont =~ s!<TITLE.*?>.*?</TITLE>!!is if (defined $title);
 
     # Exclude wvHtml's footer because it has no good index terms.
-    $$cont =~ s/<!--Section Ends-->.*$//s;
+    $$cont =~ s/(.*)<!--Section Ends-->.*$/$1/s;
 
     html::html_filter($cont, $weighted_str, $fields, $headings);
     $fields->{'title'} = $title if (defined $title);

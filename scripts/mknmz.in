@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.106 2002-04-01 13:21:15 takesako Exp $
+# $Id: mknmz.in,v 1.107 2002-06-13 06:37:57 knok Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -1621,11 +1621,11 @@ sub append_index (@) {
 
     unless (@flist) { 	# if @flist is empty
 	if ($DeletedFilesCount > 0) {
-	    make_headfoot_pages(0, 0);
 	    set_lockfile($var::NMZ{'lock2'});
 	    update_dateindex();
 	    update_registry(0);
 	    put_log(0, 0, 0, get_total_keys());
+	    make_headfoot_pages(get_status("files"), get_status("keys"));
 	    util::remove_tmpfiles();
 	}
 	print _("No files to index.\n");

@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.54 2000-01-09 08:31:37 satoru Exp $
+ * $Id: search.c,v 1.55 2000-01-09 08:52:28 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -213,7 +213,7 @@ static enum nmz_search_mode
 detect_search_mode(const char *key) {
     if (strlen(key) <= 1)
         return WORD_MODE;
-    if (isfield(key)) { /* field search */
+    if (nmz_isfield(key)) { /* field search */
 	nmz_debug_printf("do FIELD search\n");
         return FIELD_MODE;
     }
@@ -578,7 +578,7 @@ do_field_search(const char *fieldpat, NmzResult val)
         *field_name, file_name[BUFSIZE];
     FILE *fp;
 
-    field_name = get_field_name(fieldpat);
+    field_name = nmz_get_field_name(fieldpat);
     get_regex_part(expr, fieldpat);
     do_regex_preprocessing(expr);
 
@@ -939,7 +939,7 @@ nmz_search(const char *query)
 	return hlist;
     }
 
-    ret = make_query(query);
+    ret = nmz_make_query(query);
     if (ret != SUCCESS) {
 	hlist.stat = ERR_FATAL;
 	return hlist;
@@ -1045,7 +1045,7 @@ nmz_do_searching(const char *key, NmzResult val)
      * If query contains only one keyword, turn TfIdf mode off.
      * This processing MUST be done after wakati(tmpkey).
      */
-    if (get_querytokennum() == 1 && strchr(get_querytoken(0), '\t') == NULL)
+    if (nmz_get_querytokennum() == 1 && strchr(nmz_get_querytoken(0), '\t') == NULL)
         TfIdf = 0;
 
     delete_beginning_backslash(tmpkey);

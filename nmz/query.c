@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: query.c,v 1.4 2000-01-09 08:08:09 satoru Exp $
+ * $Id: query.c,v 1.5 2000-01-09 08:52:28 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -87,7 +87,7 @@ set_regex_trick(char *str)
 
     for (i = delim = 0; *(str + i); i++) {
         int field = 0;
-        if ((i == 0 || *(str + i - 1) == ' ') && isfield(str + i)) {
+        if ((i == 0 || *(str + i - 1) == ' ') && nmz_isfield(str + i)) {
             field = 1;
             i += strcspn(str + i, ":") + 1;
         }
@@ -125,7 +125,7 @@ set_regex_trick(char *str)
  * Make the query from the string querystring.
  */
 enum nmz_stat
-make_query(const char *querystring)
+nmz_make_query(const char *querystring)
 {
     int i, tokennum;
 
@@ -188,13 +188,13 @@ make_query(const char *querystring)
 }
 
 int
-get_querytokennum(void)
+nmz_get_querytokennum(void)
 {
     return query.tokennum;
 }
 
 char *
-get_querytoken(int id)
+nmz_get_querytoken(int id)
 {
     return query.tab[id];
 }

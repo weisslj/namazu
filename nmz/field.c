@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: field.c,v 1.23 2000-01-09 08:31:36 satoru Exp $
+ * $Id: field.c,v 1.24 2000-01-09 08:52:26 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -92,7 +92,7 @@ make_fullpathname_field(int n)
  * Check the key whether field or not.
  */
 int 
-isfield(const char *key)
+nmz_isfield(const char *key)
 {
     if (*key == '+') {
         key++;
@@ -117,7 +117,7 @@ isfield(const char *key)
  * call to the function. 
  */
 char *
-get_field_name(const char *fieldpat)
+nmz_get_field_name(const char *fieldpat)
 {
     static char field_name[BUFSIZE]; /* storing field name */
     char *tmp = field_name;
@@ -138,7 +138,7 @@ get_field_name(const char *fieldpat)
 }
 
 void 
-get_field_data(int idxid, int docid, const char *field, char *data) 
+nmz_get_field_data(int idxid, int docid, const char *field, char *data) 
 {
     char fname[BUFSIZE];
     char tmpfield[BUFSIZE];

@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.51 2000-01-09 08:45:13 satoru Exp $
+ * $Id: output.c,v 1.52 2000-01-09 08:52:31 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -536,7 +536,7 @@ print_hitnum_all_idx(void)
 
 	if (is_refprint() && !is_countmode() && !is_listmode() && 
 	    !is_quietmode()) {
-	    if (nmz_get_idxnum() > 1 && get_querytokennum() > 1) {
+	    if (nmz_get_idxnum() > 1 && nmz_get_querytokennum() > 1) {
 	        printf(_(" [ TOTAL: %d ]"), nmz_get_idx_totalhitnum(idxid));
 	    }
 	    nmz_print("\n");

@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.34 2000-01-09 08:31:36 satoru Exp $
+ * $Id: hlist.c,v 1.35 2000-01-09 08:52:27 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -89,7 +89,7 @@ field_sort(NmzResult hlist)
     for (i = 0; i < hlist.num; i++) {
 	char buf[BUFSIZE];
 	int leng;
-	get_field_data(hlist.data[i].idxid, hlist.data[i].docid, field_for_sort, buf);
+	nmz_get_field_data(hlist.data[i].idxid, hlist.data[i].docid, field_for_sort, buf);
 	nmz_chomp(buf);
 	leng = strlen(buf);
 

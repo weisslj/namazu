@@ -1,5 +1,15 @@
 2000-01-09  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* nmz/field.[ch]: Changed function names.
+	s/isfield/nmz_isfield/g
+	s/get_field_name/nmz_get_field_name/g
+	s/get_field_data/nmz_get_field_data/g
+
+	* nmz/query.[ch]: Changed function names.
+	s/make_query/nmz_make_query/g
+	s/get_querytokennum/nmz_get_querytokennum/g
+	s/get_querytoken/nmz_get_querytoken/g
+
 	* nmz/rcfile.[ch]: Changed function names.
 	s/set_namazurc/nmz_set_namazurc/g
 	s/load_rcfile/nmz_load_rcfile/g

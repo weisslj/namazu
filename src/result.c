@@ -1,5 +1,5 @@
 /*
- * $Id: result.c,v 1.39 2000-01-09 08:39:25 satoru Exp $
+ * $Id: result.c,v 1.40 2000-01-09 08:52:31 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -72,7 +72,7 @@ replace_field(struct nmz_data d, int counter,
 	sprintf(buf, "%d", counter);
 	nmz_commas(buf);
     } else {
-	get_field_data(d.idxid, d.docid, field, buf);
+	nmz_get_field_data(d.idxid, d.docid, field, buf);
 	if (strcasecmp(field, "uri") == 0) {
 	    if (is_urireplace()) {
 		nmz_replace_uri(buf);
@@ -129,15 +129,15 @@ emphasize(char *str)
 {
     int i;
 
-    for (i = 0; get_querytoken(i) != NULL; i++) {
+    for (i = 0; nmz_get_querytoken(i) != NULL; i++) {
 	char *ptr = str;
 	char key[BUFSIZE];
 	int keylen = 0;
 
-	if (isop(get_querytoken(i)))
+	if (isop(nmz_get_querytoken(i)))
 	    continue;
 
-	strcpy(key, get_querytoken(i));
+	strcpy(key, nmz_get_querytoken(i));
 
 	if (strchr(key, '\t')) { /* for phrase search */
 	    nmz_tr(key, "\t", " ");

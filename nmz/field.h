@@ -7,8 +7,8 @@ enum {
     FIELD_CACHE_SIZE = 8        /* Size of field caches */
 };
 
-extern int isfield ( const char *key );
-extern char *get_field_name ( const char *fieldpat );
-extern void get_field_data ( int idxid, int docid, const char *field, char *data );
+extern int nmz_isfield ( const char *key );
+extern char *nmz_get_field_name ( const char *fieldpat );
+extern void nmz_get_field_data ( int idxid, int docid, const char *field, char *data );
 
 #endif /* _FIELD_H */

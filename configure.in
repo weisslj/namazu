@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.74 2000-01-10 20:21:08 rug Exp $
+dnl $Id: configure.in,v 1.75 2000-01-10 23:26:25 satoru Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -95,7 +95,7 @@ dnl * Check tknamazu wheter to be build or not.
 dnl *
 AC_ARG_WITH(
     tknamazu,
-    [  --with-tknamazu         do not build namazu with tcl/tk front-end ],
+    [  --with-tknamazu         build namazu with tcl/tk front-end ],
     [tknamazu=${withval}], [tknamazu='no']
 )
 

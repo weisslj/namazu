@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.98 2000-02-02 13:27:32 satoru Exp $
+dnl $Id: configure.in,v 1.99 2000-02-12 13:34:55 rug Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -83,7 +83,7 @@ fi
 
 dnl Checks for header files.
 AC_HEADER_STDC
-AC_CHECK_HEADERS(fcntl.h limits.h malloc.h unistd.h string.h)
+AC_CHECK_HEADERS(fcntl.h limits.h malloc.h unistd.h string.h stdlib.h)
 
 AC_C_BIGENDIAN
 
@@ -102,8 +102,8 @@ AC_FUNC_ALLOCA
 AC_FUNC_MMAP
 AC_FUNC_MEMCMP
 AC_FUNC_VPRINTF
-AC_CHECK_FUNCS(getcwd getwd putenv setenv strdup strspn)
-AC_REPLACE_FUNCS([memmove strcasecmp strncasecmp strcspn strerror strstr])
+AC_CHECK_FUNCS(getcwd getwd putenv strdup strspn tsearch)
+AC_REPLACE_FUNCS([memmove setenv strcasecmp strncasecmp strcspn strerror strstr])
 AC_CHECK_FUNCS([vsnprintf _vsnprintf __vsnprintf])
 if test $ac_cv_func_vsnprintf = no; then
     if test $ac_cv_func__vsnprintf = yes || test $ac_cv_func__vsnprintf = yes; then

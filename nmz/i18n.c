@@ -1,6 +1,6 @@
 /*
  * i18n.c -
- * $Id: i18n.c,v 1.18 2000-01-29 07:09:25 satoru Exp $
+ * $Id: i18n.c,v 1.19 2000-02-12 13:34:58 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -81,30 +81,9 @@ nmz_set_lang(const char *lang)
      * Set enviromental variables for gettext() only if LANG is not set.
      */
     if (getenv("LANG") == NULL) {
-#if HAVE_SETENV || HAVE_PUTENV
-# if HAVE_SETENV
 	setenv("LC_ALL", Lang, 1);
 	setenv("LC_MESSAGES", Lang, 1);
 	setenv("LANG", Lang, 1);
-# else
-	{
-	    char *buf;
-
-	    buf = malloc(BUFSIZE);
-	    sprintf(buf, "LC_ALL=%s", Lang);
-	    putenv(buf);
-
-	    buf = malloc(BUFSIZE);
-	    sprintf(buf, "LC_MESSAGES=%s", Lang);
-	    putenv(buf);
-
-	    buf = malloc(BUFSIZE);
-	    sprintf(buf, "LANG=%s", Lang);
-	    putenv(buf);
-
-	}
-# endif /* HAVE_SETENV */
-#endif /* HAVE_SETENV */
     }
 
 #ifdef HAVE_SETLOCALE

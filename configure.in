@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.62 1999-12-13 10:13:54 satoru Exp $
+dnl $Id: configure.in,v 1.63 1999-12-13 22:16:08 satoru Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -263,7 +263,7 @@ if test "$KAKASI" = "no" -a "$CHASEN" = "no"; then
 fi
 
 AC_MSG_CHECKING(for default wakatigaki processor)
-OPT_WAKATI_DEFAULT=
+OPT_WAKATI_DEFAULT=none
 if test "$KAKASI" != "no"; then
     OPT_WAKATI_DEFAULT=KAKASI
 elif test "$CHASEN" != "no"; then

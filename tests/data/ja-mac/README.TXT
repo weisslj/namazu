@@ -17,6 +17,7 @@ excel2001.xls       .... Excel 2001 for Mac 出力の Excel 2001 形式
 excel5-2001.xls     .... Excel 2001 for Mac 出力の
                          Excel 97-2001 および 5.0/95 ブック形式
 excel95.xls         .... Excel 2001 for Mac 出力の Excel 5.0/95 ブック形式
+powerpoint2001.pps  .... PowerPoint 2001 for Mac 出力の スライドショー 形式
 powerpoint2001.ppt  .... PowerPoint 2001 for Mac 出力の PowerPoint 2001 形式
 powerpoint2001.rtf  .... PowerPoint 2001 for Mac 出力の RTF 形式
 powerpoint4_0.ppt   .... PowerPoint 2001 for Mac 出力の PowerPoint 4.0 形式
@@ -48,6 +49,10 @@ creator  : XCEL
 filename : excel95.xls
 type     : XLS5
 creator  : XCEL
+
+filename : powerpoint2001.pps
+type     : PPSS
+creator  : PPT3
 
 filename : powerpoint2001.ppt
 type     : SLD8

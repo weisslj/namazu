@@ -2,7 +2,7 @@
 # -*- Perl -*-
 # filter.pl - class for filter
 #
-# $Id: filter.pl.in,v 1.4 2004-10-20 14:48:37 opengl2772 Exp $
+# $Id: filter.pl.in,v 1.5 2005-01-23 13:00:34 opengl2772 Exp $
 #
 # Copyright (C) 2004 Yukio USUDA All rights reserved.
 # Copyright (C) 2000-2004 Namazu Project All rights reversed.
@@ -198,6 +198,7 @@ sub _codeconv_document ($) {
     codeconv::toeuc($textref);
     $$textref =~ s/\r\n/\n/g;
     $$textref =~ s/\r/\n/g;
+    $$textref =~ tr/\x01-\x08\x0b-\x0c\x0e-\x1f\x7f/ /; # Remove control char.
 }
 
 sub _load_filtermodules ($){

@@ -6,11 +6,13 @@
 #
 LOG=`pwd`/test-log
 echo '  *** starting ' $0 >>$LOG
+. commonfuncs
 
 pwd=`pwd`
 
 tmprc="$pwd/../src/.namazurc"
 echo "Index $pwd" > $tmprc
+duprcs
 
 tmpaccess="$pwd/idx1/NMZ.access"
 

@@ -5,10 +5,12 @@
 LOG=`pwd`/test-log
 echo '  *** starting ' $0 >>$LOG
 pwd=`pwd`
+. commonfuncs
 
 tmprc="$pwd/../src/.namazurc"
 echo "Index $pwd" > $tmprc
 echo 'ContentType "text/x-hdml"' >> $tmprc
+duprcs
 
 # To make messages English
 LANG= ; export LANG

@@ -4,9 +4,11 @@
 #
 LOG=`pwd`/test-log
 echo '  *** starting ' $0 >>$LOG
+. commonfuncs
 pwd=`pwd`
 tmprc="$pwd/../src/.namazurc"
 echo "Index $pwd/idx19" > $tmprc
+duprcs
 
 # To make messages English
 LANG= ; export LANG

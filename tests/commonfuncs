@@ -1,0 +1,10 @@
+# Common functions for test suites.
+# $Id: commonfuncs,v 1.2 2004-02-20 05:08:33 knok Exp $
+
+duprcs () {
+	if [ X"$tmprc" != "X" ]
+	then
+		test -d $pwd/../src/.libs && cp -f $tmprc $pwd/../src/.libs
+		test -d $pwd/../src/_libs && cp -f $tmprc $pwd/../src/_libs
+	fi
+}

@@ -7,10 +7,12 @@
 LOG=`pwd`/test-log
 pwd=`pwd`
 echo '  *** starting ' $0 >>$LOG
+. commonfuncs
 
 tmprc="$pwd/../src/.namazurc"
 echo "Index $pwd" > $tmprc
 echo "Template $pwd/idx1" >> $tmprc
+duprcs
 
 cd ../src
 SCRIPT_NAME='namazu.cgi'

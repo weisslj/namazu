@@ -4,6 +4,7 @@
 #
 LOG=`pwd`/test-log
 echo '  *** starting ' $0 >>$LOG
+. commonfuncs
 
 docnum=`perl -lne 'print $1 if /^files (\d+)/' "idx1/NMZ.status"`
 docnum=`expr $docnum + $docnum`
@@ -13,6 +14,7 @@ pwd=`pwd`
 tmprc="$pwd/../src/.namazurc"
 echo "Index $pwd" > $tmprc
 echo "Template $pwd/idx1" >> $tmprc
+duprcs
 
 SCRIPT_NAME='namazu.cgi'
 QUERY_STRING='query=namazu&idxname=idx1&idxname=idx2'

@@ -24,4 +24,4 @@ TESTS =	mknmz-1 mknmz-2 mknmz-3 mknmz-4 mknmz-5 \
 clean-local:
 	rm -rf test-log tmp-data tmp.* idx[0-9]* ja-idx[0-9]*
 
-EXTRA_DIST = $(srcdir)/$(TESTS) select-data
+EXTRA_DIST = $(srcdir)/$(TESTS) select-data commonfuncs

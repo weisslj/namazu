@@ -4,9 +4,11 @@
 #
 LOG=`pwd`/test-log
 echo '  *** starting ' $0 >>$LOG
+. commonfuncs
 pwd=`pwd`
 tmprc="$pwd/../src/.namazurc"
 echo "Index $pwd/idx19" > $tmprc
+duprcs
 
 # To make messages English
 LANG= ; export LANG
@@ -118,6 +120,7 @@ fi
 # check "idxname"
 tmprc="$pwd/../src/.namazurc"
 echo "Index $pwd" > $tmprc
+duprcs
 
 QUERY_STRING='query=namazu&idxname=idx1&idxname="<S>strike</S>'
 export QUERY_STRING 

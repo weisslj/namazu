@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.32 2004-10-17 09:40:58 usu Exp $
+# $Id: util.pl,v 1.33 2004-10-20 14:48:37 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -25,14 +25,13 @@
 
 package util;
 use strict;
+use English;
 use IO::File;
 require 'time.pl';
 
 use vars qw($LANG_MSG $LANG);
 $LANG_MSG = "C";           # language of messages
 $LANG = "C";               # language of text processing
-
-my $SYSTEM = $^O;
 
 #  rename() with consideration for OS/2
 sub Rename($$) {
@@ -97,7 +96,6 @@ sub vprint (@) {
 	}
     }
 } 
-
 
 sub commas ($) {
     my ($num) = @_;
@@ -219,18 +217,19 @@ sub checklib ($) {
 sub checkcmd ($) {
     my $cmd = shift;
     my $pd = ':';
-    $pd = ';' if (($SYSTEM eq "MSWin32") || ($SYSTEM eq "os2"));
+    $pd = ';' if (($English::OSNAME eq "MSWin32") || ($English::OSNAME eq "os2"));
 
     for my $dir (split(/$pd/, $ENV{'PATH'})) {
+        win32_yen_to_slash(\$dir);
 	return "$dir/$cmd" if (-x "$dir/$cmd");
-	return "$dir/$cmd" if (-x "$dir/$cmd.com" &&
-		(($SYSTEM eq "MSWin32") || ($SYSTEM eq "os2")));
-	return "$dir/$cmd" if (-x "$dir/$cmd.exe" &&
-		(($SYSTEM eq "MSWin32") || ($SYSTEM eq "os2")));
-	return "$dir/$cmd" if (-x "$dir/$cmd.bat" &&
-			       ($SYSTEM eq "MSWin32"));
-	return "$dir/$cmd" if (-x "$dir/$cmd.cmd" &&
-			       ($SYSTEM eq "os2"));
+	return "$dir/$cmd.com" if (-x "$dir/$cmd.com" &&
+		(($English::OSNAME eq "MSWin32") || ($English::OSNAME eq "os2")));
+	return "$dir/$cmd.exe" if (-x "$dir/$cmd.exe" &&
+		(($English::OSNAME eq "MSWin32") || ($English::OSNAME eq "os2")));
+	return "$dir/$cmd.bat" if (-x "$dir/$cmd.bat" &&
+			       ($English::OSNAME eq "MSWin32"));
+	return "$dir/$cmd.cmd" if (-x "$dir/$cmd.cmd" &&
+			       ($English::OSNAME eq "os2"));
     }
     return undef;
 }
@@ -314,7 +313,7 @@ sub assert($$) {
 sub systemcmd(@) {
     my $status = undef;
     my @args = @_;
-    if ($SYSTEM eq "MSWin32" || $SYSTEM eq "os2") {
+    if ($English::OSNAME eq "MSWin32" || $English::OSNAME eq "os2") {
 	foreach my $arg (@args) {
 	    $arg =~ s!/!\\!g;
 	}
@@ -407,7 +406,7 @@ sub syscmd(%)
         $text_stderr = 1;
     }
 
-    if ($SYSTEM eq "MSWin32" || $SYSTEM eq "os2") {
+    if ($English::OSNAME eq "MSWin32" || $English::OSNAME eq "os2") {
 	foreach my $arg (@args) {
 #	    $arg =~ s!/!\\!g;
 	}
@@ -481,7 +480,7 @@ sub syscmd(%)
                 codeconv::normalize_nl(\$conts_out) if (defined $text_stdout);
 
                 my $file = $option{stdout};
-                if ($SYSTEM eq "MSWin32" || $SYSTEM eq "os2") {
+                if ($English::OSNAME eq "MSWin32" || $English::OSNAME eq "os2") {
 #                    $file =~ s!/!\\!g;
                 }
                 if (!open(OUT, "$mode_stdout$file")) {
@@ -512,7 +511,7 @@ sub syscmd(%)
                 codeconv::normalize_nl(\$conts_err) if (defined $text_stderr);
     
                 my $file = $option{stderr};
-                if ($SYSTEM eq "MSWin32" || $SYSTEM eq "os2") {
+                if ($English::OSNAME eq "MSWin32" || $English::OSNAME eq "os2") {
 #                    $file =~ s!/!\\!g;
                 }
                 if (!open(OUT, "$mode_stderr$file")) {
@@ -537,13 +536,13 @@ sub syscmd(%)
 # Returns a string representation of the null device.
 # We can use File::Spec->devnull() on Perl-5.6, instead.
 sub devnull {
-    if ($SYSTEM eq "MSWin32") {
+    if ($English::OSNAME eq "MSWin32") {
 	return "nul";
-    } elsif ($SYSTEM eq "os2") {
+    } elsif ($English::OSNAME eq "os2") {
 	return "/dev/nul";
-    } elsif ($SYSTEM eq "MacOS") {
+    } elsif ($English::OSNAME eq "MacOS") {
 	return "Dev:Null";
-    } elsif ($SYSTEM eq "VMS") {
+    } elsif ($English::OSNAME eq "VMS") {
 	return "_NLA0:";
     } else { # Unix
 	return "/dev/null";
@@ -558,7 +557,7 @@ sub isurl ($) {
 # convert \ to / with consideration for Shift_JIS Kanji code
 sub win32_yen_to_slash ($) {
     my ($filenameref) = @_;
-    if (($SYSTEM eq "MSWin32") || ($SYSTEM eq "os2")) {
+    if (($English::OSNAME eq "MSWin32") || ($English::OSNAME eq "os2")) {
 	$$filenameref =~
                 s!([\x81-\x9f\xe0-\xef][\x40-\x7e\x80-\xfc]|[\x01-\x7f])!
                 $1 eq "\\" ? "/" : $1!gex;

@@ -2,7 +2,7 @@
 # -*- Perl -*-
 # document.pl - class for document
 #
-# $Id: document.pl,v 1.2 2004-10-12 18:50:05 opengl2772 Exp $
+# $Id: document.pl,v 1.3 2004-10-20 14:48:37 opengl2772 Exp $
 #
 # Copyright (C) 2004 Yukio USUDA All rights reserved.
 # Copyright (C) 2000-2004 Namazu Project All rights reversed.
@@ -25,7 +25,7 @@
 
 package mknmz::document;
 use strict;
-
+use English;
 require 'gfilter.pl';
 require 'filter.pl';
 require 'gettext.pl';
@@ -33,8 +33,6 @@ require 'gettext.pl';
 use File::MMagic;
 my $Magic = new File::MMagic;
 my $Filter = undef;
-
-my $system =  $^O;
 
 sub new {
     my $self = {};
@@ -299,7 +297,7 @@ sub _check_content {
     if (${$self->{'_contentref'}} eq "") {
 	my $cfile = $self->{'_orig_filename'};
 	# for handling a filename which contains Shift_JIS code
-	if ($system eq "MSWin32" 
+	if ($English::OSNAME eq "MSWin32" 
 	    && $cfile =~ /[\x81-\x9f\xe0-\xef][\x40-\x7e\x80-\xfc]|[\x20\xa1-\xdf]/) 
 	{
 	    my $tmpfile = util::tmpnam("NMZ.win32");

@@ -1,3 +1,25 @@
+2001-01-26  Yoshinori TAKESAKO  <takesako@ddt.or.jp>
+
+	* filter/win32/oleexcel.pl: Changed overall program structure. 
+	(filter): Use existing instance if Word is already running.
+	The making speed of the index to the big size Excel file
+	quickens by this change. The change in the following was given.
+
+	- Each sheet was saved by the tab text format by using the 
+	  SaveAs method of the OLE Excel application. 
+	- Skipped password-protected file.
+	- The using memory size was reduced.
+	- Moved Excel application destructor to END block.
+	- Do not pop up over-write dialog message.
+
+	* filter/win32/olepowerpoint.pl: 
+	(getProperties): Get a title from filename which has no slide title.
+
+	* filter/win32/olemsword.pl: 
+	(ReadMSWord): Use existing instance if Word is already running.
+	The making speed of the index to the Microsoft Word document
+	quickens by this change. patched by Hajime BABA.
+
 2001-01-26  Ryuji Abe  <rug@namazu.org>
 
 	* doc/en/tutorial.html: Updated software links.
@@ -6323,4 +6345,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.797 2001-01-26 07:11:45 rug Exp $
+$Id: ChangeLog,v 1.798 2001-01-26 11:25:26 takesako Exp $

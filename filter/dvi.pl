@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: dvi.pl,v 1.5 2003-09-02 14:45:07 usu Exp $
+# $Id: dvi.pl,v 1.6 2003-09-06 08:30:33 usu Exp $
 # Copyright (C) 2000 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -41,7 +41,7 @@ sub status() {
         unless (defined $dviconvpath) {
             $dviconvpath = util::checkcmd('dvi2tty');
             return 'no' unless (defined $dviconvpath);
-            my $err = system("$dviconvpath -J");
+            my $err = system("$dviconvpath -J 2> /dev/null");
             return 'no' if ($err == 1792);
         }
     } else {

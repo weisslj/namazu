@@ -1,3 +1,5 @@
+Thu Dec 28 22:16:08 2000  Hajime BABA  <baba@kusastro.kyoto-u.ac.jp>
+
 2000-12-28  Hajime BABA  <baba@kusastro.kyoto-u.ac.jp>
 
 	* configure.in, pl/conf.pl.in: Improved the notations of
@@ -10,6 +12,8 @@
 
 	* pl/conf.pl.in: Removed duplicated entries.
 	
+	* filter/postscript.pl: Changed util::efopen() to system().
+
 2000-12-28  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* filter/postscript.pl: Added a new file.
@@ -6196,4 +6200,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.781 2000-12-28 11:03:42 baba Exp $
+$Id: ChangeLog,v 1.782 2000-12-28 13:18:34 baba Exp $

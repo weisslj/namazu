@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: postscript.pl,v 1.2 2000-12-28 10:50:48 baba Exp $
+# $Id: postscript.pl,v 1.3 2000-12-28 13:18:37 baba Exp $
 # Copyright (C) 2000 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -61,14 +61,18 @@ sub add_magic ($) {
 sub filter ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
       = @_;
-    my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
     my $tmpfile = util::tmpnam('NMZ.postscript');
+    my $tmpfile2 = util::tmpnam('NMZ.postscript2');
 
     util::vprint("Processing postscript file ... (using  '$postscriptpath')\n");
 
+    my $fh = util::efopen("> $tmpfile");
+    print $fh $$cont;
+    undef $fh;
+
     my $landscape = 0;
-    my $fh = util::efopen("$cfile");
+    $fh = util::efopen("$tmpfile");
     while (<$fh>) {
 	last if (/^%%EndComments$/);
 	$landscape = 1 if (/^%%Orientation: Landscape$/i);
@@ -77,23 +81,27 @@ sub filter ($$$$$) {
 
     if (util::islang("ja")) {
 	if ($landscape) {
-	    $fh = util::efopen("| $postscriptpath -l > $tmpfile");
+	    system("$postscriptpath -q -l $tmpfile > $tmpfile2");
 	} else {
-	    $fh = util::efopen("| $postscriptpath > $tmpfile");
+	    system("$postscriptpath -q $tmpfile > $tmpfile2");
 	}
     } else {
-	$fh = util::efopen("| $postscriptpath > $tmpfile");
+	system("$postscriptpath -q $tmpfile > $tmpfile2");
     }
-    print $fh $$cont;
-    undef $fh;
-    $fh = util::efopen("$tmpfile");
+    return "Unable to convert postscript file ($postscriptpath error occured)"
+	unless ($? == 0);
+
+    $fh = util::efopen("$tmpfile2");
     my $size = util::filesize($fh);
+    return "Unable to convert postscript file ($postscriptpath error occured)"
+	if ($size == 0);
     if ($size > $conf::FILE_SIZE_MAX) {
 	return 'too_large_postscript_file';
     }
     $$cont = util::readfile($fh);
     undef $fh;
     unlink($tmpfile);
+    unlink($tmpfile2);
     return undef;
 }
 

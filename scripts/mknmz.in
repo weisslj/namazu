@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.64 2000-04-26 02:30:51 satoru Exp $
+# $Id: mknmz.in,v 1.65 2000-05-18 16:14:51 furukawa Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -65,6 +65,7 @@ my @Seed = ();
 my @LoadedRcfiles = ();
 my $Magic = new File::MMagic;
 
+my $ReceiveTERM = 0;
 
 STDOUT->autoflush(1);
 STDERR->autoflush(1);
@@ -125,6 +126,7 @@ sub main {
 
 	    $total_files_size     += $cfile_size;
 	    $processed_files_size += $cfile_size;
+	    last if $ReceiveTERM;
 	    if ($processed_files_size > $conf::ON_MEMORY_MAX) {
 		if (%KeyIndex) {
 		    $key_count = write_index();
@@ -320,6 +322,11 @@ sub init () {
 
     $SIG{'INT'}  = sub {
 	util::cdie("SIGINT caught! Aborted.\n");
+    };
+
+    $SIG{'TERM'}  = sub {
+	print STDERR "SIGTERM caught!\n";
+	$ReceiveTERM = 1;
     };
 
     # For executing mknmz in scripts directory

@@ -2,15 +2,41 @@
  * 
  * libnamazu.h - Namazu library api
  *
- * $Id: libnamazu.h,v 1.11 1999-11-23 09:46:18 satoru Exp $
+ * $Id: libnamazu.h,v 1.12 1999-11-23 12:58:31 satoru Exp $
  * 
  */
 
 #ifndef _LIBNAMAZU_H
 #define _LIBNAMAZU_H
 
-#include <stdio.h>  /* for FILE struct */
-#include "critical.h"  /* for INDEX_MAX */
+#include <stdio.h>     /* for FILE struct */
+
+/*
+ *
+ * Critical values
+ *
+ */
+
+enum {
+    BUFSIZE = 1024,        /* Size of general buffers */
+
+    QUERY_TOKEN_MAX =  16, /* Max number of tokens in a query */
+    QUERY_MAX       = 256, /* Max length of an IR query */
+
+    IGNORE_HIT    = 10000, /* Ignore if pages matched more than this */
+    IGNORE_MATCH  = 1000,  /* Ignore if words matched more than this */
+
+    INDEX_MAX = 64        /* Max number of databases */
+};
+
+
+/* for error handling */
+enum {
+    SUCCESS,
+    ERR_TOO_LONG_QUERY,
+    ERR_INVALID_QUERY,
+    ERR_TOO_MANY_TOKENS
+};
 
 /*
  *
@@ -20,47 +46,40 @@
 
 typedef unsigned char uchar;
 
-struct HLIST_DATA {
+typedef struct hlist_data {
     int score;   /* score */
     int docid;   /* document ID */
     int idxid;   /* index ID */
     int date;    /* document's date */
     int rank;    /* ranking data for stable sorting */
+    int status;  /* mainly used for storing error status code */
     char *field; /* for field-specified search*/
-};
-typedef struct HLIST_DATA HLIST_DATA;
+} HLIST_DATA;
 
 /* data structure for search result */
-struct hlist {
+typedef struct hlist {
     int n;
+    int status;  /* mainly used for storing error status code */
     HLIST_DATA *d;
-};
-typedef struct hlist HLIST;
+} HLIST;
 
-struct list {
-    char *str;
-    struct list *next;
-};
-typedef struct list LIST;
-
-struct alias {
+typedef struct alias {
     char *alias;
     char *real;
     struct alias *next;
-};
-typedef struct alias ALIAS;
+} ALIAS;
 
 typedef struct re_pattern_buffer REGEX;
-struct replace {
+
+typedef struct REPLACE {
     struct replace *next;
     char  *pat;  /* pattern */
     char  *rep;  /* replacement */
     REGEX  *pat_re; /* compiled regex of the pattern */
-};
-typedef struct replace REPLACE;
+} REPLACE;
 
 /* NMZ.* files' names */
-struct nmz_names {
+typedef struct nmz_names {
 #define MAXPATH 1024
     char i[MAXPATH];
     char ii[MAXPATH];
@@ -78,36 +97,31 @@ struct nmz_names {
     char pi[MAXPATH];
     char tips[MAXPATH];
     char access[MAXPATH];
-};
-typedef struct nmz_names NMZ_NAMES;
+} NMZ_NAMES;
 
 /* NMZ.* files' file pointers */
-struct nmz_files {
+typedef struct nmz_files {
     FILE *i;
     FILE *ii;
     FILE *p;
     FILE *pi;
     FILE *w;
     FILE *wi;
-};
-typedef struct nmz_files NMZ_FILES;
+} NMZ_FILES;
 
-struct query {
+typedef struct query {
     char str[BUFSIZE];              /* query string */
     char *tab[QUERY_TOKEN_MAX + 1];  /* table for the query string */
-};
-typedef struct query QUERY;
+} QUERY;
 
 /* results of phrase search */
-struct phraseres {
+typedef struct phraseres {
     int hitnum;
     char *word;
     struct phraseres *next;
-};
+} PHRASERES;
 
-typedef struct phraseres PHRASERES;
-
-struct indices {
+typedef struct indices {
     int num;                 /* Number of indices */
     char *names[INDEX_MAX + 1]; /* Index names */
 
@@ -115,8 +129,7 @@ struct indices {
     int mode[INDEX_MAX + 1]; /* search mode */
     PHRASERES *pr[INDEX_MAX + 1]; /* results of each word hits */
     int phrasehit[INDEX_MAX + 1]; /* results of each phrase hits */
-};
-typedef struct indices INDICES;
+} INDICES;
 
 extern void free_idxnames(void);
 extern void free_aliases(void);
@@ -140,3 +153,4 @@ extern void set_dyingmsg ( char *, ... );
 extern char *get_dyingmsg ( void );
 
 #endif /* _LIBNAMAZU_H */
+

@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.11 1999-11-23 09:50:29 satoru Exp $
+ * $Id: search.c,v 1.12 1999-11-23 12:58:32 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -848,12 +848,18 @@ HLIST search_main(char *query)
 {
     HLIST hlist, tmp[INDEX_MAX];
     char query_orig[BUFSIZE];
-    int i;
+    int i, ret;
+
+    if (strlen(query) > QUERY_MAX) {
+	hlist.status = ERR_TOO_LONG_QUERY;
+    }
 
     strcpy(query_orig, query); /* save */
-    if (split_query(query)) {
-      hlist.n = DIE_HLIST;
-      return hlist;
+
+    ret = split_query(query);
+    if (ret != SUCCESS) {
+	hlist.status = ret;
+	return hlist;
     }
 
     for (i = 0; i < Idx.num; i++) {

@@ -12,3 +12,4 @@ extern int wakati(char*);
 extern int split_query(char*);
 
 #endif /* _WAKATI_H */
+

@@ -1,8 +1,8 @@
 /*
  * 
- * values.c -
+ * var.c -
  * 
- * $Id: var.c,v 1.6 1999-11-23 09:46:18 satoru Exp $
+ * $Id: var.c,v 1.7 1999-11-23 12:58:32 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.

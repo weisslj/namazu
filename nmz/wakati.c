@@ -2,7 +2,7 @@
  * 
  * wakati.c -
  * 
- * $Id: wakati.c,v 1.7 1999-11-23 09:46:19 satoru Exp $
+ * $Id: wakati.c,v 1.8 1999-11-23 12:58:32 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -222,8 +222,7 @@ int split_query(char *qs)
     set_regex_trick(qs);
 
     if (strlen(qs) >= BUFSIZE - 1) {
-        set_dyingmsg(_(MSG_TOO_LONG_QUERY));
-	return 1;
+	return ERR_TOO_LONG_QUERY;
     }
 
     strcpy(Query.str, qs);
@@ -243,14 +242,12 @@ int split_query(char *qs)
     }
 
     if (qn == 0) { /* if no item available */
-	set_dyingmsg(_("	<h2>Error!</h2>\n<p>Invalid query.</p>\n"));
-	return 1;
+	return ERR_INVALID_QUERY;
     }
 
     /* if too much items in query, return with error */
     if (qn > QUERY_TOKEN_MAX) {
-	set_dyingmsg(_("	<h2>Error!</h2>\n<p>Too many query tokens.</p>\n"));
-	return 1;
+	return ERR_TOO_MANY_TOKENS;
     }
     /* assign a pointer to each item and set NULL to the last of table */
     for (i = 0, qn = 0; Query.str[i];) {
@@ -272,7 +269,7 @@ int split_query(char *qs)
     for (i = 0; i < qn; i++) {
 	tr(Query.tab[i], "", " ");
     }
-    return 0;
+    return SUCCESS;
 }
 
 

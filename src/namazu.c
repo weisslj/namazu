@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.46 1999-11-23 11:58:52 satoru Exp $
+ * $Id: namazu.c,v 1.47 1999-11-23 12:58:40 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -307,6 +307,22 @@ static int namazu_core(char * query, char *subquery, char *av0)
 
     /* search */
     hlist = search_main(query_with_subquery);
+
+    switch (hlist.status) {
+    case ERR_TOO_LONG_QUERY:
+        html_print(_(MSG_TOO_LONG_QUERY));
+	exit(1);
+	break;
+    case ERR_INVALID_QUERY:
+	html_print(_("	<h2>Error!</h2>\n<p>Invalid query.</p>\n"));
+	exit(1);
+	break;
+    case ERR_TOO_MANY_TOKENS:
+	html_print(_("	<h2>Error!</h2>\n<p>Too many query tokens.</p>\n"));
+	exit(1);
+	break;
+    }
+
     if (hlist.n == DIE_HLIST)
         return DIE_ERROR;
 

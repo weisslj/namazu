@@ -1,11 +1,18 @@
 1999-11-23  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/namazu.h: Import some named constans from libnamazu.h.
+	    PAGE_MAX,RESULT_MAX,CGI_QUERY_MAX,CGI_INDEX_NAME_MAX
+	    CGI_RESULT_NAME_MAX,SUICIDE_TIME
+
+	* nmz/critical.h: Abolished. (integrated to libnamazu.h)
+	
+	* nmz/libnamazu.h: Modify notations for struct ... typedef.
+
 	* src/namazu.c: Use ck_atoi() for -n and -w option.
 	
 	* nmz/util.c (die): Be independent from diewithmsg.
 
-	* {src,nmz}/*.[ch]: Clean up global variables. 
-	                             (to be continued...)
+	* {src,nmz}/*.[ch]: Clean up global variables. (to be continued...)
 	
 	* nmz/libnamazu.c: Introduce new functions:
 		get_namazurc, set_sortmethod, get_sortmethod,
@@ -42,7 +49,6 @@
 	* nmz/util.c (is_little_endian): Removed.
 	(freadx): Filled #ifndef WORDS_BIGENDIAN...#endif. 
 
->>>>>>> 1.224
 1999-11-22  Ken-ichi Hirose  <kenzo-@tama.or.jp>
 
 	* src/mknmz.pl.in: Add ole option and load_olemodule function.

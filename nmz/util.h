@@ -3,7 +3,7 @@
   util.h -
 
   $Author: satoru $
-  $Date: 1999-12-09 08:12:27 $
+  $Date: 1999-12-09 08:33:48 $
   created at: Thu Mar  9 11:55:53 JST 1995
 
   Copyright (C) 1993-1998 Yukihiro Matsumoto
@@ -59,7 +59,6 @@ extern void * xrealloc ( void *ptr, unsigned long size );
 extern void nmz_tr ( char *str, char *lstr, char *rstr );
 extern void nmz_chomp ( char * s );
 extern void strlower ( char *str );
-extern char *lastc ( char *str );
 extern size_t freadx ( void *ptr, size_t size, size_t nmemb, FILE *stream );
 extern int nmz_get_unpackw ( FILE *fp, int *data );
 extern int nmz_read_unpackw ( FILE *fp, int *buf, int size );
@@ -92,7 +91,6 @@ extern void * xrealloc (/* void *ptr, unsigned long size */);
 extern void nmz_tr (/* char *str, char *lstr, char *rstr */);
 extern void nmz_chomp (/* char * s */);
 extern void strlower (/* char *str */);
-extern char *lastc (/* char *str */);
 extern size_t freadx (/* void *ptr, size_t size, size_t nmemb, FILE *stream */);
 extern int nmz_get_unpackw (/* FILE *fp, int *data */);
 extern int nmz_read_unpackw (/* FILE *fp, int *buf, int size */);

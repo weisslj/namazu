@@ -1,6 +1,6 @@
 /*
  * result.c -
- * $Id: result.c,v 1.29 1999-12-09 01:30:52 satoru Exp $
+ * $Id: result.c,v 1.30 1999-12-09 08:33:50 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -132,7 +132,7 @@ static void emphasize(char *str)
 	if (strchr(key, '\t')) { /* for phrase search */
 	    nmz_tr(key, "\t", " ");
 	    strcpy(key, key + 1); 
-	    *(lastc(key)) = '\0';
+	    key[strlen(key) - 1] = '\0';
 	}
 
 	keylen = strlen(key);

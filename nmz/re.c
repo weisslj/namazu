@@ -2,7 +2,7 @@
  * 
  * re.c -
  * 
- * $Id: re.c,v 1.14 1999-12-09 08:12:26 satoru Exp $
+ * $Id: re.c,v 1.15 1999-12-09 08:33:48 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -85,11 +85,11 @@ NmzResult regex_grep(char *orig_expr, FILE *fp, char *field, int field_mode)
     re_compile_pattern(expr, strlen(expr), rp);
 
     for (i = n = 0; fgets(buf, BUFSIZE, fp); i++) {
-        if (*(lastc(buf)) != '\n') {  /* too long */
+        if (buf[strlen(buf) - 1] != '\n') {  /* too long */
             i--;
             continue;
         }
-        *(lastc(buf)) = '\0';  /* LF to NULL */
+        buf[strlen(buf) - 1] = '\0';  /* LF to NULL */
         if (strlen(buf) == 0) {
             continue;
         }

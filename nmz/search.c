@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.29 1999-12-09 08:12:26 satoru Exp $
+ * $Id: search.c,v 1.30 1999-12-09 08:33:48 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -186,7 +186,7 @@ static NmzResult prefix_match(char * orig_key, int v)
     val.num = 0;
 
     strcpy(key, orig_key);
-    *(lastc(key))= '\0';
+    key[strlen(key) - 1] = '\0';
     n = strlen(key);
 
     for (i = v; i >= 0; i--) {
@@ -246,16 +246,16 @@ static enum nmz_search_mode detect_search_mode(char *key) {
 	nmz_debug_printf("do FIELD search\n");
         return FIELD_MODE;
     }
-    if (*key == '/' && *(lastc(key)) == '/') {
+    if (*key == '/' && key[strlen(key) - 1] == '/') {
 	nmz_debug_printf("do REGEX search\n");
 	return REGEX_MODE;    /* regex match */
     } else if (*key == '*' 
-               && *(lastc(key)) == '*'
+               && key[strlen(key) - 1] == '*'
                && *(key + strlen(key) - 2) != '\\' ) 
     {
 	nmz_debug_printf("do REGEX (INTERNAL_MATCH) search\n");
 	return REGEX_MODE;    /* internal match search (treated as regex) */
-    } else if (*(lastc(key)) == '*'
+    } else if (key[strlen(key) - 1] == '*'
         && *(key + strlen(key) - 2) != '\\')
     {
 	nmz_debug_printf("do PREFIX_MATCH search\n");
@@ -263,12 +263,12 @@ static enum nmz_search_mode detect_search_mode(char *key) {
     } else if (*key == '*') {
 	nmz_debug_printf("do REGEX (SUFFIX_MATCH) search\n");
 	return REGEX_MODE;    /* suffix match  (treated as regex)*/
-    } else if ((*key == '"' && *(lastc(key)) == '"') 
-          || (*key == '{' && *(lastc(key)) == '}')) 
+    } else if ((*key == '"' && key[strlen(key) - 1] == '"') 
+          || (*key == '{' && key[strlen(key) - 1] == '}')) 
     {
         /* remove the delimiter at begging and end of string */
         strcpy(key, key + 1); 
-        *(lastc(key))= '\0';
+        key[strlen(key) - 1]= '\0';
     } 
     
     /* normal or phrase */
@@ -505,33 +505,33 @@ static NmzResult do_phrase_search(char *key, NmzResult val)
 
 static void do_regex_preprocessing(char *expr)
 {
-    if (*expr == '*' && *(lastc(expr)) != '*') {
+    if (*expr == '*' && expr[strlen(expr) - 1] != '*') {
         /* if suffix match such as '*bar', enforce it into regex */
         strcpy(expr, expr + 1);
         strcat(expr, "$");
-    } else if (*expr != '*' && *(lastc(expr)) == '*') {
+    } else if (*expr != '*' && expr[strlen(expr) - 1] == '*') {
         /* if prefix match such as 'bar*', enforce it into regex */
-        *(lastc(expr)) = '.';
+        expr[strlen(expr) - 1] = '.';
         strcat(expr, "*");
-    } else if (*expr == '*' && *(lastc(expr)) == '*') {
+    } else if (*expr == '*' && expr[strlen(expr) - 1] == '*') {
         /* if internal match such as '*foo*', enforce it into regex */
         strcpy(expr, expr + 1);
-        *(lastc(expr)) = '\0';
-    } else if (*expr == '/' && *(lastc(expr)) == '/') {
+        expr[strlen(expr) - 1] = '\0';
+    } else if (*expr == '/' && expr[strlen(expr) - 1] == '/') {
         /* genuine regex */
         /* remove the both of '/' chars at begging and end of string */
         strcpy(expr, expr + 1); 
-        *(lastc(expr))= '\0';
+        expr[strlen(expr) - 1]= '\0';
         return;
     } else {
         char buf[BUFSIZE * 2], *bufp, *exprp;
 
-        if ((*expr == '"' && *(lastc(expr)) == '"')
-            || (*expr == '{' && *(lastc(expr)) == '}')) 
+        if ((*expr == '"' && expr[strlen(expr) - 1] == '"')
+            || (*expr == '{' && expr[strlen(expr) - 1] == '}')) 
 	{
             /* delimiters of field search */
             strcpy(expr, expr + 1); 
-            *(lastc(expr))= '\0';
+            expr[strlen(expr) - 1] = '\0';
         }
         bufp = buf;
         exprp = expr;
@@ -830,7 +830,7 @@ int binsearch(char *orig_key, int prefix_match_mode)
     lrget(key, &l, &r);
 
     if (prefix_match_mode) {  /* truncate a '*' character at the end */
-        *(lastc(key)) = '\0';
+        key[strlen(key) - 1] = '\0';
     }
 
     while (r >= l) {

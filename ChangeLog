@@ -1,5 +1,10 @@
 1999-12-09  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/util.c: Abolish lastc();
+
+	* nmz/re.c, nmz/search.c, nmz/util.c, src/result.c: Abolish using
+	lastc().
+
 	* nmz/util.c (nmz_debug_printf): Renamed from nmz_dprintf. (undo)
 	(nmz_warn_printf): Renamed from nmz_wprintf. (undo) [namazu-dev 963]
 

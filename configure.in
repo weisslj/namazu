@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.78 2000-01-15 18:13:36 rug Exp $
+dnl $Id: configure.in,v 1.79 2000-01-18 13:20:14 satoru Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -16,6 +16,12 @@ AC_INIT(src/cgi.c)
 AC_PREREQ(2.13)               dnl Minimum Autoconf version required.
 AM_INIT_AUTOMAKE(namazu, 1.9.12)
 AM_MAINTAINER_MODE
+
+dnl *
+dnl * Namazu's website URL
+dnl * 
+OPT_NMZ_URI="http://openlab.ring.gr.jp/namazu/"
+AC_SUBST(OPT_NMZ_URI)
 
 dnl *
 dnl * libtool

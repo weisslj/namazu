@@ -1,5 +1,7 @@
 2000-01-18  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* configure.in: Restore AC_SUBST(OPT_NMZ_URI).
+
 	* nmz/search.c (nmz_search): Fix a serious bug. [namazu-dev 1233]
 
 	* src/namazu.c (namazu_core): Change a little.

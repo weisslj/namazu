@@ -11,10 +11,10 @@ DIST_TKNAMAZU = tknamazu
 endif
 
 SUBDIRS = m4 conf doc etc filter po lib nmz pl src lisp scripts man \
-	  tests template contrib scheme archive $(BUILT_TKNAMAZU)
+	  tests pltests template contrib scheme archive $(BUILT_TKNAMAZU)
 
 DIST_SUBDIRS = m4 conf doc etc filter po lib nmz pl src lisp scripts man \
-	  tests template contrib scheme archive $(BUILT_TKNAMAZU)
+	  tests pltests template contrib scheme archive $(BUILT_TKNAMAZU)
 
 
 bin_SCRIPTS = nmz-config

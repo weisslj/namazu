@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: doccat.pl,v 1.5 2004-05-11 09:56:20 fumiya Exp $
+# $Id: doccat.pl,v 1.6 2004-05-11 18:38:23 opengl2772 Exp $
 # Copyright (C) 2001 SATOH Fumiyasu,
 #               2001,2004 Namazu Project. All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -63,7 +63,9 @@ sub mediatype() {
             my $ver = $1;
             if ($ver >= 1.42) {
 	        push(@type, 'application/rtf');
-            }
+            } else {
+	        util::dprint("filter/doccat.pl: No RTF support (TF library version < 1.42)");
+	    }
         } else {
 	    util::dprint("filter/doccat.pl: No RTF support (TF library version < 1.42)");
 	}

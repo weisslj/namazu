@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: compress.pl,v 1.16 2002-03-06 06:21:17 knok Exp $
+# $Id: compress.pl,v 1.17 2002-03-15 08:36:16 knok Exp $
 # Copyright (C) 2000 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -54,16 +54,9 @@ sub add_magic ($) {
     return;
 }
 
-sub intr() {
-    my ($signame) = @_;
-    print STDERR "Warning: signal $signame occured.\n";
-}
-
 sub filter ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
       = @_;
-
-    local $SIG{'PIPE'} = \&intr;
 
     my $tmpfile = util::tmpnam('NMZ.compr');
 

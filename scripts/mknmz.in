@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.104 2002-02-13 07:39:36 knok Exp $
+# $Id: mknmz.in,v 1.105 2002-03-15 08:36:16 knok Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -790,8 +790,11 @@ sub load_document ($$$$\%) {
 	        || die _("unable to require ") . 
 		    "\"$var::REQUIRE_ACTIONS{$mtype}.pl\"\n";
 	    my $err = undef;
-	    eval '$err = ' . $var::REQUIRE_ACTIONS{$mtype} .
-	      '::filter($orig_cfile, $contref, $weighted_str, $headings, $fields);';
+	    {
+		local $SIG{'PIPE'} = \&trapintr;
+		eval '$err = ' . $var::REQUIRE_ACTIONS{$mtype} .
+		  '::filter($orig_cfile, $contref, $weighted_str, $headings, $fields);';
+	    }
 	    if ($err) {
 		return ($file_size, $file_size, 0, "$mtype; x-error=$err");
 	    }
@@ -2451,6 +2454,11 @@ sub dump_record($$) {
     }
     print $fh_info "\n";
     return;
+}
+
+sub trapintr {
+    my ($signame) = @_;
+    print STDERR "Warning: signal $signame occured.\n";
 }
 
 #

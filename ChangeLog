@@ -1,5 +1,11 @@
 2002-03-15  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
+	* filter/compress.pl: Removed SIGPIPE trapping routine
+	because it was changed to care in mknmz.
+
+	* scripts/mknmz.in (trapintr): Added SIGPIPE trapping routine
+	(closes: namazu-bugs-en#19).
+
 	* filter/pdf.pl (status()): Added version check to adopt
 	xpdf 1.00.
 
@@ -7458,4 +7464,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.938 2002-03-15 07:19:09 knok Exp $
+$Id: ChangeLog,v 1.939 2002-03-15 08:36:15 knok Exp $

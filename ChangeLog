@@ -1,3 +1,7 @@
+2004-11-01  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * pl/conf.pl.in ($ALLOW_FILES): Added extensions of Visio.
+
 2004-10-21  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * pltests/util.pl: It corresponds to the batch file created by 
@@ -9231,4 +9235,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1258 2004-10-21 13:09:21 opengl2772 Exp $
+$Id: ChangeLog,v 1.1259 2004-11-01 12:54:36 opengl2772 Exp $

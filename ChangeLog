@@ -8,6 +8,11 @@
 
 	* doc/{en,ja}/manual.html: Added some comments for ole{taro,rtf}.pl
 
+	* filter/win32/oleexcel.pl (status):
+ 	Change the way of presence check of each applications
+	from using Win32::OLE->new() to using Win32::OLE::Const->Load(),
+ 	in order to avoid useless and time-consuming startup.
+
 2001-01-26  Yoshinori TAKESAKO  <takesako@ddt.or.jp>
 
 	* filter/win32/oleexcel.pl: Changed overall program structure. 
@@ -6355,4 +6360,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.801 2001-01-27 02:38:07 baba Exp $
+$Id: ChangeLog,v 1.802 2001-01-27 02:51:27 baba Exp $

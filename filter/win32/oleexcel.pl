@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: oleexcel.pl,v 1.10 2001-01-26 11:17:31 takesako Exp $
+# $Id: oleexcel.pl,v 1.11 2001-01-27 02:51:29 baba Exp $
 # Copyright (C) 2001 Yoshinori TAKESAKO,
 #               1999 Jun Kurabe ,
 #               1999 Ken-ichi Hirose All rights reserved.
@@ -47,7 +47,7 @@
 # V3.06 2001/01/24 Convert kanji code of document properties to euc-jp code
 
 package oleexcel;
-#use strict;
+use strict;
 require 'util.pl';
 require 'gfilter.pl';
 
@@ -71,9 +71,12 @@ sub mediatype() {
 sub status() {
     open (SAVEERR,">&STDERR");
     open (STDERR,">nul");
-    my $excel = Win32::OLE->new('Excel.Application','Quit');
+    my $const;
+    $const = Win32::OLE::Const->Load("Microsoft Excel 9.0 Object Library");
+    $const = Win32::OLE::Const->Load("Microsoft Excel 8.0 Object Library")
+	unless $const;
     open (STDERR,">&SAVEERR");
-    return 'yes' if (defined $excel);
+    return 'yes' if (defined $const);
     return 'no';
 }
 

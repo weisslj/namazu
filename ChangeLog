@@ -1,3 +1,12 @@
+1999-11-23  Ken-ichi Hirose  <kenzo-@tama.or.jp>
+
+	* src/mknmz.pl.in: Modify make_summary function.
+
+	* pl/util.pl: Fix islang function bug.
+
+	* filter/pdf.pl: Add $fields->{'title'} before 
+        gfilter::show_filter_debug_info.
+
 1999-11-23  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* src/namazu.h: Import some named constans from libnamazu.h.

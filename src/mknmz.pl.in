@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.78 1999-11-21 19:58:52 kenzo- Exp $
+# $Id: mknmz.pl.in,v 1.79 1999-11-23 18:23:31 kenzo- Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -452,9 +452,11 @@ sub make_summary ($$$) {
         $tmp =~ s/([-=*\#])\1{2,}/$1$1/g;
     }
 
-    my $summary = substr $tmp, 0, $conf::SUMMARY_LENGTH;
+    length($tmp) < $conf::SUMMARY_LENGTH + 1 ?
+        $tmplen = $conf::SUMMARY_LENGTH : $tmplen = length($tmp) - 1;
+    my $summary = substr($tmp, 0, $tmplen);
     my $kanji = $summary =~ tr/\xa1-\xfe/\xa1-\xfe/;
-    $summary .= substr($tmp, $conf::SUMMARY_LENGTH, 1) if $kanji %2;
+    $summary .= substr($tmp, $tmplen, 1) if $kanji %2;
 
     $summary =~ s/^\s+//;
     $summary =~ s/\s+/ /g;   # normalize white spaces

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.4 1999-11-21 19:58:53 kenzo- Exp $
+# $Id: util.pl,v 1.5 1999-11-23 18:23:32 kenzo- Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -222,7 +222,7 @@ sub remove_tmpfiles () {
 sub islang($) {
     my ($lang) = @_;
 
-    if ($lang =~ /^$mknmz::LANG/) {  # prefix matching
+    if ($mknmz::LANG =~ /^$lang/) {  # prefix matching
 	return 1;
     } else {
 	return 0;

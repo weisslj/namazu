@@ -14,6 +14,7 @@ filter_DATA = bzip2.pl \
 	     pdf.pl \
 	     rfc.pl \
 	     msword.pl \
+	     olemsword.pl \
 	     oleexcel.pl \
 	     olepowerpoint.pl \
 	     ichitaro456.pl

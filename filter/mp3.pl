@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mp3.pl,v 1.4 2004-03-22 12:31:58 opengl2772 Exp $
+# $Id: mp3.pl,v 1.5 2004-03-31 14:08:08 usu Exp $
 # Copyright (C) 2002 Luc@2113.ch ,
 #               2002 2113.ch ,  
 #               2003-2004 Namazu Project All rights reserved ,
@@ -38,7 +38,10 @@ sub mediatype() {
 
 sub status() {
     # http://sourceforge.net/projects/pudge/
-    return 'yes' if (util::checklib('MP3/Info.pm'));
+    if (util::checklib('MP3/Info.pm')) {
+	eval 'use MP3::Info 1.01;';
+	return 'yes' unless $@;
+    }
     return 'no';
 }
 
@@ -64,6 +67,13 @@ sub filter($$$$$) {
     my ($orig_cfile, $contref, $weighted_str, $headings, $fields)
       = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
+
+    my $header = substr($$contref, 0, 3);
+    unless ($header =~ /ID3/) {
+	util::vprint("Couldn't find ID3 tag\n");
+	$$contref="";
+	return undef;
+    }
 
     util::vprint("Processing mp3 file ... (using MP3::Info module)\n");
 

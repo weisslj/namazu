@@ -1,3 +1,12 @@
+2004-03-31  Yukio USUDA <usu@namazu.org>
+
+	* filter/mp3.pl: exclude no ID3 tag mpeg/audio file.
+	(namazu-devel-ja #4001)
+
+	* filter/mp3.pl(status): Add version check of MP3::Info.pm.
+
+	* doc/{ja,en}/manual.html (mp3.pl): Update messages.
+
 2004-03-28  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * tests/*: overwrite some environment variable.
@@ -8675,4 +8684,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1137 2004-03-28 02:11:49 opengl2772 Exp $
+$Id: ChangeLog,v 1.1138 2004-03-31 14:08:05 usu Exp $

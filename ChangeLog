@@ -1,3 +1,10 @@
+2001-09-03  Ryuji Abe  <rug@namazu.org>
+
+	* nmz/Makefile.am (DEFS): Added -DNO_ALLOCA. We don't
+	use alloca() no more.
+	(libnmz_la_LIBADD): Delete @LTALLOCA@ again.
+	(libnmz_la_DEPENDENCIES): Likewise.
+
 2001-09-02  Ryuji Abe  <rug@namazu.org>
 
 	[Now <string.h> is included only if it was found.
@@ -6967,4 +6974,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.858 2001-09-02 08:25:32 rug Exp $
+$Id: ChangeLog,v 1.859 2001-09-03 05:17:38 rug Exp $

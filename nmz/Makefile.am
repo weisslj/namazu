@@ -1,6 +1,6 @@
 # Process this file with automake to produce Makefile.in
 #
-# $Id: Makefile.am,v 1.38 2001-09-01 11:47:25 rug Exp $
+# $Id: Makefile.am,v 1.39 2001-09-03 05:17:38 rug Exp $
 #
 
 AUTOMAKE_OPTIONS = 1.4 no-dependencies
@@ -15,7 +15,7 @@ indexdir    = $(localstatedir)/$(PACKAGE)/index
 DEFS = -DLOCALEDIR=\"$(localedir)\" \
        -DOPT_CONFDIR=\"$(confdir)\" \
        -DOPT_INDEXDIR=\"$(indexdir)\" \
-       -DHAVE_SUPPORT_H \
+       -DHAVE_SUPPORT_H -DNO_ALLOCA \
        @DEFS@
 INCLUDES = -I$(srcdir) -I.. -I$(srcdir)/../lib -I$(srcdir)/../src \
 	-I$(srcdir)/../intl -I$(srcdir)/../nmz
@@ -32,8 +32,8 @@ libnmz_la_SOURCES = alias.c alias.h codeconv.c codeconv.h \
 	regex.c regex.h search.c search.h seed.c seed.h util.c util.h \
 	var.c var.h wakati.c wakati.h score.c score.h
 
-libnmz_la_DEPENDENCIES = @NMZ_LIBOBJS@ @LTALLOCA@
-libnmz_la_LIBADD = @NMZ_LIBOBJS@ @LTALLOCA@
+libnmz_la_DEPENDENCIES = @NMZ_LIBOBJS@
+libnmz_la_LIBADD = @NMZ_LIBOBJS@
 libnmz_la_LDFLAGS = -version-info $(LTVERSION)
 
 ##Bug in automake: Can't use `if MAINTAINER_MODE'

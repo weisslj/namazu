@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.73 2000-03-03 03:36:20 satoru Exp $
+ * $Id: search.c,v 1.74 2000-04-05 07:07:54 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -834,7 +834,7 @@ make_fullpathname_index(int n)
 static 
 void remove_quotes(char *str) 
 {
-    if ((*str == '"' && str[strlen(str) - 1] == '"') 
+    if (strlen(str) >= 3 && (*str == '"' && str[strlen(str) - 1] == '"') 
 	|| (*str == '{' && str[strlen(str) - 1] == '}')) 
     {
 	strcpy(str, str + 1); 

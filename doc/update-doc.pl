@@ -59,7 +59,7 @@ for my $lang (@langs) {
     writefile("$manfname", $mancont);
 }
 
-sub readfile ($) {
+sub readfile {
     my ($fname) = @_;
 
     my $fh = new FileHandle;
@@ -73,7 +73,7 @@ sub readfile ($) {
     return $cont;
 }
 
-sub writefile ($$) {
+sub writefile {
     my ($fname, $cont) = @_;
 
     my $fh = new FileHandle;
@@ -83,7 +83,7 @@ sub writefile ($$) {
     print $fh $cont;
 }
 
-sub encode() {
+sub encode {
     my ($cont) = @_;
 
     $cont =~ s/&/&amp;/g;

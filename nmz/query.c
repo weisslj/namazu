@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: query.c,v 1.11 2000-03-04 11:11:37 satoru Exp $
+ * $Id: query.c,v 1.12 2000-04-05 07:07:54 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -58,23 +58,23 @@ set_phrase_trick(char *str)
     int i, state;
     char *b = str, *e;
 
-    for (i = state = 0; *(str + i); i++) {
-        if ((*(str + i) == '"' || *(str + i) == '{') 
-            && (i == 0 || *(str + i - 1) == ' ')) 
+    for (i = state = 0; str[i] != '\0'; i++) {
+        if ((str[i] == '"' || str[i] == '{') && 
+	    (i == 0 || str[i - 1] == ' ') &&
+	    (str[i + 1] != ' ')) 
         {
             state = 1;
             b = str + i + 1;
-        } else if (state && (*(str + i) == '"' || *(str + i) == '}') && 
-                   (*(str + i + 1) == ' ' || *(str + i + 1) == '\0')) 
+        } else if (state && (str[i] == '"' || str[i] == '}') && 
+                   (str[i + 1] == ' ' || str[i + 1] == '\0') &&
+                   (str[i - 1] != ' ')) 
         {
-            state = 0;
-            e = str + i - 1;
-
-            for (;b <= e; b++) {
-                if (*b == ' ')
-                    *b = '\t';
-            }
-        } 
+	    e = str + i - 1;
+	    for (;b <= e; b++) {
+		if (*b == ' ')
+		    *b = '\t';
+	    }
+        }
     }
 }
 
@@ -88,23 +88,23 @@ set_regex_trick(char *str)
     int i, delim;
     char *b = str, *e;
 
-    for (i = delim = 0; *(str + i); i++) {
+    for (i = delim = 0; str[i] != '\0'; i++) {
         int field = 0;
-        if ((i == 0 || *(str + i - 1) == ' ') && nmz_isfield(str + i)) {
+        if ((i == 0 || str[i - 1] == ' ') && nmz_isfield(str + i)) {
             field = 1;
             i += strcspn(str + i, ":") + 1;
         }
-        if ((field || i == 0 || *(str + i - 1) == ' ') && 
-            (*(str + i) == '/' || 
-             (field && (*(str + i) == '"' || *(str + i) == '{'))))
+        if ((field || i == 0 || str[i - 1] == ' ') && 
+            (str[i] == '/' || 
+             (field && (str[i] == '"' || str[i] == '{'))))
         {
-            delim = *(str + i);
+            delim = str[i];
             if (delim == '{') {
                 delim = '}';
             }
             b = str + i + 1;
-        } else if (*(str + i) == delim 
-                   && (*(str + i + 1) == ' ' || *(str + i + 1) == '\0')) 
+        } else if (str[i] == delim 
+                   && (str[i + 1] == ' ' || str[i + 1] == '\0')) 
         {
             delim = 0;
             e = str + i - 1;
@@ -140,7 +140,10 @@ nmz_make_query(const char *querystring)
     strcpy(query.str, querystring);
 
     set_phrase_trick(query.str);
+    nmz_debug_printf("set_phrase_trick: %s\n", query.str);
+
     set_regex_trick(query.str);
+    nmz_debug_printf("set_regex_trick: %s\n", query.str);
 
     /* Count number of tokens in querystring. */
     for (i = 0, tokennum = 0; *(query.str + i);) {
@@ -151,9 +154,6 @@ nmz_make_query(const char *querystring)
 	while (query.str[i] != ' ' &&
 	       query.str[i] != '\0')
 	    i++;
-    }
-    if (nmz_is_debugmode()) {
-	nmz_debug_printf("query.tabN: %d\n", tokennum);
     }
 
     if (tokennum == 0) { /* if no token available */
@@ -188,6 +188,13 @@ nmz_make_query(const char *querystring)
 
     /* Assign tokennum. */
     query.tokennum = tokennum;
+
+    if (nmz_is_debugmode()) {
+	nmz_debug_printf("query.tokennum: %d\n", query.tokennum);
+	for (i = 0; i < tokennum; i++) {
+	    nmz_debug_printf("query.tab[%d]: %s\n", i, query.tab[i]);
+	}
+    }
 
     return SUCCESS;
 }

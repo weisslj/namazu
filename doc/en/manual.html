@@ -121,61 +121,62 @@ The above searches a keyword "bar" for the index under
 
 <!-- mknmz-option -->
 <pre>
-    mknmz 2.0.2, an indexer of Namazu.
+    mknmz 2.0.3, Namazu のインデックス作成プログラム 
     
-    Usage: mknmz [options] &lt;target&gt;...
+    使い方: mknmz [options] &lt;target&gt;...
     
-    Target files:
-      -a, --all                target all files.
-      -t, --media-type=MTYPE   set the media type for all target files to MTYPE.
-      -h, --mailnews           same as --media-type='message/rfc822'
-          --mhonarc            same as --media-type='text/html; x-type=mhonarc'
-      -F, --target-list=FILE   load FILE which contains a list of target files.
-          --allow=PATTERN      set PATTERN for file names which should be allowed.
-          --deny=PATTERN       set PATTERN for file names which should be denied.
-          --exclude=PATTERN    set PATTERN for pathnames which should be excluded.
-      -e, --robots             exclude HTML files containing
-                               &lt;meta name="ROBOTS" content="NOINDEX"&gt;
-      -M, --meta               handle HTML meta tags for field-specified search.
-      -r, --replace=CODE       set CODE for replacing URI.
-          --html-split         split an HTML file with &lt;a name="..."&gt; anchors.
-          --mtime=NUM          limit by mtime just like find(1)'s -mtime option.
-                               e.g., -50 for recent 50 days, +50 for older than 50.
+    対象ファイル:
+      -a, --all                すべてのファイルを対象とする
+      -t, --media-type=MTYPE   対象ファイルの文書形式を指定する
+      -h, --mailnews           --media-type='message/rfc822' と同じ
+          --mhonarc            --media-type='text/html; x-type=mhonarc' と同じ
+      -F, --target-list=FILE   インデックス対象のファイルのリストを読み込む
+          --allow=PATTERN      対象とするファイル名の正規表現を指定する
+          --deny=PATTERN       拒絶するファイル名の正規表現を指定する
+          --exclude=PATTERN    除外するパス名の正規表現を指定する
+      -e, --robots             次の記述を含む HTMLファイルを除外する
+                               &lt;meta name=\"ROBOTS\" content=\"NOINDEX\"&gt;
+      -M, --meta               HTMLの metaタグをフィールド指定検索に用いる
+      -r, --replace=CODE       URIを置換するためのコードを指定する
+          --html-split         HTMLファイルを &lt;a name=\"...\"&gt; 単位で分割処理する
+          --mtime=INT          変更日制限 find(1) の -mtime と同じ規則
+                               例: -50 で 50 日以内、+50 で 50 日より古いものだけ
     
-    Morphological Analysis:
-      -c, --use-chasen         use ChaSen for analyzing Japanese.
-      -k, --use-kakasi         use KAKASI for analyzing Japanese.
-      -m, --use-chasen-noun    use ChaSen for extracting only nouns.
+    形態素解析:
+      -c, --use-chasen        日本語の単語のわかち書きに ChaSen を用いる
+      -k, --use-kakasi        日本語の単語のわかち書きに KAKASI を用いる
+      -m, --use-chasen-noun   名詞のみを抽出する
     
-    Text Operations:
-      -E, --no-edge-symbol     remove symbols on edge of word.
-      -G, --no-okurigana       remove Okurigana in word.
-      -H, --no-hiragana        ignore words consist of Hiragana only.
-      -K, --no-symbol          remove symbols.
+    文字列処理:
+      -E, --no-edge-symbol  単語の両端の記号は削除する
+      -G, --no-okurigana    送り仮名を削除する
+      -H, --no-hiragana     平仮名のみの単語は登録しない
+      -K, --no-symbol       記号をすべて削除する
     
-    Summarization:
-      -U, --no-encode-uri      do not encode URI.
-      -x, --no-heading-summary do not make summary with HTML's headings.
+    要約:
+      -U, --no-encode-uri       URIのencodeを行わない
+      -x, --no-heading-summary  HTML のヘディングによる要約作成を行わない
     
-    Index Construction:
-          --update=INDEX       set INDEX for updating.
-      -Y, --no-delete          do not detect removed documents.
-      -Z, --no-update          do not detect update and deleted documents.
     
-    Miscellaneous:
-      -s, --checkpoint         turn on the checkpoint mechanism.
-      -C, --show-config        show the current configuration.
-      -f, --config=FILE        use FILE as a config file.
-      -I, --include=FILE       include your customization FILE.
-      -O, --output-dir=DIR     set DIR to output the index.
-      -T, --template-dir=DIR   set DIR having NMZ.{head,foot,body}.*.
-      -q, --quiet              suppress status messages during execution.
-      -v, --version            show the version of namazu and exit.
-      -V, --verbose            be verbose.
-          --debug              be debug mode.
-          --help               show this help and exit.
+    インデックス作成:
+          --update=INDEX        更新するインデックスを指定する
+      -Y, --no-delete           削除された文書の検出を行わない
+      -Z, --no-update           文書の更新・削除を反映しない
     
-    Report bugs to &lt;bug-namazu@namazu.org&gt;.
+    その他:
+      -s, --checkpoint        チェックポイント機構を作動させる
+      -C, --show-config       現在の設定を表示する
+      -f, --config=FILE       設定ファイルを指定する
+      -I, --include=FILE      カスタマイズ用ファイルを読み込む
+      -O, --output-dir=DIR    インデックスの出力先を指定する
+      -T, --template-dir=DIR  NMZ.{head,foot,body}.* のディレクトリを指定する
+      -q, --quiet             インデックス処理の最中にメッセージを表示しない
+      -v, --version           ヴァージョンを表示する
+      -V, --verbose           口やかましいモード
+          --debug             デバッグモード
+          --help              このヘルプを表示する
+    
+    バグ報告は &lt;bug-namazu@namazu.org&gt; へどうぞ
 </pre>
 <!-- mknmz-option -->
 
@@ -311,35 +312,35 @@ href="http://www.vector.co.jp/soft/dl/dos/writing/s0013972.html">JSTXT</a>
 
 <!-- namazu-option -->
 <pre>
-    namazu 2.0.2, a search program of Namazu.
+    namazu 2.0.3, Namazu の検索プログラム
     
-    Usage: namazu [options] &lt;query&gt; [index]... 
-        -n, --max=NUM        set number of documents shown to NUM.
-        -w, --whence=NUM     set first number of documents shown to NUM.
-        -l, --list           print results by listing format.
-        -s, --short          print results by short format.
-            --results=EXT    set NMZ.result.EXT for printing results.
-            --late           sort documents in late order.
-            --early          sort documents in early order.
-            --sort=METHOD    set a sort METHOD (score, date, field:name)
-            --ascending      sort in ascending order (default: descending)
-        -a, --all            print all results.
-        -c, --count          print only number of hits.
-        -h, --html           print in HTML format.
-        -r, --no-references  do not display reference hit counts.
-        -H, --page           print further result links. (nearly meaningless)
-        -F, --form           force to print &lt;form&gt; ... &lt;/form&gt; region.
-        -R, --no-replace     do not replace URI string.
-        -U, --no-decode-uri  do not decode URI when printing in a plain format.
-        -o, --output=FILE    set the output file name to FILE.
-        -f, --config=FILE    set the config file name to FILE.
-        -C, --show-config    print current configuration.
-        -q, --quiet          do not display extra messages except search results.
-        -d, --debug          be debug mode.
-        -v, --version        show the version of namazu and exit.
-            --help           show this help and exit
+    使い方: namazu [options] &lt;query&gt; [index]...
+        -n, --max=NUM           一度に表示する件数
+        -w, --whence=NUM        表示する検索結果の先頭番号
+        -l, --list              検索結果を URI・パス名をリストで出力する
+        -s, --short             短い書式で出力する
+            --result=EXT        結果表示に用いる NMZ.result.EXT を指定する
+            --late              検索結果を新しい順にソートする
+            --early             検索結果を古い順にソートする
+            --sort=METHOD       ソート方法を指定する (score, date, field:name)
+            --ascending         ソートの方向を昇順にする (標準は降順)
+        -a, --all               検索結果をすべて表示する
+        -c, --count             ヒット数のみを表示する
+        -h, --html              HTMLで出力する
+        -r, --no-references     参考ヒット数を表示しない
+        -H, --page              先の検索結果へのリンクを表示する (ほぼ無意味) 
+        -F, --form              &lt;form&gt; ... &lt;/form&gt; の部分を強制的に表示する
+        -R, --no-replace        URI の置き換えを行わない
+        -U, --no-decode-uri     URI encode の復元を行わない
+        -o, --output=FILE       指定したファイルに検索結果を出力する
+        -f, --config=FILE       設定ファイルを指定する
+        -C, --show-config       設定を表示する
+        -q, --quiet             検索結果以外のメッセージを表示しない
+        -d, --debug             デバッグモード
+        -v, --version           ヴァージョンを表示する
+            --help              このヘルプを表示する
     
-    Report bugs to &lt;bug-namazu@namazu.org&gt;.
+    バグ報告は &lt;bug-namazu@namazu.org&gt; へどうぞ
 </pre>
 <!-- namazu-option -->
 
@@ -922,7 +923,7 @@ You must choose the latter with Tkanamzu or namazu.el.
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: manual.html,v 1.25 2000-03-16 13:17:09 satoru Exp $
+$Id: manual.html,v 1.26 2000-04-05 07:07:52 satoru Exp $
 </div>
 <address>
 developers@namazu.org

@@ -3,9 +3,35 @@
 # Test for namazu. Attack namazu with nasty cases.
 #
 LOG=`pwd`/test-log
+docnum=`perl -lne 'print $1 if /^files (\d+)/' idx1/NMZ.status`
 
 cd ../src
 
+# No query, no results.
+# FIXME: Is it a good behavior?
+test "`./namazu -c ''   ../tests/idx1`" != ''  && exit 1
+
+# Should never match any documents.
+test `./namazu -c '"'     ../tests/idx1` != '0' && exit 1
+test `./namazu -c '/'     ../tests/idx1` != '0' && exit 1
+test `./namazu -c '{'     ../tests/idx1` != '0' && exit 1
+test `./namazu -c '}'     ../tests/idx1` != '0' && exit 1
+test `./namazu -c '""'    ../tests/idx1` != '0' && exit 1
+test `./namazu -c '{}'    ../tests/idx1` != '0' && exit 1
+test `./namazu -c '" "'   ../tests/idx1` != '0' && exit 1
+test `./namazu -c '{ }'   ../tests/idx1` != '0' && exit 1
+test `./namazu -c '"  "'  ../tests/idx1` != '0' && exit 1
+test `./namazu -c '{  }'  ../tests/idx1` != '0' && exit 1
+test `./namazu -c ' " " ' ../tests/idx1` != '0' && exit 1
+test `./namazu -c ' { } ' ../tests/idx1` != '0' && exit 1
+
+# Match all documents.
+test `./namazu -c '//'       ../tests/idx1` != $docnum && exit 1
+test `./namazu -c 'namazu'   ../tests/idx1` != $docnum && exit 1
+test `./namazu -c '"namazu"' ../tests/idx1` != $docnum && exit 1
+test `./namazu -c '{namazu}' ../tests/idx1` != $docnum && exit 1
+
+# Boundary testing.
 perl << 'TEST'  >> $LOG
 	my $QUERY_MAX = 256;
 	my $BUFSIZE   = 1024;
@@ -32,4 +58,7 @@ perl << 'TEST'  >> $LOG
 			&$assert('$result =~ /^namazu: /');
 		}
 	}
+	exit 0;
 TEST
+exit $?
+

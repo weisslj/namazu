@@ -22,5 +22,5 @@ hitnum=`./namazu.cgi | perl -ne 'print $1 if /<!-- HIT -->(\d+)<!-- HIT -->/'`
 rm -f $tmprc
 
 echo "docnum:" $docnum, "hitnum:" $hitnum >> $LOG
-test "$docnum" != "$hitnum" && exit 1  # error if not matched
+test "$docnum" != "$hitnum" && exit 1  # error if not equal
 exit 0

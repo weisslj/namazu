@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.15 2000-03-02 11:06:36 satoru Exp $
+# $Id: util.pl,v 1.16 2000-03-15 11:52:04 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -165,14 +165,14 @@ sub checkcmd ($) {
 
     for my $dir (split(/$pd/, $ENV{'PATH'})) {
 	return "$dir/$cmd" if (-x "$dir/$cmd");
-	return "$dir/$cmd.com" if (-x "$dir/$cmd.com" &&
+	return "$dir/$cmd" if (-x "$dir/$cmd.com" &&
 		(($mknmz::SYSTEM eq "MSWin32") || ($mknmz::SYSTEM eq "os2")));
-	return "$dir/$cmd.exe" if (-x "$dir/$cmd.exe" &&
+	return "$dir/$cmd" if (-x "$dir/$cmd.exe" &&
 		(($mknmz::SYSTEM eq "MSWin32") || ($mknmz::SYSTEM eq "os2")));
-	return "$dir/$cmd.bat" if (-x "$dir/$cmd.bat" &&
-				   ($mknmz::SYSTEM eq "MSWin32"));
-	return "$dir/$cmd.cmd" if (-x "$dir/$cmd.cmd" &&
-				   ($mknmz::SYSTEM eq "os2"));
+	return "$dir/$cmd" if (-x "$dir/$cmd.bat" &&
+			       ($mknmz::SYSTEM eq "MSWin32"));
+	return "$dir/$cmd" if (-x "$dir/$cmd.cmd" &&
+			       ($mknmz::SYSTEM eq "os2"));
     }
     return undef;
 }

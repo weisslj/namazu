@@ -1,5 +1,12 @@
 2000-03-15  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* scripts/mknmz.in: Apply Hideyuki SHIRAI patch.
+	[namazu-devel-ja 00212]
+
+	* filter/win32/ichitaro456.pl: Likewise.
+
+	* filter/man.pl: Likewise.
+
 	* scripts/gcnmz.in: Add '../pl' to @INC.
 
 	* pl/nmzidx.pl: Fix NMZ.head handling bug.

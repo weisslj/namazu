@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: ichitaro456.pl,v 1.1 2000-03-01 03:20:21 satoru Exp $
+# $Id: ichitaro456.pl,v 1.2 2000-03-15 11:52:03 satoru Exp $
 # Copyright (C) 1999 Ken-ichi Hirose All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -67,8 +67,6 @@ sub filter ($$$$$) {
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
     my $tmpfile  = util::tmpnam('NMZ.jstxt');
-
-    return "Unable to execute ichitaro-converter" unless (-x $ichitaro456);
 
     util::vprint("Processing ichitaro file ... (using  '$ichitaro456')\n");
 

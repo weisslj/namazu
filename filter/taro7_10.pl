@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: taro7_10.pl,v 1.8 2003-09-29 11:18:19 usu Exp $
+# $Id: taro7_10.pl,v 1.9 2004-01-24 04:03:01 usu Exp $
 # Copyright (C) 2003 Yukio USUDA
 #               2003 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -27,7 +27,6 @@ require 'util.pl';
 require 'gfilter.pl';
 
 my $perlver =$];
-$perlver = 0;
 
 sub mediatype() {
     return ('application/x-js-taro');
@@ -192,9 +191,9 @@ sub remove_ctlcodearea($){
 # require Perl5.8 or unicode.pl
 sub u16toe($) {
     my ($tmp) = @_;
-    if ($perlver >= 5008){
-        eval 'use Encode;';
-        Encode::from_to($$tmp, "utf-16" ,"euc-jp");
+    if ($perlver >= 5.008){
+        eval 'use Encode qw/from_to Unicode JP/;';
+        Encode::from_to($$tmp, "UTF-16BE" ,"euc-jp");
     }else{
         eval require 'unicode.pl';
         my @unicodeList = unpack("n*", $$tmp);

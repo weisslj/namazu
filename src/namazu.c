@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.83 2000-01-09 08:45:13 satoru Exp $
+ * $Id: namazu.c,v 1.84 2000-01-09 11:28:59 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -193,7 +193,7 @@ parse_options(int argc, char **argv)
 		nmz_set_sortmethod(SORT_BY_DATE);
 	    } else if (nmz_strprefixcasecmp(optarg, "field:") == 0) {
 		nmz_set_sortmethod(SORT_BY_FIELD);
-		set_sortfield(optarg + strlen("field:"));
+		nmz_set_sortfield(optarg + strlen("field:"));
 	    }
 	}
 	break;
@@ -264,7 +264,7 @@ parse_options(int argc, char **argv)
 	    exit(EXIT_SUCCESS);
 	    break;
 	case 'L':
-	    set_lang(optarg);
+	    nmz_set_lang(optarg);
 	    break;
 	case 'o':
 	    stdio2file(optarg);
@@ -318,7 +318,7 @@ namazu_core(char * query, char *subquery, const char *argv0)
 	return FAILURE;
     }
 
-    free_hlist(hlist);
+    nmz_free_hlist(hlist);
     nmz_free_idxnames();
     nmz_free_aliases();
     nmz_free_replaces();
@@ -390,7 +390,7 @@ main(int argc, char **argv)
     int ret;
     char query[BUFSIZE] = "", subquery[BUFSIZE] = "";
 
-    set_lang("");
+    nmz_set_lang("");
     bindtextdomain(PACKAGE, LOCALEDIR);
     textdomain(PACKAGE);
 

@@ -1,5 +1,37 @@
 2000-01-09  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* nmz/hlist.[ch]: Changed function names.
+	s/andmerge/nmz_andmerge/g
+	s/notmerge/nmz_notmerge/g
+	s/ormerge/nmz_ormerge/g
+	s/malloc_hlist/nmz_malloc_hlist/g
+	s/realloc_hlist/nmz_realloc_hlist/g
+	s/free_hlist/nmz_free_hlist/g
+	s/copy_hlist/nmz_copy_hlist/g
+	s/set_idxid_hlist/nmz_set_idxid_hlist/g
+	s/merge_hlist/nmz_merge_hlist/g
+	s/do_date_processing/nmz_do_date_processing/g
+	s/get_hlist/nmz_get_hlist/g
+	s/sort_hlist/nmz_sort_hlist/g
+	s/reverse_hlist/nmz_reverse_hlist/g
+	s/set_docnum/nmz_set_docnum/g
+	s/set_sortfield/nmz_set_sortfield/g
+	s/get_sortfield	/nmz_get_sortfield/g
+
+	* nmz/i18n.[ch]: Changed function names.
+	s/is_lang_ja/nmz_is_lang_ja/g
+	s/set_lang/nmz_set_lang/g
+	s/get_lang/nmz_get_lang/g
+	s/choose_msgfile_suffix/nmz_choose_msgfile_suffix/g
+
+	* nmz/parser.[ch]: Changed function names.
+	s/init_parser/nmz_init_parser/g
+	s/expr/nmz_expr/g
+	s/isop/nmz_is_query_op/g
+
+	* nmz/wakati.[ch]: Changed function names.
+	s/wakati/nmz_wakati/g
+
 	* nmz/field.[ch]: Changed function names.
 	s/isfield/nmz_isfield/g
 	s/get_field_name/nmz_get_field_name/g

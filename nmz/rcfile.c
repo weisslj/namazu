@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.18 2000-01-09 08:45:10 satoru Exp $
+ * $Id: rcfile.c,v 1.19 2000-01-09 11:28:54 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -394,7 +394,7 @@ apply_rc(const char *directive, int lineno,
 	    TfIdf = 0;
 	}
     } else if (strcasecmp(directive, "LANG") == 0) {
-	set_lang(arg1);
+	nmz_set_lang(arg1);
     }
     return 0;
 }
@@ -456,7 +456,7 @@ Logging: %s\n\
 Lang:    %s\n\
 Scoring: %s\n\
 "), DEFAULT_INDEX, BASE_URI, nmz_is_loggingmode() ? "on" : "off",
-           get_lang(), TfIdf ? "tfidf" : "simple");
+           nmz_get_lang(), TfIdf ? "tfidf" : "simple");
 
     nmz_show_aliases();
     nmz_show_replaces();

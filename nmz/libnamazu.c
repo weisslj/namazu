@@ -2,7 +2,7 @@
  * 
  * libnamazu.c - Namazu library api
  *
- * $Id: libnamazu.c,v 1.24 2000-01-09 08:45:10 satoru Exp $
+ * $Id: libnamazu.c,v 1.25 2000-01-09 11:28:54 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
@@ -74,7 +74,7 @@ static char dyingmsg[BUFSIZE] = "";
 void 
 nmz_codeconv_query(char *query)
 {
-    if (is_lang_ja()) {
+    if (nmz_is_lang_ja()) {
         if (nmz_conv_ja_any_to_eucjp(query)) {
             nmz_zen2han(query);
         }

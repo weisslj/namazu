@@ -1,5 +1,5 @@
 /*
- * $Id: util.c,v 1.43 2000-01-09 08:08:10 satoru Exp $
+ * $Id: util.c,v 1.44 2000-01-09 11:28:55 satoru Exp $
  *
  * Imported scan_hex(), scan_oct(), xmalloc(), xrealloc() from 
  * Ruby b19's"util.c" and "gc.c". Thanks to Matsumoto-san for consent!
@@ -388,7 +388,7 @@ nmz_strcasestr(const char *haystack, const char *needle)
     int n = strlen(needle);
     int euc_mode = 0;
 
-    if (is_lang_ja()) {
+    if (nmz_is_lang_ja()) {
 	euc_mode = 1;
     }
 

@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.47 2000-01-09 08:31:39 satoru Exp $
+ * $Id: cgi.c,v 1.48 2000-01-09 11:28:59 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -402,7 +402,7 @@ process_cgi_var_sort(char *value, struct cgiarg *ca)
 	n = strspn(value, FIELD_SAFE_CHARS);
 	strncpy(field, value, n);
 	field[n] = '\0';  /* Hey, don't forget this after strncpy()! */
-	set_sortfield(field);
+	nmz_set_sortfield(field);
 
 	value += n;
 	nmz_set_sortmethod(SORT_BY_FIELD);
@@ -446,7 +446,7 @@ process_cgi_var_whence(char *value, struct cgiarg *ca)
 static void 
 process_cgi_var_lang(char *value, struct cgiarg *ca)
 {
-    set_lang(value);
+    nmz_set_lang(value);
 }
 
 static void 

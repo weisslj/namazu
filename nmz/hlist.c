@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.35 2000-01-09 08:52:27 satoru Exp $
+ * $Id: hlist.c,v 1.36 2000-01-09 11:28:53 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -206,25 +206,25 @@ date_cmp(const void *p1, const void *p2)
  * Merge the left and  right with AND rule
  */
 NmzResult 
-andmerge(NmzResult left, NmzResult right, int *ignore)
+nmz_andmerge(NmzResult left, NmzResult right, int *ignore)
 {
     int i, j, v;
 
     if (*ignore && left.num > 0) {
-	free_hlist(right);
+	nmz_free_hlist(right);
 	return left;
     }
     if (*ignore && right.num > 0) {
-	free_hlist(left);
+	nmz_free_hlist(left);
 	return right;
     }
 
     if (left.stat != SUCCESS || left.num <= 0) {
-	free_hlist(right);
+	nmz_free_hlist(right);
 	return left;
     }
     if (right.stat != SUCCESS || right.num <= 0) {
-	free_hlist(left);
+	nmz_free_hlist(left);
 	return right;
     }
 
@@ -236,7 +236,7 @@ andmerge(NmzResult left, NmzResult right, int *ignore)
 		break;
 	    if (left.data[i].docid == right.data[j].docid) {
 
-		copy_hlist(left, v, left, i);
+		nmz_copy_hlist(left, v, left, i);
                 if (TfIdf) {
                     left.data[v].score = left.data[i].score + right.data[j].score;
                 } else {
@@ -251,10 +251,10 @@ andmerge(NmzResult left, NmzResult right, int *ignore)
 	}
     }
   OUT:
-    free_hlist(right);
+    nmz_free_hlist(right);
     left.num = v;
     if (left.stat != SUCCESS || left.num <= 0)
-	free_hlist(left);
+	nmz_free_hlist(left);
     return left;
 }
 
@@ -263,25 +263,25 @@ andmerge(NmzResult left, NmzResult right, int *ignore)
  * Merge the left and  right with NOT rule
  */
 NmzResult 
-notmerge(NmzResult left, NmzResult right, int *ignore)
+nmz_notmerge(NmzResult left, NmzResult right, int *ignore)
 {
     int i, j, v, f;
 
     if (*ignore && left.num > 0) {
-	free_hlist(right);
+	nmz_free_hlist(right);
 	return left;
     }
     if (*ignore && right.num > 0) {
-	free_hlist(left);
+	nmz_free_hlist(left);
 	return right;
     }
 
     if (right.stat != SUCCESS || right.num <= 0) {
-	free_hlist(right);
+	nmz_free_hlist(right);
 	return left;
     }
     if (left.stat != SUCCESS || left.num <= 0) {
-	free_hlist(left);
+	nmz_free_hlist(left);
 	return right;
     }
 
@@ -296,14 +296,14 @@ notmerge(NmzResult left, NmzResult right, int *ignore)
 	    }
 	}
 	if (!f) {
-	    copy_hlist(left, v, left, i);
+	    nmz_copy_hlist(left, v, left, i);
 	    v++;
 	}
     }
-    free_hlist(right);
+    nmz_free_hlist(right);
     left.num = v;
     if (left.stat != SUCCESS || left.num <= 0)
-	free_hlist(left);
+	nmz_free_hlist(left);
     return left;
 }
 
@@ -312,7 +312,7 @@ notmerge(NmzResult left, NmzResult right, int *ignore)
  * merge the left and  right with OR rule
  */
 NmzResult 
-ormerge(NmzResult left, NmzResult right)
+nmz_ormerge(NmzResult left, NmzResult right)
 {
     int i, j, v, n;
     NmzResult val;
@@ -320,21 +320,21 @@ ormerge(NmzResult left, NmzResult right)
     if ((left.stat  != SUCCESS || left.num <= 0) && 
 	(right.stat != SUCCESS || right.num <= 0)) 
     {
-	free_hlist(right);
+	nmz_free_hlist(right);
 	return left;
     }
     if (left.stat != SUCCESS || left.num <= 0) {
-	free_hlist(left);
+	nmz_free_hlist(left);
 	return right;
     }
     if (right.stat != SUCCESS || right.num <= 0){
-	free_hlist(right);
+	nmz_free_hlist(right);
 	return left;
     }
 
     n = left.num + right.num;
 
-    malloc_hlist(&val, n);
+    nmz_malloc_hlist(&val, n);
     if (val.stat == ERR_FATAL)
         return val;
 
@@ -352,27 +352,27 @@ ormerge(NmzResult left, NmzResult right)
 		j++;
 		break;
 	    } else {
-		copy_hlist(val, v, right, j);
+		nmz_copy_hlist(val, v, right, j);
 		v++;
 	    }
 	}
-	copy_hlist(val, v, left, i);
+	nmz_copy_hlist(val, v, left, i);
 	v++;
     }
 
     for (; j < right.num; j++) {
-	copy_hlist(val, v, right, j);
+	nmz_copy_hlist(val, v, right, j);
 	v++;
     }
 
-    free_hlist(left);
-    free_hlist(right);
+    nmz_free_hlist(left);
+    nmz_free_hlist(right);
     val.num = v;
     return val;
 }
 
 void 
-malloc_hlist(NmzResult * hlist, int n)
+nmz_malloc_hlist(NmzResult * hlist, int n)
 {
     if (n <= 0) return;
     hlist->data = malloc(n * sizeof(struct nmz_data));
@@ -387,7 +387,7 @@ malloc_hlist(NmzResult * hlist, int n)
 }
 
 void 
-realloc_hlist(NmzResult * hlist, int n)
+nmz_realloc_hlist(NmzResult * hlist, int n)
 {
     if (hlist->stat != SUCCESS || n <= 0) return;
     hlist->data = realloc(hlist->data, n * sizeof(struct nmz_data));
@@ -398,20 +398,20 @@ realloc_hlist(NmzResult * hlist, int n)
 }
 
 void 
-free_hlist(NmzResult hlist)
+nmz_free_hlist(NmzResult hlist)
 {
     if (hlist.stat != SUCCESS || hlist.num <= 0) return;
     free(hlist.data);
 }
 
 void 
-copy_hlist(NmzResult to, int n_to, NmzResult from, int n_from)
+nmz_copy_hlist(NmzResult to, int n_to, NmzResult from, int n_from)
 {
     to.data[n_to] = from.data[n_from];
 }
 
 void 
-set_idxid_hlist(NmzResult hlist, int id)
+nmz_set_idxid_hlist(NmzResult hlist, int id)
 {
     int i;
     for (i = 0; i < hlist.num; i++) {
@@ -420,7 +420,7 @@ set_idxid_hlist(NmzResult hlist, int id)
 }
 
 NmzResult 
-merge_hlist(NmzResult *hlists)
+nmz_merge_hlist(NmzResult *hlists)
 {
     int i, n;
     NmzResult value;
@@ -434,7 +434,7 @@ merge_hlist(NmzResult *hlists)
             n += hlists[i].num;
         }
     }
-    malloc_hlist(&value, n);
+    nmz_malloc_hlist(&value, n);
     if (value.stat == ERR_FATAL)
         return value;
     for(i = n = 0; i < nmz_get_idxnum(); i++) {
@@ -442,7 +442,7 @@ merge_hlist(NmzResult *hlists)
             continue;
         memcpy_hlist(value, hlists[i], n);
         n += hlists[i].num;
-        free_hlist(hlists[i]);
+        nmz_free_hlist(hlists[i]);
     }
     value.stat = SUCCESS;
     value.num = n;
@@ -453,7 +453,7 @@ merge_hlist(NmzResult *hlists)
  * Get date info from NMZ.t and do the missing number processing
  */
 NmzResult 
-do_date_processing(NmzResult hlist)
+nmz_do_date_processing(NmzResult hlist)
 {
     FILE *date_index;
     int i;
@@ -478,7 +478,7 @@ do_date_processing(NmzResult hlist)
             int j;
 
             for (j = i + 1; j < hlist.num; j++) { /* shift */
-                copy_hlist(hlist, j - 1, hlist, j);
+                nmz_copy_hlist(hlist, j - 1, hlist, j);
             }
             hlist.num--;
             i--;
@@ -493,7 +493,7 @@ do_date_processing(NmzResult hlist)
  * Get the hit list
  */
 NmzResult 
-get_hlist(int index)
+nmz_get_hlist(int index)
 {
     int n, *buf, i;
     NmzResult hlist;
@@ -526,7 +526,7 @@ get_hlist(int index)
 	    return hlist;
 	}
 	n = nmz_read_unpackw(Nmz.i, buf, n) / 2;
-	malloc_hlist(&hlist, n);
+	nmz_malloc_hlist(&hlist, n);
 	if (hlist.stat == ERR_FATAL)
 	    return hlist;
 	
@@ -540,7 +540,7 @@ get_hlist(int index)
 	}
         hlist.num = n;
 	free(buf);
-        hlist = do_date_processing(hlist);
+        hlist = nmz_do_date_processing(hlist);
     } 
     return hlist;
 }
@@ -550,7 +550,7 @@ get_hlist(int index)
  * Interface to invoke merge sort function
  */
 int 
-sort_hlist(NmzResult hlist, enum nmz_sortmethod method)
+nmz_sort_hlist(NmzResult hlist, enum nmz_sortmethod method)
 {
     set_rank(hlist); /* conserve current order for STABLE sorting */
 
@@ -570,41 +570,41 @@ sort_hlist(NmzResult hlist, enum nmz_sortmethod method)
  * original of this routine was contributed by Furukawa-san [1997-11-13]
  */
 int 
-reverse_hlist(NmzResult hlist)
+nmz_reverse_hlist(NmzResult hlist)
 {
     int m, n;
     NmzResult tmp;
 
-    malloc_hlist(&tmp, 1);
+    nmz_malloc_hlist(&tmp, 1);
     if (tmp.stat == ERR_FATAL)
         return FAILURE;
     m = 0;
     n = hlist.num - 1;
     while (m < n) {
-	copy_hlist(tmp, 0, hlist, m);
-	copy_hlist(hlist, m, hlist, n);
-	copy_hlist(hlist, n, tmp, 0);
+	nmz_copy_hlist(tmp, 0, hlist, m);
+	nmz_copy_hlist(hlist, m, hlist, n);
+	nmz_copy_hlist(hlist, n, tmp, 0);
 	m++;
 	n--;
     }
-    free_hlist(tmp);
+    nmz_free_hlist(tmp);
     return 0;
 }
 
 void 
-set_docnum(int n)
+nmz_set_docnum(int n)
 {
     document_number = n;
 }
 
 void 
-set_sortfield(const char *field)
+nmz_set_sortfield(const char *field)
 {
     strcpy(field_for_sort, field);
 }
 
 char *
-get_sortfield(void)
+nmz_get_sortfield(void)
 {
     return field_for_sort;
 }

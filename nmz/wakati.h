@@ -8,8 +8,7 @@ enum {
     OTHER
 };
 
-extern int wakati(char*);
-extern int split_query(char*);
+extern int nmz_wakati(char*);
 
 #endif /* _WAKATI_H */
 

@@ -2,7 +2,7 @@
  * 
  * re.c -
  * 
- * $Id: re.c,v 1.23 2000-01-09 08:39:22 satoru Exp $
+ * $Id: re.c,v 1.24 2000-01-09 11:28:54 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -60,7 +60,7 @@ regex_grep(const char *orig_expr, FILE *fp, const char *field, int field_mode)
     NmzResult val, tmp;
     val.num = 0;
 
-    if (is_lang_ja()) {
+    if (nmz_is_lang_ja()) {
         re_mbcinit(MBCTYPE_EUC);
     } else {
         re_mbcinit(MBCTYPE_ASCII);
@@ -74,7 +74,7 @@ regex_grep(const char *orig_expr, FILE *fp, const char *field, int field_mode)
     nmz_debug_printf("REGEX: '%s'\n", expr);
 
     if (field_mode) {
-        malloc_hlist(&val, size += STEP);
+        nmz_malloc_hlist(&val, size += STEP);
 	if (val.stat == ERR_FATAL)
 	    return val;
 	val.num = 0; /* set 0 for no matching case */
@@ -105,24 +105,24 @@ regex_grep(const char *orig_expr, FILE *fp, const char *field, int field_mode)
            /* Matched */
             n++;
             if (n > max) {
-                free_hlist(val);
+                nmz_free_hlist(val);
                 val.num = 0;
 		val.stat = ERR_TOO_MUCH_MATCH;
                 break;
             }
             if (!field_mode) {
-                tmp = get_hlist(i);
+                tmp = nmz_get_hlist(i);
 		if (tmp.stat == ERR_FATAL)
 		    return tmp;
                 if (tmp.num > IGNORE_HIT) {
-                    free_hlist(val);
+                    nmz_free_hlist(val);
                     val.stat = ERR_TOO_MUCH_HIT;
                     val.num = 0;
                     break;
                 }
             } else {
                 if (n > size) {
-                    realloc_hlist(&val, size += STEP);
+                    nmz_realloc_hlist(&val, size += STEP);
 		    if (val.stat == ERR_FATAL)
 		        return val;
                 }
@@ -132,12 +132,12 @@ regex_grep(const char *orig_expr, FILE *fp, const char *field, int field_mode)
             }
 
             if (!field_mode) {
-                val = ormerge(val, tmp);
+                val = nmz_ormerge(val, tmp);
 		if (val.stat == ERR_FATAL)
 		    return val;
             } 
             if (val.num > IGNORE_HIT) {
-                free_hlist(val);
+                nmz_free_hlist(val);
                 val.num = -1;
                 break;
             }
@@ -158,7 +158,7 @@ regex_grep(const char *orig_expr, FILE *fp, const char *field, int field_mode)
         }
     }
     if (field_mode) {
-        val = do_date_processing(val);
+        val = nmz_do_date_processing(val);
     }
 
     re_free_pattern(rp);

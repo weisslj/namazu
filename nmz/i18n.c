@@ -1,6 +1,6 @@
 /*
  * i18n.c -
- * $Id: i18n.c,v 1.14 2000-01-06 10:01:52 satoru Exp $
+ * $Id: i18n.c,v 1.15 2000-01-09 11:28:54 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -44,7 +44,7 @@ static char Lang[BUFSIZE] = "C";
  */
 
 int 
-is_lang_ja(void)
+nmz_is_lang_ja(void)
 {
     if (strcmp(Lang, "japanese")) {
 	return 1;
@@ -59,7 +59,7 @@ is_lang_ja(void)
 }
 
 char *
-set_lang(const char *lang)
+nmz_set_lang(const char *lang)
 {
     if (*lang != '\0') {  /* given lang is explicitly specified */
 	strcpy(Lang, lang);
@@ -110,7 +110,7 @@ set_lang(const char *lang)
 }
 
 char *
-get_lang(void) 
+nmz_get_lang(void) 
 {
     return Lang;
 }
@@ -120,7 +120,7 @@ get_lang(void)
  * lang
  */
 enum nmz_stat
-choose_msgfile_suffix(const char *pfname,  char *lang_suffix)
+nmz_choose_msgfile_suffix(const char *pfname,  char *lang_suffix)
 {
     FILE *fp;
     int baselen;
@@ -129,7 +129,7 @@ choose_msgfile_suffix(const char *pfname,  char *lang_suffix)
     strcpy(fname, pfname);
     baselen = strlen(fname);
     strcat(fname, ".");
-    strcat(fname, get_lang());
+    strcat(fname, nmz_get_lang());
 
     /* 
      * Trial example:

@@ -2,7 +2,7 @@
  * 
  * codeconv.c -
  * 
- * $Id: codeconv.c,v 1.17 2000-01-09 08:45:09 satoru Exp $
+ * $Id: codeconv.c,v 1.18 2000-01-09 11:28:53 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -331,7 +331,7 @@ nmz_conv_ja_any_to_eucjp(char *s)
 
     in = (uchar *)s;
 
-    if (!is_lang_ja()) { /* Lang != ja */
+    if (!nmz_is_lang_ja()) { /* Lang != ja */
         return 0;
     }
     for (i = 0, m = 0, n = 0, f = 0; *(in + i); i++) {
@@ -452,7 +452,7 @@ nmz_conv_ext (const char *str) {
 	return NULL;
     }
 
-    lang = get_lang();
+    lang = nmz_get_lang();
     if (strcasecmp(lang, "japanese") == 0 || 
 	strcasecmp(lang, "ja") == 0 || 
 	strcasecmp(lang, "ja_JP.EUC") == 0 || 

@@ -1,5 +1,5 @@
 /*
- * $Id: result.c,v 1.40 2000-01-09 08:52:31 satoru Exp $
+ * $Id: result.c,v 1.41 2000-01-09 11:29:00 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -134,7 +134,7 @@ emphasize(char *str)
 	char key[BUFSIZE];
 	int keylen = 0;
 
-	if (isop(nmz_get_querytoken(i)))
+	if (nmz_is_query_op(nmz_get_querytoken(i)))
 	    continue;
 
 	strcpy(key, nmz_get_querytoken(i));

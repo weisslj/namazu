@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.42 2000-01-09 08:45:13 satoru Exp $
+ * $Id: form.c,v 1.43 2000-01-09 11:28:59 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -211,7 +211,7 @@ select_option(char *s, const char *name, const char *subquery)
 		    order = DESCENDING;
 		}
 
-		if (strcmp(field, get_sortfield()) == 0 && 
+		if (strcmp(field, nmz_get_sortfield()) == 0 && 
 		    nmz_get_sortorder() == order)
 		{
 		    fputs(" selected", stdout);
@@ -219,7 +219,7 @@ select_option(char *s, const char *name, const char *subquery)
             }
 
         } else if (strcasecmp(name, "lang") == 0) {
-            if (strcasecmp(value, get_lang()) == 0) {
+            if (strcasecmp(value, nmz_get_lang()) == 0) {
                 fputs(" selected", stdout);
             }
         } else if (strcasecmp(name, "idxname") == 0) {
@@ -314,7 +314,7 @@ read_headfoot(const char *fname)
     char *buf, *p, tmpfname[BUFSIZE], suffix[BUFSIZE];
     char *script_name;
 
-    if (choose_msgfile_suffix(fname, suffix) != SUCCESS) {
+    if (nmz_choose_msgfile_suffix(fname, suffix) != SUCCESS) {
 	nmz_warn_printf("%s: %s", fname, strerror(errno));
 	return NULL;
     } 
@@ -327,7 +327,7 @@ read_headfoot(const char *fname)
     }
 
     /* In case of suffix isn't equal to lang, we needs code conversion */
-    if (strcmp(suffix, get_lang()) != 0) {
+    if (strcmp(suffix, nmz_get_lang()) != 0) {
 	char *new = nmz_conv_ext(buf); /* new is allocated in nmz_conv_ext. */
 	free(buf);  /* Then we shoul free buf's memory */
 	buf = new;

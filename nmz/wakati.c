@@ -2,7 +2,7 @@
  * 
  * wakati.c -
  * 
- * $Id: wakati.c,v 1.20 2000-01-09 08:45:10 satoru Exp $
+ * $Id: wakati.c,v 1.21 2000-01-09 11:28:55 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -71,7 +71,7 @@ detect_char_type(char *c)
  */
 
 int 
-wakati(char *key)
+nmz_wakati(char *key)
 {
     int i, j, key_leng, type;
     char buf[BUFSIZE * 2] = "";

@@ -2,7 +2,7 @@
  * 
  * parser.c -
  * 
- * $Id: parser.c,v 1.15 2000-01-09 08:52:27 satoru Exp $
+ * $Id: parser.c,v 1.16 2000-01-09 11:28:54 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -70,7 +70,7 @@ factor(int *ignore)
             Cp++;
             if (nmz_get_querytoken(Cp) == NULL)
                 return val;
-            val = expr();
+            val = nmz_expr();
 	    if (val.stat == ERR_FATAL)
 	        return val;
             if (nmz_get_querytoken(Cp) == NULL)
@@ -78,7 +78,7 @@ factor(int *ignore)
             if (strcmp(nmz_get_querytoken(Cp), RP_STRING) == 0)
                 Cp++;
             break;
-        } else if (!isop(nmz_get_querytoken(Cp))) {
+        } else if (!nmz_is_query_op(nmz_get_querytoken(Cp))) {
             val = nmz_do_searching(nmz_get_querytoken(Cp), val);
 	    if (val.stat == ERR_FATAL)
 	       return val;
@@ -117,7 +117,7 @@ andop(void)
     }
     if (strcmp(nmz_get_querytoken(Cp), LP_STRING) == 0)
 	return AND_OP;
-    if (!isop(nmz_get_querytoken(Cp)))
+    if (!nmz_is_query_op(nmz_get_querytoken(Cp)))
 	return AND_OP;
     return 0;
 }
@@ -136,9 +136,9 @@ term(void)
 	if (right.stat == ERR_FATAL)
 	    return right;
 	if (op == AND_OP) {
-	    left = andmerge(left, right, &ignore);
+	    left = nmz_andmerge(left, right, &ignore);
 	} else if (op == NOT_OP) {
-	    left = notmerge(left, right, &ignore);
+	    left = nmz_notmerge(left, right, &ignore);
 	}
 	ignore = 0;
     }
@@ -168,7 +168,7 @@ orop(void)
  */
 
 NmzResult 
-expr(void)
+nmz_expr(void)
 {
     NmzResult left, right;
 
@@ -179,7 +179,7 @@ expr(void)
 	right = term();
 	if (right.stat == ERR_FATAL)
 	    return right;
-	left = ormerge(left, right);
+	left = nmz_ormerge(left, right);
 	if (left.stat == ERR_FATAL)
 	    return left;
     }
@@ -187,7 +187,7 @@ expr(void)
 }
 
 void 
-init_parser(void)
+nmz_init_parser(void)
 {
     Cp = 0;
 }
@@ -196,7 +196,7 @@ init_parser(void)
  * Check a character if metacharacter (operator) of not
  */
 int 
-isop(const char * c)
+nmz_is_query_op(const char * c)
 {
     if ((strcmp(c, AND_STRING) == 0 ) ||
 	(strcmp(c, AND_STRING_ALT) == 0 ) ||

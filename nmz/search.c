@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.55 2000-01-09 08:52:28 satoru Exp $
+ * $Id: search.c,v 1.56 2000-01-09 11:28:55 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -172,7 +172,7 @@ prefix_match(const char *key, int v)
 	/* Return if too much word would be hit
            because treat 'a*' completely is too consuming */
 	if (j > IGNORE_MATCH) {
-	    free_hlist(val);
+	    nmz_free_hlist(val);
 	    val.stat = ERR_TOO_MUCH_MATCH;
 	    break;
 	}
@@ -182,19 +182,19 @@ prefix_match(const char *key, int v)
 	fgets(buf, BUFSIZE, Nmz.w);
         nmz_chomp(buf);
 	if (strncmp(tmpkey, buf, n) == 0) {
-	    tmp = get_hlist(i);
+	    tmp = nmz_get_hlist(i);
 	    if (tmp.stat == ERR_FATAL)
 	        return tmp;
 	    if (tmp.num > IGNORE_HIT) {
-		free_hlist(val);
+		nmz_free_hlist(val);
 		val.stat = ERR_TOO_MUCH_MATCH;
 		break;
 	    }
-	    val = ormerge(val, tmp);
+	    val = nmz_ormerge(val, tmp);
 	    if (val.stat == ERR_FATAL)
 	        return val;
 	    if (val.num > IGNORE_HIT) {
-		free_hlist(val);
+		nmz_free_hlist(val);
 		val.stat = ERR_TOO_MUCH_MATCH;
 		break;
 	    }
@@ -252,7 +252,7 @@ do_word_search(const char *key, NmzResult val)
 
     if ((v = nmz_binsearch(key, 0)) != -1) {
         /* If found, get list */
-        val = get_hlist(v);
+        val = nmz_get_hlist(v);
 	if (val.stat == ERR_FATAL)
 	    return val;
     } else {
@@ -317,7 +317,7 @@ cmp_phrase_hash(int hash_key, NmzResult val,
     }
     ptr = nmz_getidxptr(phrase_index, hash_key);
     if (ptr <= 0) {
-	free_hlist(val);
+	nmz_free_hlist(val);
         val.num = 0;
         return val;
     }
@@ -339,13 +339,13 @@ cmp_phrase_hash(int hash_key, NmzResult val,
 	    sum = docid;
 	    for (; j < val.num && docid >= val.data[j].docid; j++) {
 		if (docid == val.data[j].docid) {
-		    copy_hlist(val, v++, val, j);
+		    nmz_copy_hlist(val, v++, val, j);
 		}
 	    }
 	}
     }
     if (v == 0) {
-	free_hlist(val);
+	nmz_free_hlist(val);
     }
     val.num = v;
     free(list);
@@ -439,7 +439,7 @@ do_phrase_search(const char *key, NmzResult val)
 	    } else {
 		ignore = 0;
 	    }
-	    val = andmerge(val, tmp, &ignore);
+	    val = nmz_andmerge(val, tmp, &ignore);
 
 	    strcpy(word_mix, prevword);
 	    strcat(word_mix, word);
@@ -777,18 +777,18 @@ nmz_search_sub(NmzResult hlist, const char *query, int n)
     }
 
     if (TfIdf) {
-	set_docnum(get_file_size(NMZ.t) / sizeof(int));
+	nmz_set_docnum(get_file_size(NMZ.t) / sizeof(int));
     }
 
-    init_parser();
-    hlist = expr(); /* Do searching! */
+    nmz_init_parser();
+    hlist = nmz_expr(); /* Do searching! */
 
     if (hlist.stat == ERR_FATAL) {
         return hlist;
     }
 
     if (hlist.stat == SUCCESS && hlist.num > 0) {  /* if hit */
-        set_idxid_hlist(hlist, n);
+        nmz_set_idxid_hlist(hlist, n);
     }
     nmz_set_idx_totalhitnum(cur_idxnum, hlist.num);
     close_index_files();
@@ -983,22 +983,22 @@ nmz_search(const char *query)
 	}
     }
 
-    hlist = merge_hlist(tmp);
+    hlist = nmz_merge_hlist(tmp);
 
     if (hlist.stat == SUCCESS && hlist.num > 0) { /* HIT!! */
 	/* Sort by date at first*/
-        if (sort_hlist(hlist, SORT_BY_DATE) != SUCCESS) {
+        if (nmz_sort_hlist(hlist, SORT_BY_DATE) != SUCCESS) {
 	    hlist.stat = ERR_FATAL;
 	    return hlist;
 	}
 	if (nmz_get_sortmethod() != SORT_BY_DATE) {
-	    if (sort_hlist(hlist, nmz_get_sortmethod()) != SUCCESS) {
+	    if (nmz_sort_hlist(hlist, nmz_get_sortmethod()) != SUCCESS) {
 	        hlist.stat = ERR_FATAL;
 		return hlist;
 	    }
 	}
         if (nmz_get_sortorder() == ASCENDING) {  /* default is descending */
-	    if (reverse_hlist(hlist)) {
+	    if (nmz_reverse_hlist(hlist)) {
 	        hlist.stat = ERR_FATAL;
 		return hlist; 
 	    }
@@ -1031,8 +1031,8 @@ nmz_do_searching(const char *key, NmzResult val)
     if (mode == WORD_MODE || mode == PHRASE_MODE) {
 	remove_quotes(tmpkey);
 	/* If under Japanese mode, do wakatigaki (word segmentation) */
-	if (is_lang_ja()) {
-	    if (wakati(tmpkey)) {
+	if (nmz_is_lang_ja()) {
+	    if (nmz_wakati(tmpkey)) {
 		val.stat = ERR_FATAL;
 		return val;
 	    }
@@ -1043,7 +1043,7 @@ nmz_do_searching(const char *key, NmzResult val)
 
     /* 
      * If query contains only one keyword, turn TfIdf mode off.
-     * This processing MUST be done after wakati(tmpkey).
+     * This processing MUST be done after nmz_wakati(tmpkey).
      */
     if (nmz_get_querytokennum() == 1 && strchr(nmz_get_querytoken(0), '\t') == NULL)
         TfIdf = 0;

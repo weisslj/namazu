@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.52 2000-01-09 08:52:31 satoru Exp $
+ * $Id: output.c,v 1.53 2000-01-09 11:28:59 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -564,7 +564,7 @@ static void
 print_msgfile(const char *fname) {
     char suffix[BUFSIZE], tmpfname[BUFSIZE];
 
-    if (choose_msgfile_suffix(fname, suffix) == SUCCESS) {
+    if (nmz_choose_msgfile_suffix(fname, suffix) == SUCCESS) {
 	char *buf;
 
 	strcpy(tmpfname, fname);
@@ -572,7 +572,7 @@ print_msgfile(const char *fname) {
 
 	buf = nmz_readfile(tmpfname); /* buf is allocated in nmz_readfile. */
 	/* In case of suffix isn't equal to lang, we need code conversion */
-	if (strcmp(suffix, get_lang()) != 0) {
+	if (strcmp(suffix, nmz_get_lang()) != 0) {
             /* new is allocated in nmz_conv_ext. */
 	    char *new = nmz_conv_ext(buf); 
 	    free(buf);  /* Then we shoul free buf's memory */

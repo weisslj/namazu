@@ -18,8 +18,8 @@
 #define AND_OP 1
 #define NOT_OP 2
 
-extern void init_parser(void);
-extern NmzResult expr(void);
-extern int isop(const char *);
+extern void nmz_init_parser(void);
+extern NmzResult nmz_expr(void);
+extern int nmz_is_query_op(const char *);
 
 #endif /* _PARSER_H */

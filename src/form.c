@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.12 1999-09-04 01:07:51 satoru Exp $
+ * $Id: form.c,v 1.13 1999-09-04 08:25:11 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -225,7 +225,7 @@ int select_option(uchar *s, uchar *name, uchar *subquery)
 		p = value + strlen("field:");
 		n = strspn(p, FIELD_SAFE_CHARS);
 		strncpy(field, p, n);
-		field[n] = '\0';        /* Hey, don't forget this! */
+		field[n] = '\0'; /* Hey, don't forget this after strncpy()! */
 		p += n;
 
 		if (strprefixcasecmp(p, ":ascending") == 0) {

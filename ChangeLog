@@ -1,5 +1,9 @@
 1999-09-04  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/conf.c: Rewrite an analizer for .namazurc or namazu.conf overall.
+	
+	* src/namazu.c: Fix --config option bug.
+	
 	* src/form.c: Modify to handle new type <form> ... </form>
 	
 	* src/cgi.c: Rename CGI variables. And Change a way to specify

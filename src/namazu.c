@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.25 1999-09-04 01:07:51 satoru Exp $
+ * $Id: namazu.c,v 1.26 1999-09-04 08:25:11 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -91,7 +91,7 @@ static struct option long_options[] = {
     {"count",            no_argument,       NULL, 'c'},
     {"show-config",      no_argument,       NULL, 'C'},
     {"debug",            no_argument,       NULL, 'd'},
-    {"config",           no_argument,       NULL, 'f'},
+    {"config",           required_argument, NULL, 'f'},
     {"form",             no_argument,       NULL, 'F'},
     {"html",             no_argument,       NULL, 'h'},
     {"page",             no_argument,       NULL, 'H'},

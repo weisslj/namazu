@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.16 1999-09-04 01:07:51 satoru Exp $
+ * $Id: cgi.c,v 1.17 1999-09-04 08:25:10 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -223,7 +223,7 @@ int get_cgi_vars(uchar * query, uchar *subquery)
 		qs += strlen("field%3A");
 		n = strspn(qs, FIELD_SAFE_CHARS);
 		strncpy(field, qs, n);
-		field[n] = '\0';        /* Hey, don't forget this! */
+		field[n] = '\0';  /* Hey, don't forget this after strncpy()! */
 		set_sort_field(field);
 		qs += n;
 		SortMethod    = SORT_BY_FIELD;

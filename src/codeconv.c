@@ -2,7 +2,7 @@
  * 
  * codeconv.c -
  * 
- * $Id: codeconv.c,v 1.4 1999-08-25 03:43:59 satoru Exp $
+ * $Id: codeconv.c,v 1.5 1999-09-04 08:25:10 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -232,7 +232,9 @@ void euctosjis(uchar *s)
 #endif  /* (_WIN32 || __EMX__) */
 
 
-/* Character encoding auto detection (simple approach) */
+/* codeconv: Detect character encoding (with simple approach) 
+ * and convert "in" into EUC-JP
+ */
 int codeconv(uchar * in)
 {
     int i, m, n, f;

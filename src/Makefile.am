@@ -22,7 +22,7 @@ DEFS = -DLOCALEDIR=\"$(localedir)\" \
        -DOPT_INDEXDIR=\"$(indexdir)\" \
        -DHAVE_SUPPORT_H \
        @DEFS@
-INCLUDES  = -I.. -I$(srcdir)/../intl -I$(srcdir)/../lib -I$(srcdir)/../nmz
+INCLUDES  = -I.. -I$(top_builddir)/intl -I$(srcdir)/../lib -I$(srcdir)/../nmz
 LDADD = @INTLLIBS@ $(top_builddir)/nmz/libnmz.la $(top_builddir)/lib/libnmzut.a 
 
 common_SOURCES = form.c form.h message.h \

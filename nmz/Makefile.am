@@ -1,6 +1,6 @@
 # Process this file with automake to produce Makefile.in
 #
-# $Id: Makefile.am,v 1.39 2001-09-03 05:17:38 rug Exp $
+# $Id: Makefile.am,v 1.40 2001-09-10 03:24:38 rug Exp $
 #
 
 AUTOMAKE_OPTIONS = 1.4 no-dependencies
@@ -18,7 +18,7 @@ DEFS = -DLOCALEDIR=\"$(localedir)\" \
        -DHAVE_SUPPORT_H -DNO_ALLOCA \
        @DEFS@
 INCLUDES = -I$(srcdir) -I.. -I$(srcdir)/../lib -I$(srcdir)/../src \
-	-I$(srcdir)/../intl -I$(srcdir)/../nmz
+	-I$(top_builddir)/intl -I$(srcdir)/../nmz
 
 pkginclude_HEADERS = codeconv.h field.h hlist.h i18n.h idxname.h \
 	libnamazu.h l10n-ja.h parser.h query.h re.h regex.h \

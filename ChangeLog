@@ -1,3 +1,10 @@
+2004-04-23  Yukio USUDA <usu@namazu.org>
+
+	* pl/usage.pl: Fixed typo (-z, --check-filesize).
+	(Reported by Takeshi Komiya, thank you.)
+
+	* doc/{en,ja}/manual.html: Ditto.
+
 2004-04-22  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * Makefile.am: 'make dist' It corrects so that
@@ -8754,4 +8761,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1155 2004-04-22 04:48:15 opengl2772 Exp $
+$Id: ChangeLog,v 1.1156 2004-04-23 14:19:23 usu Exp $

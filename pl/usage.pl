@@ -1,5 +1,5 @@
 # -*- Perl -*-
-# $Id: usage.pl,v 1.30 2004-03-17 12:27:50 usu Exp $
+# $Id: usage.pl,v 1.31 2004-04-23 14:19:26 usu Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -74,7 +74,7 @@ Summarization:
 
 Index Construction:
       --update=INDEX       set INDEX for updating.
-  -X, --check-filesize     detect file size changed.
+  -z, --check-filesize     detect file size changed.
   -Y, --no-delete          do not detect removed documents.
   -Z, --no-update          do not detect update and deleted documents.
 
@@ -88,7 +88,7 @@ Miscellaneous:
   -q, --quiet              suppress status messages during execution.
   -v, --version            show the version of namazu and exit.
   -V, --verbose            be verbose.
-      --debug              be debug mode.
+  -d, --debug              be debug mode.
       --help               show this help and exit.
 
 Report bugs to <%s>.

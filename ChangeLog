@@ -16,6 +16,8 @@
 
 1999-08-31  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* lib/var.pl: Add serveal media types into %REQUIRE_CODECONV.
+	
 	* src/mknmz.pl.in (generate_uri): Modify a way of applying eval.
 	
 	* src/mknmz.pl.in, lib/usage.pl: Add --update=s and implement

@@ -1,3 +1,15 @@
+2000-03-01  Ken-ichi Hirose  <kenzo-@tama.or.jp>
+
+	* tknamazu.tcl.in (MainKeyBind): tknamazu option bar key bind 
+	change.
+
+	* tknamazu.hlp.en: Add section 2, 7, 13, 14, etc..
+
+	* tknamazu.hlp.ja: some key word convert to japanese.
+	And Rev erase.
+
+	* tknamazu.hlp.ja_JP.SJIS: Likewise.
+
 2000-02-20  Ken-ichi Hirose  <kenzo-@tama.or.jp>
 
 	* tknamazu.tcl.in: commandline bug fix.

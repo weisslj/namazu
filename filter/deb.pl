@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: deb.pl,v 1.3 2001-06-24 09:07:48 rug Exp $
+# $Id: deb.pl,v 1.4 2001-06-24 09:19:00 rug Exp $
 # Copyright (C) 2000 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -66,8 +66,10 @@ sub filter ($$$$$) {
     my $tmpfile = util::tmpnam('NMZ.deb');
 
     util::vprint("Processing deb file ... (using  '$dpkgpath')\n");
+
+    #FIXME: needed more smart solutions.
     if (util::islang("ja")) {
-	system("env LC_ALL=ja $dpkgpath --info $cfile > $tmpfile");
+	system("env LC_ALL=ja LANGUAGE=ja $dpkgpath --info $cfile > $tmpfile");
     } else {
 	system("$dpkgpath --info $cfile > $tmpfile");
     }

@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu-cgi.c,v 1.13 2000-02-20 06:35:03 rug Exp $
+ * $Id: namazu-cgi.c,v 1.14 2000-02-28 21:23:10 kenzo- Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -110,7 +110,16 @@ main(int argc, char **argv)
 {
     char query[BUFSIZE] = "", subquery[BUFSIZE] = "";
 
+#if defined (_WIN32) && !defined (__CYGWIN__)
+	char *localedir;
+	if ((localedir = getenv("NAMAZULOCALEDIR")) != NULL) {
+	    bindtextdomain(PACKAGE, localedir);
+	} else {
+	    bindtextdomain(PACKAGE, LOCALEDIR);
+	}
+#else
     bindtextdomain(PACKAGE, LOCALEDIR);
+#endif
     textdomain(PACKAGE);
 
     nmz_set_lang("");

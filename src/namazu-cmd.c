@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu-cmd.c,v 1.8 2000-01-29 13:30:15 satoru Exp $
+ * $Id: namazu-cmd.c,v 1.9 2000-02-28 21:23:10 kenzo- Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -267,7 +267,16 @@ main(int argc, char **argv)
     int i = 0;
     char query[BUFSIZE] = "", subquery[BUFSIZE] = "";
 
+#if defined (_WIN32) && !defined (__CYGWIN__)
+	char *localedir;
+	if ((localedir = getenv("NAMAZULOCALEDIR")) != NULL) {
+	    bindtextdomain(PACKAGE, localedir);
+	} else {
+	    bindtextdomain(PACKAGE, LOCALEDIR);
+	}
+#else
     bindtextdomain(PACKAGE, LOCALEDIR);
+#endif
     textdomain(PACKAGE);
 
     nmz_set_lang("");

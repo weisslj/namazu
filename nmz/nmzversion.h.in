@@ -1,0 +1,22 @@
+/*
+ * 
+ * version.h - Namazu version info
+ *
+ * $Id: nmzversion.h.in,v 1.2 2003-07-17 09:49:59 knok Exp $
+ *
+ */
+
+#ifndef NMZ_VERSION_H_
+#define NMZ_VERSION_H_
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
+#define NMZ_VERSION "@VERSION@"
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
+
+#endif /* NMZ_VERSION_H_ */

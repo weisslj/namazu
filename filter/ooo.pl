@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: ooo.pl,v 1.9 2004-03-09 12:53:22 usu Exp $
+# $Id: ooo.pl,v 1.10 2004-03-22 06:22:09 opengl2772 Exp $
 # Copyright (C) 2003 Yukio USUDA 
 #               2003,2004 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -102,13 +102,15 @@ sub filter_metafile ($$$) {
     { 
 	my $fh = util::efopen("> $tmpfile");
 	print $fh $$contref;
-        $fh->close();
+        util::fclose($fh);
     }
     my @cmd = ($unzippath, @unzipopts, $tmpfile, $metafile);
     my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
     while (defined(my $line = <$fh_out>)){
         $xml .= $line;
     }
+    util::fclose($fh_out);
+    util::fclose($fh_err);
     unlink $tmpfile;
 
     my $authorname = ooo::get_author(\$xml);
@@ -150,13 +152,15 @@ sub filter_contentfile ($$$$$) {
     { 
 	my $fh = util::efopen("> $tmpfile");
 	print $fh $$contref;
-        $fh->close();
+        util::fclose($fh);
     }
     my @cmd = ($unzippath, @unzipopts, $tmpfile, $contentfile);
     my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
     while (defined(my $line = <$fh_out>)){
         $xml .= $line;
     }
+    util::fclose($fh_out);
+    util::fclose($fh_err);
     unlink $tmpfile;
 
     ooo::remove_all_tag(\$xml);

@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: powerpoint.pl,v 1.15 2004-02-22 10:59:00 opengl2772 Exp $
+# $Id: powerpoint.pl,v 1.16 2004-03-22 06:22:09 opengl2772 Exp $
 # Copyright (C) 2000 Ken-ichi Hirose, 
-#               2000 Namazu Project All rights reserved.
+#               2000-2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -107,7 +107,7 @@ sub filter_ppt ($$$$$) {
     {
 	my $fh = util::efopen("> $tmpfile");
 	print $fh $$cont;
-        $fh->close();
+        util::fclose($fh);
     }
 
     # get summary info in all OLE documents.
@@ -119,6 +119,8 @@ sub filter_ppt ($$$$$) {
 	my @cmd = ($pptconvpath, @pptconvopts, $tmpfile);
 	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
 	$$cont = util::readfile($fh_out);
+        util::fclose($fh_out);
+        util::fclose($fh_err);
     }
 
     # Code conversion for Japanese document.
@@ -132,21 +134,27 @@ sub filter_ppt ($$$$$) {
 	{
 	    my $fh = util::efopen("> $tmpfile");
 	    print $fh $$cont;
-            $fh->close();
+            util::fclose($fh);
 	}
 	{
 	    my @cmd = ($utfconvpath, "-I$encoding", "-Oej", $tmpfile);
 	    my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
 	    my $size = util::filesize($fh_out);
 	    if ($size == 0) {
+                util::fclose($fh_out);
+                util::fclose($fh_err);
                 unlink $tmpfile;
 		return "Unable to convert file ($utfconvpath error occurred).";
 	    }
 	    if ($size > $conf::TEXT_SIZE_MAX) {
+                util::fclose($fh_out);
+                util::fclose($fh_err);
                 unlink $tmpfile;
 		return 'Too large powerpoint file';
 	    }
 	    $$cont = util::readfile($fh_out);
+            util::fclose($fh_out);
+            util::fclose($fh_err);
             codeconv::normalize_eucjp($cont);
 	}
     } 
@@ -186,21 +194,27 @@ sub filter_doccat ($$$$$) {
     {
 	my $fh = util::efopen("> $tmpfile");
 	print $fh $$cont;
-        $fh->close();
+        util::fclose($fh);
     }
     {
 	my @cmd = ($pptconvpath, @pptconvopts, $tmpfile);
 	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
 	my $size = util::filesize($fh_out);
 	if ($size == 0) {
+            util::fclose($fh_out);
+            util::fclose($fh_err);
             unlink $tmpfile;
 	    return "Unable to convert file ($pptconvpath error occurred).";
 	}
 	if ($size > $conf::TEXT_SIZE_MAX) {
+            util::fclose($fh_out);
+            util::fclose($fh_err);
             unlink $tmpfile;
 	    return 'Too large powerpoint file.';
 	}
         $$cont = util::readfile($fh_out);
+        util::fclose($fh_out);
+        util::fclose($fh_err);
     }
     unlink $tmpfile;
 
@@ -227,7 +241,8 @@ sub getSummaryInfo ($$$$$) {
     my $orgsummary = $summary;
 
     my $size = util::filesize($fh_out);
-    $fh_out->close();
+    util::fclose($fh_out);
+    util::fclose($fh_err);
     if ($size == 0) {
         return undef;
     }
@@ -314,12 +329,14 @@ sub utf8_to_eucjp($) {
     { 
         my $fh = util::efopen("> $tmpfile");
         print $fh $$cont;
-        $fh->close();
+        util::fclose($fh);
     }
 
     my @cmd = ($utfconvpath, "-Iu8", "-Oej", $tmpfile);
     my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
     $$cont = util::readfile($fh_out);
+    util::fclose($fh_out);
+    util::fclose($fh_err);
     codeconv::normalize_eucjp($cont);
 
     unlink $tmpfile;

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: koffice.pl,v 1.4 2004-03-12 16:19:29 usu Exp $
+# $Id: koffice.pl,v 1.5 2004-03-22 06:22:09 opengl2772 Exp $
 # Copyright (C) 2004 Yukio USUDA 
 #               2004 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -92,7 +92,7 @@ sub filter_docinfofile ($$$) {
     { 
 	my $fh = util::efopen("> $tmpfile");
 	print $fh $$contref;
-        $fh->close();
+        util::fclose($fh);
     }
     my @cmd = ($unzippath, @unzipopts, $tmpfile, $metafile);
     my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
@@ -100,6 +100,8 @@ sub filter_docinfofile ($$$) {
         $xml .= $line;
     }
     unlink $tmpfile;
+    util::fclose($fh_out);
+    util::fclose($fh_err);
 
     my $authorname = koffice::get_author(\$xml);
     my $title = koffice::get_title(\$xml);
@@ -138,7 +140,7 @@ sub filter_maindocfile ($$$$$) {
     { 
 	my $fh = util::efopen("> $tmpfile");
 	print $fh $$contref;
-        $fh->close();
+        util::fclose($fh);
     }
     my @cmd = ($unzippath, @unzipopts, $tmpfile, $contentfile);
     my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
@@ -146,6 +148,9 @@ sub filter_maindocfile ($$$$$) {
         $xml .= $line;
     }
     unlink $tmpfile;
+    util::fclose($fh_out);
+    util::fclose($fh_err);
+
     koffice::get_kivio_content(\$xml);
     koffice::remove_all_tag(\$xml);
     koffice::decode_entity(\$xml);

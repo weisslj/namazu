@@ -1,8 +1,9 @@
 #
 # -*- Perl -*-
-# $Id: pdf.pl,v 1.33 2004-02-22 10:59:00 opengl2772 Exp $
+# $Id: pdf.pl,v 1.34 2004-03-22 06:22:09 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
+#               2000-2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -47,6 +48,8 @@ sub status() {
 	if (<$fh_err> =~ /^pdftotext\s+version\s+([0-9]+\.[0-9]+)/) {
 	    $pdfconvver = $1;
 	}
+        util::fclose($fh_out);
+        util::fclose($fh_err);
 	if (util::islang("ja")) {
 	    if ($pdfconvver >= 1.00) {
 		@pdfconvopts = ('-q', '-raw', '-enc', 'EUC-JP');
@@ -61,6 +64,8 @@ sub status() {
             if (<$fh_err> =~ /^pdfinfo\s+version\s+([0-9]+\.[0-9]+)/) {
                 $pdfinfover = $1;
             }
+            util::fclose($fh_out);
+            util::fclose($fh_err);
             if (util::islang("ja")) {
                 if ($pdfinfover >= 2.02) {
                     @pdfinfoopts = ('-enc', 'EUC-JP');
@@ -104,8 +109,12 @@ sub filter ($$$$$) {
     {
 	my $fh = util::efopen("> $tmpfile");
 	print $fh $$cont;
+        util::fclose($fh);
     }
-    util::systemcmd($pdfconvpath, @pdfconvopts, $tmpfile, $tmpfile2);
+    my @cmd = ($pdfconvpath, @pdfconvopts, $tmpfile, $tmpfile2);
+    my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
+    util::fclose($fh_out);
+    util::fclose($fh_err);
     unless (-e $tmpfile2) {
 	unlink $tmpfile;
 	return 'Unable to convert pdf file (maybe copying protection)';
@@ -114,22 +123,27 @@ sub filter ($$$$$) {
 	my $fh = util::efopen("< $tmpfile2");
 	my $size = util::filesize($fh);
 	if ($size == 0) {
+            util::fclose($fh);
 	    unlink $tmpfile;
 	    unlink $tmpfile2;
 	    return "Unable to convert file ($pdfconvpath error occurred)";
 	}
 	if ($size > $conf::TEXT_SIZE_MAX) {
+            util::fclose($fh);
 	    unlink $tmpfile;
 	    unlink $tmpfile2;
 	    return 'Too large pdf file';
 	}
 	$$cont = util::readfile($fh);
+        util::fclose($fh);
     }
 
     if (defined $pdfinfopath) {
 	my @cmd = ($pdfinfopath, @pdfinfoopts, $tmpfile);
 	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
         my $result = util::readfile($fh_out);
+        util::fclose($fh_out);
+        util::fclose($fh_err);
 	if ($result =~ /Title:\s+(.*)/) { # or /Subject:\s+(.*)/
 	    $fields->{'title'} = $1;
             if ($fields->{'title'} =~ /<unicode>/) {

@@ -1,3 +1,8 @@
+2004-03-22  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * filter/{bzip2.pl, compress.pl, excel.pl, koffice.pl, msword.pl,
+        ooo.pl, pdf.pl, powerpoint.pl, rtf.pl}: close() is added.
+
 2004-03-21  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * doc/{en, ja}/nmz.html: Update copyright year.
@@ -8625,4 +8630,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1128 2004-03-20 18:31:39 opengl2772 Exp $
+$Id: ChangeLog,v 1.1129 2004-03-22 06:23:17 opengl2772 Exp $

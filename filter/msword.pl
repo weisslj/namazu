@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: msword.pl,v 1.44 2004-02-22 10:59:00 opengl2772 Exp $
+# $Id: msword.pl,v 1.45 2004-03-22 06:22:09 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi All rights reserved.
-# Copyright (C) 2000-2004 Namazu Project All rights reserved.
+#               2000-2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -105,7 +105,7 @@ sub filter_wv ($$$$$) {
     { 
 	my $fh = util::efopen("> $tmpfile");
 	print $fh $$cont;
-        $fh->close();
+        util::fclose($fh);
     }
 
     # get summary info in all OLE documents.
@@ -118,6 +118,8 @@ sub filter_wv ($$$$$) {
 	my @cmd = ($wvversionpath, $tmpfile);
 	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
 	my $result = util::readfile($fh_out);
+        util::fclose($fh_out);
+        util::fclose($fh_err);
 	if ($result =~ /^Version: (word\d+)(?:,| )/i) {
 	    $docversion = $1;
 	    # Only word7,8 format is supported for Japanese.
@@ -136,6 +138,8 @@ sub filter_wv ($$$$$) {
 	my @cmd = ($wordconvpath, "--version");
 	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
 	my $result = util::readfile($fh_out);
+        util::fclose($fh_out);
+        util::fclose($fh_err);
 	if ($result ne "" and $result !~ /usage/i and $result ge "0.7") {
             ($ofile, $tpath) = fileparse($tmpfile2);
             @wordconvopts = ("--targetdir=$tpath");
@@ -152,14 +156,17 @@ sub filter_wv ($$$$$) {
 	}
     }
 
-    util::systemcmd($wordconvpath, @wordconvopts, $tmpfile, $ofile);
+    my @cmd = ($wordconvpath, @wordconvopts, $tmpfile, $ofile);
+    my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
+    util::fclose($fh_out);
+    util::fclose($fh_err);
     unless (-e $tmpfile2) {
         unlink $tmpfile;
 	return "Unable to convert file ($wordconvpath error occurred).";
     } else {
 	my $fh = util::efopen("< $tmpfile2");
 	$$cont = util::readfile($fh);
-        $fh->close();
+        util::fclose($fh);
     }
 
     # Code conversion for Japanese document.
@@ -175,23 +182,29 @@ sub filter_wv ($$$$$) {
         {
             my $fh = util::efopen("> $tmpfile2");
             print $fh $$cont;
-            $fh->close();
+            util::fclose($fh);
         }
 
 	my @cmd = ($utfconvpath, "-Iu8", "-Oej", $tmpfile2);
 	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
 	my $size = util::filesize($fh_out);
 	if ($size == 0) {
+            util::fclose($fh_out);
+            util::fclose($fh_err);
             unlink $tmpfile;
             unlink $tmpfile2;
 	    return "Unable to convert file ($utfconvpath error occurred).";
 	}
 	if ($size > $conf::TEXT_SIZE_MAX) {
+            util::fclose($fh_out);
+            util::fclose($fh_err);
             unlink $tmpfile;
             unlink $tmpfile2;
 	    return 'Too large word file';
 	}
 	$$cont = util::readfile($fh_out);
+        util::fclose($fh_out);
+        util::fclose($fh_err);
         codeconv::normalize_eucjp($cont);
     }
 
@@ -230,21 +243,27 @@ sub filter_doccat ($$$$$) {
     {
 	my $fh = util::efopen("> $tmpfile");
 	print $fh $$cont;
-        $fh->close();
+        util::fclose($fh);
     }
     {
 	my @cmd = ($wordconvpath, @wordconvopts, $tmpfile);
 	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
 	my $size = util::filesize($fh_out);
 	if ($size == 0) {
+            util::fclose($fh_out);
+            util::fclose($fh_err);
             unlink $tmpfile;
 	    return "Unable to convert file ($wordconvpath error occurred).";
 	}
 	if ($size > $conf::TEXT_SIZE_MAX) {
+            util::fclose($fh_out);
+            util::fclose($fh_err);
             unlink $tmpfile;
 	    return 'Too large word file.';
 	}
         $$cont = util::readfile($fh_out);
+        util::fclose($fh_out);
+        util::fclose($fh_err);
     }
     unlink $tmpfile;
 
@@ -271,7 +290,9 @@ sub getSummaryInfo ($$$$$) {
     my $orgsummary = $summary;
 
     my $size = util::filesize($fh_out);
-    $fh_out->close();
+    util::fclose($fh_out);
+    util::fclose($fh_err);
+
     if ($size == 0) {
         return undef;
     }
@@ -358,12 +379,15 @@ sub utf8_to_eucjp($) {
     { 
         my $fh = util::efopen("> $tmpfile");
         print $fh $$cont;
-        $fh->close();
+        util::fclose($fh);
     }
 
     my @cmd = ($utfconvpath, "-Iu8", "-Oej", $tmpfile);
     my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
     $$cont = util::readfile($fh_out);
+    util::fclose($fh_out);
+    util::fclose($fh_err);
+
     codeconv::normalize_eucjp($cont);
 
     unlink $tmpfile;

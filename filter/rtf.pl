@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: rtf.pl,v 1.10 2004-02-22 10:59:00 opengl2772 Exp $
+# $Id: rtf.pl,v 1.11 2004-03-22 06:22:09 opengl2772 Exp $
 # Copyright (C) 2003-2004 Tadamasa Teranishi All rights reserved.
-# Copyright (C) 2000-2004 Namazu Project All rights reserved.
+#               2003-2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -59,6 +59,7 @@ sub status() {
                     }
                 }
             }
+            util::fclose($fh_cmd);
         }
         return 'no';
     }
@@ -115,23 +116,26 @@ sub filter_rtf2html ($$$$$) {
     $$cont =~ s/\x5c$//gm;
 
     my $tmpfile = util::tmpnam('NMZ.rtf');
-    {
-	my $fh = util::efopen("> $tmpfile");
-	print $fh $$cont;
-    }
+    util::writefile($tmpfile, $cont);
     {
 	my @cmd = ($rtfconvpath, @rtfconvopts, $tmpfile);
 	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
 	my $size = util::filesize($fh_out);
 	if ($size == 0) {
+            util::fclose($fh_out);
+            util::fclose($fh_err);
             unlink $tmpfile;
 	    return "Unable to convert file ($rtfconvpath error occurred).";
 	}
 	if ($size > $conf::TEXT_SIZE_MAX) {
+            util::fclose($fh_out);
+            util::fclose($fh_err);
             unlink $tmpfile;
 	    return 'Too large rtf file.';
 	}
         $$cont = util::readfile($fh_out);
+        util::fclose($fh_out);
+        util::fclose($fh_err);
     }
     unlink $tmpfile;
 
@@ -159,24 +163,27 @@ sub filter_doccat ($$$$$) {
     
     util::vprint("Processing rtf file ... (using  '$rtfconvpath')\n");
 
-    my $tmpfile  = util::tmpnam('NMZ.rtf');
-    {
-	my $fh = util::efopen("> $tmpfile");
-	print $fh $$cont;
-    }
+    my $tmpfile = util::tmpnam('NMZ.rtf');
+    util::writefile($tmpfile, $cont);
     {
 	my @cmd = ($rtfconvpath, @rtfconvopts, $tmpfile);
 	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
 	my $size = util::filesize($fh_out);
 	if ($size == 0) {
+            util::fclose($fh_out);
+            util::fclose($fh_err);
             unlink $tmpfile;
 	    return "Unable to convert file ($rtfconvpath error occurred).";
 	}
 	if ($size > $conf::TEXT_SIZE_MAX) {
+            util::fclose($fh_out);
+            util::fclose($fh_err);
             unlink $tmpfile;
 	    return 'Too large rtf file.';
 	}
         $$cont = util::readfile($fh_out);
+        util::fclose($fh_out);
+        util::fclose($fh_err);
     }
     unlink $tmpfile;
 

@@ -1,3 +1,8 @@
+2000-01-22  Masao Takaku  <masao@ulis.ac.jp>
+
+	* nmz/search.c (parse_access): Fix a bug [namazu-dev 1290].
+	Keep nmz_perm to use it later.
+
 2000-01-21  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* TODO: Edit it.

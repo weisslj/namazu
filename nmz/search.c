@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.62 2000-01-18 08:16:36 satoru Exp $
+ * $Id: search.c,v 1.63 2000-01-22 12:58:34 masao Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -82,7 +82,7 @@ static void get_regex_part ( char *expr, const char *str );
 static NmzResult do_field_search ( const char *fieldpat, NmzResult val );
 static void delete_beginning_backslash ( char *str );
 static int is_locked ( void );
-static enum nmz_perm parse_access ( const char *line, const char *rhost, const char *raddr );
+static enum nmz_perm parse_access ( const char *line, const char *rhost, const char *raddr, enum nmz_perm operm );
 static enum nmz_perm check_access ( void );
 static enum nmz_stat open_index_files ( void );
 static void close_index_files ( void );
@@ -619,9 +619,9 @@ is_locked(void)
 
 
 static enum nmz_perm 
-parse_access(const char *line, const char *rhost, const char *raddr)
+parse_access(const char *line, const char *rhost, const char *raddr, enum nmz_perm operm)
 {
-    enum nmz_perm perm = ALLOW;
+    enum nmz_perm perm = operm;
 
     /* Skip white spaces */
     line += strspn(line, " \t");
@@ -679,7 +679,7 @@ check_access(void)
     }
     while (fgets(buf, BUFSIZE, fp)) {
 	nmz_chomp(buf);
-	perm = parse_access(buf, rhost, raddr);
+	perm = parse_access(buf, rhost, raddr, perm);
     }
     fclose(fp);
     return perm;

@@ -81,6 +81,7 @@ echo "Generating configure script and Makefiles for Namazu."
 
 if grep "^AM_GNU_GETTEXT" configure.in >/dev/null; then
   echo "Running gettextize..."
+  rm -f config.status
   gettextize --force --copy
 fi
 if grep "^AM_PROG_LIBTOOL" configure.in >/dev/null; then

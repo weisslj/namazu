@@ -1,3 +1,8 @@
+2000-01-20  Ryuji Abe  <raeva@t3.rim.or.jp>
+
+	* Makefile.am (COMMON_DIRS): New Variable.
+	(install-data-local): Handled $(COMMON_DIRS), never tknamazu.
+
 2000-01-20  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* scripts/mknmz.pl.in (muda): Add $var::USE_NKF_MODULE.

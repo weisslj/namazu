@@ -1,4 +1,4 @@
-$Id: TODO-namazu-2.0,v 1.32 2000-01-10 12:37:23 satoru Exp $
+$Id: TODO-namazu-2.0,v 1.33 2000-01-20 03:27:12 rug Exp $
 
 検討項目
 
@@ -23,7 +23,7 @@ $Id: TODO-namazu-2.0,v 1.32 2000-01-10 12:37:23 satoru Exp $
 
   * まともな libraryとして整備する
 
-  * test suite を作る - make test
+  * test suite を作る - make check (automakeのdefault target)
 
 
 難しいができればやりたい課題
@@ -83,6 +83,8 @@ $Id: TODO-namazu-2.0,v 1.32 2000-01-10 12:37:23 satoru Exp $
 
   * 頑丈かつ単純な美しく保守のしやすいコードを目指そう :-)
 
+  * ad-hoc な手法は極力避けるようにしよう
+
 藤原のつけ足し (2000/01/10)
  ** mknmz
   * show index directory when -C requested
@@ -114,11 +116,6 @@ $Id: TODO-namazu-2.0,v 1.32 2000-01-10 12:37:23 satoru Exp $
     or
     (2) fragment manual file
   
- ** Make
-  * BSD make (distclean,clean,dist) -- automake related
-    make clean, make dist に -i を付けなくてもいいようにする
-    (ただし、namazu の問題でなく automake の問題のはず)
-
   * test suite for releasing
     出荷時の動作確認用のしくみ
   

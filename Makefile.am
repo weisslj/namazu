@@ -27,11 +27,12 @@ bin_SCRIPTS = nmz-config
 EXTRA_DIST = README-ja INSTALL-ja namazu.spec.in namazu.spec \
 	     ChangeLog.1 maintMakefile File-MMagic
 
-EXTRA_DIRS = doc etc $(DIST_TKNAMAZU)
+COMMON_DIRS = doc etc
+EXTRA_DIRS = $(COMMON_DIRS) $(DIST_TKNAMAZU)
 
 install-data-local:
 	$(mkinstalldirs) $(localstatedir)/$(PACKAGE)/index
-	for subdir in $(EXTRA_DIRS); do \
+	for subdir in $(COMMON_DIRS); do \
 	    cp -rp $(srcdir)/$$subdir $(pkgdatadir); \
 	    rm -rf $(pkgdatadir)/$$subdir/CVS; \
 	    rm -rf $(pkgdatadir)/$$subdir/*/CVS; \

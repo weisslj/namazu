@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: util.c,v 1.84 2002-07-26 14:28:05 baba Exp $
+ * $Id: util.c,v 1.85 2002-09-03 04:56:51 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -274,7 +274,7 @@ nmz_warn_printf(const char *fmt, ...)
     if (nmz_is_output_warn_to_file()) {
 	fp = fopen(NMZ.warnlog, "a+");
 	if (fp == NULL) {
-	    fprintf(stderr, "Can't open %s.\n", NMZ.warnlog);
+	    fprintf(stderr, "Can't open NMZ.warnlog.\n");
 	    return;
 	}
     } else {

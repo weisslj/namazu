@@ -1,5 +1,7 @@
 2002-09-03  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
+	* nmz/util.c (nmz_warn_printf): Fixed potential XSS issue.
+
 	* tests/namazu-cgi-8: Added an another XSS checking.
 	(Reported by HANAI Akira, thank you)
 
@@ -7637,4 +7639,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.973 2002-09-03 04:48:47 knok Exp $
+$Id: ChangeLog,v 1.974 2002-09-03 04:56:51 knok Exp $

@@ -1,3 +1,10 @@
+2004-10-20  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * pltests/*.pl.in: $SYSTEM It changes into $OSNAME.
+
+        * pltests/pltests.pl.in(checkcmd): An extension is added.
+        win32_yen_to_slash() is added.
+
 2004-10-18  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * filter/{msword, excel, powerpoint}.pl: The addition of the check 
@@ -9200,4 +9207,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1252 2004-10-17 17:42:41 opengl2772 Exp $
+$Id: ChangeLog,v 1.1253 2004-10-19 19:36:26 opengl2772 Exp $

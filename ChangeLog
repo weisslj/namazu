@@ -1,3 +1,8 @@
+2002-01-24  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* scripts/mknmz.in: Changed to take effect --exclude option on
+	html named link (--html-split).
+
 2002-01-18  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* nmz/regex.c: Applied Admin/regex-ruby-alloca.path.
@@ -7384,4 +7389,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.925 2002-01-18 08:57:16 knok Exp $
+$Id: ChangeLog,v 1.926 2002-01-24 06:48:08 knok Exp $

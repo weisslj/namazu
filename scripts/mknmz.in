@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.101 2001-11-25 09:29:55 rug Exp $
+# $Id: mknmz.in,v 1.102 2002-01-24 06:48:09 knok Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -181,6 +181,8 @@ sub process_file ($$$$$$) {
 	if (@parts > 1) {
 	    my $id = 0;
 	    for my $part (@parts) {
+		next if (defined $conf::EXCLUDE_PATH &&
+			 "$cfile#$part" =~ /$conf::EXCLUDE_PATH/);
 		my $fname = util::tmpnam("NMZ.partial.$id");
 		my $fragment  = defined $part ? $part : undef;
 		my $uri   = generate_uri($cfile, $fragment);

@@ -1,3 +1,7 @@
+1999-11-03  Rei FURUKAWA  <furukawa@tcp-ip.or.jp>
+
+	* nmzidx.pl: Fixed lockfile related code.  Thanks to Mr. Hiroshi KOMATSU. [namazu-dev 706]
+
 1999-11-02  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* configure.in: Add codes to prevent to remove Makefile when 

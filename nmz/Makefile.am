@@ -1,6 +1,6 @@
 # Process this file with automake to produce Makefile.in
 #
-# $Id: Makefile.am,v 1.29 2000-02-13 17:34:52 rug Exp $
+# $Id: Makefile.am,v 1.30 2000-02-14 08:04:20 rug Exp $
 #
 
 AUTOMAKE_OPTIONS = 1.4 no-dependencies
@@ -27,7 +27,7 @@ libnmz_la_SOURCES = alias.c alias.h codeconv.c codeconv.h \
 	regex.c regex.h search.c search.h seed.c seed.h util.c util.h \
 	var.c var.h wakati.c wakati.h 
 
-libnmz_la_LDFLAGS = -version-info 2:0:0
+libnmz_la_LDFLAGS = -version-info $(LTVERSION)
 
 ##Bug in automake: Can't use `if MAINTAINER_MODE'
 @MAINTAINER_MODE_TRUE@include $(srcdir)/maintMakefile

@@ -1,19 +1,17 @@
 2000-02-14  Ryuji Abe  <raeva@t3.rim.or.jp>
 
-	* nmz/i18n.c [HAVE_SETENV}: Revert to use.
-	[HAVE_PUTENV]: Likewise.
+	* configure.in: Added libtool versioning section.
+	(LTVERSION): Set 2:0:0.
 
-	* configure.in (AC_CHECK_HEADERS): Removed search.h.
-	(AC_CHECK_FUNCS): Removed tsearch and Added setenv.
-	(AC_REPLACE_FUNCS): Removed setenv.
-
-	* lib/setenv.c: Removed.
-
-	* lib/Makefile.am (EXTRA_DIST): Removed setenv.c.
+	* nmz/Makefile.am (libnmz_la_LDFLAGS): Set -version-info
+	$(LTVERSION).
 
 2000-02-14  Ryuji Abe  <raeva@t3.rim.or.jp>
 
 	* configure.in: Fixed for help message.
+	(AC_CHECK_HEADERS): Removed search.h.
+	(AC_CHECK_FUNCS): Removed tsearch and Added setenv.
+	(AC_REPLACE_FUNCS): Removed setenv.
 
 	* nmz/i18n.c (nmz_is_lang_ja): Moved to l10n-ja.c.
 	(Lang): Removed.
@@ -22,6 +20,8 @@
 	(nmz_set_lang): Calls guess_category_value for get
 	environment variables.
 	(nmz_get_lang): Likewise.
+	[HAVE_SETENV}: Revert to use.
+	[HAVE_PUTENV]: Likewise.
 
 	* nmz/l10n-ja.c: New File.
 	(nmz_is_lang_ja): Calls nmz_get_lang. Use strncmp
@@ -39,6 +39,10 @@
 	* nmz/re.c: Likewise.
 
 	* src/result.c: Likewise.
+
+	* lib/setenv.c: Removed.
+
+	* lib/Makefile.am (EXTRA_DIST): Removed setenv.c.
 
 2000-02-13  Kenji Suzuki  <kenji@po.ganseki.ne.jp>
 

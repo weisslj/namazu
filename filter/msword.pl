@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: msword.pl,v 1.33 2002-09-23 08:52:32 baba Exp $
+# $Id: msword.pl,v 1.34 2002-11-12 07:23:51 knok Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2002 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -138,16 +138,16 @@ sub filter_wv ($$$$$) {
     }
 
     util::systemcmd($wordconvpath, @wordconvopts, $tmpfile, $ofile);
-    unless (-e $ofile) {
+    unless (-e $tmpfile2) {
 	return "Unable to convert file ($wordconvpath error occurred).";
     } else {
-	my $fh = util::efopen("< $ofile");
+	my $fh = util::efopen("< $tmpfile2");
 	$$cont = util::readfile($fh);
     }
 
     # Code conversion for Japanese document.
     if (util::islang("ja")) {
-	my @cmd = ($utfconvpath, "-Iu8", "-Oej", $ofile);
+	my @cmd = ($utfconvpath, "-Iu8", "-Oej", $tmpfile2);
 	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
 	my $size = util::filesize($fh_out);
 	if ($size == 0) {

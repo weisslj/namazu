@@ -2,7 +2,7 @@
  * 
  * libnamazu.h - Namazu library api
  *
- * $Id: libnamazu.h,v 1.37 2000-01-10 12:20:30 satoru Exp $
+ * $Id: libnamazu.h,v 1.38 2000-01-11 12:48:17 satoru Exp $
  * 
  */
 
@@ -15,6 +15,21 @@
 /*
  * Set the message of error occurred in libnmz.
  */
+
+#ifdef __GNUC__
+
+#define nmz_set_dyingmsg(msg) \
+    { \
+        if (nmz_is_debugmode()) { \
+            nmz_set_dyingmsg_sub("%s:%d (%s): %s", \
+                __FILE__, __LINE__, __PRETTY_FUNCTION__, msg);\
+        } else { \
+            nmz_set_dyingmsg_sub("%s", msg);\
+	} \
+    }
+
+#else /* !__GNUC__ */
+
 #define nmz_set_dyingmsg(msg) \
     { \
         if (nmz_is_debugmode()) { \
@@ -23,6 +38,9 @@
             nmz_set_dyingmsg_sub("%s", msg);\
 	} \
     }
+
+#endif /* __GNUC__ */
+
 
 /*
  *

@@ -1,5 +1,8 @@
 2000-01-11  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* nmz/libnamazu.h (nmz_set_dyingmsg): Use __PRETTY_FUNCTION__ if
+	#ifdef __GNUC__.
+
 	* configure.in: Fix a message.
 
 2000-01-11  Ryuji Abe  <raeva@t3.rim.or.jp>

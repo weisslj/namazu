@@ -1,3 +1,20 @@
+1999-08-31  Ryuji Abe <raeva@t3.rim.or.jp>
+
+	* Makefile.am: If configured, tknamazu will be built. Changed to 
+	  use dist-hook section to distribute namazu.spec.
+	* configure.in: Bumped version to 1.90. Added tknamazu configuration.
+	* namazu.spec.in: Deleted COMMITTERS at %files.
+	* src/Makefile.am: Cleaned up.
+	* tknamazu/README: Renamed README.tknamazu.
+	* tknamazu/Makefile.am: New file.
+	* tknamazu/Makefile.in: Likewise.
+	* tknamazu/tknamazu.tcl: Renamed tknamazu.tcl.in with autoconfize.
+	* tknamazu/Makefile: Removed.
+	* tknamazu/Makefile.W32: Likewise.
+	* tknamazu/tknamazu.sample: Likewise.
+	* tknamazu/tknamazu.bat.sample: Likewise.
+
+
 1999-08-30  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* lib/codeconv.pl: Fix `tmpname' function name typo.

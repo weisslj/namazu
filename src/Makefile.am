@@ -8,7 +8,7 @@
 ## 'automake'ization by Hajime BABA <baba@kusastro.kyoto-u.ac.jp>
 ## Thanks to [Ryuji Abe <raeva@t3.rim.or.jp>] for many contribution
 
-@SET_MAKE@
+AUTOMAKE_OPTIONS = no-dependencies
 LIBS = -lm @LEXLIB@
 
 bin_PROGRAMS = namazu
@@ -16,7 +16,6 @@ bin_SCRIPTS = gcnmz mailutime mknmz gtnmz
 
 CLEANFILES = mknmz.pl $(bin_SCRIPTS)
 
-pkgdatadir  = @datadir@/@PACKAGE@
 confdir     = $(pkgdatadir)/conf
 libdir      = $(pkgdatadir)/lib
 filterdir   = $(pkgdatadir)/filter

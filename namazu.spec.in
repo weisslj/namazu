@@ -46,7 +46,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-, root, root)
 
-%doc AUTHORS ChangeLog COMMITTERS COPYING NEWS README README-ja
+%doc AUTHORS ChangeLog COPYING NEWS README README-ja
 /usr/bin/*
 /usr/share/namazu/*
 

@@ -3,12 +3,16 @@
 @SET_MAKE@
 AUTOMAKE_OPTIONS = no-dependencies
 
-SUBDIRS = src conf @FILE_MMAGIC@
+always_built_SUBDIRS = src conf
 
-EXTRA_DIST = README-ja namazu.spec namazu.spec.in File-MMagic \
+SUBDIRS = $(always_built_SUBDIRS) @FILE_MMAGIC@ @TKNAMAZU@
+
+DIST_SUBDIRS = $(always_built_SUBDIRS) File-MMagic tknamazu
+
+EXTRA_DIST = README-ja namazu.spec.in \
 	     ChangeLog.old.1.gz
 
-EXTRA_DIRS = doc etc lib lisp filter template tknamazu
+EXTRA_DIRS = doc etc lib lisp filter template
 
 CLEANFILES = namazu.spec \
 	     filter/gzip.pl filter/compress.pl filter/man.pl filter/rfc.pl \
@@ -31,6 +35,7 @@ install-data-local:
 		$(pkgdatadir)/etc
 
 dist-hook:
+	cp namazu.spec $(distdir)
 	for subdir in $(EXTRA_DIRS); do \
 	    cp -rp $$subdir $(distdir)/$$subdir; \
 	    rm -f $(distdir)/$$subdir/*~; \

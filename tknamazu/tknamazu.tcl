@@ -1,4 +1,4 @@
-#!/usr/local/bin/wish4.2jp
+#!@WISH@
 #
 # Copyright (C) 1998 Ken-ichi Hirose. All rights reserved.
 #
@@ -34,17 +34,17 @@ if [info exists env(TKNMZPATH)] {
 global conf
 set conf(EXTBROWSER) {/usr/local/netscape/netscape}
 set conf(EXTVIEWER) {/usr/local/bin/jless}
-set conf(NAMAZU) {/usr/local/bin/namazu}
-set conf(BROWSER) {/usr/local/bin/lynx -dump}
-set conf(UNCOMPRESS) {/usr/bin/zcat}
-set conf(MANPAGE) {/usr/local/bin/groff -man -Tnippon}
+set conf(NAMAZU) {@bindir@/namazu}
+set conf(BROWSER) {@LYNX@ -dump}
+set conf(UNCOMPRESS) {@ZCAT@}
+set conf(MANPAGE) {@ROFF@ -man -Tnippon}
 set conf(MANPAGEFILTER) {}
 set conf(MANPATH) {/usr/local/man/ja_JP.EUC /usr/local/man/ja_JP.ujis /usr/man/ja_JP.ujis /usr/local/man /usr/share/man /usr/bin/man /usr/man /usr/X11R6/man /usr/openwin/man}
-set conf(GNUINFO) {/usr/bin/info}
+set conf(GNUINFO) {@INFO@}
 set conf(GNUINFOFILTER) {}
 set conf(GNUINFOTMP) {/tmp/.gnuinfotmp}
-set conf(MKNMZ) {/usr/local/namazu/bin/mknmz}
-set conf(WDNMZ) {/usr/local/namazu/bin/wdnmz}
+set conf(MKNMZ) {@bindir@/mknmz}
+set conf(WDNMZ) {@bindir@/wdnmz}
 set conf(DBOUTPUTDIR) {/usr/local/namazu/index}
 set conf(WIDTH) {80}
 set conf(HEIGHT) {20}

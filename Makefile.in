@@ -59,9 +59,12 @@ CC = @CC@
 CHASEN = @CHASEN@
 EXEEXT = @EXEEXT@
 FILE_MMAGIC = @FILE_MMAGIC@
+GROFF = @GROFF@
+INFO = @INFO@
 KAKASI = @KAKASI@
 LEX = @LEX@
 LN_S = @LN_S@
+LYNX = @LYNX@
 MAKEINFO = @MAKEINFO@
 NKF = @NKF@
 OBJEXT = @OBJEXT@
@@ -73,15 +76,23 @@ PACKAGE = @PACKAGE@
 PERL = @PERL@
 SCORING = @SCORING@
 TEST_MODE = @TEST_MODE@
+TKNAMAZU = @TKNAMAZU@
+TK_LANGUAGE = @TK_LANGUAGE@
 VERSION = @VERSION@
+WISH = @WISH@
+ZCAT = @ZCAT@
 AUTOMAKE_OPTIONS = no-dependencies
 
-SUBDIRS = src conf @FILE_MMAGIC@
+always_built_SUBDIRS = src conf
 
-EXTRA_DIST = README-ja namazu.spec namazu.spec.in File-MMagic 	     ChangeLog.old.1.gz
+SUBDIRS = $(always_built_SUBDIRS) @FILE_MMAGIC@ @TKNAMAZU@
+
+DIST_SUBDIRS = $(always_built_SUBDIRS) File-MMagic tknamazu
+
+EXTRA_DIST = README-ja namazu.spec.in 	     ChangeLog.old.1.gz
 
 
-EXTRA_DIRS = doc etc lib lisp filter template tknamazu
+EXTRA_DIRS = doc etc lib lisp filter template
 
 CLEANFILES = namazu.spec 	     filter/gzip.pl filter/compress.pl filter/man.pl filter/rfc.pl 	     filter/bzip2.pl filter/msword.pl filter/supported.pl 	     File-MMagic/Makefile File-MMagic/pm_to_blib 	     conf/mknmz.conf-dist lib/var.pl
 
@@ -100,7 +111,7 @@ mkinstalldirs namazu.spec.in
 
 DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
 
-TAR = tar
+TAR = gtar
 GZIP_ENV = --best
 all: all-redirect
 .SUFFIXES:
@@ -279,14 +290,14 @@ distdir: $(DISTFILES)
 	@for file in $(DISTFILES); do \
 	  d=$(srcdir); \
 	  if test -d $$d/$$file; then \
-	    cp -pr $$d/$$file $(distdir)/$$file; \
+	    cp -pr $$/$$file $(distdir)/$$file; \
 	  else \
 	    test -f $(distdir)/$$file \
 	    || ln $$d/$$file $(distdir)/$$file 2> /dev/null \
 	    || cp -p $$d/$$file $(distdir)/$$file || :; \
 	  fi; \
 	done
-	for subdir in $(SUBDIRS); do \
+	for subdir in $(DIST_SUBDIRS); do \
 	  if test "$$subdir" = .; then :; else \
 	    test -d $(distdir)/$$subdir \
 	    || mkdir $(distdir)/$$subdir \
@@ -387,6 +398,7 @@ install-data-local:
 		$(pkgdatadir)/etc
 
 dist-hook:
+	cp namazu.spec $(distdir)
 	for subdir in $(EXTRA_DIRS); do \
 	    cp -rp $$subdir $(distdir)/$$subdir; \
 	    rm -f $(distdir)/$$subdir/*~; \

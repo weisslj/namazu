@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.18 1999-08-30 09:19:26 satoru Exp $
+dnl $Id: configure.in,v 1.19 1999-08-30 17:19:27 rug Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -11,7 +11,7 @@ dnl
 
 dnl Process this file with autoconf to produce a configure script.
 AC_INIT(src/cgi.c)
-AM_INIT_AUTOMAKE(namazu, 1.9-devel)
+AM_INIT_AUTOMAKE(namazu, 1.90)
 
 dnl Do you wish?
 dnl PATH=/bin:/usr/bin:/usr/sbin:/usr/local/bin:$PATH
@@ -76,16 +76,20 @@ AC_ARG_WITH(
 if test "${japanese}" = "no"; then
     # --without-japanese
     OPT_LANGUAGE=en
+    TK_LANGUAGE=ENGLISH
     AC_SUBST(OPT_LANGUAGE)
+    AC_SUBST(TK_LANGUAGE)
     OPT_WAKATI_DEFAULT="none"
 else
     OPT_LANGUAGE=ja
+    TK_LANGUAGE=JAPANESE
     AC_ARG_WITH(
 	    lang,
 	    [  --with-lang=language    set default LANGUAGE code (ja or en) [ja]],
 	    OPT_LANGUAGE=$with_lang,
     )
     AC_SUBST(OPT_LANGUAGE)
+    AC_SUBST(TK_LANGUAGE)
 
     AC_ARG_WITH(
 	    nkf,
@@ -153,6 +157,82 @@ else
     AC_MSG_RESULT($OPT_WAKATI_DEFAULT)
 fi
 AC_SUBST(OPT_WAKATI_DEFAULT)
+
+
+dnl *
+dnl * Checking tknamazu
+dnl *
+
+AC_ARG_WITH(
+	tknamazu,
+	[  --with-tknamazu      build namazu with tcl/tk front-end ],
+	[tknamazu=${withval}], [tknamazu='yes']
+)
+
+if test "${tknamazu}" = "no"; then
+    TKNAMAZU = ""
+else
+    AC_ARG_WITH(
+		wish,
+		[  --with-wish=PATH       set wish location [search path]],
+		AC_MSG_RESULT(using $with_wish for wish)
+		WISH = $with_wish,
+		dnl checking for wish (ugly)
+		[AC_PATH_PROGS(WISH, wish8.2 wish8.1 wish8.0jp wish4.2jp wish, no)]
+    )
+    if test "$WISH" = "no"; then
+        AC_MSG_WARN(*** wish not found, tknamazu will not be built ***)
+        TKNAMAZU=""
+    else
+        AC_ARG_WITH(
+			lynx,
+			[  --with-lynx=PATH       set lynx browser location [search path]],
+			AC_MSG_RESULT(using $with_lynx for lynx)
+			LYNX = $with_lynx,
+			[AC_PATH_PROG(LYNX, lynx, no)]
+        )
+        if test "$LYNX" = "no"; then
+            AC_MSG_WARN(*** lynx not found, tknamazu will not be built ***)
+            TKNAMAZU=""
+        else
+            TKNAMAZU="tknamazu"
+        fi
+    fi
+fi
+AC_SUBST(TKNAMAZU)
+
+dnl additional helper programs
+AC_ARG_WITH(
+	groff,
+	[  --with-groff=PATH       set groff location [search path]],
+	AC_MSG_RESULT(using $with_groff for groff)
+	GROFF = $with_groff,
+	[AC_PATH_PROGS(GROFF, jgroff groff nroff, no)]
+)
+if test "$GROFF" = "no"; then
+    AC_MSG_WARN(*** groff not found, tknamazu cannot browse man pages ***)
+fi
+AC_ARG_WITH(
+	info,
+	[  --with-info=PATH       set info location [search path]],
+	AC_MSG_RESULT(using $with_info for info)
+	INFO = $with_info,
+	[AC_PATH_PROG(INFO, info, no)]
+)
+if test "$INFO" = "no"; then
+    AC_MSG_WARN(*** info not found, tknamazu cannot browse info files ***)
+fi
+AC_ARG_WITH(
+	zcat,
+	[  --with-zcat=PATH       set zcat location [search path]],
+	AC_MSG_RESULT(using $with_zcat for zcat)
+	ZCAT = $with_zcat,
+	[AC_PATH_PROG(ZCAT, zcat, no)]
+)
+if test "$ZCAT" = "no"; then
+    AC_MSG_WARN(zcat not found)
+fi
+
 
 
 dnl *
@@ -295,8 +375,8 @@ dnl *
 dnl * Set default Namazu directories.
 dnl * 
 test "${prefix}" = NONE && prefix=/usr/local
-AC_DEFINE_UNQUOTED(INDEXDIR, "${datadir}/${PACKAGE}/index")
-AC_DEFINE_UNQUOTED(OPT_NAMAZU_CONF, "${datadir}/${PACKAGE}/lib/namazu.conf")
+AC_DEFINE_UNQUOTED(INDEXDIR, "${pkgdatadir}/index")
+AC_DEFINE_UNQUOTED(OPT_NAMAZU_CONF, "${pkgdatadir}/lib/namazu.conf")
 AC_DEFINE_UNQUOTED(LANGUAGE, "$OPT_LANGUAGE")
 AC_DEFINE_UNQUOTED(SCORING, $SCORING)
 AC_DEFINE(MSIE4MACFIX)
@@ -307,5 +387,5 @@ dnl *
 AM_CONFIG_HEADER(config.h)
 
 AC_OUTPUT([Makefile src/Makefile conf/Makefile lib/var.pl lib/conf.pl
-src/mknmz.pl src/gcnmz src/gtnmz src/mailutime namazu.spec],
+src/mknmz.pl src/gcnmz src/gtnmz src/mailutime namazu.spec tknamazu/Makefile tknamazu/tknamazu.tcl],
 [chmod +x src/gcnmz src/gtnmz src/mailutime]) 

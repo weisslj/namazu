@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.47 2000-01-27 13:13:43 satoru Exp $
+ * $Id: form.c,v 1.48 2000-01-28 05:59:58 satoru Exp $
  * 
  * Copyright (C) 2000 Namazu Project All rights reserved..
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -174,7 +174,7 @@ select_option(char *s, const char *name, const char *subquery)
         fputs(s, stdout);
         get_value(s, value);
         if (strcasecmp(name, "result") == 0) {
-            if (strcasecmp(value, get_template()) == 0) {
+            if (strcasecmp(value, get_templatesuffix()) == 0) {
                 fputs(" selected", stdout);
             }
         } else if (strcasecmp(name, "sort") == 0) {
@@ -377,11 +377,6 @@ print_headfoot(const char * fname, const char * query, const char *subquery)
     }
 
     for (p = buf, f = f2 = 0; *p; p++) {
-/* FIXME: BASE_URI support will be abolished. */
-/*          if (BASE_URI[0] && (nmz_strprefixcasecmp(p, "\n</head>") == 0)) { */
-/*              printf("\n<base href=\"%s\">", BASE_URI); */
-/*          } */
-
         if (f == 0 && *p == '<') {
             if (nmz_strprefixcasecmp(p, "</title>") == 0) {
 		if (*query != '\0') {

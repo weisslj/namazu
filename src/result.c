@@ -1,5 +1,5 @@
 /*
- * $Id: result.c,v 1.45 2000-01-27 13:13:45 satoru Exp $
+ * $Id: result.c,v 1.46 2000-01-28 06:00:00 satoru Exp $
  * 
  * Copyright (C) 2000 Namazu Project All rights reserved..
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -181,9 +181,9 @@ is_uridecode(void)
 
 void 
 compose_result(struct nmz_data d, int counter, 
-			   char *template, char *r)
+			   const char *template, char *r)
 {
-    char *p = template;
+    const char *p = template;
     char achars[BUFSIZE]; /* acceptable characters */
 
     strcpy(r, "\t");  /* '\t' has an important role cf. html_print() */

@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.8 2000-01-27 13:13:45 satoru Exp $
+ * $Id: rcfile.c,v 1.9 2000-01-28 06:00:00 satoru Exp $
  * 
  * Copyright (C) 2000 Namazu Project All rights reserved..
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -29,6 +29,7 @@
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
 #endif
+#include "namazu.h"
 #include "libnamazu.h"
 #include "rcfile.h"
 #include "util.h"
@@ -83,6 +84,7 @@ static enum nmz_stat process_rc_logging(const char *directive, const struct nmz_
 static enum nmz_stat process_rc_scoring(const char *directive, const struct nmz_strlist *args);
 static enum nmz_stat process_rc_lang(const char *directive, const struct nmz_strlist *args);
 static enum nmz_stat process_rc_emphasistags(const char *directive, const struct nmz_strlist *args);
+static enum nmz_stat process_rc_template(const char *directive, const struct nmz_strlist *args);
 
 struct conf_directive {
     char *name;
@@ -103,6 +105,7 @@ static struct conf_directive directive_tab[] = {
     { "SCORING",       1, 0, process_rc_scoring },
     { "LANG",          1, 0, process_rc_lang },
     { "EMPHASISTAGS",  2, 0, process_rc_emphasistags },
+    { "TEMPLATE",      1, 0, process_rc_template },
     { NULL,            0, 0, NULL }
 };
 
@@ -214,6 +217,15 @@ process_rc_emphasistags(const char *directive, const struct nmz_strlist *args)
     char *arg2 = args->next->value;
 
     set_emphasis_tags(arg1, arg2); /* order: start, end */
+    return SUCCESS;
+}
+
+static enum nmz_stat
+process_rc_template(const char *directive, const struct nmz_strlist *args)
+{
+    char *arg1 = args->value;
+
+    set_templatedir(arg1);
     return SUCCESS;
 }
 

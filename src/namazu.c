@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.98 2000-01-27 13:13:44 satoru Exp $
+ * $Id: namazu.c,v 1.99 2000-01-28 05:59:59 satoru Exp $
  * 
  * Copyright (C) 2000 Namazu Project All rights reserved..
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -52,6 +52,8 @@
 #include "namazu.h"
 #include "var.h"
 
+static char templatedir[BUFSIZE] = "";
+
 /*
  *
  * Private functions
@@ -65,11 +67,19 @@ make_fullpathname_msg(void)
 {
     char *base;
     
-    if (nmz_get_idxnum() == 1) {
+    if (templatedir[0] != '\0') {
+	/* 
+	 * If templatedir is specified. 
+	 * NOTE: templatedir can be set by namazurc's Template directive.
+	 */
+	base = templatedir;
+    } else if (nmz_get_idxnum() == 1) {
+	/* Only one index is targeted. */
         base = nmz_get_idxname(0);
     } else {
 	/* Multiple indices are targeted. */
-        base = nmz_get_defaultidx();
+	/* As default, use defaultidx's template files. */
+	base = nmz_get_defaultidx();
     }
     
     nmz_pathcat(base, NMZ.head);
@@ -84,6 +94,18 @@ make_fullpathname_msg(void)
  * Public functions
  *
  */
+
+void 
+set_templatedir(char *dir)
+{
+    strcpy(templatedir, dir);
+}
+
+char *
+get_templatedir(void)
+{
+    return templatedir;
+}
 
 /* 
  * Print the error message and die.
@@ -116,7 +138,7 @@ die(const char *fmt, ...)
  * Namazu core routine.
  */
 enum nmz_stat 
-namazu_core(char * query, char *subquery, const char *argv0)
+namazu_core(char * query, char *subquery)
 {
     char query_with_subquery[BUFSIZE * 2];
     NmzResult hlist;

@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu-cmd.c,v 1.3 2000-01-27 13:13:44 satoru Exp $
+ * $Id: namazu-cmd.c,v 1.4 2000-01-28 05:59:59 satoru Exp $
  * 
  * Copyright (C) 2000 Namazu Project All rights reserved..
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -162,7 +162,7 @@ parse_options(int argc, char **argv)
 	    exit(EXIT_SUCCESS);
 	    break;
 	case '1':
-	    set_template(optarg);
+	    set_templatesuffix(optarg);
 	    break;
 	case '2':
 	    nmz_set_sortmethod(SORT_BY_DATE);
@@ -209,7 +209,7 @@ parse_options(int argc, char **argv)
 	    nmz_set_debugmode(1);
 	    break;
 	case 's':
-	    set_template("short");
+	    set_templatesuffix("short");
 	    break;
 	case 'l':
 	case 'S':  /* 'S' for backward compatibility */
@@ -326,7 +326,7 @@ main(int argc, char **argv)
 	}
     }
 
-    if (namazu_core(query, subquery, argv[0]) == ERR_FATAL) {
+    if (namazu_core(query, subquery) == ERR_FATAL) {
 	die(nmz_get_dyingmsg());
     }
 

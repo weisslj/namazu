@@ -1,4 +1,4 @@
-$Id: TODO-satoru,v 1.20 2000-01-27 11:47:19 satoru Exp $
+$Id: TODO-satoru,v 1.21 2000-01-28 05:59:53 satoru Exp $
 やるべきことの備忘録 by 高林
 
 手っ取り早く片づける仕事
@@ -48,8 +48,8 @@ $Id: TODO-satoru,v 1.20 2000-01-27 11:47:19 satoru Exp $
       foo->add_index(foo, "/where/foo/index/is");
       bar->add_index(bar, "/where/bar/index/is");
           :
-      foo->destroy();
-      bar->destroy();
+      foo->destroy(foo);
+      bar->destroy(bar);
 
    といった感じ?
 

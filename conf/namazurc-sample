@@ -43,6 +43,9 @@
 #         - Set a pair of html elements which is used in
 #           keyword emphasizing in search results.
 #
+#       * Template
+#         - Set a directory which contains NMZ.{head,foot,body,tips,result} 
+#           files to compose search results.
 #
 #   You can use ~/foo notation for representing a pathname of directory 
 #   which lacated under your home directory.  e.g., 
@@ -55,3 +58,4 @@
 #Lang          ja
 #Scoring       tfidf
 #EmphasisTags  "<strong class=\"keyword\">"   "</strong>"
+#Template      /usr/local/var/namazu/index

@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu-cgi.c,v 1.4 2000-01-27 13:13:44 satoru Exp $
+ * $Id: namazu-cgi.c,v 1.5 2000-01-28 05:59:59 satoru Exp $
  * 
  * Copyright (C) 2000 Namazu Project All rights reserved..
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -121,7 +121,7 @@ main(int argc, char **argv)
 
     init_cgi(query, subquery);
 
-    if (namazu_core(query, subquery, argv[0]) == ERR_FATAL) {
+    if (namazu_core(query, subquery) == ERR_FATAL) {
         die(nmz_get_dyingmsg());
     }
 

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2000-01-28 07:47+0900\n"
+"POT-Creation-Date: 2000-01-28 15:00+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -84,85 +84,85 @@ msgstr ""
 msgid "Too long QUERY_STRING"
 msgstr ""
 
-#: src/output.c:459
+#: src/output.c:489
 msgid "\t<strong>Page:</strong> "
 msgstr ""
 
-#: src/output.c:504
+#: src/output.c:534
 #, c-format
 msgid "Current List: %d"
 msgstr ""
 
-#: src/output.c:552
+#: src/output.c:582
 #, c-format
 msgid " [ TOTAL: %d ]"
 msgstr ""
 
-#: src/output.c:562
+#: src/output.c:592
 msgid "\t<p><strong> Total "
 msgstr ""
 
-#: src/output.c:569
+#: src/output.c:599
 msgid ""
 "\t documents matching your query.</strong></p>\n"
 "\n"
 msgstr ""
 
-#: src/output.c:625
+#: src/output.c:655
 #, c-format
 msgid ""
 "\t<h2>Error!</h2>\n"
 "<p>%s</p>\n"
 msgstr ""
 
-#: src/output.c:655
+#: src/output.c:685
 msgid "\t<h2>Results:</h2>\n"
 msgstr ""
 
-#: src/output.c:662
+#: src/output.c:692
 msgid "References: "
 msgstr ""
 
-#: src/output.c:709
+#: src/output.c:739
 msgid "\t<p>No document matching your query.</p>\n"
 msgstr ""
 
 #. terminator not matched
-#: src/rcfile.c:323
+#: src/rcfile.c:335
 msgid "can't find string terminator"
 msgstr ""
 
-#: src/rcfile.c:391
+#: src/rcfile.c:403
 msgid "invalid directive name"
 msgstr ""
 
-#: src/rcfile.c:404
+#: src/rcfile.c:416
 msgid "can't find arguments"
 msgstr ""
 
-#: src/rcfile.c:507
+#: src/rcfile.c:519
 msgid "too few arguments"
 msgstr ""
 
-#: src/rcfile.c:510
+#: src/rcfile.c:522
 msgid "too many arguments"
 msgstr ""
 
-#: src/rcfile.c:520
+#: src/rcfile.c:532
 msgid "unknown directive"
 msgstr ""
 
-#: src/rcfile.c:575
+#: src/rcfile.c:587
 #, c-format
 msgid "%s:%d: syntax error: %s"
 msgstr ""
 
-#: src/rcfile.c:588
+#: src/rcfile.c:600
 #, c-format
 msgid "Config:  %s\n"
 msgstr ""
 
-#: src/rcfile.c:591
+#: src/rcfile.c:603
 #, c-format
 msgid ""
 "Index:   %s\n"

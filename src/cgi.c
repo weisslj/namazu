@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.54 2000-01-27 13:13:43 satoru Exp $
+ * $Id: cgi.c,v 1.55 2000-01-28 05:59:58 satoru Exp $
  * 
  * Copyright (C) 2000 Namazu Project All rights reserved..
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -350,9 +350,9 @@ static void
 process_cgi_var_format(char *value, struct cgiarg *ca)
 {
     if (strcmp(value, "short") == 0) {
-	set_template("short");
+	set_templatesuffix("short");
     } else if (strcmp(value, "long") == 0) {
-	set_template("normal");
+	set_templatesuffix("normal");
     }
 }
 
@@ -432,7 +432,7 @@ process_cgi_var_lang(char *value, struct cgiarg *ca)
 static void 
 process_cgi_var_result(char *value, struct cgiarg *ca)
 {
-    set_template(value);
+    set_templatesuffix(value);
 }
 
 static void 

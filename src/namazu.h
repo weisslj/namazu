@@ -15,6 +15,8 @@ enum {
 };
 
 extern void die(const char *fmt, ...);
-extern enum nmz_stat namazu_core ( char * query, char *subquery, const char *argv0 );
+extern enum nmz_stat namazu_core ( char * query, char *subquery );
+void set_templatedir(char *dir);
+char *get_templatedir(void);
 
 #endif /* _NAMAZU_H */

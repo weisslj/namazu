@@ -29,8 +29,8 @@ extern void set_maxresult ( int num );
 extern int get_maxresult ( void );
 extern void set_listwhence ( int num );
 extern int get_listwhence ( void );
-extern void set_template ( const char *tmpl );
-extern char *get_template ( void );
+extern void set_templatesuffix ( const char *tmpl );
+extern char *get_templatesuffix ( void );
 extern void html_print ( const char *str );
 extern void print ( const char *str );
 

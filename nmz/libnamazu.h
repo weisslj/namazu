@@ -2,7 +2,7 @@
  * 
  * libnamazu.h - Namazu library api
  *
- * $Id: libnamazu.h,v 1.2 1999-10-19 07:24:02 knok Exp $
+ * $Id: libnamazu.h,v 1.1 1999-11-01 07:23:55 knok Exp $
  * 
  */
 

@@ -16,9 +16,9 @@ bin_SCRIPTS  = gcnmz mailutime mknmz gtnmz vfnmz kwnmz
 CLEANFILES  = gcnmz mknmz kwnmz
 
 localedir = $(datadir)/locale
-INCLUDES  = -I.. -I../intl -I../lib
+INCLUDES  = -I.. -I../intl -I../lib -I../nmz
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
-LDADD = @INTLLIBS@ ../lib/libnmzut.a
+LDADD = @INTLLIBS@ ../lib/libnmzut.a ../nmz/.libs/libnmz.a
 
 confdir     = $(pkgdatadir)/conf
 perllibdir  = $(pkgdatadir)/pl
@@ -28,11 +28,11 @@ templatedir = $(pkgdatadir)/template
 namazu_SOURCES = cgi.c codeconv.c conf.c field.c form.c \
 		 hlist.c i18n.c namazu.c output.c \
 		 parser.c re.c result.c search.c seed.c util.c \
-		 usage.c var.c wakati.c libnamazu.c idxname.c \
+		 usage.c var.c wakati.c idxname.c \
 		 cgi.h codeconv.h conf.h critical.h em.h field.h form.h \
 		 hlist.h i18n.h magic.h message.h namazu.h output.h \
 		 parser.h re.h result.h search.h \
-		 usage.h  util.h wakati.h var.h libnamazu.h idxname.h
+		 usage.h  util.h wakati.h var.h idxname.h
 
 ##################################################################
 

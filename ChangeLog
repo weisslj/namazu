@@ -2,6 +2,11 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Change a version number to 1.9.7.
 
+1999-11-01  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* nmz/*: Added new directory and moved libnamazu.* files from 
+	src/ directory.
+
 1999-10-29  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* Seacrh-Namazu/*: Added new module.

@@ -1,0 +1,29 @@
+#! /bin/sh
+#
+# Test for japanese applefile(AppleSingle) file
+#
+LOG=`pwd`/test-log
+echo '  *** starting ' $0 >>$LOG
+TARGET=$srcdir/data/ja-appl90
+IDX=ja-idx3
+
+EXEC=no
+case $LANG in 
+	ja*)
+		EXEC=yes
+		;;
+esac
+if [ $EXEC = 'no' ]
+then
+	echo "Skip $0" >> $LOG
+	exit 77
+fi
+
+if test ! -d $IDX; then
+    mkdir $IDX
+else
+    rm -f $IDX/NMZ.*
+fi
+
+../scripts/mknmz -O $IDX $TARGET >> $LOG
+exit $?

@@ -63,6 +63,9 @@ $CGI_DIR = '/(cgi-bin|htbin)/';
 ## MHonArc's header for identification (regex)
 $MHONARC_HEADER = '<\!-- MHonArc v\d\.\d\.\d -->';
 
+## MHonArc's message file
+$MHONARC_MESSAGE_FILE = 'msg\d{5}\.html(?:\.gz)?';
+
 ## Mail/News's headers should be remained as searchable text
 ## (case insensitive)
 $REMAIN_HEADER = "From|Date|Message-ID";

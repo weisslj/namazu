@@ -10,6 +10,7 @@ Group: Utilities/File
 Source: http://www.perl.com/CPAN/modules/by-module/File/File-MMagic-%{ver}.tar.gz
 BuildRoot: /var/tmp/File-MMagic-%{ver}-buildroot/
 Requires: perl >= 5.004
+Obsoletes: File-MMagic
 Summary(ja): fileコマンド風perl5モジュール
 
 %description
@@ -44,6 +45,9 @@ rm -rf $RPM_BUILD_ROOT
 /usr/lib/perl5/man/man3/File::MMagic.3
 
 %changelog
+* Thu Dec 02 1999 Ryuji Abe <raeva@t3.rim.or.jp>
+- Specified Obsoletes: File-MMagic.
+
 * Wed Dec 01 1999 Ryuji Abe <raeva@t3.rim.or.jp>
 - Fixed package name (Added prefix `perl-').
 

@@ -45,10 +45,6 @@
 #endif
 #include <setjmp.h>
 
-#ifdef HAVE_SUPPORT_H
-# include "support.h"
-#endif
-
 #ifndef roundup
 #define roundup(x, y) ((((x)+((y)-1))/(y))*(y))
 #endif
@@ -143,3 +139,14 @@ vsnprintf(str, n, fmt, ap)
 	return (ret);
 }
 
+/* provide snprintf imprementation for Namazu */
+int
+snprintf (char *string, size_t maxlen, const char *format, ...)
+{
+	va_list args;
+	int retval;
+	va_start(args, format);
+	retval = vsnprintf(string, maxlen, format, args);
+	va_end(args);
+	return retval;
+}

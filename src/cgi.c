@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.11 1999-08-28 00:07:42 satoru Exp $
+ * $Id: cgi.c,v 1.12 1999-09-01 02:43:49 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -198,6 +198,7 @@ int get_cgi_vars(uchar * query, uchar *subquery)
 
 	} else if (!strncmp(qs, "format=short", 12)) {
 	    ShortFormat = 1;
+	    strcpy(Template, "short");
 	    qs += 12;
 	} else if (!strncmp(qs, "sort=", 5)) {
 	    qs += 5;
@@ -236,6 +237,19 @@ int get_cgi_vars(uchar * query, uchar *subquery)
             strncpy(Lang, qs, 2);
             qs += 2;
             init_message();
+	    while (*qs && *qs != '&')
+		qs++;
+	} else if (!strncmp(qs, "result=", 7)) {
+	    qs += 7;
+
+	    for (i = 0; *qs && *qs != '&' && i <= CGI_RESULT_NAME_MAX; 
+		 i++, qs++)
+	    {
+		tmp[i] = *qs;
+	    }
+            tmp[i] = '\0';
+
+            strcpy(Template, tmp);
 	    while (*qs && *qs != '&')
 		qs++;
 	} else if (!strncmp(qs, "reference=off", 13)) {

@@ -1,7 +1,7 @@
 /*
  * result.l -
  * -*- C -*-
- * $Id: result.l,v 1.15 1999-09-01 02:26:38 satoru Exp $
+ * $Id: result.l,v 1.16 1999-09-01 02:43:49 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -221,7 +221,7 @@ void print_hlist(HLIST hlist)
 	    get_field_data("${uri}");
 	} else {
 	    if ((yyin = fopen(template, "r")) == NULL) {
-		die("print_hlist");
+		die("print_hlist: %s", template);
 		exit(-1);
 	    }
 	    yylex();

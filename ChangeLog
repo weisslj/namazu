@@ -1,5 +1,8 @@
 1999-09-01  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/cgi.[ch]: Implemented codes to handle result=ext in CGI
+	query.
+	
 	* src/{namazu,usage}.c: Add --result=ext option for specifying
 	NMZ.result.ext.
 

@@ -2,7 +2,7 @@
  * 
  * conf.c -
  * 
- * $Id: conf.c,v 1.7 1999-11-19 09:04:20 satoru Exp $
+ * $Id: conf.c,v 1.8 1999-11-23 09:46:17 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -83,18 +83,18 @@ static ALIAS *add_alias(ALIAS *ptr, char *alias, char *real)
     
     tmp = malloc(sizeof(ALIAS));
     if (tmp == NULL) {
-	 diemsg("add_alias_malloc");
+	 set_dyingmsg("add_alias_malloc");
 	 return NULL;
     }
     tmp->alias = malloc(strlen(alias) + 1);
     if (tmp->alias == NULL) {
-	 diemsg("add_alias_malloc");
+	 set_dyingmsg("add_alias_malloc");
 	 return NULL;
     }
 
     tmp->real = malloc(strlen(real) + 1);
     if (tmp->real == NULL) {
-	 diemsg("add_alias_malloc");
+	 set_dyingmsg("add_alias_malloc");
 	 return NULL;
     }
 
@@ -110,19 +110,19 @@ static REPLACE *add_replace(int lineno, REPLACE *ptr, char *pat, char *rep)
     
     tmp = malloc(sizeof(REPLACE));
     if (tmp == NULL) {
-	 diemsg("add_replace_malloc");
+	 set_dyingmsg("add_replace_malloc");
 	 return NULL;
     }
 
     tmp->pat = malloc(strlen(pat) + 1);
     if (tmp->pat == NULL) {
-	 diemsg("add_replace_malloc");
+	 set_dyingmsg("add_replace_malloc");
 	 return NULL;
     }
 
     tmp->rep = malloc(strlen(rep) + 1);
     if (tmp->rep == NULL) {
-	 diemsg("add_replace_malloc");
+	 set_dyingmsg("add_replace_malloc");
 	 return NULL;
     }
 
@@ -391,12 +391,12 @@ static int check_argnum(char *directive, int argnum)
 		errmsg = "too many arguments";
 		return 1;  /* error */
 	    } else {
-		diemsg("check_argnum[1]: It MUST not be happend! ");
+		set_dyingmsg("check_argnum[1]: It MUST not be happend! ");
 		return 1;
 	    }
 	}
     }
-    diemsg("check_argnum[2]: It MUST not be happend! ");
+    set_dyingmsg("check_argnum[2]: It MUST not be happend! ");
     return 1;
 }
 
@@ -417,7 +417,11 @@ static int apply_conf(char *directive, int lineno, char *arg1, char *arg2)
 	if (Alias == NULL)
 	  return 1;
     } else if (strcasecmp(directive, "LOGGING") == 0) {
-	Logging = 0;
+	if (strcasecmp(arg1, "ON") == 0) {
+	    set_loggingmode(1);
+	} else if (strcasecmp(arg1, "OFF") == 0) {
+	    set_loggingmode(0);
+	}
     } else if (strcasecmp(directive, "SCORING") == 0) {
 	if (strcasecmp(arg1, "TFIDF") == 0) {
 	    TfIdf = 1;
@@ -460,7 +464,7 @@ int load_conf(char *av0)
 	if (parse_conf(buf, lineno))
 	    return 1;
 	if (errmsg != NULL) { /* error occurred */
-	    diemsg("%s:%d: syntax error: %s.\n",  
+	    set_dyingmsg("%s:%d: syntax error: %s.\n",  
 		   NAMAZURC, lineno, errmsg);
 	    return 1;
 	}
@@ -481,7 +485,7 @@ BASE:    %s\n\
 Logging: %s\n\
 Lang:    %s\n\
 Scoring: %s\n\
-"), DEFAULT_INDEX, BASE_URI, Logging ? "on" : "off",
+"), DEFAULT_INDEX, BASE_URI, is_loggingmode() ? "on" : "off",
            get_lang(), TfIdf ? "tfidf" : "simple");
 
     {

@@ -3,7 +3,7 @@
   util.h -
 
   $Author: satoru $
-  $Date: 1999-11-19 08:08:59 $
+  $Date: 1999-11-23 09:46:18 $
   created at: Thu Mar  9 11:55:53 JST 1995
 
   Copyright (C) 1993-1998 Yukihiro Matsumoto
@@ -69,7 +69,6 @@ extern int issymbol(int);
 #ifndef die /* for perl XSUB... */
 extern void die(char*, ...);
 #endif
-extern void diemsg(char*, ...);
 extern void diewithmsg();
 extern void warnf(char*, ...);
 extern void debug_printf(char*, ...);

@@ -2,7 +2,7 @@
  * 
  * values.c -
  * 
- * $Id: var.c,v 1.5 1999-11-19 09:04:21 satoru Exp $
+ * $Id: var.c,v 1.6 1999-11-23 09:46:18 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -46,21 +46,6 @@ char CONFDIR[BUFSIZE] = OPT_CONFDIR;
 /* namazurc */
 char NAMAZURC[BUFSIZE] = "";
 
-/* too many global variables */
-int HListMax = 20;		/* max number of search results */
-int HListWhence = 0;		/* number which beginning of search results */
-int ListFormat = 0;        /* if more short format mode: 1  */
-int HitCountOnly = 0;
-int HidePageIndex = 0;		/* if hide page index: 1 */
-int ForcePrintForm = 0;		/* if display <FORM> ... </FORM>: 1 */
-int AllList = 0;		/* if dispal all search results: 1 */
-int NoReplace = 0;		/* if no replace URI: 1 */
-int DecodeURI = 0;		/* if replace URI at plaint text mode: 1 */
-int IsCGI = 0;			/* if CGI mode: 1 */
-int Logging = 1;		/* if do logging:  1 */
-int NoReference = 0;		/* if no display reference: 1  */
-
-
 #ifdef OPT_SCORING
 #define TFIDF  1
 #define SIMPLE 0
@@ -95,5 +80,3 @@ NMZ_NAMES NMZ = {  /* NMZ.* files' names */
 INDICES Idx;
 QUERY Query;
 
-char Template[BUFSIZE] = "normal";
-char Dyingmessage[BUFSIZE] = "Initialized";

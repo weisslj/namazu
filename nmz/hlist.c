@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.6 1999-11-19 02:58:15 satoru Exp $
+ * $Id: hlist.c,v 1.7 1999-11-23 09:46:17 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -106,7 +106,7 @@ static int field_sort(HLIST hlist)
 
 	hlist.d[i].field = (char *)malloc(leng + 1);
 	if (hlist.d[i].field == NULL) {
-	    diemsg("int_field_sort");
+	    set_dyingmsg("int_field_sort");
 	    return DIE_ERROR;
 	}
 	strcpy(hlist.d[i].field, buf);
@@ -370,7 +370,7 @@ void malloc_hlist(HLIST * hlist, int n)
     if (n <= 0) return;
     hlist->d = (HLIST_DATA *)malloc(n * sizeof(HLIST_DATA));
     if (hlist->d == NULL) {
-	 diemsg("malloc_hlist");
+	 set_dyingmsg("malloc_hlist");
 	 hlist->n = DIE_HLIST;
 	 return;
     }
@@ -383,7 +383,7 @@ void realloc_hlist(HLIST * hlist, int n)
     if (n <= 0) return;
     hlist->d = (HLIST_DATA *) realloc(hlist->d, n * sizeof(HLIST_DATA));
     if (hlist->d == NULL) {
-	 diemsg("realloc_hlist");
+	 set_dyingmsg("realloc_hlist");
 	 hlist->n = DIE_HLIST;
     }
 }
@@ -493,7 +493,7 @@ HLIST get_hlist(int index)
 	int sum = 0;
 	buf = (int *) malloc(n * sizeof(int)); /* with pelnty margin */
 	if (buf == NULL) {
-	    diemsg("get_hlist");
+	    set_dyingmsg("get_hlist");
 	    hlist.d = NULL;
 	    hlist.n = DIE_HLIST;
 	    return hlist;

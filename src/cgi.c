@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.27 1999-11-19 09:04:24 satoru Exp $
+ * $Id: cgi.c,v 1.28 1999-11-23 09:46:22 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -347,9 +347,9 @@ static void process_cgi_var_subquery(char *value, CGIARG *ca)
 static void process_cgi_var_format(char *value, CGIARG *ca)
 {
     if (strcmp(value, "short") == 0) {
-	strcpy(Template, "short");
+	set_template("short");
     } else if (strcmp(value, "long") == 0) {
-	strcpy(Template, "normal");
+	set_template("normal");
     }
 }
 
@@ -393,19 +393,27 @@ static void process_cgi_var_sort(char *value, CGIARG *ca)
 
 static void process_cgi_var_max(char *value, CGIARG *ca)
 {
-    sscanf(value, "%d", &HListMax);
-    if (HListMax < 0)
-	HListMax = 0;
-    if (HListMax > RESULT_MAX)
-	HListMax = RESULT_MAX;
+    int max;
+
+    sscanf(value, "%d", &max);
+
+    if (max < 0)
+	max = 0;
+    if (max > RESULT_MAX)
+	max = RESULT_MAX;
+
+    set_maxresult(max);
 }
 
 static void process_cgi_var_whence(char *value, CGIARG *ca)
 {
-    sscanf(value, "%d", &HListWhence);
-    if (HListWhence < 0) {
-	HListWhence = 0;
+    int whence;
+
+    sscanf(value, "%d", &whence);
+    if (whence < 0) {
+	whence = 0;
     }
+    set_listwhence(whence);
 }
 
 static void process_cgi_var_lang(char *value, CGIARG *ca)
@@ -415,13 +423,13 @@ static void process_cgi_var_lang(char *value, CGIARG *ca)
 
 static void process_cgi_var_result(char *value, CGIARG *ca)
 {
-    strcpy(Template, value);
+    set_template(value);
 }
 
 static void process_cgi_var_reference(char *value, CGIARG *ca)
 {
     if (strcmp(value, "off") == 0) {
-	NoReference = 1;
+	set_refprint(0);
     }
     
 }

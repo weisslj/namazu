@@ -2,7 +2,7 @@
  * 
  * codeconv.c -
  * 
- * $Id: codeconv.c,v 1.6 1999-11-19 08:08:59 satoru Exp $
+ * $Id: codeconv.c,v 1.7 1999-11-23 09:46:17 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -246,7 +246,7 @@ static void euctojis(uchar *p)
     alloc = (uchar *)strdup((char *)p);
     s = alloc;
     if (s == NULL) { /* */
-	diemsg("euctojis_strdup");
+	set_dyingmsg("euctojis_strdup");
 	return;
     }
 

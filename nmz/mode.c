@@ -2,7 +2,7 @@
  * 
  * mode.c - Namazu mode controlling class.
  * 
- * $Id: mode.c,v 1.2 1999-11-19 09:04:20 satoru Exp $
+ * $Id: mode.c,v 1.3 1999-11-23 09:46:18 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -25,6 +25,8 @@
  * 
  */
 
+#include <stdarg.h>
+
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
 #endif
@@ -37,112 +39,4 @@
  * default settings
  *
  */
-
-static int sortmethod  = SORT_BY_SCORE;
-static int sortorder   = DESCENDING;
-
-static int maxlistnum  = 20;  /* max number of search results */
-static int listwhence  = 0;   /* number which beginning of search results */
-		      
-static int htmlmode    = 0;
-static int cgimode     = 0;
-static int quietmode   = 0;
-static int debugmode   = 0;
-static int loggingmode = 1;   /* do logging with NMZ.slog */
-		      
-static int count_only  = 0;   /* like grep -c */
-static int list_format = 0;   /* like grep -l */
-		      
-static int all_result  = 0;   /* print all results */
-static int page_index  = 0;   /* print "Page: [1][2][3][4][5][6][7][8]" */
-static int form_print  = 1;   /* print "<form> ... </form>" at cgimode */
-static int ref_print   = 1;   /* print "References:  [ foo: 123 ]" */
-		      
-static int uri_replace = 1;   /* replace URI in results */
-static int uri_decode  = 0;   /* decode URI in results */
-
-static char template[BUFSIZE]     = "normal"; /* suffix of NMZ.result.* */
-static char dyingmessage[BUFSIZE] = "Initialized";
-
-
-/*
- *
- * Public functions
- *
- */
-
-void set_sortmethod(int method)
-{
-    sortmethod = method;
-}
-
-int get_sortmethod(void)
-{
-    return sortmethod;
-}
-
-
-
-
-void set_sortorder(int order)
-{
-    sortorder = order;
-}
-
-int get_sortorder(void)
-{
-    return sortorder;
-}
-
-
-
-
-void set_maxlistnum(int num)
-{
-    maxlistnum = num;
-}
-
-void set_htmlmode(int mode)
-{
-    htmlmode = mode;
-}
-
-
-
-
-int is_htmlmode(void)
-{
-    return htmlmode;
-}
-
-int get_maxlistnum(void)
-{
-    return maxlistnum;
-}
-
-
-
-
-void set_quietmode(int mode)
-{
-    quietmode = mode;
-}
-
-int is_quietmode(void)
-{
-    return quietmode;
-}
-
-
-
-
-void set_debugmode(int mode)
-{
-    debugmode = mode;
-}
-
-int is_debugmode(void)
-{
-    return debugmode;
-}
 

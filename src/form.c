@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.21 1999-11-19 09:04:24 satoru Exp $
+ * $Id: form.c,v 1.22 1999-11-23 09:46:22 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -160,7 +160,7 @@ static int select_option(char *s, char *name, char *subquery)
         fputs(s, stdout);
         get_value(s, value);
         if (strcasecmp(name, "result") == 0) {
-            if (strcasecmp(value, Template) == 0) {
+            if (strcasecmp(value, get_template()) == 0) {
                 fputs(" selected", stdout);
             }
         } else if (strcasecmp(name, "sort") == 0) {
@@ -217,7 +217,7 @@ static int select_option(char *s, char *name, char *subquery)
                 fputs(" selected", stdout);
             }
         } else if (strcasecmp(name, "max") == 0) {
-            if (atoi(value) == HListMax) {
+            if (atoi(value) == get_maxresult()) {
                 fputs(" selected", stdout);
             }
         }
@@ -366,13 +366,13 @@ void print_headfoot(char * fname, char * query, char *subquery)
                 continue;
             }
 
-            if (!IsCGI && !ForcePrintForm && 
+            if (!is_formprint() && 
 		(strprefixcasecmp(p, "<form ") == 0)) 
 	    {
 		f2 = 1;
 	    }
 
-            if (!IsCGI && !ForcePrintForm && 
+            if (!is_formprint() && 
 		(strprefixcasecmp(p, "</form>") == 0)) 
             {
 		f2 = 0; 

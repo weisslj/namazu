@@ -1,20 +1,7 @@
 #ifndef _VARIABLE_H
 #define _VARIABLE_H
 
-extern int HListMax;
-extern int HListWhence;
-extern int ListFormat;
-extern int HitCountOnly;
-extern int HidePageIndex;
-extern int ForcePrintForm;
-extern int AllList;
-extern int FinalHitN;
-extern int NoReplace;
-extern int DecodeURI;
-extern int IsCGI;
-extern int Logging;
 extern int TfIdf;
-extern int NoReference;
 
 extern char DEFAULT_INDEX[];
 
@@ -45,7 +32,5 @@ extern NMZ_NAMES NMZ;
 extern NMZ_FILES Nmz;
 extern INDICES   Idx;
 extern QUERY     Query;
-extern char      Template[];
-extern char      Dyingmessage[];
 
 #endif /* _VARIABLE_H */

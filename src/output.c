@@ -19,6 +19,26 @@
 #include "magic.h"
 #include "mode.h"
 
+static int htmlmode    = 0;
+static int cgimode     = 0;
+static int quietmode   = 0;
+
+static int countmode   = 0;   /* like grep -c */
+static int listmode    = 0;   /* like grep -l */
+		      
+static int allresult   = 0;   /* print all results */
+static int pageindex   = 0;   /* print "Page: [1][2][3][4][5][6][7][8]" */
+static int formprint   = 1;   /* print "<form> ... </form>" at cgimode */
+static int refprint    = 1;   /* print "References:  [ foo: 123 ]" */
+		      
+static int urireplace  = 1;   /* replace URI in results */
+static int uridecode   = 0;   /* decode URI in results */
+
+static int maxresult = 20;  /* max number of search results */
+static int listwhence  = 0;   /* number which beginning of search results */
+		      
+static char template[BUFSIZE]     = "normal"; /* suffix of NMZ.result.* */
+
 /*
  *
  * Private functions
@@ -161,6 +181,147 @@ static void fputs_without_html_tag(char * s, FILE *fp)
  *
  */
 
+void set_htmlmode(int mode)
+{
+    htmlmode = mode;
+}
+
+int is_htmlmode(void)
+{
+    return htmlmode;
+}
+
+void set_cgimode(int mode)
+{
+    cgimode = mode;
+}
+
+int is_cgimode(void)
+{
+    return cgimode;
+}
+
+void set_quietmode(int mode)
+{
+    quietmode = mode;
+}
+
+int is_quietmode(void)
+{
+    return quietmode;
+}
+
+int is_countmode(void)
+{
+    return countmode;
+}
+
+void set_countmode(int mode)
+{
+    countmode = mode;
+}
+
+void set_listmode(int mode)
+{
+    listmode = mode;
+}
+
+int is_listmode(void)
+{
+    return listmode;
+}
+
+void set_allresult(int mode)
+{
+    allresult = mode;
+}
+
+int is_allresult(void)
+{
+    return allresult;
+}
+
+void set_pageindex(int mode)
+{
+    pageindex = mode;
+}
+
+int is_pageindex(void)
+{
+    return pageindex;
+}
+
+void set_formprint(int mode)
+{
+    formprint = mode;
+}
+
+int is_formprint(void)
+{
+    return formprint;
+}
+
+void set_refprint(int mode)
+{
+    refprint = mode;
+}
+
+int is_refprint(void)
+{
+    return refprint;
+}
+
+void set_urireplace(int mode)
+{
+    urireplace = mode;
+}
+
+int is_urireplace(void)
+{
+    return urireplace;
+}
+
+void set_uridecode(int mode)
+{
+    uridecode = mode;
+}
+
+int is_uridecode(void)
+{
+    return uridecode;
+}
+
+void set_maxresult(int num)
+{
+    maxresult = num;
+}
+
+int get_maxresult(void)
+{
+    return maxresult;
+}
+
+void set_listwhence(int num)
+{
+    listwhence = num;
+}
+
+int get_listwhence(void)
+{
+    return listwhence;
+}
+
+
+void set_template(char *tmpl)
+{
+    strcpy(template, tmpl);
+}
+
+char *get_template(void)
+{
+    return template;
+}
+
 /*
  * for pageindex
  */
@@ -185,7 +346,7 @@ void put_query(char * qs, int w)
 /* displayin page index */
 void put_page_index(int n)
 {
-    int i;
+    int i, max, whence;
     char *qs; /* QUERY_STRING */
     char *sn; /* SCRIPT_NAME  */
 
@@ -194,15 +355,17 @@ void put_page_index(int n)
 
     html_print(_("	<strong>Page:</strong> "));
 
+    max    = get_maxresult();
+    whence = get_listwhence();
     for (i = 0; i < PAGE_MAX; i++) {
-	if (i * HListMax >= n)
+	if (i * max >= n)
 	    break;
 	if (is_htmlmode()) {
-	    if (i * HListMax != HListWhence) {
+	    if (i * max != whence) {
 		print("<a href=\"");
 		fputs(sn, stdout);
 		fputc('?', stdout);
-		put_query(qs, i * HListMax);
+		put_query(qs, i * max);
 		print("\">");
 	    } else {
 		print("<strong>");
@@ -210,27 +373,33 @@ void put_page_index(int n)
 	}
 	printf("[%d]", i + 1);
 	if (is_htmlmode()) {
-	    if (i * HListMax != HListWhence) {
+	    if (i * max != whence) {
 		print("</A> ");
 	    } else
 		print("</strong> ");
 	}
-	if (AllList)
+	if (is_allresult()) {
 	    break;
+	}
     }
 }
 
 /* output current range */
 void put_current_range(int listmax)
 {
+    int max, whence;
+
+    max    = get_maxresult();
+    whence = get_listwhence();
+
     if (is_htmlmode()) {
 	print("<strong>");
     }
-    printf(_("Current List: %d"), HListWhence + 1);
+    printf(_("Current List: %d"), whence + 1);
 
     print(" - ");
-    if (!AllList && ((HListWhence + HListMax) < listmax)) {
-	printf("%d", HListWhence + HListMax);
+    if (!is_allresult() && ((whence + max) < listmax)) {
+	printf("%d", whence + max);
     } else {
 	printf("%d", listmax);
     }
@@ -287,7 +456,7 @@ void print_hlist(HLIST hlist)
     /* prepare large memory for replace_field() and conv_ext() */
     char result[BUFSIZE * 128];
 
-    if (hlist.n <= 0 || HListMax == 0) {
+    if (hlist.n <= 0 || get_maxresult() == 0) {
 	return;
     }
 
@@ -296,14 +465,14 @@ void print_hlist(HLIST hlist)
 	templates[i] = NULL;
     }
 
-    for (i = HListWhence; i < hlist.n; i++) {
+    for (i = get_listwhence(); i < hlist.n; i++) {
 	int counter;
 
 	counter = i + 1;
 
-	if (!AllList && (i >= HListWhence + HListMax))
+	if (!is_allresult() && (i >= get_listwhence() + get_maxresult()))
 	    break;
-	if (ListFormat) {
+	if (is_listmode()) {
 	    get_field_data(hlist.d[i].idxid, hlist.d[i].docid, "uri", result);
 	} else {
 	    if (templates[hlist.d[i].idxid] == NULL) {  /* not loaded */
@@ -312,7 +481,7 @@ void print_hlist(HLIST hlist)
 		make_fullpathname_result(hlist.d[i].idxid);
 		strcpy(fname, NMZ.result);
 		strcat(fname, ".");
-		strcat(fname, Template);  /* usually "normal" */
+		strcat(fname, get_template());  /* usually "normal" */
 		templates[hlist.d[i].idxid] = readfile(fname);
 	    }
 	    compose_result(hlist.d[i], counter, 
@@ -336,7 +505,9 @@ void print_hit_count ()
     int i;
     for (i = 0; i < Idx.num; i ++) {
         PHRASERES *pr = Idx.pr[i];
-	if (!HitCountOnly && !ListFormat && !NoReference && !is_quietmode()) {
+	if (is_refprint() && !is_countmode() && 
+	    !is_listmode() && !is_quietmode()) 
+	{
 	    if (Idx.num > 1) {
 	        if (is_htmlmode()) {
 		    printf("<li><strong>%s</strong>: ",
@@ -346,8 +517,8 @@ void print_hit_count ()
 		}
 	    }
 	}
-        if (!HitCountOnly && !ListFormat && 
-	    !NoReference && !is_quietmode() && Idx.mode[i] == PHRASE_MODE) 
+        if (is_refprint() && !is_countmode() && !is_listmode() && 
+	    !is_quietmode() && Idx.mode[i] == PHRASE_MODE) 
 	{
 	    print(" { ");
 	}
@@ -355,12 +526,13 @@ void print_hit_count ()
 	    print_word_hit_count(pr->word, pr->hitnum);
 	    pr = pr->next;
 	}
-	if (!HitCountOnly && !ListFormat && 
-	    !NoReference && !is_quietmode() && Idx.mode[i] == PHRASE_MODE) 
+	if (is_refprint() && !is_countmode() && !is_listmode() && 
+	    !is_quietmode() && Idx.mode[i] == PHRASE_MODE) 
 	{
 	    printf(" :: %d } ", Idx.phrasehit[i]);
 	}
-	if (!HitCountOnly && !ListFormat && !NoReference && !is_quietmode()) {
+	if (is_refprint() && !is_countmode() && !is_listmode() && 
+	    !is_quietmode()) {
 	    if (Idx.num > 1 && Query.tab[1]) {
 	        printf(_(" [ TOTAL: %d ]"), Idx.total[i]);
 	    }
@@ -371,7 +543,8 @@ void print_hit_count ()
 
 static void print_word_hit_count (char *key, int hitnum)
 {
-    if (!HitCountOnly && !ListFormat && !NoReference && !is_quietmode()) {
+    if (is_refprint() && !is_countmode() && 
+	!is_listmode() && !is_quietmode()) {
 	char tmp_key[BUFSIZE];
 	strcpy(tmp_key, key);
 	conv_ext(tmp_key);
@@ -448,7 +621,7 @@ void print_range(HLIST hlist)
     if (is_htmlmode())
         print("<p>\n");
     put_current_range(hlist.n);
-    if (!HidePageIndex) {
+    if (is_pageindex()) {
         put_page_index(hlist.n);
     }
     if (is_htmlmode()) {

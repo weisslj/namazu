@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.43 1999-11-19 09:04:24 satoru Exp $
+ * $Id: namazu.c,v 1.44 1999-11-23 09:46:22 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -80,7 +80,7 @@ static int stdio2file(char * fname)
 {
 /*   int fd;
  *   if (-1 == (fd = open(fname, O_CREAT | O_TRUNC | O_WRONLY, 00600))) {
- *	diemsg("stdio2file(cannot open)");
+ *	set_dyingmsg("stdio2file(cannot open)");
  *	return 1;
  *    }
  *    close(STDOUT);
@@ -90,7 +90,7 @@ static int stdio2file(char * fname)
  *    close(fd);
  */
     if (freopen(fname, "wb", stdout) == NULL) {
-	diemsg("stdio2file(cannot open)");
+	set_dyingmsg("stdio2file(cannot open)");
 	return 1;
     }
     return 0;
@@ -172,10 +172,10 @@ static int parse_options(int argc, char **argv)
 	    set_namazurc(optarg);
 	    break;
 	case 'n':
-	    HListMax = atoi(optarg);
+	    set_maxresult(atoi(optarg));
 	    break;
 	case 'w':
-	    HListWhence = atoi(optarg);
+	    set_listwhence(atoi(optarg));
 	    break;
 	case 'd':
 	    set_debugmode(1);
@@ -185,34 +185,34 @@ static int parse_options(int argc, char **argv)
 	    break;
 	case 'l':
 	case 'S':  /* 'S' for backward compatibility */
-	    ListFormat = 1;
+	    set_listmode(1);
 	    break;
 	case 'q':
 	    set_quietmode(1);
 	    break;
 	case 'c':
-	    HitCountOnly = 1;
+	    set_countmode(1);
 	    break;
 	case 'h':
 	    set_htmlmode(1);
 	    break;
 	case 'H':
-	    HidePageIndex = 0;
+	    set_pageindex(1);
 	    break;
 	case 'F':
-	    ForcePrintForm = 1;
+	    set_formprint(1);
 	    break;
 	case 'a':
-	    AllList = 1;
+	    set_allresult(1);
 	    break;
 	case 'R':
-	    NoReplace = 1;
+	    set_urireplace(0);
 	    break;
 	case 'r':
-	    NoReference = 1;
+	    set_refprint(0);
 	    break;
 	case 'U':
-	    DecodeURI = 0;
+	    set_uridecode(1);
 	    break;
 	case 'v':
 	    show_version();
@@ -267,11 +267,11 @@ static int namazu_core(char * query, char *subquery, char *av0)
 	return 1;
     }
 
-    debug_printf(" -n: %d\n", HListMax);
-    debug_printf(" -w: %d\n", HListWhence);
+    debug_printf(" -n: %d\n", get_maxresult());
+    debug_printf(" -w: %d\n", get_listwhence());
     debug_printf("query: [%s]\n", query);
 
-    if (is_htmlmode() && IsCGI) {
+    if (is_htmlmode() && is_cgimode()) {
 	print(MSG_MIME_HEADER);
     }
 
@@ -285,7 +285,9 @@ static int namazu_core(char * query, char *subquery, char *av0)
         return DIE_ERROR;
 
     /* result1:  <h2>Results:</h2>, References:  */
-    if (!HitCountOnly && !ListFormat && !NoReference && !is_quietmode()) {
+    if (is_refprint() && !is_countmode() && 
+	!is_listmode() && !is_quietmode()) 
+    {
         print_result1();
 
         if (Idx.num > 1) {
@@ -298,7 +300,8 @@ static int namazu_core(char * query, char *subquery, char *av0)
     print_hit_count();
 
     /* result2 */
-    if (!HitCountOnly && !ListFormat && !NoReference && !is_quietmode()) {
+    if (is_refprint() && !is_countmode() && 
+	!is_listmode() && !is_quietmode()) {
         if (Idx.num > 1 && is_htmlmode()) {
             print("</ul>\n");
         }
@@ -310,21 +313,21 @@ static int namazu_core(char * query, char *subquery, char *av0)
     }
 
     if (hlist.n > 0) {
-        if (!HitCountOnly && !ListFormat && !is_quietmode()) {
+        if (!is_countmode() && !is_listmode() && !is_quietmode()) {
             print_hitnum(hlist.n);  /* <!-- HIT -->%d<!-- HIT --> */
         }
-	if (HitCountOnly) {
+	if (is_countmode()) {
 	    printf("%d\n", hlist.n);
 	} else {
 	    print_listing(hlist); /* summary listing */
 	}
-        if (!HitCountOnly && !ListFormat && !is_quietmode()) {
+        if (!is_countmode() && !is_listmode() && !is_quietmode()) {
             print_range(hlist);
         }
     } else {
-        if (HitCountOnly) {
+        if (is_countmode()) {
             print("0\n");
-        } else if (!ListFormat) {
+        } else if (!is_listmode()) {
             html_print(_("	<p>No document matching your query.</p>\n"));
 	    if (is_htmlmode()) {
 		print_msgfile(NMZ.tips);
@@ -346,7 +349,7 @@ static int namazu_core(char * query, char *subquery, char *av0)
 
 static void suicide (int signum)
 {
-    diemsg("processing time exceeds a limit: %d", SUICIDE_TIME);
+    set_dyingmsg("processing time exceeds a limit: %d", SUICIDE_TIME);
     diewithmsg();
 }
 
@@ -364,15 +367,15 @@ int main(int argc, char **argv)
 
     Idx.num = 0;
 
-    if (argc == 1) {
+    if (argc == 1) { /* if no argument, assume this session as CGI */
 	if (load_conf(argv[0]))
 	    diewithmsg();
-	IsCGI = 1;	/* if no argument, assume this session as CGI */
+	set_cgimode(1);
 	set_htmlmode(1);
     } else {
-	set_htmlmode(0);	 /* do not display result by HTML format */
-	DecodeURI = 1;		 /* decode a URI */
-	HidePageIndex = 1;	 /* do not diplay page index */
+	set_htmlmode(0);	 /* do not display result in HTML format */
+	set_uridecode(1);	 /* decode a URI */
+	set_pageindex(0);	 /* do not diplay page index */
 
 	i = parse_options(argc, argv); 
 	if (i == DIE_ERROR)
@@ -407,7 +410,7 @@ int main(int argc, char **argv)
 	    add_index(DEFAULT_INDEX);
 	}
     }
-    if (IsCGI) {
+    if (is_cgimode()) {
 	init_cgi(query, subquery);
     }
 
@@ -423,7 +426,7 @@ int main(int argc, char **argv)
         }
     }
 
-    if (IsCGI) {
+    if (is_cgimode()) {
 	/* set a suicide timer */
 	signal(SIGALRM, suicide);
 	alarm(SUICIDE_TIME);

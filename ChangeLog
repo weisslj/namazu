@@ -1,3 +1,36 @@
+1999-11-23  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* {src,nmz}/*.[ch]: Clean up global variables. 
+	                             (to be continued...)
+	
+	* nmz/libnamazu.c: Introduce new functions:
+		get_namazurc, set_sortmethod, get_sortmethod,
+		set_sortorder, get_sortorder, set_debugmode,
+		is_debugmode, set_loggingmode, is_loggingmode,
+		set_dyingmsg, get_dyingmsg
+
+	* src/output.c: Introduce new functions:
+		set_htmlmode, is_htmlmode, set_cgimode,
+		is_cgimode, set_quietmode, is_quietmode, 
+		is_countmode, set_countmode, set_listmode, 
+		is_listmode, set_allresult, is_allresult, 
+		set_pageindex, is_pageindex, set_formpr,
+		is_formprint, set_refprint, is_refprint,
+		set_urireplace, is_urireplace, set_uridecode, 
+		is_uridecode, set_maxresult, get_maxresult, 
+		set_listwhence, get_listwhence, set_template, 
+		get_template 
+	
+	* nmz/mode.[ch]: Abolished. (Integrated to libnamazu.[ch])
+
+	* nmz/util.c (diemsg): Abolished.
+
+	* nmz/search.c (search_sub): Abolish cgimode condition for
+	check_accessfile();
+	(check_accessfile): Add condition for searching from remote.
+
+	* nmz/util.c (diewithmsg): Abolish cgimode and htmlmode condition.
+
 1999-11-23  Ryuji Abe  <raeva@t3.rim.or.jp>
 
 	* man/Makefile.am (EXTRA_DIST): Man pages are now available.
@@ -5,6 +38,7 @@
 	* nmz/util.c (is_little_endian): Removed.
 	(freadx): Filled #ifndef WORDS_BIGENDIAN...#endif. 
 
+>>>>>>> 1.224
 1999-11-22  Ken-ichi Hirose  <kenzo-@tama.or.jp>
 
 	* src/mknmz.pl.in: Add ole option and load_olemodule function.

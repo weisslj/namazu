@@ -2,7 +2,7 @@
  * 
  * wakati.c -
  * 
- * $Id: wakati.c,v 1.6 1999-11-19 09:04:21 satoru Exp $
+ * $Id: wakati.c,v 1.7 1999-11-23 09:46:19 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -205,7 +205,7 @@ int wakati(char *key)
     if (strlen(buf) <= BUFSIZE) {
 	strcpy(key, buf);
     } else {
-	diemsg("wakatigaki processing failed.\n");
+	set_dyingmsg("wakatigaki processing failed.\n");
 	return 1; 
     }
     debug_printf("wakatied string: [%s]\n", key);
@@ -222,7 +222,7 @@ int split_query(char *qs)
     set_regex_trick(qs);
 
     if (strlen(qs) >= BUFSIZE - 1) {
-        diemsg(_(MSG_TOO_LONG_QUERY));
+        set_dyingmsg(_(MSG_TOO_LONG_QUERY));
 	return 1;
     }
 
@@ -243,13 +243,13 @@ int split_query(char *qs)
     }
 
     if (qn == 0) { /* if no item available */
-	diemsg(_("	<h2>Error!</h2>\n<p>Invalid query.</p>\n"));
+	set_dyingmsg(_("	<h2>Error!</h2>\n<p>Invalid query.</p>\n"));
 	return 1;
     }
 
     /* if too much items in query, return with error */
     if (qn > QUERY_TOKEN_MAX) {
-	diemsg(_("	<h2>Error!</h2>\n<p>Too many query tokens.</p>\n"));
+	set_dyingmsg(_("	<h2>Error!</h2>\n<p>Too many query tokens.</p>\n"));
 	return 1;
     }
     /* assign a pointer to each item and set NULL to the last of table */

@@ -258,7 +258,7 @@ void die(char *fmt, ...)
 
     va_start(args, fmt);
 
-    vsnprintf(Dyingmessage, BUFSIZE, fmt, args);
+    set_dyingmsg(fmt, args);
     va_end(args);
 
     diewithmsg();
@@ -266,37 +266,15 @@ void die(char *fmt, ...)
     exit(2);
 }
 
-void diemsg(char *fmt, ...)
-{
-    va_list args;
-
-    va_start(args, fmt);
-
-    vsnprintf(Dyingmessage, BUFSIZE, fmt, args);
-    va_end(args);
-}
-
 void diewithmsg()
 {
-    FILE *output;
-
     fflush(stderr);
 
-    if (IsCGI) {
-        output = stdout;
-    } else {
-        output = stderr;
-    }
+    fprintf(stderr, "%s: ", PACKAGE);
 
-    if (is_htmlmode()) {
-	print(MSG_MIME_HEADER);
-    }
+    fprintf(stderr, "%s", get_dyingmsg());
 
-    fprintf(output, "%s: ", PACKAGE);
-
-    fprintf(output, "%s", Dyingmessage);
-
-    fprintf(output, "\n");
+    fprintf(stderr, "\n");
 
     exit(2);
 }
@@ -484,11 +462,11 @@ char *readfile(char *fname)
     }
     buf = (char *) malloc(fstatus.st_size + 1);
     if (buf == NULL) {
-	 diemsg("readfile(malloc)");
+	 set_dyingmsg("readfile(malloc)");
 	 return NULL;
     }
     if (fread(buf, sizeof(char), fstatus.st_size, fp) == 0) {
-        diemsg("readfile(fread)");
+        set_dyingmsg("readfile(fread)");
 	return NULL;
     }
     *(buf + fstatus.st_size) = '\0';

@@ -2,7 +2,7 @@
  * 
  * libnamazu.c - Namazu library api
  *
- * $Id: libnamazu.c,v 1.6 1999-11-19 09:04:20 satoru Exp $
+ * $Id: libnamazu.c,v 1.7 1999-11-23 09:46:18 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
@@ -35,6 +35,7 @@
 #include <unistd.h>
 #include <sys/stat.h>
 #include <signal.h>
+#include <stdarg.h>
 
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
@@ -59,6 +60,18 @@
 #include "regex.h"
 #include "var.h"
 #include "magic.h"
+
+static int  sortmethod  = SORT_BY_SCORE;
+static int  sortorder   = DESCENDING;
+static int  debugmode   = 0;
+static int  loggingmode = 1;   /* do logging with NMZ.slog */
+static char dyingmsg[BUFSIZE] = "Initialized";
+
+/*
+ *
+ * Public functions
+ *
+ */
 
 void free_idxnames(void)
 {
@@ -171,7 +184,7 @@ int expand_idxname_aliases(void)
 		free(Idx.names[i]);
 		Idx.names[i] = (char *) malloc(strlen(list->real) + 1);
 		if (Idx.names[i] == NULL) {
-		    diemsg("expand_idxname_aliases: malloc()");
+		    set_dyingmsg("expand_idxname_aliases: malloc()");
 		    return DIE_ERROR;
 		}
 		strcpy(Idx.names[i], list->real);
@@ -192,7 +205,7 @@ int complete_idxnames(void)
 	    tmp = (char *)malloc(strlen(DEFAULT_INDEX) 
 				  + 1 + strlen(Idx.names[i]) + 1);
 	    if (tmp == NULL) {
-		diemsg("complete_idxnames: malloc()");
+		set_dyingmsg("complete_idxnames: malloc()");
 		return DIE_ERROR;
 	    }
 	    strcpy(tmp, DEFAULT_INDEX);
@@ -210,8 +223,60 @@ char *set_namazurc(char *arg)
     return strcpy(NAMAZURC, arg);
 }
 
-char *set_template(char *arg)
+void set_sortmethod(int method)
 {
-    return strcpy(Template, arg);
+    sortmethod = method;
 }
+
+int get_sortmethod(void)
+{
+    return sortmethod;
+}
+
+void set_sortorder(int order)
+{
+    sortorder = order;
+}
+
+int get_sortorder(void)
+{
+    return sortorder;
+}
+
+void set_debugmode(int mode)
+{
+    debugmode = mode;
+}
+
+int is_debugmode(void)
+{
+    return debugmode;
+}
+
+void set_loggingmode(int mode)
+{
+    loggingmode = mode;
+}
+
+int is_loggingmode(void)
+{
+    return loggingmode;
+}
+
+
+void set_dyingmsg(char *fmt, ...)
+{
+    va_list args;
+
+    va_start(args, fmt);
+
+    vsnprintf(dyingmsg, BUFSIZE, fmt, args);
+    va_end(args);
+}
+
+char *get_dyingmsg(void)
+{
+    return dyingmsg;
+}
+
 

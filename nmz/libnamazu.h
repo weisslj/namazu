@@ -2,7 +2,7 @@
  * 
  * libnamazu.h - Namazu library api
  *
- * $Id: libnamazu.h,v 1.10 1999-11-19 09:04:20 satoru Exp $
+ * $Id: libnamazu.h,v 1.11 1999-11-23 09:46:18 satoru Exp $
  * 
  */
 
@@ -128,6 +128,15 @@ extern void uniq_idxnames(void);
 extern int expand_idxname_aliases(void);
 extern int complete_idxnames(void);
 extern char *set_namazurc(char *arg);
-extern char *set_template(char *arg);
+extern void set_sortmethod ( int );
+extern int get_sortmethod ( void );
+extern void set_sortorder ( int );
+extern int get_sortorder ( void );
+extern void set_debugmode ( int );
+extern int is_debugmode ( void );
+extern void set_loggingmode ( int );
+extern int is_loggingmode ( void );
+extern void set_dyingmsg ( char *, ... );
+extern char *get_dyingmsg ( void );
 
 #endif /* _LIBNAMAZU_H */

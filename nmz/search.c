@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.9 1999-11-19 09:04:21 satoru Exp $
+ * $Id: search.c,v 1.10 1999-11-23 09:46:18 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -101,7 +101,7 @@ static PHRASERES *push_phraseres(PHRASERES *pr, int hitnum, char *str)
 	prptr = prptr->next;
     }
     if ((prptr = (PHRASERES *)malloc(sizeof(PHRASERES))) == NULL) {
-	diemsg("push_phraseres: malloc failed on prptr");
+	set_dyingmsg("push_phraseres: malloc failed on prptr");
 	return NULL;
     }
     if (prevprptr != NULL)
@@ -109,7 +109,7 @@ static PHRASERES *push_phraseres(PHRASERES *pr, int hitnum, char *str)
     prptr->hitnum = hitnum;
     prptr->next = NULL;
     if ((prptr->word = (char *)malloc(strlen(str) +1)) == NULL) {
-	diemsg("push_phraseres: malloc failed on str");
+	set_dyingmsg("push_phraseres: malloc failed on str");
 	return NULL;
     }
     strcpy(prptr->word, str);
@@ -343,7 +343,7 @@ static HLIST cmp_phrase_hash(int hash_key, HLIST val,
 
     list = (int *)malloc(n * sizeof(int));
     if (list == NULL) {
-	 diemsg("cmp_phrase_hash_malloc");
+	 set_dyingmsg("cmp_phrase_hash_malloc");
 	 val.n = -1;
 	 val.d = NULL;
 	 return val;
@@ -636,6 +636,10 @@ static int check_accessfile(void)
     rhost = safe_getenv("REMOTE_HOST");
     raddr = safe_getenv("REMOTE_ADDR");
 
+    if (*rhost == '\0' && *raddr == '\0') { /* not from remote */
+	return perm;
+    }
+
     fp = fopen(NMZ.access, "rb");
     if (fp == NULL) {
 	return perm;
@@ -717,7 +721,7 @@ static HLIST search_sub(HLIST hlist, char *query, char *query_orig, int n)
 {
     CurrentIndexNumber = n;
 
-    if (IsCGI && check_accessfile() == DENY) {
+    if (check_accessfile() == DENY) {
 	/* if access denied */
 	hlist.n = ERR_NO_PERMISSION;
 	return hlist;
@@ -740,7 +744,7 @@ static HLIST search_sub(HLIST hlist, char *query, char *query_orig, int n)
     init_parser();
     hlist = expr();
     if (hlist.n == DIE_HLIST) {
-	diemsg("search error");
+	set_dyingmsg("search error");
         return hlist;
     }
 
@@ -750,7 +754,7 @@ static HLIST search_sub(HLIST hlist, char *query, char *query_orig, int n)
     Idx.total[CurrentIndexNumber] = hlist.n;
     close_index_files();
 
-    if (Logging) {
+    if (is_loggingmode()) {
         do_logging(query_orig, hlist.n);
     }
     return hlist;

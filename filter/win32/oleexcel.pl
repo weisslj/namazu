@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: oleexcel.pl,v 1.7 2001-01-12 05:15:31 baba Exp $
+# $Id: oleexcel.pl,v 1.8 2001-01-16 08:39:08 baba Exp $
 # Copyright (C) 1999 Jun Kurabe ,
 #               1999 Ken-ichi Hirose All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -173,7 +173,11 @@ sub ReadExcel ($$$) {
 
     my $wb = $excel->Workbooks->Open({
 	'FileName' => $cfile,
-	'ReadOnly' => 1
+	'UpdateLinks' => 0,
+	'ReadOnly' => 1,
+	'Password' => 'dummy password',
+	'WriteResPassword' => 'dummy password',
+	'IgnoreReadOnlyRecommended' => 1,
 	});
     die "Cannot open File $cfile" unless (defined $wb);
     # print $cfile,"\n";

@@ -20,7 +20,7 @@ Namazu.xs
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 # 02111-1307, USA
 
-$Id: Namazu.xs,v 1.4 1999-11-10 08:04:51 knok Exp $
+$Id: Namazu.xs,v 1.5 1999-11-10 08:48:41 knok Exp $
 
 */
 
@@ -51,18 +51,17 @@ MODULE = Search::Namazu		PACKAGE = Search::Namazu
 
 PROTOTYPES: DISABLE
 
-AV*
+void
 call_search_main(query)
 	SV *query
-
-	PREINIT:
+PPCODE:
+{
 		char *qstr;
 		int i;
 		AV *retar;
 		HLIST hlist;
 		char result[BUFSIZE];
 
-	CODE:
 		uniq_idxnames();
 		expand_idxname_aliases();
 		complete_idxnames();
@@ -84,10 +83,8 @@ call_search_main(query)
 			av_push(retar, ohlist);
 		}
 		free_hlist(hlist);
-		RETVAL = retar;
-
-	OUTPUT:
-		RETVAL
+		PUSHs(sv_2mortal(newRV((SV*) retar)));
+}
 
 int
 nmz_addindex(index)

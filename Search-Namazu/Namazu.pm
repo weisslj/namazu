@@ -19,7 +19,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 # 02111-1307, USA
 #
-# $Id: Namazu.pm,v 1.4 1999-11-10 08:04:51 knok Exp $
+# $Id: Namazu.pm,v 1.5 1999-11-10 08:48:41 knok Exp $
 #
 
 package Search::Namazu;
@@ -186,7 +186,6 @@ sub set {
     $self->{uri} = $uri;
     $self->{date} = $date;
     $self->{rank} = $rank;
-    print "$score $uri $date $rank\n";
 }
 
 sub score {

@@ -94,6 +94,7 @@ void xfree _((void*));
 #include "util.h"
 #define xfree free
 
+#ifndef NO_ALLOCA
 /* Make alloca work the best possible way.  */
 #ifdef __GNUC__
 # ifndef atarist
@@ -119,6 +120,7 @@ char *alloca ();
 #  endif
 # endif
 #endif
+#endif /* NO_ALLOCA */
 
 #ifdef HAVE_STRING_H
 # include <string.h>
@@ -126,11 +128,15 @@ char *alloca ();
 # include <strings.h>
 #endif
 
+#ifndef NO_ALLOCA
 #ifdef C_ALLOCA
 #define FREE_VARIABLES() alloca(0)
 #else
 #define FREE_VARIABLES()
 #endif
+#else /* NO_ALLOCA */
+#define FREE_VARIABLES()
+#endif /* NO_ALLOCA */
 
 #define FREE_AND_RETURN_VOID(stackb)   do {				\
   FREE_VARIABLES();							\
@@ -160,7 +166,16 @@ char *alloca ();
   stacke = stackb + 2 * xlen;						\
 } while (0)
 
-#define RE_TALLOC(n,t)  ((t*)alloca((n)*sizeof(t)))
+#define MALLOC_STACK(type, xlen) do {					\
+  type *stackx;								\
+  stackx = (type*)nmz_xmalloc((unsigned int)xlen * sizeof(type));	\
+  memset(stackx, 0, (unsigned int)xlen * sizeof (type));		\
+  stackb = stackx;							\
+  stackp = stackb;							\
+  stacke = stackb + (unsigned int)xlen;					\
+} while (0)
+
+#define RE_TALLOC(n,t)  ((t*)nmz_xmalloc((n)*sizeof(t)))
 #define TMALLOC(n,t)    ((t*)nmz_xmalloc((n)*sizeof(t)))
 #define TREALLOC(s,n,t) (s=((t*)nmz_xrealloc(s,(n)*sizeof(t))))
 
@@ -3587,10 +3602,10 @@ nmz_re_match(bufp, string_arg, size, pos, regs)
      ``dummy''; if a failure happens and the failure point is a dummy, it
      gets discarded and the next next one is tried.  */
 
-  unsigned char **stacka;
-  unsigned char **stackb;
-  unsigned char **stackp;
-  unsigned char **stacke;
+  unsigned char *stacka[1];
+  unsigned char **stackb = NULL;
+  unsigned char **stackp = NULL;
+  unsigned char **stacke = NULL;
 
   /* Information on the contents of registers. These are pointers into
      the input strings; they record just what was matched (on this
@@ -3636,10 +3651,7 @@ nmz_re_match(bufp, string_arg, size, pos, regs)
   }
 
   /* Initialize the stack. */
-  stacka = RE_TALLOC(MAX_NUM_FAILURE_ITEMS * NFAILURES, unsigned char*);
-  stackb = stacka;
-  stackp = stackb;
-  stacke = &stackb[MAX_NUM_FAILURE_ITEMS * NFAILURES];
+  MALLOC_STACK(unsigned char *, MAX_NUM_FAILURE_ITEMS * NFAILURES);
 
 #ifdef DEBUG_REGEX
   fprintf(stderr, "Entering nmz_re_match(%s)\n", string_arg);

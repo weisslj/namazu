@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.92 2001-12-21 08:44:50 knok Exp $
+ * $Id: output.c,v 1.93 2002-03-13 08:38:27 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -87,6 +87,7 @@ char contenttype[BUFSIZE] = "text/html";
  */
 
 static void emprint( char *s, int entity_encode );
+static void unhtml_buffer( char *ostr );
 static void fputs_without_html_tag ( const char *str, FILE *fp );
 static char *load_nmz_result(const char *basedir);
 static void print_hitnum_each ( struct nmz_hitnumlist *hn );
@@ -146,12 +147,13 @@ emprint(char *s, int entity_encode)
 /*
  * Output string without HTML elements
  */
-static void 
-fputs_without_html_tag(const char *str, FILE *fp)
-{
+static void
+unhtml_buffer(char *ostr) {
     int f, i;
-    char buf[BUFSIZE];
-
+    char buf[BUFSIZE], *str;
+    int len;
+    len = strlen(ostr) + 1;
+    str = ostr;
     for (f = 0, i = 0; *str && i < BUFSIZE; str++) {
 
 	/* Iso-2022-jp handling */
@@ -211,9 +213,16 @@ fputs_without_html_tag(const char *str, FILE *fp)
 	}
     }
     buf[i] = '\0';
+    strncpy(ostr, buf, len);
+}
+static void 
+fputs_without_html_tag(const char *str, FILE *fp)
+{
+    char buf[BUFSIZE];
+    strncpy(buf, str, BUFSIZE);
+    unhtml_buffer(buf);
     fputs(buf, fp);
 }
-
 
 static void 
 print_hitnum_each (struct nmz_hitnumlist *hn)
@@ -410,13 +419,25 @@ print_hlist(NmzResult hlist)
 	    }
 	}
 
-	compose_result(hlist.data[i], counter, template,  result);
+	if (is_htmlmode() || is_listmode()) {
+	    compose_result(hlist.data[i], counter, template,  result);
+	} else {
+	    char tmpbuf[BUFSIZE];
+	    strncpy(tmpbuf, template, BUFSIZE -1);
+	    tmpbuf[BUFSIZE - 1] = 0;
+	    unhtml_buffer(tmpbuf);
+	    compose_result(hlist.data[i], counter, tmpbuf,  result);	    
+	}
 	{
 	    char *converted = nmz_codeconv_external(result);
 	    if (converted == NULL) {
 		die(nmz_get_dyingmsg());
 	    }
-	    html_print(converted);
+	    if (is_htmlmode() || is_listmode()) {
+		html_print(converted);
+	    } else {
+		puts(converted+1); /* remove '\t' in the head of buffer */
+	    }
 	    free(converted);
 	    printf("\n");
 	}

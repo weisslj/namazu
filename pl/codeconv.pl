@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: codeconv.pl,v 1.21 2004-07-28 23:45:34 opengl2772 Exp $
+# $Id: codeconv.pl,v 1.22 2004-09-07 13:34:53 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -79,6 +79,11 @@ sub stoe ($) {
 	$c1 = $c1 * 2 - ($c1 >= 0xe0 ? 0xe1 : 0x61);
 	$c2 += 0x60 + ($c2 < 0x7f);
     }
+
+    # Outside of the range of an EUC-JP code.
+    return chr(0xa2) . chr(0xae)
+        if ($c1 < 0x80 || $c1 >= 0x100 || $c2 < 0x80 || $c2 >= 0x100);
+
     return chr($c1) . chr($c2);
 }
 

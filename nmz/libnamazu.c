@@ -2,7 +2,7 @@
  * 
  * libnamazu.c - Namazu library api
  *
- * $Id: libnamazu.c,v 1.12 1999-12-04 09:28:55 satoru Exp $
+ * $Id: libnamazu.c,v 1.13 1999-12-06 09:15:15 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
@@ -151,7 +151,7 @@ int expand_idxname_aliases(void)
 	while (list) {
 	    if (strcmp(Idx.names[i], list->alias) == 0) {
 		free(Idx.names[i]);
-		Idx.names[i] = (char *) malloc(strlen(list->real) + 1);
+		Idx.names[i] = malloc(strlen(list->real) + 1);
 		if (Idx.names[i] == NULL) {
 		    set_dyingmsg("expand_idxname_aliases: malloc()");
 		    return FAILURE;
@@ -171,7 +171,7 @@ int complete_idxnames(void)
     for (i = 0; i < Idx.num; i++) {
  	if (*Idx.names[i] == '+' && isalnum(*(Idx.names[i] + 1))) {
 	    char *tmp;
-	    tmp = (char *)malloc(strlen(DEFAULT_INDEX) 
+	    tmp = malloc(strlen(DEFAULT_INDEX) 
 				  + 1 + strlen(Idx.names[i]) + 1);
 	    if (tmp == NULL) {
 		set_dyingmsg("complete_idxnames: malloc()");

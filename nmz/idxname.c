@@ -2,7 +2,7 @@
  * 
  * idxname.c - Idx handling routines.
  *
- * $Id: idxname.c,v 1.5 1999-12-06 08:51:35 satoru Exp $
+ * $Id: idxname.c,v 1.6 1999-12-06 09:15:15 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
@@ -40,7 +40,7 @@ enum nmz_stat add_index(char *idxname)
     int newidxnum = Idx.num;
     if (newidxnum >= INDEX_MAX)
 	return FAILURE;
-    Idx.names[newidxnum] = (char *) malloc(strlen(idxname) + 1);
+    Idx.names[newidxnum] = malloc(strlen(idxname) + 1);
     if (Idx.names[newidxnum] == NULL)
 	return FAILURE;
     strcpy(Idx.names[newidxnum], idxname);

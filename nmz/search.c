@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.19 1999-12-04 09:28:55 satoru Exp $
+ * $Id: search.c,v 1.20 1999-12-06 09:15:15 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -111,7 +111,7 @@ static struct nmz_hitnum *push_hitnum(struct nmz_hitnum *hn,
     hnptr->hitnum = hitnum;
     hnptr->stat = stat;
     hnptr->next = NULL;
-    if ((hnptr->word = (char *)malloc(strlen(str) +1)) == NULL) {
+    if ((hnptr->word = malloc(strlen(str) +1)) == NULL) {
 	set_dyingmsg("push_hitnum: malloc failed on str");
 	return NULL;
     }
@@ -345,7 +345,7 @@ static NmzResult cmp_phrase_hash(int hash_key, NmzResult val,
     fseek(phrase, ptr, 0);
     get_unpackw(phrase, &n);
 
-    list = (int *)malloc(n * sizeof(int));
+    list = malloc(n * sizeof(int));
     if (list == NULL) {
 	 set_dyingmsg("cmp_phrase_hash_malloc");
 	 val.stat = ERR_FATAL;

@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.32 1999-12-06 08:51:36 satoru Exp $
+ * $Id: cgi.c,v 1.33 1999-12-06 09:15:18 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -206,7 +206,7 @@ static char *get_query_string(void)
                 printf(_("Too long QUERY_STRING"));
                 exit(EXIT_FAILURE);
             }
-            query_string = (char *)malloc(contlen * sizeof(char) + 1);
+            query_string = malloc(contlen * sizeof(char) + 1);
 	    if (query_string == NULL) {
                 printf(MSG_MIME_HEADER);
 		printf("query_string(get_cgivar)");

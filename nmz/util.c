@@ -463,7 +463,7 @@ char *readfile(char *fname)
         warnf("can't open %s\n", fname);
         return 0;
     }
-    buf = (char *) malloc(fstatus.st_size + 1);
+    buf = malloc(fstatus.st_size + 1);
     if (buf == NULL) {
 	 set_dyingmsg("readfile(malloc)");
 	 return NULL;

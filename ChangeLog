@@ -1,5 +1,8 @@
 1999-12-06  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* nmz/hlist.c, nmz/idxname.c, nmz/libnamazu.c, nmz/search.c,
+	nmz/util.c, src/cgi.c: Remove unnecessary casts for malloc().
+
 	* src/cgi.c (init_cgi): Modify usage of add_index().
 	(process_cgi_var_idxname): Modify usage of add_index().
 

@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.13 1999-12-04 09:28:54 satoru Exp $
+ * $Id: hlist.c,v 1.14 1999-12-06 09:15:15 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -93,7 +93,7 @@ static int field_sort(NmzResult hlist)
 	    numeric = 0;
 	}
 
-	hlist.data[i].field = (char *)malloc(leng + 1);
+	hlist.data[i].field = malloc(leng + 1);
 	if (hlist.data[i].field == NULL) {
 	    set_dyingmsg("int_field_sort");
 	    return FAILURE;
@@ -487,7 +487,7 @@ NmzResult get_hlist(int index)
         hlist.stat = ERR_TOO_MUCH_HIT;
     } else {
 	int sum = 0;
-	buf = (int *) malloc(n * sizeof(int)); /* with pelnty margin */
+	buf = malloc(n * sizeof(int)); /* with pelnty margin */
 	if (buf == NULL) {
 	    set_dyingmsg("get_hlist");
 	    hlist.data = NULL;

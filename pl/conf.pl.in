@@ -263,6 +263,7 @@ $WAKATI  = $@OPT_WAKATI_DEFAULT@;
   'text/hnf' => ['hnf.pl'],
   'text/html' => ['html.pl'],	# Don't remove. Some filters use it internally.
   'text/html; x-type=mhonarc' => ['mhonarc.pl'],
+  'text/html; x-type=pipermail' => ['pipermail.pl'],
   'text/plain; x-type=rfc' => ['rfc.pl'],
   'text/x-hdml' => ['hdml.pl'],
   'text/x-roff' => ['man.pl'],

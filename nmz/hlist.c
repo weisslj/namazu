@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.47 2000-05-08 23:38:42 masao Exp $
+ * $Id: hlist.c,v 1.48 2000-05-27 08:09:43 furukawa Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -308,8 +308,8 @@ nmz_notmerge(NmzResult left, NmzResult right, int *ignore)
 	return left;
     }
     if (left.stat != SUCCESS || left.num <= 0) {
-	nmz_free_hlist(left);
-	return right;
+	nmz_free_hlist(right);
+	return left;
     }
 
     for (v = 0, i = 0, j = 0; i < left.num; i++) {

@@ -16,19 +16,12 @@ template_DATA = \
 	NMZ.result.normal.ja \
 	NMZ.result.short.ja \
 	NMZ.tips \
-	NMZ.tips.ja
+	NMZ.tips.ja \
+	NMZ.body.es \
+	NMZ.head.es \
+	NMZ.result.short.es \
+	NMZ.foot.es \
+	NMZ.result.normal.es \
+	NMZ.tips.es
 
-# Slightly different from template_DATA because of *.in files.
-EXTRA_DIST = \
-	NMZ.body \
-	NMZ.body.ja \
-	NMZ.foot.in \
-	NMZ.foot.ja.in \
-	NMZ.head.in \
-	NMZ.head.ja.in \
-	NMZ.result.normal \
-	NMZ.result.short \
-	NMZ.result.normal.ja \
-	NMZ.result.short.ja \
-	NMZ.tips \
-	NMZ.tips.ja
+EXTRA_DIST = $(template_DATA)

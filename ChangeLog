@@ -1,3 +1,40 @@
+2000-04-17  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* configure.in (ALL_LINGUAS): Add "es". (Spanish)
+	Thanks to Jose Juan Zapater <compi@arrakis.es> for translation.
+
+	* template/NMZ.result.normal.es: New file.
+
+	* template/NMZ.result.short.es: Likewise
+
+	* template/NMZ.head.es: Likewise
+
+	* template/NMZ.foot.es: Likewise
+
+	* template/NMZ.body.es: Likewise
+
+	* template/NMZ.tips.es: Likewise
+
+	* configure.in (AC_OUTPUT): Remove template/NMZ.head,
+	template/NMZ.foot, template/NMZ.head.ja, template/NMZ.foot.ja
+
+	* template/Makefile.am (template_DATA): Add NMZ.body.es,
+	NMZ.head.es, NMZ.result.short.es, NMZ.foot.es,
+	NMZ.result.normal.es, NMZ.tips.es.
+	(EXTRA_DIST): = $(template_DATA)
+
+	* template/NMZ.foot.in: Removed.
+
+	* template/NMZ.foot.ja.in: Removed.
+
+	* template/NMZ.head.in: Removed.
+
+	* template/NMZ.head.ja.in: Removed.
+
+2000-04-14  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.0.5.
+
 2000-04-10  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* Namazu: Version 2.0.4 released.
@@ -5540,4 +5577,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.681 2000-04-10 06:51:56 satoru Exp $
+$Id: ChangeLog,v 1.682 2000-04-17 01:23:33 satoru Exp $

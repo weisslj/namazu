@@ -3,9 +3,9 @@
 <html>
 <head>
 <!-- LINK-REV-MADE -->
-<link rev=made href="mailto:@OPT_ADMIN_EMAIL@">
+<link rev=made href="mailto:foobar@namazu.org">
 <!-- LINK-REV-MADE -->
-<title>Namazu a full text retrieval search system</title>
+<title>Esto es un completo sistema de búsqueda</title>
 <style type="text/css"><!--
   strong.keyword { color: Red; }
   p.example      { text-indent: 1em; 
@@ -22,26 +22,26 @@
 		   font-weight: bold; }
 --></style>
 </head>
-<body lang="en">
-<h1>Namazu a full text retrieval search system</h1>
+<body lang="es">
+<h1>Esto es un completo sistema de búsqueda</h1>
 <p>
-This index contains <!-- FILE --> 0 <!-- FILE --> documents and
-<!-- KEY --> 0 <!-- KEY --> keywords. 
+Este índice contiene <!-- FILE --> 0 <!-- FILE --> documentos y
+<!-- KEY --> 0 <!-- KEY --> palabras clave. 
 </p>
 <p>
-<strong>Last modified: <!-- DATE --> date <!-- DATE --></strong>
+<strong>Ultima modificación: <!-- DATE --> date <!-- DATE --></strong>
 </p>
 <hr>
 <form method="get" action="{cgi}">
 <p>
-<strong>Search String:</strong> 
+<strong>Cadena de Búsqueda:</strong> 
 <input type="text" name="query" size="40">
-<input type="submit" name="submit" value="Search!">
+<input type="submit" name="submit" value="Buscar!">
 <!-- <input type="hidden" name="idxname" value="foobar"> -->
-<a href="{cgi}">[How to search]</a>
+<a href="{cgi}">[Cómo buscar]</a>
 </p>
 <p>
-<strong>Display:</strong>
+<strong>Visualizar:</strong>
 <select name="max">
 <option value="10">10
 <option selected value="20">20
@@ -49,24 +49,24 @@ This index contains <!-- FILE --> 0 <!-- FILE --> documents and
 <option value="50">50
 <option value="100">100
 </select>
-<strong>Description:</strong>
+<strong>Descripción:</strong>
 <select name="result">
 <option selected value="normal">normal
-<option value="short">short
+<option value="short">corta
 </select>
-<strong>Sort:</strong>
+<strong>Orden:</strong>
 <select name="sort">
-<option selected value="score">by score
-<option value="date:late">by date in late order
-<option value="date:early">by date in early order
-<option value="field:subject:ascending">by title in ascending order
-<option value="field:subject:descending">by title in descending order
-<option value="field:from:ascending">by author in ascending order
-<option value="field:from:descending">by author in descending order
-<option value="field:size:ascending">by size in descending order
-<option value="field:size:descending">by size in descending order
-<option value="field:uri:ascending">by URI in descending order
-<option value="field:uri:descending">by URI in descending order
+<option selected value="score">por puntuación
+<option value="date:late">por fecha ascendente
+<option value="date:early">por fecha descendente
+<option value="field:subject:ascending">por título ascendente
+<option value="field:subject:descending">por título descendente
+<option value="field:from:ascending">por autor ascendente
+<option value="field:from:descending">por autor descendente
+<option value="field:size:ascending">por tamaño ascendente
+<option value="field:size:descending">por tamaño descendente
+<option value="field:uri:ascending">por URI ascendente
+<option value="field:uri:descending">por URI descendente
 </select>
 </p>
 <!--

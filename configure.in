@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.126 2000-04-14 00:11:01 satoru Exp $
+dnl $Id: configure.in,v 1.127 2000-04-17 01:23:33 satoru Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -88,7 +88,7 @@ fi
 dnl *
 dnl * I18N
 dnl *
-ALL_LINGUAS="ja ja_JP.SJIS"
+ALL_LINGUAS="ja ja_JP.SJIS es"
 AM_GNU_GETTEXT
 
 dnl Checks for libraries.
@@ -405,10 +405,6 @@ AC_OUTPUT([Makefile
 	   scripts/vfnmz
 	   src/Makefile
 	   template/Makefile
-	   template/NMZ.head
-	   template/NMZ.foot
-	   template/NMZ.head.ja
-	   template/NMZ.foot.ja
 	   tests/Makefile
 	   tests/data/Makefile
 	   tests/data/ja/Makefile

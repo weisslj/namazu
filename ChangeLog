@@ -1,3 +1,7 @@
+2000-01-14  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* pl/find.pl : More gettextize.
+
 2000-01-14  Ryuji Abe  <raeva@t3.rim.or.jp>
 
 	* lib/Makefile.am (EXTRA_DIST): Added forgotten easy-vsnprintf.c.

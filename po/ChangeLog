@@ -1,3 +1,7 @@
+2000-01-14  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* ja.po: Added new translations.
+
 2000-01-13  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* POTFILES.in: Added pl/{util,wakati,find}.pl.

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: find.pl,v 1.4 2000-01-07 01:29:52 knok Exp $
+# $Id: find.pl,v 1.5 2000-01-14 05:19:36 knok Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -39,7 +39,7 @@ sub find {
 
     for $topdir (@target) {
 	(($topdev,$topino,$topmode,$topnlink) = stat($topdir))
-	  || (warn("Can't stat $topdir: $!\n"), next);
+	  || (warn(_("Can't stat ")."$topdir: $!\n"), next);
 
 	if (-d $topdir) { 
 	    if (chdir($topdir)) {
@@ -50,7 +50,7 @@ sub find {
 		finddir($fixtopdir,$topnlink,$rarray);
 	    }
 	    else {
-		warn _("Can't cd to $topdir: ")."$!\n";
+		warn _("Can't cd to ") ."$topdir: $!\n";
 	    }
 	} else {
 	    unless (($dir,$_) = $topdir =~ m#^(.*/)(.*)$#) {
@@ -84,7 +84,7 @@ sub finddir {
     ## Added by G.Kunito <kunito@hal.t.u-tokyo.ac.jp>
     if( $var::Opt{'HtaccessExclude'} && 
        ( -f ".htaccess" ) && html::parse_htaccess() ){
-	printf ("%s is exclude because of .htaccess\n", cwd());
+	printf ("%s "._("is exclude because of .htaccess\n"), cwd());
 	return(0);
     }
     ##
@@ -92,7 +92,7 @@ sub finddir {
 
     # Get the list of files in the current directory.
 
-    opendir(DIR,'.') || (warn "Can't open $dir: $!\n", return);
+    opendir(DIR,'.') || (warn _("Can't open ")."$dir: $!\n", return);
     my @filenames = grep(!/^\.\.?$/, readdir(DIR));
     closedir(DIR);
 

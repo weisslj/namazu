@@ -1,12 +1,30 @@
-2004-03-09  Yukio USUDA <usu@namazu.org>
 
-	* filter/ooo.pl: Don't use original filename.
+2004-03-10  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * pl/codeconv.pl: A full-size space is changed into a 
+        half-size space.
+
+        * filter/html.pl, nmz/field.h, scripts/mknmz.in: It corrected 
+        so that a '.' could be used for the field.
+        and, META tag AUTHOR is reflected in an $fields->{'author'}.
+        (namazu-devel-ja#03708)
+
+        * scripts/mknmz.in: It corresponds to the file which starts 
+        numerically. (namazu-win32-users-ja#02005)
+
+        * scripts/mknmz.in: Search of a filename.
+
+        * pl/codeconv.pl: Convert X0208 alphabet to ASCII.
 
 2004-03-09  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * filter/win32/ole*.pl: It corresponded to Office 2003.
 
         * doc/{ja,en}/manual.html (filter): Update messages.
+
+2004-03-09  Yukio USUDA <usu@namazu.org>
+
+	* filter/ooo.pl: Don't use original filename.
 
 2004-03-08  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
@@ -8527,4 +8545,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1111 2004-03-09 12:53:19 usu Exp $
+$Id: ChangeLog,v 1.1112 2004-03-10 13:14:36 opengl2772 Exp $

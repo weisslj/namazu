@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: codeconv.pl,v 1.18 2004-03-09 20:43:03 opengl2772 Exp $
+# $Id: codeconv.pl,v 1.19 2004-03-10 13:14:37 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -152,20 +152,32 @@ sub toeuc ($) {
 
 sub eucjp_zen2han_ascii ($) {
     my ($str) = @_;
-    if (util::islang("ja")) {         
-	$str =~ s/([\xa1-\xfe][\xa1-\xfe]|\x8e[\xa1-\xdf]|\x8f[\xa1-\xfe][\xa1-\xfe])/
-	my $tmp = $1;
-	$tmp =~ m!\xa3([\xb0-\xb9\xc1-\xda\xe1-\xfa])! ? $1 & "\x7F" : $tmp/gse;    
-    }
-    $str;
-}
-
-sub eucjp_zen_spc2han_spc ($) {
-    my ($str) = @_;
-    if (util::islang("ja")) {         
-	$str =~ s/([\xa1-\xfe][\xa1-\xfe]|\x8e[\xa1-\xdf]|\x8f[\xa1-\xfe][\xa1-\xfe])/
-	my $tmp = $1;
-	$tmp =~ m!\xa1\xa1! ? " " : $tmp/gse;    
+    if (util::islang("ja")) {
+        $str =~ s/([\xa1-\xfe][\xa1-\xfe]|\x8e[\xa1-\xdf]|\x8f[\xa1-\xfe][\xa1-\xfe])/
+        my $tmp = $1;
+        if ($tmp =~ m!\xa3([\xb0-\xb9\xc1-\xda\xe1-\xfa])!) {
+            $tmp = $1 & "\x7F";
+        } elsif ($tmp =~ m!\xa1([\xa0-\xfe])!) {
+            my $kigou = (
+                # X0208 kigou conversion table
+                # 0xa1a0 - 0xa1fe
+                "\x00","\x20","\x00","\x00","\x2C","\x2E","\x00","\x3A",
+                "\x3B","\x3F","\x21","\x00","\x00","\x27","\x60","\x00",
+                "\x5E","\x00","\x5F","\x00","\x00","\x00","\x00","\x00",
+                "\x00","\x00","\x00","\x00","\x00","\x2D","\x00","\x2F",
+                "\x5C","\x00","\x00","\x7C","\x00","\x00","\x60","\x27",
+                "\x22","\x22","\x28","\x29","\x00","\x00","\x5B","\x5D",
+                "\x7B","\x7D","\x3C","\x3E","\x00","\x00","\x00","\x00",
+                "\x00","\x00","\x00","\x00","\x2B","\x2D","\x00","\x00",
+                "\x00","\x3D","\x00","\x3C","\x3E","\x00","\x00","\x00",
+                "\x00","\x00","\x00","\x00","\x00","\x00","\x00","\x00",
+                "\x24","\x00","\x00","\x25","\x23","\x26","\x2A","\x40",
+                "\x00","\x00","\x00","\x00","\x00","\x00","\x00","\x00"
+            )[unpack("C", $1 & "\x5F")];
+            $tmp = $kigou unless ($kigou eq "\x00");
+        }
+        $tmp;
+        /gse;
     }
     $str;
 }
@@ -175,7 +187,6 @@ sub normalize_eucjp ($) {
     if (util::islang("ja")) {
         $$contref = codeconv::eucjp_han2zen_kana($$contref);
         $$contref = codeconv::eucjp_zen2han_ascii($$contref);
-        $$contref = codeconv::eucjp_zen_spc2han_spc($$contref);
     }
     $contref;
 }

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: taro56.pl,v 1.2 2003-03-13 09:56:55 knok Exp $
+# $Id: taro56.pl,v 1.3 2003-03-21 16:49:47 usu Exp $
 # Copyright (C) 2003 Yukio USUDA
 #               2003 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -57,28 +57,26 @@ sub add_magic ($) {
 sub filter ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
       = @_;
+    my $err = undef;
+    $err = taro56filter($orig_cfile, $cont, $weighted_str, $headings, $fields);
+    return $err;
+}
+
+sub taro56filter ($$$$$) {
+    my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
+      = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
-    my $tmpfile  = util::tmpnam('NMZ.jstxt');
+    my $err = undef;
 
-
-    my ($dev, $ino, $mode, $nlink, $uid, $gid,
-         $rdev, $size, $atime, $mtime, $ctime, $blksize, $blocks)
-        = stat($cfile);
-    open(IN,$cfile) || die "Can't open $cfile: $!\n"
-	if $cfile;
-    binmode(IN);
-    my $buf;
-    sysread(IN, $buf, $size);
-    close(IN);
-
-    open(OUT, "> $tmpfile");
-    binmode(OUT);
-
-    my @data = unpack("C*", $buf);
+    my @data = unpack("C*", $$cont);
     my $textsizep = pack("C4", $data[0x800], $data[0x801],
                                $data[0x802], $data[0x803]);
     my $textsize = unpack("V", $textsizep);
-
+    if ((0x803 + $textsize) > length($$cont)){
+        $err = "File information (size of text data) have problem.";
+        return $err;
+    }
+    my $tmp;
     my $i =0;
     my $code="";
     while ( $i < $textsize) {
@@ -107,16 +105,11 @@ sub filter ($$$$$) {
             $i++;
         }
         $i++;
-        print OUT $code;
+        $tmp .= $code;
         $code ="";
     }
-    close(OUT);
 
-    my $fh = util::efopen("< $tmpfile");
-    $$cont = util::readfile($fh);
-    undef $fh;
-    unlink($tmpfile);
-
+    $$cont = $tmp;
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($cont);

@@ -1,5 +1,18 @@
 1999-12-10  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/cgi.h: Remove #ifdef __STDC__ related codes.
+	src/output.h: Remove #ifdef __STDC__ related codes.
+	src/result.h: Remove #ifdef __STDC__ related codes.
+	nmz/alias.h: Remove #ifdef __STDC__ related codes.
+	nmz/field.h: Remove #ifdef __STDC__ related codes.
+	nmz/hlist.h: Remove #ifdef __STDC__ related codes.
+	nmz/libnamazu.h: Remove #ifdef __STDC__ related codes.
+	nmz/rcfile.h: Remove #ifdef __STDC__ related codes.
+	nmz/regex.h: Remove #ifdef __STDC__ related codes.
+	nmz/replace.h: Remove #ifdef __STDC__ related codes.
+	nmz/search.h: Remove #ifdef __STDC__ related codes.
+	nmz/util.h: Remove #ifdef __STDC__ related codes.
+
 	* configure.in (AC_OUTPUT): Add nmzgrep.in handling.
 
 	* src/nmzgrep.in: New file.

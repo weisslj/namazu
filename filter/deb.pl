@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: deb.pl,v 1.2 2001-01-10 10:00:26 knok Exp $
+# $Id: deb.pl,v 1.3 2001-06-24 09:07:48 rug Exp $
 # Copyright (C) 2000 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -67,7 +67,7 @@ sub filter ($$$$$) {
 
     util::vprint("Processing deb file ... (using  '$dpkgpath')\n");
     if (util::islang("ja")) {
-	system("env LANGUAGE=ja $dpkgpath --info $cfile > $tmpfile");
+	system("env LC_ALL=ja $dpkgpath --info $cfile > $tmpfile");
     } else {
 	system("$dpkgpath --info $cfile > $tmpfile");
     }

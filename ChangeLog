@@ -11,7 +11,11 @@
 	(update-man): Removed this rules. Now namazu.1 and mknmz.1
 	has their own rules.
 	(man_aux): Added *.x files.
-	
+
+	* filter/rpm.pl: Replace LANGUAGE with LC_ALL.
+
+	* filter/deb.pl: Likewise.
+
 2001-06-21  Ryuji Abe  <rug@namazu.org>
 
 	* pl/util.pl (LANG): Moved from scripts/mknmz.in.
@@ -6542,4 +6546,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.832 2001-06-24 03:33:11 rug Exp $
+$Id: ChangeLog,v 1.833 2001-06-24 09:07:47 rug Exp $

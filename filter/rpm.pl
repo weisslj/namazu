@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: rpm.pl,v 1.1 2001-01-02 08:06:53 baba Exp $
+# $Id: rpm.pl,v 1.2 2001-06-24 09:07:48 rug Exp $
 # Copyright (C) 2000 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -67,7 +67,7 @@ sub filter ($$$$$) {
 
     util::vprint("Processing rpm file ... (using  '$rpmpath')\n");
     if (util::islang("ja")) {
-	system("env LANGUAGE=ja $rpmpath -qpi $cfile > $tmpfile");
+	system("env LC_ALL=ja $rpmpath -qpi $cfile > $tmpfile");
     } else {
 	system("$rpmpath -qpi $cfile > $tmpfile");
     }

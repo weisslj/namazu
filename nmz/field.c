@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: field.c,v 1.27 2000-01-28 09:40:11 satoru Exp $
+ * $Id: field.c,v 1.28 2000-03-01 08:23:11 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -153,6 +153,8 @@ nmz_get_field_data(int idxid, int docid, const char *field, char *data)
     };
     static struct field_cache fc[FIELD_CACHE_SIZE];
 
+    strcpy(data, ""); /* For safety. */
+
     strcpy(tmpfield, field);
     apply_field_alias(tmpfield);  /* This would overwrite `tmpfield' */
 
@@ -179,12 +181,14 @@ nmz_get_field_data(int idxid, int docid, const char *field, char *data)
     fp_field = fopen(fname, "rb");
     if (fp_field == NULL) {
         nmz_warn_printf("%s: %s", fname, strerror(errno));
+	return;
     }
 
     strcat(fname, ".i");
     fp_field_idx = fopen(fname, "rb");
     if (fp_field_idx == NULL) {
         nmz_warn_printf("%s: %s", fname, strerror(errno));
+	return;
     }
 
     /* 

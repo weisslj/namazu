@@ -1,3 +1,8 @@
+2000-02-25  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* pl/usage.pl: Add description of --show-config option.
+	[namazu-dev 1812]
+
 2000-02-23  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* conf/namazurc-sample: Rewrite comments.

@@ -1,5 +1,5 @@
 # -*- Perl -*-
-# $Id: usage.pl,v 1.21 2000-02-19 11:40:10 satoru Exp $
+# $Id: usage.pl,v 1.22 2000-02-25 06:49:07 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -77,7 +77,8 @@ Index Construction:\n\
 \n\
 Miscellaneous:\n\
   -s, --checkpoint         turn on the checkpoint mechanism.\n\
-  -f, --config=FILE        set the config file to FILE.\n\
+  -C, --show-config        show the current configuration.\n\
+  -f, --config=FILE        use FILE as a config file.\n\
   -I, --include=FILE       include your customization FILE.\n\
   -O, --output-dir=DIR     set DIR to output the index.\n\
   -T, --template-dir=DIR   set DIR having NMZ.{head,foot,body}.*.\n\

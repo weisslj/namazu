@@ -2,8 +2,12 @@
 
 	* src/search.c: Ignore TOO_MUCH_HIT word in phrase query.
 
+	
 1999-08-29  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/mknmz.pl.in (make_field_index): Add codes to set '(unknown)'
+	to $fields->{'from'} when it's not set.
+	
 	* src/Makefile.am: Fix lacks of noinst_HEADERS
 	
 	* lib/util.pl (readfile): Comment out $conf::FILE_SIZE_LIMIT

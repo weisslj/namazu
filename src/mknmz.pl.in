@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- CPerl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.36 1999-08-29 02:57:50 satoru Exp $
+# $Id: mknmz.pl.in,v 1.37 1999-08-29 09:26:11 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -358,6 +358,9 @@ sub make_field_index (\%$$\$\$) {
     }
     unless (defined($fields->{'summary'})) {
 	$fields->{'summary'} = make_summary($content, $headings, $cfile);
+    }
+    unless (defined($fields->{'from'})) {
+	$fields->{'from'} = "(unknown)";
     }
 }
 

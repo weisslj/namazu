@@ -2,7 +2,7 @@
  * 
  * usage.c -
  * 
- * $Id: usage.c,v 1.27 2001-08-08 09:05:51 knok Exp $
+ * $Id: usage.c,v 1.28 2004-03-17 11:28:22 usu Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -51,29 +51,30 @@ show_usage(void)
     char *usage = _("\
 namazu %s, a search program of Namazu.\n\n\
 Usage: namazu [options] <query> [index]... \n\
-    -n, --max=NUM        set number of documents shown to NUM.\n\
-    -w, --whence=NUM     set first number of documents shown to NUM.\n\
-    -l, --list           print results by listing format.\n\
-    -s, --short          print results by short format.\n\
-        --result=EXT     set NMZ.result.EXT for printing results.\n\
-        --late           sort documents in late order.\n\
-        --early          sort documents in early order.\n\
+    -n, --max=NUM        set the number of documents shown to NUM.\n\
+    -w, --whence=NUM     set the first number of documents shown to NUM.\n\
+    -l, --list           print the results by listing the format.\n\
+    -s, --short          print the results in a short format.\n\
+        --result=EXT     set NMZ.result.EXT for printing the results.\n\
+        --late           sort the documents in late order.\n\
+        --early          sort the documents in early order.\n\
         --sort=METHOD    set a sort METHOD (score, date, field:name)\n\
         --ascending      sort in ascending order (default: descending)\n\
     -a, --all            print all results.\n\
-    -c, --count          print only number of hits.\n\
+    -c, --count          print only the number of hits.\n\
     -h, --html           print in HTML format.\n\
-    -r, --no-references  do not display reference hit counts.\n\
-    -H, --page           print further result links. (nearly meaningless)\n\
-    -F, --form           force to print <form> ... </form> region.\n\
-    -R, --no-replace     do not replace URI string.\n\
-    -U, --no-decode-uri  do not decode URI when printing in a plain format.\n\
+    -r, --no-references  do not display the reference hit counts.\n\
+    -H, --page           print the links of further results. \n\
+                         (This is nearly meaningless)\n\
+    -F, --form           force to print the <form> ... </form> region.\n\
+    -R, --no-replace     do not replace the URI string.\n\
+    -U, --no-decode-uri  do not decode the URI when printing in a plain format.\n\
     -o, --output=FILE    set the output file name to FILE.\n\
     -f, --config=FILE    set the config file name to FILE.\n\
-    -C, --show-config    print current configuration.\n\
+    -C, --show-config    print the current configuration.\n\
     -q, --quiet          do not display extra messages except search results.\n\
-    -d, --debug          be debug mode.\n\
-    -v, --version        show the version of namazu and exit.\n\
+    -d, --debug          be in debug mode.\n\
+    -v, --version        show the namazu version and exit.\n\
         --help           show this help and exit\n\
 \n\
 Report bugs to <%s>.\n\

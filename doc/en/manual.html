@@ -15,7 +15,7 @@
 You can get the latest news about Namazu at <a
 href="http://www.namazu.org/">http://www.namazu.org/</a>.
 
-Namazu is a free software under the terms of <a
+Namazu is free software under the terms of <a
 href="http://www.gnu.org/copyleft/gpl.html">the GNU General Public License version 2</a> with
 ABSOLUTELY NO WARRANTY.
 </p>
@@ -44,7 +44,7 @@ ABSOLUTELY NO WARRANTY.
   <li><a href="#form-idxname">Selecting an index</a>
   <li><a href="#form-idxnames">Selecting multiple indices</a>
   <li><a href="#form-subquery">Using an auxiliary query</a>
-  <li><a href="#form-lang">Selecting language of search results</a>
+  <li><a href="#form-lang">Selecting the language of search results</a>
   </ul>
 <li><a href="#tools">Included tools</a>
   <ul>
@@ -73,19 +73,17 @@ ABSOLUTELY NO WARRANTY.
 <h2><a name="components">Namazu components</a></h2>
 
 <p>
-Namazu is a full-text search engine. Namazu has an index maker,
-<code>mknmz</code> command, and a text searcher, <code>namazu</code>
+Namazu is a full-text search engine. Namazu uses the index maker
+<code>mknmz</code> command and the text searcher <code>namazu</code>
 command.
 </p>
 
 <p>
-For searching a great amount of documents quickly, Namazu
-makes an index in advance. The concept of index is just
-similar to an index of book.
+For quickly searching through many documents, Namazu generates an index similar to that of a book's.
 </p>
 
 <p>
-<code>mknmz</code> command makes the index. The target
+<code>mknmz</code> command compiles the index. The target
 directory for indexing is given as an argument for
 <code>mknmz</code>. For example, if the target directory is
 /home/foo/public_html, then type
@@ -96,14 +94,13 @@ directory for indexing is given as an argument for
 </p>
 
 <p>
-Then, documents such as *.html and *.txt under
+Now documents such as *.html and *.txt under
 /home/foo/public_html are indexed and NMZ.* files are
-created in the directory you run mknmz. NMZ.* files are the
-Namazu's index.
+created in the directory where you run mknmz. NMZ.* files are from Namazu's index.
 </p>
 
 <p>
-<code>namazu</code> command searches the created index. For
+The <code>namazu</code> command searches the index. For
 example: 
 </p>
 
@@ -184,9 +181,9 @@ The above searches a keyword "bar" for the index under
 
 <h3><a name="mknmzrc">mknmzrc settings</a></h3>
 <p>
-Various setting is possible in <code>mknmzrc</code> or
-<code>.mknmzrc</code>.  <code>mknmzrc</code> reads
-configuration files normally in the order of
+Various settings are possible in <code>mknmzrc</code> or
+<code>.mknmzrc</code>.  <code>mknmzrc</code> normally reads
+configuration files in the order of
 </p>
 
 <ol>
@@ -197,7 +194,7 @@ Usually, /usr/local/etc/namazu/mknmzrc
 </ol>
 
 <p>
-If more than one configuration files are found, they all are loaded.
+If more than one configuration file is found, they all of the files are loaded.
 </p>
 
 
@@ -218,115 +215,115 @@ The setting details are given as comments in
 
 <p>
 <code>mknmz</code> automatically identifies target file types and
-performs appropriate document filtering. For HTML documents, filtering
-includes extraction of &lt;title&gt; or deletion of HTML tags. These
-filtering are taken care by document filters in
+performs the appropriate document filtering. For HTML documents, filtering
+includes the extraction of &lt;title&gt; or the deletion of HTML tags. The
+filtering is dealt with by document filters in
 <code>$(datadir)/$(PACKAGE)/filter</code>. The standard document
 filters are described below.
 </p>
 
 <dl>
 <dt>gzip.pl
-<dd>Handle a gzipped file
+<dd>Handles a gzipped file
 <dd>Requirement: <a href="http://www.gzip.org/">gzip</a>
 command or Compress::Zlib perl module.
 
 <dt>bzip2.pl
-<dd>Handle a bzip2-ed file
+<dd>Handles a bzip2-ed file
 <dd>Requirement: <a
 href="http://sources.redhat.com/bzip2/">bzip2</a> command.
 
 <dt>compress.pl
-<dd>Handle a compress-ed file.
+<dd>Handles a compress-ed file.
 <dd>Requirement: compress command.
 
 <dt>deb.pl
-<dd>Handle a deb package.
+<dd>Handles a deb package.
 <dd>Requirement: dpkg command.
 
 <dt>dvi.pl
-<dd>Handle a dvi file.
+<dd>Handles a dvi file.
 <dd>Requirement: dvi2tty
 <dd>Suggested software: nkf
-(it only needs for Japanese documents)
+(only for Japanese documents)
 
 <dt>excel.pl
-<dd>Handle an Microsoft Excel file.
+<dd>Handles a Microsoft Excel file.
 <dd>Requirement: <a href="http://chicago.sourceforge.net/xlhtml/">xlhtml</a>,
 (wvSummary, a part of <a href="http://wvWare.sourceforge.net/">wvWare</a>)
 <!--
 <dd>Alternate command: <a href="http://www.dehenken.co.jp/products/doccat/">doccat</a>
 -->
 <dd>Suggested software:<a href="http://www.ff.iij4u.or.jp/~nrt/lv/">lv</a>
-(it only needs for Japanese documents)
+(only for Japanese documents)
 
 <dt>hnf.pl
-<dd>Handle a file of <a href="http://www.h14m.org/">Hyper NIKKI System
+<dd>Handles a file of <a href="http://www.h14m.org/">Hyper NIKKI System
 Project</a>.
-<dd>Requirement: hnf filter is special. It requires namazu_for_hns
+<dd>Requirement: the hnf filter is special:  it requires namazu_for_hns
 of <a href="http://www.h14m.org/">Hyper NIKKI System Project</a>.
 
 <dt>hdml.pl
-<dd>Handle a HDML file.
+<dd>Handles a HDML file.
 <dd>Requirement: None
 
 <dt>html.pl
-<dd>Handle a HTML file.
+<dd>Handles a HTML file.
 <dd>Requirement: None
 
 <dt>mailnews.pl
-<dd>Handle a file of Mail/News and MHTML file.
+<dd>Handles a file of Mail/News and MHTML file.
 <dd>Requirement: None
 <dd>Note: To handle MHTML file and Attached base64 bodies,
 <a href="http://search.cpan.org/dist/MIME-Base64/">MIME::Base64 and MIME::QuotedPrint</a>
 are required.(perl5.8 contains them.)  
- --decode-base64 option is requied when handle a MHTML file or
+ --decode-base64 option is required when handling a MHTML file or
  base64-encoded bodies. 
 
 <dt>man.pl
-<dd>Handle a man file.
+<dd>Handles a man file.
 <dd>Requirement: nroff, 
 <a href="http://www.gnu.org/software/groff/groff.html">groff</a> or jgroff
 <dd>Note: To handle Japanese man, groff supporting -Tnippon is required.
 
 <dt>mhonarc.pl
-<dd>Handle a <a href="http://www.mhonarc.org/">MHonArc</a> file.
+<dd>Handles a <a href="http://www.mhonarc.org/">MHonArc</a> file.
 <dd>Requirement: None
 
 <dt>msword.pl
-<dd>Handle a Microsoft Word file.
+<dd>Handles a Microsoft Word file.
 <dd>Requirement: <a href="http://wvWare.sourceforge.net/">wvWare</a>
 <!--
 <dd>Alternate command: <a href="http://www.dehenken.co.jp/products/doccat/">doccat</a>
 -->
 <dd>Suggested software:<a href="http://www.ff.iij4u.or.jp/~nrt/lv/">lv</a>
-(it only needs for Japanese documents)
+(only for Japanese documents)
 
 <dt>pdf.pl
-<dd>Handle a PDF file.
+<dd>Handles a PDF file.
 <dd>Requirement: pdftotext, a part of <a href="http://www.foolabs.com/xpdf/">xpdf</a>
 (version 0.91 or later are suggested).
 
 <dt>postscript.pl
-<dd>Handle a PostScript file.
+<dd>Handles a PostScript file.
 <dd>Requirement: ps2ascii
 
 <dt>powerpoint.pl
-<dd>Handle an Microsoft PowerPoint file.
+<dd>Handles a Microsoft PowerPoint file.
 <dd>Requirement: pptHtml, a part of <a href="http://www.xlHtml.org/">xlHtml</a>,
 (wvSummary, a part of <a href="http://wvWare.sourceforge.net/">wvWare</a>)
 <!--
 <dd>Alternate command: <a href="http://www.dehenken.co.jp/products/doccat/">doccat</a>
 -->
 <dd>Suggested software:<a href="http://www.ff.iij4u.or.jp/~nrt/lv/">lv</a>
-(it only needs for Japanese documents)
+(only for Japanese documents)
 
 <dt>rfc.pl
-<dd>Handle a RFC file.
+<dd>Handles an RFC file.
 <dd>Requirement: None
 
 <dt>rpm.pl
-<dd>Handle a RPM package.
+<dd>Handles an RPM package.
 <dd>Requirement: <a href="http://www.rpm.org/">rpm</a>
 
 <!--
@@ -336,47 +333,47 @@ are required.(perl5.8 contains them.)
 -->
 
 <dt>taro56.pl
-<dd>Handle a file of Ichitaro a Japanese word processor version 5 and 6.
+<dd>Handles a file of Ichitaro, a Japanese word processor, versions 5 and 6.
 <dd>Requirement: None
 
 <dt>taro7_10.pl
-<dd>Handle a file of Ichitaro a Japanese word processor version (7 - 13).
+<dd>Handles a file of Ichitaro, a Japanese word processor, versions 7 through 13.
 <dd>Requirement: <a href="http://www.onicos.com/staff/iz/release/">unicode.pl</a>,
 <a href="http://search.cpan.org/~kwitknr/OLE-Storage_Lite-0.11/">OLE-Storage_Lite  perl module</a>,
 <a href="http://search.cpan.org/~eryq/IO-stringy-2.108/">IO-stringy perl module.</a>
 
 <dt>tex.pl
-<dd>Handle a TeX file.
+<dd>Handles a TeX file.
 <dd>Requirement: <a
 href="http://www.cs.purdue.edu/homes/trinkle/detex/">detex</a>
 
 <dt>rtf.pl
-<dd>Handle a Microsoft Word file.
+<dd>Handles a Microsoft Word file.
 <dd>Requirement: <a href="http://www.45.free.net/~vitus/ice/misc/rtf2html.tar.gz">rtf2html</a>
 
 <dt>ooo.pl
-<dd>Handle an OpenOffice.org Writer,Calc,Impress,Draw file.
+<dd>Handles an OpenOffice.org Writer,Calc,Impress,Draw file.
 <dd>Requirement: <a
 href="http://www.info-zip.org/pub/infozip/UnZip.html">unzip</a>
 <dd>Suggested software:<a href="http://www.ff.iij4u.or.jp/~nrt/lv/">lv</a>
-(it only needs for Japanese documents)
+(only for Japanese documents)
 
 <dt>apachecache.pl
-<dd>Handle a Apache's cache file.
+<dd>Handles an Apache's cache file.
 <dd>Requirement: None
 <dd>Note: --replace=apachecache::replacecode option replaces to original URI 
 
 <dt>mp3.pl
-<dd>Handle a MP3 file's ID3 Tag
+<dd>Handles an MP3 file's ID3 Tag
 <dd>Requirement: <a
 href="http://sourceforge.net/projects/pudge/">MP3::Info perl module.</a>
 
 <dt>macbinary.pl
-<dd>Handle a MacBinary I,II,III file.
+<dd>Handles a MacBinary I,II,III file.
 <dd>Requirement: None
 
 <dt>applefile.pl
-<dd>Handle a AppleSingle file.
+<dd>Handles an AppleSingle file.
 <dd>Requirement: None
 
 </dl>
@@ -388,37 +385,37 @@ The following filters are for Windows only.
 <dl>
 
 <dt>ichitaro456.pl
-<dd>Handle a file of Ichitaro a Japanese word processor version 4, 5 and 6.
+<dd>Handles a file of Ichitaro, a Japanese word processor, versions 4, 5 and 6.
 <dd>Requirement: <a href="http://www.vector.co.jp/soft/dos/writing/se013972.html">
 JSTXT</a>
 <dd>Note: JSTXT is a tool for MS-DOS.
 
 <dt>oleexcel.pl
-<dd>Handle an Microsoft Excel file.
+<dd>Handles a Microsoft Excel file.
 <dd>Requirement: Microsoft Excel 97, 2000, 2002(XP) or 2003
 
 <dt>olemsword.pl
-<dd>Handle a Microsoft Word file.
+<dd>Handles a Microsoft Word file.
 <dd>Requirement: Microsoft Word 97, 98, 2000, 2002(XP) or 2003
 
 <dt>olepowerpoint.pl
-<dd>Handle a Microsoft PowerPoint file.
+<dd>Handles a Microsoft PowerPoint file.
 <dd>Requirement: Microsoft PowerPoint 97,2000, 2002(XP) or 2003
 
 <dt>oletaro.pl
-<dd>Handle a file of Ichitaro a Japanese word processor version (4 - 13).
+<dd>Handles a file of Ichitaro, a Japanese word processor, versions 4 through 13.
 <dd>Requirement: Microsoft Word 97, 98, 2000, 2002(XP) or 2003
 
 <dt>olertf.pl
-<dd>Handle a Microsoft Word file.
+<dd>Handles a Microsoft Word file.
 <dd>Requirement: Microsoft Word 97, 98, 2000, 2002(XP) or 2003
 </dl>
 
 <p>
 <strong>NOTE:</strong>
-We suppose that mknmz works well on both of English version and
-Japanese version of Microsoft Office, but it is not confirmed yet.
-We would be greatful if you notice us when it works well.
+We believe that mknmz will work well on both the English version and the
+Japanese version of Microsoft Office, but that is not yet confirmed.
+We would be grateful if you would notify us how it works.
 Thanks in advance.
 </p>
 
@@ -432,29 +429,29 @@ Thanks in advance.
     namazu 2.0.x, a search program of Namazu.
     
     Usage: namazu [options] &lt;query&gt; [index]... 
-        -n, --max=NUM        set number of documents shown to NUM.
-        -w, --whence=NUM     set first number of documents shown to NUM.
-        -l, --list           print results by listing format.
-        -s, --short          print results by short format.
-            --result=EXT     set NMZ.result.EXT for printing results.
-            --late           sort documents in late order.
-            --early          sort documents in early order.
+        -n, --max=NUM        set the number of documents shown to NUM.
+        -w, --whence=NUM     set the first number of documents shown to NUM.
+        -l, --list           print the results by listing the format.
+        -s, --short          print the results in a short format.
+            --result=EXT     set NMZ.result.EXT for printing the results.
+            --late           sort the documents in late order.
+            --early          sort the documents in early order.
             --sort=METHOD    set a sort METHOD (score, date, field:name)
             --ascending      sort in ascending order (default: descending)
         -a, --all            print all results.
-        -c, --count          print only number of hits.
+        -c, --count          print only the number of hits.
         -h, --html           print in HTML format.
-        -r, --no-references  do not display reference hit counts.
-        -H, --page           print further result links. (nearly meaningless)
-        -F, --form           force to print &lt;form&gt; ... &lt;/form&gt; region.
-        -R, --no-replace     do not replace URI string.
-        -U, --no-decode-uri  do not decode URI when printing in a plain format.
+        -r, --no-references  do not display the reference hit counts.
+        -H, --page           print the links of further results. (This is nearly meaningless)
+        -F, --form           force to print the &lt;form&gt; ... &lt;/form&gt; region.
+        -R, --no-replace     do not replace the URI string.
+        -U, --no-decode-uri  do not decode the URI when printing in a plain format.
         -o, --output=FILE    set the output file name to FILE.
         -f, --config=FILE    set the config file name to FILE.
-        -C, --show-config    print current configuration.
+        -C, --show-config    print the current configuration.
         -q, --quiet          do not display extra messages except search results.
-        -d, --debug          be debug mode.
-        -v, --version        show the version of namazu and exit.
+        -d, --debug          be in debug mode.
+        -v, --version        show the namazu version and exit.
             --help           show this help and exit
     
     Report bugs to &lt;bug-namazu@namazu.org&gt;.
@@ -463,7 +460,7 @@ Thanks in advance.
 
 <p>
 You can specify one or more target indices in a command-line
-argument <code>[index dir]...</code>. If omitted, the <a
+argument <code>[index dir]...</code>. If the target index is omitted, the <a
 href="#default-index">Default index</a> will be treated as
 the target index.
 </p>
@@ -476,21 +473,19 @@ index.
 
 <p>
 When executed from a command line, Namazu outputs query
-results in simple text format. -h option is required to
+results in simple text format. The -h option is required in order to
 display query results in HTML format.
 </p>
 
 <p>
-If you want to display query results from 21st hits to 40th
-hits, type -n 20 -w 20 in a command line option. Note -w is
+If you want to display query results from the 21st hit through the 40th, type -n 20 -w 20 on the command line. Note that -w is
 not 21 in this example.
 </p>
 
 <h3><a name="namazurc">namazurc settings</a></h3>
 <p>
-Various setting is possible in <code>mknmzrc</code> or
-<code>.mknmzrc</code>.  namazu reads configuration files
-normally in the order of
+Various settings are possible in <code>mknmzrc</code> or
+<code>.mknmzrc</code>.  Namazu normally reads configuration files in the following order:
 </p>
 
 <ol>
@@ -503,7 +498,7 @@ is stored)
 </ol>
 
 <p>
-If more than one configuration files are found, they all are loaded.
+If more than one configuration file is found, all of the files are loaded.
 </p>
 
 
@@ -522,14 +517,13 @@ The setting details are given as comments in
 <h3><a name="default-index">Default Index</a></h3>
 
 <p>
-Default index is the index which is used by default.
-Default index follows the rules described bellow.
+The default index is the index that is used when no other index is specifiedand it follows the rules described below.
 </p>
 
 <ul>
 <li>The default is $(localstatedir)/$(PACKAGE)/index<br>
 Usually, /usr/local/var/namazu/index)
-<li>Directory which is specified by Index directive of <a
+<li>Otherwise it is the directory which is specified by the Index directive of <a
 href="#namazurc">namazurc</a>. 
 </ul>
 
@@ -544,7 +538,7 @@ index.
 <h3><a name="setting">namazu.cgi installation</a></h3>
 
 <p>
-<code>namazu.cgi</code> is CGI for Namazu.  namazu.cgi is
+<code>namazu.cgi</code> is the CGI script for Namazu.  namazu.cgi is
 installed in <code>$(libexecdir)</code> directory (usually
 /usr/local/libexec). If you copy namazu.cgi into a CGI
 directory of your system, installation is done!
@@ -553,10 +547,10 @@ directory of your system, installation is done!
 <h3><a name=".namazurc">.namazurc settings</a></h3>
 
 <p>
-If you have <code>.namazurc file</code> in the directory namazu.cgi is
-stored, <code>.namazurc file</code> will be treated as the CGI
-configuration file. To display Japanese, you need the following
-settings.
+If you have a <code>.namazurc file</code> in the directory where namazu.cgi is
+stored, the <code>.namazurc file</code> will be treated as a CGI
+configuration file. For the display to be in Japanese, you need the following
+settings:
 </p>
 
 
@@ -565,8 +559,8 @@ settings.
 <h3><a name="template">Template files</a></h3>
 
 <p>
-Template files define display styles of query results in
-HTML format. The details are described below.
+Template files explain the display styles of query results in
+HTML. The details are described below.
 </p>
 
 <dl>
@@ -583,14 +577,14 @@ HTML format. The details are described below.
 </dl>
 
 <p>
-These files are prepared for each language. Files suffixed by
+These files are available for either language. Files suffixed by
 <code>.ja</code> are for Japanese.
 </p>
 
 <h3><a name="form">Form settings</a></h3>
 
 <p>
-form is defined in NMZ.head.  CGI variables are as follows:
+Form is defined in NMZ.head.  CGI variables are as follows:
 </p>
 
 <dl>
@@ -603,13 +597,13 @@ form is defined in NMZ.head.  CGI variables are as follows:
 <dt>sort
 <dd>specify the sorting routine.
 <dt>idxname
-<dd>specify the name of index to search.
+<dd>specify the name of the index to search.
 <dt>subquery
 <dd>specify the sub-query expression.
 <dt>whence
 <dd>specify where you wish to display query results.
 <dt>reference
-<dd>specify whether reference hit counts is displayed or not.
+<dd>specify whether or not to display reference hit counts.
 <dt>lang
 <dd>specify language of search results.
 </dl>
@@ -635,7 +629,7 @@ To select an index from the browser, NMZ.head needs the following.
 In the above example, you can select a single index from foo, bar, or
 baz. When foo is selected, Namazu searches the foo index under the <a
 href="#default-index">default index</a>. In case the default index
-is <code>/usr/local/var/namazu/index</code>, we will have directories
+is <code>/usr/local/var/namazu/index</code>, there will be directories
 as follows.
 </p>
 
@@ -655,7 +649,7 @@ as follows.
 
 <h3><a name="form-idxnames">Selecting multiple indices</a></h3>
 <p>
-For selecting multiple indices, NMZ.head need a checkbox.
+For selecting multiple indices NMZ.head needs a checkbox.
 </p>
 
 <pre>
@@ -670,9 +664,7 @@ For selecting multiple indices, NMZ.head need a checkbox.
 
 <p>
 In the above example, you can select multiple indices from foo, bar,
-and/or baz. The template file specified in Template directive in
-<code>namazurc</code> is used in searching. If no file is given in
-Template directive, the following rules apply.
+and/or baz. The template file specified in the <code>namazurc</code> Template directive is used in searching. If no file is given in the Template directive, the following rules apply.
 </p>
 
 <ul>
@@ -703,10 +695,10 @@ pages by URI.
       &lt;input type="hidden" name="reference" value="off"&gt;
 </pre>
 
-<h3><a name="form-lang">Selecting language of search results</a></h3>
+<h3><a name="form-lang">Selecting the language of search results</a></h3>
 
 <p>
-To select language of search results by Web browser, you can
+To select the language of search results on your Web browser, you can
 set NMZ.head with CGI variable <code>lang</code> as follows:
 </p>
 
@@ -721,9 +713,9 @@ set NMZ.head with CGI variable <code>lang</code> as follows:
 
 
 <p>
-NOTE: Lang directive in .namazurc has precedence over CGI
-variable lang. So you must not set Lang directive in
-.namazurc if you want to use CGI variable lang.
+NOTE: Lang directive in .namazurc has precedence over the CGI
+variable lang. Do not set the Lang directive in
+.namazurc if you want to use the CGI variable lang.
 </p>
 
 <h2><a name="tools">Included tools</a></h2>
@@ -731,11 +723,10 @@ variable lang. So you must not set Lang directive in
 <h3><a name="bnamazu">bnamazu</a></h3>
 
 <p>
-<code>bnamazu</code> is a search tool operates with Web
+<code>bnamazu</code> is a search tool that operates with Web
 browsers. The query results are passed to a Web browser
 (default: <a href="http://www.lynx.browser.org/">
-lynx</a> ) for users to browse. The command line options
-are as follows.
+lynx</a> ) and from there to the users. The command line options are as follows.
 </p>
 
 <p>
@@ -743,19 +734,17 @@ are as follows.
 </p>
 
 <p>
--b option specifies a Web browser. -n option is valid only when using
-netscape. -n option opens a new netscape window to display query
-results.
+The -b option specifies a Web browser. The -n option is valid only when using
+netscape and it opens a new netscape window to display the query results.
 </p>
 
 
 <h3><a name="nmzgrep">nmzgrep</a></h3>
 
 <p>
-nmzgrep is an search tool operates with <code>egrep</code>
+nmzgrep is a search tool that operates with the <code>egrep</code>
 command. nmzgrep executes egrep for retrieved documents. By applying
-egrep, you can find line numbers the keyword is found. The command
-line options are as follows.
+egrep, you can find the line numbers to places where the keyword is found. The command line options are as follows.
 </p>
 
 <p>
@@ -764,8 +753,8 @@ line options are as follows.
 
 
 <p>
-For example, to search ~/Namazu/foobar index for foo and
-apply egrep to searched documents, you can do as follows:
+For example, in order to search the ~/Namazu/foobar index for foo and
+to apply egrep to the search documents, you can do as follows:
 </p>
 
 <p>
@@ -775,9 +764,7 @@ apply egrep to searched documents, you can do as follows:
 <h3><a name="gcnmz">gcnmz</a></h3>
 
 <p>
-When you repeat updates of indices caused by addition and/or
-deletion of documents, garbage will be created in index
-files. <code>gcnmz</code> is a tool for garbage collection. The
+When you update the indices after deleting or adding documents, garbage will be placed in index files. <code>gcnmz</code> is a tool for garbage collection. The
 command line options are as follows.
 </p>
 
@@ -797,7 +784,7 @@ To run garbage collection for indices in ~/Namazu/foobar, type
 
 <p>
 <code>mailutime</code> is a tool to set timestamps of
-Mail/News files to Date: header. The command line options
+Mail/News files to the Date: header. The command line options
 are as follows.
 </p>
 
@@ -806,7 +793,7 @@ are as follows.
 </p>
 
 <p>
-To change time stamps of emails stored in ~/Mail/ml/foobar, type
+To change the time stamps of emails stored in ~/Mail/ml/foobar, type
 </p>
 
 <p>
@@ -837,7 +824,7 @@ To preview indices stored in ~/Mail/ml/foobar, type
 <h3><a name="rfnmz">rfnmz</a></h3>
 
 <p>
-rfnmz is a tool to reconstruct NMZ.field.*.i files. Usage:
+rfnmz is a tool to reconstruct NMZ.field.*.i files. The usage is:
 </p>
 
 <p>
@@ -845,8 +832,7 @@ rfnmz is a tool to reconstruct NMZ.field.*.i files. Usage:
 </p>
 
 <p>
-For example, to reconstruct NMZ.field.*.i files in
-~/Namazu/foobar index, you can do as follows:
+For example, to reconstruct NMZ.field.*.i files in the ~/Namazu/foobar index, you can do:
 </p>
 
 <p>
@@ -858,8 +844,8 @@ For example, to reconstruct NMZ.field.*.i files in
 
 <h3><a name="query-term">Single term query</a></h3>
 <p>
-The query specifies only one term for retrieving all
-documents which contain the term. e.g., 
+This query specifies only one term for retrieving all of the
+documents which contain that term, for example: 
 </p>
 
 <p class="example">
@@ -869,9 +855,9 @@ namazu
 <h3><a name="query-and">AND query</a></h3> 
 
 <p>
-The query specifies two or more terms for retrieving all
-documents which contain both terms. You can insert the
-<code class="operator">and</code> operator between the terms. e.g., 
+This query specifies two or more terms for retrieving all of the
+documents which contain both terms. Insert the
+<code class="operator">and</code> operator between the terms, e.g. 
 </p>
 
 <p class="example">
@@ -879,16 +865,16 @@ Linux and Netscape
 </p>
 
 <p>
-You can omit the <code class="operator">and</code> operator.  Terms which is
-separated by one ore more spaces is assumed to be AND query.
+You can omit the <code class="operator">and</code> operator.  Terms which are
+separated by one ore more spaces are assumed to be an AND query.
 </p>
 
 <h3><a name="query-or">OR query</a></h3>
 <p>
-The query specifies two or more terms for retrieving all
-documents which contain either term. You can insert the
-<code class="operator">or</code> operator between the terms.
-e.g.,
+This query specifies two or more terms for retrieving all
+documents which contain any one term. Insert the
+<code class="operator">or</code> operator between the terms,
+e.g.
 </p>
 
 <p class="example">
@@ -897,10 +883,10 @@ Linux or FreeBSD
 
 <h3><a name="query-not">NOT query</a></h3>
 <p>
-The query specifies two or more terms for retrieving all
-documents which contain a first term but doesn't contain the
-following terms. You can insert the <code class="operator">not</code>
-operator between the terms to do NOT query.  e.g.,
+This query specifies two or more terms for retrieving all of the
+documents which contain a first term but do not contain the
+following terms. Insert the <code class="operator">not</code>
+operator between the terms, for example:
 </p>
 
 <p class="example">
@@ -912,7 +898,7 @@ Linux not UNIX
 <p>
 You can group queries by surrounding them by
 parentheses. The parentheses should be separated by one or
-more spaces. e.g., 
+more spaces, e.g. 
 </p>
 
 <p class="example">
@@ -921,11 +907,11 @@ more spaces. e.g.,
 
 <h3><a name="query-phrase">Phrase searching</a></h3>
 <p>
-You can search for a phrase which consists of two or more terms
-by surrounding them with double quotes like
-<code class="operator">"..."</code> or with braces like <code class="operator">{...}</code>.
-In Namazu, precision of phrase searching is not 100 %,
-so it causes wrong results occasionally. e.g.,
+You can search for a phrase that consists of two or more terms
+by surrounding them with double quotation marks or braces such as
+<code class="operator">"..."</code> and <code class="operator">{...}</code>.
+In Namazu, the precision of phrase searching is not 100 %,
+so wrong results may occasionally occur.  Example:
 </p>
 
 <p class="example">
@@ -940,7 +926,7 @@ You must choose the latter with Tknamazu or namazu.el.
 
 <h3><a name="query-substring">Substring matching</a></h3>
 <p>
-The are three types of substring matching searching.
+The are three types of searching by substring matching.
 </p>
 
 <dl> 
@@ -961,7 +947,7 @@ You can use regular expressions for pattern matching. The
 regular expressions must be surrounded by slashes like <code
 class="operator">/.../</code>. Namazu uses <a
 href="http://www.ruby-lang.org/">Ruby</a>'s regular
-regular expressions engine. It offers generally <a
+regular expressions engine. It generally offers a <a
 href="http://www.perl.com/">Perl</a> compatible flavor.
 e.g.,
 </p>
@@ -975,26 +961,26 @@ e.g.,
 <p>
 You can limit your search to specific fields such as
 <code>Subject:</code>, <code>From:</code>,
-<code>Message-Id:</code>. It's especially convenient for
-Mail/News documents. e.g.,
+<code>Message-Id:</code>. This feature is especially convenient for
+Mail/News documents, for example:
 </p>
 
 <ul>
 <li><code class="example">+subject:Linux</code><br>
-(Retrieving all documents which contain <code>Linux</code>
+(Retrieves all documents which contain <code>Linux</code>
 in a <code>Subject:</code> field)
 
 <li><code class="example">+subject:"GNU Emacs"</code><br>
-(Retrieving all documents which contain <code>GNU Emacs</code>
+(Retrieves all documents which contain <code>GNU Emacs</code>
 in a <code>Subject:</code> field)
 
 <li><code class="example">+from:foo@bar.jp</code><br>
-(Retrieving all documents which contain <code>foo@bar.jp</code>
+(Retrieves all documents which contain <code>foo@bar.jp</code>
 in a <code>From:</code> field)
 
 
 <li><code class="example">+message-id:&lt;199801240555.OAA18737@foo.bar.jp&gt;</code><br>
-(Retrieving a certain document which contains specified
+(Retrieves a certain document which contains specified
 <code>Message-Id:</code>)
 </ul>
 
@@ -1002,23 +988,23 @@ in a <code>From:</code> field)
 
 <ul>
 <li>In any queries, Namazu ignores case distinctions of
-alphabet characters. In other words, Namazu does
-case-insensitive pattern matching in any time.
+alphabet characters; i.e. Namazu does
+case-insensitive pattern matching.
 
 
-<li>Japanese phrases are forced to be segmented into
-morphemes automatically and are handled them as <a
-href="#query-phrase">phrase searching</a>. This processing
-causes invalid segmentation occasionally.
+<li>Japanese phrases are automatically segmented into
+morphemes and are handled as <a
+href="#query-phrase">phrase searching</a>. This process occasionally
+causes invalid segmentation.
 
 
-<li>Alphabet, numbers or a part of symbols (duplicated in
-ASCII) characters which defined in JIS X 0208 (Japanese
+<li>Letters, numbers or parts of symbols (duplicated in
+ASCII) which are defined in JIS X 0208 (Japanese
 Industrial Standards) are handled as ASCII characters.
 
 <li>Namazu can handle a term which contains symbols like
-<code>TCP/IP</code>.  Since this handling isn't complete,
-you can describe <code>TCP and IP</code> instead of
+<code>TCP/IP</code>.  Since this method of handling isn't complete,
+you can also describe the term as <code>TCP and IP</code> instead of
 <code>TCP/IP</code>, but it may cause noisy results.
 
 
@@ -1028,8 +1014,8 @@ more time than other methods.
 <li>If you want to use <code class="operator">and</code>,
 <code class="operator">or</code> or <code
 class="operator">not</code> simply as terms, you can
-surround them respectively with double quotes like <code
-class="operator">"..."</code> or braces like <code
+surround them with double quotes or braces like <code
+class="operator">"..."</code> or <code
 class="operator">{...}</code>. 
 
 <!-- foo
@@ -1048,7 +1034,7 @@ You must choose the latter with Tkanamzu or namazu.el.
 Copyright (C) 2000-2004 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: manual.html,v 1.56 2004-03-09 12:28:11 opengl2772 Exp $
+$Id: manual.html,v 1.57 2004-03-17 11:28:21 usu Exp $
 </div>
 <address>
 developers@namazu.org

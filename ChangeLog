@@ -1,6 +1,10 @@
 1999-08-31  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
-	* src/mknmz.pl.in, lib/usage.pl: Add --deny=s --exclude=s.
+	* src/mknmz.pl.in, lib/usage.pl: Add --update=s and implement
+	its codes.
+
+	* src/mknmz.pl.in, lib/usage.pl: Add --deny=s --exclude=s and
+	implement their codes.
 	
 	* src/mknmz.pl.in: Modify it to be able to take multiple targets
 	as command line arguments.

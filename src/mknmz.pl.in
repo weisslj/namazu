@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.45 1999-08-31 02:29:13 satoru Exp $
+# $Id: mknmz.pl.in,v 1.46 1999-08-31 04:01:06 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -246,8 +246,8 @@ sub namazu_core ($$$) {
 		      \$headings, \%fields);
 
     # check if the file is acceptable.
-    my $err = check_file($cfile, \$content, $text_size, $mtype);
-    if ($err) {
+    my $err = check_file($cfile, $text_size, $mtype);
+    if (defined $err) {
 	print $file_count + $file_base . " $uri $err\n" unless $var::Opt{quiet};
 	print $fh_errorsfile "$cfile $err\n"; 
 	return 0;  # return 0 if error
@@ -657,10 +657,10 @@ sub parse_options ()
 	exit 1;
     }
 
-    my $output_dir = undef;
     my @targets = ();
     my $targets_loaded = 0;
     my @argv = @ARGV;
+    my $cwd = cwd();
 
     my $opt_dummy = 0;
     my $opt_version = 0;
@@ -669,11 +669,13 @@ sub parse_options ()
     my $opt_chasen = 0;
     my $opt_chasen_morph = 0;
     my $opt_kakasi = 0;
-    my $opt_include = 0;
-    my $opt_target_list = 0;
-    my $opt_target_regex = 0;
     my $opt_checkpoint_sub = 0;
-    
+
+    my $output_dir = undef;
+    my $update_index = undef;
+    my $include_file = undef;
+    my $target_list = undef;
+
 #    Getopt::Long::Configure('bundling');
     Getopt::Long::config('bundling');
     GetOptions(
@@ -681,12 +683,13 @@ sub parse_options ()
 	       '1|exclude=s'         => \$conf::EXCLUDE_REGEX,
 	       '2|deny=s'            => \$conf::DENY_REGEX,
 	       '3|allow=s'           => \$conf::ALLOW_REGEX,
+	       '4|update=s'          => \$update_index,
 	       'A|htacces'           => \$var::Opt{htaccessexclude},
 	       'E|no-edge-symbol'    => \$var::Opt{noedgesymbol},
-	       'F|target-list=s'     => \$opt_target_list,
+	       'F|target-list=s'     => \$target_list,
 	       'G|no-okurigana'      => \$var::Opt{okurigana},
 	       'H|no-hiragana'       => \$var::Opt{hiragana},
-	       'I|include=s'         => \$opt_include,
+	       'I|include=s'         => \$include_file,
 	       'K|no-symbol'         => \$var::Opt{nosymbol},
 	       'L|lang=s'            => \$conf::LANGUAGE,
 	       'O|output-dir=s'      => \$output_dir,
@@ -712,6 +715,18 @@ sub parse_options ()
 	       'x|no-heading-summary'=> \$var::Opt{noheadabst},
 	       );
 
+    # make all path names absolute for --update=s 
+    $ConfigFile = absolute_path($cwd, $ConfigFile) 
+	if defined $ConfigFile;
+    $include_file = absolute_path($cwd, $include_file) 
+	if defined $include_file;
+    $target_list = absolute_path($cwd, $target_list) 
+	if defined $target_list;
+    $output_dir = absolute_path($cwd, $output_dir) 
+	if defined $output_dir;
+    $TEMPLATEDIR = absolute_path($cwd, $TEMPLATEDIR) 
+	if defined $TEMPLATEDIR;
+
     if ($opt_help) {
 	show_long_usage();
 	exit 0;
@@ -722,6 +737,21 @@ sub parse_options ()
 	exit 0;
     }
 
+    if (defined $update_index) {
+	$var::NMZ{status} = "$update_index/$var::NMZ{status}";
+
+	my $argv = get_status("argv");
+	@ARGV = split /\t/, $argv;
+	util::dprint("Inherited argv: @ARGV\n");
+
+	my $cwd  = get_status("cwd");
+	chdir $cwd;
+	util::dprint("Inherited cwd: $cwd\n");
+
+	($output_dir, @targets) = parse_options();
+	$output_dir = $update_index;
+	return ($output_dir, @targets);
+    }
     if ($opt_all) {
 	$conf::ALLOW_REGEX = ".*";
     }
@@ -737,16 +767,19 @@ sub parse_options ()
 	$conf::WAKATI = $conf::KAKASI;
 	$var::Opt{morph} = 0;
     }
-    if ($opt_include) {
-	eval util::readfile($opt_include);
-        util::dprint("Included: $opt_include\n");
+    if ($var::Opt{robotexclude}) {
+        html::parse_robots_txt();
     }
-    if ($opt_target_list) {
+    if ($include_file) {
+	eval util::readfile($include_file);
+        util::dprint("Included: $include_file\n");
+    }
+    if ($target_list) {
 	if ($CheckPoint{'continue'}) {
 	    @targets = ("dummy");
 	} else {
-	    @targets = load_target_list($opt_target_list);
-	    util::dprint("Loaded: $opt_target_list\n");
+	    @targets = load_target_list($target_list);
+	    util::dprint("Loaded: $target_list\n");
 	}
 	$targets_loaded = 1;
     }
@@ -771,7 +804,7 @@ sub parse_options ()
 	exit 1;
     }
 
-    $output_dir = cwd() unless defined $output_dir;
+    $output_dir = $cwd unless defined $output_dir;
     util::cdie("$output_dir: invalid output directory\n")
 	unless (-d $output_dir && -w $output_dir);
 
@@ -783,9 +816,12 @@ sub parse_options ()
     }
 
     # take remaining @ARGV as targets
-    @targets = @ARGV if @ARGV > 0 && $targets_loaded == 0;
-
+    if (@ARGV > 0 && $targets_loaded == 0) {
+	@targets = @ARGV ;
+    }
+    
     # revert @ARGV
+    # unshift @ARGV, splice(@argv, 0, @argv - @ARGV);
     @ARGV = @argv;
 
     return ($output_dir, @targets);
@@ -800,19 +836,24 @@ sub load_target_list ($) {
     return @targets;
 }
 
+# convert a relative path into an absolute path
+sub absolute_path($$) {
+    my ($cwd, $path) = @_;
+
+    $path =~ s!^\./!$cwd/!;
+    if (($SYSTEM eq "MSWin32") || ($SYSTEM eq "os2")) {
+        $path =~ s,^([A-Z](?!:/)),$cwd/$1,i;
+    } else {
+        $path =~ s!^([^/])!$cwd/$1!; 
+    }
+    return $path;
+}
+
 sub find_target (@) {
     my @targets = @_;
+
     my $cwd = cwd();
-
-    html::parse_robots_txt() if ($var::Opt{robotexclude});
-
-    # convert a relative path into an absolute path
-    grep(s!^\./!$cwd/!, @targets); 
-    if (($SYSTEM eq "MSWin32") || ($SYSTEM eq "os2")) {
-        grep {s,^([A-Z](?!:/)),$cwd/$1,i} @targets; 
-    } else {
-        grep {s!^([^/])!$cwd/$1!} @targets; 
-    }
+    @targets = map { absolute_path($cwd, $_) } @targets;
 
     # convert \ to / with consideration for Shift_JIS encoding
     if (($SYSTEM eq "MSWin32") || ($SYSTEM eq "os2")) {
@@ -860,10 +901,10 @@ sub show_mini_usage () {
 }
 
 # check the file -- 0: OK / 1: NG
-sub check_file ($$$$) {
-    my ($cfile, $content, $text_size, $mtype) = @_;
+sub check_file ($$$) {
+    my ($cfile, $text_size, $mtype) = @_;
 
-    my $msg = "";
+    my $msg = undef;
     if ($text_size == 0) {
 	$msg = "is 0 size! skipped.";
     } elsif ($mtype =~ /^application\/octet-stream/) {
@@ -872,8 +913,6 @@ sub check_file ($$$$) {
 	$msg = "is too a LARGE text! skipped.";
     } elsif ($mtype =~ /^x-system/) {
 	$msg = "system error occurred! ($mtype) skipped.";
-    } elsif ($$content =~ /^$conf::MHONARC_HEADER/o) {
-	$msg = "is MHonArc's index file! skipped.";
     } else {
 	$msg = "";
     }
@@ -1170,20 +1209,23 @@ sub update_dateindex () {
 }
 
 sub update_field_index () {
-    my @list = glob "$var::NMZ{field}.*";
+    my @list = glob "$var::NMZ{field}.*.$$.tmp";
     for my $tmp (@list) {
-	$tmp =~ m!((^.*/NMZ\.field\.[^\.]+(?:\.i)?)\..*)!;
-	my $fname_tmp = $1;
-	my $fname_out = $2;
-	{
-	    my $fh_field = util::efopen(">>$fname_out");
-	    my $fh_tmp = util::efopen($fname_tmp);
+	if ($tmp =~ m!((^.*/NMZ\.field\.[^\.]+(?:\.i)?)\.$$\.tmp)!) {
+	    my $fname_tmp = $1;
+	    my $fname_out = $2;
+	    {
+		my $fh_field = util::efopen(">>$fname_out");
+		my $fh_tmp = util::efopen($fname_tmp);
 
-	    while (defined(my $line = <$fh_tmp>)) {
-		print $fh_field $line;
+		while (defined(my $line = <$fh_tmp>)) {
+		    print $fh_field $line;
+		}
 	    }
+	    unlink $fname_tmp;
+	} else {
+	    util::cdie("update_field_index: @list");
 	}
-	unlink $fname_tmp;
     }
 }
 
@@ -1309,7 +1351,6 @@ sub put_status($$) {
 sub put_log ($$$$) {
     my ($total_files_size, $start_time, $file_count, $total_keys_count) = @_;
 
-    my $argv = join(' ', map {"'$_'"} @ARGV);
     my $date = localtime;
     my $added_files_count   = util::commas($file_count - $UpdatedFilesCount);
     my $deleted_files_count = util::commas($DeletedFilesCount);
@@ -1335,7 +1376,6 @@ sub put_log ($$$$) {
     $logmsg .= "Added Keywords: $added_keys_count words\n" if $added_keys_count;
     $logmsg .= "Total Keywords: $total_keys_count words\n" if $total_keys_count;
     $logmsg .= "Wakati: $conf::WAKATI\n" if $conf::WAKATI;
-    $logmsg .= "ARGV: $argv\n" if $argv;
     $logmsg .= "Perl Version: $]\n" if $];   # '$]' has a perl version
     $logmsg .= "Namazu Version: $var::VERSION\n" if $var::VERSION;
     $logmsg .= "System: $SYSTEM\n" if $SYSTEM;
@@ -1346,6 +1386,11 @@ sub put_log ($$$$) {
     put_log_to_logfile($logmsg);
     put_total_files($total_files_count);
     put_total_keys($total_keys_count);
+
+    my $argv = join "\t", @ARGV;
+    my $cwd  = cwd();
+    put_status("argv", $argv);
+    put_status("cwd",  $cwd);
 }
 
 sub put_log_to_logfile ($) {
@@ -1799,7 +1844,7 @@ muda($conf::SEARCH_FIELD, $conf::ON_MEMORY_MAX,
      $conf::KAKASI, $var::Opt{okurigana},
      $var::Opt{hiragana}, $conf::ROBOTS_EXCLUDE_URLS, $conf::DEFAULT_FILE,
      $conf::HTML_SUFFIX, $usage::USAGE_EN, $usage::USAGE_MINI, 
-     $var::Opt{noheadabst}, @seed::Seed, $var::OUTPUT_DIR,
+     $var::Opt{noheadabst}, @seed::Seed,
      $var::Opt{debug}, $var::Opt{noencodeurl}, $var::Opt{htaccessexclude}, 
      $var::RECURSIVE_ACTIONS, $conf::ROBOTS_EXCLUDE_URIS, 
      $conf::ROBOTS_EXCLUDE_URLS, $conf::Supported);

@@ -1,5 +1,5 @@
 # -*- Perl -*-
-# $Id: usage.pl,v 1.8 1999-08-31 02:29:12 satoru Exp $
+# $Id: usage.pl,v 1.9 1999-08-31 04:01:05 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -68,6 +68,7 @@ $var::COPYRIGHT
 
 
   インデックス作成:
+        --update=index        更新するインデックスを指定する
     -P, --no-heading-summary  フレーズ検索用のインデックスを作成しない
     -Y, --no-delete           削除された文書の検出を行わない
     -Z, --no-update           文書の更新/削除を反映しない

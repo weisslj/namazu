@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: koffice.pl,v 1.2 2004-03-11 16:20:39 opengl2772 Exp $
+# $Id: koffice.pl,v 1.3 2004-03-12 16:08:39 usu Exp $
 # Copyright (C) 2004 Yukio USUDA 
 #               2004 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -34,7 +34,8 @@ sub mediatype () {
     #http://www.iana.org/assignments/media-types/application/
     return ('application/vnd.kde.kword',
             'application/vnd.kde.kspread',
-            'application/vnd.kde.kpresenter');
+            'application/vnd.kde.kpresenter',
+	    'application/vnd.kde.kivio');
 }
 
 sub status () {
@@ -71,6 +72,7 @@ sub add_magic ($) {
     $magic->addFileExts('\\.kwd', 'application/vnd.kde.kword');
     $magic->addFileExts('\\.ksp', 'application/vnd.kde.kspread');
     $magic->addFileExts('\\.kpr', 'application/vnd.kde.kpresenter');
+    $magic->addFileExts('\\.flw', 'application/vnd.kde.kivio');
     return;
 }
 
@@ -144,6 +146,7 @@ sub filter_maindocfile ($$$$$) {
         $xml .= $line;
     }
     unlink $tmpfile;
+    koffice::get_kivio_content(\$xml);
     koffice::remove_all_tag(\$xml);
     koffice::decode_entity(\$xml);
 
@@ -203,6 +206,13 @@ sub get_abstract($){
     }else {
         return "";
     }
+}
+
+sub get_kivio_content ($) {
+    my ($contref) = @_;
+    my @content;
+    push(@content, $$contref =~ m!<KivioTextStyle .*?text="(.*?)"!sg);
+    $$contref = join("\n", @content);
 }
 
 sub remove_all_tag($) {

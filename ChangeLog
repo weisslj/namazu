@@ -1,3 +1,7 @@
+2001-10-21  Hajime BABA <hajime.baba@nao.ac.jp>
+
+	* filter/pdf.pl: Added -raw option to pdftotext.
+
 2001-10-18  Makoto Fujiwara  <makoto@ki.nu>
 
 	* scripts/mknmz.in:  Fix typo and duplicated step number
@@ -7096,4 +7100,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.880 2001-10-18 11:09:39 makoto Exp $
+$Id: ChangeLog,v 1.881 2001-10-21 13:34:27 baba Exp $

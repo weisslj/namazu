@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: pdf.pl,v 1.22 2001-01-04 01:57:58 baba Exp $
+# $Id: pdf.pl,v 1.23 2001-10-21 13:34:27 baba Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -70,10 +70,10 @@ sub filter ($$$$$) {
 
     if (util::islang("ja")) {
 	util::vprint("Processing pdf file ... (using  '$pdfconvpath' in Japanese mode)\n");
-	system("$pdfconvpath -q -eucjp $tmpfile $tmpfile2");
+	system("$pdfconvpath -q -eucjp -raw $tmpfile $tmpfile2");
     } else {
 	util::vprint("Processing pdf file ... (using  '$pdfconvpath')\n");
-	system("$pdfconvpath -q $tmpfile $tmpfile2");
+	system("$pdfconvpath -q -raw $tmpfile $tmpfile2");
     }
     unless (-e $tmpfile2) {
 	unlink $tmpfile;

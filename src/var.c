@@ -2,7 +2,7 @@
  * 
  * values.c -
  * 
- * $Id: var.c,v 1.2 1999-09-01 01:11:23 satoru Exp $
+ * $Id: var.c,v 1.3 1999-09-01 02:04:54 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -103,3 +103,4 @@ NMZ_NAMES NMZ = {  /* NMZ.* files' names */
 INDICES Idx;
 QUERY Query;
 
+char Template[BUFSIZE] = "normal";

@@ -1,5 +1,17 @@
 1999-09-01  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/namazu.c (parse_options): Be effective -s option.
+	
+	* src/result.l (print_hlist): Support choicing a correct
+	NMZ.result.foobar file.
+	
+	* src/mknmz.pl.in (write_result_file): Support making multiple
+	NMZ.result.* files.
+
+	* template/NMZ.result.{normal,short}: New files.
+
+	* template/NMZ.result: Removed
+	
 	* src/mknmz.pl.in, lib/var.pl.in, src/{hlist,search}.c:
 	Implement codes to integrate NMZ.i and NMZ.w. [namazu-dev 294]
 

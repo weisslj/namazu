@@ -58,5 +58,6 @@ extern NMZ_NAMES NMZ;
 extern NMZ_FILES Nmz;
 extern INDICES   Idx;
 extern QUERY     Query;
+extern char      Template[];
 
 #endif /* _VARIABLE_H */

@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.53 1999-09-01 01:11:23 satoru Exp $
+# $Id: mknmz.pl.in,v 1.54 1999-09-01 02:04:53 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -729,18 +729,6 @@ sub parse_options ()
 	       'x|no-heading-summary'=> \$var::Opt{noheadabst},
 	       );
 
-    # make all path names absolute for --update=s 
-    $ConfigFile = absolute_path($cwd, $ConfigFile) 
-	if defined $ConfigFile;
-    $include_file = absolute_path($cwd, $include_file) 
-	if defined $include_file;
-    $target_list = absolute_path($cwd, $target_list) 
-	if defined $target_list;
-    $output_dir = absolute_path($cwd, $output_dir) 
-	if defined $output_dir;
-    $TEMPLATEDIR = absolute_path($cwd, $TEMPLATEDIR) 
-	if defined $TEMPLATEDIR;
-
     if ($opt_help) {
 	show_long_usage();
 	exit 0;
@@ -785,7 +773,7 @@ sub parse_options ()
         html::parse_robots_txt();
     }
     if ($include_file) {
-	eval util::readfile($include_file);
+	do $include_file;
         util::dprint("Included: $include_file\n");
     }
     if ($target_list) {
@@ -955,41 +943,31 @@ sub write_body_msg () {
     write_message("$var::NMZ{body}.en");
 }
 
-# output NMZ.result
+# output NMZ.result.*
 sub write_result_file () {
-    my $file = $var::NMZ{result};
-
-    if (-f $file) {
-	return;
-    } 
-
-    $file =~ m!.*/(.*)$!;
-    my $fname = $1;
-    my $template = "";
-    my $buf = "";
+    my $fname = "NMZ.result.normal";
+    my $dir   = undef;
 
     my $templatedir2 = cwd() . "/../template";  # relative path from cwd
     if ($TestMode && -f "$templatedir2/$fname") {
-	$template = "$templatedir2/$fname";
+	$dir = $templatedir2;
     } else {
-	$template = "$TEMPLATEDIR/$fname";
-    }
-    if (-f $template) {
-	$buf = util::readfile($template);
-    } else {
-	return;
+	$dir = $TEMPLATEDIR;
     }
 
-    # the file must be saved in ISO-2022-JP encoding.
-    my $fh_file;
-    if ($conf::LANGUAGE eq "ja" && !$var::USE_NKF_MODULE) {
-	$fh_file = util::efopen("|$conf::NKF -j >$file");
-    } else {
-	$fh_file = util::efopen(">$file");
-    }
+    my @files = glob "$dir/NMZ.result.*";
 
-    $buf = NKF::nkf("-j", $buf) if $var::USE_NKF_MODULE;
-    print $fh_file $buf;
+    for my $file (@files) {
+	$file =~ m!(NMZ\.result\.[^/]*)$!;
+	my $target = "$var::OUTPUT_DIR/$1";
+	if (-f $target) {  # already exist;
+	    next;
+	} else {
+	    my $buf = util::readfile($file);
+	    my $fh_file = util::efopen(">$target");
+	    print $fh_file $buf;
+	}
+    }
 }
 
 # write NMZ.body and etc.

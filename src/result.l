@@ -1,7 +1,7 @@
 /*
  * result.l -
  * -*- C -*-
- * $Id: result.l,v 1.13 1999-08-31 09:15:54 satoru Exp $
+ * $Id: result.l,v 1.14 1999-09-01 02:04:54 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -199,9 +199,15 @@ void get_field_data(char *key)
 void print_hlist(HLIST hlist)
 {
     int i;
+    char template[BUFSIZE];
 
-    if (hlist.n <= 0 || HListMax == 0)
+    if (hlist.n <= 0 || HListMax == 0) {
 	return;
+    }
+
+    strcpy(template, NMZ.result);
+    strcat(template, ".");
+    strcat(template, Template);  /* usually "normal" */
 
     for (i = HListWhence; i < hlist.n; i++) {
 	strcpy(Buf, "\t");  /* '\t' has an important role cf. fputx() */
@@ -214,7 +220,7 @@ void print_hlist(HLIST hlist)
 	if (MoreShortFormat) {
 	    get_field_data("${uri}");
 	} else {
-	    if ((yyin = fopen(NMZ.result, "r")) == NULL) {
+	    if ((yyin = fopen(template, "r")) == NULL) {
 		die("print_hlist");
 		exit(-1);
 	    }

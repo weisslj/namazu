@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.12 1999-09-01 01:11:23 satoru Exp $
+ * $Id: hlist.c,v 1.13 1999-09-01 02:04:53 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -339,7 +339,6 @@ HLIST get_hlist(int index)
     int n, *buf, i;
     HLIST hlist;
     double idf = 0;
-    uchar tmp[BUFSIZE];
     hlist.n = 0;
 
     if (-1 == fseek(Nmz.i, getidxptr(Nmz.ii, index), 0))

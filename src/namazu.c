@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.18 1999-08-30 01:22:03 satoru Exp $
+ * $Id: namazu.c,v 1.19 1999-09-01 02:04:54 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -125,6 +125,7 @@ int parse_options(int argc, char **argv)
 	    break;
 	case 's':
 	    ShortFormat = 1;
+	    strcpy(Template, "short");
 	    break;
 	case 'S':
 	    MoreShortFormat = 1;

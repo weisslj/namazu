@@ -1,5 +1,9 @@
 2000-01-28  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* scripts/mknmz.pl.in (init): Overwrite $TEMPLATEDIR if
+	../template/NMZ.head exists. This is for executing mknmz in
+	scripts directory.
+
 	* configure.in: Aboslish --with-admin=EMAIL option.
 
 	* pl/var.pl.in: Fix $MAILING_ADDRESS quotation bug.

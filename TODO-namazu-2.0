@@ -1,4 +1,4 @@
-$Id: TODO-namazu-2.0,v 1.33 2000-01-20 03:27:12 rug Exp $
+$Id: TODO-namazu-2.0,v 1.34 2000-01-28 07:02:16 satoru Exp $
 
 検討項目
 
@@ -8,18 +8,10 @@ $Id: TODO-namazu-2.0,v 1.33 2000-01-20 03:27:12 rug Exp $
   * namazu の方の read_config は mknmz のように複数を読むようになっていない
     - むしろ複数読み込む mknmz の方が変? (要検討) [namazu-dev 1035]
 
-  * 常に namazurc で設定した Index ディレクトリの NMZ.{head,foot,..}.*  
-    を参照するという設定項目を namazu.conf/.namazurc に追加する
-    - Template ディレクティヴ?
-
   * NMZ.slog はライブラリが出力するものなのか? (要検討)
 
 
 即急に取り組むべき課題
-
-  * --with-admin=EMAIL を廃止し、 mknmzrc で設定可能にする
-
-  * mknmz の gettext化 (野首さん担当)
 
   * まともな libraryとして整備する
 
@@ -60,14 +52,7 @@ $Id: TODO-namazu-2.0,v 1.33 2000-01-20 03:27:12 rug Exp $
     e.g. study/studies, eat/ate/eaten
 
   * データ構造を見直す
-    - query, indices, NmzResult などを統合する
-    - Namazu *foo = nmz_new_namazu() みたいにして複数のインス
-      タンスを生成したい
-
-  * 文字列長などの制限を撤廃する
-    - すべて動的にメモリを確保する
-
-  * find でシンボリックをきちんと扱う (難しい)
+    - TODO-satoru を参照のこと
 
   * Glib を採用するとどうだろう?
 
@@ -81,7 +66,7 @@ $Id: TODO-namazu-2.0,v 1.33 2000-01-20 03:27:12 rug Exp $
 
   * エラー処理をきちんとしよう
 
-  * 頑丈かつ単純な美しく保守のしやすいコードを目指そう :-)
+  * simplicity, clarity, generality を大切にしょう :-)
 
   * ad-hoc な手法は極力避けるようにしよう
 

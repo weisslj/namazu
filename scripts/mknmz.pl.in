@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.15 2000-01-28 06:37:26 satoru Exp $
+# $Id: mknmz.pl.in,v 1.16 2000-01-28 07:02:19 satoru Exp $
 #
 # Copyright (C) 2000 Namazu Project All rights reserved..
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -40,10 +40,10 @@ $SYSTEM = $^O;
 
 $LANG = "C";                # language of messages
 my $CCS = "euc";
-my $CONFDIR  = "%CONFDIR%";    # directory where mknmzrc are in.
-my $LIBDIR  = "%LIBDIR%";      # directory where library etc. are in.
-my $FILTERDIR  = "%FILTERDIR%";      # directory where filters are in.
-my $TEMPLATEDIR  = "%TEMPLATEDIR%";  # directory where templates are in.
+my $CONFDIR       = "%CONFDIR%";     # directory where mknmzrc are in.
+my $LIBDIR        = "%LIBDIR%";      # directory where library etc. are in.
+my $FILTERDIR     = "%FILTERDIR%";   # directory where filters are in.
+my $TEMPLATEDIR   = "%TEMPLATEDIR%"; # directory where templates are in.
 
 my $DeletedFilesCount = 0;
 my $UpdatedFilesCount = 0;
@@ -224,6 +224,9 @@ sub init () {
     $SIG{'INT'}  = sub {
 	util::cdie("SIGINT caught! Aborted.\n");
     };
+
+    # For executing mknmz in scripts directory
+    $TEMPLATEDIR = "../template" if -f "../template/NMZ.head";
 }
 
 sub load_modules () {

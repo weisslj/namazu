@@ -1,5 +1,7 @@
 1999-09-08  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* configure.in (AM_INIT_AUTOMAKE): Change a version number to 1.9.4.
+
 	* template/NMZ.head.{en,ja}: Add a comment:
 	<!-- <input type="hidden" name="idxname" value="foobar"> -->
 
@@ -12,6 +14,7 @@
 	
 	* lib/find.pl: Abolish fncmp().
 
+	
 1999-09-08  NOKUBI Takatsugu <knok@daionet.gr.jp>
 
 	* Update File::MMagic.
@@ -19,6 +22,7 @@
 	* Optimized filetype checking routine.
 	
 
+	
 1999-09-07  Ryuji Abe <raeva@t3.rim.or.jp>
 
 	* configure.in: Using AC_CONFIG_SUBDIRS macro for tknamazu configuration.

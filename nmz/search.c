@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.95 2004-03-08 10:06:03 opengl2772 Exp $
+ * $Id: search.c,v 1.96 2004-03-28 00:37:19 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2003 Namazu Project All rights reserved.
@@ -452,11 +452,16 @@ do_phrase_search(const char *key, NmzResult val)
 
         word = words[i];
 	tmp = do_word_search(word, val);
-	if (tmp.stat == ERR_FATAL) 
+	if (tmp.stat == ERR_FATAL) {
+            fclose(phrase);
+            fclose(phrase_index);
 	    return tmp;
+        }
 
 	pr_hitnum = nmz_push_hitnum(pr_hitnum, word, tmp.num, tmp.stat);
 	if (pr_hitnum == NULL) {
+            fclose(phrase);
+            fclose(phrase_index);
 	    tmp.stat = ERR_FATAL;
 	    return tmp;
 	}
@@ -475,6 +480,8 @@ do_phrase_search(const char *key, NmzResult val)
 	    nmz_debug_printf("\nhash:: <%s, %s>: h:%d, val.num:%d\n",
 			     prevword, word, h, val.num);
 	    if (val.stat == ERR_FATAL) {
+                fclose(phrase);
+                fclose(phrase_index);
 		return val;
 	    }
 	}
@@ -491,6 +498,8 @@ do_phrase_search(const char *key, NmzResult val)
         /* Push dummy element */
 	cur = nmz_push_hitnum(cur, "", 0, SUCCESS);
 	if (cur == NULL) {
+            fclose(phrase);
+            fclose(phrase_index);
 	    val.stat = ERR_FATAL;
 	    return val;
 	}

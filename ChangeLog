@@ -2,6 +2,9 @@
 
         * tests/*: overwrite some environment variable.
 
+        * nmz/search.c (do_phrase_search): Forgets to fclose() at the time 
+        of an error.
+
 2004-03-27  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* tests/ja-namazu-cgi-1: The argument of namazu.cgi is deleted.
@@ -8666,4 +8669,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1135 2004-03-28 00:18:55 opengl2772 Exp $
+$Id: ChangeLog,v 1.1136 2004-03-28 00:37:18 opengl2772 Exp $

@@ -19,6 +19,9 @@
         $perlver It changes into $English::PERL_VERSION. 
         $^T It changes into $English::BASETIME.
 
+        * pl/util.pl(checkcmd): An extension is added.
+        win32_yen_to_slash() is added.
+
 2004-10-18  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * filter/{msword, excel, powerpoint}.pl: The addition of the check 
@@ -9221,4 +9224,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1256 2004-10-20 14:48:37 opengl2772 Exp $
+$Id: ChangeLog,v 1.1257 2004-10-20 16:16:09 opengl2772 Exp $

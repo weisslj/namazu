@@ -26,14 +26,9 @@ DEFS = -DLOCALEDIR=\"$(localedir)\" \
 INCLUDES  = -I.. -I../intl -I../lib -I../nmz
 LDADD = @INTLLIBS@ $(top_srcdir)/nmz/libnmz.la  ../lib/libnmzut.a 
 
-namazu_SOURCES = cgi.c form.c \
-		 namazu.c output.c \
-		 result.c \
-		 usage.c \
-		 cgi.h em.h form.h \
-		 message.h namazu.h output.h \
-		 result.h \
-		 usage.h
+namazu_SOURCES = cgi.c cgi.h em.h form.c form.h message.h \
+		 namazu.c namazu.h output.c output.h rcfile.c rcfile.h \
+		 result.c result.h usage.c usage.h
 
 namazu_cgi_SOURCES = $(namazu_SOURCES)
 namazu_cgi_LDFLAGS = -static

@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.90 2000-01-19 08:34:41 satoru Exp $
+ * $Id: namazu.c,v 1.91 2000-01-20 02:00:17 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -201,8 +201,8 @@ parse_options(int argc, char **argv)
 	    nmz_set_sortorder(ASCENDING);
 	    break;
 	case 'f':
-	    nmz_set_namazurc(optarg);
-	    if (nmz_load_rcfile(argv[0]) != SUCCESS) {
+	    set_namazurc(optarg);
+	    if (load_rcfile(argv[0]) != SUCCESS) {
 		die(nmz_get_dyingmsg());
 	    }
 	    break;
@@ -261,10 +261,10 @@ parse_options(int argc, char **argv)
 	    exit(EXIT_SUCCESS);
 	    break;
 	case 'C':
-	    if (nmz_load_rcfile(argv[0]) != SUCCESS) {
+	    if (load_rcfile(argv[0]) != SUCCESS) {
 		die(nmz_get_dyingmsg());
 	    }
-	    nmz_show_rcfile();
+	    show_rcfile();
 	    exit(EXIT_SUCCESS);
 	    break;
 	case 'L':
@@ -403,7 +403,7 @@ main(int argc, char **argv)
     textdomain(PACKAGE);
 
     if (argc == 1) { /* if no argument, assume this session as CGI */
-	if (nmz_load_rcfile(argv[0]) != SUCCESS) {
+	if (load_rcfile(argv[0]) != SUCCESS) {
 	    die(nmz_get_dyingmsg());
 	}
 	set_refprint(1);
@@ -415,7 +415,7 @@ main(int argc, char **argv)
     } else {
 	set_refprint(1);
 
-	if (nmz_load_rcfile(argv[0]) != SUCCESS) {
+	if (load_rcfile(argv[0]) != SUCCESS) {
 	    die(nmz_get_dyingmsg());
 	}
 

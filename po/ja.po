@@ -5,33 +5,13 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: namazu 2.0\n"
-"POT-Creation-Date: 2000-01-19 17:49+0900\n"
+"POT-Creation-Date: 2000-01-20 10:55+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>\n"
 "Language-Team: Japanese <satoru-t@is.aist-nara.ac.jp>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=EUC-JP\n"
 "Content-Transfer-Encoding: 8-bit\n"
-
-#: nmz/rcfile.c:580
-#, c-format
-msgid "Config:  %s\n"
-msgstr "設定ファイル:  %s\n"
-
-#: nmz/rcfile.c:583
-#, c-format
-msgid ""
-"Default: %s\n"
-"BASE:    %s\n"
-"Logging: %s\n"
-"Lang:    %s\n"
-"Scoring: %s\n"
-msgstr ""
-"標準のインデックス: %s\n"
-"<BASE>タグ: %s\n"
-"ログの記録: %s\n"
-"標準の言語: %s\n"
-"スコア計算: %s\n"
 
 #: nmz/util.c:559
 msgid "Fatal error occered!"
@@ -146,6 +126,26 @@ msgstr "参考ヒット数: "
 #: src/output.c:697
 msgid "\t<p>No document matching your query.</p>\n"
 msgstr "\t<p>検索式にマッチする文書はありませんでした。</p>\n"
+
+#: src/rcfile.c:580
+#, c-format
+msgid "Config:  %s\n"
+msgstr "設定ファイル:  %s\n"
+
+#: src/rcfile.c:583
+#, c-format
+msgid ""
+"Default: %s\n"
+"BASE:    %s\n"
+"Logging: %s\n"
+"Lang:    %s\n"
+"Scoring: %s\n"
+msgstr ""
+"標準のインデックス: %s\n"
+"<BASE>タグ: %s\n"
+"ログの記録: %s\n"
+"標準の言語: %s\n"
+"スコア計算: %s\n"
 
 #: src/usage.c:52
 #, c-format

@@ -1,4 +1,3 @@
-nmz/rcfile.c
 nmz/search.c
 nmz/wakati.c
 nmz/util.c
@@ -8,6 +7,7 @@ src/cgi.c
 src/form.c
 src/namazu.c
 src/output.c
+src/rcfile.c
 src/usage.c
 scripts/mknmz.pl.in
 pl/util.pl

@@ -1,3 +1,18 @@
+2000-01-20  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* src/rcfile.ch (set_namazurc): Remove prefix "nmz_" and all
+	callers changed.
+	(load_rcfile): Ditto.
+	(show_rcfile): Ditto.
+
+	* src/rcfile.c: Moved from ../nmz directory.
+
+	* src/rcfile.h: Ditto.
+	
+	* nmz/Makefile.am (libnmz_la_SOURCES): Remove rcfile.c and rcfile.h.
+
+	* src/Makefile.am (namazu_SOURCES): Add rcfile.c and rcfile.h.
+
 2000-01-19  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
   	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 1.9.13.

@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.51 1999-11-03 04:39:07 satoru Exp $
+dnl $Id: configure.in,v 1.52 1999-11-03 09:43:23 satoru Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -399,16 +399,17 @@ dnl *
 AM_PATH_LISPDIR
 
 dnl *
-dnl * set default $prefix and $sysconfdir at this time for next processing
+dnl * set default $prefix, $sysconfdir and $localstatedir 
+dnl * at this time for next processing
 dnl *
 test "${prefix}" = NONE && prefix=/usr/local
 test "${sysconfdir}" = '${prefix}/etc' && sysconfdir="${prefix}/etc"
+test "${localstatedir}" = '${prefix}/var' && localstatedir="${prefix}/var"
 
 dnl *
 dnl * Set default path names.
 dnl * 
-pkgdatadir="$prefix/share/namazu"
-AC_DEFINE_UNQUOTED(OPT_INDEXDIR, "${pkgdatadir}/index")
+AC_DEFINE_UNQUOTED(OPT_INDEXDIR, "${localstatedir}/${PACKAGE}/index")
 AC_DEFINE_UNQUOTED(OPT_CONFDIR,  "${sysconfdir}/${PACKAGE}")
 
 dnl *

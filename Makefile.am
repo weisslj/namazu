@@ -20,7 +20,7 @@ DISTCLEANDIRS  = File-MMagic/blib File-MMagic/CVS
 pkgdatadir = @datadir@/@PACKAGE@
 
 install-data-local:
-	$(mkinstalldirs) $(pkgdatadir)/index
+	$(mkinstalldirs) $(localstatedir)/$(PACKAGE)/index
 	for subdir in $(EXTRA_DIRS); do \
 	    cp -rp $(srcdir)/$$subdir $(pkgdatadir); \
 	    rm -rf $(pkgdatadir)/$$subdir/CVS; \

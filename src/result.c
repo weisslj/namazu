@@ -1,5 +1,5 @@
 /*
- * $Id: result.c,v 1.60 2001-07-10 08:57:38 knok Exp $
+ * $Id: result.c,v 1.61 2001-08-08 09:05:51 knok Exp $
  * 
  * Copyright (C) 1989, 1990 Free Software Foundation, Inc.
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
@@ -109,7 +109,7 @@ my_strcasestr (s1, s2)
 	    ;
 	if (!*p2)
 	    break;
-	if (ja_mode && nmz_iseuc(*s)) {
+	if (ja_mode && (nmz_iseuc(*s) || nmz_iseuc_kana1st(*s))) {
 	    i++;
 	    if (!*(++s)) break;
 	}

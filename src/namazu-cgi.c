@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu-cgi.c,v 1.17 2001-07-10 08:57:38 knok Exp $
+ * $Id: namazu-cgi.c,v 1.18 2001-08-08 09:05:51 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.

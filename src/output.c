@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.81 2001-07-10 08:57:38 knok Exp $
+ * $Id: output.c,v 1.82 2001-08-08 09:05:51 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -487,7 +487,7 @@ print_page_index(int n)
     sn = nmz_getenv("SCRIPT_NAME");
     dn = nmz_getenv("DOCUMENT_NAME");
 
-    if(strcmp(dn, "")) 
+    if(dn == NULL || *dn == '\0') 
         dn=sn;
 
     html_print(_("	<strong>Page:</strong> "));

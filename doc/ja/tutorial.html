@@ -70,11 +70,11 @@ Namazu 2.0 を初めて使う方のための入門書です。
   <dd>開発版。Perl モジュールを使った高速化が導入された。<br>
   が、正式公開はされず、開発は 1.9.x へと移った。
 <dt>1.9.x
-<dd>開発版。2.0 への開発中のものを不定期に公開したもの。<br>
+<dd>2.0 への開発中のものを不定期に公開したもの。<br>
 1.9.12 以前のものには外部からゴミのファイルを作られる可能性
 がある。
 <dt>2.0
-  <dd>今回公開された新安定版。
+  <dd>2000/02 から公開されている安定版。
 <dt>current
   <dd>次の版に向けて開発の続いているもの
 <a href="http://www.namazu.org/development.html">
@@ -88,7 +88,7 @@ Namazu は大きくわけて mknmz, namazu, namazu.cgi の三つから構成されています。
 </p>
 <ul>
 <li>mknmz<br> 
-インデックスをあらかじめ作る (perl で書かれている)
+インデックスをあらかじめ作る (Perl で書かれている)
 
 <li>namazu <br> 
 作成したインデックスを元に検索する<br> 
@@ -116,8 +116,8 @@ CGIとして利用する。(C言語で書かれている)
 <th>その他</th>
 </tr>
 <tr><td>Perl</td><td>Perl 言語処理系
-<td>○</td><td>5.6.0</td><td>5.004</td>
-<td>perl-5.6.0.tar.gz</td>
+<td>○</td><td>5.6.1</td><td>&gt;= 5.004</td>
+<td>perl-5.6.1.tar.gz</td>
 <td>Larry Wall
 GNU CPAN</td>
 <td> 
@@ -134,17 +134,17 @@ CPAN</a></td>
   <td rowspan=2>河野眞治</td>
   <td rowspan=2>
   <a href="ftp://ftp.ie.u-ryukyu.ac.jp/pub/software/kono/">琉球大学</a></td>
-  <td><br></td>
+  <td rowspan=2>1.90, 1.92 は問題があるので 1.71 を使う(脚注参照)</td>
   </tr>
 
 <tr><td>NKF</td><td>nkf Perl モジュール化</td>
   <td>▲</td><td>1.92</td><td>1.71</td>
-  <td><br></td>
+
   </tr>
 
 <tr>
  <td><a href="http://kakasi.namazu.org/index.html">KAKASI</a></td>
- <td>日本語・ ローマ字 変換系<td>△</td><td>2.3.3</td><td>&lt;=</td>
+ <td>日本語・ ローマ字 変換系<td>△</td><td>2.3.3</td><td>&gt;= 2.x</td>
  <td><a href="http://kakasi.namazu.org/stable/kakasi-2.3.3.tar.gz">
  kakasi-2.3.3.tar.gz</a></td>
  <td>
@@ -157,9 +157,9 @@ CPAN</a></td>
 <tr>
   <td><a href="http://www.daionet.gr.jp/~knok/kakasi/">Text::Kakasi</a></td>
   <td>KAKASI Perl モジュール化<td>▲</td>
-  <td>1.04</td><td>&lt;=</td>
+  <td>1.05</td><td>&lt;=</td>
   <td>
-  <a href="http://www.daionet.gr.jp/~knok/kakasi/Text-Kakasi-1.04.tar.gz">Text-Kakasi-1.04.tar.gz</a></td>
+  <a href="http://www.daionet.gr.jp/~knok/kakasi/Text-Kakasi-1.04.tar.gz">Text-Kakasi-1.05.tar.gz</a></td>
   <td><a href="http://www.daionet.gr.jp/~knok/kakasi/">野首貴嗣</a></td>
   <td><a href="http://www.daionet.gr.jp/~knok/kakasi/">Text::Kakasi</a>
   </td>
@@ -170,8 +170,8 @@ CPAN</a></td>
   <td>Chasen</td>
   <td>(茶筌) -- 日本語 形態素 解析器</td>
   <td>△</td>
-  <td>2.2.1</td><td>&lt;=</td><td>
-  <a href="http://chasen.aist-nara.ac.jp/stable/chasen/chasen-2.2.1.tar.gz">chasen-2.2.1.tar.gz</a><a href="http://chasen.aist-nara.ac.jp/stable/ipadic/ipadic-2.4.1.tar.gz">ipadic-2.4.1.tar.gz</a>
+  <td>2.2.8</td><td>&gt;= 2.02</td><td>
+  <a href="http://chasen.aist-nara.ac.jp/stable/chasen/chasen-2.2.8.tar.gz">chasen-2.2.8.tar.gz</a>
   </td><td>
   <a href="http://chasen.aist-nara.ac.jp/">奈良先端科学技術大学院大学</a>
   </td><td>
@@ -198,15 +198,15 @@ CPAN</a></td>
 <tr><td>
 <a href="http://search.cpan.org/search?mode=module&amp;query=MMagic">File::MMagic</a>
 </td><td>File 種別</td>
-<td>×</td><td>1.11</td><td>&lt;=</td>
-<td>File-MMagic-1.11.tar.gz
+<td>×</td><td>1.13</td><td>&gt;= 1.12</td>
+<td>File-MMagic-1.12.tar.gz
 <td>
   <a href="http://www.daionet.gr.jp/~knok/">
   野首貴嗣</a></td>
 <td align=CENTER>
 <a href="http://search.cpan.org/search?dist=File-MMagic">CPAN dist</a>
 </td><td>
-Namazuの配布に同梱されている
+Namazu の配布に同梱されている
 </td>
 </tr>
 </table>
@@ -224,20 +224,23 @@ KAKASI/ChaSen のどちらかが必要という意味。
 </table>
 
 <li>
-▲ は Perl モジュール化で、2.0 の機能を生かすには必要で
-す。しかし、なくても動きます。
-その場合には一つのファイル毎にわかち書きの外部 process を起
-動するので、インデックス作成の速度は遅くなります。インストー
-ルは <code>perl Makefile.PL; make; make install</code>
-と実行するだけです。問題がなければ入れておいた方がいいでしょ
-う。
+▲ は 
+Perl モジュール化で、2.0 の高速化機能を生かすために必要です。
+しかし、なくても動きます。
+その場合には一つのファイル毎にわかち書きの外部 process 
+を起動するので、インデックス作成の速度は遅くなります。
+インストールは <code>perl Makefile.PL; make; make install</code>
+と実行するだけです。
+問題がなければ入れておいた方がいいでしょう。
 <li>
 namazu 2.0 以降では ChaSen2 にだけ対応しています。
 
 
 <li>「KAKASI」か「茶筌」か ---- 大ざっぱに言うと<br>
 KAKASIの方が簡単 (安定)で速い。<br>
-茶筌の方が、少し遅いかもしれないが品質がいい。<br>
+茶筌の方が、
+少し遅いかもしれないがひらがなだけの文の取扱が出来る
+というような違いがある。<br>
 <li>ChaSen 2.02 以前では make install しても
 /usr/local/lib/libchasen.a をインストールしてくれないので、
 perl のChaSenモジュールを作るには手動で
@@ -250,18 +253,122 @@ ranlib /usr/local/lib/libchasen.a # ここはシステムに応じて
 <li>×となっている File::MMagic は namazu の配布に同梱されています。
 <li> namazu 自体の ./configure についてはINSTALL-ja
 を見てください。
+<li>以上用意した Kakasi や ChaSen は、
+namazu を ./configure する時に、
+($PATH 変数の設定によって) 利用出来るようになっている必要があります。
+後から追加した場合には、./configure からやり直して下さい。
+<li>nkf-1.90, 1.92 は
+<a href="http://www.namazu.org/ml/namazu-devel-ja/msg01599.html">
+全角空白の取扱いに問題</a>
+があります。1.71 を使うか
+修正して使うかして下さい。
 </ul>
 
 <h2><a name="japanese">日本語環境での利用</a></h2>
+<p class="note">
+Namazu 2.0.6 から環境変数の扱いが修正されました。また、mknmz
+にコマンド行引数が新設されました。
+
+<h3>環境変数の設定</h3>
 
 <p>
-Namazu 2.0 を日本語環境で利用するには<code>環境変数
-LANG</code>の設定が必要です。Windows では ja_JP.SJIS と設定
-します。UNIX では <code>ja</code>, <code>ja_JP.eucJP</code>,
-<code>ja_JP.EUC</code>, <code>ja_JP.ujis</code>などを設定し
-ます。適切な設定はシステムによって異なります。もしわからない
-場合は <code>ja</code> を設定してください。
-</p>
+Namazu 2.0
+を日本語環境で利用するには言語の切換を行う環境変数の設定が必要です。
+
+<p>
+2.0.5
+までは、以下のようにメッセージの表示と言語処理の両方で、
+全く同じ環境変数を用いていました。
+
+<p>
+<table cellspacing=0 cellpadding=3 border=1>
+<caption>言語の切換を行なう環境変数(左優先)</caption>
+<tr><td>【メッセージの表示】</td>
+<td>LANGUAGE</td>
+<td>LC_ALL</td>
+<td>LC_MESSAGES</td>
+<td>LANG</td></tr>
+<tr><td>【言語処理】</td>
+<td>LANGUAGE</td>
+<td>LC_ALL</td>
+<td>LC_MESSAGES</td>
+<td>LANG</td></tr>
+</table>
+
+<p>
+2.0.6 からは以下のように修正されました。
+
+<p>
+<table cellspacing=0 cellpadding=3 border=1>
+<caption>言語の切換を行なう環境変数(左優先)</caption>
+<tr><td>【メッセージの表示】</td>
+<td>LANGUAGE</td>
+<td>LC_ALL</td>
+<td>LC_MESSAGES</td>
+<td>LANG</td></tr>
+<tr><td>【言語処理】</td>
+<td><br></td>
+<td>LC_ALL</td>
+<td>LC_CTYPE</td>
+<td>LANG</td></tr>
+</table>
+
+<p>
+日本語の表示が欲しい時や、日本語の処理をしたい時には、
+これらの変数に、
+<table cellspacing=0 cellpadding=3>
+<tr><td>Unix OS</td><td>ja</td></tr>
+<tr><td>Windows</td><td>ja_JP.SJIS</td></tr>
+</table>
+等と設定します。例えば次のような方法で 
+
+<p>
+<table cellspacing=0 cellpadding=3 border=1>
+<tr><td>C shell 等</td><td>Bourne shell 等</td></tr>
+<tr><td><code>setenv LANG ja</code></td>
+<td><code>LANG=ja; export LANG</code></td></tr>
+</table>
+
+<p>
+LANG に ja を設定し
+(それ以外の変数に何も設定されていなければ)、
+全て日本語の表示をし、
+検索対象を日本語として処理します。
+
+<code>ja</code> という値が適当でない時には
+<code>ja_JP</code>, <code>ja_JP.eucJP</code>,
+<code>ja_JP.EUC</code>, <code>ja_JP.ujis</code>
+などという値が必要とされる場合(システム)もあります。
+
+<p>
+mknmz 実行時に環境変数が適切に設定されていないと、
+わかち書きが正しく行なわれず、
+(生成された索引の一つである) NMZ.w を覗いて見ると、
+本来なら単語が一行に一つづつ書いてあるはずなのに、
+長い文章が書いてあって、namazu/namazu.cgi で検索しても
+正しく見つけてくれないという問題が起きたり、
+filter が日本語について正しく動作しなかったりします。
+
+<h3>--indexing-lang コマンド行引数 (mknmz)</h3>
+
+<p>
+2.0.6 から mknmz に <code>--indexing-lang=LANG</code> が新設されました。
+<p>
+前述の環境変数の設定にかかわらなく mknmz の処理について
+言語の指定が出来ます。<code>--indexing-lang=ja</code> などとします。
+このオプションが指定されていない場合は前述の環境変数が参照されます。
+
+<h3>設定ファイル (namazu 及び namazu.cgi)</h3>
+
+<p>
+namazurc または .namazurc に次のように書きます。(一例です)
+<pre>
+Lang: ja
+</pre>
+
+<p>
+置く位置などについては
+<a href="../manual.html#namazurc">説明書</a> を参照して下さい。
 
 
 <h2><a name="before-make-install">make install 前の確認</a></h2>
@@ -490,10 +597,11 @@ href="manual.html#mknmz-option">mknmz --help</a>とすると得ら
 
 
 <p>
+<!--
 現在の版では<em>対象ディレクトリ</em>に symbolic link がある
 とうまく処理できません。
 </p>
-
+-->
 <h2><a name="run-namazu">動作確認 namazu</a></h2>
 
 <p>検索を行うにはコマンド行で次のように実行します。
@@ -553,8 +661,8 @@ DirectoryIndex</td><td> index.html
 
 <p>
 などが関係します。(Web管理者) と書かれているもの以外は 
-.htaccess にも設定できます。 (ただし Apache の設定次第でそれ
-を禁止されていることもある)
+.htaccess にも設定できます 
+(ただし Apache の設定次第でそれを禁止されていることもあります)。
 </p>
 
 <h2><a name="can-do">Namazu でできること</a></h2>
@@ -727,10 +835,10 @@ perl -MNKF -e ''
 <a href="http://www.namazu.org/">Namazu Homepage</a>
 </p>
 <div class="copyright">
-Copyright (C) 2000 Namazu Project. All rights reserved.
+Copyright (C) 2000,2001 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: tutorial.html,v 1.44 2001-01-29 14:19:27 rug Exp $
+$Id: tutorial.html,v 1.45 2001-08-08 09:05:45 knok Exp $
 </div>
 <address>
 developers@namazu.org

@@ -1,0 +1,30 @@
+#! /bin/sh
+#
+# Test for duplicated field.
+#
+LOG=`pwd`/test-log
+TARGET=`pwd`/data/dup-field
+IDX=idx18
+CONF=`pwd`/tmp.mknmzrc
+
+if test ! -d $IDX; then
+    mkdir $IDX
+else
+    rm -f $IDX/NMZ.*
+fi
+
+echo 'package conf;' > $CONF
+echo '$SEARCH_FIELD = "keywords|message-id|subject|from|date|uri|newsgroups|to|summary|size";' >> $CONF
+echo '$META_TAGS = "keywords|description";' >> $CONF
+
+cd ../scripts
+./mknmz --meta -f $CONF -O ../tests/$IDX $TARGET > $LOG 2>&1
+
+COUNT=`egrep 'test' ../tests/$IDX/NMZ.field.keywords|wc -l`
+
+if [ $COUNT -ne 1 ]
+then
+	exit 1
+fi
+
+exit 0

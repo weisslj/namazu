@@ -1,0 +1,34 @@
+#! /bin/sh
+#
+# Test for Japanese encoding handling.
+#
+LOG=`pwd`/test-log
+IDX=`pwd`/ja-idx1
+
+EXEC=no
+case $LANG in 
+	ja*)
+		EXEC=yes
+		;;
+esac
+if [ $EXEC = 'no' ]
+then
+	echo "Skip $0" >> $LOG
+	exit 0
+fi
+
+pwd=`pwd`
+tmprc="$pwd/../src/.namazurc"
+echo "Index $pwd" > $tmprc
+
+SCRIPT_NAME='namazu.cgi'
+QUERY_STRING='query=³¤&idxname=ja-idx1'
+export SCRIPT_NAME QUERY_STRING
+
+cd ../src
+RESULT=`./namazu.cgi -h ³¤ | grep »³ | wc -l`
+if [ $RESULT -ne 1 ]
+then
+	exit 1
+fi
+exit 0

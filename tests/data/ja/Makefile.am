@@ -10,6 +10,8 @@ EXTRA_DIST  =   acrobat3.pdf \
 		taro4.jsw \
 		taro5.jaw \
 		taro6.jbw \
+	        taro7.jfw \
+                taro8.jtd \
 		mail-multipart.txt \
 		mail.txt \
 		man.1 \
@@ -26,4 +28,6 @@ EXTRA_DIST  =   acrobat3.pdf \
 		word98.doc \
 		word2000.doc \
 		powerpoint97.ppt \
-		postscript.ps
+		postscript.ps \
+	        dvi.dvi \
+                rtf.rtf

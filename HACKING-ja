@@ -1,11 +1,34 @@
-CVS から入手した Namazu を make するには、あらかじめ以下の
-パッケージをインストールしておいてください。
 
-1. GNU m4 1.4
-2. GNU autoconf 2.13
-3. GNU automake 1.4
-4. GNU gettext 0.10.35
-5. GNU libtool (1.3 もしくはそれ以上)
+CVSへのアクセス
+
+Anonymous CVS で最新のソースコードを誰でも入手できます。
+方法は次の通りです。
+
+% cvs -d :pserver:guest@cvs.namazu.org:/storage/cvsroot login
+CVS password: guest
+% cvs -d :pserver:guest@cvs.namazu.org:/storage/cvsroot co -P namazu
+
+また、2001-06-25から安定版 (2.0.x) と開発版 (2.1.x) に分岐
+しました。安定版のソースを入手したい場合には
+
+% cvs -d :pserver:guest@cvs.namazu.org:/storage/cvsroot login
+CVS password: guest
+% cvs -d :pserver:guest@cvs.namazu.org:/storage/cvsroot co -r stable-2-0 namazu
+
+としてください。
+
+==============================================================
+
+GNU Build Tools
+
+CVS から入手した Namazu を make するには、あらかじめ以下の
+パッケージがインストールされている必要があります。
+
+	- GNU m4 1.4
+	- GNU autoconf 2.13
+	- GNU automake 1.4
+	- GNU libtool 1.3 (もしくはそれ以上)
+	- GNU gettext 0.10.35
 
 いずれも GNU のミラー(e.g. ftp://ftp.ring.gr.jp/pub/GNU) 
 から手に入れることができます。
@@ -14,8 +37,8 @@ CVS から入手した Namazu を make するには、あらかじめ以下の
 PATCHES.GT, PATCHES.LT に置きましたので、必要に応じて
 当ててください。
 
-CVS からソースを取得したら、まずautogen.sh スクリプトを実行して
-ください。
+CVS からソースを取得したら、まずautogen.sh スクリプトを実行
+してください。
 
 ================================================================
 

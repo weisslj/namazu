@@ -1,0 +1,14 @@
+#! /bin/sh
+#
+# Test for emphasised keyword
+#
+LOG=`pwd`/test-log
+IDX=`pwd`/idx17
+
+# To make messages English
+LANG= ; export LANG
+unset LANGUAGE
+unset LC_ALL
+unset LC_MESSAGES
+
+../src/namazu -h 'emphasise' $IDX | grep "emphasised" > /dev/null || exit 1

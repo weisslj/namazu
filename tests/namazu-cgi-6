@@ -1,0 +1,43 @@
+#! /bin/sh
+#
+# Test for idxname CGI paramater
+#
+LOG=`pwd`/test-log
+
+pwd=`pwd`
+tmprc=".namazurc"
+echo "Index $pwd/idx16" > $tmprc
+
+# To make messages English
+LANG= ; export LANG
+unset LANGUAGE
+unset LC_ALL
+unset LC_MESSAGES
+
+SCRIPT_NAME='namazu.cgi'
+QUERY_STRING=''
+export SCRIPT_NAME QUERY_STRING 
+
+RESULT=`../src/namazu.cgi | grep checked | wc -l`
+if [ $RESULT -ne 1 ]
+then
+	exit 1
+fi
+
+QUERY_STRING='idxname=foo&lang=C'
+export QUERY_STRING 
+
+RESULT=`../src/namazu.cgi | grep checked | wc -l`
+if [ $RESULT -ne 1 ]
+then
+	exit 1
+fi
+
+QUERY_STRING='idxname=foo&idxname=bar&lang=C'
+export QUERY_STRING 
+
+RESULT=`../src/namazu.cgi | grep checked | wc -l`
+if [ $RESULT -ne 2 ]
+then
+	exit 1
+fi

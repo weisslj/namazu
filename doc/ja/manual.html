@@ -121,9 +121,9 @@ mknmz を実行したディレクトリに NMZ.* というファイルを作成し
 
 <!-- mknmz-option -->
 <pre>
-    mknmz 2.0.5, Namazu のインデックス作成プログラム 
+    mknmz 2.0.6, Namazu のインデックス作成プログラム 
     
-    使い方: mknmz [options] &lt;target&gt;...
+    使い方: mknmz [オプション] &lt;対象&gt;...
     
     対象ファイル:
       -a, --all                すべてのファイルを対象とする
@@ -139,13 +139,14 @@ mknmz を実行したディレクトリに NMZ.* というファイルを作成し
       -M, --meta               HTMLの metaタグをフィールド指定検索に用いる
       -r, --replace=CODE       URIを置換するためのコードを指定する
           --html-split         HTMLファイルを &lt;a name=\"...\"&gt; 単位で分割処理する
-          --mtime=INT          変更日制限 find(1) の -mtime と同じ規則
+          --mtime=NUM          変更日制限 find(1) の -mtime と同じ規則
                                例: -50 で 50 日以内、+50 で 50 日より古いものだけ
     
     形態素解析:
       -c, --use-chasen        日本語の単語のわかち書きに ChaSen を用いる
       -k, --use-kakasi        日本語の単語のわかち書きに KAKASI を用いる
       -m, --use-chasen-noun   名詞のみを抽出する
+      -L, --indexing-lang=LANG インデックス時に言語に特化した処理を行なう
     
     文字列処理:
       -E, --no-edge-symbol  単語の両端の記号は削除する
@@ -191,7 +192,7 @@ mknmz は
 <li><code>$(sysconfdir)/$(PACKAGE)/mknmzrc</code><br>
 通常は /usr/local/etc/mknmz/mknmzrc
 <li>~/.mknmzrc
-<li>-f, --config=FILE オプションで指定した mknmzrc
+<li>-f, --config=FILE オプションで FILE に指定した mknmzrc(等)
 </ol>
 
 <p>
@@ -379,7 +380,7 @@ JSTXT</a>
 
 <!-- namazu-option -->
 <pre>
-    namazu 2.0.5, Namazu の検索プログラム
+    namazu 2.0.6, Namazu の検索プログラム
     
     使い方: namazu [options] &lt;query&gt; [index]...
         -n, --max=NUM           一度に表示する件数
@@ -424,9 +425,8 @@ href="#default-index">基本インデックス</a>が検索対象となりま
 </p>
 
 <p>
-コマンド行から実行したときは標準では質素なテキストとして検索
-結果を出力します。HTML で出力する場合には -h オプションを指
-定します。
+コマンド行から実行したときは標準では平文で検索結果を出力します。
+HTML で出力する場合には -h オプションを指定します。
 </p>
 
 <p>
@@ -981,7 +981,7 @@ Tknamazu および namazu.el から検索するときは必ず後者で指定します。
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: manual.html,v 1.60 2001-02-05 12:18:58 shirai Exp $
+$Id: manual.html,v 1.61 2001-08-08 09:05:45 knok Exp $
 </div>
 <address>
 developers@namazu.org

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.22 2001-06-21 06:21:33 rug Exp $
+# $Id: util.pl,v 1.23 2001-08-08 09:05:49 knok Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -145,7 +145,7 @@ sub filesize($) {
 	    return '';
 	}
     } else {
-	$fh = efopen($arg);
+	$fh = efopen($arg) || return 0; # in case file is removed after find_file
     }
     my $size = -s $fh;
     return $size;
@@ -216,23 +216,23 @@ sub remove_tmpfiles () {
 sub set_lang () {
     for my $cand (("LANGUAGE", "LC_ALL", "LC_MESSAGES", "LANG")) {
 	if (defined($ENV{$cand})) {
-	    $LANG_MSG = $ENV{$cand};
+	    $util::LANG_MSG = $ENV{$cand};
 	    last;
 	}
     }
     for my $cand (("LC_ALL", "LC_CTYPE", "LANG")) {
 	if (defined($ENV{$cand})) {
-	    $LANG = $ENV{$cand};
+	    $util::LANG = $ENV{$cand};
 	    last;
 	}
     }
-    # print "LANG: $LANG\n";
+    # print "LANG: $util::LANG\n";
 }
 
 sub islang_msg($) {
     my ($lang) = @_;
 
-    if ($LANG_MSG =~ /^$lang/) {  # prefix matching
+    if ($util::LANG_MSG =~ /^$lang/) {  # prefix matching
 	return 1;
     } else {
 	return 0;
@@ -242,7 +242,7 @@ sub islang_msg($) {
 sub islang($) {
     my ($lang) = @_;
 
-    if ($LANG =~ /^$lang/) {  # prefix matching
+    if ($util::LANG =~ /^$lang/) {  # prefix matching
 	return 1;
     } else {
 	return 0;

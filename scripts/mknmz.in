@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.86 2001-07-10 08:57:37 knok Exp $
+# $Id: mknmz.in,v 1.87 2001-08-08 09:05:50 knok Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -1014,6 +1014,7 @@ sub parse_options
     my $update_index = undef;
     my $include_file = undef;
     my $target_list = undef;
+    my $index_lang = undef;
 
 #    Getopt::Long::Configure('bundling');
     Getopt::Long::config('bundling');
@@ -1033,6 +1034,7 @@ sub parse_options
 	       'H|no-hiragana'       => \$var::Opt{'hiragana'},
 	       'I|include=s'         => \$include_file,
 	       'K|no-symbol'         => \$var::Opt{'nosymbol'},
+	       'L|indexing-lang=s'     => \$index_lang,
 	       'M|meta'              => \$var::Opt{'meta'},
 	       'O|output-dir=s'      => \$output_dir,
 	       'S|checkpoint-sub'    => \$opt_checkpoint_sub,
@@ -1069,6 +1071,11 @@ sub parse_options
     }
     load_filtermodules(); # to make effect $opt_config.
     postload_modules();
+
+    if ($index_lang) {
+	$util::LANG = $index_lang;
+      util::dprint("Override indexing language: $util::LANG\n");
+    }
 
     if ($opt_help) {
 	show_usage();
@@ -1309,7 +1316,7 @@ sub find_target (@) {
 		add_target($fname, \@flist, \%counts);
 	    };
 
-	    find($wanted_closure, @subtargets);
+	    find($wanted_closure, @subtargets) if (@subtargets > 0);
 	} else {
 	    print STDERR _("unsupported target: ") . $target;
 	}

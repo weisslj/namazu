@@ -30,6 +30,8 @@ EXTRA_DIST = $\
 	var.pl \
 	wakati.pl
 
+CLEANFILES = gettext.pl
+
 gettext.pl: gettext.pl.in Makefile
 	rm -f gettext.pl
 	sed -e 's!@LOCALEDIR@!$(localedir)!g' \

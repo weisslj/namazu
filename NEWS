@@ -1,4 +1,4 @@
-Overview of Changes in Namazu 2.0.6 (draft) - Jun 25, 2001
+Overview of Changes in Namazu 2.0.6 (draft) - Jul 27, 2001
 
 * Fix path delimiter problem on Windows environment.
  (namazu-win32-ja#00411)
@@ -9,6 +9,7 @@ Overview of Changes in Namazu 2.0.6 (draft) - Jun 25, 2001
 * Fix ignore $FILTERDIR specification.
  (namazu-bugs-ja#45)
 * Fix locale related environment variables handling.
+* Add -L and --indexing-lang options for mknmz text-processing.
 * Fix ERR_TOO_MANY_HIT handling and total documents counting. 
 * Add more scoring(ranking) methods.
   DOCLENGTH, FRESHNESS, URILENGTH

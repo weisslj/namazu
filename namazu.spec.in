@@ -39,6 +39,9 @@ Requires: webserver
 A CGI interface for Namazu.
 
 %changelog
+* Thu Jul 26 2001 Ryuji Abe <rug@namazu.org>
+- fix %files
+
 * Sat Jun 23 2001 Ryuji Abe <rug@namazu.org>
 - fix summary and %description
 
@@ -148,14 +151,16 @@ rm -rf %{buildroot}
 
 %files -f %{name}.lang
 %defattr(-, root, root)
-%doc AUTHORS ChangeLog ChangeLog.1 CREDITS COPYING INSTALL INSTALL-ja
-%doc README README-es README-ja NEWS THANKS TODO etc/namazu.png
+%doc AUTHORS ChangeLog ChangeLog.1 CREDITS COPYING HACKING HACKING-ja
+%doc INSTALL INSTALL-ja README README-es README-ja NEWS THANKS TODO
+%doc etc/namazu.png
 %config %{_sysconfdir}/namazu/*
 %{_bindir}/namazu
 %{_bindir}/bnamazu
 %{_bindir}/*nmz
 %{_bindir}/mailutime
 %{_bindir}/nmzgrep
+%{_bindir}/nmzmerge
 %{_libdir}/*.so.*
 %{_mandir}/man1/*
 %{_datadir}/namazu/doc/*

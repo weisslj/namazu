@@ -1,0 +1,18 @@
+#! /bin/sh
+#
+# Test for emphasized keyword.
+#
+LOG=`pwd`/test-log
+TARGET=`pwd`/data/emphasize
+IDX=idx17
+
+if test ! -d $IDX; then
+    mkdir $IDX
+else
+    rm -f $IDX/NMZ.*
+fi
+
+# Simple indexing.
+cd ../scripts
+./mknmz -O ../tests/$IDX $TARGET >> $LOG
+exit $?

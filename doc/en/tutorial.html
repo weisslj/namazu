@@ -78,7 +78,7 @@ development was transferred to 1.9.x
   <dd>Development version.  In-progress versions that are released during the development of version 2.0 <br> since the versions
 
 <dt>2.0
-  <dd>New stable version.
+  <dd>Stable version since 2000/02.
 <dt>current
   <dd> In-progress/On-going/Current(??) versions 
 <a href="http://www.namazu.org/development.html">
@@ -88,19 +88,19 @@ current</a> can be obtained by CVS.
 <h2><a name="components">Namazu components</a></h2> 
 
 <p>
-Namazu broadly consists of three components, mknmz, namazu, namazu.cgi.
+Namazu consists of three major components, mknmz, namazu, namazu.cgi.
 </p>
 <ul>
 <li>mknmz<br> 
-Create index before searching. (written in perl)
+Create index files before searching. (written in Perl)
 
 <li>namazu <br> 
 Search documents based on the created index. <br>
-Use it on the command line. (written in C)
+This is from the command line use only. (written in C)
 
 <li>namazu.cgi<br>
 Search documents based on the created index. <br>
-Use it as CGI. (written in C)
+For cgi-bin use only (written in C).
 </ul> 
 
 <h2><a name="prep-make">Preparation and make</a></h2>
@@ -120,8 +120,8 @@ You need the following softwares to build Namazu 2.0.
 <th>Others</th>
 </tr>
 <tr><td>Perl</td><td>Perl Language
-<td>Required</td><td>5.6.0</td><td>5.004</td>
-<td>perl-5.6.0.tar.gz</td>
+<td>Required</td><td>5.6.1</td><td> &gt;= 5.004</td>
+<td>perl-5.6.1.tar.gz</td>
 <td>Larry Wall
 GNU CPAN</td>
 <td> 
@@ -137,18 +137,17 @@ CPAN</a></td>
   <td rowspan=2>Shinji Kono</td>
   <td rowspan=2>
   <a href="ftp://ftp.ie.u-ryukyu.ac.jp/pub/software/kono/">University of Ryukuyus</a></td>
-  <td><br></td>
+  <td rowspan=2>avoid using version 1.90, 1.92 (See notes)</td>
   </tr>
 
 <tr><td>NKF</td><td>nkf Perl Module</td>
   <td>for Japanese processing only. ++</td><td>1.92</td><td>1.71</td>
-  <td><br></td>
   </tr>
 
 <tr>
  <td><a href="http://kakasi.namazu.org/index.html">KAKASI</a></td>
  <td>Japanese/Romaji Conversion<td>for Japanese processing
- only. **</td><td>2.3.3</td><td>&lt;=</td>
+ only. **</td><td>2.3.3</td><td>&gt;= 2.x</td>
  <td><a href="http://kakasi.namazu.org/stable/kakasi-2.3.3.tar.gz">
  kakasi-2.3.3.tar.gz</a></td>
  <td>
@@ -161,9 +160,9 @@ CPAN</a></td>
 <tr>
   <td><a href="http://www.daionet.gr.jp/~knok/kakasi/">Text::Kakasi</a></td>
   <td>KAKASI Perl Module<td>for Japanese processing only. ++</td>
-  <td>1.04</td><td>&lt;=</td>
+  <td>1.05</td><td>&lt;=</td>
   <td>
-  <a href="http://www.daionet.gr.jp/~knok/kakasi/Text-Kakasi-1.04.tar.gz">Text-Kakasi-1.04.tar.gz</a></td>
+  <a href="http://www.daionet.gr.jp/~knok/kakasi/Text-Kakasi-1.04.tar.gz">Text-Kakasi-1.05.tar.gz</a></td>
   <td><a href="http://www.daionet.gr.jp/~knok/kakasi/">NOKUBI Takatsugu</a></td>
   <td><a href="http://www.daionet.gr.jp/~knok/kakasi/">Text::Kakasi</a>
   </td>
@@ -174,8 +173,8 @@ CPAN</a></td>
   <td>ChaSen</td>
   <td>(ChaSen) -- Japanese Morphology Analyzer</td>
   <td>for Japanese processing only. **</td>
-  <td>2.2.1</td><td>&lt;=</td><td>
-  <a href="http://chasen.aist-nara.ac.jp/stable/chasen/chasen-2.2.1.tar.gz">chasen-2.2.1.tar.gz</a><a href="http://chasen.aist-nara.ac.jp/stable/ipadic/ipadic-2.4.1.tar.gz">ipadic-2.4.1.tar.gz</a>
+  <td>2.2.8</td><td>&gt;= 2.0x</td><td>
+  <a href="http://chasen.aist-nara.ac.jp/stable/chasen/chasen-2.2.8.tar.gz">chasen-2.2.8.tar.gz</a>
   </td><td>
   <a href="http://chasen.aist-nara.ac.jp/">Nara Institute of Science and Technology </a>
   </td><td>
@@ -202,8 +201,8 @@ CPAN</a></td>
 <tr><td>
 <a href="http://search.cpan.org/search?mode=module&amp;query=MMagic">File::MMagic</a>
 </td><td>File Type</td>
-<td>Included</td><td>1.11</td><td>&lt;=</td>
-<td>File-MMagic-1.11.tar.gz
+<td>Included</td><td>1.13</td><td>&gt;= 1.12</td>
+<td>File-MMagic-1.12.tar.gz
 <td>
   <a href="http://www.daionet.gr.jp/~knok/">
   NOKUBI Takatsugu</a></td>
@@ -216,12 +215,28 @@ This is packaged in Namazu distribution.
 </table>
 
 <ul>
-<li>nkf, KAKASI, ChaSen, NKF, Text::Kakasi and Text::ChanSen
-are required only if you want to use Namazu for handling
-Japanese documents. If not, you have not to have them.
-
 <li>
-** means that you need either KAKASI or ChaSen for Japanese processing.
+Checked as 
+(++) means Perl modules, and is required if you use accerallated
+functions introduced in Namazu 2.0. But, Namazu works
+without them. In this case, the speed to create index will be
+slow, since the external segmentation process is
+executed file by file. To install them, just execute <code>perl
+Makefile.PL; make; make install</code>. We recommend to
+install Perl modules, unless you have particular difficulties in doing so.
+
+<li>File::MMagic indicated by [included] is packaged in Namazu distribution.
+<li>Please refer to INSTALL for ./configure in namazu distribution.
+
+</ul>
+(Notes listed below are for Japanese processing only.)
+<ul>
+<li>Nkf, KAKASI, ChaSen, NKF, Text::Kakasi and Text::ChanSen
+are required only if you want to use Namazu for handling
+Japanese documents. If not, you don't need them.
+
+<li> Checked as
+(**) means that you need either KAKASI or ChaSen for Japanese processing.
 <table cellspacing=0 cellpadding=3 border=1>
 <tr><td>If you have both ...</td><td>
 For segmentation, KAKASI is used by default, however, ChaSen can be used by specifying -c option.</tr>
@@ -230,20 +245,13 @@ When executing ./configure, Namazu selects which one to use.</tr>
 </table>
 
 <li>
-++ means Perl modules, and is required if you use new
-functions introduced in Namazu 2.0. But, Namazu works
-without. In this case, the speed to create index will be
-slow, since the external segmentation process is
-executed. For installation, just execute <code>perl
-Makefile.PL; make; make install</code>. We recommend to
-install Perl modules, unless you have particular reasons.
-
-<li>
-Only ChaSen2 works for namazu 2.0 or later.
+Namazu 2.0x requires ChaSen 2.x.
+The older version of ChaSen 1.x will not work with Namazu 2.0.x.
 
 <li>Which to choose "KAKASI" or "ChaSen" --- in a nutshell<br>
 KAKASI is easier and faster.<br>
-ChaSen is slower but in better quality.<br>
+ChaSen is slightly slower but has some advantage like better handling
+of Hiragana-only-sentence.<br>
 <li>For ChaSen 2.02 or earlier, <code>make install</code> does not install
 /usr/local/lib/libchasen.a automatically. So to build 
 perl ChaSen module, you will need to do 
@@ -253,22 +261,121 @@ ranlib /usr/local/lib/libchasen.a # depending on your system
 </pre>
 manually.
 
-<li>File::MMagic indicated by [included] is packaged in Namazu distribution.
-<li>Please refer to INSTALL for ./configure in namazu distribution.
+<li>Kakasi or ChaSen mentioned above should be
+visible when you run ./configure through $PATH variable. If you add those
+packages later, you have to start over from ./configure.
+<li>nkf-1.90, 1.92 has problem in handling two bytes space character.
+Use 1.71 or 
+<a href="http://www.namazu.org/ml/namazu-devel-ja/msg01599.html">
+patch</a>
+should be applied. 
 </ul>
 
+
 <h2><a name="japanese">Japanese Environment</a></h2>
+<p class="note">
+Since 2.0.6, the handling of environment variables was changed.
+Besides, new command line option was added in mknmz.
+
+<h3>environment variables</h3>
 
 <p>
-You will need to set up <code>LANG</code> environment
-variable to use Namazu 2.0 under Japanese environment. For
-Windows, LANG is set to ja_JP.SJIS. For Unix, LANG is set to
-<code>ja</code>, <code>ja_JP.eucJP</code>,
-<code>ja_JP.EUC</code>, or <code>ja_JP.ujis</code>. The
-appropriate LANG will depends on your system. If you have no
-clues, just set LANG to <code>ja</code>.
-</p>
+To use Namazu 2.0 under Japanese environment, you may need
+to set up environment variables for language selection.
 
+<p>
+With 2.0.5 (or earlier), the same environment variables were used
+to switch 
+for both message translations and internal text processing.
+
+<p>
+<table cellspacing=0 cellpadding=3 border=1>
+<caption> Environment variable names for language selection (priority with left to right)</caption>
+<tr><td>Message translations</td>
+<td>LANGUAGE</td>
+<td>LC_ALL</td>
+<td>LC_MESSAGES</td>
+<td>LANG</td></tr>
+<tr><td>Text processing</td>
+<td>LANGUAGE</td>
+<td>LC_ALL</td>
+<td>LC_MESSAGES</td>
+<td>LANG</td></tr>
+</table>
+
+<p>
+With 2.0.6, We modified as follows.
+
+<p>
+<table cellspacing=0 cellpadding=3 border=1>
+<caption> Environment variable names for language selection (priority with left to right)</caption>
+<tr><td>Message Translations</td>
+<td>LANGUAGE</td>
+<td>LC_ALL</td>
+<td>LC_MESSAGES</td>
+<td>LANG</td></tr>
+<tr><td>Text processing</td>
+<td><br></td>
+<td>LC_ALL</td>
+<td>LC_CTYPE</td>
+<td>LANG</td></tr>
+</table>
+
+<p>
+The typical example to process Japanese is to set
+following values, depending on your system environment.
+<table cellspacing=0 cellpadding=3>
+<caption>Setting language Sample</caption>
+<tr><td>Unix OS</td><td>ja</td></tr>
+<tr><td>Windows</td><td>ja_JP.SJIS</td></tr>
+</table>
+
+<p>
+The actual command to set value show above
+may again depend your shell,
+
+<p>
+<table cellspacing=0 cellpadding=3 border=1>
+<tr><td>C shell</td><td>Bourne shell etc</td></tr>
+<tr><td><code>setenv LANG ja</code></td>
+<td><code>LANG=ja; export LANG</code></td></tr>
+</table>
+
+<p>
+With above example, value(ja) is set for LANG,
+and all the processing will be for Japanese.
+
+Some system may require
+<code>ja_JP</code>, <code>ja_JP.eucJP</code>,
+<code>ja_JP.EUC</code>, <code>ja_JP.ujis</code>
+instead of just <code>ja</code>.
+
+<p>
+If the variables are not properly set when mknmz is executed,
+the resulting index files are not in good shape. If you 
+browse one of the file, NMZ.w, supposed to have one (Japanese)
+word per line, instead, you have long sentence not segmented
+in each line. In that case,
+namazu or namazu.cgi execution will not show you the correct
+results.
+
+<h3>--indexing-lang command line option (mknmz)</h3>
+<p>
+Since 2.0.6, the <code>--indexing-lang=LANG</code> option has
+been added in mknmz command.
+<p>
+You can specify language-processing-type with the option 
+like <code>--indexing-lang=ja</code>
+(command line option given overrides environment variable).
+
+<!--
+<h3>rcfile (namazu and namazu.cgi)</h3>
+<p>
+Write in namazurc or .namazurc. (for example)
+<pre>
+Lang: ja
+</pre>
+-->
 
 <h2><a name="before-make-install">Test before "make install"</a></h2>
 <p>
@@ -498,12 +605,12 @@ time.
 <tr><td></td><td>--exclude=PATTERN</td><td>specify the regular expression of to-be-excluded path names.</td></tr>
 </table>
 
-
+<!--
 <p>
 The current version cannot cope with symbolic link in the
 <em>target directory</em>.
 </p>
-
+-->
 <h2><a name="run-namazu">Running namazu</a></h2>
 
 <p>To search documents, do
@@ -744,10 +851,10 @@ modules will be used.
 <a href="http://www.namazu.org/">Namazu Homepage</a>
 </p>
 <div class="copyright">
-Copyright (C) 2000 Namazu Project. All rights reserved.
+Copyright (C) 2000,2001 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: tutorial.html,v 1.10 2001-07-10 09:38:54 baba Exp $
+$Id: tutorial.html,v 1.11 2001-08-08 09:05:44 knok Exp $
 </div>
 <address>
 developers@namazu.org

@@ -2,7 +2,7 @@
  * 
  * usage.c -
  * 
- * $Id: usage.c,v 1.26 2000-02-23 13:22:44 satoru Exp $
+ * $Id: usage.c,v 1.27 2001-08-08 09:05:51 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -55,7 +55,7 @@ Usage: namazu [options] <query> [index]... \n\
     -w, --whence=NUM     set first number of documents shown to NUM.\n\
     -l, --list           print results by listing format.\n\
     -s, --short          print results by short format.\n\
-        --results=EXT    set NMZ.result.EXT for printing results.\n\
+        --result=EXT     set NMZ.result.EXT for printing results.\n\
         --late           sort documents in late order.\n\
         --early          sort documents in early order.\n\
         --sort=METHOD    set a sort METHOD (score, date, field:name)\n\

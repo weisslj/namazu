@@ -1,3 +1,189 @@
+2001-08-08  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* Merged with stable-2-0 branch.
+
+	* src/usage.c (show_usage): Fixed a typo (s/results/result/)
+	Reported by Jon Steinhart, thanks.
+
+	* po/*.po: Ditto.
+
+2001-08-08  Ryuji Abe  <rug@namazu.org>
+
+	* pl/Makefile.am (CLEANFILES): Remove gettext.pl when make clean.
+
+2001-08-07  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* configure.in (AM_INIT_AUTOMAKE): Bumped version number
+	to 2.0.6rc7.
+	
+	* Committed Kazuhiko's contribution.
+	  + scripts/{adnmz,lnnmz}.in: Use %PERL% instead of @PERL@.
+	  + scripts/Makefile.am (adnmz): Substitute @PERLLIBDIR@ and %PERL%.
+	    (lnnmz): Ditto.
+	  + configure.in (ac_cv_path_MKNMZ): Remove scripts/{lnnmz|adnmz}.
+
+2001-08-07  Makoto Fujiwara  <makoto@harry.ki.nu>
+
+	* doc/en/manual.html: Update --help output for 2.0.6.
+	* doc/en/tutorial.html: Adjust wording only
+
+2001-08-06  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* configure.in (AM_INIT_AUTOMAKE): Bumped version number
+	to 2.0.6rc6.
+
+2001-08-06  Ryuji Abe  <rug@namazu.org>
+
+	* configure.in: Fixed macro orders.
+	(AC_PROG_LIBTOOL): Use instead of AM_PROG_LIBTOOL.
+
+2001-08-02  Ryuji Abe  <rug@namazu.org>
+
+	* doc/en/tutorial.html: Fixed description about Japanese
+	environment section.
+
+	* doc/ja/tutorial.html: Likewise.
+
+2001-08-01  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* doc/en/tutorial.html: Added description about --indexing-lang
+	option.
+
+	* configure.in (AM_INIT_AUTOMAKE): Bumped version number
+	to 2.0.6rc5.
+
+2001-08-01  Ryuji Abe  <rug@namazu.org>
+
+	* doc/en/tutorial.html: Fix and update version information of
+	several packages.
+
+	* doc/ja/tutorial.html: Likewise.
+	
+2001-08-01  Makoto Fujiwara  <makoto@harry.ki.nu>
+	* doc/ja/manual.html: Replace --help output with  2.0.6
+	
+	* doc/ja/tutorial.html: command line option -> hikisu
+
+2001-07-31  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* tests/{mknmz-16,namazu-cgi-7}: Added some test scripts.
+
+	* src/output.c (print_page_index): Fixed missing SCRIPT_NAME bug.
+
+2001-07-30  Makoto Fujiwara  <makoto@harry.ki.nu>
+
+	* doc/ja/tutorial.html: add --indexing-lang= and namazurc etc
+	
+2001-07-30  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* po/fr.po: Updated.
+	(Contributed by Stephane Legrand.)
+
+2001-07-29  Ryuji Abe  <rug@namazu.org>
+
+	* configure.in (AM_INIT_AUTOMAKE): Bumped version number
+	to 2.0.6rc4.
+
+2001-07-28  Makoto Fujiwara  <makoto@harry.ki.nu>
+
+	* doc/{ja,en}/tutorial.html: Reflect LANG/switch scheme
+	at Japanese Processing, and ChaSen 2.2.7 to 2.2.8.
+
+2001-07-27  Ryuji Abe  <rug@namazu.org>
+
+	* NEWS: Added description about new feature, -L and
+	--indexing-lang options.
+
+2001-07-27  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* po/ja.po: Added some tranlated message.
+
+	* po/*.po: Updated.
+
+	* pl/usage.pl: Added missing escape character.
+
+2001-07-26  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* pl/util.pl: Reverted treatment of LANG/LANG_MSG variables.
+
+	* pl/conf.pl.in: Ditto.
+
+	* scripts/mknmz.in: Ditto.
+
+2001-07-26  Ryuji Abe  <rug@namazu.org>
+
+	* HACKING: New file.
+
+	* HACKING-ja: Added information about CVS access.
+
+	* Makefile.am (etc_DATA): Added HACKING files and deleted
+	spec files.
+	(EXTRA_DIST): Added spec files.
+
+2001-07-25  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* scripts/mknmz.in (parse_options): Added --indexing-lang option.
+
+	* pl/usage.pl: Ditto.
+
+	* pl/util.pl: Moved LANG/LANG_MSG variables to conf.pl.in.
+
+	* pl/conf.pl.in: Ditto.
+
+	* scripts/mknmz.in: Ditto.
+
+2001-07-16  Yoshinori TAKESAKO  <takesako@namazu.org>
+
+	* Makefile.am: Updated $etc_DATA, these files are installed 
+	to $(prefix)/share/namazu/etc/ which default is $etcdir.
+
+2001-07-14  Yoshinori TAKESAKO  <takesako@namazu.org>
+
+	* CREDITS: Updated. (make -f maintMakefile update-credits)
+
+2001-07-13  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.0.6rc3.
+
+	* filter/msword.pl : Changed to use wvHtml instead wvWare.
+
+2001-07-12  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.0.6rc2.
+
+	* po/fr.po: Fixed header.
+
+	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.0.6rc1.
+
+	* tests/data/{en,ja}/Makefile.am (EXTRA_DIST): Added some data.
+
+2001-07-12  Yoshinori TAKESAKO  <takesako@namazu.org>
+
+	* src/result.c (my_strcasestr): It was made O.K. 
+	even if 'JIS X 0201 KATAKANA' is contained in EUC-JP.
+
+2001-07-12  Makoto Fujiwara  <makoto@harry.ki.nu>
+
+	* doc/{ja,en}/tutorial.html: Revert to use nkf-1.71 only
+	  Thanks Furukawa San, at
+	  http://www.namazu.org/ml/namazu-devel-ja/msg01599.html
+	
+	  Foot note for prerequisite table in English sorted for
+	  general comment and for Japanese processing only.
+
+2001-07-11  Makoto Fujiwara  <makoto@harry.ki.nu>
+
+	* doc/{ja,en}/tutorial.html: Version Updates, Copyright
+
+	* pl/util.pl: http://www.namazu.org/ml/namazu-devel-ja/msg01227.html
+	 (In case the file is removed after find_file executed.)
+	
+2001-07-11  Yoshinori TAKESAKO  <takesako@namazu.org>
+
+	* scripts/mknmz.in (find_target): Fixed the bug which occurs 
+	in mknmz (using Perl5.6 and above) when a target directory is 
+	a symbolic link. It was found from the test suite of mknmz-11.
+
 2001-07-10  Hajime BABA  <hajime.baba@nao.ac.jp>
 	
 	* doc/en/*.html: Corrected trivial mis-spellings.
@@ -6694,4 +6880,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.843 2001-07-10 10:02:06 baba Exp $
+$Id: ChangeLog,v 1.844 2001-08-08 09:05:44 knok Exp $

@@ -13,8 +13,8 @@ AUTOMAKE_OPTIONS = 1.4 no-dependencies
 bin_SCRIPTS    = bnamazu gcnmz kwnmz mailutime mknmz nmzgrep rfnmz vfnmz lnnmz adnmz nmzmerge
 noinst_SCRIPTS = gtnmz
 
-EXTRA_DIST = gcnmz.in kwnmz.in mknmz.in nmzmerge.in
-CLEANFILES  = gcnmz mknmz kwnmz nmzmerge
+EXTRA_DIST = gcnmz.in kwnmz.in mknmz.in nmzmerge.in adnmz.in lnnmz.in
+CLEANFILES  = gcnmz mknmz kwnmz nmzmerge adnmz lnnmz
 
 localedir   = $(prefix)/$(DATADIRNAME)/locale
 confdir     = $(sysconfdir)/$(PACKAGE)
@@ -54,6 +54,20 @@ mknmz: mknmz.in Makefile
 	    -e 's!@TEMPLATEDIR@!$(templatedir)!g' $(srcdir)/mknmz.in >mknmz.tmp 
 	mv mknmz.tmp mknmz
 	chmod +x mknmz
+
+adnmz: adnmz.in Makefile
+	rm -f adnmz
+	sed -e 's!%PERL%!$(PERL)!g' \
+	    -e 's!@PERLLIBDIR@!$(perllibdir)!g' $(srcdir)/adnmz.in > adnmz.tmp
+	mv adnmz.tmp adnmz
+	chmod +x adnmz
+
+lnnmz: lnnmz.in Makefile
+	rm -f lnnmz
+	sed -e 's!%PERL%!$(PERL)!g' \
+	    -e 's!@PERLLIBDIR@!$(perllibdir)!g' $(srcdir)/lnnmz.in > lnnmz.tmp
+	mv lnnmz.tmp lnnmz
+	chmod +x lnnmz
 
 ETAGS_ARGS = $(SCRIPTS) --lang=perl
 TAGS_DEPENDENCIES = $(SCRIPTS)

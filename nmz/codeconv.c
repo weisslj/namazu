@@ -2,7 +2,7 @@
  * 
  * codeconv.c -
  * 
- * $Id: codeconv.c,v 1.30 2001-07-10 08:57:34 knok Exp $
+ * $Id: codeconv.c,v 1.31 2001-08-08 09:05:47 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: msword.pl,v 1.28 2000-12-28 04:31:46 knok Exp $
+# $Id: msword.pl,v 1.29 2001-08-08 09:05:46 knok Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Satoru Takabayashi Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -39,17 +39,7 @@ sub mediatype() {
 }
 
 sub status() {
-    $wordconvpath = util::checkcmd('wvWare');
-    if (defined $wordconvpath) {
-	my ($libpath) = `wv-libconfig` =~ /\s*-L\s*(\S*)/;
-	if (defined $libpath) {
-	    $wordconvpath .= " --config $libpath/wv/wvHtml.xml";
-	} else {
-	    $wordconvpath = undef;
-	}
-    } else {
-	$wordconvpath = util::checkcmd('wvHtml');
-    }
+    $wordconvpath = util::checkcmd('wvHtml');
     if (defined $wordconvpath) {
 	if (!util::islang("ja")) {
 	    return 'yes';
@@ -118,7 +108,7 @@ sub filter_wv ($$$$$) {
     }
 
     if (!util::islang("ja")) {
-	system("$wordconvpath $tmpfile > $tmpfile2");
+	system("$wordconvpath $tmpfile $tmpfile2");
     } else {
 	my $version = "unknown";
 	my $supported = undef;
@@ -135,7 +125,10 @@ sub filter_wv ($$$$$) {
 	    }
 	}
 	return _("Unsupported format: ") .  $version unless $supported;
-	system("$wordconvpath $tmpfile | $utfconvpath -Iu8 -Oej > $tmpfile2");
+	system("$wordconvpath $tmpfile $tmpfile2");
+        system("$utfconvpath -Iu8 -Oej $tmpfile2 > $tmpfile");
+	unlink($tmpfile2);
+	rename($tmpfile, $tmpfile2);
     }
 
     {

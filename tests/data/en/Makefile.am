@@ -14,4 +14,7 @@ EXTRA_DIST  = acrobat3.pdf \
 	      tex.tex \
 	      word97.doc \
 	      powerpoint97.ppt \
-	      postscript.ps
+	      postscript.ps \
+	      dvi.dvi \
+              namazu-dummy_1.0-1_i386.deb \
+              rpm.rpm

@@ -47,6 +47,12 @@ cxref-latex2e: src/namazu
 	platex namazu.tex # Two passes are needed for referencing.
 
 
+update:
+	./make_sjis_po
+	cd doc && make update-doc
+	cd man && make update-man
+
+
 global: HTAGS
 
 HTAGS: GTAGS

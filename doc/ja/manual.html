@@ -165,6 +165,7 @@ mknmz を実行したディレクトリに NMZ.* というファイルを作成し
     
     その他:
       -s, --checkpoint        チェックポイント機構を作動させる
+      -C, --show-config       現在の設定を表示する
       -f, --config=FILE       設定ファイルを指定する
       -I, --include=FILE      カスタマイズ用ファイルを読み込む
       -O, --output-dir=DIR    インデックスの出力先を指定する
@@ -317,34 +318,34 @@ ole から始まる文書フィルタは Windows専用です。Windows環境で
 
 <!-- namazu-option -->
 <pre>
-    namazu 2.0, Namazu の検索プログラム
+    namazu 2.0, a search program of Namazu.
     
-    使い方: namazu [options] &lt;query&gt; [index]...
-        -n, --max=NUM           一度に表示する件数
-        -w, --whence=NUM        表示する検索結果の先頭番号
-        -l, --list              検索結果を URI・パス名をリストで出力する
-        -s, --short             短い書式で出力する
-            --result=EXT        結果表示に用いる NMZ.result.EXT を指定する
-            --late              検索結果を新しい順にソートする
-            --early             検索結果を古い順にソートする
-            --sort=METHOD       ソート方法を指定する (score, date, field:name)
-            --ascending         ソートの方向を昇順にする (標準は降順)
-        -a, --all               検索結果をすべて表示する
-        -c, --count             ヒット数のみを表示する
-        -h, --html              HTMLで出力する
-        -r, --no-references     参考ヒット数を表示しない
-        -H, --page              先の検索結果へのリンクを表示する (ほぼ無意味) 
-        -F, --form              &lt;form&gt; ... &lt;/form&gt; の部分を強制的に表示する
-        -R, --no-replace        URI の置き換えを行わない
-        -U, --no-decode-uri     URI encode の復元を行わない
-        -o, --output=FILE       指定したファイルに検索結果を出力する
-        -f, --config=FILE       設定ファイルを指定する
-        -C, --show-config       設定を表示する
-        -q, --quiet             検索結果以外のメッセージを表示しない
-        -v, --version           ヴァージョンを表示する
-            --help              このヘルプを表示する
+    Usage: namazu [options] &lt;query&gt; [index]... 
+        -n, --max=NUM        set number of documents shown to NUM.
+        -w, --whence=NUM     set first number of documents shown to NUM.
+        -l, --list           print results by listing format.
+        -s, --short          print results by short format.
+            --results=EXT    set NMZ.result.EXT for printing results.
+            --late           sort documents in late order.
+            --early          sort documents in early order.
+            --sort=METHOD    set a sort METHOD (score, date, field:name)
+            --ascending      sort in ascending order (default: descending)
+        -a, --all            print all results.
+        -c, --count          print only number of hits.
+        -h, --html           print in HTML format.
+        -r, --no-references  do not display reference hit counts.
+        -H, --page           print further result links. (nearly meaningless)
+        -F, --form           force to print &lt;form&gt; ... &lt;/form&gt; region.
+        -R, --no-replace     do not replace URI string.
+        -U, --no-decode-uri  do not decode URI when printing in a plain format.
+        -o, --output=FILE    set the output file name to FILE.
+        -f, --config=FILE    set the config file name to FILE.
+        -C, --show-config    print current configuration.
+        -q, --quiet          do not display extra messages except search results.
+        -v, --version        show the version of namazu and exit.
+            --help           show this help and exit
     
-    バグ報告は &lt;bug-namazu@namazu.org&gt; へどうぞ
+    Report bugs to &lt;bug-namazu@namazu.org&gt;.
 </pre>
 <!-- namazu-option -->
 
@@ -915,7 +916,7 @@ Tknamazu および namazu.el から検索するときは必ず後者で指定します。
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: manual.html,v 1.32 2000-02-25 13:31:39 satoru Exp $
+$Id: manual.html,v 1.33 2000-02-26 08:54:42 satoru Exp $
 </div>
 <address>
 developers@namazu.org

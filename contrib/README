@@ -1,0 +1,11 @@
+Contributed files.
+
+The directory contains some contributed filters. Namazu Project didn't
+support them officially, but it should be useful for some people.
+
+* spreadexcel.pl
+Namazu filter for Microsoft Excel file. It requires
+Spreadsheet::ParseExcel perl module.
+It was contributed by Mineo Kasai. 
+
+$Id: README,v 1.2 2002-05-21 06:19:24 knok Exp $

@@ -1,5 +1,8 @@
 1999-09-01  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* template/NMZ.head.{en,ja}: Abolish using "format={short,long}" 
+	but use "result=ext" instead.
+	
 	* src/cgi.[ch]: Implemented codes to handle result=ext in CGI
 	query.
 	

@@ -35,9 +35,9 @@ This index contains <!-- FILE --> 0 <!-- FILE --> files and
 <option value="100">100
 </select>
 <strong>Description:</strong>
-<select name="format">
-<option selected value="long">ON
-<option value="short">OFF
+<select name="result">
+<option selected value="normal">normal
+<option value="short">short
 </select>
 <strong>Sort:</strong>
 <select name="sort">

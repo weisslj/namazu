@@ -34,10 +34,10 @@
 <option value="50">50
 <option value="100">100
 </select>
-<strong>要約表示:</strong>
-<select name="format">
-<option selected value="long">ON
-<option value="short">OFF
+<strong>表示形式:</strong>
+<select name="result">
+<option selected value="normal">normal
+<option value="short">short
 </select>
 <strong>ソート:</strong>
 <select name="sort">

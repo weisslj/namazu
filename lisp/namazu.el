@@ -2,9 +2,9 @@
 ;;
 ;; Mule $B>e$G(B Namazu $B$rMxMQ$7$?8!:w$r9T$&$?$a$N(B elisp $B$G$9!#(B
 ;;
-;;  $Id: namazu.el,v 1.1 1999-08-25 04:25:37 satoru Exp $
+;;  $Id: namazu.el,v 1.2 1999-09-04 14:06:18 kose Exp $
 
-(defconst namazu-version "namazu.el 1.00")
+(defconst namazu-version "namazu.el 1.0.1")
 
 ;; Namazu $B$K$h$k8!:w7k2L$,;X$9%I%-%e%a%s%H(B($BN`(B)$B$,(B
 ;; $B%m!<%+%k%G%#%9%/>e$K$"$k>l9g$K$O$=$l$rD>@\;2>H$7!"(B
@@ -141,12 +141,17 @@ PATH $B$,DL$C$F$$$J$$>l9g$K$OE,Ev$J%W%m%0%i%`L>$r;XDj$7$^$9!#(B")
 (defvar namazu-display-hook nil
   "*Namazu $B$N=PNO$rI=<($9$k$H$-$K8F$P$l$k(B hook $B$G$9!#(B")
 
-(defvar namazu-html-pattern "[^/]+\\.html?"
-  "*$B%m!<%+%k%G%#%9%/>e$K$"$C$F$b(B browse-url $B$r;H$C$F(B
-$B1\Mw$9$k%U%!%$%kL>$N%Q%?!<%s$G$9!#(B")
+(defvar namazu-view-function-alist
+      '(("[^/]+\\.s?html?" . namazu-browse-url)
+        ("man/man" . namazu-man)
+        ;;("/usr/local/info/\\|\\.info" . namazu-info) ;; $BL$:n@.(B
+        ("." . view-file))
+      "*$B%U%!%$%kL>$N%Q%?!<%s$H$=$l$KBP1~$9$k1\Mw4X?t$r@_Dj$7$^$9!#(B")
 
 (defvar namazu-cs
-  (if (> emacs-major-version 19) 'euc-jp '*euc-japan*)
+  (if (eq system-type 'windows-nt)
+      (if (> emacs-major-version 19) 'sjis-dos '*sjis*dos)
+    (if (> emacs-major-version 19) 'euc-jp '*euc-japan*))
   "*OS $B$NFbIt%3!<%I$H0[$J$j!"$+$DF0$+$J$$>l9g$KJQ99$7$F$_$F$/$@$5$$!#(B")
 
 ;;
@@ -525,30 +530,45 @@ mouse $B$N??$sCf$N%\%?%s$r2!$9$H!"2!$7$?0LCV$K$h$C$F!"(B\"$BJ8>O$r;2>H(B\"$
   (interactive)
   (beginning-of-line)
   (if (re-search-forward namazu-output-url-pattern nil t)
-      (let ((url (buffer-substring (match-beginning 1) (match-end 1)))
-	    (method (and (match-beginning 2)
-			 (buffer-substring
-			  (match-beginning 2) (match-end 2)))))
-	(beginning-of-line)
-	(sit-for 0)
-	(if (or (and method (not (string= method "file")))
-		(string-match namazu-html-pattern url))
-	    (funcall browse-url-browser-function url)
-	  (and method (setq url (substring url 5)))
-	  (and (string-match "^//localhost" url)
-	       (setq url (substring url (match-end 0))))
-	  (and (string-match "^/\\([a-zA-Z]\\)|\\(/.*\\)$" url)
-	       (setq url
-		     (concat (substring url (match-beginning 1) (match-end 1))
-			     ":"
-			     (substring url (match-beginning 2) (match-end 2)))))
-	  (let ((ext '("" ".gz" ".Z")) path done)
-	    (while (and (null done) ext)
-	      (setq path (concat url (car ext)))
-	      (and (file-exists-p path)
-		   (setq done t)
-		   (view-file path))
-	      (setq ext (cdr ext))))))))
+      (let ((url (buffer-substring (match-beginning 1) (match-end 1))))
+        (beginning-of-line)
+        (sit-for 0)
+        (and (string-match "^/\\([a-zA-Z]\\)|" url) ;; if DOS/Windows /c|...
+             (setq url (replace-match "\\1:" t nil url)))
+        (let ((ext '("" ".gz" ".Z" "bz2")) 
+              (fl namazu-view-function-alist)
+              (file url) (name "") path done)
+          (and (string-match "\\(.*\\)\\(#.*\\)$" url)
+               (setq file (substring url (match-beginning 1) (match-end 1)))
+               (setq name (substring url (match-beginning 2) (match-end 2))))
+          (while (and (null done) ext)
+            (setq path (concat file (car ext)))
+            (and (file-exists-p path)
+                 (setq done t)
+                 (while fl
+                   (if (string-match (car (car fl)) path)
+                       (progn
+                         (funcall (cdr (car fl)) (concat path name))
+                         (setq fl nil)))
+                     (setq fl (cdr fl))))
+            (setq ext (cdr ext)))))))
+
+(defun namazu-browse-url (url)
+  "browse-url $B$r;H$C$FI=<($7$^$9!#(B
+$B;HMQ$9$k(B browser $B$O(B browse-url-browser-function $B$G;XDj$7$^$9!#(B"
+  (interactive)
+  (setq url (browse-url-file-url url))
+  (save-excursion
+    (if (functionp browse-url-browser-function)
+        (funcall browse-url-browser-function url)
+      (browse-url url))))
+
+(defun namazu-man (file)
+  "manual $B$rI=<($7$^$9!#(B"
+  (interactive)
+  (require 'man)
+  (let ((manual-program "nroff -man -h"))
+    (Man-getpage-in-background file)))
 
 (defun namazu-exit ()
   "namazu $B$r=*N;$7$^$9!#(B"

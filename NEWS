@@ -1,6 +1,9 @@
 Overview of Changes in Namazu 2.0.4 - Apr 10, 2000
 
-* Fix a doccat related bug. 
+* Fix a security hole which may remove your file at an
+indexing process. It is occured only if doccat
+<http://www.dehenken.co.jp/products/doccat/> is installed on
+your system.
 
 Overview of Changes in Namazu 2.0.3 - Apr 05, 2000
 

@@ -1,3 +1,7 @@
+2000-04-10  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* Namazu: Version 2.0.4 released.
+
 2000-04-09  Ryuji Abe  <raeva@t3.rim.or.jp>
 
 	* template/NMZ.body: Updated the Ruby link.
@@ -6,7 +10,7 @@
 
 	* tests/Makefile.am (TESTS): Add namazu-cgi-4.
 
-	* tests/namazu-cgi-4 (tmpaccess): New file.
+	* tests/namazu-cgi-4: New file.
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.0.4.
 
@@ -5536,4 +5540,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.680 2000-04-09 07:57:15 rug Exp $
+$Id: ChangeLog,v 1.681 2000-04-10 06:51:56 satoru Exp $

@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.121 2003-07-21 11:39:41 usu Exp $
+# $Id: mknmz.in,v 1.122 2003-07-29 22:32:19 makoto Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -2250,7 +2250,7 @@ sub write_phrase_hash () {
 sub write_phrase_hash_sub () {
     my $opened = 0;
 
-    return 0 if %PhraseHash eq "0";
+    return 0 if %PhraseHash eq '';    # namazu-devel-ja #3146
     util::dprint(_("doing write_phrase_hash() processing.\n"));
 
     my $fh_tmp_pi = util::efopen(">$var::NMZ{'__pi'}");

@@ -1,3 +1,12 @@
+2003-07-30  Makoto Fujiwara  <makoto@ki.nu>
+
+	* scripts/mknmz.in (write_phrase_hash_sub): perl -d:DProf related.
+	return 0 if %PhraseHash eq '';  ( namazu-devel-ja #3146)
+
+	* pl/codeconv.pl (toeuc): perl -d:DProf related.
+	 $contref = [NKF::nkf($nkf_opt, $$contref)]; 
+	 (namazu-devel-ja #3152, by SATOH Fumiyasu)
+
 2003-07-26  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* nmz/nmzversion.c.in: Added a new file for getting version.
@@ -8082,4 +8091,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1044 2003-07-26 08:25:12 knok Exp $
+$Id: ChangeLog,v 1.1045 2003-07-29 22:32:17 makoto Exp $

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.34 2004-10-21 13:09:22 opengl2772 Exp $
+# $Id: util.pl,v 1.35 2004-12-06 16:13:35 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -70,7 +70,7 @@ sub fclose ($) {
     my ($arg) = @_;
 
     if (ref $arg) {
-	if ($arg =~ /^(IO::File|FileHandle)/) {
+        if ($arg =~ /^(IO::File|FileHandle)/) {
             my $fh = $arg;
             $fh->close();
             return undef;
@@ -171,7 +171,7 @@ sub writefile ($$) {
 	    return undef;
 	}
     } else {
-	$fh = efopen("> $arg");
+        $fh = efopen("> $arg");
     }
 
     print $fh $$cont;
@@ -577,7 +577,7 @@ sub isurl ($) {
 sub win32_yen_to_slash ($) {
     my ($filenameref) = @_;
     if (($English::OSNAME eq "MSWin32") || ($English::OSNAME eq "os2")) {
-	$$filenameref =~
+        $$filenameref =~
                 s!([\x81-\x9f\xe0-\xef][\x40-\x7e\x80-\xfc]|[\x01-\x7f])!
                 $1 eq "\\" ? "/" : $1!gex;
     }

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: gfilter.pl,v 1.6 2004-10-20 14:48:37 opengl2772 Exp $
+# $Id: gfilter.pl,v 1.7 2004-12-06 16:13:35 opengl2772 Exp $
 # Copyright (C) 1999 Satoru Takabayashi ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -60,7 +60,7 @@ sub filename_to_title ($$) {
 	$cfile = codeconv::shiftjis_to_eucjp($cfile);
 	codeconv::eucjp_han2zen_kana(\$cfile);
     }
-    
+
     codeconv::normalize_eucjp(\$cfile);
 
     $cfile =~ m!^.*/([^/]*)$!;

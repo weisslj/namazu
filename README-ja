@@ -1,3 +1,6 @@
+                   全文検索システム Namazu
+
+
 Namazuとは?
 
    Namazu は手軽に使えることを第一に目指した日本語全文検索シ
@@ -5,10 +8,33 @@ Namazuとは?
    全文検索システムを構築することができるほか、電子メイルの
    山を検索するといった個人用途にも使えます。
 
-   Namazu は GPL2 に従ったフリーソフトウェアです。Namazu
-   Project によって開発が行われています。Namazu Project につ
-   いては CREDITSファイルを参照してください。
+   Namazu は the GNU General Public License version 2 に基
+   づいたフリーソフトウェアです。詳細については COPYING
+   ファイルをお読みください。
 
-   Namazu の最新情報は <http://http://www.namazu.org/> から
-   入手可能です。
+   Namazu の最新情報は次のところから得ることができます。
+
+     http://www.namazu.org/
+
+
+Namazu Projectとは?
+
+   Namazu Project は Namazu の開発と保守を行う集団です。詳
+   細については CREDITS ファイルをお読みください。
+
+   Namazu はもともと高林哲によって開発されましたが、ヴァー
+   ジョン 2.0からは、Namazu Project による共同開発が行われ
+   ています。
+
+
+問い合わせ先
+
+   一般:
+     info@namazu.org
+
+   バグ報告:
+     bug-namazu@namazu.org
+
+   Webペイジ管理:
+     webmaster@namazu.org
 

@@ -1,3 +1,6 @@
+          Namazu a full text retrieval search system
+
+
 What is Namazu?
 
    Namazu is a search engine software intended for easy use.
@@ -5,13 +8,13 @@ What is Namazu?
    scale Web search engine, but also works as a personal use
    search system for your pile of emails.
 
-   Namazu is a free software under the terms of GPL2. Namazu
-   is developed by Namazu Project. See `CREDITS' for more
-   information about us. 
+   Namazu is a free software under the terms of the GNU
+   General Public License version 2. See the file COPYING
+   for more details.
 
    At the beginning Namazu was made with only intention for
    Japanese use.  Now it can handle English and other latin
-   languages encoded in ISO-8859-* character sets.  
+   languages encoded in ISO-8859-* character sets.
 
    We have been trying to internationalize Namazu. At the
    moment, we have just only gettextized it.  There is a lot
@@ -19,6 +22,30 @@ What is Namazu?
 
    You can find documentation in the `doc' directory. And
    you can get the latest Namazu information at
-   <http://http://www.namazu.org/>.
+
+     http://www.namazu.org/
+
+
+What is Namazu Project?
+
+   Namazu Project is the group of developing and maintaining
+   Namazu. See the file CREDITS for more details.
+
+   Namazu was originally developed by Satoru Takabayashi.
+   Since version 2.0, Namazu has been developed by Namazu
+   Project cooperatively.
+
+
+Contact
+
+   General:
+     info@namazu.org
+
+   Bug report:
+     bug-namazu@namazu.org
+
+   Webpage maintainers:
+     webmaster@namazu.org
+
 
 NOTE: Japanese word `Namazu' means `catfish' in English.

@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.4 1999-12-31 02:07:59 satoru Exp $
+# $Id: mknmz.pl.in,v 1.5 1999-12-31 06:09:55 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -2015,7 +2015,7 @@ sub setup_magic () {
     $Magic->addMagicEntry('0	string		\<!--\ MHonArc		text/html; x-type=mhonarc');
 
     $Magic->addSpecials("application/x-tex",
-	"^\\document(style|class)");
+	"^\\\\document(style|class)");
     $Magic->addFileExts('\\.tex$', 'application/x-tex');
 }
 

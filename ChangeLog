@@ -1,5 +1,8 @@
 1999-12-31  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* scripts/mknmz.pl.in (setup_magic): Fix a regex pattern. 
+	[namazu-dev 1086]
+
 	* nmz/i18n.c: Include "i18n.h"
 
 	* filter/tex.pl (filter): Use \title{foo}, \author{bar},

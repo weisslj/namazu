@@ -1,3 +1,7 @@
+2004-01-10  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * filter/rtf.pl: Fixed the problem in [namazu-devel-ja#03530].
+
 2004-01-10  Yukio USUDA <usu@namazu.org>
 
 	* filter/macbinary.pl: Changed to call mknmz::apply_filter with filetype.
@@ -8252,4 +8256,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1071 2004-01-09 23:01:42 usu Exp $
+$Id: ChangeLog,v 1.1072 2004-01-10 07:11:38 opengl2772 Exp $

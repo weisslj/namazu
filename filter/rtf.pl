@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: rtf.pl,v 1.5 2003-08-13 15:25:26 opengl2772 Exp $
+# $Id: rtf.pl,v 1.6 2004-01-10 07:11:39 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2002 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -110,6 +110,9 @@ sub filter_rtf2html ($$$$$) {
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
     util::vprint("Processing rtf file ... (using '$rtfconvpath')\n");
+
+    # rtf2html : Fixed the problem in [namazu-devel-ja#03530].
+    $$cont =~ s/\x5c$//gm;
 
     my $tmpfile = util::tmpnam('NMZ.rtf');
     {

@@ -1,12 +1,9 @@
-$Id: TODO-namazu-2.0,v 1.36 2000-01-28 13:13:00 satoru Exp $
+$Id: TODO-namazu-2.0,v 1.37 2000-01-30 03:37:35 satoru Exp $
 
 検討項目
 
   * [namazu-dev 948] が未決…。これが決まらないとライブラリ
     の仕様が固まらない。
-
-  * namazu の方の read_config は mknmz のように複数を読むようになっていない
-    - むしろ複数読み込む mknmz の方が変? (要検討) [namazu-dev 1035]
 
   * NMZ.slog はライブラリが出力するものなのか? (要検討)
 
@@ -72,10 +69,6 @@ $Id: TODO-namazu-2.0,v 1.36 2000-01-28 13:13:00 satoru Exp $
 
 藤原のつけ足し (2000/01/10)
  ** mknmz
-
- ** mknmz/namazu 
-  * .mknmzrc / .namazurc clean up (multiple or single file)
-    設定を複数で出来るのか、一つだけで設定するのかをはっきりさせる
 
  ** Manual
   * manual (document)

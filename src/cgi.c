@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.60 2000-04-04 22:22:40 kenzo- Exp $
+ * $Id: cgi.c,v 1.61 2000-12-21 09:21:30 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -108,7 +108,7 @@ validate_idxname(const char * idxname)
 #endif
 
     if (*idxname == '\0' || *idxname == '/' || (win32 && *idxname == '\\')) {
-        printf(MSG_MIME_HEADER);
+        printf("%s text/html" CRLF CRLF, MSG_MIME_HEADER);
 	printf("%s : ", idxname);
         printf(_("Invalid idxname."));
         exit(EXIT_FAILURE);
@@ -118,7 +118,7 @@ validate_idxname(const char * idxname)
 	    strcmp("..", idxname) == 0 ||
             (win32 && nmz_strprefixcasecmp("..\\", idxname) == 0)) 
         {
-            printf(MSG_MIME_HEADER);
+	    printf("%s text/html" CRLF CRLF, MSG_MIME_HEADER);
 	    printf("%s : ", idxname);
             printf(_("Invalid idxname."));
             exit(EXIT_FAILURE);
@@ -203,7 +203,7 @@ get_query_string(void)
 	 */
         contlen = strlen(query_string);
         if (contlen > CGI_QUERY_MAX) {
-            printf(MSG_MIME_HEADER);
+	    printf("%s text/html" CRLF CRLF, MSG_MIME_HEADER);
             printf(_("Too long QUERY_STRING"));
             exit(EXIT_FAILURE);
         }

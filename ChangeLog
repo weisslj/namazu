@@ -1,5 +1,8 @@
 2000-12-21  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
+	* src/namazu-cmd.c,output.c,cgi.c: Fixed maliformed header
+	probrem.
+
 	* nmz/search.c (open_index_files): Refined.
 
 2000-12-20  NOKUBI Takatsugu  <knok@daionet.gr.jp>
@@ -6149,4 +6152,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.769 2000-12-21 07:12:46 knok Exp $
+$Id: ChangeLog,v 1.770 2000-12-21 09:21:29 knok Exp $

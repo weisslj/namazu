@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.78 2000-11-17 08:08:55 knok Exp $
+ * $Id: output.c,v 1.79 2000-12-21 09:21:30 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -668,7 +668,7 @@ print_result(NmzResult hlist, const char *query, const char *subquery)
 {
 
     if (is_htmlmode() && is_cgimode()) {
-	printf("%s %s%s", MSG_MIME_HEADER, contenttype, CRLF);
+	printf("%s %s" CRLF CRLF, MSG_MIME_HEADER, contenttype);
     }
 
     if (is_htmlmode()) {
@@ -758,7 +758,7 @@ print_result(NmzResult hlist, const char *query, const char *subquery)
 void 
 print_default_page (void) {
     if (is_htmlmode()) {
-	printf("%s %s%s", MSG_MIME_HEADER, contenttype, CRLF);
+	printf("%s %s" CRLF CRLF, MSG_MIME_HEADER, contenttype);
 	print_headfoot(NMZ.head, "", "");
 	print_msgfile(NMZ.body);
 	print_headfoot(NMZ.foot, "", "");
@@ -941,7 +941,7 @@ die(const char *fmt, ...)
     fflush(stderr);
 
     if (is_cgimode()) {
-	printf("%s %s%s", MSG_MIME_HEADER, "text/html", CRLF);
+	printf("%s %s" CRLF CRLF, MSG_MIME_HEADER, "text/html");
 	printf(_("<h2>Error</h2>\n<p>"));
 	va_start(args, fmt);
 	vprintf(fmt, args);

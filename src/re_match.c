@@ -2,7 +2,7 @@
  * 
  * re_match.c -
  * 
- * $Id: re_match.c,v 1.6 1999-08-23 10:40:53 satoru Exp $
+ * $Id: re_match.c,v 1.7 1999-08-23 11:28:10 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -192,7 +192,7 @@ HLIST regex_grep(uchar *orig_expr, FILE *fp, uchar *field, int field_mode)
         if (uri_mode) {  /* consider the REPLACE directive in namazu.conf */ 
             replace_uri(buf);
         }
-        tolower_string(buf);
+        strlower(buf);
         if (-1 != re_search(rp, buf, strlen(buf), 0, strlen(buf), 0)) { 
            /* matched */
             n++;

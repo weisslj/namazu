@@ -206,7 +206,7 @@ HLIST do_date_processing();
 void nmz_mergesort();
 void sort_hlist();
 uchar URIdecode(uchar, uchar);
-void decode_uri_string();
+void decode_uri();
 void put_hlist();
 void show_usage();
 HLIST andmerge();

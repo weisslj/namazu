@@ -124,7 +124,7 @@ void *memmove(void *d, void *s, size_t n)
 #endif
 
 /* decoding URI encoded strings */
-void decode_uri_string(uchar * s)
+void decode_uri(uchar * s)
 {
     int i, j;
     for (i = j = 0; s[i]; i++, j++) {
@@ -140,7 +140,7 @@ void decode_uri_string(uchar * s)
     s[j] = '\0';
 }
 
-void tolower_string(uchar *str)
+void strlower(uchar *str)
 {
     while (*str) {
         *str = tolower(*str);
@@ -241,3 +241,19 @@ LIST *add_list(LIST *ptr, uchar *str)
     return tmp;
 }
 
+/* case-insensitive brute force search */
+uchar *strcasestr(uchar *haystack, uchar *needle)
+{
+    for (; *haystack != '\0'; haystack++) {
+	uchar *str = haystack;
+	uchar *key = needle;
+	for (; *str != '\0' && *key != '\0' &&
+		 (tolower((int)*key) == tolower((int)*str)); key++, str++) {
+	    ;
+	}
+	if (*key == '\0') {
+	    return haystack;
+	}
+    }
+    return NULL;
+}

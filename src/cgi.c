@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.6 1999-06-12 14:29:29 satoru Exp $
+ * $Id: cgi.c,v 1.7 1999-08-23 11:28:10 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -140,7 +140,7 @@ int get_cgi_variables(uchar * query, uchar *subquery)
                 *(query + i) = *qs;
 	    }
 	    *(query + i) = '\0';
-            decode_uri_string(query);
+            decode_uri(query);
 	    if (strlen(query) > QUERY_MAX_LENGTH) {
                 fputs(MSG_MIME_HEADER, stdout);
 		fputx(MSG_TOO_LONG_KEY, stdout);
@@ -153,7 +153,7 @@ int get_cgi_variables(uchar * query, uchar *subquery)
             if (!strncmp(query, "%1B", 3)) {
                 char *agent = getenv("HTTP_USER_AGENT");
                 if (agent && !strncmp(agent, MSIE4MAC, strlen(MSIE4MAC))) {
-                    decode_uri_string(query);
+                    decode_uri(query);
                 }
             }
 #endif MSIE4MACFIX
@@ -165,7 +165,7 @@ int get_cgi_variables(uchar * query, uchar *subquery)
                 *(subquery + i) = *qs;
 	    }
 	    *(subquery + i) = '\0';
-            decode_uri_string(subquery);
+            decode_uri(subquery);
 	    if (strlen(subquery) > QUERY_MAX_LENGTH) {
                 fputs(MSG_MIME_HEADER, stdout);
 		fputx(MSG_TOO_LONG_KEY, stdout);
@@ -178,7 +178,7 @@ int get_cgi_variables(uchar * query, uchar *subquery)
             if (!strncmp(subquery, "%1B", 3)) {
                 char *agent = getenv("HTTP_USER_AGENT");
                 if (agent && !strncmp(agent, MSIE4MAC, strlen(MSIE4MAC))) {
-                    decode_uri_string(subquery);
+                    decode_uri(subquery);
                 }
             }
 #endif MSIE4MACFIX
@@ -235,7 +235,7 @@ int get_cgi_variables(uchar * query, uchar *subquery)
 	    for (i = 0; *qs && *qs != '&' && i <= DBNAMELENG_MAX; i++, qs++)
 		tmp[i] = *qs;
             tmp[i] = '\0';
-            decode_uri_string(tmp);
+            decode_uri(tmp);
             for (pp = tmp; *pp ;) {
                 uchar name[BUFSIZE], *x;
 

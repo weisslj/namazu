@@ -1,7 +1,7 @@
 /*
  * result.l -
  * -*- C -*-
- * $Id: result.l,v 1.6 1999-08-23 10:40:53 satoru Exp $
+ * $Id: result.l,v 1.7 1999-08-23 11:28:10 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -26,6 +26,7 @@
  */
 %{
 #include "namazu.h"
+#include "util.h"
 #include <string.h>
 	void get_field_data(char *);
 	static int Fid;
@@ -57,13 +58,13 @@ void encode_entity(uchar *str)
     strcpy(str, "");
     for (i = 0; tmp[i]; i++) {
 	if (tmp[i] == '<') {
-	    strcat(str, "&lt;");   /* " */
+	    strcat(str, "&lt;");
 	} else if (tmp[i] == '>') {
-	    strcat(str, "&gt;");   /* " */
+	    strcat(str, "&gt;");
 	} else if (tmp[i] == '&') {
-	    strcat(str, "&amp;");  /* " */
+	    strcat(str, "&amp;");
 	} else if (tmp[i] == '"') {
-	    strcat(str, "&quot;"); /* " */
+	    strcat(str, "&quot;");
 	} else {
 	    strncat(str, tmp + i, 1);
 	}
@@ -79,7 +80,7 @@ void emphasize(uchar *str) {
 	int keylen = strlen(KeyItem[i]);
 
 	do {
-	    ptr = strstr(ptr, KeyItem[i]);
+	    ptr = strcasestr(ptr, KeyItem[i]);
 	    if (ptr != NULL) {
 		memmove(ptr + 2, ptr, strlen(ptr) + 1);
 		memmove(ptr + 1, ptr + 2, keylen);

@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.7 1999-08-23 10:40:53 satoru Exp $
+ * $Id: search.c,v 1.8 1999-08-23 11:28:11 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -639,7 +639,7 @@ HLIST do_search(uchar *orig_key, HLIST val)
     uchar key[BUFSIZE];
 
     strcpy(key, orig_key);
-    tolower_string(key);
+    strlower(key);
     mode = detect_search_mode(key);
     delete_beginning_backslash(key);
 

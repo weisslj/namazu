@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.37 1999-12-09 08:12:29 satoru Exp $
+ * $Id: cgi.c,v 1.38 1999-12-10 00:01:32 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -379,14 +379,15 @@ static void process_cgi_var_sort(char *value, struct cgiarg *ca)
 	n = strspn(value, FIELD_SAFE_CHARS);
 	strncpy(field, value, n);
 	field[n] = '\0';  /* Hey, don't forget this after strncpy()! */
-	set_sort_field(field);
+	set_sortfield(field);
+
 	value += n;
 	set_sortmethod(SORT_BY_FIELD);
 	if (strprefixcasecmp(value, ":ascending") == 0) {
-	    set_sortmethod(ASCENDING);
+	    set_sortorder(ASCENDING);
 	    value += strlen(":ascending");
 	} else if (strprefixcasecmp(value, ":descending") == 0) {
-	    set_sortmethod(DESCENDING);
+	    set_sortorder(DESCENDING);
 	    value += strlen(":descending");
 	}
     } 

@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.20 1999-12-09 10:41:54 satoru Exp $
+ * $Id: hlist.c,v 1.21 1999-12-10 00:01:30 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -565,12 +565,12 @@ void set_docnum(int n)
     document_number = n;
 }
 
-void set_sort_field(char *field)
+void set_sortfield(char *field)
 {
     strcpy(field_for_sort, field);
 }
 
-char *get_sort_field(void)
+char *get_sortfield(void)
 {
     return field_for_sort;
 }

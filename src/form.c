@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.25 1999-12-08 05:46:42 rug Exp $
+ * $Id: form.c,v 1.26 1999-12-10 00:01:32 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -196,7 +196,7 @@ static int select_option(char *s, char *name, char *subquery)
 		    order = DESCENDING;
 		}
 
-		if (strcmp(field, get_sort_field()) == 0 && 
+		if (strcmp(field, get_sortfield()) == 0 && 
 		    get_sortorder() == order)
 		{
 		    fputs(" selected", stdout);

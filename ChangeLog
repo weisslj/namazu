@@ -1,5 +1,10 @@
 1999-12-10  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/cgi.c (process_cgi_var_sort): Fix a serious CGI bug.
+
+	* nmz/hlist.c (set_sortfield): Renamed from set_sort_field.
+	(get_sortfield): Renamed from get_sort_field.
+
 	* src/output.c (print_hlist): Fix --list mode bug.
 
 1999-12-09  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>

@@ -7,8 +7,6 @@
 
 	* maintMakefile (cxref-latex2e): New rule.
 
-	* autogen.sh (conf_flags): Set --enable-maintainer-mode.
-
 	* acinclude.m4 (AM_WITH_CCMALLOC): Add "-ldl" to LIBS.
 
 2000-01-04  Ryuji Abe <raeva@t3.rim.or.jp>

@@ -209,6 +209,65 @@ $CHASEN_NOUN = "@DO_CHASEN_NOUN@";
 #
 $WAKATI  = $@OPT_WAKATI_DEFAULT@;
 
+#===================================================================
+#
+# Document filters.
+#
+# NOTE: If there are two or more filters for one mediatype, the mknmz will
+#       evaluate from a left thing. The mknmz use what was first judged to be
+#       effective.
+#       Whenever you add some filters to $(datadir)/$(PACKAGE)/filter update
+#       this, too.
+#
+%USE_FILTERS = (
+  'application/applefile' => ['applefile.pl'],
+  'application/excel' => ['excel.pl', 'win32/oleexcel.pl'],  
+  'application/gnumeric' => ['gnumeric.pl'],
+  'application/ichitaro4' => ['win32/ichitaro456.pl'],
+  'application/ichitaro5' => ['doccat.pl', 'taro56.pl',
+                              'win32/ichitaro456.pl', 'win32/oletaro.pl'],
+  'application/ichitaro6' => ['doccat.pl', 'taro56.pl',
+                              'win32/ichitaro456.pl', 'win32/oletaro.pl'],
+  'application/ichitaro7' => ['doccat.pl', 'taro7_10.pl', 'win32/oletaro.pl'],
+  'application/macbinary' => ['macbinary.pl'],
+  'application/msword' => ['msword.pl', 'win32/olemsword.pl'],
+  'application/pdf' => ['pdf.pl'],
+  'application/postscript' => ['postscript.pl'],
+  'application/powerpoint' => ['powerpoint.pl','win32/olepowerpoint.pl'],
+  'application/rtf' => ['rtf.pl', 'win32/olertf.pl'],
+  'application/vnd.kde.kivio' => ['koffice.pl'],
+  'application/vnd.kde.kpresenter' => ['koffice.pl'],
+  'application/vnd.kde.kspread' => ['koffice.pl'],
+  'application/vnd.kde.kword' => ['koffice.pl'],
+  'application/vnd.sun.xml.calc' => ['ooo.pl'],
+  'application/vnd.sun.xml.draw' => ['ooo.pl'],
+  'application/vnd.sun.xml.impress' => ['ooo.pl'],
+  'application/vnd.sun.xml.writer' => ['ooo.pl'],
+  'application/x-apache-cache' => ['apachecache.pl'],
+  'application/x-bzip2' => ['bzip2.pl'],
+  'application/x-compress' => ['compress.pl'],
+  'application/x-deb' => ['deb.pl'],
+  'application/x-dvi' => ['dvi.pl'],
+  'application/x-gtar' => ['tar.pl'],
+  'application/x-gzip' => ['gzip.pl'],
+  'application/x-js-taro' => ['doccat.pl', 'taro7_10.pl', 'win32/oletaro.pl'],
+  'application/x-lha' => ['lha.pl'],
+  'application/x-rpm' => ['rpm.pl'],
+  'application/x-shockwave-flash' => ['swf.pl'],
+  'application/x-tar' => ['tar.pl'],
+  'application/x-tex' => ['tex.pl'],
+  'application/x-zip' => ['zip.pl'],
+  'audio/mpeg' => ['mp3.pl'],
+  'message/news' => ['mailnews.pl'],
+  'message/rfc822' => ['mailnews.pl'],
+  'text/hnf' => ['hnf.pl'],
+  'text/html' => ['html.pl'],	# Don't remove. Some filters use it internally.
+  'text/html; x-type=mhonarc' => ['mhonarc.pl'],
+  'text/plain; x-type=rfc' => ['rfc.pl'],
+  'text/x-hdml' => ['hdml.pl'],
+  'text/x-roff' => ['man.pl'],
+  'x-test/x-test' => ['testfilter.pl'], # for tests/mknmz-12
+);
 
 #===================================================================
 #

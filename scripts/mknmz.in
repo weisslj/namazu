@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.138 2004-05-01 23:12:51 opengl2772 Exp $
+# $Id: mknmz.in,v 1.139 2004-05-21 15:11:40 usu Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -394,63 +394,61 @@ sub load_modules () {
 sub load_filtermodules () {
     unshift @INC, $FILTERDIR;
 
-    #
-    # Windows modules must be loaded first.
-    # Because OLE filters have low precedence over normal ones.
-    #
-    load_win32modules() if $SYSTEM eq "MSWin32";
-
     # Check filter modules
     my @filters = ();
     @filters = glob "$FILTERDIR/*.pl";
 
-    load_filters(@filters);
-}
-
-sub load_win32modules () {
-    # Check filter modules
-    my @filters = ();
-    if (-f "../filter/win32/olemsword.pl") { # to ease developing
-	@filters = glob "../filter/win32/*.pl";
-	unshift @INC, "../filter/win32";
-    } else {
-	@filters = glob "$FILTERDIR/win32/*.pl";
+    #
+    # Windows modules must be check only when Active Perl environment.
+    # Because OLE filters use Win32::OLE module.
+    #
+    if ($SYSTEM eq "MSWin32"){
+	@filters = (@filters, glob "$FILTERDIR/win32/*.pl");
 	unshift @INC, "$FILTERDIR/win32";
     }
-
     load_filters(@filters);
 }
 
 sub load_filters (@) {
     my @filters = @_;
-   
-    for my $filter (@filters) {
-	$filter =~ m!([-\w]+)\.pl$!;
-	my $module = $1;
-	require "$module.pl" || die "unable to require \"$module.pl\"\n";;
-	my (@mtypes, $status, $recursive, $pre_codeconv, $post_codeconv);
+ 
+    my $mediatype;
+    foreach $mediatype (keys %conf::USE_FILTERS){
+        my $filter;
+        foreach $filter (@{$conf::USE_FILTERS{$mediatype}}){
+	    $filter = "$FILTERDIR/$filter";
+	    my $exists = grep {m!$filter!} @filters;
+	    next if ($exists == 0);
+            $filter =~ m!([-\w]+)\.pl$!;
+            my $module = $1;
+            next if (defined $var::Supported{$mediatype} &&
+                     $var::Supported{$mediatype} eq 'yes');
+            require "$module.pl" || die "unable to require \"$module.pl\"\n";;
+            my (@mtypes, $status, $recursive, $pre_codeconv, $post_codeconv);
 
-	eval "\@mtypes =    ${module}::mediatype();";
-	die $@ if $@;  # eval error
-	eval "\$status =    ${module}::status();";
-	die $@ if $@;
-	eval "\$recursive = ${module}::recursive();";
-	die $@ if $@;
-	eval "\$pre_codeconv  = ${module}::pre_codeconv();";
-	die $@ if $@;
-	eval "\$post_codeconv  = ${module}::post_codeconv();";
-	die $@ if $@;
-	eval "${module}::add_magic(\$Magic);";
-	die $@ if $@;
+            eval "\@mtypes =    ${module}::mediatype();";
+            die $@ if $@;  # eval error
+            eval "\$status =    ${module}::status();";
+            die $@ if $@;
+            eval "\$recursive = ${module}::recursive();";
+            die $@ if $@;
+            eval "\$pre_codeconv  = ${module}::pre_codeconv();";
+            die $@ if $@;
+            eval "\$post_codeconv  = ${module}::post_codeconv();";
+            die $@ if $@;
+            eval "${module}::add_magic(\$Magic);";
+            die $@ if $@;
 
-	for my $mt (@mtypes) {
-        next if (defined $var::Supported{$mt} && 
-                 $var::Supported{$mt} eq 'yes' && $status eq 'no');
-	    $var::Supported{$mt} = $status;
-	    $var::REQUIRE_ACTIONS{$mt} = $module;
-	    $var::RECURSIVE_ACTIONS{$mt} = $recursive;
-	    $var::REQUIRE_PRE_CODECONV{$mt} = $pre_codeconv;
-	    $var::REQUIRE_POST_CODECONV{$mt} = $post_codeconv;
+	    $exists = grep {/$mediatype/} @mtypes;
+	    next if ($exists == 0);
+
+	    next if (defined $var::Supported{$mediatype} &&
+		    $var::Supported{$mediatype} eq 'yes');
+	    $var::Supported{$mediatype} = $status;
+	    $var::REQUIRE_ACTIONS{$mediatype} = $module;
+	    $var::RECURSIVE_ACTIONS{$mediatype} = $recursive;
+	    $var::REQUIRE_PRE_CODECONV{$mediatype} = $pre_codeconv;
+	    $var::REQUIRE_POST_CODECONV{$mediatype} = $post_codeconv;
 	}
     }
 }
@@ -2660,6 +2658,7 @@ muda($conf::ON_MEMORY_MAX,
      $var::RECURSIVE_ACTIONS, $conf::META_TAGS, $var::USE_NKF_MODULE,
      $conf::ADDRESS, $var::MAILING_ADDRESS,
      $conf::FILE_SIZE_MAX,
+     $conf::USE_FILTERS,
      $var::SupportedScheme, $var::RECURSIVE_SCHEME,
      $var::SupportedArchive, $var::RECURSIVE_ARCHIVE,
      );

@@ -16,6 +16,7 @@ extern void print_default_page ( void );
 extern void set_emphasis_tags(const char *start_tag, const char *end_tag);
 extern char *get_emphasis_tag_start(void);
 extern char *get_emphasis_tag_end(void);
+extern void set_contenttype( const char *str );
 extern void set_htmlmode ( int mode );
 extern int is_htmlmode ( void );
 extern void set_cgimode ( int mode );

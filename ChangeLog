@@ -1,3 +1,9 @@
+2001-01-27  Hajime BABA  <baba@kusastro.kyoto-u.ac.jp>
+
+	* pl/util.pl (checkcmd): Replace $^0 to $mknmz::SYSTEM.
+	
+	* src/output.h: add extern definitions.
+
 2001-01-26  Yoshinori TAKESAKO  <takesako@ddt.or.jp>
 
 	* filter/win32/oleexcel.pl: Changed overall program structure. 
@@ -6345,4 +6351,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.798 2001-01-26 11:25:26 takesako Exp $
+$Id: ChangeLog,v 1.799 2001-01-27 02:14:46 baba Exp $

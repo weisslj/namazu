@@ -1,3 +1,8 @@
+2002-06-17  Yoshinori TAKESAKO  <takesako@namazu.org>
+
+	* scripts/mknmz.in (make_phrase_hash, wordcount_sub): Fixed 
+	the bug that limits of WORD_LENG_MAX did not work as expected.
+
 2002-06-17  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* filter/html.pl: Applied scrpit code exclusory patch.
@@ -7550,4 +7555,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.954 2002-06-17 05:03:11 knok Exp $
+$Id: ChangeLog,v 1.955 2002-06-17 06:34:02 takesako Exp $

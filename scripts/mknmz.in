@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.107 2002-06-13 06:37:57 knok Exp $
+# $Id: mknmz.in,v 1.108 2002-06-17 06:34:05 takesako Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -2069,6 +2069,7 @@ sub make_phrase_hash ($$$) {
     my $word_b = shift @words;
     my $docid = $docid_count + $docid_base;
     for my $word (@words) {
+	next if ($word eq "" || length($word) > $conf::WORD_LENG_MAX);
 	my $hash = hash($word_b . $word);
 	unless (defined $tmp{$hash}) {
 	    $tmp{$hash} = 1;
@@ -2232,7 +2233,7 @@ sub wordcount_sub ($$\%) {
 
     my @words = split /\s+/, $text;
     for my $word (@words) {
-	next if $word eq "";
+	next if ($word eq "" || length($word) > $conf::WORD_LENG_MAX);
 	if ($var::Opt{'noedgesymbol'}) {
 	    # remove symbols at both ends
 	    $word =~ s/^[^\xa1-\xfea-z_0-9]*(.*?)[^\xa1-\xfea-z_0-9]*$/$1/g;

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 1999-11-15 08:54+0900\n"
+"POT-Creation-Date: 1999-11-17 21:59+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -60,7 +60,7 @@ msgstr ""
 msgid "Too long QUERY_STRING"
 msgstr ""
 
-#: src/namazu.c:306
+#: src/namazu.c:321
 msgid "\t<p>No document matching your query.</p>\n"
 msgstr ""
 
@@ -91,26 +91,30 @@ msgid " (cannot open regex index)"
 msgstr ""
 
 #: src/output.c:387
-msgid " (cannot open this index)\n"
+msgid " (cannot open phrase index)"
 msgstr ""
 
 #: src/output.c:389
+msgid " (cannot open this index)\n"
+msgstr ""
+
+#: src/output.c:391
 msgid "(You don't have a permission to access the index)"
 msgstr ""
 
-#: src/output.c:399
+#: src/output.c:401
 msgid "\t<h2>Results:</h2>\n"
 msgstr ""
 
-#: src/output.c:406
+#: src/output.c:408
 msgid "References: "
 msgstr ""
 
-#: src/output.c:414
+#: src/output.c:416
 msgid "\t<p><strong> Total "
 msgstr ""
 
-#: src/output.c:421
+#: src/output.c:423
 msgid ""
 "\t documents matching your query.</strong></p>\n"
 "\n"

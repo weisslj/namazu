@@ -383,6 +383,8 @@ static void print_word_hit_count (uchar *key, int hitnum)
                 msg = _(" (Too many pages hit. Ignored.)");
             } else if (hitnum == ERR_REGEX_SEARCH_FAILED) {
                 msg = _(" (cannot open regex index)");
+            } else if (hitnum == ERR_PHRASE_SEARCH_FAILED) {
+                msg = _(" (cannot open phrase index)");
             } else if (hitnum == ERR_CANNOT_OPEN_INDEX) {
 		msg = _(" (cannot open this index)\n");
             } else if (hitnum == ERR_NO_PERMISSION) {

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: namazu 2.0\n"
-"POT-Creation-Date: 1999-11-08 17:42+0900\n"
+"POT-Creation-Date: 1999-11-17 21:59+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>\n"
 "Language-Team: Japanese <satoru-t@is.aist-nara.ac.jp>\n"
@@ -13,12 +13,12 @@ msgstr ""
 "Content-Type: text/plain; charset=EUC-JP\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
-#: nmz/conf.c:470
+#: nmz/conf.c:471
 #, c-format
 msgid "Config:  %s\n"
 msgstr "設定ファイル:  %s\n"
 
-#: nmz/conf.c:473
+#: nmz/conf.c:474
 #, c-format
 msgid ""
 "Default: %s\n"
@@ -33,23 +33,15 @@ msgstr ""
 "標準の言語: %s\n"
 "スコア計算: %s\n"
 
-#: nmz/conf.c:486
+#: nmz/conf.c:487
 #, c-format
 msgid "Alias:   \"%s\" -> \"%s\"\n"
 msgstr "別名:   \"%s\" -> \"%s\"\n"
 
-#: nmz/conf.c:495
+#: nmz/conf.c:496
 #, c-format
 msgid "Replace: \"%s\" -> \"%s\"\n"
 msgstr "置換: \"%s\" -> \"%s\"\n"
-
-#: nmz/search.c:708
-msgid "(You don't have a permission to access the index)"
-msgstr "（インデックスにアクセスする権利がありません）"
-
-#: nmz/search.c:715
-msgid " (cannot open this index)\n"
-msgstr " (インデックスが開けませんでした)\n"
 
 #. if no item available
 #: nmz/wakati.c:233
@@ -68,15 +60,15 @@ msgstr ""
 "\t<h2>エラー!</h2>\n"
 "<p>検索式の項目が多すぎます。</p>\n"
 
-#: src/cgi.c:66 src/cgi.c:76
+#: src/cgi.c:103 src/cgi.c:113
 msgid "Invalid idxname."
 msgstr "不正な idxname の指定です"
 
-#: src/cgi.c:108 src/cgi.c:119
+#: src/cgi.c:185 src/cgi.c:200
 msgid "Too long QUERY_STRING"
 msgstr "CGIの QUERY_STRING が長すぎます"
 
-#: src/namazu.c:290
+#: src/namazu.c:321
 msgid "\t<p>No document matching your query.</p>\n"
 msgstr "\t<p>検索式にマッチする文書はありませんでした。</p>\n"
 
@@ -89,28 +81,41 @@ msgstr "\t<strong>ペイジ:</strong> "
 msgid "Current List: %d"
 msgstr "現在のリスト: %d"
 
-#: src/output.c:354
+#: src/output.c:358
 #, c-format
 msgid " [ TOTAL: %d ]"
 msgstr " [ 合計: %d ]"
 
-#: src/output.c:377
+#: src/output.c:381
 msgid " (Too many words matched. Ignored.)"
 msgstr " (マッチする単語が多すぎるので無視しました)"
 
-#: src/output.c:379
+#: src/output.c:383
 msgid " (Too many pages hit. Ignored.)"
 msgstr " (ヒット数が多すぎるので無視しました)"
 
-#: src/output.c:381
+#: src/output.c:385
 msgid " (cannot open regex index)"
 msgstr " (正規表現用インデックスが開けませんでした)"
 
-#: src/output.c:392
+#: src/output.c:387
+#, fuzzy
+msgid " (cannot open phrase index)"
+msgstr " (インデックスが開けませんでした)\n"
+
+#: src/output.c:389
+msgid " (cannot open this index)\n"
+msgstr " (インデックスが開けませんでした)\n"
+
+#: src/output.c:391
+msgid "(You don't have a permission to access the index)"
+msgstr "（インデックスにアクセスする権利がありません）"
+
+#: src/output.c:401
 msgid "\t<h2>Results:</h2>\n"
 msgstr "\t<h2>検索結果</h2>\n"
 
-#: src/output.c:399
+#: src/output.c:408
 msgid "References: "
 msgstr "参考ヒット数: "
 

@@ -1,3 +1,7 @@
+1999-11-17  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* ja.po: Add msgid " (cannot open phrase index)".
+
 1999-09-19  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* Gettextized!

@@ -1,5 +1,7 @@
 1999-11-17  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* nmz/search.c (cmp_phrase_hash): Fix a memory leak.
+
 	* nmz/Makefile.am (libnmz_la_SOURCES): Fix misspelling.
 
 1999-11-17  NOKUBI Takatsugu  <knok@daionet.gr.jp>

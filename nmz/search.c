@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.4 1999-11-14 22:54:02 kenzo- Exp $
+ * $Id: search.c,v 1.5 1999-11-17 13:01:29 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -326,6 +326,7 @@ static HLIST cmp_phrase_hash(int hash_key, HLIST val,
     }
     ptr = getidxptr(phrase_index, hash_key);
     if (ptr <= 0) {
+	free_hlist(val);
         val.n = 0;
         return val;
     }
@@ -353,6 +354,9 @@ static HLIST cmp_phrase_hash(int hash_key, HLIST val,
 	    }
 	}
     }
+    if (v == 0) {
+	free_hlist(val);
+    }
     val.n = v;
     free(list);
     return val;
@@ -362,11 +366,13 @@ static int open_phrase_index_files(FILE **phrase, FILE **phrase_index)
 {
     *phrase = fopen(NMZ.p, "rb");
     if (*phrase == NULL) {
+        debug_printf("%s: cannot open file.\n", NMZ.p);
         return 1;
     }
 
     *phrase_index = fopen(NMZ.pi, "rb");
     if (*phrase_index == NULL) {
+        debug_printf("%s: cannot open file.\n", NMZ.pi);
         return 1;
     }
     return 0;
@@ -376,7 +382,7 @@ static int open_phrase_index_files(FILE **phrase, FILE **phrase_index)
 /* phrase search */
 static HLIST do_phrase_search(uchar *key, HLIST val)
 {
-    int i, h = 0, ignore = 0, no_phrase_index = 0;
+    int i, h = 0, ignore = 0;
     uchar *p, *q, *word_b = 0, word_mix[BUFSIZE];
     FILE *phrase, *phrase_index;
 
@@ -388,7 +394,8 @@ static HLIST do_phrase_search(uchar *key, HLIST val)
     }
 
     if (open_phrase_index_files(&phrase, &phrase_index)) {
-	no_phrase_index = 1;
+        val.n = ERR_PHRASE_SEARCH_FAILED;  /* cannot open regex index */
+        return val;
     }
         
     while (*p == '\t') {  /* beggining tabs are skipped */
@@ -396,18 +403,21 @@ static HLIST do_phrase_search(uchar *key, HLIST val)
     }
     for (i = 0; ;i++) {
         q = (uchar *)strchr(p, '\t');
-        if (q) 
+        if (q) {
             *q = '\0';
+	}
         if (strlen(p) > 0) {
             HLIST tmp;
 	    PHRASERES *prtmp;
 
             tmp = do_word_search(p, val);
-	    if (tmp.n == DIE_HLIST)
+	    if (tmp.n == DIE_HLIST) 
 	        return tmp;
-	    if ((prtmp = push_phraseres(Idx.pr[CurrentIndexNumber], tmp.n, p)) == NULL) {
-	      tmp.n = DIE_HLIST;
-	      return tmp;
+	    if ((prtmp = push_phraseres(
+		Idx.pr[CurrentIndexNumber], tmp.n, p)) == NULL) 
+	    {
+		tmp.n = DIE_HLIST;
+		return tmp;
 	    }
 	    Idx.pr[CurrentIndexNumber] = prtmp;
 
@@ -420,20 +430,20 @@ static HLIST do_phrase_search(uchar *key, HLIST val)
 		    ignore = 0;
 		}
                 val = andmerge(val, tmp, &ignore);
-            }
-	    if (!no_phrase_index) {
-		if (i != 0) {
-		    strcpy(word_mix, word_b);
-		    strcat(word_mix, p);
-		    h = hash(word_mix);
-		    val = cmp_phrase_hash(h, val, phrase, phrase_index);
-		    if (val.n == DIE_HLIST)
-		        return val;
-		    debug_printf("\nhash:: <%s, %s>: h:%d, val.n:%d\n",
-			    word_b, p, h, val.n);
+
+		strcpy(word_mix, word_b);
+		strcat(word_mix, p);
+		h = hash(word_mix);
+		val = cmp_phrase_hash(h, val, phrase, phrase_index);
+		debug_printf("\nhash:: <%s, %s>: h:%d, val.n:%d\n",
+			     word_b, p, h, val.n);
+		if (val.n == 0) {
+		    break;
+		} else if (val.n == DIE_HLIST) {
+		    return val;
 		}
-		word_b = p;
 	    }
+	    word_b = p;
         }
         if (q == NULL) {
             break;
@@ -443,10 +453,8 @@ static HLIST do_phrase_search(uchar *key, HLIST val)
 
     Idx.phrasehit[CurrentIndexNumber] = val.n;
 
-    if (!no_phrase_index) {
-	fclose(phrase);
-	fclose(phrase_index);
-    }
+    fclose(phrase);
+    fclose(phrase_index);
 
     return val;
 }

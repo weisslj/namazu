@@ -1,3 +1,11 @@
+1999-09-07  KOSEKI Yoshinori  <kose@yk.NetLaputa.ne.jp>
+
+	* namazu.el (namazu-cs): if OS/2, emx and windows-nt, use SJIS.
+	(namazu-minibuffer-field-map): New keymap.
+	(namazu): use namazu-minibuffer-field-map, when "Enter Keyword: ".
+	(namazu-re-search): Ditto.
+	(namazu-field-complete): New function. completion of "+fileds:".
+
 1999-09-02  KOSEKI Yoshinori  <kose@yk.NetLaputa.ne.jp>
 
 	* gnus-nmz-1.el: new file.
@@ -9,6 +17,6 @@
 	(namazu-browse-url): New function.
 	(namazu-man): New function.
 
-1999-05-10  白井 秀行 <shirai@rdmg.mgcs.mei.co.jp>
+1999-05-10  Hideyuki SHIRAI <shirai@rdmg.mgcs.mei.co.jp>
 
 	* namazu.el: Version 1.00 released.

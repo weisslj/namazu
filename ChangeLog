@@ -1,3 +1,10 @@
+2001-06-18  Ryuji Abe  <rug@namazu.org>
+
+	* man/Makfile.am (EXTRA_DIST): Added help2man.
+	(update-man): Use included help2man.
+
+	* man/help2man: Included now.
+
 2001-06-15  Ryuji Abe  <rug@namazu.org>
 
 	* nmz/i18n.c (guess_category_value): Fixed indent. LANGUAGE
@@ -6474,4 +6481,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.824 2001-06-15 08:24:30 rug Exp $
+$Id: ChangeLog,v 1.825 2001-06-18 06:32:48 rug Exp $

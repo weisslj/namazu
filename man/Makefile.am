@@ -1,12 +1,10 @@
 # Process this file with automake to produce Makefile.in
 
 man_MANS = namazu.1 mknmz.1
-EXTRA_DIST = $(man_MANS)
+EXTRA_DIST = help2man $(man_MANS)
+HELP2MAN = $(PERL) -w -- $(srcdir)/help2man
 
 update-man:
-	LANG=C help2man --no-info ../src/namazu | \
-               perl -pe 's/ FSF$$/Namazu/' > namazu.1
-
-	LANG=C help2man --no-info ../scripts/mknmz | \
-	       perl -pe 's/ FSF$$/Namazu/' > mknmz.1
+	$(HELP2MAN) --no-info $(top_builddir)/src/namazu > namazu.1
+	$(HELP2MAN) --no-info $(top_builddir)/scripts/mknmz > mknmz.1
 

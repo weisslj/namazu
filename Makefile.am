@@ -3,7 +3,8 @@
 @SET_MAKE@
 AUTOMAKE_OPTIONS = no-dependencies
 
-EXTRA_DIST = README-ja namazu.spec namazu.spec.in File-MMagic
+EXTRA_DIST = README-ja namazu.spec namazu.spec.in File-MMagic \
+	     ChangeLog.old.1.gz
 EXTRA_DIRS = conf doc etc lib lisp filter template tknamazu
 SUBDIRS = src @FILE_MMAGIC@
 

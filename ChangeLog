@@ -1,5 +1,11 @@
 2000-02-28  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* tests/data/ja/ichitaro4.jsw: New file.
+
+	* tests/data/ja/ichitaro5.jaw: Likewise.
+
+	* tests/data/ja/ichitaro6.jbw: Likewise.
+
 	* pl/conf.pl.in ($ALLOW_FILE): Add the pattern for Ichitaro 4, 5, 6.
 
 	* tests/data/ja/Makefile.am (EXTRA_DIST): Add ichitaro4.jsw,

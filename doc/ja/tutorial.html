@@ -469,35 +469,36 @@ href="manual.html#mknmz-option">mknmz --help</a>とすると得ら
 </p>
 
 <pre>
-Config: /home/foobar/.mknmzrc
-System: linux
-Namazu: 2.0
-Perl:   5.00503
-NKF:    module_nkf
-KAKASI: module_kakasi -ieuc -oeuc -w
-ChaSen: module_chasen -j -F '%m '
-Wakati: module_kakasi -ieuc -oeuc -w
-Lang:   ja_JP.ujis
-CCS:    euc
-CONFDIR:     /usr/local/etc/namazu
-LIBDIR:      /usr/local/share/namazu/pl
-FILTERDIR:   /usr/local/share/namazu/filter
-TEMPLATEDIR: /usr/local/share/namazu/template
-Supported media types: 
-  application/msword
-  application/pdf
-  application/x-bzip2
-  application/x-compress
-  application/x-gzip
-  application/x-tex
-  message/news
-  message/rfc822
-  text/hnf
-  text/html
-  text/html; x-type=mhonarc
-  text/plain
-  text/plain; x-type=rfc
-  text/x-roff
+
+    読み込んだ設定ファイル: /home/satoru/.mknmzrc
+    システム: linux
+    Namazu: 1.9.15
+    Perl: 5.00503
+    NKF: module_nkf
+    KAKASI: module_kakasi -ieuc -oeuc -w
+    ChaSen: module_chasen -j -F '%m '
+    わかち書き: module_kakasi -ieuc -oeuc -w
+    言語: ja_JP.ujis
+    文字コード: euc
+    CONFDIR: /usr/local/etc/namazu
+    LIBDIR: /usr/local/share/namazu/pl
+    FILTERDIR: /usr/local/share/namazu/filter
+    TEMPLATEDIR: ../template
+    対応メディアタイプ: 
+      application/msword
+      application/pdf
+      application/x-bzip2
+      application/x-compress
+      application/x-gzip
+      application/x-tex
+      message/news
+      message/rfc822
+      text/hnf
+      text/html
+      text/html; x-type=mhonarc
+      text/plain
+      text/plain; x-type=rfc
+      text/x-roff
 </pre>
 
 
@@ -782,7 +783,7 @@ Webブラウザの言語の設定に日本語(ja) を追加してください
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: tutorial.html,v 1.23 2000-02-19 08:50:14 satoru Exp $
+$Id: tutorial.html,v 1.24 2000-02-19 09:16:50 satoru Exp $
 </div>
 <address>
 developers@namazu.org

@@ -30,5 +30,4 @@ common_SOURCES = form.c form.h message.h \
 
 namazu_SOURCES     = $(common_SOURCES) namazu-cmd.c
 namazu_cgi_SOURCES = $(common_SOURCES) cgi.c cgi.h namazu-cgi.c
-namazu_cgi_LDFLAGS = -static
 

@@ -35,7 +35,7 @@ gcc tmp.c -o tmp.aout &&
     mv po/ja_JP.SJIS.po po/ja_JP.SJIS.po.bak;
   fi
   nkf -s po/ja.po | ./tmp.aout | \
-  sed -e "s/charset=EUC-JP/charset=Shift_JIS/g" > tmp.po
+  sed -e "s/charset=EUC-JP/charset=SJIS/g" > tmp.po
   rm -f tmp.c tmp.aout
   msgmerge tmp.po po/namazu.pot > po/ja_JP.SJIS.po
   rm -f tmp.po

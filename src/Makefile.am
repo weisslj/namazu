@@ -13,15 +13,9 @@ AUTOMAKE_OPTIONS = 1.4 no-dependencies
 bin_PROGRAMS = namazu
 noinst_PROGRAMS = namazu.cgi
 
-bin_SCRIPTS  = gcnmz mailutime mknmz gtnmz vfnmz kwnmz nmzgrep
-
-CLEANFILES  = gcnmz mknmz kwnmz
-
 localedir   = $(datadir)/locale
 confdir     = $(sysconfdir)/$(PACKAGE)
-filterdir   = $(pkgdatadir)/filter
 indexdir    = $(localstatedir)/$(PACKAGE)/index
-perllibdir  = $(pkgdatadir)/pl
 templatedir = $(pkgdatadir)/template
 
 ##################################################################
@@ -45,12 +39,3 @@ namazu_SOURCES = cgi.c form.c \
 namazu_cgi_SOURCES = $(namazu_SOURCES)
 namazu_cgi_LDFLAGS = -static
 
-SUFFIXES = .pl
-.pl:
-	rm -f $@
-	sed -e 's!%CONFDIR%!$(confdir)!g' \
-	    -e 's!%LIBDIR%!$(perllibdir)!g' \
-	    -e 's!%FILTERDIR%!$(filterdir)!g' \
-	    -e 's!%TEMPLATEDIR%!$(templatedir)!g' \
-	$< > $@
-	chmod +x $@

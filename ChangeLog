@@ -1,3 +1,20 @@
+1999-12-19  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* Makefile.am (SUBDIRS): Add scripts.
+
+	* configure.in (AC_OUTPUT): Adjust to src/scripts exchanging.
+
+	* scripts/Makefile.am: New file for generating perl scripts.
+	(noinst_SCRIPTS): Bring gtnmz from bin_SCRIPTS to here because
+	gtnmz is a tool for mainly debugging.
+
+	* src/Makefile.am: Exclude perl scripts related codes.
+
+	* scripts/gcnmz.pl.in,gtnmz.in,kwnmz.pl.in,mailutime.in,
+	mknmz.pl.in,nmzgrep.in vfnmz.in: Moved from src.
+
+	* scripts: New directory for containig mainly perl scripts.
+	
 1999-12-19  Makoto Fujiwara <makoto@ki.nu>
 	* src/mknmz.pl.in (find_target): $scanned to count total # of files.
 	(read_config) neat output when -V is said.

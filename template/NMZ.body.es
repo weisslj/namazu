@@ -120,19 +120,23 @@ Mail/News documents. e.g.,
 <li><code class="example">+subject:Linux</code><br>
 (Retrieving all documents which contain <code>Linux</code>
 in a <code>Subject:</code> field)
+</li>
 
 <li><code class="example">+subject:"GNU Emacs"</code><br>
 (Retrieving all documents which contain <code>GNU Emacs</code>
 in a <code>Subject:</code> field)
+</li>
 
 <li><code class="example">+from:foo@bar.jp</code><br>
 (Retrieving all documents which contain <code>foo@bar.jp</code>
 in a <code>From:</code> field)
+</li>
 
 
 <li><code class="example">+message-id:&lt;199801240555.OAA18737@foo.bar.jp&gt;</code><br>
 (Retrieving a certain document which contains specified
 <code>Message-Id:</code>)
+</li>
 </ul>
 
 <h3><a name="query-notes">Notes</a></h3>
@@ -141,26 +145,31 @@ in a <code>From:</code> field)
 <li>In any queries, Namazu ignores case distinctions of
 alphabet characters. In other words, Namazu does
 case-insensitive pattern matching in any time.
+</li>
 
 
 <li>Japanese phrases are forced to be segmented into
 morphemes automatically and are handled them as <a
 href="#query-phrase">phrase searching</a>. This processing
 causes invalid segmentation occasionally.
+</li>
 
 
 <li>Alphabet, numbers or a part of symbols (duplicated in
 ASCII) characters which defined in JIS X 0208 (Japanese
 Industrial Standards) are handled as ASCII characters.
+</li>
 
 <li>Namazu can handle a term which contains symbols like
 <code>TCP/IP</code>.  Since this handling isn't complete,
 you can describe <code>TCP and IP</code> instead of
 <code>TCP/IP</code>, but it may cause noisy results.
+</li>
 
 
 <li>Substring matching and field-specified searching takes
 more time than other methods.
+</li>
 
 <li>If you want to use <code class="operator">and</code>,
 <code class="operator">or</code> or <code
@@ -172,6 +181,7 @@ class="operator">{...}</code>.
 <!-- foo
 You must choose the latter with Tkanamzu or namazu.el.
 -->
+</li>
 
 </ul>
 

@@ -36,7 +36,7 @@ Ten indeks zawiera <!-- FILE --> 0 <!-- FILE --> dokumentów i
 <p>
 <strong>Query:</strong>
 <input type="text" name="query" size="40" value="">
-<input type="submit" value="Szukaj!">
+<input type="submit" name="submit" value="Szukaj!">
 <!-- <input type="hidden" name="idxname" value="foobar"> -->
 <a href="{cgi}">[Jak szukaæ, ¿eby znale¼æ a nie zab³±dziæ]</a>
 </p>
@@ -73,9 +73,9 @@ Ten indeks zawiera <!-- FILE --> 0 <!-- FILE --> dokumentów i
 <p>
 <strong>Cel:</strong>
 <ul>
-<li><input type="checkbox" name="idxname" value="foo" checked>aptgept
-<li><input type="checkbox" name="idxname" value="bar">fooshmoo
-<li><input type="checkbox" name="idxname" value="baz">grepgzip
+<li><input type="checkbox" name="idxname" value="foo" checked>aptgept</li>
+<li><input type="checkbox" name="idxname" value="bar">fooshmoo</li>
+<li><input type="checkbox" name="idxname" value="baz">grepgzip</li>
 </ul>
 </p>
 -->

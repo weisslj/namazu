@@ -1,3 +1,8 @@
+2004-07-26  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+	* template/*: To the addition of </li>, and type="submit" Addition 
+	of name="submit".
+
 2004-07-23  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* pl/nmzidx.pl(write_status): NMZ.status The bug by which a comma 
@@ -8974,4 +8979,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1206 2004-07-22 18:51:29 opengl2772 Exp $
+$Id: ChangeLog,v 1.1207 2004-07-26 10:16:38 opengl2772 Exp $

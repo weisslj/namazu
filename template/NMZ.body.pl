@@ -127,25 +127,30 @@ Mail/News, np.:
 <li><code class="example">+subject:Linux</code><br>
 (Zwraca wszystkie dokument zawieraj±ce pola <code>Linux</code>
 w <code>Subject:</code> )
+</li>
 
 <li><code class="example">+subject:"GNU Emacs"</code><br>
 (Zwraca wszystkie dokumenty zawieraj±ce pola <code>GNU Emacs</code>
 w <code>Subject:</code> )
+</li>
 
 <li><code class="example">+from:foo@bar.jp</code><br>
 (Zwraca wszystkie dokument zawieraj±ce pola <code>foo@bar.jp</code>
 w <code>From:</code> )
+</li>
 
 
 <li><code class="example">+message-id:&lt;199801240555.OAA18737@foo.bar.jp&gt;</code><br>
 (Zwraca pewien dokument zawieraj±cy wyszczególnione
 <code>Message-Id:</code>)
+</li>
 </ul>
 
 <h3><a name="query-notes">Uwagi</a></h3>
 
 <ul>
 <li>We wszystkich zapytaniach, Namazu ignoruje wielko¶æ znaków alfabetu.
+</li>
 
 <li>Japanese phrases are forced to be segmented into
 morphemes automatically and are handled them as <a
@@ -153,20 +158,24 @@ href="#query-phrase">phrase searching</a>. This processing
 causes invalid segmentation occasionally.
 <br>Po cholere to t³umaczyli na angielski? Ja. w ka¿dym b±d¼ razie nie bêdê, bo nie zamierzam pos³ugiwaæ
 siê jêz. japoñskim.
+</li>
 
 <li>Alphabet, numbers or a part of symbols (duplicated in
 ASCII) characters which defined in JIS X 0208 (Japanese
 Industrial Standards) are handled as ASCII characters.
 <br>Ju¿ mam sko¶ne oczy wed³ug normy przemys³owej JIS X 0208.
+</li>
 
 <li>Namazu radzi sobie z okre¶leniami zawieraj±cymi znaki takie jak
 <code>TCP/IP</code>, ale to radzenie sobie nie jest kompletne
 mo¿esz opisaæ
 <code>TCP and IP</code> zamiast
 <code>TCP/IP</code>, ale mo¿e to byæ powodem zbyt wielu dopasowañ (szumu informacyjnego)
+</li>
 
 <li>Dopasowania okrojonych s³ów i szukania po wybranych polach zabieraj±
 wiêcej czasu, ni¿ inne metody.
+</li>
 
 <li>Je¿eli chcesz u¿ywaæ <code class="operator">and</code>,
 <code class="operator">or</code> lub <code
@@ -181,6 +190,7 @@ You must choose the latter with Tkanamzu or namazu.el.
 ???????????????????????????????????? ho ku jank siu?
 ja nie znaju sztoo eto.
 -->
+</li>
 
 </ul>
 

@@ -7,6 +7,7 @@ Je¿eli masz problem ze znalezieniem podanej przez Ciebie informacji, spróbuj zas
 <ul>
 <li>Sprawd¼ pisowniê podanych s³ów kluczowych<br>
 Namazu nic nie znajdzie z b³êdami w pisowni.
+</li>
 
 <li>Dodaj s³ów-kluczy<br>
 
@@ -22,6 +23,7 @@ pokrewnych s³ów z operatorem
 <code class="operator">and</code>
 . To ograniczy bardziej zakres przeszukiwania np.:<br>
 <code class="example">latex and dvi2ps and eps</code>
+</li>
 
 <li>Spróbuj wyszukiwania okrojonych s³ów<br>
 
@@ -45,12 +47,14 @@ Mo¿esz wyszczególniæ
 wyszukiwanie dla okre¶leñ zawieraj±cych
 <code>tex</code> (wiele).
 <br>
+</li>
 
 <li>You tried phrase searching but it hit documents which
 Spróbowa³e¶ wyszukiwania fraz, ale to nie zwróci³o ¿adnych wyników zawieraj±cych twoj± frazê?
 <br>
 To jest usterka Namazu. Precyzja wyszukiwania fraz nie jest
 100%, ale z³e wyniki s± rzadkie.
+</li>
 
 <li>Je¿eli chcesz u¿yæ <code class="operator">and</code>,
 <code class="operator">or</code> lub <code
@@ -59,5 +63,6 @@ mo¿esz otoczyæ je odpowiednio podwójnymi cudzys³owami tak, jak
 <code
 class="operator">"..."</code> lub takimi nawiasami <code
 class="operator">{...}</code>.
+</li>
 
 </ul>

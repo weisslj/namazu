@@ -36,7 +36,7 @@ This index contains <!-- FILE --> 0 <!-- FILE --> documents and
 <p>
 <strong>Query:</strong> 
 <input type="text" name="query" size="40" value="">
-<input type="submit" value="Search!">
+<input type="submit" name="submit" value="Search!">
 <!-- <input type="hidden" name="idxname" value="foobar"> -->
 <a href="{cgi}">[How to search]</a>
 </p>
@@ -73,9 +73,9 @@ This index contains <!-- FILE --> 0 <!-- FILE --> documents and
 <p>
 <strong>Target:</strong>
 <ul>
-<li><input type="checkbox" name="idxname" value="foo" checked>foo 
-<li><input type="checkbox" name="idxname" value="bar">bar
-<li><input type="checkbox" name="idxname" value="baz">baz
+<li><input type="checkbox" name="idxname" value="foo" checked>foo</li>
+<li><input type="checkbox" name="idxname" value="bar">bar</li>
+<li><input type="checkbox" name="idxname" value="baz">baz</li>
 </ul>
 </p>
 -->

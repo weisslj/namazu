@@ -36,7 +36,7 @@ Este índice contiene <!-- FILE --> 0 <!-- FILE --> documentos y
 <p>
 <strong>Cadena de Búsqueda:</strong> 
 <input type="text" name="query" size="40" value="">
-<input type="submit" value="Buscar!">
+<input type="submit" name="submit" value="Buscar!">
 <!-- <input type="hidden" name="idxname" value="foobar"> -->
 <a href="{cgi}">[Cómo buscar]</a>
 </p>
@@ -73,9 +73,9 @@ Este índice contiene <!-- FILE --> 0 <!-- FILE --> documentos y
 <p>
 <strong>Target:</strong>
 <ul>
-<li><input type="checkbox" name="idxname" value="foo" checked>foo 
-<li><input type="checkbox" name="idxname" value="bar">bar
-<li><input type="checkbox" name="idxname" value="baz">baz
+<li><input type="checkbox" name="idxname" value="foo" checked>foo</li>
+<li><input type="checkbox" name="idxname" value="bar">bar</li>
+<li><input type="checkbox" name="idxname" value="baz">baz</li>
 </ul>
 </p>
 -->

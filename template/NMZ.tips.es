@@ -7,6 +7,7 @@ If you have trouble with searching, you can check the following tips.
 <ul>
 <li>Check a spelling of your keyword<br>
 Namazu can't find anything with wrong spelling.
+</li>
 
 <li>Add keywords<br>
 
@@ -20,6 +21,7 @@ If you gaind too many results, you can add one or more
 related keywords with <code class="operator">and</code>
 operator. It makes your search more limited. e.g., <br>
 <code class="example">latex and dvi2ps and eps</code>
+</li>
 
 <li>Try substring matching<br>
 
@@ -43,12 +45,14 @@ search for terms which terminated with <code>tex</code> (e.g.,
 You can specify <code class="example">*tex*</code> to
 search for terms which contain <code>tex</code> (many).
 <br>
+</li>
 
 <li>You tried phrase searching but it hit documents which
 didn't contain your phrase.<br>
 
 It's a defect of Namazu. Precision of phrase searching is
 not 100 %, so it cause wrong results occasionally.
+</li>
 
 <li>You want to use <code class="operator">and</code>,
 <code class="operator">or</code> or <code
@@ -56,5 +60,6 @@ class="operator">not</code> as ordinary keywords<br>
 You can surround them respectively with double quotes like <code
 class="operator">"..."</code> or braces like <code
 class="operator">{...}</code>.
+</li>
 
 </ul>

@@ -126,19 +126,23 @@ les documents de type Courrier &eacute;lectronique/Message de forums de discussi
 <li><code class="example">+subject:Linux</code><br>
 (Retrouve tous les documents qui contiennent <code>Linux</code>
 dans le champ <code>Subject:</code>)
+</li>
 
 <li><code class="example">+subject:"GNU Emacs"</code><br>
 (Retrouve tous les documents qui contiennent <code>GNU Emacs</code>
 dans le champ <code>Subject:</code>)
+</li>
 
 <li><code class="example">+from:foo@bar.jp</code><br>
 (Retrouve tous les documents qui contiennent <code>foo@bar.jp</code>
 dans le champ <code>From:</code>)
+</li>
 
 
 <li><code class="example">+message-id:&lt;199801240555.OAA18737@foo.bar.jp&gt;</code><br>
 (Retrouve un document qui contient le 
 <code>Message-Id:</code> sp&eacute;cifi&eacute;)
+</li>
 </ul>
 
 <h3><a name="query-notes">Notes</a></h3>
@@ -147,26 +151,31 @@ dans le champ <code>From:</code>)
 <li>Dans toutes les requ&ecirc;tes, Namazu ignore les distinctions de casse des
 caract&egrave;res de l'alphabet. Autrement dit, Namazu fait
 toujours une recherche ind&eacute;pendante de la casse.
+</li>
 
 
 <li>Les phrases japonaises sont forc&eacute;es &agrave; &ecirc;tre segment&eacute;es en
 morph&egrave;mes automatiquement et sont g&eacute;r&eacute;es comme <a
 href="#query-phrase">une recherche de phrase</a>. Ce proc&eacute;d&eacute;
 conduit parfois &agrave; des segmentations invalides.
+</li>
 
 
 <li>L'alphabet, les nombres ou une partie des caract&egrave;res symboles (copi&eacute;s de l'
 ASCII) qui sont d&eacute;finis dans le JIS X 0208 (Standards 
 Industriel Japonais) sont g&eacute;r&eacute;s en tant que caract&egrave;res ASCII.
+</li>
 
 <li>Namazu peut g&eacute;rer un terme qui contient des symboles comme 
 <code>TCP/IP</code>. Etant donn&eacute; que cette gestion n'est pas compl&egrave;te,
 vous pouvez d&eacute;crire <code>TCP and IP</code> au lieu de 
 <code>TCP/IP</code>, mais cela peut conduire &agrave; des r&eacute;sultats impr&eacute;cis.
+</li>
 
 
 <li>La recherche de sous-cha&icirc;nes et de champs sp&eacute;cifiques prend
 plus de temps que les autres m&eacute;thodes.
+</li>
 
 <li>Si vous voulez utiliser les op&eacute;rateurs <code class="operator">and</code>,
 <code class="operator">or</code> ou <code
@@ -178,6 +187,7 @@ class="operator">{...}</code>.
 <!-- foo
 Vous devez choisir ce dernier avec Tkanamzu ou namazu.el.
 -->
+</li>
 
 </ul>
 

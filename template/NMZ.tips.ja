@@ -7,6 +7,7 @@
 <ul>
 <li>キーワードの綴りを確かめる<br>
 キーワードの綴りが間違っていると検索できません。
+</li>
 
 <li>キーワードを増やしてみる<br>
 
@@ -19,6 +20,7 @@ or latex or latex2e</code><br>
 class="operator">and</code> を挿んで羅列してみましょう。検索結
 果を絞り込めます。<br>例:
 <code class="example">latex and dvi2ps and eps</code>
+</li>
 
 <li>部分一致検索を試してみる<br>
 
@@ -42,6 +44,7 @@ class="operator">and</code> を挿んで羅列してみましょう。検索結
 <code class="example">*tex*</code> を入力すると、
 <code>tex</code> を含む単語 (たくさん) を検索できます。
 <br>
+</li>
 
 
 <li>日本語がでたらめにわかち書きされてしまう<br>
@@ -49,6 +52,7 @@ class="operator">and</code> を挿んで羅列してみましょう。検索結
 }</code> のように、でたらめにわかち書きされることがあります。
 これは、そもそも<code>最新情報</code>という言葉が検索対象に含まれない
 ことを意味します。検索はあきらめましょう。
+</li>
 
 <li>長いカタカナ語の検索がうまくいかない<br>
 <code>マルチパート</code> で検索できないときは <code>"マルチ 
@@ -56,11 +60,13 @@ class="operator">and</code> を挿んで羅列してみましょう。検索結
 の分割は行われないため、インデックス (本の索引のようなもの -
 検索を高速に行うために使います) 作成時にカタカナ語が分
 割されていると、正しく検索できません。
+</li>
 
 <li>フレイズ検索をしたが、そのフレイズを含まない文章までヒッ
 トしてしまった<br>
 これは仕様です。 Namazu のフレイズ検索は精度が 100 % ではな
 いため、ときどき失敗します。
+</li>
 
 <li><code class="operator">and</code>, <code
 class="operator">or</code>, <code
@@ -69,5 +75,6 @@ class="operator">not</code> を単語として検索したい<br>
 それぞれ、 <code class="operator">"..."</code> とダブルクォ
 ウテイションマークで、あるいは <code
 class="operator">{...}</code> と中括弧で囲みます。
+</li>
 
 </ul>

@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.132 2000-12-28 08:30:45 baba Exp $
+dnl $Id: configure.in,v 1.133 2001-02-26 08:47:10 baba Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -416,6 +416,8 @@ AC_OUTPUT([Makefile
 	   scripts/nmzgrep
 	   scripts/rfnmz
 	   scripts/vfnmz
+	   scripts/lnnmz
+	   scripts/adnmz
 	   src/Makefile
 	   template/Makefile
 	   tests/Makefile
@@ -432,6 +434,8 @@ AC_OUTPUT([Makefile
 		    scripts/nmzgrep \
 		    scripts/rfnmz \
 		    scripts/vfnmz \
+		    scripts/lnnmz \
+		    scripts/adnmz \
 	    ]) 
 
 # Local Variables:

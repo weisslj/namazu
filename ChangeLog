@@ -1,5 +1,11 @@
 2001-02-26  Hajime BABA  <baba@kusastro.kyoto-u.ac.jp>
 
+	* scripts/{lnnmz|adnmz}.in : newly added.
+
+	* scripts/Makefile.am, configure.in : changed for scripts/{lnnmz|adnmz}
+	
+2001-02-26  Hajime BABA  <baba@kusastro.kyoto-u.ac.jp>
+
 	* nmz/score.[ch]: newly added.
 	
 	* nmz/Makefile.am: changed for score.[ch]
@@ -6400,4 +6406,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.808 2001-02-26 08:39:49 baba Exp $
+$Id: ChangeLog,v 1.809 2001-02-26 08:47:10 baba Exp $

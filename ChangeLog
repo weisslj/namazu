@@ -1,3 +1,8 @@
+1999-12-31  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* man/Makefile.am (update-man): Fix mknmz's pathname.
+	Replace " FSF$$" with "Namazu" in man files.
+
 1999-12-30  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* pl/conf.pl.in: Add ".*\.tex" to $ALLOW_REGEX.

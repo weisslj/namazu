@@ -2,7 +2,7 @@
  * 
  * codeconv.c -
  * 
- * $Id: codeconv.c,v 1.9 2000-01-04 02:04:36 satoru Exp $
+ * $Id: codeconv.c,v 1.10 2000-01-05 08:05:39 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -239,8 +239,9 @@ euctosjis(uchar *s)
 }
 
 /*
- * NOTES: This function give no consideration for buffer overflow, 
+ * FIXME: This function give no consideration for buffer overflow, 
  * so you should prepare enough memory for `p'.
+ * In the future, code conversion functions will be replaced with iconv(3)
  */
 static void 
 euctojis(uchar *p)
@@ -396,7 +397,7 @@ zen2han(char *str)
 }
 
 int 
-iskatakana(char *chr)
+iskatakana(const char *chr)
 {
     uchar *c;
     c = (uchar *)chr;
@@ -415,7 +416,7 @@ iskatakana(char *chr)
 }
 
 int 
-ishiragana(char *chr)
+ishiragana(const char *chr)
 {
     uchar *c;
     c = (uchar *)chr;
@@ -433,37 +434,53 @@ ishiragana(char *chr)
 }
 
 /*
- * Convert character encoding from internal one to external one. 
+ * Convert character encoding from internal one to external one.
+ * Return a pointer of converted string.
  *
  * NOTES: Current internal encoding is EUC-JP for Japanese and
  * ISO-8859-* for others. In future, internal encoding of Namazu 
  * will be UTF-8.
  *
- * NOTES: This function give no consideration for buffer overflow, 
- * so you should prepare enough memory for `str'.
- *
  */
 char *
-conv_ext (char *str) {
-    char *lang = get_lang();
-    if (strcmp(lang, "japanese") == 0) {   /* EUC-JP */
-	;
-    } else if (strcmp(lang, "ja") == 0) {  /* EUC-JP */
-	;
-    } else if (strcmp(lang, "ja_JP.EUC") == 0) {  /* EUC-JP */
-	;
-    } else if (strcmp(lang, "ja_JP.ujis") == 0) {  /* EUC-JP */
-	;
-    } else if (strcmp(lang, "ja_JP.eucJP") == 0) {  /* EUC-JP */
-	;
-    } else if (strcmp(lang, "ja_JP.sjis") == 0) { /* Shift_JIS */
-	euctosjis((uchar *)str);
-    } else if (strcmp(lang, "ja_JP.SJIS") == 0) { /* Shift_JIS */
-	euctosjis((uchar *)str);
-    } else if (strcmp(lang, "ja_JP.JIS7") == 0) { /* ISO-2022-JP */
-	euctojis((uchar *)str);
-    } else if (strcmp(lang, "ja_JP.iso-2022-jp") == 0) { /* ISO-2022-JP */
-	euctojis((uchar *)str);
+conv_ext (const char *str) {
+    char *tmp, *lang;
+
+    tmp = strdup(str);
+    if (tmp == NULL) {
+	set_dyingmsg("conv_ext: strdup");
+	return NULL;
     }
-    return (char *)str;
+
+    lang = get_lang();
+    if (strcasecmp(lang, "japanese") == 0) {   /* EUC-JP */
+	;
+    } else if (strcasecmp(lang, "ja") == 0) {  /* EUC-JP */
+	;
+    } else if (strcasecmp(lang, "ja_JP.EUC") == 0) {  /* EUC-JP */
+	;
+    } else if (strcasecmp(lang, "ja_JP.ujis") == 0) {  /* EUC-JP */
+	;
+    } else if (strcasecmp(lang, "ja_JP.eucJP") == 0) {  /* EUC-JP */
+	;
+    } else if (strcasecmp(lang, "ja_JP.sjis") == 0) { /* Shift_JIS */
+	euctosjis((uchar *)tmp);
+    } else if (strcasecmp(lang, "ja_JP.SJIS") == 0) { /* Shift_JIS */
+	euctosjis((uchar *)tmp);
+    } else if (strcasecmp(lang, "ja_JP.JIS7") == 0) { /* ISO-2022-JP */
+	euctojis((uchar *)tmp);
+    } else if (strcasecmp(lang, "ja_JP.iso-2022-jp") == 0) { /* ISO-2022-JP */
+	/*
+	 * Prepare enough memory for ISO-2022-JP encoding.
+	 * FIXME: It's not space-efficient. In the future, 
+	 * code conversion functions will be replaced with iconv(3)
+	 */
+	tmp = realloc(tmp, strlen(str) * 5);
+	if (tmp == NULL) {
+	    set_dyingmsg("conv_ext: realloc");
+	    return NULL;
+	}
+	euctojis((uchar *)tmp);
+    }
+    return (char *)tmp;
 }

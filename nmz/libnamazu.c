@@ -2,7 +2,7 @@
  * 
  * libnamazu.c - Namazu library api
  *
- * $Id: libnamazu.c,v 1.15 2000-01-04 02:04:36 satoru Exp $
+ * $Id: libnamazu.c,v 1.16 2000-01-05 08:05:40 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
@@ -64,7 +64,7 @@ static enum nmz_sort_method  sortmethod  = SORT_BY_SCORE;
 static enum nmz_sort_order   sortorder   = DESCENDING;
 static int  debugmode   = 0;
 static int  loggingmode = 1;   /* do logging with NMZ.slog */
-static char dyingmsg[BUFSIZE] = "Initialized";
+static char dyingmsg[BUFSIZE] = "";
 
 /*
  *

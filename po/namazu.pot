@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2000-01-04 14:05+0900\n"
+"POT-Creation-Date: 2000-01-05 17:04+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,43 +29,43 @@ msgid ""
 "Scoring: %s\n"
 msgstr ""
 
-#: nmz/util.c:577
+#: nmz/util.c:581
 msgid "Fatal error occered!"
 msgstr ""
 
-#: nmz/util.c:583
+#: nmz/util.c:587
 msgid "Invalid query"
 msgstr ""
 
-#: nmz/util.c:586
+#: nmz/util.c:590
 msgid "Too many query tokens"
 msgstr ""
 
-#: nmz/util.c:589
+#: nmz/util.c:593
 msgid "Too many words matched. Ignored"
 msgstr ""
 
-#: nmz/util.c:592
+#: nmz/util.c:596
 msgid "Too many pages hit. Ignored"
 msgstr ""
 
-#: nmz/util.c:595
+#: nmz/util.c:599
 msgid "cannot open regex index"
 msgstr ""
 
-#: nmz/util.c:598
+#: nmz/util.c:602
 msgid "cannot open phrase index"
 msgstr ""
 
-#: nmz/util.c:601
+#: nmz/util.c:605
 msgid "cannot open this index"
 msgstr ""
 
-#: nmz/util.c:604
+#: nmz/util.c:608
 msgid "You don't have a permission to access the index"
 msgstr ""
 
-#: nmz/util.c:607
+#: nmz/util.c:611
 msgid "Unknown error. Report bug!"
 msgstr ""
 
@@ -87,46 +87,46 @@ msgstr ""
 msgid "Too long QUERY_STRING"
 msgstr ""
 
-#: src/output.c:372
+#: src/output.c:381
 msgid "\t<strong>Page:</strong> "
 msgstr ""
 
-#: src/output.c:415
+#: src/output.c:424
 #, c-format
 msgid "Current List: %d"
 msgstr ""
 
-#: src/output.c:462
+#: src/output.c:471
 #, c-format
 msgid " [ TOTAL: %d ]"
 msgstr ""
 
-#: src/output.c:472
+#: src/output.c:481
 msgid "\t<p><strong> Total "
 msgstr ""
 
-#: src/output.c:479
+#: src/output.c:488
 msgid ""
 "\t documents matching your query.</strong></p>\n"
 "\n"
 msgstr ""
 
-#: src/output.c:543
+#: src/output.c:568
 #, c-format
 msgid ""
 "\t<h2>Error!</h2>\n"
 "<p>%s</p>\n"
 msgstr ""
 
-#: src/output.c:553
+#: src/output.c:578
 msgid "\t<h2>Results:</h2>\n"
 msgstr ""
 
-#: src/output.c:560
+#: src/output.c:585
 msgid "References: "
 msgstr ""
 
-#: src/output.c:602
+#: src/output.c:627
 msgid "\t<p>No document matching your query.</p>\n"
 msgstr ""
 

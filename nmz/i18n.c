@@ -1,6 +1,6 @@
 /*
  * i18n.c -
- * $Id: i18n.c,v 1.10 2000-01-04 02:04:36 satoru Exp $
+ * $Id: i18n.c,v 1.11 2000-01-05 08:05:40 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -117,25 +117,24 @@ get_lang(void)
 }
 
 /*
- * Choose message filename such as NMZ.tips.ja_JP.iso-2022-jp 
- *
- * NOTES: This function overwrite given `fname', so you
- * should pass `fname' as a temporary variable. Don't pass a
- * critical variable directly.  
+ * Choose suffix of message files such as ".ja_JP", ".ja", "", etc.
+ * lang
  */
-char *
-choose_msgfile(char *fname)
+enum nmz_stat
+choose_msgfile_suffix(const char *pfname,  char *lang_suffix)
 {
     FILE *fp;
-    int base_leng;
+    int baselen;
+    char fname[BUFSIZE];
 
-    base_leng = strlen(fname);
+    strcpy(fname, pfname);
+    baselen = strlen(fname);
     strcat(fname, ".");
     strcat(fname, get_lang());
 
     /* 
      * Trial example:
-     * 1. NMZ.tips.ja_JP.iso-2022-jp
+     * 1. NMZ.tips.ja_JP.ISO-2022-JP
      * 2. NMZ.tips.ja_JP
      * 3. NMZ.tips.ja
      * 4. NMZ.tips
@@ -148,7 +147,8 @@ choose_msgfile(char *fname)
 	if (fp != NULL) { /* fopen success */
 	    nmz_debug_printf("choose_msgfile: %s open SUCCESS.\n", fname);
 	    fclose(fp);
-	    return fname;
+	    strcpy(lang_suffix, fname + baselen);
+	    return SUCCESS;
 	}
 	nmz_debug_printf("choose_msgfile: %s open failed.\n", fname);
 
@@ -160,11 +160,11 @@ choose_msgfile(char *fname)
 		break;
 	    }
 	}
-	if (strlen(fname) < base_leng) {
+	if (strlen(fname) < baselen) {
 	    break;
 	}
     } while (1);
-    return NULL;
+    return FAILURE;
 }
 
 

@@ -214,7 +214,7 @@ update-po: Makefile
 	PATH=`pwd`/../src:$$PATH; \
 	cd $(srcdir); \
 	cp ja_JP.SJIS.po ja_JP.SJIS.old.po; \
-	cp ja_JP.JIS7.po ja_JP.JIS7.old.po; \
+	cp ja_JP.ISO-2022-JP.po ja_JP.ISO-2022-JP.old.po; \
 	catalogs='$(CATALOGS)'; \
 	for cat in $$catalogs; do \
 	  cat=`basename $$cat`; \
@@ -236,12 +236,12 @@ update-po: Makefile
 	  rm -f ja_JP.SJIS.po; \
 	  mv ja_JP.SJIS.old.po ja_JP.SJIS.po; \
 	fi
-	if ./make_jis7_po; then \
-	  rm -f ja_JP.JIS7.old.po; \
+	if ./make_iso-2022-jp_po; then \
+	  rm -f ja_JP.ISO-2022-JP.old.po; \
 	else \
-	  echo "./make_jis7_po failed."; \
-	  rm -f ja_JP.JIS7.po; \
-	  mv ja_JP.JIS7.old.po ja_JP.JIS7.po; \
+	  echo "./make_iso-2022-jp_po failed."; \
+	  rm -f ja_JP.ISO-2022-JP.po; \
+	  mv ja_JP.ISO-2022-JP.old.po ja_JP.ISO-2022-JP.po; \
 	fi
 #	cp ja.po ja_JP.EUC.po
 #	cp ja.po ja_JP.ujis.po

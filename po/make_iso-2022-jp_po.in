@@ -2,7 +2,7 @@
 my $c_format = 0;
 
 open(IN, "ja.po") || die;
-open(OUT, ">ja_JP.JIS7.po") || die;
+open(OUT, ">ja_JP.ISO-2022-JP.po") || die;
 
 while (<IN>) {
     s/charset=EUC-JP/charset=ISO-2022-JP/;

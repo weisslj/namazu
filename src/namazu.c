@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.68 2000-01-04 02:04:41 satoru Exp $
+ * $Id: namazu.c,v 1.69 2000-01-05 08:05:44 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -249,7 +249,7 @@ parse_options(int argc, char **argv)
 	    break;
 	case 'C':
 	    if (load_rcfile(argv[0]) != SUCCESS)
-		nmz_die_with_msg();
+		nmz_die("parse_options");
 	    show_rcfile();
 	    exit(EXIT_SUCCESS);
 	    break;
@@ -258,7 +258,7 @@ parse_options(int argc, char **argv)
 	    break;
 	case 'o':
 	    if (stdio2file(optarg))
-		nmz_die_with_msg();
+		nmz_die("parse_options");
 	    break;
 	}
     } 
@@ -299,7 +299,7 @@ namazu_core(char * query, char *subquery, char *argv0)
     hlist = nmz_search(query_with_subquery);
 
     if (hlist.stat == ERR_FATAL) {
-	nmz_die_with_msg();
+	nmz_die("namazu_core");
     }
 
     /* result printing */
@@ -354,18 +354,17 @@ main(int argc, char **argv)
 
     if (argc == 1) { /* if no argument, assume this session as CGI */
 	if (load_rcfile(argv[0]) != SUCCESS)
-	    nmz_die_with_msg();
+	    nmz_die("main");
 	set_cgimode(1);
 	set_htmlmode(1);
+	set_pageindex(1);	 /* Print page index */
+	set_formprint(1);	 /* Print "<form> ... </form>" */
     } else {
-	set_htmlmode(0);	 /* do not display result in HTML format */
-	set_uridecode(1);	 /* decode a URI */
-	set_pageindex(0);	 /* do not diplay page index */
-	set_formprint(0);	 /* do not print "<form> ... </form>" */
+	set_uridecode(1);	 /* Decode a URI */
 
 	i = parse_options(argc, argv); 
 	if (load_rcfile(argv[0]) != SUCCESS)
-	    nmz_die_with_msg();
+	    nmz_die("main");
 
 	if (i == argc) {
 	    show_mini_usage();
@@ -396,9 +395,9 @@ main(int argc, char **argv)
 
     uniq_idxnames();
     if (expand_idxname_aliases() != SUCCESS)
-        nmz_die_with_msg();
+        nmz_die("main");
     if (complete_idxnames() != SUCCESS)
-        nmz_die_with_msg();
+        nmz_die("main");
 
     if (is_debugmode()) {
         for (i = 0; i < Idx.num; i++) {
@@ -414,7 +413,7 @@ main(int argc, char **argv)
 
     ret = namazu_core(query, subquery, argv[0]);
     if (ret == ERR_FATAL) {
-        nmz_die_with_msg();
+        nmz_die("main");
     }
     return ret;
 }

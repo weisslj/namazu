@@ -28,11 +28,11 @@ static int countmode   = 0;   /* like grep -c */
 static int listmode    = 0;   /* like grep -l */
 		      
 static int allresult   = 0;   /* print all results */
-static int pageindex   = 1;   /* print "Page: [1][2][3][4][5][6][7][8]" */
-static int formprint   = 1;   /* print "<form> ... </form>" at cgimode */
-static int refprint    = 1;   /* print "References:  [ foo: 123 ]" */
+static int pageindex   = 0;   /* print "Page: [1][2][3][4][5][6][7][8]" */
+static int formprint   = 0;   /* print "<form> ... </form>" at cgimode */
+static int refprint    = 0;   /* print "References:  [ foo: 123 ]" */
 		      
-static int maxresult = 20;  /* max number of search results */
+static int maxresult   = 20;  /* max number of search results */
 static int listwhence  = 0;   /* number which beginning of search results */
 		      
 static char template[BUFSIZE]     = "normal"; /* suffix of NMZ.result.* */
@@ -60,7 +60,7 @@ static void print_current_range ( int listmax );
 static void print_hitnum_all_idx ( void );
 static void print_hitnum ( int n );
 static void print_listing ( NmzResult hlist );
-static void print_msgfile ( char *fname );
+static void print_msgfile ( const char *fname );
 static void print_range ( NmzResult hlist );
 
 /* print s to stdout with processing for emphasizing and entity encoding  */
@@ -217,12 +217,15 @@ print_hitnum_each (struct nmz_hitnum *hn)
 	!is_listmode() && !is_quietmode()) 
     {
 	do {
-	    char tmp_word[BUFSIZE];
-	    strcpy(tmp_word, hnptr->word);
-	    conv_ext(tmp_word);
+	    char *converted = conv_ext(hnptr->word);
+	    if (converted == NULL) {
+		nmz_die("print_hitnum_each");
+	    }
 
 	    nmz_print(" [ ");
-	    nmz_print(tmp_word);
+	    nmz_print(converted);
+	    free(converted);
+
 	    if (hnptr->stat == SUCCESS) {
 		printf(": %d", hnptr->hitnum);
 	    } else {
@@ -283,7 +286,7 @@ print_hlist(NmzResult hlist)
 {
     int i;
     char *templates[INDEX_MAX];
-    /* prepare large memory for replace_field() and conv_ext() */
+    /* prepare large memory for replace_field() */
     char result[BUFSIZE * 128];
 
     if (hlist.num <= 0 || get_maxresult() == 0) {
@@ -324,9 +327,15 @@ print_hlist(NmzResult hlist)
 	}
 	compose_result(hlist.data[i], counter, 
 		       templates[hlist.data[i].idxid],  result);
-	conv_ext(result);
-	html_print(result);
-	nmz_print("\n");
+	{
+	    char *converted = conv_ext(result);
+	    if (converted == NULL) {
+		nmz_die("print_hlist");
+	    }
+	    html_print(converted);
+	    free(converted);
+	    nmz_print("\n");
+	}
     }
 
     /* free all templates[] */
@@ -493,14 +502,30 @@ print_listing(NmzResult hlist)
     }
 }
 
-/* display message file such as NMZ.tips or NMZ.body. */
+/* 
+ * Output contents of a message file such as NMZ.tips or NMZ.body. 
+ */
 static void 
-print_msgfile(char *fname) {
-    char tmp_fname[BUFSIZE];
+print_msgfile(const char *fname) {
+    char suffix[BUFSIZE], tmpfname[BUFSIZE];
 
-    strcpy(tmp_fname, fname);
-    choose_msgfile(tmp_fname);
-    nmz_cat(tmp_fname);
+    if (choose_msgfile_suffix(fname, suffix) == SUCCESS) {
+	char *buf;
+
+	strcpy(tmpfname, fname);
+	strcat(tmpfname, suffix);
+
+	buf = nmz_readfile(tmpfname);
+	/* In case of suffix isn't equal to lang, we need code conversion */
+	if (strcmp(suffix, get_lang()) != 0) {
+	    buf = conv_ext(buf);
+	}
+
+	fputs(buf, stdout);
+	free(buf);
+    } else {
+	nmz_warn_printf("print_msgfile: cannot open %s", fname);
+    }
 }
 
 static void 
@@ -613,7 +638,9 @@ print_result(NmzResult hlist, char *query, char *subquery)
     return SUCCESS;
 }
 
-/* Print default page: NMZ.{head,body,foot} */
+/* 
+ * Print default page: NMZ.{head,body,foot} 
+ */
 void 
 print_default_page (void) {
     if (is_htmlmode()) {
@@ -734,7 +761,9 @@ get_template(void)
 }
 
 
-/* fputs Namazu version, it works with considereation of mode */
+/* 
+ * Namazu version fputs, it works with considereation of html mode.
+ */
 void 
 html_print(char *str)
 {
@@ -747,12 +776,16 @@ html_print(char *str)
 
     strcpy(buf, str + is_nmz_html);
     if (is_htmlmode()) {
-        /* if str is Namazu's HTML message, it will be printed with emprint,
-           if not, it will be printed with entity conversion */
+        /* 
+	 * If str is Namazu's HTML message, it will be printed with emprint.
+	 * If not, it will be printed with entity conversion 
+	 */
         emprint(buf, ! is_nmz_html);
     } else {
-        /* if str is Namazu's HTML message, it will be printed without 
-           HTML tag, if not, it will be printed as is */
+        /* 
+	 * If str is Namazu's HTML message, it will be printed without 
+	 * HTML tag, if not, it will be printed as is 
+	 */
         if (is_nmz_html) {
             fputs_without_html_tag(buf, stdout);
         } 

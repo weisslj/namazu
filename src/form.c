@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.29 2000-01-04 02:04:41 satoru Exp $
+ * $Id: form.c,v 1.30 2000-01-05 08:05:44 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -51,22 +51,23 @@
  *
  */
 
-static int cmp_element(char*, char*);
-static int replace_query_value(char*, char*);
-static char *read_headfoot(char*);
-static void delete_str(char*, char*);
-static void get_value(char*, char*);
-static void get_select_name(char*, char*);
-static int select_option(char*, char*, char*);
-static int check_checkbox(char*);
-static void handle_tag(char*, char*, char*, char *, char *);
+static int cmp_element ( const char *s1, const char *s2 );
+static enum nmz_stat replace_query_value ( const char *p, const char *query );
+static void delete_str ( char *s, char *d );
+static void get_value ( const char *s, char *value );
+static void get_select_name ( const char *s, char *value );
+static enum nmz_stat select_option ( char *s, const char *name, const char *subquery );
+static enum nmz_stat check_checkbox ( char *s );
+static void handle_tag ( const char *start, const char *end, const char *query,char *select_name, const char *subquery );
+static char * read_headfoot ( const char *fname );
 
-/* compare the element
+/* 
+ * Compare given two elements
  * some measure of containing LF or redundant spaces are acceptable.
- * igonore cases
+ * igonore cases.
  */
 static int 
-cmp_element(char *s1, char *s2)
+cmp_element(const char *s1, const char *s2)
 {
     for (; *s1 && *s2; s1++, s2++) {
         if (*s2 == ' ') {
@@ -86,24 +87,28 @@ cmp_element(char *s1, char *s2)
     }
 }
 
-/* replace <input type="text" name="query"  value="hogehoge"> */
-static int 
-replace_query_value(char *p, char *query)
+/* 
+ * replace <input type="text" name="query"  value="hogehoge"> 
+ */
+static enum nmz_stat
+replace_query_value(const char *p, const char *query)
 {
-    char tmp_query[BUFSIZE];
-    
-    strcpy(tmp_query, query);
-
     if (cmp_element(p, (char *)"input type=\"text\" name=\"query\"") == 0) {
+	char *converted = conv_ext(query);
+	if (converted == NULL) {
+	    nmz_die("replace_query_value");
+	}
+
         for (; *p; p++)
             fputc(*p, stdout);
         nmz_print(" value=\"");
-	conv_ext(tmp_query);
-        nmz_print(tmp_query); 
+        nmz_print(converted); 
         nmz_print("\"");
-        return 0;
+
+	free(converted);
+        return SUCCESS;
     }
-    return 1;
+    return FAILURE;
 }
 
 /* delete string (case insensitive) */
@@ -124,39 +129,39 @@ delete_str(char *s, char *d)
 }
 
 static void 
-get_value(char *s, char *v)
+get_value(const char *s, char *value)
 {
-    *v = '\0';
+    *value = '\0';
     for (; *s; s++) {
         if (nmz_strprefixcasecmp(s, "value=\"") == 0) {
-            for (s += strlen("value=\""); *s && *s != '"'; s++, v++) 
+            for (s += strlen("value=\""); *s && *s != '"'; s++, value++) 
 	    {
-                *v = *s;
+                *value = *s;
             }
-            *v = '\0';
+            *value = '\0';
             return;
         }
     }
 }
 
 static void 
-get_select_name(char *s, char *v)
+get_select_name(const char *s, char *value)
 {
-    *v = '\0';
+    *value = '\0';
     for (; *s; s++) {
         if (cmp_element(s, (char *)"select name=\"") == 0) {
             s = (char *)strchr(s, '"') + 1;
-            for (; *s && *s != (char)'"'; s++, v++) {
-                *v = *s;
+            for (; *s && *s != (char)'"'; s++, value++) {
+                *value = *s;
             }
-            *v = '\0';
+            *value = '\0';
             return;
         }
     }
 }
 
-static int 
-select_option(char *s, char *name, char *subquery)
+static enum nmz_stat
+select_option(char *s, const char *name, const char *subquery)
 {
     char value[BUFSIZE];
 
@@ -226,13 +231,15 @@ select_option(char *s, char *name, char *subquery)
                 fputs(" selected", stdout);
             }
         }
-        return 0;
+        return SUCCESS;
     }
-    return 1;
+    return FAILURE;
 }
 
-/* mark CHECKBOX of idxname with CHECKED */
-static int 
+/* 
+ * Mark CHECKBOX of idxname with CHECKED 
+ */
+static enum nmz_stat
 check_checkbox(char *s)
 {
     char value[BUFSIZE];
@@ -267,28 +274,28 @@ check_checkbox(char *s)
         if (db_count == searched) {
             nmz_print(" checked");
         }
-        return 0;
+        return SUCCESS;
     }
-    return 1;
+    return FAILURE;
 }
 
 /* handle an HTML tag */
 static void 
-handle_tag(char *p, char *q, char *query, 
-               char *select_name, char *subquery)
+handle_tag(const char *start, const char *end, const char *query, 
+               char *select_name, const char *subquery)
 {
     char tmp[BUFSIZE];
     int l;
 
-    l = q - p + 1;
+    l = end - start + 1;
     if (l < BUFSIZE - 1) {
-        strncpy(tmp, p, l);
+        strncpy(tmp, start, l);
         tmp[l] = '\0';
-        if (replace_query_value(tmp, query) == 0)
+        if (replace_query_value(tmp, query) == SUCCESS)
             return;
-        if (select_option(tmp, select_name, subquery) == 0)
+        if (select_option(tmp, select_name, subquery) == SUCCESS)
             return;
-        if (check_checkbox(tmp) == 0)
+        if (check_checkbox(tmp) == SUCCESS)
             return;
         get_select_name(tmp, select_name);
     }
@@ -296,23 +303,29 @@ handle_tag(char *p, char *q, char *query,
 }
 
 static char *
-read_headfoot(char *fname) 
+read_headfoot(const char *fname) 
 {
-    char *buf, *p, tmp_fname[BUFSIZE];
+    char *buf, *p, tmpfname[BUFSIZE], suffix[BUFSIZE];
     char *script_name;
 
-    strcpy(tmp_fname, fname);
-    choose_msgfile(tmp_fname);
+    if (choose_msgfile_suffix(fname, suffix) != SUCCESS) {
+	nmz_warn_printf("read_headfoot: cannot open %s", fname);
+	return NULL;
+    } 
+    strcpy(tmpfname, fname);
+    strcat(tmpfname, suffix);
 
-    buf = nmz_readfile(tmp_fname);
+    buf = nmz_readfile(tmpfname);
     if (buf == NULL) { /* failed */
-	buf = nmz_readfile(fname); /* retry with plain fname */
-	if (buf == NULL) {
-	    return NULL;
-	}
+	return NULL;
     }
 
-    /* expand buf memory for replacing {cgi} */
+    /* In case of suffix isn't equal to lang, we needs code conversion */
+    if (strcmp(suffix, get_lang()) != 0) {
+	buf = conv_ext(buf);
+    }
+    
+    /* Expand buf memory for replacing {cgi} */
     buf = (char *)realloc(buf, strlen(buf) + BUFSIZE);
     if (buf == NULL) {
         return NULL;
@@ -320,16 +333,16 @@ read_headfoot(char *fname)
 
     script_name= getenv("SCRIPT_NAME");
 
-    /* can't determine script_name */
+    /* Can't determine script_name */
     if (script_name == NULL) {
 	return buf;
     }
 
-    /* replace {cgi} with a proper namazu.cgi location */
+    /* Replace {cgi} with a proper namazu.cgi location */
     while ((p = strstr(buf, "{cgi}")) != NULL) {
 	nmz_subst(p, "{cgi}", script_name);
     }
-    
+
     return buf;
 }
 
@@ -344,7 +357,7 @@ read_headfoot(char *fname)
  * very ad hoc.
  */
 void 
-print_headfoot(char * fname, char * query, char *subquery)
+print_headfoot(const char * fname, const char * query, const char *subquery)
 {
     char *buf, *p, *q, name[BUFSIZE] = "";
     int f, f2;
@@ -362,13 +375,11 @@ print_headfoot(char * fname, char * query, char *subquery)
         if (f == 0 && *p == '<') {
             if (nmz_strprefixcasecmp(p, "</title>") == 0) {
 		if (*query != '\0') {
-		    char tmp_query[BUFSIZE];
-		    strcpy(tmp_query, query);
-		    conv_ext(tmp_query);
-
+		    char *converted = conv_ext(query);
 		    nmz_print(": &lt;");
-		    nmz_print(tmp_query);
+		    nmz_print(converted);
 		    nmz_print("&gt;");
+		    free(converted);
 		}
 		nmz_print("</title>\n");
                 p = (char *)strchr(p, '>');

@@ -19,6 +19,6 @@
 extern int is_lang_ja ( void );
 extern char *set_lang ( char *lang );
 extern char *get_lang ( void );
-extern char *choose_msgfile ( char *fname );
+extern enum nmz_stat choose_msgfile_suffix ( const char *pfname, char *lang_suffix );
 
 #endif /* _I18N_H */

@@ -1,10 +1,67 @@
+2000-01-05  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* template/NMZ.*.ja_JP.JIS7: Renamed to NMZ.*.ja
+	and converted its character encoding to EUC-JP.
+	
+	* src/namazu.c (main): Modify set_htmlmode(), set_pageindex(),
+	set_formprint() callings.
+
+	* src/output.c: Set 0 to pageindex, formprint, refprint as default.
+
+	* nmz/util.c (nmz_die): Use get_dyingmsg().
+	(nmz_die_with_msg): Abolished.	All callers changed.
+	(nmz_die): 
+
+	* nmz/util.c (nmz_strprefixcasecmp): Make parameter(s) be const.
+	(nmz_strprefixcmp): Ditto.
+	(nmz_strsuffixcmp): Ditto.
+	(nmz_readfile): Ditto.
+	(nmz_cat): Ditto.
+	(nmz_getenv): Ditto.
+
+	* src/form.c (replace_query_value): Make parameter(s) be const.
+	(cmp_element): Ditto.
+	(print_headfoot): Ditto.
+	(read_headfoot): Ditto.
+	(get_value): Ditto.
+	(get_select_name): Ditto.
+	(select_option): Ditto.
+
+	* nmz/codeconv.c (iskatakana): Make parameter(s) be const.
+	(ishiragana): Ditto.
+
+	* nmz/codeconv.c (conv_ext): Returun a pointer of converted string.
+	All callers changed.
+
+	* src/output.c: Use choose_msgfile_suffix.
+
+	* nmz/i18n.c (choose_msgfile_suffix): Derived from choose_msgfile.
+	(choose_msgfile): Removed.
+
+	* nmz/util.c (nmz_pathcat): Make a first parameter be const.
+
+	* conf/namazurc-sample: New file.
+
+	* conf/namazurc: Removed.
+	
+	* conf/Makefile.am: s/namazurc/namazurc-sample/g,
+	s/mknmzrc/mknmzrc-sample/g
+
+	* po/ja_JP.ISO-2022-JP.po, po/make_iso-2022-jp_po,
+	po/make_iso-2022-jp_po.in: New files.
+
+	* po/ja_JP.JIS7.po, po/make_jis7_po, po/make_jis7_po.in:
+	Removed.
+	
+	* configure.in (AC_OUTPUT): s/(NMZ\.(head|foot))\.ja_JP\.JIS7/$1.ja/g
+	(AC_OUTPUT): s/make_jis7_po/make_iso-2022-jp_po/
+	(ALL_LINGUAS): s/ja_JP.JIS7/ja_JP.ISO-2022-JP/
+
+	* scripts/mailutime.in: Fix Y2K bug. (handling 00)
+
 2000-01-05  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* scripts/mknmz.pl.in : Gettextized.
-
-2000-01-05  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
-
-	* scripts/mailutime.in: Fix Y2K bug. (handling 00)
 
 2000-01-04  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 

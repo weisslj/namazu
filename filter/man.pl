@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: man.pl,v 1.30 2004-03-22 12:31:58 opengl2772 Exp $
+# $Id: man.pl,v 1.31 2004-05-21 11:58:37 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
-#               1999 NOKUBI Takatsugu All rights reserved.
+#               1999 NOKUBI Takatsugu ,
 #               2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -78,7 +78,7 @@ sub pre_codeconv() {
 }
 
 sub post_codeconv () {
-    return 1;
+    return 0;
 }
 
 sub add_magic ($) {
@@ -124,6 +124,8 @@ sub filter ($$$$$) {
         util::fclose($fh_err);
     }
     unlink $tmpfile;
+
+    codeconv::toeuc($cont);
 
     man_filter($cont, $weighted_str, $fields);
 

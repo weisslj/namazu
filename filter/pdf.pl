@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: pdf.pl,v 1.34 2004-03-22 06:22:09 opengl2772 Exp $
+# $Id: pdf.pl,v 1.35 2004-05-21 11:58:37 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
-#               1999 NOKUBI Takatsugu All rights reserved.
+#               1999 NOKUBI Takatsugu ,
 #               2000-2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -90,7 +90,7 @@ sub pre_codeconv() {
 }
 
 sub post_codeconv () {
-    return 1;
+    return 0;
 }
 
 sub add_magic ($) {
@@ -137,6 +137,8 @@ sub filter ($$$$$) {
 	$$cont = util::readfile($fh);
         util::fclose($fh);
     }
+
+    codeconv::toeuc($cont);
 
     if (defined $pdfinfopath) {
 	my @cmd = ($pdfinfopath, @pdfinfoopts, $tmpfile);

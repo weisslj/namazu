@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: postscript.pl,v 1.11 2004-03-22 12:23:56 opengl2772 Exp $
+# $Id: postscript.pl,v 1.12 2004-05-21 11:58:37 opengl2772 Exp $
 # Copyright (C) 2000,2004 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -54,7 +54,7 @@ sub pre_codeconv() {
 }
 
 sub post_codeconv () {
-    return 1;
+    return 0;
 }
 
 sub add_magic ($) {
@@ -111,6 +111,8 @@ sub filter ($$$$$) {
         util::fclose($fh_err);
     }
     unlink $tmpfile;
+
+    codeconv::toeuc($cont);
 
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);

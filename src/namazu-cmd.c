@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu-cmd.c,v 1.1 2000-01-27 03:05:03 satoru Exp $
+ * $Id: namazu-cmd.c,v 1.2 2000-01-27 06:57:24 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -280,7 +280,20 @@ main(int argc, char **argv)
 	die(nmz_get_dyingmsg());
     }
 
-    if (argc == 1) {
+    if (getenv("QUERY_STRING") && getenv("SCRIPT_NAME")) {
+	/* 
+	 * If invoked as CGI, print a help message and exit.
+	 *
+	 * NOTE: Since "namazu" command and "namazu.cgi" had
+	 * been same until 1.9.13, there might be a lot of
+	 * people trying to use "namazu" command as CGI. But
+	 * since 1.9.14, they are different and we cannot
+	 * use "namazu" command as CGI any longer.
+	 */
+	printf(MSG_MIME_HEADER);
+	printf("You should use \"namazu.cgi\" instead of \"namazu\" command.");
+	exit(EXIT_FAILURE);
+    } else if (argc == 1) {
 	show_mini_usage();
 	exit(EXIT_FAILURE);
     } else {

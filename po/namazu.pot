@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2000-01-27 11:47+0900\n"
+"POT-Creation-Date: 2000-01-27 12:32+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -84,46 +84,46 @@ msgstr ""
 msgid "Too long QUERY_STRING"
 msgstr ""
 
-#: src/output.c:447
+#: src/output.c:453
 msgid "\t<strong>Page:</strong> "
 msgstr ""
 
-#: src/output.c:492
+#: src/output.c:498
 #, c-format
 msgid "Current List: %d"
 msgstr ""
 
-#: src/output.c:540
+#: src/output.c:546
 #, c-format
 msgid " [ TOTAL: %d ]"
 msgstr ""
 
-#: src/output.c:550
+#: src/output.c:556
 msgid "\t<p><strong> Total "
 msgstr ""
 
-#: src/output.c:557
+#: src/output.c:563
 msgid ""
 "\t documents matching your query.</strong></p>\n"
 "\n"
 msgstr ""
 
-#: src/output.c:613
+#: src/output.c:619
 #, c-format
 msgid ""
 "\t<h2>Error!</h2>\n"
 "<p>%s</p>\n"
 msgstr ""
 
-#: src/output.c:643
+#: src/output.c:649
 msgid "\t<h2>Results:</h2>\n"
 msgstr ""
 
-#: src/output.c:650
+#: src/output.c:656
 msgid "References: "
 msgstr ""
 
-#: src/output.c:697
+#: src/output.c:703
 msgid "\t<p>No document matching your query.</p>\n"
 msgstr ""
 

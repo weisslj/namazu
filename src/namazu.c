@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.96 2000-01-27 03:05:03 satoru Exp $
+ * $Id: namazu.c,v 1.97 2000-01-27 06:57:24 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -25,7 +25,6 @@
  * 
  */
 
-#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>

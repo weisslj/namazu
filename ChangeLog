@@ -6,6 +6,12 @@
 
 2000-01-27  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/namazu-cmd.c (main): Print a help message if invoked as CGI.
+	[namazu-dev 1339]
+
+	* src/Makefile.am (namazu_cgi_SOURCES): Add cgi.c and cgi.h.
+	(common_SOURCES): Remove cgi.c and cgi.h.
+
 	* src/output.c (is_cgimode): Be static.
 
 	* src/rcfile.c: Make directive_tab static.

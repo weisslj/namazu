@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.54 1999-09-01 02:04:53 satoru Exp $
+# $Id: mknmz.pl.in,v 1.55 1999-09-01 06:31:32 knok Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -215,6 +215,7 @@ sub load_modules () {
     for my $filter (@filters) {
 	$filter =~ m!(\w+)\.pl$!;
 	my $module = $1;
+	next if ($module eq 'gfilter'); # skip gfilter (not for filtering)
 	require "$module.pl";
 	my (@mtypes, $status, $recursive, $codeconv);
 	eval "\@mtypes =    ${module}::mediatype();";

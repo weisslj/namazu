@@ -1,3 +1,8 @@
+1999-09-03  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* src/search.c: Don't re-sort if SortMethod == SORT_BY_DATE.
+
+	
 1999-09-02  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* src/result.l: Fix --list option bug.

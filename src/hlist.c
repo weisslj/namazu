@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.16 1999-09-02 07:05:48 satoru Exp $
+ * $Id: hlist.c,v 1.17 1999-09-02 23:06:36 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -76,6 +76,10 @@ void prep_field_sort(HLIST hlist)
 {
     int i, numeric = 1;
     str_num *tab;
+
+    /* I don't know but this conserve previous sorted order
+       at final results in my environment. */
+    reverse_hlist(hlist);
 
     tab = (str_num *)malloc(hlist.n * sizeof(str_num));
     if (tab == NULL) {

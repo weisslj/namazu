@@ -1,9 +1,9 @@
 /*
  * i18n.c -
- * $Id: i18n.c,v 1.24 2000-03-06 08:56:55 rug Exp $
+ * $Id: i18n.c,v 1.25 2001-06-15 08:24:30 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000 Namazu Project All rights reserved.
+ * Copyright (C) 2000,2001 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -51,34 +51,37 @@ static const char *guess_category_value ( const char *categoryname );
 static const char *
 guess_category_value (const char *categoryname)
 {
-  const char *retval;
+    const char *retval;
 
-  /* The highest priority value is the `LANGUAGE' environment
-     variable.  This is a GNU extension.  */
-  retval = getenv ("LANGUAGE");
-  if (retval != NULL && retval[0] != '\0')
-    return retval;
+    if (!strcmp(categoryname, "LC_MESSAGES")) {
 
-  /* `LANGUAGE' is not set.  So we have to proceed with the POSIX
-     methods of looking to `LC_ALL', `LC_xxx', and `LANG'.  On some
-     systems this can be done by the `setlocale' function itself.  */
+	/* The highest priority value is the `LANGUAGE' environment
+	   variable.  This is a GNU extension.  */
+	retval = getenv ("LANGUAGE");
+	if (retval != NULL && retval[0] != '\0')
+	    return retval;
+    }
 
-  /* Setting of LC_ALL overwrites all other.  */
-  retval = getenv ("LC_ALL");  
-  if (retval != NULL && retval[0] != '\0')
-    return retval;
+    /* `LANGUAGE' is not set.  So we have to proceed with the POSIX
+       methods of looking to `LC_ALL', `LC_xxx', and `LANG'.  On some
+       systems this can be done by the `setlocale' function itself.  */
 
-  /* Next comes the name of the desired category.  */
-  retval = getenv (categoryname);
-  if (retval != NULL && retval[0] != '\0')
-    return retval;
+    /* Setting of LC_ALL overwrites all other.  */
+    retval = getenv ("LC_ALL");  
+    if (retval != NULL && retval[0] != '\0')
+	return retval;
 
-  /* Last possibility is the LANG environment variable.  */
-  retval = getenv ("LANG");
-  if (retval != NULL && retval[0] != '\0')
-    return retval;
+    /* Next comes the name of the desired category.  */
+    retval = getenv (categoryname);
+    if (retval != NULL && retval[0] != '\0')
+	return retval;
 
-  return NULL;
+    /* Last possibility is the LANG environment variable.  */
+    retval = getenv ("LANG");
+    if (retval != NULL && retval[0] != '\0')
+	return retval;
+
+    return NULL;
 }
 
 /*

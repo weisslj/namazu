@@ -1,3 +1,9 @@
+2001-06-15  Ryuji Abe  <rug@namazu.org>
+
+	* nmz/i18n.c (guess_category_value): Fixed indent. LANGUAGE
+	environment variable is checked only if the categoryname is
+	LC_MESSAGES.
+	
 2001-05-29  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* scripts/mknmz.in (preload_modules): Added a new function.
@@ -6468,4 +6474,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.823 2001-05-29 01:27:02 knok Exp $
+$Id: ChangeLog,v 1.824 2001-06-15 08:24:30 rug Exp $

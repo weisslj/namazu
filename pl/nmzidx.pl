@@ -359,9 +359,10 @@ sub new{
 
     if ($mode ne 'w'){
         return undef if -f "$dir/NMZ.lock";
-        my $fh = new IO::File ">$dir/NMZ.lock2";
-        $fh->print($$);
-        $fh->close;
+        if (defined(my $fh = new IO::File ">$dir/NMZ.lock2")){
+            $fh->print($$);
+            $fh->close;
+        }
     }
 
     my $self = {};

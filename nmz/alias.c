@@ -2,7 +2,7 @@
  * 
  * alias.c - 
  *
- * $Id: alias.c,v 1.1 1999-12-04 09:28:54 satoru Exp $
+ * $Id: alias.c,v 1.2 1999-12-09 02:44:51 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
@@ -33,6 +33,12 @@
 #include "i18n.h"
 
 static struct nmz_alias  *aliases  = NULL;
+
+/*
+ *
+ * Public functions
+ *
+ */
 
 enum nmz_stat add_alias(char *alias, char *real)
 {

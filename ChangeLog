@@ -1,5 +1,17 @@
 1999-12-09  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* nmz/replace.c (struct nmz_replace *replaces): Be private.
+
+	* src/output.c (is_countmode): Be private.
+	(is_listmode): Be private.
+	(is_quietmode): Be private.
+	(is_refprint): Be private.
+	(print_hitnum): Be private.
+	(print_hitnum_all_idx): Be private.
+	(print_listing): Be private.
+	(print_msgfile): Be private.
+	(print_range): Be private.
+
 	* nmz/rcfile.c (load_rcfile): Fix a bug occurred when no rcfile exists.
 
 	* nmz/search.c (check_access): Renamed from is_access_ok. (undo)

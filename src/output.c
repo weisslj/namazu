@@ -49,10 +49,19 @@ static void make_fullpathname_result ( int n );
 static void print_hitnum_each ( struct nmz_hitnum *hn );
 static int is_allresult ( void );
 static int is_pageindex ( void );
+static int is_countmode ( void );
+static int is_listmode ( void );
+static int is_quietmode ( void );
+static int is_refprint ( void );
 static void print_hlist ( NmzResult hlist );
 static void print_query ( char * qs, int w );
 static void print_page_index ( int n );
 static void print_current_range ( int listmax );
+static void print_hitnum_all_idx ( void );
+static void print_hitnum ( int n );
+static void print_listing ( NmzResult hlist );
+static void print_msgfile ( char *fname );
+static void print_range ( NmzResult hlist );
 
 /* print s to stdout with processing for emphasizing and entity encoding  */
 static void emprint(char *s, int entity_encode)
@@ -251,6 +260,26 @@ static int is_pageindex(void)
     return pageindex;
 }
 
+static int is_countmode(void)
+{
+    return countmode;
+}
+
+static int is_listmode(void)
+{
+    return listmode;
+}
+
+static int is_quietmode(void)
+{
+    return quietmode;
+}
+
+static int is_refprint(void)
+{
+    return refprint;
+}
+
 /* display the hlist */
 static void print_hlist(NmzResult hlist)
 {
@@ -387,6 +416,89 @@ static void print_current_range(int listmax)
 	print("</strong><br>\n");
     } else {
 	fputc('\n', stdout);
+    }
+}
+
+static void print_hitnum_all_idx(void)
+{
+    int i;
+    for (i = 0; i < Idx.num; i ++) {
+        struct nmz_hitnum *pr = Idx.pr[i];
+
+	if (is_refprint() && !is_countmode() && 
+	    !is_listmode() && !is_quietmode()) 
+	{
+	    if (Idx.num > 1) {
+	        if (is_htmlmode()) {
+		    printf("<li><strong>%s</strong>: ",
+			   Idx.names[i] + strlen(DEFAULT_INDEX) + 1);
+		} else {
+		    printf("(%s)", Idx.names[i]);
+		}
+	    }
+	}
+
+        while (pr != NULL) {
+	    print_hitnum_each(pr);
+	    pr = pr->next;
+	}
+
+	if (is_refprint() && !is_countmode() && !is_listmode() && 
+	    !is_quietmode()) {
+	    if (Idx.num > 1 && Query.tab[1]) {
+	        printf(_(" [ TOTAL: %d ]"), Idx.total[i]);
+	    }
+	    print("\n");
+	}
+    }
+}
+
+static void print_hitnum(int n)
+{
+    html_print(_("	<p><strong> Total "));
+    if (is_htmlmode()) {
+        printf("<!-- HIT -->%d<!-- HIT -->", n);
+    }
+    else {
+        printf("%d", n);
+    }
+    html_print(_("	 documents matching your query.</strong></p>\n\n"));
+}
+
+static void print_listing(NmzResult hlist)
+{
+    if (is_htmlmode()) {
+        print("<dl>\n");
+    }
+    
+    print_hlist(hlist);
+    
+    if (is_htmlmode()) {
+        print("</dl>\n");
+    }
+}
+
+/* display message file such as NMZ.tips or NMZ.body. */
+static void print_msgfile(char *fname) {
+    char tmp_fname[BUFSIZE];
+
+    strcpy(tmp_fname, fname);
+    choose_msgfile(tmp_fname);
+    nmz_cat(tmp_fname);
+}
+
+static void print_range(NmzResult hlist)
+{
+    if (is_htmlmode())
+        print("<p>\n");
+    print_current_range(hlist.num);
+    if (is_pageindex()) {
+        print_page_index(hlist.num);
+    }
+    if (is_htmlmode()) {
+        print("</p>\n");
+    } else {
+        print("\n");
     }
 }
 
@@ -531,16 +643,6 @@ void set_quietmode(int mode)
     quietmode = mode;
 }
 
-int is_quietmode(void)
-{
-    return quietmode;
-}
-
-int is_countmode(void)
-{
-    return countmode;
-}
-
 void set_countmode(int mode)
 {
     countmode = mode;
@@ -549,11 +651,6 @@ void set_countmode(int mode)
 void set_listmode(int mode)
 {
     listmode = mode;
-}
-
-int is_listmode(void)
-{
-    return listmode;
 }
 
 void set_allresult(int mode)
@@ -579,11 +676,6 @@ int is_formprint(void)
 void set_refprint(int mode)
 {
     refprint = mode;
-}
-
-int is_refprint(void)
-{
-    return refprint;
 }
 
 void set_maxresult(int num)
@@ -644,90 +736,5 @@ void html_print(char *str)
         }
     }
 }
-/*
- * display message file such as NMZ.tips or NMZ.body.
- */
 
-void print_msgfile(char *fname) {
-    char tmp_fname[BUFSIZE];
-
-    strcpy(tmp_fname, fname);
-    choose_msgfile(tmp_fname);
-    nmz_cat(tmp_fname);
-}
-
-void print_hitnum_all_idx(void)
-{
-    int i;
-    for (i = 0; i < Idx.num; i ++) {
-        struct nmz_hitnum *pr = Idx.pr[i];
-
-	if (is_refprint() && !is_countmode() && 
-	    !is_listmode() && !is_quietmode()) 
-	{
-	    if (Idx.num > 1) {
-	        if (is_htmlmode()) {
-		    printf("<li><strong>%s</strong>: ",
-			   Idx.names[i] + strlen(DEFAULT_INDEX) + 1);
-		} else {
-		    printf("(%s)", Idx.names[i]);
-		}
-	    }
-	}
-
-        while (pr != NULL) {
-	    print_hitnum_each(pr);
-	    pr = pr->next;
-	}
-
-	if (is_refprint() && !is_countmode() && !is_listmode() && 
-	    !is_quietmode()) {
-	    if (Idx.num > 1 && Query.tab[1]) {
-	        printf(_(" [ TOTAL: %d ]"), Idx.total[i]);
-	    }
-	    print("\n");
-	}
-    }
-}
-
-
-void print_hitnum(int n)
-{
-    html_print(_("	<p><strong> Total "));
-    if (is_htmlmode()) {
-        printf("<!-- HIT -->%d<!-- HIT -->", n);
-    }
-    else {
-        printf("%d", n);
-    }
-    html_print(_("	 documents matching your query.</strong></p>\n\n"));
-}
-
-void print_listing(NmzResult hlist)
-{
-    if (is_htmlmode()) {
-        print("<dl>\n");
-    }
-    
-    print_hlist(hlist);
-    
-    if (is_htmlmode()) {
-        print("</dl>\n");
-    }
-}
-
-void print_range(NmzResult hlist)
-{
-    if (is_htmlmode())
-        print("<p>\n");
-    print_current_range(hlist.num);
-    if (is_pageindex()) {
-        print_page_index(hlist.num);
-    }
-    if (is_htmlmode()) {
-        print("</p>\n");
-    } else {
-        print("\n");
-    }
-}
 

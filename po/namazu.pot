@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 1999-12-09 11:12+0900\n"
+"POT-Creation-Date: 1999-12-09 11:41+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -37,83 +37,83 @@ msgstr ""
 msgid "Too long QUERY_STRING"
 msgstr ""
 
-#: src/output.c:218
+#: src/output.c:227
 msgid " (Too many words matched. Ignored.)"
 msgstr ""
 
-#: src/output.c:220
+#: src/output.c:229
 msgid " (Too many pages hit. Ignored.)"
 msgstr ""
 
-#: src/output.c:222
+#: src/output.c:231
 msgid " (cannot open regex index)"
 msgstr ""
 
-#: src/output.c:224
+#: src/output.c:233
 msgid " (cannot open phrase index)"
 msgstr ""
 
-#: src/output.c:226
+#: src/output.c:235
 msgid " (cannot open this index)\n"
 msgstr ""
 
-#: src/output.c:228
+#: src/output.c:237
 msgid "(You don't have a permission to access the index)"
 msgstr ""
 
-#: src/output.c:336
+#: src/output.c:365
 msgid "\t<strong>Page:</strong> "
 msgstr ""
 
-#: src/output.c:378
+#: src/output.c:407
 #, c-format
 msgid "Current List: %d"
 msgstr ""
 
+#: src/output.c:449
+#, c-format
+msgid " [ TOTAL: %d ]"
+msgstr ""
+
+#: src/output.c:458
+msgid "\t<p><strong> Total "
+msgstr ""
+
+#: src/output.c:465
+msgid ""
+"\t documents matching your query.</strong></p>\n"
+"\n"
+msgstr ""
+
 #. this should not happen...
-#: src/output.c:413
+#: src/output.c:525
 msgid ""
 "\t<h2>Error!</h2>\n"
 "<p>Fatal error occered!</p>\n"
 msgstr ""
 
-#: src/output.c:421
+#: src/output.c:533
 msgid ""
 "\t<h2>Error!</h2>\n"
 "<p>Invalid query.</p>\n"
 msgstr ""
 
-#: src/output.c:425
+#: src/output.c:537
 msgid ""
 "\t<h2>Error!</h2>\n"
 "<p>Too many query tokens.</p>\n"
 msgstr ""
 
-#: src/output.c:436
+#: src/output.c:548
 msgid "\t<h2>Results:</h2>\n"
 msgstr ""
 
-#: src/output.c:443
+#: src/output.c:555
 msgid "References: "
 msgstr ""
 
-#: src/output.c:485
+#: src/output.c:597
 msgid "\t<p>No document matching your query.</p>\n"
-msgstr ""
-
-#: src/output.c:686
-#, c-format
-msgid " [ TOTAL: %d ]"
-msgstr ""
-
-#: src/output.c:696
-msgid "\t<p><strong> Total "
-msgstr ""
-
-#: src/output.c:703
-msgid ""
-"\t documents matching your query.</strong></p>\n"
-"\n"
 msgstr ""
 
 #: src/usage.c:49

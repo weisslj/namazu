@@ -2,7 +2,7 @@
  * 
  * replace.c - 
  *
- * $Id: replace.c,v 1.1 1999-12-04 09:28:55 satoru Exp $
+ * $Id: replace.c,v 1.2 1999-12-09 02:44:51 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
@@ -36,7 +36,13 @@
 #include "re.h"
 #include "util.h"
 
-struct nmz_replace *replaces = NULL;
+static struct nmz_replace *replaces = NULL;
+
+/*
+ *
+ * Public functions
+ *
+ */
 
 void free_replaces(void)
 {

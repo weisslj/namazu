@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: rpm.pl,v 1.7 2004-01-11 08:57:59 opengl2772 Exp $
+# $Id: rpm.pl,v 1.8 2004-01-11 19:32:32 opengl2772 Exp $
 # Copyright (C) 2000 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -77,22 +77,7 @@ sub filter ($$$$$) {
     }
 
     {
-	my @env = ($envpath, "LC_ALL=C", "LANGUAGE=C");
-	my @cmd = (@env, $rpmpath, @rpmopts, $tmpfile);
-	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
-	my $size = util::filesize($fh_out);
-	if ($size == 0) {
-	    return "Unable to convert file ($rpmpath error occurred).";
-	}
-	if ($size > $conf::TEXT_SIZE_MAX) {
-	    return 'Too large rpm file.';
-	}
-	$$cont = util::readfile($fh_out);
-    }
-    rpm::get_date($cont, $fields);
-
-    {
-	my @env = ($envpath, "LC_ALL=$util::LANG", "LANGUAGE=$util::LANG");
+        my @env = ($envpath, "LC_MESSAGE=$util::LANG", "LC_TIME=C");
 	my @cmd = (@env, $rpmpath, @rpmopts, $tmpfile);
 	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
 	my $size = util::filesize($fh_out);
@@ -124,7 +109,7 @@ sub rpm_filter ($$$$) {
 
     rpm::get_title($contref, $weighted_str, $fields);
     rpm::get_author($contref, $fields);
-#    rpm::get_date($contref, $fields);
+    rpm::get_date($contref, $fields);
     rpm::get_size($contref, $fields);
     rpm::get_summary($contref, $fields);
 

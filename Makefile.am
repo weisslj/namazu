@@ -59,7 +59,7 @@ cxref: stamp-h
 	fi
 	cxref -N namazu -html20-src -I . -I src -I nmz -I lib \
 	    -warn-all -index-all -xref-all -O cxref \
-	    {nmz,src,lib}/*.[ch] 1> cxref/warnings 
+	    {src,nmz,lib}/*.[ch] 1> cxref/warnings 
 
 
 global: HTAGS

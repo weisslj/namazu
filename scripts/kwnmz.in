@@ -1,13 +1,13 @@
 #! @PERL@
 # -*- Perl -*-
 #
-# $Id: kwnmz.pl.in,v 1.1 1999-12-19 04:19:58 satoru Exp $
+# $Id: kwnmz.in,v 1.1 2000-01-30 22:42:31 rug Exp $
 #
 # kwnmz - program to make NMZ.field.keywords
 #         by furukawa@tcp-ip.or.jp
 #
 
-push(@INC, '%LIBDIR%');
+push(@INC, '@PERLLIBDIR@');
 require 'nmzidx.pl';
 
 my $rate = 0.5;

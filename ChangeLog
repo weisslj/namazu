@@ -7,6 +7,16 @@
 
 	* src/form.c (subst): Likewise.
 
+	* scripts/mknmz.pl.in: Moved to mknmz.in.
+
+	* scripts/gcnmz.pl.in: Moved to gcnmz.in.
+
+	* scripts/kwnmz.pl.in: Moved to kwnmz.in.
+
+	* scripts/Makefile.am: Update for these changes.
+
+	* configure.in (AC_OUTPUT): Likewise.
+
 2000-01-29  Kenji Suzuki  <kenji@po.ganseki.ne.jp>
 
 	* filter/hnf.pl: s/SUMMARY_LENGTH/MAX_FIELD_LENGTH/

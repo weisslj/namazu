@@ -13,6 +13,7 @@ AUTOMAKE_OPTIONS = 1.4 no-dependencies
 bin_SCRIPTS    = gcnmz mailutime mknmz vfnmz kwnmz nmzgrep bnamazu
 noinst_SCRIPTS = gtnmz
 
+EXTRA_DIST = gcnmz.in kwnmz.in mknmz.in
 CLEANFILES  = gcnmz mknmz kwnmz
 
 localedir   = $(datadir)/locale
@@ -24,26 +25,29 @@ templatedir = $(pkgdatadir)/template
 
 ##################################################################
 
-gcnmz: gcnmz.pl
-	rm -f $@
-	sed -e 's!%LIBDIR%!$(perllibdir)!g' $< > $@.tmp
-	mv $@.tmp $@
-	chmod +x $@
+gcnmz: gcnmz.in Makefile
+	rm -f gcnmz
+	sed -e 's!@PERL@!$(PERL)!g' \
+	    -e 's!@PERLLIBDIR@!$(perllibdir)!g' gcnmz.in > gcnmz.tmp
+	mv gcnmz.tmp gcnmz
+	chmod +x gcnmz
 
-kwnmz: kwnmz.pl
+kwnmz: kwnmz.in Makefile
 	rm -f $@
-	sed -e 's!%LIBDIR%!$(perllibdir)!g' $< > $@.tmp
-	mv $@.tmp $@
-	chmod +x $@
+	sed -e 's!@PERL@!$(PERL)!g' \
+	    -e 's!@PERLLIBDIR@!$(perllibdir)!g' kwnmz.in > kwnmz.tmp
+	mv kwnmz.tmp kwnmz
+	chmod +x kwnmz
 
-mknmz: mknmz.pl
+mknmz: mknmz.in Makefile
 	rm -f $@
-	sed -e 's!%CONFDIR%!$(confdir)!g' \
-	    -e 's!%LIBDIR%!$(perllibdir)!g' \
-	    -e 's!%FILTERDIR%!$(filterdir)!g' \
-	    -e 's!%TEMPLATEDIR%!$(templatedir)!g' $< >$@.tmp 
-	mv $@.tmp $@
-	chmod +x $@
+	sed -e 's!@PERL@!$(PERL)!g' \
+	    -e 's!@CONFDIR@!$(confdir)!g' \
+	    -e 's!@PERLLIBDIR@!$(perllibdir)!g' \
+	    -e 's!@FILTERDIR@!$(filterdir)!g' \
+	    -e 's!@TEMPLATEDIR@!$(templatedir)!g' mknmz.in >mknmz.tmp 
+	mv mknmz.tmp mknmz
+	chmod +x mknmz
 
 ETAGS_ARGS = $(SCRIPTS) --lang=perl
 TAGS_DEPENDENCIES = $(SCRIPTS)

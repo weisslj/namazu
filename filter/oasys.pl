@@ -1,7 +1,7 @@
 #
 # -*- Perl -*-
-# $Id: oasys.pl,v 1.10 2004-10-16 14:54:12 opengl2772 Exp $
-# Copyright (C) 2000 Ken-ichi Hirose, 
+# $Id: oasys.pl,v 1.11 2004-11-20 18:25:03 opengl2772 Exp $
+# Copyright (C) 2000 Ken-ichi Hirose , 
 #               2000,2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #

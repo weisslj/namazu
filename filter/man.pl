@@ -1,9 +1,9 @@
 #
 # -*- Perl -*-
-# $Id: man.pl,v 1.33 2004-11-19 16:28:51 opengl2772 Exp $
+# $Id: man.pl,v 1.34 2004-11-20 18:25:03 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu ,
-#               2004 Namazu Project All rights reserved.
+#               2000-2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify

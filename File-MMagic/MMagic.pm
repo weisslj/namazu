@@ -1,6 +1,6 @@
 # File::MMagic
 #
-# $Id: MMagic.pm,v 1.8 1999-11-15 09:24:32 knok Exp $
+# $Id: MMagic.pm,v 1.9 1999-11-17 07:42:58 baba Exp $
 #
 # This program is originated from file.kulp that is a production of The
 # Unix Reconstruction Projct.
@@ -294,7 +294,7 @@ sub new {
 	my $filename = shift;
 	my $fh = new FileHandle;
 	if ($fh->open("< $filename")) {
-	    &readMagicHandle($slef, $fh);
+	    &readMagicHandle($self, $fh);
 	} else {
 	    warn __PACKAGE__ . " couldn't load specified file $filename";
 	}

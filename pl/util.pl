@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.31 2004-10-17 09:25:09 usu Exp $
+# $Id: util.pl,v 1.32 2004-10-17 09:40:58 usu Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -558,9 +558,11 @@ sub isurl ($) {
 # convert \ to / with consideration for Shift_JIS Kanji code
 sub win32_yen_to_slash ($) {
     my ($filenameref) = @_;
-    $$filenameref =~
+    if (($SYSTEM eq "MSWin32") || ($SYSTEM eq "os2")) {
+	$$filenameref =~
                 s!([\x81-\x9f\xe0-\xef][\x40-\x7e\x80-\xfc]|[\x01-\x7f])!
                 $1 eq "\\" ? "/" : $1!gex;
+    }
 }
 
 1;

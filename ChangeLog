@@ -1,3 +1,10 @@
+2001-09-13  Yoshinori TAKESAKO  <takesako@namazu.org>
+
+	* src/output.c (print_page_index): Fixed the bug on Lotus Domino 
+	Server R5.06a, that namazu.cgi outputs inaccurate page links.
+
+	* src/form.c (read_headfoot): Likewise.
+
 2001-09-12  Ryuji Abe  <rug@namazu.org>
 
 	* NEWS: DOCUMENT_URI is looked up instead of DOCUMENT_NAME.
@@ -7020,4 +7027,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.865 2001-09-12 05:15:12 rug Exp $
+$Id: ChangeLog,v 1.866 2001-09-13 05:43:32 takesako Exp $

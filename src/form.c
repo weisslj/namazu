@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.65 2001-09-12 04:52:02 takesako Exp $
+ * $Id: form.c,v 1.66 2001-09-13 05:43:32 takesako Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -375,6 +375,11 @@ read_headfoot(const char *fname)
     /* no document_name, set it to script_name */
     if (document_name == NULL) {
 	document_name = script_name;
+    } else {
+	/* Delete characters after '?' for Lotus Domino Server R5.06a */
+	char *s;
+	for (s = document_name; *s; s++)
+	    if (*s == '?') {*s = 0; break;}
     }
 
     /* Replace {cgi} with a proper namazu.cgi location */

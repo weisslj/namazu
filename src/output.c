@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.84 2001-09-12 04:52:02 takesako Exp $
+ * $Id: output.c,v 1.85 2001-09-13 05:43:32 takesako Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -493,8 +493,14 @@ print_page_index(int n)
     sn = nmz_getenv("SCRIPT_NAME");
     dn = nmz_getenv("DOCUMENT_URI");
 
-    if(dn == NULL || *dn == '\0') 
-        dn=sn;
+    if(dn == NULL || *dn == '\0') {
+        dn = sn;
+    } else {
+	/* Delete characters after '?' for Lotus Domino Server R5.06a */
+	char *s;
+	for (s = dn; *s; s++)
+	    if (*s == '?') {*s = 0; break;}
+    }
 
     html_print(_("	<strong>Page:</strong> "));
 

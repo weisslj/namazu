@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.76 2004-12-15 03:13:15 opengl2772 Exp $
+ * $Id: form.c,v 1.77 2005-01-08 02:05:50 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -113,8 +113,6 @@ cmp_element(const char *s1, const char *s2)
 static enum nmz_stat
 replace_query_value(const char *p, const char *query)
 {
-    char *query_external = NULL;
-
     if (cmp_element(p, (char *)"input type=\"text\" name=\"query\"") == 0) {
 	char *converted;
 
@@ -130,29 +128,62 @@ replace_query_value(const char *p, const char *query)
             buffer[BUFSIZE - 1] = '\0';
             delete_str((char *)p, buffer);
 	}
-	converted = nmz_codeconv_external(query);
+        converted = nmz_query_external(query);
 	if (converted == NULL) {
 	    die("%s", strerror(errno));
 	}
 
-        query_external = converted;
-        while(*query_external == '\t') {
-            query_external++;
-        }
-
         for (; *p; p++)
             fputc(*p, stdout);
 
-	if (strcmp(query, "")) {
+	if (strcmp(converted, "")) {
             printf(" value=\"");
-            html_print(query_external);  /* for treating <>&" chars in the query. */
+            html_print(converted);  /* for treating <>&" chars in the query. */
             printf("\"");
         }
-
 	free(converted);
         return SUCCESS;
     }
     return FAILURE;
+}
+
+char * 
+nmz_query_external(const char *query)
+{
+    char *query_external;
+    char *alloc;
+    char *pos, *p;
+
+    alloc = strdup(query);
+    if (alloc == NULL) { /* */
+        nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
+        return NULL;
+    }
+
+    nmz_codeconv_internal(alloc);
+
+    p = alloc;
+    while(*p == '\t') {
+        p++;
+    }
+    pos = p;
+
+    /* tr/\x01-\x1f\x7f/ /; # Remove control char. */
+    while(*p != '\0') {
+        if ((*p >= 0x01 && *p <= 0x1f) || *p == 0x7f) {
+            *p = ' ';
+        }
+        p++;
+    }
+
+    query_external = nmz_codeconv_external(pos);
+    free(alloc);
+    if (query_external == NULL) {
+        nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
+        return NULL;
+    }
+
+    return query_external;
 }
 
 /*
@@ -514,14 +545,10 @@ print_headfoot(const char * fname, const char * query, const char *subquery)
         if (f == 0 && *p == '<') {
             if (nmz_strprefixcasecmp(p, "</title>") == 0) {
 		if (*query != '\0') {
-		    char *converted = nmz_codeconv_external(query);
+		    char *converted = nmz_query_external(query);
                     if (converted) {
-                        char *query_external = converted;
-                        while(*query_external == '\t') {
-                            query_external++;
-                        }
                         printf(": &lt;");
-                        html_print(query_external);
+                        html_print(converted);
                         printf("&gt;");
                         free(converted);
                     }
@@ -578,8 +605,3 @@ print_headfoot(const char * fname, const char * query, const char *subquery)
     }
     free(buf);
 }
-
-
-
-
-

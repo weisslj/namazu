@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.99 2004-11-22 09:20:54 opengl2772 Exp $
+ * $Id: output.c,v 1.100 2005-01-08 02:05:50 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2004 Namazu Project All rights reserved.
@@ -248,7 +248,7 @@ print_hitnum_each (struct nmz_hitnumlist *hn)
 	!is_listmode() && !is_quietmode()) 
     {
 	do {
-	    char *converted = nmz_codeconv_external(hnptr->word);
+	    char *converted = nmz_query_external(hnptr->word);
 	    if (converted == NULL) {
 		die("print_hitnum_each");
 	    }

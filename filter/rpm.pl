@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: rpm.pl,v 1.3 2001-06-24 09:19:00 rug Exp $
+# $Id: rpm.pl,v 1.4 2001-06-24 09:36:35 rug Exp $
 # Copyright (C) 2000 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -68,11 +68,7 @@ sub filter ($$$$$) {
     util::vprint("Processing rpm file ... (using  '$rpmpath')\n");
 
     #FIXME: needed more smart solutions.
-    if (util::islang("ja")) {
-	system("env LC_ALL=ja LANGUAGE=ja $rpmpath -qpi $cfile > $tmpfile");
-    } else {
-	system("$rpmpath -qpi $cfile > $tmpfile");
-    }
+    system("env LC_ALL=$util::LANG LANGUAGE=$util::LANG $rpmpath -qpi $cfile > $tmpfile");
 
     my $fh = util::efopen("$tmpfile");
     my $size = util::filesize($fh);

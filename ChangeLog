@@ -12,8 +12,8 @@
 	has their own rules.
 	(man_aux): Added *.x files.
 
-	* filter/rpm.pl: Set both LC_ALL and LANGUAGE when the filter
-	command is invoked. (it's a very dirty solution.)
+	* filter/rpm.pl: Set $util::LANG to both LC_ALL and LANGUAGE
+	when the filter command is invoked. (very dirty solution.)
 
 	* filter/deb.pl: Likewise.
 
@@ -6547,4 +6547,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.834 2001-06-24 09:19:00 rug Exp $
+$Id: ChangeLog,v 1.835 2001-06-24 09:36:35 rug Exp $

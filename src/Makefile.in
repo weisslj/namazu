@@ -89,10 +89,10 @@ VERSION = @VERSION@
 ZCAT = @ZCAT@
 LIBS = -lm @LEXLIB@
 
-##################################################################
-
 bin_PROGRAMS = namazu
-bin_SCRIPTS = clnmz gcnmz mailutime mknmz rvnmz vfnmz gtnmz
+bin_SCRIPTS = gcnmz mailutime mknmz gtnmz
+
+CLEANFILES = mknmz.pl $(bin_SCRIPTS)
 
 filterdir = @datadir@/@PACKAGE@/@VERSION@/filter
 templatedir = @datadir@/@PACKAGE@/@VERSION@/template
@@ -103,7 +103,7 @@ noinst_HEADERS = namazu.h regex.h util.h getopt.h field.h codeconv.h 		 type.h e
 
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = ../config.h
-CONFIG_CLEAN_FILES =  mknmz.pl vfnmz gcnmz gtnmz mailutime clnmz rvnmz
+CONFIG_CLEAN_FILES =  mknmz.pl gcnmz gtnmz mailutime
 bin_PROGRAMS =  namazu$(EXEEXT)
 PROGRAMS =  $(bin_PROGRAMS)
 
@@ -127,8 +127,8 @@ CCLD = $(CC)
 LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(LDFLAGS) -o $@
 HEADERS =  $(noinst_HEADERS)
 
-DIST_COMMON =  Makefile.am Makefile.in clnmz.in gcnmz.in gtnmz.in \
-mailutime.in mknmz.pl.in result.c rvnmz.in vfnmz.in
+DIST_COMMON =  Makefile.am Makefile.in gcnmz.in gtnmz.in mailutime.in \
+mknmz.pl.in result.c
 
 
 DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
@@ -155,17 +155,11 @@ Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status $(BUILT_SOURCES)
 
 mknmz.pl: $(top_builddir)/config.status mknmz.pl.in
 	cd $(top_builddir) && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
-vfnmz: $(top_builddir)/config.status vfnmz.in
-	cd $(top_builddir) && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
 gcnmz: $(top_builddir)/config.status gcnmz.in
 	cd $(top_builddir) && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
 gtnmz: $(top_builddir)/config.status gtnmz.in
 	cd $(top_builddir) && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
 mailutime: $(top_builddir)/config.status mailutime.in
-	cd $(top_builddir) && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
-clnmz: $(top_builddir)/config.status clnmz.in
-	cd $(top_builddir) && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
-rvnmz: $(top_builddir)/config.status rvnmz.in
 	cd $(top_builddir) && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
 mostlyclean-binPROGRAMS:
@@ -345,6 +339,7 @@ installdirs:
 mostlyclean-generic:
 
 clean-generic:
+	-test -z "$(CLEANFILES)" || rm -f $(CLEANFILES)
 
 distclean-generic:
 	-rm -f Makefile $(CONFIG_CLEAN_FILES)

@@ -11,11 +11,10 @@
 @SET_MAKE@
 LIBS = -lm @LEXLIB@
 
-##################################################################
-## Directories
-
 bin_PROGRAMS = namazu
-bin_SCRIPTS = clnmz gcnmz mailutime mknmz rvnmz vfnmz gtnmz
+bin_SCRIPTS = gcnmz mailutime mknmz gtnmz
+
+CLEANFILES = mknmz.pl $(bin_SCRIPTS)
 
 filterdir   = @datadir@/@PACKAGE@/@VERSION@/filter
 templatedir = @datadir@/@PACKAGE@/@VERSION@/template

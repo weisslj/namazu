@@ -2,6 +2,8 @@
 
 	* Makefile.am: Add an CLEANFILES entry.
 	* src/{clnmz.in,rvnmz.in,vfnmz.in}: Removed files.
+	* src/Makefile.am: Add an CLEANFILES entry.
+	* configure.in: Modify AC_OUTPUT according to removed files.
 	
 1999-08-25  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 

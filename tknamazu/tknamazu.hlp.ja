@@ -1,7 +1,7 @@
-============================================================================ 
+=============================================================================
 全文検索システム Namazu の Tcl/Tk client TkNamazu のマニュアル 
-                                                                    Rev 1.09 
-============================================================================ 
+                                                                    Rev 1.10 
+=============================================================================
 Contents
         [1] はじめに
         [2] 各ヴィジェットの説明
@@ -10,7 +10,7 @@ Contents
         [5] マウスの説明
         [6] キーバインドの説明
         [7] 検索式
-        [8] リソースファイル(~/.tknmzrc)の説明
+        [8] リソースファイル(~/.tknamazurc)の説明
         [9] ハイパーテキストブラウザ(lynx)
         [10] マニュアルブラウザ(groff)
         [11] インフォブラウザ(info)
@@ -89,7 +89,7 @@ Mac 等々の Tcl/Tk の動作するプラットホームで動くはずです。詳細は同梱されてい
          指定された directory の namazu.conf をコマンドラインオプションで指定
          します。例えば REPLACE 等を一時的に変更したい時に効果を発揮します。
     v)   Indexes
-         .tknmzrc の INDEXESx ([12] リソースファイル...) で指定した NMZ.i を
+         .tknamazurc の INDEXESx ([12] リソースファイル...) で指定した NMZ.i を
          表示／選択する事が出来ます。
         ・カスケードメニューで一番上の点線の部分を”左クリックor<Space(決定)>”
         すると SelectDB を単独で浮かせる事が出来ます。いろいろな組合せを選択す
@@ -98,7 +98,7 @@ Mac 等々の Tcl/Tk の動作するプラットホームで動くはずです。詳細は同梱されてい
         ・カスケードメニューで <Alt> + <S> で全てを選択する事が出来ます。
         ・カスケードメニューで <Alt> + <C> で全ての選択を解除する事が出来ます。
     vi)  AddDB
-         .tknmzrc に登録されていない DB(NMZ.i) を DataBase Selecter に登録しま
+         .tknamazurc に登録されていない DB(NMZ.i) を DataBase Selecter に登録しま
         す。
     vii) Quit
          TkNamazu を終了します。
@@ -119,15 +119,15 @@ Mac 等々の Tcl/Tk の動作するプラットホームで動くはずです。詳細は同梱されてい
                                                      ^^^^^^
          い。
          この入力ダイアログではパスワードを隠しません。入力中に他の人に見られ
-         ないように十分注意して下さい。また Tknamazu を終了すると、ここで入力
-         された値は破棄されます。Tknamazu の再立ち上げを行った場合は入力しな
+         ないように十分注意して下さい。また TkNamazu を終了すると、ここで入力
+         された値は破棄されます。TkNamazu の再立ち上げを行った場合は入力しな
          おして下さい。
     vii) Display configuration
-         現在(実行した瞬間)の Tknamazu の設定／ステータスを表示します。
-         この内容を save しておいて Resource file(.tknmzrc) として使う事も出
+         現在(実行した瞬間)の TkNamazu の設定／ステータスを表示します。
+         この内容を save しておいて Resource file(.tknamazurc) として使う事も出
          来ます。
     viii)Load tknmzrc
-         一時的に他の Resource file(.tknmzrc) を読み込みたい時に使用します。
+         一時的に他の Resource file(.tknamazurc) を読み込みたい時に使用します。
 
   (3) Go
     i)   To Head
@@ -147,9 +147,9 @@ Mac 等々の Tcl/Tk の動作するプラットホームで動くはずです。詳細は同梱されてい
 
   (6) Help
     i)   Help
-         Tknamazu の Help ファイル(このファイル)を表示します。
+         TkNamazu の Help ファイル(このファイル)を表示します。
     ii)  Version
-         Tknamazu の version と status を表示します。
+         TkNamazu の version と status を表示します。
 
 
  4. Popup Description
@@ -188,7 +188,7 @@ Mac 等々の Tcl/Tk の動作するプラットホームで動くはずです。詳細は同梱されてい
          結果表示画面を編集可能にします。
 
   (12) Quit
-         Tknamazu を終了します。
+         TkNamazu を終了します。
 
 
  5. Mouse Configuration
@@ -307,9 +307,9 @@ Mac 等々の Tcl/Tk の動作するプラットホームで動くはずです。詳細は同梱されてい
 を参照してください。 
 
 
- 8. Resource File(~/.tknmzrc) Description
+ 8. Resource File(~/.tknamazurc) Description
 
- .tknmzrc とは Tknamazu の設定を規定しておく file です。 Tknamazu は起動される
+ .tknamazurc とは TkNamazu の設定を規定しておく file です。 TkNamazu は起動される
 と、起動したユーザーの Home directory を探しに行きます。もしなければ TKNMZPATH
 で規定されている directory を探します。それでもなければ自分で持っている default
 で立ちあがります。
@@ -454,7 +454,7 @@ BOOKMARKS2		Home http://www.tama.or.jp/%7Ekenzo-/Namazu/tknamazu/
 
  9. Hyper Text Browsing (lynx)
 
- Tknamazu は http: や ftp: , file: 等の protocol のついた URL からの file の取
+ TkNamazu は http: や ftp: , file: 等の protocol のついた URL からの file の取
 得と、 HTML file の表示を 全て lynx に頼っています。ここでは lynx で必要な設定
 を説明します。
  lynx の設定は HOME directory の .lynxrc か、もしくは /usr/local/lib または 
@@ -493,7 +493,7 @@ BOOKMARKS2		Home http://www.tama.or.jp/%7Ekenzo-/Namazu/tknamazu/
 
 
  10. Man Page Browsing (groff)
-         Tknamazu は man page format のファイルを表示する事が出来ます。groff 自
+         TkNamazu は man page format のファイルを表示する事が出来ます。groff 自
         体の設定は特に必要ありません。また man page を表示しないのであればイン
         ストールしなくても構いません。
          man page の表示がうまく行かない時は、まず結果表示画面の最上端に
@@ -502,13 +502,13 @@ BOOKMARKS2		Home http://www.tama.or.jp/%7Ekenzo-/Namazu/tknamazu/
 
         と表示されている行をそのまま command line で実行してみて下さい。
         ここでちゃんと表示されない場合は多分 groff がおかしいのでしょう。
-         しかしちゃんと表示される場合は、 Tknamazu の不具合である可能性が高いの
+         しかしちゃんと表示される場合は、 TkNamazu の不具合である可能性が高いの
         で表示された画面を [File] -> [Save] でファイルに落として、バグレポート
         ([13] Bug report) に添えて送って頂けるようお願い致します。
 
 
  11. Info Browsing (info)
-         Tknamazu は gnu の info format のファイルを表示する事が出来ます。info
+         TkNamazu は gnu の info format のファイルを表示する事が出来ます。info
         自体の設定は特に必要ありません。また info を表示しないのであればインス
         トールしなくても構いません。
          info の表示がうまく行かない時は、まず結果表示画面の最上端に
@@ -517,13 +517,13 @@ BOOKMARKS2		Home http://www.tama.or.jp/%7Ekenzo-/Namazu/tknamazu/
 
         と表示されている行をそのまま command line で実行してみて下さい。
         ここでちゃんと表示されない場合は多分 info がおかしいのでしょう。
-         しかしちゃんと表示される場合は、 Tknamazu の不具合である可能性が高いの
+         しかしちゃんと表示される場合は、 TkNamazu の不具合である可能性が高いの
         で表示された画面を [File] -> [Save] でファイルに落として、バグレポート
         ([13] Bug report) に添えて送って頂けるようお願い致します。
 
 
  12. KANJI Input (kinput2)
-         Tknamazu は漢字の入力に kinput2 を使用します。startx や initx を使用し
+         TkNamazu は漢字の入力に kinput2 を使用します。startx や initx を使用し
         て X Window System を起動している人は Home directory の .xinitrc に、
         xdm で起動している人は .xsession に、以下の一行を追加しておくと良いで
         しょう。 
@@ -538,7 +538,7 @@ BOOKMARKS2		Home http://www.tama.or.jp/%7Ekenzo-/Namazu/tknamazu/
 
  13. Bug Report
 
- Tknamazu の使用に関しては基本的に  at your own risk でお願いいたします。
+ TkNamazu の使用に関しては基本的に  at your own risk でお願いいたします。
 但し、不具合orバグに関してはできるだけ対処したいと思っていますので、不具合orバ
 グを見つけた方は広瀬<kenzo-@tama.or.jp>までご連絡して頂けるよう、宜しくお願い致
 します。

@@ -1,12 +1,12 @@
 dnl
 dnl configure for Tknamazu
-dnl $Id: configure.in,v 1.3 1999-11-02 18:25:56 kenzo- Exp $
+dnl $Id: configure.in,v 1.4 2000-02-19 00:57:04 kenzo- Exp $
 dnl
 
 dnl Process this file with autoconf to produce a configure script.
 AC_INIT(tknamazu.tcl.in)
 AC_PREREQ(2.13)
-AM_INIT_AUTOMAKE(tknamazu, 1.12)
+AM_INIT_AUTOMAKE(tknamazu, 1.90)
 
 dnl Checks for programs.
 dnl AC_PROG_INSTALL
@@ -52,7 +52,7 @@ AC_ARG_WITH(
 	AC_MSG_RESULT(using $with_wish for wish)
 	WISH = $with_wish,
 	dnl checking for wish (ugly)
-	[AC_PATH_PROGS(WISH, wish8.0jp wish4.2jp wish8.2 wish8.1 wish, no)]
+	[AC_PATH_PROGS(WISH, wish8.0jp wish4.2jp wish8.3 wish8.2 wish8.1 wish, no)]
 )
 if test "$WISH" = "no"; then
     AC_MSG_ERROR(wish not found)

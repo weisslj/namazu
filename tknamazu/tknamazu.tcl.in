@@ -2,9 +2,9 @@
 #
 # tknamazu.tcl - Tcl/Tk front-end for Namazu.
 #
-# $Id: tknamazu.tcl.in,v 1.9 1999-11-02 18:49:40 kenzo- Exp $
+# $Id: tknamazu.tcl.in,v 1.10 2000-02-19 00:57:04 kenzo- Exp $
 #
-# Copyright (C) 1998-1999 Ken-ichi Hirose. All rights reserved.
+# Copyright (C) 1998-2000 Ken-ichi Hirose. All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -24,143 +24,160 @@
 #
 
 global version;set version "@VERSION@"
+global conf
+global inside
+global siteurl
 
-regsub -all {\\} $argv0 {/} basedir
-regsub {^(.*)/.*$} $basedir {\1} basedir
+regsub -all {\\} $argv0 {/} conf(basedir)
+regsub {^(.*)/.*$} $conf(basedir) {\1} conf(basedir)
 
 ################ Evaluation and Initialize items
-global conf
-set conf(NAMAZU) {%NAMAZU%}
-set conf(BROWSER) {@LYNX@}
-set conf(EXTBROWSER) {@NETSCAPE@}
-set conf(UNCOMPRESS) {@ZCAT@}
-set conf(MANPAGE) {@GROFF@}
-set conf(MANPAGEFILTER) {}
-set conf(MANPATH) {/usr/local/man /usr/share/man /usr/bin/man /usr/man /usr/X11R6/man /usr/openwin/man}
-set conf(GNUINFO) {@INFO@}
-set conf(GNUINFOFILTER) {}
-set conf(GNUINFOTMP) {/tmp/.gnuinfotmp}
-set conf(MKNMZ) {%MKNMZ%}
-set conf(INDEXOUTPUTDIR) {@INDEXDIR@}
-set conf(WIDTH) {80}
-set conf(HEIGHT) {20}
-set conf(LANG) {}
-set conf(WIDGETFONT) {-misc-Fixed-Medium-R-Normal-*-*-120-*-*-*-*-*-*}
-set conf(TEXTFONT) {-misc-Fixed-Medium-R-Normal-*-*-120-*-*-*-*-*-*}
-set conf(WIDGETCOLOR) {gray90}
-set conf(FONTCOLOR) {black}
-set conf(MARKCOLOR) {red}
-set conf(LINKCOLOR) {blue}
-set conf(REFERENCECOLOR) {green3}
-set conf(OPTIONS) {-r}
-set conf(NMZCONF) {}
-set conf(INDEXES) {@INDEXDIR@}
-set conf(MKLOCATION) {./}
-set conf(MKOPTIONS) {}
-set conf(WDLOCATION) {./NMZ.i}
-set conf(SMARTJUMP) {1}
-set conf(HEADERWIPE) {ON}
-set conf(LOCALSITES) {}
-set conf(THOUGHTFULFIND) {0}
+proc SetDefaultResources {} {
+	global conf
 
-set conf(tknmzhome) {%PKGDATADIR%}
-set conf(tclversion) "$tcl_version"
-set conf(tkversion) "$tk_version"
-set conf(tclpatchlevel) "$tcl_patchLevel"
-set conf(tkpatchlevel) "$tk_patchLevel"
+	set conf(NAMAZU) {%NAMAZU%}
+	set conf(BROWSER) {@LYNX@}
+	set conf(EXTBROWSER) {@NETSCAPE@}
+	set conf(UNCOMPRESS) {@ZCAT@}
+	set conf(MANPAGE) {@GROFF@}
+	set conf(MANPAGEFILTER) {}
+	set conf(MANPATH) {/usr/local/man /usr/share/man /usr/bin/man /usr/man /usr/X11R6/man /usr/openwin/man}
+	set conf(GNUINFO) {@INFO@}
+	set conf(GNUINFOFILTER) {}
+	set conf(GNUINFOTMP) {/tmp/.gnuinfotmp}
+	set conf(MKNMZ) {%MKNMZ%}
+	set conf(INDEXOUTPUTDIR) {@INDEXDIR@}
+	set conf(WIDTH) {80}
+	set conf(HEIGHT) {20}
+	set conf(LANG) {}
+	set conf(WIDGETFONT) {-misc-Fixed-Medium-R-Normal-*-*-120-*-*-*-*-*-*}
+	set conf(TEXTFONT) {-misc-Fixed-Medium-R-Normal-*-*-120-*-*-*-*-*-*}
+	set conf(WIDGETCOLOR) {gray90}
+	set conf(SELECTCOLOR) {blue60}
+	set conf(TROUGHTCOLOR) {gray30}
+	set conf(FONTCOLOR) {black}
+	set conf(MARKCOLOR) {red}
+	set conf(LINKCOLOR) {blue}
+	set conf(REFERENCECOLOR) {green3}
+	set conf(OPTIONS) {}
+	set conf(NMZCONF) {}
+	set conf(INDEXES) {@INDEXDIR@}
+	set conf(MKLOCATION) {./}
+	set conf(MKOPTIONS) {}
+	set conf(WDLOCATION) {./NMZ.i}
+	set conf(SMARTJUMP) {1}
+	set conf(HEADERWIPE) {ON}
+	set conf(LOCALSITES) {}
+	set conf(THOUGHTFULFIND) {0}
 
-if [info exists tcl_platform(os)] {
-    set conf(os) "$tcl_platform(os)"
-} else {
-    set conf(os) {unknown}
-}
-if [info exists tcl_platform(osVersion)] {
-    set conf(osversion) "$tcl_platform(osVersion)"
-} else {
-    set conf(osversion) {unknown}
-}
-if [info exists tcl_platform(machine)] {
-    set conf(machine) "$tcl_platform(machine)"
-} else {
-    set conf(machine) {unknown}
-}
-if [info exists tcl_platform(platform)] {
-    set conf(platform) "$tcl_platform(platform)"
-} else {
-    set conf(platform) {unknown}
-}
-if [info exists env(HOME)] {
-    set conf(userhome) "$env(HOME)"
-} else {
-    set conf(userhome) {~}
-}
-if {[info commands kanji] == "kanji"} {
-    set conf(kanjimode) 1
-    if ![regexp -nocase {unix} $conf(platform)] {
-        kanji internalCode SJIS
-    }
-} else {
-    set conf(kanjimode) 0
+	set conf(tknmzhome) {%PKGDATADIR%}
+	set conf(viewer) {}
+	set conf(manpagedir) {}
+	set conf(gnuinfofile) {}
+	set conf(commandline) {}
 }
 
-if {[catch {open "$conf(tknmzhome)/tknmzrc"} input] \
-   && [catch {open "$conf(tknmzhome)/tknamazurc"} input] \
-   && [catch {open "$basedir/tknmzrc"} input] \
-   && [catch {open "$basedir/tknamazurc"} input]} {
-    catch {close $input}
-    puts "I can not read resource file ... (T_T)\n"
-} else {
-    foreach line [split [read $input] \n] {
-        if [regexp {^([^#][0-9A-Z]*)	+(.*)$} $line match item value] {
-            set conf($item) "$value"
-        }
-    }
-    catch {close $input}
-    if {$conf(LANG) == ""} {
-        if [info exists env(LANG)] {
-            set conf(LANG) "$env(LANG)"
-        } else {
-            if [info exists env(LC_CTYPE)] {
-                set conf(LANG) "$env(LC_CTYPE)"
-            } else {
-                set conf(LANG) {C}
-            }
-        }
-    }
+proc LoadResources {} {
+	global conf env
+
+	if {[catch {open "$conf(tknmzhome)/tknamazurc"} input] \
+	   && [catch {open "$conf(tknmzhome)/tknmzrc"} input] \
+	   && [catch {open "$conf(basedir)/tknamazurc"} input] \
+	   && [catch {open "$conf(basedir)/tknmzrc"} input]} {
+	    catch {close $input}
+	    puts "I can not read resource file ... (T_T)\n"
+	} else {
+	    foreach line [split [read $input] \n] {
+	        if [regexp {^([^#][0-9A-Z]*)	+(.*)$} $line match item value] {
+	            set conf($item) "$value"
+	        }
+	    }
+	    catch {close $input}
+	    if {$conf(LANG) == ""} {
+	        if [info exists env(LANG)] {
+	            set conf(LANG) "$env(LANG)"
+	        } else {
+	            if [info exists env(LC_CTYPE)] {
+	                set conf(LANG) "$env(LC_CTYPE)"
+	            } else {
+	                set conf(LANG) {C}
+	            }
+	        }
+	    }
+	}
+	
+	if {  [catch {open "$env(TKNMZRC)"} input] \
+	   && [catch {open "$env(TKNMZRC)/.tknamazurc"} input] \
+	   && [catch {open "$env(TKNMZRC)/.tknmzrc"} input] \
+	   && [catch {open "$env(HOME)/.tknamazurc"} input] \
+	   && [catch {open "$env(HOME)/.tknmzrc"} input]} {
+	    catch {close $input}
+	} else {
+	    foreach line [split [read $input] \n] {
+	        if [regexp {^([^#][0-9A-Z]*)	+(.*)$} $line match item value] {
+	            set conf($item) "$value"
+	        }
+	    }
+	    catch {close $input}
+	}
 }
 
-if {  [catch {open "$env(TKNMZRC)/.tknmzrc"} input] \
-   && [catch {open "$env(HOME)/.tknmzrc"} input]} {
-    catch {close $input}
-} else {
-    foreach line [split [read $input] \n] {
-        if [regexp {^([^#][0-9A-Z]*)	+(.*)$} $line match item value] {
-            set conf($item) "$value"
-        }
-    }
-    catch {close $input}
-}
+proc Initialization {} {
+	global conf inside env tcl_version tk_version tcl_patchLevel tk_patchLevel tcl_platform
 
-set conf(viewer) {}
-set conf(manpagedir) {}
-set conf(gnuinfofile) {}
-set conf(commandline) {}
-if {$conf(LANG) == "C"} {
-    set conf(language) {en}
-} else {
-    regsub {^(..).*} $conf(LANG) {\1} conf(language)
+	set conf(tclversion) "$tcl_version"
+	set conf(tkversion) "$tk_version"
+	set conf(tclpatchlevel) "$tcl_patchLevel"
+	set conf(tkpatchlevel) "$tk_patchLevel"
+	
+	if [info exists tcl_platform(os)] {
+	    set conf(os) "$tcl_platform(os)"
+	} else {
+	    set conf(os) {unknown}
+	}
+	if [info exists tcl_platform(osVersion)] {
+	    set conf(osversion) "$tcl_platform(osVersion)"
+	} else {
+	    set conf(osversion) {unknown}
+	}
+	if [info exists tcl_platform(machine)] {
+	    set conf(machine) "$tcl_platform(machine)"
+	} else {
+	    set conf(machine) {unknown}
+	}
+	if [info exists tcl_platform(platform)] {
+	    set conf(platform) "$tcl_platform(platform)"
+	} else {
+	    set conf(platform) {unknown}
+	}
+	if [info exists env(HOME)] {
+	    set conf(userhome) "$env(HOME)"
+	} else {
+	    set conf(userhome) {~}
+	}
+	if {[info commands kanji] == "kanji"} {
+	    set conf(kanjimode) 1
+	    if ![regexp -nocase {unix} $conf(platform)] {
+	        kanji internalCode SJIS
+	    }
+	} else {
+	    set conf(kanjimode) 0
+	}
+	if {$conf(LANG) == "C"} {
+	    set conf(language) {en}
+	} else {
+	    regsub {^(..).*} $conf(LANG) {\1} conf(language)
+	}
+	
+	set inside(keyword) {}
+	set inside(history) {}
+	set inside(lynxauth) {}
+	set inside(urlforext) {}
 }
-
-global siteurl
-set keyword {}
-set history {}
-set lynxauth {}
-set urlforext {}
-set formoptions {}
 
 ################ proc routine
 proc Browse { url } {
-    global conf log keyword but
+    global conf inside log but
 
     $log config -cursor watch
     update idletasks
@@ -171,11 +188,11 @@ proc Browse { url } {
         set url [$log get $urltag.first $urltag.last]
     }
 
-    $but config -text {Back to result} -command {Exec $keyword}
+    $but config -text {Back to result} -command {Exec $inside(keyword)}
     switch -regexp $url {
         {(\.(htm|HTM).*$)|(^http://)|(^ftp://)|(^file://)} {
             set conf(viewer) {lynx}
-            set history "URLViewer $url"
+            set inside(history) "URLViewer $url"
             URLViewer $url
         }
         {(\*.*::)|(^\*.*:.*\.)|((Next|Prev|Up): [^,]*,)|((Next|Prev|Up): [^,]*$)} {
@@ -194,7 +211,7 @@ proc Browse { url } {
                 }
             }
             set conf(viewer) {gnuinfo}
-            set history "InfoViewer $url"
+            set inside(history) "InfoViewer $url"
             InfoViewer $conf(gnuinfofile) $url
         }
         {^[^/][A-Za-z0-9_\-\.]+\([1-9][A-Za-z0-9]*\)} {
@@ -205,44 +222,44 @@ proc Browse { url } {
              match manbasedir
             if {$conf(MANPATH) == ""} {
                 set url "$manbasedir/man$section/$manual.$section"
-                set history "ManViewer $url"
+                set inside(history) "ManViewer $url"
                 ManViewer $url
             }
             foreach manpath [split $conf(MANPATH)] {
                 if {[file exists $manpath/$conf(LANG)/cat$section/$manual.$section] \
                     || [file exists $manpath/$conf(LANG)/cat$section/$manual.$section.gz]} {
                     set url "$manpath/$conf(LANG)/cat$section/$manual.$section"
-                    set history "Viewer $url"
+                    set inside(history) "Viewer $url"
                     Viewer $url {}
                     break
                 } elseif {[file exists $manpath/$conf(LANG)/man$section/$manual.$section] \
                           || [file exists $manpath/$conf(LANG)/man$section/$manual.$section.gz]} {
                     set url "$manpath/$conf(LANG)/man$section/$manual.$section"
-                    set history "ManViewer $url"
+                    set inside(history) "ManViewer $url"
                     ManViewer $url
                     break
                 } elseif {[file exists $manpath/$conf(language)/cat$section/$manual.$section] \
                           || [file exists $manpath/$conf(language)/cat$section/$manual.$section.gz]} {
                     set url "$manpath/$conf(language)/cat$section/$manual.$section"
-                    set history "Viewer $url"
+                    set inside(history) "Viewer $url"
                     Viewer $url {}
                     break
                 } elseif {[file exists $manpath/$conf(language)/man$section/$manual.$section] \
                           || [file exists $manpath/$conf(language)/man$section/$manual.$section.gz]} {
                     set url "$manpath/$conf(language)/man$section/$manual.$section"
-                    set history "ManViewer $url"
+                    set inside(history) "ManViewer $url"
                     ManViewer $url
                     break
                 } elseif {[file exists $manpath/cat$section/$manual.$section] \
                           || [file exists $manpath/cat$section/$manual.$section.gz]} {
                     set url "$manpath/cat$section/$manual.$section"
-                    set history "Viewer $url"
+                    set inside(history) "Viewer $url"
                     Viewer $url {}
                     break
                 } elseif {[file exists $manpath/man$section/$manual.$section] \
                           || [file exists $manpath/man$section/$manual.$section.gz]} {
                     set url "$manpath/man$section/$manual.$section"
-                    set history "ManViewer $url"
+                    set inside(history) "ManViewer $url"
                     ManViewer $url
                     break
                 } else {
@@ -254,7 +271,7 @@ proc Browse { url } {
             set conf(viewer) {gnuinfo}
             regsub {^/([A-Za-z])\|(/.*)} $url {\1:\2} url
             regsub -nocase {(,*)(-[1-9]+)(.*)} $url {\1\3} url
-            set history "InfoViewer $url"
+            set inside(history) "InfoViewer $url"
             InfoViewer $url {}
         }
         {.*/man[1-9lno][A-Za-z]*/[^/]*$} {
@@ -309,7 +326,7 @@ proc Kick { url x y } {
 }
 
 proc Exec { searchword } {
-    global log but conf siteurl lynxauth
+    global log but conf inside siteurl
 
     $log config -cursor watch
     update idletasks
@@ -326,7 +343,7 @@ proc Exec { searchword } {
         regsub -all { } $searchword {+} searchword
         regsub -all {[^a-zA-Z0-9~\-\_\.\/\:\%\+]} $searchword \
          {[scan \\& %c x ; format "%%%02X" $x]} conf(searchword)
-        set conf(searchword) "key=[subst $conf(searchword)]"
+        set conf(searchword) "query=[subst $conf(searchword)]"
         set url $siteurl($conf(nmzsite))
         if [regexp {\?} $url] {
             append url "&"
@@ -337,10 +354,10 @@ proc Exec { searchword } {
         set conf(WIDTH) [lindex $gm 0]
         set conf(HIGTH) [lindex $gm 1]
         set conf(commandline) "$conf(BROWSER) -dump -width=$conf(WIDTH) $url$conf(searchword)$conf(optionsurl)$conf(indexesurl)"
-        if {![string compare $lynxauth ""]} {
+        if {![string compare $inside(lynxauth) ""]} {
             set exec "$conf(BROWSER) -dump -width=$conf(WIDTH) $url$conf(searchword)$conf(optionsurl)$conf(indexesurl)"
         } else {
-            set exec "$conf(BROWSER) -dump -width=$conf(WIDTH) -auth=$lynxauth $url$conf(searchword)$conf(optionsurl)$conf(indexesurl)"
+            set exec "$conf(BROWSER) -dump -width=$conf(WIDTH) -auth=$inside(lynxauth) $url$conf(searchword)$conf(optionsurl)$conf(indexesurl)"
         }
     }
 
@@ -381,8 +398,8 @@ proc Exec { searchword } {
         RichEditControl
     }
     Mark $searchword
-    set keyword "$searchword"
-    $but config -text {Search} -command {Exec $keyword}
+    set inside(keyword) "$searchword"
+    $but config -text {Search} -command {Exec $inside(keyword)}
     focus .tknmz.result.scroll
 
     if {($conf(viewer) == "lynx")} {
@@ -412,7 +429,7 @@ proc Exec { searchword } {
 }
 
 proc Viewer { url offset } {
-    global conf log keyword
+    global conf inside log
 
     if {![file exists $url]} {
         if {![file exists $url.gz]} {
@@ -464,7 +481,7 @@ proc Viewer { url offset } {
         $log config -relief raised -state disabled
     }
     RichEditControl
-    Mark $keyword
+    Mark $inside(keyword)
     if {($offset != 1) && ($conf(HEADERWIPE) == "ON")} {
         set lastline [lindex [split [$log index end] .] 0]
         set fraction [expr $offset.0 / $lastline.0]
@@ -492,16 +509,16 @@ proc Viewer { url offset } {
 }
 
 proc URLViewer { url } {
-    global conf log keyword lynxauth
+    global conf inside log
 
     set gm [split [wm geometry .tknmz] x+]
     set conf(WIDTH) [lindex $gm 0]
     set conf(HIGTH) [lindex $gm 1]
     set conf(commandline) "$conf(BROWSER) -dump -width=$conf(WIDTH) $url"
-    if {![string compare $lynxauth ""]} {
+    if {![string compare $inside(lynxauth) ""]} {
         set urlviewer "$conf(BROWSER) -dump -width=$conf(WIDTH) $url"
     } else {
-        set urlviewer "$conf(BROWSER) -dump -width=$conf(WIDTH) -auth=$lynxauth $url"
+        set urlviewer "$conf(BROWSER) -dump -width=$conf(WIDTH) -auth=$inside(lynxauth) $url"
     }
 
     if [catch {open "|$urlviewer"} input] {
@@ -524,7 +541,7 @@ proc URLViewer { url } {
         $log config -relief raised -state disabled
     }
     RichEditControl
-    Mark $keyword
+    Mark $inside(keyword)
 
     bind .tknmz.result.scroll <Key-1> {ShortCutJump 1}
     bind .tknmz.result.scroll <Key-2> {ShortCutJump 2}
@@ -538,7 +555,7 @@ proc URLViewer { url } {
 }
 
 proc InfoViewer { url node } {
-    global conf log but keyword
+    global conf inside log but
 
     if {![string compare $node ""]} {
         set node {Top}
@@ -586,7 +603,7 @@ proc InfoViewer { url node } {
     file delete -force -- $conf(gnuinfotmp)
 
     RichEditControl
-    Mark $keyword
+    Mark $inside(keyword)
 
     bind .tknmz.result.scroll <Key-1> {ShortCutBrowse 1}
     bind .tknmz.result.scroll <Key-2> {ShortCutBrowse 2}
@@ -600,7 +617,7 @@ proc InfoViewer { url node } {
 }
 
 proc ManViewer { url } {
-    global conf log but keyword
+    global conf inside log but
 
     if {![file exists $url]} {
         if {![file exists $url.gz]} {
@@ -651,7 +668,7 @@ proc ManViewer { url } {
         $log config -relief raised -state disabled
     }
     RichEditControl
-    Mark $keyword
+    Mark $inside(keyword)
 
     bind .tknmz.result.scroll <Key-1> {ShortCutBrowse 1}
     bind .tknmz.result.scroll <Key-2> {ShortCutBrowse 2}
@@ -841,25 +858,48 @@ proc ShortCutJump { i } {
 proc MakeOptions {} {
     global conf selnmzidx opt
 
-    regsub -all { \-a| \-n [0-9]+| \-s| \-l| \-e} $conf(OPTIONS) {} \
-        conf(OPTIONS)
+    regsub -all { \-\-all| \-\-max\=[0-9]+| \-\-short| \-\-late| \-\-early| \-\-sort\=[a-z\:]+| \-\-ascending} $conf(OPTIONS) {} conf(OPTIONS)
     if {$opt(n) == "ALL"} {
-        append conf(OPTIONS) " -a"
+        append conf(OPTIONS) " --all"
     } else {
-        append conf(OPTIONS) " -n $opt(n)"
+        append conf(OPTIONS) " --max=$opt(n)"
     }
     if {$opt(s) == "ON"} {
         append conf(OPTIONS) ""
     } else {
-        append conf(OPTIONS) " -s"
+        append conf(OPTIONS) " --short"
     }
 
     switch $opt(l) {
-        {later} {
-            append conf(OPTIONS) " -l"
+        {late} {
+            append conf(OPTIONS) " --late"
         }
-        {earlier} {
-            append conf(OPTIONS) " -e"
+        {early} {
+            append conf(OPTIONS) " --early"
+        }
+        {subject:ascending} {
+            append conf(OPTIONS) " --sort=field:subject --ascending"
+        }
+        {subject:descending} {
+            append conf(OPTIONS) " --sort=field:subject"
+        }
+        {from:ascending} {
+            append conf(OPTIONS) " --sort=field:from --ascending"
+        }
+        {from:descending} {
+            append conf(OPTIONS) " --sort=field:from"
+        }
+        {size:ascending} {
+            append conf(OPTIONS) " --sort=field:size --ascending"
+        }
+        {size:descending} {
+            append conf(OPTIONS) " --sort=field:size"
+        }
+        {uri:ascending} {
+            append conf(OPTIONS) " --sort=field:uri --ascending"
+        }
+        {uri:descending} {
+            append conf(OPTIONS) " --sort=field:uri"
         }
         default {
             append conf(OPTIONS) ""
@@ -868,7 +908,7 @@ proc MakeOptions {} {
 
     if {$conf(NMZCONF) != ""} {
         regsub -all { \-f [^ ]+} $conf(OPTIONS) {} conf(OPTIONS)
-        append conf(OPTIONS) " -f $conf(NMZCONF)"
+        append conf(OPTIONS) " --config=$conf(NMZCONF)"
     }
 
     if {$conf(INDEXOUTPUTDIR) != ""} {
@@ -901,17 +941,41 @@ proc MakeFormOptions {} {
         append conf(optionsurl) "&max=$opt(n)"
     }
     if {$opt(s) == "ON"} {
-        append conf(optionsurl) "&format=long"
+        append conf(optionsurl) "&result=normal"
     } else {
-        append conf(optionsurl) "&format=short"
+        append conf(optionsurl) "&result=short"
     }
 
     switch $opt(l) {
-        {later} {
-            append conf(optionsurl) "&sort=later"
+        {late} {
+            append conf(optionsurl) "&sort=date%3Alate"
         }
-        {earlier} {
-            append conf(optionsurl) "&sort=earlier"
+        {early} {
+            append conf(optionsurl) "&sort=date%3Aearly"
+        }
+        {subject:ascending} {
+            append conf(optionsurl) "&sort=field%3Asubject%3Aascending"
+        }
+        {subject:descending} {
+            append conf(optionsurl) "&sort=field%3Asubject%3Adescending"
+        }
+        {from:ascending} {
+            append conf(optionsurl) "&sort=field%3Afrom%3Aascending"
+        }
+        {from:descending} {
+            append conf(optionsurl) "&sort=field%3Afrom%3Adescending"
+        }
+        {size:ascending} {
+            append conf(optionsurl) "&sort=field%3Asize%3Aascending"
+        }
+        {size:descending} {
+            append conf(optionsurl) "&sort=field%3Asize%3Adescending"
+        }
+        {uri:ascending} {
+            append conf(optionsurl) "&sort=field%3Auri%3Aascending"
+        }
+        {uri:descending} {
+            append conf(optionsurl) "&sort=field%3Auri%3Adescending"
         }
         default {
             append conf(optionsurl) "&sort=score"
@@ -1116,7 +1180,7 @@ proc LoadConf {} {
 }
 
 proc SetAuthorization {} {
-    global conf lynxauth auth login password
+    global conf auth login password
 
     if [winfo exists .auth] {
         raise .auth
@@ -1165,10 +1229,10 @@ proc SetAuthorization {} {
         focus .auth.login.entry
         tkwait variable auth(ok)
         if {($auth(ok)) && ($login != "")} {
-            set lynxauth "$login:$password"
+            set inside(lynxauth) "$login:$password"
             break
         } else {
-            set lynxauth {}
+            set inside(lynxauth) {}
             MessageBox info ok "Clear" "Clear input authorization."
             break
         }
@@ -1181,14 +1245,13 @@ proc RegexpKeywords { regexpkeywords } {
     regsub -nocase -all { \& | \| | \! |\( | \)| and | or | not } $regexpkeywords { } regexpkeywords
     regsub -all { \+[a-z\-]+\:} $regexpkeywords { } regexpkeywords
     regsub -all { \"|\" | \/|\/ | \{|\} |^\"|\"$|^\/|\/$|^\{|\}$} $regexpkeywords { } regexpkeywords
-#    regsub -all {\[|\]|\^|\$|\.|\?|\+|\*} $regexpkeywords {} regexpkeywords
     regsub -all {^ +| +$} $regexpkeywords {} regexpkeywords
     regsub -all { +} $regexpkeywords {|} regexpkeywords
     return $regexpkeywords
 }
 
 proc FindWord {} {
-    global conf log prompt keyword findword
+    global conf inside log prompt findword
 
     if [winfo exists .prompt] {
         raise .prompt 
@@ -1250,16 +1313,16 @@ proc FindWord {} {
         .prompt.entry.entry delete 0 end
         switch $conf(THOUGHTFULFIND) {
             {1} {
-                set findword $keyword
+                set findword $inside(keyword)
             }
             {2} {
                 set prompt(regexp) 1
-                set findword [RegexpKeywords $keyword]
+                set findword [RegexpKeywords $inside(keyword)]
             }
             {3} {
                 set prompt(regexp) 1
                 set prompt(nocase) 1
-                set findword [RegexpKeywords $keyword]
+                set findword [RegexpKeywords $inside(keyword)]
             }
         }
     }
@@ -1344,7 +1407,7 @@ proc FindWord {} {
     focus .tknmz.result.scroll
     catch {destroy .prompt}
 
-    Mark $keyword
+    Mark $inside(keyword)
 }
 
 proc LoadTknmzrc {} {
@@ -1406,7 +1469,7 @@ proc DisplayConfiguration {} {
     $log delete 1.0 end
     $log insert end "# TkNamazu version $version\n"
     $log insert end "# Date : [clock format [clock seconds]]\n"
-    foreach item [array names conf] {
+    foreach item  [lsort [array names conf]]  {
         $log insert end "$item		$conf($item)\n"
     }
     $log config -relief raised -state disabled
@@ -1472,11 +1535,11 @@ proc CopyString {} {
 }
 
 proc CopyURL {} {
-    global urlforext
+    global inside
 
-    if {$urlforext != ""} {
+    if {$inside(urlforext) != ""} {
         clipboard clear
-        clipboard append $urlforext
+        clipboard append $inside(urlforext)
     }
 }
 
@@ -1515,12 +1578,12 @@ proc PasteString { widget } {
 }
 
 proc FastExec {} {
-    global keyword
+    global inside
 
     if [catch {selection get} sel] {
         return
     }
-    set keyword [selection get]
+    set inside(keyword) [selection get]
     Exec [selection get]
 }
 
@@ -1631,7 +1694,7 @@ proc DialogBox {w title text bitmap default args} {
 }
 
 proc PopupMenu { x y } {
-    global log conf urlforext
+    global log conf inside
 
     if [winfo exists .popupmenu] {
         catch {destroy .popupmenu}
@@ -1639,9 +1702,9 @@ proc PopupMenu { x y } {
         after 100 {grab .popupmenu}
     }
 
-    set urlforext {}
+    set inside(urlforext) {}
     if [regexp {(kicker[0-9]+)} [$log tag names [$log index current]] match urltag] {
-        set urlforext [$log get $urltag.first $urltag.last]
+        set inside(urlforext) [$log get $urltag.first $urltag.last]
     }
 
     menu .popupmenu -tearoff no
@@ -1665,7 +1728,7 @@ proc PopupMenu { x y } {
         -command {$log config -state normal -relief sunken } -font $conf(WIDGETFONT)
     .popupmenu add separator
     .popupmenu add command -label {External Browser or Viewer} -underline 1 \
-        -command {Kick $urlforext {} {}} -font $conf(WIDGETFONT)
+        -command {Kick $inside(urlforext) {} {}} -font $conf(WIDGETFONT)
     .popupmenu add separator
     .popupmenu add command -label {Quit} -underline 0 \
        -command {Quit} -font $conf(WIDGETFONT)
@@ -1677,7 +1740,7 @@ proc PopupMenu { x y } {
 }
 
 proc PopupMenu2 { x y } {
-    global log conf keyword
+    global conf inside LOG
 
     if [winfo exists .popupmenu2] {
         catch {destroy .popupmenu2}
@@ -1687,7 +1750,7 @@ proc PopupMenu2 { x y } {
 
     menu .popupmenu2 -tearoff no
     .popupmenu2 add command -label {0} -underline 0 \
-        -command {Exec $keyword} -font $conf(WIDGETFONT)
+        -command {Exec $inside(keyword)} -font $conf(WIDGETFONT)
     if {($conf(viewer) == "lynx")} {
     .popupmenu2 add command -label {1} -underline 0 \
         -command {ShortCutJump 1} -font $conf(WIDGETFONT)
@@ -1766,13 +1829,12 @@ proc Quit {} {
 }
 
 proc HelpView {} {
-    global conf log keyword
+    global conf inside log
 
     $log config -cursor watch
     update idletasks
     set conf(viewer) {lynx}
-#    Viewer "$conf(tknmzhome)/tknamazu.hlp.$conf(language)" {}
-    Viewer "%PKGDATADIR%/tknamazu.hlp.$conf(language)" {}
+    Viewer "$conf(tknmzhome)/tknamazu.hlp.$conf(language)" {}
     Mark {TKNAMAZU <TAB>}
     $log config -cursor {}
     update
@@ -1799,7 +1861,6 @@ proc AboutTknamazu {} {
         toplevel .about
         wm title .about "TkNamazu about"
         wm iconname .about "tknamazu"
-        wm transient .about [winfo toplevel [winfo parent .about]]
         set x [expr [winfo screenwidth .about]/2 - [winfo reqwidth .about]/2]
         set y [expr [winfo screenheight .about]/2 - [winfo reqheight .about]/2]
         wm geom .about +$x+$y
@@ -1808,8 +1869,7 @@ proc AboutTknamazu {} {
 
 
     frame .about.msg1 -relief flat -borderwidth 2 -bg white
-#    image create photo tknmzlogo -file "$conf(tknmzhome)/tknamazu_logo.ppm"
-    image create photo tknmzlogo -file "%PKGDATADIR%/tknamazu_logo.ppm"
+    image create photo tknmzlogo -file "$conf(tknmzhome)/tknamazu_logo.ppm"
     pack .about.msg1 -fill both
     label .about.msg1.title1 -text {Tcl/Tk Namazu client} \
         -font $conf(WIDGETFONT) -background white
@@ -2010,7 +2070,7 @@ proc SetResources {} {
 }
 
 ################ replace proc routine
-#proc bgerror {devnull} {}
+proc bgerror {devnull} {}
 
 ################ helper proc routine
 proc MknmzHelper {} {
@@ -2176,14 +2236,14 @@ proc BreakWdnmz {} {
     $wdbut config -text {Execute} -command {ExecWdnmz}
 }
 
-################ main routine and .tknmz widget
-wm withdraw .
+proc MainWidget {} {
+global conf inside version log but
 
+wm withdraw .
 toplevel .tknmz -class TkNamazu
-wm minsize .tknmz 80 5
+wm minsize .tknmz 40 5
 wm title .tknmz "TkNamazu version $version"
 wm iconname .tknmz "tknamazu"
-wm protocol .tknmz WM_DELETE_WINDOW {destroy .tknmz ; exit}
 catch {selection clear}
 
 frame .tknmz.menubar
@@ -2286,13 +2346,13 @@ pack .tknmz.menubar -side top -fill x
 frame .tknmz.input
 pack .tknmz.input -side top -fill x
     label .tknmz.input.l -text {Keyword:} -padx 0 -font $conf(WIDGETFONT) -underline 0
-    entry .tknmz.keyword -width 20 -relief sunken -font $conf(WIDGETFONT) -textvariable keyword
+    entry .tknmz.keyword -width 20 -relief sunken -font $conf(WIDGETFONT) -textvariable inside(keyword)
 
     pack .tknmz.input.l -side left
     pack .tknmz.keyword -side left -fill x -expand true -in .tknmz.input
 
     set but [button .tknmz.input.search -text {Search} -font $conf(WIDGETFONT) \
-         -underline 0 -command {Exec $keyword}]
+         -underline 0 -command {Exec $inside(keyword)}]
     button .tknmz.input.quit -text {Quit} -font $conf(WIDGETFONT) \
          -underline 0 -command {Quit}
 
@@ -2301,8 +2361,7 @@ pack .tknmz.input -side top -fill x
 frame .tknmz.optionbar
 pack .tknmz.optionbar -side top -fill x
 
-#    image create photo tknmzicon -file "$conf(tknmzhome)/tknamazu_icon.ppm"
-    image create photo tknmzicon -file "%PKGDATADIR%/tknamazu_icon.ppm"
+    image create photo tknmzicon -file "$conf(tknmzhome)/tknamazu_icon.ppm"
     button .tknmz.optionbar.icon -image tknmzicon -command {AboutTknamazu}
 
     pack .tknmz.optionbar.icon -side right
@@ -2331,7 +2390,9 @@ pack .tknmz.optionbar.options.opt1 -side top -fill x
      -side left -fill x
 
     label .tknmz.optionbar.options.opt1.sortlabel -text {Sort:} -font $conf(WIDGETFONT) -underline 1
-    tk_optionMenu .tknmz.optionbar.options.opt1.sort opt(l) score later earlier
+    tk_optionMenu .tknmz.optionbar.options.opt1.sort opt(l) score \
+     late early subject:ascending subject:descending from:ascending from:descending \
+     size:ascending size:descending uri:ascending uri:descending
     .tknmz.optionbar.options.opt1.sort configure -width 7
 
     pack .tknmz.optionbar.options.opt1.sortlabel .tknmz.optionbar.options.opt1.sort \
@@ -2345,11 +2406,11 @@ pack .tknmz.optionbar.options.opt2 -side bottom -fill x
 
 #    pack .tknmz.optionbar.options.opt2.backward .tknmz.optionbar.options.opt2.forward -side left -fill x
 
-    label .tknmz.optionbar.options.opt2.smartjumplabel -text {SmartJump:} \
+    label .tknmz.optionbar.options.opt2.smartbrowselabel -text {SmartBrowse:} \
      -font $conf(WIDGETFONT) -underline 5
-    tk_optionMenu .tknmz.optionbar.options.opt2.smartjump conf(SMARTJUMP) 0 1 2
+    tk_optionMenu .tknmz.optionbar.options.opt2.smartbrowse conf(SMARTJUMP) 0 1 2
 
-    pack .tknmz.optionbar.options.opt2.smartjumplabel .tknmz.optionbar.options.opt2.smartjump \
+    pack .tknmz.optionbar.options.opt2.smartbrowselabel .tknmz.optionbar.options.opt2.smartbrowse \
      -side left -fill x
 
     label .tknmz.optionbar.options.opt2.headerwarplabel -text {HeaderWipe:} \
@@ -2376,52 +2437,66 @@ pack .tknmz.result -side top -fill both -expand true
 
     pack .tknmz.result.scroll -side right -fill y
     pack .tknmz.result.log -side left -fill both -expand true
+}
+
+proc MainKeyBind {} {
+	global conf inside
+
+	bind .tknmz <Control-f> {FindWord}
+	bind .tknmz <Control-q> {destroy .tknmz ; exit}
+	bind .tknmz <Alt-k> {focus .tknmz.keyword ; break}
+	bind .tknmz <Alt-s> {focus .tknmz.input.search ; break}
+	bind .tknmz <Alt-b> {focus .tknmz.input.search ; break}
+	bind .tknmz <Alt-q> {focus .tknmz.input.quit ; break}
+	bind .tknmz <Alt-c> {focus .tknmz.optionbar.options.opt1.display ; break}
+	bind .tknmz <Alt-u> {focus .tknmz.optionbar.options.opt1.summary ; break}
+	bind .tknmz <Alt-o> {focus .tknmz.optionbar.options.opt1.sort ; break}
+	bind .tknmz <Alt-j> {focus .tknmz.optionbar.options.opt2.smartbrowse ; break}
+	bind .tknmz <Alt-w> {focus .tknmz.optionbar.options.opt2.headerwarp ; break}
+	bind .tknmz <Alt-l> {focus .tknmz.optionbar.options.opt2.siteselector ; break}
+	bind .tknmz <Control-u> {PopupMenu %X %Y}
+	bind .tknmz <Control-n> {.tknmz.result.log yview scroll 1 unit}
+	bind .tknmz <Control-p> {.tknmz.result.log yview scroll -1 unit}
+	bind .tknmz <Control-v> {.tknmz.result.log yview scroll 1 page}
+	bind .tknmz <Control-z> {.tknmz.result.log yview scroll -1 page}
+	
+	if {$conf(kanjimode) && [regexp -nocase {unix} $conf(platform)] \
+	        && ($conf(tkversion) < 8.1)} {
+	    bind Entry <Control-o> {kinput_start %W over}
+	    bind Entry <Shift-space> {kinput_start %W over}
+	}
+	
+	bind .tknmz.keyword <Return> {Exec $inside(keyword)}
+	bind .tknmz.keyword <Button-3> {PopupMenu %X %Y}
+	bind .tknmz.result.log <Button-1> {focus .tknmz.result.scroll}
+	bind .tknmz.result.log <Button-2> {Kick {} %X %Y}
+	bind .tknmz.result.log <Button-3> {PopupMenu %X %Y}
+	bind .tknmz.result.log <Control-Button-3> {Kick {} %X %Y}
+	bind .tknmz.result.log <Button-4> [list %W yview scroll -5 units]
+	bind .tknmz.result.log <Button-5> [list %W yview scroll 5 units]
+	bind .tknmz.result.log <Shift-Button-4> [list %W yview scroll -1 units]
+	bind .tknmz.result.log <Shift-Button-5> [list %W yview scroll 1 units]
+	bind .tknmz.result.log <Control-Button-4> [list %W yview scroll -1 pages]
+	bind .tknmz.result.log <Control-Button-5> [list %W yview scroll 1 pages]
+	bind .tknmz.result.scroll <Button-1> {focus .tknmz.result.scroll}
+	bind .tknmz.result.scroll <space> {.tknmz.result.log yview scroll 1 page}
+	bind .tknmz.result.scroll <BackSpace> {.tknmz.result.log yview scroll -1 page}
+	bind .tknmz.result.scroll <Return> {.tknmz.result.log yview scroll 1 unit}
+	bind .tknmz.result.scroll <Key-0> {Exec $inside(keyword)}
+}
+
+################ main routine and .tknmz widget
+SetDefaultResources
+LoadResources
+Initialization
+
+MainWidget
 
 SetColor {.tknmz}
 HelpView
 focus .tknmz.keyword
 
-bind .tknmz <Control-f> {FindWord}
-bind .tknmz <Control-q> {destroy .tknmz ; exit}
-bind .tknmz <Alt-k> {focus .tknmz.keyword ; break}
-bind .tknmz <Alt-s> {focus .tknmz.input.search ; break}
-bind .tknmz <Alt-b> {focus .tknmz.input.search ; break}
-bind .tknmz <Alt-q> {focus .tknmz.input.quit ; break}
-bind .tknmz <Alt-c> {focus .tknmz.optionbar.options.opt1.display ; break}
-bind .tknmz <Alt-u> {focus .tknmz.optionbar.options.opt1.summary ; break}
-bind .tknmz <Alt-o> {focus .tknmz.optionbar.options.opt1.sort ; break}
-bind .tknmz <Alt-j> {focus .tknmz.optionbar.options.opt2.smartjump ; break}
-bind .tknmz <Alt-w> {focus .tknmz.optionbar.options.opt2.headerwarp ; break}
-bind .tknmz <Alt-l> {focus .tknmz.optionbar.options.opt2.siteselector ; break}
-bind .tknmz <Control-u> {PopupMenu %X %Y}
-bind .tknmz <Control-n> {.tknmz.result.log yview scroll 1 unit}
-bind .tknmz <Control-p> {.tknmz.result.log yview scroll -1 unit}
-bind .tknmz <Control-v> {.tknmz.result.log yview scroll 1 page}
-bind .tknmz <Control-z> {.tknmz.result.log yview scroll -1 page}
-
-if {$conf(kanjimode) && ![regexp -nocase {^windows|^os2|^mac|^beos} $conf(os)] \
-        && ($conf(tkversion) < 8.1)} {
-    bind Entry <Control-o> {kinput_start %W over}
-    bind Entry <Shift-space> {kinput_start %W over}
-}
-
-bind .tknmz.keyword <Return> {Exec $keyword}
-bind .tknmz.keyword <Button-3> {PopupMenu %X %Y}
-bind .tknmz.result.log <Button-1> {focus .tknmz.result.scroll}
-bind .tknmz.result.log <Button-2> {Kick {} %X %Y}
-bind .tknmz.result.log <Button-3> {PopupMenu %X %Y}
-bind .tknmz.result.log <Control-Button-3> {Kick {} %X %Y}
-bind .tknmz.result.log <Button-4> [list %W yview scroll -5 units]
-bind .tknmz.result.log <Button-5> [list %W yview scroll 5 units]
-bind .tknmz.result.log <Shift-Button-4> [list %W yview scroll -1 units]
-bind .tknmz.result.log <Shift-Button-5> [list %W yview scroll 1 units]
-bind .tknmz.result.log <Control-Button-4> [list %W yview scroll -1 pages]
-bind .tknmz.result.log <Control-Button-5> [list %W yview scroll 1 pages]
-bind .tknmz.result.scroll <Button-1> {focus .tknmz.result.scroll}
-bind .tknmz.result.scroll <space> {.tknmz.result.log yview scroll 1 page}
-bind .tknmz.result.scroll <BackSpace> {.tknmz.result.log yview scroll -1 page}
-bind .tknmz.result.scroll <Return> {.tknmz.result.log yview scroll 1 unit}
-bind .tknmz.result.scroll <Key-0> {Exec $keyword}
+MainKeyBind
 
 if {$tk_version < 4.0} {
     puts \

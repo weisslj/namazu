@@ -1,3 +1,12 @@
+2000-02-19  Ken-ichi Hirose <kenzo-@tama.or.jp>
+
+	* tknamazu.tcl.in: command line option change for Namazu 2.0.
+	many code rewrite.
+
+	* tknamazu.hlp.ja: some info add.
+
+	* configure.in: change version & add wish8.3.
+
 1999-12-19  Ryuji Abe <raeva@t3.rim.or.jp>
 
 	* Makefile.am: Removed unnessesary `@SET_MAKE@'.

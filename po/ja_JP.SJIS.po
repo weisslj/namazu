@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: namazu 2.0\n"
-"POT-Creation-Date: 1999-12-09 20:11+0900\n"
+"POT-Creation-Date: 1999-12-10 09:02+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>\n"
 "Language-Team: Japanese <satoru-t@is.aist-nara.ac.jp>\n"
@@ -92,25 +92,25 @@ msgstr "\225\163\220\263\202\310 idxname \202\314\216\167\222\350\202\305\202\26
 msgid "Too long QUERY_STRING"
 msgstr "CGI\202\314 QUERY_STRING \202\252\222\267\202\267\202\254\202\334\202\267"
 
-#: src/output.c:352
+#: src/output.c:359
 msgid "\t<strong>Page:</strong> "
 msgstr "\t<strong>\203\171\203\103\203\127:</strong> "
 
-#: src/output.c:394
+#: src/output.c:401
 #, c-format
 msgid "Current List: %d"
 msgstr "\214\273\215\335\202\314\203\212\203\130\203\147: %d"
 
-#: src/output.c:436
+#: src/output.c:443
 #, c-format
 msgid " [ TOTAL: %d ]"
 msgstr " [ \215\207\214\166: %d ]"
 
-#: src/output.c:445
+#: src/output.c:452
 msgid "\t<p><strong> Total "
 msgstr "\t<p><strong>\214\237\215\365\216\256\202\311\203\175\203\142\203\140\202\267\202\351 "
 
-#: src/output.c:452
+#: src/output.c:459
 msgid ""
 "\t documents matching your query.</strong></p>\n"
 "\n"
@@ -118,7 +118,7 @@ msgstr ""
 "\t \214\302\202\314\225\266\217\221\202\252\214\251\202\302\202\251\202\350\202\334\202\265\202\275\201\102</strong></p>\n"
 "\n"
 
-#: src/output.c:512
+#: src/output.c:519
 #, c-format
 msgid ""
 "\t<h2>Error!</h2>\n"
@@ -127,15 +127,15 @@ msgstr ""
 "\t<h2>\203\107\203\211\201\133!</h2>\n"
 "<p>%s</p>\n"
 
-#: src/output.c:522
+#: src/output.c:529
 msgid "\t<h2>Results:</h2>\n"
 msgstr "\t<h2>\214\237\215\365\214\213\211\312</h2>\n"
 
-#: src/output.c:529
+#: src/output.c:536
 msgid "References: "
 msgstr "\216\121\215\154\203\161\203\142\203\147\220\224: "
 
-#: src/output.c:571
+#: src/output.c:578
 msgid "\t<p>No document matching your query.</p>\n"
 msgstr "\t<p>\214\237\215\365\216\256\202\311\203\175\203\142\203\140\202\267\202\351\225\266\217\221\202\315\202\240\202\350\202\334\202\271\202\361\202\305\202\265\202\275\201\102</p>\n"
 

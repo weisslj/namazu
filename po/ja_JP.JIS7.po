@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: namazu 2.0\n"
-"POT-Creation-Date: 1999-12-09 20:11+0900\n"
+"POT-Creation-Date: 1999-12-10 09:02+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>\n"
 "Language-Team: Japanese <satoru-t@is.aist-nara.ac.jp>\n"
@@ -92,25 +92,25 @@ msgstr "\033\044\102\111\124\100\065\044\112\033\050\102 idxname \033\044\102\04
 msgid "Too long QUERY_STRING"
 msgstr "CGI\033\044\102\044\116\033\050\102 QUERY_STRING \033\044\102\044\054\104\071\044\071\044\056\044\136\044\071\033\050\102"
 
-#: src/output.c:352
+#: src/output.c:359
 msgid "\t<strong>Page:</strong> "
 msgstr "\t<strong>\033\044\102\045\132\045\044\045\070\033\050\102:</strong> "
 
-#: src/output.c:394
+#: src/output.c:401
 #, c-format
 msgid "Current List: %d"
 msgstr "\033\044\102\070\075\072\137\044\116%%\152%%\071%%\110\033\050\102: %d"
 
-#: src/output.c:436
+#: src/output.c:443
 #, c-format
 msgid " [ TOTAL: %d ]"
 msgstr " [ \033\044\102\071\147\067\127\033\050\102: %d ]"
 
-#: src/output.c:445
+#: src/output.c:452
 msgid "\t<p><strong> Total "
 msgstr "\t<p><strong>\033\044\102\070\041\072\167\074\060\044\113\045\136\045\103\045\101\044\071\044\153\033\050\102 "
 
-#: src/output.c:452
+#: src/output.c:459
 msgid ""
 "\t documents matching your query.</strong></p>\n"
 "\n"
@@ -118,7 +118,7 @@ msgstr ""
 "\t \033\044\102\070\104\044\116\112\070\075\161\044\054\070\053\044\104\044\053\044\152\044\136\044\067\044\077\041\043\033\050\102</strong></p>\n"
 "\n"
 
-#: src/output.c:512
+#: src/output.c:519
 #, c-format
 msgid ""
 "\t<h2>Error!</h2>\n"
@@ -127,15 +127,15 @@ msgstr ""
 "\t<h2>\033\044\102%%\050%%\151\041\074\033\050\102!</h2>\n"
 "<p>%s</p>\n"
 
-#: src/output.c:522
+#: src/output.c:529
 msgid "\t<h2>Results:</h2>\n"
 msgstr "\t<h2>\033\044\102\070\041\072\167\067\153\062\114\033\050\102</h2>\n"
 
-#: src/output.c:529
+#: src/output.c:536
 msgid "References: "
 msgstr "\033\044\102\073\062\071\115\045\122\045\103\045\110\077\164\033\050\102: "
 
-#: src/output.c:571
+#: src/output.c:578
 msgid "\t<p>No document matching your query.</p>\n"
 msgstr "\t<p>\033\044\102\070\041\072\167\074\060\044\113\045\136\045\103\045\101\044\071\044\153\112\070\075\161\044\117\044\042\044\152\044\136\044\073\044\163\044\107\044\067\044\077\041\043\033\050\102</p>\n"
 

@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.68 2000-02-16 13:14:15 satoru Exp $
+ * $Id: output.c,v 1.69 2000-03-03 03:36:21 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -27,6 +27,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <stdarg.h>
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
 #endif
@@ -241,7 +242,7 @@ print_hitnum_each (struct nmz_hitnumlist *hn)
         if (is_refprint() && !is_countmode() && !is_listmode() && 
 	    !is_quietmode())
 	{
-	    print(" { ");
+	    printf(" { ");
 	}
     }
 
@@ -254,8 +255,8 @@ print_hitnum_each (struct nmz_hitnumlist *hn)
 		die("print_hitnum_each");
 	    }
 
-	    print(" [ ");
-	    print(converted);
+	    printf(" [ ");
+	    printf(converted);
 	    free(converted);
 
 	    if (hnptr->stat == SUCCESS) {
@@ -264,7 +265,7 @@ print_hitnum_each (struct nmz_hitnumlist *hn)
 		char *errmsg = nmz_strerror(hnptr->stat);
 		printf(" (%s) ", errmsg);
 	    }
-	    print(" ] ");
+	    printf(" ] ");
 	    hnptr = hnptr->next;
 	} while (hn->phrase && hnptr != NULL);
     }
@@ -441,7 +442,7 @@ print_hlist(NmzResult hlist)
 	    }
 	    html_print(converted);
 	    free(converted);
-	    print("\n");
+	    printf("\n");
 	}
     }
 
@@ -466,7 +467,7 @@ print_listing(NmzResult hlist)
     enum nmz_stat ret;
 
     if (is_htmlmode()) {
-        print("<dl>\n");
+        printf("<dl>\n");
     }
 
     ret = print_hlist(hlist);
@@ -475,7 +476,7 @@ print_listing(NmzResult hlist)
     }
     
     if (is_htmlmode()) {
-        print("</dl>\n");
+        printf("</dl>\n");
     }
     return SUCCESS;
 }
@@ -523,21 +524,21 @@ print_page_index(int n)
 	    break;
 	if (is_htmlmode()) {
 	    if (i * max != whence) {
-		print("<a href=\"");
+		printf("<a href=\"");
 		fputs(sn, stdout);
 		fputc('?', stdout);
 		print_query(qs, i * max);
-		print("\">");
+		printf("\">");
 	    } else {
-		print("<strong>");
+		printf("<strong>");
 	    }
 	}
 	printf("[%d]", i + 1);
 	if (is_htmlmode()) {
 	    if (i * max != whence) {
-		print("</A> ");
+		printf("</A> ");
 	    } else
-		print("</strong> ");
+		printf("</strong> ");
 	}
 	if (is_allresult()) {
 	    break;
@@ -557,18 +558,18 @@ print_current_range(int listmax)
     whence = get_listwhence();
 
     if (is_htmlmode()) {
-	print("<strong>");
+	printf("<strong>");
     }
     printf(_("Current List: %d"), whence + 1);
 
-    print(" - ");
+    printf(" - ");
     if (!is_allresult() && ((whence + max) < listmax)) {
 	printf("%d", whence + max);
     } else {
 	printf("%d", listmax);
     }
     if (is_htmlmode()) {
-	print("</strong><br>\n");
+	printf("</strong><br>\n");
     } else {
 	fputc('\n', stdout);
     }
@@ -609,7 +610,7 @@ print_hitnum_all_idx(void)
 	    if (nmz_get_idxnum() > 1 && nmz_get_querytokennum() > 1) {
 	        printf(_(" [ TOTAL: %d ]"), nmz_get_idx_totalhitnum(idxid));
 	    }
-	    print("\n");
+	    printf("\n");
 	}
     }
 }
@@ -660,15 +661,15 @@ static void
 print_range(NmzResult hlist)
 {
     if (is_htmlmode())
-        print("<p>\n");
+        printf("<p>\n");
     print_current_range(hlist.num);
     if (is_pageindex()) {
         print_page_index(hlist.num);
     }
     if (is_htmlmode()) {
-        print("</p>\n");
+        printf("</p>\n");
     } else {
-        print("\n");
+        printf("\n");
     }
 }
 
@@ -694,7 +695,7 @@ print_result(NmzResult hlist, const char *query, const char *subquery)
 {
 
     if (is_htmlmode() && is_cgimode()) {
-	print(MSG_MIME_HEADER);
+	printf(MSG_MIME_HEADER);
     }
 
     if (is_htmlmode()) {
@@ -717,15 +718,15 @@ print_result(NmzResult hlist, const char *query, const char *subquery)
 	} else {
 	    fputc('\n', stdout);
 	}
-	print(_("References: "));
+	printf(_("References: "));
 	if (nmz_get_idxnum() > 1 && is_htmlmode()) {
 	    fputs("</p>\n", stdout);
 	}
 
         if (nmz_get_idxnum() > 1) {
-            print("\n");
+            printf("\n");
             if (is_htmlmode())
-                print("<ul>\n");
+                printf("<ul>\n");
         }
     }
 
@@ -734,10 +735,10 @@ print_result(NmzResult hlist, const char *query, const char *subquery)
     if (is_refprint() && !is_countmode() && 
 	!is_listmode() && !is_quietmode()) {
         if (nmz_get_idxnum() > 1 && is_htmlmode()) {
-            print("</ul>\n");
+            printf("</ul>\n");
         }
 	if (nmz_get_idxnum() == 1 && is_htmlmode()) {
-	    print("\n</p>\n");
+	    printf("\n</p>\n");
 	} else {
 	    fputc('\n', stdout);
 	}
@@ -762,9 +763,9 @@ print_result(NmzResult hlist, const char *query, const char *subquery)
         }
     } else {
         if (is_countmode()) {
-            print("0\n");
-        } else if (!is_listmode()) {
-            html_print(_("	<p>No document matching your query.</p>\n"));
+            printf("0\n");
+        } else if (!is_listmode() && !is_quietmode()) {
+	    html_print(_("	<p>No document matching your query.</p>\n"));
 	    if (is_htmlmode()) {
 		print_msgfile(NMZ.tips);
 	    }
@@ -784,7 +785,7 @@ print_result(NmzResult hlist, const char *query, const char *subquery)
 void 
 print_default_page (void) {
     if (is_htmlmode()) {
-	print(MSG_MIME_HEADER);
+	printf(MSG_MIME_HEADER);
 	print_headfoot(NMZ.head, "", "");
 	print_msgfile(NMZ.body);
 	print_headfoot(NMZ.foot, "", "");
@@ -949,9 +950,37 @@ html_print(const char *str)
 }
 
 
+/* 
+ * Print the error message and die.
+ */
 void 
-print(const char *str) {
-    fputs(str, stdout);
-}
+die(const char *fmt, ...)
+{
+    va_list args;
 
+    fflush(stdout);
+    fflush(stderr);
+
+    if (is_cgimode()) {
+	printf(MSG_MIME_HEADER);
+	printf(_("<h2>Error</h2>\n<p>"));
+	va_start(args, fmt);
+	vprintf(fmt, args);
+	va_end(args);
+	printf(_("</p>"));
+	if (fmt[strlen(fmt) - 1] != '\n') {
+	    printf("\n");
+	}
+    } else {
+	fprintf(stderr, "%s: ", PACKAGE);
+	va_start(args, fmt);
+	vfprintf(stderr, fmt, args);
+	va_end(args);
+       if (fmt[strlen(fmt) - 1] != '\n') {
+	   fprintf(stderr, "\n");
+       }
+    }
+
+    exit(EXIT_FAILURE);
+}
 

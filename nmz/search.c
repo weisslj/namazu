@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.72 2000-02-27 13:01:24 satoru Exp $
+ * $Id: search.c,v 1.73 2000-03-03 03:36:20 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -960,6 +960,7 @@ nmz_search(const char *query)
 
     ret = nmz_make_query(query);
     if (ret != SUCCESS) {
+	nmz_set_dyingmsg(nmz_msg(nmz_strerror(ret)));
 	hlist.stat = ERR_FATAL;
 	return hlist;
     }

@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu-cmd.c,v 1.10 2000-02-29 08:37:53 satoru Exp $
+ * $Id: namazu-cmd.c,v 1.11 2000-03-03 03:36:21 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -309,9 +309,10 @@ main(int argc, char **argv)
 	}
 
 	if (strlen(argv[i]) > QUERY_MAX) {
-	    html_print(_(MSG_TOO_LONG_QUERY));
+	    die(nmz_strerror(ERR_TOO_LONG_QUERY));
 	    return 1;
 	}
+
         strcpy(query, argv[i++]);
         if (i < argc) {
 	    int curidx = nmz_get_idxnum();

@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.52 2000-02-01 06:36:01 rug Exp $
+ * $Id: form.c,v 1.53 2000-03-03 03:36:21 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -105,9 +105,9 @@ replace_query_value(const char *p, const char *query)
 
         for (; *p; p++)
             fputc(*p, stdout);
-        print(" value=\"");
+        printf(" value=\"");
         html_print(converted);  /* for treating <>&" chars in the query. */
-        print("\"");
+        printf("\"");
 
 	free(converted);
         return SUCCESS;
@@ -279,7 +279,7 @@ check_checkbox(char *str)
             }
         }
         if (db_count == searched) {
-            print(" checked");
+            printf(" checked");
         }
         return SUCCESS;
     }
@@ -406,12 +406,12 @@ print_headfoot(const char * fname, const char * query, const char *subquery)
             if (nmz_strprefixcasecmp(p, "</title>") == 0) {
 		if (*query != '\0') {
 		    char *converted = nmz_codeconv_external(query);
-		    print(": &lt;");
-		    print(converted);
-		    print("&gt;");
+		    printf(": &lt;");
+		    printf(converted);
+		    printf("&gt;");
 		    free(converted);
 		}
-		print("</title>\n");
+		printf("</title>\n");
                 p = (char *)strchr(p, '>');
                 continue;
             }

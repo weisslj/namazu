@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.100 2000-01-28 09:40:21 satoru Exp $
+ * $Id: namazu.c,v 1.101 2000-03-03 03:36:21 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -35,7 +35,6 @@
 #include <unistd.h>
 #include <sys/stat.h>
 #include <signal.h>
-#include <stdarg.h>
 
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
@@ -108,33 +107,6 @@ get_templatedir(void)
     return templatedir;
 }
 
-/* 
- * Print the error message and die.
- */
-void 
-die(const char *fmt, ...)
-{
-    va_list args;
-
-    fflush(stdout);
-    fflush(stderr);
-
-    fprintf(stderr, "%s: ", PACKAGE);
-
-    /*
-     * Print a message specified by function parameters.
-     */
-    va_start(args, fmt);
-    vfprintf(stderr, fmt, args);
-    va_end(args);
-
-    if (fmt[strlen(fmt) - 1] != '\n') {
-	printf("\n");
-    }
-
-    exit(EXIT_FAILURE);
-}
-
 /*
  * Namazu core routine.
  */
@@ -148,8 +120,10 @@ namazu_core(char * query, char *subquery)
     make_fullpathname_msg();
 
     strcpy(query_with_subquery, query);
-    strcat(query_with_subquery, " ");
-    strcat(query_with_subquery, subquery);
+    if (strlen(subquery) > 0) {
+	strcat(query_with_subquery, " ");
+	strcat(query_with_subquery, subquery);
+    }
 
     /* 
      * If query is null or the number of indices are 0

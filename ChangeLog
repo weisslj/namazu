@@ -1,5 +1,24 @@
 2000-03-03  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/output.c (die): Moved from namazu.c
+	Add is_cgimode() handling.
+	(print): Abolished. All callers are replaced with printf().
+
+	* src/namazu-cmd.c (main): Change QUERY_MAX checking.
+	
+	* src/cgi.c (process_cgi_var_subquery): Likewise.
+
+	* src/cgi.c (process_cgi_var_query): Likewise.
+
+	* src/message.h: Remove #define MSG_TOO_LONG_QUERY.
+
+	* nmz/search.c (nmz_search): Improve error handling.
+
+	* src/namazu.c (namazu_core): Handle subquery only if the length
+	of subquery is longer than 0.
+
+	* src/output.c (print_result): Add the check for is_quietmode().
+
 	* pl/htmlsplit.pl ($Header): Remove <h1>...</h1>
 
 2000-03-02  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>

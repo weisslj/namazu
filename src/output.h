@@ -35,5 +35,6 @@ extern void set_templatesuffix ( const char *tmpl );
 extern char *get_templatesuffix ( void );
 extern void html_print ( const char *str );
 extern void print ( const char *str );
+extern void die(const char *fmt, ...);
 
 #endif /* _OUTPUT_H */

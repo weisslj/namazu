@@ -2,7 +2,7 @@
  * 
  * libnamazu.h - Namazu library api
  *
- * $Id: libnamazu.h,v 1.42 2000-02-27 13:01:24 satoru Exp $
+ * $Id: libnamazu.h,v 1.43 2000-03-03 03:36:20 satoru Exp $
  * 
  */
 
@@ -56,11 +56,11 @@ enum {
     /* Size of general buffers. This MUST be larger than QUERY_MAX */
     BUFSIZE = 1024,        
 
-    QUERY_TOKEN_MAX =  32, /* Max number of tokens in a query */
-    QUERY_MAX       = 256, /* Max length of an IR query */
+    QUERY_TOKEN_MAX =  32, /* Max number of tokens in the query. */
+    QUERY_MAX       = 256, /* Max length of the query. */
 
-    IGNORE_HIT    = 10000, /* Ignore if pages matched more than this */
-    IGNORE_MATCH  = 1000,  /* Ignore if words matched more than this */
+    IGNORE_HIT    = 10000, /* Ignore if pages matched more than this. */
+    IGNORE_MATCH  = 1000,  /* Ignore if words matched more than this. */
 
     INDEX_MAX = 64        /* Max number of databases */
 };

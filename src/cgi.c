@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.58 2000-02-19 00:51:25 kenzo- Exp $
+ * $Id: cgi.c,v 1.59 2000-03-03 03:36:21 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -108,9 +108,9 @@ validate_idxname(const char * idxname)
 #endif
 
     if (*idxname == '\0' || *idxname == '/' || (win32 && *idxname == '\\')) {
-        print(MSG_MIME_HEADER);
+        printf(MSG_MIME_HEADER);
 	printf("%s : ", idxname);
-        print(_("Invalid idxname."));
+        printf(_("Invalid idxname."));
         exit(EXIT_FAILURE);
     }
     while (*idxname) {
@@ -118,9 +118,9 @@ validate_idxname(const char * idxname)
 	    strcmp("..", idxname) == 0 ||
             (win32 && nmz_strprefixcasecmp("..\\", idxname) == 0)) 
         {
-            print(MSG_MIME_HEADER);
+            printf(MSG_MIME_HEADER);
 	    printf("%s : ", idxname);
-            print(_("Invalid idxname."));
+            printf(_("Invalid idxname."));
             exit(EXIT_FAILURE);
         }
 	/* Skip until next '/' */
@@ -314,9 +314,7 @@ static void
 process_cgi_var_query(char *value, struct cgiarg *ca)
 {
     if (strlen(value) > QUERY_MAX) {
-	print(MSG_MIME_HEADER);
-	html_print(_(MSG_TOO_LONG_QUERY));
-	exit(EXIT_FAILURE);
+	die(nmz_strerror(ERR_TOO_LONG_QUERY));
     }
 #ifdef MSIE4MACFIX
 #define MSIE4MAC "Mozilla/4.0 (compatible; MSIE 4.01; Mac"
@@ -336,9 +334,7 @@ static void
 process_cgi_var_subquery(char *value, struct cgiarg *ca)
 {
     if (strlen(value) > QUERY_MAX) {
-	print(MSG_MIME_HEADER);
-	html_print(_(MSG_TOO_LONG_QUERY));
-	exit(EXIT_FAILURE);
+	die(nmz_strerror(ERR_TOO_LONG_QUERY));
     }
 #ifdef MSIE4MACFIX
 #define MSIE4MAC "Mozilla/4.0 (compatible; MSIE 4.01; Mac"

@@ -20,7 +20,7 @@ Namazu.xs
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 # 02111-1307, USA
 
-$Id: Namazu.xs,v 1.7 1999-11-12 01:34:27 knok Exp $
+$Id: Namazu.xs,v 1.8 1999-11-16 08:42:35 knok Exp $
 
 */
 
@@ -57,6 +57,7 @@ call_search_main(query)
 
 	PPCODE:
 		char *qstr;
+		char cqstr[BUFSIZE * 2];
 		int i;
 		AV *retar;
 		HLIST hlist;
@@ -67,8 +68,10 @@ call_search_main(query)
 		complete_idxnames();
 
 		qstr = SvPV(query, na);
+		strcpy(cqstr, qstr);
+		codeconv_query(cqstr);
 		retar = newAV();
-		hlist = search_main(qstr);
+		hlist = search_main(cqstr);
 		for (i = 0; i < hlist.n; i ++) {
 			SV *ohlist = perl_eval_pv("new Search::Namazu::HList", TRUE);
 			SV *tmp;
@@ -93,7 +96,9 @@ call_search_main(query)
 		for (i = 0; i < hlist.n; i ++) {
 			XPUSHs(av_pop(retar));
 		}
-
+		free_idxnames();
+		free_aliases();
+		free_replaces();
 
 int
 nmz_addindex(index)

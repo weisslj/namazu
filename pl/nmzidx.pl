@@ -3,7 +3,7 @@
 # nmzidx.pl - subroutines for accessing Namazu index files (NMZ.*)
 #         by furukawa@tcp-ip.or.jp
 #
-# $Id: nmzidx.pl,v 1.10 2000-03-15 07:11:15 satoru Exp $
+# $Id: nmzidx.pl,v 1.11 2000-03-15 07:28:24 satoru Exp $
 #
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -644,6 +644,7 @@ sub write_status{
         $fo->close;
         my $dh = new DirHandle($in->{'dir'});
         while (defined(my $ent = $dh->read)){
+	    next if $ent =~ /\.(BAK|tmp)$/;
 	    if ($ent =~ /^NMZ\.(head(?:\.[-\w\.]+)?)$/){
                 $fi = &nmzlib::open_db($in, $1);
                 $fo = &nmzlib::open_db($self, $1);

@@ -1,11 +1,12 @@
 #! %PERL% -w
 # -*- Perl -*-
 #
-# $Id: gcnmz.in,v 1.7 2000-03-05 17:23:45 furukawa Exp $
+# $Id: gcnmz.in,v 1.8 2000-03-15 07:28:24 satoru Exp $
 #
 # gcnmz.pl - by furukawa@tcp-ip.or.jp
 #
 
+push(@INC, '../pl');
 push(@INC, '@PERLLIBDIR@');
 require 'nmzidx.pl';
 

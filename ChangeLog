@@ -1,5 +1,7 @@
 2000-03-15  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* scripts/gcnmz.in: Add '../pl' to @INC.
+
 	* pl/nmzidx.pl: Fix NMZ.head handling bug.
 
 	* scripts/mknmz.in (generate_uri): Fix character encoding

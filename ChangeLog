@@ -1,5 +1,9 @@
 2000-02-27  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* tests/mknmz-5: New file.
+
+	* tests/namazu-4: Likewise.
+
 	* tests/*-[0-9]: Improve test-log handling.
 
 	* tests/Makefile.am (TESTS): Add mknmz-4, gcnmz-1, namazu-3 and

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: excel.pl,v 1.25 2004-05-23 18:45:02 opengl2772 Exp $
+# $Id: excel.pl,v 1.26 2004-07-26 12:38:49 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi,
 #               1999 NOKUBI Takatsugu, 
 #               2000-2004 Namazu Project All rights reserved.
@@ -131,12 +131,13 @@ sub filter_xl ($$$$$) {
             util::fclose($fh_out);
             util::fclose($fh_err);
             unlink $tmpfile;
-	    return 'Too large excel file';
+	    return 'Too large excel file.';
 	}
 	$$cont = util::readfile($fh_out);
         util::fclose($fh_out);
         util::fclose($fh_err);
     }
+    unlink $tmpfile;
 
     # Code conversion for Japanese document.
     if (util::islang("ja")) {
@@ -149,8 +150,6 @@ sub filter_xl ($$$$$) {
             utf8_to_eucjp($cont);
 	}
     } 
-
-    unlink $tmpfile;
 
     # Extract the author and exclude xlHtml's footer at once.
     $$cont =~ s!^<FONT SIZE="?-1"?><I>Spreadsheet's Author:&nbsp;(.*?)</I></FONT><br>.*!!ms;  # '
@@ -240,7 +239,7 @@ sub getSummaryInfo ($$$$$) {
         return undef;
     }
     if ($size > $conf::TEXT_SIZE_MAX) {
-        return 'Too large word file';
+        return 'Too large summary file.';
     }
 
     # Codepage

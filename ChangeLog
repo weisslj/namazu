@@ -5,6 +5,9 @@
 
 	* filter/msword.pl: It corresponds to the "wvWare" command.
 
+	* filter/{excel, powerpoint}.pl: Restriction by "TEXT_SIZE_MAX" is 
+	added. Correction of a message.
+
 2004-07-23  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* pl/nmzidx.pl(write_status): NMZ.status The bug by which a comma 
@@ -8981,4 +8984,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1208 2004-07-26 12:11:26 opengl2772 Exp $
+$Id: ChangeLog,v 1.1209 2004-07-26 12:38:48 opengl2772 Exp $

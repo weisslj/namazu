@@ -1,3 +1,8 @@
+2000-12-27  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* filter/msword.pl (status): Changed regex pattern of
+	wv-libconfig.
+
 2000-12-26  Hideyuki SHIRAI  <shirai@rdmg.mgcs.mei.co.jp>
 
 	* tests/data/en/excel97.xls: Changed to use 'Courier New' font.
@@ -6169,4 +6174,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.774 2000-12-26 05:48:49 shirai Exp $
+$Id: ChangeLog,v 1.775 2000-12-27 07:27:02 knok Exp $

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: msword.pl,v 1.26 2000-09-27 06:09:55 knok Exp $
+# $Id: msword.pl,v 1.27 2000-12-27 07:27:03 knok Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Satoru Takabayashi Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -41,7 +41,7 @@ sub mediatype() {
 sub status() {
     $wordconvpath = util::checkcmd('wvWare');
     if (defined $wordconvpath) {
-	my $libpath = `wv-libconfig |sed -e 's/^-L//' -e 's/ .*\$//'`;
+	my $libpath = `wv-libconfig |sed -e 's/^.*-L\([^ ]*\).*/\1/`;
 	chomp $libpath;
 	if (defined $libpath) {
 	    $wordconvpath .= " --config $libpath/wv/wvHtml.xml";

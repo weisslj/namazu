@@ -19,7 +19,7 @@ Namazu 2.0 を初めて使う方のための入門書です。この文書は、2.0
 <h2>目次</h2>
 <ul>
 <li><a href="#mission">本書の目的</a>
-<li><a href="#versions">四つの版</a>
+<li><a href="#versions">開発の推移</a>
 <li><a href="#components">Namazu の構成部品</a>
 <li><a href="#prep-make">準備と make</a>
 <li><a href="#japanese">日本語環境での利用</a>
@@ -50,15 +50,15 @@ Namazu 2.0 を初めて使う方のための入門書です。この文書は、2.0
 あります。
 </p>
 
-<h2><a name="versions">四つの版</a></h2>
+<h2><a name="versions">開発の推移</a></h2>
 
 <p>
-Namazu の版には(大きく分けて) 1.3 以前, 1.4, 1.9, 2.0 の 4つ
-があります。
+Namazu の版は、大きく分けて、旧安定版 (1.3.0.x)、開発版 (1.3.1.0
+→ 1.4.0.0 → 1.9.x)、新安定版 (2.0.0) の3つがあります。
 </p>
 
 <dl>
-<dt> 1.3
+<dt>1.3.0.x
 <dd> 
 一番多く使われている。<br>
 1.3.0.10 以前のものは
@@ -66,14 +66,19 @@ Namazu の版には(大きく分けて) 1.3 以前, 1.4, 1.9, 2.0 の 4つ
 1.3.0.11 に更新した方がいい。
 <br>
 1.3.0.11 が最新
-<dt>1.4 
+<dt>1.3.1.0
+  <dd>チェックポイント機能 (mknmz が定期的に自分自身を exec
+  し直してプロセスの膨張を防ぐ -s オプション) が導入された。
+  が、正式公開はされず、開発は 1.4.0.0 へと移った。
+<dt>1.4.0.0
   <dd>Perl モジュールを使った高速化が入った。<br>
-  ベータ版 (1.4.0.0-beta-8) で開発が中断した
-<dt>1.9
+  が、正式公開はされず、開発は 1.9.x へと移った。
+<dt>1.9.x
 <dd>2.0 への開発中のものを時折まとめて公開したもの。<br>
-1.9.12 以前のものには外部からファイル操作をされる可能性があります。
+1.9.12 以前のものには外部からゴミのファイルを作られる可能性
+がある。
 <dt>2.0
-  <dd>今回公開されたもの
+  <dd>今回公開された版
 <dt>2.0-current
   <dd>次の版に向けて開発の続いているもの
 <a href="http://www.namazu.org/development.html">
@@ -99,8 +104,8 @@ CGIとして利用する。(C言語で書かれている)
 
 <h2><a name="prep-make">準備と make</a></h2>
 <p>
-2.0 の版を作るために次のソフトウェアが必要になります。(お名
-前の敬称は略させていただきます。ごめんなさい)
+2.0 の版を作るために次のソフトウェアが必要です。(お名
+前の敬称は略させていただきます)
 </p>
 
 <table cellspacing=0 cellpadding=3 border=1>
@@ -227,7 +232,7 @@ KAKASI/ChaSen のどちらかが必要という意味。
 <table cellspacing=0 cellpadding=3 border=1>
 <tr><td>両方用意しておいた場合</td><td>
 (無指定ではわかち書きに KAKASI を使うが、茶筌も
--c とするだけでコマンド行で指定できるようになります。)
+-c オプションをするだけで使用できる)
 <tr><td>片方しか用意していない場合</td><td>
 ./configure の時点でどちらを使うかが選ばれ、決められます。
 </table>
@@ -255,7 +260,7 @@ namazu 2.0 以降では ChaSen2 にだけ対応しています。
 cp libchasen.a /usr/local/lib
 ranlib /usr/local/lib/libchasen.a # ここはシステムに応じて
 </pre>
-とする必要があります。
+と実行する必要があります。
 
 <li>×となっている File-MMagic は通常同梱されています。
 <li> namazu 自体の ./configure についてはINSTALL-ja
@@ -409,7 +414,7 @@ mknmz は次のように実行します。
 <code>http://foo.bar.jp/software/</code> の下に見えるもの
 なので、(Perl 語で言うと) 
 s#<em>aaa</em>#<strong>bbb</strong>#
-のように置換してね」という意味になります。
+のように置換してね」という意味です。
 (上の例では aaa (/foo/bar/doc/)
             bbb (http://foo.bar.jp/) となります。)
 </p>
@@ -470,35 +475,35 @@ href="manual.html#mknmz-option">mknmz --help</a>とすると得ら
 
 <pre>
 
-    読み込んだ設定ファイル: /home/satoru/.mknmzrc
-    システム: linux
-    Namazu: 1.9.15
-    Perl: 5.00503
-    NKF: module_nkf
-    KAKASI: module_kakasi -ieuc -oeuc -w
-    ChaSen: module_chasen -j -F '%m '
-    わかち書き: module_kakasi -ieuc -oeuc -w
-    言語: ja_JP.ujis
-    文字コード: euc
-    CONFDIR: /usr/local/etc/namazu
-    LIBDIR: /usr/local/share/namazu/pl
-    FILTERDIR: /usr/local/share/namazu/filter
-    TEMPLATEDIR: ../template
-    対応メディアタイプ: 
-      application/msword
-      application/pdf
-      application/x-bzip2
-      application/x-compress
-      application/x-gzip
-      application/x-tex
-      message/news
-      message/rfc822
-      text/hnf
-      text/html
-      text/html; x-type=mhonarc
-      text/plain
-      text/plain; x-type=rfc
-      text/x-roff
+      読み込んだ設定ファイル: /home/satoru/.mknmzrc
+      システム: linux
+      Namazu: 1.9.15
+      Perl: 5.00503
+      NKF: module_nkf
+      KAKASI: module_kakasi -ieuc -oeuc -w
+      ChaSen: module_chasen -j -F '%m '
+      わかち書き: module_kakasi -ieuc -oeuc -w
+      言語: ja_JP.ujis
+      文字コード: euc
+      CONFDIR: /usr/local/etc/namazu
+      LIBDIR: /usr/local/share/namazu/pl
+      FILTERDIR: /usr/local/share/namazu/filter
+      TEMPLATEDIR: ../template
+      対応メディアタイプ: 
+	application/msword
+	application/pdf
+	application/x-bzip2
+	application/x-compress
+	application/x-gzip
+	application/x-tex
+	message/news
+	message/rfc822
+	text/hnf
+	text/html
+	text/html; x-type=mhonarc
+	text/plain
+	text/plain; x-type=rfc
+	text/x-roff
 </pre>
 
 
@@ -676,13 +681,15 @@ contrib/00readme-namazu.jis に書かれています。
 (用語としては計算機用語として以外にも同じ意味で使われる)
 <dt>インデックス(名詞)
 <dd>検索索引<br>
-Namazu は<pre>
-         (準備)     (検索画面)
-          mknmz       namazu
-         ↑   ↓     ↑    ↓
-元々の資料    検索索引     検索結果
-           (インデックス)
-</pre>のようにして予め検索索引を作っておき、検索画面での
+Namazu は
+<pre>
+	       (準備)     (検索画面)
+		mknmz       namazu
+	       ↑   ↓     ↑    ↓
+      元々の資料    検索索引     検索結果
+		 (インデックス)
+</pre>
+のようにして予め検索索引を作っておき、検索画面での
 入力があった時には、それを見て結果を表示するという動作を
 する。この「予め作られた「検索索引」のことをインデックス
 と呼んでいる。<br>Namazu の場合 NMZ.* のような名前のものが
@@ -783,7 +790,7 @@ Webブラウザの言語の設定に日本語(ja) を追加してください
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: tutorial.html,v 1.24 2000-02-19 09:16:50 satoru Exp $
+$Id: tutorial.html,v 1.25 2000-02-19 09:51:44 satoru Exp $
 </div>
 <address>
 developers@namazu.org

@@ -231,6 +231,16 @@ NMZ.ii をseekできる。 (行番号 = 文書ID)
 単なる行指向のテキスト。(行番号 = 文書ID)
 </p>
 
+<h3>注意点</h3>
+
+<p>
+単なる行指向のテキストなのでエディタなどで書き換えてもいい。
+ただし、その際は必ず <a href="manual.html#rfnmz">rfnmz</a> 
+で <a
+href="#field-i">NMZ.field.{subject,from,date,message-id,...}.i</a> 
+ファイルを再構築すること。
+</p>
+
 
 <h2><a name="field-i">NMZ.field.{subject,from,date,message-id,...}.i</a></h2>
 <p>NMZ.field.{subject,from,date,message-id,...} の seek 用インデックス</p>
@@ -383,7 +393,7 @@ ${フィールドの名前} の部分はそのフィールドの内容に置き換
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: nmz.html,v 1.5 2000-02-19 08:50:14 satoru Exp $
+$Id: nmz.html,v 1.6 2000-02-19 09:51:44 satoru Exp $
 </div>
 <address>
 developers@namazu.org

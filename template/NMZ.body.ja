@@ -81,15 +81,15 @@ Tknamazu および namazu.el から検索するときは必ず後者で指定します。
 </p>
 
 <dl> 
-<dt>前方一致検索
+<dt>前方一致検索</dt>
 <dd><code class="example">inter*</code>
-(<code>inter</code> から始まる単語を含む文書を検索)
-<dt>中間一致検索
+(<code>inter</code> から始まる単語を含む文書を検索)</dd>
+<dt>中間一致検索</dt>
 <dd><code class="example">*text*</code>
-(<code>text</code> を内包する単語を含む文書を検索)
-<dt>後方一致検索
+(<code>text</code> を内包する単語を含む文書を検索)</dd>
+<dt>後方一致検索</dt>
 <dd><code class="example">*net</code>
-(<code>net</code> で終わる単語を含む文書を検索)
+(<code>net</code> で終わる単語を含む文書を検索)</dd>
 </dl>
 
 

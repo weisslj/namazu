@@ -89,12 +89,12 @@ S± trzy typy wyszukiwania okrojonych s³ów.
 </p>
 
 <dl>
-<dt>Przedrostkowe dopasowanie
-<dd><code class="example">inter*</code> (okre¶lenia rozpoczynaj±ce siê na <code>inter</code>)
-<dt>Wewnêtrzne dopasowanie
-<dd><code class="example">*text*</code> (okre¶lenia zawieraj±ce siê wewn±trz <code>text</code>)
-<dt>Przyrostkowe dopasowanie
-<dd><code class="example">*net</code> (okre¶lenia koñcz±ce siê na <code>net</code>)
+<dt>Przedrostkowe dopasowanie</dt>
+<dd><code class="example">inter*</code> (okre¶lenia rozpoczynaj±ce siê na <code>inter</code>)</dd>
+<dt>Wewnêtrzne dopasowanie</dt>
+<dd><code class="example">*text*</code> (okre¶lenia zawieraj±ce siê wewn±trz <code>text</code>)</dd>
+<dt>Przyrostkowe dopasowanie</dt>
+<dd><code class="example">*net</code> (okre¶lenia koñcz±ce siê na <code>net</code>)</dd>
 </dl>
 
 

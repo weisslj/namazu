@@ -3,7 +3,7 @@
 <html>
 <head>
 <!-- LINK-REV-MADE -->
-<link rev=made href="mailto:foobar@namazu.org">
+<link rev="made" href="mailto:foobar@namazu.org">
 <!-- LINK-REV-MADE -->
 <title>Esto es un completo sistema de búsqueda</title>
 <style type="text/css"><!--
@@ -32,7 +32,7 @@ Este índice contiene <!-- FILE --> 0 <!-- FILE --> documentos y
 <strong>Ultima modificación: <!-- DATE --> date <!-- DATE --></strong>
 </p>
 <hr>
-<form method="GET" action="{cgi}">
+<form method="get" action="{cgi}">
 <p>
 <strong>Cadena de Búsqueda:</strong> 
 <input type="text" name="query" size="40">

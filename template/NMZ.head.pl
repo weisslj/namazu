@@ -3,7 +3,7 @@
 <html>
 <head>
 <!-- LINK-REV-MADE -->
-<link rev=made href="mailto:foobar@namazu.org">
+<link rev="made" href="mailto:foobar@namazu.org">
 <!-- LINK-REV-MADE -->
 <title>Namazu: System Wyszukiwania Pe³notekstowego </title>
 <style type="text/css"><!--
@@ -32,7 +32,7 @@ Ten indeks zawiera <!-- FILE --> 0 <!-- FILE --> dokumentów i
 <strong>Ostatnio zmodyfikowano: <!-- DATE --> date <!-- DATE --></strong>
 </p>
 <hr>
-<form method="GET" action="{cgi}">
+<form method="get" action="{cgi}">
 <p>
 <strong>Query:</strong>
 <input type="text" name="query" size="40">

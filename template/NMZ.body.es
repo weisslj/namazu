@@ -81,13 +81,13 @@ The are three types of substring matching searching.
 </p>
 
 <dl> 
-<dt>Prefix matching
-<dd><code class="example">inter*</code> (terms which begin with <code>inter</code>)
-<dt>Inside matching
-<dd><code class="example">*text*</code> (terms which contain <code>text</code>) 
-<dt>Suffix matching
+<dt>Prefix matching</dt>
+<dd><code class="example">inter*</code> (terms which begin with <code>inter</code>)</dd>
+<dt>Inside matching</dt>
+<dd><code class="example">*text*</code> (terms which contain <code>text</code>)</dd>
+<dt>Suffix matching</dt>
 <dd><code class="example">*net</code> (terms which terminated
-with <code>net</code>)
+with <code>net</code>)</dd>
 </dl>
 
 

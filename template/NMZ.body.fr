@@ -88,13 +88,13 @@ Il existe trois types de recherche de sous-cha&icirc;ne.
 </p>
 
 <dl> 
-<dt>Correspondance pr&eacute;fix&eacute;e
-<dd><code class="example">inter*</code> (les termes qui commence par <code>inter</code>)
-<dt>Correspondance int&eacute;rieure
-<dd><code class="example">*text*</code> (les termes qui contiennent <code>text</code>) 
-<dt>Correspondance postfix&eacute;e
+<dt>Correspondance pr&eacute;fix&eacute;e</dt>
+<dd><code class="example">inter*</code> (les termes qui commence par <code>inter</code>)</dd>
+<dt>Correspondance int&eacute;rieure</dt>
+<dd><code class="example">*text*</code> (les termes qui contiennent <code>text</code>)</dd>
+<dt>Correspondance postfix&eacute;e</dt>
 <dd><code class="example">*net</code> (les termes qui finissent
-par <code>net</code>)
+par <code>net</code>)</dd>
 </dl>
 
 

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: wakati.pl,v 1.11 1999-09-05 03:14:10 satoru Exp $
+# $Id: wakati.pl,v 1.12 1999-09-06 03:22:00 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -25,15 +25,17 @@
 package wakati;
 use strict;
 
-# わかち書きによる日本語の単語の区切り出し
+# Do wakatigaki processing for a Japanese text.
 sub wakatize_japanese ($) {
     my ($content) = @_;
 
     my @tmp = wakatize_japanese_sub($content);
 
-    # ひらがなだけの語は削除する -H オプション時
-    # このコードは古川@ヤマハさんがくださりました。[1997-11-13]
-    # 送り仮名についても対応 (古川さんのコードより) [1998-04-24]
+    # Remove words consists of only Hiragana characters 
+    # when -H option is specified.
+    # Original of this code was contributed by <furukawa@tcp-ip.or.jp>. 
+    # [1997-11-13]
+    # And do Okurigana processing. [1998-04-24]
     if ($var::Opt{'Hiragana'} || $var::Opt{'Okurigana'}){
         for (my $ndx = 0; $ndx <= $#tmp; ++$ndx){
 	    $tmp[$ndx] =~ s/(\s)/ $1/g;
@@ -47,7 +49,7 @@ sub wakatize_japanese ($) {
         }
     }
 
-    # 品詞情報を元に名詞のみを登録する -m オプション時
+    # Collect only noun words when -m option is specified.
     if ($var::Opt{'Morph'}) {
 	$$content = "";
 	$$content .= shift(@tmp) =~ /(.+ )名詞/ ? $1 : "" while @tmp; 
@@ -76,7 +78,7 @@ sub wakatize_japanese_sub ($) {
     } else {
 	my $tmpfile = util::tmpnam("NMZ.wakati");
         util::dprint("wakati: using $conf::WAKATI\n");
-	# IPC::Open2 もあるけど試したらちょっと変でしかも遅かった
+	# Don't use IPC::Open2 because it's not efficent.
 	{
 	    my $fh_wakati = util::efopen("|$conf::WAKATI > $tmpfile");
 	    print $fh_wakati $$content;

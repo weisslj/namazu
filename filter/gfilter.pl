@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: gfilter.pl,v 1.7 1999-09-05 03:14:07 satoru Exp $
+# $Id: gfilter.pl,v 1.8 1999-09-06 03:21:57 satoru Exp $
 # Copyright (C) 1999 Satoru Takabayashi ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -42,7 +42,7 @@ sub white_space_adjust_filter ($) {
     $$text =~ s/\n+/\n/g;
 }
 
-# ファイル名からタイトルを取得 (単なるテキストファイルの場合)
+# get a title from a file name.
 sub filename_to_title ($$) {
     my ($cfile, $weighted_str) = @_;
 
@@ -53,7 +53,8 @@ sub filename_to_title ($$) {
     
     $cfile =~ m!^.*/([^/]*)$!;
     my $filename = $1;
-    # ファイル名を元にキーワードを割り出してみる v1.1.1
+
+    # get keywords from a file name.
     # modified [1998-09-18] 
     my $tmp = $filename;
     $tmp =~ s|/\\_\.-| |g;
@@ -65,11 +66,15 @@ sub filename_to_title ($$) {
     return $title
 }
 
-# 行頭・行末の空白、タブ、行頭の > | # を削除 (':' もつけ加えた by 高林)
-# 行末が日本語で終わる場合は改行コードを削除
-# この部分のコードは古川@ヤマハさんがくださりました。[1997-09-15]
-# 英文ハイフォネーションの解除は私が付け足しました
-# 40文字未満の行について行末の日本語連結処理を行わないようにした v1.1.1
+# Remove SPACE/TAB at the beginning or ending of the line.
+# And remove '>|#:' at the begenning of the line.
+# Join hyphenation for English text.
+# Remove LF if the line is ended with a Japanese character and 
+# length of the line is 40 or more longer.
+#
+# Original of this code was contributed by <furukawa@tcp-ip.or.jp>. 
+# [1997-09-15]
+#
 sub line_adjust_filter ($) {
     my ($text) = @_;
     return undef unless defined($$text);

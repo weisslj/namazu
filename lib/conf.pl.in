@@ -26,7 +26,7 @@ $WAKATI  = $@OPT_WAKATI_DEFAULT@;
 
 $LANGUAGE = "@OPT_LANGUAGE@";  # language of messages
 $ADMIN  = '@OPT_ADMIN_EMAIL@'; # admin's email address
-$CGI_ACTION = '@OPT_CGI_LOCATION@/namazu.cgi'; # <FORM> 's ACTION の指定
+$CGI_ACTION = '@OPT_CGI_LOCATION@/namazu.cgi'; # <FORM> 's ACTION
 
 ## Files can be omission in URI. e.g. index.html
 ## name of the file or files which can be abbreviated.
@@ -130,9 +130,8 @@ $WORD_LENG_MAX   = 128;
 
 ################################################################
 ##
-## タグを捨てる際に空白を挿入しないタグ
-## 例えば、これは<STRONG>重要</STRONG>です。などという文脈ではタグは削除すべき
-## だが、 This is foo.<BR>That is bar. という文脈ではタグは空白に変換すべき
+## Elements which should be replaced with null string when
+## removing elements.
 ##
 $NON_SEPARATION_ELEMENTS = 'A|TT|CODE|SAMP|KBD|VAR|B|STRONG|I|EM|CITE|FONT|U|'.
                        'STRIKE|BIG|SMALL|DFN|ABBR|ACRONYM|Q|SUB|SUP|SPAN|BDO';
@@ -140,9 +139,9 @@ $NON_SEPARATION_ELEMENTS = 'A|TT|CODE|SAMP|KBD|VAR|B|STRONG|I|EM|CITE|FONT|U|'.
 
 ################################################################
 ##
-## タグによる重みづけする際にこの数字以上の長さの文字列の場合は重
-## みづけをしない (<H[1-6]> を文字サイズの指定のために本文全体を囲ったり
-## している人がいるための処置)
+## Length of string which should be ignored at weighting.
+## Because there are people has a bad manner using <h[1-6]> for
+## specifying a font size.
 
 $INVALID_LENG = 128; 
 

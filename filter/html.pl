@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: html.pl,v 1.17 1999-09-05 03:14:07 satoru Exp $
+# $Id: html.pl,v 1.18 1999-09-06 03:21:58 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -61,7 +61,6 @@ sub filter ($$$$$) {
     return undef;
 }
 
-# HTML 用のフィルタ
 sub html_filter ($$$$) {
     my ($contref, $weighted_str, $fields, $headings) = @_;
 
@@ -76,14 +75,14 @@ sub html_filter ($$$$) {
     html::erase_above_body($contref);
     html::weight_element($contref, $weighted_str, $headings);
     html::remove_html_elements($contref);
-    # それぞれ実体参照の復元
+    # restore entities of each content.
     html::decode_entity($contref);
     html::decode_entity($weighted_str);
     html::decode_entity($headings);
 }
 
-# 単独の < > を実体参照に変換し、保護する
-# この処理は Perl の正規表現置換の仕様により、二重に行います
+# Convert independent < > s into entity references for escaping.
+# Substitute twice for safe.
 sub escape_lt_gt ($) {
     my ($contref) = @_;
 
@@ -109,8 +108,9 @@ sub get_author ($$) {
     }
 }
 
-# TITLE を取り出す <TITLE LANG="ja_JP"> などにも考慮しています
-# </TITLE> が二つ以上あっても大丈夫 v1.03
+# Get title from <title>..</title>
+# It's okay to exits two or more <title>...</TITLE>. 
+# First one will be retrieved.
 sub get_title ($$) {
     my ($contref, $weighted_str) = @_;
     my $title = '';
@@ -129,7 +129,7 @@ sub get_title ($$) {
     return $title;
 }
 
-# <META NAME="keywords|description" CONTENT="foo bar"> に対応する処理
+# get foo bar from <META NAME="keywords|description" CONTENT="foo bar"> 
 sub get_meta_info ($$) {
     my ($contref, $weighted_str) = @_;
     
@@ -142,51 +142,50 @@ sub get_meta_info ($$) {
 	    \1\s+[^>]*CONTENT\s*=\s*([\'\"]?)([^>]*?)\2[^>]*>/ix; #"
 }
 
-# <IMG ... ALT="foo"> の foo の取り出し
-# HTML の扱いは厳密ではないです
+# Get foo from <IMG ... ALT="foo">
+# It's not to handle HTML strictly.
 sub get_img_alt ($) {
     my ($contref) = @_;
 
     $$contref =~ s/<IMG[^>]*\s+ALT\s*=\s*[\"\']?([^\"\']*)[\"\']?[^>]*>/ $1 /gi; #"
 }
 
-# <TABLE ... SUMMARY="foo"> の foo の取り出し
+# Get foo from <TABLE ... SUMMARY="foo">
 sub get_table_summary ($) {
     my ($contref) = @_;
 
     $$contref =~ s/<TABLE[^>]*\s+SUMMARY\s*=\s*[\"\']?([^\"\']*)[\"\']?[^>]*>/ $1 /gi; #"
 }
 
-# <XXX ... TITLE="foo"> の foo の取り出し
+# Get foo from <XXX ... TITLE="foo">
 sub get_title_attr ($) {
     my ($contref) = @_;
 
     $$contref =~ s/<[A-Z]+[^>]*\s+TITLE\s*=\s*[\"\']?([^\"\']*)[\"\']?[^>]*>/ $1 /gi; #"
 }
 
-# <A HREF...> などを <A> に統一 (エレメントをすべて削除)
+# Normalize elements like: <A HREF...> -> <A>
 sub normalize_html_element ($) {
     my ($contref) = @_;
 
     $$contref =~ s/<([!\w]+)\s+[^>]*>/<$1>/g;
 }
 
-# <BODY> より上をすべて削除 (<STYLE> や <SCRIPT> への対処)
-# なぜか MSWin32 の Perl だと (.|\n)* とすると
+# Remove contents above <body>.
 sub erase_above_body ($) {
     my ($contref) = @_;
 
-    $$contref =~ s/^.*<BODY>//is;
+    $$contref =~ s/^.*<body>//is;
 }
 
 
-# %conf::Weight{'html'} に設定されている数値に応じて \x7fXX\x7f, \x7f/XX\x7f という架空のタグ
-# を作り、これで挟んでおく (\x7f は予めすべて空白に変換してある)
-# 単語のカウントの際にこの架空のタグを利用して計算する
-# <A> が最初に処理されるように sort keys しています(安直)。
-# というのは <A> は他のタグの内側に来ることが多いからです
-# 厳密な入れ子処理は行っていません
-# さらに <H[1-6]> については要約作成のために怪しい処理をしている
+# Weight a score of a keyword in a given text using %conf::Weight hash.
+# This process make the text be surround by temporary tags 
+# \x7fXX\x7f and \x7f/XX\x7f. XX represents score.
+# Sort keys of %conf::Weight for processing <a> first.
+# Because <a> has a tendency to be inside of other tags.
+# Thus, it does'not processing for nexted tags strictly.
+# Moreover, it does special processing for <h[1-6]> for summarization.
 sub weight_element ($$$ ) {
     my ($contref, $weighted_str, $headings) = @_;
 
@@ -228,7 +227,7 @@ sub remove_html_elements ($) {
 
 }
 
-# numberd entity の復元を行う /  無効な値ははじく
+# Decode a numberd entity. Exclude an invalid number.
 sub decode_numbered_entity ($) {
     my ($num) = @_;
     return ""
@@ -237,10 +236,9 @@ sub decode_numbered_entity ($) {
 }
 
 
-# 実体参照の復元 ISO-8859-1 の右半分は無視します
-# HTML 2.x で拡張された numbered entity には未対応です
-# どちらも日本語 EUC では無理なのです
-# &quot &lt &gt; のように空白で続けて最後に ; をつける記述も大丈夫 v1.03
+# Decode an entity. Ignore characters of right half of ISO-8859-1.
+# Because it can't be handled in EUC encoding.
+# This function provides sequential entities like: &quot &lt &gt;
 sub decode_entity ($) {
     my ($text) = @_;
 
@@ -251,11 +249,11 @@ sub decode_entity ($) {
     $$text =~ s/&amp[;\s]/&/g;
     $$text =~ s/&lt[;\s]/</g;
     $$text =~ s/&gt[;\s]/>/g;
-    $$text =~ s/&nbsp/ /g; ## 特別扱い v1.1.2.1
+    $$text =~ s/&nbsp/ /g; ## special handling v1.1.2.1
 }
 
 
-# '<' と '>' '&' を実体参照へ変換
+# encode entities: only '<', '>', and '&'
 sub encode_entity ($) {
     my ($tmp) = @_;
 
@@ -275,8 +273,8 @@ sub is_html ($) {
     $cfile =~ /($conf::CGI_DIR)/io);
 }
 
-# Robots.txt の読み込み
-# Disallow 行以外はいっさい無視
+# Handle robots.txt
+# Ignore all lines except Disallow:.
 #
 # This code was contributed by 
 #  - [Gorochan ^o^ <kunito@hal.t.u-tokyo.ac.jp>]
@@ -292,7 +290,7 @@ sub parse_robots_txt () {
     while(defined(my $line = <$fh_robottxt>)) {
 	$line =~ /^Disallow:\s*(\S+)/i && do {
 	    my $uri = $1;
-	    $uri =~ s/\%/%25/g;  # 元から含まれる % は %25 に変更 v1.1.1.2
+	    $uri =~ s/\%/%25/g;  # Replace original % with %25  v1.1.1.2
 	    $uri =~ s/([^a-zA-Z0-9\-\_\.\/\:\%])/
 		sprintf("%%%02X",ord($1))/ge;
 	    if (($mknmz::SYSTEM eq "MSWin32") || ($mknmz::SYSTEM eq "os2")) {

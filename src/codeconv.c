@@ -2,7 +2,7 @@
  * 
  * codeconv.c -
  * 
- * $Id: codeconv.c,v 1.5 1999-09-04 08:25:10 satoru Exp $
+ * $Id: codeconv.c,v 1.6 1999-09-06 03:22:01 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -266,8 +266,8 @@ int codeconv(uchar * in)
 }
 
 /*
- * 2 bytes 英数字・記号を 1 byte に変換するルーチン 
- * このコードはやまだあきらさんに頂きました。 [1997-09-28]
+ * Converting 2 bytes Alnum and Symbol into 1 byte one.
+ * This code was contributed by Akira Yamada <akira@linux.or.jp> [1997-09-28]
  */
 char Z2H[] = "\0 \0\0,.\0:;?!\0\0'`\0^~_\0\0\0\0\0\0\0\0\0\0\0\0/\\\0\0|\0\0`'\"\"()\0\0[]{}<>\0\0\0\0\0\0\0\0+-\0\0\0=\0<>\0\0\0\0\0\0\0'\"\0\\$\0\0%#&*@";
 void zen2han(uchar * s)

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: rfc.pl,v 1.9 1999-09-05 03:14:08 satoru Exp $
+# $Id: rfc.pl,v 1.10 1999-09-06 03:21:58 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -63,9 +63,7 @@ sub filter ($$$$$) {
     return undef;
 }
 
-# RFC 用のフィルタ
-# わりと書式はまちまちみたいだからそれなりに
-
+# It's a halway filter because of fuzziness.
 sub rfc_filter ($$$) {
     my ($contref, $weighted_str, $fields) = @_;
 
@@ -78,7 +76,9 @@ sub rfc_filter ($$$) {
     $$weighted_str .= "\x7f1\x7f$1\x7f/1\x7f\n" if defined $1;
     my $weight = $conf::Weight{'html'}->{'title'};
     $$weighted_str .= "\x7f$weight\x7f$title\x7f/$weight\x7f\n";
-    # summary または Introductionがあればそれを先頭に持ってくる
+
+    # Get Summary or Introduction and put it at the beginning 
+    # for summarization.
 #    $$contref =~ s/\A(.+?^(\d+\.\s*)?(Abstract|Introduction)\n\n)//ims;
     $$contref =~ s/([\s\S]+^(\d+\.\s*)?(Abstract|Introduction)\n\n)//im;
     $$weighted_str .= "\x7f1\x7f$1\x7f/1\x7f\n" if defined $1;

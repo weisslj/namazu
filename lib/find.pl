@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: find.pl,v 1.6 1999-09-05 03:14:10 satoru Exp $
+# $Id: find.pl,v 1.7 1999-09-06 03:22:00 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -21,7 +21,7 @@
 #
 #  This file must be encoded in EUC-JP encoding
 #
-#  find.pl をほんの少し修正して Symbolic link なディレクトリもたどるようにした
+#  NOTE: Original of this code is "find.pl" in the perl distribution.
 
 package find;
 no strict;
@@ -64,15 +64,10 @@ sub find {
 }
 
 
-# ファイル名を数字を考慮してソートする
-# このコードはは古川@ヤマハさんに頂きました
+# Sort file names with consideration for numbers.
+# Original of this code was contributed by <furukawa@tcp-ip.or.jp>. 
 sub fncmp {
     my ($x, $y) = ($a, $b);
-    # ファイル名のソートを数値も考慮して行なう
-    # 普通にやると、1, 10, 2, 3, ... の順になってしまう。
-    # ちゃんとやる方法もあるが、面倒なので、
-    # ケタ数を適当に制限して安易に実装。
-    # ファイル名に 8 ケタより長い数字が無ければ大丈夫。
 
     $x =~ s/(\d+)/sprintf("%08d", $1)/ge;
     $y =~ s/(\d+)/sprintf("%08d", $1)/ge;
@@ -101,8 +96,7 @@ sub finddir {
     my @filenames = grep(!/^\.\.?$/, readdir(DIR));
     closedir(DIR);
 
-    # ファイル名を数字を考慮してソートする
-    # 新しい順/古い順による疑似ソートを実現するためです
+    # sort filenames with fncmp()
     @filenames = sort fncmp @filenames;
 
     if ($nlink == 2 && !$dont_use_nlink) {  # This dir has no subdirectories.
@@ -150,7 +144,7 @@ sub finddir {
     }
 }
 
-# 対象ディレクトリから処理の対象となるファイルを抽出
+# public function.
 sub findfiles ($\@) {
     my ($rarray) = @_;
     find($rarray, cwd());

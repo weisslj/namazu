@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mhonarc.pl,v 1.14 1999-09-05 03:14:08 satoru Exp $
+# $Id: mhonarc.pl,v 1.15 1999-09-06 03:21:58 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -76,18 +76,23 @@ sub filter ($$$$$) {
     return undef;
 }
 
-# MHonArc 用のフィルタ
-# MHonArc v2.1.0 が標準で出力する HTML を想定しています
+# Assume a normal message files by MHonArc v2.1.0
 sub mhonarc_filter ($$) {
     my ($contref, $weighted_str) = @_;
 
-    # MHonArc を使うときはこんな感じに処理すると便利
+    # It's useful to handle MHonArc message files.
     $$contref =~ s/<!--X-MsgBody-End-->.*//s;
     $$contref =~ s/<!--X-TopPNI-->.*<!--X-TopPNI-End-->//s;
     $$contref =~ s/<!--X-Subject-Header-Begin-->.*<!--X-Subject-Header-End-->//s;
-    $$contref =~ s/<!--X-Head-Body-Sep-Begin-->/\n/;  # ヘッダと本文を区切る
-    $$contref =~ s/^<LI>//gim;   # ヘッダの前に空白をあけたくないから
-    $$contref =~ s!</?EM>!!gi;  # ヘッダの名前をインデックスにいれたくない
+
+    # Separate headers and a body message.
+    $$contref =~ s/<!--X-Head-Body-Sep-Begin-->/\n/;
+
+    # For pluggin spaces before headers
+    $$contref =~ s/^<LI>//gim;
+
+    # Make header's name not to be indexed words.
+    $$contref =~ s!</?EM>!!gi;
     $$contref =~ s/^\s+//;
 }
 

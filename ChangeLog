@@ -1,5 +1,7 @@
 1999-09-06  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* **/*.pl{,.in}, src/*.[ch]: Translate all comments into English.
+	
 	* src/namazu.h, src/*.[ch]: Rename names of hlist_data members.
 	
 	* template/NMZ.head.{ja,en}, src/{cgi,form}.c: Rename a CGI

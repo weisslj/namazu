@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.61 1999-09-05 03:14:12 satoru Exp $
+# $Id: mknmz.pl.in,v 1.62 1999-09-06 03:22:01 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -1438,8 +1438,8 @@ sub get_year() {
     return $year;
 }
 
-# ヘッダとフッタの処理。ファイルがなければサンプルを作成する。
-# また $file_count, $key_count, $month/$day/$year を埋め込む
+# Compose NMZ.head and NMZ.foot. Prepare samples if necessary.
+# Insert $file_count, $key_count, and $month/$day/$year respectively.
 sub make_headfoot ($$$) {
     my ($file, $file_count, $key_count) = @_;
 
@@ -1498,8 +1498,8 @@ sub make_headfoot ($$$) {
     print $fh_file $buf;
 }
 
-# make phrase hashes for NMZ.p
-# 2単語の組でひとつのハッシュ値 (0-65535) を生成します
+# Make phrase hashes for NMZ.p
+# Handle two words each for calculating a hash value ranged 0-65535.
 sub make_phrase_hash ($$$) {
     my ($file_count, $file_base, $content) = @_;
 
@@ -1522,7 +1522,7 @@ sub make_phrase_hash ($$$) {
     }
 }
 
-# NMZ.p, NMZ.pi ファイルへ書き出し & マージする (複雑)
+# Construct NMZ.p and NMZ.pi file. this processing is rather complex.
 sub write_phrase_hash () {
     write_phrase_hash_sub();
     util::Rename($var::NMZ{'__p'}, $var::NMZ{'_p'});
@@ -1600,7 +1600,7 @@ sub hash ($) {
     my ($i, $hash);
 
     $hash = 0;
-    $word =~ tr/\xa1-\xfea-z0-9//cd; # 記号を捨てる
+    $word =~ tr/\xa1-\xfea-z0-9//cd; # Remove symbols
     for ($i = 0; $word ne ""; $i++) {
 	$hash ^= $seed::Seed[$i & 0x03][ord($word)];
         $word = substr $word, 1;
@@ -1609,20 +1609,20 @@ sub hash ($) {
     $hash & 65535;
 }
 
-# 単語の頻度数を数える
+# Count frequencies of words.
 sub count_words ($$$$) {
     my ($file_count, $file_base, $content, $kanji) = @_;
     my (@tmp);
 
-    # 小文字に正規化
+    # Normalize into small letter.
     $$content =~ tr/A-Z/a-z/;
 
-    # わかち書き
+    # Do wakatigaki if necessary.
     if ($conf::LANGUAGE eq "ja") {
 	wakati::wakatize_japanese($content) if $kanji;
     }
 
-    # 記号を全て削除する -K オプション時
+    # Remove all symbols when -K option is specified.
     $$content =~ tr/\xa1-\xfea-z0-9/   /c if $var::Opt{'nosymbol'};
 
     my $part1 = "";
@@ -1659,13 +1659,15 @@ sub count_words ($$$$) {
 sub wordcount_sub ($$\%) {
     my ($text, $weight, $word_count) = @_;
 
-    # カレントファイルの単語の出現回数を調べる
-    # 記号をそれなりに処理する
-    # tutil::cp/ip なら tutil::cp/ip, tutil::cp, ip と 3 つに分解される
-    # (tutil::cp/ip) なら (tutil::cp/ip), tutil::cp/ip, tutil::cp, ip の 4 つなる
-    # ((tutil::cpi/ip)) なら ((tutil::cp/ip)), (tutil::cp/ip), tutil::cp, ip の 4 つになる
-    # 入れ子処理は行わない
-    # ただし -K オプション指定時は記号はすべて削除している
+    # Count frequencies of words in a current document.
+    # Handle symbols as follows.
+    #
+    # tcp/ip      ->  tcp/ip,     tcp,      ip
+    # (tcp/ip)    ->  (tcp/ip),   tcp/ip,   tcp, ip
+    # ((tcpi/ip)) ->  ((tcp/ip)), (tcp/ip), tcp
+    #
+    # Don't do processing for nested symbols.
+    # NOTE: When -K is specified, all symbols are already removed.
 
     my @words = split /\s+/, $text;
     @words = grep !/^$/, @words;   # remove empty words
@@ -1706,21 +1708,7 @@ sub wordcount_sub ($$\%) {
 }
 
 
-# 文字列の unsigned な比較ルーチン。
-# このルーチンは古川@ヤマハさんがくださりました
-# ほんの少し改変 v1.1.1.3 [1998-02-27]
-# sub unsignedcmp {
-#     my ($str1, $str2) = @_;
-#     my ($ord1, $ord2);
-#     while (($ord1 = ord($str1)) == ($ord2 = ord($str2))) {
-#         last if ! $ord1;
-#         $str1 =~ s/^.//;
-#         $str2 =~ s/^.//;
-#     }
-#     $ord1 <=> $ord2;
-# }
-
-# make NMZ.i and NMZ.ii file. this processing is rather complex.
+# Construct NMZ.i and NMZ.ii file. this processing is rather complex.
 sub write_index () {
     my $key_count = write_index_sub();
     util::Rename($var::NMZ{'__i'}, $var::NMZ{'_i'});

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mailnews.pl,v 1.16 1999-09-05 03:14:08 satoru Exp $
+# $Id: mailnews.pl,v 1.17 1999-09-06 03:21:58 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -65,8 +65,7 @@ sub filter ($$$$$) {
     return undef;
 }
 
-# Mail/News 用のフィルタ
-# 元となるものは古川@ヤマハさんにいただきました
+# Original of this code was contributed by <furukawa@tcp-ip.or.jp>. 
 sub mailnews_filter ($$$) {
     my ($contref, $weighted_str, $fields) = @_;
 
@@ -75,7 +74,7 @@ sub mailnews_filter ($$$) {
     my $partial  = 0;
 
     $$contref =~ s/^\s+//;
-    # 1 行目がヘッダっぽくないファイルは、ヘッダ処理しない
+    # Don't handle if first like does'nt seem like a mail/news header.
     return unless $$contref =~ /(^\S+:|^from )/i;
 
     my @tmp = split(/\n/, $$contref);
@@ -108,12 +107,11 @@ sub mailnews_filter ($$$) {
 	    my $title = $line;
 	    html::encode_entity(\$title);
 	    $fields->{'title'} = $title;
-	    # ML 特有の [hogehoge-ML:000] を読み飛ばす。
-	    # のが意図だが、面倒なので、
-	    # 実装上、最初の [...] を読み飛ばす。
+	    # Skip [foobar-ML:000] for a typical mailing list subject.
+	    # Practically skip first [...] for simple implementation.
 	    $line =~ s/^\[.*?\]\s*//;
 
-	    # 'Re:' を読み飛ばす。
+	    # Skip 'Re:'
 	    $line =~ s/\bre:\s*//gi;
 
 	    my $weight = $conf::Weight{'html'}->{'title'};
@@ -142,7 +140,7 @@ sub mailnews_filter ($$$) {
     }
     $$contref = join("\n", @tmp);
     if ($boundary) {
-	# MIME の Multipart  をそれなりに処理する
+	# Handle a multipart message of MIME
 	$boundary =~ s/(\W)/\\$1/g;
 	$$contref =~ s/This is multipart message.\n//i;
 
@@ -161,9 +159,10 @@ sub mailnews_filter ($$$) {
     }
 }
 
-# Mail/News の引用マークを片付ける
-# また冒頭の名乗るだけの行や、引用部分、◯◯さんは書きましたなどの行は
-# 要約に含まれないようにする (やまだあきらさんのアイディアを頂きました)
+# Make mail/news citation marks not to be indexed.
+# And a greeting message at the beginning.
+# And a meaningless message such as "foo wrote:".
+# Thanks to Akira Yamada for great idea.
 sub mailnews_citation_filter ($$) {
     my ($contref, $weighted_str) = @_;
 
@@ -172,38 +171,38 @@ sub mailnews_citation_filter ($$) {
     my @tmp = split(/\n/, $$contref);
     $$contref = "";
 
-    # 冒頭の名乗り出る部分を処理 (これは最初の 1,2 行めにしかないでしょう)
+    # Greeting at the beginning (first one or two lines)
     for (my $i = 0; $i < 2 && defined($tmp[$i]); $i++) {
 	if ($tmp[$i] =~ /(^\s*((([\xa1-\xfe][\xa1-\xfe]){1,8}|([\x21-\x7e]{1,16}))\s*(。|．|\.|，|,|、|\@|＠|の)\s*){0,2}\s*(([\xa1-\xfe][\xa1-\xfe]){1,8}|([\x21-\x7e]{1,16}))\s*(です|と申します|ともうします|といいます)(.{0,2})?\s*$)/) {
-	    # デバッグ情報から検索するには perl -n00e 'print if /^<<<</'
+	    # for searching debug info by perl -n00e 'print if /^<<<</'
 	    util::dprint("\n\n<<<<$tmp[$i]>>>>\n\n");
 	    $omake .= $tmp[$i] . "\n";
 	    $tmp[$i] = "";
         }
     }
 
-    # 引用部分を隔離
+    # Isolate citation parts.
     for my $line (@tmp) {
-	# 行頭に HTML タグが来た場合は引用処理しない
+	# Don't do that if there is an HTML tag at first.
 	if ($line !~ /^[^>]*</ &&
 	    $line =~ s/^((\S{1,10}>)|(\s*[\>\|\:\#]+\s*))+//) {
 	    $omake .= $line . "\n";
-	    $$contref .= "\n";  # 改行をいれよう
+	    $$contref .= "\n";  # Insert LF.
 	    next;
 	}
 	$$contref .= $line. "\n";
     }
 	
-    # ここでは空行を区切りにした「段落」で処理している
-    # 「◯◯さんは△△の記事において□□時頃書きました」の類いを隔離
+    # Process text as chunks of paragraphs.
+    # Isolate meaningless message such as "foo wrote:".
     @tmp = split(/\n\n+/, $$contref);
     $$contref = "";
     my $i = 0;
     for my $line (@tmp) {
-	# 完全に除外するのは無理だと思われます。こんなものかなあ
-        # この手のメッセージはせいぜい最初の 5 段落くらいに含まれるかな
-	# また、 5 行より長い段落は処理しない。
-	# それにしてもなんという hairy 正規表現だろう…
+	# Complete excluding is impossible. I tnink it's good enough.
+        # Process only first five paragrahs.
+	# And don't handle the paragrah which has five or longer lines.
+	# Hmm, this regex looks very hairly.
 	if ($i < 5 && ($line =~ tr/\n/\n/) <= 5 && $line =~ /(^\s*(Date:|Subject:|Message-ID:|From:|件名|差出人|日時))|(^.+(返事です|reply\s*です|曰く|いわく|書きました|言いました|話で|wrote|said|writes|says)(.{0,2})?\s*$)|(^.*In .*(article|message))|(<\S+\@([\w-.]\.)+\w+>)/im) {
 	    util::dprint("\n\n<<<<$line>>>>\n\n");
 	    $omake .= $line . "\n";
@@ -216,9 +215,8 @@ sub mailnews_citation_filter ($$) {
     $$weighted_str .= "\x7f1\x7f$omake\x7f/1\x7f\n";
 }
 
-# uuencode の読み飛ばしルーチンは古川@ヤマハさんがくださりました。[1997-09-28]
-# 重ね重ね感謝です。後日 BinHex も追加してもらいました [1997-11-13]
-# 私がいじったことによるバグを修正してくださいました [1998-02-05] Thanks!
+# Skip uuencode and BinHex texts.
+# Original of this code was contributed by <furukawa@tcp-ip.or.jp>. 
 sub uuencode_filter ($) {
     my ($content) = @_;
     my @tmp = split(/\n/, $$content);
@@ -229,49 +227,48 @@ sub uuencode_filter ($) {
 	my $line = shift @tmp;
 	$line .= "\n";
 
-	# BinHex の読み飛ばし
-	# 仕様がよく分からないので、最後まで飛ばす
+	# Skip BinHex texts.
+	# All lines will be skipped.
 	last if $line =~ /^\(This file must be converted with BinHex/; #)
 
-	# uuencode の読み飛ばし
-	# 参考文献 : SunOS 4.1.4 の man 5 uuencode
-	#            FreeBSD 2.2 の uuencode.c
-        # 偶然マッチしてしまった場合のデメリットを少なくするため
-	# 本体のフォーマットチェックを行なう
+	# Skip uuencode texts.
+	# References : SunOS 4.1.4: man 5 uuencode
+	#              FreeBSD 2.2: uuencode.c
+	# For avoiding accidental matching, check a format.
 	#
-	# News などでファイルを分割して投稿されているものの場合 begin がない
-	# ことがあるのでそれを考慮します by S.Takabayashi [v1.0.5]
-	# 偶然マッチすることはほとんどないとは思いますが…
+	# There are many netnews messages which is separated into several 
+	# files. This kind of files has usually no "begin" line. 
+	# This function handle them as well.
 	#
-	# length は 62 と 63 があるみたい… [v1.0.5]
-	# もしかしたら他にも違いがあるのかも
+	# There are two fashion for line length 62 and 63.
+	# This function handle both.
 	#
-	# 仕様を忠実に表現すると、
+	# In the case of following the specification strictly,
 	# int((ord($line) - ord(' ') + 2) / 3)
 	#     != (length($line) - 2) / 4
-	# となるが、式を変形して…
+	# but it can be transformed into a simple equation.
 	# 4 * int(ord($line) / 3) != length($line) + $uunumb;
 
-        # SunOS の uuencode は、encode に空白も使っている。
-        # しかし、空白も認めると、一般の行を uuencode 行と誤認する
-        # 可能性が高くなる。
-        # 折衷案として、次のケースで認める。
-        #     begin と end の間
-        #     前の行が uuencode 行と判断されて、ord が前の行と同じ
+        # Hey, SunOS's uuencode use SPACE for encoding.
+        # But allowing SPACE is dangerous for misrecognizing.
+	# For compromise, only the following case are acceptable.
+        #   1. inside of begin - end
+        #   2. previous line is recognized as uuencoded line 
+	#      and ord is identical with previous one.
 	
-	# 一行が 0x20-0x60 の文字のみで構成される場合のみ uuencode 
-	# とみなす v1.1.2.3 (bug fix)
+	# a line consists of only characters of 0x20-0x60 is recognized 
+	# as uuencoded line. v1.1.2.3 (bug fix)
 
         $uuin = 1, next if $line =~ /^begin [0-7]{3,4} \S+$/;
         if ($line =~ /^end$/){
             $uuin = 0,next if $uuin;
         } else {
-            # ここで、ord の値は 32-95 の範囲に
+            # Restrict ord value in range of 32-95.
 	    my $uuord = ord($line);
 	    $uuord = 32 if $uuord == 96;
 
-            # uunumb = 38 の行が loop の外に出ていると、
-            # 一般の行で 63 文字の行があったら誤動作してしまう
+            # if the line of uunumb = 38 is over this loop,
+	    # a normal line of 63 length can be ruined accidentaly.
             my $uunumb = (length($line)==63)? 37: 38;
 
             if ((32 <= $uuord && $uuord < 96) &&
@@ -281,7 +278,7 @@ sub uuencode_filter ($) {
                 if ($uuin == 1 || $uuin == $uuord){
                     next if $line =~ /^[\x20-\x60]+$/;
                 } else {
-		    # beginから始まっていないものは厳しくしよう [1998-05-22]
+		    # Be strict for files which doesn't begin with "begin".
                     $uuin = $uuord, next if $line =~ /^M[\x21-\x60]+$/;
                 }
             }

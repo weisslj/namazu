@@ -20,7 +20,7 @@ typedef unsigned char uchar;
 
 struct hlist_data {
     int score;  /* score */
-    int docid;  /* file ID */
+    int docid;  /* document ID */
     int idxid;  /* index ID */
     int date; /* file's date */
     int rank; /* ranking data for stable sorting */

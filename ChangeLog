@@ -1,3 +1,9 @@
+2001-02-05  Hideyuki SHIRAI  <shirai@rdmg.mgcs.mei.co.jp>
+
+	* doc/en/manual.html (rfnmz): Fixed usage.
+
+	* doc/ja/manual.html (rfnmz): Likewise.
+
 2001-01-29  Ryuji Abe  <rug@namazu.org>
 
 	* doc/en/manual.html: Fixed URLs.
@@ -6377,4 +6383,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.804 2001-01-29 14:19:26 rug Exp $
+$Id: ChangeLog,v 1.805 2001-02-05 12:05:50 shirai Exp $

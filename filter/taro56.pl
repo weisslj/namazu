@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: taro56.pl,v 1.3 2003-03-21 16:49:47 usu Exp $
+# $Id: taro56.pl,v 1.4 2003-06-03 14:36:46 usu Exp $
 # Copyright (C) 2003 Yukio USUDA
 #               2003 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -73,7 +73,7 @@ sub taro56filter ($$$$$) {
                                $data[0x802], $data[0x803]);
     my $textsize = unpack("V", $textsizep);
     if ((0x803 + $textsize) > length($$cont)){
-        $err = "File information (size of text data) have problem.";
+        $err = "Warning: unknown file format.";
         return $err;
     }
     my $tmp;
@@ -82,27 +82,36 @@ sub taro56filter ($$$$$) {
     while ( $i < $textsize) {
         my $code1 = $data[0x803 +$i];
         my $code2 = $data[0x804 +$i];
-        if (($code1 == hex("fe")) and ($code2 == hex("41"))) {
-            $code = pack("C", hex("0a"));
+        my $code3 = $data[0x805 +$i];
+        my $code4 = $data[0x806 +$i];
+        if ($code1 == hex("fe")){
+            if (($code2 == hex("41")) or ($code2 == hex("46"))) {
+                $code = pack("C", hex("0a"));
+                $i++;
+            }
+        }elsif (($code1 == hex("1f")) and ($code2 == hex("00"))) {
+            my $ctlcodesizep = pack("C2", $code3, $code4);
+            my $ctlcodesize = unpack("v", $ctlcodesizep);
+            $i = $i + $ctlcodesize -1;
+        }elsif (($code1 == hex("fd"))
+          and ($code2 >= hex("23")) and ($code2 <= hex("2f"))) {
             $i++;
-        }
-        if (($code1 >= hex("20")) and ($code1 <= hex("7f"))) {
+        }elsif (($code1 == hex("12")) and ($code3 >= hex("80"))) {
+            $i = $i + 2;
+        }elsif (($code1 >= hex("81")) and ($code1 <= hex("84"))
+          and ($code2 >= hex("40")) and ($code2 < hex("fe"))) {
+            $code = pack("CC", $code1, $code2);
+            $i++;
+        }elsif (($code1 >= hex("88")) and ($code1 <= hex("9f"))
+          and ($code2 >= hex("40")) and ($code2 < hex("fe"))) {
+            $code = pack("CC", $code1, $code2);
+            $i++;
+        }elsif (($code1 >= hex("e0")) and ($code1 <= hex("ea"))
+          and ($code2 >= hex("40")) and ($code2 < hex("fe"))) {
+            $code = pack("CC", $code1, $code2);
+            $i++;
+        }elsif (($code1 >= hex("20")) and ($code1 <= hex("7f"))) {
             $code = pack("C", $code1);
-        }
-        if (($code1 >= hex("81")) and ($code1 <= hex("84"))
-          and ($code2 >= hex("40")) and ($code2 < hex("fe"))) {
-            $code = pack("CC", $code1, $code2);
-            $i++;
-        }
-        if (($code1 >= hex("88")) and ($code1 <= hex("9f"))
-          and ($code2 >= hex("40")) and ($code2 < hex("fe"))) {
-            $code = pack("CC", $code1, $code2);
-            $i++;
-        }
-        if (($code1 >= hex("e0")) and ($code1 <= hex("ea"))
-          and ($code2 >= hex("40")) and ($code2 < hex("fe"))) {
-            $code = pack("CC", $code1, $code2);
-            $i++;
         }
         $i++;
         $tmp .= $code;

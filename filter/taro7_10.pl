@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: taro7_10.pl,v 1.3 2003-03-21 17:31:52 usu Exp $
+# $Id: taro7_10.pl,v 1.4 2003-06-03 14:36:46 usu Exp $
 # Copyright (C) 2003 Yukio USUDA
 #               2003 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -37,11 +37,10 @@ sub mediatype() {
 }
 
 sub status() {
+    my $utfconvpath = undef;
     return 'yes' if ($perlver >= 5008);
-    my $utfconvpath = util::checklib('unicode.pl');
-    if ($utfconvpath){ 
-         return 'yes';
-    } 
+    $utfconvpath = util::checklib('unicode.pl');
+    return 'yes' if defined $utfconvpath;
     return 'no'; 
 }
 
@@ -132,6 +131,8 @@ sub taro7_10_filter ($$$$$) {
         }
         $i++;
     }
+
+    taro7_10::remove_ctlcodearea(\$tmp);
     taro7_10::u16toe(\$tmp);
     taro7_10::remove_ctlcode(\$tmp);
     $$contref = $tmp;
@@ -146,6 +147,33 @@ sub taro7_10_filter ($$$$$) {
     return undef;
 }
 
+sub remove_ctlcodearea($){
+  my ($textref) = @_;
+  my $ctl_in  = "\x00\x1c";
+  my $ctl_out = "\x00\x1f";
+  my $tmptext1 = $$textref;
+  my $tmptext2="";
+  my $pos1=0;
+  my $pos2=0;
+  my @incodes;
+  while ($tmptext1 =~ /$ctl_in/sg){
+    push(@incodes, pos($tmptext1)-2);
+  }
+  push(@incodes, length($tmptext1));
+  my $i=1;
+  while (@incodes){
+    $pos2=shift(@incodes) ;
+    my $tmptext3="";
+    $tmptext3=substr($tmptext1, $pos1, $pos2-$pos1);
+    $tmptext3=~s/$ctl_in.*$ctl_out//s;
+    $tmptext3=~s/$ctl_in.*//s;
+    $tmptext2 .= $tmptext3;
+    $i++;
+    $pos1 = $pos2;
+  }
+  $$textref = $tmptext2;
+}
+
 sub remove_ctlcode ($) {
     my ($eucString) = @_;
     my $tmp = "";
@@ -155,21 +183,23 @@ sub remove_ctlcode ($) {
         my $code1 = unpack("C",substr($$eucString, $i, 1));
         my $code2 = unpack("C",substr($$eucString, $i+1, 1));
         my $code = "";
-        if (($code1 == hex("00")) and ($code2 >= hex("20"))
-          and ($code2 <= hex("7f"))) {
-            $code = pack("C", $code2);
-            $i++;
-        }
-        if (($code1 == hex("00")) and ($code2 == hex("0a"))) {
-            $code = pack("C", $code2);
-            $i++;
-        }
-        if (($code1 >= hex("a1")) and ($code1 <= hex("a8"))
+	if ($code1 == hex("00")){
+            if (($code2 >= hex("20")) and ($code2 <= hex("7f"))) {
+		$code = pack("C", $code2);
+		$i++;
+	    }elsif ($code2 == hex("0a")) {
+		$code = pack("C", $code2);
+		$i++;
+            }
+	}elsif (($code1 == hex("8e"))
+             and ($code2 > hex("a0")) and ($code2 < hex("e0"))) {
+		$code = pack("CC", $code1, $code2);
+		$i++;
+	}elsif (($code1 >= hex("a1")) and ($code1 <= hex("a8"))
           and ($code2 > hex("a0")) and ($code2 < hex("ff"))) {
             $code = pack("CC", $code1, $code2);
             $i++;
-        }
-        if (($code1 >= hex("b0")) and ($code1 <= hex("f4"))
+        }elsif (($code1 >= hex("b0")) and ($code1 <= hex("f4"))
           and ($code2 > hex("a0")) and ($code2 < hex("ff"))) {
             $code = pack("CC", $code1, $code2);
             $i++;

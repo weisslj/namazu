@@ -1,3 +1,12 @@
+2003-06-03  Yukio USUDA <usu@namazu.org>
+
+	* filter/{taro56,taro7_10}.pl: Reduced garbage character output.
+
+	* doc/en/manual.html (filter): Added descriptions about 
+	taro56, taro7_10 and OpenOffice.
+
+	* doc/ja/manual.html (filter): Likewise.
+
 2003-05-14  Yukio USUDA <usu@namazu.org>
 
 	* filter/ooo.pl: Fixed bug get title from filename.
@@ -7928,4 +7937,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1021 2003-05-13 14:46:00 usu Exp $
+$Id: ChangeLog,v 1.1022 2003-06-03 14:36:43 usu Exp $

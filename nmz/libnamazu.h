@@ -2,7 +2,7 @@
  * 
  * libnamazu.h - Namazu library api
  *
- * $Id: libnamazu.h,v 1.3 1999-11-08 09:17:36 knok Exp $
+ * $Id: libnamazu.h,v 1.4 1999-11-12 04:05:44 satoru Exp $
  * 
  */
 
@@ -101,9 +101,9 @@ typedef struct query QUERY;
 
 /* results of phrase search */
 struct phraseres {
-  int hitnum;
-  uchar *word;
-  struct phraseres *next;
+    int hitnum;
+    uchar *word;
+    struct phraseres *next;
 };
 
 typedef struct phraseres PHRASERES;

@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.1 1999-11-08 05:06:06 knok Exp $
+ * $Id: search.c,v 1.2 1999-11-12 04:05:44 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -88,36 +88,36 @@ static int CurrentIndexNumber = -1;
 /* PHRASERES handling subroutines */
 static PHRASERES *push_phraseres(PHRASERES *pr, int hitnum, uchar *str)
 {
-  PHRASERES *prptr = pr, *prevprptr = pr;
-  while (prptr != NULL) {
-    prevprptr = prptr;
-    prptr = prptr->next;
-  }
-  if ((prptr = (PHRASERES *)malloc(sizeof(PHRASERES))) == NULL) {
-    diemsg("push_phraseres: malloc failed on prptr");
-    return NULL;
-  }
-  if (prevprptr != NULL)
-    prevprptr->next = prptr;
-  prptr->hitnum = hitnum;
-  prptr->next = NULL;
-  if ((prptr->word = (uchar *)malloc(strlen(str) +1)) == NULL) {
-    diemsg("push_phraseres: malloc failed on str");
-    return NULL;
-  }
-  strcpy(prptr->word, str);
-  if (pr == NULL)
-    return prptr;
-  return pr;
+    PHRASERES *prptr = pr, *prevprptr = pr;
+    while (prptr != NULL) {
+	prevprptr = prptr;
+	prptr = prptr->next;
+    }
+    if ((prptr = (PHRASERES *)malloc(sizeof(PHRASERES))) == NULL) {
+	diemsg("push_phraseres: malloc failed on prptr");
+	return NULL;
+    }
+    if (prevprptr != NULL)
+	prevprptr->next = prptr;
+    prptr->hitnum = hitnum;
+    prptr->next = NULL;
+    if ((prptr->word = (uchar *)malloc(strlen(str) +1)) == NULL) {
+	diemsg("push_phraseres: malloc failed on str");
+	return NULL;
+    }
+    strcpy(prptr->word, str);
+    if (pr == NULL)
+	return prptr;
+    return pr;
 }
 
 void free_phraseres(PHRASERES *pr)
 {
-  if (pr == NULL)
-    return;
-  free(pr->word);
-  free_phraseres(pr->next);
-  free(pr);
+    if (pr == NULL)
+	return;
+    free(pr->word);
+    free_phraseres(pr->next);
+    free(pr);
 }
 
 /* show the status for debug use */

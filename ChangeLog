@@ -1,5 +1,11 @@
 1999-09-07  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/mknmz.pl.in (wordcount_sub): Improve efficiency a bit.
+	
+	* src/mknmz.pl.in: s/fid/docid/g
+
+	* src/mknmz.pl.in: 'grep !/^$/, @words' -> 'grep {$_ ne ""} @words'
+
 	* lib/seed.pl, src/mknmz.pl.in: Change @Seed handling.
 	accesing @seed::Seed is slower than accessing @Seed directly.
 	

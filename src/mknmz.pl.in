@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.63 1999-09-07 00:59:00 satoru Exp $
+# $Id: mknmz.pl.in,v 1.64 1999-09-07 03:04:33 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -1508,17 +1508,17 @@ sub make_phrase_hash ($$$) {
     my %tmp = ();
     $$content =~ s!\x7f */? *\d+ *\x7f!!g;  # remove tags of weight
     my @words = split(/\s+/, $$content);
-    @words = grep(!/^$/, @words);   # remove empty words
+    @words = grep {$_ ne ""} @words;   # remove empty words
     my $word_b = $words[0];
-    my $fid = $file_count + $file_base;
+    my $docid = $file_count + $file_base;
     for my $word (@words) {
 	my $hash = hash($word_b . $word);
 	unless (defined $tmp{$hash}) {
 	    $tmp{$hash} = 1;
 	    $PhraseHashLast{$hash} = 0 unless defined $PhraseHashLast{$hash};
-	    $PhraseHash{$hash} .= pack("w", $fid - $PhraseHashLast{$hash});
+	    $PhraseHash{$hash} .= pack("w", $docid - $PhraseHashLast{$hash});
 #	    util::dprint("<$word_b, $word> $hash\n");
-	    $PhraseHashLast{$hash} = $fid;
+	    $PhraseHashLast{$hash} = $docid;
 	}
 	$word_b = $word;
     }
@@ -1573,8 +1573,8 @@ sub write_phrase_hash_sub () {
 	    } else {
 		print $fh_tmp_pi pack("N", $ptr);
 		my $record = $PhraseHash{$i};
-		my $last_fid = get_last_fid($baserecord, 1);
-		$record = adjust_first_fid($record, $last_fid);
+		my $last_docid = get_last_docid($baserecord, 1);
+		$record = adjust_first_docid($record, $last_docid);
 		my $n2 = length($record) + $baseleng;
 		my $data = pack("w", $n2) .  $baserecord . $record;
 		print $fh_tmp_p $data;
@@ -1646,17 +1646,18 @@ sub count_words ($$$$) {
     wordcount_sub($part1, 1, \%word_count);
 
     # Add them to whole index
-    my $fid = $file_count + $file_base;
+    my $docid = $file_count + $file_base;
     for my $word (keys(%word_count)) {
 	next if ($word eq "" || length($word) > $conf::WORD_LENG_MAX);
 	$KeyIndexLast{$word} = 0 unless defined $KeyIndexLast{$word};
 	$KeyIndex{$word} .= pack("w2", 
-				 $fid - $KeyIndexLast{$word}, 
+				 $docid - $KeyIndexLast{$word}, 
 				 $word_count{$word});
-	$KeyIndexLast{$word} = $fid;
+	$KeyIndexLast{$word} = $docid;
     }
 }
 
+# count words and do score weighting
 # count words and do score weighting
 sub wordcount_sub ($$\%) {
     my ($text, $weight, $word_count) = @_;
@@ -1672,9 +1673,8 @@ sub wordcount_sub ($$\%) {
     # NOTE: When -K is specified, all symbols are already removed.
 
     my @words = split /\s+/, $text;
-    @words = grep !/^$/, @words;   # remove empty words
-    my @words_ = ();
     for my $word (@words) {
+	next if $word eq "";
 	if ($var::Opt{'noedgesymbol'}) {
 	    # remove symbols at both ends
 	    $word =~ s/^[^\xa1-\xfea-z_0-9]*(.*?)[^\xa1-\xfea-z_0-9]*$/$1/g;
@@ -1695,9 +1695,8 @@ sub wordcount_sub ($$\%) {
 		$word_count->{$1} += $weight;
 		next unless $1 =~ /[^\xa1-\xfea-z_0-9]/;
 	    }
-	    push(@words_, split(/[^\xa1-\xfea-z_0-9]+/, $word))
+	    my @words_ = split(/[^\xa1-\xfea-z_0-9]+/, $word)
 		if $word =~ /[^\xa1-\xfea-z_0-9]/;
-	    @words_ = grep !/^$/, @words_;   # remove empty words
 	    for my $tmp (@words_) {
 		next if $tmp eq "";
 		$word_count->{$tmp} = 0 unless defined($word_count->{$tmp});
@@ -1708,7 +1707,6 @@ sub wordcount_sub ($$\%) {
     }
     return "";
 }
-
 
 # Construct NMZ.i and NMZ.ii file. this processing is rather complex.
 sub write_index () {
@@ -1733,7 +1731,7 @@ sub readw ($) {
     return unpack('w', $ret);
 }
 
-sub get_last_fid ($$) {
+sub get_last_docid ($$) {
     my ($record, $step) = @_;
     my (@data) = unpack 'w*', $record;
 
@@ -1745,13 +1743,13 @@ sub get_last_fid ($$) {
     return $sum;
 }
 
-sub adjust_first_fid ($$) {
-    my ($record, $last_fid) = @_;
+sub adjust_first_docid ($$) {
+    my ($record, $last_docid) = @_;
     my (@data) = unpack 'w*', $record;
 
     my $val = $data[0];
-    $data[0] = $data[0] - $last_fid;
-    my $adjusted = $val - $last_fid;
+    $data[0] = $data[0] - $last_docid;
+    my $adjusted = $val - $last_docid;
     $record = pack 'w*', @data;
     return $record;
 }
@@ -1789,8 +1787,8 @@ sub write_index_sub () {
 		my $leng = length($record);
 
 		if ($current_word eq $words[$cnt]) {
-		    my $last_fid = get_last_fid($baserecord, 2);
-		    $record = adjust_first_fid($record, $last_fid);
+		    my $last_docid = get_last_docid($baserecord, 2);
+		    $record = adjust_first_docid($record, $last_docid);
 		    $leng = length($record);  # re-measure
 		    my $tmp = pack("w", $leng + $baseleng);
 

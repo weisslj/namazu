@@ -403,7 +403,7 @@ namazurc の設定項目の説明は namazurc-sample ファイルにコメント
 <ul>
 <li>標準は $(localstatedir)/$(PACKAGE)/index<br>
 通常は /usr/local/var/namazu/index)
-<li><a href="#namazurc">namazurc</a> の Indexで変更可能
+<li><a href="#namazurc">namazurc</a> の Index指示で変更可能
 </ul>
 
 <p>
@@ -538,8 +538,10 @@ namazu.cgi は <code>$(libexecdir)</code> ディレクトリ (通常
 <p>
 namazu.cgi を設置したディレクトリに .namazurc ファイルを置く
 と、CGIの実行時に設定ファイルとして読み込まれます。日本語で
-表示するには <code>Lang ja</code>の設定が必須です。
+表示するには次の設定が必須です。
 </p>
+
+<p><code>Lang ja</code></p>
 
 <h3><a name="template">雛形ファイル</a></h3>
 
@@ -577,7 +579,6 @@ formは NMZ.head に定義されています。CGI変数は次の通りです。
 <dd>検索式の指定です。
 <dt>max
 <dd>一度に表示する検索結果の件数を指定します。
-す。
 <dt>result
 <dd>検索結果の表示形式を指定します。
 <dt>sort
@@ -593,8 +594,8 @@ formは NMZ.head に定義されています。CGI変数は次の通りです。
 <h3><a name="form-idxname">インデックスを選択する</a></h3>
 
 <p>
-ブラウザからインデックスを選択するには NMZ.head に次のように
-記述します。
+ブラウザからインデックスを選択可能にするには NMZ.head に次の
+ように記述します。
 </p>
 
 <pre>
@@ -649,7 +650,7 @@ foo インデックスを検索します。基本インデックスが
 <p>
 この例では foo, bar, baz から複数選択して検索できます。検索
 結果に使われる<a href="#template">雛形ファイル</a>は 
-namazurc の Template指令で指定したディレクトリのものが用いら
+namazurc の Template指示で指定したディレクトリのものが用いら
 れます。Template が指定されていないときは、次の規則に従いま
 す。
 </p>
@@ -858,7 +859,7 @@ Tknamazu および namazu.el から検索するときは必ず後者で指定します。
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: manual.html,v 1.13 2000-02-06 10:26:28 satoru Exp $
+$Id: manual.html,v 1.14 2000-02-06 14:20:39 satoru Exp $
 </div>
 <address>
 developers@namazu.org

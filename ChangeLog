@@ -3,6 +3,9 @@
 	* configure.in, pl/conf.pl.in: Improved the notations of
  	some default directives (KAKASI, CHASEN, CHASEN_NOUN).
 
+	* filter/win32/olertf.pl: Added a new file.
+	(Contributed by Yoshinori.TAKESAKO, namazu-users-ja 902,907)
+	
 2000-12-28  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* filter/postscript.pl: Added a new file.
@@ -6189,4 +6192,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.778 2000-12-28 08:30:45 baba Exp $
+$Id: ChangeLog,v 1.779 2000-12-28 08:42:49 baba Exp $

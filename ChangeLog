@@ -1,3 +1,8 @@
+1999-12-20  Ryuji Abe  <raeva@t3.rim.or.jp>
+
+	* scripts/Makefile.am (ETAGS_ARGS): Handling perl scripts.
+	(tags): Removed.
+
 1999-12-19  Ryuji Abe  <raeva@t3.rim.or.jp>
 
 	* Makefile.am: Removed unnessesary `@SET_MAKE@'.

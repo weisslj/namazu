@@ -34,13 +34,4 @@ SUFFIXES = .pl
 	$< > $@
 	chmod +x $@
 
-#tags: TAGS
-#TAGS:  $(SCRIPTS) $(TAGS_DEPENDENCIES) $(LISP)
-#	tags=; \
-#	here=`pwd`; \
-#	list='$(SCRIPTS)'; \
-#	unique=`for i in $$list; do echo $$i; done | \
-#	  awk '    { files[$$0] = 1; } \
-#	       END { for (i in files) print i; }'`; \
-#	test -z "$(ETAGS_ARGS)$$unique$(LISP)$$tags" \
-#	  || (cd $(srcdir) && etags $(ETAGS_ARGS) $$tags  $$unique $(LISP) -o $$here/TAGS)
+ETAGS_ARGS = $(SCRIPTS) --lang=perl

@@ -1,6 +1,6 @@
 dnl
 dnl configure for Tknamazu
-dnl $Id: configure.in,v 1.2 1999-10-11 04:25:38 satoru Exp $
+dnl $Id: configure.in,v 1.3 1999-11-02 18:25:56 kenzo- Exp $
 dnl
 
 dnl Process this file with autoconf to produce a configure script.
@@ -16,7 +16,7 @@ dnl Check for namazu
 
 AC_ARG_WITH(
 	namazu,
-	[  --with-namazu=PATH       set namazu location [search path]],
+	[  --with-namazu=PATH      set namazu location [search path]],
 	AC_MSG_RESULT(using $with_namazu for namazu)
 	NAMAZU = $with_namazu,
 	[AC_PATH_PROG(NAMAZU, namazu, no)]
@@ -34,6 +34,13 @@ AC_ARG_WITH(
 if test "$MKNMZ" = "no"; then
     AC_MSG_ERROR(mknmz not found)
 fi
+AC_ARG_WITH(
+    indexdir,
+    [  --with-indexdir=DIR     defalut namazu index are in DIR [guessed]],
+    [INDEXDIR=${withval}], [INDEXDIR='']
+)
+test -z "$INDEXDIR" && INDEXDIR='/usr/local/share/namazu/index'
+AC_SUBST(INDEXDIR)
 
 dnl *
 dnl * Checking tknamazu
@@ -41,7 +48,7 @@ dnl *
 
 AC_ARG_WITH(
 	wish,
-	[  --with-wish=PATH       set wish location [search path]],
+	[  --with-wish=PATH        set wish location [search path]],
 	AC_MSG_RESULT(using $with_wish for wish)
 	WISH = $with_wish,
 	dnl checking for wish (ugly)
@@ -52,7 +59,7 @@ if test "$WISH" = "no"; then
 fi
 AC_ARG_WITH(
 	lynx,
-	[  --with-lynx=PATH       set lynx browser location [search path]],
+	[  --with-lynx=PATH        set lynx browser location [search path]],
 	AC_MSG_RESULT(using $with_lynx for lynx)
 	LYNX = $with_lynx,
 	[AC_PATH_PROG(LYNX, lynx, no)]
@@ -72,7 +79,7 @@ if test "$GROFF" = "no"; then
 fi
 AC_ARG_WITH(
 	info,
-	[  --with-info=PATH       set info location [search path]],
+	[  --with-info=PATH        set info location [search path]],
 	AC_MSG_RESULT(using $with_info for info)
 	INFO = $with_info,
 	[AC_PATH_PROG(INFO, info, no)]
@@ -82,7 +89,7 @@ if test "$INFO" = "no"; then
 fi
 AC_ARG_WITH(
 	zcat,
-	[  --with-zcat=PATH       set zcat location [search path]],
+	[  --with-zcat=PATH        set zcat location [search path]],
 	AC_MSG_RESULT(using $with_zcat for zcat)
 	ZCAT = $with_zcat,
 	[AC_PATH_PROG(ZCAT, zcat, no)]
@@ -92,7 +99,7 @@ if test "$ZCAT" = "no"; then
 fi
 AC_ARG_WITH(
     netscape,
-    [  --with-netscape=PATH       set netscape location [search path]],
+    [  --with-netscape=PATH    set netscape location [search path]],
     AC_MSG_RESULT(using $with_netscape for netscape)
     NETSCAPE = $with_netscape,
     [AC_PATH_PROG(NETSCAPE, netscape, no)]
@@ -106,4 +113,4 @@ dnl *
 dnl * Output Files.
 dnl * 
 
-AC_OUTPUT([Makefile tknamazu.tcl tknamazu.spec]) 
+AC_OUTPUT([Makefile tknamazu.tcl tknamazu.spec tknamazurc]) 

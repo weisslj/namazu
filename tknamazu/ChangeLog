@@ -1,3 +1,12 @@
+1999-11-03  Ken-ichi Hirose <kenzo-@@tama.or.jp>
+
+    * configure.in(AC_OUTPUT): add tknamazurc.
+    Makefile.am(pkgdata_DATA): change tknmzrc to tknamazurc.
+    tknamazurc.in: add tknamazurc.in.
+
+    * tknamazu.tcl.in: change system resource file from
+    tknmzrc to tknamaurc.
+
 1999-11-02  Ken-ichi Hirose <kenzo-@@tama.or.jp>
 
     * tknamazu.tcl.in: fix man section search regexp.

@@ -2,7 +2,7 @@
 #
 # tknamazu.tcl - Tcl/Tk front-end for Namazu.
 #
-# $Id: tknamazu.tcl.in,v 1.7 1999-11-01 15:36:46 kenzo- Exp $
+# $Id: tknamazu.tcl.in,v 1.8 1999-11-02 18:25:56 kenzo- Exp $
 #
 # Copyright (C) 1998-1999 Ken-ichi Hirose. All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -30,7 +30,7 @@ regsub {^(.*)/.*$} $basedir {\1} basedir
 
 ################ Evaluation and Initialize items
 global conf
-set conf(NAMAZU) {%BINDIR%/namazu}
+set conf(NAMAZU) {@NAMAZU@}
 set conf(BROWSER) {@LYNX@}
 set conf(EXTBROWSER) {@NETSCAPE@}
 set conf(UNCOMPRESS) {@ZCAT@}
@@ -40,9 +40,8 @@ set conf(MANPATH) {/usr/local/man /usr/share/man /usr/bin/man /usr/man /usr/X11R
 set conf(GNUINFO) {@INFO@}
 set conf(GNUINFOFILTER) {}
 set conf(GNUINFOTMP) {/tmp/.gnuinfotmp}
-set conf(MKNMZ) {%BINDIR%/mknmz}
-set conf(WDNMZ) {%BINDIR%/wdnmz}
-set conf(INDEXOUTPUTDIR) {%PKGDATADIR%/index}
+set conf(MKNMZ) {@MKNMZ@}
+set conf(INDEXOUTPUTDIR) {@INDEXDIR@}
 set conf(WIDTH) {80}
 set conf(HEIGHT) {20}
 set conf(LANG) {}
@@ -55,7 +54,7 @@ set conf(LINKCOLOR) {blue}
 set conf(REFERENCECOLOR) {green3}
 set conf(OPTIONS) {-r}
 set conf(NMZCONF) {}
-set conf(INDEXES) {%PKGDATADIR%/index}
+set conf(INDEXES) {@INDEXDIR@}
 set conf(MKLOCATION) {./}
 set conf(MKOPTIONS) {}
 set conf(WDLOCATION) {./NMZ.i}
@@ -105,7 +104,9 @@ if {[info commands kanji] == "kanji"} {
 }
 
 if {[catch {open "$conf(tknmzhome)/tknmzrc"} input] \
-   && [catch {open "$basedir/tknmzrc"} input]} {
+   && [catch {open "$conf(tknmzhome)/tknamazurc"} input] \
+   && [catch {open "$basedir/tknmzrc"} input] \
+   && [catch {open "$basedir/tknamazurc"} input]} {
     catch {close $input}
     puts "I can not read resource file ... (T_T)\n"
 } else {

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: koffice.pl,v 1.1 2004-03-10 13:55:06 usu Exp $
+# $Id: koffice.pl,v 1.2 2004-03-11 16:20:39 opengl2772 Exp $
 # Copyright (C) 2004 Yukio USUDA 
 #               2004 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -33,7 +33,8 @@ my @unzipopts;
 sub mediatype () {
     #http://www.iana.org/assignments/media-types/application/
     return ('application/vnd.kde.kword',
-            'application/vnd.kde.kspread');
+            'application/vnd.kde.kspread',
+            'application/vnd.kde.kpresenter');
 }
 
 sub status () {
@@ -69,6 +70,7 @@ sub add_magic ($) {
     my ($magic) = @_;
     $magic->addFileExts('\\.kwd', 'application/vnd.kde.kword');
     $magic->addFileExts('\\.ksp', 'application/vnd.kde.kspread');
+    $magic->addFileExts('\\.kpr', 'application/vnd.kde.kpresenter');
     return;
 }
 

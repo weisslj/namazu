@@ -39,6 +39,7 @@ $ALLOW_FILE =	".*\\.(?:$HTML_SUFFIX)|.*\\.txt" . # HTML, plain text
 		"|.*\\.mp3" .                      # MP3
 		"|.*\\.gnumeric" .                 # Gnumeric
 		"|.*\\.kwd|.*\\.ksp" .             # KWord, KSpread
+                "|.*\\.kpr" .                      # KPresenter
 		"|\\d+|[-\\w]+\\.[1-9n]";          # Mail/News, man
 
 #

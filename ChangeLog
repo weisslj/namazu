@@ -1,3 +1,8 @@
+2000-10-12  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* README: s/Namazu a full text retrieval search system/
+	Namazu: a Full-Text Search Engine/
+
 2000-10-12  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* doc/ja/manual.html: Added Japanese related information
@@ -6044,4 +6049,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.745 2000-10-12 05:51:18 knok Exp $
+$Id: ChangeLog,v 1.746 2000-10-12 07:35:22 satoru Exp $

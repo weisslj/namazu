@@ -1,5 +1,7 @@
 2000-03-17  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* Namazu: Version 2.0.2 released.
+
 	* scripts/mknmz.in (generate_uri): Use
 	codeconv::shiftjis_to_eucjp() for $file and codeconv::toeuc() for
 	$fragment. 

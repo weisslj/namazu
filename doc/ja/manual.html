@@ -2,6 +2,7 @@
         "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
+<meta name="robots" content="noindex,nofollow">
 <link rel=stylesheet href="namazu.css">
 <link rev=made href="mailto:developers@namazu.org">
 <title>Manual of Namazu</title>
@@ -322,12 +323,21 @@ bnamazu は Webブラウザと連携して検索を行うツールです。検索結
 <code>% bnamazu [-n] [-b browser] [namazu's options] &lt;query&gt; [index]...</code>
 </p>
 
+<p>
+-b オプションで Webブラウザを指定できます。 -n はWebブラウザ
+が netscape のときのみ有効なオプションです。-n を指定すると、
+新しい netscape の新しいウィンドウを開いて検索結果を表示しま
+す。
+</p>
+
+
 <h3><a name="nmzgrep">nmzgrep</a></h3>
 
 <p>
 nmzgrep は namazu コマンドと連携して egrep を実行するツール
-です。検索にヒットした文書に対して、egrepをかけます。コマン
-ド行から次のように実行します。
+です。検索にヒットした文書に対して、egrepをかけます。egrep 
+を適用することで、そのキーワードがどの行に出現するかがわかり
+ます。コマンド行から次のように実行します。
 </p>
 
 <p>
@@ -335,15 +345,36 @@ nmzgrep は namazu コマンドと連携して egrep を実行するツール
 </p>
 
 
+<p>
+たとえば、 ~/NMZ/foobar に置かれているインデックスに対して
+foo で検索し、ヒットした文書に対してさらに egrep をかけるに
+は、次のように実行します。
+</p>
+
+<p>
+<code>% nmzgrep foo ~/NMZ/foobar</code>
+</p>
+
 <h3><a name="gcnmz">gcnmz</a></h3>
 
 <p>
-gcnmz はインデックスを掃除するツールです。コマン
-ド行から次のように実行します。
+文書の更新・削除を伴うインデックスの更新を繰り返していくと、
+インデックス内に不要なデータが溜まっていきます。gcnmz はこの
+不要なデータを削除するツールです。コマンド行から次のように実
+行します。
 </p>
 
 <p>
 <code>% gcnmz [options] &lt;target&gt;...</code>
+</p>
+
+<p>
+たとえば、 ~/NMZ/foobar に置かれているインデックスをゴミ掃除
+するなら、次のように実行します。
+</p>
+
+<p>
+<code>% gcnmz ~/NMZ/foobar</code>
 </p>
 
 <h3><a name="mailutime">mailutime</a></h3>
@@ -357,6 +388,16 @@ mailutime は Mail/News のファイルのタイムスタンプを Date: ヘッ
 <code>% mailutime &lt;target&gt;...</code>
 </p>
 
+<p>
+たとえば、 ~/Mail/ml/foobar に置かれているメイルのタイムスタ
+ンプを変更するなら、次のように実行します。
+</p>
+
+<p>
+<code>% mailutime ~/Mail/ml/foobar/*</code>
+</p>
+
+
 <h3><a name="vfnmz">vfnmz</a></h3>
 
 <p>
@@ -368,42 +409,57 @@ vfnmz は検索結果の表示を preview するツールです。コマンド行
 <code>vfnmz &lt;index&gt; [NMZ.result.foobar]</code>
 </p>
 
+<p>
+たとえば、 ~/NMZ/foobar に置かれているインデックスを preview 
+するなら、次のように実行します。
+</p>
+
+<p>
+<code>% vfnmz ~/NMZ/foobar > foobar.html</code>
+<code>% lynx foobar.html # 出力をブラウザで閲覧する</code>
+</p>
 
 <h2><a name="cgi">CGIとして利用する</a></h2>
 
-<h3><a name="form">結果表示の件数と出力フォーマット</a></h3>
-
-<p>標準で作成される NMZ.head には</p>
+<h3><a name="setting">namazu.cgiの設置</a></h3>
 
 <p>
-<code>&lt;p&gt;</code><br>
-<code>&lt;strong&gt;一度に表示する件数:&lt;/STRONG&gt;</code><br>
-<code>&lt;select name="max"&gt;</code><br>
-<code>&lt;option value="10"&gt;10</code><br>
-<code>&lt;option selected value="20"&gt;20</code><br>
-<code>&lt;option value="30"&gt;30</code><br>
-<code>&lt;option value="50"&gt;50</code><br>
-<code>&lt;option value="100"&gt;100</code><br>
-<code>&lt;/select&gt;</code><br>
-<code>&lt;strong&gt;文書の要約表示:&lt;/STRONG&gt;</code><br>
-<code>&lt;select name="format"&gt;</code><br>
-<code>&lt;option selected value="long"&gt;ON</code><br>
-<code>&lt;option value="short"&gt;OFF</code><br>
-<code>&lt;/select&gt;</code><br>
-<code>&lt;/p&gt;</code><br>
+CGIとして Namazuを利用するには、 namazu.cgi を用います。
+namazu.cgi は $(libexecdir) ディレクトリ (通常は
+/usr/local/libexec) にインストールされています。CGI を設置し
+たいディレクトリに namazu.cgiをコピーすれば設置完了です。
 </p>
+
+
+<h3><a name="form">formの設定項目</a></h3>
 
 <p>
-のように記述され、ブラウザ側から結果表示の件数と出力フォーマットを
-指定できるようになっています。
+form で指定できる項目は次の通りです。
 </p>
 
+<dl>
+<dt>query
+<dd>検索式の指定です。
+<dt>max
+<dd>一度に表示する検索結果の件数を指定します。
+す。
+<dt>result
+<dd>検索結果の表示形式を指定します。
+<dt>sort
+<dd>ソートの方法を指定します。
+<dt>idxname
+<dd>検索するインデックス名を指定します。
+<dt>subquery
+<dd>補助の検索式を指定します。
+<dt>whence
+<dd>検索結果を何件目から表示するかを指定します。
+</dl>
 
 <h3><a name="idxname">ブラウザからインデックスを指定する方法</a></h3>
 
 <p>
-ブラウザから複数のインデックスの中からひとつを選べるように設
-定できます。
+ブラウザからインデックスを選択可能にするには NMZ.head に次の
+ように記述します。
 </p>
 
 <p>
@@ -416,43 +472,26 @@ vfnmz は検索結果の表示を preview するツールです。コマンド行
 </p>
 
 <p>
-のような記述をいれておくことで、 <var>foo, bar, baz</var> の
-中からデータベースの指定ができるようになります。この選択の要
-素はいくつあっても構いません。<var>foo</var> が選ばれた時は 
-namazurc の <code>Index</code> で設定されたディレクトリの下
-にある <var>foo</var> というディレクトリにある NMZ.* を元に
-検索することになります。 <code>Index</code> が 
-<code>/usr/local/var/namazu/index</code> の場合は下のような
-ディレクトリ構造になります。
+この例では、 <var>foo, bar, baz</var> の中からインデックスを
+選択可能にしています。<var>foo</var> が選ばれた時は namazurc 
+の <code>Index</code> で設定されたディレクトリの下にある 
+<var>foo</var> インデックスを検索します。<code>Index</code> 
+が <code>/usr/local/var/namazu/index</code> の場合は次のよう
+なディレクトリ構造になります。
 </p>
 
 <pre>
         /
         + usr/
           + local/
-            + namazu/
-              + index/
-                + <var>foo</var>/
-                + <var>bar</var>/
-                + <var>baz</var>/
+            + var/
+	      + namazu/
+		+ index/
+		  + <var>foo</var>/
+		  + <var>bar</var>/
+		  + <var>baz</var>/
 </pre>
 
-<p>
-また、その <var>foo, bar, baz</var> にある各 NMZ.head にもそれぞれ
-上のような記述をいれておかなければなりません (selected はつけなく
-てもいいです)。action の指定についてもすべての NMZ.head で同じ物を
-指定しておきます。標準で作成される NMZ.head にはこのデータ
-ベース指定の設定は記述されていないので、必要のある人は各自で追加し
-てください。
-</p>
-
-<p>
-&lt;input type="hidden" name="idxname" value="foo"&gt;
-</p>
-
-<p>
-のように INPUT を HIDDEN 属性にしてこっそり指定しておくこともできます。
-</p>
 
 <h3><a name="multiple-indices">複数のインデックスに検索をかける方法</a></h3>
 <p>
@@ -684,7 +723,7 @@ Tknamazu および namazu.el から検索するときは必ず後者で指定します。
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: manual.html,v 1.5 2000-02-01 03:01:55 satoru Exp $
+$Id: manual.html,v 1.6 2000-02-01 07:41:06 satoru Exp $
 </div>
 <address>
 developers@namazu.org

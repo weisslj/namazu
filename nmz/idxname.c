@@ -2,9 +2,9 @@
  * 
  * idxname.c - Idx handling routines.
  *
- * $Id: idxname.c,v 1.22 2000-01-13 01:13:21 satoru Exp $
+ * $Id: idxname.c,v 1.23 2000-01-27 13:13:34 satoru Exp $
  * 
- * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
+ * Copyright (C) 2000 Namazu Project All rights reserved..
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 

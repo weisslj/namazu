@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2000-01-27 21:42+0900\n"
+"POT-Creation-Date: 2000-01-27 22:07+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -171,7 +171,7 @@ msgid ""
 "Scoring: %s\n"
 msgstr ""
 
-#: src/usage.c:51
+#: src/usage.c:50
 #, c-format
 msgid ""
 "namazu %s, a search program of Namazu.\n"
@@ -206,11 +206,11 @@ msgid ""
 "Report bugs to <bug-namazu@namazu.org>.\n"
 msgstr ""
 
-#: src/usage.c:89
+#: src/usage.c:88
 msgid "Usage: namazu [options] <query> [index]...\n"
 msgstr ""
 
-#: src/usage.c:90
+#: src/usage.c:89
 msgid "Try `namazu --help' for more information.\n"
 msgstr ""
 

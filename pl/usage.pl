@@ -1,6 +1,6 @@
 # -*- Perl -*-
-# $Id: usage.pl,v 1.10 2000-01-20 03:54:43 satoru Exp $
-# Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
+# $Id: usage.pl,v 1.11 2000-01-27 13:13:38 satoru Exp $
+# Copyright (C) 2000 Namazu Project All rights reserved..
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify

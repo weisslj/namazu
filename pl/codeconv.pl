@@ -1,7 +1,7 @@
 #
 # -*- Perl -*-
-# $Id: codeconv.pl,v 1.5 2000-01-25 23:53:11 satoru Exp $
-# Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
+# $Id: codeconv.pl,v 1.6 2000-01-27 13:13:38 satoru Exp $
+# Copyright (C) 2000 Namazu Project All rights reserved..
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify

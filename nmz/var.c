@@ -2,9 +2,9 @@
  * 
  * var.c -
  * 
- * $Id: var.c,v 1.18 2000-01-13 01:13:22 satoru Exp $
+ * $Id: var.c,v 1.19 2000-01-27 13:13:36 satoru Exp $
  * 
- * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
+ * Copyright (C) 2000 Namazu Project All rights reserved..
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify

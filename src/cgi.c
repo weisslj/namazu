@@ -2,9 +2,9 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.53 2000-01-27 09:50:16 satoru Exp $
+ * $Id: cgi.c,v 1.54 2000-01-27 13:13:43 satoru Exp $
  * 
- * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
+ * Copyright (C) 2000 Namazu Project All rights reserved..
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify

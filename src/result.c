@@ -1,7 +1,7 @@
 /*
- * $Id: result.c,v 1.44 2000-01-27 09:50:17 satoru Exp $
+ * $Id: result.c,v 1.45 2000-01-27 13:13:45 satoru Exp $
  * 
- * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
+ * Copyright (C) 2000 Namazu Project All rights reserved..
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify

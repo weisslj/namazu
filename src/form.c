@@ -2,9 +2,9 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.46 2000-01-26 13:42:07 satoru Exp $
+ * $Id: form.c,v 1.47 2000-01-27 13:13:43 satoru Exp $
  * 
- * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
+ * Copyright (C) 2000 Namazu Project All rights reserved..
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify

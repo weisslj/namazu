@@ -2,9 +2,9 @@
  * 
  * replace.c - 
  *
- * $Id: replace.c,v 1.10 2000-01-09 13:00:40 satoru Exp $
+ * $Id: replace.c,v 1.11 2000-01-27 13:13:35 satoru Exp $
  * 
- * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
+ * Copyright (C) 2000 Namazu Project All rights reserved..
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 

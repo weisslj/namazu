@@ -1,8 +1,8 @@
 /*
  * i18n.c -
- * $Id: i18n.c,v 1.15 2000-01-09 11:28:54 satoru Exp $
+ * $Id: i18n.c,v 1.16 2000-01-27 13:13:34 satoru Exp $
  * 
- * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
+ * Copyright (C) 2000 Namazu Project All rights reserved..
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify

@@ -1,8 +1,8 @@
 /*
  * 
- * $Id: rcfile.c,v 1.7 2000-01-27 09:50:16 satoru Exp $
+ * $Id: rcfile.c,v 1.8 2000-01-27 13:13:45 satoru Exp $
  * 
- * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
+ * Copyright (C) 2000 Namazu Project All rights reserved..
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify

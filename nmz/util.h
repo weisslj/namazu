@@ -3,7 +3,7 @@
   util.h -
 
   $Author: satoru $
-  $Date: 1999-11-19 02:58:17 $
+  $Date: 1999-11-19 08:08:59 $
   created at: Thu Mar  9 11:55:53 JST 1995
 
   Copyright (C) 1993-1998 Yukihiro Matsumoto
@@ -28,20 +28,20 @@
  *
  */
 
-#define iskanji1st(c) (((unsigned int)(c) >= 0x81 && \
-                       (unsigned int)(c)) <= 0x9f || \
-                       ((unsigned int)(c) >= 0xe0 && \
-                       (unsigned int)(c) <= 0xfc))
-#define iskanji2nd(c) (((unsigned int)(c) >= 0x40 && \
-                       (unsigned int)(c) <= 0xfc && \
-                       (unsigned int)(c) != 0x7f))
-#define iseuc(c)  ((unsigned int)(c) >= 0xa1 && (unsigned int)(c) <= 0xfe)
+#define iskanji1st(c) (((uchar)(c) >= 0x81 && \
+                       (uchar)(c)) <= 0x9f || \
+                       ((uchar)(c) >= 0xe0 && \
+                       (uchar)(c) <= 0xfc))
+#define iskanji2nd(c) (((uchar)(c) >= 0x40 && \
+                       (uchar)(c) <= 0xfc && \
+                       (uchar)(c) != 0x7f))
+#define iseuc(c)  ((uchar)(c) >= 0xa1 && (uchar)(c) <= 0xfe)
 #ifndef iskanji /* for jperl */
 #define iskanji(c)  (iseuc(*(c)) && iseuc(*(c + 1)))
 #endif
-#define ischoon(c) ((unsigned int)*(c) == 0xa1 && \
-                    (unsigned int)*(c + 1) == 0xbc)
-#define iseuc(c)  ((unsigned int)(c) >= 0xa1 && (unsigned int)(c) <= 0xfe)
+#define ischoon(c) ((uchar)*(c) == 0xa1 && \
+                    (uchar)*(c + 1) == 0xbc)
+#define iseuc(c)  ((uchar)(c) >= 0xa1 && (uchar)(c) <= 0xfe)
 
 /*
  *

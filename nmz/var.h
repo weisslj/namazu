@@ -7,7 +7,6 @@ extern int Debug;
 extern int ListFormat;
 extern int Quiet;
 extern int HitCountOnly;
-extern int HtmlOutput;
 extern int HidePageIndex;
 extern int ForcePrintForm;
 extern int AllList;

@@ -196,7 +196,7 @@ void put_page_index(int n)
     for (i = 0; i < PAGE_MAX; i++) {
 	if (i * HListMax >= n)
 	    break;
-	if (HtmlOutput) {
+	if (is_htmlmode()) {
 	    if (i * HListMax != HListWhence) {
 		print("<a href=\"");
 		fputs(sn, stdout);
@@ -208,7 +208,7 @@ void put_page_index(int n)
 	    }
 	}
 	printf("[%d]", i + 1);
-	if (HtmlOutput) {
+	if (is_htmlmode()) {
 	    if (i * HListMax != HListWhence) {
 		print("</A> ");
 	    } else
@@ -222,7 +222,7 @@ void put_page_index(int n)
 /* output current range */
 void put_current_range(int listmax)
 {
-    if (HtmlOutput) {
+    if (is_htmlmode()) {
 	print("<strong>");
     }
     printf(_("Current List: %d"), HListWhence + 1);
@@ -233,7 +233,7 @@ void put_current_range(int listmax)
     } else {
 	printf("%d", listmax);
     }
-    if (HtmlOutput) {
+    if (is_htmlmode()) {
 	print("</strong><br>\n");
     } else {
 	fputc('\n', stdout);
@@ -251,7 +251,7 @@ void html_print(char *str)
     }
 
     strcpy(buf, str + is_nmz_html);
-    if (HtmlOutput) {
+    if (is_htmlmode()) {
         /* if str is Namazu's HTML message, it will be printed with emprint,
            if not, it will be printed with entity conversion */
         emprint(buf, ! is_nmz_html);
@@ -337,7 +337,7 @@ void print_hit_count ()
         PHRASERES *pr = Idx.pr[i];
 	if (!HitCountOnly && !ListFormat && !NoReference && !Quiet) {
 	    if (Idx.num > 1) {
-	        if (HtmlOutput) {
+	        if (is_htmlmode()) {
 		    printf("<li><strong>%s</strong>: ",
 			   Idx.names[i] + strlen(DEFAULT_INDEX) + 1);
 		} else {
@@ -406,13 +406,13 @@ void print_result1(void)
 {
     html_print(_("	<h2>Results:</h2>\n"));
 
-    if (HtmlOutput) {
+    if (is_htmlmode()) {
 	fputs("<p>\n", stdout);
     } else {
 	fputc('\n', stdout);
     }
     print(_("References: "));
-    if (Idx.num > 1 && HtmlOutput) {
+    if (Idx.num > 1 && is_htmlmode()) {
 	fputs("</p>\n", stdout);
     }
 }
@@ -420,7 +420,7 @@ void print_result1(void)
 void print_hitnum(int n)
 {
     html_print(_("	<p><strong> Total "));
-    if (HtmlOutput) {
+    if (is_htmlmode()) {
         printf("<!-- HIT -->%d<!-- HIT -->", n);
     }
     else {
@@ -431,26 +431,26 @@ void print_hitnum(int n)
 
 void print_listing(HLIST hlist)
 {
-    if (HtmlOutput) {
+    if (is_htmlmode()) {
         print("<dl>\n");
     }
     
     print_hlist(hlist);
     
-    if (HtmlOutput) {
+    if (is_htmlmode()) {
         print("</dl>\n");
     }
 }
 
 void print_range(HLIST hlist)
 {
-    if (HtmlOutput)
+    if (is_htmlmode())
         print("<p>\n");
     put_current_range(hlist.n);
     if (!HidePageIndex) {
         put_page_index(hlist.n);
     }
-    if (HtmlOutput) {
+    if (is_htmlmode()) {
         print("</p>\n");
     } else {
         print("\n");

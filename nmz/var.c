@@ -2,7 +2,7 @@
  * 
  * values.c -
  * 
- * $Id: var.c,v 1.3 1999-11-19 02:58:17 satoru Exp $
+ * $Id: var.c,v 1.4 1999-11-19 08:08:59 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -53,7 +53,6 @@ int Debug = 0;			/* if debug mode is on: 1 */
 int ListFormat = 0;        /* if more short format mode: 1  */
 int Quiet = 0;                  /* if quiet mode: 1  */
 int HitCountOnly = 0;
-int HtmlOutput = 0;		/* if display as HTML: 1 */
 int HidePageIndex = 0;		/* if hide page index: 1 */
 int ForcePrintForm = 0;		/* if display <FORM> ... </FORM>: 1 */
 int AllList = 0;		/* if dispal all search results: 1 */

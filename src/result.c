@@ -1,6 +1,6 @@
 /*
  * result.c -
- * $Id: result.c,v 1.21 1999-11-19 02:58:21 satoru Exp $
+ * $Id: result.c,v 1.22 1999-11-19 08:09:03 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -64,8 +64,9 @@ static void replace_field(HLIST_DATA d, int counter,
     } else {
 	get_field_data(d.idxid, d.docid, field, buf);
     }
+
     /* do not emphasize in URI */
-    if (strcasecmp(field, "uri") != 0 && HtmlOutput) {
+    if (strcasecmp(field, "uri") != 0 && is_htmlmode()) {
 	emphasize(buf);
     }
     encode_entity(buf);

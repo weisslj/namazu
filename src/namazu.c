@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.41 1999-11-19 02:58:21 satoru Exp $
+ * $Id: namazu.c,v 1.42 1999-11-19 08:09:02 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -193,7 +193,7 @@ static int parse_options(int argc, char **argv)
 	    HitCountOnly = 1;
 	    break;
 	case 'h':
-	    HtmlOutput = 1;
+	    set_htmlmode(1);
 	    break;
 	case 'H':
 	    HidePageIndex = 0;
@@ -253,7 +253,7 @@ static int namazu_core(char * query, char *subquery, char *av0)
 
     /* if query is null, show NMZ.head,body,foot and exit with error */
     if (*query == '\0') {
-        if (HtmlOutput) {
+        if (is_htmlmode()) {
             print(MSG_MIME_HEADER);
             print_headfoot(NMZ.head, query, subquery);
             print_msgfile(NMZ.body);
@@ -270,11 +270,11 @@ static int namazu_core(char * query, char *subquery, char *av0)
     debug_printf(" -w: %d\n", HListWhence);
     debug_printf("query: [%s]\n", query);
 
-    if (HtmlOutput && IsCGI) {
+    if (is_htmlmode() && IsCGI) {
 	print(MSG_MIME_HEADER);
     }
 
-    if (HtmlOutput) {
+    if (is_htmlmode()) {
 	print_headfoot(NMZ.head, query, subquery);
     }
 
@@ -289,7 +289,7 @@ static int namazu_core(char * query, char *subquery, char *av0)
 
         if (Idx.num > 1) {
             print("\n");
-            if (HtmlOutput)
+            if (is_htmlmode())
                 print("<ul>\n");
         }
     }
@@ -298,10 +298,10 @@ static int namazu_core(char * query, char *subquery, char *av0)
 
     /* result2 */
     if (!HitCountOnly && !ListFormat && !NoReference && !Quiet) {
-        if (Idx.num > 1 && HtmlOutput) {
+        if (Idx.num > 1 && is_htmlmode()) {
             print("</ul>\n");
         }
-	if (Idx.num == 1 && HtmlOutput) {
+	if (Idx.num == 1 && is_htmlmode()) {
 	    print("\n</p>\n");
 	} else {
 	    fputc('\n', stdout);
@@ -325,13 +325,13 @@ static int namazu_core(char * query, char *subquery, char *av0)
             print("0\n");
         } else if (!ListFormat) {
             html_print(_("	<p>No document matching your query.</p>\n"));
-	    if (HtmlOutput) {
+	    if (is_htmlmode()) {
 		print_msgfile(NMZ.tips);
 	    }
         }
     }
 
-    if (HtmlOutput) {
+    if (is_htmlmode()) {
 	print_headfoot(NMZ.foot, query, subquery);
     }
 
@@ -367,9 +367,9 @@ int main(int argc, char **argv)
 	if (load_conf(argv[0]))
 	    diewithmsg();
 	IsCGI = 1;	/* if no argument, assume this session as CGI */
-	HtmlOutput = 1;
+	set_htmlmode(1);
     } else {
-	HtmlOutput = 0;		 /* do not display result by HTML format */
+	set_htmlmode(0);	 /* do not display result by HTML format */
 	DecodeURI = 1;		 /* decode a URI */
 	HidePageIndex = 1;	 /* do not diplay page index */
 

@@ -2,7 +2,7 @@
  * 
  * codeconv.c -
  * 
- * $Id: codeconv.c,v 1.5 1999-11-19 02:58:15 satoru Exp $
+ * $Id: codeconv.c,v 1.6 1999-11-19 08:08:59 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -393,14 +393,16 @@ int iskatakana(char *chr)
     uchar *c;
     c = (uchar *)chr;
 
-    if ((((int)*c == 0xa5 && 
-          (int)*(c + 1) >= 0xa0 && 
-	  (int)*(c + 1) <= 0xff) || 
-	 ((int)*c == 0xa1 &&    /* choon */
-	  (int)*(c + 1) == 0xbc))) 
+    if ((*c == 0xa5) &&
+	(*(c + 1) >= 0xa0) && (*(c + 1) <= 0xff))
     {
+	return 1;
+    } else if ((*c == 0xa1) && (*(c + 1) == 0xbc)) { /* choon */ 
         return 1;
+    } else {
+	;
     }
+
     return 0;
 }
 
@@ -409,13 +411,14 @@ int ishiragana(char *chr)
     uchar *c;
     c = (uchar *)chr;
 
-    if ((((int)*c == 0xa4 && 
-          (int)*(c + 1) >= 0xa0 && 
-	  (int)*(c + 1) <= 0xff) || 
-	 ((int)*c == 0xa1 &&    /* choon */
-	  (int)*(c + 1) == 0xbc)))  
+    if ((*c == 0xa4) &&
+	(*(c + 1) >= 0xa0) && (*(c + 1) <= 0xff))
     {
+	return 1;
+    } else if ((*c == 0xa1) && (*(c + 1) == 0xbc)) { /* choon */ 
         return 1;
+    } else {
+	;
     }
     return 0;
 }

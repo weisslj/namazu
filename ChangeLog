@@ -1,5 +1,10 @@
 1999-11-19  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* nmz/mode.[ch]: New files.
+	
+	* nmz/codeconv.c (ishiragana): Be simple.
+	(iskatakana): Be simple.
+	
 	* pl/usage.pl (USAGE_MINI): s/options/information/.
 
 	* **/*.c: Include "config.h" by themselves.

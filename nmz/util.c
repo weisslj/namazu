@@ -308,7 +308,7 @@ void diewithmsg()
         output = stderr;
     }
 
-    if (HtmlOutput) {
+    if (is_htmlmode()) {
 	print(MSG_MIME_HEADER);
     }
 

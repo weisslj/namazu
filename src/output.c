@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.77 2000-09-14 08:49:28 knok Exp $
+ * $Id: output.c,v 1.78 2000-11-17 08:08:55 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -72,6 +72,7 @@ static char template_suffix[BUFSIZE] = "normal"; /* suffix of NMZ.result.* */
  */ 
 static char emphasis_start_tag[BUFSIZE] = "<strong class=\"keyword\">";
 static char emphasis_end_tag[BUFSIZE]   = "</strong>";
+char contenttype[BUFSIZE] = "text/html";
 
 /*
  *
@@ -667,7 +668,7 @@ print_result(NmzResult hlist, const char *query, const char *subquery)
 {
 
     if (is_htmlmode() && is_cgimode()) {
-	printf(MSG_MIME_HEADER);
+	printf("%s %s%s", MSG_MIME_HEADER, contenttype, CRLF);
     }
 
     if (is_htmlmode()) {
@@ -757,7 +758,7 @@ print_result(NmzResult hlist, const char *query, const char *subquery)
 void 
 print_default_page (void) {
     if (is_htmlmode()) {
-	printf(MSG_MIME_HEADER);
+	printf("%s %s%s", MSG_MIME_HEADER, contenttype, CRLF);
 	print_headfoot(NMZ.head, "", "");
 	print_msgfile(NMZ.body);
 	print_headfoot(NMZ.foot, "", "");
@@ -767,8 +768,8 @@ print_default_page (void) {
 void 
 set_emphasis_tags(const char *start_tag, const char *end_tag)
 {
-    strcpy(emphasis_start_tag, start_tag);
-    strcpy(emphasis_end_tag,   end_tag);
+    strncpy(emphasis_start_tag, start_tag, BUFSIZE);
+    strncpy(emphasis_end_tag,   end_tag, BUFSIZE);
 }
 
 char *
@@ -781,6 +782,12 @@ char *
 get_emphasis_tag_end(void)
 {
     return emphasis_end_tag;
+}
+
+void
+set_contenttype(const char *str)
+{
+    strncpy(contenttype, str, BUFSIZE);
 }
 
 void 
@@ -934,7 +941,7 @@ die(const char *fmt, ...)
     fflush(stderr);
 
     if (is_cgimode()) {
-	printf(MSG_MIME_HEADER);
+	printf("%s %s%s", MSG_MIME_HEADER, "text/html", CRLF);
 	printf(_("<h2>Error</h2>\n<p>"));
 	va_start(args, fmt);
 	vprintf(fmt, args);

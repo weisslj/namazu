@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.29 2000-09-05 05:47:45 rug Exp $
+ * $Id: rcfile.c,v 1.30 2000-11-17 08:08:55 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -119,6 +119,7 @@ static enum nmz_stat process_rc_emphasistags ( const char *directive, const StrL
 static enum nmz_stat process_rc_template ( const char *directive, const StrList *args );
 static enum nmz_stat process_rc_maxhit ( const char *directive, const StrList *args );
 static enum nmz_stat process_rc_maxmatch ( const char *directive, const StrList *args );
+static enum nmz_stat process_rc_contenttype ( const char *directive, const StrList *args );
 
 struct conf_directive {
     char *name;
@@ -141,6 +142,7 @@ static struct conf_directive directive_tab[] = {
     { "TEMPLATE",      1, 0, process_rc_template },
     { "MAXHIT",        1, 0, process_rc_maxhit },
     { "MAXMATCH",      1, 0, process_rc_maxmatch },
+    { "CONTENTTYPE",   1, 0, process_rc_contenttype },
     { NULL,            0, 0, NULL }
 };
 
@@ -284,6 +286,16 @@ process_rc_maxmatch(const char *directive, const StrList *args)
     int arg1 = atoi(args->value);
 
     nmz_set_maxmatch(arg1);
+    return SUCCESS;
+}
+
+static enum nmz_stat
+process_rc_contenttype(const char *directive, const StrList *args)
+{
+    char *arg1 = args->value;
+
+    set_contenttype(arg1);
+
     return SUCCESS;
 }
 

@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu-cmd.c,v 1.14 2000-09-05 05:47:45 rug Exp $
+ * $Id: namazu-cmd.c,v 1.15 2000-11-17 08:08:55 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -61,6 +61,12 @@
 #include "result.h"
 #include "system.h"
 #include "namazu.h"
+
+/*
+ * Extern variables.
+ */
+
+extern char contenttype[BUFSIZE];
 
 /*
  *
@@ -296,7 +302,7 @@ main(int argc, char **argv)
 	 * since 1.9.14, they are different and we cannot
 	 * use "namazu" command as CGI any longer.  
 	 */
-	printf(MSG_MIME_HEADER);
+	printf("%s %s%s", MSG_MIME_HEADER, contenttype, CRLF);
 	printf("You should use \"namazu.cgi\" instead of \"namazu\" command.");
 	exit(EXIT_FAILURE);
     } else if (argc == 1) {

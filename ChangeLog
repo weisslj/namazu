@@ -1,5 +1,14 @@
 2000-11-17  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
+	* src/namazu-cmd.c: Changed MSG_MIME_HEADER related stuff.
+
+	* src/message.h: Changed MSG_MIME_HEADER and added CRLF macros.
+
+	* src/output.c (set_contenttype): Added.
+	Changed MSG_MIME_HEADER related stuff.
+
+	* src/rcfile.c (process_rc_contenttype): Added.
+
 	* Created `namazu-hdml' branch.
 
 	* filter/hdml.pl: Added a new file.
@@ -6097,4 +6106,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.756 2000-11-17 05:23:43 knok Exp $
+$Id: ChangeLog,v 1.757 2000-11-17 08:08:55 knok Exp $

@@ -1,4 +1,4 @@
-#! @PERL@ -w
+#! %PERL% -w
 # -*- Perl -*-
 #
 # vfnmz - program to preview search result with NMZ.field.* and NMZ.result.*

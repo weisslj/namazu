@@ -13,8 +13,8 @@ AUTOMAKE_OPTIONS = 1.4 no-dependencies
 bin_SCRIPTS    = bnamazu gcnmz kwnmz mailutime mknmz nmzgrep rfnmz vfnmz lnnmz adnmz nmzmerge
 noinst_SCRIPTS = gtnmz
 
-EXTRA_DIST = gcnmz.in kwnmz.in mknmz.in nmzmerge.in adnmz.in lnnmz.in
-CLEANFILES  = gcnmz mknmz kwnmz nmzmerge adnmz lnnmz
+EXTRA_DIST = gcnmz.in kwnmz.in mknmz.in nmzmerge.in adnmz.in lnnmz.in gtnmz.in bnamazu.in mailutime.in nmzgrep.in rfnmz.in vfnmz.in 
+CLEANFILES  = gcnmz mknmz kwnmz nmzmerge adnmz lnnmz gtnmz bnamazu mailutime nmzgrep rfnmz vfnmz 
 
 confdir     = $(sysconfdir)/$(PACKAGE)
 
@@ -61,6 +61,50 @@ lnnmz: lnnmz.in Makefile
 	    -e 's!@pkgdatadir@!$(pkgdatadir)!g' $(srcdir)/lnnmz.in > lnnmz.tmp
 	mv lnnmz.tmp lnnmz
 	chmod +x lnnmz
+
+##
+
+bnamazu: bnamazu.in Makefile
+	rm -f $@
+	sed -e 's!%PERL%!$(PERL)!g' \
+	    -e 's!@pkgdatadir@!$(pkgdatadir)!g' $(srcdir)/$@.in > $@.tmp
+	mv $@.tmp $@
+	chmod +x $@
+
+gtnmz: gtnmz.in Makefile
+	rm -f $@
+	sed -e 's!%PERL%!$(PERL)!g' \
+	    -e 's!@pkgdatadir@!$(pkgdatadir)!g' $(srcdir)/$@.in > $@.tmp
+	mv $@.tmp $@
+	chmod +x $@
+
+mailutime: mailutime.in Makefile
+	rm -f $@
+	sed -e 's!%PERL%!$(PERL)!g' \
+	    -e 's!@pkgdatadir@!$(pkgdatadir)!g' $(srcdir)/$@.in > $@.tmp
+	mv $@.tmp $@
+	chmod +x $@
+
+nmzgrep: nmzgrep.in Makefile
+	rm -f $@
+	sed -e 's!%PERL%!$(PERL)!g' \
+	    -e 's!@pkgdatadir@!$(pkgdatadir)!g' $(srcdir)/$@.in > $@.tmp
+	mv $@.tmp $@
+	chmod +x $@
+
+rfnmz: rfnmz.in Makefile
+	rm -f $@
+	sed -e 's!%PERL%!$(PERL)!g' \
+	    -e 's!@pkgdatadir@!$(pkgdatadir)!g' $(srcdir)/$@.in > $@.tmp
+	mv $@.tmp $@
+	chmod +x $@
+
+vfnmz: vfnmz.in Makefile
+	rm -f $@
+	sed -e 's!%PERL%!$(PERL)!g' \
+	    -e 's!@pkgdatadir@!$(pkgdatadir)!g' $(srcdir)/$@.in > $@.tmp
+	mv $@.tmp $@
+	chmod +x $@
 
 ETAGS_ARGS = $(SCRIPTS) --lang=perl
 TAGS_DEPENDENCIES = $(SCRIPTS)

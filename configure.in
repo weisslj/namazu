@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.160 2004-03-06 08:44:46 usu Exp $
+dnl $Id: configure.in,v 1.161 2004-04-29 16:00:39 opengl2772 Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -422,12 +422,6 @@ AC_OUTPUT([Makefile
 	   pl/conf.pl
 	   po/Makefile.in
 	   scripts/Makefile 
-	   scripts/bnamazu
-	   scripts/gtnmz
-	   scripts/mailutime
-	   scripts/nmzgrep
-	   scripts/rfnmz
-	   scripts/vfnmz
 	   src/Makefile
 	   template/Makefile
 	   contrib/Makefile
@@ -447,12 +441,6 @@ AC_OUTPUT([Makefile
 	   tests/data/ja-appl90/Makefile
 	  ],
 	  [chmod +x nmz-config \
-		    scripts/bnamazu \
-		    scripts/gtnmz \
-		    scripts/mailutime \
-		    scripts/nmzgrep \
-		    scripts/rfnmz \
-		    scripts/vfnmz \
 	    ]) 
 
 # Local Variables:

@@ -1,4 +1,4 @@
-#! @PERL@ -w
+#! %PERL% -w
 # -*- Perl -*-
 #
 # gtnmz - program to count a total number of indexed files.

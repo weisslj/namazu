@@ -4,6 +4,10 @@
 	In the case of the file with a password, the inquiry of a password 
 	was avoided.
 
+	* configure.in, scripts/*: Since there was a program to which 
+	an execution attribute is not attached when it created by 
+	the command 'make', it corrected.
+
 2004-04-27  Yukio USUDA <usu@namazu.org>
 
 	* filter/zip.pl: Add new filter.
@@ -8793,4 +8797,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1160 2004-04-29 15:22:40 opengl2772 Exp $
+$Id: ChangeLog,v 1.1161 2004-04-29 16:00:38 opengl2772 Exp $

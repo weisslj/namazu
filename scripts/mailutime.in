@@ -1,10 +1,10 @@
-#! @PERL@ -w
+#! %PERL% -w
 # -*- Perl -*-
 #
 # mailutime - a tool to unify a file time stamp with 
 #             RFC 822 'Date:' field in a mail.
 #             It also supports MHonArc messages.
-# $Id: mailutime.in,v 1.5 2004-01-16 08:47:54 opengl2772 Exp $
+# $Id: mailutime.in,v 1.6 2004-04-29 16:00:40 opengl2772 Exp $
 #
 # Version 1.0.3    [01/16/2004]
 # Version 1.0.2    [12/12/1998]

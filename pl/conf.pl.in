@@ -26,7 +26,10 @@ $HTML_SUFFIX = "html?|[ps]html|html\\.[a-z]{2}|asp|cgi";
 #       Do NOT use `$' or `^' anchors.
 #       Case-insensitive.
 #
-$ALLOW_FILE = ".*\\.(?:$HTML_SUFFIX)|.*\\.txt|.*\\.pdf|.*\\.doc|.*\\.tex|\\d+";
+$ALLOW_FILE =	".*\\.(?:$HTML_SUFFIX)|.*\\.txt" . # HTML, plain text
+		"|.*\\.gz|.*\\.Z|.*\\.bz2" .       # Compressed files
+		"|.*\\.pdf|.*\\.doc|.*\\.tex" .    # PDF, Word, TeX
+		"|\\d+|[-\\w]+\\.[1-9n]";           # Mail/News, man
 
 #
 # This pattern specifies file names which will NOT be targeted.

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: pltests.pl.in,v 1.1 2004-09-30 12:34:55 opengl2772 Exp $
+# $Id: pltests.pl.in,v 1.2 2004-10-09 14:07:20 opengl2772 Exp $
 # Copyright (C) 2004 Tadamasa Teranishi
 #               2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -83,6 +83,16 @@ sub get_lang_messages()
     }
 
     return 'C';
+}
+
+sub normalize_nl($)
+{
+    my ($conts) = @_;
+
+    $$conts =~ s/\x0d\x0a/\x0a/g;  # Windows
+    $$conts =~ s/\x0d/\x0a/g;      # Mac
+    $$conts =~ s/\x0a/\n/g;
+    $$conts;
 }
 
 sub putline($$;$) {
@@ -256,8 +266,8 @@ sub logsyscmd($$;$)
         option => { 
             "stdout" => "$file",
             "stderr" => "$file",
-            "mode_stdout" => "append",
-            "mode_stderr" => "append",
+            "mode_stdout" => "at",  # append, text
+            "mode_stderr" => "at",  # append, text
         },
         env => $env,
     );
@@ -277,8 +287,8 @@ sub ezsyscmd($;$)
         option => { 
             "stdout" => \$conts_out,
             "stderr" => \$conts_err,
-            "mode_stdout" => "new",
-            "mode_stderr" => "new",
+            "mode_stdout" => "wt",  # new, text
+            "mode_stderr" => "wt",  # new, text
         },
         env => $env,
     );
@@ -298,8 +308,8 @@ sub syscmd(%)
     # default option
     $option{stdout} = '/dev/null' unless(defined $option{stdout});
     $option{stderr} = '/dev/null' unless(defined $option{stderr});
-    $option{mode_stdout} = 'append' unless(defined $option{mode_stdout});
-    $option{mode_stderr} = 'append' unless(defined $option{mode_stderr});
+    $option{mode_stdout} = 'at' unless(defined $option{mode_stdout});
+    $option{mode_stderr} = 'at' unless(defined $option{mode_stderr});
     $option{maxsize} = -1 unless(defined $option{maxsize});
 
     my $handle_out = undef;
@@ -322,21 +332,30 @@ sub syscmd(%)
  
     my $mode_stdout;
     my $mode_stderr;
-    if ($option{mode_stdout} eq 'new') {
+    if ($option{mode_stdout} =~ /^w/i) {
         $mode_stdout = '>';
-    } elsif ($option{mode_stdout} eq 'append') {
+    } elsif ($option{mode_stdout} =~ /^a/i) {
         $mode_stdout = '>>';
     } else {
         warn "unknown mode. : " . quotemeta($option{mode_stdout});
         $mode_stdout = '>>';
     }
-    if ($option{mode_stderr} eq 'new') {
+    if ($option{mode_stderr} =~ /^w/i) {
         $mode_stderr = '>';
-    } elsif ($option{mode_stderr} eq 'append') {
+    } elsif ($option{mode_stderr} =~ /^a/i) {
         $mode_stderr = '>>';
     } else {
         warn "unknown mode. : " . quotemeta($option{mode_stderr});
         $mode_stderr = '>>';
+    }
+
+    my $text_stdout = undef;
+    my $text_stderr = undef;
+    if ($option{mode_stdout} =~ /^.t/i) {
+        $text_stdout = 1;
+    }
+    if ($option{mode_stderr} =~ /^.t/i) {
+        $text_stderr = 1;
     }
 
     my $arg;
@@ -434,6 +453,7 @@ sub syscmd(%)
                 my $size = -s $fh_out;
                 read $fh_out, $conts_out, $size;
                 $fh_out->close();
+                normalize_nl(\$conts_out) if (defined $text_stdout);
 
                 my $file = $option{stdout};
                 if ($SYSTEM eq "MSWin32" || $SYSTEM eq "os2") {
@@ -443,7 +463,6 @@ sub syscmd(%)
                     warn "Can not open file. : $file";
                     return (1);
                 }
-                binmode(OUT);
                 print OUT $conts_out;
                 close(OUT);
             }
@@ -452,6 +471,7 @@ sub syscmd(%)
             my $size = -s $fh_out;
             read $fh_out, $$conts_out, $size;
             $fh_out->close();
+            normalize_nl($conts_out) if (defined $text_stdout);
         }
     }
 
@@ -464,6 +484,7 @@ sub syscmd(%)
                 my $size = -s $fh_err;
                 read $fh_err, $conts_err, $size;
                 $fh_err->close();
+                normalize_nl(\$conts_err) if (defined $text_stderr);
     
                 my $file = $option{stderr};
                 if ($SYSTEM eq "MSWin32" || $SYSTEM eq "os2") {
@@ -473,7 +494,6 @@ sub syscmd(%)
                     warn "Can not open file. : $file";
                     return (1);
                 }
-                binmode(OUT);
                 print OUT $conts_err;
                 close(OUT);
             }
@@ -482,6 +502,7 @@ sub syscmd(%)
             my $size = -s $fh_err;
             read $fh_err, $$conts_err, $size;
             $fh_err->close();
+            normalize_nl($conts_err) if (defined $text_stderr);
         }
     }
  

@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.34 1999-12-12 14:09:04 rug Exp $
+ * $Id: search.c,v 1.35 1999-12-14 12:25:31 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -402,11 +402,11 @@ static int open_phrase_index_files(FILE **phrase, FILE **phrase_index)
 }
 
 
-/* phrase search */
+/* FIXME: this function is too long and difficult to understand */
 static NmzResult do_phrase_search(char *key, NmzResult val)
 {
     int i, h = 0, ignore = 0;
-    char *p, *q, *word_b = 0, word_mix[BUFSIZE];
+    char *p, *words[QUERY_TOKEN_MAX + 1], *prevword = NULL;
     FILE *phrase, *phrase_index;
     struct nmz_hitnum *pr_hitnum = NULL; /* phrase hitnum */
 
@@ -424,53 +424,62 @@ static NmzResult do_phrase_search(char *key, NmzResult val)
     while (*p == '\t') {  /* beggining tabs are skipped */
         p++;
     }
-    for (i = 0; ;i++) {
-        q = (char *)strchr(p, '\t');
-        if (q) {
-            *q = '\0';
+    for (i = 0; ;) {
+	char *q;
+
+	if (strlen(p) > 0) {
+	    words[i] = p;
+	    i++;
 	}
-        if (strlen(p) > 0) {
-            NmzResult tmp;
-
-            tmp = do_word_search(p, val);
-	    if (tmp.stat == ERR_FATAL) 
-	        return tmp;
-
-	    pr_hitnum = push_hitnum(pr_hitnum, tmp.num, tmp.stat, p);
-	    if (pr_hitnum == NULL) {
-		tmp.stat = ERR_FATAL;
-		return tmp;
-	    }
-
-            if (i == 0) {
-                val = tmp;
-            } else {
-		if (tmp.stat == ERR_TOO_MUCH_HIT || 
-		    val.stat == ERR_TOO_MUCH_HIT) {
-		    ignore = 1;
-		} else {
-		    ignore = 0;
-		}
-                val = andmerge(val, tmp, &ignore);
-
-		strcpy(word_mix, word_b);
-		strcat(word_mix, p);
-		h = hash(word_mix);
-		val = cmp_phrase_hash(h, val, phrase, phrase_index);
-		nmz_debug_printf("\nhash:: <%s, %s>: h:%d, val.num:%d\n",
-			     word_b, p, h, val.num);
-		if (val.num == 0) {
-		    break;
-		} else if (val.stat == ERR_FATAL) {
-		    return val;
-		}
-	    }
-	    word_b = p;
-        }
-        if (q == NULL) {
-            break;
+	q = strchr(p, '\t');
+	if (q) {
+	    *q = '\0';
+	} else {
+	    break;
 	}
         p = q + 1;
+    }
+    words[i] = NULL;
+
+    for (i = 0; words[i] != NULL; i++) {
+	char *word, word_mix[BUFSIZE];
+	NmzResult tmp;
+
+        word = words[i];
+	tmp = do_word_search(word, val);
+	if (tmp.stat == ERR_FATAL) 
+	    return tmp;
+
+	pr_hitnum = push_hitnum(pr_hitnum, tmp.num, tmp.stat, word);
+	if (pr_hitnum == NULL) {
+	    tmp.stat = ERR_FATAL;
+	    return tmp;
+	}
+
+	if (i == 0) {
+	    val = tmp;
+	} else if (val.num == 0) { /* phrase search is failed halfway */
+	    continue;
+	} else {
+	    if (tmp.stat == ERR_TOO_MUCH_HIT || 
+		val.stat == ERR_TOO_MUCH_HIT) {
+		ignore = 1;
+	    } else {
+		ignore = 0;
+	    }
+	    val = andmerge(val, tmp, &ignore);
+
+	    strcpy(word_mix, prevword);
+	    strcat(word_mix, word);
+	    h = hash(word_mix);
+	    val = cmp_phrase_hash(h, val, phrase, phrase_index);
+	    nmz_debug_printf("\nhash:: <%s, %s>: h:%d, val.num:%d\n",
+			     prevword, word, h, val.num);
+	    if (val.stat == ERR_FATAL) {
+		return val;
+	    }
+	}
+	prevword = word;
     }
 
     /* set phrase hit numbers using phrase member */

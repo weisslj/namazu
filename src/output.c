@@ -1,8 +1,8 @@
 /*
- * $Id: output.c,v 1.98 2004-07-20 18:19:03 opengl2772 Exp $
+ * $Id: output.c,v 1.99 2004-11-22 09:20:54 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2004 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -185,11 +185,11 @@ unhtml_buffer(char *ostr) {
 	    buf[i++] = '\n';
 	    str += 3;
 	    continue;
-	} else if (strncasecmp(str, "<br />", 6) == 0 && *(str + 6) != '\n') {
-	    buf[i++] = '\n';
-	    str += 5;
-	    continue;
-	}
+        } else if (strncasecmp(str, "<br />", 6) == 0 && *(str + 6) != '\n') {
+            buf[i++] = '\n';
+            str += 5;
+            continue;
+        }
 	if (*str == '<') {
 	    f = 1;
 	    continue;
@@ -359,9 +359,10 @@ load_nmz_result(const char *basedir)
 static enum nmz_stat
 print_hlist(NmzResult hlist)
 {
-    int i;
+    int i, j;
     char *the_template = NULL;    /* User-specified  template. */
     char *template_caches[INDEX_MAX];   /* For caching each NMZ.result */
+    char *template = NULL;
 
     if (hlist.num <= 0 || get_maxresult() == 0) {
 	return SUCCESS; /* No document searched but success. */
@@ -377,15 +378,32 @@ print_hlist(NmzResult hlist)
     /* 
      * Check whether user-specified templatedir is set or not. 
      */
-    {
-	char templdir[BUFSIZE];
-	strcpy(templdir, get_templatedir());
-	if (*templdir != '\0') { /* user-specified one is set. */
-	    the_template = load_nmz_result(templdir);
-	    if (the_template == NULL) {
-		return ERR_CANNOT_OPEN_RESULT_FORMAT_FILE;
-	    }
-	}
+    if (is_listmode()) {
+        template = "${uri}";
+    } else {
+	char templdir[BUFSIZE] = "";
+	strncpy(templdir, get_templatedir(), BUFSIZE - 1);
+        if (*templdir != '\0') { /* user-specified one is set. */
+            the_template = load_nmz_result(templdir);
+            if (the_template == NULL) {
+                return ERR_CANNOT_OPEN_RESULT_FORMAT_FILE;
+            }
+            if (!is_htmlmode()) {
+                char *result = (char *)calloc(sizeof(char), BUFSIZE);
+                if (result == NULL) { /* failed */
+                    /* Free user-specified template. */
+                    if (the_template != NULL) {
+                        free(the_template);
+                    }
+                    return ERR_CANNOT_OPEN_RESULT_FORMAT_FILE;
+                }
+                strncpy(result, the_template, BUFSIZE - 1);
+                free(the_template);
+                the_template = result;
+                unhtml_buffer(the_template);
+            }
+            template = the_template;
+        }
     }
 
     for (i = get_listwhence(); i < hlist.num; i++) {
@@ -395,45 +413,64 @@ print_hlist(NmzResult hlist)
 	 */
 	char result[BUFSIZE * 128] = "";
 	int counter;
-	char *template = the_template;
 
 	counter = i + 1;
 
-	if (!is_allresult() && (i >= get_listwhence() + get_maxresult()))
+	if (!is_allresult() && (i >= get_listwhence() + get_maxresult())) {
 	    break;
+        }
 
-	if (is_listmode()) {
-	    template = "${uri}";
-	} else {
-	    int idxid = hlist.data[i].idxid;
-	    /*
-	     * If user-specified templatedir is not set. and 
-	     */
-	    if (template == NULL) {
-		/* 
-		 * If NMZ.result is not cached, load NMZ.result and cache it in
-		 * template_caches[].
-		 */ 
-		if (template_caches[idxid] == NULL) {
-		    char *basedir = nmz_get_idxname(idxid);
-		    template_caches[idxid] = load_nmz_result(basedir);
-		    if (template_caches[idxid] == NULL) {
-			return ERR_CANNOT_OPEN_RESULT_FORMAT_FILE;
-		    }
-		} 
-		template = template_caches[idxid];
-	    }
-	}
+	/*
+	 * If user-specified templatedir is not set. and 
+	 */
+	if (!is_listmode() && the_template == NULL) {
+            int idxid = hlist.data[i].idxid;
+            /* 
+             * If NMZ.result is not cached, load NMZ.result and cache it in
+             * template_caches[].
+             */ 
+            if (template_caches[idxid] == NULL) {
+                char *basedir = nmz_get_idxname(idxid);
+                template_caches[idxid] = load_nmz_result(basedir);
+                if (template_caches[idxid] == NULL) {
+                    /* Free user-specified template. */
+                    if (the_template != NULL) {
+                        free(the_template);
+                    }
+                    /* Free all template_caches[] */
+                    for (j = 0; j < nmz_get_idxnum(); j++) {
+	                if (template_caches[j] != NULL) {
+	                    free(template_caches[j]);
+	                }
+                    }
+                    return ERR_CANNOT_OPEN_RESULT_FORMAT_FILE;
+                }
+                if (!is_htmlmode()) {
+                    char *result = (char *)calloc(sizeof(char), BUFSIZE);
+                    if (result == NULL) { /* failed */
+                        /* Free user-specified template. */
+                        if (the_template != NULL) {
+                            free(the_template);
+                        }
+                        /* Free all template_caches[] */
+                        for (j = 0; j < nmz_get_idxnum(); j++) {
+	                    if (template_caches[j] != NULL) {
+	                        free(template_caches[j]);
+	                    }
+                        }
+                        return ERR_CANNOT_OPEN_RESULT_FORMAT_FILE;
+                    }
+                    strncpy(result, template_caches[idxid], BUFSIZE - 1);
+                    free(template_caches[idxid]);
+                    template_caches[idxid] = result;
+                    unhtml_buffer(template_caches[idxid]);
+                }
+            }
+            template = template_caches[idxid];
+        }
 
-	if (is_htmlmode() || is_listmode()) {
-	    compose_result(hlist.data[i], counter, template,  result);
-	} else {
-	    char tmpbuf[BUFSIZE] = "";
-	    strncpy(tmpbuf, template, BUFSIZE -1);
-	    tmpbuf[BUFSIZE - 1] = 0;
-	    unhtml_buffer(tmpbuf);
-	    compose_result(hlist.data[i], counter, tmpbuf,  result);	    
-	}
+        compose_result(hlist.data[i], counter, template, result);
+
 	{
 	    char *converted = nmz_codeconv_external(result);
 	    if (converted == NULL) {
@@ -442,7 +479,7 @@ print_hlist(NmzResult hlist)
 	    if (is_htmlmode() || is_listmode()) {
 		html_print(converted);
 	    } else {
-		puts(converted+1); /* remove '\t' in the head of buffer */
+		puts(converted + 1); /* remove '\t' in the head of buffer */
 	    }
 	    free(converted);
 	    printf("\n");
@@ -474,14 +511,12 @@ print_listing(NmzResult hlist)
     }
 
     ret = print_hlist(hlist);
-    if (ret != SUCCESS) {
-	return ret;
-    }
-    
+
     if (is_htmlmode()) {
         printf("</dl>\n");
     }
-    return SUCCESS;
+
+    return ret;
 }
 
 /*
@@ -553,8 +588,9 @@ print_page_index(int n)
 	if (is_htmlmode()) {
 	    if (i * max != whence) {
 		printf("</a> ");
-	    } else
+	    } else {
 		printf("</strong> ");
+	    }
 	}
 	if (is_allresult()) {
 	    break;
@@ -683,8 +719,9 @@ print_msgfile(const char *fname) {
 static void 
 print_range(NmzResult hlist)
 {
-    if (is_htmlmode())
+    if (is_htmlmode()) {
         printf("<p>\n");
+    }
     print_current_range(hlist.num);
     if (is_pageindex()) {
         print_page_index(hlist.num);
@@ -779,7 +816,7 @@ print_result(NmzResult hlist, const char *query, const char *subquery)
 	    if (ret != SUCCESS) { /* summary listing */
 		print_errmsg(ret);
 		return ret;
-	    }
+            }
 	}
         if (!is_countmode() && !is_listmode() && !is_quietmode()) {
             print_range(hlist);
@@ -808,7 +845,9 @@ print_result(NmzResult hlist, const char *query, const char *subquery)
 void 
 print_default_page (void) {
     if (is_htmlmode()) {
-	printf("%s %s" CRLF CRLF, MSG_MIME_HEADER, contenttype);
+        if (is_cgimode()) {
+	    printf("%s %s" CRLF CRLF, MSG_MIME_HEADER, contenttype);
+        }
 	print_headfoot(NMZ.head, "", "");
 	print_msgfile(NMZ.body);
 	print_headfoot(NMZ.foot, "", "");
@@ -876,13 +915,13 @@ set_htmlmode(int mode)
     htmlmode = mode;
 }
 
-int 
+int
 get_htmlmode(void)
 {
     return htmlmode;
 }
 
-int 
+int
 is_htmlmode(void)
 {
     return htmlmode != 0 ? 1 : 0;
@@ -966,7 +1005,6 @@ get_listwhence(void)
     return listwhence;
 }
 
-
 void 
 set_templatesuffix(const char *tmpl)
 {
@@ -986,7 +1024,7 @@ get_templatesuffix(void)
 void 
 html_print(const char *str)
 {
-    char buf[BUFSIZE * 16];
+    char buf[BUFSIZE * 16] = "";
     int is_nmz_html = 0;
 
     if ((int)*str == (int)'\t') { /* Namazu's HTML message */

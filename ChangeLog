@@ -2,6 +2,9 @@
 
 	* Namazu: Version 2.0.2 released.
 
+	* scripts/mknmz.in (load_modules): Add "../filter" to @INC.
+	[namazu-devel-ja: 00229]
+	
 	* scripts/mknmz.in (generate_uri): Use
 	codeconv::shiftjis_to_eucjp() for $file and codeconv::toeuc() for
 	$fragment. 

@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.54 2000-03-17 03:10:29 satoru Exp $
+# $Id: mknmz.in,v 1.55 2000-03-17 11:00:13 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -333,6 +333,7 @@ sub load_modules () {
     unshift @INC, $LIBDIR;
     unshift @INC, $FILTERDIR;
     unshift @INC, "../pl";
+    unshift @INC, "../filter";
 
     require "gettext.pl" || die "unable to require \"gettext.pl\"\n";
     require "var.pl" || die "unable to require \"var.pl\"\n";

@@ -1,5 +1,15 @@
 ## for MAINTAINERS.
 
+CREDITS: AUTHORS ../namazu-web/webmasters
+	@echo Developers > $@
+	@echo >> $@
+	@perl -ne 'next if /^\x23/; print "  * $$_"' AUTHORS  >> $@
+	@echo >> $@
+	@echo Webpage Maintainers >> $@
+	@echo >> $@
+	@perl -ne 'next if /^\x23/; print "  * $$_"' \
+		../namazu-web/webmasters >> $@
+
 snapshot:
 	$(MAKE) dist distdir=$(PACKAGE)`date +"-%Y-%m-%d"`
 

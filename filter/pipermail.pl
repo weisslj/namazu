@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: pipermail.pl,v 1.5 2004-08-06 05:08:23 opengl2772 Exp $
+# $Id: pipermail.pl,v 1.6 2004-08-06 14:11:39 opengl2772 Exp $
 # Copyright (C) 2004 Namazu Project All rights reserved.
 #
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -113,9 +113,7 @@ sub pipermail_filter ($$$) {
         m!<h1>(.*?)</h1>\s*<b>(.*?)\s*</b>(?:\s*<a\s+.*?href=.*?>(.*?)\s*</a>)?\s*<br>\s*<i>(.*?)</i>!is) {
             {
                 my $title = $1;
-                $title =~ s/&lt;/</g;
-                $title =~ s/&gt;/>/g;
-                $title =~ s/&amp;/&/g;
+                decode_entity(\$title);
                 $title = uncommentize($title);
                 codeconv::toeuc(\$title);
 
@@ -176,6 +174,17 @@ sub uncommentize {
     my($txt) = $_[0];
     $txt =~ s/&#(\d+);/pack("C",$1)/ge;
     $txt;
+}
+
+sub decode_entity ($) {
+    my ($text) = @_;
+
+    return unless defined($$text);
+
+    $$text =~ s/&quot;/\"/g;
+    $$text =~ s/&lt;/</g;
+    $$text =~ s/&gt;/>/g;
+    $$text =~ s/&amp;/&/g;
 }
 
 my %wday_names = (

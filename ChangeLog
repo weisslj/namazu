@@ -1,5 +1,9 @@
 2000-03-03  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* tests/Makefile.am (TESTS): Add namazu-nasty-cases.
+
+	* tests/namazu-nasty-cases: New file.
+
 	* src/output.c (die): Moved from namazu.c
 	Add is_cgimode() handling.
 	(print): Abolished. All callers are replaced with printf().

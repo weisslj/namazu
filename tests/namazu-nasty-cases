@@ -1,0 +1,34 @@
+#! /bin/sh
+#
+# Test for namazu. Attack namazu with nasty cases.
+#
+LOG=`pwd`/test-log
+
+cd ../src
+
+perl << 'TEST'  >> $LOG
+	sub assert {
+	    my ($bool) = @_;
+	    die if ! $bool;
+	}
+
+	my $QUERY_MAX = 256;
+	my $BUFSIZE   = 1024;
+	for my $num (0 .. 3, $QUERY_MAX - 5 .. $QUERY_MAX + 5,
+			     $BUFSIZE   - 5 .. $BUFSIZE   + 5, 
+			     100000) # Huge query
+        {
+		my $query  = "x" x $num;
+		my $cmd    = "./namazu -c '$query' ../tests/idx1";
+		my $result = `$cmd 2>&1`;
+		print "$num: $?\n";
+#		print "$result\n";
+		if ($num == 0) {
+			assert ($result eq "");
+		} elsif ($num <= 256) {
+			assert ($result eq "0\n");
+		} elsif ($num > 256) {
+			assert ($result =~ /^namazu: /);
+		}
+	}
+TEST

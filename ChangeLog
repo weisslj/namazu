@@ -1,3 +1,9 @@
+2000-07-06  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* scripts/mknmz.in (main): Fixed ignore MKNMZRC environment bug
+	(namazu-bugs-ja#25).
+	(load_rcfile): Added checking process for do statement.
+
 2000-06-28  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* {src,nmz,pl,scrpts}/Makefile.am: Fixed localedir location.
@@ -5735,4 +5741,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.704 2000-06-28 10:58:02 knok Exp $
+$Id: ChangeLog,v 1.705 2000-07-06 05:39:56 knok Exp $

@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.66 2000-06-15 14:11:29 furukawa Exp $
+# $Id: mknmz.in,v 1.67 2000-07-06 05:39:57 knok Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -75,6 +75,11 @@ sub main {
 
     init();
     load_modules();
+
+    # To support Windows. Since they have nasty drive letter convention,
+    # it is necessary to change mknmzrc dynamically with env. variable.
+    load_rcfile($ENV{'MKNMZRC'}) if defined $ENV{'MKNMZRC'};
+
     load_rcfiles();
     my ($output_dir, @targets) = parse_options();
     my ($docid_base, $total_files_num) = prep($output_dir, @targets);
@@ -207,11 +212,13 @@ sub process_file ($$$$$$) {
 # 
 # Load mknmzrcs:
 # 
-#  1. $(sysconfdir)/$(PACKAGE)/mknmzrc
+#  1. MKNMZRC environment
 # 
-#  2. ~/.mknmzrc
+#  2. $(sysconfdir)/$(PACKAGE)/mknmzrc
 # 
-#  3. user-specified mknmzrc set by mknmz --config=file option.
+#  3. ~/.mknmzrc
+# 
+#  4. user-specified mknmzrc set by mknmz --config=file option.
 # 
 # If multiple files exists, read all of them.
 # 
@@ -330,10 +337,6 @@ sub init () {
 
     # For executing mknmz in scripts directory
     $TEMPLATEDIR = "../template" if -f "../template/NMZ.head";
-
-    # To support Windows. Since they have nasty drive letter convention,
-    # it is necessary to change mknmzrc dynamically with env. variable.
-    load_rcfile($ENV{'MKNMZRC'}) if defined $ENV{'MKNMZRC'};
 }
 
 sub load_modules () {

@@ -46,4 +46,14 @@ docnum=`./gtnmz ../tests/idx10/NMZ.r`
 docnum2=`expr $docnum + $docnum`
 test $docnum2 != $origdocnum && exit 1  # error if not equal
 
+# Nothing changed.
+
+# Update the index with --html-split option.
+cd ../scripts 
+./mknmz --update=../tests/idx10 >> $LOG
+test "$?" != "0" && exit 1  # error if not success
+docnum=`./gtnmz ../tests/idx10/NMZ.r`
+docnum2=`expr $docnum + $docnum`
+test $docnum2 != $origdocnum && exit 1  # error if not equal
+
 exit 0

@@ -29,14 +29,13 @@ mknmz固有の事情
     OS/2 対策。
 
   * プログラム全体に影響をおよぼすグローバル変数は
-    lib/var.pl に定義する。
-
+    lib/var.pl.in に定義する。
 
   * mknmz 内だけに影響をおよぼすグローバル変数は
     src/mknmz.pl.in に定義する。 $SYSTEM のみ例外。
 
   * ユーザが mknmz.conf, ~/.mknmzrc にて変更したいであろう変
-    数は lib/conf.pl に定義する。
+    数は lib/conf.pl.in に定義する。
 
 
 書法
@@ -170,3 +169,4 @@ Perl関連リンク
     <http://ring.nacsis.ac.jp/archives/lang/perl/CPAN/modules/by-module/Tk/>
   * What's wrong with Perl   
     <http://www.stud.ifi.uio.no/~larsga/download/artikler/perl.html>
+

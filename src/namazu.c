@@ -3,7 +3,8 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.2 1999-05-14 04:33:08 satoru Exp $
+ * $Id: namazu.c,v 1.3 1999-05-14 04:38:50 satoru Exp $
+ * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 

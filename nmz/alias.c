@@ -2,7 +2,7 @@
  * 
  * alias.c - 
  *
- * $Id: alias.c,v 1.16 2001-09-02 08:25:33 rug Exp $
+ * $Id: alias.c,v 1.17 2003-06-08 13:51:30 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -73,12 +73,15 @@ nmz_add_alias(const char *alias, const char *real)
     newp->alias = malloc(strlen(alias) + 1);
     if (newp->alias == NULL) {
 	 nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
+         free(newp);
 	 return FAILURE;
     }
 
     newp->real = malloc(strlen(real) + 1);
     if (newp->real == NULL) {
 	 nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
+         free(newp->alias);
+         free(newp);
 	 return FAILURE;
     }
 

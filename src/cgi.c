@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.72 2003-03-21 09:46:49 opengl2772 Exp $
+ * $Id: cgi.c,v 1.73 2003-06-08 13:51:31 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -180,12 +180,15 @@ add_cgivar(struct cgivar *ptr, const char *name, char *value)
     tmp->name = malloc(strlen(name) + 1);
     if (tmp->name == NULL) {
 	 printf("add_cgivar_malloc");
+         free(tmp);
 	 return NULL;
     }
 
     tmp->value = malloc(strlen(value) + 1);
     if (tmp->value == NULL) {
 	 printf("add_cgivar_malloc");
+         free(tmp->name);
+         free(tmp);
 	 return NULL;
     }
 

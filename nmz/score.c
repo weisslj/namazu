@@ -2,7 +2,7 @@
  * 
  * score.c - scoring-related functions of Namazu
  * 
- * $Id: score.c,v 1.8 2003-03-21 13:30:12 opengl2772 Exp $
+ * $Id: score.c,v 1.9 2003-06-08 13:51:30 opengl2772 Exp $
  * 
  * Copyright (C) 2001 Hajime BABA  All rights reserved.
  * Copyright (C) 2001 Namazu Project All rights reserved.
@@ -437,11 +437,14 @@ nmz_recompute_score(NmzResult *hlist)
     qds =  malloc(sizeof(double)*(hlist->num + 1));
     if (qds == NULL) {
 	 nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
+         free(orig);
 	 return;
     }
     dis =  malloc(sizeof(double)*(hlist->num + 1));
     if (dis == NULL) {
 	 nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
+         free(orig);
+         free(qds);
 	 return;
     }
     

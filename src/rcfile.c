@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.37 2003-04-18 13:04:44 knok Exp $
+ * $Id: rcfile.c,v 1.38 2003-06-08 13:51:31 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2003 Namazu Project All rights reserved.
@@ -472,7 +472,8 @@ add_strlist(StrList *list, const char *arg)
 
     newp->value = malloc(strlen(arg) + 1);
     if (newp->value == NULL) {
-	 return NULL;
+        free(newp);
+	return NULL;
     }
     strcpy(newp->value, arg);
     newp->next = NULL;

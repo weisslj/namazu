@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.58 2003-06-08 08:32:52 opengl2772 Exp $
+ * $Id: hlist.c,v 1.59 2003-06-08 13:51:30 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -114,6 +114,11 @@ field_sort(NmzResult hlist)
 
 	hlist.data[i].field = malloc(leng + 1);
 	if (hlist.data[i].field == NULL) {
+            int j;
+            for (j = 0; j < i; j++) {
+	        free(hlist.data[j].field);
+	        hlist.data[j].field = NULL;
+            }
 	    nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
 	    return FAILURE;
 	}

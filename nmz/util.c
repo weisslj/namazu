@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: util.c,v 1.85 2002-09-03 04:56:51 knok Exp $
+ * $Id: util.c,v 1.86 2003-06-08 13:51:30 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -463,6 +463,7 @@ nmz_readfile(const char *fname)
 	fread(buf, sizeof(char), fstatus.st_size, fp) == 0) 
     {
         nmz_set_dyingmsg(nmz_msg("%s: %s", fname, strerror(errno)));
+        free(buf);
 	return NULL;
     }
     *(buf + fstatus.st_size) = '\0';

@@ -9,6 +9,8 @@
 
         * doc/ja/manual.html (filter): Bug fix.
 
+        * nmz/*.c, src/*.c: Fixed unfree memory allocation bug.
+
 2003-06-07  Makoto Fujiwara  <makoto@ki.nu>
 
 	* filter/html.pl (decode_numbered_entity): should be
@@ -7960,4 +7962,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1026 2003-06-08 08:56:54 opengl2772 Exp $
+$Id: ChangeLog,v 1.1027 2003-06-08 13:51:29 opengl2772 Exp $

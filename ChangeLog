@@ -1,3 +1,11 @@
+2004-03-06  Yukio USUDA <usu@namazu.org>
+
+	* m4/Makefile.in: Removed.
+
+	* configure.in: fixed typo.
+
+	* filter/rpm.pl (get_summary): fixed bug.
+
 2004-03-04  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* acconfig.h: Removed.
@@ -8493,4 +8501,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1105 2004-03-04 10:44:17 knok Exp $
+$Id: ChangeLog,v 1.1106 2004-03-06 08:44:45 usu Exp $

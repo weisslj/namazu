@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: rpm.pl,v 1.10 2004-02-22 10:59:00 opengl2772 Exp $
+# $Id: rpm.pl,v 1.11 2004-03-06 08:44:46 usu Exp $
 # Copyright (C) 2000 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -179,11 +179,11 @@ sub get_size ($$) {
 sub get_summary ($$) {
     my ($contref, $fields) = @_;
 
-    $$contref =~ s/^.*Description ://is;
-    if ($$contref =~ /Description : (.*)/) {
+    if ($$contref =~ /Description :(.*)/is) {
 	my $tmp = $1;
 	$fields->{'summary'} = $tmp;
     }
+    $$contref =~ s/^.*Description ://is;
 }
 
 1;

@@ -1,6 +1,6 @@
 /*
  * result.c -
- * $Id: result.c,v 1.28 1999-12-09 00:49:25 satoru Exp $
+ * $Id: result.c,v 1.29 1999-12-09 01:30:52 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -150,6 +150,15 @@ static void emphasize(char *str)
     }
 }
 
+static int is_urireplace(void)
+{
+    return urireplace;
+}
+
+static int is_uridecode(void)
+{
+    return uridecode;
+}
 /*
  *
  * Public functions 
@@ -197,17 +206,8 @@ void set_urireplace(int mode)
     urireplace = mode;
 }
 
-int is_urireplace(void)
-{
-    return urireplace;
-}
-
 void set_uridecode(int mode)
 {
     uridecode = mode;
 }
 
-int is_uridecode(void)
-{
-    return uridecode;
-}

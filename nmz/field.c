@@ -19,8 +19,20 @@
  *
  */
 
-static int is_field_safe_char(int);
-static void make_fullpathname_field(int);
+static void apply_field_alias ( char *field );
+static int is_field_safe_char ( int c );
+static void make_fullpathname_field ( int n );
+
+static void apply_field_alias(char *field)
+{
+    if (strcmp(field, "title") == 0) {
+        strcpy(field, "subject");
+    } else if (strcmp(field, "author") == 0) {
+        strcpy(field, "from");
+    } else if (strcmp(field, "path") == 0) {
+        strcpy(field, "uri");
+    } 
+}
 
 static int is_field_safe_char(int c)
 {
@@ -65,17 +77,6 @@ int isfield(char *key)
         return 1;
     }
     return 0;
-}
-
-void apply_field_alias(char *field)
-{
-    if (strcmp(field, "title") == 0) {
-        strcpy(field, "subject");
-    } else if (strcmp(field, "author") == 0) {
-        strcpy(field, "from");
-    } else if (strcmp(field, "path") == 0) {
-        strcpy(field, "uri");
-    } 
 }
 
 void get_field_name(char *field, char *str)

@@ -45,6 +45,12 @@ static void emprint ( char *s, int entity_encode );
 static void fputs_without_html_tag ( char * s, FILE *fp );
 static void make_fullpathname_result ( int n );
 static void print_hitnum_each ( struct nmz_hitnum *hn );
+static int is_allresult ( void );
+static int is_pageindex ( void );
+static void print_hlist ( NmzResult hlist );
+static void print_query ( char * qs, int w );
+static void print_page_index ( int n );
+static void print_current_range ( int listmax );
 
 /* print s to stdout with processing for emphasizing and entity encoding  */
 static void emprint(char *s, int entity_encode)
@@ -233,6 +239,155 @@ static void print_hitnum_each (struct nmz_hitnum *hn)
     }
 }
 
+static int is_allresult(void)
+{
+    return allresult;
+}
+
+static int is_pageindex(void)
+{
+    return pageindex;
+}
+
+/* display the hlist */
+static void print_hlist(NmzResult hlist)
+{
+    int i;
+    char *templates[INDEX_MAX];
+    /* prepare large memory for replace_field() and conv_ext() */
+    char result[BUFSIZE * 128];
+
+    if (hlist.num <= 0 || get_maxresult() == 0) {
+	return;
+    }
+
+    /* set NULL to all templates[] */
+    for (i = 0; i < Idx.num; i++) {
+	templates[i] = NULL;
+    }
+
+    for (i = get_listwhence(); i < hlist.num; i++) {
+	int counter;
+
+	counter = i + 1;
+
+	if (!is_allresult() && (i >= get_listwhence() + get_maxresult()))
+	    break;
+
+	if (templates[hlist.data[i].idxid] == NULL) {  /* not loaded */
+	    if (is_listmode()) {
+		templates[hlist.data[i].idxid] = "${uri}\n";
+	    } else {
+		char fname[BUFSIZE];
+		make_fullpathname_result(hlist.data[i].idxid);
+		strcpy(fname, NMZ.result);
+		strcat(fname, ".");
+		strcat(fname, get_template());  /* usually "normal" */
+		templates[hlist.data[i].idxid] = nmz_readfile(fname);
+	    }
+	}
+	compose_result(hlist.data[i], counter, 
+		       templates[hlist.data[i].idxid],  result);
+	conv_ext(result);
+	html_print(result);
+	print("\n");
+    }
+
+    /* free all templates[] */
+    for (i = 0; i < Idx.num; i++) {
+	if (templates[i] != NULL) {
+	    free(templates[i]);
+	}
+    }
+}
+
+/*
+ * for pageindex
+ */
+static void print_query(char * qs, int w)
+{
+    int foo = 0;
+    while (*qs) {
+	if (strprefixcmp(qs, "whence=") == 0) {
+	    foo = 1;
+	    printf("whence=%d", w);
+	    for (qs += strlen("whence="); isdigit(*qs); qs++);
+	} else {
+	    fputc(*(qs++), stdout);
+	}
+    }
+    if (foo == 0) {
+	printf("&whence=%d", w);
+    }
+}
+
+/* displayin page index */
+static void print_page_index(int n)
+{
+    int i, max, whence;
+    char *qs; /* QUERY_STRING */
+    char *sn; /* SCRIPT_NAME  */
+
+    qs = safe_getenv("QUERY_STRING");
+    sn = safe_getenv("SCRIPT_NAME");
+
+    html_print(_("	<strong>Page:</strong> "));
+
+    max    = get_maxresult();
+    whence = get_listwhence();
+    for (i = 0; i < PAGE_MAX; i++) {
+	if (i * max >= n)
+	    break;
+	if (is_htmlmode()) {
+	    if (i * max != whence) {
+		print("<a href=\"");
+		fputs(sn, stdout);
+		fputc('?', stdout);
+		print_query(qs, i * max);
+		print("\">");
+	    } else {
+		print("<strong>");
+	    }
+	}
+	printf("[%d]", i + 1);
+	if (is_htmlmode()) {
+	    if (i * max != whence) {
+		print("</A> ");
+	    } else
+		print("</strong> ");
+	}
+	if (is_allresult()) {
+	    break;
+	}
+    }
+}
+
+/* output current range */
+static void print_current_range(int listmax)
+{
+    int max, whence;
+
+    max    = get_maxresult();
+    whence = get_listwhence();
+
+    if (is_htmlmode()) {
+	print("<strong>");
+    }
+    printf(_("Current List: %d"), whence + 1);
+
+    print(" - ");
+    if (!is_allresult() && ((whence + max) < listmax)) {
+	printf("%d", whence + max);
+    } else {
+	printf("%d", listmax);
+    }
+    if (is_htmlmode()) {
+	print("</strong><br>\n");
+    } else {
+	fputc('\n', stdout);
+    }
+}
+
 /*
  *
  * Public functions
@@ -294,19 +449,9 @@ void set_allresult(int mode)
     allresult = mode;
 }
 
-int is_allresult(void)
-{
-    return allresult;
-}
-
 void set_pageindex(int mode)
 {
     pageindex = mode;
-}
-
-int is_pageindex(void)
-{
-    return pageindex;
 }
 
 void set_formprint(int mode)
@@ -360,93 +505,6 @@ char *get_template(void)
     return template;
 }
 
-/*
- * for pageindex
- */
-void put_query(char * qs, int w)
-{
-    int foo = 0;
-    while (*qs) {
-	if (strprefixcmp(qs, "whence=") == 0) {
-	    foo = 1;
-	    printf("whence=%d", w);
-	    for (qs += strlen("whence="); isdigit(*qs); qs++);
-	} else {
-	    fputc(*(qs++), stdout);
-	}
-    }
-    if (foo == 0) {
-	printf("&whence=%d", w);
-    }
-}
-
-
-/* displayin page index */
-void put_page_index(int n)
-{
-    int i, max, whence;
-    char *qs; /* QUERY_STRING */
-    char *sn; /* SCRIPT_NAME  */
-
-    qs = safe_getenv("QUERY_STRING");
-    sn = safe_getenv("SCRIPT_NAME");
-
-    html_print(_("	<strong>Page:</strong> "));
-
-    max    = get_maxresult();
-    whence = get_listwhence();
-    for (i = 0; i < PAGE_MAX; i++) {
-	if (i * max >= n)
-	    break;
-	if (is_htmlmode()) {
-	    if (i * max != whence) {
-		print("<a href=\"");
-		fputs(sn, stdout);
-		fputc('?', stdout);
-		put_query(qs, i * max);
-		print("\">");
-	    } else {
-		print("<strong>");
-	    }
-	}
-	printf("[%d]", i + 1);
-	if (is_htmlmode()) {
-	    if (i * max != whence) {
-		print("</A> ");
-	    } else
-		print("</strong> ");
-	}
-	if (is_allresult()) {
-	    break;
-	}
-    }
-}
-
-/* output current range */
-void put_current_range(int listmax)
-{
-    int max, whence;
-
-    max    = get_maxresult();
-    whence = get_listwhence();
-
-    if (is_htmlmode()) {
-	print("<strong>");
-    }
-    printf(_("Current List: %d"), whence + 1);
-
-    print(" - ");
-    if (!is_allresult() && ((whence + max) < listmax)) {
-	printf("%d", whence + max);
-    } else {
-	printf("%d", listmax);
-    }
-    if (is_htmlmode()) {
-	print("</strong><br>\n");
-    } else {
-	fputc('\n', stdout);
-    }
-}
 
 /* fputs Namazu version, it works with considereation of mode */
 void html_print(char *str)
@@ -484,58 +542,6 @@ void print_msgfile(char *fname) {
     strcpy(tmp_fname, fname);
     choose_msgfile(tmp_fname);
     nmz_cat(tmp_fname);
-}
-
-/* display the hlist */
-void print_hlist(NmzResult hlist)
-{
-    int i;
-    char *templates[INDEX_MAX];
-    /* prepare large memory for replace_field() and conv_ext() */
-    char result[BUFSIZE * 128];
-
-    if (hlist.num <= 0 || get_maxresult() == 0) {
-	return;
-    }
-
-    /* set NULL to all templates[] */
-    for (i = 0; i < Idx.num; i++) {
-	templates[i] = NULL;
-    }
-
-    for (i = get_listwhence(); i < hlist.num; i++) {
-	int counter;
-
-	counter = i + 1;
-
-	if (!is_allresult() && (i >= get_listwhence() + get_maxresult()))
-	    break;
-
-	if (templates[hlist.data[i].idxid] == NULL) {  /* not loaded */
-	    if (is_listmode()) {
-		templates[hlist.data[i].idxid] = "${uri}\n";
-	    } else {
-		char fname[BUFSIZE];
-		make_fullpathname_result(hlist.data[i].idxid);
-		strcpy(fname, NMZ.result);
-		strcat(fname, ".");
-		strcat(fname, get_template());  /* usually "normal" */
-		templates[hlist.data[i].idxid] = nmz_readfile(fname);
-	    }
-	}
-	compose_result(hlist.data[i], counter, 
-		       templates[hlist.data[i].idxid],  result);
-	conv_ext(result);
-	html_print(result);
-	print("\n");
-    }
-
-    /* free all templates[] */
-    for (i = 0; i < Idx.num; i++) {
-	if (templates[i] != NULL) {
-	    free(templates[i]);
-	}
-    }
 }
 
 void print_hitnum_all_idx(void)
@@ -616,9 +622,9 @@ void print_range(NmzResult hlist)
 {
     if (is_htmlmode())
         print("<p>\n");
-    put_current_range(hlist.num);
+    print_current_range(hlist.num);
     if (is_pageindex()) {
-        put_page_index(hlist.num);
+        print_page_index(hlist.num);
     }
     if (is_htmlmode()) {
         print("</p>\n");

@@ -53,7 +53,7 @@ dist-hook:
 
 
 # For developing use.
-cxref: stamp-h
+cxref: src/namazu
 	if test ! -d cxref; then \
 	    $(mkinstalldirs) cxref; \
 	fi
@@ -72,5 +72,5 @@ global: HTAGS
 HTAGS: GTAGS
 	htags
 
-GTAGS: stamp-h
+GTAGS: src/namazu
 	gtags

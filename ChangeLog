@@ -1,5 +1,27 @@
 1999-12-09  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/output.c: Rename functions:
+		s/put_query/print_query/
+		s/put_page_index/print_page_index/
+		s/put_query/print_query/
+		s/put_current_range/print_current_range/
+		s/put_page_index/print_page_index/
+	
+	* Makefile.am (cxref): Change a dependency: stamp-h -> src/namazu
+	(GTAGS): Change a dependency: stamp-h -> src/namazu
+
+	* src/result.c (is_urireplace): Be private.
+	(is_uridecode): Be private.
+
+	* src/output.c (is_allresult): Be private.
+	(is_pageindex): Be private.
+	(print_hlist): Be private.
+	(put_current_range): Be private.
+	(put_page_index): Be private.
+	(put_query): Be private.
+
+	* nmz/field.c (apply_field_alias): Be private.
+
 	* nmz/seed.h: New file.
 
 	* nmz/seed.c (nmz_seed): Renamed from Seed.

@@ -3,7 +3,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.3 1999-05-14 04:38:50 satoru Exp $
+ * $Id: namazu.c,v 1.4 1999-05-29 08:21:09 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -108,6 +108,8 @@ int get_commandline_opt(int ac, uchar **av)
                 case 'n':
                     if (av[i][j + 1] == '\0' && i < ac - 1)
                         HListMax = atoi(av[++i]);
+		    if (HListMax < 0)
+			HListMax = 0;
                     goto LOOP1;
                 case 'w':
                     if (av[i][j + 1] == '\0' && i < ac - 1)

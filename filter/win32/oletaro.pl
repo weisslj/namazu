@@ -1,6 +1,6 @@
 # 
 # -*- Perl -*-
-# $Id: oletaro.pl,v 1.5 2004-03-09 11:56:00 opengl2772 Exp $
+# $Id: oletaro.pl,v 1.6 2004-03-17 16:53:04 opengl2772 Exp $
 # 
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -29,10 +29,47 @@ require 'util.pl';
 require 'gfilter.pl';
 
 sub mediatype() {
+    open (SAVEERR,">&STDERR");
+    open (STDERR,">nul");
+    my $const;
+    $const = Win32::OLE::Const->Load("Microsoft Word 11.0 Object Library");
+    if ($const) {
+        open (STDERR,">&SAVEERR");
+        return (
+            'application/ichitaro7', 'application/x-js-taro'
+        );
+    }
+    $const = Win32::OLE::Const->Load("Microsoft Word 10.0 Object Library");
+    if ($const) {
+        open (STDERR,">&SAVEERR");
+        return (
+            'application/ichitaro5',
+            'application/ichitaro6', 'application/ichitaro7',
+            'application/x-js-taro'
+        );
+    }
+    $const = Win32::OLE::Const->Load("Microsoft Word 9.0 Object Library");
+    if ($const) {
+        open (STDERR,">&SAVEERR");
+        return (
+            'application/ichitaro4', 'application/ichitaro5',
+            'application/ichitaro6', 'application/ichitaro7',
+            'application/x-js-taro'
+        );
+    }
+    $const = Win32::OLE::Const->Load("Microsoft Word 8.0 Object Library");
+    if ($const) {
+        open (STDERR,">&SAVEERR");
+        return (
+            'application/ichitaro4', 'application/ichitaro5',
+            'application/ichitaro6', 'application/ichitaro7',
+            'application/x-js-taro'
+        );
+    }
+    open (STDERR,">&SAVEERR");
+
     return (
-        'application/ichitaro4', 'application/ichitaro5',
-        'application/ichitaro6', 'application/ichitaro7',
-        'application/x-js-taro'
+        'application/ichitaro7', 'application/x-js-taro'
     );
 }
 

@@ -1,0 +1,33 @@
+#! /bin/sh
+#
+# Test for phrase search.
+#
+LOG=`pwd`/test-log
+echo '  *** starting ' $0 >>$LOG
+
+EXEC=no
+case $LANG in 
+        ja*)
+                EXEC=yes
+                ;;
+esac
+if [ $EXEC = 'no' ]
+then
+        echo "Skip $0" >> $LOG
+        exit 0
+fi
+
+docnum=`perl -lne 'print $1 if /^files (\d+)/' ja-idx2/NMZ.status`
+
+# Check simple searching.
+cd ../src
+./namazu namazu ../tests/ja-idx2 >> $LOG
+test "$?" != "0" && exit 1  # error if not success
+
+# Check the number of retrieved documents.
+cd ../src
+hitnum=`./namazu -c namazu ../tests/ja-idx2`
+echo "docnum:" $docnum, "hitnum:" $hitnum >> $LOG
+test "$docnum" != "$hitnum" && exit 1  # error if not matched
+
+exit 0

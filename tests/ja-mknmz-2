@@ -1,0 +1,29 @@
+#! /bin/sh
+#
+# Test for Japanese encoding
+#
+LOG=`pwd`/test-log
+echo '  *** starting ' $0 >>$LOG
+TARGET=$srcdir/data/ja-mac
+IDX=ja-idx2
+
+EXEC=no
+case $LANG in 
+	ja*)
+		EXEC=yes
+		;;
+esac
+if [ $EXEC = 'no' ]
+then
+	echo "Skip $0" >> $LOG
+	exit 0
+fi
+
+if test ! -d $IDX; then
+    mkdir $IDX
+else
+    rm -f $IDX/NMZ.*
+fi
+
+../scripts/mknmz -O $IDX $TARGET >> $LOG
+exit $?

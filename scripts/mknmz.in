@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.137 2004-04-08 08:33:40 opengl2772 Exp $
+# $Id: mknmz.in,v 1.138 2004-05-01 23:12:51 opengl2772 Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -1442,9 +1442,9 @@ sub absolute_path($$) {
     if (($SYSTEM eq "MSWin32") || ($SYSTEM eq "os2")) {
 	    $path =~ s!([\x81-\x9f\xe0-\xef][\x40-\x7e\x80-\xfc]|[\x01-\x7f])!
 	    $1 eq "\\" ? "/" : $1!gex;
-         if ($path !~ m!^[A-Z]:/!i) {
-             $path = "$cwd/$path";
-         }
+        if ($path !~ m!^[A-Z]:/!i) {
+            $path = "$cwd/$path";
+        }
     } else {
         $path =~ s!^([^/])!$cwd/$1!; 
     }
@@ -2092,7 +2092,7 @@ sub load_sizefield() {
     return [] unless defined $fh_sizefield;
     my $line;
     my @ret = ();
-    while ($line = <$fh_sizefield>) {
+    while (defined($line = <$fh_sizefield>)) {
 	chomp $line;
 	push @ret, $line;
     }

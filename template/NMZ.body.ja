@@ -99,7 +99,7 @@ Tknamazu および namazu.el から検索するときは必ず後者で指定します。
 検索するキーワードを正規表現で指定します。正規表現は 
 <code class="operator">/.../</code> のようにスラッシュ記号で囲みます。正規表
 現のエンジンには<a
-href="http://www.netlab.co.jp/ruby/">Ruby</a>のコードを利用
+href="http://www.ruby-lang.org/">Ruby</a>のコードを利用
 しています。正規表現の書式は<a
 href="http://www.perl.com/">Perl</a>とほぼ同じです。 例:
 </p>
@@ -135,8 +135,8 @@ href="http://www.perl.com/">Perl</a>とほぼ同じです。 例:
 はしません。
 
 <li>日本語の複合語は形態素単位に分割し、それらを<a
-href="#phrase"> フレイズ検索</a>します。分割は不適切に行なわ
-れることがあります。
+href="#query-phrase"> フレイズ検索</a>します。分割は不適切に
+行なわれることがあります。
 
 <li>JIS X 0208 (いわゆる全角文字) の英数字と記号の一部 
 (ASCIIと重複しているもの) は ASCII (いわゆる半角文字) として
@@ -144,7 +144,7 @@ href="#phrase"> フレイズ検索</a>します。分割は不適切に行なわ
 
 <li>記号を含む語の検索ができます。例: <code>TCP/IP</code>。
 ただし、記号の処理は完全ではないので <code>TCP and IP</code> 
-のように分割して<a href="#and">AND検索</a>をかけた方が取りこ
+のように分割して<a href="#query-and">AND検索</a>をかけた方が取りこ
 ぼしがありません (その代わり余計なファイルまでヒットしてしま
 う可能性があります)。
 

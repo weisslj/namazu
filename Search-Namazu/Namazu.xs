@@ -20,7 +20,7 @@ Namazu.xs
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 # 02111-1307, USA
 
-$Id: Namazu.xs,v 1.5 1999-11-10 08:48:41 knok Exp $
+$Id: Namazu.xs,v 1.6 1999-11-10 10:23:57 knok Exp $
 
 */
 
@@ -54,8 +54,8 @@ PROTOTYPES: DISABLE
 void
 call_search_main(query)
 	SV *query
-PPCODE:
-{
+
+	PPCODE:
 		char *qstr;
 		int i;
 		AV *retar;
@@ -71,6 +71,7 @@ PPCODE:
 		hlist = search_main(qstr);
 		for (i = 0; i < hlist.n; i ++) {
 			SV *ohlist = perl_eval_pv("new Search::Namazu::HList", TRUE);
+			SV *tmp;
 			get_field_data(hlist.d[i].idxid, hlist.d[i].docid, "uri", result);
 			PUSHMARK(SP);
 			XPUSHs(ohlist);
@@ -79,12 +80,14 @@ PPCODE:
 			XPUSHs(sv_2mortal(newSViv(hlist.d[i].date)));
 			XPUSHs(sv_2mortal(newSViv(hlist.d[i].rank)));
 			PUTBACK;
-			perl_call_method("set", G_DISCARD);
 			av_push(retar, ohlist);
 		}
 		free_hlist(hlist);
-		PUSHs(sv_2mortal(newRV((SV*) retar)));
-}
+		EXTEND(SP, hlist.n);
+		for (i = 0; i < hlist.n; i ++) {
+			PUSHs(av_pop(retar));
+		}
+
 
 int
 nmz_addindex(index)

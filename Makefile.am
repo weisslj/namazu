@@ -59,12 +59,12 @@ cxref: src/namazu
 	fi
 	cxref -N namazu -html20-src -I . -I src -I nmz -I lib \
 	    -warn-xref -index-all -xref-all -O cxref \
-	    {nmz,src,lib}/*.[ch] 1> cxref/warnings 
+	    nmz/*.[ch] src/*.[ch] lib/*.[ch] 1> cxref/warnings 
 
 	# Two passes are needed for accurate cross referencing.
 	cxref -N namazu -html20-src -I . -I src -I nmz -I lib \
 	    -warn-xref -index-all -xref-all -O cxref \
-	    {nmz,src,lib}/*.[ch] 1> cxref/warnings 
+	    nmz/*.[ch] src/*.[ch] lib/*.[ch] 1> cxref/warnings 
 
 
 global: HTAGS

@@ -66,9 +66,8 @@ msgid "The index is locked for maintenance"
 msgstr "El índice está bloqueado para mantenimiento"
 
 #: nmz/util.c:536
-#, fuzzy
-msgid "The index should be old format."
-msgstr "El índice está bloqueado para mantenimiento"
+msgid "Present index is old type. it's unsupported."
+msgstr "El índice actual es de un tipo antiguo. No es soportado."
 
 #: nmz/util.c:539
 msgid "Unknown error. Report bug!"

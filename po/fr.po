@@ -66,8 +66,8 @@ msgid "The index is locked for maintenance"
 msgstr "L'index est vérouillé pour maintenance"
 
 #: nmz/util.c:536
-msgid "The index should be old format."
-msgstr "L'index devrait être en ancien format."
+msgid "Present index is old type. it's unsupported."
+msgstr "Cet index est d'un type obsole, il n'est plus support."
 
 #: nmz/util.c:539
 msgid "Unknown error. Report bug!"

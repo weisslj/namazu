@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: util.c,v 1.81 2002-01-18 07:41:27 knok Exp $
+ * $Id: util.c,v 1.82 2002-02-08 08:26:50 makoto Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -534,7 +534,7 @@ nmz_strerror(enum nmz_stat errnum)
 	msg = _("The index is locked for maintenance");
 	break;
     case ERR_OLD_INDEX_FORMAT:
-	msg = _("The index should be old format.");
+	msg = _("Present index is old type. it's unsupported.");
 	break;
     default:
 	msg = _("Unknown error. Report bug!");

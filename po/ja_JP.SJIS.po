@@ -66,8 +66,8 @@ msgid "The index is locked for maintenance"
 msgstr "インデックスは保守作業の最中です"
 
 #: nmz/util.c:536
-msgid "The index should be old format."
-msgstr "インデックスは古いフォーマットであるべきです"
+msgid "Present index is old type. it's unsupported."
+msgstr "存在するインデックスは古い形式です。今は対応していません"
 
 #: nmz/util.c:539
 msgid "Unknown error. Report bug!"

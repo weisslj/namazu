@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.88 2001-12-21 05:39:20 knok Exp $
+ * $Id: search.c,v 1.89 2002-02-08 08:26:50 makoto Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -697,15 +697,15 @@ check_access(void)
 static enum nmz_stat
 open_index_files(void)
 {
-    Nmz.wi = fopen(NMZ.wi, "rb"); /* Check NMZ.wi at first to recognize index format */
-    if (Nmz.wi == NULL) {
-        nmz_debug_printf("%s: %s", NMZ.wi, strerror(errno));
-	return ERR_OLD_INDEX_FORMAT;
-    }
     Nmz.i = fopen(NMZ.i, "rb");
     if (Nmz.i == NULL) {
         nmz_debug_printf("%s: %s", NMZ.i, strerror(errno));
 	return ERR_CANNOT_OPEN_INDEX;
+    }
+    Nmz.wi = fopen(NMZ.wi, "rb"); /* Check NMZ.wi at first to recognize index format */
+    if (Nmz.wi == NULL) {
+        nmz_debug_printf("%s: %s", NMZ.wi, strerror(errno));
+	return ERR_OLD_INDEX_FORMAT;
     }
     Nmz.ii = fopen(NMZ.ii, "rb");
     if (Nmz.ii == NULL) {

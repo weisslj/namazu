@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.13 1999-08-26 09:22:34 satoru Exp $
+dnl $Id: configure.in,v 1.14 1999-08-26 10:15:55 satoru Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -161,7 +161,15 @@ fi
 ZCAT_PATH=$ZCAT
 AC_SUBST(ZCAT_PATH)
 
-AC_PATH_PROG(GZIP, gzip, no)
+AC_MSG_CHECKING(for Compress::Zlib module)
+if $PERL -MCompress::Zlib -e '' 1>/dev/null 2> /dev/null; then
+    GZIP=module_gzip
+    AC_MSG_RESULT(yes)
+else
+    AC_MSG_RESULT(no)
+    AC_PATH_PROG(GZIP,gzip, no)
+fi
+
 if test "$GZIP" = "no"; then
     AC_MSG_WARN(gzip not found)
 fi

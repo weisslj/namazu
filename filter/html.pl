@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: html.pl,v 1.29 2000-03-29 14:21:49 satoru Exp $
+# $Id: html.pl,v 1.30 2000-05-23 02:59:31 masao Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -105,6 +105,9 @@ sub html_filter ($$$$) {
     html::decode_entity($contref);
     html::decode_entity($weighted_str);
     html::decode_entity($headings);
+    for my $key (keys %{$fields}) {
+	html::decode_entity(\$fields->{$key});
+    }
 }
 
 # Convert independent < > s into entity references for escaping.

@@ -1,5 +1,8 @@
 2000-05-23  Masao Takaku  <masao@ulis.ac.jp>
 
+	* filter/html.pl (html_filter): Fix namazu-bugs-ja#15. Call
+	decode_entity() for strings of %fields.
+
 	* tests/mknmz-9: Fix a syntax error with the Bourne shell.
 
 2000-05-19  Rei FURUKAWA  <furukawa@tcp-ip.or.jp>
@@ -5687,4 +5690,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.696 2000-05-23 02:23:59 masao Exp $
+$Id: ChangeLog,v 1.697 2000-05-23 02:59:31 masao Exp $

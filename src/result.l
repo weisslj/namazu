@@ -1,7 +1,7 @@
 /*
  * result.l -
  * -*- C -*-
- * $Id: result.l,v 1.14 1999-09-01 02:04:54 satoru Exp $
+ * $Id: result.l,v 1.15 1999-09-01 02:26:38 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -199,22 +199,22 @@ void get_field_data(char *key)
 void print_hlist(HLIST hlist)
 {
     int i;
-    char template[BUFSIZE];
 
     if (hlist.n <= 0 || HListMax == 0) {
 	return;
     }
 
-    strcpy(template, NMZ.result);
-    strcat(template, ".");
-    strcat(template, Template);  /* usually "normal" */
-
     for (i = HListWhence; i < hlist.n; i++) {
+	char template[BUFSIZE];
 	strcpy(Buf, "\t");  /* '\t' has an important role cf. fputx() */
 	Score   = hlist.scr[i];
 	Counter = i + 1;
 	Fid = hlist.fid[i];
 	make_fullpathname_field(hlist.did[i]);
+	strcpy(template, NMZ.result);
+	strcat(template, ".");
+	strcat(template, Template);  /* usually "normal" */
+
 	if (!AllList && (i >= HListWhence + HListMax))
 	    break;
 	if (MoreShortFormat) {

@@ -1,5 +1,11 @@
 1999-09-01  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/{namazu,usage}.c: Add --result=ext option for specifying
+	NMZ.result.ext.
+
+	* src/{namazu,usage}.c: Change identifiers of  sevaral command
+	line options.
+	
 	* src/namazu.c (parse_options): Be effective -s option.
 	
 	* src/result.l (print_hlist): Support choicing a correct

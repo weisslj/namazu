@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.19 1999-09-01 02:04:54 satoru Exp $
+ * $Id: namazu.c,v 1.20 1999-09-01 02:26:38 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -78,17 +78,20 @@ void set_redirect_stdout_to_file(uchar * fname)
 /*
  * Command line options.
  */
-static const char *short_options = "acCedfFhHlL:n:o:qrRsSUvw0";
+static const char *short_options = "01acCedfFhHlL:n:o:qrRsSUvw";
 static struct option long_options[] = {
+    {"help",             no_argument,       NULL, '0'},
+    {"result",           required_argument, NULL, '1'},
+    {"late",             no_argument,       NULL, '2'},
+    {"early",            no_argument,       NULL, '3'},
     {"all",              no_argument,       NULL, 'a'},
     {"count",            no_argument,       NULL, 'c'},
     {"show-config",      no_argument,       NULL, 'C'},
-    {"early",            no_argument,       NULL, 'e'},
+    {"debug",            no_argument,       NULL, 'd'},
     {"config",           no_argument,       NULL, 'f'},
     {"form",             no_argument,       NULL, 'F'},
     {"html",             no_argument,       NULL, 'h'},
     {"page",             no_argument,       NULL, 'H'},
-    {"late",             no_argument,       NULL, 'l'},
     {"lang",             required_argument, NULL, 'L'},
     {"max",              required_argument, NULL, 'n'},
     {"output",           required_argument, NULL, 'o'},
@@ -100,8 +103,6 @@ static struct option long_options[] = {
     {"no-encode-uri",    no_argument,       NULL, 'U'},
     {"version",          no_argument,       NULL, 'v'},
     {"whence",           required_argument, NULL, 'w'},
-    {"help",             no_argument,       NULL, '0'},
-    {"debug",            no_argument,       NULL, 'd'},
     {NULL, 0, NULL, 0}
 };
 
@@ -127,7 +128,8 @@ int parse_options(int argc, char **argv)
 	    ShortFormat = 1;
 	    strcpy(Template, "short");
 	    break;
-	case 'S':
+	case 'l':
+	case 'S':  /* 'S' for backward compatibility */
 	    MoreShortFormat = 1;
 	    break;
 	case 'q':
@@ -148,11 +150,11 @@ int parse_options(int argc, char **argv)
 	case 'a':
 	    AllList = 1;
 	    break;
-	case 'l':
+	case '2':
 	    LaterOrder = 1;
 	    ScoreSort = 0;
 	    break;
-	case 'e':
+	case '3':
 	    LaterOrder = 0;
 	    ScoreSort = 0;
 	    break;
@@ -172,6 +174,9 @@ int parse_options(int argc, char **argv)
 	case '0':
 	    show_long_usage();
 	    exit(0);
+	    break;
+	case '1':
+	    strcpy(Template, optarg);
 	    break;
 	case 'C':
 	    show_conf();

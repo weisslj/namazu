@@ -2,7 +2,7 @@
  * 
  * messages.c -
  * 
- * $Id: message.c,v 1.6 1999-08-30 01:22:03 satoru Exp $
+ * $Id: message.c,v 1.7 1999-09-01 02:26:38 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -63,13 +63,14 @@ void init_message(void)
 Usage: namazu [options] <query> [index dir(s)] \n\
    -n, --max=num           一度に表示する件数\n\
    -w, --whence=num        表示するリストの先頭番号\n\
+   -l, --list              検索結果を URI・パス名のリストで出力\n\
    -s, --short             短いフォーマットで出力\n\
-   -S, --very-short        もっと短いフォーマット (リスト表示) で出力\n\
-   -h, --html              HTML で出力する\n\
-   -l, --late              新しい順にソートする\n\
-   -e, --early             古い順にソートする\n\
+       --result=ext        結果表示に用いる NMZ.result.ext を指定
+       --late              検索結果を新しい順にソートする\n\
+       --early             検索結果を古い順にソートする\n\
    -a, --all               検索結果をすべて表示する\n\
    -c, --count             ヒット数のみを表示する\n\
+   -h, --html              HTML で出力する\n\
    -r, --no-references     参考ヒット数を表示しない\n\
    -H, --page              先の検索結果へのリンクを表示する (ほぼ無意味) \n\
    -F, --form              <form> ... </form> の部分を強制的に表示する\n\
@@ -81,7 +82,7 @@ Usage: namazu [options] <query> [index dir(s)] \n\
    -q, --quiet             検索結果以外のメッセージを表示しない\n\
    -L, --lang=lang         メッセージの言語を設定する ja または en\n\
    -v, --version           ヴァージョンを表示する\n\
-   -0, --help              help を表示する (この表示)\n";
+       --help              help を表示する (この表示)\n";
 
         /* output messages (Japanese message should be outputed by
            euctojisput function */

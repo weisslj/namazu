@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.30 2004-10-16 14:54:12 opengl2772 Exp $
+# $Id: util.pl,v 1.31 2004-10-17 09:25:09 usu Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -31,6 +31,8 @@ require 'time.pl';
 use vars qw($LANG_MSG $LANG);
 $LANG_MSG = "C";           # language of messages
 $LANG = "C";               # language of text processing
+
+my $SYSTEM = $^O;
 
 #  rename() with consideration for OS/2
 sub Rename($$) {
@@ -217,18 +219,18 @@ sub checklib ($) {
 sub checkcmd ($) {
     my $cmd = shift;
     my $pd = ':';
-    $pd = ';' if (($mknmz::SYSTEM eq "MSWin32") || ($mknmz::SYSTEM eq "os2"));
+    $pd = ';' if (($SYSTEM eq "MSWin32") || ($SYSTEM eq "os2"));
 
     for my $dir (split(/$pd/, $ENV{'PATH'})) {
 	return "$dir/$cmd" if (-x "$dir/$cmd");
 	return "$dir/$cmd" if (-x "$dir/$cmd.com" &&
-		(($mknmz::SYSTEM eq "MSWin32") || ($mknmz::SYSTEM eq "os2")));
+		(($SYSTEM eq "MSWin32") || ($SYSTEM eq "os2")));
 	return "$dir/$cmd" if (-x "$dir/$cmd.exe" &&
-		(($mknmz::SYSTEM eq "MSWin32") || ($mknmz::SYSTEM eq "os2")));
+		(($SYSTEM eq "MSWin32") || ($SYSTEM eq "os2")));
 	return "$dir/$cmd" if (-x "$dir/$cmd.bat" &&
-			       ($mknmz::SYSTEM eq "MSWin32"));
+			       ($SYSTEM eq "MSWin32"));
 	return "$dir/$cmd" if (-x "$dir/$cmd.cmd" &&
-			       ($mknmz::SYSTEM eq "os2"));
+			       ($SYSTEM eq "os2"));
     }
     return undef;
 }
@@ -312,7 +314,7 @@ sub assert($$) {
 sub systemcmd(@) {
     my $status = undef;
     my @args = @_;
-    if ($mknmz::SYSTEM eq "MSWin32" || $mknmz::SYSTEM eq "os2") {
+    if ($SYSTEM eq "MSWin32" || $SYSTEM eq "os2") {
 	foreach my $arg (@args) {
 	    $arg =~ s!/!\\!g;
 	}
@@ -405,7 +407,7 @@ sub syscmd(%)
         $text_stderr = 1;
     }
 
-    if ($mknmz::SYSTEM eq "MSWin32" || $mknmz::SYSTEM eq "os2") {
+    if ($SYSTEM eq "MSWin32" || $SYSTEM eq "os2") {
 	foreach my $arg (@args) {
 #	    $arg =~ s!/!\\!g;
 	}
@@ -479,7 +481,7 @@ sub syscmd(%)
                 codeconv::normalize_nl(\$conts_out) if (defined $text_stdout);
 
                 my $file = $option{stdout};
-                if ($mknmz::SYSTEM eq "MSWin32" || $mknmz::SYSTEM eq "os2") {
+                if ($SYSTEM eq "MSWin32" || $SYSTEM eq "os2") {
 #                    $file =~ s!/!\\!g;
                 }
                 if (!open(OUT, "$mode_stdout$file")) {
@@ -510,7 +512,7 @@ sub syscmd(%)
                 codeconv::normalize_nl(\$conts_err) if (defined $text_stderr);
     
                 my $file = $option{stderr};
-                if ($mknmz::SYSTEM eq "MSWin32" || $mknmz::SYSTEM eq "os2") {
+                if ($SYSTEM eq "MSWin32" || $SYSTEM eq "os2") {
 #                    $file =~ s!/!\\!g;
                 }
                 if (!open(OUT, "$mode_stderr$file")) {
@@ -535,13 +537,13 @@ sub syscmd(%)
 # Returns a string representation of the null device.
 # We can use File::Spec->devnull() on Perl-5.6, instead.
 sub devnull {
-    if ($mknmz::SYSTEM eq "MSWin32") {
+    if ($SYSTEM eq "MSWin32") {
 	return "nul";
-    } elsif ($mknmz::SYSTEM eq "os2") {
+    } elsif ($SYSTEM eq "os2") {
 	return "/dev/nul";
-    } elsif ($mknmz::SYSTEM eq "MacOS") {
+    } elsif ($SYSTEM eq "MacOS") {
 	return "Dev:Null";
-    } elsif ($mknmz::SYSTEM eq "VMS") {
+    } elsif ($SYSTEM eq "VMS") {
 	return "_NLA0:";
     } else { # Unix
 	return "/dev/null";
@@ -551,6 +553,14 @@ sub devnull {
 # check url
 sub isurl ($) {
     return $_[0] =~ /^[a-z]+:/;
+}
+
+# convert \ to / with consideration for Shift_JIS Kanji code
+sub win32_yen_to_slash ($) {
+    my ($filenameref) = @_;
+    $$filenameref =~
+                s!([\x81-\x9f\xe0-\xef][\x40-\x7e\x80-\xfc]|[\x01-\x7f])!
+                $1 eq "\\" ? "/" : $1!gex;
 }
 
 1;

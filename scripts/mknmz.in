@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.144 2004-10-09 08:55:47 usu Exp $
+# $Id: mknmz.in,v 1.145 2004-10-17 09:25:09 usu Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -270,10 +270,7 @@ sub load_rcfiles () {
 sub load_rcfile ($) {
     my ($rcfile) = @_;
     if ($SYSTEM eq "MSWin32" || $SYSTEM eq "os2") {
-	# convert \ to / with consideration for Shift_JIS Kanji code
-	$rcfile =~ 
-		s!([\x81-\x9f\xe0-\xef][\x40-\x7e\x80-\xfc]|[\x01-\x7f])!
-	    $1 eq "\\" ? "/" : $1!gex;
+	util::win32_yen_to_slash(\$rcfile);
     }
     return if (grep {m/^$rcfile$/} @LoadedRcfiles);
     do $rcfile;
@@ -1167,10 +1164,7 @@ sub parse_options
 	unless (-d $output_dir && -w $output_dir);
 
     if ($SYSTEM eq "MSWin32" || $SYSTEM eq "os2") {
-	# convert \ to / with consideration for Shift_JIS Kanji code
-	$output_dir =~ 
-	    s!([\x81-\x9f\xe0-\xef][\x40-\x7e\x80-\xfc]|[\x01-\x7f])!
-	    $1 eq "\\" ? "/" : $1!gex;
+	util::win32_yen_to_slash(\$output_dir); 
     }
 
     # take remaining @ARGV as targets
@@ -1213,12 +1207,10 @@ sub load_target_list ($) {
     my $fh_targets = util::efopen($file);
     my @targets = <$fh_targets>;
     if (($SYSTEM eq "MSWin32") || ($SYSTEM eq "os2")) {
-	grep { 
-	    s/\r//g; 
-	    # Replace \ with / with consideration for Shift_JIS.
-	    s!([\x81-\x9f\xe0-\xef][\x40-\x7e\x80-\xfc]|[\x01-\x7f])!
-		$1 eq "\\" ? "/" : $1!gex;
-	} @targets;
+	foreach my $tmp (@targets){
+	    $tmp =~ s/\r//g;
+	    util::win32_yen_to_slash(\$tmp);
+        }
     }
     chomp @targets; 
     return @targets;
@@ -1232,8 +1224,7 @@ sub absolute_path($$) {
     $path =~ s!^\.$!\./!;
     $path =~ s!^\.[/\\]!$cwd/!;
     if (($SYSTEM eq "MSWin32") || ($SYSTEM eq "os2")) {
-	    $path =~ s!([\x81-\x9f\xe0-\xef][\x40-\x7e\x80-\xfc]|[\x01-\x7f])!
-	    $1 eq "\\" ? "/" : $1!gex;
+	util::win32_yen_to_slash(\$path);
         if ($path =~ m!^//!) {
         } elsif ($path =~ m!^/[^/]!) {
 	    my $driveletter = $cwd;
@@ -1258,10 +1249,9 @@ sub find_target (@) {
 
     # Convert \ to / with consideration for Shift_JIS encoding.
     if (($SYSTEM eq "MSWin32") || ($SYSTEM eq "os2")) {
-	grep {
-	    $_ =~ s!([\x81-\x9f\xe0-\xef][\x40-\x7e\x80-\xfc]|[\x01-\x7f])!
-	    $1 eq "\\" ? "/" : $1!gex;
-	} @targets;
+	foreach my $tmp (@targets){
+	    util::win32_yen_to_slash(\$tmp);
+	}
     }
 
     # For reporting effects of --allow, --deny, --exclude, --mtime

@@ -1,3 +1,16 @@
+2004-10-17  Yukio USUDA <usu@namazu.org>
+
+	* pl/{util.pl, gfilter.pl}: Replace $mknmz::SYSTEM to $SYSTEM.
+
+	* scripts/{nmzcat.in, nmzegrep.in}: Remove package mknmz;
+
+	* pl/filter.pl.in: Move win32_yen_to_slash() to pl/util.pl.
+
+	* scripts/mknmz.in(load_rcfile, parse_options, load_target_list,
+	absolute_path, find_target): Change to use util::win32_yen_to_slash.
+
+	* pltests/Makefile.am(EXTRA_DIST): Remove README-ja.txt.
+
 2004-10-16  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* filter/*.pl, pl/conf.pl.in, util.pl, codeconv.pl: It changes 
@@ -9182,4 +9195,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1250 2004-10-16 14:54:12 opengl2772 Exp $
+$Id: ChangeLog,v 1.1251 2004-10-17 09:25:08 usu Exp $

@@ -3,7 +3,7 @@
 # -*- Perl -*-
 # nmzcat - print file content on the standard output.
 #
-# $Id: nmzcat.in,v 1.1 2004-09-18 12:30:41 usu Exp $
+# $Id: nmzcat.in,v 1.2 2004-10-17 09:25:09 usu Exp $
 #
 # Copyright (C) 2004 Yukio USUDA All rights reserved.
 # Copyright (C) 2004 Namazu Project All rights reserved.
@@ -23,11 +23,6 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 #  02111-1307, USA
-
-{
-    package mknmz;
-    $SYSTEM = $^O;
-}
 
 require 5.004;
 use strict;
@@ -91,7 +86,7 @@ rmdir $tmpdir or die "unable to remove temporary directory \"$tmpdir\"\n";
 
 muda(
     $var::USE_NKF_MODULE, $var::OUTPUT_DIR,
-    $mknmz::SYSTEM, $conf::NKF
+    $conf::NKF
     );
 
 sub muda {};

@@ -21,7 +21,7 @@ PROGRAM = alltests.pl pltests.pl \
 	namazu-cgi-7.pl namazu-cgi-8.pl \
 	namazu-cgi-9.pl namazu-cgi-10.pl
 
-EXTRA_DIST = README-ja.txt pltests.pl.in \
+EXTRA_DIST = pltests.pl.in \
 	alltests.pl.in \
 	mknmz-1.pl.in mknmz-2.pl.in mknmz-4.pl.in \
 	mknmz-5.pl.in mknmz-6.pl.in mknmz-7.pl.in mknmz-8.pl.in \

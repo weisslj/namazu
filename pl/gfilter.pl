@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: gfilter.pl,v 1.4 2004-10-01 03:44:28 opengl2772 Exp $
+# $Id: gfilter.pl,v 1.5 2004-10-17 09:25:09 usu Exp $
 # Copyright (C) 1999 Satoru Takabayashi ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -23,6 +23,8 @@
 #
 
 package gfilter;
+
+my $SYSTEM = $^O;
 
 # Show debug information for filters
 sub show_filter_debug_info ($$$$) {
@@ -55,7 +57,7 @@ sub filename_to_title ($$) {
     my ($cfile, $weighted_str) = @_;
 
     # for MSWin32's filename using Shift_JIS [1998-09-24]
-    if (($mknmz::SYSTEM eq "MSWin32") || ($mknmz::SYSTEM eq "os2")) {
+    if (($SYSTEM eq "MSWin32") || ($SYSTEM eq "os2")) {
 	$cfile = codeconv::shiftjis_to_eucjp($cfile);
 	codeconv::eucjp_han2zen_kana(\$cfile);
     }

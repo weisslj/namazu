@@ -1,3 +1,13 @@
+1999-12-18  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* conf/namazurc: Rewrited.
+
+	* src/mknmz.pl.in (require_modules): Require Text::ChaSen instead
+	of Text::ChaSen1. 
+
+	* configure.in: Detect Text::ChaSen instead of Text::ChaSen1.
+	
+
 1999-12-17  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* src/mknmz.pl.in (wanted): Skip a file name containing LF/CR chars.

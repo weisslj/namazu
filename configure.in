@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.63 1999-12-13 22:16:08 satoru Exp $
+dnl $Id: configure.in,v 1.64 1999-12-18 04:31:35 satoru Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -247,9 +247,9 @@ AC_ARG_WITH(
     CHASEN=$with_chasen
     AC_MSG_RESULT(using $with_chasen for chasen),
     if test -z "$CHASEN"; then
-	AC_MSG_CHECKING(for Text::ChaSen1 module)
-	if $PERL -MText::ChaSen1 -e '' 1>/dev/null 2> /dev/null; then
-	    CHASEN=module_chasen1
+	AC_MSG_CHECKING(for Text::ChaSen module)
+	if $PERL -MText::ChaSen -e '' 1>/dev/null 2> /dev/null; then
+	    CHASEN=module_chasen
 	    AC_MSG_RESULT(yes)
 	else
 	    AC_MSG_RESULT(no)

@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.88 1999-12-17 08:40:25 satoru Exp $
+# $Id: mknmz.pl.in,v 1.89 1999-12-18 04:31:37 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -677,12 +677,12 @@ sub require_modules() {
         util::dprint("wakati: using Text::Kakasi module\n");
 	my $res = Text::Kakasi::getopt_argv('kakasi', '-ieuc', '-oeuc', '-w');
     }
-    if (util::islang("ja") && $conf::WAKATI =~ /^module_chasen1/) {
-	require Text::ChaSen1 || die "unable to require \"Text::ChaSen1\"\n";
-        util::dprint("wakati: using Text::ChaSen1 module\n");
+    if (util::islang("ja") && $conf::WAKATI =~ /^module_chasen/) {
+	require Text::ChaSen || die "unable to require \"Text::ChaSen\"\n";
+        util::dprint("wakati: using Text::ChaSen module\n");
 	my @arg = ('-j', '-F', '%m ');
 	@arg    = ('-j', '-F', '%m %H\\n') if $var::Opt{'morph'};
-	my $res = Text::ChaSen1::getopt_argv('chasen-perl', @arg);
+	my $res = Text::ChaSen::getopt_argv('chasen-perl', @arg);
     }
 }
 

@@ -1,46 +1,46 @@
 # This is a Namazu configuration file.
 #
-#   Originally, this file is named 'namazu.conf-dist'. so you should
-#   copy this to 'namazu.conf' to use.
+#   Originally, this file is named 'namazurc-sample'.  so you should
+#   copy this to 'namazurc' to be effective.
 #
-#   Each items  are must be separated by SPACE or TAB characters. You can
-#   use a double-quoted string for represanting a string which contains 
-#   SPACE or TAB character(s) like "foo bar baz".
+#   Each item is must be separated by one or more SPACE or TAB characters. 
+#   You can use a double-quoted string for represanting a string which 
+#   contains one or more SPACE or TAB characters like "foo bar baz".
 #
 #     <List of Directives>
 #
-#       * INDEX   : Pathname where index files (NMZ.*) are placed.
+#       * Index   : Specify a directory which contains index files (NMZ.*).
 #
-#       * REPLACE : Replace a string for search result output.
-#                   describe by TARGET, REPLACEMENT order. e.g.,
+#       * Replace : Replace a URI string for search results.
+#                   Specify TARGET REPLACEMENT.  e.g.,
 #
-#                     REPLACE  /www/  http://www.foobar.jp/
+#                     Replace  /www/  http://www.foobar.jp/
 #
-#                   if you do not want to do this replacement in command
-#                   line use, you can run 'namazu -U'.
+#                   If you do not want to do the replacement in command
+#                   line use, you can run namazu with -U option.
 #
-#       * BASE    : Append <BASE HREF="..."> to a result HTML document.
-#                   This value must be terminated with '/' or '\' character.
+#       * Base    : Append <BASE HREF="..."> to a result HTML document.
+#                   This value must be terminated with a '/' or '\' character.
 #
-#       * LOGGING : Set OFF to turn off keyword logging in NMZ.slog. 
+#       * Logging : Set OFF to turn off keyword logging in NMZ.slog. 
 #                   Default: logging ON
 #
-#	* LANG    : Set a locale code such as `ja_JP.ujis', `ja_JP.sjis', 
-#                   `de', etc. If you set `de' to this, namazu would use 
+#	* Lang    : Set a locale code such as `ja_JP.ujis', `ja_JP.sjis', 
+#                   `de', etc.  If you set `de' to this, namazu will use 
 #                   NMZ.(head|foot|body|msg).de for composing a result 
 #                   document and use a proper message catalog for `de'.
 #
-#	* SCORING : Set a scoring method TFIDF or SIMPLE.
+#	* Scoring : Set a scoring method TFIDF or SIMPLE.
 #
 #
 #   You can use ~/foo notation for representing a pathname of directory 
-#   which lacated under your home directory. e.g., 
+#   which lacated under your home directory.  e.g., 
 #
-#      INDEX  ~/NMZ
+#      Index  ~/NMZ
 #
-#INDEX		/usr/local/share/namazu/index
-#REPLACE	/home/foo/public_html/	http://www.hoge.jp/~foo/
-#BASE		file://localhost/home/foo/documents/
-#LOGGING	OFF
-#LANG		ja_JP.JIS7
-#SCORING	TFIDF
+#Index		/usr/local/var/namazu/index
+#Replace	/home/foo/public_html/	http://www.hoge.jp/~foo/
+#Base		file://localhost/home/foo/documents/
+#Logging	OFF
+#Lang		ja_JP.JIS7
+#Scoring	TFIDF

@@ -4,7 +4,7 @@ Overview of Changes in Namazu 2.0.3 - Apl 05, 2000
   is printed as it is in search results.
 * Fix several bugs.
 * Add a couple of test suites.
-* Support Perl 5.6.0. No warnings is no longer printed.
+* Support Perl 5.6.0. warnings are no longer printed.
 * Speed up mknmz.  Finding targets becomes fast by orders of magnitude.
 
 Overview of Changes in Namazu 2.0.2 - Mar 17, 2000

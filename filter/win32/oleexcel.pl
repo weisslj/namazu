@@ -1,9 +1,10 @@
 #
 # -*- Perl -*-
-# $Id: oleexcel.pl,v 1.17 2004-05-10 06:00:11 opengl2772 Exp $
+# $Id: oleexcel.pl,v 1.18 2004-05-10 06:02:49 opengl2772 Exp $
 # Copyright (C) 2001 Yoshinori TAKESAKO,
-#               1999 Jun Kurabe ,
-#               1999 Ken-ichi Hirose All rights reserved.
+#               1999 Jun Kurabe,
+#               1999 Ken-ichi Hirose,
+#               2000-2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify

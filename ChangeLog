@@ -1,3 +1,24 @@
+1999-08-31  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* src/mknmz.pl.in, lib/usage.pl: Add --deny=s --exclude=s.
+	
+	* src/mknmz.pl.in: Modify it to be able to take multiple targets
+	as command line arguments.
+	
+	* lib/util.pl: Modify cdie() to use `exit' instead of `die'
+	because `die' cause a annoying message for ordinary users. :-)
+	
+	* src/mknmz.pl.in, lib/usage.pl: Add --replace=s option for
+	transforming URI. And abolish a PREFIX argument in command line.
+	
+	* filter/gfliter.pl, filter/mailnews.pl: Move uuencode_filter()
+	from gfilter.pl to mailnews.pl.
+	
+	* filter/html.pl: s/url/uri/g;
+	
+	* lib/conf.pl.in: Change $DEFAULT_FILE: _default -> index.html
+
+	
 1999-08-31  Ryuji Abe <raeva@t3.rim.or.jp>
 
 	* Makefile.am: If configured, tknamazu will be built. Changed to 

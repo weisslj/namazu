@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.44 1999-08-30 09:19:30 satoru Exp $
+# $Id: mknmz.pl.in,v 1.45 1999-08-31 02:29:13 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -41,7 +41,6 @@ my $CONFDIR  = "%CONFDIR%";      # directory where mknmz.conf are in.
 my $LIBDIR  = "%LIBDIR%";      # directory where library etc. are in.
 my $FILTERDIR  = "%FILTERDIR%";      # directory where filters are in.
 my $TEMPLATEDIR  = "%TEMPLATEDIR%";      # directory where templates are in.
-my $TARGET_DIR = "";
 
 my $DeletedFilesCount = 0;
 my $UpdatedFilesCount = 0;
@@ -53,6 +52,8 @@ my %KeyIndexLast = ();
 my %CheckPoint = ("on" => undef, "continue" => undef);
 my $TestMode   = @TEST_MODE@;
 my $ConfigFile = undef;
+
+my $ReplaceCode  = undef;  # perl code for transforming URI
 
 STDOUT->autoflush(1);
 main();
@@ -239,37 +240,28 @@ sub namazu_core ($$$) {
     my $weighted_str = "";
     my %fields;
 
-    # temporary
-    my $title = "";
-
     my $uri = generate_uri($cfile);  # Make a URI from a file name
     my ($cfile_size, $text_size, $kanji, $mtype) = 
-	load_document(\$cfile, \$title, \$content, \$weighted_str,
+	load_document(\$cfile, \$content, \$weighted_str,
 		      \$headings, \%fields);
 
-    # Do checking
+    # check if the file is acceptable.
     my $err = check_file($cfile, \$content, $text_size, $mtype);
     if ($err) {
 	print $file_count + $file_base . " $uri $err\n" unless $var::Opt{quiet};
 	print $fh_errorsfile "$cfile $err\n"; 
-	return 0;  # return with 0 if error
+	return 0;  # return 0 if error
     }
-    if ($var::Opt{robotexclude}) {
-	if ($uri =~ m/$conf::ROBOTS_EXCLUDE_URIS/io) {
-	    $err = "is excluded because of /robots.txt.\n";
-	    print $file_count + $file_base . " $uri $err\n";
-	    print $fh_errorsfile "$cfile $err\n"; 
-	    return 0;  # return with 0 if error
-	} elsif ($cfile =~ /\.($conf::HTML_SUFFIX)$/io &&
-		 $content =~ /META\s+NAME\s*=\s*([\'\"]?)ROBOTS\1\s+[^>]*
-		 CONTENT\s*=\s*([\'\"]?).*?(NOINDEX|NONE).*?\2[^>]*>/ix)  #"
-	{
-	    $err = "is excluded because of <META> element.";
-	    print $file_count + $file_base . " $uri $err\n" unless $var::Opt{quiet};
-	    print $fh_errorsfile "$cfile $err\n"; 
-	    return 0;  # return with 0 if error
-	}
+
+    # check if the file should be excluded.
+    $err = isexcluded($cfile, $uri, \$content);
+    if (defined $err) {
+	print $file_count + $file_base . 
+	    " $uri $err\n" unless $var::Opt{quiet};
+	print $fh_errorsfile "$cfile $err\n"; 
+	return 0;  # return 0 if error
     }
+
     # Output processing file name as URI
     print $file_count + $file_base . 
 	" $uri [$mtype]\n" unless $var::Opt{quiet};
@@ -278,29 +270,52 @@ sub namazu_core ($$$) {
     put_field_index(\%fields, $field_indices);
 
     put_dateindex($cfile);
-    $content .= $weighted_str;   # add weight info
+    $content .= $weighted_str;   # add weights
     count_words($file_count, $file_base, \$content, $kanji);
     make_phrase_hash($file_count, $file_base, \$content);
 
     return $cfile_size;
 }
 
+# Check wheter or not the given URI is excluded.
+sub isexcluded ($$$) {
+    my ($cfile, $uri, $contref) = @_;
+    my $err = undef;
+
+    if ($var::Opt{robotexclude}) {
+	if ($uri =~ m/^$conf::ROBOTS_EXCLUDE_URIS/io) {
+	    $err = "is excluded because of /robots.txt.\n";
+	} elsif ($cfile =~ /\.($conf::HTML_SUFFIX)$/io &&
+		 $$contref =~ /META\s+NAME\s*=\s*([\'\"]?)ROBOTS\1\s+[^>]*
+		 CONTENT\s*=\s*([\'\"]?).*?(NOINDEX|NONE).*?\2[^>]*>/ix)  #"
+	{
+	    $err = "is excluded because of <META> element.";
+	}
+    } elsif (defined $conf::EXCLUDE_REGEX && $uri =~ /$conf::EXCLUDE_REGEX/) {
+	$err = "is excluded because of \$conf::EXCLUDE_REGEX.\n";
+    }
+
+    return $err;
+
+}
+
 # make a URI from a file name
 sub generate_uri ($) {
     my ($file) = @_;
     return undef unless defined $file;
-
     my $uri = $file;
-    # remove a file name if omittable
-    if ($var::PREFIX && $TARGET_DIR) {
+
+    if ($var::Opt{ommit}) {
+    }
+
+    if (defined $ReplaceCode) {
+	# omit a file name if omittable
 	$uri =~ s!(.*)/($conf::DEFAULT_FILE)$!$1/!o; 
-	$uri =~ s!$TARGET_DIR/!$var::PREFIX!o;
+	# transforming URI by evaling
+	eval "\$uri =~ $ReplaceCode;";
     }
 
     if (($SYSTEM eq "MSWin32") || ($SYSTEM eq "os2")) {
-	# convert \ to / with consideration for Shift_JIS Kanji code
-#	$uri =~ s!([\x81-\x9f\xe0-\xef][\x40-\x7e\x80-\xfc]|[\x01-\x7f])!
-#	    $1 eq "\\" ? "/" : $1!gex;
 	$uri =~ s#^([A-Z]):#/$1|#i; # converting a drive part like: /C|
     }
 
@@ -447,8 +462,8 @@ sub put_dateindex ($) {
 
 
 # load a document file
-sub load_document ($$$$$\%) {
-    my ($orig_cfile, $title, $content, $weighted_str, $headings, $fields)
+sub load_document ($$$$\%) {
+    my ($orig_cfile, $content, $weighted_str, $headings, $fields)
       = @_;
     my $cfile = $$orig_cfile;
 
@@ -516,11 +531,10 @@ sub load_document ($$$$$\%) {
 sub prep () {
     my $file_base = 0;
     my $output_dir = "";
-    my $target_dir = "";
+    my @targets = ();
     my @flist = ();
 
-    ($output_dir, $target_dir, @flist) = parse_options();
-    $TARGET_DIR = $target_dir;
+    ($output_dir, @targets) = parse_options();
     $var::OUTPUT_DIR = $output_dir;
 
     require_modules();
@@ -530,7 +544,7 @@ sub prep () {
     # if Checkpoint mode, return
     return 0 if $CheckPoint{'continue'};
 
-    @flist = find_target($target_dir) unless @flist;
+    @flist = find_target(@targets);
     ($file_base, @flist) = append_index(@flist) 
 	if -f $var::NMZ{r};
     unless (@flist) { # if @flist is empty
@@ -541,19 +555,6 @@ sub prep () {
     save_flist(@flist);
 
     return $file_base;
-}
-
-sub find_target ($) {
-    my ($target_dir) = @_;
-    my @flist = ();
-
-    html::parse_robots_txt() if ($var::Opt{robotexclude});
-    my $current_dir = cwd();
-    chdir $target_dir || util::cdie("$target_dir: $!\n");
-    find::findfiles(\@flist);
-    chdir $current_dir;
-
-    return @flist;
 }
 
 sub save_flist(@) {
@@ -656,10 +657,9 @@ sub parse_options ()
 	exit 1;
     }
 
-    my $output_dir = "";
-    my $target_dir = "";
-    my $target_loaded = 0;
-    my @flist = ();
+    my $output_dir = undef;
+    my @targets = ();
+    my $targets_loaded = 0;
     my @argv = @ARGV;
 
     my $opt_dummy = 0;
@@ -676,37 +676,40 @@ sub parse_options ()
     
 #    Getopt::Long::Configure('bundling');
     Getopt::Long::config('bundling');
-    GetOptions('H|no-hiragana'       => \$var::Opt{hiragana},
-	       'G|no-okurigana'      => \$var::Opt{okurigana},
+    GetOptions(
+       	       '0|help'              => \$opt_help,
+	       '1|exclude=s'         => \$conf::EXCLUDE_REGEX,
+	       '2|deny=s'            => \$conf::DENY_REGEX,
+	       '3|allow=s'           => \$conf::ALLOW_REGEX,
+	       'A|htacces'           => \$var::Opt{htaccessexclude},
 	       'E|no-edge-symbol'    => \$var::Opt{noedgesymbol},
+	       'F|target-list=s'     => \$opt_target_list,
+	       'G|no-okurigana'      => \$var::Opt{okurigana},
+	       'H|no-hiragana'       => \$var::Opt{hiragana},
+	       'I|include=s'         => \$opt_include,
 	       'K|no-symbol'         => \$var::Opt{nosymbol},
+	       'L|lang=s'            => \$conf::LANGUAGE,
+	       'O|output-dir=s'      => \$output_dir,
+	       'S|checkpoint-sub'    => \$opt_checkpoint_sub,
+	       'T|template-dir=s'    => \$TEMPLATEDIR,
 	       'U|no-encode-uri'     => \$var::Opt{noencodeuri} ,
-	       'x|no-heading-summary'=> \$var::Opt{noheadabst},
-	       'e|robots-txt'        => \$var::Opt{robotexclude},
-	       'q|quiet'             => \$var::Opt{quiet},
+	       'V|verbose'           => \$var::Opt{verbose},
 	       'Y|no-delete'         => \$var::Opt{nodelete},
 	       'Z|no-update'         => \$var::Opt{noupdate},
-	       'A|htacces'           => \$var::Opt{htaccessexclude},
-	       'd|debug'             => \$var::Opt{debug},
-	       's|checkpoint'        => \$CheckPoint{'on'},
-	       'O|output-dir=s'      => \$output_dir,
-	       'L|lang=s'            => \$conf::LANGUAGE,
-	       'T|template-dir=s'    => \$TEMPLATEDIR,
-	       'f|config=s'          => \$ConfigFile,
-	       't|allow=s'           => \$conf::ALLOW_REGEX,
-
-	       'v|version'           => \$opt_version,
-	       'V|verbose'           => \$var::Opt{verbose},
 	       'a|all'               => \$opt_all,
-	       'k|use-kakasi'        => \$opt_kakasi,
 	       'c|use-chasen'        => \$opt_chasen,
-	       'm|use-chasen-morph'  => \$opt_chasen_morph,
-	       'I|include=s'         => \$opt_include,
-	       'F|target-list=s'     => \$opt_target_list,
-	       'S|checkpoint-sub'    => \$opt_checkpoint_sub,
-	       '0|help'              => \$opt_help,
+	       'd|debug'             => \$var::Opt{debug},
+	       'e|robots-txt'        => \$var::Opt{robotexclude},
+	       'f|config=s'          => \$ConfigFile,
 	       'h|rfc822'            => \$opt_dummy, # for backward compat.
+	       'k|use-kakasi'        => \$opt_kakasi,
+	       'm|use-chasen-morph'  => \$opt_chasen_morph,
+	       'q|quiet'             => \$var::Opt{quiet},
+	       'r|replace=s'         => \$ReplaceCode,
+	       's|checkpoint'        => \$CheckPoint{'on'},
 	       'u|uuencode'          => \$opt_dummy, # for backward compat.
+	       'v|version'           => \$opt_version,
+	       'x|no-heading-summary'=> \$var::Opt{noheadabst},
 	       );
 
     if ($opt_help) {
@@ -736,17 +739,16 @@ sub parse_options ()
     }
     if ($opt_include) {
 	eval util::readfile($opt_include);
-        util::dprint("Included: $opt_include\n") unless $var::Opt{quiet};
+        util::dprint("Included: $opt_include\n");
     }
     if ($opt_target_list) {
 	if ($CheckPoint{'continue'}) {
-	    @flist = ("dummy");
+	    @targets = ("dummy");
 	} else {
-	    @flist = load_target_list($opt_target_list);
-	    util::dprint("Loaded: $opt_target_list\n") unless $var::Opt{quiet};
+	    @targets = load_target_list($opt_target_list);
+	    util::dprint("Loaded: $opt_target_list\n");
 	}
-	$target_loaded = 1;
-	$target_dir = cwd();
+	$targets_loaded = 1;
     }
     if ($opt_checkpoint_sub) {
 	$CheckPoint{'on'}           = 1;
@@ -754,78 +756,86 @@ sub parse_options ()
 	@argv = grep {! /-S/} @argv;  # remove -S
     }
 
-    if (@ARGV == 0 && !$target_loaded && $output_dir eq "") {
+    if (defined $ReplaceCode) {
+	my $orig = "/foo/bar/baz/quux.html";
+	my $tmp  = $orig;
+	eval "\$tmp =~ $ReplaceCode;";
+	if ($@) {  # eval error
+	    util::cdie("Invalid replace: $ReplaceCode\n");
+	}
+	util::dprint("Replace: $orig -> $tmp\n");
+    }
+
+    if (@ARGV == 0 && $targets_loaded == 0) {
 	show_mini_usage();
 	exit 1;
     }
 
-    if ($target_loaded && ! @flist) {
- 	print "No files to index.\n";
- 	exit 0;
-    }
-
-    if ($#ARGV > 0 || $#ARGV == 0 && $target_loaded) {
-	$var::PREFIX = $ARGV[0];
-	shift @ARGV;
-    }
-
-    $target_dir = $ARGV[0] if defined $ARGV[0];
-    $output_dir = cwd() if $output_dir eq "";
+    $output_dir = cwd() unless defined $output_dir;
     util::cdie("$output_dir: invalid output directory\n")
 	unless (-d $output_dir && -w $output_dir);
 
     if ($SYSTEM eq "MSWin32" || $SYSTEM eq "os2") {
 	# convert \ to / with consideration for Shift_JIS Kanji code
-	$target_dir =~ 
-	    s!([\x81-\x9f\xe0-\xef][\x40-\x7e\x80-\xfc]|[\x01-\x7f])!
-	    $1 eq "\\" ? "/" : $1!gex;
 	$output_dir =~ 
 	    s!([\x81-\x9f\xe0-\xef][\x40-\x7e\x80-\xfc]|[\x01-\x7f])!
 	    $1 eq "\\" ? "/" : $1!gex;
     }
 
+    # take remaining @ARGV as targets
+    @targets = @ARGV if @ARGV > 0 && $targets_loaded == 0;
+
     # revert @ARGV
     @ARGV = @argv;
 
-    return ($output_dir, $target_dir, @flist);
+    return ($output_dir, @targets);
 }
 
 
 sub load_target_list ($) {
     my ($file) = @_;
-    my @flist = ();
+    my $fh_targets = util::efopen($file);
+    my @targets = <$fh_targets>;
+    chomp @targets; 
+    return @targets;
+}
 
+sub find_target (@) {
+    my @targets = @_;
     my $cwd = cwd();
 
-    {
-	my $fh_tlist = util::efopen($file);
-	@flist = <$fh_tlist>;
-	chomp @flist; 
-    }
+    html::parse_robots_txt() if ($var::Opt{robotexclude});
 
     # convert a relative path into an absolute path
-    grep(s!^\./!$cwd/!, @flist); 
+    grep(s!^\./!$cwd/!, @targets); 
     if (($SYSTEM eq "MSWin32") || ($SYSTEM eq "os2")) {
-        grep(s,^([A-Z](?!:/)),$cwd/$1,i, @flist); 
+        grep {s,^([A-Z](?!:/)),$cwd/$1,i} @targets; 
     } else {
-        grep(s!^([^/])!$cwd/$1!, @flist); 
+        grep {s!^([^/])!$cwd/$1!} @targets; 
+    }
+
+    # convert \ to / with consideration for Shift_JIS encoding
+    if (($SYSTEM eq "MSWin32") || ($SYSTEM eq "os2")) {
+	grep {
+	    $_ =~ s!([\x81-\x9f\xe0-\xef][\x40-\x7e\x80-\xfc]|[\x01-\x7f])!
+	    $1 eq "\\" ? "/" : $1!gex;
+	} @targets;
     }
 
     # traverse directories
     # this routine is not efficent but I prefer reliable logic.
-    my @tmp2 = ();
-    while (@flist) {
-	my $tmp = shift (@flist);
-	if ($tmp =~ s!/$!! && -d $tmp) { # path ending with /
+    my @flist = ();
+    while (@targets) {
+	my $target = shift @targets;
+	if (-d $target) { # target is a directory
 	    my $cwd = cwd();
-	    chdir $tmp;
-	    find::findfiles(\@tmp2);
+	    chdir $target;
+	    find::findfiles(\@flist);
 	    chdir $cwd;
 	} else {
-	    push(@tmp2, $tmp);
+	    push(@flist, $target);
 	}
     }
-    @flist = @tmp2;
 
     return @flist;
 }
@@ -992,12 +1002,17 @@ sub change_dbnames ($) {
 }
 
 
-# for `find'
+# for "find"
 sub wanted ($$){
     my ($name, $rarray) = @_;
-    push(@{$rarray}, $name) if 
-	($name !~ m!^.*/(($conf::DENY_REGEX)(\.gz|\.Z)?)$!i &&
-	 $name =~ m!^.*/(($conf::ALLOW_REGEX)(\.gz|\.Z|\?.*)?)$!i && -f $name && -r $name);
+    
+    if ($name !~ m!^.*/(($conf::DENY_REGEX)(\.gz|\.Z)?)$!i &&
+	$name =~ m!^.*/(($conf::ALLOW_REGEX)(\.gz|\.Z|\?.*)?)$!i && 
+	-f $name && -r $name)
+    {
+	push(@{$rarray}, $name);
+	util::dprint("wanted: $name\n");
+    }
 }
 
 #
@@ -1064,11 +1079,10 @@ sub set_target_files() {
 	return (scalar @{$rfiles{'name'}}, @flist); 
     };
 
-    if ($#{$rfiles{'name'}} != $#{$rfiles{'mtime'}}) {
+    if (@{$rfiles{'name'}} != @{$rfiles{'mtime'}}) {
 	util::dprint("\n\n== registered ==\n", join("\n", @{$rfiles{'name'}}));
 	util::dprint("\n\n== mtimes ==\n", join("\n", @{$rfiles{'mtime'}}));
-	util::cdie("NMZ.r ($#{$rfiles{'name'}}) and NMZ.t ($#{$rfiles{'mtime'}})")
-	    . "are not consistent!\n";
+	util::cdie("NMZ.r ($#{$rfiles{'name'}}) and NMZ.t ($#{$rfiles{'mtime'}}) are not consistent!\n");
     }
 
     # pick up deleted files and do marking
@@ -1782,7 +1796,7 @@ muda($conf::SEARCH_FIELD, $conf::ON_MEMORY_MAX,
      $conf::WORD_LENG_MAX, $conf::TEXT_SIZE_MAX,
      $conf::DENY_REGEX, $var::INTSIZE,
      $conf::CHASEN_MORPH, $conf::MHONARC_HEADER, $conf::CHASEN,
-     $conf::KAKASI, $var::Opt{okurigana}, $TARGET_DIR,
+     $conf::KAKASI, $var::Opt{okurigana},
      $var::Opt{hiragana}, $conf::ROBOTS_EXCLUDE_URLS, $conf::DEFAULT_FILE,
      $conf::HTML_SUFFIX, $usage::USAGE_EN, $usage::USAGE_MINI, 
      $var::Opt{noheadabst}, @seed::Seed, $var::OUTPUT_DIR,

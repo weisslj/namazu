@@ -353,7 +353,7 @@ maintainer-clean-generic clean mostlyclean distclean maintainer-clean
 
 ##################################################################
 
-mknmz: mknmz.pl
+mknmz: mknmz.pl ../lib/var.pl ../lib/conf.pl
 	rm -f $@
 	sed -e 's!%CONFDIR%!$(confdir)!g' \
 	    -e 's!%LIBDIR%!$(libdir)!g' \

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.17 1999-08-30 09:19:29 satoru Exp $
+# $Id: util.pl,v 1.18 1999-08-31 02:29:12 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -172,8 +172,12 @@ sub tmpnam ($) {
 
 # cdie ... clean files before die
 sub cdie (@) {
+    my (@msgs)  = @_;
+
     remove_tmpfiles();
-    die @_;
+    print STDERR "mknmz: ", @msgs;
+    print STDERR "\n" unless $msgs[$#msgs] =~ /\n$/;
+    exit 2;
 }
 
 # remove_tmpfiles ... remove temporary files which mknmz would make

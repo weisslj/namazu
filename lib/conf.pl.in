@@ -35,8 +35,7 @@ $URI_PREFIX = "";
 ## (specify by regular expression)
 ## e.g. index.html|index.htm|Default.html
 ## it's useful to use Namazu as WWW search engine.
-## ("_default" would be made by httpdown)
-$DEFAULT_FILE = "_default";
+$DEFAULT_FILE = "index.html";
 
 ## Target files' regex. (case insensitive)
 ## Do *not* use '$' and '^' regular expression meta charactors.
@@ -47,10 +46,13 @@ $ALLOW_REGEX = '.*\.html?|.*\.txt|.*_default|.*\.pdf|.*\.doc';
 ## this regular expression describes the names of the files which
 ## you do *not* want to index (case insensitive). this setting is
 ## effective when mknmz runs with -a option.
-## do *not* use '$' and '^' regular expression meta charactors.
+## Do *not* use '$' and '^' regular expression meta charactors.
 ## that will be automatically appended by mknmz.pl.
 ##
 $DENY_REGEX = '.*\.gif|.*\.(jpg|jpeg)|.*\.tar\.gz|core|.*\.bak|.*~|\..*|\x23.*|NMZ\..*';
+
+## Pathnames which match this regex will be excluded.
+$EXCLUDE_REGEX = undef;
 
 ## HTML extentions like .htm, .html, .shtml, .phtml, .html.en, .html.ja, .asp
 $HTML_SUFFIX = 'html?|[ps]html|html\.[a-z]{2}|asp|cgi';

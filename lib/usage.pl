@@ -1,5 +1,5 @@
 # -*- Perl -*-
-# $Id: usage.pl,v 1.7 1999-08-30 09:19:28 satoru Exp $
+# $Id: usage.pl,v 1.8 1999-08-31 02:29:12 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -28,7 +28,7 @@ require "var.pl";
 ## Mini usage
 ##
 $USAGE_MINI = <<EOFusage;
-Usage: mknmz [options] [prefix] <target(s)>
+Usage: mknmz [options] <target(s)>
 Try `mknmz --help' for more options.
 EOFusage
 
@@ -39,14 +39,17 @@ $USAGE_JA = <<EOFusage;
 mknmz v$var::VERSION -  全文検索システム Namazu のインデックス作成プログラム
 $var::COPYRIGHT
 
-使い方: mknmz [options] [prefix] <target(s)>
+使い方: mknmz [options] <target(s)>
 
   対象ファイル:
     -a, --all                すべてのファイルを対象とする
     -e, --robots-txt         ロボットよけされているファイルを除外する
     -A, --htaccess           .htaccess で制限されたファイルを除外する
     -F, --target-list=file   インデックス対象のファイルのリストを読み込む
-    -t, --allow=regex        対象ファイルの正規表現を指定する
+        --allow=regex        対象ファイル名の正規表現を指定する
+        --deny=regex         除外するファイル名の正規表現を指定する
+        --exclude=regex      除外するパス名の正規表現を指定する
+    -r, --replace=code       URIを置換するためのコードを指定する
 
   形態素解析:
     -c, --use-chasen        日本語の単語のわかち書きに ChaSen を用いる
@@ -71,6 +74,7 @@ $var::COPYRIGHT
 
   その他:
     -s, --checkpoint        チェックポイント機構を作動させる
+    -f, --config=file       設定ファイルを指定する
     -I, --include=file      カスタマイズ用ファイルを読み込む
     -O, --output-dir=dir    インデックスの出力先を指定する
     -T, --template-dir=dir  NMZ.{head,foot,body}.* のディレクトリを指定する
@@ -89,7 +93,7 @@ $USAGE_EN = <<EOFusage;
   mknmz.pl v$var::VERSION -  indexer of Namazu
   $var::COPYRIGHT
 
-   Usage: mknmz [options] [prefix] <target(s)>
+   Usage: mknmz [options] <target(s)>
       -a: target all files
       -c: use ChaSen as Japanese processor
       -e: exclude files which has robot exclusion

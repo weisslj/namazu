@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: html.pl,v 1.12 1999-08-30 09:19:27 satoru Exp $
+# $Id: html.pl,v 1.13 1999-08-31 02:29:10 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -280,25 +280,26 @@ sub is_html ($) {
 sub parse_robots_txt () {
     if (not -f "$conf::ROBOTS_TXT") {
 	warn "$conf::ROBOTS_TXT does not exists";
-	$conf::ROBOTS_EXCLUDE_URLS="\t";
+	$conf::ROBOTS_EXCLUDE_URIS="\t";
 	return 0;
     }
 
     my $fh_robottxt = util::efopen($conf::ROBOTS_TXT);
-    while(<$fh_robottxt>){
-	/^Disallow:\s*(\S+)/i && do {
-	    my $url = $1;
-	    $url =~ s/\%/%25/g;  # 元から含まれる % は %25 に変更 v1.1.1.2
-	    $url =~ s/([^a-zA-Z0-9\-\_\.\/\:\%])/
+    while(defined(my $line = <$fh_robottxt>)) {
+	$line =~ /^Disallow:\s*(\S+)/i && do {
+	    my $uri = $1;
+	    $uri =~ s/\%/%25/g;  # 元から含まれる % は %25 に変更 v1.1.1.2
+	    $uri =~ s/([^a-zA-Z0-9\-\_\.\/\:\%])/
 		sprintf("%%%02X",ord($1))/ge;
 	    if (($mknmz::SYSTEM eq "MSWin32") || ($mknmz::SYSTEM eq "os2")) {
 		# restore '|' for drive letter rule of Win32, OS/2
-		$url =~ s!^/([A-Z])%7C!/$1|!i;
+		$uri =~ s!^/([A-Z])%7C!/$1|!i;
 	    }
-	    $conf::ROBOTS_EXCLUDE_URLS .= "^$conf::HTDOCUMENT_ROOT_URL_PREFIX$url|";
+	    $conf::ROBOTS_EXCLUDE_URIS .= 
+		"^$conf::HTDOCUMENT_ROOT_URI_PREFIX$uri|";
 	}
     }
-    chop($conf::ROBOTS_EXCLUDE_URLS);
+    chop($conf::ROBOTS_EXCLUDE_URIS);
 }
 
 
@@ -318,15 +319,16 @@ sub parse_htaccess () {
 
     my $fh = util::fopen(".htaccess") or 
 	$err = $!,  $CWD = cwd() , util::cdie("$CWD/.htaccess : $err\n");
-    while(<$fh>) {
-	s/^\#.*$//;
-	/^\s*$/ && next;
-	/^\s*deny\s+|require\s+(valid-user|usr|group)([^\w]+|$)/i && do {
+    while(defined(my $line = <$fh>)) {
+	$line =~ s/^\#.*$//;
+	$line =~ /^\s*$/ && next;
+	$line =~ /^\s*deny\s+|require\s+(valid-user|usr|group)([^\w]+|$)/i && 
+        do {
 	    $r=1;
 	    last;
 	};
     }
-    return($r);
+    return $r;
 }
 
 

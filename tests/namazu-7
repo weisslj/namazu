@@ -1,0 +1,40 @@
+#! /bin/sh
+#
+# Test for namazu.  Searching an index created with --html-split option.
+#
+LOG=`pwd`/test-log
+
+docnum=`perl -lne 'print $1 if /^files (\d+)/' idx9/NMZ.status`
+
+# All parts should have "test".
+cd ../src
+hitnum=`./namazu -c test ../tests/idx9`
+echo "docnum:" $docnum, "hitnum:" $hitnum >> $LOG
+test "$docnum" != "$hitnum" && exit 1  # error if not matched
+
+# Each keyword shoudl match only one part.
+hitnum=`./namazu -c xyzzy ../tests/idx9`
+echo xyzzy $hitnum >> $LOG
+test "$hitnum" != "1" && exit 1  # error if not matched
+
+hitnum=`./namazu -c 'foo foo1'  ../tests/idx9`
+echo foo $hitnum >> $LOG
+test "$hitnum" != "1" && exit 1  # error if not matched
+
+hitnum=`./namazu -c 'bar bar2' ../tests/idx9`
+echo bar $hitnum >> $LOG
+test "$hitnum" != "1" && exit 1  # error if not matched
+
+hitnum=`./namazu -c 'baz baz3' ../tests/idx9`
+echo baz $hitnum >> $LOG
+test "$hitnum" != "1" && exit 1  # error if not matched
+
+hitnum=`./namazu -c 'qux qux4' ../tests/idx9`
+echo qux $hitnum >> $LOG
+test "$hitnum" != "1" && exit 1  # error if not matched
+
+hitnum=`./namazu -c 'quux quux5' ../tests/idx9`
+echo quux $hitnum >> $LOG
+test "$hitnum" != "1" && exit 1  # error if not matched
+
+exit 0

@@ -1,0 +1,18 @@
+#! /bin/sh
+#
+# Test for mknmz's --html-split option.
+#
+LOG=`pwd`/test-log
+TARGET=`pwd`/data/html-split/html-split.html
+
+if test ! -d idx9; then
+    mkdir idx9
+else
+    rm -f idx9/NMZ.*
+fi
+
+# Indexing with --html-split option.
+cd ../scripts 
+./mknmz --html-split -O ../tests/idx9 $TARGET >> $LOG
+exit $?
+

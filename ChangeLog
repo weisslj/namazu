@@ -1,5 +1,7 @@
 2000-02-26  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* filter/bzip2.pl (filter): Fix fatal bug. s/-dc/-c/
+
 	* filter/msword.pl (filter): Fix wvHtml option. (-o was unnecessary)
 	(status): Add conditions for Japanese environment.
 	(filter): Likewise.

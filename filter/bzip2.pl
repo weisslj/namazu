@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: bzip2.pl,v 1.11 2000-02-11 12:54:20 satoru Exp $
+# $Id: bzip2.pl,v 1.12 2000-02-26 08:23:34 satoru Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -63,12 +63,14 @@ sub filter ($$$$$) {
 
     util::vprint("Processing bzip2 file ... (using  '$bzip2path')\n");
 
-    my $fh = util::efopen("|$bzip2path -cd > $tmpfile");
-    print $fh $$cont;
-    undef $fh;
-    $fh = util::efopen("$tmpfile");
-    $$cont = util::readfile($fh);
-    undef $fh;
+    {
+	my $fh = util::efopen("|$bzip2path -d > $tmpfile");
+	print $fh $$cont;
+    }
+    {
+	my $fh = util::efopen("$tmpfile");
+	$$cont = util::readfile($fh);
+    }
     unlink($tmpfile);
     return undef;
 }

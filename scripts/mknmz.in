@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.147 2004-11-19 14:49:15 opengl2772 Exp $
+# $Id: mknmz.in,v 1.148 2004-11-27 03:11:45 usu Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -482,29 +482,34 @@ sub namazu_core ($$$$$$$$$$) {
 	$$contref = "";
     }
 
+    my $err = undef;
     my ($cfile_size, $text_size, $kanji, $mtype);
     unless (util::isurl($cfile) || (-f $cfile && -r $cfile)){
 	($cfile_size, $text_size, $kanji, $mtype) = (0, 0, 0, 0);
     } else {
 	$Document->init_doc($uri, $cfile, $contref, $mtype);
-	$contref= $Document->get_filtered_contentref();
+	$err = $Document->get_errmsg();
+	unless ($err) {
+	    $contref= $Document->get_filtered_contentref();
 
-	$weighted_str = $Document->get_weighted_str();
-	$headings = $Document->get_headings();
-	%fields = $Document->get_fields();
+	    $weighted_str = $Document->get_weighted_str();
+	    $headings = $Document->get_headings();
+	    %fields = $Document->get_fields();
 
-	$cfile_size = $Document->get_file_size();
-	$fields{'size'} = $cfile_size;
-	$fields{'mtime'} = $Document->get_mtime();
+	    $cfile_size = $Document->get_file_size();
+	    $fields{'size'} = $cfile_size;
+	    $fields{'mtime'} = $Document->get_mtime();
 
-	$kanji = $Document->is_contain_kanji();
-	$text_size = $Document->get_text_size();
-	$mtype = $Document->get_mimetype();
+	    $kanji = $Document->is_contain_kanji();
+	    $text_size = $Document->get_text_size();
+	    $mtype = $Document->get_mimetype();
+	}
     }
 
-    util::dprint(_("after load_document: ")."$uri: $cfile_size, $text_size, $kanji, $mtype\n");
+    unless ($err) {
+        util::dprint(_("after load_document: ")."$uri: $cfile_size, $text_size, $kanji, $mtype\n");
+    }
 
-    my $err = undef;
     if ($$contref eq "") {
 	$err = $Document->get_errmsg();
 	if (($English::OSNAME eq "MSWin32") || ($English::OSNAME eq "os2")) {

@@ -35,19 +35,21 @@ make
 rm -rf $RPM_BUILD_ROOT
 eval `perl '-V:installarchlib'`
 mkdir -p $RPM_BUILD_ROOT/$installarchlib
-make PREFIX=$RPM_BUILD_ROOT/usr \
-   INSTALLMAN3DIR=$RPM_BUILD_ROOT/`dirname $installarchlib`/man/man3 install
+make PREFIX=$RPM_BUILD_ROOT/usr install
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root)
-/usr/lib/perl5/site_perl/*/*-linux/File/MMagic.pm
+/usr/lib/perl5/site_perl/*/File/MMagic.pm
 /usr/lib/perl5/site_perl/*/*-linux/auto/File/MMagic
-/usr/lib/perl5/*/man/man3/File::MMagic.3
+/usr/lib/perl5/man/man3/File::MMagic.3
 
 %changelog
+* Fri Dec 31 1999 Ryuji Abe <raeva@t3.rim.or.jp>
+- Installed correctly directories.
+
 * Sat Dec 11 1999 Ryuji Abe <raeva@t3.rim.or.jp>
 - Rebuild for RHL-6.1.
 

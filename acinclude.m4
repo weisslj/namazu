@@ -863,7 +863,7 @@ AC_DEFUN(AM_PATH_LISPDIR,
   if test "x$EMACS" = "xt" -o "x$EMACS" = x; then
     AC_PATH_PROGS(EMACS, emacs xemacs mule, no)
     if test $EMACS = no; then
-      AC_MSG_ERROR(you should install Emacs first)
+      AC_MSG_WARN(you should install Emacs first)
     fi
   fi
   dnl # 

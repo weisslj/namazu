@@ -1,3 +1,8 @@
+2000-03-06  Ryuji Abe  <raeva@t3.rim.or.jp>
+
+	* nmz/i18n.c (nmz_set_lang)[HAVE_PUTENV]: Use malloc()
+	instead of realloc() that doesn't works fine anyware.
+
 2000-03-06  Rei FURUKAWA  <furukawa@tcp-ip.or.jp>
 	* pl/nmzidx.pl: seek & search method.
 	(log_open): use binmode.

@@ -3,6 +3,7 @@
 	* filter/man.pl (filter): Make groff output one paragraph per one
 	 line.  Thanks to Tatsuo SEKINE <tsekine@isoternet.org> for
 	 his suggestion.
+	 (filter): Fix jgroff/groff condition bug.
 
 	* maintMakefile (cxref-latex2e): New rule.
 

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: man.pl,v 1.14 2000-01-04 09:46:54 satoru Exp $
+# $Id: man.pl,v 1.15 2000-01-04 09:57:05 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -62,13 +62,12 @@ sub filter ($$$$$) {
     return "Unable to execute nroff/groff/jgroff" unless (-x $roffpath);
 
     my $roffargs;
-    $roffargs = '-Tnippon' if ($roffpath =~ /jgroff$/);
-    $roffargs = '-Tascii' if ($roffpath =~ /groff$/);
+    $roffargs = '-Tnippon' if ($roffpath =~ /\bjgroff$/);
+    $roffargs = '-Tascii' if ($roffpath =~ /\bgroff$/);
     $roffargs = '' if ($roffpath =~ /nroff$/);
 
-    util::vprint("Processing man file ... (using  '$roffpath')\n");
-
     {
+      util::vprint("Processing man file ... (using '$roffpath -man $roffargs')\n");
 	my $fh = util::efopen("|$roffpath -man $roffargs > $tmpfile");
 
 	# Make groff output one paragraph per one line.

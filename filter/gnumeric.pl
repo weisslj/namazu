@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: gnumeric.pl,v 1.1 2004-03-10 13:55:06 usu Exp $
+# $Id: gnumeric.pl,v 1.2 2004-03-10 17:55:23 opengl2772 Exp $
 # Copyright (C) 2004 Yukio USUDA 
 #               2004 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -122,11 +122,13 @@ sub get_content ($) {
 sub get_author ($){
     my ($contref) = @_;
     my $author = "";
-    $$contref =~ m!<gmr:name>author</gmr:name>\s+<gmr:val-string>(.*?)</gmr:val-string>!s;
-    $author = $1;
+    if ($$contref =~ m!<gmr:name>author</gmr:name>\s+<gmr:val-string>(.*?)</gmr:val-string>!s) {
+        $author = $1;
+    }
     if ($author eq ""){
-	$$contref =~ m!<gmr:name>manager</gmr:name>\s+<gmr:val-string>(.*?)</gmr:val-string>!s;
-	$author = $1;
+	if ($$contref =~ m!<gmr:name>manager</gmr:name>\s+<gmr:val-string>(.*?)</gmr:val-string>!s) {
+	    $author = $1;
+        }
     }
     return $author;
 }
@@ -134,16 +136,18 @@ sub get_author ($){
 sub get_title ($){
     my ($contref) = @_;
     my $title = "";
-    $$contref =~ m!<gmr:name>title</gmr:name>\s+<gmr:val-string>(.*?)</gmr:val-string>!s;
-    $title = $1;
+    if ($$contref =~ m!<gmr:name>title</gmr:name>\s+<gmr:val-string>(.*?)</gmr:val-string>!s) {
+        $title = $1;
+    }
     return $title;
 }
 
 sub get_keywords ($){
     my ($contref) = @_;
     my $keyword = "";
-    $$contref =~ m!<gmr:name>keywords</gmr:name>\s+<gmr:val-string>(.*?)</gmr:val-string>!s;
-    $keyword = $1;
+    if ($$contref =~ m!<gmr:name>keywords</gmr:name>\s+<gmr:val-string>(.*?)</gmr:val-string>!s) {
+        $keyword = $1;
+    }
     return $keyword;
 }
 

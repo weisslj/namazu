@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.24 2000-01-10 12:37:24 satoru Exp $
+ * $Id: rcfile.c,v 1.25 2000-01-10 13:19:11 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -414,15 +414,20 @@ get_rc_args(const char *line)
 static enum nmz_stat 
 parse_rcfile(const char *line, int lineno) 
 {
+    struct nmz_strlist *d_args; /* directive + arguments */
     struct nmz_strlist *args;
     char *directive;
 
-    args = get_rc_args(line);
-    if (args == NULL) { 
+   /* 
+    * d_args are allocated in the func. 
+    * So we should free it later.
+    */
+    d_args = get_rc_args(line); 
+    if (d_args == NULL) { 
 	return FAILURE; /* error */
     }
-    directive = args->value; /* the first arg is a directive. */
-    args = args->next;
+    directive = d_args->value; /* the first arg is a directive. */
+    args = d_args->next;
 
     if (apply_rc(lineno, directive, args) != SUCCESS) {
         return FAILURE;
@@ -449,6 +454,7 @@ parse_rcfile(const char *line, int lineno)
 	}
     }
 
+    nmz_free_strlist(d_args);
     return SUCCESS;
 }
 

@@ -1,4 +1,4 @@
-$Id: TODO-satoru,v 1.10 2000-01-10 12:37:23 satoru Exp $
+$Id: TODO-satoru,v 1.11 2000-01-10 13:19:09 satoru Exp $
 
 やるべきことの備忘録 by 高林
 
@@ -14,6 +14,9 @@ $Id: TODO-satoru,v 1.10 2000-01-10 12:37:23 satoru Exp $
     - libraryとしての挙動を考慮すれば nmz_search() か?
 
   * conv_query() を nmz_search() から呼ぶようにする。
+
+  * nmz_free_hlist(), nmz_free_idxnames(), nmz_free_aliases(),
+    nmz_free_replaces() もnmz_search() から呼んだ方がよさそう。
 
   * 一対多の alias に対応する。例: Alias all-ml foo bar baz quux
     - 今の struct nmz_indices の構造では難しい

@@ -1,5 +1,7 @@
 2000-01-10  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* nmz/rcfile.c (parse_rcfile): Fix memory leak bug.
+
 	* nmz/idxname.c: Inclued "util.h".
 
 	* nmz/rcfile.h: Inclued "util.h".

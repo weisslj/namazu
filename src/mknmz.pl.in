@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.15 1999-07-06 12:36:23 satoru Exp $
+# $Id: mknmz.pl.in,v 1.16 1999-07-08 23:54:39 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -275,8 +275,10 @@ sub get_field_index_base (\%) {
     for my $key (@keys) {
 	$key = lc($key);
 	my $fname    = "$conf::File{'FIELDINFO'}.$key";
+	my $tmp_fname = "$conf::File{'FIELDINFO'}.$key.$$";
 	my $size = 0;
 	$size = -s $fname if -e $fname;
+	$size += -s $tmp_fname if -e $tmp_fname;
 	$field_indices->{$key} = $size;
     }
 }
@@ -695,15 +697,15 @@ sub parse_options ()
 	$conf::ALLOW_REGEX = ".*";
     }
     if ($opt_chasen) {
-	$conf::WAKATI = $conf::KAKASI;
+	$conf::WAKATI = $conf::CHASEN;
 	$conf::MorphOpt = 0;
     }
     if ($opt_chasen_morph) {
 	$conf::WAKATI = $conf::CHASEN_MORPH;
-	$conf::MorphOpt = 0;
+	$conf::MorphOpt = 1;
     }
     if ($opt_kakasi) {
-	$conf::WAKATI = $conf::CHASEN;
+	$conf::WAKATI = $conf::KAKASI;
 	$conf::MorphOpt = 0;
     }
     if ($opt_man) {

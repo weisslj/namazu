@@ -85,9 +85,9 @@ exec_prefix = @prefix@/@PACKAGE@
 bin_PROGRAMS = namazu
 bin_SCRIPTS = clnmz gcnmz mailutime mknmz rvnmz vfnmz wdnmz gtnmz
 
-namazu_SOURCES = cgi.c codeconv.c conf.c form.c hlist.c messages.c 	namazu.c output.c parser.c re_match.c regex.c search.c 	seed.c util.c values.c wakati.c result.l
+namazu_SOURCES = cgi.c codeconv.c conf.c form.c hlist.c messages.c 	namazu.c output.c parser.c re_match.c regex.c search.c 	seed.c util.c values.c wakati.c result.l getopt.c getopt1.c
 
-noinst_HEADERS = namazu.h regex.h util.h
+noinst_HEADERS = namazu.h regex.h util.h getopt.h
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = ../config.h
 CONFIG_CLEAN_FILES =  mknmz.pl wdnmz vfnmz gcnmz gtnmz mailutime clnmz \
@@ -101,7 +101,7 @@ CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
 namazu_OBJECTS =  cgi.o codeconv.o conf.o form.o hlist.o messages.o \
 namazu.o output.o parser.o re_match.o regex.o search.o seed.o util.o \
-values.o wakati.o result.o
+values.o wakati.o result.o getopt.o getopt1.o
 namazu_LDADD = $(LDADD)
 namazu_DEPENDENCIES = 
 namazu_LDFLAGS = 
@@ -124,9 +124,10 @@ DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
 TAR = tar
 GZIP_ENV = --best
 DEP_FILES =  .deps/cgi.P .deps/codeconv.P .deps/conf.P .deps/form.P \
-.deps/hlist.P .deps/messages.P .deps/namazu.P .deps/output.P \
-.deps/parser.P .deps/re_match.P .deps/regex.P .deps/result.P \
-.deps/search.P .deps/seed.P .deps/util.P .deps/values.P .deps/wakati.P
+.deps/getopt.P .deps/getopt1.P .deps/hlist.P .deps/messages.P \
+.deps/namazu.P .deps/output.P .deps/parser.P .deps/re_match.P \
+.deps/regex.P .deps/result.P .deps/search.P .deps/seed.P .deps/util.P \
+.deps/values.P .deps/wakati.P
 SOURCES = $(namazu_SOURCES)
 OBJECTS = $(namazu_OBJECTS)
 
@@ -265,7 +266,7 @@ distdir: $(DISTFILES)
 	@for file in $(DISTFILES); do \
 	  d=$(srcdir); \
 	  if test -d $$d/$$file; then \
-	    cp -pr $$d/$$file $(distdir)/$$file; \
+	    cp -pr $$/$$file $(distdir)/$$file; \
 	  else \
 	    test -f $(distdir)/$$file \
 	    || ln $$d/$$file $(distdir)/$$file 2> /dev/null \

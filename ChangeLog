@@ -5,6 +5,12 @@
 	about major changes from previous version, please see 
 	"manual.html#VERSIONDIFF".
 
+1999-07-09  masao@ulis.ac.jp (Masao Takaku)
+
+	* mknmz.pl.in: Fix field_indices bug occurred at re-exec
+	* mknmz.pl.in: Fix -k and -c options bug
+	* src/Makefile.am: Added getopt.c, getopt1.c, getotp.h entries 
+
 1999-07-06  masao@ulis.ac.jp (Masao Takaku)
 
 	* mknmz.pl: Fix --checkpoint, --include, --target-list

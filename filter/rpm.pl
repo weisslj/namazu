@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: rpm.pl,v 1.8 2004-01-11 19:32:32 opengl2772 Exp $
+# $Id: rpm.pl,v 1.9 2004-01-16 08:47:54 opengl2772 Exp $
 # Copyright (C) 2000 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -160,8 +160,8 @@ sub get_date ($$) {
 
     if ($$contref =~ /Build Date: (.*)/) {
 	my $time = $1;
-        time::ctime_to_rfc822time(\$time);
-	$fields->{'date'} = $time;
+        my $err = time::ctime_to_rfc822time(\$time);
+        $fields->{'date'} = $time unless ($err);
     }
 }
 

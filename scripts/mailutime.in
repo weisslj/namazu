@@ -3,7 +3,7 @@
 #
 # mailutime - a tool to unify a file time stamp with 
 #             RFC 822 'Date:' field in a mail.
-# $Id: mailutime.in,v 1.1 1999-12-19 04:19:58 satoru Exp $
+# $Id: mailutime.in,v 1.2 2000-01-04 23:40:12 satoru Exp $
 #
 # Version 1.0.2    [12/12/1998]
 #
@@ -46,9 +46,9 @@ $| = 1;   # autoflush output
 my %month_names = ("Jan" => 0, "Feb" => 1, "Mar" => 2, "Apr" => 3, 
 		   "May" => 4, "Jun" => 5, "Jul" => 6, "Aug" => 7, 
 		   "Sep" => 8, "Oct" => 9, "Nov" => 10, "Dec" => 11);
-my $re_month =  join('|', keys (%month_names));
+my $re_month =  join '|', keys %month_names;
 my $re_day   =  '(?:0?[1-9]|[12][0-9]|3[01])';
-my $re_year  =  '(?:\d\d\d\d+|[789]\d)';  # allow 2 digit fomrat such as '98'
+my $re_year  =  '(?:\d\d\d\d|\d\d)';  # allow 2 digit fomrat
 my $re_hour  =  '(?:[01][0-9]|2[0-3])';
 my $re_min   =  '(?:[012345][0-9])';
 my $re_sec   =  '(?:[012345][0-9])';
@@ -104,6 +104,8 @@ sub rfc822time($) {
 	/x) 
     {
 	my ($mday, $mon, $year, $hour, $min, $sec) = ($1, $2, $3, $4, $5, $6);
+	$year += 2000 if $year < 50;
+	$year += 1900 if 50 <= $year && $year <= 99;
 	$mon = $month_names{$mon};
 	my $mtime = timelocal($sec, $min, $hour, $mday, $mon, $year);
 	return $mtime;
@@ -125,7 +127,7 @@ sub get_date_fuzzily($) {
     # remove a timezone adjustment such as '+0900'
     $str =~ s/(\+\d+)//;
 
-    # get the hour, min and sec.
+    # get hour, min and sec.
     if ($str =~ s/\b($re_hour):($re_min):($re_sec)\b//) {
 	$hour = $1;
 	$min  = $2;
@@ -137,7 +139,7 @@ sub get_date_fuzzily($) {
 	$sec  = 0;
     }
 
-    # get the month
+    # get a month
     if ($str =~ s/\b($re_month)\b//i) {
 	$mon = $month_names{$1};
     } else {
@@ -145,8 +147,7 @@ sub get_date_fuzzily($) {
 	$mon = 0;
     }
 
-    # get the year
-    # CAUTION: YEAR 10,000 problem is creeping :-)
+    # get a year
     if ($str =~ s/\b($re_year)\b//i) {
 	$year = $1;
     } else {
@@ -154,7 +155,7 @@ sub get_date_fuzzily($) {
 	$year = 1970;
     }
 
-    # get the day using little bit tricky regex :-)
+    # get a day
     # this SHOULD be tried at the last.
     if ($str =~ s/\b($re_day)\b//i) {
 	$mday = $1;

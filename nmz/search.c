@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.50 2000-01-07 10:58:34 satoru Exp $
+ * $Id: search.c,v 1.51 2000-01-08 09:27:20 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -326,7 +326,7 @@ cmp_phrase_hash(int hash_key, NmzResult val,
 
     list = malloc(n * sizeof(int));
     if (list == NULL) {
-	 set_dyingmsg("cmp_phrase_hash: %s", strerror(errno));
+	 nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
 	 val.stat = ERR_FATAL;
 	 return val;
     }
@@ -784,7 +784,6 @@ nmz_search_sub(NmzResult hlist, const char *query, int n)
     hlist = expr(); /* Do searching! */
 
     if (hlist.stat == ERR_FATAL) {
-	set_dyingmsg("search error");
         return hlist;
     }
 

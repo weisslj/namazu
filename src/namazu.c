@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.79 2000-01-08 03:12:06 satoru Exp $
+ * $Id: namazu.c,v 1.80 2000-01-08 09:27:23 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -35,6 +35,7 @@
 #include <unistd.h>
 #include <sys/stat.h>
 #include <signal.h>
+#include <stdarg.h>
 
 #if defined (WIN32) && !defined (__CYGWIN32__)
 /*
@@ -108,7 +109,7 @@ stdio2file(const char * fname)
  *
  *   int fd;
  *   if (-1 == (fd = open(fname, O_CREAT | O_TRUNC | O_WRONLY, 00600))) {
- *	nmz_die("%s", strerror(errno));
+ *	die("%s", strerror(errno));
  *	return 1;
  *    }
  *    close(STDOUT);
@@ -118,7 +119,7 @@ stdio2file(const char * fname)
  *    close(fd);
  */
     if (freopen(fname, "wb", stdout) == NULL) {
-	nmz_die("%s", strerror(errno));
+	die("%s", strerror(errno));
     }
 }
 
@@ -204,13 +205,13 @@ parse_options(int argc, char **argv)
 	    break;
 	case 'n':
 	    if (ck_atoi(optarg, &tmp)) {
-		nmz_die("%s: invalid argument for -n, --max", optarg);
+		die("%s: invalid argument for -n, --max", optarg);
 	    }
 	    set_maxresult(tmp);
 	    break;
 	case 'w':
 	    if (ck_atoi(optarg, &tmp)) {
-		nmz_die("%s: invalid argument for -w, --whence", optarg);
+		die("%s: invalid argument for -w, --whence", optarg);
 	    }
 	    set_listwhence(tmp);
 	    break;
@@ -256,8 +257,9 @@ parse_options(int argc, char **argv)
 	    exit(EXIT_SUCCESS);
 	    break;
 	case 'C':
-	    if (load_rcfile(argv[0]) != SUCCESS)
-		nmz_die("parse_options");
+	    if (load_rcfile(argv[0]) != SUCCESS) {
+		die(nmz_get_dyingmsg());
+	    }
 	    show_rcfile();
 	    exit(EXIT_SUCCESS);
 	    break;
@@ -308,7 +310,7 @@ namazu_core(char * query, char *subquery, const char *argv0)
     hlist = nmz_search(query_with_subquery);
 
     if (hlist.stat == ERR_FATAL) {
-	nmz_die("namazu_core");
+	die(nmz_get_dyingmsg());
     }
 
     /* Result printing */
@@ -345,7 +347,7 @@ make_fullpathname_msg(void)
 static void 
 suicide (int signum)
 {
-    nmz_die("processing time exceeds a limit: %d", SUICIDE_TIME);
+    die("processing time exceeds a limit: %d", SUICIDE_TIME);
 }
 
 /*
@@ -353,6 +355,33 @@ suicide (int signum)
  * Public functions
  *
  */
+
+/* 
+ * Print the error message and die.
+ */
+void 
+die(const char *fmt, ...)
+{
+    va_list args;
+
+    fflush(stdout);
+    fflush(stderr);
+
+    fprintf(stderr, "%s: ", PACKAGE);
+
+    /*
+     * Print a message specified by function parameters.
+     */
+    va_start(args, fmt);
+    vfprintf(stderr, fmt, args);
+    va_end(args);
+
+    if (fmt[strlen(fmt) - 1] != '\n') {
+	printf("\n");
+    }
+
+    exit(EXIT_FAILURE);
+}
 
 int 
 main(int argc, char **argv)
@@ -366,8 +395,9 @@ main(int argc, char **argv)
     textdomain(PACKAGE);
 
     if (argc == 1) { /* if no argument, assume this session as CGI */
-	if (load_rcfile(argv[0]) != SUCCESS)
-	    nmz_die("main");
+	if (load_rcfile(argv[0]) != SUCCESS) {
+	    die(nmz_get_dyingmsg());
+	}
 	set_refprint(1);
 	set_cgimode(1);
 	set_htmlmode(1);
@@ -378,8 +408,9 @@ main(int argc, char **argv)
 	set_uridecode(1);	 /* Decode a URI */
 
 	i = parse_options(argc, argv); 
-	if (load_rcfile(argv[0]) != SUCCESS)
-	    nmz_die("main");
+	if (load_rcfile(argv[0]) != SUCCESS) {
+	    die(nmz_get_dyingmsg());
+	}
 
 	if (i == argc) {
 	    show_mini_usage();
@@ -394,13 +425,13 @@ main(int argc, char **argv)
 	    int curidx = get_idxnum();
             for (curidx = 0; i < argc && curidx < INDEX_MAX; i++) {
 	        if (add_index(argv[i]) != SUCCESS) {
-		    nmz_die("invalid idxname: %s", argv[i]);
+		    die("invalid idxname: %s", argv[i]);
 		}
             }
         } 
         if (get_idxnum() == 0) {
 	    if (add_index(DEFAULT_INDEX) != SUCCESS) {
-		nmz_die("invalid idxname: %s", argv[i]);
+		die("invalid idxname: %s", argv[i]);
 	    }
 	}
     }
@@ -415,8 +446,10 @@ main(int argc, char **argv)
     }
 
     ret = namazu_core(query, subquery, argv[0]);
+    ret = ERR_FATAL;
+    nmz_set_dyingmsg(nmz_msg("Out of memory"));
     if (ret == ERR_FATAL) {
-        nmz_die("main");
+        die(nmz_get_dyingmsg());
     }
     return ret;
 }

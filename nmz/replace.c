@@ -2,7 +2,7 @@
  * 
  * replace.c - 
  *
- * $Id: replace.c,v 1.6 2000-01-07 09:06:20 satoru Exp $
+ * $Id: replace.c,v 1.7 2000-01-08 09:27:19 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
@@ -172,19 +172,19 @@ add_replace(const char *pat, const char *rep)
     
     newp = malloc(sizeof(struct nmz_replace));
     if (newp == NULL) {
-	 set_dyingmsg("add_replace: %s", strerror(errno));
+	 nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
 	 return FAILURE;
     }
 
     newp->pat = malloc(strlen(pat) + 1);
     if (newp->pat == NULL) {
-	 set_dyingmsg("add_replace: %s", strerror(errno));
+	 nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
 	 return FAILURE;
     }
 
     newp->rep = malloc(strlen(rep) + 1);
     if (newp->rep == NULL) {
-	 set_dyingmsg("add_replace: %s", strerror(errno));
+	 nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
 	 return FAILURE;
     }
 

@@ -1,5 +1,23 @@
 2000-01-08  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* nmz/rcfile.c (load_rcfile): Fix bug.
+	(is_valid_argnum): Handle unknown directive as an error.
+
+	* nmz/libnamazu.h (nmz_set_dyingmsg): New macro.
+	
+	* nmz/libnamazu.c (nmz_get_dyingmsg): Renamed from get_dyingmsg.
+	(nmz_set_dyingmsg_func_sub): Derived from set_dyingmsg.
+	(nmz_msg): New function.
+
+	* src/namazu.c (die): New function.
+	All callers changes to use die() instead of nmz_die().
+	
+	* nmz/util.c (nmz_die): Abolished.
+
+	* src/form.c (replace_query_value): Use strerror().
+
+	* src/output.c (print_hlist): Use strerror().
+
 	* src/namazu.h (main): Abolish unused enums DIE_ERROR and
 	DIE_NOERROR.
 
@@ -594,8 +612,6 @@
 	
 	* pl/usage.pl: add --mtime string.
 	 
-1999-12-19  Makoto Fujiwara <makoto@ki.nu>
-	
 	* src/mknmz.pl.in (find_target): Add to show Elapsed time,
 	If -V, print start and end time.
 	

@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.31 2000-01-07 10:58:33 satoru Exp $
+ * $Id: hlist.c,v 1.32 2000-01-08 09:27:19 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -99,7 +99,7 @@ field_sort(NmzResult hlist)
 
 	hlist.data[i].field = malloc(leng + 1);
 	if (hlist.data[i].field == NULL) {
-	    set_dyingmsg("field_sort: %s", strerror(errno));
+	    nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
 	    return FAILURE;
 	}
 	strcpy(hlist.data[i].field, buf);
@@ -377,7 +377,7 @@ malloc_hlist(NmzResult * hlist, int n)
     if (n <= 0) return;
     hlist->data = malloc(n * sizeof(struct nmz_data));
     if (hlist->data == NULL) {
-	 set_dyingmsg("malloc_hlist: %s", strerror(errno));
+	 nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
 	 hlist->stat = ERR_FATAL;
 	 return;
     }
@@ -392,7 +392,7 @@ realloc_hlist(NmzResult * hlist, int n)
     if (hlist->stat != SUCCESS || n <= 0) return;
     hlist->data = realloc(hlist->data, n * sizeof(struct nmz_data));
     if (hlist->data == NULL) {
-	 set_dyingmsg("realloc_hlist: %s", strerror(errno));
+	 nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
 	 hlist->stat = ERR_FATAL;
     }
 }
@@ -460,14 +460,14 @@ do_date_processing(NmzResult hlist)
 
     date_index = fopen(NMZ.t, "rb");
     if (date_index == NULL) {
-	set_dyingmsg("do_date_processing: %s: %s", NMZ.t, strerror(errno));
+	nmz_set_dyingmsg(nmz_msg("%s: %s", NMZ.t, strerror(errno)));
 	hlist.stat = ERR_FATAL;
         return hlist; /* error */
     }
 
     for (i = 0; i < hlist.num ; i++) {
         if (-1 == fseek(date_index, hlist.data[i].docid * sizeof(hlist.data[i].date), 0)) {
-	    set_dyingmsg("do_date_processing: %s: %s", NMZ.t, strerror(errno));
+	    nmz_set_dyingmsg(nmz_msg("%s: %s", NMZ.t, strerror(errno)));
 	    hlist.stat = ERR_FATAL;
             return hlist; /* error */
         }
@@ -520,7 +520,7 @@ get_hlist(int index)
 	int sum = 0;
 	buf = malloc(n * sizeof(int)); /* with pelnty margin */
 	if (buf == NULL) {
-	    set_dyingmsg("get_hlist: %s", strerror(errno));
+	    nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
 	    hlist.data = NULL;
 	    hlist.stat = ERR_FATAL;
 	    return hlist;

@@ -3,7 +3,7 @@
   util.h -
 
   $Author: satoru $
-  $Date: 2000-01-08 03:06:59 $
+  $Date: 2000-01-08 09:27:20 $
   created at: Thu Mar  9 11:55:53 JST 1995
 
   Copyright (C) 1993-1998 Yukihiro Matsumoto
@@ -56,8 +56,6 @@ extern int nmz_get_unpackw ( FILE *fp, int *data );
 extern int nmz_read_unpackw ( FILE *fp, int *buf, int size );
 extern long nmz_getidxptr ( FILE * fp, long point );
 extern int nmz_issymbol ( int c );
-extern void nmz_die ( const char *fmt, ... );
-extern void nmz_die_with_msg ( void );
 extern void nmz_warn_printf ( const char *fmt, ... );
 extern void nmz_debug_printf ( const char *fmt, ... );
 extern void nmz_pathcat ( const char *base, char *name );
@@ -70,7 +68,6 @@ extern int nmz_strprefixcmp ( const char *str1, const char *str2 );
 extern int nmz_strsuffixcmp ( const char *str1, const char *str2 );
 extern char * nmz_readfile ( const char *fname );
 extern void nmz_subst ( char *str, const char *pat, const char *rep );
-extern void nmz_cat ( const char *fname );
 extern char * nmz_getenv ( const char *str );
 extern void nmz_decode_uri ( char * str );
 extern char * nmz_strerror ( enum nmz_stat errnumt );

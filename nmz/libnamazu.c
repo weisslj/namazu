@@ -2,7 +2,7 @@
  * 
  * libnamazu.c - Namazu library api
  *
- * $Id: libnamazu.c,v 1.20 2000-01-06 10:01:52 satoru Exp $
+ * $Id: libnamazu.c,v 1.21 2000-01-08 09:27:19 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
@@ -63,6 +63,7 @@ static enum nmz_sort_order   sortorder   = DESCENDING;
 static int  debugmode   = 0;
 static int  loggingmode = 1;   /* do logging with NMZ.slog */
 static char dyingmsg[BUFSIZE] = "";
+
 
 /*
  *
@@ -128,20 +129,48 @@ is_loggingmode(void)
     return loggingmode;
 }
 
+/*
+ * This function is used for formating a string with printf
+ * notation and store the string in the static variable
+ * `msg'.  and return its pointer. So, thhe string can only
+ * be used until the next call to the function.  
+ *
+ * NOTE: Mainly used with nmz_set_dyingmsg() macro.
+ */
+char *
+nmz_msg(const char *fmt, ...)
+{
+    static char msg[BUFSIZE];
+    va_list args;
+    
+    va_start(args, fmt);
+    vsnprintf(msg, BUFSIZE, fmt, args);
+    va_end(args);
 
-void 
-set_dyingmsg(const char *fmt, ...)
+    return msg;
+}
+
+/*
+ * This function is not used directly but used only through
+ * nmz_set_dyingmsg() macro. That's for getting __FILE__ and
+ * __LINE__ information and including them in the
+ * dyingmsg in debug mode. It makes debug easy.  
+ */
+char *
+nmz_set_dyingmsg_sub(const char *fmt, ...)
 {
     va_list args;
-
+    
     va_start(args, fmt);
     vsnprintf(dyingmsg, BUFSIZE, fmt, args);
     va_end(args);
 
+    return dyingmsg;
 }
 
+
 char *
-get_dyingmsg(void)
+nmz_get_dyingmsg(void)
 {
     return dyingmsg;
 }

@@ -2,7 +2,7 @@
  * 
  * wakati.c -
  * 
- * $Id: wakati.c,v 1.17 2000-01-06 10:01:53 satoru Exp $
+ * $Id: wakati.c,v 1.18 2000-01-08 09:27:20 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -137,7 +137,7 @@ wakati(char *key)
     if (strlen(buf) <= BUFSIZE) {
 	strcpy(key, buf);
     } else {
-	set_dyingmsg("wakatigaki processing failed.\n");
+	nmz_set_dyingmsg(nmz_msg("wakatigaki processing failed.\n"));
 	return 1; 
     }
     nmz_debug_printf("wakatied string: [%s]\n", key);

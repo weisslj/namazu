@@ -13,6 +13,6 @@ enum {
 };
 
 extern int main(int argc, char **argv);
-
+extern void die(const char *fmt, ...);
 
 #endif /* _NAMAZU_H */

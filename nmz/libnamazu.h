@@ -2,7 +2,7 @@
  * 
  * libnamazu.h - Namazu library api
  *
- * $Id: libnamazu.h,v 1.32 2000-01-07 23:49:41 satoru Exp $
+ * $Id: libnamazu.h,v 1.33 2000-01-08 09:27:19 satoru Exp $
  * 
  */
 
@@ -11,6 +11,18 @@
 
 #include <stdio.h>   /* for FILE struct */
 
+
+/*
+ * Set the message of error occurred in libnmz.
+ */
+#define nmz_set_dyingmsg(msg) \
+    { \
+        if (is_debugmode()) { \
+            nmz_set_dyingmsg_sub("%s:%d: %s", __FILE__, __LINE__, msg);\
+        } else { \
+            nmz_set_dyingmsg_sub("%s", msg);\
+	} \
+    }
 
 /*
  *
@@ -198,7 +210,8 @@ extern void set_debugmode ( int mode );
 extern int is_debugmode ( void );
 extern void set_loggingmode ( int mode );
 extern int is_loggingmode ( void );
-extern void set_dyingmsg ( const char *fmt, ... );
-extern char *get_dyingmsg ( void );
+extern char *nmz_get_dyingmsg ( void );
+extern char *nmz_set_dyingmsg_sub(const char *fmt, ...);
+extern char *nmz_msg(const char *fmt, ...);
 
 #endif /* _LIBNAMAZU_H */

@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.48 2000-01-08 03:07:02 satoru Exp $
+ * $Id: output.c,v 1.49 2000-01-08 09:27:24 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -249,7 +249,7 @@ print_hitnum_each (struct nmz_hitnumlist *hn)
 	do {
 	    char *converted = conv_ext(hnptr->word);
 	    if (converted == NULL) {
-		nmz_die("print_hitnum_each");
+		die("print_hitnum_each");
 	    }
 
 	    nmz_print(" [ ");
@@ -352,7 +352,7 @@ print_hlist(NmzResult hlist)
 	    if (is_listmode()) {
 		templates[hlist.data[i].idxid] = malloc(BUFSIZE);
 		if (templates[hlist.data[i].idxid] == NULL) {
-		    nmz_die("print_hlist: memory exhausted");
+		    die("%s", strerror(errno));
 		}
 		strcpy(templates[hlist.data[i].idxid], "${uri}");
 	    } else {
@@ -372,7 +372,7 @@ print_hlist(NmzResult hlist)
 	{
 	    char *converted = conv_ext(result);
 	    if (converted == NULL) {
-		nmz_die("print_hlist");
+		die(nmz_get_dyingmsg());
 	    }
 	    html_print(converted);
 	    free(converted);

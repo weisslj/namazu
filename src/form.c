@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.37 2000-01-07 09:06:23 satoru Exp $
+ * $Id: form.c,v 1.38 2000-01-08 09:27:23 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -98,7 +98,7 @@ replace_query_value(const char *p, const char *query)
     if (cmp_element(p, (char *)"input type=\"text\" name=\"query\"") == 0) {
 	char *converted = conv_ext(query);
 	if (converted == NULL) {
-	    nmz_die("replace_query_value");
+	    die("%s", strerror(errno));
 	}
 
         for (; *p; p++)

@@ -2,7 +2,7 @@
  * 
  * alias.c - 
  *
- * $Id: alias.c,v 1.7 2000-01-07 09:06:19 satoru Exp $
+ * $Id: alias.c,v 1.8 2000-01-08 09:27:18 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
@@ -31,6 +31,7 @@
 #include <string.h>
 #include <errno.h>
 #include "alias.h"
+#include "util.h"
 #include "libnamazu.h"
 #include "i18n.h"
 
@@ -49,18 +50,18 @@ add_alias(const char *alias, const char *real)
 
     newp = malloc(sizeof(struct nmz_alias));
     if (newp == NULL) {
-	 set_dyingmsg("add_alias: %s", strerror(errno));
+	 nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
 	 return FAILURE;
     }
     newp->alias = malloc(strlen(alias) + 1);
     if (newp->alias == NULL) {
-	 set_dyingmsg("add_alias: %s", strerror(errno));
+	 nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
 	 return FAILURE;
     }
 
     newp->real = malloc(strlen(real) + 1);
     if (newp->real == NULL) {
-	 set_dyingmsg("add_alias: %s", strerror(errno));
+	 nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
 	 return FAILURE;
     }
 

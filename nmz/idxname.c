@@ -2,7 +2,7 @@
  * 
  * idxname.c - Idx handling routines.
  *
- * $Id: idxname.c,v 1.14 2000-01-07 10:58:33 satoru Exp $
+ * $Id: idxname.c,v 1.15 2000-01-08 09:27:19 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
@@ -112,8 +112,7 @@ expand_idxname_aliases(void)
 		free(indices.names[i]);
 		indices.names[i] = malloc(strlen(list->real) + 1);
 		if (indices.names[i] == NULL) {
-		    set_dyingmsg("expand_idxname_aliases: %s", 
-				 strerror(errno));
+		    nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
 		    return FAILURE;
 		}
 		strcpy(indices.names[i], list->real);
@@ -139,7 +138,7 @@ complete_idxnames(void)
 	    tmp = malloc(strlen(DEFAULT_INDEX) 
 				  + 1 + strlen(indices.names[i]) + 1);
 	    if (tmp == NULL) {
-		set_dyingmsg("complete_idxnames: %s", strerror(errno));
+		nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
 		return FAILURE;
 	    }
 	    strcpy(tmp, DEFAULT_INDEX);
@@ -219,7 +218,7 @@ push_hitnum(struct nmz_hitnumlist *hn,
 	hnptr = hnptr->next;
     }
     if ((hnptr = malloc(sizeof(struct nmz_hitnumlist))) == NULL) {
-	set_dyingmsg("push_hitnum: %s", strerror(errno));
+	nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
 	return NULL;
     }
     if (prevhnptr != NULL)
@@ -229,7 +228,7 @@ push_hitnum(struct nmz_hitnumlist *hn,
     hnptr->phrase = NULL;
     hnptr->next  = NULL;
     if ((hnptr->word = malloc(strlen(str) +1)) == NULL) {
-	set_dyingmsg("push_hitnum: %s", strerror(errno));
+	nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
 	return NULL;
     }
     strcpy(hnptr->word, str);

@@ -2,7 +2,7 @@
  * 
  * codeconv.c -
  * 
- * $Id: codeconv.c,v 1.15 2000-01-07 11:35:48 satoru Exp $
+ * $Id: codeconv.c,v 1.16 2000-01-08 09:27:18 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -252,7 +252,7 @@ euctojis(uchar *p)
     alloc = (uchar *)strdup((char *)p);
     s = alloc;
     if (s == NULL) { /* */
-	set_dyingmsg("euctojis: %s", strerror(errno));
+	nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
 	return;
     }
 
@@ -448,7 +448,7 @@ conv_ext (const char *str) {
 
     tmp = strdup(str);
     if (tmp == NULL) {
-	set_dyingmsg("conv_ext: %s", strerror(errno));
+	nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
 	return NULL;
     }
 
@@ -470,7 +470,7 @@ conv_ext (const char *str) {
 	 */
 	tmp = realloc(tmp, strlen(str) * 5);
 	if (tmp == NULL) {
-	    set_dyingmsg("conv_ext: %s", strerror(errno));
+	    nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
 	    return NULL;
 	}
 	euctojis((uchar *)tmp);

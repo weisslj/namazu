@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.14 2000-01-08 01:09:23 satoru Exp $
+ * $Id: rcfile.c,v 1.15 2000-01-08 09:27:19 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -358,8 +358,7 @@ is_valid_argnum(const char *directive, int argnum)
 	    }
 	}
     }
-    assert(0);
-    /* NOTREACHED */
+    errmsg = "unknown directive";
     return 0;
 }
 
@@ -433,11 +432,9 @@ load_rcfile(const char *argv0)
 	lineno++;
 	nmz_chomp(buf);
 	conv_ja_any_to_eucjp(buf);  /* for Shift_JIS encoding */
-	if (parse_rcfile(buf, lineno) != SUCCESS)
-	    return FAILURE;
-	if (errmsg != NULL) { /* error occurred */
-	    set_dyingmsg("%s:%d: syntax error: %s.\n",  
-		   namazurc, lineno, errmsg);
+	if (parse_rcfile(buf, lineno) != SUCCESS) {
+	    nmz_set_dyingmsg(nmz_msg("%s:%d: syntax error: %s.",  
+				     namazurc, lineno, errmsg));
 	    return FAILURE;
 	}
     }

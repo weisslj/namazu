@@ -1,3 +1,8 @@
+2004-07-29  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+	* pl/codeconv.pl(chomp_eucjp): It corrects so that it may pass 
+	only along Japanese. (Reported by Frederik Ramm, thanks.)
+
 2004-07-26  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* template/*: To the addition of </li>, and type="submit" Addition 
@@ -8984,4 +8989,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1209 2004-07-26 12:38:48 opengl2772 Exp $
+$Id: ChangeLog,v 1.1210 2004-07-28 23:45:34 opengl2772 Exp $

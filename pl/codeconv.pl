@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: codeconv.pl,v 1.20 2004-05-16 22:45:47 opengl2772 Exp $
+# $Id: codeconv.pl,v 1.21 2004-07-28 23:45:34 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -119,9 +119,11 @@ sub eucjp_to_shiftjis ($) {
 # Remove a garbage EUC-JP 1st charactor at the end.
 sub chomp_eucjp ($) {
     my ($str) = @_;
-    if ($str =~ /\x8f$/ or $str =~ tr/\x8e\xa1-\xfe// % 2) {
-	chop($str);
-	chop($str) if ($str =~ /\x8f$/);
+    if (util::islang("ja")) {
+        if ($str =~ /\x8f$/ or $str =~ tr/\x8e\xa1-\xfe// % 2) {
+            chop($str);
+            chop($str) if ($str =~ /\x8f$/);
+        }
     }
     return $str;
 }

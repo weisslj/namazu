@@ -13,7 +13,7 @@ AUTOMAKE_OPTIONS = 1.4 no-dependencies
 bin_PROGRAMS = namazu
 libexec_PROGRAMS = namazu.cgi
 
-localedir   = $(datadir)/locale
+localedir   = $(prefix)/$(DATADIRNAME)/locale
 confdir     = $(sysconfdir)/$(PACKAGE)
 indexdir    = $(localstatedir)/$(PACKAGE)/index
 

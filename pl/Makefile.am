@@ -2,7 +2,7 @@
 
 AUTOMAKE_OPTIONS = 1.4 no-dependencies
 
-localedir   = $(datadir)/locale
+localedir   = $(prefix)/$(DATADIRNAME)/locale
 perllibdir = $(pkgdatadir)/pl
 
 perllib_DATA = \

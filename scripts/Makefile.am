@@ -16,7 +16,7 @@ noinst_SCRIPTS = gtnmz
 EXTRA_DIST = gcnmz.in kwnmz.in mknmz.in
 CLEANFILES  = gcnmz mknmz kwnmz
 
-localedir   = $(datadir)/locale
+localedir   = $(prefix)/$(DATADIRNAME)/locale
 confdir     = $(sysconfdir)/$(PACKAGE)
 filterdir   = $(pkgdatadir)/filter
 indexdir    = $(localstatedir)/$(PACKAGE)/index

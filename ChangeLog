@@ -1,3 +1,7 @@
+2000-06-28  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* {src,nmz,pl,scrpts}/Makefile.am: Fixed localedir location.
+
 2000-06-21  Masao Takaku  <masao@ulis.ac.jp>
 
 	* **/*.c: s/strcasecmp/nmz_strcasecmp/;
@@ -5731,4 +5735,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.703 2000-06-21 11:16:27 masao Exp $
+$Id: ChangeLog,v 1.704 2000-06-28 10:58:02 knok Exp $

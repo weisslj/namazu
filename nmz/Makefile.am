@@ -1,13 +1,13 @@
 # Process this file with automake to produce Makefile.in
 #
-# $Id: Makefile.am,v 1.30 2000-02-14 08:04:20 rug Exp $
+# $Id: Makefile.am,v 1.31 2000-06-28 10:58:02 knok Exp $
 #
 
 AUTOMAKE_OPTIONS = 1.4 no-dependencies
 
 INCLUDES = -I$(srcdir) -I.. -I$(srcdir)/../lib -I$(srcdir)/../src \
 	-I$(srcdir)/../intl -I$(srcdir)/../nmz
-localedir   = $(datadir)/locale
+localedir   = $(prefix)/$(DATADIRNAME)/locale
 confdir     = $(sysconfdir)/$(PACKAGE)
 indexdir    = $(localstatedir)/$(PACKAGE)/index
 DEFS = -DLOCALEDIR=\"$(localedir)\" \

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: namazu 2.0\n"
-"POT-Creation-Date: 1999-11-19 12:46+0900\n"
+"POT-Creation-Date: 1999-11-24 07:49+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>\n"
 "Language-Team: Japanese <satoru-t@is.aist-nara.ac.jp>\n"
@@ -13,12 +13,12 @@ msgstr ""
 "Content-Type: text/plain; charset=EUC-JP\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
-#: nmz/conf.c:475
+#: nmz/conf.c:479
 #, c-format
 msgid "Config:  %s\n"
 msgstr "設定ファイル:  %s\n"
 
-#: nmz/conf.c:478
+#: nmz/conf.c:482
 #, c-format
 msgid ""
 "Default: %s\n"
@@ -33,32 +33,15 @@ msgstr ""
 "標準の言語: %s\n"
 "スコア計算: %s\n"
 
-#: nmz/conf.c:491
+#: nmz/conf.c:495
 #, c-format
 msgid "Alias:   \"%s\" -> \"%s\"\n"
 msgstr "別名:   \"%s\" -> \"%s\"\n"
 
-#: nmz/conf.c:500
+#: nmz/conf.c:504
 #, c-format
 msgid "Replace: \"%s\" -> \"%s\"\n"
 msgstr "置換: \"%s\" -> \"%s\"\n"
-
-#. if no item available
-#: nmz/wakati.c:244
-msgid ""
-"\t<h2>Error!</h2>\n"
-"<p>Invalid query.</p>\n"
-msgstr ""
-"\t<h2>エラー!</h2>\n"
-"<p>検索式が不正です。</p>\n"
-
-#: nmz/wakati.c:250
-msgid ""
-"\t<h2>Error!</h2>\n"
-"<p>Too many query tokens.</p>\n"
-msgstr ""
-"\t<h2>エラー!</h2>\n"
-"<p>検索式の項目が多すぎます。</p>\n"
 
 #: src/cgi.c:109 src/cgi.c:119
 msgid "Invalid idxname."
@@ -68,61 +51,77 @@ msgstr "不正な idxname の指定です"
 msgid "Too long QUERY_STRING"
 msgstr "CGIの QUERY_STRING が長すぎます"
 
-#: src/namazu.c:327
+#: src/namazu.c:316
+msgid ""
+"\t<h2>Error!</h2>\n"
+"<p>Invalid query.</p>\n"
+msgstr ""
+"\t<h2>エラー!</h2>\n"
+"<p>検索式が不正です。</p>\n"
+
+#: src/namazu.c:320
+msgid ""
+"\t<h2>Error!</h2>\n"
+"<p>Too many query tokens.</p>\n"
+msgstr ""
+"\t<h2>エラー!</h2>\n"
+"<p>検索式の項目が多すぎます。</p>\n"
+
+#: src/namazu.c:369
 msgid "\t<p>No document matching your query.</p>\n"
 msgstr "\t<p>検索式にマッチする文書はありませんでした。</p>\n"
 
-#: src/output.c:194
+#: src/output.c:355
 msgid "\t<strong>Page:</strong> "
 msgstr "\t<strong>ペイジ:</strong> "
 
-#: src/output.c:228
+#: src/output.c:397
 #, c-format
 msgid "Current List: %d"
 msgstr "現在のリスト: %d"
 
-#: src/output.c:364
+#: src/output.c:536
 #, c-format
 msgid " [ TOTAL: %d ]"
 msgstr " [ 合計: %d ]"
 
-#: src/output.c:387
+#: src/output.c:560
 msgid " (Too many words matched. Ignored.)"
 msgstr " (マッチする単語が多すぎるので無視しました)"
 
-#: src/output.c:389
+#: src/output.c:562
 msgid " (Too many pages hit. Ignored.)"
 msgstr " (ヒット数が多すぎるので無視しました)"
 
-#: src/output.c:391
+#: src/output.c:564
 msgid " (cannot open regex index)"
 msgstr " (正規表現用インデックスが開けませんでした)"
 
-#: src/output.c:393
+#: src/output.c:566
 msgid " (cannot open phrase index)"
 msgstr " (フレイズ検索用インデックスが開けませんでした)"
 
-#: src/output.c:395
+#: src/output.c:568
 msgid " (cannot open this index)\n"
 msgstr " (インデックスが開けませんでした)\n"
 
-#: src/output.c:397
+#: src/output.c:570
 msgid "(You don't have a permission to access the index)"
 msgstr "（インデックスにアクセスする権利がありません）"
 
-#: src/output.c:407
+#: src/output.c:580
 msgid "\t<h2>Results:</h2>\n"
 msgstr "\t<h2>検索結果</h2>\n"
 
-#: src/output.c:414
+#: src/output.c:587
 msgid "References: "
 msgstr "参考ヒット数: "
 
-#: src/output.c:422
+#: src/output.c:595
 msgid "\t<p><strong> Total "
 msgstr "\t<p><strong>検索式にマッチする "
 
-#: src/output.c:429
+#: src/output.c:602
 msgid ""
 "\t documents matching your query.</strong></p>\n"
 "\n"

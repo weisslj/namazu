@@ -1,3 +1,7 @@
+1999-11-29  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* lib/Makefile.am (EXTRA_DIST): Add system.h
+
 1999-11-24  Ryuji Abe  <raeva@t3.rim.or.jp>
 
 	* pxgettext: New file derived from gimp-perl.

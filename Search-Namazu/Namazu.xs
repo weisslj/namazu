@@ -20,7 +20,7 @@ Namazu.xs
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 # 02111-1307, USA
 
-$Id: Namazu.xs,v 1.10 2000-01-24 05:35:23 knok Exp $
+$Id: Namazu.xs,v 1.11 2000-01-27 03:29:19 satoru Exp $
 
 */
 
@@ -62,13 +62,8 @@ call_search_main(query)
 		NmzResult hlist;
 		char result[BUFSIZE];
 
-		nmz_uniq_idxnames();
-		nmz_expand_idxname_aliases();
-		nmz_complete_idxnames();
-
 		qstr = SvPV(query, na);
 		strcpy(cqstr, qstr);
-		nmz_codeconv_query(cqstr);
 		retar = newAV();
 		hlist = nmz_search(cqstr);
 		for (i = 0; i < hlist.num; i ++) {

@@ -1,3 +1,10 @@
+2000-01-27  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* Namazu.xs (call_search_main): Do not call the following
+	functions: nmz_uniq_idxnames(), nmz_expand_idxname_aliases(),
+	nmz_complete_idxnames(), nmz_codeconv_query()
+
+
 2000-01-24  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* Version 0.20.

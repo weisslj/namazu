@@ -1,7 +1,7 @@
 Overview of Changes in Namazu 2.1.0 (draft) - Jun 25, 2001
 
 [currently same as stable-2-0 branch]
-* Fix path delimter probrem on Windows environment.
+* Fix path delimter problem on Windows environment.
  (namazu-win32-ja#00411)
 * Fix ignore $FILTERDIR specification.
   (namazu-bugs-ja#45)

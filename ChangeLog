@@ -1,3 +1,7 @@
+2003-06-15  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * filter/taro7_10.pl (status): Bug fix.
+
 2003-06-08  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * nmz/hlist.c (nmz_get_hlist): Fixed unfree memory allocation bug.
@@ -7962,4 +7966,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1027 2003-06-08 13:51:29 opengl2772 Exp $
+$Id: ChangeLog,v 1.1028 2003-06-15 13:54:37 opengl2772 Exp $

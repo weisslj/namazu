@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: taro7_10.pl,v 1.4 2003-06-03 14:36:46 usu Exp $
+# $Id: taro7_10.pl,v 1.5 2003-06-15 13:54:37 opengl2772 Exp $
 # Copyright (C) 2003 Yukio USUDA
 #               2003 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -40,7 +40,7 @@ sub status() {
     my $utfconvpath = undef;
     return 'yes' if ($perlver >= 5008);
     $utfconvpath = util::checklib('unicode.pl');
-    return 'yes' if defined $utfconvpath;
+    return 'yes' if $utfconvpath;
     return 'no'; 
 }
 

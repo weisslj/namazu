@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.82 2001-04-28 07:29:21 knok Exp $
+# $Id: mknmz.in,v 1.83 2001-05-29 01:27:03 knok Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -349,16 +349,19 @@ sub preload_modules () {
     require "gettext.pl" || die "unable to require \"gettext.pl\"\n";
 }
 
+sub postload_modules () {
+    require "htmlsplit.pl" || die "unable to require \"htmlsplit.pl\"\n";
+}
+
 sub load_modules () {
-    unshift @INC, "../pl";
-    unshift @INC, "../filter";
+    unshift @INC, "../pl";	# FIXME: remove the workaround for 
+    unshift @INC, "../filter";	# test suites.
 
     require "var.pl" || die "unable to require \"var.pl\"\n";
     require "usage.pl" || die "unable to require \"usage.pl\"\n";
     require "codeconv.pl" || die "unable to require \"codeconv.pl\"\n";
     require "wakati.pl" || die "unable to require \"wakati.pl\"\n";
     require "seed.pl" || die "unable to require \"seed.pl\"\n";
-    require "htmlsplit.pl" || die "unable to require \"htmlsplit.pl\"\n";
 
     @Seed = seed::init();
     textdomain('namazu', $LANG);
@@ -1069,6 +1072,7 @@ sub parse_options
 	load_rcfile($ConfigFile = $opt_config);
     }
     load_filtermodules(); # to make effect $opt_config.
+    postload_modules();
 
     if ($opt_help) {
 	show_usage();

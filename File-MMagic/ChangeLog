@@ -1,3 +1,9 @@
+1999-12-01  Ryuji Abe  <raeva@t3.rim.or.jp>
+
+	* perl-File-MMagic.spec: New File for build RPM package.
+
+	* MANIFEST: s/File-MMagic.spec/perl-File-MMagic.spec/g.
+
 1999-11-15  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* MMagic.pm (new): Changed to handle specified filename for

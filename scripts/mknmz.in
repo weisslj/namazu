@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.83 2001-05-29 01:27:03 knok Exp $
+# $Id: mknmz.in,v 1.84 2001-06-19 04:27:43 knok Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -344,6 +344,9 @@ sub init () {
 
 sub preload_modules () { 
     unshift @INC, $LIBDIR;
+    unshift @INC, "../pl";	# FIXME: remove the workaround for 
+    unshift @INC, "../filter";	# test suites.
+
     require "conf.pl" || die "unable to require \"conf.pl\"\n";
     require "util.pl" || die "unable to require \"util.pl\"\n";
     require "gettext.pl" || die "unable to require \"gettext.pl\"\n";
@@ -354,9 +357,6 @@ sub postload_modules () {
 }
 
 sub load_modules () {
-    unshift @INC, "../pl";	# FIXME: remove the workaround for 
-    unshift @INC, "../filter";	# test suites.
-
     require "var.pl" || die "unable to require \"var.pl\"\n";
     require "usage.pl" || die "unable to require \"usage.pl\"\n";
     require "codeconv.pl" || die "unable to require \"codeconv.pl\"\n";

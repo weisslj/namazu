@@ -1,3 +1,8 @@
+2001-06-19  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* scripts/mknmz.in (preload_modules): Changed @INC handling
+	timing.
+
 2001-06-18  Ryuji Abe  <rug@namazu.org>
 
 	* man/Makfile.am (EXTRA_DIST): Added help2man.
@@ -6481,4 +6486,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.825 2001-06-18 06:32:48 rug Exp $
+$Id: ChangeLog,v 1.826 2001-06-19 04:27:43 knok Exp $

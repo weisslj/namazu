@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.78 2000-09-05 05:47:42 rug Exp $
+ * $Id: search.c,v 1.79 2000-12-18 09:16:11 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -772,6 +772,7 @@ do_logging(const char *query, int n)
 static NmzResult 
 nmz_search_sub(NmzResult hlist, const char *query, int n)
 {
+    nmz_stat nstat;
     cur_idxnum = n;
 
     if (check_access() != ALLOW) { /* if access denied */
@@ -784,9 +785,12 @@ nmz_search_sub(NmzResult hlist, const char *query, int n)
 	return hlist;
     }
 
-    if (open_index_files() != SUCCESS) {
+    if ((nstat = open_index_files()) != SUCCESS) {
         /* If open failed */
-        hlist.stat = ERR_CANNOT_OPEN_INDEX;
+	if (nstat == ERR_OLD_INDEX_FORMAT)
+	    hlist.stat = nstat;
+	else
+	    hlist.stat = ERR_CANNOT_OPEN_INDEX;
         return hlist;
     }
 

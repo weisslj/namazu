@@ -1,5 +1,5 @@
 /*
- * $Id: result.c,v 1.70 2003-03-23 17:53:16 opengl2772 Exp $
+ * $Id: result.c,v 1.71 2003-03-23 21:12:55 opengl2772 Exp $
  * 
  * Copyright (C) 1989, 1990 Free Software Foundation, Inc.
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
@@ -223,17 +223,15 @@ emphasize(char *str)
             memmove(key, key + 1, strlen(key + 1) + 1);
             key[strlen(key) - 1] = '\0';
 
-            for (ptr = key; *ptr; ptr++) {
-                *ptr = tolower(*ptr);
-            }
+            nmz_strlower(key);
 
             ptr = str;
             lowerPtr = lowerString;
             while (*ptr) {
                 lowerString = strdup(str);
-                for (lowerPtr = lowerString; *lowerPtr; lowerPtr++) {
-                    *lowerPtr = tolower(*lowerPtr);
-                }
+                startPos = endPos = lowerPtr;
+
+                nmz_strlower(lowerString);
                 lowerPtr = lowerString + (ptr - str);
 
                 findFlag = 0;

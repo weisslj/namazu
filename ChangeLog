@@ -1,5 +1,7 @@
 2003-03-24  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
+        * src/result.c: Change to nmz_strlower from tolower.
+
         * src/output.c (emprint): Buffer size is corrected.
 
         * src/result.c (emphasize): The emphasis at the time of phrase
@@ -7833,4 +7835,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1006 2003-03-23 17:53:15 opengl2772 Exp $
+$Id: ChangeLog,v 1.1007 2003-03-23 21:12:55 opengl2772 Exp $

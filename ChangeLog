@@ -4,6 +4,7 @@
 	(load_document): Call codeconv_document() after pre_codeconv()
 	and post_codeconv() processing. [namazu-dev 1744]
 	(codeconv_document): Handle both CR+LR and CR  well.
+	(add_target): Fix ALLOW_FILE, DENY_FILE bug. [namazu 1455]
 
 	* nmz/util.c (nmz_isnumstr): Fix isdigit() related
 	bug. [namazu-dev 1731] 

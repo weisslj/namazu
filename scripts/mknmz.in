@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.25 2000-02-21 08:53:40 satoru Exp $
+# $Id: mknmz.in,v 1.26 2000-02-21 10:38:37 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -1227,12 +1227,17 @@ sub add_target ($\@\%) {
 	    return;
 	}
     }
-    if ($target =~ m!^.*/(($conf::DENY_FILE)(\.gz|\.Z)?)$!i ) {
+
+    # Extract the file name of the target.
+    $target =~ m!^.*/([^/]+)$!;
+    my $fname = $1;
+
+    if ($fname =~ m!^($conf::DENY_FILE)(\.gz|\.Z|\.bz2)?$!i ) {
         util::vprint(sprintf(_("Denied:	%s"), $target));
 	$counts_ref->{'denied'}++; 
 	return;
     }
-    if ($target !~ m!^.*/(($conf::ALLOW_FILE)(\.gz|\.Z|\?.*)?)$!i) {
+    if ($fname !~ m!^($conf::ALLOW_FILE)(\.gz|\.Z|\.bz2)?$!i) {
         util::vprint(sprintf(_("Not allowed:	%s"), $target));
 	$counts_ref->{'not_allowed'}++; 
 	return;

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.4 1999-08-25 10:20:54 satoru Exp $
+# $Id: util.pl,v 1.5 1999-08-27 01:30:52 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -22,7 +22,6 @@
 #  This file must be encoded in EUC-JP encoding
 #
 
-package util;
 use strict;
 use IO::File;
 
@@ -30,8 +29,8 @@ use IO::File;
 sub cp ($$) {
     my ($from, $to) = @_;
 
-    my $fh_from = fopen_or_die($from);
-    my $fh_to = fopen_or_die(">$to");
+    my $fh_from = efpoen($from);
+    my $fh_to = efpoen(">$to");
 
     my $buf = "";
     while(read ($fh_from, $buf, 16384)) {
@@ -51,7 +50,7 @@ sub Rename($$) {
     dprint("// Renamed: $from, $to\n");
 }
 
-sub fopen_or_die ($) {
+sub efopen ($) {
     my ($fname) = @_;
 
     my $fh = fopen($fname) || die "$fname: $!\n";
@@ -75,14 +74,6 @@ sub fopen ($) {
 sub dprint (@) {
     print STDERR @_ if $conf::DebugOpt;
 } 
-
-sub include($) {
-    my ($filename) = @_;
-
-    my $fh_include = util::fopen_or_die($filename);
-    my $code = join('',<$fh_include>);
-    return $code;
-}
 
 sub commas ($) {
     my ($num) = @_;
@@ -131,7 +122,7 @@ sub readfile ($) {
 	    return '';
 	}
     } else {
-	$fh = fopen_or_die($arg);
+	$fh = efpoen($arg);
     }
 
     my $cont = "";

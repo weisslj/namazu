@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.8 1999-08-25 03:43:59 satoru Exp $
+ * $Id: cgi.c,v 1.9 1999-08-27 01:30:53 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -294,7 +294,7 @@ int get_cgi_vars(uchar * query, uchar *subquery)
 void init_cgi(uchar * query, uchar *subquery)
 {
     if (get_cgi_vars(query, subquery)) {
-	show_usage();	/* if it is NOT CGI, show usage and exit */
+	show_mini_usage();	/* if it is NOT CGI, show usage and exit */
 	exit(1);
     }
     if (DbNumber == 0) {

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: msword.pl.in,v 1.2 1999-08-26 06:09:38 knok Exp $
+# $Id: msword.pl.in,v 1.3 1999-08-27 01:30:50 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -29,7 +29,7 @@ require 'util.pl';
 require 'filter.pl';
 require 'html.pl';
 
-my $TMPFILE = util::tmpnam('NMZ.word');
+my $TMPFILE = tmpnam('NMZ.word');
 my $TMPFILE2 = itil::tmpnam('NMZ.word2');
 
 sub filter ($$$$$$$) {
@@ -40,13 +40,13 @@ sub filter ($$$$$$$) {
     print "Proccessing ms-word file ... (use '@MSWORDVIEW_PATH@')\n"
       if ($conf::VerboseOpt);
 
-    my $fh = util::fopen_or_die("> $TMPFILE");
+    my $fh = efopen("> $TMPFILE");
     print $fh $$cont;
     undef $fh;
 
     system("@MSWORDVIEW_PATH@ -o - $TMPFILE | @LV_PATH@ -Iu8 -Oej > $TMPFILE2");
-    $fh = util::fopen_or_die("< $TMPFILE2");
-    $$cont = util::readfile($fh);
+    $fh = efopen("< $TMPFILE2");
+    $$cont = readfile($fh);
     undef $fh;
     unlink($TMPFILE);
     unlink($TMPFILE2);

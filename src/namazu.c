@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.14 1999-08-26 04:29:50 satoru Exp $
+ * $Id: namazu.c,v 1.15 1999-08-27 01:30:54 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -169,7 +169,7 @@ int parse_options(int argc, char **argv)
 	    exit(0);
 	    break;
 	case '0':
-	    show_usage();
+	    show_long_usage();
 	    exit(0);
 	    break;
 	case 'C':
@@ -370,8 +370,8 @@ int main(int argc, char **argv)
 
 	i = parse_options(argc, argv); 
 	if (i == argc) {
-	    show_usage();
-	    exit(0);
+	    show_mini_usage();
+	    exit(1);
 	}
 	if (strlen(argv[i]) > QUERY_MAX_LENGTH) {
 	    fputx(MSG_TOO_LONG_KEY, stdout);

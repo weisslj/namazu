@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: html.pl,v 1.5 1999-06-12 14:29:27 satoru Exp $
+# $Id: html.pl,v 1.6 1999-08-27 01:30:52 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -231,7 +231,7 @@ sub parse_robots_txt () {
 	return 0;
     }
 
-    my $fh_robottxt = util::fopen_or_die($conf::ROBOTS_TXT);
+    my $fh_robottxt = efopen($conf::ROBOTS_TXT);
     while(<$fh_robottxt>){
 	/^\s*Disallow:\s*(\S+)/i && do {
 	    my $uri = $1;
@@ -263,7 +263,7 @@ sub parse_htaccess () {
     my $r = 0;
     my $CWD;
 
-    my $fh = util::fopen(".htaccess") or 
+    my $fh = fopen(".htaccess") or 
 	$err = $!,  $CWD = cwd() , die "$CWD/.htaccess : $err\n";
     while(<$fh>) {
 	s/^\#.*$//;

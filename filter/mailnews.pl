@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mailnews.pl,v 1.2 1999-08-26 06:09:38 knok Exp $
+# $Id: mailnews.pl,v 1.3 1999-08-27 01:30:50 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -104,12 +104,12 @@ sub mailnews_filter ($$$\%) {
 	} elsif ($line =~ s/^content-type:\s*//i) {
 	    if ($line =~ /multipart.*boundary="(.*)"/i){
 		$boundary = $1;
-		util::dprint("((boundary: $boundary))\n");
+		dprint("((boundary: $boundary))\n");
   	    } elsif ($line =~ m!message/partial;\s*(.*)!i) {
 		# The Message/Partial subtype routine [1998-10-12]
 		# contributed by Hiroshi Kato <tumibito@mm.rd.nttdata.co.jp>
   		$partial = $1;
-  		util::dprint("((partial: $partial))\n");
+  		dprint("((partial: $partial))\n");
 	    }
 	} 
     }
@@ -159,7 +159,7 @@ sub mailnews_citation_filter ($$) {
     for (my $i = 0; $i < 2 && defined($tmp[$i]); $i++) {
 	if ($tmp[$i] =~ /(^\s*((([\xa1-\xfe][\xa1-\xfe]){1,8}|([\x21-\x7e]{1,16}))\s*(。|．|\.|，|,|、|\@|＠|の)\s*){0,2}\s*(([\xa1-\xfe][\xa1-\xfe]){1,8}|([\x21-\x7e]{1,16}))\s*(です|と申します|ともうします|といいます)(.{0,2})?\s*$)/) {
 	    # デバッグ情報から検索するには perl -n00e 'print if /^<<<</'
-	    util::dprint("\n\n<<<<$tmp[$i]>>>>\n\n");
+	    dprint("\n\n<<<<$tmp[$i]>>>>\n\n");
 	    $omake .= $tmp[$i] . "\n";
 	    $tmp[$i] = "";
         }
@@ -188,7 +188,7 @@ sub mailnews_citation_filter ($$) {
 	# また、 5 行より長い段落は処理しない。
 	# それにしてもなんという hairy 正規表現だろう…
 	if ($i < 5 && ($line =~ tr/\n/\n/) <= 5 && $line =~ /(^\s*(Date:|Subject:|Message-ID:|From:|件名|差出人|日時))|(^.+(返事です|reply\s*です|曰く|いわく|書きました|言いました|話で|wrote|said|writes|says)(.{0,2})?\s*$)|(^.*In .*(article|message))|(<\S+\@([\w-.]\.)+\w+>)/im) {
-	    util::dprint("\n\n<<<<$line>>>>\n\n");
+	    dprint("\n\n<<<<$line>>>>\n\n");
 	    $omake .= $line . "\n";
 	    $line = "";
 	    next;

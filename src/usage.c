@@ -11,7 +11,7 @@
  ************************************************************/
 
 /* display the usage and version info and exit */
-void show_usage(void)
+void show_long_usage(void)
 {
     uchar buf[BUFSIZE * 4];
     strcpy(buf, MSG_USAGE);
@@ -19,6 +19,13 @@ void show_usage(void)
     euctosjis(buf);
 #endif
     printf(buf, COPYRIGHT, VERSION);
+}
+
+
+void show_mini_usage(void)
+{
+    printf("Usage: namazu [options] <query> [index dir(s)]\n");
+    printf("Try `namazu --help' for more options.\n");
 }
 
 

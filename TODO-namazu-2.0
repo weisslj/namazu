@@ -1,4 +1,4 @@
-$Id: TODO-namazu-2.0,v 1.25 2000-01-06 09:16:10 satoru Exp $
+$Id: TODO-namazu-2.0,v 1.26 2000-01-06 09:21:08 satoru Exp $
 
 検討項目
 
@@ -14,6 +14,8 @@ $Id: TODO-namazu-2.0,v 1.25 2000-01-06 09:16:10 satoru Exp $
 
 
 即急に取り組むべき課題
+
+  * mknmz の gettext化 (野首さん担当)
 
   * prefix "nmz" を徹底する
 

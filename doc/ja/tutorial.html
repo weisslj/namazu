@@ -12,8 +12,7 @@
 <hr>
 
 <p>
-Namazu 2.0 を初めて使う方のための入門書です。この文書は、2.0 
-が公開されたことを前提として書かれています。
+Namazu 2.0 を初めて使う方のための入門書です。
 </p>
 
 <h2>目次</h2>
@@ -270,16 +269,14 @@ ranlib /usr/local/lib/libchasen.a # ここはシステムに応じて
 <h2><a name="japanese">日本語環境での利用</a></h2>
 
 <p>
-Namazu を日本語環境で利用するには<code>環境変数LANG</code>の
-設定が必要です。Windows では ja_JP.SJIS と設定します。UNIX 
-では <code>ja</code>, <code>ja_JP.eucJP</code>,
-<code>ja_JP.EUC</code> などを設定します。
+Namazu 2.0 を日本語環境で利用するには<code>環境変数
+LANG</code>の設定が必要です。Windows では ja_JP.SJIS と設定
+します。UNIX では <code>ja</code>, <code>ja_JP.eucJP</code>,
+<code>ja_JP.EUC</code>, <code>ja_JP.ujis</code>などを設定し
+ます。適切な設定はシステムによって異なります。もしわからない
+場合は <code>ja</code> を設定してください。
 </p>
 
-<p>
-FIXME: 不親切。 localeと gettextの仕組みを簡単に説明して、シ
-ステムごとに LANG の設定例を紹介できないか?
-</p>
 
 <h2><a name="before-make-install">make install 前の確認</a></h2>
 <p>
@@ -776,9 +773,8 @@ Webブラウザの言語の設定に日本語(ja) を追加してください
 <dt>やまだあきらさんの namazu.el (Emacs/Mule client)
   <dd>
   <a href="http://arika.org/linux/tools/namazu-el/">http://arika.org/linux/tools/namazu-el/</a>
-<dt>Namazu Beta version
-  <dd>ここの説明で使っている 1.9.14 はここにある<br>
-  <a href="http://www.namazu.org/unstable/">http://www.namazu.org/unstable/</a>
+<dt>Namazu unstable version
+  <dd><a href="http://www.namazu.org/unstable/">http://www.namazu.org/unstable/</a>
 </dl>
 
 
@@ -790,7 +786,7 @@ Webブラウザの言語の設定に日本語(ja) を追加してください
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: tutorial.html,v 1.25 2000-02-19 09:51:44 satoru Exp $
+$Id: tutorial.html,v 1.26 2000-02-19 10:01:07 satoru Exp $
 </div>
 <address>
 developers@namazu.org

@@ -35,7 +35,7 @@ Dieser Index enth&auml;lt <!-- FILE --> 0 <!-- FILE --> Dokumente und
 <form method="get" action="{cgi}">
 <p>
 <strong>Suche:</strong> 
-<input type="text" name="query" size="40">
+<input type="text" name="query" size="40" value="">
 <input type="submit" value="Search!">
 <!-- <input type="hidden" name="idxname" value="foobar"> -->
 <a href="{cgi}">[Hilfe zur Suche]</a>

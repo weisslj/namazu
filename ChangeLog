@@ -2,6 +2,10 @@
 
 	* template/NMZ.result.*: The addition of </dd>, </dt>.
 
+	* src/form.c, output.[ch], namazu-cmd.c, namazu-cgi.c,
+	template/NMZ.head*: Template file It corresponds to XHTML 
+	provisional.
+
 2004-07-20  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* filter/pipermail.pl: Add new filter.
@@ -8953,4 +8957,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1200 2004-07-20 15:21:15 opengl2772 Exp $
+$Id: ChangeLog,v 1.1201 2004-07-20 18:19:02 opengl2772 Exp $

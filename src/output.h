@@ -18,6 +18,7 @@ extern char *get_emphasis_tag_start(void);
 extern char *get_emphasis_tag_end(void);
 extern void set_contenttype( const char *str );
 extern void set_htmlmode ( int mode );
+extern int get_htmlmode ( void );
 extern int is_htmlmode ( void );
 extern void set_cgimode ( int mode );
 extern void set_quietmode ( int mode );

@@ -35,7 +35,7 @@ Ten indeks zawiera <!-- FILE --> 0 <!-- FILE --> dokumentów i
 <form method="get" action="{cgi}">
 <p>
 <strong>Query:</strong>
-<input type="text" name="query" size="40">
+<input type="text" name="query" size="40" value="">
 <input type="submit" value="Szukaj!">
 <!-- <input type="hidden" name="idxname" value="foobar"> -->
 <a href="{cgi}">[Jak szukaæ, ¿eby znale¼æ a nie zab³±dziæ]</a>

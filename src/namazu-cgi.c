@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu-cgi.c,v 1.24 2003-11-19 12:58:37 opengl2772 Exp $
+ * $Id: namazu-cgi.c,v 1.25 2004-07-20 18:19:03 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -167,7 +167,7 @@ main(int argc, char **argv)
      */
     set_cgimode(1);
     set_refprint(1);
-    set_htmlmode(1);
+    set_htmlmode(1);     /* 1: HTML */
     set_pageindex(1);	 /* Print page index */
     set_formprint(1);	 /* Print "<form> ... </form>"  */
     set_uridecode(0);        /* Do not decode URI in results. */

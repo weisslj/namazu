@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu-cmd.c,v 1.22 2004-04-27 05:26:12 opengl2772 Exp $
+ * $Id: namazu-cmd.c,v 1.23 2004-07-20 18:19:03 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -254,7 +254,7 @@ parse_options(int argc, char **argv)
 	    set_countmode(1);
 	    break;
 	case 'h':
-	    set_htmlmode(1);
+	    set_htmlmode(1);   /* 1: HTML */
 	    set_uridecode(0);  /* Do no decode URI in results. */
 	    break;
 	case 'H':

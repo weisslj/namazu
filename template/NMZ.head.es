@@ -35,7 +35,7 @@ Este índice contiene <!-- FILE --> 0 <!-- FILE --> documentos y
 <form method="get" action="{cgi}">
 <p>
 <strong>Cadena de Búsqueda:</strong> 
-<input type="text" name="query" size="40">
+<input type="text" name="query" size="40" value="">
 <input type="submit" value="Buscar!">
 <!-- <input type="hidden" name="idxname" value="foobar"> -->
 <a href="{cgi}">[Cómo buscar]</a>

@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.73 2004-01-20 09:14:20 opengl2772 Exp $
+ * $Id: form.c,v 1.74 2004-07-20 18:19:03 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -75,8 +75,8 @@ static enum nmz_stat replace_query_value ( const char *p, const char *query );
 static void delete_str ( char *s, char *d );
 static void get_value ( const char *s, char *value );
 static void get_select_name ( const char *s, char *value );
-static enum nmz_stat select_option ( char *s, const char *name, const char *subquery );
-static enum nmz_stat check_checkbox ( char *str );
+static enum nmz_stat select_option ( char *s, const char *name, const char *query, const char *subquery );
+static enum nmz_stat check_checkbox ( char *str, const char *query );
 static void handle_tag ( const char *start, const char *end, const char *query,char *select_name, const char *subquery );
 static char * read_headfoot ( const char *fname );
 static void subst ( char *str, const char *pat, const char *rep );
@@ -114,17 +114,33 @@ static enum nmz_stat
 replace_query_value(const char *p, const char *query)
 {
     if (cmp_element(p, (char *)"input type=\"text\" name=\"query\"") == 0) {
-	char *converted = nmz_codeconv_external(query);
+	char *converted;
+
+	if (strcmp(query, "")) {
+            char buffer[BUFSIZE] = "";
+            char value[BUFSIZE];
+
+            get_value(p, value);
+
+            strncpy(buffer, " value=\"", BUFSIZE - 1);
+            strncat(buffer, value, BUFSIZE - 1);
+            strncat(buffer, "\"", BUFSIZE - 1);
+            buffer[BUFSIZE - 1] = '\0';
+            delete_str((char *)p, buffer);
+	}
+	converted = nmz_codeconv_external(query);
 	if (converted == NULL) {
 	    die("%s", strerror(errno));
 	}
 
         for (; *p; p++)
             fputc(*p, stdout);
-        printf(" value=\"");
 
-        html_print(converted);  /* for treating <>&" chars in the query. */
-        printf("\"");
+	if (strcmp(query, "")) {
+            printf(" value=\"");
+            html_print(converted);  /* for treating <>&" chars in the query. */
+            printf("\"");
+        }
 
 	free(converted);
         return SUCCESS;
@@ -185,35 +201,53 @@ get_select_name(const char *s, char *value)
 }
 
 static enum nmz_stat
-select_option(char *s, const char *name, const char *subquery)
+select_option(char *s, const char *name, const char *query, const char *subquery)
 {
     char value[BUFSIZE] = "";
 
     if (cmp_element(s, (char *)"option") == 0) {
-	if(strcmp(nmz_getenv("QUERY_STRING"), "")) {
-            delete_str(s, (char *)"selected ");
+	if (strcmp(query, "")) {
+            delete_str(s, (char *)" selected=\"selected\"");
+            delete_str(s, (char *)" selected='selected'");
+            delete_str(s, (char *)" selected");
 	}
         fputs(s, stdout);
         get_value(s, value);
         if (strcasecmp(name, "result") == 0) {
             if (strcasecmp(value, get_templatesuffix()) == 0) {
-                fputs(" selected", stdout);
+                if (get_htmlmode() == 1) {
+                    fputs(" selected", stdout);              /* HTML */
+                } else {
+                    fputs(" selected=\"selected\"", stdout); /* XHTML */
+                }
             }
         } else if (strcasecmp(name, "sort") == 0) {
             if ((strcasecmp(value, "date:late") == 0) && 
 		nmz_get_sortmethod() == SORT_BY_DATE &&
 		nmz_get_sortorder()  == DESCENDING) 
 	    {
-                fputs(" selected", stdout);
+                if (get_htmlmode() == 1) {
+                    fputs(" selected", stdout);              /* HTML */
+                } else {
+                    fputs(" selected=\"selected\"", stdout); /* XHTML */
+                }
             } else if ((strcasecmp(value, "date:early") == 0) && 
 		       nmz_get_sortmethod() == SORT_BY_DATE &&
 		       nmz_get_sortorder()  == ASCENDING)
             {
-                fputs(" selected", stdout);
+                if (get_htmlmode() == 1) {
+                    fputs(" selected", stdout);              /* HTML */
+                } else {
+                    fputs(" selected=\"selected\"", stdout); /* XHTML */
+                }
             } else if ((strcasecmp(value, "score") == 0) && 
 		       nmz_get_sortmethod() == SORT_BY_SCORE) 
 	    {
-                fputs(" selected", stdout);
+                if (get_htmlmode() == 1) {
+                    fputs(" selected", stdout);              /* HTML */
+                } else {
+                    fputs(" selected=\"selected\"", stdout); /* XHTML */
+                }
             } else if ((nmz_strprefixcasecmp(value, "field:") == 0) && 
 		       nmz_get_sortmethod() == SORT_BY_FIELD) 
 	    {
@@ -237,25 +271,45 @@ select_option(char *s, const char *name, const char *subquery)
 		if (strcmp(field, nmz_get_sortfield()) == 0 && 
 		    nmz_get_sortorder() == order)
 		{
-		    fputs(" selected", stdout);
+                    if (get_htmlmode() == 1) {
+                        fputs(" selected", stdout);              /* HTML */
+                    } else {
+                        fputs(" selected=\"selected\"", stdout); /* XHTML */
+                    }
 		}
             }
 
         } else if (strcasecmp(name, "lang") == 0) {
             if (strcasecmp(value, nmz_get_lang()) == 0) {
-                fputs(" selected", stdout);
+                if (get_htmlmode() == 1) {
+                    fputs(" selected", stdout);              /* HTML */
+                } else {
+                    fputs(" selected=\"selected\"", stdout); /* XHTML */
+                }
             }
         } else if (strcasecmp(name, "idxname") == 0) {
             if (nmz_get_idxnum() >= 1 && nmz_strsuffixcmp(value, nmz_get_idxname(0)) == 0) {
-                fputs(" selected", stdout);
+                if (get_htmlmode() == 1) {
+                    fputs(" selected", stdout);              /* HTML */
+                } else {
+                    fputs(" selected=\"selected\"", stdout); /* XHTML */
+                }
             }
         } else if (strcasecmp(name, "subquery") == 0) {
             if (strcasecmp(value, subquery)  == 0) {
-                fputs(" selected", stdout);
+                if (get_htmlmode() == 1) {
+                    fputs(" selected", stdout);              /* HTML */
+                } else {
+                    fputs(" selected=\"selected\"", stdout); /* XHTML */
+                }
             }
         } else if (strcasecmp(name, "max") == 0) {
             if (atoi(value) == get_maxresult()) {
-                fputs(" selected", stdout);
+                if (get_htmlmode() == 1) {
+                    fputs(" selected", stdout);              /* HTML */
+                } else {
+                    fputs(" selected=\"selected\"", stdout); /* XHTML */
+                }
             }
         }
         return SUCCESS;
@@ -267,7 +321,7 @@ select_option(char *s, const char *name, const char *subquery)
  * Mark CHECKBOX of idxname with CHECKED 
  */
 static enum nmz_stat
-check_checkbox(char *str)
+check_checkbox(char *str, const char *query)
 {
     char value[BUFSIZE] = "";
     int i;
@@ -276,8 +330,10 @@ check_checkbox(char *str)
         char *pp;
         int db_count, searched;
 
-	if(strcmp(nmz_getenv("QUERY_STRING"), "")) {
-            delete_str(str, (char *)"checked");
+	if (strcmp(query, "")) {
+            delete_str(str, (char *)" checked=\"checked\"");
+            delete_str(str, (char *)" checked='checked'");
+            delete_str(str, (char *)" checked");
 	}
         fputs(str, stdout);
         get_value(str, value);
@@ -302,7 +358,11 @@ check_checkbox(char *str)
             }
         }
         if (db_count == searched) {
-            printf(" checked");
+            if (get_htmlmode() == 1) {
+                printf(" checked");                /* HTML */
+            } else {
+                printf(" checked=\"checked\"");    /* XHTML */
+            }
         }
         return SUCCESS;
     }
@@ -325,9 +385,9 @@ handle_tag(const char *start, const char *end, const char *query,
         tmp[l] = '\0';
         if (replace_query_value(tmp, query) == SUCCESS)
             return;
-        if (select_option(tmp, select_name, subquery) == SUCCESS)
+        if (select_option(tmp, select_name, query, subquery) == SUCCESS)
             return;
-        if (check_checkbox(tmp) == SUCCESS)
+        if (check_checkbox(tmp, query) == SUCCESS)
             return;
         get_select_name(tmp, select_name);
 	fputs(tmp, stdout);
@@ -486,6 +546,7 @@ print_headfoot(const char * fname, const char * query, const char *subquery)
 	    } else {		/* for XHTML */
 		handle_tag(p + 1, q - 2, query, name, subquery);
 		fputs("/>", stdout);
+                set_htmlmode(2);    /* 2: XHTML */
 	    }
             p = q;
         } else {

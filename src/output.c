@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.97 2004-07-18 08:24:26 opengl2772 Exp $
+ * $Id: output.c,v 1.98 2004-07-20 18:19:03 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -56,7 +56,7 @@
 #include "query.h"
 #include "system.h"
 
-static int htmlmode    = 0;
+static int htmlmode    = 0;   /* 0: text  1: HTML  2: XHTML */
 static int cgimode     = 0;
 static int quietmode   = 0;
 
@@ -181,9 +181,13 @@ unhtml_buffer(char *ostr) {
 	    }
 	}
 
-	if (strncasecmp(str, "<br>", 4) == 0&& *(str + 4) != '\n') {
+	if (strncasecmp(str, "<br>", 4) == 0 && *(str + 4) != '\n') {
 	    buf[i++] = '\n';
 	    str += 3;
+	    continue;
+	} else if (strncasecmp(str, "<br />", 6) == 0 && *(str + 6) != '\n') {
+	    buf[i++] = '\n';
+	    str += 5;
 	    continue;
 	}
 	if (*str == '<') {
@@ -580,8 +584,10 @@ print_current_range(int listmax)
     } else {
 	printf("%d", listmax);
     }
-    if (is_htmlmode()) {
+    if (get_htmlmode() == 1) {            /* HTML */
 	printf("</strong><br>\n");
+    } else if (get_htmlmode() == 2) {     /* XHTML */
+	printf("</strong><br />\n");
     } else {
 	fputc('\n', stdout);
     }
@@ -607,7 +613,7 @@ print_hitnum_all_idx(void)
 		    }
 		    printf("<li><strong>");
 		    puts_entitize(idxname);
-		    printf("</strong>: ");
+		    printf("</li></strong>: ");
 		} else {
 		    printf("(%s)", nmz_get_idxname(idxid));
 		}
@@ -871,9 +877,15 @@ set_htmlmode(int mode)
 }
 
 int 
-is_htmlmode(void)
+get_htmlmode(void)
 {
     return htmlmode;
+}
+
+int 
+is_htmlmode(void)
+{
+    return htmlmode != 0 ? 1 : 0;
 }
 
 void 

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.24 2001-08-20 13:31:58 baba Exp $
+# $Id: util.pl,v 1.25 2001-09-16 22:29:49 makoto Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -145,7 +145,8 @@ sub filesize($) {
 	    return '';
 	}
     } else {
-	$fh = efopen($arg) || return 0; # in case file is removed after find_file
+	$fh = fopen($arg) || return 0; # in case file is removed after find_file
+	                               # 2.0.7 had problem
     }
     my $size = -s $fh;
     return $size;

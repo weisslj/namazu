@@ -1,3 +1,9 @@
+2001-09-17  Makoto Fujiwara  <makoto@u.ki.nu>
+
+	* pl/util.pl: sub filesize had not fixed.
+	http://www.namazu.org/ml/namazu-devel-ja/msg01227.html
+	http://www.namazu.org/ml/namazu-devel-ja/msg02030.html
+
 2001-09-16  Makoto Fujiwara  <makoto@u.ki.nu>
 
 	* scripts/{gcnmz,mknmz}.in:
@@ -7046,4 +7052,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.869 2001-09-16 12:29:14 makoto Exp $
+$Id: ChangeLog,v 1.870 2001-09-16 22:29:49 makoto Exp $

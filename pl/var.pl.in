@@ -1,6 +1,7 @@
 # -*- Perl -*-
-# $Id: var.pl.in,v 1.7 2000-01-28 06:37:24 satoru Exp $
-# Copyright (C) 2000 Namazu Project All rights reserved..
+# $Id: var.pl.in,v 1.8 2000-01-28 09:40:16 satoru Exp $
+# Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
+# Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -28,8 +29,8 @@ package var;
 # Software information.
 #
 
-$VERSION         = '@VERSION@';
-$COPYRIGHT       = '@COPYRIGHT@';
+$VERSION         = "@VERSION@";
+$COPYRIGHT       = "@COPYRIGHT@"; # should be doublequote
 $MAILING_ADDRESS = '@MAILING_ADDRESS@';
 
 #-----------------------------------------------------------

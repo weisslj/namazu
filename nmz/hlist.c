@@ -2,9 +2,10 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.40 2000-01-27 13:13:34 satoru Exp $
+ * $Id: hlist.c,v 1.41 2000-01-28 09:40:11 satoru Exp $
  * 
- * Copyright (C) 2000 Namazu Project All rights reserved..
+ * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
+ * Copyright (C) 2000 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify

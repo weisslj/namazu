@@ -2,9 +2,10 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu-cgi.c,v 1.5 2000-01-28 05:59:59 satoru Exp $
+ * $Id: namazu-cgi.c,v 1.6 2000-01-28 09:40:21 satoru Exp $
  * 
- * Copyright (C) 2000 Namazu Project All rights reserved..
+ * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
+ * Copyright (C) 2000 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify

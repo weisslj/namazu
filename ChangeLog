@@ -1,5 +1,10 @@
 2000-01-28  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* configure.in (COPYRIGHT): Add "Copyright (C) 1997-1999 Satoru
+	Takabayashi All rights reserved.\n"
+
+	* pl/var.pl.in: Make $COPYRIGHT double-quoted string.
+
 	* src/output.c (print_hlist): Fix a bug.
 
 	* template/NMZ.result.normal.ja: New file.

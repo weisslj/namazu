@@ -2,9 +2,10 @@
  * 
  * usage.c -
  * 
- * $Id: usage.c,v 1.22 2000-01-27 22:53:30 satoru Exp $
+ * $Id: usage.c,v 1.23 2000-01-28 09:40:22 satoru Exp $
  * 
- * Copyright (C) 2000 Namazu Project All rights reserved..
+ * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
+ * Copyright (C) 2000 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify

@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.60 2003-06-16 14:31:42 opengl2772 Exp $
+ * $Id: hlist.c,v 1.61 2003-12-02 18:27:27 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -544,9 +544,7 @@ nmz_do_date_processing(NmzResult hlist)
 NmzResult 
 nmz_get_hlist(int index)
 {
-    int n, *buf, i;
     NmzResult hlist;
-    double idf = 1.0;
 
     hlist.num  = 0;
     hlist.data = NULL;
@@ -557,23 +555,16 @@ nmz_get_hlist(int index)
 	return hlist; /* error */
     }
 
-    nmz_get_unpackw(Nmz.i, &n);
-
-    if (nmz_is_tfidfmode() &&
-	(nmz_get_querytokennum() > 1
-	 /* 0th token is a phrase. */
-	 || strchr(nmz_get_querytoken(0), '\t') != NULL)) 
     {
-        idf = log((double)document_number / (n/2)) / log(2);
-	nmz_debug_printf("idf: %f (N:%d, n:%d)\n", idf, document_number, n/2);
-    }
-
-    {
+        int n, *buf, i;
+        double idf = 1.0;
 	int sum = 0;
 	int hit;
 	int maxhit = nmz_get_maxhit();
-	int bersize = n;
+	int bersize;
 	int totalsize;
+
+        nmz_get_unpackw(Nmz.i, &bersize);
 
 	hit = (bersize < maxhit * 2 ? bersize : maxhit * 2);
 	buf = malloc(hit * sizeof(int));
@@ -596,6 +587,15 @@ nmz_get_hlist(int index)
             }
         }
         n /= 2;
+
+        if (nmz_is_tfidfmode() &&
+	    (nmz_get_querytokennum() > 1
+	     /* 0th token is a phrase. */
+	     || strchr(nmz_get_querytoken(0), '\t') != NULL)) 
+        {
+            idf = log((double)document_number / n) / log(2);
+	    nmz_debug_printf("idf: %f (N:%d, n:%d)\n", idf, document_number, n);
+        }
 
 	nmz_malloc_hlist(&hlist, n);
 	if (hlist.stat == ERR_FATAL) {

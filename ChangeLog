@@ -1,3 +1,9 @@
+2003-12-03  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * nmz/hlist.c (nmz_get_hlist): The error of the number of
+        documents used when calculating 'idf' was corrected.
+        (namazu-devel-ja#03385)
+
 2003-11-27  Yukio USUDA <usu@namazu.org>
 
 	* filter/taro56.pl: Added routine to get title.
@@ -8220,4 +8226,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1065 2003-11-26 15:26:09 usu Exp $
+$Id: ChangeLog,v 1.1066 2003-12-02 18:27:26 opengl2772 Exp $

@@ -1,3 +1,8 @@
+2000-03-08  Ken-ichi Hirose  <kenzo-@tama.or.jp>
+
+	* scripts/mknmz.in (load_filters): Add selecting same mediatype
+	function.
+
 2000-03-08  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* tests/gcnmz-1: Add --quiet option to gcnmz.

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: taro.pl,v 1.11 2004-03-22 12:23:56 opengl2772 Exp $
+# $Id: taro.pl,v 1.12 2004-05-11 02:40:18 opengl2772 Exp $
 # Copyright (C) 2000 Ken-ichi Hirose, 
 #               2000,2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -32,10 +32,11 @@ my $taroconvpath = undef;
 my @taroconvopts = undef;
 
 sub mediatype() {
-    # File::MMagic detects Ichitaro 6 document as `application/ichitaro6'
     return qw(
-	application/x-js-taro
+	application/ichitaro5
 	application/ichitaro6
+	application/ichitaro7
+	application/x-js-taro
     );
 }
 
@@ -61,10 +62,15 @@ sub post_codeconv () {
 sub add_magic ($) {
     my ($magic) = @_;
 
-    # Ichitaro 6, 7
-    $magic->addFileExts('\\.j[bf]w$', 'application/x-js-taro');
-    # Ichitaro 8, 9, 10
+    # Justsystem Ichitaro 5
+    $magic->addFileExts('\\.jaw$', 'application/ichitaro5');
+    # Justsystem Ichitaro 6
+    $magic->addFileExts('\\.jbw$', 'application/ichitaro6');
+    # Justsystem Ichitaro 7
+    $magic->addFileExts('\\.jfw$', 'application/ichitaro7');
+    # Justsystem Ichitaro 8 - 13, 2004
     $magic->addFileExts('\\.jt[dt]$', 'application/x-js-taro');
+
     return;
 }
 

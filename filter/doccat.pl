@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: doccat.pl,v 1.1 2004-05-10 09:17:55 fumiya Exp $
+# $Id: doccat.pl,v 1.2 2004-05-11 02:40:18 opengl2772 Exp $
 # Copyright (C) 2001 SATOH Fumiyasu,
-#               2001 Namazu Project. All rights reserved.
+#               2001,2004 Namazu Project. All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -33,7 +33,6 @@
 
 package doccat;
 use strict;
-use File::Copy;
 require 'util.pl';
 require 'gfilter.pl';
 
@@ -41,7 +40,7 @@ my $doccatpath  = undef;
 
 sub mediatype() {
     if (status() eq 'no') {
-	return ();
+        return ();
     }
 
     my $info = `$doccatpath -h`;
@@ -53,11 +52,20 @@ sub mediatype() {
 	    application/msword
 	    application/excel
 	    application/powerpoint
+	    application/ichitaro5
 	    application/ichitaro6
-	    application/ichitaro
+	    application/ichitaro7
+	    application/x-js-taro
 	    application/x-lotus-wordpro
 	    application/oasys
 	));
+        if ($info =~ /TF Library *: *Version *: *(\d*)\.(\d*)/i) {
+            my $major = $1;
+            my $minor = $2 . "000";
+            if ($major >= 1 && substr($minor, 0, 2) >= 42) {
+	        push(@type, 'application/rtf');
+            }
+        }
     }
 
     # Optional supported media types
@@ -70,7 +78,19 @@ sub mediatype() {
 
 sub status() {
     $doccatpath = util::checkcmd('doccat');
-    return 'yes' if defined $doccatpath;
+    if (defined $doccatpath) {
+        my $fh_cmd = util::efopen("$doccatpath -V |");
+        while (<$fh_cmd>) {
+            if (/DocCat *: *Version *: *(\d*)\.\d*/i) {
+                my $major = $1;
+                if ($major >= 3) {
+                    util::fclose($fh_cmd);
+                    return 'yes';
+                }
+            }
+        }
+        util::fclose($fh_cmd);
+    }
     return 'no'; 
 }
 
@@ -96,22 +116,32 @@ sub add_magic ($) {
     $magic->addFileExts('\\.xls$', 'application/excel');
 
     # MS PowerPoint
-    $magic->addFileExts('\\.ppt$', 'application/powerpoint');
+    $magic->addFileExts('\\.pp[st]$', 'application/powerpoint');
 
-    # Justsystem Ichitaro 6, 7
-    $magic->addFileExts('\\.j[bf]w$', 'application/ichitaro');
-    # Justsystem Ichitaro 8, 9, 10, 11
-    $magic->addFileExts('\\.jt[dt]$', 'application/ichitaro');
-    # File::MMagic detects Ichitaro 6 document as `application/ichitaro6'
+    # Justsystem Ichitaro 5
+    $magic->addFileExts('\\.jaw$', 'application/ichitaro5');
+    # Justsystem Ichitaro 6
+    $magic->addFileExts('\\.jbw$', 'application/ichitaro6');
+    # Justsystem Ichitaro 7
+    $magic->addFileExts('\\.jfw$', 'application/ichitaro7');
+    # Justsystem Ichitaro 8 - 13, 2004
+    $magic->addFileExts('\\.jt[dt]$', 'application/x-js-taro');
 
     # Lotus WordPro
     $magic->addFileExts('\\.lwp$', 'application/x-lotus-wordpro');
 
-    # Fujitsu OASYS for Windows 6, 7
+    # Fujitsu OASYS for Windows 6, 7, 8, 2002
     $magic->addFileExts('\\.oa[23]$', 'application/oasys');
 
     # Adobe PDF
     # File::MMagic detects PDF document as `application/pdf'
+
+    # RTF
+    $magic->addMagicEntry("0\tstring\t{\\rtf\t");
+    $magic->addMagicEntry(">6\tstring\t\\ansi\tapplication/rtf");
+    $magic->addMagicEntry(">6\tstring\t\\mac\tapplication/rtf");
+    $magic->addMagicEntry(">6\tstring\t\\pc\tapplication/rtf");
+    $magic->addMagicEntry(">6\tstring\t\\pca\tapplication/rtf");
 
     return;
 }
@@ -121,54 +151,73 @@ sub filter ($$$$$) {
       = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
-    my $tmpfile  = util::tmpnam('NMZ.doccat');
-    my $tmpfile2 = util::tmpnam('NMZ.doccat2');
-    copy("$cfile", "$tmpfile2");
+    my $tmpfile = util::tmpnam('NMZ.doccat');
+    {
+        my $fh = util::efopen("> $tmpfile");
+        print $fh $$cont;
+        util::fclose($fh);
+    }
 
-    system("$doccatpath -p -oe $tmpfile2 > $tmpfile");
+    my $tmpfile2  = util::tmpnam('NMZ.doccat2');
+    system("$doccatpath -p -o e $tmpfile > $tmpfile2");
 
     {
-        my $fh = util::efopen("< $tmpfile");
+        my $size = util::filesize($tmpfile2);
+        if ($size == 0) {
+            unlink($tmpfile);
+            unlink($tmpfile2);
+            return "Unable to convert file ($doccatpath error occurred).";
+        }
+        if ($size > $conf::TEXT_SIZE_MAX) {
+            unlink($tmpfile);
+            unlink($tmpfile2);
+            return 'Too large taro file.';
+        }
+    }
+
+    {
+        my $fh = util::efopen("< $tmpfile2");
         $$cont = util::readfile($fh);
+        util::fclose($fh);
     }
 
     unlink($tmpfile);
     unlink($tmpfile2);
 
-    doccat_filter($cont, $cfile, $weighted_str, $fields);
+    doccat_filter($orig_cfile, $cont, $weighted_str, $headings, $fields);
 
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($cont);
+    $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
+        unless $fields->{'title'};
     gfilter::show_filter_debug_info($cont, $weighted_str,
                $fields, $headings);
     return undef;
 }
 
-sub doccat_filter ($$$$) {
-    my ($cont, $cfile, $weighted_str, $fields) = @_;
-
-    # By most users, filename is used as document title instead of
-    # `subject' property.
-    $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str);
+sub doccat_filter ($$$$$) {
+    my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
+      = @_;
+    my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
     # Check if no properties part
     if ($$cont =~ s/^\n//s) {
 	# Do nothing in this sub routine
-	return;
+	return undef;
     }
     # Check if broken DocCat :-(
     if ($$cont !~ /^([\w\-]+): /s) {
 	# Workaround for broken DocCat that does not output null
 	# line before part of document body if document has no
 	# any properties.
-	return;
+	return undef;
     }
 
     # Get part of document properties from content
     if ($$cont !~ s/^(.+?)\n\n//s) {
 	# No properties part. This is broken DocCat!? :-(
-	return;
+	return undef;
     }
     my $property_chunk = $1;
     my %property = ();
@@ -196,7 +245,7 @@ sub doccat_filter ($$$$) {
 
     if (defined $property{'subject'}) {
 	my $subject = ${$property{'subject'}}[0];
-	$fields->{'title'} .= " ($subject)";
+	$fields->{'title'} = $subject;
     }
 
     if (defined $property{'author'} || defined $property{'operator'}) {
@@ -209,7 +258,35 @@ sub doccat_filter ($$$$) {
 	$fields->{'author'} = join(', ', @author);
     }
 
-    # FIXME: Support other properties such as 'keywords'
+    if (defined $property{'keywords'}) {
+	my $keywords = join(' ', @{$property{'keywords'}});
+        my $weight = $conf::Weight{'metakey'};
+        $$weighted_str .= "\x7f$weight\x7f$keywords\x7f/$weight\x7f\n";
+
+#        if ($var::Opt{'meta'}) {
+#            my @keys = split '\|', $conf::META_TAGS;
+#            for my $key (@keys) {
+#                if ($key =~ m/^keywords$/i) {
+#                    $fields->{'keywords'} = $keywords;
+#                }
+#                util::dprint("meta: keywords: $fields->{'keywords'}\n")
+#                    if defined $fields->{'keywords'};
+#                }
+#            }
+#        }
+    }
+
+    if (defined $property{'software'}) {
+	my $software = ${$property{'software'}}[0];
+	$fields->{'software'} = $software;
+    }
+
+    if (defined $property{'company'}) {
+	my $company = ${$property{'company'}}[0];
+	$fields->{'company'} = $company;
+    }
+
+    return undef;
 }
 
 1;

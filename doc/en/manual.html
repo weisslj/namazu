@@ -549,22 +549,19 @@ href="#default-index">Default index</a>.
 
 <p>
 You can set an auxiliary query apart from a user-inputing
-query.
-
-利用者が入力する検索式とは別に、補助検索式を設定できます。た
-とえば次の例では、検索対象のペイジを選択可能にしています。検
-索対象の URIを +uri: で制限しているところが要です。
+query. The following example describes a way to limit target
+pages by URI.
 </p>
 
 <pre>
 
-      &lt;strong&gt;検索対象&lt;/strong&gt;
+      &lt;strong&gt;Target&lt;/strong&gt;
       &lt;select name="subquery"&gt;
-      &lt;option value=""&gt;全体
-      &lt;option value="+uri:/^http://foo.bar.jp/foo//"&gt;fooのペイジ
-      &lt;option value="+uri:/^http://foo.bar.jp/bar//"&gt;barのペイジ
-      &lt;option value="+uri:/^http://foo.bar.jp/baz//"&gt;bazのペイジ
-      &lt;option value="+uri:/^http://foo.bar.jp/quux//"&gt;quuxのペイジ
+      &lt;option value=""&gt;All
+      &lt;option value="+uri:/^http://foo.bar.jp/foo//"&gt;foo's pages
+      &lt;option value="+uri:/^http://foo.bar.jp/bar//"&gt;bar's pages
+      &lt;option value="+uri:/^http://foo.bar.jp/baz//"&gt;baz's pages
+      &lt;option value="+uri:/^http://foo.bar.jp/quux//"&gt;quux's pages
       &lt;/select&gt;
       &lt;input type="hidden" name="reference" value="off"&gt;
 </pre>
@@ -575,9 +572,9 @@ query.
 <h3><a name="bnamazu">bnamazu</a></h3>
 
 <p>
-bnamazu は Webブラウザと連携して検索を行うツールです。検索結
-果を Webブラウザ (標準では lynx) に渡して閲覧できます。コマ
-ンド行から次のように実行します。
+bnamazu is a tool to search with Web browser on the command
+line. Search results are passed to Web browser (default:
+lynx). Usage:
 </p>
 
 <p>
@@ -585,20 +582,19 @@ bnamazu は Webブラウザと連携して検索を行うツールです。検索結
 </p>
 
 <p>
--b オプションで Webブラウザを指定できます。 -n はWebブラウザ
-が netscape のときのみ有効なオプションです。-n を指定すると、
-新しい netscape の新しいウィンドウを開いて検索結果を表示しま
-す。
+You can specify your favorite Web browser with -b option. -n
+option is only worked if Web browser is netscape.  If -n is
+specified, new window is opned for displaying the search
+results.
 </p>
 
 
 <h3><a name="nmzgrep">nmzgrep</a></h3>
 
 <p>
-nmzgrep は namazu コマンドと連携して egrep を実行するツール
-です。検索にヒットした文書に対して、egrepをかけます。egrep 
-を適用することで、そのキーワードがどの行に出現するかがわかり
-ます。コマンド行から次のように実行します。
+nmzgrep is a tool to search Namazu-indexed documents for a
+given pattern and print lines matching the pattern using
+egrep. Usage:
 </p>
 
 <p>
@@ -607,9 +603,8 @@ nmzgrep は namazu コマンドと連携して egrep を実行するツール
 
 
 <p>
-たとえば、 ~/Namazu/foobar に置かれているインデックスに対して
-foo で検索し、ヒットした文書に対してさらに egrep をかけるに
-は、次のように実行します。
+For example, to search ~/Namazu/foobar index for foo and
+apply egrep to searched documents, you can do as follows:
 </p>
 
 <p>
@@ -619,10 +614,9 @@ foo で検索し、ヒットした文書に対してさらに egrep をかけるに
 <h3><a name="gcnmz">gcnmz</a></h3>
 
 <p>
-文書の更新・削除を伴うインデックスの更新を繰り返していくと、
-インデックス内に不要なデータが溜まっていきます。gcnmz はこの
-不要なデータを削除するツールです。コマンド行から次のように実
-行します。
+Updating an index may produce garbage data in the index if
+documents were deleted or updated.  gcnmz is the tool for
+removing the garbage data.  Usage:
 </p>
 
 <p>
@@ -630,8 +624,8 @@ foo で検索し、ヒットした文書に対してさらに egrep をかけるに
 </p>
 
 <p>
-たとえば、 ~/Namazu/foobar に置かれているインデックスをゴミ掃除
-するなら、次のように実行します。
+For example, to clean up ~/Namazu/foobar index, you can do
+as follows:
 </p>
 
 <p>
@@ -641,8 +635,8 @@ foo で検索し、ヒットした文書に対してさらに egrep をかけるに
 <h3><a name="mailutime">mailutime</a></h3>
 
 <p>
-mailutime は Mail/News のファイルのタイムスタンプを Date: ヘッ
-ダに合わせるツールです。コマンド行から次のように実行します。
+mailutime is a tool to adjust a time-stamp of Mail/News file
+with its Date: header. Usage:
 </p>
 
 <p>
@@ -650,8 +644,8 @@ mailutime は Mail/News のファイルのタイムスタンプを Date: ヘッ
 </p>
 
 <p>
-たとえば、 ~/Mail/ml/foobar に置かれているメイルのタイムスタ
-ンプを変更するなら、次のように実行します。
+For example, to adjust timestamps of files in
+~/Mail/ml/foobar, you can do as follows:
 </p>
 
 <p>
@@ -662,8 +656,7 @@ mailutime は Mail/News のファイルのタイムスタンプを Date: ヘッ
 <h3><a name="vfnmz">vfnmz</a></h3>
 
 <p>
-vfnmz は検索結果の表示を preview するツールです。コマンド行
-から次のように実行します。
+vfnmz is a tool to preview search results. Usage:
 </p>
 
 <p>
@@ -671,8 +664,8 @@ vfnmz は検索結果の表示を preview するツールです。コマンド行
 </p>
 
 <p>
-たとえば、 ~/Namazu/foobar に置かれているインデックスを preview 
-するなら、次のように実行します。
+For example, to preview search results of ~/Namazu/foobar
+index, you can do as follows:
 </p>
 
 <p>
@@ -683,8 +676,7 @@ vfnmz は検索結果の表示を preview するツールです。コマンド行
 <h3><a name="rfnmz">rfnmz</a></h3>
 
 <p>
-rfnmz は NMZ.field.*.i を再構築するツールです。コマンド行か
-ら次のように実行します。
+rfnmz is a tool to reconstruct NMZ.field.*.i files. Usage:
 </p>
 
 <p>
@@ -692,8 +684,8 @@ rfnmz は NMZ.field.*.i を再構築するツールです。コマンド行か
 </p>
 
 <p>
-たとえば、 ~/Namazu/foobar に置かれている NMZ.field.*.i を再
-構築するなら、次のように実行します。
+For example, to reconstruct NMZ.field.*.i files in
+~/Namazu/foobar index, you can do as follows:
 </p>
 
 <p>
@@ -897,7 +889,7 @@ You must choose the latter with Tkanamzu or namazu.el.
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: manual.html,v 1.9 2000-02-20 06:18:37 satoru Exp $
+$Id: manual.html,v 1.10 2000-02-20 07:08:02 satoru Exp $
 </div>
 <address>
 developers@namazu.org

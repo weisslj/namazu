@@ -1,7 +1,9 @@
 ## for MAINTAINERS.
 
 CREDITS: AUTHORS ../namazu-web/webmasters
-	@echo Developers > $@
+	@echo Namazu Project > $@
+	@echo >> $@
+	@echo Developers >> $@
 	@echo >> $@
 	@perl -ne 'next if /^\x23/; print "  * $$_"' AUTHORS  >> $@
 	@echo >> $@

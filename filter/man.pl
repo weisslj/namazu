@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: man.pl,v 1.7 1999-08-30 07:25:42 satoru Exp $
+# $Id: man.pl,v 1.8 1999-08-31 04:51:20 knok Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -46,6 +46,10 @@ sub recursive() {
     return 0;
 }
 
+sub codeconv() {
+    return 0;
+}
+
 sub filter ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
       = @_;
@@ -70,6 +74,7 @@ sub filter ($$$$$) {
     $$cont = util::readfile($fh);
     undef $fh;
     unlink($tmpfile);
+    codeconv::toeuc($cont);
 
     man_filter($cont, $weighted_str, $fields);
 

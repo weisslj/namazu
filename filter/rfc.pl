@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: rfc.pl,v 1.6 1999-08-30 07:25:42 satoru Exp $
+# $Id: rfc.pl,v 1.7 1999-08-31 04:51:21 knok Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -38,6 +38,10 @@ sub status() {
 
 sub recursive() {
     return 0;
+}
+
+sub codeconv() {
+    return 0; # Need for tranrated document?
 }
 
 sub filter ($$$$$) {

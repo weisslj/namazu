@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: compress.pl,v 1.6 1999-08-30 03:47:45 satoru Exp $
+# $Id: compress.pl,v 1.7 1999-08-31 04:51:20 knok Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -39,6 +39,10 @@ sub status() {
 
 sub recursive() {
     return 1;
+}
+
+sub codeconv() {
+    return 0;
 }
 
 sub filter ($$$$$) {

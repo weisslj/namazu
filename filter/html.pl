@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: html.pl,v 1.13 1999-08-31 02:29:10 satoru Exp $
+# $Id: html.pl,v 1.14 1999-08-31 04:51:20 knok Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -36,6 +36,10 @@ sub status() {
 
 sub recursive() {
     return 0;
+}
+
+sub codeconv() {
+    return 1;
 }
 
 sub filter ($$$$$) {

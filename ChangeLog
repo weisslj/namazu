@@ -1,3 +1,19 @@
+1999-08-31  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* lib/wakati.pm: Fix `tmpname' function name typo.
+
+	* lib/var.pl, src/mknmz.pl.in: Add %REQUIRE_CODECONV variable.
+
+	* filter/*.pl: Add codeconv() function.
+
+	* filter/man.pl: Add codeconv::toeuc() before man_filter().
+
+	* filter/pdf.pl: Add `-q' option with $pdfconvpath program.
+
+	* lib/util.pl: Add filesize() function.
+
+	* src/mknmz.pl.in: Add filesize check before reading file.
+
 1999-08-31  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* src/mknmz.pl.in (generate_uri): Modify a way of applying eval.
@@ -24,7 +40,6 @@
 	
 	* lib/conf.pl.in: Change $DEFAULT_FILE: _default -> index.html
 
-	
 1999-08-31  Ryuji Abe <raeva@t3.rim.or.jp>
 
 	* Makefile.am: If configured, tknamazu will be built. Changed to 

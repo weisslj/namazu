@@ -1,5 +1,5 @@
 # -*- Perl -*-
-# $Id: var.pl.in,v 1.8 1999-08-31 02:29:12 satoru Exp $
+# $Id: var.pl.in,v 1.9 1999-08-31 04:51:23 knok Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -127,6 +127,9 @@ $PREFIX = "";
 
 %REQUIRE_ACTIONS = ();
 %RECURSIVE_ACTIONS = ();
+%REQUIRE_CODECONV = (
+		     'text/plain' => 1
+);
 %Supported = ();
 
 1;

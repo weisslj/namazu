@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.18 1999-08-31 02:29:12 satoru Exp $
+# $Id: util.pl,v 1.19 1999-08-31 04:51:23 knok Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -140,6 +140,23 @@ sub readfile ($) {
     read $fh, $cont, $size;
 
     return $cont;
+}
+
+sub filesize($) {
+    my ($arg) = @_;
+    my $fh;
+    if (ref $arg) {
+	if ($arg =~ /^(IO::File|FileHandle)/) {
+	    $fh = $arg;
+	} else {
+	    warn "$arg: not an IO::File/FileHandle object!\n";
+	    return '';
+	}
+    } else {
+	$fh = efopen($arg);
+    }
+    my $size = -s $fh;
+    return $size;
 }
 
 # checklib ... check existence of library file 

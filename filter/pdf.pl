@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: pdf.pl,v 1.7 1999-08-30 07:25:42 satoru Exp $
+# $Id: pdf.pl,v 1.8 1999-08-31 04:51:21 knok Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -42,6 +42,10 @@ sub recursive() {
     return 0;
 }
 
+sub codeconv() {
+    return 0;
+}
+
 sub filter ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
       = @_;
@@ -56,7 +60,8 @@ sub filter ($$$$$) {
     print $fh $$cont;
     undef $fh;
 
-    system("$pdfconvpath -eucjp $tmpfile $tmpfile2");
+    system("$pdfconvpath -q -eucjp $tmpfile $tmpfile2");
+    
     $fh = util::efopen("< $tmpfile2");
     $$cont = util::readfile($fh);
     undef $fh;

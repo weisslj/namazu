@@ -1,3 +1,9 @@
+2004-11-20  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * scripts/mknmz.in: The mistake about $adjrecord pointed out by 
+        Namazu-devel-ja#346 is corrected.
+        (Reported by NAKATANI KATSUMI, thanks.)
+
 2004-11-01  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * pl/conf.pl.in ($ALLOW_FILES): Added extensions of Visio.
@@ -9235,4 +9241,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1259 2004-11-01 12:54:36 opengl2772 Exp $
+$Id: ChangeLog,v 1.1260 2004-11-19 14:49:15 opengl2772 Exp $

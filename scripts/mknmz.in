@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.146 2004-10-20 14:44:40 opengl2772 Exp $
+# $Id: mknmz.in,v 1.147 2004-11-19 14:49:15 opengl2772 Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -2120,7 +2120,7 @@ sub write_phrase_hash_sub () {
 		my $record = $PhraseHash{$i};
 		my $last_docid = get_last_docid($baserecord, 1);
 		my $adjrecord = adjust_first_docid($record, $last_docid);
-		check_records(\$record, \$baserecord, 1) unless defined $record; # namazu-bugs-ja#31
+		check_records(\$record, \$baserecord, 1) unless defined $adjrecord; # namazu-bugs-ja#31
 		$record = $adjrecord;
 		my $n2 = length($record) + $baseleng;
 		my $data = pack("w", $n2) .  $baserecord . $record;
@@ -2255,7 +2255,7 @@ sub write_index_sub () {
 		if ($current_word eq $words[$cnt]) {
 		    my $last_docid = get_last_docid($baserecord, 2);
 		    my $adjrecord = adjust_first_docid($record, $last_docid);
-		    check_records(\$record, \$baserecord, 2) unless defined $record; # namazu-bugs-ja#31
+		    check_records(\$record, \$baserecord, 2) unless defined $adjrecord; # namazu-bugs-ja#31
 		    $record = $adjrecord;
 		    $leng = length($record);  # re-measure
 		    my $tmp = pack("w", $leng + $baseleng);

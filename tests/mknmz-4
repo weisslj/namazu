@@ -4,7 +4,6 @@
 #
 LOG=`pwd`/test-log
 TARGET=`./select-data`
-TMPDATA=`pwd`/tmp-data
 
 if test ! -d idx4; then
     mkdir idx4
@@ -12,6 +11,7 @@ else
     rm -f idx4/NMZ.*
 fi
 
+TMPDATA=`pwd`/tmp-data
 # Copy docments.
 if test -d tmp-data; then
     rm -rf tmp-data

@@ -3,7 +3,7 @@
 # Test for mknmz's --html-split option.
 #
 LOG=`pwd`/test-log
-TARGET=`pwd`/data/html-split/html-split.html
+TARGET=`pwd`/data/html-split
 
 if test ! -d idx9; then
     mkdir idx9

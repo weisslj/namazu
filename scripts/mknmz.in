@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.63 2000-04-25 06:20:41 satoru Exp $
+# $Id: mknmz.in,v 1.64 2000-04-26 02:30:51 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -1589,83 +1589,87 @@ sub append_index (@) {
 # Set target files to @flist and return with the number of regiested files.
 #
 sub set_target_files() {
-    my %rfiles;    # 'rfiles' means 'registered files'
+    my %rdocs;    # 'rdocs' means 'registered documents'
     my @found_files = @_;
 
-    # Load the list of registered files
-    $rfiles{'name'} = [ load_registry() ];
+    # Load the list of registered documents
+    $rdocs{'name'} = load_registry();
 
-    # Pick up overlap files and do marking
+    # Pick up overlapped documents and do marking
     my %mark1;
     my @overlapped_files;
-    grep {$_ !~ /^\# / && $mark1{$_}++ } @{$rfiles{'name'}};
-    $rfiles{'overlapped'} = {}; # Prepare an anonymous hash.
+    grep {$_ !~ /^\# / && $mark1{$_}++ } @{$rdocs{'name'}};
+    $rdocs{'overlapped'} = {}; # Prepare an anonymous hash.
     for my $overlapped (grep { $mark1{$_} } @found_files) {
-	$rfiles{'overlapped'}{$overlapped} = 1;
+	$rdocs{'overlapped'}{$overlapped} = 1;
 	push @overlapped_files, $overlapped;
     };
 
-    # Pick up not overlapped files which are files to index.
+    # Pick up not overlapped documents which are files to index.
     my @flist = grep { ! $mark1{$_} } @found_files;
 	 
     if ($var::Opt{'noupdate'}) {
-	return (scalar @{$rfiles{'name'}}, @flist);
+	return (scalar @{$rdocs{'name'}}, @flist);
     };
 
     # Load the date index.
-    $rfiles{'mtime'} = [ load_dateindex() ];
+    $rdocs{'mtime'} = load_dateindex();
 
-    if (@{$rfiles{'mtime'}} == 0) {
-	return (scalar @{$rfiles{'name'}}, @flist); 
+    if (@{$rdocs{'mtime'}} == 0) {
+	return (scalar @{$rdocs{'name'}}, @flist); 
     };
 
-    util::assert(@{$rfiles{'name'}} == @{$rfiles{'mtime'}},
-		 "NMZ.r ($#{$rfiles{'name'}}) and NMZ.t ($#{$rfiles{'mtime'}}) are not consistent!");
+    util::assert(@{$rdocs{'name'}} == @{$rdocs{'mtime'}},
+		 "NMZ.r ($#{$rdocs{'name'}}) and NMZ.t ($#{$rdocs{'mtime'}}) are not consistent!");
 
-    # Pick up deleted files and do marking
+    # Pick up deleted documents and do marking
     # (registered in the NMZ.r but not existent in the filesystem)
-    my @deleted_files;
+    my @deleted_documents;
     unless ($var::Opt{'nodelete'}) {
 	my %mark2;
 	grep { $mark2{$_}++ } @found_files;
 	for my $deleted (grep { $_ !~ /^\# / && ! $mark2{$_} && 
-				! $rfiles{'overlapped'}{$_} } 
-			 @{$rfiles{'name'}}) 
+				! $rdocs{'overlapped'}{$_} } 
+			 @{$rdocs{'name'}}) 
 	{
-	    $rfiles{'deleted'}{$deleted} = 1;
-	    push @deleted_files, $deleted;
+	    $rdocs{'deleted'}{$deleted} = 1;
+	    push @deleted_documents, $deleted;
 	}
     }
 
-    # Pick up updated files and set the missing number for deleted files
-    my @updated_files = pickup_updated_files(\%rfiles);
+    # Pick up updated documents and set the missing number for deleted files.
+    my @updated_documents = pickup_updated_documents(\%rdocs);
 
-    # Append updated files to the list of files to index
-    if (@updated_files) {
-	push @flist, @updated_files;
+    # Append updated files to the list of files to index.
+    if (@updated_documents) {
+	push @flist, @updated_documents;
     }
 
-    util::dprint(_("\n\n== found ==\n"), join("\n", @found_files), "\n");
-    util::dprint(_("\n\n== registered ==\n"), join("\n", @{$rfiles{'name'}}), "\n");
-    util::dprint(_("\n\n== overlapped  ==\n"), join("\n", @overlapped_files), "\n");
-    util::dprint(_("\n\n== deleted  ==\n"), join("\n", @deleted_files), "\n");
-    util::dprint(_("\n\n== updated ==\n"), join("\n", @updated_files), "\n");
+    # Remove duplicates.
+    my %seen = ();
+    @flist = grep { ! $seen{$_}++ } @flist;
+
+    util::dprint(_("\n\n== found files ==\n"), join("\n", @found_files), "\n");
+    util::dprint(_("\n\n== registered documents ==\n"), join("\n", @{$rdocs{'name'}}), "\n");
+    util::dprint(_("\n\n== overlapped docunumets ==\n"), join("\n", @overlapped_files), "\n");
+    util::dprint(_("\n\n== deleted documents ==\n"), join("\n", @deleted_documents), "\n");
+    util::dprint(_("\n\n== updated documents ==\n"), join("\n", @updated_documents), "\n");
     util::dprint(_("\n\n== files to index ==\n"), join("\n", @flist), "\n");
 
     # Update NMZ.t with the missing number infomation and
     # append updated files and deleted files to NMZ.r with leading '# '
-    if (@updated_files || @deleted_files) {
+    if (@updated_documents || @deleted_documents) {
 	$DeletedFilesCount = 0;
 	$UpdatedFilesCount = 0;
-	$UpdatedFilesCount += @updated_files;
-#	$DeletedFilesCount += @updated_files;
-	$DeletedFilesCount += @deleted_files;
-	preupdate_dateindex(@{$rfiles{'mtime'}});
-	preupdate_registry(@updated_files, @deleted_files);
+	$UpdatedFilesCount += @updated_documents;
+#	$DeletedFilesCount += @updated_documents;
+	$DeletedFilesCount += @deleted_documents;
+	preupdate_dateindex(@{$rdocs{'mtime'}});
+	preupdate_registry(@updated_documents, @deleted_documents);
     }
 
-    # Return with number of registered files and list of files to index.
-    return (scalar @{$rfiles{'name'}}, @flist);
+    # Return the number of registered documents and list of files to index.
+    return (scalar @{$rdocs{'name'}}, @flist);
 }
 
 sub preupdate_registry(@) {
@@ -1728,38 +1732,38 @@ sub update_field_index () {
     }
 }
 
-sub pickup_updated_files (\%) {
-    my ($ref) = @_;
-    my @updated_files = ();
+sub pickup_updated_documents (\%) {
+    my ($rdocs_ref) = @_;
+    my @updated_documents = ();
 
     # To avoid duplicated outputs caused by --html-split support.
     my %printed = ();
     my $i = 0;
-    for my $cfile (@{$ref->{'name'}}) {
-	if (defined($ref->{'deleted'}{$cfile})) {
+    for my $cfile (@{$rdocs_ref->{'name'}}) {
+	if (defined($rdocs_ref->{'deleted'}{$cfile})) {
 	    unless ($printed{$cfile}) {
 		print "$cfile " . _("was deleted!\n");
 		$printed{$cfile} = 1;
 	    }
-	    $ref->{'mtime'}[$i] = -1; # Assign the missing number.
-	} elsif (defined($ref->{'overlapped'}{$cfile})) {
+	    $rdocs_ref->{'mtime'}[$i] = -1; # Assign the missing number.
+	} elsif (defined($rdocs_ref->{'overlapped'}{$cfile})) {
 	    my $cfile_mtime = (stat($cfile))[9];
-	    my $rfile_mtime = $ref->{'mtime'}[$i];
+	    my $rfile_mtime = $rdocs_ref->{'mtime'}[$i];
 
 	    if ($rfile_mtime != $cfile_mtime) {
 		# The file is updated!
 		unless ($printed{$cfile}) {
 		    print "$cfile " . _("was updated!\n");
 		    $printed{$cfile} = 1;
-		    push(@updated_files, $cfile);
 		}
-		$ref->{'mtime'}[$i] = -1; # Assign the missing number.
+		push(@updated_documents, $cfile);
+		$rdocs_ref->{'mtime'}[$i] = -1; # Assign the missing number.
 	    }
 	}
 	$i++;
     }
 
-    return @updated_files
+    return @updated_documents
 }
 
 sub load_dateindex() {
@@ -1771,40 +1775,40 @@ sub load_dateindex() {
     my @list = unpack("N*", $buf);  # load date index
 #    print "\nload_dateindex\n", join("\n", @list), "\n\n";
 
-    return @list;
+    return [ @list ];
 }
 
 sub load_registry () {
-    my @list = ();
-
     my $fh_registry = util::efopen($var::NMZ{'r'});
 
-    my $i = 0;
-    my %mark;
+    my @list = ();
+    my %deleted    = ();
+    my @registered = ();
+
     while (defined(my $line = <$fh_registry>)) {
 	chomp($line);
-	next if $line =~ /^\s*$/; # an empty line
-	next if $line =~ /^##/; # a comment
-	if ($line =~ /^\#\s+(.*)/) {  # deleted document
-	    my $tmp = $1;
-	    # remove previous registration
-	    if (defined($mark{$tmp})) {
-		splice(@list, $mark{$tmp}, 1, "# $tmp");
-		undef $mark{$tmp};
-	    } else {
-		util::cdie(_("ERROR: malformed NMZ.r format!\n"));
-	    }
+	next if $line =~ /^\s*$/;  # an empty line
+	next if $line =~ /^##/;    # a comment
+	if ($line =~ s/^\#\s+//) { # deleted document
+	    $deleted{$line}++;
 	} else {
-	    unless (defined $mark{$line}) {
-		# Remove HTML's anchor generated by --html-split option.
-		$line =~ s/\t.*$//g;  
-		push @list, $line;
-		$mark{$line} = $i;
-		$i++;
-	    } 
+	    # Remove HTML's anchor generated by --html-split option.
+	    $line =~ s/\t.*$//g;  
+	    push @registered, $line;
 	}
     }
-    return @list;
+
+    # Exclude deleted documents.
+    for my $doc (@registered) {
+	if ($deleted{$doc}) {
+	    push @list, "# $doc";
+	    $deleted{$doc}--;
+	} else {
+	    push @list, $doc;
+	}
+    }
+
+    return [ @list ];
 }
 
 sub get_total_keys() {
@@ -1862,8 +1866,8 @@ sub put_log ($$$$) {
 
     my $date = localtime;
     my $added_files_count   = $docid_count - $UpdatedFilesCount;
-    my $deleted_files_count = $DeletedFilesCount;
-    my $updated_files_count = $UpdatedFilesCount;
+    my $deleted_documents_count = $DeletedFilesCount;
+    my $updated_documents_count = $UpdatedFilesCount;
     my $total_files_count   = get_total_files() + $docid_count 
 			      - $DeletedFilesCount - $UpdatedFilesCount;
     my $added_keys_count    = 0;
@@ -1884,9 +1888,9 @@ sub put_log ($$$$) {
     push @logmsgs, N_("Added Documents:"), util::commas("$added_files_count")
 	if $added_files_count;
     push @logmsgs, N_("Deleted Documents:"), 
-	util::commas("$deleted_files_count") if $deleted_files_count;
+	util::commas("$deleted_documents_count") if $deleted_documents_count;
     push @logmsgs, N_("Updated Documents:"), 
-	util::commas("$updated_files_count") if $updated_files_count;
+	util::commas("$updated_documents_count") if $updated_documents_count;
     push @logmsgs, N_("Size (bytes):"), util::commas("$total_files_size")
 	if $total_files_size;
     push @logmsgs, N_("Total Documents:"), util::commas("$total_files_count") 
@@ -1899,7 +1903,7 @@ sub put_log ($$$$) {
     push @logmsgs, N_("Time (sec):"), util::commas("$processtime")
 	if $processtime;
     push @logmsgs, N_("File/Sec:"),  sprintf "%.2f", 
-    	(($added_files_count + $updated_files_count) / $processtime) 
+    	(($added_files_count + $updated_documents_count) / $processtime) 
 	if $processtime;
     push @logmsgs, N_("System:"), "$SYSTEM" if $SYSTEM;
     push @logmsgs, N_("Perl:"),   "$]" if $];   # '$]' has a perl version

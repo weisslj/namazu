@@ -12,7 +12,7 @@ hitnum=`./namazu -c test ../tests/idx9`
 echo "docnum:" $docnum, "hitnum:" $hitnum >> $LOG
 test "$docnum" != "$hitnum" && exit 1  # error if not matched
 
-# Each keyword shoudl match only one part.
+# For 1.html. Each keyword should match only one part.
 hitnum=`./namazu -c xyzzy ../tests/idx9`
 echo xyzzy $hitnum >> $LOG
 test "$hitnum" != "1" && exit 1  # error if not matched
@@ -34,6 +34,31 @@ echo qux $hitnum >> $LOG
 test "$hitnum" != "1" && exit 1  # error if not matched
 
 hitnum=`./namazu -c 'quux quux5' ../tests/idx9`
+echo quux $hitnum >> $LOG
+test "$hitnum" != "1" && exit 1  # error if not matched
+
+# For 2.html. Each keyword should match only one part.
+hitnum=`./namazu -c orabidoo ../tests/idx9`
+echo xyzzy $hitnum >> $LOG
+test "$hitnum" != "1" && exit 1  # error if not matched
+
+hitnum=`./namazu -c 'zero foo' ../tests/idx9`
+echo quux $hitnum >> $LOG
+test "$hitnum" != "1" && exit 1  # error if not matched
+
+hitnum=`./namazu -c 'bar one' ../tests/idx9`
+echo quux $hitnum >> $LOG
+test "$hitnum" != "1" && exit 1  # error if not matched
+
+hitnum=`./namazu -c 'baz two' ../tests/idx9`
+echo quux $hitnum >> $LOG
+test "$hitnum" != "1" && exit 1  # error if not matched
+
+hitnum=`./namazu -c 'qux three' ../tests/idx9`
+echo quux $hitnum >> $LOG
+test "$hitnum" != "1" && exit 1  # error if not matched
+
+hitnum=`./namazu -c 'quux four' ../tests/idx9`
 echo quux $hitnum >> $LOG
 test "$hitnum" != "1" && exit 1  # error if not matched
 

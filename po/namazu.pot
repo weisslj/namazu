@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2000-04-17 09:49+0900\n"
+"POT-Creation-Date: 2000-04-26 10:06+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -490,141 +490,141 @@ msgstr ""
 msgid "system error occurred! "
 msgstr ""
 
-#: scripts/mknmz.in:1648
-msgid ""
-"\n"
-"\n"
-"== found ==\n"
-msgstr ""
-
-#: scripts/mknmz.in:1649
-msgid ""
-"\n"
-"\n"
-"== registered ==\n"
-msgstr ""
-
-#: scripts/mknmz.in:1650
-msgid ""
-"\n"
-"\n"
-"== overlapped  ==\n"
-msgstr ""
-
-#: scripts/mknmz.in:1651
-msgid ""
-"\n"
-"\n"
-"== deleted  ==\n"
-msgstr ""
-
 #: scripts/mknmz.in:1652
 msgid ""
 "\n"
 "\n"
-"== updated ==\n"
+"== found files ==\n"
 msgstr ""
 
 #: scripts/mknmz.in:1653
 msgid ""
 "\n"
 "\n"
+"== registered documents ==\n"
+msgstr ""
+
+#: scripts/mknmz.in:1654
+msgid ""
+"\n"
+"\n"
+"== overlapped docunumets ==\n"
+msgstr ""
+
+#: scripts/mknmz.in:1655
+msgid ""
+"\n"
+"\n"
+"== deleted documents ==\n"
+msgstr ""
+
+#: scripts/mknmz.in:1656
+msgid ""
+"\n"
+"\n"
+"== updated documents ==\n"
+msgstr ""
+
+#: scripts/mknmz.in:1657
+msgid ""
+"\n"
+"\n"
 "== files to index ==\n"
 msgstr ""
 
-#: scripts/mknmz.in:1677
+#: scripts/mknmz.in:1681
 msgid "## deleted: "
 msgstr ""
 
-#: scripts/mknmz.in:1700
+#: scripts/mknmz.in:1704
 msgid "## indexed: "
 msgstr ""
 
-#: scripts/mknmz.in:1726
+#: scripts/mknmz.in:1730
 msgid "update_field_index: "
 msgstr ""
 
-#: scripts/mknmz.in:1741
+#: scripts/mknmz.in:1745
 msgid "was deleted!\n"
 msgstr ""
 
-#: scripts/mknmz.in:1752
+#: scripts/mknmz.in:1756
 msgid "was updated!\n"
 msgstr ""
 
-#: scripts/mknmz.in:1795
+#: scripts/mknmz.in:1799
 msgid "ERROR: malformed NMZ.r format!\n"
 msgstr ""
 
-#: scripts/mknmz.in:1879
+#: scripts/mknmz.in:1883
 msgid "[Append]"
 msgstr ""
 
-#: scripts/mknmz.in:1881
+#: scripts/mknmz.in:1885
 msgid "[Base]"
 msgstr ""
 
-#: scripts/mknmz.in:1883
+#: scripts/mknmz.in:1887
 msgid "Date:"
 msgstr ""
 
-#: scripts/mknmz.in:1884
+#: scripts/mknmz.in:1888
 msgid "Added Documents:"
 msgstr ""
 
-#: scripts/mknmz.in:1886
+#: scripts/mknmz.in:1890
 msgid "Deleted Documents:"
 msgstr ""
 
-#: scripts/mknmz.in:1888
+#: scripts/mknmz.in:1892
 msgid "Updated Documents:"
 msgstr ""
 
-#: scripts/mknmz.in:1890
+#: scripts/mknmz.in:1894
 msgid "Size (bytes):"
 msgstr ""
 
-#: scripts/mknmz.in:1892
+#: scripts/mknmz.in:1896
 msgid "Total Documents:"
 msgstr ""
 
-#: scripts/mknmz.in:1894
+#: scripts/mknmz.in:1898
 msgid "Added Keywords:"
 msgstr ""
 
-#: scripts/mknmz.in:1896
+#: scripts/mknmz.in:1900
 msgid "Total Keywords:"
 msgstr ""
 
-#: scripts/mknmz.in:1898
+#: scripts/mknmz.in:1902
 msgid "Wakati:"
 msgstr ""
 
-#: scripts/mknmz.in:1899
+#: scripts/mknmz.in:1903
 msgid "Time (sec):"
 msgstr ""
 
-#: scripts/mknmz.in:1901
+#: scripts/mknmz.in:1905
 msgid "File/Sec:"
 msgstr ""
 
-#: scripts/mknmz.in:1904
+#: scripts/mknmz.in:1908
 msgid "System:"
 msgstr ""
 
-#: scripts/mknmz.in:1905
+#: scripts/mknmz.in:1909
 msgid "Perl:"
 msgstr ""
 
-#: scripts/mknmz.in:1906
+#: scripts/mknmz.in:1910
 msgid "Namazu:"
 msgstr ""
 
-#: scripts/mknmz.in:2031
+#: scripts/mknmz.in:2035
 msgid "doing write_phrase_hash() processing.\n"
 msgstr ""
 
-#: scripts/mknmz.in:2259
+#: scripts/mknmz.in:2263
 msgid "doing write_index() processing.\n"
 msgstr ""
 

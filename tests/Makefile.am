@@ -2,10 +2,12 @@
 AUTOMAKE_OPTIONS = 1.4 no-dependencies
 SUBDIRS = data
 
-TESTS =	mknmz-1 mknmz-2 mknmz-3 mknmz-4 mknmz-5 mknmz-6 mknmz-7 \
+TESTS =	mknmz-1 mknmz-2 mknmz-3 mknmz-4 mknmz-5 \
+	mknmz-6 mknmz-7 mknmz-8 \
 	gcnmz-1 \
 	idxdiff-1 idxdiff-2 idxdiff-3 \
-	namazu-1 namazu-2 namazu-3 namazu-4 namazu-5 namazu-6 namazu-7 \
+	namazu-1 namazu-2 namazu-3 namazu-4 namazu-5 \
+	namazu-6 namazu-7 namazu-8 \
 	namazu-cgi-1 namazu-cgi-2 namazu-cgi-3 namazu-cgi-4
 
 clean-local:

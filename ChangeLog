@@ -1,3 +1,11 @@
+2001-11-30  Yoshinori TAKESAKO  <takesako@namazu.org>
+
+	* Makefile.am (install-data-local): Fixed The bug which is not 
+	installable in Cygwin environment, when DESTDIR is not set.
+	Deleted '/' in the next of $(DESTDIR).
+
+	* NEWS: Fixed description of Updating Win32 OLE filters.
+
 2001-11-30  Ryuji Abe  <rug@namazu.org>
 
 	* Makefile.am (install-data-local): DESTDIR should be
@@ -7206,4 +7214,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.894 2001-11-30 02:50:23 rug Exp $
+$Id: ChangeLog,v 1.895 2001-11-30 11:07:20 takesako Exp $

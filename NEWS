@@ -1,8 +1,15 @@
-Overview of Changes in Namazu 2.0.8 - Nov 26, 2001
+Overview of Changes in Namazu 2.0.9 - Nov 30, 2001
+
+* Fix another cross-site scripting vulnerability.
+* Fix old gfilter.pl problem in overwriting upgrade.
+* Update hnf filter.
+* Win32 OLE filters support MS-Office XP. (experimental)
+
+Overview of Changes in Namazu 2.0.8 - Nov 27, 2001
 
 * Fix cross-site scripting vulnerability.
 
-Overview of Changes in Namazu 2.0.7 - Sep 12, 2001
+Overview of Changes in Namazu 2.0.7 - Sep 13, 2001
 
 * Bug fix release.
 * Fix nmz_is_lang_ja() to return correct value.

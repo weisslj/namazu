@@ -30,7 +30,7 @@ EXTRA_DIST = $(etc_DATA) maintMakefile namazu.spec namazu.spec.in
 EXTRA_DIRS = $(DIST_TKNAMAZU) File-MMagic
 
 install-data-local:
-	$(mkinstalldirs) $(DESTDIR)/$(localstatedir)/$(PACKAGE)/index
+	$(mkinstalldirs) $(DESTDIR)$(localstatedir)/$(PACKAGE)/index
 
 dist-hook:
 	for subdir in $(EXTRA_DIRS); do \

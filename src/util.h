@@ -3,7 +3,7 @@
   util.h -
 
   $Author: rug $
-  $Date: 1999-10-21 01:30:32 $
+  $Date: 1999-10-22 14:03:51 $
   created at: Thu Mar  9 11:55:53 JST 1995
 
   Copyright (C) 1993-1998 Yukihiro Matsumoto
@@ -19,7 +19,7 @@
 #define _UTIL_H
 
 #ifdef HAVE__VSNPRINTF
-#define vsnprintf _vsnprintf
+#define vsnprintf(str,n,format,ap) _vsnprintf(str,n,format,ap)
 #endif /* HAVE__VSNPRINTF */
 
 /************************************************************

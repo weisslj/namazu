@@ -2,7 +2,7 @@ This is the todo list for Namazu.
 
   * Support <a name="...">...</a> and <foo id="...">...</foo> of HTML.
   * Support a zlib-compressed index.
-  * Employ an effient indexing algorithm.
+  * Employ an efficient indexing algorithm.
   * Make a tool to merge indices.
   * Make a filter `info'.
   * Make a filter `perldoc'.

@@ -1,15 +1,15 @@
 Overview of Changes in Namazu 2.0.6 (draft) - Jun 25, 2001
 
-* Fix path delimter probrem on Windows environment.
+* Fix path delimiter problem on Windows environment.
  (namazu-win32-ja#00411)
-* Fix html parse probrem.
+* Fix html parse problem.
  (namazu-bugs-ja#23)
 * Added ContentType directive in namazurc.
  (namazu-bugs-ja#34)
 * Fix ignore $FILTERDIR specification.
  (namazu-bugs-ja#45)
-* Fix locale related environment variables handlings.
-* Fix ERR_TOO_MANY_HIT handlings and total documents counting. 
+* Fix locale related environment variables handling.
+* Fix ERR_TOO_MANY_HIT handling and total documents counting. 
 * Add more scoring(ranking) methods.
   DOCLENGTH, FRESHNESS, URILENGTH
 * Add helper scripts lnnmz, adnmz and nmzmerge.
@@ -33,7 +33,7 @@ Overview of Changes in Namazu 2.0.5 - Oct 10, 2000
 Overview of Changes in Namazu 2.0.4 - Apr 10, 2000
 
 * Fix a security hole which may remove your file at an
-  indexing process. It is occured only if doccat
+  indexing process. It is occurred only if doccat
   <http://www.dehenken.co.jp/products/doccat/> is installed on
   your system.
 

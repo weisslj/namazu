@@ -1,3 +1,9 @@
+2003-06-08  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * nmz/hlist.c (nmz_get_hlist): Fixed unfree memory allocation bug.
+
+        * filter/rtf.pl: Support rtf2html.
+
 2003-06-07  Makoto Fujiwara  <makoto@ki.nu>
 
 	* filter/html.pl (decode_numbered_entity): should be
@@ -7949,4 +7955,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1024 2003-06-07 08:34:15 makoto Exp $
+$Id: ChangeLog,v 1.1025 2003-06-08 08:32:51 opengl2772 Exp $

@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.57 2003-03-21 13:30:12 opengl2772 Exp $
+ * $Id: hlist.c,v 1.58 2003-06-08 08:32:52 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -544,6 +544,7 @@ nmz_get_hlist(int index)
     double idf = 1.0;
 
     hlist.num  = 0;
+    hlist.data = NULL;
     hlist.stat = SUCCESS;
 
     if (-1 == fseek(Nmz.i, nmz_getidxptr(Nmz.ii, index), 0)) {
@@ -576,8 +577,10 @@ nmz_get_hlist(int index)
 	}
 	n = nmz_read_unpackw(Nmz.i, buf, n) / 2;
 	nmz_malloc_hlist(&hlist, n);
-	if (hlist.stat == ERR_FATAL)
+	if (hlist.stat == ERR_FATAL) {
+	    free(buf);
 	    return hlist;
+        }
 	
 	for (i = 0; i < n; i++) {
 	    hlist.data[i].docid = *(buf + i * 2) + sum;

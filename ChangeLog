@@ -1,5 +1,12 @@
 1999-12-08  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* Makefile.am (cxref): New command for using cxref.
+	<http://www.gedanken.demon.co.uk/cxref/>
+	
+	* nmz/search.h: Add #include "namazu.h" for NmzResult type.
+
+	* nmz/parser.h: Add #include "namazu.h" for NmzResult type.
+
 	* nmz/util.c: Add comments.
 
 1999-12-08  Ryuji Abe  <raeva@t3.rim.or.jp>

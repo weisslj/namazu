@@ -1,6 +1,8 @@
 #ifndef _PARSER_H
 #define _PARSER_H
 
+#include "libnamazu.h" /* for NmzResult type */
+
 /* definitions of operator */
 #define AND_STRING "&"
 #define OR_STRING  "|"

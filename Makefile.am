@@ -50,3 +50,17 @@ dist-hook:
 	for dir in $(DISTCLEANDIRS); do \
 	    rm -rf $(distdir)/$$dir; \
 	done
+
+
+# For developing use.
+cxref: stamp-h
+	if test ! -d cxref; then \
+	    $(mkinstalldirs) cxref; \
+	fi
+	cxref -html20-src -I . -I src -I nmz -I lib \
+	    -warn-all -index-all -xref-all -O cxref \
+	    {nmz,src,lib}/*.[ch] 1> cxref/warnings \
+				 2> cxref/errors
+	if test -s cxref/errors; then \
+	    cat cxref/errors \
+	fi

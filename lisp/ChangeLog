@@ -1,0 +1,14 @@
+1999-09-02  KOSEKI Yoshinori  <kose@yk.NetLaputa.ne.jp>
+
+	* gnus-nmz-1.el: new file.
+
+	* namazu.el (namazu-cs): if windows-nt, use SJIS.
+	(namazu-view): use namazu-view-function-alist.
+	(namazu-view-function-alist): New variable. --  view function alist.
+	(namazu-html-pattern): Abolish, integrate namazu-view-function-alist.
+	(namazu-browse-url): New function.
+	(namazu-man): New function.
+
+1999-05-10  白井 秀行 <shirai@rdmg.mgcs.mei.co.jp>
+
+	* namazu.el: Version 1.00 released.

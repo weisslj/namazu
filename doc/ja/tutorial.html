@@ -37,16 +37,15 @@ Namazu 2.0 を初めて使う方のための入門書です。
 <h2><a name="mission">本書の目的</a></h2>
 
 <ul>
-<li>Namazu 2.0 を初めて設置する方
+<li>Namazu 2.0 を初めてインストールする方
 <li>Namazu を初めて使う方、Namazu 2.0 を初めて使う方
 </ul>
 
 <p>
 を対象に、Namazu を使い始める時の困難を少しでも減らせるよう
 にという目的で書かれています。Namazu の全ての機能については、
-<a href="manual.html">説明書</a> がありますので、そちらを参
-照して下さい。また設置については INSTALL-ja ファイルに説明が
-あります。
+<a href="manual.html">説明書</a> があります。またインストー
+ルについては INSTALL-ja ファイルに説明があります。
 </p>
 
 <h2><a name="versions">開発の推移</a></h2>
@@ -68,10 +67,10 @@ Namazu 2.0 を初めて使う方のための入門書です。
   し直してプロセスの膨張を防ぐ -s オプション) が導入された。
   が、正式公開はされず、開発は 1.4.0.0 へと移った。
 <dt>1.4.0.0
-  <dd>開発版。Perl モジュールを使った高速化が入った。<br>
+  <dd>開発版。Perl モジュールを使った高速化が導入された。<br>
   が、正式公開はされず、開発は 1.9.x へと移った。
 <dt>1.9.x
-<dd>開発版。2.0 への開発中のものを時折まとめて公開したもの。<br>
+<dd>開発版。2.0 への開発中のものを不定期に公開したもの。<br>
 1.9.12 以前のものには外部からゴミのファイルを作られる可能性
 がある。
 <dt>2.0
@@ -85,18 +84,18 @@ current</a> は CVS で取得できます。
 <h2><a name="components">Namazu の構成部品</a></h2> 
 
 <p>
-Namazu は大きく分けて mknmz, namazu, namazu.cgi の三つから構成されています。 
+Namazu は大きくわけて mknmz, namazu, namazu.cgi の三つから構成されています。 
 </p>
 <ul>
 <li>mknmz<br> 
-インデックスを予め作る。 (perl で書かれている)
+インデックスをあらかじめ作る (perl で書かれている)
 
 <li>namazu <br> 
-実際に文字列を入力して検索する<br> 
+作成したインデックスを元に検索する<br> 
 コマンド行から利用する。 (C言語で書かれている)
 
 <li>namazu.cgi<br>
-実際に文字列を入力して検索する<br>
+作成したインデックスを元に検索する<br> 
 CGIとして利用する。(C言語で書かれている)
 </ul> 
 
@@ -222,28 +221,27 @@ KAKASI/ChaSen のどちらかが必要という意味。
 (無指定ではわかち書きに KAKASI を使うが、茶筌も
 -c オプションをするだけで使用できる)
 <tr><td>片方しか用意していない場合</td><td>
-./configure の時点でどちらを使うかが選ばれ、決められます。
+./configure の時点でどちらを使うかが選ばれます。
 </table>
 
 <li>
-▲ は Perl モジュール化で、1.9/2.0 の機能を生かすには必要で
-す。しかし、なくても動くことは動きます。
-その場合には一つのファイル毎にわかち書きの外部 process を起動するので、
-遅くなります。その場合でも、
-mknmz による索引の作成が遅いだけで、namazu の検索の
-速度には関係ありません。でも、入れるのは 
-<code>perl Makefile.PL; make; make install</code>
-とするだけだから、問題がないなら入れておいた方がいいと思います。
+▲ は Perl モジュール化で、2.0 の機能を生かすには必要で
+す。しかし、なくても動きます。
+その場合には一つのファイル毎にわかち書きの外部 process を起
+動するので、インデックス作成の速度は遅くなります。インストー
+ルは <code>perl Makefile.PL; make; make install</code>
+と実行するだけです。問題がなければ入れておいた方がいいでしょ
+う。
 <li>
 namazu 2.0 以降では ChaSen2 にだけ対応しています。
 
 
-<li>「かかし」か「茶筌」か ---- とても大雑巴に言うと<br>
-かかしの方が簡単 (安定)で速い。<br>
+<li>「KAKASI」か「茶筌」か ---- 大ざっぱに言うと<br>
+KAKASIの方が簡単 (安定)で速い。<br>
 茶筌の方が、少し遅いかもしれないが品質がいい。<br>
 <li>ChaSen 2.02 以前では make install しても
-/usr/local/lib/libchasen.a を入れてくれないので、perl のChaSenモジュー
-ルを作るには手動で
+/usr/local/lib/libchasen.a をインストールしてくれないので、
+perl のChaSenモジュールを作るには手動で
 <pre>
 cp libchasen.a /usr/local/lib
 ranlib /usr/local/lib/libchasen.a # ここはシステムに応じて
@@ -252,7 +250,7 @@ ranlib /usr/local/lib/libchasen.a # ここはシステムに応じて
 
 <li>×となっている File::MMagic は namazu の配布に同梱されています。
 <li> namazu 自体の ./configure についてはINSTALL-ja
-を見て下さい。
+を見てください。
 </ul>
 
 <h2><a name="japanese">日本語環境での利用</a></h2>
@@ -269,11 +267,10 @@ LANG</code>の設定が必要です。Windows では ja_JP.SJIS と設定
 
 <h2><a name="before-make-install">make install 前の確認</a></h2>
 <p>
-もし make install する前に mknmz を試して見たいという時には
-cd scripts してから ./mknmz とすると、
+もし make install する前に mknmz を試してみたいという時には
+cd scripts してから ./mknmz と実行すると、
 (<code>/usr/local/share/namazu</code> でなく)
-すぐ隣にある ../pl/*.pl を参
-照します。
+すぐ隣にある ../pl/*.pl を参照します。
 </p>
 
 <p class=note>
@@ -290,9 +287,9 @@ cd scripts してから ./mknmz とすると、
 
 <h2><a name="help">help の表示</a></h2>
 <p>
-以上 mknmz と namazu の二つの使い方は引数無しで起動するとと
-ても簡単な説明が、--help と入力すると長い説明が表示されます。
-また -C を付けるとその時の構成を表示します。この三つ
+以上 mknmz と namazu の 2つの使い方は引数無しで起動すると簡
+単な説明が、--help と入力すると長い説明が表示されます。また 
+-C を付けるとその時の構成を表示します。この 3つは覚えておくと便利です。 
 </p>
 
 <table cellspacing=0 cellpadding=3 border=1>
@@ -305,23 +302,16 @@ cd scripts してから ./mknmz とすると、
   <tr><td><code>-C </code>   </td><td>その時の構成<td> (他の引数・選択も意味がある)</td></tr>
   </table>
 
-<p>
-は覚えておくと便利です。 
-上にも書きましたが、全ての機能については別の
-<a href="manual.html">説明書</a> がありますので、そちらを
-参照して下さい。
-</p>
-
 <h2><a name="run-mknmz">動作確認 mknmz</a></h2>
 <p>
-さて、組立たばかりのものを使って、まずは索引を作ります。
+まずはインデックスを作ります。
 
 <strong>
 (もし make install の前に試したいなら、上の
 <a href="#before-make-install">
-mknmz make install 前の確認</a>を見て下さい。)</strong>
+mknmz make install 前の確認</a>を見てください)</strong>
 <br>
-1.4.0.8 からは少し書式が変っていて
+1.4.0.8 からは少し書式が変っています。
 URI の置換は 
 --replaceオプションを使って指定するようになりました。
 
@@ -390,7 +380,7 @@ mknmz は次のように実行します。
 </pre>
 
 <ul>
-  <li>結果 (の索引) は (-O で指定した) /tmp/index に
+  <li>結果 (のインデックス) は (-O で指定した) /tmp/index に
   <li>検索対象は<code>/foo/bar/doc</code>
   <li>URI については
 
@@ -407,7 +397,7 @@ s#<em>aaa</em>#<strong>bbb</strong>#
 
   <li> (/usr/local/etc/namazu/mknmzrc の $conf::ALLOW_FILE,
      $conf::DENY_FILE の設定によって) 
-     *.html *.txt *.tex *.pdf MH形式のメイルなどを対象とします。
+     *.html, *.txt, *.tex, *.pdf, MH形式のメイルなどを対象とします。
 </ul>
 
 
@@ -423,11 +413,11 @@ HTML
 -->
 
 <p>
-Namazu は元々は HTML 形式のものを処理するように考えられてい
-ますが、実際には様々な形式を取扱うことができます。
+Namazu は元々は HTML 形式のものを処理するために作られました
+が、現在では様々な文書形式を取り扱うことができます。
 /usr/local/share/namazu/filter というディレクトリに手がかり
 が、また説明書の中の <a href="manual.html#doc-filter">文書フィ
-ルタ</a> の部分に詳しい説明があります。
+ルタ</a> の節に詳しい説明があります。
 </p>
 
 <dl>
@@ -435,17 +425,16 @@ Namazu は元々は HTML 形式のものを処理するように考えられてい
   <dd>普通に mknmz を実行します。<br>
 <code class=command>% mknmz ~/Mail/foobar</code>
 
-<dt>MHonArc
-  <dd>初めから HTML 形式ですが、更に Namazu
-にこの形式に対応した処理が含まれています。
+<dt><a href="http://www.mhonarc.org/">MHonArc</a>
+  <dd>Namazu は MHonArc の HTMLに特化した処理を行います。
 
 <dt>hnf
   <dd> hnf 用の .mknmzrc と起動手続が
 <a href="http://www.h14m.org/">ハイパー日記システム・プロジェクト</a> から入手出
 来ます。
-<dt>  他の Web
-  <dd>これは Namazu 単独ではできません。他にその内容を転送してくる
-しくみ (httpdown, wget など)と組合せて使います。
+<dt>他の計算機にある文書
+  <dd>Namazu 単独ではできません。他にその内容を転送してくる
+  仕組み (wget, NFS など) と組合せて使います。
 </dl>
 
 <p>
@@ -458,7 +447,7 @@ href="manual.html#mknmz-option">mknmz --help</a>とすると得ら
 
       読み込んだ設定ファイル: /home/satoru/.mknmzrc
       システム: linux
-      Namazu: 1.9.15
+      Namazu: 2.0
       Perl: 5.00503
       NKF: module_nkf
       KAKASI: module_kakasi -ieuc -oeuc -w
@@ -488,77 +477,67 @@ href="manual.html#mknmz-option">mknmz --help</a>とすると得ら
 </pre>
 
 
-<h3>検索対象について</h3>
+<h3>インデックスの作成対象について</h3>
 
 <table cellspacing=0 cellpadding=3>
 <tr><th>短縮形</th><th>本名</th><th>説明</th>
-<tr><td>-a</td><td>--all</td>        <td>を付けると全て調べる</td></tr>
-<tr><td>-e</td><td>--robots-txt</td> <td>ロボットよけされているファイルを除外する</td>
-<tr><td>-A</td><td>--htaccess</td>   <td>.htaccess で制限されたファイルを除外する</td>
 <tr><td>-F</td><td>--target-list=file</td><td>インデックス対象のファイルのリストを読み込む</td>
 <tr><td>-t</td><td>--media-type=mtype</td><td>対象ファイルの文書形式を指定する
-<tr><td></td><td>--allow=regex  </td><td>対象ファイル名の正規表現を指定する
-<tr><td></td><td>--deny=regex   </td><td>除外するファイル名の正規表現を指定する
-<tr><td></td><td>--exclude=regex</td><td>除外するパス名の正規表現を指定する
+<tr><td></td><td>--allow=PATTERN  </td><td>対象ファイル名の正規表現を指定する
+<tr><td></td><td>--deny=PATTERN   </td><td>除外するファイル名の正規表現を指定する
+<tr><td></td><td>--exclude=PATTERN</td><td>除外するパス名の正規表現を指定する
 
 </table>
 
 
 <p>
 現在の版では<em>対象ディレクトリ</em>に symbolic link がある
-とうまくいかないので、 symbolic link の先をそのまま指定する、
-つまり(cd <em>対象ディレクトリ</em>; pwd) として表示されるも
-のを使うのが無難です。</p>
+とうまく処理できません。
+</p>
 
 <h2><a name="run-namazu">動作確認 namazu</a></h2>
-<p>
-さまざまな設定は<code> <a
-href="manual.html#namazurc">namazurc</a></code> 
-に書くことができます。namazurc の設定例は 配布の中の 
-<code>/usr/local/etc/namazu/namazurc-sample</code> にあります。
-</p>
 
-<p>初めはコマンド行で 
+<p>検索を行うにはコマンド行で次のように実行します。
 </p>
 <pre>
-      % /usr/local/namazu/bin 検索文字列 インデックス
+      % namazu 検索文字列 インデックス
 </pre>
 
 <p>
-を試すのが手軽です。
-</p>
-
-<p>
 インデックスを省略すると、namazu は
-<code>/usr/local/var/namazu/index</code> を探しにいきます。
+<code>/usr/local/var/namazu/index</code> を対象とします。
 </p>
 
 <p>
-詳しい説明は <a href="manual.html">manual</a> があります。
+namazu コマンドの設定は<code> <a
+href="manual.html#namazurc">namazurc</a></code> で行います。
+namazurc の設定例は 配布の中の 
+<code>/usr/local/etc/namazu/namazurc-sample</code> にありま
+す。
 </p>
 
 <p>
-Web で cgi を実行できるようにするには、いくつかの条件があるかも知
-れない。<a href="http://www.apache.org/">apache</a> の場合
-<a href="http://www.apache.org/docs/">設定</a>として
+Web で CGI を実行するにはいくつかの条件があります。<a
+href="http://www.apache.org/">Apache</a> の場合、<a
+href="http://www.apache.org/docs/">設定</a>として
 </p>
 
 <table cellspacing=0 cellpadding=3>
 <tr><td>
 ScriptAlias</td><td> /cgi-bin/ /usr/local/apache/cgi-bin/
-</td><td>/cgi-bin/ と来た時に、どこを見に行くか</td>
+</td><td>URI 中の /cgi-bin/ に対応するディレクトリ</td>
 </tr>
 
 <tr><td>
 AddHandler</td><td> cgi-script .cgi
-</td><td> .cgi と付いていれば cgi として実行する</td>
+</td><td> .cgi と拡張子ならば cgi として実行する</td>
 </tr>
 
 <tr><td>
 <a href="http://www.apache.org/docs/mod/core.html#allowoverride">
 AllowOverride</a></td><td> All
 </td>
-<td>.htaccess での設定を有効にする(= 許可する)(管理者)</td>
+<td>.htaccess での設定を許可する (Web管理者)</td>
 <tr><td>
 Options 
 </td>
@@ -574,16 +553,10 @@ DirectoryIndex</td><td> index.html
 </table>
 
 <p>
-などが関係して来ます。(管理者)と書いてあるもの以外は .htaccess にも
-書ける(ただし apache の設置時にそれを禁止することもできるので不可の場合もある)
+などが関係します。(Web管理者) と書かれているもの以外は 
+.htaccess にも設定できます。 (ただし Apache の設定次第でそれ
+を禁止されていることもある)
 </p>
-
-<!--
-<h3>型紙(template)のこと</h3>
-<p>
-/usr/local/share/namazu/template
-</p>
--->
 
 <h2><a name="can-do">Namazu でできること</a></h2>
 
@@ -591,7 +564,7 @@ DirectoryIndex</td><td> index.html
 <strong>
 ここに書いてあることは「保証」ではありません。
 </strong>
-開発者の希望が書いてあるだけです。
+開発者の希望が書かれているだけです。
 </p>
 
 <ul>
@@ -599,7 +572,7 @@ DirectoryIndex</td><td> index.html
 書ファイルを指定して、
 <li>それらの中の単語を調べ、どの文書ファイルにどの単語が含まれているか
 をインデックスに書き出しておく
-<li>使用者が入力した文字列と、上記の単語を比べて、
+<li>利用者が入力した検索式と、上記の単語を比べて、
 その単語が含まれている文書ファイルを表示すること
 <li>上記単語の指定は、単語の一部分でなく単語全体です。
 ですから sys と指定しても system は見つかりません。
@@ -607,8 +580,7 @@ DirectoryIndex</td><td> index.html
 を付けることによって、sys で始まる単語 (sys*)、
 sys を含む単語 (*sys*)、
 sys で終了する単語 (*sys) と入力します。
-<li>以上の操作を設定で英語または日本語の表示とすること
-<li>作られた索引の利用はコマンド行、または 
+<li>作られたインデックスの利用はコマンド行、または 
 cgi-bin が動く HTTP server を Webブラウザを通じて利用する形
 で行なう。
 </ul>
@@ -622,10 +594,10 @@ cgi-bin が動く HTTP server を Webブラウザを通じて利用する形
 
 <h2><a name="others">その他</a></h2>
 <dl>
-<dt>対象ファイルについて
+<dt>インデックス作成の対象ファイルについて
 <dd>
 指定した「対象ディレクトリ」の中で、どのファイルがインデック
-ス作成の対象となるかは <strong>(mknmzrc の) </strong>
+ス作成の対象とされるかは <strong>(mknmzrc の) </strong>
 $conf::ALLOW_FILE, $conf::DENY_FILE の設定、あるいは -a,
 --allow, --deny, --exclude オプションの設定で決まります。
 
@@ -645,9 +617,8 @@ contrib/00readme-namazu.jis に書かれています。
 <h2><a name="terminology">用語</a></h2>
 <dl>
 <dt><a href="http://kakasi.namazu.org/">KAKASI</a>
-<dd>本来は「漢字で書かれたもの」を「ひらがな・カタカナ・ro-maji 」
-などに変換する系。しかしここでは次々項の「わかち書き」をする道具とし
-て使う。
+<dd>本来は「漢字で書かれたもの」を「ひらがな・カタカナ・Ro-maji」などに変換するソフトウェア。しかし Namazu では次々項の「わ
+かち書き」をする道具として使う。
 
 <dt>
 <a href="http://cactus.aist-nara.ac.jp/lab/nlt/chasen.html">Chasen (茶筌)</a>
@@ -657,39 +628,35 @@ contrib/00readme-namazu.jis に書かれています。
 <dt>わかち書き
 <dd>
 日本語 は (英語 と 違って)単語 の 区切り に 空白 を 書いたり は しない。
-そのまま では 計算機 の 処理 に 不都合 が ある ので、単語毎 に 分けて、
+そのまま では 計算機 の 処理 に 不都合 が ある ので、単語毎 に わけて、
 間 に 空白 を 入れて 書いた もの を 利用する。
 そういう書き方を「わかち書き」と言う。
 (用語としては計算機用語として以外にも同じ意味で使われる)
 <dt>インデックス(名詞)
-<dd>インデックス<br>
-Namazu は
 <pre>
                (準備)     (検索画面)
                 mknmz       namazu
                ↑   ↓     ↑    ↓
       元々の資料    インデックス  検索結果
 </pre>
-のようにして予めインデックスを作っておき、検索画面での
-入力があった時には、それを見て結果を表示するという動作を
-する。この「予め作られた「インデックス」のことをインデックス
-と呼んでいる。<br>Namazu の場合 NMZ.* のような名前のものが
-それにあたる。
+Namazu はあらかじめ単語の索引を作っておき、検索要求があっ
+たときには、それを元に検索を行う。この「あらかじめ作
+られた「索引」のことをインデックスと呼んでいる。<br>Namazu
+の場合 NMZ.* ファイルがそれにあたる。
 
 <dt>インデックス(動詞)
 <dd>上記インデックスを作ること。mknmz を使う
 <dt>複数インデックス
-<dd>二つ以上のインデックスを作っておいて、それらの中をまとめて
+<dd>2つ以上のインデックスを作っておいて、それらの中をまとめて
 検索する機能
-
-<a href="http://www.namazu.org/manual.html.ja#MULTIPLE_INDICES">説明書の中に実現方法</a>が書いてある。
 
 <dt>フレイズ検索
 <dd>
 Namazu の検索の基本は単語の組合せである。
-"単語 and 組合せ" と(順を逆にした)
-"組合せ and 単語" は区別しない。これを"単語 組合せ"という
-文字列がそのままの順で出現するものを探す機能のこと。
+"foo and bar" と (順を逆にした)
+"bar and foo" は区別しない。また、 foo と bar は文書中のどこ
+に現れてもいい。 "foo bar" という文字列がそのままの順
+で出現する文書を探すことをフレイズ検索という。
 <dt>namazu.conf, conf.pl
 <dd>
 1.4 以前では、 namazu, mknmz の設定はそれぞれ namazu.conf,
@@ -699,20 +666,19 @@ conf.pl で行ったが 2.0 では namazurc, mknmzrc に変更された。
 
 <dt>namazurc  (/usr/local/etc/namazu/namazurc)
 <dd>
-Namazu の動作を make 時から変更したいというような時に、その
-設定が書ける。
+Namazu の動作を変更したいときに、その設定をする。
 <code>Index, Replace, Base, Logging, Lang, Template</code>
 の設定ができる。
-詳しくは<a href="manual.html#namazurc">説明書</a>そ参照のこ
+詳しくは<a href="manual.html#namazurc">説明書</a>を参照のこ
 と。
 
 <dt>Perl モジュール (Perl module)
-<dd>NKF, KAKASI, ChaSen などは以前は  Namazu から外部 process として呼出さ
-れていた。この場合、プロセスをファイル毎に起動するので
+<dd>NKF, KAKASI, ChaSen などは以前は  Namazu から外部プロセ
+スとして呼出されていた。この場合、プロセスをファイル毎に起動するので
 時間がかかる。
 現在の版では、これらの perl モジュールを使うしくみが用意されて、
 perl からモジュールとして呼出されるようにできる。
-そうするとプロセスを起動しないで済む分、実行速度が有利になる。
+そうするとプロセスを起動しないで済む分、実行速度が速くなる。
 
 <br>この機能は Namazu-1.3 以前では提供されていない。 
 1.4 以降の機能である。
@@ -723,8 +689,7 @@ perl -MText::ChaSen -e ''
 perl -MNKF -e ''
 </pre>
 のように入力した時に、何も表示されなければいい。
-そうしておいて namazu で ./configure すると、これらが使われるよう
-に設置される。
+その状態で namazu で ./configure すると、これらが使われる。
 </dl>
 
 <h2><a name="reference">参照</a></h2>
@@ -737,18 +702,11 @@ perl -MNKF -e ''
   Namazu ではこれを転じてわかち書き処理に使っている。<br>
   <a href="http://kakasi.namazu.org/">http://kakasi.namazu.org/</a>
   <br>
-  <em>
-(これが日本語で表示されない場合、
-<a href="http://www.apache.org/docs/content-negotiation.html">
-content negotiation </a>
-が適切に行なわれていない場合があります。
-Webブラウザの言語の設定に日本語(ja) を追加してください
-       </em> )
 
 <dt>開発・配布元の情報
   <dd>
   <a href="http://www.namazu.org/">http://www.namazu.org/</a>
-<dt>良くある質問と答 (FAQ)日本語
+<dt>よくある質問と答 (FAQ)日本語
   <dd>
   <a href="http://www.namazu.org/FAQ.html">http://www.namazu.org/FAQ.html</a>
 <dt>Namazu メイリングリスト
@@ -757,7 +715,7 @@ Webブラウザの言語の設定に日本語(ja) を追加してください
 <dt>やまだあきらさんの namazu.el (Emacs/Mule client)
   <dd>
   <a href="http://arika.org/linux/tools/namazu-el/">http://arika.org/linux/tools/namazu-el/</a>
-<dt>Namazu unstable version
+<dt>Namazu開発版
   <dd><a href="http://www.namazu.org/unstable/">http://www.namazu.org/unstable/</a>
 </dl>
 
@@ -770,7 +728,7 @@ Webブラウザの言語の設定に日本語(ja) を追加してください
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: tutorial.html,v 1.34 2000-02-20 06:33:36 satoru Exp $
+$Id: tutorial.html,v 1.35 2000-02-20 12:17:55 satoru Exp $
 </div>
 <address>
 developers@namazu.org

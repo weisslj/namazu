@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.43 1999-11-01 08:26:40 satoru Exp $
+dnl $Id: configure.in,v 1.44 1999-11-01 08:31:05 satoru Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -412,7 +412,7 @@ dnl *
 AC_MSG_CHECKING(for a directory to place config files)
 AC_ARG_WITH(
     CONFDIR,
-    [  --with-confdir=DIR      set a directory to place config files],
+    [  --with-confdir=DIR      config files  in DIR [PREFIX/conf]],
     [CONFDIR=${withval}], [CONFDIR="${prefix}/share/namazu/conf"]
 )
 AC_MSG_RESULT($CONFDIR)

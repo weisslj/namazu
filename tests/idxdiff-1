@@ -1,18 +1,18 @@
 #! /bin/sh
 #
-# Check whether tmp1 and tmp2 indices are same.
+# Check whether idx1 and idx2 indices are same.
 #
-# tmp1: simply indexed.
-# tmp2: incrementally indexed.
+# idx1: simply indexed.
+# idx2: incrementally indexed.
 #
 
-cd tmp1
+cd idx1
 targets=`find . -type f -name 'NMZ.*' | \
-              egrep -v "NMZ\.(log|r|slog|status)$"`  # Exclude them.
+              egrep -v "NMZ\.(log|r|slog|status|err)$"`  # Exclude them.
 cd ..
 
 for target in $targets; do
-    diff "tmp1/$target" "tmp2/$target"
+    diff "idx1/$target" "idx2/$target"
     test "$?" != "0" && exit 1  # error if not success
 done
 exit 0

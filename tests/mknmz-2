@@ -2,10 +2,10 @@
 #
 # Test for incremental indexing.
 #
-if test ! -d tmp2; then
-    mkdir tmp2
+if test ! -d idx2; then
+    mkdir idx2
 else
-    rm -f tmp2/NMZ.*
+    rm -f idx2/NMZ.*
 fi
 
 cd ../tests/data
@@ -13,7 +13,7 @@ pwd=`pwd`
 targets=`find $pwd -type f | grep -v CVS | grep -v Makefile | sort`
 cd ../../scripts
 for target in $targets; do
-   ./mknmz --no-delete -O ../tests/tmp2 $target \
+   ./mknmz --no-delete -O ../tests/idx2 $target \
 	>>../tests/test-log
     test "$?" != "0" && exit 1  # error if not success
 done;

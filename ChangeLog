@@ -1,5 +1,21 @@
 2000-02-27  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* tests/Makefile.am (TESTS): Add mknmz-4, gcnmz-1 and idxdiff-3.
+
+	* tests/mknmz-4: New file.
+
+	* tests/gcnmz-1: Likewise.
+
+	* tests/namazu-3: Likewise.
+
+	* tests/idxdiff-3: Likewise.
+
+	* pl/nmzidx.pl (write_status): Fix NMZ.head handling.
+	(write_status): Fix critical typos: s/key /keys /, s/file /files /.
+
+	* scripts/gcnmz.in: Add ../pl to @INC for testing before
+	installatoin. 
+
 	* tests/namazu-cgi-1: Change `export' syntax.
 
 	* tests/namazu-cgi-2: Likewise.

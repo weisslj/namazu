@@ -1,12 +1,14 @@
 #! %PERL% -w
 # -*- Perl -*-
 #
-# $Id: gcnmz.in,v 1.5 2000-02-11 18:52:03 furukawa Exp $
+# $Id: gcnmz.in,v 1.6 2000-02-27 06:30:15 satoru Exp $
 #
 # gcnmz.pl - by furukawa@tcp-ip.or.jp
 #
 
+push(@INC, '../pl');
 push(@INC, '@PERLLIBDIR@');
+
 require 'nmzidx.pl';
 
 my $backup = 1;

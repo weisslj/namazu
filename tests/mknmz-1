@@ -3,13 +3,13 @@
 # Test for simple indexing.
 #
 
-if test ! -d tmp1; then
-    mkdir tmp1
+if test ! -d idx1; then
+    mkdir idx1
 else
-    rm -f tmp1/NMZ.*
+    rm -f idx1/NMZ.*
 fi
 
-# Simple indexing
+# Simple indexing.
 cd ../scripts 
-./mknmz -O ../tests/tmp1 ../tests/data > ../tests/test-log
+./mknmz -O ../tests/idx1 ../tests/data >> ../tests/test-log
 exit $?

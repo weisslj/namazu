@@ -3,10 +3,10 @@
 # Test for indexing with --checkpoint and $ON_MEMORY_MAX is 0.
 #
 
-if test ! -d tmp3; then
-    mkdir tmp3
+if test ! -d idx3; then
+    mkdir idx3
 else
-    rm -f tmp3/NMZ.*
+    rm -f idx3/NMZ.*
 fi
 
 pwd=`pwd`
@@ -15,7 +15,7 @@ echo '$conf::ON_MEMORY_MAX=0' > $tmprc
 
 # Simple indexing
 cd ../scripts 
-./mknmz --checkpoint -f $tmprc -O ../tests/tmp3 ../tests/data > \
+./mknmz --checkpoint -f $tmprc -O ../tests/idx3 ../tests/data > \
     ../tests/test-log
 rm -f $tmprc
 

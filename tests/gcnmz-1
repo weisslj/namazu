@@ -1,0 +1,28 @@
+#! /bin/sh
+#
+# Test for gcnmz.
+#
+
+if test ! -d idx5; then
+    mkdir idx5
+else
+    rm -f idx5/NMZ.*
+fi
+
+if test -d idx6; then
+    rm -rf idx6
+fi
+
+# Copy idx4 for testing gcnmz.
+cp -r idx4 idx6
+
+# Simple indexing to make a reference index.
+cd ../scripts 
+./mknmz -O ../tests/idx5 ../tests/tmp-data >> ../tests/test-log
+test "$?" != "0" && exit 1  # error if not success
+
+# Apply gcnmz for idx6.
+./gcnmz --no-backup ../tests/idx6
+test "$?" != "0" && exit 1  # error if not success
+
+exit 0

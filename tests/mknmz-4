@@ -1,0 +1,38 @@
+#! /bin/sh
+#
+# Test for deleting documents in an index.
+#
+
+if test ! -d idx4; then
+    mkdir idx4
+else
+    rm -f idx4/NMZ.*
+fi
+
+# Copy docments.
+if test -d tmp-data; then
+    rm -rf tmp-data
+fi
+cp -r data tmp-data
+
+# Simple indexing.
+cd ../scripts 
+./mknmz -O ../tests/idx4 ../tests/tmp-data >> ../tests/test-log
+test "$?" != "0" && exit 1  # error if not success
+
+prevdocnum=`perl -lne 'print $1 if /^files (\d+)/' ../tests/idx4/NMZ.status`
+
+# Remove some documents.
+cd ../tests/tmp-data
+find . -type f -name '*.txt' | xargs rm -f
+cd ../
+
+# Update the index.
+cd ../scripts 
+./mknmz --update=../tests/idx4 >> ../tests/test-log
+test "$?" != "0" && exit 1  # error if not success
+
+postdocnum=`perl -lne 'print $1 if /^files (\d+)/' ../tests/idx4/NMZ.status`
+
+test $prevdocnum -le $postdocnum && exit 1  # error if prev <= post
+exit 0

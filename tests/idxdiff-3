@@ -1,18 +1,18 @@
 #! /bin/sh
 #
-# Check whether idx1 and idx3 indices are same.
+# Check whether idx5 and idx6 indices are same.
 #
-# idx1: simply indexed.
-# idx3: indexed with --checkpoint and $ON_MEMORY_MAX is 0.
+# idx5: reference index which is simply indexed.
+# idx6: garbage collected by gcnmz.
 #
 
-cd idx1
+cd idx5
 targets=`find . -type f -name 'NMZ.*' | \
               egrep -v "NMZ\.(log|r|slog|status|err)$"`  # Exclude them.
 cd ..
 
 for target in $targets; do
-    diff "idx1/$target" "idx3/$target"
+    diff "idx5/$target" "idx6/$target"
     test "$?" != "0" && exit 1  # error if not success
 done
 exit 0

@@ -3,14 +3,14 @@
 # Test for namazu.cgi.
 #
 
-docnum=`perl -lne 'print $1 if /^files (\d+)/' "tmp1/NMZ.status"`
+docnum=`perl -lne 'print $1 if /^files (\d+)/' "idx1/NMZ.status"`
 
 pwd=`pwd`
 tmprc="../src/.namazurc"
 echo "Index $pwd" > $tmprc
 
 SCRIPT_NAME='namazu.cgi'
-QUERY_STRING='query=namazu&idxname=tmp1'
+QUERY_STRING='query=namazu&idxname=idx1'
 export SCRIPT_NAME QUERY_STRING
 
 cd ../src

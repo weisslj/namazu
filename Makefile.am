@@ -9,8 +9,8 @@ DIST_SUBDIRS = $(SUBDIRS) tknamazu
 
 bin_SCRIPTS = nmz-config
 
-EXTRA_DIST = README-ja namazu.spec.in namazu.spec pxgettext \
-	     ChangeLog.1 maintMakefile File-MMagic
+EXTRA_DIST = README-ja INSTALL-ja namazu.spec.in namazu.spec pxgettext \
+	     ChangeLog.1 maintMakefile File-MMagic 
 
 EXTRA_DIRS = doc etc template
 

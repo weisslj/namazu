@@ -1,3 +1,9 @@
+2004-07-18  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * src/output.c: A tag is changed into a small letter.
+
+        * scripts/mknmz.in: from 'rev=made' to 'rev="made"'.
+
 2004-05-24  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * filter/{excel, powerpoint}.pl: The source code was arranged.
@@ -8935,4 +8941,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1196 2004-05-23 18:45:01 opengl2772 Exp $
+$Id: ChangeLog,v 1.1197 2004-07-18 08:24:25 opengl2772 Exp $

@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.96 2004-01-20 09:58:28 opengl2772 Exp $
+ * $Id: output.c,v 1.97 2004-07-18 08:24:26 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -548,7 +548,7 @@ print_page_index(int n)
 	printf("[%d]", i + 1);
 	if (is_htmlmode()) {
 	    if (i * max != whence) {
-		printf("</A> ");
+		printf("</a> ");
 	    } else
 		printf("</strong> ");
 	}

@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.139 2004-05-21 15:11:40 usu Exp $
+# $Id: mknmz.in,v 1.140 2004-07-18 08:24:26 opengl2772 Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -2278,7 +2278,7 @@ sub make_headfoot ($$$) {
     $buf =~ s{(<!-- ADDRESS -->)(.*)(<!-- ADDRESS -->)}
 	     {$1\n<a href="mailto:$conf::ADDRESS">$conf::ADDRESS</a>\n$3}gs;
     $buf =~ s{(<!-- LINK-REV-MADE -->)(.*)(<!-- LINK-REV-MADE -->)}
-	     {$1\n<link rev=made href="mailto:$conf::ADDRESS">\n$3}gs;
+	     {$1\n<link rev="made" href="mailto:$conf::ADDRESS">\n$3}gs;
 
     print $fh_file $buf;
 }

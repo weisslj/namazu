@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.58 2000-03-21 20:15:43 satoru Exp $
+# $Id: mknmz.in,v 1.59 2000-03-21 21:38:06 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -1264,8 +1264,8 @@ sub find_target (@) {
     # Sort file names with consideration for numbers.
     @flist = map  { $_->[0] }
 	     sort { $a->[1] cmp $b->[1] } 
-	     map  { my $orig = $_; s/(\d+)/sprintf("%08d", $1)/ge; 
-		    [ $orig, $_ ] } @flist;
+	     map  { my $tmp = $_; $tmp =~ s/(\d+)/sprintf("%08d", $1)/ge; 
+		    [ $_, $tmp ] } @flist;
 
     my $elapsed = time() - $start ;
     $elapsed += 1 ;   # to round up and avoid 0 

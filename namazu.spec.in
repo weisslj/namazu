@@ -33,6 +33,9 @@ Requires: %name = %{PACKAGE_VERSION}
 Libraries and include files of Namazu.
 
 %changelog
+* Tue Apr 25 2000 Ryuji Abe <rug@namazu.org>
+- Ignore %{prefix}/share/namazu/etc.
+
 * Sun Feb 20 2000 Ryuji Abe <raeva@t3.rim.or.jp>
 - Install namazu.cgi at /home/httpd/cgi-bin.
 - Fixed typo.
@@ -126,8 +129,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-, root, root)
-%doc AUTHORS ChangeLog COPYING INSTALL INSTALL-ja README README-ja
-%doc NEWS THANKS TODO
+%doc AUTHORS ChangeLog ChangeLog.1 CREDITS COPYING INSTALL INSTALL-ja
+%doc README README-es README-ja NEWS THANKS TODO etc/namazu.png
 %config %{sysconfdir}/namazu/*
 %{prefix}/bin/namazu
 %{prefix}/bin/*nmz
@@ -137,7 +140,10 @@ rm -rf $RPM_BUILD_ROOT
 /home/httpd/cgi-bin/namazu.cgi
 %{prefix}/man/man1
 %{prefix}/share/locale/*
-%{prefix}/share/namazu/*
+%{prefix}/share/namazu/doc/*
+%{prefix}/share/namazu/filter/*
+%{prefix}/share/namazu/pl/*
+%{prefix}/share/namazu/template/*
 %dir %{localstatedir}/namazu
 %dir %{localstatedir}/namazu/index
 

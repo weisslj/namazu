@@ -45,7 +45,7 @@ test -n "$NO_AUTOCONF" || (autoheader --version) < /dev/null > /dev/null 2>&1 ||
   DIE=1
 }
 
-(grep "^AM_PROG_LIBTOOL" configure.in >/dev/null) && {
+(grep "^AC_PROG_LIBTOOL" configure.in >/dev/null) && {
   (libtool --version) < /dev/null > /dev/null 2>&1 || {
     echo
     echo "**Error**: You must have \`libtool' installed to compile Namazu."
@@ -84,7 +84,7 @@ if grep "^AM_GNU_GETTEXT" configure.in >/dev/null; then
   rm -f config.status
   gettextize --force --copy
 fi
-if grep "^AM_PROG_LIBTOOL" configure.in >/dev/null; then
+if grep "^AC_PROG_LIBTOOL" configure.in >/dev/null; then
   echo "Running libtoolize..."
   libtoolize --force --copy
 fi

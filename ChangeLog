@@ -1,3 +1,7 @@
+2001-09-11  Yoshinori TAKESAKO  <takesako@namazu.org>
+
+	* autogen.sh (AC_PROG_LIBTOOL): Use instead of AM_PROG_LIBTOOL.
+
 2001-09-10  Ryuji Abe  <rug@namazu.org>
 
 	* nmz/Makefile.am (INCLUDES): Use -I$(top_builddir)/intl instead
@@ -6996,4 +7000,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.862 2001-09-10 03:24:38 rug Exp $
+$Id: ChangeLog,v 1.863 2001-09-11 03:47:29 takesako Exp $

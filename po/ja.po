@@ -294,15 +294,15 @@ msgstr "呼び出しに失敗 "
 
 #: scripts/mknmz.in:696 scripts/mknmz.in:1330
 msgid "No files to index.\n"
-msgstr "インデックスすべきファイルはありません。\n"
+msgstr "インデックスすべきファイルはありません\n"
 
 #: scripts/mknmz.in:716
 msgid "code conversion: using NKF module\n"
-msgstr "コード変換に NKF モジュールを用います。\n"
+msgstr "コード変換に NKF モジュールを用います\n"
 
 #: scripts/mknmz.in:721
 msgid "wakati: using Text::Kakasi module\n"
-msgstr "わかち書きに Text::Kakasi モジュールを用います。\n"
+msgstr "わかち書きに Text::Kakasi モジュールを用います\n"
 
 #: scripts/mknmz.in:726
 msgid "wakati: using Text::ChaSen module\n"
@@ -313,15 +313,13 @@ msgid ""
 "found. Maybe this index is being updated by another process now.\n"
 "If not, you can remove this file.\n"
 msgstr ""
-"ファイルを発見しました。\n"
-"このインデックスは他のプロセスによって更新されている可能性があります。\n"
-"そうでなければ、このファイルを削除して下さい。\n"
+"ファイルを発見しました\n"
+"このインデックスは他のプロセスによって更新されている可能性があります\n"
+"そうでなければ、このファイルを削除して下さい\n"
 
 #: scripts/mknmz.in:769
 msgid "Present index is old type. it's unsupported.\n"
-msgstr ""
-"すでに存在するインデックスは古い形式のものです。今はサポートされていません。"
-"\n"
+msgstr "存在するインデックスは古い形式です。今は対応していません\n"
 
 #: scripts/mknmz.in:914
 msgid "No such index: "
@@ -383,27 +381,27 @@ msgstr "`mknmz --help' でより詳しい情報が表示されます\n"
 
 #: scripts/mknmz.in:1188
 msgid "does NOT EXIST! skipped."
-msgstr "は存在しないので無視します。"
+msgstr "は存在しないので無視します"
 
 #: scripts/mknmz.in:1190
 msgid "is NOT READABLE! skipped."
-msgstr "は読み込み不可能なので無視します。"
+msgstr "は読み込み不可能なので無視します"
 
 #: scripts/mknmz.in:1192
 msgid "is 0 size! skipped."
-msgstr "はサイズが 0 なので無視します。"
+msgstr "はサイズが 0 なので無視します"
 
 #: scripts/mknmz.in:1194
 msgid "may be a BINARY file! skipped."
-msgstr "はバイナリと思われるので無視します。"
+msgstr "はバイナリと思われるので無視します"
 
 #: scripts/mknmz.in:1196
 msgid "is too LARGE a text! skipped."
-msgstr "ファイルが巨大なので無視します。"
+msgstr "ファイルが巨大なので無視します"
 
 #: scripts/mknmz.in:1199
 msgid " skipped."
-msgstr "無視します。"
+msgstr "無視します"
 
 #: scripts/mknmz.in:1204
 msgid "system error occurred! "
@@ -483,11 +481,11 @@ msgstr "フィールド検索用のインデックスが開けませんでした"
 
 #: scripts/mknmz.in:1502
 msgid "was updated!\n"
-msgstr "ファイルは更新されています。\n"
+msgstr "ファイルは更新されています\n"
 
 #: scripts/mknmz.in:1543
 msgid "ERROR: malformed NMZ.r format!\n"
-msgstr "エラー: NMZ.r が無効な形式です。\n"
+msgstr "エラー: NMZ.r が無効な形式です\n"
 
 #: scripts/mknmz.in:1625
 msgid "[Append]"
@@ -567,7 +565,7 @@ msgstr "Renamed: "
 
 #: pl/util.pl:115 pl/util.pl:140
 msgid "not an IO::File/FileHandle object!\n"
-msgstr "IO::File/FileHandle オブジェクトではありません。\n"
+msgstr "IO::File/FileHandle オブジェクトではありません\n"
 
 #: pl/util.pl:205
 msgid "Remove tmporary files:"

@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.21 2000-02-16 13:14:15 satoru Exp $
+ * $Id: rcfile.c,v 1.22 2000-02-23 08:01:32 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -656,8 +656,10 @@ load_rcfiles(void)
     {
 	char *env = getenv_namazurc();
 	if (env != NULL) {
-	    if (load_rcfile(env) != SUCCESS) {
-		return FAILURE;
+	    if (nmz_is_file_exists(env)) {
+		if (load_rcfile(env) != SUCCESS) {
+		    return FAILURE;
+		}
 	    }
 	} else {
 	    char fname[BUFSIZE];

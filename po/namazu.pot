@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2000-02-23 11:54+0900\n"
+"POT-Creation-Date: 2000-02-23 17:01+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -147,12 +147,12 @@ msgstr ""
 msgid "%s:%d: syntax error: %s"
 msgstr ""
 
-#: src/rcfile.c:716
+#: src/rcfile.c:718
 #, c-format
 msgid "Loaded rcfile: %s\n"
 msgstr ""
 
-#: src/rcfile.c:721
+#: src/rcfile.c:723
 #, c-format
 msgid ""
 "Index:        %s\n"
@@ -163,12 +163,12 @@ msgid ""
 "EmphasisTags: %s\t%s\n"
 msgstr ""
 
-#: src/rcfile.c:738
+#: src/rcfile.c:740
 #, c-format
 msgid "Alias:   %-20s\t%s\n"
 msgstr ""
 
-#: src/rcfile.c:748
+#: src/rcfile.c:750
 #, c-format
 msgid "Replace: %-20s\t%s\n"
 msgstr ""

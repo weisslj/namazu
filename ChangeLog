@@ -1,5 +1,8 @@
 2000-02-23  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/rcfile.c (load_rcfiles): Fix getenv_namazurc() bug. 
+	[namazu	1504] 
+
 	* scripts/mknmz.in (make_headfoot): Add <!-- LINK-REV-MADE -->
 	handlings. 
 

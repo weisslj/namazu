@@ -6,7 +6,7 @@ LOG=`pwd`/test-log
 echo '  *** starting ' $0 >>$LOG
 pwd=`pwd`
 
-tmprc=".namazurc"
+tmprc="$pwd/../src/.namazurc"
 echo "Index $pwd" > $tmprc
 echo 'ContentType "text/x-hdml"' >> $tmprc
 
@@ -20,7 +20,8 @@ SCRIPT_NAME='namazu.cgi'
 QUERY_STRING='query=namazu&idxname=idx1&lang=C'
 export SCRIPT_NAME QUERY_STRING 
 
-../src/namazu.cgi | \
+cd ../src
+./namazu.cgi | \
 grep "text/x-hdml" > /dev/null || exit 1
 
 rm -f $tmprc

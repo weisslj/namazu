@@ -25,7 +25,7 @@ test "$?" != "0" && exit 1  # error if not success
 origdocnum=`../scripts/gtnmz idx10/NMZ.r`
 
 # Update 1.html.
-perl -i -pe s/xyzzy// $TMPDATA/1.html
+perl -i.bak -pe s/xyzzy// $TMPDATA/1.html
 echo amarok >> $TMPDATA/1.html
 
 # Update the index with --html-split option.

@@ -5,7 +5,7 @@
 LOG=`pwd`/test-log
 echo '  *** starting ' $0 >>$LOG
 pwd=`pwd`
-tmprc=".namazurc"
+tmprc="$pwd/../src/.namazurc"
 echo "Index $pwd/idx16" > $tmprc
 
 # To make messages English
@@ -18,7 +18,8 @@ SCRIPT_NAME='namazu.cgi'
 QUERY_STRING=''
 export SCRIPT_NAME QUERY_STRING 
 
-RESULT=`../src/namazu.cgi | grep checked | wc -l`
+cd ../src
+RESULT=`./namazu.cgi | grep checked | wc -l`
 if [ $RESULT -ne 1 ]
 then
 	exit 1
@@ -27,7 +28,7 @@ fi
 QUERY_STRING='idxname=foo&lang=C'
 export QUERY_STRING 
 
-RESULT=`../src/namazu.cgi | grep checked | wc -l`
+RESULT=`./namazu.cgi | grep checked | wc -l`
 if [ $RESULT -ne 1 ]
 then
 	exit 1
@@ -36,7 +37,7 @@ fi
 QUERY_STRING='idxname=foo&idxname=bar&lang=C'
 export QUERY_STRING 
 
-RESULT=`../src/namazu.cgi | grep checked | wc -l`
+RESULT=`./namazu.cgi | grep checked | wc -l`
 if [ $RESULT -ne 2 ]
 then
 	exit 1

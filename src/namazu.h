@@ -45,9 +45,14 @@ enum {
     DBNAMELENG_MAX = 256,
     QUERY_MAX_LENGTH = 256,
 
+    SUICIDE_TIME = 60,  /* namazu will suicide when its
+			   processing time exceeds this */
+
     STDIN  = 0,		/* stdin's fd */
     STDOUT = 1,		/* stdout's fd */
     STDERR = 2		/* stderr's fd */
+
+
 };
 
 /* data structure for search result */
@@ -176,7 +181,7 @@ void sjistoeuc();
 void euctojisput();
 uchar jistojms(uchar, uchar);
 void euctosjis();
-void error();
+void error(char *, ...);
 int ismetastring();
 void fputs_without_html_tag();
 void fputs_with_codeconv();

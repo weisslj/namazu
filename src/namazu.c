@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.8 1999-08-13 00:16:58 satoru Exp $
+ * $Id: namazu.c,v 1.9 1999-08-23 01:52:59 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -34,24 +34,39 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/stat.h>
+#include <signal.h>
 #include "namazu.h"
 #include "getopt.h"
+#include <stdarg.h>
 
 
-/* stupid function intended for debug use */
-void error(const char *msg)
+/* error messaging function */
+void error(char *fmt, ...)
 {
+    va_list args;
     FILE *output;
 
+    fflush(stdout);
+
     if (IsCGI) {
-        output = stderr;
-    } else {
         output = stdout;
+    } else {
+        output = stderr;
     }
-    if (HtmlOutput)
+
+    if (HtmlOutput) {
 	fputs(MSG_MIME_HEADER, output);
-    fprintf(output, "%s: Sorry, something error occurred...\n", msg);
-    exit(1);
+    }
+
+    fprintf(output, "ERROR: ");
+
+    va_start(args, fmt);
+    vfprintf(output, fmt, args);
+    va_end(args);
+
+    fprintf(output, "\n");
+
+    exit(2);
 }
 
 
@@ -371,8 +386,11 @@ void complete_dbnames(void)
     }
 }
 
+void suicide ()
+{
+    error("processing time exceeds a limit: %d", SUICIDE_TIME);
+}
 
-/* main function */
 int main(int argc, char **argv)
 {
     int i = 0;
@@ -382,16 +400,12 @@ int main(int argc, char **argv)
     initialize_message();
     if (argc == 1) {
 	load_namazu_conf(argv[0]);
-	IsCGI = 1;		/* if no argument, assume as CGI */
+	IsCGI = 1;	/* if no argument, assume this session as CGI */
 	HtmlOutput = 1;
     } else {
-	HtmlOutput = 0;		/* in default mode of command line, 
-				 * do not display result by HTML format */
-	DecodeURI = 1;		/* in default mode of command line, 
-				 * decode a URI */
-	HidePageIndex = 1;	/* in default mode of command line, 
-				 * do not diplay page index
-				 */
+	HtmlOutput = 0;		 /* do not display result by HTML format */
+	DecodeURI = 1;		 /* decode a URI */
+	HidePageIndex = 1;	 /* do not diplay page index */
 
 	load_namazu_conf(argv[0]);
 
@@ -441,6 +455,10 @@ int main(int argc, char **argv)
             fprintf(stderr, "DbNames[%d]: %s\n", i, DbNames[i]);
         }
     }
+
+    /* set a suicide timer */
+    signal(SIGALRM, suicide);
+    alarm(SUICIDE_TIME);
 
     namazu_core(query, subquery, argv[0]);
     return 0;

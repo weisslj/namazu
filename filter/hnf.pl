@@ -1,10 +1,10 @@
 #
 # -*- Perl -*-
-# $Id: hnf.pl,v 1.6 2000-02-20 14:32:44 kenji Exp $
+# $Id: hnf.pl,v 1.7 2000-02-27 10:27:03 kenji Exp $
 #
 # HNF Filter for Namazu 2.0
-# version 0.9.9
-# 2000/2/19  Kenji Suzuki <kenji@h14m.org>
+# version 0.9.10
+# 2000/2/23  Kenji Suzuki <kenji@h14m.org>
 #
 # Copyright (C) 1999,2000  Kenji Suzuki, HyperNikkiSystem Project
 # All rights reserved.
@@ -126,7 +126,7 @@ sub hnf_filter ($$$$$$$) {
     $$contref =~ s/~\n/\n/g;
 
     # command
-    $$contref =~ s/^GRP (.*)/command_GRP GRP $1/gm;
+    $$contref =~ s/^GRP (.*)/command_GRP $1/gm;
     $$contref =~ s/^CAT (.*)/command_CAT CAT $1/gm;
     $$contref =~ s/^NEW (.*)/command_NEW <h1>$mark$1<\/h1>/gm;
     $$contref =~ 
@@ -255,14 +255,18 @@ sub make_summary ($$$$$) {
     my $offset = 0;
     my $tmplen = 0;
     my $tmp2 = $$contref;
+
     # hiding GRP section
-    $tmp2 =~ s/\ncommand_GRP (.*?)\ncommand_/\ncommand_/gs if $hnf::grp_hide;
+    while ($tmp2 =~ /\ncommand_GRP /) {
+        $tmp2 =~ s/\ncommand_GRP .*?\ncommand_/\ncommand_/gs if $hnf::grp_hide;
+    }
+
     $tmp2 =~ s/\ncommand_OK\n.*//s;	# remove below of command_OK
     $tmp2 =~ s/\ncommand_NG\n.*//s;	# remove below of command_NG
-    $tmp2 =~ s/command_CAT CAT (.*)//gm;
+    $tmp2 =~ s/command_CAT CAT .*//gm;
     $tmp2 =~ s/command_[A-Z]+//g;
-    $tmp2 =~ s/^! (.*)$//gm;
-    $tmp2 =~ s/^!# (.*)$//gm;
+    $tmp2 =~ s/^! .*$//gm;
+    $tmp2 =~ s/^!# .*$//gm;
 
     while (($tmplen = $conf::MAX_FIELD_LENGTH + 1 - length($tmp)) > 0
            && $offset < length($tmp2))

@@ -1,48 +1,24 @@
-Thanks for fishing Namazu! 
-(The Japanese word `Namazu' means `catfish' in English)
-
 What is Namazu?
 
-   Namazu is a search engine software intended for easy use.  Not
-   only it works as CGI program for small or medium scale WWW search
-   engine, but also works as personal use such as search system for
-   local HDD.  Now, search clients for Mule and Tcl/Tk, JAVA and
-   Win32 are available.
+   Namazu is a search engine software intended for easy use.
+   Not only it works as CGI program for a small or medium
+   scale Web search engine, but also works as a personal use
+   search system for your a pile of emails.
 
-Background Information
+   Namazu is a free software under the terms of GPL2. Namazu
+   is developed by Namazu Project. See `CREDITS' for more
+   information about us. 
 
-   At the beginning Namazu was made with only intention of
-   Japanese use but now it has been developed to handle English
-   (ASCII charset) and other languages defined in ISO-8859-*.
+   At the beginning Namazu was made with only intention for
+   Japanese use.  Now it can handle English and other latin
+   languages encoded in ISO-8859-* character sets.  
 
-   I have a desire to distribute Namazu to all over the world but
-   there are many problems on Internationalization. So perhaps
-   using Namazu in non-Japanese environment is currently a little
-   difficult. I am trying to improve now!
+   We Namazu Project has been trying to internationalize it.
+   At the moment, we have just only gettextized it.  There
+   is a lot of things to do. Please help us.
 
-Notice
+   You can find documentation in the `doc' directory. And
+   you can get the latest Namazu information
+   at <http://http://www.namazu.org/>.
 
-   Many documents and comments in source code are written in
-   Japanese. I will translate that into English before long. 
-   If I should get email from someone using Namazu from
-   overseas, my motivation would rise :-).
-
-   For same reason, contributed softwares written in Japanese will
-   translate into English, maybe.
-
-Request for comments
-
-   My English skill is really horrible. If you notice mistakes in my
-   writing, please teach me kindly :-).
-
-
-You can get the latest news about Namazu at:
-
-  <http://http://www.namazu.org/>
-
-
-Happy searching!
-
---
-Satoru Takabayashi
-satoru-t@is.aist-nara.ac.jp
+NOTE: Japanese word `Namazu' means `catfish' in English.

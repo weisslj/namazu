@@ -1,6 +1,14 @@
-Namazu の最新版は <http://http://www.namazu.org/> から入
-手できます。インストール方法は INSTALL 参照のこと。
+Namazuとは?
 
---
-Satoru Takabayashi
-satoru-t@is.aist-nara.ac.jp
+   Namazu は手軽に使えることを第一に目指した日本語全文検索シ
+   ステムです。CGI として動作させることにより小中規模の WWW 
+   全文検索システムを構築することができるほか、電子メイルの
+   山を検索するといった個人用途にも使えます。
+
+   Namazu は GPL2 に従ったフリーソフトウェアです。Namazu
+   Project によって開発が行われています。Namazu Project につ
+   いては CREDITSファイルを参照してください。
+
+   Namazu の最新情報は <http://http://www.namazu.org/> から
+   入手可能です。
+

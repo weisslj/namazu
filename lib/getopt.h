@@ -38,13 +38,29 @@
 extern "C" {
 #endif
 
+#define GETOPT_INTERFACE_VERSION 2
+#if !defined _LIBC && defined __GLIBC__ && __GLIBC__ >= 2
+# include <gnu-versions.h>
+# if _GNU_GETOPT_INTERFACE_VERSION == GETOPT_INTERFACE_VERSION
+
+#define nmz_optarg optarg
+#define nmz_optind optind
+#define nmz_opterr opterr
+#define nmz_optopt optopt
+#define nmz_getopt_long getopt_long
+#define nmz_getopt_long_only getopt_long_only
+
+# endif
+#endif
+
+
 /* For communication from `getopt' to the caller.
    When `getopt' finds an option that takes an argument,
    the argument value is returned here.
    Also, when `ordering' is RETURN_IN_ORDER,
    each non-option ARGV-element is returned here.  */
 
-extern char *optarg;
+extern char *nmz_optarg;
 
 /* Index in ARGV of the next element to be scanned.
    This is used for communication to and from the caller
@@ -58,16 +74,16 @@ extern char *optarg;
    Otherwise, `optind' communicates from one call to the next
    how much of ARGV has been scanned so far.  */
 
-extern int optind;
+extern int nmz_optind;
 
 /* Callers store zero here to inhibit the error message `getopt' prints
    for unrecognized options.  */
 
-extern int opterr;
+extern int nmz_opterr;
 
 /* Set to an option character which was unrecognized.  */
 
-extern int optopt;
+extern int nmz_optopt;
 
 #ifndef __need_getopt
 /* Describe the long-named options requested by the application.
@@ -148,9 +164,9 @@ extern int getopt ();
 # endif /* __GNU_LIBRARY__ */
 
 # ifndef __need_getopt
-extern int getopt_long (int __argc, char *const *__argv, const char *__shortopts,
+extern int nmz_getopt_long (int __argc, char *const *__argv, const char *__shortopts,
 		        const struct option *__longopts, int *__longind);
-extern int getopt_long_only (int __argc, char *const *__argv,
+extern int nmz_getopt_long_only (int __argc, char *const *__argv,
 			     const char *__shortopts,
 		             const struct option *__longopts, int *__longind);
 
@@ -163,8 +179,8 @@ extern int _getopt_internal (int __argc, char *const *__argv,
 #else /* not __STDC__ */
 extern int getopt ();
 # ifndef __need_getopt
-extern int getopt_long ();
-extern int getopt_long_only ();
+extern int nmz_getopt_long ();
+extern int nmz_getopt_long_only ();
 
 extern int _getopt_internal ();
 # endif

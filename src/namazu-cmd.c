@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu-cmd.c,v 1.20 2002-01-11 05:18:00 knok Exp $
+ * $Id: namazu-cmd.c,v 1.21 2004-04-01 18:11:53 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -104,7 +104,7 @@ ck_atoi (char const *str, int *out)
 	if (*p < '0' || *p > '9')
 	    return -1;
 
-    *out = atoi (optarg);
+    *out = atoi (nmz_optarg);
     return 0;
 }
 
@@ -176,7 +176,7 @@ parse_options(int argc, char **argv)
     int opt_show_config = 0;
 
     for (;;) {
-        int ch = getopt_long(argc, argv, short_options, long_options, NULL);
+        int ch = nmz_getopt_long(argc, argv, short_options, long_options, NULL);
         if (ch == EOF) {
             break;
 	}
@@ -186,7 +186,7 @@ parse_options(int argc, char **argv)
 	    exit(EXIT_SUCCESS);
 	    break;
 	case '1':
-	    set_templatesuffix(optarg);
+	    set_templatesuffix(nmz_optarg);
 	    break;
 	case '2':
 	    nmz_set_sortmethod(SORT_BY_DATE);
@@ -198,13 +198,13 @@ parse_options(int argc, char **argv)
 	    break;
 	case '4':  /* --sort */
 	{
-	    if (strcasecmp(optarg, "score") == 0) {
+	    if (strcasecmp(nmz_optarg, "score") == 0) {
 		nmz_set_sortmethod(SORT_BY_SCORE);
-	    } else if (strcasecmp(optarg, "date") == 0) {
+	    } else if (strcasecmp(nmz_optarg, "date") == 0) {
 		nmz_set_sortmethod(SORT_BY_DATE);
-	    } else if (nmz_strprefixcasecmp(optarg, "field:") == 0) {
+	    } else if (nmz_strprefixcasecmp(nmz_optarg, "field:") == 0) {
 		nmz_set_sortmethod(SORT_BY_FIELD);
-		nmz_set_sortfield(optarg + strlen("field:"));
+		nmz_set_sortfield(nmz_optarg + strlen("field:"));
 	    }
 	}
 	break;
@@ -212,17 +212,17 @@ parse_options(int argc, char **argv)
 	    nmz_set_sortorder(ASCENDING);
 	    break;
 	case 'f':
-	    set_namazurc(optarg);
+	    set_namazurc(nmz_optarg);
 	    break;
 	case 'n':
-	    if (ck_atoi(optarg, &tmp)) {
-		die("%s: invalid argument for -n, --max", optarg);
+	    if (ck_atoi(nmz_optarg, &tmp)) {
+		die("%s: invalid argument for -n, --max", nmz_optarg);
 	    }
 	    set_maxresult(tmp);
 	    break;
 	case 'w':
-	    if (ck_atoi(optarg, &tmp)) {
-		die("%s: invalid argument for -w, --whence", optarg);
+	    if (ck_atoi(nmz_optarg, &tmp)) {
+		die("%s: invalid argument for -w, --whence", nmz_optarg);
 	    }
 	    set_listwhence(tmp);
 	    break;
@@ -272,7 +272,7 @@ parse_options(int argc, char **argv)
 	    opt_show_config = 1;
 	    break;
 	case 'o':
-	    stdio2file(optarg);
+	    stdio2file(nmz_optarg);
 	    break;
 	}
     } 
@@ -284,7 +284,7 @@ parse_options(int argc, char **argv)
 	exit(EXIT_SUCCESS);
     }
 
-    return optind;
+    return nmz_optind;
 }
 
 int 

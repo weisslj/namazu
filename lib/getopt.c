@@ -110,14 +110,7 @@
    Also, when `ordering' is RETURN_IN_ORDER,
    each non-option ARGV-element is returned here.  */
 
-char *optarg = NULL;  
-  /* 
-  Above initialization is required to avoid following problem on MacOS X 10.1,10.2.6
-  (This is the only difference from gengetopt-2.5. ... 2003/07/14 ... )
-  ld: multiple definitions of symbol _getopt
-  /usr/lib/libm.dylib(getopt.So) definition of _getopt
-  ../lib/libnmzut.a(getopt.o) definition of _getopt in section (__TEXT,__text)
-  */
+char *nmz_optarg = NULL;
 
 /* Index in ARGV of the next element to be scanned.
    This is used for communication to and from the caller
@@ -128,17 +121,17 @@ char *optarg = NULL;
    When `getopt' returns -1, this is the index of the first of the
    non-option elements that the caller should itself scan.
 
-   Otherwise, `optind' communicates from one call to the next
+   Otherwise, `nmz_optind' communicates from one call to the next
    how much of ARGV has been scanned so far.  */
 
 /* 1003.2 says this must be 1 before any call.  */
-int optind = 1;
+int nmz_optind = 1;
 
 /* Formerly, initialization of getopt depended on optind==0, which
    causes problems with re-calling getopt as programs generally don't
    know that. */
 
-int __getopt_initialized;
+int __getopt_initialized = 0;
 
 /* The next char to be scanned in the option-element
    in which the last option character we returned was found.
@@ -152,13 +145,13 @@ static char *nextchar;
 /* Callers store zero here to inhibit the error message
    for unrecognized options.  */
 
-int opterr = 1;
+int nmz_opterr = 1;
 
 /* Set to an option character which was unrecognized.
    This must be initialized on some systems to avoid linking in the
    system's own getopt implementation.  */
 
-int optopt = '?';
+int nmz_optopt = '?';
 
 /* Describe how to deal with options that follow non-option ARGV-elements.
 
@@ -308,7 +301,7 @@ exchange (argv)
 {
   int bottom = first_nonopt;
   int middle = last_nonopt;
-  int top = optind;
+  int top = nmz_optind;
   char *tem;
 
   /* Exchange the shorter segment with the far end of the longer segment.
@@ -378,8 +371,8 @@ exchange (argv)
 
   /* Update records for the slots the non-options now occupy.  */
 
-  first_nonopt += (optind - last_nonopt);
-  last_nonopt = optind;
+  first_nonopt += (nmz_optind - last_nonopt);
+  last_nonopt = nmz_optind;
 }
 
 /* Initialize the internal data when the first call is made.  */
@@ -397,7 +390,7 @@ _getopt_initialize (argc, argv, optstring)
      is the program name); the sequence of previously skipped
      non-option ARGV-elements is empty.  */
 
-  first_nonopt = last_nonopt = optind;
+  first_nonopt = last_nonopt = nmz_optind;
 
   nextchar = NULL;
 
@@ -473,7 +466,7 @@ _getopt_initialize (argc, argv, optstring)
 
    OPTSTRING is a string containing the legitimate option characters.
    If an option character is seen that is not listed in OPTSTRING,
-   return '?' after printing an error message.  If you set `opterr' to
+   return '?' after printing an error message.  If you set `nmz_opterr' to
    zero, the error message is suppressed but we still return '?'.
 
    If a char in OPTSTRING is followed by a colon, that means it wants an arg,
@@ -518,33 +511,33 @@ _getopt_internal (argc, argv, optstring, longopts, longind, long_only)
      int *longind;
      int long_only;
 {
-  int print_errors = opterr;
+  int print_errors = nmz_opterr;
   if (optstring[0] == ':')
     print_errors = 0;
 
   if (argc < 1)
     return -1;
 
-  optarg = NULL;
+  nmz_optarg = NULL;
 
-  if (optind == 0 || !__getopt_initialized)
+  if (nmz_optind == 0 || !__getopt_initialized)
     {
-      if (optind == 0)
-	optind = 1;	/* Don't scan ARGV[0], the program name.  */
+      if (nmz_optind == 0)
+	nmz_optind = 1;	/* Don't scan ARGV[0], the program name.  */
       optstring = _getopt_initialize (argc, argv, optstring);
       __getopt_initialized = 1;
     }
 
-  /* Test whether ARGV[optind] points to a non-option argument.
+  /* Test whether ARGV[nmz_optind] points to a non-option argument.
      Either it does not have option syntax, or there is an environment flag
      from the shell indicating it is not an option.  The later information
      is only used when the used in the GNU libc.  */
 #if defined _LIBC && defined USE_NONOPTION_FLAGS
-# define NONOPTION_P (argv[optind][0] != '-' || argv[optind][1] == '\0'	      \
-		      || (optind < nonoption_flags_len			      \
-			  && __getopt_nonoption_flags[optind] == '1'))
+# define NONOPTION_P (argv[nmz_optind][0] != '-' || argv[nmz_optind][1] == '\0'	      \
+		      || (nmz_optind < nonoption_flags_len			      \
+			  && __getopt_nonoption_flags[nmz_optind] == '1'))
 #else
-# define NONOPTION_P (argv[optind][0] != '-' || argv[optind][1] == '\0')
+# define NONOPTION_P (argv[nmz_optind][0] != '-' || argv[nmz_optind][1] == '\0')
 #endif
 
   if (nextchar == NULL || *nextchar == '\0')
@@ -553,27 +546,27 @@ _getopt_internal (argc, argv, optstring, longopts, longind, long_only)
 
       /* Give FIRST_NONOPT & LAST_NONOPT rational values if OPTIND has been
 	 moved back by the user (who may also have changed the arguments).  */
-      if (last_nonopt > optind)
-	last_nonopt = optind;
-      if (first_nonopt > optind)
-	first_nonopt = optind;
+      if (last_nonopt > nmz_optind)
+	last_nonopt = nmz_optind;
+      if (first_nonopt > nmz_optind)
+	first_nonopt = nmz_optind;
 
       if (ordering == PERMUTE)
 	{
 	  /* If we have just processed some options following some non-options,
 	     exchange them so that the options come first.  */
 
-	  if (first_nonopt != last_nonopt && last_nonopt != optind)
+	  if (first_nonopt != last_nonopt && last_nonopt != nmz_optind)
 	    exchange ((char **) argv);
-	  else if (last_nonopt != optind)
-	    first_nonopt = optind;
+	  else if (last_nonopt != nmz_optind)
+	    first_nonopt = nmz_optind;
 
 	  /* Skip any additional non-options
 	     and extend the range of non-options previously skipped.  */
 
-	  while (optind < argc && NONOPTION_P)
-	    optind++;
-	  last_nonopt = optind;
+	  while (nmz_optind < argc && NONOPTION_P)
+	    nmz_optind++;
+	  last_nonopt = nmz_optind;
 	}
 
       /* The special ARGV-element `--' means premature end of options.
@@ -581,28 +574,28 @@ _getopt_internal (argc, argv, optstring, longopts, longind, long_only)
 	 then exchange with previous non-options as if it were an option,
 	 then skip everything else like a non-option.  */
 
-      if (optind != argc && !strcmp (argv[optind], "--"))
+      if (nmz_optind != argc && !strcmp (argv[nmz_optind], "--"))
 	{
-	  optind++;
+	  nmz_optind++;
 
-	  if (first_nonopt != last_nonopt && last_nonopt != optind)
+	  if (first_nonopt != last_nonopt && last_nonopt != nmz_optind)
 	    exchange ((char **) argv);
 	  else if (first_nonopt == last_nonopt)
-	    first_nonopt = optind;
+	    first_nonopt = nmz_optind;
 	  last_nonopt = argc;
 
-	  optind = argc;
+	  nmz_optind = argc;
 	}
 
       /* If we have done all the ARGV-elements, stop the scan
 	 and back over any non-options that we skipped and permuted.  */
 
-      if (optind == argc)
+      if (nmz_optind == argc)
 	{
 	  /* Set the next-arg-index to point at the non-options
 	     that we previously skipped, so the caller will digest them.  */
 	  if (first_nonopt != last_nonopt)
-	    optind = first_nonopt;
+	    nmz_optind = first_nonopt;
 	  return -1;
 	}
 
@@ -613,15 +606,15 @@ _getopt_internal (argc, argv, optstring, longopts, longind, long_only)
 	{
 	  if (ordering == REQUIRE_ORDER)
 	    return -1;
-	  optarg = argv[optind++];
+	  nmz_optarg = argv[nmz_optind++];
 	  return 1;
 	}
 
       /* We have found another option-ARGV-element.
 	 Skip the initial punctuation.  */
 
-      nextchar = (argv[optind] + 1
-		  + (longopts != NULL && argv[optind][1] == '-'));
+      nextchar = (argv[nmz_optind] + 1
+		  + (longopts != NULL && argv[nmz_optind][1] == '-'));
     }
 
   /* Decode the current option-ARGV-element.  */
@@ -640,8 +633,8 @@ _getopt_internal (argc, argv, optstring, longopts, longind, long_only)
      This distinction seems to be the most useful approach.  */
 
   if (longopts != NULL
-      && (argv[optind][1] == '-'
-	  || (long_only && (argv[optind][2] || !my_index (optstring, argv[optind][1])))))
+      && (argv[nmz_optind][1] == '-'
+	  || (long_only && (argv[nmz_optind][2] || !my_index (optstring, argv[nmz_optind][1])))))
     {
       char *nameend;
       const struct option *p;
@@ -686,28 +679,28 @@ _getopt_internal (argc, argv, optstring, longopts, longind, long_only)
 	{
 	  if (print_errors)
 	    fprintf (stderr, _("%s: option `%s' is ambiguous\n"),
-		     argv[0], argv[optind]);
+		     argv[0], argv[nmz_optind]);
 	  nextchar += strlen (nextchar);
-	  optind++;
-	  optopt = 0;
+	  nmz_optind++;
+	  nmz_optopt = 0;
 	  return '?';
 	}
 
       if (pfound != NULL)
 	{
 	  option_index = indfound;
-	  optind++;
+	  nmz_optind++;
 	  if (*nameend)
 	    {
 	      /* Don't test has_arg with >, because some C compilers don't
 		 allow it to be used on enums.  */
 	      if (pfound->has_arg)
-		optarg = nameend + 1;
+		nmz_optarg = nameend + 1;
 	      else
 		{
 		  if (print_errors)
 		    {
-		      if (argv[optind - 1][1] == '-')
+		      if (argv[nmz_optind - 1][1] == '-')
 			/* --option */
 			fprintf (stderr,
 				 _("%s: option `--%s' doesn't allow an argument\n"),
@@ -716,27 +709,27 @@ _getopt_internal (argc, argv, optstring, longopts, longind, long_only)
 			/* +option or -option */
 			fprintf (stderr,
 				 _("%s: option `%c%s' doesn't allow an argument\n"),
-				 argv[0], argv[optind - 1][0], pfound->name);
+				 argv[0], argv[nmz_optind - 1][0], pfound->name);
 		    }
 
 		  nextchar += strlen (nextchar);
 
-		  optopt = pfound->val;
+		  nmz_optopt = pfound->val;
 		  return '?';
 		}
 	    }
 	  else if (pfound->has_arg == 1)
 	    {
-	      if (optind < argc)
-		optarg = argv[optind++];
+	      if (nmz_optind < argc)
+		nmz_optarg = argv[nmz_optind++];
 	      else
 		{
 		  if (print_errors)
 		    fprintf (stderr,
 			   _("%s: option `%s' requires an argument\n"),
-			   argv[0], argv[optind - 1]);
+			   argv[0], argv[nmz_optind - 1]);
 		  nextchar += strlen (nextchar);
-		  optopt = pfound->val;
+		  nmz_optopt = pfound->val;
 		  return optstring[0] == ':' ? ':' : '?';
 		}
 	    }
@@ -755,23 +748,23 @@ _getopt_internal (argc, argv, optstring, longopts, longind, long_only)
 	 or the option starts with '--' or is not a valid short
 	 option, then it's an error.
 	 Otherwise interpret it as a short option.  */
-      if (!long_only || argv[optind][1] == '-'
+      if (!long_only || argv[nmz_optind][1] == '-'
 	  || my_index (optstring, *nextchar) == NULL)
 	{
 	  if (print_errors)
 	    {
-	      if (argv[optind][1] == '-')
+	      if (argv[nmz_optind][1] == '-')
 		/* --option */
 		fprintf (stderr, _("%s: unrecognized option `--%s'\n"),
 			 argv[0], nextchar);
 	      else
 		/* +option or -option */
 		fprintf (stderr, _("%s: unrecognized option `%c%s'\n"),
-			 argv[0], argv[optind][0], nextchar);
+			 argv[0], argv[nmz_optind][0], nextchar);
 	    }
 	  nextchar = (char *) "";
-	  optind++;
-	  optopt = 0;
+	  nmz_optind++;
+	  nmz_optopt = 0;
 	  return '?';
 	}
     }
@@ -782,9 +775,9 @@ _getopt_internal (argc, argv, optstring, longopts, longind, long_only)
     char c = *nextchar++;
     char *temp = my_index (optstring, c);
 
-    /* Increment `optind' when we start to process its last character.  */
+    /* Increment `nmz_optind' when we start to process its last character.  */
     if (*nextchar == '\0')
-      ++optind;
+      ++nmz_optind;
 
     if (temp == NULL || c == ':')
       {
@@ -798,7 +791,7 @@ _getopt_internal (argc, argv, optstring, longopts, longind, long_only)
 	      fprintf (stderr, _("%s: invalid option -- %c\n"),
 		       argv[0], c);
 	  }
-	optopt = c;
+	nmz_optopt = c;
 	return '?';
       }
     /* Convenience. Treat POSIX -W foo same as long option --foo */
@@ -815,12 +808,12 @@ _getopt_internal (argc, argv, optstring, longopts, longind, long_only)
 	/* This is an option that requires an argument.  */
 	if (*nextchar != '\0')
 	  {
-	    optarg = nextchar;
+	    nmz_optarg = nextchar;
 	    /* If we end this ARGV-element by taking the rest as an arg,
 	       we must advance to the next element now.  */
-	    optind++;
+	    nmz_optind++;
 	  }
-	else if (optind == argc)
+	else if (nmz_optind == argc)
 	  {
 	    if (print_errors)
 	      {
@@ -828,7 +821,7 @@ _getopt_internal (argc, argv, optstring, longopts, longind, long_only)
 		fprintf (stderr, _("%s: option requires an argument -- %c\n"),
 			 argv[0], c);
 	      }
-	    optopt = c;
+	    nmz_optopt = c;
 	    if (optstring[0] == ':')
 	      c = ':';
 	    else
@@ -836,14 +829,14 @@ _getopt_internal (argc, argv, optstring, longopts, longind, long_only)
 	    return c;
 	  }
 	else
-	  /* We already incremented `optind' once;
+	  /* We already incremented `nmz_optind' once;
 	     increment it again when taking next ARGV-elt as argument.  */
-	  optarg = argv[optind++];
+	  nmz_optarg = argv[nmz_optind++];
 
-	/* optarg is now the argument, see if it's in the
+	/* nmz_optarg is now the argument, see if it's in the
 	   table of longopts.  */
 
-	for (nextchar = nameend = optarg; *nameend && *nameend != '='; nameend++)
+	for (nextchar = nameend = nmz_optarg; *nameend && *nameend != '='; nameend++)
 	  /* Do nothing.  */ ;
 
 	/* Test all long options for either exact match
@@ -873,9 +866,9 @@ _getopt_internal (argc, argv, optstring, longopts, longind, long_only)
 	  {
 	    if (print_errors)
 	      fprintf (stderr, _("%s: option `-W %s' is ambiguous\n"),
-		       argv[0], argv[optind]);
+		       argv[0], argv[nmz_optind]);
 	    nextchar += strlen (nextchar);
-	    optind++;
+	    nmz_optind++;
 	    return '?';
 	  }
 	if (pfound != NULL)
@@ -886,7 +879,7 @@ _getopt_internal (argc, argv, optstring, longopts, longind, long_only)
 		/* Don't test has_arg with >, because some C compilers don't
 		   allow it to be used on enums.  */
 		if (pfound->has_arg)
-		  optarg = nameend + 1;
+		  nmz_optarg = nameend + 1;
 		else
 		  {
 		    if (print_errors)
@@ -900,14 +893,14 @@ _getopt_internal (argc, argv, optstring, longopts, longind, long_only)
 	      }
 	    else if (pfound->has_arg == 1)
 	      {
-		if (optind < argc)
-		  optarg = argv[optind++];
+		if (nmz_optind < argc)
+		  nmz_optarg = argv[nmz_optind++];
 		else
 		  {
 		    if (print_errors)
 		      fprintf (stderr,
 			       _("%s: option `%s' requires an argument\n"),
-			       argv[0], argv[optind - 1]);
+			       argv[0], argv[nmz_optind - 1]);
 		    nextchar += strlen (nextchar);
 		    return optstring[0] == ':' ? ':' : '?';
 		  }
@@ -932,11 +925,11 @@ _getopt_internal (argc, argv, optstring, longopts, longind, long_only)
 	    /* This is an option that accepts an argument optionally.  */
 	    if (*nextchar != '\0')
 	      {
-		optarg = nextchar;
-		optind++;
+		nmz_optarg = nextchar;
+		nmz_optind++;
 	      }
 	    else
-	      optarg = NULL;
+	      nmz_optarg = NULL;
 	    nextchar = NULL;
 	  }
 	else
@@ -944,12 +937,12 @@ _getopt_internal (argc, argv, optstring, longopts, longind, long_only)
 	    /* This is an option that requires an argument.  */
 	    if (*nextchar != '\0')
 	      {
-		optarg = nextchar;
+		nmz_optarg = nextchar;
 		/* If we end this ARGV-element by taking the rest as an arg,
 		   we must advance to the next element now.  */
-		optind++;
+		nmz_optind++;
 	      }
-	    else if (optind == argc)
+	    else if (nmz_optind == argc)
 	      {
 		if (print_errors)
 		  {
@@ -958,16 +951,16 @@ _getopt_internal (argc, argv, optstring, longopts, longind, long_only)
 			     _("%s: option requires an argument -- %c\n"),
 			     argv[0], c);
 		  }
-		optopt = c;
+		nmz_optopt = c;
 		if (optstring[0] == ':')
 		  c = ':';
 		else
 		  c = '?';
 	      }
 	    else
-	      /* We already incremented `optind' once;
+	      /* We already incremented `nmz_optind' once;
 		 increment it again when taking next ARGV-elt as argument.  */
-	      optarg = argv[optind++];
+	      nmz_optarg = argv[nmz_optind++];
 	    nextchar = NULL;
 	  }
       }
@@ -1004,7 +997,7 @@ main (argc, argv)
 
   while (1)
     {
-      int this_option_optind = optind ? optind : 1;
+      int this_option_optind = nmz_optind ? nmz_optind : 1;
 
       c = getopt (argc, argv, "abc:d:0123456789");
       if (c == -1)
@@ -1037,7 +1030,7 @@ main (argc, argv)
 	  break;
 
 	case 'c':
-	  printf ("option c with value `%s'\n", optarg);
+	  printf ("option c with value `%s'\n", nmz_optarg);
 	  break;
 
 	case '?':
@@ -1048,11 +1041,11 @@ main (argc, argv)
 	}
     }
 
-  if (optind < argc)
+  if (nmz_optind < argc)
     {
       printf ("non-option ARGV-elements: ");
-      while (optind < argc)
-	printf ("%s ", argv[optind++]);
+      while (nmz_optind < argc)
+	printf ("%s ", argv[nmz_optind++]);
       printf ("\n");
     }
 

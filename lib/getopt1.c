@@ -64,7 +64,7 @@
 #endif
 
 int
-getopt_long (argc, argv, options, long_options, opt_index)
+nmz_getopt_long (argc, argv, options, long_options, opt_index)
      int argc;
      char *const *argv;
      const char *options;
@@ -80,7 +80,7 @@ getopt_long (argc, argv, options, long_options, opt_index)
    instead.  */
 
 int
-getopt_long_only (argc, argv, options, long_options, opt_index)
+nmz_getopt_long_only (argc, argv, options, long_options, opt_index)
      int argc;
      char *const *argv;
      const char *options;
@@ -107,7 +107,7 @@ main (argc, argv)
 
   while (1)
     {
-      int this_option_optind = optind ? optind : 1;
+      int this_option_optind = nmz_optind ? nmz_optind : 1;
       int option_index = 0;
       static struct option long_options[] =
       {
@@ -120,7 +120,7 @@ main (argc, argv)
 	{0, 0, 0, 0}
       };
 
-      c = getopt_long (argc, argv, "abc:d:0123456789",
+      c = nmz_getopt_long (argc, argv, "abc:d:0123456789",
 		       long_options, &option_index);
       if (c == -1)
 	break;
@@ -129,8 +129,8 @@ main (argc, argv)
 	{
 	case 0:
 	  printf ("option %s", long_options[option_index].name);
-	  if (optarg)
-	    printf (" with arg %s", optarg);
+	  if (nmz_optarg)
+	    printf (" with arg %s", nmz_optarg);
 	  printf ("\n");
 	  break;
 
@@ -159,11 +159,11 @@ main (argc, argv)
 	  break;
 
 	case 'c':
-	  printf ("option c with value `%s'\n", optarg);
+	  printf ("option c with value `%s'\n", nmz_optarg);
 	  break;
 
 	case 'd':
-	  printf ("option d with value `%s'\n", optarg);
+	  printf ("option d with value `%s'\n", nmz_optarg);
 	  break;
 
 	case '?':
@@ -174,11 +174,11 @@ main (argc, argv)
 	}
     }
 
-  if (optind < argc)
+  if (nmz_optind < argc)
     {
       printf ("non-option ARGV-elements: ");
-      while (optind < argc)
-	printf ("%s ", argv[optind++]);
+      while (nmz_optind < argc)
+	printf ("%s ", argv[nmz_optind++]);
       printf ("\n");
     }
 

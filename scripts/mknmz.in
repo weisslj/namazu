@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.81 2001-04-03 09:32:22 knok Exp $
+# $Id: mknmz.in,v 1.82 2001-04-28 07:29:21 knok Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -350,7 +350,6 @@ sub preload_modules () {
 }
 
 sub load_modules () {
-    unshift @INC, $FILTERDIR;
     unshift @INC, "../pl";
     unshift @INC, "../filter";
 
@@ -363,6 +362,10 @@ sub load_modules () {
 
     @Seed = seed::init();
     textdomain('namazu', $LANG);
+}
+
+sub load_filtermodules () {
+    unshift @INC, $FILTERDIR;
 
     #
     # Windows modules must be loaded first.
@@ -1065,6 +1068,7 @@ sub parse_options
     if ($opt_config) {
 	load_rcfile($ConfigFile = $opt_config);
     }
+    load_filtermodules(); # to make effect $opt_config.
 
     if ($opt_help) {
 	show_usage();

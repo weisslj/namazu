@@ -6,7 +6,6 @@
 LOG=`pwd`/test-log
 TARGET=`pwd`/data/symlink
 IDXDIR=idx14
-TXTCOUNT=`ls ./data/symlink/*.txt|wc -l`
 
 if test ! -d $IDXDIR; then
     mkdir $IDXDIR
@@ -17,6 +16,7 @@ fi
 if test ! -h $TARGET; then
     ln -s `pwd`/data/en $TARGET
 fi
+TXTCOUNT=`ls ./data/symlink/*.txt|wc -l`
 
 cd ../scripts
 ./mknmz --allow='.*.txt' -O ../tests/$IDXDIR $TARGET >> $LOG 2>&1

@@ -1,3 +1,11 @@
+2001-04-28  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* tests/mknmz-11 : Fixed the place of evaluating TXTCOUNTS.
+
+	* scripts/mknmz.in (parse_options): Splited load_filtermodules()
+	from load_modules() and put it on parse_options	to make effect
+	$opt_config.
+
 2001-04-23  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* filter/mailnews.pl (mailnews_filter): Fixed wrong handling
@@ -6444,4 +6452,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.819 2001-04-23 09:09:38 knok Exp $
+$Id: ChangeLog,v 1.820 2001-04-28 07:29:20 knok Exp $

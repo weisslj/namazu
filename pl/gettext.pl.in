@@ -38,19 +38,19 @@ sub textdomain
 	die "Not a catalog file\n";
     }
 
-    $revision = &mo_format_value (4);
-    $nstrings = &mo_format_value (8);
-    $orig_tab_offset = &mo_format_value (12);
-    $trans_tab_offset = &mo_format_value (16);
+    $revision = &mo_format_value($reverse, $buffer,4);
+    $nstrings = &mo_format_value($reverse, $buffer,8);
+    $orig_tab_offset = &mo_format_value($reverse, $buffer,12);
+    $trans_tab_offset = &mo_format_value($reverse, $buffer,16);
 
     while ($nstrings-- > 0)
     {
-	$orig_length = &mo_format_value ($orig_tab_offset);
-	$orig_pointer = &mo_format_value ($orig_tab_offset + 4);
+	$orig_length = &mo_format_value($reverse, $buffer,$orig_tab_offset);
+	$orig_pointer = &mo_format_value($reverse, $buffer,$orig_tab_offset + 4);
 	$orig_tab_offset += 8;
 
-	$trans_length = &mo_format_value ($trans_tab_offset);
-	$trans_pointer = &mo_format_value ($trans_tab_offset + 4);
+	$trans_length = &mo_format_value($reverse, $buffer,$trans_tab_offset);
+	$trans_pointer = &mo_format_value($reverse, $buffer,$trans_tab_offset + 4);
 	$trans_tab_offset += 8;
 
 	$_{substr ($buffer, $orig_pointer, $orig_length)}
@@ -67,6 +67,8 @@ sub textdomain
 
 sub mo_format_value
 {
+    my ($reverse) = shift @_;
+    my ($buffer) = shift @_;
     unpack ("i",
 	    $reverse
 	    ? pack ("c4", reverse unpack ("c4", substr ($buffer, $_[0], 4)))

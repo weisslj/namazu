@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.8 2000-01-06 10:02:00 satoru Exp $
+# $Id: mknmz.pl.in,v 1.9 2000-01-12 06:22:40 knok Exp $
 #
 # Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -241,6 +241,7 @@ sub load_modules () {
     require "seed.pl" || die "unable to require \"seed.pl\"\n";
 
     @Seed = seed::init();
+    textdomain('namazu');
 
     # Check filter modules
     my @filters = ();

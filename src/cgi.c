@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.70 2002-02-19 07:40:26 knok Exp $
+ * $Id: cgi.c,v 1.71 2002-06-06 10:48:26 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -130,7 +130,8 @@ validate_idxname(const char * idxname)
     while (*idxname) {
         if (nmz_strprefixcasecmp("../", idxname) == 0 ||
 	    strcmp("..", idxname) == 0 ||
-            (win32 && nmz_strprefixcasecmp("..\\", idxname) == 0)) 
+            (win32 && nmz_strprefixcasecmp("..\\", idxname) == 0) || 
+            (win32 && nmz_strprefixcasecmp("..." , idxname) == 0)) 
         {
 	    printf("%s text/html" CRLF CRLF, MSG_MIME_HEADER);
 	    puts_entitize(idxname);

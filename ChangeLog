@@ -1,3 +1,13 @@
+2000-03-02  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* scripts/mknmz.in (process_file): New file.
+	(main): Call process_file() instead of namazu_core().
+	(parse_options): Add --html-split option.
+	(process_file): New function.
+	(namazu_core): Add --html-split handling.
+
+	* pl/htmlsplit.pl: New file.
+
 2000-03-01  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* nmz/field.c (nmz_get_field_data): Be safe.

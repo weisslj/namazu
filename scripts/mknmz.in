@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.38 2000-03-01 06:04:02 satoru Exp $
+# $Id: mknmz.in,v 1.39 2000-03-02 02:39:34 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -76,9 +76,10 @@ sub main () {
     load_modules();
     my ($output_dir, @targets) = parse_options();
     load_rcfiles();
-    my ($file_base, $total_files_num) = prep($output_dir, @targets);
+    my ($docid_base, $total_files_num) = prep($output_dir, @targets);
 
     my $swap = 1;
+    my $docid_count = 0;
     my $file_count = 0;
     my $total_files_size = 0;
     my $key_count = 0;
@@ -110,17 +111,20 @@ sub main () {
 	    chomp $cfile;
 	    util::dprint(_("target file: ")."$cfile\n");
 
-	    my $cfile_size = namazu_core($cfile, $file_count, $file_base, 
-			 \%field_indices, $fh_errorsfile, $total_files_num);
-	    if ($cfile_size == 0) {
+	    my ($cfile_size, $num) = 
+		process_file($cfile, $docid_count, $docid_base, 
+			     $file_count, \%field_indices,
+			     $fh_errorsfile, $total_files_num);
+	    if ($num == 0) {
 		$total_files_num--;
 		next;
+	    } else {
+		$docid_count += $num;
+		$file_count++;
 	    }
-	    put_registry($cfile);
 
 	    $total_files_size     += $cfile_size;
 	    $processed_files_size += $cfile_size;
-	    $file_count++;
 	    if ($processed_files_size > $conf::ON_MEMORY_MAX) {
 		if (%KeyIndex) {
 		    $key_count = write_index();
@@ -134,7 +138,7 @@ sub main () {
 	}
     }
     # This should be out of above blocks because of file handler closing.
-    re_exec($flist_ptr, $file_count, $file_base, $start_time, 
+    re_exec($flist_ptr, $docid_count, $docid_base, $start_time, 
 	    $total_files_size, $total_files_num, $key_count) if $checkpoint;
 
     if (%KeyIndex) {
@@ -145,9 +149,55 @@ sub main () {
     }
 
     $key_count = get_total_keys() unless $key_count;
-    do_remain_job($total_files_size, $file_count, $key_count, 
+    do_remain_job($total_files_size, $docid_count, $key_count, 
 		   $start_time);
     exit 0;
+}
+
+#
+# FIXME: Very complicated.
+#
+sub process_file ($$$$$$) {
+    my ($cfile, $docid_count, $docid_base, $file_count, 
+	$field_indices, $fh_errorsfile, $total_files_num) = @_;
+
+    my $processed_num = 0;
+    my $file_size = util::filesize($cfile);
+
+    if ($Opt{'htmlsplit'}) {
+	require "htmlsplit.pl";
+	my @parts = htmlsplit::split($cfile, "NMZ.partial");
+	if (@parts > 1) {
+	    my $id = 0;
+	    for my $part (@parts) {
+		my $fname = util::tmpnam("NMZ.partial.$id");
+		my $name  = $part ? "#$part" : "";
+		my $uri   = generate_uri($cfile) . $name;
+		my $result = namazu_core($fname, 
+					 $docid_count + $processed_num, 
+					 $docid_base, $file_count, 
+					 $field_indices, $fh_errorsfile, 
+					 $total_files_num, 
+					 $uri, $id, $#parts);
+		if ($result > 0) {
+		    $processed_num++;
+		}
+		my $rname = $part ? "$cfile\t$part" : "$cfile";
+		put_registry($rname);
+		$id++;
+	    }
+	    return ($file_size, $processed_num);
+	}
+    }
+    my $result = namazu_core($cfile, $docid_count, $docid_base, 
+			     $file_count, $field_indices, 
+			     $fh_errorsfile, $total_files_num,
+			     undef, undef, undef);
+    if ($result > 0) {
+	$processed_num++;
+    }
+
+    return ($file_size, $processed_num);
 }
 
 # 
@@ -180,7 +230,7 @@ sub load_rcfiles () {
 }
 
 sub re_exec($$$$$$$) {
-    my ($flist_ptr, $file_count, $file_base, $start_time, 
+    my ($flist_ptr, $docid_count, $docid_base, $start_time, 
 	$total_files_size, $total_files_num, $key_count) = @_;
 
     # store variables
@@ -192,8 +242,8 @@ sub re_exec($$$$$$$) {
 	\$UpdatedFilesCount = $UpdatedFilesCount;
 	\$APPENDMODE = $APPENDMODE;
 	\$flist_ptr = $flist_ptr;
-	\$file_count = $file_count;
-	\$file_base = $file_base;
+	\$docid_count = $docid_count;
+	\$docid_base = $docid_base;
 	\$start_time = $start_time;
 	\$total_files_size = $total_files_size;
 	\$total_files_num = $total_files_num;
@@ -337,25 +387,37 @@ sub load_filters (@) {
     }
 }
 
-# Core routine
-sub namazu_core ($$$$$$) {
-    my ($cfile, $file_count, $file_base, $field_indices, 
-	$fh_errorsfile, $total_files_num) = @_;
+# Core routine.
+#
+# FIXME: Too many parameters. They must be cleared.
+#
+sub namazu_core ($$$$$$$$$$) {
+    my ($cfile, $docid_count, $docid_base, 
+	$file_count, $field_indices, $fh_errorsfile, $total_files_num,
+	$uri, $part_id, $part_num) = @_;
 
     my $headings = "";
     my $content = "";
     my $weighted_str = "";
     my %fields;
-    my $msg_prefix = $file_count + 1 . "/$total_files_num - ";
+    my $msg_prefix;
 
-    my $uri = generate_uri($cfile);  # Make a URI from a file name
+    if ($part_id) {
+	$msg_prefix = "    $part_id/$part_num - ";
+    } else {
+	$msg_prefix = $file_count + 1 . "/$total_files_num - ";
+    }
+
+    unless ($uri) {
+	$uri = generate_uri($cfile);  # Make a URI from a file name.
+    }
     my ($cfile_size, $text_size, $kanji, $mtype) = 
 	load_document(\$cfile, \$content, \$weighted_str,
 		      \$headings, \%fields);
 
     util::dprint(_("after load_document: ")."$uri: $cfile_size, $text_size, $kanji, $mtype\n");
 
-    # check if the file is acceptable.
+    # Check if the file is acceptable.
     my $err = check_file($cfile, $cfile_size, $text_size, $mtype, $uri);
     if (defined $err) {
 	print $msg_prefix . "$uri $err\n";
@@ -372,8 +434,8 @@ sub namazu_core ($$$$$$) {
 
     put_dateindex($cfile);
     $content .= $weighted_str;   # add weights
-    count_words($file_count, $file_base, \$content, $kanji);
-    make_phrase_hash($file_count, $file_base, \$content);
+    count_words($docid_count, $docid_base, \$content, $kanji);
+    make_phrase_hash($docid_count, $docid_base, \$content);
 
     # assertion
     util::assert($cfile_size != 0, 
@@ -697,7 +759,7 @@ sub codeconv_document ($) {
 }
 
 sub prep () {
-    my $file_base = 0;
+    my $docid_base = 0;
     my $output_dir = shift @_ ;
     my @targets = @_ ;
     my @flist = ();
@@ -713,7 +775,7 @@ sub prep () {
 
     check_lockfile($var::NMZ{'lock2'});
     @flist = find_target(@targets);
-    ($file_base, @flist) = append_index(@flist) 
+    ($docid_base, @flist) = append_index(@flist) 
 	if -f $var::NMZ{'r'};
     unless (@flist) { # if @flist is empty
 	print _("No files to index.\n");
@@ -723,7 +785,7 @@ sub prep () {
     save_flist(@flist);
     my $total_files_num = @flist;
 
-    return ($file_base, $total_files_num);
+    return ($docid_base, $total_files_num);
 }
 
 sub save_flist(@) {
@@ -796,13 +858,13 @@ sub check_present_index () {
 
 # remain
 sub do_remain_job ($$$$) {
-    my ($total_files_size, $file_count, $key_count, $start_time) = @_;
+    my ($total_files_size, $docid_count, $key_count, $start_time) = @_;
 
-    if ($file_count == 0) {
+    if ($docid_count == 0) {
 	# No files are indexed
 	if ($DeletedFilesCount > 0) {
 	    update_dateindex();
-	    update_registry($file_count);
+	    update_registry($docid_count);
 	}
     } else {
 	set_lockfile($var::NMZ{'lock'});
@@ -812,29 +874,29 @@ sub do_remain_job ($$$$) {
 	write_result_file();
 	update_field_index();
 	update_dateindex();
-	update_registry($file_count);
+	update_registry($docid_count);
 	write_nmz_files();
 	make_slog_file();
 	remove_lockfile($var::NMZ{'lock'});
     }
-    make_headfoot_pages($file_count, $key_count);
-    put_log($total_files_size, $start_time, $file_count, $key_count);
+    make_headfoot_pages($docid_count, $key_count);
+    put_log($total_files_size, $start_time, $docid_count, $key_count);
     util::remove_tmpfiles();
     unlink $var::NMZ{'_flist'};
 }
 
 sub make_headfoot_pages($$) {
-    my ($file_count, $key_count) = @_;
+    my ($docid_count, $key_count) = @_;
 
     for my $file (glob "$TEMPLATEDIR/NMZ.head*") {
 	$file =~ m!.*/NMZ.head(.*)$!;
 	my $suffix = $1;
-	make_headfoot("$var::NMZ{'head'}${suffix}", $file_count, $key_count);
+	make_headfoot("$var::NMZ{'head'}${suffix}", $docid_count, $key_count);
     }
     for my $file (glob "$TEMPLATEDIR/NMZ.foot*") {
 	$file =~ m!.*/NMZ.foot(.*)$!;
 	my $suffix = $1;
-	make_headfoot("$var::NMZ{'foot'}${suffix}", $file_count, $key_count);
+	make_headfoot("$var::NMZ{'foot'}${suffix}", $docid_count, $key_count);
     }
 }
 
@@ -880,6 +942,7 @@ sub parse_options ()
 	       '4|update=s'          => \$update_index,
 	       '5|mhonarc'           => \$opt_mhonarc,
 	       '6|mtime=s'           => \$var::Opt{'mtime'},
+	       '7|html-split'        => \$var::Opt{'htmlsplit'},
 	       'C|show-config'       => \$opt_show_config,
 	       'E|no-edge-symbol'    => \$var::Opt{'noedgesymbol'},
 	       'F|target-list=s'     => \$target_list,
@@ -1454,8 +1517,8 @@ sub change_filenames ($) {
 sub append_index (@) {
     my @flist = @_;
 
-    my $file_base = 0;
-    ($file_base, @flist) = set_target_files(@flist);
+    my $docid_base = 0;
+    ($docid_base, @flist) = set_target_files(@flist);
 
     unless (@flist) { 	# if @flist is empty
 	if ($DeletedFilesCount > 0) {
@@ -1479,7 +1542,7 @@ sub append_index (@) {
     copy($var::NMZ{'p'},  $var::NMZ{'_p'});
     copy($var::NMZ{'pi'}, $var::NMZ{'_pi'});
 
-    return ($file_base, @flist);
+    return ($docid_base, @flist);
 }
 
 #
@@ -1583,7 +1646,7 @@ sub preupdate_dateindex(@) {
 }
 
 sub update_registry ($) {
-    my ($file_count) = @_;
+    my ($docid_count) = @_;
 
     {
 	my $fh_registry = util::efopen(">>$var::NMZ{'r'}");
@@ -1591,7 +1654,7 @@ sub update_registry ($) {
 	while (defined(my $line = <$fh_registry_>)) {
 	    print $fh_registry $line;
 	}
-	if ($file_count > 0) {
+	if ($docid_count > 0) {
 	    print $fh_registry &_("## indexed: ") . util::rfc822time(time()) . "\n\n";
 	}
     }
@@ -1743,13 +1806,13 @@ sub put_status($$) {
 
 # do logging
 sub put_log ($$$$) {
-    my ($total_files_size, $start_time, $file_count, $total_keys_count) = @_;
+    my ($total_files_size, $start_time, $docid_count, $total_keys_count) = @_;
 
     my $date = localtime;
-    my $added_files_count   = $file_count - $UpdatedFilesCount;
+    my $added_files_count   = $docid_count - $UpdatedFilesCount;
     my $deleted_files_count = $DeletedFilesCount;
     my $updated_files_count = $UpdatedFilesCount;
-    my $total_files_count   = get_total_files() + $file_count 
+    my $total_files_count   = get_total_files() + $docid_count 
 			      - $DeletedFilesCount - $UpdatedFilesCount;
     my $added_keys_count    = 0;
     $added_keys_count       = $total_keys_count - get_total_keys();
@@ -1829,9 +1892,9 @@ sub get_year() {
 }
 
 # Compose NMZ.head and NMZ.foot. Prepare samples if necessary.
-# Insert $file_count, $key_count, and $month/$day/$year respectively.
+# Insert $docid_count, $key_count, and $month/$day/$year respectively.
 sub make_headfoot ($$$) {
-    my ($file, $file_count, $key_count) = @_;
+    my ($file, $docid_count, $key_count) = @_;
 
     my $day   = sprintf("%02d", (localtime)[3]);
     my $month = sprintf("%02d", (localtime)[4] + 1);
@@ -1855,7 +1918,7 @@ sub make_headfoot ($$$) {
     my $fh_file = util::efopen(">$file");
 
     if ($buf =~ /(<!-- FILE -->)\s*(.*)\s*(<!-- FILE -->)/) {
-	my $total_files_count = util::commas(get_total_files() + $file_count 
+	my $total_files_count = util::commas(get_total_files() + $docid_count 
 				   - $DeletedFilesCount - $UpdatedFilesCount);
 	$buf =~ s/(<!-- FILE -->)(.*)(<!-- FILE -->)/$1 $total_files_count $3/;
 
@@ -1880,7 +1943,7 @@ sub make_headfoot ($$$) {
 # Make phrase hashes for NMZ.p
 # Handle two words each for calculating a hash value ranged 0-65535.
 sub make_phrase_hash ($$$) {
-    my ($file_count, $file_base, $contref) = @_;
+    my ($docid_count, $docid_base, $contref) = @_;
 
     my %tmp = ();
     $$contref =~ s!\x7f */? *\d+ *\x7f!!g;  # remove tags of weight
@@ -1888,7 +1951,7 @@ sub make_phrase_hash ($$$) {
     my @words = split(/\s+/, $$contref);
     @words = grep {$_ ne ""} @words;   # remove empty words
     my $word_b = shift @words;
-    my $docid = $file_count + $file_base;
+    my $docid = $docid_count + $docid_base;
     for my $word (@words) {
 	my $hash = hash($word_b . $word);
 	unless (defined $tmp{$hash}) {
@@ -1989,7 +2052,7 @@ sub hash ($) {
 
 # Count frequencies of words.
 sub count_words ($$$$) {
-    my ($file_count, $file_base, $contref, $kanji) = @_;
+    my ($docid_count, $docid_base, $contref, $kanji) = @_;
     my (@tmp);
 
     # Normalize into small letter.
@@ -2022,7 +2085,7 @@ sub count_words ($$$$) {
     wordcount_sub($part1, 1, \%word_count);
 
     # Add them to whole index
-    my $docid = $file_count + $file_base;
+    my $docid = $docid_count + $docid_base;
     for my $word (keys(%word_count)) {
 	next if ($word eq "" || length($word) > $conf::WORD_LENG_MAX);
 	$KeyIndexLast{$word} = 0 unless defined $KeyIndexLast{$word};

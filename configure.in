@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.95 2000-02-01 11:24:13 satoru Exp $
+dnl $Id: configure.in,v 1.96 2000-02-02 06:44:04 rug Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -90,6 +90,7 @@ AC_C_BIGENDIAN
 dnl Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
 AC_C_INLINE
+AC_C_CHAR_UNSIGNED
 AC_CHECK_SIZEOF(int)
 AC_CHECK_SIZEOF(long)
 AC_CHECK_SIZEOF(long long)
@@ -276,50 +277,23 @@ fi
 AC_CONFIG_SUBDIRS($TKNAMAZU)
 AM_CONDITIONAL(BUILD_TKNAMAZU, test x$tknamazu = xyes)
 
-dnl *
-dnl * Preprocessing for File::MMagic
-dnl *
-AC_MSG_CHECKING([whether included file-mmagic is requested])
-AC_ARG_WITH(
-    included-file-mmagic,
-    [  --with-included-file-mmagic use file-mmagic perl module included here ],
-    [file_mmagic=${withval}], [file_mmagic='no']
-)
-AC_MSG_RESULT($file_mmagic)
+changequote(<<, >>)
+tmp=`$PERL -nle 'print \$1 if /^\\$VERSION = \"([\d\.]+)\";\$/' \
+    $srcdir/File-MMagic/MMagic.pm`
+# tmp="10.0"  # for testing
+AC_MSG_CHECKING(for File::MMagic perl module)
+changequote([, ])
 
-if test "${file_mmagic}" != "yes"; then
-    changequote(<<, >>)
-    tmp=`$PERL -nle 'print \$1 if /^\\$VERSION = \"([\d\.]+)\";\$/' \
-	$srcdir/File-MMagic/MMagic.pm`
-    # tmp="10.0"  # for testing
-    AC_MSG_CHECKING(for File::MMagic perl module)
-    changequote([, ])
-
-    if $PERL -e "use lib '$PMDIR'; use File::MMagic $tmp" >/dev/null 2>&1; then
-	AC_MSG_RESULT(yes)
-	file_mmagic=no
-    else
-	AC_MSG_RESULT(no)
-	file_mmagic=yes
-    fi
+if $PERL -e "use lib '$PMDIR'; use File::MMagic $tmp" >/dev/null 2>&1; then
+    AC_MSG_RESULT(yes)
+    file_mmagic=no
+else
+    AC_MSG_RESULT(no)
+    file_mmagic=yes
 fi
 if test "${file_mmagic}" = "yes"; then
-    AC_MSG_WARN(File::MMagic module not installed. preparing its Makefile.)
-    pwd=`pwd`
-    cd $srcdir/File-MMagic
-    if test -z "$PMDIR"; then
-	$PERL Makefile.PL
-    else
-	$PERL Makefile.PL LIB=$PMDIR INSTALLMAN3DIR=$PMDIR/man
-    fi
-
-    # To prevent to remove Makefile when doing 'make clean'
-    grep -v '^	-mv Makefile Makefile\.old \$(DEV_NULL)' Makefile > Makefile.tmp
-    mv Makefile.tmp Makefile
-
-    cd $pwd
+    AC_MSG_ERROR(you need to install included File-MMagic at first.)
 fi
-AM_CONDITIONAL(BUILD_FILE_MMAGIC, test x$file_mmagic = xyes)
 
 dnl *
 dnl * Check for Emacs and where to install .elc files.

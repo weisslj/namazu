@@ -2,6 +2,11 @@
 
 	* nmz/util.c (nmz_is_file_exists): Use stat instead of fopen.
 
+	* Makefile.am: Abolished File-MMagic automatic installation.
+
+	* configure.in: Likewise.
+	(AC_C_CHAR_UNSIGNED): New Macro.
+
 2000-02-01  Ryuji Abe  <raeva@t3.rim.or.jp>
 
 	* nmz/libnamazu.[ch] (nmz_codeconv_query): Moved to nmz/codeconv.[ch].

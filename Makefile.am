@@ -2,12 +2,6 @@
 
 AUTOMAKE_OPTIONS = 1.4 no-dependencies
 
-if BUILD_FILE_MMAGIC
-FILE_MMAGIC = File-MMagic
-else
-FILE_MMAGIC =
-endif
-
 if BUILD_TKNAMAZU
 BUILT_TKNAMAZU = tknamazu
 DIST_TKNAMAZU =
@@ -17,18 +11,19 @@ DIST_TKNAMAZU = tknamazu
 endif
 
 SUBDIRS = intl po conf filter nmz lib pl src lisp man scripts \
-	  template $(FILE_MMAGIC) $(BUILT_TKNAMAZU)
+	  template $(BUILT_TKNAMAZU)
 
 DIST_SUBDIRS = intl po conf filter nmz lib pl src lisp man scripts \
 	  template $(BUILT_TKNAMAZU)
 
+
 bin_SCRIPTS = nmz-config
 
 EXTRA_DIST = README-ja INSTALL-ja namazu.spec.in namazu.spec \
-	     ChangeLog.1 maintMakefile File-MMagic
+	     ChangeLog.1 maintMakefile
 
 COMMON_DIRS = doc etc
-EXTRA_DIRS = $(COMMON_DIRS) $(DIST_TKNAMAZU)
+EXTRA_DIRS = $(COMMON_DIRS) $(DIST_TKNAMAZU) File-MMagic
 
 install-data-local:
 	$(mkinstalldirs) $(localstatedir)/$(PACKAGE)/index

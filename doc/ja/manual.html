@@ -9,9 +9,6 @@
 </head>
 <body lang="ja">
 <h1>全文検索システム Namazu 説明書</h1>
-<p>
-Last Modified: 
-</p>
 <hr>
 
 <p>
@@ -33,6 +30,7 @@ href="http://www.namazu.org/">http://www.namazu.org/</a> か
   <ul>
   <li><a href="#namazu-option">namazuコマンド行引数</a>
   <li><a href="#namazurc">namazurcの設定</a>
+  <li><a href="#default-index">基本インデックス</a>
   </ul>
 <li><a href="#tools">付属ツール</a>
   <ul>
@@ -49,7 +47,7 @@ href="http://www.namazu.org/">http://www.namazu.org/</a> か
   <li><a href="#template">雛形ファイル</a>
   <li><a href="#form">formの設定</a>
   <li><a href="#form-idxname">インデックスを選択する</a>
-  <li><a href="#form-idxnames">複数のインデックスを検索する</a>
+  <li><a href="#form-idxnames">複数のインデックスを選択する</a>
   <li><a href="#form-subquery">補助検索式の利用法</a>
   </ul>
 <li><a href="#query">検索式</a>
@@ -66,6 +64,7 @@ href="http://www.namazu.org/">http://www.namazu.org/</a> か
   <li><a href="#query-notes">特記事項</a>
   </ul>
 </ul>
+
 
 <h2><a name="organization">Namazuの基本構成</a></h2>
 
@@ -245,40 +244,28 @@ mknmzrc の設定項目の説明は mknmzrc-sample ファイルにコメント
 <!-- namazu-option -->
 
 <p>
-<code>% namazu [options] &lt;query&gt; [index]...</code>
+コマンド行引数の <code>[index dir]...</code> に検索対象のイ
+ンデックスを指定します。インデックスの指定を省略すると、<a
+href="#default-index">基本インデックス</a>が検索対象となりま
+す。
 </p>
 
 <p>
-のように実行する形になっています。<code>[index
-dir]...</code> は検索対象となるインデックスの置いてあるディ
-レクトリの指定です。
+また、 <code>+foo</code>, <code>+bar</code> のように頭に
+<code>+</code> 記号をつけると、基本インデックスからの相対パ
+スでインデックスを指定できます。
 </p>
 
 <p>
-コマンド行から実行したときは標準でプレインなテキストとし
-て検索結果の表示を行います。HTML で出力する場合には -h オプ
-ションを使います。CGI から検索したときは結果が一度に表示でき
-ないと下の方に [1] [2] [3] のように先の検索結果へ進むための
-リンクが作られますが、コマンド行から実行したときにはこれ
-らの表示は無意味なので、表示しません。この余分な表示を何らか
-の理由によって強制的に表示させるには -H オプションを使います。
-また、コマンド行から実行したときは標準で &lt;form&gt;
-... &lt;/FORM&gt; を表示させないようになっていますが、 -F を
-つけると強制的に表示させることができます。
+コマンド行から実行したときは標準でプレインなテキストとして検
+索結果の表示を行います。HTML で出力する場合には -h オプショ
+ンを用います。
 </p>
 
 <p>
--a オプションは検索結果をすべて表示させます。
-</p>
-
-<p>
-検索結果の 21 件目から 40 件目までを表示させたいという場合には 
-<code>-n 20 -w 20</code> のように指定します。
--w の値が 21 でないところに注意してください。
-</p>
-
-<p>
--U オプションはコマンド行から実行して plain text で結果出力する際に URI encode のデコードを行わないためのオプションです。標準では行われるようになっています。
+検索結果の 21 件目から 40 件目までを表示させたいときは 
+<code>-n 20 -w 20</code> と指定します。-w の値が 21 でないと
+ころに注意してください。
 </p>
 
 <h3><a name="namazurc">namazurcの設定</a></h3>
@@ -309,6 +296,33 @@ $(sysconfdir)/$(PACKAGE)/namazurc にコピーする、あるいは自分
 <p>
 namazurc の設定項目の説明は namazurc-sample ファイルにコメント
 として書かれています。
+</p>
+
+<h3><a name="default-index">基本インデックス</a></h3>
+
+<p>
+基本インデックスは、検索時にインデックスの指定が省略されたと
+きに検索対象となるインデックスです。基本インデックスは次の規
+則に従います。
+</p>
+
+<ul>
+<li>標準は $(localstatedir)/$(PACKAGE)/index<br>
+通常は /usr/local/var/namazu/index)
+<li><a href="#namazurc">namazurc</a> の Index 設定項目で変更可能
+</ul>
+
+<p>
+CGI (<a href="#cgi">namazu.cgi</a>) では、<a
+href="#form-idxname">インデックスを選択する</a>際に基本イン
+デックスからの相対パスで指定します。
+</p>
+
+<p>
+FIXME: 基本インデックスという言葉は適切だろうか? 英語なら
+default index だけど、デフォルトというカタカナ語はできれば使
+いたくない。(カタカナ語はできるだけ避けたい - インデックスを
+索引とするかも迷うところ)
 </p>
 
 <h2><a name="tools">付属ツール</a></h2>
@@ -447,15 +461,8 @@ namazu.cgi を設置したディレクトリに .namazurc ファイルを置く
 <h3><a name="template">雛形ファイル</a></h3>
 
 <p>
-HTML での結果出力には NMZ.head, NMZ.foot, NMZ.body,
-NMZ.tips, NMZ.result ファイルが表示形式の雛形として用いられ
-ます。
-</p>
-
-<p>
-これらのファイルは言語ごとに分かれています。ファイル名の末尾
-が .ja で終わるファイルが日本語用です。それぞれの役割は次の
-通りです。
+雛形ファイルは HTMLでの結果出力の書式を定義するファイル群で
+す。それぞれの役割は次の通りです。
 </p>
 
 <dl>
@@ -470,6 +477,11 @@ NMZ.tips, NMZ.result ファイルが表示形式の雛形として用いられ
 <dt><a href="nmz.html#result">NMZ.result</a>
 <dd>検索結果の表示書式
 </dl>
+
+<p>
+これらのファイルは言語ごとに分かれています。ファイル名の末尾
+が .ja で終わるものが日本語用です。
+</p>
 
 <h3><a name="form">formの設定</a></h3>
 
@@ -513,11 +525,11 @@ formは NMZ.head に定義されています。CGI変数は次の通りです。
 
 <p>
 この例では、 <var>foo, bar, baz</var> の中からインデックスを
-選択可能にしています。<var>foo</var> が選ばれた時は namazurc 
-の <code>Index</code> で設定されたディレクトリの下にある 
-<var>foo</var> インデックスを検索します。<code>Index</code> 
-が <code>/usr/local/var/namazu/index</code> の場合は次のよう
-なディレクトリ構成になります。
+選択可能にしています。<var>foo</var> が選ばれた時は<a
+href="#default-index">基本インデックス</a> の下にある 
+<var>foo</var> インデックスを検索します。基本インデックスが 
+<code>/usr/local/var/namazu/index</code> の場合は次のディレ
+クトリ構成になります。
 </p>
 
 <pre>
@@ -533,7 +545,7 @@ formは NMZ.head に定義されています。CGI変数は次の通りです。
 </pre>
 
 
-<h3><a name="form-idxnames">複数のインデックスを検索する</a></h3>
+<h3><a name="form-idxnames">複数のインデックスを選択する</a></h3>
 <p>
 複数のインデックスを検索するは NMZ.head に checkbox の記述を
 します。
@@ -553,9 +565,17 @@ formは NMZ.head に定義されています。CGI変数は次の通りです。
 
 <p>
 この例では foo, bar, baz から複数選択して検索できます。検索
-結果に使われる雛形ファイルは namazurc の Template で指定した
-ディレクトリのものが用いられます。
+結果に使われる<a href="#template">雛形ファイル</a>は namazurc 
+の Template で指定したディレクトリのものが用いられます。
+Template が指定されていないときは、次の規則に従います。
 </p>
+
+<dl>
+<dt>選択されたインデックスが 1つのとき
+<dd>選択されたインデックスの雛形ファイルが用いられる
+<dt>選択されたインデックスが複数のとき
+<dd><a href="#default-index">基本インデックス</a>の雛形ファイルが用いられる
+</dl>
 
 <h3><a name="form-subquery">補助検索式の利用法</a></h3>
 
@@ -753,7 +773,7 @@ Tknamazu および namazu.el から検索するときは必ず後者で指定します。
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: manual.html,v 1.7 2000-02-01 09:52:50 satoru Exp $
+$Id: manual.html,v 1.8 2000-02-04 03:15:04 satoru Exp $
 </div>
 <address>
 developers@namazu.org

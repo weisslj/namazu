@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: util.c,v 1.73 2000-09-06 09:02:50 rug Exp $
+ * $Id: util.c,v 1.74 2000-10-22 16:54:44 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -371,45 +371,45 @@ nmz_strlower(char *str)
 int 
 nmz_strprefixcasecmp(const char *str1, const char *str2)
 {
-    int leng1, leng2;
+    int len1, len2;
 
-    leng1 = strlen(str1);
-    leng2 = strlen(str2);
+    len1 = strlen(str1);
+    len2 = strlen(str2);
 
-    if (leng1 > leng2) {
-	return strncasecmp(str1, str2, leng2);
+    if (len1 > len2) {
+	return strncasecmp(str1, str2, len2);
     } else {
-	return strncasecmp(str2, str1, leng1);
+	return strncasecmp(str1, str2, len1);
     }
 }
 
 int 
 nmz_strprefixcmp(const char *str1, const char *str2)
 {
-    int leng1, leng2;
+    int len1, len2;
 
-    leng1 = strlen(str1);
-    leng2 = strlen(str2);
+    len1 = strlen(str1);
+    len2 = strlen(str2);
 
-    if (leng1 > leng2) {
-	return strncmp(str1, str2, leng2);
+    if (len1 > len2) {
+	return strncmp(str1, str2, len2);
     } else {
-	return strncmp(str2, str1, leng1);
+	return strncmp(str1, str2, len1);
     }
 }
 
 int 
 nmz_strsuffixcmp(const char *str1, const char *str2)
 {
-    int leng1, leng2;
+    int len1, len2;
 
-    leng1 = strlen(str1);
-    leng2 = strlen(str2);
+    len1 = strlen(str1);
+    len2 = strlen(str2);
 
-    if (leng1 > leng2) {
-	return strcmp(str1 + leng1 - leng2, str2);
+    if (len1 > len2) {
+	return strcmp(str1 + len1 - len2, str2);
     } else {					     
-	return strcmp(str2 + leng2 - leng1, str1);
+	return strcmp(str1, str2 + len2 - len1);
     }
 }
 

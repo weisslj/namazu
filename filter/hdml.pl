@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: hdml.pl,v 1.2 2000-11-17 06:11:06 knok Exp $
+# $Id: hdml.pl,v 1.3 2000-11-17 06:27:05 knok Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -28,7 +28,7 @@ use strict;
 require 'gfilter.pl';
 
 sub mediatype() {
-    return ('text/x-wdml');
+    return ('text/x-hdml');
 }
 
 sub status() {
@@ -49,7 +49,7 @@ sub post_codeconv () {
 
 sub add_magic ($) {
     my $magic = shift @_;
-    $magic->addSpecials('text/x-wdml', '<[Ww][Dd][Mm][Ll][^>]*>');
+    $magic->addSpecials('text/x-hdml', '<[Hh][Dd][Mm][Ll][^>]*>');
     return;
 }
 
@@ -100,10 +100,6 @@ sub escape_lt_gt ($) {
     $$contref =~ s/\s>\s/ &gt; /g;
 }
 
-## adapting to HDML
-# Get title from <title>..</title>
-# It's okay to exits two or more <title>...</TITLE>. 
-# First one will be retrieved.
 sub get_title ($$) {
     my ($contref, $weighted_str) = @_;
     my $title = '';

@@ -941,6 +941,7 @@ AC_DEFUN(AM_PATH_LISPDIR,
     fi
   fi
 AC_SUBST(lispdir)])
+
 ## AM_WITH_CCMALLOC - based on AM_WITH_DMALLOC in automake-1.4.
 ##
 ## This program is free software; you can redistribute it and/or modify
@@ -965,7 +966,7 @@ AC_SUBST(lispdir)])
 AC_DEFUN(AM_WITH_CCMALLOC,
 [AC_MSG_CHECKING(if malloc debugging is wanted)
 AC_ARG_WITH(ccmalloc,
-[  --with-ccmalloc          use ccmalloc, as in
+[ --with-ccmalloc          use ccmalloc, as in
                           ftp://iseran.ira.uka.de/pub/armin/ccmalloc-0.2.3.tar.gz],
 [if test "$withval" = yes; then
   AC_MSG_RESULT(yes)

@@ -5,7 +5,7 @@ AUTOMAKE_OPTIONS = 1.4 no-dependencies
 perllibdir = $(pkgdatadir)/pl
 
 perllib_DATA = \
-	codeconv.pl \ 
+	codeconv.pl \
 	conf.pl \
 	find.pl \
 	nmzidx.pl \
@@ -16,7 +16,7 @@ perllib_DATA = \
 	wakati.pl
 
 EXTRA_DIST = \
-	codeconv.pl \ 
+	codeconv.pl \
 	conf.pl.in \
 	find.pl \
 	nmzidx.pl \

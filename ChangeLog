@@ -1,3 +1,8 @@
+1999-12-30  Ryuji Abe  <raeva@t3.rim.or.jp>
+
+	* pl/Makefile.am (perllib_DATA): Fixed typo.
+	(EXTRA_DIST): Likewise.
+
 1999-12-29  Ryuji Abe  <raeva@t3.rim.or.jp>
 
 	* filter/Makefile.am (AUTOMAKE_OPTIONS): 1.4.

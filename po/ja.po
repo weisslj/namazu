@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: namazu 2.0\n"
-"POT-Creation-Date: 2000-01-27 18:07+0900\n"
+"POT-Creation-Date: 2000-01-28 07:47+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>\n"
 "Language-Team: Japanese <satoru-t@is.aist-nara.ac.jp>\n"
@@ -83,25 +83,25 @@ msgstr "不正な idxname の指定です"
 msgid "Too long QUERY_STRING"
 msgstr "CGIの QUERY_STRING が長すぎます"
 
-#: src/output.c:453
+#: src/output.c:459
 msgid "\t<strong>Page:</strong> "
 msgstr "\t<strong>ペイジ:</strong> "
 
-#: src/output.c:498
+#: src/output.c:504
 #, c-format
 msgid "Current List: %d"
 msgstr "現在のリスト: %d"
 
-#: src/output.c:546
+#: src/output.c:552
 #, c-format
 msgid " [ TOTAL: %d ]"
 msgstr " [ 合計: %d ]"
 
-#: src/output.c:556
+#: src/output.c:562
 msgid "\t<p><strong> Total "
 msgstr "\t<p><strong>検索式にマッチする "
 
-#: src/output.c:563
+#: src/output.c:569
 msgid ""
 "\t documents matching your query.</strong></p>\n"
 "\n"
@@ -109,7 +109,7 @@ msgstr ""
 "\t 個の文書が見つかりました。</strong></p>\n"
 "\n"
 
-#: src/output.c:619
+#: src/output.c:625
 #, c-format
 msgid ""
 "\t<h2>Error!</h2>\n"
@@ -118,54 +118,54 @@ msgstr ""
 "\t<h2>エラー!</h2>\n"
 "<p>%s</p>\n"
 
-#: src/output.c:649
+#: src/output.c:655
 msgid "\t<h2>Results:</h2>\n"
 msgstr "\t<h2>検索結果</h2>\n"
 
-#: src/output.c:656
+#: src/output.c:662
 msgid "References: "
 msgstr "参考ヒット数: "
 
-#: src/output.c:703
+#: src/output.c:709
 msgid "\t<p>No document matching your query.</p>\n"
 msgstr "\t<p>検索式にマッチする文書はありませんでした。</p>\n"
 
 #. terminator not matched
-#: src/rcfile.c:313
+#: src/rcfile.c:323
 msgid "can't find string terminator"
 msgstr "文字列の終端が見つかりません"
 
-#: src/rcfile.c:381
+#: src/rcfile.c:391
 msgid "invalid directive name"
 msgstr "不正なディレクティヴです"
 
-#: src/rcfile.c:394
+#: src/rcfile.c:404
 msgid "can't find arguments"
 msgstr "引数が見つかりません"
 
-#: src/rcfile.c:497
+#: src/rcfile.c:507
 msgid "too few arguments"
 msgstr "引数が足りません"
 
-#: src/rcfile.c:500
+#: src/rcfile.c:510
 msgid "too many arguments"
 msgstr "引数が多すぎます"
 
-#: src/rcfile.c:510
+#: src/rcfile.c:520
 msgid "unknown directive"
 msgstr "不明なディレクティヴです"
 
-#: src/rcfile.c:565
+#: src/rcfile.c:575
 #, c-format
 msgid "%s:%d: syntax error: %s"
 msgstr "%s:%d: 構文エラー: %s"
 
-#: src/rcfile.c:578
+#: src/rcfile.c:588
 #, c-format
 msgid "Config:  %s\n"
 msgstr "設定ファイル:  %s\n"
 
-#: src/rcfile.c:581
+#: src/rcfile.c:591
 #, c-format
 msgid ""
 "Index:   %s\n"
@@ -178,7 +178,7 @@ msgstr ""
 "使用する言語 (Lang):  %s\n"
 "スコア計算 (Scoring): %s\n"
 
-#: src/usage.c:51
+#: src/usage.c:50
 #, c-format
 msgid ""
 "namazu %s, a search program of Namazu.\n"
@@ -210,7 +210,7 @@ msgid ""
 "    -v, --version        show the version of namazu and exit.\n"
 "        --help           show this help and exit\n"
 "\n"
-"Report bugs to <bug-namazu@namazu.org>.\n"
+"Report bugs to <%s>.\n"
 msgstr ""
 "namazu %s, Namazu の検索プログラム\n"
 "\n"
@@ -240,13 +240,13 @@ msgstr ""
 "    -v, --version           ヴァージョンを表示する\n"
 "        --help              help を表示する (この表示)\n"
 "\n"
-"バグ報告は <bug-namazu@namazu.org> へどうぞ\n"
+"バグ報告は <%s> へどうぞ\n"
 
-#: src/usage.c:89
+#: src/usage.c:88
 msgid "Usage: namazu [options] <query> [index]...\n"
 msgstr "使い方: namazu [オプション] <検索式> [インデックス]...\n"
 
-#: src/usage.c:90
+#: src/usage.c:89
 msgid "Try `namazu --help' for more information.\n"
 msgstr "`namazu --help' でより詳しい情報が表示されます\n"
 

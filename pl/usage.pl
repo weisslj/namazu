@@ -1,5 +1,5 @@
 # -*- Perl -*-
-# $Id: usage.pl,v 1.11 2000-01-27 13:13:38 satoru Exp $
+# $Id: usage.pl,v 1.12 2000-01-27 22:53:26 satoru Exp $
 # Copyright (C) 2000 Namazu Project All rights reserved..
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -82,7 +82,7 @@ mknmz $var::VERSION, Namazu のインデックス作成プログラム
       --debug             デバッグモード
       --help              このヘルプを表示する
 
-バグ報告は <bug-namazu\@namazu.org> へどうぞ
+バグ報告は <$var::MAILING_ADDRESS> へどうぞ
 EOFusage
 
 ##
@@ -142,7 +142,7 @@ Miscellaneous:
       --debug              be debug mode.
       --help               show this help and exit.
 
-Report bugs to <bug-namazu\@namazu.org>.
+Report bugs to <$var::MAILING_ADDRESS>.
 EOFusage
 
 ##

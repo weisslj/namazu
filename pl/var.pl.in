@@ -1,5 +1,5 @@
 # -*- Perl -*-
-# $Id: var.pl.in,v 1.5 2000-01-27 13:13:39 satoru Exp $
+# $Id: var.pl.in,v 1.6 2000-01-27 22:53:27 satoru Exp $
 # Copyright (C) 2000 Namazu Project All rights reserved..
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -23,18 +23,19 @@
 
 package var;
 
-################################################################
-##
-## Software information
-##
+#-----------------------------------------------------------
+#
+# Software information.
+#
 
-$VERSION = "@VERSION@";
-$COPYRIGHT = "@COPYRIGHT@";
+$VERSION         = "@VERSION@";
+$COPYRIGHT       = "@COPYRIGHT@";
+$MAILING_ADDRESS = "@MAILING_ADDRESS@";
 
-################################################################
-##
-## Names of Index files
-##
+#-----------------------------------------------------------
+#
+# Names of Index files.
+#
 
 my $base      = "NMZ";
 
@@ -82,10 +83,10 @@ $NMZ{'__pi'} = "$base.tmp_pi";
 
 $OUTPUT_DIR = undef;
 
-################################################################
-##
-## Options
-##
+#-----------------------------------------------------------
+#
+# Options
+#
 
 $Opt{'debug'}         = 0;
 $Opt{'quiet'}         = 0;
@@ -105,22 +106,22 @@ $Opt{'noencodeuri'}   = 0;
 $Opt{'nodelete'} = 0;
 $Opt{'noupdate'} = 0;
 
-################################################################
-##
-## Size of `int'
-##
+#-----------------------------------------------------------
+#
+# Size of `int'
+#
 
 {
     my $tmp = 0;
     $tmp = pack("i", $tmp);
-    $var::INTSIZE = length($tmp);
+    $INTSIZE = length($tmp);
 }
 
 
-################################################################
-##
-## Misc
-##
+#-----------------------------------------------------------
+#
+# Misc
+#
 
 $INTSIZE = 4;
 $USE_NKF_MODULE   = 0;

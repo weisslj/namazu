@@ -2,7 +2,7 @@
  * 
  * usage.c -
  * 
- * $Id: usage.c,v 1.21 2000-01-27 13:13:45 satoru Exp $
+ * $Id: usage.c,v 1.22 2000-01-27 22:53:30 satoru Exp $
  * 
  * Copyright (C) 2000 Namazu Project All rights reserved..
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -75,10 +75,10 @@ Usage: namazu [options] <query> [index]... \n\
     -v, --version        show the version of namazu and exit.\n\
         --help           show this help and exit\n\
 \n\
-Report bugs to <bug-namazu@namazu.org>.\n\
+Report bugs to <%s>.\n\
 ");
 
-    printf(usage, VERSION);
+    printf(usage, VERSION, MAILING_ADDRESS);
 }
 
 

@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.87 2000-01-27 12:50:58 satoru Exp $
+dnl $Id: configure.in,v 1.88 2000-01-27 22:53:25 satoru Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -18,13 +18,20 @@ AM_INIT_AUTOMAKE(namazu, 1.9.14)
 AM_MAINTAINER_MODE
 
 dnl *
-dnl * Namazu Website
+dnl * Namazu Website.
 dnl * 
-OPT_NMZ_URI="http://openlab.ring.gr.jp/namazu/"
+OPT_NMZ_URI="http://www.namazu.org/"
 AC_SUBST(OPT_NMZ_URI)
 
 dnl *
-dnl * Namazu Copyright
+dnl * Mailing address.
+dnl *
+MAILING_ADDRESS="bug-namazu@namazu.org"
+AC_SUBST(MAILING_ADDRESS)
+AC_DEFINE_UNQUOTED(MAILING_ADDRESS, "$MAILING_ADDRESS")
+
+dnl *
+dnl * Namazu Copyright.
 dnl * 
 COPYRIGHT="Copyright (C) 2000 Namazu Project All rights reserved."
 AC_SUBST(COPYRIGHT)

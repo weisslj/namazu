@@ -11,6 +11,7 @@
  */
 #undef MSIE4MACFIX
 
+#undef MAILING_ADDRESS
 #undef COPYRIGHT
 #undef ENABLE_NLS
 #undef HAVE_CATGETS

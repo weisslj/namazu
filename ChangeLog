@@ -1,3 +1,17 @@
+2000-01-28  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* src/usage.c (show_usage): Use MAILING_ADDRESS macro.
+
+	* pl/var.pl.in: Define $MAILING_ADDRESS.
+
+	* pl/usage.pl: Use $var::MAILING_ADDRESS.
+
+	* configure.in: Define MAILING_ADDRESS.
+
+	* acconfig.h: Add MAILING_ADDRESS.
+
+	* configure.in (OPT_NMZ_URI): Change URI of Namazu Website.
+
 2000-01-27  Ryuji Abe  <raeva@t3.rim.or.jp>
 
 	* lib/alloca.c: New file (taken from GNU grep-2.4).

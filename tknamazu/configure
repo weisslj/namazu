@@ -12,6 +12,10 @@ ac_help=
 ac_default_prefix=/usr/local
 # Any additions from configure.in:
 ac_help="$ac_help
+  --with-namazu=PATH       set namazu location [search path]"
+ac_help="$ac_help
+  --with-mknmz=PATH       set mknmz location [search path]"
+ac_help="$ac_help
   --with-wish=PATH       set wish location [search path]"
 ac_help="$ac_help
   --with-lynx=PATH       set lynx browser location [search path]"
@@ -21,6 +25,8 @@ ac_help="$ac_help
   --with-info=PATH       set info location [search path]"
 ac_help="$ac_help
   --with-zcat=PATH       set zcat location [search path]"
+ac_help="$ac_help
+  --with-netscape=PATH       set netscape location [search path]"
 
 # Initialize some variables set by options.
 # The variables have the same names as the options, with
@@ -461,7 +467,7 @@ echo > confdefs.h
 
 # A filename unique to this package, relative to the directory that
 # configure is in, which we can look for to find out if srcdir is correct.
-ac_unique_file=tknamazu.hlp
+ac_unique_file=tknamazu.tcl.in
 
 # Find the source files, if location was not specified.
 if test -z "$srcdir"; then
@@ -531,6 +537,7 @@ else
 fi
 
 
+
 ac_aux_dir=
 for ac_dir in $srcdir $srcdir/.. $srcdir/../..; do
   if test -f $ac_dir/install-sh; then
@@ -562,7 +569,7 @@ ac_configure=$ac_aux_dir/configure # This should be Cygnus configure.
 # SVR4 /usr/ucb/install, which tries to use the nonexistent group "staff"
 # ./install, which can be erroneously created by make from ./install.sh.
 echo $ac_n "checking for a BSD compatible install""... $ac_c" 1>&6
-echo "configure:566: checking for a BSD compatible install" >&5
+echo "configure:573: checking for a BSD compatible install" >&5
 if test -z "$INSTALL"; then
 if eval "test \"`echo '$''{'ac_cv_path_install'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
@@ -615,7 +622,7 @@ test -z "$INSTALL_SCRIPT" && INSTALL_SCRIPT='${INSTALL_PROGRAM}'
 test -z "$INSTALL_DATA" && INSTALL_DATA='${INSTALL} -m 644'
 
 echo $ac_n "checking whether build environment is sane""... $ac_c" 1>&6
-echo "configure:619: checking whether build environment is sane" >&5
+echo "configure:626: checking whether build environment is sane" >&5
 # Just in case
 sleep 1
 echo timestamp > conftestfile
@@ -672,7 +679,7 @@ test "$program_suffix" != NONE &&
 test "$program_transform_name" = "" && program_transform_name="s,x,x,"
 
 echo $ac_n "checking whether ${MAKE-make} sets \${MAKE}""... $ac_c" 1>&6
-echo "configure:676: checking whether ${MAKE-make} sets \${MAKE}" >&5
+echo "configure:683: checking whether ${MAKE-make} sets \${MAKE}" >&5
 set dummy ${MAKE-make}; ac_make=`echo "$2" | sed 'y%./+-%__p_%'`
 if eval "test \"`echo '$''{'ac_cv_prog_make_${ac_make}_set'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
@@ -718,7 +725,7 @@ EOF
 
 missing_dir=`cd $ac_aux_dir && pwd`
 echo $ac_n "checking for working aclocal""... $ac_c" 1>&6
-echo "configure:722: checking for working aclocal" >&5
+echo "configure:729: checking for working aclocal" >&5
 # Run test in a subshell; some versions of sh will print an error if
 # an executable is not found, even if stderr is redirected.
 # Redirect stdin to placate older versions of autoconf.  Sigh.
@@ -731,7 +738,7 @@ else
 fi
 
 echo $ac_n "checking for working autoconf""... $ac_c" 1>&6
-echo "configure:735: checking for working autoconf" >&5
+echo "configure:742: checking for working autoconf" >&5
 # Run test in a subshell; some versions of sh will print an error if
 # an executable is not found, even if stderr is redirected.
 # Redirect stdin to placate older versions of autoconf.  Sigh.
@@ -744,7 +751,7 @@ else
 fi
 
 echo $ac_n "checking for working automake""... $ac_c" 1>&6
-echo "configure:748: checking for working automake" >&5
+echo "configure:755: checking for working automake" >&5
 # Run test in a subshell; some versions of sh will print an error if
 # an executable is not found, even if stderr is redirected.
 # Redirect stdin to placate older versions of autoconf.  Sigh.
@@ -757,7 +764,7 @@ else
 fi
 
 echo $ac_n "checking for working autoheader""... $ac_c" 1>&6
-echo "configure:761: checking for working autoheader" >&5
+echo "configure:768: checking for working autoheader" >&5
 # Run test in a subshell; some versions of sh will print an error if
 # an executable is not found, even if stderr is redirected.
 # Redirect stdin to placate older versions of autoconf.  Sigh.
@@ -770,7 +777,7 @@ else
 fi
 
 echo $ac_n "checking for working makeinfo""... $ac_c" 1>&6
-echo "configure:774: checking for working makeinfo" >&5
+echo "configure:781: checking for working makeinfo" >&5
 # Run test in a subshell; some versions of sh will print an error if
 # an executable is not found, even if stderr is redirected.
 # Redirect stdin to placate older versions of autoconf.  Sigh.
@@ -786,18 +793,116 @@ fi
 
 
 
+# Check whether --with-namazu or --without-namazu was given.
+if test "${with_namazu+set}" = set; then
+  withval="$with_namazu"
+  echo "$ac_t""using $with_namazu for namazu" 1>&6
+	NAMAZU = $with_namazu
+else
+  # Extract the first word of "namazu", so it can be a program name with args.
+set dummy namazu; ac_word=$2
+echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
+echo "configure:806: checking for $ac_word" >&5
+if eval "test \"`echo '$''{'ac_cv_path_NAMAZU'+set}'`\" = set"; then
+  echo $ac_n "(cached) $ac_c" 1>&6
+else
+  case "$NAMAZU" in
+  /*)
+  ac_cv_path_NAMAZU="$NAMAZU" # Let the user override the test with a path.
+  ;;
+  ?:/*)			 
+  ac_cv_path_NAMAZU="$NAMAZU" # Let the user override the test with a dos path.
+  ;;
+  *)
+  IFS="${IFS= 	}"; ac_save_ifs="$IFS"; IFS=":"
+  ac_dummy="$PATH"
+  for ac_dir in $ac_dummy; do 
+    test -z "$ac_dir" && ac_dir=.
+    if test -f $ac_dir/$ac_word; then
+      ac_cv_path_NAMAZU="$ac_dir/$ac_word"
+      break
+    fi
+  done
+  IFS="$ac_save_ifs"
+  test -z "$ac_cv_path_NAMAZU" && ac_cv_path_NAMAZU="no"
+  ;;
+esac
+fi
+NAMAZU="$ac_cv_path_NAMAZU"
+if test -n "$NAMAZU"; then
+  echo "$ac_t""$NAMAZU" 1>&6
+else
+  echo "$ac_t""no" 1>&6
+fi
+
+
+fi
+
+if test "$NAMAZU" = "no"; then
+    { echo "configure: error: namazu not found" 1>&2; exit 1; }
+fi
+# Check whether --with-mknmz or --without-mknmz was given.
+if test "${with_mknmz+set}" = set; then
+  withval="$with_mknmz"
+  echo "$ac_t""using $with_mknmz for mknmz" 1>&6
+	MKNMZ = $with_mknmz
+else
+  # Extract the first word of "mknmz", so it can be a program name with args.
+set dummy mknmz; ac_word=$2
+echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
+echo "configure:854: checking for $ac_word" >&5
+if eval "test \"`echo '$''{'ac_cv_path_MKNMZ'+set}'`\" = set"; then
+  echo $ac_n "(cached) $ac_c" 1>&6
+else
+  case "$MKNMZ" in
+  /*)
+  ac_cv_path_MKNMZ="$MKNMZ" # Let the user override the test with a path.
+  ;;
+  ?:/*)			 
+  ac_cv_path_MKNMZ="$MKNMZ" # Let the user override the test with a dos path.
+  ;;
+  *)
+  IFS="${IFS= 	}"; ac_save_ifs="$IFS"; IFS=":"
+  ac_dummy="$PATH"
+  for ac_dir in $ac_dummy; do 
+    test -z "$ac_dir" && ac_dir=.
+    if test -f $ac_dir/$ac_word; then
+      ac_cv_path_MKNMZ="$ac_dir/$ac_word"
+      break
+    fi
+  done
+  IFS="$ac_save_ifs"
+  test -z "$ac_cv_path_MKNMZ" && ac_cv_path_MKNMZ="no"
+  ;;
+esac
+fi
+MKNMZ="$ac_cv_path_MKNMZ"
+if test -n "$MKNMZ"; then
+  echo "$ac_t""$MKNMZ" 1>&6
+else
+  echo "$ac_t""no" 1>&6
+fi
+
+
+fi
+
+if test "$MKNMZ" = "no"; then
+    { echo "configure: error: mknmz not found" 1>&2; exit 1; }
+fi
+
+
 # Check whether --with-wish or --without-wish was given.
 if test "${with_wish+set}" = set; then
   withval="$with_wish"
   echo "$ac_t""using $with_wish for wish" 1>&6
 	WISH = $with_wish
 else
-  	for ac_prog in wish8.2 wish8.1 wish8.0jp wish4.2jp wish
+  	for ac_prog in wish8.0jp wish4.2jp wish8.2 wish8.1 wish
 do
 # Extract the first word of "$ac_prog", so it can be a program name with args.
 set dummy $ac_prog; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:801: checking for $ac_word" >&5
+echo "configure:906: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_path_WISH'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -838,17 +943,17 @@ fi
 
 if test "$WISH" = "no"; then
     { echo "configure: error: wish not found" 1>&2; exit 1; }
-else
-    # Check whether --with-lynx or --without-lynx was given.
+fi
+# Check whether --with-lynx or --without-lynx was given.
 if test "${with_lynx+set}" = set; then
   withval="$with_lynx"
   echo "$ac_t""using $with_lynx for lynx" 1>&6
-		LYNX = $with_lynx
+	LYNX = $with_lynx
 else
   # Extract the first word of "lynx", so it can be a program name with args.
 set dummy lynx; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:852: checking for $ac_word" >&5
+echo "configure:957: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_path_LYNX'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -881,24 +986,24 @@ else
   echo "$ac_t""no" 1>&6
 fi
 
-    
+
 fi
 
-    if test "$LYNX" = "no"; then
-        { echo "configure: error: lynx not found" 1>&2; exit 1; }
-    else
-        # Check whether --with-groff or --without-groff was given.
+if test "$LYNX" = "no"; then
+    { echo "configure: error: lynx not found" 1>&2; exit 1; }
+fi
+# Check whether --with-groff or --without-groff was given.
 if test "${with_groff+set}" = set; then
   withval="$with_groff"
   echo "$ac_t""using $with_groff for groff" 1>&6
-			GROFF = $with_groff
+	GROFF = $with_groff
 else
   for ac_prog in jgroff groff nroff
 do
 # Extract the first word of "$ac_prog", so it can be a program name with args.
 set dummy $ac_prog; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:902: checking for $ac_word" >&5
+echo "configure:1007: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_path_GROFF'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -934,22 +1039,22 @@ test -n "$GROFF" && break
 done
 test -n "$GROFF" || GROFF="no"
 
-        
+
 fi
 
-        if test "$GROFF" = "no"; then
-            echo "configure: warning: *** groff not found: tknamazu cannot browse man pages ***" 1>&2
-        fi
-        # Check whether --with-info or --without-info was given.
+if test "$GROFF" = "no"; then
+    echo "configure: warning: *** groff not found: tknamazu cannot browse man pages ***" 1>&2
+fi
+# Check whether --with-info or --without-info was given.
 if test "${with_info+set}" = set; then
   withval="$with_info"
   echo "$ac_t""using $with_info for info" 1>&6
-			INFO = $with_info
+	INFO = $with_info
 else
   # Extract the first word of "info", so it can be a program name with args.
 set dummy info; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:953: checking for $ac_word" >&5
+echo "configure:1058: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_path_INFO'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -982,22 +1087,22 @@ else
   echo "$ac_t""no" 1>&6
 fi
 
-        
+
 fi
 
-        if test "$INFO" = "no"; then
-            echo "configure: warning: *** info not found: tknamazu cannot browse info files ***" 1>&2
-        fi
-        # Check whether --with-zcat or --without-zcat was given.
+if test "$INFO" = "no"; then
+    echo "configure: warning: *** info not found: tknamazu cannot browse info files ***" 1>&2
+fi
+# Check whether --with-zcat or --without-zcat was given.
 if test "${with_zcat+set}" = set; then
   withval="$with_zcat"
   echo "$ac_t""using $with_zcat for zcat" 1>&6
-			ZCAT = $with_zcat
+	ZCAT = $with_zcat
 else
   # Extract the first word of "zcat", so it can be a program name with args.
 set dummy zcat; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:1001: checking for $ac_word" >&5
+echo "configure:1106: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_path_ZCAT'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -1030,13 +1135,59 @@ else
   echo "$ac_t""no" 1>&6
 fi
 
-        
+
 fi
 
-        if test "$ZCAT" = "no"; then
-            echo "configure: warning: zcat not found" 1>&2
-        fi
+if test "$ZCAT" = "no"; then
+    echo "configure: warning: zcat not found" 1>&2
+fi
+# Check whether --with-netscape or --without-netscape was given.
+if test "${with_netscape+set}" = set; then
+  withval="$with_netscape"
+  echo "$ac_t""using $with_netscape for netscape" 1>&6
+    NETSCAPE = $with_netscape
+else
+  # Extract the first word of "netscape", so it can be a program name with args.
+set dummy netscape; ac_word=$2
+echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
+echo "configure:1154: checking for $ac_word" >&5
+if eval "test \"`echo '$''{'ac_cv_path_NETSCAPE'+set}'`\" = set"; then
+  echo $ac_n "(cached) $ac_c" 1>&6
+else
+  case "$NETSCAPE" in
+  /*)
+  ac_cv_path_NETSCAPE="$NETSCAPE" # Let the user override the test with a path.
+  ;;
+  ?:/*)			 
+  ac_cv_path_NETSCAPE="$NETSCAPE" # Let the user override the test with a dos path.
+  ;;
+  *)
+  IFS="${IFS= 	}"; ac_save_ifs="$IFS"; IFS=":"
+  ac_dummy="$PATH"
+  for ac_dir in $ac_dummy; do 
+    test -z "$ac_dir" && ac_dir=.
+    if test -f $ac_dir/$ac_word; then
+      ac_cv_path_NETSCAPE="$ac_dir/$ac_word"
+      break
     fi
+  done
+  IFS="$ac_save_ifs"
+  test -z "$ac_cv_path_NETSCAPE" && ac_cv_path_NETSCAPE="no"
+  ;;
+esac
+fi
+NETSCAPE="$ac_cv_path_NETSCAPE"
+if test -n "$NETSCAPE"; then
+  echo "$ac_t""$NETSCAPE" 1>&6
+else
+  echo "$ac_t""no" 1>&6
+fi
+
+
+fi
+
+if test "$NETSCAPE" = "no"; then
+    echo "configure: warning: netscape not found" 1>&2
 fi
 
 
@@ -1154,7 +1305,7 @@ done
 ac_given_srcdir=$srcdir
 ac_given_INSTALL="$INSTALL"
 
-trap 'rm -fr `echo "Makefile tknamazu.tcl" | sed "s/:[^ ]*//g"` conftest*; exit 1' 1 2 15
+trap 'rm -fr `echo "Makefile tknamazu.tcl tknamazu.spec" | sed "s/:[^ ]*//g"` conftest*; exit 1' 1 2 15
 EOF
 cat >> $CONFIG_STATUS <<EOF
 
@@ -1197,11 +1348,14 @@ s%@AUTOMAKE@%$AUTOMAKE%g
 s%@AUTOHEADER@%$AUTOHEADER%g
 s%@MAKEINFO@%$MAKEINFO%g
 s%@SET_MAKE@%$SET_MAKE%g
+s%@NAMAZU@%$NAMAZU%g
+s%@MKNMZ@%$MKNMZ%g
 s%@WISH@%$WISH%g
 s%@LYNX@%$LYNX%g
 s%@GROFF@%$GROFF%g
 s%@INFO@%$INFO%g
 s%@ZCAT@%$ZCAT%g
+s%@NETSCAPE@%$NETSCAPE%g
 
 CEOF
 EOF
@@ -1243,7 +1397,7 @@ EOF
 
 cat >> $CONFIG_STATUS <<EOF
 
-CONFIG_FILES=\${CONFIG_FILES-"Makefile tknamazu.tcl"}
+CONFIG_FILES=\${CONFIG_FILES-"Makefile tknamazu.tcl tknamazu.spec"}
 EOF
 cat >> $CONFIG_STATUS <<\EOF
 for ac_file in .. $CONFIG_FILES; do if test "x$ac_file" != x..; then

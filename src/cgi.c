@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.19 1999-09-06 01:13:10 satoru Exp $
+ * $Id: cgi.c,v 1.20 1999-10-11 04:25:23 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -22,7 +22,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA
  * 
- * This file must be encoded in EUC-JP encoding.
  * 
  */
 #include <stdio.h>
@@ -38,6 +37,7 @@
 #include "output.h"
 #include "field.h"
 #include "hlist.h"
+#include "i18n.h"
 
 uchar *ScriptName    = (uchar *)"";
 uchar *QueryString   = (uchar *)"";
@@ -49,11 +49,11 @@ uchar *ContentLength = (uchar *)"";
  *
  ************************************************************/
 
-int validate_idxname(uchar* );
-int get_cgi_vars(uchar* , uchar*);
+static int validate_idxname(uchar* );
+static int get_cgi_vars(uchar* , uchar*);
 
 /* validate idxname (if it contain '/', it's invalid) */
-int validate_idxname(uchar * idxname)
+static int validate_idxname(uchar * idxname)
 {
     int win32 = 0;
 #if  defined(_WIN32) || defined(__EMX__)
@@ -61,8 +61,9 @@ int validate_idxname(uchar * idxname)
 #endif
 
     if (*idxname == '\0' || *idxname == '/' || (win32 && *idxname == '\\')) {
-        fputs(MSG_MIME_HEADER, stdout);
-        fputx(MSG_INVALID_DB_NAME, stdout);
+        print(MSG_MIME_HEADER);
+	printf("%s : ", idxname);
+        print(_("Invalid idxname."));
         exit(1);
     }
     while (*idxname) {
@@ -70,18 +71,21 @@ int validate_idxname(uchar * idxname)
 	    strcmp("..", idxname) == 0 ||
             (win32 && strprefixcasecmp("..\\", idxname) == 0)) 
         {
-            fputs(MSG_MIME_HEADER, stdout);
-            fputx(MSG_INVALID_DB_NAME, stdout);
+            print(MSG_MIME_HEADER);
+	    printf("%s : ", idxname);
+            print(_("Invalid idxname."));
             exit(1);
         }
 	/* Skip until next '/' */
-	while (*idxname && *idxname != '/' && !(win32 && *idxname == '\\'))
-	  idxname++;
+	while (*idxname && *idxname != '/' && !(win32 && *idxname == '\\')) {
+	    idxname++;
+	}
 	/* Skip '/' */
-	if (*idxname)
-	  idxname++;
+	if (*idxname) {
+	    idxname++;
+	}
     }
-    idxname--;  /* remove ending slashed */
+    idxname--;  /* remove ending slashes */
     while (*idxname == '/' || (win32 && *idxname == '\\')) {
         *idxname = '\0';
         idxname--;
@@ -90,8 +94,8 @@ int validate_idxname(uchar * idxname)
 }
 
 
-/*  get CGI vars, very complicated routine */
-int get_cgi_vars(uchar * query, uchar *subquery)
+/*  get CGI vars, very complicated ad hoc routine */
+static int get_cgi_vars(uchar * query, uchar *subquery)
 {
     int i;
     uchar *qs, tmp[BUFSIZE];
@@ -100,8 +104,8 @@ int get_cgi_vars(uchar * query, uchar *subquery)
     if ((QueryString = (uchar *)getenv("QUERY_STRING"))) {
         content_length = strlen(QueryString);
         if (content_length > CGI_QUERY_MAX) {
-            fputs(MSG_MIME_HEADER, stdout);
-            fputx(MSG_QUERY_STRING_TOO_LONG, stdout);
+            print(MSG_MIME_HEADER);
+            print(_("Too long QUERY_STRING"));
             exit(1);
         }
         if (!(ScriptName = (uchar *)getenv("SCRIPT_NAME"))) {
@@ -111,13 +115,14 @@ int get_cgi_vars(uchar * query, uchar *subquery)
 	if ((ContentLength = (uchar *)getenv("CONTENT_LENGTH"))) {
 	    content_length = atoi(ContentLength);
             if (content_length > CGI_QUERY_MAX) {
-                fputs(MSG_MIME_HEADER, stdout);
-                fputx(MSG_QUERY_STRING_TOO_LONG, stdout);
+                print(MSG_MIME_HEADER);
+                print(_("Too long QUERY_STRING"));
                 exit(1);
             }
             QueryString = (uchar *)malloc(content_length * sizeof(uchar) + 1);
-	    if (QueryString == NULL)
+	    if (QueryString == NULL) {
 		die("QueryString( get_cgi_vars )");
+	    }
 
 	    fread(QueryString, sizeof(char), content_length, stdin);
 	    HtmlOutput = 1;
@@ -132,9 +137,10 @@ int get_cgi_vars(uchar * query, uchar *subquery)
     /* note that CERN HTTPD would add empty PATH_INFO */
     if (getenv("PATH_INFO")) {
         uchar *path_info = (uchar *)getenv("PATH_INFO");
+	path_info++; /* skip a beginning '/' character */
         if (strlen(path_info) > 0 && strlen(path_info) < 128) {
             validate_idxname(path_info);
-            sprintf(tmp, "%s%s", DEFAULT_INDEX, path_info);
+            sprintf(tmp, "%s/%s", DEFAULT_INDEX, path_info);
             Idx.names[Idx.num] = (uchar *) malloc(strlen(tmp) + 1);
             if (Idx.names[Idx.num] == NULL) {
                 die("cgi: malloc(idxname)");
@@ -157,8 +163,8 @@ int get_cgi_vars(uchar * query, uchar *subquery)
 	    *(query + i) = '\0';
             decode_uri(query);
 	    if (strlen(query) > QUERY_MAX) {
-                fputs(MSG_MIME_HEADER, stdout);
-		fputx(MSG_TOO_LONG_KEY, stdout);
+                print(MSG_MIME_HEADER);
+		html_print(_(MSG_TOO_LONG_QUERY));
 		exit(1);
 	    }
 
@@ -182,8 +188,8 @@ int get_cgi_vars(uchar * query, uchar *subquery)
 	    *(subquery + i) = '\0';
             decode_uri(subquery);
 	    if (strlen(subquery) > QUERY_MAX) {
-                fputs(MSG_MIME_HEADER, stdout);
-		fputx(MSG_TOO_LONG_KEY, stdout);
+                print(MSG_MIME_HEADER);
+		html_print(_(MSG_TOO_LONG_QUERY));
 		exit(1);
 	    }
 
@@ -199,7 +205,6 @@ int get_cgi_vars(uchar * query, uchar *subquery)
 #endif MSIE4MACFIX
 
 	} else if (strprefixcasecmp(qs, "format=short") == 0) {
-	    ShortFormat = 1;
 	    strcpy(Template, "short");
 	    qs += strlen("format=short");
 	} else if (strprefixcasecmp(qs, "sort=") == 0) {
@@ -255,9 +260,15 @@ int get_cgi_vars(uchar * query, uchar *subquery)
 		qs++;
 	} else if (strprefixcasecmp(qs, "lang=") == 0) {
 	    qs += strlen("lang=");
-            strncpy(Lang, qs, 2);
-            qs += 2;
-            init_message();
+
+	    for (i = 0; *qs && *qs != '&' && i < BUFSIZE - 1; 
+		 i++, qs++)
+	    {
+		tmp[i] = *qs;
+	    }
+            tmp[i] = '\0';
+
+            set_lang(tmp);
 	    while (*qs && *qs != '&')
 		qs++;
 	} else if (strprefixcasecmp(qs, "result=") == 0) {
@@ -337,6 +348,7 @@ void init_cgi(uchar * query, uchar *subquery)
     }
     if (Idx.num == 0) {
         Idx.names[Idx.num] = (uchar *) malloc(strlen(DEFAULT_INDEX) + 1);
+	Idx.pr[Idx.num] = NULL;
         if (Idx.names[Idx.num] == NULL) {
             die("cgi_initialize: malloc(idxname)");
         }
@@ -344,7 +356,5 @@ void init_cgi(uchar * query, uchar *subquery)
         Idx.num++;
     } 
 }
-
-
 
 

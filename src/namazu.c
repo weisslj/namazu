@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.28 1999-09-06 01:13:11 satoru Exp $
+ * $Id: namazu.c,v 1.29 1999-10-11 04:25:26 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -22,7 +22,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA
  * 
- * This file must be encoded in EUC-JP encoding.
  * 
  */
 
@@ -47,33 +46,23 @@
 #include "search.h"
 #include "cgi.h"
 #include "hlist.h"
-
-/* output a content of file */
-void cat(uchar *fname)
-{
-    uchar buf[BUFSIZE];
-    FILE *fp;
-
-    if ((fp = fopen(fname, "rb"))) {
-	while (fgets(buf, BUFSIZE, fp))
-	    fputs(buf, stdout);
-	fclose(fp);
-    }
-}
-
+#include "i18n.h"
 
 /* redirect stdio to specified file */
-void set_redirect_stdout_to_file(uchar * fname)
+int set_redirect_stdout_to_file(uchar * fname)
 {
     int fd;
 
-    if (-1 == (fd = open(fname, O_CREAT | O_TRUNC | O_WRONLY, 00600)))
-	die("stdio2file(cannot open)");
+    if (-1 == (fd = open(fname, O_CREAT | O_TRUNC | O_WRONLY, 00600))) {
+	diemsg("stdio2file(cannot open)");
+	return 1;
+    }
     close(STDOUT);
     dup(fd);
     close(STDERR);
     dup(fd);
     close(fd);
+    return 0;
 }
 
 /*
@@ -120,7 +109,7 @@ int parse_options(int argc, char **argv)
 	switch (ch) {
 	case '0':
 	    show_long_usage();
-	    exit(0);
+	    return DIE_NOERROR;
 	    break;
 	case '1':
 	    strcpy(Template, optarg);
@@ -161,12 +150,11 @@ int parse_options(int argc, char **argv)
 	    Debug = 1;
 	    break;
 	case 's':
-	    ShortFormat = 1;
 	    strcpy(Template, "short");
 	    break;
 	case 'l':
 	case 'S':  /* 'S' for backward compatibility */
-	    MoreShortFormat = 1;
+	    ListFormat = 1;
 	    break;
 	case 'q':
 	    Quiet = 1;
@@ -197,18 +185,20 @@ int parse_options(int argc, char **argv)
 	    break;
 	case 'v':
 	    printf("namazu v%s\n", VERSION);
-	    exit(0);
+	    return DIE_NOERROR;
 	    break;
 	case 'C':
-	    load_conf(argv[0]);
+	    if (load_conf(argv[0]))
+	      return DIE_ERROR;
 	    show_conf();
+	    return DIE_NOERROR;
 	    break;
 	case 'L':
-	    strncpy(Lang, optarg, 2);
-	    init_message();
+	    set_lang(optarg);
 	    break;
 	case 'o':
-	    set_redirect_stdout_to_file(optarg);
+	    if (set_redirect_stdout_to_file(optarg))
+	      return DIE_ERROR;
 	    break;
 	}
     } 
@@ -221,6 +211,39 @@ void free_idxnames(void)
     int i;
     for (i = 0; i < Idx.num; i++) {
         free(Idx.names[i]);
+	free_phraseres(Idx.pr[i]);
+    }
+    Idx.num = 0;
+}
+
+void free_aliases(void)
+{
+    ALIAS *list, *next;
+    list = Alias;
+
+    while (list) {
+	next = list->next;
+	free(list->alias);
+	free(list->real);
+	free(list);
+	list = next;
+    }
+}
+
+void free_replaces(void)
+{
+    REPLACE *list, *next;
+    list = Replace;
+
+    while (list) {
+	next = list->next;
+	free(list->pat);
+	free(list->rep);
+	if (list->pat_re != NULL) {
+	    re_free_pattern(list->pat_re);
+	}
+	free(list);
+	list = next;
     }
 }
 
@@ -238,21 +261,23 @@ void make_fullpathname_msg(void)
     pathcat(base, NMZ.foot);
     pathcat(base, NMZ.body);
     pathcat(base, NMZ.lock);
+    pathcat(base, NMZ.tips);
 }
 
 void codeconv_query(uchar *query)
 {
-    if (is_lang_ja(Lang)) {
-        if (codeconv(query)) {
+    if (is_lang_ja()) {
+        if (conv_ja_any_to_eucjp(query)) {
             zen2han(query);
         }
     }
 }
 
 /* namazu core routine */
-void namazu_core(uchar * query, uchar *subquery, uchar *av0)
+int namazu_core(uchar * query, uchar *subquery, uchar *av0)
 {
     uchar query_with_subquery[BUFSIZE * 2];
+    HLIST hlist;
 
     /* make full-pathname of NMZ.{head,foot,msg,body,slog}.?? */
     make_fullpathname_msg();
@@ -266,31 +291,84 @@ void namazu_core(uchar * query, uchar *subquery, uchar *av0)
     /* if query is null, show NMZ.head,body,foot and exit with error */
     if (*query == '\0') {
         if (HtmlOutput) {
-            fputs(MSG_MIME_HEADER, stdout);
+            print(MSG_MIME_HEADER);
             print_headfoot(NMZ.head, query, subquery);
-            cat(NMZ.body);
+            print_msgfile(NMZ.body);
             print_headfoot(NMZ.foot, query, subquery);
         }
 	free_idxnames();
-	exit(1);
+	/*	exit(1);*/
+	return 1;
     }
 
-    if (Debug) {
-	fprintf(stderr, " -n: %d\n", HListMax);
-	fprintf(stderr, " -w: %d\n", HListWhence);
-	fprintf(stderr, "key: [%s]\n", query);
-    }
+    debug_printf(" -n: %d\n", HListMax);
+    debug_printf(" -w: %d\n", HListWhence);
+    debug_printf("query: [%s]\n", query);
+
+    /* search */
+    hlist = search_main(query_with_subquery);
+    if (hlist.n == DIE_HLIST)
+        return DIE_ERROR;
 
     if (HtmlOutput && IsCGI)
-	fputs(MSG_MIME_HEADER, stdout);
+	print(MSG_MIME_HEADER);
     if (HtmlOutput)
 	print_headfoot(NMZ.head, query, subquery);
 
-    search_main(query_with_subquery);
+    /* result1 */
+    if (!HitCountOnly && !ListFormat && !NoReference && !Quiet) {
+        print_result1();
 
-    if (HtmlOutput)
+        if (Idx.num > 1) {
+            print("\n");
+            if (HtmlOutput)
+                print("<ul>\n");
+        }
+    }
+
+    print_hit_count();
+
+    /* result2 */
+    if (!HitCountOnly && !ListFormat && !NoReference && !Quiet) {
+        if (Idx.num > 1 && HtmlOutput) {
+            print("</ul>\n");
+        }
+        print_result2();
+    }
+
+    if (hlist.n > 0) {
+        if (!HitCountOnly && !ListFormat && !Quiet) {
+            print_hitnum(hlist.n);  /* <!-- HIT -->%d<!-- HIT --> */
+        }
+	if (HitCountOnly) {
+	    printf("%d\n", hlist.n);
+	} else {
+	    print_listing(hlist); /* summary listing */
+	}
+        if (!HitCountOnly && !ListFormat && !Quiet) {
+            print_range(hlist);
+        }
+    } else {
+        if (HitCountOnly) {
+            print("0\n");
+        } else if (!ListFormat) {
+            html_print(_("	<p>No document matching your query.</p>\n"));
+	    if (HtmlOutput) {
+		print_msgfile(NMZ.tips);
+	    }
+        }
+    }
+
+    free_hlist(hlist);
+
+    if (HtmlOutput) {
 	print_headfoot(NMZ.foot, query, subquery);
+    }
     free_idxnames();
+    free_aliases();
+    free_replaces();
+
+    return 0;
 }
 
 
@@ -327,7 +405,7 @@ void uniq_idxnames(void)
     }
 }
 
-void expand_idxname_aliases(void)
+int expand_idxname_aliases(void)
 {
     int i;
 
@@ -338,16 +416,18 @@ void expand_idxname_aliases(void)
 		free(Idx.names[i]);
 		Idx.names[i] = (uchar *) malloc(strlen(list->real) + 1);
 		if (Idx.names[i] == NULL) {
-		    die("expand_idxname_aliases: malloc()");
+		    diemsg("expand_idxname_aliases: malloc()");
+		    return DIE_ERROR;
 		}
 		strcpy(Idx.names[i], list->real);
             }
 	    list = list->next;
 	}
     }
+    return 0;
 }
 
-void complete_idxnames(void)
+int complete_idxnames(void)
 {
     int i;
 
@@ -357,7 +437,8 @@ void complete_idxnames(void)
 	    tmp = (uchar *)malloc(strlen(DEFAULT_INDEX) 
 				  + 1 + strlen(Idx.names[i]) + 1);
 	    if (tmp == NULL) {
-		die("complete_idxnames: malloc()");
+		diemsg("complete_idxnames: malloc()");
+		return DIE_ERROR;
 	    }
 	    strcpy(tmp, DEFAULT_INDEX);
 	    strcat(tmp, "/");
@@ -366,26 +447,32 @@ void complete_idxnames(void)
 	    Idx.names[i] = tmp;
 	}
     }
+    return 0;
 }
 
 void suicide ()
 {
-    die("processing time exceeds a limit: %d", SUICIDE_TIME);
+    diemsg("processing time exceeds a limit: %d", SUICIDE_TIME);
+    diewithmsg();
 }
 
 int main(int argc, char **argv)
 {
     int i = 0;
+    int ret;
     uchar query[BUFSIZE] = "", subquery[BUFSIZE] = "";
 
-    setprogname(argv[0]);
+    set_lang("");
+    bindtextdomain(PACKAGE, LOCALEDIR);
+    textdomain(PACKAGE);
+
     getenv_namazuconf();
-    init_message();
 
     Idx.num = 0;
 
     if (argc == 1) {
-	load_conf(argv[0]);
+	if (load_conf(argv[0]))
+	    diewithmsg();
 	IsCGI = 1;	/* if no argument, assume this session as CGI */
 	HtmlOutput = 1;
     } else {
@@ -394,14 +481,19 @@ int main(int argc, char **argv)
 	HidePageIndex = 1;	 /* do not diplay page index */
 
 	i = parse_options(argc, argv); 
-	load_conf(argv[0]);
+	if (i == DIE_ERROR)
+	    diewithmsg();
+	if (i == DIE_NOERROR)
+	    exit(0);
+	if (load_conf(argv[0]))
+	    diewithmsg();
 
 	if (i == argc) {
 	    show_mini_usage();
 	    exit(1);
 	}
 	if (strlen(argv[i]) > QUERY_MAX) {
-	    fputx(MSG_TOO_LONG_KEY, stdout);
+	    html_print(_(MSG_TOO_LONG_QUERY));
 	    return 1;
 	}
         strcpy(query, argv[i++]);
@@ -412,6 +504,7 @@ int main(int argc, char **argv)
 		if (Idx.names[Idx.num] == NULL) {
 		    die("main: malloc(idxname)");
 		}
+		Idx.pr[Idx.num] = NULL;
 		strcpy(Idx.names[Idx.num], argv[i]);
 		Idx.num++;
             }
@@ -432,12 +525,14 @@ int main(int argc, char **argv)
     }
 
     uniq_idxnames();
-    expand_idxname_aliases();
-    complete_idxnames();
+    if (expand_idxname_aliases())
+        diewithmsg();
+    if (complete_idxnames())
+        diewithmsg();
 
     if (Debug) {
         for (i = 0; i < Idx.num; i++) {
-            fprintf(stderr, "Idx.names[%d]: %s\n", i, Idx.names[i]);
+            debug_printf("Idx.names[%d]: %s\n", i, Idx.names[i]);
         }
     }
 
@@ -447,6 +542,9 @@ int main(int argc, char **argv)
 	alarm(SUICIDE_TIME);
     }
 
-    namazu_core(query, subquery, argv[0]);
-    return 0;
+    ret = namazu_core(query, subquery, argv[0]);
+    if (ret == DIE_ERROR)
+        diewithmsg();
+    return ret;
 }
+

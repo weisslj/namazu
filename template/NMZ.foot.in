@@ -1,0 +1,10 @@
+<hr>
+<p>
+This search system is powered by 
+<strong><a href="@OPT_NMZ_URI@">Namazu</a> <!-- VERSION --> v@VERSION@ <!-- VERSION --></strong>
+</p>
+<address>
+<a href="mailto:@OPT_ADMIN_EMAIL@">@OPT_ADMIN_EMAIL@</a>
+</address>
+</body>
+</html>

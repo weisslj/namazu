@@ -4,8 +4,7 @@
 extern int HListMax;
 extern int HListWhence;
 extern int Debug;
-extern int ShortFormat;
-extern int MoreShortFormat;
+extern int ListFormat;
 extern int Quiet;
 extern int HitCountOnly;
 extern int HtmlOutput;
@@ -25,7 +24,6 @@ extern int SortMethod;
 extern int SortOrder;
 
 extern uchar DEFAULT_INDEX[];
-extern uchar Lang[];
 
 extern uchar BASE_URI[];
 extern uchar NAMAZU_CONF[];
@@ -51,7 +49,7 @@ extern uchar DATEINDEX[];
 extern uchar PHRASE[];
 extern uchar PHRASEINDEX[];
 
-extern REPLACE Replace;
+extern REPLACE *Replace;
 extern ALIAS   *Alias;
 
 extern NMZ_NAMES NMZ;
@@ -59,5 +57,6 @@ extern NMZ_FILES Nmz;
 extern INDICES   Idx;
 extern QUERY     Query;
 extern char      Template[];
+extern char      Dyingmessage[];
 
 #endif /* _VARIABLE_H */

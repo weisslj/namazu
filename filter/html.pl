@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: html.pl,v 1.18 1999-09-06 03:21:58 satoru Exp $
+# $Id: html.pl,v 1.19 1999-10-11 04:25:03 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -54,8 +54,6 @@ sub filter ($$$$$) {
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($cont);
-    $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
-      unless $fields->{'title'};
     gfilter::show_filter_debug_info($cont, $weighted_str,
 			   $fields, $headings);
     return undef;
@@ -67,7 +65,7 @@ sub html_filter ($$$$) {
     html::escape_lt_gt($contref);
     $fields->{'title'} = html::get_title($contref, $weighted_str);
     html::get_author($contref, $fields);
-    html::get_meta_info($contref, $weighted_str);
+    html::get_meta_tags($contref, $weighted_str, $fields);
     html::get_img_alt($contref);
     html::get_table_summary($contref);
     html::get_title_attr($contref);
@@ -108,6 +106,7 @@ sub get_author ($$) {
     }
 }
 
+
 # Get title from <title>..</title>
 # It's okay to exits two or more <title>...</TITLE>. 
 # First one will be retrieved.
@@ -130,16 +129,33 @@ sub get_title ($$) {
 }
 
 # get foo bar from <META NAME="keywords|description" CONTENT="foo bar"> 
-sub get_meta_info ($$) {
-    my ($contref, $weighted_str) = @_;
+sub get_meta_tags ($$$) {
+    my ($contref, $weighted_str, $fields) = @_;
     
+    # <meta name="keywords" content="foo bar baz">
+
     my $weight = $conf::Weight{'metakey'};
     $$weighted_str .= "\x7f$weight\x7f$3\x7f/$weight\x7f\n" 
-	if $$contref =~ /<META\s+NAME\s*=\s*([\'\"]?) #"
-	    KEYWORDS\1\s+[^>]*CONTENT\s*=\s*([\'\"]?)([^>]*?)\2[^>]*>/ix; #"
+	if $$contref =~ /<meta\s+name\s*=\s*([\'\"]?) #"
+	    keywords\1\s+[^>]*content\s*=\s*([\'\"]?)([^>]*?)\2[^>]*>/ix; #"
+
+    # <meta name="description" content="foo bar baz">
     $$weighted_str .= "\x7f$weight\x7f$3\x7f/$weight\x7f\n" 
-	if $$contref =~ /<META\s+NAME\s*=\s*([\'\"]?)DESCRIPTION #"
-	    \1\s+[^>]*CONTENT\s*=\s*([\'\"]?)([^>]*?)\2[^>]*>/ix; #"
+	if $$contref =~ /<meta\s+name\s*=\s*([\'\"]?)description #"
+	    \1\s+[^>]*content\s*=\s*([\'\"]?)([^>]*?)\2[^>]*>/ix; #"
+
+    if ($var::Opt{'meta'}) {
+	my @keys = split '\|', $conf::META_TAGS;
+	for my $key (@keys) {
+	    while ($$contref =~ /<meta\s+name\s*=\s*([\'\"]?)$key #"
+	       \1\s+[^>]*content\s*=\s*([\'\"]?)([^>]*?)\2[^>]*>/gix) 
+	    {
+		$fields->{$key} .= $3 . " ";
+	    }
+	    util::dprint("meta: $key: $fields->{$key}\n") 
+		if defined $fields->{$key};
+	}
+    }
 }
 
 # Get foo from <IMG ... ALT="foo">

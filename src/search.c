@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.20 1999-09-06 01:13:11 satoru Exp $
+ * $Id: search.c,v 1.21 1999-10-11 04:25:29 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -22,7 +22,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA
  * 
- * This file must be encoded in EUC-JP encoding.
  * 
  */
 
@@ -47,6 +46,10 @@
 #include "wakati.h"
 #include "output.h"
 #include "search.h"
+#include "i18n.h"
+#include "codeconv.h"
+
+enum { ALLOW, DENY } perm;
 
 /************************************************************
  *
@@ -54,63 +57,96 @@
  *
  ************************************************************/
 
-void show_status(int, int);
-int get_file_size (uchar*);
-void lrget(uchar* , int*, int*);
-HLIST prefix_match(uchar* , int);
-int detect_search_mode(uchar*);
-void print_hit_count (uchar*, HLIST);
-HLIST do_word_search(uchar*, HLIST);
-HLIST do_prefix_match_search(uchar*, HLIST);
-int hash(uchar*);
-HLIST cmp_phrase_hash(int, HLIST, FILE *, FILE *);
-int open_phrase_index_files(FILE**, FILE**);
-HLIST do_phrase_search(uchar*, HLIST);
-void do_regex_preprocessing(uchar*);
-HLIST do_regex_search(uchar*, HLIST);
-void get_expr(uchar*, uchar*);
-HLIST do_field_search(uchar*, HLIST);
-void delete_beginning_backslash(uchar*);
-int check_lockfile(void);
-void check_byte_order(void);
-int open_index_files();
-void close_index_files(void);
-void print_hitnum(int);
-void print_range(HLIST);
-char *get_env_safely(char*);
-void do_logging(uchar* , int);
-uchar *get_dir_name(uchar*);
-HLIST search_sub(HLIST, uchar*, uchar*, int);
-void make_fullpathname_index(int);
+static void show_status(int, int);
+static int get_file_size (uchar*);
+static void lrget(uchar* , int*, int*);
+static HLIST prefix_match(uchar* , int);
+static int detect_search_mode(uchar*);
+static HLIST do_word_search(uchar*, HLIST);
+static HLIST do_prefix_match_search(uchar*, HLIST);
+static int hash(uchar*);
+static HLIST cmp_phrase_hash(int, HLIST, FILE *, FILE *);
+static int open_phrase_index_files(FILE**, FILE**);
+static HLIST do_phrase_search(uchar*, HLIST);
+static void do_regex_preprocessing(uchar*);
+static HLIST do_regex_search(uchar*, HLIST);
+static void get_expr(uchar*, uchar*);
+static HLIST do_field_search(uchar*, HLIST);
+static void delete_beginning_backslash(uchar*);
+static int check_lockfile(void);
+static void check_byte_order(void);
+static int open_index_files();
+static void close_index_files(void);
+static void do_logging(uchar* , int);
+static HLIST search_sub(HLIST, uchar*, uchar*, int);
+static void make_fullpathname_index(int);
+static int check_accessfile();
+static void parse_access(uchar *, uchar *, uchar *);
+static PHRASERES *push_phraseres(PHRASERES *, int, uchar *);
 
+static int CurrentIndexNumber = -1;
+
+/* PHRASERES handling subroutines */
+static PHRASERES *push_phraseres(PHRASERES *pr, int hitnum, uchar *str)
+{
+  PHRASERES *prptr = pr, *prevprptr = pr;
+  while (prptr != NULL) {
+    prevprptr = prptr;
+    prptr = prptr->next;
+  }
+  if ((prptr = (PHRASERES *)malloc(sizeof(PHRASERES))) == NULL) {
+    diemsg("push_phraseres: malloc failed on prptr");
+    return NULL;
+  }
+  if (prevprptr != NULL)
+    prevprptr->next = prptr;
+  prptr->hitnum = hitnum;
+  prptr->next = NULL;
+  if ((prptr->word = (uchar *)malloc(strlen(str) +1)) == NULL) {
+    diemsg("push_phraseres: malloc failed on str");
+    return NULL;
+  }
+  strcpy(prptr->word, str);
+  if (pr == NULL)
+    return prptr;
+  return pr;
+}
+
+void free_phraseres(PHRASERES *pr)
+{
+  if (pr == NULL)
+    return;
+  free(pr->word);
+  free_phraseres(pr->next);
+  free(pr);
+}
 
 /* show the status for debug use */
-void show_status(int l, int r)
+static void show_status(int l, int r)
 {
     uchar buf[BUFSIZE];
 
     fseek(Nmz.w, getidxptr(Nmz.wi, l), 0);
     fgets(buf, BUFSIZE, Nmz.w);
-    fprintf(stderr, "l:%d: %s", l, buf);
+    debug_printf("l:%d: %s", l, buf);
     fseek(Nmz.w, getidxptr(Nmz.wi, r), 0);
     fgets(buf, BUFSIZE, Nmz.w);
-    fprintf(stderr, "r:%d: %s", r, buf);
+    debug_printf("r:%d: %s", r, buf);
 }
 
 /* get size of file */
-int get_file_size (uchar *filename) {
+static int get_file_size (uchar *filename) 
+{
     struct stat st;
 
     stat(filename, &st);
-    if (Debug) {
-        fprintf(stderr, "size of %s: %d\n", filename, (int)st.st_size);
-    }
+    debug_printf("size of %s: %d\n", filename, (int)st.st_size);
     return ((int)(st.st_size));
 }
 
 
 /* get the left and right value of search range */
-void lrget(uchar * key, int *l, int *r)
+static void lrget(uchar * key, int *l, int *r)
 {
     *l = 0;
     *r = get_file_size(NMZ.ii) / sizeof(int) - 1;
@@ -120,7 +156,7 @@ void lrget(uchar * key, int *l, int *r)
 }
 
 /* Prefix match search */
-HLIST prefix_match(uchar * orig_key, int v)
+static HLIST prefix_match(uchar * orig_key, int v)
 {
     int i, j, n;
     HLIST tmp, val;
@@ -138,8 +174,9 @@ HLIST prefix_match(uchar * orig_key, int v)
 	    break;
 	}
     }
-    if (Debug)
+    if (Debug) {
 	v = i;
+    }
 
     for (j = 0, i++;; i++, j++) {
 	/* return if too much word would be hit
@@ -156,63 +193,54 @@ HLIST prefix_match(uchar * orig_key, int v)
         chomp(buf);
 	if (strncmp(key, buf, n) == 0) {
 	    tmp = get_hlist(i);
+	    if (tmp.n == DIE_HLIST)
+	        return tmp;
 	    if (tmp.n > IGNORE_HIT) {
 		free_hlist(val);
 		val.n = ERR_TOO_MUCH_MATCH;
 		break;
 	    }
 	    val = ormerge(val, tmp);
+	    if (val.n == DIE_HLIST)
+	        return val;
 	    if (val.n > IGNORE_HIT) {
 		free_hlist(val);
 		val.n = ERR_TOO_MUCH_MATCH;
 		break;
 	    }
-	    if (Debug)
-		fprintf(stderr, "fw: %s, %d, %d\n", buf, tmp.n, val.n);
+	    debug_printf("fw: %s, %d, %d\n", buf, tmp.n, val.n);
 	} else
 	    break;
     }
-    if (Debug)
-	fprintf(stderr, "range: %d - %d\n", v + 1, i - 1);
+    debug_printf("range: %d - %d\n", v + 1, i - 1);
     return val;
 }
 
-#define NM 0
-#define FW 1
-#define RE 2
-#define PH 3
-#define FI 4
-
 /* detect search mode */
-int detect_search_mode(uchar *key) {
+static int detect_search_mode(uchar *key) {
     if (strlen(key) <= 1)
-        return NM;
+        return WORD_MODE;
     if (isfield(key)) { /* field search */
-        if (Debug)
-            fprintf(stderr, "do FIELD search\n");
-        return FI;
+	debug_printf("do FIELD search\n");
+        return FIELD_MODE;
     }
     if (*key == '/' && *(lastc(key)) == '/') {
-        if (Debug)
-            fprintf(stderr, "do REGEX search\n");
-	return RE;    /* regex match */
+	debug_printf("do REGEX search\n");
+	return REGEX_MODE;    /* regex match */
     } else if (*key == '*' 
                && *(lastc(key)) == '*'
                && *(key + strlen(key) - 2) != '\\' ) 
     {
-        if (Debug)
-            fprintf(stderr, "do REGEX (INTERNAL_MATCH) search\n");
-	return RE;    /* internal match search (treated as regex) */
+	debug_printf("do REGEX (INTERNAL_MATCH) search\n");
+	return REGEX_MODE;    /* internal match search (treated as regex) */
     } else if (*(lastc(key)) == '*'
         && *(key + strlen(key) - 2) != '\\')
     {
-        if (Debug)
-            fprintf(stderr, "do PREFIX_MATCH search\n");
-	return FW;    /* prefix match search */
+	debug_printf("do PREFIX_MATCH search\n");
+	return PREFIX_MODE;    /* prefix match search */
     } else if (*key == '*') {
-        if (Debug)
-            fprintf(stderr, "do REGEX (SUFFIX_MATCH) search\n");
-	return RE;    /* suffix match  (treated as regex)*/
+	debug_printf("do REGEX (SUFFIX_MATCH) search\n");
+	return REGEX_MODE;    /* suffix match  (treated as regex)*/
     } else if ((*key == '"' && *(lastc(key)) == '"') 
           || (*key == '{' && *(lastc(key)) == '}')) 
     {
@@ -224,74 +252,55 @@ int detect_search_mode(uchar *key) {
     /* normal or phrase */
 
     /* if under Japanese mode, do wakatigaki */
-    if (is_lang_ja(Lang)) {
-        wakati(key);
+    if (is_lang_ja()) {
+        if (wakati(key))
+	  return ERROR_MODE;
     }
 
     if (strchr(key, '\t')) {
-        if (Debug)
-            fprintf(stderr, "do PHRASE search\n");
-	return PH;
+	debug_printf("do PHRASE search\n");
+	return PHRASE_MODE;
     } else {
-        if (Debug)
-            fprintf(stderr, "do WORD search\n");
-        return NM;
+	debug_printf("do WORD search\n");
+        return WORD_MODE;
     }
 }
 
-void print_hit_count (uchar *key, HLIST val)
-{
-    if (!HitCountOnly && !MoreShortFormat && !NoReference && !Quiet) {
-        printf(" [ ");
-        fputx(key, stdout);
-        if (val.n > 0) {
-            printf(": %d", val.n);
-        } else { 
-            uchar *msg = (uchar *)"";
-            if (val.n == 0) {
-                msg = (uchar *)": 0 ";
-            } else if (val.n == ERR_TOO_MUCH_MATCH) {
-                msg = MSG_ERR_TOO_MUCH_MATCH;
-            } else if (val.n == ERR_TOO_MUCH_HIT) {
-                msg = MSG_ERR_TOO_MUCH_HIT;
-            } else if (val.n == ERR_REGEX_SEARCH_FAILED) {
-                msg = MSG_CANNOT_OPEN_REGEX_INDEX;
-            } 
-            fputx(msg, stdout);
-        }
-        printf(" ] ");
-    }
-}
-
-HLIST do_word_search(uchar *key, HLIST val)
+static HLIST do_word_search(uchar *key, HLIST val)
 {
     int v;
 
     if ((v = binsearch(key, 0)) != -1) {
         /* if found, get list */
         val = get_hlist(v);
+	if (val.n == DIE_HLIST)
+	    return val;
     } else {
         val.n = 0;  /* no hit */
+	val.d = NULL;
     }
     return val;
 }
 
-HLIST do_prefix_match_search(uchar *key, HLIST val)
+static HLIST do_prefix_match_search(uchar *key, HLIST val)
 {
     int v;
 
     if ((v = binsearch(key, 1)) != -1) { /* 2nd argument must be 1  */
         /* if found, do foward match */
         val = prefix_match(key, v);
+	if (val.n == DIE_HLIST)
+	    return val;
     } else {
         val.n = 0;  /* no hit */
+	val.d = NULL;
     }
     return val;
 }
 
 
 /* calculate a value of phase hash */
-int hash(uchar *str)
+static int hash(uchar *str)
 {
     extern int Seed[4][256];
     int hash = 0, i, j;
@@ -307,7 +316,7 @@ int hash(uchar *str)
 }
 
 /* get the phrase hash and compare it with HLIST */
-HLIST cmp_phrase_hash(int hash_key, HLIST val, 
+static HLIST cmp_phrase_hash(int hash_key, HLIST val, 
                           FILE *phrase, FILE *phrase_index)
 {
     int i, j, v, n, *list;
@@ -326,7 +335,10 @@ HLIST cmp_phrase_hash(int hash_key, HLIST val,
 
     list = (int *)malloc(n * sizeof(int));
     if (list == NULL) {
-	 die("cmp_phrase_hash_malloc");
+	 diemsg("cmp_phrase_hash_malloc");
+	 val.n = -1;
+	 val.d = NULL;
+	 return val;
     }
 
     {
@@ -347,7 +359,7 @@ HLIST cmp_phrase_hash(int hash_key, HLIST val,
     return val;
 }
 
-int open_phrase_index_files(FILE **phrase, FILE **phrase_index)
+static int open_phrase_index_files(FILE **phrase, FILE **phrase_index)
 {
     *phrase = fopen(NMZ.p, "rb");
     if (*phrase == NULL) {
@@ -363,7 +375,7 @@ int open_phrase_index_files(FILE **phrase, FILE **phrase_index)
 
 
 /* phrase search */
-HLIST do_phrase_search(uchar *key, HLIST val)
+static HLIST do_phrase_search(uchar *key, HLIST val)
 {
     int i, h = 0, ignore = 0, no_phrase_index = 0;
     uchar *p, *q, *word_b = 0, word_mix[BUFSIZE];
@@ -372,17 +384,14 @@ HLIST do_phrase_search(uchar *key, HLIST val)
     p = key;
     if (strchr(p, '\t') == NULL) {  /* if only one word */
         val = do_word_search(p, val);
+	Idx.mode[CurrentIndexNumber] = WORD_MODE;
         return val;
     }
 
     if (open_phrase_index_files(&phrase, &phrase_index)) {
-/*        fputx(MSG_CANNOT_OPEN_PHRASE_INDEX, stdout); */
 	no_phrase_index = 1;
     }
         
-    if (!HitCountOnly && !MoreShortFormat && !NoReference && !Quiet) {
-        printf(" { ");
-    }
     while (*p == '\t') {  /* beggining tabs are skipped */
         p++;
     }
@@ -392,9 +401,16 @@ HLIST do_phrase_search(uchar *key, HLIST val)
             *q = '\0';
         if (strlen(p) > 0) {
             HLIST tmp;
+	    PHRASERES *prtmp;
 
             tmp = do_word_search(p, val);
-            print_hit_count(p, tmp);
+	    if (tmp.n == DIE_HLIST)
+	        return tmp;
+	    if ((prtmp = push_phraseres(Idx.pr[CurrentIndexNumber], tmp.n, p)) == NULL) {
+	      tmp.n = DIE_HLIST;
+	      return tmp;
+	    }
+	    Idx.pr[CurrentIndexNumber] = prtmp;
 
             if (i == 0) {
                 val = tmp;
@@ -412,21 +428,21 @@ HLIST do_phrase_search(uchar *key, HLIST val)
 		    strcat(word_mix, p);
 		    h = hash(word_mix);
 		    val = cmp_phrase_hash(h, val, phrase, phrase_index);
-		    if (Debug) {
-			fprintf(stderr, "\nhash:: <%s, %s>: h:%d, val.n:%d\n",
-				word_b, p, h, val.n);
-		    }
+		    if (val.n == DIE_HLIST)
+		        return val;
+		    debug_printf("\nhash:: <%s, %s>: h:%d, val.n:%d\n",
+			    word_b, p, h, val.n);
 		}
 		word_b = p;
 	    }
         }
-        if (q == NULL)
+        if (q == NULL) {
             break;
+	}
         p = q + 1;
     }
-    if (!HitCountOnly && !MoreShortFormat && !NoReference && !Quiet) {
-        printf(" :: %d } ", val.n);
-    }
+
+    Idx.phrasehit[CurrentIndexNumber] = val.n;
 
     if (!no_phrase_index) {
 	fclose(phrase);
@@ -437,7 +453,7 @@ HLIST do_phrase_search(uchar *key, HLIST val)
 }
 
 #define iseuc(c)  ((c) >= 0xa1 && (c) <= 0xfe)
-void do_regex_preprocessing(uchar *expr)
+static void do_regex_preprocessing(uchar *expr)
 {
     if (*expr == '*' && *(lastc(expr)) != '*') {
         /* if suffix match such as '*bar', enforce it into regex */
@@ -483,7 +499,7 @@ void do_regex_preprocessing(uchar *expr)
     }
 }
 
-HLIST do_regex_search(uchar *orig_expr, HLIST val)
+static HLIST do_regex_search(uchar *orig_expr, HLIST val)
 {
     FILE *fp;
     uchar expr[BUFSIZE * 2]; /* because of escaping meta characters */
@@ -493,7 +509,7 @@ HLIST do_regex_search(uchar *orig_expr, HLIST val)
 
     fp = fopen(NMZ.w, "rb");
     if (fp == NULL) {
-        fprintf(stderr, "%s: cannot open file.\n", NMZ.w);
+        debug_printf("%s: cannot open file.\n", NMZ.w);
         val.n = ERR_REGEX_SEARCH_FAILED;  /* cannot open regex index */
         return val;
     }
@@ -503,13 +519,13 @@ HLIST do_regex_search(uchar *orig_expr, HLIST val)
 
 }
 
-void get_expr(uchar *expr, uchar *str)
+static void get_expr(uchar *expr, uchar *str)
 {
     str = (uchar *)strchr(str, (int)':') + 1;
     strcpy(expr, str);
 }
 
-HLIST do_field_search(uchar *str, HLIST val)
+static HLIST do_field_search(uchar *str, HLIST val)
 {
     uchar expr[BUFSIZE * 2], /* because of escaping meta characters */
         field_name[BUFSIZE], file_name[BUFSIZE];
@@ -524,7 +540,7 @@ HLIST do_field_search(uchar *str, HLIST val)
 
     fp = fopen(file_name, "rb");
     if (fp == NULL) {
-        fprintf(stderr, "%s: cannot open file.\n", file_name);
+        debug_printf("%s: cannot open file.\n", file_name);
         val.n = -4;  /* cannot open field index */
         return val;
     }
@@ -533,7 +549,7 @@ HLIST do_field_search(uchar *str, HLIST val)
     return val;
 }
 
-void delete_beginning_backslash(uchar *str)
+static void delete_beginning_backslash(uchar *str)
 {
     if (*str == '\\') {
         strcpy(str, str + 1);
@@ -541,13 +557,13 @@ void delete_beginning_backslash(uchar *str)
 }
 
 /* check the existence of lockfile */
-int check_lockfile(void)
+static int check_lockfile(void)
 {
     FILE *lock;
 
     if ((lock = fopen(NMZ.lock, "rb"))) {
 	fclose(lock);
-        printf("(now be in system maintenance)");
+        print("(now be in system maintenance)");
         return 1;
     }
     return 0;
@@ -555,7 +571,7 @@ int check_lockfile(void)
 
 
 /* checking byte order */
-void check_byte_order(void)
+static void check_byte_order(void)
 {
     int  n = 1;
     char *c;
@@ -565,13 +581,76 @@ void check_byte_order(void)
     if (*c) { /* little-endian */
 	OppositeEndian = 1;
     } 
-    if (Debug && OppositeEndian) {
-        fprintf(stderr, "OppositeEndian mode\n");
+    if (OppositeEndian) {
+        debug_printf("OppositeEndian mode\n");
     }
 }
 
+static void parse_access(uchar *line, uchar *rhost, uchar *raddr)
+{
+    /* Skip white spaces */
+    line += strspn(line, " \t");
+
+    if (*line == '\0' || *line == '#') {
+	/* Ignore blank line or comment line */
+        return;
+    }
+    if (strprefixcasecmp(line, "allow") == 0) {
+	line += strlen("allow");
+	line += strspn(line, " \t");
+	if (strcasecmp(line, "all") == 0) {
+	    perm = ALLOW;
+	} else if (*raddr != '\0' && strprefixcmp(line, raddr) == 0) {
+	    /* IP Address : forward match */
+	    perm = ALLOW;
+	} else if (*rhost != '\0' && strsuffixcmp(line, rhost) == 0) {
+	    /* Hostname : backword match */
+	    perm = ALLOW;
+	}
+    } else if (strprefixcasecmp(line, "deny") == 0) {
+	line += strlen("deny");
+	line += strspn(line, " \t");
+	if (strcasecmp(line, "all") == 0) {
+	    perm = DENY;
+	} else if (*raddr != '\0' && strprefixcmp(line, raddr) == 0) {
+	    /* IP Address : forward match */
+	    perm = DENY;
+	} else if (*rhost != '\0' && strsuffixcmp(line, rhost) == 0) {
+	    /* Hostname : backword match */
+	    perm = DENY;
+	}
+    }
+}
+
+/*
+ * If Access is OK: return 0;
+ * else Access is not OK: return 1;
+ */
+static int check_accessfile(void)
+{
+    uchar buf[BUFSIZE];
+    uchar *rhost, *raddr;
+    FILE *fp;
+
+    perm = ALLOW;
+    
+    rhost = safe_getenv("REMOTE_HOST");
+    raddr = safe_getenv("REMOTE_ADDR");
+
+    fp = fopen(NMZ.access, "rb");
+    if (fp == NULL) {
+	return perm;
+    }
+    while (fgets(buf, BUFSIZE, fp)) {
+	chomp(buf);
+	parse_access(buf, rhost, raddr);
+    }
+    fclose(fp);
+    return perm;
+}
+
 /* opening files at once */
-int open_index_files()
+static int open_index_files()
 {
     if (check_lockfile())
         return 1;
@@ -597,7 +676,7 @@ int open_index_files()
 }
 
 /* closing files at once */
-void close_index_files(void)
+static void close_index_files(void)
 {
     fclose(Nmz.i);
     fclose(Nmz.ii);
@@ -606,74 +685,10 @@ void close_index_files(void)
 }
 
 
-/* flow of displaying search results */
-void print_result1(void)
-{
-    fputx(MSG_RESULT_HEADER, stdout);
-
-    if (HtmlOutput)
-	fputs("<p>\n", stdout);
-    else
-	fputc('\n', stdout);
-    fputx(MSG_REFERENCE_HEADER, stdout);
-    if (Idx.num > 1 && HtmlOutput)
-	fputs("</p>\n", stdout);
-}
-
-void print_result2(void)
-{
-    if (Idx.num == 1 && HtmlOutput)
-	printf("\n</p>\n");
-    else
-	fputc('\n', stdout);
-}
-
-void print_hitnum(int n)
-{
-    fputx(MSG_HIT_1, stdout);
-    if (HtmlOutput)
-        printf("<!-- HIT -->%d<!-- HIT -->", n);
-    else
-        printf("%d", n);
-    fputx(MSG_HIT_2, stdout);
-}
-
-void print_listing(HLIST hlist)
-{
-    if (HtmlOutput)
-        printf("<dl>\n");
-    
-    print_hlist(hlist);
-    
-    if (HtmlOutput)
-        printf("</dl>\n");
-
-}
-
-void print_range(HLIST hlist)
-{
-    if (HtmlOutput)
-        printf("<p>\n");
-    put_current_range(hlist.n);
-    if (!HidePageIndex)
-        put_page_index(hlist.n);
-    if (HtmlOutput)
-        printf("</p>\n");
-    else
-        printf("\n");
-}
-
-char *get_env_safely(char *s)
-{
-    char *cp;
-    return (cp = getenv(s)) ? cp : "";
-}
-
-
 /* do logging, separated with TAB characters 
    it does not consider a LOCK mechanism!
 */
-void do_logging(uchar * query, int n)
+static void do_logging(uchar * query, int n)
 {
     FILE *slog;
     char *rhost;
@@ -685,48 +700,35 @@ void do_logging(uchar * query, int n)
 
     slog = fopen(NMZ.slog, "a");
     if (slog == NULL) {
-        if (Debug)
-            fprintf(stderr, "NMZ.slog: Permission denied\n");
+	wprintf("%s: Permission denied\n", NMZ.slog);
 	return;
     }
-    rhost = get_env_safely("REMOTE_HOST");
-    if (!*rhost)
-	rhost = get_env_safely("REMOTE_ADDR");
-    if (!*rhost)
+    rhost = safe_getenv("REMOTE_HOST");
+    if (*rhost == '\0') {
+	rhost = safe_getenv("REMOTE_ADDR");
+    }
+    if (*rhost == '\0')
 	rhost = "LOCALHOST";
     fprintf(slog, "%s\t%d\t%s\t%s", query, n, rhost, time_string);
 
     fclose(slog);
 }
 
-
-uchar *get_dir_name(uchar *path)
+static HLIST search_sub(HLIST hlist, uchar *query, uchar *query_orig, int n)
 {
-    uchar *p;
+    CurrentIndexNumber = n;
 
-    p = (uchar *)strrchr(path, '/');
-    if (p) {
-        return (p + 1);
-    } else {
-        return path;
+    if (IsCGI && check_accessfile() == DENY) {
+	/* if access denied */
+	hlist.n = DIE_HLIST;
+	free_hlist(hlist);
+	diemsg(_("(You don\'t have a permission to access the index)"));
+	return hlist;
     }
-}
-
-HLIST search_sub(HLIST hlist, uchar *query, uchar *query_orig, int n)
-{
-    if (!HitCountOnly && !MoreShortFormat && !NoReference && !Quiet) {
-        if (Idx.num > 1) {
-            if (HtmlOutput)
-                printf("<li><strong>%s</strong>: ", get_dir_name(Idx.names[n]));
-            else
-                printf("(%s)", Idx.names[n]);
-        }
-    }
-
     if (open_index_files()) {
         /* if open failed */
-        hlist.n = 0;
-        fputx(MSG_CANNOT_OPEN_INDEX, stdout);
+        hlist.n = DIE_HLIST;
+        diemsg(_(" (cannot open this index)\n"));
         return hlist;
     }
 
@@ -740,16 +742,15 @@ HLIST search_sub(HLIST hlist, uchar *query, uchar *query_orig, int n)
     /* search */
     init_parser();
     hlist = expr();
+    if (hlist.n == DIE_HLIST) {
+	diemsg("search error");
+        return hlist;
+    }
 
     if (hlist.n) {  /* if hit */
         set_idxid_hlist(hlist, n);
     }
-    if (!HitCountOnly && !MoreShortFormat && !NoReference && !Quiet) {
-        if (Idx.num > 1 && Query.tab[1]) {
-            printf(" [ TOTAL: %d ]", hlist.n);
-        }
-        printf("\n");
-    }
+    Idx.total[CurrentIndexNumber] = hlist.n;
     close_index_files();
 
     if (Logging) {
@@ -758,7 +759,7 @@ HLIST search_sub(HLIST hlist, uchar *query, uchar *query_orig, int n)
     return hlist;
 }
 
-void make_fullpathname_index(int n)
+static void make_fullpathname_index(int n)
 {
     uchar *base;
 
@@ -774,6 +775,7 @@ void make_fullpathname_index(int n)
     pathcat(base, NMZ.slog);
     pathcat(base, NMZ.field);
     pathcat(base, NMZ.t);
+    pathcat(base, NMZ.access);
 }
 
 
@@ -803,8 +805,7 @@ int binsearch(uchar *orig_key, int prefix_match_mode)
 	fseek(Nmz.w, getidxptr(Nmz.wi, x), 0);
 	fgets(term, BUFSIZE, Nmz.w);
 
-	if (Debug)
-	    fprintf(stderr, "searching: %s", term);
+	debug_printf("searching: %s", term);
 	for (e = 0, i = 0; *(term + i) != '\n' && *(key + i) != '\0' ; i++) {
 	    if (*(term + i) > *(key + i)) {
 		e = -1;
@@ -819,12 +820,12 @@ int binsearch(uchar *orig_key, int prefix_match_mode)
 	if (*(term + i) == '\n' && *(key + i)) {
 	    e = 1;
 	} else if (! prefix_match_mode && *(term + i) != '\n' 
-                   && (!*(key + i))) {
+                   && (*(key + i) == '\0')) {
 	    e = -1;
 	}
 
 	/* if hit, return */
-	if (!e) {
+	if (e == 0) {
 	    return x;
 	}
 
@@ -838,63 +839,51 @@ int binsearch(uchar *orig_key, int prefix_match_mode)
 }
 
 /* flow of search */
-void search_main(uchar *query)
+HLIST search_main(uchar *query)
 {
     HLIST hlist, tmp[INDEX_MAX];
     uchar query_orig[BUFSIZE];
     int i;
 
     strcpy(query_orig, query); /* save */
-    split_query(query);
-
-    if (!HitCountOnly && !MoreShortFormat && !NoReference && !Quiet) {
-        print_result1();
-
-        if (Idx.num > 1) {
-            printf("\n");
-            if (HtmlOutput)
-                printf("<ul>\n");
-        }
+    if (split_query(query)) {
+      hlist.n = DIE_HLIST;
+      return hlist;
     }
+
     for (i = 0; i < Idx.num; i++) {
         make_fullpathname_index(i);
         tmp[i] = search_sub(tmp[i], query, query_orig, i);
-    }
-    if (!HitCountOnly && !MoreShortFormat && !NoReference && !Quiet) {
-        if (Idx.num > 1 && HtmlOutput) {
-            printf("</ul>\n");
-        }
-        print_result2();
+	if (tmp[i].n == DIE_HLIST) {
+	    hlist.d = NULL;
+	    hlist.n = DIE_HLIST;
+	    return hlist; /* need freeing memory? */
+	}
     }
 
     hlist = merge_hlist(tmp);
-    if (hlist.n > 0) {       /* HIT!! */
-        sort_hlist(hlist, SORT_BY_DATE);   /* sort by date at first*/
+
+    if (hlist.n > 0) { /* HIT!! */
+        if (sort_hlist(hlist, SORT_BY_DATE))   /* sort by date at first*/
+	  {
+	    hlist.n = DIE_HLIST;
+	    return hlist;
+	  }
 	if (SortMethod != SORT_BY_DATE) {
-	    sort_hlist(hlist, SortMethod);
+	    if (sort_hlist(hlist, SortMethod)) {
+	        hlist.n = DIE_HLIST;
+		return hlist;
+	    }
 	}
         if (SortOrder == ASCENDING) {  /* default is descending */
-            reverse_hlist(hlist);
-        }
-        if (!HitCountOnly && !MoreShortFormat && !Quiet) {
-            print_hitnum(hlist.n);  /* <!-- HIT -->%d<!-- HIT --> */
-        }
-	if (HitCountOnly) {
-	    printf("%d\n", hlist.n);
-	} else {
-	    print_listing(hlist); /* summary listing */
-	}
-        if (!HitCountOnly && !MoreShortFormat && !Quiet) {
-            print_range(hlist);
-        }
-    } else {
-        if (HitCountOnly) {
-            printf("0\n");
-        } else if (!MoreShortFormat) {
-            fputx(MSG_NO_HIT, stdout);
+	    if (reverse_hlist(hlist)) {
+	        hlist.n = DIE_HLIST;
+		return hlist; 
+	    }
         }
     }
-    free_hlist(hlist);
+
+    return hlist;
 }
 
 
@@ -907,24 +896,33 @@ HLIST do_search(uchar *orig_key, HLIST val)
     strcpy(key, orig_key);
     strlower(key);
     mode = detect_search_mode(key);
+    if (mode == ERROR_MODE) {
+      val.n = DIE_HLIST;
+      return val;
+    }
+    Idx.mode[CurrentIndexNumber] = mode;
     delete_beginning_backslash(key);
 
-    if (mode == FW) {
+    if (mode == PREFIX_MODE) {
         val = do_prefix_match_search(key, val);
-    } else  if (mode == RE) {
+    } else  if (mode == REGEX_MODE) {
         val = do_regex_search(key, val);
-    } else if (mode == PH) {
+    } else if (mode == PHRASE_MODE) {
         val = do_phrase_search(key, val);
-    } else if (mode == FI) {
+    } else if (mode == FIELD_MODE) {
         val = do_field_search(key, val);
     } else {
         val = do_word_search(key, val);
     }
 
-    if (mode != PH) { /* phrase mode print status by itself */
-        print_hit_count(orig_key, val);
+    if (mode != PHRASE_MODE) { /* phrase mode print status by itself */
+      PHRASERES *prtmp;
+      if ((prtmp = push_phraseres(Idx.pr[CurrentIndexNumber], val.n, orig_key)) == NULL) {
+	  val.n = DIE_HLIST;
+	  return val;
+      }
+      Idx.pr[CurrentIndexNumber] = prtmp;
     }
     return val;
 }
-
 

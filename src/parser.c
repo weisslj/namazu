@@ -2,7 +2,7 @@
  * 
  * parser.c -
  * 
- * $Id: parser.c,v 1.6 1999-09-04 01:07:52 satoru Exp $
+ * $Id: parser.c,v 1.7 1999-10-11 04:25:27 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -22,7 +22,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA
  * 
- * This file must be encoded in EUC-JP encoding.
  * 
  */
 
@@ -46,14 +45,14 @@ static int Cp = 0; /* variable that saves current position of parser */
  *
  ************************************************************/
 
-int isop(uchar*);
-HLIST factor(int*);
-int andop(void);
-HLIST term(void);
-int orop(void);
+static int isop(uchar*);
+static HLIST factor(int*);
+static int andop(void);
+static HLIST term(void);
+static int orop(void);
 
 /* check a character if metacharacter (operator) of not */
-int isop(uchar * c)
+static int isop(uchar * c)
 {
     if ((strcmp(c, AND_STRING) == 0 ) ||
 	(strcmp(c, AND_STRING_ALT) == 0 ) ||
@@ -68,7 +67,7 @@ int isop(uchar * c)
 }
 
 
-HLIST factor(int *ignore)
+static HLIST factor(int *ignore)
 {
     HLIST val;
     val.n = 0;
@@ -83,6 +82,8 @@ HLIST factor(int *ignore)
             if (Query.tab[Cp] == NULL)
                 return val;
             val = expr();
+	    if (val.n == DIE_HLIST)
+	        return val;
             if (Query.tab[Cp] == NULL)
                 return val;
             if (strcmp(Query.tab[Cp], RP_STRING) == 0)
@@ -90,8 +91,10 @@ HLIST factor(int *ignore)
             break;
         } else if (!isop(Query.tab[Cp])) {
             val = do_search(Query.tab[Cp], val);
-            /*  MSG_ERR_TOO_MUCH_MATCH;
-                MSG_ERR_TOO_MUCH_HIT;  case */
+	    if (val.n == DIE_HLIST)
+	       return val;
+            /*  ERR_TOO_MUCH_MATCH;
+                ERR_TOO_MUCH_HIT;  case */
             if (val.n < 0) {
                 *ignore = 1;
                 val.n = 0;   /* assign 0 - note that is important */
@@ -106,7 +109,7 @@ HLIST factor(int *ignore)
     return val;
 }
 
-int andop(void)
+static int andop(void)
 {
     if (Query.tab[Cp] == NULL)
 	return 0;
@@ -129,14 +132,18 @@ int andop(void)
     return 0;
 }
 
-HLIST term(void)
+static HLIST term(void)
 {
     HLIST left, right;
     int ignore = 0, op;
 
     left = factor(&ignore);
+    if (left.n == DIE_HLIST)
+        return left;
     while ((op = andop())) {
 	right = factor(&ignore);
+	if (right.n == DIE_HLIST)
+	    return right;
 	if (op == AND_OP) {
 	    left = andmerge(left, right, &ignore);
 	} else if (op == NOT_OP) {
@@ -148,7 +155,7 @@ HLIST term(void)
 }
 
 
-int orop(void)
+static int orop(void)
 {
     if (Query.tab[Cp] == NULL)
 	return 0;
@@ -173,9 +180,15 @@ HLIST expr(void)
     HLIST left, right;
 
     left = term();
+    if (left.n == DIE_HLIST)
+        return left;
     while (orop()) {
 	right = term();
+	if (right.n == DIE_HLIST)
+	    return right;
 	left = ormerge(left, right);
+	if (left.n == DIE_HLIST)
+	    return left;
     }
     return left;
 }

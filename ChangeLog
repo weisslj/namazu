@@ -1,3 +1,715 @@
+1999-10-07  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* src/{result.c, search.c}: Move output functions to output.c.
+
+	* src/wakati.c: Remove some exit() functions.
+
+1999-10-03  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* src/mknmz.pl.in (complete_field_info): Add filename_to_title()
+	calling. 
+	
+	* filter/{html,mailnews,man,msword,pdf,rfc}.pl: Remove
+	filename_to_title() calling.
+
+	* configure.in: Modify a message.
+	
+	* namazu.spec: Add "/usr/share/locale/*" at the end.
+
+	* src/mknmz.pl.in (load_document): Fix typo: s/!=/!~/
+
+1999-10-01  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* src/mknmz.pl.in (load_document): Fixed misrecognizing text/html
+	type file.
+
+1999-09-30  Ryuji Abe <raeva@t3.rim.or.jp>
+
+	* configure.in(AM_ACLOCAL_INCLUDE): New Macros.
+	(AM_PATH_LISPDIR): New Macros.
+	(AC_OUTPUT): Added filter/Makefile, lisp/Makefile, macros/Makefile, pl/Makefile.
+	
+	* Makefile.am(ACLOCAL_AMFLAGS): Removed.
+	(SUBDIRS): Added filter lisp macros pl.
+	(EXTRA_DIRS): Removed filter lisp macros pl conf.
+	
+	* conf/Makefile.am: Modified standard automake style.
+	
+	* filter/Makefile.{am,in}: New File.
+	
+	* macros/Makefile.{am,in}, pl/Makefile.{am,in}: Likewise.
+	
+	* macros/aclocal-include.m4: New File that derived from gnome-libs-1.0.16.
+	
+	* macros/lcmessage.m4: New File that derived from sh-utils-2.0.
+	
+	* macros/progtest.m4: Likewise.
+	
+1999-09-29  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* src/Makefile.am (INCLUDES): Add ../lib
+
+	* po/Makefiel.in.in (update-po): Fix a subtle bug.
+	
+	* po/make_jis7_po.in: New file.
+
+	* po/make_sjis_po: Fix a subtle bug by s/sjis/SJIS/.
+
+1999-09-29  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* src/namazu.h: Change INDICES structure (add total, modes, pr,
+	phrasehit members).
+	
+	* src/search.c (search_sub): Move some output process to 
+	print_hit_count() function.
+
+1999-09-28  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* src/codeconv.c (conv_ext): Add ja_JP.JIS7 handing.
+	(zen2han): Add `static' on Z2H.
+
+	* src/form.c (replace_query_value): Add conv_ext() calling.
+
+	* conf/namazu.conf-dist (LANG): ja_JP.iso-2022-jp -> ja_JP.JIS7
+
+	* src/util.c (strcasestr): Implement EUC handling.
+
+	* src/{util,search}.c: Remove a duplicated define statement:
+	#define iseuc(c)  ((c) >= 0xa1 && (c) <= 0xfe)
+
+	* Makefile.am (install-data-local): Add the line:
+	rm -f $(pkgdatadir)/template/*.in 
+
+	* po/(*)sjis()*: Renamed -> ${1}SJIS${2}
+
+	* po/(*)iso-2022-jp()*: Renamed -> ${1}JIS7${2}
+	
+	* template/NMZ.(*).ja_JP.iso-2022-jp: Renamed -> NMZ.${1}.ja_JP.JIS7
+
+	* configure.in (AC_OUTPT): s/make_iso_2022_jp_po/make_jis7_po/;
+	s/iso-2022-jp/JIS7/
+
+	* po/make_sjis_po.in: s/sjis/SJIS/;
+
+	* po/make_jis7_po.in: s/iso-2022-jp/JIS7/;
+
+	* po/make_jis7_po.in: New file. (make_iso_2022_jp)
+
+	* po/make_iso_2022_jp_po.in: Removed.
+	
+	* po/Makefile.in.in: Comment out codes for creating ja_JP.EUC and
+	ja_JP.ujis. And do s/sjis/SJIS/; s/iso-2022-jp/JIS7/.
+	
+	* configure.in (ALL_LINGUAS): Add ja_JP.JIS7, ja_JP.SJIS.
+
+	* configure.in (ALL_LINGUAS): Remove ja_JP.EUC, ja_JP.ujis,
+	ja_JP.iso-2022-jp, ja_JP.sjis
+
+1999-09-28  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* src/namazu.c (parse_options): Remove some exit() functions.
+
+	* src/var.{c,h}: Add PhraseResult variable and PHRASERES type.
+
+	* src/{search.c, namazu.c}: Devide hit count printing routine.
+
+1999-09-27  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* src/codeconv.c (conv_ext): Add ja_JP.SJIS handling.
+
+	* src/mknmz.pl.in (setup_magic): Modify a regex for RFC.
+
+	* src/util.c (isnumstr): Add cast: (int)
+
+	* src/util.c (diemsg): Remove #ifdef HAVE_VSPRINTF ...
+
+	* configure.in (Add AC_REPLACE_FUNCS): Remove some functions.
+
+	* configure.in: Add AC_REPLACE_FUNCS macro.
+	
+	* Makefile.am (SUBDIRS): Add lib.
+
+	* lib/Makefile.am: New file.
+
+	* lib/vsnprintf.c: New file imported from 
+	gnome-1.0.40/gnome-libs-1.0.40/support.
+	
+	* lib/{memmove,strcasecmp,strstr,memset,strcspn,
+	memcmp,strncasecmp}.c: New files imported from gettext-0.10.35/lib.
+	
+	* lib/{regex.[ch],getopt{,1}.[ch]}: Moved from src.
+	
+	* src/Makefile.am (namazu_SOURCES): Remove regex.[ch],
+	getopt.[ch], getopt1.c
+	
+	* src/util.[ch]: Remove memmove();
+	
+	* src/i18n.c: Add putenv/setenv handling. 
+
+	* src/i18n.c: Include <locale.h> if available.
+	
+	* configure.in (AC_CHECK_FUNCS): Add setenv.
+	
+	* conf/Makefile.am (mknmz.conf-dist): s!lib/!pl/!
+	
+	* src/Makefile.am (.pl): Replace libdir with  perllibdir.
+	
+	* src/Makefile.am (perllibdir): = $(pkgdatadir)/pl
+
+	* src/Makefile.am (libdir): Rename to perllibdir
+	
+	* Makefile.am (EXTRA_DIRS): Replace lib with pl.
+
+	* pl/*.pl, pl/*.in: New files. (moved from lib)
+	
+	* lib/*.pl, lib/*.in: Removed. (moved to pl)
+	
+	* src/mknmz.pl.in (make_headfoot): Abolish evaling.
+
+	* lib/conf.pl.in: Remove a variable: $ADMIN. 
+
+	* lib/var.pl.in: Remove a variable: $NMZ_URI.
+
+	* configure.in: Add OPT_NMZ_URI="http://openlab.ring.gr.jp/namazu/".
+
+	* configure.in (AC_OUTPUT): Add the following files.
+	   template/NMZ.head
+	   template/NMZ.foot
+	   template/NMZ.head.ja_JP.iso-2022-jp
+	   template/NMZ.foot.ja_JP.iso-2022-jp
+
+	* template/{NMZ.head,NMZ.foot,NMZ.head.ja_JP.iso-2022-jp,
+	NMZ.foot.ja_JP.iso-2022-jp}: Renamed: -> *.in
+
+	* src/mknmz.pl.in: Add `use lib "@ADDITIONAL_INC@"' at the upper part.
+	
+	* configure.in: Modify File-MMagic related codes. [namazu-dev 523]
+
+1999-09-27  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* src/{search.c, namazu.c}: Move output process from search.c to
+	namazu.c.
+
+	* src/mknmz.pl.in (setup_magic): Change rfc detection entry.
+
+	* src/mknmz.pl.in: Add some conditions to call checktype_magic().
+
+1999-09-26  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* template/NMZ.*.ja_JP.iso-2022-jp: Covert encoding: EUC-JP ->
+	ISO-2022-JP 
+	
+	* src/mknmz.pl.in (write_body_msg, write_tips_msg,
+	make_headfoot_pages): Get target files list with glob.
+	
+	* src/mknmz.pl.in: Abolish --enable-test related codes.
+	
+	* configure.in: Abolish --enable-test.
+	
+	* lib/find.pl: Restore fncmp().
+	
+	* po/Makefile.in.in (DISTFILES): Add ADDITIONAL_FILES.
+
+	* po/Makefile.in.in: Add new macro: ADDITIONAL_FILES.
+
+	* src/{usage,i18n}.c: Insert a header describing copyright.
+	
+	* src/*.c: Remove a statement "* This file must be encoded in
+	EUC-JP encoding.".
+	
+	* src/codeconv.c: Remove EUC-JP characters.
+	
+	* src/output.c (print_msgfile): Use choose_msgfile();
+
+	* src/form.c (read_headfoot): Use choose_msgfile();
+	
+	* src/i18n.[ch]: Introduce New function: choose_msgfile();
+	
+	* conf/namazu.conf-dist: Modify a description on LANG.
+	
+	* po/POTFILES.in: Remove message.c.
+	
+	* template/NMZ.{body,foot,head,tips}.en: Remove suffix.
+
+	* template/NMZ.{body,foot,head,tips}.ja: Change suffix: ja ->
+	ja_JP.iso-2022-jp.
+	
+	* src/util.c (debug_printf, wprintf, wprint): Do fflush(stdout) 
+	at each calling.
+	
+	* src/var.c (NMZ_NAMES NMZ): Remove ending `.' from NMZ.head,
+	NMZ.foot and NMZ.body.
+
+	* src/message.h: Define some messages with #define.
+	
+	* src/message.c: Removed.
+	
+	* src/*.c: Add `static' specifier for all private functions.
+	
+	* src/wakati.[ch]: Refine detect_char_type() related codes by
+	using enum.
+	
+	* src/search.[ch]: Refine detect_search_mode() related codes by
+	using enum.
+	
+	* src/{cgi,codeconv,conf,form,message,namazu,re,search}.c:
+	Add one line: #include "i18n.h"
+
+	* src/{cgi,critical}.h: Move CGI-related critical values from
+	cgi.h to critical.h. And decrease those values for safe.
+	
+	* src/{form,result,search}.c: Use codnv_ext() for converting
+	internal encoding to external one before outputting messages.
+	
+	* src/codeconv.c: Introduce new functions: conv_ext() and euctojis()
+
+	* src/codeconv.c: Rename function: codeconv() -> conv_ja_any_to_eucjp()
+	
+	* src/Makefile.am: Add i18n.[ch] to namazu_SOURCES.
+
+	* src/i18.[ch]: New files.
+	
+	* src/namazu.c (main): Add setlocale() calling;
+	
+	* po/*.{po,pot}: Release MSG_MIME_HEADER from gettext().
+	(make update-po && make)
+	
+	* src/{cgi,namazu,util}.c: Release MSG_MIME_HEADER from gettext().
+
+1999-09-26  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* src/*.c: Remove all die() functions.
+
+1999-09-25  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* src/util.c (diemsg): Surround vsnprintf() with #ifdef HAVE_VSPRINTF
+	and #ifdef HAVE_VSNPRINTF for system having no vsnprintf().
+	
+	* configure.in: AC_FUNC_VPRINTF.
+
+	* src/*.[ch]: s/fputx/html_print/g
+	
+	* src/output.c: Rename a function:  fputx() -> html_print().
+	
+	* src/*.c: Use print() and wprint();
+	
+	* src/util.[ch]: Introduce new functions: print() and wprint();
+	
+	* src/output.c: Introduce new functions: emprint();
+
+	* src/output.c: Abolish euctojisput() and fputs_with_codeconv();
+	
+	* src/{cgi.form,namazu,output,result,search,wakati}.c:
+	Abolish fputx's second argument (fp).
+
+	* src/util.c (diemsg): Fix stdarg related bug: Surround vsnprintf()
+	with va_start and va_end.
+
+	* src/utilc: Fix an unterminated comment.
+	
+	* configure.in (AC_CHECK_FUNCS): Add getcwd, getwd, putenv, 
+	strdup, strcspn, strspn, strstr. 
+	
+	* configure.in (AC_CHECK_HEADERS): Add limits.h and malloc.h.
+
+	* configure.in: Add macros: AC_PROG_RANLIB, AC_C_INLINE,
+	AC_FUNC_MMAP 
+
+1999-09-25  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* search.c, parser.c, hlist.c: Remove die() function.
+
+	* src/conf.{c,h}, namazu.c: Remove die() function.
+
+	* src/util.{c,h}: Add diewithmsg() function.
+
+	* src/magic.h: Add error code enum.
+
+1999-09-24  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* src/utils.{c,h}: Add new function diemsg().
+
+	* src/var.{c,h}: Add new variable Dyingmessage.
+
+1999-09-23  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* po/make_iso_2022_jp.po: New file
+	
+	* po/make_sjis_po: charset=shift-jis -> charset=Shift_JIS
+	
+	* po/ja.po:  charset=euc-jp -> charset=EUC-JP
+	
+	* po/Makefile.in.in (update-po): Add a routine to create
+	ja_JP.iso-2022-jp.po, ja_JP.EUC.po, ja_JP.ujis.po.
+	
+	* configure.in (ALL_LINGUAS): Add ja_JP.iso-2022-jp, ja_JP.EUC,
+	ja_JP.ujis 
+	
+	* configure.in (AC_OUTPUT): Add po/make_iso_2022_jp_po.
+
+1999-09-22  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* src/util.c (debug_printf, wprintf): Do fflush(stderr) at each 
+	calling.
+	
+	* src/usage.c (show_mini_usage): Use fputs() instead of printf()
+	because it doesn't use any printf format such as %s.
+	
+	* src/output.c (fputs_without_html_tag): Implement ISO-2022-JP
+	handling. 
+	
+	* Makefile.am (ACLOCAL_AMFLAGS): Fix a typo: -l -> -I.
+
+	* macros/gettext.m4: Imported reliable one from sh-utils-2.0/m4.
+	
+	* src/form.c (print_headfoot): \x1b -> \033
+
+1999-09-21  Ryuji Abe <raeva@t3.rim.or.jp>
+
+	* configure.in(ALL_LINGUAS): Added ja_JP.sjis.
+	
+	* Makefile.am(ACLOCAL_AMFLAGS): Specified -l macros.
+	(EXTRA_DIRS): Added macros.
+
+	* po/Makefile.in.in: Derived from Akira Higuchi's mgedit snapshot.
+	
+	* po/make_sjis_po: New File. Derived from Akira Higuchi's mgedit snapshot.
+	
+	* po/ja_JP.sjis: New File.
+
+	* macros: New Directory.
+
+	* macros/gettext.m4: New File.
+
+	* src/Makefile.am: More simplified make rules for perl scripts.
+
+1999-09-21  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* acloca.m4: Fix a subtle problem relating to libintl.a reported
+	in [namazu-dev 488] by refering sh-utils-2.0's aclocal.m4
+
+1999-09-20  Ryuji Abe <raeva@t3.rim.or.jp>
+
+	* configure.in: Added AC_ISC_POSIX.
+
+	* Makefile.am(AUTOMAKE_OPTIONS): Added 1.4.
+
+	* src/Makefile.am: Likewise.
+
+	* src/Makefile.am(LDADD): Use instead of namazu_LDADD.
+
+1999-09-20  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* src/*.[ch]: Rename a function name: dprintf -> debug_printf
+	due to the former causes a conflict with system library. 
+	[namazu-dev 474]
+	
+	* src/*.c: Extract almost MSG_foobar into sources.
+	
+	* src/*.c: Rename variables:
+	MSG_TOO_LONG_KEY     -> MSG_TOO_LONG_QUERY
+	
+	* src/re.c (regex_grep): Do re_free_pattern at the end.
+	
+	* src/cgi.c (get_cgi_vars): Fix PATH_INFO related codes.
+	
+	* src/*.c: Use wprintf() for warning and use dprintf() for debug
+	messages. And eliminate wasteful if (Debug) { ... } statements.
+	
+	* src/util.c: Add new functions: wprintf() and dprintf().
+	
+	* src/wakati.c: Abolish using strlen2() but use strcspn() instead.
+	
+	* src/util.c: Abolish strlen2().
+	
+	* src/util.c: Abolish setprogname() but use PACKAGE macro instead.
+
+1999-09-20  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* src/namazu.c: Fixed merge conflict.
+
+1999-09-19  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* configure.in: Arrange indent.
+	
+	* src/*.c: Gettextized.
+	
+	* po/ja.po: Japanese messages prepared.
+	
+	* po/namazu.pot: Collect messages.
+
+	* src/message.c: Gettextized.
+	
+	* src/magic.h: Separate enum declarations.
+	
+	* src/output.c (put_page_index): Fix enviromental variable related
+	bugs by using safe_getenv().
+	
+	* src/{search,util}.c: Move safe_getenv() from search.c to util.c
+	
+	* src/Makefile.am (namazu_LIBS): Abolished.
+	
+	* po/ChangeLog: New file.
+	
+	* Makefile.am (DIST_SUBDIRS): add $(SUBDIRS)
+
+	* po/en.po: Removed
+	
+	* configure.in (ALL_LINGUAS): Remove `en'
+	
+	* src/Makefile (CLEANDIRS): Renamed -> DISTCLEANDIRS
+
+	* src/Makefile (CLEANFILES): Renamed -> DISTCLEANFILES
+	
+	* ABOUT-NLS: Replace this with latest one.
+	<ftp://ring.asahi-net.or.jp/pub/GNU/ABOUT-NLS>
+
+	* aclocal.m4: Import AC_ISC_POSIX related codes from aclocal.m4 of
+	GNU sh-utils-2.0 for avoiding autoheader's complaints like:
+	configure.in:375: AC_TRY_COMPILE was called before AC_ISC_POSIX
+
+	* po/namazu.pot: New file.
+	
+	* acconfig.h: Prepare the following undefs
+	ENABLE_NLS, HAVE_CATGETS, HAVE_GETTEXT, HAVE_LC_MESSAGES, HAVE_STPCPY
+	
+	* configure.in: Add AC_PREREQ(2.13) at the head.
+
+	* configure.in: Add ALL_LINGUAS and AM_GNU_GETTEXT macros.
+
+	* configure.in (AC_OUTPUT): intl/Makefile, po/Makefile.in
+
+	* src/Makefile.am (always_built_SUBDIRS): Abolish this because
+	autoreconf complains:
+	AM_GNU_GETTEXT in configure.in but `po' not in SUBDIRS
+	AM_GNU_GETTEXT in configure.in but `intl' not in SUBDIRS
+
+	* src/Makefile.am (DEFS): New entry.
+
+	* src/Makefile.am (localedir): New entry.
+
+	* src/Makefile.am (INCLUDES): New entry.
+
+	* src/Makefile.am (namazu_LDADD): New entry.
+	
+	* src/{mailutime,vfnmz,gtnmz,kwnmz.pl,gcnmz.pl}.in: Add
+	"-*- Perl -*-" string for convenience with Emacs.
+
+	* po/{ja.po,en.po,POTFILES.in}: New files.
+	
+	* src/{kwnmz,gcnmz}.pl.in: Add RCS Id at the head and chmod -x.
+	
+	* aclocal.m4: Adding contents of gettext.m4,  lcmessage.m4 and
+	progtest.m4.
+
+	* ABOUT-NLS: New file created by gettextize(1).
+	
+	* intl/{ChangeLog,dcgettext.c,gettext.h,libgettext.h,po2tbl.sed.in,
+	Makefile.in,dgettext.c,gettextP.h,linux-msg.sed,textdomain.c, 
+	VERSION,explodename.c,hash-string.h,loadinfo.h,xopen-msg.sed,
+	bindtextdom.c,finddomain.c,intl-compat.c,loadmsgcat.c,
+	cat-compat.c,gettext.c,l10nflist.c,localealias.c}:
+	New files created by gettextize(1).	
+	
+	* po/Makefile.in.in: New files created by gettextize(1).
+	
+	* Makefile.am (always_built_SUBDIRS): Add intl and po
+	
+	* configure.in (AM_INIT_AUTOMAKE): Change a version number to 1.9.5.
+
+1999-09-19  Rei FURUKAWA  <furukawa@tcp-ip.or.up>
+
+	* lib/nmzidx.pl: Replace nmzdb -> nmzidx,
+
+	* src/kwnmz.pl.in: Replace nmzdb -> nmzidx,
+ 	Add --help option for usage.
+
+	* src/gcnmz.in: Removed. (Renamed: gcnmz.in -> gcnmz.pl.in)
+
+	* src/gcnmz.pl.in: New File. (Renamed: gcnmz.in -> gcnmz.pl.in)
+	Replace nmzdb -> nmzidx
+
+	* src/Makefile.am: add src/gcnmz.pl.in
+
+	* configure.in: Renamed: gcnmz.in -> gcnmz.pl.in
+
+1999-09-18  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* src/regex.[ch]: Imported from source codes of Ruby 1.4.2.
+
+	* src/search.c (search_sub): Modify to only do check_access() at
+	a CGI mode.
+	
+	* src/search.c (search_main): Modify not to print NMZ.tips.* at
+	a command line mode
+	
+	* src/Makefile.am (CLEANFILES): Restore kwnmz.
+	(I misunderstood)
+
+	* configure.in: Modify codes for getting a version number of
+	included File::MMagic for a cygwin environment. [namazu 998]
+
+1999-09-17  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* src/Makefile.am (noinst_HEADERS): Integrated to namazu_SOURCES.
+
+	* src/Makefile.am (LIBS): Renamed: -> namazu_LIBS.
+	
+	* src/Makefile.am (CLEANFILES): Remove kwnmz.
+	
+	* configure.in: Modfy check codes related to perl.
+
+1999-09-16  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* template/NMZ.body.{en,ja}: Commented out Tkanamazu and namazu.el
+	related descriptions.
+
+1999-09-15  Masao Takaku  <masao@ulis.ac.jp>
+
+	* src/{message.c,message.h,namazu.h,search.c,var.c}: Add a access
+	control feature by hostname and IP address. (NMZ.access)
+
+1999-09-15  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* doc/ja/nmz.html: Add a description for NMZ.access
+	
+	* src/{result,search,var}.c, src/var.h: Rename a variable name. 
+	s/MoreShortFormat/ListFormat/
+
+	* src/{namazu,cgi,var}.c, src/var.h: Abolish ShortFormat variable.
+	
+	* src/search.c (check_accessfile): Modify `rhost' handling.
+
+	* src/search.c: Rename a function: s/get_env_safely/safe_getenv/
+	
+	* Makefile.am (EXTRA_DIST): s/ChangeLog.old.1.gz/ChangeLog.1/
+	
+	* src/{search,namazu,message}.c: Modify them to print
+	NMZ.tips.{en,ja} when no documents found.
+	
+	* lib/{namazu,usage}.c: Move cat() from namazu.c to usage.c.
+	
+	* src/mknmz.pl.in, lib/var.pl.in: Add codes to create
+	NMZ.tips.{en,ja} 
+
+	* template/NMZ.tips.{en,ja}: New files.
+	
+	* src/mknmz.pl.in, lib/usage.pl: Add --mhonarc option.
+	(same as --media-type='text/html; x-type=mhonarc')
+	
+	* ChangeLog.1: New file. (ChangeLog.old.1)
+	
+	* ChangeLog.old.1.gz: Removed.
+	
+	* doc/ja/nmz.html: New file. (htmlized version of nmz_files.txt)
+	
+	* doc/ja/nmz_files.txt: Removed.
+	
+	* lib/find.pl: Restore fncmp().
+	(cvs update -j 1.8 -j 1.7 find.pl)
+	
+	* lib/nmzidx.pl: New file. (Renamed: nmzdb.pl -> nmzidx.pl)
+
+	* lib/nmzdb.pl: Removed. (Renamed: nmzdb.pl -> nmzidx.pl)
+
+	* src/kwnmz.pl (kwnmz): Modify not to convert a charcode.
+	And translate some comments into English.
+	
+	* template/NMZ.result.normal: Modify a little bit.
+	
+	* src/search.c (search_sub): Modify a way to display idxnames at
+	results.
+
+1999-09-15  Rei FURUKAWA  <furukawa@tcp-ip.or.jp>
+
+	* src/kwnmz.pl.in, lib/nmzdb.pl: New files.
+
+	* src/Makefile.am, configure.in: Add src/kwnmz.
+
+1999-09-14  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* template/NMZ.head.{en,ja}: Remove unnecessary
+	<input type="hidden" name="whence" value="0">.
+
+	* src/form.c (check_checkbox): Fix a subtle bug: put "checked"
+	accidentally.
+	
+	* src/regex.[ch]: Imported from source codes of Ruby 1.4.
+	
+	* template/NMZ.{head,body}.{en,ja}: Use CSS1 for decoration.
+
+1999-09-13  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* src/{conf.c,namazu.h,re.c,re.h,util.c,util.h,var.c,var.h}:
+	Rearrange REPLACE related codes.
+
+	* src/mknmz.pl.in (load_document): Modify the way to masure text
+	size. [namazu-dev 417]
+
+1999-09-13  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* New File::MMagic module.
+
+	* Add setup_magic function.
+
+1999-09-11  Masao Takaku <masao@ulis.ac.jp>
+
+	* src/mknmz.pl.in (load_document): Add kanji contained check for
+	$weighted_str.
+	
+	* src/mknmz.pl.in (put_field_index): Fix a bug with too long field
+	texts.
+
+1999-09-11  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* src/mknmz.pl.in (write_message): Fix a bug: can't parepare
+	NMZ.body.{en,ja}.
+	
+	* template/NMZ.body.ja: Rewrite a little.
+
+	* template/NMZ.body.en: Rewrite all descriptions.
+
+	* tknamazu/configure.in (AC_OUTPUT): Add tknamazu.spec.
+	
+	* configure.in: Suppress useless messages.
+
+1999-09-11  Ryuji Abe <raeva@t3.rim.or.jp>
+
+	* configure.in: export $bindir/namazu and $bindir/mknmz in config.cache.
+
+1999-09-10  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* Makefile.am (dist-hook): Handle CLEANFILES and CLEANDIRS well.
+
+	* Makefile.am (CLEANDIRS): conf/conf File-MMagic/CVS.
+
+	* Makefile.am (CLEANFILES): Add lib/var.pl lib/conf.pl.
+
+	* Makefile.am (EXTRA_DIRS): Add `conf'.
+	
+	* src/mknmz.pl.in: Add --meta option for meta tag handling. 
+
+	* src/conf.pl.in: Add $META_TAGS variable for specifying meta tags
+	which you want to do field-specified search with.
+	
+	* filter/html.pl (get_meta_tags): Implement a feature to handle
+	meta tags. Thanks to <eschmid@s.netic.de> for the good idea.
+	
+	* re.c (regex_grep): Fix a bug in no matching case.
+
+1999-09-09  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* template/NMZ.body.ja: Rewrite descriptions.
+	
+	* configure.in: Avoid runnning tknamazu/configure when lynx or
+	wish are not exist. [namazu-dev 402]
+	
+	* configure.in (AC_OUTPUT): Add src/vfnmz.
+
+	* src/Makefile.am (bin_SCRIPTS): Add vfnmz.
+
+	* src/vfnmz.in: New file.
+
 1999-09-08  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* configure.in (AM_INIT_AUTOMAKE): Change a version number to 1.9.4.
@@ -14,15 +726,12 @@
 	
 	* lib/find.pl: Abolish fncmp().
 
-	
 1999-09-08  NOKUBI Takatsugu <knok@daionet.gr.jp>
 
 	* Update File::MMagic.
 
 	* Optimized filetype checking routine.
-	
 
-	
 1999-09-07  Ryuji Abe <raeva@t3.rim.or.jp>
 
 	* configure.in: Using AC_CONFIG_SUBDIRS macro for tknamazu configuration.
@@ -41,7 +750,6 @@
 
 	* tknamazu/tknamazu.tcl.in: See tknamazu/ChangeLog.
 
-
 1999-09-07  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* configure.in (AM_INIT_AUTOMAKE): Change a version number to 1.9.3.
@@ -57,12 +765,10 @@
 	
 	* Makefile.am (CLEANFILES): Remove lib/var.pl lib/conf.pl entries.
 
-
 1999-09-07  NOKUBI Takatsugu <knok@daionet.gr.jp>
 
 	* src/mknmz.pl.in: Changed to create File::MMagic object once.
 
-	
 1999-09-06  Ryuji Abe <raeva@t3.rim.or.jp>
 
 	* configure.in: Fixed incorrect warnings.
@@ -70,7 +776,6 @@
 	* src/Makefile.am: Removed $(bin_SCRIPTS) at CLEANFILES.
 
 	* tknamazu/Makefile.am: Likewise.
-
 
 1999-09-06  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
@@ -96,7 +801,6 @@
 	* src/namazu.c: Rename option: --no-replace-uri -> --no-replace
 
 	* src/message.c, lib/usage.pl: Rewrite Englisu usages.
-	
 
 1999-09-05  masao@ulis.ac.jp (Masao Takaku)
 
@@ -126,13 +830,11 @@
 	
 	* src/cgi.c (get_cgi_vars): Fix a bug: can't sort by score at CGI.
 
-	
 1999-09-04  masao@ulis.ac.jp (Masao Takaku)
 
 	* src/mknmz.pl.in: Fix syntax error in perl5.004.
 
 	* src/mknmz.pl.in: Fix flist_ptr bug (for checkpoint).
-
 
 1999-09-04  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
@@ -181,7 +883,6 @@
 	
 	* src/cgi.c: Use strprefixcasecmp() instead of strncmp().
 
-	
 1999-09-03  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* src/hlist.c: Introduce set_rank() for STABLE sorting.
@@ -212,7 +913,6 @@
 	* src/search.c (search_main) : Don't re-sort if SortMethod ==
 	SORT_BY_DATE.
 
-	
 1999-09-02  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* src/result.l: Fix --list option bug.
@@ -239,7 +939,6 @@
 	* lib/mhonarc.pl: Implement detection codes for MHonArc's index
 	files such as maillist.hml or threads.html.
 
-	
 1999-09-01  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* acconfg.h: Rename several macro definiions for C program.
@@ -313,7 +1012,6 @@
 	
 	* tknamazu/tknamazu.xpm: Removed.
 
-
 1999-09-01  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* filter/gzip.pl: Fix opposite condition in status() function.
@@ -325,8 +1023,6 @@
 	* src/mknmz.pl.in: Exclude gfilter.pl from filters/*.pl in 
 	load_mocules() functions.
 
-
-	
 1999-08-31  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* lib/wakati.pm: Fix `tmpname' function name typo.
@@ -347,7 +1043,6 @@
 
 	* filter/*.pl, src/mknmz.pl.in: Add return value on filter::filter()
 	functions.
-
 
 1999-08-31  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
@@ -435,7 +1130,6 @@
 
 	* tknamazu/tknamazu.bat.sample: Likewise.
 
-
 1999-08-30  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* lib/codeconv.pl: Fix `tmpname' function name typo.
@@ -443,7 +1137,6 @@
 	* Makefile.am: Ignore test command return value on 
 	  install-data-local target.
 
-	
 1999-08-30  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* Makefile.am (install-data-local): Remove codes creating
@@ -517,12 +1210,10 @@
 	
 	* lib/util.pl: Remove useless codes from dprint and vprint.
 
-	
 1999-08-29  masao@ulis.ac.jp (Masao Takaku)
 
 	* src/search.c: Ignore TOO_MUCH_HIT word in phrase query.
 
-	
 1999-08-29  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* src/mknmz.pl.in (make_field_index): Add codes to set '(unknown)'
@@ -564,8 +1255,7 @@
 	* filter/html.pl (get_title): Fix.
 
 	* src/mknmz.pl.in (namazu_core): Remove $url.
-	
-	
+
 1999-08-28  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* src/mknmz.pl.in: Add istext() and codeconv() functions.
@@ -657,8 +1347,7 @@
 	* **/*.pl{,.in}: Restore prefix `util::'
 
 	* src/*.[ch]: Rename HLIST_MAXMAX -> RESULT_MAX.
-	
-	
+
 1999-08-27  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* lib/util.pl: Add checkcmd function.
@@ -667,7 +1356,6 @@
 
 	* lib/conf.pl.in: Add %supported variable.
 
-	
 1999-08-27  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* src/mknmz.pl.in: Silence warnings.
@@ -701,7 +1389,6 @@
 	* Makefile.am, src/Makefile.am: Change packagedir (omit @VERSION@)
 	[namazu-dev 192]
 
-	
 1999-08-26  Ryuji Abe <raeva@t3.rim.or.jp>
 
 	* Makefile.am: Added namazu.spec to EXTRA_DIST and removed rpm target.
@@ -710,12 +1397,10 @@
         
 	* namazu.spec.in: See %changelog section.
 
-	
 1999-08-26  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* filter/*, lib/filter.pl, src/mknmz.pl.in: Fix $title probrem.
 
-	
 1999-08-26  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* src/configure.in: Add codes to make filter/supported.pl.
@@ -758,7 +1443,6 @@
 
 	* Makefile.am: Add an CLEANFILES entry.
 
-
 1999-08-25  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* Makefile.am, src/Makefile.am: Change a directory structure for
@@ -781,7 +1465,6 @@
 	* configure.in, src/Makefile.am, src/wdnmz.in:
 	Remove wdnmz.in
 
-	
 1999-08-25 NOKUBI Takatsugu <knok@daionet.gr.jp>
 
 	* ChangeLog: merge conflicted parts.
@@ -830,7 +1513,6 @@
 
 	* configure.in: Add a feature to determine admin's email address
 	automatically: imported the code from Apache's buildinfo.sh
-	
 
 1999-07-09  masao@ulis.ac.jp (Masao Takaku)
 
@@ -891,7 +1573,6 @@
 
 	* lib/html.pl: Modified parse_robots_txt a little bit
 
-	
 1999-05-07  Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>
 
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]

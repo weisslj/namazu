@@ -57,50 +57,100 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
+ADDITIONAL_INC = @ADDITIONAL_INC@
+CATALOGS = @CATALOGS@
+CATOBJEXT = @CATOBJEXT@
 CC = @CC@
 CHASEN = @CHASEN@
+DATADIRNAME = @DATADIRNAME@
+EMACS = @EMACS@
 EXEEXT = @EXEEXT@
 FILE_MMAGIC = @FILE_MMAGIC@
+GENCAT = @GENCAT@
+GMOFILES = @GMOFILES@
+GMSGFMT = @GMSGFMT@
 GROFF = @GROFF@
+GT_NO = @GT_NO@
+GT_YES = @GT_YES@
+INCLUDE_LOCALE_H = @INCLUDE_LOCALE_H@
 INFO = @INFO@
+INSTOBJEXT = @INSTOBJEXT@
+INTLDEPS = @INTLDEPS@
+INTLLIBS = @INTLLIBS@
+INTLOBJS = @INTLOBJS@
 KAKASI = @KAKASI@
 LN_S = @LN_S@
 LYNX = @LYNX@
 MAKEINFO = @MAKEINFO@
+MKINSTALLDIRS = @MKINSTALLDIRS@
+MSGFMT = @MSGFMT@
 NKF = @NKF@
 OBJEXT = @OBJEXT@
 OPT_ADMIN_EMAIL = @OPT_ADMIN_EMAIL@
 OPT_LANGUAGE = @OPT_LANGUAGE@
+OPT_NMZ_URI = @OPT_NMZ_URI@
 OPT_SCORING = @OPT_SCORING@
 OPT_WAKATI_DEFAULT = @OPT_WAKATI_DEFAULT@
 PACKAGE = @PACKAGE@
 PERL = @PERL@
-TEST_MODE = @TEST_MODE@
+POFILES = @POFILES@
+POSUB = @POSUB@
+RANLIB = @RANLIB@
 TKNAMAZU = @TKNAMAZU@
+USE_INCLUDED_LIBINTL = @USE_INCLUDED_LIBINTL@
+USE_NLS = @USE_NLS@
 VERSION = @VERSION@
 WISH = @WISH@
 ZCAT = @ZCAT@
+l = @l@
+lispdir = @lispdir@
 
+AUTOMAKE_OPTIONS = 1.4 no-dependencies
+
+confdir = $(pkgdatadir)/conf
+conf_DATA = namazu.conf-dist mknmz.conf-dist
 EXTRA_DIST = namazu.conf-dist
+CLEANFILES = mknmz.conf-dist
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = ../config.h
 CONFIG_CLEAN_FILES = 
+DATA =  $(conf_DATA)
+
 DIST_COMMON =  Makefile.am Makefile.in
 
 
 DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
 
-TAR = tar
+TAR = gtar
 GZIP_ENV = --best
 all: all-redirect
 .SUFFIXES:
 $(srcdir)/Makefile.in: Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
 	cd $(top_srcdir) && $(AUTOMAKE) --gnu conf/Makefile
 
-Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status $(BUILT_SOURCES)
+Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) \
 	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
+
+install-confDATA: $(conf_DATA)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(confdir)
+	@list='$(conf_DATA)'; for p in $$list; do \
+	  if test -f $(srcdir)/$$p; then \
+	    echo " $(INSTALL_DATA) $(srcdir)/$$p $(DESTDIR)$(confdir)/$$p"; \
+	    $(INSTALL_DATA) $(srcdir)/$$p $(DESTDIR)$(confdir)/$$p; \
+	  else if test -f $$p; then \
+	    echo " $(INSTALL_DATA) $$p $(DESTDIR)$(confdir)/$$p"; \
+	    $(INSTALL_DATA) $$p $(DESTDIR)$(confdir)/$$p; \
+	  fi; fi; \
+	done
+
+uninstall-confDATA:
+	@$(NORMAL_UNINSTALL)
+	list='$(conf_DATA)'; for p in $$list; do \
+	  rm -f $(DESTDIR)$(confdir)/$$p; \
+	done
 tags: TAGS
 TAGS:
 
@@ -110,15 +160,10 @@ distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
 subdir = conf
 
 distdir: $(DISTFILES)
-	here=`cd $(top_builddir) && pwd`; \
-	top_distdir=`cd $(top_distdir) && pwd`; \
-	distdir=`cd $(distdir) && pwd`; \
-	cd $(top_srcdir) \
-	  && $(AUTOMAKE) --include-deps --build-dir=$$here --srcdir-name=$(top_srcdir) --output-dir=$$top_distdir --gnu conf/Makefile
 	@for file in $(DISTFILES); do \
 	  d=$(srcdir); \
 	  if test -d $$d/$$file; then \
-	    cp -pr $$d/$$file $(distdir)/$$file; \
+	    cp -pr $$/$$file $(distdir)/$$file; \
 	  else \
 	    test -f $(distdir)/$$file \
 	    || ln $$d/$$file $(distdir)/$$file 2> /dev/null \
@@ -136,24 +181,26 @@ installcheck: installcheck-am
 install-exec-am:
 install-exec: install-exec-am
 
-install-data-am:
+install-data-am: install-confDATA
 install-data: install-data-am
 
 install-am: all-am
 	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
 install: install-am
-uninstall-am:
+uninstall-am: uninstall-confDATA
 uninstall: uninstall-am
-all-am: Makefile
+all-am: Makefile $(DATA)
 all-redirect: all-am
 install-strip:
 	$(MAKE) $(AM_MAKEFLAGS) AM_INSTALL_PROGRAM_FLAGS=-s install
 installdirs:
+	$(mkinstalldirs)  $(DESTDIR)$(confdir)
 
 
 mostlyclean-generic:
 
 clean-generic:
+	-test -z "$(CLEANFILES)" || rm -f $(CLEANFILES)
 
 distclean-generic:
 	-rm -f Makefile $(CONFIG_CLEAN_FILES)
@@ -178,16 +225,16 @@ maintainer-clean-am:  maintainer-clean-generic distclean-am
 
 maintainer-clean: maintainer-clean-am
 
-.PHONY: tags distdir info-am info dvi-am dvi check check-am \
-installcheck-am installcheck install-exec-am install-exec \
-install-data-am install-data install-am install uninstall-am uninstall \
-all-redirect all-am all installdirs mostlyclean-generic \
-distclean-generic clean-generic maintainer-clean-generic clean \
-mostlyclean distclean maintainer-clean
+.PHONY: uninstall-confDATA install-confDATA tags distdir info-am info \
+dvi-am dvi check check-am installcheck-am installcheck install-exec-am \
+install-exec install-data-am install-data install-am install \
+uninstall-am uninstall all-redirect all-am all installdirs \
+mostlyclean-generic distclean-generic clean-generic \
+maintainer-clean-generic clean mostlyclean distclean maintainer-clean
 
-all: mknmz.conf-dist
-mknmz.conf-dist: ../lib/conf.pl
-	@grep -v '^package conf;$$' ../lib/conf.pl | \
+
+mknmz.conf-dist: ../pl/conf.pl
+	@grep -v '^package conf;$$' ../pl/conf.pl | \
 	perl -pe 's/^(\$$|\@|\%)/$$1conf::/' > $@
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

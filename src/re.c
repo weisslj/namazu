@@ -2,7 +2,7 @@
  * 
  * re.c -
  * 
- * $Id: re.c,v 1.5 1999-09-06 01:13:11 satoru Exp $
+ * $Id: re.c,v 1.6 1999-10-11 04:25:28 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -22,7 +22,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA
  * 
- * This file must be encoded in EUC-JP encoding.
  * 
  */
 
@@ -33,11 +32,8 @@
 #include "namazu.h"
 #include "util.h"
 #include "hlist.h"
-
-#define ALLOC_N(type,n) (type*)xmalloc(sizeof(type)*(n))
-#define ALLOC(type) (type*)xmalloc(sizeof(type))
-#define MEMZERO(p,type,n) memset((p), 0, sizeof(type)*(n))
-typedef struct re_pattern_buffer Regexp;
+#include "re.h"
+#include "i18n.h"
 
 #define STEP 256
 
@@ -48,74 +44,71 @@ typedef struct re_pattern_buffer Regexp;
  ************************************************************/
 
 /* replace a URI */
-int replace_uri(uchar * s)
+int replace_uri(uchar *uri)
 {
-    int n_src, n_dst, i, j;
+    int npat, nrep, i, j;
     uchar tmp[BUFSIZE];
-    REPLACE list = Replace;
+    REPLACE *list = Replace;
+    int is_regex_matching = 0;
 
-    strcpy(tmp, s);
+    strcpy(tmp, uri);
 
-    while (list.src) {
-        if (strpbrk (list.src->str, ".*")) {
-	    struct re_registers regs;
-	    Regexp *re;
-	    int mlen;
-	    int is_a_regexp_match = 0;
+    while (list) {
+	struct re_registers regs;
+	int mlen;
+	REGEX *re;
 
-	    regs.allocated = 0;
-	    re = ALLOC(Regexp);
-	    MEMZERO((char *)re, Regexp, 1);
-	    re->buffer = 0;
-	    re->allocated = 0;
-	    if (re_compile_pattern (list.src->str, strlen (list.src->str), re))
-	      /* re_comp fails; maybe it was not a regexp substitution
-	       * after all.  Fall back to string substitution for backward
-	       * compatibility.
-	       */
-	      is_a_regexp_match = 0;
-	    else if (0 < (mlen = re_match (re, tmp, strlen (tmp), 0, &regs))) {
-	      /* We got a match.  Try to replace the string. */
-	      uchar repl[BUFSIZE];
-	      uchar *subst = list.dst->str;
-	      /* Assume we are doing regexp match for now; if any of the
-	       * substitution fails, we will switch back to the straight
-	       * string substitution.
-	       */
-	      is_a_regexp_match = 1;
-	      for (i = j = 0; subst[i]; i++) {
+	re = list->pat_re;
+	regs.allocated = 0;
+
+	if (re == NULL) {
+	    /* Compiled regex is no available, we will apply the straight
+	     * string substitution.
+	     */
+	    is_regex_matching = 0;
+	} else if (0 < (mlen = re_match (re, tmp, strlen (tmp), 0, &regs))) {
+	    /* We got a match.  Try to replace the string. */
+	    uchar repl[BUFSIZE];
+	    uchar *subst = list->rep;
+	    /* Assume we are doing regexp match for now; if any of the
+	     * substitution fails, we will switch back to the straight
+	     * string substitution.
+	     */
+	    is_regex_matching = 1;
+	    for (i = j = 0; subst[i]; i++) {
 		/* i scans through RHS of sed-style substitution.
 		 * j points at the string being built.
 		 */
 		if ((subst[i] == '\\') &&
 		    ('0' <= subst[++i]) &&
-		    (subst[i] <= '9')) {
-		  /* A backslash followed by a digit---regexp substitution.
-		   * Note that a backslash followed by anything else is
-		   * silently dropped (including a \\ sequence) and is
-		   * passed on to the else clause.
-		   */
-		  int regno = subst[i] - '0';
-		  int ct;
-		  if (re->re_nsub <= regno) {
-		    /* Oops; this is a bad substitution.  Just give up
-		     * and use straight string substitution for backward
-		     * compatibility.
+		    (subst[i] <= '9')) 
+		{
+		    /* A backslash followed by a digit---regexp substitution.
+		     * Note that a backslash followed by anything else is
+		     * silently dropped (including a \\ sequence) and is
+		     * passed on to the else clause.
 		     */
-		    is_a_regexp_match = 0;
-		    break;
-		  }
-		  for (ct = regs.beg[regno]; ct < regs.end[regno]; ct++)
-		    repl[j++] = tmp[ct];
+		    int regno = subst[i] - '0';
+		    int ct;
+		    if (re->re_nsub <= regno) {
+			/* Oops; this is a bad substitution.  Just give up
+			 * and use straight string substitution for backward
+			 * compatibility.
+			 */
+			is_regex_matching = 0;
+			break;
+		    }
+		    for (ct = regs.beg[regno]; ct < regs.end[regno]; ct++)
+			repl[j++] = tmp[ct];
+		} else {
+		    /* Either ordinary character, 
+		     * or an unrecognized \ sequence.
+		     * Just copy it.
+		     */
+		    repl[j++] = subst[i];
 		}
-		else {
-		  /* Either ordinary character, or an unrecognized \ sequence.
-		   * Just copy it.
-		   */
-		  repl[j++] = subst[i];
-		}
-	      }
-	      if (is_a_regexp_match) {
+	    }
+	    if (is_regex_matching) {
 		/* Good.  Regexp substitution worked and we now have a good
 		 * string in repl.
 		 * The part that matched and being replaced is 0 to mlen-1
@@ -123,29 +116,28 @@ int replace_uri(uchar * s)
 		 * concatenated to the end of the resulting string.
 		 */
 		repl[j] = 0;
-		strcpy (s, repl);
-		strcpy (s + j, tmp + mlen);
-	      }
-	      re_free_registers (&regs);
+		strcpy(uri, repl);
+		strcpy(uri + j, tmp + mlen);
 	    }
-	    re_free_pattern (re);
-	    if (is_a_regexp_match)
-	      return 0;
-	    /* Otherwise, we fall back to string substitution */
+	    re_free_registers (&regs);
 	}
-	n_src = strlen(list.src->str);
-	n_dst = strlen(list.dst->str);
+	if (is_regex_matching) {
+	    return 0;
+	}
+	/* Otherwise, we fall back to string substitution */
 
-	if (strncmp(list.src->str, tmp, n_src) == 0) {
-	    strcpy(s, list.dst->str);
-	    for (i = n_src, j = n_dst; tmp[i]; i++, j++) {
-		s[j] = tmp[i];
+	npat = strlen(list->pat);
+	nrep = strlen(list->rep);
+
+	if (strncmp(list->pat, tmp, npat) == 0) {
+	    strcpy(uri, list->rep);
+	    for (i = npat, j = nrep; tmp[i]; i++, j++) {
+		uri[j] = tmp[i];
 	    }
-	    s[j] = '\0';
+	    uri[j] = '\0';
 	    return 1;
 	}
-	list.src = list.src->next;
-	list.dst = list.dst->next;
+	list = list->next;
     }
     return 0;
 }
@@ -153,30 +145,29 @@ int replace_uri(uchar * s)
 HLIST regex_grep(uchar *orig_expr, FILE *fp, uchar *field, int field_mode)
 {
     unsigned char buf[BUFSIZE], expr[BUFSIZE];
-    struct re_pattern_buffer *rp;
+    REGEX *rp;
     int i, n, size = 0, max, uri_mode = 0;
     HLIST val, tmp;
     val.n = 0;
 
-    if (is_lang_ja(Lang)) {
+    if (is_lang_ja()) {
         re_mbcinit(MBCTYPE_EUC);
     } else {
         re_mbcinit(MBCTYPE_ASCII);
     }
-    rp = ALLOC(Regexp);
-    MEMZERO((char *)rp, Regexp, 1);
-    rp->buffer = ALLOC_N(char, 16);
-    rp->allocated = 16;
-    rp->fastmap = ALLOC_N(char, 256);
-
+    rp = ALLOC(REGEX);
+    MEMZERO((char *)rp, REGEX, 1);
+    rp->buffer = 0;
+    rp->allocated = 0;
     
     strcpy(expr, orig_expr); /* save orig_expr */
-    if (Debug)
-        fprintf(stderr, "REGEX EXPRESSION is '%s'\n", expr);
-
+    debug_printf("REGEX: '%s'\n", expr);
 
     if (field_mode) {
         malloc_hlist(&val, size += STEP);
+	if (val.n == DIE_HLIST)
+	    return val;
+	val.n = 0; /* set 0 for no matching case */
         max = IGNORE_HIT;
         if (strcmp(field, "uri") == 0) {
             uri_mode = 1;
@@ -210,6 +201,8 @@ HLIST regex_grep(uchar *orig_expr, FILE *fp, uchar *field, int field_mode)
             }
             if (!field_mode) {
                 tmp = get_hlist(i);
+		if (tmp.n == DIE_HLIST)
+		    return tmp;
                 if (tmp.n > IGNORE_HIT) {
                     free_hlist(val);
                     val.n = -1;
@@ -218,6 +211,8 @@ HLIST regex_grep(uchar *orig_expr, FILE *fp, uchar *field, int field_mode)
             } else {
                 if (n > size) {
                     realloc_hlist(&val, size += STEP);
+		    if (val.n == DIE_HLIST)
+		        return val;
                 }
                 val.d[n-1].docid = i;
                 val.d[n-1].score = 1;  /* score = 1 */
@@ -226,6 +221,8 @@ HLIST regex_grep(uchar *orig_expr, FILE *fp, uchar *field, int field_mode)
 
             if (!field_mode) {
                 val = ormerge(val, tmp);
+		if (val.n == DIE_HLIST)
+		    return val;
             } 
             if (val.n > IGNORE_HIT) {
                 free_hlist(val);
@@ -236,13 +233,13 @@ HLIST regex_grep(uchar *orig_expr, FILE *fp, uchar *field, int field_mode)
                 uchar buf2[BUFSIZE];
 
                 if (field_mode) {
-                    fprintf(stderr, "field: [%d]<%s> id: %d\n", 
+                    debug_printf("field: [%d]<%s> id: %d\n", 
                             val.n, buf, i);
                 } else {
-                    fseek(Nmz.i, getidxptr(Nmz.ii, i), 0);
-                    fgets(buf2, BUFSIZE, Nmz.i); /* read and dispose */
+                    fseek(Nmz.w, getidxptr(Nmz.wi, i), 0);
+                    fgets(buf2, BUFSIZE, Nmz.w);
                     chomp(buf2);
-                    fprintf(stderr, "re: %s, (%d:%s), %d, %d\n", 
+                    debug_printf("re: %s, (%d:%s), %d, %d\n", 
                             buf2, i, buf, tmp.n, val.n);
                 }
 	    }
@@ -252,8 +249,7 @@ HLIST regex_grep(uchar *orig_expr, FILE *fp, uchar *field, int field_mode)
         val = do_date_processing(val);
     }
 
-    free(rp->buffer);
-    free(rp->fastmap);
+    re_free_pattern(rp);
     return val;
 }
 

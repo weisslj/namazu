@@ -2,7 +2,7 @@
  * 
  * conf.c -
  * 
- * $Id: conf.c,v 1.12 1999-09-04 10:23:45 satoru Exp $
+ * $Id: conf.c,v 1.13 1999-10-11 04:25:24 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -22,7 +22,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA
  * 
- * This file must be encoded in EUC-JP encoding.
  * 
  */
 
@@ -32,7 +31,10 @@
 #include "namazu.h"
 #include "util.h"
 #include "conf.h"
+#include "regex.h"
+#include "re.h"
 #include "codeconv.h"
+#include "i18n.h"
 
 static uchar *errmsg  = NULL;
 static int ConfLoaded = 0;
@@ -43,18 +45,19 @@ static int ConfLoaded = 0;
  *
  ************************************************************/
 
-void set_pathname(char*, char*, char*);
-FILE *open_conf_file(char*);
-ALIAS *add_alias(ALIAS*, uchar*, uchar*);
-void parse_conf(uchar *, int);
-int get_conf_args(uchar*, uchar*, uchar*, uchar*);
-int get_conf_arg(uchar*, uchar*);
-void replace_home(uchar *);
-void apply_conf(uchar*, uchar*, uchar*);
-int check_argnum(uchar*, int);
+static void set_pathname(char*, char*, char*);
+static FILE *open_conf_file(char*);
+static ALIAS *add_alias(ALIAS*, uchar*, uchar*);
+static REPLACE *add_replace(int, REPLACE*, uchar*, uchar*);
+static int parse_conf(uchar *, int);
+static int get_conf_args(uchar*, uchar*, uchar*, uchar*);
+static int get_conf_arg(uchar*, uchar*);
+static void replace_home(uchar *);
+static int apply_conf(uchar*, int, uchar*, uchar*);
+static int check_argnum(uchar*, int);
 
 /* change filename in full pathname */
-void set_pathname(char *to, char *o, char *name)
+static void set_pathname(char *to, char *o, char *name)
 {
     int i;
 
@@ -69,26 +72,69 @@ void set_pathname(char *to, char *o, char *name)
     return;
 }
 
-ALIAS *add_alias(ALIAS *ptr, uchar *alias, uchar *real)
+static ALIAS *add_alias(ALIAS *ptr, uchar *alias, uchar *real)
 {
     ALIAS *tmp;
     
     tmp = malloc(sizeof *tmp);
     if (tmp == NULL) {
-	 die("add_alias_malloc");
+	 diemsg("add_alias_malloc");
+	 return NULL;
     }
     tmp->alias = malloc(strlen(alias) + 1);
     if (tmp->alias == NULL) {
-	 die("add_alias_malloc");
+	 diemsg("add_alias_malloc");
+	 return NULL;
     }
 
     tmp->real = malloc(strlen(real) + 1);
-    if (tmp->alias == NULL) {
-	 die("add_alias_malloc");
+    if (tmp->real == NULL) {
+	 diemsg("add_alias_malloc");
+	 return NULL;
     }
 
     strcpy(tmp->alias, alias);
     strcpy(tmp->real, real);
+    tmp->next = ptr;
+    return tmp;
+}
+
+static REPLACE *add_replace(int lineno, REPLACE *ptr, uchar *pat, uchar *rep)
+{
+    REPLACE *tmp;
+    
+    tmp = malloc(sizeof *tmp);
+    if (tmp == NULL) {
+	 diemsg("add_replace_malloc");
+	 return NULL;
+    }
+
+    tmp->pat = malloc(strlen(pat) + 1);
+    if (tmp->pat == NULL) {
+	 diemsg("add_replace_malloc");
+	 return NULL;
+    }
+
+    tmp->rep = malloc(strlen(rep) + 1);
+    if (tmp->rep == NULL) {
+	 diemsg("add_replace_malloc");
+	 return NULL;
+    }
+
+    tmp->pat_re = ALLOC(REGEX);
+    MEMZERO((char *)tmp->pat_re, REGEX, 1);
+    tmp->pat_re->buffer = 0;
+    tmp->pat_re->allocated = 0;
+
+    strcpy(tmp->pat, pat);
+    strcpy(tmp->rep, rep);
+
+    if (re_compile_pattern (tmp->pat, strlen (tmp->pat), tmp->pat_re)) {
+	/* re_comp fails; set NULL to pat_re  */
+	re_free_pattern(tmp->pat_re);
+	tmp->pat_re = NULL;
+    }
+    
     tmp->next = ptr;
     return tmp;
 }
@@ -99,7 +145,7 @@ ALIAS *add_alias(ALIAS *ptr, uchar *alias, uchar *real)
  2. ${HOME}/.namazurc
  3. lib/namazu.conf
  */
-FILE *open_conf_file(char *av0)
+static FILE *open_conf_file(char *av0)
 {
     FILE *fp;
     char fname[BUFSIZE], *home;
@@ -136,7 +182,7 @@ FILE *open_conf_file(char *av0)
     return (FILE *) NULL;
 }
 
-int get_conf_arg(uchar *line, uchar *arg)
+static int get_conf_arg(uchar *line, uchar *arg)
 {
     *arg = '\0';
     if (*line != '"') {
@@ -172,7 +218,7 @@ int get_conf_arg(uchar *line, uchar *arg)
     }
 }
 
-void replace_home(uchar *str)
+static void replace_home(uchar *str)
 {
     uchar tmp[BUFSIZE];
 
@@ -193,7 +239,7 @@ void replace_home(uchar *str)
 }
 
 
-int get_conf_args(uchar *line, uchar *directive, uchar *arg1, uchar *arg2)
+static int get_conf_args(uchar *line, uchar *directive, uchar *arg1, uchar *arg2)
 {
     int n;
 
@@ -273,7 +319,8 @@ int get_conf_args(uchar *line, uchar *directive, uchar *arg1, uchar *arg2)
     }
 }
 
-void parse_conf(uchar *line, int lineno) {
+static int parse_conf(uchar *line, int lineno) 
+{
     uchar directive[BUFSIZE] = "";
     uchar arg1[BUFSIZE] = "";
     uchar arg2[BUFSIZE] = "";
@@ -281,7 +328,7 @@ void parse_conf(uchar *line, int lineno) {
 
     argnum = get_conf_args(line, directive, arg1, arg2);
     if (errmsg != NULL) { 
-	return; /* error */
+	return 1; /* error */
     }
 
     if (Debug && 
@@ -295,18 +342,19 @@ void parse_conf(uchar *line, int lineno) {
 	if (argnum == 2) {
 	    printf("    ARG2: [%s]\n", arg2);
 	}
-	printf("\n");
+	print("\n");
     }
 
     if (check_argnum(directive, argnum) != 0) {
-	return; /* error */
+	return 1; /* error */
     }
 
-    apply_conf(directive, arg1, arg2);
-    return;
+    if (apply_conf(directive, lineno, arg1, arg2))
+        return 1;
+    return 0;
 }
 
-int check_argnum(uchar *directive, int argnum)
+static int check_argnum(uchar *directive, int argnum)
 {
     struct conf_directive {
 	uchar *name;
@@ -336,15 +384,16 @@ int check_argnum(uchar *directive, int argnum)
 		errmsg = "too many arguments";
 		return 1;  /* error */
 	    } else {
-		die("check_argnum[1]: It MUST not be happend! ");
+		diemsg("check_argnum[1]: It MUST not be happend! ");
+		return 1;
 	    }
 	}
     }
-    die("check_argnum[2]: It MUST not be happend! ");
+    diemsg("check_argnum[2]: It MUST not be happend! ");
     return 1;
 }
 
-void apply_conf(uchar *directive, uchar *arg1, uchar *arg2)
+static int apply_conf(uchar *directive, int lineno, uchar *arg1, uchar *arg2)
 {
     if (strcasecmp(directive, "COMMENT") == 0) {
 	;  /* only a comment */
@@ -353,10 +402,13 @@ void apply_conf(uchar *directive, uchar *arg1, uchar *arg2)
     } else if (strcasecmp(directive, "BASE") == 0) {
 	strcpy(BASE_URI, arg1);
     } else if (strcasecmp(directive, "REPLACE") == 0) {
-	Replace.src = add_list(Replace.src, arg1);
-	Replace.dst = add_list(Replace.dst, arg2);
+	Replace = add_replace(lineno, Replace, arg1, arg2);
+	if (Replace == NULL)
+	  return 1;
     } else if (strcasecmp(directive, "ALIAS") == 0) {
 	Alias = add_alias(Alias, arg1, arg2);
+	if (Alias == NULL)
+	  return 1;
     } else if (strcasecmp(directive, "LOGGING") == 0) {
 	Logging = 0;
     } else if (strcasecmp(directive, "SCORING") == 0) {
@@ -366,9 +418,9 @@ void apply_conf(uchar *directive, uchar *arg1, uchar *arg2)
 	    TfIdf = 0;
 	}
     } else if (strcasecmp(directive, "LANG") == 0) {
-	strcpy(Lang, arg1);
-	init_message();
+	set_lang(arg1);
     }
+    return 0;
 }
 
 /************************************************************
@@ -378,7 +430,7 @@ void apply_conf(uchar *directive, uchar *arg1, uchar *arg2)
  ************************************************************/
 
 /* loading configuration file of Namazu */
-void load_conf(char *av0)
+int load_conf(char *av0)
 {
     FILE *fp;
     uchar buf[BUFSIZE];
@@ -390,21 +442,24 @@ void load_conf(char *av0)
 
     fp = open_conf_file(av0);
     if (fp == NULL)
-	return;
+	return 0;
 
     ConfLoaded = 1;  /* for show_config() */
 
     while (fgets(buf, BUFSIZE, fp)) {
 	lineno++;
 	chomp(buf);
-	codeconv(buf);  /* for Shift_JIS encoding */
-	parse_conf(buf, lineno);
+	conv_ja_any_to_eucjp(buf);  /* for Shift_JIS encoding */
+	if (parse_conf(buf, lineno))
+	    return 1;
 	if (errmsg != NULL) { /* error occurred */
-	    die("%s:%d: syntax error: %s.\n",  
+	    diemsg("%s:%d: syntax error: %s.\n",  
 		NAMAZU_CONF, lineno, errmsg);
+	    return 1;
 	}
     }
     fclose(fp);
+    return 0;
 }
 
 void show_conf(void)
@@ -413,36 +468,36 @@ void show_conf(void)
 	printf("Config:  %s\n", NAMAZU_CONF);
     }
 
-    printf("\
+    printf(_("\
 Default: %s\n\
 BASE:    %s\n\
 Logging: %s\n\
 Lang:    %s\n\
 Scoring: %s\n\
-", DEFAULT_INDEX, BASE_URI, Logging ? "on" : "off",
-           Lang, TfIdf ? "tfidf" : "simple");
+"), DEFAULT_INDEX, BASE_URI, Logging ? "on" : "off",
+           get_lang(), TfIdf ? "tfidf" : "simple");
 
     {
 	ALIAS *list = Alias;
 
 	while (list) {
-	    printf("Alias:   \"%s\" -> \"%s\"\n", 
+	    printf(_("Alias:   \"%s\" -> \"%s\"\n"), 
 		   list->alias, list->real);
 	    list = list->next;
 	}
     }
     {
-	REPLACE list = Replace;
+	REPLACE *list = Replace;
 
-	while (list.src) {
-	    printf("Replace: \"%s\" -> \"%s\"\n", 
-		   list.src->str, list.dst->str);
-	    list.src = list.src->next;
-	    list.dst = list.dst->next;
+	while (list) {
+	    printf(_("Replace: \"%s\" -> \"%s\"\n"), 
+		   list->pat, list->rep);
+	    list = list->next;
 	}
     }
 
-    exit(0);
+    /*    exit(0);*/
+    return;
 }
 
 

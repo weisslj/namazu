@@ -15,17 +15,17 @@
 #include "namazu.h"
 #include "util.h"
 
-static char *progname = NULL;
-
 /************************************************************
  *
  * Private functions
  *
  ************************************************************/
 
+static uchar URIdecode(uchar, uchar);
+
 /* decde URIencode */
 /* c & 0xdf means to uppercase c */
-uchar URIdecode(uchar c, uchar c2)
+static uchar URIdecode(uchar c, uchar c2)
 {
 
     c = ((c >= 'A' ? ((c & 0xdf) - 'A') + 10 : (c - '0'))) * 16;
@@ -133,30 +133,6 @@ void chomp(uchar * s)
     }
 }
 
-
-/* a machine has no memmove() such as SunOS 4.1.x */
-#if !defined(HAVE_MEMMOVE)
-
-void *memmove(void *d, void *s, size_t n)
-{
-    size_t i;
-
-    if (s > d) {
-        for (i = 0; i < n; i++) {
-            *((char *)d + i) = *((char *)s + i);
-        }
-    } else {
-        for (i = n - 1; ; i--) {
-            *((char *)d + i) = *((char *)s + i);
-            if (i == 0) {
-                break;
-	    }
-        }
-    }
-    return d;
-}
-
-#endif
 
 /* decoding URI encoded strings */
 void decode_uri(uchar * s)
@@ -275,24 +251,6 @@ int read_unpackw(FILE *fp, int *buf, int size) {
     return  n;
 }
 
-LIST *add_list(LIST *ptr, uchar *str)
-{
-    LIST *tmp;
-    
-    tmp = malloc(sizeof *tmp);
-    if (tmp == NULL) {
-	 die("add_list_malloc");
-    }
-    tmp->str = malloc(strlen(str) + 1);
-    if (tmp->str == NULL) {
-	 die("add_list_malloc");
-    }
-
-    strcpy(tmp->str, str);
-    tmp->next = ptr;
-    return tmp;
-}
-
 /* read index and return with value */
 long getidxptr(FILE * fp, long p)
 {
@@ -316,9 +274,32 @@ int issymbol(int c)
 void die(char *fmt, ...)
 {
     va_list args;
+
+    va_start(args, fmt);
+
+    vsnprintf(Dyingmessage, BUFSIZE, fmt, args);
+    va_end(args);
+
+    diewithmsg();
+
+    exit(2);
+}
+
+void diemsg(char *fmt, ...)
+{
+    va_list args;
+
+    va_start(args, fmt);
+
+    vsnprintf(Dyingmessage, BUFSIZE, fmt, args);
+    va_end(args);
+}
+
+void diewithmsg()
+{
     FILE *output;
 
-    fflush(stdout);
+    fflush(stderr);
 
     if (IsCGI) {
         output = stdout;
@@ -327,29 +308,52 @@ void die(char *fmt, ...)
     }
 
     if (HtmlOutput) {
-	fputs(MSG_MIME_HEADER, output);
+	print(MSG_MIME_HEADER);
     }
 
-    if (progname != NULL) {
-	fprintf(output, "%s: ", progname);
-    }
+    fprintf(output, "%s: ", PACKAGE);
 
-    va_start(args, fmt);
-    vfprintf(output, fmt, args);
-    va_end(args);
+    fprintf(output, "%s", Dyingmessage);
 
     fprintf(output, "\n");
 
     exit(2);
 }
 
-size_t strlen2(uchar *str, int c)
+/* warning messaging function */
+void wprintf(char *fmt, ...)
 {
-    int i;
+    va_list args;
 
-    for (i = 0; *str && *str != c; i++, str++)
-        ;
-    return i;
+    fflush(stdout);
+
+    fprintf(stderr, "%s: ", PACKAGE);
+
+    va_start(args, fmt);
+    vfprintf(stderr, fmt, args);
+    va_end(args);
+
+    fflush(stderr);
+}
+
+/* debug messaging function */
+void debug_printf(char *fmt, ...)
+{
+    va_list args;
+
+    if (Debug == 0) {
+	return;
+    }
+
+    fflush(stdout);
+
+    fprintf(stderr, "%s(debug): ", PACKAGE);
+
+    va_start(args, fmt);
+    vfprintf(stderr, fmt, args);
+    va_end(args);
+
+    fflush(stderr);
 }
 
 void pathcat(uchar *base, uchar *name)
@@ -369,11 +373,6 @@ void pathcat(uchar *base, uchar *name)
     strcpy(name, work);
 }
 
-void setprogname(char *argv0)
-{
-    progname = argv0;
-}
-
 int isnumstr(char *str)
 {
     int i, nonnum = 0;
@@ -383,7 +382,7 @@ int isnumstr(char *str)
     }
 
     for (i = 0; str[i] != '\0'; i++) {
-	if (! isdigit(str[i])) {
+	if (! isdigit((int)str[i])) {
 	    nonnum = 1;
 	    return 0;
 	}
@@ -408,15 +407,26 @@ void commas(char *str)
     }
 }
 
-/* case-insensitive brute force search  */
+/* 
+ * case-insensitive brute force search  
+ * (with consideration for EUC encoding schemes)
+ */
 uchar *strcasestr(uchar *haystack, uchar *needle)
 {
     int n = strlen(needle);
+    int euc_mode = 0;
+
+    if (is_lang_ja()) {
+	euc_mode = 1;
+    }
 
     for (; *haystack != '\0'; haystack++) {
 	if (strncasecmp(haystack, needle, n) == 0) {
 	    return haystack;
-	} 
+	}
+	if (euc_mode && iseuc(*haystack)) {
+	    haystack++;
+	}
     }
     return NULL;
 }
@@ -488,15 +498,18 @@ uchar *readfile(uchar *fname)
     stat(fname, &fstatus);
     fp = fopen(fname, "rb");
     if (fp == NULL) {
-        fprintf(stderr, "warning: Can't open %s\n", fname);
+        wprintf("can't open %s\n", fname);
         return 0;
     }
     buf = (uchar *) malloc(fstatus.st_size + 1);
     if (buf == NULL) {
-	 die("readfile(malloc)");
+	 diemsg("readfile(malloc)");
+	 return NULL;
     }
-    if (fread(buf, sizeof(uchar), fstatus.st_size, fp) == 0)
-        die("readfile(fread)");
+    if (fread(buf, sizeof(uchar), fstatus.st_size, fp) == 0) {
+        diemsg("readfile(fread)");
+	return NULL;
+    }
     *(buf + fstatus.st_size) = '\0';
     fclose(fp);
     return buf;
@@ -521,3 +534,36 @@ void subst(uchar *p, uchar *pat, uchar *rep)
 	memmove(p + replen, p + patlen, strlen(p) - patlen + 1);
     }
 }
+
+/* output contents of file */
+void cat(uchar *fname)
+{
+    uchar buf[BUFSIZE];
+    FILE *fp;
+
+    if ((fp = fopen(fname, "rb"))) {
+	while (fgets(buf, BUFSIZE, fp)) {
+	    fputs(buf, stdout);
+	}
+	fclose(fp);
+    }
+    wprintf("can't open %s\n", fname);
+}
+
+char *safe_getenv(char *s)
+{
+    char *cp;
+    return (cp = getenv(s)) ? cp : "";
+}
+
+void print(uchar *s) {
+    fputs(s, stdout);
+}
+
+void wprint(uchar *s) {
+    fflush(stdout);
+    fprintf(stderr, "%s: ", PACKAGE);
+    fputs(s, stderr);
+    fflush(stderr);
+}
+

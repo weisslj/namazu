@@ -1,4 +1,5 @@
 #! @PERL@
+# -*- Perl -*-
 #
 # mailutimepl - program to unify the file time stamp with 
 #               the RFC 822 'Date:' field

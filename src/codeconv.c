@@ -2,7 +2,7 @@
  * 
  * codeconv.c -
  * 
- * $Id: codeconv.c,v 1.6 1999-09-06 03:22:01 satoru Exp $
+ * $Id: codeconv.c,v 1.7 1999-10-11 04:25:23 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -22,7 +22,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA
  * 
- * This file must be encoded in EUC-JP encoding.
  * 
  */
 
@@ -33,9 +32,12 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "namazu.h"
 #include "codeconv.h"
 #include "util.h"
+#include "i18n.h"
 
 static uchar kanji2nd;
 
@@ -46,8 +48,14 @@ static uchar kanji2nd;
  *
  ************************************************************/
 
-uchar jmstojis(uchar, uchar);
-uchar jmstojis(uchar c1, uchar c2)
+static uchar jmstojis(uchar, uchar);
+static uchar jistojms(uchar, uchar);
+static void jistoeuc(uchar*);
+static void sjistoeuc(uchar *);
+static void euctosjis(uchar *);
+static void euctojis(uchar *);
+
+static uchar jmstojis(uchar c1, uchar c2)
 {
     c1 -= (c1 <= 0x9f) ? 0x70 : 0xb0;
     c1 <<= 1;
@@ -61,13 +69,7 @@ uchar jmstojis(uchar c1, uchar c2)
 }
 
 
-/************************************************************
- *
- * Public functions
- *
- ************************************************************/
-
-void jistoeuc(uchar * s)
+static void jistoeuc(uchar * s)
 {
     uchar c, c2;
     int state, i = 0, j = 0;
@@ -151,7 +153,7 @@ void jistoeuc(uchar * s)
     }
 }
 
-void sjistoeuc(uchar * s)
+static void sjistoeuc(uchar * s)
 {
     uchar c, c2;
     int i = 0, j = 0;
@@ -181,9 +183,7 @@ void sjistoeuc(uchar * s)
     }
 }
 
-#if	defined(_WIN32) || defined(__EMX__)
-
-uchar jistojms(uchar c1, uchar c2)
+static uchar jistojms(uchar c1, uchar c2)
 {
     if (c1 & 1) {
 	c1 = (c1 >> 1) + 0x71;
@@ -200,7 +200,7 @@ uchar jistojms(uchar c1, uchar c2)
     return c1;
 }
 
-void euctosjis(uchar *s)
+static void euctosjis(uchar *s)
 {
     uchar c, c2;
     int i = 0, j = 0;
@@ -229,17 +229,94 @@ void euctosjis(uchar *s)
     }
 }
 
-#endif  /* (_WIN32 || __EMX__) */
-
-
-/* codeconv: Detect character encoding (with simple approach) 
- * and convert "in" into EUC-JP
+/*
+ * NOTES: This function give no consideration for buffer overflow, 
+ * so you should prepare enough memory for `p'.
  */
-int codeconv(uchar * in)
+static void euctojis(uchar *p)
+{
+    int c, c2, state = 0;
+    uchar *alloc, *s;
+    
+    alloc = strdup(p);
+    s = alloc;
+    if (s == NULL) { /* */
+	diemsg("euctojis_strdup");
+	return;
+    }
+
+    if (!(c = (int) *(s++))) {
+	return;
+    }
+    while (1) {
+	if (c < 0x80) {
+	    if (state) {
+		*p = ESC; p++; *p = '('; p++; *p = 'B'; p++;
+		state = 0;
+	    }
+	    *p = c;
+	    p++;
+	} else if (iseuc(c)) {
+	    if (!(c2 = (int) *(s++))) {
+		*p = c;
+		p++;
+		break;
+	    }
+	    if (!state) {
+		*p = ESC; p++; *p = '$'; p++; *p = 'B'; p++;
+		state = 1;
+	    }
+	    if (iseuc(c2)) {
+		*p = c & 0x7f;
+		p++;
+		*p = c2 & 0x7f;
+		p++;
+	    } else {
+		*p = c;
+		p++;
+		*p = ESC; p++; *p = '('; p++; *p = 'B'; p++;
+		state = 0;
+		*p = c2;
+		p++;
+	    }
+	} else {
+	    if (state) {
+		*p = ESC; p++; *p = '('; p++; *p = 'B'; p++;
+		state = 0;
+	    }
+	    *p = c;
+	    p++;
+	}
+	if (!(c = (int) *(s++))) {
+	    if (state) {
+		*p = ESC; p++; *p = '('; p++; *p = 'B'; p++;
+	    }
+	    *p = '\0';
+	    break;
+	}
+    }
+    *p = '\0';
+    free(alloc);
+}
+
+
+/************************************************************
+ *
+ * Public functions
+ *
+ ************************************************************/
+
+
+/*
+ * Detect character encoding (with simple approach) 
+ * and convert "in" into EUC-JP
+ * Supported encodings: EUC-JP, ISO-2022-JP, Shift_JIS
+ */
+int conv_ja_any_to_eucjp(uchar * in)
 {
     int i, m, n, f;
 
-    if (!is_lang_ja(Lang)) { /* Lang != ja */
+    if (!is_lang_ja()) { /* Lang != ja */
         return 0;
     }
     for (i = 0, m = 0, n = 0, f = 0; *(in + i); i++) {
@@ -269,7 +346,8 @@ int codeconv(uchar * in)
  * Converting 2 bytes Alnum and Symbol into 1 byte one.
  * This code was contributed by Akira Yamada <akira@linux.or.jp> [1997-09-28]
  */
-char Z2H[] = "\0 \0\0,.\0:;?!\0\0'`\0^~_\0\0\0\0\0\0\0\0\0\0\0\0/\\\0\0|\0\0`'\"\"()\0\0[]{}<>\0\0\0\0\0\0\0\0+-\0\0\0=\0<>\0\0\0\0\0\0\0'\"\0\\$\0\0%#&*@";
+static char Z2H[] = 
+"\0 \0\0,.\0:;?!\0\0'`\0^~_\0\0\0\0\0\0\0\0\0\0\0\0/\\\0\0|\0\0`'\"\"()\0\0[]{}<>\0\0\0\0\0\0\0\0+-\0\0\0=\0<>\0\0\0\0\0\0\0'\"\0\\$\0\0%#&*@";
 void zen2han(uchar * s)
 {
     int p = 0, q = 0, r;
@@ -303,7 +381,7 @@ int iskatakana(uchar *c)
 {
     if ((((int)*c == 0xa5 && 
           (int)*(c + 1) >= 0xa0 && (int)*(c + 1) <= 0xff)
-         || ((int)*c == 0xa1 && (int)*(c + 1) == 0xbc))) {  /* '¡¼' */
+         || ((int)*c == 0xa1 && (int)*(c + 1) == 0xbc))) {  /* choon */
         return 1;
     }
     return 0;
@@ -313,9 +391,43 @@ int ishiragana(uchar *c)
 {
     if ((((int)*c == 0xa4 && 
           (int)*(c + 1) >= 0xa0 && (int)*(c + 1) <= 0xff) 
-         || ((int)*c == 0xa1 && (int)*(c + 1) == 0xbc))) {  /* '¡¼' */
+         || ((int)*c == 0xa1 && (int)*(c + 1) == 0xbc))) {  /* choon */
         return 1;
     }
     return 0;
 }
 
+/*
+ * Convert character encoding from internal one to external one. 
+ *
+ * NOTES: Current internal encoding is EUC-JP for Japanese and
+ * ISO-8859-* for others. In future, internal encoding of Namazu 
+ * will be UTF-8.
+ *
+ * NOTES: This function give no consideration for buffer overflow, 
+ * so you should prepare enough memory for `str'.
+ *
+ */
+uchar *conv_ext (uchar *str) {
+    char *lang = get_lang();
+    if (strcmp(lang, "japanese") == 0) {   /* EUC-JP */
+	;
+    } else if (strcmp(lang, "ja") == 0) {  /* EUC-JP */
+	;
+    } else if (strcmp(lang, "ja_JP.EUC") == 0) {  /* EUC-JP */
+	;
+    } else if (strcmp(lang, "ja_JP.ujis") == 0) {  /* EUC-JP */
+	;
+    } else if (strcmp(lang, "ja_JP.eucJP") == 0) {  /* EUC-JP */
+	;
+    } else if (strcmp(lang, "ja_JP.sjis") == 0) { /* Shift_JIS */
+	euctosjis(str);
+    } else if (strcmp(lang, "ja_JP.SJIS") == 0) { /* Shift_JIS */
+	euctosjis(str);
+    } else if (strcmp(lang, "ja_JP.JIS7") == 0) { /* ISO-2022-JP */
+	euctojis(str);
+    } else if (strcmp(lang, "ja_JP.iso-2022-jp") == 0) { /* ISO-2022-JP */
+	euctojis(str);
+    }
+    return str;
+}

@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.23 1999-09-06 01:13:10 satoru Exp $
+ * $Id: hlist.c,v 1.24 1999-10-11 04:25:25 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -50,21 +50,21 @@ typedef struct str_num str_num;
  *
  ************************************************************/
 
-void memcpy_hlist(HLIST, HLIST, int);
-void init_date(HLIST);
-void set_rank(HLIST);
-void field_sort(HLIST);
-int  field_scmp(const void*, const void*);
-int  field_ncmp(const void*, const void*);
-int  date_cmp(const void*, const void*);
-int  score_cmp(const void*, const void*);
+static void memcpy_hlist(HLIST, HLIST, int);
+static void init_date(HLIST);
+static void set_rank(HLIST);
+static int  field_sort(HLIST);
+static int  field_scmp(const void*, const void*);
+static int  field_ncmp(const void*, const void*);
+static int  date_cmp(const void*, const void*);
+static int  score_cmp(const void*, const void*);
 
-void memcpy_hlist(HLIST to, HLIST from, int n)
+static void memcpy_hlist(HLIST to, HLIST from, int n)
 {
     memcpy(to.d + n,  from.d,  from.n * sizeof (to.d[0]));
 }
 
-void init_date(HLIST hlist)
+static void init_date(HLIST hlist)
 {
     int i;
 
@@ -73,7 +73,7 @@ void init_date(HLIST hlist)
     }
 }
 
-void set_rank(HLIST hlist)
+static void set_rank(HLIST hlist)
 {
     int i;
 
@@ -83,7 +83,7 @@ void set_rank(HLIST hlist)
     }
 }
 
-void field_sort(HLIST hlist) 
+static int field_sort(HLIST hlist) 
 {
     int i, numeric = 1;
 
@@ -100,7 +100,8 @@ void field_sort(HLIST hlist)
 
 	hlist.d[i].field = (uchar *)malloc(leng + 1);
 	if (hlist.d[i].field == NULL) {
-	    die("void_field_sort");
+	    diemsg("int_field_sort");
+	    return DIE_ERROR;
 	}
 	strcpy(hlist.d[i].field, buf);
     } 
@@ -115,11 +116,12 @@ void field_sort(HLIST hlist)
     for (i = 0; i < hlist.n; i++) {
 	free(hlist.d[i].field);
     }
+    return 0;
 }
 
 /* field_scmp: 
    compare of a pair of hlist.d[].field as string in descending order */
-int field_scmp(const void *p1, const void *p2)
+static int field_scmp(const void *p1, const void *p2)
 {
     hlist_data *v1, *v2;
     int r;
@@ -137,7 +139,7 @@ int field_scmp(const void *p1, const void *p2)
 
 /* field_ncmp: 
    compare of a pair of hlist.d[].field as number in descending order */
-int field_ncmp(const void *p1, const void *p2)
+static int field_ncmp(const void *p1, const void *p2)
 {
     hlist_data *v1, *v2;
     int r;
@@ -156,7 +158,7 @@ int field_ncmp(const void *p1, const void *p2)
 
 /* score_cmp: 
    compare of a pair of hlist.d[].score as number in descending order */
-int score_cmp(const void *p1, const void *p2)
+static int score_cmp(const void *p1, const void *p2)
 {
     hlist_data *v1, *v2;
     int r;
@@ -175,7 +177,7 @@ int score_cmp(const void *p1, const void *p2)
 
 /* date_ncmp: 
    compare of a pair of hlist.d[].date as number in descending order */
-int date_cmp(const void *p1, const void *p2)
+static int date_cmp(const void *p1, const void *p2)
 {
     hlist_data *v1, *v2;
     int r;
@@ -299,6 +301,8 @@ HLIST ormerge(HLIST left, HLIST right)
     n = left.n + right.n;
 
     malloc_hlist(&val, n);
+    if (val.n == DIE_HLIST)
+        return val;
 
     for (v = 0, i = 0, j = 0; i < left.n; i++) {
 	for (; left.d[i].docid >= right.d[j].docid && j < right.n; j++) {
@@ -338,7 +342,9 @@ void malloc_hlist(HLIST * hlist, int n)
     if (n <= 0) return;
     hlist->d = (hlist_data *)malloc(n * sizeof(hlist_data));
     if (hlist->d == NULL) {
-	 die("malloc_hlist");
+	 diemsg("malloc_hlist");
+	 hlist->n = DIE_HLIST;
+	 return;
     }
 
     hlist->n = n;
@@ -349,7 +355,8 @@ void realloc_hlist(HLIST * hlist, int n)
     if (n <= 0) return;
     hlist->d = (hlist_data *) realloc(hlist->d, n * sizeof(hlist_data));
     if (hlist->d == NULL) {
-	 die("realloc_hlist");
+	 diemsg("realloc_hlist");
+	 hlist->n = DIE_HLIST;
     }
 }
 
@@ -384,6 +391,8 @@ HLIST merge_hlist(HLIST *hlists)
         }
     }
     malloc_hlist(&value, n);
+    if (value.n == DIE_HLIST)
+        return value;
     for(i = n = 0; i < Idx.num; i++) {
         if (hlists[i].n <= 0) 
             continue;
@@ -403,9 +412,7 @@ HLIST do_date_processing(HLIST hlist)
 
     date_index = fopen(NMZ.t, "rb");
     if (date_index == NULL) {
-        if (Debug) {
-            fprintf(stderr, "%s: cannot open file.\n", NMZ.t);
-        }
+	wprintf("%s: cannot open file.\n", NMZ.t);
         init_date(hlist);
         return hlist; /* error */
     }
@@ -448,8 +455,7 @@ HLIST get_hlist(int index)
 
     if (TfIdf) {
         idf = log((double)DocNum / (n/2)) / log(2);
-        if (Debug)
-            fprintf(stderr, "idf: %f (N:%d, n:%d)\n", idf, DocNum, n/2);
+	debug_printf("idf: %f (N:%d, n:%d)\n", idf, DocNum, n/2);
     }
 
     if (n >= IGNORE_HIT * 2) {  
@@ -459,10 +465,15 @@ HLIST get_hlist(int index)
 	int sum = 0;
 	buf = (int *) malloc(n * sizeof(int)); /* with pelnty margin */
 	if (buf == NULL) {
-	    die("get_hlist");
+	    diemsg("get_hlist");
+	    hlist.d = NULL;
+	    hlist.n = DIE_HLIST;
+	    return hlist;
 	}
 	n = read_unpackw(Nmz.i, buf, n);
 	malloc_hlist(&hlist, n / 2);
+	if (hlist.n == DIE_HLIST)
+	    return hlist;
 	
 	for (i = 0; i < n; i += 2) {
 	    hlist.d[i/2].docid = *(buf + i) + sum;
@@ -481,29 +492,33 @@ HLIST get_hlist(int index)
 
 
 /* interface to invoke merge sort function */
-void sort_hlist(HLIST hlist, int mode)
+int sort_hlist(HLIST hlist, int mode)
 {
     set_rank(hlist); /* conserve current order for STABLE sorting */
 
     if (mode == SORT_BY_FIELD) {
-	field_sort(hlist);
+	if (field_sort(hlist))
+	    return DIE_ERROR;
     } else if (mode == SORT_BY_DATE) {
 	qsort(hlist.d, hlist.n, sizeof(hlist.d[0]), date_cmp);
     } else if (mode == SORT_BY_SCORE) {
 	qsort(hlist.d, hlist.n, sizeof(hlist.d[0]), score_cmp);
     } 
+    return 0;
 }
 
 /* 
  * reverse a given hlist
  * original of this routine was contributed by Furukawa-san [1997-11-13]
  */
-void reverse_hlist(HLIST hlist)
+int reverse_hlist(HLIST hlist)
 {
     int m, n;
     HLIST tmp;
 
     malloc_hlist(&tmp, 1);
+    if (tmp.n == DIE_HLIST)
+        return DIE_ERROR;
     m = 0;
     n = hlist.n - 1;
     while (m < n) {
@@ -514,6 +529,7 @@ void reverse_hlist(HLIST hlist)
 	n--;
     }
     free_hlist(tmp);
+    return 0;
 }
 
 void set_docnum(int n)

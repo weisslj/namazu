@@ -1,0 +1,209 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: namazu 2.0\n"
+"POT-Creation-Date: 1999-09-28 22:08+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
+"Last-Translator: Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>\n"
+"Language-Team: Japanese <satoru-t@is.aist-nara.ac.jp>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=EUC-JP\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#: src/cgi.c:66 src/cgi.c:76
+msgid "Invalid idxname."
+msgstr "不正な idxname の指定です"
+
+#: src/cgi.c:108 src/cgi.c:119
+msgid "Too long QUERY_STRING"
+msgstr "CGIの QUERY_STRING が長すぎます"
+
+#: src/conf.c:471
+#, c-format
+msgid ""
+"Default: %s\n"
+"BASE:    %s\n"
+"Logging: %s\n"
+"Lang:    %s\n"
+"Scoring: %s\n"
+msgstr ""
+"標準のインデックス: %s\n"
+"<BASE>タグ: %s\n"
+"ログの記録: %s\n"
+"標準の言語: %s\n"
+"スコア計算: %s\n"
+
+#: src/conf.c:484
+#, c-format
+msgid "Alias:   \"%s\" -> \"%s\"\n"
+msgstr "別名:   \"%s\" -> \"%s\"\n"
+
+#: src/conf.c:493
+#, c-format
+msgid "Replace: \"%s\" -> \"%s\"\n"
+msgstr "置換: \"%s\" -> \"%s\"\n"
+
+#: src/namazu.c:353
+msgid "\t<p>No document matching your query.</p>\n"
+msgstr "\t<p>検索式にマッチする文書はありませんでした。</p>\n"
+
+#: src/output.c:185
+msgid "\t<strong>Page:</strong> "
+msgstr "\t<strong>ペイジ:</strong> "
+
+#: src/output.c:219
+#, c-format
+msgid "Current List: %d"
+msgstr "現在のリスト: %d"
+
+#: src/search.c:291
+msgid " (Too many words matched. Ignored.)"
+msgstr " (マッチする単語が多すぎるので無視しました)"
+
+#: src/search.c:293
+msgid " (Too many pages hit. Ignored.)"
+msgstr " (ヒット数が多すぎるので無視しました)"
+
+#: src/search.c:295
+msgid " (cannot open regex index)"
+msgstr " (正規表現用インデックスが開けませんでした)"
+
+#: src/search.c:727
+msgid "\t<h2>Results:</h2>\n"
+msgstr "\t<h2>検索結果</h2>\n"
+
+#: src/search.c:734
+msgid "References: "
+msgstr "参考ヒット数: "
+
+#: src/search.c:751
+msgid "\t<p><strong> Total "
+msgstr "\t<p><strong>検索式にマッチする "
+
+#: src/search.c:758
+msgid ""
+"\t documents matching your query.</strong></p>\n"
+"\n"
+msgstr ""
+"\t 個の文書が見つかりました。</strong></p>\n"
+"\n"
+
+#: src/search.c:835
+msgid "(You don't have a permission to access the index)"
+msgstr "（インデックスにアクセスする権利がありません）"
+
+#: src/search.c:841
+msgid " (cannot open this index)\n"
+msgstr " (インデックスが開けませんでした)\n"
+
+#: src/search.c:865
+#, c-format
+msgid " [ TOTAL: %d ]"
+msgstr " [ 合計: %d ]"
+
+#: src/usage.c:44
+#, c-format
+msgid ""
+"Search Program of Namazu v%s\n"
+"%s\n"
+"\n"
+"Usage: namazu [options] <query> [index(s)] \n"
+"    -n, --max=num        set number of documents shown at once.\n"
+"    -w, --whence=num     set first number of documents shown in results.\n"
+"    -l, --list           print results by listing format.\n"
+"    -s, --short          print results by short format.\n"
+"        --results=ext    set NMZ.result.ext for printing results.\n"
+"        --late           sort documents in late order.\n"
+"        --early          sort documents in early order.\n"
+"        --sort=method    set a sort method (score, date, field:name)\n"
+"        --ascending      sort in ascending order (default: descending)\n"
+"    -a, --all            print all results.\n"
+"    -c, --count          print only number of hits.\n"
+"    -h, --html           print in HTML format.\n"
+"    -r, --no-references  do not display reference hit counts.\n"
+"    -H, --page           print further result links. (nearly meaningless)\n"
+"    -F, --form           force to print <form> ... </form> region.\n"
+"    -R, --no-replace     do not replace URI string.\n"
+"    -U, --no-encode-uri  do not decode URI when printing in a plain format.\n"
+"    -o, --output=file    set output file name.\n"
+"    -f, --config=file    set a pathname of a config file.\n"
+"    -C, --show-config    print current configuration.\n"
+"    -q, --quiet          do not display extra messages except search "
+"results.\n"
+"    -L, --lang=lang      set language (ja or en)\n"
+"    -v, --version        show the version of namazu and exit.\n"
+"        --help           show this help and exit\n"
+msgstr ""
+"全文検索システム Namazu の検索プログラム v%s\n"
+"%s\n"
+"使い方: namazu [options] <query> [index(s)] \n"
+"    -n, --max=num           一度に表示する件数\n"
+"    -w, --whence=num        表示するリストの先頭番号\n"
+"    -l, --list              検索結果を URI・パス名のリストで出力\n"
+"    -s, --short             短いフォーマットで出力\n"
+"        --result=ext        結果表示に用いる NMZ.result.ext を指定\n"
+"        --late              検索結果を新しい順にソートする\n"
+"        --early             検索結果を古い順にソートする\n"
+"        --sort=method       ソート方法を指定する (score, date, field:name)\n"
+"        --ascending         ソートの方向を昇順にする (標準は降順)\n"
+"    -a, --all               検索結果をすべて表示する\n"
+"    -c, --count             ヒット数のみを表示する\n"
+"    -h, --html              HTML で出力する\n"
+"    -r, --no-references     参考ヒット数を表示しない\n"
+"    -H, --page              先の検索結果へのリンクを表示する (ほぼ無意味) \n"
+"    -F, --form              <form> ... </form> の部分を強制的に表示する\n"
+"    -R, --no-replace        URI の置き換えを行わない\n"
+"    -U, --no-encode-uri     URI encode の復元を行わない\n"
+"    -o, --output=file       指定したファイルに検索結果を出力する\n"
+"    -f, --config=file       namazu.conf を指定する\n"
+"    -C, --show-config       コンフィギュレーション内容を表示する\n"
+"    -q, --quiet             検索結果以外のメッセージを表示しない\n"
+"    -L, --lang=lang         メッセージの言語を設定する ja または en\n"
+"    -v, --version           ヴァージョンを表示する\n"
+"        --help              help を表示する (この表示)\n"
+
+#: src/usage.c:83
+msgid "Usage: namazu [options] <query> [index dir(s)]\n"
+msgstr "使い方: namazu [オプション] <検索式> [インデックス...]\n"
+
+#: src/usage.c:84
+msgid "Try `namazu --help' for more options.\n"
+msgstr "`namazu --help' でオプションの説明が表示されます\n"
+
+#. if no item available
+#: src/wakati.c:232
+msgid ""
+"\t<h2>Error!</h2>\n"
+"<p>Invalid query.</p>\n"
+msgstr ""
+"\t<h2>エラー!</h2>\n"
+"<p>検索式が不正です。</p>\n"
+
+#: src/wakati.c:238
+msgid ""
+"\t<h2>Error!</h2>\n"
+"<p>Too many query tokens.</p>\n"
+msgstr ""
+"\t<h2>エラー!</h2>\n"
+"<p>検索式の項目が多すぎます。</p>\n"
+
+#~ msgid ""
+#~ "\t<h2>Error!</h2>\n"
+#~ "<p>Too long Query.</p>\n"
+#~ msgstr ""
+#~ "\t<h2>エラー!</h2>\n"
+#~ "<p>検索式が長すぎます。</p>\n"
+
+#~ msgid "Too long CGI query length"
+#~ msgstr "CGIのクエリーが長すぎます"
+
+#~ msgid ""
+#~ "To Administrator:\n"
+#~ "Check the definition of INDEXDIR.\n"
+#~ msgstr "管理者へ: INDEXDIR の設定を確認してください\n"
+
+#~ msgid "Word count: "
+#~ msgstr "\t<strong>参考ヒット数:</strong> "

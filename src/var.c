@@ -2,7 +2,7 @@
  * 
  * values.c -
  * 
- * $Id: var.c,v 1.7 1999-09-04 10:23:45 satoru Exp $
+ * $Id: var.c,v 1.8 1999-10-11 04:25:30 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -22,12 +22,12 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA
  * 
- * This file must be encoded in EUC-JP encoding.
  * 
  */
 
 #include <stdio.h>
 #include "namazu.h"
+#include "re.h"
 
 /* default directory of where indices are */
 #ifdef OPT_INDEXDIR
@@ -53,8 +53,7 @@ uchar NAMAZURC[BUFSIZE] = "";
 int HListMax = 20;		/* max number of search results */
 int HListWhence = 0;		/* number which beginning of search results */
 int Debug = 0;			/* if debug mode is on: 1 */
-int ShortFormat = 0;		/* if no display summary: 1  */
-int MoreShortFormat = 0;        /* if more short format mode: 1  */
+int ListFormat = 0;        /* if more short format mode: 1  */
 int Quiet = 0;                  /* if quiet mode: 1  */
 int HitCountOnly = 0;
 int HtmlOutput = 0;		/* if display as HTML: 1 */
@@ -79,16 +78,16 @@ int TfIdf = OPT_SCORING;   /* switch of TfIdf mode */
 int TfIdf = 1;
 #endif
 
-REPLACE Replace = { NULL, NULL };
+REPLACE *Replace = NULL;
 ALIAS   *Alias   = NULL;
 
 NMZ_FILES Nmz;  /* NMZ.* files' file pointers */
 NMZ_NAMES NMZ = {  /* NMZ.* files' names */
     "NMZ.i", 
     "NMZ.ii",
-    "NMZ.head.",
-    "NMZ.foot.",
-    "NMZ.body.",
+    "NMZ.head",
+    "NMZ.foot",
+    "NMZ.body",
     "NMZ.lock",
     "NMZ.result",
     "NMZ.slog",
@@ -97,10 +96,13 @@ NMZ_NAMES NMZ = {  /* NMZ.* files' names */
     "NMZ.field.",
     "NMZ.t",
     "NMZ.p",
-    "NMZ.pi"
+    "NMZ.pi",
+    "NMZ.tips",
+    "NMZ.access"
 };
 
 INDICES Idx;
 QUERY Query;
 
 char Template[BUFSIZE] = "normal";
+char Dyingmessage[BUFSIZE] = "Initialized";

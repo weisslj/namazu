@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.32 1999-09-08 07:05:10 satoru Exp $
+dnl $Id: configure.in,v 1.33 1999-10-11 04:24:55 satoru Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -11,15 +11,25 @@ dnl
 
 dnl Process this file with autoconf to produce a configure script.
 AC_INIT(src/cgi.c)
-AM_INIT_AUTOMAKE(namazu, 1.9.4)
+AC_PREREQ(2.13)               dnl Minimum Autoconf version required.
+AM_INIT_AUTOMAKE(namazu, 1.9.5)
+
+dnl AM_ACLOCAL_INCLUDE(macros)
+
+dnl Namazu's website
+OPT_NMZ_URI="http://openlab.ring.gr.jp/namazu/"
+AC_SUBST(OPT_NMZ_URI)
 
 dnl This option requires config.guess, config.sub and install-sh
 dnl AC_CANONICAL_SYSTEM
+
+AC_ISC_POSIX
 
 dnl Checks for programs.
 AC_PROG_CC
 AC_PROG_INSTALL
 AC_PROG_LN_S
+AC_PROG_RANLIB
 AC_PROG_MAKE_SET
 
 if test -n "$GCC"; then
@@ -30,6 +40,12 @@ dnl OS specific.
 AC_EXEEXT
 AC_OBJEXT
 
+dnl *
+dnl * I18N
+dnl *
+ALL_LINGUAS="ja ja_JP.SJIS ja_JP.JIS7"
+AM_GNU_GETTEXT
+
 dnl Checks for libraries.
 dnl Replace `main' with a function in -lm:
 if test -z "$MINGW32"; then
@@ -38,48 +54,54 @@ fi
 
 dnl Checks for header files.
 AC_HEADER_STDC
-AC_CHECK_HEADERS(fcntl.h unistd.h string.h)
+AC_CHECK_HEADERS(fcntl.h limits.h malloc.h unistd.h string.h)
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
+AC_C_INLINE
 AC_TYPE_PID_T
 AC_TYPE_SIZE_T
 
 dnl Checks for library functions.
 AC_FUNC_ALLOCA
+AC_FUNC_MMAP
 AC_FUNC_MEMCMP
-AC_CHECK_FUNCS(re_comp memmove)
+AC_FUNC_VPRINTF
+AC_CHECK_FUNCS(getcwd getwd putenv setenv strdup strspn)
+AC_REPLACE_FUNCS([memmove strcasecmp strncasecmp vsnprintf \
+		strcspn strstr])
 
-dnl Checks for external commands
+dnl *
+dnl * Checks for external commands
+dnl *
 
 AC_ARG_WITH(
 	perl5,
-	[  --with-perl5=PATH       set perl ver.5 interpreter location [search path]],
+	[  --with-perl5=PATH       set perl 5.004 or later location [search path]],
 	AC_MSG_RESULT(using $with_perl5 for perl5)
 	PERL=$with_perl5,
 	[AC_PATH_PROGS(PERL, perl5 perl, no)]
 )
-if test $PERL = "no" || $PERL -e 'exit ($] >= 5)'; then
-    AC_MSG_ERROR(perl(ver.5) interpreter required)
+if test $PERL = "no" || $PERL -e 'exit ($] >= 5.004)'; then
+    AC_MSG_ERROR(perl 5.004 or later required)
 fi
 
 AC_ARG_WITH(
 	japanese,
-	[  --without-japanese      don't handle Japanese code],
+	[  --without-japanese      don't handle Japanese characters],
 	[japanese=${withval}], [japanese='yes']
 )
 
 if test "${japanese}" = "no"; then
     # --without-japanese
     OPT_LANGUAGE=en
-    TK_LANGUAGE=ENGLISH
     AC_SUBST(OPT_LANGUAGE)
     OPT_WAKATI_DEFAULT="none"
 else
     OPT_LANGUAGE=ja
     AC_ARG_WITH(
 	    lang,
-	    [  --with-lang=language    set default LANGUAGE code (ja or en) [ja]],
+	    [  --with-lang=language    set default LANGUAGE code [ja]],
 	    OPT_LANGUAGE=$with_lang,
     )
     AC_SUBST(OPT_LANGUAGE)
@@ -137,7 +159,7 @@ else
 	    fi
     )
     if test "$KAKASI" = "no" -a "$CHASEN" = "no"; then
-	AC_MSG_ERROR(KAKASI or ChaSen required to handle Japanese code)
+	AC_MSG_ERROR(KAKASI or ChaSen are required to handle a Japanese text)
     fi
 
     AC_MSG_CHECKING(for default wakatigaki processor)
@@ -156,9 +178,13 @@ dnl *
 dnl * Checking tknamazu
 dnl *
 
+dnl * For determining namazu and mknmz pathnames
+ac_cv_path_NAMAZU="$bindir/namazu"
+ac_cv_path_MKNMZ="$bindir/mknmz"
+
 AC_ARG_WITH(
 	tknamazu,
-	[  --with-tknamazu      build namazu with tcl/tk front-end ],
+	[  --with-tknamazu         build namazu with tcl/tk front-end ],
 	[tknamazu=${withval}], [tknamazu='yes']
 )
 
@@ -167,11 +193,11 @@ if test "${tknamazu}" = "no"; then
 else
     AC_ARG_WITH(
 		wish,
-		[  --with-wish=PATH       set wish location [search path]],
+		[  --with-wish=PATH        set wish location [search path]],
 		AC_MSG_RESULT(using $with_wish for wish)
 		WISH = $with_wish,
 		dnl checking for wish (ugly)
-		[AC_PATH_PROGS(WISH, wish8.2 wish8.1 wish8.0jp wish4.2jp wish, no)]
+		[AC_PATH_PROGS(WISH, wish8.0jp wish4.2jp wish8.2 wish8.1 wish, no)]
     )
     if test "$WISH" = "no"; then
         AC_MSG_WARN(*** wish not found: tknamazu will not be built because ***)
@@ -179,7 +205,7 @@ else
     else
         AC_ARG_WITH(
 			lynx,
-			[  --with-lynx=PATH       set lynx browser location [search path]],
+			[  --with-lynx=PATH        set lynx browser location [search path]],
 			AC_MSG_RESULT(using $with_lynx for lynx)
 			LYNX = $with_lynx,
 			[AC_PATH_PROG(LYNX, lynx, no)]
@@ -201,7 +227,7 @@ else
             fi
             AC_ARG_WITH(
 				info,
-				[  --with-info=PATH       set info location [search path]],
+				[  --with-info=PATH        set info location [search path]],
 				AC_MSG_RESULT(using $with_info for info)
 				INFO = $with_info,
 				[AC_PATH_PROG(INFO, info, no)]
@@ -211,7 +237,7 @@ else
             fi
             AC_ARG_WITH(
 				zcat,
-				[  --with-zcat=PATH       set zcat location [search path]],
+				[  --with-zcat=PATH        set zcat location [search path]],
 				AC_MSG_RESULT(using $with_zcat for zcat)
 				ZCAT = $with_zcat,
 				[AC_PATH_PROG(ZCAT, zcat, no)]
@@ -219,11 +245,11 @@ else
             if test "$ZCAT" = "no"; then
                 AC_MSG_WARN(zcat not found)
             fi
-            AC_CONFIG_SUBDIRS(tknamazu)
         fi
     fi
 fi
 AC_SUBST(TKNAMAZU)
+AC_CONFIG_SUBDIRS($TKNAMAZU)
 
 
 dnl *
@@ -231,26 +257,41 @@ dnl * Checking File::MMagic module
 dnl *
 
 changequote(<<, >>)
-tmp=`$PERL -nle 'print \$1 if /^\\$VERSION = "([\d\.]+)";\$/' \
+tmp=`$PERL -nle 'print \$1 if /^\\$VERSION = \"([\d\.]+)\";\$/' \
 	File-MMagic/MMagic.pm`
 dnl *
 dnl * tmp="10.0"  # for testing
 dnl *
 AC_MSG_CHECKING(for File::MMagic module)
+
+FILE_MMAGIC=""
+ADDITIONAL_INC="."  # dummy
+
+if test "$prefix" != "$ac_default_prefix"; then
+    FILE_MMAGIC_DIR="$prefix/share/namazu/perl5"
+    ADDITIONAL_INC="$FILE_MMAGIC_DIR"
+fi
+
 if $PERL -e "use File::MMagic $tmp" 1>/dev/null 2> /dev/null; then
     AC_MSG_RESULT(yes)
-    FILE_MMAGIC=""
 else
     AC_MSG_RESULT(no)
     AC_MSG_WARN(File::MMagic module not installed. preparing its Makefile.)
     cd File-MMagic
-    $PERL Makefile.PL
+    if test "$prefix" != "$ac_default_prefix"; then
+        $PERL Makefile.PL LIB=$FILE_MMAGIC_DIR
+    else
+        $PERL Makefile.PL
+    fi
     cd ..
     FILE_MMAGIC="File-MMagic"
 fi
 changequote([, ])
 AC_SUBST(FILE_MMAGIC)
+AC_SUBST(ADDITIONAL_INC)
 
+dnl Check for Emacs and where to install .elc files.
+AM_PATH_LISPDIR
 
 dnl *
 dnl * Define the admin's email address
@@ -337,21 +378,6 @@ SCORING=$scoring
 AC_SUBST(OPT_SCORING)
 
 dnl *
-dnl * Define a test mode (defult: off)
-dnl *
-
-AC_ARG_ENABLE(test,
-[  --enable-test           enable a test mode [no]],
-[case "${enableval}" in
-   yes)	TEST_MODE=1 ;;
-   no)	TEST_MODE=0 ;;
-   *)	AC_MSG_ERROR(invalid value ${enableval} for --enable-test) ;;
-esac], TEST_MODE=0)
-AC_SUBST(TEST_MODE)
-
-
-
-dnl *
 dnl * Set default Namazu directories.
 dnl * 
 test "${prefix}" = NONE && prefix=/usr/local
@@ -367,11 +393,34 @@ dnl * Output Files.
 dnl * 
 AM_CONFIG_HEADER(config.h)
 
-AC_OUTPUT([Makefile src/Makefile conf/Makefile lib/var.pl lib/conf.pl
-src/mknmz.pl src/gcnmz src/gtnmz src/mailutime namazu.spec],
-[chmod +x src/gcnmz src/gtnmz src/mailutime]) 
+AC_OUTPUT([Makefile
+	   namazu.spec
+	   conf/Makefile 
+	   filter/Makefile
+	   intl/Makefile 
+	   lib/Makefile
+	   lisp/Makefile
+	   macros/Makefile
+	   pl/Makefile
+	   pl/var.pl
+	   pl/conf.pl
+	   po/Makefile.in
+	   po/make_jis7_po
+	   src/Makefile 
+	   src/mknmz.pl
+	   src/gcnmz.pl
+	   src/gtnmz
+	   src/vfnmz
+	   src/kwnmz.pl
+	   src/mailutime
+	   template/NMZ.head
+	   template/NMZ.foot
+	   template/NMZ.head.ja_JP.JIS7
+	   template/NMZ.foot.ja_JP.JIS7
+	  ],
+	  [chmod +x src/gtnmz src/mailutime src/vfnmz po/make_jis7_po]) 
 
 # Local Variables:
 # mode:shell-script
-# sh-indentation:2
+# sh-indentation:4
 # End:

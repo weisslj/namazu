@@ -55,60 +55,83 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
+ADDITIONAL_INC = @ADDITIONAL_INC@
+CATALOGS = @CATALOGS@
+CATOBJEXT = @CATOBJEXT@
 CC = @CC@
 CHASEN = @CHASEN@
+DATADIRNAME = @DATADIRNAME@
+EMACS = @EMACS@
 EXEEXT = @EXEEXT@
 FILE_MMAGIC = @FILE_MMAGIC@
+GENCAT = @GENCAT@
+GMOFILES = @GMOFILES@
+GMSGFMT = @GMSGFMT@
 GROFF = @GROFF@
+GT_NO = @GT_NO@
+GT_YES = @GT_YES@
+INCLUDE_LOCALE_H = @INCLUDE_LOCALE_H@
 INFO = @INFO@
+INSTOBJEXT = @INSTOBJEXT@
+INTLDEPS = @INTLDEPS@
+INTLLIBS = @INTLLIBS@
+INTLOBJS = @INTLOBJS@
 KAKASI = @KAKASI@
 LN_S = @LN_S@
 LYNX = @LYNX@
 MAKEINFO = @MAKEINFO@
+MKINSTALLDIRS = @MKINSTALLDIRS@
+MSGFMT = @MSGFMT@
 NKF = @NKF@
 OBJEXT = @OBJEXT@
 OPT_ADMIN_EMAIL = @OPT_ADMIN_EMAIL@
 OPT_LANGUAGE = @OPT_LANGUAGE@
+OPT_NMZ_URI = @OPT_NMZ_URI@
 OPT_SCORING = @OPT_SCORING@
 OPT_WAKATI_DEFAULT = @OPT_WAKATI_DEFAULT@
 PACKAGE = @PACKAGE@
 PERL = @PERL@
-TEST_MODE = @TEST_MODE@
+POFILES = @POFILES@
+POSUB = @POSUB@
+RANLIB = @RANLIB@
 TKNAMAZU = @TKNAMAZU@
+USE_INCLUDED_LIBINTL = @USE_INCLUDED_LIBINTL@
+USE_NLS = @USE_NLS@
 VERSION = @VERSION@
 WISH = @WISH@
 ZCAT = @ZCAT@
-AUTOMAKE_OPTIONS = no-dependencies
+l = @l@
+lispdir = @lispdir@
+AUTOMAKE_OPTIONS = 1.4 no-dependencies
 
-always_built_SUBDIRS = src conf
+SUBDIRS = intl po conf filter lib lisp macros pl src @FILE_MMAGIC@ @TKNAMAZU@
 
-SUBDIRS = $(always_built_SUBDIRS) @FILE_MMAGIC@ @TKNAMAZU@
+DIST_SUBDIRS = $(SUBDIRS) tknamazu
 
-DIST_SUBDIRS = $(always_built_SUBDIRS) tknamazu
-
-EXTRA_DIST = README-ja namazu.spec.in namazu.spec 	     ChangeLog.old.1.gz File-MMagic
+EXTRA_DIST = README-ja namazu.spec.in namazu.spec 	     ChangeLog.1 File-MMagic
 
 
-EXTRA_DIRS = doc etc lib lisp filter template
+EXTRA_DIRS = doc etc template
 
-CLEANFILES = File-MMagic/Makefile File-MMagic/pm_to_blib 	     conf/mknmz.conf-dist
+DISTCLEANFILES = File-MMagic/Makefile File-MMagic/pm_to_blib 		 conf/mknmz.conf-dist lib/var.pl lib/conf.pl
 
-CLEANDIRS = File-MMagic/blib
+
+DISTCLEANDIRS = File-MMagic/blib conf/conf File-MMagic/CVS
 
 pkgdatadir = @datadir@/@PACKAGE@
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = config.h
 CONFIG_CLEAN_FILES =  namazu.spec
-DIST_COMMON =  README ./stamp-h.in AUTHORS COPYING ChangeLog INSTALL \
-Makefile.am Makefile.in NEWS THANKS TODO acconfig.h acinclude.m4 \
-aclocal.m4 config.h.in configure configure.in install-sh missing \
-mkinstalldirs namazu.spec.in
+DIST_COMMON =  README ./stamp-h.in ABOUT-NLS AUTHORS COPYING ChangeLog \
+INSTALL Makefile.am Makefile.in NEWS THANKS TODO acconfig.h \
+acinclude.m4 aclocal.m4 config.h.in configure configure.in install-sh \
+missing mkinstalldirs namazu.spec.in
 
 
 DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
 
-TAR = tar
+TAR = gtar
 GZIP_ENV = --best
 all: all-redirect
 .SUFFIXES:
@@ -259,7 +282,7 @@ distcheck: dist
 	mkdir $(distdir)/=inst
 	dc_install_base=`cd $(distdir)/=inst && pwd`; \
 	cd $(distdir)/=build \
-	  && ../configure --srcdir=.. --prefix=$$dc_install_base \
+	  && ../configure --with-included-gettext --srcdir=.. --prefix=$$dc_install_base \
 	  && $(MAKE) $(AM_MAKEFLAGS) \
 	  && $(MAKE) $(AM_MAKEFLAGS) dvi \
 	  && $(MAKE) $(AM_MAKEFLAGS) check \
@@ -338,11 +361,11 @@ installdirs-am:
 mostlyclean-generic:
 
 clean-generic:
-	-test -z "$(CLEANFILES)" || rm -f $(CLEANFILES)
 
 distclean-generic:
 	-rm -f Makefile $(CONFIG_CLEAN_FILES)
 	-rm -f config.cache config.log stamp-h stamp-h[0-9]*
+	-test -z "$(DISTCLEANFILES)" || rm -f $(DISTCLEANFILES)
 
 maintainer-clean-generic:
 mostlyclean-am:  mostlyclean-hdr mostlyclean-tags mostlyclean-generic
@@ -393,6 +416,7 @@ install-data-local:
 	done
 	cp ChangeLog COPYING NEWS README README-ja THANKS TODO \
 		$(pkgdatadir)/etc
+	rm -f $(pkgdatadir)/template/*.in
 
 dist-hook:
 	for subdir in $(EXTRA_DIRS); do \
@@ -402,8 +426,14 @@ dist-hook:
 	    rm -rf $(distdir)/$$subdir/CVS; \
 	    rm -rf $(distdir)/$$subdir/*/CVS; \
 	done
-	rm -f $(distdir)/$(CLEANFILES)
-	rm -rf $(distdir)/$(CLEANDIRS)
+
+	for file in $(DISTCLEANFILES); do \
+	    rm -f $(distdir)/$$file; \
+	done
+
+	for dir in $(DISTCLEANDIRS); do \
+	    rm -rf $(distdir)/$$dir; \
+	done
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

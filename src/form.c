@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.16 1999-09-06 07:56:38 satoru Exp $
+ * $Id: form.c,v 1.17 1999-10-11 04:25:24 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -22,7 +22,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA
  * 
- * This file must be encoded in EUC-JP encoding.
  * 
  */
 
@@ -37,6 +36,8 @@
 #include "output.h"
 #include "field.h"
 #include "hlist.h"
+#include "codeconv.h"
+#include "i18n.h"
 
 /************************************************************
  *
@@ -44,21 +45,21 @@
  *
  ************************************************************/
 
-int cmp_element(uchar*, uchar*);
-int replace_query_value(uchar*, uchar*);
-uchar *read_headfoot(uchar*);
-void delete_str(uchar*, uchar*);
-void get_value(uchar*, uchar*);
-void get_select_name(uchar*, uchar*);
-int select_option(uchar*, uchar*, uchar*);
-int check_checkbox(uchar*);
-void handle_tag(uchar*, uchar*, uchar*, uchar *, uchar *);
+static int cmp_element(uchar*, uchar*);
+static int replace_query_value(uchar*, uchar*);
+static uchar *read_headfoot(uchar*);
+static void delete_str(uchar*, uchar*);
+static void get_value(uchar*, uchar*);
+static void get_select_name(uchar*, uchar*);
+static int select_option(uchar*, uchar*, uchar*);
+static int check_checkbox(uchar*);
+static void handle_tag(uchar*, uchar*, uchar*, uchar *, uchar *);
 
 /* compare the element
  * some measure of containing LF or redundant spaces are acceptable.
  * igonore cases
  */
-int cmp_element(uchar *s1, uchar *s2)
+static int cmp_element(uchar *s1, uchar *s2)
 {
     for (; *s1 && *s2; s1++, s2++) {
         if (*s2 == ' ') {
@@ -81,25 +82,26 @@ int cmp_element(uchar *s1, uchar *s2)
 #define iseuc(c)  ((c) >= 0xa1 && (c) <= 0xfe)
 
 /* replace <input type="text" name="query"  value="hogehoge"> */
-int replace_query_value(uchar *p, uchar *orig_query)
+static int replace_query_value(uchar *p, uchar *query)
 {
-    uchar query[BUFSIZE];
+    uchar tmp_query[BUFSIZE];
     
-    strcpy(query, orig_query);
+    strcpy(tmp_query, query);
 
     if (cmp_element(p, (uchar *)"input type=\"text\" name=\"query\"") == 0) {
         for (; *p; p++)
             fputc(*p, stdout);
-        printf(" value=\"");
-        fputx(query, stdout); 
-        fputs("\"", stdout);
+        print(" value=\"");
+	conv_ext(tmp_query);
+        print(tmp_query); 
+        print("\"");
         return 0;
     }
     return 1;
 }
 
 /* delete string (case insensitive) */
-void delete_str(uchar *s, uchar *d)
+static void delete_str(uchar *s, uchar *d)
 {
     int l;
     uchar *tmp;
@@ -114,7 +116,7 @@ void delete_str(uchar *s, uchar *d)
     chomp(s);
 }
 
-void get_value(uchar *s, uchar *v)
+static void get_value(uchar *s, uchar *v)
 {
     *v = '\0';
     for (; *s; s++) {
@@ -129,7 +131,7 @@ void get_value(uchar *s, uchar *v)
     }
 }
 
-void get_select_name(uchar *s, uchar *v)
+static void get_select_name(uchar *s, uchar *v)
 {
     *v = '\0';
     for (; *s; s++) {
@@ -144,7 +146,7 @@ void get_select_name(uchar *s, uchar *v)
     }
 }
 
-int select_option(uchar *s, uchar *name, uchar *subquery)
+static int select_option(uchar *s, uchar *name, uchar *subquery)
 {
     uchar value[BUFSIZE];
 
@@ -197,7 +199,7 @@ int select_option(uchar *s, uchar *name, uchar *subquery)
             }
 
         } else if (strcasecmp(name, "lang") == 0) {
-            if (strcasecmp(value, Lang) == 0) {
+            if (strcasecmp(value, get_lang()) == 0) {
                 fputs(" selected", stdout);
             }
         } else if (strcasecmp(name, "idxname") == 0) {
@@ -219,7 +221,7 @@ int select_option(uchar *s, uchar *name, uchar *subquery)
 }
 
 /* mark CHECKBOX of idxname with CHECKED */
-int check_checkbox(uchar *s)
+static int check_checkbox(uchar *s)
 {
     uchar value[BUFSIZE];
     int i;
@@ -242,14 +244,16 @@ int check_checkbox(uchar *s)
                 pp += strlen(pp);
             }
             for (i = 0; i < Idx.num; i++) {
-                if (strsuffixcmp(name, Idx.names[i]) == 0) {
+                if (strcmp(name, 
+			   Idx.names[i] + strlen(DEFAULT_INDEX) + 1) == 0) 
+		{
                     searched++;
                     break;
                 }
             }
         }
         if (db_count == searched) {
-            printf(" checked");
+            print(" checked");
         }
         return 0;
     }
@@ -257,7 +261,7 @@ int check_checkbox(uchar *s)
 }
 
 /* handle an HTML tag */
-void handle_tag(uchar *p, uchar *q, uchar *query, 
+static void handle_tag(uchar *p, uchar *q, uchar *query, 
                uchar *select_name, uchar *subquery)
 {
     uchar tmp[BUFSIZE];
@@ -278,13 +282,20 @@ void handle_tag(uchar *p, uchar *q, uchar *query,
     fputs(tmp, stdout);
 }
 
-uchar *read_headfoot(uchar *fname) {
-    uchar *buf, *p;
+static uchar *read_headfoot(uchar *fname) 
+{
+    uchar *buf, *p, tmp_fname[BUFSIZE];
     char *script_name;
 
-    buf = readfile(fname);
-    if (buf == NULL) {
-        return NULL;
+    strcpy(tmp_fname, fname);
+    choose_msgfile(tmp_fname);
+
+    buf = readfile(tmp_fname);
+    if (buf == NULL) { /* failed */
+	buf = readfile(fname); /* retry with plain fname */
+	if (buf == NULL) {
+	    return NULL;
+	}
     }
 
     /* expand buf memory for replacing {cgi} */
@@ -314,7 +325,8 @@ uchar *read_headfoot(uchar *fname) {
  *
  ************************************************************/
 
-/* display header or footer file.
+/* 
+ * display header or footer file.
  * very ad hoc.
  */
 void print_headfoot(uchar * fname, uchar * query, uchar *subquery)
@@ -335,11 +347,15 @@ void print_headfoot(uchar * fname, uchar * query, uchar *subquery)
         if (f == 0 && *p == '<') {
             if (strprefixcasecmp(p, "</title>") == 0) {
 		if (*query != '\0') {
-		    printf(": &lt;");
-		    fputx(query, stdout);
-		    printf("&gt;");
+		    uchar tmp_query[BUFSIZE];
+		    strcpy(tmp_query, query);
+		    conv_ext(tmp_query);
+
+		    print(": &lt;");
+		    print(tmp_query);
+		    print("&gt;");
 		}
-		printf("</title>\n");
+		print("</title>\n");
                 p = (uchar *)strchr(p, '>');
                 continue;
             }
@@ -368,11 +384,11 @@ void print_headfoot(uchar * fname, uchar * query, uchar *subquery)
             fputs(">", stdout);
             p = q;
         } else {
-            if ((strncmp(p, "\x1b$", 2) == 0)
+            if ((strncmp(p, "\033$", 2) == 0)
                 && (*(p + 2) == 'B' || *(p + 2) == '@')) 
             {
                 f = 1;
-            } else if (!strncmp(p, "\x1b(", 2) &&
+            } else if ((strncmp(p, "\033(", 2) == 0) &&
                        (*(p + 2) == 'J' || *(p + 2) == 'B' || *(p + 2) == 'H'))
             {
                 f = 0;

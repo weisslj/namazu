@@ -1,0 +1,25 @@
+#! @PERL@
+my $c_format = 0;
+
+open(IN, "ja.po") || die;
+open(OUT, ">ja_JP.JIS7.po") || die;
+
+while (<IN>) {
+    s/charset=EUC-JP/charset=ISO-2022-JP/;
+    $c_format = 1 if /^\#, c-format/;
+    $c_format = 0 if /^$/;
+
+    s/([\xa1-\xfe]+)/\\033\\044\\102$1\\033\\050\\102/g;
+    s/([\xa1-\xfe])/escape($1)/ge;
+    print OUT;
+}
+
+sub escape { 
+    my ($c) = @_;
+    $c =~ tr/\xa1-\xfe/\x21-\x7e/;
+    if ($c_format == 1 && $c eq "%") {
+	return "%%";
+    } else {
+	return sprintf("\\%03o", ord($c));
+    }
+}

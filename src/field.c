@@ -13,10 +13,10 @@
  *
  ************************************************************/
 
-int is_field_safe_char(int);
-void make_fullpathname_field(int);
+static int is_field_safe_char(int);
+static void make_fullpathname_field(int);
 
-int is_field_safe_char(int c)
+static int is_field_safe_char(int c)
 {
     if ((strchr(FIELD_SAFE_CHARS, c) != NULL)) {
         return 1;
@@ -26,7 +26,7 @@ int is_field_safe_char(int c)
 
 }
 
-void make_fullpathname_field(int n)
+static void make_fullpathname_field(int n)
 {
     uchar *base;
 
@@ -109,12 +109,10 @@ void get_field_data(int idxid, int docid, uchar *orig_field, uchar *data)
 
     /* consult caches */
     for (i = 0; i < cache_num; i++) {
-	if (Debug) {
-	    printf("@@ field cache [%s] hit!\n", field);
-	}
 	if (idxid == fc[i].idxid && docid == fc[i].docid &&
 	    strcmp(field, fc[i].field) == 0)
 	{  /* cache hit! */
+	    debug_printf("field cache [%s] hit!\n", field);
 	    strcpy(data, fc[i].data);
 	    return;
 	}
@@ -127,13 +125,13 @@ void get_field_data(int idxid, int docid, uchar *orig_field, uchar *data)
     
     fp_field = fopen(fname, "rb");
     if (fp_field == NULL) {
-        fprintf(stderr, "%s: cannot open file.\n", fname);
+        debug_printf("%s: cannot open file.\n", fname);
     }
 
     strcat(fname, ".i");
     fp_field_idx = fopen(fname, "rb");
     if (fp_field_idx == NULL) {
-        fprintf(stderr, "%s: cannot open file.\n", fname);
+        debug_printf("%s: cannot open file.\n", fname);
     }
 
     /* You can rely on that length of one field is shorter than 

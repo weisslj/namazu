@@ -7,8 +7,21 @@
 
 #include <stdio.h>
 
+#if ENABLE_NLS
+# include <libintl.h>
+# define _(Text) gettext (Text)
+#else
+# undef bindtextdomain
+# define bindtextdomain(Domain, Directory) /* empty */
+# undef textdomain
+# define textdomain(Domain) /* empty */
+# define _(Text) Text
+#endif
+#define N_(Text) Text
+
 #include "critical.h"
 #include "magic.h"
+#include "regex.h"
 
 /************************************************************
  *
@@ -19,13 +32,12 @@
 typedef unsigned char uchar;
 
 struct hlist_data {
-    int score;  /* score */
-    int docid;  /* document ID */
-    int idxid;  /* index ID */
-    int date; /* file's date */
-    int rank; /* ranking data for stable sorting */
+    int score;   /* score */
+    int docid;   /* document ID */
+    int idxid;   /* index ID */
+    int date;    /* document's date */
+    int rank;    /* ranking data for stable sorting */
     char *field; /* for field-specified search*/
-
 };
 typedef struct hlist_data hlist_data;
 
@@ -36,34 +48,11 @@ struct hlist {
 };
 typedef struct hlist HLIST;
 
-struct replace_elem {
-    struct replace_elem *next;
-    uchar *src;
-    uchar *dst;
-    /* The following fields are NULL if this is a traditional
-     * string substitution
-     */
-    struct re_pattern_buffer *src_exp;
-    struct subst_elem {
-	enum { literal, regex_regno } subst_type;
-	union {
-	    uchar *literal_string;
-	    int regex_regno;
-        } u;
-    };
-};
-
 struct list {
     uchar *str;
     struct list *next;
 };
 typedef struct list LIST;
-
-struct replace {
-    LIST *src;
-    LIST *dst;
-};
-typedef struct replace REPLACE;
 
 struct alias {
     uchar *alias;
@@ -71,6 +60,15 @@ struct alias {
     struct alias *next;
 };
 typedef struct alias ALIAS;
+
+typedef struct re_pattern_buffer REGEX;
+struct replace {
+    struct replace *next;
+    uchar  *pat;  /* pattern */
+    uchar  *rep;  /* replacement */
+    REGEX  *pat_re; /* compiled regex of the pattern */
+};
+typedef struct replace REPLACE;
 
 /* NMZ.* files' names */
 struct nmz_names {
@@ -89,6 +87,8 @@ struct nmz_names {
     uchar t[MAXPATH]; 
     uchar p[MAXPATH];
     uchar pi[MAXPATH];
+    uchar tips[MAXPATH];
+    uchar access[MAXPATH];
 };
 typedef struct nmz_names NMZ_NAMES;
 
@@ -109,14 +109,27 @@ struct query {
 };
 typedef struct query QUERY;
 
+/* results of phrase search */
+struct phraseres {
+  int hitnum;
+  uchar *word;
+  struct phraseres *next;
+};
+
+typedef struct phraseres PHRASERES;
+
 struct indices {
     int num;                 /* Number of indices */
     uchar *names[INDEX_MAX + 1]; /* Index names */
+
+    int total[INDEX_MAX + 1]; /* results of total hits */
+    int mode[INDEX_MAX + 1]; /* search mode */
+    PHRASERES *pr[INDEX_MAX + 1]; /* results of each word hits */
+    int phrasehit[INDEX_MAX + 1]; /* results of each phrase hits */
 };
 typedef struct indices INDICES;
 
 #include "message.h"
 #include "var.h"
-#include "em.h"
  
 #endif /* _NAMAZU_H */

@@ -8,35 +8,40 @@
 ## 'automake'ization by Hajime BABA <baba@kusastro.kyoto-u.ac.jp>
 ## Thanks to [Ryuji Abe <raeva@t3.rim.or.jp>] for many contribution
 
-AUTOMAKE_OPTIONS = no-dependencies
-LIBS = -lm
+AUTOMAKE_OPTIONS = 1.4 no-dependencies
 
 bin_PROGRAMS = namazu
-bin_SCRIPTS = gcnmz mailutime mknmz gtnmz
+bin_SCRIPTS  = gcnmz mailutime mknmz gtnmz vfnmz kwnmz
 
-CLEANFILES = mknmz
+CLEANFILES  = gcnmz mknmz kwnmz
+
+localedir = $(datadir)/locale
+INCLUDES  = -I.. -I../intl -I../lib
+DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
+LDADD = @INTLLIBS@ ../lib/libnmzut.a
 
 confdir     = $(pkgdatadir)/conf
-libdir      = $(pkgdatadir)/lib
+perllibdir  = $(pkgdatadir)/pl
 filterdir   = $(pkgdatadir)/filter
 templatedir = $(pkgdatadir)/template
 
-namazu_SOURCES = cgi.c codeconv.c conf.c field.c form.c getopt.c \
-		 getopt1.c hlist.c message.c namazu.c output.c parser.c re.c \
-		 result.c regex.c search.c seed.c util.c usage.c var.c wakati.c
-noinst_HEADERS = namazu.h regex.h util.h getopt.h field.h codeconv.h \
-		 form.h usage.h hlist.h re.h output.h conf.h em.h \
-		 magic.h critical.h cgi.h message.h var.h parser.h search.h \
-		 result.h wakati.h
+namazu_SOURCES = cgi.c codeconv.c conf.c field.c form.c \
+		 hlist.c i18n.c namazu.c output.c \
+		 parser.c re.c result.c search.c seed.c util.c \
+		 usage.c var.c wakati.c \
+		 cgi.h codeconv.h conf.h critical.h em.h field.h form.h \
+		 hlist.h i18n.h magic.h message.h namazu.h output.h \
+		 parser.h re.h result.h search.h \
+		 usage.h  util.h wakati.h var.h 
 
 ##################################################################
 
-mknmz: mknmz.pl
+SUFFIXES = .pl
+.pl:
 	rm -f $@
 	sed -e 's!%CONFDIR%!$(confdir)!g' \
-	    -e 's!%LIBDIR%!$(libdir)!g' \
+	    -e 's!%LIBDIR%!$(perllibdir)!g' \
 	    -e 's!%FILTERDIR%!$(filterdir)!g' \
 	    -e 's!%TEMPLATEDIR%!$(templatedir)!g' \
-	mknmz.pl > $@
+	$< > $@
 	chmod +x $@
-

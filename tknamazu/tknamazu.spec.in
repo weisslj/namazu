@@ -1,0 +1,42 @@
+%define ver	@VERSION@
+
+Summary: Tcl/Tk front-end for namazu
+Name: tknamazu
+Version: %{ver}
+Release: 1
+Copyright: GPL
+Group: Utilities/Text
+Requires: namazu, tcl, tk, lynx
+Source0: tknamazu-%{ver}.tar.gz
+URL: http://www.tama.or.jp/%7Ekenzo-/Namazu/tknamazu/
+BuildRoot: /var/tmp/tknamazu-%{ver}-buildroot
+
+%description
+TkNamazu is Tcl/Tk front-end for namazu.
+
+%changelog 
+* Sat Sep 11 1999 Ryuji Abe <raeva@t3.rim.or.jp>
+- First Build.
+
+%prep 
+rm -rf $RPM_BUILD_ROOT
+
+%setup
+
+%build
+CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=/usr
+make
+
+%install
+make prefix=$RPM_BUILD_ROOT/usr install
+
+%clean
+rm -rf $RPM_BUILD_ROOT
+
+%files
+%defattr(-, root, root)
+
+%doc AUTHORS ChangeLog COPYING NEWS README
+/usr/bin/tknamazu
+/usr/share/tknamazu/*
+

@@ -2,7 +2,7 @@
  * 
  * wakati.c -
  * 
- * $Id: wakati.c,v 1.7 1999-08-27 10:05:14 satoru Exp $
+ * $Id: wakati.c,v 1.8 1999-10-11 04:25:30 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -22,7 +22,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA
  * 
- * This file must be encoded in EUC-JP encoding.
  * 
  */
 
@@ -37,10 +36,6 @@
 #include "output.h"
 #include "wakati.h"
 
-#define KANJI 1
-#define KATAKANA 2
-#define HIRAGANA 3
-#define OTHER 0
 
 /************************************************************
  *
@@ -48,11 +43,11 @@
  *
  ************************************************************/
 
-int detect_char_type(uchar*);
-void set_phrase_trick(uchar*);
-void set_regex_trick(uchar*);
+static int detect_char_type(uchar*);
+static void set_phrase_trick(uchar*);
+static void set_regex_trick(uchar*);
 
-int detect_char_type(uchar *c)
+static int detect_char_type(uchar *c)
 {
     if (iskatakana(c)) {
         return KATAKANA;
@@ -66,7 +61,7 @@ int detect_char_type(uchar *c)
 
 /* replace duble quotes with spaces and replace internal spaces with TABs
 {foo bar} is also acceptable */
-void set_phrase_trick(uchar *qs)
+static void set_phrase_trick(uchar *qs)
 {
     int i, state;
     uchar *b = qs, *e;
@@ -93,7 +88,7 @@ void set_phrase_trick(uchar *qs)
 
 /* replace internal spaces with  */
 /* very complicated ad hoc routine :-( */
-void set_regex_trick(uchar *qs)
+static void set_regex_trick(uchar *qs)
 {
     int i, delim;
     uchar *b = qs, *e;
@@ -102,7 +97,7 @@ void set_regex_trick(uchar *qs)
         int field = 0;
         if ((i == 0 || *(qs + i - 1) == ' ') && isfield(qs + i)) {
             field = 1;
-            i += strlen2(qs + i, ':') + 1;
+            i += strcspn(qs + i, ":") + 1;
         }
         if ((field || i == 0 || *(qs + i - 1) == ' ') && 
             (*(qs + i) == '/' || 
@@ -133,7 +128,7 @@ void set_regex_trick(uchar *qs)
  *
  ************************************************************/
 
-void wakati(uchar *key)
+int wakati(uchar *key)
 {
     int i, j, key_leng, type;
     uchar buf[BUFSIZE * 2] = "";
@@ -198,17 +193,16 @@ void wakati(uchar *key)
     if (strlen(buf) <= BUFSIZE) {
 	strcpy(key, buf);
     } else {
-	printf("wakatigaki processing failed.\n");
-	exit(1);
+	diemsg("wakatigaki processing failed.\n");
+	return 1; 
     }
-    if (Debug) {
-        fprintf(stderr, "Wakatied STRING: [%s]\n", key);
-    }
+    debug_printf("Wakatied STRING: [%s]\n", key);
+    return 0;
 }
 
 
 /* split a given query */
-void split_query(uchar *qs)
+int split_query(uchar *qs)
 {
     int i, qn;
 
@@ -216,8 +210,8 @@ void split_query(uchar *qs)
     set_regex_trick(qs);
 
     if (strlen(qs) >= BUFSIZE - 1) {
-        fputx(MSG_TOO_LONG_KEY, stdout);
-	exit(1);
+        diemsg(_(MSG_TOO_LONG_QUERY));
+	return 1;
     }
 
     strcpy(Query.str, qs);
@@ -233,17 +227,17 @@ void split_query(uchar *qs)
 	    i++;
     }
     if (Debug)
-	fprintf(stderr, "Query.tabN: %d\n", qn);
+	debug_printf("Query.tabN: %d\n", qn);
 
     if (qn == 0) { /* if no item available */
-	fputx(MSG_INVALID_QUERY, stdout);
-	exit(1);
+	diemsg(_("	<h2>Error!</h2>\n<p>Invalid query.</p>\n"));
+	return 1;
     }
 
     /* if too much items in query, return with error */
     if (qn > QUERY_TOKEN_MAX) {
-	fputx(MSG_TOO_MANY_KEYITEM, stdout);
-	exit(1);
+	diemsg(_("	<h2>Error!</h2>\n<p>Too many query tokens.</p>\n"));
+	return 1;
     }
     /* assign a pointer to each item and set NULL to the last of table */
     for (i = 0, qn = 0; Query.str[i];) {
@@ -265,6 +259,7 @@ void split_query(uchar *qs)
     for (i = 0; i < qn; i++) {
 	tr(Query.tab[i], "", " ");
     }
+    return 0;
 }
 
 

@@ -1,3 +1,9 @@
+1999-09-30  Ryuji Abe <raeva@t3.rim.or.jp>
+
+	* Makefile.am: New File.
+	
+	* elisp-comp: New File that derived from automake-1.4.
+
 1999-09-07  KOSEKI Yoshinori  <kose@yk.NetLaputa.ne.jp>
 
 	* namazu.el (namazu-cs): if OS/2, emx and windows-nt, use SJIS.

@@ -59,34 +59,42 @@ GROFF = @GROFF@
 INFO = @INFO@
 LYNX = @LYNX@
 MAKEINFO = @MAKEINFO@
+MKNMZ = @MKNMZ@
+NAMAZU = @NAMAZU@
+NETSCAPE = @NETSCAPE@
 PACKAGE = @PACKAGE@
 VERSION = @VERSION@
 WISH = @WISH@
 ZCAT = @ZCAT@
-AUTOMAKE_OPTIONS = no-dependencies
+AUTOMAKE_OPTIONS = 1.4 no-dependencies
 
 pkgdatadir = @datadir@/@PACKAGE@
 
+ext_namazu = @NAMAZU@
+ext_mknmz = @MKNMZ@
+
 bin_SCRIPTS = tknamazu
-pkgdata_DATA = tknamazu.hlp tknamazu.ppm mini-tknamazu.xpm
+pkgdata_DATA = tknamazu.hlp.en tknamazu.hlp.ja 	tknamazu_icon.ppm tknamazu_logo.ppm mini-tknamazu.xpm mini-tknamazu.ico 	tknmzrc
+
 
 CLEANFILES = tknamazu
 
-EXTRA_DIST = $(pkgdata_DATA)
+EXTRA_DIST = $(pkgdata_DATA) tknamazu.spec.in tknamazu.spec
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/../mkinstalldirs
-CONFIG_CLEAN_FILES =  tknamazu.tcl
+CONFIG_CLEAN_FILES =  tknamazu.tcl tknamazu.spec
 SCRIPTS =  $(bin_SCRIPTS)
 
 DATA =  $(pkgdata_DATA)
 
 DIST_COMMON =  README AUTHORS COPYING ChangeLog INSTALL Makefile.am \
-Makefile.in NEWS aclocal.m4 configure configure.in tknamazu.tcl.in
+Makefile.in NEWS aclocal.m4 configure configure.in tknamazu.spec.in \
+tknamazu.tcl.in
 
 
 DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
 
-TAR = tar
+TAR = gtar
 GZIP_ENV = --best
 all: all-redirect
 .SUFFIXES:
@@ -105,6 +113,8 @@ config.status: $(srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
 $(srcdir)/configure: $(srcdir)/configure.in $(ACLOCAL_M4) $(CONFIGURE_DEPENDENCIES)
 	cd $(srcdir) && $(AUTOCONF)
 tknamazu.tcl: $(top_builddir)/config.status tknamazu.tcl.in
+	cd $(top_builddir) && CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) ./config.status
+tknamazu.spec: $(top_builddir)/config.status tknamazu.spec.in
 	cd $(top_builddir) && CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
 install-binSCRIPTS: $(bin_SCRIPTS)
@@ -265,7 +275,8 @@ mostlyclean distclean maintainer-clean
 @SET_MAKE@
 
 tknamazu: tknamazu.tcl
-	sed -e 's!%BINDIR%!$(bindir)!g' \
+	sed -e 's!%NAMAZU%!$(ext_namazu)!g' \
+	    -e 's!%MKNMZ%!$(ext_mknmz)!g' \
 	    -e 's!%PKGDATADIR%!$(pkgdatadir)!g' \
 	tknamazu.tcl > $@
 	chmod +x $@

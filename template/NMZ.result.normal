@@ -1,5 +1,5 @@
 <dt>${namazu::counter}. <strong><a href="${uri}">${title}</a></strong> (score: ${namazu::score})
-<dd><strong>Author</strong>: <em>${author}</em><br>
-<strong>Date</strong>: <em>${date}</em><br>
-${summary}
+<dd><strong>Author</strong>: <em>${author}</em>
+<dd><strong>Date</strong>: <em>${date}</em>
+<dd>${summary}
 <dd><a href="${uri}">${uri}</a> (${size} bytes)<br><br>

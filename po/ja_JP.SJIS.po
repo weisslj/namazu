@@ -1,0 +1,209 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: namazu 2.0\n"
+"POT-Creation-Date: 1999-09-28 22:08+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
+"Last-Translator: Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>\n"
+"Language-Team: Japanese <satoru-t@is.aist-nara.ac.jp>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=Shift_JIS\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#: src/cgi.c:66 src/cgi.c:76
+msgid "Invalid idxname."
+msgstr "\225\163\220\263\202\310 idxname \202\314\216\167\222\350\202\305\202\267"
+
+#: src/cgi.c:108 src/cgi.c:119
+msgid "Too long QUERY_STRING"
+msgstr "CGI\202\314 QUERY_STRING \202\252\222\267\202\267\202\254\202\334\202\267"
+
+#: src/conf.c:471
+#, c-format
+msgid ""
+"Default: %s\n"
+"BASE:    %s\n"
+"Logging: %s\n"
+"Lang:    %s\n"
+"Scoring: %s\n"
+msgstr ""
+"\225\127\217\200\202\314\203\103\203\223\203\146\203\142\203\116\203\130: %s\n"
+"<BASE>\203\136\203\117: %s\n"
+"\203\215\203\117\202\314\213\114\230\136: %s\n"
+"\225\127\217\200\202\314\214\276\214\352: %s\n"
+"\203\130\203\122\203\101\214\166\216\132: %s\n"
+
+#: src/conf.c:484
+#, c-format
+msgid "Alias:   \"%s\" -> \"%s\"\n"
+msgstr "\225\312\226\274:   \"%s\" -> \"%s\"\n"
+
+#: src/conf.c:493
+#, c-format
+msgid "Replace: \"%s\" -> \"%s\"\n"
+msgstr "\222\165\212\267: \"%s\" -> \"%s\"\n"
+
+#: src/namazu.c:353
+msgid "\t<p>No document matching your query.</p>\n"
+msgstr "\t<p>\214\237\215\365\216\256\202\311\203\175\203\142\203\140\202\267\202\351\225\266\217\221\202\315\202\240\202\350\202\334\202\271\202\361\202\305\202\265\202\275\201\102</p>\n"
+
+#: src/output.c:185
+msgid "\t<strong>Page:</strong> "
+msgstr "\t<strong>\203\171\203\103\203\127:</strong> "
+
+#: src/output.c:219
+#, c-format
+msgid "Current List: %d"
+msgstr "\214\273\215\335\202\314\203\212\203\130\203\147: %d"
+
+#: src/search.c:291
+msgid " (Too many words matched. Ignored.)"
+msgstr " (\203\175\203\142\203\140\202\267\202\351\222\120\214\352\202\252\221\275\202\267\202\254\202\351\202\314\202\305\226\263\216\213\202\265\202\334\202\265\202\275)"
+
+#: src/search.c:293
+msgid " (Too many pages hit. Ignored.)"
+msgstr " (\203\161\203\142\203\147\220\224\202\252\221\275\202\267\202\254\202\351\202\314\202\305\226\263\216\213\202\265\202\334\202\265\202\275)"
+
+#: src/search.c:295
+msgid " (cannot open regex index)"
+msgstr " (\220\263\213\113\225\134\214\273\227\160\203\103\203\223\203\146\203\142\203\116\203\130\202\252\212\112\202\257\202\334\202\271\202\361\202\305\202\265\202\275)"
+
+#: src/search.c:727
+msgid "\t<h2>Results:</h2>\n"
+msgstr "\t<h2>\214\237\215\365\214\213\211\312</h2>\n"
+
+#: src/search.c:734
+msgid "References: "
+msgstr "\216\121\215\154\203\161\203\142\203\147\220\224: "
+
+#: src/search.c:751
+msgid "\t<p><strong> Total "
+msgstr "\t<p><strong>\214\237\215\365\216\256\202\311\203\175\203\142\203\140\202\267\202\351 "
+
+#: src/search.c:758
+msgid ""
+"\t documents matching your query.</strong></p>\n"
+"\n"
+msgstr ""
+"\t \214\302\202\314\225\266\217\221\202\252\214\251\202\302\202\251\202\350\202\334\202\265\202\275\201\102</strong></p>\n"
+"\n"
+
+#: src/search.c:835
+msgid "(You don't have a permission to access the index)"
+msgstr "\201\151\203\103\203\223\203\146\203\142\203\116\203\130\202\311\203\101\203\116\203\132\203\130\202\267\202\351\214\240\227\230\202\252\202\240\202\350\202\334\202\271\202\361\201\152"
+
+#: src/search.c:841
+msgid " (cannot open this index)\n"
+msgstr " (\203\103\203\223\203\146\203\142\203\116\203\130\202\252\212\112\202\257\202\334\202\271\202\361\202\305\202\265\202\275)\n"
+
+#: src/search.c:865
+#, c-format
+msgid " [ TOTAL: %d ]"
+msgstr " [ \215\207\214\166: %d ]"
+
+#: src/usage.c:44
+#, c-format
+msgid ""
+"Search Program of Namazu v%s\n"
+"%s\n"
+"\n"
+"Usage: namazu [options] <query> [index(s)] \n"
+"    -n, --max=num        set number of documents shown at once.\n"
+"    -w, --whence=num     set first number of documents shown in results.\n"
+"    -l, --list           print results by listing format.\n"
+"    -s, --short          print results by short format.\n"
+"        --results=ext    set NMZ.result.ext for printing results.\n"
+"        --late           sort documents in late order.\n"
+"        --early          sort documents in early order.\n"
+"        --sort=method    set a sort method (score, date, field:name)\n"
+"        --ascending      sort in ascending order (default: descending)\n"
+"    -a, --all            print all results.\n"
+"    -c, --count          print only number of hits.\n"
+"    -h, --html           print in HTML format.\n"
+"    -r, --no-references  do not display reference hit counts.\n"
+"    -H, --page           print further result links. (nearly meaningless)\n"
+"    -F, --form           force to print <form> ... </form> region.\n"
+"    -R, --no-replace     do not replace URI string.\n"
+"    -U, --no-encode-uri  do not decode URI when printing in a plain format.\n"
+"    -o, --output=file    set output file name.\n"
+"    -f, --config=file    set a pathname of a config file.\n"
+"    -C, --show-config    print current configuration.\n"
+"    -q, --quiet          do not display extra messages except search "
+"results.\n"
+"    -L, --lang=lang      set language (ja or en)\n"
+"    -v, --version        show the version of namazu and exit.\n"
+"        --help           show this help and exit\n"
+msgstr ""
+"\221\123\225\266\214\237\215\365\203\126\203\130\203\145\203\200 Namazu \202\314\214\237\215\365\203\166\203\215\203\117\203\211\203\200 v%s\n"
+"%s\n"
+"\216\147\202\242\225\373: namazu [options] <query> [index(s)] \n"
+"    -n, --max=num           \210\352\223\170\202\311\225\134\216\246\202\267\202\351\214\217\220\224\n"
+"    -w, --whence=num        \225\134\216\246\202\267\202\351\203\212\203\130\203\147\202\314\220\346\223\252\224\324\215\206\n"
+"    -l, --list              \214\237\215\365\214\213\211\312\202\360 URI\201\105\203\160\203\130\226\274\202\314\203\212\203\130\203\147\202\305\217\157\227\315\n"
+"    -s, --short             \222\132\202\242\203\164\203\110\201\133\203\175\203\142\203\147\202\305\217\157\227\315\n"
+"        --result=ext        \214\213\211\312\225\134\216\246\202\311\227\160\202\242\202\351 NMZ.result.ext \202\360\216\167\222\350\n"
+"        --late              \214\237\215\365\214\213\211\312\202\360\220\126\202\265\202\242\217\207\202\311\203\134\201\133\203\147\202\267\202\351\n"
+"        --early             \214\237\215\365\214\213\211\312\202\360\214\303\202\242\217\207\202\311\203\134\201\133\203\147\202\267\202\351\n"
+"        --sort=method       \203\134\201\133\203\147\225\373\226\100\202\360\216\167\222\350\202\267\202\351 (score, date, field:name)\n"
+"        --ascending         \203\134\201\133\203\147\202\314\225\373\214\374\202\360\217\270\217\207\202\311\202\267\202\351 (\225\127\217\200\202\315\215\176\217\207)\n"
+"    -a, --all               \214\237\215\365\214\213\211\312\202\360\202\267\202\327\202\304\225\134\216\246\202\267\202\351\n"
+"    -c, --count             \203\161\203\142\203\147\220\224\202\314\202\335\202\360\225\134\216\246\202\267\202\351\n"
+"    -h, --html              HTML \202\305\217\157\227\315\202\267\202\351\n"
+"    -r, --no-references     \216\121\215\154\203\161\203\142\203\147\220\224\202\360\225\134\216\246\202\265\202\310\202\242\n"
+"    -H, --page              \220\346\202\314\214\237\215\365\214\213\211\312\202\326\202\314\203\212\203\223\203\116\202\360\225\134\216\246\202\267\202\351 (\202\331\202\332\226\263\210\323\226\241) \n"
+"    -F, --form              <form> ... </form> \202\314\225\224\225\252\202\360\213\255\220\247\223\111\202\311\225\134\216\246\202\267\202\351\n"
+"    -R, --no-replace        URI \202\314\222\165\202\253\212\267\202\246\202\360\215\163\202\355\202\310\202\242\n"
+"    -U, --no-encode-uri     URI encode \202\314\225\234\214\263\202\360\215\163\202\355\202\310\202\242\n"
+"    -o, --output=file       \216\167\222\350\202\265\202\275\203\164\203\100\203\103\203\213\202\311\214\237\215\365\214\213\211\312\202\360\217\157\227\315\202\267\202\351\n"
+"    -f, --config=file       namazu.conf \202\360\216\167\222\350\202\267\202\351\n"
+"    -C, --show-config       \203\122\203\223\203\164\203\102\203\115\203\205\203\214\201\133\203\126\203\207\203\223\223\340\227\145\202\360\225\134\216\246\202\267\202\351\n"
+"    -q, --quiet             \214\237\215\365\214\213\211\312\210\310\212\117\202\314\203\201\203\142\203\132\201\133\203\127\202\360\225\134\216\246\202\265\202\310\202\242\n"
+"    -L, --lang=lang         \203\201\203\142\203\132\201\133\203\127\202\314\214\276\214\352\202\360\220\335\222\350\202\267\202\351 ja \202\334\202\275\202\315 en\n"
+"    -v, --version           \203\224\203\100\201\133\203\127\203\207\203\223\202\360\225\134\216\246\202\267\202\351\n"
+"        --help              help \202\360\225\134\216\246\202\267\202\351 (\202\261\202\314\225\134\216\246)\n"
+
+#: src/usage.c:83
+msgid "Usage: namazu [options] <query> [index dir(s)]\n"
+msgstr "\216\147\202\242\225\373: namazu [\203\111\203\166\203\126\203\207\203\223] <\214\237\215\365\216\256> [\203\103\203\223\203\146\203\142\203\116\203\130...]\n"
+
+#: src/usage.c:84
+msgid "Try `namazu --help' for more options.\n"
+msgstr "`namazu --help' \202\305\203\111\203\166\203\126\203\207\203\223\202\314\220\340\226\276\202\252\225\134\216\246\202\263\202\352\202\334\202\267\n"
+
+#. if no item available
+#: src/wakati.c:232
+msgid ""
+"\t<h2>Error!</h2>\n"
+"<p>Invalid query.</p>\n"
+msgstr ""
+"\t<h2>\203\107\203\211\201\133!</h2>\n"
+"<p>\214\237\215\365\216\256\202\252\225\163\220\263\202\305\202\267\201\102</p>\n"
+
+#: src/wakati.c:238
+msgid ""
+"\t<h2>Error!</h2>\n"
+"<p>Too many query tokens.</p>\n"
+msgstr ""
+"\t<h2>\203\107\203\211\201\133!</h2>\n"
+"<p>\214\237\215\365\216\256\202\314\215\200\226\332\202\252\221\275\202\267\202\254\202\334\202\267\201\102</p>\n"
+
+#~ msgid ""
+#~ "\t<h2>Error!</h2>\n"
+#~ "<p>Too long Query.</p>\n"
+#~ msgstr ""
+#~ "\t<h2>\203\107\203\211\201\133!</h2>\n"
+#~ "<p>\214\237\215\365\216\256\202\252\222\267\202\267\202\254\202\334\202\267\201\102</p>\n"
+
+#~ msgid "Too long CGI query length"
+#~ msgstr "CGI\202\314\203\116\203\107\203\212\201\133\202\252\222\267\202\267\202\254\202\334\202\267"
+
+#~ msgid ""
+#~ "To Administrator:\n"
+#~ "Check the definition of INDEXDIR.\n"
+#~ msgstr "\212\307\227\235\216\322\202\326: INDEXDIR \202\314\220\335\222\350\202\360\212\155\224\106\202\265\202\304\202\255\202\276\202\263\202\242\n"
+
+#~ msgid "Word count: "
+#~ msgstr "\t<strong>\216\121\215\154\203\161\203\142\203\147\220\224:</strong> "

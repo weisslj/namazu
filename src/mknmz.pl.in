@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.68 1999-09-08 05:18:45 knok Exp $
+# $Id: mknmz.pl.in,v 1.69 1999-10-11 04:25:26 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -26,6 +26,7 @@
 
 package mknmz;
 require 5.004;
+use lib "@ADDITIONAL_INC@";
 use Cwd;
 use IO::File;
 use Time::Local;
@@ -50,7 +51,6 @@ my %PhraseHashLast = ();
 my %KeyIndex = ();
 my %KeyIndexLast = ();
 my %CheckPoint = ("on" => undef, "continue" => undef);
-my $TestMode   = @TEST_MODE@;
 my $ConfigFile = undef;
 my $MediaType  = undef;
 
@@ -65,6 +65,7 @@ sub main () {
     my $start_time = time;
 
     init();
+    setup_magic();
     load_modules();
     my $file_base = prep();
     read_config();
@@ -195,13 +196,8 @@ sub init () {
 }
 
 sub load_modules () {
-    my $libdir2 = cwd() . "/../lib";        # relative path from cwd
     unshift @INC, $LIBDIR;
-    unshift @INC, $libdir2 if $TestMode;
-
-    my $filterdir2 = cwd() . "/../filter";  # relative path from cwd
     unshift @INC, $FILTERDIR;
-    unshift @INC, $filterdir2 if $TestMode;
 
     require "var.pl";
     require "conf.pl";
@@ -215,7 +211,6 @@ sub load_modules () {
 
     # Check filter modules
     my @filters = ();
-    @filters = glob "$filterdir2/*.pl" if $TestMode;
     @filters = glob "$FILTERDIR/*.pl" if @filters == 0;
 
     for my $filter (@filters) {
@@ -234,8 +229,6 @@ sub load_modules () {
 	    $var::RECURSIVE_ACTIONS{$mt} = $recursive if ($recursive);
 	    $var::REQUIRE_CODECONV{$mt} = $codeconv if ($codeconv);
 	}
-	print STDERR "\@\@ loaded: $module.pl [@mtypes]\n" 
-	    if $TestMode;
     }
 }
 
@@ -275,7 +268,8 @@ sub namazu_core ($$$) {
     print $file_count + $file_base . 
 	" $uri [$mtype]\n" unless $var::Opt{'quiet'};
 
-    complete_field_info(\%fields, $cfile, $uri, \$headings, \$content);
+    complete_field_info(\%fields, $cfile, $uri, 
+			\$headings, \$content, \$weighted_str);
     put_field_index(\%fields, $field_indices);
 
     put_dateindex($cfile);
@@ -349,6 +343,9 @@ sub get_field_index_base (\%) {
     my ($field_indices) = @_;
 
     my @keys = split('\|', $conf::SEARCH_FIELD);
+    if ($var::Opt{'meta'}) {
+	push @keys, (split '\|', $conf::META_TAGS);
+    }
     for my $key (@keys) {
 	$key = lc($key);
 	my $fname    = "$var::NMZ{'field'}.$key";
@@ -360,9 +357,12 @@ sub get_field_index_base (\%) {
     }
 }
 
-sub complete_field_info (\%$$\$\$) {
-    my ($fields, $cfile, $uri, $headings, $content) = @_;
+sub complete_field_info (\%$$\$\$\$) {
+    my ($fields, $cfile, $uri, $headings, $contref, $wsref) = @_;
 
+    unless (defined($fields->{'title'})) {
+	$fields->{'title'} = gfilter::filename_to_title($cfile, $wsref);
+    }
     unless (defined($fields->{'date'})) {
 	my $mtime = (stat($cfile))[9];
 	my $date = util::rfc822time($mtime);
@@ -375,7 +375,7 @@ sub complete_field_info (\%$$\$\$) {
 	$fields->{'size'} = -s $cfile;
     }
     unless (defined($fields->{'summary'})) {
-	$fields->{'summary'} = make_summary($content, $headings, $cfile);
+	$fields->{'summary'} = make_summary($contref, $headings, $cfile);
     }
     unless (defined($fields->{'from'}) || defined($fields->{'author'})) {
 	$fields->{'from'} = "(unknown)";
@@ -383,7 +383,7 @@ sub complete_field_info (\%$$\$\$) {
 }
 
 sub make_summary ($$$) {
-    my ($content, $headings, $cfile) = @_;
+    my ($contref, $headings, $cfile) = @_;
 
     # pick up $conf::SUMMARY_LENGTH bytes string
     my $tmp = "";
@@ -398,9 +398,9 @@ sub make_summary ($$$) {
     my $offset = 0;
     my $tmplen = 0;
     while (($tmplen = $conf::SUMMARY_LENGTH + 1 - length($tmp)) > 0
-           && $offset < length($$content))
+           && $offset < length($$contref))
     {
-        $tmp .= substr $$content, $offset, $tmplen;
+        $tmp .= substr $$contref, $offset, $tmplen;
         $offset += $tmplen;
         $tmp =~ s/(([\xa1-\xfe]).)/$2 eq "\xa8" ? '': $1/ge;
         $tmp =~ s/([-=*\#])\1{2,}/$1$1/g;
@@ -434,10 +434,13 @@ sub put_field_index (\%$) {
 	}
     }
 
-    my @keys = split('\|', $conf::SEARCH_FIELD);
+    my @keys = split '\|', $conf::SEARCH_FIELD;
+    if ($var::Opt{'meta'}) {
+	push @keys, (split '\|', $conf::META_TAGS);
+    }
     for my $key (@keys) {
-	$key = lc($key);
-	my $fname    = util::tmpnam("NMZ.field.$key");
+	my $lkey = lc($key);
+	my $fname    = util::tmpnam("NMZ.field.$lkey");
 	my $fh_field = util::efopen(">>$fname");
 	my $output = "";
 	if (defined($fields->{$key})) {
@@ -445,8 +448,9 @@ sub put_field_index (\%$) {
 	    $fields->{$key} =~ s/\s+$//;
 	    $fields->{$key} =~ s/^\s+//;
 	    $output = $fields->{$key} . "\n";
-	    if (length($output) >= 1024) {
-		$output = substr $output, 0, 1023;
+	    if (length($output) > 1024) {
+		$output = substr $output, 0, 1022;
+		$output .= "\n";
 	    }
 	} else {
 	    $output = "\n";
@@ -455,10 +459,10 @@ sub put_field_index (\%$) {
 
 	# put index of field index
 	{
-	    my $fname        = util::tmpnam("NMZ.field.$key.i");
+	    my $fname        = util::tmpnam("NMZ.field.$lkey.i");
 	    my $fh_field_idx = util::efopen(">>$fname");
-	    print $fh_field_idx pack("N", $field_indices->{$key});
-	    $field_indices->{$key} += length $output;
+	    print $fh_field_idx pack("N", $field_indices->{$lkey});
+	    $field_indices->{$lkey} += length $output;
 	}
     }
 }
@@ -508,9 +512,12 @@ sub load_document ($$$$\%) {
 	} else {
 	    my $mtype_n = $Magic->checktype_byfilename($cfile);
 	    my $mtype_c = $Magic->checktype_data($$contref);
-	    $mtype_c = $Magic->checktype_magic($$contref) 
-	      if ((! defined $mtype_c) || $mtype_c =~ /^application\/octet-stream$/);
-	    $mtype_c = 'text/plain' unless (defined $mtype_c);
+	    my $mtype_m;
+	    $mtype_m = $Magic->checktype_magic($$contref) 
+	      if ((! defined $mtype_c) || $mtype_c =~ /^(text\/html|text\/plain|application\/octet-stream)$/);
+	    $mtype_c = $mtype_m if (defined $mtype_m && 
+				    $mtype_m !~ /^(text\/html|text\/plain|application\/octet-stream)$/);
+	    $mtype_c = 'text/plain' unless defined $mtype_c;
 	    $mtype = decide_type($mtype_n, $mtype_c);
 	}
 	if (defined $var::REQUIRE_CODECONV{$mtype}) {
@@ -544,7 +551,8 @@ sub load_document ($$$$\%) {
 	last;
     }
 
-    my $text_size = length($$contref); # masure text size at this time
+    # masure text size at this time
+    my $text_size = length($$contref) + length($$weighted_str); 
 
     if ($SYSTEM eq "MSWin32" && $shelter_cfile ne "") {
 	unlink $cfile;
@@ -552,6 +560,7 @@ sub load_document ($$$$\%) {
     }
 
     my $kanji = $$contref =~ tr/\xa1-\xfe/\xa1-\xfe/;  # Kanji contained?
+    $kanji += $$weighted_str =~ tr/\xa1-\xfe/\xa1-\xfe/;
 
     return ($file_size, $text_size, $kanji, $mtype);
 }
@@ -654,6 +663,7 @@ sub do_remain_job ($$$$) {
     } else {
 	set_lockfile($var::NMZ{'lock'});
 	write_body_msg();
+	write_tips_msg();
 	write_result_file();
 	update_field_index();
 	update_dateindex();
@@ -671,10 +681,16 @@ sub do_remain_job ($$$$) {
 sub make_headfoot_pages($$) {
     my ($file_count, $key_count) = @_;
 
-    make_headfoot("$var::NMZ{'head'}.ja", $file_count, $key_count);
-    make_headfoot("$var::NMZ{'foot'}.ja", $file_count, $key_count);
-    make_headfoot("$var::NMZ{'head'}.en", $file_count, $key_count);
-    make_headfoot("$var::NMZ{'foot'}.en", $file_count, $key_count);
+    for my $file (glob "$TEMPLATEDIR/NMZ.head*") {
+	$file =~ m!.*/NMZ.head(.*)$!;
+	my $suffix = $1;
+	make_headfoot("$var::NMZ{'head'}${suffix}", $file_count, $key_count);
+    }
+    for my $file (glob "$TEMPLATEDIR/NMZ.foot*") {
+	$file =~ m!.*/NMZ.foot(.*)$!;
+	my $suffix = $1;
+	make_headfoot("$var::NMZ{'foot'}${suffix}", $file_count, $key_count);
+    }
 }
 
 # parse comannd line options
@@ -700,6 +716,7 @@ sub parse_options ()
     my $opt_checkpoint_sub = 0;
     my $opt_show_config = 0;
     my $opt_mailnews = 0;
+    my $opt_mhonarc = 0;
 
     my $output_dir = undef;
     my $update_index = undef;
@@ -714,6 +731,7 @@ sub parse_options ()
 	       '2|deny=s'            => \$conf::DENY_REGEX,
 	       '3|allow=s'           => \$conf::ALLOW_REGEX,
 	       '4|update=s'          => \$update_index,
+	       '5|mhonarc'           => \$opt_mhonarc,
 	       'A|htacces'           => \$var::Opt{'htaccessexclude'},
 	       'C|show-config'       => \$opt_show_config,
 	       'E|no-edge-symbol'    => \$var::Opt{'noedgesymbol'},
@@ -723,6 +741,7 @@ sub parse_options ()
 	       'I|include=s'         => \$include_file,
 	       'K|no-symbol'         => \$var::Opt{'nosymbol'},
 	       'L|lang=s'            => \$conf::LANGUAGE,
+	       'M|meta'              => \$var::Opt{'meta'},
 	       'O|output-dir=s'      => \$output_dir,
 	       'S|checkpoint-sub'    => \$opt_checkpoint_sub,
 	       'T|template-dir=s'    => \$TEMPLATEDIR,
@@ -781,6 +800,9 @@ sub parse_options ()
 
     if ($opt_mailnews) {
 	$MediaType = 'message/rfc822';
+    }
+    if ($opt_mhonarc) {
+	$MediaType = 'text/html; x-type=mhonarc';
     }
     if ($opt_all) {
 	$conf::ALLOW_REGEX = ".*";
@@ -991,23 +1013,28 @@ sub write_nmz_files () {
 
 # output NMZ.body
 sub write_body_msg () {
-    write_message("$var::NMZ{'body'}.ja");
-    write_message("$var::NMZ{'body'}.en");
+    for my $file (glob "$TEMPLATEDIR/NMZ.body*") {
+	$file =~ m!.*/NMZ.body(.*)$!;
+	my $suffix = $1;
+	write_message("$var::NMZ{'body'}${suffix}");
+    }
 }
+
+# output NMZ.tips
+sub write_tips_msg () {
+    for my $file (glob "$TEMPLATEDIR/NMZ.tips*") {
+	$file =~ m!.*/NMZ.tips(.*)$!;
+	my $suffix = $1;
+	write_message("$var::NMZ{'tips'}${suffix}");
+    }
+}
+
 
 # output NMZ.result.*
 sub write_result_file () {
     my $fname = "NMZ.result.normal";
-    my $dir   = undef;
 
-    my $templatedir2 = cwd() . "/../template";  # relative path from cwd
-    if ($TestMode && -f "$templatedir2/$fname") {
-	$dir = $templatedir2;
-    } else {
-	$dir = $TEMPLATEDIR;
-    }
-
-    my @files = glob "$dir/NMZ.result.*";
+    my @files = glob "$TEMPLATEDIR/NMZ.result.*";
 
     for my $file (@files) {
 	$file =~ m!(NMZ\.result\.[^/]*)$!;
@@ -1031,13 +1058,8 @@ sub write_message ($) {
 	
 	$msgfile =~ m!.*/(.*)$!;
 	$fname = $1;
+	$template = "$TEMPLATEDIR/$fname";
 
-	my $templatedir2 = cwd() . "/../template";  # relative path from cwd
-	if ($TestMode && -f "$templatedir2/$fname") {
-	    $template = "$templatedir2/$fname";
-	} else {
-	    $template = "$LIBDIR/$fname";
-	}
 	if (-f $template) {
 	    my $buf = util::readfile($template);
 	    my $fh_output;
@@ -1046,9 +1068,6 @@ sub write_message ($) {
 	    } else {
 		$fh_output = util::efopen(">$msgfile");
 	    }
-	    $buf =~ s/"/\\"/g;
-	    $buf =~ s/\@/\\@/g;
-	    $buf = eval("\"$buf\"");  # eval to interpolate variables in $buf
 	    $buf = NKF::nkf("-j", $buf) if $var::USE_NKF_MODULE;
 
 	    print $fh_output $buf;
@@ -1470,21 +1489,13 @@ sub make_headfoot ($$$) {
     } else {
 	$file =~ m!.*/(.*)$!;
 	my $fname = $1;
-	my $template = "";
-	my $templatedir2 = cwd() . "/../template";  # relative path from cwd
-	if ($TestMode && -f "$templatedir2/$fname") {
-	    $template = "$templatedir2/$fname";
-	} else {
-	    $template = "$TEMPLATEDIR/$fname";
-	}
+	my $template = "$TEMPLATEDIR/$fname";
+
 	if (-f $template) {
 	    $buf = util::readfile($template);
 	} else {
 	    return;
 	}
-	$buf =~ s/"/\\"/g;
-	$buf =~ s/\@/\\@/g;
-	$buf = eval("\"$buf\"");
     }
 
     # the file must be saved in ISO-2022-JP encoding.
@@ -1518,12 +1529,12 @@ sub make_headfoot ($$$) {
 # Make phrase hashes for NMZ.p
 # Handle two words each for calculating a hash value ranged 0-65535.
 sub make_phrase_hash ($$$) {
-    my ($file_count, $file_base, $content) = @_;
+    my ($file_count, $file_base, $contref) = @_;
 
     my %tmp = ();
-    $$content =~ s!\x7f */? *\d+ *\x7f!!g;  # remove tags of weight
-    $$content =~ tr/\xa1-\xfea-z0-9 \n//cd; # remove all symbols
-    my @words = split(/\s+/, $$content);
+    $$contref =~ s!\x7f */? *\d+ *\x7f!!g;  # remove tags of weight
+    $$contref =~ tr/\xa1-\xfea-z0-9 \n//cd; # remove all symbols
+    my @words = split(/\s+/, $$contref);
     @words = grep {$_ ne ""} @words;   # remove empty words
     my $word_b = shift @words;
     my $docid = $file_count + $file_base;
@@ -1627,29 +1638,29 @@ sub hash ($) {
 
 # Count frequencies of words.
 sub count_words ($$$$) {
-    my ($file_count, $file_base, $content, $kanji) = @_;
+    my ($file_count, $file_base, $contref, $kanji) = @_;
     my (@tmp);
 
     # Normalize into small letter.
-    $$content =~ tr/A-Z/a-z/;
+    $$contref =~ tr/A-Z/a-z/;
 
     # Do wakatigaki if necessary.
     if ($conf::LANGUAGE eq "ja") {
-	wakati::wakatize_japanese($content) if $kanji;
+	wakati::wakatize_japanese($contref) if $kanji;
     }
 
     # Remove all symbols when -K option is specified.
-    $$content =~ tr/\xa1-\xfea-z0-9/   /c if $var::Opt{'nosymbol'};
+    $$contref =~ tr/\xa1-\xfea-z0-9/   /c if $var::Opt{'nosymbol'};
 
     my $part1 = "";
     my $part2 = "";
-    if ($$content =~ /\x7f/) {
-	$part1 = substr $$content, 0, index($$content, "\x7f");
-	$part2 = substr $$content, index($$content, "\x7f");
+    if ($$contref =~ /\x7f/) {
+	$part1 = substr $$contref, 0, index($$contref, "\x7f");
+	$part2 = substr $$contref, index($$contref, "\x7f");
 #	$part1 = $PREMATCH;  # $& and friends are not efficient
 #	$part2 = $MATCH . $POSTMATCH;
     } else {
-	$part1 = $$content;
+	$part1 = $$contref;
 	$part2 = "";
     }
 
@@ -1865,6 +1876,19 @@ sub write_index_sub () {
     return $key_count;
 }
 
+sub setup_magic () {
+    $Magic->addSpecials("text/plain; x-type=rfc",
+			"^Network Working Group",
+			"^Request [fF]or Comments",
+			"^Obsoletes:",
+			"^Category:",
+			"^Updates:");
+    $Magic->addFileExts('^rfc\d+\.txt$', 'text/plain; x-type=rfc');
+    $Magic->addFileExts('^draft-(\w*-)+-\d+\.txt$', 'text/plain; x-type=internet-draft');
+    $Magic->addFileExts('^fyi\d+\.txt$' => 'text/plain; x-type=fyi');
+    $Magic->addMagicEntry('0	string		\<!--\ MHonArc		text/html; x-type=mhonarc');
+}
+
 # decide file type from diffrent type ditection
 sub decide_type ($$) {
     my ($name, $cont) = @_;
@@ -1879,7 +1903,7 @@ sub decide_type ($$) {
 
 # for avoiding "used only once: possible typo at ..." warnings
 
-muda($conf::SEARCH_FIELD, $conf::ON_MEMORY_MAX,
+muda($conf::ON_MEMORY_MAX,
      $conf::WORD_LENG_MAX, $conf::TEXT_SIZE_MAX,
      $conf::DENY_REGEX, $var::INTSIZE,
      $conf::CHASEN_MORPH, $conf::CHASEN,
@@ -1887,9 +1911,9 @@ muda($conf::SEARCH_FIELD, $conf::ON_MEMORY_MAX,
      $var::Opt{'hiragana'}, $conf::ROBOTS_EXCLUDE_URLS, $conf::DEFAULT_FILE,
      $conf::HTML_SUFFIX, $usage::USAGE_EN, $usage::USAGE_MINI, 
      $var::Opt{'noheadabst'}, 
-     $var::Opt{'debug'}, $var::Opt{'noencodeurl'}, $var::Opt{'htaccessexclude'}, 
+     $var::Opt{'noencodeurl'}, $var::Opt{'htaccessexclude'}, 
      $var::RECURSIVE_ACTIONS, $conf::ROBOTS_EXCLUDE_URIS, 
-     $conf::ROBOTS_EXCLUDE_URLS);
+     $conf::ROBOTS_EXCLUDE_URLS, $conf::META_TAGS);
 
 
 sub muda(@) {}

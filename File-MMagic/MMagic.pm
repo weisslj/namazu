@@ -1,6 +1,6 @@
 # File::MMagic
 #
-# $Id: MMagic.pm,v 1.6 1999-09-08 05:18:44 knok Exp $
+# $Id: MMagic.pm,v 1.7 1999-10-11 04:24:59 satoru Exp $
 #
 # This program is originated from file.kulp that is a production of The
 # Unix Reconstruction Projct.
@@ -238,7 +238,7 @@ use FileHandle;
 use strict;
 
 use vars qw(
-%TEMPLATES %ESC %SPECIALS %FILEEXTS $VERSION
+%TEMPLATES %ESC $VERSION
 $magicFile $checkMagic $followLinks $fileList
 $dataLoc
 );
@@ -274,59 +274,7 @@ BEGIN {
 	    f => "\f",
 	    v => "\v" );
 
-# from the BSD names.h, some tokens for hard-coded checks of
-# different texts.  This isn't rocket science.  It's prone to
-# failure so these checks are only a last resort.
-%SPECIALS = 	(
-		 "text/plain; x-type=rfc" => [
-			      "^Network Working Group",
-			      "^Request for Comments:",
-			      "^Obsoletes:",
-			      "^Category:",
-			      "^Updates:",
-				   ],
-		 "message/rfc822" => [ "^Received:",   
-			     "^>From ",       
-			     "^From ",       
-			     "^To: ",
-			     "^Return-Path: ",
-			     "^Cc: ",
-			     "^X-Mailer: "],
-		 "message/news" => [ "^Newsgroups: ", 
-			     "^Path: ",       
-			     "^X-Newsreader: "],
-		 "text/html" => [ "<html>",
-			     "<HTML>",
-			     "<head>",
-			     "<HEAD>",
-			     "<title>",
-			     "<TITLE>",
-			     "<h1>",
-			     "<H1>",
-			     "<!--",
-			     "<!DOCTYPE",
-			],
-		 "text/x-roff" => [
-			      "^\\.SH",
-			      "^\\.PP",
-			      "^\\.TH",
-			      "^\\.BR",
-			      "^\\.SS",
-			      "^\\.TP",
-			      "^\\.IR",
-				   ],
-		);
-
-%FILEEXTS = (
-	     'gz$' => 'application/x-gzip',
-	     'Z$' => 'application/x-compress',
-	     'txt$' => 'text/plain',
-	     '^rfc\d+\.txt$' => 'text/plain; x-type=rfc',
-	     '^draft-(\w*-)+-\d+\.txt$' => 'text/plain; x-type=internet-draft', #' (for cperl-mode)
-	     '^fyi\d+\.txt$' => 'text/plain; x-type=fyi',
-);
-
-$VERSION = "0.18dev";
+$VERSION = "0.18.2";
 undef $dataLoc;
 }
 
@@ -343,7 +291,83 @@ sub new {
 	$fh->seek($dataLoc, 0);
 	&readMagicHandle($self, $fh);
     }
+
+# from the BSD names.h, some tokens for hard-coded checks of
+# different texts.  This isn't rocket science.  It's prone to
+# failure so these checks are only a last resort.
+    $self->{SPECIALS} = {
+#		 "text/plain; x-type=rfc" => [
+#			      "^Network Working Group",
+#			      "^Request for Comments:",
+#			      "^Obsoletes:",
+#			      "^Category:",
+#			      "^Updates:",
+#				   ],
+		 "message/rfc822" => [ "^Received:",   
+			     "^>From ",       
+			     "^From ",       
+			     "^To: ",
+			     "^Return-Path: ",
+			     "^Cc: ",
+			     "^X-Mailer: "],
+		 "message/news" => [ "^Newsgroups: ", 
+			     "^Path: ",       
+			     "^X-Newsreader: "],
+		 "text/html" => [ "<html[^>]*>",
+			     "<HTML[^>]*>",
+			     "<head[^>]*>",
+			     "<HEAD[^>]*>",
+			     "<body[^>]*>",
+			     "<BODY[^>]*>",
+			     "<title[^>]*>",
+			     "<TITLE[^>]*>",
+			     "<h1[^>]*>",
+			     "<H1[^>]*>",
+			],
+		 "text/x-roff" => [
+			      "^\\.SH",
+			      "^\\.PP",
+			      "^\\.TH",
+			      "^\\.BR",
+			      "^\\.SS",
+			      "^\\.TP",
+			      "^\\.IR",
+				   ],
+		};
+
+    $self->{FILEEXTS} = {
+	     'gz$' => 'application/x-gzip',
+	     'Z$' => 'application/x-compress',
+	     'txt$' => 'text/plain',
+	     'html$' => 'text/html',
+	     'htm$' => 'text/html',
+#	     '^rfc\d+\.txt$' => 'text/plain; x-type=rfc',
+#	     '^draft-(\w*-)+-\d+\.txt$' => 'text/plain; x-type=internet-draft', #' (for cperl-mode)
+#	     '^fyi\d+\.txt$' => 'text/plain; x-type=fyi',
+    };
     bless($self);
+    return $self;
+}
+
+sub addSpecials {
+    my $self = shift;
+    my $mtype = shift;
+    $self->{SPECIALS}->{"$mtype"} = [@_];
+    return $self;
+}
+
+sub addFileExts {
+    my $self = shift;
+    my $filepat = shift;
+    my $mtype = shift;
+    $self->{FILEXTS}->{"$filepat"} = $mtype;
+    return $self;
+}
+
+sub addMagicEntry {
+    my $self = shift;
+    my $entry = shift;
+    push @{$self->{magic}}, [$entry, -1, []];
     return $self;
 }
 
@@ -492,6 +516,8 @@ sub checktype_magic {
     my $desc;
     my $mtype;
 
+    return 'application/octet-stream' if (length($data) <= 0);
+
     # 3) iterate over each magic entry.
     my $m;
     for ($m = 0; $m <= $#{$self->{magic}}; $m++) {
@@ -519,6 +545,8 @@ sub checktype_data {
     my $data = shift;
     my $mtype;
 
+    return undef if (length($data) <= 0);
+
     # truncate data
     $data = substr($data, 0, 8192);
 
@@ -528,9 +556,9 @@ sub checktype_data {
 	# in BSD's version, there's an effort to search from
 	# more specific to less, but I don't do that.
 	my ($token, %val);
-	foreach my $type (keys %SPECIALS) {
+	foreach my $type (keys %{$self->{SPECIALS}}) {
 	    my $token = '(' . 
-	      (join '|', sort {length($a) <=> length($b)} @{$SPECIALS{$type}})
+	      (join '|', sort {length($a) <=> length($b)} @{$self->{SPECIALS}->{$type}})
 		. ')';
 	    my $tdata = $data;
 	    if ($tdata =~ /$token/mg) {
@@ -557,10 +585,10 @@ sub checktype_byfilename {
     my $type;
 
     $fname =~ s/^.*\///;
-    for my $regex (keys %FILEEXTS) {
+    for my $regex (keys %{$self->{FILEEXTS}}) {
 	if ($fname =~ /$regex/) {
 	    if ((defined $type && $type !~ /;/) || (! defined $type)) {
-		$type = $FILEEXTS{$regex}; # has no x-type param
+		$type = $self->{FILEEXTS}->{$regex}; # has no x-type param
 	    }
 	}
     }
@@ -571,7 +599,7 @@ sub checktype_byfilename {
 sub check_binary {
     my ($data) = @_;
     my $len = length($data);
-    my $count = ($data =~ tr/[\x00-\x08\x0b-\x1a\x1c-\x1f]//); # exclude TAB, ESC, nl
+    my $count = ($data =~ tr/[\x00-\x08\x0b-\x0c\x0e-\x1a\x1c-\x1f]//); # exclude TAB, ESC, nl, cr
     return 1 if ($len <= 0); # no contents
     return 1 if (($count/$len) > 0.1); # binary
     return 0;
@@ -761,9 +789,11 @@ sub magicMatchStr {
     # false for every item which allows reading/checking the entire
     # magic file.
     return unless defined($str);
+    return if ($str eq '');
     
     my ($offtype, $offset, $numbytes, $type, $mask, $op, $testval, 
 	$template, $message, $subtests) = @$item;
+    return unless defined $op;
 
     # bytes from file
     my $data;
@@ -1193,16 +1223,16 @@ __DATA__
 # The following paramaters are created for Namazu.
 # <http://openlab.ring.gr.jp/namazu/>
 #
-# 1999/06/15
-0	string		\<!--\ MHonArc		text/html; x-type=mhonarc
+# 1999/08/13
+#0	string		\<!--\ MHonArc		text/html; x-type=mhonarc
 0	string		BZh			application/x-bzip2
 
 # The following paramaters are local hack.
 #
-# 1999/09/06
+# 1999/09/09
 # VRML (suggested by Masao Takaku)
-0	string		#VRML V1.0 ascii	model/vrml
-0	string		#VRML V2.0 utf8		model/vrml
+0	string		#VRML\ V1.0\ ascii	model/vrml
+0	string		#VRML\ V2.0\ utf8	model/vrml
 
 #------------------------------------------------------------------------------
 # end local stuff

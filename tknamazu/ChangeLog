@@ -1,11 +1,75 @@
+1999-10-07  Ken-ichi Hirose <kenzo-@tama.or.jp>
+
+	* tknamazu.tcl.in: Marge current code.
+	New function "Sort".
+	New function "Smart Jump".
+	New function "Header Wipe".
+	New function "Site Search".
+	New value "LANG".
+		:
+
+	* tknamazu.hlp.jp: Rename tknamazu.hlp.
+
+	* tknamazu.hlp.en: Make help file in english.
+
+	* tknamazu_logo.ppm: Rename tknamazu.ppm.
+
+	* tknamazu_icon.ppm: Convert mini-tknamazu.xpm.
+
+	* mini-tknamazu.ico: Convert mini-tknamazu.xpm to Windows icon.
+
+	* Makefile.am(pkgdata_DATA): Added mini-tknamazu.ico.
+
+	* configure.in(WISH): Move wish8.0jp to top.
+
+1999-10-01  Ryuji Abe <raeva@t3.rim.or.jp>
+
+	* tknamazu.tcl.in: Quit to make $(HOME)/.tknmzrc.
+	
+	* tknmzrc: Comment-out all sections currently.
+	
+1999-09-30  Ryuji Abe <raeva@t3.rim.or.jp>
+
+	* Makefile.am(pkgdata_DATA): Added tknmzrc and removed tknamazu.spec.in
+	(EXTRA_DIST): Added tknamazu.spec.in
+	
+	* tknmzrc: New File.
+	
+	* tknamazu.tcl.in: Changed to make $(HOME)/.tknmzrc if it doesn't exist.  
+	
+1999-09-20  Ryuji Abe <raeva@t3.rim.or.jp>
+
+	* configure.in: Added AC_PREREQ(2.13).
+
+	* Makefile.am(AUTOMAKE_OPTIONS): Added 1.4.
+
+1999-09-10  Ryuji Abe <raeva@t3.rim.or.jp>
+
+	* Makefile.am(ext_namazu): New Variable.
+	(ext_mknmz): New Variable.
+	(pkgdata_DATA): Added tknamazu.spec.in.
+	(EXTRA_DIST): Added tknamazu.spec.
+
+	* configure.in: Find namazu and mknmz location.
+
+	* tknamazu.tcl.in(NAMAZU): Configured at make all.
+	(MKNMZ): Likewise.
+
+	* tknamazu.spec.in: New File.
+
 1999-09-07  Ryuji Abe <raeva@t3.rim.or.jp>
 
 	* README.tknamazu: Renamed README.
+
 	* AUTHORS: New File.
+
 	* AUTHORS, COPYING, ChangeLog, INSTALL, NEWS: New Files. 
+
 	* aclocal.m4, configure.in, configure: New Files.
+
 	* Makefile.am(pkgdatadir): Used instead of tknamazudir. 
 	(pkgdata_DATA): Used instead of tknamazu_DATA.
 	(CLEANFILES): Only tknamazu.
+
 	* tknamazu.tcl.in(version): Set by configure.
 	(LANGUAGE): Set JAPANESE by default.

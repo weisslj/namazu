@@ -1,22 +1,21 @@
 ## Process this file with automake to produce Makefile.in
 
 @SET_MAKE@
-AUTOMAKE_OPTIONS = no-dependencies
+AUTOMAKE_OPTIONS = 1.4 no-dependencies
 
-always_built_SUBDIRS = src conf
+SUBDIRS = intl po conf filter lib lisp macros pl src @FILE_MMAGIC@ @TKNAMAZU@
 
-SUBDIRS = $(always_built_SUBDIRS) @FILE_MMAGIC@ @TKNAMAZU@
-
-DIST_SUBDIRS = $(always_built_SUBDIRS) tknamazu
+DIST_SUBDIRS = $(SUBDIRS) tknamazu
 
 EXTRA_DIST = README-ja namazu.spec.in namazu.spec \
-	     ChangeLog.old.1.gz File-MMagic
+	     ChangeLog.1 File-MMagic
 
-EXTRA_DIRS = doc etc lib lisp filter template
+EXTRA_DIRS = doc etc template
 
-CLEANFILES = File-MMagic/Makefile File-MMagic/pm_to_blib \
-	     conf/mknmz.conf-dist
-CLEANDIRS  = File-MMagic/blib
+DISTCLEANFILES = File-MMagic/Makefile File-MMagic/pm_to_blib \
+		 conf/mknmz.conf-dist lib/var.pl lib/conf.pl
+
+DISTCLEANDIRS  = File-MMagic/blib conf/conf File-MMagic/CVS
 
 pkgdatadir = @datadir@/@PACKAGE@
 
@@ -30,6 +29,7 @@ install-data-local:
 	done
 	cp ChangeLog COPYING NEWS README README-ja THANKS TODO \
 		$(pkgdatadir)/etc
+	rm -f $(pkgdatadir)/template/*.in
 
 dist-hook:
 	for subdir in $(EXTRA_DIRS); do \
@@ -39,6 +39,11 @@ dist-hook:
 	    rm -rf $(distdir)/$$subdir/CVS; \
 	    rm -rf $(distdir)/$$subdir/*/CVS; \
 	done
-	rm -f $(distdir)/$(CLEANFILES)
-	rm -rf $(distdir)/$(CLEANDIRS)
 
+	for file in $(DISTCLEANFILES); do \
+	    rm -f $(distdir)/$$file; \
+	done
+
+	for dir in $(DISTCLEANDIRS); do \
+	    rm -rf $(distdir)/$$dir; \
+	done

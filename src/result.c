@@ -1,7 +1,6 @@
 /*
- * result.l -
- * -*- C -*-
- * $Id: result.c,v 1.16 1999-09-06 01:13:11 satoru Exp $
+ * result.c -
+ * $Id: result.c,v 1.17 1999-10-11 04:25:29 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -21,7 +20,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA
  * 
- * This file must be encoded in EUC-JP encoding.
  * 
  */
 #include <string.h>
@@ -33,6 +31,7 @@
 #include "re.h"
 #include "result.h"
 #include "em.h"
+#include "codeconv.h"
 
 /************************************************************
  *
@@ -40,49 +39,13 @@
  *
  ************************************************************/
 
-void make_fullpathname_result(int);
-void encode_entity(uchar*);
-void emphasize(uchar*);
-void compose_result(hlist_data, int, uchar*, uchar*);
-void replace_field(hlist_data, int, uchar*, uchar*);
-
-void compose_result(hlist_data d, int counter, uchar *template, uchar *r)
-{
-    uchar *p = template;
-    uchar achars[BUFSIZE]; /* acceptable characters */
-
-    strcpy(r, "\t");  /* '\t' has an important role cf. fputx() */
-
-    strcpy(achars, FIELD_SAFE_CHARS);
-    strcat(achars, ":");  /* for namazu::score, namazu::counter */
-
-    do {
-	uchar *pp;
-	pp = strstr(p, "${");
-	if (pp != NULL) {
-	    int n;
-	    strncat(r, p, pp - p);
-	    pp += 2;  /* skip "${" */
-	    n = strspn(pp, achars);
-	    if (n > 0 && pp[n] == '}') {
-		uchar field[BUFSIZE];
-		
-		strncpy(field, pp, n);
-		field[n] = '\0';
-		replace_field(d, counter, field, r);
-		p = pp + n + 1; /* +1 for skipping "}" */
-	    } else {
-		p += 2;
-	    }
-	} else {
-	    strcat(r, p);
-	    break;
-	}
-    } while (1);
-}
+static void encode_entity(uchar*);
+static void emphasize(uchar*);
+static void replace_field(hlist_data, int, uchar*, uchar*);
 
 
-void replace_field(hlist_data d, int counter, uchar *field, uchar *result)
+static void replace_field(hlist_data d, int counter, 
+			  uchar *field, uchar *result)
 {
     /* 8 is length of '&quot;' + 2 (for emphasizing). 
        It's a consideration for buffer overflow (overkill?) */
@@ -112,15 +75,7 @@ void replace_field(hlist_data d, int counter, uchar *field, uchar *result)
     strcat(result, buf);
 }
 
-void make_fullpathname_result(int n)
-{
-    uchar *base;
-
-    base = Idx.names[n];
-    pathcat(base, NMZ.result);
-}
-
-void encode_entity(uchar *str)
+static void encode_entity(uchar *str)
 {
     int i;
     uchar tmp[BUFSIZE];
@@ -143,7 +98,7 @@ void encode_entity(uchar *str)
 }
 
 /* inefficient algorithm but it works */
-void emphasize(uchar *str)
+static void emphasize(uchar *str)
 {
     int i;
 
@@ -175,59 +130,49 @@ void emphasize(uchar *str)
     }
 }
 
-/************************************************************
- *
- * Public functions
- *
- ************************************************************/
+/* public functions */
 
-/* display the hlist */
-void print_hlist(HLIST hlist)
+void make_fullpathname_result(int n)
 {
-    int i;
-    uchar *templates[INDEX_MAX];
-    uchar result[BUFSIZE * 16];
+    uchar *base;
 
-    if (hlist.n <= 0 || HListMax == 0) {
-	return;
-    }
+    base = Idx.names[n];
+    pathcat(base, NMZ.result);
+}
 
-    /* set NULL to all templates[] */
-    for (i = 0; i < Idx.num; i++) {
-	templates[i] = NULL;
-    }
+void compose_result(hlist_data d, int counter, 
+			   uchar *template, uchar *r)
+{
+    uchar *p = template;
+    uchar achars[BUFSIZE]; /* acceptable characters */
 
-    for (i = HListWhence; i < hlist.n; i++) {
-	int counter;
+    strcpy(r, "\t");  /* '\t' has an important role cf. html_print() */
 
-	counter = i + 1;
+    strcpy(achars, FIELD_SAFE_CHARS);
+    strcat(achars, ":");  /* for namazu::score, namazu::counter */
 
-	if (!AllList && (i >= HListWhence + HListMax))
-	    break;
-	if (MoreShortFormat) {
-	    get_field_data(hlist.d[i].idxid, hlist.d[i].docid, "uri", result);
-	} else {
-	    if (templates[hlist.d[i].idxid] == NULL) {  /* not loaded */
-		uchar fname[BUFSIZE];
-
-		make_fullpathname_result(hlist.d[i].idxid);
-		strcpy(fname, NMZ.result);
-		strcat(fname, ".");
-		strcat(fname, Template);  /* usually "normal" */
-		templates[hlist.d[i].idxid] = readfile(fname);
+    do {
+	uchar *pp;
+	pp = strstr(p, "${");
+	if (pp != NULL) {
+	    int n;
+	    strncat(r, p, pp - p);
+	    pp += 2;  /* skip "${" */
+	    n = strspn(pp, achars);
+	    if (n > 0 && pp[n] == '}') {
+		uchar field[BUFSIZE];
+		
+		strncpy(field, pp, n);
+		field[n] = '\0';
+		replace_field(d, counter, field, r);
+		p = pp + n + 1; /* +1 for skipping "}" */
+	    } else {
+		p += 2;
 	    }
-	    compose_result(hlist.d[i], counter, 
-			   templates[hlist.d[i].idxid],  result);
+	} else {
+	    strcat(r, p);
+	    break;
 	}
-	fputx(result, stdout);
-	fputx("\n", stdout);
-    }
-
-    /* free all templates[] */
-    for (i = 0; i < Idx.num; i++) {
-	if (templates[i] != NULL) {
-	    free(templates[i]);
-	}
-    }
+    } while (1);
 }
 

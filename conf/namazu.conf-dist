@@ -25,13 +25,12 @@
 #       * LOGGING : Set OFF to turn off keyword logging in NMZ.slog. 
 #                   Default: logging ON
 #
-#	* LANG    : Set a language code registrated in ISO 639
-#                   such as `ja', `en', `de', and etc.
-#                   If you set 'de' to this, namazu would use 
+#	* LANG    : Set a locale code such as `ja_JP.ujis', `ja_JP.sjis', 
+#                   `de', etc. If you set `de' to this, namazu would use 
 #                   NMZ.(head|foot|body|msg).de for composing a result 
-#                   document.
+#                   document and use a proper message catalog for `de'.
 #
-#	* SCORING : Sset a scoring method TFIDF or SIMPLE.
+#	* SCORING : Set a scoring method TFIDF or SIMPLE.
 #
 #
 #   You can use ~/foo notation for representing a pathname of directory 
@@ -43,5 +42,5 @@
 #REPLACE	/home/foo/public_html/	http://www.hoge.jp/~foo/
 #BASE		file://localhost/home/foo/documents/
 #LOGGING	OFF
-#LANG		ja
+#LANG		ja_JP.JIS7
 #SCORING	TFIDF

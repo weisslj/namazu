@@ -2,7 +2,7 @@
  * 
  * re_match.c -
  * 
- * $Id: re_match.c,v 1.4 1999-06-12 14:29:31 satoru Exp $
+ * $Id: re_match.c,v 1.5 1999-07-11 12:05:44 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -50,6 +50,82 @@ int replace_uri(uchar * s)
     strcpy(tmp, s);
 
     while (list.src) {
+        if (strpbrk (list.src->str, ".*")) {
+	    struct re_registers regs;
+	    Regexp *re;
+	    int mlen;
+	    int is_a_regexp_match = 0;
+
+	    regs.allocated = 0;
+	    re = ALLOC(Regexp);
+	    MEMZERO((char *)re, Regexp, 1);
+	    re->buffer = 0;
+	    re->allocated = 0;
+	    if (re_compile_pattern (list.src->str, strlen (list.src->str), re))
+	      /* re_comp fails; maybe it was not a regexp substitution
+	       * after all.  Fall back to string substitution for backward
+	       * compatibility.
+	       */
+	      is_a_regexp_match = 0;
+	    else if (0 < (mlen = re_match (re, tmp, strlen (tmp), 0, &regs))) {
+	      /* We got a match.  Try to replace the string. */
+	      uchar repl[BUFSIZE];
+	      uchar *subst = list.dst->str;
+	      /* Assume we are doing regexp match for now; if any of the
+	       * substitution fails, we will switch back to the straight
+	       * string substitution.
+	       */
+	      is_a_regexp_match = 1;
+	      for (i = j = 0; subst[i]; i++) {
+		/* i scans through RHS of sed-style substitution.
+		 * j points at the string being built.
+		 */
+		if ((subst[i] == '\\') &&
+		    ('0' <= subst[++i]) &&
+		    (subst[i] <= '9')) {
+		  /* A backslash followed by a digit---regexp substitution.
+		   * Note that a backslash followed by anything else is
+		   * silently dropped (including a \\ sequence) and is
+		   * passed on to the else clause.
+		   */
+		  int regno = subst[i] - '0';
+		  int ct;
+		  if (re->re_nsub <= regno) {
+		    /* Oops; this is a bad substitution.  Just give up
+		     * and use straight string substitution for backward
+		     * compatibility.
+		     */
+		    is_a_regexp_match = 0;
+		    break;
+		  }
+		  for (ct = regs.beg[regno]; ct < regs.end[regno]; ct++)
+		    repl[j++] = tmp[ct];
+		}
+		else {
+		  /* Either ordinary character, or an unrecognized \ sequence.
+		   * Just copy it.
+		   */
+		  repl[j++] = subst[i];
+		}
+	      }
+	      if (is_a_regexp_match) {
+		/* Good.  Regexp substitution worked and we now have a good
+		 * string in repl.
+		 * The part that matched and being replaced is 0 to mlen-1
+		 * in tmp; tmp[mlen] through the end of it should be
+		 * concatenated to the end of the resulting string.
+		 */
+		repl[j] = 0;
+		strcpy (s, repl);
+		strcpy (s + j, tmp + mlen);
+	      }
+	      re_free_registers (&regs);
+	    }
+	    re_free_pattern (re);
+	    if (is_a_regexp_match)
+	      return 0;
+	    /* Otherwise, we fall back to string substitution */
+	}
 	n_src = strlen(list.src->str);
 	n_dst = strlen(list.dst->str);
 

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: gzip.pl,v 1.19 2004-03-22 06:22:09 opengl2772 Exp $
+# $Id: gzip.pl,v 1.20 2004-03-22 12:23:56 opengl2772 Exp $
 # Copyright (C) 2000-2004 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -79,6 +79,7 @@ sub filter_file ($) {
     {
 	my $fh = util::efopen("> $tmpfile");
 	print $fh $$contref;
+        util::fclose($fh);
     }
     {
 	my @cmd = ($gzippath, @gzipopts, $tmpfile);

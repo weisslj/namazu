@@ -12,4 +12,5 @@ EXTRA_DIST  = acrobat3.pdf \
 	      plain.txt.gz \
 	      rfc0000.txt \
 	      tex.tex \
-	      word97.doc
+	      word97.doc \
+	      powerpoint97.ppt

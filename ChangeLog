@@ -1,3 +1,8 @@
+2000-01-09  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* src/usage.c (show_mini_usage): Use fputs() instead of printf()
+	to avoid mojibake in LANG=ja_JP.ISO-2022-JP.
+
 2000-01-09  Ryuji Abe <raeva@t3.rim.or.jp>
 
 	* po/make_iso-2022-jp_po.in: Quit replace % -> %%.

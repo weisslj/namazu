@@ -1,5 +1,7 @@
 1999-09-04  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* template/namazu.conf: Rewrite descriptions.
+	
 	* src/conf.c: Rewrite an analizer for .namazurc or namazu.conf overall.
 	
 	* src/namazu.c: Fix --config option bug.

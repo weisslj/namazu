@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.17 2000-02-19 08:55:02 rug Exp $
+# $Id: mknmz.in,v 1.18 2000-02-19 09:14:56 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -41,7 +41,7 @@ use vars qw($SYSTEM $LANG);
 $SYSTEM = $^O;
 
 $LANG = "C";                # language of messages
-my $CCS = "euc";
+my $CodingSystem = "euc";
 my $CONFDIR       = "@CONFDIR@";     # directory where mknmzrc are in.
 my $LIBDIR        = "@PERLLIBDIR@";      # directory where library etc. are in.
 my $FILTERDIR     = "@FILTERDIR@";   # directory where filters are in.
@@ -60,6 +60,7 @@ my $MediaType  = undef;
 
 my $ReplaceCode  = undef;  # perl code for transforming URI
 my @Seed = ();
+my @LoadedRcfiles = ();
 
 my $Magic = new File::MMagic;
 
@@ -166,11 +167,12 @@ sub load_rcfiles () {
     push @cand, $ConfigFile if defined $ConfigFile;
 
     util::vprint(_("Reading rcfile: "));
-    for my $conf (@cand) {
-	if (-f $conf) {
-	    do $conf;
-	    $ConfigFile = $conf;
-	    util::vprint(" $conf");
+    for my $rcfile (@cand) {
+	if (-f $rcfile) {
+	    do $rcfile;
+	    $ConfigFile = $rcfile;
+	    util::vprint(" $rcfile");
+	    push @LoadedRcfiles, $rcfile;
 	}
     }
     util::vprint("\n");
@@ -212,11 +214,11 @@ sub put_registry ($) {
 
 
 # Initialization
-#   $CCS: Character Coding System 'euc' or 'sjis'
+#   $CodingSystem: Character Coding System 'euc' or 'sjis'
 sub init () {
     $SYSTEM = $^O;
     if (($SYSTEM eq "MSWin32") || ($SYSTEM eq "os2")) {
-	$CCS = "sjis";
+	$CodingSystem = "sjis";
 	if ($CONFDIR !~ /^[A-Z]:|^\\\\/i && $0 =~ m#^([A-Z]:)(/|\\)#i) {
 	    $CONFDIR = $1 . $CONFDIR ;
 	}
@@ -230,7 +232,7 @@ sub init () {
 	    $TEMPLATEDIR = $1 . $TEMPLATEDIR ;
 	}
     } else {
-	$CCS = "euc";
+	$CodingSystem = "euc";
     }
 
     # set LANG
@@ -1040,28 +1042,24 @@ sub parse_options ()
 }
 
 sub show_config () {
-    $ConfigFile = "(none)" unless defined $ConfigFile;
-    print "Config: $ConfigFile\n";
-    print "System: $SYSTEM\n" if $SYSTEM;
-    print "Namazu: $var::VERSION\n" if $var::VERSION;
-    print "Perl:   $]\n" if $];   # '$]' has a perl version
-    print "NKF:    $conf::NKF\n" if $conf::NKF;
-    print "KAKASI: $conf::KAKASI\n" if $conf::KAKASI;
-    print "ChaSen: $conf::CHASEN\n" if $conf::CHASEN;
-    print "Wakati: $conf::WAKATI\n" if $conf::WAKATI;
-    print "Lang:   $LANG\n";
-    print "CCS:    $CCS\n";
-# XXX uncomment givs -> Use of uninitialized value at mknmz line 972.
-# finding output_dir just for -C does not seem easy.
-##  print "INDEX:       $var::OUTPUT_DIR\n"; 
-    print "CONFDIR:     $CONFDIR\n";
-    print "LIBDIR:      $LIBDIR\n";
-    print "FILTERDIR:   $FILTERDIR\n";
-    print "TEMPLATEDIR: $TEMPLATEDIR\n";
+    print _("Loaded rcfile: ") . "@LoadedRcfiles\n" if @LoadedRcfiles;
+    print _("System: ") . "$SYSTEM\n" if $SYSTEM;
+    print _("Namazu: ") . "$var::VERSION\n" if $var::VERSION;
+    print _("Perl: ") . "$]\n" if $];   # '$]' has a perl version
+    print _("NKF: ") . "$conf::NKF\n" if $conf::NKF;
+    print _("KAKASI: ") . "$conf::KAKASI\n" if $conf::KAKASI;
+    print _("ChaSen: ") . "$conf::CHASEN\n" if $conf::CHASEN;
+    print _("Wakati: ") . "$conf::WAKATI\n" if $conf::WAKATI;
+    print _("Lang: ") . "$LANG\n";
+    print _("Coding System: ") . "$CodingSystem\n";
+    print _("CONFDIR: ") . "$CONFDIR\n";
+    print _("LIBDIR: ") . "$LIBDIR\n";
+    print _("FILTERDIR: ") . "$FILTERDIR\n";
+    print _("TEMPLATEDIR: ") . "$TEMPLATEDIR\n";
 
     my @supported = sort grep { $var::Supported{$_} eq "yes" }
     keys %var::Supported;
-    print "Supported media types: \n";
+    print _("Supported media types: \n");
     for my $mtype (@supported) {
 	print "  $mtype\n";
     }

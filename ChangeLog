@@ -1,10 +1,12 @@
-2000-02-19  Ryuji Abe  <raeva@t3.rim.or.jp>
-
-	* scripts/mknmz.in: Use LANGUAGE environment variable if defined.
-
 2000-02-19  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
-	* README: Change URI of Namazu website.
+	* scripts/mknmz.in: Change a variable name:
+	s/$CCS/$CodingSystem/.
+
+	* scripts/mknmz.in (load_rcfiles): Use @LoadedRcfiles.
+	(show_config): Gettextized.
+
+	* README: Change URI of Namazu website and Rewritten.
 
 	* README-ja: Likewise.
 
@@ -13,6 +15,10 @@
 	* configure.in (AC_OUTPUT): Add rfnmz.
 
 	* scripts/rfnmz.in: New file.
+
+2000-02-19  Ryuji Abe  <raeva@t3.rim.or.jp>
+
+	* scripts/mknmz.in: Use LANGUAGE environment variable if defined.
 
 2000-02-19  Ken-ichi Hirose  <kenzo-@tama.or.jp>
 

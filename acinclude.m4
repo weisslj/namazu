@@ -524,7 +524,7 @@ AC_DEFUN(AM_WITH_CCMALLOC,
 [AC_MSG_CHECKING(if malloc debugging is wanted)
 AC_ARG_WITH(ccmalloc,
 [  --with-ccmalloc         use ccmalloc, as in
-                          http://www.inf.ethz.ch/personal/biere/projects/ccmalloc/],
+                           http://www.inf.ethz.ch/personal/biere/projects/ccmalloc/],
 [if test "$withval" = yes; then
   AC_MSG_RESULT(yes)
   AC_DEFINE(WITH_CCMALLOC,1,

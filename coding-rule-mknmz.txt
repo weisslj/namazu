@@ -28,6 +28,16 @@ mknmz固有の事情
   * ファイルを rename するときは必ず util::Rename() を使う。
     OS/2 対策。
 
+  * プログラム全体に影響をおよぼすグローバル変数は
+    lib/var.pl に定義する。
+
+
+  * mknmz 内だけに影響をおよぼすグローバル変数は
+    src/mknmz.pl.in に定義する。 $SYSTEM のみ例外。
+
+  * ユーザが mknmz.conf, ~/.mknmzrc にて変更したいであろう変
+    数は lib/conf.pl に定義する。
+
 
 書法
 

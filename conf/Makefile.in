@@ -183,7 +183,8 @@ mostlyclean distclean maintainer-clean
 
 all: mknmz.conf-dist
 mknmz.conf-dist: ../lib/conf.pl
-	@grep -v '^package conf;$$' ../lib/conf.pl > $@
+	@grep -v '^package conf;$$' ../lib/conf.pl | \
+	perl -pe 's/^\$$/\$$conf::/' > $@
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

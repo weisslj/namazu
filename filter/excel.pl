@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: excel.pl,v 1.1 2000-02-27 12:26:57 rug Exp $
+# $Id: excel.pl,v 1.2 2000-02-27 14:22:29 satoru Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu, 
 #               2000 Namazu Project All rights reserved.
@@ -30,15 +30,26 @@ require 'util.pl';
 require 'gfilter.pl';
 require 'html.pl';
 
+my $xlconvpath  = undef;
+my $utfconvpath = undef;
+
 sub mediatype() {
     return ('application/excel');
 }
 
 sub status() {
-    my $wordconvpath = util::checkcmd('xlHtml');
-    my $utfconvpath = util::checkcmd('lv');
-    return 'yes' if (defined $wordconvpath && defined $utfconvpath);
-    return 'no';
+    $xlconvpath = util::checkcmd('xlHtml');
+    return 'no' unless defined $xlconvpath;
+    if (!util::islang("ja")) {
+	return 'yes';
+    } else {
+	$utfconvpath = util::checkcmd('lv');
+	if (defined $utfconvpath) {
+	    return 'yes';
+	} else {
+	    return 'no';
+	}
+    } 
 }
 
 sub recursive() {
@@ -65,21 +76,27 @@ sub filter ($$$$$) {
     my $tmpfile  = util::tmpnam('NMZ.excel');
     my $tmpfile2 = util::tmpnam('NMZ.excel2');
 
-    my $xlconvpath = util::checkcmd('xlHtml');
-    my $utfconvpath = util::checkcmd('lv');
     return "Unable to execute excel-converter" unless (-x $xlconvpath);
     return "Unable to execute utf-converter" unless (-x $utfconvpath);
 
     util::vprint("Processing ms-excel file ... (using  '$xlconvpath', '$utfconvpath')\n");
 
-    my $fh = util::efopen("> $tmpfile");
-    print $fh $$cont;
-    undef $fh;
+    {
+	my $fh = util::efopen("> $tmpfile");
+	print $fh $$cont;
+    }
 
-    system("$xlconvpath $tmpfile | $utfconvpath -Iu8 -Oej > $tmpfile2");
-    $fh = util::efopen("< $tmpfile2");
-    $$cont = util::readfile($fh);
-    undef $fh;
+    if (util::islang("ja")) {
+	system("$xlconvpath $tmpfile | $utfconvpath -Iu8 -Oej > $tmpfile2");
+    } else {
+	system("$xlconvpath $tmpfile > $tmpfile2");
+    }
+
+    {
+	my $fh = util::efopen("< $tmpfile2");
+	$$cont = util::readfile($fh);
+    }
+
     unlink($tmpfile);
     unlink($tmpfile2);
 

@@ -1,6 +1,6 @@
 #! /bin/sh
 #
-# Test for phrase search.
+# Test for japanese MacBinary file.
 #
 LOG=`pwd`/test-log
 echo '  *** starting ' $0 >>$LOG
@@ -14,7 +14,7 @@ esac
 if [ $EXEC = 'no' ]
 then
         echo "Skip $0" >> $LOG
-        exit 0
+        exit 77
 fi
 
 docnum=`perl -lne 'print $1 if /^files (\d+)/' ja-idx2/NMZ.status`

@@ -16,7 +16,7 @@ esac
 if [ $EXEC = 'no' ]
 then
 	echo "Skip $0" >> $LOG
-	exit 0
+	exit 77
 fi
 
 if test ! -d $IDX; then

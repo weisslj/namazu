@@ -8,6 +8,8 @@ TARGET=`pwd`/data/filter
 IDXDIR=idx15
 TXTCOUNT=`ls ./data/filter/*.txt|wc -l`
 FDIR=`pwd`/data/filter
+MKNMZRC=`pwd`/mknmzrc-mknmz12
+export MKNMZRC
 
 if test ! -d $IDXDIR; then
     mkdir $IDXDIR
@@ -17,12 +19,12 @@ fi
 
 cd ../scripts
 echo "package conf; \$FILTERDIR='$FDIR'; 1;" > ../tests/mknmzrc-mknmz12
-RESULTCOUNT=`./mknmz -C -f ../tests/mknmzrc-mknmz12|egrep x-test|wc -l`
+RESULTCOUNT=`./mknmz -C|egrep x-test|wc -l`
 rm -f ../tests/mknmzrc-mknmz12
 test $RESULTCOUNT -eq 1 || exit $?
 
 echo "package conf; \$FILTERDIR='$FDIR'; 1;" > ../tests/mknmzrc-mknmz12
-./mknmz --allow='.*.txt' -f ../tests/mknmzrc-mknmz12 -O ../tests/$IDXDIR $TARGET >> $LOG 2>&1
+./mknmz --allow='.*.txt' -O ../tests/$IDXDIR $TARGET >> $LOG 2>&1
 rm -f ../tests/mknmzrc-mknmz12
 RESULTCOUNT=`wc -l < ../tests/$IDXDIR/NMZ.field.uri`
 test $TXTCOUNT -eq $RESULTCOUNT

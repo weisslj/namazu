@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.80 2001-01-20 03:34:46 baba Exp $
+# $Id: mknmz.in,v 1.81 2001-04-03 09:32:22 knok Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -76,12 +76,14 @@ sub main {
 
     init();
 
+    # At first, loading pl/conf.pl to prevent overriding some variables.
+    preload_modules();
     # To support Windows. Since they have nasty drive letter convention,
     # it is necessary to change mknmzrc dynamically with env. variable.
     load_rcfile($ENV{'MKNMZRC'}) if defined $ENV{'MKNMZRC'};
 
-    load_modules();
     load_rcfiles();
+    load_modules();
     my ($output_dir, @targets) = parse_options();
     my ($docid_base, $total_files_num) = prep($output_dir, @targets);
 
@@ -340,16 +342,19 @@ sub init () {
     $TEMPLATEDIR = "../template" if -f "../template/NMZ.head";
 }
 
-sub load_modules () {
+sub preload_modules () { 
     unshift @INC, $LIBDIR;
+    require "conf.pl" || die "unable to require \"conf.pl\"\n";
+    require "util.pl" || die "unable to require \"util.pl\"\n";
+    require "gettext.pl" || die "unable to require \"gettext.pl\"\n";
+}
+
+sub load_modules () {
     unshift @INC, $FILTERDIR;
     unshift @INC, "../pl";
     unshift @INC, "../filter";
 
-    require "gettext.pl" || die "unable to require \"gettext.pl\"\n";
     require "var.pl" || die "unable to require \"var.pl\"\n";
-    require "conf.pl" || die "unable to require \"conf.pl\"\n";
-    require "util.pl" || die "unable to require \"util.pl\"\n";
     require "usage.pl" || die "unable to require \"usage.pl\"\n";
     require "codeconv.pl" || die "unable to require \"codeconv.pl\"\n";
     require "wakati.pl" || die "unable to require \"wakati.pl\"\n";
@@ -368,7 +373,7 @@ sub load_modules () {
     # Check filter modules
     my @filters = ();
     if (-f "../filter/gfilter.pl") { # to ease developing
-	@filters = glob "../filter/*.pl";
+	@filters = (glob("../filter/*.pl"), glob("$FILTERDIR/*.pl"));
 	unshift @INC, "../filter";
     } else {
 	@filters = glob "$FILTERDIR/*.pl";

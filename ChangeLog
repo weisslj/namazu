@@ -1,5 +1,7 @@
 2001-04-03  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
+	* scripts/mknmz.in : Added preload_modules() function.
+
 	* tests/mknmz-12 : Added a test case for check $FILTERDIR effect on
 	mknmzrc (bugs-ja#45).
 
@@ -6416,4 +6418,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.812 2001-04-03 07:25:45 knok Exp $
+$Id: ChangeLog,v 1.813 2001-04-03 09:32:21 knok Exp $

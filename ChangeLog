@@ -1,5 +1,8 @@
 2001-01-10  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
+	* filter/deb.pl (dpkg_filter): Removed get_date() function.
+	Added m option in get_author.
+
 	* pl/htmlsplit.pl (split): Changed to recognize html anchor
 	more suitably.
 	Thanks to Tomoyasu Mizuno (namazu-users-ja#01385).
@@ -6251,4 +6254,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.786 2001-01-10 06:13:30 knok Exp $
+$Id: ChangeLog,v 1.787 2001-01-10 10:00:26 knok Exp $

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: deb.pl,v 1.1 2001-01-02 08:06:53 baba Exp $
+# $Id: deb.pl,v 1.2 2001-01-10 10:00:26 knok Exp $
 # Copyright (C) 2000 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -97,7 +97,7 @@ sub dpkg_filter ($$$$) {
 
     deb::get_title($contref, $weighted_str, $fields);
     deb::get_author($contref, $fields);
-    deb::get_date($contref, $fields);
+#    deb::get_date($contref, $fields);
     deb::get_size($contref, $fields);
     deb::get_summary($contref, $fields);
 
@@ -130,7 +130,7 @@ sub dpkg_filter ($$$$) {
 sub get_title ($$$) {
     my ($contref, $weighted_str, $fields) = @_;
 
-    if ($$contref =~ /^ Description: (.*)/) {
+    if ($$contref =~ /^ Description: (.*)/m) {
 	my $tmp = $1;
 	$fields->{'title'} = $tmp;
 	my $weight = $conf::Weight{'html'}->{'title'};
@@ -141,25 +141,16 @@ sub get_title ($$$) {
 sub get_author ($$) {
     my ($contref, $fields) = @_;
 
-    if ($$contref =~ /^ Maintainer: (.*)/) {
+    if ($$contref =~ /^ Maintainer: (.*)/m) {
 	my $tmp = $1;
 	$fields->{'author'} = $tmp;
-    }
-}
-
-sub get_date ($$) {
-    my ($contref, $fields) = @_;
-
-    if ($$contref =~ /^ Version: (.*)/) { # X-)
-	my $tmp = $1;
-	$fields->{'date'} = $tmp;
     }
 }
 
 sub get_size ($$) {
     my ($contref, $fields) = @_;
 
-    if ($$contref =~ /^ size (\d+) bytes:/) {
+    if ($$contref =~ /^ size (\d+) bytes:/m) {
 	my $tmp = $1;
 	$fields->{'size'} = $tmp;
     }

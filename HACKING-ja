@@ -81,6 +81,11 @@ mknmz固有の事情
   * ファイルを開くときには必ず util::efopen() (エラーの時に
     util::cdie() する)または util::fopen() を使う
 
+  * ファイルを閉じるときには必ず util::fclose() を使う
+
+  * util::systemcmd() を使ったときは必ず $fh_out, $fh_err を
+    util::fclose() で閉じる。
+
   * while (<>) {} や while (<$fh>) {} を禁止する。$_ はグロー
     バル変数であるため、危険。代わりに
     while (defined(my $line = <$fh>)) {} とする。
@@ -130,8 +135,8 @@ mknmz固有の事情
     - $_ はグローバル変数なので危険
   * open() は使わない。 use IO::File を用いて
     my $fh = new IO::File; $fh->open() とする
-  * ファイルは陽に閉じず、 destructor にまかせる
-    - $fh->close() しない (スコープで制限する)
+  * ファイルは destructor にまかせず、陽に閉じる
+    - util::fclose() を用いる (2.0.13 以降改定)
   * リファレンスは大いに活用する
   * 既存の perl module を活用する
     - 車輪の再発明をしない

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.28 2004-01-11 08:57:58 opengl2772 Exp $
+# $Id: util.pl,v 1.29 2004-03-18 15:52:11 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -65,6 +65,21 @@ sub fopen ($) {
     return $fh;
 }
 
+sub fclose ($) {
+    my ($arg) = @_;
+
+    if (ref $arg) {
+	if ($arg =~ /^(IO::File|FileHandle)/) {
+            my $fh = $arg;
+            $fh->close();
+            return undef;
+        }
+    }
+
+    warn "$arg: " . _("not an IO::File/FileHandle object!\n");
+    return undef;
+}
+
 sub dprint (@) {
     if ($var::Opt{'debug'}) {
 	for my $str (@_) {
@@ -117,7 +132,7 @@ sub readfile ($) {
 	if ($arg =~ /^(IO::File|FileHandle)/) {
 	    $fh = $arg;
 	} else {
-	    warn "$arg: "._("not an IO::File/FileHandle object!\n");
+	    warn "$arg: " . _("not an IO::File/FileHandle object!\n");
 	    return '';
 	}
     } else {
@@ -132,7 +147,33 @@ sub readfile ($) {
 #    }
     read $fh, $cont, $size;
 
+    unless (ref $arg) {
+        fclose($fh);
+    }
     return $cont;
+}
+
+sub writefile ($$) {
+    my ($arg, $cont) = @_;
+
+    my $fh;
+    if (ref $arg) {
+	if ($arg =~ /^(IO::File|FileHandle)/) {
+	    $fh = $arg;
+	} else {
+	    warn "$arg: " . _("not an IO::File/FileHandle object!\n");
+	    return undef;
+	}
+    } else {
+	$fh = efopen("> $arg");
+    }
+
+    print $fh $$cont;
+
+    unless (ref $arg) {
+        fclose($fh);
+    }
+    return undef;
 }
 
 sub filesize($) {
@@ -142,7 +183,7 @@ sub filesize($) {
 	if ($arg =~ /^(IO::File|FileHandle)/) {
 	    $fh = $arg;
 	} else {
-	    warn "$arg: "._("not an IO::File/FileHandle object!\n");
+	    warn "$arg: " . _("not an IO::File/FileHandle object!\n");
 	    return '';
 	}
     } else {
@@ -150,6 +191,9 @@ sub filesize($) {
 	                               # 2.0.7 had problem
     }
     my $size = -s $fh;
+    unless (ref $arg) {
+        fclose($fh);
+    }
     return $size;
 }
 

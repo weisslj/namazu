@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.112 2002-09-25 04:32:40 knok Exp $
+# $Id: mknmz.in,v 1.113 2002-09-26 07:22:37 knok Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -479,11 +479,13 @@ sub namazu_core ($$$$$$$$$$) {
 
     complete_field_info(\%fields, $cfile, $uri, 
 			\$headings, \$content, \$weighted_str);
+    clean_field_index(\%fields);
     put_field_index(\%fields, $field_indices);
 
     put_dateindex($cfile);
     $content .= $weighted_str;   # add weights
-    count_words($docid_count, $docid_base, \$content, $kanji);
+    normalize_content(\$content, $kanji);
+    count_words($docid_count, $docid_base, \$content);
     make_phrase_hash($docid_count, $docid_base, \$content);
 
     # assertion
@@ -640,11 +642,9 @@ sub make_summary ($$$) {
     return $summary;
 }
 
-
-# output the field infomation into NMZ.fields.* files
-sub put_field_index (\%$) {
-    my ($fields, $field_indices) = @_;
-
+sub clean_field_index(\%)
+{
+    my ($fields) = @_;
     my $aliases_regex = 
 	join('|', sort {length($b) <=> length($a)} keys %conf::FIELD_ALIASES);
 
@@ -657,6 +657,11 @@ sub put_field_index (\%$) {
 	    undef $fields->{$field};
 	}
     }
+}
+
+# output the field infomation into NMZ.fields.* files
+sub put_field_index (\%$) {
+    my ($fields, $field_indices) = @_;
 
     my @keys = split '\|', $conf::SEARCH_FIELD;
     if ($var::Opt{'meta'}) {
@@ -2179,11 +2184,10 @@ sub hash ($) {
     return $hash & 65535;
 }
 
-# Count frequencies of words.
-sub count_words ($$$$) {
-    my ($docid_count, $docid_base, $contref, $kanji) = @_;
-    my (@tmp);
-
+# Nomalization
+sub normalize_content($$) {
+    my ($contref, $kanji) = @_;
+    
     # Normalize into small letter.
     $$contref =~ tr/A-Z/a-z/;
 
@@ -2194,6 +2198,12 @@ sub count_words ($$$$) {
 
     # Remove all symbols when -K option is specified.
     $$contref =~ tr/\xa1-\xfea-z0-9/   /c if $var::Opt{'nosymbol'};
+}
+
+# Count frequencies of words.
+sub count_words ($$$) {
+    my ($docid_count, $docid_base, $contref) = @_;
+    my (@tmp);
 
     my $part1 = "";
     my $part2 = "";

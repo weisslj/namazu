@@ -1,3 +1,9 @@
+2002-09-26  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* scripts/mknmz.in (clean_field_index): Refactoring: splitted out
+	from put_field_index().
+	(normalize_content): Refactoring: splitted out from count_words().
+
 2002-09-25  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* scripts/mknmz.in (load_document): Refactoring: changed to be
@@ -7691,4 +7697,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.982 2002-09-25 04:32:39 knok Exp $
+$Id: ChangeLog,v 1.983 2002-09-26 07:22:37 knok Exp $

@@ -2,7 +2,7 @@
 ;;
 ;; Mule $B>e$G(B Namazu $B$rMxMQ$7$?8!:w$r9T$&$?$a$N(B elisp $B$G$9!#(B
 ;;
-;;  $Id: namazu.el,v 1.8 2000-02-01 12:20:03 shirai Exp $
+;;  $Id: namazu.el,v 1.9 2000-02-06 06:45:05 shirai Exp $
 
 (defconst namazu-version "namazu.el 1.0.3")
 
@@ -93,7 +93,7 @@
 $BDL>o$O(B namazu $B$J$I$G$7$g$&$,!"$=$&$G$O$J$$>l9g$d(B
 PATH $B$,DL$C$F$$$J$$>l9g$K$OE,Ev$J%W%m%0%i%`L>$r;XDj$7$^$9!#(B")
 
-(defvar namazu-argument "-H"
+(defvar namazu-argument '("-H")
   "*Namazu $B$N8!:wMQ%W%m%0%i%`$r5/F0$9$k:]$K;XDj$9$k0z?t$G$9!#(B")
 
 (defvar namazu-search-num 30
@@ -135,10 +135,19 @@ PATH $B$,DL$C$F$$$J$$>l9g$K$OE,Ev$J%W%m%0%i%`L>$r;XDj$7$^$9!#(B")
 
 (defvar namazu-view-function-alist
   '(("[^/]+\\.s?html?" . namazu-browse-url)
+    ("/Mail\\|News/.*/[1-9][0-9]*$" . namazu-view-msg)
     ("man/man" . namazu-man)
-    ;;("/usr/local/info/\\|\\.info" . namazu-info) ;; $BL$:n@.(B
-    ("." . view-file))
+    ;; ("/usr/local/info/\\|\\.info" . namazu-info) ;; $BL$:n@.(B
+    ("." . namazu-view-file))
   "*$B%U%!%$%kL>$N%Q%?!<%s$H$=$l$KBP1~$9$k1\Mw4X?t$r@_Dj$7$^$9!#(B")
+
+(defvar namazu-view-other-window nil
+  "*If non-nil, make an other window when namazu-view.")
+(defvar namazu-view-other-frame nil
+  "*If non-nil, make an other frame when namazu-view.")
+
+(defvar namazu-msg-visible-field (list "subject" "from" "to" "newsgroups" "date")
+  "*Visible header list for namazu-view-msg.")
 
 (defvar namazu-cs-write
   (if (memq system-type '(OS/2 emx windows-nt))
@@ -207,15 +216,19 @@ PATH $B$,DL$C$F$$$J$$>l9g$K$OE,Ev$J%W%m%0%i%`L>$r;XDj$7$^$9!#(B")
 			      nil namazu-minibuffer-map)
       nil)
     (read-from-minibuffer "Enter Keyword: "
-       (car namazu-history) namazu-minibuffer-field-map nil 'namazu-history)))
+			  (car namazu-history)
+			  namazu-minibuffer-field-map nil 'namazu-history)))
   (let ((buffer (get-buffer-create namazu-buffer))
 	(dir (or namazu-dir
 		 (and namazu-default-dir
 		      (expand-file-name namazu-default-dir))))
-	(arg-list
-	 (list "-n" (int-to-string namazu-search-num)
-	       "-w" (int-to-string (* page-num namazu-search-num))
-	       namazu-argument key)))
+	(arg-list (if (listp namazu-argument)
+		      namazu-argument (list namazu-argument))))
+    (setq arg-list (append
+		    arg-list
+		    (list "-n" (int-to-string namazu-search-num)
+			  "-w" (int-to-string (* page-num namazu-search-num))
+			  key)))
     (if (and dir (not (string= dir "")) (string-match "[^ \t]" dir))
 	(setq arg-list (append arg-list
 			       (namazu-split-dir (namazu-expand-dir-alias dir)))))
@@ -290,7 +303,7 @@ PATH $B$,DL$C$F$$$J$$>l9g$K$OE,Ev$J%W%m%0%i%`L>$r;XDj$7$^$9!#(B")
    (list
     (save-excursion
       (read-from-minibuffer "Enter Keyword: "
-         (car namazu-history) namazu-minibuffer-field-map nil 
+         (car namazu-history) namazu-minibuffer-field-map nil
             'namazu-history))))
   (namazu 0 namazu-last-dir key))
 
@@ -418,7 +431,7 @@ PATH $B$,DL$C$F$$$J$$>l9g$K$OE,Ev$J%W%m%0%i%`L>$r;XDj$7$^$9!#(B")
   "+to:field $B$NJd40$r$7$^$9!#(B"
   (interactive)
   (goto-char (point-max))
-  (let ((p (point)) 
+  (let ((p (point))
         (alist (namazu-make-field-completion-alist namazu-last-dir))
         (completion-buffer "*Completions*")
         word start result)
@@ -659,7 +672,7 @@ mouse $B$N??$sCf$N%\%?%s$r2!$9$H!"2!$7$?0LCV$K$h$C$F!"(B\"$BJ8>O$r;2>H(B\"$
 			   (substring url (match-beginning 2) (match-end 2)))))
 	(if (string-match namazu-url-regex url)
 	    (namazu-browse-url url)
-	  (let ((ext '("" ".gz" ".Z" "bz2")) 
+	  (let ((ext '("" ".gz" ".Z" "bz2"))
 		(fl namazu-view-function-alist)
 		(file (expand-file-name url)) (name "") path done)
 	    (and (string-match "\\(.*\\)\\(#.*\\)$" url)
@@ -676,6 +689,58 @@ mouse $B$N??$sCf$N%\%?%s$r2!$9$H!"2!$7$?0LCV$K$h$C$F!"(B\"$BJ8>O$r;2>H(B\"$
 			   (setq fl nil)))
                      (setq fl (cdr fl))))
 	      (setq ext (cdr ext))))))))
+
+(defun namazu-view-file (&optional file)
+  "View file function."
+  (interactive "fView message: ")
+  (if (and window-system namazu-view-other-frame)
+      (view-file-other-frame file)
+    (if namazu-view-other-window
+	(view-file-other-window file)
+      (view-file file)))
+  (rename-buffer (concat namazu-buffer (buffer-name)) t))
+
+(defun namazu-view-msg (&optional file)
+  "View message function."
+  (namazu-view-file file)
+  (let ((buffer-read-only nil)
+	(vis-head "")
+	hspos vismark)
+    (goto-char (point-min))
+    (if (not (re-search-forward "^$" nil t))
+	()
+      (save-excursion
+	(save-restriction
+	  (narrow-to-region (point-min) (point))
+	  (mapcar (function
+		   (lambda (head)
+		     (goto-char (point-min))
+		     (if (not (re-search-forward (concat "^" head ":") nil t))
+			 ()
+		       (beginning-of-line)
+		       (setq hspos (point))
+		       (forward-line 1)
+		       (while (looking-at "^[ \t]+")
+			 (forward-line 1))
+		       (setq vis-head
+			     (concat vis-head (buffer-substring hspos (point))))
+		       (delete-region hspos (point)))))
+		  namazu-msg-visible-field)
+	  (goto-char (point-max))
+	  (setq vismark (point-marker))
+	  (insert vis-head)
+	  (condition-case err
+	      (cond
+	       ((fboundp 'mew-header-decode-region)
+		(mew-header-decode-region 'text (point-min) (point-max) t))
+	       ((fboundp 'eword-decode-region)
+		(eword-decode-region (point-min) (point-max) t)))
+	    (error nil))
+	  (widen)))
+      (goto-char vismark)
+      (recenter 0)
+      (set-visited-file-name nil)
+      (set-buffer-modified-p nil))))
 
 (defun namazu-browse-url (url)
   "browse-url $B$r;H$C$FI=<($7$^$9!#(B

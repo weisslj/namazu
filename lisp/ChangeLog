@@ -1,3 +1,9 @@
+2000-02-06  Hideyuki SHIRAI  <shirai@rdmg.mgcs.mei.co.jp>
+
+	* namazu.el: (namazu-view-file, namazu-view-msg): New functions, viewer for file and viewer for message.
+	(namazu-msg-visible-field): List of visible headers in message.
+	(namazu-view-other-window, *-other-frame): New variables, as clear as it is written.
+	
 2000-02-01  Hideyuki SHIRAI  <shirai@rdmg.mgcs.mei.co.jp>
 
 	* namazu.el: (namazu-cs-read|write): New variables for namazu process.

@@ -11,6 +11,7 @@ INSTALL
 config.guess
 config.sub
 install-sh
+intl
 ltconfig
 ltmain.sh
 missing

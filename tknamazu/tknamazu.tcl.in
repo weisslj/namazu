@@ -1,5 +1,9 @@
 #!@WISH@
 #
+# tknamazu.tcl - Tcl/Tk front-end for Namazu.
+#
+# $Id: tknamazu.tcl.in,v 1.7 1999-11-01 15:36:46 kenzo- Exp $
+#
 # Copyright (C) 1998-1999 Ken-ichi Hirose. All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -194,7 +198,7 @@ proc Browse { url } {
         }
         {^[^/][A-Za-z0-9_\-\.]+\([1-9][A-Za-z0-9]*\)} {
             set conf(viewer) {manpage}
-            regexp {([A-Za-z0-9_\-\.]+)\(([1-9])([A-Za-z0-9]*)\)} $url \
+            regexp {([A-Za-z0-9_\-\.]+)\(([1-9lno])([A-Za-z0-9]*)\)} $url \
              match manual section subsection
             regexp {(.*)/(man|cat)[1-9lno]/[^/]*$} $conf(manpagedir) \
              match manbasedir
@@ -463,7 +467,7 @@ proc Viewer { url offset } {
     if {($offset != 1) && ($conf(HEADERWIPE) == "ON")} {
         set lastline [lindex [split [$log index end] .] 0]
         set fraction [expr $offset.0 / $lastline.0]
-        if {$fraction > 0.333} {
+        if {$fraction > 0.3} {
             set pading [expr $conf(HEIGHT) - ($lastline - $offset)]
             $log config -state normal
             for {set i 0} {$i <= $pading} {incr i} {$log insert end "\n"}

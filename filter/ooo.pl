@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: ooo.pl,v 1.4 2003-04-17 15:34:14 usu Exp $
+# $Id: ooo.pl,v 1.5 2003-05-13 14:46:01 usu Exp $
 # Copyright (C) 2003 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -88,11 +88,12 @@ sub filter ($$$$$) {
 
 sub filter_metafile ($$$) {
     my ($orig_cfile, $weighted_str, $fields) = @_;
+    my $cfile = defined $orig_cfile ? $$orig_cfile : '';
     my $metafile = 'meta.xml';
     my $unzippath = util::checkcmd('unzip');
     my @unzipopts = ('-p');
     my $xml = "";
-    my @cmd = ($unzippath, @unzipopts, $$orig_cfile, $metafile);
+    my @cmd = ($unzippath, @unzipopts, $cfile, $metafile);
     my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
     while (defined(my $line = <$fh_out>)){
         $xml .= $line;
@@ -120,7 +121,7 @@ sub filter_metafile ($$$) {
         $$weighted_str .= "\x7f$weight\x7f$title\x7f/$weight\x7f\n";
     }else{
         $fields->{'title'} 
-           = gfilter::filename_to_title($orig_cfile, $weighted_str)
+           = gfilter::filename_to_title($cfile, $weighted_str)
     }
     my @weight_str = split(' ',$keywords);
     for my $tmp (@weight_str) {
@@ -131,11 +132,12 @@ sub filter_metafile ($$$) {
 
 sub filter_contentfile ($$$$$) {
     my ($orig_cfile, $contref, $weighted_str, $headings, $fields) = @_;
+    my $cfile = defined $orig_cfile ? $$orig_cfile : '';
     my $contentfile = "content.xml";
     my $unzippath = util::checkcmd('unzip');
     my @unzipopts = ("-p");
     my $xml = "";
-    my @cmd = ($unzippath, @unzipopts, $$orig_cfile, $contentfile);
+    my @cmd = ($unzippath, @unzipopts, $cfile, $contentfile);
     my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
     while (defined(my $line = <$fh_out>)){
         $xml .= $line;

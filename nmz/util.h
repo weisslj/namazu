@@ -4,11 +4,6 @@
 #include <stdio.h>     /* for FILE struct */
 #include "libnamazu.h" /* for enum nmz_stat struct */
 
-/* FIXME: Will be moved.  */
-#ifdef HAVE__VSNPRINTF
-#define vsnprintf(str,n,format,ap) _vsnprintf(str,n,format,ap)
-#endif /* HAVE__VSNPRINTF */
-
 /*
  *
  * Data Structures.

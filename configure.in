@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.75 2000-01-10 23:26:25 satoru Exp $
+dnl $Id: configure.in,v 1.76 2000-01-11 16:01:43 rug Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -81,11 +81,14 @@ AC_FUNC_MEMCMP
 AC_FUNC_VPRINTF
 AC_CHECK_FUNCS(getcwd getwd putenv setenv strdup strspn)
 AC_REPLACE_FUNCS([memmove strcasecmp strncasecmp strcspn strerror strstr])
-AC_CHECK_FUNCS([vsnprintf _vsnprintf])
-if test $ac_cv_func_vsnprintf = no && test $ac_cv_func__vsnprintf = no; then
-    LIBOBJS="$LIBOBJS vsnprintf.${ac_objext}"
+AC_CHECK_FUNCS([vsnprintf _vsnprintf __vsnprintf])
+if test $ac_cv_func_vsnprintf = no; then
+    if test $ac_cv_func__vsnprintf = yes || test $ac_cv_func__vsnprintf = yes; then
+	LIBOBJS="$LIBOBJS easy-vsnprintf.${ac_objext}"
+    else
+	LIBOBJS="$LIBOBJS vsnprintf.${ac_objext}"
+    fi
 fi
-
 
 dnl for debugging.
 AM_WITH_CCMALLOC

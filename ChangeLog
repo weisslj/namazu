@@ -1,3 +1,13 @@
+2000-01-12  Ryuji Abe  <raeva@t3.rim.or.jp>
+
+	* configure.in(AC_CHECK_FUNCS): Checking for __vsnprintf.
+
+	* lib/easy-vsnprintf: Derived from gnome-libs support file.
+
+	* lib/Makefile.am (EXTRA_DIST): Added easy-vsnprintf.c
+
+	* nmz/util.h: Removed HAVE__VSNPRINTF conditional.
+
 2000-01-11  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* nmz/libnamazu.h (nmz_set_dyingmsg): Use __PRETTY_FUNCTION__ if

@@ -1,0 +1,6 @@
+*.mo
+*.gmo
+POTFILES
+make_jis7_po
+Makefile
+Makefile.in

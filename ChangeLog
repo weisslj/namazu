@@ -1,3 +1,7 @@
+2001-06-19  Ryuji Abe  <rug@namazu.org>
+
+	* THANKS: Updated.
+
 2001-06-19  SATOH Fumiyasu  <fumiya@samba.gr.jp>
 
 	* filter/{taro,wordpro}.pl (add_magic): Fixed regex pattern
@@ -6500,4 +6504,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.828 2001-06-19 09:08:15 fumiya Exp $
+$Id: ChangeLog,v 1.829 2001-06-19 09:36:47 rug Exp $

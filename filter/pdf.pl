@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: pdf.pl,v 1.39 2004-11-26 15:23:44 opengl2772 Exp $
+# $Id: pdf.pl,v 1.40 2004-12-08 01:36:00 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu ,
 #               2000-2004 Namazu Project All rights reserved.
@@ -161,7 +161,7 @@ sub filter ($$$$$) {
     codeconv::toeuc($cont);
 
     if (defined $pdfinfopath) {
-	my @cmd = ($pdfinfopath, @pdfinfoopts, $tmpfile);
+        my @cmd = ($pdfinfopath, @pdfinfoopts, $tmpfile);
         my $result = "";
         my $status = util::syscmd(
             command => \@cmd,
@@ -172,24 +172,24 @@ sub filter ($$$$$) {
                 "mode_stderr" => 'wt',
             },
         );
-	if ($result =~ /Title:\s+(.*)/) { # or /Subject:\s+(.*)/
-	    $fields->{'title'} = $1;
+        if ($result =~ /Title:\s+(.*)/) { # or /Subject:\s+(.*)/
+            $fields->{'title'} = $1;
             if ($fields->{'title'} =~ /<unicode>/) {
                 delete $fields->{'title'};
             }
             elsif ($fields->{'title'} =~ /^\s*$/) {
                 delete $fields->{'title'};
             }
-	}
-	if ($result =~ /Author:\s+(.*)/) {
-	    $fields->{'author'} = $1;
+        }
+        if ($result =~ /Author:\s+(.*)/) {
+            $fields->{'author'} = $1;
             if ($fields->{'author'} =~ /<unicode>/) {
                 delete $fields->{'author'};
             }
             elsif ($fields->{'author'} =~ /^\s*$/) {
                 delete $fields->{'author'};
             }
-	}
+        }
     }
 
     unlink $tmpfile;
@@ -197,16 +197,16 @@ sub filter ($$$$$) {
     
     # Zenkaku-space handling bug fix (before pdftotext-0.90)
     if (util::islang("ja") && $pdfconvver <= 0.90) {
-	$$cont =~ s/\xa1\xa0/\xa1\xa1/g;
+        $$cont =~ s/\xa1\xa0/\xa1\xa1/g;
     }
 
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($cont);
     $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
-	unless $fields->{'title'};
+        unless $fields->{'title'};
     gfilter::show_filter_debug_info($cont, $weighted_str,
-				    $fields, $headings);
+                                    $fields, $headings);
 
     return undef;
 }

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: pdf.pl,v 1.26 2002-07-25 14:11:36 baba Exp $
+# $Id: pdf.pl,v 1.27 2002-07-26 15:23:27 baba Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -115,7 +115,7 @@ sub filter ($$$$$) {
 	my $tmpfile3 = util::tmpnam('NMZ.pdf3');
 #	system("$pdfinfopath $tmpfile > $tmpfile3");
 	open(SAVEOUT, ">&STDOUT");
-	open(SAVEOUT, ">$tmpfile3");
+	open(STDOUT, ">$tmpfile3");
 	system("$pdfinfopath $tmpfile");
 	open(STDOUT, ">&SAVEOUT");
 	my $fh = util::efopen("< $tmpfile3");

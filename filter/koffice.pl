@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: koffice.pl,v 1.7 2004-09-20 13:08:37 usu Exp $
+# $Id: koffice.pl,v 1.8 2004-10-01 03:44:28 opengl2772 Exp $
 # Copyright (C) 2004 Yukio USUDA 
 #               2004 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -29,6 +29,7 @@ require 'util.pl';
 my $utfconvpath = undef;
 my $unzippath = undef;
 my @unzipopts;
+my $perlver = $];
 
 sub mediatype () {
     #http://www.iana.org/assignments/media-types/application/

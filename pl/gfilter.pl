@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: gfilter.pl,v 1.3 2004-01-30 14:22:16 opengl2772 Exp $
+# $Id: gfilter.pl,v 1.4 2004-10-01 03:44:28 opengl2772 Exp $
 # Copyright (C) 1999 Satoru Takabayashi ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -57,16 +57,18 @@ sub filename_to_title ($$) {
     # for MSWin32's filename using Shift_JIS [1998-09-24]
     if (($mknmz::SYSTEM eq "MSWin32") || ($mknmz::SYSTEM eq "os2")) {
 	$cfile = codeconv::shiftjis_to_eucjp($cfile);
-	$cfile = codeconv::eucjp_han2zen_kana($cfile);
+	codeconv::eucjp_han2zen_kana(\$cfile);
     }
     
+    codeconv::normalize_eucjp(\$cfile);
+
     $cfile =~ m!^.*/([^/]*)$!;
     my $filename = $1;
 
     # get keywords from a file name.
     # modified [1998-09-18] 
     my $tmp = $filename;
-    $tmp =~ s|/\\_\.-| |g;
+    $tmp =~ tr|/\\_\.-| |;
 
     my $weight = $conf::Weight{'html'}->{'title'};
     $$weighted_str .= "\x7f$weight\x7f$tmp\x7f/$weight\x7f\n";

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: codeconv.pl,v 1.22 2004-09-07 13:34:53 opengl2772 Exp $
+# $Id: codeconv.pl,v 1.23 2004-10-01 03:44:28 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -58,11 +58,10 @@ sub ktoe ($$) {
 }
 
 sub eucjp_han2zen_kana ($) {
-    my ($str) = @_;
+    my ($strref) = @_;
     if (util::islang("ja")) {
-	$str =~ s/\x8e([\xa1-\xdf])(\x8e([\xde\xdf]))?/&ktoe($1,$3)/geo;
+	$$strref =~ s/\x8e([\xa1-\xdf])(\x8e([\xde\xdf]))?/&ktoe($1,$3)/geo;
     }
-    $str;
 }
 
 # convert Shift_JIS to EUC-JP
@@ -160,9 +159,9 @@ sub toeuc ($) {
 }
 
 sub eucjp_zen2han_ascii ($) {
-    my ($str) = @_;
+    my ($strref) = @_;
     if (util::islang("ja")) {
-        $str =~ s/([\xa1-\xfe][\xa1-\xfe]|\x8e[\xa1-\xdf]|\x8f[\xa1-\xfe][\xa1-\xfe])/
+        $$strref =~ s/([\xa1-\xfe][\xa1-\xfe]|\x8e[\xa1-\xdf]|\x8f[\xa1-\xfe][\xa1-\xfe])/
         my $tmp = $1;
         if ($tmp =~ m!\xa3([\xb0-\xb9\xc1-\xda\xe1-\xfa])!) {
             $tmp = $1 & "\x7F";
@@ -188,14 +187,13 @@ sub eucjp_zen2han_ascii ($) {
         $tmp;
         /gse;
     }
-    $str;
 }
 
 sub normalize_eucjp ($) {
     my ($contref) = @_;
     if (util::islang("ja")) {
-        $$contref = codeconv::eucjp_han2zen_kana($$contref);
-        $$contref = codeconv::eucjp_zen2han_ascii($$contref);
+        codeconv::eucjp_han2zen_kana($contref);
+        codeconv::eucjp_zen2han_ascii($contref);
     }
     $contref;
 }

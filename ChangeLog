@@ -1,6 +1,24 @@
+2004-10-01  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * pl/codeconv.pl(eucjp_han2zen_kana, eucjp_zen2han_ascii): Change the
+        parameter passing method to pass-by-reference.
+
+        (normalize_eucjp): Ditto.
+
+        * pl/gfilter.pl(filename_to_title): Ditto.
+
+        * filter/koffice.pl: Bug fix. Add variable $perlver.
+
+        * pl/gfilter.pl(filename_to_title): get keywords from a file name.
+        Added codeconv::normalize_eucjp().
+
 2004-09-30  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* tests/data/en/acrobat5.pdf: New file.
+
+	* pltests/*: The Perl version test program.
+
+	* Makefile.am, configure.in: Added pltests.
 
 2004-09-20  Yukio USUDA <usu@namazu.org>
 
@@ -9104,4 +9122,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1233 2004-09-30 05:05:04 opengl2772 Exp $
+$Id: ChangeLog,v 1.1234 2004-10-01 03:44:27 opengl2772 Exp $

@@ -1,3 +1,7 @@
+2000-02-13  Ryuji Abe <raeva@t3.rim.or.jp>
+
+	* configure.in (AC_CHECK_HEADERS): Added search.h.
+
 2000-02-12  Ryuji Abe  <raeva@t3.rim.or.jp>
 
 	* lib/setenv.c: New file that stolen from glibc-2.1.2.

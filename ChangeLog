@@ -1,3 +1,11 @@
+2000-04-04  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* tests/Makefile.am (TESTS): Add mknmz-7 and namazu-7.
+
+	* tests/namazu-7: New file.
+
+	* tests/mknmz-7: Likewise.
+
 2000-04-02  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* doc/en/Makefile.am (html_DATA): Add tips.html.
@@ -5394,4 +5402,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.662 2000-04-01 16:41:35 satoru Exp $
+$Id: ChangeLog,v 1.663 2000-04-04 07:18:04 satoru Exp $

@@ -411,7 +411,7 @@ mknmz は次のように実行します。
 
 <ul>
   <li>結果 (の索引) は (-O で指定した) /tmp/index に
-  <li>検索対象は<code>カレントディレクトリ</code> (これが<strong>ピリオド</strong>)
+  <li>検索対象は<code>/foo/bar/doc</code>
   <li>URI については
 
 <p>
@@ -422,13 +422,13 @@ mknmz は次のように実行します。
 s#<em>aaa</em>#<strong>bbb</strong>#
 のように置換してね」という意味になります。
 (上の例では aaa (/foo/bar/doc/)
-            bbb (http://foo.bar.jp/) となる。
+            bbb (http://foo.bar.jp/) となります。)
 </p>
 
   <li> (/usr/local/etc/namazu/mknmzrc の $HTML_SUFFIX の設定によって)
      *.html *.html.ja *.phtml *.html *.asp *.cgi などだけを調べ、メー
-      ルのようなものは調べない。
-  <li>手軽にメイルなどを調べるなら -a を付けておく
+      ルのようなものはこの指定では調べません。
+  <li>手軽にメイルなどを調べるなら -a を付けておきます。
 </ul>
 
 
@@ -793,7 +793,7 @@ Webブラウザの言語の設定に日本語(ja) を追加してください
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: tutorial.html,v 1.19 2000-02-19 06:36:23 makoto Exp $
+$Id: tutorial.html,v 1.20 2000-02-19 07:05:55 makoto Exp $
 </div>
 <address>
 developers@namazu.org

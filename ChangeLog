@@ -1,3 +1,23 @@
+2000-03-23  Ken-ichi Hirose  <kenzo-@tama.or.jp>
+
+	* filter/ichitaro456.pl: Add New file.
+	Because jstxt.exe can execute in PC-UNIX(now FreeBSD 3.x or late,
+	BSDI and BSD/386 ?).
+
+	* filter/win32/ichitaro456.pl: Remove.
+
+	* filter/powerpoint.pl: Add new file. this filter use doccat.
+
+	* filter/taro.pl: Likewise.
+
+	* filter/msword.pl (filter): Separate filter_wv and filter_doccat.
+
+	* filter/excel.pl (filter): Separate filter_xl and filter_doccat.
+
+	* filter/Makefile.am: Add ichitaro456.pl, powerpoint.pl and taro.pl.
+
+	* filter/win32/Makefile.am: Remove ichitaro456.pl.
+
 2000-03-22  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* scripts/mknmz.in (load_document): Apply Shirai's patch
@@ -5326,4 +5346,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.652 2000-03-22 12:21:05 satoru Exp $
+$Id: ChangeLog,v 1.653 2000-03-22 21:13:16 kenzo- Exp $

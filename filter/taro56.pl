@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: taro56.pl,v 1.4 2003-06-03 14:36:46 usu Exp $
+# $Id: taro56.pl,v 1.5 2003-11-26 15:26:10 usu Exp $
 # Copyright (C) 2003 Yukio USUDA
 #               2003 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -67,6 +67,11 @@ sub taro56filter ($$$$$) {
       = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
     my $err = undef;
+
+    my $title = substr($$cont, 0x40, 64);
+    $title =~ s/\x00//g;
+    codeconv::toeuc(\$title);
+    $fields->{'title'} = $title;
 
     my @data = unpack("C*", $$cont);
     my $textsizep = pack("C4", $data[0x800], $data[0x801],

@@ -1,3 +1,7 @@
+2003-11-27  Yukio USUDA <usu@namazu.org>
+
+	* filter/taro56.pl: Added routine to get title.
+
 2003-11-19  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * src/namazu-cgi.c: Bug fix.
@@ -8216,4 +8220,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1064 2003-11-19 12:58:36 opengl2772 Exp $
+$Id: ChangeLog,v 1.1065 2003-11-26 15:26:09 usu Exp $

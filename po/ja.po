@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Namazu 2.0.6pre1\n"
-"POT-Creation-Date: 2001-11-19 17:03+0900\n"
+"POT-Creation-Date: 2002-01-04 16:18+0900\n"
 "PO-Revision-Date: 2001-06-26 16:55+0900\n"
 "Last-Translator: Ryuji Abe <rug@namazu.org>\n"
 "Language-Team: Japanese <ja@li.org>\n"
@@ -73,33 +73,33 @@ msgstr "インデックスは古いフォーマットであるべきです"
 msgid "Unknown error. Report bug!"
 msgstr "不明なエラー。バグ報告してください"
 
-#: src/cgi.c:126 src/cgi.c:136
+#: src/cgi.c:127 src/cgi.c:138
 msgid "Invalid idxname."
 msgstr "不正な idxname の指定です"
 
-#: src/cgi.c:220
+#: src/cgi.c:222
 msgid "Too long QUERY_STRING"
 msgstr "CGIの QUERY_STRING が長すぎます"
 
-#: src/output.c:505
+#: src/output.c:507
 msgid "\t<strong>Page:</strong> "
 msgstr "\t<strong>ペイジ:</strong> "
 
-#: src/output.c:550
+#: src/output.c:552
 #, c-format
 msgid "Current List: %d"
 msgstr "現在のリスト: %d"
 
-#: src/output.c:598
+#: src/output.c:602
 #, c-format
 msgid " [ TOTAL: %d ]"
 msgstr " [ 合計: %d ]"
 
-#: src/output.c:608
+#: src/output.c:612
 msgid "\t<p><strong> Total "
 msgstr "\t<p><strong>検索式にマッチする "
 
-#: src/output.c:615
+#: src/output.c:619
 msgid ""
 "\t documents matching your query.</strong></p>\n"
 "\n"
@@ -107,7 +107,7 @@ msgstr ""
 "\t 個の文書が見つかりました。</strong></p>\n"
 "\n"
 
-#: src/output.c:674
+#: src/output.c:678
 #, c-format
 msgid ""
 "\t<h2>Error!</h2>\n"
@@ -116,19 +116,19 @@ msgstr ""
 "\t<h2>エラー!</h2>\n"
 "<p>%s</p>\n"
 
-#: src/output.c:704
+#: src/output.c:708
 msgid "\t<h2>Results:</h2>\n"
 msgstr "\t<h2>検索結果</h2>\n"
 
-#: src/output.c:711
+#: src/output.c:715
 msgid "References: "
 msgstr "参考ヒット数: "
 
-#: src/output.c:758
+#: src/output.c:762
 msgid "\t<p>No document matching your query.</p>\n"
 msgstr "\t<p>検索式にマッチする文書はありませんでした。</p>\n"
 
-#: src/output.c:962
+#: src/output.c:996
 msgid ""
 "<h2>Error</h2>\n"
 "<p>"
@@ -136,46 +136,46 @@ msgstr ""
 "<h2>エラー!</h2>\n"
 "<p>"
 
-#: src/output.c:966
+#: src/output.c:1000
 msgid "</p>"
 msgstr "</p>"
 
 #. terminator not matched
-#: src/rcfile.c:388
+#: src/rcfile.c:391
 msgid "can't find string terminator"
 msgstr "文字列の終端が見つかりません"
 
-#: src/rcfile.c:504
+#: src/rcfile.c:507
 msgid "invalid directive name"
 msgstr "不正な指示子です"
 
-#: src/rcfile.c:517
+#: src/rcfile.c:521
 msgid "can't find arguments"
 msgstr "引数が見つかりません"
 
-#: src/rcfile.c:620
+#: src/rcfile.c:624
 msgid "too few arguments"
 msgstr "引数が足りません"
 
-#: src/rcfile.c:623
+#: src/rcfile.c:627
 msgid "too many arguments"
 msgstr "引数が多すぎます"
 
-#: src/rcfile.c:633
+#: src/rcfile.c:637
 msgid "unknown directive"
 msgstr "不明な指示子です"
 
-#: src/rcfile.c:684
+#: src/rcfile.c:688
 #, c-format
 msgid "%s:%d: syntax error: %s"
 msgstr "%s:%d: 構文エラー: %s"
 
-#: src/rcfile.c:789
+#: src/rcfile.c:795
 #, c-format
 msgid "Loaded rcfile: %s\n"
 msgstr "読み込んだ設定ファイル: %s\n"
 
-#: src/rcfile.c:794
+#: src/rcfile.c:800
 #, c-format
 msgid ""
 "Index:        %s\n"
@@ -196,12 +196,12 @@ msgstr ""
 "マッチする語の上限 (MaxMatch):  %d\n"
 "強調タグ (EmphasisTags): %s\t%s\n"
 
-#: src/rcfile.c:814
+#: src/rcfile.c:820
 #, c-format
 msgid "Alias:   %-20s\t%s\n"
 msgstr "別名 (Alias):   %-20s\t%s\n"
 
-#: src/rcfile.c:824
+#: src/rcfile.c:830
 #, c-format
 msgid "Replace: %-20s\t%s\n"
 msgstr "置換 (Replace): %-20s\t%s\n"
@@ -278,15 +278,15 @@ msgstr "使い方: namazu [オプション] <検索式> [インデックス]...\n"
 msgid "Try `namazu --help' for more information.\n"
 msgstr "`namazu --help' でより詳しい情報が表示されます\n"
 
-#: scripts/mknmz.in:108
+#: scripts/mknmz.in:104
 msgid " files are found to be indexed.\n"
 msgstr "個のファイルがインデックス作成の対象として見つかりました\n"
 
-#: scripts/mknmz.in:126
+#: scripts/mknmz.in:122
 msgid "target file: "
 msgstr "対象ファイル: "
 
-#: scripts/mknmz.in:146 scripts/mknmz.in:162
+#: scripts/mknmz.in:142 scripts/mknmz.in:158
 msgid "Writing index files..."
 msgstr "インデックスを書き出しています..."
 

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Namazu 2.0.6pre1\n"
-"POT-Creation-Date: 2001-11-19 17:03+0900\n"
+"POT-Creation-Date: 2002-01-04 16:18+0900\n"
 "PO-Revision-Date: 2001-06-26 16:55+0900\n"
 "Last-Translator: Stephane Legrand <Stephane.Legrand@bigfoot.com>\n"
 "Language-Team: French <fr@li.org>\n"
@@ -73,33 +73,33 @@ msgstr "L'index devrait être en ancien format."
 msgid "Unknown error. Report bug!"
 msgstr "Erreur inconnue. Signalez le bug !"
 
-#: src/cgi.c:126 src/cgi.c:136
+#: src/cgi.c:127 src/cgi.c:138
 msgid "Invalid idxname."
 msgstr "Invalide idxname."
 
-#: src/cgi.c:220
+#: src/cgi.c:222
 msgid "Too long QUERY_STRING"
 msgstr "Trop longue QUERY_STRING"
 
-#: src/output.c:505
+#: src/output.c:507
 msgid "\t<strong>Page:</strong> "
 msgstr "\t<strong>Page :</strong> "
 
-#: src/output.c:550
+#: src/output.c:552
 #, c-format
 msgid "Current List: %d"
 msgstr "Liste courante : %d"
 
-#: src/output.c:598
+#: src/output.c:602
 #, c-format
 msgid " [ TOTAL: %d ]"
 msgstr " [ TOTAL : %d ]"
 
-#: src/output.c:608
+#: src/output.c:612
 msgid "\t<p><strong> Total "
 msgstr "\t<p><strong> Total "
 
-#: src/output.c:615
+#: src/output.c:619
 msgid ""
 "\t documents matching your query.</strong></p>\n"
 "\n"
@@ -107,7 +107,7 @@ msgstr ""
 "\t documents correspondent à votre requête.</strong></p>\n"
 "\n"
 
-#: src/output.c:674
+#: src/output.c:678
 #, c-format
 msgid ""
 "\t<h2>Error!</h2>\n"
@@ -116,19 +116,19 @@ msgstr ""
 "\t<h2>Erreur !</h2>\n"
 "<p>%s</p>\n"
 
-#: src/output.c:704
+#: src/output.c:708
 msgid "\t<h2>Results:</h2>\n"
 msgstr "\t<h2>Résultats :</h2>\n"
 
-#: src/output.c:711
+#: src/output.c:715
 msgid "References: "
 msgstr "Références : "
 
-#: src/output.c:758
+#: src/output.c:762
 msgid "\t<p>No document matching your query.</p>\n"
 msgstr "\t<p>Aucun document ne correspond à votre requête.</p>\n"
 
-#: src/output.c:962
+#: src/output.c:996
 msgid ""
 "<h2>Error</h2>\n"
 "<p>"
@@ -136,46 +136,46 @@ msgstr ""
 "\t<h2>Erreur</h2>\n"
 "<p>"
 
-#: src/output.c:966
+#: src/output.c:1000
 msgid "</p>"
 msgstr "</p>"
 
 #. terminator not matched
-#: src/rcfile.c:388
+#: src/rcfile.c:391
 msgid "can't find string terminator"
 msgstr "impossible de trouver la terminaison de chaîne de caractères"
 
-#: src/rcfile.c:504
+#: src/rcfile.c:507
 msgid "invalid directive name"
 msgstr "nom de directive invalide"
 
-#: src/rcfile.c:517
+#: src/rcfile.c:521
 msgid "can't find arguments"
 msgstr "impossible de trouver les arguments"
 
-#: src/rcfile.c:620
+#: src/rcfile.c:624
 msgid "too few arguments"
 msgstr "trop peu d'arguments"
 
-#: src/rcfile.c:623
+#: src/rcfile.c:627
 msgid "too many arguments"
 msgstr "trop d'arguments"
 
-#: src/rcfile.c:633
+#: src/rcfile.c:637
 msgid "unknown directive"
 msgstr "directive inconnue"
 
-#: src/rcfile.c:684
+#: src/rcfile.c:688
 #, c-format
 msgid "%s:%d: syntax error: %s"
 msgstr "%s:%d: erreur de syntaxe : %s"
 
-#: src/rcfile.c:789
+#: src/rcfile.c:795
 #, c-format
 msgid "Loaded rcfile: %s\n"
 msgstr "rcfile chargé : %s\n"
 
-#: src/rcfile.c:794
+#: src/rcfile.c:800
 #, c-format
 msgid ""
 "Index:        %s\n"
@@ -196,12 +196,12 @@ msgstr ""
 "Nb correspondances max :  %d\n"
 "Tags de mise en relief : %s\t%s\n"
 
-#: src/rcfile.c:814
+#: src/rcfile.c:820
 #, c-format
 msgid "Alias:   %-20s\t%s\n"
 msgstr "Alias :   %-20s\t%s\n"
 
-#: src/rcfile.c:824
+#: src/rcfile.c:830
 #, c-format
 msgid "Replace: %-20s\t%s\n"
 msgstr "Remplacer : %-20s\t%s\n"
@@ -289,15 +289,15 @@ msgstr "Usage : namazu [options] <requête> [index]...\n"
 msgid "Try `namazu --help' for more information.\n"
 msgstr "`namazu --help' pour plus d'informations.\n"
 
-#: scripts/mknmz.in:108
+#: scripts/mknmz.in:104
 msgid " files are found to be indexed.\n"
 msgstr " fichiers trouvés pour être indexés.\n"
 
-#: scripts/mknmz.in:126
+#: scripts/mknmz.in:122
 msgid "target file: "
 msgstr "fichier cible : "
 
-#: scripts/mknmz.in:146 scripts/mknmz.in:162
+#: scripts/mknmz.in:142 scripts/mknmz.in:158
 msgid "Writing index files..."
 msgstr "Ecriture des fichiers d'index..."
 

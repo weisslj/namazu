@@ -3,6 +3,9 @@
 	* scripts/mknmz.in (show_config): [n-d-j:03263] verbose
         Supported media types:  (sync with stable-2-0)
 
+	* scripts/mknmz.in (show_config): [n-d-j:03265] show File::MMagic
+	version at -C, proposed by Usuda San. (sync with stable-2-0)
+
 2003-10-07  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * filter/mailnews.pl: Fixed the problem in [n-d-j:03172,03208].
@@ -8205,4 +8208,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1061 2003-10-21 03:41:58 makoto Exp $
+$Id: ChangeLog,v 1.1062 2003-10-21 05:53:48 makoto Exp $

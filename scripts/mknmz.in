@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.125 2003-10-21 03:41:59 makoto Exp $
+# $Id: mknmz.in,v 1.126 2003-10-21 05:53:48 makoto Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -1346,6 +1346,7 @@ sub show_config () {
     print _("System: ") . "$SYSTEM\n" if $SYSTEM;
     print _("Namazu: ") . "$var::VERSION\n" if $var::VERSION;
     print _("Perl: ") . "$]\n" if $];   # '$]' has a perl version
+    print _("File-MMagic: ") . "$File::MMagic::VERSION\n" if $File::MMagic::VERSION;
     print _("NKF: ") . "$conf::NKF\n" if $conf::NKF;
     print _("KAKASI: ") . "$conf::KAKASI\n" if $conf::KAKASI;
     print _("ChaSen: ") . "$conf::CHASEN\n" if $conf::CHASEN;

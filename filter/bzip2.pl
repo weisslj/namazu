@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: bzip2.pl,v 1.14 2000-03-15 06:53:50 satoru Exp $
+# $Id: bzip2.pl,v 1.15 2000-03-22 10:02:37 knok Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -69,6 +69,10 @@ sub filter ($$$$$) {
     }
     {
 	my $fh = util::efopen("$tmpfile");
+	my $size = filesize($fh);
+	if ($size > $conf::FILE_SIZE_MAX) {
+	    return 'too_large_gzipped_file';
+	}
 	$$cont = util::readfile($fh);
     }
     unlink($tmpfile);

@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: rtf.pl,v 1.8 2004-02-20 19:10:37 opengl2772 Exp $
+# $Id: rtf.pl,v 1.9 2004-02-20 19:17:34 opengl2772 Exp $
 # Copyright (C) 2003-2004 Tadamasa Teranishi All rights reserved.
-# Copyright (C) 2000-2002 Namazu Project All rights reserved.
+# Copyright (C) 2000-2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify

@@ -1,5 +1,7 @@
 2002-01-18  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
+	* nmz/regex*: Imported latest source from Ruby 1.6.6.
+
 	* lib/getopt*: Imported latest sources from GNU gengetopt-2.5.
 
 2002-01-17  NOKUBI Takatsugu  <knok@daionet.gr.jp>
@@ -7374,4 +7376,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.922 2002-01-18 05:11:43 knok Exp $
+$Id: ChangeLog,v 1.923 2002-01-18 05:44:28 knok Exp $

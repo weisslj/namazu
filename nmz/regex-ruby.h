@@ -16,7 +16,7 @@
    Library General Public License for more details.
 
    You should have received a copy of the GNU Library General Public
-   License along with the GNU C Library; see the file COPYING.LIB.  If not,
+   License along with the GNU C Library; see the file LGPL.  If not,
    write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
    Boston, MA 02111-1307, USA.  */
 /* Multi-byte extension added May, 1993 by t^2 (Takahiro Tanimoto)
@@ -28,6 +28,7 @@
 
 /* symbol mangling for ruby */
 #ifdef RUBY
+# define re_adjust_startpos ruby_re_adjust_startpos
 # define re_compile_fastmap ruby_re_compile_fastmap
 # define re_compile_pattern ruby_re_compile_pattern
 # define re_copy_registers ruby_re_copy_registers
@@ -68,15 +69,20 @@
 #define RE_OPTION_IGNORECASE (1L)
 /* perl-style extended pattern available */
 #define RE_OPTION_EXTENDED   (RE_OPTION_IGNORECASE<<1)
-/* newline will be included for . and invert charclass matches */
-#define RE_OPTION_POSIXLINE  (RE_OPTION_EXTENDED<<1)
+/* newline will be included for . */
+#define RE_OPTION_MULTILINE  (RE_OPTION_EXTENDED<<1)
+/* ^ and $ ignore newline */
+#define RE_OPTION_SINGLELINE (RE_OPTION_MULTILINE<<1)
+/* works line Perl's /s; it's called POSIX for wrong reason */
+#define RE_OPTION_POSIXLINE  (RE_OPTION_MULTILINE|RE_OPTION_SINGLELINE)
 /* search for longest match, in accord with POSIX regexp */
-#define RE_OPTION_LONGEST    (RE_OPTION_POSIXLINE<<1)
+#define RE_OPTION_LONGEST    (RE_OPTION_SINGLELINE<<1)
 
 #define RE_MAY_IGNORECASE    (RE_OPTION_LONGEST<<1)
 #define RE_OPTIMIZE_ANCHOR   (RE_MAY_IGNORECASE<<1)
 #define RE_OPTIMIZE_EXACTN   (RE_OPTIMIZE_ANCHOR<<1)
 #define RE_OPTIMIZE_NO_BM    (RE_OPTIMIZE_EXACTN<<1)
+#define RE_OPTIMIZE_BMATCH   (RE_OPTIMIZE_NO_BM<<1)
 
 /* For multi-byte char support */
 #define MBCTYPE_ASCII 0
@@ -84,7 +90,14 @@
 #define MBCTYPE_SJIS 2
 #define MBCTYPE_UTF8 3
 
-extern const unsigned char *re_mbctab;
+#if defined IMPORT || defined USEIMPORTLIB
+extern __declspec(dllimport)
+#elif defined EXPORT
+extern __declspec(dllexport)
+#else
+extern
+#endif
+const unsigned char *re_mbctab;
 #if defined(__STDC__)
 void re_mbcinit (int);
 #else
@@ -176,15 +189,12 @@ typedef struct
 } regmatch_t;
 
 
-#ifdef NeXT
-#define re_match rre_match
-#endif
-
 #ifdef __STDC__
 
 extern char *re_compile_pattern (const char *, int, struct re_pattern_buffer *);
 void re_free_pattern (struct re_pattern_buffer *);
 /* Is this really advertised?  */
+extern int re_adjust_startpos (struct re_pattern_buffer *, const char*, int, int, int);
 extern void re_compile_fastmap (struct re_pattern_buffer *);
 extern int re_search (struct re_pattern_buffer *, const char*, int, int, int,
 		      struct re_registers *);
@@ -205,6 +215,7 @@ extern int re_exec (const char *);
 extern char *re_compile_pattern ();
 void re_free_regexp ();
 /* Is this really advertised? */
+extern int re_adjust_startpos ();
 extern void re_compile_fastmap ();
 extern int re_search ();
 extern int re_match ();

@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.19 1999-12-09 08:12:26 satoru Exp $
+ * $Id: hlist.c,v 1.20 1999-12-09 10:41:54 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -404,7 +404,10 @@ NmzResult merge_hlist(NmzResult *hlists)
     int i, n;
     NmzResult value;
 
-    if (Idx.num == 1) return hlists[0];
+    if (Idx.num == 1) {
+	return hlists[0];
+    }
+
     for(i = n = 0; i < Idx.num; i++) {
         if (hlists[i].stat == SUCCESS && hlists[i].num > 0) {
             n += hlists[i].num;
@@ -420,6 +423,7 @@ NmzResult merge_hlist(NmzResult *hlists)
         n += hlists[i].num;
         free_hlist(hlists[i]);
     }
+    value.stat = SUCCESS;
     value.num = n;
     return value;
 }

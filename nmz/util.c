@@ -1,5 +1,5 @@
 /*
- * $Id: util.c,v 1.25 1999-12-09 08:33:48 satoru Exp $
+ * $Id: util.c,v 1.26 1999-12-09 10:41:54 satoru Exp $
  *
  * Imported scan_hex(), scan_oct(), xmalloc(), xrealloc() from 
  * Ruby b19's"util.c" and "gc.c". Thanks to Matsumoto-san for consent!
@@ -525,6 +525,49 @@ void decode_uri(char * s)
 	}
     }
     s[j] = '\0';
+}
+
+char *nmz_get_errmsg(enum nmz_stat stat)
+{
+    char *msg = "If you see this message, please report.";
+
+    switch (stat) {
+    case ERR_FATAL:
+	msg = _("Fatal error occered!");
+	break;
+    case ERR_TOO_LONG_QUERY:
+        msg = _(MSG_TOO_LONG_QUERY);
+	break;
+    case ERR_INVALID_QUERY:
+	msg = _("Invalid query");
+	break;
+    case ERR_TOO_MANY_TOKENS:
+	msg = _("Too many query tokens");
+	break;
+    case  ERR_TOO_MUCH_MATCH:
+	msg = _("Too many words matched. Ignored");
+	break;
+    case ERR_TOO_MUCH_HIT:
+	msg = _("Too many pages hit. Ignored");
+	break;
+    case ERR_REGEX_SEARCH_FAILED:
+	msg = _("cannot open regex index");
+	break;
+    case ERR_PHRASE_SEARCH_FAILED:
+	msg = _("cannot open phrase index");
+	break;
+    case ERR_CANNOT_OPEN_INDEX:
+	msg = _("cannot open this index");
+	break;
+    case ERR_NO_PERMISSION:
+	msg = _("You don\'t have a permission to access the index");
+	break;
+    default:
+	msg = _("Unknown error. Report bug!");
+	break;
+    } 
+
+    return msg;
 }
 
 

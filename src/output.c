@@ -222,21 +222,8 @@ static void print_hitnum_each (struct nmz_hitnum *hn)
 	    if (hnptr->stat == SUCCESS) {
 		printf(": %d", hnptr->hitnum);
 	    } else {
-		char *msg = "(unknown error)";
-		if (hnptr->stat == ERR_TOO_MUCH_MATCH) {
-		    msg = _(" (Too many words matched. Ignored.)");
-		} else if (hnptr->stat == ERR_TOO_MUCH_HIT) {
-		    msg = _(" (Too many pages hit. Ignored.)");
-		} else if (hnptr->stat == ERR_REGEX_SEARCH_FAILED) {
-		    msg = _(" (cannot open regex index)");
-		} else if (hnptr->stat == ERR_PHRASE_SEARCH_FAILED) {
-		    msg = _(" (cannot open phrase index)");
-		} else if (hnptr->stat == ERR_CANNOT_OPEN_INDEX) {
-		    msg = _(" (cannot open this index)\n");
-		} else if (hnptr->stat == ERR_NO_PERMISSION) {
-		    msg = _("(You don\'t have a permission to access the index)");
-		} 
-		print(_(msg));
+		char *errmsg = nmz_get_errmsg(hnptr->stat);
+		printf(" (%s) ", errmsg);
 	    }
 	    print(" ] ");
 	    hnptr = hnptr->next;
@@ -519,26 +506,13 @@ enum nmz_stat print_result(NmzResult hlist, char *query, char *subquery)
 	print_headfoot(NMZ.head, query, subquery);
     }
 
-    switch (hlist.stat) {
-    case ERR_FATAL:
-	/* this should not happen... */
-	html_print(_("	<h2>Error!</h2>\n<p>Fatal error occered!</p>\n"));
+    if (hlist.stat != SUCCESS) {
+	char *errmsg = nmz_get_errmsg(hlist.stat);
+	char buf[BUFSIZE];
+	sprintf(buf, _("	<h2>Error!</h2>\n<p>%s</p>\n"), errmsg);
+
+	html_print(buf);
 	return FAILURE;
-	break;
-    case ERR_TOO_LONG_QUERY:
-        html_print(_(MSG_TOO_LONG_QUERY));
-	return FAILURE;
-	break;
-    case ERR_INVALID_QUERY:
-	html_print(_("	<h2>Error!</h2>\n<p>Invalid query.</p>\n"));
-	return FAILURE;
-	break;
-    case ERR_TOO_MANY_TOKENS:
-	html_print(_("	<h2>Error!</h2>\n<p>Too many query tokens.</p>\n"));
-	return FAILURE;
-	break;
-    default:
-	break;
     }
 
     /* result1:  <h2>Results:</h2>, References:  */

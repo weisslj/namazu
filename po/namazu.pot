@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 1999-12-09 18:09+0900\n"
+"POT-Creation-Date: 1999-12-09 19:32+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,6 +29,56 @@ msgid ""
 "Scoring: %s\n"
 msgstr ""
 
+#: nmz/util.c:536
+msgid "Fatal error occered!"
+msgstr ""
+
+#: nmz/util.c:542
+msgid "Invalid query"
+msgstr ""
+
+#: nmz/util.c:545
+msgid "Too many query tokens"
+msgstr ""
+
+#: nmz/util.c:548
+msgid "Too many words matched. Ignored"
+msgstr ""
+
+#: nmz/util.c:551
+msgid "Too many pages hit. Ignored"
+msgstr ""
+
+#: nmz/util.c:554
+msgid "cannot open regex index"
+msgstr ""
+
+#: nmz/util.c:557
+msgid "cannot open phrase index"
+msgstr ""
+
+#: nmz/util.c:560
+msgid "cannot open this index"
+msgstr ""
+
+#: nmz/util.c:563
+msgid "You don't have a permission to access the index"
+msgstr ""
+
+#: nmz/util.c:566
+msgid "Unknown error. Report bug!"
+msgstr ""
+
+#: nmz/alias.c:96
+#, c-format
+msgid "Alias:   \"%s\" -> \"%s\"\n"
+msgstr ""
+
+#: nmz/replace.c:210
+#, c-format
+msgid "Replace: \"%s\" -> \"%s\"\n"
+msgstr ""
+
 #: src/cgi.c:111 src/cgi.c:121
 msgid "Invalid idxname."
 msgstr ""
@@ -37,82 +87,46 @@ msgstr ""
 msgid "Too long QUERY_STRING"
 msgstr ""
 
-#: src/output.c:227
-msgid " (Too many words matched. Ignored.)"
-msgstr ""
-
-#: src/output.c:229
-msgid " (Too many pages hit. Ignored.)"
-msgstr ""
-
-#: src/output.c:231
-msgid " (cannot open regex index)"
-msgstr ""
-
-#: src/output.c:233
-msgid " (cannot open phrase index)"
-msgstr ""
-
-#: src/output.c:235
-msgid " (cannot open this index)\n"
-msgstr ""
-
-#: src/output.c:237
-msgid "(You don't have a permission to access the index)"
-msgstr ""
-
-#: src/output.c:365
+#: src/output.c:352
 msgid "\t<strong>Page:</strong> "
 msgstr ""
 
-#: src/output.c:407
+#: src/output.c:394
 #, c-format
 msgid "Current List: %d"
 msgstr ""
 
-#: src/output.c:449
+#: src/output.c:436
 #, c-format
 msgid " [ TOTAL: %d ]"
 msgstr ""
 
-#: src/output.c:458
+#: src/output.c:445
 msgid "\t<p><strong> Total "
 msgstr ""
 
-#: src/output.c:465
+#: src/output.c:452
 msgid ""
 "\t documents matching your query.</strong></p>\n"
 "\n"
 msgstr ""
 
-#. this should not happen...
-#: src/output.c:525
+#: src/output.c:512
+#, c-format
 msgid ""
 "\t<h2>Error!</h2>\n"
-"<p>Fatal error occered!</p>\n"
+"<p>%s</p>\n"
 msgstr ""
 
-#: src/output.c:533
-msgid ""
-"\t<h2>Error!</h2>\n"
-"<p>Invalid query.</p>\n"
-msgstr ""
-
-#: src/output.c:537
-msgid ""
-"\t<h2>Error!</h2>\n"
-"<p>Too many query tokens.</p>\n"
-msgstr ""
-
-#: src/output.c:548
+#: src/output.c:522
 msgid "\t<h2>Results:</h2>\n"
 msgstr ""
 
-#: src/output.c:555
+#: src/output.c:529
 msgid "References: "
 msgstr ""
 
-#: src/output.c:597
+#: src/output.c:571
 msgid "\t<p>No document matching your query.</p>\n"
 msgstr ""
 

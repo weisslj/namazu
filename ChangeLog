@@ -1,5 +1,14 @@
 1999-12-09  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* nmz/search.c (nmz_search): Modify error state handling.
+
+	* nmz/hlist.c (merge_hlist): Set vallue.stat to SUCCESS.
+
+	* src/output.c (print_result): Use nmz_get_errmsg().
+	(print_hitnum_each): Use nmz_get_errmsg().
+
+	* nmz/util.c (nmz_get_errmsg): New function.
+
 	* nmz/search.c (nmz_search_sub): Renamed from search_sub().
 
 	* nmz/search.c (search_sub): Modify access permission handling.

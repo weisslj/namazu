@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.64 1999-12-09 09:10:55 satoru Exp $
+ * $Id: namazu.c,v 1.65 1999-12-09 10:41:58 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -407,7 +407,8 @@ int main(int argc, char **argv)
     }
 
     ret = namazu_core(query, subquery, argv[0]);
-    if (ret != SUCCESS)
+    if (ret == ERR_FATAL) {
         nmz_die_with_msg();
+    }
     return ret;
 }

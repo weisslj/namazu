@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.31 1999-12-09 09:10:53 satoru Exp $
+ * $Id: search.c,v 1.32 1999-12-09 10:41:54 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -757,15 +757,6 @@ static NmzResult nmz_search_sub(NmzResult hlist, char *query, char *query_orig, 
 
     if (check_access() != ALLOW) { /* if access denied */
 	hlist.stat = ERR_NO_PERMISSION;
-
-	/* set Idx.pr to an error state for later error messaging */
-	Idx.pr[cur_idxnum] = push_hitnum(Idx.pr[cur_idxnum], 
-					 0, ERR_NO_PERMISSION, "");
-
-	if (Idx.pr[cur_idxnum] == NULL) {
-	    hlist.stat = ERR_FATAL;
-	    return hlist;
-	}
 	return hlist;
     }
 
@@ -910,10 +901,30 @@ NmzResult nmz_search(char *query)
         make_fullpathname_index(i);
         tmp[i] = nmz_search_sub(tmp[i], query, query_orig, i);
 
-	if (tmp[i].stat == ERR_FATAL) {
-	    hlist.data = NULL;
-	    hlist.stat = ERR_FATAL;
-	    return hlist; /* FIXME: need freeing memory? */
+	if (tmp[i].stat != SUCCESS) {
+
+	    if (tmp[i].stat == ERR_FATAL) {
+		hlist.data = NULL;
+		hlist.stat = tmp[i].stat;
+		return hlist; /* FIXME: need freeing memory? */
+	    }
+
+	    /* Set Idx.pr to an error state for later error messaging */
+	    if (Idx.pr[cur_idxnum] == NULL) {
+		Idx.pr[cur_idxnum] = push_hitnum(Idx.pr[cur_idxnum], 
+						 0, tmp[i].stat, "");
+	    }
+
+	    if (Idx.pr[cur_idxnum] == NULL) {
+		hlist.stat = ERR_FATAL;
+		return hlist;
+	    }
+	    /*
+	     * Reset state with SUCCESS. Because at this time, 
+	     * trivial errors such as ERR_TOO_MUCH_MATCH are 
+	     * recorded in Idx.pr[].
+	     */
+	    tmp[i].stat = SUCCESS; 
 	}
     }
 

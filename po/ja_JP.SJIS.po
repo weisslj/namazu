@@ -320,9 +320,8 @@ msgid "Faild to call "
 msgstr "呼び出しに失敗 "
 
 #: scripts/mknmz.in:841
-#, fuzzy
 msgid "Looking for indexing files...\n"
-msgstr "検索対象のファイルを調べています..."
+msgstr "検索対象のファイルを調べています...\n"
 
 #: scripts/mknmz.in:846 scripts/mknmz.in:1594
 msgid "No files to index.\n"

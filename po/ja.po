@@ -125,7 +125,6 @@ msgid "\t<p>No document matching your query.</p>\n"
 msgstr "\t<p>検索式にマッチする文書はありませんでした。</p>\n"
 
 #: src/output.c:941
-#, fuzzy
 msgid ""
 "<h2>Error</h2>\n"
 "<p>"
@@ -322,7 +321,7 @@ msgstr "呼び出しに失敗 "
 #: scripts/mknmz.in:841
 #, fuzzy
 msgid "Looking for indexing files...\n"
-msgstr "検索対象のファイルを調べています..."
+msgstr "検索対象のファイルを調べています...\n"
 
 #: scripts/mknmz.in:846 scripts/mknmz.in:1594
 msgid "No files to index.\n"

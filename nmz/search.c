@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.14 1999-12-04 01:20:38 satoru Exp $
+ * $Id: search.c,v 1.15 1999-12-04 02:16:26 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -87,12 +87,15 @@ static HLIST search_sub(HLIST, char*, char*, int);
 static void make_fullpathname_index(int);
 static int check_accessfile();
 static void parse_access(char *, char *, char *);
-static PHRASERES *push_phraseres(PHRASERES *, int, char *);
+static PHRASERES *push_phraseres(PHRASERES *, int, enum nmz_stat, char *);
 
 static int CurrentIndexNumber = -1;
 
 /* PHRASERES handling subroutines */
-static PHRASERES *push_phraseres(PHRASERES *pr, int hitnum, char *str)
+static PHRASERES *push_phraseres(PHRASERES *pr, 
+				 int hitnum, 
+				 enum nmz_stat stat,
+				 char *str)
 {
     PHRASERES *prptr = pr, *prevprptr = pr;
     while (prptr != NULL) {
@@ -106,6 +109,7 @@ static PHRASERES *push_phraseres(PHRASERES *pr, int hitnum, char *str)
     if (prevprptr != NULL)
 	prevprptr->next = prptr;
     prptr->hitnum = hitnum;
+    prptr->stat = stat;
     prptr->next = NULL;
     if ((prptr->word = (char *)malloc(strlen(str) +1)) == NULL) {
 	set_dyingmsg("push_phraseres: malloc failed on str");
@@ -420,7 +424,7 @@ static HLIST do_phrase_search(char *key, HLIST val)
 	    if (tmp.stat == ERR_FATAL) 
 	        return tmp;
 	    if ((prtmp = push_phraseres(
-		Idx.pr[CurrentIndexNumber], tmp.num, p)) == NULL) 
+		Idx.pr[CurrentIndexNumber], tmp.num, tmp.stat, p)) == NULL) 
 	    {
 		tmp.stat = ERR_FATAL;
 		return tmp;
@@ -866,16 +870,6 @@ HLIST search_main(char *query)
         make_fullpathname_index(i);
         tmp[i] = search_sub(tmp[i], query, query_orig, i);
 
-	if (tmp[i].stat != SUCCESS) {/* ERROR occured */
-	    PHRASERES *prtmp;
-	    if ((prtmp = push_phraseres(Idx.pr[i], tmp[i].num, "")) == NULL) 
-	    {
-		hlist.stat = ERR_FATAL;
-		return hlist;
-	    }
-	    Idx.pr[i] = prtmp;
-	}
-
 	if (tmp[i].stat == ERR_FATAL) {
 	    hlist.data = NULL;
 	    hlist.stat = ERR_FATAL;
@@ -943,13 +937,14 @@ HLIST do_search(char *orig_key, HLIST val)
     if (mode != PHRASE_MODE) { /* phrase mode print status by itself */
 	PHRASERES *prtmp;
 	if ((prtmp = push_phraseres(Idx.pr[CurrentIndexNumber], 
-				    val.num, orig_key)) == NULL) 
+				    val.num, val.stat, orig_key)) == NULL) 
 	{
 	    val.stat = ERR_FATAL;
 	    return val;
 	}
 	Idx.pr[CurrentIndexNumber] = prtmp;
     }
+
     return val;
 }
 

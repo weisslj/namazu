@@ -2,7 +2,7 @@
  * 
  * libnamazu.h - Namazu library api
  *
- * $Id: libnamazu.h,v 1.14 1999-12-04 01:20:37 satoru Exp $
+ * $Id: libnamazu.h,v 1.15 1999-12-04 02:16:26 satoru Exp $
  * 
  */
 
@@ -64,7 +64,7 @@ typedef unsigned char uchar;
 
 
 /* for error handling */
-enum nmz_err {
+enum nmz_stat {
     SUCCESS,
     FAILURE,
     ERR_FATAL,
@@ -91,7 +91,7 @@ typedef struct hlist_data {
 /* data structure for search result */
 typedef struct hlist {
     int num;           /* number of elements in its data */
-    enum nmz_err stat; /* status code mainly used for error handling */
+    enum nmz_stat stat; /* status code mainly used for error handling */
     HLIST_DATA *data;  /* dynamic array for storing a list of docid etc. */
 } HLIST;
 
@@ -150,7 +150,7 @@ typedef struct query {
 /* results of phrase search */
 typedef struct phraseres {
     int hitnum;
-    enum nmz_err stat;    /* status code mainly used for error handling */
+    enum nmz_stat stat;    /* status code mainly used for error handling */
     char *word;
     struct phraseres *next;
 } PHRASERES;

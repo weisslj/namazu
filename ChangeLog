@@ -1,5 +1,8 @@
 1999-12-04  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* nmz/search.c (push_phraseres): Take `stat' parameter.
+	(search_main): 	Remove "if (tmp[i].stat != SUCCESS) { ... }"
+	
 	* nmz/libnamazu.h: Rearrange enum definitions.
 	
 	* nmz/hlist.c (malloc_hlist): Set hlist->stat = SUCCESS.

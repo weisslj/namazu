@@ -552,14 +552,11 @@ static void print_word_hit_count (PHRASERES *pr)
 
         print(" [ ");
         print(tmp_word);
-        if (pr->hitnum > 0) {
+	if (pr->stat == SUCCESS) {
             printf(": %d", pr->hitnum);
-        } else { 
-            char *msg = (char *)"";
-
-            if (pr->stat == 0) {
-                msg = (char *)": 0 ";
-            } else if (pr->stat == ERR_TOO_MUCH_MATCH) {
+	} else {
+	    char *msg = "(unknown error)";
+	    if (pr->stat == ERR_TOO_MUCH_MATCH) {
                 msg = _(" (Too many words matched. Ignored.)");
             } else if (pr->stat == ERR_TOO_MUCH_HIT) {
                 msg = _(" (Too many pages hit. Ignored.)");
@@ -571,10 +568,10 @@ static void print_word_hit_count (PHRASERES *pr)
 		msg = _(" (cannot open this index)\n");
             } else if (pr->stat == ERR_NO_PERMISSION) {
 		msg = _("(You don\'t have a permission to access the index)");
-	    }
-            print(_(msg));
+	    } 
+	    print(_(msg));
         }
-        print(" ] ");
+	print(" ] ");
     }
 }
 

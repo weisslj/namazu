@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 1999-12-04 10:15+0900\n"
+"POT-Creation-Date: 1999-12-04 11:09+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -47,19 +47,26 @@ msgstr ""
 msgid "Too long QUERY_STRING"
 msgstr ""
 
-#: src/namazu.c:316
+#. this should not happen...
+#: src/namazu.c:313
+msgid ""
+"\t<h2>Error!</h2>\n"
+"<p>Fatal error occered!</p>\n"
+msgstr ""
+
+#: src/namazu.c:321
 msgid ""
 "\t<h2>Error!</h2>\n"
 "<p>Invalid query.</p>\n"
 msgstr ""
 
-#: src/namazu.c:320
+#: src/namazu.c:325
 msgid ""
 "\t<h2>Error!</h2>\n"
 "<p>Too many query tokens.</p>\n"
 msgstr ""
 
-#: src/namazu.c:371
+#: src/namazu.c:376
 msgid "\t<p>No document matching your query.</p>\n"
 msgstr ""
 
@@ -77,43 +84,43 @@ msgstr ""
 msgid " [ TOTAL: %d ]"
 msgstr ""
 
-#: src/output.c:563
+#: src/output.c:560
 msgid " (Too many words matched. Ignored.)"
 msgstr ""
 
-#: src/output.c:565
+#: src/output.c:562
 msgid " (Too many pages hit. Ignored.)"
 msgstr ""
 
-#: src/output.c:567
+#: src/output.c:564
 msgid " (cannot open regex index)"
 msgstr ""
 
-#: src/output.c:569
+#: src/output.c:566
 msgid " (cannot open phrase index)"
 msgstr ""
 
-#: src/output.c:571
+#: src/output.c:568
 msgid " (cannot open this index)\n"
 msgstr ""
 
-#: src/output.c:573
+#: src/output.c:570
 msgid "(You don't have a permission to access the index)"
 msgstr ""
 
-#: src/output.c:583
+#: src/output.c:580
 msgid "\t<h2>Results:</h2>\n"
 msgstr ""
 
-#: src/output.c:590
+#: src/output.c:587
 msgid "References: "
 msgstr ""
 
-#: src/output.c:598
+#: src/output.c:595
 msgid "\t<p><strong> Total "
 msgstr ""
 
-#: src/output.c:605
+#: src/output.c:602
 msgid ""
 "\t documents matching your query.</strong></p>\n"
 "\n"

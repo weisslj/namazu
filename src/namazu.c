@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.50 1999-12-04 01:20:40 satoru Exp $
+ * $Id: namazu.c,v 1.51 1999-12-04 02:16:28 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -72,7 +72,7 @@
 
 static int stdio2file(char*);
 static int parse_options(int, char**);
-static int namazu_core(char*, char*, char*);
+static enum nmz_stat namazu_core(char*, char*, char*);
 static void suicide(int);
 static int ck_atoi (char const *, int*);
 
@@ -264,7 +264,7 @@ static int parse_options(int argc, char **argv)
 }
 
 /* namazu core routine */
-static int namazu_core(char * query, char *subquery, char *av0)
+static enum nmz_stat namazu_core(char * query, char *subquery, char *av0)
 {
     char query_with_subquery[BUFSIZE * 2];
     HLIST hlist;
@@ -308,6 +308,11 @@ static int namazu_core(char * query, char *subquery, char *av0)
     hlist = search_main(query_with_subquery);
 
     switch (hlist.stat) {
+    case ERR_FATAL:
+	/* this should not happen... */
+	html_print(_("	<h2>Error!</h2>\n<p>Fatal error occered!</p>\n"));
+	return FAILURE;
+	break;
     case ERR_TOO_LONG_QUERY:
         html_print(_(MSG_TOO_LONG_QUERY));
 	return FAILURE;

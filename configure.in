@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.25 1999-09-05 10:45:12 satoru Exp $
+dnl $Id: configure.in,v 1.26 1999-09-06 07:56:34 satoru Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -256,19 +256,6 @@ fi
 changequote([, ])
 AC_SUBST(FILE_MMAGIC)
 
-
-dnl *
-dnl * CGI location
-dnl *
-AC_MSG_CHECKING(for CGI location)
-AC_ARG_WITH(
-        cgi_location,
-	[  --with-cgi-location=DIR      set CGI location [/cgi-bin]],
-	[cgi_location=${withval}], [cgi_location='/cgi-bin']
-)
-AC_MSG_RESULT($cgi_location)
-OPT_CGI_LOCATION=$cgi_location
-AC_SUBST(OPT_CGI_LOCATION)
 
 dnl *
 dnl * Define the admin's email address

@@ -18,12 +18,13 @@ This index contains <!-- FILE --> 0 <!-- FILE --> documents and
 <strong>Last modified: <!-- DATE --> date <!-- DATE --></strong>
 </p>
 <hr>
-<form method="GET" action="$conf::CGI_ACTION">
+<form method="GET" action="{cgi}">
 <p>
 <strong>Search String:</strong> 
 <input type="TEXT" name="query" size="40">
 <input type="SUBMIT" name="submit" value="Search!">
 <input type="HIDDEN" name="whence" value="0">
+<a href="{cgi}">[Help]</a>
 </p>
 <p>
 <strong>Display:</strong>

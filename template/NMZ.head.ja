@@ -18,12 +18,13 @@
 <strong>インデックスの最終更新日: <!-- DATE --> date <!-- DATE --></strong>
 </p>
 <hr>
-<form method="GET" action="$conf::CGI_ACTION">
+<form method="GET" action="{cgi}">
 <p>
 <strong>検索式:</strong> 
 <input type="TEXT" name="query" size="40">
 <input type="SUBMIT" name="submit" value="Search!">
 <input type="HIDDEN" name="whence" value="0">
+<a href="{cgi}">[Help]</a>
 </p>
 <p>
 <strong>表示件数:</strong>

@@ -502,3 +502,22 @@ uchar *readfile(uchar *fname)
     return buf;
 }
 
+/* subst: substitute pat with rep at without memory size consideration */
+void subst(uchar *p, uchar *pat, uchar *rep)
+{
+    int patlen, replen;
+    patlen = strlen(pat);
+    replen = strlen(rep);
+
+    if (patlen == replen) {
+	memmove(p, rep, replen);
+    } else if (patlen < replen) {
+	/* + 1 for including '\0' */
+	memmove(p + replen, p + patlen, strlen(p) - patlen + 1);
+	memmove(p, rep, replen);
+    } else if (patlen > replen) {
+	memmove(p, rep, replen);
+	/* + 1 for including '\0' */
+	memmove(p + replen, p + patlen, strlen(p) - patlen + 1);
+    }
+}

@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.15 1999-09-06 01:13:10 satoru Exp $
+ * $Id: form.c,v 1.16 1999-09-06 07:56:38 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -46,13 +46,13 @@
 
 int cmp_element(uchar*, uchar*);
 int replace_query_value(uchar*, uchar*);
-int replace_action(uchar*);
+uchar *read_headfoot(uchar*);
 void delete_str(uchar*, uchar*);
 void get_value(uchar*, uchar*);
 void get_select_name(uchar*, uchar*);
 int select_option(uchar*, uchar*, uchar*);
 int check_checkbox(uchar*);
-void treat_tag(uchar*, uchar*, uchar*, uchar *, uchar *);
+void handle_tag(uchar*, uchar*, uchar*, uchar *, uchar *);
 
 /* compare the element
  * some measure of containing LF or redundant spaces are acceptable.
@@ -87,28 +87,13 @@ int replace_query_value(uchar *p, uchar *orig_query)
     
     strcpy(query, orig_query);
 
-    if (!cmp_element(p, (uchar *)"input type=\"text\" name=\"query\"")) {
+    if (cmp_element(p, (uchar *)"input type=\"text\" name=\"query\"") == 0) {
         for (; *p; p++)
             fputc(*p, stdout);
         printf(" value=\"");
         fputx(query, stdout); 
         fputs("\"", stdout);
         return 0;
-    }
-    return 1;
-}
-
-/* replace <form method="get" action="/somewhere/namazu.cgi"> */
-int replace_action(uchar *p)
-{
-    if (!cmp_element(p, (uchar *)"form method=\"get\"")) {
-        char *script_name = getenv("SCRIPT_NAME");
-        if (script_name) {
-            printf("form method=\"get\" action=\"%s\"", script_name);
-            return 0;
-        } else {
-            return 1;
-        }
     }
     return 1;
 }
@@ -148,7 +133,7 @@ void get_select_name(uchar *s, uchar *v)
 {
     *v = '\0';
     for (; *s; s++) {
-        if (!cmp_element(s, (uchar *)"select name=\"")) {
+        if (cmp_element(s, (uchar *)"select name=\"") == 0) {
             s = (uchar *)strchr(s, '"') + 1;
             for (; *s && *s != (uchar)'"'; s++, v++) {
                 *v = *s;
@@ -163,7 +148,7 @@ int select_option(uchar *s, uchar *name, uchar *subquery)
 {
     uchar value[BUFSIZE];
 
-    if (!cmp_element(s, (uchar *)"option")) {
+    if (cmp_element(s, (uchar *)"option") == 0) {
         delete_str(s, (uchar *)"selected ");
         fputs(s, stdout);
         get_value(s, value);
@@ -239,7 +224,7 @@ int check_checkbox(uchar *s)
     uchar value[BUFSIZE];
     int i;
 
-    if (!cmp_element(s, (uchar *)"input type=\"checkbox\" name=\"idxname\"")) {
+    if (cmp_element(s, "input type=\"checkbox\" name=\"idxname\"") == 0) {
         uchar *pp;
         int db_count, searched;
 
@@ -271,8 +256,8 @@ int check_checkbox(uchar *s)
     return 1;
 }
 
-/* treat an HTML tag */
-void treat_tag(uchar *p, uchar *q, uchar *query, 
+/* handle an HTML tag */
+void handle_tag(uchar *p, uchar *q, uchar *query, 
                uchar *select_name, uchar *subquery)
 {
     uchar tmp[BUFSIZE];
@@ -282,17 +267,45 @@ void treat_tag(uchar *p, uchar *q, uchar *query,
     if (l < BUFSIZE - 1) {
         strncpy(tmp, p, l);
         tmp[l] = '\0';
-        if (!replace_query_value(tmp, query))
+        if (replace_query_value(tmp, query) == 0)
             return;
-        if (!replace_action(tmp))
+        if (select_option(tmp, select_name, subquery) == 0)
             return;
-        if (!select_option(tmp, select_name, subquery))
-            return;
-        if (!check_checkbox(tmp))
+        if (check_checkbox(tmp) == 0)
             return;
         get_select_name(tmp, select_name);
     }
     fputs(tmp, stdout);
+}
+
+uchar *read_headfoot(uchar *fname) {
+    uchar *buf, *p;
+    char *script_name;
+
+    buf = readfile(fname);
+    if (buf == NULL) {
+        return NULL;
+    }
+
+    /* expand buf memory for replacing {cgi} */
+    buf = (uchar *)realloc(buf, strlen(buf) + BUFSIZE);
+    if (buf == NULL) {
+        return NULL;
+    }
+
+    script_name= getenv("SCRIPT_NAME");
+
+    /* can't determine script_name */
+    if (script_name == NULL) {
+	return buf;
+    }
+
+    /* replace {cgi} with a proper namazu.cgi location */
+    while ((p = strstr(buf, "{cgi}")) != NULL) {
+	subst(p, "{cgi}", script_name);
+    }
+    
+    return buf;
 }
 
 /************************************************************
@@ -308,9 +321,10 @@ void print_headfoot(uchar * fname, uchar * query, uchar *subquery)
 {
     uchar *buf, *p, *q, name[BUFSIZE] = "";
     int f, f2;
-    buf = readfile(fname);
+
+    buf = read_headfoot(fname);
     if (buf == NULL) {
-        return;
+	return;
     }
 
     for (p = buf, f = f2 = 0; *p; p++) {
@@ -350,7 +364,7 @@ void print_headfoot(uchar * fname, uchar * query, uchar *subquery)
                the problem occurs if JIS X 208 characters in element */
             q = (uchar *)strchr(p, (int)'>');
             fputs("<", stdout);
-            treat_tag(p + 1, q - 1, query, name, subquery);
+            handle_tag(p + 1, q - 1, query, name, subquery);
             fputs(">", stdout);
             p = q;
         } else {

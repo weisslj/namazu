@@ -1,5 +1,17 @@
 1999-09-06  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* form.c (replace_action): Replace {cgi} with suitable namazu.cgi
+	location on the fly.
+
+	* src/util.c (subst): New function.
+
+	* templates/NMZ.head.{ja,en}: Abolish $conf::CGI_ACTION but
+	introduce {cgi} instead. And add [Help] link next to Search! button.
+	
+	* configure.in: Remove cgi-location related codes.
+
+	* lib/conf.pl.in: Abolish $CGI_ACTION.
+
 	* **/*.pl{,.in}, src/*.[ch]: Translate all comments into English.
 	
 	* src/namazu.h, src/*.[ch]: Rename names of hlist_data members.

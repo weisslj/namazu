@@ -1,3 +1,7 @@
+1999-12-08  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* nmz/util.c: Add comments.
+
 1999-12-08  Ryuji Abe  <raeva@t3.rim.or.jp>
 
 	* nmz/util.[ch] (wprint): Removed.

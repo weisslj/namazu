@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.13 1999-08-28 09:26:18 satoru Exp $
+ * $Id: search.c,v 1.14 1999-08-29 07:59:12 masao Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -397,6 +397,11 @@ HLIST do_phrase_search(uchar *key, HLIST val)
             if (i == 0) {
                 val = tmp;
             } else {
+		if (tmp.n == ERR_TOO_MUCH_HIT || val.n == ERR_TOO_MUCH_HIT) {
+		    ignore = 1;
+		} else {
+		    ignore = 0;
+		}
                 val = andmerge(val, tmp, &ignore);
             }
 	    if (!no_phrase_index) {

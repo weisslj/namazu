@@ -24,6 +24,10 @@
 
 #include "config.h"
 
+#ifdef HAVE_SUPPORT_H
+# include "support.h"
+#endif
+
 #ifdef HAVE_STRING_H
 # include <string.h>
 #else

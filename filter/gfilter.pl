@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: gfilter.pl,v 1.5 1999-08-31 02:29:09 satoru Exp $
+# $Id: gfilter.pl,v 1.6 1999-08-31 15:01:23 satoru Exp $
 # Copyright (C) 1999 Satoru Takabayashi ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -91,7 +91,6 @@ sub line_adjust_filter ($) {
 sub analize_rcs_stamp()
 {
 }
-
 
 1;
 

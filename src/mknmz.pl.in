@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.50 1999-08-31 10:17:51 knok Exp $
+# $Id: mknmz.pl.in,v 1.51 1999-08-31 15:01:24 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -500,7 +500,12 @@ sub load_document ($$$$\%) {
 	my $mtype_c = $mm->checktype_contents($$content);
 	$mtype = decide_type($mtype_n, $mtype_c);
 	if (defined $var::REQUIRE_CODECONV{$mtype}) {
-	    codeconv::toeuc($content);
+	      codeconv::toeuc($content);
+	      $content =~ s/[ \t]+/ /g;   # remain LFs v1.03
+	      $content =~ s/\r\n/\n/g;    # remain LFs for ChaSen
+	      $content =~ s/\r/\n/g;      # CR+LF or CR are into LF
+	      # Control characters be into space
+	      $content =~ tr/\x00-\x09\x0b-\x1f\x7f\xff/    /;
 	}
 	util::dprint("Detected type: $mtype\n");
 	if (! defined $conf::Supported{$mtype} || $conf::Supported{$mtype} ne 'yes') {
@@ -532,13 +537,6 @@ sub load_document ($$$$\%) {
 	$cfile = $shelter_cfile;
     }
 
-    $$content =~ s/[ \t]+/ /g;   # remain LFs v1.03
-    $$content =~ s/\r\n/\n/g;    # remain LFs for ChaSen
-    $$content =~ s/\r/\n/g;      # CR+LF or CR are into LF
-
-
-    # Control characters be into space
-    $$content =~ tr/\x00-\x09\x0b-\x1f\x7f\xff/    /;
     my $kanji = $$content =~ tr/\xa1-\xfe/\xa1-\xfe/;  # Kanji contained?
 
     return ($file_size, $text_size, $kanji, $mtype);

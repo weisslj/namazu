@@ -22,6 +22,9 @@
 
 1999-08-31  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/mknmz.pl.in (load_document): Move some codes from the bottom
+	to "if (defined $var::REQUIRE_CODECONV{$mtype}) {}" block.
+	
 	* filter/mailnews.pl (filter): Add mailnews_citation_filter()
 	process. (this fix an awful bug...)
 	

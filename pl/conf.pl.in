@@ -208,7 +208,12 @@ $CHASEN = "@DO_CHASEN@";
 $CHASEN_NOUN = "@DO_CHASEN_NOUN@";
 
 #
-# Default Japanese processer: KAKASI or ChaSen.
+# MeCab
+#
+$MECAB = "@DO_MECAB@";
+
+#
+# Default Japanese processer: KAKASI or ChaSen or MeCab.
 #
 $WAKATI  = $@OPT_WAKATI_DEFAULT@;
 

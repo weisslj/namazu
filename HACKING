@@ -23,6 +23,6 @@ the following packages:
 	- GNU autoconf 2.50 (or later)
 	- GNU automake 1.6 (or later)
 	- GNU libtool 1.4 (or later)
-	- GNU gettext 0.13 (or later)
+	- GNU gettext 0.13.1 (or later)
 
 After check out, run ./autogen.sh at top of the source tree.

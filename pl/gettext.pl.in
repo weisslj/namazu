@@ -115,7 +115,8 @@ sub mo_format_value
 sub _
 {
     my $msg = $_[0];
-    $msg =~ s/\$/\\\$/g;
+#    It comments out after xgettext 0.13.1
+#    $msg =~ s/\$/\\\$/g;
     defined $_{$msg} ? $_{$msg} : $_[0];
 }
 

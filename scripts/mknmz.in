@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.148 2004-11-27 03:11:45 usu Exp $
+# $Id: mknmz.in,v 1.149 2004-12-06 16:19:44 opengl2772 Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -867,6 +867,10 @@ sub require_modules() {
 	@arg    = ('-j', '-F', '%m %H\\n') if $var::Opt{'noun'};
 	my $res = Text::ChaSen::getopt_argv('chasen-perl', @arg);
     }
+    if (util::islang("ja") && $conf::WAKATI =~ /^module_mecab/) {
+        require MeCab || die "unable to require \"MeCab\"\n";
+        util::dprint(_("wakati: using MeCab module\n"));
+    }
 }
 
 sub check_lockfile ($) {
@@ -973,6 +977,7 @@ sub parse_options
     my $opt_chasen = 0;
     my $opt_chasen_noun = 0;
     my $opt_kakasi = 0;
+    my $opt_mecab = 0;
     my $opt_checkpoint_sub = 0;
     my $opt_show_config = 0;
     my $opt_mailnews = 0;
@@ -1015,6 +1020,7 @@ sub parse_options
 	       'Y|no-delete'         => \$var::Opt{'nodelete'},
 	       'Z|no-update'         => \$var::Opt{'noupdate'},
 	       'a|all'               => \$opt_all,
+	       'b|use-mecab'         => \$opt_mecab,
 	       'c|use-chasen'        => \$opt_chasen,
 	       'd|debug'             => \$var::Opt{'debug'},
 	       'e|robots'            => \$var::Opt{'robotexclude'},
@@ -1130,6 +1136,11 @@ sub parse_options
 	$conf::WAKATI = $conf::KAKASI;
 	$var::Opt{'noun'} = 0;
     }
+    if ($opt_mecab) {
+	$conf::WAKATI = $conf::MECAB;
+	$var::Opt{'noun'} = 0;
+    }
+
     if ($include_file) {
 	do $include_file;
         util::dprint("Included: $include_file\n");
@@ -1195,6 +1206,7 @@ sub show_config () {
     print _("NKF: ") . "$conf::NKF\n" if $conf::NKF;
     print _("KAKASI: ") . "$conf::KAKASI\n" if $conf::KAKASI;
     print _("ChaSen: ") . "$conf::CHASEN\n" if $conf::CHASEN;
+    print _("MeCab: ") . "$conf::MECAB\n" if $conf::MECAB;
     print _("Wakati: ") . "$conf::WAKATI\n" if $conf::WAKATI;
     print _("Lang_Msg: ") . "$util::LANG_MSG\n";
     print _("Lang: ") . "$util::LANG\n";

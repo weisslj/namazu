@@ -1,4 +1,17 @@
-2004-10-27  Yukio USUDA <usu@namazu.org>
+2004-12-07  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+	* pl/{gfilter, util}.pl : TAB Replacement of SPACE.
+
+	* pl/gettext.pl, HACKING, HACKING-ja : It corresponds xgettext 0.13.1.
+
+	* scripts/mknmz.in, configure.in: It corresponds to MeCab.
+        The addition of the -b(--use-mecab) option.
+
+	* pl/{conf.pl.in, usage.pl} : Ditto.
+
+	* po/{POTFILES.in, ja.po, ja_JP.SJIS.po, namazu.pot} : Ditto.
+
+2004-11-27  Yukio USUDA <usu@namazu.org>
 
 	* scripts/mknmz.in(namazu_core): Bug fix. Correct the problem with
 	file larger than $FILE_SIZE_MAX.
@@ -9281,4 +9294,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1277 2004-11-27 03:11:45 usu Exp $
+$Id: ChangeLog,v 1.1278 2004-12-06 16:19:44 opengl2772 Exp $

@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.131 2000-09-19 09:03:31 knok Exp $
+dnl $Id: configure.in,v 1.132 2000-12-28 08:30:45 baba Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -261,6 +261,22 @@ else
 fi
 AC_MSG_RESULT($OPT_WAKATI_DEFAULT)
 AC_SUBST(OPT_WAKATI_DEFAULT)
+
+if test "$KAKASI" = "no"; then
+    DO_KAKASI="no"
+else
+    DO_KAKASI="$KAKASI -ieuc -oeuc -w"
+fi
+if test "$CHASEN" = "no"; then
+    DO_CHASEN="no"
+    DO_CHASEN_NOUN="no"
+else
+    DO_CHASEN="$CHASEN -j -F '\%m '"
+    DO_CHASEN_NOUN="$CHASEN -j -F '\%m %H\\\\n'"
+fi
+AC_SUBST(DO_KAKASI)
+AC_SUBST(DO_CHASEN)
+AC_SUBST(DO_CHASEN_NOUN)
 
 dnl *
 dnl * Preprocessing for tknamazu (FIXME: ugly scripts)

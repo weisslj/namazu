@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.91 2000-01-28 09:40:08 satoru Exp $
+dnl $Id: configure.in,v 1.92 2000-01-29 09:14:57 rug Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -323,7 +323,7 @@ AM_CONDITIONAL(BUILD_FILE_MMAGIC, test x$file_mmagic = xyes)
 dnl *
 dnl * Check for Emacs and where to install .elc files.
 dnl *
-AM_PATH_LISPDIR
+dnl AM_PATH_LISPDIR
 
 dnl *
 dnl * Set default behavior (will be moved)

@@ -63,6 +63,10 @@
 	* scripts/Makefile.am: Revert to verbose configuration process.
 	(TAGS_DEPENDENCIES): Set $(SCRIPTS).
 
+	* lisp/Makefile.am (lisp_LISP): Comment out.
+
+	* configure.in (AM_PATH_LISPDIR): Likewise.
+
 2000-01-28  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* pl/Makefile.am (perllib_DATA): Remove find.pl.

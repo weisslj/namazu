@@ -3,6 +3,9 @@ EXTRA_DIST  =   acrobat3.pdf \
 		acrobat4.pdf \
 		d20000220.hnf \
 		html.html \
+		ichitaro4.jsw \
+		ichitaro5.jaw \
+		ichitaro6.jaw \
 		mail-multipart.txt \
 		mail.txt \
 		man.1 \

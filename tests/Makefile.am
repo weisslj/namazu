@@ -8,4 +8,7 @@ TESTS =	mknmz-1 mknmz-2 mknmz-3 mknmz-4 mknmz-5 \
 	namazu-1 namazu-2 namazu-3 namazu-4 \
 	namazu-cgi-1 namazu-cgi-2
 
+clean-local:
+	rm -rf tmp-data idx* test-log
+
 EXTRA_DIST = $(TESTS)

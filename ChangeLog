@@ -1,5 +1,19 @@
 2000-02-28  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* pl/conf.pl.in ($ALLOW_FILE): Add the pattern for Ichitaro 4, 5, 6.
+
+	* tests/data/ja/Makefile.am (EXTRA_DIST): Add ichitaro4.jsw,
+	ichitaro5.jaw and ichitaro6.jbw.
+	[namazu-devel-ja:00063] [namazu-devel-ja:00066] 
+
+	* scripts/mknmz.in (decide_type): Improve $name handling.
+
+	* filter/ichitaro456.pl (add_magic): Add magics for ichitaro[456]
+	[namazu-devel-ja:00063] 
+
+	* tests/Makefile.am (clean-local): New	rule. 
+	[namazu-devel-ja:00064] 
+
 	* filter/ichitaro456.pl (post_codeconv): return 1
 	[namazu-devel-ja:00058] 
 

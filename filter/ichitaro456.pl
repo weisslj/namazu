@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: ichitaro456.pl,v 1.7 2000-02-28 05:44:49 satoru Exp $
+# $Id: ichitaro456.pl,v 1.8 2000-02-28 07:50:49 satoru Exp $
 # Copyright (C) 1999 Ken-ichi Hirose All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -54,6 +54,10 @@ sub post_codeconv () {
 }
 
 sub add_magic ($) {
+    my ($magic) = @_;
+    $magic->addFileExts('(?i)\\.jsw', 'application/ichitaro4');
+    $magic->addFileExts('(?i)\\.jaw', 'application/ichitaro5');
+    $magic->addFileExts('(?i)\\.jbw', 'application/ichitaro6');
     return;
 }
 

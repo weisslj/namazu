@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2000-02-28 07:52+0900\n"
+"POT-Creation-Date: 2000-02-28 16:50+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -248,8 +248,8 @@ msgstr ""
 msgid "Detected type: "
 msgstr ""
 
-#: scripts/mknmz.in:640
-msgid "Unsupported data type "
+#: scripts/mknmz.in:640 scripts/mknmz.in:1316
+msgid "Unsupported media type "
 msgstr ""
 
 #: scripts/mknmz.in:645
@@ -470,10 +470,6 @@ msgstr ""
 
 #: scripts/mknmz.in:1313
 msgid "is too LARGE a text! skipped."
-msgstr ""
-
-#: scripts/mknmz.in:1316
-msgid "Unsupported media type "
 msgstr ""
 
 #: scripts/mknmz.in:1316

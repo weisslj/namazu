@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.34 2000-02-27 15:09:07 satoru Exp $
+# $Id: mknmz.in,v 1.35 2000-02-28 07:50:51 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -637,7 +637,7 @@ sub load_document ($$$$\%) {
 	if (! $var::Supported{$mtype} || 
 	    $var::Supported{$mtype} ne 'yes') 
 	{
-	    util::vprint(_("Unsupported data type ")."$mtype\n");
+	    util::vprint(_("Unsupported media type ")."$mtype\n");
 	    return ($file_size, $file_size, 0, "$mtype; x-system=unsupported");
 	}
 
@@ -2214,13 +2214,14 @@ sub decide_type ($$) {
     my ($name, $cont) = @_;
     return $name if (!defined $cont || $name eq $cont);
 
-    if ($cont =~ /^text/ && $name =~ /.*;.*x-type=(rfc|internet-draft|fyi)/) {
+    if ($cont =~ m!^text/plain! && $name =~ m!^text/plain!) {
+	return $name;
+    } elsif ($cont =~ m!^application/octet-stream!) {
 	return $name;
     }
 
     return $cont;
 }
-
 
 #
 # For avoiding "used only once: possible typo at ..." warnings.

@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.63 2004-01-30 14:22:18 opengl2772 Exp $
+ * $Id: hlist.c,v 1.64 2004-03-26 17:37:38 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -590,13 +590,13 @@ nmz_get_hlist(int index)
         n = 0;
         totalsize = 0;
         while (totalsize < bersize) {
-            totalsize += nmz_get_unpackw(Nmz.i, &buf[n]);
-            n++;
-            if (n > maxhit * 2) {
+            if (n == hit) {
                 hlist.stat = ERR_TOO_MUCH_HIT;
                 free(buf);
                 return hlist;
             }
+            totalsize += nmz_get_unpackw(Nmz.i, &buf[n]);
+            n++;
         }
         n /= 2;
 

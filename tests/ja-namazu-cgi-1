@@ -36,7 +36,7 @@ QUERY_STRING='query=³¤&idxname=ja-idx1'
 export SCRIPT_NAME QUERY_STRING
 
 cd ../src
-RESULT=`./namazu.cgi -h ³¤ | grep »³ | wc -l`
+RESULT=`./namazu.cgi | grep »³ | wc -l`
 if [ $RESULT -ne 1 ]
 then
 	exit 1

@@ -87,9 +87,9 @@ always_built_SUBDIRS = src conf
 
 SUBDIRS = $(always_built_SUBDIRS) @FILE_MMAGIC@ @TKNAMAZU@
 
-DIST_SUBDIRS = $(always_built_SUBDIRS) File-MMagic tknamazu
+DIST_SUBDIRS = $(always_built_SUBDIRS) tknamazu
 
-EXTRA_DIST = README-ja namazu.spec.in 	     ChangeLog.old.1.gz
+EXTRA_DIST = README-ja namazu.spec.in 	     ChangeLog.old.1.gz File-MMagic
 
 
 EXTRA_DIRS = doc etc lib lisp filter template

@@ -19,9 +19,14 @@
 	* filter/*.pl, src/mknmz.pl.in: Add return value on filter::filter()
 	functions.
 
+
 1999-08-31  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
-	* lib/var.pl.in: Remove serveal media types into %REQUIRE_CODECONV.
+	* Makefile.am (DIST_SUBDIRS): Remove File-MMagic because it causes
+	error at "make dist" time.
+	
+	* lib/var.pl.in: Remove serveal media types from
+	%REQUIRE_CODECONV. (undo)
 
 	* src/result.l (get_field_data): Insert commas if given filed is a
 	numeric string.

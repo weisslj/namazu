@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: man.pl.in,v 1.6 1999-08-28 00:07:39 satoru Exp $
+# $Id: man.pl.in,v 1.7 1999-08-28 00:19:40 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -26,7 +26,7 @@
 package man;
 use strict;
 require 'util.pl';
-require 'filter.pl';
+#require 'filter.pl';
 
 my $TMPFILE = util::tmpnam('NMZ.man');
 

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: msword.pl.in,v 1.5 1999-08-28 00:07:39 satoru Exp $
+# $Id: msword.pl.in,v 1.6 1999-08-28 00:19:41 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -26,11 +26,11 @@
 package msword;
 use strict;
 require 'util.pl';
-require 'filter.pl';
+#require 'filter.pl';
 require 'html.pl';
 
-my $TMPFILE = util::tmpnam('NMZ.word');
-my $TMPFILE2 = itil::util::tmpnam('NMZ.word2');
+my $TMPFILE  = util::tmpnam('NMZ.word');
+my $TMPFILE2 = util::tmpnam('NMZ.word2');
 
 sub mediatype() {
     return ('application/msword');
@@ -39,7 +39,7 @@ sub mediatype() {
 sub status() {
     my $wordconvpath = util::checkcmd('mswordview');
     my $utfconvpath = util::checkcmd('lv');
-    return 'yes' if (defined $wordconvpath && defined utfconvpath);
+    return 'yes' if (defined $wordconvpath && defined $utfconvpath);
     return 'no';
 }
 

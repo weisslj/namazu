@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: html.pl,v 1.37 2003-04-29 19:11:14 opengl2772 Exp $
+# $Id: html.pl,v 1.38 2003-06-05 12:08:16 makoto Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -315,7 +315,9 @@ sub remove_html_elements ($) {
 sub decode_numbered_entity ($) {
     my ($num) = @_;
     return ""
-	if $num >= 0 && $num <= 8 ||  $num >= 11 && $num <= 31 || $num >=127;
+	if $num >= 0 && $num <= 31 || $num >= 127 && $num <= 159 ;
+    return "" 
+	if $num >=127 && islang('ja');
     sprintf ("%c",$num);
 }
 

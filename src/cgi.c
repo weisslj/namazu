@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.26 1999-11-19 02:58:20 satoru Exp $
+ * $Id: cgi.c,v 1.27 1999-11-19 09:04:24 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -45,6 +45,7 @@
 #include "idxname.h"
 #include "magic.h"
 #include "var.h"
+#include "mode.h"
 
 /*
  *
@@ -355,20 +356,20 @@ static void process_cgi_var_format(char *value, CGIARG *ca)
 static void process_cgi_var_sort(char *value, CGIARG *ca)
 {
     if (strprefixcasecmp(value, "score") == 0) {
-	SortMethod  = SORT_BY_SCORE;
-	SortOrder   = DESCENDING;
+	set_sortmethod(SORT_BY_SCORE);
+	set_sortorder(DESCENDING);
     } if (strprefixcasecmp(value, "later") == 0) {  /* backward compat. */
-	SortMethod  = SORT_BY_DATE;
-	SortOrder   = DESCENDING;
+	set_sortmethod(SORT_BY_DATE);
+	set_sortorder(DESCENDING);
     } if (strprefixcasecmp(value, "earlier") == 0) { /* backward compat. */
-	SortMethod  = SORT_BY_DATE;
-	SortOrder   = ASCENDING;
+	set_sortmethod(SORT_BY_DATE);
+	set_sortorder(ASCENDING);
     } else if (strprefixcasecmp(value, "date:late") == 0) {
-	SortMethod  = SORT_BY_DATE;
-	SortOrder   = DESCENDING;
+	set_sortmethod(SORT_BY_DATE);
+	set_sortorder(DESCENDING);
     } else if (strprefixcasecmp(value, "date:early") == 0) {
-	SortMethod  = SORT_BY_DATE;
-	SortOrder   = ASCENDING;
+	set_sortmethod(SORT_BY_DATE);
+	set_sortorder(ASCENDING);
     } else if (strprefixcasecmp(value, "field:") == 0) {
 	int n;
 	char field[BUFSIZE];
@@ -379,12 +380,12 @@ static void process_cgi_var_sort(char *value, CGIARG *ca)
 	field[n] = '\0';  /* Hey, don't forget this after strncpy()! */
 	set_sort_field(field);
 	value += n;
-	SortMethod    = SORT_BY_FIELD;
+	set_sortmethod(SORT_BY_FIELD);
 	if (strprefixcasecmp(value, ":ascending") == 0) {
-	    SortOrder = ASCENDING;
+	    set_sortmethod(ASCENDING);
 	    value += strlen(":ascending");
 	} else if (strprefixcasecmp(value, ":descending") == 0) {
-	    SortOrder = DESCENDING;
+	    set_sortmethod(DESCENDING);
 	    value += strlen(":descending");
 	}
     } 

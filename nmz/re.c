@@ -2,7 +2,7 @@
  * 
  * re.c -
  * 
- * $Id: re.c,v 1.4 1999-11-19 02:58:16 satoru Exp $
+ * $Id: re.c,v 1.5 1999-11-19 09:04:20 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -235,7 +235,7 @@ HLIST regex_grep(char *orig_expr, FILE *fp, char *field, int field_mode)
                 val.n = -1;
                 break;
             }
-	    if (Debug) {
+	    if (is_debugmode()) {
                 char buf2[BUFSIZE];
 
                 if (field_mode) {

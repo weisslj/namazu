@@ -1,5 +1,15 @@
 1999-11-19  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* nmz/var.c: Abolish global values:
+	SortMethod, SortOrder, HtmlOutput, Debug, Quiet
+	
+	* nmz/libnamazu.c (set_sortbydate): Abolished.
+	(set_sortbyscore): Abolished.
+	(set_sortbyfield): Abolished.
+	(set_sort_descending): Abolished.
+	(set_sort_ascending): Abolished.
+	(set_debug): Abolished.
+
 	* nmz/mode.[ch]: New files.
 	
 	* nmz/codeconv.c (ishiragana): Be simple.

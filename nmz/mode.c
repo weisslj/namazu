@@ -2,7 +2,7 @@
  * 
  * mode.c - Namazu mode controlling class.
  * 
- * $Id: mode.c,v 1.1 1999-11-19 08:08:10 satoru Exp $
+ * $Id: mode.c,v 1.2 1999-11-19 09:04:20 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -71,16 +71,6 @@ static char dyingmessage[BUFSIZE] = "Initialized";
  *
  */
 
-void set_htmlmode(int mode)
-{
-    htmlmode = mode;
-}
-
-int is_htmlmode(void)
-{
-    return htmlmode;
-}
-
 void set_sortmethod(int method)
 {
     sortmethod = method;
@@ -89,5 +79,70 @@ void set_sortmethod(int method)
 int get_sortmethod(void)
 {
     return sortmethod;
+}
+
+
+
+
+void set_sortorder(int order)
+{
+    sortorder = order;
+}
+
+int get_sortorder(void)
+{
+    return sortorder;
+}
+
+
+
+
+void set_maxlistnum(int num)
+{
+    maxlistnum = num;
+}
+
+void set_htmlmode(int mode)
+{
+    htmlmode = mode;
+}
+
+
+
+
+int is_htmlmode(void)
+{
+    return htmlmode;
+}
+
+int get_maxlistnum(void)
+{
+    return maxlistnum;
+}
+
+
+
+
+void set_quietmode(int mode)
+{
+    quietmode = mode;
+}
+
+int is_quietmode(void)
+{
+    return quietmode;
+}
+
+
+
+
+void set_debugmode(int mode)
+{
+    debugmode = mode;
+}
+
+int is_debugmode(void)
+{
+    return debugmode;
 }
 

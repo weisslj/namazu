@@ -3,9 +3,7 @@
 
 extern int HListMax;
 extern int HListWhence;
-extern int Debug;
 extern int ListFormat;
-extern int Quiet;
 extern int HitCountOnly;
 extern int HidePageIndex;
 extern int ForcePrintForm;
@@ -17,9 +15,6 @@ extern int IsCGI;
 extern int Logging;
 extern int TfIdf;
 extern int NoReference;
-
-extern int SortMethod;
-extern int SortOrder;
 
 extern char DEFAULT_INDEX[];
 

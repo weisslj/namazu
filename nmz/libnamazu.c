@@ -2,7 +2,7 @@
  * 
  * libnamazu.c - Namazu library api
  *
- * $Id: libnamazu.c,v 1.5 1999-11-19 02:58:16 satoru Exp $
+ * $Id: libnamazu.c,v 1.6 1999-11-19 09:04:20 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
@@ -214,35 +214,4 @@ char *set_template(char *arg)
 {
     return strcpy(Template, arg);
 }
-
-void set_sortbydate(void)
-{
-    SortMethod = SORT_BY_DATE;
-}
-
-void set_sortbyscore(void)
-{
-    SortMethod = SORT_BY_SCORE;
-}
-
-void set_sortbyfield(void)
-{
-    SortMethod = SORT_BY_FIELD;
-}
-
-void set_sort_descending(void)
-{
-    SortOrder = DESCENDING;
-}
-
-void set_sort_ascending(void)
-{
-    SortOrder = ASCENDING;
-}
-
-void set_debug(void)
-{
-    Debug = 1;
-}
-
 

@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.8 1999-11-19 02:58:16 satoru Exp $
+ * $Id: search.c,v 1.9 1999-11-19 09:04:21 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -54,6 +54,7 @@
 #include "codeconv.h"
 #include "var.h"
 #include "magic.h"
+#include "mode.h"
 
 enum { ALLOW, DENY } perm;
 
@@ -156,8 +157,9 @@ static void lrget(char * key, int *l, int *r)
     *l = 0;
     *r = get_file_size(NMZ.ii) / sizeof(int) - 1;
 
-    if (Debug)
+    if (is_debugmode()) {
 	show_status(*l, *r);
+    }
 }
 
 /* Prefix match search */
@@ -179,7 +181,7 @@ static HLIST prefix_match(char * orig_key, int v)
 	    break;
 	}
     }
-    if (Debug) {
+    if (is_debugmode()) {
 	v = i;
     }
 
@@ -879,13 +881,13 @@ HLIST search_main(char *query)
 	    hlist.n = DIE_HLIST;
 	    return hlist;
 	  }
-	if (SortMethod != SORT_BY_DATE) {
-	    if (sort_hlist(hlist, SortMethod)) {
+	if (get_sortmethod() != SORT_BY_DATE) {
+	    if (sort_hlist(hlist, get_sortmethod())) {
 	        hlist.n = DIE_HLIST;
 		return hlist;
 	    }
 	}
-        if (SortOrder == ASCENDING) {  /* default is descending */
+        if (get_sortorder() == ASCENDING) {  /* default is descending */
 	    if (reverse_hlist(hlist)) {
 	        hlist.n = DIE_HLIST;
 		return hlist; 

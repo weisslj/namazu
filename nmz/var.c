@@ -2,7 +2,7 @@
  * 
  * values.c -
  * 
- * $Id: var.c,v 1.4 1999-11-19 08:08:59 satoru Exp $
+ * $Id: var.c,v 1.5 1999-11-19 09:04:21 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -49,9 +49,7 @@ char NAMAZURC[BUFSIZE] = "";
 /* too many global variables */
 int HListMax = 20;		/* max number of search results */
 int HListWhence = 0;		/* number which beginning of search results */
-int Debug = 0;			/* if debug mode is on: 1 */
 int ListFormat = 0;        /* if more short format mode: 1  */
-int Quiet = 0;                  /* if quiet mode: 1  */
 int HitCountOnly = 0;
 int HidePageIndex = 0;		/* if hide page index: 1 */
 int ForcePrintForm = 0;		/* if display <FORM> ... </FORM>: 1 */
@@ -61,8 +59,6 @@ int DecodeURI = 0;		/* if replace URI at plaint text mode: 1 */
 int IsCGI = 0;			/* if CGI mode: 1 */
 int Logging = 1;		/* if do logging:  1 */
 int NoReference = 0;		/* if no display reference: 1  */
-int SortMethod = SORT_BY_SCORE;	/* Method of sorting */
-int SortOrder = DESCENDING;	/* Direction of sorting */
 
 
 #ifdef OPT_SCORING

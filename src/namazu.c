@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.42 1999-11-19 08:09:02 satoru Exp $
+ * $Id: namazu.c,v 1.43 1999-11-19 09:04:24 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -62,6 +62,7 @@
 #include "message.h"
 #include "var.h"
 #include "magic.h"
+#include "mode.h"
 
 /*
  *
@@ -145,27 +146,27 @@ static int parse_options(int argc, char **argv)
 	    set_template(optarg);
 	    break;
 	case '2':
-	    set_sortbydate();
-	    set_sort_descending();
+	    set_sortmethod(SORT_BY_DATE);
+	    set_sortorder(DESCENDING);
 	    break;	  
 	case '3':	  
-	    set_sortbydate();
-	    set_sort_ascending();
+	    set_sortmethod(SORT_BY_DATE);
+	    set_sortorder(ASCENDING);
 	    break;
 	case '4':  /* --sort */
 	{
 	    if (strcasecmp(optarg, "score") == 0) {
-		set_sortbyscore();
+		set_sortmethod(SORT_BY_SCORE);
 	    } else if (strcasecmp(optarg, "date") == 0) {
-		set_sortbydate();
+		set_sortmethod(SORT_BY_DATE);
 	    } else if (strprefixcasecmp(optarg, "field:") == 0) {
-		set_sortbyfield();
-		set_sort_field(optarg + 6);
+		set_sortmethod(SORT_BY_FIELD);
+		set_sort_field(optarg + strlen("field:"));
 	    }
 	}
 	break;
 	case '5':  /* --ascending */
-	    set_sort_ascending();
+	    set_sortorder(ASCENDING);
 	    break;
 	case 'f':
 	    set_namazurc(optarg);
@@ -177,7 +178,7 @@ static int parse_options(int argc, char **argv)
 	    HListWhence = atoi(optarg);
 	    break;
 	case 'd':
-	    set_debug();
+	    set_debugmode(1);
 	    break;
 	case 's':
 	    set_template("short");
@@ -187,7 +188,7 @@ static int parse_options(int argc, char **argv)
 	    ListFormat = 1;
 	    break;
 	case 'q':
-	    Quiet = 1;
+	    set_quietmode(1);
 	    break;
 	case 'c':
 	    HitCountOnly = 1;
@@ -284,7 +285,7 @@ static int namazu_core(char * query, char *subquery, char *av0)
         return DIE_ERROR;
 
     /* result1:  <h2>Results:</h2>, References:  */
-    if (!HitCountOnly && !ListFormat && !NoReference && !Quiet) {
+    if (!HitCountOnly && !ListFormat && !NoReference && !is_quietmode()) {
         print_result1();
 
         if (Idx.num > 1) {
@@ -297,7 +298,7 @@ static int namazu_core(char * query, char *subquery, char *av0)
     print_hit_count();
 
     /* result2 */
-    if (!HitCountOnly && !ListFormat && !NoReference && !Quiet) {
+    if (!HitCountOnly && !ListFormat && !NoReference && !is_quietmode()) {
         if (Idx.num > 1 && is_htmlmode()) {
             print("</ul>\n");
         }
@@ -309,7 +310,7 @@ static int namazu_core(char * query, char *subquery, char *av0)
     }
 
     if (hlist.n > 0) {
-        if (!HitCountOnly && !ListFormat && !Quiet) {
+        if (!HitCountOnly && !ListFormat && !is_quietmode()) {
             print_hitnum(hlist.n);  /* <!-- HIT -->%d<!-- HIT --> */
         }
 	if (HitCountOnly) {
@@ -317,7 +318,7 @@ static int namazu_core(char * query, char *subquery, char *av0)
 	} else {
 	    print_listing(hlist); /* summary listing */
 	}
-        if (!HitCountOnly && !ListFormat && !Quiet) {
+        if (!HitCountOnly && !ListFormat && !is_quietmode()) {
             print_range(hlist);
         }
     } else {
@@ -416,7 +417,7 @@ int main(int argc, char **argv)
     if (complete_idxnames())
         diewithmsg();
 
-    if (Debug) {
+    if (is_debugmode()) {
         for (i = 0; i < Idx.num; i++) {
             debug_printf("Idx.names[%d]: %s\n", i, Idx.names[i]);
         }

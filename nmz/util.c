@@ -21,6 +21,7 @@
 #include "util.h"
 #include "i18n.h"
 #include "var.h"
+#include "mode.h"
 
 /*
  *
@@ -342,7 +343,7 @@ void debug_printf(char *fmt, ...)
 {
     va_list args;
 
-    if (Debug == 0) {
+    if (!is_debugmode()) {
 	return;
     }
 

@@ -17,6 +17,7 @@
 #include "i18n.h"
 #include "var.h"
 #include "magic.h"
+#include "mode.h"
 
 /*
  *
@@ -335,7 +336,7 @@ void print_hit_count ()
     int i;
     for (i = 0; i < Idx.num; i ++) {
         PHRASERES *pr = Idx.pr[i];
-	if (!HitCountOnly && !ListFormat && !NoReference && !Quiet) {
+	if (!HitCountOnly && !ListFormat && !NoReference && !is_quietmode()) {
 	    if (Idx.num > 1) {
 	        if (is_htmlmode()) {
 		    printf("<li><strong>%s</strong>: ",
@@ -346,7 +347,7 @@ void print_hit_count ()
 	    }
 	}
         if (!HitCountOnly && !ListFormat && 
-	    !NoReference && !Quiet && Idx.mode[i] == PHRASE_MODE) 
+	    !NoReference && !is_quietmode() && Idx.mode[i] == PHRASE_MODE) 
 	{
 	    print(" { ");
 	}
@@ -355,11 +356,11 @@ void print_hit_count ()
 	    pr = pr->next;
 	}
 	if (!HitCountOnly && !ListFormat && 
-	    !NoReference && !Quiet && Idx.mode[i] == PHRASE_MODE) 
+	    !NoReference && !is_quietmode() && Idx.mode[i] == PHRASE_MODE) 
 	{
 	    printf(" :: %d } ", Idx.phrasehit[i]);
 	}
-	if (!HitCountOnly && !ListFormat && !NoReference && !Quiet) {
+	if (!HitCountOnly && !ListFormat && !NoReference && !is_quietmode()) {
 	    if (Idx.num > 1 && Query.tab[1]) {
 	        printf(_(" [ TOTAL: %d ]"), Idx.total[i]);
 	    }
@@ -370,7 +371,7 @@ void print_hit_count ()
 
 static void print_word_hit_count (char *key, int hitnum)
 {
-    if (!HitCountOnly && !ListFormat && !NoReference && !Quiet) {
+    if (!HitCountOnly && !ListFormat && !NoReference && !is_quietmode()) {
 	char tmp_key[BUFSIZE];
 	strcpy(tmp_key, key);
 	conv_ext(tmp_key);

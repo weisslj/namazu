@@ -2,7 +2,7 @@
  * 
  * wakati.c -
  * 
- * $Id: wakati.c,v 1.5 1999-11-19 08:09:00 satoru Exp $
+ * $Id: wakati.c,v 1.6 1999-11-19 09:04:21 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -238,8 +238,9 @@ int split_query(char *qs)
 	       Query.str[i] != '\0')
 	    i++;
     }
-    if (Debug)
+    if (is_debugmode()) {
 	debug_printf("Query.tabN: %d\n", qn);
+    }
 
     if (qn == 0) { /* if no item available */
 	diemsg(_("	<h2>Error!</h2>\n<p>Invalid query.</p>\n"));

@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.20 1999-11-19 02:58:20 satoru Exp $
+ * $Id: form.c,v 1.21 1999-11-19 09:04:24 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -44,6 +44,7 @@
 #include "i18n.h"
 #include "var.h"
 #include "magic.h"
+#include "mode.h"
 
 /*
  *
@@ -164,21 +165,21 @@ static int select_option(char *s, char *name, char *subquery)
             }
         } else if (strcasecmp(name, "sort") == 0) {
             if ((strcasecmp(value, "date:late") == 0) && 
-		SortMethod    == SORT_BY_DATE &&
-		SortOrder == DESCENDING) 
+		get_sortmethod() == SORT_BY_DATE &&
+		get_sortorder()  == DESCENDING) 
 	    {
                 fputs(" selected", stdout);
             } else if ((strcasecmp(value, "date:early") == 0) && 
-		SortMethod    == SORT_BY_DATE &&
-		SortOrder == ASCENDING)
+		       get_sortmethod() == SORT_BY_DATE &&
+		       get_sortorder()  == ASCENDING)
             {
                 fputs(" selected", stdout);
             } else if ((strcasecmp(value, "score") == 0) && 
-		       SortMethod  == SORT_BY_SCORE) 
+		       get_sortmethod() == SORT_BY_SCORE) 
 	    {
                 fputs(" selected", stdout);
             } else if ((strprefixcasecmp(value, "field:") == 0) && 
-		       SortMethod  == SORT_BY_FIELD) 
+		       get_sortmethod() == SORT_BY_FIELD) 
 	    {
 		char *p;
 		int n, order = DESCENDING;
@@ -197,7 +198,8 @@ static int select_option(char *s, char *name, char *subquery)
 		}
 
 		if (strcmp(field, get_sort_field()) == 0 && 
-		    order == SortOrder) {
+		    get_sortorder() == order)
+		{
 		    fputs(" selected", stdout);
 		}
             }

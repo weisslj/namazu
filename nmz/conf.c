@@ -2,7 +2,7 @@
  * 
  * conf.c -
  * 
- * $Id: conf.c,v 1.6 1999-11-19 02:58:15 satoru Exp $
+ * $Id: conf.c,v 1.7 1999-11-19 09:04:20 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -338,7 +338,7 @@ static int parse_conf(char *line, int lineno)
 	return 1; /* error */
     }
 
-    if (Debug && 
+    if (is_debugmode() && 
 	(strcasecmp(directive, "COMMENT") != 0) &&
 	(strcasecmp(directive, "BLANK") != 0))
     {

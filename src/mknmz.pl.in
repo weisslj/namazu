@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- CPerl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.27 1999-08-27 12:18:33 knok Exp $
+# $Id: mknmz.pl.in,v 1.28 1999-08-27 13:42:08 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -1875,7 +1875,9 @@ muda($conf::File{'BODY_MSG_EN'},
      $conf::DebugOpt, $conf::NoEncodeURL, $conf::HtaccessExcludeOpt, 
      $conf::RECURSIVE_ACTIONS, $conf::ROBOTS_EXCLUDE_URIS, 
      $conf::NoInsertHeaderOpt, $conf::NoRegexpIndexOpt, $conf::NoFieldInfoOpt,
-     $conf::ROBOTS_EXCLUDE_URLS);
+     $conf::ROBOTS_EXCLUDE_URLS, $module::recursive, $module::mediatype,
+     $module::status, $conf::supported);
+
 
 sub muda(@) {}
 

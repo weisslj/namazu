@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.99 2001-10-18 11:06:07 makoto Exp $
+# $Id: mknmz.in,v 1.100 2001-11-06 05:28:36 rug Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -44,10 +44,11 @@ $SYSTEM = $^O;
 my $NAMAZU_INDEX_VERSION = "2.0";
 
 my $CodingSystem = "euc";
+my $PKGDATADIR    = $ENV{'pkgdatadir'} || "@pkgdatadir@";
 my $CONFDIR       = "@CONFDIR@";     # directory where mknmzrc are in.
-my $LIBDIR        = "@PERLLIBDIR@";      # directory where library etc. are in.
-my $FILTERDIR     = "@FILTERDIR@";   # directory where filters are in.
-my $TEMPLATEDIR   = "@TEMPLATEDIR@"; # directory where templates are in.
+my $LIBDIR        = $PKGDATADIR . "/pl";      # directory where library etc. are in.
+my $FILTERDIR     = $PKGDATADIR . "/filter";   # directory where filters are in.
+my $TEMPLATEDIR   = $PKGDATADIR . "/template"; # directory where templates are in.
 
 my $DeletedFilesCount = 0;
 my $UpdatedFilesCount = 0;
@@ -332,23 +333,12 @@ sub init () {
 	print STDERR "SIGTERM caught!\n";
 	$ReceiveTERM = 1;
     };
-
-    # For executing mknmz in scripts directory
-    my $srcdir = '';
-    if (defined($ENV{'srcdir'})) {      ## for VPATH ;make check
-	$srcdir = $ENV{'srcdir'}.'/';}
-    my $tempdir = $srcdir . "../template";
-    $TEMPLATEDIR = $tempdir if -f $tempdir."/NMZ.head";
 }
 
 sub preload_modules () { 
     unshift @INC, $LIBDIR;
-    my $srcdir = undef;
-    if (defined $ENV{'top_srcdir'}) {      ## for VPATH ;make check
-	$srcdir = $ENV{'top_srcdir'} .'/';}
-    unshift @INC, $srcdir. "/pl" if defined $srcdir;	# FIXME: remove the workaround for   (util.pl)
-    unshift @INC, $srcdir. "/filter" if defined $srcdir;# test suites.
-    unshift @INC, $ENV{'top_builddir'} . '/pl' if defined $ENV{'top_builddir'};
+    # workaround for test suites.
+    unshift @INC, $ENV{'top_builddir'} . "/pl" if defined $ENV{'top_builddir'};
 
     require "conf.pl" || die "unable to require \"conf.pl\"\n";
     require "util.pl" || die "unable to require \"util.pl\"\n";
@@ -381,20 +371,7 @@ sub load_filtermodules () {
 
     # Check filter modules
     my @filters = ();
-    my $srcfilterdir = undef;  # for make check in VPATH environment
-    if (defined($ENV{'top_srcdir'})) {
-	$srcfilterdir = $ENV{'top_srcdir'}.'/filter';
-    }
-    if (defined $srcfilterdir) { # to ease developing
-	if ($FILTERDIR eq '@FILTERDIR@') {
-	    @filters = glob "$srcfilterdir/*.pl";
-	    unshift @INC, "$srcfilterdir";
-	} else {
-	    @filters = glob "$FILTERDIR/*.pl";
-	}
-    } else {
-	@filters = glob "$FILTERDIR/*.pl";
-    }
+    @filters = glob "$FILTERDIR/*.pl";
 
     load_filters(@filters);
 }

@@ -1,3 +1,37 @@
+2001-11-06  Ryuji Abe  <rug@namazu.org>
+
+	* scripts/mknmz.in ($PKGDATADIR): New variable. The value
+	is pkgdatadir by default, but which can override by the
+	pkgdatadir environment variable.
+	($LIBDIR): Always locate $PKGDATADIR/pl.
+	($FILTERDIR): Always locate $PKGDATADIR/filter.
+	($TEMPLATEDIR): Always locate $PKGDATADIR/template.
+	(init): Removed workaround code about $TEMPLATEDIR.
+	(preload_modules): Rewrite workaround code. If top_builddir
+	environment variable is defined, do unshift.
+	(load_filtermodules): Removed workaround code about $FILTERDIR.
+
+	* scripts/gcnmz.in ($PKGDATADIR): New variable. The value
+	is pkgdatadir by default, but which can override by the
+	pkgdatadir environment variable. And $PKGDATADIR . "/pl"
+	is used instead of @PERLLIBDIR@.
+
+	* scripts/kwnmz.in: Likewise.
+
+	* scripts/nmzmerge.in: Likewise.
+
+	* scripts/adnmz.in: Likewise.
+
+	* scripts/lnnmz.in: Likewise.
+	
+	* scripts/Makefile.am (perllibdir): Removed.
+	(filterdir):Likewise.
+	(templatedir): Likewise.
+	(localedir): Likewise.
+	(indexdir): Likewise.
+
+	* tests/Makefile.am (TESTS_ENVIRONMENT): Add pkgdatadir.
+	
 2001-10-30  Ryuji Abe  <rug@namazu.org>
 
 	* configure.in: Moved changequote([, ]) before AC_MSG_CHECKING.
@@ -7105,4 +7139,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.882 2001-10-30 11:30:37 rug Exp $
+$Id: ChangeLog,v 1.883 2001-11-06 05:28:36 rug Exp $

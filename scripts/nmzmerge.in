@@ -1,7 +1,7 @@
 #! %PERL%
 # -*- Perl -*-
 #
-# $Id: nmzmerge.in,v 1.1 2001-06-24 15:05:36 furukawa Exp $
+# $Id: nmzmerge.in,v 1.2 2001-11-06 05:28:36 rug Exp $
 #
 # nmzmerge.pl - program to merge index
 #         by furukawa@tcp-ip.or.jp
@@ -9,7 +9,8 @@
 
 use strict;
 
-push(@INC, '@PERLLIBDIR@');
+my $PKGDATADIR = $ENV{'pkgdatadir'} || "@pkgdatadir@";
+push(@INC, $PKGDATADIR . "/pl");
 require 'nmzidx.pl';
 
 &usage, exit unless @ARGV == 3;

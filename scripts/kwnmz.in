@@ -1,14 +1,15 @@
 #! %PERL%
 # -*- Perl -*-
 #
-# $Id: kwnmz.in,v 1.4 2000-10-06 20:22:42 furukawa Exp $
+# $Id: kwnmz.in,v 1.5 2001-11-06 05:28:36 rug Exp $
 #
 # kwnmz - program to make NMZ.field.keywords
 #         by furukawa@tcp-ip.or.jp
 # modified by osamu2001@livedoor.com
 #
 
-push(@INC, '@PERLLIBDIR@');
+my $PKGDATADIR = $ENV{'pkgdatadir'} || "@pkgdatadir@";
+push(@INC, $PKGDATADIR . "/pl");
 require 'nmzidx.pl';
 
 my $rate = 0.5;

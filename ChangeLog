@@ -1,3 +1,13 @@
+2000-03-13  ken-ichi Hirose  <kenzo-@tama.or.jp>
+
+	* scripts/mknmz.in (load_rcfiles): separate load_rcfile() function.
+	(main): Add load_rcfile($ENV{'MKNMZRC'}).
+
+	* pl/conf.pl ($CONFDIR): Add new value. default is commentout.
+	($LIBDIR): Likewise.
+	($FILTERDIR): Likewise.
+	($TEMPLATEDIR): Likewise.
+
 2000-03-12  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* tests/data/Makefile.am (SUBDIRS): Add query.

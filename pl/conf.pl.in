@@ -5,6 +5,28 @@ package conf;  # Don't remove this line!
 
 #===================================================================
 #
+# directory where mknmzrc are in.
+#
+# $CONFDIR = "@CONFDIR@";
+
+#
+# directory where library etc. are in.
+#
+# $LIBDIR = "@PERLLIBDIR@";
+
+#
+# directory where filters are in. 
+#
+# $FILTERDIR = "@FILTERDIR@";
+
+#
+# directory where templates are in.
+#
+# $TEMPLATEDIR = "@TEMPLATEDIR@";
+
+
+#===================================================================
+#
 # Administrator's email address
 #
 $ADDRESS = '@OPT_ADMIN_EMAIL@';

@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.46 2000-03-11 04:09:17 masao Exp $
+# $Id: mknmz.in,v 1.47 2000-03-12 20:20:53 kenzo- Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -72,6 +72,8 @@ main();
 sub main () {
     my $start_time = time;
 
+    load_rcfile($ENV{'MKNMZRC'}) if (defined $ENV{'MKNMZRC'} &&
+									 -f $ENV{'MKNMZRC'});
     init();
     load_modules();
     my ($output_dir, @targets) = parse_options();
@@ -218,16 +220,29 @@ sub load_rcfiles () {
     push @cand, "$ENV{'HOME'}/.mknmzrc";
     push @cand, $ConfigFile if defined $ConfigFile;
 
-    util::vprint(_("Reading rcfile: "));
+#    util::vprint(_("Reading rcfile: "));
     for my $rcfile (@cand) {
 	if (-f $rcfile) {
-	    do $rcfile;
-	    $ConfigFile = $rcfile;
-	    util::vprint(" $rcfile");
-	    push @LoadedRcfiles, $rcfile;
+		load_rcfile ($rcfile);
+#	    util::vprint(" $rcfile");
 	}
     }
-    util::vprint("\n");
+#    util::vprint("\n");
+}
+
+sub load_rcfile ($) {
+	my ($rcfile) = @_;
+    do $rcfile;
+    $ConfigFile = $rcfile;
+    push @LoadedRcfiles, $rcfile;
+	$CONFDIR = $conf::CONFDIR
+	 if (defined $conf::CONFDIR && -d $conf::CONFDIR);
+	$LIBDIR = $conf::LIBDIR
+	 if (defined $conf::LIBDIR && -d $conf::LIBDIR);
+	$FILTERDIR = $conf::FILTERDIR
+	 if (defined $conf::FILTERDIR && -d $conf::FILTERDIR);
+	$TEMPLATEDIR = $conf::TEMPLATEDIR
+	 if (defined $conf::TEMPLATEDIR && -d $conf::TEMPLATEDIR);
 }
 
 sub re_exec($$$$$$$$) {
@@ -1010,7 +1025,6 @@ sub parse_options ()
     }
 
     if ($opt_show_config) {
-	load_olemodules() if ($var::Opt{'ole'});
 	load_rcfiles();
 	show_config();
 	exit 1;

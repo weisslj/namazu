@@ -1,5 +1,9 @@
 2000-01-26  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+  	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 1.9.14.
+  
+  	* Namazu: Version 1.9.13 released.
+
 	* src/namazu.c (main): Fix a security hole in CGI mode which
 	allows malicious person to put a garbage file on a Web server's
 	directory such as /tmp. -- reported by Motoyuki Kasahara

@@ -9,3 +9,4 @@ src/form.c
 src/namazu.c
 src/output.c
 src/usage.c
+scripts/mknmz.pl.in

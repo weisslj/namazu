@@ -1,3 +1,7 @@
+2000-01-12  Ryuji Abe  <raeva@t3.rim.or.jp>
+
+	* po/POTFILES.in: Added scripts/mknmz.pl.in.
+
 2000-01-12  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* scripts/mknmz.pl.in (load_modules): Modified to call textdomain().

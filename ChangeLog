@@ -1,5 +1,8 @@
 2000-01-31  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/result.c (replace_field): Fix html handling bug.
+	[namazu-dev 1414] 
+
 	* scripts/vfnmz.in: Change usage message.
 
 	* scripts/gcnmz.in (usage): Ditto.

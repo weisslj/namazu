@@ -1,5 +1,5 @@
 /*
- * $Id: result.c,v 1.49 2000-01-31 10:36:17 rug Exp $
+ * $Id: result.c,v 1.50 2000-01-31 10:43:58 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -132,8 +132,10 @@ replace_field(struct nmz_data d, int counter,
      * Do not emphasize keywords in URI.
      * And do not encode entity in URI.
      */
-    if (strcasecmp(field, "uri") != 0 && is_htmlmode()) {
-	emphasize(buf);
+    if (strcasecmp(field, "uri") != 0) {
+	if (is_htmlmode()) {
+	    emphasize(buf);
+	}
 	encode_entity(buf);
     }
 

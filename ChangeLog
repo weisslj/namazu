@@ -1,3 +1,7 @@
+2000-03-03  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* pl/htmlsplit.pl ($Header): Remove <h1>...</h1>
+
 2000-03-02  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* pl/htmlsplit.pl (split): Remove global variables through the use

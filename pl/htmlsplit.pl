@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: htmlsplit.pl,v 1.2 2000-03-02 11:06:36 satoru Exp $
+# $Id: htmlsplit.pl,v 1.3 2000-03-02 23:03:21 satoru Exp $
 #
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -35,7 +35,6 @@ my $Header = << 'EOS';
 <title>${subject}</title>
 </head>
 <body>
-<h1>${subject}</h1>
 <hr>
 EOS
 

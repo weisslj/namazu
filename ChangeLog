@@ -1,7 +1,15 @@
+2000-03-08  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* tests/gcnmz-1: Add --quiet option to gcnmz.
+
+	* configure.in: Add `;' after `use' of perl. 
+	[namazu-users-ja:00054]
+	
+
 2000-03-08  Ken-ichi Hirose  <kenzo-@tama.or.jp>
 
-	* scripts/mknmz.in (load_win32modules): Remove top of the unshift
-	in load_win32modules.
+	* scripts/mknmz.in (load_win32modules): Remove unshift at the top
+	of load_win32modules.
 
 2000-03-08  Ken-ichi Hirose  <kenzo-@tama.or.jp>
 

@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.117 2000-03-02 08:58:09 rug Exp $
+dnl $Id: configure.in,v 1.118 2000-03-08 02:26:26 satoru Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -224,7 +224,7 @@ if test $PERL = "no" || $PERL -e 'exit ($] >= 5.004)'; then
 fi
 
 AC_MSG_CHECKING(for NKF perl module)
-if $PERL -e "use lib '$PMDIR'; use NKF" >/dev/null 2>&1; then
+if $PERL -e "use lib '$PMDIR'; use NKF;" >/dev/null 2>&1; then
     NKF=module_nkf
     AC_MSG_RESULT(yes)
 else
@@ -236,7 +236,7 @@ if test "$NKF" = "no"; then
 fi
 
 AC_MSG_CHECKING(for Text::Kakasi perl module)
-if $PERL -e "use lib '$PMDIR'; use Text::Kakasi" >/dev/null 2>&1; then
+if $PERL -e "use lib '$PMDIR'; use Text::Kakasi;" >/dev/null 2>&1; then
     KAKASI=module_kakasi
     AC_MSG_RESULT(yes)
 else
@@ -245,7 +245,7 @@ else
 fi
 
 AC_MSG_CHECKING(for Text::ChaSen perl module)
-if $PERL -e "use lib '$PMDIR'; use Text::ChaSen" >/dev/null 2>&1; then
+if $PERL -e "use lib '$PMDIR'; use Text::ChaSen;" >/dev/null 2>&1; then
     CHASEN=module_chasen
     AC_MSG_RESULT(yes)
 else
@@ -312,7 +312,7 @@ tmp=`$PERL -nle 'print \$1 if /^\\$VERSION = \"([\d\.]+)\";\$/' \
 AC_MSG_CHECKING(for File::MMagic perl module)
 changequote([, ])
 
-if $PERL -e "use lib '$PMDIR'; use File::MMagic $tmp" >/dev/null 2>&1; then
+if $PERL -e "use lib '$PMDIR'; use File::MMagic $tmp;" >/dev/null 2>&1; then
     AC_MSG_RESULT(yes)
     file_mmagic=no
 else

@@ -38,7 +38,7 @@ cd ../scripts
 test "$?" != "0" && exit 1  # error if not success
 
 # Apply gcnmz for idx6.
-./gcnmz --no-backup ../tests/idx6
+./gcnmz --quiet --no-backup ../tests/idx6
 test "$?" != "0" && exit 1  # error if not success
 
 exit 0

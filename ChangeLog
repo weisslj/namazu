@@ -1,3 +1,8 @@
+1999-11-16  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* lib/Makefile.am, nmz/Makefile.am: Moved regex.{c,h} to 
+	nmz/ directory.
+
 1999-11-16  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* src/namazu.c (stdio2file): reimplemented with

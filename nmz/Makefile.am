@@ -1,6 +1,6 @@
 # Process this file with automake to produce Makefile.in
 #
-# $Id: Makefile.am,v 1.11 1999-11-11 14:34:08 masao Exp $
+# $Id: Makefile.am,v 1.12 1999-11-16 06:32:50 knok Exp $
 #
 
 AUTOMAKE_OPTIONS = no-dependencies
@@ -15,13 +15,14 @@ DEFS = -DLOCALEDIR=\"$(localedir)\" \
        @DEFS@
 
 pkginclude_HEADERS = libnamazu.h codeconv.h conf.h critical.h field.h hlist.h \
-	idxname.h magic.h parser.h re.h search.h util.h var.h wakati.h i18n.h
+	idxname.h magic.h parser.h re.h search.h util.h var.h wakati.h i18n.h \
+	regex.h
 lib_LTLIBRARIES = libnmz.la
 
 libnmz_la_SOURCES = libnamazu.c libnamazu.h codeconv.c codeconv.h conf.c \
 	conf.h critical.h field.c field.h hlist.c hlist.h \
 	idxname.c idxname.h magic.h parser.c perser.h re.c re.h \
 	search.c search.h seed.c util.c util.h var.c var.h \
-	wakati.c wakati.h i18n.c i18n.h
+	wakati.c wakati.h i18n.c i18n.h regex.c regex.h
 
 libnmz_la_LDFLAGS = -version-info 0:0:0

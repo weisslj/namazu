@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.68 2000-07-19 09:09:36 knok Exp $
+# $Id: mknmz.in,v 1.69 2000-08-03 01:21:12 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -2256,9 +2256,7 @@ sub adjust_first_docid ($$) {
     my ($record, $last_docid) = @_;
     my (@data) = unpack 'w*', $record;
 
-    my $val = $data[0];
     $data[0] = $data[0] - $last_docid;
-    my $adjusted = $val - $last_docid;
     $record = pack 'w*', @data;
     return $record;
 }

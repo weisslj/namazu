@@ -1,3 +1,7 @@
+2000-08-03  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* scripts/mknmz.in (adjust_first_docid): Remove unnecessary codes.
+
 2000-07-19  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* scripts/mknmz.in (find_target): Added a routine to skip empty
@@ -5746,4 +5750,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.706 2000-07-19 09:09:36 knok Exp $
+$Id: ChangeLog,v 1.707 2000-08-03 01:21:12 satoru Exp $

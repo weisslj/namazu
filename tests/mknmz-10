@@ -18,7 +18,7 @@ else
     rm -f idx13/NMZ.*
 fi
 
-export HOME=`pwd`
+HOME=`pwd`; export HOME
 tmprc="$HOME/.mknmzrc"
 echo '$conf::ALLOW_FILE=".*\\.txt"' > $tmprc
 

@@ -1,3 +1,7 @@
+2000-09-18  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* tests/mknmz-10: Purged bashism.
+
 2000-09-14  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* src/output.c (load_nmz_result): Removed excessive encoding
@@ -5957,4 +5961,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.726 2000-09-14 08:49:28 knok Exp $
+$Id: ChangeLog,v 1.727 2000-09-18 07:37:23 knok Exp $

@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.23 1999-11-23 09:50:37 satoru Exp $
+ * $Id: form.c,v 1.24 1999-11-23 22:46:38 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -43,7 +43,6 @@
 #include "codeconv.h"
 #include "i18n.h"
 #include "var.h"
-#include "magic.h"
 
 
 /*

@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.47 1999-11-23 12:58:40 satoru Exp $
+ * $Id: namazu.c,v 1.48 1999-11-23 22:46:38 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -61,7 +61,7 @@
 #include "i18n.h"
 #include "message.h"
 #include "var.h"
-#include "magic.h"
+#include "system.h"
 
 
 /*
@@ -160,7 +160,7 @@ static int parse_options(int argc, char **argv)
 	switch (ch) {
 	case '0':
 	    show_usage();
-	    return DIE_NOERROR;
+	    exit(EXIT_SUCCESS);
 	    break;
 	case '1':
 	    set_template(optarg);
@@ -242,20 +242,20 @@ static int parse_options(int argc, char **argv)
 	    break;
 	case 'v':
 	    show_version();
-	    return DIE_NOERROR;
+	    exit(EXIT_SUCCESS);
 	    break;
 	case 'C':
 	    if (load_conf(argv[0]))
-	      return DIE_ERROR;
+	      return FAILURE;
 	    show_conf();
-	    return DIE_NOERROR;
+	    exit(EXIT_SUCCESS);
 	    break;
 	case 'L':
 	    set_lang(optarg);
 	    break;
 	case 'o':
 	    if (stdio2file(optarg))
-	      return DIE_ERROR;
+	      return FAILURE;
 	    break;
 	}
     } 
@@ -289,8 +289,7 @@ static int namazu_core(char * query, char *subquery, char *av0)
 	free_idxnames();
 	free_aliases();
 	free_replaces();
-	/*	exit(1);*/
-	return 1;
+	return FAILURE;
     }
 
     debug_printf(" -n: %d\n", get_maxresult());
@@ -308,23 +307,20 @@ static int namazu_core(char * query, char *subquery, char *av0)
     /* search */
     hlist = search_main(query_with_subquery);
 
-    switch (hlist.status) {
+    switch (hlist.stat) {
     case ERR_TOO_LONG_QUERY:
         html_print(_(MSG_TOO_LONG_QUERY));
-	exit(1);
+	return FAILURE;
 	break;
     case ERR_INVALID_QUERY:
 	html_print(_("	<h2>Error!</h2>\n<p>Invalid query.</p>\n"));
-	exit(1);
+	return FAILURE;
 	break;
     case ERR_TOO_MANY_TOKENS:
 	html_print(_("	<h2>Error!</h2>\n<p>Too many query tokens.</p>\n"));
-	exit(1);
+	return FAILURE;
 	break;
     }
-
-    if (hlist.n == DIE_HLIST)
-        return DIE_ERROR;
 
     /* result1:  <h2>Results:</h2>, References:  */
     if (is_refprint() && !is_countmode() && 
@@ -386,7 +382,7 @@ static int namazu_core(char * query, char *subquery, char *av0)
     free_aliases();
     free_replaces();
 
-    return 0;
+    return SUCCESS;
 }
 
 static void suicide (int signum)
@@ -419,16 +415,14 @@ int main(int argc, char **argv)
 	set_pageindex(0);	 /* do not diplay page index */
 
 	i = parse_options(argc, argv); 
-	if (i == DIE_ERROR)
+	if (i == FAILURE)
 	    diewithmsg();
-	if (i == DIE_NOERROR)
-	    exit(0);
 	if (load_conf(argv[0]))
 	    diewithmsg();
 
 	if (i == argc) {
 	    show_mini_usage();
-	    exit(1);
+	    exit(EXIT_FAILURE);
 	}
 	if (strlen(argv[i]) > QUERY_MAX) {
 	    html_print(_(MSG_TOO_LONG_QUERY));
@@ -456,9 +450,9 @@ int main(int argc, char **argv)
     }
 
     uniq_idxnames();
-    if (expand_idxname_aliases())
+    if (expand_idxname_aliases() == FAILURE)
         diewithmsg();
-    if (complete_idxnames())
+    if (complete_idxnames() == FAILURE)
         diewithmsg();
 
     if (is_debugmode()) {
@@ -474,7 +468,7 @@ int main(int argc, char **argv)
     }
 
     ret = namazu_core(query, subquery, argv[0]);
-    if (ret == DIE_ERROR)
+    if (ret == FAILURE)
         diewithmsg();
     return ret;
 }

@@ -16,7 +16,6 @@
 #include "em.h"
 #include "i18n.h"
 #include "var.h"
-#include "magic.h"
 
 
 static int htmlmode    = 0;

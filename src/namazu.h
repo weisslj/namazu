@@ -12,5 +12,11 @@ enum {
 			      processing time exceeds this */
 };
 
+/* error code */
+enum {
+    DIE_ERROR   = -2,
+    DIE_NOERROR = -1
+};
+
 
 #endif /* _NAMAZU_H */

@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.29 1999-11-23 09:50:37 satoru Exp $
+ * $Id: cgi.c,v 1.30 1999-11-23 22:46:38 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -43,9 +43,8 @@
 #include "hlist.h"
 #include "i18n.h"
 #include "idxname.h"
-#include "magic.h"
 #include "var.h"
-
+#include "system.h"
 
 /*
  *
@@ -108,7 +107,7 @@ static int validate_idxname(char * idxname)
         print(MSG_MIME_HEADER);
 	printf("%s : ", idxname);
         print(_("Invalid idxname."));
-        exit(1);
+        exit(EXIT_FAILURE);
     }
     while (*idxname) {
         if (strprefixcasecmp("../", idxname) == 0 ||
@@ -118,7 +117,7 @@ static int validate_idxname(char * idxname)
             print(MSG_MIME_HEADER);
 	    printf("%s : ", idxname);
             print(_("Invalid idxname."));
-            exit(1);
+            exit(EXIT_FAILURE);
         }
 	/* Skip until next '/' */
 	while (*idxname && *idxname != '/' && !(win32 && *idxname == '\\')) {
@@ -190,7 +189,7 @@ static char *get_query_string(void)
         if (contlen > CGI_QUERY_MAX) {
             printf(MSG_MIME_HEADER);
             printf(_("Too long QUERY_STRING"));
-            exit(1);
+            exit(EXIT_FAILURE);
         }
 	script_name = (char *)getenv("SCRIPT_NAME");
         if (script_name == NULL) {
@@ -205,13 +204,13 @@ static char *get_query_string(void)
             if (contlen > CGI_QUERY_MAX) {
                 printf(MSG_MIME_HEADER);
                 printf(_("Too long QUERY_STRING"));
-                exit(1);
+                exit(EXIT_FAILURE);
             }
             query_string = (char *)malloc(contlen * sizeof(char) + 1);
 	    if (query_string == NULL) {
                 printf(MSG_MIME_HEADER);
 		printf("query_string(get_cgivar)");
-		exit(1);
+		exit(EXIT_FAILURE);
 	    }
 	    fread(query_string, sizeof(char), contlen, stdin);
 	} else {
@@ -255,7 +254,7 @@ static CGIVAR *get_cgi_vars(char *qs)
 
 	if (cv == NULL) {
 	    fprintf(stderr, "an error occured at add_cgivar.\n");
-	    exit(1);
+	    exit(EXIT_FAILURE);
 	}
 
 	if (*qs == '\0') {
@@ -306,7 +305,7 @@ static void process_cgi_var_query(char *value, CGIARG *ca)
     if (strlen(value) > QUERY_MAX) {
 	print(MSG_MIME_HEADER);
 	html_print(_(MSG_TOO_LONG_QUERY));
-	exit(1);
+	exit(EXIT_FAILURE);
     }
 #ifdef MSIE4MACFIX
 #define MSIE4MAC "Mozilla/4.0 (compatible; MSIE 4.01; Mac"
@@ -327,7 +326,7 @@ static void process_cgi_var_subquery(char *value, CGIARG *ca)
     if (strlen(value) > QUERY_MAX) {
 	print(MSG_MIME_HEADER);
 	html_print(_(MSG_TOO_LONG_QUERY));
-	exit(1);
+	exit(EXIT_FAILURE);
     }
 #ifdef MSIE4MACFIX
 #define MSIE4MAC "Mozilla/4.0 (compatible; MSIE 4.01; Mac"
@@ -507,7 +506,7 @@ void init_cgi(char *query, char *subquery)
 
     if (process_cgi_vars(&ca)) {
 	show_mini_usage();   /* if it is NOT CGI, show usage and exit */
-	exit(1);
+	exit(EXIT_FAILURE);
     }
 
     if (Idx.num == 0) {

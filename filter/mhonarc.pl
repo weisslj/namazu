@@ -1,8 +1,10 @@
 #
 # -*- Perl -*-
-# $Id: mhonarc.pl,v 1.24 2001-09-15 00:45:30 kenji Exp $
+# $Id: mhonarc.pl,v 1.25 2002-08-06 05:00:42 knok Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
-#               1999 NOKUBI Takatsugu All rights reserved.
+#               1999 NOKUBI Takatsugu,
+#               2002 Earl Hood
+#               All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -32,8 +34,10 @@ require 'mailnews.pl';
 
 #
 # This pattern specifies MHonArc's file names.
+# NOTE: MHonArc does allow one to customize the filename for message files.
+#	So we make the regex a little flexible to handle common variations.
 #
-my $MHONARC_MESSAGE_FILE = 'msg\d{5}\.html(?:\.gz)?';
+my $MHONARC_MESSAGE_FILE = '\bmsg\d+\.s?html(?:\.gz)?\Z';
 
 sub mediatype() {
     return ('text/html; x-type=mhonarc');
@@ -70,12 +74,12 @@ sub filter ($$$$$) {
 
     util::vprint("Processing MHonArc file ...\n");
 
-    unless ($cfile =~ /($MHONARC_MESSAGE_FILE)$/o) 
+    if (($cfile !~ /$MHONARC_MESSAGE_FILE/o) ||
+	($$contref !~ /\A\s*<!-- MHonArc /)) 
     {
-	return "is MHonArc's index file! skipped."; # error
+	return "is not a MHonArc message file! skipped."; # error
     } 
     
-
     mhonarc_filter($contref, $weighted_str, $fields);
     html::html_filter($contref, $weighted_str, $fields, $headings);
 
@@ -92,32 +96,93 @@ sub filter ($$$$$) {
     return undef;
 }
 
-# Assume a normal message files by MHonArc v2.1.0
+# Assume a normal message files by MHonArc v2.x
 sub mhonarc_filter ($$) {
-    my ($contref, $weighted_str) = @_;
+    my ($contref, $weighted_str, $fields) = @_;
+    my $mha_fields = { };
 
-    # It's useful to handle MHonArc message files.
-    $$contref =~ s/<!--X-MsgBody-End-->.*//s;
-    $$contref =~ s/<!--X-TopPNI-->.*<!--X-TopPNI-End-->//s;
-    $$contref =~ s/<!--X-Subject-Header-Begin-->.*<!--X-Subject-Header-End-->//s;
+    my $pos = index($$contref, '<!--X-Head-End-->');
+    if ($pos > 0) {
+	load_mhonarc_fields($mha_fields, $weighted_str,
+			    substr($$contref, 0, $pos));
+    }
 
-    # Separate headers and a body message.
-    $$contref =~ s/<!--X-Head-Body-Sep-Begin-->/\n/;
+    # Strip off front-matter
+    $pos = index($$contref, '<!--X-Head-of-Message-->');
+    substr($$contref, 0, $pos + length('<!--X-Head-of-Message-->')) = "";
 
-    # Handle a field consists of two or more lines.
-    $$contref =~ s!^(<LI>)(.*?)(</LI>$)!$1 . lftospace($2) . $3!gemsi;
+    # Strip off end-matter
+    $pos = index($$contref, '<!--X-Body-of-Message-End-->');
+    substr($$contref, $pos) = "";
 
-    # For plugging spaces before headers
-    $$contref =~ s/^<LI>//gim;
+    # Extract message header for separate processing, will be added back
+    my $msg_header = "";
+    $pos = index($$contref, '<!--X-Head-of-Message-End-->');
+    if ($pos >= 0) {
+	$msg_header = substr($$contref, 0, $pos);
+	substr($$contref, 0, $pos) = "";
+    }
 
-    # Make header's name not to be indexed words.
-    $$contref =~ s!</?EM>!!gi;
-    $$contref =~ s/^\s+//;
+    # Strip out stuff between header and body
+    $pos = index($$contref, '<!--X-Body-of-Message-->');
+    substr($$contref, 0, $pos + length('<!--X-Body-of-Message-->')) = "";
+
+    # Reformat header to make it nice for mailnews filter
+    if ($msg_header ne "") {
+	$msg_header =~ s/\A\s+//;
+	html::remove_html_elements(\$msg_header);
+	$msg_header =~ s/^\s*([\w\-_]+:)/$1/gm;
+	$msg_header =~ s/^([\w\-_]+:)(?:[^\n\S]*\n[^\n\S]*)+/$1 /gm;
+    }
+
+    # Format MHonArc X comment extracted headers as regular headers
+    my $mha_header = "";
+    my($fld_name, $fld_value);
+    while (($fld_name, $fld_value) = each %$mha_fields) {
+	$mha_header .= join('', $fld_name, ': ', $fld_value, "\n");
+    }
+
+    # Added header back to content string.
+    $$contref = $mha_header . $msg_header . "\n" . $$contref;
+
+    # Return extract MHonArc fields
+    #$mha_fields;
 }
 
-sub lftospace ($) {
-    my ($str) = @_;
-    $str =~ s/[\r\n]/ /g;
-    return $str;
+sub load_mhonarc_fields {
+    my $fields	     = shift;
+    my $weighted_str = shift;
+    my $mha_head     = shift;
+
+    if ($mha_head =~ /<!--X-Subject: ([^-]+) -->/) {
+	my $subject = uncommentize($1);
+	1  while ($subject =~ s/\A\s*(re|sv|fwd|fw)[\[\]\d]*[:>-]+\s*//i);
+	$subject =~ s/\A\s*\[[^\]]+\]\s*//;
+	$fields->{'subject'} = $subject;
+    }
+    if ($mha_head =~ /<!--X-From-R13: ([^-]+) -->/) {
+	$fields->{'from'} = mrot13(uncommentize($1));
+    } elsif ($mha_head =~ /<!--X-From: ([^-]+) -->/) {
+	$fields->{'from'} = uncommentize($1);
+    }
+    if ($mha_head =~ /<!--X-Message-Id: ([^-]+) -->/) {
+	$fields->{'message-id'} = '&lt;' . uncommentize($1). '&gt;';
+    }
+    if ($mha_head =~ /<!--X-Date: ([^-]+) -->/) {
+	$fields->{'date'} = uncommentize($1);
+    }
 }
+
+sub uncommentize {
+    my($txt) = $_[0];
+    $txt =~ s/&#(\d+);/pack("C",$1)/ge;
+    $txt;
+}
+
+sub mrot13 {
+    my $str     = shift;
+    $str =~ tr/@A-Z[a-z/N-Z[@A-Mn-za-m/;
+    $str;
+}
+
 1;

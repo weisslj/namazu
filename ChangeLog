@@ -1,3 +1,8 @@
+2002-08-06  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* filter/mhonarc.pl: Adapted to MHonARC 2.x.
+	(contributed by Earl Hood, thank you!)
+
 2002-07-31  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* filter/excel.pl (filter_xl): Adapted to xlhtml 0.5.x.
@@ -7601,4 +7606,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.965 2002-07-31 07:27:30 knok Exp $
+$Id: ChangeLog,v 1.966 2002-08-06 05:00:42 knok Exp $

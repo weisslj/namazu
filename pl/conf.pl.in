@@ -1,104 +1,112 @@
 package conf;
-################################################################
-##
-## Required softwares
-##
 
-## Network Kanji Filter nkf v1.62 or later
+#---------------------------------------------------------------
+#
+# Administrator's email address.
+#
+$ADDRESS = '@OPT_ADMIN_EMAIL@';
+
+
+#---------------------------------------------------------------
+#
+# Required softwares.
+#
+
+# Network Kanji Filter nkf v1.62 or later
 $NKF = "@NKF@"; 
 
-## KAKASI or ChaSen (to handle Japanese characters)
+# KAKASI or ChaSen (to handle Japanese characters)
 $KAKASI = "@KAKASI@ -ieuc -oeuc -w";
 
-## ChaSen 1.51 or later (simple wakatigaki)
+# ChaSen 1.51 or later (simple wakatigaki)
 $CHASEN = "@CHASEN@ -j -F '\%m '";
 
-## ChaSen 1.51 or later (with morphological processing)
+# ChaSen 1.51 or later (with morphological processing)
 $CHASEN_MORPH = "@CHASEN@ -j -F '\%m %H\\n'";
 
-## Default Japanese processer
+# Default Japanese processer
 $WAKATI  = $@OPT_WAKATI_DEFAULT@;
 
-#########################################################
-##
-## Default Values
-##
+#---------------------------------------------------------------
+#
+# Default Settings.
+#
 
-## Files can be omission in URI. e.g. index.html
-## name of the file or files which can be abbreviated.
-## (specify by regular expression)
-## e.g. index.html|index.htm|Default.html
-## it's useful to use Namazu as a WWW search engine.
+# Files can be omission in URI. e.g. index.html
+# name of the file or files which can be abbreviated.
+# (specify by regular expression)
+# e.g. index.html|index.htm|Default.html
+# it's useful to use Namazu as a WWW search engine.
 $DEFAULT_FILE = "index.html";
 
-## Target files' regex. (case insensitive)
-## Do *not* use '$' and '^' regular expression meta characters.
-## That will be automatically added by mknmz.
+# Target files' regex. (case insensitive)
+# Do *not* use '$' and '^' regular expression meta characters.
+# That will be automatically added by mknmz.
 $ALLOW_REGEX = '.*\.html?|.*\.txt|.*_default|.*\.pdf|.*\.doc|.*\.tex';
 
-## Non-Target files' regex
-## this regular expression describes the names of the files which
-## you do *not* want to index (case insensitive). this setting is
-## effective when mknmz runs with -a option.
-## Do *not* use '$' and '^' regular expression meta characters.
-## that will be automatically appended by mknmz.pl.
-##
+# Non-Target files' regex
+# this regular expression describes the names of the files which
+# you do *not* want to index (case insensitive). this setting is
+# effective when mknmz runs with -a option.
+# Do *not* use '$' and '^' regular expression meta characters.
+# that will be automatically appended by mknmz.pl.
+#
 $DENY_REGEX = '.*\.gif|.*\.(jpg|jpeg)|.*\.tar\.gz|core|.*\.bak|.*~|\..*|\x23.*|NMZ\..*';
 
-## Pathnames which match this regex will be excluded.
+# Pathnames which match this regex will be excluded.
 $EXCLUDE_REGEX = undef;
 
-## HTML extentions like .htm, .html, .shtml, .phtml, .html.en, .html.ja, .asp
+# HTML extentions like .htm, .html, .shtml, .phtml, .html.en, .html.ja, .asp
 $HTML_SUFFIX = 'html?|[ps]html|html\.[a-z]{2}|asp|cgi';
 
-## Place where CGI prgrams is in. e.g. /cgi-bin/, /htbin/
+# Place where CGI prgrams is in. e.g. /cgi-bin/, /htbin/
 $CGI_DIR = '/(cgi-bin|htbin)/';
 
-## MHonArc's header for identification (regex)
+# MHonArc's header for identification (regex)
 $MHONARC_HEADER = '<\!-- MHonArc v\d\.\d\.\d -->';
 
-## MHonArc's message file
+# MHonArc's message file
 $MHONARC_MESSAGE_FILE = 'msg\d{5}\.html(?:\.gz)?';
 
-## Mail/News's headers should be remained as searchable text
-## (case insensitive)
+# Mail/News's headers should be remained as searchable text
+# (case insensitive)
 $REMAIN_HEADER = "From|Date|Message-ID";
 
-## Fields for field-specified search (NMZ.field.*)
+# Fields for field-specified search (NMZ.field.*)
 $SEARCH_FIELD = "message-id|subject|from|date|uri|newsgroups|to|summary|size";
 
-## Aliases for NMZ.field.*
+# Aliases for NMZ.field.*
 %FIELD_ALIASES = ('title' => 'subject', 'author' => 'from');
 
-## Meta tags which you want to use for field-specified search.
+# Meta tags which you want to use for field-specified search.
 $META_TAGS = 'keywords|description';
 
 $TEXT_TITLE = " (Text File) "; # text file
 $NO_TITLE = "No title in original";    # document has no title
 
 
-################################################################
-## 
-## Size of files indexed at once on memory. (bytes)
-## If you have much memory, you can increase this value. (128MB or more)
-## If you have not much memory, you can decrease this value. (32MB or less)
-##
+#---------------------------------------------------------------
+# 
+# Size of files indexed at once on memory. (bytes)
+# If you have much memory, you can increase this value. (128MB or more)
+# If you have not much memory, you can decrease this value. (32MB or less)
+#
 
 $ON_MEMORY_MAX   = 5000000;
 #                  M  K  bytes   
 
-## Text size limitation. a text larger than this value will be ignored.
+# Text size limitation. a text larger than this value will be ignored.
 $TEXT_SIZE_MAX   =  600000;
 #                  M  K  bytes   
 
-## Word length limitation. The word longer than this value will be ignored.
+# Word length limitation. The word longer than this value will be ignored.
 $WORD_LENG_MAX   = 128;
 
 
-################################################################
-##
-## Weights for HTML elements
-##
+#---------------------------------------------------------------
+#
+# Weights for HTML elements.
+#
 
 %Weight = 
     (
@@ -126,35 +134,36 @@ $WORD_LENG_MAX   = 128;
      'headers' => 8,  # for mail/news' headers
 );
 
-################################################################
-##
-## Elements which should be replaced with null string when
-## removing elements.
-##
+#---------------------------------------------------------------
+#
+# Elements which should be replaced with null string when
+# removing elements.
+#
 $NON_SEPARATION_ELEMENTS = 'A|TT|CODE|SAMP|KBD|VAR|B|STRONG|I|EM|CITE|FONT|U|'.
                        'STRIKE|BIG|SMALL|DFN|ABBR|ACRONYM|Q|SUB|SUP|SPAN|BDO';
 
 
-################################################################
-##
-## Length of string which should be ignored at weighting.
-## Because there are people has a bad manner using <h[1-6]> for
-## specifying a font size.
+#---------------------------------------------------------------
+#
+# Length of string which should be ignored at weighting.
+# Because there are people has a bad manner using <h[1-6]> for
+# specifying a font size.
 
 $INVALID_LENG = 128; 
 
-################################################################
-##
-## Max length of a field
-## This MUST be smaller than libnamazu.h's BUFSIZE (1024).
-##
+#---------------------------------------------------------------
+#
+# Max length of a field
+# This MUST be smaller than libnamazu.h's BUFSIZE (1024).
+#
+
 $MAX_FIELD_LENGTH = 200;
 
 
-################################################################
-##
-## robots.txt related settings
-##
+#---------------------------------------------------------------
+#
+# robots.txt related settings.
+#
 
 $HTDOCUMENT_ROOT = "/usr/local/apache/share/htdocs";
 $HTDOCUMENT_ROOT_URI_PREFIX = "http://www.foo.domain.jp/";

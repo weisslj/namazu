@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2000-01-28 15:00+0900\n"
+"POT-Creation-Date: 2000-01-28 15:22+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -413,11 +413,11 @@ msgstr ""
 msgid "ERROR: malformed NMZ.r format!\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1684
+#: scripts/mknmz.pl.in:1686
 msgid "doing write_phrase_hash() processing.\n"
 msgstr ""
 
-#: scripts/mknmz.pl.in:1911
+#: scripts/mknmz.pl.in:1913
 msgid "doing write_index() processing.\n"
 msgstr ""
 

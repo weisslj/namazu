@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.14 2000-01-27 13:13:42 satoru Exp $
+# $Id: mknmz.pl.in,v 1.15 2000-01-28 06:37:26 satoru Exp $
 #
 # Copyright (C) 2000 Namazu Project All rights reserved..
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -1639,8 +1639,10 @@ sub make_headfoot ($$$) {
 	$tmp = util::commas($tmp);
 	$buf =~ s/(<!-- KEY -->)(.*)(<!-- KEY -->)/$1 $tmp $3/;
     }
-    $buf =~ s#(<!-- DATE -->)(.*)(<!-- DATE -->)#$1 $year-$month-$day $3#g;
-    $buf =~ s/(<!-- VERSION -->)(.*)(<!-- VERSION -->)/$1 v$var::VERSION $3/g;
+    $buf =~ s#(<!-- DATE -->)(.*)(<!-- DATE -->)#$1 $year-$month-$day $3#gs;
+    $buf =~ s/(<!-- VERSION -->)(.*)(<!-- VERSION -->)/$1 v$var::VERSION $3/gs;
+    $buf =~ s{(<!-- ADDRESS -->)(.*)(<!-- ADDRESS -->)}
+	     {$1\n<a href="mailto:$conf::ADDRESS">$conf::ADDRESS</a>\n$3}gs;
 
     print $fh_file $buf;
 }
@@ -2037,6 +2039,7 @@ muda($conf::ON_MEMORY_MAX,
      $var::Opt{'noencodeurl'}, $var::Opt{'htaccessexclude'}, 
      $var::RECURSIVE_ACTIONS, $conf::ROBOTS_EXCLUDE_URIS, 
      $conf::ROBOTS_EXCLUDE_URLS, $conf::META_TAGS, $var::USE_NKF_MODULE,
+     $conf::ADDRESS
      );
 
 sub muda(@) {}

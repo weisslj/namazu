@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.88 2000-01-27 22:53:25 satoru Exp $
+dnl $Id: configure.in,v 1.89 2000-01-28 06:37:22 satoru Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -167,11 +167,6 @@ changequote([, ])
 
 webmaster="webmaster@${hostname}${domainname}"
 AC_MSG_CHECKING(for admin's email address)
-AC_ARG_WITH(
-    admin,
-    [  --with-admin=EMAIL      set admin's email address [guessed]],
-    [admin=${withval}], [admin=$webmaster]
-)
 AC_MSG_RESULT($admin)
 OPT_ADMIN_EMAIL=$admin
 AC_SUBST(OPT_ADMIN_EMAIL)

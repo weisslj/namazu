@@ -1,3 +1,7 @@
+2000-03-20  Masao Takaku  <masao@ulis.ac.jp>
+
+	* scripts/mknmz.in (process_file): Remove temporary partial files.
+
 2000-03-20  Ken-ichi Hirose  <kenzo-@tama.or.jp>
 
 	* scripts/mknmz.in (generate_uri): add restore '|' for 
@@ -5296,4 +5300,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.646 2000-03-19 17:31:38 kenzo- Exp $
+$Id: ChangeLog,v 1.647 2000-03-20 12:11:22 masao Exp $

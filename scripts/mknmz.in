@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.56 2000-03-19 17:31:39 kenzo- Exp $
+# $Id: mknmz.in,v 1.57 2000-03-20 12:11:23 masao Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -184,6 +184,7 @@ sub process_file ($$$$$$) {
 		    my $rname = $part ? "$cfile\t$part" : "$cfile";
 		    put_registry($rname);
 		}
+	    	unlink $fname;
 		$id++;
 	    }
 	    return ($file_size, $processed_num);

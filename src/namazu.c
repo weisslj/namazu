@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.53 1999-12-04 09:28:59 satoru Exp $
+ * $Id: namazu.c,v 1.54 1999-12-06 08:51:36 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -438,17 +438,15 @@ int main(int argc, char **argv)
         if (i < argc) {
 	    int curidx = getidxnum();
             for (curidx = 0; i < argc && curidx < INDEX_MAX; i++) {
-	        curidx = add_index(argv[i]);
-		if (curidx == ERR_MALLOC) {
-		    die("main: malloc(idxname)");
-		    break;
-		} else if (curidx == ERR_INDEX_MAX) {
-		    break;
+	        if (add_index(argv[i]) != SUCCESS) {
+		    die("invalid idxname: %s", argv[i]);
 		}
             }
         } 
         if (getidxnum() == 0) {
-	    add_index(DEFAULT_INDEX);
+	    if (add_index(DEFAULT_INDEX) != SUCCESS) {
+		die("invalid idxname: %s", argv[i]);
+	    }
 	}
     }
     if (is_cgimode()) {

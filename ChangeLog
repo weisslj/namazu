@@ -1,3 +1,14 @@
+1999-12-06  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* src/cgi.c (init_cgi): Modify usage of add_index().
+	(process_cgi_var_idxname): Modify usage of add_index().
+
+	* src/namazu.c (main): Modify usage of add_index().
+
+	* nmz/idxname.c (add_index): Change a return value and its type.
+
+	* nmz/idxname.h: Abolish enums:  ERR_INDEX_MAX, ERR_MALLOC.
+
 1999-12-04  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* nmz/Makefile.am (libnmz_la_SOURCES): Add {alias,replace}.[ch].

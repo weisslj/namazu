@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.31 1999-12-04 09:28:59 satoru Exp $
+ * $Id: cgi.c,v 1.32 1999-12-06 08:51:36 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -457,9 +457,8 @@ static void process_cgi_var_idxname(char *value, CGIARG *ca)
 	strcpy(tmp, DEFAULT_INDEX);
 	strcat(tmp, "/");
 	strcat(tmp, name);
-	if (add_index(tmp) == -1) {
-	    
-	    ;
+	if (add_index(tmp) != SUCCESS) {
+	    warnf("invalid idxname: %s", name);
 	}
     }
 }
@@ -513,7 +512,9 @@ void init_cgi(char *query, char *subquery)
     }
 
     if (Idx.num == 0) {
-	add_index(DEFAULT_INDEX);
+	if (add_index(DEFAULT_INDEX) != SUCCESS) {
+	    warnf("invalid idxname: %s", DEFAULT_INDEX);
+	}
     } 
 }
 

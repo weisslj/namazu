@@ -86,7 +86,7 @@ SCORING = @SCORING@
 VERSION = @VERSION@
 ZCAT = @ZCAT@
 EXTRA_DIST = README-ja namazu.spec.in
-EXTRA_DIRS = lib filter template
+EXTRA_DIRS = conf doc etc lib lisp filter template tknamazu
 # EXTRA_DIRS = contrib doc lib misc
 SUBDIRS = src
 
@@ -390,7 +390,11 @@ install-data-local:
 	$(mkinstalldirs) $(pkgdatadir)/index
 	for subdir in $(EXTRA_DIRS); do \
 	  cp -rp $(srcdir)/$$subdir $(pkgdatadir); \
+	  rm -rf $(pkgdatadir)/$$subdir/CVS; \
+	  rm -rf $(pkgdatadir)/$$subdir/*/CVS; \
 	done
+	cp ChangeLog COPYING NEWS README README-ja THANKS TODO \
+		$(pkgdatadir)/etc
 
 dist-hook:
 	for subdir in $(EXTRA_DIRS); do \
@@ -399,14 +403,7 @@ dist-hook:
 	  rm -f $(distdir)/$$subdir/*.{bak,orig}; \
 	  rm -rf $(distdir)/$$subdir/CVS; \
 	done
-	rm -f $(distdir)/lib/conf.pl
-	rm -f $(distdir)/filter/gzip.pl
-	rm -f $(distdir)/filter/compress.pl
-	rm -f $(distdir)/filter/man.pl
-	rm -f $(distdir)/filter/rfc.pl
-	rm -f $(distdir)/filter/bzip2.pl
-	rm -f $(distdir)/filter/pdf.pl
-	rm -f $(distdir)/filter/msword.pl
+	rm -f $(distdir)/$(CLEANFILES)
 
 rpm:
 	# put Namazu's tar-ball to a correct directory before do this

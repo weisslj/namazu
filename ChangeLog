@@ -1,5 +1,17 @@
 1999-11-18  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* man/mknmz.1: New file.
+
+	* man/namazu.1: New file.
+
+	* man/Makefile.am: New file.
+
+	* configure.in (AC_OUTPUT): Add man/Makefile
+
+	* Makefile.am (SUBDIRS): Add 'man'.
+
+	* pl/usage.pl ($USAGE_JA, $USAGE_EN): Reindented.
+	
 	* pl/usage.pl: s/<target(s)>/<target>.../g.
 
 	* src/mknmz.pl.in (load_modules): Add "../pl" and "../filter" into

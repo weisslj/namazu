@@ -1,7 +1,7 @@
 #
 # -*- Perl -*-
-# $Id: rpm.pl,v 1.13 2004-10-16 14:54:12 opengl2772 Exp $
-# Copyright (C) 2000,2004 Namazu Project All rights reserved ,
+# $Id: rpm.pl,v 1.14 2004-11-24 16:17:06 opengl2772 Exp $
+# Copyright (C) 2000,2001,2002,2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -81,7 +81,7 @@ sub filter ($$$$$) {
             "LC_MESSAGE" => $util::LANG, 
             "LC_TIME" => "C",
         );
-	my @cmd = ($rpmpath, @rpmopts, $tmpfile);
+        my @cmd = ($rpmpath, @rpmopts, $tmpfile);
         my $fh_out = IO::File->new_tmpfile();
         my $status = util::syscmd(
             command => \@cmd,
@@ -91,18 +91,18 @@ sub filter ($$$$$) {
             },
             env => \%env,
         );
-	my $size = util::filesize($fh_out);
-	if ($size == 0) {
+        my $size = util::filesize($fh_out);
+        if ($size == 0) {
             util::fclose($fh_out);
             unlink $tmpfile;
-	    return "Unable to convert file ($rpmpath error occurred).";
-	}
-	if ($size > $conf::TEXT_SIZE_MAX) {
+            return "Unable to convert file ($rpmpath error occurred).";
+        }
+        if ($size > $conf::TEXT_SIZE_MAX) {
             util::fclose($fh_out);
             unlink $tmpfile;
-	    return 'Too large rpm file.';
-	}
-	$$cont = util::readfile($fh_out, "t");
+            return 'Too large rpm file.';
+        }
+        $$cont = util::readfile($fh_out, "t");
         util::fclose($fh_out);
     }
     unlink $tmpfile;
@@ -113,9 +113,9 @@ sub filter ($$$$$) {
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($cont);
     $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
-	unless $fields->{'title'};
+        unless $fields->{'title'};
     gfilter::show_filter_debug_info($cont, $weighted_str,
-				    $fields, $headings);
+                                    $fields, $headings);
 
     return undef;
 }
@@ -155,10 +155,10 @@ sub get_title ($$$) {
     my ($contref, $weighted_str, $fields) = @_;
 
     if ($$contref =~ /Summary     : (.*)/) {
-	my $tmp = $1;
-	$fields->{'title'} = $tmp;
-	my $weight = $conf::Weight{'html'}->{'title'};
-	$$weighted_str .= "\x7f$weight\x7f$tmp\x7f/$weight\x7f\n";
+        my $tmp = $1;
+        $fields->{'title'} = $tmp;
+        my $weight = $conf::Weight{'html'}->{'title'};
+        $$weighted_str .= "\x7f$weight\x7f$tmp\x7f/$weight\x7f\n";
     }
 }
 
@@ -166,8 +166,8 @@ sub get_author ($$) {
     my ($contref, $fields) = @_;
 
     if ($$contref =~ /Vendor: (.*)/) {
-	my $tmp = $1;
-	$fields->{'author'} = $tmp;
+        my $tmp = $1;
+        $fields->{'author'} = $tmp;
     }
 }
 
@@ -175,7 +175,7 @@ sub get_date ($$) {
     my ($contref, $fields) = @_;
 
     if ($$contref =~ /Build Date: (.*)/) {
-	my $time = $1;
+        my $time = $1;
         my $err = time::ctime_to_rfc822time(\$time);
         $fields->{'date'} = $time unless ($err);
     }
@@ -185,8 +185,8 @@ sub get_size ($$) {
     my ($contref, $fields) = @_;
 
     if ($$contref =~ /Size\s+: (.*)$/) {
-	my $tmp = $1;
-	$fields->{'size'} = $tmp;
+        my $tmp = $1;
+        $fields->{'size'} = $tmp;
     }
 }
 
@@ -194,8 +194,8 @@ sub get_summary ($$) {
     my ($contref, $fields) = @_;
 
     if ($$contref =~ /Description :(.*)/is) {
-	my $tmp = $1;
-	$fields->{'summary'} = $tmp;
+        my $tmp = $1;
+        $fields->{'summary'} = $tmp;
     }
     $$contref =~ s/^.*Description ://is;
 }

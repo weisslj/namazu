@@ -10,7 +10,7 @@
 #include "message.h"
 #include "variable.h"
 
-#define is_lang_ja(a) (strcmp(a,"ja") == 0)
+#define is_lang_ja(a) (strcmp((a),"ja") == 0)
 #define EMPHASIZING_START_ELEMENT "<strong class=\"keyword\">"
 #define EMPHASIZING_END_ELEMENT   "</strong>"
  

@@ -1,3 +1,10 @@
+2003-03-27  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * filter/Makefile.am: Added an entry for rtf.pl
+
+        * filter/pdf.pl: Fixed the problem in [n-u-j:03064],
+        Adapted to xpdf 2.02.
+
 2003-03-22  Yukio USUDA <usu@namazu.org>
 
         * filter/ooo.pl: Added alternative method (utilize lv) 
@@ -7840,4 +7847,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1008 2003-03-26 10:53:02 usu Exp $
+$Id: ChangeLog,v 1.1009 2003-03-26 20:37:38 opengl2772 Exp $

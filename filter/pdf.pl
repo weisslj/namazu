@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: pdf.pl,v 1.29 2002-09-23 08:52:32 baba Exp $
+# $Id: pdf.pl,v 1.30 2003-03-26 20:37:39 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -31,7 +31,9 @@ require 'gfilter.pl';
 my $pdfconvpath = undef;
 my $pdfinfopath = undef;
 my @pdfconvopts = undef;
+my @pdfinfoopts = undef;
 my $pdfconvver = 0;
+my $pdfinfover = 0;
 
 sub mediatype() {
     return ('application/pdf');
@@ -54,6 +56,21 @@ sub status() {
 	} else {
 	    @pdfconvopts = ('-q', '-raw');
 	}
+        if (defined $pdfinfopath) {
+	    my ($status, $fh_out, $fh_err) = util::systemcmd($pdfinfopath);
+            if (<$fh_err> =~ /^pdfinfo\s+version\s+([0-9]+\.[0-9]+)/) {
+                $pdfinfover = $1;
+            }
+            if (util::islang("ja")) {
+                if ($pdfinfover >= 2.02) {
+                    @pdfinfoopts = ('-enc', 'EUC-JP');
+                } else {
+                    @pdfinfoopts = ();
+                }
+	    } else {
+                @pdfinfoopts = ();
+            }
+        }
 	return 'yes';
     }
     return 'no';
@@ -107,14 +124,20 @@ sub filter ($$$$$) {
     }
 
     if (defined $pdfinfopath) {
-	my @cmd = ($pdfinfopath, $tmpfile);
+	my @cmd = ($pdfinfopath, @pdfinfoopts, $tmpfile);
 	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
         my $result = util::readfile($fh_out);
 	if ($result =~ /Title:\s+(.*)/) { # or /Subject:\s+(.*)/
 	    $fields->{'title'} = $1;
+            if ($fields->{'title'} =~ /<unicode>/) {
+                $fields->{'title'} = undef;
+            }
 	}
 	if ($result =~ /Author:\s+(.*)/) {
 	    $fields->{'author'} = $1;
+            if ($fields->{'author'} =~ /<unicode>/) {
+                $fields->{'author'} = undef;
+            }
 	}
     }
 

@@ -57,6 +57,12 @@ sub new{
     return $self;
 }
 
+sub close{
+    my $self = shift;
+    $self->{'body'}->close;
+    $self->{'index'}->close if defined $self->{'index'};
+}
+
 sub seek{
     my $self = shift;
     my $offset = @_? shift: 0;
@@ -164,6 +170,13 @@ sub open_all{
     $dh->close;
 }
 
+sub close{
+    my $self = shift;
+    for my $key (keys %$self){
+        $self->{$key}->close;
+    }
+}
+
 
 package nmzflist;
 sub new{
@@ -179,6 +192,13 @@ sub new{
     $self->{'offset'} = 0;
     $self->{'size'} = (-s $self->{'t'}) / length(pack('N', 0));
     return $self;
+}
+
+sub close{
+    my $self = shift;
+    $self->{'t'}->close;
+    $self->{'r'}->close;
+    $self->{'field'}->close;
 }
 
 sub read{
@@ -241,6 +261,12 @@ sub new{
     return $self;
 }
 
+sub close{
+    my $self = shift;
+    $self->{'i'}->close;
+    $self->{'w'}->close;
+}
+
 sub read{
     my $self = shift;
     my $word = shift;
@@ -288,6 +314,11 @@ sub new{
     $self->{'offset'} = 0;
     $self->{'size'} = 0x10000;
     return $self;
+}
+
+sub close{
+    my $self = shift;
+    $self->{'p'}->close;
 }
 
 sub read{

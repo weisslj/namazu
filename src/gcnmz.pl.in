@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 #
-# $Id: gcnmz.pl.in,v 1.2 1999-10-11 04:25:24 satoru Exp $
+# $Id: gcnmz.pl.in,v 1.3 1999-10-25 17:59:30 furukawa Exp $
 #
 # gcnmz.pl - by furukawa@tcp-ip.or.jp
 #
@@ -43,48 +43,54 @@ sub gcnmz{
     {
         my $file_num = 0;
         my %list;
-        $nmzi->open_flist;
-        $nmzo->open_flist;
-        while (defined $nmzi->{'flist'}->read(\%list)){
+        my $nmzfi = $nmzi->open_flist;
+        my $nmzfo = $nmzo->open_flist;
+        while (defined $nmzfi->read(\%list)){
             if ($list{'t'} != -1){
-                $table{$file_num} = $nmzo->{'flist'}->{'offset'};
-                $nmzo->{'flist'}->write(\%list);
+                $table{$file_num} = $nmzfo->{'offset'};
+                $nmzfo->write(\%list);
             }
             ++$file_num;
         }
+        $nmzfi->close;
+        $nmzfo->close;
     }
 
     {
         my $word;
         my %list_i;
 
-        $nmzi->open_word;
-        $nmzo->open_word;
-        while (defined $nmzi->{'word'}->read(\$word, \%list_i)){
+        my $nmzwi = $nmzi->open_word;
+        my $nmzwo = $nmzo->open_word;
+        while (defined $nmzwi->read(\$word, \%list_i)){
             my %list_o;
             for my $key (keys %list_i){
                 if (defined $table{$key}){
                     $list_o{$table{$key}} = $list_i{$key};
                 }
             }
-            $nmzo->{'word'}->write($word, \%list_o);
+            $nmzwo->write($word, \%list_o);
         }
+        $nmzwi->close;
+        $nmzwo->close;
     }
 
     {
-        $nmzi->open_phrase;
-        $nmzo->open_phrase;
+        my $nmzpi = $nmzi->open_phrase;
+        my $nmzpo = $nmzo->open_phrase;
         for (my $x = 0; $x < 0x10000; $x++){
             my @list_i;
             my @list_o;
-            $nmzi->{'phrase'}->read(\@list_i);
+            $nmzpi->read(\@list_i);
             for my $key (@list_i){
                 if (defined $table{$key}){
                     push(@list_o, $table{$key});
                 }
             }
-            $nmzo->{'phrase'}->write(\@list_o);
+            $nmzpo->write(\@list_o);
         }
+        $nmzpi->close;
+        $nmzpo->close;
     }
 
     $nmzo->write_status($nmzi);

@@ -1,10 +1,11 @@
 This is the todo list for Namazu.
 
-  * Make a filter `info'.
-  * Make a filter `perldoc'.
+  * Support <a name="...">...</a> and <foo id="...">...</foo> of HTML.
   * Support a zlib-compressed index.
   * Employ an effient indexing algorithm.
   * Make a tool to merge indices.
+  * Make a filter `info'.
+  * Make a filter `perldoc'.
   * Support UTF-8 and XML.
   * Make source codes clear.
   * Redesign and reimplement.

@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.134 2004-03-09 20:43:05 opengl2772 Exp $
+# $Id: mknmz.in,v 1.135 2004-03-17 06:25:34 opengl2772 Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -180,8 +180,8 @@ sub process_file ($$$$$$) {
 
     my $processed_num = 0;
     my $file_size = 0;
-    if (! $cfile =~ /^[a-z]+:/) {
-	$file_size = util::filesize($cfile);
+    if (-f $cfile) {
+        $file_size = util::filesize($cfile);
     }
 
     if ($var::Opt{'htmlsplit'} && $cfile =~ $conf::HTML_SUFFIX) {

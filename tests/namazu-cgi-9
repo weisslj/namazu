@@ -4,7 +4,7 @@
 #
 LOG=`pwd`/test-log
 echo '  *** starting ' $0 >>$LOG
-. commonfuncs
+. ./commonfuncs
 pwd=`pwd`
 tmprc="$pwd/../src/.namazurc"
 echo "Index $pwd/idx19" > $tmprc

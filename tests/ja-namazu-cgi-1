@@ -6,7 +6,7 @@ LOG=`pwd`/test-log
 echo '  *** starting ' $0 >>$LOG
 IDX=`pwd`/ja-idx1
 
-. commonfuncs
+. ./commonfuncs
 
 EXEC=no
 case $LANG in 

@@ -1,7 +1,7 @@
 #
 # -*- Perl -*-
-# $Id: rtf.pl,v 1.7 2004-01-16 13:07:10 opengl2772 Exp $
-# Copyright (C) 1997-2000 Satoru Takabayashi All rights reserved.
+# $Id: rtf.pl,v 1.8 2004-02-20 19:10:37 opengl2772 Exp $
+# Copyright (C) 2003-2004 Tadamasa Teranishi All rights reserved.
 # Copyright (C) 2000-2002 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #

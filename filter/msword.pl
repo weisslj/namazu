@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: msword.pl,v 1.41 2004-02-15 16:20:10 opengl2772 Exp $
+# $Id: msword.pl,v 1.42 2004-02-20 19:10:37 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2002 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -97,6 +97,7 @@ sub filter_wv ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
 	= @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
+    my $docversion = "unknown";
 
     util::vprint("Processing ms-word file ... (using  '$wordconvpath')\n");
 
@@ -111,17 +112,16 @@ sub filter_wv ($$$$$) {
     getSummaryInfo($tmpfile, $cont, $weighted_str, $headings, $fields);
     my $title = $fields->{'title'};
 
-    # Check version of word document (greater than word8 or else).
+    # Check version of word document (greater than word7,8 or else).
     if (util::islang("ja")) {
-	my $docversion = "unknown";
 	my $supported = 0;
 	my @cmd = ($wvversionpath, $tmpfile);
 	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
 	my $result = util::readfile($fh_out);
 	if ($result =~ /^Version: (word\d+)(?:,| )/i) {
 	    $docversion = $1;
-	    # Only word8 format is supported for Japanese.
-	    $supported = 1 if ($docversion =~ /^word8$/);
+	    # Only word7,8 format is supported for Japanese.
+	    $supported = 1 if ($docversion =~ /^word[78]$/);
 	}
 	unless ($supported) {
 	    return _("Unsupported format: ") .  $docversion;
@@ -139,6 +139,11 @@ sub filter_wv ($$$$$) {
             ($ofile, $tpath) = fileparse($tmpfile2);
             @wordconvopts = ("--targetdir=$tpath");
 	} else {
+            if (util::islang("ja")) {
+                return _("Unsupported format: ") .  $docversion
+                    if ($docversion =~ /^word7$/);
+            }
+
 	    $ofile = $tmpfile2;
 	    @wordconvopts = ();
 	}
@@ -155,6 +160,20 @@ sub filter_wv ($$$$$) {
 
     # Code conversion for Japanese document.
     if (util::islang("ja")) {
+        if ($docversion =~ /^word7$/) {
+            # Title shoud be removed.
+            $$cont =~ s!<TITLE.*?>.*?</TITLE>!!is;
+        }
+
+        # div name shoud be removed.
+        $$cont =~ s!(<div(?:\s[A-Z]+\w*(?:=(?:".*?"|'.*?'|[^\s>]*))?)*)\s+name=(?:".*?"|'.*?'|[^\s>]*)(\s[A-Z]+\w*(?:=(?:".*?"|'.*?'|[^\s>]*))?\s*>)!$1$2!igs;
+
+        {
+            my $fh = util::efopen("> $tmpfile2");
+            print $fh $$cont;
+            $fh->close();
+        }
+
 	my @cmd = ($utfconvpath, "-Iu8", "-Oej", $tmpfile2);
 	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
 	my $size = util::filesize($fh_out);
@@ -172,7 +191,9 @@ sub filter_wv ($$$$$) {
     unlink $tmpfile2;
 
     # Title shoud be removed.
-    $$cont =~ s!<TITLE.*?>.*?</TITLE>!!is if (defined $title);
+    $$cont =~ s!<TITLE.*?>.*?</TITLE>!!is
+        if ((defined $title) or
+        (util::islang("ja") && $docversion =~ /^word7$/));
 
     # Exclude wvHtml's footer because it has no good index terms.
     $$cont =~ s/(.*)<!--Section Ends-->.*$/$1/s;

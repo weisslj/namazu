@@ -1,6 +1,7 @@
 #
 # -*- Perl -*-
-# $Id: applefile.pl,v 1.1 2004-02-05 10:33:13 opengl2772 Exp $
+# $Id: applefile.pl,v 1.2 2004-02-20 19:10:37 opengl2772 Exp $
+# Copyright (C) 2004 Tadamasa Teranishi All rights reserved ,
 # Copyright (C) 2004 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #

@@ -1,3 +1,7 @@
+2004-02-01  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * script/mknmz.in, po/*: Update messages.
+
 2004-02-01  Yukio USUDA <usu@namazu.org>
 
 	* doc/{en,ja}/tutorial.html: Update
@@ -8368,4 +8372,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1089 2004-02-01 02:43:05 usu Exp $
+$Id: ChangeLog,v 1.1090 2004-02-01 09:30:46 opengl2772 Exp $

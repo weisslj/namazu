@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.129 2004-01-30 16:41:29 opengl2772 Exp $
+# $Id: mknmz.in,v 1.130 2004-02-01 09:30:47 opengl2772 Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -1375,8 +1375,8 @@ sub show_config () {
 
     my $num_supported = @supported;
     my $num_unsupported = @all_types - @supported;
-    print _("Supported media types: ($num_supported)\n");
-    print _("Unsupported types:     ($num_unsupported) marked with minus (-) probably missing application in your \$path.\n");
+    print _("Supported media types:   ") . "($num_supported)\n";
+    print _("Unsupported media types: ") . "($num_unsupported) " . _("marked with minus (-) probably missing application in your \$path.\n");
     for my $mtype (sort keys %var::Supported) {
 	my $yn = $var::Supported{$mtype};
 	if ($yn eq 'yes') { $yn = ' ' } else {$yn = '-'};

@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.123 2003-09-06 08:26:38 usu Exp $
+# $Id: mknmz.in,v 1.124 2003-09-23 07:34:22 knok Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -1190,6 +1190,7 @@ sub parse_options
 	       'u|uuencode'          => \$opt_dummy, # for backward compat.
 	       'v|version'           => \$opt_version,
 	       'x|no-heading-summary'=> \$var::Opt{'noheadabst'},
+	       'z|check-filesize'    => \$var::Opt{'checkfilesize'},
 	       );
     my $mediatype;
     foreach $mediatype (keys %var::ARCHIVE_REQUIRE_ACTIONS) {
@@ -1854,6 +1855,11 @@ sub set_target_files() {
 	}
     }
 
+    # check filesize
+    if ($var::Opt{'checkfilesize'}) {
+	$rdocs{'size'} = load_sizefield();
+    }
+
     # Pick up updated documents and set the missing number for deleted files.
     my @updated_documents = pickup_updated_documents(\%rdocs);
 
@@ -1966,8 +1972,14 @@ sub pickup_updated_documents (\%) {
 	} elsif (defined($rdocs_ref->{'overlapped'}{$cfile})) {
 	    my $cfile_mtime = (stat($cfile))[9];
 	    my $rfile_mtime = $rdocs_ref->{'mtime'}[$i];
+	    my ($cfile_size, $rfile_size);
+	    if ($var::Opt{'checkfilesize'}) {
+		$cfile_size = (stat($cfile))[7];
+		$rfile_size = $rdocs_ref->{'size'}[$i];
+	    }
 
-	    if ($rfile_mtime != $cfile_mtime) {
+	    if ($rfile_mtime != $cfile_mtime || 
+		($var::Opt{'checkfilesize'} && ($cfile_size != $rfile_size))) {
 		# The file is updated!
 		unless ($printed{$cfile}) {
 		    print "$cfile " . _("was updated!\n");
@@ -2026,6 +2038,19 @@ sub load_registry () {
     }
 
     return [ @list ];
+}
+
+# get file size information from NMZ.field.size
+sub load_sizefield() {
+    my $fh_sizefield = util::efopen($var::NMZ{'field'} . '.size');
+    return [] unless defined $fh_sizefield;
+    my $line;
+    my @ret = ();
+    while ($line = <$fh_sizefield>) {
+	chomp $line;
+	push @ret, $line;
+    }
+    return \@ret;
 }
 
 sub get_total_keys() {

@@ -12,9 +12,11 @@
 
 	* filter/mailnews.pl: Fix mailnews_filter arguments.
 
-	* filter/msword.pl: Fix status();
+	* filter/msword.pl.in: Fix status();
 
-	* filter/rfc.pl: Fix rfc_filter();
+	* filter/rfc.pl.in: Fix rfc_filter();
+
+	* configure.in: Remove filter command detection codes.
 
 
 1999-08-27  NOKUBI Takatsugu  <knok@daionet.gr.jp>

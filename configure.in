@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.14 1999-08-26 10:15:55 satoru Exp $
+dnl $Id: configure.in,v 1.15 1999-08-28 00:34:20 satoru Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -154,111 +154,6 @@ else
 fi
 AC_SUBST(OPT_WAKATI_DEFAULT)
 
-AC_PATH_PROG(ZCAT, zcat, no)
-if test "$ZCAT" = "no"; then
-    AC_MSG_WARN(zcat not found)
-fi
-ZCAT_PATH=$ZCAT
-AC_SUBST(ZCAT_PATH)
-
-AC_MSG_CHECKING(for Compress::Zlib module)
-if $PERL -MCompress::Zlib -e '' 1>/dev/null 2> /dev/null; then
-    GZIP=module_gzip
-    AC_MSG_RESULT(yes)
-else
-    AC_MSG_RESULT(no)
-    AC_PATH_PROG(GZIP,gzip, no)
-fi
-
-if test "$GZIP" = "no"; then
-    AC_MSG_WARN(gzip not found)
-fi
-GZIP_PATH=$GZIP
-AC_SUBST(GZIP_PATH)
-
-AC_PATH_PROG(BZIP2, bzip2, no)
-if test "$BZIP2" = "no"; then
-    AC_MSG_WARN(bzip2 not found)
-fi
-BZIP2_PATH=$BZIP2
-AC_SUBST(BZIP2_PATH)
-
-AC_PATH_PROG(PDFTOTEXT, pdftotext, no)
-if test "$PDFTOTEXT" = "no"; then
-    AC_MSG_WARN(pdftotext not found)
-fi
-PDFTOTEXT_PATH=$PDFTOTEXT
-AC_SUBST(PDFTOTEXT_PATH)
-
-AC_PATH_PROG(MSWORDVIEW, mswordview, no)
-if test "$MSWORDVIEW" = "no"; then
-    AC_MSG_WARN(mswordview not found)
-fi
-MSWORDVIEW_PATH=$MSWORDVIEW
-AC_SUBST(MSWORDVIEW_PATH)
-
-AC_PATH_PROG(LV, lv, no)
-if test "$LV" = "no"; then
-    AC_MSG_WARN(lv not found)
-fi
-LV_PATH=$LV
-AC_SUBST(LV_PATH)
-
-AC_PATH_PROGS(GROFF, jgroff groff nroff, no)
-if test "$GROFF" = "no"; then
-    AC_MSG_WARN(jgroff(, groff and nroff) not found)
-else
-    # nroff
-    GROFF_OPT=
-    # groff
-    if $GROFF -man -Tascii </dev/null 2>/dev/null; then
-	GROFF_OPT=-Tascii
-    fi
-    # jgroff
-    if $GROFF -man -Tnippon </dev/null 2>/dev/null; then
-	GROFF_OPT=-Tnippon
-    fi
-fi
-
-GROFF_PATH="$GROFF -man $GROFF_OPT"
-AC_SUBST(GROFF_PATH)
-
-
-dnl *
-dnl * Make yes/no values for filter/supported.pl
-dnl *
-
-application_pdf="no"
-application_msword="no"
-application_x_gzip="no"
-application_x_bzip="no"
-application_x_compress="no"
-
-if test "$PDFTOTEXT_PATH" != "no"; then
-    application_pdf="yes"
-fi
-
-if test "$MSWORDVIEW_PATH" != "no"; then
-    application_msword="yes"
-fi
-
-if test "$GZIP_PATH" != "no"; then
-    application_x_gzip="yes"
-fi
-
-if test "$BZIP2_PATH" != "no"; then
-    application_x_bzip2="yes"
-fi
-
-if test "$ZCAT_PATH" != "no"; then
-    application_x_compress="yes"
-fi
-
-AC_SUBST(application_pdf)
-AC_SUBST(application_msword)
-AC_SUBST(application_x_gzip)
-AC_SUBST(application_x_bzip2)
-AC_SUBST(application_x_compress)
 
 dnl *
 dnl * Checking File::MMagic module
@@ -394,7 +289,5 @@ dnl *
 AM_CONFIG_HEADER(config.h)
 
 AC_OUTPUT([Makefile src/Makefile lib/conf.pl src/mknmz.pl
-filter/gzip.pl filter/compress.pl filter/man.pl filter/rfc.pl
-filter/bzip2.pl filter/msword.pl filter/supported.pl
 src/gcnmz src/gtnmz src/mailutime namazu.spec],
 [chmod +x src/gcnmz src/gtnmz src/mailutime]) 

@@ -5,6 +5,7 @@
 	Fixed to work multiple subtests.
 	Changed some entries for MicroSoft Office files.
 	Fixed addFileExts() bug.
+	Changed to check file-extends for case insensitive.
 
 	* perl-File-MMagic.spec: Created.
 	(contributed by Ryuji Abe)

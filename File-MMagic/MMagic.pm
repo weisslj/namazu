@@ -1,6 +1,6 @@
 # File::MMagic
 #
-# $Id: MMagic.pm,v 1.14 2000-02-28 06:16:45 knok Exp $
+# $Id: MMagic.pm,v 1.15 2000-02-28 08:35:33 knok Exp $
 #
 # This program is originated from file.kulp that is a production of The
 # Unix Reconstruction Projct.
@@ -589,7 +589,7 @@ sub checktype_byfilename {
 
     $fname =~ s/^.*\///;
     for my $regex (keys %{$self->{FILEEXTS}}) {
-	if ($fname =~ /$regex/) {
+	if ($fname =~ /$regex/i) {
 	    if ((defined $type && $type !~ /;/) || (! defined $type)) {
 		$type = $self->{FILEEXTS}->{$regex}; # has no x-type param
 	    }

@@ -1,3 +1,7 @@
+2001-11-29  Kenji Suzuki  <kenji@po.ganseki.ne.jp>
+
+	* filter/hnf.pl: support new RT command and bug fixes.
+
 2001-11-26  Ryuji Abe  <rug@namazu.org>
 
 	* NEWS: Cross-site scripting vulnerability was fixed.
@@ -7183,4 +7187,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.890 2001-11-26 07:45:00 rug Exp $
+$Id: ChangeLog,v 1.891 2001-11-29 09:29:20 kenji Exp $

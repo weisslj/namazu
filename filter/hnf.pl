@@ -1,10 +1,10 @@
 #
 # -*- Perl -*-
-# $Id: hnf.pl,v 1.9 2001-01-14 13:38:35 kenji Exp $
+# $Id: hnf.pl,v 1.10 2001-11-29 09:29:20 kenji Exp $
 #
 # hnf filter for Namazu 2.0
-# version 0.9.14
-# 2001/1/14  Kenji Suzuki <kenji@h14m.org>
+# version 0.9.15
+# 2001/9/15  Kenji Suzuki <kenji@h14m.org>
 #
 # Copyright (C) 1999-2001  Kenji Suzuki, HyperNikkiSystem Project
 # All rights reserved.
@@ -140,7 +140,7 @@ sub hnf_filter ($$$$$$$) {
     $$contref =~ s/^command_GRP (.*)<h1>(.*)<\/h1>/command_GRP $1 $2/gm
 	if $hnf::grp_hide;
 
-    $$contref =~ s/^SUB (.*)/
+    $$contref =~ s/^SUB\s(.*)/
 	command_SUB <strong>$1<\/strong>/gm;
     $$contref =~ s/^LSUB (.*?) (.*)/
 	command_LSUB <strong><a href=\"$1\">$2<\/a><\/strong>/gm;
@@ -161,12 +161,14 @@ sub hnf_filter ($$$$$$$) {
     $$contref =~ s/^DIV\s(.*)/
 	command_DIV $1/gm;
 
-    $$contref =~ s/^PRE\s$/
+    $$contref =~ s/^PRE\s*$/
 	command_PRE/gm;
-    $$contref =~ s/^P\s$/
+    $$contref =~ s/^P\s*$/
 	command_P/gm;
     $$contref =~ s/^CITE\s(.*)/
 	command_CITE $1/gm;
+    $$contref =~ s/^RT\s*$/
+	command_RT/gm;
 
     $$contref =~ s/\nFN\n/
 	command_FN\n/g;

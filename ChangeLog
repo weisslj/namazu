@@ -1,3 +1,7 @@
+2000-05-16  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* filter/powerpoint.pl (add_magic): Fixed contradicted media type.
+
 2000-05-15  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* src/output.c: Apply Jun Kuriyama's patch. namazu-bugs-ja#19
@@ -5671,4 +5675,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.693 2000-05-15 00:35:57 satoru Exp $
+$Id: ChangeLog,v 1.694 2000-05-16 08:24:12 knok Exp $

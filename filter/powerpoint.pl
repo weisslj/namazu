@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: powerpoint.pl,v 1.4 2000-04-06 19:05:34 kenzo- Exp $
+# $Id: powerpoint.pl,v 1.5 2000-05-16 08:24:12 knok Exp $
 # Copyright (C) 2000 Ken-ichi Hirose, 
 #               2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -56,7 +56,7 @@ sub post_codeconv () {
 sub add_magic ($) {
     my ($magic) = @_;
 
-    $magic->addFileExts('\\.ppt$', 'application/ms-powerpoint');
+    $magic->addFileExts('\\.ppt$', 'application/powerpoint');
     return;
 }
 

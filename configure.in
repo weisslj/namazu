@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.45 1999-11-01 08:45:11 satoru Exp $
+dnl $Id: configure.in,v 1.46 1999-11-01 08:50:41 satoru Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -425,7 +425,7 @@ pkgdatadir="$prefix/share/namazu"
 AC_DEFINE_UNQUOTED(OPT_INDEXDIR, "${pkgdatadir}/index")
 AC_DEFINE_UNQUOTED(OPT_NAMAZU_CONF, "$CONFDIR/namazu.conf")
 AC_DEFINE_UNQUOTED(OPT_LANGUAGE, "$OPT_LANGUAGE")
-AC_DEFINE_UNQUOTED(OPT_SCORING, $SCORING)
+AC_DEFINE_UNQUOTED(OPT_SCORING, $OPT_SCORING)
 AC_DEFINE(MSIE4MACFIX)
 
 dnl * 

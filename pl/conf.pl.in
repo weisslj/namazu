@@ -40,6 +40,7 @@ $ALLOW_FILE =	".*\\.(?:$HTML_SUFFIX)|.*\\.txt" . # HTML, plain text
 		"|.*\\.gnumeric" .                 # Gnumeric
 		"|.*\\.kwd|.*\\.ksp" .             # KWord, KSpread
                 "|.*\\.kpr|.*\\.flw" .             # KPresenter, Kivio
+                "|.*\\.zip" .			   # ZIP
 		"|\\d+|[-\\w]+\\.[1-9n]";          # Mail/News, man
 
 #

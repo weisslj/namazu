@@ -1,3 +1,12 @@
+2004-04-27  Yukio USUDA <usu@namazu.org>
+
+	* filter/zip.pl: Add new filter.
+	(namazu-users-ja#0358, Contributed by MATSUMURA Namihiko, thanks.)
+
+	* tests/data/ja/zip.zip: Add new file.
+
+	* pl/conf.pl.in ($ALLOW_FILES): Added extensions of ZIP.
+
 2004-04-27  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* src/namazu-cmd.c (parse_options): nmz_optarg A NULL check is
@@ -8778,4 +8787,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1158 2004-04-27 12:15:29 opengl2772 Exp $
+$Id: ChangeLog,v 1.1159 2004-04-27 15:19:54 usu Exp $

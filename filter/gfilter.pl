@@ -1,6 +1,6 @@
 #
-# -*- CPerl -*-
-# $Id: gfilter.pl,v 1.3 1999-08-30 03:13:17 satoru Exp $
+# -*- Perl -*-
+# $Id: gfilter.pl,v 1.4 1999-08-30 09:19:27 satoru Exp $
 # Copyright (C) 1999 Satoru Takabayashi ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #

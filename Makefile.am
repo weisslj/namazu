@@ -3,10 +3,12 @@
 @SET_MAKE@
 AUTOMAKE_OPTIONS = no-dependencies
 
+SUBDIRS = src conf @FILE_MMAGIC@
+
 EXTRA_DIST = README-ja namazu.spec namazu.spec.in File-MMagic \
 	     ChangeLog.old.1.gz
-EXTRA_DIRS = conf doc etc lib lisp filter template tknamazu
-SUBDIRS = src @FILE_MMAGIC@
+
+EXTRA_DIRS = doc etc lib lisp filter template tknamazu
 
 CLEANFILES = namazu.spec \
 	     filter/gzip.pl filter/compress.pl filter/man.pl filter/rfc.pl \
@@ -23,6 +25,7 @@ install-data-local:
 	    cp -rp $(srcdir)/$$subdir $(pkgdatadir); \
 	    rm -rf $(pkgdatadir)/$$subdir/CVS; \
 	    rm -rf $(pkgdatadir)/$$subdir/*/CVS; \
+	    rm -f $(pkgdatadir)/$$subdir/Makefile*; \
 	done
 	cp ChangeLog COPYING NEWS README README-ja THANKS TODO \
 		$(pkgdatadir)/etc

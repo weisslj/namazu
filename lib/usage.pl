@@ -1,5 +1,5 @@
-# -*- CPerl -*-
-# $Id: usage.pl,v 1.6 1999-08-30 07:25:44 satoru Exp $
+# -*- Perl -*-
+# $Id: usage.pl,v 1.7 1999-08-30 09:19:28 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #

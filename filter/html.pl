@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: html.pl,v 1.11 1999-08-30 07:25:41 satoru Exp $
+# $Id: html.pl,v 1.12 1999-08-30 09:19:27 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -317,7 +317,7 @@ sub parse_htaccess () {
     my $CWD;
 
     my $fh = util::fopen(".htaccess") or 
-	$err = $!,  $CWD = cwd() , die "$CWD/.htaccess : $err\n";
+	$err = $!,  $CWD = cwd() , util::cdie("$CWD/.htaccess : $err\n");
     while(<$fh>) {
 	s/^\#.*$//;
 	/^\s*$/ && next;

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.16 1999-08-30 03:47:47 satoru Exp $
+# $Id: util.pl,v 1.17 1999-08-30 09:19:29 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -46,7 +46,7 @@ sub Rename($$) {
     return unless -e $from;
     unlink $to if (-f $from) && (-f $to); # some systems require this
     if (0 == rename($from, $to)) {
-	die "rename($from, $to): $!\n";
+	cdie("rename($from, $to): $!\n");
     }
     dprint("Renamed: $from, $to\n");
 }
@@ -54,7 +54,7 @@ sub Rename($$) {
 sub efopen ($) {
     my ($fname) = @_;
 
-    my $fh = fopen($fname) || die "$fname: $!\n";
+    my $fh = fopen($fname) || cdie("$fname: $!\n");
 
     return $fh;
 }
@@ -73,7 +73,7 @@ sub fopen ($) {
 }
 
 sub dprint (@) {
-    if ($var::Opt{Debug}) {
+    if ($var::Opt{debug}) {
 	for my $str (@_) {
 	    map {print STDERR '// ', $_, "\n"} split "\n", $str;
 	}
@@ -81,7 +81,7 @@ sub dprint (@) {
 } 
 
 sub vprint (@) {
-    if ($var::Opt{verbose} || $var::Opt{Debug}) {
+    if ($var::Opt{verbose} || $var::Opt{debug}) {
 	for my $str (@_) {
 	    map {print STDERR '@@ ', $_, "\n"} split "\n", $str;
 	}
@@ -164,10 +164,28 @@ sub checkcmd ($) {
 # tmpnam ... make temporary file name
 sub tmpnam ($) {
     my ($base) = @_;
-    die "util::tmpnam: Set \$var::OUTPUT_DIR first!\n" 
+    cdie("util::tmpnam: Set \$var::OUTPUT_DIR first!\n") 
 	if $var::OUTPUT_DIR eq "";
     dprint("tmpnam: $var::OUTPUT_DIR/$base.$$.tmp\n");
     return "$var::OUTPUT_DIR/$base.$$.tmp";
+}
+
+# cdie ... clean files before die
+sub cdie (@) {
+    remove_tmpfiles();
+    die @_;
+}
+
+# remove_tmpfiles ... remove temporary files which mknmz would make
+sub remove_tmpfiles () {
+    return unless defined $var::OUTPUT_DIR;
+
+    my @list = glob "$var::OUTPUT_DIR/NMZ.*.$$.tmp";
+    push @list, $var::NMZ{err}   if -z $var::NMZ{err}; # if size == 0
+    push @list, $var::NMZ{lock}  if -f $var::NMZ{lock};
+    push @list, $var::NMZ{lock2} if -f $var::NMZ{lock2};
+    dprint("Remove tmporary files:", @list);
+    unlink @list;
 }
 
 1;

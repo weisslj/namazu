@@ -8,6 +8,26 @@
 	
 1999-08-30  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/mknmz.pl.in lib/util.pl: Move remove_tmpfiles from
+	src/mknmz.pl.in to lib/util.pl. And modify it.
+	
+	* lib/util.pl: Add `cdie()' function to remove temporary files
+	before mknmz die. mknmz MUST always dies with this function.
+	
+	* src/mknmz.pl.in (read_config): Use `do' instead of `require' for
+	multiple calling of read_config().
+	
+	* lib/conf.pl: New file for containing default values which may
+	overriden by mknmz.conf or ~/.mknmzrc
+	
+	* conf/mknmz.conf-dist.in: Removed
+	
+	* conf/Makefile.am : New file for creating mknmz.conf-dist at make
+	time.
+	
+	* src/Makefile.am (install-data-local): Add codes to Removed
+	`Makefile*' in the install directory. (for `conf' directory)
+
 	* conf/mknmz.conf-dist.in: Append "|.*\.pdf|.*\.doc" regex into
 	$ALLOW_REGEX for handling pdf and msword documents by default.
 	And remove `_default' target.
@@ -146,7 +166,7 @@
 	* lib/util.pl: Add funtion called 'vprint()' for printing verbose
 	messaegs. 
 	
-	* filter/supported.pl: Remove
+	* filter/supported.pl: Removed
 	
 	* Makefile.am (EXTRA_DIST): Add ChangeLog.old.1.gz
 	
@@ -169,7 +189,7 @@
 
 	* **/*.pl{,.in}: Move non-config variables from conf:: to var::.
 
-	* lib/conf.pl.in: Remove
+	* lib/conf.pl.in: Removed
 
 	* **/*.pl{,.in}: s/foreach /for /g;
 

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: wakati.pl,v 1.8 1999-08-30 03:13:19 satoru Exp $
+# $Id: wakati.pl,v 1.9 1999-08-30 09:19:29 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -69,7 +69,7 @@ sub wakatize_japanese_sub ($) {
 	} elsif ($module eq "chasen1") {
 	    $str = Text::ChaSen1::sparse_tostr_long($$content);
 	} else {
-	    die "invalid wakati module: $module\n";
+	    util::cdie("invalid wakati module: $module\n");
 	}
         util::dprint("-- wakatized bare content --\n$str\n\n");
 	@tmp = split('\n', $str);

@@ -1,7 +1,7 @@
 #! @PERL@ -w
-# -*- CPerl -*-
+# -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.43 1999-08-30 07:44:30 satoru Exp $
+# $Id: mknmz.pl.in,v 1.44 1999-08-30 09:19:30 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -51,7 +51,8 @@ my %PhraseHashLast = ();
 my %KeyIndex = ();
 my %KeyIndexLast = ();
 my %CheckPoint = ("on" => undef, "continue" => undef);
-my $TestMode = @TEST_MODE@;
+my $TestMode   = @TEST_MODE@;
+my $ConfigFile = undef;
 
 STDOUT->autoflush(1);
 main();
@@ -60,8 +61,8 @@ sub main () {
 
     init();
     load_modules();
-    read_config();
     my $file_base = prep();
+    read_config();
 
     my $swap = 1;
     my $file_count = 0;
@@ -122,20 +123,18 @@ sub main () {
     exit 0;
 }
 
-sub read_config() {
-    my @cand = ("$ENV{HOME}/.mknmzrc", 
-		"$CONFDIR/mknmz.conf");
-    my $conf2 = cwd() . "/../conf/mknmz.conf-dist";  # relative path from cwd
-    push @cand, $conf2 if $TestMode;
+sub read_config($) {
+    my (@cand) = ();
+    push @cand, $ConfigFile if defined $ConfigFile;
+    push @cand, "$ENV{HOME}/.mknmzrc", "$CONFDIR/mknmz.conf";
 
     for my $conf (@cand) {
 	if (-f $conf) {
-	    print STDERR "\@\@ conf: $conf\n" if $TestMode;
-	    require $conf;
+	    util::vprint("conf: $conf\n");
+	    do $conf;
 	    return;
 	}
     }
-    die "No config file is available.\n";
 }
 
 sub re_exec($$$$) {
@@ -185,15 +184,7 @@ sub init () {
     }
 
     $SIG{INT}  = sub {
-	warn "SIGINT caught! removing tmporary files...\n";
-	remove_tmpfiles();
-	remove_lockfile($var::NMZ{lock2});
-
-	my $errsize = -s $var::NMZ{err};
-	unlink $var::NMZ{err} if $errsize == 0;
-	warn "exit(2)\n";
-    
-	exit 2;
+	util::cdie("SIGINT caught! Aborted.\n");
     };
 }
 
@@ -206,11 +197,13 @@ sub load_modules () {
     unshift @INC, $FILTERDIR;
     unshift @INC, $filterdir2 if $TestMode;
 
+    require "var.pl";
+    require "conf.pl";
+    require "util.pl";
     require "usage.pl";
     require "seed.pl";
     require "codeconv.pl";
     require "find.pl";
-    require "util.pl";
     require "wakati.pl";
 
     # Check filter modules
@@ -332,7 +325,7 @@ sub get_field_index_base (\%) {
     for my $key (@keys) {
 	$key = lc($key);
 	my $fname    = "$var::NMZ{field}.$key";
-	my $tmp_fname = "$var::NMZ{field}.$key.$$";
+	my $tmp_fname = util::tmpnam("NMZ.field.$key");
 	my $size = 0;
 	$size = -s $fname if -f $fname;
 	$size += -s $tmp_fname if -f $tmp_fname;
@@ -416,7 +409,7 @@ sub put_field_index (\%$) {
     my @keys = split('\|', $conf::SEARCH_FIELD);
     for my $key (@keys) {
 	$key = lc($key);
-	my $fname    = "$var::NMZ{field}.$key.$$";
+	my $fname    = util::tmpnam("NMZ.field.$key");
 	my $fh_field = util::efopen(">>$fname");
 	my $output = "";
 	if (defined($fields->{$key})) {
@@ -434,7 +427,7 @@ sub put_field_index (\%$) {
 
 	# put index of field index
 	{
-	    my $fname        = "$var::NMZ{field}.$key.i.$$";
+	    my $fname        = util::tmpnam("NMZ.field.$key.i");
 	    my $fh_field_idx = util::efopen(">>$fname");
 	    print $fh_field_idx pack("N", $field_indices->{$key});
 	    $field_indices->{$key} += length $output;
@@ -556,7 +549,7 @@ sub find_target ($) {
 
     html::parse_robots_txt() if ($var::Opt{robotexclude});
     my $current_dir = cwd();
-    chdir $target_dir || die "$target_dir: $!\n";
+    chdir $target_dir || util::cdie("$target_dir: $!\n");
     find::findfiles(\@flist);
     chdir $current_dir;
 
@@ -615,7 +608,7 @@ sub remove_lockfile ($) {
 sub check_present_index () {
     if (-f $var::NMZ{i} && ! -f $var::NMZ{result}) 
     {
-	die "!!ERROR!!\nPresent index is old type. it's unsupported.\n";
+	util::cdie("Present index is old type. it's unsupported.\n");
     }
 }
 
@@ -642,8 +635,7 @@ sub do_remain_job ($$$$) {
     }
     make_headfoot_pages($file_count, $key_count);
     put_log($total_files_size, $start_time, $file_count, $key_count);
-    remove_lockfile($var::NMZ{lock2});
-    remove_tmpfiles();
+    util::remove_tmpfiles();
     unlink $var::NMZ{_flist};
 }
 
@@ -654,10 +646,6 @@ sub make_headfoot_pages($$) {
     make_headfoot("$var::NMZ{foot}.ja", $file_count, $key_count);
     make_headfoot("$var::NMZ{head}.en", $file_count, $key_count);
     make_headfoot("$var::NMZ{foot}.en", $file_count, $key_count);
-}
-
-sub remove_tmpfiles() {
-    unlink glob "$var::OUTPUT_DIR/NMZ.*.$$.tmp";
 }
 
 # parse comannd line options
@@ -704,6 +692,7 @@ sub parse_options ()
 	       'O|output-dir=s'      => \$output_dir,
 	       'L|lang=s'            => \$conf::LANGUAGE,
 	       'T|template-dir=s'    => \$TEMPLATEDIR,
+	       'f|config=s'          => \$ConfigFile,
 	       't|allow=s'           => \$conf::ALLOW_REGEX,
 
 	       'v|version'           => \$opt_version,
@@ -782,7 +771,7 @@ sub parse_options ()
 
     $target_dir = $ARGV[0] if defined $ARGV[0];
     $output_dir = cwd() if $output_dir eq "";
-    die "$output_dir: invalid output directory\n"
+    util::cdie("$output_dir: invalid output directory\n")
 	unless (-d $output_dir && -w $output_dir);
 
     if ($SYSTEM eq "MSWin32" || $SYSTEM eq "os2") {
@@ -1027,7 +1016,7 @@ sub append_index (@) {
 	    update_dateindex();
 	    update_registry(0);
 	    put_log(0, 0, 0, get_total_keys());
-	    remove_lockfile($var::NMZ{lock2});
+	    util::remove_tmpfiles();
 	}
 	print "No files to index.\n";
 	exit 0;
@@ -1078,7 +1067,7 @@ sub set_target_files() {
     if ($#{$rfiles{'name'}} != $#{$rfiles{'mtime'}}) {
 	util::dprint("\n\n== registered ==\n", join("\n", @{$rfiles{'name'}}));
 	util::dprint("\n\n== mtimes ==\n", join("\n", @{$rfiles{'mtime'}}));
-	die "NMZ.r ($#{$rfiles{'name'}}) and NMZ.t ($#{$rfiles{'mtime'}})"
+	util::cdie("NMZ.r ($#{$rfiles{'name'}}) and NMZ.t ($#{$rfiles{'mtime'}})")
 	    . "are not consistent!\n";
     }
 
@@ -1167,17 +1156,11 @@ sub update_dateindex () {
 }
 
 sub update_field_index () {
-    update_field_index_sub(glob "$var::NMZ{field}.*.$$");
-    update_field_index_sub(glob "$var::NMZ{field}.*.i.$$");
-}
-
-sub update_field_index_sub () {
-    my @list = @_;
+    my @list = glob "$var::NMZ{field}.*";
     for my $tmp (@list) {
-	$tmp =~ /((.*)\.$$)/;
+	$tmp =~ m!((^.*/NMZ\.field\.[^\.]+(?:\.i)?)\..*)!;
 	my $fname_tmp = $1;
 	my $fname_out = $2;
-
 	{
 	    my $fh_field = util::efopen(">>$fname_out");
 	    my $fh_tmp = util::efopen($fname_tmp);
@@ -1246,7 +1229,7 @@ sub load_registry () {
 		splice(@list, $mark{$tmp}, 1, "# $tmp");
 		undef $mark{$tmp};
 	    } else {
-		die "ERROR: malformed NMZ.r format!\n";
+		util::cdie("ERROR: malformed NMZ.r format!\n");
 	    }
 	} else {
 	    unless (defined($mark{$line})) {
@@ -1661,7 +1644,7 @@ sub get_unpackw ($) {
     my $val = 0;
     while (1) {
 	my $tmp = getc($fh);
-        die "fatal error occurred in get_unpackw\n" unless defined $tmp;
+        util::cdie("fatal error occurred in get_unpackw\n") unless defined $tmp;
 	$tmp = ord($tmp);
 
 	if ($tmp < 128) {
@@ -1796,17 +1779,15 @@ sub decide_type ($$) {
 # for avoiding "used only once: possible typo at ..." warnings
 
 muda($conf::SEARCH_FIELD, $conf::ON_MEMORY_MAX,
-     $conf::WORD_LENG_MAX,
-     $conf::MHONARC_MESSAGE_FILE, $conf::DENY_REGEX, $var::INTSIZE,
-     $conf::CHASEN_MORPH,
-     $var::Opt{uuencode}, $conf::MHONARC_HEADER, $conf::CHASEN,
+     $conf::WORD_LENG_MAX, $conf::TEXT_SIZE_MAX,
+     $conf::DENY_REGEX, $var::INTSIZE,
+     $conf::CHASEN_MORPH, $conf::MHONARC_HEADER, $conf::CHASEN,
      $conf::KAKASI, $var::Opt{okurigana}, $TARGET_DIR,
      $var::Opt{hiragana}, $conf::ROBOTS_EXCLUDE_URLS, $conf::DEFAULT_FILE,
      $conf::HTML_SUFFIX, $usage::USAGE_EN, $usage::USAGE_MINI, 
      $var::Opt{noheadabst}, @seed::Seed, $var::OUTPUT_DIR,
      $var::Opt{debug}, $var::Opt{noencodeurl}, $var::Opt{htaccessexclude}, 
      $var::RECURSIVE_ACTIONS, $conf::ROBOTS_EXCLUDE_URIS, 
-     $conf::FILE_SIZE_LIMIT,
      $conf::ROBOTS_EXCLUDE_URLS, $conf::Supported);
 
 

@@ -1,0 +1,129 @@
+# -*- CPerl -*-
+# $Id: var.pl.in,v 1.1 1999-08-28 01:02:44 satoru Exp $
+# Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
+#     This is free software with ABSOLUTELY NO WARRANTY.
+#
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either versions 2, or (at your option)
+#  any later version.
+# 
+#  This program is distributed in the hope that it will be useful
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program; if not, write to the Free Software
+#  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+#  02111-1307, USA
+#
+#  This file must be encoded in EUC-JP encoding
+#
+
+package var;
+
+################################################################
+##
+## Software information
+##
+
+$VERSION = "@VERSION@";
+$COPYRIGHT = "Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.";
+$NMZ_URI = "http://openlab.ring.gr.jp/namazu/";
+
+
+################################################################
+##
+## Names of Index files
+##
+
+$DBNAME     = "NMZ";
+%File = ();
+$File{INDEX}      = "$DBNAME.i";
+$File{INDEXINDEX} = "$DBNAME.ii";
+$File{REGISTRY}    = "$DBNAME.r";
+$File{HEADERFILE} = "$DBNAME.head";
+$File{FOOTERFILE} = "$DBNAME.foot";
+$File{LOGFILE}    = "$DBNAME.log";
+$File{SLOGFILE}   = "$DBNAME.slog";
+$File{LOCKFILE}   = "$DBNAME.lock";
+$File{LOCKFILE2}  = "$DBNAME.lock2";
+$File{LOCKMSGFILE} = "$DBNAME.msg";
+$File{BODYMSGFILE} = "$DBNAME.body";
+$File{ERRORSFILE} = "$DBNAME.err";
+$File{WORDLIST}    = "$DBNAME.w";
+$File{PHRASE}      = "$DBNAME.p";
+$File{PHRASEINDEX} = "$DBNAME.pi";
+$File{FIELDINFO}   = "$DBNAME.field";
+$File{FLIST}       = "$DBNAME.flist";
+$File{RESULTFILE} = "$DBNAME.result";
+
+$File{BIGENDIAN}  = "$DBNAME.be";
+$File{LITTLEENDIAN}  = "$DBNAME.le";
+
+$File{DATEINDEX} = "$DBNAME.t";
+
+$File{TOTALFILESCOUNT} = "$DBNAME.total";
+$File{TOTALKEYSCOUNT}  = "$DBNAME.keys";
+
+$File{BODY_MSG_JA} = $File{BODYMSGFILE} . "ja";
+$File{BODY_MSG_EN} = $File{BODYMSGFILE} . "en";
+$File{DATEINDEX_} = $File{DATEINDEX};
+$File{INDEX_} = $File{INDEX};
+$File{HEADERFILE_} = $File{HEADERFILE};
+$File{FOOTERFILE_} = $File{FOOTERFILE};
+$File{PHRASE_}     = $File{PHRASE};
+$File{PHRASEINDEX_} = $File{PHRASEINDEX};
+$File{REGISTRY_} = $File{REGISTRY};
+$File{INDEXINDEX_} = $File{INDEXINDEX};
+$File{WORDLIST_} = $File{WORDLIST};
+$File{FLIST_} = $File{FLIST};
+
+$File{TMP_WAKATI} = "$DBNAME.wkc";
+$File{TMP_I}      = "$DBNAME.tmp_i";
+$File{TMP_W}      = "$DBNAME.tmp_w";
+$File{TMP_P}      = "$DBNAME.tmp_p";
+$File{TMP_PI}     = "$DBNAME.tmp_pi";
+
+$File{CHECKPOINT_}     = "$DBNAME.checkpoint";
+
+$INTSIZE = 4;
+$USE_NKF_MODULE   = 0;
+
+################################################################
+##
+## Options
+##
+
+$NoPhraseIndexOpt = 0;
+$DebugOpt         = 0;
+$QuietOpt         = 0;
+$VerboseOpt       = 0;
+$RobotExcludeOpt  = 0;
+$NoFieldInfoOpt   = 0;
+$NoDateIndexOpt   = 0;
+$ManOpt           = 0;
+$NoMHonArcOpt     = 0;
+$UuencodeOpt      = 0;
+$MailNewsOpt      = 0;
+$NoLineAdOpt      = 0;
+$NoHeadAbstOpt    = 0;
+$HiraganaOpt      = 0;
+$OkuriganaOpt     = 0;
+$NoEdgeSymbolOpt  = 0;
+$NoSymbolOpt      = 0;
+$NoEncodeURI      = 0;
+$NoRegexIndexOpt = 0;
+$NoInsertHeaderOpt = 0;
+$NoDeleteProcessing = 0;
+$NoUpdateProcessing = 0;
+$HtaccessExcludeOpt = 0;
+
+%CheckPoint = ("on" => undef, "continue" => undef, "pid" => $$, "fid" => 0);
+
+%REQUIRE_ACTIONS = ();
+%RECURSIVE_ACTIONS = ();
+%supported = ();
+
+1;

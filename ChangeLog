@@ -7,6 +7,8 @@
 	(Contributed by Yoshinori.TAKESAKO, namazu-users-ja 902,907)
 	
 	* filter/postscript.pl: Support landscape postscript.
+
+	* pl/conf.pl.in: Removed duplicated entries.
 	
 2000-12-28  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
@@ -6194,4 +6196,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.780 2000-12-28 10:50:44 baba Exp $
+$Id: ChangeLog,v 1.781 2000-12-28 11:03:42 baba Exp $

@@ -1,7 +1,7 @@
-#! @PERL@ -w
+#! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.1 2000-01-30 22:42:31 rug Exp $
+# $Id: mknmz.in,v 1.2 2000-01-30 23:32:36 rug Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -27,7 +27,7 @@
 
 package mknmz;
 require 5.004;
-use lib "@ADDITIONAL_INC@";
+use lib "%ADDITIONAL_INC%";
 use Cwd;
 use IO::File;
 use File::Find;

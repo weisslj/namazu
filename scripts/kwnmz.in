@@ -1,7 +1,7 @@
-#! @PERL@
+#! %PERL%
 # -*- Perl -*-
 #
-# $Id: kwnmz.in,v 1.1 2000-01-30 22:42:31 rug Exp $
+# $Id: kwnmz.in,v 1.2 2000-01-30 23:32:36 rug Exp $
 #
 # kwnmz - program to make NMZ.field.keywords
 #         by furukawa@tcp-ip.or.jp

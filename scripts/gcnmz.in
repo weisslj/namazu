@@ -1,7 +1,7 @@
-#! @PERL@ -w
+#! %PERL% -w
 # -*- Perl -*-
 #
-# $Id: gcnmz.in,v 1.1 2000-01-30 22:42:30 rug Exp $
+# $Id: gcnmz.in,v 1.2 2000-01-30 23:32:36 rug Exp $
 #
 # gcnmz.pl - by furukawa@tcp-ip.or.jp
 #

@@ -33,15 +33,16 @@ gcnmz: gcnmz.in Makefile
 	chmod +x gcnmz
 
 kwnmz: kwnmz.in Makefile
-	rm -f $@
+	rm -f kwnmz
 	sed -e 's!@PERL@!$(PERL)!g' \
 	    -e 's!@PERLLIBDIR@!$(perllibdir)!g' kwnmz.in > kwnmz.tmp
 	mv kwnmz.tmp kwnmz
 	chmod +x kwnmz
 
 mknmz: mknmz.in Makefile
-	rm -f $@
+	rm -f mknmz
 	sed -e 's!@PERL@!$(PERL)!g' \
+	    -e 's!@ADDITIONAL_INC@!$(ADDITIONAL_INC)!g' \
 	    -e 's!@CONFDIR@!$(confdir)!g' \
 	    -e 's!@PERLLIBDIR@!$(perllibdir)!g' \
 	    -e 's!@FILTERDIR@!$(filterdir)!g' \

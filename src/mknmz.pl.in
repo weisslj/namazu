@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.73 1999-11-05 04:25:12 satoru Exp $
+# $Id: mknmz.pl.in,v 1.74 1999-11-05 05:29:53 masao Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -304,8 +304,6 @@ sub isexcluded ($$$) {
 	{
 	    $err = "is excluded because of <META> element.";
 	}
-    } elsif (defined $conf::EXCLUDE_REGEX && $uri =~ /$conf::EXCLUDE_REGEX/) {
-	$err = "is excluded because of \$conf::EXCLUDE_REGEX.\n";
     }
 
     return $err;
@@ -1124,6 +1122,8 @@ sub change_dbnames ($) {
 # for "find"
 sub wanted ($$){
     my ($name, $rarray) = @_;
+
+    return if (defined $conf::EXCLUDE_REGEX && $name =~ /$conf::EXCLUDE_REGEX/);
     
     if ($name !~ m!^.*/(($conf::DENY_REGEX)(\.gz|\.Z)?)$!i &&
 	$name =~ m!^.*/(($conf::ALLOW_REGEX)(\.gz|\.Z|\?.*)?)$!i && 

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: namazu 2.0\n"
-"POT-Creation-Date: 2000-01-07 21:01+0900\n"
+"POT-Creation-Date: 2000-01-08 18:17+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>\n"
 "Language-Team: Japanese <satoru-t@is.aist-nara.ac.jp>\n"
@@ -33,56 +33,56 @@ msgstr ""
 "\225\127\217\200\202\314\214\276\214\352: %s\n"
 "\203\130\203\122\203\101\214\166\216\132: %s\n"
 
-#: nmz/util.c:573
+#: nmz/util.c:548
 msgid "Fatal error occered!"
 msgstr "\222\166\226\275\223\111\202\310\203\107\203\211\201\133"
 
-#: nmz/util.c:579
+#: nmz/util.c:554
 msgid "Invalid query"
 msgstr "\225\163\220\263\202\310 idxname \202\314\216\167\222\350\202\305\202\267"
 
-#: nmz/util.c:582
+#: nmz/util.c:557
 #, fuzzy
 msgid "Too many query tokens"
 msgstr "\214\237\215\365\216\256\202\314\215\200\226\332\202\252\221\275\202\267\202\254\202\334\202\267\n"
 
-#: nmz/util.c:585
+#: nmz/util.c:560
 msgid "Too many words matched. Ignored"
 msgstr "\203\175\203\142\203\140\202\267\202\351\222\120\214\352\202\252\221\275\202\267\202\254\202\351\202\314\202\305\226\263\216\213\202\265\202\334\202\265\202\275"
 
-#: nmz/util.c:588
+#: nmz/util.c:563
 msgid "Too many pages hit. Ignored"
 msgstr "\203\161\203\142\203\147\220\224\202\252\221\275\202\267\202\254\202\351\202\314\202\305\226\263\216\213\202\265\202\334\202\265\202\275"
 
-#: nmz/util.c:591
+#: nmz/util.c:566
 msgid "cannot open regex index"
 msgstr "\220\263\213\113\225\134\214\273\227\160\203\103\203\223\203\146\203\142\203\116\203\130\202\252\212\112\202\257\202\334\202\271\202\361\202\305\202\265\202\275"
 
-#: nmz/util.c:594
+#: nmz/util.c:569
 msgid "cannot open phrase index"
 msgstr "\203\164\203\214\203\103\203\131\214\237\215\365\227\160\203\103\203\223\203\146\203\142\203\116\203\130\202\252\212\112\202\257\202\334\202\271\202\361\202\305\202\265\202\275"
 
-#: nmz/util.c:597
+#: nmz/util.c:572
 msgid "cannot open field index"
 msgstr "\203\164\203\102\201\133\203\213\203\150\214\237\215\365\227\160\202\314\203\103\203\223\203\146\203\142\203\116\203\130\202\252\212\112\202\257\202\334\202\271\202\361\202\305\202\265\202\275"
 
-#: nmz/util.c:600
+#: nmz/util.c:575
 msgid "cannot open this index"
 msgstr "\203\103\203\223\203\146\203\142\203\116\203\130\202\252\212\112\202\257\202\334\202\271\202\361\202\305\202\265\202\275"
 
-#: nmz/util.c:603
+#: nmz/util.c:578
 msgid "cannot open result format file"
 msgstr "\214\213\211\312\217\157\227\315\202\314\217\221\216\256\216\167\222\350\203\164\203\100\203\103\203\213\202\252\212\112\202\257\202\334\202\271\202\361\202\305\202\265\202\275"
 
-#: nmz/util.c:606
+#: nmz/util.c:581
 msgid "You don't have a permission to access the index"
 msgstr "\203\103\203\223\203\146\203\142\203\116\203\130\202\311\203\101\203\116\203\132\203\130\202\267\202\351\214\240\227\230\202\252\202\240\202\350\202\334\202\271\202\361"
 
-#: nmz/util.c:609
+#: nmz/util.c:584
 msgid "Unknown error. Report bug!"
 msgstr "\225\163\226\276\202\310\203\107\203\211\201\133\201\102\203\157\203\117\225\361\215\220\202\265\202\304\202\255\202\276\202\263\202\242"
 
-#: nmz/alias.c:104
+#: nmz/alias.c:105
 #, c-format
 msgid "Alias:   \"%s\" -> \"%s\"\n"
 msgstr "\225\312\226\274:   \"%s\" -> \"%s\"\n"
@@ -173,8 +173,7 @@ msgid ""
 "    -o, --output=file    set output file name.\n"
 "    -f, --config=file    set a pathname of a config file.\n"
 "    -C, --show-config    print current configuration.\n"
-"    -q, --quiet          do not display extra messages except search "
-"results.\n"
+"    -q, --quiet          do not display extra messages except search results.\n"
 "    -L, --lang=lang      set language (ja or en)\n"
 "    -v, --version        show the version of namazu and exit.\n"
 "        --help           show this help and exit\n"

@@ -1,11 +1,11 @@
 Summary: Nmazu is a search engine intented for easy use
 Name: namazu
-Version: 1.4.0.0-beta-8
+Version: @VERSION@
 Release: 1
 Copyright: GPL
 Group: Utilities/Text
 Requires: perl >= 5.0, kakasi, nkf
-Source0: namazu-1.4.0.0-beta-8.tar.gz
+Source0: @PACKAGE@-@VERSION@.tar.gz
 URL: http://openlab.ring.gr.jp/namazu/
 Packager: Taku Kudoh <taku@TAHOO.ORG>
 BuildRoot: /var/tmp/namazu

@@ -1,18 +1,25 @@
-$Id: TODO-satoru,v 1.9 2000-01-10 09:33:06 satoru Exp $
+$Id: TODO-satoru,v 1.10 2000-01-10 12:37:23 satoru Exp $
 
 やるべきことの備忘録 by 高林
+
+  * mknmz.pl.in: File::Copy を使おう
 
   * var.c: BASE_URI, DEFAULT_INDEX, CONFDIR, TfIdf を隠蔽する
 
   * rcfile.c: syntax error のメッセージを gettext化
 
+  * rcfile.c: エラーメッセージに directive名を入れる?
+
+  * rcfile.c: nmz_load_conf() の呼び出す位置はどこが適切か?
+    - libraryとしての挙動を考慮すれば nmz_search() か?
+
   * conv_query() を nmz_search() から呼ぶようにする。
 
   * 一対多の alias に対応する。例: Alias all-ml foo bar baz quux
+    - 今の struct nmz_indices の構造では難しい
 
   * idxnames.c: インデックスの数の制限を廃止する (リスト構造?)
-
-  * mknmz.pl.in: File::Copy を使おう
+    - struct nmz_indices の構造を見直す
 
   * nmz/libnamazu.c を廃止 (中の関数は適切なファイルに移動する)
 
@@ -24,8 +31,6 @@ $Id: TODO-satoru,v 1.9 2000-01-10 09:33:06 satoru Exp $
 
   * NmzResult(旧HLIST) 関連の処理 -> 戻り値をポインタでもらう
     NULLポインタでエラーを返す
-
-  * NMZ.slog はライブラリが出力するものなのか? (要検討)
 
   * var.[ch] の扱いはどうすべきか (廃止したいが NMZ は残したい)
 

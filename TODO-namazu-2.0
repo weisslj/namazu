@@ -1,4 +1,4 @@
-$Id: TODO-namazu-2.0,v 1.31 2000-01-10 05:33:57 makoto Exp $
+$Id: TODO-namazu-2.0,v 1.32 2000-01-10 12:37:23 satoru Exp $
 
 検討項目
 
@@ -11,6 +11,8 @@ $Id: TODO-namazu-2.0,v 1.31 2000-01-10 05:33:57 makoto Exp $
   * 常に namazurc で設定した Index ディレクトリの NMZ.{head,foot,..}.*  
     を参照するという設定項目を namazu.conf/.namazurc に追加する
     - Template ディレクティヴ?
+
+  * NMZ.slog はライブラリが出力するものなのか? (要検討)
 
 
 即急に取り組むべき課題
@@ -40,6 +42,8 @@ $Id: TODO-namazu-2.0,v 1.31 2000-01-10 05:33:57 makoto Exp $
 
 しばらく先の課題
 
+  * 国際化にまじめに取り組む
+
   * UTF-8化 (Perl 5.6 が公開されたら)
 
   * コード変換に iconv(3) を用いる
@@ -56,6 +60,7 @@ $Id: TODO-namazu-2.0,v 1.31 2000-01-10 05:33:57 makoto Exp $
     e.g. study/studies, eat/ate/eaten
 
   * データ構造を見直す
+    - query, indices, NmzResult などを統合する
     - Namazu *foo = nmz_new_namazu() みたいにして複数のインス
       タンスを生成したい
 
@@ -64,13 +69,15 @@ $Id: TODO-namazu-2.0,v 1.31 2000-01-10 05:33:57 makoto Exp $
 
   * find でシンボリックをきちんと扱う (難しい)
 
+  * Glib を採用するとどうだろう?
+
   * boehm GC <http://reality.sgi.com/boehm/gc.html> を導入す
     るとどうだろう?
 
 
 常にこころがけること
 
-  * 雑なルーチンをきれいに書き直す
+  * 雑なルーチンをきれいに書き直す - 特に FIXME つきの関数
 
   * エラー処理をきちんとしよう
 

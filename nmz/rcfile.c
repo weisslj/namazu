@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.23 2000-01-10 12:20:31 satoru Exp $
+ * $Id: rcfile.c,v 1.24 2000-01-10 12:37:24 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -234,9 +234,9 @@ set_pathname(char *dest, const char *command, const char *name)
 }
 
 /*
- 1. current_executing_binary_dir/.namazurc
- 2. ${HOME}/.namazurc
- 3. DEFAULT_NAMAZURC (SYSCONFDIR/namazurc)
+ * 1. current_executing_binary_dir/.namazurc
+ * 2. ${HOME}/.namazurc
+ * 3. DEFAULT_NAMAZURC (SYSCONFDIR/namazurc)
  */
 static FILE *
 open_rcfile(const char *argv0)

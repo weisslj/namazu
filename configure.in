@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.49 1999-11-02 09:27:11 satoru Exp $
+dnl $Id: configure.in,v 1.50 1999-11-02 23:07:10 satoru Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -310,7 +310,8 @@ else
     AC_MSG_CHECKING(for File::MMagic module)
 
     FILE_MMAGIC=""
-    if $PERL -e "use File::MMagic $tmp" 1>/dev/null 2> /dev/null; then
+    if $PERL -e "use lib '$PMDIR'; use File::MMagic $tmp" \
+    1>/dev/null 2> /dev/null; then
         AC_MSG_RESULT(yes)
     else
         AC_MSG_RESULT(no)

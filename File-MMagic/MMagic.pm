@@ -1,6 +1,6 @@
 # File::MMagic
 #
-# $Id: MMagic.pm,v 1.26 2001-02-09 01:09:47 knok Exp $
+# $Id: MMagic.pm,v 1.27 2003-03-21 17:49:42 usu Exp $
 #
 # This program is originated from file.kulp that is a production of The
 # Unix Reconstruction Projct.
@@ -1711,6 +1711,9 @@ __DATA__
 >6		string	-				application/x-lha
 
 # ZIP archiver
+0		string	PK				
+>30 		string  content				application/vnd.sun.xml.writer
+
 0		string	PK				application/x-zip
 
 # POSIX tar archives

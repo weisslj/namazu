@@ -1,3 +1,11 @@
+2003-03-22  Yukio USUDA <usu@namazu.org>
+
+        * filter/taro45.pl: Changed to get file content from $cont.
+        * filter/taro7_10.pl: Removed file read/write function.
+        * filter/ooo.pl: Added a new file. OpenOffice filter
+        * File-MMagic.pm: Add 'application/vnd.sun.xml.writer'
+                          for OpenOffice zip archive 
+
 2003-03-22  Ryuji Abe  <rug@namazu.org>
 
 	* nmz/vsnprintf.c: Provide snprintf imprementation.
@@ -7796,4 +7804,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1001 2003-03-21 16:15:37 rug Exp $
+$Id: ChangeLog,v 1.1002 2003-03-21 17:49:40 usu Exp $

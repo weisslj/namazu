@@ -1,3 +1,9 @@
+1999-10-14  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* po/ja.po: Modify the usage message a bit.
+
+	* src/usage.c (show_long_usage): Modify the usage message a bit.
+
 1999-10-13  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* src/util.[ch]: Introduce is_little_endian() function.

@@ -2,7 +2,7 @@
  * 
  * usage.c -
  * 
- * $Id: usage.c,v 1.4 1999-10-11 04:25:30 satoru Exp $
+ * $Id: usage.c,v 1.5 1999-10-13 22:49:01 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -44,7 +44,7 @@ void show_long_usage(void)
     N_("\
 Search Program of Namazu v%s\n\
 %s\n\n\
-Usage: namazu [options] <query> [index(s)] \n\
+Usage: namazu [options] <query> [index ...] \n\
     -n, --max=num        set number of documents shown at once.\n\
     -w, --whence=num     set first number of documents shown in results.\n\
     -l, --list           print results by listing format.\n\

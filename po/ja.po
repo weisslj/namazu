@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: namazu 2.0\n"
-"POT-Creation-Date: 1999-09-28 22:08+0900\n"
+"POT-Creation-Date: 1999-10-14 07:40+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>\n"
 "Language-Team: Japanese <satoru-t@is.aist-nara.ac.jp>\n"
@@ -46,44 +46,49 @@ msgstr "別名:   \"%s\" -> \"%s\"\n"
 msgid "Replace: \"%s\" -> \"%s\"\n"
 msgstr "置換: \"%s\" -> \"%s\"\n"
 
-#: src/namazu.c:353
+#: src/namazu.c:273
 msgid "\t<p>No document matching your query.</p>\n"
 msgstr "\t<p>検索式にマッチする文書はありませんでした。</p>\n"
 
-#: src/output.c:185
+#: src/output.c:188
 msgid "\t<strong>Page:</strong> "
 msgstr "\t<strong>ペイジ:</strong> "
 
-#: src/output.c:219
+#: src/output.c:222
 #, c-format
 msgid "Current List: %d"
 msgstr "現在のリスト: %d"
 
-#: src/search.c:291
+#: src/output.c:354
+#, c-format
+msgid " [ TOTAL: %d ]"
+msgstr " [ 合計: %d ]"
+
+#: src/output.c:377
 msgid " (Too many words matched. Ignored.)"
 msgstr " (マッチする単語が多すぎるので無視しました)"
 
-#: src/search.c:293
+#: src/output.c:379
 msgid " (Too many pages hit. Ignored.)"
 msgstr " (ヒット数が多すぎるので無視しました)"
 
-#: src/search.c:295
+#: src/output.c:381
 msgid " (cannot open regex index)"
 msgstr " (正規表現用インデックスが開けませんでした)"
 
-#: src/search.c:727
+#: src/output.c:392
 msgid "\t<h2>Results:</h2>\n"
 msgstr "\t<h2>検索結果</h2>\n"
 
-#: src/search.c:734
+#: src/output.c:399
 msgid "References: "
 msgstr "参考ヒット数: "
 
-#: src/search.c:751
+#: src/output.c:416
 msgid "\t<p><strong> Total "
 msgstr "\t<p><strong>検索式にマッチする "
 
-#: src/search.c:758
+#: src/output.c:423
 msgid ""
 "\t documents matching your query.</strong></p>\n"
 "\n"
@@ -91,18 +96,13 @@ msgstr ""
 "\t 個の文書が見つかりました。</strong></p>\n"
 "\n"
 
-#: src/search.c:835
+#: src/search.c:708
 msgid "(You don't have a permission to access the index)"
 msgstr "（インデックスにアクセスする権利がありません）"
 
-#: src/search.c:841
+#: src/search.c:715
 msgid " (cannot open this index)\n"
 msgstr " (インデックスが開けませんでした)\n"
-
-#: src/search.c:865
-#, c-format
-msgid " [ TOTAL: %d ]"
-msgstr " [ 合計: %d ]"
 
 #: src/usage.c:44
 #, c-format
@@ -110,7 +110,7 @@ msgid ""
 "Search Program of Namazu v%s\n"
 "%s\n"
 "\n"
-"Usage: namazu [options] <query> [index(s)] \n"
+"Usage: namazu [options] <query> [index ...] \n"
 "    -n, --max=num        set number of documents shown at once.\n"
 "    -w, --whence=num     set first number of documents shown in results.\n"
 "    -l, --list           print results by listing format.\n"
@@ -159,7 +159,7 @@ msgstr ""
 "    -U, --no-encode-uri     URI encode の復元を行わない\n"
 "    -o, --output=file       指定したファイルに検索結果を出力する\n"
 "    -f, --config=file       namazu.conf を指定する\n"
-"    -C, --show-config       コンフィギュレーション内容を表示する\n"
+"    -C, --show-config       設定を表示する\n"
 "    -q, --quiet             検索結果以外のメッセージを表示しない\n"
 "    -L, --lang=lang         メッセージの言語を設定する ja または en\n"
 "    -v, --version           ヴァージョンを表示する\n"
@@ -174,7 +174,7 @@ msgid "Try `namazu --help' for more options.\n"
 msgstr "`namazu --help' でオプションの説明が表示されます\n"
 
 #. if no item available
-#: src/wakati.c:232
+#: src/wakati.c:233
 msgid ""
 "\t<h2>Error!</h2>\n"
 "<p>Invalid query.</p>\n"
@@ -182,7 +182,7 @@ msgstr ""
 "\t<h2>エラー!</h2>\n"
 "<p>検索式が不正です。</p>\n"
 
-#: src/wakati.c:238
+#: src/wakati.c:239
 msgid ""
 "\t<h2>Error!</h2>\n"
 "<p>Too many query tokens.</p>\n"

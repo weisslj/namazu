@@ -1,8 +1,8 @@
 /*
  * result.c -
- * $Id: result.c,v 1.36 2000-01-06 08:27:33 satoru Exp $
+ * $Id: result.c,v 1.37 2000-01-06 10:02:01 satoru Exp $
  * 
- * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
+ * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify

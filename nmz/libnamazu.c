@@ -2,9 +2,9 @@
  * 
  * libnamazu.c - Namazu library api
  *
- * $Id: libnamazu.c,v 1.19 2000-01-06 06:52:38 satoru Exp $
+ * $Id: libnamazu.c,v 1.20 2000-01-06 10:01:52 satoru Exp $
  * 
- * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
+ * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 

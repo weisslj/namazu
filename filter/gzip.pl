@@ -1,7 +1,7 @@
 #
 # -*- Perl -*-
-# $Id: gzip.pl,v 1.9 1999-09-01 08:41:55 knok Exp $
-# Copyright (C) 1997-1999 Satoru Takabayashi ,
+# $Id: gzip.pl,v 1.10 2000-01-06 10:01:48 satoru Exp $
+# Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #

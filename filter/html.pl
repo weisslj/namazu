@@ -1,7 +1,7 @@
 #
 # -*- Perl -*-
-# $Id: html.pl,v 1.19 1999-10-11 04:25:03 satoru Exp $
-# Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
+# $Id: html.pl,v 1.20 2000-01-06 10:01:48 satoru Exp $
+# Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify

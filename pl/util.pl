@@ -1,7 +1,7 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.6 1999-12-16 07:27:32 satoru Exp $
-# Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
+# $Id: util.pl,v 1.7 2000-01-06 10:01:56 satoru Exp $
+# Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify

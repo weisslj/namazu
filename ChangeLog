@@ -8,6 +8,11 @@
 
 2000-01-06  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* **/*.c, **/*.pl{,in}: Change copyright notice: 
+	1997-1999 -> 1997-2000
+	
+	* pl/usage.pl ($VERSION_INFO): Use $var::COPYRIGHT.
+
 	* nmz/query.c: Use static struct nmz_query query = {0}
 	instead of Query.
 

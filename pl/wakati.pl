@@ -1,7 +1,7 @@
 #
 # -*- Perl -*-
-# $Id: wakati.pl,v 1.4 1999-12-29 22:20:21 satoru Exp $
-# Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
+# $Id: wakati.pl,v 1.5 2000-01-06 10:01:56 satoru Exp $
+# Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify

@@ -2,9 +2,9 @@
  * 
  * usage.c -
  * 
- * $Id: usage.c,v 1.15 2000-01-05 10:30:51 satoru Exp $
+ * $Id: usage.c,v 1.16 2000-01-06 10:02:01 satoru Exp $
  * 
- * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
+ * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -96,7 +96,7 @@ void
 show_version(void)
 {
     printf("namazu of Namazu %s\n", VERSION);
-    printf("Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.\n\n");
+    printf("Copyright (C) 1997-2000 Satoru Takabayashi All rights reserved.\n\n");
     printf("This is free software; you can redistribute it and/or modify\n");
     printf("it under the terms of the GNU General Public License as published by\n");
     printf("the Free Software Foundation; either version 2, or (at your option)\n");

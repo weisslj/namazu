@@ -2,9 +2,9 @@
  * 
  * parser.c -
  * 
- * $Id: parser.c,v 1.12 2000-01-06 08:27:29 satoru Exp $
+ * $Id: parser.c,v 1.13 2000-01-06 10:01:52 satoru Exp $
  * 
- * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
+ * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify

@@ -1,7 +1,7 @@
 #
 # -*- Perl -*-
-# $Id: man.pl,v 1.15 2000-01-04 09:57:05 satoru Exp $
-# Copyright (C) 1997-1999 Satoru Takabayashi ,
+# $Id: man.pl,v 1.16 2000-01-06 10:01:49 satoru Exp $
+# Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #

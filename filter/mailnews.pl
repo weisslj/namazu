@@ -1,7 +1,7 @@
 #
 # -*- Perl -*-
-# $Id: mailnews.pl,v 1.18 1999-10-11 04:25:04 satoru Exp $
-# Copyright (C) 1997-1999 Satoru Takabayashi ,
+# $Id: mailnews.pl,v 1.19 2000-01-06 10:01:49 satoru Exp $
+# Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #

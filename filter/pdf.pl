@@ -1,7 +1,7 @@
 #
 # -*- Perl -*-
-# $Id: pdf.pl,v 1.12 1999-11-23 18:23:33 kenzo- Exp $
-# Copyright (C) 1997-1999 Satoru Takabayashi ,
+# $Id: pdf.pl,v 1.13 2000-01-06 10:01:49 satoru Exp $
+# Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #

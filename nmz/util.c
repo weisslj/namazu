@@ -21,7 +21,7 @@
 #include "util.h"
 #include "i18n.h"
 #include "var.h"
-#include "mode.h"
+
 
 /*
  *

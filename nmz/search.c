@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.10 1999-11-23 09:46:18 satoru Exp $
+ * $Id: search.c,v 1.11 1999-11-23 09:50:29 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -54,7 +54,7 @@
 #include "codeconv.h"
 #include "var.h"
 #include "magic.h"
-#include "mode.h"
+
 
 enum { ALLOW, DENY } perm;
 

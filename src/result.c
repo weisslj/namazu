@@ -1,6 +1,6 @@
 /*
  * result.c -
- * $Id: result.c,v 1.23 1999-11-19 09:04:25 satoru Exp $
+ * $Id: result.c,v 1.24 1999-11-23 09:50:37 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -36,7 +36,7 @@
 #include "em.h"
 #include "codeconv.h"
 #include "var.h"
-#include "mode.h"
+
 
 /*
  *

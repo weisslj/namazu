@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.28 1999-11-23 09:46:22 satoru Exp $
+ * $Id: cgi.c,v 1.29 1999-11-23 09:50:37 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -45,7 +45,7 @@
 #include "idxname.h"
 #include "magic.h"
 #include "var.h"
-#include "mode.h"
+
 
 /*
  *

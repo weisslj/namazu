@@ -17,7 +17,7 @@
 #include "i18n.h"
 #include "var.h"
 #include "magic.h"
-#include "mode.h"
+
 
 static int htmlmode    = 0;
 static int cgimode     = 0;

@@ -2,7 +2,7 @@
  * 
  * re.c -
  * 
- * $Id: re.c,v 1.15 1999-12-09 08:33:48 satoru Exp $
+ * $Id: re.c,v 1.16 1999-12-09 09:10:53 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -102,7 +102,8 @@ NmzResult regex_grep(char *orig_expr, FILE *fp, char *field, int field_mode)
             n++;
             if (n > max) {
                 free_hlist(val);
-                val.num = -1;
+                val.num = 0;
+		val.stat = ERR_TOO_MUCH_MATCH;
                 break;
             }
             if (!field_mode) {
@@ -111,7 +112,8 @@ NmzResult regex_grep(char *orig_expr, FILE *fp, char *field, int field_mode)
 		    return tmp;
                 if (tmp.num > IGNORE_HIT) {
                     free_hlist(val);
-                    val.num = -1;
+                    val.stat = ERR_TOO_MUCH_HIT;
+                    val.num = 0;
                     break;
                 }
             } else {

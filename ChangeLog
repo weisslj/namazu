@@ -1,5 +1,9 @@
 1999-12-09  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* nmz/search.c (nmz_search_sub): Renamed from search_sub().
+
+	* nmz/search.c (search_sub): Modify access permission handling.
+
 	* src/util.c: Abolish lastc();
 
 	* nmz/re.c, nmz/search.c, nmz/util.c, src/result.c: Abolish using

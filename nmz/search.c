@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.30 1999-12-09 08:33:48 satoru Exp $
+ * $Id: search.c,v 1.31 1999-12-09 09:10:53 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -89,7 +89,7 @@ static enum nmz_perm check_access ( void );
 static int open_index_files ( void );
 static void close_index_files ( void );
 static void do_logging ( char * query, int n );
-static NmzResult search_sub ( NmzResult hlist, char *query, char *query_orig, int n );
+static NmzResult nmz_search_sub ( NmzResult hlist, char *query, char *query_orig, int n );
 static void make_fullpathname_index ( int n );
 
 /* struct nmz_hitnum handling subroutines */
@@ -751,13 +751,21 @@ static void do_logging(char * query, int n)
     fclose(slog);
 }
 
-static NmzResult search_sub(NmzResult hlist, char *query, char *query_orig, int n)
+static NmzResult nmz_search_sub(NmzResult hlist, char *query, char *query_orig, int n)
 {
     cur_idxnum = n;
 
-    if (check_access() != ALLOW) {
-	/* if access denied */
+    if (check_access() != ALLOW) { /* if access denied */
 	hlist.stat = ERR_NO_PERMISSION;
+
+	/* set Idx.pr to an error state for later error messaging */
+	Idx.pr[cur_idxnum] = push_hitnum(Idx.pr[cur_idxnum], 
+					 0, ERR_NO_PERMISSION, "");
+
+	if (Idx.pr[cur_idxnum] == NULL) {
+	    hlist.stat = ERR_FATAL;
+	    return hlist;
+	}
 	return hlist;
     }
 
@@ -900,15 +908,14 @@ NmzResult nmz_search(char *query)
 
     for (i = 0; i < Idx.num; i++) {
         make_fullpathname_index(i);
-        tmp[i] = search_sub(tmp[i], query, query_orig, i);
+        tmp[i] = nmz_search_sub(tmp[i], query, query_orig, i);
 
 	if (tmp[i].stat == ERR_FATAL) {
 	    hlist.data = NULL;
 	    hlist.stat = ERR_FATAL;
-	    return hlist; /* need freeing memory? */
+	    return hlist; /* FIXME: need freeing memory? */
 	}
     }
-
 
     hlist = merge_hlist(tmp);
 

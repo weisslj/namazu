@@ -1,5 +1,7 @@
 2000-02-29  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* TODO: Add some TODOs.
+
 	* tests/Makefile.am (clean-local): Fix bug. Don't remove
 	idxdiff-*. 
 

@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.45 2000-01-07 01:21:56 satoru Exp $
+ * $Id: search.c,v 1.46 2000-01-07 01:37:47 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -847,6 +847,27 @@ void remove_quotes(char *str)
 }
 
 /*
+ * Normalize index names. Expand aliases and complete abbreviated names.
+ */
+static void 
+normalize_idxnames(void)
+{
+    if (expand_idxname_aliases() != SUCCESS)
+        nmz_die("normalize_idxnames");
+    if (complete_idxnames() != SUCCESS)
+        nmz_die("normalize_idxnames");
+
+    uniq_idxnames();
+
+    if (is_debugmode()) {
+	int i;
+        for (i = 0; i < get_idxnum(); i++) {
+            nmz_debug_printf("Index name [%d]: %s\n", i, get_idxname(i));
+        }
+    }
+}
+
+/*
  *
  * Public functions
  *
@@ -921,6 +942,8 @@ nmz_search(const char *query)
 {
     NmzResult hlist, tmp[INDEX_MAX];
     int i, ret;
+
+    normalize_idxnames();
 
     ret = make_query(query);
     if (ret != SUCCESS) {

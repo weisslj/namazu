@@ -1,5 +1,12 @@
 2000-01-07  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/namazu.c (main): Do not call expand_idxname_aliases(),
+	complete_idxnames() and uniq_idxnames(). They are called in
+	normalize_idxnames(). 
+
+	* nmz/search.c (normalize_idxnames): New function.
+	(nmz_search): Use normalize_idxnames().
+
 	* nmz/field.c (get_field_name): Change interface. All callers
 	changed. 
 

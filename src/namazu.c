@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.74 2000-01-06 10:02:01 satoru Exp $
+ * $Id: namazu.c,v 1.75 2000-01-07 01:37:50 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -401,18 +401,6 @@ main(int argc, char **argv)
     }
     if (is_cgimode()) {
 	init_cgi(query, subquery);
-    }
-
-    uniq_idxnames();
-    if (expand_idxname_aliases() != SUCCESS)
-        nmz_die("main");
-    if (complete_idxnames() != SUCCESS)
-        nmz_die("main");
-
-    if (is_debugmode()) {
-        for (i = 0; i < get_idxnum(); i++) {
-            nmz_debug_printf("Index name [%d]: %s\n", i, get_idxname(i));
-        }
     }
 
     if (is_cgimode()) {

@@ -1,7 +1,7 @@
 #
 # -*- Perl -*-
-# $Id: rpm.pl,v 1.11 2004-03-06 08:44:46 usu Exp $
-# Copyright (C) 2000 Namazu Project All rights reserved ,
+# $Id: rpm.pl,v 1.12 2004-03-22 12:31:58 opengl2772 Exp $
+# Copyright (C) 2000,2004 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -74,6 +74,7 @@ sub filter ($$$$$) {
     {   
         my $fh = util::efopen("> $tmpfile");
         print $fh $$cont;
+        util::fclose($fh);
     }
 
     {
@@ -82,14 +83,20 @@ sub filter ($$$$$) {
 	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
 	my $size = util::filesize($fh_out);
 	if ($size == 0) {
+            util::fclose($fh_out);
+            util::fclose($fh_err);
             unlink $tmpfile;
 	    return "Unable to convert file ($rpmpath error occurred).";
 	}
 	if ($size > $conf::TEXT_SIZE_MAX) {
+            util::fclose($fh_out);
+            util::fclose($fh_err);
             unlink $tmpfile;
 	    return 'Too large rpm file.';
 	}
 	$$cont = util::readfile($fh_out);
+        util::fclose($fh_out);
+        util::fclose($fh_err);
     }
     unlink $tmpfile;
 

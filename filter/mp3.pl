@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mp3.pl,v 1.3 2004-03-20 03:10:08 usu Exp $
+# $Id: mp3.pl,v 1.4 2004-03-22 12:31:58 opengl2772 Exp $
 # Copyright (C) 2002 Luc@2113.ch ,
 #               2002 2113.ch ,  
 #               2003-2004 Namazu Project All rights reserved ,
@@ -73,6 +73,7 @@ sub filter($$$$$) {
     {
         my $fh = util::efopen("> $tmpfile");
         print $fh $$contref;
+        util::fclose($fh);
     }
     $mp3 = $tmpfile;
 

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: koffice.pl,v 1.5 2004-03-22 06:22:09 opengl2772 Exp $
+# $Id: koffice.pl,v 1.6 2004-03-22 12:31:58 opengl2772 Exp $
 # Copyright (C) 2004 Yukio USUDA 
 #               2004 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -235,6 +235,7 @@ sub utoe($) {
         {
             my $fh = util::efopen("> $tmpfile");
             print $fh $$tmp;
+            util::fclose($fh);
         }
         my $cmd = ($utfconvpath . " -Iu8 " . "-Oej " . $tmpfile . " |");
         $$tmp = "";
@@ -242,6 +243,7 @@ sub utoe($) {
         while (defined(my $line = <$fh>)){
             $$tmp .= $line;
         }
+        util::fclose($fh);
         unlink $tmpfile;
     }
 }

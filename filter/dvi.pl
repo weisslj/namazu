@@ -1,7 +1,7 @@
 #
 # -*- Perl -*-
-# $Id: dvi.pl,v 1.6 2003-09-06 08:30:33 usu Exp $
-# Copyright (C) 2000 Namazu Project All rights reserved ,
+# $Id: dvi.pl,v 1.7 2004-03-22 12:31:58 opengl2772 Exp $
+# Copyright (C) 2000,2004 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -92,6 +92,7 @@ sub filter ($$$$$) {
 	# note that dvi2tty need suffix .dvi
 	my $fh = util::efopen("> $tmpfile.dvi");
 	print $fh $$cont;
+        util::fclose($fh);
     }
     {
 	my @cmd = (@env, $dviconvpath, @dviconvopts, "$tmpfile.dvi");
@@ -99,12 +100,18 @@ sub filter ($$$$$) {
 	my $size = util::filesize($fh_out);
         unlink("$tmpfile.dvi");
 	if ($size == 0) {
+            util::fclose($fh_out);
+            util::fclose($fh_err);
 	    return "Unable to convert file ($dviconvpath error occurred)";
 	}
 	if ($size > $conf::TEXT_SIZE_MAX) {
+            util::fclose($fh_out);
+            util::fclose($fh_err);
 	    return 'Too large dvi file';
 	} 
 	$$cont = util::readfile($fh_out);
+        util::fclose($fh_out);
+        util::fclose($fh_err);
     }
     #unlink("$tmpfile.dvi");
 

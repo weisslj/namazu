@@ -1,7 +1,7 @@
 #
 # -*- Perl -*-
-# $Id: deb.pl,v 1.8 2004-02-22 10:59:00 opengl2772 Exp $
-# Copyright (C) 2000 Namazu Project All rights reserved ,
+# $Id: deb.pl,v 1.9 2004-03-22 12:31:58 opengl2772 Exp $
+# Copyright (C) 2000,2004 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -73,6 +73,7 @@ sub filter ($$$$$) {
     {	
 	my $fh = util::efopen("> $tmpfile");
 	print $fh $$cont;
+        util::fclose($fh);
     }
     {
 	my @env = ($envpath, "LC_ALL=$util::LANG", "LANGUAGE=$util::LANG");
@@ -80,14 +81,20 @@ sub filter ($$$$$) {
 	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
 	my $size = util::filesize($fh_out);
 	if ($size == 0) {
+            util::fclose($fh_out);
+            util::fclose($fh_err);
             unlink $tmpfile;
 	    return "Unable to convert file ($dpkgpath error occurred)";
 	}
 	if ($size > $conf::TEXT_SIZE_MAX) {
+            util::fclose($fh_out);
+            util::fclose($fh_err);
             unlink $tmpfile;
 	    return 'Too large deb file';
 	}
 	$$cont = util::readfile($fh_out);
+        util::fclose($fh_out);
+        util::fclose($fh_err);
     }
     unlink $tmpfile;
 

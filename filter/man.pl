@@ -1,8 +1,9 @@
 #
 # -*- Perl -*-
-# $Id: man.pl,v 1.29 2004-02-22 10:59:00 opengl2772 Exp $
+# $Id: man.pl,v 1.30 2004-03-22 12:31:58 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
+#               2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -56,6 +57,8 @@ sub status() {
 	} else {
 	    @roffopts = ('-man', '-Wall', '-Tascii');
 	}
+        util::fclose($fh_out);
+        util::fclose($fh_err);
     } elsif ($roffpath =~ /\bj?groff$/) {
 	@roffopts = ('-man', '-Tascii');
     } elsif ($roffpath =~ /nroff$/) {
@@ -98,20 +101,27 @@ sub filter ($$$$$) {
 	print $fh ".ll 100i\n";
 
 	print $fh $$cont;
+        util::fclose($fh);
     }
     {
 	my @cmd = (@env, $roffpath, @roffopts, $tmpfile);
 	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
         my $size = util::filesize($fh_out);
 	if ($size == 0) {
+            util::fclose($fh_out);
+            util::fclose($fh_err);
             unlink $tmpfile;
 	    return "Unable to convert file ($roffpath error occurred)";
 	}
 	if ($size > $conf::TEXT_SIZE_MAX) {
+            util::fclose($fh_out);
+            util::fclose($fh_err);
             unlink $tmpfile;
 	    return 'Too large man file';
 	}
 	$$cont = util::readfile($fh_out);
+        util::fclose($fh_out);
+        util::fclose($fh_err);
     }
     unlink $tmpfile;
 
@@ -131,6 +141,9 @@ sub filter ($$$$$) {
 sub man_filter ($$$) {
     my ($contref, $weighted_str, $fields) = @_;
     my $name = "";
+
+    # remove escape sequence
+    $$contref =~ s/\x1b\[[01]m//gs;
 
     # processing like col -b (2byte character acceptable)
     $$contref =~ s/_\x08//g;

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: ooo.pl,v 1.10 2004-03-22 06:22:09 opengl2772 Exp $
+# $Id: ooo.pl,v 1.11 2004-03-22 12:31:58 opengl2772 Exp $
 # Copyright (C) 2003 Yukio USUDA 
 #               2003,2004 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -220,6 +220,7 @@ sub utoe ($) {
 	{
 	    my $fh = util::efopen("> $tmpfile");
 	    print $fh $$tmp;
+            util::fclose($fh);
 	}
         my $cmd = ($utfconvpath . " -Iu8 " . "-Oej " . $tmpfile . " |");
         $$tmp = "";
@@ -227,6 +228,7 @@ sub utoe ($) {
         while (defined(my $line = <$fh>)){
             $$tmp .= $line;
         }
+        util::fclose($fh);
         unlink $tmpfile;
     }elsif ($perlver >= 5.008){
         eval 'use Encode qw/from_to Unicode JP/;';

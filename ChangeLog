@@ -1,16 +1,34 @@
+<<<<<<< ChangeLog
+
+			       ChangeLog for Namazu
+
+	This file describes Namazu's change history. If you want to know
+	about major changes from previous version, please see 
+	"manual.html#VERSIONDIFF".
+
+1999-08-25 NOKUBI Takatsugu <knok@daionet.gr.jp>
+
+	* ChangeLog: merge conflicted parts.
+
+1999-08-24 NOKUBI Takatsugu <knok@daionet.gr.jp>
+
+	* lib/conf.pl.in, lib/filter.pl, lib/util.pl, src/mknmz.pl.in:
+	  merge with knok-filter-1.
+
 1999-08-23  Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>
 
-	* src/namazu.c: Implement a suicide code.  * src/mknmz.pl.in:
-	Implement a signal handler for SIGINT.
-
+	* src/namazu.c: Implement a suicide code.
 	* src/mknmz.pl.in: Implement a signal handler for SIGINT (mknmz)
-
 	* src/{hlist.c,result.l,output.c}, lib/NMZ.result: Implement a
 	keyword emphasizing in HTML mode. (rough implementation)
 
 	* src/form.c: Modified not to display ugly '<>' in a title of
 	  HTML.
 
+1999-08-23 NOKUBI Takatsugu <knok@daionet.gr.jp>
+
+	* Makefile.am, configure.in: merge with knok-filter-1.
+	* lib/util.pl: merge and add tnpnam function.
 
 1999-08-13  Satoru Takabayashi <satoru-t@is.aist-nara.ac.jp>
 

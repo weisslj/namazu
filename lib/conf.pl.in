@@ -1,5 +1,5 @@
 # -*- Perl -*-
-# $Id: conf.pl.in,v 1.6 1999-06-12 14:29:26 satoru Exp $
+# $Id: conf.pl.in,v 1.7 1999-08-25 00:40:17 knok Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -147,15 +147,15 @@ $CHASEN_MORPH = "@CHASEN@ -j -F '\%m %H\\n'";
 $WAKATI  = $@OPT_WAKATI_DEFAULT@;
 
 ## Table of helper programs and extentions
-%HELPER_PROGRAMS = (
-    'gz'  => '@OPT_HELPER_ZCAT@',
-    'Z'   => '@OPT_HELPER_ZCAT@',
-    'man' => '@OPT_HELPER_MAN@',
-);
+#%HELPER_PROGRAMS = (
+#    'gz'  => '@OPT_HELPER_ZCAT@',
+#    'Z'   => '@OPT_HELPER_ZCAT@',
+#    'man' => '@OPT_HELPER_MAN@',
+#);
 
 ## Make regex of extensions
-$HELPER_EXTENSIONS = 
-    join('|', sort {length($b) <=> length($a)} keys %HELPER_PROGRAMS);
+#$HELPER_EXTENSIONS = 
+#    join('|', sort {length($b) <=> length($a)} keys %HELPER_PROGRAMS);
 
 ##
 ## Default values
@@ -359,6 +359,7 @@ $USE_NKF_MODULE   = 0;
 $NoPhraseIndexOpt = 0;
 $DebugOpt         = 0;
 $QuietOpt         = 0;
+$VerboseOpt       = 0;
 $RobotExcludeOpt  = 0;
 $NoFieldInfoOpt   = 0;
 $NoDateIndexOpt   = 0;
@@ -380,5 +381,27 @@ $NoUpdateProcessing = 0;
 $HtaccessExcludeOpt = 0;
 
 %CheckPoint = ("on" => undef, "continue" => undef, "pid" => $$, "fid" => 0);
+
+#
+
+%REQUIRE_ACTIONS = (
+		    'text/x-roff' => 'man',
+		    'text/plain; x-type=rfc' => 'rfc',
+		    'text/html' => 'html',
+		    'text/html; x-type=mhonarc' => 'mhonarc',
+		    'message/rfc822' => 'mailnews',
+		    'message/news' => 'mailnews',
+		    'application/pdf' => 'pdf',
+		    'application/msword' => 'msword',
+		    'application/x-gzip' => 'gzip',
+		    'application/x-bzip2' => 'bzip2',
+		    'application/x-compress' => 'compress',
+);
+
+%RECURSIVE_ACTIONS = (
+		      'application/x-gzip' => 1,
+		      'application/x-bzip2' => 1,
+		      'application/x-compress' => 1,
+);
 
 1;

@@ -55,10 +55,14 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
+BZIP2 = @BZIP2@
+BZIP2_PATH = @BZIP2_PATH@
 CC = @CC@
 CHASEN = @CHASEN@
 EXEEXT = @EXEEXT@
 GROFF = @GROFF@
+GZIP = @GZIP@
+GZIP_PATH = @GZIP_PATH@
 KAKASI = @KAKASI@
 LEX = @LEX@
 LN_S = @LN_S@
@@ -386,6 +390,11 @@ dist-hook:
 	  rm -rf $(distdir)/$$subdir/CVS; \
 	done
 	rm -f $(distdir)/lib/conf.pl
+	rm -f $(distdir)/lib/gzip.pl
+	rm -f $(distdir)/lib/compress.pl
+	rm -f $(distdir)/lib/man.pl
+	rm -f $(distdir)/lib/rfc.pl
+	rm -f $(distdir)/lib/bzip2.pl
 
 rpm:
 	# put Namazu's tar-ball to a correct directory before do this

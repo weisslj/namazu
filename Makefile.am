@@ -22,6 +22,13 @@ dist-hook:
 	  rm -rf $(distdir)/$$subdir/CVS; \
 	done
 	rm -f $(distdir)/lib/conf.pl
+	rm -f $(distdir)/filter/gzip.pl
+	rm -f $(distdir)/filter/compress.pl
+	rm -f $(distdir)/filter/man.pl
+	rm -f $(distdir)/filter/rfc.pl
+	rm -f $(distdir)/filter/bzip2.pl
+	rm -f $(distdir)/filter/pdf.pl
+	rm -f $(distdir)/filter/msword.pl
 
 rpm:
 	# put Namazu's tar-ball to a correct directory before do this

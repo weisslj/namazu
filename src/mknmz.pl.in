@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- CPerl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.19 1999-08-23 03:06:27 satoru Exp $
+# $Id: mknmz.pl.in,v 1.20 1999-08-25 00:40:19 knok Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -29,6 +29,7 @@ require 5.004;
 use Cwd;
 use IO::File;
 use Time::Local;
+use File::MMagic;
 use strict;  # be strict since v1.2.0
 use Getopt::Long;
 
@@ -107,7 +108,7 @@ sub main () {
 	    $file_count++;
 	    if ($processed_files_size > $conf::ON_MEMORY_MAX) {
 		if (%KeyIndex) {
-		    $key_count = write_index();
+	    $key_count = write_index();
 		    write_phrase_hash()
 			unless $conf::NoPhraseIndexOpt;
 		}
@@ -205,11 +206,13 @@ sub namazu_core ($$$) {
     my $weighted_str = "";
     my %fields;
 
-    my $uri = uri_decchiagator($cfile);  # Make a URI from a file name
-    my ($cfile_size, $ctrl, $kanji) = load_document(\$cfile, \$content);
+    my $url = url_decchiagator($cfile);  # Make a URL from a file name
+    my ($cfile_size, $ctrl, $kanji, $mtype) = 
+      load_document(\$cfile, \$title, \$contents, \$weighted_str,
+		     \$headings, \%fields);
 
     # Do checking
-    my $err = check_file($cfile, \$content, $ctrl, $cfile_size);
+    my $err = check_file($cfile, \$contents, $ctrl, $cfile_size, $mtype);
     if ($err) {
 	print $file_count + $file_base . " $uri $err\n" unless $conf::QuietOpt;
 	print $fh_errorsfile "$cfile $err\n"; 
@@ -231,13 +234,14 @@ sub namazu_core ($$$) {
 	    return 0;  # return with 0 if error
 	}
     }
-    # Output processing file name as URI
-    print $file_count + $file_base . " $uri\n" unless $conf::QuietOpt;
+    # Output processing file name as URL
+    print $file_count + $file_segment . " $url".($conf::VerboseOpt ? ":$mtype" : '') ."\n" unless $conf::QuietOpt;
 
-    filter::document_filter($cfile, \$content, \$weighted_str,
-		     \$headings, \%fields);
-    make_field_index(\%fields, $cfile, $uri, \$headings, \$content);
-    put_field_index(\%fields, $field_indices) unless $conf::NoFieldIndexOpt;
+    make_field_info(\%fields, $cfile, $title, $url);
+
+    put_file_info($url, $title, $cfile_size, \$contents,
+		  \$headings, $cfile, \%fields, $fh_finfo);
+    put_field_info(\%fields) unless $conf::NoFieldInfoOpt;
 
     put_dateindex($cfile) unless $conf::NoDateIndexOpt;
     $content .= $weighted_str;   # add weight info
@@ -407,14 +411,16 @@ sub put_dateindex ($) {
 
 
 # load a document file
-sub load_document ($$) {
-    my ($orig_cfile, $content) = @_;
+sub load_document ($$$$$\%) {
+    my ($orig_cfile, $title, $contents, $weighted_str, $headings, $fields)
+      = @_;
     my $cfile = $$orig_cfile;
 
     return (0, 0, 0) unless (-f $cfile && -r $cfile);
     my $zipped = 0;
-    my $size   = -s $cfile;
-    return ($size, 0, 0) if $size > $conf::FILE_SIZE_LIMIT;
+    my $size   = -s $cfile; # 非ファイルでも処理できるよう変更する必要あり
+    my $sizeref = \$size;
+    return ($size, 0, 0, 'x-system/x-error') if $size > $conf::FILE_SIZE_LIMIT;
 
     # for handling a file which contains Shift_JIS code
     my $shelter_cfile = "";
@@ -426,44 +432,43 @@ sub load_document ($$) {
         util::cp($shelter_cfile,$cfile);
     }
 
-    my $filter = "";    
-    while ($cfile =~ /^.*\.($conf::HELPER_EXTENSIONS)$/o) {
-	my $ext = $1;
-	if ($filter eq "") {
-	    $filter = "$conf::HELPER_PROGRAMS{$ext} \"$cfile\" |";
-	} else {
-	    $filter .= "$conf::HELPER_PROGRAMS{$ext} |";
+    # filtering process
+    my $fh_cfile = util::fopen_or_die($cfile);
+    $$contents = join('', <$fh_cfile>);
+    my $mm = new File::MMagic;
+    my $mtype;
+    while (1) {
+	my $mtype_n = $mm->checktype_byfilename($cfile);
+	my $mtype_c = $mm->checktype_contents($$contents);
+	$mtype = decide_type($mtype_n, $mtype_c);
+	if (defined $conf::REQUIRE_ACTIONS{$mtype}) {
+	    print "Using $conf::REQUIRE_ACTIONS{$mtype}.pl\n"
+	      if ($conf::VerboseOpt);
+	    require $conf::REQUIRE_ACTIONS{$mtype}.'.pl';
+	    eval $conf::REQUIRE_ACTIONS{$mtype} .
+	      '::filter($orig_cfile, $title ,$contents, $weighted_str, $headings, $fields, $sizeref);';
+	    if ($@) {
+		print STDERR "Faild to call $conf::REQUIRE_ACTIONS{$mtype}\n$@\n";
+		$mtype = "x-system/x-error; failed to call $conf::REQUIRE_ACTIONS{$mtype}";
+		last;
+	    }
+	    $zipped = 1, next if (defined $conf::RECURSIVE_ACTIONS{$mtype});
 	}
-	# if .gz or .Z, suppress the extention and continue
-	if ($ext =~ /^(gz|Z)$/) {
-	    $zipped = 1;
-	    $cfile =~ s/\.$ext$//;
-	} else {
-	    last;
-	}
-    } 
-    if ($conf::LANGUAGE eq "ja" && ! $conf::USE_NKF_MODULE) {
-	if ($filter eq "") {
-	    $filter = "$conf::NKF -emXZ1 \"$cfile\" |";
-	} else {
-	    $filter .= "$conf::NKF -emXZ1 |";
-	}
-    } else {
-	if ($filter eq "") {
-	    $filter = "$cfile";
-	}
-    }
-    if ($conf::ManOpt) { # man mode
-	if ($filter =~ /\|$/) {
-	    $filter .= "$conf::HELPER_PROGRAMS{'man'} |";
-	} else {
-	    $filter  = "$conf::HELPER_PROGRAMS{'man'}" . $filter . "|";
-	}
+	last;
     }
 
-    my $fh_cfile = util::fopen_or_die($filter);
-    $$content = join("", <$fh_cfile>);
-    $$content = NKF::nkf("-emXZ1", $$content) if $conf::USE_NKF_MODULE;
+    if ($conf::LANGUAGE eq "ja" && ! $conf::USE_NKF_MODULE) {
+	my $nkftmp = 'NMZ.nkftmp';
+	my $nh = util::fopen_or_die("|$conf::NKF -emXZ1 > $nkftmp");
+	print $nh $$contents;
+	undef $nh;
+	$nh = util::fopen_or_die("< $nkftmp");
+	$$contents = util::readfile($nh);
+	undef $nh;
+	unlink($nkftmp);
+    } else {
+	$$contents = NKF::nkf("-emXZ1", $$contents);
+    }
 
     if ($SYSTEM eq "MSWin32" && $shelter_cfile ne "") {
 	unlink $cfile;
@@ -472,24 +477,20 @@ sub load_document ($$) {
 
     # if a zipped file, the size has been changed
     if ($zipped) {
-	$size = length($$content);
-	return ($size, 0, 0) if $size > $conf::FILE_SIZE_LIMIT;
+	return ($size, 0, 0, 'x-system/x-error;')
+	  if $size > $conf::FILE_SIZE_LIMIT;
     }
 
-    if ($conf::ManOpt) { # processing like col -b (2byte character acceptable)
-	$$content =~ s/_\x08//g;
-	$$content =~ s/\x08{1,2}([\x20-\x7e]|[\xa1-\xfe]{2})//g;
-    }
+    $$contents =~ s/[ \t]+/ /g;   # remain LFs v1.03
+    $$contents =~ s/\r\n/\n/g;    # remain LFs is for ChaSen
+    $$contents =~ s/\r/\n/g;      # CR+LF or CR are into LF
 
-    $$content =~ s/[ \t]+/ /g;   # remain LFs v1.03
-    $$content =~ s/\r\n/\n/g;    # remain LFs is for ChaSen
-    $$content =~ s/\r/\n/g;      # CR+LF or CR are into LF
 
     # Control characters be into space
-    my $ctrl = $$content =~ tr/\x00-\x09\x0b-\x1f\x7f\xff/    /;
-    my $kanji = $$content =~ tr/\xa1-\xfe/\xa1-\xfe/;  # Kanji contained?
+    my $ctrl = $$contents =~ tr/\x00-\x09\x0b-\x1f\x7f\xff/    /;
+    my $kanji = $$contents =~ tr/\xa1-\xfe/\xa1-\xfe/;  # Kanji contained?
 
-    return ($size, $ctrl, $kanji);
+    return ($size, $ctrl, $kanji, $mtype);
 }
 
 # 準備
@@ -749,6 +750,70 @@ sub parse_options ()
     if (@ARGV == 0 && !$target_loaded && $output_dir eq "") {
 	show_usage();
 	exit 1;
+    while (defined($argv[0]) && $argv[0] =~ /^-/) {
+	$conf::TARGET_FILE = ".*" if $argv[0] =~ /a/;
+	$conf::WAKATI = $conf::KAKASI, $conf::MorphOpt = 0 if $argv[0] =~ /k/;
+	$conf::WAKATI = $conf::CHASEN, $conf::MorphOpt = 0 if $argv[0] =~ /c/;
+	$conf::WAKATI = $conf::CHASEN_MORPH, $conf::MorphOpt = 1 if $argv[0] =~ /m/;
+	$conf::UuencodeOpt = 1 if $argv[0] =~ /u/;
+	$conf::MailNewsOpt = 1 if $argv[0] =~ /h/;
+	if ($argv[0] =~ /r/) {
+	    $conf::ManOpt      = 1;
+	    $conf::TARGET_FILE = '.*\.\d.*';
+	}
+	$conf::HiraganaOpt = 1 if $argv[0] =~ /H/;
+	$conf::OkuriganaOpt = 1 if $argv[0] =~ /G/;
+	$conf::NoEdgeSymbolOpt = 1 if $argv[0] =~ /E/;
+	$conf::NoSymbolOpt = 1 if $argv[0] =~ /K/;
+	$conf::NoLineAdOpt = 1 if $argv[0] =~ /L/;
+	$conf::NoMHonArcOpt  = 1 if $argv[0] =~ /M/;
+	$conf::NoEncodeURL  = 1 if $argv[0] =~ /U/;
+	$conf::DebugOpt    = 1 if $argv[0] =~ /d/;
+	$conf::NoHeadAbstOpt  = 1 if $argv[0] =~ /x/;
+	$conf::RobotExcludeOpt = 1 if $argv[0] =~ /e/;
+	$conf::QuietOpt = 1 if $argv[0] =~ /q/;
+	$conf::VerboseOpt = 1 if $argv[0] =~ /v/;
+	$conf::NoPhraseIndexOpt  = 1 if $argv[0] =~ /P/;
+	$conf::NoRegexpIndexOpt  = 1 if $argv[0] =~ /R/;
+	$conf::NoInsertHeaderOpt  = 1 if $argv[0] =~ /D/;
+	$conf::NoDateIndexOpt = 1 if $argv[0] =~ /W/;
+	$conf::NoFieldInfoOpt = 1 if $argv[0] =~ /X/;
+	$conf::NoDeleteProcessing = 1 if $argv[0] =~ /Y/;
+	$conf::NoUpdateProcessing = 1 if $argv[0] =~ /Z/;
+ 	$conf::HtaccessExcludeOpt = 1 if $argv[0] =~ /A/;
+ 	$CheckPoint{'on'} = 1 if $argv[0] =~ /s/;
+ 	if ($argv[0] =~ /O$/) {
+ 	    shift @argv;
+	    $output_dir = $argv[0];
+	    $output_dir =~ s|/*$||;
+ 	    print "Index output directory: $argv[0]\n" unless $conf::QuietOpt;
+ 	} elsif ($argv[0] =~ /T$/) {
+ 	    shift @argv;
+	    $LIBDIR = $argv[0];
+	    $LIBDIR =~ s|/*$||;
+ 	} elsif ($argv[0] =~ /I$/) {
+	    shift @argv;
+	    eval util::include($argv[0]);
+	    print "Included: $argv[0]\n" unless $conf::QuietOpt;
+	} elsif ($argv[0] =~ /l$/) { # small letter of 'L'
+	    shift @argv;
+	    $conf::LANGUAGE = $argv[0];
+	} elsif ($argv[0] =~ /F$/) {
+	    shift @argv;
+	    @flist = load_target_list($argv[0]);
+	    print "Loaded: $argv[0]\n" unless $conf::QuietOpt;
+	    $target_loaded = 1;
+	    $target_dir = cwd();
+	} elsif ($argv[0] =~ /t$/) {
+	    shift @argv;
+	    print "TARGET: $argv[0]\n" unless $conf::QuietOpt;
+	    $conf::TARGET_FILE = $argv[0];
+	} elsif ($argv[0] =~ /S$/) {  # for checkpoint mechanism
+	    $CheckPoint{'on'}           = 1;
+	    $CheckPoint{'continue'}     = 1;
+	    shift @ARGV;  # remove -S
+	}
+	shift @argv;
     }
 
     unless (!$target_loaded || @flist) { # if @flist is empty
@@ -833,18 +898,22 @@ sub show_usage () {
 }
 
 # check the file -- 0: OK / 1: NG
-sub check_file ($$$$) {
-    my ($cfile, $content, $ctrl, $size) = @_;
+sub check_file ($$$$$) {
+    my ($cfile, $contents, $ctrl, $size, $mtype) = @_;
 
     # コントロール文字が全体の 3 % よりも多ければバイナリファイル
     # とみなし、スキップする (-B は問題があるので使わない)
     my $msg = "";
     if ($size == 0) {
 	$msg = "is 0 size! skipped.";
-    } elsif (int ($ctrl / $size * 100) > 3) {
-	$msg = "may be a BINARY file! skipped."
+#    } elsif (int ($ctrl / $size * 100) > 3) {
+#	$msg = "may be a BINARY file! skipped.";
+    } elsif ($mtype =~ /^application\/octet-stream/) {
+	$msg = "may be a BINARY file! skipped.";
     } elsif ($size > $conf::FILE_SIZE_LIMIT) {
 	$msg = "is too LARGE file! skipped.";
+    } elsif ($mtype =~ /^x-system/) {
+	$msg = "system error occurred! ($mtype) skipped.";
     } elsif (!$conf::NoMHonArcOpt && $cfile !~ /($conf::MHONARC_MESSAGE_FILE)$/o 
 	     && $$content =~ /^$conf::MHONARC_HEADER/o) {
 	$msg = "is MHonArc's index file! skipped.";
@@ -1745,19 +1814,52 @@ sub write_index_sub () {
     return $key_count;
 }
 
+# make a FINFOINDEX file
+sub make_finfo_index () {
+    my $fh_finfo = util::fopen_or_die("$conf::File{'FINFO_'}");
+
+    my $fh_finfoindex = util::fopen_or_die(">$conf::File{'FINFOINDEX_'}");
+
+    my $ptr = 0;
+    my $f = 1;
+
+    while (<$fh_finfo>) {
+	print $fh_finfoindex pack("N", $ptr) if $f;
+	if (/^\n$/) { 
+	    $f = 1;
+	} else {
+	    $f = 0;
+	}
+	$ptr += length;
+    }
+}
+
+# decide file type from diffrent type ditection
+
+sub decide_type ($$) {
+    my ($name, $cont) = @_;
+    return $name if ($name eq $cont);
+
+    if ($cont =~ /^text/ && $name =~ /.*;.*x-type=(rfc|internet-draft|fyi)/) {
+	return $name;
+    }
+
+    return $cont;
+}
+
 # for avoiding "used only once: possible typo at ..." warnings
 
-muda($conf::File{'BODY_MSG_EN'}, $conf::HELPER_EXTENSIONS,
+muda($conf::File{'BODY_MSG_EN'},
      $conf::SEARCH_FIELD, $conf::ON_MEMORY_MAX,
      $conf::File{'BODY_MSG_JA'}, $conf::WORD_LENG_MAX,
      $conf::MHONARC_MESSAGE_FILE, $conf::DENY_REGEX, $conf::INTSIZE,
      $conf::MailNewsOpt, $conf::NoLineAdOpt, $conf::CHASEN_MORPH,
      $conf::UuencodeOpt, $conf::MHONARC_HEADER, $conf::CHASEN,
-     $conf::KAKASI, $conf::OkuriganaOpt, $TARGET_DIR,
-     $conf::HiraganaOpt, $conf::ROBOTS_EXCLUDE_URIS, $conf::DEFAULT_FILE,
+     $conf::KAKASI, $conf::OkuriganaOpt, $TARGET_DIR, $conf::ManOpt,
+     $conf::HiraganaOpt, $conf::ROBOTS_EXCLUDE_URLS, $conf::DEFAULT_FILE,
      $conf::HTML_SUFFIX, $conf::USAGE_EN, $conf::NoHeadAbstOpt,
-     $conf::DebugOpt, $conf::NoEncodeURI,
-     $conf::HtaccessExcludeOpt, $conf::URI_PREFIX);
+     $conf::SUMMARY_HEADER, $conf::DebugOpt, $conf::NoEncodeURL,
+     $conf::HtaccessExcludeOpt, $conf::URL_PREFIX, $conf::RECURSIVE_ACTIONS);
 
 sub muda(@) {}
 

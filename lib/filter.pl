@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: filter.pl,v 1.3 1999-06-12 14:29:26 satoru Exp $
+# $Id: filter.pl,v 1.4 1999-08-25 00:40:17 knok Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -26,46 +26,11 @@ package filter;
 use strict;
 require "html.pl";
 
-# Filters
-sub document_filter ($$$$$\%) {
-    my ($orig_cfile, $content, $weighted_str, $headings, $fields)
-	= @_;
-
-    my $cfile = $orig_cfile;
-    my $mhonarc_opt = 0;
-
-    $cfile =~ s/\.(gz|Z)$//;  # zipped file
-    analize_rcs_stamp();
-    $mhonarc_opt = 1 if 
-	(!$conf::NoMHonArcOpt && $$content =~/^$conf::MHONARC_HEADER/);
-    if (html::is_html($cfile)) {
-	mhonarc_filter($content, $weighted_str) 
-	    if $mhonarc_opt;
-	html_filter($content, $weighted_str, $fields, $headings);
-    } elsif ($cfile =~ /rfc\d+\.txt/i ) {
-	rfc_filter($content, $weighted_str, $fields);
-    } elsif ($conf::ManOpt) {
-	man_filter($content, $weighted_str, $fields);
-    }
-    uuencode_filter($content) if $conf::UuencodeOpt;
-    if ($mhonarc_opt  || $conf::MailNewsOpt) {
-	mailnews_filter($content, $weighted_str, $fields);
-	mailnews_citation_filter($content, $weighted_str);
-    }
-    line_adjust_filter($content) unless $conf::NoLineAdOpt;
-    line_adjust_filter($weighted_str) unless $conf::NoLineAdOpt;
-    white_space_adjust_filter($content);
-    $fields->{'title'} =  filename_to_title($cfile, $weighted_str) 
-	unless $fields->{'title'};
-    show_filter_debug_info($content, $weighted_str,
-			   $fields, $headings);
-}
-
 # Show debug information for filters
-sub show_filter_debug_info ($$$) {
-    my ($content, $weighted_str, $fields, $headings) = @_;
-    util::dprint("-- title --\n$fields->{'title'}\n");
-    util::dprint("-- content --\n$$content\n");
+sub show_filter_debug_info ($$$$$) {
+    my ($contents, $weighted_str, $title, $fields, $headings) = @_;
+    util::dprint("-- title --\n$$title\n");
+    util::dprint("-- content --\n$$contents\n");
     util::dprint("-- weighted_str: --\n$$weighted_str\n");
     util::dprint("-- headings --\n$$headings\n");
 }
@@ -80,8 +45,8 @@ sub white_space_adjust_filter ($) {
 }
 
 # ファイル名からタイトルを取得 (単なるテキストファイルの場合)
-sub filename_to_title ($\$\$) {
-    my ($cfile, $weighted_str) = @_;
+sub filename_to_title ($$$) {
+    my ($cfile, $title, $weighted_str) = @_;
 
     # for MSWin32's filename using Shift_JIS [1998-09-24]
     if (($namazu::SYSTEM eq "MSWin32") || ($namazu::SYSTEM eq "os2")) {

@@ -1,0 +1,64 @@
+#
+# -*- Perl -*-
+# $Id: msword.pl.in,v 1.1 1999-08-25 00:40:16 knok Exp $
+# Copyright (C) 1997-1999 Satoru Takabayashi ,
+#               1999 NOKUBI Takatsugu All rights reserved.
+#     This is free software with ABSOLUTELY NO WARRANTY.
+#
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either versions 2, or (at your option)
+#  any later version.
+# 
+#  This program is distributed in the hope that it will be useful
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program; if not, write to the Free Software
+#  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+#  02111-1307, USA
+#
+#  This file must be encoded in EUC-JP encoding
+#
+
+package msword;
+use strict;
+require 'util.pl';
+require 'filter.pl';
+require 'html.pl';
+
+my $TMPFILE = 'NMZ.wordtmp';
+my $TMPFILE2 = 'NMZ.wordtmp2';
+
+sub filter ($$$$$$$) {
+    my ($orig_cfile, $title, $cont, $weighted_str, $headings, $fields, $size)
+      = @_;
+    my $cfile = defined $orig_cfile ? $$orig_cfile : '';
+
+    print "Proccessing ms-word file ... (use '@MSWORDVIEW_PATH@')\n"
+      if ($conf::VerboseOpt);
+
+    my $fh = util::fopen_or_die("> $TMPFILE");
+    print $fh $$cont;
+    undef $fh;
+
+    system("@MSWORDVIEW_PATH@ -o - $TMPFILE | @LV_PATH@ -Iu8 -Oej > $TMPFILE2");
+    $fh = util::fopen_or_die("< $TMPFILE2");
+    $$cont = util::readfile($fh);
+    undef $fh;
+    unlink($TMPFILE);
+    unlink($TMPFILE2);
+
+    html::html_filter($cont, $weighted_str, $title, $fields, $headings);
+
+    filter::line_adjust_filter($cont) unless $conf::NoLineAdOpt;
+    filter::line_adjust_filter($weighted_str) unless $conf::NoLineAdOpt;
+    filter::white_space_adjust_filter($cont);
+    filter::filename_to_title($cfile, $title, $weighted_str) unless $$title;
+    filter::show_filter_debug_info($cont, $weighted_str,
+			   $title, $fields, $headings);
+}
+
+1;

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.2 1999-05-04 04:42:38 satoru Exp $
+# $Id: util.pl,v 1.3 1999-08-25 00:40:18 knok Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -131,6 +131,48 @@ sub read_file ($) {
     my $buf = join("", <$fh_file>);
     $buf = NKF::nkf("-e", $buf) if $conf::USE_NKF_MODULE;
     return $buf;
+}
+
+sub readfile ($) {
+    my ($arg) = @_;
+
+    my $fh;
+    if (ref $arg) {
+	if ($arg =~ /^(IO::File|FileHandle)/) {
+	    $fh = $arg;
+	} else {
+	    warn "$arg: not an IO::File/FileHandle object!\n";
+	    return '';
+	}
+    } else {
+	$fh = fopen_or_die($arg);
+    }
+
+    my $cont = "";
+    my $size = -s $fh;
+    if ($size > $conf::FILE_SIZE_LIMIT) {
+	warn "$arg: too large!\n";
+	return '';
+    }
+    read $fh, $cont, $size;
+
+    return $cont;
+}
+
+# checklib ... check existence of library file 
+sub checklib ($) {
+    my $libfile = shift;
+    for my $path (@INC) {
+	my $cpath = "$path/$libfile";
+	return 1 if -e $cpath;
+    }
+    return 0;
+}
+
+# tmpnam ... make temporary file name
+sub tmpnam ($) {
+    my ($base) = @_;
+    return "$base.$$.tmp";
 }
 
 1;

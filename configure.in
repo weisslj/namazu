@@ -5,6 +5,7 @@ dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
 dnl Modified by Satoru Takabayashi <satoru@isoternet.org> [1998-12-06]
 dnl Modified by Hajime BABA <baba@kusastro.kyoto-u.ac.jp> [1999-02-02]
+dnl Modified by NOKUBI Takatsugu <knok@daionet.gr.jp> [1999/06/22]
 dnl
 
 dnl Process this file with autoconf to produce a configure script.
@@ -159,6 +160,41 @@ fi
 OPT_HELPER_ZCAT=$ZCAT
 AC_SUBST(OPT_HELPER_ZCAT)
 
+AC_PATH_PROG(GZIP, gzip, no)
+if test "$GZIP" = "no"; then
+    AC_MSG_WARN(gzip not found)
+fi
+GZIP_PATH=$GZIP
+AC_SUBST(GZIP_PATH)
+
+AC_PATH_PROG(BZIP2, bzip2, no)
+if test "$BZIP2" = "no"; then
+    AC_MSG_WARN(bzip2 not found)
+fi
+BZIP2_PATH=$BZIP2
+AC_SUBST(BZIP2_PATH)
+
+AC_PATH_PROG(PDFTOTEXT, pdftotext, no)
+if test "$PDFTOTEXT" = "no"; then
+    AC_MSG_WARN(pdftotext not found)
+fi
+PDFTOTEXT_PATH=$PDFTOTEXT
+AC_SUBST(PDFTOTEXT_PATH)
+
+AC_PATH_PROG(MSWORDVIEW, mswordview, no)
+if test "$MSWORDVIEW" = "no"; then
+    AC_MSG_WARN(mswordview not found)
+fi
+MSWORDVIEW_PATH=$MSWORDVIEW
+AC_SUBST(MSWORDVIEW_PATH)
+
+AC_PATH_PROG(LV, lv, no)
+if test "$LV" = "no"; then
+    AC_MSG_WARN(lv not found)
+fi
+LV_PATH=$LV
+AC_SUBST(LV_PATH)
+
 AC_PATH_PROGS(GROFF, jgroff groff nroff, no)
 if test "$GROFF" = "no"; then
     AC_MSG_WARN(jgroff(, groff and nroff) not found)
@@ -284,5 +320,7 @@ dnl *
 AM_CONFIG_HEADER(config.h)
 
 AC_OUTPUT([Makefile src/Makefile lib/conf.pl src/mknmz.pl src/wdnmz
+filter/gzip.pl filter/compress.pl filter/man.pl filter/rfc.pl
+filter/bzip2.pl filter/msword.pl
 src/vfnmz src/gcnmz src/gtnmz src/mailutime src/clnmz src/rvnmz namazu.spec],
 [chmod +x src/wdnmz src/vfnmz src/gcnmz src/gtnmz src/mailutime src/clnmz src/rvnmz]) 

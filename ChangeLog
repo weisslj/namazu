@@ -1,3 +1,8 @@
+2000-03-20  Ken-ichi Hirose  <kenzo-@tama.or.jp>
+
+	* scripts/mknmz.in (generate_uri): add restore '|' for 
+	drive letter rule.
+
 2000-03-18  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* doc/en/nmz.html: Documentation changed.
@@ -5290,3 +5295,5 @@
 
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
+
+$Id: ChangeLog,v 1.646 2000-03-19 17:31:38 kenzo- Exp $

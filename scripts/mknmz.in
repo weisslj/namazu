@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.55 2000-03-17 11:00:13 satoru Exp $
+# $Id: mknmz.in,v 1.56 2000-03-19 17:31:39 kenzo- Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -516,6 +516,10 @@ sub generate_uri (@) {
 
     my $uri = $file;
     $uri .= "#" . $fragment if defined $fragment;
+    if (($SYSTEM eq "MSWin32") || ($SYSTEM eq "os2")) {
+        # restore '|' for drive letter rule of Win32, OS/2
+        $uri =~ s!^/([A-Z])%7C!/$1|!i;
+    }
     return $uri;
 }
 

@@ -7,6 +7,9 @@
 
 1999-09-04  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/mknmz.pl.in (put_log_to_logfile): Replace
+	$var::NMZ{log} with $var::NMZ{'log'} [namazu-dev 339]
+	
 	* src/namazu.c: Fix lacks of *short_options bug.
 
 	* Makefile.am (dist-hook): Remove "cp namazu.spec $(distdir)"

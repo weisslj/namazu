@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.59 1999-09-04 10:11:09 masao Exp $
+# $Id: mknmz.pl.in,v 1.60 1999-09-04 10:28:45 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -1428,7 +1428,7 @@ sub put_log ($$$$) {
 
 sub put_log_to_logfile ($) {
     my ($logmsg) = @_;
-    my $fh_logfile = util::efopen(">>$var::NMZ{log}");
+    my $fh_logfile = util::efopen(">>$var::NMZ{'log'}");
     print $fh_logfile $logmsg;
 }
 

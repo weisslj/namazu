@@ -1,3 +1,12 @@
+2002-03-06  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* filter/compress.pl (filter): Added trapping sigpipe (bugs-ja#111).
+	(Patch contributed by Hiroki Nakai, thanks)
+
+	* src/form.c (handle_tag): Fixed no output probrem on
+	large NMZ.head file (bugs-ja#111).
+	(Patch contributed by Hiroki Nakai, thanks)
+
 2002-02-25  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* filter/html.pl (remove_comments): Added a new function.
@@ -7436,4 +7445,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.935 2002-02-25 10:27:57 knok Exp $
+$Id: ChangeLog,v 1.936 2002-03-06 06:21:16 knok Exp $

@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.69 2001-12-21 03:30:41 knok Exp $
+ * $Id: form.c,v 1.70 2002-03-06 06:21:18 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -330,8 +330,10 @@ handle_tag(const char *start, const char *end, const char *query,
         if (check_checkbox(tmp) == SUCCESS)
             return;
         get_select_name(tmp, select_name);
+	fputs(tmp, stdout);
+    } else {
+	fprintf(stdout, "%*.*s", l, l, start);
     }
-    fputs(tmp, stdout);
 }
 
 static char *

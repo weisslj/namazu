@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.50 2000-01-09 08:31:40 satoru Exp $
+ * $Id: output.c,v 1.51 2000-01-09 08:45:13 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -247,7 +247,7 @@ print_hitnum_each (struct nmz_hitnumlist *hn)
 	!is_listmode() && !is_quietmode()) 
     {
 	do {
-	    char *converted = conv_ext(hnptr->word);
+	    char *converted = nmz_conv_ext(hnptr->word);
 	    if (converted == NULL) {
 		die("print_hitnum_each");
 	    }
@@ -370,7 +370,7 @@ print_hlist(NmzResult hlist)
 	compose_result(hlist.data[i], counter, 
 		       templates[hlist.data[i].idxid],  result);
 	{
-	    char *converted = conv_ext(result);
+	    char *converted = nmz_conv_ext(result);
 	    if (converted == NULL) {
 		die(nmz_get_dyingmsg());
 	    }
@@ -573,7 +573,8 @@ print_msgfile(const char *fname) {
 	buf = nmz_readfile(tmpfname); /* buf is allocated in nmz_readfile. */
 	/* In case of suffix isn't equal to lang, we need code conversion */
 	if (strcmp(suffix, get_lang()) != 0) {
-	    char *new = conv_ext(buf); /* new is allocated in conv_ext. */
+            /* new is allocated in nmz_conv_ext. */
+	    char *new = nmz_conv_ext(buf); 
 	    free(buf);  /* Then we shoul free buf's memory */
 	    buf = new;
 	}

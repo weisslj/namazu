@@ -2,7 +2,7 @@
  * 
  * wakati.c -
  * 
- * $Id: wakati.c,v 1.19 2000-01-09 08:22:33 satoru Exp $
+ * $Id: wakati.c,v 1.20 2000-01-09 08:45:10 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -54,9 +54,9 @@ static int detect_char_type(char *c);
 static int 
 detect_char_type(char *c)
 {
-    if (iskatakana(c)) {
+    if (nmz_iskatakana(c)) {
         return KATAKANA;
-    } else if (ishiragana(c)){
+    } else if (nmz_ishiragana(c)){
         return HIRAGANA;
     } else if (iskanji(c)) {
         return KANJI;
@@ -85,8 +85,8 @@ wakati(char *key)
 	    for (j = 0; iskanji(key + i + j) ;  j += 2) {
 		char tmp[BUFSIZE];
 
-                if (j == 0 && (iskatakana(key + i + j) ||
-                    ishiragana(key + i + j))) 
+                if (j == 0 && (nmz_iskatakana(key + i + j) ||
+                    nmz_ishiragana(key + i + j))) 
                 {
                     /* If beggining character is Katakana or Hiragana */
                     break;
@@ -107,8 +107,8 @@ wakati(char *key)
 	    } else {
                 if (type == HIRAGANA || type == KATAKANA) {
                     for (j =0; ; j += 2) {
-                        if (!((type == HIRAGANA && ishiragana(key + i + j))
-                            ||(type == KATAKANA && iskatakana(key + i + j)))) 
+                        if (!((type == HIRAGANA && nmz_ishiragana(key + i + j))
+                            ||(type == KATAKANA && nmz_iskatakana(key + i + j)))) 
                         {
                             break;
                         }

@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.17 2000-01-09 08:39:22 satoru Exp $
+ * $Id: rcfile.c,v 1.18 2000-01-09 08:45:10 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -406,7 +406,7 @@ apply_rc(const char *directive, int lineno,
  */
 
 char *
-set_namazurc(const char *arg)
+nmz_set_namazurc(const char *arg)
 {
     return strcpy(namazurc, arg);
 }
@@ -416,7 +416,7 @@ set_namazurc(const char *arg)
  * FIXME: Taking argv0 argument is dirty spec.
  */
 enum nmz_stat 
-load_rcfile(const char *argv0)
+nmz_load_rcfile(const char *argv0)
 {
     FILE *fp;
     char buf[BUFSIZE];
@@ -426,12 +426,12 @@ load_rcfile(const char *argv0)
     if (fp == NULL)
 	return SUCCESS; /* no rcfile exists */
 
-    rcfile_is_loaded = 1;  /* for show_rcfile() */
+    rcfile_is_loaded = 1;  /* for nmz_show_rcfile() */
 
     while (fgets(buf, BUFSIZE, fp)) {
 	lineno++;
 	nmz_chomp(buf);
-	conv_ja_any_to_eucjp(buf);  /* for Shift_JIS encoding */
+	nmz_conv_ja_any_to_eucjp(buf);  /* for Shift_JIS encoding */
 	if (parse_rcfile(buf, lineno) != SUCCESS) {
 	    nmz_set_dyingmsg(nmz_msg("%s:%d: syntax error: %s.",  
 				     namazurc, lineno, errmsg));
@@ -443,7 +443,7 @@ load_rcfile(const char *argv0)
 }
 
 void 
-show_rcfile(void)
+nmz_show_rcfile(void)
 {
     if (rcfile_is_loaded == 1) {
 	printf(_("Config:  %s\n"), namazurc);

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2000-01-09 17:38+0900\n"
+"POT-Creation-Date: 2000-01-09 17:45+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -119,22 +119,22 @@ msgid ""
 "\n"
 msgstr ""
 
-#: src/output.c:612
+#: src/output.c:613
 #, c-format
 msgid ""
 "\t<h2>Error!</h2>\n"
 "<p>%s</p>\n"
 msgstr ""
 
-#: src/output.c:642
+#: src/output.c:643
 msgid "\t<h2>Results:</h2>\n"
 msgstr ""
 
-#: src/output.c:649
+#: src/output.c:650
 msgid "References: "
 msgstr ""
 
-#: src/output.c:696
+#: src/output.c:697
 msgid "\t<p>No document matching your query.</p>\n"
 msgstr ""
 

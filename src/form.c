@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.41 2000-01-09 08:31:39 satoru Exp $
+ * $Id: form.c,v 1.42 2000-01-09 08:45:13 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -96,7 +96,7 @@ static enum nmz_stat
 replace_query_value(const char *p, const char *query)
 {
     if (cmp_element(p, (char *)"input type=\"text\" name=\"query\"") == 0) {
-	char *converted = conv_ext(query);
+	char *converted = nmz_conv_ext(query);
 	if (converted == NULL) {
 	    die("%s", strerror(errno));
 	}
@@ -328,7 +328,7 @@ read_headfoot(const char *fname)
 
     /* In case of suffix isn't equal to lang, we needs code conversion */
     if (strcmp(suffix, get_lang()) != 0) {
-	char *new = conv_ext(buf); /* new is allocated in conv_ext. */
+	char *new = nmz_conv_ext(buf); /* new is allocated in nmz_conv_ext. */
 	free(buf);  /* Then we shoul free buf's memory */
 	buf = new;
     }
@@ -383,7 +383,7 @@ print_headfoot(const char * fname, const char * query, const char *subquery)
         if (f == 0 && *p == '<') {
             if (nmz_strprefixcasecmp(p, "</title>") == 0) {
 		if (*query != '\0') {
-		    char *converted = conv_ext(query);
+		    char *converted = nmz_conv_ext(query);
 		    nmz_print(": &lt;");
 		    nmz_print(converted);
 		    nmz_print("&gt;");

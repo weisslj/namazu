@@ -1,5 +1,17 @@
 2000-01-09  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* nmz/rcfile.[ch]: Changed function names.
+	s/set_namazurc/nmz_set_namazurc/g
+	s/load_rcfile/nmz_load_rcfile/g
+	s/show_rcfile/nmz_show_rcfile/g
+
+	* nmz/codeconv.[ch]: Changed function names.
+	s/conv_ja_any_to_eucjp/nmz_conv_ja_any_to_eucjp/g
+	s/zen2han/nmz_zen2han/g
+	s/ishiragana/nmz_ishiragana/g
+	s/iskatakana/nmz_iskatakana/g
+	s/conv_ext/nmz_conv_ext/g
+
 	* nmz/alias.[ch]: Changed function names.
 	s/add_alias/nmz_add_alias/g
 	s/get_aliases/nmz_get_aliases/g

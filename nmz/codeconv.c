@@ -2,7 +2,7 @@
  * 
  * codeconv.c -
  * 
- * $Id: codeconv.c,v 1.16 2000-01-08 09:27:18 satoru Exp $
+ * $Id: codeconv.c,v 1.17 2000-01-09 08:45:09 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -324,7 +324,7 @@ euctojis(uchar *p)
  * Supported encodings: EUC-JP, ISO-2022-JP, Shift_JIS
  */
 int 
-conv_ja_any_to_eucjp(char *s)
+nmz_conv_ja_any_to_eucjp(char *s)
 {
     int i, m, n, f;
     uchar *in;
@@ -364,7 +364,7 @@ conv_ja_any_to_eucjp(char *s)
 static char Z2H[] = 
 "\0 \0\0,.\0:;?!\0\0'`\0^~_\0\0\0\0\0\0\0\0\0\0\0\0/\\\0\0|\0\0`'\"\"()\0\0[]{}<>\0\0\0\0\0\0\0\0+-\0\0\0=\0<>\0\0\0\0\0\0\0'\"\0\\$\0\0%#&*@";
 void 
-zen2han(char *str)
+nmz_zen2han(char *str)
 {
     int p = 0, q = 0, r;
     uchar *s;
@@ -397,7 +397,7 @@ zen2han(char *str)
 }
 
 int 
-iskatakana(const char *chr)
+nmz_iskatakana(const char *chr)
 {
     uchar *c;
     c = (uchar *)chr;
@@ -416,7 +416,7 @@ iskatakana(const char *chr)
 }
 
 int 
-ishiragana(const char *chr)
+nmz_ishiragana(const char *chr)
 {
     uchar *c;
     c = (uchar *)chr;
@@ -443,7 +443,7 @@ ishiragana(const char *chr)
  *
  */
 char *
-conv_ext (const char *str) {
+nmz_conv_ext (const char *str) {
     char *tmp, *lang;
 
     tmp = strdup(str);

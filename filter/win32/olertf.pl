@@ -1,6 +1,6 @@
 # 
 # -*- Perl -*-
-# $Id: olertf.pl,v 1.8 2004-05-23 10:51:39 opengl2772 Exp $
+# $Id: olertf.pl,v 1.9 2004-10-12 12:29:57 opengl2772 Exp $
 # 
 # Copyright (C) 2000 Yoshinori.TAKESAKO,
 #               2000 Jun Kurabe,
@@ -30,6 +30,8 @@ package olertf;
 use strict;
 require 'util.pl';
 require 'gfilter.pl';
+
+use Win32::OLE::Const;
 
 sub mediatype() {
     return ('application/rtf');

@@ -1,6 +1,6 @@
 # 
 # -*- Perl -*-
-# $Id: oletaro.pl,v 1.8 2004-05-23 10:51:39 opengl2772 Exp $
+# $Id: oletaro.pl,v 1.9 2004-10-12 12:29:57 opengl2772 Exp $
 # 
 # Copyright (C) 2000-2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -27,6 +27,8 @@ package oletaro;
 use strict;
 require 'util.pl';
 require 'gfilter.pl';
+
+use Win32::OLE::Const;
 
 sub mediatype() {
     open (SAVEERR,">&STDERR");

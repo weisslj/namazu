@@ -10,9 +10,10 @@ HELP2MAN = $(PERL) -w -- $(srcdir)/help2man
 namazu.1:
 	@progname=`basename $@ .1`; \
 	executable=$(top_builddir)/src/$$progname; \
+	includes=$(srcdir)/$$progname.x; \
 	if test -f $$executable; then \
 	 rm -f t-$$progname.1; \
-	 $(HELP2MAN) --include=$$progname.x --no-info \
+	 $(HELP2MAN) --include=$$includes --no-info \
 	 $$executable > t-$$progname.1 || exit 1; \
 	 mv t-$$progname.1 $$progname.1; \
 	else \
@@ -22,9 +23,13 @@ namazu.1:
 mknmz.1:
 	@progname=`basename $@ .1`; \
 	executable=$(top_builddir)/scripts/$$progname; \
+	includes=$(srcdir)/$$progname.x; \
+	pkgdatadir=$(top_srcdir); \
+	top_builddir=$(top_builddir); \
+	export pkgdatadir;export top_builddir; \
 	if test -f $$executable; then \
 	 rm -f t-$$progname.1; \
-	 $(HELP2MAN) --include=$$progname.x --no-info \
+	 $(HELP2MAN) --include=$$includes --no-info \
 	 $$executable > t-$$progname.1 || exit 1; \
 	 mv t-$$progname.1 $$progname.1; \
 	else \

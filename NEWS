@@ -1,3 +1,7 @@
+Overview of Changes in Namazu 2.0.8 - Nov 26, 2001
+
+* Fix cross-site scripting vulnerability.
+
 Overview of Changes in Namazu 2.0.7 - Sep 12, 2001
 
 * Bug fix release.

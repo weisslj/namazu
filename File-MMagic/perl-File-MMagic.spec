@@ -1,4 +1,4 @@
-%define	ver	0.17
+%define	ver	0.19
 %define rel	1
 
 Summary: file command like perl5 module

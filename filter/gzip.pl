@@ -1,8 +1,7 @@
 #
 # -*- Perl -*-
-# $Id: gzip.pl,v 1.15 2000-03-22 10:02:37 knok Exp $
-# Copyright (C) 1997-2000 Satoru Takabayashi ,
-#               1999 NOKUBI Takatsugu All rights reserved.
+# $Id: gzip.pl,v 1.16 2000-03-23 10:41:04 knok Exp $
+# Copyright (C) 2000 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -80,7 +79,7 @@ sub filter_file ($) {
     print $fh $$contref;
     undef $fh;
     $fh = util::efopen("$tmpfile");
-    my $size = filesize($fh);
+    my $size = util::filesize($fh);
     if ($size > $conf::FILE_SIZE_MAX) {
 	return 'too_large_gzipped_file';
     }

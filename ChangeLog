@@ -1,3 +1,9 @@
+2001-04-20  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* src/output.c (fputs_without_html_tag, print_query): 
+	Fixed inappropriate substitution on idxname, closes: bugs-ja#52.
+	(Reported and a patch contributed by Akihiro Sagwa)
+
 2001-04-17  SATOH Fumiyasu  <fumiya@samba.gr.jp>
 
 	* AUTHORS: Added new member SATOH Fumiyasu.
@@ -6432,4 +6438,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.816 2001-04-17 07:15:58 fumiya Exp $
+$Id: ChangeLog,v 1.817 2001-04-20 07:38:26 knok Exp $

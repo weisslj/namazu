@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.79 2000-12-21 09:21:30 knok Exp $
+ * $Id: output.c,v 1.80 2001-04-20 07:38:27 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -187,16 +187,16 @@ fputs_without_html_tag(const char *str, FILE *fp)
 	    continue;
 	}
 	if (f == 0) {
-	    if (nmz_strprefixcmp(str, "&lt;") == 0) {
+	    if (strncmp(str, "&lt;", strlen("&lt;")) == 0) {
 		buf[i++] = '<';
 		str += 3;
-	    } else if (nmz_strprefixcmp(str, "&gt;") == 0) {
+	    } else if (strncmp(str, "&gt;", strlen("&gt;")) == 0) {
 		buf[i++] = '>';
 		str += 3;
-	    } else if (nmz_strprefixcmp(str, "&amp;") == 0) {
+	    } else if (strncmp(str, "&amp;", strlen("&amp;")) == 0) {
 		buf[i++] = '&';
 		str += 4;
-	    } else if (nmz_strprefixcmp(str, "&quot;") == 0) {
+	    } else if (strncmp(str, "&quot;", strlen("&quot;")) == 0) {
 		buf[i++] = '"';
 		str += 5;
 	    } else {
@@ -459,7 +459,7 @@ print_query(const char * qs, int w)
 {
     int foo = 0;
     while (*qs) {
-	if (nmz_strprefixcmp(qs, "whence=") == 0) {
+	if (strncmp(qs, "whence=", strlen("whence=")) == 0) {
 	    foo = 1;
 	    printf("whence=%d", w);
 	    for (qs += strlen("whence="); isdigit(*qs); qs++);

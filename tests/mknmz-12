@@ -1,0 +1,29 @@
+#! /bin/sh
+#
+# Test for $FILTERDIR
+#
+
+LOG=`pwd`/test-log
+TARGET=`pwd`/data/filter
+IDXDIR=idx15
+TXTCOUNT=`ls ./data/filter/*.txt|wc -l`
+FDIR=`pwd`/data/filter
+
+if test ! -d $IDXDIR; then
+    mkdir $IDXDIR
+else
+    rm -f $IDXDIR/NMZ.*
+fi
+
+cd ../scripts
+echo "package conf; \$FILTERDIR='$FDIR'; 1;" > ../tests/mknmzrc-mknmz12
+RESULTCOUNT=`./mknmz -C -f ../tests/mknmzrc-mknmz12|egrep x-test|wc -l`
+rm -f ../tests/mknmzrc-mknmz12
+test $RESULTCOUNT -eq 1 || exit $?
+
+echo "package conf; \$FILTERDIR='$FDIR'; 1;" > ../tests/mknmzrc-mknmz12
+./mknmz --allow='.*.txt' -f ../tests/mknmzrc-mknmz12 -O ../tests/$IDXDIR $TARGET >> $LOG 2>&1
+rm -f ../tests/mknmzrc-mknmz12
+RESULTCOUNT=`wc -l < ../tests/$IDXDIR/NMZ.field.uri`
+test $TXTCOUNT -eq $RESULTCOUNT
+exit $?

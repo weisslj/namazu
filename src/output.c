@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.91 2001-12-21 07:59:27 knok Exp $
+ * $Id: output.c,v 1.92 2001-12-21 08:44:50 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -790,9 +790,9 @@ print_default_page (void) {
  * output string as non-html (replace special characters by entities)
  */
 void
-puts_entitize(char *str)
+puts_entitize(const char *str)
 {
-    char *p = str;
+    const char *p = str;
     for (; *p != 0; p++) {
 	putc_entitize(*p);
     }

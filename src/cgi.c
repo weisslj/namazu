@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.68 2001-12-21 03:30:41 knok Exp $
+ * $Id: cgi.c,v 1.69 2001-12-21 08:44:50 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -492,11 +492,11 @@ process_cgi_var_idxname(char *value, struct cgiarg *ca)
 	if ((x = (char *)strchr(pp, (int)','))) {
 	    *x = '\0';
 	    strncpy(name, pp, BUFSIZE);
-	    name[BUFSIZE - 1] - '\0';
+	    name[BUFSIZE - 1] = '\0';
 	    pp = x + 1;
 	} else {
 	    strncpy(name, pp, BUFSIZE);
-	    name[BUFSIZE - 1] - '\0';
+	    name[BUFSIZE - 1] = '\0';
 	    pp += strlen(pp);
 	}
 	validate_idxname(name);

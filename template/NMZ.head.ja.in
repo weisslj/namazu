@@ -21,26 +21,26 @@
 --></style>
 </head>
 <body lang="ja">
-<h1>Namazu $B$K$h$kA4J88!:w%7%9%F%`(B</h1>
+<h1>Namazu ¤Ë¤è¤ëÁ´Ê¸¸¡º÷¥·¥¹¥Æ¥à</h1>
 <p>
-$B8=:_!"(B<!-- FILE --> 0 <!-- FILE --> $B$NJ8=q$,%$%s%G%C%/%92=$5$l!"(B
-<!-- KEY --> 0 <!-- KEY --> $B8D$N%-!<%o!<%I$,EPO?$5$l$F$$$^$9!#(B
+¸½ºß¡¢<!-- FILE --> 0 <!-- FILE --> ¤ÎÊ¸½ñ¤¬¥¤¥ó¥Ç¥Ã¥¯¥¹²½¤µ¤ì¡¢
+<!-- KEY --> 0 <!-- KEY --> ¸Ä¤Î¥­¡¼¥ï¡¼¥É¤¬ÅÐÏ¿¤µ¤ì¤Æ¤¤¤Þ¤¹¡£
 </p>
 <p>
-<strong>$B%$%s%G%C%/%9$N:G=*99?7F|(B: <!-- DATE --> date <!-- DATE --></strong>
+<strong>¥¤¥ó¥Ç¥Ã¥¯¥¹¤ÎºÇ½ª¹¹¿·Æü: <!-- DATE --> date <!-- DATE --></strong>
 </p>
 <hr>
 <form method="get" action="{cgi}">
 <p>
-<strong>$B8!:w<0(B:</strong> 
+<strong>¸¡º÷¼°:</strong> 
 <input type="text" name="query" size="40">
 <input type="submit" name="submit" value="Search!">
 <input type="hidden" name="whence" value="0">
 <!-- <input type="hidden" name="idxname" value="foobar"> -->
-<a href="{cgi}">[$B8!:wJ}K!(B]</a>
+<a href="{cgi}">[¸¡º÷ÊýË¡]</a>
 </p>
 <p>
-<strong>$BI=<(7o?t(B:</strong>
+<strong>É½¼¨·ï¿ô:</strong>
 <select name="max">
 <option value="10">10
 <option selected value="20">20
@@ -48,29 +48,29 @@
 <option value="50">50
 <option value="100">100
 </select>
-<strong>$BI=<(7A<0(B:</strong>
+<strong>É½¼¨·Á¼°:</strong>
 <select name="result">
-<option selected value="normal">$BI8=`(B
-<option value="short">$B4J7i(B
+<option selected value="normal">É¸½à
+<option value="short">´Ê·é
 </select>
-<strong>$B%=!<%H(B:</strong>
+<strong>¥½¡¼¥È:</strong>
 <select name="sort">
-<option selected value="score">$B%9%3%"(B
-<option value="date:late">$BF|IU(B ($B?7$7$$=g(B)
-<option value="date:early">$BF|IU(B ($B8E$$=g(B)
-<option value="field:subject:ascending">$BBjL>(B ($B>:=g(B)
-<option value="field:subject:descending">$BBjL>(B ($B9_=g(B)
-<option value="field:from:ascending">$BCx<T(B ($B>:=g(B)
-<option value="field:from:descending">$BCx<T(B ($B9_=g(B)
-<option value="field:size:ascending">$B%5%$%:(B ($B>:=g(B)
-<option value="field:size:descending">$B%5%$%:(B ($B9_=g(B)
-<option value="field:uri:ascending">URI ($B>:=g(B)
-<option value="field:uri:descending">URI ($B9_=g(B)
+<option selected value="score">¥¹¥³¥¢
+<option value="date:late">ÆüÉÕ (¿·¤·¤¤½ç)
+<option value="date:early">ÆüÉÕ (¸Å¤¤½ç)
+<option value="field:subject:ascending">ÂêÌ¾ (¾º½ç)
+<option value="field:subject:descending">ÂêÌ¾ (¹ß½ç)
+<option value="field:from:ascending">Ãø¼Ô (¾º½ç)
+<option value="field:from:descending">Ãø¼Ô (¹ß½ç)
+<option value="field:size:ascending">¥µ¥¤¥º (¾º½ç)
+<option value="field:size:descending">¥µ¥¤¥º (¹ß½ç)
+<option value="field:uri:ascending">URI (¾º½ç)
+<option value="field:uri:descending">URI (¹ß½ç)
 </select>
 </p>
 <!--
 <p>
-<strong>$B8!:wBP>](B:</strong>
+<strong>¸¡º÷ÂÐ¾Ý:</strong>
 <ul>
 <li><input type="checkbox" name="idxname" value="foo" checked>foo 
 <li><input type="checkbox" name="idxname" value="bar">bar

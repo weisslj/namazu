@@ -1,5 +1,7 @@
 2000-03-17  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* pl/codeconv.pl (shiftjis_to_eucjp): Check util::islang("ja").
+
 	* scripts/mknmz.in (generate_uri): Use codeconv::shiftjis_to_eucjp
 	instead of codeconv::toeuc(). [namazu-devel-ja: 00219]
 

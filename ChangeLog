@@ -1,3 +1,8 @@
+2002-09-25  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* scripts/mknmz.in (load_document): Refactoring: changed to be
+	able to get file contents in $contref.
+
 2002-09-24  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* scripts/mknmz.in (apply_filter): Refactoring: split filter
@@ -7686,4 +7691,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.981 2002-09-24 09:43:23 knok Exp $
+$Id: ChangeLog,v 1.982 2002-09-25 04:32:39 knok Exp $

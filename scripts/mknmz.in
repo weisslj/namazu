@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.111 2002-09-24 09:43:24 knok Exp $
+# $Id: mknmz.in,v 1.112 2002-09-25 04:32:40 knok Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -719,25 +719,29 @@ sub load_document ($$$$\%) {
 
     return (0, 0, 0, 0) unless (-f $cfile && -r $cfile);
 
-    # for handling a filename which contains Shift_JIS code
-    my $shelter_cfile = "";
-    if ($SYSTEM eq "MSWin32" 
-	&& $cfile =~ /[\x81-\x9f\xe0-\xef][\x40-\x7e\x80-\xfc]|[\x20\xa1-\xdf]/) 
-    {
-	$shelter_cfile = $cfile;
-	$cfile = util::tmpnam("NMZ.win32");
-	unlink $cfile if (-e $cfile);
-	copy($shelter_cfile, $cfile);
-    }
-
     my $file_size;
-    $file_size = util::filesize($cfile); # not only file in feature.
-    if ($file_size > $conf::FILE_SIZE_MAX) {
-	return ($file_size, $file_size, 0, 'x-system/x-error');
-    }
+    my $shelter_cfile = "";
 
-    $$contref = util::readfile($cfile);
-#    $file_size = length($$contref);
+    if ($$contref eq "") {
+    # for handling a filename which contains Shift_JIS code
+	if ($SYSTEM eq "MSWin32" 
+	    && $cfile =~ /[\x81-\x9f\xe0-\xef][\x40-\x7e\x80-\xfc]|[\x20\xa1-\xdf]/) 
+	{
+	    $shelter_cfile = $cfile;
+	    $cfile = util::tmpnam("NMZ.win32");
+	    unlink $cfile if (-e $cfile);
+	    copy($shelter_cfile, $cfile);
+	}
+
+	$file_size = util::filesize($cfile); # not only file in feature.
+	if ($file_size > $conf::FILE_SIZE_MAX) {
+	    return ($file_size, $file_size, 0, 'x-system/x-error');
+	}
+
+	$$contref = util::readfile($cfile);
+    } else {
+	$file_size = length($$contref);
+    }
 
     my ($kanji, $mtype) = apply_filter($orig_cfile, $contref, $weighted_str, $headings, $fields, $shelter_cfile);
 

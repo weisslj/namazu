@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.92 2001-09-16 12:29:14 makoto Exp $
+# $Id: mknmz.in,v 1.93 2001-09-17 02:06:52 shirai Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -343,7 +343,7 @@ sub init () {
 
 sub preload_modules () { 
     unshift @INC, $LIBDIR;
-    my $srcdir;
+    my $srcdir = '';
     if (defined($ENV{'srcdir'})) {      ## for VPATH ;make check
 	$srcdir = $ENV{'srcdir'} .'/';}
     unshift @INC, $srcdir. "../pl";	# FIXME: remove the workaround for   (util.pl)

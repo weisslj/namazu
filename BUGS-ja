@@ -1,3 +1,8 @@
 BUGS
+2000/01/16
 * make update-poが効かない。
-* -with-tknamazuしていないときにmake distがコケる。[ad-hocに解決済]
+
+FIXED
+2000/01/16
+* <index>/NMZ.*.jaがISO-2022-JPでencodingされたままになっている。
+* --with-tknamazuしていないときにmake distがコケる。[ad-hocに解決]

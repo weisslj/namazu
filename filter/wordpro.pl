@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: wordpro.pl,v 1.5 2001-04-13 04:50:53 knok Exp $
+# $Id: wordpro.pl,v 1.6 2001-06-19 09:08:15 fumiya Exp $
 # Copyright (C) 2000 Ken-ichi Hirose, 
 #               2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -56,7 +56,7 @@ sub post_codeconv () {
 sub add_magic ($) {
     my ($magic) = @_;
 
-    $magic->addFileExts('\\.lwp', 'application/x-lotus-wordpro');
+    $magic->addFileExts('\\.lwp$', 'application/x-lotus-wordpro');
     return;
 }
 

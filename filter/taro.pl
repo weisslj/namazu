@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: taro.pl,v 1.6 2001-04-13 05:53:41 knok Exp $
+# $Id: taro.pl,v 1.7 2001-06-19 09:08:15 fumiya Exp $
 # Copyright (C) 2000 Ken-ichi Hirose, 
 #               2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -32,7 +32,11 @@ require 'gfilter.pl';
 my $taroconvpath  = undef;
 
 sub mediatype() {
-    return ('application/x-js-taro');
+    # File::MMagic detects Ichitaro 6 document as `application/ichitaro6'
+    return qw(
+	application/x-js-taro
+	application/ichitaro6
+    );
 }
 
 sub status() {
@@ -56,10 +60,10 @@ sub post_codeconv () {
 sub add_magic ($) {
     my ($magic) = @_;
 
-   # Ichitaro 6, 7
-    $magic->addFileExts('\\.j[bf]w', 'application/x-js-taro');
-   # Ichitaro 8, 9, 10
-    $magic->addFileExts('\\.jt[dt]', 'application/x-js-taro');
+    # Ichitaro 6, 7
+    $magic->addFileExts('\\.j[bf]w$', 'application/x-js-taro');
+    # Ichitaro 8, 9, 10
+    $magic->addFileExts('\\.jt[dt]$', 'application/x-js-taro');
     return;
 }
 

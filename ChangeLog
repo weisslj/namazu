@@ -1,3 +1,13 @@
+2001-06-19  SATOH Fumiyasu  <fumiya@samba.gr.jp>
+
+	* filter/{taro,wordpro}.pl (add_magic): Fixed regex pattern
+	for filename suffix.
+
+	* filter/taro.pl (mediatype): Added media type
+	`application/ichitaro6' that detected by File::MMagic.
+
+	* ChangeLog: s/probrem/problem/g
+
 2001-06-19  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* scripts/mknmz.in (preload_modules): Changed @INC handling
@@ -339,7 +349,7 @@
 2000-12-21  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* src/namazu-cmd.c,output.c,cgi.c: Fixed malformed header
-	probrem.
+	problem.
 
 	* nmz/search.c (open_index_files): Refined.
 
@@ -353,7 +363,7 @@
 
 	* scripts/mknmz.in (main): Changed to call load_modules()
 	before when load_rcfiles() is called.
-	(fixed namazu-win32-users-ja#00396 probrem)
+	(fixed namazu-win32-users-ja#00396 problem)
 
 2000-12-19  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
@@ -6311,7 +6321,7 @@
 
 1999-08-26  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
-	* filter/*, lib/filter.pl, src/mknmz.pl.in: Fix $title probrem.
+	* filter/*, lib/filter.pl, src/mknmz.pl.in: Fix $title problem.
 
 1999-08-26  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
@@ -6490,4 +6500,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.827 2001-06-19 08:48:03 knok Exp $
+$Id: ChangeLog,v 1.828 2001-06-19 09:08:15 fumiya Exp $

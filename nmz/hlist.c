@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.2 1999-11-14 22:54:02 kenzo- Exp $
+ * $Id: hlist.c,v 1.3 1999-11-17 06:55:03 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -204,15 +204,23 @@ HLIST andmerge(HLIST left, HLIST right, int *ignore)
 {
     int i, j, v;
 
-    if (*ignore && left.n > 0)
+    if (*ignore && left.n > 0) {
+	free_hlist(right);
 	return left;
-    if (*ignore && right.n > 0)
+    }
+    if (*ignore && right.n > 0) {
+	free_hlist(left);
 	return right;
+    }
 
-    if (left.n <= 0)
+    if (left.n <= 0) {
+	free_hlist(right);
 	return left;
-    if (right.n <= 0)
+    }
+    if (right.n <= 0) {
+	free_hlist(left);
 	return right;
+    }
 
     for (v = 0, i = 0, j = 0; i < left.n; i++) {
 	for (;; j++) {
@@ -250,15 +258,23 @@ HLIST notmerge(HLIST left, HLIST right, int *ignore)
 {
     int i, j, v, f;
 
-    if (*ignore && left.n > 0)
+    if (*ignore && left.n > 0) {
+	free_hlist(right);
 	return left;
-    if (*ignore && right.n > 0)
+    }
+    if (*ignore && right.n > 0) {
+	free_hlist(left);
 	return right;
+    }
 
-    if (right.n <= 0)
+    if (right.n <= 0) {
+	free_hlist(right);
 	return left;
-    if (left.n <= 0)
-	return left;
+    }
+    if (left.n <= 0) {
+	free_hlist(left);
+	return right;
+    }
 
     for (v = 0, i = 0, j = 0; i < left.n; i++) {
 	for (f = 0; j < right.n; j++) {
@@ -291,12 +307,18 @@ HLIST ormerge(HLIST left, HLIST right)
     int i, j, v, n;
     HLIST val;
 
-    if (left.n <= 0 && right.n <= 0)
+    if (left.n <= 0 && right.n <= 0) {
+	free_hlist(right);
 	return left;
-    if (left.n <= 0)
+    }
+    if (left.n <= 0) {
+	free_hlist(left);
 	return right;
-    if (right.n <= 0)
+    }
+    if (right.n <= 0){
+	free_hlist(right);
 	return left;
+    }
 
     n = left.n + right.n;
 

@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.32 2000-02-25 13:31:42 satoru Exp $
+# $Id: mknmz.in,v 1.33 2000-02-26 15:13:59 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -133,8 +133,8 @@ sub main () {
 	}
     }
     # This should be out of above blocks because of file handler closing.
-    re_exec($flist_ptr, $file_count, $file_base, 
-	    $start_time, $total_files_size, $total_files_num) if $checkpoint;
+    re_exec($flist_ptr, $file_count, $file_base, $start_time, 
+	    $total_files_size, $total_files_num, $key_count) if $checkpoint;
 
     if (%KeyIndex) {
 	$key_count = write_index();
@@ -178,9 +178,9 @@ sub load_rcfiles () {
     util::vprint("\n");
 }
 
-sub re_exec($$$$$$) {
-    my ($flist_ptr, $file_count, $file_base, 
-	$start_time, $total_files_size, $total_files_num) = @_;
+sub re_exec($$$$$$$) {
+    my ($flist_ptr, $file_count, $file_base, $start_time, 
+	$total_files_size, $total_files_num, $key_count) = @_;
 
     # store variables
     {
@@ -196,6 +196,7 @@ sub re_exec($$$$$$) {
 	\$start_time = $start_time;
 	\$total_files_size = $total_files_size;
 	\$total_files_num = $total_files_num;
+	\$key_count = $key_count;
 	\$\$ = $$;
 EOM
     }

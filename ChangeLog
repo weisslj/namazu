@@ -1,3 +1,7 @@
+2000-02-27  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* scripts/mknmz.in (re_exec): Store $key_count.
+
 2000-02-26  Ryuji Abe  <raeva@t3.rim.or.jp>
 
 	* tests/Makefile.am: Tiny Fix.

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: ooo.pl,v 1.3 2003-03-27 14:07:55 usu Exp $
+# $Id: ooo.pl,v 1.4 2003-04-17 15:34:14 usu Exp $
 # Copyright (C) 2003 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -90,10 +90,11 @@ sub filter_metafile ($$$) {
     my ($orig_cfile, $weighted_str, $fields) = @_;
     my $metafile = 'meta.xml';
     my $unzippath = util::checkcmd('unzip');
-    my $unzipopts = ('-p');
+    my @unzipopts = ('-p');
     my $xml = "";
-    my $fh = util::efopen("$unzippath $unzipopts $$orig_cfile $metafile|");
-    while (defined(my $line = <$fh>)){
+    my @cmd = ($unzippath, @unzipopts, $$orig_cfile, $metafile);
+    my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
+    while (defined(my $line = <$fh_out>)){
         $xml .= $line;
     }
 
@@ -132,10 +133,11 @@ sub filter_contentfile ($$$$$) {
     my ($orig_cfile, $contref, $weighted_str, $headings, $fields) = @_;
     my $contentfile = "content.xml";
     my $unzippath = util::checkcmd('unzip');
-    my $unzipopts = ("-p");
+    my @unzipopts = ("-p");
     my $xml = "";
-    my $fh = util::efopen("$unzippath $unzipopts $$orig_cfile $contentfile|");
-    while (defined(my $line = <$fh>)){
+    my @cmd = ($unzippath, @unzipopts, $$orig_cfile, $contentfile);
+    my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
+    while (defined(my $line = <$fh_out>)){
         $xml .= $line;
     }
     ooo::remove_all_tag(\$xml);

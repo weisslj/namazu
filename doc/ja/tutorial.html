@@ -133,14 +133,14 @@ namazu は大きく分けて次の二つから出来ています。
 実際に文字列を入力して検索する<br> 
 例えば、cgi-bin として動かす時に使う。 
 あるいは操作行 (command line) から使うことも出来る。 ( c で書いてある)
-
-<p>
+<br>
+<p class=note>
 1.9.13 からは、この操作行用 (namazu) と cgi-bin 
 用 (namazu.cgi)が 「外部からの攻撃を受けないように」 
 との理由で別物になっている。
 namazu という名前のものを namazu.cgi という名前で写したり、名前を
 変更して 使ってしまっては、
-その意味がない。
+その意味がありません。
 </p>
 </ul> 
 <p>
@@ -181,12 +181,13 @@ CPAN</a></td>
   <td rowspan=2>河野眞治</td>
   <td rowspan=2>
   <a href="ftp://ftp.ie.u-ryukyu.ac.jp/pub/software/kono/">琉球大学</a></td>
-  <td><br></td>1.9 を使うと不具合があるという報告がある
+  <td><br></td>
   </tr>
 
 <tr><td>NKF</td><td>nkf Perl 部品化</td>
   <td>▲</td><td>1.9</td><td>1.71</td>
-  <td><br></td>
+  <td>1.9 を使うと不具合があるという報告がある</td>
+
   </tr>
 
 <tr>
@@ -299,7 +300,7 @@ kakasi/ChaSen のどちらかが必要という意味。
 遅くなります。その場合でも、
 mknmz による索引の作成が遅いだけで、namazu の検索の
 速度には関係ありません。でも、入れるのは 
-<code>perl Makefile.PL; make; make install</code>
+<code class=command>perl Makefile.PL; make; make install</code>
 とするだけだから、問題がないなら入れておいた方がいいと思います。
 <li>
 namazu 1.9.12 以降では Chasen2 にだけ対応しています。
@@ -325,7 +326,7 @@ ranlib -t /usr/local/lib/libchasen.a
 を見て下さい。
 </ul>
 
-
+<h2><a name="before-make-install">make install する前に試す</a></h2>
 
 <p>
 もし make install する前に mknmz を試して見たいという時には
@@ -336,12 +337,12 @@ cd scripts してから ./mknmz とすると、
 </p>
 
 <p>
-<strong>
+< class=note>
 (この辺の事情は mknmz の中の load_module() の中の @INC の文字の辺
-で分るはずです)。</strong>
+で分るはずです)。</p>
 <br>
 例えば
-<code>./mknmz -C  ./mknmz --help ./mknmz -O /tmp ~/Mail</code>
+<code command>./mknmz -C  ./mknmz --help ./mknmz -O /tmp ~/Mail</code>
 などを試せます。
 </p>
 
@@ -360,9 +361,9 @@ cd scripts してから ./mknmz とすると、
   <tr>                                                         <td>mknmz<td> namazu
   <tr><td>無</td> <td>とても簡単な説明<td>(他の引数・選択は付けられない)
     <td><td>
-  <tr><td><code>--help</code></td><td>詳しい説明 <td>(他の引数・選択は無視される)
-    <td><a href="mknmz-1.9.12--help">*</a>    <td><a href="namazu-1.9.12--help">*</a>
-  <tr><td><code>-C </code>   </td><td>その時の構成<td> (他の引数・選択も意味がある)
+  <tr><td><code command>--help</code></td><td>詳しい説明 <td>(他の引数・選択は無視される)
+    <td><a href="manual.html#mknmz-option">*</a>    <td><a href="manual.html#namazu-option">*</a>
+  <tr><td><code command>-C </code>   </td><td>その時の構成<td> (他の引数・選択も意味がある)
     <td><a href="mknmz-1.9.12-C">*</a>    <td><a href="namazu-1.9.12-C">*</a>
   </table>
 
@@ -395,7 +396,7 @@ namazu の実行時に
 
 <blockquote>
 <p>
-<code><a href="man/mknmz">mknmz</a> [options] <i>検索 directory</i></code>
+<code command><a href="man/mknmz">mknmz</a> [options] <i>検索 directory</i></code>
 </p>
 </blockquote>
 
@@ -504,7 +505,7 @@ $DENY_REGEX = '\..*';<br>
 $ALLOW_REGEX = '.*';<br>
 $HTML_SUFFIX = '.*';<br>
 </code>
-<code>mknmz -f ~/.mknmz-Mail </code>と起動するという方法があります。
+<code command>mknmz -f ~/.mknmz-Mail </code>と起動するという方法があります。
 <!-- ------------------------------------------- -->
 <dt>MHonArc
 <dd>これは HTML 形式ですし、Namazu にこの形式に対応した処理が含ま
@@ -627,7 +628,7 @@ namazu.conf の設定例は 配布の中の <code>lib/namazu.conf-dist</code> に
 あります。
 </p>
 
-<p>初めは操作行で <code>/usr/local/namazu/bin 検索文字列</code>
+<p>初めは操作行で <code command>/usr/local/namazu/bin 検索文字列</code>
 を試すのが手軽です。
 </p>
 
@@ -761,7 +762,7 @@ Namazu の動作を make 時から変更したいというような時に、その
 説明は次のところにある。
 
 <a href="http://openlab.ring.gr.jp/namazu/manual.html.ja#NAMAZU_CONF">http://openlab.ring.gr.jp/namazu/manual.html.ja#NAMAZU_CONF</a>
-<code>
+<code class=rc>
 INDEX, REPLACE, BASE, WAKATI, LOGGING OFF, LANG ja
 </code>
 の設定が出来る。
@@ -858,7 +859,7 @@ contrib/00readme-namazu.jis</a> に書いてあります。
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: tutorial.html,v 1.11 2000-02-14 13:06:25 makoto Exp $
+$Id: tutorial.html,v 1.12 2000-02-14 13:22:59 makoto Exp $
 </div>
 <address>
 developers@namazu.org

@@ -1,4 +1,4 @@
-/* $Id: namazu.css,v 1.5 2000-02-14 13:04:14 makoto Exp $ */
+/* $Id: namazu.css,v 1.6 2000-02-14 13:23:06 makoto Exp $ */
 
 body { 
 	background-color: White; 
@@ -39,6 +39,11 @@ p.example {
 	font-weight: bold;
 	font-family: monospace; 
 }
+p.note  { 
+	color: DarkGreen;
+	font-family: monospace; 
+        font-size: small;
+}
 
 code { 
 	color: Navy;
@@ -66,4 +71,9 @@ code.rc  {
 	font-family: monospace; 
 	font-weight: bold; 
 }
+code.command {
+	color: Navy;
+	font-family: monospace; 
+	font-weight: bold; 
 
+}

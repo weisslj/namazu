@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mhonarc.pl,v 1.25 2002-08-06 05:00:42 knok Exp $
+# $Id: mhonarc.pl,v 1.26 2002-10-31 08:51:01 knok Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu,
 #               2002 Earl Hood
@@ -74,10 +74,10 @@ sub filter ($$$$$) {
 
     util::vprint("Processing MHonArc file ...\n");
 
-    if (($cfile !~ /$MHONARC_MESSAGE_FILE/o) ||
-	($$contref !~ /\A\s*<!-- MHonArc /)) 
+    if ($$contref !~ /\A\s*<!-- MHonArc /) 
     {
-	return "is not a MHonArc message file! skipped."; # error
+	util::vprint( $$orig_cfile." is not a MHonArc message file, fallback to HTML proccesing" );
+	return html::filter($orig_cfile, $contref, $weighted_str, $headings, $fields);
     } 
     
     mhonarc_filter($contref, $weighted_str, $fields);

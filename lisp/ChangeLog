@@ -5,6 +5,7 @@
 	(namazu): use namazu-minibuffer-field-map, when "Enter Keyword: ".
 	(namazu-re-search): Ditto.
 	(namazu-field-complete): New function. completion of "+fileds:".
+	(namazu-make-field-completion-alist): New function. make +fileds:-alist.
 
 1999-09-02  KOSEKI Yoshinori  <kose@yk.NetLaputa.ne.jp>
 

@@ -33,6 +33,7 @@ cat $M1 $M2 $M3 > $M123
 # Check WORD searching.
 # Matches: 1.txt
 #
+echo "./namazu -l 'foo' $IDX | sort > $TMP" >> $LOG
 ./namazu -l 'foo' $IDX | sort > $TMP
 cmp $TMP $M1 || exit 1 # error if not matched
 
@@ -40,6 +41,7 @@ cmp $TMP $M1 || exit 1 # error if not matched
 # Check WORD searching.
 # Matches: 1.txt 2.txt
 #
+echo "./namazu -l 'bar' $IDX | sort > $TMP" >> $LOG
 ./namazu -l 'bar' $IDX | sort > $TMP
 cmp $TMP $M12 || exit 1
 
@@ -47,10 +49,12 @@ cmp $TMP $M12 || exit 1
 # Check PHRASE searching.
 # Matches: 1.txt 2.txt
 #
+echo "./namazu -l '\"bar baz\"' $IDX | sort > $TMP" >> $LOG
 ./namazu -l '"bar baz"' $IDX | sort > $TMP
 cmp $TMP $M12 || exit 1
 
 # isomorphism
+echo "./namazu -l '{bar baz}' $IDX | sort > $TMP" >> $LOG
 ./namazu -l '{bar baz}' $IDX | sort > $TMP
 cmp $TMP $M12 || exit 1
 
@@ -59,6 +63,7 @@ cmp $TMP $M12 || exit 1
 # Check PHRASE searching.
 # Matches: 1.txt
 #
+echo "./namazu -l '\"foo bar baz qux quux\"' $IDX | sort > $TMP" >> $LOG
 ./namazu -l '"foo bar baz qux quux"' $IDX | sort > $TMP
 cmp $TMP $M1 || exit 1
 
@@ -66,6 +71,7 @@ cmp $TMP $M1 || exit 1
 # Check PHRASE searching.
 # Matches: no hit
 #
+echo "./namazu -l '\"bar foo\"' $IDX | sort > $TMP" >> $LOG
 ./namazu -l '"bar foo"' $IDX | sort > $TMP
 cmp $TMP $M0 || exit 1
 
@@ -73,6 +79,7 @@ cmp $TMP $M0 || exit 1
 # Check PHRASE searching.
 # Matches: no hit
 #
+echo "./namazu -l '\"foo bar qux\"' $IDX | sort > $TMP" >> $LOG
 ./namazu -l '"foo bar qux"' $IDX | sort > $TMP
 cmp $TMP $M0 || exit 1
 
@@ -81,6 +88,7 @@ cmp $TMP $M0 || exit 1
 # Check WORD searching.
 # Matches: 1.txt 2.txt 3.txt
 #
+echo "./namazu -l 'baz' $IDX | sort > $TMP" >> $LOG
 ./namazu -l 'baz' $IDX | sort > $TMP
 cmp $TMP $M123 || exit 1
 
@@ -88,6 +96,7 @@ cmp $TMP $M123 || exit 1
 # Check PREFIX searching.
 # Matches: 1.txt
 #
+echo "./namazu -l 'f*' $IDX | sort > $TMP" >> $LOG
 ./namazu -l 'f*' $IDX | sort > $TMP
 cmp $TMP $M1 || exit 1
 
@@ -95,6 +104,7 @@ cmp $TMP $M1 || exit 1
 # Check SUFFIX searching.
 # Matches: 3.txt
 #
+echo "./namazu -l '*ult' $IDX | sort > $TMP" >> $LOG
 ./namazu -l '*ult' $IDX | sort > $TMP
 cmp $TMP $M3 || exit 1
 
@@ -102,6 +112,7 @@ cmp $TMP $M3 || exit 1
 # Check SUBSTRING searching.
 # Matches: 1.txt and 2.txt 3.txt
 #
+echo "./namazu -l '*u*' $IDX | sort > $TMP" >> $LOG
 ./namazu -l '*u*' $IDX | sort > $TMP
 cmp $TMP $M123 || exit 1
 
@@ -109,6 +120,7 @@ cmp $TMP $M123 || exit 1
 # Check REGEX searching.
 # Matches: 2.txt 3.txt
 #
+echo "./namazu -l '/c.*e/' $IDX | sort > $TMP" >> $LOG
 ./namazu -l '/c.*e/' $IDX | sort > $TMP
 cmp $TMP $M23 || exit 1
 
@@ -116,6 +128,7 @@ cmp $TMP $M23 || exit 1
 # Check REGEX searching.
 # Matches: 1.txt 2.txt 3.txt
 #
+echo "./namazu -l '/(foo|corge|grault)/' $IDX | sort > $TMP" >> $LOG
 ./namazu -l '/(foo|corge|grault)/' $IDX | sort > $TMP
 cmp $TMP $M123 || exit 1
 
@@ -123,6 +136,7 @@ cmp $TMP $M123 || exit 1
 # Check FIELD-specified searching.
 # Matches: 1.txt
 #
+echo "./namazu -l '+subject:foo' $IDX | sort > $TMP" >> $LOG
 ./namazu -l '+subject:foo' $IDX | sort > $TMP
 cmp $TMP $M1 || exit 1
 
@@ -130,6 +144,7 @@ cmp $TMP $M1 || exit 1
 # Check FIELD-specified searching.
 # Matches: 1.txt 2.txt 3.txt
 #
+echo "./namazu -l '+to:test@namazu.org' $IDX | sort > $TMP" >> $LOG
 ./namazu -l '+to:test@namazu.org' $IDX | sort > $TMP
 cmp $TMP $M123 || exit 1
 
@@ -137,6 +152,7 @@ cmp $TMP $M123 || exit 1
 # Check FIELD-specified searching with REGEX.
 # Matches: 2.txt 3.txt
 #
+echo "./namazu -l '+from:/test@(bar|baz).namazu.org/' $IDX | sort > $TMP" >> $LOG
 ./namazu -l '+from:/test@(bar|baz).namazu.org/' $IDX | sort > $TMP
 cmp $TMP $M23 || exit 1
 
@@ -144,14 +160,17 @@ cmp $TMP $M23 || exit 1
 # Check AND searching.
 # Matches: 1.txt
 #
+echo "./namazu -l 'foo bar' $IDX | sort > $TMP" >> $LOG
 ./namazu -l 'foo bar' $IDX | sort > $TMP
 cmp $TMP $M1 || exit 1
 
 # isomorphism
+echo "./namazu -l 'foo & bar' $IDX | sort > $TMP" >> $LOG
 ./namazu -l 'foo & bar' $IDX | sort > $TMP
 cmp $TMP $M1 || exit 1
 
 # isomorphism
+echo "./namazu -l 'foo and bar' $IDX | sort > $TMP" >> $LOG
 ./namazu -l 'foo and bar' $IDX | sort > $TMP
 cmp $TMP $M1 || exit 1
 
@@ -159,10 +178,12 @@ cmp $TMP $M1 || exit 1
 # Check OR searching.
 # Matches: 1.txt, 2.txt
 #
+echo "./namazu -l 'foo or bar' $IDX | sort > $TMP" >> $LOG
 ./namazu -l 'foo or bar' $IDX | sort > $TMP
 cmp $TMP $M12 || exit 1
 
 # isomorphism
+echo "./namazu -l 'foo | bar' $IDX | sort > $TMP" >> $LOG
 ./namazu -l 'foo | bar' $IDX | sort > $TMP
 cmp $TMP $M12 || exit 1
 
@@ -170,10 +191,12 @@ cmp $TMP $M12 || exit 1
 # Check NOT searching. 
 # Matches: 2.txt
 #
+echo "./namazu -l 'bar not foo' $IDX | sort > $TMP" >> $LOG
 ./namazu -l 'bar not foo' $IDX | sort > $TMP
 cmp $TMP $M2 || exit 1
 
 # isomorphism
+echo "./namazu -l 'bar ! foo' $IDX | sort > $TMP" >> $LOG
 ./namazu -l 'bar ! foo' $IDX | sort > $TMP
 cmp $TMP $M2 || exit 1
 
@@ -182,6 +205,7 @@ cmp $TMP $M2 || exit 1
 # Check complex searching. 
 # Matches: 1.txt
 #
+echo "./namazu -l '( foo or baz ) and foo' $IDX | sort > $TMP" >> $LOG
 ./namazu -l '( foo or baz ) and foo' $IDX | sort > $TMP
 cmp $TMP $M1 || exit 1
 
@@ -189,6 +213,7 @@ cmp $TMP $M1 || exit 1
 # Check complex searching. 
 # Matches: 2.txt
 #
+echo "./namazu -l '( foo or bar ) not foo' $IDX | sort > $TMP" >> $LOG
 ./namazu -l '( foo or bar ) not foo' $IDX | sort > $TMP
 cmp $TMP $M2 || exit 1
 
@@ -196,6 +221,7 @@ cmp $TMP $M2 || exit 1
 # Check complex searching. 
 # Matches: 1.txt 2.txt
 #
+echo "./namazu -l '( foo or baz ) not grault' $IDX | sort > $TMP" >> $LOG
 ./namazu -l '( foo or baz ) not grault' $IDX | sort > $TMP
 cmp $TMP $M12 || exit 1
 
@@ -203,6 +229,7 @@ cmp $TMP $M12 || exit 1
 # Check complex searching. 
 # Matches: 3.txt
 #
+echo "./namazu -l '( foo or baz ) not foo and grault' $IDX | sort > $TMP" >> $LOG
 ./namazu -l '( foo or baz ) not foo and grault' $IDX | sort > $TMP
 cmp $TMP $M3 || exit 1
 
@@ -210,6 +237,7 @@ cmp $TMP $M3 || exit 1
 # Check complex searching. 
 # Matches: no hit
 #
+echo "./namazu -l '( foo or bar or baz ) and foo and corge' $IDX | sort > $TMP" >> $LOG
 ./namazu -l '( foo or bar or baz ) and foo and corge' $IDX | sort > $TMP
 cmp $TMP $M0 || exit 1
 
@@ -217,8 +245,8 @@ cmp $TMP $M0 || exit 1
 # Check complex searching. 
 # Matches: 1.txt 2.txt 3.txt
 #
-./namazu -l '( /(foo|grault)/ or ( bar and corge ) ) and /q.*x/' \
-	$IDX | sort > $TMP
+echo "./namazu -l '( /(foo|grault)/ or ( bar and corge ) ) and /q.*x/' $IDX | sort > $TMP" >> $LOG
+./namazu -l '( /(foo|grault)/ or ( bar and corge ) ) and /q.*x/' $IDX | sort > $TMP
 cmp $TMP $M123 || exit 1
 
 rm -f $TMP $TMP.*

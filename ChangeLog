@@ -3,6 +3,10 @@
         * nmz/hlist.c (nmz_free_hlist): The rearrangement after free()
         is added.
 
+        * tests/namazu-6: Add debug messages.
+
+        * tests/namazu-cgi-9: STDERR message It was made to output to $LOG.
+
 2004-03-31  Yukio USUDA <usu@namazu.org>
 
 	* filter/mp3.pl: exclude no ID3 tag mpeg/audio file.
@@ -8689,4 +8693,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1139 2004-04-01 15:36:00 opengl2772 Exp $
+$Id: ChangeLog,v 1.1140 2004-04-01 15:41:47 opengl2772 Exp $

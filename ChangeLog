@@ -1,5 +1,7 @@
 2000-03-12  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* tests/data/Makefile.am (SUBDIRS): Add query.
+
 	* tests/Makefile.am (TESTS): Add namazu-5 and namazu-6 and remove
 	namazu-query and namazu-nasty-cases.
 

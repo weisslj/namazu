@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.91 2000-01-20 02:00:17 satoru Exp $
+ * $Id: namazu.c,v 1.92 2000-01-20 02:35:26 satoru Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -291,8 +291,6 @@ namazu_core(char * query, char *subquery, const char *argv0)
     /* Make full-pathname of NMZ.{head,foot,msg,body,slog}.?? */
     make_fullpathname_msg();
 
-    nmz_codeconv_query(query);
-    nmz_codeconv_query(subquery);
     strcpy(query_with_subquery, query);
     strcat(query_with_subquery, " ");
     strcat(query_with_subquery, subquery);

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: powerpoint.pl,v 1.24 2004-10-20 10:01:18 opengl2772 Exp $
+# $Id: powerpoint.pl,v 1.25 2004-11-21 13:52:10 opengl2772 Exp $
 # Copyright (C) 2000 Ken-ichi Hirose, 
 #               2000-2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -54,30 +54,25 @@ sub status() {
     $pptconvpath = util::checkcmd('ppthtml') || util::checkcmd('pptHtml');
 #    return 'no' unless defined $pptconvpath
     if (defined $pptconvpath) {
-	@pptconvopts = ();
-	if (!util::islang("ja")) {
-	    return 'yes';
-	} else {
-            if ($English::PERL_VERSION >= 5.008) {
-                return 'yes';
-            }
+        @pptconvopts = ();
+        if (!util::islang("ja")) {
+            return 'yes';
+        } else {
+            return 'yes' if ($English::PERL_VERSION >= 5.008);
+            return 'yes' if ($nkfversion >= 2.04);
 
-            if ($nkfversion >= 2.04) {
+        $utfconvpath = util::checkcmd('lv');
+            if (defined $utfconvpath) {
                 return 'yes';
+            } else {
+                return 'no';
             }
-
-	    $utfconvpath = util::checkcmd('lv');
-	    if (defined $utfconvpath) {
-		return 'yes';
-	    } else {
-		return 'no';
-	    }
-	} 
+        } 
     } else {
-	$pptconvpath = util::checkcmd('doccat');
-	@pptconvopts = ("-o", "e");
-	return 'yes' if defined $pptconvpath;
-	return 'no'; 
+        $pptconvpath = util::checkcmd('doccat');
+        @pptconvopts = ("-o", "e");
+        return 'yes' if defined $pptconvpath;
+        return 'no'; 
     }
 }
 
@@ -102,30 +97,30 @@ sub add_magic ($) {
 
 sub filter ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
-	= @_;
+        = @_;
     my $err = undef;
 
     $convname = basename($pptconvpath) unless (defined $convname);
 
     if ($convname =~ /ppthtml/i) {
-	$err = filter_ppt($orig_cfile, $cont, $weighted_str, $headings, $fields);
+        $err = filter_ppt($orig_cfile, $cont, $weighted_str, $headings, $fields);
     } else {
-	$err = filter_doccat($orig_cfile, $cont, $weighted_str, $headings, $fields);
+        $err = filter_doccat($orig_cfile, $cont, $weighted_str, $headings, $fields);
     }
     return $err;
 }
 
 sub filter_ppt ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
-	= @_;
+        = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
     util::vprint("Processing powerpoint file ... (using  '$pptconvpath')\n");
 
     my $tmpfile  = util::tmpnam('NMZ.powerpoint');
     {
-	my $fh = util::efopen("> $tmpfile");
-	print $fh $$cont;
+        my $fh = util::efopen("> $tmpfile");
+        print $fh $$cont;
         util::fclose($fh);
     }
 
@@ -134,8 +129,8 @@ sub filter_ppt ($$$$$) {
     my $title = $fields->{'title'};
 
     {
-	# handle a Japanese PowerPoint document correctly.
-	my @cmd = ($pptconvpath, @pptconvopts, $tmpfile);
+        # handle a Japanese PowerPoint document correctly.
+        my @cmd = ($pptconvpath, @pptconvopts, $tmpfile);
         my $fh_out = IO::File->new_tmpfile();
         my $status = util::syscmd(
             command => \@cmd,
@@ -155,21 +150,21 @@ sub filter_ppt ($$$$$) {
             unlink $tmpfile;
             return 'Too large powerpoint file.';
         }
-	$$cont = util::readfile($fh_out, "t");
+        $$cont = util::readfile($fh_out, "t");
         util::fclose($fh_out);
     }
     unlink $tmpfile;
 
     # Code conversion for Japanese document.
     if (util::islang("ja")) {
-	# Pattern for pptHtml
-	if ($$cont =~ m!^<FONT SIZE=-1><I>Last Updated&nbsp;using Excel 5.0 or 95</I></FONT><br>$!m) 
-	{
+        # Pattern for pptHtml
+        if ($$cont =~ m!^<FONT SIZE=-1><I>Last Updated&nbsp;using Excel 5.0 or 95</I></FONT><br>$!m) 
+        {
             $$cont = codeconv::shiftjis_to_eucjp($$cont);
             codeconv::normalize_eucjp($cont);
-	} else {
+        } else {
             utf8_to_eucjp($cont);
-	}
+        }
     } 
 
     # Extract the author and exclude pptHtml's footer at once.
@@ -188,28 +183,28 @@ sub filter_ppt ($$$$$) {
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($cont);
     $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
-	unless $fields->{'title'};
+        unless $fields->{'title'};
     gfilter::show_filter_debug_info($cont, $weighted_str,
-				    $fields, $headings);
+                                    $fields, $headings);
 
     return undef;
 }
 
 sub filter_doccat ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
-	= @_;
+        = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
     util::vprint("Processing powerpoint file ... (using  '$pptconvpath')\n");
 
     my $tmpfile  = util::tmpnam('NMZ.powerpoint');
     {
-	my $fh = util::efopen("> $tmpfile");
-	print $fh $$cont;
+        my $fh = util::efopen("> $tmpfile");
+        print $fh $$cont;
         util::fclose($fh);
     }
     {
-	my @cmd = ($pptconvpath, @pptconvopts, $tmpfile);
+        my @cmd = ($pptconvpath, @pptconvopts, $tmpfile);
         my $fh_out = IO::File->new_tmpfile();
         my $status = util::syscmd(
             command => \@cmd,
@@ -218,17 +213,17 @@ sub filter_doccat ($$$$$) {
                 "stderr" => "/dev/null",
             },
         );
-	my $size = util::filesize($fh_out);
-	if ($size == 0) {
+        my $size = util::filesize($fh_out);
+        if ($size == 0) {
             util::fclose($fh_out);
             unlink $tmpfile;
-	    return "Unable to convert file ($pptconvpath error occurred).";
-	}
-	if ($size > $conf::TEXT_SIZE_MAX) {
+            return "Unable to convert file ($pptconvpath error occurred).";
+        }
+        if ($size > $conf::TEXT_SIZE_MAX) {
             util::fclose($fh_out);
             unlink $tmpfile;
-	    return 'Too large powerpoint file.';
-	}
+            return 'Too large powerpoint file.';
+        }
         $$cont = util::readfile($fh_out, "t");
         util::fclose($fh_out);
     }
@@ -238,9 +233,9 @@ sub filter_doccat ($$$$$) {
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($cont);
     $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
-	unless $fields->{'title'};
+        unless $fields->{'title'};
     gfilter::show_filter_debug_info($cont, $weighted_str,
-				    $fields, $headings);
+                                    $fields, $headings);
 
     return undef;
 }

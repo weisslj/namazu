@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: msword.pl,v 1.54 2004-10-20 10:01:18 opengl2772 Exp $
+# $Id: msword.pl,v 1.55 2004-11-21 13:52:10 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi,
 #               2000-2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -86,7 +86,7 @@ sub status() {
     $wordconvpath = util::checkcmd('wvHtml');
     if (defined $wordconvpath) {
         if (!util::islang("ja")) {
-	    return 'yes';
+            return 'yes';
         } else {
             $utfconvpath   = util::checkcmd('lv');
             if (defined $wvversionpath
@@ -121,7 +121,7 @@ sub add_magic ($) {
 
 sub filter ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
-	= @_;
+        = @_;
     my $err = undef;
 
     $convname = basename($wordconvpath) unless (defined $convname);
@@ -136,7 +136,7 @@ sub filter ($$$$$) {
 
 sub filter_wv ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
-	= @_;
+        = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
     my $err = undef;
 
@@ -152,10 +152,10 @@ sub filter_wv ($$$$$) {
     # Check version of word document (greater than word7,8 or else).
     if (util::islang("ja")) {
         my $docversion = getDocumentVersion($tmpfile);
-	if ($docversion !~ /^word[78]$/) {
+        if ($docversion !~ /^word[78]$/) {
             unlink $tmpfile;
-	    return _("Unsupported format: ") . $docversion;
-	}
+            return _("Unsupported format: ") . $docversion;
+        }
     }
 
     # get summary info in all OLE documents.
@@ -182,15 +182,15 @@ sub filter_wv ($$$$$) {
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($cont);
     $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
-	unless $fields->{'title'};
+        unless $fields->{'title'};
     gfilter::show_filter_debug_info($cont, $weighted_str,
-				    $fields, $headings);
+                                    $fields, $headings);
     return undef;
 }
 
 sub filter_wvWare ($$$$$) {
     my ($cfile, $cont, $weighted_str, $headings, $fields)
-	= @_;
+        = @_;
 
     my $tmpfile2 = util::tmpnam('NMZ.word2');
     my ($ofile, $tpath) = ("", "");
@@ -247,13 +247,13 @@ sub filter_wvWare ($$$$$) {
 
 sub filter_wvHtml ($$$$$) {
     my ($cfile, $cont, $weighted_str, $headings, $fields)
-	= @_;
+        = @_;
 
     # Check version of wvWare (greater than 0.7 or else).
     my $tmpfile2 = util::tmpnam('NMZ.word2');
     my ($ofile, $tpath) = ("", "");
     {
-	my @cmd = ($wordconvpath, "--version");
+        my @cmd = ($wordconvpath, "--version");
         my $fh_out = IO::File->new_tmpfile();
         my $status = util::syscmd(
             command => \@cmd,
@@ -262,21 +262,21 @@ sub filter_wvHtml ($$$$$) {
                 "stderr" => "/dev/null",
             },
         );
-	my $result = util::readfile($fh_out, "t");
+        my $result = util::readfile($fh_out, "t");
         util::fclose($fh_out);
-	if ($result ne "" and $result !~ /usage/i and $result ge "0.7") {
+        if ($result ne "" and $result !~ /usage/i and $result ge "0.7") {
             ($ofile, $tpath) = fileparse($tmpfile2);
             @wordconvopts = ("--targetdir=$tpath");
-	} else {
+        } else {
             if (util::islang("ja")) {
                 my $docversion = getDocumentVersion($cfile);
                 return _("Unsupported format: ") . $docversion
                     if ($docversion =~ /^word7$/i);
             }
 
-	    $ofile = $tmpfile2;
-	    @wordconvopts = ();
-	}
+            $ofile = $tmpfile2;
+            @wordconvopts = ();
+        }
     }
 
     my @cmd = ($wordconvpath, @wordconvopts, $cfile, $ofile);
@@ -288,7 +288,7 @@ sub filter_wvHtml ($$$$$) {
         },
     );
     unless (-e $tmpfile2) {
-	return "Unable to convert file ($wordconvpath error occurred).";
+        return "Unable to convert file ($wordconvpath error occurred).";
     }
     my $size = util::filesize($tmpfile2);
     if ($size == 0) {
@@ -301,7 +301,7 @@ sub filter_wvHtml ($$$$$) {
     }
 
     {
-	$$cont = util::readfile($tmpfile2, "t");
+        $$cont = util::readfile($tmpfile2, "t");
     }
     unlink $tmpfile2;
 
@@ -321,19 +321,19 @@ sub filter_wvHtml ($$$$$) {
 
 sub filter_doccat ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
-	= @_;
+        = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
     
     util::vprint("Processing ms-word file ... (using  '$wordconvpath')\n");
 
     my $tmpfile  = util::tmpnam('NMZ.word');
     {
-	my $fh = util::efopen("> $tmpfile");
-	print $fh $$cont;
+        my $fh = util::efopen("> $tmpfile");
+        print $fh $$cont;
         util::fclose($fh);
     }
     {
-	my @cmd = ($wordconvpath, @wordconvopts, $tmpfile);
+        my @cmd = ($wordconvpath, @wordconvopts, $tmpfile);
         my $fh_out = IO::File->new_tmpfile();
         my $status = util::syscmd(
             command => \@cmd,
@@ -342,17 +342,17 @@ sub filter_doccat ($$$$$) {
                 "stderr" => "/dev/null",
             },
         );
-	my $size = util::filesize($fh_out);
-	if ($size == 0) {
+        my $size = util::filesize($fh_out);
+        if ($size == 0) {
             util::fclose($fh_out);
             unlink $tmpfile;
-	    return "Unable to convert file ($wordconvpath error occurred).";
-	}
-	if ($size > $conf::TEXT_SIZE_MAX) {
+            return "Unable to convert file ($wordconvpath error occurred).";
+        }
+        if ($size > $conf::TEXT_SIZE_MAX) {
             util::fclose($fh_out);
             unlink $tmpfile;
-	    return 'Too large word file.';
-	}
+            return 'Too large word file.';
+        }
         $$cont = util::readfile($fh_out, "t");
         util::fclose($fh_out);
     }
@@ -362,9 +362,9 @@ sub filter_doccat ($$$$$) {
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($cont);
     $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
-	unless $fields->{'title'};
+        unless $fields->{'title'};
     gfilter::show_filter_debug_info($cont, $weighted_str,
-				    $fields, $headings);
+                                    $fields, $headings);
 
     return undef;
 }

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: excel.pl,v 1.31 2004-10-20 10:01:18 opengl2772 Exp $
+# $Id: excel.pl,v 1.32 2004-11-21 13:52:10 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi,
 #               1999 NOKUBI Takatsugu, 
 #               2000-2004 Namazu Project All rights reserved.
@@ -55,28 +55,23 @@ sub status() {
     $xlconvpath = util::checkcmd('xlhtml') || util::checkcmd('xlHtml');
 #    return 'no' unless defined $xlconvpath;
     if (defined $xlconvpath) {
-	@xlconvopts = ("-m");
-	if (!util::islang("ja")) {
-	    return 'yes';
-	} else {
-            if ($English::PERL_VERSION >= 5.008) {
-	        return 'yes';
-            }
+        @xlconvopts = ("-m");
+        if (!util::islang("ja")) {
+            return 'yes';
+        } else {
+            return 'yes' if ($English::PERL_VERSION >= 5.008);
+            return 'yes' if ($nkfversion >= 2.04);
 
-            if ($nkfversion >= 2.04) {
-		return 'yes';
+            $utfconvpath = util::checkcmd('lv');
+            if (defined $utfconvpath) {
+                return 'yes';
+            } else {
+                return 'no';
             }
-
-	    $utfconvpath = util::checkcmd('lv');
-	    if (defined $utfconvpath) {
-		return 'yes';
-	    } else {
-		return 'no';
-	    }
-	} 
+        } 
     } else {
         $xlconvpath = util::checkcmd('doccat');
-	@xlconvopts = ("-o", "e");
+        @xlconvopts = ("-o", "e");
         return 'yes' if defined $xlconvpath;
         return 'no'; 
     }
@@ -103,30 +98,30 @@ sub add_magic ($) {
 
 sub filter ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
-	= @_;
+        = @_;
     my $err = undef;
 
     $convname = basename($xlconvpath) unless (defined $convname);
 
     if ($convname =~ /xlhtml/i) {
-	$err = filter_xl($orig_cfile, $cont, $weighted_str, $headings, $fields);
+        $err = filter_xl($orig_cfile, $cont, $weighted_str, $headings, $fields);
     } else {
-	$err = filter_doccat($orig_cfile, $cont, $weighted_str, $headings, $fields);
+        $err = filter_doccat($orig_cfile, $cont, $weighted_str, $headings, $fields);
     }
     return $err;
 }
 
 sub filter_xl ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
-	= @_;
+        = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
     util::vprint("Processing ms-excel file ... (using  '$xlconvpath')\n");
 
     my $tmpfile  = util::tmpnam('NMZ.excel');
     {
-	my $fh = util::efopen("> $tmpfile");
-	print $fh $$cont;
+        my $fh = util::efopen("> $tmpfile");
+        print $fh $$cont;
         util::fclose($fh);
     }
 
@@ -137,7 +132,7 @@ sub filter_xl ($$$$$) {
     # -m: No encoding for multibyte. It's necessary to
     # handle a Japanese Excel 5.0 or 95 document correctly.
     {
-	my @cmd = ($xlconvpath, @xlconvopts, $tmpfile);
+        my @cmd = ($xlconvpath, @xlconvopts, $tmpfile);
         my $fh_out = IO::File->new_tmpfile();
         my $status = util::syscmd(
             command => \@cmd,
@@ -146,32 +141,32 @@ sub filter_xl ($$$$$) {
                 "stderr" => "/dev/null",
             },
         );
-	my $size = util::filesize($fh_out);
-	if ($size == 0) {
+        my $size = util::filesize($fh_out);
+        if ($size == 0) {
             util::fclose($fh_out);
             unlink $tmpfile;
-	    return "Unable to convert file ($xlconvpath error occurred).";
-	}
-	if ($size > $conf::TEXT_SIZE_MAX) {
+            return "Unable to convert file ($xlconvpath error occurred).";
+        }
+        if ($size > $conf::TEXT_SIZE_MAX) {
             util::fclose($fh_out);
             unlink $tmpfile;
-	    return 'Too large excel file.';
-	}
-	$$cont = util::readfile($fh_out, "t");
+            return 'Too large excel file.';
+        }
+        $$cont = util::readfile($fh_out, "t");
         util::fclose($fh_out);
     }
     unlink $tmpfile;
 
     # Code conversion for Japanese document.
     if (util::islang("ja")) {
-	# Pattern for xlHtml version 0.2.6.
-	if ($$cont =~ m!^<FONT SIZE="?-1"?><I>Last Updated(&nbsp;using| with) Excel 5.0 or 95</I></FONT><br>$!m) 
-	{
+        # Pattern for xlHtml version 0.2.6.
+        if ($$cont =~ m!^<FONT SIZE="?-1"?><I>Last Updated(&nbsp;using| with) Excel 5.0 or 95</I></FONT><br>$!m) 
+        {
             $$cont = codeconv::shiftjis_to_eucjp($$cont);
             codeconv::normalize_eucjp($cont);
-	} else {
+        } else {
             utf8_to_eucjp($cont);
-	}
+        }
     } 
 
     # Extract the author and exclude xlHtml's footer at once.
@@ -191,28 +186,28 @@ sub filter_xl ($$$$$) {
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($cont);
     $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
-	unless $fields->{'title'};
+        unless $fields->{'title'};
     gfilter::show_filter_debug_info($cont, $weighted_str,
-				    $fields, $headings);
+                                    $fields, $headings);
 
     return undef;
 }
 
 sub filter_doccat ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
-	= @_;
+        = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
     util::vprint("Processing ms-excel file ... (using  '$xlconvpath')\n");
 
     my $tmpfile  = util::tmpnam('NMZ.excel');
     {
-	my $fh = util::efopen("> $tmpfile");
-	print $fh $$cont;
+        my $fh = util::efopen("> $tmpfile");
+        print $fh $$cont;
         util::fclose($fh);
     }
     {
-	my @cmd = ($xlconvpath, @xlconvopts, $tmpfile);
+        my @cmd = ($xlconvpath, @xlconvopts, $tmpfile);
         my $fh_out = IO::File->new_tmpfile();
         my $status = util::syscmd(
             command => \@cmd,
@@ -221,17 +216,17 @@ sub filter_doccat ($$$$$) {
                 "stderr" => "/dev/null",
             },
         );
-	my $size = util::filesize($fh_out);
-	if ($size == 0) {
+        my $size = util::filesize($fh_out);
+        if ($size == 0) {
             util::fclose($fh_out);
             unlink $tmpfile;
-	    return "Unable to convert file ($xlconvpath error occurred)";
-	}
-	if ($size > $conf::TEXT_SIZE_MAX) {
+            return "Unable to convert file ($xlconvpath error occurred)";
+        }
+        if ($size > $conf::TEXT_SIZE_MAX) {
             util::fclose($fh_out);
             unlink $tmpfile;
-	    return 'Too large excel file.';
-	}
+            return 'Too large excel file.';
+        }
         $$cont = util::readfile($fh_out, "t");
         util::fclose($fh_out);
     }
@@ -241,9 +236,9 @@ sub filter_doccat ($$$$$) {
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($cont);
     $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
-	unless $fields->{'title'};
+        unless $fields->{'title'};
     gfilter::show_filter_debug_info($cont, $weighted_str,
-				    $fields, $headings);
+                                    $fields, $headings);
 
     return undef;
 }

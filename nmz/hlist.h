@@ -12,8 +12,6 @@
 #ifndef __CEXTRACT__
 #if __STDC__
 
-extern double __copysign ( double __x, double __y );
-extern __long_double_t __copysignl ( __long_double_t __x, __long_double_t __y );
 extern NmzResult andmerge ( NmzResult left, NmzResult right, int *ignore );
 extern NmzResult notmerge ( NmzResult left, NmzResult right, int *ignore );
 extern NmzResult ormerge ( NmzResult left, NmzResult right );
@@ -33,8 +31,6 @@ extern char *get_sortfield ( void );
 
 #else /* __STDC__ */
 
-extern double __copysign (/* double __x, double __y */);
-extern __long_double_t __copysignl (/* __long_double_t __x, __long_double_t __y */);
 extern NmzResult andmerge (/* NmzResult left, NmzResult right, int *ignore */);
 extern NmzResult notmerge (/* NmzResult left, NmzResult right, int *ignore */);
 extern NmzResult ormerge (/* NmzResult left, NmzResult right */);

@@ -1,3 +1,9 @@
+1999-08-30  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* lib/codeconv.pl: Fix `tmpname' function name typo.
+	* Makefile.am: Ignore test command return value on 
+	  install-data-local target.
+
 1999-08-30  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* src/mknmz.pl.in (make_headfoot): Fix $templatedir2.

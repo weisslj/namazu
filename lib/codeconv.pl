@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: codeconv.pl,v 1.3 1999-08-29 02:57:48 satoru Exp $
+# $Id: codeconv.pl,v 1.4 1999-08-30 02:48:11 knok Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -107,7 +107,7 @@ sub toeuc ($) {
     my ($contref) = @_;
 
     if ($conf::LANGUAGE eq "ja" && ! $var::USE_NKF_MODULE) {
-	my $nkftmp = util::tmpname("NMZ.nkf");
+	my $nkftmp = util::tmpnam("NMZ.nkf");
 	{
 	    my $nh = util::efopen("|$conf::NKF -emXZ1 > $nkftmp");
 	    print $nh $$contref;

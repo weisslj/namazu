@@ -1,3 +1,7 @@
+2004-04-20  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * scripts/nmzmerge.in: Fixed typo. (namazu-user-ja#03774)
+
 2004-04-16  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * nmz/Makefile.am: 'make clean' It corrects so that 
@@ -8741,4 +8745,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1152 2004-04-16 14:35:53 opengl2772 Exp $
+$Id: ChangeLog,v 1.1153 2004-04-19 20:32:32 opengl2772 Exp $

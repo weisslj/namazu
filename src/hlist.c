@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.3 1999-05-14 04:38:50 satoru Exp $
+ * $Id: hlist.c,v 1.4 1999-05-29 08:21:00 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -512,7 +512,7 @@ void put_hlist(HLIST hlist)
     int i, j, before_did = -1;
     uchar buf[BUFSIZE];
 
-    if (hlist.n <= 0)
+    if (hlist.n <= 0 || HListMax == 0)
 	return;
     for (i = HListWhence; i < hlist.n; i++) {
 	if (!AllList && (i >= HListWhence + HListMax))

@@ -395,8 +395,8 @@ s#<em>aaa</em>#<strong>bbb</strong>#
             bbb (http://foo.bar.jp/) となります。)
 </p>
 
-  <li> (/usr/local/etc/namazu/mknmzrc の $conf::ALLOW_FILE,
-     $conf::DENY_FILE の設定によって) 
+  <li> (/usr/local/etc/namazu/mknmzrc の $ALLOW_FILE,
+     $DENY_FILE の設定によって) 
      *.html, *.txt, *.tex, *.pdf, MH形式のメイルなどを対象とします。
 </ul>
 
@@ -598,7 +598,7 @@ cgi-bin が動く HTTP server を Webブラウザを通じて利用する形
 <dd>
 指定した「対象ディレクトリ」の中で、どのファイルがインデック
 ス作成の対象とされるかは <strong>(mknmzrc の) </strong>
-$conf::ALLOW_FILE, $conf::DENY_FILE の設定、あるいは -a,
+$ALLOW_FILE, $DENY_FILE の設定、あるいは -a,
 --allow, --deny, --exclude オプションの設定で決まります。
 
 <dt>mew-1.94b2x と mew-nmz.el
@@ -729,7 +729,7 @@ perl -MNKF -e ''
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: tutorial.html,v 1.36 2000-02-20 12:29:14 satoru Exp $
+$Id: tutorial.html,v 1.37 2000-02-25 14:04:36 satoru Exp $
 </div>
 <address>
 developers@namazu.org

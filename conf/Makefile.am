@@ -6,6 +6,4 @@ EXTRA_DIST = namazurc-sample
 CLEANFILES = mknmzrc-sample
 
 mknmzrc-sample: ../pl/conf.pl
-	@grep -v '^package conf;$$' ../pl/conf.pl | \
-	perl -pe 's/^(\$$|\@|\%)/$$1conf::/' | \
-	perl -pe 's/^/\x23 / unless /^(\x23|$$)/' > $@
+	perl -pe 's/^/\x23 / unless /^(\x23|package|$$)/' ../pl/conf.pl > $@

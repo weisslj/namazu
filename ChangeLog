@@ -1,5 +1,9 @@
 2000-02-25  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* pl/conf.pl.in: Change comments.
+
+	* conf/Makefile.am (mknmzrc-sample): Change the way to make.
+
 	* doc/en/manual.html: Rewritten.
 
 	* scripts/mknmz.in (getmsg): New function.

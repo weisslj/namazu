@@ -1,7 +1,7 @@
 #
 # This is a Namazu configuration file for mknmz.
 #
-package conf;
+package conf;  # Don't remove this line!
 
 #---------------------------------------------------------------
 #

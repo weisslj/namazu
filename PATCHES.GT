@@ -1,10 +1,5 @@
-===================================================================
-RCS file: /circus/cvsroot/namazu/po/Makefile.in.in,v
-retrieving revision 1.2
-retrieving revision 1.3
-diff -u -r1.2 -r1.3
---- namazu/po/Makefile.in.in	1999/10/11 04:25:20	1.2
-+++ namazu/po/Makefile.in.in	1999/12/21 14:04:53	1.3
+--- gettext-0.10.35/po/Makefile.in.in.orig	1999/10/11 04:25:20
++++ gettext-0.10.35/po/Makefile.in.in	1999/12/21 14:04:53
 @@ -82,10 +82,10 @@
  
  all: all-@USE_NLS@

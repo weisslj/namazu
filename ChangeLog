@@ -1,3 +1,11 @@
+2000-12-28  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* THANKS: Added.
+
+	* filter/msword.pl (status): Changed regex pattern of
+	wv-libconfig again.
+	(Contributed by Takuya Nakayama)
+
 2000-12-27  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* filter/msword.pl (status): Changed regex pattern of
@@ -6174,4 +6182,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.775 2000-12-27 07:27:02 knok Exp $
+$Id: ChangeLog,v 1.776 2000-12-28 04:31:46 knok Exp $

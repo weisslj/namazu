@@ -3,7 +3,7 @@
 
 #define DIRECTIVE_CHARS "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_"
 
-void show_conf(void);
-int load_conf(char *);
+extern void show_conf(void);
+extern int load_conf(char *);
 
 #endif /* _CONF_H */

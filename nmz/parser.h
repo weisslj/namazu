@@ -16,7 +16,7 @@
 #define AND_OP 1
 #define NOT_OP 2
 
-void init_parser(void);
-HLIST expr(void);
+extern void init_parser(void);
+extern HLIST expr(void);
 
 #endif /* _PARSER_H */

@@ -5,7 +5,7 @@
 #define ALLOC(type) (type*)xmalloc(sizeof(type))
 #define MEMZERO(p,type,n) memset((p), 0, sizeof(type)*(n))
 
-int replace_uri(char*);
-HLIST regex_grep(char*, FILE*, char*, int);
+extern int replace_uri(char*);
+extern HLIST regex_grep(char*, FILE*, char*, int);
 
 #endif /* _RE_H */

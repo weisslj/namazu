@@ -25,6 +25,6 @@ struct cgivar_func {
 };
 typedef struct cgivar_func CGIVAR_FUNC;
 
-void init_cgi(char*, char*);
+extern void init_cgi(char*, char*);
 
 #endif /* _CGI_H */

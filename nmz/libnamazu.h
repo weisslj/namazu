@@ -2,7 +2,7 @@
  * 
  * libnamazu.h - Namazu library api
  *
- * $Id: libnamazu.h,v 1.6 1999-11-18 08:58:58 satoru Exp $
+ * $Id: libnamazu.h,v 1.7 1999-11-18 09:42:11 satoru Exp $
  * 
  */
 
@@ -124,22 +124,22 @@ typedef struct indices INDICES;
 
 #include "var.h"
 
-void free_idxnames(void);
-void free_aliases(void);
-void free_replaces(void);
-void make_fullpathname_msg(void);
-void codeconv_query(char *query);
-void getenv_namazurc(void);
-void uniq_idxnames(void);
-int expand_idxname_aliases(void);
-int complete_idxnames(void);
-char *set_namazurc(char *arg);
-char *set_template(char *arg);
-void set_sortbydate(void);
-void set_sortbyscore(void);
-void set_sortbyfield(void);
-void set_sort_descending(void);
-void set_sort_ascending(void);
-void set_debug(void);
+extern void free_idxnames(void);
+extern void free_aliases(void);
+extern void free_replaces(void);
+extern void make_fullpathname_msg(void);
+extern void codeconv_query(char *query);
+extern void getenv_namazurc(void);
+extern void uniq_idxnames(void);
+extern int expand_idxname_aliases(void);
+extern int complete_idxnames(void);
+extern char *set_namazurc(char *arg);
+extern char *set_template(char *arg);
+extern void set_sortbydate(void);
+extern void set_sortbyscore(void);
+extern void set_sortbyfield(void);
+extern void set_sort_descending(void);
+extern void set_sort_ascending(void);
+extern void set_debug(void);
 
 #endif /* _LIBNAMAZU_H */

@@ -1,9 +1,9 @@
 #ifndef _I18N_H
 #define _I18N_H
 
-int is_lang_ja(void);
-char *set_lang(char *);
-char *get_lang(void);
-char *choose_msgfile(char *fname);
+extern int is_lang_ja(void);
+extern char *set_lang(char *);
+extern char *get_lang(void);
+extern char *choose_msgfile(char *fname);
 
 #endif /* _I18N_H */

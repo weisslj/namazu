@@ -3,7 +3,7 @@
   util.h -
 
   $Author: satoru $
-  $Date: 1999-11-18 02:46:02 $
+  $Date: 1999-11-18 09:42:12 $
   created at: Thu Mar  9 11:55:53 JST 1995
 
   Copyright (C) 1993-1998 Yukihiro Matsumoto
@@ -47,48 +47,48 @@
  *
  ************************************************************/
 
-unsigned long scan_hex();
-unsigned long scan_oct();
+extern unsigned long scan_hex();
+extern unsigned long scan_oct();
 
-void *xmalloc(unsigned long);
-void *xrealloc(void*, unsigned long);
-void tr(char*, char*, char*);
-void chomp(char*);
+extern void *xmalloc(unsigned long);
+extern void *xrealloc(void*, unsigned long);
+extern void tr(char*, char*, char*);
+extern void chomp(char*);
 
-void strlower();
-void delete_backslashes();
-int get_unpackw();
-int read_unpackw(FILE *, int *, int);
+extern void strlower();
+extern void delete_backslashes();
+extern int get_unpackw();
+extern int read_unpackw(FILE *, int *, int);
 
-char *lastc();
+extern char *lastc();
 size_t freadx();
-long getidxptr(FILE* , long);
-int issymbol(int);
+extern long getidxptr(FILE* , long);
+extern int issymbol(int);
 #ifndef die /* for perl XSUB... */
-void die(char*, ...);
+extern void die(char*, ...);
 #endif
-void diemsg(char*, ...);
-void diewithmsg();
-void warnf(char*, ...);
-void debug_printf(char*, ...);
-void pathcat(char*, char*);
+extern void diemsg(char*, ...);
+extern void diewithmsg();
+extern void warnf(char*, ...);
+extern void debug_printf(char*, ...);
+extern void pathcat(char*, char*);
 
-int  isnumstr(char *);
-void commas(char *);
+extern int  isnumstr(char *);
+extern void commas(char *);
 
-char *strcasestr(char *, char *);
-int strprefixcmp(char *, char *);
-int strsuffixcmp(char *, char *);
-int strprefixcasecmp(char *, char *);
-int strsuffixcasecmp(char *, char *);
-char *readfile(char*);
-void subst(char*, char*, char*);
-void cat(char*);
+extern char *strcasestr(char *, char *);
+extern int strprefixcmp(char *, char *);
+extern int strsuffixcmp(char *, char *);
+extern int strprefixcasecmp(char *, char *);
+extern int strsuffixcasecmp(char *, char *);
+extern char *readfile(char*);
+extern void subst(char*, char*, char*);
+extern void cat(char*);
 
-char *safe_getenv(char *s);
+extern char *safe_getenv(char *s);
 
-void print(char*);
-void wprint(char*);
+extern void print(char*);
+extern void wprint(char*);
 
 #endif /* _UTIL_H */
 

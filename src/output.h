@@ -1,17 +1,17 @@
 #ifndef _OUTPUT_H
 #define _OUTPUT_H
 
-void html_print(char*);
-void put_current_range(int);
-void put_page_index(int);
-void print_msgfile(char*);
+extern void html_print(char*);
+extern void put_current_range(int);
+extern void put_page_index(int);
+extern void print_msgfile(char*);
 
-void print_hlist(HLIST);
+extern void print_hlist(HLIST);
 
-void print_result1(void);
-void print_hitnum(int n);
-void print_listing(HLIST hlist);
-void print_range(HLIST hlist);
-void print_hit_count();
+extern void print_result1(void);
+extern void print_hitnum(int n);
+extern void print_listing(HLIST hlist);
+extern void print_range(HLIST hlist);
+extern void print_hit_count();
 
 #endif /* _OUTPUT_H */

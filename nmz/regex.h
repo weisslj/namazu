@@ -86,9 +86,9 @@
 
 extern const unsigned char *re_mbctab;
 #if defined(__STDC__)
-void re_mbcinit (int);
+extern void re_mbcinit (int);
 #else
-void re_mbcinit ();
+extern void re_mbcinit ();
 #endif
 
 #undef ismbchar
@@ -183,7 +183,7 @@ typedef struct
 #ifdef __STDC__
 
 extern char *re_compile_pattern (const char *, int, struct re_pattern_buffer *);
-void re_free_pattern (struct re_pattern_buffer *);
+extern void re_free_pattern (struct re_pattern_buffer *);
 /* Is this really advertised?  */
 extern void re_compile_fastmap (struct re_pattern_buffer *);
 extern int re_search (struct re_pattern_buffer *, const char*, int, int, int,
@@ -203,7 +203,7 @@ extern int re_exec (const char *);
 #else /* !__STDC__ */
 
 extern char *re_compile_pattern ();
-void re_free_regexp ();
+extern void re_free_regexp ();
 /* Is this really advertised? */
 extern void re_compile_fastmap ();
 extern int re_search ();

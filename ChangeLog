@@ -1,5 +1,7 @@
 1999-11-18  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* {src,nmz}/*.h: Add 'extern' keyword for all public functions.
+	
 	* nmz/util.c (reverse_byte_order): Be type dependent.
 	(freadx): Be type dependent.
 

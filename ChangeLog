@@ -1,3 +1,7 @@
+2000-09-28  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* doc/en/manual.html: Changed on describing msword.pl.
+
 2000-09-27  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* filter/msword.pl: Adapted to wvWare 0.6.0.
@@ -5979,4 +5983,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.731 2000-09-27 06:09:55 knok Exp $
+$Id: ChangeLog,v 1.732 2000-09-28 06:25:28 knok Exp $

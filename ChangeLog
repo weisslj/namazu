@@ -1,5 +1,12 @@
 2000-01-28  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* template/NMZ.result.normal.ja: New file.
+
+	* template/NMZ.result.short.ja: Ditto.
+
+	* src/output.c (load_nmz_result): New function.
+	(load_nmz_result): Handle lang suffix such as ".ja".
+
 	* configure.in: Fix OPT_ADMIN_EMAIL handling bug.
 
 	* scripts/mknmz.pl.in (init): Overwrite $TEMPLATEDIR if

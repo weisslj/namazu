@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.61 2000-01-28 05:59:59 satoru Exp $
+ * $Id: output.c,v 1.62 2000-01-28 08:40:05 satoru Exp $
  * 
  * Copyright (C) 2000 Namazu Project All rights reserved..
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -317,14 +317,33 @@ is_cgimode(void)
 static char*
 load_nmz_result(const char *basedir)
 {
-    char fname[BUFSIZE];
+    char fname[BUFSIZE], lang_suffix[BUFSIZE], *buf;
 
     nmz_pathcat(basedir, NMZ.result);
     strcpy(fname, NMZ.result);
     strcat(fname, ".");
     strcat(fname, get_templatesuffix());  /* usually "normal" */
 
-    return nmz_readfile(fname);
+    if (nmz_choose_msgfile_suffix(fname, lang_suffix) != SUCCESS) {
+	nmz_warn_printf("%s: %s", fname, strerror(errno));
+	return NULL;
+    } 
+    strcat(fname, lang_suffix);
+
+    /* buf is allocated in nmz_readfile. */
+    buf = nmz_readfile(fname); 
+    if (buf == NULL) { /* failed */
+	return NULL;
+    }
+
+    /* In case of suffix isn't equal to lang, we needs code conversion */
+    if (strcmp(lang_suffix, nmz_get_lang()) != 0) {
+	char *new = nmz_conv_ext(buf); /* new is allocated in nmz_conv_ext. */
+	free(buf);  /* Then we should free buf's memory */
+	buf = new;
+    }
+
+    return buf;
 }
 
 /*
@@ -398,11 +417,11 @@ print_hlist(NmzResult hlist)
 	    if (template == NULL && template_caches[idxid] == NULL) {
 		char *basedir = nmz_get_idxname(idxid);
 		template_caches[idxid] = load_nmz_result(basedir);
-		template = template_caches[idxid];
-		if (template == NULL) {
+		if (template_caches[idxid] == NULL) {
 		    return ERR_CANNOT_OPEN_RESULT_FORMAT_FILE;
 		}
 	    }
+	    template = template_caches[idxid];
 	}
 
 	compose_result(hlist.data[i], counter, template,  result);

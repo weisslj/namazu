@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.48 2000-01-28 05:59:58 satoru Exp $
+ * $Id: form.c,v 1.49 2000-01-28 08:40:05 satoru Exp $
  * 
  * Copyright (C) 2000 Namazu Project All rights reserved..
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -330,7 +330,7 @@ read_headfoot(const char *fname)
     /* In case of suffix isn't equal to lang, we needs code conversion */
     if (strcmp(suffix, nmz_get_lang()) != 0) {
 	char *new = nmz_conv_ext(buf); /* new is allocated in nmz_conv_ext. */
-	free(buf);  /* Then we shoul free buf's memory */
+	free(buf);  /* Then we should free buf's memory */
 	buf = new;
     }
     

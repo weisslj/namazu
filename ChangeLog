@@ -1,3 +1,7 @@
+2000-02-16  Ryuji Abe <raeva@t3.rim.or.jp>
+
+	* configure.in (LTVERSION): Set 3:0:0.
+
 2000-02-16  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* src/rcfile.c (loaded_rcfiles): Be static.

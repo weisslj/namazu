@@ -1,5 +1,5 @@
 # -*- Perl -*-
-# $Id: usage.pl,v 1.11 1999-09-06 01:13:09 satoru Exp $
+# $Id: usage.pl,v 1.12 1999-09-08 00:43:10 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -44,6 +44,8 @@ $var::COPYRIGHT
   対象ファイル:
     -a, --all                すべてのファイルを対象とする
     -e, --robots-txt         ロボットよけされているファイルを除外する
+    -h, --mailnews           対象ファイルをすべて mail/news とみなす
+    -t, --media-type=mtype   対象ファイルの文書形式を指定する
     -A, --htaccess           .htaccess で制限されたファイルを除外する
     -F, --target-list=file   インデックス対象のファイルのリストを読み込む
         --allow=regex        対象ファイル名の正規表現を指定する
@@ -98,6 +100,8 @@ Usage: mknmz [options] <target(s)>
   Target files:
     -a, --all                target all files.
     -e, --robots-txt         exclude files which is excluded by robots.txt.
+    -h, --mailnews           presume all target files are mail/news.
+    -t, --media-type=mtype   set a media type for all target files explicitly.
     -A, --htaccess           exclude files restricted by .htaccess.
     -F, --target-list=file   load a file which contains list of target files.
         --allow=regex        set a regex for file names which will be allowed.

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: find.pl,v 1.7 1999-09-06 03:22:00 satoru Exp $
+# $Id: find.pl,v 1.8 1999-09-08 00:43:10 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -64,16 +64,6 @@ sub find {
 }
 
 
-# Sort file names with consideration for numbers.
-# Original of this code was contributed by <furukawa@tcp-ip.or.jp>. 
-sub fncmp {
-    my ($x, $y) = ($a, $b);
-
-    $x =~ s/(\d+)/sprintf("%08d", $1)/ge;
-    $y =~ s/(\d+)/sprintf("%08d", $1)/ge;
-    $x cmp $y;
-}
-
 sub finddir {
     my ($dir,$nlink,$rarray) = @_;
     local ($dev,$ino,$mode,$subcount);
@@ -96,8 +86,8 @@ sub finddir {
     my @filenames = grep(!/^\.\.?$/, readdir(DIR));
     closedir(DIR);
 
-    # sort filenames with fncmp()
-    @filenames = sort fncmp @filenames;
+    # Sort file names 
+    @filenames = sort @filenames;
 
     if ($nlink == 2 && !$dont_use_nlink) {  # This dir has no subdirectories.
 	for (@filenames) {

@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.66 1999-09-07 07:41:43 satoru Exp $
+# $Id: mknmz.pl.in,v 1.67 1999-09-08 00:43:11 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -52,6 +52,7 @@ my %KeyIndexLast = ();
 my %CheckPoint = ("on" => undef, "continue" => undef);
 my $TestMode   = @TEST_MODE@;
 my $ConfigFile = undef;
+my $MediaType  = undef;
 
 my $ReplaceCode  = undef;  # perl code for transforming URI
 my @Seed = ();
@@ -502,9 +503,13 @@ sub load_document ($$$$\%) {
     # filtering process
     my $mtype;
     while (1) {
-	my $mtype_n = $Magic->checktype_byfilename($cfile);
-	my $mtype_c = $Magic->checktype_contents($$contref);
-	$mtype = decide_type($mtype_n, $mtype_c);
+	if (defined $MediaType) {
+	    $mtype = $MediaType;
+	} else {
+	    my $mtype_n = $Magic->checktype_byfilename($cfile);
+	    my $mtype_c = $Magic->checktype_contents($$contref);
+	    $mtype = decide_type($mtype_n, $mtype_c);
+	}
 	if (defined $var::REQUIRE_CODECONV{$mtype}) {
 	      codeconv::toeuc($contref);
 	      $$contref =~ s/[ \t]+/ /g;   # remain LFs v1.03
@@ -691,6 +696,7 @@ sub parse_options ()
     my $opt_kakasi = 0;
     my $opt_checkpoint_sub = 0;
     my $opt_show_config = 0;
+    my $opt_mailnews = 0;
 
     my $output_dir = undef;
     my $update_index = undef;
@@ -726,12 +732,13 @@ sub parse_options ()
 	       'd|debug'             => \$var::Opt{'debug'},
 	       'e|robots-txt'        => \$var::Opt{'robotexclude'},
 	       'f|config=s'          => \$ConfigFile,
-	       'h|rfc822'            => \$opt_dummy, # for backward compat.
+	       'h|mailnews'          => \$opt_mailnews,
 	       'k|use-kakasi'        => \$opt_kakasi,
 	       'm|use-chasen-morph'  => \$opt_chasen_morph,
 	       'q|quiet'             => \$var::Opt{'quiet'},
 	       'r|replace=s'         => \$ReplaceCode,
 	       's|checkpoint'        => \$CheckPoint{'on'},
+	       't|media-type=s'      => \$MediaType,
 	       'u|uuencode'          => \$opt_dummy, # for backward compat.
 	       'v|version'           => \$opt_version,
 	       'x|no-heading-summary'=> \$var::Opt{'noheadabst'},
@@ -767,6 +774,10 @@ sub parse_options ()
 	($output_dir, @targets) = parse_options();
 	$output_dir = $update_index;
 	return ($output_dir, @targets);
+    }
+
+    if ($opt_mailnews) {
+	$MediaType = 'message/rfc822';
     }
     if ($opt_all) {
 	$conf::ALLOW_REGEX = ".*";

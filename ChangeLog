@@ -1,3 +1,15 @@
+1999-09-08  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* src/mknmz.pl.in, lib/usage.pl: Add -h, --mailnews option for
+	limitting target files to mail/news. (identical with
+	--media-type=message/rfc822 )
+	
+	* src/mknmz.pl.in, lib/usage.pl: Add --media-type=type option for
+	skipping media type guessing with File::MMagic.
+	
+	* lib/find.pl: Abolish fncmp().
+	
+
 1999-09-07  Ryuji Abe <raeva@t3.rim.or.jp>
 
 	* configure.in: Using AC_CONFIG_SUBDIRS macro for tknamazu configuration.

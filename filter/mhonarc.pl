@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mhonarc.pl,v 1.19 2000-02-11 12:54:21 satoru Exp $
+# $Id: mhonarc.pl,v 1.20 2000-02-12 10:54:30 satoru Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -98,7 +98,10 @@ sub mhonarc_filter ($$) {
     # Separate headers and a body message.
     $$contref =~ s/<!--X-Head-Body-Sep-Begin-->/\n/;
 
-    # For pluggin spaces before headers
+    # Handle a field consists of two or more lines.
+    $$contref =~ s!^(<LI>)(.*)(</LI>$)!$1 . lftospace($2) . $3!gems;
+
+    # For plugging spaces before headers
     $$contref =~ s/^<LI>//gim;
 
     # Make header's name not to be indexed words.
@@ -106,4 +109,9 @@ sub mhonarc_filter ($$) {
     $$contref =~ s/^\s+//;
 }
 
+sub lftospace ($) {
+    my ($str) = @_;
+    $str =~ s/[\r\n]/ /g;
+    return $str;
+}
 1;

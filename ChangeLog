@@ -1,10 +1,7 @@
-2000-02-12  Rei FURUKAWA  <furukawa@tcp-ip.or.jp>
-
-	* pl/nmzidx.pl: Add new function remove_tmpdb().
-	* scripts/gcnmz.in: Check NMZ.t before processing.
-
 2000-02-12  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* filter/mhonarc.pl (lftospace): New function.
+	(mhonarc_filter): Handle a field consists of two or more lines.
 	* scripts/mknmz.in (find_target): Sort file names with
 	consideration for numbers.
 	(check_file): Add -e and -r checking.
@@ -17,6 +14,11 @@
 
 	* filter/mailnews.pl (mailnews_filter): Do not use encode_entity().
 	(mailnews_filter): Change "if" conditions order.
+
+2000-02-12  Rei FURUKAWA  <furukawa@tcp-ip.or.jp>
+
+	* pl/nmzidx.pl: Add new function remove_tmpdb().
+	* scripts/gcnmz.in: Check NMZ.t before processing.
 
 2000-02-11  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 

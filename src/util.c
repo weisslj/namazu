@@ -249,6 +249,9 @@ uchar *strcasestr(uchar *haystack, uchar *needle)
 	uchar *key = needle;
 	for (; *str != '\0' && *key != '\0' &&
 		 (tolower((int)*key) == tolower((int)*str)); key++, str++) {
+	    /*
+	      printf("// %c %c\n", tolower((int)*key), tolower((int)*str));
+	    */
 	    ;
 	}
 	if (*key == '\0') {

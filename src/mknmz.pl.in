@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.8 1999-05-22 17:10:13 satoru Exp $
+# $Id: mknmz.pl.in,v 1.9 1999-05-29 08:20:38 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -30,6 +30,7 @@ use Cwd;
 use IO::File;
 use Time::Local;
 use strict;  # be strict since v1.2.0
+use Getopt::Long;
 
 use vars qw($SYSTEM);
 $SYSTEM = $^O;
@@ -231,11 +232,11 @@ sub namazu_core ($$$) {
 
     filter::document_filter($cfile, \$title, \$contents, \$weighted_str,
 		     \$headings, \%fields);
-    make_field_info(\%fields, $cfile, $title, $url);
+    make_field_index(\%fields, $cfile, $title, $url);
 
     put_file_info($url, $title, $cfile_size, \$contents,
 		  \$headings, $cfile, \%fields, $fh_finfo);
-    put_field_info(\%fields) unless $conf::NoFieldInfoOpt;
+    put_field_index(\%fields) unless $conf::NoFieldIndexOpt;
 
     put_dateindex($cfile) unless $conf::NoDateIndexOpt;
     $contents .= $weighted_str;   # add weight info
@@ -279,7 +280,7 @@ sub url_decchiagator ($) {
 
 
 
-sub make_field_info (\%$$$) {
+sub make_field_index (\%$$$) {
     my ($fields, $cfile, $title, $url) = @_;
 
     unless (defined($fields->{'date'})) {
@@ -298,7 +299,7 @@ sub make_field_info (\%$$$) {
 }
 
 # output the field infomation into NMZ.fileds.* files
-sub put_field_info (\%) {
+sub put_field_index (\%) {
     my ($orig_fields) = @_;
 
     my (%fields) = %{$orig_fields};
@@ -434,7 +435,7 @@ sub do_preparation_processing () {
     my $target_dir = "";
     my @flist = ();
 
-    ($output_dir, $target_dir, @flist) = parse_command_line_options();
+    ($output_dir, $target_dir, @flist) = parse_options();
     $TARGET_DIR = $target_dir;
 
     require_modules();
@@ -540,7 +541,7 @@ sub do_remain_processing ($$$$) {
 	append_finfo() if $APPENDMODE;
 	make_finfo_index();
 	write_body_msg();
-	update_field_info();
+	update_field_index();
 	update_dateindex();
 	update_registry($file_count);
 	write_nmz_files();
@@ -569,97 +570,136 @@ sub remove_temporary_files() {
 }
 
 # parse comannd line options
-sub parse_command_line_options ()
+sub parse_options ()
 {
+    if (@ARGV == 0) {
+	show_usage();
+	exit 1;
+    }
+
     my $output_dir = "";
     my $target_dir = "";
     my $target_loaded = 0;
     my @flist = ();
     my @argv = @ARGV;
 
-    usage() if (@argv == 0);
+    my $opt_version = 0;
+    my $opt_help = 0;
+    my $opt_all = 0;
+    my $opt_chasen = 0;
+    my $opt_chasen_morph = 0;
+    my $opt_kakasi = 0;
+    my $opt_man = 0;
+    my $opt_include = 0;
+    my $opt_target_list = 0;
+    my $opt_target_regex = 0;
+    my $opt_checkpoint_sub = 0;
+    
+#    Getopt::Long::Configure('bundling');
+    Getopt::Long::config('bundling');
+    GetOptions('u|uuencode'          => \$conf::UuencodeOpt,
+	       'h|mailnews'          => \$conf::MailNewsOpt,
+	       'H|no-hiragana'       => \$conf::HiraganaOpt,
+	       'G|no-okurigana'      => \$conf::OkuriganaOpt,
+	       'E|no-edge-symbol'    => \$conf::NoEdgeSymbolOpt,
+	       'K|no-symbol'         => \$conf::NoSymbolOpt,
+	       'L|no-line-adjust'    => \$conf::NoLineAdOpt,
+	       'M|no-mhonarc'        => \$conf::NoMHonArcOpt, 
+	       'U|no-encode-url'     => \$conf::NoEncodeURL ,
+	       'x|no-heading-summary'=> \$conf::NoHeadAbstOpt,
+	       'e|robots-txt'        => \$conf::RobotExcludeOpt,
+	       'q|quiet'             => \$conf::QuietOpt,
+	       'P|no-phrase-index'   => \$conf::NoPhraseIndexOpt,
+	       'R|no-regex-index'    => \$conf::NoRegexIndexOpt,
+	       'W|no-date-index'     => \$conf::NoDateIndexOpt,
+	       'D|no-insert-headers' => \$conf::NoInsertHeaderOpt,
+	       'X|no-field-index'    => \$conf::NoFieldIndexOpt,
+	       'Y|no-delete'         => \$conf::NoDeleteProcessing,
+	       'Z|no-update'         => \$conf::NoUpdateProcessing,
+	       'A|htacces'           => \$conf::HtaccessExcludeOpt,
+	       'd|debug'             => \$conf::DebugOpt,
+	       's|checkpoint'        => \$CheckPoint{'on'},
+	       'O|output-dir=s'      => \$output_dir,
+	       'l|lang=s'            => \$conf::LANGUAGE,
+	       'T|template-dir=s'    => \$LIBDIR,
+	       't|target-regex=s'    => \$conf::TARGET_FILE,
 
-    while (defined($argv[0]) && $argv[0] =~ /^-/) {
-	$conf::TARGET_FILE = ".*" if $argv[0] =~ /a/;
-	$conf::WAKATI = $conf::KAKASI, $conf::MorphOpt = 0 if $argv[0] =~ /k/;
-	$conf::WAKATI = $conf::CHASEN, $conf::MorphOpt = 0 if $argv[0] =~ /c/;
-	$conf::WAKATI = $conf::CHASEN_MORPH, $conf::MorphOpt = 1 if $argv[0] =~ /m/;
-	$conf::UuencodeOpt = 1 if $argv[0] =~ /u/;
-	$conf::MailNewsOpt = 1 if $argv[0] =~ /h/;
-	if ($argv[0] =~ /r/) {
-	    $conf::ManOpt      = 1;
-	    $conf::TARGET_FILE = '.*\.\d.*';
-	}
-	$conf::HiraganaOpt = 1 if $argv[0] =~ /H/;
-	$conf::OkuriganaOpt = 1 if $argv[0] =~ /G/;
-	$conf::NoEdgeSymbolOpt = 1 if $argv[0] =~ /E/;
-	$conf::NoSymbolOpt = 1 if $argv[0] =~ /K/;
-	$conf::NoLineAdOpt = 1 if $argv[0] =~ /L/;
-	$conf::NoMHonArcOpt  = 1 if $argv[0] =~ /M/;
-	$conf::NoEncodeURL  = 1 if $argv[0] =~ /U/;
-	$conf::DebugOpt    = 1 if $argv[0] =~ /d/;
-	$conf::NoHeadAbstOpt  = 1 if $argv[0] =~ /x/;
-	$conf::RobotExcludeOpt = 1 if $argv[0] =~ /e/;
-	$conf::QuietOpt = 1 if $argv[0] =~ /q/;
-	$conf::NoPhraseIndexOpt  = 1 if $argv[0] =~ /P/;
-	$conf::NoRegexpIndexOpt  = 1 if $argv[0] =~ /R/;
-	$conf::NoInsertHeaderOpt  = 1 if $argv[0] =~ /D/;
-	$conf::NoDateIndexOpt = 1 if $argv[0] =~ /W/;
-	$conf::NoFieldInfoOpt = 1 if $argv[0] =~ /X/;
-	$conf::NoDeleteProcessing = 1 if $argv[0] =~ /Y/;
-	$conf::NoUpdateProcessing = 1 if $argv[0] =~ /Z/;
- 	$conf::HtaccessExcludeOpt = 1 if $argv[0] =~ /A/;
- 	$CheckPoint{'on'} = 1 if $argv[0] =~ /s/;
- 	if ($argv[0] =~ /O$/) {
- 	    shift @argv;
-	    $output_dir = $argv[0];
-	    $output_dir =~ s|/*$||;
- 	    print "Index output directory: $argv[0]\n" unless $conf::QuietOpt;
- 	} elsif ($argv[0] =~ /T$/) {
- 	    shift @argv;
-	    $LIBDIR = $argv[0];
-	    $LIBDIR =~ s|/*$||;
- 	} elsif ($argv[0] =~ /I$/) {
-	    shift @argv;
-	    eval util::include($argv[0]);
-	    print "Included: $argv[0]\n" unless $conf::QuietOpt;
-	} elsif ($argv[0] =~ /l$/) { # small letter of 'L'
-	    shift @argv;
-	    $conf::LANGUAGE = $argv[0];
-	} elsif ($argv[0] =~ /F$/) {
-	    shift @argv;
-	    if ($CheckPoint{'continue'}) {
-		@flist = ("dummy");
-	    } else {
-		@flist = load_target_list($argv[0]);
-		print "Loaded: $argv[0]\n" unless $conf::QuietOpt;
-	    }
-	    $target_loaded = 1;
-	    $target_dir = cwd();
-	} elsif ($argv[0] =~ /t$/) {
-	    shift @argv;
-	    print "TARGET: $argv[0]\n" unless $conf::QuietOpt;
-	    $conf::TARGET_FILE = $argv[0];
-	} elsif ($argv[0] =~ /S$/) {  # for checkpoint mechanism
-	    $CheckPoint{'on'}           = 1;
-	    $CheckPoint{'continue'}     = 1;
-	    shift @ARGV;  # remove -S
-	}
-	shift @argv;
+	       'v|version'           => \$opt_version,
+	       '0|help'              => \$opt_help,
+	       'a|all'               => \$opt_all,
+	       'k|use-kakasi'        => \$opt_kakasi,
+	       'm|use-chasen-morph'  => \$opt_chasen_morph,
+	       'r|man'               => \$opt_man,
+	       'I|include=s'         => \$opt_include,
+	       'F|target-list=s'     => \$opt_target_list,
+	       'S|checkpoint-sub'    => \$opt_checkpoint_sub,
+	       );
+
+    if ($opt_version) {
+	print "mknmz v$conf::VERSION\n";
+	exit 1;
     }
-    usage() if (@argv == 0 && !$target_loaded && $output_dir eq "");
+    if ($opt_help) {
+	show_usage();
+	exit 1;
+    }
+    if ($opt_all) {
+	$conf::TARGET_FILE = ".*";
+    }
+    if ($opt_chasen) {
+	$conf::WAKATI = $conf::KAKASI;
+	$conf::MorphOpt = 0;
+    }
+    if ($opt_chasen_morph) {
+	$conf::WAKATI = $conf::CHASEN_MORPH;
+	$conf::MorphOpt = 0;
+    }
+    if ($opt_kakasi) {
+	$conf::WAKATI = $conf::CHASEN;
+	$conf::MorphOpt = 0;
+    }
+    if ($opt_man) {
+	$conf::ManOpt      = 1;
+	$conf::TARGET_FILE = '.*\.\d.*';
+    }
+    if ($opt_include) {
+	shift @argv;
+	eval util::include($argv[0]);
+        util::dprint("Included: $argv[0]\n") unless $conf::QuietOpt;
+    }
+    if ($opt_target_list) {
+	if ($CheckPoint{'continue'}) {
+	    @flist = ("dummy");
+	} else {
+	    @flist = load_target_list($argv[0]);
+	    util::dprint("Loaded: $argv[0]\n") unless $conf::QuietOpt;
+	}
+	$target_loaded = 1;
+	$target_dir = cwd();
+    }
+    if ($opt_checkpoint_sub) {
+	$CheckPoint{'on'}           = 1;
+	$CheckPoint{'continue'}     = 1;
+	@argv = grep {! /-S/} @ARGV;  # remove -S
+    }
 
-    unless( !$target_loaded || @flist) { # if @FList is empty
+
+    if (@ARGV == 0 && !$target_loaded && $output_dir eq "") {
+	show_usage();
+	exit 1;
+    }
+
+    unless (!$target_loaded || @flist) { # if @flist is empty
  	print "No files to index.\n";
  	exit;
     }
 
-    if ($#argv > 0 || $#argv == 0 && $target_loaded) {
-	$conf::URL_PREFIX = $argv[0];
-	shift @argv;
+    if ($#ARGV > 0 || $#ARGV == 0 && $target_loaded) {
+	$conf::URL_PREFIX = $ARGV[0];
+	shift @ARGV;
     }
 
-    $target_dir = $argv[0] if defined $argv[0];
+    $target_dir = $ARGV[0] if defined $ARGV[0];
     $output_dir = cwd() if $output_dir eq "";
     die "$output_dir: invalid output directory\n"
 	unless (-d $output_dir && -w $output_dir);
@@ -713,7 +753,7 @@ sub load_target_list ($) {
     return @flist;
 }
 
-sub usage () {
+sub show_usage () {
     if ($conf::LANGUAGE eq "ja") {
 	if ($CCS eq "euc") {
 	    print $conf::USAGE_JA;
@@ -724,7 +764,6 @@ sub usage () {
     } else {
 	print $conf::USAGE_EN;
     }
-    exit;
 }
 
 # check the file -- 0: OK / 1: NG
@@ -1010,7 +1049,7 @@ sub update_dateindex() {
     util::Rename($conf::File{'DATEINDEX_'}, $conf::File{'DATEINDEX'});
 }
 
-sub update_field_info() {
+sub update_field_index() {
     for my $tmp (<$conf::File{'FIELDINFO'}.*.$$>) {
 	$tmp =~ /((.*)\..*)/;
 	my $fname_tmp = $1;
@@ -1599,7 +1638,7 @@ sub write_index_sub () {
     util::dprint("// doing write_index() processing.\n");
     my $fh_indexindex = util::fopen_or_die(">$conf::File{'INDEXINDEX_'}");
     my $fh_tmp_i = util::fopen_or_die(">$conf::File{'TMP_I'}");
-    my $fh_tmp_w = util::fopen_or_die(">$conf::File{'TMP_W'}") unless $conf::NoRegexpIndexOpt;
+    my $fh_tmp_w = util::fopen_or_die(">$conf::File{'TMP_W'}") unless $conf::NoRegexIndexOpt;
 
     my $cnt = 0;
     my $ptr = 0;
@@ -1627,7 +1666,7 @@ sub write_index_sub () {
 
 		    my $data = "$current_word\n$tmp$baserecord$record\n";
 		    print $fh_tmp_w "$current_word\n"
-			unless $conf::NoRegexpIndexOpt;
+			unless $conf::NoRegexIndexOpt;
 		    print $fh_tmp_i $data;
 		    print $fh_indexindex pack("N", $ptr);
 		    $ptr += length($data);
@@ -1639,7 +1678,7 @@ sub write_index_sub () {
 		    my $tmp = pack("w", $leng);
 		    my $data = "$words[$cnt]\n$tmp$record\n";
 		    print $fh_tmp_w "$words[$cnt]\n"
-			unless ($conf::NoRegexpIndexOpt);
+			unless ($conf::NoRegexIndexOpt);
 		    print $fh_tmp_i $data;
 		    print $fh_indexindex pack("N", $ptr);
 		    $ptr += length($data);
@@ -1649,7 +1688,7 @@ sub write_index_sub () {
 	    my $tmp  = pack("w", $baseleng);
 	    my $data = "$current_word\n$tmp$baserecord\n";
 	    print $fh_tmp_w "$current_word\n"
-		unless $conf::NoRegexpIndexOpt;
+		unless $conf::NoRegexIndexOpt;
 	    print $fh_tmp_i $data;
 	    print $fh_indexindex pack("N", $ptr);
 	    $ptr += length($data);
@@ -1663,7 +1702,7 @@ sub write_index_sub () {
 
 	my $data = "$words[$cnt]\n$tmp$record\n";
 	print $fh_tmp_w "$words[$cnt]\n"
-	    unless $conf::NoRegexpIndexOpt;
+	    unless $conf::NoRegexIndexOpt;
 	print $fh_tmp_i $data;
 	print $fh_indexindex pack("N", $ptr);
 	$ptr += length($data);

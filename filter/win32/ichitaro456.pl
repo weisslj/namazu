@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: ichitaro456.pl,v 1.13 2000-04-05 18:15:37 kenzo- Exp $
+# $Id: ichitaro456.pl,v 1.4 2000-04-06 19:08:14 kenzo- Exp $
 # Copyright (C) 1999 Ken-ichi Hirose,
 #               2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -81,28 +81,29 @@ sub filter ($$$$$) {
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
     my $tmpfile  = util::tmpnam('NMZ.jstxt');
-    my $tmpfile2 = $cfile;
-    if ($cfile =~ /[\x81-\x9f\xe0-\xef][\x40-\x7e\x80-\xfc]|[\x20\xa1-\xdf]/) {
-        my $tmpfile3 = util::tmpnam('NMZJSTXT');
-        copy("$cfile", "$tmpfile3");
-        $tmpfile2 = $tmpfile3;
-        my $tmpext = $cfile;
-        $tmpext =~ s/^.*(j[sab]w$)/$1/i;
-        $tmpfile2 =~ s/tmp$/$tmpext/;
-        move("$tmpfile3", "$tmpfile2");
-    }
+    my $tmpfile3 = util::tmpnam('NMZJSTXT');
+    copy("$cfile", "$tmpfile3");
+    my $tmpfile2 = $tmpfile3;
+    my $tmpext = $cfile;
+    $tmpext =~ s/^.*(j[sab]w$)/$1/i;
+    $tmpfile2 =~ s/tmp$/$tmpext/;
+    move("$tmpfile3", "$tmpfile2");
     $tmpfile2 = "C:$tmpfile2"
-     if ($mknmz::SYSTEM ne "MSWin32" && $tmpfile2 =~ m!^/!);
+     if ($ichitaro456 =~ m/doscmd/ && $tmpfile2 =~ m!^/!);
 
     util::vprint("Processing ichitaro file ... (using  '$ichitaro456')\n");
 
     system("$ichitaro456 -k -s -p $tmpfile2 > $tmpfile");
-    my $fh = util::efopen("< $tmpfile");
-    $$cont = util::readfile($fh);
-    undef $fh;
+
+    {
+        my $fh = util::efopen("< $tmpfile");
+        $$cont = util::readfile($fh);
+    }
+
     unlink($tmpfile);
-    $tmpfile2 =~ s/^C://;
-    unlink("$tmpfile2");
+    $tmpfile2 =~ s/^C://
+     if ($ichitaro456 =~ m/doscmd/);
+    unlink($tmpfile2);
 
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);

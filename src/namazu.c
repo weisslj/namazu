@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.39 1999-11-19 01:32:50 satoru Exp $
+ * $Id: namazu.c,v 1.40 1999-11-19 02:09:16 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -57,11 +57,11 @@
 #include "idxname.h"
 #include "i18n.h"
 
-/************************************************************
+/*
  *
  * Private functions
  *
- ************************************************************/
+ */
 
 static int stdio2file(char*);
 static int parse_options(int, char**);

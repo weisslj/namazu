@@ -8,11 +8,11 @@
 #include "util.h"
 #include "re.h"
 
-/************************************************************
+/*
  *
  * Private functions
  *
- ************************************************************/
+ */
 
 static int is_field_safe_char(int);
 static void make_fullpathname_field(int);
@@ -35,11 +35,11 @@ static void make_fullpathname_field(int n)
     pathcat(base, NMZ.field);
 }
 
-/************************************************************
+/*
  *
  * Public functions
  *
- ************************************************************/
+ */
 
 
 /* check a key if field or not */

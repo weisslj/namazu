@@ -2,7 +2,7 @@
  * 
  * codeconv.c -
  * 
- * $Id: codeconv.c,v 1.3 1999-11-18 02:45:59 satoru Exp $
+ * $Id: codeconv.c,v 1.4 1999-11-19 02:09:10 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -43,11 +43,11 @@
 static uchar kanji2nd;
 
 
-/************************************************************
+/*
  *
  * Private functions
  *
- ************************************************************/
+ */
 
 static uchar jmstojis(uchar, uchar);
 static uchar jistojms(uchar, uchar);
@@ -301,11 +301,11 @@ static void euctojis(uchar *p)
 }
 
 
-/************************************************************
+/*
  *
  * Public functions
  *
- ************************************************************/
+ */
 
 
 /*

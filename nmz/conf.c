@@ -2,7 +2,7 @@
  * 
  * conf.c -
  * 
- * $Id: conf.c,v 1.4 1999-11-18 02:45:59 satoru Exp $
+ * $Id: conf.c,v 1.5 1999-11-19 02:09:10 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -40,11 +40,11 @@
 static char *errmsg  = NULL;
 static int ConfLoaded = 0;
 
-/************************************************************
+/*
  *
  * Private functions
  *
- ************************************************************/
+ */
 
 static void set_pathname(char*, char*, char*);
 static FILE *open_conf_file(char*);
@@ -426,11 +426,11 @@ static int apply_conf(char *directive, int lineno, char *arg1, char *arg2)
     return 0;
 }
 
-/************************************************************
+/*
  *
  * Public functions
  *
- ************************************************************/
+ */
 
 /* loading configuration file of Namazu */
 int load_conf(char *av0)

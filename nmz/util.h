@@ -1,9 +1,9 @@
-/************************************************
+/*
 
   util.h -
 
   $Author: satoru $
-  $Date: 1999-11-18 09:42:12 $
+  $Date: 1999-11-19 02:09:12 $
   created at: Thu Mar  9 11:55:53 JST 1995
 
   Copyright (C) 1993-1998 Yukihiro Matsumoto
@@ -11,7 +11,7 @@
   Modifications for Namazu 
   by satoru-t@is.aist-nara.ac.jp
 
-************************************************/
+*/
 
 #ifndef _UTIL_H
 #define _UTIL_H
@@ -20,11 +20,11 @@
 #define vsnprintf(str,n,format,ap) _vsnprintf(str,n,format,ap)
 #endif /* HAVE__VSNPRINTF */
 
-/************************************************************
+/*
  *
  * Macros
  *
- ************************************************************/
+ */
 
 #define iskanji1st(c) (((unsigned int)(c) >= 0x81 && \
                        (unsigned int)(c)) <= 0x9f || \
@@ -41,11 +41,11 @@
                     (unsigned int)*(c + 1) == 0xbc)
 #define iseuc(c)  ((unsigned int)(c) >= 0xa1 && (unsigned int)(c) <= 0xfe)
 
-/************************************************************
+/*
  *
  * Function declarations
  *
- ************************************************************/
+ */
 
 extern unsigned long scan_hex();
 extern unsigned long scan_oct();

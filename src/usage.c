@@ -2,7 +2,7 @@
  * 
  * usage.c -
  * 
- * $Id: usage.c,v 1.11 1999-11-19 01:44:38 satoru Exp $
+ * $Id: usage.c,v 1.12 1999-11-19 02:09:16 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -30,11 +30,11 @@
 #include "message.h"
 #include "usage.h"
 
-/************************************************************
+/*
  *
  * Public functions
  *
- ************************************************************/
+ */
 
 /* display the usage and version info and exit */
 void show_usage(void)

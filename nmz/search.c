@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.6 1999-11-18 02:46:01 satoru Exp $
+ * $Id: search.c,v 1.7 1999-11-19 02:09:12 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -51,11 +51,11 @@
 
 enum { ALLOW, DENY } perm;
 
-/************************************************************
+/*
  *
  * Private functions
  *
- ************************************************************/
+ */
 
 static void show_status(int, int);
 static int get_file_size (char*);
@@ -768,11 +768,11 @@ static void make_fullpathname_index(int n)
 }
 
 
-/************************************************************
+/*
  *
  * Public functions
  *
- ************************************************************/
+ */
 
 /* main routine of binary search */
 int binsearch(char *orig_key, int prefix_match_mode)

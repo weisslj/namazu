@@ -12,11 +12,11 @@
 #include "em.h"
 #include "i18n.h"
 
-/************************************************************
+/*
  *
  * Private functions
  *
- ************************************************************/
+ */
 
 static void fputs_without_html_tag(char* , FILE*);
 static void emprint(char*, int);
@@ -148,11 +148,11 @@ static void fputs_without_html_tag(char * s, FILE *fp)
 
 
 
-/************************************************************
+/*
  *
  * Public functions
  *
- ************************************************************/
+ */
 
 /*
  * for pageindex

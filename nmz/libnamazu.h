@@ -2,7 +2,7 @@
  * 
  * libnamazu.h - Namazu library api
  *
- * $Id: libnamazu.h,v 1.7 1999-11-18 09:42:11 satoru Exp $
+ * $Id: libnamazu.h,v 1.8 1999-11-19 02:09:11 satoru Exp $
  * 
  */
 
@@ -16,11 +16,11 @@
 #include <stdio.h>  /* for FILE struct */
 
 
-/************************************************************
+/*
  *
  * Data Structures
  *
- ************************************************************/
+ */
 
 typedef unsigned char uchar;
 

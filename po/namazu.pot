@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 1999-11-19 10:40+0900\n"
+"POT-Creation-Date: 1999-11-19 11:03+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -40,13 +40,13 @@ msgid "Replace: \"%s\" -> \"%s\"\n"
 msgstr ""
 
 #. if no item available
-#: nmz/wakati.c:233
+#: nmz/wakati.c:237
 msgid ""
 "\t<h2>Error!</h2>\n"
 "<p>Invalid query.</p>\n"
 msgstr ""
 
-#: nmz/wakati.c:239
+#: nmz/wakati.c:243
 msgid ""
 "\t<h2>Error!</h2>\n"
 "<p>Too many query tokens.</p>\n"

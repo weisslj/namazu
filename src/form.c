@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.18 1999-11-18 02:46:06 satoru Exp $
+ * $Id: form.c,v 1.19 1999-11-19 02:09:15 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -39,11 +39,11 @@
 #include "codeconv.h"
 #include "i18n.h"
 
-/************************************************************
+/*
  *
  * Private functions
  *
- ************************************************************/
+ */
 
 static int cmp_element(char*, char*);
 static int replace_query_value(char*, char*);
@@ -319,11 +319,11 @@ static char *read_headfoot(char *fname)
     return buf;
 }
 
-/************************************************************
+/*
  *
  * Public functions
  *
- ************************************************************/
+ */
 
 /* 
  * display header or footer file.

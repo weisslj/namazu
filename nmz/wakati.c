@@ -2,7 +2,7 @@
  * 
  * wakati.c -
  * 
- * $Id: wakati.c,v 1.2 1999-11-18 02:46:02 satoru Exp $
+ * $Id: wakati.c,v 1.3 1999-11-19 02:09:12 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -37,11 +37,11 @@
 #include "wakati.h"
 
 
-/************************************************************
+/*
  *
  * Private functions
  *
- ************************************************************/
+ */
 
 static int detect_char_type(char*);
 static void set_phrase_trick(char*);
@@ -59,8 +59,10 @@ static int detect_char_type(char *c)
     return OTHER;
 }
 
-/* replace duble quotes with spaces and replace internal spaces with TABs
-{foo bar} is also acceptable */
+/* 
+ * replace duble quotes with spaces and replace internal spaces with TABs
+ *{foo bar} is also acceptable 
+ */
 static void set_phrase_trick(char *qs)
 {
     int i, state;
@@ -86,8 +88,10 @@ static void set_phrase_trick(char *qs)
     }
 }
 
-/* replace internal spaces with  */
-/* very complicated ad hoc routine :-( */
+/* 
+ * replace internal spaces with  
+ * very complicated ad hoc routine :-( 
+ */
 static void set_regex_trick(char *qs)
 {
     int i, delim;
@@ -122,11 +126,11 @@ static void set_regex_trick(char *qs)
     }
 }
 
-/************************************************************
+/*
  *
  * Public functions
  *
- ************************************************************/
+ */
 
 int wakati(char *key)
 {

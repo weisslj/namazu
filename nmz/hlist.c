@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.4 1999-11-18 02:46:00 satoru Exp $
+ * $Id: hlist.c,v 1.5 1999-11-19 02:09:11 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -44,11 +44,11 @@ struct str_num {
 };
 typedef struct str_num str_num;
 
-/************************************************************
+/*
  *
  * Private functions
  *
- ************************************************************/
+ */
 
 static void memcpy_hlist(HLIST, HLIST, int);
 static void init_date(HLIST);
@@ -193,11 +193,11 @@ static int date_cmp(const void *p1, const void *p2)
     return r;
 }
 
-/************************************************************
+/*
  *
  * Public functions
  *
- ************************************************************/
+ */
 
 /* merge the left and  right with AND rule */
 HLIST andmerge(HLIST left, HLIST right, int *ignore)

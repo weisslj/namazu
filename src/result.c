@@ -1,6 +1,6 @@
 /*
  * result.c -
- * $Id: result.c,v 1.19 1999-11-18 02:46:07 satoru Exp $
+ * $Id: result.c,v 1.20 1999-11-19 02:09:16 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -33,11 +33,11 @@
 #include "em.h"
 #include "codeconv.h"
 
-/************************************************************
+/*
  *
  * Private functions
  *
- ************************************************************/
+ */
 
 static void encode_entity(char*);
 static void emphasize(char*);

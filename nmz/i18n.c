@@ -1,6 +1,6 @@
 /*
  * i18n.c -
- * $Id: i18n.c,v 1.2 1999-11-18 02:46:00 satoru Exp $
+ * $Id: i18n.c,v 1.3 1999-11-19 02:09:11 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -33,11 +33,11 @@
 
 static char Lang[BUFSIZE] = "C";
 
-/************************************************************
+/*
  *
  * Public functions
  *
- ************************************************************/
+ */
 
 int is_lang_ja(void)
 {

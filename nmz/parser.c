@@ -2,7 +2,7 @@
  * 
  * parser.c -
  * 
- * $Id: parser.c,v 1.2 1999-11-18 02:46:01 satoru Exp $
+ * $Id: parser.c,v 1.3 1999-11-19 02:09:11 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -39,11 +39,11 @@
 
 static int Cp = 0; /* variable that saves current position of parser */
 
-/************************************************************
+/*
  *
  * Private functions
  *
- ************************************************************/
+ */
 
 static int isop(char*);
 static HLIST factor(int*);
@@ -169,11 +169,11 @@ static int orop(void)
 }
 
 
-/************************************************************
+/*
  *
  * Public functions
  *
- ************************************************************/
+ */
 
 HLIST expr(void)
 {

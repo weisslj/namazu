@@ -15,11 +15,11 @@
 #include "namazu.h"
 #include "util.h"
 
-/************************************************************
+/*
  *
  * Private functions
  *
- ************************************************************/
+ */
 
 static void reverse_byte_order (int*, int, int);
 static int is_little_endian(void);
@@ -61,11 +61,11 @@ static int is_little_endian(void)
 */
 }
 
-/************************************************************
+/*
  *
  * Public functions
  *
- ************************************************************/
+ */
 
 unsigned long
 scan_oct(start, len, retlen)

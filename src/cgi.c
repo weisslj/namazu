@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.24 1999-11-18 02:46:06 satoru Exp $
+ * $Id: cgi.c,v 1.25 1999-11-19 02:09:15 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -40,11 +40,11 @@
 #include "i18n.h"
 #include "idxname.h"
 
-/************************************************************
+/*
  *
  * Private functions
  *
- ************************************************************/
+ */
 
 static int validate_idxname(char* );
 
@@ -474,11 +474,11 @@ static char decode_uri_sub(char c1, char c2)
 }
 
 
-/************************************************************
+/*
  *
  * Public functions
  *
- ************************************************************/
+ */
 
 /* initialize CGI mode. actually, to be invoked from commandline
  * with no arguments also trhough this function */

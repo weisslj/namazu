@@ -1,3 +1,8 @@
+2003-03-13  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+        * filter/{taro56,taro7_10}.pl: New Ichitaro filters.
+        (Contributed by Yukio USUDA, thank you)
+
 2003-02-27  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* archive/*: Refactoring: added archive support.
@@ -7780,4 +7785,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.995 2003-02-27 10:04:46 knok Exp $
+$Id: ChangeLog,v 1.996 2003-03-13 09:56:19 knok Exp $

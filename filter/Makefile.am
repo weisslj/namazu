@@ -28,6 +28,8 @@ filter_DATA = bzip2.pl \
 	      tex.pl \
 	      powerpoint.pl \
 	      taro.pl \
+	      taro56.pl \
+	      taro7_10.pl \
 	      hdml.pl \
 	      postscript.pl \
 	      dvi.pl \

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: html.pl,v 1.31 2000-05-24 13:27:53 masao Exp $
+# $Id: html.pl,v 1.32 2001-01-13 09:16:04 kenji Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -239,9 +239,9 @@ sub weight_element ($$$ ) {
     for my $element (sort keys(%{$conf::Weight{'html'}})) {
 	my $tmp = "";
 	$$contref =~ s!<($element)>(.*?)</$element>!weight_element_sub($1, $2, \$tmp)!gies;
-	$$headings .= $tmp if $element =~ /^H[1-6]$/i && ! $var::Opt{'NoHeadAbst'} 
+	$$headings .= $tmp if $element =~ /^H[1-6]$/i && ! $var::Opt{'noheadabst'} 
 	    && $tmp;
-	my $weight = $element =~ /^H[1-6]$/i && ! $var::Opt{'NoHeadAbst'} ? 
+	my $weight = $element =~ /^H[1-6]$/i && ! $var::Opt{'noheadabst'} ? 
 	    $conf::Weight{'html'}->{$element} : $conf::Weight{'html'}->{$element} - 1;
 	$$weighted_str .= "\x7f$weight\x7f$tmp\x7f/$weight\x7f\n" if $tmp;
     }
@@ -253,7 +253,7 @@ sub weight_element_sub ($$$) {
     my $space = element_space($element);
     $text =~ s/<[^>]*>//g;
     $$tmp .= "$text " if (length($text)) < $conf::INVALID_LENG;
-    $element =~ /^H[1-6]$/i && ! $var::Opt{'NoHeadAbst'}  ? " " : "$space$text$space";
+    $element =~ /^H[1-6]$/i && ! $var::Opt{'noheadabst'}  ? " " : "$space$text$space";
 }
 
 

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: powerpoint.pl,v 1.16 2004-03-22 06:22:09 opengl2772 Exp $
+# $Id: powerpoint.pl,v 1.17 2004-05-23 17:36:49 opengl2772 Exp $
 # Copyright (C) 2000 Ken-ichi Hirose, 
 #               2000-2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -323,6 +323,12 @@ sub utf8_to_eucjp($) {
     my ($cont) = @_;
 
     return undef unless (util::islang("ja"));
+    if ($var::USE_NKF_MODULE) {
+        if ($NKF::VERSION >= 2.04) {
+            $$cont = NKF::nkf("-WemXZ1", $$cont);
+            return undef;
+        }
+    }
     return undef unless (defined $utfconvpath);
 
     my $tmpfile  = util::tmpnam('NMZ.tmp.utf8');

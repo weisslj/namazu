@@ -1,8 +1,13 @@
 BUGS
-* GNU以外のmakeを使ったとき、script以下でコケる。
-* namazurcにLangを設定すると、環境変数で設定を上書きできない。
+
 
 FIXED
+2000/01/29
+* GNU以外のmakeを使ったとき、script以下でコケる。
+
+2000/01/29
+* namazurcにLangを設定すると、環境変数で設定を上書きできない。
+
 2000/01/20
 * --with-tknamazuしていないときにmake installでtknamazu以下を丸々
   コピーしてしまう。[ad-hoc]

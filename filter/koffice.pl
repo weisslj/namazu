@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: koffice.pl,v 1.3 2004-03-12 16:08:39 usu Exp $
+# $Id: koffice.pl,v 1.4 2004-03-12 16:19:29 usu Exp $
 # Copyright (C) 2004 Yukio USUDA 
 #               2004 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -212,7 +212,7 @@ sub get_kivio_content ($) {
     my ($contref) = @_;
     my @content;
     push(@content, $$contref =~ m!<KivioTextStyle .*?text="(.*?)"!sg);
-    $$contref = join("\n", @content);
+    $$contref .= join("\n", @content);
 }
 
 sub remove_all_tag($) {

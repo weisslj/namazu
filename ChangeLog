@@ -1,6 +1,7 @@
 2004-03-13  Yukio USUDA <usu@namazu.org>
 
-	* filter/koffice.pl: Add support Kivio file.
+	* filter/koffice.pl(get_kivio_content): Add new subroutine.
+	Add support Kivio file.
 
 	* tests/data/{en,ja}/kivio.flw: Add new file.
 
@@ -8576,4 +8577,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1117 2004-03-12 16:08:38 usu Exp $
+$Id: ChangeLog,v 1.1118 2004-03-12 16:19:28 usu Exp $

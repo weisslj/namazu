@@ -1,10 +1,10 @@
 #
 # -*- Perl -*-
-# $Id: hnf.pl,v 1.7 2000-02-27 10:27:03 kenji Exp $
+# $Id: hnf.pl,v 1.8 2000-10-14 11:36:17 kenji Exp $
 #
 # HNF Filter for Namazu 2.0
-# version 0.9.10
-# 2000/2/23  Kenji Suzuki <kenji@h14m.org>
+# version 0.9.12
+# 2000/10/14  Kenji Suzuki <kenji@h14m.org>
 #
 # Copyright (C) 1999,2000  Kenji Suzuki, HyperNikkiSystem Project
 # All rights reserved.
@@ -99,8 +99,8 @@ sub hnf_filter ($$$$$$$) {
         my @tmp = split ("OK\n", $$contref);
         my $header = $tmp[0];
 
-        # illeagel hnf header means has no OK
-        if ($header =~ /\nCAT |\nNEW |\nLNEW /) {
+        # illeagel hnf header means having no OK
+        if ($header =~ /\nCAT |\nNEW\s|\nLNEW |\nRLNEW /) {
             $$contref = "\ncommand_NG\n";	# NG is a pseudo-command
         }
         else {
@@ -128,7 +128,7 @@ sub hnf_filter ($$$$$$$) {
     # command
     $$contref =~ s/^GRP (.*)/command_GRP $1/gm;
     $$contref =~ s/^CAT (.*)/command_CAT CAT $1/gm;
-    $$contref =~ s/^NEW (.*)/command_NEW <h1>$mark$1<\/h1>/gm;
+    $$contref =~ s/^NEW\s(.*)/command_NEW <h1>$mark$1<\/h1>/gm;
     $$contref =~ 
 	s/^LNEW (.*?) (.*)/command_LNEW <h1>$mark<a href=\"$1\">$2<\/a><\/h1>/gm;
     $$contref =~ 
@@ -156,10 +156,14 @@ sub hnf_filter ($$$$$$$) {
 
     $$contref =~ s/^FONT (.*?) (.*?) (.*)/
 	command_FONT $1 $2 $3/gm;
+    $$contref =~ s/^SPAN (.*?) (.*)/
+	command_SPAN $1 $2/gm;
+    $$contref =~ s/^DIV\s(.*)/
+	command_DIV $1/gm;
 
-    $$contref =~ s/^PRE$/
+    $$contref =~ s/^PRE\s$/
 	command_PRE/gm;
-    $$contref =~ s/^P$/
+    $$contref =~ s/^P\s$/
 	command_P/gm;
     $$contref =~ s/^CITE\s(.*)/
 	command_CITE $1/gm;
@@ -176,9 +180,9 @@ sub hnf_filter ($$$$$$$) {
 
     $$contref =~ s/^\/([A-Z]+)$//gm;
 
-    $$contref =~ s/^LI (.*)$/$1/gm;
-    $$contref =~ s/^DT (.*)$/$1/gm;
-    $$contref =~ s/^DD (.*)$/$1/gm;
+    $$contref =~ s/^LI\s(.*)$/$1/gm;
+    $$contref =~ s/^DT\s(.*)$/$1/gm;
+    $$contref =~ s/^DD\s(.*)$/$1/gm;
 
     $$contref =~ s/^STRIKE (.*)/
 	command_STRIKE <strike>$1<\/strike>/gm;

@@ -2,7 +2,7 @@
  * 
  * wakati.c -
  * 
- * $Id: wakati.c,v 1.22 2000-01-10 20:21:10 rug Exp $
+ * $Id: wakati.c,v 1.23 2000-01-13 18:33:02 rug Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -32,12 +32,10 @@
 #  include "config.h"
 #endif
 #include "libnamazu.h"
-#include "message.h"
 #include "util.h"
 #include "field.h"
 #include "codeconv.h"
 #include "search.h"
-#include "output.h"
 #include "wakati.h"
 #include "i18n.h"
 #include "var.h"

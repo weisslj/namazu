@@ -2,7 +2,7 @@
  * 
  * libnamazu.c - Namazu library api
  *
- * $Id: libnamazu.c,v 1.25 2000-01-09 11:28:54 satoru Exp $
+ * $Id: libnamazu.c,v 1.26 2000-01-13 18:33:02 rug Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
@@ -40,18 +40,10 @@
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
 #endif
-#ifdef HAVE_CONFIG_H
-#  include "config.h"
-#endif
 #include "libnamazu.h"
-#include "getopt.h"
 #include "util.h"
 #include "codeconv.h"
-#include "form.h"
-#include "usage.h"
-#include "output.h"
 #include "search.h"
-#include "cgi.h"
 #include "hlist.h"
 #include "i18n.h"
 #include "regex.h"

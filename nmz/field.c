@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: field.c,v 1.24 2000-01-09 08:52:26 satoru Exp $
+ * $Id: field.c,v 1.25 2000-01-13 18:33:02 rug Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -32,7 +32,6 @@
 #endif
 #include "libnamazu.h"
 #include "field.h"
-#include "result.h"
 #include "util.h"
 #include "re.h"
 #include "var.h"

@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.60 2000-01-13 01:13:22 satoru Exp $
+ * $Id: search.c,v 1.61 2000-01-13 18:33:02 rug Exp $
  * 
  * Copyright (C) 1997-2000 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -42,12 +42,10 @@
 #include "libnamazu.h"
 #include "util.h"
 #include "field.h"
-#include "result.h"
 #include "parser.h"
 #include "hlist.h"
 #include "re.h"
 #include "wakati.h"
-#include "output.h"
 #include "search.h"
 #include "i18n.h"
 #include "codeconv.h"

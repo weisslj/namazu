@@ -4,6 +4,19 @@
 
 	* nmz/query.c: Includes nmz/codeconv.h.
 
+	* nmz/codeconv.[ch]: Renamed these functions.
+	s/nmz_conv_ja_any_to_eucjp/nmz_codeconv_internal/g.
+	s/nmz_conv_ext/nmz_codeconv_external/g.
+
+	* nmz/query.c: Likewise.
+
+	* src/form.c: Likewise.
+
+	* src/output.c: Likewise.
+
+	* src/rcfile.c: Likewise.
+
+
 2000-02-01  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* configure.in: Applied Motoyuki Kasahara's patch. [namazu-dev

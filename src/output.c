@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.65 2000-01-29 05:31:40 satoru Exp $
+ * $Id: output.c,v 1.66 2000-02-01 06:36:01 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -245,7 +245,7 @@ print_hitnum_each (struct nmz_hitnumlist *hn)
 	!is_listmode() && !is_quietmode()) 
     {
 	do {
-	    char *converted = nmz_conv_ext(hnptr->word);
+	    char *converted = nmz_codeconv_external(hnptr->word);
 	    if (converted == NULL) {
 		die("print_hitnum_each");
 	    }
@@ -339,7 +339,7 @@ load_nmz_result(const char *basedir)
 
     /* In case of suffix isn't equal to lang, we needs code conversion */
     if (strcmp(lang_suffix, nmz_get_lang()) != 0) {
-	char *new = nmz_conv_ext(buf); /* new is allocated in nmz_conv_ext. */
+	char *new = nmz_codeconv_external(buf); /* new is allocated in nmz_codeconv_external. */
 	free(buf);  /* Then we should free buf's memory */
 	buf = new;
     }
@@ -431,7 +431,7 @@ print_hlist(NmzResult hlist)
 
 	compose_result(hlist.data[i], counter, template,  result);
 	{
-	    char *converted = nmz_conv_ext(result);
+	    char *converted = nmz_codeconv_external(result);
 	    if (converted == NULL) {
 		die(nmz_get_dyingmsg());
 	    }
@@ -639,8 +639,8 @@ print_msgfile(const char *fname) {
 	buf = nmz_readfile(tmpfname); /* buf is allocated in nmz_readfile. */
 	/* In case of suffix isn't equal to lang, we need code conversion */
 	if (strcmp(suffix, nmz_get_lang()) != 0) {
-            /* new is allocated in nmz_conv_ext. */
-	    char *new = nmz_conv_ext(buf); 
+            /* new is allocated in nmz_codeconv_external. */
+	    char *new = nmz_codeconv_external(buf); 
 	    free(buf);  /* Then we shoul free buf's memory */
 	    buf = new;
 	}

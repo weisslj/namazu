@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.51 2000-01-30 22:18:11 rug Exp $
+ * $Id: form.c,v 1.52 2000-02-01 06:36:01 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -98,7 +98,7 @@ static enum nmz_stat
 replace_query_value(const char *p, const char *query)
 {
     if (cmp_element(p, (char *)"input type=\"text\" name=\"query\"") == 0) {
-	char *converted = nmz_conv_ext(query);
+	char *converted = nmz_codeconv_external(query);
 	if (converted == NULL) {
 	    die("%s", strerror(errno));
 	}
@@ -331,7 +331,7 @@ read_headfoot(const char *fname)
 
     /* In case of suffix isn't equal to lang, we needs code conversion */
     if (strcmp(suffix, nmz_get_lang()) != 0) {
-	char *new = nmz_conv_ext(buf); /* new is allocated in nmz_conv_ext. */
+	char *new = nmz_codeconv_external(buf); /* new is allocated in nmz_codeconv_external. */
 	free(buf);  /* Then we should free buf's memory */
 	buf = new;
     }
@@ -405,7 +405,7 @@ print_headfoot(const char * fname, const char * query, const char *subquery)
         if (f == 0 && *p == '<') {
             if (nmz_strprefixcasecmp(p, "</title>") == 0) {
 		if (*query != '\0') {
-		    char *converted = nmz_conv_ext(query);
+		    char *converted = nmz_codeconv_external(query);
 		    print(": &lt;");
 		    print(converted);
 		    print("&gt;");

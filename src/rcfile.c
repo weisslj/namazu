@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.16 2000-01-29 10:04:58 rug Exp $
+ * $Id: rcfile.c,v 1.17 2000-02-01 06:36:01 rug Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -630,7 +630,7 @@ load_rcfile(const char *fname)
 	    }
 	} while (1);
 
-	nmz_conv_ja_any_to_eucjp(buf);  /* for Shift_JIS encoding */
+	nmz_codeconv_internal(buf);  /* for Shift_JIS encoding */
 	if (parse_rcfile(buf, current_lineno) != SUCCESS) {
 	    nmz_set_dyingmsg(nmz_msg(_("%s:%d: syntax error: %s"),  
 				     fname, current_lineno, errmsg));

@@ -1,3 +1,43 @@
+1999-12-12  Ryuji Abe <raeva@t3.rim.or.jp>
+
+	* util.[ch] : Changed function names.
+	s/strcasestr/nmz_strcasestr/g
+	s/strlower/nmz_strlower/g
+	s/strprefixcasecmp/nmz_strprefixcasecmp/g
+	s/strprefixcmp/nmz_strprefixcmp/g
+	s/strsuffixcmp/nmz_strsuffixcmp/g
+	s/isnumstr/nmz_isnumstr/g
+	s/issymbol/nmz_issymbol/g
+	s/safe_getenv/nmz_getenv/g
+	s/commas/nmz_commas/g
+	s/freadx/nmz_fread/g
+	s/getidxptr/nmz_getidxptr/g
+	s/decode_uri/nmz_decode_uri/g
+	s/print/nmz_fputs_stdout/g (#FIXME)
+
+	* nmz/field.c: Likewise.
+
+	* nmz/hlist.c: Likewise.
+	
+	* nmz/i18n.c: Likewise.
+	
+	* nmz/rcfile.c: Likewise.
+	
+	* nmz/re.c: Likewise.
+	
+	* nmz/search.c: Likewise.
+	
+	* src/cgi.c: Likewise.
+	
+	* src/form.c: Likewise.
+	
+	* src/namazu.c: Likewise.
+	
+	* src/output.c: Likewise.
+	
+	* src/result.c: Likewise.
+	
+
 1999-12-11  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* src/nmzgrep: Put /dev/null to egrep's argument.

@@ -1,5 +1,11 @@
 1999-12-10  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* configure.in (AC_OUTPUT): Add nmzgrep.in handling.
+
+	* src/nmzgrep.in: New file.
+
+	* src/mailutime.in: Modify comments.
+
 	* nmz/hlist.h: Remove badly made prototypes.
 
 	* configure.in (AM_INIT_AUTOMAKE): Change a version number to 1.9.10.

@@ -1,25 +1,41 @@
 #! @PERL@
 # -*- Perl -*-
 #
-# mailutimepl - program to unify the file time stamp with 
-#               the RFC 822 'Date:' field
-# Version 1.0.2    [12/12/1998]
+# mailutime - a tool to unify a file time stamp with 
+#             RFC 822 'Date:' field in a mail.
+# $Id: mailutime.in,v 1.3 1999-12-10 09:11:25 satoru Exp $
 #
-# Copyright (C) 1998 Satoru Takabayashi  All rights reserved.
-#     This is free software with ABSOLUTELY NO WARRANTY.
+# Version 1.0.2    [12/12/1998]
 #
 # USAGE:
 #
-#   usage: mailutime <Target_Files...>
+#   usage: mailutime <Target Files>...
 #
 #
 # RECOMMENDED USAGE:
 #
 #   % find . -type f ~/Mail/ml/hoge |xargs mailutime
 #
-#   It is very useful way to modify all the time stamp of files in the 
+#   It is very useful way to modify time stamps for all files in a
 #   specified mailbox (MH format).
 #
+# Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
+#     This is free software with ABSOLUTELY NO WARRANTY.
+#
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either versions 2, or (at your option)
+#  any later version.
+# 
+#  This program is distributed in the hope that it will be useful
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program; if not, write to the Free Software
+#  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+#  02111-1307, USA
 
 require 5.004;
 use strict;

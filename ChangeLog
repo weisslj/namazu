@@ -1,5 +1,7 @@
 1999-12-15  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/message.h (MSG_MIME_HEADER): Reindented to column 1.
+
 	* src/mknmz.pl.in: Apply Fujiwara-san's patch. [namazu-dev 1016]
 
 	* src/Makefile.am (noinst_PROGRAMS): New variable: namazu.cgi

@@ -1,5 +1,5 @@
 /*
- * $Id: result.c,v 1.68 2003-03-22 18:19:27 opengl2772 Exp $
+ * $Id: result.c,v 1.69 2003-03-23 12:20:40 opengl2772 Exp $
  * 
  * Copyright (C) 1989, 1990 Free Software Foundation, Inc.
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
@@ -216,6 +216,7 @@ emphasize(char *str)
 	if (strchr(key, '\t')) { /* for phrase search */
 	    nmz_tr(key, "\t", " ");
             memmove(key, key + 1, strlen(key + 1) + 1);
+            key[strlen(key) - 1] = '\0';
 	}
 
 	keylen = strlen(key);

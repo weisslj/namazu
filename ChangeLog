@@ -1,5 +1,7 @@
 2003-03-23  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
+        * src/result.c : Bug fix.
+
         * src/result.c (emphasize): The bug which fails in the copy of
         a long string is corrected.
 
@@ -7822,4 +7824,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1004 2003-03-22 18:19:27 opengl2772 Exp $
+$Id: ChangeLog,v 1.1005 2003-03-23 12:20:39 opengl2772 Exp $

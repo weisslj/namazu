@@ -1,0 +1,25 @@
+#! /bin/sh
+#
+# Test for phrase search.
+#
+LOG=`pwd`/test-log
+echo '  *** starting ' $0 >>$LOG
+
+EXEC=no
+case $LANG in 
+        ja*)
+                EXEC=yes
+                ;;
+esac
+if [ $EXEC = 'no' ]
+then
+        echo "Skip $0" >> $LOG
+        exit 0
+fi
+
+# Check Jaapanese phrease searching.
+cd ../src
+./namazu '{関数 追加}' ../tests/idx1 | fgrep '[ : 0 ]'
+test $? -ne 0 && exit 0
+
+exit 1

@@ -57,4 +57,10 @@ rm -rf $RPM_BUILD_ROOT
 #/usr/share/emacs/site-lisp/*
 /usr/share/locale/*
 /usr/share/namazu/*
+#/usr/share/tknamazu/*
+/usr/var/namazu/*
+/usr/etc/namazu/*
+/usr/include/*
+/usr/lib/*
+
 

@@ -1,5 +1,8 @@
 1999-11-03  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* namazu.spec.in: Add /usr/var/namazu/*, /usr/etc/namazu/*, 
+	/usr/include/*, /usr/lib/* at the end.
+
 	* Makefile.am (install-data-local): 
 	$(mkinstalldirs) ${localstatedir}/${PACKAGE}/index
 

@@ -1,5 +1,17 @@
 1999-11-18  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* nmz/search.c (binsearch): Compare in unsigned.
+
+	* nmz/codeconv.[ch]: s/char/uchar/ adjustment.
+
+	* **/*.c: s/uchar/char/g;
+
+	* configure.in: Set -pedantic if cc is gcc.
+
+	* Makefile.am (SUBDIRS): Change order: 'lisp' last.
+
+	* configure.in (AM_INIT_AUTOMAKE): Change a version number to 1.9.8.
+
 	* configure.in (AM_INIT_AUTOMAKE): Change a version number to 1.9.8.
 
 1999-11-17  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>

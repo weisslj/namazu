@@ -2,7 +2,7 @@
  * 
  * libnamazu.c - Namazu library api
  *
- * $Id: libnamazu.c,v 1.3 1999-11-14 13:55:01 satoru Exp $
+ * $Id: libnamazu.c,v 1.4 1999-11-18 02:46:00 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
@@ -94,7 +94,7 @@ void free_replaces(void)
 
 void make_fullpathname_msg(void)
 {
-    uchar *base;
+    char *base;
     
     if (Idx.num == 1) {
         base = Idx.names[0];
@@ -109,7 +109,7 @@ void make_fullpathname_msg(void)
     pathcat(base, NMZ.tips);
 }
 
-void codeconv_query(uchar *query)
+void codeconv_query(char *query)
 {
     if (is_lang_ja()) {
         if (conv_ja_any_to_eucjp(query)) {
@@ -123,11 +123,11 @@ void codeconv_query(uchar *query)
  */
 void getenv_namazurc(void)
 {
-    uchar *env_namazu_conf;
+    char *env_namazu_conf;
 
-    env_namazu_conf = (uchar*)getenv("NAMAZUCONFPATH");
+    env_namazu_conf = getenv("NAMAZUCONFPATH");
     if (env_namazu_conf == NULL)
-        env_namazu_conf = (uchar*)getenv("NAMAZUCONF");
+        env_namazu_conf = getenv("NAMAZUCONF");
 
     if (env_namazu_conf != NULL)
         strcpy(NAMAZURC, env_namazu_conf);
@@ -160,7 +160,7 @@ int expand_idxname_aliases(void)
 	while (list) {
 	    if (strcmp(Idx.names[i], list->alias) == 0) {
 		free(Idx.names[i]);
-		Idx.names[i] = (uchar *) malloc(strlen(list->real) + 1);
+		Idx.names[i] = (char *) malloc(strlen(list->real) + 1);
 		if (Idx.names[i] == NULL) {
 		    diemsg("expand_idxname_aliases: malloc()");
 		    return DIE_ERROR;
@@ -179,8 +179,8 @@ int complete_idxnames(void)
 
     for (i = 0; i < Idx.num; i++) {
  	if (*Idx.names[i] == '+' && isalnum(*(Idx.names[i] + 1))) {
-	    uchar *tmp;
-	    tmp = (uchar *)malloc(strlen(DEFAULT_INDEX) 
+	    char *tmp;
+	    tmp = (char *)malloc(strlen(DEFAULT_INDEX) 
 				  + 1 + strlen(Idx.names[i]) + 1);
 	    if (tmp == NULL) {
 		diemsg("complete_idxnames: malloc()");

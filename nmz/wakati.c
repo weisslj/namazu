@@ -2,7 +2,7 @@
  * 
  * wakati.c -
  * 
- * $Id: wakati.c,v 1.1 1999-11-08 05:06:07 knok Exp $
+ * $Id: wakati.c,v 1.2 1999-11-18 02:46:02 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -43,11 +43,11 @@
  *
  ************************************************************/
 
-static int detect_char_type(uchar*);
-static void set_phrase_trick(uchar*);
-static void set_regex_trick(uchar*);
+static int detect_char_type(char*);
+static void set_phrase_trick(char*);
+static void set_regex_trick(char*);
 
-static int detect_char_type(uchar *c)
+static int detect_char_type(char *c)
 {
     if (iskatakana(c)) {
         return KATAKANA;
@@ -61,10 +61,10 @@ static int detect_char_type(uchar *c)
 
 /* replace duble quotes with spaces and replace internal spaces with TABs
 {foo bar} is also acceptable */
-static void set_phrase_trick(uchar *qs)
+static void set_phrase_trick(char *qs)
 {
     int i, state;
-    uchar *b = qs, *e;
+    char *b = qs, *e;
 
     for (i = state = 0; *(qs + i); i++) {
         if ((*(qs + i) == '"' || *(qs + i) == '{') 
@@ -88,10 +88,10 @@ static void set_phrase_trick(uchar *qs)
 
 /* replace internal spaces with  */
 /* very complicated ad hoc routine :-( */
-static void set_regex_trick(uchar *qs)
+static void set_regex_trick(char *qs)
 {
     int i, delim;
-    uchar *b = qs, *e;
+    char *b = qs, *e;
 
     for (i = delim = 0; *(qs + i); i++) {
         int field = 0;
@@ -128,10 +128,10 @@ static void set_regex_trick(uchar *qs)
  *
  ************************************************************/
 
-int wakati(uchar *key)
+int wakati(char *key)
 {
     int i, j, key_leng, type;
-    uchar buf[BUFSIZE * 2] = "";
+    char buf[BUFSIZE * 2] = "";
 
     for (i = 0; i < strlen(key); ) {
         type = detect_char_type(key + i);
@@ -139,7 +139,7 @@ int wakati(uchar *key)
 	    key_leng = 0;
 	    for (j = 0; iskanji(key + i + j) ;  j += 2)
             {
-		uchar tmp[BUFSIZE];
+		char tmp[BUFSIZE];
 
                 if (j == 0 && (iskatakana(key + i + j) ||
                     ishiragana(key + i + j))) 
@@ -202,7 +202,7 @@ int wakati(uchar *key)
 
 
 /* split a given query */
-int split_query(uchar *qs)
+int split_query(char *qs)
 {
     int i, qn;
 
@@ -253,7 +253,7 @@ int split_query(uchar *qs)
     }
 
     /* set NULL to the last key item */
-    Query.tab[qn] = (uchar *) NULL;
+    Query.tab[qn] = (char *) NULL;
 
     /* replace  with spaces */
     for (i = 0; i < qn; i++) {

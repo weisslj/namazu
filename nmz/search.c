@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.5 1999-11-17 13:01:29 satoru Exp $
+ * $Id: search.c,v 1.6 1999-11-18 02:46:01 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -58,35 +58,35 @@ enum { ALLOW, DENY } perm;
  ************************************************************/
 
 static void show_status(int, int);
-static int get_file_size (uchar*);
-static void lrget(uchar* , int*, int*);
-static HLIST prefix_match(uchar* , int);
-static int detect_search_mode(uchar*);
-static HLIST do_word_search(uchar*, HLIST);
-static HLIST do_prefix_match_search(uchar*, HLIST);
-static int hash(uchar*);
+static int get_file_size (char*);
+static void lrget(char* , int*, int*);
+static HLIST prefix_match(char* , int);
+static int detect_search_mode(char*);
+static HLIST do_word_search(char*, HLIST);
+static HLIST do_prefix_match_search(char*, HLIST);
+static int hash(char*);
 static HLIST cmp_phrase_hash(int, HLIST, FILE *, FILE *);
 static int open_phrase_index_files(FILE**, FILE**);
-static HLIST do_phrase_search(uchar*, HLIST);
-static void do_regex_preprocessing(uchar*);
-static HLIST do_regex_search(uchar*, HLIST);
-static void get_expr(uchar*, uchar*);
-static HLIST do_field_search(uchar*, HLIST);
-static void delete_beginning_backslash(uchar*);
+static HLIST do_phrase_search(char*, HLIST);
+static void do_regex_preprocessing(char*);
+static HLIST do_regex_search(char*, HLIST);
+static void get_expr(char*, char*);
+static HLIST do_field_search(char*, HLIST);
+static void delete_beginning_backslash(char*);
 static int check_lockfile(void);
 static int open_index_files();
 static void close_index_files(void);
-static void do_logging(uchar* , int);
-static HLIST search_sub(HLIST, uchar*, uchar*, int);
+static void do_logging(char* , int);
+static HLIST search_sub(HLIST, char*, char*, int);
 static void make_fullpathname_index(int);
 static int check_accessfile();
-static void parse_access(uchar *, uchar *, uchar *);
-static PHRASERES *push_phraseres(PHRASERES *, int, uchar *);
+static void parse_access(char *, char *, char *);
+static PHRASERES *push_phraseres(PHRASERES *, int, char *);
 
 static int CurrentIndexNumber = -1;
 
 /* PHRASERES handling subroutines */
-static PHRASERES *push_phraseres(PHRASERES *pr, int hitnum, uchar *str)
+static PHRASERES *push_phraseres(PHRASERES *pr, int hitnum, char *str)
 {
     PHRASERES *prptr = pr, *prevprptr = pr;
     while (prptr != NULL) {
@@ -101,7 +101,7 @@ static PHRASERES *push_phraseres(PHRASERES *pr, int hitnum, uchar *str)
 	prevprptr->next = prptr;
     prptr->hitnum = hitnum;
     prptr->next = NULL;
-    if ((prptr->word = (uchar *)malloc(strlen(str) +1)) == NULL) {
+    if ((prptr->word = (char *)malloc(strlen(str) +1)) == NULL) {
 	diemsg("push_phraseres: malloc failed on str");
 	return NULL;
     }
@@ -123,7 +123,7 @@ void free_phraseres(PHRASERES *pr)
 /* show the status for debug use */
 static void show_status(int l, int r)
 {
-    uchar buf[BUFSIZE];
+    char buf[BUFSIZE];
 
     fseek(Nmz.w, getidxptr(Nmz.wi, l), 0);
     fgets(buf, BUFSIZE, Nmz.w);
@@ -134,7 +134,7 @@ static void show_status(int l, int r)
 }
 
 /* get size of file */
-static int get_file_size (uchar *filename) 
+static int get_file_size (char *filename) 
 {
     struct stat st;
 
@@ -145,7 +145,7 @@ static int get_file_size (uchar *filename)
 
 
 /* get the left and right value of search range */
-static void lrget(uchar * key, int *l, int *r)
+static void lrget(char * key, int *l, int *r)
 {
     *l = 0;
     *r = get_file_size(NMZ.ii) / sizeof(int) - 1;
@@ -155,11 +155,11 @@ static void lrget(uchar * key, int *l, int *r)
 }
 
 /* Prefix match search */
-static HLIST prefix_match(uchar * orig_key, int v)
+static HLIST prefix_match(char * orig_key, int v)
 {
     int i, j, n;
     HLIST tmp, val;
-    uchar buf[BUFSIZE], key[BUFSIZE];
+    char buf[BUFSIZE], key[BUFSIZE];
     val.n = 0;
 
     strcpy(key, orig_key);
@@ -216,7 +216,7 @@ static HLIST prefix_match(uchar * orig_key, int v)
 }
 
 /* detect search mode */
-static int detect_search_mode(uchar *key) {
+static int detect_search_mode(char *key) {
     if (strlen(key) <= 1)
         return WORD_MODE;
     if (isfield(key)) { /* field search */
@@ -265,7 +265,7 @@ static int detect_search_mode(uchar *key) {
     }
 }
 
-static HLIST do_word_search(uchar *key, HLIST val)
+static HLIST do_word_search(char *key, HLIST val)
 {
     int v;
 
@@ -281,7 +281,7 @@ static HLIST do_word_search(uchar *key, HLIST val)
     return val;
 }
 
-static HLIST do_prefix_match_search(uchar *key, HLIST val)
+static HLIST do_prefix_match_search(char *key, HLIST val)
 {
     int v;
 
@@ -299,7 +299,7 @@ static HLIST do_prefix_match_search(uchar *key, HLIST val)
 
 
 /* calculate a value of phase hash */
-static int hash(uchar *str)
+static int hash(char *str)
 {
     extern int Seed[4][256];
     int hash = 0, i, j;
@@ -380,10 +380,10 @@ static int open_phrase_index_files(FILE **phrase, FILE **phrase_index)
 
 
 /* phrase search */
-static HLIST do_phrase_search(uchar *key, HLIST val)
+static HLIST do_phrase_search(char *key, HLIST val)
 {
     int i, h = 0, ignore = 0;
-    uchar *p, *q, *word_b = 0, word_mix[BUFSIZE];
+    char *p, *q, *word_b = 0, word_mix[BUFSIZE];
     FILE *phrase, *phrase_index;
 
     p = key;
@@ -402,7 +402,7 @@ static HLIST do_phrase_search(uchar *key, HLIST val)
         p++;
     }
     for (i = 0; ;i++) {
-        q = (uchar *)strchr(p, '\t');
+        q = (char *)strchr(p, '\t');
         if (q) {
             *q = '\0';
 	}
@@ -459,8 +459,7 @@ static HLIST do_phrase_search(uchar *key, HLIST val)
     return val;
 }
 
-#define iseuc(c)  ((c) >= 0xa1 && (c) <= 0xfe)
-static void do_regex_preprocessing(uchar *expr)
+static void do_regex_preprocessing(char *expr)
 {
     if (*expr == '*' && *(lastc(expr)) != '*') {
         /* if suffix match such as '*bar', enforce it into regex */
@@ -481,10 +480,11 @@ static void do_regex_preprocessing(uchar *expr)
         *(lastc(expr))= '\0';
         return;
     } else {
-        uchar buf[BUFSIZE * 2], *bufp, *exprp;
+        char buf[BUFSIZE * 2], *bufp, *exprp;
 
         if ((*expr == '"' && *(lastc(expr)) == '"')
-            || (*expr == '{' && *(lastc(expr)) == '}')) {
+            || (*expr == '{' && *(lastc(expr)) == '}')) 
+	{
             /* delimiters of field search */
             strcpy(expr, expr + 1); 
             *(lastc(expr))= '\0';
@@ -506,10 +506,10 @@ static void do_regex_preprocessing(uchar *expr)
     }
 }
 
-static HLIST do_regex_search(uchar *orig_expr, HLIST val)
+static HLIST do_regex_search(char *orig_expr, HLIST val)
 {
     FILE *fp;
-    uchar expr[BUFSIZE * 2]; /* because of escaping meta characters */
+    char expr[BUFSIZE * 2]; /* because of escaping meta characters */
 
     strcpy(expr, orig_expr);
     do_regex_preprocessing(expr);
@@ -526,15 +526,15 @@ static HLIST do_regex_search(uchar *orig_expr, HLIST val)
 
 }
 
-static void get_expr(uchar *expr, uchar *str)
+static void get_expr(char *expr, char *str)
 {
-    str = (uchar *)strchr(str, (int)':') + 1;
+    str = (char *)strchr(str, (int)':') + 1;
     strcpy(expr, str);
 }
 
-static HLIST do_field_search(uchar *str, HLIST val)
+static HLIST do_field_search(char *str, HLIST val)
 {
-    uchar expr[BUFSIZE * 2], /* because of escaping meta characters */
+    char expr[BUFSIZE * 2], /* because of escaping meta characters */
         field_name[BUFSIZE], file_name[BUFSIZE];
     FILE *fp;
 
@@ -556,7 +556,7 @@ static HLIST do_field_search(uchar *str, HLIST val)
     return val;
 }
 
-static void delete_beginning_backslash(uchar *str)
+static void delete_beginning_backslash(char *str)
 {
     if (*str == '\\') {
         strcpy(str, str + 1);
@@ -577,7 +577,7 @@ static int check_lockfile(void)
 }
 
 
-static void parse_access(uchar *line, uchar *rhost, uchar *raddr)
+static void parse_access(char *line, char *rhost, char *raddr)
 {
     /* Skip white spaces */
     line += strspn(line, " \t");
@@ -619,8 +619,8 @@ static void parse_access(uchar *line, uchar *rhost, uchar *raddr)
  */
 static int check_accessfile(void)
 {
-    uchar buf[BUFSIZE];
-    uchar *rhost, *raddr;
+    char buf[BUFSIZE];
+    char *rhost, *raddr;
     FILE *fp;
 
     perm = ALLOW;
@@ -679,7 +679,7 @@ static void close_index_files(void)
 /* do logging, separated with TAB characters 
    it does not consider a LOCK mechanism!
 */
-static void do_logging(uchar * query, int n)
+static void do_logging(char * query, int n)
 {
     FILE *slog;
     char *rhost;
@@ -705,7 +705,7 @@ static void do_logging(uchar * query, int n)
     fclose(slog);
 }
 
-static HLIST search_sub(HLIST hlist, uchar *query, uchar *query_orig, int n)
+static HLIST search_sub(HLIST hlist, char *query, char *query_orig, int n)
 {
     CurrentIndexNumber = n;
 
@@ -750,7 +750,7 @@ static HLIST search_sub(HLIST hlist, uchar *query, uchar *query_orig, int n)
 
 static void make_fullpathname_index(int n)
 {
-    uchar *base;
+    char *base;
 
     base = Idx.names[n];
 
@@ -775,10 +775,10 @@ static void make_fullpathname_index(int n)
  ************************************************************/
 
 /* main routine of binary search */
-int binsearch(uchar *orig_key, int prefix_match_mode)
+int binsearch(char *orig_key, int prefix_match_mode)
 {
     int l, r, x, e = 0, i;
-    uchar term[BUFSIZE], key[BUFSIZE];
+    char term[BUFSIZE], key[BUFSIZE];
 
     strcpy(key, orig_key);
     lrget(key, &l, &r);
@@ -796,11 +796,15 @@ int binsearch(uchar *orig_key, int prefix_match_mode)
 
 	debug_printf("searching: %s", term);
 	for (e = 0, i = 0; *(term + i) != '\n' && *(key + i) != '\0' ; i++) {
-	    if (*(term + i) > *(key + i)) {
+	    /*
+	     * compare in unsigned. 
+	     * because they could be 8 bit characters (0x80 or upper).
+	     */
+	    if ((uchar)*(term + i) > (uchar)*(key + i)) {
 		e = -1;
 		break;
 	    }
-	    if (*(term + i) < *(key + i)) {
+	    if ((uchar)*(term + i) < (uchar)*(key + i)) {
 		e = 1;
 		break;
 	    }
@@ -828,10 +832,10 @@ int binsearch(uchar *orig_key, int prefix_match_mode)
 }
 
 /* flow of search */
-HLIST search_main(uchar *query)
+HLIST search_main(char *query)
 {
     HLIST hlist, tmp[INDEX_MAX];
-    uchar query_orig[BUFSIZE];
+    char query_orig[BUFSIZE];
     int i;
 
     strcpy(query_orig, query); /* save */
@@ -888,10 +892,10 @@ HLIST search_main(uchar *query)
 
 
 
-HLIST do_search(uchar *orig_key, HLIST val)
+HLIST do_search(char *orig_key, HLIST val)
 {
     int mode;
-    uchar key[BUFSIZE];
+    char key[BUFSIZE];
 
     strcpy(key, orig_key);
     strlower(key);

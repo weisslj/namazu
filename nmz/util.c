@@ -25,10 +25,10 @@
 static void reverse_byte_order (int *p, int n)
 {
     int i, j;
-    uchar *c, tmp;
+    char *c, tmp;
 
     for (i = 0; i < n; i++) {
-        c = (uchar *)(p + i);
+        c = (char *)(p + i);
         for (j = 0; j < (sizeof(int) / 2); j++) {
             tmp = *(c + j);
             *(c + j)= *(c + sizeof(int) - 1 - j);
@@ -132,10 +132,10 @@ xrealloc(ptr, size)
 
 
 
-void tr(uchar *str, uchar *lstr, uchar *rstr)
+void tr(char *str, char *lstr, char *rstr)
 {
     while (*str) {
-	uchar *idx = strchr(lstr, *str);
+	char *idx = strchr(lstr, *str);
 	if (idx != NULL) { /* found */
 	    *str = *(idx - lstr + rstr);
 	}
@@ -144,7 +144,7 @@ void tr(uchar *str, uchar *lstr, uchar *rstr)
 }
 
 /* delete ending LF and spaces of string*/
-void chomp(uchar * s)
+void chomp(char * s)
 {
     int i;
     for (i = strlen(s) - 1; i >= 0; i--) {
@@ -158,7 +158,7 @@ void chomp(uchar * s)
 }
 
 
-void strlower(uchar *str)
+void strlower(char *str)
 {
     while (*str) {
         *str = tolower(*str);
@@ -166,9 +166,9 @@ void strlower(uchar *str)
     }
 }
 
-void delete_backslashes(uchar *str)
+void delete_backslashes(char *str)
 {
-    uchar *pos = str;
+    char *pos = str;
 
     while (*str) {
         if (*str == '\\' && *(str + 1) == '\\') {
@@ -188,7 +188,7 @@ void delete_backslashes(uchar *str)
 }
 
 /* return with pointer to character at the end of string */
-uchar *lastc(uchar *str)
+char *lastc(char *str)
 {
     return (str + strlen(str) - 1);
 }
@@ -347,9 +347,9 @@ void debug_printf(char *fmt, ...)
     fflush(stderr);
 }
 
-void pathcat(uchar *base, uchar *name)
+void pathcat(char *base, char *name)
 {
-    uchar work[BUFSIZE];
+    char work[BUFSIZE];
     int i;
 
     for (i = strlen(name) - 1; i >= 0; i--) {
@@ -402,7 +402,7 @@ void commas(char *str)
  * case-insensitive brute force search  
  * (with consideration for EUC encoding schemes)
  */
-uchar *strcasestr(uchar *haystack, uchar *needle)
+char *strcasestr(char *haystack, char *needle)
 {
     int n = strlen(needle);
     int euc_mode = 0;
@@ -423,7 +423,7 @@ uchar *strcasestr(uchar *haystack, uchar *needle)
 }
 
 
-int strprefixcasecmp(uchar *str1, uchar *str2)
+int strprefixcasecmp(char *str1, char *str2)
 {
     int leng1, leng2;
 
@@ -437,7 +437,7 @@ int strprefixcasecmp(uchar *str1, uchar *str2)
     }
 }
 
-int strsuffixcasecmp(uchar *str1, uchar *str2)
+int strsuffixcasecmp(char *str1, char *str2)
 {
     int leng1, leng2;
 
@@ -451,7 +451,7 @@ int strsuffixcasecmp(uchar *str1, uchar *str2)
     }
 }
 
-int strprefixcmp(uchar *str1, uchar *str2)
+int strprefixcmp(char *str1, char *str2)
 {
     int leng1, leng2;
 
@@ -465,7 +465,7 @@ int strprefixcmp(uchar *str1, uchar *str2)
     }
 }
 
-int strsuffixcmp(uchar *str1, uchar *str2)
+int strsuffixcmp(char *str1, char *str2)
 {
     int leng1, leng2;
 
@@ -480,9 +480,9 @@ int strsuffixcmp(uchar *str1, uchar *str2)
 }
 
 /* load the whole of file */
-uchar *readfile(uchar *fname)
+char *readfile(char *fname)
 {
-    uchar *buf;
+    char *buf;
     FILE *fp;
     struct stat fstatus;
 
@@ -492,12 +492,12 @@ uchar *readfile(uchar *fname)
         warnf("can't open %s\n", fname);
         return 0;
     }
-    buf = (uchar *) malloc(fstatus.st_size + 1);
+    buf = (char *) malloc(fstatus.st_size + 1);
     if (buf == NULL) {
 	 diemsg("readfile(malloc)");
 	 return NULL;
     }
-    if (fread(buf, sizeof(uchar), fstatus.st_size, fp) == 0) {
+    if (fread(buf, sizeof(char), fstatus.st_size, fp) == 0) {
         diemsg("readfile(fread)");
 	return NULL;
     }
@@ -507,7 +507,7 @@ uchar *readfile(uchar *fname)
 }
 
 /* subst: substitute pat with rep at without memory size consideration */
-void subst(uchar *p, uchar *pat, uchar *rep)
+void subst(char *p, char *pat, char *rep)
 {
     int patlen, replen;
     patlen = strlen(pat);
@@ -527,9 +527,9 @@ void subst(uchar *p, uchar *pat, uchar *rep)
 }
 
 /* output contents of file */
-void cat(uchar *fname)
+void cat(char *fname)
 {
-    uchar buf[BUFSIZE];
+    char buf[BUFSIZE];
     FILE *fp;
 
     if ((fp = fopen(fname, "rb"))) {
@@ -547,11 +547,11 @@ char *safe_getenv(char *s)
     return (cp = getenv(s)) ? cp : "";
 }
 
-void print(uchar *s) {
+void print(char *s) {
     fputs(s, stdout);
 }
 
-void wprint(uchar *s) {
+void wprint(char *s) {
     fflush(stdout);
     fprintf(stderr, "%s: ", PACKAGE);
     fputs(s, stderr);

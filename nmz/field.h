@@ -8,9 +8,9 @@ enum {
 };
 
 int is_field_safe_character(int);
-int isfield(uchar *);
-void apply_field_alias(uchar *);
-void get_field_name(uchar *, uchar *);
-void get_field_data(int, int, uchar *, uchar *);
+int isfield(char *);
+void apply_field_alias(char *);
+void get_field_name(char *, char *);
+void get_field_data(int, int, char *, char *);
 
 #endif /* _FIELD_H */

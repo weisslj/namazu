@@ -2,7 +2,7 @@
  * 
  * values.c -
  * 
- * $Id: var.c,v 1.1 1999-11-08 05:06:07 knok Exp $
+ * $Id: var.c,v 1.2 1999-11-18 02:46:02 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -30,16 +30,16 @@
 #include "re.h"
 
 /* string of HTML 's <BASE HREF="...">  (namazu.conf) */
-uchar BASE_URI[BUFSIZE] = "";
+char BASE_URI[BUFSIZE] = "";
 
 /* default directory to place indices */
-uchar DEFAULT_INDEX[BUFSIZE] = OPT_INDEXDIR;
+char DEFAULT_INDEX[BUFSIZE] = OPT_INDEXDIR;
 
 /* default directory to place config files */
-uchar CONFDIR[BUFSIZE] = OPT_CONFDIR;
+char CONFDIR[BUFSIZE] = OPT_CONFDIR;
 
 /* namazurc */
-uchar NAMAZURC[BUFSIZE] = "";
+char NAMAZURC[BUFSIZE] = "";
 
 /* too many global variables */
 int HListMax = 20;		/* max number of search results */

@@ -2,8 +2,8 @@
 #define _CGI_H
 
 struct cgivar {
-    uchar *name;
-    uchar *value;
+    char *name;
+    char *value;
     struct cgivar *next;
 };
 typedef struct cgivar CGIVAR;
@@ -13,18 +13,18 @@ typedef struct cgivar CGIVAR;
  * as a second arg as a pointer.
  */
 struct cgiarg {
-    uchar *query;
-    uchar *subquery;
+    char *query;
+    char *subquery;
 };
 typedef struct cgiarg CGIARG;
 
 
 struct cgivar_func {
-    uchar *name;
-    void (*func)(uchar*, CGIARG*);
+    char *name;
+    void (*func)(char*, CGIARG*);
 };
 typedef struct cgivar_func CGIVAR_FUNC;
 
-void init_cgi(uchar*, uchar*);
+void init_cgi(char*, char*);
 
 #endif /* _CGI_H */

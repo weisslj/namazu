@@ -18,12 +18,12 @@
  *
  ************************************************************/
 
-static void fputs_without_html_tag(uchar* , FILE*);
-static void emprint(uchar*, int);
-static void print_word_hit_count (uchar *key, int hitnum);
+static void fputs_without_html_tag(char* , FILE*);
+static void emprint(char*, int);
+static void print_word_hit_count (char *key, int hitnum);
 
 /* print s to stdout with processing for emphasizing and entity encoding  */
-static void emprint(uchar *s, int entity_encode)
+static void emprint(char *s, int entity_encode)
 {
     int i;
     for (i = 0; *s && i < BUFSIZE; s++) {
@@ -31,9 +31,9 @@ static void emprint(uchar *s, int entity_encode)
 	if ((strncmp(s, "\033$", 2) == 0)
 	    && (*(s + 2) == 'B' || *(s + 2) == '@')) 
 	{
-	    uchar *p;
+	    char *p;
 	    int n = 0;
-	    uchar buf[BUFSIZE];
+	    char buf[BUFSIZE];
 
 	    strncpy(buf, s, 3);
 	    n += 3;
@@ -82,10 +82,10 @@ static void emprint(uchar *s, int entity_encode)
 }
 
 /* output string without HTML elements */
-static void fputs_without_html_tag(uchar * s, FILE *fp)
+static void fputs_without_html_tag(char * s, FILE *fp)
 {
     int f, i;
-    uchar buf[BUFSIZE];
+    char buf[BUFSIZE];
 
     for (f = 0, i = 0; *s && i < BUFSIZE; s++) {
 
@@ -93,7 +93,7 @@ static void fputs_without_html_tag(uchar * s, FILE *fp)
 	if ((strncmp(s, "\033$", 2) == 0)
 	    && (*(s + 2) == 'B' || *(s + 2) == '@')) 
 	{
-	    uchar *p;
+	    char *p;
 
 	    strncpy(buf + i, s, 3);
 	    i += 3;
@@ -157,7 +157,7 @@ static void fputs_without_html_tag(uchar * s, FILE *fp)
 /*
  * for pageindex
  */
-void put_query(uchar * qs, int w)
+void put_query(char * qs, int w)
 {
     int foo = 0;
     while (*qs) {
@@ -235,9 +235,9 @@ void put_current_range(int listmax)
 }
 
 /* fputs Namazu version, it works with considereation of mode */
-void html_print(uchar *str)
+void html_print(char *str)
 {
-    uchar buf[BUFSIZE * 16];
+    char buf[BUFSIZE * 16];
     int is_nmz_html = 0;
 
     if ((int)*str == (int)'\t') { /* Namazu's HTML message */
@@ -264,8 +264,8 @@ void html_print(uchar *str)
  * display message file such as NMZ.tips or NMZ.body.
  */
 
-void print_msgfile(uchar *fname) {
-    uchar tmp_fname[BUFSIZE];
+void print_msgfile(char *fname) {
+    char tmp_fname[BUFSIZE];
 
     strcpy(tmp_fname, fname);
     choose_msgfile(tmp_fname);
@@ -276,9 +276,9 @@ void print_msgfile(uchar *fname) {
 void print_hlist(HLIST hlist)
 {
     int i;
-    uchar *templates[INDEX_MAX];
+    char *templates[INDEX_MAX];
     /* prepare large memory for replace_field() and conv_ext() */
-    uchar result[BUFSIZE * 128];
+    char result[BUFSIZE * 128];
 
     if (hlist.n <= 0 || HListMax == 0) {
 	return;
@@ -300,7 +300,7 @@ void print_hlist(HLIST hlist)
 	    get_field_data(hlist.d[i].idxid, hlist.d[i].docid, "uri", result);
 	} else {
 	    if (templates[hlist.d[i].idxid] == NULL) {  /* not loaded */
-		uchar fname[BUFSIZE];
+		char fname[BUFSIZE];
 
 		make_fullpathname_result(hlist.d[i].idxid);
 		strcpy(fname, NMZ.result);
@@ -362,10 +362,10 @@ void print_hit_count ()
     }
 }
 
-static void print_word_hit_count (uchar *key, int hitnum)
+static void print_word_hit_count (char *key, int hitnum)
 {
     if (!HitCountOnly && !ListFormat && !NoReference && !Quiet) {
-	uchar tmp_key[BUFSIZE];
+	char tmp_key[BUFSIZE];
 	strcpy(tmp_key, key);
 	conv_ext(tmp_key);
 
@@ -374,9 +374,9 @@ static void print_word_hit_count (uchar *key, int hitnum)
         if (hitnum > 0) {
             printf(": %d", hitnum);
         } else { 
-            uchar *msg = (uchar *)"";
+            char *msg = (char *)"";
             if (hitnum == 0) {
-                msg = (uchar *)": 0 ";
+                msg = (char *)": 0 ";
             } else if (hitnum == ERR_TOO_MUCH_MATCH) {
                 msg = _(" (Too many words matched. Ignored.)");
             } else if (hitnum == ERR_TOO_MUCH_HIT) {

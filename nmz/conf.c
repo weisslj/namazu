@@ -2,7 +2,7 @@
  * 
  * conf.c -
  * 
- * $Id: conf.c,v 1.3 1999-11-14 13:55:01 satoru Exp $
+ * $Id: conf.c,v 1.4 1999-11-18 02:45:59 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -37,7 +37,7 @@
 #include "codeconv.h"
 #include "i18n.h"
 
-static uchar *errmsg  = NULL;
+static char *errmsg  = NULL;
 static int ConfLoaded = 0;
 
 /************************************************************
@@ -48,14 +48,14 @@ static int ConfLoaded = 0;
 
 static void set_pathname(char*, char*, char*);
 static FILE *open_conf_file(char*);
-static ALIAS *add_alias(ALIAS*, uchar*, uchar*);
-static REPLACE *add_replace(int, REPLACE*, uchar*, uchar*);
-static int parse_conf(uchar *, int);
-static int get_conf_args(uchar*, uchar*, uchar*, uchar*);
-static int get_conf_arg(uchar*, uchar*);
-static void replace_home(uchar *);
-static int apply_conf(uchar*, int, uchar*, uchar*);
-static int check_argnum(uchar*, int);
+static ALIAS *add_alias(ALIAS*, char*, char*);
+static REPLACE *add_replace(int, REPLACE*, char*, char*);
+static int parse_conf(char *, int);
+static int get_conf_args(char*, char*, char*, char*);
+static int get_conf_arg(char*, char*);
+static void replace_home(char *);
+static int apply_conf(char*, int, char*, char*);
+static int check_argnum(char*, int);
 
 /* change filename in full pathname */
 static void set_pathname(char *to, char *o, char *name)
@@ -73,7 +73,7 @@ static void set_pathname(char *to, char *o, char *name)
     return;
 }
 
-static ALIAS *add_alias(ALIAS *ptr, uchar *alias, uchar *real)
+static ALIAS *add_alias(ALIAS *ptr, char *alias, char *real)
 {
     ALIAS *tmp;
     
@@ -100,7 +100,7 @@ static ALIAS *add_alias(ALIAS *ptr, uchar *alias, uchar *real)
     return tmp;
 }
 
-static REPLACE *add_replace(int lineno, REPLACE *ptr, uchar *pat, uchar *rep)
+static REPLACE *add_replace(int lineno, REPLACE *ptr, char *pat, char *rep)
 {
     REPLACE *tmp;
     
@@ -185,7 +185,7 @@ static FILE *open_conf_file(char *av0)
     return (FILE *) NULL;
 }
 
-static int get_conf_arg(uchar *line, uchar *arg)
+static int get_conf_arg(char *line, char *arg)
 {
     *arg = '\0';
     if (*line != '"') {
@@ -221,9 +221,9 @@ static int get_conf_arg(uchar *line, uchar *arg)
     }
 }
 
-static void replace_home(uchar *str)
+static void replace_home(char *str)
 {
-    uchar tmp[BUFSIZE];
+    char tmp[BUFSIZE];
 
     strcpy(tmp, str);
     if (strprefixcmp(tmp, "~/") == 0) {
@@ -242,7 +242,7 @@ static void replace_home(uchar *str)
 }
 
 
-static int get_conf_args(uchar *line, uchar *directive, uchar *arg1, uchar *arg2)
+static int get_conf_args(char *line, char *directive, char *arg1, char *arg2)
 {
     int n;
 
@@ -322,11 +322,11 @@ static int get_conf_args(uchar *line, uchar *directive, uchar *arg1, uchar *arg2
     }
 }
 
-static int parse_conf(uchar *line, int lineno) 
+static int parse_conf(char *line, int lineno) 
 {
-    uchar directive[BUFSIZE] = "";
-    uchar arg1[BUFSIZE] = "";
-    uchar arg2[BUFSIZE] = "";
+    char directive[BUFSIZE] = "";
+    char arg1[BUFSIZE] = "";
+    char arg2[BUFSIZE] = "";
     int argnum = 0;
 
     argnum = get_conf_args(line, directive, arg1, arg2);
@@ -357,10 +357,10 @@ static int parse_conf(uchar *line, int lineno)
     return 0;
 }
 
-static int check_argnum(uchar *directive, int argnum)
+static int check_argnum(char *directive, int argnum)
 {
     struct conf_directive {
-	uchar *name;
+	char *name;
 	int argnum;
     };
     struct conf_directive dtab[] = {
@@ -396,7 +396,7 @@ static int check_argnum(uchar *directive, int argnum)
     return 1;
 }
 
-static int apply_conf(uchar *directive, int lineno, uchar *arg1, uchar *arg2)
+static int apply_conf(char *directive, int lineno, char *arg1, char *arg2)
 {
     if (strcasecmp(directive, "COMMENT") == 0) {
 	;  /* only a comment */
@@ -436,7 +436,7 @@ static int apply_conf(uchar *directive, int lineno, uchar *arg1, uchar *arg2)
 int load_conf(char *av0)
 {
     FILE *fp;
-    uchar buf[BUFSIZE];
+    char buf[BUFSIZE];
     int lineno = 0;
 
     

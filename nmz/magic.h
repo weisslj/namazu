@@ -31,7 +31,7 @@ enum {  /* all should be negative value. */
     ERR_REGEX_SEARCH_FAILED  = -3,
     ERR_PHRASE_SEARCH_FAILED = -4,
     ERR_CANNOT_OPEN_INDEX    = -5,
-    ERR_NO_PERMISSION        = -6,
+    ERR_NO_PERMISSION        = -6
 };
 
 /* error code */

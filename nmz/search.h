@@ -12,9 +12,9 @@ enum {
     ERROR_MODE = -1
 };
 
-int binsearch(uchar*, int);
-HLIST search_main(uchar*);
-HLIST do_search(uchar *, HLIST);
+int binsearch(char*, int);
+HLIST search_main(char*);
+HLIST do_search(char *, HLIST);
 
 void free_phraseres(PHRASERES *);
 

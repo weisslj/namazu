@@ -29,7 +29,7 @@ static int is_field_safe_char(int c)
 
 static void make_fullpathname_field(int n)
 {
-    uchar *base;
+    char *base;
 
     base = Idx.names[n];
     pathcat(base, NMZ.field);
@@ -43,7 +43,7 @@ static void make_fullpathname_field(int n)
 
 
 /* check a key if field or not */
-int isfield(uchar *key)
+int isfield(char *key)
 {
     if (*key == '+') {
         key++;
@@ -62,7 +62,7 @@ int isfield(uchar *key)
     return 0;
 }
 
-void apply_field_alias(uchar *field)
+void apply_field_alias(char *field)
 {
     if (strcmp(field, "title") == 0) {
         strcpy(field, "subject");
@@ -73,9 +73,9 @@ void apply_field_alias(uchar *field)
     } 
 }
 
-void get_field_name(uchar *field, uchar *str)
+void get_field_name(char *field, char *str)
 {
-    uchar *tmp = field;
+    char *tmp = field;
 
     str++;  /* ignore beggining '+' mark */
     while (*str) {
@@ -91,18 +91,18 @@ void get_field_name(uchar *field, uchar *str)
     apply_field_alias(field);
 }
 
-void get_field_data(int idxid, int docid, uchar *orig_field, uchar *data) 
+void get_field_data(int idxid, int docid, char *orig_field, char *data) 
 {
-    uchar fname[BUFSIZE];
-    uchar *field = orig_field;
+    char fname[BUFSIZE];
+    char *field = orig_field;
     int i;
     static int cache_idx = 0, cache_num = 0;
     FILE *fp_field, *fp_field_idx;
     struct field_cache {
 	int idxid;
 	int docid;
-	uchar field[BUFSIZE];
-	uchar data[BUFSIZE];
+	char field[BUFSIZE];
+	char data[BUFSIZE];
     };
     static struct field_cache fc[FIELD_CACHE_SIZE];
 

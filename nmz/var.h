@@ -22,27 +22,27 @@ extern int NoReference;
 extern int SortMethod;
 extern int SortOrder;
 
-extern uchar DEFAULT_INDEX[];
+extern char DEFAULT_INDEX[];
 
-extern uchar BASE_URI[];
-extern uchar CONFDIR[];
-extern uchar NAMAZURC[];
+extern char BASE_URI[];
+extern char CONFDIR[];
+extern char NAMAZURC[];
 
-extern uchar INDEX[];
-extern uchar INDEXINDEX[];
-extern uchar HEADERFILE[];
-extern uchar FOOTERFILE[];
-extern uchar LOCKFILE[];
-extern uchar LOCKMSGFILE[];
-extern uchar BODYMSGFILE[];
-extern uchar RESULTFILE[];
-extern uchar SLOG[];
-extern uchar WORDLIST[];
-extern uchar FIELDINFO[];
-extern uchar DATEINDEX[];
+extern char INDEX[];
+extern char INDEXINDEX[];
+extern char HEADERFILE[];
+extern char FOOTERFILE[];
+extern char LOCKFILE[];
+extern char LOCKMSGFILE[];
+extern char BODYMSGFILE[];
+extern char RESULTFILE[];
+extern char SLOG[];
+extern char WORDLIST[];
+extern char FIELDINFO[];
+extern char DATEINDEX[];
 
-extern uchar PHRASE[];
-extern uchar PHRASEINDEX[];
+extern char PHRASE[];
+extern char PHRASEINDEX[];
 
 extern REPLACE *Replace;
 extern ALIAS   *Alias;

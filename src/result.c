@@ -1,6 +1,6 @@
 /*
  * result.c -
- * $Id: result.c,v 1.18 1999-11-01 14:13:20 satoru Exp $
+ * $Id: result.c,v 1.19 1999-11-18 02:46:07 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -39,17 +39,17 @@
  *
  ************************************************************/
 
-static void encode_entity(uchar*);
-static void emphasize(uchar*);
-static void replace_field(HLIST_DATA, int, uchar*, uchar*);
+static void encode_entity(char*);
+static void emphasize(char*);
+static void replace_field(HLIST_DATA, int, char*, char*);
 
 
 static void replace_field(HLIST_DATA d, int counter, 
-			  uchar *field, uchar *result)
+			  char *field, char *result)
 {
     /* 8 is length of '&quot;' + 2 (for emphasizing). 
        It's a consideration for buffer overflow (overkill?) */
-    uchar buf[BUFSIZE * 8];  
+    char buf[BUFSIZE * 8];  
 
     if (strcmp(field, "namazu::score") == 0) {
 	sprintf(buf, "%d", d.score);
@@ -75,10 +75,10 @@ static void replace_field(HLIST_DATA d, int counter,
     strcat(result, buf);
 }
 
-static void encode_entity(uchar *str)
+static void encode_entity(char *str)
 {
     int i;
-    uchar tmp[BUFSIZE];
+    char tmp[BUFSIZE];
 
     strcpy(tmp, str);
     strcpy(str, "");
@@ -98,13 +98,13 @@ static void encode_entity(uchar *str)
 }
 
 /* inefficient algorithm but it works */
-static void emphasize(uchar *str)
+static void emphasize(char *str)
 {
     int i;
 
     for (i = 0; Query.tab[i] != NULL; i++) {
-	uchar *ptr = str;
-	uchar key[BUFSIZE];
+	char *ptr = str;
+	char key[BUFSIZE];
 	int keylen = 0;
 
 	strcpy(key, Query.tab[i]);
@@ -134,17 +134,17 @@ static void emphasize(uchar *str)
 
 void make_fullpathname_result(int n)
 {
-    uchar *base;
+    char *base;
 
     base = Idx.names[n];
     pathcat(base, NMZ.result);
 }
 
 void compose_result(HLIST_DATA d, int counter, 
-			   uchar *template, uchar *r)
+			   char *template, char *r)
 {
-    uchar *p = template;
-    uchar achars[BUFSIZE]; /* acceptable characters */
+    char *p = template;
+    char achars[BUFSIZE]; /* acceptable characters */
 
     strcpy(r, "\t");  /* '\t' has an important role cf. html_print() */
 
@@ -152,7 +152,7 @@ void compose_result(HLIST_DATA d, int counter,
     strcat(achars, ":");  /* for namazu::score, namazu::counter */
 
     do {
-	uchar *pp;
+	char *pp;
 	pp = strstr(p, "${");
 	if (pp != NULL) {
 	    int n;
@@ -160,7 +160,7 @@ void compose_result(HLIST_DATA d, int counter,
 	    pp += 2;  /* skip "${" */
 	    n = strspn(pp, achars);
 	    if (n > 0 && pp[n] == '}') {
-		uchar field[BUFSIZE];
+		char field[BUFSIZE];
 		
 		strncpy(field, pp, n);
 		field[n] = '\0';

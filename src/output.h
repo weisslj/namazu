@@ -1,10 +1,10 @@
 #ifndef _OUTPUT_H
 #define _OUTPUT_H
 
-void html_print(uchar*);
+void html_print(char*);
 void put_current_range(int);
 void put_page_index(int);
-void print_msgfile(uchar*);
+void print_msgfile(char*);
 
 void print_hlist(HLIST);
 

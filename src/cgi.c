@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.23 1999-11-17 10:01:38 satoru Exp $
+ * $Id: cgi.c,v 1.24 1999-11-18 02:46:06 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -46,51 +46,51 @@
  *
  ************************************************************/
 
-static int validate_idxname(uchar* );
+static int validate_idxname(char* );
 
-static CGIVAR *add_cgivar(CGIVAR*, uchar*, uchar*);
-static CGIVAR *get_cgi_vars(uchar*);
-static uchar *get_query_string(void);
+static CGIVAR *add_cgivar(CGIVAR*, char*, char*);
+static CGIVAR *get_cgi_vars(char*);
+static char *get_query_string(void);
 static int process_cgi_vars(CGIARG*);
 static int apply_cgifunc(CGIVAR*, CGIARG*);
 static void free_cgi_vars(CGIVAR*);
 
-static void decode_uri(uchar*);
-static uchar decode_uri_sub(uchar, uchar);
+static void decode_uri(char*);
+static char decode_uri_sub(char, char);
 
-static void process_cgi_var_query(uchar*, CGIARG*);
-static void process_cgi_var_subquery(uchar*, CGIARG*);
-static void process_cgi_var_format(uchar*, CGIARG*);
-static void process_cgi_var_sort(uchar*, CGIARG*);
-static void process_cgi_var_max(uchar*, CGIARG*);
-static void process_cgi_var_whence(uchar*, CGIARG*);
-static void process_cgi_var_lang(uchar*, CGIARG*);
-static void process_cgi_var_result(uchar*, CGIARG*);
-static void process_cgi_var_reference(uchar*, CGIARG*);
-static void process_cgi_var_idxname(uchar*, CGIARG*);
-static void process_cgi_var_submit(uchar*, CGIARG*);
+static void process_cgi_var_query(char*, CGIARG*);
+static void process_cgi_var_subquery(char*, CGIARG*);
+static void process_cgi_var_format(char*, CGIARG*);
+static void process_cgi_var_sort(char*, CGIARG*);
+static void process_cgi_var_max(char*, CGIARG*);
+static void process_cgi_var_whence(char*, CGIARG*);
+static void process_cgi_var_lang(char*, CGIARG*);
+static void process_cgi_var_result(char*, CGIARG*);
+static void process_cgi_var_reference(char*, CGIARG*);
+static void process_cgi_var_idxname(char*, CGIARG*);
+static void process_cgi_var_submit(char*, CGIARG*);
 
 /* Table for cgi vars and corresponding functions. */
 static CGIVAR_FUNC CgiFuncTab[] = {
-    { "query",     (void *)process_cgi_var_query },
-    { "key",       (void *)process_cgi_var_query },  /* backward comat. */
-    { "subquery",  (void *)process_cgi_var_subquery },
-    { "format",    (void *)process_cgi_var_format }, /* backward comat. */
-    { "sort",      (void *)process_cgi_var_sort },
-    { "max",       (void *)process_cgi_var_max },
-    { "whence",    (void *)process_cgi_var_whence },
-    { "lang",      (void *)process_cgi_var_lang },
-    { "result",    (void *)process_cgi_var_result },
-    { "reference", (void *)process_cgi_var_reference },
-    { "idxname",   (void *)process_cgi_var_idxname },
-    { "dbname",    (void *)process_cgi_var_idxname },  /* backward comat. */
-    { "submit",    (void *)process_cgi_var_submit },
-    { NULL,        (void *)NULL }   /* sentry */
+    { "query",     process_cgi_var_query },
+    { "key",       process_cgi_var_query },  /* backward comat. */
+    { "subquery",  process_cgi_var_subquery },
+    { "format",    process_cgi_var_format }, /* backward comat. */
+    { "sort",      process_cgi_var_sort },
+    { "max",       process_cgi_var_max },
+    { "whence",    process_cgi_var_whence },
+    { "lang",      process_cgi_var_lang },
+    { "result",    process_cgi_var_result },
+    { "reference", process_cgi_var_reference },
+    { "idxname",   process_cgi_var_idxname },
+    { "dbname",    process_cgi_var_idxname },  /* backward comat. */
+    { "submit",    process_cgi_var_submit },
+    { NULL,        NULL }   /* sentry */
 };
 
 
 /* validate idxname (if it contain '/', it's invalid) */
-static int validate_idxname(uchar * idxname)
+static int validate_idxname(char * idxname)
 {
     int win32 = 0;
 #if  defined(_WIN32) || defined(__EMX__)
@@ -130,7 +130,7 @@ static int validate_idxname(uchar * idxname)
     return 1;
 }
 
-static CGIVAR *add_cgivar(CGIVAR *ptr, uchar *name, uchar *value)
+static CGIVAR *add_cgivar(CGIVAR *ptr, char *name, char *value)
 {
     CGIVAR *tmp;
 
@@ -167,15 +167,15 @@ static void free_cgi_vars(CGIVAR *cv)
     free(cv);
 }
 
-static uchar *get_query_string(void) 
+static char *get_query_string(void) 
 {
     int contlen;
-    uchar *script_name    = (uchar *)"";
-    uchar *query_string   = (uchar *)"";
-    uchar *content_length = (uchar *)"";
+    char *script_name    = (char *)"";
+    char *query_string   = (char *)"";
+    char *content_length = (char *)"";
 
 
-    if ((query_string = (uchar *)getenv("QUERY_STRING"))) {
+    if ((query_string = (char *)getenv("QUERY_STRING"))) {
         /* 
 	 * get QUERY_STRING from environmental variables.
 	 */
@@ -185,7 +185,7 @@ static uchar *get_query_string(void)
             printf(_("Too long QUERY_STRING"));
             exit(1);
         }
-	script_name = (uchar *)getenv("SCRIPT_NAME");
+	script_name = (char *)getenv("SCRIPT_NAME");
         if (script_name == NULL) {
             return NULL;
         }
@@ -193,14 +193,14 @@ static uchar *get_query_string(void)
         /* 
 	 * get QUERY_STRING from stdin 
 	 */
-	if ((content_length = (uchar *)getenv("CONTENT_LENGTH"))) {
+	if ((content_length = (char *)getenv("CONTENT_LENGTH"))) {
 	    contlen = atoi(content_length);
             if (contlen > CGI_QUERY_MAX) {
                 printf(MSG_MIME_HEADER);
                 printf(_("Too long QUERY_STRING"));
                 exit(1);
             }
-            query_string = (uchar *)malloc(contlen * sizeof(uchar) + 1);
+            query_string = (char *)malloc(contlen * sizeof(char) + 1);
 	    if (query_string == NULL) {
                 printf(MSG_MIME_HEADER);
 		printf("query_string(get_cgivar)");
@@ -214,15 +214,15 @@ static uchar *get_query_string(void)
     return query_string;
 }
 
-static CGIVAR *get_cgi_vars(uchar *qs)
+static CGIVAR *get_cgi_vars(char *qs)
 {
     CGIVAR *cv = NULL; /* SHOULD BE NULL for sentinel! */
 
     while (1) {
 	int len;
-	uchar *tmp;
-	uchar name[BUFSIZE];
-	uchar value[BUFSIZE];
+	char *tmp;
+	char name[BUFSIZE];
+	char value[BUFSIZE];
 
 	tmp = strchr(qs, '=');
 	if (tmp == NULL) {
@@ -261,7 +261,7 @@ static CGIVAR *get_cgi_vars(uchar *qs)
 
 static int process_cgi_vars(CGIARG *ca)
 {
-    uchar *qs;
+    char *qs;
     CGIVAR *cv;
 
     qs = get_query_string();
@@ -294,7 +294,7 @@ static int apply_cgifunc(CGIVAR *cv, CGIARG *ca)
     return 0; /* not applied */
 }
 
-static void process_cgi_var_query(uchar *value, CGIARG *ca)
+static void process_cgi_var_query(char *value, CGIARG *ca)
 {
     if (strlen(value) > QUERY_MAX) {
 	print(MSG_MIME_HEADER);
@@ -310,12 +310,12 @@ static void process_cgi_var_query(uchar *value, CGIARG *ca)
 	    decode_uri(value);
 	}
     }
-#endif MSIE4MACFIX
+#endif /* MSIE4MACFIX */
 
     strcpy(ca->query, value);
 }
 
-static void process_cgi_var_subquery(uchar *value, CGIARG *ca)
+static void process_cgi_var_subquery(char *value, CGIARG *ca)
 {
     if (strlen(value) > QUERY_MAX) {
 	print(MSG_MIME_HEADER);
@@ -337,7 +337,7 @@ static void process_cgi_var_subquery(uchar *value, CGIARG *ca)
 }
 
 /* this function is for backward compatibility with 1.3.0.x */
-static void process_cgi_var_format(uchar *value, CGIARG *ca)
+static void process_cgi_var_format(char *value, CGIARG *ca)
 {
     if (strcmp(value, "short") == 0) {
 	strcpy(Template, "short");
@@ -346,7 +346,7 @@ static void process_cgi_var_format(uchar *value, CGIARG *ca)
     }
 }
 
-static void process_cgi_var_sort(uchar *value, CGIARG *ca)
+static void process_cgi_var_sort(char *value, CGIARG *ca)
 {
     if (strprefixcasecmp(value, "score") == 0) {
 	SortMethod  = SORT_BY_SCORE;
@@ -365,7 +365,7 @@ static void process_cgi_var_sort(uchar *value, CGIARG *ca)
 	SortOrder   = ASCENDING;
     } else if (strprefixcasecmp(value, "field:") == 0) {
 	int n;
-	uchar field[BUFSIZE];
+	char field[BUFSIZE];
 
 	value += strlen("field:");
 	n = strspn(value, FIELD_SAFE_CHARS);
@@ -384,7 +384,7 @@ static void process_cgi_var_sort(uchar *value, CGIARG *ca)
     } 
 }
 
-static void process_cgi_var_max(uchar *value, CGIARG *ca)
+static void process_cgi_var_max(char *value, CGIARG *ca)
 {
     sscanf(value, "%d", &HListMax);
     if (HListMax < 0)
@@ -393,7 +393,7 @@ static void process_cgi_var_max(uchar *value, CGIARG *ca)
 	HListMax = RESULT_MAX;
 }
 
-static void process_cgi_var_whence(uchar *value, CGIARG *ca)
+static void process_cgi_var_whence(char *value, CGIARG *ca)
 {
     sscanf(value, "%d", &HListWhence);
     if (HListWhence < 0) {
@@ -401,17 +401,17 @@ static void process_cgi_var_whence(uchar *value, CGIARG *ca)
     }
 }
 
-static void process_cgi_var_lang(uchar *value, CGIARG *ca)
+static void process_cgi_var_lang(char *value, CGIARG *ca)
 {
     set_lang(value);
 }
 
-static void process_cgi_var_result(uchar *value, CGIARG *ca)
+static void process_cgi_var_result(char *value, CGIARG *ca)
 {
     strcpy(Template, value);
 }
 
-static void process_cgi_var_reference(uchar *value, CGIARG *ca)
+static void process_cgi_var_reference(char *value, CGIARG *ca)
 {
     if (strcmp(value, "off") == 0) {
 	NoReference = 1;
@@ -419,19 +419,19 @@ static void process_cgi_var_reference(uchar *value, CGIARG *ca)
     
 }
 
-static void process_cgi_var_submit(uchar *value, CGIARG *ca)
+static void process_cgi_var_submit(char *value, CGIARG *ca)
 {
     /* do nothing; */
 }
 
-static void process_cgi_var_idxname(uchar *value, CGIARG *ca)
+static void process_cgi_var_idxname(char *value, CGIARG *ca)
 {
-    uchar *pp;
+    char *pp;
 
     for (pp = value; *pp ;) {
-	uchar name[BUFSIZE], tmp[BUFSIZE], *x;
+	char name[BUFSIZE], tmp[BUFSIZE], *x;
 
-	if ((x = (uchar *)strchr(pp, (int)','))) {
+	if ((x = (char *)strchr(pp, (int)','))) {
 	    *x = '\0';
 	    strcpy(name, pp);
 	    pp = x + 1;
@@ -448,7 +448,7 @@ static void process_cgi_var_idxname(uchar *value, CGIARG *ca)
 }
 
 /* decoding URI encoded strings */
-static void decode_uri(uchar * s)
+static void decode_uri(char * s)
 {
     int i, j;
     for (i = j = 0; s[i]; i++, j++) {
@@ -464,9 +464,9 @@ static void decode_uri(uchar * s)
     s[j] = '\0';
 }
 
-static uchar decode_uri_sub(uchar c1, uchar c2)
+static char decode_uri_sub(char c1, char c2)
 {
-    uchar c;
+    char c;
 
     c =  ((c1 >= 'A' ? (toupper(c1) - 'A') + 10 : (c1 - '0'))) * 16;
     c += ( c2 >= 'A' ? (toupper(c2) - 'A') + 10 : (c2 - '0'));
@@ -482,7 +482,7 @@ static uchar decode_uri_sub(uchar c1, uchar c2)
 
 /* initialize CGI mode. actually, to be invoked from commandline
  * with no arguments also trhough this function */
-void init_cgi(uchar *query, uchar *subquery)
+void init_cgi(char *query, char *subquery)
 {
     CGIARG ca;  /* passed for process_cgi_var_*() functions 
 		   for modifying important variables. */

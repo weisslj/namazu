@@ -2,7 +2,7 @@
  * 
  * re.c -
  * 
- * $Id: re.c,v 1.1 1999-11-08 05:06:05 knok Exp $
+ * $Id: re.c,v 1.2 1999-11-18 02:46:01 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -44,10 +44,10 @@
  ************************************************************/
 
 /* replace a URI */
-int replace_uri(uchar *uri)
+int replace_uri(char *uri)
 {
     int npat, nrep, i, j;
-    uchar tmp[BUFSIZE];
+    char tmp[BUFSIZE];
     REPLACE *list = Replace;
     int is_regex_matching = 0;
 
@@ -68,8 +68,8 @@ int replace_uri(uchar *uri)
 	    is_regex_matching = 0;
 	} else if (0 < (mlen = re_match (re, tmp, strlen (tmp), 0, &regs))) {
 	    /* We got a match.  Try to replace the string. */
-	    uchar repl[BUFSIZE];
-	    uchar *subst = list->rep;
+	    char repl[BUFSIZE];
+	    char *subst = list->rep;
 	    /* Assume we are doing regexp match for now; if any of the
 	     * substitution fails, we will switch back to the straight
 	     * string substitution.
@@ -142,9 +142,9 @@ int replace_uri(uchar *uri)
     return 0;
 }
 
-HLIST regex_grep(uchar *orig_expr, FILE *fp, uchar *field, int field_mode)
+HLIST regex_grep(char *orig_expr, FILE *fp, char *field, int field_mode)
 {
-    unsigned char buf[BUFSIZE], expr[BUFSIZE];
+    char buf[BUFSIZE], expr[BUFSIZE];
     REGEX *rp;
     int i, n, size = 0, max, uri_mode = 0;
     HLIST val, tmp;
@@ -230,7 +230,7 @@ HLIST regex_grep(uchar *orig_expr, FILE *fp, uchar *field, int field_mode)
                 break;
             }
 	    if (Debug) {
-                uchar buf2[BUFSIZE];
+                char buf2[BUFSIZE];
 
                 if (field_mode) {
                     debug_printf("field: [%d]<%s> id: %d\n", 

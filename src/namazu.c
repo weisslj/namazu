@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.36 1999-11-16 01:49:02 satoru Exp $
+ * $Id: namazu.c,v 1.37 1999-11-18 02:46:07 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -63,13 +63,13 @@
  *
  ************************************************************/
 
-static int stdio2file(uchar*);
+static int stdio2file(char*);
 static int parse_options(int, char**);
-static int namazu_core(uchar*, uchar*, uchar*);
+static int namazu_core(char*, char*, char*);
 static void suicide(void);
 
 /* redirect stdio to specified file */
-static int stdio2file(uchar * fname)
+static int stdio2file(char * fname)
 {
 /*   int fd;
  *   if (-1 == (fd = open(fname, O_CREAT | O_TRUNC | O_WRONLY, 00600))) {
@@ -231,9 +231,9 @@ static int parse_options(int argc, char **argv)
 }
 
 /* namazu core routine */
-static int namazu_core(uchar * query, uchar *subquery, uchar *av0)
+static int namazu_core(char * query, char *subquery, char *av0)
 {
-    uchar query_with_subquery[BUFSIZE * 2];
+    char query_with_subquery[BUFSIZE * 2];
     HLIST hlist;
 
     /* make full-pathname of NMZ.{head,foot,msg,body,slog}.?? */
@@ -347,7 +347,7 @@ int main(int argc, char **argv)
 {
     int i = 0;
     int ret;
-    uchar query[BUFSIZE] = "", subquery[BUFSIZE] = "";
+    char query[BUFSIZE] = "", subquery[BUFSIZE] = "";
 
     set_lang("");
     bindtextdomain(PACKAGE, LOCALEDIR);

@@ -1,6 +1,6 @@
 /*
  * i18n.c -
- * $Id: i18n.c,v 1.1 1999-11-09 08:34:37 knok Exp $
+ * $Id: i18n.c,v 1.2 1999-11-18 02:46:00 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -76,7 +76,7 @@ char *set_lang(char *lang)
     setenv("LANG", Lang, 1);
 # else
     {
-	uchar *buf;
+	char *buf;
 
 	buf = malloc(BUFSIZE);
 	sprintf(buf, "LC_ALL=%s", Lang);
@@ -115,7 +115,7 @@ char *get_lang(void)
  * should pass `fname' as a temporary variable. Don't pass a
  * critical variable directly.  
  */
-uchar *choose_msgfile(uchar *fname)
+char *choose_msgfile(char *fname)
 {
     FILE *fp;
     int base_leng;

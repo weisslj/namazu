@@ -2,8 +2,8 @@
 
   util.h -
 
-  $Author: knok $
-  $Date: 1999-11-15 09:24:39 $
+  $Author: satoru $
+  $Date: 1999-11-18 02:46:02 $
   created at: Thu Mar  9 11:55:53 JST 1995
 
   Copyright (C) 1993-1998 Yukihiro Matsumoto
@@ -26,15 +26,20 @@
  *
  ************************************************************/
 
-#define iskanji1st(c) (((c) >= 0x81 && (c)) <= 0x9f ||\
-                      ((c) >= 0xe0 && (c) <= 0xfc))
-#define iskanji2nd(c) ((c) >= 0x40 && (c) <= 0xfc && (c) != 0x7f)
-#define iseuc(c)  ((c) >= 0xa1 && (c) <= 0xfe)
+#define iskanji1st(c) (((unsigned int)(c) >= 0x81 && \
+                       (unsigned int)(c)) <= 0x9f || \
+                       ((unsigned int)(c) >= 0xe0 && \
+                       (unsigned int)(c) <= 0xfc))
+#define iskanji2nd(c) (((unsigned int)(c) >= 0x40 && \
+                       (unsigned int)(c) <= 0xfc && \
+                       (unsigned int)(c) != 0x7f))
+#define iseuc(c)  ((unsigned int)(c) >= 0xa1 && (unsigned int)(c) <= 0xfe)
 #ifndef iskanji /* for jperl */
 #define iskanji(c)  (iseuc(*(c)) && iseuc(*(c + 1)))
 #endif
-#define ischoon(c) ((int)*(c) == 0xa1 && (int)*(c + 1) == 0xbc)
-#define iseuc(c)  ((c) >= 0xa1 && (c) <= 0xfe)
+#define ischoon(c) ((unsigned int)*(c) == 0xa1 && \
+                    (unsigned int)*(c + 1) == 0xbc)
+#define iseuc(c)  ((unsigned int)(c) >= 0xa1 && (unsigned int)(c) <= 0xfe)
 
 /************************************************************
  *
@@ -47,15 +52,15 @@ unsigned long scan_oct();
 
 void *xmalloc(unsigned long);
 void *xrealloc(void*, unsigned long);
-void tr(uchar*, uchar*, uchar*);
-void chomp(uchar*);
+void tr(char*, char*, char*);
+void chomp(char*);
 
 void strlower();
 void delete_backslashes();
 int get_unpackw();
 int read_unpackw(FILE *, int *, int);
 
-uchar *lastc();
+char *lastc();
 size_t freadx();
 long getidxptr(FILE* , long);
 int issymbol(int);
@@ -66,24 +71,24 @@ void diemsg(char*, ...);
 void diewithmsg();
 void warnf(char*, ...);
 void debug_printf(char*, ...);
-void pathcat(uchar*, uchar*);
+void pathcat(char*, char*);
 
 int  isnumstr(char *);
 void commas(char *);
 
-uchar *strcasestr(uchar *, uchar *);
-int strprefixcmp(uchar *, uchar *);
-int strsuffixcmp(uchar *, uchar *);
-int strprefixcasecmp(uchar *, uchar *);
-int strsuffixcasecmp(uchar *, uchar *);
-uchar *readfile(uchar*);
-void subst(uchar*, uchar*, uchar*);
-void cat(uchar*);
+char *strcasestr(char *, char *);
+int strprefixcmp(char *, char *);
+int strsuffixcmp(char *, char *);
+int strprefixcasecmp(char *, char *);
+int strsuffixcasecmp(char *, char *);
+char *readfile(char*);
+void subst(char*, char*, char*);
+void cat(char*);
 
 char *safe_getenv(char *s);
 
-void print(uchar*);
-void wprint(uchar*);
+void print(char*);
+void wprint(char*);
 
 #endif /* _UTIL_H */
 

@@ -8,7 +8,7 @@ enum {
     OTHER
 };
 
-int wakati(uchar*);
-int split_query(uchar*);
+int wakati(char*);
+int split_query(char*);
 
 #endif /* _WAKATI_H */

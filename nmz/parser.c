@@ -2,7 +2,7 @@
  * 
  * parser.c -
  * 
- * $Id: parser.c,v 1.1 1999-11-08 05:06:05 knok Exp $
+ * $Id: parser.c,v 1.2 1999-11-18 02:46:01 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -45,14 +45,14 @@ static int Cp = 0; /* variable that saves current position of parser */
  *
  ************************************************************/
 
-static int isop(uchar*);
+static int isop(char*);
 static HLIST factor(int*);
 static int andop(void);
 static HLIST term(void);
 static int orop(void);
 
 /* check a character if metacharacter (operator) of not */
-static int isop(uchar * c)
+static int isop(char * c)
 {
     if ((strcmp(c, AND_STRING) == 0 ) ||
 	(strcmp(c, AND_STRING_ALT) == 0 ) ||

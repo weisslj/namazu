@@ -2,7 +2,7 @@
  * 
  * idxname.c - Idx handling routines.
  *
- * $Id: idxname.c,v 1.2 1999-11-14 13:55:01 satoru Exp $
+ * $Id: idxname.c,v 1.3 1999-11-18 02:46:00 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
@@ -32,12 +32,12 @@
 #include "var.h"
 #include "idxname.h"
 
-int add_index(uchar *idxname)
+int add_index(char *idxname)
 {
     int newidxnum = Idx.num;
     if (newidxnum >= INDEX_MAX)
 	return ERR_INDEX_MAX;
-    Idx.names[newidxnum] = (uchar *) malloc(strlen(idxname) + 1);
+    Idx.names[newidxnum] = (char *) malloc(strlen(idxname) + 1);
     if (Idx.names[newidxnum] == NULL)
 	return ERR_MALLOC;
     strcpy(Idx.names[newidxnum], idxname);

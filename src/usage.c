@@ -2,7 +2,7 @@
  * 
  * usage.c -
  * 
- * $Id: usage.c,v 1.7 1999-10-27 07:54:40 satoru Exp $
+ * $Id: usage.c,v 1.8 1999-11-18 02:46:07 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -39,8 +39,8 @@
 /* display the usage and version info and exit */
 void show_long_usage(void)
 {
-    uchar buf[BUFSIZE * 4];
-    uchar *usage = (uchar *)
+    char buf[BUFSIZE * 4];
+    char *usage = (char *)
     N_("\
 Search Program of Namazu v%s\n\
 %s\n\n\

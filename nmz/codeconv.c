@@ -2,7 +2,7 @@
  * 
  * codeconv.c -
  * 
- * $Id: codeconv.c,v 1.2 1999-11-08 09:17:36 knok Exp $
+ * $Id: codeconv.c,v 1.3 1999-11-18 02:45:59 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -239,7 +239,7 @@ static void euctojis(uchar *p)
     int c, c2, state = 0;
     uchar *alloc, *s;
     
-    alloc = strdup(p);
+    alloc = (uchar *)strdup((char *)p);
     s = alloc;
     if (s == NULL) { /* */
 	diemsg("euctojis_strdup");
@@ -313,9 +313,12 @@ static void euctojis(uchar *p)
  * and convert "in" into EUC-JP
  * Supported encodings: EUC-JP, ISO-2022-JP, Shift_JIS
  */
-int conv_ja_any_to_eucjp(uchar * in)
+int conv_ja_any_to_eucjp(char *s)
 {
     int i, m, n, f;
+    uchar *in;
+
+    in = (uchar *)s;
 
     if (!is_lang_ja()) { /* Lang != ja */
         return 0;
@@ -349,9 +352,12 @@ int conv_ja_any_to_eucjp(uchar * in)
  */
 static char Z2H[] = 
 "\0 \0\0,.\0:;?!\0\0'`\0^~_\0\0\0\0\0\0\0\0\0\0\0\0/\\\0\0|\0\0`'\"\"()\0\0[]{}<>\0\0\0\0\0\0\0\0+-\0\0\0=\0<>\0\0\0\0\0\0\0'\"\0\\$\0\0%#&*@";
-void zen2han(uchar * s)
+void zen2han(char *str)
 {
     int p = 0, q = 0, r;
+    uchar *s;
+    
+    s = (uchar *)str;
     while (*(s + p)) {
 	if (*(s + p) == 0xa1) {
 	    r = *(s + p + 1) - 0xa0;
@@ -378,21 +384,33 @@ void zen2han(uchar * s)
     *(s + q) = '\0';
 }
 
-int iskatakana(uchar *c)
+int iskatakana(char *chr)
 {
+    uchar *c;
+    c = (uchar *)chr;
+
     if ((((int)*c == 0xa5 && 
-          (int)*(c + 1) >= 0xa0 && (int)*(c + 1) <= 0xff)
-         || ((int)*c == 0xa1 && (int)*(c + 1) == 0xbc))) {  /* choon */
+          (int)*(c + 1) >= 0xa0 && 
+	  (int)*(c + 1) <= 0xff) || 
+	 ((int)*c == 0xa1 &&    /* choon */
+	  (int)*(c + 1) == 0xbc))) 
+    {
         return 1;
     }
     return 0;
 }
 
-int ishiragana(uchar *c)
+int ishiragana(char *chr)
 {
+    uchar *c;
+    c = (uchar *)chr;
+
     if ((((int)*c == 0xa4 && 
-          (int)*(c + 1) >= 0xa0 && (int)*(c + 1) <= 0xff) 
-         || ((int)*c == 0xa1 && (int)*(c + 1) == 0xbc))) {  /* choon */
+          (int)*(c + 1) >= 0xa0 && 
+	  (int)*(c + 1) <= 0xff) || 
+	 ((int)*c == 0xa1 &&    /* choon */
+	  (int)*(c + 1) == 0xbc)))  
+    {
         return 1;
     }
     return 0;
@@ -409,7 +427,7 @@ int ishiragana(uchar *c)
  * so you should prepare enough memory for `str'.
  *
  */
-uchar *conv_ext (uchar *str) {
+char *conv_ext (char *str) {
     char *lang = get_lang();
     if (strcmp(lang, "japanese") == 0) {   /* EUC-JP */
 	;
@@ -422,13 +440,13 @@ uchar *conv_ext (uchar *str) {
     } else if (strcmp(lang, "ja_JP.eucJP") == 0) {  /* EUC-JP */
 	;
     } else if (strcmp(lang, "ja_JP.sjis") == 0) { /* Shift_JIS */
-	euctosjis(str);
+	euctosjis((uchar *)str);
     } else if (strcmp(lang, "ja_JP.SJIS") == 0) { /* Shift_JIS */
-	euctosjis(str);
+	euctosjis((uchar *)str);
     } else if (strcmp(lang, "ja_JP.JIS7") == 0) { /* ISO-2022-JP */
-	euctojis(str);
+	euctojis((uchar *)str);
     } else if (strcmp(lang, "ja_JP.iso-2022-jp") == 0) { /* ISO-2022-JP */
-	euctojis(str);
+	euctojis((uchar *)str);
     }
-    return str;
+    return (char *)str;
 }

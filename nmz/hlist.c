@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.3 1999-11-17 06:55:03 knok Exp $
+ * $Id: hlist.c,v 1.4 1999-11-18 02:46:00 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -36,10 +36,10 @@
 #include "field.h"
 
 static int DocNum = 0;  /* Number of documents covered in atarget index */
-static uchar Field[BUFSIZE] = "";  /* Field name used with sorting */
+static char Field[BUFSIZE] = "";  /* Field name used with sorting */
 
 struct str_num {
-    uchar *str;
+    char *str;
     int   num;
 };
 typedef struct str_num str_num;
@@ -88,7 +88,7 @@ static int field_sort(HLIST hlist)
     int i, numeric = 1;
 
     for (i = 0; i < hlist.n; i++) {
-	uchar buf[BUFSIZE];
+	char buf[BUFSIZE];
 	int leng;
 	get_field_data(hlist.d[i].idxid, hlist.d[i].docid, Field, buf);
 	chomp(buf);
@@ -98,7 +98,7 @@ static int field_sort(HLIST hlist)
 	    numeric = 0;
 	}
 
-	hlist.d[i].field = (uchar *)malloc(leng + 1);
+	hlist.d[i].field = (char *)malloc(leng + 1);
 	if (hlist.d[i].field == NULL) {
 	    diemsg("int_field_sort");
 	    return DIE_ERROR;
@@ -559,12 +559,12 @@ void set_docnum(int n)
     DocNum = n;
 }
 
-void set_sort_field(uchar *field)
+void set_sort_field(char *field)
 {
     strcpy(Field, field);
 }
 
-uchar *get_sort_field(void)
+char *get_sort_field(void)
 {
     return Field;
 }

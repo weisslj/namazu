@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: lha.pl,v 1.9 2004-10-20 10:01:18 opengl2772 Exp $
+# $Id: lha.pl,v 1.10 2004-11-24 18:07:49 opengl2772 Exp $
 #  lha filter for namazu
 #  Copyright (C) 2004 Tadamasa Teranishi,
 #                2004 MATSUMURA Namihiko <po-jp@counterghost.net>,
@@ -28,6 +28,7 @@ package lha;
 use strict;
 use English;
 require 'util.pl';
+require 'document.pl';
 
 my $lhapath = undef;
 

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: tar.pl,v 1.6 2004-10-16 14:54:12 opengl2772 Exp $
+# $Id: tar.pl,v 1.7 2004-11-24 18:07:49 opengl2772 Exp $
 #  tar filter for namazu
 #  Copyright (C) 2004 Tadamasa Teranishi,
 #                2004 Namazu Project All rights reserved.
@@ -26,6 +26,7 @@
 package tar;
 use strict;
 require 'util.pl';
+require 'document.pl';
 eval 'use Archive::Tar';
 $Archive::Tar::WARN = 0;
 

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: applefile.pl,v 1.4 2004-09-18 12:30:41 usu Exp $
+# $Id: applefile.pl,v 1.5 2004-11-24 18:07:49 opengl2772 Exp $
 # Copyright (C) 2004 Tadamasa Teranishi All rights reserved ,
 # Copyright (C) 2004 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -29,6 +29,7 @@
 package applefile;
 use strict;
 require 'util.pl';
+require 'document.pl';
 
 sub mediatype() {
     return ('application/applefile');

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: zip.pl,v 1.14 2004-11-19 16:28:51 opengl2772 Exp $
+# $Id: zip.pl,v 1.15 2004-11-24 18:07:49 opengl2772 Exp $
 #  zip filter for namazu
 #  Copyright (C) 2004 MATSUMURA Namihiko <po-jp@counterghost.net>
 #                2004 Yukio USUDA <usu@namazu.org>
@@ -27,6 +27,7 @@
 package zip;
 use strict;
 require 'util.pl';
+require 'document.pl';
 
 my $unzippath = undef;
 

@@ -1,3 +1,8 @@
+2004-05-07  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+	* filter/{zip, lha, tar}.pl: A random number is used for the 
+	filename of a temporary file.
+
 2004-05-05  Yukio USUDA <usu@namazu.org>
 
 	* filter/zip.pl: Support Archive::Zip perl module.
@@ -8842,4 +8847,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1172 2004-05-05 10:00:00 usu Exp $
+$Id: ChangeLog,v 1.1173 2004-05-07 16:51:29 opengl2772 Exp $

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: lha.pl,v 1.3 2004-05-05 09:32:41 opengl2772 Exp $
+# $Id: lha.pl,v 1.4 2004-05-07 16:51:30 opengl2772 Exp $
 #  lha filter for namazu
 #  Copyright (C) 2004 Tadamasa Teranishi,
 #                2004 MATSUMURA Namihiko <po-jp@counterghost.net>,
@@ -95,12 +95,12 @@ sub filter_lha_unix ($$$$$) {
     my ($orig_cfile, $contref, $weighted_str, $headings, $fields)
       = @_;
 
-    my $depth = 0;
     my $tmpfile;
+    my $uniqnumber = int(rand(10000));
     do {
-       $tmpfile = util::tmpnam('NMZ.lha' . substr("000$depth", -1, 4));
-       $depth++;
-    } while ( -f $tmpfile);
+       $tmpfile = util::tmpnam('NMZ.lha' . substr("000$uniqnumber", -4));
+       $uniqnumber++;
+    } while (-f $tmpfile);
 
     {
 	my $fh = util::efopen("> $tmpfile");

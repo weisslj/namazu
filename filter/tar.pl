@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: tar.pl,v 1.1 2004-05-05 09:32:41 opengl2772 Exp $
+# $Id: tar.pl,v 1.2 2004-05-07 16:51:30 opengl2772 Exp $
 #  tar filter for namazu
 #  Copyright (C) 2004 Tadamasa Teranishi,
 #                2004 Namazu Project All rights reserved.
@@ -79,12 +79,12 @@ sub filter_gtar ($$$$$) {
     my ($orig_cfile, $contref, $weighted_str, $headings, $fields)
       = @_;
 
-    my $depth = 0;
+    my $uniqnumber = 0;
     my $tmpfile;
     do {
-       $tmpfile = util::tmpnam('NMZ.tar' . substr("000$depth", -1, 4));
-       $depth++;
-    } while ( -f $tmpfile);
+       $tmpfile = util::tmpnam('NMZ.tar' . substr("000$uniqnumber", -4));
+       $uniqnumber++;
+    } while (-f $tmpfile);
 
     {
 	my $fh = util::efopen("> $tmpfile");
@@ -160,12 +160,12 @@ sub filter_archive_tar ($$$$$) {
     my ($orig_cfile, $contref, $weighted_str, $headings, $fields)
       = @_;
 
-    my $depth = 0;
     my $tmpfile;
+    my $uniqnumber = int(rand(10000));
     do {
-       $tmpfile = util::tmpnam('NMZ.tar' . substr("000$depth", -1, 4));
-       $depth++;
-    } while ( -f $tmpfile);
+       $tmpfile = util::tmpnam('NMZ.tar' . substr("000$uniqnumber", -4));
+       $uniqnumber++;
+    } while (-f $tmpfile);
 
     {
         my $fh = util::efopen("> $tmpfile");

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: zip.pl,v 1.8 2004-05-05 10:00:01 usu Exp $
+# $Id: zip.pl,v 1.9 2004-05-07 16:51:30 opengl2772 Exp $
 #  zip filter for namazu
 #  Copyright (C) 2004 MATSUMURA Namihiko <po-jp@counterghost.net>
 #                2004 Yukio USUDA <usu@namazu.org>
@@ -64,12 +64,12 @@ sub filter ($$$$$) {
     my ($orig_cfile, $contref, $weighted_str, $headings, $fields)
       = @_;
 
-    my $depth = 0;
     my $tmpfile;
+    my $uniqnumber = int(rand(10000));
     do {
-	$tmpfile = util::tmpnam('NMZ.zip' . substr("000$depth", -1, 4));
-	$depth++;
-    } while ( -f $tmpfile);
+	$tmpfile = util::tmpnam('NMZ.zip' . substr("000$uniqnumber", -4));
+	$uniqnumber++;
+    } while (-f $tmpfile);
 
     {
 	my $fh = util::efopen("> $tmpfile");

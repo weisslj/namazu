@@ -28,7 +28,7 @@ static int countmode   = 0;   /* like grep -c */
 static int listmode    = 0;   /* like grep -l */
 		      
 static int allresult   = 0;   /* print all results */
-static int pageindex   = 0;   /* print "Page: [1][2][3][4][5][6][7][8]" */
+static int pageindex   = 1;   /* print "Page: [1][2][3][4][5][6][7][8]" */
 static int formprint   = 1;   /* print "<form> ... </form>" at cgimode */
 static int refprint    = 1;   /* print "References:  [ foo: 123 ]" */
 		      

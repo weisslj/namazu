@@ -1,5 +1,7 @@
 1999-12-14  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/output.c: Set pageindex to 1 as default. [namazu-dev 1001]
+
 	* configure.in (OPT_WAKATI_DEFAULT): Set default to
 	"none". [namazu-dev 997] 
 

@@ -12,7 +12,7 @@ struct nmz_replace {
 
 extern void free_replaces ( void );
 extern int replace_uri ( char *uri );
-extern enum nmz_stat add_replace ( char *pat, char *rep );
+extern enum nmz_stat add_replace ( const char *pat, const char *rep );
 extern void show_replaces ( void );
 
 #endif /* _REPLACE_H */

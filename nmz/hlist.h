@@ -17,6 +17,6 @@ extern NmzResult get_hlist ( int index );
 extern int sort_hlist ( NmzResult hlist, enum nmz_sort_method mode );
 extern int reverse_hlist ( NmzResult hlist );
 extern void set_docnum ( int n );
-extern void set_sortfield ( char *field );
+extern void set_sortfield ( const char *field );
 extern char *get_sortfield ( void );
 #endif /* _HLIST_H */

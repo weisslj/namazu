@@ -2,7 +2,7 @@
  * 
  * libnamazu.h - Namazu library api
  *
- * $Id: libnamazu.h,v 1.25 1999-12-23 09:14:05 satoru Exp $
+ * $Id: libnamazu.h,v 1.26 2000-01-05 10:30:44 satoru Exp $
  * 
  */
 
@@ -180,7 +180,7 @@ extern void set_debugmode ( int mode );
 extern int is_debugmode ( void );
 extern void set_loggingmode ( int mode );
 extern int is_loggingmode ( void );
-extern void set_dyingmsg ( char *fmt, ... );
+extern void set_dyingmsg ( const char *fmt, ... );
 extern char *get_dyingmsg ( void );
 
 #endif /* _LIBNAMAZU_H */

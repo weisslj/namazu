@@ -62,9 +62,11 @@ make_fullpathname_field(int n)
  */
 
 
-/* check a key if field or not */
+/*
+ * Check a key if field or not
+ */
 int 
-isfield(char *key)
+isfield(const char *key)
 {
     if (*key == '+') {
         key++;
@@ -103,10 +105,10 @@ get_field_name(char *field, char *str)
 }
 
 void 
-get_field_data(int idxid, int docid, char *orig_field, char *data) 
+get_field_data(int idxid, int docid, const char *orig_field, char *data) 
 {
     char fname[BUFSIZE];
-    char *field = orig_field;
+    char field[BUFSIZE];
     int i;
     static int cache_idx = 0, cache_num = 0;
     FILE *fp_field, *fp_field_idx;
@@ -118,9 +120,10 @@ get_field_data(int idxid, int docid, char *orig_field, char *data)
     };
     static struct field_cache fc[FIELD_CACHE_SIZE];
 
+    strcpy(field, orig_field);
     apply_field_alias(field);  /* This would overwrite `field' */
 
-    /* consult caches */
+    /* Consult caches */
     for (i = 0; i < cache_num; i++) {
 	if (idxid == fc[i].idxid && docid == fc[i].docid &&
 	    strcmp(field, fc[i].field) == 0)
@@ -131,7 +134,7 @@ get_field_data(int idxid, int docid, char *orig_field, char *data)
 	}
     }
 
-    /* make a pathname */
+    /* Make a pathname */
     make_fullpathname_field(idxid);
     strcpy(fname, NMZ.field);
     strcat(fname, field);
@@ -149,7 +152,7 @@ get_field_data(int idxid, int docid, char *orig_field, char *data)
 
     /* 
      * You can rely on that length of a field is shorter than 
-     * BUFSIZE (1024) because its length is restricted in 
+     * BUFSIZE [1024] because its length is restricted in 
      * conf.pl: $conf::MAX_FIELD_LENGTH = 200;
      */
     fseek(fp_field, nmz_getidxptr(fp_field_idx, docid), 0);
@@ -159,7 +162,7 @@ get_field_data(int idxid, int docid, char *orig_field, char *data)
     fclose(fp_field);
     fclose(fp_field_idx);
 
-    /* cache */
+    /* Cache */
     fc[cache_idx].idxid = idxid;
     fc[cache_idx].docid = docid;
     strcpy(fc[cache_idx].field, field);
@@ -169,4 +172,5 @@ get_field_data(int idxid, int docid, char *orig_field, char *data)
 	cache_num++;
     }
 }
+
 

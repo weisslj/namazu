@@ -2,7 +2,7 @@
  * 
  * var.c -
  * 
- * $Id: var.c,v 1.11 1999-12-07 09:14:02 satoru Exp $
+ * $Id: var.c,v 1.12 2000-01-05 10:30:46 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -33,13 +33,19 @@
 #include "libnamazu.h"
 #include "re.h"
 
-/* string of HTML 's <BASE HREF="...">  (namazu.conf) */
+/*
+ * String of HTML 's <BASE HREF="...">  (namazu.conf)
+ */
 char BASE_URI[BUFSIZE] = "";
 
-/* default directory to place indices */
+/*
+ * Default directory to place indices
+ */
 char DEFAULT_INDEX[BUFSIZE] = OPT_INDEXDIR;
 
-/* default directory to place config files */
+/*
+ * Default directory to place config files
+ */
 char CONFDIR[BUFSIZE] = OPT_CONFDIR;
 
 #ifdef OPT_SCORING

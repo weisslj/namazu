@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.38 2000-01-04 02:04:37 satoru Exp $
+ * $Id: search.c,v 1.39 2000-01-05 10:30:45 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -65,7 +65,7 @@ static int cur_idxnum = -1;
  *
  */
 
-static struct nmz_hitnum *push_hitnum ( struct nmz_hitnum *hn, int hitnum, enum nmz_stat stat, char *str );
+static struct nmz_hitnum *push_hitnum ( struct nmz_hitnum *hn, int hitnum, enum nmz_stat stat, const char *str );
 void free_hitnums ( struct nmz_hitnum *hn );
 static void show_status ( int l, int r );
 static int get_file_size ( char *filename );
@@ -88,16 +88,18 @@ static enum nmz_perm parse_access ( char *line, char *rhost, char *raddr );
 static enum nmz_perm check_access ( void );
 static int open_index_files ( void );
 static void close_index_files ( void );
-static void do_logging ( char * query, int n );
-static NmzResult nmz_search_sub ( NmzResult hlist, char *query, char *query_orig, int n );
+static void do_logging ( const char * query, int n );
+static NmzResult nmz_search_sub ( NmzResult hlist, const char *query, int n );
 static void make_fullpathname_index ( int n );
 
-/* struct nmz_hitnum handling subroutines */
+/*
+ * Struct nmz_hitnum handling subroutines
+ */
 static struct nmz_hitnum *
 push_hitnum(struct nmz_hitnum *hn, 
-				 int hitnum, 
-				 enum nmz_stat stat,
-				 char *str)
+	    int hitnum, 
+	    enum nmz_stat stat,
+	    const char *str)
 {
     struct nmz_hitnum *hnptr = hn, *prevhnptr = hn;
     while (hnptr != NULL) {
@@ -140,7 +142,9 @@ free_hitnums(struct nmz_hitnum *hn)
     }
 }
 
-/* show the status for debug use */
+/*
+ * Show the status for debug use
+ */
 static void 
 show_status(int l, int r)
 {
@@ -158,7 +162,9 @@ show_status(int l, int r)
     nmz_debug_printf("r:%d: %s", r, buf);
 }
 
-/* get size of file */
+/*
+ * Get size of file
+ */
 static int 
 get_file_size (char *filename) 
 {
@@ -170,7 +176,9 @@ get_file_size (char *filename)
 }
 
 
-/* get the left and right value of search range */
+/*
+ * Get the left and right value of search range
+ */
 static void 
 lrget(char * key, int *l, int *r)
 {
@@ -182,7 +190,9 @@ lrget(char * key, int *l, int *r)
     }
 }
 
-/* Prefix match search */
+/*
+ * Prefix match search
+ */
 static NmzResult 
 prefix_match(char * orig_key, int v)
 {
@@ -207,7 +217,7 @@ prefix_match(char * orig_key, int v)
     }
 
     for (j = 0, i++;; i++, j++) {
-	/* return if too much word would be hit
+	/* Return if too much word would be hit
            because treat 'a*' completely is too consuming */
 	if (j > IGNORE_MATCH) {
 	    free_hlist(val);
@@ -244,7 +254,9 @@ prefix_match(char * orig_key, int v)
     return val;
 }
 
-/* detect search mode */
+/*
+ * Detect search mode
+ */
 static enum nmz_search_mode 
 detect_search_mode(char *key) {
     if (strlen(key) <= 1)
@@ -273,14 +285,14 @@ detect_search_mode(char *key) {
     } else if ((*key == '"' && key[strlen(key) - 1] == '"') 
           || (*key == '{' && key[strlen(key) - 1] == '}')) 
     {
-        /* remove the delimiter at begging and end of string */
+        /* Remove the delimiter at begging and end of string */
         strcpy(key, key + 1); 
         key[strlen(key) - 1]= '\0';
     } 
     
-    /* normal or phrase */
+    /* Normal or phrase */
 
-    /* if under Japanese mode, do wakatigaki */
+    /* If under Japanese mode, do wakatigaki */
     if (is_lang_ja()) {
         if (wakati(key))
 	  return ERROR_MODE;
@@ -301,7 +313,7 @@ do_word_search(char *key, NmzResult val)
     int v;
 
     if ((v = binsearch(key, 0)) != -1) {
-        /* if found, get list */
+        /* If found, get list */
         val = get_hlist(v);
 	if (val.stat == ERR_FATAL)
 	    return val;
@@ -319,7 +331,7 @@ do_prefix_match_search(char *key, NmzResult val)
     int v;
 
     if ((v = binsearch(key, 1)) != -1) { /* 2nd argument must be 1  */
-        /* if found, do foward match */
+        /* If found, do foward match */
         val = prefix_match(key, v);
 	if (val.stat == ERR_FATAL)
 	    return val;
@@ -333,7 +345,9 @@ do_prefix_match_search(char *key, NmzResult val)
 }
 
 
-/* calculate a value of phase hash */
+/*
+ * Calculate a value of phase hash
+ */
 static int 
 hash(char *str)
 {
@@ -350,7 +364,9 @@ hash(char *str)
     return (hash & 65535);
 }
 
-/* get the phrase hash and compare it with NmzResult */
+/*
+ * Get the phrase hash and compare it with NmzResult
+ */
 static NmzResult 
 cmp_phrase_hash(int hash_key, NmzResult val, 
                           FILE *phrase, FILE *phrase_index)
@@ -416,7 +432,9 @@ open_phrase_index_files(FILE **phrase, FILE **phrase_index)
 }
 
 
-/* FIXME: this function is too long and difficult to understand */
+/*
+ * FIXME: this function is too long and difficult to understand
+ */
 static NmzResult 
 do_phrase_search(char *key, NmzResult val)
 {
@@ -497,11 +515,11 @@ do_phrase_search(char *key, NmzResult val)
 	prevword = word;
     }
 
-    /* set phrase hit numbers using phrase member */
+    /* Set phrase hit numbers using phrase member */
     {
 	struct nmz_hitnum *x;
 
-        /* set dummy */
+        /* Set dummy */
 	Idx.pr[cur_idxnum] = push_hitnum(Idx.pr[cur_idxnum], 
 						 0, SUCCESS, "");
 	if (Idx.pr[cur_idxnum] == NULL) {
@@ -509,7 +527,7 @@ do_phrase_search(char *key, NmzResult val)
 	    return val;
 	}
 
-	/* get the last element */
+	/* Get the last element */
 	x = Idx.pr[cur_idxnum];
 	while (1) {
 	    if (x->next == NULL) {
@@ -531,20 +549,20 @@ static void
 do_regex_preprocessing(char *expr)
 {
     if (*expr == '*' && expr[strlen(expr) - 1] != '*') {
-        /* if suffix match such as '*bar', enforce it into regex */
+        /* If suffix match such as '*bar', enforce it into regex */
         strcpy(expr, expr + 1);
         strcat(expr, "$");
     } else if (*expr != '*' && expr[strlen(expr) - 1] == '*') {
-        /* if prefix match such as 'bar*', enforce it into regex */
+        /* If prefix match such as 'bar*', enforce it into regex */
         expr[strlen(expr) - 1] = '.';
         strcat(expr, "*");
     } else if (*expr == '*' && expr[strlen(expr) - 1] == '*') {
-        /* if internal match such as '*foo*', enforce it into regex */
+        /* If internal match such as '*foo*', enforce it into regex */
         strcpy(expr, expr + 1);
         expr[strlen(expr) - 1] = '\0';
     } else if (*expr == '/' && expr[strlen(expr) - 1] == '/') {
-        /* genuine regex */
-        /* remove the both of '/' chars at begging and end of string */
+        /* Genuine regex */
+        /* Remove the both of '/' chars at begging and end of string */
         strcpy(expr, expr + 1); 
         expr[strlen(expr) - 1]= '\0';
         return;
@@ -554,13 +572,13 @@ do_regex_preprocessing(char *expr)
         if ((*expr == '"' && expr[strlen(expr) - 1] == '"')
             || (*expr == '{' && expr[strlen(expr) - 1] == '}')) 
 	{
-            /* delimiters of field search */
+            /* Delimiters of field search */
             strcpy(expr, expr + 1); 
             expr[strlen(expr) - 1] = '\0';
         }
         bufp = buf;
         exprp = expr;
-        /* escape meta characters */
+        /* Escape meta characters */
         while (*exprp) {
             if (!isalnum(*exprp) && !iseuc(*exprp)) {
                 *bufp = '\\';
@@ -636,7 +654,9 @@ delete_beginning_backslash(char *str)
     }
 }
 
-/* check the existence of lockfile */
+/*
+ * Check the existence of lockfile
+ */
 static int 
 check_lockfile(void)
 {
@@ -718,7 +738,9 @@ check_access(void)
     return perm;
 }
 
-/* opening files at once */
+/*
+ * Opening files at once
+ */
 static int 
 open_index_files()
 {
@@ -745,7 +767,9 @@ open_index_files()
     return 0;
 }
 
-/* closing files at once */
+/*
+ * Closing files at once
+ */
 static void 
 close_index_files(void)
 {
@@ -756,11 +780,12 @@ close_index_files(void)
 }
 
 
-/* do logging, separated with TAB characters 
-   it does not consider a LOCK mechanism!
-*/
+/*
+ * Do logging, separated with TAB characters 
+ * FIXME: It does not consider a LOCK mechanism!
+ */
 static void 
-do_logging(char * query, int n)
+do_logging(const char *query, int n)
 {
     FILE *slog;
     char *rhost;
@@ -787,7 +812,7 @@ do_logging(char * query, int n)
 }
 
 static NmzResult 
-nmz_search_sub(NmzResult hlist, char *query, char *query_orig, int n)
+nmz_search_sub(NmzResult hlist, const char *query, int n)
 {
     cur_idxnum = n;
 
@@ -797,19 +822,19 @@ nmz_search_sub(NmzResult hlist, char *query, char *query_orig, int n)
     }
 
     if (open_index_files()) {
-        /* if open failed */
+        /* If open failed */
         hlist.stat = ERR_CANNOT_OPEN_INDEX;
         return hlist;
     }
 
-    /* if query contains only one keyword, TfIdf mode will be off */
+    /* If query contains only one keyword, turn TfIdf mode off */
     if (Query.tab[1] == NULL && strchr(Query.tab[0], '\t') == NULL)
         TfIdf = 0;
     if (TfIdf) {
 	set_docnum(get_file_size(NMZ.t) / sizeof(int));
     }
 
-    /* search */
+    /* Search! */
     init_parser();
     hlist = expr();
     if (hlist.stat == ERR_FATAL) {
@@ -824,7 +849,7 @@ nmz_search_sub(NmzResult hlist, char *query, char *query_orig, int n)
     close_index_files();
 
     if (is_loggingmode()) {
-        do_logging(query_orig, hlist.num);
+        do_logging(query, hlist.num);
     }
     return hlist;
 }
@@ -856,52 +881,54 @@ make_fullpathname_index(int n)
  *
  */
 
-/* main routine of binary search */
+/*
+ * Main routine of binary search
+ */
 int 
-binsearch(char *orig_key, int prefix_match_mode)
+binsearch(const char *key, int prefix_match_mode)
 {
     int l, r, x, e = 0, i;
-    char term[BUFSIZE], key[BUFSIZE];
+    char term[BUFSIZE], tmpkey[BUFSIZE];
 
-    strcpy(key, orig_key);
-    lrget(key, &l, &r);
+    strcpy(tmpkey, key);
+    lrget(tmpkey, &l, &r);
 
     if (prefix_match_mode) {  /* truncate a '*' character at the end */
-        key[strlen(key) - 1] = '\0';
+        tmpkey[strlen(tmpkey) - 1] = '\0';
     }
 
     while (r >= l) {
 	x = (l + r) / 2;
 
-	/* over BUFSIZE (maybe 1024) size keyword is nuisance */
+	/* Over BUFSIZE (maybe 1024) size keyword is nuisance */
 	fseek(Nmz.w, nmz_getidxptr(Nmz.wi, x), 0);
 	fgets(term, BUFSIZE, Nmz.w);
 	nmz_chomp(term);
 
 	nmz_debug_printf("searching: %s", term);
-	for (e = 0, i = 0; *(term + i) != '\0' && *(key + i) != '\0' ; i++) {
+	for (e = 0, i = 0; *(term + i) != '\0' && *(tmpkey + i) != '\0' ; i++) {
 	    /*
 	     * compare in unsigned. 
 	     * because they could be 8 bit characters (0x80 or upper).
 	     */
-	    if ((uchar)*(term + i) > (uchar)*(key + i)) {
+	    if ((uchar)*(term + i) > (uchar)*(tmpkey + i)) {
 		e = -1;
 		break;
 	    }
-	    if ((uchar)*(term + i) < (uchar)*(key + i)) {
+	    if ((uchar)*(term + i) < (uchar)*(tmpkey + i)) {
 		e = 1;
 		break;
 	    }
 	}
 
-	if (*(term + i) == '\0' && *(key + i)) {
+	if (*(term + i) == '\0' && *(tmpkey + i)) {
 	    e = 1;
 	} else if (! prefix_match_mode && *(term + i) != '\0' 
-                   && (*(key + i) == '\0')) {
+                   && (*(tmpkey + i) == '\0')) {
 	    e = -1;
 	}
 
-	/* if hit, return */
+	/* If hit, return */
 	if (e == 0) {
 	    return x;
 	}
@@ -915,12 +942,14 @@ binsearch(char *orig_key, int prefix_match_mode)
     return -1;
 }
 
-/* flow of search */
+/*
+ * Flow of search
+ */
 NmzResult 
-nmz_search(char *query)
+nmz_search(const char *query)
 {
     NmzResult hlist, tmp[INDEX_MAX];
-    char query_orig[BUFSIZE];
+    char tmpquery[BUFSIZE];
     int i, ret;
 
     if (strlen(query) > QUERY_MAX) {
@@ -928,9 +957,9 @@ nmz_search(char *query)
 	return hlist;
     }
 
-    strcpy(query_orig, query); /* save */
+    strcpy(tmpquery, query);
 
-    ret = split_query(query);
+    ret = split_query(tmpquery);
     if (ret != SUCCESS) {
 	hlist.stat = ret;
 	return hlist;
@@ -938,7 +967,7 @@ nmz_search(char *query)
 
     for (i = 0; i < Idx.num; i++) {
         make_fullpathname_index(i);
-        tmp[i] = nmz_search_sub(tmp[i], query, query_orig, i);
+        tmp[i] = nmz_search_sub(tmp[i], query, i);
 
 	if (tmp[i].stat != SUCCESS) {
 
@@ -970,7 +999,7 @@ nmz_search(char *query)
     hlist = merge_hlist(tmp);
 
     if (hlist.stat == SUCCESS && hlist.num > 0) { /* HIT!! */
-	/* sort by date at first*/
+	/* Sort by date at first*/
         if (sort_hlist(hlist, SORT_BY_DATE) != SUCCESS) {
 	    hlist.stat = ERR_FATAL;
 	    return hlist;
@@ -995,41 +1024,41 @@ nmz_search(char *query)
 
 
 NmzResult 
-do_search(char *orig_key, NmzResult val)
+do_search(const char *key, NmzResult val)
 {
     enum nmz_search_mode mode;
-    char key[BUFSIZE];
+    char tmpkey[BUFSIZE];
 
-    strcpy(key, orig_key);
+    strcpy(tmpkey, key);
 
-    nmz_debug_printf("before nmz_strlower: [%s]", key);
-    nmz_strlower(key);
-    nmz_debug_printf("after nmz_strlower:  [%s]", key);
+    nmz_debug_printf("before nmz_strlower: [%s]", tmpkey);
+    nmz_strlower(tmpkey);
+    nmz_debug_printf("after nmz_strlower:  [%s]", tmpkey);
 
-    mode = detect_search_mode(key);
+    mode = detect_search_mode(tmpkey);
     if (mode == ERROR_MODE) {
 	val.stat = ERR_FATAL;
 	return val;
     }
-    delete_beginning_backslash(key);
+    delete_beginning_backslash(tmpkey);
 
     if (mode == PREFIX_MODE) {
-        val = do_prefix_match_search(key, val);
+        val = do_prefix_match_search(tmpkey, val);
     } else  if (mode == REGEX_MODE) {
-        val = do_regex_search(key, val);
+        val = do_regex_search(tmpkey, val);
     } else if (mode == PHRASE_MODE) {
-        val = do_phrase_search(key, val);
+        val = do_phrase_search(tmpkey, val);
     } else if (mode == FIELD_MODE) {
-        val = do_field_search(key, val);
+        val = do_field_search(tmpkey, val);
     } else {
-        val = do_word_search(key, val);
+        val = do_word_search(tmpkey, val);
     }
 
     if (mode != PHRASE_MODE) {
 	struct nmz_hitnum *prtmp;
 
 	prtmp = push_hitnum(Idx.pr[cur_idxnum], 
-			    val.num, val.stat, orig_key);
+			    val.num, val.stat, key);
 	if (prtmp == NULL) {
 	    val.stat = ERR_FATAL;
 	    return val;

@@ -1,6 +1,6 @@
 /*
  * result.c -
- * $Id: result.c,v 1.34 2000-01-04 02:04:41 satoru Exp $
+ * $Id: result.c,v 1.35 2000-01-05 10:30:51 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -35,6 +35,7 @@
 #include "result.h"
 #include "em.h"
 #include "codeconv.h"
+#include "replace.h"
 #include "var.h"
 #include "parser.h"
 
@@ -47,19 +48,21 @@ static int uridecode   = 0;   /* decode URI in results */
  *
  */
 
-static void encode_entity(char*);
-static void emphasize(char*);
-static void replace_field(struct nmz_data, int, char*, char*);
-static int is_urireplace(void);
-static int is_uridecode(void);
+static void replace_field ( struct nmz_data d, int counter, const char *field, char *result );
+static void encode_entity ( char *str );
+static void emphasize ( char *str );
+static int is_urireplace ( void );
+static int is_uridecode ( void );
 
 
 static void 
 replace_field(struct nmz_data d, int counter, 
-			  char *field, char *result)
+			  const char *field, char *result)
 {
-    /* 8 is length of '&quot;' + 2 (for emphasizing). 
-       It's a consideration for buffer overflow (overkill?) */
+    /* 
+     * 8 is length of '&quot;' + 2 (for emphasizing). 
+     * It's a consideration for buffer overflow (overkill?) 
+     */
     char buf[BUFSIZE * 8];  
 
     if (strcmp(field, "namazu::score") == 0) {
@@ -80,7 +83,7 @@ replace_field(struct nmz_data d, int counter,
 	}
     }
 
-    /* do not emphasize in URI */
+    /* Do not emphasize in URI */
     if (strcasecmp(field, "uri") != 0 && is_htmlmode()) {
 	emphasize(buf);
     }
@@ -118,7 +121,9 @@ encode_entity(char *str)
     }
 }
 
-/* inefficient algorithm but it works */
+/*
+ * Inefficient algorithm but it works
+ */
 static void 
 emphasize(char *str)
 {

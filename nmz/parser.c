@@ -2,7 +2,7 @@
  * 
  * parser.c -
  * 
- * $Id: parser.c,v 1.9 2000-01-04 02:04:37 satoru Exp $
+ * $Id: parser.c,v 1.10 2000-01-05 10:30:44 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -192,9 +192,11 @@ init_parser(void)
     Cp = 0;
 }
 
-/* check a character if metacharacter (operator) of not */
+/*
+ * Check a character if metacharacter (operator) of not
+ */
 int 
-isop(char * c)
+isop(const char * c)
 {
     if ((strcmp(c, AND_STRING) == 0 ) ||
 	(strcmp(c, AND_STRING_ALT) == 0 ) ||

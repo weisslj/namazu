@@ -2,7 +2,7 @@
  * 
  * libnamazu.c - Namazu library api
  *
- * $Id: libnamazu.c,v 1.16 2000-01-05 08:05:40 satoru Exp $
+ * $Id: libnamazu.c,v 1.17 2000-01-05 10:30:44 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
@@ -209,7 +209,7 @@ is_loggingmode(void)
 
 
 void 
-set_dyingmsg(char *fmt, ...)
+set_dyingmsg(const char *fmt, ...)
 {
     va_list args;
 

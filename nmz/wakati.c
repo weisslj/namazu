@@ -2,7 +2,7 @@
  * 
  * wakati.c -
  * 
- * $Id: wakati.c,v 1.13 2000-01-04 02:04:37 satoru Exp $
+ * $Id: wakati.c,v 1.14 2000-01-05 10:30:46 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -160,7 +160,7 @@ wakati(char *key)
                 if (j == 0 && (iskatakana(key + i + j) ||
                     ishiragana(key + i + j))) 
                 {
-                    /* if beggining character is Katakana or Hiragana */
+                    /* If beggining character is Katakana or Hiragana */
                     break;
                 }
 
@@ -196,7 +196,7 @@ wakati(char *key)
 	    }
 	} else {
             while(*(key + i) && !iseuc(*(key + i))) {
-                /* as an initial attempt always success, 
+                /* As an initial attempt always success, 
                    outer 'for loop' can avoid infinite loop */
                 strncat(buf, key + i, 1);
                 i++;
@@ -217,7 +217,9 @@ wakati(char *key)
 }
 
 
-/* split a given query */
+/*
+ * Split a given query
+ */
 int 
 split_query(char *qs)
 {
@@ -232,7 +234,7 @@ split_query(char *qs)
 
     strcpy(Query.str, qs);
 
-    /* count items in query */
+    /* Count items in query */
     for (i = 0, qn = 0; *(Query.str + i);) {
 	while (Query.str[i] == ' ')
 	    i++;
@@ -250,11 +252,11 @@ split_query(char *qs)
 	return ERR_INVALID_QUERY;
     }
 
-    /* if too much items in query, return with error */
+    /* If too much items in query, return with error */
     if (qn > QUERY_TOKEN_MAX) {
 	return ERR_TOO_MANY_TOKENS;
     }
-    /* assign a pointer to each item and set NULL to the last of table */
+    /* Assign a pointer to each item and set NULL to the last of table */
     for (i = 0, qn = 0; Query.str[i];) {
 	while (Query.str[i] == ' ')
 	    i++;
@@ -267,10 +269,10 @@ split_query(char *qs)
 	    Query.str[i++] = '\0';
     }
 
-    /* set NULL to the last key item */
+    /* Set NULL to the last key item */
     Query.tab[qn] = (char *) NULL;
 
-    /* replace  with spaces */
+    /* Replace  with spaces */
     for (i = 0; i < qn; i++) {
 	nmz_tr(Query.tab[i], "", " ");
     }

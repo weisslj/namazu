@@ -1,6 +1,6 @@
 /*
  * i18n.c -
- * $Id: i18n.c,v 1.11 2000-01-05 08:05:40 satoru Exp $
+ * $Id: i18n.c,v 1.12 2000-01-05 10:30:43 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -60,7 +60,7 @@ is_lang_ja(void)
 }
 
 char *
-set_lang(char *lang)
+set_lang(const char *lang)
 {
     if (*lang != '\0') {  /* given lang is explicitly specified */
 	strcpy(Lang, lang);
@@ -101,7 +101,7 @@ set_lang(char *lang)
 # endif
 #endif
 
-    /* set enviromental variables for gettext() */
+    /* Set enviromental variables for gettext() */
 #ifdef HAVE_SETLOCALE
     /* Set locale via LC_ALL.  */
     setlocale (LC_ALL, "");

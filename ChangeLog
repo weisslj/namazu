@@ -1,5 +1,52 @@
 2000-01-05  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* nmz/util.c (nmz_subst): Make parameter(s) be const.
+
+	* nmz/search.c (do_search): Make parameter(s) be const.
+	(nmz_search): Ditto.
+	(binsearch): Ditto.
+	(do_logging): Ditto.
+	(push_hitnum): Ditto.
+
+	* nmz/rcfile.c (set_namazurc): Make parameter(s) be const.
+	(load_rcfile): Ditto.
+	(set_pathname): Ditto.
+	(open_rcfile): Ditto.
+	(get_rc_arg): Ditto.
+	(get_rc_args): Ditto.
+	(parse_rcfile): Ditto.
+
+	* nmz/re.c (regex_grep): Make parameter(s) be const.
+
+	* nmz/libnamazu.c (set_dyingmsg): Make parameter(s) be const.
+
+	* nmz/parser.c (isop): Make parameter(s) be const.p
+
+	* nmz/idxname.c (add_index): Make parameter(s) be const.
+
+	* nmz/hlist.c (set_sortfield): Make parameter(s) be const.
+
+	* nmz/i18n.c (set_lang): Make parameter(s) be const.
+
+	* nmz/field.c (get_field_data): Make parameter(s) be const.
+	* nmz/field.c (isfield): Ditto.
+
+	* nmz/replace.c (add_replace): Make parameter(s) be const.
+
+	* nmz/alias.c (add_alias): Make parameter(s) be const.
+
+	* src/result.c (replace_field): Make parameter(s) be const.
+
+	* src/output.c (html_print): Make parameter(s) be const.
+
+	* src/cgi.c (validate_idxname): Make parameter(s) be const.
+	(add_cgivar): Ditto.
+	(apply_cgifunc): Ditto.
+
+	* src/cgi.c (remove_ending_slashes): New function.
+	
+	* {src,nmz}/*.c: Change comment styles.
+	
 	* nmz/codeconv.c: Fix ja_JP.JIS7 bug.
 
 	* template/NMZ.*.ja_JP.JIS7: Renamed to NMZ.*.ja
@@ -12,7 +59,6 @@
 
 	* nmz/util.c (nmz_die): Use get_dyingmsg().
 	(nmz_die_with_msg): Abolished.	All callers changed.
-	(nmz_die): 
 
 	* nmz/util.c (nmz_strprefixcasecmp): Make parameter(s) be const.
 	(nmz_strprefixcmp): Ditto.

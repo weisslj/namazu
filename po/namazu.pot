@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2000-01-05 17:48+0900\n"
+"POT-Creation-Date: 2000-01-05 19:25+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -14,12 +14,12 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: ENCODING\n"
 
-#: nmz/rcfile.c:447
+#: nmz/rcfile.c:449
 #, c-format
 msgid "Config:  %s\n"
 msgstr ""
 
-#: nmz/rcfile.c:450
+#: nmz/rcfile.c:452
 #, c-format
 msgid ""
 "Default: %s\n"
@@ -29,108 +29,108 @@ msgid ""
 "Scoring: %s\n"
 msgstr ""
 
-#: nmz/util.c:581
+#: nmz/util.c:589
 msgid "Fatal error occered!"
 msgstr ""
 
-#: nmz/util.c:587
+#: nmz/util.c:595
 msgid "Invalid query"
 msgstr ""
 
-#: nmz/util.c:590
+#: nmz/util.c:598
 msgid "Too many query tokens"
 msgstr ""
 
-#: nmz/util.c:593
+#: nmz/util.c:601
 msgid "Too many words matched. Ignored"
 msgstr ""
 
-#: nmz/util.c:596
+#: nmz/util.c:604
 msgid "Too many pages hit. Ignored"
 msgstr ""
 
-#: nmz/util.c:599
+#: nmz/util.c:607
 msgid "cannot open regex index"
 msgstr ""
 
-#: nmz/util.c:602
+#: nmz/util.c:610
 msgid "cannot open phrase index"
 msgstr ""
 
-#: nmz/util.c:605
+#: nmz/util.c:613
 msgid "cannot open this index"
 msgstr ""
 
-#: nmz/util.c:608
+#: nmz/util.c:616
 msgid "You don't have a permission to access the index"
 msgstr ""
 
-#: nmz/util.c:611
+#: nmz/util.c:619
 msgid "Unknown error. Report bug!"
 msgstr ""
 
-#: nmz/alias.c:100
+#: nmz/alias.c:102
 #, c-format
 msgid "Alias:   \"%s\" -> \"%s\"\n"
 msgstr ""
 
-#: nmz/replace.c:214
+#: nmz/replace.c:216
 #, c-format
 msgid "Replace: \"%s\" -> \"%s\"\n"
 msgstr ""
 
-#: src/cgi.c:112 src/cgi.c:122
+#: src/cgi.c:111 src/cgi.c:121
 msgid "Invalid idxname."
 msgstr ""
 
-#: src/cgi.c:197 src/cgi.c:212
+#: src/cgi.c:207 src/cgi.c:222
 msgid "Too long QUERY_STRING"
 msgstr ""
 
-#: src/output.c:381
+#: src/output.c:389
 msgid "\t<strong>Page:</strong> "
 msgstr ""
 
-#: src/output.c:424
+#: src/output.c:434
 #, c-format
 msgid "Current List: %d"
 msgstr ""
 
-#: src/output.c:471
+#: src/output.c:481
 #, c-format
 msgid " [ TOTAL: %d ]"
 msgstr ""
 
-#: src/output.c:481
+#: src/output.c:491
 msgid "\t<p><strong> Total "
 msgstr ""
 
-#: src/output.c:488
+#: src/output.c:498
 msgid ""
 "\t documents matching your query.</strong></p>\n"
 "\n"
 msgstr ""
 
-#: src/output.c:568
+#: src/output.c:578
 #, c-format
 msgid ""
 "\t<h2>Error!</h2>\n"
 "<p>%s</p>\n"
 msgstr ""
 
-#: src/output.c:578
+#: src/output.c:588
 msgid "\t<h2>Results:</h2>\n"
 msgstr ""
 
-#: src/output.c:585
+#: src/output.c:595
 msgid "References: "
 msgstr ""
 
-#: src/output.c:627
+#: src/output.c:637
 msgid "\t<p>No document matching your query.</p>\n"
 msgstr ""
 
-#: src/usage.c:50
+#: src/usage.c:52
 #, c-format
 msgid ""
 "namazu %s, a search program of Namazu.\n"
@@ -165,10 +165,10 @@ msgid ""
 "Report bugs to <bug-namazu@namazu.org>.\n"
 msgstr ""
 
-#: src/usage.c:89
+#: src/usage.c:91
 msgid "Usage: namazu [options] <query> [index]...\n"
 msgstr ""
 
-#: src/usage.c:90
+#: src/usage.c:92
 msgid "Try `namazu --help' for more information.\n"
 msgstr ""

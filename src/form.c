@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.31 2000-01-05 08:50:01 satoru Exp $
+ * $Id: form.c,v 1.32 2000-01-05 10:30:50 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -111,7 +111,9 @@ replace_query_value(const char *p, const char *query)
     return FAILURE;
 }
 
-/* delete string (case insensitive) */
+/*
+ * Delete string (case insensitive)
+ */
 static void 
 delete_str(char *s, char *d)
 {
@@ -279,7 +281,9 @@ check_checkbox(char *s)
     return FAILURE;
 }
 
-/* handle an HTML tag */
+/*
+ * Handle an HTML tag
+ */
 static void 
 handle_tag(const char *start, const char *end, const char *query, 
                char *select_name, const char *subquery)

@@ -9,7 +9,7 @@ struct nmz_alias {
     struct nmz_alias *next;
 };
 
-extern enum nmz_stat add_alias ( char *alias, char *real );
+extern enum nmz_stat add_alias ( const char *alias, const char *real );
 extern void free_aliases ( void );
 extern struct nmz_alias *get_aliases ( void );
 extern void show_aliases ( void );

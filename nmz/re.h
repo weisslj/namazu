@@ -7,7 +7,6 @@
 #define ALLOC(type) (type*)xmalloc(sizeof(type))
 #define MEMZERO(p,type,n) memset((p), 0, sizeof(type)*(n))
 
-extern int replace_uri(char*);
-extern NmzResult regex_grep(char*, FILE*, char*, int);
+extern NmzResult regex_grep ( const char *orig_expr, FILE *fp, const char *field, int field_mode );
 
 #endif /* _RE_H */

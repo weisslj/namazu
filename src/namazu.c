@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.70 2000-01-05 08:50:01 satoru Exp $
+ * $Id: namazu.c,v 1.71 2000-01-05 10:30:51 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -36,7 +36,9 @@
 #include <signal.h>
 
 #if defined (WIN32) && !defined (__CYGWIN32__)
-/* It's not Unix, really.  See?  Capital letters.  */
+/*
+ * It's not Unix, really.  See?  Capital letters. 
+ */
 #include <windows.h>
 #define alarm(sec)	SetTimer(NULL,1,((sec)*1000),NULL)
 #define	SIGALRM	14	/* alarm clock */
@@ -77,7 +79,9 @@ static enum nmz_stat namazu_core ( char * query, char *subquery, char *argv0 );
 static void make_fullpathname_msg ( void );
 static void suicide ( int signum );
 
-/* Imported from GNU grep-2.3 [1999-11-08] by satoru-t */
+/*
+ * Imported from GNU grep-2.3 [1999-11-08] by satoru-t
+ */
 /* Convert STR to a positive integer, storing the result in *OUT.
    If STR is not a valid integer, return -1 (otherwise 0). */
 static int
@@ -94,7 +98,9 @@ ck_atoi (str, out)
     return 0;
 }
 
-/* redirect stdio to specified file */
+/*
+ * Redirect stdio to specified file
+ */
 static int 
 stdio2file(char * fname)
 {
@@ -149,7 +155,9 @@ static struct option long_options[] = {
     {NULL, 0, NULL, 0}
 };
 
-/* parse command line options */
+/*
+ * Parse command line options
+ */
 static int 
 parse_options(int argc, char **argv)
 {
@@ -266,7 +274,9 @@ parse_options(int argc, char **argv)
     return optind;
 }
 
-/* namazu core routine */
+/*
+ * Namazu core routine
+ */
 static enum nmz_stat 
 namazu_core(char * query, char *subquery, char *argv0)
 {
@@ -302,7 +312,7 @@ namazu_core(char * query, char *subquery, char *argv0)
 	nmz_die("namazu_core");
     }
 
-    /* result printing */
+    /* Result printing */
     if (print_result(hlist, query, subquery) != SUCCESS) {
 	return FAILURE;
     }
@@ -406,7 +416,7 @@ main(int argc, char **argv)
     }
 
     if (is_cgimode()) {
-	/* set a suicide timer */
+	/* Set a suicide timer */
 	signal(SIGALRM, suicide);
 	alarm(SUICIDE_TIME);
     }

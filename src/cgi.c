@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.41 2000-01-04 02:04:40 satoru Exp $
+ * $Id: cgi.c,v 1.42 2000-01-05 10:30:50 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -53,15 +53,14 @@
  *
  */
 
-static int validate_idxname(char* );
-
-static int validate_idxname ( char * idxname );
-static struct cgivar *add_cgivar ( struct cgivar *ptr, char *name, char *value );
+static int validate_idxname ( const char * idxname );
+static void remove_ending_slashes ( char *str );
+static struct cgivar * add_cgivar ( struct cgivar *ptr, const char *name, char *value );
 static void free_cgi_vars ( struct cgivar *cv );
-static char *get_query_string ( void );
-static struct cgivar *get_cgi_vars ( char *qs );
+static char * get_query_string ( void );
+static struct cgivar * get_cgi_vars ( char *qs );
 static int process_cgi_vars ( struct cgiarg *ca );
-static int apply_cgifunc ( struct cgivar *cv, struct cgiarg *ca );
+static int apply_cgifunc ( const struct cgivar *cv, struct cgiarg *ca );
 static void process_cgi_var_query ( char *value, struct cgiarg *ca );
 static void process_cgi_var_subquery ( char *value, struct cgiarg *ca );
 static void process_cgi_var_format ( char *value, struct cgiarg *ca );
@@ -73,8 +72,6 @@ static void process_cgi_var_result ( char *value, struct cgiarg *ca );
 static void process_cgi_var_reference ( char *value, struct cgiarg *ca );
 static void process_cgi_var_submit ( char *value, struct cgiarg *ca );
 static void process_cgi_var_idxname ( char *value, struct cgiarg *ca );
-void init_cgi ( char *query, char *subquery );
-
 
 /*
  * Table for cgi vars and corresponding functions. 
@@ -97,9 +94,11 @@ static struct cgivar_func cgifunctab[] = {
     { NULL,        NULL }   /* sentry */
 };
 
-/* validate idxname (if it contain '/', it's invalid) */
+/*
+ * Validate idxname. (if it contain '/', it's invalid)
+ */
 static int 
-validate_idxname(char * idxname)
+validate_idxname(const char * idxname)
 {
     int win32 = 0;
 #if  defined(_WIN32) || defined(__EMX__)
@@ -131,16 +130,27 @@ validate_idxname(char * idxname)
 	    idxname++;
 	}
     }
-    idxname--;  /* remove ending slashes */
-    while (*idxname == '/' || (win32 && *idxname == '\\')) {
-        *idxname = '\0';
-        idxname--;
-    }
     return 1;
 }
 
+static void 
+remove_ending_slashes(char *str)
+{
+    int win32 = 0;
+#if  defined(_WIN32) || defined(__EMX__)
+    win32 = 1;
+#endif
+
+    str = str + strlen(str) - 1;
+
+    while (*str == '/' || (win32 && *str == '\\')) {
+        *str = '\0';
+        str--;
+    }
+}
+
 static struct cgivar *
-add_cgivar(struct cgivar *ptr, char *name, char *value)
+add_cgivar(struct cgivar *ptr, const char *name, char *value)
 {
     struct cgivar *tmp;
 
@@ -286,7 +296,7 @@ process_cgi_vars(struct cgiarg *ca)
 
     for (; cv != NULL; cv = cv->next) {
 	if (!apply_cgifunc(cv, ca)) {
-	    /* message for httpd's error_log */
+	    /* Message for httpd's error_log */
 	    nmz_warn_printf("unknown cgi var: %s=%s\n", cv->name, cv->value);
 	}
     }
@@ -295,7 +305,7 @@ process_cgi_vars(struct cgiarg *ca)
 }
 
 static int 
-apply_cgifunc(struct cgivar *cv, struct cgiarg *ca) 
+apply_cgifunc(const struct cgivar *cv, struct cgiarg *ca) 
 {
     struct cgivar_func *cf = cgifunctab;
     int i;
@@ -353,7 +363,9 @@ process_cgi_var_subquery(char *value, struct cgiarg *ca)
     strcpy(ca->subquery, value);
 }
 
-/* this function is for backward compatibility with 1.3.0.x */
+/*
+ * This function is for backward compatibility with 1.3.0.x
+ */
 static void 
 process_cgi_var_format(char *value, struct cgiarg *ca)
 {
@@ -455,7 +467,7 @@ process_cgi_var_reference(char *value, struct cgiarg *ca)
 static void 
 process_cgi_var_submit(char *value, struct cgiarg *ca)
 {
-    /* do nothing; */
+    /* Do nothing; */
 }
 
 static void 
@@ -475,6 +487,8 @@ process_cgi_var_idxname(char *value, struct cgiarg *ca)
 	    pp += strlen(pp);
 	}
 	validate_idxname(name);
+	remove_ending_slashes(name);
+
 	strcpy(tmp, DEFAULT_INDEX);
 	strcat(tmp, "/");
 	strcat(tmp, name);

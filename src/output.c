@@ -43,8 +43,8 @@ static char template[BUFSIZE]     = "normal"; /* suffix of NMZ.result.* */
  *
  */
 
-static void emprint ( char *s, int entity_encode );
-static void fputs_without_html_tag ( char * s, FILE *fp );
+static void emprint ( char *str, int entity_encode );
+static void fputs_without_html_tag ( char *str, FILE *fp );
 static void make_fullpathname_result ( int n );
 static void print_hitnum_each ( struct nmz_hitnum *hn );
 static int is_allresult ( void );
@@ -54,7 +54,7 @@ static int is_listmode ( void );
 static int is_quietmode ( void );
 static int is_refprint ( void );
 static void print_hlist ( NmzResult hlist );
-static void print_query ( char * qs, int w );
+static void print_query ( const char * qs, int w );
 static void print_page_index ( int n );
 static void print_current_range ( int listmax );
 static void print_hitnum_all_idx ( void );
@@ -63,13 +63,15 @@ static void print_listing ( NmzResult hlist );
 static void print_msgfile ( const char *fname );
 static void print_range ( NmzResult hlist );
 
-/* print s to stdout with processing for emphasizing and entity encoding  */
+/*
+ * Print s to stdout with processing for emphasizing and entity encoding 
+ */
 static void 
 emprint(char *s, int entity_encode)
 {
     int i;
     for (i = 0; *s && i < BUFSIZE; s++) {
-	/* iso-2022-jp handling */
+	/* Iso-2022-jp handling */
 	if ((strncmp(s, "\033$", 2) == 0)
 	    && (*(s + 2) == 'B' || *(s + 2) == '@')) 
 	{
@@ -123,16 +125,18 @@ emprint(char *s, int entity_encode)
     }
 }
 
-/* output string without HTML elements */
+/*
+ * Output string without HTML elements
+ */
 static void 
-fputs_without_html_tag(char * s, FILE *fp)
+fputs_without_html_tag(char *s, FILE *fp)
 {
     int f, i;
     char buf[BUFSIZE];
 
     for (f = 0, i = 0; *s && i < BUFSIZE; s++) {
 
-	/* iso-2022-jp handling */
+	/* Iso-2022-jp handling */
 	if ((strncmp(s, "\033$", 2) == 0)
 	    && (*(s + 2) == 'B' || *(s + 2) == '@')) 
 	{
@@ -280,20 +284,22 @@ is_refprint(void)
     return refprint;
 }
 
-/* display the hlist */
+/*
+ * Display the hlist
+ */
 static void 
 print_hlist(NmzResult hlist)
 {
     int i;
     char *templates[INDEX_MAX];
-    /* prepare large memory for replace_field() */
+    /* Prepare large memory for replace_field() */
     char result[BUFSIZE * 128];
 
     if (hlist.num <= 0 || get_maxresult() == 0) {
 	return;
     }
 
-    /* set NULL to all templates[] */
+    /* Set NULL to all templates[] */
     for (i = 0; i < Idx.num; i++) {
 	templates[i] = NULL;
     }
@@ -338,7 +344,7 @@ print_hlist(NmzResult hlist)
 	}
     }
 
-    /* free all templates[] */
+    /* Free all templates[] */
     for (i = 0; i < Idx.num; i++) {
 	if (templates[i] != NULL) {
 	    free(templates[i]);
@@ -350,7 +356,7 @@ print_hlist(NmzResult hlist)
  * for pageindex
  */
 static void 
-print_query(char * qs, int w)
+print_query(const char * qs, int w)
 {
     int foo = 0;
     while (*qs) {
@@ -367,7 +373,9 @@ print_query(char * qs, int w)
     }
 }
 
-/* displayin page index */
+/*
+ * Displayin page index
+ */
 static void 
 print_page_index(int n)
 {
@@ -409,7 +417,9 @@ print_page_index(int n)
     }
 }
 
-/* output current range */
+/*
+ * Output current range
+ */
 static void 
 print_current_range(int listmax)
 {
@@ -450,7 +460,7 @@ print_hitnum_all_idx(void)
 	        if (is_htmlmode()) {
 		    char *idxname = Idx.names[i];
 		    if (is_cgimode()) {
-			/* for hiding a full pathname of an index */
+			/* For hiding a full pathname of an index */
 			idxname = Idx.names[i] + strlen(DEFAULT_INDEX) + 1;
 		    }
 		    printf("<li><strong>%s</strong>: ", idxname);
@@ -571,7 +581,7 @@ print_result(NmzResult hlist, char *query, char *subquery)
 	return FAILURE;
     }
 
-    /* result1:  <h2>Results:</h2>, References:  */
+    /* Result1:  <h2>Results:</h2>, References:  */
     if (is_refprint() && !is_countmode() && 
 	!is_listmode() && !is_quietmode()) 
     {
@@ -765,7 +775,7 @@ get_template(void)
  * Namazu version fputs, it works with considereation of html mode.
  */
 void 
-html_print(char *str)
+html_print(const char *str)
 {
     char buf[BUFSIZE * 16];
     int is_nmz_html = 0;

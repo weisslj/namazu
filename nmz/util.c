@@ -1,5 +1,5 @@
 /*
- * $Id: util.c,v 1.32 2000-01-05 08:05:40 satoru Exp $
+ * $Id: util.c,v 1.33 2000-01-05 10:30:45 satoru Exp $
  *
  * Imported scan_hex(), scan_oct(), xmalloc(), xrealloc() from 
  * Ruby b19's"util.c" and "gc.c". Thanks to Matsumoto-san for consent!
@@ -67,7 +67,7 @@ decode_uri_sub(char c1, char c2)
 }
 
 /* 
- * Substitute for tolower(3) 
+ * Substitute for tolower(3).
  */
 static int 
 nmz_tolower(int c)
@@ -166,7 +166,7 @@ nmz_tr(char *str, const char *lstr, const char *rstr)
 }
 
 /* 
- * Delete ending LF and spaces of string
+ * Delete ending LF and spaces of string.
  */
 void 
 nmz_chomp(char * s)
@@ -184,7 +184,7 @@ nmz_chomp(char * s)
 
 
 /* 
- * Do fread with endian consideration 
+ * Do fread with endian consideration.
  */
 size_t 
 nmz_fread(void *ptr, size_t size, size_t nmemb, FILE *stream)
@@ -192,7 +192,9 @@ nmz_fread(void *ptr, size_t size, size_t nmemb, FILE *stream)
     size_t value;
 
     value = fread(ptr, size, nmemb, stream);
-/* FIXME: Please tell me if you know more better way. */
+/*
+ * FIXME: Please tell me if you know more better way.
+ */
 #ifndef WORDS_BIGENDIAN
     reverse_byte_order(ptr, nmemb, size);
 #endif
@@ -239,7 +241,7 @@ nmz_read_unpackw(FILE *fp, int *buf, int size) {
 }
 
 /* 
- * Read index and return with value 
+ * Read index and return with value.
  */
 long 
 nmz_getidxptr(FILE * fp, long p)
@@ -262,7 +264,7 @@ nmz_issymbol(int c)
 }
 
 /* 
- * Error messaging function 
+ * Error messaging function.
  */
 void 
 nmz_die(const char *fmt, ...)
@@ -272,23 +274,23 @@ nmz_die(const char *fmt, ...)
     fflush(stdout);
     fflush(stderr);
 
-    if (fmt[strlen(fmt) - 1] == '\n') {
-	fmt[strlen(fmt) - 1] = '\0';
-    }
-
     fprintf(stderr, "%s: ", PACKAGE);
 
     va_start(args, fmt);
     vfprintf(stderr, fmt, args);
     va_end(args);
 
-    fprintf(stderr, "%s\n", get_dyingmsg());
+    fprintf(stderr, "%s", get_dyingmsg());
+
+    if (fmt[strlen(fmt) - 1] != '\n') {
+	printf("\n");
+    }
 
     exit(EXIT_FAILURE);
 }
 
 /* 
- * Warning messaging function
+ * Warning messaging function.
  */
 void 
 nmz_warn_printf(const char *fmt, ...)
@@ -311,7 +313,7 @@ nmz_warn_printf(const char *fmt, ...)
 }
 
 /* 
- * Debug messaging function 
+ * Debug messaging function.
  */
 void 
 nmz_debug_printf(const char *fmt, ...)
@@ -360,7 +362,7 @@ nmz_isnumstr(const char *str)
 {
     int i, nonnum = 0;
 
-    if (strlen(str) > 10) {  /* too large number */
+    if (strlen(str) > 10) {  /* Too large number */
 	return 0;
     }
 
@@ -406,7 +408,7 @@ nmz_strlower(char *str)
 }
 
 /* 
- * case-insensitive brute force search  
+ * Case-insensitive brute force search.
  * (with consideration for EUC encoding schemes)
  */
 char *
@@ -421,7 +423,7 @@ nmz_strcasestr(const char *haystack, const char *needle)
 
     for (; *haystack != '\0'; haystack++) {
 	if (strncasecmp(haystack, needle, n) == 0) {
-	    return haystack;
+	    return (char *)haystack;
 	}
 	if (euc_mode && iseuc(*haystack)) {
 	    haystack++;
@@ -476,7 +478,9 @@ nmz_strsuffixcmp(const char *str1, const char *str2)
     }
 }
 
-/* load the whole of file */
+/*
+ * Load the whole of file.
+ */
 char *
 nmz_readfile(const char *fname)
 {
@@ -505,30 +509,30 @@ nmz_readfile(const char *fname)
 }
 
 /* 
- * Substitute pat with rep at without memory size consideration 
+ * Substitute pat with rep in str at without memory size consideration.
  */
 void 
-nmz_subst(char *p, char *pat, char *rep)
+nmz_subst(char *str, const char *pat, const char *rep)
 {
     int patlen, replen;
     patlen = strlen(pat);
     replen = strlen(rep);
 
     if (patlen == replen) {
-	memmove(p, rep, replen);
+	memmove(str, rep, replen);
     } else if (patlen < replen) {
 	/* + 1 for including '\0' */
-	memmove(p + replen, p + patlen, strlen(p) - patlen + 1);
-	memmove(p, rep, replen);
+	memmove(str + replen, str + patlen, strlen(str) - patlen + 1);
+	memmove(str, rep, replen);
     } else if (patlen > replen) {
-	memmove(p, rep, replen);
+	memmove(str, rep, replen);
 	/* + 1 for including '\0' */
-	memmove(p + replen, p + patlen, strlen(p) - patlen + 1);
+	memmove(str + replen, str + patlen, strlen(str) - patlen + 1);
     }
 }
 
 /* 
- * Output contents of file 
+ * Output contents of file.
  */
 void 
 nmz_cat(const char *fname)
@@ -545,7 +549,9 @@ nmz_cat(const char *fname)
     nmz_warn_printf("can't open %s\n", fname);
 }
 
-/* safe version of getenv.  */
+/*
+ * Safe version of getenv. 
+ */
 char *
 nmz_getenv(const char *s)
 {
@@ -553,7 +559,9 @@ nmz_getenv(const char *s)
     return (cp = getenv(s)) ? cp : "";
 }
 
-/* decoding URI encoded strings */
+/*
+ * Decoding URI encoded strings
+ */
 void 
 nmz_decode_uri(char * s)
 {
@@ -615,7 +623,9 @@ nmz_get_errmsg(enum nmz_stat stat)
     return msg;
 }
 
-/* FIXME: Tell me if you know more better function name (or better way). */
+/*
+ * FIXME: Tell me if you know more better function name (or better way).
+ */
 void 
 nmz_print(const char *s) {
     fputs(s, stdout);

@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.23 2000-01-04 02:04:36 satoru Exp $
+ * $Id: hlist.c,v 1.24 2000-01-05 10:30:43 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -74,7 +74,7 @@ set_rank(NmzResult hlist)
 {
     int i;
 
-    /* set rankings in descending order */
+    /* Set rankings in descending order */
     for (i = 0 ; i < hlist.num; i++) {
         hlist.data[i].rank = hlist.num - i;
     }
@@ -173,7 +173,7 @@ score_cmp(const void *p1, const void *p2)
 	r = v2->rank - v1->rank;
     }
     return r;
-    /* return (r = v2->score - v1->score) ? r : v2->rank - v1->rank; */
+    /* Return (r = v2->score - v1->score) ? r : v2->rank - v1->rank; */
 }
 
 /* date_ncmp: 
@@ -201,7 +201,9 @@ date_cmp(const void *p1, const void *p2)
  *
  */
 
-/* merge the left and  right with AND rule */
+/*
+ * Merge the left and  right with AND rule
+ */
 NmzResult 
 andmerge(NmzResult left, NmzResult right, int *ignore)
 {
@@ -237,7 +239,7 @@ andmerge(NmzResult left, NmzResult right, int *ignore)
                 if (TfIdf) {
                     left.data[v].score = left.data[i].score + right.data[j].score;
                 } else {
-                    /* assign a smaller number, left or right*/
+                    /* Assign a smaller number, left or right*/
                     left.data[v].score = left.data[i].score < right.data[j].score ?
                         left.data[i].score : right.data[j].score;
                 }
@@ -256,7 +258,9 @@ andmerge(NmzResult left, NmzResult right, int *ignore)
 }
 
 
-/* merge the left and  right with NOT rule */
+/*
+ * Merge the left and  right with NOT rule
+ */
 NmzResult 
 notmerge(NmzResult left, NmzResult right, int *ignore)
 {
@@ -340,7 +344,7 @@ ormerge(NmzResult left, NmzResult right)
                 if (TfIdf) {
                     left.data[i].score = left.data[i].score + right.data[j].score;
                 } else {
-                    /* assign a large number, left or right */
+                    /* Assign a large number, left or right */
                     left.data[i].score = left.data[i].score > right.data[j].score ?
                         left.data[i].score : right.data[j].score;
                 }
@@ -444,7 +448,9 @@ merge_hlist(NmzResult *hlists)
     return value;
 }
 
-/* get date info from NMZ.t and do the missing number processing */
+/*
+ * Get date info from NMZ.t and do the missing number processing
+ */
 NmzResult 
 do_date_processing(NmzResult hlist)
 {
@@ -467,7 +473,7 @@ do_date_processing(NmzResult hlist)
         nmz_fread(&hlist.data[i].date, sizeof(hlist.data[i].date), 1, date_index);
 
         if (hlist.data[i].date == -1) {  
-            /* the missing number, this document has been deleted */
+            /* The missing number, this document has been deleted */
             int j;
 
             for (j = i + 1; j < hlist.num; j++) { /* shift */
@@ -482,7 +488,9 @@ do_date_processing(NmzResult hlist)
     return hlist;
 }
 
-/* get the hit list */
+/*
+ * Get the hit list
+ */
 NmzResult 
 get_hlist(int index)
 {
@@ -537,7 +545,9 @@ get_hlist(int index)
 }
 
 
-/* interface to invoke merge sort function */
+/*
+ * Interface to invoke merge sort function
+ */
 int 
 sort_hlist(NmzResult hlist, enum nmz_sort_method mode)
 {
@@ -587,7 +597,7 @@ set_docnum(int n)
 }
 
 void 
-set_sortfield(char *field)
+set_sortfield(const char *field)
 {
     strcpy(field_for_sort, field);
 }

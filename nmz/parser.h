@@ -20,6 +20,6 @@
 
 extern void init_parser(void);
 extern NmzResult expr(void);
-extern int isop(char *);
+extern int isop(const char *);
 
 #endif /* _PARSER_H */

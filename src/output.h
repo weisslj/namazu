@@ -23,6 +23,6 @@ extern void set_listwhence ( int num );
 extern int get_listwhence ( void );
 extern void set_template ( char *tmpl );
 extern char *get_template ( void );
-extern void html_print ( char *str );
+extern void html_print ( const char *str );
 
 #endif /* _OUTPUT_H */

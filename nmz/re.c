@@ -2,7 +2,7 @@
  * 
  * re.c -
  * 
- * $Id: re.c,v 1.18 2000-01-04 02:04:37 satoru Exp $
+ * $Id: re.c,v 1.19 2000-01-05 10:30:45 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -36,6 +36,7 @@
 #include "regex.h"
 #include "util.h"
 #include "hlist.h"
+#include "replace.h"
 #include "re.h"
 #include "i18n.h"
 #include "var.h"
@@ -48,8 +49,11 @@
  *
  */
 
+/*
+ * FIXME: Dirty coding...
+ */
 NmzResult 
-regex_grep(char *orig_expr, FILE *fp, char *field, int field_mode)
+regex_grep(const char *orig_expr, FILE *fp, const char *field, int field_mode)
 {
     char buf[BUFSIZE], expr[BUFSIZE];
     struct re_pattern_buffer *rp;
@@ -99,7 +103,7 @@ regex_grep(char *orig_expr, FILE *fp, char *field, int field_mode)
         }
         nmz_strlower(buf);
         if (-1 != re_search(rp, buf, strlen(buf), 0, strlen(buf), 0)) { 
-           /* matched */
+           /* Matched */
             n++;
             if (n > max) {
                 free_hlist(val);

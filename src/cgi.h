@@ -20,7 +20,7 @@ struct cgiarg {
 
 struct cgivar_func {
     char *name;
-    void (*func)(char*, struct cgiarg*);
+    void (*func)(char *, struct cgiarg *);
 };
 
 extern void init_cgi ( char *query, char *subquery );

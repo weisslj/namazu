@@ -2,7 +2,7 @@
  * 
  * replace.c - 
  *
- * $Id: replace.c,v 1.3 2000-01-04 02:04:37 satoru Exp $
+ * $Id: replace.c,v 1.4 2000-01-05 10:30:45 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
@@ -62,7 +62,9 @@ free_replaces(void)
     }
 }
 
-/* replace a URI */
+/*
+ * Replace a URI
+ */
 int 
 replace_uri(char *uri)
 {
@@ -96,7 +98,7 @@ replace_uri(char *uri)
 	     */
 	    is_regex_matching = 1;
 	    for (i = j = 0; subst[i]; i++) {
-		/* i scans through RHS of sed-style substitution.
+		/* I scans through RHS of sed-style substitution.
 		 * j points at the string being built.
 		 */
 		if ((subst[i] == '\\') &&
@@ -163,7 +165,7 @@ replace_uri(char *uri)
 }
 
 enum nmz_stat 
-add_replace(char *pat, char *rep)
+add_replace(const char *pat, const char *rep)
 {
     struct nmz_replace *newp;
     
@@ -194,7 +196,7 @@ add_replace(char *pat, char *rep)
     strcpy(newp->rep, rep);
 
     if (re_compile_pattern (newp->pat, strlen (newp->pat), newp->pat_re)) {
-	/* re_comp fails; set NULL to pat_re  */
+	/* Re_comp fails; set NULL to pat_re  */
 	re_free_pattern(newp->pat_re);
 	newp->pat_re = NULL;
     }

@@ -1,8 +1,6 @@
 /*
  * 
- * conf.c -
- * 
- * $Id: rcfile.c,v 1.6 2000-01-04 02:04:37 satoru Exp $
+ * $Id: rcfile.c,v 1.7 2000-01-05 10:30:44 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -21,7 +19,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA
- * 
  * 
  */
 
@@ -54,17 +51,17 @@ static char namazurc[BUFSIZE] = "";
  */
 
 static void getenv_namazurc ( void );
-static void set_pathname ( char *to, char *o, char *name );
-static FILE *open_rcfile ( char *argv0 );
-static int get_rc_arg ( char *line, char *arg );
+static void set_pathname ( char *to, const char *o, const char *name );
+static FILE *open_rcfile ( const char *argv0 );
+static int get_rc_arg ( const char *line, char *arg );
 static void replace_home ( char *str );
-static int get_rc_args ( char *line, char *directive, char *arg1, char *arg2 );
-static enum nmz_stat parse_rcfile ( char *line, int lineno );
-static int is_valid_argnum ( char *directive, int argnum );
-static enum nmz_stat apply_rc ( char *directive, int lineno, char *arg1, char *arg2 );
+static int get_rc_args ( const char *line, char *directive, char *arg1, char *arg2 );
+static enum nmz_stat parse_rcfile ( const char *line, int lineno );
+static int is_valid_argnum ( const char *directive, int argnum );
+static enum nmz_stat apply_rc ( const char *directive, int lineno, const char *arg1, const char *arg2 );
 
 /* 
- * get an environmental variable of NAMAZUCONFPATH
+ * Get an environmental variable of NAMAZUCONFPATH
  * contributed by Shimizu-san [1998-02-27]
  */
 static void 
@@ -80,13 +77,15 @@ getenv_namazurc(void)
         strcpy(namazurc, env_namazu_conf);
 }
 
-/* change filename in full pathname */
+/*
+ * Change filename in full pathname
+ */
 static void 
-set_pathname(char *to, char *o, char *name)
+set_pathname(char *to, const char *orig, const char *name)
 {
     int i;
 
-    strcpy(to, o);
+    strcpy(to, orig);
     for (i = strlen(to) - 1; i > 0; i--) {
 	if (to[i] == '/') {
 	    i++;
@@ -103,28 +102,28 @@ set_pathname(char *to, char *o, char *name)
  3. DEFAULT_NAMAZURC (SYSCONFDIR/namazurc)
  */
 static FILE *
-open_rcfile(char *argv0)
+open_rcfile(const char *argv0)
 {
     FILE *fp;
     char fname[BUFSIZE], *home;
 
     getenv_namazurc();
 
-    /* rcfile is specified (not default) */
+    /* Rcfile is specified (not default) */
     if (namazurc[0] != '\0') {
         if ((fp = fopen(namazurc, "rb"))) {
             return fp;
         }
     }
 
-    /* check the where program is */
+    /* Check the where program is */
     set_pathname(fname, argv0, ".namazurc");
     if ((fp = fopen(fname, "rb"))) {
         strcpy(namazurc, fname);
         return fp;
     }
 
-    /* checke a home directory */
+    /* Checke a home directory */
     if ((home = getenv("HOME")) != NULL) {
         strcpy(fname, home);
         strcat(fname, "/.namazurc");
@@ -134,7 +133,7 @@ open_rcfile(char *argv0)
         }
     }
 
-    /* check the defalut */
+    /* Check the defalut */
     strcpy(fname, CONFDIR);
     strcat(fname, "/namazurc");
     if ((fp = fopen(fname, "rb"))) {
@@ -145,7 +144,7 @@ open_rcfile(char *argv0)
 }
 
 static int 
-get_rc_arg(char *line, char *arg)
+get_rc_arg(const char *line, char *arg)
 {
     *arg = '\0';
     if (*line != '"') {
@@ -189,7 +188,7 @@ replace_home(char *str)
     strcpy(tmp, str);
     if (nmz_strprefixcmp(tmp, "~/") == 0) {
 	char *home;
-	/* checke a home directory */
+	/* Checke a home directory */
 	if ((home = getenv("HOME")) != NULL) {
 	    strcpy(tmp, home);
 	    strcat(tmp, "/");
@@ -204,8 +203,8 @@ replace_home(char *str)
 
 
 static int 
-get_rc_args(char *line, char *directive, 
-				   char *arg1, char *arg2)
+get_rc_args(const char *line, char *directive, 
+	    char *arg1, char *arg2)
 {
     int n;
 
@@ -224,7 +223,7 @@ get_rc_args(char *line, char *directive,
 	return 0;
     }
 
-    /* get a directive name */
+    /* Get a directive name */
     n = strspn(line, DIRECTIVE_CHARS);
     if (n == 0) {
 	errmsg = "invalid directive name";
@@ -234,7 +233,7 @@ get_rc_args(char *line, char *directive,
     directive[n] = '\0';        /* Hey, don't forget this after strncpy()! */
     line += n;
 
-    /* skip a delimiter after a directive */
+    /* Skip a delimiter after a directive */
     n = strspn(line, " \t");    /* skip white spaces */
     line += n;
     if (n == 0) {
@@ -242,7 +241,7 @@ get_rc_args(char *line, char *directive,
 	return 0;
     }
 
-    /* get arg1 */
+    /* Get arg1 */
     n = get_rc_arg(line, arg1);
     line += n;
 
@@ -250,19 +249,19 @@ get_rc_args(char *line, char *directive,
 	return 0;
     }
 
-    /* replace ~/ */
+    /* Replace ~/ */
     replace_home(arg1);
 
-    /* skip a delimiter after an arg1 */
+    /* Skip a delimiter after an arg1 */
     n = strspn(line, " \t");    /* skip white spaces */
     line += n;
 
     if (*line == '\0' || *line == '#') {  /* allow comment at the ending */
-        /* this line has only one argument (arg1) */
+        /* This line has only one argument (arg1) */
 	return 1;
     }
 
-    /* get arg2 */
+    /* Get arg2 */
     n = get_rc_arg(line, arg2);
     line += n;
 
@@ -270,10 +269,10 @@ get_rc_args(char *line, char *directive,
 	return 1;
     }
 
-    /* replace ~/ */
+    /* Replace ~/ */
     replace_home(arg2);
 
-    /* skip trailing white spaces after an arg2 */
+    /* Skip trailing white spaces after an arg2 */
     n = strspn(line, " \t");    /* skip white spaces */
     line += n;
 
@@ -286,7 +285,7 @@ get_rc_args(char *line, char *directive,
 }
 
 static enum nmz_stat 
-parse_rcfile(char *line, int lineno) 
+parse_rcfile(const char *line, int lineno) 
 {
     char directive[BUFSIZE] = "";
     char arg1[BUFSIZE] = "";
@@ -322,7 +321,7 @@ parse_rcfile(char *line, int lineno)
 }
 
 static int 
-is_valid_argnum(char *directive, int argnum)
+is_valid_argnum(const char *directive, int argnum)
 {
     struct conf_directive {
 	char *name;
@@ -361,9 +360,12 @@ is_valid_argnum(char *directive, int argnum)
     return 0;
 }
 
+/*
+ * FIXME: This processing should be rewritten with function pointers.
+ */
 static enum nmz_stat 
-apply_rc(char *directive, int lineno, 
-				char *arg1, char *arg2)
+apply_rc(const char *directive, int lineno, 
+	 const char *arg1, const char *arg2)
 {
     if (strcasecmp(directive, "COMMENT") == 0) {
 	;  /* only a comment */
@@ -402,7 +404,7 @@ apply_rc(char *directive, int lineno,
  */
 
 char *
-set_namazurc(char *arg)
+set_namazurc(const char *arg)
 {
     return strcpy(namazurc, arg);
 }
@@ -412,7 +414,7 @@ set_namazurc(char *arg)
  * FIXME: Taking argv0 argument is dirty spec.
  */
 enum nmz_stat 
-load_rcfile(char *argv0)
+load_rcfile(const char *argv0)
 {
     FILE *fp;
     char buf[BUFSIZE];

@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: html.pl,v 1.43 2004-10-16 14:54:12 opengl2772 Exp $
+# $Id: html.pl,v 1.44 2004-11-19 16:42:36 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
-# Copyright (C) 2000 Namazu Project All rights reserved.
+# Copyright (C) 2000-2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -150,7 +150,7 @@ sub get_author ($$) {
     if ($$contref =~ m!<META\s[^>]*?NAME=([\"\']?)AUTHOR\1\s[^>]*?CONTENT=([\"\']?)(.*?)\2\s*>!is) {
         $fields->{'author'} = $3;
     } elsif ($$contref =~ m!<LINK\s[^>]*?HREF=([\"\']?)mailto:(.*?)\1\s*>!i) {
-	    $fields->{'author'} = $2;
+        $fields->{'author'} = $2;
     } elsif ($$contref =~ m!.*<ADDRESS[^>]*>(.*?)</ADDRESS>!is) {
 	my $tmp = $1;
 #	$tmp =~ s/\s//g;
@@ -199,19 +199,19 @@ sub get_meta_tags ($$$) {
 	    \1\s+[^>]*content\s*=\s*([\'\"]?)([^>]*?)\2[^>]*>/ix; #"
 
     if ($var::Opt{'meta'}) {
-	my @keys = split '\|', $conf::META_TAGS;
-	for my $key (@keys) {
+        my @keys = split '\|', $conf::META_TAGS;
+        for my $key (@keys) {
             if ($key !~ m/^author$/i) {
                 my $quotekey = quotemeta($key);
-	        while ($$contref =~ /<meta\s+name\s*=\s*([\'\"]?)$quotekey #"
-	           \1\s+[^>]*content\s*=\s*([\'\"]?)([^>]*?)\2[^>]*>/gix) 
-	        {
-		    $fields->{$key} .= $3 . " ";
-	        }
-	        util::dprint("meta: $key: $fields->{$key}\n") 
-		    if defined $fields->{$key};
+                while ($$contref =~ /<meta\s+name\s*=\s*([\'\"]?)$quotekey #"
+                    \1\s+[^>]*content\s*=\s*([\'\"]?)([^>]*?)\2[^>]*>/gix)
+                {
+                    $fields->{$key} .= $3 . " ";
+                }
+                util::dprint("meta: $key: $fields->{$key}\n")
+                    if defined $fields->{$key};
             }
-	}
+        }
     }
 }
 

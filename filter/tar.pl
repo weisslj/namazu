@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: tar.pl,v 1.5 2004-10-02 12:57:29 usu Exp $
+# $Id: tar.pl,v 1.6 2004-10-16 14:54:12 opengl2772 Exp $
 #  tar filter for namazu
 #  Copyright (C) 2004 Tadamasa Teranishi,
 #                2004 Namazu Project All rights reserved.
@@ -97,9 +97,16 @@ sub filter_gtar ($$$$$) {
     $$contref = "";
     my %files;
     my $tmpfile2 = util::tmpnam('NMZ.tar.list');
-    my $status = system("$tarpath tvf $tmpfile > $tmpfile2");
+    my @cmd = ("$tarpath", "tvf", "$tmpfile");
+    my $status = util::syscmd(
+        command => \@cmd,
+        option => {
+            "stdout" => $tmpfile2,
+            "stderr" => "/dev/null",
+        },
+    );
     if ($status == 0) {
-        my $filelist = util::readfile("$tmpfile2");
+        my $filelist = util::readfile("$tmpfile2", "t");
         while ($filelist =~ s/^\S+\s+	# permission
 		(?:\S+\s+)?		# (uid, giD)
 		(\d+)\s+		# filesize
@@ -138,9 +145,16 @@ sub filter_gtar ($$$$$) {
 	    util::vprint(sprintf(_("Not allowed:	%s"), $fname));
         } else {
             my $tmpfile3 = util::tmpnam('NMZ.tar.file');
-            my $status = system("$tarpath xfO $tmpfile \"$fname\" > $tmpfile3");
+            my @cmd = ("$tarpath", "xfO", "$tmpfile", "$fname");
+            my $status = util::syscmd(
+                command => \@cmd,
+                option => {
+                    "stdout" => $tmpfile3,
+                    "stderr" => "/dev/null",
+                },
+            );
             if ($status == 0) {
-                my $con = util::readfile($tmpfile3);
+                my $con = util::readfile($tmpfile3, "b");
                 unlink($tmpfile3);
 
                 my $taredname = "tared_content";

@@ -1,3 +1,8 @@
+2004-10-16  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+	* filter/*.pl, pl/conf.pl.in, util.pl, codeconv.pl: It changes 
+        so that util::syscmd() may be used.
+
 2004-10-13  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* pl/filter.pl.in: filter.pl It renamed to filter.pl.in.
@@ -9177,4 +9182,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1249 2004-10-12 18:52:50 opengl2772 Exp $
+$Id: ChangeLog,v 1.1250 2004-10-16 14:54:12 opengl2772 Exp $

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mhonarc.pl,v 1.28 2003-07-07 13:50:59 opengl2772 Exp $
+# $Id: mhonarc.pl,v 1.29 2004-10-16 14:54:12 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu,
 #               2002 Earl Hood
@@ -44,6 +44,10 @@ sub mediatype() {
 }
 
 sub status() {
+    # The check of a dependence filter.
+    return 'no' if (html::status() ne 'yes');
+    return 'no' if (mailnews::status() ne 'yes');
+
     return 'yes';
 }
 

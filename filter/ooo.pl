@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: ooo.pl,v 1.11 2004-03-22 12:31:58 opengl2772 Exp $
+# $Id: ooo.pl,v 1.12 2004-10-16 14:54:12 opengl2772 Exp $
 # Copyright (C) 2003 Yukio USUDA 
 #               2003,2004 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -105,12 +105,15 @@ sub filter_metafile ($$$) {
         util::fclose($fh);
     }
     my @cmd = ($unzippath, @unzipopts, $tmpfile, $metafile);
-    my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
-    while (defined(my $line = <$fh_out>)){
-        $xml .= $line;
-    }
-    util::fclose($fh_out);
-    util::fclose($fh_err);
+    my $status = util::syscmd(
+        command => \@cmd,
+        option => {
+            "stdout" => \$xml,
+            "stderr" => "/dev/null",
+            "mode_stdout" => "wt",
+            "mode_stderr" => "wt",
+        },
+    );
     unlink $tmpfile;
 
     my $authorname = ooo::get_author(\$xml);
@@ -155,12 +158,15 @@ sub filter_contentfile ($$$$$) {
         util::fclose($fh);
     }
     my @cmd = ($unzippath, @unzipopts, $tmpfile, $contentfile);
-    my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
-    while (defined(my $line = <$fh_out>)){
-        $xml .= $line;
-    }
-    util::fclose($fh_out);
-    util::fclose($fh_err);
+    my $status = util::syscmd(
+        command => \@cmd,
+        option => {
+            "stdout" => \$xml,
+            "stderr" => "/dev/null",
+            "mode_stdout" => "wt",
+            "mode_stderr" => "wt",
+        },
+    );
     unlink $tmpfile;
 
     ooo::remove_all_tag(\$xml);

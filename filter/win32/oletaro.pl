@@ -1,6 +1,6 @@
 # 
 # -*- Perl -*-
-# $Id: oletaro.pl,v 1.9 2004-10-12 12:29:57 opengl2772 Exp $
+# $Id: oletaro.pl,v 1.10 2004-10-16 14:54:13 opengl2772 Exp $
 # 
 # Copyright (C) 2000-2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -27,6 +27,7 @@ package oletaro;
 use strict;
 require 'util.pl';
 require 'gfilter.pl';
+require 'olemsword.pl';
 
 use Win32::OLE::Const;
 
@@ -76,6 +77,9 @@ sub mediatype() {
 }
 
 sub status() {
+    # The check of a dependence filter.
+    return 'no' if (olemsword::status() ne 'yes');
+
     open (SAVEERR,">&STDERR");
     open (STDERR,">nul");
     my $const;

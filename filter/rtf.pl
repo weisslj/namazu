@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: rtf.pl,v 1.13 2004-05-11 09:31:12 fumiya Exp $
+# $Id: rtf.pl,v 1.14 2004-10-16 14:54:12 opengl2772 Exp $
 # Copyright (C) 2003-2004 Tadamasa Teranishi All rights reserved.
 #               2003-2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -28,15 +28,20 @@ use strict;
 use File::Basename;
 require 'util.pl';
 require 'gfilter.pl';
+require 'html.pl';
 
 my $rtfconvpath  = undef;
 my @rtfconvopts  = undef;
+my $convname = undef;
 
 sub mediatype() {
     return ('application/rtf');
 }
 
 sub status() {
+    # The check of a dependence filter.
+    return 'no' if (html::status() ne 'yes');
+
     #
     # http://www.45.free.net/~vitus/ice/misc/rtf2html.tar.gz
     #
@@ -49,7 +54,16 @@ sub status() {
         $rtfconvpath = util::checkcmd('doccat');
         @rtfconvopts = ("-o", "e");
         if (defined $rtfconvpath) {
-            my $fh_cmd = util::efopen("$rtfconvpath -V |");
+            my @cmd = ("$rtfconvpath", "-V");
+            my $fh_cmd = IO::File->new_tmpfile();
+            my $status = util::syscmd(
+                command => \@cmd,
+                option => {
+                    "stdout" => $fh_cmd,
+                    "stderr" => "/dev/null",
+                },
+            );
+
             while (<$fh_cmd>) {
                 if (/TF Library *: *Version *: *(\d+\.\d+)/i) {
                     my $ver = $1;
@@ -96,7 +110,9 @@ sub filter ($$$$$) {
 	= @_;
     my $err = undef;
 
-    if (basename($rtfconvpath) =~ /rtf2html/i) {
+    $convname = basename($rtfconvpath) unless (defined $convname);
+
+    if ($convname =~ /rtf2html/i) {
         $err = filter_rtf2html($orig_cfile, $cont, $weighted_str, $headings, $fields);
     } else {
         $err = filter_doccat($orig_cfile, $cont, $weighted_str, $headings, $fields);
@@ -119,23 +135,27 @@ sub filter_rtf2html ($$$$$) {
     util::writefile($tmpfile, $cont);
     {
 	my @cmd = ($rtfconvpath, @rtfconvopts, $tmpfile);
-	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
+        my $fh_out = IO::File->new_tmpfile();
+        my $status = util::syscmd(
+            command => \@cmd,
+            option => {
+                "stdout" => $fh_out,
+                "stderr" => "/dev/null",
+            },
+        );
 	my $size = util::filesize($fh_out);
 	if ($size == 0) {
             util::fclose($fh_out);
-            util::fclose($fh_err);
             unlink $tmpfile;
 	    return "Unable to convert file ($rtfconvpath error occurred).";
 	}
 	if ($size > $conf::TEXT_SIZE_MAX) {
             util::fclose($fh_out);
-            util::fclose($fh_err);
             unlink $tmpfile;
 	    return 'Too large rtf file.';
 	}
-        $$cont = util::readfile($fh_out);
+        $$cont = util::readfile($fh_out, "t");
         util::fclose($fh_out);
-        util::fclose($fh_err);
     }
     unlink $tmpfile;
 
@@ -167,23 +187,27 @@ sub filter_doccat ($$$$$) {
     util::writefile($tmpfile, $cont);
     {
 	my @cmd = ($rtfconvpath, @rtfconvopts, $tmpfile);
-	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
+        my $fh_out = IO::File->new_tmpfile();
+        my $status = util::syscmd(
+            command => \@cmd,
+            option => {
+                "stdout" => $fh_out,
+                "stderr" => "/dev/null",
+            },
+        );
 	my $size = util::filesize($fh_out);
 	if ($size == 0) {
             util::fclose($fh_out);
-            util::fclose($fh_err);
             unlink $tmpfile;
 	    return "Unable to convert file ($rtfconvpath error occurred).";
 	}
 	if ($size > $conf::TEXT_SIZE_MAX) {
             util::fclose($fh_out);
-            util::fclose($fh_err);
             unlink $tmpfile;
 	    return 'Too large rtf file.';
 	}
-        $$cont = util::readfile($fh_out);
+        $$cont = util::readfile($fh_out, "t");
         util::fclose($fh_out);
-        util::fclose($fh_err);
     }
     unlink $tmpfile;
 

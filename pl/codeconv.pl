@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: codeconv.pl,v 1.23 2004-10-01 03:44:28 opengl2772 Exp $
+# $Id: codeconv.pl,v 1.24 2004-10-16 14:54:12 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -196,6 +196,15 @@ sub normalize_eucjp ($) {
         codeconv::eucjp_zen2han_ascii($contref);
     }
     $contref;
+}
+
+sub normalize_nl ($) {
+    my ($conts) = @_;
+
+    $$conts =~ s/\x0d\x0a/\x0a/g;  # Windows
+    $$conts =~ s/\x0d/\x0a/g;      # Mac
+    $$conts =~ s/\x0a/\n/g;
+    $$conts;
 }
 
 1;

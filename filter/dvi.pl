@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: dvi.pl,v 1.9 2004-05-21 12:49:14 opengl2772 Exp $
+# $Id: dvi.pl,v 1.10 2004-10-16 14:54:12 opengl2772 Exp $
 # Copyright (C) 2000,2004 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -28,8 +28,9 @@ require 'util.pl';
 
 my $dviconvpath = undef;
 my @dviconvopts = undef;
-my $envpath = undef;
-my @env = undef;
+my %env = ( 
+    "DVI2TTY" => undef,
+);
 
 sub mediatype() {
     return ('application/x-dvi');
@@ -41,16 +42,21 @@ sub status() {
         unless (defined $dviconvpath) {
             $dviconvpath = util::checkcmd('dvi2tty');
             return 'no' unless (defined $dviconvpath);
-            my $devnull = util::devnull();
-            my $err = system("$dviconvpath -J 2> $devnull");
+            my @cmd = ("$dviconvpath", "-J");
+            my $err = util::syscmd(
+                command => \@cmd,
+                option => {
+                    "stdout" => "/dev/null",
+                    "stderr" => "/dev/null",
+                },
+                env => \%env,
+            );
             return 'no' if ($err == 1792);
         }
     } else {
         $dviconvpath = util::checkcmd('dvi2tty');
     }
-    $envpath = util::checkcmd('env');
-    @env = ($envpath, "DVI2TTY=");
-    return 'no' unless (defined $dviconvpath && defined $envpath);
+    return 'no' unless (defined $dviconvpath);
     return 'yes';
 }
 
@@ -96,23 +102,29 @@ sub filter ($$$$$) {
         util::fclose($fh);
     }
     {
-	my @cmd = (@env, $dviconvpath, @dviconvopts, "$tmpfile.dvi");
-	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
+	my @cmd = ($dviconvpath, @dviconvopts, "$tmpfile.dvi");
+        my $fh_out = IO::File->new_tmpfile();
+        my $status = util::syscmd(
+            command => \@cmd,
+            option => {
+                "stdout" => $fh_out,
+                "stderr" => "/dev/null",
+            },
+            env => \%env,
+        );
+
 	my $size = util::filesize($fh_out);
         unlink("$tmpfile.dvi");
 	if ($size == 0) {
             util::fclose($fh_out);
-            util::fclose($fh_err);
 	    return "Unable to convert file ($dviconvpath error occurred)";
 	}
 	if ($size > $conf::TEXT_SIZE_MAX) {
             util::fclose($fh_out);
-            util::fclose($fh_err);
 	    return 'Too large dvi file';
 	} 
-	$$cont = util::readfile($fh_out);
+	$$cont = util::readfile($fh_out, "t");
         util::fclose($fh_out);
-        util::fclose($fh_err);
     }
     #unlink("$tmpfile.dvi");
 

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: hnf.pl,v 1.10 2001-11-29 09:29:20 kenji Exp $
+# $Id: hnf.pl,v 1.11 2004-10-16 14:54:12 opengl2772 Exp $
 #
 # hnf filter for Namazu 2.0
 # version 0.9.15
@@ -41,6 +41,12 @@ sub mediatype() {
 }
 
 sub status() {
+    {
+        # The check of a dependence filter.
+        my $status = html::status();
+        return 'no' if ($status ne 'yes');
+    }
+
     return 'yes';
 }
 
@@ -302,7 +308,7 @@ sub make_summary ($$$$$) {
 
 sub read_alias_file () {
     if (-f $hnf::alias_file) {
-        my $def = util::readfile($hnf::alias_file);
+        my $def = util::readfile($hnf::alias_file, "t");
         my @aliases = split("\n", $def);
         foreach (@aliases) {
             if ($_ =~ /(\S+) (.*)/) {

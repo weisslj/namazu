@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: msword.pl,v 1.50 2004-09-12 04:35:42 opengl2772 Exp $
+# $Id: msword.pl,v 1.51 2004-10-16 14:54:12 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi,
 #               2000-2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -35,6 +35,7 @@ my $wordconvpath  = undef;
 my @wordconvopts  = undef;
 my $wvversionpath = undef;
 my $utfconvpath   = undef;
+my $convname = undef;
 my $wvsummarypath = undef;
 
 sub mediatype() {
@@ -42,16 +43,25 @@ sub mediatype() {
 }
 
 sub status() {
+    # The check of a dependence filter.
+    return 'no' if (html::status() ne 'yes');
+
     $wvsummarypath = util::checkcmd('wvSummary');
     $wvversionpath = util::checkcmd('wvVersion');
 
     $wordconvpath = util::checkcmd('wvWare');
     if (defined $wordconvpath) {
         my @cmd = ($wordconvpath, "--version");
-        my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
-        my $version = util::readfile($fh_out);
+        my $fh_out = IO::File->new_tmpfile();
+        my $status = util::syscmd(
+            command => \@cmd,
+            option => {
+                "stdout" => $fh_out,
+                "stderr" => "/dev/null",
+            },
+        );
+        my $version = util::readfile($fh_out, "t");
         util::fclose($fh_out);
-        util::fclose($fh_err);
 
         if ($version =~ s/wvWare (\d\.\d)\.(\d).*/$1$2/) {
             if ($version >= 0.75) {
@@ -108,7 +118,9 @@ sub filter ($$$$$) {
 	= @_;
     my $err = undef;
 
-    if (basename($wordconvpath) =~ /(?:wvWare|wvHtml)/i) {
+    $convname = basename($wordconvpath) unless (defined $convname);
+
+    if ($convname =~ /(?:wvWare|wvHtml)/i) {
         $err = filter_wv($orig_cfile, $cont, $weighted_str, $headings, $fields);
     } else { 
         $err = filter_doccat($orig_cfile, $cont, $weighted_str, $headings, $fields);
@@ -191,23 +203,27 @@ sub filter_wvWare ($$$$$) {
     }
 
     my @cmd = ($wordconvpath, @wordconvopts, $cfile);
-    my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
+    my $fh_out = IO::File->new_tmpfile();
+    my $status = util::syscmd(
+        command => \@cmd,
+        option => {
+            "stdout" => $fh_out,
+            "stderr" => "/dev/null",
+        },
+    );
     my $size = util::filesize($fh_out);
     if ($size == 0) {
         util::fclose($fh_out);
-        util::fclose($fh_err);
         unlink($tmpfile2);
         return "Unable to convert file ($wordconvpath error occurred).";
     }
     if ($size > $conf::TEXT_SIZE_MAX) {
         util::fclose($fh_out);
-        util::fclose($fh_err);
         unlink($tmpfile2);
         return 'Too large word file.';
     }
-    $$cont = util::readfile($fh_out);
+    $$cont = util::readfile($fh_out, "t");
     util::fclose($fh_out);
-    util::fclose($fh_err);
     unlink($tmpfile2);
 
     if (util::islang("ja")) {
@@ -232,10 +248,16 @@ sub filter_wvHtml ($$$$$) {
     my ($ofile, $tpath) = ("", "");
     {
 	my @cmd = ($wordconvpath, "--version");
-	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
-	my $result = util::readfile($fh_out);
+        my $fh_out = IO::File->new_tmpfile();
+        my $status = util::syscmd(
+            command => \@cmd,
+            option => {
+                "stdout" => $fh_out,
+                "stderr" => "/dev/null",
+            },
+        );
+	my $result = util::readfile($fh_out, "t");
         util::fclose($fh_out);
-        util::fclose($fh_err);
 	if ($result ne "" and $result !~ /usage/i and $result ge "0.7") {
             ($ofile, $tpath) = fileparse($tmpfile2);
             @wordconvopts = ("--targetdir=$tpath");
@@ -252,9 +274,13 @@ sub filter_wvHtml ($$$$$) {
     }
 
     my @cmd = ($wordconvpath, @wordconvopts, $cfile, $ofile);
-    my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
-    util::fclose($fh_out);
-    util::fclose($fh_err);
+    my $status = util::syscmd(
+        command => \@cmd,
+        option => {
+            "stdout" => "/dev/null",
+            "stderr" => "/dev/null",
+        },
+    );
     unless (-e $tmpfile2) {
 	return "Unable to convert file ($wordconvpath error occurred).";
     }
@@ -269,9 +295,7 @@ sub filter_wvHtml ($$$$$) {
     }
 
     {
-	my $fh = util::efopen("< $tmpfile2");
-	$$cont = util::readfile($fh);
-        util::fclose($fh);
+	$$cont = util::readfile($tmpfile2, "t");
     }
     unlink $tmpfile2;
 
@@ -304,23 +328,27 @@ sub filter_doccat ($$$$$) {
     }
     {
 	my @cmd = ($wordconvpath, @wordconvopts, $tmpfile);
-	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
+        my $fh_out = IO::File->new_tmpfile();
+        my $status = util::syscmd(
+            command => \@cmd,
+            option => {
+                "stdout" => $fh_out,
+                "stderr" => "/dev/null",
+            },
+        );
 	my $size = util::filesize($fh_out);
 	if ($size == 0) {
             util::fclose($fh_out);
-            util::fclose($fh_err);
             unlink $tmpfile;
 	    return "Unable to convert file ($wordconvpath error occurred).";
 	}
 	if ($size > $conf::TEXT_SIZE_MAX) {
             util::fclose($fh_out);
-            util::fclose($fh_err);
             unlink $tmpfile;
 	    return 'Too large word file.';
 	}
-        $$cont = util::readfile($fh_out);
+        $$cont = util::readfile($fh_out, "t");
         util::fclose($fh_out);
-        util::fclose($fh_err);
     }
     unlink $tmpfile;
 
@@ -342,10 +370,16 @@ sub getDocumentVersion ($) {
     # Check version of word document (greater than word7,8 or else).
     if (util::islang("ja")) {
         my @cmd = ($wvversionpath, $cfile);
-        my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
-        my $result = util::readfile($fh_out);
+        my $fh_out = IO::File->new_tmpfile();
+        my $status = util::syscmd(
+            command => \@cmd,
+            option => {
+                "stdout" => $fh_out,
+                "stderr" => "/dev/null",
+            },
+        );
+        my $result = util::readfile($fh_out, "t");
         util::fclose($fh_out);
-        util::fclose($fh_err);
         if ($result =~ /^Version: (word\d+)(?:,| )/i) {
             $docversion = $1;
         }
@@ -361,13 +395,19 @@ sub getSummaryInfo ($$$$$) {
     return undef unless (defined $wvsummarypath);
 
     my @cmd = ($wvsummarypath, $cfile);
-    my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
-    my $summary = util::readfile($fh_out);
+    my $fh_out = IO::File->new_tmpfile();
+    my $status = util::syscmd(
+        command => \@cmd,
+        option => {
+            "stdout" => $fh_out,
+            "stderr" => "/dev/null",
+        },
+    );
+    my $summary = util::readfile($fh_out, "t");
     my $orgsummary = $summary;
 
     my $size = util::filesize($fh_out);
     util::fclose($fh_out);
-    util::fclose($fh_err);
 
     if ($size == 0) {
         return undef;
@@ -473,10 +513,16 @@ sub utf8_to_eucjp($) {
     }
 
     my @cmd = ($utfconvpath, "-Iu8", "-Oej", $tmpfile);
-    my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
-    $$cont = util::readfile($fh_out);
+    my $fh_out = IO::File->new_tmpfile();
+    my $status = util::syscmd(
+        command => \@cmd,
+        option => {
+            "stdout" => $fh_out,
+            "stderr" => "/dev/null",
+        },
+    );
+    $$cont = util::readfile($fh_out, "t");
     util::fclose($fh_out);
-    util::fclose($fh_err);
 
     codeconv::normalize_eucjp($cont);
 

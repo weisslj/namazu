@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: doccat.pl,v 1.6 2004-05-11 18:38:23 opengl2772 Exp $
+# $Id: doccat.pl,v 1.7 2004-10-16 14:54:12 opengl2772 Exp $
 # Copyright (C) 2001 SATOH Fumiyasu,
 #               2001,2004 Namazu Project. All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -43,7 +43,17 @@ sub mediatype() {
         return ();
     }
 
-    my $info = `$doccatpath -h`;
+    my $info = "";
+    my @cmd = ("$doccatpath", "-h");
+    my $status = util::syscmd(
+        command => \@cmd,
+        option => {
+            "stdout" => \$info,
+            "stderr" => "/dev/null",
+            "mode_stdout" => "wt",
+            "mode_stderr" => "wt",
+        },
+    );
     my @type = ();
 
     # Standard supported media types
@@ -86,7 +96,15 @@ sub mediatype() {
 sub status() {
     $doccatpath = util::checkcmd('doccat');
     if (defined $doccatpath) {
-        my $fh_cmd = util::efopen("$doccatpath -V |");
+        my @cmd = ("$doccatpath", "-V");
+        my $fh_cmd = IO::File->new_tmpfile();
+        my $status = util::syscmd(
+            command => \@cmd,
+            option => {
+                "stdout" => $fh_cmd,
+                "stderr" => "/dev/null",
+            },
+        );
         while (<$fh_cmd>) {
             if (/DocCat *: *Version *: *(\d*)\.\d*/i) {
                 my $major = $1;
@@ -168,7 +186,16 @@ sub filter ($$$$$) {
     }
 
     my $tmpfile2  = util::tmpnam('NMZ.doccat2');
-    system("$doccatpath -p -o e $tmpfile > $tmpfile2");
+    my @cmd = ("$doccatpath", "-p", "-o", "e", "$tmpfile");
+    my $status = util::syscmd(
+        command => \@cmd,
+        option => {
+            "stdout" => $tmpfile2,
+            "stderr" => "/dev/null",
+            "mode_stdout" => "wt",
+            "mode_stderr" => "wt",
+        },
+    );
 
     {
         my $size = util::filesize($tmpfile2);
@@ -185,9 +212,7 @@ sub filter ($$$$$) {
     }
 
     {
-        my $fh = util::efopen("< $tmpfile2");
-        $$cont = util::readfile($fh);
-        util::fclose($fh);
+        $$cont = util::readfile($tmpfile2, "t");
     }
 
     unlink($tmpfile);

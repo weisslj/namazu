@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: bzip2.pl,v 1.20 2004-03-22 12:23:56 opengl2772 Exp $
+# $Id: bzip2.pl,v 1.21 2004-10-16 14:54:12 opengl2772 Exp $
 # Copyright (C) 2000-2004 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -70,23 +70,27 @@ sub filter ($$$$$) {
     }
     {
 	my @cmd = ($bzip2path, @bzip2opts, $tmpfile);
-	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
+        my $fh_out = IO::File->new_tmpfile();
+        my $status = util::syscmd(
+            command => \@cmd,
+            option => {
+                "stdout" => $fh_out,
+                "stderr" => "/dev/null",
+            },
+        );
 	my $size = util::filesize($fh_out);
 	if ($size == 0) {
             util::fclose($fh_out);
-            util::fclose($fh_err);
             unlink $tmpfile;
 	    return "Unable to convert file ($bzip2path error occurred)";
 	}
 	if ($size > $conf::FILE_SIZE_MAX) {
             util::fclose($fh_out);
-            util::fclose($fh_err);
             unlink $tmpfile;
 	    return 'Too large bzipped file';
 	}
-	$$cont = util::readfile($fh_out);
+	$$cont = util::readfile($fh_out, "b");
         util::fclose($fh_out);
-        util::fclose($fh_err);
     }
     unlink $tmpfile;
 

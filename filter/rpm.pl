@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: rpm.pl,v 1.12 2004-03-22 12:31:58 opengl2772 Exp $
+# $Id: rpm.pl,v 1.13 2004-10-16 14:54:12 opengl2772 Exp $
 # Copyright (C) 2000,2004 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -29,7 +29,6 @@ require 'gfilter.pl';
 
 my $rpmpath = undef;
 my @rpmopts = undef;
-my $envpath = undef;
 
 sub mediatype() {
     return ('application/x-rpm');
@@ -38,8 +37,7 @@ sub mediatype() {
 sub status() {
     $rpmpath = util::checkcmd('rpm');
     @rpmopts = ("-qpi");
-    $envpath = util::checkcmd('env');
-    return 'no' unless (defined $rpmpath && defined $envpath);
+    return 'no' unless (defined $rpmpath);
     return 'yes';
 }
 
@@ -78,25 +76,34 @@ sub filter ($$$$$) {
     }
 
     {
-        my @env = ($envpath, "LC_MESSAGE=$util::LANG", "LC_TIME=C");
-	my @cmd = (@env, $rpmpath, @rpmopts, $tmpfile);
-	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
+        my %env = (
+            "LC_ALL" => undef,
+            "LC_MESSAGE" => $util::LANG, 
+            "LC_TIME" => "C",
+        );
+	my @cmd = ($rpmpath, @rpmopts, $tmpfile);
+        my $fh_out = IO::File->new_tmpfile();
+        my $status = util::syscmd(
+            command => \@cmd,
+            option => {
+                "stdout" => $fh_out,
+                "stderr" => "/dev/null",
+            },
+            env => \%env,
+        );
 	my $size = util::filesize($fh_out);
 	if ($size == 0) {
             util::fclose($fh_out);
-            util::fclose($fh_err);
             unlink $tmpfile;
 	    return "Unable to convert file ($rpmpath error occurred).";
 	}
 	if ($size > $conf::TEXT_SIZE_MAX) {
             util::fclose($fh_out);
-            util::fclose($fh_err);
             unlink $tmpfile;
 	    return 'Too large rpm file.';
 	}
-	$$cont = util::readfile($fh_out);
+	$$cont = util::readfile($fh_out, "t");
         util::fclose($fh_out);
-        util::fclose($fh_err);
     }
     unlink $tmpfile;
 

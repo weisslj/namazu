@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: deb.pl,v 1.9 2004-03-22 12:31:58 opengl2772 Exp $
+# $Id: deb.pl,v 1.10 2004-10-16 14:54:12 opengl2772 Exp $
 # Copyright (C) 2000,2004 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -29,7 +29,6 @@ require 'gfilter.pl';
 
 my $dpkgpath = undef;
 my @dpkgopts = undef;
-my $envpath = undef;
 
 sub mediatype() {
     return ('application/x-deb');
@@ -38,8 +37,7 @@ sub mediatype() {
 sub status() {
     $dpkgpath = util::checkcmd('dpkg');
     @dpkgopts = ("--info");
-    $envpath = util::checkcmd('env');
-    return 'no' unless (defined $dpkgpath && defined $envpath);
+    return 'no' unless (defined $dpkgpath);
     return 'yes';
 }
 
@@ -76,25 +74,33 @@ sub filter ($$$$$) {
         util::fclose($fh);
     }
     {
-	my @env = ($envpath, "LC_ALL=$util::LANG", "LANGUAGE=$util::LANG");
-	my @cmd = (@env, $dpkgpath, @dpkgopts, $tmpfile);
-	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
+        my %env = (
+            "LC_ALL" => $util::LANG,
+            "LANGUAGE" => $util::LANG,
+        ); 
+	my @cmd = ($dpkgpath, @dpkgopts, $tmpfile);
+        my $fh_out = IO::File->new_tmpfile();
+        my $status = util::syscmd(
+            command => \@cmd,
+            option => {
+                "stdout" => $fh_out,
+                "stderr" => "/dev/null",
+            },
+            env => \%env,
+        );
 	my $size = util::filesize($fh_out);
 	if ($size == 0) {
             util::fclose($fh_out);
-            util::fclose($fh_err);
             unlink $tmpfile;
 	    return "Unable to convert file ($dpkgpath error occurred)";
 	}
 	if ($size > $conf::TEXT_SIZE_MAX) {
             util::fclose($fh_out);
-            util::fclose($fh_err);
             unlink $tmpfile;
 	    return 'Too large deb file';
 	}
-	$$cont = util::readfile($fh_out);
+	$$cont = util::readfile($fh_out, "t");
         util::fclose($fh_out);
-        util::fclose($fh_err);
     }
     unlink $tmpfile;
 

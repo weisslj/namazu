@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.29 2004-03-18 15:52:11 opengl2772 Exp $
+# $Id: util.pl,v 1.30 2004-10-16 14:54:12 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -124,8 +124,12 @@ sub rfc822time ($)
 		   $hour, $min, $sec, time::gettimezone());
 }
 
-sub readfile ($) {
-    my ($arg) = @_;
+sub readfile ($;$) {
+    my ($arg, $mode) = @_;
+    my $text_mode = undef;
+    if (defined $mode && $mode =~ /^t/i) {
+        $text_mode = 1;
+    }
 
     my $fh;
     if (ref $arg) {
@@ -146,6 +150,8 @@ sub readfile ($) {
 #	return '';
 #    }
     read $fh, $cont, $size;
+
+    codeconv::normalize_nl(\$cont) if (defined $text_mode);
 
     unless (ref $arg) {
         fclose($fh);
@@ -334,6 +340,196 @@ sub systemcmd(@) {
     $fh_err->seek(0, SEEK_SET) or cdie "seek: $!";
 
     return ($status, $fh_out, $fh_err);
+}
+
+sub syscmd(%)
+{
+    my $status = undef;
+    my %arg = @_;
+    my @args = @{$arg{command}} if (defined $arg{command});
+    my %option = %{$arg{option}} if (defined $arg{option});
+    my %env = %{$arg{env}} if (defined $arg{env});
+ 
+    dprint(_("Invoked: ") . join(' ', @args));
+
+    # default option
+    $option{stdout} = '/dev/null' unless(defined $option{stdout});
+    $option{stderr} = '/dev/null' unless(defined $option{stderr});
+    $option{mode_stdout} = 'wt' unless(defined $option{mode_stdout});
+    $option{mode_stderr} = 'wt' unless(defined $option{mode_stderr});
+    $option{maxsize} = -1 unless(defined $option{maxsize});
+
+    my $handle_out = undef;
+    my $handle_err = undef;
+    if (ref $option{stdout}) {
+        if ($option{stdout} =~ /^(IO::File|FileHandle)/) {
+            $handle_out = $option{stdout};
+        }
+    }
+    if (ref $option{stderr}) {
+        if ($option{stderr} =~ /^(IO::File|FileHandle)/) {
+            $handle_err = $option{stderr};
+        }
+    }
+
+    my $same = 0;
+    if ($option{stdout} eq $option{stderr}) {
+        $same = 1;
+    }
+ 
+    my $mode_stdout;
+    my $mode_stderr;
+    if ($option{mode_stdout} =~ /^w/i) {
+        $mode_stdout = '>';
+    } elsif ($option{mode_stdout} =~ /^a/i) {
+        $mode_stdout = '>>';
+    } else {
+        warn "unknown mode. : " . quotemeta($option{mode_stdout});
+        $mode_stdout = '>>';
+    }
+    if ($option{mode_stderr} =~ /^w/i) {
+        $mode_stderr = '>';
+    } elsif ($option{mode_stderr} =~ /^a/i) {
+        $mode_stderr = '>>';
+    } else {
+        warn "unknown mode. : " . quotemeta($option{mode_stderr});
+        $mode_stderr = '>>';
+    }
+
+    my $text_stdout = undef;
+    my $text_stderr = undef;
+    if ($option{mode_stdout} =~ /^.t/i) {
+        $text_stdout = 1;
+    }
+    if ($option{mode_stderr} =~ /^.t/i) {
+        $text_stderr = 1;
+    }
+
+    if ($mknmz::SYSTEM eq "MSWin32" || $mknmz::SYSTEM eq "os2") {
+	foreach my $arg (@args) {
+#	    $arg =~ s!/!\\!g;
+	}
+    }
+
+    my $fh_out = undef;
+    my $fh_err = undef;
+
+    if (defined $handle_out) {
+        $fh_out = $handle_out;
+    } else {
+        $fh_out= IO::File->new_tmpfile();
+    }
+    if ($same) {
+        $fh_err = $fh_out;
+    } else {
+        if (defined $handle_err) {
+            $fh_err = $handle_err;
+        } else {
+            $fh_err = IO::File->new_tmpfile();
+        }
+    }
+
+    {
+        my $saveout = new IO::File (">&" . STDOUT->fileno()) or cdie "Can't dup STDOUT: $!";
+        my $saveerr = new IO::File (">&" . STDERR->fileno()) or cdie "Can't dup STDERR: $!";
+        STDOUT->fdopen($fh_out->fileno(), 'w') or cdie "Can't open fh_out: $!";
+        STDERR->fdopen($fh_err->fileno(), 'w') or cdie "Can't open fh_out: $!";
+
+        # backup $ENV{}
+        my %backup;
+        my ($key, $value);
+        while(($key, $value) = each %env) {
+            $backup{$key} = $ENV{$key};
+            if (defined $value) {
+                $ENV{$key} = $value;
+            } else {
+                delete $ENV{$key};
+            }
+        }
+
+        # Use an indirect object: see Perl Cookbook Recipe 16.2 in detail.
+        $status = system { $args[0] } @args;
+
+        # restore $ENV{}
+        while(($key, $value) = each %env) {
+            if (defined $backup{$key}) {
+                $ENV{$key} = $backup{$key};
+            } else {
+                delete $ENV{$key};
+            }
+        }
+
+        STDOUT->fdopen($saveout->fileno(), 'w') or cdie "Can't restore saveout: $!";
+        STDERR->fdopen($saveerr->fileno(), 'w') or cdie "Can't restore saveerr: $!";
+    }
+
+    # Note that the file position of filehandles must be rewinded.
+    $fh_out->seek(0, SEEK_SET) or cdie "seek: $!";
+    $fh_err->seek(0, SEEK_SET) or cdie "seek: $!";
+
+    if (!defined $handle_out) {
+        if (ref($option{stdout}) ne 'SCALAR') {
+            if ($option{stdout} eq '/dev/null') {
+                $fh_out->close();
+            } else {
+                my $conts_out = "";
+                my $size = -s $fh_out;
+                read $fh_out, $conts_out, $size;
+                $fh_out->close();
+                codeconv::normalize_nl(\$conts_out) if (defined $text_stdout);
+
+                my $file = $option{stdout};
+                if ($mknmz::SYSTEM eq "MSWin32" || $mknmz::SYSTEM eq "os2") {
+#                    $file =~ s!/!\\!g;
+                }
+                if (!open(OUT, "$mode_stdout$file")) {
+                    warn "Can not open file. : $file";
+                    return (1);
+                }
+                print OUT $conts_out;
+                close(OUT);
+            }
+        } else {
+            my $conts_out = $option{stdout};
+            my $size = -s $fh_out;
+            read $fh_out, $$conts_out, $size;
+            $fh_out->close();
+            codeconv::normalize_nl($conts_out) if (defined $text_stdout);
+        }
+    }
+
+    if (!(defined $handle_err || $same)) {
+        if (ref($option{stderr}) ne 'SCALAR') {
+            if ($option{stderr} eq '/dev/null') {
+                $fh_err->close();
+            } else {
+                my $conts_err = "";
+                my $size = -s $fh_err;
+                read $fh_err, $conts_err, $size;
+                $fh_err->close();
+                codeconv::normalize_nl(\$conts_err) if (defined $text_stderr);
+    
+                my $file = $option{stderr};
+                if ($mknmz::SYSTEM eq "MSWin32" || $mknmz::SYSTEM eq "os2") {
+#                    $file =~ s!/!\\!g;
+                }
+                if (!open(OUT, "$mode_stderr$file")) {
+                    warn "Can not open file. : $file";
+                    return (1);
+                }
+                print OUT $conts_err;
+                close(OUT);
+            }
+        } else {
+            my $conts_err = $option{stderr};
+            my $size = -s $fh_err;
+            read $fh_err, $$conts_err, $size;
+            $fh_err->close();
+            codeconv::normalize_nl($conts_err) if (defined $text_stderr);
+        }
+    }
+ 
+    return ($status);
 }
 
 # Returns a string representation of the null device.

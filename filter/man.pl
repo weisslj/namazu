@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: man.pl,v 1.31 2004-05-21 11:58:37 opengl2772 Exp $
+# $Id: man.pl,v 1.32 2004-10-16 14:54:12 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu ,
 #               2004 Namazu Project All rights reserved.
@@ -31,8 +31,7 @@ require 'gfilter.pl';
 
 my $roffpath = undef;
 my @roffopts = undef;
-my $envpath = undef;
-my @env = undef;
+my %env = ();
 
 sub mediatype() {
     return ('text/x-roff');
@@ -42,23 +41,30 @@ sub status() {
     $roffpath = util::checkcmd('jgroff');
     $roffpath = util::checkcmd('groff') unless (defined $roffpath);
     $roffpath = util::checkcmd('nroff') unless (defined $roffpath);
-    $envpath = util::checkcmd('env');
-    unless (defined $roffpath && defined $envpath) {
+    unless (defined $roffpath) {
 	return 'no';
     }
-    @env = ($envpath, "LC_ALL=$util::LANG", "LANGUAGE=$util::LANG");
+    %env = (
+        "LC_ALL" => $util::LANG,
+        "LANGUAGE" => $util::LANG,
+    );
 
     if (util::islang("ja") && $roffpath =~ /\bj?groff$/) {
 	# Check wheter -Tnippon is valid.
-	my @cmd = (@env, $roffpath, "-Tnippon", util::devnull());
-	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
+	my @cmd = ($roffpath, "-Tnippon", util::devnull());
+        my $status = util::syscmd(
+            command => \@cmd,
+            option => {
+                "stdout" => "/dev/null",
+                "stderr" => "/dev/null",
+            },
+            env => \%env,
+        );
 	if ($status == 0) {
 	    @roffopts = ('-man', '-Wall', '-Tnippon');
 	} else {
 	    @roffopts = ('-man', '-Wall', '-Tascii');
 	}
-        util::fclose($fh_out);
-        util::fclose($fh_err);
     } elsif ($roffpath =~ /\bj?groff$/) {
 	@roffopts = ('-man', '-Tascii');
     } elsif ($roffpath =~ /nroff$/) {
@@ -104,24 +110,29 @@ sub filter ($$$$$) {
         util::fclose($fh);
     }
     {
-	my @cmd = (@env, $roffpath, @roffopts, $tmpfile);
-	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
+	my @cmd = ($roffpath, @roffopts, $tmpfile);
+        my $fh_out = IO::File->new_tmpfile();
+        my $status = util::syscmd(
+            command => \@cmd,
+            option => {
+                "stdout" => $fh_out,
+                "stderr" => "/dev/null",
+            },
+            env => \%env,
+        );
         my $size = util::filesize($fh_out);
 	if ($size == 0) {
             util::fclose($fh_out);
-            util::fclose($fh_err);
             unlink $tmpfile;
 	    return "Unable to convert file ($roffpath error occurred)";
 	}
 	if ($size > $conf::TEXT_SIZE_MAX) {
             util::fclose($fh_out);
-            util::fclose($fh_err);
             unlink $tmpfile;
 	    return 'Too large man file';
 	}
-	$$cont = util::readfile($fh_out);
+	$$cont = util::readfile($fh_out, "t");
         util::fclose($fh_out);
-        util::fclose($fh_err);
     }
     unlink $tmpfile;
 

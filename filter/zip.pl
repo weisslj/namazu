@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: zip.pl,v 1.12 2004-10-01 16:43:16 usu Exp $
+# $Id: zip.pl,v 1.13 2004-10-16 14:54:12 opengl2772 Exp $
 #  zip filter for namazu
 #  Copyright (C) 2004 MATSUMURA Namihiko <po-jp@counterghost.net>
 #                2004 Yukio USUDA <usu@namazu.org>
@@ -150,16 +150,30 @@ sub unzip_filter ($$$$$) {
 
     util::vprint("Processing zip file ... (using  '$unzippath')\n");
 
-    my $status = system("$unzippath -P passwd -qq -t $tmpfile");
+    my @cmd = ("$unzippath", "-P", "passwd", "-qq", "-t", "$tmpfile");
+    my $status = util::syscmd(
+        command => \@cmd,
+        option => {
+            "stdout" => "/dev/null",
+            "stderr" => "/dev/null",
+        },
+    );
     if ($status != 0) {
         unlink($tmpfile);
         return 'Unable to convert zip file (maybe copying protection)';
     }
 
     my $tmpfile2 = util::tmpnam('NMZ.zip_comment');
-    $status = system("$unzippath -z -qq $tmpfile > $tmpfile2");
+    @cmd = ("$unzippath", "-z", "-qq", "$tmpfile");
+    $status = util::syscmd(
+        command => \@cmd,
+        option => {
+            "stdout" => $tmpfile2,
+            "stderr" => "/dev/null",
+        },
+    );
     if ($status == 0) {
-	my $summary = util::readfile("$tmpfile2");
+	my $summary = util::readfile("$tmpfile2", "t");
         codeconv::toeuc(\$summary);
 	$$contref .= $summary . " ";
     }
@@ -167,9 +181,16 @@ sub unzip_filter ($$$$$) {
 
     my %files;
     my $filenames = undef;
-    $status = system("$unzippath -Z $tmpfile > $tmpfile2");
+    @cmd = ("$unzippath", "-Z", "$tmpfile");
+    $status = util::syscmd(
+        command => \@cmd,
+        option => {
+            "stdout" => $tmpfile2,
+            "stderr" => "/dev/null",
+        },
+    );
     if ($status == 0) {
-	my $filelist = util::readfile("$tmpfile2");
+	my $filelist = util::readfile("$tmpfile2", "t");
 	while ($filelist =~/\n\S+\s+	# permission
 			\S+\s+		# version
 			(\S+)\s+	# filesystem
@@ -209,10 +230,16 @@ sub unzip_filter ($$$$$) {
 	    util::vprint(sprintf(_("Not allowed:	%s"), $fname));
 	} else {
 	    my $con = "";
-	    my $fh = util::efopen("$unzippath -p $tmpfile \"$fname\"|");
-	    while (defined(my $line = <$fh>)){
-		$con .= $line;
-	    }
+            my @cmd = ("$unzippath", "-p", "$tmpfile", "$fname");
+            my $status = util::syscmd(
+                command => \@cmd,
+                option => {
+                    "stdout" => \$con,
+                    "stderr" => "/dev/null",
+                    "mode_stdout" => "wt",
+                    "mode_stderr" => "wt",
+                },
+            );
 	    my $unzippedname = "unzipped_content";
 	    if ($fname =~ /.*(\..*)/){
 		$unzippedname = $unzippedname . $1;
@@ -222,7 +249,6 @@ sub unzip_filter ($$$$$) {
 		util::dprint("filter/zip.pl gets error message \"$err\"");
 	    }
 	    $$contref .= $con . " ";
-	    util::fclose($fh);
 	}
     };
     return undef;

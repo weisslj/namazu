@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: postscript.pl,v 1.12 2004-05-21 11:58:37 opengl2772 Exp $
+# $Id: postscript.pl,v 1.13 2004-10-16 14:54:12 opengl2772 Exp $
 # Copyright (C) 2000,2004 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -28,7 +28,6 @@ require 'util.pl';
 
 my $psconvpath = undef;
 my @psconvopts = undef;
-my $envpath = undef;
 
 sub mediatype() {
     return ('application/postscript');
@@ -40,8 +39,7 @@ sub status() {
     } else {
 	$psconvpath = util::checkcmd('ps2ascii');
     }
-    $envpath = util::checkcmd('env');
-    return 'no' unless (defined $psconvpath && defined $envpath);
+    return 'no' unless (defined $psconvpath);
     return 'yes';
 }
 
@@ -90,25 +88,34 @@ sub filter ($$$$$) {
 	}
     }
     {
-	my @env = ($envpath, "LANG=$util::LANG");
-	my @cmd = (@env, $psconvpath, @psconvopts, $tmpfile);
-	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
+        my %env = (
+            "LC_ALL" => undef,
+            "LANG" => $util::LANG,
+        );
+        my @cmd = ($psconvpath, @psconvopts, $tmpfile);
+        my $fh_out = IO::File->new_tmpfile();
+        my $status = util::syscmd(
+            command => \@cmd,
+            option => {
+                "stdout" => $fh_out,
+                "stderr" => "/dev/null",
+            },
+            env => \%env,
+        );
+
 	my $size = util::filesize($fh_out);
 	if ($size == 0) {
             util::fclose($fh_out);
-            util::fclose($fh_err);
             unlink $tmpfile;
 	    return "Unable to convert postscript file ($psconvpath error occurred)";
 	}
 	if ($size > $conf::TEXT_SIZE_MAX) {
             util::fclose($fh_out);
-            util::fclose($fh_err);
             unlink $tmpfile;
 	    return 'Too large postscript file';
 	}
-	$$cont = util::readfile($fh_out);
+	$$cont = util::readfile($fh_out, "t");
         util::fclose($fh_out);
-        util::fclose($fh_err);
     }
     unlink $tmpfile;
 
@@ -126,5 +133,3 @@ sub filter ($$$$$) {
 }
 
 1;
-
-

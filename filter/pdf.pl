@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: pdf.pl,v 1.35 2004-05-21 11:58:37 opengl2772 Exp $
+# $Id: pdf.pl,v 1.36 2004-10-16 14:54:12 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu ,
 #               2000-2004 Namazu Project All rights reserved.
@@ -44,12 +44,20 @@ sub status() {
     $pdfconvpath = util::checkcmd('pdftotext');
     $pdfinfopath = util::checkcmd('pdfinfo');
     if (defined $pdfconvpath) {
-	my ($status, $fh_out, $fh_err) = util::systemcmd($pdfconvpath);
-	if (<$fh_err> =~ /^pdftotext\s+version\s+([0-9]+\.[0-9]+)/) {
+        my @cmd = ("$pdfconvpath");
+        my $result = "";
+	my $status = util::syscmd(
+            command => \@cmd,
+            option => {
+                "stdout" => "/dev/null",
+                "stderr" => \$result,
+                "mode_stdout" => 'wt',
+                "mode_stderr" => 'wt',
+            },
+        );
+	if ($result =~ /^pdftotext\s+version\s+([0-9]+\.[0-9]+)/) {
 	    $pdfconvver = $1;
 	}
-        util::fclose($fh_out);
-        util::fclose($fh_err);
 	if (util::islang("ja")) {
 	    if ($pdfconvver >= 1.00) {
 		@pdfconvopts = ('-q', '-raw', '-enc', 'EUC-JP');
@@ -60,12 +68,20 @@ sub status() {
 	    @pdfconvopts = ('-q', '-raw');
 	}
         if (defined $pdfinfopath) {
-	    my ($status, $fh_out, $fh_err) = util::systemcmd($pdfinfopath);
-            if (<$fh_err> =~ /^pdfinfo\s+version\s+([0-9]+\.[0-9]+)/) {
+            my @cmd = ("$pdfinfopath");
+            my $result = "";
+            my $status = util::syscmd(
+                command => \@cmd,
+                option => {
+                    "stdout" => "/dev/null",
+                    "stderr" => \$result,
+                    "mode_stdout" => 'wt',
+                    "mode_stderr" => 'wt',
+                },
+            );
+            if ($result =~ /^pdfinfo\s+version\s+([0-9]+\.[0-9]+)/) {
                 $pdfinfover = $1;
             }
-            util::fclose($fh_out);
-            util::fclose($fh_err);
             if (util::islang("ja")) {
                 if ($pdfinfover >= 2.02) {
                     @pdfinfoopts = ('-enc', 'EUC-JP');
@@ -112,9 +128,13 @@ sub filter ($$$$$) {
         util::fclose($fh);
     }
     my @cmd = ($pdfconvpath, @pdfconvopts, $tmpfile, $tmpfile2);
-    my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
-    util::fclose($fh_out);
-    util::fclose($fh_err);
+    my $status = util::syscmd(
+        command => \@cmd,
+        option => {
+            "stdout" => "/dev/null",
+            "stderr" => "/dev/null",
+        },
+    );
     unless (-e $tmpfile2) {
 	unlink $tmpfile;
 	return 'Unable to convert pdf file (maybe copying protection)';
@@ -134,7 +154,7 @@ sub filter ($$$$$) {
 	    unlink $tmpfile2;
 	    return 'Too large pdf file';
 	}
-	$$cont = util::readfile($fh);
+	$$cont = util::readfile($fh, "t");
         util::fclose($fh);
     }
 
@@ -142,10 +162,16 @@ sub filter ($$$$$) {
 
     if (defined $pdfinfopath) {
 	my @cmd = ($pdfinfopath, @pdfinfoopts, $tmpfile);
-	my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
-        my $result = util::readfile($fh_out);
-        util::fclose($fh_out);
-        util::fclose($fh_err);
+        my $result = "";
+        my $status = util::syscmd(
+            command => \@cmd,
+            option => {
+                "stdout" => \$result,
+                "stderr" => "/dev/null",
+                "mode_stdout" => 'wt',
+                "mode_stderr" => 'wt',
+            },
+        );
 	if ($result =~ /Title:\s+(.*)/) { # or /Subject:\s+(.*)/
 	    $fields->{'title'} = $1;
             if ($fields->{'title'} =~ /<unicode>/) {

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: wordpro.pl,v 1.10 2004-03-22 12:23:56 opengl2772 Exp $
+# $Id: wordpro.pl,v 1.11 2004-10-16 14:54:12 opengl2772 Exp $
 # Copyright (C) 2000 Ken-ichi Hirose, 
 #               2000,2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -76,23 +76,27 @@ sub filter ($$$$$) {
     }
     {   
         my @cmd = ($wordproconvpath, @wordproconvopts, $tmpfile);
-        my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
+        my $fh_out = IO::File->new_tmpfile();
+        my $status = util::syscmd(
+            command => \@cmd,
+            option => {
+                "stdout" => $fh_out,
+                "stderr" => "/dev/null",
+            },
+        );
 	my $size = util::filesize($fh_out);
 	if ($size == 0) {
             util::fclose($fh_out);
-            util::fclose($fh_err);
             unlink $tmpfile;
 	    return "Unable to convert file ($wordproconvpath error occurred).";
 	}
 	if ($size > $conf::TEXT_SIZE_MAX) {
             util::fclose($fh_out);
-            util::fclose($fh_err);
             unlink $tmpfile;
 	    return 'Too large wordpro file.';
 	}
-        $$cont = util::readfile($fh_out);
+        $$cont = util::readfile($fh_out, "t");
         util::fclose($fh_out);
-        util::fclose($fh_err);
     }
     unlink $tmpfile;
 

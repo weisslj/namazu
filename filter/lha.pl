@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: lha.pl,v 1.7 2004-10-02 12:57:29 usu Exp $
+# $Id: lha.pl,v 1.8 2004-10-16 14:54:12 opengl2772 Exp $
 #  lha filter for namazu
 #  Copyright (C) 2004 Tadamasa Teranishi,
 #                2004 MATSUMURA Namihiko <po-jp@counterghost.net>,
@@ -91,6 +91,68 @@ sub filter ($$$$$) {
     return $err;
 }
 
+sub filter_lha_msdos ($$$$$) {
+    my ($orig_cfile, $contref, $weighted_str, $headings, $fields)
+      = @_;
+
+    my $tmpfile;
+    my $uniqnumber = int(rand(10000));
+    do {
+       $tmpfile = util::tmpnam('NMZ.lha' . substr("000$uniqnumber", -4));
+       $uniqnumber++;
+    } while (-f $tmpfile);
+
+    {
+        my $fh = util::efopen("> $tmpfile");
+        print $fh $$contref;
+        util::fclose($fh);
+    }
+
+    util::vprint("Processing lha file ... (using  '$lhapath')\n");
+
+    my %files;
+    my $tmpfile2 = util::tmpnam('NMZ.lha.list');
+    my @cmd = ("$lhapath", "v", "-gm", "$tmpfile");
+    my $status = util::syscmd(
+        command => \@cmd,
+        option => {
+            "stdout" => $tmpfile2,
+            "stderr" => "/dev/null",
+        },
+    );
+    if ($status == 0) {
+        my $filelist = util::readfile("$tmpfile2", "t");
+        while ($filelist =~ s/^\S+\s+   # permission
+                (?:\S+\s+)?             # (uid, giD)
+                (\d+)\s+                # filesize
+                \S+\s+                  # rate
+                \S+\s+                  # month
+                \S+\s+                  # day
+                \S+\s+                  # year
+                (.+)$//mx)              # filename
+        {
+            my $name = $2;
+            $files{$name} = $1;
+            my $fname = "./" . $name;
+            codeconv::toeuc(\$fname);
+            $fname = gfilter::filename_to_title($fname, $weighted_str);
+            $$contref .= $fname . " ";
+
+            codeconv::toeuc(\$name);
+            util::vprint("lha: $name");
+        }
+    } else {
+        unlink($tmpfile2);
+        unlink($tmpfile);
+        return "Unable to convert file ($lhapath error occurred).";
+    }
+    unlink($tmpfile2);
+
+    $$contref = "";
+
+    return undef;
+}
+
 sub filter_lha_unix ($$$$$) {
     my ($orig_cfile, $contref, $weighted_str, $headings, $fields)
       = @_;
@@ -103,8 +165,8 @@ sub filter_lha_unix ($$$$$) {
     } while (-f $tmpfile);
 
     {
-	my $fh = util::efopen("> $tmpfile");
-	print $fh $$contref;
+        my $fh = util::efopen("> $tmpfile");
+        print $fh $$contref;
         util::fclose($fh);
     }
 
@@ -112,9 +174,16 @@ sub filter_lha_unix ($$$$$) {
 
     my %files;
     my $tmpfile2 = util::tmpnam('NMZ.lha.list');
-    my $status = system("$lhapath lq2g $tmpfile > $tmpfile2");
+    my @cmd = ("$lhapath", "lq2g", "$tmpfile");
+    my $status = util::syscmd(
+        command => \@cmd,
+        option => {
+            "stdout" => $tmpfile2,
+            "stderr" => "/dev/null",
+        },
+    );
     if ($status == 0) {
-        my $filelist = util::readfile("$tmpfile2");
+        my $filelist = util::readfile("$tmpfile2", "t");
         while ($filelist =~ s/^\S+\s+	# permission
 		(?:\S+\s+)?		# (uid, giD)
 		(\d+)\s+		# filesize
@@ -157,9 +226,16 @@ sub filter_lha_unix ($$$$$) {
 	    util::vprint(sprintf(_("Not allowed:	%s"), $fname));
         } else {
             my $tmpfile3 = util::tmpnam('NMZ.lha.file');
-            my $status = system("$lhapath -pq2 $tmpfile \"$fname\" > $tmpfile3");
+            my @cmd = ("$lhapath", "-pq2", "$tmpfile", "$fname");
+            my $status = util::syscmd(
+                command => \@cmd,
+                option => {
+                    "stdout" => $tmpfile3,
+                    "stderr" => "/dev/null",
+                },
+            );
             if ($status == 0) {
-                my $con = util::readfile($tmpfile3);
+                my $con = util::readfile($tmpfile3, "b");
                 unlink($tmpfile3);
 
                 my $lhaedname = "lhaed_content";
@@ -174,7 +250,7 @@ sub filter_lha_unix ($$$$$) {
             } else {
                 unlink($tmpfile3);
             }
-	}
+        }
     }
     unlink($tmpfile);
     return undef;
@@ -201,17 +277,17 @@ sub nesting_filter ($$$){
 	%fields = $Document->get_fields();
     }
     if ($mtype =~ /; x-system=unsupported$/){
-	$$contref = "";
+        $$contref = "";
         $err = $mtype;
     }elsif ($mtype =~ /; x-error=(.*)$/){
         $$contref = "";
         $err = $1;
     }else{
-	gfilter::show_filter_debug_info($contref, $weighted_str,
+        gfilter::show_filter_debug_info($contref, $weighted_str,
 					\%fields, \$headings);
-	for my $field (keys %fields) {
-	    $$contref .= " ". $fields{$field};
-	}
+        for my $field (keys %fields) {
+            $$contref .= " ". $fields{$field};
+        }
     }
     return $err;
 }

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: koffice.pl,v 1.8 2004-10-01 03:44:28 opengl2772 Exp $
+# $Id: koffice.pl,v 1.9 2004-10-16 14:54:12 opengl2772 Exp $
 # Copyright (C) 2004 Yukio USUDA 
 #               2004 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -100,13 +100,16 @@ sub filter_docinfofile ($$$) {
         util::fclose($fh);
     }
     my @cmd = ($unzippath, @unzipopts, $tmpfile, $metafile);
-    my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
-    while (defined(my $line = <$fh_out>)){
-        $xml .= $line;
-    }
+    my $status = util::syscmd(
+        command => \@cmd,
+        option => {
+            "stdout" => \$xml,
+            "stderr" => "/dev/null",
+            "mode_stdout" => "wt",
+            "mode_stderr" => "wt",
+        },
+    );
     unlink $tmpfile;
-    util::fclose($fh_out);
-    util::fclose($fh_err);
 
     my $authorname = koffice::get_author(\$xml);
     my $title = koffice::get_title(\$xml);
@@ -148,13 +151,16 @@ sub filter_maindocfile ($$$$$) {
         util::fclose($fh);
     }
     my @cmd = ($unzippath, @unzipopts, $tmpfile, $contentfile);
-    my ($status, $fh_out, $fh_err) = util::systemcmd(@cmd);
-    while (defined(my $line = <$fh_out>)){
-        $xml .= $line;
-    }
+    my $status = util::syscmd(
+        command => \@cmd,
+        option => {
+            "stdout" => \$xml,
+            "stderr" => "/dev/null",
+            "mode_stdout" => "wt",
+            "mode_stderr" => "wt",
+        },
+    );
     unlink $tmpfile;
-    util::fclose($fh_out);
-    util::fclose($fh_err);
 
     koffice::get_kivio_content(\$xml);
     koffice::remove_all_tag(\$xml);

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: pipermail.pl,v 1.7 2004-10-12 09:14:15 opengl2772 Exp $
+# $Id: pipermail.pl,v 1.8 2004-10-16 14:54:12 opengl2772 Exp $
 # Copyright (C) 2004 Namazu Project All rights reserved.
 #
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -40,6 +40,10 @@ sub mediatype() {
 }
 
 sub status() {
+    # The check of a dependence filter.
+    return 'no' if (html::status() ne 'yes');
+    return 'no' if (mailnews::status() ne 'yes');
+
     return 'yes';
 }
 

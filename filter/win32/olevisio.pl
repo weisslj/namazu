@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: olevisio.pl,v 1.3 2004-10-11 08:53:31 opengl2772 Exp $
+# $Id: olevisio.pl,v 1.4 2004-10-16 14:54:13 opengl2772 Exp $
 # Copyright (C) 2004 Tadamasa Teranishi,
 #               2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -33,6 +33,7 @@ package olevisio;
 use strict;
 require 'util.pl';
 require 'gfilter.pl';
+require 'olemsword.pl';
 
 use Win32::OLE;
 use Win32::OLE::Enum;
@@ -61,6 +62,9 @@ sub mediatype() {
 }
 
 sub status() {
+    # The check of a dependence filter.
+    return 'no' if (olemsword::status() ne 'yes');
+
     open (SAVEERR, ">&STDERR");
     open (STDERR, ">nul");
     $const = Win32::OLE::Const->Load("Microsoft Visio 11.0 Type Library");

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: pdf.pl,v 1.23 2001-10-21 13:34:27 baba Exp $
+# $Id: pdf.pl,v 1.24 2002-03-15 07:19:09 knok Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -29,6 +29,8 @@ require 'util.pl';
 require 'gfilter.pl';
 
 my $pdfconvpath = undef;
+my $pdfconvver = 0;
+my $pdfconvarg = '';
 
 sub mediatype() {
     return ('application/pdf');
@@ -36,7 +38,20 @@ sub mediatype() {
 
 sub status() {
     $pdfconvpath = util::checkcmd('pdftotext');
-    return 'yes' if (defined $pdfconvpath);
+    if (defined $pdfconvpath) {
+	my $ret = `$pdfconvpath 2>&1`;
+	if ($ret =~ /^pdftotext\s+version\s+([0-9]+\.[0-9]+)/) {
+	    $pdfconvver = $1;
+	}
+	if (util::islang("ja")) {
+	    if ($pdfconvver >= 1.00) {
+		$pdfconvarg = '-enc EUC-JP';
+	    } else {
+		$pdfconvarg = '-eucjp';
+	    }
+	}
+	return 'yes';
+    }
     return 'no';
 }
 
@@ -70,7 +85,7 @@ sub filter ($$$$$) {
 
     if (util::islang("ja")) {
 	util::vprint("Processing pdf file ... (using  '$pdfconvpath' in Japanese mode)\n");
-	system("$pdfconvpath -q -eucjp -raw $tmpfile $tmpfile2");
+	system("$pdfconvpath -q $pdfconvarg -raw $tmpfile $tmpfile2");
     } else {
 	util::vprint("Processing pdf file ... (using  '$pdfconvpath')\n");
 	system("$pdfconvpath -q -raw $tmpfile $tmpfile2");

@@ -1,3 +1,8 @@
+2002-03-15  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* filter/pdf.pl (status()): Added version check to adopt
+	xpdf 1.00.
+
 2002-03-13  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* src/output.c (print_hlist): Fixed excessive deletion of
@@ -7453,4 +7458,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.937 2002-03-13 08:38:26 knok Exp $
+$Id: ChangeLog,v 1.938 2002-03-15 07:19:09 knok Exp $

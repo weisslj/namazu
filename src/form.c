@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.71 2002-09-20 07:25:33 knok Exp $
+ * $Id: form.c,v 1.72 2003-03-21 09:46:49 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -219,7 +219,7 @@ select_option(char *s, const char *name, const char *subquery)
 	    {
 		char *p;
 		int n, order = DESCENDING;
-		char field[BUFSIZE];
+		char field[BUFSIZE] = "";
 
 		p = value + strlen("field:");
 		n = strspn(p, FIELD_SAFE_CHARS);
@@ -282,7 +282,7 @@ check_checkbox(char *str)
         fputs(str, stdout);
         get_value(str, value);
         for (pp = value, db_count = searched = 0 ; *pp ;db_count++) {
-            char name[BUFSIZE], *x;
+            char name[BUFSIZE] = "", *x;
             if ((x = (char *)strchr(pp, (int)','))) {
                 *x = '\0';
                 strncpy(name, pp, BUFSIZE - 1);
@@ -316,7 +316,7 @@ static void
 handle_tag(const char *start, const char *end, const char *query, 
                char *select_name, const char *subquery)
 {
-    char tmp[BUFSIZE];
+    char tmp[BUFSIZE] = "";
     int l;
 
     l = end - start + 1;
@@ -339,7 +339,7 @@ handle_tag(const char *start, const char *end, const char *query,
 static char *
 read_headfoot(const char *fname) 
 {
-    char *buf, *p, tmpfname[BUFSIZE], suffix[BUFSIZE];
+    char *buf, *p, tmpfname[BUFSIZE] = "", suffix[BUFSIZE] = "";
     char *script_name;
     char *document_name;
 

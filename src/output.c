@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.93 2002-03-13 08:38:27 knok Exp $
+ * $Id: output.c,v 1.94 2003-03-21 09:46:49 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -150,7 +150,7 @@ emprint(char *s, int entity_encode)
 static void
 unhtml_buffer(char *ostr) {
     int f, i;
-    char buf[BUFSIZE], *str;
+    char buf[BUFSIZE] = "", *str;
     int len;
     len = strlen(ostr) + 1;
     str = ostr;
@@ -214,12 +214,13 @@ unhtml_buffer(char *ostr) {
     }
     buf[i] = '\0';
     strncpy(ostr, buf, len);
+    ostr[len - 1] = '\0';
 }
 static void 
 fputs_without_html_tag(const char *str, FILE *fp)
 {
-    char buf[BUFSIZE];
-    strncpy(buf, str, BUFSIZE);
+    char buf[BUFSIZE] = "";
+    strncpy(buf, str, BUFSIZE - 1);
     unhtml_buffer(buf);
     fputs(buf, fp);
 }
@@ -315,7 +316,7 @@ is_cgimode(void)
 static char*
 load_nmz_result(const char *basedir)
 {
-    char fname[BUFSIZE], lang_suffix[BUFSIZE], *buf;
+    char fname[BUFSIZE] = "", lang_suffix[BUFSIZE] = "", *buf;
 
     nmz_pathcat(basedir, NMZ.result);
     strncpy(fname, NMZ.result, BUFSIZE - 1);
@@ -422,7 +423,7 @@ print_hlist(NmzResult hlist)
 	if (is_htmlmode() || is_listmode()) {
 	    compose_result(hlist.data[i], counter, template,  result);
 	} else {
-	    char tmpbuf[BUFSIZE];
+	    char tmpbuf[BUFSIZE] = "";
 	    strncpy(tmpbuf, template, BUFSIZE -1);
 	    tmpbuf[BUFSIZE - 1] = 0;
 	    unhtml_buffer(tmpbuf);
@@ -645,7 +646,7 @@ print_hitnum(int n)
  */
 static void 
 print_msgfile(const char *fname) {
-    char suffix[BUFSIZE], tmpfname[BUFSIZE];
+    char suffix[BUFSIZE] = "", tmpfname[BUFSIZE] = "";
 
     if (nmz_choose_msgfile_suffix(fname, suffix) == SUCCESS) {
 	char *buf;

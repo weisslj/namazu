@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.71 2002-06-06 10:48:26 knok Exp $
+ * $Id: cgi.c,v 1.72 2003-03-21 09:46:49 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -254,6 +254,8 @@ get_cgi_vars(const char *querystring)
 	char name[BUFSIZE];
 	char value[BUFSIZE];
 
+	name[BUFSIZE - 1] = '\0';
+
 	tmp = strchr(querystring, '=');
 	if (tmp == NULL) {
 	    break;
@@ -486,7 +488,7 @@ process_cgi_var_idxname(char *value, struct cgiarg *ca)
     char *pp;
 
     for (pp = value; *pp ;) {
-	char name[BUFSIZE], tmp[BUFSIZE], *x;
+	char name[BUFSIZE] = "", tmp[BUFSIZE] = "", *x;
 
 	if ((x = (char *)strchr(pp, (int)','))) {
 	    *x = '\0';
@@ -501,10 +503,10 @@ process_cgi_var_idxname(char *value, struct cgiarg *ca)
 	validate_idxname(name);
 	remove_ending_slashes(name);
 
-	strncpy(tmp, nmz_get_defaultidx(), BUFSIZE);
-	strncat(tmp, "/", BUFSIZE - strlen(tmp));
-	strncat(tmp, name, BUFSIZE - strlen(tmp));
-	tmp[BUFSIZE -1] = '\0';
+	strncpy(tmp, nmz_get_defaultidx(), BUFSIZE - 1);
+	strncat(tmp, "/", BUFSIZE - strlen(tmp) - 1);
+	strncat(tmp, name, BUFSIZE - strlen(tmp) - 1);
+	tmp[BUFSIZE - 1] = '\0';
 	if (nmz_add_index(tmp) != SUCCESS) {
 	    nmz_warn_printf("invalid idxname: %s", name);
 	}

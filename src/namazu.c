@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.105 2002-01-11 05:18:00 knok Exp $
+ * $Id: namazu.c,v 1.106 2003-03-21 09:46:49 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -126,7 +126,7 @@ get_templatedir(void)
 enum nmz_stat 
 namazu_core(char * query, char *subquery)
 {
-    char query_with_subquery[BUFSIZE * 2];
+    char query_with_subquery[BUFSIZE * 2] = "";
     NmzResult hlist;
 
     /* Make full-pathname of NMZ.{head,foot,msg,body,slog}.?? */

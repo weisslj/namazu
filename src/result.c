@@ -1,5 +1,5 @@
 /*
- * $Id: result.c,v 1.66 2001-12-26 01:46:03 knok Exp $
+ * $Id: result.c,v 1.67 2003-03-21 09:46:49 opengl2772 Exp $
  * 
  * Copyright (C) 1989, 1990 Free Software Foundation, Inc.
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
@@ -175,7 +175,7 @@ static void
 encode_entity(char *str)
 {
     int i;
-    char tmp[BUFSIZE];
+    char tmp[BUFSIZE] = "";
 
     strncpy(tmp, str, BUFSIZE - 1);
     strcpy(str, "");
@@ -205,7 +205,7 @@ emphasize(char *str)
 
     for (i = 0; nmz_get_querytoken(i) != NULL; i++) {
 	char *ptr = str;
-	char key[BUFSIZE];
+	char key[BUFSIZE] = "";
 	int keylen = 0;
 
 	if (nmz_is_query_op(nmz_get_querytoken(i)))
@@ -268,7 +268,7 @@ compose_result(struct nmz_data d, int counter,
 			   const char *template, char *r)
 {
     const char *p = template;
-    char achars[BUFSIZE]; /* acceptable characters */
+    char achars[BUFSIZE] = ""; /* acceptable characters */
 
     strcpy(r, "\t");  /* '\t' has an important role cf. html_print() */
 

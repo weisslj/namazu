@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.34 2001-12-21 03:30:41 knok Exp $
+ * $Id: rcfile.c,v 1.35 2003-03-21 09:46:49 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -368,6 +368,7 @@ getenv_namazurc(void)
 static int 
 get_rc_arg(const char *line, char *arg)
 {
+    arg[BUFSIZE - 1] = '\0';
     *arg = '\0';
     if (*line != '"') {
 	int n = strcspn(line, " \t");
@@ -408,7 +409,7 @@ get_rc_arg(const char *line, char *arg)
 static void 
 replace_home(char *str)
 {
-    char tmp[BUFSIZE];
+    char tmp[BUFSIZE] = "";
 
     strcpy(tmp, str);
     if (nmz_strprefixcmp(tmp, "~/") == 0) {
@@ -501,7 +502,7 @@ get_rc_args(const char *line)
 
     /* Get a directive name. */
     {
-	char directive[BUFSIZE];
+	char directive[BUFSIZE] = "";
 	n = strspn(line, DIRECTIVE_CHARS);
 	if (n == 0) {
 	    errmsg = _("invalid directive name");
@@ -524,6 +525,7 @@ get_rc_args(const char *line)
 
     while (1) {
 	char arg[BUFSIZE];
+	arg[BUFSIZE - 1] = '\0';
 	n = get_rc_arg(line, arg);
 	if (n == 0) { /* cannot get arg1 */
 	    return NULL;
@@ -663,7 +665,7 @@ load_rcfile(const char *fname)
 	return FAILURE;
     }
 
-    while (fgets(buf, BUFSIZE - 1, fp) != NULL) {
+    while (fgets(buf, BUFSIZE, fp) != NULL) {
 	int current_lineno = lineno;
 	
 	do {
@@ -674,6 +676,10 @@ load_rcfile(const char *fname)
 		
 		buf[strlen(buf) - 1] = '\0'; /* Remove ending \ */
 		remaining = BUFSIZE - strlen(buf) - 1;
+		if (remaining == 0) {
+		    nmz_chomp(buf);
+		    break;
+		}
 		if (fgets(buf + strlen(buf), remaining, fp) == NULL) {
 		    nmz_chomp(buf);
 		    break;
@@ -737,7 +743,7 @@ load_rcfiles(void)
 		return FAILURE;
 	    }
 	} else {
-	    char fname[BUFSIZE];
+	    char fname[BUFSIZE] = "";
 	    strncpy(fname, namazurcdir, BUFSIZE - 1);
 	    strncat(fname, "/namazurc",
 		    BUFSIZE - strlen(fname) - 1);
@@ -758,7 +764,7 @@ load_rcfiles(void)
     {
 	char *home = getenv("HOME");
 	if (home != NULL) {
-	    char fname[BUFSIZE];
+	    char fname[BUFSIZE] = "";
 	    strncpy(fname, home, BUFSIZE - 1);
 	    strncat(fname, "/.namazurc",
 		    BUFSIZE - strlen(fname) - 1);

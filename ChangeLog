@@ -1,5 +1,9 @@
 2002-08-10  Hajime BABA  <baba@plain.isas.ac.jp>
 
+        * (somewhere)/.cvsignore: Newly added.
+
+2002-08-10  Hajime BABA  <baba@plain.isas.ac.jp>
+
         * filter/postscript.pl: Adapted to ps2text 0.4.1.
 
 2002-08-06  NOKUBI Takatsugu  <knok@daionet.gr.jp>
@@ -7610,4 +7614,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.967 2002-08-10 10:32:09 baba Exp $
+$Id: ChangeLog,v 1.968 2002-08-10 10:37:41 baba Exp $

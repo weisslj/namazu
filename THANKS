@@ -1,4 +1,4 @@
-$Id: THANKS,v 1.22 2000-05-15 00:35:58 satoru Exp $
+$Id: THANKS,v 1.23 2000-10-06 14:43:40 rug Exp $
 
 We have been trying to keep track of everyone who
 contributes to Namazu.  Please contact us if you know anyone
@@ -13,6 +13,7 @@ hints/fixes/discussions/contributions:
 "Junji KAKUTA" <junji.kakuta@city.chiba.jp>
 "SAKAGUCHI Akio" <akios@hi-ho.ne.jp>
 "Tokita Kazuyuki" <ktoki@bonson.sony.co.jp>
+"Yoshinori.TAKESAKO" <takesako@ddt.or.jp>
 ASHIDA Isao <isao@process.semicon.sony.co.jp>
 Chiaki Ishikawa <Chiaki.Ishikawa@personal-media.co.jp>
 Egon Schmid <eschmid@s.netic.de>
@@ -46,6 +47,7 @@ Kobayakawa <kobaken@hh.iij4u.or.jp>
 MAEDA Atusi <maeda@is.uec.ac.jp>
 Masaki Takayama <takayama@lang.csd.nes.nec.co.jp>
 Matsumura Naoki <j5306050@cs.gunma-u.ac.jp>
+Maximo Ramos <maximo@violadores.org>
 MORIMOTO Akihiro <morimoto@laser.ee.es.osaka-u.ac.jp>
 MURATA Nobuhiro <nob@y-min.or.jp>
 Masami HIRATA <a0292060@iwate-u.ac.jp>
@@ -55,12 +57,14 @@ Naohiro IIMURA <iimura@sra.co.jp>
 NISHIDA Keisuke <knishida@nn.iij4u.or.jp>
 OKI Yukihiro <yoki@beams.nagaokakyo.kyoto.jp>
 OKUNISHI Fujikazu <fuji0924@mbox.kyoto-inet.or.jp>
+Osamu Okano <osamu2001@livedoor.com>
 Rei FURUKAWA <furukawa@dkv.yamaha.co.jp>
 Ryuji Abe <raeva@t3.rim.or.jp>
 SATOH Fumiyasu <fumiya@cij.co.jp>
 SHIOZAKI Takehiko <takehi-s@ascii.co.jp>
 SUGITA Shigeki <sugita@ambitious.lib.hokudai.ac.jp>
 Seiji Yamashita <s_yam@na.rim.or.jp>
+Stephane Legrand <Stephane.Legrand@bigfoot.com>
 Takanori Hayashi <tzhaya@affrc.go.jp>
 Takashi Tomokiyo <tomokiyo+@cs.cmu.edu>
 Takeshi ITOH <titou@bits.co.jp>
@@ -100,6 +104,7 @@ shimizu@rodem.ingrid.org (Shimizu Susumu)
 shin@hans.or.jp (Teruhiko Shinmura)
 sugiura@kt.rim.or.jp (Sugiura Shiro)
 susumu-w@ppp.bekkoame.or.jp
+teranisi@bpo.co.jp
 tmu@ikegami.co.jp (MURASHITA Takuya)
 usuda@pwri.go.jp (Usuda Yukio)
 yoshihide hirose <hirose@niko.fast.co.jp>

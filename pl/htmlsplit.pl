@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: htmlsplit.pl,v 1.6 2000-03-22 06:10:52 satoru Exp $
+# $Id: htmlsplit.pl,v 1.7 2000-04-25 06:20:41 satoru Exp $
 #
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -49,6 +49,7 @@ EOS
 sub split ($$) {
     my ($fname, $base) = @_;
 
+    my $mtime = (stat($fname))[9];
     my $fh = util::efopen($fname);
     my $cont   = join '', <$fh>;
 
@@ -78,9 +79,9 @@ sub split ($$) {
                 (["']).+?\5)[^>]*>(.*?)</a>                  # 5,6
                 \s*(</h\3>)?                                 # 7
              } {
-                write_partial_file($1, $4, $6, $id++, \%info)
+                write_partial_file($1, $4, $6, $id++, $mtime, \%info)
              }sgexi;
-    write_partial_file($cont, "", "", $id, \%info);
+    write_partial_file($cont, "", "", $id, $mtime, \%info);
 
     return @{$info{'names'}};
 }
@@ -119,10 +120,10 @@ sub get_author ($) {
     return $author;
 }
 
-sub write_partial_file($$$$$) {
-    my ($cont, $name, $anchored, $id, $info_ref) = @_;
+sub write_partial_file($$$$$$) {
+    my ($cont, $name, $anchored, $id, $mtime, $info_ref) = @_;
 
-    $name =~ s/^(["'])(.*)\1$/$2/;  # Remove quotation marks.
+    $name =~ s/^([\"\'])(.*)\1$/$2/;  # Remove quotation marks.
 
     my $author        = $info_ref->{'author'};
     my $base          = $info_ref->{'base'};
@@ -162,6 +163,7 @@ sub write_partial_file($$$$$) {
     # FIXME: Actually we don't need this. 
     #        But some perl versions need this.
     close($fh);
+    utime($mtime, $mtime, $fname);
 
     return "";
 }

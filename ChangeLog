@@ -1,8 +1,13 @@
 2000-04-25  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* pl/htmlsplit.pl (write_partial_file): Fix namazu-bug#9
+	(split): Likewise.
+
 	* scripts/mknmz.in (process_file): Fix namazu-bug#10
 	<http://www.namazu.org/cgi-bin/jitterbug>
-	
+	(process_file): Tiny fix. [n-d-j: 00415]
+	(pickup_updated_files): Fix namazu-bug#11
+
 2000-04-24  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* template/NMZ.head: s/Search String/Query/
@@ -5590,4 +5595,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.685 2000-04-25 02:33:46 satoru Exp $
+$Id: ChangeLog,v 1.686 2000-04-25 06:20:40 satoru Exp $

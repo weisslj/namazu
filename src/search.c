@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.18 1999-09-03 02:42:59 satoru Exp $
+ * $Id: search.c,v 1.19 1999-09-04 01:07:52 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -872,7 +872,7 @@ void search_main(uchar *query)
 	if (SortMethod != SORT_BY_DATE) {
 	    sort_hlist(hlist, SortMethod);
 	}
-        if (SortDirection == ASCENDING) {  /* default is descending */
+        if (SortOrder == ASCENDING) {  /* default is descending */
             reverse_hlist(hlist);
         }
         if (!HitCountOnly && !MoreShortFormat && !Quiet) {

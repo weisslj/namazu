@@ -1,3 +1,23 @@
+1999-09-04  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
+
+	* src/form.c: Modify to handle new type <form> ... </form>
+	
+	* src/cgi.c: Rename CGI variables. And Change a way to specify
+	"sort=" variable.
+
+	* template/NMZ.head.ja: Use Kanji in descriptions for "option".
+	
+	* src/*.[chl]: Change condition styles: 
+	    "!strXXcmp()" -> "strXXcmp() == 0"
+	
+	* src/field.[ch]: Define FIELD_SAFE_CHARS in field.h and use it in
+	field.c (is_field_safe_char).
+	
+	* src/*.[chl]: s/SortDirection/SortOrder/g;
+	
+	* src/cgi.c: Use strprefixcasecmp() instead of strncmp().
+
+	
 1999-09-03  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* src/hlist.c: Introduce set_rank() for STABLE sorting.
@@ -48,7 +68,7 @@
 		int strprefixcasecmp(uchar *, uchar *);
 		int strsuffixcasecmp(uchar *, uchar *);
 	
-	* src/formc.c: Make all string comparisons case insensitive.
+	* src/{cgi,form}.c: Make all string comparisons case insensitive.
 	
 	* template/*, src/*.c: s/dbname/idxname/g
 	

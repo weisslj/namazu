@@ -1,6 +1,6 @@
 未実装
 
-  * CGIからフィールド指定のソート方法を指定できるようにする
+  * NMZ.result のスキャナを自作する
 
   * NMZ.result, NMZ.field.* を何度も読み直すのは馬鹿げている
     ので、caching 機構を導入する。
@@ -31,14 +31,11 @@
     - 現在の LIST の実装は最低
 
   * gettext 化
-    <http://hp.vector.co.jp/authors/VA001240/article/msgcat.html>
+    <http://plaza20.mbn.or.jp/~shimaki/>
 
   * コメントをすべて英語にする
 
   * 文書整備 (いろんな面で)
-
-  * 文書のタイトルでソートする機能を実装
-    - NMZ.field.subject を使ってソートすればよい
 
   * find でシンボリックをきちんと扱う (難しい)
 
@@ -62,7 +59,6 @@
     e.g. study/studies, eat/ate/eaten (面倒くさいな)
 
   * ヒット数がゼロだったキーワードを無視する (ひらがなだけ?)
-
 
   * NMZ.head の Search! ボタンの隣りに [Help] のリンクをつける。
     (ここをクリックすると NMZ.body が表示される)
@@ -152,6 +148,13 @@
 	ChaSen:	module_chasen1
 	WAKATI_DEFAULT:	KAKASI
   => 実装しました 1999-09-01
+
+  * 文書のタイトルでソートする機能を実装
+    - NMZ.field.subject を使ってソートすればよい
+  => 任意のフィールドでソートできます 1999-09-02
+
+  * CGIからフィールド指定のソート方法を指定できるようにする
+  => しました 1999-09-04
 
 
 ======================================================

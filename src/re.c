@@ -2,7 +2,7 @@
  * 
  * re.c -
  * 
- * $Id: re.c,v 1.3 1999-09-03 02:42:58 satoru Exp $
+ * $Id: re.c,v 1.4 1999-09-04 01:07:52 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -136,7 +136,7 @@ int replace_uri(uchar * s)
 	n_src = strlen(list.src->str);
 	n_dst = strlen(list.dst->str);
 
-	if (!strncmp(list.src->str, tmp, n_src)) {
+	if (strncmp(list.src->str, tmp, n_src) == 0) {
 	    strcpy(s, list.dst->str);
 	    for (i = n_src, j = n_dst; tmp[i]; i++, j++) {
 		s[j] = tmp[i];
@@ -178,7 +178,7 @@ HLIST regex_grep(uchar *orig_expr, FILE *fp, uchar *field, int field_mode)
     if (field_mode) {
         malloc_hlist(&val, size += STEP);
         max = IGNORE_HIT;
-        if (!strcmp(field, "uri")) {
+        if (strcmp(field, "uri") == 0) {
             uri_mode = 1;
         }
     } else {

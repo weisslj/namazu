@@ -165,12 +165,13 @@ void put_query(uchar * qs, int w)
 {
     int foo = 0;
     while (*qs) {
-	if (!strncmp(qs, "whence=", 7)) {
+	if (strprefixcmp(qs, "whence=") == 0) {
 	    foo = 1;
 	    printf("whence=%d", w);
-	    for (qs += 7; isdigit(*qs); qs++);
-	} else
+	    for (qs += strlen("whence="); isdigit(*qs); qs++);
+	} else {
 	    fputc(*(qs++), stdout);
+	}
     }
     if (foo == 0) {
 	printf("&whence=%d", w);

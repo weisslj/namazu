@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.11 1999-09-02 02:54:09 satoru Exp $
+ * $Id: form.c,v 1.12 1999-09-04 01:07:51 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -39,6 +39,8 @@
 #include "util.h"
 #include "form.h"
 #include "output.h"
+#include "field.h"
+#include "hlist.h"
 
 /************************************************************
  *
@@ -148,7 +150,7 @@ void delete_str(uchar *s, uchar *d)
 
     l = strlen(d);
     for (tmp = s; *tmp; tmp++) {
-        if (!strncasecmp(tmp, d, l)) {
+        if (strncasecmp(tmp, d, l) == 0) {
             strcpy(tmp, tmp + l);
             tmp--;
         }
@@ -160,8 +162,9 @@ void get_value(uchar *s, uchar *v)
 {
     *v = '\0';
     for (; *s; s++) {
-        if (!strncasecmp(s, "value=\"", 7)) {
-            for (s += 7; *s && *s != '"'; s++, v++) {
+        if (strprefixcasecmp(s, "value=\"") == 0) {
+            for (s += strlen("value=\""); *s && *s != '"'; s++, v++) 
+	    {
                 *v = *s;
             }
             *v = '\0';
@@ -193,41 +196,63 @@ int select_option(uchar *s, uchar *name, uchar *subquery)
         delete_str(s, (uchar *)"selected ");
         fputs(s, stdout);
         get_value(s, value);
-        if (!strcasecmp(name, "format")) {
-            if (!strcasecmp(value, "short") && ShortFormat) {
+        if (strcasecmp(name, "result") == 0) {
+            if (strcasecmp(value, Template) == 0) {
                 fputs(" selected", stdout);
-            } else if (!strcasecmp(value, "long") && (!ShortFormat)) {
-                fputs(" selected", stdout);
-            } 
-        } else if (!strcasecmp(name, "sort")) {
-            if (!strcasecmp(value, "later") && 
+            }
+        } else if (strcasecmp(name, "sort") == 0) {
+            if ((strcasecmp(value, "date:late") == 0) && 
 		SortMethod    == SORT_BY_DATE &&
-		SortDirection == DESCENDING) 
+		SortOrder == DESCENDING) 
 	    {
                 fputs(" selected", stdout);
-            } else if (!strcasecmp(value, "earlier")  && 
+            } else if ((strcasecmp(value, "date:early") == 0) && 
 		SortMethod    == SORT_BY_DATE &&
-		SortDirection == ASCENDING)
+		SortOrder == ASCENDING)
             {
                 fputs(" selected", stdout);
-            } else if (!strcasecmp(value, "score") && 
+            } else if ((strcasecmp(value, "score") == 0) && 
 		       SortMethod  == SORT_BY_SCORE) 
 	    {
                 fputs(" selected", stdout);
+            } else if ((strprefixcasecmp(value, "field:") == 0) && 
+		       SortMethod  == SORT_BY_FIELD) 
+	    {
+		uchar *p;
+		int n, order = DESCENDING;
+		uchar field[BUFSIZE];
+
+		p = value + strlen("field:");
+		n = strspn(p, FIELD_SAFE_CHARS);
+		strncpy(field, p, n);
+		field[n] = '\0';        /* Hey, don't forget this! */
+		p += n;
+
+		if (strprefixcasecmp(p, ":ascending") == 0) {
+		    order = ASCENDING;
+		} else if (strprefixcasecmp(p, ":descending") == 0) {
+		    order = DESCENDING;
+		}
+
+		if (strcmp(field, get_sort_field()) == 0 && 
+		    order == SortOrder) {
+		    fputs(" selected", stdout);
+		}
             }
-        } else if (!strcasecmp(name, "lang")) {
-            if (!strcasecmp(value, Lang)) {
+
+        } else if (strcasecmp(name, "lang") == 0) {
+            if (strcasecmp(value, Lang) == 0) {
                 fputs(" selected", stdout);
             }
-        } else if (!strcasecmp(name, "idxname")) {
+        } else if (strcasecmp(name, "idxname") == 0) {
             if (*Idx.names[0] && strsuffixcmp(value, Idx.names[0]) == 0) {
                 fputs(" selected", stdout);
             }
-        } else if (!strcasecmp(name, "subquery")) {
-            if (!strcasecmp(value, subquery)) {
+        } else if (strcasecmp(name, "subquery") == 0) {
+            if (strcasecmp(value, subquery)  == 0) {
                 fputs(" selected", stdout);
             }
-        } else if (!strcasecmp(name, "max")) {
+        } else if (strcasecmp(name, "max") == 0) {
             if (atoi(value) == HListMax) {
                 fputs(" selected", stdout);
             }
@@ -318,12 +343,12 @@ void print_headfoot(uchar * fname, uchar * query, uchar *subquery)
     }
 
     for (p = buf, f = f2 = 0; *p; p++) {
-        if (BASE_URI[0] && !strncasecmp(p, "\n</head>", 8)) {
+        if (BASE_URI[0] && (strprefixcasecmp(p, "\n</head>") == 0)) {
             printf("\n<base href=\"%s\">", BASE_URI);
         }
 
-        if (!f && *p == '<') {
-            if (!strncasecmp(p, "</title>", 8)) {
+        if (f == 0 && *p == '<') {
+            if (strprefixcasecmp(p, "</title>") == 0) {
 		if (*query != '\0') {
 		    printf(": &lt;");
 		    fputx(query, stdout);
@@ -334,10 +359,22 @@ void print_headfoot(uchar * fname, uchar * query, uchar *subquery)
                 continue;
             }
 
-            if (!IsCGI && !ForcePrintForm && !strncasecmp(p, "<form ",  6)) f2 = 1;
-            if (!IsCGI && !ForcePrintForm && !strncasecmp(p, "</form>", 7)) 
-            {f2 = 0; p += 6; continue;}
-            if (f2) continue;
+            if (!IsCGI && !ForcePrintForm && 
+		(strprefixcasecmp(p, "<form ") == 0)) 
+	    {
+		f2 = 1;
+	    }
+
+            if (!IsCGI && !ForcePrintForm && 
+		(strprefixcasecmp(p, "</form>") == 0)) 
+            {
+		f2 = 0; 
+		p += 6; continue;
+	    }
+            if (f2) {
+		continue;
+	    }
+
             /* In case of file's encoding is ISO-2022-JP, 
                the problem occurs if JIS X 208 characters in element */
             q = (uchar *)strchr(p, (int)'>');
@@ -346,7 +383,7 @@ void print_headfoot(uchar * fname, uchar * query, uchar *subquery)
             fputs(">", stdout);
             p = q;
         } else {
-            if (!strncmp(p, "\x1b$", 2) 
+            if ((strncmp(p, "\x1b$", 2) == 0)
                 && (*(p + 2) == 'B' || *(p + 2) == '@')) 
             {
                 f = 1;

@@ -23,7 +23,7 @@ extern int TfIdf;
 extern int NoReference;
 
 extern int SortMethod;
-extern int SortDirection;
+extern int SortOrder;
 
 extern uchar DEFAULT_INDEX[];
 extern uchar Lang[];

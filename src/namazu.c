@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.24 1999-09-02 03:51:31 satoru Exp $
+ * $Id: namazu.c,v 1.25 1999-09-04 01:07:51 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -127,11 +127,11 @@ int parse_options(int argc, char **argv)
 	    break;
 	case '2':
 	    SortMethod    = SORT_BY_DATE;
-	    SortDirection = DESCENDING;
+	    SortOrder = DESCENDING;
 	    break;	  
 	case '3':	  
 	    SortMethod    = SORT_BY_DATE;
-	    SortDirection = ASCENDING;
+	    SortOrder = ASCENDING;
 	    break;
 	case '4':  /* --sort */
 	{
@@ -146,7 +146,7 @@ int parse_options(int argc, char **argv)
 	}
 	break;
 	case '5':  /* --ascending */
-	    SortDirection = ASCENDING;
+	    SortOrder = ASCENDING;
 	    break;
 	case 'n':
 	    HListMax = atoi(optarg);
@@ -315,7 +315,7 @@ void uniq_idxnames(void)
 
     for (i = 0; i < Idx.num - 1; i++) {
         for (j = i + 1; j < Idx.num; j++) {
-            if (!strcmp(Idx.names[i], Idx.names[j])) {
+            if (strcmp(Idx.names[i], Idx.names[j]) == 0) {
                 free(Idx.names[j]);
                 for (k = j + 1; k < Idx.num; k++) {
                     Idx.names[k - 1] = Idx.names[k];

@@ -18,7 +18,7 @@ void make_fullpathname_field(int);
 
 int is_field_safe_char(int c)
 {
-    if ((isalnum(c) || c == (int)'-' || c == (int)'_')) {
+    if ((strchr(FIELD_SAFE_CHARS, c) != NULL)) {
         return 1;
     } else {
         return 0;

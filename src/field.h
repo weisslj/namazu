@@ -1,6 +1,8 @@
 #ifndef _FIELD_H
 #define _FIELD_H
 
+#define FIELD_SAFE_CHARS "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_"
+
 int is_field_safe_character(int);
 int isfield(uchar *);
 void apply_field_alias(uchar *);

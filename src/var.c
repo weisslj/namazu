@@ -2,7 +2,7 @@
  * 
  * values.c -
  * 
- * $Id: var.c,v 1.5 1999-09-02 02:54:11 satoru Exp $
+ * $Id: var.c,v 1.6 1999-09-04 01:07:52 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -69,7 +69,7 @@ int Logging = 1;		/* if do logging:  1 */
 int OppositeEndian = 0;         /* if opposite byte order: 1 */
 int NoReference = 0;		/* if no display reference: 1  */
 int SortMethod = SORT_BY_SCORE;	/* Method of sorting */
-int SortDirection = DESCENDING;	/* Direction of sorting */
+int SortOrder = DESCENDING;	/* Direction of sorting */
 
 
 #ifdef OPT_SCORING

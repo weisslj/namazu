@@ -36,14 +36,22 @@
 </select>
 <strong>表示形式:</strong>
 <select name="result">
-<option selected value="normal">normal
-<option value="short">short
+<option selected value="normal">標準
+<option value="short">簡潔
 </select>
 <strong>ソート:</strong>
 <select name="sort">
-<option selected value="score">score
-<option value="later">in late order
-<option value="earlier">in early order
+<option selected value="score">スコア
+<option value="date:late">日付 (新しい順)
+<option value="date:early">日付 (古い順)
+<option value="field:title:ascending">題名 (昇順)
+<option value="field:title:descending">題名 (降順)
+<option value="field:from:ascending">著者 (昇順)
+<option value="field:from:descending">著者 (降順)
+<option value="field:size:ascending">サイズ (昇順)
+<option value="field:size:descending">サイズ (降順)
+<option value="field:uri:ascending">URI (昇順)
+<option value="field:uri:descending">URI (降順)
 </select>
 </p>
 <!--

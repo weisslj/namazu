@@ -41,10 +41,17 @@ This index contains <!-- FILE --> 0 <!-- FILE --> files and
 </select>
 <strong>Sort:</strong>
 <select name="sort">
-<option selected value="score">score
-<option value="later">in late order
-<option value="earlier">in early order
-</select>
+<option selected value="score">by score
+<option value="date:late">by date in late order
+<option value="date:early">by date in early order
+<option value="field:title:ascending">by title in ascending order
+<option value="field:title:descending">by title in descending order
+<option value="field:from:ascending">by author in ascending order
+<option value="field:from:descending">by author in descending order
+<option value="field:size:ascending">by size in descending order
+<option value="field:size:descending">by size in descending order
+<option value="field:uri:ascending">by URI in descending order
+<option value="field:uri:descending">by URI in descending order
 </p>
 <!--
 <p>

@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.15 1999-09-02 02:54:09 satoru Exp $
+ * $Id: cgi.c,v 1.16 1999-09-04 01:07:51 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -36,6 +36,8 @@
 #include "message.h"
 #include "cgi.h"
 #include "output.h"
+#include "field.h"
+#include "hlist.h"
 
 uchar *ScriptName    = (uchar *)"";
 uchar *QueryString   = (uchar *)"";
@@ -64,9 +66,9 @@ int validate_idxname(uchar * idxname)
         exit(1);
     }
     while (*idxname) {
-        if (strncmp("../", idxname, 3) == 0 ||
+        if (strprefixcasecmp("../", idxname) == 0 ||
 	    strcmp("..", idxname) == 0 ||
-            (win32 && strncmp("..\\", idxname, 3) == 0)) 
+            (win32 && strprefixcasecmp("..\\", idxname) == 0)) 
         {
             fputs(MSG_MIME_HEADER, stdout);
             fputx(MSG_INVALID_DB_NAME, stdout);
@@ -146,8 +148,8 @@ int get_cgi_vars(uchar * query, uchar *subquery)
         if (*qs == '&') {
             qs++;
             continue;
-        } else if (!strncmp(qs, "key=", 4)) {
-	    qs += 4;
+        } else if (strprefixcasecmp(qs, "key=") == 0) {
+	    qs += strlen("key=");
 
 	    for (i = 0; *qs && *qs != '&'; qs++, i++) {
                 *(query + i) = *qs;
@@ -163,16 +165,16 @@ int get_cgi_vars(uchar * query, uchar *subquery)
 #ifdef MSIE4MACFIX
 #define MSIE4MAC "Mozilla/4.0 (compatible; MSIE 4.01; Mac"
 
-            if (!strncmp(query, "%1B", 3)) {
+            if (strprefixcasecmp(query, "%1B") == 0) {
                 char *agent = getenv("HTTP_USER_AGENT");
-                if (agent && !strncmp(agent, MSIE4MAC, strlen(MSIE4MAC))) {
+                if (agent && strprefixcasecmp(agent, MSIE4MAC) == 0) {
                     decode_uri(query);
                 }
             }
 #endif MSIE4MACFIX
 
-	} else if (!strncmp(qs, "subquery=", 4)) {
-	    qs += 9;
+	} else if (strprefixcasecmp(qs, "subquery=") == 0) {
+	    qs += strlen("subquery=");
 
 	    for (i = 0; *qs && *qs != '&'; qs++, i++) {
                 *(subquery + i) = *qs;
@@ -188,37 +190,55 @@ int get_cgi_vars(uchar * query, uchar *subquery)
 #ifdef MSIE4MACFIX
 #define MSIE4MAC "Mozilla/4.0 (compatible; MSIE 4.01; Mac"
 
-            if (!strncmp(subquery, "%1B", 3)) {
+            if (strprefixcasecmp(subquery, "%1B") == 0) {
                 char *agent = getenv("HTTP_USER_AGENT");
-                if (agent && !strncmp(agent, MSIE4MAC, strlen(MSIE4MAC))) {
+                if (agent && strprefixcasecmp(agent, MSIE4MAC) == 0) {
                     decode_uri(subquery);
                 }
             }
 #endif MSIE4MACFIX
 
-	} else if (!strncmp(qs, "format=short", 12)) {
+	} else if (strprefixcasecmp(qs, "format=short") == 0) {
 	    ShortFormat = 1;
 	    strcpy(Template, "short");
-	    qs += 12;
-	} else if (!strncmp(qs, "sort=", 5)) {
-	    qs += 5;
-	    if (!strncmp(qs, "score", 5)) {
+	    qs += strlen("format=short");
+	} else if (strprefixcasecmp(qs, "sort=") == 0) {
+	    qs += strlen("sort=");
+	    if (strprefixcasecmp(qs, "score") == 0) {
 		SortMethod    = SORT_BY_DATE;
-		SortDirection = DESCENDING;
-		qs += 5;
-	    } else if (!strncmp(qs, "later", 5)) {
+		SortOrder = DESCENDING;
+		qs += strlen("score");
+	    } else if (strprefixcasecmp(qs, "date%3Alate") == 0) {
 		SortMethod    = SORT_BY_DATE;
-		SortDirection = DESCENDING;
-		qs += 5;
-	    } else if (!strncmp(qs, "earlier", 7)) {
+		SortOrder = DESCENDING;
+		qs += strlen("date%3Alate");
+	    } else if (strprefixcasecmp(qs, "date%3Aearly") == 0) {
 		SortMethod    = SORT_BY_DATE;
-		SortDirection = ASCENDING;
-		qs += 7;
-	    }
+		SortOrder = ASCENDING;
+		qs += strlen("date%3Aearly");
+	    } else if (strprefixcasecmp(qs, "field%3A") == 0) {
+		int n;
+		uchar field[BUFSIZE];
+
+		qs += strlen("field%3A");
+		n = strspn(qs, FIELD_SAFE_CHARS);
+		strncpy(field, qs, n);
+		field[n] = '\0';        /* Hey, don't forget this! */
+		set_sort_field(field);
+		qs += n;
+		SortMethod    = SORT_BY_FIELD;
+		if (strprefixcasecmp(qs, "%3Aascending") == 0) {
+		    SortOrder = ASCENDING;
+		    qs += strlen("%3Aascending");
+		} else if (strprefixcasecmp(qs, "%3Adescending") == 0) {
+		    SortOrder = DESCENDING;
+		    qs += strlen("%3Adescending");
+		}
+	    } 
 	    while (*qs && *qs != '&')
 		qs++;
-	} else if (!strncmp(qs, "max=", 4)) {
-	    qs += 4;
+	} else if (strprefixcasecmp(qs, "max=") == 0) {
+	    qs += strlen("max=");
 	    sscanf(qs, "%d", &HListMax);
 	    if (HListMax < 0)
 		HListMax = 0;
@@ -226,22 +246,22 @@ int get_cgi_vars(uchar * query, uchar *subquery)
 		HListMax = RESULT_MAX;
 	    while (*qs && *qs != '&')
 		qs++;
-	} else if (!strncmp(qs, "whence=", 7)) {
-	    qs += 7;
+	} else if (strprefixcasecmp(qs, "whence=") == 0) {
+	    qs += strlen("whence=");
 	    sscanf(qs, "%d", &HListWhence);
 	    if (HListWhence < 0)
 		HListWhence = 0;
 	    while (*qs && *qs != '&')
 		qs++;
-	} else if (!strncmp(qs, "lang=", 5)) {
-	    qs += 5;
+	} else if (strprefixcasecmp(qs, "lang=") == 0) {
+	    qs += strlen("lang=");
             strncpy(Lang, qs, 2);
             qs += 2;
             init_message();
 	    while (*qs && *qs != '&')
 		qs++;
-	} else if (!strncmp(qs, "result=", 7)) {
-	    qs += 7;
+	} else if (strprefixcasecmp(qs, "result=") == 0) {
+	    qs += strlen("result=");
 
 	    for (i = 0; *qs && *qs != '&' && i <= CGI_RESULT_NAME_MAX; 
 		 i++, qs++)
@@ -253,13 +273,13 @@ int get_cgi_vars(uchar * query, uchar *subquery)
             strcpy(Template, tmp);
 	    while (*qs && *qs != '&')
 		qs++;
-	} else if (!strncmp(qs, "reference=off", 13)) {
+	} else if (strprefixcasecmp(qs, "reference=off") == 0) {
             NoReference = 1;
-            qs += 13;
-	} else if (!strncmp(qs, "idxname=", 7)) {
+            qs += strlen("reference=off");
+	} else if (strprefixcasecmp(qs, "idxname=") == 0) {
             uchar *pp;
 
-	    qs += 7;
+	    qs += strlen("idxname=");
 	    for (i = 0; *qs && *qs != '&' && i <= CGI_INDEX_NAME_MAX; 
 		 i++, qs++)
 	    {

@@ -2,7 +2,7 @@
  * 
  * parser.c -
  * 
- * $Id: parser.c,v 1.5 1999-08-27 10:05:13 satoru Exp $
+ * $Id: parser.c,v 1.6 1999-09-04 01:07:52 satoru Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -46,23 +46,23 @@ static int Cp = 0; /* variable that saves current position of parser */
  *
  ************************************************************/
 
-int isoperator(uchar*);
+int isop(uchar*);
 HLIST factor(int*);
 int andop(void);
 HLIST term(void);
 int orop(void);
 
 /* check a character if metacharacter (operator) of not */
-int isoperator(uchar * c)
+int isop(uchar * c)
 {
-    if ((!strcmp(c, AND_STRING)) ||
-	(!strcmp(c, AND_STRING_ALT)) ||
-	(!strcmp(c, OR_STRING)) ||
-	(!strcmp(c, OR_STRING_ALT)) ||
-	(!strcmp(c, NOT_STRING)) ||
-	(!strcmp(c, NOT_STRING_ALT)) ||
-	(!strcmp(c, LP_STRING)) ||
-	(!strcmp(c, RP_STRING)))
+    if ((strcmp(c, AND_STRING) == 0 ) ||
+	(strcmp(c, AND_STRING_ALT) == 0 ) ||
+	(strcmp(c, OR_STRING) == 0 ) ||
+	(strcmp(c, OR_STRING_ALT) == 0 ) ||
+	(strcmp(c, NOT_STRING) == 0 ) ||
+	(strcmp(c, NOT_STRING_ALT) == 0 ) ||
+	(strcmp(c, LP_STRING) == 0 ) ||
+	(strcmp(c, RP_STRING) == 0 ))
 	return 1;
     return 0;
 }
@@ -74,20 +74,21 @@ HLIST factor(int *ignore)
     val.n = 0;
 
     while (1) {
-        if (!Query.tab[Cp])
+        if (Query.tab[Cp] == 0) {
             return val;
+	}
 
-        if (!strcmp(Query.tab[Cp], LP_STRING)) {
+        if (strcmp(Query.tab[Cp], LP_STRING) == 0) {
             Cp++;
             if (Query.tab[Cp] == NULL)
                 return val;
             val = expr();
             if (Query.tab[Cp] == NULL)
                 return val;
-            if (!strcmp(Query.tab[Cp], RP_STRING))
+            if (strcmp(Query.tab[Cp], RP_STRING) == 0)
                 Cp++;
             break;
-        } else if (!isoperator(Query.tab[Cp])) {
+        } else if (!isop(Query.tab[Cp])) {
             val = do_search(Query.tab[Cp], val);
             /*  MSG_ERR_TOO_MUCH_MATCH;
                 MSG_ERR_TOO_MUCH_HIT;  case */
@@ -109,19 +110,21 @@ int andop(void)
 {
     if (Query.tab[Cp] == NULL)
 	return 0;
-    if (!strcmp(Query.tab[Cp], AND_STRING) ||
-	!strcmp(Query.tab[Cp], AND_STRING_ALT)) {
+    if ((strcmp(Query.tab[Cp], AND_STRING) == 0) ||
+	(strcmp(Query.tab[Cp], AND_STRING_ALT) ==0)) 
+    {
 	Cp++;
 	return AND_OP;
     }
-    if (!strcmp(Query.tab[Cp], NOT_STRING) ||
-	!strcmp(Query.tab[Cp], NOT_STRING_ALT)) {
+    if ((strcmp(Query.tab[Cp], NOT_STRING) == 0)||
+	(strcmp(Query.tab[Cp], NOT_STRING_ALT) == 0)) 
+    {
 	Cp++;
 	return NOT_OP;
     }
-    if (!strcmp(Query.tab[Cp], LP_STRING))
+    if (strcmp(Query.tab[Cp], LP_STRING) == 0)
 	return AND_OP;
-    if (!isoperator(Query.tab[Cp]))
+    if (isop(Query.tab[Cp]) == 0)
 	return AND_OP;
     return 0;
 }
@@ -149,8 +152,9 @@ int orop(void)
 {
     if (Query.tab[Cp] == NULL)
 	return 0;
-    if (!strcmp(Query.tab[Cp], OR_STRING) ||
-	!strcmp(Query.tab[Cp], OR_STRING_ALT)) {
+    if ((strcmp(Query.tab[Cp], OR_STRING) == 0)||
+	(strcmp(Query.tab[Cp], OR_STRING_ALT) == 0)) 
+    {
 	Cp++;
 	return 1;
     }

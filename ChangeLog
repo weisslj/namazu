@@ -1,3 +1,7 @@
+2000-01-29  Kenji Suzuki  <kenji@po.ganseki.ne.jp>
+
+	* filter/hnf.pl: s/SUMMARY_LENGTH/MAX_FIELD_LENGTH/
+
 2000-01-29  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* conf/namazurc-sample: Modify comments.

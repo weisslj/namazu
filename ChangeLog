@@ -1,4 +1,13 @@
 1999-12-19  Makoto Fujiwara <makoto@ki.nu>
+	* src/mknmz.pl.in (find_target): $scanned to count total # of files.
+	(read_config) neat output when -V is said.
+	(prep): check lock2 before find_target (new function check_lock).
+	(parse_option): add --mtime to give the similar func. as find(1).
+	(wanted): warn filename if $name contains \n\r.
+	
+	* pl/usage.pl: add --mtime string.
+	 
+1999-12-19  Makoto Fujiwara <makoto@ki.nu>
 	* src/mknmz.pl.in (find_target): add to show Elapsed time,
 	if -V, print start and end time.
 	

@@ -1,5 +1,5 @@
 # -*- Perl -*-
-# $Id: usage.pl,v 1.7 1999-12-13 05:31:01 satoru Exp $
+# $Id: usage.pl,v 1.8 1999-12-19 00:55:12 makoto Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -53,6 +53,8 @@ mknmz $var::VERSION, Namazu のインデックス作成プログラム
       --exclude=regex      除外するパス名の正規表現を指定する
   -M, --meta               HTMLの metaタグをフィールド指定検索に用いる
   -r, --replace=code       URIを置換するためのコードを指定する
+      --mtime=int          変更日制限 (int が 負で最近、正で古いものだけ、
+                           例。-50 で 50 日以内、50 で 50 日より古いものだけ)
 
 形態素解析:
   -c, --use-chasen        日本語の単語のわかち書きに ChaSen を用いる
@@ -112,6 +114,8 @@ Target files:
       --exclude=regex      set a regex for pathnames which will be excluded.
   -M, --meta               handle HTML meta tags for field-specified search.
   -r, --replace=code       set a code for replacing URI.
+      --mtime=int          limit by date, ( minus number for recent, i.e.,
+                           -50 for recent 50 days, 50 for older than 50.)
 
 Morphological Analysis:
   -c, --use-chasen         use ChaSen for analyzing Japanese.

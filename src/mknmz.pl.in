@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.91 1999-12-18 08:51:39 makoto Exp $
+# $Id: mknmz.pl.in,v 1.92 1999-12-19 00:55:13 makoto Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -59,6 +59,7 @@ my $ReplaceCode  = undef;  # perl code for transforming URI
 my @Seed = ();
 
 my $Magic = new File::MMagic;
+my $scanned = 0 ; # total number scanned by find_targets()
 
 STDOUT->autoflush(1);
 main();
@@ -134,6 +135,7 @@ sub main () {
 
 sub read_config () {
     my (@cand) = ();
+    my (@vprint) = (); # only for neat output when vprint requested.
     push @cand, "$CONFDIR/mknmzrc";
     push @cand, "$ENV{'HOME'}/.mknmzrc";
     push @cand, $ConfigFile if defined $ConfigFile;
@@ -141,13 +143,14 @@ sub read_config () {
     print STDERR "Reading rcfile: " ;
     for my $conf (@cand) {
 	if (-f $conf) {
-	    util::vprint("conf: $conf\n");
+	    push(@vprint,"conf: $conf\n");
 	    do $conf;
 	    $ConfigFile = $conf;
 	    print STDERR " $conf";
 	}
     }
-    print STDERR "\n"
+    print STDERR "\n" ;
+    util::vprint(@vprint);
 }
 
 sub re_exec($$$$) {
@@ -645,6 +648,7 @@ sub prep () {
     # if Checkpoint mode, return
     return 0 if $CheckPoint{'continue'};
 
+    check_lockfile($var::NMZ{'lock2'});
     @flist = find_target(@targets);
     ($file_base, @flist) = append_index(@flist) 
 	if -f $var::NMZ{'r'};
@@ -683,6 +687,18 @@ sub require_modules() {
 	my @arg = ('-j', '-F', '%m ');
 	@arg    = ('-j', '-F', '%m %H\\n') if $var::Opt{'morph'};
 	my $res = Text::ChaSen::getopt_argv('chasen-perl', @arg);
+    }
+}
+
+sub check_lockfile ($) {
+    # warn if check file exists in case other process is running or abnormal
+    # stop execution (later is not the major purpose, though).
+    # This is mainly for early detection before longish find_target.
+    my ($file) = @_;
+
+    if (-f $file) {
+	print "$file found. Maybe this index is being updated by another process now.\nIf not, you can remove this file.\n";
+	exit 1;
     }
 }
 
@@ -797,6 +813,7 @@ sub parse_options ()
 	       '3|allow=s'           => \$conf::ALLOW_REGEX,
 	       '4|update=s'          => \$update_index,
 	       '5|mhonarc'           => \$opt_mhonarc,
+	       '6|mtime=s'           => \$conf::MTIME,
 	       'A|htacces'           => \$var::Opt{'htaccessexclude'},
 	       'C|show-config'       => \$opt_show_config,
 	       'E|no-edge-symbol'    => \$var::Opt{'noedgesymbol'},
@@ -964,6 +981,9 @@ sub show_config () {
     print "Wakati: $conf::WAKATI\n" if $conf::WAKATI;
     print "Lang:   $LANG\n";
     print "CCS:    $CCS\n";
+# XXX uncomment givs -> Use of uninitialized value at mknmz line 972.
+# finding output_dir just for -C does not seem easy.
+##  print "INDEX:       $var::OUTPUT_DIR\n"; 
     print "CONFDIR:     $CONFDIR\n";
     print "LIBDIR:      $LIBDIR\n";
     print "FILTERDIR:   $FILTERDIR\n";
@@ -1033,10 +1053,12 @@ sub find_target (@) {
     my %mark = ();
     @flist = grep {$mark{$_}++; $mark{$_} == 1} @flist;
     my $elapsed = time() - $start ;
-    if ($elapsed == 0 ) { $elapsed = 1 }
-    util::vprint(" findfiles    ended: ", localtime(time()). "\n" );
-    printf(" find_target: Files: (%d), Elapsed: (%d), Files/sec: (%.1f).\n", 
-           $#flist, $elapsed, $#flist/$elapsed ) unless $var::Opt{'quiet'};
+    $elapsed += 1 ;   # to round up and avoid 0 
+    util::vprint(" findfiles    ended: ". localtime(time()). "\n" );
+    printf(" find_target: Scanned : (%d), Files: (%d), Elapsed: (%d), Files/sec: (%.1f).\n", 
+           $mknmz::scanned, 
+	   $#flist + 1, $elapsed, 
+	   ($#flist + 1 ) /$elapsed ) unless $var::Opt{'quiet'};
     return @flist;
 }
 
@@ -1200,9 +1222,19 @@ sub change_dbnames ($) {
 # for "find"
 sub wanted ($$){
     my ($name, $rarray) = @_;
+    my ($dev,$ino,$mode,$nlink,$uid,$gid ) ;
 
-    return if $name =~ /[\n\r]/;  # skip a file name containing LF/CR chars.
+    if ($name =~ /[\n\r]/) {
+	$name =~ s/[\n\r]//g;
+	print " ** Warning: $name contains LF/CR chars, skipping.\n";
+	return ;    # skip a file name containing LF/CR chars.
+	}
+    $mknmz::scanned++;
     return if(defined $conf::EXCLUDE_REGEX && $name =~ /$conf::EXCLUDE_REGEX/);
+    if ( defined $conf::MTIME ) {
+	(($dev,$ino,$mode,$nlink,$uid,$gid) = lstat($name));
+	return if ( $conf::MTIME < 0 &&  (int(-C _) > $conf::MTIME )  ); 
+	return if ( $conf::MTIME > 0 &&  (int(-C _) < $conf::MTIME )  );  }
 
     if ($name !~ m!^.*/(($conf::DENY_REGEX)(\.gz|\.Z)?)$!i &&
 	$name =~ m!^.*/(($conf::ALLOW_REGEX)(\.gz|\.Z|\?.*)?)$!i && 
@@ -2001,8 +2033,8 @@ muda($conf::ON_MEMORY_MAX,
      $var::Opt{'noheadabst'}, $usage::VERSION_INFO,
      $var::Opt{'noencodeurl'}, $var::Opt{'htaccessexclude'}, 
      $var::RECURSIVE_ACTIONS, $conf::ROBOTS_EXCLUDE_URIS, 
-     $conf::ROBOTS_EXCLUDE_URLS, $conf::META_TAGS);
-
+     $conf::ROBOTS_EXCLUDE_URLS, $conf::META_TAGS,
+     );
 
 sub muda(@) {}
 

@@ -1,3 +1,7 @@
+2000-01-05  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* scripts/mknmz.pl.in : Gettextized.
+
 2000-01-05  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* scripts/mailutime.in: Fix Y2K bug. (handling 00)

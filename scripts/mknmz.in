@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.119 2003-03-28 08:59:23 opengl2772 Exp $
+# $Id: mknmz.in,v 1.120 2003-04-20 04:18:56 usu Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -270,7 +270,12 @@ sub load_rcfile ($) {
     }
     return if (grep {m/^$rcfile$/} @LoadedRcfiles);
     do $rcfile;
-    push @LoadedRcfiles, $rcfile;
+    if ($@) {
+        chop $@;
+        push @LoadedRcfiles, "load failed " .$rcfile . "\'$@\'";
+    }else {
+        push @LoadedRcfiles, $rcfile;
+    }
 
     # Dirty workaround.
     $LIBDIR = $conf::LIBDIR

@@ -17,4 +17,5 @@ EXTRA_DIST  = acrobat3.pdf \
 	      postscript.ps \
 	      dvi.dvi \
               namazu-dummy_1.0-1_i386.deb \
-              rpm.rpm
+              rpm.rpm \
+              oowriter.sxw

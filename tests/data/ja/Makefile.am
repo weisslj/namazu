@@ -30,4 +30,8 @@ EXTRA_DIST  =   acrobat3.pdf \
 		powerpoint97.ppt \
 		postscript.ps \
 	        dvi.dvi \
-                rtf.rtf
+                rtf.rtf \
+                oowriter.sxw \
+                oocalc.sxc \
+                oodraw.sxd \
+                ooimpress.sxi

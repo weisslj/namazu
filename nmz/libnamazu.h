@@ -2,7 +2,7 @@
  * 
  * libnamazu.h - Namazu library api
  *
- * $Id: libnamazu.h,v 1.5 1999-11-18 02:46:01 satoru Exp $
+ * $Id: libnamazu.h,v 1.6 1999-11-18 08:58:58 satoru Exp $
  * 
  */
 
@@ -12,6 +12,9 @@
 #include "critical.h"
 #include "magic.h"
 #include "regex.h"
+
+#include <stdio.h>  /* for FILE struct */
+
 
 /************************************************************
  *

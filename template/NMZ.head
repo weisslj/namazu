@@ -63,9 +63,9 @@ This index contains <!-- FILE --> 0 <!-- FILE --> documents and
 <option value="field:subject:descending">by title in descending order
 <option value="field:from:ascending">by author in ascending order
 <option value="field:from:descending">by author in descending order
-<option value="field:size:ascending">by size in descending order
+<option value="field:size:ascending">by size in ascending order
 <option value="field:size:descending">by size in descending order
-<option value="field:uri:ascending">by URI in descending order
+<option value="field:uri:ascending">by URI in ascending order
 <option value="field:uri:descending">by URI in descending order
 </select>
 </p>

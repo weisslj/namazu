@@ -1,3 +1,7 @@
+2000-02-19  Ryuji Abe  <raeva@t3.rim.or.jp>
+
+	* scripts/mknmz.in: Use LANGUAGE environment variable if defined.
+
 2000-02-19  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* README: Change URI of Namazu website.

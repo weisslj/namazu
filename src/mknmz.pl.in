@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- CPerl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.26 1999-08-27 12:14:54 knok Exp $
+# $Id: mknmz.pl.in,v 1.27 1999-08-27 12:18:33 knok Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -209,6 +209,7 @@ sub init () {
 	    $conf::supported{$mt} = $status;
 	    $conf::REQUIRE_ACTIONS{$mt} = $module;
 	    $conf::RECURSIVE_ACTIONS{$mt} = $recursive if ($recursive)
+	}
     }
 
     # no return values

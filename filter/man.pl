@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: man.pl,v 1.5 1999-08-29 02:57:46 satoru Exp $
+# $Id: man.pl,v 1.6 1999-08-30 03:47:45 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -28,8 +28,6 @@ use strict;
 require 'util.pl';
 require 'gfilter.pl';
 
-my $TMPFILE = util::tmpnam('NMZ.man');
-
 sub mediatype() {
     return ('text/x-roff');
 }
@@ -53,6 +51,7 @@ sub filter ($$$$$) {
       = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
+    my $tmpfile = util::tmpnam('NMZ.man');
     my $roffpath = util::checkcmd('jgroff');
     $roffpath = util::checkcmd('groff') unless (defined $roffpath);
     $roffpath = util::checkcmd('nroff') unless (defined $roffpath);
@@ -64,13 +63,13 @@ sub filter ($$$$$) {
 
     util::vprint("Processing man file ... (using  '$roffpath')\n");
 
-    my $fh = util::efopen("|$roffpath -man $roffargs > $TMPFILE");
+    my $fh = util::efopen("|$roffpath -man $roffargs > $tmpfile");
     print $fh $$cont;
     undef $fh;
-    $fh = util::efopen("$TMPFILE");
+    $fh = util::efopen("$tmpfile");
     $$cont = util::readfile($fh);
     undef $fh;
-    unlink($TMPFILE);
+    unlink($tmpfile);
 
     man_filter($cont, $weighted_str, $fields);
 

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: pdf.pl,v 1.5 1999-08-29 02:57:46 satoru Exp $
+# $Id: pdf.pl,v 1.6 1999-08-30 03:47:46 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -28,9 +28,6 @@ use strict;
 require 'util.pl';
 require 'gfilter.pl';
 
-my $TMPFILE = util::tmpnam('NMZ.pdf');
-my $TMPFILE2 = util::tmpnam('NMZ.pdf2');
-
 sub mediatype() {
     return ('application/pdf');
 }
@@ -50,19 +47,21 @@ sub filter ($$$$$) {
       = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
+    my $tmpfile = util::tmpnam('NMZ.pdf');
+    my $tmpfile2 = util::tmpnam('NMZ.pdf2');
     my $pdfconvpath = util::checkcmd('pdftotext');
     util::vprint("Processing pdf file ... (using  '$pdfconvpath')\n");
 
-    my $fh = util::efopen("> $TMPFILE");
+    my $fh = util::efopen("> $tmpfile");
     print $fh $$cont;
     undef $fh;
 
-    system("$pdfconvpath -eucjp $TMPFILE $TMPFILE2");
-    $fh = util::efopen("< $TMPFILE2");
+    system("$pdfconvpath -eucjp $tmpfile $tmpfile2");
+    $fh = util::efopen("< $tmpfile2");
     $$cont = util::readfile($fh);
     undef $fh;
-    unlink($TMPFILE);
-    unlink($TMPFILE2);
+    unlink $tmpfile;
+    unlink $tmpfile2;
 
     gfilter::line_adjust_filter($cont) unless $var::Opt{NoLineAd};
     gfilter::line_adjust_filter($weighted_str) unless $var::Opt{NoLineAd};

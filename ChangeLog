@@ -8,6 +8,12 @@
 	
 1999-08-30  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* src/mknmz.pl.in (put_registry): Fix a variable name typo.
+	
+	* filter/*.pl: Change timing of dosing util::tmpnam()
+
+	* lib/util.pl (tmpnam): Name file name with $var::OUTPUT_DIR
+	
 	* src/mknmz.pl.in, lib/var.pl: Change all NMZ.* file name
 	representations using %var::NMZ instead of %var::File. 
 

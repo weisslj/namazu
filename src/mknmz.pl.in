@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- CPerl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.39 1999-08-30 03:13:20 satoru Exp $
+# $Id: mknmz.pl.in,v 1.40 1999-08-30 03:47:48 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -167,7 +167,7 @@ EOM
 
 sub put_registry ($) {
     my ($filename) = @_;
-    my $fh_registry = util::efopen(">>$var::NMZ{r}");
+    my $fh_registry = util::efopen(">>$var::NMZ{_r}");
     print $fh_registry $filename, "\n";
 }
 
@@ -1145,7 +1145,7 @@ sub set_target_files() {
 sub preupdate_registry(@) {
     my (@list) = @_;
 
-    my $fh_registry = util::efopen(">$var::NMZ{r}");
+    my $fh_registry = util::efopen(">$var::NMZ{_r}");
     @list = grep(s/(.*)/\# $1\n/, @list);
     print $fh_registry @list;
     print $fh_registry "## deleted: " . util::rfc822time(time()) . "\n\n";
@@ -1166,7 +1166,7 @@ sub update_registry ($) {
 
     {
 	my $fh_registry = util::efopen(">>$var::NMZ{r}");
-	my $fh_registry_ = util::efopen($var::NMZ{r});
+	my $fh_registry_ = util::efopen($var::NMZ{_r});
 	while (<$fh_registry_>) {
 	    print $fh_registry $_;
 	}
@@ -1174,7 +1174,7 @@ sub update_registry ($) {
 	    print $fh_registry "## indexed: " . util::rfc822time(time()) . "\n\n";
 	}
     }
-    unlink $var::NMZ{r};
+    unlink $var::NMZ{_r};
 }
 
 sub update_dateindex () {

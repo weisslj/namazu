@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: msword.pl,v 1.5 1999-08-29 02:57:46 satoru Exp $
+# $Id: msword.pl,v 1.6 1999-08-30 03:47:46 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -29,9 +29,6 @@ require 'util.pl';
 require 'gfilter.pl';
 require 'html.pl';
 
-my $TMPFILE  = util::tmpnam('NMZ.word');
-my $TMPFILE2 = util::tmpnam('NMZ.word2');
-
 sub mediatype() {
     return ('application/msword');
 }
@@ -52,21 +49,24 @@ sub filter ($$$$$) {
       = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
+    my $tmpfile  = util::tmpnam('NMZ.word');
+    my $tmpfile2 = util::tmpnam('NMZ.word2');
+
     my $wordconvpath = util::checkcmd('mswordview');
     my $utfconvpath = util::checkcmd('lv');
 
     util::vprint("Processing ms-word file ... (using  '$wordconvpath', '$utfconvpath')\n");
 
-    my $fh = util::efopen("> $TMPFILE");
+    my $fh = util::efopen("> $tmpfile");
     print $fh $$cont;
     undef $fh;
 
-    system("$wordconvpath -o - $TMPFILE | $utfconvpath -Iu8 -Oej > $TMPFILE2");
-    $fh = util::efopen("< $TMPFILE2");
+    system("$wordconvpath -o - $tmpfile | $utfconvpath -Iu8 -Oej > $tmpfile2");
+    $fh = util::efopen("< $tmpfile2");
     $$cont = util::readfile($fh);
     undef $fh;
-    unlink($TMPFILE);
-    unlink($TMPFILE2);
+    unlink($tmpfile);
+    unlink($tmpfile2);
 
     html::html_filter($cont, $weighted_str, $fields, $headings);
 

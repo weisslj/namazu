@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: compress.pl,v 1.5 1999-08-29 02:57:45 satoru Exp $
+# $Id: compress.pl,v 1.6 1999-08-30 03:47:45 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -27,8 +27,6 @@ package compress;
 use strict;
 require 'util.pl';
 
-my $TMPFILE = util::tmpnam('NMZ.compr');
-
 sub mediatype() {
     return ('application/x-compress');
 }
@@ -47,17 +45,18 @@ sub filter ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
       = @_;
 
+    my $tmpfile = util::tmpnam('NMZ.compr');
     my $zcatpath = util::checkcmd('zcat');
 
     util::vprint("Processing compress file ... (using  '$zcatpath')\n");
 
-    my $fh = util::efopen("|$zcatpath > $TMPFILE");
+    my $fh = util::efopen("|$zcatpath > $tmpfile");
     print $fh $$cont;
     undef $fh;
-    $fh = util::efopen("$TMPFILE");
+    $fh = util::efopen("$tmpfile");
     $$cont = util::readfile($fh);
     undef $fh;
-    unlink($TMPFILE);
+    unlink $tmpfile;
 }
 
 1;

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: gzip.pl,v 1.5 1999-08-29 02:57:45 satoru Exp $
+# $Id: gzip.pl,v 1.6 1999-08-30 03:47:45 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -26,8 +26,6 @@
 package gzip;
 use strict;
 require 'util.pl';
-
-my $TMPFILE = util::tmpnam('NMZ.gzip');
 
 sub mediatype() {
     return ('application/x-gzip');
@@ -58,17 +56,18 @@ sub filter ($$$$$) {
 sub filter_file ($) {
     my ($contref) = @_;
 
+    my $tmpfile = util::tmpnam('NMZ.gzip');
     my $gzippath = util::checkcmd('gzip');
-    my $fh = util::efopen("|$gzippath -cd > $TMPFILE");
+    my $fh = util::efopen("|$gzippath -cd > $tmpfile");
 
     util::vprint("Processing gzip file ... (using  '$gzippath')\n");
 
     print $fh $$contref;
     undef $fh;
-    $fh = util::efopen("$TMPFILE");
+    $fh = util::efopen("$tmpfile");
     $$contref = util::readfile($fh);
     $fh->close();
-    unlink($TMPFILE);
+    unlink($tmpfile);
     return;
 }
 

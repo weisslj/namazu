@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.15 1999-08-30 03:13:19 satoru Exp $
+# $Id: util.pl,v 1.16 1999-08-30 03:47:47 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -164,6 +164,8 @@ sub checkcmd ($) {
 # tmpnam ... make temporary file name
 sub tmpnam ($) {
     my ($base) = @_;
+    die "util::tmpnam: Set \$var::OUTPUT_DIR first!\n" 
+	if $var::OUTPUT_DIR eq "";
     dprint("tmpnam: $var::OUTPUT_DIR/$base.$$.tmp\n");
     return "$var::OUTPUT_DIR/$base.$$.tmp";
 }

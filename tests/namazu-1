@@ -9,7 +9,7 @@ docnum=`perl -lne 'print $1 if /^files (\d+)/' idx1/NMZ.status`
 
 # Check simple searching.
 cd ../src
-./namazu namazu ../tests/idx1 >> $LOG
+./namazu -a namazu ../tests/idx1 >> $LOG
 test "$?" != "0" && exit 1  # error if not success
 
 # Check the number of retrieved documents.

@@ -89,7 +89,7 @@ Namazu は大きく分けて mknmz, namazu, namazu.cgi の三つから構成されています。
 </p>
 <ul>
 <li>mknmz<br> 
-検索索引(index) を予め作る。 (perl で書かれている)
+インデックスを予め作る。 (perl で書かれている)
 
 <li>namazu <br> 
 実際に文字列を入力して検索する<br> 
@@ -407,9 +407,7 @@ s#<em>aaa</em>#<strong>bbb</strong>#
 
   <li> (/usr/local/etc/namazu/mknmzrc の $conf::ALLOW_FILE,
      $conf::DENY_FILE の設定によって) 
-     *.html *.html.ja *.phtml *.html *.asp *.cgi などだけを
-     対象とします。メイルは標準の設定では対象としません。
-  <li>手軽にメイルなどを調べるなら -a を付けておきます。
+     *.html *.txt *.tex *.pdf MH形式のメイルなどを対象とします。
 </ul>
 
 
@@ -434,8 +432,8 @@ Namazu は元々は HTML 形式のものを処理するように考えられてい
 
 <dl>
 <dt>MH 形式のメイル
-  <dd>mknmz に -a オプションをつけて実行します。<br>
-<code class=command>% mknmz -a ~/Mail/foobar</code>
+  <dd>普通に mknmz を実行します。<br>
+<code class=command>% mknmz ~/Mail/foobar</code>
 
 <dt>MHonArc
   <dd>初めから HTML 形式ですが、更に Namazu
@@ -473,20 +471,20 @@ href="manual.html#mknmz-option">mknmz --help</a>とすると得ら
       FILTERDIR: /usr/local/share/namazu/filter
       TEMPLATEDIR: ../template
       対応メディアタイプ: 
-	application/msword
-	application/pdf
-	application/x-bzip2
-	application/x-compress
-	application/x-gzip
-	application/x-tex
-	message/news
-	message/rfc822
-	text/hnf
-	text/html
-	text/html; x-type=mhonarc
-	text/plain
-	text/plain; x-type=rfc
-	text/x-roff
+        application/msword
+        application/pdf
+        application/x-bzip2
+        application/x-compress
+        application/x-gzip
+        application/x-tex
+        message/news
+        message/rfc822
+        text/hnf
+        text/html
+        text/html; x-type=mhonarc
+        text/plain
+        text/plain; x-type=rfc
+        text/x-roff
 </pre>
 
 
@@ -626,16 +624,17 @@ cgi-bin が動く HTTP server を Webブラウザを通じて利用する形
 <dl>
 <dt>対象ファイルについて
 <dd>
-指定した「対象ディレクトリ」の中で、何が検索の対象になるかと
-いう疑問があるとしたら、答えは、<strong>(mknmzrc の)</strong> $conf::ALLOW_FILE, $conf::DENY_FILE の設定。それ
-と -a 選択で決まる。
+指定した「対象ディレクトリ」の中で、どのファイルがインデック
+ス作成の対象となるかは <strong>(mknmzrc の) </strong>
+$conf::ALLOW_FILE, $conf::DENY_FILE の設定、あるいは -a,
+--allow, --deny, --exclude オプションの設定で決まります。
 
 <dt>mew-1.94b2x と mew-nmz.el
 <dd>
 mew には namazu と連動して
 <ul>
 <li>
-mknmz を起動して必要な検索索引を作り
+mknmz を起動して必要なインデックスを作り
 <li>
 検索した結果を使って virtual folder を作成する
 </ul>
@@ -663,25 +662,24 @@ contrib/00readme-namazu.jis に書かれています。
 そういう書き方を「わかち書き」と言う。
 (用語としては計算機用語として以外にも同じ意味で使われる)
 <dt>インデックス(名詞)
-<dd>検索索引<br>
+<dd>インデックス<br>
 Namazu は
 <pre>
-	       (準備)     (検索画面)
-		mknmz       namazu
-	       ↑   ↓     ↑    ↓
-      元々の資料    検索索引     検索結果
-		 (インデックス)
+               (準備)     (検索画面)
+                mknmz       namazu
+               ↑   ↓     ↑    ↓
+      元々の資料    インデックス  検索結果
 </pre>
-のようにして予め検索索引を作っておき、検索画面での
+のようにして予めインデックスを作っておき、検索画面での
 入力があった時には、それを見て結果を表示するという動作を
-する。この「予め作られた「検索索引」のことをインデックス
+する。この「予め作られた「インデックス」のことをインデックス
 と呼んでいる。<br>Namazu の場合 NMZ.* のような名前のものが
 それにあたる。
 
 <dt>インデックス(動詞)
-<dd>上記検索索引を作ること。mknmz を使う
+<dd>上記インデックスを作ること。mknmz を使う
 <dt>複数インデックス
-<dd>二つ以上の検索索引を作っておいて、それらの中をまとめて
+<dd>二つ以上のインデックスを作っておいて、それらの中をまとめて
 検索する機能
 
 <a href="http://www.namazu.org/manual.html.ja#MULTIPLE_INDICES">説明書の中に実現方法</a>が書いてある。
@@ -772,7 +770,7 @@ Webブラウザの言語の設定に日本語(ja) を追加してください
 Copyright (C) 2000 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: tutorial.html,v 1.33 2000-02-20 05:31:21 satoru Exp $
+$Id: tutorial.html,v 1.34 2000-02-20 06:33:36 satoru Exp $
 </div>
 <address>
 developers@namazu.org

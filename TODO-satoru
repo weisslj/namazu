@@ -1,7 +1,9 @@
-$Id: TODO-satoru,v 1.31 2000-04-05 07:07:51 satoru Exp $
+$Id: TODO-satoru,v 1.32 2000-04-10 04:43:38 satoru Exp $
 やるべきことの備忘録 by 高林
 
 手っ取り早く片づける仕事
+
+  * 存在しないファイル、ディレクトリの処理を改善
 
   * fread, fclose のエラーチェックをすべし
 

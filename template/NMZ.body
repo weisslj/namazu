@@ -1,6 +1,6 @@
-<h2>How to search</h2>
+<h2><a name="query-description">Query Description</a></h2>
 
-<h3><a name="term">One term query</a></h3>
+<h3><a name="query-term">One term query</a></h3>
 <p>
 The query specifies only one term for retrieving all
 documents which contain the term. e.g., 
@@ -10,7 +10,7 @@ documents which contain the term. e.g.,
 namazu
 </p>
 
-<h3><a name="and">AND query</a></h3> 
+<h3><a name="query-and">AND query</a></h3> 
 
 <p>
 The query specifies two or more terms for retrieving all
@@ -28,7 +28,7 @@ You can ommit the <code class="operator">and</code> operator.  Terms which is
 separated by one ore more spaces is assumed to be AND query.
 </p>
 
-<h3><a name="or">OR query</a></h3>
+<h3><a name="query-or">OR query</a></h3>
 <p>
 The query specifies two or more terms for retrieving all
 documents which contain either term. You can insert the
@@ -40,7 +40,7 @@ e.g.,
 Linux or FreeBSD
 </p>
 
-<h3><a name="not">NOT query</a></h3>
+<h3><a name="query-not">NOT query</a></h3>
 <p>
 The query specifies two or more terms for retrieving all
 documents which contain a first term but does't contain the
@@ -53,7 +53,7 @@ Linux not UNIX
 </p>
 
 
-<h3><a name="grouping">Grouping</a></h3>
+<h3><a name="query-grouping">Grouping</a></h3>
 <p>
 You can group queries by surrounding them by
 parentheses. the parentheses should be separated by one ore
@@ -64,7 +64,7 @@ more spaces. e.g.,
 ( Linux or FreeBSD ) and Netscape not Windows
 </p>
 
-<h3><a name="phrase">Phrase searching</a></h3>
+<h3><a name="query-phrase">Phrase searching</a></h3>
 <p>
 You can search a phrase which consists of two or more terms
 by surrounding them with double quotes like
@@ -84,7 +84,7 @@ You must choose the latter with Tkanamzu or namazu.el.
 </p>
 -->
 
-<h3><a name="substring">Substring matching</a></h3>
+<h3><a name="query-substring">Substring matching</a></h3>
 <p>
 The are three types of substring matching searching.
 </p>
@@ -100,7 +100,7 @@ with <code>net</code>)
 </dl>
 
 
-<h3><a name="regex">Regular expressions</a></h3>
+<h3><a name="query-regex">Regular expressions</a></h3>
 
 <p>
 You can use regular expressions for pattern matching. The
@@ -117,7 +117,7 @@ e.g.,
 </p>
 
 
-<h3><a name="field">Field-specified searching</a></h3>
+<h3><a name="query-field">Field-specified searching</a></h3>
 <p>
 You can limit your search to specific fields such as
 <code>Subject:</code>, <code>From:</code>,
@@ -144,7 +144,7 @@ in a <code>From:</code> field)
 <code>Message-Id:</code>)
 </ul>
 
-<h3><a name="notes">Notes</a></h3>
+<h3><a name="query-notes">Notes</a></h3>
 
 <ul>
 <li>In any queries, Namazu ignores case distinctions of

@@ -1,3 +1,11 @@
+2000-05-25  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* Version 0.11.
+
+	* Added Namazu.pod.ja.
+
+	* Changed default order of results (descending -> ascending).
+
 2000-01-31  Ryuji Abe  <raeva@t3.rim.or.jp>
 
 	* nmz/util.[ch] (nmz_commas): Moved to src/result.c as commas.

@@ -1,7 +1,7 @@
 #
 # Search::Namazu.pm
 #
-# Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
+# Copyright (C) 1999, 2000 NOKUBI Takatsugu All rights reserved.
 # This is free software with ABSOLUTELY NO WARRANTY.
 # 
 # This program is free software; you can redistribute it and/or modify
@@ -19,7 +19,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 # 02111-1307, USA
 #
-# $Id: Namazu.pm,v 1.8 2000-01-24 05:35:23 knok Exp $
+# $Id: Namazu.pm,v 1.9 2000-05-25 07:52:21 knok Exp $
 #
 
 package Search::Namazu;
@@ -47,7 +47,7 @@ of full text retrieval search system.
 
 =head1 COPYRIGHT
 
-Copyright 1999 NOKUBI Takatsugu All rights reserved.
+Copyright 1999, 2000 NOKUBI Takatsugu All rights reserved.
 This is free software with ABSOLUTELY NO WARRANTY.
 
 This program is free software; you can redistribute it and/or modify
@@ -77,7 +77,7 @@ NMZ_ASCENDSORT NMZ_DESCENDSORT
 NMZ_NOT_SPECIFIED_INDEX NMZ_ERR_INDEX);
 # %EXPORT_TAGS = (all => [qw()]);
 
-$VERSION = '0.10';
+$VERSION = '0.11';
 
 bootstrap Search::Namazu $VERSION;
 
@@ -121,7 +121,9 @@ sub Search {
 
 # set paramater
 
-    if ($sortmeth == NMZ_SORTBYDATE) {
+    if (!defined $sortmeth) {
+	nmz_sortbydate();
+    } elsif ( $sortmeth == NMZ_SORTBYDATE) {
 	nmz_sortbydate();
     } elsif ($sortmeth == NMZ_SORTBYSCORE) {
 	nmz_sortbyscore();
@@ -131,7 +133,9 @@ sub Search {
 	nmz_sortbydate();
     }
 
-    if ($sortord == NMZ_DESCENDSORT) {
+    if (!defined $sortord) {
+	nmz_ascendingsort();
+    } elsif ($sortord == NMZ_DESCENDSORT) {
 	nmz_descendingsort();
     } elsif ($sortord == NMZ_ASCENDSORT) {
 	nmz_ascendingsort();

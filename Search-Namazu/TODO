@@ -1,4 +1,7 @@
 TODO
 
 * 基本的な機能の実装
+	+ 定数の export
 * ドキュメントの整備
+* test suites
+	+ test 用 index の作成

@@ -1,6 +1,7 @@
 Makefile.PL
 Namazu.pm
 Namazu.xs
+Namazu.pod.ja
 TODO
 MANIFEST
 ChangeLog

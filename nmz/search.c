@@ -1,9 +1,9 @@
 /*
  * 
- * $Id: search.c,v 1.91 2003-03-21 13:30:12 opengl2772 Exp $
+ * $Id: search.c,v 1.92 2003-04-18 13:04:43 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2003 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -230,14 +230,20 @@ detect_search_mode(const char *key) {
         return FIELD_MODE;
     }
     if (*key == '/' && key[strlen(key) - 1] == '/') {
-	nmz_debug_printf("do REGEX search\n");
-	return REGEX_MODE;    /* regex match */
+	if (nmz_is_regex_searchmode()) {
+	    nmz_debug_printf("do REGEX search\n");
+	    return REGEX_MODE;    /* regex match */
+	} else {
+	    nmz_debug_printf("disabled REGEX search\n");
+	    return WORD_MODE;
+	}
     } else if (*key == '*' 
                && key[strlen(key) - 1] == '*'
                && *(key + strlen(key) - 2) != '\\' ) 
     {
-	nmz_debug_printf("do REGEX (INTERNAL_MATCH) search\n");
-	return REGEX_MODE;    /* internal match search (treated as regex) */
+	    nmz_debug_printf("do REGEX (INTERNAL_MATCH) search\n");
+	    return REGEX_MODE;    /* internal match search (treated as regex) */
+	    /* [*keyword*] is always enabled */
     } else if (key[strlen(key) - 1] == '*'
         && *(key + strlen(key) - 2) != '\\')
     {
@@ -246,6 +252,7 @@ detect_search_mode(const char *key) {
     } else if (*key == '*') {
 	nmz_debug_printf("do REGEX (SUFFIX_MATCH) search\n");
 	return REGEX_MODE;    /* suffix match  (treated as regex)*/
+	/* [*keyword] is always enabled */
     }
     
     if (strchr(key, '\t')) {

@@ -2,7 +2,7 @@
  * 
  * libnamazu.h - Namazu library api
  *
- * $Id: libnamazu.h,v 1.49 2002-11-15 09:01:48 knok Exp $
+ * $Id: libnamazu.h,v 1.50 2003-04-18 13:04:43 knok Exp $
  * 
  */
 
@@ -252,6 +252,8 @@ extern void nmz_set_debugmode ( int mode );
 extern int  nmz_is_debugmode ( void );
 extern void nmz_set_loggingmode ( int mode );
 extern int  nmz_is_loggingmode ( void );
+extern void nmz_set_regex_searchmode ( int mode );
+extern int  nmz_is_regex_searchmode ( void );
 extern void nmz_set_output_warn_to_file ( int mode );
 extern int  nmz_is_output_warn_to_file ( void );
 extern char *nmz_get_dyingmsg ( void );

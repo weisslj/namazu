@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu-cgi.c,v 1.21 2002-03-26 10:49:47 knok Exp $
+ * $Id: namazu-cgi.c,v 1.22 2003-04-18 13:04:44 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -88,10 +88,12 @@
 static void suicide ( int signum );
 static void combine_pathname( char *dest, const char *command, const char *name );
 
+extern int suicide_time;
+
 static void 
 suicide (int signum)
 {
-    die("processing time exceeds a limit: %d", SUICIDE_TIME);
+    die("processing time exceeds a limit: %d", suicide_time);
 }
 
 /*
@@ -162,7 +164,7 @@ main(int argc, char **argv)
      * namazu.cgi will suicide automatically when SUICIDE_TIME reached.
      */
     signal(SIGALRM, suicide);
-    alarm(SUICIDE_TIME);
+    alarm(suicide_time);
 
     /*
      * Setting up CGI mode.
@@ -190,6 +192,7 @@ main(int argc, char **argv)
 	die(nmz_get_dyingmsg());
     }
 
+    alarm(suicide_time);
     nmz_set_output_warn_to_file(1);
 
     /*

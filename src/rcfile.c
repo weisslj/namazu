@@ -1,9 +1,9 @@
 /*
  * 
- * $Id: rcfile.c,v 1.36 2003-03-22 18:19:27 opengl2772 Exp $
+ * $Id: rcfile.c,v 1.37 2003-04-18 13:04:44 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2003 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -68,6 +68,9 @@ static char user_namazurc[BUFSIZE] = "";
 
 static char *errmsg  = NULL;
 
+/* suicide time (sec) */
+int suicide_time = SUICIDE_TIME;
+
 /* 
  * Storing loaded rcfile names for show_config().
  *
@@ -130,6 +133,8 @@ static enum nmz_stat process_rc_template ( const char *directive, const StrList 
 static enum nmz_stat process_rc_maxhit ( const char *directive, const StrList *args );
 static enum nmz_stat process_rc_maxmatch ( const char *directive, const StrList *args );
 static enum nmz_stat process_rc_contenttype ( const char *directive, const StrList *args );
+static enum nmz_stat process_rc_suicidetime ( const char *directive, const StrList *args );
+static enum nmz_stat process_rc_regexsearch ( const char *directive, const StrList *args );
 
 struct conf_directive {
     char *name;
@@ -156,6 +161,8 @@ static struct conf_directive directive_tab[] = {
     { "MAXHIT",        1, 0, process_rc_maxhit },
     { "MAXMATCH",      1, 0, process_rc_maxmatch },
     { "CONTENTTYPE",   1, 0, process_rc_contenttype },
+    { "SUICIDE_TIME",  1, 0, process_rc_suicidetime },
+    { "REGEX_SEARCH",  1, 0, process_rc_regexsearch },
     { NULL,            0, 0, NULL }
 };
 
@@ -331,6 +338,29 @@ process_rc_contenttype(const char *directive, const StrList *args)
     char *arg1 = args->value;
 
     set_contenttype(arg1);
+
+    return SUCCESS;
+}
+
+static enum nmz_stat
+process_rc_suicidetime(const char *directive, const StrList *args)
+{
+    int arg1 = atoi(args->value);
+
+    suicide_time = arg1;
+    return SUCCESS;
+}
+
+static enum nmz_stat
+process_rc_regexsearch(const char *directive, const StrList *args)
+{
+    char *arg1 = args->value;
+
+    if (strcasecmp(arg1, "ON") == 0) {
+	nmz_set_regex_searchmode(1);
+    } else if (strcasecmp(arg1, "OFF") == 0) {
+	nmz_set_regex_searchmode(0);
+    }
 
     return SUCCESS;
 }

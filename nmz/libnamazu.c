@@ -2,10 +2,10 @@
  * 
  * libnamazu.c - Namazu library api
  *
- * $Id: libnamazu.c,v 1.40 2002-11-15 09:01:48 knok Exp $
+ * $Id: libnamazu.c,v 1.41 2003-04-18 13:04:43 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2003 Namazu Project All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
@@ -76,6 +76,7 @@ static int  maxhit      = 10000;  /* Ignore if pages matched more than this. */
 static int  maxmatch    = 1000;   /* Ignore if words matched more than this. */
 static int  debugmode   = 0;
 static int  loggingmode = 1;   /* do logging with NMZ.slog */
+static int  regex_searchmode = 1; /* enable regex search */
 static char dyingmsg[BUFSIZE] = "";
 static int  output_warn_to_file = 0; /* output warning to file or stderr */
 
@@ -182,6 +183,19 @@ nmz_is_output_warn_to_file(void)
 {
     return output_warn_to_file;
 }
+
+void 
+nmz_set_regex_searchmode(int mode)
+{
+    regex_searchmode = mode;
+}
+
+int 
+nmz_is_regex_searchmode(void)
+{
+    return regex_searchmode;
+}
+
 /*
  * This function is used for formating a string with printf
  * notation and store the string in the static variable

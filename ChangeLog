@@ -1,3 +1,15 @@
+2003-04-18  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* src/rcfile.c: Added 2 directives; SUICIDE_TIME and
+	REGEX_SEARCH.
+
+	* src/namazu-cgi.c: Ditto
+
+	* nmz/libnamazu.{c,h}: Added 2 API (nmz_set_regex_search, 
+	nmz_is_regex_searchmode).
+
+	* nmz/search.c: Ditto.
+
 2003-04-18  Yukio USUDA <usu@namazu.org>
 
 	* filter/ooo.pl: change to use util::systemcmd()
@@ -7872,4 +7884,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1014 2003-04-17 15:34:13 usu Exp $
+$Id: ChangeLog,v 1.1015 2003-04-18 13:04:42 knok Exp $

@@ -29,7 +29,8 @@ filter_DATA = bzip2.pl \
 	      tex.pl \
 	      powerpoint.pl \
 	      taro.pl \
-	      hdml.pl
+	      hdml.pl \
+	      postscript.pl
 
 EXTRA_DIST = $(filter_DATA)
 

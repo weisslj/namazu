@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.74 2000-08-29 10:05:27 knok Exp $
+# $Id: mknmz.in,v 1.75 2000-09-01 07:29:28 knok Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -838,6 +838,7 @@ sub prep () {
     return (0, 0) if $CheckPoint{'continue'};
 
     check_lockfile($var::NMZ{'lock2'});
+    print _("Looking for indexing files...\n");
     @flist = find_target(@targets);
     ($docid_base, @flist) = append_index(@flist) 
 	if -f $var::NMZ{'r'};

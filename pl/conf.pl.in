@@ -1,45 +1,18 @@
+#
+# This is a Namazu configuration file for mknmz.
+#
 package conf;
 
 #---------------------------------------------------------------
 #
-# Administrator's email address.
+# Administrator's email address
 #
 $ADDRESS = '@OPT_ADMIN_EMAIL@';
 
 
 #---------------------------------------------------------------
 #
-# Softwares.
-#
-
-#
-# Network Kanji Filter nkf v1.62 or later
-#
-$NKF = "@NKF@"; 
-
-#
-# KAKASI or ChaSen (to handle Japanese characters)
-#
-$KAKASI = "@KAKASI@ -ieuc -oeuc -w";
-
-#
-# ChaSen 1.51 or later (simple wakatigaki)
-#
-$CHASEN = "@CHASEN@ -j -F '\%m '";
-
-#
-# ChaSen 1.51 or later (with morphological processing)
-#
-$CHASEN_NOUN = "@CHASEN@ -j -F '\%m %H\\n'";
-
-#
-# Default Japanese processer.
-#
-$WAKATI  = $@OPT_WAKATI_DEFAULT@;
-
-#---------------------------------------------------------------
-#
-# Regular Expression Patterns.
+# Regular Expression Patterns
 #
 
 #
@@ -56,35 +29,23 @@ $HTML_SUFFIX = 'html?|[ps]html|html\.[a-z]{2}|asp|cgi';
 
 #
 # This pattern specifies file names which will be targeted.
-# NOTE: Do NOT use '$' and '^' meta characters.
+# NOTE: It can be specified by --allow=regex option.
+#       Do NOT use `$' or `^' anchors.
 #
 $ALLOW_REGEX = ".*\.(?:$HTML_SUFFIX)|.*\.txt|.*_default|.*\.pdf|.*\.doc|.*\.tex";
 
 #
 # This pattern specifies file names which will NOT be targeted.
-# NOTE: Do NOT use '$' and '^' meta characters.
+# NOTE: It can be specified by --deny=regex option.
+#       Do NOT use `$' or `^' anchors.
 #
 $DENY_REGEX = '.*\.gif|.*\.png|.*\.(jpg|jpeg)|.*\.tar\.gz|core|.*\.bak|.*~|\..*|\x23.*|NMZ\..*';
 
 #
 # This pattern specifies PATHNAMEs which will NOT be targeted.
+# NOTE: Usually specified by --exclude=regex option.
 #
 $EXCLUDE_REGEX = undef;
-
-#
-# This pattern specifies where CGI prgrams are located.
-#
-$CGI_DIR = '/(cgi-bin|htbin)/';
-
-#
-# This pattern specifies MHonArc's header for identification.
-#
-$MHONARC_HEADER = '<\!-- MHonArc v\d\.\d\.\d -->';
-
-#
-# This pattern specifies MHonArc's message file names.
-# 
-$MHONARC_MESSAGE_FILE = 'msg\d{5}\.html(?:\.gz)?';
 
 #
 # This pattern specifies Mail/News's fields in its header which 
@@ -118,33 +79,40 @@ $META_TAGS = 'keywords|description';
 $NON_SEPARATION_ELEMENTS = 'A|TT|CODE|SAMP|KBD|VAR|B|STRONG|I|EM|CITE|FONT|U|'.
                        'STRIKE|BIG|SMALL|DFN|ABBR|ACRONYM|Q|SUB|SUP|SPAN|BDO';
 
-
 #---------------------------------------------------------------
 # 
-# Size of files which will be indexed at once on memory. (bytes)
-# If you have much memory, you can increase this. (128 MB or more)
-# If you have not much memory, you can decrease this. (32MB or less)
-#
+# Critical Numbers
+# 
 
+# 
+# The max size of files which can be loaded in memory at once.
+# If you have much memory, you can increase the value.
+# If you have less memory, you can decrease the value.
+#
 $ON_MEMORY_MAX   = 5000000;
 
 #
-# Text size limitation. a text larger than this value will be ignored.
+# The max file size for indexing. Files larger than this 
+# will be ignored.
+# NOTE: This value is usually larger than TEXT_SIZE_MAX because 
+#       binary-formated files such as PDF, Word are larger.
+#
+$FILE_SIZE_MAX   = 2000000;
+
+#
+# The max text size for indexing. Files larger than this 
+# will be ignored.
 #
 $TEXT_SIZE_MAX   =  600000;
 
 #
-# Word length limitation. The word longer than this value will be ignored.
+# The max length of a word. the word longer than this will be ignored.
 #
 $WORD_LENG_MAX   = 128;
 
-$TEXT_TITLE = " (Text File) "; # text file
-$NO_TITLE   = "No title in original";    # document has no title
 
-
-#---------------------------------------------------------------
 #
-# Weights for HTML elements.
+# Weights for HTML elements which are used for term weightning.
 #
 %Weight = 
     (
@@ -168,31 +136,29 @@ $NO_TITLE   = "No title in original";    # document has no title
          'acronym'=> 2,
          'dfn'    => 2,
      },
-     'metakey' => 32, # for <META NAME="keywords" CONTENT="foo bar">
-     'headers' => 8,  # for mail/news' headers
+     'metakey' => 32, # for <meta name="keywords" content="foo bar">
+     'headers' => 8,  # for Mail/News' headers
 );
 
-#---------------------------------------------------------------
 #
-# Length of a string which should be ignored at HTML weighting.
-# Because there are people has a bad manner using <h[1-6]> for
-# changing a font size.
+# The max length of a HTML-tagged string which can be processed for
+# term weighting. 
+# NOTE: There are not a few people has a bad manner using 
+#       <h[1-6]> for changing a font size.
 #
-
 $INVALID_LENG = 128; 
 
-#---------------------------------------------------------------
 #
-# Max length of a field
-# This MUST be smaller than libnamazu.h's BUFSIZE (1024).
+# The max length of a field.
+# This MUST be smaller than libnamazu.h's BUFSIZE (usually 1024).
 #
-
 $MAX_FIELD_LENGTH = 200;
 
 
 #---------------------------------------------------------------
 #
-# robots.txt related settings.
+# Settings for robots.txt
+# FIXME: I don't know whether the settings works or not.
 #
 
 $HTDOCUMENT_ROOT = "/usr/local/apache/share/htdocs";
@@ -200,6 +166,36 @@ $HTDOCUMENT_ROOT_URI_PREFIX = "http://www.foo.domain.jp/";
 $ROBOTS_TXT = "$HTDOCUMENT_ROOT/robots.txt";
 $ROBOTS_EXCLUDE_URIS = "";
 
+
+#---------------------------------------------------------------
+#
+# Softwares for handling a Japanese text
+#
+
+#
+# Network Kanji Filter nkf v1.62 or later
+#
+$NKF = "@NKF@"; 
+
+#
+# KAKASI
+#
+$KAKASI = "@KAKASI@ -ieuc -oeuc -w";
+
+#
+# ChaSen 1.51 or later (simple wakatigaki)
+#
+$CHASEN = "@CHASEN@ -j -F '\%m '";
+
+#
+# ChaSen 1.51 or later (with noun words extraction)
+#
+$CHASEN_NOUN = "@CHASEN@ -j -F '\%m %H\\n'";
+
+#
+# Default Japanese processer: KAKASI or ChaSen.
+#
+$WAKATI  = $@OPT_WAKATI_DEFAULT@;
 
 1;
 

@@ -13,3 +13,4 @@ scripts/mknmz.in
 pl/util.pl
 pl/wakati.pl
 pl/usage.pl
+pl/var.pl.in

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mhonarc.pl,v 1.20 2000-02-12 10:54:30 satoru Exp $
+# $Id: mhonarc.pl,v 1.21 2000-02-16 10:22:05 satoru Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -29,6 +29,11 @@ require 'util.pl';
 require 'gfilter.pl';
 require 'html.pl';
 require 'mailnews.pl';
+
+#
+# This pattern specifies MHonArc's header for identification.
+#
+my $MHONARC_HEADER = '<\!-- MHonArc v\d\.\d\.\d -->';
 
 sub mediatype() {
     return ('text/html; x-type=mhonarc');
@@ -65,7 +70,7 @@ sub filter ($$$$$) {
 
     util::vprint("Processing MHonArc file ...\n");
 
-    unless ($cfile =~ /($conf::MHONARC_MESSAGE_FILE)$/o) 
+    unless ($cfile =~ /($MHONARC_MESSAGE_FILE)$/o) 
     {
 	return "is MHonArc's index file! skipped."; # error
     } 

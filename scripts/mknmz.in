@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.14 2000-02-16 06:22:37 satoru Exp $
+# $Id: mknmz.in,v 1.15 2000-02-16 10:22:10 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
@@ -603,13 +603,14 @@ sub load_document ($$$$\%) {
 
     my $file_size;
     $file_size = util::filesize($cfile); # not only file in feature.
-    if ($file_size > $conf::TEXT_SIZE_MAX) {
+    if ($file_size > $conf::FILE_SIZE_MAX) {
 	return ($file_size, $file_size, 0, 'x-system/x-error');
     }
-   $$contref = util::readfile($cfile);
+
+    $$contref = util::readfile($cfile);
 #    $file_size = length($$contref);
 
-    # filtering process
+    # Filtering process.
     my $mtype;
     while (1) {
 	if (defined $MediaType) {
@@ -671,7 +672,7 @@ sub load_document ($$$$\%) {
 	last;
     }
 
-    # measure text size at this time
+    # Measure the text size at this time.
     my $text_size = length($$contref) + length($$weighted_str); 
 
     if ($SYSTEM eq "MSWin32" && $shelter_cfile ne "") {
@@ -2113,7 +2114,9 @@ sub write_index_sub () {
     return $key_count;
 }
 
-# decide file type from diffrent type ditection
+#
+# Decide the file type.
+#
 sub decide_type ($$) {
     my ($name, $cont) = @_;
     return $name if (!defined $cont || $name eq $cont);
@@ -2125,8 +2128,10 @@ sub decide_type ($$) {
     return $cont;
 }
 
-# for avoiding "used only once: possible typo at ..." warnings
 
+#
+# For avoiding "used only once: possible typo at ..." warnings.
+#
 muda($conf::ON_MEMORY_MAX,
      $conf::WORD_LENG_MAX, $conf::TEXT_SIZE_MAX,
      $conf::DENY_REGEX, $var::INTSIZE,
@@ -2138,7 +2143,8 @@ muda($conf::ON_MEMORY_MAX,
      $var::Opt{'noencodeurl'}, $var::Opt{'htaccessexclude'}, 
      $var::RECURSIVE_ACTIONS, $conf::ROBOTS_EXCLUDE_URIS, 
      $conf::ROBOTS_EXCLUDE_URLS, $conf::META_TAGS, $var::USE_NKF_MODULE,
-     $conf::ADDRESS, $var::MAILING_ADDRESS
+     $conf::ADDRESS, $var::MAILING_ADDRESS,
+     $conf::FILE_SIZE_MAX,
      );
 
 sub muda(@) {}

@@ -1,5 +1,17 @@
 2000-02-16  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* filter/mhonarc.pl (MHONARC_HEADER): Moved from conf.pl.in.
+
+	* pl/conf.pl.in (MHONARC_MESSAGE_FILE): Abolished.
+
+	* pl/var.pl.in (PREFIX): Abolished.
+	(NO_TITLE): Moved from conf.pl.in and gettextized.
+
+	* pl/conf.pl.in (CGI_DIR): Abolished.
+	(TEXT_FILE): Abolished.
+
+	* scripts/mknmz.in (load_document): Use $conf::FILE_SIZE_MAX.
+
 	* pl/conf.pl.in (ALLOW_REGEX): Include $HTML_SUFFIX.
 	Rewrite messages (halfdone).
 

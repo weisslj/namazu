@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: html.pl,v 1.16 1999-09-03 02:42:56 satoru Exp $
+# $Id: html.pl,v 1.17 1999-09-05 03:14:07 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -54,8 +54,8 @@ sub filter ($$$$$) {
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($cont);
-    $fields->{title} = gfilter::filename_to_title($cfile, $weighted_str)
-      unless $fields->{title};
+    $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
+      unless $fields->{'title'};
     gfilter::show_filter_debug_info($cont, $weighted_str,
 			   $fields, $headings);
     return undef;
@@ -66,7 +66,7 @@ sub html_filter ($$$$) {
     my ($contref, $weighted_str, $fields, $headings) = @_;
 
     html::escape_lt_gt($contref);
-    $fields->{title} = html::get_title($contref, $weighted_str);
+    $fields->{'title'} = html::get_title($contref, $weighted_str);
     html::get_author($contref, $fields);
     html::get_meta_info($contref, $weighted_str);
     html::get_img_alt($contref);
@@ -193,9 +193,9 @@ sub weight_element ($$$ ) {
     for my $element (sort keys(%{$conf::Weight{'html'}})) {
 	my $tmp = "";
 	$$contref =~ s!<($element)>(.*?)</$element>!weight_element_sub($1, $2, \$tmp)!gies;
-	$$headings .= $tmp if $element =~ /^H[1-6]$/i && ! $var::Opt{NoHeadAbst} 
+	$$headings .= $tmp if $element =~ /^H[1-6]$/i && ! $var::Opt{'NoHeadAbst'} 
 	    && $tmp;
-	my $weight = $element =~ /^H[1-6]$/i && ! $var::Opt{NoHeadAbst} ? 
+	my $weight = $element =~ /^H[1-6]$/i && ! $var::Opt{'NoHeadAbst'} ? 
 	    $conf::Weight{'html'}->{$element} : $conf::Weight{'html'}->{$element} - 1;
 	$$weighted_str .= "\x7f$weight\x7f$tmp\x7f/$weight\x7f\n" if $tmp;
     }
@@ -207,7 +207,7 @@ sub weight_element_sub ($$$) {
     my $space = element_space($element);
     $text =~ s/<[^>]*>//g;
     $$tmp .= "$text " if (length($text)) < $conf::INVALID_LENG;
-    $element =~ /^H[1-6]$/i && ! $var::Opt{NoHeadAbst}  ? " " : "$space$text$space";
+    $element =~ /^H[1-6]$/i && ! $var::Opt{'NoHeadAbst'}  ? " " : "$space$text$space";
 }
 
 

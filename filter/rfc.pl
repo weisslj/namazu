@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: rfc.pl,v 1.8 1999-08-31 10:17:50 knok Exp $
+# $Id: rfc.pl,v 1.9 1999-09-05 03:14:08 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -56,8 +56,8 @@ sub filter ($$$$$) {
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($cont);
-    $fields->{title} = gfilter::filename_to_title($cfile, $weighted_str)
-      unless $fields->{title};
+    $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
+      unless $fields->{'title'};
     gfilter::show_filter_debug_info($cont, $weighted_str,
 			   $fields, $headings);
     return undef;
@@ -71,10 +71,10 @@ sub rfc_filter ($$$) {
 
     $$contref =~ s/^\s+//s;
     $$contref =~ s/((.+\n)+)\s+(.*)//;
-    my $title = $fields->{title};
+    my $title = $fields->{'title'};
     $title = $3 if defined $3;
     html::encode_entity(\$title);
-    $fields->{title} = $title;
+    $fields->{'title'} = $title;
     $$weighted_str .= "\x7f1\x7f$1\x7f/1\x7f\n" if defined $1;
     my $weight = $conf::Weight{'html'}->{'title'};
     $$weighted_str .= "\x7f$weight\x7f$title\x7f/$weight\x7f\n";

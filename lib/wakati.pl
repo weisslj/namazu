@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: wakati.pl,v 1.10 1999-08-31 04:51:23 knok Exp $
+# $Id: wakati.pl,v 1.11 1999-09-05 03:14:10 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -34,21 +34,21 @@ sub wakatize_japanese ($) {
     # ひらがなだけの語は削除する -H オプション時
     # このコードは古川@ヤマハさんがくださりました。[1997-11-13]
     # 送り仮名についても対応 (古川さんのコードより) [1998-04-24]
-    if ($var::Opt{Hiragana} || $var::Opt{Okurigana}){
+    if ($var::Opt{'Hiragana'} || $var::Opt{'Okurigana'}){
         for (my $ndx = 0; $ndx <= $#tmp; ++$ndx){
 	    $tmp[$ndx] =~ s/(\s)/ $1/g;
 	    $tmp[$ndx] = ' ' . $tmp[$ndx];
-	    if ($var::Opt{Okurigana}) {
+	    if ($var::Opt{'Okurigana'}) {
 		$tmp[$ndx] =~ s/([^\xa4][\xa1-\xfe])+(\xa4[\xa1-\xf3])+ /$1 /g;
 	    }
-	    if ($var::Opt{Hiragana}) {
+	    if ($var::Opt{'Hiragana'}) {
 		$tmp[$ndx] =~ s/ (\xa4[\xa1-\xf3])+ //g;
 	    }
         }
     }
 
     # 品詞情報を元に名詞のみを登録する -m オプション時
-    if ($var::Opt{Morph}) {
+    if ($var::Opt{'Morph'}) {
 	$$content = "";
 	$$content .= shift(@tmp) =~ /(.+ )名詞/ ? $1 : "" while @tmp; 
     } else {

@@ -1,5 +1,5 @@
 # -*- Perl -*-
-# $Id: var.pl.in,v 1.14 1999-09-05 02:41:41 satoru Exp $
+# $Id: var.pl.in,v 1.15 1999-09-05 03:14:10 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -41,44 +41,44 @@ $NMZ_URI = "http://openlab.ring.gr.jp/namazu/";
 my $base      = "NMZ";
 
 %NMZ = ();
-$NMZ{i}      = "$base.i";
-$NMZ{ii}     = "$base.ii";
-$NMZ{r}      = "$base.r";
-$NMZ{head}   = "$base.head";
-$NMZ{foot}   = "$base.foot";
+$NMZ{'i'}      = "$base.i";
+$NMZ{'ii'}     = "$base.ii";
+$NMZ{'r'}      = "$base.r";
+$NMZ{'head'}   = "$base.head";
+$NMZ{'foot'}   = "$base.foot";
 $NMZ{'log'}    = "$base.log";
-$NMZ{slog}   = "$base.slog";
-$NMZ{lock}   = "$base.lock";
-$NMZ{lock2}  = "$base.lock2";
-$NMZ{msg}    = "$base.msg";
-$NMZ{body}   = "$base.body";
-$NMZ{err}    = "$base.err";
-$NMZ{w}      = "$base.w";
-$NMZ{wi}     = "$base.wi";
-$NMZ{p}      = "$base.p";
-$NMZ{pi}     = "$base.pi";
-$NMZ{field}  = "$base.field";
-$NMZ{result} = "$base.result";
+$NMZ{'slog'}   = "$base.slog";
+$NMZ{'lock'}   = "$base.lock";
+$NMZ{'lock2'}  = "$base.lock2";
+$NMZ{'msg'}    = "$base.msg";
+$NMZ{'body'}   = "$base.body";
+$NMZ{'err'}    = "$base.err";
+$NMZ{'w'}      = "$base.w";
+$NMZ{'wi'}     = "$base.wi";
+$NMZ{'p'}      = "$base.p";
+$NMZ{'pi'}     = "$base.pi";
+$NMZ{'field'}  = "$base.field";
+$NMZ{'result'} = "$base.result";
 
-$NMZ{t}      = "$base.t";
-$NMZ{status} = "$base.status";
+$NMZ{'t'}      = "$base.t";
+$NMZ{'status'} = "$base.status";
 
-$NMZ{_t}  = $NMZ{t};
-$NMZ{_i}  = $NMZ{i};
-$NMZ{_p}  = $NMZ{p};
-$NMZ{_pi} = $NMZ{pi};
-$NMZ{_r}  = $NMZ{r};
-$NMZ{_ii} = $NMZ{ii};
-$NMZ{_w}  = $NMZ{w};
-$NMZ{_wi} = $NMZ{wi};
+$NMZ{'_t'}  = $NMZ{'t'};
+$NMZ{'_i'}  = $NMZ{'i'};
+$NMZ{'_p'}  = $NMZ{'p'};
+$NMZ{'_pi'} = $NMZ{'pi'};
+$NMZ{'_r'}  = $NMZ{'r'};
+$NMZ{'_ii'} = $NMZ{'ii'};
+$NMZ{'_w'}  = $NMZ{'w'};
+$NMZ{'_wi'} = $NMZ{'wi'};
 
-$NMZ{_flist}       = "$base.flist";
-$NMZ{_checkpoint}  = "$base.checkpoint";
+$NMZ{'_flist'}       = "$base.flist";
+$NMZ{'_checkpoint'}  = "$base.checkpoint";
 
-$NMZ{__i}  = "$base.tmp_i";
-$NMZ{__w}  = "$base.tmp_w";
-$NMZ{__p}  = "$base.tmp_p";
-$NMZ{__pi} = "$base.tmp_pi";
+$NMZ{'__i'}  = "$base.tmp_i";
+$NMZ{'__w'}  = "$base.tmp_w";
+$NMZ{'__p'}  = "$base.tmp_p";
+$NMZ{'__pi'} = "$base.tmp_pi";
 
 
 $OUTPUT_DIR = undef;
@@ -88,23 +88,23 @@ $OUTPUT_DIR = undef;
 ## Options
 ##
 
-$Opt{debug}         = 0;
-$Opt{quiet}         = 0;
-$Opt{verbose}       = 0;
+$Opt{'debug'}         = 0;
+$Opt{'quiet'}         = 0;
+$Opt{'verbose'}       = 0;
 
-$Opt{robotexclude}    = 0;
-$Opt{htaccessexclude} = 0;
+$Opt{'robotexclude'}    = 0;
+$Opt{'htaccessexclude'} = 0;
 
-$Opt{uuencode}      = 0;
-$Opt{noheadabst}    = 0;
-$Opt{hiragana}      = 0;
-$Opt{okurigana}     = 0;
-$Opt{noedgesymbol}  = 0;
-$Opt{nosymbol}      = 0;
-$Opt{noencodeuri}   = 0;
+$Opt{'uuencode'}      = 0;
+$Opt{'noheadabst'}    = 0;
+$Opt{'hiragana'}      = 0;
+$Opt{'okurigana'}     = 0;
+$Opt{'noedgesymbol'}  = 0;
+$Opt{'nosymbol'}      = 0;
+$Opt{'noencodeuri'}   = 0;
 
-$Opt{nodelete} = 0;
-$Opt{noupdate} = 0;
+$Opt{'nodelete'} = 0;
+$Opt{'noupdate'} = 0;
 
 ################################################################
 ##

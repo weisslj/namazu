@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.60 1999-09-04 10:28:45 satoru Exp $
+# $Id: mknmz.pl.in,v 1.61 1999-09-05 03:14:12 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -74,11 +74,11 @@ sub main () {
     my $processed_files_size = 0;
 
     # Restore variables
-    eval util::readfile($var::NMZ{_checkpoint}) if $CheckPoint{'continue'};
+    eval util::readfile($var::NMZ{'_checkpoint'}) if $CheckPoint{'continue'};
 
     {
-	my $fh_errorsfile = util::efopen(">>$var::NMZ{err}");
-	my $fh_flist = util::efopen($var::NMZ{_flist});
+	my $fh_errorsfile = util::efopen(">>$var::NMZ{'err'}");
+	my $fh_flist = util::efopen($var::NMZ{'_flist'});
 	my %field_indices = ();
 	get_field_index_base(\%field_indices);
 
@@ -127,7 +127,7 @@ sub main () {
 sub read_config () {
     my (@cand) = ();
     push @cand, $ConfigFile if defined $ConfigFile;
-    push @cand, "$ENV{HOME}/.mknmzrc", "$CONFDIR/mknmz.conf";
+    push @cand, "$ENV{'HOME'}/.mknmzrc", "$CONFDIR/mknmz.conf";
 
     for my $conf (@cand) {
 	if (-f $conf) {
@@ -144,7 +144,7 @@ sub re_exec($$$$) {
 
     # store variables
     {
-	my $fh_checkpoint = util::efopen(">$var::NMZ{_checkpoint}");
+	my $fh_checkpoint = util::efopen(">$var::NMZ{'_checkpoint'}");
 
 	print $fh_checkpoint <<EOM;
 	\$DeletedFilesCount = $DeletedFilesCount;
@@ -160,14 +160,14 @@ EOM
     }
 
     @ARGV = ("-S", @ARGV) ;
-    print "Checkpoint reached: re-exec mknmz...\n" unless $var::Opt{quiet};
+    print "Checkpoint reached: re-exec mknmz...\n" unless $var::Opt{'quiet'};
     util::dprint(join ' ', ("::::", @ARGV, "\n"));
     exec ($0, @ARGV) ;
 }
 
 sub put_registry ($) {
     my ($filename) = @_;
-    my $fh_registry = util::efopen(">>$var::NMZ{_r}");
+    my $fh_registry = util::efopen(">>$var::NMZ{'_r'}");
     print $fh_registry $filename, "\n";
 }
 
@@ -185,7 +185,7 @@ sub init () {
 	$CCS = "euc";
     }
 
-    $SIG{INT}  = sub {
+    $SIG{'INT'}  = sub {
 	util::cdie("SIGINT caught! Aborted.\n");
     };
 }
@@ -252,7 +252,7 @@ sub namazu_core ($$$) {
     # check if the file is acceptable.
     my $err = check_file($cfile, $text_size, $mtype);
     if (defined $err) {
-	print $file_count + $file_base . " $uri $err\n" unless $var::Opt{quiet};
+	print $file_count + $file_base . " $uri $err\n" unless $var::Opt{'quiet'};
 	print $fh_errorsfile "$cfile $err\n"; 
 	return 0;  # return 0 if error
     }
@@ -261,14 +261,14 @@ sub namazu_core ($$$) {
     $err = isexcluded($cfile, $uri, \$content);
     if (defined $err) {
 	print $file_count + $file_base . 
-	    " $uri $err\n" unless $var::Opt{quiet};
+	    " $uri $err\n" unless $var::Opt{'quiet'};
 	print $fh_errorsfile "$cfile $err\n"; 
 	return 0;  # return 0 if error
     }
 
     # Output processing file name as URI
     print $file_count + $file_base . 
-	" $uri [$mtype]\n" unless $var::Opt{quiet};
+	" $uri [$mtype]\n" unless $var::Opt{'quiet'};
 
     complete_field_info(\%fields, $cfile, $uri, \$headings, \$content);
     put_field_index(\%fields, $field_indices);
@@ -286,7 +286,7 @@ sub isexcluded ($$$) {
     my ($cfile, $uri, $contref) = @_;
     my $err = undef;
 
-    if ($var::Opt{robotexclude}) {
+    if ($var::Opt{'robotexclude'}) {
 	if ($uri =~ m/^$conf::ROBOTS_EXCLUDE_URIS/io) {
 	    $err = "is excluded because of /robots.txt.\n";
 	} elsif ($cfile =~ /\.($conf::HTML_SUFFIX)$/io &&
@@ -309,7 +309,7 @@ sub generate_uri ($) {
     return undef unless defined $file;
     my $uri = $file;
 
-    if ($var::Opt{ommit}) {
+    if ($var::Opt{'ommit'}) {
     }
 
     if (defined $ReplaceCode) {
@@ -326,7 +326,7 @@ sub generate_uri ($) {
 	$uri =~ s#^([A-Z]):#/$1|#i; # converting a drive part like: /C|
     }
 
-    unless ($var::Opt{noencodeuri}) {
+    unless ($var::Opt{'noencodeuri'}) {
 	# Escape unsafe characters (not strict)
 	$uri =~ s/\%/%25/g;  # Convert original '%' into '%25' v1.1.1.2
 	$uri =~ s/([^a-zA-Z0-9~\-\_\.\/\:\%])/
@@ -346,7 +346,7 @@ sub get_field_index_base (\%) {
     my @keys = split('\|', $conf::SEARCH_FIELD);
     for my $key (@keys) {
 	$key = lc($key);
-	my $fname    = "$var::NMZ{field}.$key";
+	my $fname    = "$var::NMZ{'field'}.$key";
 	my $tmp_fname = util::tmpnam("NMZ.field.$key");
 	my $size = 0;
 	$size = -s $fname if -f $fname;
@@ -464,7 +464,7 @@ sub put_dateindex ($) {
     my ($cfile) = @_;
     my $mtime = (stat($cfile))[9];
 
-    my $fh_dataindex = util::efopen(">>$var::NMZ{_t}");
+    my $fh_dataindex = util::efopen(">>$var::NMZ{'_t'}");
     print $fh_dataindex pack("N", $mtime);
 }
 
@@ -563,12 +563,12 @@ sub prep () {
 
     @flist = find_target(@targets);
     ($file_base, @flist) = append_index(@flist) 
-	if -f $var::NMZ{r};
+	if -f $var::NMZ{'r'};
     unless (@flist) { # if @flist is empty
 	print "No files to index.\n";
 	exit 0;
     }
-    set_lockfile($var::NMZ{lock2});
+    set_lockfile($var::NMZ{'lock2'});
     save_flist(@flist);
 
     return $file_base;
@@ -578,7 +578,7 @@ sub save_flist(@) {
     my @flist = @_;
     return if (@flist == 0);
 
-    my $fh_flist = util::efopen(">$var::NMZ{_flist}");
+    my $fh_flist = util::efopen(">$var::NMZ{'_flist'}");
     print $fh_flist join("\n", @flist), "\n";
 }
 
@@ -597,7 +597,7 @@ sub require_modules() {
 	require Text::ChaSen1;
         util::dprint("wakati: using Text::ChaSen1 module\n");
 	my @arg = ('-j', '-F', '%m ');
-	@arg    = ('-j', '-F', '%m %H\\n') if $var::Opt{morph};
+	@arg    = ('-j', '-F', '%m %H\\n') if $var::Opt{'morph'};
 	my $res = Text::ChaSen1::getopt_argv('chasen-perl', @arg);
     }
 }
@@ -624,7 +624,7 @@ sub remove_lockfile ($) {
 
 # check present index whether it is old type of not
 sub check_present_index () {
-    if (-f $var::NMZ{i} && ! -f "$var::NMZ{result}.normal") 
+    if (-f $var::NMZ{'i'} && ! -f "$var::NMZ{'result'}.normal") 
     {
 	util::cdie("Present index is old type. it's unsupported.\n");
     }
@@ -641,7 +641,7 @@ sub do_remain_job ($$$$) {
 	    update_registry($file_count);
 	}
     } else {
-	set_lockfile($var::NMZ{lock});
+	set_lockfile($var::NMZ{'lock'});
 	write_body_msg();
 	write_result_file();
 	update_field_index();
@@ -649,21 +649,21 @@ sub do_remain_job ($$$$) {
 	update_registry($file_count);
 	write_nmz_files();
 	make_slog_file();
-	remove_lockfile($var::NMZ{lock});
+	remove_lockfile($var::NMZ{'lock'});
     }
     make_headfoot_pages($file_count, $key_count);
     put_log($total_files_size, $start_time, $file_count, $key_count);
     util::remove_tmpfiles();
-    unlink $var::NMZ{_flist};
+    unlink $var::NMZ{'_flist'};
 }
 
 sub make_headfoot_pages($$) {
     my ($file_count, $key_count) = @_;
 
-    make_headfoot("$var::NMZ{head}.ja", $file_count, $key_count);
-    make_headfoot("$var::NMZ{foot}.ja", $file_count, $key_count);
-    make_headfoot("$var::NMZ{head}.en", $file_count, $key_count);
-    make_headfoot("$var::NMZ{foot}.en", $file_count, $key_count);
+    make_headfoot("$var::NMZ{'head'}.ja", $file_count, $key_count);
+    make_headfoot("$var::NMZ{'foot'}.ja", $file_count, $key_count);
+    make_headfoot("$var::NMZ{'head'}.en", $file_count, $key_count);
+    make_headfoot("$var::NMZ{'foot'}.en", $file_count, $key_count);
 }
 
 # parse comannd line options
@@ -702,36 +702,36 @@ sub parse_options ()
 	       '2|deny=s'            => \$conf::DENY_REGEX,
 	       '3|allow=s'           => \$conf::ALLOW_REGEX,
 	       '4|update=s'          => \$update_index,
-	       'A|htacces'           => \$var::Opt{htaccessexclude},
+	       'A|htacces'           => \$var::Opt{'htaccessexclude'},
 	       'C|show-config'       => \$opt_show_config,
-	       'E|no-edge-symbol'    => \$var::Opt{noedgesymbol},
+	       'E|no-edge-symbol'    => \$var::Opt{'noedgesymbol'},
 	       'F|target-list=s'     => \$target_list,
-	       'G|no-okurigana'      => \$var::Opt{okurigana},
-	       'H|no-hiragana'       => \$var::Opt{hiragana},
+	       'G|no-okurigana'      => \$var::Opt{'okurigana'},
+	       'H|no-hiragana'       => \$var::Opt{'hiragana'},
 	       'I|include=s'         => \$include_file,
-	       'K|no-symbol'         => \$var::Opt{nosymbol},
+	       'K|no-symbol'         => \$var::Opt{'nosymbol'},
 	       'L|lang=s'            => \$conf::LANGUAGE,
 	       'O|output-dir=s'      => \$output_dir,
 	       'S|checkpoint-sub'    => \$opt_checkpoint_sub,
 	       'T|template-dir=s'    => \$TEMPLATEDIR,
-	       'U|no-encode-uri'     => \$var::Opt{noencodeuri} ,
-	       'V|verbose'           => \$var::Opt{verbose},
-	       'Y|no-delete'         => \$var::Opt{nodelete},
-	       'Z|no-update'         => \$var::Opt{noupdate},
+	       'U|no-encode-uri'     => \$var::Opt{'noencodeuri'} ,
+	       'V|verbose'           => \$var::Opt{'verbose'},
+	       'Y|no-delete'         => \$var::Opt{'nodelete'},
+	       'Z|no-update'         => \$var::Opt{'noupdate'},
 	       'a|all'               => \$opt_all,
 	       'c|use-chasen'        => \$opt_chasen,
-	       'd|debug'             => \$var::Opt{debug},
-	       'e|robots-txt'        => \$var::Opt{robotexclude},
+	       'd|debug'             => \$var::Opt{'debug'},
+	       'e|robots-txt'        => \$var::Opt{'robotexclude'},
 	       'f|config=s'          => \$ConfigFile,
 	       'h|rfc822'            => \$opt_dummy, # for backward compat.
 	       'k|use-kakasi'        => \$opt_kakasi,
 	       'm|use-chasen-morph'  => \$opt_chasen_morph,
-	       'q|quiet'             => \$var::Opt{quiet},
+	       'q|quiet'             => \$var::Opt{'quiet'},
 	       'r|replace=s'         => \$ReplaceCode,
 	       's|checkpoint'        => \$CheckPoint{'on'},
 	       'u|uuencode'          => \$opt_dummy, # for backward compat.
 	       'v|version'           => \$opt_version,
-	       'x|no-heading-summary'=> \$var::Opt{noheadabst},
+	       'x|no-heading-summary'=> \$var::Opt{'noheadabst'},
 	       );
 
     if ($opt_help) {
@@ -751,7 +751,7 @@ sub parse_options ()
     }
 
     if (defined $update_index) {
-	$var::NMZ{status} = "$update_index/$var::NMZ{status}";
+	$var::NMZ{'status'} = "$update_index/$var::NMZ{'status'}";
 
 	my $argv = get_status("argv");
 	@ARGV = split /\t/, $argv;
@@ -770,17 +770,17 @@ sub parse_options ()
     }
     if ($opt_chasen) {
 	$conf::WAKATI = $conf::CHASEN;
-	$var::Opt{morph} = 0;
+	$var::Opt{'morph'} = 0;
     }
     if ($opt_chasen_morph) {
 	$conf::WAKATI = $conf::CHASEN_MORPH;
-	$var::Opt{morph} = 1;
+	$var::Opt{'morph'} = 1;
     }
     if ($opt_kakasi) {
 	$conf::WAKATI = $conf::KAKASI;
-	$var::Opt{morph} = 0;
+	$var::Opt{'morph'} = 0;
     }
-    if ($var::Opt{robotexclude}) {
+    if ($var::Opt{'robotexclude'}) {
         html::parse_robots_txt();
     }
     if ($include_file) {
@@ -964,18 +964,18 @@ sub check_file ($$$) {
 
 # util::Rename *.$$ to each real file name
 sub write_nmz_files () {
-    util::Rename($var::NMZ{_i},   $var::NMZ{i});
-    util::Rename($var::NMZ{_ii}, $var::NMZ{ii});
-    util::Rename($var::NMZ{_w},  $var::NMZ{w});
-    util::Rename($var::NMZ{_wi}, $var::NMZ{wi});
-    util::Rename($var::NMZ{_p},  $var::NMZ{p});
-    util::Rename($var::NMZ{_pi}, $var::NMZ{pi});
+    util::Rename($var::NMZ{'_i'},   $var::NMZ{'i'});
+    util::Rename($var::NMZ{'_ii'}, $var::NMZ{'ii'});
+    util::Rename($var::NMZ{'_w'},  $var::NMZ{'w'});
+    util::Rename($var::NMZ{'_wi'}, $var::NMZ{'wi'});
+    util::Rename($var::NMZ{'_p'},  $var::NMZ{'p'});
+    util::Rename($var::NMZ{'_pi'}, $var::NMZ{'pi'});
 }
 
 # output NMZ.body
 sub write_body_msg () {
-    write_message("$var::NMZ{body}.ja");
-    write_message("$var::NMZ{body}.en");
+    write_message("$var::NMZ{'body'}.ja");
+    write_message("$var::NMZ{'body'}.en");
 }
 
 # output NMZ.result.*
@@ -1043,9 +1043,9 @@ sub write_message ($) {
 # Make a file for logging
 sub make_slog_file () {
     {
-	my $fh_slogfile = util::efopen(">>$var::NMZ{slog}");
+	my $fh_slogfile = util::efopen(">>$var::NMZ{'slog'}");
     }
-    chmod 0666, $var::NMZ{slog};
+    chmod 0666, $var::NMZ{'slog'};
 }
 
 
@@ -1065,7 +1065,7 @@ sub change_dbnames ($) {
 	}
     }
 
-    if ($var::Opt{debug}) {
+    if ($var::Opt{'debug'}) {
 	for my $key (sort keys %var::NMZ) {
 	    util::dprint("NMZ: $var::NMZ{$key}\n");
 	}
@@ -1098,7 +1098,7 @@ sub append_index (@) {
     unless (@flist) { 	# if @flist is empty
 	if ($DeletedFilesCount > 0) {
 	    make_headfoot_pages(0, 0);
-	    set_lockfile($var::NMZ{lock2});
+	    set_lockfile($var::NMZ{'lock2'});
 	    update_dateindex();
 	    update_registry(0);
 	    put_log(0, 0, 0, get_total_keys());
@@ -1110,12 +1110,12 @@ sub append_index (@) {
 
     $APPENDMODE = 1;
     # conserve files by copying
-    util::cp($var::NMZ{i},  $var::NMZ{_i});
-    util::cp($var::NMZ{w},  $var::NMZ{_w});
-    util::cp($var::NMZ{t},  $var::NMZ{_t}) 
-	unless -f $var::NMZ{_t}; # preupdated ?
-    util::cp($var::NMZ{p},  $var::NMZ{_p});
-    util::cp($var::NMZ{pi}, $var::NMZ{_pi});
+    util::cp($var::NMZ{'i'},  $var::NMZ{'_i'});
+    util::cp($var::NMZ{'w'},  $var::NMZ{'_w'});
+    util::cp($var::NMZ{'t'},  $var::NMZ{'_t'}) 
+	unless -f $var::NMZ{'_t'}; # preupdated ?
+    util::cp($var::NMZ{'p'},  $var::NMZ{'_p'});
+    util::cp($var::NMZ{'pi'}, $var::NMZ{'_pi'});
 
     return ($file_base, @flist);
 }
@@ -1140,7 +1140,7 @@ sub set_target_files() {
     # pick up not overlapped files which are files to index
     my @flist = grep(! $mark1{$_}, @found_files);
 	 
-    if ($var::Opt{noupdate}) {
+    if ($var::Opt{'noupdate'}) {
 	return (scalar @{$rfiles{'name'}}, @flist);
     };
 
@@ -1160,7 +1160,7 @@ sub set_target_files() {
     # pick up deleted files and do marking
     # (registered in the NMZ.r but not existent in the filesystem)
     my @deleted_files;
-    unless ($var::Opt{nodelete}) {
+    unless ($var::Opt{'nodelete'}) {
 	my %mark2;
 	grep($mark2{$_}++, @found_files);
 	for (grep($_ !~ /^\# / && ! $mark2{$_} && ! $rfiles{'overlapped'}{$_}
@@ -1205,7 +1205,7 @@ sub set_target_files() {
 sub preupdate_registry(@) {
     my (@list) = @_;
 
-    my $fh_registry = util::efopen(">$var::NMZ{_r}");
+    my $fh_registry = util::efopen(">$var::NMZ{'_r'}");
     @list = grep(s/(.*)/\# $1\n/, @list);
     print $fh_registry @list;
     print $fh_registry "## deleted: " . util::rfc822time(time()) . "\n\n";
@@ -1216,7 +1216,7 @@ sub preupdate_dateindex(@) {
 
     # Since rewriting the entire file, it is not efficient, 
     # but simple and reliable. this would be revised in the future.
-    my $fh_dateindex = util::efopen(">$var::NMZ{_t}");
+    my $fh_dateindex = util::efopen(">$var::NMZ{'_t'}");
 #    print "\nupdate_dateindex\n", join("\n", @mtimes), "\n\n";
     print $fh_dateindex pack("N*", @mtimes);
 }
@@ -1225,8 +1225,8 @@ sub update_registry ($) {
     my ($file_count) = @_;
 
     {
-	my $fh_registry = util::efopen(">>$var::NMZ{r}");
-	my $fh_registry_ = util::efopen($var::NMZ{_r});
+	my $fh_registry = util::efopen(">>$var::NMZ{'r'}");
+	my $fh_registry_ = util::efopen($var::NMZ{'_r'});
 	while (defined(my $line = <$fh_registry_>)) {
 	    print $fh_registry $line;
 	}
@@ -1234,15 +1234,15 @@ sub update_registry ($) {
 	    print $fh_registry "## indexed: " . util::rfc822time(time()) . "\n\n";
 	}
     }
-    unlink $var::NMZ{_r};
+    unlink $var::NMZ{'_r'};
 }
 
 sub update_dateindex () {
-    util::Rename($var::NMZ{_t}, $var::NMZ{t});
+    util::Rename($var::NMZ{'_t'}, $var::NMZ{'t'});
 }
 
 sub update_field_index () {
-    my @list = glob "$var::NMZ{field}.*.$$.tmp";
+    my @list = glob "$var::NMZ{'field'}.*.$$.tmp";
     for my $tmp (@list) {
 	if ($tmp =~ m!((^.*/NMZ\.field\.[^\.]+(?:\.i)?)\.$$\.tmp)!) {
 	    my $fname_tmp = $1;
@@ -1269,7 +1269,7 @@ sub pickup_updated_files (\%) {
     my $i = 0;
     for my $cfile (@{$ref->{'name'}}) {
 	if (defined($ref->{'deleted'}{$cfile})) {
-	    print "$cfile was deleted!\n" unless $var::Opt{quiet};
+	    print "$cfile was deleted!\n" unless $var::Opt{'quiet'};
 	    $ref->{'mtime'}[$i] = -1; # assign the a messing number
 	} elsif (defined($ref->{'overlapped'}{$cfile})) {
 	    my $cfile_mtime = (stat($cfile))[9];
@@ -1277,7 +1277,7 @@ sub pickup_updated_files (\%) {
 
 	    if ($rfile_mtime < $cfile_mtime) {
 		# this file is updated!
-		print "$cfile was updated!\n" unless $var::Opt{quiet};
+		print "$cfile was updated!\n" unless $var::Opt{'quiet'};
 		$ref->{'mtime'}[$i] = -1; # assign the messing number
 		push(@updated_files, $cfile);
 	    }
@@ -1289,9 +1289,9 @@ sub pickup_updated_files (\%) {
 }
 
 sub load_dateindex() {
-    my $fh_dateindex = util::efopen($var::NMZ{t});
+    my $fh_dateindex = util::efopen($var::NMZ{'t'});
 
-    my $size = -s $var::NMZ{t};
+    my $size = -s $var::NMZ{'t'};
     my $buf  = "";
     read($fh_dateindex, $buf, $size);
     my @list = unpack("N*", $buf);  # load date index
@@ -1303,7 +1303,7 @@ sub load_dateindex() {
 sub load_registry () {
     my @list = ();
 
-    my $fh_registry = util::efopen($var::NMZ{r});
+    my $fh_registry = util::efopen($var::NMZ{'r'});
 
     my $i = 0;
     my %mark;
@@ -1346,7 +1346,7 @@ sub get_total_files() {
 sub get_status($) {
     my ($key) = @_;
 
-    my $fh = util::fopen($var::NMZ{status});
+    my $fh = util::fopen($var::NMZ{'status'});
     return undef unless defined $fh;
 
     while (defined(my $line = <$fh>)) {
@@ -1374,9 +1374,9 @@ sub put_status($$) {
     my ($key, $value) = @_;
 
     # remove NMZ.status file if the file has a previous value.
-    unlink $var::NMZ{status} if defined get_status($key);
+    unlink $var::NMZ{'status'} if defined get_status($key);
 
-    my $fh = util::efopen(">> $var::NMZ{status}");
+    my $fh = util::efopen(">> $var::NMZ{'status'}");
     print $fh "$key $value\n";
 }
 
@@ -1415,7 +1415,7 @@ sub put_log ($$$$) {
     $logmsg .= "Time: $processtime sec.\n"if $processtime;
     $logmsg .= "\n";
 
-    print $logmsg unless $var::Opt{quiet};
+    print $logmsg unless $var::Opt{'quiet'};
     put_log_to_logfile($logmsg);
     put_total_files($total_files_count);
     put_total_keys($total_keys_count);
@@ -1525,8 +1525,8 @@ sub make_phrase_hash ($$$) {
 # NMZ.p, NMZ.pi ファイルへ書き出し & マージする (複雑)
 sub write_phrase_hash () {
     write_phrase_hash_sub();
-    util::Rename($var::NMZ{__p}, $var::NMZ{_p});
-    util::Rename($var::NMZ{__pi}, $var::NMZ{_pi});
+    util::Rename($var::NMZ{'__p'}, $var::NMZ{'_p'});
+    util::Rename($var::NMZ{'__pi'}, $var::NMZ{'_pi'});
 }
 
 sub write_phrase_hash_sub () {
@@ -1535,13 +1535,13 @@ sub write_phrase_hash_sub () {
     return 0 if %PhraseHash eq "0";
     util::dprint("doing write_phrase_hash() processing.\n");
 
-    my $fh_tmp_pi = util::efopen(">$var::NMZ{__pi}");
-    my $fh_tmp_p  = util::efopen(">$var::NMZ{__p}");
+    my $fh_tmp_pi = util::efopen(">$var::NMZ{'__pi'}");
+    my $fh_tmp_p  = util::efopen(">$var::NMZ{'__p'}");
 
-    my $fh_phrase = util::fopen($var::NMZ{_p});
+    my $fh_phrase = util::fopen($var::NMZ{'_p'});
     my $fh_phraseindex;
     if ($fh_phrase) {
-	$fh_phraseindex = util::efopen($var::NMZ{_pi});
+	$fh_phraseindex = util::efopen($var::NMZ{'_pi'});
 	$opened = 1;
     }
 	
@@ -1623,7 +1623,7 @@ sub count_words ($$$$) {
     }
 
     # 記号を全て削除する -K オプション時
-    $$content =~ tr/\xa1-\xfea-z0-9/   /c if $var::Opt{nosymbol};
+    $$content =~ tr/\xa1-\xfea-z0-9/   /c if $var::Opt{'nosymbol'};
 
     my $part1 = "";
     my $part2 = "";
@@ -1671,13 +1671,13 @@ sub wordcount_sub ($$\%) {
     @words = grep !/^$/, @words;   # remove empty words
     my @words_ = ();
     for my $word (@words) {
-	if ($var::Opt{noedgesymbol}) {
+	if ($var::Opt{'noedgesymbol'}) {
 	    # remove symbols at both ends
 	    $word =~ s/^[^\xa1-\xfea-z_0-9]*(.*?)[^\xa1-\xfea-z_0-9]*$/$1/g;
 	}
 	$word_count->{$word} = 0 unless defined($word_count->{$word});
 	$word_count->{$word} += $weight;
-	unless ($var::Opt{nosymbol}) {
+	unless ($var::Opt{'nosymbol'}) {
 	    if ($word =~ /^[^\xa1-\xfea-z_0-9](.+)[^\xa1-\xfea-z_0-9]$/) {
 		$word_count->{$1} = 0 unless defined($word_count->{$1});
 		$word_count->{$1} += $weight;
@@ -1723,8 +1723,8 @@ sub wordcount_sub ($$\%) {
 # make NMZ.i and NMZ.ii file. this processing is rather complex.
 sub write_index () {
     my $key_count = write_index_sub();
-    util::Rename($var::NMZ{__i}, $var::NMZ{_i});
-    util::Rename($var::NMZ{__w}, $var::NMZ{_w});
+    util::Rename($var::NMZ{'__i'}, $var::NMZ{'_i'});
+    util::Rename($var::NMZ{'__w'}, $var::NMZ{'_w'});
 
     return $key_count;
 }
@@ -1777,12 +1777,12 @@ sub write_index_sub () {
     my $baserecord = "";
 
     util::dprint("doing write_index() processing.\n");
-    my $fh_tmp_i  = util::efopen(">$var::NMZ{__i}");
-    my $fh_tmp_w  = util::efopen(">$var::NMZ{__w}");
-    my $fh_i      = util::fopen($var::NMZ{_i});
-    my $fh_ii     = util::efopen(">$var::NMZ{_ii}");
-    my $fh_w      = util::fopen($var::NMZ{_w});
-    my $fh_wi = util::efopen(">$var::NMZ{_wi}");
+    my $fh_tmp_i  = util::efopen(">$var::NMZ{'__i'}");
+    my $fh_tmp_w  = util::efopen(">$var::NMZ{'__w'}");
+    my $fh_i      = util::fopen($var::NMZ{'_i'});
+    my $fh_ii     = util::efopen(">$var::NMZ{'_ii'}");
+    my $fh_w      = util::fopen($var::NMZ{'_w'});
+    my $fh_wi = util::efopen(">$var::NMZ{'_wi'}");
 
     if ($fh_w) {
       FOO:
@@ -1881,11 +1881,11 @@ muda($conf::SEARCH_FIELD, $conf::ON_MEMORY_MAX,
      $conf::WORD_LENG_MAX, $conf::TEXT_SIZE_MAX,
      $conf::DENY_REGEX, $var::INTSIZE,
      $conf::CHASEN_MORPH, $conf::CHASEN,
-     $conf::KAKASI, $var::Opt{okurigana},
-     $var::Opt{hiragana}, $conf::ROBOTS_EXCLUDE_URLS, $conf::DEFAULT_FILE,
+     $conf::KAKASI, $var::Opt{'okurigana'},
+     $var::Opt{'hiragana'}, $conf::ROBOTS_EXCLUDE_URLS, $conf::DEFAULT_FILE,
      $conf::HTML_SUFFIX, $usage::USAGE_EN, $usage::USAGE_MINI, 
-     $var::Opt{noheadabst}, @seed::Seed,
-     $var::Opt{debug}, $var::Opt{noencodeurl}, $var::Opt{htaccessexclude}, 
+     $var::Opt{'noheadabst'}, @seed::Seed,
+     $var::Opt{'debug'}, $var::Opt{'noencodeurl'}, $var::Opt{'htaccessexclude'}, 
      $var::RECURSIVE_ACTIONS, $conf::ROBOTS_EXCLUDE_URIS, 
      $conf::ROBOTS_EXCLUDE_URLS);
 

@@ -2,6 +2,10 @@ Namazu のコーディング規則 - Perl編
 
 mknmz固有の事情
 
+  * ハッシュのキーを文字列で指定するときは必ず '' で括る。例:
+    × $NMZ{log}  ○ $NMZ{'log'}
+  => log という関数があるため perl 5.004 では warning が出る
+
   * debugメッセージを出力するときは必ず 
     util::dprint() を使う
 

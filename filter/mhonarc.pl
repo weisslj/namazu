@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mhonarc.pl,v 1.13 1999-09-02 00:05:39 satoru Exp $
+# $Id: mhonarc.pl,v 1.14 1999-09-05 03:14:08 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -69,8 +69,8 @@ sub filter ($$$$$) {
     gfilter::line_adjust_filter($contref);
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($contref);
-    $fields->{title} = gfilter::filename_to_title($cfile, $weighted_str)
-      unless $fields->{title};
+    $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
+      unless $fields->{'title'};
     gfilter::show_filter_debug_info($contref, $weighted_str,
 			   $fields, $headings);
     return undef;

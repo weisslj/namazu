@@ -1,5 +1,8 @@
 1999-09-05  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* **/*.pl{,.in}: Change all notations for representing hash value:
+	key string must be single-quoted. e.g., $NMZ{log} -> NMZ{'log'}
+	
 	* lib/var.pl.in: Replace $NMZ{log} with $NMZ{'log'} 
 	[namazu-dev 346]
 	

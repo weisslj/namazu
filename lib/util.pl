@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.21 1999-09-03 02:42:57 satoru Exp $
+# $Id: util.pl,v 1.22 1999-09-05 03:14:10 satoru Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -74,7 +74,7 @@ sub fopen ($) {
 }
 
 sub dprint (@) {
-    if ($var::Opt{debug}) {
+    if ($var::Opt{'debug'}) {
 	for my $str (@_) {
 	    map {print STDERR '// ', $_, "\n"} split "\n", $str;
 	}
@@ -82,7 +82,7 @@ sub dprint (@) {
 } 
 
 sub vprint (@) {
-    if ($var::Opt{verbose} || $var::Opt{debug}) {
+    if ($var::Opt{'verbose'} || $var::Opt{'debug'}) {
 	for my $str (@_) {
 	    map {print STDERR '@@ ', $_, "\n"} split "\n", $str;
 	}
@@ -173,7 +173,7 @@ sub checklib ($) {
 # checkcmd ... check command path
 sub checkcmd ($) {
     my $cmd = shift;
-    for my $dir (split(/:/, $ENV{PATH})) {
+    for my $dir (split(/:/, $ENV{'PATH'})) {
 	return "$dir/$cmd" if (-x "$dir/$cmd");
     }
     return undef;
@@ -201,12 +201,12 @@ sub cdie (@) {
 # remove_tmpfiles ... remove temporary files which mknmz would make
 sub remove_tmpfiles () {
     return unless defined $var::OUTPUT_DIR;
-    return if $var::Opt{debug};
+    return if $var::Opt{'debug'};
 
     my @list = glob "$var::OUTPUT_DIR/NMZ.*.$$.tmp";
-    push @list, $var::NMZ{err}   if -z $var::NMZ{err}; # if size == 0
-    push @list, $var::NMZ{lock}  if -f $var::NMZ{lock};
-    push @list, $var::NMZ{lock2} if -f $var::NMZ{lock2};
+    push @list, $var::NMZ{'err'}   if -z $var::NMZ{'err'}; # if size == 0
+    push @list, $var::NMZ{'lock'}  if -f $var::NMZ{'lock'};
+    push @list, $var::NMZ{'lock2'} if -f $var::NMZ{'lock2'};
     dprint("Remove tmporary files:", @list);
     unlink @list;
 }

@@ -1,7 +1,7 @@
 #! @PERL@ -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.pl.in,v 1.46 1999-08-31 04:01:06 satoru Exp $
+# $Id: mknmz.pl.in,v 1.47 1999-08-31 04:47:12 satoru Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -311,8 +311,11 @@ sub generate_uri ($) {
     if (defined $ReplaceCode) {
 	# omit a file name if omittable
 	$uri =~ s!(.*)/($conf::DEFAULT_FILE)$!$1/!o; 
+
 	# transforming URI by evaling
-	eval "\$uri =~ $ReplaceCode;";
+	$_ = $uri;
+	eval $ReplaceCode;
+	$uri = $_;
     }
 
     if (($SYSTEM eq "MSWin32") || ($SYSTEM eq "os2")) {
@@ -791,12 +794,12 @@ sub parse_options ()
 
     if (defined $ReplaceCode) {
 	my $orig = "/foo/bar/baz/quux.html";
-	my $tmp  = $orig;
-	eval "\$tmp =~ $ReplaceCode;";
+	$_ = $orig;
+	eval $ReplaceCode;
 	if ($@) {  # eval error
 	    util::cdie("Invalid replace: $ReplaceCode\n");
 	}
-	util::dprint("Replace: $orig -> $tmp\n");
+	util::dprint("Replace: $orig -> $_\n");
     }
 
     if (@ARGV == 0 && $targets_loaded == 0) {
@@ -1840,7 +1843,7 @@ sub decide_type ($$) {
 muda($conf::SEARCH_FIELD, $conf::ON_MEMORY_MAX,
      $conf::WORD_LENG_MAX, $conf::TEXT_SIZE_MAX,
      $conf::DENY_REGEX, $var::INTSIZE,
-     $conf::CHASEN_MORPH, $conf::MHONARC_HEADER, $conf::CHASEN,
+     $conf::CHASEN_MORPH, $conf::CHASEN,
      $conf::KAKASI, $var::Opt{okurigana},
      $var::Opt{hiragana}, $conf::ROBOTS_EXCLUDE_URLS, $conf::DEFAULT_FILE,
      $conf::HTML_SUFFIX, $usage::USAGE_EN, $usage::USAGE_MINI, 

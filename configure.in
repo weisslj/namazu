@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.38 1999-10-21 01:30:30 rug Exp $
+dnl $Id: configure.in,v 1.39 1999-10-24 18:29:45 kenzo- Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -97,7 +97,7 @@ fi
 
 AC_ARG_WITH(
 	japanese,
-	[  --without-japanese      don't handle Japanese characters],
+	[  --without-japanese      do not handle Japanese characters],
 	[japanese=${withval}], [japanese='yes']
 )
 
@@ -193,12 +193,12 @@ ac_cv_path_MKNMZ="$bindir/mknmz"
 
 AC_ARG_WITH(
 	tknamazu,
-	[  --with-tknamazu         build namazu with tcl/tk front-end ],
+	[  --without-tknamazu      do not build namazu with tcl/tk front-end ],
 	[tknamazu=${withval}], [tknamazu='yes']
 )
 
 if test "${tknamazu}" = "no"; then
-    TKNAMAZU = ""
+    TKNAMAZU=""
 else
     AC_ARG_WITH(
 		wish,
@@ -256,7 +256,7 @@ else
             fi
             AC_ARG_WITH(
 				netscape,
-				[  --with-netscape=PATH       set netscape location [search path]],
+				[  --with-netscape=PATH    set netscape location [search path]],
 				AC_MSG_RESULT(using $with_netscape for netscape)
 				NETSCAPE = $with_netscape,
 				[AC_PATH_PROG(NETSCAPE, netscape, no)]
@@ -275,37 +275,46 @@ dnl *
 dnl * Checking File::MMagic module
 dnl *
 
-changequote(<<, >>)
-tmp=`$PERL -nle 'print \$1 if /^\\$VERSION = \"([\d\.]+)\";\$/' \
-	File-MMagic/MMagic.pm`
-dnl *
-dnl * tmp="10.0"  # for testing
-dnl *
-AC_MSG_CHECKING(for File::MMagic module)
+AC_ARG_WITH(
+	file-mmagic,
+	[  --without-file-mmagic   do not build file-mmagic perl module ],
+	[file_mmagic=${withval}], [file_mmagic='yes']
+)
 
-FILE_MMAGIC=""
-ADDITIONAL_INC="."  # dummy
-
-if test "$prefix" != "$ac_default_prefix"; then
-    FILE_MMAGIC_DIR="$prefix/share/namazu/perl5"
-    ADDITIONAL_INC="$FILE_MMAGIC_DIR"
-fi
-
-if $PERL -e "use File::MMagic $tmp" 1>/dev/null 2> /dev/null; then
-    AC_MSG_RESULT(yes)
+if test "${file_mmagic}" = "no"; then
+    FILE_MMAGIC=""
+	ADDITIONAL_INC="."  # dummy
 else
-    AC_MSG_RESULT(no)
-    AC_MSG_WARN(File::MMagic module not installed. preparing its Makefile.)
-    cd File-MMagic
-    if test "$prefix" != "$ac_default_prefix"; then
-        $PERL Makefile.PL LIB=$FILE_MMAGIC_DIR
-    else
-        $PERL Makefile.PL
-    fi
-    cd ..
-    FILE_MMAGIC="File-MMagic"
+	changequote(<<, >>)
+	tmp=`$PERL -nle 'print \$1 if /^\\$VERSION = \"([\d\.]+)\";\$/' \
+		File-MMagic/MMagic.pm`
+	# tmp="10.0"  # for testing
+	AC_MSG_CHECKING(for File::MMagic module)
+
+	FILE_MMAGIC=""
+	ADDITIONAL_INC="."  # dummy
+
+	if test "$prefix" != "$ac_default_prefix"; then
+	    FILE_MMAGIC_DIR="$prefix/share/namazu/perl5"
+	    ADDITIONAL_INC="$FILE_MMAGIC_DIR"
+	fi
+
+	if $PERL -e "use File::MMagic $tmp" 1>/dev/null 2> /dev/null; then
+	    AC_MSG_RESULT(yes)
+	else
+	    AC_MSG_RESULT(no)
+	    AC_MSG_WARN(File::MMagic module not installed. preparing its Makefile.)
+	    cd File-MMagic
+	    if test "$prefix" != "$ac_default_prefix"; then
+	        $PERL Makefile.PL LIB=$FILE_MMAGIC_DIR
+	    else
+	        $PERL Makefile.PL
+	    fi
+	    cd ..
+	    FILE_MMAGIC="File-MMagic"
+	fi
+	changequote([, ])
 fi
-changequote([, ])
 AC_SUBST(FILE_MMAGIC)
 AC_SUBST(ADDITIONAL_INC)
 

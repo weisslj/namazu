@@ -1,3 +1,12 @@
+1999-10-25  Ken-ichi Hirose <kenzo-@tama.or.jp>
+
+	* configure.in: Added --without-file-mmagic option.
+
+	* configure.in: change --with-tknamazu option 
+      to --without-tknamazu.
+
+	* src/usage.c: erase euctosjis(buf) for _WIN32 and __EMX__.
+
 1999-10-22  Ryuji Abe <raeva@t3.rim.or.jp>
 
 	* src/util.h [HAVE__VSNPRINTF]: Fixed macro definition.

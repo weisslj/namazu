@@ -2,7 +2,7 @@
  * 
  * usage.c -
  * 
- * $Id: usage.c,v 1.5 1999-10-13 22:49:01 satoru Exp $
+ * $Id: usage.c,v 1.6 1999-10-24 18:29:47 kenzo- Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
@@ -71,9 +71,6 @@ Usage: namazu [options] <query> [index ...] \n\
         --help           show this help and exit\n");
 
     strcpy(buf, _(usage));
-#if	defined(_WIN32) || defined(__EMX__)
-    euctosjis(buf);
-#endif
     printf(buf, VERSION, COPYRIGHT);
 }
 

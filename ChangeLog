@@ -1,3 +1,7 @@
+1999-10-27  Rei FURUKAWA  <furukawa@tcp-ip.or.jp>
+
+	* nmzidx.pl: Fixed lockfile related code
+
 1999-10-27  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
 	* src/usage.c (show_mini_usage): s/more options/more information/

@@ -1,5 +1,7 @@
 2000-04-04  Satoru Takabayashi  <satoru-t@is.aist-nara.ac.jp>
 
+	* tests/data/html-split/html-split.html: New file.
+
 	* tests/Makefile.am (TESTS): Add mknmz-7 and namazu-7.
 
 	* tests/namazu-7: New file.
@@ -5402,4 +5404,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.663 2000-04-04 07:18:04 satoru Exp $
+$Id: ChangeLog,v 1.664 2000-04-04 07:35:48 satoru Exp $

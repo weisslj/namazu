@@ -1,4 +1,4 @@
-$Id: TODO-namazu-2.0,v 1.26 2000-01-06 09:21:08 satoru Exp $
+$Id: TODO-namazu-2.0,v 1.27 2000-01-06 09:43:41 satoru Exp $
 
 検討項目
 
@@ -25,6 +25,8 @@ $Id: TODO-namazu-2.0,v 1.26 2000-01-06 09:21:08 satoru Exp $
 
 
 難しいができればやりたい課題
+
+  * インデックス作成の効率化 [namazu-dev 1088]
 
   * zlib でインデックスを圧縮
 

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: taro7_10.pl,v 1.7 2003-08-27 15:37:30 usu Exp $
+# $Id: taro7_10.pl,v 1.8 2003-09-29 11:18:19 usu Exp $
 # Copyright (C) 2003 Yukio USUDA
 #               2003 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -27,18 +27,19 @@ require 'util.pl';
 require 'gfilter.pl';
 
 my $perlver =$];
-$perlver =~ s/\.//;
-$perlver =~ m/^(\d\d\d\d)\d*$/;
 $perlver = 0;
-#$perlver = $1;
 
 sub mediatype() {
     return ('application/x-js-taro');
 }
 
 sub status() {
+    my $olepath = undef;
+    $olepath = util::checklib('OLE/Storage_Lite.pm');
+    return 'no' until $olepath;
+
+    return 'yes' if ($perlver >= 5.008);
     my $utfconvpath = undef;
-    return 'yes' if ($perlver >= 5008);
     $utfconvpath = util::checklib('unicode.pl');
     return 'yes' if $utfconvpath;
     return 'no'; 
@@ -76,67 +77,19 @@ sub taro7_10_filter($$$$$) {
       = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
     my $err = undef;
-    my $tmp = "";
-    my @data = unpack("C*", $$contref);
-    my $i = 0;
-    while ( $i <= $#data) {
-        if (pack("C", $data[$i]) eq "T") {
-            my $matchdata = "";
-            my $j = $i;
-            while ( $j <= ($i + 7)) {
-                $matchdata .= pack("C", $data[$j]);
-                $j++;
-            }
-            # This is magic word for search text data.
-            if ( $matchdata eq "TextV.01"){
-                my $textsizep = pack("C4", $data[$i+8], $data[$i+9],
-                                        $data[$i+10], $data[$i+11]);
-                my $textsize = unpack("N", $textsizep);
-                if (($i + $textsize)> $#data){
-                    $err = "File information (size of text data) have problem.";
-                    return $err;
-                }
-                my $k = 1;
-                while ( $k <= ($textsize * 2)) {
-                    $tmp .= pack("C", $data[$i + 11 + $k]);
-                    $k++;
-                }
-                $tmp .= pack("n", 10);
-                $i = $j + $k;
-            }
-        }elsif (pack("C", $data[$i]) eq "\x04") {
-            my $matchdata = "";
-            my $j = $i;
-            while ( $j <= ($i + 9)) {
-                $matchdata .= pack("C", $data[$j]);
-                $j++;
-            }
-            # This is magic word for search author's name.
-            # This may be imprecise definition.
-            if ( $matchdata eq pack("H20", "040000315c4f10620580")){
-                my $textsize =  $data[$i+80] - 2;
-                my $k = 1;
-                my $authorname = "";
-                while ( $k <= ($textsize)) {
-                    my $hbyte = pack("C", $data[$i + 95 + $k]);
-                    my $lbyte = pack("C", $data[$i + 95 + $k +1 ]);
-                    $authorname .= $lbyte . $hbyte;
-                    $k += 2;
-                }
-                taro7_10::u16toe(\$authorname);
-                $authorname =~ s/\x00//g;
-                codeconv::normalize_eucjp(\$authorname);
-                $fields->{'author'} = $authorname;
-            }
-        }
-        $i++;
-    }
 
-    taro7_10::remove_ctlcodearea(\$tmp);
-    taro7_10::u16toe(\$tmp);
-    $tmp =~ s/\x00//g;
-    codeconv::normalize_eucjp(\$tmp);
-    $$contref = $tmp;
+    eval 'use OLE::Storage_Lite';
+    my $oleobject = OLE::Storage_Lite->new($contref);
+    return (undef) unless($oleobject);
+    my ($authorname, $title) = getinfo($oleobject);
+    codeconv::normalize_eucjp(\$authorname);
+    codeconv::normalize_eucjp(\$title);
+    $fields->{'author'} = $authorname;
+    $fields->{'title'} = $title;
+
+    my $content = getcontent($oleobject);
+    codeconv::normalize_eucjp(\$content);
+    $$contref = $content;
 
     gfilter::line_adjust_filter($contref);
     gfilter::line_adjust_filter($weighted_str);
@@ -146,6 +99,66 @@ sub taro7_10_filter($$$$$) {
     gfilter::show_filter_debug_info($contref, $weighted_str,
                $fields, $headings);
     return undef;
+}
+
+sub byteswap($) {
+    my($tmp)=@_;
+    $$tmp = pack("n".length($$tmp)*2, unpack("v".length($$tmp)*2,$$tmp));
+}
+
+sub getinfo($) {
+    my($oleobject)=@_;
+    my @pps = $oleobject->getPpsSearch(
+            [OLE::Storage_Lite::Asc2Ucs("\x04JSRV_SummaryInformation")], 1, 1);
+    return (undef) if($#pps < 0);
+    my $author = undef;
+    my $title = undef;
+    my $position;
+    if ($pps[0]->{Data}) {
+        if ($pps[0]->{Data} =~ /\x02\x00\x00\x31\x8b\x89\xfa\x51\x57\x30/g) {
+            $position = pos($pps[0]->{Data});
+            my $title_length = unpack("v", substr($pps[0]->{Data}, 
+                                       $position + 70, 2));
+            $title = substr($pps[0]->{Data}, 
+                      $position + 86, $title_length);
+        }
+        if ($pps[0]->{Data} =~ /\x04\x00\x00\x31\x5c\x4f\x10\x62\x05\x80/g) {
+            $position = pos($pps[0]->{Data});
+            my $author_length = unpack("v", substr($pps[0]->{Data}, 
+                                       $position + 70, 2));
+            $author = substr($pps[0]->{Data}, 
+                             $position + 86, $author_length);
+        }
+    }
+    taro7_10::byteswap(\$author);
+    taro7_10::u16toe(\$author);
+    $author =~ s/[\x00\x0E\x0c]//g;
+
+    taro7_10::byteswap(\$title);
+    taro7_10::u16toe(\$title);
+    $title =~ s/[\x00\x0E\x0c]//g;
+
+    return ($author, $title);
+}
+
+sub getcontent($) {
+    my($oleobject)=@_;
+    my @pps = $oleobject->getPpsSearch(
+            [OLE::Storage_Lite::Asc2Ucs('DocumentText')], 1, 1);
+    return (undef) if($#pps < 0);
+    my $content="";
+    for my $i (0..$#pps) {
+        if ($pps[$i]->{Data}) {
+            my $size = unpack("N", substr($pps[$i]->{Data}, 0x1c, 4)) * 2;
+            my $buf = substr($pps[$i]->{Data}, 0x20, $size);
+            taro7_10::remove_ctlcodearea(\$buf);
+            $content .= $buf . "\x00\x0a";
+        }
+    }
+    u16toe(\$content);
+    $content =~ s/[\x00\x0E\x0c]//g;
+    $content =~ s/\xa1\xa1//g;
+    return $content;
 }
 
 sub remove_ctlcodearea($){
@@ -177,7 +190,7 @@ sub remove_ctlcodearea($){
 
 # convert utf-16 to euc
 # require Perl5.8 or unicode.pl
-sub u16toe ($) {
+sub u16toe($) {
     my ($tmp) = @_;
     if ($perlver >= 5008){
         eval 'use Encode;';

@@ -1,3 +1,9 @@
+003-09-29  Yukio USUDA <usu@namazu.org>
+
+        * filter/taro7_10.pl: Change to use OLE-Storage_Lite perl module.
+
+        * doc/{en,ja}/manual.html: Add OLE-Storage_Lite URI.
+
 2003-09-23  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* scripts/mknmz.in: Added --check-filesize option for
@@ -8187,4 +8193,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1057 2003-09-23 07:34:21 knok Exp $
+$Id: ChangeLog,v 1.1058 2003-09-29 11:18:14 usu Exp $

@@ -72,5 +72,5 @@ global: HTAGS
 HTAGS: GTAGS
 	htags
 
-GTAGS:
+GTAGS: stamp-h
 	gtags

@@ -2,8 +2,8 @@
 
   util.h -
 
-  $Author: rug $
-  $Date: 1999-10-22 14:03:51 $
+  $Author: knok $
+  $Date: 1999-11-08 05:06:06 $
   created at: Thu Mar  9 11:55:53 JST 1995
 
   Copyright (C) 1993-1998 Yukihiro Matsumoto

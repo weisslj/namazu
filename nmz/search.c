@@ -2,7 +2,7 @@
  * 
  * search.c -
  * 
- * $Id: search.c,v 1.22 1999-10-13 08:19:57 satoru Exp $
+ * $Id: search.c,v 1.1 1999-11-08 05:06:06 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.

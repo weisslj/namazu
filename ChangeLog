@@ -1,3 +1,7 @@
+1999-11-08  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* src/Makefile.am: Fixed conflicts.
+
 1999-11-06  Ryuji Abe  <raeva@t3.rim.or.jp>
 
 	* nmz-config.in (--cflags): Always output @pkgincludedir@.
@@ -11,6 +15,12 @@
  
 1999-11-05  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
+	* src/{codeconv.c codeconv.h conf.c 
+	conf.h critical.h field.c field.h hlist.c hlist.h 
+	idxname.c idxname.h magic.h parser.c perser.h re.c re.h 
+	regex.c regex.h search.c search.h seed.c util.c util.h 
+	var.c var.h wakati.c wakati.h} : Moved to nmz/ directory.
+	
 	* nmz/Makefile.am: Changed `include_HEADERS' to `pkginclude_HEADERS'.
 
 1999-11-05  Masao Takaku  <masao@ulis.ac.jp>

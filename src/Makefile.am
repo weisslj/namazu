@@ -22,6 +22,8 @@ indexdir    = $(localstatedir)/$(PACKAGE)/index
 perllibdir  = $(pkgdatadir)/pl
 templatedir = $(pkgdatadir)/template
 
+##################################################################
+
 DEFS = -DLOCALEDIR=\"$(localedir)\" \
        -DOPT_CONFDIR=\"$(confdir)\" \
        -DOPT_INDEXDIR=\"$(indexdir)\" \
@@ -29,14 +31,14 @@ DEFS = -DLOCALEDIR=\"$(localedir)\" \
 INCLUDES  = -I.. -I../intl -I../lib -I../nmz
 LDADD = @INTLLIBS@ ../lib/libnmzut.a $(top_srcdir)/nmz/libnmz.la
 
-namazu_SOURCES = cgi.c codeconv.c conf.c field.c form.c \
-		 hlist.c i18n.c namazu.c output.c \
-		 parser.c re.c result.c search.c seed.c util.c \
-		 usage.c var.c wakati.c idxname.c \
-		 cgi.h codeconv.h conf.h critical.h em.h field.h form.h \
-		 hlist.h i18n.h magic.h message.h namazu.h output.h \
-		 parser.h re.h result.h search.h \
-		 usage.h  util.h wakati.h var.h idxname.h
+namazu_SOURCES = cgi.c form.c \
+		 i18n.c namazu.c output.c \
+		 result.c \
+		 usage.c \
+		 cgi.h em.h form.h \
+		 i18n.h message.h namazu.h output.h \
+		 result.h \
+		 usage.h
 
 SUFFIXES = .pl
 .pl:

@@ -2,7 +2,7 @@
  * 
  * idxname.h - header files for Idx handling.
  *
- * $Id: idxname.h,v 1.1 1999-10-13 08:30:42 knok Exp $
+ * $Id: idxname.h,v 1.1 1999-11-08 05:06:05 knok Exp $
  * 
  * 
  */

@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.25 1999-11-01 14:13:19 satoru Exp $
+ * $Id: hlist.c,v 1.1 1999-11-08 05:06:04 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.

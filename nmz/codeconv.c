@@ -2,7 +2,7 @@
  * 
  * codeconv.c -
  * 
- * $Id: codeconv.c,v 1.7 1999-10-11 04:25:23 satoru Exp $
+ * $Id: codeconv.c,v 1.1 1999-11-08 05:06:03 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.

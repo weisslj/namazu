@@ -2,7 +2,7 @@
  * 
  * wakati.c -
  * 
- * $Id: wakati.c,v 1.8 1999-10-11 04:25:30 satoru Exp $
+ * $Id: wakati.c,v 1.1 1999-11-08 05:06:07 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi  All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.

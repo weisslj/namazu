@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: html.pl,v 1.41 2003-10-07 06:38:17 opengl2772 Exp $
+# $Id: html.pl,v 1.42 2004-03-09 20:43:03 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -144,9 +144,12 @@ sub escape_lt_gt ($) {
 sub get_author ($$) {
     my ($contref, $fields) = @_;
 
+    # <META NAME="AUTHOR" CONTENT="author">
     # <LINK REV=MADE HREF="mailto:ccsatoru@vega.aichi-u.ac.jp">
 
-    if ($$contref =~ m!<LINK\s[^>]*?HREF=([\"\'])mailto:(.*?)\1\s*>!i) { #"
+    if ($$contref =~ m!<META\s[^>]*?NAME=([\"\']?)AUTHOR\1\s[^>]*?CONTENT=([\"\']?)(.*?)\2\s*>!is) {
+        $fields->{'author'} = $3;
+    } elsif ($$contref =~ m!<LINK\s[^>]*?HREF=([\"\']?)mailto:(.*?)\1\s*>!i) {
 	    $fields->{'author'} = $2;
     } elsif ($$contref =~ m!.*<ADDRESS[^>]*>(.*?)</ADDRESS>!is) {
 	my $tmp = $1;
@@ -198,13 +201,16 @@ sub get_meta_tags ($$$) {
     if ($var::Opt{'meta'}) {
 	my @keys = split '\|', $conf::META_TAGS;
 	for my $key (@keys) {
-	    while ($$contref =~ /<meta\s+name\s*=\s*([\'\"]?)$key #"
-	       \1\s+[^>]*content\s*=\s*([\'\"]?)([^>]*?)\2[^>]*>/gix) 
-	    {
-		$fields->{$key} .= $3 . " ";
-	    }
-	    util::dprint("meta: $key: $fields->{$key}\n") 
-		if defined $fields->{$key};
+            if ($key !~ m/^author$/i) {
+                my $quotekey = quotemeta($key);
+	        while ($$contref =~ /<meta\s+name\s*=\s*([\'\"]?)$quotekey #"
+	           \1\s+[^>]*content\s*=\s*([\'\"]?)([^>]*?)\2[^>]*>/gix) 
+	        {
+		    $fields->{$key} .= $3 . " ";
+	        }
+	        util::dprint("meta: $key: $fields->{$key}\n") 
+		    if defined $fields->{$key};
+            }
 	}
     }
 }
@@ -305,6 +311,9 @@ sub element_space ($) {
 # remove all HTML elements. it's not perfect but almost works.
 sub remove_html_elements ($) {
     my ($contref) = @_;
+
+    # remove Office Markup <o:></o:>, <![]>
+    $$contref =~ s#</?([A-Z]\w*):.*?>|<(!)\[.*?\]\s*>#element_space($1||$2)#gsixe;
 
     # remove all elements
     $$contref =~ s!</?([A-Z]\w*)(?:\s+[A-Z]\w*(?:\s*=\s*(?:(["']).*?\2|[\w\-.]+))?)*\s*>!element_space($1)!gsixe;

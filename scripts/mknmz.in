@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.133 2004-03-07 09:47:17 usu Exp $
+# $Id: mknmz.in,v 1.134 2004-03-09 20:43:05 opengl2772 Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -37,6 +37,7 @@ use strict;  # be strict since v1.2.0
 use Getopt::Long;
 use File::Copy;
 use DirHandle;
+use File::Basename;
 
 use vars qw($SYSTEM);
 $SYSTEM = $^O;
@@ -574,12 +575,19 @@ sub namazu_core ($$$$$$$$$$) {
 	print $msg_prefix . "$uri [$mtype]\n";
     }
 
+    # Add filename.
+    my $filename = defined $cfile ? $cfile : '';
+    codeconv::toeuc(\$filename);
+    $filename = basename($filename);
+    $fields{'filename'} = $filename;
+
     complete_field_info(\%fields, $cfile, $uri, 
 			\$headings, \$content, \$weighted_str);
     clean_field_index(\%fields);
     put_field_index(\%fields, $field_indices);
 
     put_dateindex($cfile, $fields{'mtime'});
+    $content .= " $filename ";
     $content .= $weighted_str;   # add weights
     $Indexer->init(\$content, $conf::WORD_LENG_MAX, $var::Opt{'nosymbol'});
     $Indexer->noedgesymbol() if ($var::Opt{'noedgesymbol'});
@@ -790,7 +798,13 @@ sub put_field_index (\%$) {
 
     my @keys = split '\|', $conf::SEARCH_FIELD;
     if ($var::Opt{'meta'}) {
-	push @keys, (split '\|', $conf::META_TAGS);
+        my @meta = split '\|', $conf::META_TAGS;
+        while (my $meta = shift(@meta)) {
+            $meta = $conf::FIELD_ALIASES{$meta}
+                if (defined $conf::FIELD_ALIASES{$meta});
+
+            push @keys, $meta;
+        }
 
         # uniq @keys
         my %mark = ();
@@ -1421,7 +1435,9 @@ sub absolute_path($$) {
     if (($SYSTEM eq "MSWin32") || ($SYSTEM eq "os2")) {
 	    $path =~ s!([\x81-\x9f\xe0-\xef][\x40-\x7e\x80-\xfc]|[\x01-\x7f])!
 	    $1 eq "\\" ? "/" : $1!gex;
-        $path =~ s,^([A-Z](?!:/)),$cwd/$1,i;
+         if ($path !~ m!^[A-Z]:/!i) {
+             $path = "$cwd/$path";
+         }
     } else {
         $path =~ s!^([^/])!$cwd/$1!; 
     }
@@ -1960,7 +1976,7 @@ sub update_dateindex () {
 sub update_field_index () {
     my @list = glob "$var::NMZ{'field'}.*.tmp";
     for my $tmp (@list) {
-	if ($tmp =~ m!((^.*/NMZ\.field\.[^\.]+(?:\.i)?)\.tmp)!) {
+	if ($tmp =~ m!((^.*/NMZ\.field\..+?(?:\.i)?)\.tmp$)!) {
 	    my $fname_tmp = $1;
 	    my $fname_out = $2;
 	    {

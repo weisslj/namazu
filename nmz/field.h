@@ -1,7 +1,7 @@
 #ifndef _FIELD_H
 #define _FIELD_H
 
-#define FIELD_SAFE_CHARS "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_"
+#define FIELD_SAFE_CHARS "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_."
 
 enum {
     FIELD_CACHE_SIZE = 8        /* Size of field caches */

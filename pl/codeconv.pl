@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: codeconv.pl,v 1.17 2004-01-30 15:04:39 usu Exp $
+# $Id: codeconv.pl,v 1.18 2004-03-09 20:43:03 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -159,12 +159,23 @@ sub eucjp_zen2han_ascii ($) {
     }
     $str;
 }
+
+sub eucjp_zen_spc2han_spc ($) {
+    my ($str) = @_;
+    if (util::islang("ja")) {         
+	$str =~ s/([\xa1-\xfe][\xa1-\xfe]|\x8e[\xa1-\xdf]|\x8f[\xa1-\xfe][\xa1-\xfe])/
+	my $tmp = $1;
+	$tmp =~ m!\xa1\xa1! ? " " : $tmp/gse;    
+    }
+    $str;
+}
  
 sub normalize_eucjp ($) {
     my ($contref) = @_;
     if (util::islang("ja")) {
         $$contref = codeconv::eucjp_han2zen_kana($$contref);
         $$contref = codeconv::eucjp_zen2han_ascii($$contref);
+        $$contref = codeconv::eucjp_zen_spc2han_spc($$contref);
     }
     $contref;
 }

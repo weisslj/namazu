@@ -5,6 +5,9 @@
 
 	* filter/mp3.pl: Remove unnecessary code.
 
+	* filter/mailnews.pl: Add ALLOW_FILE, DENY_FILE check
+	before nestingfilter process. 
+
 2004-05-07  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* filter/{zip, lha, tar}.pl: A random number is used for the 
@@ -8854,4 +8857,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1175 2004-05-08 13:19:47 usu Exp $
+$Id: ChangeLog,v 1.1176 2004-05-08 13:49:51 usu Exp $

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mailnews.pl,v 1.31 2004-02-07 08:33:13 usu Exp $
+# $Id: mailnews.pl,v 1.32 2004-05-08 13:49:52 usu Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -398,6 +398,15 @@ sub nesting_filter ($$$$){
     }
     util::dprint("((Attached filename: $filename))\n");
 
+    if ($filename =~ m!^($conf::DENY_FILE)$!i ) {
+	util::vprint(sprintf(_("Denied:	%s"), $filename));
+	$err = "Denied file.";
+	return $err;
+    } elsif ($filename !~ m!^($conf::ALLOW_FILE)$!i) {
+	util::vprint(sprintf(_("Not allowed:	%s"), $filename));
+	$err = "Not allowed file.";
+	return $err;
+    }
     #if ($mmtype =~ m!application/octet-stream!){
 	$mmtype = undef;
     #}

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: ooo.pl,v 1.14 2004-12-27 17:30:57 opengl2772 Exp $
+# $Id: ooo.pl,v 1.15 2005-04-17 13:14:16 usu Exp $
 # Copyright (C) 2003 Yukio USUDA 
 #               2003,2004 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -38,7 +38,11 @@ sub mediatype() {
     return ('application/vnd.sun.xml.writer',
             'application/vnd.sun.xml.calc',
             'application/vnd.sun.xml.impress',
-            'application/vnd.sun.xml.draw');
+            'application/vnd.sun.xml.draw',
+            'application/vnd.oasis.opendocument.text',
+            'application/vnd.oasis.opendocument.spreadsheet',
+            'application/vnd.oasis.opendocument.presentation',
+            'application/vnd.oasis.opendocument.graphics');
 }
 
 sub status() {
@@ -85,6 +89,11 @@ sub add_magic ($) {
     $magic->addFileExts('\\.sxc', 'application/vnd.sun.xml.calc');
     $magic->addFileExts('\\.sxi', 'application/vnd.sun.xml.impress');
     $magic->addFileExts('\\.sxd', 'application/vnd.sun.xml.draw');
+
+    $magic->addFileExts('\\.odt', 'application/vnd.oasis.opendocument.text');
+    $magic->addFileExts('\\.ods', 'application/vnd.oasis.opendocument.spreadsheet');
+    $magic->addFileExts('\\.odp', 'application/vnd.oasis.opendocument.presentation');
+    $magic->addFileExts('\\.odg', 'application/vnd.oasis.opendocument.graphics');
     return;
 }
 

@@ -1,3 +1,14 @@
+2005-04-17  Yukio USUDA <usu@namazu.org>
+
+	* filter/ooo.pl: Added file extension for OpenOffice2.0 
+	file.
+ 
+	* pl/conf.pl.in: Added file extension for OpenOffice2.0
+	file.
+
+	* tests/data/ja/{oowriter.odt, oocalc.ods, oodraw.odg,
+	ooimpress.odp}: Added new file for testsuite.
+
 2005-02-22  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* scripts/mknmz.in (make_slog_file): Removed chmod 666.
@@ -9340,4 +9351,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1290 2005-02-21 23:27:32 knok Exp $
+$Id: ChangeLog,v 1.1291 2005-04-17 13:14:15 usu Exp $

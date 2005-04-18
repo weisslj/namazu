@@ -1,3 +1,8 @@
+2005-04-19  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+	* pl/codeconv.pl: Add new subroutine. (remove_control_char, 
+	codeconv_document, normalize_eucjp_document)
+
 2005-04-17  Yukio USUDA <usu@namazu.org>
 
 	* filter/ooo.pl: Added file extension for OpenOffice2.0 
@@ -9351,4 +9356,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1291 2005-04-17 13:14:15 usu Exp $
+$Id: ChangeLog,v 1.1292 2005-04-18 18:00:05 opengl2772 Exp $

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: ichitaro456.pl,v 1.12 2004-10-20 10:01:18 opengl2772 Exp $
+# $Id: ichitaro456.pl,v 1.13 2005-06-03 04:17:16 opengl2772 Exp $
 # Copyright (C) 1999 Ken-ichi Hirose,
 #               2000-2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -120,7 +120,8 @@ sub filter ($$$$$) {
 
     unlink($tmpfile);
 
-    codeconv::toeuc($cont);
+    #codeconv::toeuc($cont);
+    codeconv::codeconv_document($cont);
 
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);

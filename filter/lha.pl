@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: lha.pl,v 1.10 2004-11-24 18:07:49 opengl2772 Exp $
+# $Id: lha.pl,v 1.11 2005-06-03 04:21:21 opengl2772 Exp $
 #  lha filter for namazu
 #  Copyright (C) 2004 Tadamasa Teranishi,
 #                2004 MATSUMURA Namihiko <po-jp@counterghost.net>,
@@ -134,11 +134,13 @@ sub filter_lha_msdos ($$$$$) {
             my $name = $2;
             $files{$name} = $1;
             my $fname = "./" . $name;
-            codeconv::toeuc(\$fname);
+            # codeconv::toeuc(\$fname);
+            codeconv::codeconv_document(\$fname);
             $fname = gfilter::filename_to_title($fname, $weighted_str);
             $$contref .= $fname . " ";
 
-            codeconv::toeuc(\$name);
+            # codeconv::toeuc(\$name);
+            codeconv::codeconv_document(\$name);
             util::vprint("lha: $name");
         }
     } else {
@@ -196,11 +198,13 @@ sub filter_lha_unix ($$$$$) {
             my $name = $2;
             $files{$name} = $1;
             my $fname = "./" . $name;
-            codeconv::toeuc(\$fname);
+            # codeconv::toeuc(\$fname);
+            codeconv::codeconv_document(\$fname);
             $fname = gfilter::filename_to_title($fname, $weighted_str);
             $$contref .= $fname . " ";
 
-            codeconv::toeuc(\$name);
+            # codeconv::toeuc(\$name);
+            codeconv::codeconv_document(\$name);
             util::vprint("lha: $name");
         }
     } else {
@@ -219,10 +223,12 @@ sub filter_lha_unix ($$$$$) {
         } elsif ($size > $conf::FILE_SIZE_MAX) {
             util::dprint("$fname: Too large lhaed file");
 	} elsif ($fname =~ m!^($conf::DENY_FILE)$!i ) {
-	    codeconv::toeuc(\$fname);
+	    # codeconv::toeuc(\$fname);
+            codeconv::codeconv_document(\$fname);
 	    util::vprint(sprintf(_("Denied:	%s"), $fname));
 	} elsif ($fname !~ m!^($conf::ALLOW_FILE)$!i) {
-	    codeconv::toeuc(\$fname);
+	    # codeconv::toeuc(\$fname);
+            codeconv::codeconv_document(\$fname);
 	    util::vprint(sprintf(_("Not allowed:	%s"), $fname));
         } else {
             my $tmpfile3 = util::tmpnam('NMZ.lha.file');

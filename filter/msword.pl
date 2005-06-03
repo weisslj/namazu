@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: msword.pl,v 1.56 2004-11-26 15:23:44 opengl2772 Exp $
+# $Id: msword.pl,v 1.57 2005-06-03 04:21:21 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi,
 #               2000-2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -442,7 +442,8 @@ sub getSummaryInfo ($$$$$) {
     if ($codepage eq "fffffde9") { 
         utf8_to_eucjp(\$summary);
     } else {
-        codeconv::toeuc(\$summary);
+        # codeconv::toeuc(\$summary);
+        codeconv::codeconv_document(\$summary);
     }
 
     if ($summary =~ /^The title is (.*)$/m) {

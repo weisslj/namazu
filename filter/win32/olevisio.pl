@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: olevisio.pl,v 1.4 2004-10-16 14:54:13 opengl2772 Exp $
+# $Id: olevisio.pl,v 1.5 2005-06-03 04:21:22 opengl2772 Exp $
 # Copyright (C) 2004 Tadamasa Teranishi,
 #               2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -154,7 +154,8 @@ sub ReadDocument ($$$$$) {
     my $err = ReadVISIO($tmpfile, $cont, $fields, $weighted_str, $headings);
     unlink $tmpfile;
 
-    codeconv::toeuc($cont);
+    # codeconv::toeuc($cont);
+    codeconv::codeconv_document($cont);
 
     return $err;
 }

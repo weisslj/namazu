@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: tar.pl,v 1.7 2004-11-24 18:07:49 opengl2772 Exp $
+# $Id: tar.pl,v 1.8 2005-06-03 04:21:21 opengl2772 Exp $
 #  tar filter for namazu
 #  Copyright (C) 2004 Tadamasa Teranishi,
 #                2004 Namazu Project All rights reserved.
@@ -118,11 +118,13 @@ sub filter_gtar ($$$$$) {
             my $name = $2;
             $files{$name} = $1;
             my $fname = "./" . $name;
-            codeconv::toeuc(\$fname);
+            # codeconv::toeuc(\$fname);
+            codeconv::codeconv_document(\$fname);
             $fname = gfilter::filename_to_title($fname, $weighted_str);
             $$contref .= $fname . " ";
 
-            codeconv::toeuc(\$name);
+            # codeconv::toeuc(\$name);
+            codeconv::codeconv_document(\$name);
             util::vprint("tar: $name");
         }
     } else {
@@ -139,10 +141,12 @@ sub filter_gtar ($$$$$) {
         } elsif ($size > $conf::FILE_SIZE_MAX) {
             util::dprint("$fname: Too large tared file");
 	} elsif ($fname =~ m!^($conf::DENY_FILE)$!i ) {
-	    codeconv::toeuc(\$fname);
+	    # codeconv::toeuc(\$fname);
+            codeconv::codeconv_document(\$fname);
 	    util::vprint(sprintf(_("Denied:	%s"), $fname));
 	} elsif ($fname !~ m!^($conf::ALLOW_FILE)$!i) {
-	    codeconv::toeuc(\$fname);
+	    # codeconv::toeuc(\$fname);
+            codeconv::codeconv_document(\$fname);
 	    util::vprint(sprintf(_("Not allowed:	%s"), $fname));
         } else {
             my $tmpfile3 = util::tmpnam('NMZ.tar.file');
@@ -217,11 +221,13 @@ sub filter_archive_tar ($$$$$) {
         $files{$name} = $size;
 
         my $fname = "./" . $name;
-        codeconv::toeuc(\$fname);
+        # codeconv::toeuc(\$fname);
+        codeconv::codeconv_document(\$fname);
         $fname = gfilter::filename_to_title($fname, $weighted_str);
         $$contref .= $fname . " ";
 
-        codeconv::toeuc(\$name);
+        # codeconv::toeuc(\$name);
+        codeconv::codeconv_document(\$name);
         util::vprint("tar: $name");
     }
 
@@ -232,10 +238,12 @@ sub filter_archive_tar ($$$$$) {
         } elsif ($size > $conf::FILE_SIZE_MAX) {
             util::dprint("$fname: Too large tared file");
 	} elsif ($fname =~ m!^($conf::DENY_FILE)$!i ) {
-	    codeconv::toeuc(\$fname);
+	    # codeconv::toeuc(\$fname);
+            codeconv::codeconv_document(\$fname);
 	    util::vprint(sprintf(_("Denied:	%s"), $fname));
 	} elsif ($fname !~ m!^($conf::ALLOW_FILE)$!i) {
-	    codeconv::toeuc(\$fname);
+	    # codeconv::toeuc(\$fname);
+            codeconv::codeconv_document(\$fname);
 	    util::vprint(sprintf(_("Not allowed:	%s"), $fname));
         } else {
             my $con = $tar->get_content($fname);

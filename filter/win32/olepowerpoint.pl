@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: olepowerpoint.pl,v 1.18 2004-10-11 08:53:31 opengl2772 Exp $
+# $Id: olepowerpoint.pl,v 1.19 2005-06-03 04:21:22 opengl2772 Exp $
 # Copyright (C) 1999 Jun Kurabe,
 #               1999 Ken-ichi Hirose,
 #               2004 Namazu Project All rights reserved.
@@ -206,7 +206,8 @@ sub ReadDocument ($$$$) {
     my $err = ReadPPT::ReadPPT($tmpfile, $cont, $fields, $weighted_str);
     unlink $tmpfile;
 
-    codeconv::toeuc($cont);
+    # codeconv::toeuc($cont);
+    codeconv::codeconv_document($cont);
 
     return $err;
 }

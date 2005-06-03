@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: man.pl,v 1.35 2004-11-26 15:23:44 opengl2772 Exp $
+# $Id: man.pl,v 1.36 2005-06-03 04:21:21 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu ,
 #               2000-2004 Namazu Project All rights reserved.
@@ -136,7 +136,8 @@ sub filter ($$$$$) {
     }
     unlink $tmpfile;
 
-    codeconv::toeuc($cont);
+    # codeconv::toeuc($cont);
+    codeconv::codeconv_document($cont);
 
     man_filter($cont, $weighted_str, $fields);
 

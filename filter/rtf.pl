@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: rtf.pl,v 1.17 2004-11-26 15:23:44 opengl2772 Exp $
+# $Id: rtf.pl,v 1.18 2005-06-03 04:21:21 opengl2772 Exp $
 # Copyright (C) 2003-2004 Tadamasa Teranishi All rights reserved.
 #               2003-2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -159,7 +159,8 @@ sub filter_rtf2html ($$$$$) {
     }
     unlink $tmpfile;
 
-    codeconv::toeuc($cont);
+    # codeconv::toeuc($cont);
+    codeconv::codeconv_document($cont);
 
     # Title shoud be removed.
     $$cont =~ s!<TITLE.*?>.*?</TITLE>!!is;

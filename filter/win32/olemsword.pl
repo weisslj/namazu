@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: olemsword.pl,v 1.17 2004-10-11 08:53:31 opengl2772 Exp $
+# $Id: olemsword.pl,v 1.18 2005-06-03 04:21:22 opengl2772 Exp $
 # Copyright (C) 1999 Jun Kurabe,
 #		1999-2000 Ken-ichi Hirose,
 #               2004 Namazu Project All rights reserved.
@@ -213,7 +213,8 @@ sub ReadDocument ($$$$) {
     my $err = ReadMSWord::ReadMSWord($tmpfile, $cont, $fields, $weighted_str);
     unlink $tmpfile;
 
-    codeconv::toeuc($cont);
+    # codeconv::toeuc($cont);
+    codeconv::codeconv_document($cont);
 
     return $err;
 }

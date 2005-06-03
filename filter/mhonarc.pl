@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mhonarc.pl,v 1.31 2004-11-26 15:23:44 opengl2772 Exp $
+# $Id: mhonarc.pl,v 1.32 2005-06-03 04:21:21 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu ,
 #               2002 Earl Hood ,
@@ -160,18 +160,21 @@ sub load_mhonarc_fields {
 
     if ($mha_head =~ /<!--X-Subject: ([^-]+) -->/) {
 	my $subject = uncommentize($1);
-        codeconv::toeuc(\$subject);
+        # codeconv::toeuc(\$subject);
+        codeconv::codeconv_document(\$subject);
 	1  while ($subject =~ s/\A\s*(re|sv|fwd|fw)[\[\]\d]*[:>-]+\s*//i);
 	$subject =~ s/\A\s*\[[^\]]+\]\s*//;
 	$fields->{'subject'} = $subject;
     }
     if ($mha_head =~ /<!--X-From-R13: ([^-]+) -->/) {
         my $from = mrot13(uncommentize($1));
-        codeconv::toeuc(\$from);
+        # codeconv::toeuc(\$from);
+        codeconv::codeconv_document(\$from);
         $fields->{'from'} = $from;
     } elsif ($mha_head =~ /<!--X-From: ([^-]+) -->/) {
         my $from = uncommentize($1);
-        codeconv::toeuc(\$from);
+        # codeconv::toeuc(\$from);
+        codeconv::codeconv_document(\$from);
         $fields->{'from'} = $from;
     }
     if ($mha_head =~ /<!--X-Message-Id: ([^-]+) -->/) {

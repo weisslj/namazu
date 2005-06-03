@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: pdf.pl,v 1.40 2004-12-08 01:36:00 opengl2772 Exp $
+# $Id: pdf.pl,v 1.41 2005-06-03 04:21:21 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu ,
 #               2000-2004 Namazu Project All rights reserved.
@@ -158,7 +158,8 @@ sub filter ($$$$$) {
         util::fclose($fh);
     }
 
-    codeconv::toeuc($cont);
+    # codeconv::toeuc($cont);
+    codeconv::codeconv_document($cont);
 
     if (defined $pdfinfopath) {
         my @cmd = ($pdfinfopath, @pdfinfoopts, $tmpfile);

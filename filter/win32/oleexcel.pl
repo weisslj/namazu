@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: oleexcel.pl,v 1.23 2004-10-20 10:01:18 opengl2772 Exp $
+# $Id: oleexcel.pl,v 1.24 2005-06-03 04:21:22 opengl2772 Exp $
 # Copyright (C) 2001 Yoshinori TAKESAKO,
 #               1999 Jun Kurabe,
 #               1999 Ken-ichi Hirose,
@@ -209,7 +209,8 @@ sub ReadDocument ($$$$$) {
     my $err = ReadExcel($tmpfile, $cont, $weighted_str, $headings, $fields);
     unlink($tmpfile);
 
-    codeconv::toeuc($cont);
+    # codeconv::toeuc($cont);
+    codeconv::codeconv_document($cont);
 
     # TEXT_SIZE_MAX
     my $text_size_max = $conf::TEXT_SIZE_MAX;

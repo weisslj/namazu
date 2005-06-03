@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mailnews.pl,v 1.36 2004-11-24 18:07:49 opengl2772 Exp $
+# $Id: mailnews.pl,v 1.37 2005-06-03 04:21:21 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu ,
 #               2001,2003,2004 Namazu Project All rights reserved.
@@ -393,7 +393,8 @@ sub nesting_filter ($$$$){
 	if ($tmp) {
 	    $tmp =~ s/%(\w\w)/chr(hex($1))/eg;
 	    $filename = $tmp;
-	    codeconv::toeuc(\$filename);
+	    # codeconv::toeuc(\$filename);
+            codeconv::codeconv_document(\$filename);
 	}else {
 	    $filename =~ s/filename.*=//;
 	}

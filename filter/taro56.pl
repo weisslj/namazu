@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: taro56.pl,v 1.6 2004-05-21 11:58:37 opengl2772 Exp $
+# $Id: taro56.pl,v 1.7 2005-06-03 04:21:21 opengl2772 Exp $
 # Copyright (C) 2003 Yukio USUDA
 #               2003,2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -70,7 +70,8 @@ sub taro56filter ($$$$$) {
 
     my $title = substr($$cont, 0x40, 64);
     $title =~ s/\x00//g;
-    codeconv::toeuc(\$title);
+    # codeconv::toeuc(\$title);
+    codeconv::codeconv_document(\$title);
     $fields->{'title'} = $title;
 
     my @data = unpack("C*", $$cont);
@@ -125,7 +126,8 @@ sub taro56filter ($$$$$) {
 
     $$cont = $tmp;
 
-    codeconv::toeuc($cont);
+    # codeconv::toeuc($cont);
+    codeconv::codeconv_document($cont);
 
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);

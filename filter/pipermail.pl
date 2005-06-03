@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: pipermail.pl,v 1.9 2004-11-19 16:16:02 opengl2772 Exp $
+# $Id: pipermail.pl,v 1.10 2005-06-03 04:21:21 opengl2772 Exp $
 # Copyright (C) 2004 Namazu Project All rights reserved.
 #
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -116,7 +116,8 @@ sub pipermail_filter ($$$) {
                 my $title = $1;
                 decode_entity(\$title);
                 $title = uncommentize($title);
-                codeconv::toeuc(\$title);
+                # codeconv::toeuc(\$title);
+                codeconv::codeconv_document(\$title);
 
                 1  while ($title =~ s/\A\s*(re|sv|fwd|fw|aw)[\[\]\d]*[:>-]+\s*//i);
                 $title =~ s/\A\s*\[[^\]]+\]\s*//;
@@ -137,14 +138,16 @@ sub pipermail_filter ($$$) {
                     $from .= " <$email>";
                 }
                 html::decode_entity(\$from);
-                codeconv::toeuc(\$from);
+                # codeconv::toeuc(\$from);
+                codeconv::codeconv_document(\$from);
                 $fields->{'from'} = $from;
             }
 
             {
                 my $date = $4;
                 html::decode_entity(\$date);
-                codeconv::toeuc(\$date);
+                # codeconv::toeuc(\$date);
+                codeconv::codeconv_document(\$date);
                 if (util::islang("ja")) {
                     if ($date =~ m/(\d{4})Ç¯\s*(\d{1,2})·î\s*(\d{1,2})Æü\s+\(.*\)\s+(\d{2}:\d{2}:\d{2})\s+(\w+)/s) {
                         my @month = (
@@ -164,7 +167,8 @@ sub pipermail_filter ($$$) {
 
     $$contref =~ s/<head>(.*)?<\/head>//si;
     $$contref =~ s/<h1>.*<!--beginarticle-->//si;
-    codeconv::toeuc($contref);
+    # codeconv::toeuc($contref);
+    codeconv::codeconv_document($contref);
     $$contref =~ s/ at /@/s;
     if (util::islang("ja")) {
         $$contref =~ s/ @ /@/s;

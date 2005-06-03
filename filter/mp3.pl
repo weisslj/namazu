@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mp3.pl,v 1.8 2004-11-19 16:28:51 opengl2772 Exp $
+# $Id: mp3.pl,v 1.9 2005-06-03 04:21:21 opengl2772 Exp $
 # Copyright (C) 2002 Luc@2113.ch ,
 #               2003-2004 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -117,7 +117,8 @@ sub filter($$$$$) {
     $data1 .= "Genre: $genre\n" ;
     $data1 .= "Track: $track\n" ;
 
-    codeconv::toeuc(\$data1);
+    # codeconv::toeuc(\$data1);
+    codeconv::codeconv_document(\$data1);
     $$contref = $data1;
     mp3_filter($contref, $weighted_str, $fields, $headings);
 

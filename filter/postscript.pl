@@ -1,7 +1,7 @@
 #
 # -*- Perl -*-
-# $Id: postscript.pl,v 1.16 2004-11-26 15:23:44 opengl2772 Exp $
-# Copyright (C) 2000,2004 Namazu Project All rights reserved.
+# $Id: postscript.pl,v 1.17 2005-06-03 04:21:21 opengl2772 Exp $
+# Copyright (C) 2000-2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -119,7 +119,8 @@ sub filter ($$$$$) {
     }
     unlink $tmpfile;
 
-    codeconv::toeuc($cont);
+    # codeconv::toeuc($cont);
+    codeconv::codeconv_document($cont);
 
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);

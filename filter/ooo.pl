@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: ooo.pl,v 1.15 2005-04-17 13:14:16 usu Exp $
+# $Id: ooo.pl,v 1.16 2005-06-05 09:52:33 opengl2772 Exp $
 # Copyright (C) 2003 Yukio USUDA 
-#               2003,2004 Namazu Project All rights reserved ,
+#               2003-2005 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify

@@ -1,9 +1,9 @@
 #
 # -*- Perl -*-
-# $Id: tar.pl,v 1.8 2005-06-03 04:21:21 opengl2772 Exp $
+# $Id: tar.pl,v 1.9 2005-06-05 09:52:33 opengl2772 Exp $
 #  tar filter for namazu
 #  Copyright (C) 2004 Tadamasa Teranishi,
-#                2004 Namazu Project All rights reserved.
+#                2004-2005 Namazu Project All rights reserved.
 #
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -107,7 +107,8 @@ sub filter_gtar ($$$$$) {
         },
     );
     if ($status == 0) {
-        my $filelist = util::readfile("$tmpfile2", "t");
+        my $filelist = util::readfile("$tmpfile2");
+        codeconv::normalize_document(\$filelist);
         while ($filelist =~ s/^\S+\s+	# permission
 		(?:\S+\s+)?		# (uid, giD)
 		(\d+)\s+		# filesize
@@ -159,7 +160,7 @@ sub filter_gtar ($$$$$) {
                 },
             );
             if ($status == 0) {
-                my $con = util::readfile($tmpfile3, "b");
+                my $con = util::readfile($tmpfile3);
                 unlink($tmpfile3);
 
                 my $taredname = "tared_content";

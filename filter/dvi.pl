@@ -1,7 +1,7 @@
 #
 # -*- Perl -*-
-# $Id: dvi.pl,v 1.13 2005-06-03 04:21:21 opengl2772 Exp $
-# Copyright (C) 2000,2004 Namazu Project All rights reserved ,
+# $Id: dvi.pl,v 1.14 2005-06-05 09:52:33 opengl2772 Exp $
+# Copyright (C) 2000,2004-2005 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -123,7 +123,7 @@ sub filter ($$$$$) {
             util::fclose($fh_out);
 	    return 'Too large dvi file';
 	} 
-	$$cont = util::readfile($fh_out, "t");
+	$$cont = util::readfile($fh_out);
         util::fclose($fh_out);
     }
     #unlink("$tmpfile.dvi");

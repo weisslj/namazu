@@ -1,7 +1,7 @@
 #
 # -*- Perl -*-
-# $Id: gzip.pl,v 1.21 2004-10-16 14:54:12 opengl2772 Exp $
-# Copyright (C) 2000-2004 Namazu Project All rights reserved ,
+# $Id: gzip.pl,v 1.22 2005-06-05 09:52:33 opengl2772 Exp $
+# Copyright (C) 2000-2005 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -102,7 +102,7 @@ sub filter_file ($) {
             unlink $tmpfile;
 	    return 'Too large gzipped file';
 	}
-	$$contref = util::readfile($fh_out, "b");
+	$$contref = util::readfile($fh_out);
         util::fclose($fh_out);
     }
     unlink $tmpfile;

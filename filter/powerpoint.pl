@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: powerpoint.pl,v 1.27 2005-06-03 04:21:21 opengl2772 Exp $
+# $Id: powerpoint.pl,v 1.28 2005-06-05 09:52:33 opengl2772 Exp $
 # Copyright (C) 2000 Ken-ichi Hirose, 
-#               2000-2004 Namazu Project All rights reserved.
+#               2000-2005 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -150,10 +150,12 @@ sub filter_ppt ($$$$$) {
             unlink $tmpfile;
             return 'Too large powerpoint file.';
         }
-        $$cont = util::readfile($fh_out, "t");
+        $$cont = util::readfile($fh_out);
         util::fclose($fh_out);
     }
     unlink $tmpfile;
+
+    codeconv::normalize_document($cont);
 
     # Code conversion for Japanese document.
     if (util::islang("ja")) {
@@ -224,10 +226,12 @@ sub filter_doccat ($$$$$) {
             unlink $tmpfile;
             return 'Too large powerpoint file.';
         }
-        $$cont = util::readfile($fh_out, "t");
+        $$cont = util::readfile($fh_out);
         util::fclose($fh_out);
     }
     unlink $tmpfile;
+
+    codeconv::normalize_document($cont);
 
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);
@@ -255,7 +259,8 @@ sub getSummaryInfo ($$$$$) {
             "stderr" => "/dev/null",
         },
     );
-    my $summary = util::readfile($fh_out, "t");
+    my $summary = util::readfile($fh_out);
+    codeconv::normalize_document(\$summary);
     my $orgsummary = $summary;
 
     my $size = util::filesize($fh_out);
@@ -372,7 +377,7 @@ sub utf8_to_eucjp($) {
             "stderr" => "/dev/null",
         },
     );
-    $$cont = util::readfile($fh_out, "t");
+    $$cont = util::readfile($fh_out);
     util::fclose($fh_out);
     codeconv::normalize_eucjp($cont);
 

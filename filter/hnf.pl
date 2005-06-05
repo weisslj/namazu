@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: hnf.pl,v 1.12 2004-11-19 16:28:51 opengl2772 Exp $
+# $Id: hnf.pl,v 1.13 2005-06-05 09:52:33 opengl2772 Exp $
 #
 # hnf filter for Namazu 2.0
 # version 0.9.15
@@ -8,7 +8,7 @@
 #
 # Copyright (C) 1999-2001  Kenji Suzuki, HyperNikkiSystem Project
 # All rights reserved.
-#
+# Copyright (C) 2005 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -305,7 +305,8 @@ sub make_summary ($$$$$) {
 
 sub read_alias_file () {
     if (-f $hnf::alias_file) {
-        my $def = util::readfile($hnf::alias_file, "t");
+        my $def = util::readfile($hnf::alias_file);
+        codeconv::normalize_document(\$def);
         my @aliases = split("\n", $def);
         foreach (@aliases) {
             if ($_ =~ /(\S+) (.*)/) {

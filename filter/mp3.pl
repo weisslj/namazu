@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: mp3.pl,v 1.9 2005-06-03 04:21:21 opengl2772 Exp $
+# $Id: mp3.pl,v 1.10 2005-06-05 09:52:33 opengl2772 Exp $
 # Copyright (C) 2002 Luc@2113.ch ,
-#               2003-2004 Namazu Project All rights reserved ,
+#               2003-2005 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify

@@ -1,7 +1,7 @@
 #
 # -*- Perl -*-
-# $Id: rpm.pl,v 1.15 2004-11-26 15:23:44 opengl2772 Exp $
-# Copyright (C) 2000,2001,2002,2004 Namazu Project All rights reserved.
+# $Id: rpm.pl,v 1.16 2005-06-05 09:52:33 opengl2772 Exp $
+# Copyright (C) 2000-2002,2004-2005 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -102,10 +102,12 @@ sub filter ($$$$$) {
             unlink $tmpfile;
             return 'Too large rpm file.';
         }
-        $$cont = util::readfile($fh_out, "t");
+        $$cont = util::readfile($fh_out);
         util::fclose($fh_out);
     }
     unlink $tmpfile;
+
+    codeconv::normalize_document($cont);
 
     rpm_filter($cont, $weighted_str, $fields, $headings);
 

@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: rtf.pl,v 1.18 2005-06-03 04:21:21 opengl2772 Exp $
-# Copyright (C) 2003-2004 Tadamasa Teranishi All rights reserved.
-#               2003-2004 Namazu Project All rights reserved.
+# $Id: rtf.pl,v 1.19 2005-06-05 09:52:33 opengl2772 Exp $
+# Copyright (C) 2003-2005 Tadamasa Teranishi All rights reserved.
+#               2003-2005 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -154,7 +154,7 @@ sub filter_rtf2html ($$$$$) {
             unlink $tmpfile;
             return 'Too large rtf file.';
         }
-        $$cont = util::readfile($fh_out, "t");
+        $$cont = util::readfile($fh_out);
         util::fclose($fh_out);
     }
     unlink $tmpfile;
@@ -207,10 +207,12 @@ sub filter_doccat ($$$$$) {
             unlink $tmpfile;
             return 'Too large rtf file.';
         }
-        $$cont = util::readfile($fh_out, "t");
+        $$cont = util::readfile($fh_out);
         util::fclose($fh_out);
     }
     unlink $tmpfile;
+
+    codeconv::normalize_document($cont);
 
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);

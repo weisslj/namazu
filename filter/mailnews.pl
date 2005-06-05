@@ -1,9 +1,9 @@
 #
 # -*- Perl -*-
-# $Id: mailnews.pl,v 1.37 2005-06-03 04:21:21 opengl2772 Exp $
+# $Id: mailnews.pl,v 1.38 2005-06-05 09:52:33 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu ,
-#               2001,2003,2004 Namazu Project All rights reserved.
+#               2001,2003-2005 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify

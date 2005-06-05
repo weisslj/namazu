@@ -1,9 +1,9 @@
 #
 # -*- Perl -*-
-# $Id: pdf.pl,v 1.41 2005-06-03 04:21:21 opengl2772 Exp $
+# $Id: pdf.pl,v 1.42 2005-06-05 09:52:33 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu ,
-#               2000-2004 Namazu Project All rights reserved.
+#               2000-2005 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -154,7 +154,7 @@ sub filter ($$$$$) {
             unlink $tmpfile2;
             return 'Too large pdf file';
         }
-        $$cont = util::readfile($fh, "t");
+        $$cont = util::readfile($fh);
         util::fclose($fh);
     }
 

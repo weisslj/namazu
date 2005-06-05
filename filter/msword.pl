@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: msword.pl,v 1.57 2005-06-03 04:21:21 opengl2772 Exp $
+# $Id: msword.pl,v 1.58 2005-06-05 09:52:33 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi,
-#               2000-2004 Namazu Project All rights reserved.
+#               2000-2005 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -64,7 +64,8 @@ sub status() {
                 "stderr" => "/dev/null",
             },
         );
-        my $version = util::readfile($fh_out, "t");
+        my $version = util::readfile($fh_out);
+        codeconv::normalize_document(\$version);
         util::fclose($fh_out);
 
         if ($version =~ s/wvWare (\d\.\d)\.(\d).*/$1$2/) {
@@ -228,7 +229,8 @@ sub filter_wvWare ($$$$$) {
         unlink($tmpfile2);
         return 'Too large word file.';
     }
-    $$cont = util::readfile($fh_out, "t");
+    $$cont = util::readfile($fh_out);
+    codeconv::normalize_document($cont);
     util::fclose($fh_out);
     unlink($tmpfile2);
 
@@ -262,7 +264,8 @@ sub filter_wvHtml ($$$$$) {
                 "stderr" => "/dev/null",
             },
         );
-        my $result = util::readfile($fh_out, "t");
+        my $result = util::readfile($fh_out);
+        codeconv::normalize_document(\$result);
         util::fclose($fh_out);
         if ($result ne "" and $result !~ /usage/i and $result ge "0.7") {
             ($ofile, $tpath) = fileparse($tmpfile2);
@@ -301,9 +304,11 @@ sub filter_wvHtml ($$$$$) {
     }
 
     {
-        $$cont = util::readfile($tmpfile2, "t");
+        $$cont = util::readfile($tmpfile2);
     }
     unlink $tmpfile2;
+
+    codeconv::normalize_document($cont);
 
     # Code conversion for Japanese document.
     if (util::islang("ja")) {
@@ -353,10 +358,12 @@ sub filter_doccat ($$$$$) {
             unlink $tmpfile;
             return 'Too large word file.';
         }
-        $$cont = util::readfile($fh_out, "t");
+        $$cont = util::readfile($fh_out);
         util::fclose($fh_out);
     }
     unlink $tmpfile;
+
+    codeconv::normalize_document($cont);
 
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);
@@ -384,7 +391,8 @@ sub getDocumentVersion ($) {
                 "stderr" => "/dev/null",
             },
         );
-        my $result = util::readfile($fh_out, "t");
+        my $result = util::readfile($fh_out);
+        codeconv::normalize_document(\$result);
         util::fclose($fh_out);
         if ($result =~ /^Version: (word\d+)(?:,| )/i) {
             $docversion = $1;
@@ -409,7 +417,8 @@ sub getSummaryInfo ($$$$$) {
             "stderr" => "/dev/null",
         },
     );
-    my $summary = util::readfile($fh_out, "t");
+    my $summary = util::readfile($fh_out);
+    codeconv::normalize_document(\$summary);
     my $orgsummary = $summary;
 
     my $size = util::filesize($fh_out);
@@ -527,7 +536,7 @@ sub utf8_to_eucjp($) {
             "stderr" => "/dev/null",
         },
     );
-    $$cont = util::readfile($fh_out, "t");
+    $$cont = util::readfile($fh_out);
     util::fclose($fh_out);
 
     codeconv::normalize_eucjp($cont);

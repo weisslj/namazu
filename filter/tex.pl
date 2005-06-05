@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: tex.pl,v 1.12 2004-11-26 15:23:44 opengl2772 Exp $
+# $Id: tex.pl,v 1.13 2005-06-05 09:52:33 opengl2772 Exp $
 # Copyright (C) 1999 Satoru Takabayashi ,
-#               2004 Namazu Project All rights reserved.
+#               2004-2005 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -112,10 +112,12 @@ sub filter ($$$$$) {
             unlink $tmpfile;
 	    return 'Too large tex file.';
 	}
-	$$cont = util::readfile($fh_out, "t");
+	$$cont = util::readfile($fh_out);
         util::fclose($fh_out);
     }
     unlink $tmpfile;
+
+    codeconv::normalize_document($cont);
 
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);

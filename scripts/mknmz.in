@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.150 2005-02-21 23:27:32 knok Exp $
+# $Id: mknmz.in,v 1.151 2005-06-05 09:02:18 opengl2772 Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -159,6 +159,9 @@ sub main {
 		$checkpoint = 1, last if $CheckPoint{'on'} && defined(<$fh_flist>);
 	    }
 	}
+
+        util::fclose($fh_flist);
+        util::fclose($fh_errorsfile);
     }
     # This should be out of above blocks because of file handler closing.
     re_exec($flist_ptr, $docid_count, $docid_base, $start_time, 
@@ -311,6 +314,7 @@ sub re_exec($$$$$$$$) {
 	\$file_count = $file_count;
 	\$\$ = $$;
 EOM
+        util::fclose($fh_checkpoint);
     }
 
     @ARGV = ("-S", @ARGV) ;
@@ -323,6 +327,7 @@ sub put_registry ($) {
     my ($filename) = @_;
     my $fh_registry = util::efopen(">>$var::NMZ{'_r'}");
     print $fh_registry $filename, "\n";
+    util::fclose($fh_registry);
 }
 
 
@@ -772,6 +777,9 @@ sub put_field_index (\%$) {
 	my $output = "";
 	if (defined($fields->{$key})) {
 	    if ($key ne 'uri') { # workaround for namazu-bugs-ja#30
+                # Remove control char.
+                $fields->{$key} =~ tr/\x01-\x08\x0b-\x0c\x0e-\x1a/ /;
+
 		$fields->{$key} =~ s/\s+/ /g;
 		$fields->{$key} =~ s/\s+$//;
 		$fields->{$key} =~ s/^\s+//;
@@ -789,6 +797,7 @@ sub put_field_index (\%$) {
 	    $output = "\n";
 	}
 	print $fh_field $output;
+        util::fclose($fh_field);
 
 	# put index of field index
 	{
@@ -796,6 +805,7 @@ sub put_field_index (\%$) {
 	    my $fh_field_idx = util::efopen(">>$fname");
 	    print $fh_field_idx pack("N", $field_indices->{$lkey});
 	    $field_indices->{$lkey} += length $output;
+            util::fclose($fh_field_idx);
 	}
     }
 
@@ -808,6 +818,7 @@ sub put_dateindex ($) {
 
     my $fh_dataindex = util::efopen(">>$var::NMZ{'_t'}");
     print $fh_dataindex pack("N", $mtime);
+    util::fclose($fh_dataindex);
 }
 
 sub prep () {
@@ -847,6 +858,7 @@ sub save_flist(@) {
 
     my $fh_flist = util::efopen(">$var::NMZ{'_flist'}");
     print $fh_flist join("\n", @flist), "\n";
+    util::fclose($fh_flist);
 }
 
 sub require_modules() {
@@ -895,6 +907,7 @@ sub set_lockfile ($) {
     } else {
 	my $fh_lockfile = util::efopen(">$file");
 	print $fh_lockfile "$$"; # save pid
+        util::fclose($fh_lockfile);
     }
 }
 
@@ -1223,6 +1236,7 @@ sub load_target_list ($) {
     my ($file) = @_;
     my $fh_targets = util::efopen($file);
     my @targets = <$fh_targets>;
+    util::fclose($fh_targets);
     if (($English::OSNAME eq "MSWin32") || ($English::OSNAME eq "os2")) {
 	foreach my $tmp (@targets){
 	    $tmp =~ s/\r//g;
@@ -1478,6 +1492,7 @@ sub write_version() {
     unless (-f $var::NMZ{'version'}) {
 	my $fh = util::efopen(">$var::NMZ{'version'}");
 	print $fh "Namazu-Index-Version: $NAMAZU_INDEX_VERSION\n";
+        util::fclose($fh);
     }
 }
 
@@ -1527,6 +1542,7 @@ sub write_result_file () {
 	    my $buf = util::readfile($file);
 	    my $fh_file = util::efopen(">$target");
 	    print $fh_file $buf;
+            util::fclose($fh_file);
 	}
     }
 }
@@ -1546,6 +1562,7 @@ sub write_message ($) {
 	    my $buf = util::readfile($template);
 	    my $fh_output = util::efopen(">$msgfile");
 	    print $fh_output $buf;
+            util::fclose($fh_output);
 	}
     }
 }
@@ -1557,6 +1574,7 @@ sub write_message ($) {
 sub make_slog_file () {
     {
 	my $fh_slogfile = util::efopen(">>$var::NMZ{'slog'}");
+        util::fclose($fh_slogfile);
     }
 }
 
@@ -1720,6 +1738,7 @@ sub preupdate_registry(@) {
     @list = grep { s/(.*)/\# $1\n/ } @list;
     print $fh_registry @list;
     print $fh_registry &_("## deleted: ") . util::rfc822time(time()) . "\n\n";
+    util::fclose($fh_registry);
 }
 
 sub preupdate_dateindex(@) {
@@ -1730,6 +1749,7 @@ sub preupdate_dateindex(@) {
     my $fh_dateindex = util::efopen(">$var::NMZ{'_t'}");
 #    print "\nupdate_dateindex\n", join("\n", @mtimes), "\n\n";
     print $fh_dateindex pack("N*", @mtimes);
+    util::fclose($fh_dateindex);
 }
 
 sub update_registry ($) {
@@ -1744,6 +1764,8 @@ sub update_registry ($) {
 	if ($docid_count > 0) {
 	    print $fh_registry &_("## indexed: ") . util::rfc822time(time()) . "\n\n";
 	}
+        util::fclose($fh_registry_) if (defined $fh_registry_);
+        util::fclose($fh_registry);
     }
     unlink $var::NMZ{'_r'};
 }
@@ -1765,6 +1787,8 @@ sub update_field_index () {
 		while (defined(my $line = <$fh_tmp>)) {
 		    print $fh_field $line;
 		}
+                util::fclose($fh_tmp) if (defined $fh_tmp);
+                util::fclose($fh_field);
 	    }
 	    unlink $fname_tmp;
 	} else {
@@ -1822,6 +1846,7 @@ sub load_dateindex() {
     my @list = unpack("N*", $buf);  # load date index
 #    print "\nload_dateindex\n", join("\n", @list), "\n\n";
 
+    util::fclose($fh_dateindex);
     return [ @list ];
 }
 
@@ -1844,6 +1869,8 @@ sub load_registry () {
 	    push @registered, $line;
 	}
     }
+
+    util::fclose($fh_registry) if (defined $fh_registry);
 
     # Exclude deleted documents.
     for my $doc (@registered) {
@@ -1868,6 +1895,7 @@ sub load_sizefield() {
 	chomp $line;
 	push @ret, $line;
     }
+    util::fclose($fh_sizefield) if (defined $fh_sizefield);
     return \@ret;
 }
 
@@ -1894,10 +1922,11 @@ sub get_status($) {
     while (defined(my $line = <$fh>)) {
 	if ($line =~ /^$key\s+(.*)$/) {
 	    util::dprint("status: $key = $1\n");
-	    $fh->close;
+            util::fclose($fh);
 	    return $1;
 	}
     }
+    util::fclose($fh) if (defined $fh);
     return undef;
 }
 
@@ -1921,6 +1950,7 @@ sub put_status($$) {
 
     my $fh = util::efopen(">> $var::NMZ{'status'}");
     print $fh "$key $value\n";
+    util::fclose($fh);
 }
 
 # do logging
@@ -2002,6 +2032,7 @@ sub put_log_to_logfile ($) {
     my ($logmsg) = @_;
     my $fh_logfile = util::efopen(">>$var::NMZ{'log'}");
     print $fh_logfile $logmsg;
+    util::fclose($fh_logfile);
 }
 
 sub get_year() {
@@ -2057,6 +2088,7 @@ sub make_headfoot ($$$) {
 	     {$1\n<link rev="made" href="mailto:$conf::ADDRESS">\n$3}gs;
 
     print $fh_file $buf;
+    util::fclose($fh_file);
 }
 
 # Make phrase hashes for NMZ.p
@@ -2331,6 +2363,13 @@ sub write_index_sub () {
     }
     %KeyIndex = ();
     %KeyIndexLast = ();
+
+    util::fclose($fh_wi);
+    util::fclose($fh_w) if (defined $fh_w);
+    util::fclose($fh_ii);
+    util::fclose($fh_i) if (defined $fh_i);
+    util::fclose($fh_tmp_w);
+    util::fclose($fh_tmp_i);
 
     return $key_count;
 }

@@ -43,30 +43,30 @@ Cet index contient <!-- FILE --> 0 <!-- FILE --> documents et
 <p>
 <strong>Affichage :</strong>
 <select name="max">
-<option value="10">10
-<option selected value="20">20
-<option value="30">30
-<option value="50">50
-<option value="100">100
+<option value="10">10</option>
+<option selected value="20">20</option>
+<option value="30">30</option>
+<option value="50">50</option>
+<option value="100">100</option>
 </select>
 <strong>Description :</strong>
 <select name="result">
-<option selected value="normal">normal
-<option value="short">courte
+<option selected value="normal">normal</option>
+<option value="short">courte</option>
 </select>
 <strong>Tri :</strong>
 <select name="sort">
-<option selected value="score">par score
-<option value="date:late">par date (+ r&eacute;cent en premier)
-<option value="date:early">par date (+ ancien en premier)
-<option value="field:subject:ascending">par titre (ordre ascendant)
-<option value="field:subject:descending">par titre (ordre descendant)
-<option value="field:from:ascending">par auteur (ordre ascendant)
-<option value="field:from:descending">par auteur (ordre descendant)
-<option value="field:size:ascending">par taille (ordre ascendant)
-<option value="field:size:descending">par taille (ordre descendant)
-<option value="field:uri:ascending">par URI (ordre ascendant)
-<option value="field:uri:descending">par URI (ordre descendant)
+<option selected value="score">par score</option>
+<option value="date:late">par date (+ r&eacute;cent en premier)</option>
+<option value="date:early">par date (+ ancien en premier)</option>
+<option value="field:subject:ascending">par titre (ordre ascendant)</option>
+<option value="field:subject:descending">par titre (ordre descendant)</option>
+<option value="field:from:ascending">par auteur (ordre ascendant)</option>
+<option value="field:from:descending">par auteur (ordre descendant)</option>
+<option value="field:size:ascending">par taille (ordre ascendant)</option>
+<option value="field:size:descending">par taille (ordre descendant)</option>
+<option value="field:uri:ascending">par URI (ordre ascendant)</option>
+<option value="field:uri:descending">par URI (ordre descendant)</option>
 </select>
 </p>
 <!--

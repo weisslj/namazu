@@ -44,30 +44,30 @@
 <p>
 <strong>表示件数:</strong>
 <select name="max">
-<option value="10">10
-<option selected value="20">20
-<option value="30">30
-<option value="50">50
-<option value="100">100
+<option value="10">10</option>
+<option selected value="20">20</option>
+<option value="30">30</option>
+<option value="50">50</option>
+<option value="100">100</option>
 </select>
 <strong>表示形式:</strong>
 <select name="result">
-<option selected value="normal">標準
-<option value="short">簡潔
+<option selected value="normal">標準</option>
+<option value="short">簡潔</option>
 </select>
 <strong>ソート:</strong>
 <select name="sort">
-<option selected value="score">スコア
-<option value="date:late">日付 (新しい順)
-<option value="date:early">日付 (古い順)
-<option value="field:subject:ascending">題名 (昇順)
-<option value="field:subject:descending">題名 (降順)
-<option value="field:from:ascending">著者 (昇順)
-<option value="field:from:descending">著者 (降順)
-<option value="field:size:ascending">サイズ (昇順)
-<option value="field:size:descending">サイズ (降順)
-<option value="field:uri:ascending">URI (昇順)
-<option value="field:uri:descending">URI (降順)
+<option selected value="score">スコア</option>
+<option value="date:late">日付 (新しい順)</option>
+<option value="date:early">日付 (古い順)</option>
+<option value="field:subject:ascending">題名 (昇順)</option>
+<option value="field:subject:descending">題名 (降順)</option>
+<option value="field:from:ascending">著者 (昇順)</option>
+<option value="field:from:descending">著者 (降順)</option>
+<option value="field:size:ascending">サイズ (昇順)</option>
+<option value="field:size:descending">サイズ (降順)</option>
+<option value="field:uri:ascending">URI (昇順)</option>
+<option value="field:uri:descending">URI (降順)</option>
 </select>
 </p>
 <!--

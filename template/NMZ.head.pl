@@ -43,30 +43,30 @@ Ten indeks zawiera <!-- FILE --> 0 <!-- FILE --> dokumentów i
 <p>
 <strong>Pokazuj:</strong>
 <select name="max">
-<option value="10">10
-<option selected value="20">20
-<option value="30">30
-<option value="50">50
-<option value="100">100
+<option value="10">10</option>
+<option selected value="20">20</option>
+<option value="30">30</option>
+<option value="50">50</option>
+<option value="100">100</option>
 </select>
 <strong>Opis:</strong>
 <select name="result">
-<option selected value="normal">normalny
-<option value="short">skrócony
+<option selected value="normal">normalny</option>
+<option value="short">skrócony</option>
 </select>
 <strong>Kryterium sortowania:</strong>
 <select name="sort">
-<option selected value="score">wynik
-<option value="date:late">data, od najnowszych
-<option value="date:early">data, od najstarszych
-<option value="field:subject:ascending">tytu³, w porz±dku rosn±cym
-<option value="field:subject:descending">tytu³, w porz±dku malej±cym
-<option value="field:from:ascending">autor, w porz±dku rosn±cym
-<option value="field:from:descending">autor, w porz±dku malej±cym
-<option value="field:size:ascending">rozmiar, w porz±dku rosn±cym
-<option value="field:size:descending">rozmiar, w porz±dku malej±cym
-<option value="field:uri:ascending">URI, w porz±dku rosn±cym
-<option value="field:uri:descending">URI, w porz±dku malej±cym
+<option selected value="score">wynik</option>
+<option value="date:late">data, od najnowszych</option>
+<option value="date:early">data, od najstarszych</option>
+<option value="field:subject:ascending">tytu³, w porz±dku rosn±cym</option>
+<option value="field:subject:descending">tytu³, w porz±dku malej±cym</option>
+<option value="field:from:ascending">autor, w porz±dku rosn±cym</option>
+<option value="field:from:descending">autor, w porz±dku malej±cym</option>
+<option value="field:size:ascending">rozmiar, w porz±dku rosn±cym</option>
+<option value="field:size:descending">rozmiar, w porz±dku malej±cym</option>
+<option value="field:uri:ascending">URI, w porz±dku rosn±cym</option>
+<option value="field:uri:descending">URI, w porz±dku malej±cym</option>
 </select>
 </p>
 <!--

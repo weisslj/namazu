@@ -9,6 +9,8 @@
 	* filter/*.pl: codeconv::normalize_eucjp was changed to
         codeconv::normalize_eucjp_document.
 
+	* template/*: To the addition of </option>.
+
 2005-06-05  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* scripts/mknmz.in: util::fclose() is added.
@@ -9380,4 +9382,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1301 2005-06-06 07:06:39 opengl2772 Exp $
+$Id: ChangeLog,v 1.1302 2005-06-06 09:07:01 opengl2772 Exp $

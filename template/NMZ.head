@@ -43,30 +43,30 @@ This index contains <!-- FILE --> 0 <!-- FILE --> documents and
 <p>
 <strong>Display:</strong>
 <select name="max">
-<option value="10">10
-<option selected value="20">20
-<option value="30">30
-<option value="50">50
-<option value="100">100
+<option value="10">10</option>
+<option selected value="20">20</option>
+<option value="30">30</option>
+<option value="50">50</option>
+<option value="100">100</option>
 </select>
 <strong>Description:</strong>
 <select name="result">
-<option selected value="normal">normal
-<option value="short">short
+<option selected value="normal">normal</option>
+<option value="short">short</option>
 </select>
 <strong>Sort:</strong>
 <select name="sort">
-<option selected value="score">by score
-<option value="date:late">by date in late order
-<option value="date:early">by date in early order
-<option value="field:subject:ascending">by title in ascending order
-<option value="field:subject:descending">by title in descending order
-<option value="field:from:ascending">by author in ascending order
-<option value="field:from:descending">by author in descending order
-<option value="field:size:ascending">by size in ascending order
-<option value="field:size:descending">by size in descending order
-<option value="field:uri:ascending">by URI in ascending order
-<option value="field:uri:descending">by URI in descending order
+<option selected value="score">by score</option>
+<option value="date:late">by date in late order</option>
+<option value="date:early">by date in early order</option>
+<option value="field:subject:ascending">by title in ascending order</option>
+<option value="field:subject:descending">by title in descending order</option>
+<option value="field:from:ascending">by author in ascending order</option>
+<option value="field:from:descending">by author in descending order</option>
+<option value="field:size:ascending">by size in ascending order</option>
+<option value="field:size:descending">by size in descending order</option>
+<option value="field:uri:ascending">by URI in ascending order</option>
+<option value="field:uri:descending">by URI in descending order</option>
 </select>
 </p>
 <!--

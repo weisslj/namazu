@@ -43,30 +43,30 @@ Este índice contiene <!-- FILE --> 0 <!-- FILE --> documentos y
 <p>
 <strong>Visualizar:</strong>
 <select name="max">
-<option value="10">10
-<option selected value="20">20
-<option value="30">30
-<option value="50">50
-<option value="100">100
+<option value="10">10</option>
+<option selected value="20">20</option>
+<option value="30">30</option>
+<option value="50">50</option>
+<option value="100">100</option>
 </select>
 <strong>Descripción:</strong>
 <select name="result">
-<option selected value="normal">normal
-<option value="short">corta
+<option selected value="normal">normal</option>
+<option value="short">corta</option>
 </select>
 <strong>Orden:</strong>
 <select name="sort">
-<option selected value="score">por puntuación
-<option value="date:late">por fecha ascendente
-<option value="date:early">por fecha descendente
-<option value="field:subject:ascending">por título ascendente
-<option value="field:subject:descending">por título descendente
-<option value="field:from:ascending">por autor ascendente
-<option value="field:from:descending">por autor descendente
-<option value="field:size:ascending">por tamaño ascendente
-<option value="field:size:descending">por tamaño descendente
-<option value="field:uri:ascending">por URI ascendente
-<option value="field:uri:descending">por URI descendente
+<option selected value="score">por puntuación</option>
+<option value="date:late">por fecha ascendente</option>
+<option value="date:early">por fecha descendente</option>
+<option value="field:subject:ascending">por título ascendente</option>
+<option value="field:subject:descending">por título descendente</option>
+<option value="field:from:ascending">por autor ascendente</option>
+<option value="field:from:descending">por autor descendente</option>
+<option value="field:size:ascending">por tamaño ascendente</option>
+<option value="field:size:descending">por tamaño descendente</option>
+<option value="field:uri:ascending">por URI ascendente</option>
+<option value="field:uri:descending">por URI descendente</option>
 </select>
 </p>
 <!--

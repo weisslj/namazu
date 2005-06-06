@@ -1,9 +1,9 @@
 #
 # -*- Perl -*-
-# $Id: olemsword.pl,v 1.18 2005-06-03 04:21:22 opengl2772 Exp $
+# $Id: olemsword.pl,v 1.19 2005-06-06 07:06:40 opengl2772 Exp $
 # Copyright (C) 1999 Jun Kurabe,
 #		1999-2000 Ken-ichi Hirose,
-#               2004 Namazu Project All rights reserved.
+#               2004-2005 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -136,7 +136,7 @@ sub getProperties ($$$) {
 	unless (defined $title);
     if (defined $title) {
         $title = codeconv::shiftjis_to_eucjp($title);
-        codeconv::normalize_eucjp(\$title);
+        codeconv::normalize_eucjp_document(\$title);
         $fields->{'title'} = $title;
 
         my $weight = $conf::Weight{'html'}->{'title'};
@@ -148,7 +148,7 @@ sub getProperties ($$$) {
 	unless (defined $author);
     if (defined $author) {
         $author = codeconv::shiftjis_to_eucjp($author);
-        codeconv::normalize_eucjp(\$author);
+        codeconv::normalize_eucjp_document(\$author);
         $fields->{'author'} = $author;
     }
 
@@ -157,14 +157,14 @@ sub getProperties ($$$) {
     #    unless (defined $date);
     # if (defined $date) {
     #     $date = codeconv::shiftjis_to_eucjp($date);
-    #     codeconv::normalize_eucjp(\$date);
+    #     codeconv::normalize_eucjp_document(\$date);
     #     $fields->{'date'} = $date;
     # }
 
     my $keyword = $cfile->BuiltInDocumentProperties('keywords')->{Value};
     if (defined $keyword) {
         $keyword = codeconv::shiftjis_to_eucjp($keyword);
-        codeconv::normalize_eucjp(\$keyword);
+        codeconv::normalize_eucjp_document(\$keyword);
 
         my $weight = $conf::Weight{'metakey'};
         $$weighted_str .= "\x7f$weight\x7f$keyword\x7f/$weight\x7f\n";

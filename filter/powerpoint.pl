@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: powerpoint.pl,v 1.28 2005-06-05 09:52:33 opengl2772 Exp $
+# $Id: powerpoint.pl,v 1.29 2005-06-06 07:06:39 opengl2772 Exp $
 # Copyright (C) 2000 Ken-ichi Hirose, 
 #               2000-2005 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -379,7 +379,7 @@ sub utf8_to_eucjp($) {
     );
     $$cont = util::readfile($fh_out);
     util::fclose($fh_out);
-    codeconv::normalize_eucjp($cont);
+    codeconv::normalize_eucjp_document($cont);
 
     unlink $tmpfile;
 

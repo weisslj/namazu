@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: excel.pl,v 1.35 2005-06-05 09:52:33 opengl2772 Exp $
+# $Id: excel.pl,v 1.36 2005-06-06 07:06:39 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi,
 #               1999 NOKUBI Takatsugu, 
 #               2000-2005 Namazu Project All rights reserved.
@@ -382,7 +382,7 @@ sub utf8_to_eucjp($) {
     );
     $$cont = util::readfile($fh_out);
     util::fclose($fh_out);
-    codeconv::normalize_eucjp($cont);
+    codeconv::normalize_eucjp_document($cont);
 
     unlink $tmpfile;
 

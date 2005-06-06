@@ -1,4 +1,4 @@
-<h2><a name="tips">Porady dotycz±ce wyszukiwania</a></h2>
+<h2><a name="tips" id="tips">Porady dotycz±ce wyszukiwania</a></h2>
 
 <p>
 Je¿eli masz problem ze znalezieniem podanej przez Ciebie informacji, spróbuj zastosowaæ poni¿sze rady

@@ -1,6 +1,6 @@
-<h2><a name="query">検索式</a></h2>
+<h2><a name="query" id="query">検索式</a></h2>
 
-<h3><a name="query-term">単一単語検索</a></h3>
+<h3><a name="query-term" id="query-term">単一単語検索</a></h3>
 <p>
 調べたい単語を一つ指定するだけのもっとも基本的な検索手法です。
 例: 
@@ -10,7 +10,7 @@
 namazu
 </p>
 
-<h3><a name="query-and">AND検索</a></h3> 
+<h3><a name="query-and" id="query-and">AND検索</a></h3> 
 
 <p>
 ある単語とある単語の両方を含む文書を検索します。検索結果を絞
@@ -25,7 +25,7 @@ namazu
 るとそれらの語すべてを含む文書をAND検索します。
 </p>
 
-<h3><a name="query-or">OR検索</a></h3>
+<h3><a name="query-or" id="query-or">OR検索</a></h3>
 <p>
 ある単語とある単語のどちらかを含む文書を検索します。3つ以上
 の単語を指定することも可能です。単語と単語の間に 
@@ -36,7 +36,7 @@ namazu
 Linux or FreeBSD
 </p>
 
-<h3><a name="query-not">NOT検索</a></h3>
+<h3><a name="query-not" id="query-not">NOT検索</a></h3>
 <p>
 ある単語を含み、ある単語を含まない文書を検索します。3つ以上
 の単語を指定することも可能です。単語と単語の間に 
@@ -47,7 +47,7 @@ Linux or FreeBSD
 Linux not UNIX
 </p>
 
-<h3><a name="query-grouping">グループ化</a></h3>
+<h3><a name="query-grouping" id="query-grouping">グループ化</a></h3>
 <p>
 AND検索、OR検索、NOT検索を括弧でグループ化できます。括弧の両
 隣には空白を入れる必要があります。例:
@@ -57,7 +57,7 @@ AND検索、OR検索、NOT検索を括弧でグループ化できます。括弧の両
 ( Linux or FreeBSD ) and Netscape not Windows
 </p>
 
-<h3><a name="query-phrase">フレイズ検索</a></h3>
+<h3><a name="query-phrase" id="query-phrase">フレイズ検索</a></h3>
 <p>
 2語以上からなる複合語を検索します。 <code
 class="operator">"..."</code> と2重引用符で、あるいは <code
@@ -75,7 +75,7 @@ Tknamazu および namazu.el から検索するときは必ず後者で指定します。
 </p>
 -->
 
-<h3><a name="query-substring">部分一致検索</a></h3>
+<h3><a name="query-substring" id="query-substring">部分一致検索</a></h3>
 <p>
 部分一致検索には前方一致、中間一致、後方一致の 3種類があります。
 </p>
@@ -93,7 +93,7 @@ Tknamazu および namazu.el から検索するときは必ず後者で指定します。
 </dl>
 
 
-<h3><a name="query-regex">正規表現検索</a></h3>
+<h3><a name="query-regex" id="query-regex">正規表現検索</a></h3>
 
 <p>
 検索するキーワードを正規表現で指定します。正規表現は 
@@ -109,7 +109,7 @@ href="http://www.perl.com/">Perl</a>とほぼ同じです。 例:
 </p>
 
 
-<h3><a name="query-field">フィールド指定の検索</a></h3>
+<h3><a name="query-field" id="query-field">フィールド指定の検索</a></h3>
 <p>
 <code>Subject:</code>, <code>From:</code>,
 <code>Message-Id:</code> といったフィールドを指定して検
@@ -132,7 +132,7 @@ href="http://www.perl.com/">Perl</a>とほぼ同じです。 例:
 </li>
 </ul>
 
-<h3><a name="query-notes">特記事項</a></h3>
+<h3><a name="query-notes" id="query-notes">特記事項</a></h3>
 
 <ul>
 <li>いずれの検索方法でもアルファベットの大文字・小文字の区別

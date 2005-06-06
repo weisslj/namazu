@@ -1,6 +1,6 @@
-<h2><a name="query">CONSULTA</a></h2>
+<h2><a name="query" id="query">CONSULTA</a></h2>
 
-<h3><a name="query-term">Consulta de un sólo término</a></h3>
+<h3><a name="query-term" id="query-term">Consulta de un sólo término</a></h3>
 <p>
 La consulta especifica sólo un término para recibir todos los documentos que contienen el término.  Ej:
 </p>
@@ -9,7 +9,7 @@ La consulta especifica sólo un término para recibir todos los documentos que con
 namazu
 </p>
 
-<h3><a name="query-and">Consulta AND</a></h3> 
+<h3><a name="query-and" id="query-and">Consulta AND</a></h3> 
 
 <p>
 La consulta especifica dos o más términos para recibir todos los documentos que contienen ambos términos.  Tu puedes insertar el operador <code class="operator">and</code> entre los términos.  Ej:
@@ -23,7 +23,7 @@ Linux and Netscape
 Tu puedes omitir el operador <code class="operator">and</code>.  Los términos los cuales están separados por uno o más espacios se asume que son una consulta AND.
 </p>
 
-<h3><a name="query-or">Consulta OR</a></h3>
+<h3><a name="query-or" id="query-or">Consulta OR</a></h3>
 <p>
 La consulta especifica dos o más términos para recibir todos los documentos que contienen alguno de los términos.  Tu puedes insertar el operador
 <code class="operator">or</code> entre los términos.  Ej:
@@ -33,7 +33,7 @@ La consulta especifica dos o más términos para recibir todos los documentos que 
 Linux or FreeBSD
 </p>
 
-<h3><a name="query-not">Operador NOT</a></h3>
+<h3><a name="query-not" id="query-not">Operador NOT</a></h3>
 <p>
 La consulta especifica dos o más terminos para recibir todos los documentos
 que contienen el primer término pero no contienen los términos siguientes.  
@@ -46,7 +46,7 @@ Linux not UNIX
 </p>
 
 
-<h3><a name="query-grouping">Agrupando</a></h3>
+<h3><a name="query-grouping" id="query-grouping">Agrupando</a></h3>
 <p>
 Tu puedes agrupar consultas encerrándolas entre paréntesis.  Los paréntesis 
 deben estar separados por uno o más espacios.  Ej:
@@ -56,7 +56,7 @@ deben estar separados por uno o más espacios.  Ej:
 ( Linux or FreeBSD ) and Netscape not Windows
 </p>
 
-<h3><a name="query-phrase">Buscandos frases</a></h3>
+<h3><a name="query-phrase" id="query-phrase">Buscandos frases</a></h3>
 <p>
 Tu puedes buscar una frase la cuál consiste de dos o más términos encerrados
 entre comillas como
@@ -75,7 +75,7 @@ You must choose the latter with Tkanamzu or namazu.el.
 </p>
 -->
 
-<h3><a name="query-substring">Substring matching</a></h3>
+<h3><a name="query-substring" id="query-substring">Substring matching</a></h3>
 <p>
 The are three types of substring matching searching.
 </p>
@@ -91,7 +91,7 @@ with <code>net</code>)</dd>
 </dl>
 
 
-<h3><a name="query-regex">Regular expressions</a></h3>
+<h3><a name="query-regex" id="query-regex">Regular expressions</a></h3>
 
 <p>
 You can use regular expressions for pattern matching. The
@@ -108,7 +108,7 @@ e.g.,
 </p>
 
 
-<h3><a name="query-field">Field-specified searching</a></h3>
+<h3><a name="query-field" id="query-field">Field-specified searching</a></h3>
 <p>
 You can limit your search to specific fields such as
 <code>Subject:</code>, <code>From:</code>,
@@ -139,7 +139,7 @@ in a <code>From:</code> field)
 </li>
 </ul>
 
-<h3><a name="query-notes">Notes</a></h3>
+<h3><a name="query-notes" id="query-notes">Notes</a></h3>
 
 <ul>
 <li>In any queries, Namazu ignores case distinctions of

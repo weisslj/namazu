@@ -1,4 +1,4 @@
-<h2><a name="tips">Trucs pour la recherche</a></h2>
+<h2><a name="tips" id="tips">Trucs pour la recherche</a></h2>
 
 <p>
 Si vous avez des probl&egrave;mes avec la recherche, vous pouvez essayer les trucs suivants.

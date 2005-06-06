@@ -1,4 +1,4 @@
-<h2><a name="tips">Tips on searching</a></h2>
+<h2><a name="tips" id="tips">Tips on searching</a></h2>
 
 <p>
 If you have trouble with searching, you can check the following tips.

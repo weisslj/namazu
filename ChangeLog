@@ -10,6 +10,7 @@
         codeconv::normalize_eucjp_document.
 
 	* template/*: To the addition of </option>.
+        The id attribute was added to <a> tag. 
 
 2005-06-05  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
@@ -9382,4 +9383,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1302 2005-06-06 09:07:01 opengl2772 Exp $
+$Id: ChangeLog,v 1.1303 2005-06-06 10:12:58 opengl2772 Exp $

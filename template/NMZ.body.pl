@@ -1,6 +1,6 @@
-<h2><a name="query">Zapytania</a></h2>
+<h2><a name="query" id="query">Zapytania</a></h2>
 
-<h3><a name="query-term">Zapytanie pojedyñcze</a></h3>
+<h3><a name="query-term" id="query-term">Zapytanie pojedyñcze</a></h3>
 <p>
 To zapytanie wyszczególnia tylko jedno okre¶lenie dla wyszukiwania wszystkich
 dokumentów, które zawieraj± to okre¶lenie, np.:
@@ -10,7 +10,7 @@ dokumentów, które zawieraj± to okre¶lenie, np.:
 namazu
 </p>
 
-<h3><a name="query-and">Zapytanie typu AND(logiczne i)</a></h3>
+<h3><a name="query-and" id="query-and">Zapytanie typu AND(logiczne i)</a></h3>
 
 <p>
 To zapytanie wyszczególnia 2 lub wiêcej okre¶leñ dla wyszukiwania wszystkich
@@ -28,7 +28,7 @@ Mo¿esz pomin±æ operator
 Okre¶lenia, które s± oddzielone jedn± lub wiêcej spacj± s± uwa¿ane za zapytanie typu AND.
 </p>
 
-<h3><a name="query-or">Zapytanie typu OR(logiczne lub)</a></h3>
+<h3><a name="query-or" id="query-or">Zapytanie typu OR(logiczne lub)</a></h3>
 <p>
 To zapytanie wyszczególnia 2 lub wiêcej okre¶leñ dla wyszukiwania wszystkich
 dokumentów, które zawieraj± jakiekolwiek z podanych okre¶leñ. Mo¿esz wpisaæ operator
@@ -39,7 +39,7 @@ dokumentów, które zawieraj± jakiekolwiek z podanych okre¶leñ. Mo¿esz wpisaæ oper
 Linux or FreeBSD
 </p>
 
-<h3><a name="query-not">Zapytanie typu NOT(przeczenie)</a></h3>
+<h3><a name="query-not" id="query-not">Zapytanie typu NOT(przeczenie)</a></h3>
 <p>
 To zapytanie wyszczególnia 2 lub wiêcej okre¶leñ dla wyszukiwania wszystkich
 dokumentów, które zawieraj± pierwsze okre¶lenie, ale nie zawieraj±
@@ -52,7 +52,7 @@ Linux not UNIX
 </p>
 
 
-<h3><a name="query-grouping">Grupowanie</a></h3>
+<h3><a name="query-grouping" id="query-grouping">Grupowanie</a></h3>
 <p>
 Mo¿esz grupowaæ zapytania przez zawarcie ich
 w nawiasach okrag³ych. Nawiasy powinny byæ oddzielone przez jedn± lub
@@ -63,7 +63,7 @@ wiêcej spacji, np.:
 ( Linux or FreeBSD ) and Netscape not Windows
 </p>
 
-<h3><a name="query-phrase">Wyszukiwanie fraz</a></h3>
+<h3><a name="query-phrase" id="query-phrase">Wyszukiwanie fraz</a></h3>
 <p>
 Mo¿esz szukaæ wyra¿enia, które sk³ada siê z dwóch lub wiêcej okre¶leñ
 otaczaj±c je podwójnym cudzys³owem jak
@@ -83,7 +83,7 @@ Musisz wybraæ ten ostatni z  Tkanamzu lub namazu.el. ???
 </p>
 -->
 
-<h3><a name="query-substring">Wyszukiwanie okrojonych s³ów</a></h3>
+<h3><a name="query-substring" id="query-substring">Wyszukiwanie okrojonych s³ów</a></h3>
 <p>
 S± trzy typy wyszukiwania okrojonych s³ów.
 </p>
@@ -98,7 +98,7 @@ S± trzy typy wyszukiwania okrojonych s³ów.
 </dl>
 
 
-<h3><a name="query-regex">Wyra¿enia regularne (man grep)</a></h3>
+<h3><a name="query-regex" id="query-regex">Wyra¿enia regularne (man grep)</a></h3>
 
 <p>
 Mo¿esz u¿ywaæ wyra¿eñ regularnych jako wzór do dopasowywania.
@@ -115,7 +115,7 @@ np.:
 </p>
 
 
-<h3><a name="query-field">Wyszukiwanie po wyspecyfikowanych polach</a></h3>
+<h3><a name="query-field" id="query-field">Wyszukiwanie po wyspecyfikowanych polach</a></h3>
 <p>
 Mo¿esz ograniczyæ przeszukiwanie do okre¶lonych pól jak
 <code>Subject:</code>, <code>From:</code>,
@@ -146,7 +146,7 @@ w <code>From:</code> )
 </li>
 </ul>
 
-<h3><a name="query-notes">Uwagi</a></h3>
+<h3><a name="query-notes" id="query-notes">Uwagi</a></h3>
 
 <ul>
 <li>We wszystkich zapytaniach, Namazu ignoruje wielko¶æ znaków alfabetu.

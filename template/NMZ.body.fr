@@ -1,6 +1,6 @@
-<h2><a name="query">Requ&ecirc;te</a></h2>
+<h2><a name="query" id="query">Requ&ecirc;te</a></h2>
 
-<h3><a name="query-term">Requ&ecirc;te avec un seul terme</a></h3>
+<h3><a name="query-term" id="query-term">Requ&ecirc;te avec un seul terme</a></h3>
 <p>
 La requ&ecirc;te sp&eacute;cifie un seul terme pour retrouver tous
 les documents qui contiennent le terme. Ex. : 
@@ -10,7 +10,7 @@ les documents qui contiennent le terme. Ex. :
 namazu
 </p>
 
-<h3><a name="query-and">Requ&ecirc;te AND</a></h3> 
+<h3><a name="query-and" id="query-and">Requ&ecirc;te AND</a></h3> 
 
 <p>
 La requ&ecirc;te sp&eacute;cifie deux termes ou plus pour retrouver tous
@@ -27,7 +27,7 @@ Vous pouvez omettre l'op&eacute;rateur <code class="operator">and</code>. Les te
 s&eacute;par&eacute;s par un ou plusieurs espaces sont consid&eacute;r&eacute;s comme une requ&ecirc;te avec AND.
 </p>
 
-<h3><a name="query-or">Requ&ecirc;te OR</a></h3>
+<h3><a name="query-or" id="query-or">Requ&ecirc;te OR</a></h3>
 <p>
 La requ&ecirc;te sp&eacute;cifie deux termes ou plus pour retrouver tous
 les documents qui contiennent l'un des termes. Vous pouvez ins&eacute;rer l'op&eacute;rateur
@@ -39,7 +39,7 @@ Ex. :
 Linux or FreeBSD
 </p>
 
-<h3><a name="query-not">Requ&ecirc;te NOT</a></h3>
+<h3><a name="query-not" id="query-not">Requ&ecirc;te NOT</a></h3>
 <p>
 La requ&ecirc;te sp&eacute;cifie deux termes ou plus pour retrouver tous
 les documents qui contiennent un premier terme mais qui ne contiennent pas les
@@ -52,7 +52,7 @@ Linux not UNIX
 </p>
 
 
-<h3><a name="query-grouping">Regroupement</a></h3>
+<h3><a name="query-grouping" id="query-grouping">Regroupement</a></h3>
 <p>
 Vous pouvez regrouper les requ&ecirc;tes en les entourant par
 des parenth&egrave;ses. Les parenth&egrave;ses doivent &ecirc;tre s&eacute;par&eacute;es par un ou
@@ -63,7 +63,7 @@ plusieurs espaces. Ex. :
 ( Linux or FreeBSD ) and Netscape not Windows
 </p>
 
-<h3><a name="query-phrase">Recherche de phrase</a></h3>
+<h3><a name="query-phrase" id="query-phrase">Recherche de phrase</a></h3>
 <p>
 Vous pouvez rechercher une phrase qui consiste en deux ou plusieurs termes
 en les entourant avec des guillemets comme
@@ -82,7 +82,7 @@ Vous devez choisir ce dernier avec Tkanamzu ou namazu.el.
 </p>
 -->
 
-<h3><a name="query-substring">Correspondance de sous-cha&icirc;ne</a></h3>
+<h3><a name="query-substring" id="query-substring">Correspondance de sous-cha&icirc;ne</a></h3>
 <p>
 Il existe trois types de recherche de sous-cha&icirc;ne.
 </p>
@@ -98,7 +98,7 @@ par <code>net</code>)</dd>
 </dl>
 
 
-<h3><a name="query-regex">Expressions r&eacute;guli&egrave;res</a></h3>
+<h3><a name="query-regex" id="query-regex">Expressions r&eacute;guli&egrave;res</a></h3>
 
 <p>
 Vous pouvez utiliser les expressions r&eacute;guli&egrave;res pour la recherche. Les
@@ -114,7 +114,7 @@ Ex. :
 </p>
 
 
-<h3><a name="query-field">Recherche de champ sp&eacute;cifique</a></h3>
+<h3><a name="query-field" id="query-field">Recherche de champ sp&eacute;cifique</a></h3>
 <p>
 Vous pouvez limiter votre recherche &agrave; des champs sp&eacute;cifiques tel que
 <code>Subject:</code>, <code>From:</code>,
@@ -145,7 +145,7 @@ dans le champ <code>From:</code>)
 </li>
 </ul>
 
-<h3><a name="query-notes">Notes</a></h3>
+<h3><a name="query-notes" id="query-notes">Notes</a></h3>
 
 <ul>
 <li>Dans toutes les requ&ecirc;tes, Namazu ignore les distinctions de casse des

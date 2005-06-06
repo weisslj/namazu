@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.35 2004-12-06 16:13:35 opengl2772 Exp $
+# $Id: util.pl,v 1.36 2005-06-06 03:48:02 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
-# Copyright (C) 2000,2001 Namazu Project All rights reserved.
+# Copyright (C) 2000-2005 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -124,12 +124,8 @@ sub rfc822time ($)
 		   $hour, $min, $sec, time::gettimezone());
 }
 
-sub readfile ($;$) {
-    my ($arg, $mode) = @_;
-    my $text_mode = undef;
-    if (defined $mode && $mode =~ /^t/i) {
-        $text_mode = 1;
-    }
+sub readfile ($) {
+    my ($arg) = @_;
 
     my $fh;
     if (ref $arg) {
@@ -150,8 +146,6 @@ sub readfile ($;$) {
 #	return '';
 #    }
     read $fh, $cont, $size;
-
-    codeconv::normalize_nl(\$cont) if (defined $text_mode);
 
     unless (ref $arg) {
         fclose($fh);
@@ -411,7 +405,8 @@ sub syscmd(%)
 #	    $arg =~ s!/!\\!g;
 	}
         if ($args[0] =~ m/\.bat$/i) {
-            my $conts = util::readfile($args[0], "t");
+            my $conts = util::readfile($args[0]);
+            codeconv::normalize_document(\$conts);
             if ($conts =~ m/^\@rem\s=\s'--\*-Perl-\*--/i) {
                 @args = ("perl", @args);
             } else {

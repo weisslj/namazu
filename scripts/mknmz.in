@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.151 2005-06-05 09:02:18 opengl2772 Exp $
+# $Id: mknmz.in,v 1.152 2005-06-06 05:03:07 opengl2772 Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -2423,6 +2423,7 @@ sub dump_record($$) {
 	print $fh_info sprintf(" %08x", $_);
     }
     print $fh_info "\n";
+    util::fclose($fh_info);
     return;
 }
 

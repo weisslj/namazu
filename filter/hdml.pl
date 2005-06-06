@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: hdml.pl,v 1.6 2001-02-07 10:23:10 knok Exp $
+# $Id: hdml.pl,v 1.7 2005-06-06 06:11:50 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
-# Copyright (C) 2000 Namazu Project All rights reserved.
+# Copyright (C) 2000,2005 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -25,6 +25,7 @@
 
 package hdml;
 use strict;
+require 'util.pl';
 require 'gfilter.pl';
 
 sub mediatype() {

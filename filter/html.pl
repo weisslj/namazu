@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: html.pl,v 1.45 2004-11-26 11:08:02 opengl2772 Exp $
+# $Id: html.pl,v 1.46 2005-06-06 06:11:50 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
-# Copyright (C) 2000-2004 Namazu Project All rights reserved.
+# Copyright (C) 2000-2005 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -25,6 +25,7 @@
 
 package html;
 use strict;
+require 'util.pl';
 require 'gfilter.pl';
 
 my $EMBEDDED_FILE = '\.(asp|jsp|php[3s]?|phtml)(?:\.gz)?';

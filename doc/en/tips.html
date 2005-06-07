@@ -14,17 +14,17 @@
 <h2>Table of contents</h2>
 
 <ul>
-<li><a href="#indexing">Fast indexing</a>
-<li><a href="#saving-memory">Saving memory for indexing</a>
-<li><a href="#weight">Score weighting by HTML elements</a>
-<li><a href="#html">HTML processing</a>
-<li><a href="#line-adjustment">Line Adjustment</a>
-<li><a href="#digest">HTML documents digest</a>
-<li><a href="#mailnews">Mail/News Digest</a>
-<li><a href="#symbol">Symbol handling</a>
-<li><a href="#phrase">(Pseudo) Phrase searching</a>
+<li><a href="#indexing">Fast indexing</a></li>
+<li><a href="#saving-memory">Saving memory for indexing</a></li>
+<li><a href="#weight">Score weighting by HTML elements</a></li>
+<li><a href="#html">HTML processing</a></li>
+<li><a href="#line-adjustment">Line Adjustment</a></li>
+<li><a href="#digest">HTML documents digest</a></li>
+<li><a href="#mailnews">Mail/News Digest</a></li>
+<li><a href="#symbol">Symbol handling</a></li>
+<li><a href="#phrase">(Pseudo) Phrase searching</a></li>
 <li><a href="#update-index">Updating index for updated
-documents and/or deleted documents</a>
+documents and/or deleted documents</a></li>
 </ul>
 
 <h2><a name="indexing">Fast indexing</a></h2>
@@ -34,10 +34,11 @@ documents and/or deleted documents</a>
 To handle Japanese documents, using NKF, KAKASI (or ChaSen)
 Perl modules makes 1.5 - 2 times faster.
   <ul>
-  <li><a href="ftp://ftp.ie.u-ryukyu.ac.jp/pub/software/kono/nkf171.shar">NKF</a>
-  <li><a href="http://www.daionet.gr.jp/~knok/kakasi/">Text::Kakasi</a>
-  <li><a href="http://www.daionet.gr.jp/~knok/chasen/"> Text::ChaSen1</a>
+  <li><a href="ftp://ftp.ie.u-ryukyu.ac.jp/pub/software/kono/nkf171.shar">NKF</a></li>
+  <li><a href="http://www.daionet.gr.jp/~knok/kakasi/">Text::Kakasi</a></li>
+  <li><a href="http://www.daionet.gr.jp/~knok/chasen/"> Text::ChaSen1</a></li>
   </ul>
+</li>
 
 <li>Specify <code>--media-type=mtype</code> option<br>
 mknmz uses File-MMagic module to automatically identify the
@@ -54,6 +55,7 @@ If the target file is Mail/News, you can use
 target file is MHonArc, you can use <code>--mhonarc</code>
 instead of <code>--media-type='text/html;
 x-type=mhonarc'</code>.
+</li>
 
 
 <li>Increase the value of <code>$ON_MEMORY_MAX</code> in mknmzrc<br> 
@@ -64,11 +66,13 @@ documents processed in memory. If you use a machine with 1
 GB memory, you will have no trouble setting
 <code>$ON_MEMORY_MAX</code> to 100 MB. By doing so, the
 number of times to write to working files will be reduced.
+</li>
 
 <li>Use fast computer<br>
 Namazu is effective when you use a fast computer that has <br>
 fast CPU + large memory + fast HDD . Do not forget to change
 $ON_MEMORY_MAX.
+</li>
 </ul>
 
 <h2><a name="saving-memory">Saving memory for indexing</a></h2>
@@ -91,6 +95,7 @@ Using --checkpoint option makes mknmz re-exec itself at
 this time. As a result, the size of mknmz's process
 decreases considerably. Use top command to see behavior if
 you are curious.
+</li>
 
 
 <li>Decrease the value of $ON_MEMORY_MAX in mknmzrc<br>
@@ -99,6 +104,7 @@ you are curious.
 By default, <code>$ON_MEMORY_MAX</code> is set to 5
 MB. This value assumes your machine has 64 MB memory. If your
 machine have less memory, decrease this.
+</li>
 </ul>
 
 
@@ -112,15 +118,15 @@ theoretical foundations.
 
 
 <ul>
-<li><code>&lt;title&gt; 16</code>
-<li><code>&lt;h1&gt; 8</code>
-<li><code>&lt;h2&gt; 7</code>
-<li><code>&lt;h3&gt; 6</code>
-<li><code>&lt;h4&gt; 5</code>
-<li><code>&lt;h5&gt; 4</code>
-<li><code>&lt;h6&gt; 3</code>
-<li><code>&lt;a&gt; 4</code>
-<li><code>&lt;strong&gt;, &lt;em&gt;, &lt;code&gt;, &lt;kbd&gt;, &lt;samp&gt;, &lt;cite&gt;, &lt;var&gt; 2</code>
+<li><code>&lt;title&gt; 16</code></li>
+<li><code>&lt;h1&gt; 8</code></li>
+<li><code>&lt;h2&gt; 7</code></li>
+<li><code>&lt;h3&gt; 6</code></li>
+<li><code>&lt;h4&gt; 5</code></li>
+<li><code>&lt;h5&gt; 4</code></li>
+<li><code>&lt;h6&gt; 3</code></li>
+<li><code>&lt;a&gt; 4</code></li>
+<li><code>&lt;strong&gt;, &lt;em&gt;, &lt;code&gt;, &lt;kbd&gt;, &lt;samp&gt;, &lt;cite&gt;, &lt;var&gt; 2</code></li>
 </ul>
 
 <p>
@@ -267,7 +273,7 @@ garbage by gcnmz.
 Copyright (C) 2000-2004 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: tips.html,v 1.7 2004-08-04 03:14:27 opengl2772 Exp $
+$Id: tips.html,v 1.8 2005-06-07 06:01:42 opengl2772 Exp $
 </div>
 <address>
 developers@namazu.org

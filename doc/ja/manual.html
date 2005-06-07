@@ -673,9 +673,9 @@ NMZ.head に次のように記述します。
 
       &lt;strong&gt;検索対象:&lt;/strong&gt;
       &lt;select name="idxname"&gt;
-      &lt;option selected value="foo"&gt;foo
-      &lt;option value="bar"&gt;bar
-      &lt;option value="baz"&gt;baz
+      &lt;option selected value="foo"&gt;foo&lt;/option&gt;
+      &lt;option value="bar"&gt;bar&lt;/option&gt;
+      &lt;option value="baz"&gt;baz&lt;/option&gt;
       &lt;/select&gt;
 </pre>
 
@@ -712,9 +712,9 @@ foo インデックスを検索します。基本インデックスが
 
       &lt;strong&gt;対象インデックス&lt;/strong&gt;
       &lt;ul&gt;
-      &lt;li&gt;&lt;input type="checkbox" name="idxname" value="foo"&gt;foo
-      &lt;li&gt;&lt;input type="checkbox" name="idxname" value="bar"&gt;bar
-      &lt;li&gt;&lt;input type="checkbox" name="idxname" value="baz"&gt;baz
+      &lt;li&gt;&lt;input type="checkbox" name="idxname" value="foo"&gt;foo&lt;/li&gt;
+      &lt;li&gt;&lt;input type="checkbox" name="idxname" value="bar"&gt;bar&lt;/li&gt;
+      &lt;li&gt;&lt;input type="checkbox" name="idxname" value="baz"&gt;baz&lt;/li&gt;
       &lt;/ul&gt;
 </pre>
 
@@ -747,11 +747,11 @@ namazurc の Template指示で指定したディレクトリのものが用いら
 
       &lt;strong&gt;検索対象&lt;/strong&gt;
       &lt;select name="subquery"&gt;
-      &lt;option value=""&gt;全体
-      &lt;option value="+uri:/^http://foo.bar.jp/foo//"&gt;fooのペイジ
-      &lt;option value="+uri:/^http://foo.bar.jp/bar//"&gt;barのペイジ
-      &lt;option value="+uri:/^http://foo.bar.jp/baz//"&gt;bazのペイジ
-      &lt;option value="+uri:/^http://foo.bar.jp/quux//"&gt;quuxのペイジ
+      &lt;option value=""&gt;全体&lt;/option&gt;
+      &lt;option value="+uri:/^http://foo.bar.jp/foo//"&gt;fooのペイジ&lt;/option&gt;
+      &lt;option value="+uri:/^http://foo.bar.jp/bar//"&gt;barのペイジ&lt;/option&gt;
+      &lt;option value="+uri:/^http://foo.bar.jp/baz//"&gt;bazのペイジ&lt;/option&gt;
+      &lt;option value="+uri:/^http://foo.bar.jp/quux//"&gt;quuxのペイジ&lt;/option&gt;
       &lt;/select&gt;
       &lt;input type="hidden" name="reference" value="off"&gt;
 </pre>
@@ -771,8 +771,8 @@ CGI変数 langを用いるときは .namazurc に Lang の設定をしては
 
       &lt;strong&gt;言語:&lt;/strong&gt;
       &lt;select name="lang"&gt;
-      &lt;option selected value="ja"&gt;日本語
-      &lt;option value=""&gt;英語
+      &lt;option selected value="ja"&gt;日本語&lt;/option&gt;
+      &lt;option value=""&gt;英語&lt;/option&gt;
       &lt;/select&gt;
 </pre>
 
@@ -1226,7 +1226,7 @@ Tknamazu および namazu.el から検索するときは必ず後者で指定します。
 Copyright (C) 2000-2004 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: manual.html,v 1.89 2004-12-27 15:43:16 opengl2772 Exp $
+$Id: manual.html,v 1.90 2005-06-07 06:01:42 opengl2772 Exp $
 </div>
 <address>
 developers@namazu.org

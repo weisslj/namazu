@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu-cmd.c,v 1.23 2004-07-20 18:19:03 opengl2772 Exp $
+ * $Id: namazu-cmd.c,v 1.24 2005-06-16 15:23:38 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -304,7 +304,6 @@ parse_options(int argc, char **argv)
 int 
 main(int argc, char **argv)
 {
-    int i = 0;
     char query[BUFSIZE] = "", subquery[BUFSIZE] = "";
     char *localedir = getenv("NAMAZULOCALEDIR");
 
@@ -340,6 +339,8 @@ main(int argc, char **argv)
 	show_mini_usage();
 	exit(EXIT_FAILURE);
     } else {
+        int i = 0;
+
 	set_refprint(1);
 
 	i = parse_options(argc, argv); 
@@ -376,7 +377,7 @@ main(int argc, char **argv)
     if (nmz_get_idxnum() == 0) {
 	/* Use defaultidx for the taget index. */
 	if (nmz_add_index(nmz_get_defaultidx()) != SUCCESS) {
-	    die("invalid idxname: %s", argv[i]);
+	    die("invalid idxname: %s", nmz_get_defaultidx());
 	}
     }
 

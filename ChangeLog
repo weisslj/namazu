@@ -1,3 +1,7 @@
+2005-06-17  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * src/namazu-cmd.c: Bug fix.
+
 2005-06-07  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* doc/{en,ja}/*.html: To the addition of </option>, </li>.
@@ -9387,4 +9391,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1304 2005-06-07 06:01:42 opengl2772 Exp $
+$Id: ChangeLog,v 1.1305 2005-06-16 15:23:36 opengl2772 Exp $

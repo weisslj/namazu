@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: excel.pl,v 1.36 2005-06-06 07:06:39 opengl2772 Exp $
+# $Id: excel.pl,v 1.37 2005-06-18 07:30:38 usu Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi,
 #               1999 NOKUBI Takatsugu, 
 #               2000-2005 Namazu Project All rights reserved.
@@ -180,6 +180,8 @@ sub filter_xl ($$$$$) {
     # Title shoud be removed.
     # Because xlHtml generate poor <TITLE>/foo/bar/NMZ.excel.tmp</TITLE>.
     $$cont =~ s!<TITLE.*?>.*?</TITLE>!!is;
+
+    $$cont =~ s!<TD>&nbsp;</TD>!!g;
 
     html::html_filter($cont, $weighted_str, $fields, $headings);
     $fields->{'title'} = $title if (defined $title);

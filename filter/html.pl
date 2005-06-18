@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: html.pl,v 1.46 2005-06-06 06:11:50 opengl2772 Exp $
+# $Id: html.pl,v 1.47 2005-06-18 07:30:38 usu Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2005 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -29,12 +29,20 @@ require 'util.pl';
 require 'gfilter.pl';
 
 my $EMBEDDED_FILE = '\.(asp|jsp|php[3s]?|phtml)(?:\.gz)?';
+my $has_parser = undef;
 
 sub mediatype() {
     return ('text/html');
 }
 
 sub status() {
+    if (util::checklib('HTML/Parser.pm')) {
+        eval 'use HTML::Parser 3.28 ();';
+        unless ($@) {
+            $has_parser = 1;
+            return 'yes';
+        }
+    }
     return 'yes';
 }
 
@@ -66,7 +74,7 @@ sub filter ($$$$$) {
 	return $err if $err;
     }
 
-    if ($cfile =~ /($EMBEDDED_FILE)$/o) {
+    if (!($has_parser) && ($cfile =~ /($EMBEDDED_FILE)$/o)) {
        embedded_filter($cont);
     }
 
@@ -93,8 +101,191 @@ sub isexcluded ($) {
     return $err;
 }
 
-
 sub html_filter ($$$$) {
+    my ($contref, $weighted_str, $fields, $headings) = @_;
+
+    if ($has_parser) {
+        htmlparser_filter($contref, $weighted_str, $fields, $headings);
+    } else {
+        regex_html_filter($contref, $weighted_str, $fields, $headings);
+    }
+}
+
+my $weighted_str;
+my $fields;
+my $headings;
+my %inside;
+my $content;
+
+sub htmlparser_filter ($$$$) {
+    my ($contref, $weighted_str, $fields, $headings) = @_;
+
+    $html::weighted_str = $weighted_str;
+    $html::fields = $fields;
+    $html::headings = $headings;
+
+    %inside = ();
+    $fields->{'title'} = $conf::NO_TITLE;
+    $content = "";
+
+    HTML::Parser->new(api_version => 3,
+		  handlers    => [start => [\&_tag, "tagname, '+1', attr"],
+				  end   => [\&_tag, "tagname, '-1', attr"],
+				  text  => [\&_text, "text"],
+				 ],
+		  marked_sections => 1,
+	)->parse($$contref);
+
+    $$contref = $content;
+
+    # restore entities of each content.
+    html::decode_entity($contref);
+    html::decode_entity($weighted_str);
+    for my $key (keys %{$fields}) {
+	html::decode_entity(\$fields->{$key});
+    }
+}
+
+sub _tag ($$$){
+    my($tag, $num, $attr_hashref) = @_;
+
+    $inside{$tag} += $num;
+
+    # <META NAME="AUTHOR" CONTENT="author">
+    # <LINK REV=MADE HREF="mailto:ccsatoru@vega.aichi-u.ac.jp">
+    my $author = '';
+    my $existauthor = 'no';
+    if (($num >0) && ($tag =~ /^META$/i)){
+        while ( my ($key, $val) = each %{$attr_hashref} ) {
+            $existauthor = 'yes' if ($key =~ /^NAME$/i)&&($val =~ /^AUTHOR$/i);
+            $author = $val if ($key =~ /^CONTENT$/i)&&($existauthor eq 'yes');
+        }
+        set_author($author) if ($author ne '');
+    }elsif (($num >0) && ($tag =~ /^LINK$/i)){
+        while ( my ($key, $val) = each %{$attr_hashref} ) {
+            $existauthor = 'yes' if (($key =~ /^REV$/i)&&($val =~ /^MADE$/i));
+            $author = $val if ($key =~ /^HREF$/i)&&($existauthor eq 'yes');
+        }
+        set_author($author) if ($author ne '');
+    }
+
+    # Get foo from <TABLE ... SUMMARY="foo">
+    if (($num >0)&&($tag =~ /^TABLE$/i)&&("SUMMARY" =~ /^($conf::HTML_ATTRIBUTES)$/io)){
+        while ( my ($key, $val) = each %{$attr_hashref} ) {
+            $content .= " $val" if ($key =~ /^SUMMARY$/i);
+        }
+    }
+
+    if ($num >0){
+        while ( my ($key, $val) = each %{$attr_hashref} ) {
+            # Get foo from <XXX ... ALT="foo">
+            # It's not to handle HTML strictly.
+            $content .= " $val" if (($key =~ /^ALT$/i)&&("ALT" =~ /^($conf::HTML_ATTRIBUTES)$/io));
+            # Get foo from <XXX ... TITLE="foo">
+            $content .= " $val" if (($key =~ /^TITLE$/i)&&("TITLE" =~ /^($conf::HTML_ATTRIBUTES)$/io));
+        }
+    }
+
+    # get foo bar from <META NAME="keywords|description" CONTENT="foo bar"> 
+    my $metatags = "keywords|description";
+    my $weight = $conf::Weight{'metakey'};
+    if (($num >0) && ($tag =~ /^META$/i)){
+        while ( my ($key, $val) = each %{$attr_hashref} ) {
+            if ($key =~ /^NAME$/i){
+                if ($val =~ /^($metatags)$/io){
+                    if ($key =~ /^CONTENT$/i){
+                        $$weighted_str .= "\x7f$weight\x7f$val\x7f/$weight\x7f\n";
+                    }
+                }elsif (($var::Opt{'meta'})&&($val =~ /^($conf::META_TAGS)$/io)){
+                    if ($key =~ /^CONTENT$/i){
+                        $html::fields->{$key} .= $val . " ";
+                        util::dprint("meta: $key: $fields->{$key}\n");
+                        $$html::weighted_str .= "\x7f$weight\x7f$val\x7f/$weight\x7f\n";
+                    }
+                }
+            }
+        }
+    }
+    if ($num >0) {
+        $content .= html::element_space($tag) ;
+    }
+}
+
+
+sub _text ($) {
+    my ($tmptext) = @_;
+    if ($inside{script} || $inside{style}){
+        return;
+    }elsif ($inside{title}) {
+        set_title($tmptext);
+        return;
+    }elsif ($inside{address}){
+        set_author($tmptext);
+        $content .= $tmptext;
+        return;
+    }
+
+    # Weight a score of a keyword in a given text using %conf::Weight hash.
+    # This process make the text be surround by temporary tags 
+    # \x7fXX\x7f and \x7f/XX\x7f. XX represents score.
+    # Sort keys of %conf::Weight for processing <a> first.
+    # Because <a> has a tendency to be inside of other tags.
+    # Thus, it does'not processing for nexted tags strictly.
+    # Moreover, it does special processing for <h[1-6]> for summarization.
+    my $addcontent = "";
+    my $weight = "";
+    my $space;
+    for my $element (sort keys(%{$conf::Weight{'html'}})) {
+        $space = "";
+        if ($inside{$element}){
+            next if (length($tmptext)) >= $conf::INVALID_LENG;
+            $space = html::element_space($element);
+            $tmptext .= " ";
+            if ($element =~ /^H[1-6]$/i && ! $var::Opt{'noheadabst'}){
+                $$html::headings .= "$tmptext ";
+                $weight = $conf::Weight{'html'}->{$element};
+                $addcontent = "no";
+                last;
+            }else {
+                my $ishtag = "";
+                for my $htag ('h1', 'h2', 'h3', 'h4', 'h5', 'h6'){
+                    $ishtag = 'yes' if ($inside{$htag});
+                }
+                if ($ishtag) {
+                    $addcontent = "no";
+                    last;
+                }
+                $weight = $conf::Weight{'html'}->{$element} -1;
+            }
+        }
+    }
+    $tmptext =~ s/^\s+(.*)/$1/;
+    if ($tmptext){
+        $content .= "$space$tmptext$space" unless $addcontent;
+        $$html::weighted_str .= "\x7f$weight\x7f$tmptext\x7f/$weight\x7f\n" if $weight;
+    }
+}
+
+# Set title from <title>..</title>
+# It's okay to exits two or more <title>...</TITLE>. 
+# First one will be retrieved.
+sub set_title ($) {
+    my ($title) = @_;
+
+    my $weight = $conf::Weight{'html'}->{'title'};
+    $$html::weighted_str .= "\x7f$weight\x7f$title\x7f/$weight\x7f\n";
+    $html::fields->{'title'} = $title;
+
+}
+
+sub set_author ($) {
+    my ($author) =@_;
+    if ($author =~ /\b([\w\.\-]+\@[\w\.\-]+(?:\.[\w\.\-]+)+)\b/) {
+        $html::fields->{'author'} = $1;
+    }
+}
+
+sub regex_html_filter ($$$$) {
     my ($contref, $weighted_str, $fields, $headings) = @_;
 
     html::escape_lt_gt($contref);

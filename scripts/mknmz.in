@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.152 2005-06-06 05:03:07 opengl2772 Exp $
+# $Id: mknmz.in,v 1.153 2005-06-18 07:30:38 usu Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -517,14 +517,16 @@ sub namazu_core ($$$$$$$$$$) {
 
     if ($$contref eq "") {
 	$err = $Document->get_errmsg();
-	if (($English::OSNAME eq "MSWin32") || ($English::OSNAME eq "os2")) {
-	    my $uri2 = codeconv::eucjp_to_shiftjis($uri);
-	    print $msg_prefix . "$uri2 $err\n";
-	} else {
-	    print $msg_prefix . "$uri $err\n";
+	if (defined $err) {
+	    if (($English::OSNAME eq "MSWin32") || ($English::OSNAME eq "os2")) {
+		my $uri2 = codeconv::eucjp_to_shiftjis($uri);
+		print $msg_prefix . "$uri2 $err\n";
+	    } else {
+		print $msg_prefix . "$uri $err\n";
+	    }
+	    print $fh_errorsfile "$cfile $err\n"; 
+	    return 0;  # return 0 if error
 	}
-	print $fh_errorsfile "$cfile $err\n"; 
-	return 0;  # return 0 if error
     }
 
     # Print processing file name as URI.

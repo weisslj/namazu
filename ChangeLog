@@ -1,3 +1,13 @@
+2005-06-18  Yukio USUDA <usu@namazu.org>
+
+	* scripts/mknmz.in (namazu_core): $err NULL check is added.
+	(Namazu-devel-ja#468)
+
+	* filter/excel.pl (filter_xl): Remove NULL table tags.
+	(Namazu-users-ja#421)
+
+	* filter/html.pl: Changed to use HTML-Parser.
+
 2005-06-17  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * src/namazu-cmd.c: Bug fix.
@@ -9391,4 +9401,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1305 2005-06-16 15:23:36 opengl2772 Exp $
+$Id: ChangeLog,v 1.1306 2005-06-18 07:30:37 usu Exp $

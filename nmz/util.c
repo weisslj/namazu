@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: util.c,v 1.88 2004-03-20 13:46:11 knok Exp $
+ * $Id: util.c,v 1.89 2005-07-21 08:24:32 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -90,8 +90,8 @@ decode_uri_sub(char c1, char c2)
 {
     char c;
 
-    c =  ((c1 >= 'A' ? (toupper(c1) - 'A') + 10 : (c1 - '0'))) * 16;
-    c += ( c2 >= 'A' ? (toupper(c2) - 'A') + 10 : (c2 - '0'));
+    c =  ((c1 >= 'A' ? (_nmz_toupper((unsigned char)c1) - 'A') + 10 : (c1 - '0'))) * 16;
+    c += ( c2 >= 'A' ? (_nmz_toupper((unsigned char)c2) - 'A') + 10 : (c2 - '0'));
     return c;
 }
 
@@ -376,6 +376,16 @@ _nmz_tolower(int c)
 {
     if (c >= 'A' && c <= 'Z') {
 	c = 'a' + c - 'A';
+	return c;
+    }
+    return c;
+}
+
+int 
+_nmz_toupper(int c)
+{
+    if (c >= 'a' && c <= 'z') {
+	c = 'A' + c - 'a';
 	return c;
     }
     return c;

@@ -29,6 +29,7 @@ extern void nmz_debug_printf ( const char *fmt, ... );
 extern void nmz_pathcat ( const char *base, char *name );
 extern int nmz_isnumstr ( const char *str );
 extern int _nmz_tolower ( int c );
+extern int _nmz_toupper ( int c );
 extern void nmz_strlower ( char *str );
 extern int nmz_strcasecmp ( const char *str1, const char *str2 );
 extern int nmz_strncasecmp ( const char *str1, const char *str2, int n );

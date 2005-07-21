@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.77 2005-01-08 02:05:50 opengl2772 Exp $
+ * $Id: form.c,v 1.78 2005-07-21 08:24:32 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -96,7 +96,7 @@ cmp_element(const char *s1, const char *s2)
             }
             s2++;
         }
-        if (toupper(*s1) != toupper(*s2)) {
+        if (_nmz_toupper((unsigned char)*s1) != _nmz_toupper((unsigned char)*s2)) {
             break;
         }
     }

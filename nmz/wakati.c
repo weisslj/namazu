@@ -2,7 +2,7 @@
  * 
  * wakati.c -
  * 
- * $Id: wakati.c,v 1.29 2004-12-27 15:56:07 opengl2772 Exp $
+ * $Id: wakati.c,v 1.30 2005-07-21 08:24:32 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -82,7 +82,7 @@ iskatakana(const char *chr)
     c = (uchar *)chr;
 
     if ((*c == 0xa5) &&
-	(*(c + 1) >= 0xa0) && (*(c + 1) <= 0xff))
+	(*(c + 1) >= 0xa0)) /* 0xa0 <= *(c + 1) <= 0xff */
     {
 	return 1;
     } else if ((*c == 0xa1) && (*(c + 1) == 0xbc)) { /* choon */ 
@@ -101,7 +101,7 @@ ishiragana(const char *chr)
     c = (uchar *)chr;
 
     if ((*c == 0xa4) &&
-	(*(c + 1) >= 0xa0) && (*(c + 1) <= 0xff))
+	(*(c + 1) >= 0xa0)) /* 0xa0 <= *(c + 1) <= 0xff */
     {
 	return 1;
     } else if ((*c == 0xa1) && (*(c + 1) == 0xbc)) { /* choon */ 

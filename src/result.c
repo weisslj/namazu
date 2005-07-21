@@ -1,5 +1,5 @@
 /*
- * $Id: result.c,v 1.73 2004-01-20 09:58:28 opengl2772 Exp $
+ * $Id: result.c,v 1.74 2005-07-21 08:24:32 opengl2772 Exp $
  * 
  * Copyright (C) 1989, 1990 Free Software Foundation, Inc.
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
@@ -315,8 +315,8 @@ emphasize(char *str)
 static int
 is_wordboundary(char *p)
 {
-  if (isalpha(*p) && isalpha(*(p + 1))) return 0;
-  if (isdigit(*p) && isdigit(*(p + 1))) return 0;
+  if (isalpha((unsigned char)*p) && isalpha((unsigned char)*(p + 1))) return 0;
+  if (isdigit((unsigned char)*p) && isdigit((unsigned char)*(p + 1))) return 0;
   return 1;
 }
 

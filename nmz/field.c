@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: field.c,v 1.36 2004-02-21 12:16:27 opengl2772 Exp $
+ * $Id: field.c,v 1.37 2005-07-21 08:24:32 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -122,7 +122,7 @@ nmz_isfield(const char *key)
         }
         key++;
     }
-    if (isalpha(*(key - 1)) && *key == ':' ) {
+    if (isalpha((unsigned char)*(key - 1)) && *key == ':' ) {
         return 1;
     }
     return 0;

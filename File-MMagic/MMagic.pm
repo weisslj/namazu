@@ -1,6 +1,6 @@
 # File::MMagic
 #
-# $Id: MMagic.pm,v 1.28 2003-07-31 13:36:26 knok Exp $
+# $Id: MMagic.pm,v 1.29 2005-07-22 04:23:50 knok Exp $
 #
 # This program is originated from file.kulp that is a production of The
 # Unix Reconstruction Projct.
@@ -113,8 +113,8 @@ File::MMagic - Guess file type
   use FileHandle;
 
   $mm = new File::MMagic; # use internal magic file
-  # $mm = File::MMagic::new('/etc/magic'); # use external magic file
-  # $mm = File::MMagic::new('/usr/share/etc/magic'); # if you use Debian
+  # $mm = File::MMagic->new('/etc/magic'); # use external magic file
+  # $mm = File::MMagic->new('/usr/share/etc/magic'); # if you use Debian
   $res = $mm->checktype_filename("/somewhere/unknown/file");
 
   $fh = new FileHandle "< /somewhere/unknown/file2";
@@ -339,7 +339,7 @@ BEGIN {
 	    t => "\t",
 	    f => "\f");
 
-$VERSION = "1.20";
+$VERSION = "1.22";
 $allowEightbit = 1;
 }
 
@@ -353,7 +353,15 @@ sub new {
 	my $fh = *File::MMagic::DATA{IO};
 	binmode($fh);
 	bless $fh, 'FileHandle' if ref $fh ne 'FileHandle';
-	my $dataLoc = $fh->tell();
+	my $dataLoc;
+	# code block to localise the no strict;, contribute by Simon Matthews
+	{
+	    no strict 'refs';
+	    my $instance = \${ "$class\::_instance" };
+	    $$instance = $fh->tell() unless $$instance;
+	    $dataLoc = $$instance;
+	}
+
 	$fh->seek($dataLoc, 0);
 	&readMagicHandle($self, $fh);
     } else {
@@ -789,7 +797,7 @@ sub magicMatch {
 	$fh->seek($offset,0) or return;
     }
 
-    if ($type eq 'string') {
+    if ($type =~ /^string/) {
 	# read the length of the match string unless the
 	# comparison is '>' ($numbytes == 0), in which case 
 	# read to the next null or "\n". (that's what BSD's file does)
@@ -945,7 +953,7 @@ sub magicMatchStr {
 	$str = substr($str, $offset);
     }
 
-    if ($type eq 'string') {
+    if ($type =~ /^string/) {
 	# read the length of the match string unless the
 	# comparison is '>' ($numbytes == 0), in which case 
 	# read to the next null or "\n". (that's what BSD's file does)
@@ -1207,7 +1215,7 @@ sub readMagicLine {
     }
     
     # check if type is valid
-    if (!exists($TEMPLATES{$type})) {
+    if (!exists($TEMPLATES{$type}) && $type !~ /^string/) {
 	warn "Invalid type '$type' at line $line_num\n";
 	return;
     }
@@ -1234,7 +1242,7 @@ sub readMagicLine {
     else { $operator = '='; }
     
 
-    if ($type eq 'string') {
+    if ($type =~ /string/) {
 	$testval = $line;
 
 	# do octal/hex conversion

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mailnews.pl,v 1.38 2005-06-05 09:52:33 opengl2772 Exp $
+# $Id: mailnews.pl,v 1.39 2005-07-22 04:23:50 knok Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu ,
 #               2001,2003-2005 Namazu Project All rights reserved.
@@ -203,8 +203,9 @@ sub multipart_process ($$$$){
 		if ($contenttype =~ m!text/plain!){
 		    $$contref .= $body;
 		} elsif ($contenttype =~ m!multipart/alternative!){
-		    if ($head =~ /boundary="(.*?)"/i){
+		    if ($head =~ /boundary=(.*?)/i){
 			my $boundary2 = $1;
+                        $boundary2 =~ s/"(.*?)"/$1/;
 			util::dprint("((boundary: $boundary2))\n");
 			$boundary2 =~ s/(\W)/\\$1/g;
 			multipart_process(\$body, $boundary2, $weighted_str, $fields);

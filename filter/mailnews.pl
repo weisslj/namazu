@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mailnews.pl,v 1.39 2005-07-22 04:23:50 knok Exp $
+# $Id: mailnews.pl,v 1.40 2005-08-14 04:59:40 usu Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu ,
 #               2001,2003-2005 Namazu Project All rights reserved.
@@ -66,7 +66,7 @@ sub filter ($$$$$) {
     util::vprint("Processing mail/news file ...\n");
 
     uuencode_filter($cont);
-    mailnews_filter($cont, $weighted_str, $fields);
+    mailnews_filter($cont, $weighted_str, $headings, $fields);
     mailnews_citation_filter($cont, $weighted_str);
 
     gfilter::line_adjust_filter($cont);
@@ -80,11 +80,12 @@ sub filter ($$$$$) {
 
 # Original of this code was contributed by <furukawa@tcp-ip.or.jp>. 
 sub mailnews_filter ($$$) {
-    my ($contref, $weighted_str, $fields) = @_;
+    my ($contref, $weighted_str, $headings, $fields) = @_;
 
     my $boundary = "";
     my $line     = "";
     my $partial  = 0;
+    my $htmlmail = "";
 
     $$contref =~ s/^\s+//;
     # Don't handle if first like does'nt seem like a mail/news header.
@@ -126,6 +127,10 @@ sub mailnews_filter ($$$) {
                 # contributed by Hiroshi Kato <tumibito@mm.rd.nttdata.co.jp>
                 $partial = $1;
                 util::dprint("((partial: $partial))\n");
+            } elsif ($line =~ m!text/html!i) {
+               # The simplest form of an HTML email message.
+               util::dprint("text/html mail\n");
+               $htmlmail = "yes";
             } elsif ($line !~ m!text/plain!i) {
                 $$contref = '';
                 return;
@@ -161,6 +166,9 @@ sub mailnews_filter ($$$) {
 
 	multipart_process($contref, $boundary, $weighted_str, $fields);
 
+    }
+    if ($htmlmail) {
+       html::html_filter($contref, $weighted_str, $fields, $headings);
     }
 }
 

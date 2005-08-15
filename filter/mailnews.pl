@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mailnews.pl,v 1.40 2005-08-14 04:59:40 usu Exp $
+# $Id: mailnews.pl,v 1.41 2005-08-15 13:58:30 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu ,
 #               2001,2003-2005 Namazu Project All rights reserved.
@@ -28,6 +28,7 @@ package mailnews;
 use strict;
 require 'util.pl';
 require 'gfilter.pl';
+require 'html.pl';
 require 'document.pl';
 
 my $has_base64 = undef;

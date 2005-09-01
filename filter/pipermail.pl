@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: pipermail.pl,v 1.11 2005-06-05 09:52:33 opengl2772 Exp $
+# $Id: pipermail.pl,v 1.12 2005-09-01 13:24:39 opengl2772 Exp $
 # Copyright (C) 2004-2005 Namazu Project All rights reserved.
 #
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -181,15 +181,19 @@ sub uncommentize {
     $txt;
 }
 
+# Decode an entity. Ignore characters of right half of ISO-8859-1.
+# Because it can't be handled in EUC encoding.
+# This function provides sequential entities like: &quot &lt &gt;
 sub decode_entity ($) {
     my ($text) = @_;
 
     return unless defined($$text);
 
-    $$text =~ s/&quot;/\"/g;
-    $$text =~ s/&lt;/</g;
-    $$text =~ s/&gt;/>/g;
-    $$text =~ s/&amp;/&/g;
+    $$text =~ s/&quot[;\s]/\"/g;
+    $$text =~ s/&amp[;\s]/&/g;
+    $$text =~ s/&lt[;\s]/</g;
+    $$text =~ s/&gt[;\s]/>/g;
+    $$text =~ s/&nbsp[;\s]/ /g;
 }
 
 my %wday_names = (

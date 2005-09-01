@@ -1,3 +1,7 @@
+2005-09-01  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * filter/pipermail.pl (decode_entity): Add &nbsp; handling.
+
 2005-08-28  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* File-MMagic: Imported 1.25.
@@ -9432,4 +9436,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1311 2005-08-27 15:33:39 knok Exp $
+$Id: ChangeLog,v 1.1312 2005-09-01 13:24:38 opengl2772 Exp $

@@ -13,8 +13,8 @@ What is Namazu?
    for more details.
 
    At the beginning Namazu was made with only intention for
-   Japanese use.  Now it can handle English and other latin
-   languages encoded in ISO-8859-* character sets.
+   Japanese use.  Now it can handle English. But, ISO-8859-*
+   character set are not officially supported in Namazu.
 
    We have been trying to internationalize Namazu. At the
    moment, we have just only gettextized it.  There is a lot

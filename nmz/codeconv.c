@@ -2,10 +2,10 @@
  * 
  * codeconv.c -
  * 
- * $Id: codeconv.c,v 1.33 2004-02-20 20:21:31 opengl2772 Exp $
+ * $Id: codeconv.c,v 1.34 2005-09-02 09:22:51 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2005 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -454,9 +454,8 @@ nmz_codeconv_internal(char *s)
  * Convert character encoding from internal one to external one.
  * Return a pointer of converted string.
  *
- * NOTES: Current internal encoding is EUC-JP for Japanese and
- * ISO-8859-* for others. In future, internal encoding of Namazu 
- * will be UTF-8.
+ * NOTES: Current internal encoding is EUC-JP for Japanese.
+ * In future, internal encoding of Namazu will be UTF-8.
  *
  */
 char *

@@ -1,3 +1,9 @@
+2005-09-04  Yukio USUDA <usu@namazu.org>
+
+        * tests/mknmz-1: Added file disappearance check.
+
+        * pltests/mknmz-1.pl.in: Ditto.
+
 2005-09-03  Yukio USUDA <usu@namazu.org>
 
 	* pl/builtinwakati.pl: Added new wakatigaki subroutine.
@@ -9466,4 +9472,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1314 2005-09-03 08:41:07 usu Exp $
+$Id: ChangeLog,v 1.1315 2005-09-03 16:17:21 usu Exp $

@@ -22,6 +22,13 @@ else
     rm -f idx1/NMZ.*
 fi
 
+origfilenum=`ls $TARGET|wc -l`
+
 # Simple indexing.
 ../scripts/mknmz  -O idx1 $TARGET >> $LOG
-exit $?
+test "$?" != "0" && exit 1  # error if not success
+
+filenum=`ls $TARGET|wc -l`
+test $filenum != $origfilenum && exit 1  # error if not equal
+
+exit 0

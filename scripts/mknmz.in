@@ -1,10 +1,10 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.153 2005-06-18 07:30:38 usu Exp $
+# $Id: mknmz.in,v 1.154 2005-09-03 08:41:08 usu Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
-# Copyright (C) 2000,2001 Namazu Project All rights reserved.
+# Copyright (C) 2000-2005 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -52,6 +52,7 @@ my $LIBDIR        = $PKGDATADIR . "/pl";      # directory where library etc. are
 my $TEMPLATEDIR   = $PKGDATADIR . "/template"; # directory where templates are in.
 my $SCHEMEDIR   = $PKGDATADIR . "/scheme"; # directory where scheme handlers are in.
 my $ARCHIVEDIR   = $PKGDATADIR . "/archive"; # directory where archive handlers are in.
+my $WAKATIDICDIR        = $PKGDATADIR . "/wakatidict";      # directory where wakatidictionary are in.
 
 my $DeletedFilesCount = 0;
 my $UpdatedFilesCount = 0;
@@ -885,6 +886,11 @@ sub require_modules() {
         require MeCab || die "unable to require \"MeCab\"\n";
         util::dprint(_("wakati: using MeCab module\n"));
     }
+    if (util::islang("ja") && $conf::WAKATI =~ /^module_builtin/) {
+        require 'builtinwakati.pl';
+        builtinwakati::init("$WAKATIDICDIR/kakasidict");
+        util::dprint(_("wakati: using Built-in module\n"));
+    }
 }
 
 sub check_lockfile ($) {
@@ -993,6 +999,7 @@ sub parse_options
     my $opt_chasen_noun = 0;
     my $opt_kakasi = 0;
     my $opt_mecab = 0;
+    my $opt_builtin_wakati = 0;
     my $opt_checkpoint_sub = 0;
     my $opt_show_config = 0;
     my $opt_mailnews = 0;
@@ -1052,6 +1059,7 @@ sub parse_options
 	       'x|no-heading-summary'=> \$var::Opt{'noheadabst'},
 	       'z|check-filesize'    => \$var::Opt{'checkfilesize'},
 	       'decode-base64'       => \$var::Opt{'decodebase64'},
+               'use-builtinwakati'   => \$opt_builtin_wakati,
 	       );
     my $mediatype;
     foreach $mediatype (keys %var::ARCHIVE_REQUIRE_ACTIONS) {
@@ -1154,6 +1162,10 @@ sub parse_options
     if ($opt_mecab) {
 	$conf::WAKATI = $conf::MECAB;
 	$var::Opt{'noun'} = 0;
+    }
+    if ($opt_builtin_wakati) {
+        $conf::WAKATI = "module_builtin";
+        $var::Opt{'noun'} = 0;
     }
 
     if ($include_file) {

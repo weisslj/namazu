@@ -1,7 +1,7 @@
 # -*- Perl -*-
-# $Id: usage.pl,v 1.33 2004-12-27 15:52:05 opengl2772 Exp $
+# $Id: usage.pl,v 1.34 2005-09-03 08:41:07 usu Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
-# Copyright (C) 2000 Namazu Project All rights reserved.
+# Copyright (C) 2000-2005 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -60,6 +60,7 @@ Morphological Analysis:
   -c, --use-chasen         use ChaSen for analyzing Japanese.
   -k, --use-kakasi         use KAKASI for analyzing Japanese.
   -m, --use-chasen-noun    use ChaSen for extracting only nouns.
+      --use-builtinwakati  use Built-in wakati for analyzing Japanese.
   -L, --indexing-lang=LANG index with language specific processing.
 
 Text Operations:

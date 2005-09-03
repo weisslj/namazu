@@ -10,11 +10,11 @@
 
 AUTOMAKE_OPTIONS = 1.4 no-dependencies
 
-bin_SCRIPTS    = bnamazu gcnmz kwnmz mailutime mknmz nmzgrep rfnmz vfnmz lnnmz adnmz nmzmerge nmzcat nmzegrep
+bin_SCRIPTS    = bnamazu gcnmz kwnmz mailutime mknmz nmzgrep rfnmz vfnmz lnnmz adnmz nmzmerge nmzcat nmzegrep load_dict
 noinst_SCRIPTS = gtnmz
 
-EXTRA_DIST = gcnmz.in kwnmz.in mknmz.in nmzmerge.in adnmz.in lnnmz.in gtnmz.in bnamazu.in mailutime.in nmzgrep.in rfnmz.in vfnmz.in nmzcat.in nmzegrep.in
-CLEANFILES  = gcnmz mknmz kwnmz nmzmerge adnmz lnnmz gtnmz bnamazu mailutime nmzgrep rfnmz vfnmz nmzcat nmzegrep
+EXTRA_DIST = gcnmz.in kwnmz.in mknmz.in nmzmerge.in adnmz.in lnnmz.in gtnmz.in bnamazu.in mailutime.in nmzgrep.in rfnmz.in vfnmz.in nmzcat.in nmzegrep.in load_dict.in
+CLEANFILES  = gcnmz mknmz kwnmz nmzmerge adnmz lnnmz gtnmz bnamazu mailutime nmzgrep rfnmz vfnmz nmzcat nmzegrep load_dict
 
 confdir     = $(sysconfdir)/$(PACKAGE)
 
@@ -114,6 +114,13 @@ nmzcat: nmzcat.in Makefile
 	chmod +x $@
 
 nmzegrep: nmzegrep.in Makefile
+	rm -f $@
+	sed -e 's!%PERL%!$(PERL)!g' \
+	    -e 's!@pkgdatadir@!$(pkgdatadir)!g' $(srcdir)/$@.in > $@.tmp
+	mv $@.tmp $@
+	chmod +x $@
+
+load_dict: load_dict.in Makefile
 	rm -f $@
 	sed -e 's!%PERL%!$(PERL)!g' \
 	    -e 's!@pkgdatadir@!$(pkgdatadir)!g' $(srcdir)/$@.in > $@.tmp

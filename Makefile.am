@@ -10,11 +10,19 @@ BUILT_TKNAMAZU =
 DIST_TKNAMAZU = tknamazu
 endif
 
+if BUILD_WAKATIDICT
+BUILT_WAKATIDICT = wakatidict
+else
+BUILT_WAKATIDICT =
+endif
+
 SUBDIRS = m4 conf doc etc filter po lib nmz pl src lisp scripts man \
-	  tests pltests template contrib scheme archive $(BUILT_TKNAMAZU)
+	  tests pltests template contrib scheme archive \
+	  $(BUILT_TKNAMAZU) $(BUILT_WAKATIDICT)
 
 DIST_SUBDIRS = m4 conf doc etc filter po lib nmz pl src lisp scripts man \
-	  tests pltests template contrib scheme archive $(BUILT_TKNAMAZU)
+	  tests pltests template contrib scheme archive \
+          $(BUILT_TKNAMAZU) $(BUILT_WAKATIDICT)
 
 
 bin_SCRIPTS = nmz-config

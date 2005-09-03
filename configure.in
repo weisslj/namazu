@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.163 2004-12-27 15:24:53 opengl2772 Exp $
+dnl $Id: configure.in,v 1.164 2005-09-03 08:41:07 usu Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -283,7 +283,7 @@ elif test "$CHASEN" != "no"; then
 elif test "$MECAB" != "no"; then
     OPT_WAKATI_DEFAULT=MECAB
 else
-    AC_MSG_WARN(KAKASI or ChaSen or MeCab are required to handle Japanese)
+    OPT_WAKATI_DEFAULT="module_builtin"
 fi
 AC_MSG_RESULT($OPT_WAKATI_DEFAULT)
 AC_SUBST(OPT_WAKATI_DEFAULT)
@@ -346,6 +346,17 @@ if test "${tknamazu}" = "yes"; then
     AC_CONFIG_SUBDIRS(tknamazu)
 fi
 AM_CONDITIONAL(BUILD_TKNAMAZU, test x$tknamazu = xyes)
+
+
+dnl *
+dnl * Preprocessing for buitin-wakatidict (FIXME: ugly scripts)
+dnl *
+AC_ARG_ENABLE(build_wakatidict,
+    [  --enable-build-wakatidict  build wakatidict for builtin wakati module.],
+    enable_build_wakatidict=yes,
+    enable_build_wakatidict=no)
+
+AM_CONDITIONAL(BUILD_WAKATIDICT, test x$enable_build_wakatidict = xyes)
 
 
 dnl * 
@@ -457,6 +468,7 @@ AC_OUTPUT([Makefile
 	   tests/data/ja-mac/Makefile
 	   tests/data/ja-appl90/Makefile
 	   pltests/Makefile
+	   wakatidict/Makefile
 	  ],
 	  [chmod +x nmz-config \
 	    ]) 

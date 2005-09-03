@@ -19,6 +19,7 @@ perllib_DATA = \
 	wakati.pl \
 	indexer.pl \
 	time.pl \
+	builtinwakati.pl \
 	document.pl \
 	filter.pl
 
@@ -37,6 +38,7 @@ EXTRA_DIST = $\
 	wakati.pl \
 	indexer.pl \
 	time.pl \
+	builtinwakati.pl \
 	document.pl \
 	filter.pl.in
 

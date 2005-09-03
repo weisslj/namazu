@@ -4,6 +4,8 @@
 
         * pltests/mknmz-1.pl.in: Ditto.
 
+	* pl/Makefile.am(EXTRA_DIST): Added builtinwakati.pl.
+
 2005-09-03  Yukio USUDA <usu@namazu.org>
 
 	* pl/builtinwakati.pl: Added new wakatigaki subroutine.
@@ -9472,4 +9474,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1315 2005-09-03 16:17:21 usu Exp $
+$Id: ChangeLog,v 1.1316 2005-09-03 17:22:59 usu Exp $

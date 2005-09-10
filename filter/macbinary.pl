@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: macbinary.pl,v 1.6 2004-11-26 15:23:44 opengl2772 Exp $
+# $Id: macbinary.pl,v 1.7 2005-09-10 13:30:51 usu Exp $
 # Copyright (C) 2003 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -81,6 +81,8 @@ sub filter ($$$$$) {
 
     if ($size > $conf::FILE_SIZE_MAX) {
         return 'too_large_macbinary_file';
+    }elsif ($size == 0){
+        return 'is 0 size!';
     }
 
     # 128-byte Header Size

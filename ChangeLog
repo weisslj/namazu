@@ -1,3 +1,13 @@
+2005-09-10  Yukio USUDA <usu@namazu.org>
+
+	* filter/macbinary.pl(filter): Added 0 byte content check.
+
+	* scripts/mknmz.in(namazu_core): Changed the initial value to passed
+	to $Document->init_doc(). 
+
+	* pl/document.pl(_check_content): Changed the condition of deciding
+	whether to read a file or not to read.
+
 2005-09-04  Yukio USUDA <usu@namazu.org>
 
         * tests/mknmz-1: Added file disappearance check.
@@ -9474,4 +9484,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1316 2005-09-03 17:22:59 usu Exp $
+$Id: ChangeLog,v 1.1317 2005-09-10 13:30:50 usu Exp $

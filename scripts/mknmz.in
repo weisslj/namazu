@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.154 2005-09-03 08:41:08 usu Exp $
+# $Id: mknmz.in,v 1.155 2005-09-10 13:30:51 usu Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2005 Namazu Project All rights reserved.
@@ -485,7 +485,7 @@ sub namazu_core ($$$$$$$$$$) {
     my $mmtype = '';
     ($contref, $mtime, $mmtype) = fetchscheme($uri);
     unless (defined $contref) {
-	$$contref = "";
+	$$contref = undef;
     }
 
     my $err = undef;

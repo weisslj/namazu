@@ -2,7 +2,7 @@
 # -*- Perl -*-
 # document.pl - class for document
 #
-# $Id: document.pl,v 1.3 2004-10-20 14:48:37 opengl2772 Exp $
+# $Id: document.pl,v 1.4 2005-09-10 13:30:51 usu Exp $
 #
 # Copyright (C) 2004 Yukio USUDA All rights reserved.
 # Copyright (C) 2000-2004 Namazu Project All rights reversed.
@@ -294,7 +294,7 @@ sub _check_content {
     my $self = shift @_;
 
     my $file_size;
-    if (${$self->{'_contentref'}} eq "") {
+    if (!defined ${$self->{'_contentref'}}) {
 	my $cfile = $self->{'_orig_filename'};
 	# for handling a filename which contains Shift_JIS code
 	if ($English::OSNAME eq "MSWin32" 

@@ -1,3 +1,8 @@
+2005-09-14  Yukio USUDA <usu@namazu.org>
+
+	* fiter/mp3.pl: Fixed problem. MP3::Info's default behavior
+	was changed from version1.10.
+
 2005-09-10  Yukio USUDA <usu@namazu.org>
 
 	* filter/macbinary.pl(filter): Added 0 byte content check.
@@ -9484,4 +9489,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1317 2005-09-10 13:30:50 usu Exp $
+$Id: ChangeLog,v 1.1318 2005-09-14 14:05:07 usu Exp $

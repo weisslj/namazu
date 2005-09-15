@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mp3.pl,v 1.11 2005-09-14 14:05:08 usu Exp $
+# $Id: mp3.pl,v 1.12 2005-09-15 13:14:46 usu Exp $
 # Copyright (C) 2002 Luc@2113.ch ,
 #               2003-2005 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -67,11 +67,14 @@ sub filter($$$$$) {
       = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
-    my $header = substr($$contref, 0, 3);
-    unless ($header =~ /ID3/) {
-	util::vprint("Couldn't find ID3 tag\n");
-	$$contref="";
-	return undef;
+    my $id3v2header = substr($$contref, 0, 3);
+    unless ($id3v2header =~ /ID3/) {
+        my $id3v1header = substr($$contref, -128, 3);
+        unless ($id3v1header =~ /TAG/) {
+            util::vprint("Couldn't find ID3 tag\n");
+            $$contref="";
+            return undef;
+        }
     }
 
     util::vprint("Processing mp3 file ... (using  MP3::Info module)\n");

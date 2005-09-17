@@ -1,3 +1,8 @@
+2005-09-17  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+	* pl/wakati.pl(wakatize_japanese_sub): Text::ChaSen
+	(or Mecab module) is called excluding the one-byte character. 
+
 2005-09-15  Yukio USUDA <usu@namazu.org>
 
 	* filter/mp3.pl: Specified the mp3 file where the ID3 tag was not
@@ -9496,4 +9501,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1319 2005-09-15 13:14:46 usu Exp $
+$Id: ChangeLog,v 1.1320 2005-09-17 10:36:37 opengl2772 Exp $

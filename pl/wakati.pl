@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: wakati.pl,v 1.17 2005-09-17 10:36:38 opengl2772 Exp $
+# $Id: wakati.pl,v 1.18 2005-09-17 14:38:57 usu Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2005 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -86,6 +86,8 @@ sub wakatize_japanese_sub ($) {
 	    }; 
             $str = $$content;
 	    $str =~ s/([\x80-\xff]+)/{my $text = $t->parse($1); " $text ";}/ge;
+        } elsif ($module eq "builtin") {
+            $str = builtinwakati::wakati($content);
 	} else {
 	    util::cdie(_("invalid wakati module: ")."$module\n");
 	}

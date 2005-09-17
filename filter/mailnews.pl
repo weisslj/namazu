@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mailnews.pl,v 1.41 2005-08-15 13:58:30 opengl2772 Exp $
+# $Id: mailnews.pl,v 1.42 2005-09-17 14:38:57 usu Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu ,
 #               2001,2003-2005 Namazu Project All rights reserved.
@@ -226,6 +226,7 @@ sub multipart_process ($$$$){
 		}
 	    }
 	}
+        $$contref .= " ";
     }
 }
 

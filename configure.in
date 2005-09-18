@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.164 2005-09-03 08:41:07 usu Exp $
+dnl $Id: configure.in,v 1.165 2005-09-18 16:36:33 usu Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -467,6 +467,7 @@ AC_OUTPUT([Makefile
 	   tests/data/dup-field/Makefile
 	   tests/data/ja-mac/Makefile
 	   tests/data/ja-appl90/Makefile
+	   tests/data/decodebase64/Makefile
 	   pltests/Makefile
 	   wakatidict/Makefile
 	  ],

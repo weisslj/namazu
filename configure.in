@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.165 2005-09-18 16:36:33 usu Exp $
+dnl $Id: configure.in,v 1.166 2005-09-21 16:06:43 opengl2772 Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -297,8 +297,8 @@ if test "$CHASEN" = "no"; then
     DO_CHASEN="no"
     DO_CHASEN_NOUN="no"
 else
-    DO_CHASEN="$CHASEN -j -F '\%m '"
-    DO_CHASEN_NOUN="$CHASEN -j -F '\%m %H\\\\n'"
+    DO_CHASEN="$CHASEN -i e -j -F \\\"\%m \\\""
+    DO_CHASEN_NOUN="$CHASEN -i e -j -F \\\"\%m %H\\\\n\\\""
 fi
 if test "$MECAB" = "no"; then
     DO_MECAB="no"

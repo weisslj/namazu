@@ -1,3 +1,11 @@
+2005-09-22  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+	* scripts/mknmz.in(require_modules): The command line option of 
+	ChaSen was added. (-i e)
+
+	* configure.in: Addition of option (-i e) of ChaSen. and,
+	The escape character is changed for Windows. 
+
 2005-09-19  Yukio USUDA <usu@namazu.org>
 
 	* tests/data/decodebase64/Makefile.am: Added new file.
@@ -9521,4 +9529,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1322 2005-09-18 16:36:33 usu Exp $
+$Id: ChangeLog,v 1.1323 2005-09-21 16:06:43 opengl2772 Exp $

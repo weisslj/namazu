@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.155 2005-09-10 13:30:51 usu Exp $
+# $Id: mknmz.in,v 1.156 2005-09-21 16:06:44 opengl2772 Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2005 Namazu Project All rights reserved.
@@ -878,8 +878,8 @@ sub require_modules() {
     if (util::islang("ja") && $conf::WAKATI =~ /^module_chasen/) {
 	require Text::ChaSen || die "unable to require \"Text::ChaSen\"\n";
         util::dprint(_("wakati: using Text::ChaSen module\n"));
-	my @arg = ('-j', '-F', '%m ');
-	@arg    = ('-j', '-F', '%m %H\\n') if $var::Opt{'noun'};
+	my @arg = ('-i', 'e', '-j', '-F', '%m ');
+	@arg    = ('-i', 'e', '-j', '-F', '%m %H\\n') if $var::Opt{'noun'};
 	my $res = Text::ChaSen::getopt_argv('chasen-perl', @arg);
     }
     if (util::islang("ja") && $conf::WAKATI =~ /^module_mecab/) {

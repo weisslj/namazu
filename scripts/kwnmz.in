@@ -1,11 +1,31 @@
 #! %PERL% -w
 # -*- Perl -*-
 #
-# $Id: kwnmz.in,v 1.6 2004-09-19 03:21:07 opengl2772 Exp $
+# $Id: kwnmz.in,v 1.7 2005-09-24 12:24:47 opengl2772 Exp $
 #
 # kwnmz - program to make NMZ.field.keywords
 #         by furukawa@tcp-ip.or.jp
 # modified by osamu2001@livedoor.com
+#
+# Copyright (C) 2001-2005 Namazu Project  All rights reserved.
+#     This is free software with ABSOLUTELY NO WARRANTY.
+#
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either versions 2, or (at your option)
+#  any later version.
+#
+#  This program is distributed in the hope that it will be useful
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program; if not, write to the Free Software
+#  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+#  02111-1307, USA
+#
+#  This file must be encoded in EUC-JP encoding
 #
 
 use strict;
@@ -62,7 +82,7 @@ if (@ARGV){
     for my $argv (@ARGV){
         $argv =~ s/NMZ$// unless -d $argv;
         $argv = '.' if $argv eq '';
-        &kwnmz($argv, $num, $rate, \&judge, $meta, $backup) if -d $argv;
+        &kwnmz($argv, $num, $rate, \&judge, $meta, $backup);
     }
 }else{
     &kwnmz('.', $num, $rate, \&judge, $meta, $backup);
@@ -85,6 +105,10 @@ sub kwnmz{
     $num = 10 unless defined $num;
     $rate = 0.5 unless defined $rate;
     my %table = ();
+    if (! -f "$dir/NMZ.i") {
+        print "Cannot open index. : $dir\n";
+        return;
+    }
     my $nmzi = new nmzidx($dir, 'r');
     defined($nmzi) or die("NMZ.lock2 found. Maybe this index is being updated by another process now.");
 

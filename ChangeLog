@@ -1,3 +1,8 @@
+2005-09-24  Yukio USUDA <usu@namazu.org>
+
+	* scripts/mknmz.in(namazu_core): There was no reaction though
+	'-h -t' option were specified. (namazu-develop-ja#622)
+
 2005-09-22  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* scripts/mknmz.in(require_modules): The command line option of 
@@ -9529,4 +9534,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1323 2005-09-21 16:06:43 opengl2772 Exp $
+$Id: ChangeLog,v 1.1324 2005-09-24 10:16:28 usu Exp $

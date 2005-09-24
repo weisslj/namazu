@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.156 2005-09-21 16:06:44 opengl2772 Exp $
+# $Id: mknmz.in,v 1.157 2005-09-24 10:18:45 usu Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2005 Namazu Project All rights reserved.
@@ -493,6 +493,11 @@ sub namazu_core ($$$$$$$$$$) {
     unless (util::isurl($cfile) || (-f $cfile && -r $cfile)){
 	($cfile_size, $text_size, $kanji, $mtype) = (0, 0, 0, 0);
     } else {
+
+	if (defined $MediaType) {
+	    $mtype = $MediaType;
+	}
+
 	$Document->init_doc($uri, $cfile, $contref, $mtype);
 	$err = $Document->get_errmsg();
 	unless ($err) {

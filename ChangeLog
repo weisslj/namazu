@@ -1,3 +1,10 @@
+2005-09-28  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+	* scripts/mknmz.in, pl/wakati.pl: It undergoes plastic operation 
+	on the text in front of do_wakatigaki.  
+	Text::ChaSen, Text::Kakashi, Mecab perl module is called 
+	excluding the one-byte character.
+
 2005-09-24  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* scripts/{adnmz.in, kwnmz.in, lnnmz.in}: It was evaded that 
@@ -9539,4 +9546,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1325 2005-09-24 12:24:46 opengl2772 Exp $
+$Id: ChangeLog,v 1.1326 2005-09-27 15:55:06 opengl2772 Exp $

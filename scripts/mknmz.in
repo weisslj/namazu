@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.157 2005-09-24 10:18:45 usu Exp $
+# $Id: mknmz.in,v 1.158 2005-09-27 15:55:07 opengl2772 Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2005 Namazu Project All rights reserved.
@@ -560,7 +560,18 @@ sub namazu_core ($$$$$$$$$$) {
     $Indexer->init($contref, $conf::WORD_LENG_MAX, $var::Opt{'nosymbol'});
     $Indexer->noedgesymbol() if ($var::Opt{'noedgesymbol'});
     $$contref =~ tr/\x00-\x08\x0b-\x0c\x0e-\x1a/ /; # Remove control char.
+
+    # It corresponds to -j option of ChaSen.
+    $$contref =~ s/^[ \t\f]+//gm;    # except "\r\n"
+    $$contref =~ s/[ \t\f]+$//gm;    # except "\r\n"
+#    $$contref =~ s/([a-z])-\n([a-z])/$1$2/gsi;   # hyphenation
+    if (util::islang("ja")) {
+        $$contref =~ s/([\x80-\xff])\n([\x80-\xff])/$1$2/gs;
+        $$contref =~ s/¡£/¡£\n/gs;
+    }
+    $$contref =~ s/\n+/\n/gs;
     do_wakatigaki($contref, $kanji);
+
     $$contref =~ tr/A-Z/a-z/; # Normalize
     $Indexer->count_words();
     add_key($Indexer, $docid_count, $docid_base);

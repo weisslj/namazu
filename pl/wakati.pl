@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: wakati.pl,v 1.18 2005-09-17 14:38:57 usu Exp $
+# $Id: wakati.pl,v 1.19 2005-09-27 15:55:07 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2005 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -59,6 +59,9 @@ sub wakatize_japanese ($) {
     } else {
 	$$content = join("\n", @tmp);
     }
+    $$content =~ s/^\s+//gm;
+    $$content =~ s/\s+$//gm;
+    $$content .= "\n";
     util::dprint(_("-- wakatized content --\n")."$$content\n");
 }
 
@@ -70,10 +73,15 @@ sub wakatize_japanese_sub ($) {
     if ($conf::WAKATI =~ /^module_(\w+)/) {
 	my $module = $1;
 	if ($module eq "kakasi") {
-	    $str = Text::Kakasi::do_kakasi($$content);
+	    $str = $$content;
+	    $str =~ s/([\x80-\xff]+)/{my $text = Text::Kakasi::do_kakasi($1); " $text";}/ge;
 	} elsif ($module eq "chasen") {
-            $str = $$content;
-	    $str =~ s/([\x80-\xff]+)/{my $text = Text::ChaSen::sparse_tostr_long($1); " $text ";}/ge;
+            if ($var::Opt{'noun'}) {
+	        $str = Text::ChaSen::sparse_tostr_long($$content);
+            } else {
+                $str = $$content;
+	        $str =~ s/([\x80-\xff]+)/{my $text = Text::ChaSen::sparse_tostr_long($1); " $text";}/ge;
+            }
 	} elsif ($module eq "mecab") {
 	    use vars qw($t);
 	    if (!defined $t) {
@@ -85,7 +93,7 @@ sub wakatize_japanese_sub ($) {
 		$t->DESTROY() if defined $t;
 	    }; 
             $str = $$content;
-	    $str =~ s/([\x80-\xff]+)/{my $text = $t->parse($1); " $text ";}/ge;
+	    $str =~ s/([\x80-\xff]+)/{my $text = $t->parse($1); " $text";}/ge;
         } elsif ($module eq "builtin") {
             $str = builtinwakati::wakati($content);
 	} else {

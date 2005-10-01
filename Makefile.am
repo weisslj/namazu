@@ -12,8 +12,10 @@ endif
 
 if BUILD_WAKATIDICT
 BUILT_WAKATIDICT = wakatidict
+DIST_WAKATIDICT = 
 else
 BUILT_WAKATIDICT =
+DIST_WAKATIDICT = wakatidict
 endif
 
 SUBDIRS = m4 conf doc etc filter po lib nmz pl src lisp scripts man \
@@ -36,7 +38,7 @@ EXTRA_DIST = $(etc_DATA) maintMakefile namazu.spec namazu.spec.in \
 	     config.rpath mkinstalldirs
 
 
-EXTRA_DIRS = $(DIST_TKNAMAZU) File-MMagic
+EXTRA_DIRS = $(DIST_TKNAMAZU) File-MMagic $(DIST_WAKATIDICT)
 
 install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(localstatedir)/$(PACKAGE)/index

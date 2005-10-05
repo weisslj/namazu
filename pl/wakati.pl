@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: wakati.pl,v 1.20 2005-10-05 18:26:57 opengl2772 Exp $
+# $Id: wakati.pl,v 1.21 2005-10-05 18:35:22 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2005 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -106,7 +106,11 @@ sub wakatize_japanese_sub ($) {
 	my $tmpfile = util::tmpnam("NMZ.wakati");
         util::dprint(_("wakati: using ")."$conf::WAKATI\n");
 	# Don't use IPC::Open2 because it's not efficent.
-	{
+        if ($var::Opt{'noun'}) {
+            my $fh_wakati = util::efopen("|$conf::WAKATI > $tmpfile");
+            print $fh_wakati $$content;
+            util::fclose($fh_wakati);
+        } else {
             $str = $$content;
 
             my $redirect = ">";

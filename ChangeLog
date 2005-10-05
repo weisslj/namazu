@@ -3,6 +3,10 @@
 	* scripts/mknmz.in(find_target): To skip when '\' is included in 
 	the filename. (Excluding the second byte of Shift_JIS)
 
+	* configure.in, scripts/Makefile.am: In Win32, it changed like 
+	setting $CodingSystem by using Win32::API. 
+	(and 'euc' -> 'eucJP', 'sjis' -> 'cp932')
+
 2005-10-01  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* Makefile.am(EXTRA_DIRS): Added $(DIST_WAKATIDICT).
@@ -9555,4 +9559,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1329 2005-10-05 10:05:45 opengl2772 Exp $
+$Id: ChangeLog,v 1.1330 2005-10-05 10:21:11 opengl2772 Exp $

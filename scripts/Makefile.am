@@ -44,6 +44,7 @@ mknmz: mknmz.in Makefile
 	sed -e 's!%PERL%!$(PERL)!g' \
 	    -e 's!%ADDITIONAL_INC%!$(ADDITIONAL_INC)!g' \
 	    -e 's!@pkgdatadir@!$(pkgdatadir)!g' \
+	    -e 's!%PERL_WIN32_ONLY%!$(PERL_WIN32_ONLY)!g' \
 	    -e 's!@CONFDIR@!$(confdir)!g' $(srcdir)/mknmz.in >mknmz.tmp 
 	mv mknmz.tmp mknmz
 	chmod +x mknmz

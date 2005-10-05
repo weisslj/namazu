@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.166 2005-09-21 16:06:43 opengl2772 Exp $
+dnl $Id: configure.in,v 1.167 2005-10-05 10:21:11 opengl2772 Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -309,6 +309,17 @@ AC_SUBST(DO_KAKASI)
 AC_SUBST(DO_CHASEN)
 AC_SUBST(DO_CHASEN_NOUN)
 AC_SUBST(DO_MECAB)
+
+case "$host_os" in
+    mingw*)
+    PERL_WIN32_ONLY=''
+    ;;
+    *)
+    # UNIX like-system
+    PERL_WIN32_ONLY='\#'
+    ;;
+esac
+AC_SUBST(PERL_WIN32_ONLY)
 
 dnl *
 dnl * Preprocessing for tknamazu (FIXME: ugly scripts)

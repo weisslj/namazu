@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu-cgi.c,v 1.25 2004-07-20 18:19:03 opengl2772 Exp $
+ * $Id: namazu-cgi.c,v 1.26 2005-10-05 20:50:02 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -76,7 +76,6 @@
 #include "i18n.h"
 #include "message.h"
 #include "system.h"
-#include "namazu.h"
 #include "result.h"
 
 /*

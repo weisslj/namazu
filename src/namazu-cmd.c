@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu-cmd.c,v 1.24 2005-06-16 15:23:38 opengl2772 Exp $
+ * $Id: namazu-cmd.c,v 1.25 2005-10-05 20:50:02 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -73,7 +73,6 @@
 #include "var.h"
 #include "result.h"
 #include "system.h"
-#include "namazu.h"
 
 /*
  * Extern variables.

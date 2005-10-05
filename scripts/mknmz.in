@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.158 2005-09-27 15:55:07 opengl2772 Exp $
+# $Id: mknmz.in,v 1.159 2005-10-05 10:05:47 opengl2772 Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2005 Namazu Project All rights reserved.
@@ -39,13 +39,14 @@ use Getopt::Long;
 use File::Copy;
 use DirHandle;
 use File::Basename;
+%PERL_WIN32_ONLY%use Win32::API;
 
 use vars qw($SYSTEM);
 $SYSTEM = $English::OSNAME;
 
 my $NAMAZU_INDEX_VERSION = "2.0";
 
-my $CodingSystem = "euc";
+my $CodingSystem = "eucJP";
 my $PKGDATADIR    = $ENV{'pkgdatadir'} || "@pkgdatadir@";
 my $CONFDIR       = "@CONFDIR@";     # directory where mknmzrc are in.
 my $LIBDIR        = $PKGDATADIR . "/pl";      # directory where library etc. are in.
@@ -333,10 +334,18 @@ sub put_registry ($) {
 
 
 # Initialization
-#   $CodingSystem: Character Coding System 'euc' or 'sjis'
+#   $CodingSystem: Character Coding System 
+#   'euc' -> 'eucJP', 'sjis' -> 'cp932', etc...
 sub init () {
     if (($English::OSNAME eq "MSWin32") || ($English::OSNAME eq "os2")) {
-	$CodingSystem = "sjis";
+        if ($English::OSNAME eq "MSWin32") {
+            Win32::API->Import('kernel32', 'UINT GetACP()');
+            $CodingSystem = "cp" . GetACP();
+        } else {
+            # OS/2
+	    $CodingSystem = "cp932";
+        }
+
 	if ($CONFDIR !~ /^[A-Z]:|^\\\\/i && $0 =~ m#^([A-Z]:)(/|\\)#i) {
 	    $CONFDIR = $1 . $CONFDIR ;
 	}
@@ -347,7 +356,7 @@ sub init () {
 	    $TEMPLATEDIR = $1 . $TEMPLATEDIR ;
 	}
     } else {
-	$CodingSystem = "euc";
+	$CodingSystem = "eucJP";
     }
 
     $SIG{'INT'}  = sub {
@@ -1350,6 +1359,11 @@ sub find_target (@) {
 		my $dh = new DirHandle($target);
 		while (defined(my $ent = $dh->read)) {
 		    next if ($ent eq '.' || $ent eq '..');
+		    if ($English::OSNAME eq "MSWin32" || $English::OSNAME eq "os2") {
+		        my $tmp = $ent;
+		        util::win32_yen_to_slash(\$tmp);
+		        next if ($ent ne $tmp);
+		    }
 		    my $fname = "$target/$ent";
 		    if (-d $fname) {
 			push(@subtargets, $fname);

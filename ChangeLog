@@ -1,3 +1,8 @@
+2005-10-04  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+	* scripts/mknmz.in(find_target): To skip when '\' is included in 
+	the filename. (Excluding the second byte of Shift_JIS)
+
 2005-10-01  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* Makefile.am(EXTRA_DIRS): Added $(DIST_WAKATIDICT).
@@ -9550,4 +9555,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1328 2005-10-01 13:52:51 opengl2772 Exp $
+$Id: ChangeLog,v 1.1329 2005-10-05 10:05:45 opengl2772 Exp $

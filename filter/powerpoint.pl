@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: powerpoint.pl,v 1.29 2005-06-06 07:06:39 opengl2772 Exp $
+# $Id: powerpoint.pl,v 1.30 2005-10-07 03:28:19 opengl2772 Exp $
 # Copyright (C) 2000 Ken-ichi Hirose, 
 #               2000-2005 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -40,6 +40,7 @@ my $wvsummarypath = undef;
 
 my $nkfversion = 0.00;
 eval '$nkfversion = $NKF::VERSION;';
+$nkfversion = 0.00 if (!defined $nkfversion);
 
 sub mediatype() {
     return ('application/powerpoint');

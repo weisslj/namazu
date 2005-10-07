@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: excel.pl,v 1.37 2005-06-18 07:30:38 usu Exp $
+# $Id: excel.pl,v 1.38 2005-10-07 03:28:19 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi,
 #               1999 NOKUBI Takatsugu, 
 #               2000-2005 Namazu Project All rights reserved.
@@ -41,6 +41,7 @@ my $wvsummarypath = undef;
 
 my $nkfversion = 0.00;
 eval '$nkfversion = $NKF::VERSION;';
+$nkfversion = 0.00 if (!defined $nkfversion);
 
 sub mediatype() {
     return ('application/excel');

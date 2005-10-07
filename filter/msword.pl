@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: msword.pl,v 1.59 2005-06-06 07:06:39 opengl2772 Exp $
+# $Id: msword.pl,v 1.60 2005-10-07 03:28:19 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi,
 #               2000-2005 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -41,6 +41,7 @@ my $wvsummarypath = undef;
 
 my $nkfversion = 0.00;
 eval '$nkfversion = $NKF::VERSION;';
+$nkfversion = 0.00 if (!defined $nkfversion);
 
 sub mediatype() {
     return ('application/msword');

@@ -1,6 +1,6 @@
 #
 # -*- Perl *-*
-# $Id: html.pl,v 1.1 2003-02-27 10:04:48 knok Exp $
+# $Id: html.pl,v 1.2 2005-10-07 18:35:19 opengl2772 Exp $
 #
 
 package Namazu::Archive::html;
@@ -53,11 +53,14 @@ sub splitfile ($$) {
     my $mtime = (stat($fname))[9];
     my $fh = util::efopen($fname);
     my $cont   = join '', <$fh>;
+    util::fclose($fh);
     Namazu::Archive::html::split(\$cont, $mtime, $base);
 }
 
 sub split ($$$) {
     my ($contref, $mtime, $base) = @_;
+
+    codeconv::normalize_document($contref);
 
     my %info = (
 		'title'    => get_title($contref),
@@ -172,7 +175,7 @@ sub write_partial_file($$$$$$) {
 
     # FIXME: Actually we don't need this. 
     #        But some perl versions need this.
-    close($fh);
+    util::fclose($fh);
     utime($mtime, $mtime, $fname);
 
     return "";

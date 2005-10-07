@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.159 2005-10-05 10:05:47 opengl2772 Exp $
+# $Id: mknmz.in,v 1.160 2005-10-07 19:02:38 opengl2772 Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2005 Namazu Project All rights reserved.
@@ -207,10 +207,16 @@ sub process_file ($$$$$$) {
 	if (@parts > 1) {
 	    my $id = 0;
 	    for my $part (@parts) {
+                my $tmpname;
+                if (defined $part) {
+                    $tmpname = "$cfile#$part";
+                } else {
+                    $tmpname = $cfile;
+                }
 		next if (defined $conf::EXCLUDE_PATH &&
-			 "$cfile#$part" =~ /$conf::EXCLUDE_PATH/);
+			 $tmpname =~ /$conf::EXCLUDE_PATH/);
 		my $fname = util::tmpnam("NMZ.partial.$id");
-		my $fragment  = defined $part ? $part : undef;
+		my $fragment  = $part ne '' ? $part : undef;
 		my $uri = generate_uri($cfile, $fragment);
 		my $result = namazu_core($fname, 
 					 $docid_count + $processed_num, 
@@ -292,6 +298,12 @@ sub load_rcfile ($) {
 	if (defined $conf::LIBDIR && -d $conf::LIBDIR);
     $TEMPLATEDIR = $conf::TEMPLATEDIR
 	if (defined $conf::TEMPLATEDIR && -d $conf::TEMPLATEDIR);
+    $SCHEMEDIR = $conf::SCHEMEDIR
+	if (defined $conf::SCHEMEDIR && -d $conf::SCHEMEDIR);
+    $ARCHIVEDIR = $conf::ARCHIVEDIR
+	if (defined $conf::ARCHIVEDIR && -d $conf::ARCHIVEDIR);
+    $WAKATIDICDIR = $conf::WAKATIDICDIR
+	if (defined $conf::WAKATIDICDIR && -d $conf::WAKATIDICDIR);
 }
 
 sub re_exec($$$$$$$$) {
@@ -354,6 +366,15 @@ sub init () {
 	}
 	if ($TEMPLATEDIR !~ /^[A-Z]:|^\\\\/i && $0 =~ m#^([A-Z]:)(/|\\)#i) {
 	    $TEMPLATEDIR = $1 . $TEMPLATEDIR ;
+	}
+	if ($SCHEMEDIR !~ /^[A-Z]:|^\\\\/i && $0 =~ m#^([A-Z]:)(/|\\)#i) {
+	    $SCHEMEDIR = $1 . $SCHEMEDIR ;
+	}
+	if ($ARCHIVEDIR !~ /^[A-Z]:|^\\\\/i && $0 =~ m#^([A-Z]:)(/|\\)#i) {
+	    $ARCHIVEDIR = $1 . $ARCHIVEDIR ;
+	}
+	if ($WAKATIDICDIR !~ /^[A-Z]:|^\\\\/i && $0 =~ m#^([A-Z]:)(/|\\)#i) {
+	    $WAKATIDICDIR = $1 . $WAKATIDICDIR ;
 	}
     } else {
 	$CodingSystem = "eucJP";
@@ -1267,6 +1288,9 @@ sub show_config () {
     print _("LIBDIR: ") . "$LIBDIR\n";
     print _("FILTERDIR: ") . $filter->get_info('filter_dir') ."\n";
     print _("TEMPLATEDIR: ") . "$TEMPLATEDIR\n";
+    print _("SCHEMEDIR: ") . "$SCHEMEDIR\n";
+    print _("ARCHIVEDIR: ") . "$ARCHIVEDIR\n";
+    print _("WAKATIDICDIR: ") . "$WAKATIDICDIR\n";
 
     print $filter->get_info('supported_list') ."\n";
 }

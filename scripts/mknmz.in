@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.160 2005-10-07 19:02:38 opengl2772 Exp $
+# $Id: mknmz.in,v 1.161 2005-10-08 17:33:57 opengl2772 Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2005 Namazu Project All rights reserved.
@@ -300,8 +300,6 @@ sub load_rcfile ($) {
 	if (defined $conf::TEMPLATEDIR && -d $conf::TEMPLATEDIR);
     $SCHEMEDIR = $conf::SCHEMEDIR
 	if (defined $conf::SCHEMEDIR && -d $conf::SCHEMEDIR);
-    $ARCHIVEDIR = $conf::ARCHIVEDIR
-	if (defined $conf::ARCHIVEDIR && -d $conf::ARCHIVEDIR);
     $WAKATIDICDIR = $conf::WAKATIDICDIR
 	if (defined $conf::WAKATIDICDIR && -d $conf::WAKATIDICDIR);
 }

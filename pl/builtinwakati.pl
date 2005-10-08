@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: builtinwakati.pl,v 1.1 2005-09-03 08:41:07 usu Exp $
+# $Id: builtinwakati.pl,v 1.2 2005-10-08 11:40:51 usu Exp $
 # Copyright (C) 1998 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2005 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -55,7 +55,7 @@ sub wakatize ($) {
     my @parts = ();
 
     if (length($string) <= 4) { # too short to wakatize
-        return ($string, '');
+        return ($string);
     }
     while (length($rest_string) > 0) {
         my $tmp = $rest_string;
@@ -78,49 +78,62 @@ sub wakatize ($) {
         }
     }
     push(@parts, $rest_string) if $rest_string;
-    return  ($string, '') if (($#parts == 0) && $rest_string);
-    my $parts2;
-    foreach my $part (@parts){
-        my ($longpart, $flinders) = wakatize($part);
-        $parts2 .= $longpart . " " . $flinders;
-    }
-    return (join(' ', @parts), $parts2); # return with value
+    return ($string) if (($#parts == 0) && $rest_string);
+    return (join(' ', @parts)); # return with value
 }
 
 sub wakati ($) {
     my ($contref) = @_;
-    my $l_wakatized_content='';
-    my $s_wakatized_content='';
+    my $l_wakati_cont='';
+    my $s_wakati_cont='';
+    my $ss_wakati_cont='';
     while (1) {
         my $tmp = '';
         if ($$contref =~ /\G($KANJI+(?:$HIRAGANA)*|$HIRAGANA+)(\s*)/ogc) {
-            my ($l_wakati_cont, $s_wakati_cont) = wakatize($1);
-            $l_wakatized_content .= $l_wakati_cont;
-            $l_wakatized_content .= $2 ? $2 : " ";
-            $s_wakatized_content .= $s_wakati_cont;
-            $s_wakatized_content .= $2 ? $2 : " ";
+            my $l_cont = wakatize($1);
+            $l_wakati_cont .= $l_cont;
+            $l_wakati_cont .= $2 ? $2 : " ";
+            foreach my $tmp (split(/\s+/, $l_cont)) {
+                my $s_cont = wakatize($tmp);
+                $s_wakati_cont .= $s_cont;
+                $s_wakati_cont .= $2 ? $2 : " ";
+                foreach my $tmp (split(/\s+/, $s_cont)) {
+                    $ss_wakati_cont .= wakatize($tmp);
+                    $ss_wakati_cont .= $2 ? $2 : " ";
+                }
+            }
         } elsif ($$contref =~ 
                  /\G
                  ([\x21-\x7e]+|$KATAKANA+|$ALNUM+|$KIGOU+|\S+)
                  (\s*)
                  /ogcx) 
         {
-            $l_wakatized_content .= $1;
-            $l_wakatized_content .= $2 ? $2 : " ";
+            $l_wakati_cont .= $1;
+            $l_wakati_cont .= $2 ? $2 : " ";
+            $s_wakati_cont .= $1;
+            $s_wakati_cont .= $2 ? $2 : " ";
+            $ss_wakati_cont .= $1;
+            $ss_wakati_cont .= $2 ? $2 : " ";
         } elsif ($$contref =~ /\G(\s+)/ogc) {
-            $l_wakatized_content .= $1;
+            $l_wakati_cont .= " ";
+            $s_wakati_cont .= " ";
+            $ss_wakati_cont .= " ";
         } else {
             last;
         }
     }
+    $s_wakati_cont =~ s!\x7F\d+\x7f.*\x7F/\d+\x7F!!g;
+    $ss_wakati_cont =~ s!\x7F\d+\x7f.*\x7F/\d+\x7F!!g;
+
     my @uniq;
     my %seen = ();
-    foreach my $tmp (split(' ', $s_wakatized_content)) {
+    my $tmptext = '';
+    foreach my $tmp (split(/\s+/, $s_wakati_cont . $ss_wakati_cont)) {
         push(@uniq, $tmp) unless $seen{$tmp};
         $seen{$tmp} = 1;
     }
-    return "$l_wakatized_content { @uniq }";
+    return($l_wakati_cont . "\n.\n" . $s_wakati_cont . "\n.\n"
+           . $ss_wakati_cont . "\n.\n" . join(" ", @uniq));
 }
-
 
 1;

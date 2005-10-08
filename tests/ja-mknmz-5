@@ -1,0 +1,58 @@
+#! /bin/sh
+#
+# Test for mknmz's builtin wakatigaki module.
+#
+LOG=`pwd`/test-log
+TARGET=$srcdir/data/ja-wakati
+echo '  *** starting ' $0 >>$LOG
+
+EXEC=no
+
+lc_all=$LC_ALL
+lc_ctype=$LC_CTYPE
+lang=$LANG
+
+for ctype in "$lc_all" "$lc_ctype" "$lang"; do
+    if test -n "$ctype" -a "$ctype" = "C"; then
+        ctype="en"
+        break
+    fi
+    cand=`echo "$ctype" | LC_ALL="C" perl -nle 'print $1 if /^(..)/'`
+    if test -n "$cand"; then
+        ctype=$cand
+        break
+    fi
+done
+
+case $ctype in 
+	ja*)
+		EXEC=yes
+		;;
+esac
+if [ $EXEC = 'no' ]
+then
+        echo "Skipping because of LANG does not begin with ja: $0" >> $LOG
+	exit 77
+fi
+
+if test ! -d ja-idx5; then
+    mkdir ja-idx5
+else
+    rm -f ja-idx5/NMZ.*
+fi
+
+pwd=`pwd`
+tmprc="$pwd/tmp.mknmzrc-jamknmz5"
+echo "\$conf::WAKATIDICDIR='$TARGET';" > $tmprc
+
+# load dictionary to SDBM file.
+../scripts/load_dict -i $TARGET/testdict
+test "$?" != "0" && exit 1  # error if not success
+
+# Indexing with --use-builtinwakati option.
+../scripts/mknmz -f $tmprc --use-builtinwakati -O ja-idx5 $TARGET >> $LOG
+test "$?" != "0" && exit 1  # error if not success
+rm -f $tmprc
+
+exit 0
+

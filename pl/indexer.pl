@@ -2,7 +2,7 @@
 # -*- Perl -*-
 # indexer.pl - class for indexing
 #
-# $Id: indexer.pl,v 1.3 2004-01-23 16:44:46 opengl2772 Exp $
+# $Id: indexer.pl,v 1.4 2005-10-08 11:40:51 usu Exp $
 #
 # Copyright (C) 2002 Namazu Project All rights reversed.
 #
@@ -65,14 +65,29 @@ sub count_words {
 
     my $part1 = "";
     my $part2 = "";
+    my $part3 = "";
+    my $part3_uniqword = "";
+
     if ($$contref =~ /\x7f/) {
         $part1 = substr $$contref, 0, index($$contref, "\x7f");
-        $part2 = substr $$contref, index($$contref, "\x7f");
+        $part2 = substr $$contref, index($$contref, "\x7f"),
+                 (rindex($$contref, "\x7f") - index($$contref, "\x7f") +1);
 #       $part1 = $PREMATCH;  # $& and friends are not efficient
 #       $part2 = $MATCH . $POSTMATCH;
+        if ($$contref =~ /\x7f([^\x7f]+)$/){
+            $part3 = $1;
+            $part3 = '' if $part3 =~ /^\s+$/;
+        }
     } else {
         $part1 = $$contref;
         $part2 = "";
+    }
+
+    if ($part3 ne ''){
+        $part3_uniqword = substr $part3, (rindex($part3, "\n\.\n") +3);
+        if ($part3_uniqword ne ""){
+            substr($$contref, rindex($$contref, "\n\.\n")) = "";
+        }
     }
 
     # do scoring
@@ -80,6 +95,7 @@ sub count_words {
     $part2 =~ s!\x7f *(\d+) *\x7f([^\x7f]*)\x7f */ *\d+ *\x7f!
         $self->_wordcount_sub($2, $1, $word_count)!ge;
     $self->_wordcount_sub($part1, 1, $word_count);
+    $self->_wordcount_sub($part3_uniqword, 1, $word_count) if $part3_uniqword;
 }
 
 sub _wordcount_sub {

@@ -28,26 +28,9 @@ use strict;
 use IO::File;
 use Fcntl;
 use SDBM_File;
+use Getopt::Std;
+use File::Basename;
 my %dict;
-
-unless (defined($ARGV[0])) {
-    print STDERR <<USAGE;
-    usage: wakati [-i] <kakasidict>
-       -i: convert  KAKASI dictionary into a DBM file
-
-USAGE
-    exit 1;
-}
-
-STDIN->autoflush(1);
-
-if ($ARGV[0] eq "-i") {
-    shift @ARGV;
-    tie %dict, "SDBM_File", $ARGV[0], O_RDWR|O_CREAT, 0644 or
-	    die "$!\n";
-    load_kakasi_dict($ARGV[0]);
-    exit;
-}
 
 sub load_kakasi_dict($)
 {
@@ -66,3 +49,33 @@ sub load_kakasi_dict($)
 	$dict{$2} = 1;
     }
 }
+
+my %opts;
+getopt('Oi', \%opts);
+
+my $input_kakasidict;
+unless (defined $opts{i}) {
+    print STDERR <<USAGE;
+    usage: wakati [-O output_DBM_dir_name] [-i input_kakasidict]
+       -O: set directory name to output the DBM.
+       -i: set KAKASI dictionary name for convert.
+USAGE
+    exit 1;
+}else {
+    $input_kakasidict = $opts{i};
+    die "$input_kakasidict: invalid input filename\n" unless (-f $input_kakasidict && -r $input_kakasidict);
+}
+
+STDIN->autoflush(1);
+
+my $outputdir = dirname($input_kakasidict);
+
+if (defined $opts{O}) {
+    $outputdir = $opts{O};
+    die "$outputdir: invalid output directory\n" unless (-d $outputdir && -w $outputdir);
+}
+my $outputdbm = $outputdir . "/kakasidict";
+tie %dict, "SDBM_File", $outputdbm, O_RDWR|O_CREAT, 0644 or die "$!\n";
+load_kakasi_dict($input_kakasidict);
+exit;
+

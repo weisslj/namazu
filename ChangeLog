@@ -2,6 +2,10 @@
 
 	* pl/conf.pl.in, scripts/mknmz.in: $conf::ARCHIVEDIR is deleted.
 
+	* scripts/mknmz.in: $ENV{'NMZ_ARCHIVEDIR'} is added.
+
+	* archive/html.pl: 'rev=made' -> 'rev="made"'.
+
 2005-10-08  Yukio USUDA <usu@namazu.org>
 
 	* scripts/load_dict.in: Added -O option.
@@ -9612,4 +9616,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1338 2005-10-08 17:33:56 opengl2772 Exp $
+$Id: ChangeLog,v 1.1339 2005-10-08 19:03:41 opengl2772 Exp $

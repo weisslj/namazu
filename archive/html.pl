@@ -1,6 +1,6 @@
 #
 # -*- Perl *-*
-# $Id: html.pl,v 1.2 2005-10-07 18:35:19 opengl2772 Exp $
+# $Id: html.pl,v 1.3 2005-10-08 19:03:41 opengl2772 Exp $
 #
 
 package Namazu::Archive::html;
@@ -10,7 +10,7 @@ my $Header = << 'EOS';
         "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
-<link rev=made href="mailto:${author}">
+<link rev="made" href="mailto:${author}">
 <title>${subject}</title>
 </head>
 <body>

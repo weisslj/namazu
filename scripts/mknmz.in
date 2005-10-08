@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.161 2005-10-08 17:33:57 opengl2772 Exp $
+# $Id: mknmz.in,v 1.162 2005-10-08 19:03:41 opengl2772 Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2005 Namazu Project All rights reserved.
@@ -347,6 +347,10 @@ sub put_registry ($) {
 #   $CodingSystem: Character Coding System 
 #   'euc' -> 'eucJP', 'sjis' -> 'cp932', etc...
 sub init () {
+    if (defined $ENV{'NMZ_ARCHIVEDIR'} && -d $ENV{'NMZ_ARCHIVEDIR'}) {
+        $ARCHIVEDIR = $ENV{'NMZ_ARCHIVEDIR'};
+    }
+
     if (($English::OSNAME eq "MSWin32") || ($English::OSNAME eq "os2")) {
         if ($English::OSNAME eq "MSWin32") {
             Win32::API->Import('kernel32', 'UINT GetACP()');

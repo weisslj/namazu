@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.162 2005-10-08 19:03:41 opengl2772 Exp $
+# $Id: mknmz.in,v 1.163 2005-10-10 13:41:24 opengl2772 Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2005 Namazu Project All rights reserved.
@@ -96,7 +96,7 @@ sub main {
     util::set_lang();
     textdomain('namazu', $util::LANG_MSG);
 
-    load_rcfiles() if !(defined $ENV{'MKNMZNORC'});
+    load_rcfiles() if (!defined $ENV{'MKNMZNORC'});
     load_modules();
     load_archivemodules();
     my ($output_dir, @targets) = parse_options();
@@ -207,12 +207,8 @@ sub process_file ($$$$$$) {
 	if (@parts > 1) {
 	    my $id = 0;
 	    for my $part (@parts) {
-                my $tmpname;
-                if (defined $part) {
-                    $tmpname = "$cfile#$part";
-                } else {
-                    $tmpname = $cfile;
-                }
+                my $tmpname = $cfile;
+                $tmpname .= "#$part" if ($part ne '');
 		next if (defined $conf::EXCLUDE_PATH &&
 			 $tmpname =~ /$conf::EXCLUDE_PATH/);
 		my $fname = util::tmpnam("NMZ.partial.$id");
@@ -348,7 +344,7 @@ sub put_registry ($) {
 #   'euc' -> 'eucJP', 'sjis' -> 'cp932', etc...
 sub init () {
     if (defined $ENV{'NMZ_ARCHIVEDIR'} && -d $ENV{'NMZ_ARCHIVEDIR'}) {
-        $ARCHIVEDIR = $ENV{'NMZ_ARCHIVEDIR'};
+        $ARCHIVEDIR = $ENV{'NMZ_ARCHIVEDIR'} if (!defined $ENV{'MKNMZNORC'});
     }
 
     if (($English::OSNAME eq "MSWin32") || ($English::OSNAME eq "os2")) {

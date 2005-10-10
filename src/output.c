@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.102 2005-10-10 17:10:50 opengl2772 Exp $
+ * $Id: output.c,v 1.103 2005-10-10 19:44:27 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2004 Namazu Project All rights reserved.
@@ -649,7 +649,7 @@ print_hitnum_all_idx(void)
 		    }
 		    printf("<li><strong>");
 		    puts_entitize(idxname);
-		    printf("</strong></li>: ");
+		    printf("</strong>: ");
 		} else {
 		    printf("(%s)", nmz_get_idxname(idxid));
 		}
@@ -666,6 +666,11 @@ print_hitnum_all_idx(void)
 	    if (nmz_get_idxnum() > 1 && nmz_get_querytokennum() > 1) {
 	        printf(_(" [ TOTAL: %d ]"), nmz_get_idx_totalhitnum(idxid));
 	    }
+	    if (nmz_get_idxnum() > 1) {
+                if (is_htmlmode()) {
+		    printf("</li>");
+                }
+            }
 	    printf("\n");
 	}
     }
@@ -720,14 +725,14 @@ static void
 print_range(NmzResult hlist)
 {
     if (is_htmlmode()) {
-        printf("<p>\n");
+        printf("<div class=\"namazu-result-footer\">\n");
     }
     print_current_range(hlist.num);
     if (is_pageindex()) {
         print_page_index(hlist.num);
     }
     if (is_htmlmode()) {
-        printf("</p>\n");
+        printf("</div>\n");  /* class="namazu-result-footer" */
     } else {
         printf("\n");
     }
@@ -771,6 +776,9 @@ print_result(NmzResult hlist, const char *query, const char *subquery)
     if (is_refprint() && !is_countmode() && 
 	!is_listmode() && !is_quietmode()) 
     {
+        if (is_htmlmode()) {
+            fputs("<div class=\"namazu-result-header\">\n", stdout);
+        }
 	html_print(_("	<h2>Results:</h2>\n"));
 
 	if (is_htmlmode()) {
@@ -807,6 +815,9 @@ print_result(NmzResult hlist, const char *query, const char *subquery)
     if (hlist.num > 0) {
         if (!is_countmode() && !is_listmode() && !is_quietmode()) {
             print_hitnum(hlist.num);  /* <!-- HIT -->%d<!-- HIT --> */
+	    if (is_htmlmode()) {
+	        fputs("</div>\n", stdout); /* class="namazu-result-header" */
+            }
         }
 	if (is_countmode()) {
 	    printf("%d\n", hlist.num);
@@ -826,7 +837,8 @@ print_result(NmzResult hlist, const char *query, const char *subquery)
             printf("0\n");
         } else if (!is_listmode() && !is_quietmode()) {
 	    html_print(_("	<p>No document matching your query.</p>\n"));
-	    if (is_htmlmode()) {
+            if (is_htmlmode()) {
+	        fputs("</div>\n", stdout); /* class="namazu-result-header" */
 		print_msgfile(NMZ.tips);
 	    }
         }

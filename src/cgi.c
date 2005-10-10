@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.74 2003-11-19 12:58:37 opengl2772 Exp $
+ * $Id: cgi.c,v 1.75 2005-10-10 15:37:14 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -251,6 +251,7 @@ get_cgi_vars(const char *querystring)
     while (1) {
 	int len;
 	const char *tmp;
+	char *pSemicolon;
 	char name[BUFSIZE];
 	char value[BUFSIZE];
 
@@ -271,6 +272,10 @@ get_cgi_vars(const char *querystring)
 
 	querystring++;
 	tmp = strchr(querystring, '&');
+	pSemicolon = strchr(querystring, ';');
+        if (tmp == NULL || (pSemicolon && (tmp > pSemicolon))) {
+            tmp = pSemicolon;
+        }
 	if (tmp == NULL) {
 	    tmp = querystring + strlen(querystring);  /* last point: '\0' */
 	}

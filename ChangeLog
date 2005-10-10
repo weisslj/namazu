@@ -3,6 +3,9 @@
 	* src/cgi.c(get_cgi_vars): ';' can have been used for the 
 	delimiter of QUERY_STRING.
 
+	* src/output.c(print_hitnum_all_idx): The mistake of nesting was 
+	corrected. 
+
 2005-10-10  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* scripts/mknmz.in: It gave priority to MKNMZNORC more than 
@@ -9626,4 +9629,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1341 2005-10-10 15:37:14 opengl2772 Exp $
+$Id: ChangeLog,v 1.1342 2005-10-10 17:10:50 opengl2772 Exp $

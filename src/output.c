@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.101 2005-07-21 08:24:32 opengl2772 Exp $
+ * $Id: output.c,v 1.102 2005-10-10 17:10:50 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2004 Namazu Project All rights reserved.
@@ -649,7 +649,7 @@ print_hitnum_all_idx(void)
 		    }
 		    printf("<li><strong>");
 		    puts_entitize(idxname);
-		    printf("</li></strong>: ");
+		    printf("</strong></li>: ");
 		} else {
 		    printf("(%s)", nmz_get_idxname(idxid));
 		}

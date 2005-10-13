@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.103 2005-10-10 19:44:27 opengl2772 Exp $
+ * $Id: output.c,v 1.104 2005-10-13 17:48:27 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2004 Namazu Project All rights reserved.
@@ -772,13 +772,16 @@ print_result(NmzResult hlist, const char *query, const char *subquery)
 	return FAILURE;
     }
 
+    if (!is_countmode() && !is_listmode() && !is_quietmode()) {
+        if (is_htmlmode()) {
+            fputs("<div class=\"namazu-result-header\">\n", stdout);
+        }
+    }
+
     /* Result1:  <h2>Results:</h2>, References:  */
     if (is_refprint() && !is_countmode() && 
 	!is_listmode() && !is_quietmode()) 
     {
-        if (is_htmlmode()) {
-            fputs("<div class=\"namazu-result-header\">\n", stdout);
-        }
 	html_print(_("	<h2>Results:</h2>\n"));
 
 	if (is_htmlmode()) {

@@ -3,6 +3,10 @@
 	* src/output.c: It corresponds to "--no-references" class 
 	"namazu-result-header". 
 
+	* src/form.c(get_select_name): It corrected it because there was 
+	a bug that was not able to be selected when another tag was 
+	written between the option tag and the option tag. 
+
 2005-10-11  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* src/cgi.c(get_cgi_vars): ';' can have been used for the 
@@ -9637,4 +9641,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1344 2005-10-13 17:48:25 opengl2772 Exp $
+$Id: ChangeLog,v 1.1345 2005-10-14 00:37:10 opengl2772 Exp $

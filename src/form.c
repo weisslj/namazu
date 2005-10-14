@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.78 2005-07-21 08:24:32 opengl2772 Exp $
+ * $Id: form.c,v 1.79 2005-10-14 00:37:11 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -225,13 +225,15 @@ get_value(const char *s, char *value)
 static void 
 get_select_name(const char *s, char *value)
 {
-    *value = '\0';
     for (; *s; s++) {
         if (cmp_element(s, (char *)"select name=\"") == 0) {
             s = (char *)strchr(s, '"') + 1;
             for (; *s && *s != (char)'"'; s++, value++) {
                 *value = *s;
             }
+            *value = '\0';
+            return;
+        } else if (cmp_element(s, (char *)"/select") == 0) {
             *value = '\0';
             return;
         }

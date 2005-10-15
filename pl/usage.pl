@@ -1,5 +1,5 @@
 # -*- Perl -*-
-# $Id: usage.pl,v 1.35 2005-10-15 07:46:15 usu Exp $
+# $Id: usage.pl,v 1.36 2005-10-15 07:55:38 usu Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2005 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -92,7 +92,7 @@ Miscellaneous:
   -V, --verbose            be verbose.
   -d, --debug              be debug mode.
       --help               show this help and exit.
-      --norc               do not read and execute the personal initialization files.
+      --norc               do not read the personal initialization files.
       --                   Terminate option list.
 
 Report bugs to <%s>.

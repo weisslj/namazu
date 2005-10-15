@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.163 2005-10-10 13:41:24 opengl2772 Exp $
+# $Id: mknmz.in,v 1.164 2005-10-15 07:46:16 usu Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2005 Namazu Project All rights reserved.
@@ -96,9 +96,7 @@ sub main {
     util::set_lang();
     textdomain('namazu', $util::LANG_MSG);
 
-    load_rcfiles() if (!defined $ENV{'MKNMZNORC'});
     load_modules();
-    load_archivemodules();
     my ($output_dir, @targets) = parse_options();
     my ($docid_base, $total_files_num) = prep($output_dir, @targets);
 
@@ -296,6 +294,8 @@ sub load_rcfile ($) {
 	if (defined $conf::TEMPLATEDIR && -d $conf::TEMPLATEDIR);
     $SCHEMEDIR = $conf::SCHEMEDIR
 	if (defined $conf::SCHEMEDIR && -d $conf::SCHEMEDIR);
+    $ARCHIVEDIR = $conf::ARCHIVEDIR
+	if (defined $conf::ARCHIVEDIR && -d $conf::ARCHIVEDIR);
     $WAKATIDICDIR = $conf::WAKATIDICDIR
 	if (defined $conf::WAKATIDICDIR && -d $conf::WAKATIDICDIR);
 }
@@ -393,6 +393,7 @@ sub preload_modules () {
     # workaround for test suites.
     unshift @INC, $ENV{'top_builddir'} . "/pl" if defined $ENV{'top_builddir'};
 
+    require "var.pl"  || die "unable to require \"var.pl\"\n";
     require "conf.pl" || die "unable to require \"conf.pl\"\n";
     require "util.pl" || die "unable to require \"util.pl\"\n";
     require "gettext.pl" || die "unable to require \"gettext.pl\"\n";
@@ -403,7 +404,6 @@ sub postload_modules () {
 }
 
 sub load_modules () {
-    require "var.pl" || die "unable to require \"var.pl\"\n";
     require "usage.pl" || die "unable to require \"usage.pl\"\n";
     require "codeconv.pl" || die "unable to require \"codeconv.pl\"\n";
     require "wakati.pl" || die "unable to require \"wakati.pl\"\n";
@@ -1048,6 +1048,7 @@ sub parse_options
     my $opt_show_config = 0;
     my $opt_mailnews = 0;
     my $opt_mhonarc = 0;
+    my $opt_norc = 0;
 
     my $opt_quiet = undef;
     my $opt_config = undef;
@@ -1060,7 +1061,7 @@ sub parse_options
     my %opt_conf;
 
 #    Getopt::Long::Configure('bundling');
-    Getopt::Long::config('bundling');
+    Getopt::Long::config('bundling', 'pass_through');
     my %argopts = (
        	       '0|help'              => \$opt_help,
 	       '1|exclude=s'         => \$opt_conf{'EXCLUDE_PATH'},
@@ -1104,60 +1105,9 @@ sub parse_options
 	       'z|check-filesize'    => \$var::Opt{'checkfilesize'},
 	       'decode-base64'       => \$var::Opt{'decodebase64'},
                'use-builtinwakati'   => \$opt_builtin_wakati,
+               'norc'                => \$opt_norc,
 	       );
-    my $mediatype;
-    foreach $mediatype (keys %var::ARCHIVE_REQUIRE_ACTIONS) {
-	my $archive = $var::ARCHIVE_REQUIRE_ACTIONS{$mediatype};
-	if ($var::SupportedArchive{$mediatype} eq 'yes') {
-	    my %ret;
-	    eval "%ret = Namazu::Archive::${archive}::option();";
-	    die $@ if $@;
-	    my $tmp;
-	    foreach $tmp (keys %ret) {
-		$argopts{$tmp} = $ret{$tmp};
-	    }
-	}
-    }
     GetOptions(%argopts);
-
-    if ($opt_quiet) {
-	# Make STDOUT quiet by redirecting STDOUT to null device.
-	my $devnull = util::devnull();
-	open(STDOUT, ">$devnull") || die "$devnull: $!";
-    }
-
-    if ($opt_config) {
-	load_rcfile($ConfigFile = $opt_config);
-    }
-    $Document->init();
-
-    foreach my $key (keys %opt_conf){
-	if (defined ($opt_conf{$key})) { 
-	     ${*{$conf::{$key}}{SCALAR}} = $opt_conf{$key};
-	}
-    }
-
-    if ($index_lang) {
-	$util::LANG = $index_lang;
-      util::dprint("Override indexing language: $util::LANG\n");
-    }
-    load_schememodules();
-    postload_modules();
-
-    if ($opt_help) {
-	show_usage();
-	exit 1;
-    }
-
-    if ($opt_version) {
-	show_version();
-	exit 1;
-    }
-
-    if ($opt_show_config) {
-	show_config();
-	exit 1;
-    }
 
     if (defined $update_index) {
 	unless (-d $update_index) {
@@ -1180,6 +1130,48 @@ sub parse_options
 	$output_dir = $update_index;
 	$var::NMZ{'status'} = $orig_status;  # See also change_filenames()
 	return ($output_dir, @targets);
+    }
+
+    if ($opt_quiet) {
+	# Make STDOUT quiet by redirecting STDOUT to null device.
+	my $devnull = util::devnull();
+	open(STDOUT, ">$devnull") || die "$devnull: $!";
+    }
+
+    if (!$opt_norc && !(defined $ENV{'MKNMZNORC'})){
+        load_rcfiles();
+    }
+    if ($opt_config) {
+        if (-f $opt_config) {
+            util::vprint(_("Reading rcfile: "));
+            load_rcfile($ConfigFile = $opt_config);
+            util::vprint(" $opt_config\n");
+        }
+    }
+
+    if ($index_lang) {
+	$util::LANG = $index_lang;
+      util::dprint("Override indexing language: $util::LANG\n");
+    }
+
+    if ($opt_help) {
+	show_usage();
+	exit 1;
+    }
+
+    if ($opt_version) {
+	show_version();
+	exit 1;
+    }
+
+    load_schememodules();
+    postload_modules();
+    $Document->init();
+
+    foreach my $key (keys %opt_conf){
+	if (defined ($opt_conf{$key})) { 
+	     ${*{$conf::{$key}}{SCALAR}} = $opt_conf{$key};
+	}
     }
 
     if ($opt_mailnews) {
@@ -1239,6 +1231,30 @@ sub parse_options
 	    util::cdie(_("Invalid replace: ")."$ReplaceCode\n");
 	}
 	util::dprint(_("Replace: ")."$orig -> $_\n");
+    }
+
+    Getopt::Long::config('bundling', 'no_pass_through');
+
+    load_archivemodules();
+    %argopts = ();
+    my $mediatype;
+    foreach $mediatype (keys %var::ARCHIVE_REQUIRE_ACTIONS) {
+	my $archive = $var::ARCHIVE_REQUIRE_ACTIONS{$mediatype};
+	if ($var::SupportedArchive{$mediatype} eq 'yes') {
+	    my %ret;
+	    eval "%ret = Namazu::Archive::${archive}::option();";
+	    die $@ if $@;
+	    my $tmp;
+	    foreach $tmp (keys %ret) {
+		$argopts{$tmp} = $ret{$tmp};
+	    }
+	}
+    }
+    GetOptions(%argopts);
+
+    if ($opt_show_config) {
+	show_config();
+	exit 1;
     }
 
     if (@ARGV == 0 && $targets_loaded == 0) {

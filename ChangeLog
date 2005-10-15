@@ -1,3 +1,15 @@
+2005-10-15  Yukio USUDA <usu@namazu.org>
+
+	* scripts/mknmz.in(parse_options): Added --norc option.
+	Changed to call load_rcfiles() after parsing --config option. 
+	Changed to call load_archivemodules() after parsing most options
+	save for --html-split option. 
+	Changed to call show_config() after parsing all options. 
+	
+	* pl/conf.pl.in, scripts/mknmz.in: Added $conf::ARCHIVEDIR.
+
+	* pl/usage.pl:  Added --norc option.
+
 2005-10-14  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* src/output.c: It corresponds to "--no-references" class 
@@ -9641,4 +9653,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1345 2005-10-14 00:37:10 opengl2772 Exp $
+$Id: ChangeLog,v 1.1346 2005-10-15 07:46:14 usu Exp $

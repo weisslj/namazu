@@ -1,9 +1,9 @@
 /*
  * 
- * $Id: search.c,v 1.98 2005-07-21 08:24:32 opengl2772 Exp $
+ * $Id: search.c,v 1.99 2005-10-18 20:02:21 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2003 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2005 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -194,15 +194,18 @@ prefix_match(const char *key, int v)
 	    val.stat = ERR_TOO_MUCH_MATCH;
 	    break;
 	}
-	if (-1 == fseek(Nmz.w, nmz_getidxptr(Nmz.wi, i), 0)) {
+	if (fseek(Nmz.w, nmz_getidxptr(Nmz.wi, i), 0) != 0) {
 	    break;
 	}
-	fgets(buf, BUFSIZE - 1, Nmz.w);
+        if (fgets(buf, BUFSIZE - 1, Nmz.w) == NULL) {
+            break;
+        }
         nmz_chomp(buf);
 	if (strncmp(tmpkey, buf, n) == 0) {
 	    tmp = nmz_get_hlist(i);
-	    if (tmp.stat == ERR_FATAL)
-	        return tmp;
+            if (tmp.stat != SUCCESS) {
+                return tmp;
+            }
 	    if (tmp.num > nmz_get_maxhit()) {
 		nmz_free_hlist(val);
 		val.stat = ERR_TOO_MUCH_MATCH;
@@ -909,7 +912,7 @@ normalize_idxnames(void)
 static int 
 issymbol(int c)
 {
-    if (c >= 0x00 && c < 0x80 && !isalnum((unsigned char)c)) {
+    if (c >= 0x00 && c < 0x80 && !isalnum(c)) {
         return 1;
     } else {
 	return 0;

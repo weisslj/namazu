@@ -2,10 +2,10 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.65 2004-04-01 15:36:01 opengl2772 Exp $
+ * $Id: hlist.c,v 1.66 2005-10-18 20:02:21 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000,2001 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2005 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -525,8 +525,8 @@ nmz_do_date_processing(NmzResult hlist)
     }
 
     for (i = 0; i < hlist.num ; i++) {
-        if (-1 == fseek(date_index, 
-			hlist.data[i].docid * sizeof(hlist.data[i].date), 0)) 
+        if (fseek(date_index, 
+	        hlist.data[i].docid * sizeof(hlist.data[i].date), 0) != 0) 
 	{
 	    nmz_set_dyingmsg(nmz_msg("%s: %s", NMZ.t, strerror(errno)));
 	    hlist.stat = ERR_FATAL;
@@ -549,6 +549,13 @@ nmz_do_date_processing(NmzResult hlist)
     }
 
     fclose(date_index);
+
+    if (hlist.num > nmz_get_maxhit()) {
+        nmz_free_hlist(hlist);
+        hlist.stat = ERR_TOO_MUCH_HIT;
+        return hlist;
+    }
+
     return hlist;
 }
 
@@ -564,7 +571,7 @@ nmz_get_hlist(int index)
     hlist.data = NULL;
     hlist.stat = SUCCESS;
 
-    if (-1 == fseek(Nmz.i, nmz_getidxptr(Nmz.ii, index), 0)) {
+    if (fseek(Nmz.i, nmz_getidxptr(Nmz.ii, index), 0) != 0) {
 	hlist.stat = ERR_FATAL;
 	return hlist; /* error */
     }
@@ -574,13 +581,12 @@ nmz_get_hlist(int index)
         double idf = 1.0;
 	int sum = 0;
 	int hit;
-	int maxhit = nmz_get_maxhit();
 	int bersize;
 	int totalsize;
 
         nmz_get_unpackw(Nmz.i, &bersize);
 
-	hit = (bersize < maxhit * 2 ? bersize : maxhit * 2);
+	hit = bersize;
 	buf = malloc(hit * sizeof(int));
 	if (buf == NULL) {
 	    nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
@@ -592,11 +598,6 @@ nmz_get_hlist(int index)
         n = 0;
         totalsize = 0;
         while (totalsize < bersize) {
-            if (n == hit) {
-                hlist.stat = ERR_TOO_MUCH_HIT;
-                free(buf);
-                return hlist;
-            }
             totalsize += nmz_get_unpackw(Nmz.i, &buf[n]);
             n++;
         }

@@ -2,10 +2,10 @@
  * 
  * re.c -
  * 
- * $Id: re.c,v 1.37 2004-01-20 09:14:21 opengl2772 Exp $
+ * $Id: re.c,v 1.38 2005-10-18 20:02:21 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000,2001 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2005 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -154,7 +154,8 @@ nmz_regex_grep(const char *expr, FILE *fp, const char *field, int field_mode)
             } 
             if (val.num > nmz_get_maxhit()) {
                 nmz_free_hlist(val);
-                val.num = -1;
+                val.stat = ERR_TOO_MUCH_HIT;
+                val.num = 0;
                 break;
             }
 	    if (nmz_is_debugmode()) {

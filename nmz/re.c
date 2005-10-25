@@ -2,7 +2,7 @@
  * 
  * re.c -
  * 
- * $Id: re.c,v 1.38 2005-10-18 20:02:21 opengl2772 Exp $
+ * $Id: re.c,v 1.39 2005-10-25 13:12:54 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2005 Namazu Project All rights reserved.
@@ -118,12 +118,12 @@ nmz_regex_grep(const char *expr, FILE *fp, const char *field, int field_mode)
         }
         nmz_strlower(buf);
         if (-1 != nmz_re_search(rp, buf, strlen(buf), 0, strlen(buf), 0)) { 
-           /* Matched */
+            /* Matched */
             n++;
             if (n > max) {
                 nmz_free_hlist(val);
                 val.num = 0;
-		val.stat = ERR_TOO_MUCH_MATCH;
+                val.stat = ERR_TOO_MUCH_MATCH;
                 break;
             }
             if (!field_mode) {
@@ -131,6 +131,15 @@ nmz_regex_grep(const char *expr, FILE *fp, const char *field, int field_mode)
 		if (tmp.stat == ERR_FATAL)
 		    return tmp;
                 if (tmp.num > nmz_get_maxhit()) {
+                    nmz_free_hlist(val);
+                    val.stat = ERR_TOO_MUCH_HIT;
+                    val.num = 0;
+                    break;
+                }
+                val = nmz_ormerge(val, tmp);
+		if (val.stat == ERR_FATAL)
+		    return val;
+                if (val.num > nmz_get_maxhit()) {
                     nmz_free_hlist(val);
                     val.stat = ERR_TOO_MUCH_HIT;
                     val.num = 0;
@@ -147,17 +156,6 @@ nmz_regex_grep(const char *expr, FILE *fp, const char *field, int field_mode)
                 val.num = n;
             }
 
-            if (!field_mode) {
-                val = nmz_ormerge(val, tmp);
-		if (val.stat == ERR_FATAL)
-		    return val;
-            } 
-            if (val.num > nmz_get_maxhit()) {
-                nmz_free_hlist(val);
-                val.stat = ERR_TOO_MUCH_HIT;
-                val.num = 0;
-                break;
-            }
 	    if (nmz_is_debugmode()) {
                 char buf2[BUFSIZE];
 
@@ -174,11 +172,18 @@ nmz_regex_grep(const char *expr, FILE *fp, const char *field, int field_mode)
 	    }
         }
     }
-    if (field_mode) {
-        val = nmz_do_date_processing(val);
-    }
 
     nmz_re_free_pattern(rp);
+
+    if (field_mode) {
+        val = nmz_do_date_processing(val);
+        if (val.num > nmz_get_maxhit()) {
+            nmz_free_hlist(val);
+            val.stat = ERR_TOO_MUCH_HIT;
+            return val;
+        }
+    }
+
     return val;
 }
 

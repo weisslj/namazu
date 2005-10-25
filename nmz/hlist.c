@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.66 2005-10-18 20:02:21 opengl2772 Exp $
+ * $Id: hlist.c,v 1.67 2005-10-25 13:12:54 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2005 Namazu Project All rights reserved.
@@ -549,12 +549,6 @@ nmz_do_date_processing(NmzResult hlist)
     }
 
     fclose(date_index);
-
-    if (hlist.num > nmz_get_maxhit()) {
-        nmz_free_hlist(hlist);
-        hlist.stat = ERR_TOO_MUCH_HIT;
-        return hlist;
-    }
 
     return hlist;
 }

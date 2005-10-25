@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.99 2005-10-18 20:02:21 opengl2772 Exp $
+ * $Id: search.c,v 1.100 2005-10-25 13:12:54 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2005 Namazu Project All rights reserved.
@@ -203,7 +203,7 @@ prefix_match(const char *key, int v)
         nmz_chomp(buf);
 	if (strncmp(tmpkey, buf, n) == 0) {
 	    tmp = nmz_get_hlist(i);
-            if (tmp.stat != SUCCESS) {
+            if (tmp.stat == ERR_FATAL) {
                 return tmp;
             }
 	    if (tmp.num > nmz_get_maxhit()) {
@@ -283,6 +283,11 @@ do_word_search(const char *key, NmzResult val)
         val = nmz_get_hlist(v);
 	if (val.stat == ERR_FATAL)
 	    return val;
+        if (val.num > nmz_get_maxhit()) {
+            nmz_free_hlist(val);
+            val.stat = ERR_TOO_MUCH_HIT;
+            return val;
+        }
     } else {
         val.num  = 0;  /* no hit */
 	val.stat = SUCCESS; /* no hit but success */
@@ -554,6 +559,7 @@ do_regex_preprocessing(char *expr)
         expr[strlen(expr) - 1]= '\0';
         return;
     } else {
+        /* field search */
         char buf[BUFSIZE * 2], *bufp, *exprp;
 
         if ((*expr == '"' && expr[strlen(expr) - 1] == '"')

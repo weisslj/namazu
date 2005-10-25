@@ -1,3 +1,8 @@
+2005-10-25  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+	* nmz/{hlist.c, search.c, re.c}: Debugging concerning MaxHit and 
+	MaxMatch.
+
 2005-10-19  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* nmz/{hlist.c, search.c}: The error check of fseek() is changed 
@@ -9664,4 +9669,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1348 2005-10-18 20:02:20 opengl2772 Exp $
+$Id: ChangeLog,v 1.1349 2005-10-25 13:12:53 opengl2772 Exp $

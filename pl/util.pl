@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.36 2005-06-06 03:48:02 opengl2772 Exp $
+# $Id: util.pl,v 1.37 2005-10-26 03:58:12 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2005 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -419,7 +419,7 @@ sub syscmd(%)
                     }
                     $ENV{'COMSPEC'} = $comspec;
                 }
-                @args = ($comspec, "/c", @args);
+                @args = ($comspec, "/d", "/x", "/c", @args);
             }
         }
     }

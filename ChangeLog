@@ -7,6 +7,10 @@
         "Suffix matching", because the regular expression retrieval was 
         able to be used, this was corrected. 
 
+	* pl/util.c(syscmd): The execution of the AutoRun command is 
+        nullified  with cmd.exe. (/d)
+        The command enhanced feature is made effective with cmd.exe. (/x)
+
 2005-10-19  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* nmz/{hlist.c, search.c}: The error check of fseek() is changed 
@@ -9673,4 +9677,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1350 2005-10-26 02:56:36 opengl2772 Exp $
+$Id: ChangeLog,v 1.1351 2005-10-26 03:58:11 opengl2772 Exp $

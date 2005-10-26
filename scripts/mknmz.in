@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.164 2005-10-15 07:46:16 usu Exp $
+# $Id: mknmz.in,v 1.165 2005-10-26 04:53:40 opengl2772 Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2005 Namazu Project All rights reserved.
@@ -343,10 +343,6 @@ sub put_registry ($) {
 #   $CodingSystem: Character Coding System 
 #   'euc' -> 'eucJP', 'sjis' -> 'cp932', etc...
 sub init () {
-    if (defined $ENV{'NMZ_ARCHIVEDIR'} && -d $ENV{'NMZ_ARCHIVEDIR'}) {
-        $ARCHIVEDIR = $ENV{'NMZ_ARCHIVEDIR'} if (!defined $ENV{'MKNMZNORC'});
-    }
-
     if (($English::OSNAME eq "MSWin32") || ($English::OSNAME eq "os2")) {
         if ($English::OSNAME eq "MSWin32") {
             Win32::API->Import('kernel32', 'UINT GetACP()');
@@ -538,6 +534,11 @@ sub namazu_core ($$$$$$$$$$) {
 	    $cfile_size = $Document->get_file_size();
 	    $fields{'size'} = $cfile_size;
 	    $fields{'mtime'} = $Document->get_mtime();
+            {
+                my $utc = $fields{'mtime'};
+                $utc = time::rfc822time_to_mtime($fields{'date'}) if (defined $fields{'date'});
+                $fields{'utc'} = $utc;
+            }
 
 	    $kanji = $Document->is_contain_kanji();
 	    $text_size = $Document->get_text_size();

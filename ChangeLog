@@ -11,6 +11,10 @@
         nullified  with cmd.exe. (/d)
         The command enhanced feature is made effective with cmd.exe. (/x)
 
+	* scripts/mknmz.in(init): $ENV{NMZ_ARCHIVEDIR} was deleted. 
+
+	* scripts/mknmz.in: $fields{'utc'} was added. 
+
 2005-10-19  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* nmz/{hlist.c, search.c}: The error check of fseek() is changed 
@@ -9677,4 +9681,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1351 2005-10-26 03:58:11 opengl2772 Exp $
+$Id: ChangeLog,v 1.1352 2005-10-26 04:53:39 opengl2772 Exp $

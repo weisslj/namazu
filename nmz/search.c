@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.100 2005-10-25 13:12:54 opengl2772 Exp $
+ * $Id: search.c,v 1.101 2005-10-26 02:56:37 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2005 Namazu Project All rights reserved.
@@ -103,6 +103,7 @@ static void make_fullpathname_index ( int n );
 static void remove_quotes(char *str);
 static enum nmz_stat normalize_idxnames(void);
 static int issymbol ( int c );
+static void escape_meta_characters(char *expr, size_t bufsize);
 
 /*
  * Show the status for debug use
@@ -543,15 +544,20 @@ do_regex_preprocessing(char *expr)
     if (*expr == '*' && expr[strlen(expr) - 1] != '*') {
         /* If suffix match such as '*bar', enforce it into regex */
         strcpy(expr, expr + 1);
-        strcat(expr, "$");
+        escape_meta_characters(expr, BUFSIZE * 2);
+        strncat(expr, "$", BUFSIZE * 2 - strlen(expr) - 1);
+        expr[BUFSIZE * 2 - 1] = '\0';
     } else if (*expr != '*' && expr[strlen(expr) - 1] == '*') {
         /* If prefix match such as 'bar*', enforce it into regex */
-        expr[strlen(expr) - 1] = '.';
-        strcat(expr, "*");
+        expr[strlen(expr) - 1] = '\0';
+        escape_meta_characters(expr, BUFSIZE * 2);
+        strncat(expr, ".*", BUFSIZE * 2 - strlen(expr) - 1);
+        expr[BUFSIZE * 2 - 1] = '\0';
     } else if (*expr == '*' && expr[strlen(expr) - 1] == '*') {
         /* If internal match such as '*foo*', enforce it into regex */
         strcpy(expr, expr + 1);
         expr[strlen(expr) - 1] = '\0';
+        escape_meta_characters(expr, BUFSIZE * 2);
     } else if (*expr == '/' && expr[strlen(expr) - 1] == '/') {
         /* Genuine regex */
         /* Remove the both of '/' chars at begging and end of string */
@@ -560,8 +566,6 @@ do_regex_preprocessing(char *expr)
         return;
     } else {
         /* field search */
-        char buf[BUFSIZE * 2], *bufp, *exprp;
-
         if ((*expr == '"' && expr[strlen(expr) - 1] == '"')
             || (*expr == '{' && expr[strlen(expr) - 1] == '}')) 
 	{
@@ -569,21 +573,31 @@ do_regex_preprocessing(char *expr)
             strcpy(expr, expr + 1); 
             expr[strlen(expr) - 1] = '\0';
         }
-        bufp = buf;
-        exprp = expr;
-        /* Escape meta characters */
-        while (*exprp) {
-            if (!isalnum((unsigned char)*exprp) && !nmz_iseuc(*exprp)) {
-                *bufp = '\\';
-                bufp++;
-            }
-            *bufp = *exprp;
-            bufp++;
-            exprp++;
-        }
-        *bufp = '\0';
-        strcpy(expr, buf);
+        escape_meta_characters(expr, BUFSIZE * 2);
     }
+}
+
+static void
+escape_meta_characters(char *expr, size_t bufsize)
+{
+    char buf[BUFSIZE * 4] = "", *bufp, *exprp;
+
+    bufp = buf;
+    exprp = expr;
+    /* Escape meta characters */
+    while (*exprp) {
+        /* japanese only */
+        if (!isalnum((unsigned char)*exprp) && !nmz_iseuc(*exprp)) {
+            *bufp = '\\';
+            bufp++;
+        }
+        *bufp = *exprp;
+        bufp++;
+        exprp++;
+    }
+    *bufp = '\0';
+    strncpy(expr, buf, bufsize - 1);
+    expr[bufsize - 1] = '\0';
 }
 
 static NmzResult 

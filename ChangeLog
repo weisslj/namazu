@@ -1,5 +1,3 @@
-2005-10-26  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
-
 2005-10-25  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* nmz/{hlist.c, search.c, re.c}: Debugging concerning MaxHit and 
@@ -9685,4 +9683,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1354 2005-10-26 15:59:20 opengl2772 Exp $
+$Id: ChangeLog,v 1.1355 2005-10-26 16:09:22 opengl2772 Exp $

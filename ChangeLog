@@ -1,6 +1,6 @@
 2005-10-26  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
-	* ChangeLog: test.
+	* ChangeLog: commit test.
 
 2005-10-25  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
@@ -9687,4 +9687,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1361 2005-10-27 02:10:50 opengl2772 Exp $
+$Id: ChangeLog,v 1.1362 2005-10-27 02:12:22 opengl2772 Exp $

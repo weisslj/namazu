@@ -1,4 +1,4 @@
-2005-11-01  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+2005-10-31  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* nmz/search.c(prefix_match): ERR_TOO_MUCH_MATCH -> ERR_TOO_MUCH_HIT.
 
@@ -9687,4 +9687,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1367 2005-10-31 14:38:30 opengl2772 Exp $
+$Id: ChangeLog,v 1.1368 2005-10-31 14:44:40 opengl2772 Exp $

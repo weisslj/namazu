@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.79 2005-10-14 00:37:11 opengl2772 Exp $
+ * $Id: form.c,v 1.80 2005-10-31 14:49:10 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -116,15 +116,21 @@ replace_query_value(const char *p, const char *query)
     if (cmp_element(p, (char *)"input type=\"text\" name=\"query\"") == 0) {
 	char *converted;
 
-	if (strcmp(query, "")) {
+        {
             char buffer[BUFSIZE] = "";
-            char value[BUFSIZE];
+            char value[BUFSIZE] = "";
 
             get_value(p, value);
 
             strncpy(buffer, " value=\"", BUFSIZE - 1);
             strncat(buffer, value, BUFSIZE - strlen(buffer) - 1);
             strncat(buffer, "\"", BUFSIZE - strlen(buffer) - 1);
+            buffer[BUFSIZE - 1] = '\0';
+            delete_str((char *)p, buffer);
+
+            strncpy(buffer, " value='", BUFSIZE - 1);
+            strncat(buffer, value, BUFSIZE - strlen(buffer) - 1);
+            strncat(buffer, "'", BUFSIZE - strlen(buffer) - 1);
             buffer[BUFSIZE - 1] = '\0';
             delete_str((char *)p, buffer);
 	}
@@ -136,7 +142,7 @@ replace_query_value(const char *p, const char *query)
         for (; *p; p++)
             fputc(*p, stdout);
 
-	if (strcmp(converted, "")) {
+	{
             printf(" value=\"");
             html_print(converted);  /* for treating <>&" chars in the query. */
             printf("\"");
@@ -246,7 +252,7 @@ select_option(char *s, const char *name, const char *query, const char *subquery
     char value[BUFSIZE] = "";
 
     if (cmp_element(s, (char *)"option") == 0) {
-	if (strcmp(query, "")) {
+	{
             delete_str(s, (char *)" selected=\"selected\"");
             delete_str(s, (char *)" selected='selected'");
             delete_str(s, (char *)" selected");

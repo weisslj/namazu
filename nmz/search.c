@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.101 2005-10-26 02:56:37 opengl2772 Exp $
+ * $Id: search.c,v 1.102 2005-10-31 14:38:31 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2005 Namazu Project All rights reserved.
@@ -209,7 +209,7 @@ prefix_match(const char *key, int v)
             }
 	    if (tmp.num > nmz_get_maxhit()) {
 		nmz_free_hlist(val);
-		val.stat = ERR_TOO_MUCH_MATCH;
+		val.stat = ERR_TOO_MUCH_HIT;
 		break;
 	    }
 	    val = nmz_ormerge(val, tmp);
@@ -217,7 +217,7 @@ prefix_match(const char *key, int v)
 	        return val;
 	    if (val.num > nmz_get_maxhit()) {
 		nmz_free_hlist(val);
-		val.stat = ERR_TOO_MUCH_MATCH;
+		val.stat = ERR_TOO_MUCH_HIT;
 		break;
 	    }
 	    nmz_debug_printf("fw: %s, %d, %d\n", buf, tmp.num, val.num);

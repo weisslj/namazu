@@ -2,7 +2,7 @@
  * 
  * re.c -
  * 
- * $Id: re.c,v 1.39 2005-10-25 13:12:54 opengl2772 Exp $
+ * $Id: re.c,v 1.40 2005-11-01 05:08:51 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2005 Namazu Project All rights reserved.
@@ -22,10 +22,10 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA
- * 
- * 
+ *
+ * This file must be encoded in EUC-JP encoding
+ *
  */
-
 #include <stdio.h>
 #include <stdlib.h>
 #ifdef HAVE_CONFIG_H
@@ -52,6 +52,9 @@
 
 #define STEP 256
 
+static NmzResult nmz_regex_grep_standard ( struct re_pattern_buffer *rp, FILE *fp );
+static NmzResult nmz_regex_grep_field ( struct re_pattern_buffer *rp, FILE *fp, const char * field );
+
 /*
  *
  * Public functions
@@ -64,9 +67,47 @@
 NmzResult 
 nmz_regex_grep(const char *expr, FILE *fp, const char *field, int field_mode)
 {
-    char buf[BUFSIZE], tmpexpr[BUFSIZE] = "";
+    char tmpexpr[BUFSIZE] = "";
     struct re_pattern_buffer *rp;
-    int i, n, size = 0, max, uri_mode = 0;
+    NmzResult val;
+
+    val.num  = 0;
+    val.data = NULL;
+    val.stat = SUCCESS;
+
+    if (nmz_is_lang_ja()) {
+        /* japanese only */
+        nmz_re_mbcinit(MBCTYPE_EUC);
+    } else {
+        nmz_re_mbcinit(MBCTYPE_ASCII);
+    }
+
+    rp = ALLOC(struct re_pattern_buffer);
+    MEMZERO((char *)rp, struct re_pattern_buffer, 1);
+    rp->buffer = 0;
+    rp->allocated = 0;
+
+    strncpy(tmpexpr, expr, BUFSIZE - 1); /* save orig_expr */
+    nmz_debug_printf("REGEX: '%s'\n", tmpexpr);
+
+    nmz_re_compile_pattern(tmpexpr, strlen(tmpexpr), rp);
+
+    if (!field_mode) {
+        val = nmz_regex_grep_standard(rp, fp);
+    } else {
+        val = nmz_regex_grep_field(rp, fp, field);
+    }
+
+    nmz_re_free_pattern(rp);
+
+    return val;
+}
+
+static NmzResult 
+nmz_regex_grep_standard(struct re_pattern_buffer *rp, FILE *fp)
+{
+    char buf[BUFSIZE] = "";
+    int i, n, maxmatch, maxhit;
     NmzResult val, tmp;
 
     val.num  = 0;
@@ -76,33 +117,86 @@ nmz_regex_grep(const char *expr, FILE *fp, const char *field, int field_mode)
     tmp.data = NULL;
     tmp.stat = SUCCESS;
 
-    if (nmz_is_lang_ja()) {
-        nmz_re_mbcinit(MBCTYPE_EUC);
-    } else {
-        nmz_re_mbcinit(MBCTYPE_ASCII);
-    }
-    rp = ALLOC(struct re_pattern_buffer);
-    MEMZERO((char *)rp, struct re_pattern_buffer, 1);
-    rp->buffer = 0;
-    rp->allocated = 0;
-    
-    strncpy(tmpexpr, expr, BUFSIZE - 1); /* save orig_expr */
-    nmz_debug_printf("REGEX: '%s'\n", tmpexpr);
+    maxmatch = nmz_get_maxmatch();
+    maxhit = nmz_get_maxhit();
 
-    if (field_mode) {
+    for (i = n = 0; fgets(buf, BUFSIZE - 1, fp); i++) {
+        if (buf[strlen(buf) - 1] != '\n') {  /* too long */
+            i--;
+            continue;
+        }
+        buf[strlen(buf) - 1] = '\0';  /* LF to NULL */
+        if (strlen(buf) == 0) {
+            continue;
+        }
+        nmz_strlower(buf);
+        if (nmz_re_search(rp, buf, strlen(buf), 0, strlen(buf), 0) != -1) { 
+            /* Matched */
+            n++;
+            if (n > maxmatch) {
+                nmz_free_hlist(val);
+                val.num = 0;
+                val.stat = ERR_TOO_MUCH_MATCH;
+                return val;
+            }
+            {
+                tmp = nmz_get_hlist(i);
+		if (tmp.stat == ERR_FATAL)
+		    return tmp;
+                if (tmp.num > maxhit) {
+                    nmz_free_hlist(val);
+                    val.stat = ERR_TOO_MUCH_HIT;
+                    val.num = 0;
+                    break;
+                }
+                val = nmz_ormerge(val, tmp);
+		if (val.stat == ERR_FATAL)
+		    return val;
+                if (val.num > maxhit) {
+                    nmz_free_hlist(val);
+                    val.stat = ERR_TOO_MUCH_HIT;
+                    val.num = 0;
+                    break;
+                }
+            }
+
+	    if (nmz_is_debugmode()) {
+                char buf2[BUFSIZE];
+
+                fseek(Nmz.w, nmz_getidxptr(Nmz.wi, i), 0);
+                fgets(buf2, BUFSIZE, Nmz.w);
+                nmz_chomp(buf2);
+                nmz_debug_printf("re: %s, (%d:%s), %d, %d\n", 
+                        buf2, i, buf, tmp.num, val.num);
+	    }
+        }
+    }
+
+    return val;
+}
+
+static NmzResult 
+nmz_regex_grep_field(struct re_pattern_buffer *rp, FILE *fp, const char *field)
+{
+    char buf[BUFSIZE] = "";
+    int i, n, size = 0, maxhit, uri_mode = 0;
+    NmzResult val;
+
+    val.num  = 0;
+    val.data = NULL;
+    val.stat = SUCCESS;
+
+    {
         nmz_malloc_hlist(&val, size += STEP);
 	if (val.stat == ERR_FATAL)
 	    return val;
 	val.num = 0; /* set 0 for no matching case */
-        max = nmz_get_maxhit();
         if (strcmp(field, "uri") == 0) {
             uri_mode = 1;
         }
-    } else {
-        max = nmz_get_maxmatch();
     }
 
-    nmz_re_compile_pattern(tmpexpr, strlen(tmpexpr), rp);
+    maxhit = nmz_get_maxhit();
 
     for (i = n = 0; fgets(buf, BUFSIZE - 1, fp); i++) {
         if (buf[strlen(buf) - 1] != '\n') {  /* too long */
@@ -117,35 +211,16 @@ nmz_regex_grep(const char *expr, FILE *fp, const char *field, int field_mode)
             nmz_replace_uri(buf);
         }
         nmz_strlower(buf);
-        if (-1 != nmz_re_search(rp, buf, strlen(buf), 0, strlen(buf), 0)) { 
+        if (nmz_re_search(rp, buf, strlen(buf), 0, strlen(buf), 0) != -1) { 
             /* Matched */
             n++;
-            if (n > max) {
+            if (n > maxhit) {
                 nmz_free_hlist(val);
                 val.num = 0;
                 val.stat = ERR_TOO_MUCH_MATCH;
-                break;
+                return val;
             }
-            if (!field_mode) {
-                tmp = nmz_get_hlist(i);
-		if (tmp.stat == ERR_FATAL)
-		    return tmp;
-                if (tmp.num > nmz_get_maxhit()) {
-                    nmz_free_hlist(val);
-                    val.stat = ERR_TOO_MUCH_HIT;
-                    val.num = 0;
-                    break;
-                }
-                val = nmz_ormerge(val, tmp);
-		if (val.stat == ERR_FATAL)
-		    return val;
-                if (val.num > nmz_get_maxhit()) {
-                    nmz_free_hlist(val);
-                    val.stat = ERR_TOO_MUCH_HIT;
-                    val.num = 0;
-                    break;
-                }
-            } else {
+            {
                 if (n > size) {
                     nmz_realloc_hlist(&val, size += STEP);
 		    if (val.stat == ERR_FATAL)
@@ -157,27 +232,15 @@ nmz_regex_grep(const char *expr, FILE *fp, const char *field, int field_mode)
             }
 
 	    if (nmz_is_debugmode()) {
-                char buf2[BUFSIZE];
-
-                if (field_mode) {
-                    nmz_debug_printf("field: [%d]<%s> id: %d\n", 
-                            val.num, buf, i);
-                } else {
-                    fseek(Nmz.w, nmz_getidxptr(Nmz.wi, i), 0);
-                    fgets(buf2, BUFSIZE, Nmz.w);
-                    nmz_chomp(buf2);
-                    nmz_debug_printf("re: %s, (%d:%s), %d, %d\n", 
-                            buf2, i, buf, tmp.num, val.num);
-                }
+                nmz_debug_printf("field: [%d]<%s> id: %d\n", 
+                        val.num, buf, i);
 	    }
         }
     }
 
-    nmz_re_free_pattern(rp);
-
-    if (field_mode) {
+    {
         val = nmz_do_date_processing(val);
-        if (val.num > nmz_get_maxhit()) {
+        if (val.num > maxhit) {
             nmz_free_hlist(val);
             val.stat = ERR_TOO_MUCH_HIT;
             return val;
@@ -186,6 +249,3 @@ nmz_regex_grep(const char *expr, FILE *fp, const char *field, int field_mode)
 
     return val;
 }
-
-
-

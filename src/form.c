@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.81 2005-11-02 08:47:43 opengl2772 Exp $
+ * $Id: form.c,v 1.82 2005-11-02 09:17:07 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2005 Namazu Project All rights reserved.
@@ -376,8 +376,7 @@ check_checkbox(char *str, const char *query)
         char *pp;
         int db_count, searched;
 
-        if (!(nmz_get_idxnum() == 1 && nmz_get_defaultidx() &&
-        strcmp(nmz_get_idxname(0), nmz_get_defaultidx()) == 0)) {
+        if (strcmp(nmz_getenv("QUERY_STRING"), "")) {
             delete_str(str, (char *)" checked=\"checked\"");
             delete_str(str, (char *)" checked='checked'");
             delete_str(str, (char *)" checked");

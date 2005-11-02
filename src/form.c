@@ -2,10 +2,10 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.80 2005-10-31 14:49:10 opengl2772 Exp $
+ * $Id: form.c,v 1.81 2005-11-02 08:47:43 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2005 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -142,7 +142,7 @@ replace_query_value(const char *p, const char *query)
         for (; *p; p++)
             fputc(*p, stdout);
 
-	{
+        {
             printf(" value=\"");
             html_print(converted);  /* for treating <>&" chars in the query. */
             printf("\"");
@@ -153,7 +153,7 @@ replace_query_value(const char *p, const char *query)
     return FAILURE;
 }
 
-char * 
+char *
 nmz_query_external(const char *query)
 {
     char *query_external;
@@ -376,7 +376,8 @@ check_checkbox(char *str, const char *query)
         char *pp;
         int db_count, searched;
 
-	if (strcmp(query, "")) {
+        if (!(nmz_get_idxnum() == 1 && nmz_get_defaultidx() &&
+        strcmp(nmz_get_idxname(0), nmz_get_defaultidx()) == 0)) {
             delete_str(str, (char *)" checked=\"checked\"");
             delete_str(str, (char *)" checked='checked'");
             delete_str(str, (char *)" checked");

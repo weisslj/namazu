@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.102 2005-10-31 14:38:31 opengl2772 Exp $
+ * $Id: search.c,v 1.103 2005-11-02 17:09:09 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2005 Namazu Project All rights reserved.
@@ -159,7 +159,7 @@ lrget(int *l, int *r)
 static NmzResult 
 prefix_match(const char *key, int v)
 {
-    int i, j, n;
+    int i, j, n, maxmatch, maxhit;
     char buf[BUFSIZE], tmpkey[BUFSIZE];
     NmzResult val, tmp;
 
@@ -185,16 +185,14 @@ prefix_match(const char *key, int v)
 	v = i;
     }
 
-    for (j = 0, i++;; i++, j++) {
+    maxmatch = nmz_get_maxmatch();
+    maxhit = nmz_get_maxhit();
+
+    for (j = 0, i++;; i++) {
 	/* 
 	 * Return if too much word would be hit
          * because treat 'a*' completely is too consuming 
 	 */
-	if (j > nmz_get_maxmatch()) {
-	    nmz_free_hlist(val);
-	    val.stat = ERR_TOO_MUCH_MATCH;
-	    break;
-	}
 	if (fseek(Nmz.w, nmz_getidxptr(Nmz.wi, i), 0) != 0) {
 	    break;
 	}
@@ -207,19 +205,27 @@ prefix_match(const char *key, int v)
             if (tmp.stat == ERR_FATAL) {
                 return tmp;
             }
-	    if (tmp.num > nmz_get_maxhit()) {
+	    if (tmp.num > maxhit) {
 		nmz_free_hlist(val);
 		val.stat = ERR_TOO_MUCH_HIT;
 		break;
 	    }
-	    val = nmz_ormerge(val, tmp);
-	    if (val.stat == ERR_FATAL)
-	        return val;
-	    if (val.num > nmz_get_maxhit()) {
-		nmz_free_hlist(val);
-		val.stat = ERR_TOO_MUCH_HIT;
-		break;
-	    }
+            if (tmp.num > 0) {
+                j++;
+                if (j > maxmatch) {
+                    nmz_free_hlist(val);
+                    val.stat = ERR_TOO_MUCH_MATCH;
+                    break;
+                }
+                val = nmz_ormerge(val, tmp);
+                if (val.stat == ERR_FATAL)
+                    return val;
+                if (val.num > maxhit) {
+                    nmz_free_hlist(val);
+                    val.stat = ERR_TOO_MUCH_HIT;
+                    break;
+                }
+            }
 	    nmz_debug_printf("fw: %s, %d, %d\n", buf, tmp.num, val.num);
 	} else
 	    break;

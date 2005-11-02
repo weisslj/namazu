@@ -5,6 +5,8 @@
 	* filter/win32/xdoc2txt.pl: Add new filter.
 	(Contributed by HANAI Akira, Thanks.)
 
+	* pl/conf.pl.in: Add win32/xdoc2txt.pl to %USE_FILTERS. 
+
 2005-11-03  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* nmz/{re.c, search.c}: Debugging concerning MaxMatch.
@@ -9710,4 +9712,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1375 2005-11-02 17:22:14 usu Exp $
+$Id: ChangeLog,v 1.1376 2005-11-02 17:47:05 usu Exp $

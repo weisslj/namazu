@@ -2,7 +2,7 @@
  * 
  * re.c -
  * 
- * $Id: re.c,v 1.40 2005-11-01 05:08:51 opengl2772 Exp $
+ * $Id: re.c,v 1.41 2005-11-02 16:58:00 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2005 Namazu Project All rights reserved.
@@ -28,6 +28,7 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
+#include <errno.h>
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
 #endif
@@ -132,30 +133,31 @@ nmz_regex_grep_standard(struct re_pattern_buffer *rp, FILE *fp)
         nmz_strlower(buf);
         if (nmz_re_search(rp, buf, strlen(buf), 0, strlen(buf), 0) != -1) { 
             /* Matched */
-            n++;
-            if (n > maxmatch) {
-                nmz_free_hlist(val);
-                val.num = 0;
-                val.stat = ERR_TOO_MUCH_MATCH;
-                return val;
+            tmp = nmz_get_hlist(i);
+            if (tmp.stat == ERR_FATAL) {
+	        return tmp;
             }
-            {
-                tmp = nmz_get_hlist(i);
-		if (tmp.stat == ERR_FATAL)
-		    return tmp;
-                if (tmp.num > maxhit) {
+            if (tmp.num > maxhit) {
+                nmz_free_hlist(val);
+                val.stat = ERR_TOO_MUCH_HIT;
+                break;
+            }
+
+            if (tmp.num > 0) {
+                n++;
+                if (n > maxmatch) {
                     nmz_free_hlist(val);
-                    val.stat = ERR_TOO_MUCH_HIT;
-                    val.num = 0;
-                    break;
+                    val.stat = ERR_TOO_MUCH_MATCH;
+                    return val;
                 }
+
                 val = nmz_ormerge(val, tmp);
-		if (val.stat == ERR_FATAL)
+		if (val.stat == ERR_FATAL) {
 		    return val;
+                }
                 if (val.num > maxhit) {
                     nmz_free_hlist(val);
                     val.stat = ERR_TOO_MUCH_HIT;
-                    val.num = 0;
                     break;
                 }
             }
@@ -181,15 +183,25 @@ nmz_regex_grep_field(struct re_pattern_buffer *rp, FILE *fp, const char *field)
     char buf[BUFSIZE] = "";
     int i, n, size = 0, maxhit, uri_mode = 0;
     NmzResult val;
+    FILE *date_index;
 
     val.num  = 0;
     val.data = NULL;
     val.stat = SUCCESS;
 
+    date_index = fopen(NMZ.t, "rb");
+    if (date_index == NULL) {
+        nmz_set_dyingmsg(nmz_msg("%s: %s", NMZ.t, strerror(errno)));
+        val.stat = ERR_FATAL;
+        return val; /* error */
+    }
+
     {
         nmz_malloc_hlist(&val, size += STEP);
-	if (val.stat == ERR_FATAL)
+	if (val.stat == ERR_FATAL) {
+            fclose(date_index);
 	    return val;
+        }
 	val.num = 0; /* set 0 for no matching case */
         if (strcmp(field, "uri") == 0) {
             uri_mode = 1;
@@ -213,18 +225,35 @@ nmz_regex_grep_field(struct re_pattern_buffer *rp, FILE *fp, const char *field)
         nmz_strlower(buf);
         if (nmz_re_search(rp, buf, strlen(buf), 0, strlen(buf), 0) != -1) { 
             /* Matched */
+            struct nmz_data data;
+
+            if (fseek(date_index, i * sizeof(data.date), 0) != 0) {
+                nmz_set_dyingmsg(nmz_msg("%s: %s", NMZ.t, strerror(errno)));
+                fclose(date_index);
+                nmz_free_hlist(val);
+                val.stat = ERR_FATAL;
+                return val; /* error */
+            }
+            nmz_fread(&data.date, sizeof(data.date), 1, date_index);
+
+            if (data.date == -1) {
+                continue;
+            }
+
             n++;
             if (n > maxhit) {
+                fclose(date_index);
                 nmz_free_hlist(val);
-                val.num = 0;
-                val.stat = ERR_TOO_MUCH_MATCH;
+                val.stat = ERR_TOO_MUCH_HIT;
                 return val;
             }
             {
                 if (n > size) {
                     nmz_realloc_hlist(&val, size += STEP);
-		    if (val.stat == ERR_FATAL)
+		    if (val.stat == ERR_FATAL) {
+                        fclose(date_index);
 		        return val;
+                    }
                 }
                 val.data[n-1].docid = i;
                 val.data[n-1].score = 1;  /* score = 1 */
@@ -238,14 +267,7 @@ nmz_regex_grep_field(struct re_pattern_buffer *rp, FILE *fp, const char *field)
         }
     }
 
-    {
-        val = nmz_do_date_processing(val);
-        if (val.num > maxhit) {
-            nmz_free_hlist(val);
-            val.stat = ERR_TOO_MUCH_HIT;
-            return val;
-        }
-    }
+    fclose(date_index);
 
     return val;
 }

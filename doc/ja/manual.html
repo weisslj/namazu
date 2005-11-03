@@ -158,6 +158,7 @@ mknmz を実行したディレクトリに NMZ.* というファイルを作成し
       -c, --use-chasen        日本語の単語のわかち書きに ChaSen を用いる
       -k, --use-kakasi        日本語の単語のわかち書きに KAKASI を用いる
       -m, --use-chasen-noun   名詞のみを抽出する
+          --use-builtinwakati 日本語の単語のわかち書きに内蔵ルーチンを用いる
       -L, --indexing-lang=LANG インデックス時に言語に特化した処理を行なう
     
     文字列処理:
@@ -468,6 +469,10 @@ JSTXT</a>
 <dd>RTF (Rich Text Format) 形式の文書を扱う
 <dd>必需品: Microsoft Word 97 SP1 以降/98/2000/2002(XP)/2003 のいずれか
 
+<dt>xdoc2txt.pl
+<dd>Microsoft Word,excel,powerpoint、一太郎の文書を扱う
+<dd>必需品: <a href="http://www31.ocn.ne.jp/~h_ishida/xdoc2txt.html"></a>
+<dd>注意: xdo2txt.exe は MS-Win32用のツールです。
 </dl>
 
 
@@ -1227,7 +1232,7 @@ Tknamazu および namazu.el から検索するときは必ず後者で指定します。
 Copyright (C) 2000-2005 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: manual.html,v 1.91 2005-10-15 14:16:08 usu Exp $
+$Id: manual.html,v 1.92 2005-11-03 01:30:36 usu Exp $
 </div>
 <address>
 developers@namazu.org

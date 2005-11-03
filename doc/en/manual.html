@@ -57,6 +57,8 @@ ABSOLUTELY NO WARRANTY.
   <li><a href="#mailutime">mailutime</a></li>
   <li><a href="#vfnmz">vfnmz</a></li>
   <li><a href="#rfnmz">rfnmz</a></li>
+  <li><a href="#nmzegrep">nmzegrep</a></li>
+  <li><a href="#nmzcat">nmzcat</a></li>
   </ul>
 </li>
 <li><a href="#query">Query</a>
@@ -884,6 +886,46 @@ For example, to reconstruct NMZ.field.*.i files in the ~/Namazu/foobar index, yo
 <code>% rfnmz ~/Namazu/foobar</code><br>
 </p>
 
+<h3><a name="nmzegrep">nmzegrep</a></h3>
+
+<p>
+nmzegrep is a search tool that operates with the <code>egrep</code>
+command and mknmz document filters.
+nmzegrep executes egrep for retrieved documents. By applying
+egrep, you can find the line numbers to places where the keyword is found. The command line options are as follows.
+</p>
+
+<p>
+<code>% nmzegrep [egrep's options] &lt;pattern&gt; [index]...</code>
+</p>
+
+<p>
+For example, in order to search the ~/Namazu/foobar index for foo and
+to apply egrep to the search documents, you can do as follows:
+</p>
+
+<p>
+<code>% nmzegrep foo ~/Namazu/foobar</code>
+</p>
+
+<p>NOTE: nmzegrep do egrep after passing the mknmz document filter for
+ retrieved document.
+ nmzegrep is slower than nmzgrep because it calls the document filter of mknmz.
+ However, nmzegrep can do egrep for various file format.
+</p>
+
+<h3><a name="nmzcat">nmzcat</a></h3>
+<p>
+nmzcat converts the binary files from various format to plain text.
+</p>
+
+<p>
+<code>% nmzcat &lt;target&gt;...</code>
+</p>
+
+<p>NOTE: nmzcat supports only the file of the type supported by mknmz.
+</p>
+
 <!-- query -->
 <h2><a name="query">Query</a></h2>
 
@@ -1084,7 +1126,7 @@ You must choose the latter with Tkanamzu or namazu.el.
 Copyright (C) 2000-2005 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: manual.html,v 1.68 2005-11-03 01:30:36 usu Exp $
+$Id: manual.html,v 1.69 2005-11-03 07:56:50 usu Exp $
 </div>
 <address>
 developers@namazu.org

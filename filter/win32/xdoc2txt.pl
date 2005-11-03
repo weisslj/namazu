@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: xdoc2txt.pl,v 1.1 2005-11-02 17:22:14 usu Exp $
+# $Id: xdoc2txt.pl,v 1.2 2005-11-03 04:53:50 usu Exp $
 # Copyright (C) 2004 HANAI,Akira All rights reserved.
 # Copyright (C) 2005 Yukio USUDA All rights reserved.
 # Copyright (C) 2005 Namazu Project All rights reserved.
@@ -26,6 +26,7 @@
 
 package xdoc2txt;
 use strict;
+use English;
 require 'util.pl';
 require 'gfilter.pl';
 
@@ -47,7 +48,7 @@ sub mediatype() {
 sub status() {
     $wordconvpath = util::checkcmd('xdoc2txt');
     return 'no' unless defined $wordconvpath;
-    if ($] >= 5.008){
+    if ($English::PERL_VERSION >= 5.008){
         eval 'use Encode qw/ from_to /;';
         if ($@) {return 'no'};
         eval 'use Encode::Guess qw/ shiftjis utf-8 /;';

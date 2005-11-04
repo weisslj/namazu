@@ -189,7 +189,7 @@ mknmz を実行したディレクトリに NMZ.* というファイルを作成し
       -q, --quiet             インデックス処理の最中にメッセージを表示しない
       -v, --version           ヴァージョンを表示する
       -V, --verbose           口やかましいモード
-          --debug             デバッグモード
+      -d, --debug             デバッグモード
           --help              このヘルプを表示する
           --norc              設定ファイルを読み込まない
           --                  オプションリストを終了する
@@ -245,186 +245,190 @@ mknmz は対象ファイルの文書形式を自動で判別して、適切なフィル
 </p>
 
 <dl>
-<dt>apachecache.pl
-<dd>Apacheのキャッシュファイルを扱う
-<dd>必需品: なし
+<dt>apachecache.pl</dt>
+<dd>Apacheのキャッシュファイルを扱う</dd>
+<dd>必需品: なし</dd>
 <dd>注意: 元のURIへ置き換える場合は mknmzに次のオプションを使用、
- --replace=apachecache::replacecode
+ --replace=apachecache::replacecode</dd>
 
-<dt>applefile.pl
-<dd>AppleSingle ファイルを扱う
-<dd>必需品: なし
+<dt>applefile.pl</dt>
+<dd>AppleSingle ファイルを扱う</dd>
+<dd>必需品: なし</dd>
 
-<dt>bzip2.pl
-<dd>bzip2で圧縮されたファイルを扱う
+<dt>bzip2.pl</dt>
+<dd>bzip2で圧縮されたファイルを扱う</dd>
 <dd>必需品: <a
-href="http://sources.redhat.com/bzip2/">bzip2</a> コマンド
+href="http://sources.redhat.com/bzip2/">bzip2</a> コマンド</dd>
 
-<dt>compress.pl
-<dd>compressで圧縮されたファイルを扱う
-<dd>必需品: compressコマンド
+<dt>compress.pl</dt>
+<dd>compressで圧縮されたファイルを扱う</dd>
+<dd>必需品: compressコマンド</dd>
 
-<dt>deb.pl
-<dd>debパッケージを扱う
-<dd>必需品: dpkgコマンド
+<dt>deb.pl</dt>
+<dd>debパッケージを扱う</dd>
+<dd>必需品: dpkgコマンド</dd>
 
-<dt>dvi.pl
-<dd>dviファイルを扱う
-<dd>必需品: dvi2tty, nkf
+<dt>dvi.pl</dt>
+<dd>dviファイルを扱う</dd>
+<dd>必需品: dvi2tty, nkf</dd>
 
-<dt>excel.pl
-<dd>Microsoft Excel文書を扱う
+<dt>excel.pl</dt>
+<dd>Microsoft Excel文書を扱う</dd>
 <dd>必需品: <a href="http://chicago.sourceforge.net/xlhtml/">xlhtml</a>, 
 <a href="http://www.ff.iij4u.or.jp/~nrt/lv/">lv</a> (Perlのバージョンが5.8以上であれば lv は不要),
 (<a href="http://wvWare.sourceforge.net/">wvWare</a> に付属の wvSummaryコマンド)
-<dd>代替品: <a href="http://www.dehenken.co.jp/products/doccat/">doccat</a>
+<dd>代替品: <a href="http://www.dehenken.co.jp/products/doccat/">doccat</a></dd>
 
-<dt>gnumeric.pl
-<dd>Gnumericの文書を扱う
+<dt>gnumeric.pl</dt>
+<dd>Gnumericの文書を扱う</dd>
 <dd>必需品: <a href="http://www.gzip.org/">gzip</a> コマンド
-または Compress::Zlib モジュール
+または Compress::Zlib モジュール</dd>
 
-<dt>gzip.pl
-<dd>gzipで圧縮されたファイルを扱う
+<dt>gzip.pl</dt>
+<dd>gzipで圧縮されたファイルを扱う</dd>
 <dd>必需品: <a href="http://www.gzip.org/">gzip</a> コマンド
-または Compress::Zlib モジュール
+または Compress::Zlib モジュール</dd>
 
-<dt>hdml.pl
-<dd>HDML文書を扱う
-<dd>必需品: なし
+<dt>hdml.pl</dt>
+<dd>HDML文書を扱う</dd>
+<dd>必需品: なし</dd>
 
-<dt>hnf.pl
+<dt>hnf.pl</dt>
 <dd><a href="http://www.h14m.org/">ハイパー日記システム</a> のファ
-イルを扱う
+イルを扱う</dd>
 <dd>必需品: hnf フィルタは特殊。<a
 href="http://www.h14m.org/">ハイパー日記システム・プロジェクト</a>か
-ら Namazu for hns を入手する必要がある
+ら Namazu for hns を入手する必要がある</dd>
 
-<dt>html.pl
-<dd>HTML文書を扱う
-<dd>必需品: なし
+<dt>html.pl</dt>
+<dd>HTML文書を扱う</dd>
+<dd>必需品: なし</dd>
 
-<dt>koffice.pl
-<dd>KOffice の KWord, KSpread, KPresenter, Kivio 文書を扱う
+<dt>koffice.pl</dt>
+<dd>KOffice の KWord, KSpread, KPresenter, Kivio 文書を扱う</dd>
 <dd>必需品: <a
 href="http://www.info-zip.org/pub/infozip/UnZip.html">unzip</a>,
-<a href="http://www.ff.iij4u.or.jp/~nrt/lv/">lv</a> (Perlのバージョンが5.8以上であれば lv は不要)
+<a href="http://www.ff.iij4u.or.jp/~nrt/lv/">lv</a> (Perlのバージョンが5.8以上であれば lv は不要)</dd>
 
-<dt>macbinary.pl
-<dd>MacBinary I,II,III ファイルを扱う
-<dd>必需品: なし
+<dt>macbinary.pl</dt>
+<dd>MacBinary I,II,III ファイルを扱う</dd>
+<dd>必需品: なし</dd>
 
-<dt>mailnews.pl
-<dd>Mail/News のファイル、mhtml ファイルを扱う
-<dd>必需品: なし
+<dt>mailnews.pl</dt>
+<dd>Mail/News のファイル、mhtml ファイルを扱う</dd>
+<dd>必需品: なし</dd>
 <dd>注意: mhtml ファイル、E-mail に添付された Base64 でエンコードされた部分
 を扱うには
 <a href="http://search.cpan.org/dist/MIME-Base64/">MIME::Base64, MIME::QuotedPrint</a>
 が必要(Perl5.8では標準で組込済)。利用する際には mknmz に次のオプションを使用、
---decode=base64 
+--decode=base64</dd>
 
-<dt>man.pl
-<dd>man を扱う
+<dt>man.pl</dt>
+<dd>man を扱う</dd>
 <dd>必需品: nroff または 
-<a href="http://www.gnu.org/software/groff/groff.html">groff</a>
+<a href="http://www.gnu.org/software/groff/groff.html">groff</a></dd>
 <dd>注意: 日本語の man を扱うには -T nippon に対応した groff
-または jgroff が必要
+または jgroff が必要</dd>
 
-<dt>mhonarc.pl
-<dd><a href="http://www.mhonarc.org/">MHonArc</a> のファイルを扱う
-<dd>必需品: なし
+<dt>mhonarc.pl</dt>
+<dd><a href="http://www.mhonarc.org/">MHonArc</a> のファイルを扱う</dd>
+<dd>必需品: なし</dd>
 
-<dt>mp3.pl
-<dd>MP3ファイルのID3タグ内データを扱う
+<dt>mp3.pl</dt>
+<dd>MP3ファイルのID3タグ内データを扱う</dd>
 <dd>必需品: <a
-href="http://sourceforge.net/projects/pudge/">MP3::Info モジュール</a>(バージョン 1.01 以上)
+href="http://sourceforge.net/projects/pudge/">MP3::Info モジュール</a>(バージョン 1.01 以上)</dd>
 
-<dt>msword.pl
-<dd>Microsoft Word文書を扱う (日本語版は Word 97, 98, 2000, 2002(XP), 2003)
+<dt>msword.pl</dt>
+<dd>Microsoft Word文書を扱う (日本語版は Word 97, 98, 2000, 2002(XP), 2003)</dd>
 <dd>必需品: <a href="http://wvWare.sourceforge.net/">wvWare</a>, 
-<a href="http://www.ff.iij4u.or.jp/~nrt/lv/">lv</a> (Perlのバージョンが5.8以上であれば lv は不要)
-<dd>代替品: <a href="http://www.dehenken.co.jp/products/doccat/">doccat</a>
+<a href="http://www.ff.iij4u.or.jp/~nrt/lv/">lv</a> (Perlのバージョンが5.8以上であれば lv は不要)</dd>
+<dd>代替品: <a href="http://www.dehenken.co.jp/products/doccat/">doccat</a></dd>
 
 <!--
-<dt>oasys.pl
-<dd>OASYS V6/V7文書を扱う
-<dd>必需品: <a href="http://www.dehenken.co.jp/products/doccat/">doccat</a>
+<dt>oasys.pl</dt>
+<dd>OASYS V6/V7文書を扱う</dd>
+<dd>必需品: <a href="http://www.dehenken.co.jp/products/doccat/">doccat</a></dd>
 -->
 
-<dt>ooo.pl
-<dd>OpenOffice.org の Writer, Calc, Impress, Draw 文書を扱う
+<dt>ooo.pl</dt>
+<dd>OpenOffice.org の Writer, Calc, Impress, Draw 文書を扱う</dd>
 <dd>必需品: <a
 href="http://www.info-zip.org/pub/infozip/UnZip.html">unzip</a>,
 <a href="http://www.ff.iij4u.or.jp/~nrt/lv/">lv</a> (Perlのバージョンが5.8以上であれば lv は不要)
+</dd>
 <!--
 <dd>代替品: lvのかわりに<a href="http://www.onicos.com/staff/iz/release/">unicode.pl</a>
 も利用可
+</dd>
 -->
 
-<dt>pdf.pl
-<dd>PDF 文書を扱う
+<dt>pdf.pl</dt>
+<dd>PDF 文書を扱う</dd>
 <dd>必需品: <a href="http://www.foolabs.com/xpdf/">xpdf</a>
-(バージョン 0.91 以上を推奨)に付属の pdftotextコマンド
+(バージョン 0.91 以上を推奨)に付属の pdftotextコマンド</dd>
 <dd>注意: バージョン 1.00 より前の xpdf にて日本語の PDF 文書を扱う場合、
     --enable-japanese で configure されたものが必要<br>
     バージョン 1.00 以降では、Language Support Packages が必要
+</dd>
 
-<dt>postscript.pl
-<dd>PostScript 文書を扱う
+<dt>postscript.pl</dt>
+<dd>PostScript 文書を扱う</dd>
 <dd>必需品: <a 
-href="http://softpark.jplaza.com/software/freesoft.html">ps2textコマンド</a>
+href="http://softpark.jplaza.com/software/freesoft.html">ps2textコマンド</a></dd>
 
-<dt>powerpoint.pl
-<dd>Microsoft PowerPoint文書を扱う
+<dt>powerpoint.pl</dt>
+<dd>Microsoft PowerPoint文書を扱う</dd>
 <dd>必需品: <a href="http://www.xlhtml.org/">xlHtml</a> に付属の pptHtmlコマンド, 
 <a href="http://www.ff.iij4u.or.jp/~nrt/lv/">lv</a> (Perlのバージョンが5.8以上であれば lv は不要),
-(<a href="http://wvWare.sourceforge.net/">wvWare</a> に付属の wvSummaryコマンド)
-<dd>代替品: <a href="http://www.dehenken.co.jp/products/doccat/">doccat</a>
+(<a href="http://wvWare.sourceforge.net/">wvWare</a> に付属の wvSummaryコマンド)</dd>
+<dd>代替品: <a href="http://www.dehenken.co.jp/products/doccat/">doccat</a></dd>
 
-<dt>rfc.pl
-<dd>RFCのファイルを扱う
-<dd>必需品: なし
+<dt>rfc.pl</dt>
+<dd>RFCのファイルを扱う</dd>
+<dd>必需品: なし</dd>
 
-<dt>rpm.pl
-<dd>RPMパッケージを扱う
-<dd>必需品: <a href="http://www.rpm.org/">rpm</a>
+<dt>rpm.pl</dt>
+<dd>RPMパッケージを扱う</dd>
+<dd>必需品: <a href="http://www.rpm.org/">rpm</a></dd>
 
-<dt>rtf.pl
-<dd>RTF (Rich Text Format) 形式の文書を扱う
-<dd>必需品: <a href="http://www.45.free.net/~vitus/ice/misc/rtf2html.tar.gz">rtf2html</a>
-<dd>代替品: <a href="http://www.dehenken.co.jp/products/doccat/">doccat</a>
+<dt>rtf.pl</dt>
+<dd>RTF (Rich Text Format) 形式の文書を扱う</dd>
+<dd>必需品: <a href="http://www.45.free.net/~vitus/ice/misc/rtf2html.tar.gz">rtf2html</a></dd>
+<dd>代替品: <a href="http://www.dehenken.co.jp/products/doccat/">doccat</a></dd>
 
-<dt>taro.pl
-<dd>一太郎 (バージョン 7 〜 13)の文書を扱う
-<dd>必需品: <a href="http://www.dehenken.co.jp/products/doccat/">doccat</a>
+<dt>taro.pl</dt>
+<dd>一太郎 (バージョン 7 〜 13)の文書を扱う</dd>
+<dd>必需品: <a href="http://www.dehenken.co.jp/products/doccat/">doccat</a></dd>
 
-<dt>taro56.pl
-<dd>一太郎 5, 6 の文書を扱う
-<dd>必需品: なし
+<dt>taro56.pl</dt>
+<dd>一太郎 5, 6 の文書を扱う</dd>
+<dd>必需品: なし</dd>
 
-<dt>taro7_10.pl
-<dd>一太郎 (バージョン 7 〜 13)の文書を扱う
+<dt>taro7_10.pl</dt>
+<dd>一太郎 (バージョン 7 〜 13)の文書を扱う</dd>
 <dd>必需品: <a href="http://www.onicos.com/staff/iz/release/">unicode.pl</a> (Perlのバージョンが5.8以上であれば不要),
 <a href="http://search.cpan.org/~kwitknr/OLE-Storage_Lite-0.13/">OLE-Storage_Lite モジュール</a>,
-<a href="http://search.cpan.org/~eryq/IO-stringy-2.109/">IO-stringy モジュール</a>
+<a href="http://search.cpan.org/~eryq/IO-stringy-2.109/">IO-stringy モジュール</a></dd>
 
-<dt>tex.pl
-<dd>TeXのファイルを扱う
+<dt>tex.pl</dt>
+<dd>TeXのファイルを扱う</dd>
 <dd>必需品: <a
-href="http://www.cs.purdue.edu/homes/trinkle/detex/">detex</a>
+href="http://www.cs.purdue.edu/homes/trinkle/detex/">detex</a></dd>
 
 <!--
-<dt>wordpro.pl
-<dd>Lotus Word Pro文書を扱う
-<dd>必需品: <a href="http://www.dehenken.co.jp/products/doccat/">doccat</a>
+<dt>wordpro.pl</dt>
+<dd>Lotus Word Pro文書を扱う</dd>
+<dd>必需品: <a href="http://www.dehenken.co.jp/products/doccat/">doccat</a></dd>
 -->
 
-<dt>zip.pl
-<dd>zip圧縮ファイルを扱う
+<dt>zip.pl</dt>
+<dd>zip圧縮ファイルを扱う</dd>
 <dd>必需品: <a
 href="http://www.info-zip.org/pub/infozip/UnZip.html">unzip</a> コマンド
 <dd>代替品: Compress::Zlibモジュール, 
 <a href="http://search.cpan.org/~nedkonz/Archive-Zip-1.13/">Archive::Zipモジュール</a>
+</dd>
 </dl>
 
 <p>
@@ -433,46 +437,47 @@ href="http://www.info-zip.org/pub/infozip/UnZip.html">unzip</a> コマンド
 
 <dl>
 
-<dt>ichitaro456.pl
-<dd>一太郎 4, 5, 6 の文書を扱う
+<dt>ichitaro456.pl</dt>
+<dd>一太郎 4, 5, 6 の文書を扱う</dd>
 <dd>必需品: <a href="http://www.vector.co.jp/soft/dos/writing/se013972.html">
-JSTXT</a>
-<dd>注意: JSTXT は MS-DOS用のツールです。
+JSTXT</a></dd>
+<dd>注意: JSTXT は MS-DOS用のツールです。</dd>
 
-<dt>oleexcel.pl
-<dd>Microsoft Excel文書を扱う
-<dd>必需品: Microsoft Excel 97 SP1 以降/2000/2002(XP)/2003 のいずれか
+<dt>oleexcel.pl</dt>
+<dd>Microsoft Excel文書を扱う</dd>
+<dd>必需品: Microsoft Excel 97 SP1 以降/2000/2002(XP)/2003 のいずれか</dd>
 
-<dt>olemsword.pl
-<dd>Microsoft Word文書を扱う
-<dd>必需品: Microsoft Word 97 SP1 以降/98/2000/2002(XP)/2003 のいずれか
+<dt>olemsword.pl</dt>
+<dd>Microsoft Word文書を扱う</dd>
+<dd>必需品: Microsoft Word 97 SP1 以降/98/2000/2002(XP)/2003 のいずれか</dd>
 
-<dt>olepowerpoint.pl
-<dd>Microsoft PowerPoint文書を扱う
-<dd>必需品: Microsoft PowerPoint 97 SP1 以降/2000/2002(XP)/2003 のいずれか
+<dt>olepowerpoint.pl</dt>
+<dd>Microsoft PowerPoint文書を扱う</dd>
+<dd>必需品: Microsoft PowerPoint 97 SP1 以降/2000/2002(XP)/2003 のいずれか</dd>
 
-<dt>oletaro.pl
-<dd>一太郎 (バージョン 4) の文書を扱う
-<dd>必需品: Microsoft Word 97 SP1 以降/98/2000 のいずれか
+<dt>oletaro.pl</dt>
+<dd>一太郎 (バージョン 4) の文書を扱う</dd>
+<dd>必需品: Microsoft Word 97 SP1 以降/98/2000 のいずれか</dd>
 <dd>必需品: および Microsoft Office 付属の該当文書コンバータ
-<BR><BR>
-<dd>一太郎 (バージョン 5 〜 6) の文書を扱う
-<dd>必需品: Microsoft Word 97 SP1 以降/98/2000/2002(XP) のいずれか
+<br></dd>
+<dd><br></dd>
+<dd>一太郎 (バージョン 5 〜 6) の文書を扱う</dd>
+<dd>必需品: Microsoft Word 97 SP1 以降/98/2000/2002(XP) のいずれか</dd>
 <dd>必需品: および Microsoft Office 付属の該当文書コンバータ
-<BR><BR>
-<dd>一太郎 (バージョン 7 〜 13, 2004他) の文書を扱う
-<dd>必需品: Microsoft Word 97 SP1 以降/98/2000/2002(XP)/2003 のいずれか
-<dd>必需品: および Microsoft Office 付属の該当文書コンバータ
+<br></dd>
+<dd><br></dd>
+<dd>一太郎 (バージョン 7 〜 13, 2004他) の文書を扱う</dd>
+<dd>必需品: Microsoft Word 97 SP1 以降/98/2000/2002(XP)/2003 のいずれか</dd>
+<dd>必需品: および Microsoft Office 付属の該当文書コンバータ</dd>
 
+<dt>olertf.pl</dt>
+<dd>RTF (Rich Text Format) 形式の文書を扱う</dd>
+<dd>必需品: Microsoft Word 97 SP1 以降/98/2000/2002(XP)/2003 のいずれか</dd>
 
-<dt>olertf.pl
-<dd>RTF (Rich Text Format) 形式の文書を扱う
-<dd>必需品: Microsoft Word 97 SP1 以降/98/2000/2002(XP)/2003 のいずれか
-
-<dt>xdoc2txt.pl
-<dd>Microsoft Word,excel,powerpoint、一太郎の文書を扱う
-<dd>必需品: <a href="http://www31.ocn.ne.jp/~h_ishida/xdoc2txt.html">xdoc2txt.exe</a>
-<dd>注意: xdoc2txt.exe は MS-Win32用のツールです。
+<dt>xdoc2txt.pl</dt>
+<dd>Microsoft Word,excel,powerpoint、一太郎の文書を扱う</dd>
+<dd>必需品: <a href="http://www31.ocn.ne.jp/~h_ishida/xdoc2txt.html">xdoc2txt.exe</a></dd>
+<dd>注意: xdoc2txt.exe は MS-Win32用のツールです。</dd>
 </dl>
 
 
@@ -623,16 +628,16 @@ namazu.cgi を設置したディレクトリに .namazurc ファイルを置く
 </p>
 
 <dl>
-<dt><a href="nmz.html#head">NMZ.head</a>
-<dd>検索結果の冒頭部分
-<dt><a href="nmz.html#foot">NMZ.foot</a>
-<dd>検索結果の末尾部分
-<dt><a href="nmz.html#body">NMZ.body</a>
-<dd>検索式の説明
-<dt><a href="nmz.html#tips">NMZ.tips</a>
-<dd>検索のコツ
-<dt><a href="nmz.html#result">NMZ.result</a>
-<dd>検索結果の表示書式
+<dt><a href="nmz.html#head">NMZ.head</a></dt>
+<dd>検索結果の冒頭部分</dd>
+<dt><a href="nmz.html#foot">NMZ.foot</a></dt>
+<dd>検索結果の末尾部分</dd>
+<dt><a href="nmz.html#body">NMZ.body</a></dt>
+<dd>検索式の説明</dd>
+<dt><a href="nmz.html#tips">NMZ.tips</a></dt>
+<dd>検索のコツ</dd>
+<dt><a href="nmz.html#result">NMZ.result</a></dt>
+<dd>検索結果の表示書式</dd>
 </dl>
 
 <p>
@@ -648,24 +653,24 @@ formは NMZ.head に定義されています。CGI変数は次の通りです。
 </p>
 
 <dl>
-<dt>query
-<dd>検索式の指定です。
-<dt>max
-<dd>一度に表示する検索結果の件数を指定します。
-<dt>result
-<dd>検索結果の表示形式を指定します。
-<dt>sort
-<dd>ソートの方法を指定します。
-<dt>idxname
-<dd>検索するインデックス名を指定します。
-<dt>subquery
-<dd>補助の検索式を指定します。
-<dt>whence
-<dd>検索結果を何件目から表示するかを指定します。
-<dt>reference
-<dd>参考ヒット数を表示するかを指定します。
-<dt>lang
-<dd>検索結果を表示する言語を指定します。
+<dt>query</dt>
+<dd>検索式の指定です。</dd>
+<dt>max</dt>
+<dd>一度に表示する検索結果の件数を指定します。</dd>
+<dt>result</dt>
+<dd>検索結果の表示形式を指定します。</dd>
+<dt>sort</dt>
+<dd>ソートの方法を指定します。</dd>
+<dt>idxname</dt>
+<dd>検索するインデックス名を指定します。</dd>
+<dt>subquery</dt>
+<dd>補助の検索式を指定します。</dd>
+<dt>whence</dt>
+<dd>検索結果を何件目から表示するかを指定します。</dd>
+<dt>reference</dt>
+<dd>参考ヒット数を表示するかを指定します。</dd>
+<dt>lang</dt>
+<dd>検索結果を表示する言語を指定します。</dd>
 </dl>
 
 <h3><a name="form-idxname">インデックスを選択する</a></h3>
@@ -1232,7 +1237,7 @@ Tknamazu および namazu.el から検索するときは必ず後者で指定します。
 Copyright (C) 2000-2005 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: manual.html,v 1.93 2005-11-03 06:03:09 usu Exp $
+$Id: manual.html,v 1.94 2005-11-04 17:28:29 opengl2772 Exp $
 </div>
 <address>
 developers@namazu.org

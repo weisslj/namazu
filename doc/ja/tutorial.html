@@ -17,28 +17,28 @@ Namazu 2.0 を初めて使う方のための入門書です。
 
 <h2>目次</h2>
 <ul>
-<li><a href="#mission">本書の目的</a>
-<li><a href="#versions">開発の推移</a>
-<li><a href="#components">Namazu の構成部品</a>
-<li><a href="#prep-make">準備と make</a>
-<li><a href="#japanese">日本語環境での利用</a>
-<li><a href="#before-make-install">make install 前の確認</a>
-<li><a href="#help">help の表示</a>
-<li><a href="#run-mknmz">動作確認 mknmz</a>
-<li><a href="#customize-mknmz">mknmz の調整</a>
-<li><a href="#run-namazu">動作確認 namazu</a>
-<li><a href="#can-do">Namazu でできること</a>
-<li><a href="#can-not-do">できないこと</a>
-<li><a href="#others">その他</a>
-<li><a href="#terminology">用語</a>
-<li><a href="#reference">参照</a>
+<li><a href="#mission">本書の目的</a></li>
+<li><a href="#versions">開発の推移</a></li>
+<li><a href="#components">Namazu の構成部品</a></li>
+<li><a href="#prep-make">準備と make</a></li>
+<li><a href="#japanese">日本語環境での利用</a></li>
+<li><a href="#before-make-install">make install 前の確認</a></li>
+<li><a href="#help">help の表示</a></li>
+<li><a href="#run-mknmz">動作確認 mknmz</a></li>
+<li><a href="#customize-mknmz">mknmz の調整</a></li>
+<li><a href="#run-namazu">動作確認 namazu</a></li>
+<li><a href="#can-do">Namazu でできること</a></li>
+<li><a href="#can-not-do">できないこと</a></li>
+<li><a href="#others">その他</a></li>
+<li><a href="#terminology">用語</a></li>
+<li><a href="#reference">参照</a></li>
 </ul>
 
 <h2><a name="mission">本書の目的</a></h2>
 
 <ul>
-<li>Namazu 2.0 を初めてインストールする方
-<li>Namazu を初めて使う方、Namazu 2.0 を初めて使う方
+<li>Namazu 2.0 を初めてインストールする方</li>
+<li>Namazu を初めて使う方、Namazu 2.0 を初めて使う方</li>
 </ul>
 
 <p>
@@ -89,14 +89,17 @@ Namazu は大きくわけて mknmz, namazu, namazu.cgi の三つから構成されています。
 <ul>
 <li>mknmz<br> 
 インデックスをあらかじめ作る (Perl で書かれている)
+</li>
 
-<li>namazu <br> 
+<li>namazu<br> 
 作成したインデックスを元に検索する<br> 
 コマンド行から利用する。 (C言語で書かれている)
+</li>
 
 <li>namazu.cgi<br>
 作成したインデックスを元に検索する<br> 
 CGIとして利用する。(C言語で書かれている)
+</li>
 </ul> 
 
 <h2><a name="prep-make">準備と make</a></h2>
@@ -105,7 +108,7 @@ CGIとして利用する。(C言語で書かれている)
 前の敬称は略させていただきます)
 </p>
 
-<table cellspacing=0 cellpadding=3 border=1>
+<table cellspacing="0" cellpadding="3" border="1">
 <tr>
 <th>名称</th><th>説明</th>
 <th>必須</th>
@@ -263,7 +266,7 @@ Namazu の配布に同梱されています
 <li>
 △ は (日本語の処理をするなら)
 KAKASI/ChaSen のどちらかが必要という意味。
-<table cellspacing=0 cellpadding=3 border=1>
+<table cellspacing="0" cellpadding="3" border="1">
 <tr><td>両方用意しておいた場合</td><td>
 (無指定ではわかち書きに KAKASI を使うが、茶筌も
 -c オプションをするだけで使用できる)</td>
@@ -272,6 +275,7 @@ KAKASI/ChaSen のどちらかが必要という意味。
 ./configure の時点で KAKASI/ChaSen のどちらを使うかが選ばれます。</td>
 </tr>
 </table>
+</li>
 
 <li>
 ▲ は 
@@ -282,6 +286,7 @@ Perl モジュール化で、2.0 の高速化機能を生かすために必要です。
 インストールは <code>perl Makefile.PL; make; make install</code>
 と実行するだけです。
 問題がなければ入れておいた方がいいでしょう。
+</li>
 
 <li>
 ※ MeCabを使用する場合 (Namazu 2.0.13 から実験的にサポート)<br>
@@ -292,9 +297,11 @@ Perlモジュール版 MeCab を使用する場合は、
 $WAKATI = "module_mecab";
 と書く必要があります。
 ただし、MeCab は現在開発段階にあり、仕様そのものが不安定です。御了承ください。
+</li>
 
 <li>
 namazu 2.0 以降では ChaSen2 にだけ対応しています。
+</li>
 
 
 <li>「KAKASI」か「茶筌」か ---- 大ざっぱに言うと<br>
@@ -302,6 +309,7 @@ KAKASIの方が簡単 (安定)で速い。<br>
 茶筌の方が、
 少し遅いかもしれないがひらがなだけの文の取扱が出来る
 というような違いがあります。<br>
+</li>
 <li>ChaSen 2.02 以前では make install しても
 /usr/local/lib/libchasen.a をインストールしてくれないので、
 perl のChaSenモジュールを作るには手動で
@@ -310,18 +318,23 @@ cp libchasen.a /usr/local/lib
 ranlib /usr/local/lib/libchasen.a # ここはシステムに応じて
 </pre>
 と実行する必要があります。
+</li>
 
 <li>×となっている File::MMagic は namazu の配布に同梱されています。
+</li>
 <li> namazu 自体の ./configure についてはINSTALL-ja
 を見てください。
+</li>
 <li>以上用意した Kakasi や ChaSen は、
 namazu を ./configure する時に、
 ($PATH 変数の設定によって) 利用出来るようになっている必要があります。
 後から追加した場合には、./configure からやり直して下さい。
+</li>
 <li>nkf-1.90, 1.92 は
 <a href="http://www.namazu.org/ml/namazu-devel-ja/msg01599.html">
 全角空白の取扱いに問題</a>
 があります。最新版2.0.4を使うか 1.71 を使うかして下さい。
+</li>
 </ul>
 
 <h2><a name="japanese">日本語環境での利用</a></h2>
@@ -340,8 +353,8 @@ Namazu 2.0
 までは、以下のようにメッセージの表示と言語処理の両方で、
 全く同じ環境変数を用いていました。
 
-<p>
-<table cellspacing=0 cellpadding=3 border=1>
+<div>
+<table cellspacing="0" cellpadding="3" border="1">
 <caption>言語の切換を行なう環境変数(左優先)</caption>
 <tr><td>【メッセージの表示】</td>
 <td>LANGUAGE</td>
@@ -354,12 +367,13 @@ Namazu 2.0
 <td>LC_MESSAGES</td>
 <td>LANG</td></tr>
 </table>
+</div>
 
 <p>
 2.0.6 からは以下のように修正されました。
 
-<p>
-<table cellspacing=0 cellpadding=3 border=1>
+<div>
+<table cellspacing="0" cellpadding="3" border="1">
 <caption>言語の切換を行なう環境変数(左優先)</caption>
 <tr><td>【メッセージの表示】</td>
 <td>LANGUAGE</td>
@@ -372,22 +386,29 @@ Namazu 2.0
 <td>LC_CTYPE</td>
 <td>LANG</td></tr>
 </table>
+</div>
 
 <p>
 日本語の表示が欲しい時や、日本語の処理をしたい時には、
 これらの変数に、
-<table cellspacing=0 cellpadding=3>
+</p>
+<div>
+<table cellspacing="0" cellpadding="3">
 <tr><td>Unix OS</td><td>ja</td></tr>
 <tr><td>Windows</td><td>ja_JP.SJIS</td></tr>
 </table>
-等と設定します。例えば次のような方法で 
-
+</div>
 <p>
-<table cellspacing=0 cellpadding=3 border=1>
+等と設定します。例えば次のような方法で 
+</p>
+
+<div>
+<table cellspacing="0" cellpadding="3" border="1">
 <tr><td>C shell 等</td><td>Bourne shell 等</td></tr>
 <tr><td><code>setenv LANG ja</code></td>
 <td><code>LANG=ja; export LANG</code></td></tr>
 </table>
+</div>
 
 <p>
 LANG に ja を設定し
@@ -434,6 +455,7 @@ Lang: ja
 <h2><a name="before-make-install">make install 前の確認</a></h2>
 <p>
 もし make install する前に mknmz を試してみたいという時には
+</p>
 <pre>
 cd namazu-2.0.x ( ... tar.gz 形式を開けた位置)
    してから
@@ -441,20 +463,22 @@ env pkgdatadir=`pwd` scripts/mknmz (csh/tcsh 等の場合)
    または
 pkgdatadir=. scripts/mknmz (sh/bash 等の場合).
 </pre>
+<p>
 とすると、
 (<code>/usr/local/share/namazu</code> でなく)
 すぐ隣にある pl,filter,template 等を参照します。
 </p>
 
-<p class=note>
+<p class="note">
 (この辺の事情は mknmz 等の中の変数 $PKGDATADIR の文字列付近を見ると
 少し分ります。)
 </p>
 
 <p>
 同じようにして、
-<code class=command>
+</p>
 <pre>
+<code class="command">
 setenv pkgdatadir .
    または 
 pkgdatadir=.
@@ -464,6 +488,7 @@ scripts/mknmz -C
 scripts/mknmz --help 
 scripts/mknmz -O /tmp ~/Mail</code>
 </pre>
+<p>
 などが試すと、それぞれ、構成を表示・説明を表示・~/Mail の索引を作成する、
 などを行うことが出来ます。
 ただし、 make install 前は日本語でのメッセージ出力は行えません。
@@ -477,7 +502,7 @@ scripts/mknmz -O /tmp ~/Mail</code>
 -C を付けるとその時の構成を表示します。この 3つは覚えておくと便利です。 
 </p>
 
-<table cellspacing=0 cellpadding=3 border=1>
+<table cellspacing="0" cellpadding="3" border="1">
   <caption>コマンド行で説明などを得る方法</caption>
   <tr><th>引数</th><th>意味</th><th>その他に引数を付けると</th></tr>
 
@@ -512,7 +537,7 @@ mknmz は次のように実行します。
 
 <blockquote>
 <p>
-<code class=command><a href="manual.html#mknmz">mknmz</a> [options] 対象ディレクトリ</code>
+<code class="command"><a href="manual.html#mknmz">mknmz</a> [options] 対象ディレクトリ</code>
 </p>
 </blockquote>
 
@@ -565,8 +590,8 @@ mknmz は次のように実行します。
 </pre>
 
 <ul>
-  <li>結果 (のインデックス) は (-O で指定した) /tmp/index に
-  <li>検索対象は<code>/foo/bar/doc</code>
+  <li>結果 (のインデックス) は (-O で指定した) /tmp/index に</li>
+  <li>検索対象は<code>/foo/bar/doc</code></li>
   <li>URI については
 
 <p>
@@ -579,10 +604,12 @@ s#<em>aaa</em>#<strong>bbb</strong>#
 (上の例では aaa (/foo/bar/doc/)
             bbb (http://foo.bar.jp/) となります。)
 </p>
+  </li>
 
   <li> (/usr/local/etc/namazu/mknmzrc の $ALLOW_FILE,
      $DENY_FILE の設定によって) 
      *.html, *.txt, *.tex, *.pdf, MH形式のメイルなどを対象とします。
+  </li>
 </ul>
 
 
@@ -608,7 +635,7 @@ Namazu は元々は HTML 形式のものを処理するために作られました
 <dl>
 <dt>MH 形式のメイル
   <dd>普通に mknmz を実行します。<br>
-<code class=command>% mknmz ~/Mail/foobar</code>
+<code class="command">% mknmz ~/Mail/foobar</code>
 
 <dt><a href="http://www.mhonarc.org/">MHonArc</a>
   <dd>Namazu は MHonArc の HTMLに特化した処理を行います。
@@ -632,7 +659,7 @@ href="manual.html#mknmz-option">mknmz --help</a>とすると得ら
 
       読み込んだ設定ファイル: /home/foobar/.mknmzrc
       システム: linux
-      Namazu: 2.0.13
+      Namazu: 2.0.14
       Perl: 5.00503
       File-MMagic: 1.20
       NKF: module_nkf
@@ -684,7 +711,7 @@ href="manual.html#mknmz-option">mknmz --help</a>とすると得ら
 
 <h3>インデックスの作成対象について</h3>
 
-<table cellspacing=0 cellpadding=3>
+<table cellspacing="0" cellpadding="3">
 <tr><th>短縮形</th><th>本名</th><th>説明</th></tr>
 <tr><td>-F</td><td>--target-list=file</td><td>インデックス対象のファイルのリストを読み込む</td></tr>
 <tr><td>-t</td><td>--media-type=mtype</td><td>対象ファイルの文書形式を指定する</tr>
@@ -695,8 +722,8 @@ href="manual.html#mknmz-option">mknmz --help</a>とすると得ら
 </table>
 
 
-<p>
 <!--
+<p>
 現在の版では<em>対象ディレクトリ</em>に symbolic link がある
 とうまく処理できません。
 </p>
@@ -728,7 +755,7 @@ href="http://www.apache.org/">Apache</a> の場合、<a
 href="http://www.apache.org/docs/">設定</a>として
 </p>
 
-<table cellspacing=0 cellpadding=3>
+<table cellspacing="0" cellpadding="3">
 <tr><td>
 ScriptAlias</td><td> /cgi-bin/ /usr/local/apache/cgi-bin/
 </td><td>URI 中の /cgi-bin/ に対応するディレクトリ</td>
@@ -776,26 +803,33 @@ DirectoryIndex</td><td> index.html
 <ul>
 <li>一つの計算機の、一つまたは複数のディレクトリの下にある文
 書ファイルを指定して、
+</li>
 <li>それらの中の単語を調べ、どの文書ファイルにどの単語が含まれているか
 をインデックスに書き出しておく
+</li>
 <li>利用者が入力した検索式と、上記の単語を比べて、
 その単語が含まれている文書ファイルを表示すること
+</li>
 <li>上記単語の指定は、単語の一部分でなく単語全体です。
 ですから sys と指定しても system は見つかりません。
 そのような時には sys* や *sys* のように前後に *
 を付けることによって、sys で始まる単語 (sys*)、
 sys を含む単語 (*sys*)、
 sys で終了する単語 (*sys) と入力します。
+</li>
 <li>作られたインデックスの利用はコマンド行、または 
 cgi-bin が動く HTTP server を Webブラウザを通じて利用する形
 で行なう。
+</li>
 </ul>
 
 <h2><a name="can-not-do">できないこと</a></h2>
 <ul>
 <li>他の計算機にまで文書ファイルを取りにいって検索すること
+</li>
 <li>「一日に 100 万回の利用件数がある」というような大規模な構成
 の使い方。
+</li>
 </ul>
 
 <h2><a name="others">その他</a></h2>
@@ -813,8 +847,10 @@ mew には namazu と連動して
 <ul>
 <li>
 mknmz を起動して必要なインデックスを作り
+</li>
 <li>
 検索した結果を使って virtual folder を作成する
+</li>
 </ul>
 機能が contrib/mew-nmz.el にあり、説明は
 contrib/00readme-namazu.jis に書かれています。
@@ -940,10 +976,10 @@ perl -MNKF -e ''
 <a href="http://www.namazu.org/">Namazu Homepage</a>
 </p>
 <div class="copyright">
-Copyright (C) 2000-2004 Namazu Project. All rights reserved.
+Copyright (C) 2000-2005 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: tutorial.html,v 1.57 2004-08-04 03:14:27 opengl2772 Exp $
+$Id: tutorial.html,v 1.58 2005-11-05 14:25:32 opengl2772 Exp $
 </div>
 <address>
 developers@namazu.org

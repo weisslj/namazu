@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.165 2005-10-26 04:53:40 opengl2772 Exp $
+# $Id: mknmz.in,v 1.166 2005-11-09 15:26:12 opengl2772 Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2005 Namazu Project All rights reserved.
@@ -593,10 +593,10 @@ sub namazu_core ($$$$$$$$$$) {
     # It corresponds to -j option of ChaSen.
     $$contref =~ s/^[ \t\f]+//gm;    # except "\r\n"
     $$contref =~ s/[ \t\f]+$//gm;    # except "\r\n"
-#    $$contref =~ s/([a-z])-\n([a-z])/$1$2/gsi;   # hyphenation
+    $$contref =~ s/([a-z])-\n([a-z])/$1$2/gsi;   # for hyphenation
     if (util::islang("ja")) {
         $$contref =~ s/([\x80-\xff])\n([\x80-\xff])/$1$2/gs;
-        $$contref =~ s/。/。\n/gs;
+        $$contref =~ s/(。|、)/$1\n/gs;
     }
     $$contref =~ s/\n+/\n/gs;
     do_wakatigaki($contref, $kanji);
@@ -985,7 +985,7 @@ sub do_remain_job ($$$$) {
 
     if ($docid_count == 0) {
 	# No files are indexed
-	if ($DeletedFilesCount > 0) {
+	if ($DeletedFilesCount > 0 || $UpdatedFilesCount > 0) {
 	    update_dateindex();
 	    update_registry($docid_count);
 	}
@@ -1698,7 +1698,7 @@ sub append_index (@) {
     ($docid_base, @flist) = set_target_files(@flist);
 
     unless (@flist) { 	# if @flist is empty
-	if ($DeletedFilesCount > 0) {
+	if ($DeletedFilesCount > 0 || $UpdatedFilesCount > 0) {
 	    set_lockfile($var::NMZ{'lock2'});
 	    update_dateindex();
 	    update_registry(0);
@@ -2041,10 +2041,10 @@ sub put_log ($$$$) {
     my ($total_files_size, $start_time, $docid_count, $total_keys_count) = @_;
 
     my $date = localtime;
-    my $added_files_count   = $docid_count - $UpdatedFilesCount;
+    my $added_files_count   = $docid_count;
     my $deleted_documents_count = $DeletedFilesCount;
     my $updated_documents_count = $UpdatedFilesCount;
-    my $total_files_count   = get_total_files() + $docid_count 
+    my $total_files_count   = get_total_files() + $docid_count
 			      - $DeletedFilesCount - $UpdatedFilesCount;
     my $added_keys_count    = 0;
     $added_keys_count       = $total_keys_count - get_total_keys();
@@ -2151,8 +2151,8 @@ sub make_headfoot ($$$) {
     my $fh_file = util::efopen(">$file");
 
     if ($buf =~ /(<!-- FILE -->)\s*(.*)\s*(<!-- FILE -->)/) {
-	my $total_files_count = util::commas(get_total_files() + $docid_count 
-				   - $DeletedFilesCount - $UpdatedFilesCount);
+	my $total_files_count = util::commas(get_total_files() + $docid_count
+                                  - $DeletedFilesCount - $UpdatedFilesCount);
 	$buf =~ s/(<!-- FILE -->)(.*)(<!-- FILE -->)/$1 $total_files_count $3/;
 
     }

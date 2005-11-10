@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu-cmd.c,v 1.25 2005-10-05 20:50:02 opengl2772 Exp $
+ * $Id: namazu-cmd.c,v 1.26 2005-11-10 09:13:29 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -135,7 +135,7 @@ stdio2file(const char * fname)
 /*
  * Command line options.
  */
-static const char *short_options = "01:2345acCedf:FhHlL:n:o:qrRsSUvw:";
+static const char *short_options = "01:234:5acCedf:FhHlL:n:o:qrRsSUvw:";
 static struct option long_options[] = {
     { "help",             no_argument,       NULL, '0' },
     { "result",           required_argument, NULL, '1' },
@@ -176,7 +176,7 @@ parse_options(int argc, char **argv)
 
     for (;;) {
         int ch = nmz_getopt_long(argc, argv, short_options, long_options, NULL);
-        if (ch == EOF) {
+        if (ch == -1) {
             break;
 	}
 	switch (ch) {

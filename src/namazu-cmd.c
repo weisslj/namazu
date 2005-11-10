@@ -2,10 +2,10 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu-cmd.c,v 1.26 2005-11-10 09:13:29 opengl2772 Exp $
+ * $Id: namazu-cmd.c,v 1.27 2005-11-10 22:01:11 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2005 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -137,6 +137,7 @@ stdio2file(const char * fname)
  */
 static const char *short_options = "01:234:5acCedf:FhHlL:n:o:qrRsSUvw:";
 static struct option long_options[] = {
+    { "norc",             no_argument,       NULL, 1 },
     { "help",             no_argument,       NULL, '0' },
     { "result",           required_argument, NULL, '1' },
     { "late",             no_argument,       NULL, '2' },
@@ -180,6 +181,9 @@ parse_options(int argc, char **argv)
             break;
 	}
 	switch (ch) {
+        case 1:
+            set_namazunorc("all");
+            break;
 	case '0':
 	    show_usage();
 	    exit(EXIT_SUCCESS);
@@ -204,12 +208,12 @@ parse_options(int argc, char **argv)
                 die("%s: invalid argument for -4 --sort", nmz_optarg);
             }
 	    if (strcasecmp(nmz_optarg, "score") == 0) {
-		nmz_set_sortmethod(SORT_BY_SCORE);
+                nmz_set_sortmethod(SORT_BY_SCORE);
 	    } else if (strcasecmp(nmz_optarg, "date") == 0) {
-		nmz_set_sortmethod(SORT_BY_DATE);
+                nmz_set_sortmethod(SORT_BY_DATE);
 	    } else if (nmz_strprefixcasecmp(nmz_optarg, "field:") == 0) {
-		nmz_set_sortmethod(SORT_BY_FIELD);
-		nmz_set_sortfield(nmz_optarg + strlen("field:"));
+                nmz_set_sortmethod(SORT_BY_FIELD);
+                nmz_set_sortfield(nmz_optarg + strlen("field:"));
             } else {
                 die("%s: invalid argument for -4 --sort", nmz_optarg);
             }

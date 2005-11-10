@@ -2,10 +2,10 @@
  * 
  * usage.c -
  * 
- * $Id: usage.c,v 1.29 2004-04-27 12:15:33 opengl2772 Exp $
+ * $Id: usage.c,v 1.30 2005-11-10 22:01:11 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2005 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -76,6 +76,7 @@ Usage: namazu [options] <query> [index]... \n\
     -d, --debug          be in debug mode.\n\
     -v, --version        show the namazu version and exit.\n\
         --help           show this help and exit.\n\
+        --norc           do not read the personal initialization files.\n\
         --               Terminate option list.\n\
 \n\
 Report bugs to <%s>.\n\

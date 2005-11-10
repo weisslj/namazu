@@ -1,9 +1,9 @@
 /*
  * 
- * $Id: rcfile.c,v 1.42 2004-04-05 08:15:04 opengl2772 Exp $
+ * $Id: rcfile.c,v 1.43 2005-11-10 22:01:11 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2003 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2005 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -65,6 +65,8 @@ static char *namazurcdir = OPT_CONFDIR;
  * User specified namazurc. This can be set with set_namazurc().
  */
 static char user_namazurc[BUFSIZE] = "";
+
+static char namazunorc[BUFSIZE] = "";
 
 static char *errmsg  = NULL;
 
@@ -749,7 +751,16 @@ load_rcfile(const char *fname)
 void
 set_namazurc(const char *arg)
 {
-    strcpy(user_namazurc, arg);
+    strncpy(user_namazurc, arg, BUFSIZE - 1);
+    user_namazurc[BUFSIZE - 1] = '\0';
+}
+
+void
+set_namazunorc(const char *arg)
+{
+    strncpy(namazunorc, arg, BUFSIZE - 1);
+    namazunorc[BUFSIZE - 1] = '\0';
+    nmz_strlower(namazunorc);
 }
 
 /*
@@ -767,15 +778,20 @@ set_namazurc(const char *arg)
 enum nmz_stat 
 load_rcfiles(void)
 {
-    char *env_norc, namazunorc[BUFSIZE] = "";
+    char *env_norc, _norc[BUFSIZE] = "";
 
     if ((env_norc = getenv("NAMAZUNORC"))) {
-        strncpy(namazunorc, env_norc, BUFSIZE - 1);
-        namazunorc[BUFSIZE - 1] = '\0';
-        nmz_strlower(namazunorc);
+        strncpy(_norc, env_norc, BUFSIZE - 1);
+        _norc[BUFSIZE - 1] = '\0';
+        nmz_strlower(_norc);
+
+        if (namazunorc[0] == '\0') {
+            set_namazunorc(_norc);
+        }
     }
 
-    nmz_debug_printf("NAMAZUNORC: '%s'", namazunorc);
+    nmz_debug_printf("NAMAZUNORC: '%s'", _norc);
+    nmz_debug_printf("namazunorc: '%s'", namazunorc);
 
     /*
      *  1. $(sysconfdir)/$(PACKAGE)/namazurc

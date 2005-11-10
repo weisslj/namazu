@@ -3,6 +3,8 @@
         * src/{namazu-cmd.c, rcfile.h, rcfile.c, usage.c}, po/*: Added --norc
         option.
 
+        * doc/{en, ja}/manual.html: Added --norc option.
+
 2005-11-10  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * scripts/mknmz.in: The calculation mistakes of the number of total 
@@ -9740,4 +9742,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1384 2005-11-10 22:01:10 opengl2772 Exp $
+$Id: ChangeLog,v 1.1385 2005-11-10 22:10:54 opengl2772 Exp $

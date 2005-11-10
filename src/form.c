@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.82 2005-11-02 09:17:07 opengl2772 Exp $
+ * $Id: form.c,v 1.83 2005-11-10 14:28:43 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2005 Namazu Project All rights reserved.
@@ -75,8 +75,8 @@ static enum nmz_stat replace_query_value ( const char *p, const char *query );
 static void delete_str ( char *s, char *d );
 static void get_value ( const char *s, char *value );
 static void get_select_name ( const char *s, char *value );
-static enum nmz_stat select_option ( char *s, const char *name, const char *query, const char *subquery );
-static enum nmz_stat check_checkbox ( char *str, const char *query );
+static enum nmz_stat select_option ( char *s, const char *name, const char *subquery );
+static enum nmz_stat check_checkbox ( char *str );
 static void handle_tag ( const char *start, const char *end, const char *query,char *select_name, const char *subquery );
 static char * read_headfoot ( const char *fname );
 static void subst ( char *str, const char *pat, const char *rep );
@@ -247,7 +247,7 @@ get_select_name(const char *s, char *value)
 }
 
 static enum nmz_stat
-select_option(char *s, const char *name, const char *query, const char *subquery)
+select_option(char *s, const char *name, const char *subquery)
 {
     char value[BUFSIZE] = "";
 
@@ -367,7 +367,7 @@ select_option(char *s, const char *name, const char *query, const char *subquery
  * Mark CHECKBOX of idxname with CHECKED 
  */
 static enum nmz_stat
-check_checkbox(char *str, const char *query)
+check_checkbox(char *str)
 {
     char value[BUFSIZE] = "";
     int i;
@@ -431,9 +431,9 @@ handle_tag(const char *start, const char *end, const char *query,
         tmp[l] = '\0';
         if (replace_query_value(tmp, query) == SUCCESS)
             return;
-        if (select_option(tmp, select_name, query, subquery) == SUCCESS)
+        if (select_option(tmp, select_name, subquery) == SUCCESS)
             return;
-        if (check_checkbox(tmp, query) == SUCCESS)
+        if (check_checkbox(tmp) == SUCCESS)
             return;
         get_select_name(tmp, select_name);
 	fputs(tmp, stdout);

@@ -2,10 +2,10 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.75 2005-10-10 15:37:14 opengl2772 Exp $
+ * $Id: cgi.c,v 1.76 2005-11-10 14:28:43 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2005 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -251,11 +251,11 @@ get_cgi_vars(const char *querystring)
     while (1) {
 	int len;
 	const char *tmp;
-	char *pSemicolon;
+        char *pSemicolon;
 	char name[BUFSIZE];
 	char value[BUFSIZE];
 
-	name[BUFSIZE - 1] = '\0';
+        name[BUFSIZE - 1] = '\0';
 
 	tmp = strchr(querystring, '=');
 	if (tmp == NULL) {
@@ -272,11 +272,11 @@ get_cgi_vars(const char *querystring)
 
 	querystring++;
 	tmp = strchr(querystring, '&');
-	pSemicolon = strchr(querystring, ';');
+        pSemicolon = strchr(querystring, ';');
         if (tmp == NULL || (pSemicolon && (tmp > pSemicolon))) {
             tmp = pSemicolon;
         }
-	if (tmp == NULL) {
+        if (tmp == NULL) {
 	    tmp = querystring + strlen(querystring);  /* last point: '\0' */
 	}
 	len = tmp - querystring;

@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.166 2005-11-09 15:26:12 opengl2772 Exp $
+# $Id: mknmz.in,v 1.167 2005-11-16 09:09:26 opengl2772 Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2005 Namazu Project All rights reserved.
@@ -536,7 +536,8 @@ sub namazu_core ($$$$$$$$$$) {
 	    $fields{'mtime'} = $Document->get_mtime();
             {
                 my $utc = $fields{'mtime'};
-                $utc = time::rfc822time_to_mtime($fields{'date'}) if (defined $fields{'date'});
+                $utc = time::rfc822time_to_mtime($fields{'date'})
+                        if (defined $fields{'date'});
                 $fields{'utc'} = $utc;
             }
 
@@ -584,8 +585,8 @@ sub namazu_core ($$$$$$$$$$) {
     put_field_index(\%fields, $field_indices);
 
     put_dateindex($cfile, $fields{'mtime'});
-    $$contref .= " $filename ";
-    $$contref .= $weighted_str;   # add weights
+    $$contref .= "\n\n$filename\n\n";   # add filename
+    $$contref .= $weighted_str;         # add weights
     $Indexer->init($contref, $conf::WORD_LENG_MAX, $var::Opt{'nosymbol'});
     $Indexer->noedgesymbol() if ($var::Opt{'noedgesymbol'});
     $$contref =~ tr/\x00-\x08\x0b-\x0c\x0e-\x1a/ /; # Remove control char.
@@ -713,7 +714,6 @@ sub complete_field_info (\%$$\$\$\$) {
 	my $mtime = $fields->{'mtime'};
 	my $date = util::rfc822time($mtime);
 	$fields->{'date'} = $date;
-	$fields->{'mtime'} = $mtime;
     }
     unless (defined($fields->{'uri'})) {
 	$fields->{'uri'} = $uri;

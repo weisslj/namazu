@@ -44,7 +44,9 @@ Linux or FreeBSD
 This query specifies two or more terms for retrieving all of the
 documents which contain a first term but do not contain the
 following terms. Insert the <code class="operator">not</code>
-operator between the terms, for example:</p>
+operator between the terms, for example:
+</p>
+
 <p class="example">
 Linux not UNIX
 </p>
@@ -118,7 +120,8 @@ e.g.,
 You can limit your search to specific fields such as
 <code>Subject:</code>, <code>From:</code>,
 <code>Message-Id:</code>. This feature is especially convenient for
-Mail/News documents, for example:</p>
+Mail/News documents, for example:
+</p>
 
 <ul>
 <li><code class="example">+subject:Linux</code><br>

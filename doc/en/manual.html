@@ -147,6 +147,7 @@ The above searches a keyword "bar" for the index under
                                e.g., -50 for recent 50 days, +50 for older than 50.
     
     Morphological Analysis:
+      -b, --use-mecab          use MeCab for analyzing Japanese.
       -c, --use-chasen         use ChaSen for analyzing Japanese.
       -k, --use-kakasi         use KAKASI for analyzing Japanese.
       -m, --use-chasen-noun    use ChaSen for extracting only nouns.
@@ -974,7 +975,9 @@ Linux or FreeBSD
 This query specifies two or more terms for retrieving all of the
 documents which contain a first term but do not contain the
 following terms. Insert the <code class="operator">not</code>
-operator between the terms, for example:</p>
+operator between the terms, for example:
+</p>
+
 <p class="example">
 Linux not UNIX
 </p>
@@ -1006,7 +1009,7 @@ so wrong results may occasionally occur.  Example:
 
 <!-- foo
 <p>
-You must choose the latter with Tkanamzu or namazu.el.
+You must choose the latter with Tknamazu or namazu.el.
 </p>
 -->
 
@@ -1048,7 +1051,8 @@ e.g.,
 You can limit your search to specific fields such as
 <code>Subject:</code>, <code>From:</code>,
 <code>Message-Id:</code>. This feature is especially convenient for
-Mail/News documents, for example:</p>
+Mail/News documents, for example:
+</p>
 
 <ul>
 <li><code class="example">+subject:Linux</code><br>
@@ -1127,7 +1131,7 @@ You must choose the latter with Tkanamzu or namazu.el.
 Copyright (C) 2000-2005 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: manual.html,v 1.70 2005-11-10 22:10:54 opengl2772 Exp $
+$Id: manual.html,v 1.71 2005-11-21 08:39:04 opengl2772 Exp $
 </div>
 <address>
 developers@namazu.org

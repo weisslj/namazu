@@ -99,3 +99,13 @@
 ## ContentType: Set "Content-Type" header output. If you want to
 ## use non-HTML template files, set it suitably.
 #ContentType	"text/x-hdml"
+
+##
+## Suicide_Time: namazu.cgi stops the process in 60 seconds by 
+## default.
+#Suicide_Time	60
+
+##
+## Regex_Search: Set OFF to turn off regex_search.
+## Default is ON.
+#Regex_Search	off

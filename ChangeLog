@@ -1,3 +1,8 @@
+2005-11-22  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+	* conf/namazurc-sample: Added 2 directives; Suicide_Time and
+	Regex_Search.
+
 2005-11-15  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * nmz/search.c(cmp_phrase_hash): The bug to which docid = 0 doesn't 
@@ -9747,4 +9752,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1386 2005-11-15 08:14:57 opengl2772 Exp $
+$Id: ChangeLog,v 1.1387 2005-11-21 16:55:31 opengl2772 Exp $

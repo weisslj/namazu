@@ -1,6 +1,6 @@
 # Process this file with automake to produce Makefile.in
 #
-# $Id: Makefile.am,v 1.43 2004-04-16 14:35:54 opengl2772 Exp $
+# $Id: Makefile.am,v 1.44 2005-11-22 16:55:37 opengl2772 Exp $
 #
 
 AUTOMAKE_OPTIONS = 1.4 no-dependencies
@@ -9,7 +9,13 @@ EXTRA_DIST = alloca.c memcmp.c memmove.c memset.c strcasecmp.c strncasecmp.c \
 	     strcspn.c strerror.c vsnprintf.c system.h support.h \
 	     nmzversion.c.in
 
-CLEAN_FILES = nmzversion.c
+CLEAN_FILES = nmzversion.c nmz.dll nmz.def nmz.lib nmz.exp
+
+DLL_OBJ_FILES = alias.o codeconv.o field.o hlist.o i18n.o \
+		idxname.o l10n-ja.o libnamazu.o nmzversion.o \
+		parser.o query.o re.o regex.o replace.o \
+		score.o search.o seed.o \
+		util.o var.o wakati.o
 
 localedir   = $(prefix)/$(DATADIRNAME)/locale
 confdir     = $(sysconfdir)/$(PACKAGE)
@@ -46,6 +52,23 @@ nmzversion.c: nmzversion.c.in
 
 clean-generic:
 	-rm -f $(CLEAN_FILES)
+
+# Win32: nmz.dll (for MinGw)
+dll: nmz.dll nmz.def
+
+nmz.dll: $(DLL_OBJ_FILES)
+	$(CC) -shared -Wl,--output-def,nmz.def,--out-implib,libnmz.a \
+	-o nmz.dll $(DLL_OBJ_FILES)
+	strip nmz.dll
+
+nmz.def: $(DLL_OBJ_FILES)
+	$(CC) -shared -Wl,--output-def,nmz.def,--out-implib,libnmz.a \
+	-o nmz.dll $(DLL_OBJ_FILES)
+	strip nmz.dll
+
+# Win32: MSVC import libirary (need lib.exe)
+implib: nmz.dll nmz.def
+	lib /machine:i386 /def:nmz.def
 
 ##Bug in automake: Can't use `if MAINTAINER_MODE'
 @MAINTAINER_MODE_TRUE@include $(srcdir)/maintMakefile

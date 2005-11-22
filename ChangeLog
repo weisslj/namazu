@@ -1,3 +1,7 @@
+2005-11-23  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+	* nmz/Makefile.am: Added an entry for nmz.dll.
+
 2005-11-22  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* conf/namazurc-sample: Added 2 directives; Suicide_Time and
@@ -9752,4 +9756,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1387 2005-11-21 16:55:31 opengl2772 Exp $
+$Id: ChangeLog,v 1.1388 2005-11-22 16:55:36 opengl2772 Exp $

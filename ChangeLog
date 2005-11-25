@@ -1,3 +1,9 @@
+2005-11-25  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+	* scripts/mknmz.in(find_target): To skip when filename is DDN.
+
+	* pl/conf.pl.in: Added DDN.
+
 2005-11-23  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* nmz/Makefile.am: Added an entry for nmz.dll.
@@ -9756,4 +9762,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1388 2005-11-22 16:55:36 opengl2772 Exp $
+$Id: ChangeLog,v 1.1389 2005-11-25 06:00:00 opengl2772 Exp $

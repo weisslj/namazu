@@ -54,6 +54,14 @@ $ALLOW_FILE =	".*\\.(?:$HTML_SUFFIX)|.*\\.txt" . # HTML, plain text
 $DENY_FILE = ".*\\.(gif|png|jpg|jpeg)|.*\\.tar\\.gz|core|.*\\.bak|.*~|\\..*|\x23.*";
 
 #
+# This pattern specifies DDN(DOS Device Name) which will NOT be targeted.
+# NOTE: Only for Windows.
+#       Do NOT use `$' or `^' anchors.
+#       Case-insensitive.
+#
+$DENY_DDN = "con|aux|nul|prn|lpt[1-9]|com[1-9]|clock\$|xmsxxxx0";
+
+#
 # This pattern specifies PATHNAMEs which will NOT be targeted.
 # NOTE: Usually specified by --exclude=regex option.
 #
@@ -77,7 +85,7 @@ $REMAIN_HEADER = "From|Date|Message-ID";
 # This pattern specifies fields which used for field-specified 
 # searching.  NOTE: case-insensitive
 # 
-$SEARCH_FIELD = "message-id|subject|from|date|uri|newsgroups|to|summary|size";
+$SEARCH_FIELD = "message-id|subject|from|date|uri|newsgroups|to|summary|size|utc";
 
 #
 # This pattern specifies meta tags which used for field-specified 
@@ -104,6 +112,7 @@ $NON_SEPARATION_ELEMENTS = 'A|TT|CODE|SAMP|KBD|VAR|B|STRONG|I|EM|CITE|FONT|U|'.
 # searchable.
 #
 $HTML_ATTRIBUTES = 'ALT|SUMMARY|TITLE';
+
 
 #===================================================================
 # 
@@ -218,6 +227,7 @@ $MECAB = "@DO_MECAB@";
 #
 $WAKATI  = $@OPT_WAKATI_DEFAULT@;
 
+
 #===================================================================
 #
 # Document filters.
@@ -288,6 +298,7 @@ $WAKATI  = $@OPT_WAKATI_DEFAULT@;
   'text/x-roff' => ['man.pl'],
   'x-test/x-test' => ['testfilter.pl'], # for tests/mknmz-12
 );
+
 
 #===================================================================
 #

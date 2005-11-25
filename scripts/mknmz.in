@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.167 2005-11-16 09:09:26 opengl2772 Exp $
+# $Id: mknmz.in,v 1.168 2005-11-25 06:00:02 opengl2772 Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2005 Namazu Project All rights reserved.
@@ -1399,6 +1399,7 @@ sub find_target (@) {
 		while (defined(my $ent = $dh->read)) {
 		    next if ($ent eq '.' || $ent eq '..');
 		    if ($English::OSNAME eq "MSWin32" || $English::OSNAME eq "os2") {
+                        next if ($ent =~ m!^($conf::DENY_DDN)$!i);
 		        my $tmp = $ent;
 		        util::win32_yen_to_slash(\$tmp);
 		        next if ($ent ne $tmp);

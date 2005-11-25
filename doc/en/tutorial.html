@@ -17,21 +17,21 @@ This tutorial is for users who begin using Namazu 2.0.
 
 <h2>Table of Contents</h2>
 <ul>
-<li><a href="#mission">Mission</a>
-<li><a href="#versions">History of development</a>
-<li><a href="#components">Namazu components</a>
-<li><a href="#prep-make">Preparation and <code>make</code></a>
-<li><a href="#japanese">Japanese environment</a>
-<li><a href="#before-make-install">Test before <code>make install</code></a>
-<li><a href="#help">Help</a>
-<li><a href="#run-mknmz">Running mknmz</a>
-<li><a href="#customize-mknmz">Customizing mknmz</a>
-<li><a href="#run-namazu">Running namazu</a>
-<li><a href="#can-do">What you can do with Namazu</a>
-<li><a href="#can-not-do">What you cannot do with Namazu</a>
-<li><a href="#others">Others</a>
-<li><a href="#terminology">Terminology</a>
-<li><a href="#reference">References</a>
+<li><a href="#mission">Mission</a></li>
+<li><a href="#versions">History of development</a></li>
+<li><a href="#components">Namazu components</a></li>
+<li><a href="#prep-make">Preparation and <code>make</code></a></li>
+<li><a href="#japanese">Japanese environment</a></li>
+<li><a href="#before-make-install">Test before <code>make install</code></a></li>
+<li><a href="#help">Help</a></li>
+<li><a href="#run-mknmz">Running mknmz</a></li>
+<li><a href="#customize-mknmz">Customizing mknmz</a></li>
+<li><a href="#run-namazu">Running namazu</a></li>
+<li><a href="#can-do">What you can do with Namazu</a></li>
+<li><a href="#can-not-do">What you cannot do with Namazu</a></li>
+<li><a href="#others">Others</a></li>
+<li><a href="#terminology">Terminology</a></li>
+<li><a href="#reference">References</a></li>
 </ul>
 
 <h2><a name="mission">Mission</a></h2>
@@ -41,8 +41,8 @@ This tutorial is written for
 </p>
 
 <ul>
-<li>users who install Namazu 2.0 for the first time
-<li>users who have never used Namazu or Namazu 2.0 before
+<li>users who install Namazu 2.0 for the first time</li>
+<li>users who have never used Namazu or Namazu 2.0 before</li>
 </ul>
 
 <p>
@@ -93,14 +93,17 @@ Namazu consists of three major components, mknmz, namazu, namazu.cgi.
 <ul>
 <li>mknmz<br> 
 Create index files before searching. (written in Perl)
+</li>
 
 <li>namazu <br> 
 Search documents based on the created index. <br>
 This is from the command line use only. (written in C)
+</li>
 
 <li>namazu.cgi<br>
 Search documents based on the created index. <br>
 For cgi-bin use only (written in C).
+</li>
 </ul> 
 
 <h2><a name="prep-make">Preparation and make</a></h2>
@@ -120,7 +123,7 @@ You need the following softwares to build Namazu 2.0.
 <th>Others</th>
 </tr>
 <tr><td>Perl</td><td>Perl Language</td>
-<td>Required</td><td>5.8.3</td><td> &gt;= 5.004</td>
+<td>Required</td><td>5.8.7</td><td> &gt;= 5.004</td>
 <td>perl5.005_03.tar.gz</td>
 <td>Larry Wall
 GNU CPAN</td>
@@ -141,17 +144,17 @@ CPAN</a></td>
 
 <tr><td><a href="http://www.gnu.org/software/gettext/gettext.html">gettext</a></td>
 <td>translate message</td>
-<td>Required only because of a multi-language message.</td><td>0.14.1</td><td>&gt;= 0.13</td>
-<td><a href="http://ftp.gnu.org/gnu/gettext/gettext-0.14.1.tar.gz">gettext-0.14.1.tar.gz</a></td>
+<td>Required only because of a multi-language message.</td><td>0.14.5</td><td>&gt;= 0.13.1</td>
+<td><a href="http://ftp.gnu.org/gnu/gettext/gettext-0.14.5.tar.gz">gettext-0.14.5.tar.gz</a></td>
 <td>FSF</td>
 <td><a href="http://ftp.gnu.org/gnu/gettext/">GNU</a></td>
  <td>Solaris is indispensable.</td>
 </tr>
 
 <tr><td>nkf</td><td>Network Kanji Filter </td>
-  <td>for Japanese processing only</td><td>2.0.4</td><td>&gt;= 1.71</td>
+  <td>for Japanese processing only</td><td>2.0.5</td><td>&gt;= 1.71</td>
   <td rowspan=2>
-  <a href="http://www01.tcp-ip.or.jp/%7Efurukawa/nkf_utf8/nkf204.tar.gz">nkf204.tar.gz</a></td>
+  <a href="http://www01.tcp-ip.or.jp/%7Efurukawa/nkf_utf8/nkf205.tar.gz">nkf205.tar.gz</a></td>
   <td rowspan=2>
   <a href="http://www.ie.u-ryukyu.ac.jp/~kono/pub/software/index-e.html">Shinji Kono</a><br>
   <a href="http://www01.tcp-ip.or.jp/%7Efurukawa/">Rei FURUKAWA</a><br></td>
@@ -161,7 +164,7 @@ CPAN</a></td>
   </tr>
 
 <tr><td>NKF</td><td>nkf Perl Module</td>
-  <td>for Japanese processing only. ++</td><td>2.0.4</td><td>&gt;= 1.71</td>
+  <td>for Japanese processing only. ++</td><td>2.0.5</td><td>&gt;= 1.71</td>
   </tr>
 
 <tr>
@@ -219,38 +222,38 @@ CPAN</a></td>
 </tr>
 
 <tr>
-  <td><a href="http://cl.aist-nara.ac.jp/~taku-ku/software/mecab/">MeCab</a></td>
+  <td><a href="http://chasen.org/~taku/software/mecab/">MeCab</a></td>
   <td>Yet Another Japanese Morphology Analyzer</td>
   <td>for Japanese processing only. **</td>
-  <td>0.77</td><td>&gt;= 0.6</td><td>
-  <a href="http://cl.aist-nara.ac.jp/~taku-ku/software/mecab/src/mecab-0.77.tar.gz">
-  mecab-0.77.tar.gz</a></td>
+  <td>0.81</td><td>&gt;= 0.6</td><td>
+  <a href="http://chasen.org/~taku/software/mecab/src/mecab-0.81.tar.gz">
+  mecab-0.81.tar.gz</a></td>
   <td>
-  <a href="http://cl.aist-nara.ac.jp/~taku-ku/software/mecab/">
+  <a href="http://chasen.org/~taku/software/mecab/">
   Taku Kudo</a></td>
-  <td><a href="http://cl.aist-nara.ac.jp/~taku-ku/software/mecab/src/">MeCab</a></td>
+  <td><a href="http://chasen.org/~taku/software/mecab/src/">MeCab</a></td>
   <td>*** experimental support</td>
 </tr>
 
 <tr>
-  <td><a href="http://cl.aist-nara.ac.jp/~taku-ku/software/mecab/bindings.html">mecab-perl</a></td>
+  <td><a href="http://chasen.org/~taku/software/mecab/bindings.html">mecab-perl</a></td>
   <td>MeCab Perl Module</td>
   <td>for Japanese processing only. ++</td>
-  <td>0.77</td><td>&gt;= 0.76</td><td>
-  <a href="http://cl.aist-nara.ac.jp/~taku-ku/software/mecab/bindings/mecab-perl-0.77.tar.gz">
-  mecab-perl-0.77.tar.gz</a></td>
+  <td>0.81</td><td>&gt;= 0.76</td><td>
+  <a href="http://chasen.org/~taku/software/mecab/bindings/mecab-perl-0.81.tar.gz">
+  mecab-perl-0.81.tar.gz</a></td>
   <td>
-  <a href="http://cl.aist-nara.ac.jp/~taku-ku/software/mecab/bindings.html">
+  <a href="http://chasen.org/~taku/software/mecab/bindings.html">
   Taku Kudo</a></td>
-  <td><a href="http://cl.aist-nara.ac.jp/~taku-ku/software/mecab/bindings/">MeCab</a></td>
+  <td><a href="http://chasen.org/~taku/software/mecab/bindings/">MeCab</a></td>
   <td>*** experimental support</td>
 </tr>
 
 <tr><td>
 <a href="http://search.cpan.org/search?mode=module&amp;query=MMagic">File::MMagic</a>
 </td><td>File Type</td>
-<td>Included</td><td>1.22</td><td>&gt;= 1.20</td>
-<td>File-MMagic-1.22.tar.gz
+<td>Included</td><td>1.25</td><td>&gt;= 1.20</td>
+<td>File-MMagic-1.25.tar.gz
 <td>
   <a href="http://www.daionet.gr.jp/~knok/">
   NOKUBI Takatsugu</a></td>
@@ -272,16 +275,22 @@ slow, since the external segmentation process is
 executed file by file. To install them, just execute <code>perl
 Makefile.PL; make; make install</code>. We recommend to
 install Perl modules, unless you have particular difficulties in doing so.
+</li>
 
 <li>File::MMagic indicated by [included] is packaged in Namazu distribution.
+</li>
 <li>Please refer to INSTALL for ./configure in namazu distribution.
+</li>
 
 </ul>
+<p>
 (Notes listed below are for Japanese processing only.)
+</p>
 <ul>
 <li>Nkf, KAKASI, ChaSen, NKF, Text::Kakasi and Text::ChanSen
 are required only if you want to use Namazu for handling
 Japanese documents. If not, you don't need them.
+</li>
 
 <li> Checked as
 (**) means that you need either KAKASI or ChaSen for Japanese processing.
@@ -291,6 +300,7 @@ For segmentation, KAKASI is used by default, however, ChaSen can be used by spec
 <tr><td>If you have only one ... </td><td>
 When executing ./configure, Namazu selects which one to use.</tr>
 </table>
+</li>
 
 <li>using MeCab (***), it supports experimentally above Namazu 2.0.13.<br>
 It is necessary to customize mknmzrc.
@@ -300,15 +310,18 @@ And, if you want to use MeCab of Perl module version,
 write it as $WAKATI = "module_mecab"; .
 However, MeCab is in a development stage now 
 and its specification is unstable. 
+</li>
 
 <li>
 Namazu 2.0x requires ChaSen 2.x.
 The older version of ChaSen 1.x will not work with Namazu 2.0.x.
+</li>
 
 <li>Which to choose "KAKASI" or "ChaSen" --- in a nutshell<br>
 KAKASI is easier and faster.<br>
 ChaSen is slightly slower but has some advantage like better handling
 of Hiragana-only-sentence.<br>
+</li>
 <li>For ChaSen 2.02 or earlier, <code>make install</code> does not install
 /usr/local/lib/libchasen.a automatically. So to build 
 perl ChaSen module, you will need to do 
@@ -317,13 +330,16 @@ cp libchasen.a /usr/local/lib
 ranlib /usr/local/lib/libchasen.a # depending on your system
 </pre>
 manually.
+</li>
 
 <li>Kakasi or ChaSen mentioned above should be
 visible when you run ./configure through $PATH variable. If you add those
 packages later, you have to start over from ./configure.
+</li>
 <li>nkf-1.90, 1.92 has problem in handling two bytes space character.
  nkf-2.0 - 2.0.3 has another problem.
  Use 1.71 or latest version. 
+</li>
 </ul>
 
 
@@ -342,8 +358,9 @@ to set up environment variables for language selection.
 With 2.0.5 (or earlier), the same environment variables were used
 to switch 
 for both message translations and internal text processing.
+</p>
 
-<p>
+<div>
 <table cellspacing="0" cellpadding="3" border="1">
 <caption> Environment variable names for language selection (priority with left to right)</caption>
 <tr><td>Message translations</td>
@@ -357,11 +374,12 @@ for both message translations and internal text processing.
 <td>LC_MESSAGES</td>
 <td>LANG</td></tr>
 </table>
+</div>
 
 <p>
 With 2.0.6, We modified as follows.
 
-<p>
+<div>
 <table cellspacing="0" cellpadding="3" border="1">
 <caption> Environment variable names for language selection (priority with left to right)</caption>
 <tr><td>Message Translations</td>
@@ -375,6 +393,7 @@ With 2.0.6, We modified as follows.
 <td>LC_CTYPE</td>
 <td>LANG</td></tr>
 </table>
+</div>
 
 <p>
 The typical example to process Japanese is to set
@@ -389,12 +408,13 @@ following values, depending on your system environment.
 The actual command to set value show above
 may again depend your shell,
 
-<p>
+<div>
 <table cellspacing="0" cellpadding="3" border="1">
 <tr><td>C shell</td><td>Bourne shell etc</td></tr>
 <tr><td><code>setenv LANG ja</code></td>
 <td><code>LANG=ja; export LANG</code></td></tr>
 </table>
+</div>
 
 <p>
 With above example, value(ja) is set for LANG,
@@ -446,7 +466,7 @@ These will refer adjacent
 <code>/usr/local/share/namazu</code> etc).
 </p>
 
-<p class=note>
+<p class="note">
 (To know more about this, see $PKGDATADIR variable in mknmz etc.)
 </p>
 
@@ -509,7 +529,7 @@ Run mknmz as follows.
 
 <blockquote>
 <p>
-<code class=command><a href="manual.html#mknmz">mknmz</a> [options] target directory</code>
+<code class="command"><a href="manual.html#mknmz">mknmz</a> [options] target directory</code>
 </p>
 </blockquote>
 
@@ -568,18 +588,20 @@ please refer to <a href="#japanese">Japanese Environment</a>.
 </pre>
 
 <ul>
-  <li>Result (Index) will be in /tmp/index (specified in -O)
-  <li>Target documents are <code>/foo/bar/doc</code>
-  <li>For URI 
+  <li>Result (Index) will be in /tmp/index (specified in -O)</li>
+  <li>Target documents are <code>/foo/bar/doc</code></li>
+  <li>For URI
 
 <p>
 This means "documents under <code>/foo/bar/doc/</code> will appear as 
 <code>http://foo.bar.jp/software/</code>, so please perform replacement like s#<em>aaa</em>#<strong>bbb</strong># if written in Perl."
 (In this example, (aaa) corresponds to (/foo/bar/doc/) and (bbb) corresponds to (http://foo.bar.jp/))
 </p>
+  </li>
 
   <li> (Depending on $ALLOW_FILE and $DENY_FILE in /usr/local/etc/namazu/mknmzrc) 
      target files may be *.html, *.txt, *.tex, *.pdf, mails in MH format.
+  </li>
 </ul>
 
 
@@ -600,7 +622,7 @@ filters</a> in Namazu manual.
 <dl>
 <dt>Mails in MH format
   <dd>run mknmz <br>
-<code class=command>% mknmz ~/Mail/foobar</code>
+<code class="command">% mknmz ~/Mail/foobar</code>
 
 <dt><a href="http://www.mhonarc.org/">MHonArc</a>
   <dd>Namazu will do specific processing for MHonArc HTML.
@@ -624,7 +646,7 @@ time.
 
     Loaded rcfile: /home/foobar/.mknmzrc
     System: linux
-    Namazu: 2.0.13
+    Namazu: 2.0.14
     Perl: 5.00503
     File-MMagic: 1.20
     NKF: module_nkf
@@ -766,14 +788,17 @@ Just introduce the advanced usage that developers have in mind.
 
 <li>
 Specify document files under one or several directory(ies) in a computer,
+</li>
 
 <li>
 Find all words appeared in files, record index of which word
 is found in which file.
+</li>
  
 <li>
 Compare the users' search expression with the above words,
 and display the files that the word is found.
+</li>
 
 <li>
 In this example, the word is specified not in part but in
@@ -782,16 +807,18 @@ If you wish to include "system", you can use "*", in our
 case, "sys*", "*sys*".  Note that "sys*" stands for strings
 beginning with "sys", "*sys*" stands for strings "sys" is
 included, and "*sys" stands for strings ending with "sys".
+</li>
 
 <li>
 The index created in this way can be used in command-line or
 by cgi-bin executable HTTP server by Web browser.
+</li>
 </ul>
 
 <h2><a name="can-not-do">What you cannot do with Namazu</a></h2>
 <ul>
-<li>Search files in other machines.
-<li>Use for a HTTP server that has 1,000,000 hits per day.
+<li>Search files in other machines.</li>
+<li>Use for a HTTP server that has 1,000,000 hits per day.</li>
 </ul>
 
 <h2><a name="others">Others</a></h2>
@@ -808,8 +835,8 @@ options.
 <dd>
 mew works in combination with namazu; the features such as 
 <ul> 
-<li> invoke mknmz to create necessary index
-<li> use search result to create virtual folder
+<li> invoke mknmz to create necessary index</li>
+<li> use search result to create virtual folder</li>
 </ul> 
 are coded in contrib/mew-nmz.el, and you can find further information in contrib/00readme-namazu.jis </dl>
 
@@ -823,7 +850,7 @@ are coded in contrib/mew-nmz.el, and you can find further information in contrib
 <dd>Japanese morphological analyzer. Namazu uses this as a segmentation tool. 
 
 <dt>
-<a href="http://cl.aist-nara.ac.jp/~taku-ku/software/mecab/">MeCab</a>
+<a href="http://chasen.org/~taku/software/mecab/">MeCab</a>
 <dd>MeCab is yet another part-of-speech and morphological analyzer which developed based on ChaSen.
 Mr. Kudo is developing from the full scratch, independently of ChaSen.
 Although analysis accuracy does not change with ChaSen, it operates at high-speed than ChaSen.
@@ -937,10 +964,10 @@ modules will be used.
 <a href="http://www.namazu.org/">Namazu Homepage</a>
 </p>
 <div class="copyright">
-Copyright (C) 2000-2004 Namazu Project. All rights reserved.
+Copyright (C) 2000-2005 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: tutorial.html,v 1.21 2005-11-06 15:51:27 opengl2772 Exp $
+$Id: tutorial.html,v 1.22 2005-11-25 08:37:30 opengl2772 Exp $
 </div>
 <address>
 developers@namazu.org

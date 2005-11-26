@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: pltests.pl.in,v 1.4 2004-10-19 19:36:27 opengl2772 Exp $
+# $Id: pltests.pl.in,v 1.5 2005-11-26 16:37:33 opengl2772 Exp $
 # Copyright (C) 2004 Tadamasa Teranishi
 #               2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -100,11 +100,13 @@ sub putline($$;$) {
     my ($file, $msg, $args) = @_;
     my @args = @{$args} if (defined $args);
 
-    if (!open(OUT, ">>$file")) {
+    my $fh = new IO::File ">>$file";
+    
+    if (!(defined $fh)) {
         warn "Can not open file. : $file";
         return '';
     }
-    my $oldfh = select(OUT); $| = 1; select($oldfh);
+    $fh->autoflush(1);
 
     if (defined $args) {
         for my $arg (@args) {
@@ -132,18 +134,18 @@ sub putline($$;$) {
                     }
                     $ENV{'COMSPEC'} = $comspec;
                 }
-                @args = ($comspec, "/c", @args);
+                @args = ($comspec, "/d", "/x", "/c", @args);
             }
         }
-        print OUT "$msg";
+        print $fh "$msg";
         for my $arg (@args) {
-            print OUT "$arg ";
+            print $fh "$arg ";
         }
-        print OUT "\n";
+        print $fh "\n";
     } else {
-        print OUT "$msg\n";
+        print $fh "$msg\n";
     }
-    close(OUT);
+    $fh->close();
 
     return 1;
 }

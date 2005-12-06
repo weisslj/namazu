@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: html.pl,v 1.48 2005-12-06 19:33:19 opengl2772 Exp $
+# $Id: html.pl,v 1.49 2005-12-06 19:52:17 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2005 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -515,7 +515,7 @@ sub remove_html_elements ($) {
 # Decode a numberd entity. Exclude an invalid number.
 sub decode_numbered_entity ($) {
     my ($num) = @_;
-    /* FIXME: very ad hoc. (ISO-8859-1) */
+    # FIXME: very ad hoc. (ISO-8859-1)
     return ""
         if (($num >= 0 && $num <= 31) || ($num >= 127 && $num <= 159) ||
         ($num >= 256));

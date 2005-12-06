@@ -2,6 +2,8 @@
 
 	* po/{POTFILES.in, *.po, namazu.pot}: Update messages.
 
+	* scripts/mknmz.pl.in (muda): Add $conf::MECAB, $conf::DENY_DDN.
+
 2005-11-27  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* pltests/pltests.pl.in: The execution of the AutoRun command is 
@@ -9775,4 +9777,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1393 2005-12-06 13:38:36 opengl2772 Exp $
+$Id: ChangeLog,v 1.1394 2005-12-06 13:47:40 opengl2772 Exp $

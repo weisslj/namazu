@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.168 2005-11-25 06:00:02 opengl2772 Exp $
+# $Id: mknmz.in,v 1.169 2005-12-06 13:47:41 opengl2772 Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2005 Namazu Project All rights reserved.
@@ -2529,6 +2529,8 @@ muda($conf::ON_MEMORY_MAX,
      $var::Opt{'noencodeurl'}, $conf::HTML_SUFFIX,
      $conf::META_TAGS, $var::USE_NKF_MODULE,
      $conf::ADDRESS, $var::MAILING_ADDRESS,
+     $conf::MECAB,
+     $conf::DENY_DDN,
      $var::SupportedScheme, $var::RECURSIVE_SCHEME,
      $var::SupportedArchive, $var::RECURSIVE_ARCHIVE,
      );

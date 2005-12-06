@@ -1,3 +1,8 @@
+2005-12-07  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+	* filter/gnumeric.pl(decode_numbered_entity): The decipherment does
+	the multi byte only to a Japanese environment. 
+
 2005-12-06  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* po/{POTFILES.in, *.po, namazu.pot}: Update messages.
@@ -9777,4 +9782,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1394 2005-12-06 13:47:40 opengl2772 Exp $
+$Id: ChangeLog,v 1.1395 2005-12-06 19:22:41 opengl2772 Exp $

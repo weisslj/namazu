@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: gnumeric.pl,v 1.2 2004-03-10 17:55:23 opengl2772 Exp $
+# $Id: gnumeric.pl,v 1.3 2005-12-06 19:22:42 opengl2772 Exp $
 # Copyright (C) 2004 Yukio USUDA 
 #               2004 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -154,9 +154,18 @@ sub get_keywords ($){
 # Decode a numberd entity. Exclude an invalid number.
 sub decode_numbered_entity ($) {
     my ($num) = @_;
-    return ""
-        if $num >= 0 && $num <= 8 ||  $num >= 11 && $num <= 31 || $num >=127;
-    sprintf ("%c",$num);
+
+    if ($num <= 127) {
+        return ""
+            if (($num >= 0 && $num <= 8) || ($num >= 11 && $num <= 31) ||
+            $num == 127);
+    } else {
+        return "" if (!util::islang('ja'));
+        # gnumeric use numberd entity for multibyte chars.
+        # Japanese is EUC-JP.
+        return "" if ($num < 0xa1 || $num > 0xfe);
+    }
+    chr($num);
 }
 
 # Decode an entity. Ignore characters of right half of ISO-8859-1.
@@ -167,9 +176,7 @@ sub decode_entity ($) {
 
     return unless defined($$text);
 
-    # gnumeric use numberd entity for multibyte chars.
-    $$text =~ s/&#(\d+);/chr($1)/ge;
-    # $$text =~ s/&#(\d{2,3})[;\s]/decode_numbered_entity($1)/ge;
+    $$text =~ s/&#(\d+);/decode_numbered_entity($1)/ge;
     $$text =~ s/&#x([\da-f]+)[;\s]/decode_numbered_entity(hex($1))/gei;
     $$text =~ s/&quot[;\s]/\"/g; #"
     $$text =~ s/&apos[;\s]/\'/g; #"

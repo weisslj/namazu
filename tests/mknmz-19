@@ -6,6 +6,13 @@ LOG=`pwd`/test-log
 TARGET=$srcdir/data/decodebase64
 echo '  *** starting ' $0 >>$LOG
 
+perl -e 'use MIME::Base64 ();' 2> /dev/null
+if [ $? != "0" ]; then
+     echo "Skipping because perl module not exist." >> $LOG
+     echo "SKIP:" $0 >&2
+     exit 77
+fi
+
 if test ! -d idx22; then
     mkdir idx22
 else

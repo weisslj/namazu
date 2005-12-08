@@ -5,6 +5,13 @@
 LOG=`pwd`/test-log
 echo '  *** starting ' $0 >>$LOG
 
+perl -e 'use MIME::Base64 ();' 2> /dev/null
+if [ $? != "0" ]; then
+     echo "Skipping because perl module not exist." >> $LOG
+     echo "SKIP:" $0 >&2
+     exit 77
+fi
+
 # 1st parts is "Content-Type: text/plain;" and contain 'baz'.
 # 2nd parts is "Content-Type: aplication/x-gzip;" and gziped file contain 'foo'.
 # 3rd parts is "Content-Type: aplication/x-gzip;" and gziped file contain 'bar'.

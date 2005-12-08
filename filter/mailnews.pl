@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mailnews.pl,v 1.42 2005-09-17 14:38:57 usu Exp $
+# $Id: mailnews.pl,v 1.43 2005-12-08 08:40:00 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu ,
 #               2001,2003-2005 Namazu Project All rights reserved.
@@ -120,7 +120,8 @@ sub mailnews_filter ($$$) {
 	    my $weight = $conf::Weight{'html'}->{'title'};
 	    $$weighted_str .= "\x7f$weight\x7f$line\x7f/$weight\x7f\n";
         } elsif ($line =~ s/^content-type:\s*//i) {
-            if ($line =~ /multipart.*boundary="(.*?)"/i){
+            if ($line =~ /multipart.*boundary="(.*?)"/si ||
+            $line =~ /multipart.*boundary=(.*?)(?:\s|$)/mi) {
                 $boundary = $1;
                 util::dprint("((boundary: $boundary))\n");
             } elsif ($line =~ m!message/partial;\s*(.*)!i) {
@@ -212,9 +213,9 @@ sub multipart_process ($$$$){
 		if ($contenttype =~ m!text/plain!){
 		    $$contref .= $body;
 		} elsif ($contenttype =~ m!multipart/alternative!){
-		    if ($head =~ /boundary=(.*?)/i){
+                    if ($head =~ /boundary="(.*?)"/si ||
+                    $head =~ /boundary=(.*?)(?:\s|$)/mi) {
 			my $boundary2 = $1;
-                        $boundary2 =~ s/"(.*?)"/$1/;
 			util::dprint("((boundary: $boundary2))\n");
 			$boundary2 =~ s/(\W)/\\$1/g;
 			multipart_process(\$body, $boundary2, $weighted_str, $fields);

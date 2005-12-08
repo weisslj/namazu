@@ -1,3 +1,12 @@
+2005-12-08  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+	* filter/mailnews.pl: It corresponds to the one that the value of
+	boundary is not enclosed with a double quotation. 
+
+        * po/*.po, po/namazu.pot: Update messages.
+
+        * namazu.spec.in: Update.
+
 2005-12-07  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* filter/gnumeric.pl(decode_numbered_entity): The decipherment does
@@ -9785,4 +9794,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1396 2005-12-06 19:33:18 opengl2772 Exp $
+$Id: ChangeLog,v 1.1397 2005-12-08 08:39:59 opengl2772 Exp $

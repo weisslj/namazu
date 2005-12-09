@@ -4,7 +4,7 @@
 # nmzegrep - search namazu-indexed documents for a given pattern and 
 #            print lines matching the pattern.
 # 
-# $Id: nmzegrep.in,v 1.4 2004-10-20 14:44:40 opengl2772 Exp $
+# $Id: nmzegrep.in,v 1.5 2005-12-09 12:26:16 usu Exp $
 #
 # Copyright (C) 2004 Yukio USUDA All rights reserved.
 # Copyright (C) 2004 Namazu Project All rights reserved.
@@ -60,7 +60,7 @@ my $tmpdir = "/tmp/NMZ$$";
 if ($English::OSNAME eq "MSWin32") {
     $tmpdir = "$ENV{'TMP'}/NMZ$$";
 }
-if (mkdir $tmpdir) {
+if (mkdir($tmpdir, 0700)) {
     $var::OUTPUT_DIR = $tmpdir;
 } else {
     die "unable to make temporary directory \"$tmpdir\"\n";

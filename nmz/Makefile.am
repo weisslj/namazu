@@ -1,6 +1,6 @@
 # Process this file with automake to produce Makefile.in
 #
-# $Id: Makefile.am,v 1.45 2005-12-10 02:49:11 opengl2772 Exp $
+# $Id: Makefile.am,v 1.46 2005-12-10 07:56:25 opengl2772 Exp $
 #
 
 AUTOMAKE_OPTIONS = 1.4 no-dependencies
@@ -11,7 +11,7 @@ EXTRA_DIST = alloca.c memcmp.c memmove.c memset.c strcasecmp.c strncasecmp.c \
 
 CLEAN_FILES = nmzversion.c nmz.dll nmz.def nmz.lib nmz.exp
 
-DLL_LIBADD = @LTLIBINTL@
+dll_libadd = @LTLIBINTL@
 
 DLL_OBJ_FILES = alias.o codeconv.o field.o hlist.o i18n.o \
 		idxname.o l10n-ja.o libnamazu.o nmzversion.o \
@@ -60,12 +60,12 @@ dll: nmz.dll nmz.def
 
 nmz.dll: $(DLL_OBJ_FILES)
 	$(CC) -shared -Wl,--output-def,nmz.def,--out-implib,libnmz.a \
-	-o nmz.dll $(DLL_OBJ_FILES) $(DLL_LIBADD) $(LIBS)
+	-o nmz.dll $(DLL_OBJ_FILES) $(dll_libadd) $(LIBS)
 	strip nmz.dll
 
 nmz.def: $(DLL_OBJ_FILES)
 	$(CC) -shared -Wl,--output-def,nmz.def,--out-implib,libnmz.a \
-	-o nmz.dll $(DLL_OBJ_FILES) $(DLL_LIBADD) $(LIBS)
+	-o nmz.dll $(DLL_OBJ_FILES) $(dll_libadd) $(LIBS)
 	strip nmz.dll
 
 # Win32: MSVC import libirary (need lib.exe)

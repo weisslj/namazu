@@ -1,6 +1,6 @@
 # Process this file with automake to produce Makefile.in
 #
-# $Id: Makefile.am,v 1.44 2005-11-22 16:55:37 opengl2772 Exp $
+# $Id: Makefile.am,v 1.45 2005-12-10 02:49:11 opengl2772 Exp $
 #
 
 AUTOMAKE_OPTIONS = 1.4 no-dependencies
@@ -10,6 +10,8 @@ EXTRA_DIST = alloca.c memcmp.c memmove.c memset.c strcasecmp.c strncasecmp.c \
 	     nmzversion.c.in
 
 CLEAN_FILES = nmzversion.c nmz.dll nmz.def nmz.lib nmz.exp
+
+DLL_LIBADD = @LTLIBINTL@
 
 DLL_OBJ_FILES = alias.o codeconv.o field.o hlist.o i18n.o \
 		idxname.o l10n-ja.o libnamazu.o nmzversion.o \
@@ -42,7 +44,7 @@ libnmz_la_SOURCES = alias.c alias.h codeconv.c codeconv.h \
 	var.c var.h wakati.c wakati.h score.c score.h nmzversion.c
 
 libnmz_la_DEPENDENCIES = @NMZ_LIBOBJS@
-libnmz_la_LIBADD = @NMZ_LIBOBJS@
+libnmz_la_LIBADD = @LTLIBINTL@
 libnmz_la_LDFLAGS = -version-info $(LTVERSION)
 
 nmzversion.c: nmzversion.c.in
@@ -58,12 +60,12 @@ dll: nmz.dll nmz.def
 
 nmz.dll: $(DLL_OBJ_FILES)
 	$(CC) -shared -Wl,--output-def,nmz.def,--out-implib,libnmz.a \
-	-o nmz.dll $(DLL_OBJ_FILES)
+	-o nmz.dll $(DLL_OBJ_FILES) $(DLL_LIBADD) $(LIBS)
 	strip nmz.dll
 
 nmz.def: $(DLL_OBJ_FILES)
 	$(CC) -shared -Wl,--output-def,nmz.def,--out-implib,libnmz.a \
-	-o nmz.dll $(DLL_OBJ_FILES)
+	-o nmz.dll $(DLL_OBJ_FILES) $(DLL_LIBADD) $(LIBS)
 	strip nmz.dll
 
 # Win32: MSVC import libirary (need lib.exe)

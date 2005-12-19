@@ -1,3 +1,7 @@
+2005-12-19  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+	* pltests/*: Added chasen-[1-3].pl.in, mecab-[1-3].pl.in. 
+
 2005-12-09  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* {nmz, src}/Makefile.am: The order of linking libraries is changed. 
@@ -9807,4 +9811,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1400 2005-12-10 02:49:10 opengl2772 Exp $
+$Id: ChangeLog,v 1.1401 2005-12-19 09:58:09 opengl2772 Exp $

@@ -1,6 +1,6 @@
 #!/usr/local/bin/perl -w
 #
-# $Id: towin.pl,v 1.1 2004-09-30 12:34:55 opengl2772 Exp $
+# $Id: towin.pl,v 1.2 2005-12-19 09:58:36 opengl2772 Exp $
 # Copyright (C) 2004 Tadamasa Teranishi
 #               2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -43,6 +43,8 @@ my @TESTS = (
     'namazu-cgi-3.pl', 'namazu-cgi-4.pl', 'namazu-cgi-5.pl',
     'namazu-cgi-7.pl', 'namazu-cgi-8.pl',
     'namazu-cgi-9.pl', 'namazu-cgi-10.pl',
+    'chasen-1.pl', 'chasen-2.pl', 'chasen-3.pl',
+    'mecab-1.pl', 'mecab-2.pl', 'mecab-3.pl',
     'pltests.pl',
 );
 

@@ -3,7 +3,9 @@
 AUTOMAKE_OPTIONS = 1.4 no-dependencies
 
 LOG = test-log
-INDEX = idx1 idx2 idx3 idx4 idx5 idx6 idx7 idx8 idx9 idx10 idx12 idx13 idx15 idx17 idx18 idx19 idx20 idx21
+INDEX = idx1 idx2 idx3 idx4 idx5 idx6 idx7 idx8 idx9 idx10 idx12 idx13 idx15 idx17 idx18 idx19 idx20 idx21 \
+	idx101 idx102 \
+	idx111 idx112
 TMPDATA = tmp-data
 PROGRAM = alltests.pl pltests.pl \
 	mknmz-1.pl mknmz-2.pl mknmz-4.pl \
@@ -19,7 +21,9 @@ PROGRAM = alltests.pl pltests.pl \
 	namazu-cgi-3.pl namazu-cgi-4.pl \
 	namazu-cgi-5.pl \
 	namazu-cgi-7.pl namazu-cgi-8.pl \
-	namazu-cgi-9.pl namazu-cgi-10.pl
+	namazu-cgi-9.pl namazu-cgi-10.pl \
+	chasen-1.pl chasen-2.pl chasen-3.pl \
+	mecab-1.pl mecab-2.pl mecab-3.pl
 
 EXTRA_DIST = pltests.pl.in \
 	alltests.pl.in \
@@ -37,7 +41,9 @@ EXTRA_DIST = pltests.pl.in \
 	namazu-cgi-3.pl.in namazu-cgi-4.pl.in \
 	namazu-cgi-5.pl.in \
 	namazu-cgi-7.pl.in namazu-cgi-8.pl.in \
-	namazu-cgi-9.pl.in namazu-cgi-10.pl.in
+	namazu-cgi-9.pl.in namazu-cgi-10.pl.in \
+	chasen-1.pl.in chasen-2.pl.in chasen-3.pl.in \
+	mecab-1.pl.in mecab-2.pl.in mecab-3.pl.in
 
 #CLEANFILES = $(LOG) $(INDEX) $(TMPDATA) $(PROGRAM)
 
@@ -257,6 +263,36 @@ namazu-cgi-9.pl: namazu-cgi-9.pl.in pltests.pl.in Makefile
 	chmod +x $@
 
 namazu-cgi-10.pl: namazu-cgi-10.pl.in pltests.pl.in Makefile
+	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	mv $@.tmp $@
+	chmod +x $@
+
+chasen-1.pl: chasen-1.pl.in pltests.pl.in Makefile
+	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	mv $@.tmp $@
+	chmod +x $@
+
+chasen-2.pl: chasen-2.pl.in pltests.pl.in Makefile
+	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	mv $@.tmp $@
+	chmod +x $@
+
+chasen-3.pl: chasen-3.pl.in pltests.pl.in Makefile
+	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	mv $@.tmp $@
+	chmod +x $@
+
+mecab-1.pl: mecab-1.pl.in pltests.pl.in Makefile
+	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	mv $@.tmp $@
+	chmod +x $@
+
+mecab-2.pl: mecab-2.pl.in pltests.pl.in Makefile
+	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	mv $@.tmp $@
+	chmod +x $@
+
+mecab-3.pl: mecab-3.pl.in pltests.pl.in Makefile
 	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
 	mv $@.tmp $@
 	chmod +x $@

@@ -1,6 +1,6 @@
 #!%PERL% -w
 #
-# $Id: idxdiff-3.pl.in,v 1.1 2004-09-30 12:34:54 opengl2772 Exp $
+# $Id: idxdiff-3.pl.in,v 1.2 2005-12-19 12:35:53 opengl2772 Exp $
 # Copyright (C) 2004 Tadamasa Teranishi
 #               2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -46,7 +46,7 @@ pltests::putline($LOG, "  *** starting $0");
 
 my @targets = ();
 for my $file (<$INDEX/NMZ.*>) {
-    if ($file !~ /NMZ\.(?:log|r|slog|status|err|t|field\.date)$/s) {
+    if ($file !~ /NMZ\.(?:log|r|slog|status|err|t|field\.date|field\.utc)$/s) {
         push @targets, basename($file);
     }
 }

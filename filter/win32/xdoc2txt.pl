@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: xdoc2txt.pl,v 1.2 2005-11-03 04:53:50 usu Exp $
+# $Id: xdoc2txt.pl,v 1.3 2005-12-25 22:53:30 usu Exp $
 # Copyright (C) 2004 HANAI,Akira All rights reserved.
 # Copyright (C) 2005 Yukio USUDA All rights reserved.
 # Copyright (C) 2005 Namazu Project All rights reserved.
@@ -137,11 +137,6 @@ sub filter ($$$$$) {
             },
         );
         my $size = util::filesize($fh_out);
-        if ($size == 0) {
-            util::fclose($fh_out);
-            unlink $tmpfile;
-            return "Unable to convert file ($wordconvpath error occurred).";
-        }
         if ($size > $conf::FILE_SIZE_MAX) {
             util::fclose($fh_out);
             unlink $tmpfile;

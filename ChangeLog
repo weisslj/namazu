@@ -1,3 +1,12 @@
+2005-12-28  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+	* nmz/search.c: Trouble from which the search type of the 
+        regular expression is converted into the small letter is corrected. 
+
+	* nmz/search.c: When the search type of the phrase search 
+	is written with a space between words, the trouble misidentified
+	to the regular expression and other retrieval types is corrected. 
+
 2005-12-26  Yukio USUDA <usu@namazu.org>
 
 	* filter/win32/xdoc2txt.pl: Remove too strict error check.
@@ -9822,4 +9831,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1404 2005-12-25 22:53:30 usu Exp $
+$Id: ChangeLog,v 1.1405 2005-12-27 16:09:33 opengl2772 Exp $

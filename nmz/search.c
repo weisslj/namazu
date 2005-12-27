@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.104 2005-11-15 08:14:58 opengl2772 Exp $
+ * $Id: search.c,v 1.105 2005-12-27 16:09:35 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2005 Namazu Project All rights reserved.
@@ -100,10 +100,11 @@ static void close_index_files ( void );
 static void do_logging ( const char * query, int n );
 static NmzResult nmz_search_sub ( NmzResult hlist, const char *query, int n );
 static void make_fullpathname_index ( int n );
-static void remove_quotes(char *str);
-static enum nmz_stat normalize_idxnames(void);
+static void remove_quotes( char *str );
+static enum nmz_stat normalize_idxnames( void );
 static int issymbol ( int c );
-static void escape_meta_characters(char *expr, size_t bufsize);
+static void escape_meta_characters( char *expr, size_t bufsize );
+static void nmz_regex_strlower( char *str );
 
 /*
  * Show the status for debug use
@@ -1118,9 +1119,9 @@ nmz_do_searching(const char *key, NmzResult src)
 
     strncpy(tmpkey, key, BUFSIZE - 1);
 
-    nmz_debug_printf("before nmz_strlower: [%s]", tmpkey);
-    nmz_strlower(tmpkey);
-    nmz_debug_printf("after nmz_strlower:  [%s]", tmpkey);
+    nmz_debug_printf("before nmz_regex_strlower: [%s]", tmpkey);
+    nmz_regex_strlower(tmpkey);
+    nmz_debug_printf("after nmz_regex_strlower:  [%s]", tmpkey);
 
     mode = detect_search_mode(tmpkey);
     if (mode == ERROR_MODE) {
@@ -1137,7 +1138,11 @@ nmz_do_searching(const char *key, NmzResult src)
 		return val;
 	    }
 	    /* Re-examine because tmpkey is wakatied. */
-	    mode = detect_search_mode(tmpkey);
+            if (strchr(tmpkey, '\t')) {
+                mode = PHRASE_MODE;
+            } else {
+                mode = WORD_MODE;
+            }
 	}
     }
 
@@ -1184,3 +1189,25 @@ nmz_free_hitnums(struct nmz_hitnumlist *hn)
     }
 }
 
+static void nmz_regex_strlower(char *str)
+{
+    if (strlen(str) >= 2 && *str == '/' && str[strlen(str) - 1] == '/') {
+        if (nmz_is_regex_searchmode()) {
+            /* keep \W \S \D \A \Z \B \G */
+            char bak = '\0';
+
+            while (*str) {
+                if (bak != '\\') {
+                    /* Using ascii dependent lower same as mknmz.  */
+                    bak = *str = _nmz_tolower(*str);
+                } else {
+                    bak = '\0';
+                }
+                str++;
+            }
+            return;
+        }
+    }
+
+    nmz_strlower(str);
+}

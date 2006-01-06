@@ -1,3 +1,7 @@
+2006-01-07  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+	* pltests/*: Measures of exit code 256.
+
 2005-12-28  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* nmz/search.c: Trouble from which the search type of the 
@@ -9831,4 +9835,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1405 2005-12-27 16:09:33 opengl2772 Exp $
+$Id: ChangeLog,v 1.1406 2006-01-06 18:09:30 opengl2772 Exp $

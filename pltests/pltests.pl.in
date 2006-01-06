@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: pltests.pl.in,v 1.5 2005-11-26 16:37:33 opengl2772 Exp $
-# Copyright (C) 2004 Tadamasa Teranishi
-#               2004 Namazu Project All rights reserved.
+# $Id: pltests.pl.in,v 1.6 2006-01-06 18:09:32 opengl2772 Exp $
+# Copyright (C) 2004,2005 Tadamasa Teranishi
+#               2004,2005 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify

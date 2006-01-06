@@ -1,8 +1,8 @@
 #!%PERL% -w
 #
-# $Id: mknmz-14.pl.in,v 1.1 2004-09-30 12:34:55 opengl2772 Exp $
-# Copyright (C) 2004 Tadamasa Teranishi
-#               2004 Namazu Project All rights reserved.
+# $Id: mknmz-14.pl.in,v 1.2 2006-01-06 18:09:32 opengl2772 Exp $
+# Copyright (C) 2004-2006 Tadamasa Teranishi
+#               2004-2006 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -52,5 +52,6 @@ if (-d "$INDEX") {
 @cmd = ("$MKNMZ", "-O", "$INDEX", "$TARGET");
 pltests::putline($LOG, "  ", \@cmd);
 my $status = pltests::logsyscmd($LOG, \@cmd);
-
-exit $status;
+ 
+exit 101 if ($status != 0);
+exit 0;

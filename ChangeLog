@@ -6,6 +6,8 @@
 	except EUC-JP the character-code of the dictionary of kakasi,
 	chasen, and mecab.
 
+	* pltests/*: gettext 0.41.2 for Mac.
+
 2005-12-28  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* nmz/search.c: Trouble from which the search type of the 
@@ -9839,4 +9841,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1407 2006-01-07 01:30:46 opengl2772 Exp $
+$Id: ChangeLog,v 1.1408 2006-01-07 09:49:10 opengl2772 Exp $

@@ -1,8 +1,8 @@
 #!%PERL% -w
 #
-# $Id: namazu-cgi-9.pl.in,v 1.1 2004-09-30 12:34:55 opengl2772 Exp $
-# Copyright (C) 2004 Yukio USUDA
-#               2004 Namazu Project All rights reserved.
+# $Id: namazu-cgi-9.pl.in,v 1.2 2006-01-07 09:49:11 opengl2772 Exp $
+# Copyright (C) 2004-2006 Yukio USUDA
+#               2004-2006 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -44,8 +44,8 @@ pltests::putline($RC, "Index $INDEX");
 pltests::duprcs($RC);
 
 # To make messages English
-$ENV{'LANG'} = "C";
-delete $ENV{'LANGUAGE'};
+$ENV{'LANG'} = 'C';
+$ENV{'LANGUAGE'} = 'C';
 delete $ENV{'LC_ALL'};
 delete $ENV{'LC_MESSAGES'};
 delete $ENV{'LC_CTYPE'};

@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.168 2005-10-08 11:40:51 usu Exp $
+dnl $Id: configure.in,v 1.169 2006-01-09 15:13:19 opengl2772 Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -412,7 +412,13 @@ if test "$enable_file_mmagic_checking" = "yes"; then
     Or you can install File-MMagic to your home directory by the following way:
 
       % cd File-MMagic
+
+      ExtUtils::MakeMaker older
       % perl Makefile.PL LIB=$HOME/lib INSTALLMAN3DIR=$HOME/man
+
+      ExtUtils::MakeMaker newer
+      % perl Makefile.PL LIB=$HOME/lib INSTALLSITEMAN3DIR=$HOME/man
+
       % make
       % make install
 

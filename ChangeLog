@@ -6,6 +6,8 @@
 
 	* configure.in: Update COPYRIGHT.
 
+	* man: Update messages.
+
 2006-01-07  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* pltests/*: Measures of exit code 256.
@@ -9849,4 +9851,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1410 2006-01-09 17:59:06 opengl2772 Exp $
+$Id: ChangeLog,v 1.1411 2006-01-09 18:18:12 opengl2772 Exp $

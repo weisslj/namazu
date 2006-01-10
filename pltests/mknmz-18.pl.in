@@ -1,8 +1,8 @@
 #!%PERL% -w
 #
-# $Id: mknmz-18.pl.in,v 1.1 2004-09-30 12:34:55 opengl2772 Exp $
-# Copyright (C) 2004 Yukio USUDA
-#               2004 Namazu Project All rights reserved.
+# $Id: mknmz-18.pl.in,v 1.2 2006-01-10 19:30:43 opengl2772 Exp $
+# Copyright (C) 2004-2006 Yukio USUDA
+#               2004-2006 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -32,7 +32,7 @@ use strict;
 require Cwd;
 require 'pltests.pl';
 
-my $cwd = Cwd::getcwd();
+my $cwd = Cwd::cwd();
 my $LOG = "$cwd/test-log";
 my $TARGET = pltests::selectdata();
 my $INDEX = "$cwd/idx21";
@@ -54,14 +54,14 @@ pltests::putline($LOG, "  *** starting $0");
 if (-d "$INDEX") {
     unlink(<$INDEX/NMZ.*>);
 } else {
-    mkdir("$INDEX");
+    mkdir("$INDEX", 0755);
 }
 
 # create temporary data
 if (-d "$TMPDATA") {
     unlink(<$TMPDATA/*>);
 } else {
-    mkdir("$TMPDATA");
+    mkdir("$TMPDATA", 0755);
 }
 pltests::putline("$TMPDATA/tmp1.txt", "namazu 1");
 pltests::putline("$TMPDATA/tmp2.txt", "namazu 2");

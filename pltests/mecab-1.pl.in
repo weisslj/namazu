@@ -1,6 +1,6 @@
 #!%PERL% -w
 #
-# $Id: mecab-1.pl.in,v 1.3 2006-01-07 01:30:48 opengl2772 Exp $
+# $Id: mecab-1.pl.in,v 1.4 2006-01-10 19:30:43 opengl2772 Exp $
 # Copyright (C) 2005-2006 Tadamasa Teranishi
 #               2005-2006 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -32,7 +32,7 @@ use strict;
 require Cwd;
 require 'pltests.pl';
 
-my $cwd = Cwd::getcwd();
+my $cwd = Cwd::cwd();
 my $LOG = "$cwd/test-log";
 my $TARGET = pltests::selectdata() . "/html.html";
 my $INDEX = "$cwd/idx111";
@@ -43,7 +43,7 @@ my @cmd;
 if (-d "$INDEX") {
     unlink(<$INDEX/NMZ.*>);
 } else {
-    mkdir("$INDEX");
+    mkdir("$INDEX", 0755);
 }
 
 #

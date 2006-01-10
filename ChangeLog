@@ -1,3 +1,9 @@
+2006-01-11  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+	* pltests/*: Cwd::getcwd() was changed to Cwd::cwd().
+
+	* pltests/*: The second argument of mkdir() is added. 
+
 2006-01-10  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* configure.in: Because the version that ExtUtils::MakeMaker
@@ -9851,4 +9857,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1411 2006-01-09 18:18:12 opengl2772 Exp $
+$Id: ChangeLog,v 1.1412 2006-01-10 19:30:41 opengl2772 Exp $

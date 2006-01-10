@@ -1,6 +1,6 @@
 #!%PERL% -w
 #
-# $Id: mknmz-7.pl.in,v 1.2 2006-01-06 18:09:32 opengl2772 Exp $
+# $Id: mknmz-7.pl.in,v 1.3 2006-01-10 19:30:43 opengl2772 Exp $
 # Copyright (C) 2004-2006 Tadamasa Teranishi
 #               2004-2006 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -32,7 +32,7 @@ use strict;
 require Cwd;
 require 'pltests.pl';
 
-my $cwd = Cwd::getcwd();
+my $cwd = Cwd::cwd();
 my $LOG = "$cwd/test-log";
 my $TARGET = "$cwd/../tests/data/html-split";
 my $INDEX = "$cwd/idx9";
@@ -45,7 +45,7 @@ pltests::putline($LOG, "  *** starting $0");
 if (-d "$INDEX") {
     unlink(<$INDEX/NMZ.*>);
 } else {
-    mkdir("$INDEX");
+    mkdir("$INDEX", 0755);
 }
 
 # Indexing with --html-split option.

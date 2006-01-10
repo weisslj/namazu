@@ -1,6 +1,6 @@
 #!%PERL% -w
 #
-# $Id: namazu-cgi-4.pl.in,v 1.2 2006-01-07 09:49:11 opengl2772 Exp $
+# $Id: namazu-cgi-4.pl.in,v 1.3 2006-01-10 19:30:43 opengl2772 Exp $
 # Copyright (C) 2004-2006 Yukio USUDA
 #               2004-2006 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -31,7 +31,7 @@ use strict;
 require Cwd;
 require 'pltests.pl';
 
-my $cwd = Cwd::getcwd();
+my $cwd = Cwd::cwd();
 my $LOG = "$cwd/test-log";
 my $INDEX = "$cwd/idx1";
 my $NAMAZU = pltests::binpath('namazu.cgi');

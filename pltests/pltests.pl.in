@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: pltests.pl.in,v 1.6 2006-01-06 18:09:32 opengl2772 Exp $
-# Copyright (C) 2004,2005 Tadamasa Teranishi
-#               2004,2005 Namazu Project All rights reserved.
+# $Id: pltests.pl.in,v 1.7 2006-01-10 19:30:43 opengl2772 Exp $
+# Copyright (C) 2004-2006 Tadamasa Teranishi
+#               2004-2006 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -41,7 +41,7 @@ if ($English::OSNAME eq "MSWin32" || $English::OSNAME eq "os2") {
 }
 
 sub selectdata() {
-    my $cwd = Cwd::getcwd();
+    my $cwd = Cwd::cwd();
     my $base = "$cwd/../tests/data";
     my @lang = ("LC_ALL", "LC_CTYPE", "LANG");
   

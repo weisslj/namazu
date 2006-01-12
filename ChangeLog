@@ -2,6 +2,9 @@
 
 	* pl/wakati.pl: For MeCab-perl-0.90rc6.
 
+	* pl/{chasen, kakasi}-2.pl: It is corrected that VERSION of 
+	the module is output. 
+
 2006-01-11  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* pltests/*: Cwd::getcwd() was changed to Cwd::cwd().
@@ -9864,4 +9867,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1414 2006-01-12 17:42:02 opengl2772 Exp $
+$Id: ChangeLog,v 1.1415 2006-01-12 18:18:57 opengl2772 Exp $

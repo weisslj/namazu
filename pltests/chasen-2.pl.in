@@ -1,6 +1,6 @@
 #!%PERL% -w
 #
-# $Id: chasen-2.pl.in,v 1.4 2006-01-10 19:30:43 opengl2772 Exp $
+# $Id: chasen-2.pl.in,v 1.5 2006-01-12 18:18:57 opengl2772 Exp $
 # Copyright (C) 2005-2006 Tadamasa Teranishi
 #               2005-2006 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -54,6 +54,8 @@ eval 'require Text::ChaSen;' || exit 77;
 my $CHASEN = "module_chasen";
 
 pltests::putline($LOG, "  *** starting $0");
+
+pltests::putline($LOG, "Text::ChaSen : $Text::ChaSen::VERSION");
 
 my $RC = "$cwd/tmp.mknmzrc-chasen-2";
 if (-f $RC) {

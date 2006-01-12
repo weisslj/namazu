@@ -1,6 +1,6 @@
 #!%PERL% -w
 #
-# $Id: kakasi-2.pl.in,v 1.4 2006-01-10 19:30:43 opengl2772 Exp $
+# $Id: kakasi-2.pl.in,v 1.5 2006-01-12 18:18:57 opengl2772 Exp $
 # Copyright (C) 2005-2006 Tadamasa Teranishi
 #               2005-2006 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -55,6 +55,8 @@ my $KAKASI = "module_kakasi";
 exit 77 if (!defined $KAKASI);
 
 pltests::putline($LOG, "  *** starting $0");
+
+pltests::putline($LOG, "Text::Kakasi : $Text::Kakasi::VERSION");
 
 my $RC = "$cwd/tmp.mknmzrc-kakasi-2";
 if (-f $RC) {

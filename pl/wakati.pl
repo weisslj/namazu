@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: wakati.pl,v 1.21 2005-10-05 18:35:22 opengl2772 Exp $
+# $Id: wakati.pl,v 1.22 2006-01-12 17:42:03 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2005 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -88,13 +88,14 @@ sub wakatize_japanese_sub ($) {
 	    if (!defined $t) {
 		require MeCab;
 		import MeCab;
-		$t = new MeCab::Tagger([qw(mecab -O wakati)]);
+                eval '$t = new MeCab::Tagger("-Owakati");' or
+                    $t = new MeCab::Tagger([qw(mecab -O wakati)]);
 	    } 
 	    END {
 		$t->DESTROY() if defined $t;
 	    }; 
             $str = $$content;
-	    $str =~ s/([\x80-\xff]+)/{my $text = $t->parse($1); " $text ";}/ge;
+	    $str =~ s/([\x80-\xff]+)/{my $s = $1; my $text = $t->parse($s); " $text ";}/ge;
         } elsif ($module eq "builtin") {
             $str = builtinwakati::wakati($content);
 	} else {

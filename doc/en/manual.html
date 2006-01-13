@@ -200,7 +200,8 @@ configuration files in the order of
 
 <ol>
 <li><code>$(sysconfdir)/$(PACKAGE)/mknmzrc</code><br>
-Usually, /usr/local/etc/namazu/mknmzrc</li>
+Usually, /usr/local/etc/namazu/mknmzrc
+</li>
 <li>~/.mknmzrc</li>
 <li>file which is specified by -f or --config=FILE --option.</li>
 </ol>
@@ -235,177 +236,179 @@ filters are described below.
 </p>
 
 <dl>
-<dt>apachecache.pl
-<dd>Handles an Apache's cache file.
-<dd>Requirement: None
-<dd>Note: --replace=apachecache::replacecode option replaces to original URI 
+<dt>apachecache.pl</dt>
+<dd>Handles an Apache's cache file.</dd>
+<dd>Requirement: None</dd>
+<dd>Note: --replace=apachecache::replacecode option replaces to original URI</dd>
 
-<dt>applefile.pl
-<dd>Handles an AppleSingle file.
-<dd>Requirement: None
+<dt>applefile.pl</dt>
+<dd>Handles an AppleSingle file.</dd>
+<dd>Requirement: None</dd>
 
-<dt>bzip2.pl
-<dd>Handles a bzip2-ed file
+<dt>bzip2.pl</dt>
+<dd>Handles a bzip2-ed file.</dd>
 <dd>Requirement: <a
-href="http://sources.redhat.com/bzip2/">bzip2</a> command.
+href="http://sources.redhat.com/bzip2/">bzip2</a> command.</dd>
 
-<dt>compress.pl
-<dd>Handles a compress-ed file.
-<dd>Requirement: compress command.
+<dt>compress.pl</dt>
+<dd>Handles a compress-ed file.</dd>
+<dd>Requirement: compress command.</dd>
 
-<dt>deb.pl
-<dd>Handles a deb package.
-<dd>Requirement: dpkg command.
+<dt>deb.pl</dt>
+<dd>Handles a deb package.</dd>
+<dd>Requirement: dpkg command.</dd>
 
-<dt>dvi.pl
-<dd>Handles a dvi file.
-<dd>Requirement: dvi2tty
+<dt>dvi.pl</dt>
+<dd>Handles a dvi file.</dd>
+<dd>Requirement: dvi2tty</dd>
 <dd>Suggested software: nkf
-(only for Japanese documents)
+(only for Japanese documents)</dd>
 
-<dt>excel.pl
-<dd>Handles a Microsoft Excel file.
+<dt>excel.pl</dt>
+<dd>Handles a Microsoft Excel file.</dd>
 <dd>Requirement: <a href="http://chicago.sourceforge.net/xlhtml/">xlhtml</a>,
-(wvSummary, a part of <a href="http://wvWare.sourceforge.net/">wvWare</a>)
+(wvSummary, a part of <a href="http://wvWare.sourceforge.net/">wvWare</a>)</dd>
 <!--
-<dd>Alternate command: <a href="http://www.dehenken.co.jp/products/doccat/">doccat</a>
+<dd>Alternate command: <a href="http://www.dehenken.co.jp/products/doccat/">doccat</a></dd>
 -->
 <dd>Suggested software:<a href="http://www.ff.iij4u.or.jp/~nrt/lv/">lv</a>
-(only for Japanese documents)
+(only for Japanese documents)</dd>
 
-<dt>gnumeric.pl
-<dd>Handles a Gnumeric file.
+<dt>gnumeric.pl</dt>
+<dd>Handles a Gnumeric file.</dd>
 <dd>Requirement: <a href="http://www.gzip.org/">gzip</a>
-command or Compress::Zlib perl module.
+command or Compress::Zlib perl module.</dd>
 
-<dt>gzip.pl
-<dd>Handles a gzipped file
+<dt>gzip.pl</dt>
+<dd>Handles a gzipped file.</dd>
 <dd>Requirement: <a href="http://www.gzip.org/">gzip</a>
-command or Compress::Zlib perl module.
+command or Compress::Zlib perl module.</dd>
 
-<dt>hdml.pl
-<dd>Handles a HDML file.
-<dd>Requirement: None
+<dt>hdml.pl</dt>
+<dd>Handles a HDML file.</dd>
+<dd>Requirement: None</dd>
 
-<dt>hnf.pl
+<dt>hnf.pl</dt>
 <dd>Handles a file of <a href="http://www.h14m.org/">Hyper NIKKI System
-Project</a>.
+Project</a>.</dd>
 <dd>Requirement: the hnf filter is special:  it requires namazu_for_hns
-of <a href="http://www.h14m.org/">Hyper NIKKI System Project</a>.
+of <a href="http://www.h14m.org/">Hyper NIKKI System Project</a>.</dd>
 
-<dt>html.pl
-<dd>Handles a HTML file.
-<dd>Requirement: None
+<dt>html.pl</dt>
+<dd>Handles a HTML file.</dd>
+<dd>Requirement: None</dd>
 
-<dt>koffice.pl
-<dd>Handles a KOffice KWord, KSpread, KPresenter, Kivio file.
+<dt>koffice.pl</dt>
+<dd>Handles a KOffice KWord, KSpread, KPresenter, Kivio file.</dd>
 <dd>Requirement: <a
 href="http://www.info-zip.org/pub/infozip/UnZip.html">unzip</a>,
-<a href="http://www.ff.iij4u.or.jp/~nrt/lv/">lv</a>(only for Japanese documents)
+<a href="http://www.ff.iij4u.or.jp/~nrt/lv/">lv</a>(only for Japanese documents)</dd>
 
-<dt>macbinary.pl
-<dd>Handles a MacBinary I,II,III file.
-<dd>Requirement: None
+<dt>macbinary.pl</dt>
+<dd>Handles a MacBinary I,II,III file.</dd>
+<dd>Requirement: None</dd>
 
-<dt>mailnews.pl
-<dd>Handles a file of Mail/News and MHTML file.
-<dd>Requirement: None
+<dt>mailnews.pl</dt>
+<dd>Handles a file of Mail/News and MHTML file.</dd>
+<dd>Requirement: None</dd>
 <dd>Note: To handle MHTML file and Attached base64 bodies,
 <a href="http://search.cpan.org/dist/MIME-Base64/">MIME::Base64 and MIME::QuotedPrint</a>
 are required.(perl5.8 contains them.)  
  --decode-base64 option is required when handling a MHTML file or
  base64-encoded bodies. 
+</dd>
 
-<dt>man.pl
-<dd>Handles a man file.
+<dt>man.pl</dt>
+<dd>Handles a man file.</dd>
 <dd>Requirement: nroff, 
-<a href="http://www.gnu.org/software/groff/groff.html">groff</a> or jgroff
-<dd>Note: To handle Japanese man, groff supporting -Tnippon is required.
+<a href="http://www.gnu.org/software/groff/groff.html">groff</a> or jgroff</dd>
+<dd>Note: To handle Japanese man, groff supporting -Tnippon is required.</dd>
 
-<dt>mhonarc.pl
-<dd>Handles a <a href="http://www.mhonarc.org/">MHonArc</a> file.
-<dd>Requirement: None
+<dt>mhonarc.pl</dt>
+<dd>Handles a <a href="http://www.mhonarc.org/">MHonArc</a> file.</dd>
+<dd>Requirement: None</dd>
 
-<dt>mp3.pl
-<dd>Handles an MP3 file's ID3 Tag
+<dt>mp3.pl</dt>
+<dd>Handles an MP3 file's ID3 Tag</dd>
 <dd>Requirement: <a
 href="http://sourceforge.net/projects/pudge/">MP3::Info perl module.</a>
-(version 1.01 or later are suggested).
+(version 1.01 or later are suggested).</dd>
 
-<dt>msword.pl
-<dd>Handles a Microsoft Word file.
-<dd>Requirement: <a href="http://wvWare.sourceforge.net/">wvWare</a>
+<dt>msword.pl</dt>
+<dd>Handles a Microsoft Word file.</dd>
+<dd>Requirement: <a href="http://wvWare.sourceforge.net/">wvWare</a></dd>
 <!--
-<dd>Alternate command: <a href="http://www.dehenken.co.jp/products/doccat/">doccat</a>
+<dd>Alternate command: <a href="http://www.dehenken.co.jp/products/doccat/">doccat</a></dd>
 -->
 <dd>Suggested software:<a href="http://www.ff.iij4u.or.jp/~nrt/lv/">lv</a>
-(only for Japanese documents)
+(only for Japanese documents)</dd>
 
-<dt>ooo.pl
-<dd>Handles an OpenOffice.org Writer, Calc, Impress, Draw file.
+<dt>ooo.pl</dt>
+<dd>Handles an OpenOffice.org Writer, Calc, Impress, Draw file.</dd>
 <dd>Requirement: <a
-href="http://www.info-zip.org/pub/infozip/UnZip.html">unzip</a>
+href="http://www.info-zip.org/pub/infozip/UnZip.html">unzip</a></dd>
 <dd>Suggested software:<a href="http://www.ff.iij4u.or.jp/~nrt/lv/">lv</a>
-(only for Japanese documents)
+(only for Japanese documents)</dd>
 
-<dt>pdf.pl
-<dd>Handles a PDF file.
+<dt>pdf.pl</dt>
+<dd>Handles a PDF file.</dd>
 <dd>Requirement: pdftotext, a part of <a href="http://www.foolabs.com/xpdf/">xpdf</a>
-(version 0.91 or later are suggested).
+(version 0.91 or later are suggested).</dd>
 
-<dt>postscript.pl
-<dd>Handles a PostScript file.
-<dd>Requirement: ps2ascii
+<dt>postscript.pl</dt>
+<dd>Handles a PostScript file.</dd>
+<dd>Requirement: ps2ascii</dd>
 
-<dt>powerpoint.pl
-<dd>Handles a Microsoft PowerPoint file.
+<dt>powerpoint.pl</dt>
+<dd>Handles a Microsoft PowerPoint file.</dd>
 <dd>Requirement: pptHtml, a part of <a href="http://www.xlHtml.org/">xlHtml</a>,
-(wvSummary, a part of <a href="http://wvWare.sourceforge.net/">wvWare</a>)
+(wvSummary, a part of <a href="http://wvWare.sourceforge.net/">wvWare</a>)</dd>
 <!--
-<dd>Alternate command: <a href="http://www.dehenken.co.jp/products/doccat/">doccat</a>
+<dd>Alternate command: <a href="http://www.dehenken.co.jp/products/doccat/">doccat</a></dd>
 -->
 <dd>Suggested software:<a href="http://www.ff.iij4u.or.jp/~nrt/lv/">lv</a>
-(only for Japanese documents)
+(only for Japanese documents)</dd>
 
-<dt>rfc.pl
-<dd>Handles an RFC file.
-<dd>Requirement: None
+<dt>rfc.pl</dt>
+<dd>Handles an RFC file.</dd>
+<dd>Requirement: None</dd>
 
-<dt>rpm.pl
-<dd>Handles an RPM package.
-<dd>Requirement: <a href="http://www.rpm.org/">rpm</a>
+<dt>rpm.pl</dt>
+<dd>Handles an RPM package.</dd>
+<dd>Requirement: <a href="http://www.rpm.org/">rpm</a></dd>
 
-<dt>rtf.pl
-<dd>Handles a Microsoft Word file.
-<dd>Requirement: <a href="http://www.45.free.net/~vitus/ice/misc/rtf2html.tar.gz">rtf2html</a>
+<dt>rtf.pl</dt>
+<dd>Handles a Microsoft Word file.</dd>
+<dd>Requirement: <a href="http://www.45.free.net/~vitus/ice/misc/rtf2html.tar.gz">rtf2html</a></dd>
 
 <!--
-<dt>taro.pl
-<dd>Handle a file of Ichitaro a Japanese word processor version 9 and 10.
-<dd>Requirement: <a href="http://www.dehenken.co.jp/products/doccat/">doccat</a>
+<dt>taro.pl</dt>
+<dd>Handle a file of Ichitaro a Japanese word processor version 9 and 10.</dd>
+<dd>Requirement: <a href="http://www.dehenken.co.jp/products/doccat/">doccat</a></dd>
 -->
 
-<dt>taro56.pl
-<dd>Handles a file of Ichitaro, a Japanese word processor, versions 5 and 6.
-<dd>Requirement: None
+<dt>taro56.pl</dt>
+<dd>Handles a file of Ichitaro, a Japanese word processor, versions 5 and 6.</dd>
+<dd>Requirement: None</dd>
 
-<dt>taro7_10.pl
-<dd>Handles a file of Ichitaro, a Japanese word processor, versions 7 through 13.
+<dt>taro7_10.pl</dt>
+<dd>Handles a file of Ichitaro, a Japanese word processor, versions 7 through 13.</dd>
 <dd>Requirement: <a href="http://www.onicos.com/staff/iz/release/">unicode.pl</a>,
 <a href="http://search.cpan.org/~kwitknr/OLE-Storage_Lite-0.13/">OLE-Storage_Lite  perl module</a>,
 <a href="http://search.cpan.org/~eryq/IO-stringy-2.109/">IO-stringy perl module.</a>
+</dd>
 
-<dt>tex.pl
-<dd>Handles a TeX file.
+<dt>tex.pl</dt>
+<dd>Handles a TeX file.</dd>
 <dd>Requirement: <a
-href="http://www.cs.purdue.edu/homes/trinkle/detex/">detex</a>
+href="http://www.cs.purdue.edu/homes/trinkle/detex/">detex</a></dd>
 
-<dt>zip.pl
-<dd>Handles a Zip archive files.
+<dt>zip.pl</dt>
+<dd>Handles a Zip archive files.</dd>
 <dd>Requirement: <a
-href="http://www.info-zip.org/pub/infozip/UnZip.html">unzip</a>
+href="http://www.info-zip.org/pub/infozip/UnZip.html">unzip</a></dd>
 <dd>Alternative: Compress::Zlib perl module, 
-<a href="http://search.cpan.org/~nedkonz/Archive-Zip-1.13/">Archive::Zip perl module</a>.
+<a href="http://search.cpan.org/~nedkonz/Archive-Zip-1.13/">Archive::Zip perl module</a>.</dd>
 
 </dl>
 
@@ -415,50 +418,52 @@ The following filters are for Windows only.
 
 <dl>
 
-<dt>ichitaro456.pl
-<dd>Handles a file of Ichitaro, a Japanese word processor, versions 4, 5 and 6.
+<dt>ichitaro456.pl</dt>
+<dd>Handles a file of Ichitaro, a Japanese word processor, versions 4, 5 and 6.</dd>
 <dd>Requirement: <a href="http://www.vector.co.jp/soft/dos/writing/se013972.html">
-JSTXT</a>
-<dd>Note: JSTXT is a tool for MS-DOS.
+JSTXT</a></dd>
+<dd>Note: JSTXT is a tool for MS-DOS.</dd>
 
-<dt>oleexcel.pl
-<dd>Handles a Microsoft Excel file.
-<dd>Requirement: Microsoft Excel 97 SP1 or later, 2000, 2002(XP) or 2003
+<dt>oleexcel.pl</dt>
+<dd>Handles a Microsoft Excel file.</dd>
+<dd>Requirement: Microsoft Excel 97 SP1 or later, 2000, 2002(XP) or 2003</dd>
 
-<dt>olemsword.pl
-<dd>Handles a Microsoft Word file.
-<dd>Requirement: Microsoft Word 97 SP1 or later, 98, 2000, 2002(XP) or 2003
+<dt>olemsword.pl</dt>
+<dd>Handles a Microsoft Word file.</dd>
+<dd>Requirement: Microsoft Word 97 SP1 or later, 98, 2000, 2002(XP) or 2003</dd>
 
-<dt>olepowerpoint.pl
-<dd>Handles a Microsoft PowerPoint file.
-<dd>Requirement: Microsoft PowerPoint 97 SP1 or later, 2000, 2002(XP) or 2003
+<dt>olepowerpoint.pl</dt>
+<dd>Handles a Microsoft PowerPoint file.</dd>
+<dd>Requirement: Microsoft PowerPoint 97 SP1 or later, 2000, 2002(XP) or 2003</dd>
 
-<dt>oletaro.pl
-<dd>Handles a file of Ichitaro, a Japanese word processor, versions 4.
-<dd>Requirement: Microsoft Word 97 SP1 or later, 98 or 2000
+<dt>oletaro.pl</dt>
+<dd>Handles a file of Ichitaro, a Japanese word processor, versions 4.</dd>
+<dd>Requirement: Microsoft Word 97 SP1 or later, 98 or 2000</dd>
 <dd>Requirement: and applicable document converter of Microsoft Office attachment.
-<br><br>
-<dd>Handles a file of Ichitaro, a Japanese word processor, versions 5 through 6.
-<dd>Requirement: Microsoft Word 97 SP1 or later, 98, 2000 or 2002(XP)
+<br></dd>
+<dd><br></dd>
+<dd>Handles a file of Ichitaro, a Japanese word processor, versions 5 through 6.</dd>
+<dd>Requirement: Microsoft Word 97 SP1 or later, 98, 2000 or 2002(XP)</dd>
 <dd>Requirement: and applicable document converter of Microsoft Office attachment.
-<br><br>
-<dd>Handles a file of Ichitaro, a Japanese word processor, versions 7 through 13, 2004.
-<dd>Requirement: Microsoft Word 97 SP1 or later, 98, 2000, 2002(XP) or 2003
-<dd>Requirement: and applicable document converter of Microsoft Office attachment.
+<br></dd>
+<dd><br></dd>
+<dd>Handles a file of Ichitaro, a Japanese word processor, versions 7 through 13, 2004.</dd>
+<dd>Requirement: Microsoft Word 97 SP1 or later, 98, 2000, 2002(XP) or 2003</dd>
+<dd>Requirement: and applicable document converter of Microsoft Office attachment.</dd>
 
-<dt>olertf.pl
-<dd>Handles a Microsoft Word file.
-<dd>Requirement: Microsoft Word 97 SP1 or later, 98, 2000, 2002(XP) or 2003
+<dt>olertf.pl</dt>
+<dd>Handles a Microsoft Word file.</dd>
+<dd>Requirement: Microsoft Word 97 SP1 or later, 98, 2000, 2002(XP) or 2003</dd>
 
 <dt>olevisio.pl</dt>
 <dd>Handles a Microsoft Visio file.</dd>
 <dd>Requirement: Microsoft Visio 2000, 2002 or 2003</dd>
 
-<dt>xdoc2txt.pl
-<dd>Handles a file of Microsoft Word, Excel, Powerpoint, Ichitaro, etc.
+<dt>xdoc2txt.pl</dt>
+<dd>Handles a file of Microsoft Word, Excel, Powerpoint, Ichitaro, etc.</dd>
 <dd>Requirement: <a href="http://www31.ocn.ne.jp/~h_ishida/xdoc2txt.html">
-xdoc2txt.exe</a>
-<dd>Note: xdoc2txt.exe is a tool for MS-Win32.
+xdoc2txt.exe</a></dd>
+<dd>Note: xdoc2txt.exe is a tool for MS-Win32.</dd>
 </dl>
 
 <p>
@@ -543,7 +548,8 @@ Various settings are possible in <code>mknmzrc</code> or
 
 <ol>
 <li><code>$(sysconfdir)/$(PACKAGE)/namazurc</code><br>
-(Usually, /usr/local/etc/namazu/namazurc</li>
+(Usually, /usr/local/etc/namazu/namazurc
+</li>
 <li>~/.namazurc</li>
 <li>file which is specified by -f or --config=FILE --option.<br>
 (In case of CGI, it is .namazurc in the directory namazu.cgi
@@ -575,9 +581,11 @@ The default index is the index that is used when no other index is specifiedand 
 
 <ul>
 <li>The default is $(localstatedir)/$(PACKAGE)/index<br>
-Usually, /usr/local/var/namazu/index)</li>
+Usually, /usr/local/var/namazu/index)
+</li>
 <li>Otherwise it is the directory which is specified by the Index directive of <a
-href="#namazurc">namazurc</a>. </li>
+href="#namazurc">namazurc</a>.
+</li>
 </ul>
 
 <p>
@@ -617,16 +625,16 @@ HTML. The details are described below.
 </p>
 
 <dl>
-<dt><a href="nmz.html#head">NMZ.head</a>
-<dd>Header of search results.
-<dt><a href="nmz.html#foot">NMZ.foot</a>
-<dd>Footer of search results.
-<dt><a href="nmz.html#body">NMZ.body</a>
-<dd>Description of Namazu's query.
-<dt><a href="nmz.html#tips">NMZ.tips</a>
-<dd>Tips on searching.
-<dt><a href="nmz.html#result">NMZ.result</a>
-<dd>Format of search results.
+<dt><a href="nmz.html#head">NMZ.head</a></dt>
+<dd>Header of search results.</dd>
+<dt><a href="nmz.html#foot">NMZ.foot</a></dt>
+<dd>Footer of search results.</dd>
+<dt><a href="nmz.html#body">NMZ.body</a></dt>
+<dd>Description of Namazu's query.</dd>
+<dt><a href="nmz.html#tips">NMZ.tips</a></dt>
+<dd>Tips on searching.</dd>
+<dt><a href="nmz.html#result">NMZ.result</a></dt>
+<dd>Format of search results.</dd>
 </dl>
 
 <p>
@@ -641,24 +649,24 @@ Form is defined in NMZ.head.  CGI variables are as follows:
 </p>
 
 <dl>
-<dt>query
-<dd>specify a query expression.
-<dt>max
-<dd>specify the maximum number of query results to display at once.
-<dt>result
-<dd>specify the display style of query results.
-<dt>sort
-<dd>specify the sorting routine.
-<dt>idxname
-<dd>specify the name of the index to search.
-<dt>subquery
-<dd>specify the sub-query expression.
-<dt>whence
-<dd>specify where you wish to display query results.
-<dt>reference
-<dd>specify whether or not to display reference hit counts.
-<dt>lang
-<dd>specify language of search results.
+<dt>query</dt>
+<dd>specify a query expression.</dd>
+<dt>max</dt>
+<dd>specify the maximum number of query results to display at once.</dd>
+<dt>result</dt>
+<dd>specify the display style of query results.</dd>
+<dt>sort</dt>
+<dd>specify the sorting routine.</dd>
+<dt>idxname</dt>
+<dd>specify the name of the index to search.</dd>
+<dt>subquery</dt>
+<dd>specify the sub-query expression.</dd>
+<dt>whence</dt>
+<dd>specify where you wish to display query results.</dd>
+<dt>reference</dt>
+<dd>specify whether or not to display reference hit counts.</dd>
+<dt>lang</dt>
+<dd>specify language of search results.</dd>
 </dl>
 
 
@@ -722,7 +730,8 @@ and/or baz. The template file specified in the <code>namazurc</code> Template di
 
 <ul>
 <li>When a single index is selected<br>
-the template file for the selected index is used.</li>
+the template file for the selected index is used.
+</li>
 <li>When multiple indices are selected<br>
 the template file for the <a href="#default-index">default index</a> is used.</li>
 </ul>
@@ -991,7 +1000,7 @@ Linux not UNIX
 <p>
 You can group queries by surrounding them by
 parentheses. The parentheses should be separated by one or
-more spaces. e.g. 
+more spaces. e.g.
 </p>
 
 <p class="example">
@@ -1132,10 +1141,10 @@ You must choose the latter with Tkanamzu or namazu.el.
 <a href="http://www.namazu.org/">Namazu Homepage</a>
 </p>
 <div class="copyright">
-Copyright (C) 2000-2005 Namazu Project. All rights reserved.
+Copyright (C) 2000-2006 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: manual.html,v 1.72 2006-01-11 05:00:38 opengl2772 Exp $
+$Id: manual.html,v 1.73 2006-01-13 08:28:40 opengl2772 Exp $
 </div>
 <address>
 developers@namazu.org

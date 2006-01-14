@@ -1,6 +1,6 @@
 #!%PERL% -w
 #
-# $Id: kakasi-3.pl.in,v 1.2 2006-01-10 19:30:43 opengl2772 Exp $
+# $Id: kakasi-3.pl.in,v 1.3 2006-01-14 08:41:21 opengl2772 Exp $
 # Copyright (C) 2005-2006 Tadamasa Teranishi
 #               2005-2006 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -43,6 +43,11 @@ my $INDEX = "$cwd/idx121";
 my $INDEX2 = "$cwd/idx122";
 
 pltests::putline($LOG, "  *** starting $0");
+
+if (pltests::get_lang() !~ /^ja/) {
+    pltests::putline($LOG, "Skipping because of LANG does not begin with ja: $0");
+    exit 77;
+}
 
 my @targets = ();
 for my $file (<$INDEX/NMZ.*>) {

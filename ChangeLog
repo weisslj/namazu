@@ -1,3 +1,9 @@
+2006-01-14  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+	* pltests/pltests.pl.in: Added codeconv_to_*().
+
+	* pltests/{chasen, kakasi, mecab}-[1-3].pl.in: For Windows.
+
 2006-01-13  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* pl/wakati.pl: For MeCab-perl-0.90rc6.
@@ -9869,4 +9875,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1416 2006-01-13 08:28:39 opengl2772 Exp $
+$Id: ChangeLog,v 1.1417 2006-01-14 08:41:18 opengl2772 Exp $

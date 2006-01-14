@@ -1,6 +1,6 @@
 #!%PERL% -w
 #
-# $Id: kakasi-2.pl.in,v 1.5 2006-01-12 18:18:57 opengl2772 Exp $
+# $Id: kakasi-2.pl.in,v 1.6 2006-01-14 08:41:21 opengl2772 Exp $
 # Copyright (C) 2005-2006 Tadamasa Teranishi
 #               2005-2006 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -56,6 +56,11 @@ exit 77 if (!defined $KAKASI);
 
 pltests::putline($LOG, "  *** starting $0");
 
+if (pltests::get_lang() !~ /^ja/) {
+    pltests::putline($LOG, "Skipping because of LANG does not begin with ja: $0");
+    exit 77;
+}
+
 pltests::putline($LOG, "Text::Kakasi : $Text::Kakasi::VERSION");
 
 my $RC = "$cwd/tmp.mknmzrc-kakasi-2";
@@ -77,6 +82,16 @@ if (-f $RC) {
 
 exit 101 if ($status != 0);
 
+my $word = pltests::cat("$INDEX/NMZ.w");
+pltests::codeconv_to_external(\$word);
+pltests::putline($LOG, "  *** NMZ.w ***");
+my @word = split(/\n/, $word);
+my $w;
+foreach $w (@word) {
+    pltests::putline($LOG, $w);
+}
+pltests::putline($LOG, "  *** NMZ.w ***");
+
 #
 # Test for namazu.
 #
@@ -95,14 +110,16 @@ if ($doc =~ /^files (\d+)/m) {
 }
 
 # Check simple searching.
-@cmd = ("$NAMAZU", "*全* *文* *検* *索*", "$INDEX");
+my $query = "*全* *文* *検* *索*";
+pltests::codeconv_to_external(\$query);
+@cmd = ("$NAMAZU", "$query", "$INDEX");
 pltests::putline($LOG, "  ", \@cmd);
 $status = pltests::logsyscmd($LOG, \@cmd);
 if ($status != 0) {
     exit 1;
 }
 
-@cmd = ("$NAMAZU", "-c", "*全* *文* *検* *索*", "$INDEX");
+@cmd = ("$NAMAZU", "-c", "$query", "$INDEX");
 my $hitnum;
 my $conts_err;
 ($status, $hitnum, $conts_err) = pltests::ezsyscmd(\@cmd);

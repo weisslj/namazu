@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: pltests.pl.in,v 1.7 2006-01-10 19:30:43 opengl2772 Exp $
+# $Id: pltests.pl.in,v 1.8 2006-01-14 08:41:21 opengl2772 Exp $
 # Copyright (C) 2004-2006 Tadamasa Teranishi
 #               2004-2006 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -31,6 +31,7 @@ require Cwd;
 use IO::File;
 use File::Basename;
 use File::Copy;
+use NKF;
 
 sub cdie (@);
 
@@ -543,6 +544,38 @@ sub win32_yen_to_slash ($) {
         $$filenameref =~
                 s!([\x81-\x9f\xe0-\xef][\x40-\x7e\x80-\xfc]|[\x01-\x7f])!
                 $1 eq "\\" ? "/" : $1!gex;
+    }
+}
+
+# for Windows
+#     EUC-JP -> Shift_JIS
+sub codeconv_to_external($) {
+    my ($contref) = @_;
+
+    if (get_lang() =~ /^ja/) {
+        my $nkf_opt = "-emXZ1";
+
+        if ($English::OSNAME eq "MSWin32" || $English::OSNAME eq "os2") {
+            $nkf_opt = "-EsmXZ1";
+        }
+
+        $$contref = NKF::nkf($nkf_opt, $$contref);
+    }
+}
+
+# for Windows
+#     Shift_JIS -> EUC-JP
+sub codeconv_to_internal($) {
+    my ($contref) = @_;
+
+    if (get_lang() =~ /^ja/) {
+        my $nkf_opt = "-emXZ1";
+
+        if ($English::OSNAME eq "MSWin32" || $English::OSNAME eq "os2") {
+            $nkf_opt = "-SemXZ1";
+        }
+
+        $$contref = NKF::nkf($nkf_opt, $$contref);
     }
 }
 

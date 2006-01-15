@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.37 2005-10-26 03:58:12 opengl2772 Exp $
+# $Id: util.pl,v 1.38 2006-01-15 19:18:58 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2005 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -214,8 +214,9 @@ sub checkcmd ($) {
     $pd = ';' if (($English::OSNAME eq "MSWin32") || ($English::OSNAME eq "os2"));
 
     for my $dir (split(/$pd/, $ENV{'PATH'})) {
+        next if ($dir eq '');
         win32_yen_to_slash(\$dir);
-	return "$dir/$cmd" if (-x "$dir/$cmd");
+	return "$dir/$cmd" if (-x "$dir/$cmd" && ! -d "$dir/$cmd");
 	return "$dir/$cmd.com" if (-x "$dir/$cmd.com" &&
 		(($English::OSNAME eq "MSWin32") || ($English::OSNAME eq "os2")));
 	return "$dir/$cmd.exe" if (-x "$dir/$cmd.exe" &&

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: pltests.pl.in,v 1.8 2006-01-14 08:41:21 opengl2772 Exp $
+# $Id: pltests.pl.in,v 1.9 2006-01-15 19:18:58 opengl2772 Exp $
 # Copyright (C) 2004-2006 Tadamasa Teranishi
 #               2004-2006 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -232,8 +232,9 @@ sub checkcmd($) {
     $pd = ';' if (($English::OSNAME eq "MSWin32") || ($English::OSNAME eq "os2"));
 
     for my $dir (split(/$pd/, $ENV{'PATH'})) {
+        next if ($dir eq '');
         win32_yen_to_slash(\$dir);
-        return "$dir/$cmd" if (-x "$dir/$cmd");
+        return "$dir/$cmd" if (-x "$dir/$cmd" && ! -d "$dir/$cmd");
         return "$dir/$cmd" if (-x "$dir/$cmd.com" &&
                 (($English::OSNAME eq "MSWin32") || ($English::OSNAME eq "os2")));
         return "$dir/$cmd" if (-x "$dir/$cmd.exe" &&

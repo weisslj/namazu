@@ -4,7 +4,7 @@
 # mailutime - a tool to unify a file time stamp with 
 #             RFC 822 'Date:' field in a mail.
 #             It also supports MHonArc messages.
-# $Id: mailutime.in,v 1.7 2004-10-20 14:44:40 opengl2772 Exp $
+# $Id: mailutime.in,v 1.8 2006-01-18 13:43:17 opengl2772 Exp $
 #
 # Version 1.0.3    [01/16/2004]
 # Version 1.0.2    [12/12/1998]
@@ -22,7 +22,7 @@
 #   specified mailbox (MH format).
 #
 # Copyright (C) 1998-1999 Satoru Takabayashi  All rights reserved.
-# Copyright (C) 2002-2004 Namazu Project All rights reserved.
+# Copyright (C) 2002-2006 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -157,21 +157,22 @@ sub get_date_fuzzily($) {
 	$mon = 0;
     }
 
-    # get a year
-    if ($str =~ s/\b($re_year)\b//i) {
-	$year = $1;
-    } else {
-	print STDERR "[$orig_str]:: lacks 'year'\n" if $DebugOpt;
-	$year = 1970;
-    }
-
     # get a day
-    # this SHOULD be tried at the last.
+    # this SHOULD be tried at the last save one.
     if ($str =~ s/\b($re_day)\b//i) {
 	$mday = $1;
     } else {
 	print STDERR "[$orig_str]:: lacks 'day'\n" if $DebugOpt;
 	$mday = 0;
+    }
+
+    # get a year
+    # this SHOULD be tried at the last.
+    if ($str =~ s/\b($re_year)\b//i) {
+	$year = $1;
+    } else {
+	print STDERR "[$orig_str]:: lacks 'year'\n" if $DebugOpt;
+	$year = 1970;
     }
 
     # calculate

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Namazu 2.0.6pre1\n"
 "Report-Msgid-Bugs-To: bugs@namazu.org\n"
-"POT-Creation-Date: 2005-12-06 22:36+0900\n"
+"POT-Creation-Date: 2006-01-20 01:20+0900\n"
 "PO-Revision-Date: 2001-06-26 16:55+0900\n"
 "Last-Translator: Ryuji Abe <rug@namazu.org>\n"
 "Language-Team: Japanese <ja@li.org>\n"
@@ -763,15 +763,15 @@ msgstr "Renamed: "
 msgid "not an IO::File/FileHandle object!\n"
 msgstr "IO::File/FileHandle オブジェクトではありません\n"
 
-#: pl/util.pl:259
+#: pl/util.pl:260
 msgid "Remove temporary files:"
 msgstr "一時ファイルを削除:"
 
-#: pl/util.pl:303
+#: pl/util.pl:304
 msgid "ASSERTION ERROR!: "
 msgstr "ASSERTION ERROR!: "
 
-#: pl/util.pl:315 pl/util.pl:348 pl/util.pl:463
+#: pl/util.pl:316 pl/util.pl:349 pl/util.pl:464
 msgid "Invoked: "
 msgstr "Invoked: "
 
@@ -779,15 +779,15 @@ msgstr "Invoked: "
 msgid "-- wakatized content --\n"
 msgstr "-- わかち書きされた内容 --\n"
 
-#: pl/wakati.pl:101
+#: pl/wakati.pl:102
 msgid "invalid wakati module: "
 msgstr "無効なわかち書きモジュール: "
 
-#: pl/wakati.pl:103
+#: pl/wakati.pl:104
 msgid "-- wakatized bare content --\n"
 msgstr "-- wakatized bare content --\n"
 
-#: pl/wakati.pl:111
+#: pl/wakati.pl:108
 msgid "wakati: using "
 msgstr "わかち書きには以下を利用: "
 
@@ -924,7 +924,7 @@ msgstr ""
 "  -q, --quiet              インデックス処理の最中にメッセージを表示しない\n"
 "  -v, --version            ヴァージョンを表示する\n"
 "  -V, --verbose            口やかましいモード\n"
-"      --debug              デバッグモード\n"
+"  -d, --debug              デバッグモード\n"
 "      --help               このヘルプを表示する\n"
 "      --norc               設定ファイルを読み込まない\n"
 "      --                   オプションリストを終了する\n"

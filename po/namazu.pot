@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: bugs@namazu.org\n"
-"POT-Creation-Date: 2005-12-06 22:36+0900\n"
+"POT-Creation-Date: 2006-01-20 01:20+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -699,15 +699,15 @@ msgstr ""
 msgid "not an IO::File/FileHandle object!\n"
 msgstr ""
 
-#: pl/util.pl:259
+#: pl/util.pl:260
 msgid "Remove temporary files:"
 msgstr ""
 
-#: pl/util.pl:303
+#: pl/util.pl:304
 msgid "ASSERTION ERROR!: "
 msgstr ""
 
-#: pl/util.pl:315 pl/util.pl:348 pl/util.pl:463
+#: pl/util.pl:316 pl/util.pl:349 pl/util.pl:464
 msgid "Invoked: "
 msgstr ""
 
@@ -715,15 +715,15 @@ msgstr ""
 msgid "-- wakatized content --\n"
 msgstr ""
 
-#: pl/wakati.pl:101
+#: pl/wakati.pl:102
 msgid "invalid wakati module: "
 msgstr ""
 
-#: pl/wakati.pl:103
+#: pl/wakati.pl:104
 msgid "-- wakatized bare content --\n"
 msgstr ""
 
-#: pl/wakati.pl:111
+#: pl/wakati.pl:108
 msgid "wakati: using "
 msgstr ""
 

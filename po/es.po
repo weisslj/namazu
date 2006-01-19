@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Namazu 2.0.6pre1\n"
 "Report-Msgid-Bugs-To: bugs@namazu.org\n"
-"POT-Creation-Date: 2005-12-06 22:36+0900\n"
+"POT-Creation-Date: 2006-01-20 01:20+0900\n"
 "PO-Revision-Date: 2001-06-26 16:55+0900\n"
 "Last-Translator: Jose Juan Zapater Vera <compi@arrakis.es>\n"
 "Language-Team: Spanish <es@li.org>\n"
@@ -774,15 +774,15 @@ msgstr "Renombrados: "
 msgid "not an IO::File/FileHandle object!\n"
 msgstr "no es un objeto IO::File/FileHandle!\n"
 
-#: pl/util.pl:259
+#: pl/util.pl:260
 msgid "Remove temporary files:"
 msgstr "Borra los ficheros temporales:"
 
-#: pl/util.pl:303
+#: pl/util.pl:304
 msgid "ASSERTION ERROR!: "
 msgstr "ERROR DE ASERCIƒ‚N!: "
 
-#: pl/util.pl:315 pl/util.pl:348 pl/util.pl:463
+#: pl/util.pl:316 pl/util.pl:349 pl/util.pl:464
 msgid "Invoked: "
 msgstr ""
 
@@ -790,15 +790,15 @@ msgstr ""
 msgid "-- wakatized content --\n"
 msgstr "-- contenidos wakatizados --\n"
 
-#: pl/wakati.pl:101
+#: pl/wakati.pl:102
 msgid "invalid wakati module: "
 msgstr "módulo wakati no válido: "
 
-#: pl/wakati.pl:103
+#: pl/wakati.pl:104
 msgid "-- wakatized bare content --\n"
 msgstr "-- contenido bare wakatizado --\n"
 
-#: pl/wakati.pl:111
+#: pl/wakati.pl:108
 msgid "wakati: using "
 msgstr "wakati: usando "
 
@@ -944,7 +944,7 @@ msgstr ""
 "ejecución.\n"
 "  -v, --version            muestra la versión de namazu y sal.\n"
 "  -V, --verbose            modo verbose.\n"
-"      --debug              modo debug.\n"
+"  -d, --debug              modo debug.\n"
 "      --help               muestra esta ayuda y sal.\n"
 "      --norc               do not read the personal initialization files.\n"
 "      --                   Terminate option list.\n"

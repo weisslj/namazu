@@ -189,7 +189,7 @@ mknmz を実行したディレクトリに NMZ.* というファイルを作成し
       -q, --quiet              インデックス処理の最中にメッセージを表示しない
       -v, --version            ヴァージョンを表示する
       -V, --verbose            口やかましいモード
-          --debug              デバッグモード
+      -d, --debug              デバッグモード
           --help               このヘルプを表示する
           --norc               設定ファイルを読み込まない
           --                   オプションリストを終了する
@@ -251,6 +251,10 @@ mknmz は対象ファイルの文書形式を自動で判別して、適切なフィル
 <dd>注意: 元のURIへ置き換える場合は mknmzに次のオプションを使用、
  --replace=apachecache::replacecode</dd>
 
+<dt>applefile.pl</dt>
+<dd>AppleSingle ファイルを扱う</dd>
+<dd>必需品: なし</dd>
+
 <dt>bzip2.pl</dt>
 <dd>bzip2で圧縮されたファイルを扱う</dd>
 <dd>必需品: <a
@@ -307,7 +311,7 @@ href="http://www.info-zip.org/pub/infozip/UnZip.html">unzip</a>,
 <a href="http://www.ff.iij4u.or.jp/~nrt/lv/">lv</a> (Perlのバージョンが5.8以上であれば lv は不要)</dd>
 
 <dt>macbinary.pl</dt>
-<dd>MacBinary I,II,III 形式の文書を排除する</dd>
+<dd>MacBinary I,II,III ファイルを扱う</dd>
 <dd>必需品: なし</dd>
 
 <dt>mailnews.pl</dt>
@@ -1242,7 +1246,7 @@ Tknamazu および namazu.el から検索するときは必ず後者で指定します。
 Copyright (C) 2000-2006 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: manual.html,v 1.106 2006-01-19 15:58:50 opengl2772 Exp $
+$Id: manual.html,v 1.107 2006-01-19 16:10:21 opengl2772 Exp $
 </div>
 <address>
 developers@namazu.org

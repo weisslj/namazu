@@ -334,7 +334,7 @@ msgstr "wakati: usando el módulo Text::ChaSen\n"
 
 #: scripts/mknmz.in:932
 msgid "wakati: using MeCab module\n"
-msgstr "wakati: usando el módulo Text::MeCab\n"
+msgstr "wakati: usando el módulo MeCab\n"
 
 #: scripts/mknmz.in:937
 msgid "wakati: using Built-in module\n"
@@ -527,7 +527,6 @@ msgid "  MTIME too old: %d, MTIME too new: %d"
 msgstr "  MTIME demasiado antiguo: %d, MTIME demasiado nuevo: %d"
 
 #: scripts/mknmz.in:1555
-#, fuzzy
 msgid "lang_msg: "
 msgstr "lenguaje: "
 
@@ -544,7 +543,6 @@ msgid "Try `mknmz --help' for more information.\n"
 msgstr "Intenta `mknmz --help para más información.\n"
 
 #: scripts/mknmz.in:1795
-#, fuzzy
 msgid ""
 "\n"
 "\n"
@@ -555,7 +553,6 @@ msgstr ""
 "== encontrados ==\n"
 
 #: scripts/mknmz.in:1796
-#, fuzzy
 msgid ""
 "\n"
 "\n"
@@ -563,7 +560,7 @@ msgid ""
 msgstr ""
 "\n"
 "\n"
-"== registrados ==\n"
+"== documentos registrados ==\n"
 
 #: scripts/mknmz.in:1797
 #, fuzzy
@@ -588,7 +585,6 @@ msgstr ""
 "== borrados ==\n"
 
 #: scripts/mknmz.in:1799
-#, fuzzy
 msgid ""
 "\n"
 "\n"
@@ -596,7 +592,7 @@ msgid ""
 msgstr ""
 "\n"
 "\n"
-"== actualizados ==\n"
+"== documentos actualizados ==\n"
 
 #: scripts/mknmz.in:1800
 msgid ""
@@ -908,7 +904,7 @@ msgstr ""
 "que sean más antiguos de 50.\n"
 "\n"
 "Analisis Morfológico:\n"
-"  -b, --use-mecab          use MeCab para analizar japonés.\n"
+"  -b, --use-mecab          usa MeCab para analizar japonés.\n"
 "  -c, --use-chasen         usa ChaSen para analizar japonés.\n"
 "  -k, --use-kakasi         usa KAKASI para analizar japonés.\n"
 "  -m, --use-chasen-noun    usa ChaSen para extraer sólo nombres.\n"

@@ -345,7 +345,7 @@ msgstr "wakati : utilisation du module Text::ChaSen\n"
 
 #: scripts/mknmz.in:932
 msgid "wakati: using MeCab module\n"
-msgstr "wakati : utilisation du module Text::MeCab\n"
+msgstr "wakati : utilisation du module MeCab\n"
 
 #: scripts/mknmz.in:937
 msgid "wakati: using Built-in module\n"
@@ -410,7 +410,7 @@ msgstr "Perl : "
 
 #: scripts/mknmz.in:1293
 msgid "File-MMagic: "
-msgstr ""
+msgstr "File-MMagic : "
 
 #: scripts/mknmz.in:1294
 msgid "NKF: "
@@ -426,7 +426,7 @@ msgstr "ChaSen : "
 
 #: scripts/mknmz.in:1297
 msgid "MeCab: "
-msgstr ""
+msgstr "MeCab : "
 
 #: scripts/mknmz.in:1298
 msgid "Wakati: "
@@ -694,7 +694,7 @@ msgstr "Perl :"
 
 #: scripts/mknmz.in:2087
 msgid "Namazu:"
-msgstr "Namazu :"
+msgstr "Namazu:"
 
 #: scripts/mknmz.in:2215
 msgid "doing write_phrase_hash() processing.\n"
@@ -888,7 +888,7 @@ msgstr ""
 "  -a, --all                cible tous les fichiers.\n"
 "  -t, --media-type=MTYPE   positionne le type de média pour tous les "
 "fichiers cibles à MTYPE.\n"
-"   -h, --mailnews           identique à --media-type='message/rfc822'\n"
+"  -h, --mailnews           identique à --media-type='message/rfc822'\n"
 "      --mhonarc            identique à --media-type='text/html; x-"
 "type=mhonarc'\n"
 "  -F, --target-list=FILE   charge un fichier FILE qui contient une liste de "

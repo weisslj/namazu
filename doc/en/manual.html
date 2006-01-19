@@ -942,9 +942,9 @@ nmzcat converts the binary files from various format to plain text.
 </p>
 
 <!-- query -->
-<h2><a name="query">Query</a></h2>
+<h2><a name="query" id="query">Query</a></h2>
 
-<h3><a name="query-term">Single term query</a></h3>
+<h3><a name="query-term" id="query-term">Single term query</a></h3>
 <p>
 This query specifies only one term for retrieving all of the
 documents which contain that term, for example: 
@@ -954,7 +954,7 @@ documents which contain that term, for example:
 namazu
 </p>
 
-<h3><a name="query-and">AND query</a></h3> 
+<h3><a name="query-and" id="query-and">AND query</a></h3> 
 
 <p>
 This query specifies two or more terms for retrieving all of the
@@ -971,7 +971,7 @@ You can omit the <code class="operator">and</code> operator.  Terms which are
 separated by one ore more spaces are assumed to be an AND query.
 </p>
 
-<h3><a name="query-or">OR query</a></h3>
+<h3><a name="query-or" id="query-or">OR query</a></h3>
 <p>
 This query specifies two or more terms for retrieving all
 documents which contain any one term. Insert the
@@ -983,7 +983,7 @@ e.g.
 Linux or FreeBSD
 </p>
 
-<h3><a name="query-not">NOT query</a></h3>
+<h3><a name="query-not" id="query-not">NOT query</a></h3>
 <p>
 This query specifies two or more terms for retrieving all of the
 documents which contain a first term but do not contain the
@@ -996,18 +996,18 @@ Linux not UNIX
 </p>
 
 
-<h3><a name="query-grouping">Grouping</a></h3>
+<h3><a name="query-grouping" id="query-grouping">Grouping</a></h3>
 <p>
 You can group queries by surrounding them by
 parentheses. The parentheses should be separated by one or
-more spaces. e.g.
+more spaces. e.g. 
 </p>
 
 <p class="example">
 ( Linux or FreeBSD ) and Netscape not Windows
 </p>
 
-<h3><a name="query-phrase">Phrase searching</a></h3>
+<h3><a name="query-phrase" id="query-phrase">Phrase searching</a></h3>
 <p>
 You can search for a phrase that consists of two or more terms
 by surrounding them with double quotation marks or braces such as
@@ -1022,11 +1022,11 @@ so wrong results may occasionally occur.  Example:
 
 <!-- foo
 <p>
-You must choose the latter with Tknamazu or namazu.el.
+You must choose the latter with Tkanamzu or namazu.el.
 </p>
 -->
 
-<h3><a name="query-substring">Substring matching</a></h3>
+<h3><a name="query-substring" id="query-substring">Substring matching</a></h3>
 <p>
 The are three types of searching by substring matching.
 </p>
@@ -1042,7 +1042,7 @@ with <code>net</code>)</dd>
 </dl>
 
 
-<h3><a name="query-regex">Regular expressions</a></h3>
+<h3><a name="query-regex" id="query-regex">Regular expressions</a></h3>
 
 <p>
 You can use regular expressions for pattern matching. The
@@ -1059,7 +1059,7 @@ e.g.,
 </p>
 
 
-<h3><a name="query-field">Field-specified searching</a></h3>
+<h3><a name="query-field" id="query-field">Field-specified searching</a></h3>
 <p>
 You can limit your search to specific fields such as
 <code>Subject:</code>, <code>From:</code>,
@@ -1090,7 +1090,7 @@ in a <code>From:</code> field)
 </li>
 </ul>
 
-<h3><a name="query-notes">Notes</a></h3>
+<h3><a name="query-notes" id="query-notes">Notes</a></h3>
 
 <ul>
 <li>In any queries, Namazu ignores case distinctions of
@@ -1144,7 +1144,7 @@ You must choose the latter with Tkanamzu or namazu.el.
 Copyright (C) 2000-2006 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: manual.html,v 1.73 2006-01-13 08:28:40 opengl2772 Exp $
+$Id: manual.html,v 1.74 2006-01-19 06:27:36 opengl2772 Exp $
 </div>
 <address>
 developers@namazu.org

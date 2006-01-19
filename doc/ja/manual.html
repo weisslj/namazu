@@ -154,45 +154,45 @@ mknmz を実行したディレクトリに NMZ.* というファイルを作成し
                                例: -50 で 50 日以内、+50 で 50 日より古いものだけ
     
     形態素解析:
-      -b, --use-mecab         日本語の単語のわかち書きに MeCab を用いる
-      -c, --use-chasen        日本語の単語のわかち書きに ChaSen を用いる
-      -k, --use-kakasi        日本語の単語のわかち書きに KAKASI を用いる
-      -m, --use-chasen-noun   名詞のみを抽出する
-          --use-builtinwakati 日本語の単語のわかち書きに内蔵ルーチンを用いる
+      -b, --use-mecab          日本語の単語のわかち書きに MeCab を用いる
+      -c, --use-chasen         日本語の単語のわかち書きに ChaSen を用いる
+      -k, --use-kakasi         日本語の単語のわかち書きに KAKASI を用いる
+      -m, --use-chasen-noun    名詞のみを抽出する
+          --use-builtinwakati  日本語の単語のわかち書きに内蔵ルーチンを用いる
       -L, --indexing-lang=LANG インデックス時に言語に特化した処理を行なう
     
     文字列処理:
-      -E, --no-edge-symbol  単語の両端の記号は削除する
-      -G, --no-okurigana    送り仮名を削除する
-      -H, --no-hiragana     平仮名のみの単語は登録しない
-      -K, --no-symbol       記号をすべて削除する
-          --decode-base64   添付されたBase64エンコード部分をデコードする
+      -E, --no-edge-symbol     単語の両端の記号は削除する
+      -G, --no-okurigana       送り仮名を削除する
+      -H, --no-hiragana        平仮名のみの単語は登録しない
+      -K, --no-symbol          記号をすべて削除する
+          --decode-base64      添付されたBase64エンコード部分をデコードする
     
     要約:
-      -U, --no-encode-uri       URIのencodeを行わない
-      -x, --no-heading-summary  HTML のヘディングによる要約作成を行わない
+      -U, --no-encode-uri      URIのencodeを行わない
+      -x, --no-heading-summary HTML のヘディングによる要約作成を行わない
     
     
     インデックス作成:
-          --update=INDEX        更新するインデックスを指定する
-      -z, --check-filesize      サイズが変わったファイルも対象とする
-      -Y, --no-delete           削除された文書の検出を行わない
-      -Z, --no-update           文書の更新・削除を反映しない
+          --update=INDEX       更新するインデックスを指定する
+      -z, --check-filesize     サイズが変わったファイルも対象とする
+      -Y, --no-delete          削除された文書の検出を行わない
+      -Z, --no-update          文書の更新・削除を反映しない
     
     その他:
-      -s, --checkpoint        チェックポイント機構を作動させる
-      -C, --show-config       現在の設定を表示する
-      -f, --config=FILE       設定ファイルを指定する
-      -I, --include=FILE      カスタマイズ用ファイルを読み込む
-      -O, --output-dir=DIR    インデックスの出力先を指定する
-      -T, --template-dir=DIR  NMZ.{head,foot,body}.* のディレクトリを指定する
-      -q, --quiet             インデックス処理の最中にメッセージを表示しない
-      -v, --version           ヴァージョンを表示する
-      -V, --verbose           口やかましいモード
-      -d, --debug             デバッグモード
-          --help              このヘルプを表示する
-          --norc              設定ファイルを読み込まない
-          --                  オプションリストを終了する
+      -s, --checkpoint         チェックポイント機構を作動させる
+      -C, --show-config        現在の設定を表示する
+      -f, --config=FILE        設定ファイルを指定する
+      -I, --include=FILE       カスタマイズ用ファイルを読み込む
+      -O, --output-dir=DIR     インデックスの出力先を指定する
+      -T, --template-dir=DIR   NMZ.{head,foot,body}.* のディレクトリを指定する
+      -q, --quiet              インデックス処理の最中にメッセージを表示しない
+      -v, --version            ヴァージョンを表示する
+      -V, --verbose            口やかましいモード
+          --debug              デバッグモード
+          --help               このヘルプを表示する
+          --norc               設定ファイルを読み込まない
+          --                   オプションリストを終了する
     
     バグ報告は &lt;bug-namazu@namazu.org&gt; へどうぞ
 </pre>
@@ -1058,9 +1058,9 @@ mknmz の文書フィルタを呼び出すため多少処理に時間がかかります。
 
 
 <!-- query -->
-<h2><a name="query">検索式</a></h2>
+<h2><a name="query" id="query">検索式</a></h2>
 
-<h3><a name="query-term">単一単語検索</a></h3>
+<h3><a name="query-term" id="query-term">単一単語検索</a></h3>
 <p>
 調べたい単語を一つ指定するだけのもっとも基本的な検索手法です。
 例: 
@@ -1070,7 +1070,7 @@ mknmz の文書フィルタを呼び出すため多少処理に時間がかかります。
 namazu
 </p>
 
-<h3><a name="query-and">AND検索</a></h3> 
+<h3><a name="query-and" id="query-and">AND検索</a></h3> 
 
 <p>
 ある単語とある単語の両方を含む文書を検索します。検索結果を絞
@@ -1085,7 +1085,7 @@ namazu
 るとそれらの語すべてを含む文書をAND検索します。
 </p>
 
-<h3><a name="query-or">OR検索</a></h3>
+<h3><a name="query-or" id="query-or">OR検索</a></h3>
 <p>
 ある単語とある単語のどちらかを含む文書を検索します。3つ以上
 の単語を指定することも可能です。単語と単語の間に 
@@ -1096,7 +1096,7 @@ namazu
 Linux or FreeBSD
 </p>
 
-<h3><a name="query-not">NOT検索</a></h3>
+<h3><a name="query-not" id="query-not">NOT検索</a></h3>
 <p>
 ある単語を含み、ある単語を含まない文書を検索します。3つ以上
 の単語を指定することも可能です。単語と単語の間に 
@@ -1107,7 +1107,7 @@ Linux or FreeBSD
 Linux not UNIX
 </p>
 
-<h3><a name="query-grouping">グループ化</a></h3>
+<h3><a name="query-grouping" id="query-grouping">グループ化</a></h3>
 <p>
 AND検索、OR検索、NOT検索を括弧でグループ化できます。括弧の両
 隣には空白を入れる必要があります。例:
@@ -1117,7 +1117,7 @@ AND検索、OR検索、NOT検索を括弧でグループ化できます。括弧の両
 ( Linux or FreeBSD ) and Netscape not Windows
 </p>
 
-<h3><a name="query-phrase">フレイズ検索</a></h3>
+<h3><a name="query-phrase" id="query-phrase">フレイズ検索</a></h3>
 <p>
 2語以上からなる複合語を検索します。 <code
 class="operator">"..."</code> と2重引用符で、あるいは <code
@@ -1135,7 +1135,7 @@ Tknamazu および namazu.el から検索するときは必ず後者で指定します。
 </p>
 -->
 
-<h3><a name="query-substring">部分一致検索</a></h3>
+<h3><a name="query-substring" id="query-substring">部分一致検索</a></h3>
 <p>
 部分一致検索には前方一致、中間一致、後方一致の 3種類があります。
 </p>
@@ -1153,7 +1153,7 @@ Tknamazu および namazu.el から検索するときは必ず後者で指定します。
 </dl>
 
 
-<h3><a name="query-regex">正規表現検索</a></h3>
+<h3><a name="query-regex" id="query-regex">正規表現検索</a></h3>
 
 <p>
 検索するキーワードを正規表現で指定します。正規表現は 
@@ -1169,7 +1169,7 @@ href="http://www.perl.com/">Perl</a>とほぼ同じです。 例:
 </p>
 
 
-<h3><a name="query-field">フィールド指定の検索</a></h3>
+<h3><a name="query-field" id="query-field">フィールド指定の検索</a></h3>
 <p>
 <code>Subject:</code>, <code>From:</code>,
 <code>Message-Id:</code> といったフィールドを指定して検
@@ -1192,7 +1192,7 @@ href="http://www.perl.com/">Perl</a>とほぼ同じです。 例:
 </li>
 </ul>
 
-<h3><a name="query-notes">特記事項</a></h3>
+<h3><a name="query-notes" id="query-notes">特記事項</a></h3>
 
 <ul>
 <li>いずれの検索方法でもアルファベットの大文字・小文字の区別
@@ -1242,7 +1242,7 @@ Tknamazu および namazu.el から検索するときは必ず後者で指定します。
 Copyright (C) 2000-2006 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: manual.html,v 1.100 2006-01-11 05:00:38 opengl2772 Exp $
+$Id: manual.html,v 1.101 2006-01-19 06:27:36 opengl2772 Exp $
 </div>
 <address>
 developers@namazu.org

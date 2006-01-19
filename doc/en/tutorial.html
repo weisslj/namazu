@@ -584,7 +584,7 @@ please refer to <a href="#japanese">Japanese Environment</a>.
     File/Sec:            1.00
     System:              linux
     Perl:                5.00503
-    Namazu:              2.0.2
+    Namazu:              2.0.X
 </pre>
 
 <ul>
@@ -646,30 +646,42 @@ time.
 
     Loaded rcfile: /home/foobar/.mknmzrc
     System: linux
-    Namazu: 2.0.14
+    Namazu: 2.0.X
     Perl: 5.00503
-    File-MMagic: 1.20
+    File-MMagic: 1.25
     NKF: module_nkf
     KAKASI: module_kakasi -ieuc -oeuc -w
-    ChaSen: module_chasen -j -F '%m '
+    ChaSen: module_chasen -i e -j -F "%m "
+    MeCab: module_mecab -Owakati -b 8192
     Wakati: module_kakasi -ieuc -oeuc -w
+    Lang_Msg: C
     Lang: C
     Coding System: euc
     CONFDIR: /usr/local/etc/namazu
     LIBDIR: /usr/local/share/namazu/pl
     FILTERDIR: /usr/local/share/namazu/filter
     TEMPLATEDIR: /usr/local/share/namazu/template
-    Supported media types:   (28)
-    Unsupported media types: (4) marked with minus (-) probably missing application in your $path.
+    Supported media types:   (42)
+    Unsupported media types: (2) marked with minus (-) probably missing application in your $path.
       application/excel: excel.pl
+      application/gnumeric: gnumeric.pl
       application/ichitaro5: taro56.pl
       application/ichitaro6: taro56.pl
+      application/ichitaro7: taro7_10.pl
       application/macbinary: macbinary.pl
       application/msword: msword.pl
-    - application/pdf: pdf.pl
+      application/pdf: pdf.pl
       application/postscript: postscript.pl
       application/powerpoint: powerpoint.pl
       application/rtf: rtf.pl
+      application/vnd.kde.kivio: koffice.pl
+      application/vnd.kde.kpresenter: koffice.pl
+      application/vnd.kde.kspread: koffice.pl
+      application/vnd.kde.kword: koffice.pl
+      application/vnd.oasis.opendocument.graphics: ooo.pl
+      application/vnd.oasis.opendocument.presentation: ooo.pl
+      application/vnd.oasis.opendocument.spreadsheet: ooo.pl
+      application/vnd.oasis.opendocument.text: ooo.pl
       application/vnd.sun.xml.calc: ooo.pl
       application/vnd.sun.xml.draw: ooo.pl
       application/vnd.sun.xml.impress: ooo.pl
@@ -682,13 +694,15 @@ time.
       application/x-gzip: gzip.pl
       application/x-js-taro: taro7_10.pl
       application/x-rpm: rpm.pl
-    - application/x-tex: tex.pl
+      application/x-tex: tex.pl
+      application/x-zip: zip.pl
       audio/mpeg: mp3.pl
       message/news: mailnews.pl
       message/rfc822: mailnews.pl
       text/hnf: hnf.pl
       text/html: html.pl
       text/html; x-type=mhonarc: mhonarc.pl
+      text/html; x-type=pipermail: pipermail.pl
       text/plain
       text/plain; x-type=rfc: rfc.pl
       text/x-hdml: hdml.pl
@@ -964,10 +978,10 @@ modules will be used.
 <a href="http://www.namazu.org/">Namazu Homepage</a>
 </p>
 <div class="copyright">
-Copyright (C) 2000-2005 Namazu Project. All rights reserved.
+Copyright (C) 2000-2006 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: tutorial.html,v 1.22 2005-11-25 08:37:30 opengl2772 Exp $
+$Id: tutorial.html,v 1.23 2006-01-19 15:58:24 opengl2772 Exp $
 </div>
 <address>
 developers@namazu.org

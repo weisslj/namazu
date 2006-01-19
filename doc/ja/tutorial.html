@@ -585,7 +585,7 @@ mknmz は次のように実行します。
       ファイル/秒:         0.75
       システム:            linux
       Perl:                5.00503
-      Namazu:              2.0
+      Namazu:              2.0.X
 
 </pre>
 
@@ -659,30 +659,42 @@ href="manual.html#mknmz-option">mknmz --help</a>とすると得ら
 
       読み込んだ設定ファイル: /home/foobar/.mknmzrc
       システム: linux
-      Namazu: 2.0.14
+      Namazu: 2.0.X
       Perl: 5.00503
-      File-MMagic: 1.20
+      File-MMagic: 1.25
       NKF: module_nkf
       KAKASI: module_kakasi -ieuc -oeuc -w
-      ChaSen: module_chasen -j -F '%m '
+      茶筌: module_chasen -i e -j -F "%m "
+      和布蕪: module_mecab -Owakati -b 8192
       わかち書き: module_kakasi -ieuc -oeuc -w
-      言語: ja_JP.ujis
+      メッセージの言語: ja_JP.eucJP
+      言語: ja_JP.eucJP
       文字コード: euc
       CONFDIR: /usr/local/etc/namazu
       LIBDIR: /usr/local/share/namazu/pl
       FILTERDIR: /usr/local/share/namazu/filter
       TEMPLATEDIR: ../template
-      対応メディアタイプ:   (27) 
-      未対応メディアタイプ: (5) 必要ツールが $path にないものには (-) を表示 
+      対応メディアタイプ:   (43) 
+      未対応メディアタイプ: (1) 必要ツールが $path にないものには (-) を表示 
         application/excel: excel.pl
+        application/gnumeric: gnumeric.pl
         application/ichitaro5: taro56.pl
         application/ichitaro6: taro56.pl
+        application/ichitaro7: taro7_10.pl
         application/macbinary: macbinary.pl
         application/msword: msword.pl
-      - application/pdf: pdf.pl
-      - application/postscript: postscript.pl
+        application/pdf: pdf.pl
+        application/postscript: postscript.pl
         application/powerpoint: powerpoint.pl
         application/rtf: rtf.pl
+        application/vnd.kde.kivio: koffice.pl
+        application/vnd.kde.kpresenter: koffice.pl
+        application/vnd.kde.kspread: koffice.pl
+        application/vnd.kde.kword: koffice.pl
+        application/vnd.oasis.opendocument.graphics: ooo.pl
+        application/vnd.oasis.opendocument.presentation: ooo.pl
+        application/vnd.oasis.opendocument.spreadsheet: ooo.pl
+        application/vnd.oasis.opendocument.text: ooo.pl
         application/vnd.sun.xml.calc: ooo.pl
         application/vnd.sun.xml.draw: ooo.pl
         application/vnd.sun.xml.impress: ooo.pl
@@ -691,17 +703,19 @@ href="manual.html#mknmz-option">mknmz --help</a>とすると得ら
         application/x-bzip2: bzip2.pl
         application/x-compress: compress.pl
       - application/x-deb: deb.pl
-      - application/x-dvi: dvi.pl
+        application/x-dvi: dvi.pl
         application/x-gzip: gzip.pl
         application/x-js-taro: taro7_10.pl
         application/x-rpm: rpm.pl
-      - application/x-tex: tex.pl
+        application/x-tex: tex.pl
+        application/x-zip: zip.pl
         audio/mpeg: mp3.pl
         message/news: mailnews.pl
         message/rfc822: mailnews.pl
         text/hnf: hnf.pl
         text/html: html.pl
         text/html; x-type=mhonarc: mhonarc.pl
+        text/html; x-type=pipermail: pipermail.pl
         text/plain
         text/plain; x-type=rfc: rfc.pl
         text/x-hdml: hdml.pl
@@ -976,10 +990,10 @@ perl -MNKF -e ''
 <a href="http://www.namazu.org/">Namazu Homepage</a>
 </p>
 <div class="copyright">
-Copyright (C) 2000-2005 Namazu Project. All rights reserved.
+Copyright (C) 2000-2006 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: tutorial.html,v 1.59 2005-11-25 08:37:30 opengl2772 Exp $
+$Id: tutorial.html,v 1.60 2006-01-19 15:59:16 opengl2772 Exp $
 </div>
 <address>
 developers@namazu.org

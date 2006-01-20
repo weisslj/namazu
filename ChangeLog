@@ -4,6 +4,8 @@
 
 	* doc/{en,ja}/tutial.html: for MeCab.
 
+	* pl/time.pl: The mistake of the comment is corrected. 
+
 2006-01-20  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* doc/{en,ja}/manual.html: Update messages.
@@ -9907,4 +9909,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1423 2006-01-20 18:29:29 opengl2772 Exp $
+$Id: ChangeLog,v 1.1424 2006-01-20 20:43:42 opengl2772 Exp $

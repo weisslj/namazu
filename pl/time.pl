@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: time.pl,v 1.5 2004-09-08 13:13:56 usu Exp $
-# Copyright (C) 2004 Tadamasa Teranishi
-#               2004 Namazu Project All rights reserved.
+# $Id: time.pl,v 1.6 2006-01-20 20:43:43 opengl2772 Exp $
+# Copyright (C) 2004-2006 Tadamasa Teranishi
+#               2004-2006 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -35,7 +35,7 @@ use Time::Local;
 #      my $zone = time::timezone($zone{'JST'} * 3600);
 #
 # ctime -> rfc822time :
-#      my $time = "Sun Jan 11 16:38:39 JST 2004";
+#      my $time = "Sun Jan 11 16:38:39 2004";
 #      my $err = time::ctime_to_rfc822time(\$time);
 #
 # "15 Jan 2004 05:09 JST" -> "Thu, 15 Jan 2004 05:09:00 +0900" :

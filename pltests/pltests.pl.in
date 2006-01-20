@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: pltests.pl.in,v 1.9 2006-01-15 19:18:58 opengl2772 Exp $
+# $Id: pltests.pl.in,v 1.10 2006-01-20 15:09:50 opengl2772 Exp $
 # Copyright (C) 2004-2006 Tadamasa Teranishi
 #               2004-2006 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -553,10 +553,12 @@ sub win32_yen_to_slash ($) {
 sub codeconv_to_external($) {
     my ($contref) = @_;
 
-    if (get_lang() =~ /^ja/) {
+    my $lang = get_lang();
+
+    if ($lang =~ /^ja/) {
         my $nkf_opt = "-emXZ1";
 
-        if ($English::OSNAME eq "MSWin32" || $English::OSNAME eq "os2") {
+        if ($lang =~ m/sjis/i) {
             $nkf_opt = "-EsmXZ1";
         }
 
@@ -569,10 +571,12 @@ sub codeconv_to_external($) {
 sub codeconv_to_internal($) {
     my ($contref) = @_;
 
-    if (get_lang() =~ /^ja/) {
+    my $lang = get_lang();
+
+    if ($lang =~ /^ja/) {
         my $nkf_opt = "-emXZ1";
 
-        if ($English::OSNAME eq "MSWin32" || $English::OSNAME eq "os2") {
+        if ($lang =~ m/sjis/i) {
             $nkf_opt = "-SemXZ1";
         }
 

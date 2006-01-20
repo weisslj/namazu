@@ -88,16 +88,16 @@ Namazu は大きくわけて mknmz, namazu, namazu.cgi の三つから構成されています。
 </p>
 <ul>
 <li>mknmz<br> 
-インデックスをあらかじめ作る (Perl で書かれている)
+インデックスをあらかじめ作る。(Perl で書かれている)
 </li>
 
 <li>namazu<br> 
-作成したインデックスを元に検索する<br> 
-コマンド行から利用する。 (C言語で書かれている)
+作成したインデックスを元に検索する。<br> 
+コマンド行から利用する。(C言語で書かれている)
 </li>
 
 <li>namazu.cgi<br>
-作成したインデックスを元に検索する<br> 
+作成したインデックスを元に検索する。<br> 
 CGIとして利用する。(C言語で書かれている)
 </li>
 </ul> 
@@ -229,7 +229,7 @@ CPAN</a></td>
   <a href="http://chasen.org/~taku/software/mecab/">
   工藤 拓</a></td>
   <td><a href="http://chasen.org/~taku/software/mecab/src/">MeCab</a></td>
-  <td>※ experimental support</td>
+  <td>Namazu 2.0.15 から正式対応</td>
 </tr>
 
 <tr>
@@ -243,7 +243,7 @@ CPAN</a></td>
   <a href="http://chasen.org/~taku/software/mecab/bindings.html">
   工藤 拓</a></td>
   <td><a href="http://chasen.org/~taku/software/mecab/bindings/">MeCab</a></td>
-  <td>※ experimental support</td>
+  <td>Namazu 2.0.15 から正式対応</td>
 </tr>
 
 <tr><td>
@@ -265,14 +265,19 @@ Namazu の配布に同梱されています
 <ul>
 <li>
 △ は (日本語の処理をするなら)
-KAKASI/ChaSen のどちらかが必要という意味。
+KAKASI/ChaSen/MeCab のいずれかが必要という意味。
 <table cellspacing="0" cellpadding="3" border="1">
-<tr><td>両方用意しておいた場合</td><td>
-(無指定ではわかち書きに KAKASI を使うが、茶筌も
--c オプションをするだけで使用できる)</td>
+<tr><td>全て用意しておいた場合</td><td>
+(無指定ではわかち書きに KAKASI を使いますが、
+茶筌は -c オプション、和布蕪は -b オプションを
+指定するだけで使用できます。)</td>
 </tr>
-<tr><td>片方しか用意していない場合</td><td>
-./configure の時点で KAKASI/ChaSen のどちらを使うかが選ばれます。</td>
+<tr><td>ひとつ以上用意している場合</td><td>
+./configure の時点で KAKASI/ChaSen/MeCab のいずれを使うかが選ばれます。
+(KAKASI を用意している場合は -k オプション、
+茶筌を用意している場合は -c オプション、
+和布蕪を用意している場合は -b オプションを
+指定するだけで使用できます。)</td>
 </tr>
 </table>
 </li>
@@ -288,23 +293,13 @@ Perl モジュール化で、2.0 の高速化機能を生かすために必要です。
 問題がなければ入れておいた方がいいでしょう。
 </li>
 
-<li>
-※ MeCabを使用する場合 (Namazu 2.0.13 から実験的にサポート)<br>
-現在は、mknmz の設定ファイル mknmzrc をカスタマイズして使用する必要があります。
-コマンドライン版の mecab を使用する場合は、
-$WAKATI = "mecab -O wakati";
-Perlモジュール版 MeCab を使用する場合は、
-$WAKATI = "module_mecab";
-と書く必要があります。
-ただし、MeCab は現在開発段階にあり、仕様そのものが不安定です。御了承ください。
-</li>
 
 <li>
-namazu 2.0 以降では ChaSen2 にだけ対応しています。
+Namazu 2.0 以降では ChaSen2 にだけ対応しています。
 </li>
 
 
-<li>「KAKASI」か「茶筌」か ---- 大ざっぱに言うと<br>
+<li>「KAKASI」か「茶筌」か「和布蕪」 ---- 大ざっぱに言うと<br>
 KAKASIの方が簡単 (安定)で速い。<br>
 茶筌の方が、
 少し遅いかもしれないがひらがなだけの文の取扱が出来る
@@ -322,11 +317,11 @@ ranlib /usr/local/lib/libchasen.a # ここはシステムに応じて
 
 <li>×となっている File::MMagic は namazu の配布に同梱されています。
 </li>
-<li> namazu 自体の ./configure についてはINSTALL-ja
+<li>Namazu 自体の ./configure についてはINSTALL-ja
 を見てください。
 </li>
-<li>以上用意した Kakasi や ChaSen は、
-namazu を ./configure する時に、
+<li>以上用意した Kakasi や ChaSen や MeCab は、
+Namazu を ./configure する時に、
 ($PATH 変数の設定によって) 利用出来るようになっている必要があります。
 後から追加した場合には、./configure からやり直して下さい。
 </li>
@@ -585,7 +580,7 @@ mknmz は次のように実行します。
       ファイル/秒:         0.75
       システム:            linux
       Perl:                5.00503
-      Namazu:              2.0.X
+      Namazu:              2.1.X
 
 </pre>
 
@@ -659,7 +654,7 @@ href="manual.html#mknmz-option">mknmz --help</a>とすると得ら
 
       読み込んだ設定ファイル: /home/foobar/.mknmzrc
       システム: linux
-      Namazu: 2.0.X
+      Namazu: 2.1.X
       Perl: 5.00503
       File-MMagic: 1.25
       NKF: module_nkf
@@ -949,6 +944,7 @@ Namazu に必要な Perl のモジュールが入っているかどうかは
 <pre>
 perl -MText::Kakasi -e ''
 perl -MText::ChaSen -e ''
+perl -MMeCab -e ''
 perl -MNKF -e ''
 </pre>
 のように入力した時に、何も表示されなければいい。
@@ -993,7 +989,7 @@ perl -MNKF -e ''
 Copyright (C) 2000-2006 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: tutorial.html,v 1.60 2006-01-19 15:59:16 opengl2772 Exp $
+$Id: tutorial.html,v 1.61 2006-01-20 18:29:31 opengl2772 Exp $
 </div>
 <address>
 developers@namazu.org

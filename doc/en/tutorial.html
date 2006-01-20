@@ -232,7 +232,7 @@ CPAN</a></td>
   <a href="http://chasen.org/~taku/software/mecab/">
   Taku Kudo</a></td>
   <td><a href="http://chasen.org/~taku/software/mecab/src/">MeCab</a></td>
-  <td>*** experimental support</td>
+  <td>from Namazu 2.0.15</td>
 </tr>
 
 <tr>
@@ -246,7 +246,7 @@ CPAN</a></td>
   <a href="http://chasen.org/~taku/software/mecab/bindings.html">
   Taku Kudo</a></td>
   <td><a href="http://chasen.org/~taku/software/mecab/bindings/">MeCab</a></td>
-  <td>*** experimental support</td>
+  <td>from Namazu 2.0.15</td>
 </tr>
 
 <tr><td>
@@ -279,7 +279,7 @@ install Perl modules, unless you have particular difficulties in doing so.
 
 <li>File::MMagic indicated by [included] is packaged in Namazu distribution.
 </li>
-<li>Please refer to INSTALL for ./configure in namazu distribution.
+<li>Please refer to INSTALL for ./configure in Namazu distribution.
 </li>
 
 </ul>
@@ -287,29 +287,22 @@ install Perl modules, unless you have particular difficulties in doing so.
 (Notes listed below are for Japanese processing only.)
 </p>
 <ul>
-<li>Nkf, KAKASI, ChaSen, NKF, Text::Kakasi and Text::ChanSen
+<li>Nkf, KAKASI, ChaSen, NKF, Text::Kakasi, Text::ChanSen and MeCab
 are required only if you want to use Namazu for handling
 Japanese documents. If not, you don't need them.
 </li>
 
 <li> Checked as
-(**) means that you need either KAKASI or ChaSen for Japanese processing.
+(**) means that you need either KAKASI, ChaSen or MeCab for Japanese processing.
 <table cellspacing="0" cellpadding="3" border="1">
-<tr><td>If you have both ...</td><td>
-For segmentation, KAKASI is used by default, however, ChaSen can be used by specifying -c option.</tr>
-<tr><td>If you have only one ... </td><td>
-When executing ./configure, Namazu selects which one to use.</tr>
+<tr><td>If you have everything ...</td><td>
+For segmentation, KAKASI is used by default, however, ChaSen can be used by specifying -c option. MeCab can be used by specifying -b option.</tr>
+<tr><td>If you have one or more ... </td><td>
+When executing ./configure, Namazu selects which one to use.
+(KAKASI can be used by specifying -k option. 
+ChaSen can be used by specifying -c option. 
+MeCab can be used by specifying -b option.)</tr>
 </table>
-</li>
-
-<li>using MeCab (***), it supports experimentally above Namazu 2.0.13.<br>
-It is necessary to customize mknmzrc.
-If you want to use MeCab of command line version,
-write it as $WAKATI = "mecab -O wakati"; .
-And, if you want to use MeCab of Perl module version,
-write it as $WAKATI = "module_mecab"; .
-However, MeCab is in a development stage now 
-and its specification is unstable. 
 </li>
 
 <li>
@@ -317,7 +310,7 @@ Namazu 2.0x requires ChaSen 2.x.
 The older version of ChaSen 1.x will not work with Namazu 2.0.x.
 </li>
 
-<li>Which to choose "KAKASI" or "ChaSen" --- in a nutshell<br>
+<li>Which to choose "KAKASI", "ChaSen" or "MeCab" --- in a nutshell<br>
 KAKASI is easier and faster.<br>
 ChaSen is slightly slower but has some advantage like better handling
 of Hiragana-only-sentence.<br>
@@ -332,7 +325,7 @@ ranlib /usr/local/lib/libchasen.a # depending on your system
 manually.
 </li>
 
-<li>Kakasi or ChaSen mentioned above should be
+<li>Kakasi, ChaSen or MeCab mentioned above should be
 visible when you run ./configure through $PATH variable. If you add those
 packages later, you have to start over from ./configure.
 </li>
@@ -584,7 +577,7 @@ please refer to <a href="#japanese">Japanese Environment</a>.
     File/Sec:            1.00
     System:              linux
     Perl:                5.00503
-    Namazu:              2.0.X
+    Namazu:              2.1.X
 </pre>
 
 <ul>
@@ -646,7 +639,7 @@ time.
 
     Loaded rcfile: /home/foobar/.mknmzrc
     System: linux
-    Namazu: 2.0.X
+    Namazu: 2.1.X
     Perl: 5.00503
     File-MMagic: 1.25
     NKF: module_nkf
@@ -936,6 +929,7 @@ necessary for Namazu is installed, do
 <pre>
 perl -MText::Kakasi -e ''
 perl -MText::ChaSen -e ''
+perl -MMeCab -e ''
 perl -MNKF -e ''
 </pre>
 You can take advantage of Perl modules if nothing is
@@ -981,7 +975,7 @@ modules will be used.
 Copyright (C) 2000-2006 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: tutorial.html,v 1.23 2006-01-19 15:58:24 opengl2772 Exp $
+$Id: tutorial.html,v 1.24 2006-01-20 18:29:30 opengl2772 Exp $
 </div>
 <address>
 developers@namazu.org

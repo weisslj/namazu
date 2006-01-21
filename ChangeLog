@@ -1,3 +1,11 @@
+2006-01-22  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+	* filter/win32/ichitaro456.pl: It changes so that util::syscmd() 
+	may be used.
+
+	* pl/util.pl (syscmd): The passing delimitation of Windows was
+	changed to '\'. 
+
 2006-01-21  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* pltests/pltests.pl.in (codeconv_to_*): for Cygwin.
@@ -9909,4 +9917,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1424 2006-01-20 20:43:42 opengl2772 Exp $
+$Id: ChangeLog,v 1.1425 2006-01-21 19:55:40 opengl2772 Exp $

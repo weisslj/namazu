@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: ichitaro456.pl,v 1.14 2005-06-06 07:06:40 opengl2772 Exp $
+# $Id: ichitaro456.pl,v 1.15 2006-01-21 19:55:41 opengl2772 Exp $
 # Copyright (C) 1999 Ken-ichi Hirose,
-#               2000-2005 Namazu Project All rights reserved.
+#               2000-2006 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -110,11 +110,21 @@ sub filter ($$$$$) {
     my $cwd = getcwd();
     chdir("$var::OUTPUT_DIR");
     {
-        my $fh_cmd = util::efopen("$ichitaro456 -k -s -p NMZjstxt$ext |");
+        my $text = "";
 
-        $$cont = "";
-        while (<$fh_cmd>) {$$cont .= $_;}
-        util::fclose($fh_cmd);
+        my @opts = ("-k", "-s", "-p");
+        my @cmd = ($ichitaro456, @opts, "NMZjstxt$ext");
+
+        my $status = util::syscmd(
+            command => \@cmd,
+            option => {
+                "stdout" => \$text,
+                "stderr" => "/dev/null",
+                "mode_stdout" => "wt",
+                "mode_stderr" => "wt",
+            },
+        );
+        $$cont = $text;
     }
     chdir("$cwd");
 

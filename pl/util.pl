@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.38 2006-01-15 19:18:58 opengl2772 Exp $
+# $Id: util.pl,v 1.39 2006-01-21 19:55:41 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2005 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -403,7 +403,7 @@ sub syscmd(%)
 
     if ($English::OSNAME eq "MSWin32" || $English::OSNAME eq "os2") {
 	foreach my $arg (@args) {
-#	    $arg =~ s!/!\\!g;
+	    $arg =~ s!/!\\!g;
 	}
         if ($args[0] =~ m/\.bat$/i) {
             my $conts = util::readfile($args[0]);
@@ -496,7 +496,7 @@ sub syscmd(%)
 
                 my $file = $option{stdout};
                 if ($English::OSNAME eq "MSWin32" || $English::OSNAME eq "os2") {
-#                    $file =~ s!/!\\!g;
+                    $file =~ s!/!\\!g;
                 }
                 if (!open(OUT, "$mode_stdout$file")) {
                     warn "Can not open file. : $file";
@@ -527,7 +527,7 @@ sub syscmd(%)
     
                 my $file = $option{stderr};
                 if ($English::OSNAME eq "MSWin32" || $English::OSNAME eq "os2") {
-#                    $file =~ s!/!\\!g;
+                    $file =~ s!/!\\!g;
                 }
                 if (!open(OUT, "$mode_stderr$file")) {
                     warn "Can not open file. : $file";

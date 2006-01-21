@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: pltests.pl.in,v 1.10 2006-01-20 15:09:50 opengl2772 Exp $
+# $Id: pltests.pl.in,v 1.11 2006-01-21 20:02:37 opengl2772 Exp $
 # Copyright (C) 2004-2006 Tadamasa Teranishi
 #               2004-2006 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -386,7 +386,7 @@ sub syscmd(%)
                 }
                 $ENV{'COMSPEC'} = $comspec;
             }
-            @args = ($comspec, "/c", @args);
+            @args = ($comspec, "/d", "/x", "/c", @args);
         }
     } else {
         for $arg (@args) {

@@ -42,4 +42,16 @@ EXTRA_DIST  =   acrobat3.pdf \
 	        apachecache.txt \
 	        hdml.hdml \
 		ID3v1.mp3 \
-		ID3v2.mp3
+		ID3v2.mp3 \
+		kivio.flw \
+		kpresenter.kpr \
+		kspread.ksp \
+		kword.kwd \
+		gnumeric.gnumeric \
+		oocalc.ods \
+		oodraw.odg \
+		ooimpress.odp \
+		oowriter.odt \
+		visio2002.vsd \
+		zip.zip
+

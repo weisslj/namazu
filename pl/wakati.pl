@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: wakati.pl,v 1.22 2006-01-12 17:42:03 opengl2772 Exp $
+# $Id: wakati.pl,v 1.23 2006-01-23 09:18:01 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
-# Copyright (C) 2000-2005 Namazu Project All rights reserved.
+# Copyright (C) 2000-2006 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -95,7 +95,7 @@ sub wakatize_japanese_sub ($) {
 		$t->DESTROY() if defined $t;
 	    }; 
             $str = $$content;
-	    $str =~ s/([\x80-\xff]+)/{my $s = $1; my $text = $t->parse($s); " $text ";}/ge;
+	    $str =~ s/([\x80-\xff]+)/{my $text = $t->parse($1); " $text ";}/ge;
         } elsif ($module eq "builtin") {
             $str = builtinwakati::wakati($content);
 	} else {

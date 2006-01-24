@@ -1,10 +1,10 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.169 2005-12-06 13:47:41 opengl2772 Exp $
+# $Id: mknmz.in,v 1.170 2006-01-24 10:03:05 opengl2772 Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
-# Copyright (C) 2000-2005 Namazu Project All rights reserved.
+# Copyright (C) 2000-2006 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -1557,7 +1557,7 @@ sub show_usage () {
 
     my $usage = $usage::USAGE;
     $usage = _($usage);
-    printf "$usage", $var::VERSION, $var::MAILING_ADDRESS;
+    printf "$usage", $var::VERSION, $var::TRAC_URI, $var::MAILING_ADDRESS;
 }
 
 sub show_mini_usage () {
@@ -2533,6 +2533,7 @@ muda($conf::ON_MEMORY_MAX,
      $conf::DENY_DDN,
      $var::SupportedScheme, $var::RECURSIVE_SCHEME,
      $var::SupportedArchive, $var::RECURSIVE_ARCHIVE,
+     $var::TRAC_URI,
      );
 
 sub muda {}

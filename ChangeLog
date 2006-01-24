@@ -8,6 +8,8 @@
 
 	* po/{*.po, namazu.pot}: Ditto.
 
+        * doc/{en, ja}/manual.html: Ditto.
+
 2006-01-23  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* pl/wakati.pl: For MeCab-perl-0.90rc8.
@@ -9937,4 +9939,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1430 2006-01-24 09:22:08 opengl2772 Exp $
+$Id: ChangeLog,v 1.1431 2006-01-24 09:41:41 opengl2772 Exp $

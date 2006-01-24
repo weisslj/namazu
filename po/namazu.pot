@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: bugs@namazu.org\n"
-"POT-Creation-Date: 2006-01-20 01:20+0900\n"
+"POT-Creation-Date: 2006-01-24 18:12+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -234,14 +234,15 @@ msgid ""
 "        --norc           do not read the personal initialization files.\n"
 "        --               Terminate option list.\n"
 "\n"
-"Report bugs to <%s>.\n"
-msgstr ""
-
-#: src/usage.c:92
-msgid "Usage: namazu [options] <query> [index]...\n"
+"Report bugs to <%s>\n"
+"or <%s>.\n"
 msgstr ""
 
 #: src/usage.c:93
+msgid "Usage: namazu [options] <query> [index]...\n"
+msgstr ""
+
+#: src/usage.c:94
 msgid "Try `namazu --help' for more information.\n"
 msgstr ""
 
@@ -799,10 +800,11 @@ msgid ""
 "      --norc               do not read the personal initialization files.\n"
 "      --                   Terminate option list.\n"
 "\n"
-"Report bugs to <%s>.\n"
+"Report bugs to <%s>\n"
+"or <%s>.\n"
 msgstr ""
 
-#: pl/var.pl.in:131
+#: pl/var.pl.in:132
 msgid "No title in original"
 msgstr ""
 

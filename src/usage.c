@@ -2,10 +2,10 @@
  * 
  * usage.c -
  * 
- * $Id: usage.c,v 1.30 2005-11-10 22:01:11 opengl2772 Exp $
+ * $Id: usage.c,v 1.31 2006-01-24 09:22:08 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2005 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2006 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -79,10 +79,11 @@ Usage: namazu [options] <query> [index]... \n\
         --norc           do not read the personal initialization files.\n\
         --               Terminate option list.\n\
 \n\
-Report bugs to <%s>.\n\
+Report bugs to <%s>\n\
+or <%s>.\n\
 ");
 
-    printf(usage, VERSION, MAILING_ADDRESS);
+    printf(usage, VERSION, TRAC_URI, MAILING_ADDRESS);
 }
 
 

@@ -1,7 +1,7 @@
 # -*- Perl -*-
-# $Id: usage.pl,v 1.36 2005-10-15 07:55:38 usu Exp $
+# $Id: usage.pl,v 1.37 2006-01-24 09:20:16 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
-# Copyright (C) 2000-2005 Namazu Project All rights reserved.
+# Copyright (C) 2000-2006 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -95,7 +95,8 @@ Miscellaneous:
       --norc               do not read the personal initialization files.
       --                   Terminate option list.
 
-Report bugs to <%s>.
+Report bugs to <%s>
+or <%s>.
 ");
 
 ##

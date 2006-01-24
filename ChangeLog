@@ -1,3 +1,9 @@
+2006-01-25  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+	* configure.in: Add TRAC_URI.
+
+	* pl/{usage.pl, var.pl.in}: Ditto.
+
 2006-01-23  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* pl/wakati.pl: For MeCab-perl-0.90rc8.
@@ -9927,4 +9933,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1428 2006-01-23 09:17:59 opengl2772 Exp $
+$Id: ChangeLog,v 1.1429 2006-01-24 09:20:15 opengl2772 Exp $

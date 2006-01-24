@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: codeconv.pl,v 1.27 2005-06-03 04:23:49 opengl2772 Exp $
+# $Id: codeconv.pl,v 1.28 2006-01-24 09:20:16 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
-# Copyright (C) 2000 Namazu Project All rights reserved.
+# Copyright (C) 2000-2005 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify

@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.170 2006-01-09 17:59:06 opengl2772 Exp $
+dnl $Id: configure.in,v 1.171 2006-01-24 09:17:15 opengl2772 Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -31,6 +31,13 @@ dnl *
 MAILING_ADDRESS="bug-namazu@namazu.org"
 AC_SUBST(MAILING_ADDRESS)
 AC_DEFINE_UNQUOTED(MAILING_ADDRESS, "$MAILING_ADDRESS", [Mailing address])
+
+dnl *
+dnl * Trac URI.
+dnl *
+TRAC_URI="http://www.namazu.org/trac-namazu/trac.cgi"
+AC_SUBST(TRAC_URI)
+AC_DEFINE_UNQUOTED(TRAC_URI, "$TRAC_URI", [Trac URI])
 
 dnl *
 dnl * Namazu Copyright.

@@ -279,7 +279,7 @@ msgstr ""
 "        --               Terminate option list.\n"
 "\n"
 "Reporta los errores a <%s>\n"
-"or <%s>.\n"
+"o <%s>.\n"
 
 #: src/usage.c:93
 msgid "Usage: namazu [options] <query> [index]...\n"
@@ -951,7 +951,7 @@ msgstr ""
 "      --                   Terminate option list.\n"
 "\n"
 "Reporta los errores a <%s>\n"
-"or <%s>.\n"
+"o <%s>.\n"
 
 #: pl/var.pl.in:132
 msgid "No title in original"

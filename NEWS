@@ -1,3 +1,30 @@
+Overview of Changes in Namazu 2.0.15 - Jan. XX, 2006
+
+* The mistake of the document concerning ISO-8859-* is corrected.
+* RedHat software namazu.spec was taken in.
+  The unnecessary patch was deleted.
+* Include File::MMagic 1.25.
+* Support MeCab.
+* Add -b and --use-mecab options for mknmz.
+* Add --norc option for mknmz and namazu.
+* Add --decode-base64 option for mknmz.
+* Add new filters (Gnumeric, Koffice, Mainman/Pipermail, Zip, Visio).
+* Add new directives for mknmzrc (MECAB, DENY_DDN).
+  To skip when filename is DDN.
+* Add sorting function by date of field.
+* Added new files (nmzcat, nmzegrep).
+* Adapt new filter programs (wvWare 1.0.3, xlhtml 0.5.1, xpdf 3.01).
+* For Windows of filter (msword.pl, excel.pl, powerpoint.pl,
+  postscript.pl, etc...).
+* Ole filter renewal.
+* ';' can have been used for the delimiter of QUERY_STRING.
+* Add the Perl version test program (pltests).
+* Fix some bugs.
+
+Overview of Changes in Namazu 2.0.14 - December 15, 2004
+
+* Correction for JVN#904429FE.
+
 Overview of Changes in Namazu 2.0.13 - April 14, 2004
 
 * Include File::MMagic 1.20.

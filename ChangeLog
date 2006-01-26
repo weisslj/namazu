@@ -1,3 +1,11 @@
+2006-01-26  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+	* NEWS: updated.
+
+	* pltests/{towin.pl, README-ja.txt}: updated.
+
+	* filter/pipermail.pl: The mistake on a day of the week is corrected. 
+
 2006-01-24  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* configure.in: Add TRAC_URI.
@@ -9945,4 +9953,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1433 2006-01-24 13:47:08 opengl2772 Exp $
+$Id: ChangeLog,v 1.1434 2006-01-26 12:47:01 opengl2772 Exp $

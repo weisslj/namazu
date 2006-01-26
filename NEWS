@@ -16,7 +16,7 @@ Overview of Changes in Namazu 2.0.15 - Jan. XX, 2006
 * Adapt new filter programs (wvWare 1.0.3, xlhtml 0.5.1, xpdf 3.01).
 * For Windows of filter (msword.pl, excel.pl, powerpoint.pl,
   postscript.pl, etc...).
-* Ole filter renewal.
+* Ole control filter renewal.
 * ';' can have been used for the delimiter of QUERY_STRING.
 * Add the Perl version test program (pltests).
 * Fix some bugs.

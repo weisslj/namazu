@@ -1,7 +1,7 @@
 #
 # -*- Perl -*-
-# $Id: pipermail.pl,v 1.12 2005-09-01 13:24:39 opengl2772 Exp $
-# Copyright (C) 2004-2005 Namazu Project All rights reserved.
+# $Id: pipermail.pl,v 1.13 2006-01-26 12:38:04 opengl2772 Exp $
+# Copyright (C) 2004-2006 Namazu Project All rights reserved.
 #
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -231,6 +231,10 @@ sub time_to_rfc822time ($) {
 
         $timezone = gettimezone() unless(defined $timezone);
         $timezone = time::normalize_rfc822timezone($timezone);
+
+        my $mon = $month_names{$month};
+        $week = ("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat")
+                                [time::getwday($year, $mon + 1, $day)];
 
         $$conf = sprintf("%s, %2.2d %s %d %2.2d:%2.2d:%2.2d %s\n",
             $week, $day, $month, $year, $hour, $min, $sec, $timezone);

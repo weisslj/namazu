@@ -31,6 +31,8 @@ namazu-1.pl
 namazu-2.pl
 namazu-3.pl
 namazu-4.pl
+namazu-5.pl
+namazu-6.pl
 namazu-7.pl
 namazu-8.pl
 namazu-9.pl
@@ -57,7 +59,6 @@ kakasi-2.pl
 kakasi-3.pl
 
 pltests.pl テスト用ライブラリ
-towin.pl Windows 用 perl プログラム作成用(Only Windows)
 
 ==============================================================
 
@@ -71,19 +72,14 @@ towin.pl Windows 用 perl プログラム作成用(Only Windows)
 
 - Windows 環境
 
-  C:\namazu\pltests> alltests
-  または
   C:\namazu\pltests> perl alltests.bat
 
 [[ 注意 ]]
 
 - 事前に Namazu をインストールしている必要があります。
+- 環境変数 HOME が設定されている必要があります。
 - Windows では、環境変数 pkgdatadir が設定されている必要があります。
 
   例) C:\> set pkgdatadir=C:\namazu\share\namazu
 
-- Windows では、予め towin.pl により Windows 用ファイルを作成する必要が
-  あります。
-
-  C:\namazu\pltests> perl towin.pl
-
+- 事前に NKF の Perl モジュールをインストールしている必要があります。

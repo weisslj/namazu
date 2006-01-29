@@ -1,3 +1,8 @@
+2006-01-29  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * filter/mailnews.pl (mailnews_filter): The argument is changed to
+        the same number so far.
+
 2006-01-26  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* NEWS: updated.
@@ -9953,4 +9958,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1434 2006-01-26 12:47:01 opengl2772 Exp $
+$Id: ChangeLog,v 1.1435 2006-01-29 13:27:41 opengl2772 Exp $

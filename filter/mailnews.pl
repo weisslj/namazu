@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mailnews.pl,v 1.43 2005-12-08 08:40:00 opengl2772 Exp $
+# $Id: mailnews.pl,v 1.44 2006-01-29 13:27:42 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu ,
 #               2001,2003-2005 Namazu Project All rights reserved.
@@ -32,6 +32,7 @@ require 'html.pl';
 require 'document.pl';
 
 my $has_base64 = undef;
+my $htmlmail = "";
 
 sub mediatype() {
     return ('message/rfc822', 'message/news');
@@ -67,7 +68,10 @@ sub filter ($$$$$) {
     util::vprint("Processing mail/news file ...\n");
 
     uuencode_filter($cont);
-    mailnews_filter($cont, $weighted_str, $headings, $fields);
+    mailnews_filter($cont, $weighted_str, $fields);
+    if ($htmlmail) {
+       html::html_filter($cont, $weighted_str, $fields, $headings);
+    }
     mailnews_citation_filter($cont, $weighted_str);
 
     gfilter::line_adjust_filter($cont);
@@ -81,12 +85,13 @@ sub filter ($$$$$) {
 
 # Original of this code was contributed by <furukawa@tcp-ip.or.jp>. 
 sub mailnews_filter ($$$) {
-    my ($contref, $weighted_str, $headings, $fields) = @_;
+    my ($contref, $weighted_str, $fields) = @_;
 
     my $boundary = "";
     my $line     = "";
     my $partial  = 0;
-    my $htmlmail = "";
+
+    $htmlmail = "";
 
     $$contref =~ s/^\s+//;
     # Don't handle if first like does'nt seem like a mail/news header.
@@ -168,9 +173,6 @@ sub mailnews_filter ($$$) {
 
 	multipart_process($contref, $boundary, $weighted_str, $fields);
 
-    }
-    if ($htmlmail) {
-       html::html_filter($contref, $weighted_str, $fields, $headings);
     }
 }
 

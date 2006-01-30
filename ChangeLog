@@ -1,3 +1,7 @@
+2006-01-30  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * doc/{en, ja}/manual.html: Add TRAC_URI.
+
 2006-01-29  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * filter/mailnews.pl (mailnews_filter): The argument is changed to
@@ -9958,4 +9962,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1435 2006-01-29 13:27:41 opengl2772 Exp $
+$Id: ChangeLog,v 1.1436 2006-01-30 01:45:22 opengl2772 Exp $

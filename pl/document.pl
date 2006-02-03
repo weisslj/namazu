@@ -2,10 +2,10 @@
 # -*- Perl -*-
 # document.pl - class for document
 #
-# $Id: document.pl,v 1.4 2005-09-10 13:30:51 usu Exp $
+# $Id: document.pl,v 1.5 2006-02-03 02:42:14 opengl2772 Exp $
 #
 # Copyright (C) 2004 Yukio USUDA All rights reserved.
-# Copyright (C) 2000-2004 Namazu Project All rights reversed.
+# Copyright (C) 2000-2006 Namazu Project All rights reversed.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -26,6 +26,7 @@
 package mknmz::document;
 use strict;
 use English;
+use File::Copy;
 require 'gfilter.pl';
 require 'filter.pl';
 require 'gettext.pl';
@@ -296,9 +297,11 @@ sub _check_content {
     my $file_size;
     if (!defined ${$self->{'_contentref'}}) {
 	my $cfile = $self->{'_orig_filename'};
-	# for handling a filename which contains Shift_JIS code
-	if ($English::OSNAME eq "MSWin32" 
-	    && $cfile =~ /[\x81-\x9f\xe0-\xef][\x40-\x7e\x80-\xfc]|[\x20\xa1-\xdf]/) 
+        # for handling a filename which contains Shift_JIS code for Windows.
+        # for handling a filename which contains including space.
+        if (($cfile =~ /\s/) ||
+            ($English::OSNAME eq "MSWin32"
+            && $cfile =~ /[\x81-\x9f\xe0-\xef][\x40-\x7e\x80-\xfc]|[\x20\xa1-\xdf]/) )
 	{
 	    my $tmpfile = util::tmpnam("NMZ.win32");
 	    unlink $tmpfile if (-e $tmpfile);
@@ -347,7 +350,7 @@ sub _check_file ($$$$$) {
 	$msg = _("system error occurred! ")."($mtype)"._(" skipped.");
     } elsif (! util::isurl($cfile) && ! -e $cfile) {
 	$msg = _("does NOT EXIST! skipped.");
-    } elsif (! util::isurl($cfile) && ! -r $cfile) {
+    } elsif (! util::isurl($cfile) && ! util::canopen($cfile)) {
 	$msg = _("is NOT READABLE! skipped.");
     } elsif ($text_size == 0 || $cfile_size == 0) {
 	$msg = _("is 0 size! skipped.");

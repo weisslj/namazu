@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.170 2006-01-24 10:03:05 opengl2772 Exp $
+# $Id: mknmz.in,v 1.171 2006-02-03 02:42:14 opengl2772 Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2006 Namazu Project All rights reserved.
@@ -514,7 +514,7 @@ sub namazu_core ($$$$$$$$$$) {
 
     my $err = undef;
     my ($cfile_size, $text_size, $kanji, $mtype);
-    unless (util::isurl($cfile) || (-f $cfile && -r $cfile)){
+    unless (util::isurl($cfile) || (-f $cfile && util::canopen($cfile))){
 	($cfile_size, $text_size, $kanji, $mtype) = (0, 0, 0, 0);
     } else {
 
@@ -1461,7 +1461,7 @@ sub add_target ($\@\%) {
 
     $counts_ref->{'possible'}++;
 
-    unless (util::isurl($target) || -r $target) {
+    unless (util::isurl($target) || util::canopen($target)) {
         util::vprint(sprintf(_("Unreadable:	%s"), $target));
 	$counts_ref->{'excluded'}++;
 	return;

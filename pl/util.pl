@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.39 2006-01-21 19:55:41 opengl2772 Exp $
+# $Id: util.pl,v 1.40 2006-02-03 02:42:14 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2005 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -577,6 +577,24 @@ sub win32_yen_to_slash ($) {
                 s!([\x81-\x9f\xe0-\xef][\x40-\x7e\x80-\xfc]|[\x01-\x7f])!
                 $1 eq "\\" ? "/" : $1!gex;
     }
+}
+
+# Substitution of "-r" that doesn't correspond to ACL of NTFS
+sub canopen($)
+{
+    my ($file) = @_;
+
+    my $fh;
+
+    return (-r $file) if ($English::OSNAME ne "MSWin32");
+
+    $fh = new IO::File $file, "r";
+
+    return 0 if (!defined $fh);
+
+    $fh->close();
+
+    return 1;
 }
 
 1;

@@ -1,6 +1,10 @@
+2006-03-10  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+	* pl/wakati.pl: For MeCab-perl-0.90rc10.
+
 2006-02-03  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
-        * pl/util.c: Add canopen(). Substitution of "-r" that doesn't
+        * pl/util.pl: Add canopen(). Substitution of "-r" that doesn't
         correspond to ACL of NTFS
 
         * pl/document.c, scripts/mknmz.in: Ditto.
@@ -9972,4 +9976,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1437 2006-02-03 02:42:12 opengl2772 Exp $
+$Id: ChangeLog,v 1.1438 2006-03-10 13:13:40 opengl2772 Exp $

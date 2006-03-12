@@ -1,9 +1,9 @@
 /*
  * i18n.c -
- * $Id: i18n.c,v 1.32 2003-03-21 13:30:12 opengl2772 Exp $
+ * $Id: i18n.c,v 1.33 2006-03-12 21:24:01 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000,2001 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2006 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -51,6 +51,7 @@
 
 static const char *guess_category_value ( const char *categoryname );
 static char *get_lang_by_category ( const char *categoryname );
+static int _purification_lang( char *lang, size_t n );
 
 
 /* The following is (partly) taken from the gettext package.
@@ -95,12 +96,21 @@ guess_category_value (const char *categoryname)
 static char *
 get_lang_by_category(const char *categoryname) 
 {
-    char *lang;
-    lang = (char *)guess_category_value(categoryname);
-    if (lang == NULL)
-	return "C";
-    else
-	return lang;
+    static char lang[BUFSIZE] = "";
+    char *value;
+
+    value = (char *)guess_category_value(categoryname);
+    if (value == NULL) {
+        return "C";
+    } else {
+        strncpy(lang, value, BUFSIZE - 1);
+        lang[BUFSIZE - 1] = '\0';
+        _purification_lang(lang, BUFSIZE);
+        if (lang[0] == '\0') {
+            return "C";
+        }
+        return lang;
+    }
 }
 
 /*
@@ -110,9 +120,13 @@ get_lang_by_category(const char *categoryname)
  */
 
 char *
-nmz_set_lang(const char *lang)
+nmz_set_lang(const char *value)
 {
+    static char lang[BUFSIZE] = "";
     const char* env;
+
+    strncpy(lang, value, BUFSIZE - 1);
+    _purification_lang(lang, BUFSIZE);
 
     env = guess_category_value("LC_MESSAGES");
     if (env == NULL && *lang != '\0') {
@@ -166,11 +180,13 @@ nmz_choose_msgfile_suffix(const char *pfname,  char *lang_suffix)
     FILE *fp;
     int baselen;
     char fname[BUFSIZE] = "";
+    char suffix[BUFSIZE] = "";
 
     strncpy(fname, pfname, BUFSIZE - 1);
     baselen = strlen(fname);
     strncat(fname, ".", BUFSIZE - strlen(fname) - 1);
-    strncat(fname, nmz_get_lang(), BUFSIZE - strlen(fname) - 1);
+    nmz_delete_since_path_delimitation(suffix, nmz_get_lang(), BUFSIZE);
+    strncat(fname, suffix, BUFSIZE - strlen(fname) - 1);
 
     /* 
      * Trial example:
@@ -207,4 +223,34 @@ nmz_choose_msgfile_suffix(const char *pfname,  char *lang_suffix)
     return FAILURE;
 }
 
+/*
+ *   purification language.
+ *     [A-Za-z][A-Za-z0-9_,+@\-\.=]*
+ *     (ex. ja_JP.eucJP, ja_JP.SJIS, C)
+ */
+static int _purification_lang(char *lang, size_t n)
+{
+    char *p;
 
+    p = lang;
+
+    /*   [A-Za-z][A-Za-z0-9_,+@\-\.=]*   */
+    if ((*p >= 'A' && *p <= 'Z') || (*p >= 'a' && *p <= 'z')) {
+        p++;
+        while(*p) {
+            if ((*p >= 'A' && *p <= 'Z') || (*p >= 'a' && *p <= 'z')
+            || *p == '_' || *p == ',' || *p == '+' || *p == '@' 
+            || *p == '-' || *p == '.' || *p == '='
+            ) {
+            } else {
+                *p = '\0';
+                break;
+            }
+            p++;
+        }
+    } else {
+        *p = '\0';
+    }
+
+    return 1;
+}

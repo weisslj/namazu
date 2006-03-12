@@ -1,9 +1,9 @@
 /*
  * 
- * $Id: util.c,v 1.89 2005-07-21 08:24:32 opengl2772 Exp $
+ * $Id: util.c,v 1.90 2006-03-12 21:24:01 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000,2001 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2006 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -588,3 +588,30 @@ nmz_is_file_exists(const char *fname)
     return stat(fname, &fstatus) == 0;
 }
 
+/*
+ *   for directory traversal issue.
+ *   Must be encoded in EUC-JP encoding.
+ */
+char *
+nmz_delete_since_path_delimitation(char *dest, const char *src, size_t n)
+{
+    char *p;
+
+    if (n < 1) {
+        return dest;
+    }
+
+    strncpy(dest, src, n - 1);
+    dest[n - 1] = '\0';
+
+    p = dest;
+    while(*p) {
+        if (*p == '/' || *p == '\\') {
+            *p = '\0';
+            break;
+        }
+        p++;
+    }
+
+    return dest;
+}

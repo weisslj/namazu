@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.104 2005-10-13 17:48:27 opengl2772 Exp $
+ * $Id: output.c,v 1.105 2006-03-12 21:24:01 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2004 Namazu Project All rights reserved.
@@ -322,11 +322,13 @@ static char*
 load_nmz_result(const char *basedir)
 {
     char fname[BUFSIZE] = "", lang_suffix[BUFSIZE] = "", *buf;
+    char templatesuffix[BUFSIZE] = "";
 
     nmz_pathcat(basedir, NMZ.result);
     strncpy(fname, NMZ.result, BUFSIZE - 1);
     strncat(fname, ".", BUFSIZE - strlen(fname) - 1);
-    strncat(fname, get_templatesuffix(), BUFSIZE - strlen(fname) - 1);  /* usually "normal" */
+    nmz_delete_since_path_delimitation(templatesuffix, get_templatesuffix(), BUFSIZE);
+    strncat(fname, templatesuffix, BUFSIZE - strlen(fname) - 1);  /* usually "normal" */
 
     if (nmz_choose_msgfile_suffix(fname, lang_suffix) != SUCCESS) {
 	nmz_warn_printf("%s: %s", fname, strerror(errno));
@@ -1023,7 +1025,31 @@ get_listwhence(void)
 void 
 set_templatesuffix(const char *tmpl)
 {
-    strcpy(template_suffix, tmpl);
+    int i = 0;
+    char *p;
+
+    strncpy(template_suffix, tmpl, BUFSIZE - 1);
+    template_suffix[BUFSIZE - 1] = '\0';
+
+    /*
+     *   result : [A-Za-z][A-Za-z0-9_\-]*
+     *   (ex. normal, short)
+     */
+    p = template_suffix;
+    while(*p) {
+        if (!((*p >= 'A' && *p <= 'Z') || (*p >= 'a' && *p <= 'z') ||
+        (((*p >= '0' && *p <= '9') || *p == '_' || *p == '-')&& i != 0))) {
+            *p = '\0';
+            break;
+        }
+        p++;
+        i++;
+    }
+
+    if (template_suffix[0] == '\0') {
+        strncpy(template_suffix, "normal", BUFSIZE - 1);
+        template_suffix[BUFSIZE - 1] = '\0';
+    }
 }
 
 char *

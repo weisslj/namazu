@@ -3,6 +3,9 @@
         * src/outpu.c, nmz/{i18n.c, util.c, util.h}: Directory traversal
         problem by lang and result of CGI parameter is corrected.
 
+        * filter/html.pl(embedded_filter): The trouble of <script> tag is
+        corrected. 
+
 2006-03-10  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* pl/wakati.pl: For MeCab-perl-0.90rc10.
@@ -9981,4 +9984,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1439 2006-03-12 21:23:54 opengl2772 Exp $
+$Id: ChangeLog,v 1.1440 2006-03-12 21:38:53 opengl2772 Exp $

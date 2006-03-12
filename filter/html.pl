@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: html.pl,v 1.49 2005-12-06 19:52:17 opengl2772 Exp $
+# $Id: html.pl,v 1.50 2006-03-12 21:38:54 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2005 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -319,7 +319,7 @@ sub embedded_filter ($) {
     $$contref =~ s/<\?.*?\?>//gs;
     $$contref =~ s/<asp:.*?\/>//gs;
     $$contref =~ s/<jsp:.*?\/>//gs;
-    $$contref =~ s/<script.*>.*<\/script>//igs;
+    $$contref =~ s/<script.*?<\/script>//igs;
 }
 
 # Convert independent < > s into entity references for escaping.

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: html.pl,v 1.50 2006-03-12 21:38:54 opengl2772 Exp $
+# $Id: html.pl,v 1.51 2006-03-12 21:56:12 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2005 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -339,9 +339,9 @@ sub get_author ($$) {
     # <META NAME="AUTHOR" CONTENT="author">
     # <LINK REV=MADE HREF="mailto:ccsatoru@vega.aichi-u.ac.jp">
 
-    if ($$contref =~ m!<META\s[^>]*?NAME=([\"\']?)AUTHOR\1\s[^>]*?CONTENT=([\"\']?)(.*?)\2\s*>!is) {
+    if ($$contref =~ m!<META\s[^>]*?NAME=([\"\']?)AUTHOR\1\s[^>]*?CONTENT=([\"\']?)(.*?)\2\s*/?>!is) {
         $fields->{'author'} = $3;
-    } elsif ($$contref =~ m!<LINK\s[^>]*?HREF=([\"\']?)mailto:(.*?)\1\s*>!i) {
+    } elsif ($$contref =~ m!<LINK\s[^>]*?HREF=([\"\']?)mailto:(.*?)\1\s*/?>!i) {
         $fields->{'author'} = $2;
     } elsif ($$contref =~ m!<ADDRESS[^>]*>(.*?)</ADDRESS>!is) {
 	my $tmp = $1;
@@ -505,10 +505,10 @@ sub remove_html_elements ($) {
     my ($contref) = @_;
 
     # remove Office Markup <o:></o:>, <![]>
-    $$contref =~ s#</?([A-Z]\w*):.*?>|<(!)\[.*?\]\s*>#element_space($1||$2)#gsixe;
+    $$contref =~ s#</?([A-Z]\w*):.*?>|<(!)\[.*?\]\s*/?>#element_space($1||$2)#gsixe;
 
     # remove all elements
-    $$contref =~ s!</?([A-Z]\w*)(?:\s+[A-Z]\w*(?:\s*=\s*(?:(["']).*?\2|[\w\-.]+))?)*\s*>!element_space($1)!gsixe;
+    $$contref =~ s!</?([A-Z]\w*)(?:\s+[A-Z]\w*(?:\s*=\s*(?:(["']).*?\2|[\w\-.]+))?)*\s*/?>!element_space($1)!gsixe;
 
 }
 

@@ -1,3 +1,8 @@
+2006-03-16  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * filter/win32/olevisio.pl: The type library name of Visio 2000 is
+        added. 
+
 2006-03-13  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * src/outpu.c, nmz/{i18n.c, util.c, util.h}: Directory traversal
@@ -9987,4 +9992,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1441 2006-03-12 21:56:12 opengl2772 Exp $
+$Id: ChangeLog,v 1.1442 2006-03-16 13:12:33 opengl2772 Exp $

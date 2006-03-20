@@ -1,6 +1,6 @@
 #
 # -*- Perl *-*
-# $Id: html.pl,v 1.3 2005-10-08 19:03:41 opengl2772 Exp $
+# $Id: html.pl,v 1.4 2006-03-20 15:49:03 opengl2772 Exp $
 #
 
 package Namazu::Archive::html;
@@ -100,7 +100,7 @@ sub get_title ($) {
     my ($contref) = @_;
     my $title = undef;
     
-    if ($$contref =~ s!<TITLE[^>]*>([^<]+)</TITLE>!!i) {
+    if ($$contref =~ s!<TITLE[^>]*>(.*?)</TITLE>!!is) {
 	$title = $1;
 	$title =~ s/\s+/ /g;
 	$title =~ s/^\s+//;
@@ -117,11 +117,14 @@ sub get_author ($) {
 
     my $author = "unknown";
 
+    # <META NAME="AUTHOR" CONTENT="author">
     # <LINK REV=MADE HREF="mailto:ccsatoru@vega.aichi-u.ac.jp">
 
-    if ($$contref =~ m!<LINK\s[^>]*?HREF=([\"\'])mailto:(.*?)\1\s*>!i) { #"
+    if ($$contref =~ m!<META\s[^>]*?NAME=([\"\']?)AUTHOR\1\s[^>]*?CONTENT=([\"\']?)(.*?)\2\s*/?>!is) {
+        $author = $3;
+    } elsif ($$contref =~ m!<LINK\s[^>]*?HREF=([\"\']?)mailto:(.*?)\1\s*/?>!i) {
 	$author = $2;
-    } elsif ($$contref =~ m!.*<ADDRESS[^>]*>([^<]*?)</ADDRESS>!i) {
+    } elsif ($$contref =~ m!<ADDRESS[^>]*>(.*?)</ADDRESS>!is) {
 	my $tmp = $1;
 	if ($tmp =~ /\b([\w\.\-]+\@[\w\.\-]+(?:\.[\w\.\-]+)+)\b/) {
 	    $author = $1;

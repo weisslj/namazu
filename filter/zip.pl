@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: zip.pl,v 1.17 2005-06-05 09:52:33 opengl2772 Exp $
+# $Id: zip.pl,v 1.18 2006-03-24 16:15:13 opengl2772 Exp $
 #  zip filter for namazu
 #  Copyright (C) 2004 MATSUMURA Namihiko <po-jp@counterghost.net>
 #                2004 Yukio USUDA <usu@namazu.org>
@@ -182,7 +182,6 @@ sub unzip_filter ($$$$$) {
         codeconv::codeconv_document(\$summary);
 	$$contref .= $summary . " ";
     }
-    unlink($tmpfile2);
 
     my %files;
     my $filenames = undef;
@@ -221,6 +220,8 @@ sub unzip_filter ($$$$$) {
 	}
     }
     $$contref .= $filenames . " " if (defined $filenames);
+
+    unlink($tmpfile2);
 
     my $fname;
     foreach $fname (keys %files){

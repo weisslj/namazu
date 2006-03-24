@@ -1,3 +1,8 @@
+2006-03-24  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * pl/gfilter.pl(filename_to_title): It corresponds to the filename
+        that doesn't contain the passing delimiter. 
+
 2006-03-21  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * archive/html.pl: Correction that looks like filter/html.pl .
@@ -9996,4 +10001,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1443 2006-03-20 15:49:02 opengl2772 Exp $
+$Id: ChangeLog,v 1.1444 2006-03-24 08:53:14 opengl2772 Exp $

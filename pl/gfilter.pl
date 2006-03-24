@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: gfilter.pl,v 1.7 2004-12-06 16:13:35 opengl2772 Exp $
+# $Id: gfilter.pl,v 1.8 2006-03-24 08:53:16 opengl2772 Exp $
 # Copyright (C) 1999 Satoru Takabayashi ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -63,8 +63,8 @@ sub filename_to_title ($$) {
 
     codeconv::normalize_eucjp(\$cfile);
 
-    $cfile =~ m!^.*/([^/]*)$!;
-    my $filename = $1;
+    my $filename = $cfile;
+    $filename = $1 if ($cfile =~ m!^.*/([^/]*)$!);
 
     # get keywords from a file name.
     # modified [1998-09-18] 

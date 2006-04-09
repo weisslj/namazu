@@ -1,3 +1,7 @@
+2006-04-09  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * scripts/mknmz.in(namazu_core): Warning is controlled.
+
 2006-03-25  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * filter/zip.pl: The bug that a temporary file remains is corrected. 
@@ -10005,4 +10009,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1445 2006-03-24 16:15:11 opengl2772 Exp $
+$Id: ChangeLog,v 1.1446 2006-04-09 07:42:31 opengl2772 Exp $

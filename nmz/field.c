@@ -1,9 +1,9 @@
 /*
  * 
- * $Id: field.c,v 1.38 2006-04-15 17:18:35 opengl2772 Exp $
+ * $Id: field.c,v 1.39 2006-04-15 17:30:14 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000,2001 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2006 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify

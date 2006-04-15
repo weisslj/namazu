@@ -1,9 +1,9 @@
 /*
- * $Id: result.c,v 1.75 2006-04-15 17:18:35 opengl2772 Exp $
+ * $Id: result.c,v 1.76 2006-04-15 17:31:38 opengl2772 Exp $
  * 
  * Copyright (C) 1989, 1990 Free Software Foundation, Inc.
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2006 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify

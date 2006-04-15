@@ -2,7 +2,7 @@
  * 
  * idxname.c - Idx handling routines.
  *
- * $Id: idxname.c,v 1.30 2005-07-21 08:24:32 opengl2772 Exp $
+ * $Id: idxname.c,v 1.31 2006-04-15 17:18:35 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000,2001 Namazu Project All rights reserved.
@@ -154,7 +154,7 @@ nmz_complete_idxnames(void)
 
     for (i = 0; i < indices.num; i++) {
  	if (*indices.names[i] == '+' && 
-	    isalnum((unsigned char)*(indices.names[i] + 1))) {
+	    nmz_isalnum((unsigned char)*(indices.names[i] + 1))) {
 	    char *tmp;
 	    tmp = malloc(strlen(defaultidx) 
 				  + 1 + strlen(indices.names[i]) + 1);

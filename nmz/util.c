@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: util.c,v 1.90 2006-03-12 21:24:01 opengl2772 Exp $
+ * $Id: util.c,v 1.91 2006-04-15 17:18:35 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2006 Namazu Project All rights reserved.
@@ -359,7 +359,7 @@ nmz_isnumstr(const char *str)
     }
 
     for (p = (const unsigned char *)str; *p != '\0'; p++) {
-	if (! isdigit((int)*p)) {
+	if (!nmz_isdigit((int)*p)) {
 	    return 0;
 	}
     }

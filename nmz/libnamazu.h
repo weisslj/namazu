@@ -2,7 +2,7 @@
  * 
  * libnamazu.h - Namazu library api
  *
- * $Id: libnamazu.h,v 1.53 2003-07-26 08:25:13 knok Exp $
+ * $Id: libnamazu.h,v 1.54 2006-04-15 17:18:35 opengl2772 Exp $
  * 
  */
 
@@ -263,6 +263,19 @@ extern void nmz_free_internal(void);
 
 /* since v2.0.13 */
 extern char *nmz_get_version();
+
+/* since v2.0.17 */
+#define nmz_isascii(c) (!(c & 0x80))
+#define nmz_isprint(c) (nmz_isascii(c) && isprint(c))
+#define nmz_isdigit(c) (nmz_isascii(c) && isdigit(c))
+#define nmz_isalnum(c) (nmz_isascii(c) && isalnum(c))
+#define nmz_isalpha(c) (nmz_isascii(c) && isalpha(c))
+#define nmz_iscntrl(c) (nmz_isascii(c) && iscntrl(c))
+#define nmz_islower(c) (nmz_isascii(c) && islower(c))
+#define nmz_ispunct(c) (nmz_isascii(c) && ispunct(c))
+#define nmz_isspace(c) (nmz_isascii(c) && isspace(c))
+#define nmz_isupper(c) (nmz_isascii(c) && isupper(c))
+#define nmz_isxdigit(c) (nmz_isascii(c) && isxdigit(c))
 
 #ifdef __cplusplus
 }

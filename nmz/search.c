@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.105 2005-12-27 16:09:35 opengl2772 Exp $
+ * $Id: search.c,v 1.106 2006-04-15 17:18:35 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2005 Namazu Project All rights reserved.
@@ -594,7 +594,7 @@ escape_meta_characters(char *expr, size_t bufsize)
     /* Escape meta characters */
     while (*exprp) {
         /* japanese only */
-        if (!isalnum((unsigned char)*exprp) && !nmz_iseuc(*exprp)) {
+        if (!nmz_isalnum((unsigned char)*exprp) && !nmz_iseuc(*exprp)) {
             *bufp = '\\';
             bufp++;
         }
@@ -939,7 +939,7 @@ normalize_idxnames(void)
 static int 
 issymbol(int c)
 {
-    if (c >= 0x00 && c < 0x80 && !isalnum(c)) {
+    if (c >= 0x00 && c < 0x80 && !nmz_isalnum(c)) {
         return 1;
     } else {
 	return 0;

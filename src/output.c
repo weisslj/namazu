@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.105 2006-03-12 21:24:01 opengl2772 Exp $
+ * $Id: output.c,v 1.106 2006-04-15 17:18:35 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2004 Namazu Project All rights reserved.
@@ -532,7 +532,7 @@ print_query(const char * qs, int w)
 	if (strncmp(qs, "whence=", strlen("whence=")) == 0) {
 	    foo = 1;
 	    printf("whence=%d", w);
-	    for (qs += strlen("whence="); isdigit((unsigned char)*qs); qs++);
+	    for (qs += strlen("whence="); nmz_isdigit((unsigned char)*qs); qs++);
 	} else {
 	    /* '"' is converted to entities "&quot;" */
 	    putc_entitize(*qs);

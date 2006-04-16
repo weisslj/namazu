@@ -1,7 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: gfilter.pl,v 1.8 2006-03-24 08:53:16 opengl2772 Exp $
+# $Id: gfilter.pl,v 1.9 2006-04-16 12:49:14 opengl2772 Exp $
 # Copyright (C) 1999 Satoru Takabayashi ,
+#               2000-2006 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify

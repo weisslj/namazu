@@ -2,7 +2,7 @@
 # -*- Perl -*-
 # document.pl - class for document
 #
-# $Id: document.pl,v 1.5 2006-02-03 02:42:14 opengl2772 Exp $
+# $Id: document.pl,v 1.6 2006-04-16 13:35:45 opengl2772 Exp $
 #
 # Copyright (C) 2004 Yukio USUDA All rights reserved.
 # Copyright (C) 2000-2006 Namazu Project All rights reversed.
@@ -309,8 +309,9 @@ sub _check_content {
 
   	    $file_size = util::filesize($tmpfile); # not only file in feature.
 	    if ($file_size > $conf::FILE_SIZE_MAX) {
-	        $self->{'_errmsg'} = 'too big file';
-	        $self->{'_mimetype'} = 'x-system/x-error';
+	        $self->{'_errmsg'} = 
+                    _("is larger than your setup before filtered, skipped: ") . 'conf::FILE_SIZE_MAX (' . $conf::FILE_SIZE_MAX . ') < '. $file_size ;
+	        $self->{'_mimetype'} = 'x-system/x-error; x-error=file_size_max';
 	        unlink $tmpfile;
                 return;
 	    }
@@ -321,8 +322,9 @@ sub _check_content {
 	} else {
   	    $file_size = util::filesize($cfile); # not only file in feature.
 	    if ($file_size > $conf::FILE_SIZE_MAX) {
-	        $self->{'_errmsg'} = 'too big file';
-	        $self->{'_mimetype'} = 'x-system/x-error';
+	        $self->{'_errmsg'} = 
+                    _("is larger than your setup before filtered, skipped: ") . 'conf::FILE_SIZE_MAX (' . $conf::FILE_SIZE_MAX . ') < '. $file_size ;
+	        $self->{'_mimetype'} = 'x-system/x-error; x-error=file_size_max';
                 return;
 	    }
 
@@ -343,6 +345,8 @@ sub _check_file ($$$$$) {
     if ($mtype =~ /; x-system=unsupported$/) {
 	$mtype =~ s/; x-system=unsupported$//;
 	$msg = _("Unsupported media type ")."($mtype)"._(" skipped.");
+    } elsif ($mtype =~ /; x-error=file_size_max/) {
+	$msg = _("is larger than your setup before filtered, skipped: ") . 'conf::FILE_SIZE_MAX (' . $conf::FILE_SIZE_MAX . ') < '. $cfile_size ;
     } elsif ($mtype =~ /; x-error=.*$/) {
 	$mtype =~ s/^.*; x-error=(.*)$/$1/;
 	$msg = $mtype;

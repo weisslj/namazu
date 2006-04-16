@@ -1,10 +1,10 @@
 #
 # -*- Perl -*-
-# $Id: zip.pl,v 1.18 2006-03-24 16:15:13 opengl2772 Exp $
+# $Id: zip.pl,v 1.19 2006-04-16 12:55:16 opengl2772 Exp $
 #  zip filter for namazu
 #  Copyright (C) 2004 MATSUMURA Namihiko <po-jp@counterghost.net>
 #                2004 Yukio USUDA <usu@namazu.org>
-#                2004-2005 Namazu Project All rights reserved.
+#                2004-2006 Namazu Project All rights reserved.
 #
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #

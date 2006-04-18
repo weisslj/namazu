@@ -51,12 +51,12 @@ EXTRA_DIST = pltests.pl.in \
 all: $(PROGRAM)
 
 test: $(PROGRAM) 
-	@ $(PERL) alltests.pl
+	@$(PERL) alltests.pl
 
 distclean: clean
 
 clean:
-	@ -rm -rf $(LOG) $(INDEX) $(TMPDATA) $(PROGRAM)
+	@-rm -rf $(LOG) $(INDEX) $(TMPDATA) $(PROGRAM)
 
 alltests.pl: alltests.pl.in pltests.pl Makefile
 	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp

@@ -1,3 +1,8 @@
+2006-04-18  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * pltests/Makefile.am: The blank after '@' was deleted because 
+        there was a case where make clean fails. 
+
 2006-04-16  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * filter/win32/oleexcel.pl(Win32_FullPath): Corrected a typo.
@@ -6,6 +11,9 @@
         isalpha -> nmz_isalpha, isdigit -> nmz_isdigt, etc...
 
         * src/{output.c, result.c}: ditto.
+
+        * pl/document.pl: The error message when the size of the file
+        exceeded $conf::FILE_SIZE_MAX was changed. 
 
 2006-04-09  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
@@ -10018,4 +10026,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1448 2006-04-15 17:18:34 opengl2772 Exp $
+$Id: ChangeLog,v 1.1449 2006-04-18 09:43:41 opengl2772 Exp $

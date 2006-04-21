@@ -1,7 +1,7 @@
 2006-04-21  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * filter/mailnews.pl: It corresponds to the Japanese text encoded
-        with base64/qcode. (single part and multi part)
+        with base64/quotedprint. (single part and multi part)
 
 2006-04-18  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
@@ -10031,4 +10031,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1450 2006-04-21 14:45:06 opengl2772 Exp $
+$Id: ChangeLog,v 1.1451 2006-04-21 15:03:21 opengl2772 Exp $

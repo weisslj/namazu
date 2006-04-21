@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mailnews.pl,v 1.45 2006-01-29 13:37:42 opengl2772 Exp $
+# $Id: mailnews.pl,v 1.46 2006-04-21 14:45:08 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu ,
 #               2001,2003-2006 Namazu Project All rights reserved.
@@ -90,6 +90,8 @@ sub mailnews_filter ($$$) {
     my $boundary = "";
     my $line     = "";
     my $partial  = 0;
+    my $cont_encode = "";
+    my $textplain = "";
 
     $htmlmail = "";
 
@@ -135,13 +137,17 @@ sub mailnews_filter ($$$) {
                 $partial = $1;
                 util::dprint("((partial: $partial))\n");
             } elsif ($line =~ m!text/html!i) {
-               # The simplest form of an HTML email message.
-               util::dprint("text/html mail\n");
-               $htmlmail = "yes";
+                # The simplest form of an HTML email message.
+                util::dprint("text/html mail\n");
+                $htmlmail = 'yes';
+            } elsif ($line =~ m!text/plain!i) {
+                $textplain = 'yes';
             } elsif ($line !~ m!text/plain!i) {
                 $$contref = '';
                 return;
             }
+        } elsif ($line =~ s/^content-transfer-encoding:\s*(\S+)$//i) {
+            $cont_encode = lc($1);
 	} elsif ($line =~ /^(\S+):\s*(.*)/i) {
 	    my $name = $1;
 	    my $value = $2;
@@ -173,6 +179,12 @@ sub mailnews_filter ($$$) {
 
 	multipart_process($contref, $boundary, $weighted_str, $fields);
 
+    } elsif ($textplain && $cont_encode =~ m/base64/) {
+        base64_filter($contref);
+        codeconv::codeconv_document($contref);
+    } elsif ($textplain && $cont_encode =~ m/quoted-printable/) {
+        quotedprint_filter($contref);
+        codeconv::codeconv_document($contref);
     }
 }
 
@@ -213,6 +225,7 @@ sub multipart_process ($$$$){
 		} 
 
 		if ($contenttype =~ m!text/plain!){
+                    codeconv::codeconv_document(\$body);
 		    $$contref .= $body;
 		} elsif ($contenttype =~ m!multipart/alternative!){
                     if ($head =~ /boundary="(.*?)"/si ||

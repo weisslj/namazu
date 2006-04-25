@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mailnews.pl,v 1.46 2006-04-21 14:45:08 opengl2772 Exp $
+# $Id: mailnews.pl,v 1.47 2006-04-25 14:00:29 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu ,
 #               2001,2003-2006 Namazu Project All rights reserved.
@@ -197,7 +197,8 @@ sub multipart_process ($$$$){
 
     # MIME multipart processing,
     # modified by Furukawa-san's patch on [1998/08/27]
-    $$contref =~ s/--$boundary(--)?\n?/\xff/g;
+    $$contref =~ s/--$boundary(?:--)?\n?/\xff/g;
+    $$contref =~ s/\xff[^\xff]*$//s;
     my (@parts) = split(/\xff/, $$contref);
     $$contref = '';
     for $_ (@parts){

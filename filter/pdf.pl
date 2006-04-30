@@ -1,9 +1,9 @@
 #
 # -*- Perl -*-
-# $Id: pdf.pl,v 1.42 2005-06-05 09:52:33 opengl2772 Exp $
+# $Id: pdf.pl,v 1.43 2006-04-30 08:27:32 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu ,
-#               2000-2005 Namazu Project All rights reserved.
+#               2000-2006 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -55,7 +55,7 @@ sub status() {
                 "mode_stderr" => 'wt',
             },
         );
-        if ($result =~ /^pdftotext\s+version\s+([0-9]+\.[0-9]+)/) {
+        if ($result =~ m/^pdftotext\s+version\s+([0-9]+\.[0-9]+)/m) {
             $pdfconvver = $1;
         }
         if (util::islang("ja")) {

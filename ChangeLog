@@ -1,3 +1,8 @@
+2006-04-30  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * filter/pdf.pl: 'Unable to convert pdf file (maybe copying 
+        protection)' was corrected at option --debug. 
+
 2006-04-25  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * filter/mailnews.pl: Correspondence for imperfect multi part.
@@ -10035,4 +10040,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1452 2006-04-25 14:00:27 opengl2772 Exp $
+$Id: ChangeLog,v 1.1453 2006-04-30 08:27:30 opengl2772 Exp $

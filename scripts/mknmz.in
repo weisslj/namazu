@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.172 2006-04-09 07:42:30 opengl2772 Exp $
+# $Id: mknmz.in,v 1.173 2006-05-01 04:11:23 opengl2772 Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2006 Namazu Project All rights reserved.
@@ -184,7 +184,7 @@ sub main {
 #
 # FIXME: Very complicated.
 #
-sub process_file ($$$$$$) {
+sub process_file ($$$$\%$$) {
     my ($cfile, $docid_count, $docid_base, $file_count, 
 	$field_indices, $fh_errorsfile, $total_files_num) = @_;
 
@@ -1122,10 +1122,18 @@ sub parse_options
 	$var::NMZ{'status'} = "$update_index/$var::NMZ{'status'}";
 
 	my $argv = get_status("argv");
+        if (!defined $argv) {
+	    print _("No such index: "), "$update_index\n";
+	    exit 1;
+        }
 	@ARGV = split /\t/, $argv;
 	util::dprint(_("Inherited argv: ")."@ARGV\n");
 
 	my $cwd  = get_status("cwd");
+        if (!defined $cwd) {
+	    print _("No such index: "), "$update_index\n";
+	    exit 1;
+        }
 	chdir $cwd;
 	util::dprint(_("Inherited cwd: ")."$cwd\n");
 

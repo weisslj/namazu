@@ -1,3 +1,12 @@
+2006-05-01  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * scripts/mknmz.in: The mistake of the number of dummy arguments of
+        process_file() is corrected. 
+
+        * scripts/mknmz.in: It is corrected that it ends when the content of
+        NMZ.status cannot be read in the directory specified by the --update
+        option. 
+
 2006-04-30  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * filter/pdf.pl: 'Unable to convert pdf file (maybe copying 
@@ -10040,4 +10049,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1453 2006-04-30 08:27:30 opengl2772 Exp $
+$Id: ChangeLog,v 1.1454 2006-05-01 04:11:20 opengl2772 Exp $

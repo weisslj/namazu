@@ -1,3 +1,9 @@
+2006-05-18  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * src/form.c: When the template is customized, the possibility 
+        that the buffer overflow happens is corrected. 
+        (Reported by Derek Atkins, Thanks.)
+
 2006-05-01  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * scripts/mknmz.in: The mistake of the number of dummy arguments of
@@ -10049,4 +10055,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1454 2006-05-01 04:11:20 opengl2772 Exp $
+$Id: ChangeLog,v 1.1455 2006-05-17 17:22:53 opengl2772 Exp $

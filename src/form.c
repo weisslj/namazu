@@ -2,10 +2,10 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.83 2005-11-10 14:28:43 opengl2772 Exp $
+ * $Id: form.c,v 1.84 2006-05-17 17:22:54 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2005 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2006 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -448,6 +448,17 @@ read_headfoot(const char *fname)
     char *buf, *p, tmpfname[BUFSIZE] = "", suffix[BUFSIZE] = "";
     char *script_name;
     char *document_name;
+    size_t bufsize, newsize;
+    int i;
+
+    struct nmz_param {
+        char *name;
+        size_t len_name;
+        char *value;
+        size_t len_value;
+    };
+    struct nmz_param nmz_param_table[2];
+
 
     if (nmz_choose_msgfile_suffix(fname, suffix) != SUCCESS) {
 	nmz_warn_printf("%s: %s", fname, strerror(errno));
@@ -486,20 +497,60 @@ read_headfoot(const char *fname)
 	    if (*s == '?') {*s = 0; break;}
     }
 
-    /* Expand buf memory for replacing {cgi} and {doc} */
-    buf = (char *)realloc(buf, strlen(buf) + strlen(script_name) + strlen(document_name) + 2);
-    if (buf == NULL) {
-        return NULL;
+
+    /*
+       Namazu Parameter
+         0 ... {cgi}
+         1 ... {doc}
+     */
+    nmz_param_table[0].name = "{cgi}";
+    nmz_param_table[0].len_name = strlen(nmz_param_table[0].name);
+    nmz_param_table[0].value = script_name;
+    nmz_param_table[0].len_value = strlen(nmz_param_table[0].value);
+
+    nmz_param_table[1].name = "{doc}";
+    nmz_param_table[1].len_name = strlen(nmz_param_table[1].name);
+    nmz_param_table[1].value = document_name;
+    nmz_param_table[1].len_value = strlen(nmz_param_table[1].value);
+ 
+    newsize = bufsize = strlen(buf) + 1;
+    for (i = 0; i < sizeof(nmz_param_table) / sizeof(struct nmz_param); i++) {
+        for (p = buf; (p = strstr(p, nmz_param_table[i].name)) != NULL; p += nmz_param_table[i].len_name) {
+            newsize += (nmz_param_table[i].len_value - nmz_param_table[i].len_name);
+        }
+    }
+
+    if (newsize > bufsize) {
+        /* Expand buf memory for replacing {cgi} and {doc} */
+        buf = (char *)realloc(buf, newsize);
+        if (buf == NULL) {
+            return NULL;
+        }
     }
 
     /* Replace {cgi} with a proper namazu.cgi location */
-    while ((p = strstr(buf, "{cgi}")) != NULL) {
-	subst(p, "{cgi}", script_name);
-    }
-
     /* Replace {doc} with the name of the calling document eg, using SSI */
-    while ((p = strstr(buf, "{doc}")) != NULL) {
-	subst(p, "{doc}", document_name);
+    p = buf;
+    while (1) {
+        char *pp = NULL;
+        int idx = 0;
+
+        for (i = 0; i < sizeof(nmz_param_table) / sizeof(struct nmz_param); i++) {
+            char *pos;
+
+            if ((pos = strstr(p, nmz_param_table[i].name)) != NULL) {
+                if (pp == NULL || pp > pos) {
+                    pp = pos;
+                    idx = i;
+                }
+            }
+        }
+        if (pp == NULL) {
+            break;
+        }
+
+        subst(pp, nmz_param_table[idx].name, nmz_param_table[idx].value);
+        p = pp + nmz_param_table[idx].len_value;
     }
 
     return buf;

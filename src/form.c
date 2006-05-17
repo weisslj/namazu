@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.84 2006-05-17 17:22:54 opengl2772 Exp $
+ * $Id: form.c,v 1.85 2006-05-17 17:39:55 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2006 Namazu Project All rights reserved.
@@ -512,7 +512,7 @@ read_headfoot(const char *fname)
     nmz_param_table[1].len_name = strlen(nmz_param_table[1].name);
     nmz_param_table[1].value = document_name;
     nmz_param_table[1].len_value = strlen(nmz_param_table[1].value);
- 
+
     newsize = bufsize = strlen(buf) + 1;
     for (i = 0; i < sizeof(nmz_param_table) / sizeof(struct nmz_param); i++) {
         for (p = buf; (p = strstr(p, nmz_param_table[i].name)) != NULL; p += nmz_param_table[i].len_name) {

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: taro56.pl,v 1.8 2005-06-05 09:52:33 opengl2772 Exp $
+# $Id: taro56.pl,v 1.9 2006-05-28 13:49:19 usu Exp $
 # Copyright (C) 2003 Yukio USUDA
 #               2003-2005 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -91,17 +91,30 @@ sub taro56filter ($$$$$) {
         my $code3 = $data[0x805 +$i];
         my $code4 = $data[0x806 +$i];
         if ($code1 == hex("fe")){
-            if (($code2 == hex("41")) or ($code2 == hex("46"))) {
+            if (($code2 == hex("41")) or ($code2 == hex("46"))
+                                      or ($code2 == hex("45"))) {
                 $code = pack("C", hex("0a"));
                 $i++;
             }
         }elsif (($code1 == hex("1f")) and ($code2 == hex("00"))) {
             my $ctlcodesizep = pack("C2", $code3, $code4);
             my $ctlcodesize = unpack("v", $ctlcodesizep);
+            $ctlcodesize = 5 if ($ctlcodesize == 0);
             $i = $i + $ctlcodesize -1;
-        }elsif (($code1 == hex("fd"))
-          and ($code2 >= hex("23")) and ($code2 <= hex("2f"))) {
-            $i++;
+        }elsif ($code1 == hex("1e")){
+            if ($code2 == hex("05")){
+                my $ctlcodesize = 30; 
+                $i = $i + $ctlcodesize -1;
+            }elsif ($code2 == hex("80")){
+                my $ctlcodesize = 12; 
+                $i = $i + $ctlcodesize -1;
+            }
+        }elsif ($code1 == hex("fd")){
+            if (($code2 >= hex("23")) and ($code2 <= hex("2f"))) {
+                $i++;
+            }elsif ($code2 >= hex("83")){
+                $i++;
+            }
         }elsif (($code1 == hex("12")) and ($code3 >= hex("80"))) {
             $i = $i + 2;
         }elsif (($code1 >= hex("81")) and ($code1 <= hex("84"))

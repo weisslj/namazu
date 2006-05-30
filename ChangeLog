@@ -1,3 +1,11 @@
+2006-05-30  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+	* pl/nmzidx.pl: The order of the output of the log was changed. 
+
+	* scripts/{gcnmz.in, nmzmerge.in}: "Total Files:" is changed to 
+        "Total Documents:". With the comma.
+        (#16: nmzmerge log format is inconsistent with mknmz)
+
 2006-05-28  Yukio USUDA <usu@namazu.org>
 
 	* filter/taro56.pl: Fixed taro5 file convert error bug. 
@@ -10059,4 +10067,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1456 2006-05-28 13:49:18 usu Exp $
+$Id: ChangeLog,v 1.1457 2006-05-30 13:32:44 opengl2772 Exp $

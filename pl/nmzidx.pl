@@ -3,7 +3,7 @@
 # nmzidx.pl - subroutines for accessing Namazu index files (NMZ.*)
 #         by furukawa@tcp-ip.or.jp
 #
-# $Id: nmzidx.pl,v 1.20 2004-10-20 14:48:37 opengl2772 Exp $
+# $Id: nmzidx.pl,v 1.21 2006-05-30 13:32:46 opengl2772 Exp $
 #
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -705,9 +705,9 @@ sub log_putline{
 sub log_close{
     my $self = shift;
     if (defined $self->{'log'}){
-        $self->log_putline("Perl:", sprintf("%f", $English::PERL_VERSION));
-        $self->log_putline("System:", $English::OSNAME);
         $self->log_putline("Time (sec):", (time - $English::BASETIME));
+        $self->log_putline("System:", $English::OSNAME);
+        $self->log_putline("Perl:", sprintf("%f", $English::PERL_VERSION));
         $self->{'log'}->print("\n");
         $self->{'log'}->close;
     }

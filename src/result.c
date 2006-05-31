@@ -1,5 +1,5 @@
 /*
- * $Id: result.c,v 1.76 2006-04-15 17:31:38 opengl2772 Exp $
+ * $Id: result.c,v 1.77 2006-05-31 16:31:50 opengl2772 Exp $
  * 
  * Copyright (C) 1989, 1990 Free Software Foundation, Inc.
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
@@ -290,6 +290,14 @@ emphasize(char *str)
             || (key[0] == '/' && key[strlen(key) - 1] == '/')) {
                 memmove(key, key + 1, strlen(key + 1) + 1);
                 key[strlen(key) - 1] = '\0';
+            } else {
+                /* substring matching */
+                if (key[0] == '*') {
+                    memmove(key, key + 1, strlen(key + 1) + 1);
+                }
+                if (key[strlen(key) - 1] == '*') {
+                    key[strlen(key) - 1] = '\0';
+                }
             }
         }
 

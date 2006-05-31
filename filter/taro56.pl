@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: taro56.pl,v 1.9 2006-05-28 13:49:19 usu Exp $
+# $Id: taro56.pl,v 1.10 2006-05-31 04:17:42 opengl2772 Exp $
 # Copyright (C) 2003 Yukio USUDA
-#               2003-2005 Namazu Project All rights reserved.
+#               2003-2006 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -131,6 +131,9 @@ sub taro56filter ($$$$$) {
             $i++;
         }elsif (($code1 >= hex("20")) and ($code1 <= hex("7f"))) {
             $code = pack("C", $code1);
+#        } elsif ($code1 >= hex("80")) {
+#            $code = pack("CC", 0x81, 0xac);    # GETA
+#            $i++;
         }
         $i++;
         $tmp .= $code;

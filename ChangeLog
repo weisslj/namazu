@@ -1,3 +1,8 @@
+2006-05-31  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+	* filter/taro56.pl: The model dependence character is converted 
+        into GETA. 
+
 2006-05-30  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* pl/nmzidx.pl: The order of the output of the log was changed. 
@@ -10067,4 +10072,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1457 2006-05-30 13:32:44 opengl2772 Exp $
+$Id: ChangeLog,v 1.1458 2006-05-31 04:17:40 opengl2772 Exp $

@@ -2,6 +2,8 @@
 
 	* namazu.spec.in: add nmzcat, nmzegrep.
 
+	* namazu.spec.in: fix filter-requires-namazu.sh.
+
 2006-06-01  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* src/result.c: The substring match was corrected to do the emphasis.
@@ -10080,4 +10082,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1460 2006-06-01 16:41:44 opengl2772 Exp $
+$Id: ChangeLog,v 1.1461 2006-06-01 17:17:50 opengl2772 Exp $

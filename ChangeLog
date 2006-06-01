@@ -1,3 +1,7 @@
+2006-06-02  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+	* namazu.spec.in: add nmzcat, nmzegrep.
+
 2006-06-01  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* src/result.c: The substring match was corrected to do the emphasis.
@@ -10076,4 +10080,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1459 2006-05-31 16:31:48 opengl2772 Exp $
+$Id: ChangeLog,v 1.1460 2006-06-01 16:41:44 opengl2772 Exp $

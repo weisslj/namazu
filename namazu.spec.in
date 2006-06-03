@@ -86,6 +86,7 @@ rm -rf $RPM_BUILD_DIR/%{name}-%{version}/doc/ja/Makefile*
 
 %clean
 [ -n "$RPM_BUILD_ROOT" -a "$RPM_BUILD_ROOT" != / ] && rm -rf $RPM_BUILD_ROOT
+rm -f %{_tmppath}/filter-requires-namazu.sh
 
 %post -p /sbin/ldconfig
 %postun -p /sbin/ldconfig
@@ -133,6 +134,9 @@ rm -rf $RPM_BUILD_DIR/%{name}-%{version}/doc/ja/Makefile*
 
 
 %changelog
+* Sat Jun 03 2006 Tadamasa Teranishi <yw3t-trns@asahi-net.or.jp>
+- filter-requires-namazu.sh is deleted with clean.
+
 * Fri Jun 02 2006 Tadamasa Teranishi <yw3t-trns@asahi-net.or.jp>
 - add nmzcat, nmzegrep.
 - fix filter-requires-namazu.sh.

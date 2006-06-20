@@ -1,3 +1,7 @@
+2006-06-20  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * filter/win32/olertf.pl: Add addMagicEntry.
+
 2006-06-03  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* namazu.spec.in: It is corrected that filter-requires-namazu.sh is 
@@ -10087,4 +10091,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1462 2006-06-03 02:52:00 opengl2772 Exp $
+$Id: ChangeLog,v 1.1463 2006-06-20 04:50:26 opengl2772 Exp $

@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.85 2006-05-17 17:39:55 opengl2772 Exp $
+ * $Id: form.c,v 1.86 2006-07-01 17:58:37 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2006 Namazu Project All rights reserved.
@@ -77,6 +77,9 @@ static void get_value ( const char *s, char *value );
 static void get_select_name ( const char *s, char *value );
 static enum nmz_stat select_option ( char *s, const char *name, const char *subquery );
 static enum nmz_stat check_checkbox ( char *str );
+static enum nmz_stat check_radio ( char *str, const char *subquery );
+static void fputs_selected();
+static void fputs_checked();
 static void handle_tag ( const char *start, const char *end, const char *query,char *select_name, const char *subquery );
 static char * read_headfoot ( const char *fname );
 static void subst ( char *str, const char *pat, const char *rep );
@@ -108,7 +111,7 @@ cmp_element(const char *s1, const char *s2)
 }
 
 /* 
- * replace <input type="text" name="query"  value="hogehoge"> 
+ * replace <input type="text" name="query" value="hogehoge"> 
  */
 static enum nmz_stat
 replace_query_value(const char *p, const char *query)
@@ -261,39 +264,23 @@ select_option(char *s, const char *name, const char *subquery)
         get_value(s, value);
         if (strcasecmp(name, "result") == 0) {
             if (strcasecmp(value, get_templatesuffix()) == 0) {
-                if (get_htmlmode() == 1) {
-                    fputs(" selected", stdout);              /* HTML */
-                } else {
-                    fputs(" selected=\"selected\"", stdout); /* XHTML */
-                }
+                fputs_selected();
             }
         } else if (strcasecmp(name, "sort") == 0) {
             if ((strcasecmp(value, "date:late") == 0) && 
 		nmz_get_sortmethod() == SORT_BY_DATE &&
 		nmz_get_sortorder()  == DESCENDING) 
 	    {
-                if (get_htmlmode() == 1) {
-                    fputs(" selected", stdout);              /* HTML */
-                } else {
-                    fputs(" selected=\"selected\"", stdout); /* XHTML */
-                }
+                fputs_selected();
             } else if ((strcasecmp(value, "date:early") == 0) && 
 		       nmz_get_sortmethod() == SORT_BY_DATE &&
 		       nmz_get_sortorder()  == ASCENDING)
             {
-                if (get_htmlmode() == 1) {
-                    fputs(" selected", stdout);              /* HTML */
-                } else {
-                    fputs(" selected=\"selected\"", stdout); /* XHTML */
-                }
+                fputs_selected();
             } else if ((strcasecmp(value, "score") == 0) && 
 		       nmz_get_sortmethod() == SORT_BY_SCORE) 
 	    {
-                if (get_htmlmode() == 1) {
-                    fputs(" selected", stdout);              /* HTML */
-                } else {
-                    fputs(" selected=\"selected\"", stdout); /* XHTML */
-                }
+                fputs_selected();
             } else if ((nmz_strprefixcasecmp(value, "field:") == 0) && 
 		       nmz_get_sortmethod() == SORT_BY_FIELD) 
 	    {
@@ -317,46 +304,32 @@ select_option(char *s, const char *name, const char *subquery)
 		if (strcmp(field, nmz_get_sortfield()) == 0 && 
 		    nmz_get_sortorder() == order)
 		{
-                    if (get_htmlmode() == 1) {
-                        fputs(" selected", stdout);              /* HTML */
-                    } else {
-                        fputs(" selected=\"selected\"", stdout); /* XHTML */
-                    }
+                    fputs_selected();
 		}
             }
 
         } else if (strcasecmp(name, "lang") == 0) {
             if (strcasecmp(value, nmz_get_lang()) == 0) {
-                if (get_htmlmode() == 1) {
-                    fputs(" selected", stdout);              /* HTML */
-                } else {
-                    fputs(" selected=\"selected\"", stdout); /* XHTML */
-                }
+                fputs_selected();
             }
         } else if (strcasecmp(name, "idxname") == 0) {
             if (nmz_get_idxnum() >= 1 && nmz_strsuffixcmp(value, nmz_get_idxname(0)) == 0) {
-                if (get_htmlmode() == 1) {
-                    fputs(" selected", stdout);              /* HTML */
-                } else {
-                    fputs(" selected=\"selected\"", stdout); /* XHTML */
-                }
+                fputs_selected();
             }
         } else if (strcasecmp(name, "subquery") == 0) {
             if (strcasecmp(value, subquery)  == 0) {
-                if (get_htmlmode() == 1) {
-                    fputs(" selected", stdout);              /* HTML */
-                } else {
-                    fputs(" selected=\"selected\"", stdout); /* XHTML */
-                }
+                fputs_selected();
             }
         } else if (strcasecmp(name, "max") == 0) {
             if (atoi(value) == get_maxresult()) {
-                if (get_htmlmode() == 1) {
-                    fputs(" selected", stdout);              /* HTML */
-                } else {
-                    fputs(" selected=\"selected\"", stdout); /* XHTML */
-                }
+                fputs_selected();
             }
+        } else if (strcasecmp(name, "mode") == 0) {
+#if 0
+            if (strcasecmp(value, nmz_get_mode()) == 0) {
+                fputs_selected();
+            }
+#endif
         }
         return SUCCESS;
     }
@@ -404,15 +377,162 @@ check_checkbox(char *str)
             }
         }
         if (db_count == searched) {
-            if (get_htmlmode() == 1) {
-                printf(" checked");                /* HTML */
-            } else {
-                printf(" checked=\"checked\"");    /* XHTML */
-            }
+            fputs_checked();
         }
         return SUCCESS;
     }
     return FAILURE;
+}
+
+/* 
+ * Mark RADIO of mode with RADIO 
+ */
+static enum nmz_stat
+check_radio(char *str, const char *subquery)
+{
+    char value[BUFSIZE] = "";
+    enum radio_name {
+        RADIO_RESULT,
+        RADIO_SORT,
+        RADIO_LANG,
+        RADIO_IDXNAME,
+        RADIO_SUBQUERY,
+        RADIO_MAX,
+        RADIO_MODE
+    };
+    enum radio_name name;
+
+    if (cmp_element(str, "input type=\"radio\" name=\"result\"") == 0) {
+        name = RADIO_RESULT;
+    } else if (cmp_element(str, "input type=\"radio\" name=\"sort\"") == 0) {
+        name = RADIO_SORT;
+    } else if (cmp_element(str, "input type=\"radio\" name=\"lang\"") == 0) {
+        name = RADIO_LANG;
+    } else if (cmp_element(str, "input type=\"radio\" name=\"idxname\"") == 0) {
+        name = RADIO_IDXNAME;
+    } else if (cmp_element(str, "input type=\"radio\" name=\"subquery\"") == 0) {
+        name = RADIO_SUBQUERY;
+    } else if (cmp_element(str, "input type=\"radio\" name=\"max\"") == 0) {
+        name = RADIO_MAX;
+    } else if (cmp_element(str, "input type=\"radio\" name=\"mode\"") == 0) {
+        name = RADIO_MODE;
+    } else {
+        return FAILURE;
+    }
+
+    if (strcmp(nmz_getenv("QUERY_STRING"), "")) {
+        delete_str(str, (char *)" checked=\"checked\"");
+        delete_str(str, (char *)" checked='checked'");
+        delete_str(str, (char *)" checked");
+    }
+    fputs(str, stdout);
+    get_value(str, value);
+
+    switch (name) {
+    case RADIO_RESULT:
+        if (strcasecmp(value, get_templatesuffix()) == 0) {
+            fputs_checked();
+        }
+        break;
+    case RADIO_SORT:
+        if ((strcasecmp(value, "date:late") == 0) && 
+		nmz_get_sortmethod() == SORT_BY_DATE &&
+		nmz_get_sortorder()  == DESCENDING) 
+        {
+            fputs_checked();
+        } else if ((strcasecmp(value, "date:early") == 0) && 
+	       nmz_get_sortmethod() == SORT_BY_DATE &&
+	       nmz_get_sortorder()  == ASCENDING)
+        {
+            fputs_checked();
+        } else if ((strcasecmp(value, "score") == 0) && 
+	       nmz_get_sortmethod() == SORT_BY_SCORE) 
+	{
+            fputs_checked();
+        } else if ((nmz_strprefixcasecmp(value, "field:") == 0) && 
+	       nmz_get_sortmethod() == SORT_BY_FIELD) 
+	{
+            char *p;
+            int n, order = DESCENDING;
+            char field[BUFSIZE] = "";
+
+            p = value + strlen("field:");
+            n = strspn(p, FIELD_SAFE_CHARS);
+            if (n >= BUFSIZE) n = BUFSIZE - 1;
+            strncpy(field, p, n);
+            field[n] = '\0'; /* Hey, don't forget this after strncpy()! */
+            p += n;
+
+            if (nmz_strprefixcasecmp(p, ":ascending") == 0) {
+                order = ASCENDING;
+            } else if (nmz_strprefixcasecmp(p, ":descending") == 0) {
+                order = DESCENDING;
+            }
+
+            if (strcmp(field, nmz_get_sortfield()) == 0 &&
+                nmz_get_sortorder() == order)
+            {
+                fputs_checked();
+            }
+        }
+        break;
+    case RADIO_LANG:
+        if (strcasecmp(value, nmz_get_lang()) == 0) {
+            fputs_checked();
+        }
+        break;
+    case RADIO_IDXNAME:
+        if (nmz_get_idxnum() >= 1 && nmz_strsuffixcmp(value, nmz_get_idxname(0)) == 0) {
+            fputs_checked();
+        }
+        break;
+    case RADIO_SUBQUERY:
+        if (strcasecmp(value, subquery) == 0) {
+            fputs_checked();
+        }
+        break;
+    case RADIO_MAX:
+        if (atoi(value) == get_maxresult()) {
+            fputs_checked();
+        }
+        break;
+    case RADIO_MODE:
+#if 0
+        if (strcasecmp(value, nmz_get_mode()) == 0) {
+            fputs_checked();
+        }
+#endif
+        break;
+    default:
+        break;
+    }
+    return SUCCESS;
+}
+
+/*
+ * output " selected"
+ */
+static void
+fputs_selected()
+{
+    if (get_htmlmode() == 1) {
+        fputs(" selected", stdout);              /* HTML */
+    } else {
+        fputs(" selected=\"selected\"", stdout); /* XHTML */
+    }
+}
+
+/*
+ * output " checked"
+ */
+static void
+fputs_checked()
+{
+    if (get_htmlmode() == 1) {
+        fputs(" checked", stdout);             /* HTML */
+    } else {
+        fputs(" checked=\"checked\"", stdout); /* XHTML */
+    }
 }
 
 /*
@@ -434,6 +554,8 @@ handle_tag(const char *start, const char *end, const char *query,
         if (select_option(tmp, select_name, subquery) == SUCCESS)
             return;
         if (check_checkbox(tmp) == SUCCESS)
+            return;
+        if (check_radio(tmp, subquery) == SUCCESS)
             return;
         get_select_name(tmp, select_name);
 	fputs(tmp, stdout);

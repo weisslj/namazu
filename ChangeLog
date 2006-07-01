@@ -5,6 +5,15 @@
 
         * src/form.c: Add fputs_selected(), fput_checked().
 
+        * src/form.c: To rewrite neither "checked" nor "selected" of 
+        NMZ.head when QUERY_STRING is empty, it changes. 
+
+        * src/form.c: check_xhtml() that examined whether it was XHTML 
+        file was added. 
+
+        * src/form.c: The part where the empty element tag is shut by "/>"
+        is changed to " />".
+
 2006-06-20  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * filter/win32/olertf.pl: Add addMagicEntry.
@@ -10098,4 +10107,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1464 2006-07-01 17:58:35 opengl2772 Exp $
+$Id: ChangeLog,v 1.1465 2006-07-01 21:09:51 opengl2772 Exp $

@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.86 2006-07-01 17:58:37 opengl2772 Exp $
+ * $Id: form.c,v 1.87 2006-07-01 21:09:53 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2006 Namazu Project All rights reserved.
@@ -83,6 +83,7 @@ static void fputs_checked();
 static void handle_tag ( const char *start, const char *end, const char *query,char *select_name, const char *subquery );
 static char * read_headfoot ( const char *fname );
 static void subst ( char *str, const char *pat, const char *rep );
+void check_xhtml( char *str );
 
 /* 
  * Compare given two elements
@@ -254,12 +255,17 @@ select_option(char *s, const char *name, const char *subquery)
 {
     char value[BUFSIZE] = "";
 
+    if (!strcmp(nmz_getenv("QUERY_STRING"), "")) {
+        return FAILURE;
+    }
+
     if (cmp_element(s, (char *)"option") == 0) {
-	{
-            delete_str(s, (char *)" selected=\"selected\"");
-            delete_str(s, (char *)" selected='selected'");
-            delete_str(s, (char *)" selected");
-	}
+
+        delete_str(s, (char *)" selected=\"selected\"");
+        delete_str(s, (char *)" selected='selected'");
+        delete_str(s, (char *)" selected=selected");
+        delete_str(s, (char *)" selected");
+
         fputs(s, stdout);
         get_value(s, value);
         if (strcasecmp(name, "result") == 0) {
@@ -345,15 +351,19 @@ check_checkbox(char *str)
     char value[BUFSIZE] = "";
     int i;
 
+    if (!strcmp(nmz_getenv("QUERY_STRING"), "")) {
+        return FAILURE;
+    }
+
     if (cmp_element(str, "input type=\"checkbox\" name=\"idxname\"") == 0) {
         char *pp;
         int db_count, searched;
 
-        if (strcmp(nmz_getenv("QUERY_STRING"), "")) {
-            delete_str(str, (char *)" checked=\"checked\"");
-            delete_str(str, (char *)" checked='checked'");
-            delete_str(str, (char *)" checked");
-	}
+        delete_str(str, (char *)" checked=\"checked\"");
+        delete_str(str, (char *)" checked='checked'");
+        delete_str(str, (char *)" checked=checked");
+        delete_str(str, (char *)" checked");
+
         fputs(str, stdout);
         get_value(str, value);
         for (pp = value, db_count = searched = 0 ; *pp ;db_count++) {
@@ -402,6 +412,10 @@ check_radio(char *str, const char *subquery)
     };
     enum radio_name name;
 
+    if (!strcmp(nmz_getenv("QUERY_STRING"), "")) {
+        return FAILURE;
+    }
+
     if (cmp_element(str, "input type=\"radio\" name=\"result\"") == 0) {
         name = RADIO_RESULT;
     } else if (cmp_element(str, "input type=\"radio\" name=\"sort\"") == 0) {
@@ -420,11 +434,11 @@ check_radio(char *str, const char *subquery)
         return FAILURE;
     }
 
-    if (strcmp(nmz_getenv("QUERY_STRING"), "")) {
-        delete_str(str, (char *)" checked=\"checked\"");
-        delete_str(str, (char *)" checked='checked'");
-        delete_str(str, (char *)" checked");
-    }
+    delete_str(str, (char *)" checked=\"checked\"");
+    delete_str(str, (char *)" checked='checked'");
+    delete_str(str, (char *)" checked=checked");
+    delete_str(str, (char *)" checked");
+
     fputs(str, stdout);
     get_value(str, value);
 
@@ -701,6 +715,39 @@ subst(char *str, const char *pat, const char *rep)
     }
 }
 
+/* 
+ * check XHTML file. FIXME: very ad hoc.
+ */
+void
+check_xhtml(char *src)
+{
+    char buff[256] = "";
+    char *word;
+
+    /* check first (256 - 1) part of data */
+    strncpy(buff, src, 256 - 1);
+    buff[256 - 1] = '\0';
+
+    word = strtok(buff, " \t\n\r");
+    while (word) {
+        if (!strcmp(word, "<!DOCTYPE")) {
+            if ((word = strtok(NULL, " \t\n\r")) == NULL) {
+                break;
+            }
+    
+            if (!strcmp(word, "html")) {  /* <!DOCTYPE html */
+                set_htmlmode(2);    /* 2: XHTML */
+                break;
+            } else {
+                continue;
+            }
+        } else if (!strncasecmp(word, "<html", strlen("<html"))) {
+            break;
+        }
+        word = strtok(NULL, " \t\n\r");
+    }
+}
+
 /*
  *
  * Public functions
@@ -721,6 +768,8 @@ print_headfoot(const char * fname, const char * query, const char *subquery)
     if (buf == NULL) {
 	return;
     }
+
+    check_xhtml(buf);
 
     for (p = buf, f = f2 = 0; *p; p++) {
         if (f == 0 && *p == '<') {
@@ -766,7 +815,7 @@ print_headfoot(const char * fname, const char * query, const char *subquery)
 		fputs(">", stdout);
 	    } else {		/* for XHTML */
 		handle_tag(p + 1, q - 2, query, name, subquery);
-		fputs("/>", stdout);
+		fputs(" />", stdout);
                 set_htmlmode(2);    /* 2: XHTML */
 	    }
             p = q;

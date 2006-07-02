@@ -2,10 +2,10 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.107 2005-01-20 12:28:25 opengl2772 Exp $
+ * $Id: namazu.c,v 1.108 2006-07-02 16:20:29 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2006 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -127,7 +127,9 @@ enum nmz_stat
 namazu_core(char * query, char *subquery)
 {
     char query_with_subquery[BUFSIZE * 2] = "";
+    char exquery[BUFSIZE] = "";
     NmzResult hlist;
+    char *p;
 
     /* Make full-pathname of NMZ.{head,foot,msg,body,slog}.?? */
     make_fullpathname_msg();
@@ -137,18 +139,6 @@ namazu_core(char * query, char *subquery)
      */
     nmz_codeconv_query(query);
     nmz_codeconv_query(subquery);
-
-    /*
-     * And then, concatnate them.
-     */
-    if (strlen(subquery) > 0) {
-        strncpy(query_with_subquery, "( ", BUFSIZE * 2 - 1);
-        strncat(query_with_subquery, query, BUFSIZE * 2 - 1 - strlen(query_with_subquery));
-	strncat(query_with_subquery, " ) ", BUFSIZE * 2 - 1 - strlen(query_with_subquery));
-	strncat(query_with_subquery, subquery, BUFSIZE * 2 - 1 - strlen(query_with_subquery));
-    } else {
-        strncpy(query_with_subquery, query, BUFSIZE * 2 - 1);
-    }
 
     /* 
      * If query is null or the number of indices is 0
@@ -160,9 +150,53 @@ namazu_core(char * query, char *subquery)
 	return SUCCESS;
     }
 
+    /*
+     * query mode
+     */
+    p = nmz_get_querymode();
+    if (!strncasecmp(p, "field:", strlen("field:"))) {
+        int simple = 1;
+        char * s;
+
+        s = query;
+        while(*s) {
+            if (*s == ' ') {
+                simple = 0;
+                break;
+            }
+            s++;
+        }
+
+        p += strlen("field:");
+        if (simple) {
+            snprintf(exquery, BUFSIZE - 1, "+%s:%s", p, query);
+        } else {
+            snprintf(exquery, BUFSIZE - 1, "+%s:\"%s\"", p, query);
+        }
+        exquery[BUFSIZE - 1] = '\0';
+    } else {
+        /* normal */
+        strncpy(exquery, query, BUFSIZE - 1);
+        exquery[BUFSIZE - 1] = '\0';
+    }
+
+    /*
+     * And then, concatnate them.
+     */
+    if (strlen(subquery) > 0) {
+        strncpy(query_with_subquery, "( ", BUFSIZE * 2 - 1);
+        strncat(query_with_subquery, exquery, BUFSIZE * 2 - 1 - strlen(query_with_subquery));
+	strncat(query_with_subquery, " ) ", BUFSIZE * 2 - 1 - strlen(query_with_subquery));
+	strncat(query_with_subquery, subquery, BUFSIZE * 2 - 1 - strlen(query_with_subquery));
+    } else {
+        strncpy(query_with_subquery, exquery, BUFSIZE * 2 - 1);
+    }
+
     nmz_debug_printf(" -n: %d\n", get_maxresult());
     nmz_debug_printf(" -w: %d\n", get_listwhence());
     nmz_debug_printf("query: [%s]\n", query);
+    nmz_debug_printf("exquery: [%s]\n", exquery);
+    nmz_debug_printf("querymode: [%s]\n", nmz_get_querymode());
 
     /* Search */
     hlist = nmz_search(query_with_subquery);

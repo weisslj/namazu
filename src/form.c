@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.87 2006-07-01 21:09:53 opengl2772 Exp $
+ * $Id: form.c,v 1.88 2006-07-02 16:20:29 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2006 Namazu Project All rights reserved.
@@ -330,12 +330,10 @@ select_option(char *s, const char *name, const char *subquery)
             if (atoi(value) == get_maxresult()) {
                 fputs_selected();
             }
-        } else if (strcasecmp(name, "mode") == 0) {
-#if 0
-            if (strcasecmp(value, nmz_get_mode()) == 0) {
+        } else if (strcasecmp(name, "querymode") == 0) {
+            if (strcasecmp(value, nmz_get_querymode()) == 0) {
                 fputs_selected();
             }
-#endif
         }
         return SUCCESS;
     }
@@ -408,7 +406,7 @@ check_radio(char *str, const char *subquery)
         RADIO_IDXNAME,
         RADIO_SUBQUERY,
         RADIO_MAX,
-        RADIO_MODE
+        RADIO_QUERYMODE
     };
     enum radio_name name;
 
@@ -428,8 +426,8 @@ check_radio(char *str, const char *subquery)
         name = RADIO_SUBQUERY;
     } else if (cmp_element(str, "input type=\"radio\" name=\"max\"") == 0) {
         name = RADIO_MAX;
-    } else if (cmp_element(str, "input type=\"radio\" name=\"mode\"") == 0) {
-        name = RADIO_MODE;
+    } else if (cmp_element(str, "input type=\"radio\" name=\"querymode\"") == 0) {
+        name = RADIO_QUERYMODE;
     } else {
         return FAILURE;
     }
@@ -510,12 +508,10 @@ check_radio(char *str, const char *subquery)
             fputs_checked();
         }
         break;
-    case RADIO_MODE:
-#if 0
-        if (strcasecmp(value, nmz_get_mode()) == 0) {
+    case RADIO_QUERYMODE:
+        if (strcasecmp(value, nmz_get_querymode()) == 0) {
             fputs_checked();
         }
-#endif
         break;
     default:
         break;

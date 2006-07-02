@@ -1,3 +1,10 @@
+2006-07-03  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * nmz/libnamazu.[ch], src/cgi.c, src/namazu.c, src/form.c:
+        Querymode was added to CGI parameter. 
+        For instance, it is a field search (title) by contents of query 
+        for "querymode=field:title". 
+
 2006-07-02  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * src/form.c: The RADIO button enabled the selection. the one that
@@ -10107,4 +10114,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1465 2006-07-01 21:09:51 opengl2772 Exp $
+$Id: ChangeLog,v 1.1466 2006-07-02 16:20:27 opengl2772 Exp $

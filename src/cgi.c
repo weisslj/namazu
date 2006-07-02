@@ -2,10 +2,10 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.76 2005-11-10 14:28:43 opengl2772 Exp $
+ * $Id: cgi.c,v 1.77 2006-07-02 16:20:29 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2005 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2006 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -87,6 +87,7 @@ static void process_cgi_var_result ( char *value, struct cgiarg *ca );
 static void process_cgi_var_reference ( char *value, struct cgiarg *ca );
 static void process_cgi_var_submit ( char *value, struct cgiarg *ca );
 static void process_cgi_var_idxname ( char *value, struct cgiarg *ca );
+static void process_cgi_var_querymode ( char *value, struct cgiarg *ca );
 
 /*
  * Table for cgi vars and corresponding functions. 
@@ -106,6 +107,7 @@ static struct cgivar_func cgifunctab[] = {
     { "idxname",   process_cgi_var_idxname },
     { "dbname",    process_cgi_var_idxname },  /* backward comat. */
     { "submit",    process_cgi_var_submit },
+    { "querymode", process_cgi_var_querymode },
     { NULL,        NULL }   /* sentry */
 };
 
@@ -516,6 +518,12 @@ process_cgi_var_idxname(char *value, struct cgiarg *ca)
 	    nmz_warn_printf("invalid idxname: %s", name);
 	}
     }
+}
+
+static void 
+process_cgi_var_querymode(char *value, struct cgiarg *ca)
+{
+    nmz_set_querymode(value);
 }
 
 /*

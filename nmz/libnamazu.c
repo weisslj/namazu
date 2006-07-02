@@ -2,10 +2,10 @@
  * 
  * libnamazu.c - Namazu library api
  *
- * $Id: libnamazu.c,v 1.44 2003-07-26 08:25:13 knok Exp $
+ * $Id: libnamazu.c,v 1.45 2006-07-02 16:20:29 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2003 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2006 Namazu Project All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
@@ -77,6 +77,7 @@ static int  maxmatch    = 1000;   /* Ignore if words matched more than this. */
 static int  debugmode   = 0;
 static int  loggingmode = 1;   /* do logging with NMZ.slog */
 static int  regex_searchmode = 1; /* enable regex search */
+static char querymode[BUFSIZE] = "normal";
 static char dyingmsg[BUFSIZE] = "";
 static int  output_warn_to_file = 0; /* output warning to file or stderr */
 
@@ -194,6 +195,19 @@ int
 nmz_is_regex_searchmode(void)
 {
     return regex_searchmode;
+}
+
+void
+nmz_set_querymode(char *mode)
+{
+    strncpy(querymode, mode, BUFSIZE -1);
+    querymode[BUFSIZE - 1] ='0';
+}
+
+char *
+nmz_get_querymode()
+{
+     return querymode;
 }
 
 /*

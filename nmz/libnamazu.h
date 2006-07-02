@@ -2,7 +2,7 @@
  * 
  * libnamazu.h - Namazu library api
  *
- * $Id: libnamazu.h,v 1.54 2006-04-15 17:18:35 opengl2772 Exp $
+ * $Id: libnamazu.h,v 1.55 2006-07-02 16:20:29 opengl2772 Exp $
  * 
  */
 
@@ -254,6 +254,8 @@ extern void nmz_set_loggingmode ( int mode );
 extern int  nmz_is_loggingmode ( void );
 extern void nmz_set_regex_searchmode ( int mode );
 extern int  nmz_is_regex_searchmode ( void );
+extern void nmz_set_querymode( char *mode );
+extern char *nmz_get_querymode( void );
 extern void nmz_set_output_warn_to_file ( int mode );
 extern int  nmz_is_output_warn_to_file ( void );
 extern char *nmz_get_dyingmsg ( void );

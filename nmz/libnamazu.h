@@ -2,7 +2,7 @@
  * 
  * libnamazu.h - Namazu library api
  *
- * $Id: libnamazu.h,v 1.55 2006-07-02 16:20:29 opengl2772 Exp $
+ * $Id: libnamazu.h,v 1.56 2006-07-12 16:52:43 opengl2772 Exp $
  * 
  */
 
@@ -59,7 +59,9 @@ enum {
     QUERY_TOKEN_MAX =  32, /* Max number of tokens in the query. */
     QUERY_MAX       = 256, /* Max length of the query. */
 
-    INDEX_MAX = 64        /* Max number of databases */
+    INDEX_MAX       = 64,  /* Max number of databases */
+
+    NUM_QUERY       = (1 + 8)
 };
 
 
@@ -254,8 +256,10 @@ extern void nmz_set_loggingmode ( int mode );
 extern int  nmz_is_loggingmode ( void );
 extern void nmz_set_regex_searchmode ( int mode );
 extern int  nmz_is_regex_searchmode ( void );
-extern void nmz_set_querymode( char *mode );
-extern char *nmz_get_querymode( void );
+extern void nmz_set_querymode( int idx, char *mode );
+extern char *nmz_get_querymode( int idx );
+extern void nmz_set_query( int idx, char *str );
+extern char *nmz_get_query( int idx );
 extern void nmz_set_output_warn_to_file ( int mode );
 extern int  nmz_is_output_warn_to_file ( void );
 extern char *nmz_get_dyingmsg ( void );

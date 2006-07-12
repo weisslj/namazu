@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.88 2006-07-02 16:20:29 opengl2772 Exp $
+ * $Id: form.c,v 1.89 2006-07-12 16:52:44 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2006 Namazu Project All rights reserved.
@@ -117,28 +117,50 @@ cmp_element(const char *s1, const char *s2)
 static enum nmz_stat
 replace_query_value(const char *p, const char *query)
 {
+    char tmp[BUFSIZE] = "";
+    char *str = NULL;
+
     if (cmp_element(p, (char *)"input type=\"text\" name=\"query\"") == 0) {
+        str = (char *)query;
+    } else {
+        char buff[BUFSIZE] = "";
+        int i;
+
+        for (i = 1; i < NUM_QUERY; i++) {
+            sprintf(buff, "input type=\"text\" name=\"query%d\"", i);
+            if (cmp_element(p, buff) == 0) {
+                strncpy(tmp, nmz_get_query(i), BUFSIZE - 1);
+                tmp[BUFSIZE - 1] = '\0';
+                str = tmp;
+                break;
+            }
+        }
+     
+        if (str == NULL) {
+            return FAILURE;
+        }
+    }
+
+    {
+        char buffer[BUFSIZE] = "";
+        char value[BUFSIZE] = "";
 	char *converted;
 
-        {
-            char buffer[BUFSIZE] = "";
-            char value[BUFSIZE] = "";
+        get_value(p, value);
 
-            get_value(p, value);
+        strncpy(buffer, " value=\"", BUFSIZE - 1);
+        strncat(buffer, value, BUFSIZE - strlen(buffer) - 1);
+        strncat(buffer, "\"", BUFSIZE - strlen(buffer) - 1);
+        buffer[BUFSIZE - 1] = '\0';
+        delete_str((char *)p, buffer);
 
-            strncpy(buffer, " value=\"", BUFSIZE - 1);
-            strncat(buffer, value, BUFSIZE - strlen(buffer) - 1);
-            strncat(buffer, "\"", BUFSIZE - strlen(buffer) - 1);
-            buffer[BUFSIZE - 1] = '\0';
-            delete_str((char *)p, buffer);
+        strncpy(buffer, " value='", BUFSIZE - 1);
+        strncat(buffer, value, BUFSIZE - strlen(buffer) - 1);
+        strncat(buffer, "'", BUFSIZE - strlen(buffer) - 1);
+        buffer[BUFSIZE - 1] = '\0';
+        delete_str((char *)p, buffer);
 
-            strncpy(buffer, " value='", BUFSIZE - 1);
-            strncat(buffer, value, BUFSIZE - strlen(buffer) - 1);
-            strncat(buffer, "'", BUFSIZE - strlen(buffer) - 1);
-            buffer[BUFSIZE - 1] = '\0';
-            delete_str((char *)p, buffer);
-	}
-        converted = nmz_query_external(query);
+        converted = nmz_query_external(str);
 	if (converted == NULL) {
 	    die("%s", strerror(errno));
 	}
@@ -331,8 +353,21 @@ select_option(char *s, const char *name, const char *subquery)
                 fputs_selected();
             }
         } else if (strcasecmp(name, "querymode") == 0) {
-            if (strcasecmp(value, nmz_get_querymode()) == 0) {
+            if (strcasecmp(value, nmz_get_querymode(0)) == 0) {
                 fputs_selected();
+            }
+        } else {
+            char buff[BUFSIZE] = "";
+            int i;
+
+            for (i = 1; i < NUM_QUERY; i++) {
+                sprintf(buff, "querymode%d", i);
+                if (strcasecmp(name, buff) == 0) {
+                    if (strcasecmp(value, nmz_get_querymode(i)) == 0) {
+                        fputs_selected();
+                        break;
+                    }
+                }
             }
         }
         return SUCCESS;
@@ -400,6 +435,7 @@ check_radio(char *str, const char *subquery)
 {
     char value[BUFSIZE] = "";
     enum radio_name {
+        RADIO_UNKNOWN,
         RADIO_RESULT,
         RADIO_SORT,
         RADIO_LANG,
@@ -408,7 +444,8 @@ check_radio(char *str, const char *subquery)
         RADIO_MAX,
         RADIO_QUERYMODE
     };
-    enum radio_name name;
+    enum radio_name name = RADIO_UNKNOWN;
+    int idx = 0;
 
     if (!strcmp(nmz_getenv("QUERY_STRING"), "")) {
         return FAILURE;
@@ -428,8 +465,23 @@ check_radio(char *str, const char *subquery)
         name = RADIO_MAX;
     } else if (cmp_element(str, "input type=\"radio\" name=\"querymode\"") == 0) {
         name = RADIO_QUERYMODE;
+        idx = 0;
     } else {
-        return FAILURE;
+        char buff[BUFSIZE] = "";
+        int i;
+
+        idx = 0;
+        for (i = 1; i < NUM_QUERY; i++) {
+            sprintf(buff, "input type=\"radio\" name=\"querymode%d\"", i);
+            if (cmp_element(str, buff) == 0) {
+                name = RADIO_QUERYMODE;
+                idx = i;
+                break;
+            }
+        }
+        if (idx == 0) {
+            return FAILURE;
+        }
     }
 
     delete_str(str, (char *)" checked=\"checked\"");
@@ -509,7 +561,7 @@ check_radio(char *str, const char *subquery)
         }
         break;
     case RADIO_QUERYMODE:
-        if (strcasecmp(value, nmz_get_querymode()) == 0) {
+        if (strcasecmp(value, nmz_get_querymode(idx)) == 0) {
             fputs_checked();
         }
         break;

@@ -2,7 +2,7 @@
  * 
  * libnamazu.c - Namazu library api
  *
- * $Id: libnamazu.c,v 1.45 2006-07-02 16:20:29 opengl2772 Exp $
+ * $Id: libnamazu.c,v 1.46 2006-07-12 16:52:43 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2006 Namazu Project All rights reserved.
@@ -77,7 +77,8 @@ static int  maxmatch    = 1000;   /* Ignore if words matched more than this. */
 static int  debugmode   = 0;
 static int  loggingmode = 1;   /* do logging with NMZ.slog */
 static int  regex_searchmode = 1; /* enable regex search */
-static char querymode[BUFSIZE] = "normal";
+static char querymode[NUM_QUERY][BUFSIZE];
+static char query[NUM_QUERY][BUFSIZE];
 static char dyingmsg[BUFSIZE] = "";
 static int  output_warn_to_file = 0; /* output warning to file or stderr */
 
@@ -198,16 +199,40 @@ nmz_is_regex_searchmode(void)
 }
 
 void
-nmz_set_querymode(char *mode)
+nmz_set_querymode(int idx, char *mode)
 {
-    strncpy(querymode, mode, BUFSIZE -1);
-    querymode[BUFSIZE - 1] ='0';
+    if (idx >= 0 && idx < NUM_QUERY) {
+        strncpy(querymode[idx], mode, BUFSIZE -1);
+        querymode[idx][BUFSIZE - 1] ='0';
+    }
 }
 
 char *
-nmz_get_querymode()
+nmz_get_querymode(int idx)
 {
-     return querymode;
+    if (idx >= 0 && idx < NUM_QUERY) {
+        return querymode[idx];
+    }
+
+    return NULL;
+}
+
+void
+nmz_set_query(int idx, char *str)
+{
+    if (idx >= 1 && idx < NUM_QUERY) {
+        strncpy(query[idx], str, BUFSIZE -1);
+        query[idx][BUFSIZE - 1] ='0';
+    }
+}
+
+char *
+nmz_get_query(int idx)
+{
+    if (idx >= 1 && idx < NUM_QUERY) {
+        return query[idx];
+    }
+    return NULL;
 }
 
 /*
@@ -221,7 +246,7 @@ nmz_get_querymode()
 char *
 nmz_msg(const char *fmt, ...)
 {
-    static char msg[BUFSIZE];
+    static char msg[BUFSIZE] = "";
     va_list args;
     
     va_start(args, fmt);

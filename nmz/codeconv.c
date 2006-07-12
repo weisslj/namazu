@@ -2,10 +2,10 @@
  * 
  * codeconv.c -
  * 
- * $Id: codeconv.c,v 1.34 2005-09-02 09:22:51 opengl2772 Exp $
+ * $Id: codeconv.c,v 1.35 2006-07-12 19:26:34 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2005 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2006 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -48,11 +48,7 @@
 #include <strings.h>
 #endif
 
-/* #define TEST_UTF8 */
-
-#ifdef TEST_UTF8
-#    include <iconv.h>
-#endif /* TEST_UTF8 */
+#include <iconv.h>
 
 #include "libnamazu.h"
 #include "codeconv.h"
@@ -62,9 +58,7 @@
 
 static uchar kanji2nd;
 
-#ifdef TEST_UTF8
 static int nmz_codeconv_internal_EX(char *buffer, int bufferSize);
-#endif /* TEST_UTF8 */
 
 /*
  *
@@ -498,20 +492,16 @@ void
 nmz_codeconv_query(char *query)
 {
     if (nmz_is_lang_ja()) {
-#ifdef TEST_UTF8
-		/* BUFSIZE = size of query */
+        /* BUFSIZE = size of query */
         if (nmz_codeconv_internal_EX(query, BUFSIZE)) {
             zen2han(query);
             return;
         }
-#endif /* TEST_UTF8 */
         if (nmz_codeconv_internal(query)) {
             zen2han(query);
         }
     }
 }
-
-#ifdef TEST_UTF8
 
 enum code_type {
     CODE_TYPE_ERROR = -1,
@@ -782,5 +772,3 @@ nmz_lengthEUCJP(const char *str, int length)
 
    return count;
 }
-
-#endif /* TEST_UTF8 */

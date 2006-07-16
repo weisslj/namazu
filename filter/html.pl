@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: html.pl,v 1.51 2006-03-12 21:56:12 opengl2772 Exp $
+# $Id: html.pl,v 1.52 2006-07-16 21:07:38 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
-# Copyright (C) 2000-2005 Namazu Project All rights reserved.
+# Copyright (C) 2000-2006 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -124,8 +124,10 @@ sub htmlparser_filter ($$$$) {
     $html::fields = $fields;
     $html::headings = $headings;
 
+
     %inside = ();
     $fields->{'title'} = $conf::NO_TITLE;
+    $fields->{'author'} = undef;
     $content = "";
 
     HTML::Parser->new(api_version => 3,
@@ -151,64 +153,64 @@ sub _tag ($$$){
 
     $inside{$tag} += $num;
 
+    return if ($num < 0);
+
     # <META NAME="AUTHOR" CONTENT="author">
     # <LINK REV=MADE HREF="mailto:ccsatoru@vega.aichi-u.ac.jp">
-    my $author = '';
-    my $existauthor = 'no';
-    if (($num >0) && ($tag =~ /^META$/i)){
-        while ( my ($key, $val) = each %{$attr_hashref} ) {
-            $existauthor = 'yes' if ($key =~ /^NAME$/i)&&($val =~ /^AUTHOR$/i);
-            $author = $val if ($key =~ /^CONTENT$/i)&&($existauthor eq 'yes');
+    if ($tag =~ /^META$/i) {
+        my $name = $attr_hashref->{name};
+        if (defined($name) && $name =~ /^AUTHOR$/i) {
+            my $val = $attr_hashref->{content};
+            $html::fields->{'author'} = $val if (defined $val);
         }
-        set_author($author) if ($author ne '');
-    }elsif (($num >0) && ($tag =~ /^LINK$/i)){
-        while ( my ($key, $val) = each %{$attr_hashref} ) {
-            $existauthor = 'yes' if (($key =~ /^REV$/i)&&($val =~ /^MADE$/i));
-            $author = $val if ($key =~ /^HREF$/i)&&($existauthor eq 'yes');
+    } elsif ($tag =~ /^LINK$/i) {
+        my $rev = $attr_hashref->{rev};
+        if (defined($rev) && $rev =~ /^MADE$/i) {
+            my $val = $attr_hashref->{href};
+            if (defined($val)) {
+                if ($val =~ m/^mailto:(.*)$/i) {
+                    $html::fields->{'author'} = $1 if (!defined $html::fields->{'author'});
+                }
+            }
         }
-        set_author($author) if ($author ne '');
     }
 
     # Get foo from <TABLE ... SUMMARY="foo">
-    if (($num >0)&&($tag =~ /^TABLE$/i)&&("SUMMARY" =~ /^($conf::HTML_ATTRIBUTES)$/io)){
-        while ( my ($key, $val) = each %{$attr_hashref} ) {
-            $content .= " $val" if ($key =~ /^SUMMARY$/i);
-        }
+    if (($tag =~ /^TABLE$/i) && ("SUMMARY" =~ /^(?:$conf::HTML_ATTRIBUTES)$/io)) {
+        my $val = $attr_hashref->{summary};
+        $content .= " $val" if (defined $val);
     }
-
-    if ($num >0){
-        while ( my ($key, $val) = each %{$attr_hashref} ) {
-            # Get foo from <XXX ... ALT="foo">
-            # It's not to handle HTML strictly.
-            $content .= " $val" if (($key =~ /^ALT$/i)&&("ALT" =~ /^($conf::HTML_ATTRIBUTES)$/io));
-            # Get foo from <XXX ... TITLE="foo">
-            $content .= " $val" if (($key =~ /^TITLE$/i)&&("TITLE" =~ /^($conf::HTML_ATTRIBUTES)$/io));
-        }
+    # Get foo from <XXX ... ALT="foo">
+    if ("ALT" =~ /^(?:$conf::HTML_ATTRIBUTES)$/io) {
+        my $val = $attr_hashref->{alt};
+        $content .= " $val" if (defined $val);
+    }
+    # Get foo from <XXX ... TITLE="foo">
+    if ("TITLE" =~ /^(?:$conf::HTML_ATTRIBUTES)$/io) {
+        my $val = $attr_hashref->{title};
+        $content .= " $val" if (defined $val);
     }
 
     # get foo bar from <META NAME="keywords|description" CONTENT="foo bar"> 
     my $metatags = "keywords|description";
     my $weight = $conf::Weight{'metakey'};
-    if (($num >0) && ($tag =~ /^META$/i)){
-        while ( my ($key, $val) = each %{$attr_hashref} ) {
-            if ($key =~ /^NAME$/i){
-                if ($val =~ /^($metatags)$/io){
-                    if ($key =~ /^CONTENT$/i){
-                        $$weighted_str .= "\x7f$weight\x7f$val\x7f/$weight\x7f\n";
-                    }
-                }elsif (($var::Opt{'meta'})&&($val =~ /^($conf::META_TAGS)$/io)){
-                    if ($key =~ /^CONTENT$/i){
-                        $html::fields->{$key} .= $val . " ";
-                        util::dprint("meta: $key: $fields->{$key}\n");
-                        $$html::weighted_str .= "\x7f$weight\x7f$val\x7f/$weight\x7f\n";
-                    }
-                }
+    if ($tag =~ /^META$/i) {
+        my $name = $attr_hashref->{name};
+        if (defined($name)) {
+            if ($name =~ /^(?:$metatags)$/io){
+                my $val = $attr_hashref->{content};
+                $$weighted_str .= "\x7f$weight\x7f$val\x7f/$weight\x7f\n";
+            } 
+
+            if (($var::Opt{'meta'}) && ($name =~ /^(?:$conf::META_TAGS)$/io) && ($name !~ m/^author$/i)) {
+                my $val = $attr_hashref->{content};
+                $html::fields->{$name} .= $val . " ";
+                util::dprint("meta: $name: $html::fields->{$name}\n");
             }
         }
     }
-    if ($num >0) {
-        $content .= html::element_space($tag) ;
-    }
+
+    $content .= html::element_space($tag);
 }
 
 
@@ -279,9 +281,10 @@ sub set_title ($) {
 }
 
 sub set_author ($) {
-    my ($author) =@_;
+    my ($author) = @_;
+
     if ($author =~ /\b([\w\.\-]+\@[\w\.\-]+(?:\.[\w\.\-]+)+)\b/) {
-        $html::fields->{'author'} = $1;
+        $html::fields->{'author'} = $1 if (!defined $html::fields->{'author'});
     }
 }
 

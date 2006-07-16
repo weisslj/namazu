@@ -1,6 +1,6 @@
 # Process this file with automake to produce Makefile.in
 #
-# $Id: Makefile.am,v 1.46 2005-12-10 07:56:25 opengl2772 Exp $
+# $Id: Makefile.am,v 1.47 2006-07-16 21:12:05 opengl2772 Exp $
 #
 
 AUTOMAKE_OPTIONS = 1.4 no-dependencies
@@ -11,7 +11,7 @@ EXTRA_DIST = alloca.c memcmp.c memmove.c memset.c strcasecmp.c strncasecmp.c \
 
 CLEAN_FILES = nmzversion.c nmz.dll nmz.def nmz.lib nmz.exp
 
-dll_libadd = @LTLIBINTL@
+dll_libadd = @LTLIBINTL@ @LTLIBICONV@
 
 DLL_OBJ_FILES = alias.o codeconv.o field.o hlist.o i18n.o \
 		idxname.o l10n-ja.o libnamazu.o nmzversion.o \
@@ -44,7 +44,7 @@ libnmz_la_SOURCES = alias.c alias.h codeconv.c codeconv.h \
 	var.c var.h wakati.c wakati.h score.c score.h nmzversion.c
 
 libnmz_la_DEPENDENCIES = @NMZ_LIBOBJS@
-libnmz_la_LIBADD = @LTLIBINTL@
+libnmz_la_LIBADD = @LTLIBINTL@ @LTLIBICONV@
 libnmz_la_LDFLAGS = -version-info $(LTVERSION)
 
 nmzversion.c: nmzversion.c.in

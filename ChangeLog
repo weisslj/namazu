@@ -5,6 +5,9 @@
 
         * nmz/Makefile.am: libiconv is linked. 
 
+	* filter/html.pl: When HTML-Parser is used, only the first <title>
+        tag is made effective. 
+
 2006-07-13  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * nmz/libnamazu.[ch], src/{cgi, form, namazu-cmd, namazu}.c:
@@ -10128,4 +10131,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1470 2006-07-16 21:12:05 opengl2772 Exp $
+$Id: ChangeLog,v 1.1471 2006-07-16 22:16:43 opengl2772 Exp $

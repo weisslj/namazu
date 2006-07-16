@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: html.pl,v 1.52 2006-07-16 21:07:38 opengl2772 Exp $
+# $Id: html.pl,v 1.53 2006-07-16 22:16:45 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2006 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -126,7 +126,7 @@ sub htmlparser_filter ($$$$) {
 
 
     %inside = ();
-    $fields->{'title'} = $conf::NO_TITLE;
+    $fields->{'title'} = undef;
     $fields->{'author'} = undef;
     $content = "";
 
@@ -139,6 +139,8 @@ sub htmlparser_filter ($$$$) {
 	)->parse($$contref);
 
     $$contref = $content;
+
+    $fields->{'title'} = $conf::NO_TITLE if (!defined $fields->{'title'});
 
     # restore entities of each content.
     html::decode_entity($contref);
@@ -274,10 +276,15 @@ sub _text ($) {
 sub set_title ($) {
     my ($title) = @_;
 
+    return if (defined $html::fields->{'title'});
+
+    $title =~ s/\s+/ /g;
+    $title =~ s/^\s+//;
+    $title =~ s/\s+$//;
+
     my $weight = $conf::Weight{'html'}->{'title'};
     $$html::weighted_str .= "\x7f$weight\x7f$title\x7f/$weight\x7f\n";
     $html::fields->{'title'} = $title;
-
 }
 
 sub set_author ($) {

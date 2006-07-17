@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.107 2006-04-15 17:30:14 opengl2772 Exp $
+ * $Id: search.c,v 1.108 2006-07-17 10:13:33 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2006 Namazu Project All rights reserved.
@@ -566,10 +566,16 @@ do_regex_preprocessing(char *expr)
         expr[strlen(expr) - 1] = '\0';
         escape_meta_characters(expr, BUFSIZE * 2);
     } else if (*expr == '/' && expr[strlen(expr) - 1] == '/') {
-        /* Genuine regex */
-        /* Remove the both of '/' chars at begging and end of string */
-        strcpy(expr, expr + 1); 
-        expr[strlen(expr) - 1]= '\0';
+	if (nmz_is_regex_searchmode()) {
+	    nmz_debug_printf("do REGEX search\n");
+            /* Genuine regex */
+            /* Remove the both of '/' chars at begging and end of string */
+            strcpy(expr, expr + 1); 
+            expr[strlen(expr) - 1]= '\0';
+	} else {
+	    nmz_debug_printf("disabled REGEX search\n");
+            escape_meta_characters(expr, BUFSIZE * 2);
+        }
         return;
     } else {
         /* field search */

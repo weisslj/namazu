@@ -2,10 +2,10 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu-cgi.c,v 1.26 2005-10-05 20:50:02 opengl2772 Exp $
+ * $Id: namazu-cgi.c,v 1.27 2006-08-04 11:58:25 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2006 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -40,7 +40,6 @@
  * It's not Unix, really.  See?  Capital letters. 
  */
 #include <windows.h>
-#define alarm(sec)	SetTimer(NULL,1,((sec)*1000),NULL)
 #define	SIGALRM	14	/* alarm clock */
 #endif
 
@@ -154,12 +153,14 @@ main(int argc, char **argv)
 	die("environment variable QUERY_STRING and SCRIPT_NAME are required");
     }
 
+#if !defined (_WIN32) || defined (__CYGWIN__)
     /* 
      * Set a suicide timer for safety.
      * namazu.cgi will suicide automatically when SUICIDE_TIME reached.
      */
     signal(SIGALRM, suicide);
     alarm(suicide_time);
+#endif
 
     /*
      * Setting up CGI mode.
@@ -187,7 +188,9 @@ main(int argc, char **argv)
 	die(nmz_get_dyingmsg());
     }
 
+#if !defined (_WIN32) || defined (__CYGWIN__)
     alarm(suicide_time);
+#endif
     nmz_set_output_warn_to_file(1);
 
     /*

@@ -100,10 +100,19 @@
 ## use non-HTML template files, set it suitably.
 ##
 #ContentType	"text/x-hdml"
+##
+## When you specify Japanese charset by UNIX
+##
+#ContentType	"text/html; charset=EUC-JP"
+##
+## When you specify Japanese charset by Windows
+##
+#ContentType	"text/html; charset=Shift_JIS"
 
 ##
 ## Suicide_Time: namazu.cgi stops the process in 60 seconds by 
 ## default.
+## (Only UNIX)
 ##
 #Suicide_Time	60
 

@@ -2,7 +2,7 @@
  * 
  * wakati.c -
  * 
- * $Id: wakati.c,v 1.30 2005-07-21 08:24:32 opengl2772 Exp $
+ * $Id: wakati.c,v 1.31 2006-08-11 14:51:30 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -134,12 +134,14 @@ nmz_wakati(char *key)
 	    for (j = 0; iskanji(key + i + j) ;  j += 2) {
 		char tmp[BUFSIZE];
 
+#ifndef NGRAM
                 if (j == 0 && (iskatakana(key + i + j) ||
                     ishiragana(key + i + j))) 
                 {
                     /* If beggining character is Katakana or Hiragana */
                     break;
                 }
+#endif /* NGRAM */
 
 		strncpy(tmp, key + i, j + 2);
 		*(tmp + j + 2) = '\0';
@@ -154,6 +156,7 @@ nmz_wakati(char *key)
                 strcat(buf, "\t");
 		i += key_leng;
 	    } else {
+#ifndef NGRAM
                 if (type == HIRAGANA || type == KATAKANA) {
                     for (j =0; ; j += 2) {
                         if (!((type == HIRAGANA && ishiragana(key + i + j))
@@ -170,6 +173,13 @@ nmz_wakati(char *key)
                     strcat(buf, "\t");
                     i += 2;
                 }
+#else /* NGRAM */
+                {
+                    strncat(buf, key + i, 2);
+                    strcat(buf, "\t");
+                    i += 2;
+                }
+#endif /* NGRAM */
 	    }
 	} else {
             while(*(key + i) && !nmz_iseuc(*(key + i))) {

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: wakati.pl,v 1.24 2006-03-10 13:13:44 opengl2772 Exp $
+# $Id: wakati.pl,v 1.25 2006-08-11 14:51:31 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2006 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -102,6 +102,10 @@ sub wakatize_japanese_sub ($) {
 	    util::cdie(_("invalid wakati module: ")."$module\n");
 	}
         util::dprint(_("-- wakatized bare content --\n")."$str\n\n");
+	@tmp = split('\n', $str);
+    } elsif ($conf::WAKATI =~ /^n-gram$/i) {
+        $str = $$content;
+        $str =~ s/([\xa1-\xfe][\a1-\xfe]|\x8e[\a1-\xfe]|\x8f[\a1-\xfe][\a1-\xfe])/ $1 /g;
 	@tmp = split('\n', $str);
     } else {
 	my $tmpfile = util::tmpnam("NMZ.wakati");

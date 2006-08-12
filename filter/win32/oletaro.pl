@@ -1,6 +1,6 @@
 # 
 # -*- Perl -*-
-# $Id: oletaro.pl,v 1.10 2004-10-16 14:54:13 opengl2772 Exp $
+# $Id: oletaro.pl,v 1.11 2006-08-12 07:06:44 opengl2772 Exp $
 # 
 # Copyright (C) 2000-2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.

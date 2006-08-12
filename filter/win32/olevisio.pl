@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: olevisio.pl,v 1.7 2006-03-16 13:12:35 opengl2772 Exp $
-# Copyright (C) 2004-2006 Tadamasa Teranishi,
-#               2004-2006 Namazu Project All rights reserved.
+# $Id: olevisio.pl,v 1.8 2006-08-12 07:06:44 opengl2772 Exp $
+# Copyright (C) 2004 Tadamasa Teranishi,
+#               2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -71,8 +71,6 @@ sub status() {
     $const = Win32::OLE::Const->Load("Microsoft Visio 2002 Type Library")
         unless $const;
     $const = Win32::OLE::Const->Load("Microsoft Visio 2000 Type Library")
-        unless $const;
-    $const = Win32::OLE::Const->Load("Visio 2000 Type Library")
         unless $const;
     open (STDERR, ">&SAVEERR");
     return 'yes' if (defined $const);
@@ -156,8 +154,7 @@ sub ReadDocument ($$$$$) {
     my $err = ReadVISIO($tmpfile, $cont, $fields, $weighted_str, $headings);
     unlink $tmpfile;
 
-    # codeconv::toeuc($cont);
-    codeconv::codeconv_document($cont);
+    codeconv::toeuc($cont);
 
     return $err;
 }
@@ -218,7 +215,7 @@ sub getDescription ($) {
 
     if (defined $description && $description ne "") {
         $description = codeconv::shiftjis_to_eucjp($description);
-        codeconv::normalize_eucjp_document(\$description);
+        codeconv::normalize_eucjp(\$description);
 
         util::vprint("Description : $description\n");
 
@@ -236,7 +233,7 @@ sub getProperties ($$$) {
         unless (defined $title);
     if (defined $title) {
         $title = codeconv::shiftjis_to_eucjp($title);
-        codeconv::normalize_eucjp_document(\$title);
+        codeconv::normalize_eucjp(\$title);
         $fields->{'title'} = $title;
 
         my $weight = $conf::Weight{'html'}->{'title'};
@@ -248,14 +245,14 @@ sub getProperties ($$$) {
         unless (defined $author);
     if (defined $author) {
         $author = codeconv::shiftjis_to_eucjp($author);
-        codeconv::normalize_eucjp_document(\$author);
+        codeconv::normalize_eucjp(\$author);
         $fields->{'author'} = $author;
     }
 
     my $keyword = $doc->{Keywords};
     if (defined $keyword) {
         $keyword = codeconv::shiftjis_to_eucjp($keyword);
-        codeconv::normalize_eucjp_document(\$keyword);
+        codeconv::normalize_eucjp(\$keyword);
 
         my $weight = $conf::Weight{'metakey'};
         $$weighted_str .= "\x7f$weight\x7f$keyword\x7f/$weight\x7f\n";

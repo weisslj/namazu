@@ -1,9 +1,9 @@
 #
 # -*- Perl -*-
-# $Id: olepowerpoint.pl,v 1.20 2005-06-06 07:06:40 opengl2772 Exp $
+# $Id: olepowerpoint.pl,v 1.21 2006-08-12 07:06:44 opengl2772 Exp $
 # Copyright (C) 1999 Jun Kurabe,
 #               1999 Ken-ichi Hirose,
-#               2004-2005 Namazu Project All rights reserved.
+#               2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -65,8 +65,19 @@ sub status() {
     $const = Win32::OLE::Const->Load("Microsoft PowerPoint 9.0 Object Library") unless $const;
     $const = Win32::OLE::Const->Load("Microsoft PowerPoint 8.0 Object Library") unless $const;
     open (STDERR,">&SAVEERR");
-    return 'yes' if (defined $const);
-    return 'no';
+    if (defined $const){
+	if (!util::islang("ja")) {
+	    return 'yes';
+	} else {
+	    if ($conf::NKF ne 'no') {
+		return 'yes';
+	    } else {
+		return 'no';
+	    }
+	}
+    }else {
+	return 'no';
+    }
 }
 
 sub recursive() {
@@ -138,8 +149,7 @@ sub getProperties ($$$) {
     undef $title if $title eq # which has no slide title
 	"\xbd\xd7\xb2\xc4\xde\x20\xc0\xb2\xc4\xd9\x82\xc8\x82\xb5";
     if (defined $title) {
-        $title = codeconv::shiftjis_to_eucjp($title);
-        codeconv::normalize_eucjp_document(\$title);
+	codeconv::to_inner_encoding(\$title, 'shiftjis');
         $fields->{'title'} = $title;
 
         my $weight = $conf::Weight{'html'}->{'title'};
@@ -150,8 +160,7 @@ sub getProperties ($$$) {
     $author = $cfile->BuiltInDocumentProperties('Last Author')->{Value}
 	unless (defined $author);
     if (defined $author) {
-        $author = codeconv::shiftjis_to_eucjp($author);
-        codeconv::normalize_eucjp_document(\$author);
+	codeconv::to_inner_encoding(\$author, 'shiftjis');
         $fields->{'author'} = $author;
     }
 
@@ -160,14 +169,13 @@ sub getProperties ($$$) {
     #    unless (defined $date);
     # if (defined $date) {
     #     $date = codeconv::shiftjis_to_eucjp($date);
-    #     codeconv::normalize_eucjp_document(\$date);
+    #     codeconv::normalize_eucjp(\$date);
     #     $fields->{'date'} = $date;
     # }
 
     my $keyword = $cfile->BuiltInDocumentProperties('keywords')->{Value};
     if (defined $keyword) {
-        $keyword = codeconv::shiftjis_to_eucjp($keyword);
-        codeconv::normalize_eucjp_document(\$keyword);
+	codeconv::to_inner_encoding(\$keyword, 'shiftjis');
 
         my $weight = $conf::Weight{'metakey'};
         $$weighted_str .= "\x7f$weight\x7f$keyword\x7f/$weight\x7f\n";
@@ -206,8 +214,7 @@ sub ReadDocument ($$$$) {
     my $err = ReadPPT::ReadPPT($tmpfile, $cont, $fields, $weighted_str);
     unlink $tmpfile;
 
-    # codeconv::toeuc($cont);
-    codeconv::codeconv_document($cont);
+    codeconv::to_inner_encoding(\$title, undef);
 
     return $err;
 }

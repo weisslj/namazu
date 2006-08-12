@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: testfilter.pl,v 1.3 2004-09-06 11:40:09 opengl2772 Exp $
+# $Id: testfilter.pl,v 1.4 2006-08-12 07:03:29 opengl2772 Exp $
 # Copyright (C) 2000 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #

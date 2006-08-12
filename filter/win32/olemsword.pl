@@ -1,9 +1,9 @@
 #
 # -*- Perl -*-
-# $Id: olemsword.pl,v 1.20 2006-07-18 13:41:28 opengl2772 Exp $
+# $Id: olemsword.pl,v 1.21 2006-08-12 07:06:44 opengl2772 Exp $
 # Copyright (C) 1999 Jun Kurabe,
 #		1999-2000 Ken-ichi Hirose,
-#               2004-2006 Namazu Project All rights reserved.
+#               2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -65,8 +65,19 @@ sub status() {
     $const = Win32::OLE::Const->Load("Microsoft Word 9.0 Object Library") unless $const;
     $const = Win32::OLE::Const->Load("Microsoft Word 8.0 Object Library") unless $const;
     open (STDERR,">&SAVEERR");
-    return 'yes' if (defined $const);
-    return 'no';
+    if (defined $const){
+	if (!util::islang("ja")) {
+	    return 'yes';
+	} else {
+	    if ($conf::NKF ne 'no') {
+		return 'yes';
+	    } else {
+		return 'no';
+	    }
+	}
+    }else {
+	return 'no';
+    }
 }
 
 sub recursive() {
@@ -135,8 +146,7 @@ sub getProperties ($$$) {
     $title = $cfile->BuiltInDocumentProperties('Subject')->{Value}
 	unless (defined $title);
     if (defined $title) {
-        $title = codeconv::shiftjis_to_eucjp($title);
-        codeconv::normalize_eucjp_document(\$title);
+	codeconv::to_inner_encoding(\$title, 'shiftjis');
         $fields->{'title'} = $title;
 
         my $weight = $conf::Weight{'html'}->{'title'};
@@ -147,8 +157,7 @@ sub getProperties ($$$) {
     $author = $cfile->BuiltInDocumentProperties('Author')->{Value}
 	unless (defined $author);
     if (defined $author) {
-        $author = codeconv::shiftjis_to_eucjp($author);
-        codeconv::normalize_eucjp_document(\$author);
+	codeconv::to_inner_encoding(\$author, 'shiftjis');
         $fields->{'author'} = $author;
     }
 
@@ -157,14 +166,13 @@ sub getProperties ($$$) {
     #    unless (defined $date);
     # if (defined $date) {
     #     $date = codeconv::shiftjis_to_eucjp($date);
-    #     codeconv::normalize_eucjp_document(\$date);
+    #     codeconv::normalize_eucjp(\$date);
     #     $fields->{'date'} = $date;
     # }
 
     my $keyword = $cfile->BuiltInDocumentProperties('keywords')->{Value};
     if (defined $keyword) {
-        $keyword = codeconv::shiftjis_to_eucjp($keyword);
-        codeconv::normalize_eucjp_document(\$keyword);
+	codeconv::to_inner_encoding(\$keyword, 'shiftjis');
 
         my $weight = $conf::Weight{'metakey'};
         $$weighted_str .= "\x7f$weight\x7f$keyword\x7f/$weight\x7f\n";
@@ -213,8 +221,7 @@ sub ReadDocument ($$$$) {
     my $err = ReadMSWord::ReadMSWord($tmpfile, $cont, $fields, $weighted_str);
     unlink $tmpfile;
 
-    # codeconv::toeuc($cont);
-    codeconv::codeconv_document($cont);
+    codeconv::to_inner_encoding(\$title, undef);
 
     return $err;
 }
@@ -317,7 +324,6 @@ sub getFrames ($$) {
 
     my $enum_func = sub {
 	my $obj = shift;
-        return 1 if (!defined($obj->Range));
 	my $p = $obj->Range->{Text};
 #	chop $p;
         $$cont .= "$p\n" if ( defined $p );

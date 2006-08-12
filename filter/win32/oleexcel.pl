@@ -1,10 +1,10 @@
 #
 # -*- Perl -*-
-# $Id: oleexcel.pl,v 1.26 2006-04-15 16:16:12 opengl2772 Exp $
+# $Id: oleexcel.pl,v 1.27 2006-08-12 07:06:44 opengl2772 Exp $
 # Copyright (C) 2001 Yoshinori TAKESAKO,
 #               1999 Jun Kurabe,
 #               1999 Ken-ichi Hirose,
-#               2000-2006 Namazu Project All rights reserved.
+#               2000-2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -82,8 +82,19 @@ sub status() {
     $const = Win32::OLE::Const->Load("Microsoft Excel 9.0 Object Library") unless $const;
     $const = Win32::OLE::Const->Load("Microsoft Excel 8.0 Object Library") unless $const;
     open (STDERR,">&SAVEERR");
-    return 'yes' if (defined $const);
-    return 'no';
+    if (defined $const){
+	if (!util::islang("ja")) {
+	    return 'yes';
+	} else {
+	    if ($conf::NKF ne 'no') {
+		return 'yes';
+	    } else {
+		return 'no';
+	    }
+	}
+    }else {
+	return 'no';
+    }
 }
 
 sub recursive() {
@@ -114,8 +125,7 @@ sub getProperties ($$$) {
     $title = $cfile->BuiltInDocumentProperties('Subject')->{Value}
 	unless (defined $title);
     if (defined $title) {
-        $title = codeconv::shiftjis_to_eucjp($title);
-        codeconv::normalize_eucjp_document(\$title);
+	codeconv::to_inner_encoding(\$title, 'shiftjis');
         $fields->{'title'} = $title;
 
         my $weight = $conf::Weight{'html'}->{'title'};
@@ -126,8 +136,7 @@ sub getProperties ($$$) {
     $author = $cfile->BuiltInDocumentProperties('Author')->{Value}
 	unless (defined $author);
     if (defined $author) {
-        $author = codeconv::shiftjis_to_eucjp($author);
-        codeconv::normalize_eucjp_document(\$author);
+	codeconv::to_inner_encoding(\$author, 'shiftjis');
         $fields->{'author'} = $author;
     }
 
@@ -136,14 +145,13 @@ sub getProperties ($$$) {
     #    unless (defined $date);
     # if (defined $date) {
     #     $date = codeconv::shiftjis_to_eucjp($date);
-    #     codeconv::normalize_eucjp_document(\$date);
+    #     codeconv::normalize_eucjp(\$date);
     #     $fields->{'date'} = $date;
     # }
 
     my $keyword = $cfile->BuiltInDocumentProperties('keywords')->{Value};
     if (defined $keyword) {
-        $keyword = codeconv::shiftjis_to_eucjp($keyword);
-        codeconv::normalize_eucjp_document(\$keyword);
+	codeconv::to_inner_encoding(\$keyword, 'shiftjis');
 
         my $weight = $conf::Weight{'metakey'};
         $$weighted_str .= "\x7f$weight\x7f$keyword\x7f/$weight\x7f\n";
@@ -155,7 +163,7 @@ sub getProperties ($$$) {
 sub Win32_FullPath ($) {
     # c:/hoge/hoge.xls -> c:\hoge\hoge.xls
     my $file = shift;
-    if ($English::PERL_VERSION >= 5.006) {
+    if ($English::Perl_VERSION >= 5.006) {
 	$file = Win32::GetFullPathName($file);
     }
     $file =~ s|/|\\|g;
@@ -209,8 +217,7 @@ sub ReadDocument ($$$$$) {
     my $err = ReadExcel($tmpfile, $cont, $weighted_str, $headings, $fields);
     unlink($tmpfile);
 
-    # codeconv::toeuc($cont);
-    codeconv::codeconv_document($cont);
+    codeconv::to_inner_encoding($cont, undef);
 
     # TEXT_SIZE_MAX
     my $text_size_max = $conf::TEXT_SIZE_MAX;

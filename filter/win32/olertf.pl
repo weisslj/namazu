@@ -1,11 +1,11 @@
 # 
 # -*- Perl -*-
-# $Id: olertf.pl,v 1.11 2006-06-20 04:50:28 opengl2772 Exp $
+# $Id: olertf.pl,v 1.12 2006-08-12 07:06:44 opengl2772 Exp $
 # 
 # Copyright (C) 2000 Yoshinori.TAKESAKO,
 #               2000 Jun Kurabe,
 #               2000 Ken-ichi Hirose,
-#               2004-2006 Namazu Project All rights reserved.
+#               2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -69,14 +69,7 @@ sub post_codeconv () {
 sub add_magic ($) {
     my ($magic) = @_;
 
-    $magic->addMagicEntry("0\tstring\t{\\rtf\t");
-    $magic->addMagicEntry(">6\tstring\t\\ansi\tapplication/rtf");
-    $magic->addMagicEntry(">6\tstring\t\\mac\tapplication/rtf");
-    $magic->addMagicEntry(">6\tstring\t\\pc\tapplication/rtf");
-    $magic->addMagicEntry(">6\tstring\t\\pca\tapplication/rtf");
-
     $magic->addFileExts('\\.rtf$', 'application/rtf');
-
     return;
 }
 

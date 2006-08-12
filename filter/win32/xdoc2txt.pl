@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: xdoc2txt.pl,v 1.3 2005-12-25 22:53:30 usu Exp $
+# $Id: xdoc2txt.pl,v 1.4 2006-08-12 07:06:44 opengl2772 Exp $
 # Copyright (C) 2004 HANAI,Akira All rights reserved.
 # Copyright (C) 2005 Yukio USUDA All rights reserved.
 # Copyright (C) 2005 Namazu Project All rights reserved.
@@ -147,10 +147,10 @@ sub filter ($$$$$) {
     }
     unlink $tmpfile;
 
-    codeconv::codeconv_document($cont);
+    codeconv::codeconv_inner_encoding($cont, undef);
 
     rm2byteutf8(\$prop);
-    codeconv::codeconv_document(\$prop);
+    codeconv::codeconv_inner_encoding(\$prop, undef);
 
     if ($prop =~ /\<LastAuthor\>(.+)\<\/LastAuthor\>/) {
         $fields->{'author'} = $1;
@@ -181,7 +181,7 @@ sub rm2byteutf8 ($) {
     my $enc = guess_encoding($$property);
     if (ref $enc){
         $$property =~ s/[\xC2-\xDF][\x80-\xBF]/ /g if ($enc->name eq 'utf8');
-        Encode::from_to($$property, $enc->name ,'euc-jp');
+        Encode::from_to($$property, $enc->name ,'utf-8');
     }else {
         $$property = "";
         util::dprint("Encode::Guess couldn't find coding name");

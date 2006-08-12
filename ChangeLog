@@ -1,3 +1,9 @@
+2006-08-11  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+	* nmz/wakati.c: A simple n-gram search is experimentally added. 
+
+	* pl/wakati.pl: ditto.
+
 2006-08-04  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* conf/namazurc-sample: It is added to the comment that Suicide_Time
@@ -10149,4 +10155,4 @@
 	* src/mknmz.pl.in: Fixed -F & -s option bug [namazu 647]
 	  - [SHIOZAKI Takehiko <takehi-s@ascii.co.jp>] - report
 
-$Id: ChangeLog,v 1.1475 2006-08-04 11:58:22 opengl2772 Exp $
+$Id: ChangeLog,v 1.1476 2006-08-12 01:40:00 opengl2772 Exp $

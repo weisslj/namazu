@@ -98,19 +98,29 @@
 ##
 ## ContentType: Set "Content-Type" header output. If you want to
 ## use non-HTML template files, set it suitably.
+##
 #ContentType	"text/x-hdml"
+##
+## When you specify Japanese charset by UNIX
+##
+#ContentType	"text/html; charset=EUC-JP"
+##
+## When you specify Japanese charset by Windows
+##
+#ContentType	"text/html; charset=Shift_JIS"
 
 ##
-## Suicide_Time: namazu.cgi stops the process in 60 seconds by
+## Suicide_Time: namazu.cgi stops the process in 60 seconds by 
 ## default.
+## (Only UNIX)
 ##
-#Suicide_Time   60
+#Suicide_Time	60
 
 ##
 ## Regex_Search: Set OFF to turn off regex_search.
 ## Default is ON.
 ##
-#Regex_Search   off
+#Regex_Search	off
 
 ##
 ## Filesys_coding: Set the filesystem encoding such as `euc-jp', `cp932',

@@ -2,9 +2,9 @@
 # -*- Perl -*-
 # indexer.pl - class for indexing
 #
-# $Id: indexer.pl,v 1.4 2005-10-08 11:40:51 usu Exp $
+# $Id: indexer.pl,v 1.5 2006-08-12 05:45:03 opengl2772 Exp $
 #
-# Copyright (C) 2002 Namazu Project All rights reversed.
+# Copyright (C) 2002-2006 Namazu Project All rights reversed.
 #
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -24,6 +24,8 @@
 
 package mknmz::indexer;
 
+my $allow_c = ""; 
+
 sub new {
     my $self = {};
     my $proto = shift @_;
@@ -41,6 +43,7 @@ sub init {
     $self->{'_word_leng_max'} = shift @_;
     $self->{'_nosymbol'} = shift @_;
     $self->{'_hook_word'} = undef;
+    $allow_c = "[^\x80-\xefa-z_0-9]";
 }
 
 sub get_keyindex {
@@ -55,7 +58,7 @@ sub word_hook {
 
 sub noedgesymbol {
     my $self = shift @_;
-    $self->word_hook(sub {$_[0] =~ s/^[^\xa1-\xfea-z_0-9]*(.*?)[^\xa1-\xfea-z_0-9]*$/$1/g; $_[0];});
+    $self->word_hook(sub {$_[0] =~ s/^$allow_c*(.*?)$allow_c*$/$1/g; $_[0];});
 }
 
 sub count_words {
@@ -67,11 +70,10 @@ sub count_words {
     my $part2 = "";
     my $part3 = "";
     my $part3_uniqword = "";
-
     if ($$contref =~ /\x7f/) {
         $part1 = substr $$contref, 0, index($$contref, "\x7f");
         $part2 = substr $$contref, index($$contref, "\x7f"),
-                 (rindex($$contref, "\x7f") - index($$contref, "\x7f") +1);
+        (rindex($$contref, "\x7f") - index($$contref, "\x7f") +1);
 #       $part1 = $PREMATCH;  # $& and friends are not efficient
 #       $part2 = $MATCH . $POSTMATCH;
         if ($$contref =~ /\x7f([^\x7f]+)$/){
@@ -124,7 +126,7 @@ sub _wordcount_sub {
         $word_count->{$word} = 0 unless defined($word_count->{$word});
         $word_count->{$word} += $weight;
         unless ($self->{'_nosymbol'}) {
-	    $self->_splitsymbol($word, $weight);
+		$self->_splitsymbol($word, $weight);
         }
     }
     return "";
@@ -135,21 +137,22 @@ sub _splitsymbol {
     my $word = shift @_;
     my $weight = shift @_;
     my $word_count = $self->{'_keyindex'};
-    if ($word =~ /^[^\xa1-\xfea-z_0-9](.+)[^\xa1-\xfea-z_0-9]$/) {
+    
+    if ($word =~ /^$allow_c(.+)$allow_c$/) {
 	$word_count->{$1} = 0 unless defined($word_count->{$1});
 	$word_count->{$1} += $weight;
-	return unless $1 =~ /[^\xa1-\xfea-z_0-9]/;
-    } elsif ($word =~ /^[^\xa1-\xfea-z_0-9](.+)/) {
+	return unless $1 =~ /$allow_c/;
+    } elsif ($word =~ /^$allow_c(.+)/) {
 	$word_count->{$1} = 0 unless defined($word_count->{$1});
 	$word_count->{$1} += $weight;
-	return unless $1 =~ /[^\xa1-\xfea-z_0-9]/;
-    } elsif ($word =~ /(.+)[^\xa1-\xfea-z_0-9]$/) {
+	return unless $1 =~ /$allow_c/;
+    } elsif ($word =~ /(.+)$allow_c$/) {
 	$word_count->{$1} = 0 unless defined($word_count->{$1});
 	$word_count->{$1} += $weight;
-	return unless $1 =~ /[^\xa1-\xfea-z_0-9]/;
+	return unless $1 =~ /$allow_c/;
     }
-    my @words_ = split(/[^\xa1-\xfea-z_0-9]+/, $word)
-      if $word =~ /[^\xa1-\xfea-z_0-9]/;
+    my @words_ = split(/$allow_c+/, $word)
+      if $word =~ /$allow_c/;
     for my $tmp (@words_) {
 	next if $tmp eq "";
 	$word_count->{$tmp} = 0 unless defined($word_count->{$tmp});

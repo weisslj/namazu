@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: time.pl,v 1.6 2006-01-20 20:43:43 opengl2772 Exp $
+# $Id: time.pl,v 1.7 2006-08-12 05:45:03 opengl2772 Exp $
 # Copyright (C) 2004-2006 Tadamasa Teranishi
 #               2004-2006 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.

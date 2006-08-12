@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: wakati.pl,v 1.25 2006-08-11 14:51:31 opengl2772 Exp $
+# $Id: wakati.pl,v 1.26 2006-08-12 05:45:03 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2006 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -26,11 +26,26 @@
 package wakati;
 use strict;
 
+my $kakasi_utf8 = undef;
+sub init_text_kakasi () {
+    $kakasi_utf8 = Text::Kakasi->new(qw/-iutf-8 -outf-8 -w/);
+}
+
+# Unicode: CJK Unified Ideographs(U+4E00 - U+9FAF)
+my $kanji = "([\xE4-\xE9][\x80-\xBF][\x80-\xBF])";
+
+# Unicode: Hiragana(U+3041 - U+3093)
+my $hiragana = "(\xE3\x81[\x81-\xBF]|\xE3\x82[\x80-\x93])+";
+
+my $noun = "\xE5\x90\x8D\xE8\xA9\x9E";
+# noun (meisi) in Japanese "cc be bb ec"
+
 # Do wakatigaki processing for a Japanese text.
 sub wakatize_japanese ($) {
     my ($content) = @_;
 
-    my @tmp = wakatize_japanese_sub($content);
+    my @tmp = ();
+    @tmp = wakatize_japanese_sub($content);
 
     # Remove words consists of only Hiragana characters 
     # when -H option is specified.
@@ -43,10 +58,11 @@ sub wakatize_japanese ($) {
 	    $tmp[$ndx] = ' ' . $tmp[$ndx] . ' ';
             $tmp[$ndx] =~ s!\x7f *(\d+) *\x7f([^\x7f]*)\x7f */ *\d+ *\x7f!\x7f$1\x7f $2 \x7f/$1\x7f!g;
 	    if ($var::Opt{'okurigana'}) {
-		$tmp[$ndx] =~ s/((?:[^\xa4][\xa1-\xfe])+)(?:\xa4[\xa1-\xf3])+ /$1 /g;
+		$tmp[$ndx] =~ s/$kanji
+				$hiragana\s/$1 /gx;
 	    }
 	    if ($var::Opt{'hiragana'}) {
-		$tmp[$ndx] =~ s/ (?:\xa4[\xa1-\xf3])+ //g;
+		$tmp[$ndx] =~ s/ $hiragana //g;
 	    }
         }
     }
@@ -54,8 +70,7 @@ sub wakatize_japanese ($) {
     # Collect only noun words when -m option is specified.
     if ($var::Opt{'noun'}) {
 	$$content = "";
-	$$content .= shift(@tmp) =~ /(.+ )\xcc\xbe\xbb\xec/ ? $1 : "" while @tmp; 
-	# noun (meisi) in Japanese "cc be bb ec"
+	$$content .= shift(@tmp) =~ /(.+ )$noun/ ? $1 : "" while @tmp; 
     } else {
 	$$content = join("\n", @tmp);
     }
@@ -63,7 +78,9 @@ sub wakatize_japanese ($) {
     $$content =~ s/\s+$//gm;
     $$content =~ s/ +/ /gm;
     $$content .= "\n";
-    util::dprint(_("-- wakatized content --\n")."$$content\n");
+    my $tmp_cont = $$content;
+    codeconv::to_external_encoding(\$tmp_cont);
+    util::dprint(_("-- wakatized content --\n")."$tmp_cont\n");
 }
 
 sub wakatize_japanese_sub ($) {
@@ -74,66 +91,40 @@ sub wakatize_japanese_sub ($) {
     if ($conf::WAKATI =~ /^module_(\w+)/) {
 	my $module = $1;
 	if ($module eq "kakasi") {
-	    $str = $$content;
-	    $str =~ s/([\x80-\xff]+)/{my $text = Text::Kakasi::do_kakasi($1); " $text ";}/ge;
+	    {
+		$str = $kakasi_utf8->get($$content);
+		Encode::_utf8_off($str);
+		util::dprint(_("wakati: using ")."module_kakasi(utf-8)\n");
+	    }
 	} elsif ($module eq "chasen") {
-            if ($var::Opt{'noun'}) {
-	        $str = Text::ChaSen::sparse_tostr_long($$content);
-            } else {
-                $str = $$content;
-	        $str =~ s/([\x80-\xff]+)/{my $text = Text::ChaSen::sparse_tostr_long($1); " $text ";}/ge;
-            }
+	    $str = Text::ChaSen::sparse_tostr_long($$content);
 	} elsif ($module eq "mecab") {
 	    use vars qw($t);
 	    if (!defined $t) {
 		require MeCab;
 		import MeCab;
                 eval '$t = new MeCab::Tagger("-Owakati");' or
-                    $t = new MeCab::Tagger([qw(mecab -O wakati)]);
+		$t = new MeCab::Tagger([qw(mecab -O wakati)]);
 	    } 
 	    END {
 		$t->DESTROY() if defined $t;
 	    }; 
-            $str = $$content;
-            $str =~ s/([\x80-\xff]+)/{my $s = $1; my $text = $t->parse($s); " $text ";}/ge;
-        } elsif ($module eq "builtin") {
+	    $str = $t->parse($$content);
+        }elsif($module eq "builtin") {
             $str = builtinwakati::wakati($content);
 	} else {
 	    util::cdie(_("invalid wakati module: ")."$module\n");
 	}
         util::dprint(_("-- wakatized bare content --\n")."$str\n\n");
 	@tmp = split('\n', $str);
-    } elsif ($conf::WAKATI =~ /^n-gram$/i) {
-        $str = $$content;
-        $str =~ s/([\xa1-\xfe][\a1-\xfe]|\x8e[\a1-\xfe]|\x8f[\a1-\xfe][\a1-\xfe])/ $1 /g;
-	@tmp = split('\n', $str);
     } else {
 	my $tmpfile = util::tmpnam("NMZ.wakati");
         util::dprint(_("wakati: using ")."$conf::WAKATI\n");
 	# Don't use IPC::Open2 because it's not efficent.
-        if ($var::Opt{'noun'}) {
-            my $fh_wakati = util::efopen("|$conf::WAKATI > $tmpfile");
-            print $fh_wakati $$content;
+	{
+	    my $fh_wakati = util::efopen("|$conf::WAKATI > $tmpfile");
+	    print $fh_wakati $$content;
             util::fclose($fh_wakati);
-        } else {
-            $str = $$content;
-
-            my $redirect = ">";
-            while(1) {
-                if ($str =~ s/^([\x80-\xff]+)//s) {
-                    my $fh_wakati = util::efopen("|$conf::WAKATI $redirect $tmpfile");
-                    print $fh_wakati " $1\n";
-                    util::fclose($fh_wakati);
-                } elsif ($str =~ s/^([\x00-\x7f]+)//s) {
-                    my $fh_wakati = util::efopen("$redirect $tmpfile");
-                    print $fh_wakati " $1 ";
-                    util::fclose($fh_wakati);
-                } else {
-                    last;
-                }
-            
-                $redirect = ">>";
-            }
 	}
 	{
 	    my $fh_wakati = util::efopen($tmpfile);

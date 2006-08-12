@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: htmlsplit.pl,v 1.13 2004-05-23 10:30:11 opengl2772 Exp $
+# $Id: htmlsplit.pl,v 1.14 2006-08-12 05:45:03 opengl2772 Exp $
 #
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.

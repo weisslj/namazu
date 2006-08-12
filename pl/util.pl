@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.40 2006-02-03 02:42:14 opengl2772 Exp $
+# $Id: util.pl,v 1.41 2006-08-12 05:45:03 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
-# Copyright (C) 2000-2005 Namazu Project All rights reserved.
+# Copyright (C) 2000-2006 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -29,9 +29,10 @@ use English;
 use IO::File;
 require 'time.pl';
 
-use vars qw($LANG_MSG $LANG);
+use vars qw($LANG_MSG $LANG $EXT_ENCODE);
 $LANG_MSG = "C";           # language of messages
 $LANG = "C";               # language of text processing
+$EXT_ENCODE = "utf-8";     # encode of terminal
 
 #  rename() with consideration for OS/2
 sub Rename($$) {
@@ -124,7 +125,7 @@ sub rfc822time ($)
 		   $hour, $min, $sec, time::gettimezone());
 }
 
-sub readfile ($) {
+sub readfile ($;$) {
     my ($arg) = @_;
 
     my $fh;
@@ -275,6 +276,26 @@ sub set_lang () {
 	}
     }
     # print "LANG: $util::LANG\n";
+
+    if ($util::LANG_MSG =~ /utf-8/i) {
+        $util::EXT_ENCODE = 'utf-8';
+    } elsif ($util::LANG_MSG =~ /(SJIS|Shift_JIS|shiftjis|Shift-jis)/i) {
+        $util::EXT_ENCODE = 'shiftjis';
+    } elsif ($util::LANG_MSG =~ /ISO-2022-JP/i) {
+	$util::EXT_ENCODE = 'iso-2022-jp';
+    } elsif (($util::LANG_MSG =~ /ja_JP\.(EUC|ujis|eucJP)/) ||
+	     ($util::LANG_MSG eq 'japanese') || ($util::LANG_MSG eq 'ja')){
+	$util::EXT_ENCODE = 'euc-jp';
+    } elsif (($util::LANG_MSG =~ /ISO-8859-1/i) || 
+	    ($util::LANG_MSG eq 'german') ||
+	    ($util::LANG_MSG eq 'de') || ($util::LANG_MSG eq 'deutsch') ||
+	    ($util::LANG_MSG eq 'fr') || ($util::LANG_MSG eq 'french')  ||
+	    ($util::LANG_MSG eq 'es') || ($util::LANG_MSG eq 'spanish')) {
+	$util::EXT_ENCODE = 'iso-8859-1';
+    } elsif (($util::LANG_MSG =~ /ISO-8859-2/i) || 
+	    ($util::LANG_MSG eq 'polish') || ($util::LANG_MSG eq 'pl')) {
+	$util::EXT_ENCODE = 'iso-8859-2';
+    }
 }
 
 sub islang_msg($) {
@@ -582,19 +603,13 @@ sub win32_yen_to_slash ($) {
 # Substitution of "-r" that doesn't correspond to ACL of NTFS
 sub canopen($)
 {
-    my ($file) = @_;
-
-    my $fh;
-
-    return (-r $file) if ($English::OSNAME ne "MSWin32");
-
-    $fh = new IO::File $file, "r";
-
-    return 0 if (!defined $fh);
-
-    $fh->close();
-
-    return 1;
+     my ($file) = @_;
+     my $fh;
+     return (-r $file) if ($English::OSNAME ne "MSWin32");
+     $fh = new IO::File $file, "r";
+     return 0 if (!defined $fh);
+     $fh->close();
+     return 1;
 }
 
 1;

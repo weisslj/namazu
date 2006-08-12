@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: seed.pl,v 1.5 2000-01-28 09:40:16 satoru Exp $
+# $Id: seed.pl,v 1.6 2006-08-12 05:45:03 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.

@@ -57,8 +57,9 @@ sub textdomain
 	$trans_pointer = &mo_format_value($reverse, $buffer,$trans_tab_offset + 4);
 	$trans_tab_offset += 8;
 
-	$_{substr ($buffer, $orig_pointer, $orig_length)}
-	    = substr ($buffer, $trans_pointer, $trans_length);
+	my $msg = substr ($buffer, $trans_pointer, $trans_length);
+	codeconv::to_external_encoding(\$msg);
+	$_{substr ($buffer, $orig_pointer, $orig_length)} = $msg;
     }
 }
 

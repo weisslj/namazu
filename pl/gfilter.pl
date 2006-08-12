@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: gfilter.pl,v 1.9 2006-04-16 12:49:14 opengl2772 Exp $
+# $Id: gfilter.pl,v 1.10 2006-08-12 05:45:03 opengl2772 Exp $
 # Copyright (C) 1999 Satoru Takabayashi ,
-#               2000-2006 Namazu Project All rights reserved.
+# Copyright (C) 2004 Namazu Project ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -29,11 +29,21 @@ use English;
 # Show debug information for filters
 sub show_filter_debug_info ($$$$) {
     my ($contref, $weighted_str, $fields, $headings) = @_;
-    util::dprint("-- title --\n$fields->{'title'}\n") 
-	if defined $fields->{'title'};
-    util::dprint("-- content --\n$$contref\n");
-    util::dprint("-- weighted_str: --\n$$weighted_str\n");
-    util::dprint("-- headings --\n$$headings\n");
+    my $tmp_cont = $$contref;
+    my $tmp_weighted = $$weighted_str;
+    my $tmp_head = $$headings;
+    codeconv::to_external_encoding(\$tmp_cont);
+    codeconv::to_external_encoding(\$tmp_weighted);
+    codeconv::to_external_encoding(\$tmp_head);
+
+    if ($fields->{'title'}) {
+	my $title = $fields->{'title'};
+	codeconv::to_external_encoding(\$title);
+	util::dprint("-- title --\n$title\n");
+    }
+    util::dprint("-- content --\n$tmp_cont\n");
+    util::dprint("-- weighted_str: --\n$tmp_weighted\n");
+    util::dprint("-- headings --\n$tmp_head\n");
 }
 
 # Adjust white spaces
@@ -56,16 +66,8 @@ sub white_space_adjust_filter ($) {
 sub filename_to_title ($$) {
     my ($cfile, $weighted_str) = @_;
 
-    # for MSWin32's filename using Shift_JIS [1998-09-24]
-    if (($English::OSNAME eq "MSWin32") || ($English::OSNAME eq "os2")) {
-	$cfile = codeconv::shiftjis_to_eucjp($cfile);
-	codeconv::eucjp_han2zen_kana(\$cfile);
-    }
-
-    codeconv::normalize_eucjp(\$cfile);
-
-    my $filename = $cfile;
-    $filename = $1 if ($cfile =~ m!^.*/([^/]*)$!);
+    $cfile =~ m!^.*/([^/]*)$!;
+    my $filename = $1;
 
     # get keywords from a file name.
     # modified [1998-09-18] 

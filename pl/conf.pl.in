@@ -60,7 +60,7 @@ $DENY_FILE = ".*\\.(gif|png|jpg|jpeg)|.*\\.tar\\.gz|core|.*\\.bak|.*~|\\..*|\x23
 #       Case-insensitive.
 #
 $DENY_DDN = "con|aux|nul|prn|lpt[1-9]|com[1-9]|clock\$|xmsxxxx0";
-
+ 
 #
 # This pattern specifies PATHNAMEs which will NOT be targeted.
 # NOTE: Usually specified by --exclude=regex option.
@@ -85,7 +85,7 @@ $REMAIN_HEADER = "From|Date|Message-ID";
 # This pattern specifies fields which used for field-specified 
 # searching.  NOTE: case-insensitive
 # 
-$SEARCH_FIELD = "message-id|subject|from|date|uri|newsgroups|to|summary|size|utc";
+$SEARCH_FIELD = "message-id|subject|from|date|uri|newsgroups|to|summary|size|utc|duri";
 
 #
 # This pattern specifies meta tags which used for field-specified 
@@ -112,7 +112,6 @@ $NON_SEPARATION_ELEMENTS = 'A|TT|CODE|SAMP|KBD|VAR|B|STRONG|I|EM|CITE|FONT|U|'.
 # searchable.
 #
 $HTML_ATTRIBUTES = 'ALT|SUMMARY|TITLE';
-
 
 #===================================================================
 # 
@@ -196,7 +195,7 @@ $MAX_FIELD_LENGTH = 200;
 #
 
 #
-# Network Kanji Filter nkf v1.71 or later
+# Network Kanji Filter nkf v2.04 or later
 #
 $NKF = "@NKF@"; 
 
@@ -204,29 +203,35 @@ $NKF = "@NKF@";
 # KAKASI 2.x or later
 # Text::Kakasi 1.05 or later
 #
-$KAKASI = "@DO_KAKASI@";
+$KAKASI = "@DO_KAKASI_UTF8@";
 
 #
-# ChaSen 2.02 or later (simple wakatigaki)
+# ChaSen 2.3.1 or later (simple wakatigaki)
 # Text::ChaSen 1.03
 #
-$CHASEN = "@DO_CHASEN@";
+$CHASEN = "@DO_CHASEN_UTF8@";
 
 #
-# ChaSen 2.02 or later (with noun words extraction)
+# ChaSen 2.3.1 or later (with noun words extraction)
 #
-$CHASEN_NOUN = "@DO_CHASEN_NOUN@";
+$CHASEN_NOUN = "@DO_CHASEN_NOUN_UTF8@";
 
 #
 # MeCab
 #
-$MECAB = "@DO_MECAB@";
+$MECAB = "@DO_MECAB_UTF8@";
 
 #
 # Default Japanese processer: KAKASI or ChaSen or MeCab.
 #
 $WAKATI  = $@OPT_WAKATI_DEFAULT@;
 
+#===================================================================
+#
+# Filesystem encoding.
+# ex. Win32:cp932, WebDAV:utf-8, Samba-jp:HEX,CAP.
+#
+$TARGET_FILESYS_CODING = 'euc-jp';
 
 #===================================================================
 #
@@ -240,24 +245,19 @@ $WAKATI  = $@OPT_WAKATI_DEFAULT@;
 #
 %USE_FILTERS = (
   'application/applefile' => ['applefile.pl'],
-  'application/excel' => ['excel.pl', 'win32/oleexcel.pl', 'win32/xdoc2txt.pl'],  
+  'application/excel' => ['excel.pl', 'win32/oleexcel.pl', 'win32/xdoc2txt.pl'],
   'application/gnumeric' => ['gnumeric.pl'],
   'application/ichitaro4' => ['win32/ichitaro456.pl'],
   'application/ichitaro5' => ['doccat.pl', 'taro56.pl',
-                              'win32/ichitaro456.pl', 'win32/oletaro.pl',
-                              'win32/xdoc2txt.pl'],
+                              'win32/ichitaro456.pl', 'win32/oletaro.pl', 'win32/xdoc2txt.pl'],
   'application/ichitaro6' => ['doccat.pl', 'taro56.pl',
-                              'win32/ichitaro456.pl', 'win32/oletaro.pl',
-                              'win32/xdoc2txt.pl'],
-  'application/ichitaro7' => ['doccat.pl', 'taro7_10.pl', 'win32/oletaro.pl',
-                              'win32/xdoc2txt.pl'],
+                              'win32/ichitaro456.pl', 'win32/oletaro.pl', 'win32/xdoc2txt.pl'],
+  'application/ichitaro7' => ['doccat.pl', 'taro7_10.pl', 'win32/oletaro.pl', 'win32/xdoc2txt.pl'],
   'application/macbinary' => ['macbinary.pl'],
-  'application/msword' => ['msword.pl', 'win32/olemsword.pl',
-                           'win32/xdoc2txt.pl'],
-  'application/pdf' => ['pdf.pl'],
+  'application/msword' => ['msword.pl', 'win32/olemsword.pl', 'win32/xdoc2txt.pl'],
+  'application/pdf' => ['pdf.pl', 'win32/xdoc2txt.pl'],
   'application/postscript' => ['postscript.pl'],
-  'application/powerpoint' => ['powerpoint.pl','win32/olepowerpoint.pl',
-                              'win32/xdoc2txt.pl'],
+  'application/powerpoint' => ['powerpoint.pl','win32/olepowerpoint.pl', 'win32/xdoc2txt.pl'],
   'application/rtf' => ['rtf.pl', 'win32/olertf.pl', 'win32/xdoc2txt.pl'],
   'application/vnd.kde.kivio' => ['koffice.pl'],
   'application/vnd.kde.kpresenter' => ['koffice.pl'],
@@ -278,8 +278,7 @@ $WAKATI  = $@OPT_WAKATI_DEFAULT@;
   'application/x-dvi' => ['dvi.pl'],
   'application/x-gtar' => ['tar.pl'],
   'application/x-gzip' => ['gzip.pl'],
-  'application/x-js-taro' => ['doccat.pl', 'taro7_10.pl', 'win32/oletaro.pl',
-                           'win32/xdoc2txt.pl'],
+  'application/x-js-taro' => ['doccat.pl', 'taro7_10.pl', 'win32/oletaro.pl', 'win32/xdoc2txt.pl'],
   'application/x-lha' => ['lha.pl'],
   'application/x-rpm' => ['rpm.pl'],
   'application/x-shockwave-flash' => ['swf.pl'],
@@ -290,7 +289,7 @@ $WAKATI  = $@OPT_WAKATI_DEFAULT@;
   'message/news' => ['mailnews.pl'],
   'message/rfc822' => ['mailnews.pl'],
   'text/hnf' => ['hnf.pl'],
-  'text/html' => ['html.pl'],
+  'text/html' => ['html.pl'],	# Don't remove. Some filters use it internally.
   'text/html; x-type=mhonarc' => ['mhonarc.pl'],
   'text/html; x-type=pipermail' => ['pipermail.pl'],
   'text/plain; x-type=rfc' => ['rfc.pl'],
@@ -298,7 +297,6 @@ $WAKATI  = $@OPT_WAKATI_DEFAULT@;
   'text/x-roff' => ['man.pl'],
   'x-test/x-test' => ['testfilter.pl'], # for tests/mknmz-12
 );
-
 
 #===================================================================
 #

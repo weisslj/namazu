@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: builtinwakati.pl,v 1.2 2005-10-08 11:40:51 usu Exp $
+# $Id: builtinwakati.pl,v 1.3 2006-08-12 05:45:02 opengl2772 Exp $
 # Copyright (C) 1998 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2005 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -30,14 +30,19 @@ require 'util.pl';
 
 use Fcntl;
 use SDBM_File;
-my $CHAR  = "(?:[\x21-\x7e]|[\xa1-\xfe][\xa1-\xfe])";
-my $NONKANJI = "(?:[\x21-\x7e]|[\xa1-\xaf][\xa1-\xfe])";
-my $KIGOU = "(?:[\xa1\xa2\xa6-\xa8][\xa1-\xfe])";
-my $ALNUM = "(?:\xa3[\xa1-\xfe])";
-my $CHOON    = "(?:[\xa1][\xbc\xc1\xdd])";
-my $HIRAGANA = "(?:(?:[\xa4][\xa1-\xf3])|$CHOON)";
-my $KATAKANA = "(?:(?:[\xa5][\xa1-\xf6])|$CHOON)";
-my $KANJI    = "(?:[\xb0-\xfe][\xa1-\xfe]|\xa1\xb9)";
+
+# Unicode: CJK Unified Ideographs(U+4E00 - U+9FAF)
+my $KANJI = "(?:[\xE4-\xE9][\x80-\xBF][\x80-\xBF])";
+my $CHOON    = "(?:(?:\xE3\x80\x9C)|(?:\xE3\x83\xBC)|(?:\xE2\x80\x95))";
+# Unicode: Hiragana(U+3041 - U+3093)
+my $HIRAGANA = "(?:(?:\xE3\x81[\x81-\xBF])|(?:\xE3\x82[\x80-\x93])|$CHOON)";
+# Unicode: Katakana(U+30A1 - U+30F6)
+my $KATAKANA = "(?:(?:\xE3\x82[\xA1-\xBF])|(?:\xE3\x83[\x80-\xB6])|$CHOON)";
+# Unicode: (U+FF10 - U+FF19, U+FF21 - U+FF3A, U+FF41 - U+FF5A)
+my $ALNUM = "(?:(?:\xEF\xBC[\x90-\x99])|(?:\xEF\xBC[\xA1-\xBA])|(?:\xEF\xBD[\x81-\x9A]))";
+#my $CHAR  = "(?:[\x21-\x7e]|[\xC0-\xDF][\x80-\xBF]|[\xE0-\xEF][\x80-\xBF]{2}|[\xF0-\xF8][\x80-\xBF]{3}|[\xF8-\xFB][\x80-\xBF]{4}|[\xFC-\xFD][\x80-\xBF]{5})";
+my $CHAR  = "(?:[\x21-\x7e]|[\xC0-\xFD][\x80-\xBF]+)";
+
 my %dict;
 
 sub init ($) {
@@ -104,7 +109,7 @@ sub wakati ($) {
             }
         } elsif ($$contref =~ 
                  /\G
-                 ([\x21-\x7e]+|$KATAKANA+|$ALNUM+|$KIGOU+|\S+)
+                 ([\x21-\x7e]+|$KATAKANA+|$ALNUM+|\S+)
                  (\s*)
                  /ogcx) 
         {

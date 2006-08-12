@@ -1,6 +1,6 @@
 #
 # -*- Perl *-*
-# $Id: html.pl,v 1.4 2006-03-20 15:49:03 opengl2772 Exp $
+# $Id: html.pl,v 1.5 2006-08-12 06:38:09 opengl2772 Exp $
 #
 
 package Namazu::Archive::html;

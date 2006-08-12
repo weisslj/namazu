@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: xdoc2txt.pl,v 1.4 2006-08-12 07:06:44 opengl2772 Exp $
+# $Id: xdoc2txt.pl,v 1.5 2006-08-12 13:55:24 opengl2772 Exp $
 # Copyright (C) 2004 HANAI,Akira All rights reserved.
 # Copyright (C) 2005 Yukio USUDA All rights reserved.
 # Copyright (C) 2005 Namazu Project All rights reserved.

@@ -1,0 +1,76 @@
+#! /bin/sh
+#
+# Test for japanese filename
+#
+LOG=`pwd`/test-log
+echo '  *** starting ' $0 >>$LOG
+
+IDX=ja-idx4
+
+EXEC=no
+
+lc_all=$LC_ALL
+lc_ctype=$LC_CTYPE
+lang=$LANG
+
+for ctype in "$lc_all" "$lc_ctype" "$lang"; do
+    if test -n "$ctype" -a "$ctype" = "C"; then
+        ctype="en"
+        break
+    fi
+    cand=`echo "$ctype" | LC_ALL="C" perl -nle 'print $1 if /^(..)/'`
+    if test -n "$cand"; then
+        ctype=$cand
+        break
+    fi
+done
+
+case $ctype in 
+	ja*)
+		EXEC=yes
+		;;
+esac
+if [ $EXEC = 'no' ]
+then
+        echo "Skipping because of LANG does not begin with ja: $0" >> $LOG
+	exit 77
+fi
+
+TMPDATA=`pwd`/tmp-data
+if test -d tmp-data; then
+    rm -rf tmp-data
+fi
+mkdir tmp-data
+
+if test -d ja-idx4; then
+    rm -rf ja-idx4/*
+else
+    mkdir ja-idx4
+fi
+
+perl <<'TEST'
+    my $LOG = "test-log";
+    my %files = ('EUC-JP'    => "\xA4\xCA\xA4\xDE\xA4\xBA.html",
+		'Shift_JIS' => "\x82\xC8\x82\xDC\x82\xB8.html",
+		'UTF-8'     => "\xE3\x81\xAA\xE3\x81\xBE\xE3\x81\x9A.html",
+		'CAP' => ":82:C8:82:DC:82:B8.html");
+    for $dir (keys(%files)) {
+	my $targetdir = "tmp-data/$dir";
+	mkdir $targetdir;
+	system "cp data/ja/html.html $targetdir/$files{$dir}";
+
+	my $idxdir = "ja-idx4/$dir";
+	unless (-d $idxdir){
+	    mkdir  $idxdir;
+	} else {
+	    system "rm -f $idxdir/NMZ.*";
+	}
+	open FH, ">mknmzrc-ja4";
+	print FH  "package conf;\n\$TARGET_FILESYS_CODING = '$dir';\n1;\n" ;
+	close FH;
+	system "../scripts/mknmz -a -f mknmzrc-ja4 -O $idxdir $targetdir >> $LOG";
+	unlink FH;
+    }
+TEST
+
+exit $?

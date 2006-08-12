@@ -1,0 +1,82 @@
+#! /bin/sh
+#
+# Test for Japanese encoding handling.
+#
+LOG=`pwd`/test-log
+echo '  *** starting ' $0 >>$LOG
+. ./commonfuncs
+
+EXEC=no
+
+lc_all=$LC_ALL
+lc_ctype=$LC_CTYPE
+lang=$LANG
+
+for ctype in "$lc_all" "$lc_ctype" "$lang"; do
+    if test -n "$ctype" -a "$ctype" = "C"; then
+        ctype="en"
+        break
+    fi
+    cand=`echo "$ctype" | LC_ALL="C" perl -nle 'print $1 if /^(..)/'`
+    if test -n "$cand"; then
+        ctype=$cand
+        break
+    fi
+done
+
+case $ctype in 
+	ja*)
+		EXEC=yes
+		;;
+esac
+if [ $EXEC = 'no' ]
+then
+        echo "Skipping because of LANG does not begin with ja: $0" >> $LOG
+	exit 77
+fi
+
+unset LANGUAGE
+unset LC_ALL
+unset LC_MESSAGES
+unset LC_CTYPE
+unset LANG
+
+pwd=`pwd`
+tmprc="$pwd/../src/.namazurc"
+echo "Index $pwd" > $tmprc
+echo "Lang ja" >> $tmprc
+duprcs
+
+cd ../src
+
+perl <<'TEST'
+    open LOG, ">>../tests/test-log";
+
+    open NMZSTATUS, "< ../tests/idx1/NMZ.status";
+    while (<NMZSTATUS>){
+	$docnum = $1 if /^files (\d+)/;
+    }
+    close NMZSTATUS;
+
+    $ENV{'SCRIPT_NAME'} = 'namazu.cgi';
+
+    my %query = ('EUC-JP'    => "\xA5\xC6\xA5\xB9\xA5\xC8",
+		'Shift_JIS' => "\x83\x65\x83\x58\x83\x67",
+		'UTF-8'     => "\xE3\x83\x86\xE3\x82\xB9\xE3\x83\x88");
+    for $coding (keys(%query)) {
+	$ENV{'QUERY_STRING'} = 'query=' . $query{$coding} . '&idxname=idx1';
+	open FH, "./namazu.cgi |";
+	while ($result = <FH>){
+	    if ($result =~ /<!-- HIT -->(\d+)<!-- HIT -->/){
+		$hitnum = $1;
+		print LOG "$coding: docnum=$docnum, hitnum=$hitnum\n";
+		if ($docnum != $hitnum){
+		     exit 1;
+		}
+	    }
+	}
+	close FH;
+    }
+    close LOG;
+TEST
+exit $?

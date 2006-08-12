@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.43 2005-11-10 22:01:11 opengl2772 Exp $
+ * $Id: rcfile.c,v 1.44 2006-08-12 06:56:05 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2005 Namazu Project All rights reserved.
@@ -137,6 +137,7 @@ static enum nmz_stat process_rc_maxmatch ( const char *directive, const StrList 
 static enum nmz_stat process_rc_contenttype ( const char *directive, const StrList *args );
 static enum nmz_stat process_rc_suicidetime ( const char *directive, const StrList *args );
 static enum nmz_stat process_rc_regexsearch ( const char *directive, const StrList *args );
+static enum nmz_stat process_rc_filesyscoding ( const char *directive, const StrList *args );
 
 struct conf_directive {
     char *name;
@@ -165,6 +166,7 @@ static struct conf_directive directive_tab[] = {
     { "CONTENTTYPE",   1, 0, process_rc_contenttype },
     { "SUICIDE_TIME",  1, 0, process_rc_suicidetime },
     { "REGEX_SEARCH",  1, 0, process_rc_regexsearch },
+    { "FILESYS_CODING", 1, 0, process_rc_filesyscoding },
     { NULL,            0, 0, NULL }
 };
 
@@ -363,6 +365,15 @@ process_rc_regexsearch(const char *directive, const StrList *args)
     } else if (strcasecmp(arg1, "OFF") == 0) {
 	nmz_set_regex_searchmode(0);
     }
+
+    return SUCCESS;
+}
+
+static enum nmz_stat
+process_rc_filesyscoding(const char *directive, const StrList *args)
+{
+    char *arg1 = args->value;
+    nmz_set_filesyscoding(arg1);
 
     return SUCCESS;
 }
@@ -725,7 +736,7 @@ load_rcfile(const char *fname)
 	    }
 	} while (1);
 
-	nmz_codeconv_internal(buf);  /* for Shift_JIS encoding */
+	/* nmz_codeconv_internal(buf);*/  /* for Shift_JIS encoding */
 	if (parse_rcfile(buf, current_lineno) != SUCCESS) {
 	    nmz_set_dyingmsg(nmz_msg(_("%s:%d: syntax error: %s"),  
 				     fname, current_lineno, errmsg));
@@ -758,9 +769,9 @@ set_namazurc(const char *arg)
 void
 set_namazunorc(const char *arg)
 {
-    strncpy(namazunorc, arg, BUFSIZE - 1);
-    namazunorc[BUFSIZE - 1] = '\0';
-    nmz_strlower(namazunorc);
+     strncpy(namazunorc, arg, BUFSIZE - 1);
+     namazunorc[BUFSIZE - 1] = '\0';
+     nmz_strlower(namazunorc);
 }
 
 /*
@@ -787,7 +798,7 @@ load_rcfiles(void)
 
         if (namazunorc[0] == '\0') {
             set_namazunorc(_norc);
-        }
+  	}
     }
 
     nmz_debug_printf("NAMAZUNORC: '%s'", _norc);

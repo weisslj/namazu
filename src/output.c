@@ -1,8 +1,8 @@
 /*
- * $Id: output.c,v 1.107 2006-04-15 17:31:38 opengl2772 Exp $
+ * $Id: output.c,v 1.108 2006-08-12 06:56:05 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2006 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2004 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -322,13 +322,11 @@ static char*
 load_nmz_result(const char *basedir)
 {
     char fname[BUFSIZE] = "", lang_suffix[BUFSIZE] = "", *buf;
-    char templatesuffix[BUFSIZE] = "";
 
     nmz_pathcat(basedir, NMZ.result);
     strncpy(fname, NMZ.result, BUFSIZE - 1);
     strncat(fname, ".", BUFSIZE - strlen(fname) - 1);
-    nmz_delete_since_path_delimitation(templatesuffix, get_templatesuffix(), BUFSIZE);
-    strncat(fname, templatesuffix, BUFSIZE - strlen(fname) - 1);  /* usually "normal" */
+    strncat(fname, get_templatesuffix(), BUFSIZE - strlen(fname) - 1);  /* usually "normal" */
 
     if (nmz_choose_msgfile_suffix(fname, lang_suffix) != SUCCESS) {
 	nmz_warn_printf("%s: %s", fname, strerror(errno));
@@ -532,7 +530,7 @@ print_query(const char * qs, int w)
 	if (strncmp(qs, "whence=", strlen("whence=")) == 0) {
 	    foo = 1;
 	    printf("whence=%d", w);
-	    for (qs += strlen("whence="); nmz_isdigit((unsigned char)*qs); qs++);
+	    for (qs += strlen("whence="); isdigit((unsigned char)*qs); qs++);
 	} else {
 	    /* '"' is converted to entities "&quot;" */
 	    putc_entitize(*qs);
@@ -1025,31 +1023,7 @@ get_listwhence(void)
 void 
 set_templatesuffix(const char *tmpl)
 {
-    int i = 0;
-    char *p;
-
-    strncpy(template_suffix, tmpl, BUFSIZE - 1);
-    template_suffix[BUFSIZE - 1] = '\0';
-
-    /*
-     *   result : [A-Za-z][A-Za-z0-9_\-]*
-     *   (ex. normal, short)
-     */
-    p = template_suffix;
-    while(*p) {
-        if (!((*p >= 'A' && *p <= 'Z') || (*p >= 'a' && *p <= 'z') ||
-        (((*p >= '0' && *p <= '9') || *p == '_' || *p == '-')&& i != 0))) {
-            *p = '\0';
-            break;
-        }
-        p++;
-        i++;
-    }
-
-    if (template_suffix[0] == '\0') {
-        strncpy(template_suffix, "normal", BUFSIZE - 1);
-        template_suffix[BUFSIZE - 1] = '\0';
-    }
+    strcpy(template_suffix, tmpl);
 }
 
 char *

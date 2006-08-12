@@ -2,7 +2,7 @@
  * 
  * usage.c -
  * 
- * $Id: usage.c,v 1.31 2006-01-24 09:22:08 opengl2772 Exp $
+ * $Id: usage.c,v 1.32 2006-08-12 06:56:05 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2006 Namazu Project All rights reserved.

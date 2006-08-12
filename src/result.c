@@ -1,9 +1,9 @@
 /*
- * $Id: result.c,v 1.77 2006-05-31 16:31:50 opengl2772 Exp $
+ * $Id: result.c,v 1.78 2006-08-12 06:56:05 opengl2772 Exp $
  * 
  * Copyright (C) 1989, 1990 Free Software Foundation, Inc.
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2006 Namazu Project All rights reserved.
+ * Copyright (C) 2000,2004 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -142,16 +142,20 @@ replace_field(struct nmz_data d, int counter,
     } else if (strcmp(field, "namazu::counter") == 0) {
 	sprintf(buf, "%d", counter);
 	commas(buf);
+    } else if (strcasecmp(field, "uri") == 0) {
+	nmz_get_field_data(d.idxid, d.docid, "duri", buf);
+	if (is_urireplace()) {
+	    nmz_replace_uri(buf);
+	}
+	nmz_encode_uri(buf);
+    } else if (strcasecmp(field, "uri#uriencode=\"decode\"") == 0) {
+	nmz_get_field_data(d.idxid, d.docid, "duri", buf);
+	if (is_urireplace()) {
+	    nmz_replace_uri(buf);
+	}
+	nmz_parse_escape_crosshatch(buf);
     } else {
 	nmz_get_field_data(d.idxid, d.docid, field, buf);
-	if (strcasecmp(field, "uri") == 0) {
-	    if (is_urireplace()) {
-		nmz_replace_uri(buf);
-	    }
-	    if (is_uridecode()) {
-		nmz_decode_uri(buf);
-	    }
-	}
     }
 
     /* 
@@ -290,14 +294,6 @@ emphasize(char *str)
             || (key[0] == '/' && key[strlen(key) - 1] == '/')) {
                 memmove(key, key + 1, strlen(key + 1) + 1);
                 key[strlen(key) - 1] = '\0';
-            } else {
-                /* substring matching */
-                if (key[0] == '*') {
-                    memmove(key, key + 1, strlen(key + 1) + 1);
-                }
-                if (key[strlen(key) - 1] == '*') {
-                    key[strlen(key) - 1] = '\0';
-                }
             }
         }
 
@@ -323,10 +319,8 @@ emphasize(char *str)
 static int
 is_wordboundary(char *p)
 {
-  if (nmz_isalpha((unsigned char)*p) && nmz_isalpha((unsigned char)*(p + 1)))
-      return 0;
-  if (nmz_isdigit((unsigned char)*p) && nmz_isdigit((unsigned char)*(p + 1)))
-      return 0;
+  if (isalpha((unsigned char)*p) && isalpha((unsigned char)*(p + 1))) return 0;
+  if (isdigit((unsigned char)*p) && isdigit((unsigned char)*(p + 1))) return 0;
   return 1;
 }
 
@@ -358,6 +352,7 @@ compose_result(struct nmz_data d, int counter,
 
     strncpy(achars, FIELD_SAFE_CHARS, BUFSIZE - 1);
     strncat(achars, ":", BUFSIZE - strlen(achars) - 1);  /* for namazu::score, namazu::counter */
+    strncat(achars, "#\"=", BUFSIZE - strlen(achars) - 1);  /* for uri#uriencode="decode" */
 
     do {
 	char *pp;
@@ -375,7 +370,7 @@ compose_result(struct nmz_data d, int counter,
 		replace_field(d, counter, field, r);
 		p = pp + n + 1; /* +1 for skipping "}" */
 	    } else {
-		p += 2;
+		p = pp + 1;
 	    }
 	} else {
 	    strncat(r, p, BUFSIZE * 128 - strlen(r) - 1);

@@ -1,6 +1,6 @@
 #!%PERL% -w
 #
-# $Id: kakasi-2.pl.in,v 1.7 2006-01-15 18:33:47 opengl2772 Exp $
+# $Id: kakasi-2.pl.in,v 1.8 2006-08-12 05:58:02 opengl2772 Exp $
 # Copyright (C) 2005-2006 Tadamasa Teranishi
 #               2005-2006 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -68,7 +68,7 @@ if (-f $RC) {
     unlink $RC;
 }
 pltests::putline($RC, 'package conf;');
-pltests::putline($RC, "\$KAKASI = \"$KAKASI -ieuc -oeuc -w\";");
+pltests::putline($RC, "\$KAKASI = \"$KAKASI -iutf8 -outf8 -w\";");
 pltests::putline($RC, '$WAKATI = $KAKASI;');
 
 # Simple indexing.

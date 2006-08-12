@@ -1,6 +1,6 @@
 #!%PERL% -w
 #
-# $Id: chasen-1.pl.in,v 1.5 2006-01-14 08:41:21 opengl2772 Exp $
+# $Id: chasen-1.pl.in,v 1.6 2006-08-12 05:58:02 opengl2772 Exp $
 # Copyright (C) 2005-2006 Tadamasa Teranishi
 #               2005-2006 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -65,7 +65,7 @@ if (-f $RC) {
     unlink $RC;
 }
 pltests::putline($RC, 'package conf;');
-pltests::putline($RC, "\$CHASEN = \"$CHASEN -i e -j -F \\\"\\%m \\\"\";");
+pltests::putline($RC, "\$CHASEN = \"$CHASEN -i w -j -F \\\"\\%m \\\"\";");
 pltests::putline($RC, '$WAKATI = $CHASEN;');
 
 # Simple indexing.

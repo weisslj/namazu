@@ -1,6 +1,6 @@
 #!/usr/local/bin/perl -w
 #
-# $Id: towin.pl,v 1.4 2006-01-26 12:38:04 opengl2772 Exp $
+# $Id: towin.pl,v 1.5 2006-08-12 06:07:30 opengl2772 Exp $
 # Copyright (C) 2004-2006 Tadamasa Teranishi
 #               2004-2006 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.

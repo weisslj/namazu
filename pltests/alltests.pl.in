@@ -1,6 +1,6 @@
 #!%PERL% -w
 #
-# $Id: alltests.pl.in,v 1.5 2005-12-21 09:28:20 opengl2772 Exp $
+# $Id: alltests.pl.in,v 1.6 2006-08-12 06:07:29 opengl2772 Exp $
 # Copyright (C) 2004,2005 Tadamasa Teranishi
 #               2004,2005 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.

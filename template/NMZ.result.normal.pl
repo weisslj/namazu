@@ -2,4 +2,4 @@
 <dd><strong>Autor</strong>: <em>${author}</em></dd>
 <dd><strong>Data</strong>: <em>${date}</em></dd>
 <dd>${summary}</dd>
-<dd><a href="${uri}">${uri}</a> (${size} bajtów)<br><br></dd>
+<dd><a href="${uri}">${uri#uriencode="decode"}</a> (${size} bajtÃ³w)<br><br></dd>

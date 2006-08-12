@@ -5,7 +5,7 @@
 <!-- LINK-REV-MADE -->
 <link rev="made" href="mailto:foobar@namazu.org">
 <!-- LINK-REV-MADE -->
-<title>Namazu: System Wyszukiwania Pe³notekstowego </title>
+<title>Namazu: System Wyszukiwania PeÅ‚notekstowego </title>
 <style type="text/css"><!--
   strong.keyword { color: Red; }
   p.example      { text-indent: 1em;
@@ -23,10 +23,10 @@
 --></style>
 </head>
 <body lang="pl">
-<h1>Namazu: System Wyszukiwania Pe³notekstowego</h1>
+<h1>Namazu: System Wyszukiwania PeÅ‚notekstowego</h1>
 <p>
-Ten indeks zawiera <!-- FILE --> 0 <!-- FILE --> dokumentów i
-<!-- KEY --> 0 <!-- KEY --> s³ów kluczowych.
+Ten indeks zawiera <!-- FILE --> 0 <!-- FILE --> dokumentÃ³w i
+<!-- KEY --> 0 <!-- KEY --> sÅ‚Ã³w kluczowych.
 </p>
 <p>
 <strong>Ostatnio zmodyfikowano: <!-- DATE --> date <!-- DATE --></strong>
@@ -38,7 +38,7 @@ Ten indeks zawiera <!-- FILE --> 0 <!-- FILE --> dokumentów i
 <input type="text" name="query" size="40" value="">
 <input type="submit" name="submit" value="Szukaj!">
 <!-- <input type="hidden" name="idxname" value="foobar"> -->
-<a href="{cgi}">[Jak szukaæ, ¿eby znale¼æ a nie zab³±dziæ]</a>
+<a href="{cgi}">[Jak szukaÄ‡, Å¼eby znaleÅºÄ‡ a nie zabÅ‚Ä…dziÄ‡]</a>
 </p>
 <p>
 <strong>Pokazuj:</strong>
@@ -52,21 +52,21 @@ Ten indeks zawiera <!-- FILE --> 0 <!-- FILE --> dokumentów i
 <strong>Opis:</strong>
 <select name="result">
 <option selected value="normal">normalny</option>
-<option value="short">skrócony</option>
+<option value="short">skrÃ³cony</option>
 </select>
 <strong>Kryterium sortowania:</strong>
 <select name="sort">
 <option selected value="score">wynik</option>
 <option value="date:late">data, od najnowszych</option>
 <option value="date:early">data, od najstarszych</option>
-<option value="field:subject:ascending">tytu³, w porz±dku rosn±cym</option>
-<option value="field:subject:descending">tytu³, w porz±dku malej±cym</option>
-<option value="field:from:ascending">autor, w porz±dku rosn±cym</option>
-<option value="field:from:descending">autor, w porz±dku malej±cym</option>
-<option value="field:size:ascending">rozmiar, w porz±dku rosn±cym</option>
-<option value="field:size:descending">rozmiar, w porz±dku malej±cym</option>
-<option value="field:uri:ascending">URI, w porz±dku rosn±cym</option>
-<option value="field:uri:descending">URI, w porz±dku malej±cym</option>
+<option value="field:subject:ascending">tytuÅ‚, w porzÄ…dku rosnÄ…cym</option>
+<option value="field:subject:descending">tytuÅ‚, w porzÄ…dku malejÄ…cym</option>
+<option value="field:from:ascending">autor, w porzÄ…dku rosnÄ…cym</option>
+<option value="field:from:descending">autor, w porzÄ…dku malejÄ…cym</option>
+<option value="field:size:ascending">rozmiar, w porzÄ…dku rosnÄ…cym</option>
+<option value="field:size:descending">rozmiar, w porzÄ…dku malejÄ…cym</option>
+<option value="field:uri:ascending">URI, w porzÄ…dku rosnÄ…cym</option>
+<option value="field:uri:descending">URI, w porzÄ…dku malejÄ…cym</option>
 </select>
 </p>
 <!--

@@ -5,7 +5,7 @@
 <!-- LINK-REV-MADE -->
 <link rev="made" href="mailto:foobar@namazu.org">
 <!-- LINK-REV-MADE -->
-<title>Esto es un completo sistema de búsqueda</title>
+<title>Esto es un completo sistema de bÃºsqueda</title>
 <style type="text/css"><!--
   strong.keyword { color: Red; }
   p.example      { text-indent: 1em; 
@@ -23,22 +23,22 @@
 --></style>
 </head>
 <body lang="es">
-<h1>Esto es un completo sistema de búsqueda</h1>
+<h1>Esto es un completo sistema de bÃºsqueda</h1>
 <p>
-Este índice contiene <!-- FILE --> 0 <!-- FILE --> documentos y
+Este Ã­ndice contiene <!-- FILE --> 0 <!-- FILE --> documentos y
 <!-- KEY --> 0 <!-- KEY --> palabras clave. 
 </p>
 <p>
-<strong>Ultima modificación: <!-- DATE --> date <!-- DATE --></strong>
+<strong>Ultima modificaciÃ³n: <!-- DATE --> date <!-- DATE --></strong>
 </p>
 <hr>
 <form method="get" action="{cgi}">
 <p>
-<strong>Cadena de Búsqueda:</strong> 
+<strong>Cadena de BÃºsqueda:</strong> 
 <input type="text" name="query" size="40" value="">
 <input type="submit" name="submit" value="Buscar!">
 <!-- <input type="hidden" name="idxname" value="foobar"> -->
-<a href="{cgi}">[Cómo buscar]</a>
+<a href="{cgi}">[CÃ³mo buscar]</a>
 </p>
 <p>
 <strong>Visualizar:</strong>
@@ -49,22 +49,22 @@ Este índice contiene <!-- FILE --> 0 <!-- FILE --> documentos y
 <option value="50">50</option>
 <option value="100">100</option>
 </select>
-<strong>Descripción:</strong>
+<strong>DescripciÃ³n:</strong>
 <select name="result">
 <option selected value="normal">normal</option>
 <option value="short">corta</option>
 </select>
 <strong>Orden:</strong>
 <select name="sort">
-<option selected value="score">por puntuación</option>
+<option selected value="score">por puntuaciÃ³n</option>
 <option value="date:late">por fecha ascendente</option>
 <option value="date:early">por fecha descendente</option>
-<option value="field:subject:ascending">por título ascendente</option>
-<option value="field:subject:descending">por título descendente</option>
+<option value="field:subject:ascending">por tÃ­tulo ascendente</option>
+<option value="field:subject:descending">por tÃ­tulo descendente</option>
 <option value="field:from:ascending">por autor ascendente</option>
 <option value="field:from:descending">por autor descendente</option>
-<option value="field:size:ascending">por tamaño ascendente</option>
-<option value="field:size:descending">por tamaño descendente</option>
+<option value="field:size:ascending">por tamaÃ±o ascendente</option>
+<option value="field:size:descending">por tamaÃ±o descendente</option>
 <option value="field:uri:ascending">por URI ascendente</option>
 <option value="field:uri:descending">por URI descendente</option>
 </select>

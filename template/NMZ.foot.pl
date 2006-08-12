@@ -3,7 +3,7 @@
 Ten system wyszukiwania jest oparty na
 <strong><a href="http://www.namazu.org/">Namazu</a> <!-- VERSION --> v <!-- VERSION --></strong>
 </p>
-<p>Mniej udan±, lecz wiêksz± czê¶æ t³umaczenia na jêzyk polski(?) wykona³ Tomasz Wittner dn. 07-08-2002, podpuszczony przez Krzysztofa Drewicza (alias hunter), developera PLD i t³umacza list rozwijanych, którego podpu¶ci³ do zajmowania siê Namazu Tomasz Wittner ...
+<p>Mniej udanÄ…, lecz wiÄ™kszÄ… czÄ™Å›Ä‡ tÅ‚umaczenia na jÄ™zyk polski(?) wykonaÅ‚ Tomasz Wittner dn. 07-08-2002, podpuszczony przez Krzysztofa Drewicza (alias hunter), developera PLD i tÅ‚umacza list rozwijanych, ktÃ³rego podpuÅ›ciÅ‚ do zajmowania siÄ™ Namazu Tomasz Wittner ...
  </p>
 <address>
 <!-- ADDRESS -->

@@ -1,9 +1,9 @@
 <h2><a name="query" id="query">Zapytania</a></h2>
 
-<h3><a name="query-term" id="query-term">Zapytanie pojedyñcze</a></h3>
+<h3><a name="query-term" id="query-term">Zapytanie pojedyÅ„cze</a></h3>
 <p>
-To zapytanie wyszczególnia tylko jedno okre¶lenie dla wyszukiwania wszystkich
-dokumentów, które zawieraj± to okre¶lenie, np.:
+To zapytanie wyszczegÃ³lnia tylko jedno okreÅ›lenie dla wyszukiwania wszystkich
+dokumentÃ³w, ktÃ³re zawierajÄ… to okreÅ›lenie, np.:
 </p>
 
 <p class="example">
@@ -13,9 +13,9 @@ namazu
 <h3><a name="query-and" id="query-and">Zapytanie typu AND(logiczne i)</a></h3>
 
 <p>
-To zapytanie wyszczególnia 2 lub wiêcej okre¶leñ dla wyszukiwania wszystkich
-dokumentów, które zawieraj± wszystkie podane okre¶lenia. Mo¿esz wpisaæ operator
-<code class="operator">and</code> pomiêdzy dwoma lub wiêcej okre¶leniami, np.:
+To zapytanie wyszczegÃ³lnia 2 lub wiÄ™cej okreÅ›leÅ„ dla wyszukiwania wszystkich
+dokumentÃ³w, ktÃ³re zawierajÄ… wszystkie podane okreÅ›lenia. MoÅ¼esz wpisaÄ‡ operator
+<code class="operator">and</code> pomiÄ™dzy dwoma lub wiÄ™cej okreÅ›leniami, np.:
 </p>
 
 <p class="example">
@@ -23,16 +23,16 @@ Linux and Netscape
 </p>
 
 <p>
-Mo¿esz pomin±æ operator
+MoÅ¼esz pominÄ…Ä‡ operator
 <code class="operator">and</code> .
-Okre¶lenia, które s± oddzielone jedn± lub wiêcej spacj± s± uwa¿ane za zapytanie typu AND.
+OkreÅ›lenia, ktÃ³re sÄ… oddzielone jednÄ… lub wiÄ™cej spacjÄ… sÄ… uwaÅ¼ane za zapytanie typu AND.
 </p>
 
 <h3><a name="query-or" id="query-or">Zapytanie typu OR(logiczne lub)</a></h3>
 <p>
-To zapytanie wyszczególnia 2 lub wiêcej okre¶leñ dla wyszukiwania wszystkich
-dokumentów, które zawieraj± jakiekolwiek z podanych okre¶leñ. Mo¿esz wpisaæ operator
-<code class="operator">or</code> pomiêdzy dwoma lub wiêcej okre¶leniami, np.:
+To zapytanie wyszczegÃ³lnia 2 lub wiÄ™cej okreÅ›leÅ„ dla wyszukiwania wszystkich
+dokumentÃ³w, ktÃ³re zawierajÄ… jakiekolwiek z podanych okreÅ›leÅ„. MoÅ¼esz wpisaÄ‡ operator
+<code class="operator">or</code> pomiÄ™dzy dwoma lub wiÄ™cej okreÅ›leniami, np.:
 </p>
 
 <p class="example">
@@ -41,10 +41,10 @@ Linux or FreeBSD
 
 <h3><a name="query-not" id="query-not">Zapytanie typu NOT(przeczenie)</a></h3>
 <p>
-To zapytanie wyszczególnia 2 lub wiêcej okre¶leñ dla wyszukiwania wszystkich
-dokumentów, które zawieraj± pierwsze okre¶lenie, ale nie zawieraj±
-nastêpnych okre¶leñ. Mo¿esz wpisaæ operator <code class="operator">not</code>
- pomiêdzy dwoma lub wiêcej okre¶leniami, np.:
+To zapytanie wyszczegÃ³lnia 2 lub wiÄ™cej okreÅ›leÅ„ dla wyszukiwania wszystkich
+dokumentÃ³w, ktÃ³re zawierajÄ… pierwsze okreÅ›lenie, ale nie zawierajÄ…
+nastÄ™pnych okreÅ›leÅ„. MoÅ¼esz wpisaÄ‡ operator <code class="operator">not</code>
+ pomiÄ™dzy dwoma lub wiÄ™cej okreÅ›leniami, np.:
 </p>
 
 <p class="example">
@@ -54,9 +54,9 @@ Linux not UNIX
 
 <h3><a name="query-grouping" id="query-grouping">Grupowanie</a></h3>
 <p>
-Mo¿esz grupowaæ zapytania przez zawarcie ich
-w nawiasach okrag³ych. Nawiasy powinny byæ oddzielone przez jedn± lub
-wiêcej spacji, np.:
+MoÅ¼esz grupowaÄ‡ zapytania przez zawarcie ich
+w nawiasach okragÅ‚ych. Nawiasy powinny byÄ‡ oddzielone przez jednÄ… lub
+wiÄ™cej spacji, np.:
 </p>
 
 <p class="example">
@@ -65,11 +65,11 @@ wiêcej spacji, np.:
 
 <h3><a name="query-phrase" id="query-phrase">Wyszukiwanie fraz</a></h3>
 <p>
-Mo¿esz szukaæ wyra¿enia, które sk³ada siê z dwóch lub wiêcej okre¶leñ
-otaczaj±c je podwójnym cudzys³owem jak
+MoÅ¼esz szukaÄ‡ wyraÅ¼enia, ktÃ³re skÅ‚ada siÄ™ z dwÃ³ch lub wiÄ™cej okreÅ›leÅ„
+otaczajÄ…c je podwÃ³jnym cudzysÅ‚owem jak
 <code class="operator">"..."</code> lub klamrami jak <code class="operator">{...}</code>.
 Precyzja Namazu  w wyszukiwaniu fraz nie jest 100%,
-lecz b³êdne wyniki trafiaj± siê bardzo rzadko, np.:
+lecz bÅ‚Ä™dne wyniki trafiajÄ… siÄ™ bardzo rzadko, np.:
 </p>
 
 <p class="example">
@@ -79,33 +79,33 @@ lecz b³êdne wyniki trafiaj± siê bardzo rzadko, np.:
 <!-- foo
 <p>
 You must choose the latter with Tkanamzu or namazu.el.
-Musisz wybraæ ten ostatni z  Tkanamzu lub namazu.el. ???
+Musisz wybraÄ‡ ten ostatni z  Tkanamzu lub namazu.el. ???
 </p>
 -->
 
-<h3><a name="query-substring" id="query-substring">Wyszukiwanie okrojonych s³ów</a></h3>
+<h3><a name="query-substring" id="query-substring">Wyszukiwanie okrojonych sÅ‚Ã³w</a></h3>
 <p>
-S± trzy typy wyszukiwania okrojonych s³ów.
+SÄ… trzy typy wyszukiwania okrojonych sÅ‚Ã³w.
 </p>
 
 <dl>
 <dt>Przedrostkowe dopasowanie</dt>
-<dd><code class="example">inter*</code> (okre¶lenia rozpoczynaj±ce siê na <code>inter</code>)</dd>
-<dt>Wewnêtrzne dopasowanie</dt>
-<dd><code class="example">*text*</code> (okre¶lenia zawieraj±ce siê wewn±trz <code>text</code>)</dd>
+<dd><code class="example">inter*</code> (okreÅ›lenia rozpoczynajÄ…ce siÄ™ na <code>inter</code>)</dd>
+<dt>WewnÄ™trzne dopasowanie</dt>
+<dd><code class="example">*text*</code> (okreÅ›lenia zawierajÄ…ce siÄ™ wewnÄ…trz <code>text</code>)</dd>
 <dt>Przyrostkowe dopasowanie</dt>
-<dd><code class="example">*net</code> (okre¶lenia koñcz±ce siê na <code>net</code>)</dd>
+<dd><code class="example">*net</code> (okreÅ›lenia koÅ„czÄ…ce siÄ™ na <code>net</code>)</dd>
 </dl>
 
 
-<h3><a name="query-regex" id="query-regex">Wyra¿enia regularne (man grep)</a></h3>
+<h3><a name="query-regex" id="query-regex">WyraÅ¼enia regularne (man grep)</a></h3>
 
 <p>
-Mo¿esz u¿ywaæ wyra¿eñ regularnych jako wzór do dopasowywania.
-Wyra¿enia regularne musz± byæ otoczone przez uko¶niki tak, jak
+MoÅ¼esz uÅ¼ywaÄ‡ wyraÅ¼eÅ„ regularnych jako wzÃ³r do dopasowywania.
+WyraÅ¼enia regularne muszÄ… byÄ‡ otoczone przez ukoÅ›niki tak, jak
 <code
-class="operator">/.../</code>. Namazu wykorzystuje silnik wyra¿eñ regularnych
-<ahref="http://www.ruby-lang.org/">Ruby</a>. Ogólnie jest on kompatybilny z <a
+class="operator">/.../</code>. Namazu wykorzystuje silnik wyraÅ¼eÅ„ regularnych
+<ahref="http://www.ruby-lang.org/">Ruby</a>. OgÃ³lnie jest on kompatybilny z <a
 href="http://www.perl.com/">Perl</a> ,
 np.:
 </p>
@@ -117,31 +117,30 @@ np.:
 
 <h3><a name="query-field" id="query-field">Wyszukiwanie po wyspecyfikowanych polach</a></h3>
 <p>
-Mo¿esz ograniczyæ przeszukiwanie do okre¶lonych pól jak
+MoÅ¼esz ograniczyÄ‡ przeszukiwanie do okreÅ›lonych pÃ³l jak
 <code>Subject:</code>, <code>From:</code>,
-<code>Message-Id:</code>. Jest to zw³aszcza dogodne dla dokumentów typu
+<code>Message-Id:</code>. Jest to zwÅ‚aszcza dogodne dla dokumentÃ³w typu
 Mail/News, np.:
 </p>
 
 <ul>
 <li><code class="example">+subject:Linux</code><br>
-(Zwraca wszystkie dokument zawieraj±ce pola <code>Linux</code>
+(Zwraca wszystkie dokument zawierajÄ…ce pola <code>Linux</code>
 w <code>Subject:</code> )
 </li>
 
 <li><code class="example">+subject:"GNU Emacs"</code><br>
-(Zwraca wszystkie dokumenty zawieraj±ce pola <code>GNU Emacs</code>
+(Zwraca wszystkie dokumenty zawierajÄ…ce pola <code>GNU Emacs</code>
 w <code>Subject:</code> )
 </li>
 
 <li><code class="example">+from:foo@bar.jp</code><br>
-(Zwraca wszystkie dokument zawieraj±ce pola <code>foo@bar.jp</code>
+(Zwraca wszystkie dokument zawierajÄ…ce pola <code>foo@bar.jp</code>
 w <code>From:</code> )
 </li>
 
-
 <li><code class="example">+message-id:&lt;199801240555.OAA18737@foo.bar.jp&gt;</code><br>
-(Zwraca pewien dokument zawieraj±cy wyszczególnione
+(Zwraca pewien dokument zawierajÄ…cy wyszczegÃ³lnione
 <code>Message-Id:</code>)
 </li>
 </ul>
@@ -149,38 +148,38 @@ w <code>From:</code> )
 <h3><a name="query-notes" id="query-notes">Uwagi</a></h3>
 
 <ul>
-<li>We wszystkich zapytaniach, Namazu ignoruje wielko¶æ znaków alfabetu.
+<li>We wszystkich zapytaniach, Namazu ignoruje wielkoÅ›Ä‡ znakÃ³w alfabetu.
 </li>
 
 <li>Japanese phrases are forced to be segmented into
 morphemes automatically and are handled them as <a
 href="#query-phrase">phrase searching</a>. This processing
 causes invalid segmentation occasionally.
-<br>Po cholere to t³umaczyli na angielski? Ja. w ka¿dym b±d¼ razie nie bêdê, bo nie zamierzam pos³ugiwaæ
-siê jêz. japoñskim.
+<br>Po cholere to tÅ‚umaczyli na angielski? Ja. w kaÅ¼dym bÄ…dÅº razie nie bÄ™dÄ™, bo nie zamierzam posÅ‚ugiwaÄ‡
+siÄ™ jÄ™z. japoÅ„skim.
 </li>
 
 <li>Alphabet, numbers or a part of symbols (duplicated in
 ASCII) characters which defined in JIS X 0208 (Japanese
 Industrial Standards) are handled as ASCII characters.
-<br>Ju¿ mam sko¶ne oczy wed³ug normy przemys³owej JIS X 0208.
+<br>JuÅ¼ mam skoÅ›ne oczy wedÅ‚ug normy przemysÅ‚owej JIS X 0208.
 </li>
 
-<li>Namazu radzi sobie z okre¶leniami zawieraj±cymi znaki takie jak
+<li>Namazu radzi sobie z okreÅ›leniami zawierajÄ…cymi znaki takie jak
 <code>TCP/IP</code>, ale to radzenie sobie nie jest kompletne
-mo¿esz opisaæ
+moÅ¼esz opisaÄ‡
 <code>TCP and IP</code> zamiast
-<code>TCP/IP</code>, ale mo¿e to byæ powodem zbyt wielu dopasowañ (szumu informacyjnego)
+<code>TCP/IP</code>, ale moÅ¼e to byÄ‡ powodem zbyt wielu dopasowaÅ„ (szumu informacyjnego)
 </li>
 
-<li>Dopasowania okrojonych s³ów i szukania po wybranych polach zabieraj±
-wiêcej czasu, ni¿ inne metody.
+<li>Dopasowania okrojonych sÅ‚Ã³w i szukania po wybranych polach zabierajÄ…
+wiÄ™cej czasu, niÅ¼ inne metody.
 </li>
 
-<li>Je¿eli chcesz u¿ywaæ <code class="operator">and</code>,
+<li>JeÅ¼eli chcesz uÅ¼ywaÄ‡ <code class="operator">and</code>,
 <code class="operator">or</code> lub <code
-class="operator">not</code> po prostu jako okre¶leñ, mo¿esz
-otoczyæ je odpowiednio podwójnym cudzys³owem tak, jak
+class="operator">not</code> po prostu jako okreÅ›leÅ„, moÅ¼esz
+otoczyÄ‡ je odpowiednio podwÃ³jnym cudzysÅ‚owem tak, jak
 <code
 class="operator">"..."</code> lub klamrami tak, jak <code
 class="operator">{...}</code>.
@@ -193,4 +192,3 @@ ja nie znaju sztoo eto.
 </li>
 
 </ul>
-

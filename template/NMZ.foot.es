@@ -1,6 +1,6 @@
 <hr>
 <p>
-El sistema de búsqueda está soportado por 
+El sistema de bÃºsqueda estÃ¡ soportado por 
 <strong><a href="http://www.namazu.org/">Namazu</a> <!-- VERSION --> v <!-- VERSION --></strong>
 </p>
 <address>

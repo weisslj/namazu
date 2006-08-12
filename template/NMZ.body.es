@@ -1,18 +1,19 @@
 <h2><a name="query" id="query">CONSULTA</a></h2>
 
-<h3><a name="query-term" id="query-term">Consulta de un sÛlo tÈrmino</a></h3>
+<h3><a name="query-term" id="query-term">Consulta de un s√≥lo t√©rmino</a></h3>
 <p>
-La consulta especifica sÛlo un tÈrmino para recibir todos los documentos que contienen el tÈrmino.  Ej:
+La consulta especifica s√≥lo un t√©rmino para recibir todos los documentos que contienen el t√©rmino.  Ej:
 </p>
 
 <p class="example">
 namazu
 </p>
 
-<h3><a name="query-and" id="query-and">Consulta AND</a></h3> 
+<h3><a name="query-and" id="query-and>Consulta AND</a></h3> 
 
 <p>
-La consulta especifica dos o m·s tÈrminos para recibir todos los documentos que contienen ambos tÈrminos.  Tu puedes insertar el operador <code class="operator">and</code> entre los tÈrminos.  Ej:
+La consulta especifica dos o m√°s t√©rminos para recibir todos los documentos que contienen ambos t√©rminos.  Tu puedes insertar el operador <code class="operator">and</code> entre los t√©rminos.  Ej:
+
 </p>
 
 <p class="example">
@@ -20,13 +21,14 @@ Linux and Netscape
 </p>
 
 <p>
-Tu puedes omitir el operador <code class="operator">and</code>.  Los tÈrminos los cuales est·n separados por uno o m·s espacios se asume que son una consulta AND.
+Tu puedes omitir el operador <code class="operator">and</code>.  Los t√©rminos los cuales est√°n separados por uno o m√°s espacios se asume que son una consulta AND.
 </p>
 
 <h3><a name="query-or" id="query-or">Consulta OR</a></h3>
 <p>
-La consulta especifica dos o m·s tÈrminos para recibir todos los documentos que contienen alguno de los tÈrminos.  Tu puedes insertar el operador
-<code class="operator">or</code> entre los tÈrminos.  Ej:
+La consulta especifica dos o m√°s t√©rminos para recibir todos los documentos que contienen alguno de los t√©rminos.  Tu puedes insertar el operador
+<code class="operator">or</code> entre los t√©rminos.  Ej:
+
 </p>
 
 <p class="example">
@@ -35,21 +37,22 @@ Linux or FreeBSD
 
 <h3><a name="query-not" id="query-not">Operador NOT</a></h3>
 <p>
-La consulta especifica dos o m·s terminos para recibir todos los documentos
-que contienen el primer tÈrmino pero no contienen los tÈrminos siguientes.  
+La consulta especifica dos o m√°s terminos para recibir todos los documentos
+que contienen el primer t√©rmino pero no contienen los t√©rminos siguientes.  
 Tu puedes insertar el operador <code class="operator">not</code>
-entre los tÈrminos para hacer una consulta NOT.  Ej:
+entre los t√©rminos para hacer una consulta NOT.  Ej:
 </p>
 
 <p class="example">
 Linux not UNIX
+
 </p>
 
 
 <h3><a name="query-grouping" id="query-grouping">Agrupando</a></h3>
 <p>
-Tu puedes agrupar consultas encerr·ndolas entre parÈntesis.  Los parÈntesis 
-deben estar separados por uno o m·s espacios.  Ej:
+Tu puedes agrupar consultas encerr√°ndolas entre par√©ntesis.  Los par√©ntesis 
+deben estar separados por uno o m√°s espacios.  Ej:
 </p>
 
 <p class="example">
@@ -58,11 +61,12 @@ deben estar separados por uno o m·s espacios.  Ej:
 
 <h3><a name="query-phrase" id="query-phrase">Buscandos frases</a></h3>
 <p>
-Tu puedes buscar una frase la cu·l consiste de dos o m·s tÈrminos encerrados
+Tu puedes buscar una frase la cu√°l consiste de dos o m√°s t√©rminos encerrados
 entre comillas como
+
 <code class="operator">"..."</code> o con llaves como
 <code class="operator">{...}</code>.
-La precisiÛn de la b˙squeda por frase no es el 100 %, y puede causar ocasionalmente alg˙n resultado errÛneo.  Ej:
+La precisi√≥n de la b√∫squeda por frase no es el 100 %, y puede causar ocasionalmente alg√∫n resultado err√≥neo.  Ej:
 </p>
 
 <p class="example">
@@ -78,16 +82,18 @@ You must choose the latter with Tkanamzu or namazu.el.
 <h3><a name="query-substring" id="query-substring">Substring matching</a></h3>
 <p>
 The are three types of substring matching searching.
+
 </p>
 
 <dl> 
 <dt>Prefix matching</dt>
 <dd><code class="example">inter*</code> (terms which begin with <code>inter</code>)</dd>
 <dt>Inside matching</dt>
-<dd><code class="example">*text*</code> (terms which contain <code>text</code>)</dd>
+<dd><code class="example">*text*</code> (terms which contain <code>text</code>) </dd>
 <dt>Suffix matching</dt>
 <dd><code class="example">*net</code> (terms which terminated
 with <code>net</code>)</dd>
+
 </dl>
 
 
@@ -132,7 +138,6 @@ in a <code>Subject:</code> field)
 in a <code>From:</code> field)
 </li>
 
-
 <li><code class="example">+message-id:&lt;199801240555.OAA18737@foo.bar.jp&gt;</code><br>
 (Retrieving a certain document which contains specified
 <code>Message-Id:</code>)
@@ -147,13 +152,11 @@ alphabet characters. In other words, Namazu does
 case-insensitive pattern matching in any time.
 </li>
 
-
 <li>Japanese phrases are forced to be segmented into
 morphemes automatically and are handled them as <a
 href="#query-phrase">phrase searching</a>. This processing
 causes invalid segmentation occasionally.
 </li>
-
 
 <li>Alphabet, numbers or a part of symbols (duplicated in
 ASCII) characters which defined in JIS X 0208 (Japanese
@@ -184,4 +187,3 @@ You must choose the latter with Tkanamzu or namazu.el.
 </li>
 
 </ul>
-

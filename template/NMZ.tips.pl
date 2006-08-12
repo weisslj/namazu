@@ -1,65 +1,65 @@
-<h2><a name="tips" id="tips">Porady dotycz±ce wyszukiwania</a></h2>
+<h2><a name="tips" id="tips">Porady dotyczÄ…ce wyszukiwania</a></h2>
 
 <p>
-Je¿eli masz problem ze znalezieniem podanej przez Ciebie informacji, spróbuj zastosowaæ poni¿sze rady
+JeÅ¼eli masz problem ze znalezieniem podanej przez Ciebie informacji, sprÃ³buj zastosowaÄ‡ poniÅ¼sze rady
 </p>
 
 <ul>
-<li>Sprawd¼ pisowniê podanych s³ów kluczowych<br>
-Namazu nic nie znajdzie z b³êdami w pisowni.
+<li>SprawdÅº pisowniÄ™ podanych sÅ‚Ã³w kluczowych<br>
+Namazu nic nie znajdzie z bÅ‚Ä™dami w pisowni.
 </li>
 
-<li>Dodaj s³ów-kluczy<br>
+<li>Dodaj sÅ‚Ã³w-kluczy<br>
 
-Je¿eli nie otrzymujesz wyników, lub otrzymujesz ich za ma³o, mo¿esz dodaæ jedno
-lub wiêcej pokrewnych s³ów z operatorem
+JeÅ¼eli nie otrzymujesz wynikÃ³w, lub otrzymujesz ich za maÅ‚o, moÅ¼esz dodaÄ‡ jedno
+lub wiÄ™cej pokrewnych sÅ‚Ã³w z operatorem
 <code
-class="operator">or</code> . Powiniene¶ otrzymaæ wiêcej rezultatów np.:
+class="operator">or</code> . PowinieneÅ› otrzymaÄ‡ wiÄ™cej rezultatÃ³w np.:
 <br>
 <code class="example">tex or ptex or latex or latex2e</code><br>
 
-Jezeli otrzymujesz za du¿o wynikow, mo¿esz dodaæ jedno lub wiêcej
-pokrewnych s³ów z operatorem
+Jezeli otrzymujesz za duÅ¼o wynikow, moÅ¼esz dodaÄ‡ jedno lub wiÄ™cej
+pokrewnych sÅ‚Ã³w z operatorem
 <code class="operator">and</code>
 . To ograniczy bardziej zakres przeszukiwania np.:<br>
 <code class="example">latex and dvi2ps and eps</code>
 </li>
 
-<li>Spróbuj wyszukiwania okrojonych s³ów<br>
+<li>SprÃ³buj wyszukiwania okrojonych sÅ‚Ã³w<br>
 
-Je¿eli nie otrzymujesz wyników, lub otrzymujesz ich za ma³o, mo¿esz spróbowaæ
-dopasowywania okrojonych s³ów.
-Mo¿esz wyszczególniæ<code class="example">tex*</code> dla wyszukania okre¶leñ zaczynaj±cych siê na
+JeÅ¼eli nie otrzymujesz wynikÃ³w, lub otrzymujesz ich za maÅ‚o, moÅ¼esz sprÃ³bowaÄ‡
+dopasowywania okrojonych sÅ‚Ã³w.
+MoÅ¼esz wyszczegÃ³lniÄ‡<code class="example">tex*</code> dla wyszukania okreÅ›leÅ„ zaczynajÄ…cych siÄ™ na
 <code>tex</code> (e.g., <code>tex</code>,
 <code>texi2html</code>,
 <code>texindex</code>, <code>text</code>).
 <br>
-Mo¿esz wyszczególniæ<code class="example">*tex</code> to
-wyszukiwanie dla okre¶leñ koñcz±cych siê na
+MoÅ¼esz wyszczegÃ³lniÄ‡<code class="example">*tex</code> to
+wyszukiwanie dla okreÅ›leÅ„ koÅ„czÄ…cych siÄ™ na
 <code>tex</code> (np.:
 <code>bibtex</code>,
 <code>jlatex</code>, <code>latex</code>,
 <code>platex</code>, <code>ptex</code>, <code>vertex</code>).
 <br>
 
-Mo¿esz wyszczególniæ
+MoÅ¼esz wyszczegÃ³lniÄ‡
 <code class="example">*tex*</code> to
-wyszukiwanie dla okre¶leñ zawieraj±cych
+wyszukiwanie dla okreÅ›leÅ„ zawierajÄ…cych
 <code>tex</code> (wiele).
 <br>
 </li>
 
 <li>You tried phrase searching but it hit documents which
-Spróbowa³e¶ wyszukiwania fraz, ale to nie zwróci³o ¿adnych wyników zawieraj±cych twoj± frazê?
+SprÃ³bowaÅ‚eÅ› wyszukiwania fraz, ale to nie zwrÃ³ciÅ‚o Å¼adnych wynikÃ³w zawierajÄ…cych twojÄ… frazÄ™?
 <br>
 To jest usterka Namazu. Precyzja wyszukiwania fraz nie jest
-100%, ale z³e wyniki s± rzadkie.
+100%, ale zÅ‚e wyniki sÄ… rzadkie.
 </li>
 
-<li>Je¿eli chcesz u¿yæ <code class="operator">and</code>,
+<li>JeÅ¼eli chcesz uÅ¼yÄ‡ <code class="operator">and</code>,
 <code class="operator">or</code> lub <code
-class="operator">not</code> jako zwyk³ych s³ów kluczowych <br>
-mo¿esz otoczyæ je odpowiednio podwójnymi cudzys³owami tak, jak
+class="operator">not</code> jako zwykÅ‚ych sÅ‚Ã³w kluczowych <br>
+moÅ¼esz otoczyÄ‡ je odpowiednio podwÃ³jnymi cudzysÅ‚owami tak, jak
 <code
 class="operator">"..."</code> lub takimi nawiasami <code
 class="operator">{...}</code>.

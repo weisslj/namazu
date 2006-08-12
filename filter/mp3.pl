@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mp3.pl,v 1.12 2005-09-15 13:14:46 usu Exp $
+# $Id: mp3.pl,v 1.13 2006-08-12 07:18:44 opengl2772 Exp $
 # Copyright (C) 2002 Luc@2113.ch ,
 #               2003-2005 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -71,9 +71,9 @@ sub filter($$$$$) {
     unless ($id3v2header =~ /ID3/) {
         my $id3v1header = substr($$contref, -128, 3);
         unless ($id3v1header =~ /TAG/) {
-            util::vprint("Couldn't find ID3 tag\n");
-            $$contref="";
-            return undef;
+	    util::vprint("Couldn't find ID3 tag\n");
+	    $$contref="";
+	    return undef;
         }
     }
 
@@ -123,8 +123,7 @@ sub filter($$$$$) {
     $data1 .= "Genre: $genre\n" ;
     $data1 .= "Track: $track\n" ;
 
-    # codeconv::toeuc(\$data1);
-    codeconv::codeconv_document(\$data1);
+    codeconv::to_inner_encoding(\$data1, "");
     $$contref = $data1;
     mp3_filter($contref, $weighted_str, $fields, $headings);
 

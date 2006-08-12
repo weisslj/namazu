@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: pipermail.pl,v 1.13 2006-01-26 12:38:04 opengl2772 Exp $
+# $Id: pipermail.pl,v 1.14 2006-08-12 07:18:44 opengl2772 Exp $
 # Copyright (C) 2004-2006 Namazu Project All rights reserved.
 #
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -116,8 +116,7 @@ sub pipermail_filter ($$$) {
                 my $title = $1;
                 decode_entity(\$title);
                 $title = uncommentize($title);
-                # codeconv::toeuc(\$title);
-                codeconv::codeconv_document(\$title);
+                codeconv::to_inner_encoding(\$title, 'unknown');
 
                 1  while ($title =~ s/\A\s*(re|sv|fwd|fw|aw)[\[\]\d]*[:>-]+\s*//i);
                 $title =~ s/\A\s*\[[^\]]+\]\s*//;
@@ -138,18 +137,16 @@ sub pipermail_filter ($$$) {
                     $from .= " <$email>";
                 }
                 html::decode_entity(\$from);
-                # codeconv::toeuc(\$from);
-                codeconv::codeconv_document(\$from);
+                codeconv::to_inner_encoding(\$from, 'unknown');
                 $fields->{'from'} = $from;
             }
 
             {
                 my $date = $4;
                 html::decode_entity(\$date);
-                # codeconv::toeuc(\$date);
-                codeconv::codeconv_document(\$date);
+                codeconv::to_inner_encoding(\$date, 'unknown');
                 if (util::islang("ja")) {
-                    if ($date =~ m/(\d{4})年\s*(\d{1,2})月\s*(\d{1,2})日\s+\(.*\)\s+(\d{2}:\d{2}:\d{2})\s+(\w+)/s) {
+                    if ($date =~ m/(\d{4})?\s*(\d{1,2})・i\s*(\d{1,2})Au\s+\(.*\)\s+(\d{2}:\d{2}:\d{2})\s+(\w+)/s) {
                         my @month = (
                             "Jan", "Feb", "Mar", "Apr",
                             "May", "Jun", "Jul", "Aug",
@@ -167,8 +164,7 @@ sub pipermail_filter ($$$) {
 
     $$contref =~ s/<head>(.*)?<\/head>//si;
     $$contref =~ s/<h1>.*<!--beginarticle-->//si;
-    # codeconv::toeuc($contref);
-    codeconv::codeconv_document($contref);
+    codeconv::to_inner_encoding($contref, 'unknown');
     $$contref =~ s/ at /@/s;
     if (util::islang("ja")) {
         $$contref =~ s/ @ /@/s;
@@ -234,8 +230,8 @@ sub time_to_rfc822time ($) {
 
         my $mon = $month_names{$month};
         $week = ("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat")
-                                [time::getwday($year, $mon + 1, $day)];
-
+                            [time::getwday($year, $mon + 1, $day)];
+  	 
         $$conf = sprintf("%s, %2.2d %s %d %2.2d:%2.2d:%2.2d %s\n",
             $week, $day, $month, $year, $hour, $min, $sec, $timezone);
 

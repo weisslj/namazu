@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: ooo.pl,v 1.16 2005-06-05 09:52:33 opengl2772 Exp $
+# $Id: ooo.pl,v 1.17 2006-08-12 07:18:44 opengl2772 Exp $
 # Copyright (C) 2003 Yukio USUDA 
 #               2003-2005 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -48,21 +48,11 @@ sub mediatype() {
 sub status() {
     $unzippath = util::checkcmd('unzip');
     if (defined $unzippath){
-        @unzipopts = ("-p");
-        if (util::islang("ja")) {
-           if ($English::PERL_VERSION >= 5.008) {
-               $utfconvpath = "none";
-               return 'yes';
-           }
-           $utfconvpath = util::checkcmd('lv');
-           if ($utfconvpath){ 
-               return 'yes';
-           }else{
-               $utfconvpath = util::checklib('unicode.pl');
-               if ($utfconvpath){ 
-                   return 'yes';
-               }
-           }
+	@unzipopts = ("-p");
+	if (util::islang("ja")) {
+           if ($conf::NKF ne 'no') {
+		return 'yes';
+	   }
            return 'no'; 
         } else {
            return 'yes'; 
@@ -89,7 +79,6 @@ sub add_magic ($) {
     $magic->addFileExts('\\.sxc', 'application/vnd.sun.xml.calc');
     $magic->addFileExts('\\.sxi', 'application/vnd.sun.xml.impress');
     $magic->addFileExts('\\.sxd', 'application/vnd.sun.xml.draw');
-
     $magic->addFileExts('\\.odt', 'application/vnd.oasis.opendocument.text');
     $magic->addFileExts('\\.ods', 'application/vnd.oasis.opendocument.spreadsheet');
     $magic->addFileExts('\\.odp', 'application/vnd.oasis.opendocument.presentation');
@@ -136,12 +125,9 @@ sub filter_metafile ($$$) {
 
     # Code conversion for Japanese document.
     if (util::islang("ja")) {
-        ooo::utoe(\$authorname);
-        ooo::utoe(\$title);
-        ooo::utoe(\$keywords);
-        codeconv::normalize_eucjp(\$authorname);
-        codeconv::normalize_eucjp(\$title);
-        codeconv::normalize_eucjp(\$keywords);
+        codeconv::normalize_jp(\$authorname);
+        codeconv::normalize_jp(\$title);
+        codeconv::normalize_jp(\$keywords);
     }
     if (!($authorname eq "")){
         $fields->{'author'} = $authorname;
@@ -185,8 +171,7 @@ sub filter_contentfile ($$$$$) {
 
     # Code conversion for Japanese document.
     if (util::islang("ja")) {
-        ooo::utoe(\$xml);
-        codeconv::normalize_eucjp(\$xml);
+         codeconv::normalize_jp(\$xml);
     }
     $$contref = $xml;
     gfilter::line_adjust_filter($contref);
@@ -226,36 +211,6 @@ sub remove_all_tag ($) {
       $$contref =~ s/<[^>]*>/\n/gs;
       $$contref =~ s/\n+/\n/gs;
       $$contref =~ s/^\n+//;
-}
-
-# convert utf-8 to euc
-# require Perl5.8 or unicode.pl
-sub utoe ($) {
-    my ($tmp) = @_;
-    if ($utfconvpath =~ /lv/){
-        my $tmpfile  = util::tmpnam('NMZ.ooo');
-        {
-            my $fh = util::efopen("> $tmpfile");
-            print $fh $$tmp;
-            util::fclose($fh);
-        }
-        my $cmd = ($utfconvpath . " -Iu8 " . "-Oej " . $tmpfile . " |");
-        $$tmp = "";
-        my $fh = util::efopen($cmd);
-        while (defined(my $line = <$fh>)){
-            $$tmp .= $line;
-        }
-        util::fclose($fh);
-        unlink $tmpfile;
-    }elsif ($English::PERL_VERSION >= 5.008){
-        eval 'use Encode qw/from_to Unicode JP/;';
-        Encode::from_to($$tmp, "utf-8" ,"euc-jp");
-    }else{
-        eval require 'unicode.pl';
-        my @unicodeList = unicode::UTF8toUTF16($$tmp);
-        $$tmp = unicode::u2e(@unicodeList);
-        $$tmp =~ s/\00//g;
-    }
 }
 
 # Decode a numberd entity. Exclude an invalid number.

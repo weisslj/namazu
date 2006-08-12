@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: apachecache.pl,v 1.2 2003-09-06 08:26:37 usu Exp $
+# $Id: apachecache.pl,v 1.3 2006-08-12 07:18:44 opengl2772 Exp $
 # Copyright (C) 2002 TSUCHIYA Masatoshi ,
 #               2002 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.

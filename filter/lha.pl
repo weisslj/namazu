@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: lha.pl,v 1.12 2005-06-05 09:52:33 opengl2772 Exp $
+# $Id: lha.pl,v 1.13 2006-08-12 07:18:44 opengl2772 Exp $
 #  lha filter for namazu
 #  Copyright (C) 2004 Tadamasa Teranishi,
 #                2004 MATSUMURA Namihiko <po-jp@counterghost.net>,
@@ -135,13 +135,11 @@ sub filter_lha_msdos ($$$$$) {
             my $name = $2;
             $files{$name} = $1;
             my $fname = "./" . $name;
-            # codeconv::toeuc(\$fname);
-            codeconv::codeconv_document(\$fname);
+            codeconv::to_inner_encoding(\$fname, 'unknown');
             $fname = gfilter::filename_to_title($fname, $weighted_str);
             $$contref .= $fname . " ";
 
-            # codeconv::toeuc(\$name);
-            codeconv::codeconv_document(\$name);
+            codeconv::to_inner_encoding(\$name, 'unknown');
             util::vprint("lha: $name");
         }
     } else {
@@ -200,13 +198,11 @@ sub filter_lha_unix ($$$$$) {
             my $name = $2;
             $files{$name} = $1;
             my $fname = "./" . $name;
-            # codeconv::toeuc(\$fname);
-            codeconv::codeconv_document(\$fname);
+	    codeconv::to_inner_encoding(\$fname, 'unknown');
             $fname = gfilter::filename_to_title($fname, $weighted_str);
             $$contref .= $fname . " ";
 
-            # codeconv::toeuc(\$name);
-            codeconv::codeconv_document(\$name);
+	    codeconv::to_inner_encoding(\$name, 'unknown');
             util::vprint("lha: $name");
         }
     } else {
@@ -225,12 +221,10 @@ sub filter_lha_unix ($$$$$) {
         } elsif ($size > $conf::FILE_SIZE_MAX) {
             util::dprint("$fname: Too large lhaed file");
 	} elsif ($fname =~ m!^($conf::DENY_FILE)$!i ) {
-	    # codeconv::toeuc(\$fname);
-            codeconv::codeconv_document(\$fname);
+	    codeconv::to_inner_encoding(\$fname, 'unknown');
 	    util::vprint(sprintf(_("Denied:	%s"), $fname));
 	} elsif ($fname !~ m!^($conf::ALLOW_FILE)$!i) {
-	    # codeconv::toeuc(\$fname);
-            codeconv::codeconv_document(\$fname);
+	    codeconv::to_inner_encoding(\$fname, 'unknown');
 	    util::vprint(sprintf(_("Not allowed:	%s"), $fname));
         } else {
             my $tmpfile3 = util::tmpnam('NMZ.lha.file');

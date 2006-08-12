@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: taro7_10.pl,v 1.14 2004-11-19 16:28:51 opengl2772 Exp $
+# $Id: taro7_10.pl,v 1.15 2006-08-12 07:18:44 opengl2772 Exp $
 # Copyright (C) 2003 Yukio USUDA
 #               2003,2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -27,7 +27,6 @@ use English;
 require 'util.pl';
 require 'gfilter.pl';
 
-
 sub mediatype() {
     return (
         'application/ichitaro7', 'application/x-js-taro'
@@ -39,11 +38,7 @@ sub status() {
     $olepath = util::checklib('OLE/Storage_Lite.pm');
     return 'no' unless $olepath;
 
-    return 'yes' if ($English::PERL_VERSION >= 5.008);
-    my $utfconvpath = undef;
-    $utfconvpath = util::checklib('unicode.pl');
-    return 'yes' if $utfconvpath;
-    return 'no'; 
+    return 'yes';
 }
 
 sub recursive() {
@@ -83,28 +78,18 @@ sub taro7_10_filter($$$$$) {
     my $oleobject = OLE::Storage_Lite->new($contref);
     return (undef) unless($oleobject);
     my ($authorname, $title) = getinfo($oleobject);
-    codeconv::normalize_eucjp(\$authorname);
-    codeconv::normalize_eucjp(\$title);
     $fields->{'author'} = $authorname;
     $fields->{'title'} = $title;
 
     my $content = getcontent($oleobject);
-    codeconv::normalize_eucjp(\$content);
     $$contref = $content;
 
     gfilter::line_adjust_filter($contref);
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($contref);
-    $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
-      unless $fields->{'title'};
     gfilter::show_filter_debug_info($contref, $weighted_str,
                $fields, $headings);
     return undef;
-}
-
-sub byteswap($) {
-    my($tmp)=@_;
-    $$tmp = pack("n".length($$tmp)*2, unpack("v".length($$tmp)*2,$$tmp));
 }
 
 sub getinfo($) {
@@ -131,13 +116,10 @@ sub getinfo($) {
                              $position + 86, $author_length);
         }
     }
-    taro7_10::byteswap(\$author);
-    taro7_10::u16toe(\$author);
-    $author =~ s/[\x00\x0E\x0c]//g;
-
-    taro7_10::byteswap(\$title);
-    taro7_10::u16toe(\$title);
-    $title =~ s/[\x00\x0E\x0c]//g;
+    #$author = "\xff\xfe" . $author;
+    codeconv::to_inner_encoding(\$author, 'UTF-16LE'); 
+    #$title = "\xff\xfe" . $title;
+    codeconv::to_inner_encoding(\$title, 'UTF-16LE'); 
 
     return ($author, $title);
 }
@@ -156,8 +138,8 @@ sub getcontent($) {
             $content .= $buf . "\x00\x0a";
         }
     }
-    u16toe(\$content);
-    $content =~ s/[\x00\x0E\x0c]//g;
+    #$content = "\xfe\xff" . $content;
+    codeconv::to_inner_encoding(\$content, 'UTF-16BE'); 
     return $content;
 }
 
@@ -186,20 +168,6 @@ sub remove_ctlcodearea($){
         $pos1 = $pos2;
     }
     $$textref = $tmptext2;
-}
-
-# convert utf-16 to euc
-# require Perl5.8 or unicode.pl
-sub u16toe($) {
-    my ($tmp) = @_;
-    if ($English::PERL_VERSION >= 5.008){
-        eval 'use Encode qw/from_to Unicode JP/;';
-        Encode::from_to($$tmp, "UTF-16BE" ,"euc-jp");
-    }else{
-        eval require 'unicode.pl';
-        my @unicodeList = unpack("n*", $$tmp);
-        $$tmp = unicode::u2e(@unicodeList);
-    }
 }
 
 1;

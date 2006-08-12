@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: compress.pl,v 1.23 2005-06-05 09:52:33 opengl2772 Exp $
+# $Id: compress.pl,v 1.24 2006-08-12 07:18:44 opengl2772 Exp $
 # Copyright (C) 2000-2005 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #

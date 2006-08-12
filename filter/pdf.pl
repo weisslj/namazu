@@ -1,9 +1,9 @@
 #
 # -*- Perl -*-
-# $Id: pdf.pl,v 1.43 2006-04-30 08:27:32 opengl2772 Exp $
+# $Id: pdf.pl,v 1.44 2006-08-12 07:18:44 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu ,
-#               2000-2006 Namazu Project All rights reserved.
+#               2000-2005 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -55,7 +55,7 @@ sub status() {
                 "mode_stderr" => 'wt',
             },
         );
-        if ($result =~ m/^pdftotext\s+version\s+([0-9]+\.[0-9]+)/m) {
+        if ($result =~ /^pdftotext\s+version\s+([0-9]+\.[0-9]+)/) {
             $pdfconvver = $1;
         }
         if (util::islang("ja")) {
@@ -158,8 +158,7 @@ sub filter ($$$$$) {
         util::fclose($fh);
     }
 
-    # codeconv::toeuc($cont);
-    codeconv::codeconv_document($cont);
+    codeconv::to_inner_encoding($cont, undef);
 
     if (defined $pdfinfopath) {
         my @cmd = ($pdfinfopath, @pdfinfoopts, $tmpfile);
@@ -173,6 +172,7 @@ sub filter ($$$$$) {
                 "mode_stderr" => 'wt',
             },
         );
+	codeconv::to_inner_encoding(\$result, undef);
         if ($result =~ /Title:\s+(.*)/) { # or /Subject:\s+(.*)/
             $fields->{'title'} = $1;
             if ($fields->{'title'} =~ /<unicode>/) {
@@ -204,8 +204,6 @@ sub filter ($$$$$) {
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($cont);
-    $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
-        unless $fields->{'title'};
     gfilter::show_filter_debug_info($cont, $weighted_str,
                                     $fields, $headings);
 

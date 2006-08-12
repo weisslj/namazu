@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: deb.pl,v 1.13 2005-06-05 09:52:33 opengl2772 Exp $
+# $Id: deb.pl,v 1.14 2006-08-12 07:18:44 opengl2772 Exp $
 # Copyright (C) 2000,2004-2005 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -111,8 +111,6 @@ sub filter ($$$$$) {
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($cont);
-    $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
-	unless $fields->{'title'};
     gfilter::show_filter_debug_info($cont, $weighted_str,
 				    $fields, $headings);
 

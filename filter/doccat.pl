@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: doccat.pl,v 1.9 2005-06-05 09:52:33 opengl2772 Exp $
+# $Id: doccat.pl,v 1.10 2006-08-12 07:18:44 opengl2772 Exp $
 # Copyright (C) 2001 SATOH Fumiyasu,
 #               2001,2004-2005 Namazu Project. All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.

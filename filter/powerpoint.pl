@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: powerpoint.pl,v 1.30 2005-10-07 03:28:19 opengl2772 Exp $
+# $Id: powerpoint.pl,v 1.31 2006-08-12 07:18:44 opengl2772 Exp $
 # Copyright (C) 2000 Ken-ichi Hirose, 
 #               2000-2005 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -30,17 +30,12 @@ use File::Basename;
 require 'util.pl';
 require 'gfilter.pl';
 require 'html.pl';
-eval 'require NKF;';
 
 my $pptconvpath = undef;
 my @pptconvopts = undef;
 my $utfconvpath = undef;
 my $convname = undef;
 my $wvsummarypath = undef;
-
-my $nkfversion = 0.00;
-eval '$nkfversion = $NKF::VERSION;';
-$nkfversion = 0.00 if (!defined $nkfversion);
 
 sub mediatype() {
     return ('application/powerpoint');
@@ -55,20 +50,16 @@ sub status() {
     $pptconvpath = util::checkcmd('ppthtml') || util::checkcmd('pptHtml');
 #    return 'no' unless defined $pptconvpath
     if (defined $pptconvpath) {
-        @pptconvopts = ();
-        if (!util::islang("ja")) {
-            return 'yes';
-        } else {
-            return 'yes' if ($English::PERL_VERSION >= 5.008);
-            return 'yes' if ($nkfversion >= 2.04);
-
-            $utfconvpath = util::checkcmd('lv');
-            if (defined $utfconvpath) {
-                return 'yes';
-            } else {
-                return 'no';
-            }
-        } 
+	@pptconvopts = ();
+	if (!util::islang("ja")) {
+	    return 'yes';
+	} else {
+	    if ($conf::NKF ne 'no') {
+		return 'yes';
+	    } else {
+		return 'no';
+	    }
+	} 
     } else {
         $pptconvpath = util::checkcmd('doccat');
         @pptconvopts = ("-o", "e");
@@ -160,14 +151,13 @@ sub filter_ppt ($$$$$) {
 
     # Code conversion for Japanese document.
     if (util::islang("ja")) {
-        # Pattern for pptHtml
-        if ($$cont =~ m!^<FONT SIZE=-1><I>Last Updated&nbsp;using Excel 5.0 or 95</I></FONT><br>$!m) 
-        {
-            $$cont = codeconv::shiftjis_to_eucjp($$cont);
-            codeconv::normalize_eucjp($cont);
-        } else {
-            utf8_to_eucjp($cont);
-        }
+	# Pattern for pptHtml
+	if ($$cont =~ m!^<FONT SIZE=-1><I>Last Updated&nbsp;using Excel 5.0 or 95</I></FONT><br>$!m) 
+	{
+	    codeconv::to_inner_encoding($cont, 'shiftjis');
+	} else {
+	    codeconv::normalize_jp($cont);
+	}
     } 
 
     # Extract the author and exclude pptHtml's footer at once.
@@ -291,10 +281,9 @@ sub getSummaryInfo ($$$$$) {
     }
 
     if ($codepage eq "fffffde9") { 
-        utf8_to_eucjp(\$summary);
+        codeconv::normalize_jp(\$summary);
     } else {
-        # codeconv::toeuc(\$summary);
-        codeconv::codeconv_document(\$summary);
+	codeconv::to_inner_encoding(\$summary, 'shiftjis');
     }
 
     if ($summary =~ /^The title is (.*)$/m) {
@@ -339,50 +328,6 @@ sub getSummaryInfo ($$$$$) {
         $weight = $conf::Weight{'metakey'};
         $$weighted_str .= "\x7f$weight\x7f$keywords\x7f/$weight\x7f\n";
     }
-
-    return undef;
-}
-
-sub utf8_to_eucjp($) {
-    my ($cont) = @_;
-
-    return undef unless (util::islang("ja"));
-
-    if ($English::PERL_VERSION >= 5.008){
-        eval 'use Encode qw/from_to Unicode JP/;';
-        Encode::from_to($$cont, "utf-8" ,"euc-jp");
-        codeconv::normalize_eucjp($cont);
-        return undef;
-    }
-
-    if ($nkfversion >= 2.04) {
-        $$cont = NKF::nkf("-WemXZ1", $$cont);
-        return undef;
-    }
-
-    return undef unless (defined $utfconvpath);
-
-    my $tmpfile  = util::tmpnam('NMZ.tmp.utf8');
-    { 
-        my $fh = util::efopen("> $tmpfile");
-        print $fh $$cont;
-        util::fclose($fh);
-    }
-
-    my @cmd = ($utfconvpath, "-Iu8", "-Oej", $tmpfile);
-    my $fh_out = IO::File->new_tmpfile();
-    my $status = util::syscmd(
-        command => \@cmd,
-        option => {
-            "stdout" => $fh_out,
-            "stderr" => "/dev/null",
-        },
-    );
-    $$cont = util::readfile($fh_out);
-    util::fclose($fh_out);
-    codeconv::normalize_eucjp_document($cont);
-
-    unlink $tmpfile;
 
     return undef;
 }

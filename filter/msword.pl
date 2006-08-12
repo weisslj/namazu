@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: msword.pl,v 1.60 2005-10-07 03:28:19 opengl2772 Exp $
+# $Id: msword.pl,v 1.61 2006-08-12 07:18:44 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi,
 #               2000-2005 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -30,7 +30,6 @@ use File::Basename;
 require 'util.pl';
 require 'gfilter.pl';
 require 'html.pl';
-eval 'require NKF;';
 
 my $wordconvpath  = undef;
 my @wordconvopts  = undef;
@@ -38,10 +37,6 @@ my $wvversionpath = undef;
 my $utfconvpath   = undef;
 my $convname = undef;
 my $wvsummarypath = undef;
-
-my $nkfversion = 0.00;
-eval '$nkfversion = $NKF::VERSION;';
-$nkfversion = 0.00 if (!defined $nkfversion);
 
 sub mediatype() {
     return ('application/msword');
@@ -74,12 +69,11 @@ sub status() {
                 if (!util::islang("ja")) {
                     return 'yes';
                 } else {
-                    $utfconvpath   = util::checkcmd('lv');
-                    if (defined $wvversionpath
-                    && (defined $utfconvpath || $English::PERL_VERSION >= 5.008
-                        || $nkfversion >= 2.04)) {
-                        return 'yes';
-                    }
+		    if ($conf::NKF ne 'no') {
+			return 'yes';
+		    } else {
+			return 'no';
+		    }
                 }
             }
         }
@@ -88,15 +82,14 @@ sub status() {
     $wordconvpath = util::checkcmd('wvHtml');
     if (defined $wordconvpath) {
         if (!util::islang("ja")) {
-            return 'yes';
+	    return 'yes';
         } else {
-            $utfconvpath   = util::checkcmd('lv');
-            if (defined $wvversionpath
-            && (defined $utfconvpath || $English::PERL_VERSION >= 5.008
-                || $nkfversion >= 2.04)) {
-                return 'yes';
-            }
-        }
+	    if ($conf::NKF ne 'no') {
+		return 'yes';
+	    } else {
+		return 'no';
+	    }
+       }
     }
 
     $wordconvpath = util::checkcmd('doccat');
@@ -164,7 +157,6 @@ sub filter_wv ($$$$$) {
     getSummaryInfo($tmpfile, $cont, $weighted_str, $headings, $fields);
     my $title = $fields->{'title'};
 
-
     if ($convname =~ /wvWare/i) {
         $err = filter_wvWare($tmpfile, $cont, $weighted_str, $headings, $fields);
     } else {
@@ -202,7 +194,7 @@ sub filter_wvWare ($$$$$) {
     if (util::islang("ja")) {
         @wordconvopts = (
             "--nographics", "-d", "$tpath", "-b", "$name", 
-            "--charset=EUC-JP"
+            "--charset=UTF-8"
         );
     } else {
         @wordconvopts = (
@@ -242,7 +234,7 @@ sub filter_wvWare ($$$$$) {
         # div name shoud be removed.
         $$cont =~ s!(<div(?:\s[A-Z]+\w*(?:=(?:"(?:\\"|[^"])*"|'(?:\\'|[^'])*'|[^\s>]*))?)*)\s+name=(?:"(?:\\"|[^"])*"|'(?:\\'|[^'])*'|[^\s>]*)(\s[A-Z]+\w*(?:=(?:"(?:\\"|[^"])*"|'(?:\\'|[^'])*'|[^\s>]*))?\s*>)!$1$2!igs;
 
-        codeconv::normalize_eucjp($cont);
+        codeconv::normalize_jp($cont);
     }
 
     return undef;
@@ -319,7 +311,6 @@ sub filter_wvHtml ($$$$$) {
         # div name shoud be removed.
         $$cont =~ s!(<div(?:\s[A-Z]+\w*(?:=(?:"(?:\\"|[^"])*"|'(?:\\'|[^'])*'|[^\s>]*))?)*)\s+name=(?:"(?:\\"|[^"])*"|'(?:\\'|[^'])*'|[^\s>]*)(\s[A-Z]+\w*(?:=(?:"(?:\\"|[^"])*"|'(?:\\'|[^'])*'|[^\s>]*))?\s*>)!$1$2!igs;
 
-        utf8_to_eucjp($cont);
     }
 
     return undef;
@@ -450,10 +441,9 @@ sub getSummaryInfo ($$$$$) {
     }
 
     if ($codepage eq "fffffde9") { 
-        utf8_to_eucjp(\$summary);
+        codeconv::normalize_jp(\$summary);
     } else {
-        # codeconv::toeuc(\$summary);
-        codeconv::codeconv_document(\$summary);
+	codeconv::to_inner_encoding(\$summary, 'shiftjis');
     }
 
     if ($summary =~ /^The title is (.*)$/m) {
@@ -498,50 +488,6 @@ sub getSummaryInfo ($$$$$) {
         $weight = $conf::Weight{'metakey'};
         $$weighted_str .= "\x7f$weight\x7f$keywords\x7f/$weight\x7f\n";
     }
-
-    return undef;
-}
-
-sub utf8_to_eucjp($) {
-    my ($cont) = @_;
-
-    return undef unless (util::islang("ja"));
-
-    if ($English::PERL_VERSION >= 5.008){
-        eval 'use Encode qw/from_to Unicode JP/;';
-        Encode::from_to($$cont, "utf-8" ,"euc-jp");
-        codeconv::normalize_eucjp($cont);
-        return undef;
-    }
-
-    if ($nkfversion >= 2.04) {
-        $$cont = NKF::nkf("-WemXZ1", $$cont);
-        return undef;
-    }
-
-    return undef unless (defined $utfconvpath);
-
-    my $tmpfile  = util::tmpnam('NMZ.tmp.utf8');
-    { 
-        my $fh = util::efopen("> $tmpfile");
-        print $fh $$cont;
-        util::fclose($fh);
-    }
-
-    my @cmd = ($utfconvpath, "-Iu8", "-Oej", $tmpfile);
-    my $fh_out = IO::File->new_tmpfile();
-    my $status = util::syscmd(
-        command => \@cmd,
-        option => {
-            "stdout" => $fh_out,
-            "stderr" => "/dev/null",
-        },
-    );
-    $$cont = util::readfile($fh_out);
-    util::fclose($fh_out);
-    codeconv::normalize_eucjp_document($cont);
-
-    unlink $tmpfile;
 
     return undef;
 }

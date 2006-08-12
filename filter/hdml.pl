@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: hdml.pl,v 1.7 2005-06-06 06:11:50 opengl2772 Exp $
+# $Id: hdml.pl,v 1.8 2006-08-12 07:18:44 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000,2005 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.

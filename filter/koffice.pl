@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: koffice.pl,v 1.10 2004-10-20 10:01:18 opengl2772 Exp $
+# $Id: koffice.pl,v 1.11 2006-08-12 07:18:44 opengl2772 Exp $
 # Copyright (C) 2004 Yukio USUDA 
 #               2004 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -43,19 +43,7 @@ sub status () {
     $unzippath = util::checkcmd('unzip');
     if (defined $unzippath){
 	@unzipopts = ('-p');
-        if (util::islang("ja")) {
-           if ($English::PERL_VERSION >= 5.008) {
-		$utfconvpath = "none";
-		return 'yes';
-	   }
-           $utfconvpath = util::checkcmd('lv');
-           if ($utfconvpath){ 
-               return 'yes';
-           }
-           return 'no'; 
-        } else {
-           return 'yes'; 
-        }
+	return 'yes';
     }
     return 'no';
 }
@@ -120,12 +108,9 @@ sub filter_docinfofile ($$$) {
 
     # Code conversion for Japanese document.
     if (util::islang("ja")) {
-        koffice::utoe(\$authorname);
-        koffice::utoe(\$title);
-        koffice::utoe(\$abstract);
-        codeconv::normalize_eucjp(\$authorname);
-        codeconv::normalize_eucjp(\$title);
-        codeconv::normalize_eucjp(\$abstract);
+        codeconv::normalize_jp(\$authorname);
+        codeconv::normalize_jp(\$title);
+        codeconv::normalize_jp(\$abstract);
     }
     if ($authorname ne ""){
         $fields->{'author'} = $authorname;
@@ -168,8 +153,7 @@ sub filter_maindocfile ($$$$$) {
 
     # Code conversion for Japanese document.
     if (util::islang("ja")) {
-         koffice::utoe(\$xml);
-         codeconv::normalize_eucjp(\$xml);
+         codeconv::normalize_jp(\$xml);
     }
     $$contref = $xml;
     gfilter::line_adjust_filter($contref);
@@ -236,30 +220,6 @@ sub remove_all_tag($) {
       $$contref =~ s/<[^>]*>/\n/gs;
       $$contref =~ s/\n+/\n/gs;
       $$contref =~ s/^\n+//;
-}
-
-# convert utf-8 to euc
-sub utoe($) {
-    my ($tmp) = @_;
-    if ($utfconvpath =~ /lv/){
-        my $tmpfile  = util::tmpnam('NMZ.koffice');
-        {
-            my $fh = util::efopen("> $tmpfile");
-            print $fh $$tmp;
-            util::fclose($fh);
-        }
-        my $cmd = ($utfconvpath . " -Iu8 " . "-Oej " . $tmpfile . " |");
-        $$tmp = "";
-        my $fh = util::efopen($cmd);
-        while (defined(my $line = <$fh>)){
-            $$tmp .= $line;
-        }
-        util::fclose($fh);
-        unlink $tmpfile;
-    }elsif ($English::PERL_VERSION >= 5.008){
-        eval 'use Encode qw/from_to Unicode JP/;';
-        Encode::from_to($$tmp, "utf-8" ,"euc-jp");
-    }
 }
 
 # Decode a numberd entity. Exclude an invalid number.

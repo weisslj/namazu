@@ -1,10 +1,10 @@
 #
 # -*- Perl -*-
-# $Id: mhonarc.pl,v 1.33 2005-06-05 09:52:33 opengl2772 Exp $
+# $Id: mhonarc.pl,v 1.34 2006-08-12 07:18:44 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu ,
 #               2002 Earl Hood ,
-#               2000-2005 Namazu Project All rights reserved.
+#               2000-2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -160,21 +160,18 @@ sub load_mhonarc_fields {
 
     if ($mha_head =~ /<!--X-Subject: ([^-]+) -->/) {
 	my $subject = uncommentize($1);
-        # codeconv::toeuc(\$subject);
-        codeconv::codeconv_document(\$subject);
+        codeconv::to_inner_encoding(\$subject, "");
 	1  while ($subject =~ s/\A\s*(re|sv|fwd|fw)[\[\]\d]*[:>-]+\s*//i);
 	$subject =~ s/\A\s*\[[^\]]+\]\s*//;
 	$fields->{'subject'} = $subject;
     }
     if ($mha_head =~ /<!--X-From-R13: ([^-]+) -->/) {
         my $from = mrot13(uncommentize($1));
-        # codeconv::toeuc(\$from);
-        codeconv::codeconv_document(\$from);
+        codeconv::to_inner_encoding(\$from, "");
         $fields->{'from'} = $from;
     } elsif ($mha_head =~ /<!--X-From: ([^-]+) -->/) {
         my $from = uncommentize($1);
-        # codeconv::toeuc(\$from);
-        codeconv::codeconv_document(\$from);
+        codeconv::to_inner_encoding(\$from, "");
         $fields->{'from'} = $from;
     }
     if ($mha_head =~ /<!--X-Message-Id: ([^-]+) -->/) {

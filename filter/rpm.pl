@@ -1,7 +1,7 @@
 #
 # -*- Perl -*-
-# $Id: rpm.pl,v 1.16 2005-06-05 09:52:33 opengl2772 Exp $
-# Copyright (C) 2000-2002,2004-2005 Namazu Project All rights reserved.
+# $Id: rpm.pl,v 1.17 2006-08-12 07:18:44 opengl2772 Exp $
+# Copyright (C) 2000,2001,2002,2004-2005 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -50,7 +50,7 @@ sub pre_codeconv() {
 }
 
 sub post_codeconv () {
-    return 0;
+    return 1;
 }
 
 sub add_magic ($) {
@@ -114,8 +114,6 @@ sub filter ($$$$$) {
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($cont);
-    $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
-        unless $fields->{'title'};
     gfilter::show_filter_debug_info($cont, $weighted_str,
                                     $fields, $headings);
 
@@ -130,6 +128,10 @@ sub rpm_filter ($$$$) {
     rpm::get_date($contref, $fields);
     rpm::get_size($contref, $fields);
     rpm::get_summary($contref, $fields);
+
+    codeconv::to_inner_encoding(\$fields->{'title'}, "");
+    codeconv::to_inner_encoding(\$fields->{'author'}, "");
+    codeconv::to_inner_encoding(\$fields->{'summary'}, "");
 
     return;
 }

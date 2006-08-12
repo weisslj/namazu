@@ -1,9 +1,9 @@
 #
 # -*- Perl -*-
-# $Id: excel.pl,v 1.38 2005-10-07 03:28:19 opengl2772 Exp $
+# $Id: excel.pl,v 1.39 2006-08-12 07:18:44 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi,
 #               1999 NOKUBI Takatsugu, 
-#               2000-2005 Namazu Project All rights reserved.
+#               2000-2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -31,17 +31,12 @@ use File::Basename;
 require 'util.pl';
 require 'gfilter.pl';
 require 'html.pl';
-eval 'require NKF;';
 
 my $xlconvpath  = undef;
 my @xlconvopts  = undef;
 my $utfconvpath = undef;
 my $convname = undef;
 my $wvsummarypath = undef;
-
-my $nkfversion = 0.00;
-eval '$nkfversion = $NKF::VERSION;';
-$nkfversion = 0.00 if (!defined $nkfversion);
 
 sub mediatype() {
     return ('application/excel');
@@ -59,17 +54,13 @@ sub status() {
         @xlconvopts = ("-m");
         if (!util::islang("ja")) {
             return 'yes';
-        } else {
-            return 'yes' if ($English::PERL_VERSION >= 5.008);
-            return 'yes' if ($nkfversion >= 2.04);
-
-            $utfconvpath = util::checkcmd('lv');
-            if (defined $utfconvpath) {
-                return 'yes';
-            } else {
-                return 'no';
-            }
-        } 
+	} else {
+	    if ($conf::NKF ne 'no') {
+		return 'yes';
+	    } else {
+		return 'no';
+	    }
+	} 
     } else {
         $xlconvpath = util::checkcmd('doccat');
         @xlconvopts = ("-o", "e");
@@ -162,14 +153,13 @@ sub filter_xl ($$$$$) {
 
     # Code conversion for Japanese document.
     if (util::islang("ja")) {
-        # Pattern for xlHtml version 0.2.6.
-        if ($$cont =~ m!^<FONT SIZE="?-1"?><I>Last Updated(&nbsp;using| with) Excel 5.0 or 95</I></FONT><br>$!m) 
-        {
-            $$cont = codeconv::shiftjis_to_eucjp($$cont);
-            codeconv::normalize_eucjp($cont);
-        } else {
-            utf8_to_eucjp($cont);
-        }
+	my $encoding = "utf-8"; # UTF-8
+	# Pattern for xlHtml version 0.2.6.
+	if ($$cont =~ m!^<FONT SIZE="?-1"?><I>Last Updated(&nbsp;using| with) Excel 5.0 or 95</I></FONT><br>$!m) 
+	{
+	    $encoding = "shiftjis"; # Shift_JIS
+	}
+	codeconv::to_inner_encoding($cont, $encoding);
     } 
 
     # Extract the author and exclude xlHtml's footer at once.
@@ -190,8 +180,6 @@ sub filter_xl ($$$$$) {
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($cont);
-    $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
-        unless $fields->{'title'};
     gfilter::show_filter_debug_info($cont, $weighted_str,
                                     $fields, $headings);
 
@@ -242,8 +230,6 @@ sub filter_doccat ($$$$$) {
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($cont);
-    $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
-        unless $fields->{'title'};
     gfilter::show_filter_debug_info($cont, $weighted_str,
                                     $fields, $headings);
 
@@ -283,7 +269,6 @@ sub getSummaryInfo ($$$$$) {
     # 10001 : 0x00002711 : x-mac-japanese
     # 65001 : 0xfffffde9 : UTF-8
 
-
     my $codepage = "000003a4"; # Shift_JIS
     my $title = undef;
     my $subject = undef;
@@ -296,10 +281,9 @@ sub getSummaryInfo ($$$$$) {
     }
 
     if ($codepage eq "fffffde9") { 
-        utf8_to_eucjp(\$summary);
+        codeconv::to_inner_encoding(\$summary, 'utf-8');
     } else {
-        # codeconv::toeuc(\$summary);
-        codeconv::codeconv_document(\$summary);
+        codeconv::to_inner_encoding(\$summary, 'shiftjis');
     }
 
     if ($summary =~ /^The title is (.*)$/m) {
@@ -344,50 +328,6 @@ sub getSummaryInfo ($$$$$) {
         $weight = $conf::Weight{'metakey'};
         $$weighted_str .= "\x7f$weight\x7f$keywords\x7f/$weight\x7f\n";
     }
-
-    return undef;
-}
-
-sub utf8_to_eucjp($) {
-    my ($cont) = @_;
-
-    return undef unless (util::islang("ja"));
-
-    if ($English::PERL_VERSION >= 5.008){
-        eval 'use Encode qw/from_to Unicode JP/;';
-        Encode::from_to($$cont, "utf-8" ,"euc-jp");
-        codeconv::normalize_eucjp($cont);
-        return undef;
-    }
-
-    if ($nkfversion >= 2.04) {
-        $$cont = NKF::nkf("-WemXZ1", $$cont);
-        return undef;
-    }
-
-    return undef unless (defined $utfconvpath);
-
-    my $tmpfile  = util::tmpnam('NMZ.tmp.utf8');
-    { 
-        my $fh = util::efopen("> $tmpfile");
-        print $fh $$cont;
-        util::fclose($fh);
-    }
-
-    my @cmd = ($utfconvpath, "-Iu8", "-Oej", $tmpfile);
-    my $fh_out = IO::File->new_tmpfile();
-    my $status = util::syscmd(
-        command => \@cmd,
-        option => {
-            "stdout" => $fh_out,
-            "stderr" => "/dev/null",
-        },
-    );
-    $$cont = util::readfile($fh_out);
-    util::fclose($fh_out);
-    codeconv::normalize_eucjp_document($cont);
-
-    unlink $tmpfile;
 
     return undef;
 }

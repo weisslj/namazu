@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mailnews.pl,v 1.47 2006-04-25 14:00:29 opengl2772 Exp $
+# $Id: mailnews.pl,v 1.48 2006-08-12 07:18:44 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu ,
 #               2001,2003-2006 Namazu Project All rights reserved.
@@ -32,7 +32,7 @@ require 'html.pl';
 require 'document.pl';
 
 my $has_base64 = undef;
-my $htmlmail = "";
+my $htmlmail="";
 
 sub mediatype() {
     return ('message/rfc822', 'message/news');
@@ -70,7 +70,7 @@ sub filter ($$$$$) {
     uuencode_filter($cont);
     mailnews_filter($cont, $weighted_str, $fields);
     if ($htmlmail) {
-       html::html_filter($cont, $weighted_str, $fields, $headings);
+        html::html_filter($cont, $weighted_str, $fields, $headings);
     }
     mailnews_citation_filter($cont, $weighted_str);
 
@@ -90,10 +90,7 @@ sub mailnews_filter ($$$) {
     my $boundary = "";
     my $line     = "";
     my $partial  = 0;
-    my $cont_encode = "";
-    my $textplain = "";
-
-    $htmlmail = "";
+    my $htmlmail = "";
 
     $$contref =~ s/^\s+//;
     # Don't handle if first like does'nt seem like a mail/news header.
@@ -139,15 +136,11 @@ sub mailnews_filter ($$$) {
             } elsif ($line =~ m!text/html!i) {
                 # The simplest form of an HTML email message.
                 util::dprint("text/html mail\n");
-                $htmlmail = 'yes';
-            } elsif ($line =~ m!text/plain!i) {
-                $textplain = 'yes';
+                $htmlmail = "yes";
             } elsif ($line !~ m!text/plain!i) {
                 $$contref = '';
                 return;
             }
-        } elsif ($line =~ s/^content-transfer-encoding:\s*(\S+)$//i) {
-            $cont_encode = lc($1);
 	} elsif ($line =~ /^(\S+):\s*(.*)/i) {
 	    my $name = $1;
 	    my $value = $2;
@@ -179,12 +172,6 @@ sub mailnews_filter ($$$) {
 
 	multipart_process($contref, $boundary, $weighted_str, $fields);
 
-    } elsif ($textplain && $cont_encode =~ m/base64/) {
-        base64_filter($contref);
-        codeconv::codeconv_document($contref);
-    } elsif ($textplain && $cont_encode =~ m/quoted-printable/) {
-        quotedprint_filter($contref);
-        codeconv::codeconv_document($contref);
     }
 }
 
@@ -197,8 +184,7 @@ sub multipart_process ($$$$){
 
     # MIME multipart processing,
     # modified by Furukawa-san's patch on [1998/08/27]
-    $$contref =~ s/--$boundary(?:--)?\n?/\xff/g;
-    $$contref =~ s/\xff[^\xff]*$//s;
+    $$contref =~ s/--$boundary(--)?\n?/\xff/g;
     my (@parts) = split(/\xff/, $$contref);
     $$contref = '';
     for $_ (@parts){
@@ -226,7 +212,6 @@ sub multipart_process ($$$$){
 		} 
 
 		if ($contenttype =~ m!text/plain!){
-                    codeconv::codeconv_document(\$body);
 		    $$contref .= $body;
 		} elsif ($contenttype =~ m!multipart/alternative!){
                     if ($head =~ /boundary="(.*?)"/si ||
@@ -421,8 +406,7 @@ sub nesting_filter ($$$$){
 	if ($tmp) {
 	    $tmp =~ s/%(\w\w)/chr(hex($1))/eg;
 	    $filename = $tmp;
-	    # codeconv::toeuc(\$filename);
-            codeconv::codeconv_document(\$filename);
+	    codeconv::to_inner_encoding(\$filename, "");
 	}else {
 	    $filename =~ s/filename.*=//;
 	}

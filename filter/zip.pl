@@ -1,10 +1,10 @@
 #
 # -*- Perl -*-
-# $Id: zip.pl,v 1.19 2006-04-16 12:55:16 opengl2772 Exp $
+# $Id: zip.pl,v 1.20 2006-08-12 07:18:44 opengl2772 Exp $
 #  zip filter for namazu
 #  Copyright (C) 2004 MATSUMURA Namihiko <po-jp@counterghost.net>
 #                2004 Yukio USUDA <usu@namazu.org>
-#                2004-2006 Namazu Project All rights reserved.
+#                2004-2005 Namazu Project All rights reserved.
 #
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -106,8 +106,7 @@ sub az_filter ($$$$$) {
 	my $comment = $zip->zipfileComment();
 	my @filenames = $zip->memberNames();
 	my $tmp = join(" ", @filenames);
-	# codeconv::toeuc(\$tmp);
-        codeconv::codeconv_document(\$tmp);
+	codeconv::to_inner_encoding(\$tmp, 'unknown');
 	$$contref = $comment . " " . $tmp . " ";
     }
     my @members = $zip->members();
@@ -122,12 +121,10 @@ sub az_filter ($$$$$) {
 	} elsif ($size > $conf::FILE_SIZE_MAX) {
 	    util::dprint("$fname: Too large ziped file");
 	} elsif ($fname =~ m!^($conf::DENY_FILE)$!i ) {
-	    # codeconv::toeuc(\$fname);
-            codeconv::codeconv_document(\$fname);
+	    codeconv::to_inner_encoding(\$fname, 'unknown');
 	    util::vprint(sprintf(_("Denied:	%s"), $fname));
 	} elsif ($fname !~ m!^($conf::ALLOW_FILE)$!i) {
-	    # codeconv::toeuc(\$fname);
-            codeconv::codeconv_document(\$fname);
+	    codeconv::to_inner_encoding(\$fname, 'unknown');
 	    util::vprint(sprintf(_("Not allowed:	%s"), $fname));
 	} else {
 	    my $con = $zip->contents($member);
@@ -178,10 +175,10 @@ sub unzip_filter ($$$$$) {
     );
     if ($status == 0) {
 	my $summary = util::readfile("$tmpfile2");
-        # codeconv::toeuc(\$summary);
-        codeconv::codeconv_document(\$summary);
+	codeconv::to_inner_encoding(\$summary, 'unknown');
 	$$contref .= $summary . " ";
     }
+    unlink($tmpfile2);
 
     my %files;
     my $filenames = undef;
@@ -212,16 +209,13 @@ sub unzip_filter ($$$$$) {
 	    # attribute is 'fat' or 'hpfs'.
 	    if ($filesystem =~ /unx|ntf/) {
 		$filename = './' . $filename;
-		# codeconv::toeuc(\$filename);
-                codeconv::codeconv_document(\$filename);
+		codeconv::to_inner_encoding(\$filename, 'unknown');
 		$filename = gfilter::filename_to_title($filename, $weighted_str);
 		$filenames .= $filename . " ";
 	    }
 	}
     }
     $$contref .= $filenames . " " if (defined $filenames);
-
-    unlink($tmpfile2);
 
     my $fname;
     foreach $fname (keys %files){
@@ -231,12 +225,10 @@ sub unzip_filter ($$$$$) {
 	} elsif ($size > $conf::FILE_SIZE_MAX) {
 	    util::dprint("$fname: Too large ziped file");
 	} elsif ($fname =~ m!^($conf::DENY_FILE)$!i ) {
-	    # codeconv::toeuc(\$fname);
-            codeconv::codeconv_document(\$fname);
+	    codeconv::to_inner_encoding(\$fname, 'unknown');
 	    util::vprint(sprintf(_("Denied:	%s"), $fname));
 	} elsif ($fname !~ m!^($conf::ALLOW_FILE)$!i) {
-	    # codeconv::toeuc(\$fname);
-            codeconv::codeconv_document(\$fname);
+	    codeconv::to_inner_encoding(\$fname, 'unknown');
 	    util::vprint(sprintf(_("Not allowed:	%s"), $fname));
 	} else {
 	    my $con = "";

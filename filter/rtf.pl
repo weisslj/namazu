@@ -1,7 +1,7 @@
 #
 # -*- Perl -*-
-# $Id: rtf.pl,v 1.19 2005-06-05 09:52:33 opengl2772 Exp $
-# Copyright (C) 2003-2005 Tadamasa Teranishi All rights reserved.
+# $Id: rtf.pl,v 1.20 2006-08-12 07:18:44 opengl2772 Exp $
+# Copyright (C) 2003-2004 Tadamasa Teranishi All rights reserved.
 #               2003-2005 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -159,8 +159,7 @@ sub filter_rtf2html ($$$$$) {
     }
     unlink $tmpfile;
 
-    # codeconv::toeuc($cont);
-    codeconv::codeconv_document($cont);
+    codeconv::to_inner_encoding($cont, "");
 
     # Title shoud be removed.
     $$cont =~ s!<TITLE.*?>.*?</TITLE>!!is;
@@ -170,8 +169,6 @@ sub filter_rtf2html ($$$$$) {
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($cont);
-    $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
-        unless $fields->{'title'};
     gfilter::show_filter_debug_info($cont, $weighted_str,
                                     $fields, $headings);
     return undef;
@@ -217,8 +214,6 @@ sub filter_doccat ($$$$$) {
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($cont);
-    $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
-        unless $fields->{'title'};
     gfilter::show_filter_debug_info($cont, $weighted_str,
                                     $fields, $headings);
 

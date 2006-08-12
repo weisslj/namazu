@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: man.pl,v 1.37 2005-06-05 09:52:33 opengl2772 Exp $
+# $Id: man.pl,v 1.38 2006-08-12 07:18:44 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu ,
 #               2000-2005 Namazu Project All rights reserved.
@@ -21,7 +21,7 @@
 #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 #  02111-1307, USA
 #
-#  This file must be encoded in EUC-JP encoding
+#  This file must be encoded in utf-8 encoding
 #
 
 package man;
@@ -136,16 +136,13 @@ sub filter ($$$$$) {
     }
     unlink $tmpfile;
 
-    # codeconv::toeuc($cont);
-    codeconv::codeconv_document($cont);
+    codeconv::to_inner_encoding($cont, undef);
 
     man_filter($cont, $weighted_str, $fields);
 
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($cont);
-    $fields->{'title'} = gfilter::filename_to_title($cfile, $weighted_str)
-	unless $fields->{'title'};
     gfilter::show_filter_debug_info($cont, $weighted_str,
 				    $fields, $headings);
     return undef;
@@ -171,14 +168,14 @@ sub man_filter ($$$) {
     my $weight = $conf::Weight{'html'}->{'title'};
     $$weighted_str .= "\x7f$weight\x7f$title\x7f/$weight\x7f\n";
 
-    if ($$contref =~ /^(?:NAME|Ì¾Á°|Ì¾¾Î)\s*\n(.*?)\n\n/ms) {
+    if ($$contref =~ /^(?:NAME|åå‰|åç§°)\s*\n(.*?)\n\n/ms) {
 	$name = "$1::\n";
 	$weight = $conf::Weight{'html'}->{'h1'};
 	$$weighted_str .= "\x7f$weight\x7f$1\x7f/$weight\x7f\n";
     }
 
     if ($$contref =~ 
-	s/\A(.+^(?:DESCRIPTION ²òÀâ|DESCRIPTIONS?|SHELL GRAMMAR|INTRODUCTION|¡Ú³µÍ×¡Û|²òÀâ|ÀâÌÀ|µ¡Ç½ÀâÌÀ|´ðËÜµ¡Ç½ÀâÌÀ)\s*\n)//ims) 
+	s/\A(.+^(?:DESCRIPTION è§£èª¬|DESCRIPTIONS?|SHELL GRAMMAR|INTRODUCTION|ã€æ¦‚è¦ã€‘|è§£èª¬|èª¬æ˜Ž|æ©Ÿèƒ½èª¬æ˜Ž|åŸºæœ¬æ©Ÿèƒ½èª¬æ˜Ž)\s*\n)//ims) 
     {
 	$$contref = $name . $$contref;
 	$$weighted_str .= "\x7f1\x7f$1\x7f/1\x7f\n";

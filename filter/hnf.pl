@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: hnf.pl,v 1.13 2005-06-05 09:52:33 opengl2772 Exp $
+# $Id: hnf.pl,v 1.14 2006-08-12 07:18:44 opengl2772 Exp $
 #
 # hnf filter for Namazu 2.0
 # version 0.9.15
@@ -9,6 +9,7 @@
 # Copyright (C) 1999-2001  Kenji Suzuki, HyperNikkiSystem Project
 # All rights reserved.
 # Copyright (C) 2005 Namazu Project All rights reserved ,
+#
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify

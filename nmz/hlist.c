@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.67 2005-10-25 13:12:54 opengl2772 Exp $
+ * $Id: hlist.c,v 1.68 2006-08-12 07:01:01 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2005 Namazu Project All rights reserved.
@@ -525,8 +525,8 @@ nmz_do_date_processing(NmzResult hlist)
     }
 
     for (i = 0; i < hlist.num ; i++) {
-        if (fseek(date_index, 
-	        hlist.data[i].docid * sizeof(hlist.data[i].date), 0) != 0) 
+        if (fseek(date_index,
+                     hlist.data[i].docid * sizeof(hlist.data[i].date), 0) != 0)
 	{
 	    nmz_set_dyingmsg(nmz_msg("%s: %s", NMZ.t, strerror(errno)));
 	    hlist.stat = ERR_FATAL;
@@ -549,7 +549,6 @@ nmz_do_date_processing(NmzResult hlist)
     }
 
     fclose(date_index);
-
     return hlist;
 }
 

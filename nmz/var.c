@@ -2,7 +2,7 @@
  * 
  * var.c -
  * 
- * $Id: var.c,v 1.22 2002-03-26 10:49:46 knok Exp $
+ * $Id: var.c,v 1.23 2006-08-12 07:01:01 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.

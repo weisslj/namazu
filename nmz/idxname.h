@@ -2,7 +2,7 @@
  * 
  * idxname.h - header files for Idx handling.
  *
- * $Id: idxname.h,v 1.8 2000-01-13 01:13:22 satoru Exp $
+ * $Id: idxname.h,v 1.9 2006-08-12 07:01:01 opengl2772 Exp $
  * 
  * 
  */

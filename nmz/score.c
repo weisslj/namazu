@@ -2,7 +2,7 @@
  * 
  * score.c - scoring-related functions of Namazu
  * 
- * $Id: score.c,v 1.10 2004-02-21 12:16:27 opengl2772 Exp $
+ * $Id: score.c,v 1.11 2006-08-12 07:01:01 opengl2772 Exp $
  * 
  * Copyright (C) 2001 Hajime BABA  All rights reserved.
  * Copyright (C) 2001 Namazu Project All rights reserved.

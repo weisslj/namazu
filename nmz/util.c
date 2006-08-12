@@ -1,9 +1,9 @@
 /*
  * 
- * $Id: util.c,v 1.91 2006-04-15 17:18:35 opengl2772 Exp $
+ * $Id: util.c,v 1.92 2006-08-12 07:01:01 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2006 Namazu Project All rights reserved.
+ * Copyright (C) 2000,2001,2004 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -56,6 +56,10 @@
 #include "var.h"
 #include "system.h"
 
+static char filesyscoding[BUFSIZE];
+static int capmode = 0;
+static int hexmode = 0;
+
 /*
  *
  * Private functions
@@ -64,6 +68,13 @@
 
 static void reverse_byte_order (void*, int, int);
 static char decode_uri_sub(char c1, char c2);
+static void uri_to_hex ( uchar * p );
+static void uri_to_cap ( uchar * p );
+static void encode_uri_sub ( uchar * p );
+static int is_uri_cap (void);
+static int is_uri_hex (void);
+static void set_uri_cap (void);
+static void set_uri_hex (void);
 
 /* 
  * Reverse byte order. It's type independent.
@@ -90,9 +101,159 @@ decode_uri_sub(char c1, char c2)
 {
     char c;
 
-    c =  ((c1 >= 'A' ? (_nmz_toupper((unsigned char)c1) - 'A') + 10 : (c1 - '0'))) * 16;
+    c = ((c1 >= 'A' ? (_nmz_toupper((unsigned char)c1) - 'A') + 10 : (c1 - '0'))) * 16;
     c += ( c2 >= 'A' ? (_nmz_toupper((unsigned char)c2) - 'A') + 10 : (c2 - '0'));
     return c;
+}
+
+static void
+uri_to_cap ( uchar * p )
+{
+    uchar c;
+    uchar *alloc, *s;
+    uchar tmp[3], *s2;
+
+    s2 = tmp;
+    alloc = (uchar *)strdup( p );
+    s = alloc;
+
+    if (s == NULL) { /* */
+	nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
+	return;
+    }
+
+    if (!(c = *(s++))) {
+	*p = '\0';
+	return;
+    }
+    while (1) {
+	if (c >= 0x80) {
+	    *p = ':';      p++;
+	    sprintf(s2, "%02x", c);
+	    *p =  *s2;     p++;
+	    *p =  *(s2+1); p++;
+	} else {
+	    *p = c;
+	    p++;
+	}
+	if (!(c = *(s++))) {
+	    *p = '\0';
+	    break;
+	}
+    }
+    *p = '\0';
+    free(alloc);
+}
+
+static void
+uri_to_hex ( uchar * p )
+{
+    uchar c;
+    uchar *alloc, *s;
+    uchar tmp[3], *s2;
+
+    s2 = tmp;
+    alloc = (uchar *)strdup( p );
+    s = alloc;
+
+    if (s == NULL) { /* */
+	nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
+	return;
+    }
+
+    if (!(c = *(s++))) {
+	*p = '\0';
+	return;
+    }
+    while (1) {
+	*p = ':';      p++;
+	sprintf(s2, "%02x", c);
+	*p =  *s2;     p++;
+	*p =  *(s2+1); p++;
+	if (!(c = *(s++))) {
+	    *p = '\0';
+	    break;
+	}
+    }
+    *p = '\0';
+    free(alloc);
+}
+
+static void
+encode_uri_sub(uchar * p)
+{
+    uchar c;
+    uchar *alloc, *s;
+    uchar tmp[3], *s2;
+    
+    s2 = tmp;
+    alloc = (uchar *)strdup( p );
+    s = alloc;
+
+    if (s == NULL) { /* */
+	nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
+	return;
+    }
+
+    if (!(c = *(s++))) {
+	*p = '\0';
+	return;
+    }
+    if ((c == '/') && (isalpha(*s)) && (*(s+1) == '|')){
+	/* Win32 drive letter was escaped like "/C|" */
+	*p = '/';  p++;
+	*p = *s;  p++;
+	*p = '|';  p++;
+	s += 3;
+    }
+    while (1) {
+	if (!(nmz_is_safe_char(c))) {
+	    *p = '%';      p++;
+	    sprintf(s2, "%02x", c);
+	    *p =  *s2;     p++;
+	    *p =  *(s2+1); p++;
+	} else if((c == ':') && (*s == '/') && (*(s+1) == '/')){
+	    *p = ':';  p++;
+	    *p = '/';  p++;
+	    *p = '/';  p++;
+	    s += 2;
+	} else if((c == '/') && (*s == '/')){/* '#' was escaped to '//'. */
+	    *p = '#';  p++;
+	    s++;
+	} else {
+	    *p = c;
+	    p++;
+	}
+	if (!(c = *(s++))) {
+	    *p = '\0';
+	    break;
+	}
+    }
+    free(alloc);
+}
+
+static int
+is_uri_cap( void )
+{
+    return capmode;
+}
+
+static void
+set_uri_cap( void )
+{
+    capmode = 1;
+}
+
+static int
+is_uri_hex( void )
+{
+    return hexmode;
+}
+
+static void
+set_uri_hex( void )
+{
+    hexmode = 1;
 }
 
 /*
@@ -359,7 +520,7 @@ nmz_isnumstr(const char *str)
     }
 
     for (p = (const unsigned char *)str; *p != '\0'; p++) {
-	if (!nmz_isdigit((int)*p)) {
+	if (! isdigit((int)*p)) {
 	    return 0;
 	}
     }
@@ -381,12 +542,12 @@ _nmz_tolower(int c)
     return c;
 }
 
-int 
+int
 _nmz_toupper(int c)
 {
     if (c >= 'a' && c <= 'z') {
-	c = 'A' + c - 'a';
-	return c;
+  	c = 'A' + c - 'a';
+ 	return c;
     }
     return c;
 }
@@ -588,30 +749,88 @@ nmz_is_file_exists(const char *fname)
     return stat(fname, &fstatus) == 0;
 }
 
-/*
- *   for directory traversal issue.
- *   Must be encoded in EUC-JP encoding.
- */
-char *
-nmz_delete_since_path_delimitation(char *dest, const char *src, size_t n)
+void
+nmz_parse_escape_crosshatch(uchar * p)
 {
-    char *p;
+    uchar c;
+    uchar *alloc, *s;
+    uchar tmp[3], *s2;
 
-    if (n < 1) {
-        return dest;
+    s2 = tmp;
+    alloc = (uchar *)strdup( p );
+    s = alloc;
+
+    if (s == NULL) { /* */
+	nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
+	return;
     }
 
-    strncpy(dest, src, n - 1);
-    dest[n - 1] = '\0';
-
-    p = dest;
-    while(*p) {
-        if (*p == '/' || *p == '\\') {
-            *p = '\0';
-            break;
-        }
-        p++;
+    if (!(c = *(s++))) {
+	*p = '\0';
+	return;
     }
-
-    return dest;
+    while (1) {
+	if((c == ':') && (*s == '/') && (*(s+1) == '/')){
+	    *p = ':';  p++;
+	    *p = '/';  p++;
+	    *p = '/';  p++;
+	    s += 2;
+	} else if((c == '/') && (*s == '/')){ /* '#' was escaped to '//'. */
+	    *p = '#';  p++;
+	    s++;
+	} else {
+	    *p = c;
+	    p++;
+	}
+	if (!(c = *(s++))) {
+	    *p = '\0';
+	    break;
+	}
+    }
+    free(alloc);
 }
+
+void
+nmz_encode_uri(uchar * p)
+{
+    int tmpsize;
+    tmpsize = strlen(p)  + 1;
+
+    nmz_from_to(p, tmpsize, "UTF-8", filesyscoding);
+
+    if (is_uri_hex()) {
+	uri_to_hex(p);
+    }else if (is_uri_cap()) {
+	uri_to_cap(p);
+    }
+    encode_uri_sub(p);
+}
+
+void
+nmz_set_filesyscoding(const char *str)
+{
+    char *pp;
+    char tmp[4];
+
+    pp = strstr(str, "#");
+    if (pp != NULL) {
+	int n;
+	n = pp - str;
+	strncpy(filesyscoding, str, n);
+	filesyscoding[n] = '\0';  /* Hey, don't forget this after strncpy()! */
+	pp++;  /* skip "#" */
+
+	if ((strlen(str) - n) >= 3 ){
+	    strncpy(tmp, pp, 3);
+	    tmp[3] = '\0';
+	    if (!(strncasecmp(tmp, "HEX", 3))){
+		set_uri_hex();
+	    } else if (!(strncasecmp(tmp, "CAP", 3))){
+		set_uri_cap();
+	    }
+	}
+    } else {
+	strncpy(filesyscoding, str, BUFSIZE - 1);
+    }
+}
+

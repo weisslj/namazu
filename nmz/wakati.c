@@ -2,7 +2,7 @@
  * 
  * wakati.c -
  * 
- * $Id: wakati.c,v 1.31 2006-08-11 14:51:30 opengl2772 Exp $
+ * $Id: wakati.c,v 1.32 2006-08-12 07:01:01 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.
@@ -50,6 +50,7 @@
  */
 
 #define iskanji(c)  (nmz_iseuc(*(c)) && nmz_iseuc(*(c + 1)))
+#define iskanji_utf8(c)  (nmz_isutf8_3byte_1st(*(c)) && nmz_isutf8_multibyte_2nd(*(c + 1)) && nmz_isutf8_multibyte_2nd(*(c + 2)))
 
 
 /*
@@ -59,34 +60,38 @@
  */
 
 static int detect_char_type(char *c);
-static int iskatakana(const char *chr);
-static int ishiragana(const char *chr);
+static int iskatakana_utf8(const char *chr);
+static int ishiragana_utf8(const char *chr);
 
 static int 
 detect_char_type(char *c)
 {
-    if (iskatakana(c)) {
+    if (iskatakana_utf8(c)) {
         return KATAKANA;
-    } else if (ishiragana(c)){
+    } else if (ishiragana_utf8(c)){
         return HIRAGANA;
-    } else if (iskanji(c)) {
+    } else if (iskanji_utf8(c)) {
         return KANJI;
     }
     return OTHER;
 }
 
 static int 
-iskatakana(const char *chr)
+iskatakana_utf8(const char *chr)
 {
     uchar *c;
     c = (uchar *)chr;
 
-    if ((*c == 0xa5) &&
-	(*(c + 1) >= 0xa0)) /* 0xa0 <= *(c + 1) <= 0xff */
-    {
-	return 1;
-    } else if ((*c == 0xa1) && (*(c + 1) == 0xbc)) { /* choon */ 
-        return 1;
+    if (*c == 0xe3) {
+	if (((*(c + 1) == 0x82) && 
+	   ((*(c + 2) >= 0xa1) && (*(c + 2) <= 0xbf))) || 
+	   ((*(c + 1) == 0x83) && 
+	   ((*(c + 2) >= 0x80) && (*(c + 2) <= 0xb6)))) 
+	{
+	    return 1;
+	} else if ((*(c + 1) == 0x83) && (*(c + 2) == 0xbc)) { /* choon */ 
+            return 1;
+	}
     } else {
 	;
     }
@@ -95,20 +100,25 @@ iskatakana(const char *chr)
 }
 
 static int 
-ishiragana(const char *chr)
+ishiragana_utf8(const char *chr)
 {
     uchar *c;
     c = (uchar *)chr;
 
-    if ((*c == 0xa4) &&
-	(*(c + 1) >= 0xa0)) /* 0xa0 <= *(c + 1) <= 0xff */
-    {
-	return 1;
-    } else if ((*c == 0xa1) && (*(c + 1) == 0xbc)) { /* choon */ 
-        return 1;
+    if (*c == 0xe3) {
+	if (((*(c + 1) == 0x81) && 
+	   ((*(c + 2) >= 0x81) && (*(c + 2) <= 0xbf))) || 
+	   ((*(c + 1) == 0x82) && 
+	   ((*(c + 2) >= 0x80) && (*(c + 2) <= 0x93)))) 
+	{
+	    return 1;
+	} else if ((*(c + 1) == 0x83) && (*(c + 2) == 0xbc)) { /* choon */ 
+            return 1;
+	}
     } else {
 	;
     }
+
     return 0;
 }
 
@@ -129,25 +139,23 @@ nmz_wakati(char *key)
 
     for (i = 0; i < (int)strlen(key); ) {
         type = detect_char_type(key + i);
-	if (nmz_iseuc(*(key + i))) {
+	if (nmz_isutf8_3byte_1st(*(key + i))) {
 	    key_leng = 0;
-	    for (j = 0; iskanji(key + i + j) ;  j += 2) {
+	    for (j = 0; iskanji_utf8(key + i + j) ;  j += 3) {
 		char tmp[BUFSIZE];
 
-#ifndef NGRAM
-                if (j == 0 && (iskatakana(key + i + j) ||
-                    ishiragana(key + i + j))) 
+                if (j == 0 && (iskatakana_utf8(key + i + j) ||
+                    ishiragana_utf8(key + i + j))) 
                 {
                     /* If beggining character is Katakana or Hiragana */
                     break;
                 }
-#endif /* NGRAM */
 
-		strncpy(tmp, key + i, j + 2);
-		*(tmp + j + 2) = '\0';
+		strncpy(tmp, key + i, j + 3);
+		*(tmp + j + 3) = '\0';
 
 		if (nmz_binsearch(tmp, 0) != -1) {
-		    key_leng = j + 2;
+		    key_leng = j + 3;
 		}
 	    }
 
@@ -156,33 +164,25 @@ nmz_wakati(char *key)
                 strcat(buf, "\t");
 		i += key_leng;
 	    } else {
-#ifndef NGRAM
                 if (type == HIRAGANA || type == KATAKANA) {
-                    for (j =0; ; j += 2) {
-                        if (!((type == HIRAGANA && ishiragana(key + i + j))
-                            ||(type == KATAKANA && iskatakana(key + i + j)))) 
+                    for (j =0; ; j += 3) {
+                        if (!((type == HIRAGANA && ishiragana_utf8(key + i + j))
+                            ||(type == KATAKANA && iskatakana_utf8(key + i + j)))) 
                         {
                             break;
                         }
-                        strncat(buf, key + i + j, 2);
+                        strncat(buf, key + i + j, 3);
                     }
                     i += j;
                     strcat(buf, "\t");
                 } else {
-                    strncat(buf, key + i, 2);
+                    strncat(buf, key + i, 3);
                     strcat(buf, "\t");
-                    i += 2;
+                    i += 3;
                 }
-#else /* NGRAM */
-                {
-                    strncat(buf, key + i, 2);
-                    strcat(buf, "\t");
-                    i += 2;
-                }
-#endif /* NGRAM */
 	    }
 	} else {
-            while(*(key + i) && !nmz_iseuc(*(key + i))) {
+            while(*(key + i) && !nmz_isutf8_3byte_1st(*(key + i))) {
                 /* As an initial attempt always success, 
                    outer 'for loop' can avoid infinite loop */
                 if (*(key + i) == '\t') {

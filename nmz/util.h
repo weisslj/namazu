@@ -14,6 +14,18 @@
 #define nmz_iseuc_kana1st(c) ((uchar)(c) == 0x8e)
 #define nmz_iseuc_hojo1st(c) ((uchar)(c) == 0x8f)
 
+#define nmz_isutf8_3byte_1st(c)  ((uchar)(c) >= 0xe0 && (uchar)(c) <= 0xef)
+#define nmz_isutf8_multibyte_2nd(c)  ((uchar)(c) >= 0x80 && (uchar)(c) <= 0xbf)
+
+#define nmz_is_safe_char(c)  ((uchar)(c) == 0x21  || \
+                              (uchar)(c) == 0x24  || \
+                              ((uchar)(c) >= 0x26 && (uchar)(c) <= 0x3b) || \
+                              (uchar)(c) == 0x3d  || \
+                              ((uchar)(c) >= 0x3f && (uchar)(c) <= 0x5a) || \
+                              (uchar)(c) == 0x5f  || \
+                              ((uchar)(c) >= 0x61 && (uchar)(c) <= 0x7a) || \
+                              (uchar)(c) == 0x7e)
+
 extern unsigned long nmz_scan_oct ( const char *start, int len, int *retlen );
 extern unsigned long nmz_scan_hex ( const char *start, int len, int *retlen );
 extern void * nmz_xmalloc ( unsigned long size );
@@ -41,6 +53,8 @@ extern char * nmz_getenv ( const char *str );
 extern void nmz_decode_uri ( char * str );
 extern char * nmz_strerror ( enum nmz_stat errnumt );
 extern int nmz_is_file_exists(const char *fname);
-extern char *nmz_delete_since_path_delimitation( char *dest, const char *src, size_t n);
+extern void nmz_parse_escape_crosshatch ( uchar * p );
+extern void nmz_encode_uri ( uchar * p );
+extern void set_filesyscoding ( const char *str );
 
 #endif /* _UTIL_H */

@@ -1,9 +1,9 @@
 /*
  * 
- * $Id: search.c,v 1.108 2006-07-17 10:13:33 opengl2772 Exp $
+ * $Id: search.c,v 1.109 2006-08-12 07:01:01 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2006 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2005 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -194,39 +194,39 @@ prefix_match(const char *key, int v)
 	 * Return if too much word would be hit
          * because treat 'a*' completely is too consuming 
 	 */
-	if (fseek(Nmz.w, nmz_getidxptr(Nmz.wi, i), 0) != 0) {
+        if (fseek(Nmz.w, nmz_getidxptr(Nmz.wi, i), 0) != 0) {
 	    break;
 	}
         if (fgets(buf, BUFSIZE - 1, Nmz.w) == NULL) {
-            break;
-        }
+	    break;
+	}
         nmz_chomp(buf);
 	if (strncmp(tmpkey, buf, n) == 0) {
 	    tmp = nmz_get_hlist(i);
-            if (tmp.stat == ERR_FATAL) {
-                return tmp;
-            }
+	    if (tmp.stat == ERR_FATAL) {
+	        return tmp;
+	    }
 	    if (tmp.num > maxhit) {
 		nmz_free_hlist(val);
 		val.stat = ERR_TOO_MUCH_HIT;
 		break;
 	    }
-            if (tmp.num > 0) {
-                j++;
-                if (j > maxmatch) {
-                    nmz_free_hlist(val);
-                    val.stat = ERR_TOO_MUCH_MATCH;
-                    break;
-                }
-                val = nmz_ormerge(val, tmp);
-                if (val.stat == ERR_FATAL)
-                    return val;
-                if (val.num > maxhit) {
-                    nmz_free_hlist(val);
-                    val.stat = ERR_TOO_MUCH_HIT;
-                    break;
-                }
-            }
+	    if (tmp.num > 0) {
+	 	j++;
+  	  	if (j > maxmatch) {
+	 	    nmz_free_hlist(val);
+	 	    val.stat = ERR_TOO_MUCH_MATCH;
+		    break;
+		}
+		val = nmz_ormerge(val, tmp);
+		if (val.stat == ERR_FATAL)
+		    return val;
+		if (val.num > maxhit) {
+		    nmz_free_hlist(val);
+		    val.stat = ERR_TOO_MUCH_HIT;
+		    break;
+		}
+	    }
 	    nmz_debug_printf("fw: %s, %d, %d\n", buf, tmp.num, val.num);
 	} else
 	    break;
@@ -291,11 +291,11 @@ do_word_search(const char *key, NmzResult val)
         val = nmz_get_hlist(v);
 	if (val.stat == ERR_FATAL)
 	    return val;
-        if (val.num > nmz_get_maxhit()) {
-            nmz_free_hlist(val);
-            val.stat = ERR_TOO_MUCH_HIT;
-            return val;
-        }
+	if (val.num > nmz_get_maxhit()) {
+  	    nmz_free_hlist(val);
+  	    val.stat = ERR_TOO_MUCH_HIT;
+  	    return val;
+	}
     } else {
         val.num  = 0;  /* no hit */
 	val.stat = SUCCESS; /* no hit but success */
@@ -551,34 +551,28 @@ do_regex_preprocessing(char *expr)
     if (*expr == '*' && expr[strlen(expr) - 1] != '*') {
         /* If suffix match such as '*bar', enforce it into regex */
         strcpy(expr, expr + 1);
-        escape_meta_characters(expr, BUFSIZE * 2);
-        strncat(expr, "$", BUFSIZE * 2 - strlen(expr) - 1);
-        expr[BUFSIZE * 2 - 1] = '\0';
+	escape_meta_characters(expr, BUFSIZE * 2);
+  	strncat(expr, "$", BUFSIZE * 2 - strlen(expr) - 1);
+  	expr[BUFSIZE * 2 - 1] = '\0';
     } else if (*expr != '*' && expr[strlen(expr) - 1] == '*') {
         /* If prefix match such as 'bar*', enforce it into regex */
-        expr[strlen(expr) - 1] = '\0';
-        escape_meta_characters(expr, BUFSIZE * 2);
-        strncat(expr, ".*", BUFSIZE * 2 - strlen(expr) - 1);
-        expr[BUFSIZE * 2 - 1] = '\0';
+	expr[strlen(expr) - 1] = '\0';
+  	escape_meta_characters(expr, BUFSIZE * 2);
+  	strncat(expr, ".*", BUFSIZE * 2 - strlen(expr) - 1);
+  	expr[BUFSIZE * 2 - 1] = '\0';
     } else if (*expr == '*' && expr[strlen(expr) - 1] == '*') {
         /* If internal match such as '*foo*', enforce it into regex */
         strcpy(expr, expr + 1);
         expr[strlen(expr) - 1] = '\0';
-        escape_meta_characters(expr, BUFSIZE * 2);
+	escape_meta_characters(expr, BUFSIZE * 2);
     } else if (*expr == '/' && expr[strlen(expr) - 1] == '/') {
-	if (nmz_is_regex_searchmode()) {
-	    nmz_debug_printf("do REGEX search\n");
-            /* Genuine regex */
-            /* Remove the both of '/' chars at begging and end of string */
-            strcpy(expr, expr + 1); 
-            expr[strlen(expr) - 1]= '\0';
-	} else {
-	    nmz_debug_printf("disabled REGEX search\n");
-            escape_meta_characters(expr, BUFSIZE * 2);
-        }
+        /* Genuine regex */
+        /* Remove the both of '/' chars at begging and end of string */
+        strcpy(expr, expr + 1); 
+        expr[strlen(expr) - 1]= '\0';
         return;
     } else {
-        /* field search */
+	/* field search */
         if ((*expr == '"' && expr[strlen(expr) - 1] == '"')
             || (*expr == '{' && expr[strlen(expr) - 1] == '}')) 
 	{
@@ -586,7 +580,7 @@ do_regex_preprocessing(char *expr)
             strcpy(expr, expr + 1); 
             expr[strlen(expr) - 1] = '\0';
         }
-        escape_meta_characters(expr, BUFSIZE * 2);
+	escape_meta_characters(expr, BUFSIZE * 2);
     }
 }
 
@@ -599,9 +593,9 @@ escape_meta_characters(char *expr, size_t bufsize)
     exprp = expr;
     /* Escape meta characters */
     while (*exprp) {
-        /* japanese only */
-        if (!nmz_isalnum((unsigned char)*exprp) && !nmz_iseuc(*exprp)) {
-            *bufp = '\\';
+  	/* japanese only */
+  	if (!isalnum((unsigned char)*exprp) && !nmz_iseuc(*exprp)) {
+	    *bufp = '\\';
             bufp++;
         }
         *bufp = *exprp;
@@ -945,7 +939,7 @@ normalize_idxnames(void)
 static int 
 issymbol(int c)
 {
-    if (c >= 0x00 && c < 0x80 && !nmz_isalnum(c)) {
+    if (c >= 0x00 && c < 0x80 && !isalnum(c)) {
         return 1;
     } else {
 	return 0;
@@ -1144,11 +1138,11 @@ nmz_do_searching(const char *key, NmzResult src)
 		return val;
 	    }
 	    /* Re-examine because tmpkey is wakatied. */
-            if (strchr(tmpkey, '\t')) {
-                mode = PHRASE_MODE;
-            } else {
-                mode = WORD_MODE;
-            }
+	    if (strchr(tmpkey, '\t')) {
+		mode = PHRASE_MODE;
+	    } else {
+		mode = WORD_MODE;
+	    }
 	}
     }
 
@@ -1194,25 +1188,24 @@ nmz_free_hitnums(struct nmz_hitnumlist *hn)
 	free(hn);
     }
 }
-
 static void nmz_regex_strlower(char *str)
 {
     if (strlen(str) >= 2 && *str == '/' && str[strlen(str) - 1] == '/') {
-        if (nmz_is_regex_searchmode()) {
-            /* keep \W \S \D \A \Z \B \G */
-            char bak = '\0';
+	if (nmz_is_regex_searchmode()) {
+	    /* keep \W \S \D \A \Z \B \G */
+	    char bak = '\0';
 
-            while (*str) {
-                if (bak != '\\') {
-                    /* Using ascii dependent lower same as mknmz.  */
-                    bak = *str = _nmz_tolower(*str);
-                } else {
-                    bak = '\0';
-                }
-                str++;
-            }
-            return;
-        }
+	    while (*str) {
+	 	if (bak != '\\') {
+		    /* Using ascii dependent lower same as mknmz. */
+		    bak = *str = _nmz_tolower(*str);
+		} else {
+		    bak = '\0';
+		}
+		str++;
+	    }
+	    return;
+	}
     }
 
     nmz_strlower(str);

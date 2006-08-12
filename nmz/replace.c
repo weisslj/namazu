@@ -2,7 +2,7 @@
  * 
  * replace.c - 
  *
- * $Id: replace.c,v 1.20 2004-02-21 12:16:27 opengl2772 Exp $
+ * $Id: replace.c,v 1.21 2006-08-12 07:01:01 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000,2001 Namazu Project All rights reserved.

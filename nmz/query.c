@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: query.c,v 1.14 2001-09-02 08:25:33 rug Exp $
+ * $Id: query.c,v 1.15 2006-08-12 07:01:01 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000 Namazu Project All rights reserved.

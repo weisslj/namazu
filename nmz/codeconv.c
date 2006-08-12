@@ -2,10 +2,10 @@
  * 
  * codeconv.c -
  * 
- * $Id: codeconv.c,v 1.35 2006-07-12 19:26:34 opengl2772 Exp $
+ * $Id: codeconv.c,v 1.36 2006-08-12 07:01:01 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2006 Namazu Project All rights reserved.
+ * Copyright (C) 2000,2004 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -48,7 +48,7 @@
 #include <strings.h>
 #endif
 
-#include <iconv.h>
+#    include <iconv.h>
 
 #include "libnamazu.h"
 #include "codeconv.h"
@@ -56,23 +56,7 @@
 #include "i18n.h"
 #include "l10n-ja.h"
 
-static uchar kanji2nd;
-
-static int nmz_codeconv_internal_EX(char *buffer, int bufferSize);
-
-/*
- *
- * Macros
- *
- */
-
-#define iskanji1st(c) (((uchar)(c) >= 0x81 && \
-                       (uchar)(c)) <= 0x9f || \
-                       ((uchar)(c) >= 0xe0 && \
-                       (uchar)(c) <= 0xfc))
-#define iskanji2nd(c) (((uchar)(c) >= 0x40 && \
-                       (uchar)(c) <= 0xfc && \
-                       (uchar)(c) != 0x7f))
+static int nmz_codeconv_jp(char *buffer, int bufferSize);
 
 
 /*
@@ -81,315 +65,36 @@ static int nmz_codeconv_internal_EX(char *buffer, int bufferSize);
  *
  */
 
-static uchar jmstojis ( uchar c1, uchar c2 );
-static void jistoeuc ( uchar * s );
-static void sjistoeuc ( uchar * s );
-static uchar jistojms ( uchar c1, uchar c2 );
-static void euctosjis ( uchar *s );
-static void euctojis ( uchar *p );
-static void zen2han ( char *str );
+static void utf8_zen2han ( char *str );
 
-static uchar 
-jmstojis(uchar c1, uchar c2)
+static void
+utf8_zen2han(char *str)
 {
-    c1 -= (c1 <= 0x9f) ? 0x70 : 0xb0;
-    c1 <<= 1;
-    if (c2 < 0x9f) {
-	c2 -= (c2 < 0x7f) ? 0x1f : 0x20;
-	c1--;
-    } else
-	c2 -= 0x7e;
-    kanji2nd = c2;
-    return c1;
-}
-
-
-static void 
-jistoeuc(uchar * s)
-{
-    uchar c, c2;
-    int state, i = 0, j = 0;
-
-    state = 0;
-    if (!(c = *(s + j++)))
-	return;
-    while (1) {
-	if (c == ESC) {
-	    if (!(c = *(s + j++))) {
-		*(s + i) = ESC;
-		return;
-	    }
-	    switch (c) {
-	    case '$':
-		if (!(c2 = *(s + j++))) {
-		    *(s + i++) = ESC;
-		    *(s + i) = c;
-		    return;
-		}
-		if (c2 == 'B' || c2 == '@')
-		    state = 1;
-		else {
-		    *(s + i++) = ESC;
-		    *(s + i++) = c;
-		    c = c2;
-		    continue;
-		}
-		break;
-
-	    case '(':
-		if (!(c2 = *(s + j++))) {
-		    *(s + i++) = ESC;
-		    *(s + i) = c;
-		    return;
-		}
-		if (c2 == 'J' || c2 == 'B' || c2 == 'H') {
-		    state = 0;
-		} else {
-		    *(s + i++) = ESC;
-		    *(s + i++) = c;
-		    c = c2;
-		    continue;
-		}
-		break;
-
-	    case 'K':
-		state = 1;
-		break;
-
-	    case 'H':
-		state = 0;
-		break;
-
-	    default:
-		*(s + i++) = c;
-		continue;
-	    }
-	} else if (c <= 0x20 || c == 0x7f) {
-	    *(s + i++) = c;
-	} else if (state) {
-	    if (!(c2 = *(s + j++))) {
-		*(s + i++) = c;
-		*(s + i) = '\0';
-		return;
-	    }
-	    if (c2 <= 0x20 || c2 == 0x7f) {
-		*(s + i++) = c;
-		c = c2;
-		continue;
-	    }
-	    *(s + i++) = c | 0x80;
-	    *(s + i++) = c2 | 0x80;
-	} else {
-	    *(s + i++) = c;
-	}
-	if (!(c = *(s + j++))) {
-	    *(s + i) = '\0';
-	    return;
-	}
-    }
-}
-
-static void 
-sjistoeuc(uchar * s)
-{
-    uchar c, c2;
-    int i = 0, j = 0;
-
-    if (!(c = *(s + j++)))
-	return;
-    while (1) {
-	if (c < 0x80)
-	    *(s + i++) = c;
-	else if (iskanji1st(c)) {
-	    if (!(c2 = *(s + j++))) {
-		*(s + i) = c;
-		return;
-	    }
-	    if (iskanji2nd(c2)) {
-		c = jmstojis(c, c2);
-		*(s + i++) = (c | 0x80);
-		*(s + i++) = (kanji2nd | 0x80);
-	    } else {
-		*(s + i++) = c;
-		*(s + i++) = c2;
-	    }
-	} else
-	    *(s + i++) = c;
-	if (!(c = *(s + j++)))
-	    return;
-    }
-}
-
-static uchar 
-jistojms(uchar c1, uchar c2)
-{
-    if (c1 & 1) {
-	c1 = (c1 >> 1) + 0x71;
-	c2 += 0x1f;
-	if (c2 >= 0x7f)
-	    c2++;
-    } else {
-	c1 = (c1 >> 1) + 0x70;
-	c2 += 0x7e;
-    }
-    if (c1 > 0x9f)
-	c1 += 0x40;
-    kanji2nd = c2;
-    return c1;
-}
-
-static void 
-euctosjis(uchar *s)
-{
-    uchar c, c2;
-    int i = 0, j = 0;
-
-    while ((int)(c = *(s + j++))) {
-	if (nmz_iseuc(c)) {
-	    /* G1 for JIS X 0208 KANJI */
-	    if (!(c2 = *(s + j++))) {
-		*(s + i++) = c;
-		break;
-	    }
-	    if (nmz_iseuc(c2)) {
-		c = jistojms(c & 0x7f, c2 & 0x7f);
-		*(s + i++) = c;
-		*(s + i++) = kanji2nd;
-	    } else {
-		*(s + i++) = c;
-		*(s + i++) = c2;
-	    }
-	} else if (nmz_iseuc_kana1st(c)) {
-	    /* G2 for JIS X 0201 KATAKANA */
-	    if (!(c2 = *(s + j++))) {
-		*(s + i++) = c;
-		break;
-	    }
-	    *(s + i++) = c2;
-	} else if (nmz_iseuc_hojo1st(c)) {
-	    /* G3 for JIS X 0212 HOJO KANJI */
-	    if (!(c2 = *(s + j++))) {
-		*(s + i++) = c;
-		break;
-	    }
-	    *(s + i++) = 0x81;
-	    if (!(c2 = *(s + j++)))
-		break;
-	    *(s + i++) = 0xac;
-	} else
-	    /* G0 for ASCII or JIS X 0201 ROMAN SET */
-	    *(s + i++) = c;
-    }
-    *(s + i) = 0;
-}
-
-/*
- * FIXME: This function give no consideration for buffer overflow, 
- * so you should prepare enough memory for `p'.
- * In the future, code conversion functions will be replaced with iconv(3)
- */
-static void 
-euctojis(uchar *p)
-{
-    int c, c2, state = 0;
-    uchar *alloc, *s;
-    
-    alloc = (uchar *)strdup((char *)p);
-    s = alloc;
-    if (s == NULL) { /* */
-	nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
-	return;
-    }
-
-    if (!(c = (int) *(s++))) {
-	return;
-    }
-    while (1) {
-	if (c < 0x80) {
-	    if (state) {
-		*p = ESC; p++; *p = '('; p++; *p = 'B'; p++;
-		state = 0;
-	    }
-	    *p = c;
-	    p++;
-	} else if (nmz_iseuc(c)) {
-	    if (!(c2 = (int) *(s++))) {
-		*p = c;
-		p++;
-		break;
-	    }
-	    if (!state) {
-		*p = ESC; p++; *p = '$'; p++; *p = 'B'; p++;
-		state = 1;
-	    }
-	    if (nmz_iseuc(c2)) {
-		*p = c & 0x7f;
-		p++;
-		*p = c2 & 0x7f;
-		p++;
-	    } else {
-		*p = c;
-		p++;
-		*p = ESC; p++; *p = '('; p++; *p = 'B'; p++;
-		state = 0;
-		*p = c2;
-		p++;
-	    }
-	} else {
-	    if (state) {
-		*p = ESC; p++; *p = '('; p++; *p = 'B'; p++;
-		state = 0;
-	    }
-	    *p = c;
-	    p++;
-	}
-	if (!(c = (int) *(s++))) {
-	    if (state) {
-		*p = ESC; p++; *p = '('; p++; *p = 'B'; p++;
-	    }
-	    *p = '\0';
-	    break;
-	}
-    }
-    *p = '\0';
-    free(alloc);
-}
-
-
-/*
- * Converting 2 bytes Alnum and Symbol into 1 byte one.
- * This code was contributed by Akira Yamada <akira@linux.or.jp> [1997-09-28]
- */
-static char Z2H[] = 
-"\0 \0\0,.\0:;?!\0\0'`\0^~_\0\0\0\0\0\0\0\0\0\0\0\0/\\\0\0|\0\0`'\"\"()\0\0[]{}<>\0\0\0\0\0\0\0\0+-\0\0\0=\0<>\0\0\0\0\0\0\0'\"\0\\$\0\0%#&*@";
-
-static void 
-zen2han(char *str)
-{
-    int p = 0, q = 0, r;
+    int p = 0, q = 0;
     uchar *s;
     
     s = (uchar *)str;
 
     while (*(s + p)) {
-	if (*(s + p) == 0xa1) {
-	    r = *(s + p + 1) - 0xa0;
-	    if (r <= sizeof(Z2H) && Z2H[r] != '\0') {
-		p++;
-		*(s + p) = Z2H[r];
-	    } else {
-		*(s + q) = *(s + p);
-		q++;
-		p++;
-	    }
-	} else if (*(s + p) == 0xa3) {
-	    p++;
-	    *(s + p) = *(s + p) - 128;
-	} else if (*(s + p) & 0x80) {
+	if (*(s + p) == 0xe3 && *(s + p + 1) == 0x80 && *(s + p + 2) == 0x80) {
+	    p += 2;
+	    *(s + p) = 0x20;
+	} else if (*(s + p) == 0xef && *(s + p + 1) == 0xbc && 
+		   (*(s + p + 2) >= 0x81 || *(s + p + 2) <= 0xbf)){
+	    p += 2;
+	    *(s + p) = *(s + p) - 0x60;
+	} else if (*(s + p) == 0xef && *(s + p + 1) == 0xbd && 
+		   (*(s + p + 2) >= 0x80 || *(s + p + 2) <= 0x9d)){
+	    p += 2;
+	    *(s + p) = *(s + p) - 0x20;
+	} else if (*(s + p) == 0xef){
 	    *(s + q) = *(s + p);
 	    p++;
 	    q++;
-	}
+	    *(s + q) = *(s + p);
+	    p++;
+	    q++;
+	} 
 	*(s + q) = *(s + p);
 	p++;
 	q++;
@@ -397,70 +102,30 @@ zen2han(char *str)
     *(s + q) = '\0';
 }
 
-
 /*
  *
  * Public functions
  *
  */
 
-
-/*
- * Detect character encoding (with simple approach) 
- * and convert "in" into EUC-JP
- * Supported encodings: EUC-JP, ISO-2022-JP, Shift_JIS
- */
-int 
-nmz_codeconv_internal(char *s)
-{
-    int i, m, n, f;
-    uchar *in;
-
-    in = (uchar *)s;
-
-    if (!nmz_is_lang_ja()) { /* Lang != ja */
-        return 0;
-    }
-    for (i = 0, m = 0, n = 0, f = 0; *(in + i); i++) {
-	if (*(in + i) == ESC) {
-	    jistoeuc(in);
-	    return 1;
-	}
-	if (*(in + i) > (uchar) '\x80')
-	    m++, f = f ? 0 : 1;
-	else if (f) {
-	    sjistoeuc(in);
-	    return 1;
-	}
-	if (*(in + i) > (uchar) '\xa0')
-	    n++;
-    }
-    if (m != n) {
-	sjistoeuc(in);
-	return 1;
-    }
-    if (n)
-	return 1;
-    return 0;
-}
-
 /*
  * Convert character encoding from internal one to external one.
  * Return a pointer of converted string.
  *
- * NOTES: Current internal encoding is EUC-JP for Japanese.
- * In future, internal encoding of Namazu will be UTF-8.
+ * NOTES: Current internal encoding is UTF-8.
  *
  */
 char *
 nmz_codeconv_external (const char *str) {
     char *tmp, *lang;
+    int tmpsize;
 
     tmp = strdup(str);
     if (tmp == NULL) {
 	nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
 	return NULL;
     }
+    tmpsize = strlen(tmp)  + 1;
 
     lang = nmz_get_lang();
     if (strcasecmp(lang, "japanese") == 0 || 
@@ -469,22 +134,44 @@ nmz_codeconv_external (const char *str) {
 	strcasecmp(lang, "ja_JP.ujis") == 0 ||
 	strcasecmp(lang, "ja_JP.eucJP") == 0)  /* EUC-JP */
     {
-	;
+        nmz_from_to(tmp, tmpsize, "UTF-8", "EUC-JP");
     } else if (strcasecmp(lang, "ja_JP.SJIS") == 0) { /* Shift_JIS */
-	euctosjis((uchar *)tmp);
+        nmz_from_to(tmp, tmpsize, "UTF-8", "SHIFT-JIS");
     } else if (strcasecmp(lang, "ja_JP.ISO-2022-JP") == 0) { /* ISO-2022-JP */
 	/*
 	 * Prepare enough memory for ISO-2022-JP encoding.
 	 * FIXME: It's not space-efficient. In the future, 
 	 * code conversion functions will be replaced with iconv(3)
 	 */
-	tmp = realloc(tmp, strlen(str) * 5);
+        tmpsize = strlen(tmp) * 5  + 1;
+	tmp = realloc(tmp, tmpsize);
 	if (tmp == NULL) {
 	    nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
 	    return NULL;
 	}
-	euctojis((uchar *)tmp);
+        nmz_from_to(tmp, tmpsize, "UTF-8", "ISO-2022-JP");
+    } else if  (strcasecmp(lang, "deutsch") == 0 || 
+	strcasecmp(lang, "german") == 0 || 
+	strcasecmp(lang, "de") == 0 || 
+	strcasecmp(lang, "de_DE.ISO-8859-1") == 0 || 
+
+	strcasecmp(lang, "french") == 0 || 
+	strcasecmp(lang, "fr") == 0 || 
+	strcasecmp(lang, "fr_FR.ISO-8859-1") == 0 || 
+
+	strcasecmp(lang, "spanish") == 0 || 
+	strcasecmp(lang, "es") == 0 || 
+	strcasecmp(lang, "es_ES.ISO-8859-1") == 0)  /* ISO-8859-1 */
+    {
+        nmz_from_to(tmp, tmpsize, "UTF-8", "ISO-8859-1");
+    } else if  (strcasecmp(lang, "polish") == 0 || 
+	strcasecmp(lang, "german") == 0 || 
+	strcasecmp(lang, "pl") == 0 || 
+	strcasecmp(lang, "pl_PL.ISO-8859-2") == 0)  /* ISO-8859-2 */
+    {
+	nmz_from_to(tmp, tmpsize, "UTF-8", "ISO-8859-2");
     }
+
     return (char *)tmp;
 }
 
@@ -492,28 +179,24 @@ void
 nmz_codeconv_query(char *query)
 {
     if (nmz_is_lang_ja()) {
-        /* BUFSIZE = size of query */
-        if (nmz_codeconv_internal_EX(query, BUFSIZE)) {
-            zen2han(query);
+        if (nmz_codeconv_jp(query, BUFSIZE)) {
+            utf8_zen2han(query);
             return;
-        }
-        if (nmz_codeconv_internal(query)) {
-            zen2han(query);
         }
     }
 }
 
 enum code_type {
-    CODE_TYPE_ERROR = -1,
-    CODE_TYPE_UNKNOWN = 0,
-    CODE_TYPE_JIS,
-    CODE_TYPE_UTF8,
-    CODE_TYPE_EUCJP,
-    CODE_TYPE_SJIS
+    ERROR = -1,
+    TYPE_UNKNOWN = 0,
+    TYPE_JIS,
+    TYPE_UTF8,
+    TYPE_EUCJP,
+    TYPE_SJIS
 };
 
 static int 
-nmz_codeconv_internal_EX(char *buffer, int bufferSize)
+nmz_codeconv_jp(char *buffer, int bufferSize)
 {
     int i, j;
     char *bufferJIS;
@@ -526,6 +209,7 @@ nmz_codeconv_internal_EX(char *buffer, int bufferSize)
     } CODE_DATA;
 
     CODE_DATA data[3], _data[3];
+    enum code_type resultType = TYPE_UNKNOWN;
     int count;
 
 
@@ -539,19 +223,19 @@ nmz_codeconv_internal_EX(char *buffer, int bufferSize)
     /******************************************/
     {
         strncpy(bufferJIS, buffer, bufferSize);
-        if (nmz_from_to(bufferJIS, bufferSize, "ISO-2022-JP", "EUC-JP")) {
+        if (nmz_from_to(bufferJIS, bufferSize, "ISO-2022-JP", "UTF-8")) {
             strncpy(buffer, bufferJIS, bufferSize);
             free(bufferJIS);
             return 1;
         }
     }
 
+    bufferUTF8 = bufferJIS;
     if ((bufferSJIS = calloc(sizeof(char), bufferSize)) == NULL) {
+        free(bufferUTF8);
 	nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
-        free(bufferJIS);
         return 0;
     }
-    bufferUTF8 = bufferJIS;
     bufferUTF8[bufferSize - 1] = '\0';
 
     /******************************************/
@@ -561,9 +245,9 @@ nmz_codeconv_internal_EX(char *buffer, int bufferSize)
        data[i].length = 0;
        data[i].bytes = 0;
     }
-    data[0].type = CODE_TYPE_UTF8;
-    data[1].type = CODE_TYPE_EUCJP;
-    data[2].type = CODE_TYPE_SJIS;
+    data[0].type = TYPE_UTF8;
+    data[1].type = TYPE_EUCJP;
+    data[2].type = TYPE_SJIS;
 
     /******************************************/
     /* UTF-8                                  */
@@ -585,10 +269,10 @@ nmz_codeconv_internal_EX(char *buffer, int bufferSize)
     }
 
     /******************************************/
-    /* SHIFT_JIS                              */
+    /* SHIFT-JIS                              */
     /******************************************/
     strncpy(bufferSJIS, buffer, bufferSize);
-    if (nmz_from_to(bufferSJIS, bufferSize, "SHIFT_JIS", "EUC-JP")) {
+    if (nmz_from_to(bufferSJIS, bufferSize, "SHIFT-JIS", "EUC-JP")) {
         data[2].length = nmz_lengthEUCJP(bufferSJIS, strlen(bufferSJIS));
         if (data[2].length != 0) {
             data[2].bytes = strlen(bufferSJIS);
@@ -632,12 +316,14 @@ nmz_codeconv_internal_EX(char *buffer, int bufferSize)
         }
     }
 
+    resultType = _data[0].type;
+
     /******************************************/
 
-    if (_data[0].type == CODE_TYPE_UTF8) {
-        strncpy(buffer, bufferUTF8, bufferSize);
-    } else if (_data[0].type == CODE_TYPE_SJIS) {
-        strncpy(buffer, bufferSJIS, bufferSize);
+    if (resultType == TYPE_EUCJP) {
+        nmz_from_to(buffer, bufferSize, "EUC-JP", "UTF-8"); 
+    } else if (resultType == TYPE_SJIS) {
+        nmz_from_to(buffer, bufferSize, "SHIFT-JIS", "UTF-8"); 
     }
 
     free(bufferUTF8);
@@ -656,16 +342,12 @@ nmz_from_to(char *buffer, int bufferSize,
     char *from, *to;
     size_t status;
 
-    if (!buffer || bufferSize <= 0) {
-        return NULL;
-    }
-
     sz_from = strlen(buffer) + 1;
     sz_to = bufferSize;
 
     toBuffer = (char *)calloc(sizeof(char), sz_to);
     if (!toBuffer) {
-	    nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
+	nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
         return NULL;
     }
 
@@ -674,6 +356,7 @@ nmz_from_to(char *buffer, int bufferSize,
 
     cd = iconv_open(toCode, fromCode);
 
+    errno = 0;
     status = iconv(cd, &from, &sz_from, &to, &sz_to);
 
     iconv_close(cd);
@@ -682,50 +365,27 @@ nmz_from_to(char *buffer, int bufferSize,
         if (toBuffer) {
             free(toBuffer);
         }
+	switch (errno) {
+	    case E2BIG:
+		nmz_debug_printf("iconv ERR E2BIG\n");
+		break;
+	    case EILSEQ:
+		nmz_debug_printf("iconv ERR EILSEQ\n");
+		break;
+	    case EINVAL:
+		nmz_debug_printf("iconv ERR EINVAL\n");
+		break;
+
+	}
         return NULL;
     }
-
     strncpy(buffer, toBuffer, bufferSize - 1);
+
     buffer[bufferSize - 1] = '\0';
 
     free(toBuffer);
 
     return buffer;
-}
-
-char *
-nmz_codeconv(const char *fromCode, char *fromBuffer, int fromBufferSize,
-    const char *toCode, char *toBuffer, int toBufferSize)
-{
-    iconv_t cd;
-    size_t sz_from, sz_to;
-    char *from, *to;
-    size_t status;
-
-    if (!fromBuffer || fromBufferSize <= 0
-    || !toBuffer || toBufferSize <= 0) {
-        return NULL;
-    }
-
-    sz_from = strlen(fromBuffer) + 1;
-    sz_to = toBufferSize;
-
-    from = fromBuffer;
-    to = toBuffer;
-
-    cd = iconv_open(toCode, fromCode);
-
-    status = iconv(cd, &from, &sz_from, &to, &sz_to);
-
-    iconv_close(cd);
-
-    if (status == -1) {
-        return NULL;
-    }
-
-    toBuffer[toBufferSize - 1] = '\0';
-
-    return toBuffer;
 }
 
 int 
@@ -739,22 +399,20 @@ nmz_lengthEUCJP(const char *str, int length)
        ch = (unsigned char)str[i];
        if (mode == 0) {
            count++;
-           if (ch >= 0xa1 && ch <= 0xfe) {
-               mode = 3;
-           } else if (ch == 0x8e) {
+           if (ch == 0x8e || (ch >= 0xa1 && ch <= 0xfe)) {
                mode = 1;
            } else if (ch == 0x8f) {
                mode = 2;
            } else if (ch >= 0x80) {
                return 0;
            }
-       } else if (mode == 1) {              /* 2bytes char kana */
-           if (ch >= 0xa1 && ch <= 0xdf) {
+       } else if (mode == 1) {              /* 2bytes char */
+           if (ch >= 0xa1 && ch <= 0xfe) {
                mode = 0;
            } else {
                return 0;
            }
-       } else if (mode == 2 || mode == 3) { /* 2,3bytes char */
+       } else if (mode == 2 || mode == 3) { /* 3bytes char */
            if (ch >= 0xa1 && ch <= 0xfe) {
                mode++;
                if (mode == 4) {
@@ -772,3 +430,4 @@ nmz_lengthEUCJP(const char *str, int length)
 
    return count;
 }
+

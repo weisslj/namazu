@@ -2,7 +2,7 @@
  * 
  * re.c -
  * 
- * $Id: re.c,v 1.41 2005-11-02 16:58:00 opengl2772 Exp $
+ * $Id: re.c,v 1.42 2006-08-12 07:01:01 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2005 Namazu Project All rights reserved.
@@ -22,10 +22,10 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA
- *
- * This file must be encoded in EUC-JP encoding
- *
+ * 
+ * 
  */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
@@ -77,26 +77,25 @@ nmz_regex_grep(const char *expr, FILE *fp, const char *field, int field_mode)
     val.stat = SUCCESS;
 
     if (nmz_is_lang_ja()) {
-        /* japanese only */
-        nmz_re_mbcinit(MBCTYPE_EUC);
+	/* japanese only */
+        nmz_re_mbcinit(MBCTYPE_UTF8);
     } else {
         nmz_re_mbcinit(MBCTYPE_ASCII);
     }
-
     rp = ALLOC(struct re_pattern_buffer);
     MEMZERO((char *)rp, struct re_pattern_buffer, 1);
     rp->buffer = 0;
     rp->allocated = 0;
-
+    
     strncpy(tmpexpr, expr, BUFSIZE - 1); /* save orig_expr */
     nmz_debug_printf("REGEX: '%s'\n", tmpexpr);
 
     nmz_re_compile_pattern(tmpexpr, strlen(tmpexpr), rp);
 
     if (!field_mode) {
-        val = nmz_regex_grep_standard(rp, fp);
+	val = nmz_regex_grep_standard(rp, fp);
     } else {
-        val = nmz_regex_grep_field(rp, fp, field);
+	val = nmz_regex_grep_field(rp, fp, field);
     }
 
     nmz_re_free_pattern(rp);
@@ -271,3 +270,4 @@ nmz_regex_grep_field(struct re_pattern_buffer *rp, FILE *fp, const char *field)
 
     return val;
 }
+

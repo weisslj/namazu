@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.172 2006-08-12 07:27:53 opengl2772 Exp $
+dnl $Id: configure.in,v 1.173 2006-08-12 07:41:54 opengl2772 Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -12,7 +12,7 @@ dnl
 dnl *
 dnl * Process this file with autoconf to produce a configure script.
 dnl *
-AC_INIT(namazu, 2.1.0, bug-namazu@namazu.org)
+AC_INIT(namazu, 2.3.0, bug-namazu@namazu.org)
 AC_PREREQ(2.50)               dnl Minimum Autoconf version required.
 
 

@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # adnmz.pl - make NMZ.field.adjacency
-# $Id: adnmz.in,v 1.5 2005-09-24 12:24:47 opengl2772 Exp $
+# $Id: adnmz.in,v 1.6 2006-08-12 07:26:20 opengl2772 Exp $
 #
 # Copyright (C) 2001 Hajime BABA  All rights reserved.
 # Copyright (C) 2001-2005 Namazu Project  All rights reserved.

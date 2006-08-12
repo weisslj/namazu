@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 #
-# $Id: nmzmerge.in,v 1.5 2006-05-30 13:32:46 opengl2772 Exp $
+# $Id: nmzmerge.in,v 1.6 2006-08-12 07:26:20 opengl2772 Exp $
 #
 # nmzmerge.pl - program to merge index
 #         by furukawa@tcp-ip.or.jp
@@ -12,7 +12,6 @@ use strict;
 my $PKGDATADIR = $ENV{'pkgdatadir'} || "@pkgdatadir@";
 push(@INC, $PKGDATADIR . "/pl");
 require 'nmzidx.pl';
-require 'util.pl';
 
 &usage, exit unless @ARGV == 3;
 
@@ -124,8 +123,8 @@ sub nmzmerge{
     $nmz0->write_status($nmz1);
 
     if (my $log = $nmz0->log_open("[Merge]")){
-        $log->printf("%-20s %d\n", "Total Documents:", util::commas($nmz0->{'flist'}->{'offset'}));
-        $log->printf("%-20s %d\n", "Total Keywords:", util::commas($nmz0->{'word'}->{'offset'}));
+        $log->printf("%-20s %d\n", "Total Files:", $nmz0->{'flist'}->{'offset'});
+        $log->printf("%-20s %d\n", "Total Keywords:", $nmz0->{'word'}->{'offset'});
         $nmz0->log_close;
     }
 

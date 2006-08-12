@@ -3,7 +3,7 @@
 # -*- Perl -*-
 # nmzcat - print file content on the standard output.
 #
-# $Id: nmzcat.in,v 1.4 2005-12-09 12:26:16 usu Exp $
+# $Id: nmzcat.in,v 1.5 2006-08-12 07:26:20 opengl2772 Exp $
 #
 # Copyright (C) 2004 Yukio USUDA All rights reserved.
 # Copyright (C) 2004 Namazu Project All rights reserved.
@@ -74,11 +74,13 @@ foreach my $fname (@ARGV) {
     my $title = $Document->get_field_info('title');
     my $contref= $Document->get_filtered_contentref();
     my $mimetype = $Document->get_mimetype();
-    print "filename: $orig_filename\n";
-    print "mimetype: $mimetype\n";
-    print "author  : $author\n";
-    print "title   : $title\n";
-    print "content :\n$$contref\n";
+    my $result = "filename: $orig_filename\n";
+    $result .= "mimetype: $mimetype\n";
+    $result .= "author  : $author\n";
+    $result .= "title   : $title\n";
+    $result .= "content :\n$$contref\n";
+    codeconv::to_external_encoding(\$result);
+    print $result;
 }
 
 rmdir $tmpdir or die "unable to remove temporary directory \"$tmpdir\"\n";

@@ -4,7 +4,7 @@
 # nmzegrep - search namazu-indexed documents for a given pattern and 
 #            print lines matching the pattern.
 # 
-# $Id: nmzegrep.in,v 1.5 2005-12-09 12:26:16 usu Exp $
+# $Id: nmzegrep.in,v 1.6 2006-08-12 07:26:20 opengl2772 Exp $
 #
 # Copyright (C) 2004 Yukio USUDA All rights reserved.
 # Copyright (C) 2004 Namazu Project All rights reserved.

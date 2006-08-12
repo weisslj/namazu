@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.173 2006-05-01 04:11:23 opengl2772 Exp $
+# $Id: mknmz.in,v 1.174 2006-08-12 07:26:20 opengl2772 Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2006 Namazu Project All rights reserved.
@@ -46,7 +46,7 @@ $SYSTEM = $English::OSNAME;
 
 my $NAMAZU_INDEX_VERSION = "2.0";
 
-my $CodingSystem = "eucJP";
+my $FILESYS_WIN32 = 0;
 my $PKGDATADIR    = $ENV{'pkgdatadir'} || "@pkgdatadir@";
 my $CONFDIR       = "@CONFDIR@";     # directory where mknmzrc are in.
 my $LIBDIR        = $PKGDATADIR . "/pl";      # directory where library etc. are in.
@@ -94,10 +94,13 @@ sub main {
 
     # set LANG and bind textdomain
     util::set_lang();
+    my $err = codeconv::load_encode();
+    die "Encode module error: $err\n" if $err;
     textdomain('namazu', $util::LANG_MSG);
 
     load_modules();
     my ($output_dir, @targets) = parse_options();
+
     my ($docid_base, $total_files_num) = prep($output_dir, @targets);
 
     my $swap = 1;
@@ -159,9 +162,8 @@ sub main {
 		$checkpoint = 1, last if $CheckPoint{'on'} && defined(<$fh_flist>);
 	    }
 	}
-
         util::fclose($fh_flist);
-        util::fclose($fh_errorsfile);
+  	util::fclose($fh_errorsfile);
     }
     # This should be out of above blocks because of file handler closing.
     re_exec($flist_ptr, $docid_count, $docid_base, $start_time, 
@@ -184,7 +186,7 @@ sub main {
 #
 # FIXME: Very complicated.
 #
-sub process_file ($$$$\%$$) {
+sub process_file ($$$$$$) {
     my ($cfile, $docid_count, $docid_base, $file_count, 
 	$field_indices, $fh_errorsfile, $total_files_num) = @_;
 
@@ -206,9 +208,9 @@ sub process_file ($$$$\%$$) {
 	    my $id = 0;
 	    for my $part (@parts) {
                 my $tmpname = $cfile;
-                $tmpname .= "#$part" if ($part ne '');
+  	        $tmpname .= "#$part" if ($part ne '');
 		next if (defined $conf::EXCLUDE_PATH &&
-			 $tmpname =~ /$conf::EXCLUDE_PATH/);
+			 $tmpname =~ /$conf::EXCLUDE_PATH/); 
 		my $fname = util::tmpnam("NMZ.partial.$id");
 		my $fragment  = $part ne '' ? $part : undef;
 		my $uri = generate_uri($cfile, $fragment);
@@ -273,9 +275,17 @@ sub load_rcfiles () {
     util::vprint("\n");
 }
 
+# convert \ to / with consideration for Shift_JIS Kanji code
+sub win32_yen_to_slash ($) {
+    my ($rcfileref) = @_;
+    $$rcfileref =~ 
+		s!([\x81-\x9f\xe0-\xef][\x40-\x7e\x80-\xfc]|[\x01-\x7f])!
+		$1 eq "\\" ? "/" : $1!gex;
+}
+
 sub load_rcfile ($) {
     my ($rcfile) = @_;
-    if ($English::OSNAME eq "MSWin32" || $English::OSNAME eq "os2") {
+    if ($FILESYS_WIN32) {
 	util::win32_yen_to_slash(\$rcfile);
     }
     return if (grep {m/^$rcfile$/} @LoadedRcfiles);
@@ -293,11 +303,11 @@ sub load_rcfile ($) {
     $TEMPLATEDIR = $conf::TEMPLATEDIR
 	if (defined $conf::TEMPLATEDIR && -d $conf::TEMPLATEDIR);
     $SCHEMEDIR = $conf::SCHEMEDIR
-	if (defined $conf::SCHEMEDIR && -d $conf::SCHEMEDIR);
+        if (defined $conf::SCHEMEDIR && -d $conf::SCHEMEDIR);
     $ARCHIVEDIR = $conf::ARCHIVEDIR
-	if (defined $conf::ARCHIVEDIR && -d $conf::ARCHIVEDIR);
+        if (defined $conf::ARCHIVEDIR && -d $conf::ARCHIVEDIR);
     $WAKATIDICDIR = $conf::WAKATIDICDIR
-	if (defined $conf::WAKATIDICDIR && -d $conf::WAKATIDICDIR);
+        if (defined $conf::WAKATIDICDIR && -d $conf::WAKATIDICDIR);
 }
 
 sub re_exec($$$$$$$$) {
@@ -338,40 +348,26 @@ sub put_registry ($) {
     util::fclose($fh_registry);
 }
 
+sub win32_add_driveletter ($) {
+    my ($filenameref) = @_;
+    if ($$filenameref !~ /^[A-Z]:|^\\\\/i && $0 =~ m#^([A-Z]:)(/|\\)#i) {
+	$$filenameref = $1 . $$filenameref ;
+    }
+}
 
 # Initialization
-#   $CodingSystem: Character Coding System 
-#   'euc' -> 'eucJP', 'sjis' -> 'cp932', etc...
+#   $CodingSystem: Character Coding System 'euc' or 'sjis'
 sub init () {
     if (($English::OSNAME eq "MSWin32") || ($English::OSNAME eq "os2")) {
-        if ($English::OSNAME eq "MSWin32") {
-            Win32::API->Import('kernel32', 'UINT GetACP()');
-            $CodingSystem = "cp" . GetACP();
-        } else {
-            # OS/2
-	    $CodingSystem = "cp932";
-        }
-
-	if ($CONFDIR !~ /^[A-Z]:|^\\\\/i && $0 =~ m#^([A-Z]:)(/|\\)#i) {
-	    $CONFDIR = $1 . $CONFDIR ;
-	}
-	if ($LIBDIR !~ /^[A-Z]:|^\\\\/i && $0 =~ m#^([A-Z]:)(/|\\)#i) {
-	    $LIBDIR = $1 . $LIBDIR ;
-	}
-	if ($TEMPLATEDIR !~ /^[A-Z]:|^\\\\/i && $0 =~ m#^([A-Z]:)(/|\\)#i) {
-	    $TEMPLATEDIR = $1 . $TEMPLATEDIR ;
-	}
-	if ($SCHEMEDIR !~ /^[A-Z]:|^\\\\/i && $0 =~ m#^([A-Z]:)(/|\\)#i) {
-	    $SCHEMEDIR = $1 . $SCHEMEDIR ;
-	}
-	if ($ARCHIVEDIR !~ /^[A-Z]:|^\\\\/i && $0 =~ m#^([A-Z]:)(/|\\)#i) {
-	    $ARCHIVEDIR = $1 . $ARCHIVEDIR ;
-	}
-	if ($WAKATIDICDIR !~ /^[A-Z]:|^\\\\/i && $0 =~ m#^([A-Z]:)(/|\\)#i) {
-	    $WAKATIDICDIR = $1 . $WAKATIDICDIR ;
-	}
+	$FILESYS_WIN32 = 1;
+	win32_add_driveletter(\$CONFDIR);
+	win32_add_driveletter(\$LIBDIR);
+	win32_add_driveletter(\$TEMPLATEDIR);
+	win32_add_driveletter(\$SCHEMEDIR);
+	win32_add_driveletter(\$ARCHIVEDIR);
+	win32_add_driveletter(\$WAKATIDICDIR);
     } else {
-	$CodingSystem = "eucJP";
+	$FILESYS_WIN32 = 0;
     }
 
     $SIG{'INT'}  = sub {
@@ -389,9 +385,10 @@ sub preload_modules () {
     # workaround for test suites.
     unshift @INC, $ENV{'top_builddir'} . "/pl" if defined $ENV{'top_builddir'};
 
-    require "var.pl"  || die "unable to require \"var.pl\"\n";
+    require "var.pl" || die "unable to require \"var.pl\"\n";
     require "conf.pl" || die "unable to require \"conf.pl\"\n";
     require "util.pl" || die "unable to require \"util.pl\"\n";
+    require "codeconv.pl" || die "unable to require \"codeconv.pl\"\n";
     require "gettext.pl" || die "unable to require \"gettext.pl\"\n";
 }
 
@@ -401,7 +398,6 @@ sub postload_modules () {
 
 sub load_modules () {
     require "usage.pl" || die "unable to require \"usage.pl\"\n";
-    require "codeconv.pl" || die "unable to require \"codeconv.pl\"\n";
     require "wakati.pl" || die "unable to require \"wakati.pl\"\n";
     require "seed.pl" || die "unable to require \"seed.pl\"\n";
     require "gfilter.pl" || die "unable to require \"gfilter.pl\"\n";
@@ -491,7 +487,6 @@ sub namazu_core ($$$$$$$$$$) {
 	$uri, $part_id, $part_num) = @_;
 
     my $headings = "";
-    my $contref;
     my $weighted_str = "";
     my %fields;
     my $msg_prefix;
@@ -503,11 +498,12 @@ sub namazu_core ($$$$$$$$$$) {
     }
 
     unless ($uri) {
-	$uri = generate_uri($cfile);  # Make a URI from a file name.
+	$uri = generate_uri($cfile);	# Make a URI from a file name.
     }
     my $mtime;
     my $mmtype = '';
-    ($contref, $mtime, $mmtype) = fetchscheme($uri);
+    my $contref;
+    ($contref, $mtime, $mmtype) = fetchscheme(uri_encode($uri));
     unless (defined $contref) {
 	$$contref = undef;
     }
@@ -518,9 +514,9 @@ sub namazu_core ($$$$$$$$$$) {
 	($cfile_size, $text_size, $kanji, $mtype) = (0, 0, 0, 0);
     } else {
 
-	if (defined $MediaType) {
-	    $mtype = $MediaType;
-	}
+        if (defined $MediaType) {
+            $mtype = $MediaType;
+        }
 
 	$Document->init_doc($uri, $cfile, $contref, $mtype);
 	$err = $Document->get_errmsg();
@@ -544,8 +540,6 @@ sub namazu_core ($$$$$$$$$$) {
 	    $kanji = $Document->is_contain_kanji();
 	    $text_size = $Document->get_text_size();
 	    $mtype = $Document->get_mimetype();
-
-	    $fields{'mtype'} = $mtype;
 	}
     }
 
@@ -553,31 +547,22 @@ sub namazu_core ($$$$$$$$$$) {
         util::dprint(_("after load_document: ")."$uri: $cfile_size, $text_size, $kanji, $mtype\n");
     }
 
-    if (!defined $$contref || $$contref eq "") {
-	$err = $Document->get_errmsg();
+    my $cfile2 = $cfile; # $cfile2 is for terminal message.
+    codeconv::decode_filename(\$cfile2, $conf::TARGET_FILESYS_CODING);
+    codeconv::to_external_encoding(\$cfile2);
+    if ($$contref eq "") {
+	my $err = $Document->get_errmsg();
 	if (defined $err) {
-	    if (($English::OSNAME eq "MSWin32") || ($English::OSNAME eq "os2")) {
-		my $uri2 = codeconv::eucjp_to_shiftjis($uri);
-		print $msg_prefix . "$uri2 $err\n";
-	    } else {
-		print $msg_prefix . "$uri $err\n";
-	    }
-	    print $fh_errorsfile "$cfile $err\n"; 
+	    print $msg_prefix . "$cfile2 $err\n";
+	    print $fh_errorsfile "$cfile2 $err\n"; 
 	    return 0;  # return 0 if error
 	}
     }
-
     # Print processing file name as URI.
-    if (($English::OSNAME eq "MSWin32") || ($English::OSNAME eq "os2")) {
-	my $uri2 = codeconv::eucjp_to_shiftjis($uri);
-	print $msg_prefix . "$uri2 [$mtype]\n";
-    } else {
-	print $msg_prefix . "$uri [$mtype]\n";
-    }
+    print $msg_prefix . "$cfile2 [$mtype]\n";
 
     # Add filename.
     my $filename = defined $cfile ? $cfile : '';
-    codeconv::toeuc(\$filename);
     $filename = basename($filename);
     $fields{'filename'} = $filename;
 
@@ -587,23 +572,22 @@ sub namazu_core ($$$$$$$$$$) {
     put_field_index(\%fields, $field_indices);
 
     put_dateindex($cfile, $fields{'mtime'});
+    $$contref .= " $filename ";
     $$contref .= "\n\n$filename\n\n";   # add filename
-    $$contref .= $weighted_str;         # add weights
+    $$contref .= $weighted_str;   # add weights
     $Indexer->init($contref, $conf::WORD_LENG_MAX, $var::Opt{'nosymbol'});
     $Indexer->noedgesymbol() if ($var::Opt{'noedgesymbol'});
     $$contref =~ tr/\x00-\x08\x0b-\x0c\x0e-\x1a/ /; # Remove control char.
-
     # It corresponds to -j option of ChaSen.
     $$contref =~ s/^[ \t\f]+//gm;    # except "\r\n"
     $$contref =~ s/[ \t\f]+$//gm;    # except "\r\n"
     $$contref =~ s/([a-z])-\n([a-z])/$1$2/gsi;   # for hyphenation
-    if (util::islang("ja")) {
-        $$contref =~ s/([\x80-\xff])\n([\x80-\xff])/$1$2/gs;
-        $$contref =~ s/(。|、)/$1\n/gs;
-    }
+#    if (util::islang("ja")) {
+#        $$contref =~ s/([\x80-\xff])\n([\x80-\xff])/$1$2/gs;
+#        $$contref =~ s/(|)/$1\n/gs;
+#    }
     $$contref =~ s/\n+/\n/gs;
     do_wakatigaki($contref, $kanji);
-
     $$contref =~ tr/A-Z/a-z/; # Normalize
     $Indexer->count_words();
     add_key($Indexer, $docid_count, $docid_base);
@@ -649,38 +633,30 @@ sub generate_uri (@) {
 	$file = $_;
     }
 
-    if (($English::OSNAME eq "MSWin32") || ($English::OSNAME eq "os2")) {
+    if ($FILESYS_WIN32) {
 	$file =~ s#^([A-Z]):#/$1|#i; # converting a drive part like: /C|
     }
 
-    if (($English::OSNAME eq "MSWin32") || ($English::OSNAME eq "os2")) {
-	$file = codeconv::shiftjis_to_eucjp($file);
-    }
-    if (defined $fragment) {
-        codeconv::toeuc(\$fragment);
-    }
-
-    unless ($var::Opt{'noencodeuri'}) {
-	for my $tmp ($file, $fragment) {
-	    next unless defined $tmp;
-
-	    # Escape unsafe characters (not strict)
-	    $tmp =~ s/\%/%25/g;  # Convert original '%' into '%25' v1.1.1.2
-	    $tmp =~ s/([^a-zA-Z0-9~\-\_\.\/\:\%])/
-		sprintf("%%%02X",ord($1))/ge;
-	}
-    }
-
-
     my $uri = $file;
-    $uri .= "#" . $fragment if defined $fragment;
-    if (($English::OSNAME eq "MSWin32") || ($English::OSNAME eq "os2")) {
+    $uri .= "//" . $fragment if defined $fragment;
+
+    if ($FILESYS_WIN32) {
         # restore '|' for drive letter rule of Win32, OS/2
         $uri =~ s!^/([A-Z])%7C!/$1|!i;
     }
     return $uri;
 }
 
+sub uri_encode ($) {
+    my ($tmp) = @_;
+    return "" unless defined $tmp;
+    # Escape unsafe characters (not strict)
+    # Crosshatch(#)  must be escaped to '//' before this routine.
+    $tmp =~ s/\%/%25/g;  # Convert original '%' into '%25' v1.1.1.2
+    $tmp =~ s/([^a-zA-Z0-9~\-\_\.\/\:\%])/sprintf("%%%02X",ord($1))/ge;
+    $tmp =~ s![^:]//!#!;
+    return $tmp;
+}
 
 sub get_field_index_base (\%) {
     my ($field_indices) = @_;
@@ -708,9 +684,15 @@ sub complete_field_info (\%$$\$\$\$) {
             delete $fields->{$field};
         }
     }
-
+    # $cfile2 is for decoded uri.
+    my $cfile2 = $uri;
+    codeconv::decode_filename(\$cfile2, $conf::TARGET_FILESYS_CODING);
+    # uri no encoded filename for easy to read.
+    unless (defined($fields->{'duri'})) {
+	$fields->{'duri'} = $cfile2;
+    }
     unless (defined($fields->{'title'})) {
-	$fields->{'title'} = gfilter::filename_to_title($cfile, $wsref);
+	$fields->{'title'} = gfilter::filename_to_title($cfile2, $wsref);
     }
     unless (defined($fields->{'date'})) {
 	my $mtime = $fields->{'mtime'};
@@ -744,7 +726,7 @@ sub getmsg($) {
 
     if (util::islang_msg("ja")) {
 	if ($msg eq "unknown") {
-	    return "不明";
+	    return "\xE4\xB8\x8D\xE6\x98\x8E"; # "fumei"
 	}
     }
     return $msg;
@@ -770,14 +752,16 @@ sub make_summary ($$$) {
     {
         $tmp .= substr $$contref, $offset, $tmplen;
         $offset += $tmplen;
-        $tmp =~ s/(([\xa1-\xfe]).)/$2 eq "\xa8" ? '': $1/ge;
+
+	# remove some symbols.
+	$tmp =~ s/\xe2[\x94\x95][\x80-\xbf]//s; # Box Drawing
         $tmp =~ s/([-=*\#])\1{2,}/$1$1/g;
     }
 
     # -1 means "LF"
     my $summary = substr $tmp, 0, $conf::MAX_FIELD_LENGTH - 1;
     # Remove a garbage Kanji 1st char at the end.
-    $summary = codeconv::chomp_eucjp($summary);
+    $summary = codeconv::chomp_multibytechar($summary);
 
     $summary =~ s/^\s+//;
     $summary =~ s/\s+/ /g;   # normalize white spaces
@@ -792,7 +776,9 @@ sub clean_field_index(\%)
 	join('|', sort {length($b) <=> length($a)} keys %conf::FIELD_ALIASES);
 
     for my $field (keys %{$fields}) {
-        util::dprint("Field: $field: $fields->{$field}\n");
+	my $tmp_field = $fields->{$field};
+	codeconv::to_external_encoding(\$tmp_field);
+        util::dprint("Field: $field: $tmp_field\n");
 	if ($field =~ /^($aliases_regex)$/o) {
 	    unless (defined($fields->{$conf::FIELD_ALIASES{$field}})) {
 		$fields->{$conf::FIELD_ALIASES{$field}} = $fields->{$field};
@@ -839,7 +825,7 @@ sub put_field_index (\%$) {
 	    # -1 means "LF"
 	    $output = substr $output, 0, $conf::MAX_FIELD_LENGTH - 1;
 	    # Remove a garbage Kanji 1st char at the end.
-	    $output = codeconv::chomp_eucjp($output);
+	    $output = codeconv::chomp_multibytechar($output);
 
             $output =~ s/\n.*$//s;
             $output .= "\n";
@@ -858,7 +844,6 @@ sub put_field_index (\%$) {
             util::fclose($fh_field_idx);
 	}
     }
-
 }
 
 # put the date infomation into NMZ.t file
@@ -912,21 +897,23 @@ sub save_flist(@) {
 }
 
 sub require_modules() {
-    if (util::islang("ja") && $conf::NKF =~ /^module_nkf/) {
-	require NKF || die "unable to require \"NKF\"\n";
-        util::dprint(_("code conversion: using NKF module\n"));
-	$var::USE_NKF_MODULE = 1;
-    }
     if (util::islang("ja") && $conf::WAKATI =~ /^module_kakasi/) {
 	require Text::Kakasi || die "unable to require \"Text::Kakasi\"\n";
+	{
+	    die "Text::Kakasi can not support utf-8. Perl 5.8 is required.\n"
+		if ($] < 5.008);
+	    die "unable to require \"Text::Kakasi 2.0\"\n"
+		if ($Text::Kakasi::VERSION < 2.0);
+	    wakati::init_text_kakasi();
+	}
         util::dprint(_("wakati: using Text::Kakasi module\n"));
-	my $res = Text::Kakasi::getopt_argv('kakasi', '-ieuc', '-oeuc', '-w');
     }
     if (util::islang("ja") && $conf::WAKATI =~ /^module_chasen/) {
 	require Text::ChaSen || die "unable to require \"Text::ChaSen\"\n";
         util::dprint(_("wakati: using Text::ChaSen module\n"));
-	my @arg = ('-i', 'e', '-j', '-F', '%m ');
-	@arg    = ('-i', 'e', '-j', '-F', '%m %H\\n') if $var::Opt{'noun'};
+	my @arg = ('-i', 'w', '-j', '-F', '%m ');
+	@arg    = ('-i', 'w', '-j', '-F', '%m %H\\n') if $var::Opt{'noun'};
+	unshift( @arg, '-i', 'w');
 	my $res = Text::ChaSen::getopt_argv('chasen-perl', @arg);
     }
     if (util::islang("ja") && $conf::WAKATI =~ /^module_mecab/) {
@@ -1111,36 +1098,26 @@ sub parse_options
                'norc'                => \$opt_norc,
 	       );
     GetOptions(%argopts);
-
     if (defined $update_index) {
-	unless (-d $update_index) {
-	    print _("No such index: "), "$update_index\n";
-	    exit 1;
-	}
-
-	my $orig_status = $var::NMZ{'status'};
-	$var::NMZ{'status'} = "$update_index/$var::NMZ{'status'}";
-
-	my $argv = get_status("argv");
-        if (!defined $argv) {
-	    print _("No such index: "), "$update_index\n";
-	    exit 1;
+        unless (-d $update_index) {
+            print _("No such index: "), "$update_index\n";
+            exit 1;
         }
-	@ARGV = split /\t/, $argv;
-	util::dprint(_("Inherited argv: ")."@ARGV\n");
+        my $orig_status = $var::NMZ{'status'};
+        $var::NMZ{'status'} = "$update_index/$var::NMZ{'status'}";
 
-	my $cwd  = get_status("cwd");
-        if (!defined $cwd) {
-	    print _("No such index: "), "$update_index\n";
-	    exit 1;
-        }
-	chdir $cwd;
-	util::dprint(_("Inherited cwd: ")."$cwd\n");
+        my $argv = get_status("argv");
+        @ARGV = split /\t/, $argv;
+        util::dprint(_("Inherited argv: ")."@ARGV\n");
 
-	($output_dir, @targets) = parse_options();
-	$output_dir = $update_index;
-	$var::NMZ{'status'} = $orig_status;  # See also change_filenames()
-	return ($output_dir, @targets);
+        my $cwd  = get_status("cwd");
+        chdir $cwd;
+        util::dprint(_("Inherited cwd: ")."$cwd\n");
+
+        ($output_dir, @targets) = parse_options();
+        $output_dir = $update_index;
+        $var::NMZ{'status'} = $orig_status;  # See also change_filenames()
+        return ($output_dir, @targets);
     }
 
     if ($opt_quiet) {
@@ -1148,16 +1125,15 @@ sub parse_options
 	my $devnull = util::devnull();
 	open(STDOUT, ">$devnull") || die "$devnull: $!";
     }
-
     if (!$opt_norc && !(defined $ENV{'MKNMZNORC'})){
         load_rcfiles();
     }
     if ($opt_config) {
         if (-f $opt_config) {
             util::vprint(_("Reading rcfile: "));
-            load_rcfile($ConfigFile = $opt_config);
+	    load_rcfile($ConfigFile = $opt_config);
             util::vprint(" $opt_config\n");
-        }
+	}
     }
 
     if ($index_lang) {
@@ -1180,8 +1156,8 @@ sub parse_options
     $Document->init();
 
     foreach my $key (keys %opt_conf){
-	if (defined ($opt_conf{$key})) { 
-	     ${*{$conf::{$key}}{SCALAR}} = $opt_conf{$key};
+        if (defined ($opt_conf{$key})) {
+            ${*{$conf::{$key}}{SCALAR}} = $opt_conf{$key};
 	}
     }
 
@@ -1250,22 +1226,22 @@ sub parse_options
     %argopts = ();
     my $mediatype;
     foreach $mediatype (keys %var::ARCHIVE_REQUIRE_ACTIONS) {
-	my $archive = $var::ARCHIVE_REQUIRE_ACTIONS{$mediatype};
-	if ($var::SupportedArchive{$mediatype} eq 'yes') {
-	    my %ret;
-	    eval "%ret = Namazu::Archive::${archive}::option();";
-	    die $@ if $@;
-	    my $tmp;
-	    foreach $tmp (keys %ret) {
-		$argopts{$tmp} = $ret{$tmp};
-	    }
-	}
+        my $archive = $var::ARCHIVE_REQUIRE_ACTIONS{$mediatype};
+        if ($var::SupportedArchive{$mediatype} eq 'yes') {
+            my %ret;
+            eval "%ret = Namazu::Archive::${archive}::option();";
+            die $@ if $@;
+            my $tmp;
+            foreach $tmp (keys %ret) {
+                $argopts{$tmp} = $ret{$tmp};
+            }
+        }
     }
     GetOptions(%argopts);
 
     if ($opt_show_config) {
-	show_config();
-	exit 1;
+        show_config();
+        exit 1;
     }
 
     if (@ARGV == 0 && $targets_loaded == 0) {
@@ -1277,7 +1253,7 @@ sub parse_options
     util::cdie("$output_dir: "._("invalid output directory\n"))
 	unless (-d $output_dir && -w $output_dir);
 
-    if ($English::OSNAME eq "MSWin32" || $English::OSNAME eq "os2") {
+    if ($FILESYS_WIN32) {
 	util::win32_yen_to_slash(\$output_dir); 
     }
 
@@ -1308,7 +1284,7 @@ sub show_config () {
     print _("Wakati: ") . "$conf::WAKATI\n" if $conf::WAKATI;
     print _("Lang_Msg: ") . "$util::LANG_MSG\n";
     print _("Lang: ") . "$util::LANG\n";
-    print _("Coding System: ") . "$CodingSystem\n";
+    print _("Coding System: ") . "$conf::TARGET_FILESYS_CODING\n";
     print _("CONFDIR: ") . "$CONFDIR\n";
     print _("LIBDIR: ") . "$LIBDIR\n";
     print _("FILTERDIR: ") . $filter->get_info('filter_dir') ."\n";
@@ -1325,7 +1301,7 @@ sub load_target_list ($) {
     my $fh_targets = util::efopen($file);
     my @targets = <$fh_targets>;
     util::fclose($fh_targets);
-    if (($English::OSNAME eq "MSWin32") || ($English::OSNAME eq "os2")) {
+    if ($FILESYS_WIN32){
 	foreach my $tmp (@targets){
 	    $tmp =~ s/\r//g;
 	    util::win32_yen_to_slash(\$tmp);
@@ -1342,7 +1318,7 @@ sub absolute_path($$) {
     return $path if (util::isurl($path));
     $path =~ s!^\.$!\./!;
     $path =~ s!^\.[/\\]!$cwd/!;
-    if (($English::OSNAME eq "MSWin32") || ($English::OSNAME eq "os2")) {
+    if ($FILESYS_WIN32) {
 	util::win32_yen_to_slash(\$path);
         if ($path =~ m!^//!) {
         } elsif ($path =~ m!^/[^/]!) {
@@ -1366,8 +1342,7 @@ sub find_target (@) {
     my $cwd = cwd();
     @targets = map { absolute_path($cwd, $_) } @targets;
 
-    # Convert \ to / with consideration for Shift_JIS encoding.
-    if (($English::OSNAME eq "MSWin32") || ($English::OSNAME eq "os2")) {
+    if ($FILESYS_WIN32){
 	foreach my $tmp (@targets){
 	    util::win32_yen_to_slash(\$tmp);
 	}
@@ -1408,12 +1383,13 @@ sub find_target (@) {
 		my $dh = new DirHandle($target);
 		while (defined(my $ent = $dh->read)) {
 		    next if ($ent eq '.' || $ent eq '..');
-		    if ($English::OSNAME eq "MSWin32" || $English::OSNAME eq "os2") {
+
+                    if ($English::OSNAME eq "MSWin32" || $English::OSNAME eq "os2") {
                         next if ($ent =~ m!^($conf::DENY_DDN)$!i);
-		        my $tmp = $ent;
-		        util::win32_yen_to_slash(\$tmp);
-		        next if ($ent ne $tmp);
-		    }
+                        my $tmp = $ent;
+                        util::win32_yen_to_slash(\$tmp);
+                        next if ($ent ne $tmp);
+                    }
 		    my $fname = "$target/$ent";
 		    if (-d $fname) {
 			push(@subtargets, $fname);
@@ -1963,7 +1939,6 @@ sub load_registry () {
 	    push @registered, $line;
 	}
     }
-
     util::fclose($fh_registry) if (defined $fh_registry);
 
     # Exclude deleted documents.
@@ -2016,7 +1991,7 @@ sub get_status($) {
     while (defined(my $line = <$fh>)) {
 	if ($line =~ /^$key\s+(.*)$/) {
 	    util::dprint("status: $key = $1\n");
-            util::fclose($fh);
+	    util::fclose($fh);
 	    return $1;
 	}
     }
@@ -2055,7 +2030,7 @@ sub put_log ($$$$) {
     my $added_files_count   = $docid_count;
     my $deleted_documents_count = $DeletedFilesCount;
     my $updated_documents_count = $UpdatedFilesCount;
-    my $total_files_count   = get_total_files() + $docid_count
+    my $total_files_count   = get_total_files() + $docid_count 
 			      - $DeletedFilesCount - $UpdatedFilesCount;
     my $added_keys_count    = 0;
     $added_keys_count       = $total_keys_count - get_total_keys();
@@ -2162,8 +2137,8 @@ sub make_headfoot ($$$) {
     my $fh_file = util::efopen(">$file");
 
     if ($buf =~ /(<!-- FILE -->)\s*(.*)\s*(<!-- FILE -->)/) {
-	my $total_files_count = util::commas(get_total_files() + $docid_count
-                                  - $DeletedFilesCount - $UpdatedFilesCount);
+	my $total_files_count = util::commas(get_total_files() + $docid_count 
+				   - $DeletedFilesCount - $UpdatedFilesCount);
 	$buf =~ s/(<!-- FILE -->)(.*)(<!-- FILE -->)/$1 $total_files_count $3/;
 
     }
@@ -2192,7 +2167,8 @@ sub make_phrase_hash ($$$) {
 
     my %tmp = ();
     $$contref =~ s!\x7f */? *\d+ *\x7f!!g;  # remove tags of weight
-    $$contref =~ tr/\xa1-\xfea-z0-9 \n//cd; # remove all symbols
+    # remove all 1byte symbol charcters.
+    $$contref =~ tr/\x80-\xefa-z0-9 \n//cd;
     my @words = split(/\s+/, $$contref);
     @words = grep {$_ ne ""} @words;   # remove empty words
     my $word_b = shift @words;
@@ -2532,17 +2508,17 @@ sub trapintr {
 muda($conf::ON_MEMORY_MAX,
      $conf::WORD_LENG_MAX,
      $conf::DENY_FILE, $var::INTSIZE,
-     $conf::CHASEN_NOUN, $conf::CHASEN,
      $conf::KAKASI, $var::Opt{'okurigana'},
      $var::Opt{'hiragana'}, $conf::DIRECTORY_INDEX,
      $usage::USAGE, $var::Opt{'noheadabst'}, $usage::VERSION_INFO,
      $var::Opt{'noencodeurl'}, $conf::HTML_SUFFIX,
-     $conf::META_TAGS, $var::USE_NKF_MODULE,
+     $conf::META_TAGS, 
      $conf::ADDRESS, $var::MAILING_ADDRESS,
      $conf::MECAB,
      $conf::DENY_DDN,
      $var::SupportedScheme, $var::RECURSIVE_SCHEME,
      $var::SupportedArchive, $var::RECURSIVE_ARCHIVE,
+     $conf::CHASEN_NOUN, $conf::CHASEN,
      $var::TRAC_URI,
      );
 

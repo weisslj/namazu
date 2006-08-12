@@ -2,7 +2,7 @@
 # -*- Perl -*-
 #
 # bnamazu -- search with "namazu" and browse its results with a web browser.
-# $Id: bnamazu.in,v 1.6 2004-09-19 03:21:07 opengl2772 Exp $
+# $Id: bnamazu.in,v 1.7 2006-08-12 07:26:20 opengl2772 Exp $
 # 
 # Copyright (C) 1998 Hajime BABA. All rights reserved.
 #

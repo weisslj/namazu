@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # lnnmz - program to make NMZ.field.link
-# $Id: lnnmz.in,v 1.7 2005-09-24 12:24:47 opengl2772 Exp $
+# $Id: lnnmz.in,v 1.8 2006-08-12 07:26:20 opengl2772 Exp $
 #
 # Copyright (C) 2000 osamu2001@livedoor.com  All rights reserved.
 # Copyright (C) 2000 furukawa@tcp-ip.or.jp  All rights reserved.

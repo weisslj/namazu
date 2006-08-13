@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.173 2006-08-12 07:41:54 opengl2772 Exp $
+dnl $Id: configure.in,v 1.174 2006-08-13 04:11:48 opengl2772 Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -515,6 +515,7 @@ AC_OUTPUT([Makefile
 	   tests/data/decodebase64/Makefile
 	   tests/data/ja-wakati/Makefile
 	   pltests/Makefile
+	   wakatidict/Makefile
 	  ],
 	  [chmod +x nmz-config \
 	    ]) 

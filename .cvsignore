@@ -16,3 +16,5 @@ ltconfig
 ltmain.sh
 missing
 mkinstalldirs
+namazu.spec
+Makefile

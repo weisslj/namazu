@@ -85,7 +85,7 @@ $REMAIN_HEADER = "From|Date|Message-ID";
 # This pattern specifies fields which used for field-specified 
 # searching.  NOTE: case-insensitive
 # 
-$SEARCH_FIELD = "message-id|subject|from|date|uri|newsgroups|to|summary|size|utc|duri";
+$SEARCH_FIELD = "message-id|subject|from|date|uri|newsgroups|to|summary|size|utc|mtype|duri";
 
 #
 # This pattern specifies meta tags which used for field-specified 

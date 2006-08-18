@@ -2,7 +2,7 @@
 # -*- Perl -*-
 # document.pl - class for document
 #
-# $Id: document.pl,v 1.7 2006-08-12 05:45:03 opengl2772 Exp $
+# $Id: document.pl,v 1.8 2006-08-18 17:34:26 opengl2772 Exp $
 #
 # Copyright (C) 2004 Yukio USUDA All rights reserved.
 # Copyright (C) 2000-2006 Namazu Project All rights reversed.
@@ -296,38 +296,40 @@ sub _check_content {
 
     my $file_size;
     if (!defined ${$self->{'_contentref'}}) {
-	my $cfile = $self->{'_orig_filename'};
-	# for handling a filename which contains Shift_JIS code for Windows.
+        my $cfile = $self->{'_orig_filename'};
+        # for handling a filename which contains Shift_JIS code for Windows.
         # for handling a filename which contains including space.
 
         if (($cfile =~ /\s/) ||
-	 ($English::OSNAME eq "MSWin32" 
-	    && $cfile =~ /[\x81-\x9f\xe0-\xef][\x40-\x7e\x80-\xfc]|[\x20\xa1-\xdf]/)) 
-	{
+            ($English::OSNAME eq "MSWin32"
+            && $cfile =~ /[\x81-\x9f\xe0-\xef][\x40-\x7e\x80-\xfc]|[\x20\xa1-\xdf]/))
+        {
 	    my $tmpfile = util::tmpnam("NMZ.win32");
 	    unlink $tmpfile if (-e $tmpfile);
 	    copy($self->{'_orig_filename'}, $tmpfile);
 
-  	    $file_size = util::filesize($tmpfile); # not only file in feature.
-	    if ($file_size > $conf::FILE_SIZE_MAX) {
-	        $self->{'_errmsg'} = 'too big file';
-	        $self->{'_mimetype'} = 'x-system/x-error';
-	        unlink $tmpfile;
+            $file_size = util::filesize($tmpfile); # not only file in feature.
+            if ($file_size > $conf::FILE_SIZE_MAX) {
+                $self->{'_errmsg'} =
+                    _("is larger than your setup before filtered, skipped: ") . 'conf::FILE_SIZE_MAX (' . $conf::FILE_SIZE_MAX . ') < '. $file_size ;
+                $self->{'_mimetype'} = 'x-system/x-error; x-error=file_size_max';
+                unlink $tmpfile;
                 return;
-	    }
+            }
 
 	    ${$self->{'_contentref'}} = util::readfile($tmpfile);
 
 	    unlink $tmpfile;
 	} else {
-  	    $file_size = util::filesize($cfile); # not only file in feature.
-	    if ($file_size > $conf::FILE_SIZE_MAX) {
-	        $self->{'_errmsg'} = 'too big file';
-	        $self->{'_mimetype'} = 'x-system/x-error';
+            $file_size = util::filesize($cfile); # not only file in feature.
+            if ($file_size > $conf::FILE_SIZE_MAX) {
+                $self->{'_errmsg'} =
+                    _("is larger than your setup before filtered, skipped: ") . 'conf::FILE_SIZE_MAX (' . $conf::FILE_SIZE_MAX . ') < '. $file_size ;
+                $self->{'_mimetype'} = 'x-system/x-error; x-error=file_size_max';
                 return;
-	    }
+            }
 
-	    ${$self->{'_contentref'}} = util::readfile($cfile);
+            ${$self->{'_contentref'}} = util::readfile($cfile);
         }
     } else {
 	$file_size = length(${$self->{'_contentref'}});
@@ -342,11 +344,13 @@ sub _check_file ($$$$$) {
 
     my $msg = undef;
     if ($mtype =~ /; x-system=unsupported$/) {
-	$mtype =~ s/; x-system=unsupported$//;
-	$msg = _("Unsupported media type ")."($mtype)"._(" skipped.");
+        $mtype =~ s/; x-system=unsupported$//;
+        $msg = _("Unsupported media type ")."($mtype)"._(" skipped.");
+    } elsif ($mtype =~ /; x-error=file_size_max/) {
+        $msg = _("is larger than your setup before filtered, skipped: ") . 'conf::FILE_SIZE_MAX (' . $conf::FILE_SIZE_MAX . ') < '. $cfile_size ;
     } elsif ($mtype =~ /; x-error=.*$/) {
-	$mtype =~ s/^.*; x-error=(.*)$/$1/;
-	$msg = $mtype;
+        $mtype =~ s/^.*; x-error=(.*)$/$1/;
+        $msg = $mtype;
     } elsif ($mtype =~ /^x-system/) {
 	$msg = _("system error occurred! ")."($mtype)"._(" skipped.");
     } elsif (! util::isurl($cfile) && ! -e $cfile) {

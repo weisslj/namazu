@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 #
-# $Id: gcnmz.in,v 1.13 2006-08-12 07:26:20 opengl2772 Exp $
+# $Id: gcnmz.in,v 1.14 2006-08-18 17:36:23 opengl2772 Exp $
 #
 # gcnmz.pl - by furukawa@tcp-ip.or.jp
 #
@@ -9,6 +9,7 @@
 my $PKGDATADIR = $ENV{'pkgdatadir'} || "@pkgdatadir@";
 push(@INC, $PKGDATADIR . "/pl");
 require 'nmzidx.pl';
+require 'util.pl';
 
 use IO::File;
 STDOUT->autoflush(1);
@@ -143,9 +144,9 @@ sub gcnmz{
         $nmzo->write_status($nmzi);
         $nmzo->replace_db($backup);
         if (my $log = $nmzo->log_open("[Garbage Collection]")){
-            $log->printf("%-20s %d\n", "Collected Entry:", $nmzi->{'flist'}->{'offset'} - $nmzo->{'flist'}->{'offset'});
-            $log->printf("%-20s %d\n", "Total Files:", $nmzo->{'flist'}->{'offset'});
-            $log->printf("%-20s %d\n", "Total Keywords:", $nmzo->{'word'}->{'offset'});
+            $log->printf("%-20s %d\n", "Collected Entry:", util::commas($nmzi->{'flist'}->{'offset'} - $nmzo->{'flist'}->{'offset'}));
+            $log->printf("%-20s %d\n", "Total Documents:", util::commas($nmzo->{'flist'}->{'offset'}));
+            $log->printf("%-20s %d\n", "Total Keywords:", util::commas($nmzo->{'word'}->{'offset'}));
             $nmzo->log_close;
         }
     }else{

@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: taro56.pl,v 1.12 2006-08-12 07:18:44 opengl2772 Exp $
+# $Id: taro56.pl,v 1.13 2006-08-18 17:35:19 opengl2772 Exp $
 # Copyright (C) 2003 Yukio USUDA
-#               2003-2005 Namazu Project All rights reserved.
+#               2003-2006 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -90,17 +90,30 @@ sub taro56filter ($$$$$) {
         my $code3 = $data[0x805 +$i];
         my $code4 = $data[0x806 +$i];
         if ($code1 == hex("fe")){
-            if (($code2 == hex("41")) or ($code2 == hex("46"))) {
+            if (($code2 == hex("41")) or ($code2 == hex("46"))
+                                      or ($code2 == hex("45"))) {
                 $code = pack("C", hex("0a"));
                 $i++;
             }
         }elsif (($code1 == hex("1f")) and ($code2 == hex("00"))) {
             my $ctlcodesizep = pack("C2", $code3, $code4);
             my $ctlcodesize = unpack("v", $ctlcodesizep);
+            $ctlcodesize = 5 if ($ctlcodesize == 0);
             $i = $i + $ctlcodesize -1;
-        }elsif (($code1 == hex("fd"))
-          and ($code2 >= hex("23")) and ($code2 <= hex("2f"))) {
-            $i++;
+        }elsif ($code1 == hex("1e")){
+            if ($code2 == hex("05")){
+                my $ctlcodesize = 30;
+                $i = $i + $ctlcodesize -1;
+            }elsif ($code2 == hex("80")){
+                my $ctlcodesize = 12;
+                $i = $i + $ctlcodesize -1;
+            }
+        }elsif ($code1 == hex("fd")){
+            if (($code2 >= hex("23")) and ($code2 <= hex("2f"))) {
+                $i++;
+            }elsif ($code2 >= hex("83")){
+                $i++;
+            }
         }elsif (($code1 == hex("12")) and ($code3 >= hex("80"))) {
             $i = $i + 2;
         }elsif (($code1 >= hex("81")) and ($code1 <= hex("84"))
@@ -117,6 +130,9 @@ sub taro56filter ($$$$$) {
             $i++;
         }elsif (($code1 >= hex("20")) and ($code1 <= hex("7f"))) {
             $code = pack("C", $code1);
+        } elsif ($code1 >= hex("80")) {
+            $code = pack("CC", 0x81, 0xac);    # GETA
+            $i++;
         }
         $i++;
         $tmp .= $code;

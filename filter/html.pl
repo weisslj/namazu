@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: html.pl,v 1.54 2006-08-12 07:18:44 opengl2772 Exp $
+# $Id: html.pl,v 1.55 2006-08-18 17:35:19 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
-# Copyright (C) 2000-2005 Namazu Project All rights reserved.
+# Copyright (C) 2000-2006 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -110,7 +110,7 @@ sub html_filter ($$$$) {
         regex_html_filter($contref, $weighted_str, $fields, $headings);
     }
 }
-  	 
+
 my $weighted_str;
 my $fields;
 my $headings;
@@ -124,19 +124,23 @@ sub htmlparser_filter ($$$$) {
     $html::fields = $fields;
     $html::headings = $headings;
 
+
     %inside = ();
-    $fields->{'title'} = $conf::NO_TITLE;
+    $fields->{'title'} = undef;
+    $fields->{'author'} = undef;
     $content = "";
 
     HTML::Parser->new(api_version => 3,
-                  handlers    => [start => [\&_tag, "tagname, '+1', attr"],
+		  handlers    => [start => [\&_tag, "tagname, '+1', attr"],
                                   end   => [\&_tag, "tagname, '-1', attr"],
                                   text  => [\&_text, "text"],
-                                 ],
-                  marked_sections => 1,
-        )->parse($$contref);
+				],
+		  marked_sections => 1,
+	)->parse($$contref);
 
     $$contref = $content;
+
+    $fields->{'title'} = $conf::NO_TITLE if (!defined $fields->{'title'});
 
     # restore entities of each content.
     html::decode_entity($contref);
@@ -151,64 +155,64 @@ sub _tag ($$$){
 
     $inside{$tag} += $num;
 
+    return if ($num < 0);
+
     # <META NAME="AUTHOR" CONTENT="author">
     # <LINK REV=MADE HREF="mailto:ccsatoru@vega.aichi-u.ac.jp">
-    my $author = '';
-    my $existauthor = 'no';
-    if (($num >0) && ($tag =~ /^META$/i)){
-        while ( my ($key, $val) = each %{$attr_hashref} ) {
-            $existauthor = 'yes' if ($key =~ /^NAME$/i)&&($val =~ /^AUTHOR$/i);
-            $author = $val if ($key =~ /^CONTENT$/i)&&($existauthor eq 'yes');
+    if ($tag =~ /^META$/i) {
+        my $name = $attr_hashref->{name};
+        if (defined($name) && $name =~ /^AUTHOR$/i) {
+            my $val = $attr_hashref->{content};
+            $html::fields->{'author'} = $val if (defined $val);
         }
-        set_author($author) if ($author ne '');
-    }elsif (($num >0) && ($tag =~ /^LINK$/i)){
-        while ( my ($key, $val) = each %{$attr_hashref} ) {
-            $existauthor = 'yes' if (($key =~ /^REV$/i)&&($val =~ /^MADE$/i));
-            $author = $val if ($key =~ /^HREF$/i)&&($existauthor eq 'yes');
+    } elsif ($tag =~ /^LINK$/i) {
+        my $rev = $attr_hashref->{rev};
+        if (defined($rev) && $rev =~ /^MADE$/i) {
+            my $val = $attr_hashref->{href};
+            if (defined($val)) {
+                if ($val =~ m/^mailto:(.*)$/i) {
+                    $html::fields->{'author'} = $1 if (!defined $html::fields->{'author'});
+                }
+            }
         }
-        set_author($author) if ($author ne '');
     }
 
     # Get foo from <TABLE ... SUMMARY="foo">
-    if (($num >0)&&($tag =~ /^TABLE$/i)&&("SUMMARY" =~ /^($conf::HTML_ATTRIBUTES)$/io)){
-        while ( my ($key, $val) = each %{$attr_hashref} ) {
-            $content .= " $val" if ($key =~ /^SUMMARY$/i);
-        }
+    if (($tag =~ /^TABLE$/i) && ("SUMMARY" =~ /^(?:$conf::HTML_ATTRIBUTES)$/io)) {
+        my $val = $attr_hashref->{summary};
+        $content .= " $val" if (defined $val);
     }
-
-    if ($num >0){
-        while ( my ($key, $val) = each %{$attr_hashref} ) {
-            # Get foo from <XXX ... ALT="foo">
-            # It's not to handle HTML strictly.
-            $content .= " $val" if (($key =~ /^ALT$/i)&&("ALT" =~ /^($conf::HTML_ATTRIBUTES)$/io));
-            # Get foo from <XXX ... TITLE="foo">
-            $content .= " $val" if (($key =~ /^TITLE$/i)&&("TITLE" =~ /^($conf::HTML_ATTRIBUTES)$/io));
-        }
+    # Get foo from <XXX ... ALT="foo">
+    if ("ALT" =~ /^(?:$conf::HTML_ATTRIBUTES)$/io) {
+        my $val = $attr_hashref->{alt};
+        $content .= " $val" if (defined $val);
+    }
+    # Get foo from <XXX ... TITLE="foo">
+    if ("TITLE" =~ /^(?:$conf::HTML_ATTRIBUTES)$/io) {
+        my $val = $attr_hashref->{title};
+        $content .= " $val" if (defined $val);
     }
 
     # get foo bar from <META NAME="keywords|description" CONTENT="foo bar">
     my $metatags = "keywords|description";
     my $weight = $conf::Weight{'metakey'};
-    if (($num >0) && ($tag =~ /^META$/i)){
-        while ( my ($key, $val) = each %{$attr_hashref} ) {
-            if ($key =~ /^NAME$/i){
-                if ($val =~ /^($metatags)$/io){
-                    if ($key =~ /^CONTENT$/i){
-                        $$weighted_str .= "\x7f$weight\x7f$val\x7f/$weight\x7f\n";
-                    }
-                }elsif (($var::Opt{'meta'})&&($val =~ /^($conf::META_TAGS)$/io)){
-                    if ($key =~ /^CONTENT$/i){
-                        $html::fields->{$key} .= $val . " ";
-                        util::dprint("meta: $key: $fields->{$key}\n");
-                        $$html::weighted_str .= "\x7f$weight\x7f$val\x7f/$weight\x7f\n";
-                    }
-                }
+    if ($tag =~ /^META$/i) {
+        my $name = $attr_hashref->{name};
+        if (defined($name)) {
+            if ($name =~ /^(?:$metatags)$/io){
+                my $val = $attr_hashref->{content};
+                $$weighted_str .= "\x7f$weight\x7f$val\x7f/$weight\x7f\n";
+            }
+
+            if (($var::Opt{'meta'}) && ($name =~ /^(?:$conf::META_TAGS)$/io) && ($name !~ m/^author$/i)) {
+                my $val = $attr_hashref->{content};
+                $html::fields->{$name} .= $val . " ";
+                util::dprint("meta: $name: $html::fields->{$name}\n");
             }
         }
     }
-    if ($num >0) {
-        $content .= html::element_space($tag) ;
-    }
+
+    $content .= html::element_space($tag);
 }
 
 sub _text ($) {
@@ -271,15 +275,22 @@ sub _text ($) {
 sub set_title ($) {
     my ($title) = @_;
 
+    return if (defined $html::fields->{'title'});
+
+    $title =~ s/\s+/ /g;
+    $title =~ s/^\s+//;
+    $title =~ s/\s+$//;
+
     my $weight = $conf::Weight{'html'}->{'title'};
     $$html::weighted_str .= "\x7f$weight\x7f$title\x7f/$weight\x7f\n";
     $html::fields->{'title'} = $title;
 }
 
 sub set_author ($) {
-    my ($author) =@_;
+    my ($author) = @_;
+
     if ($author =~ /\b([\w\.\-]+\@[\w\.\-]+(?:\.[\w\.\-]+)+)\b/) {
-        $html::fields->{'author'} = $1;
+        $html::fields->{'author'} = $1 if (!defined $html::fields->{'author'});
     }
 }
 
@@ -317,7 +328,7 @@ sub embedded_filter ($) {
     $$contref =~ s/<\?.*?\?>//gs;
     $$contref =~ s/<asp:.*?\/>//gs;
     $$contref =~ s/<jsp:.*?\/>//gs;
-    $$contref =~ s/<script.*>.*<\/script>//igs;
+    $$contref =~ s/<script.*?<\/script>//igs;
 }
 
 # Convert independent < > s into entity references for escaping.
@@ -337,9 +348,9 @@ sub get_author ($$) {
     # <META NAME="AUTHOR" CONTENT="author">
     # <LINK REV=MADE HREF="mailto:ccsatoru@vega.aichi-u.ac.jp">
 
-    if ($$contref =~ m!<META\s[^>]*?NAME=([\"\']?)AUTHOR\1\s[^>]*?CONTENT=([\"\']?)(.*?)\2\s*>!is) {
+    if ($$contref =~ m!<META\s[^>]*?NAME=([\"\']?)AUTHOR\1\s[^>]*?CONTENT=([\"\']?)(.*?)\2\s*/?>!is) {
         $fields->{'author'} = $3;
-    } elsif ($$contref =~ m!<LINK\s[^>]*?HREF=([\"\']?)mailto:(.*?)\1\s*>!i) {
+    } elsif ($$contref =~ m!<LINK\s[^>]*?HREF=([\"\']?)mailto:(.*?)\1\s*/?>!i) {
         $fields->{'author'} = $2;
     } elsif ($$contref =~ m!<ADDRESS[^>]*>(.*?)</ADDRESS>!is) {
 	my $tmp = $1;
@@ -503,10 +514,10 @@ sub remove_html_elements ($) {
     my ($contref) = @_;
 
     # remove Office Markup <o:></o:>, <![]>
-    $$contref =~ s#</?([A-Z]\w*):.*?>|<(!)\[.*?\]\s*>#element_space($1||$2)#gsixe;
+    $$contref =~ s#</?([A-Z]\w*):.*?>|<(!)\[.*?\]\s*/?>#element_space($1||$2)#gsixe;
 
     # remove all elements
-    $$contref =~ s!</?([A-Z]\w*)(?:\s+[A-Z]\w*(?:\s*=\s*(?:(["']).*?\2|[\w\-.]+))?)*\s*>!element_space($1)!gsixe;
+    $$contref =~ s!</?([A-Z]\w*)(?:\s+[A-Z]\w*(?:\s*=\s*(?:(["']).*?\2|[\w\-.]+))?)*\s*/?>!element_space($1)!gsixe;
 
 }
 

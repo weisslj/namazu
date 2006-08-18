@@ -1,7 +1,12 @@
+2006-08-19  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * pl/*, filter/*, scripts/*: Synced from development-2-1 changes 
+        2006-02-01 to 2006-08-11.
+
 2006-08-12  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* Replaces utf8index-branch. 
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1477 2006-08-12 14:10:27 opengl2772 Exp $
+$Id: ChangeLog,v 1.1478 2006-08-18 17:36:23 opengl2772 Exp $

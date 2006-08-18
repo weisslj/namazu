@@ -1,9 +1,9 @@
 #
 # -*- Perl -*-
-# $Id: olemsword.pl,v 1.21 2006-08-12 07:06:44 opengl2772 Exp $
+# $Id: olemsword.pl,v 1.22 2006-08-18 17:35:19 opengl2772 Exp $
 # Copyright (C) 1999 Jun Kurabe,
 #		1999-2000 Ken-ichi Hirose,
-#               2004 Namazu Project All rights reserved.
+#               2004-2006 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -324,6 +324,7 @@ sub getFrames ($$) {
 
     my $enum_func = sub {
 	my $obj = shift;
+        return 1 if (!defined($obj->Range));
 	my $p = $obj->Range->{Text};
 #	chop $p;
         $$cont .= "$p\n" if ( defined $p );

@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.174 2006-08-12 07:26:20 opengl2772 Exp $
+# $Id: mknmz.in,v 1.175 2006-08-18 17:36:23 opengl2772 Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2006 Namazu Project All rights reserved.
@@ -186,7 +186,7 @@ sub main {
 #
 # FIXME: Very complicated.
 #
-sub process_file ($$$$$$) {
+sub process_file ($$$$\%$$) {
     my ($cfile, $docid_count, $docid_base, $file_count, 
 	$field_indices, $fh_errorsfile, $total_files_num) = @_;
 
@@ -540,6 +540,8 @@ sub namazu_core ($$$$$$$$$$) {
 	    $kanji = $Document->is_contain_kanji();
 	    $text_size = $Document->get_text_size();
 	    $mtype = $Document->get_mimetype();
+
+            $fields{'mtype'} = $mtype;
 	}
     }
 
@@ -550,7 +552,7 @@ sub namazu_core ($$$$$$$$$$) {
     my $cfile2 = $cfile; # $cfile2 is for terminal message.
     codeconv::decode_filename(\$cfile2, $conf::TARGET_FILESYS_CODING);
     codeconv::to_external_encoding(\$cfile2);
-    if ($$contref eq "") {
+    if (!defined $$contref || $$contref eq "") {
 	my $err = $Document->get_errmsg();
 	if (defined $err) {
 	    print $msg_prefix . "$cfile2 $err\n";
@@ -1107,10 +1109,18 @@ sub parse_options
         $var::NMZ{'status'} = "$update_index/$var::NMZ{'status'}";
 
         my $argv = get_status("argv");
+        if (!defined $argv) {
+           print _("No such index: "), "$update_index\n";
+           exit 1;
+        }
         @ARGV = split /\t/, $argv;
         util::dprint(_("Inherited argv: ")."@ARGV\n");
 
         my $cwd  = get_status("cwd");
+        if (!defined $cwd) {
+           print _("No such index: "), "$update_index\n";
+           exit 1;
+        }
         chdir $cwd;
         util::dprint(_("Inherited cwd: ")."$cwd\n");
 

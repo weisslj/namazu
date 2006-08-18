@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: gfilter.pl,v 1.10 2006-08-12 05:45:03 opengl2772 Exp $
+# $Id: gfilter.pl,v 1.11 2006-08-18 17:34:26 opengl2772 Exp $
 # Copyright (C) 1999 Satoru Takabayashi ,
-# Copyright (C) 2004 Namazu Project ,
+#               2000-2006 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -66,8 +66,8 @@ sub white_space_adjust_filter ($) {
 sub filename_to_title ($$) {
     my ($cfile, $weighted_str) = @_;
 
-    $cfile =~ m!^.*/([^/]*)$!;
-    my $filename = $1;
+    my $filename = $cfile;
+    $filename = $1 if ($cfile =~ m!^.*/([^/]*)$!);
 
     # get keywords from a file name.
     # modified [1998-09-18] 

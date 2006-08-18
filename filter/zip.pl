@@ -1,10 +1,10 @@
 #
 # -*- Perl -*-
-# $Id: zip.pl,v 1.20 2006-08-12 07:18:44 opengl2772 Exp $
+# $Id: zip.pl,v 1.21 2006-08-18 17:35:19 opengl2772 Exp $
 #  zip filter for namazu
 #  Copyright (C) 2004 MATSUMURA Namihiko <po-jp@counterghost.net>
 #                2004 Yukio USUDA <usu@namazu.org>
-#                2004-2005 Namazu Project All rights reserved.
+#                2004-2006 Namazu Project All rights reserved.
 #
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -178,7 +178,6 @@ sub unzip_filter ($$$$$) {
 	codeconv::to_inner_encoding(\$summary, 'unknown');
 	$$contref .= $summary . " ";
     }
-    unlink($tmpfile2);
 
     my %files;
     my $filenames = undef;
@@ -216,6 +215,8 @@ sub unzip_filter ($$$$$) {
 	}
     }
     $$contref .= $filenames . " " if (defined $filenames);
+
+    unlink($tmpfile2);
 
     my $fname;
     foreach $fname (keys %files){

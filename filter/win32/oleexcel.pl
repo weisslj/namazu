@@ -1,10 +1,10 @@
 #
 # -*- Perl -*-
-# $Id: oleexcel.pl,v 1.27 2006-08-12 07:06:44 opengl2772 Exp $
+# $Id: oleexcel.pl,v 1.28 2006-08-18 17:35:19 opengl2772 Exp $
 # Copyright (C) 2001 Yoshinori TAKESAKO,
 #               1999 Jun Kurabe,
 #               1999 Ken-ichi Hirose,
-#               2000-2004 Namazu Project All rights reserved.
+#               2000-2006 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -163,7 +163,7 @@ sub getProperties ($$$) {
 sub Win32_FullPath ($) {
     # c:/hoge/hoge.xls -> c:\hoge\hoge.xls
     my $file = shift;
-    if ($English::Perl_VERSION >= 5.006) {
+    if ($English::PERL_VERSION >= 5.006) {
 	$file = Win32::GetFullPathName($file);
     }
     $file =~ s|/|\\|g;

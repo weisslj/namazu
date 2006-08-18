@@ -2,7 +2,7 @@
  * 
  * codeconv.c -
  * 
- * $Id: codeconv.c,v 1.36 2006-08-12 07:01:01 opengl2772 Exp $
+ * $Id: codeconv.c,v 1.37 2006-08-18 18:56:03 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000,2004 Namazu Project All rights reserved.
@@ -48,7 +48,7 @@
 #include <strings.h>
 #endif
 
-#    include <iconv.h>
+#include <iconv.h>
 
 #include "libnamazu.h"
 #include "codeconv.h"
@@ -136,7 +136,7 @@ nmz_codeconv_external (const char *str) {
     {
         nmz_from_to(tmp, tmpsize, "UTF-8", "EUC-JP");
     } else if (strcasecmp(lang, "ja_JP.SJIS") == 0) { /* Shift_JIS */
-        nmz_from_to(tmp, tmpsize, "UTF-8", "SHIFT-JIS");
+        nmz_from_to(tmp, tmpsize, "UTF-8", "SHIFT_JIS");
     } else if (strcasecmp(lang, "ja_JP.ISO-2022-JP") == 0) { /* ISO-2022-JP */
 	/*
 	 * Prepare enough memory for ISO-2022-JP encoding.
@@ -269,10 +269,10 @@ nmz_codeconv_jp(char *buffer, int bufferSize)
     }
 
     /******************************************/
-    /* SHIFT-JIS                              */
+    /* SHIFT_JIS                              */
     /******************************************/
     strncpy(bufferSJIS, buffer, bufferSize);
-    if (nmz_from_to(bufferSJIS, bufferSize, "SHIFT-JIS", "EUC-JP")) {
+    if (nmz_from_to(bufferSJIS, bufferSize, "SHIFT_JIS", "EUC-JP")) {
         data[2].length = nmz_lengthEUCJP(bufferSJIS, strlen(bufferSJIS));
         if (data[2].length != 0) {
             data[2].bytes = strlen(bufferSJIS);
@@ -323,7 +323,7 @@ nmz_codeconv_jp(char *buffer, int bufferSize)
     if (resultType == TYPE_EUCJP) {
         nmz_from_to(buffer, bufferSize, "EUC-JP", "UTF-8"); 
     } else if (resultType == TYPE_SJIS) {
-        nmz_from_to(buffer, bufferSize, "SHIFT-JIS", "UTF-8"); 
+        nmz_from_to(buffer, bufferSize, "SHIFT_JIS", "UTF-8"); 
     }
 
     free(bufferUTF8);
@@ -399,7 +399,7 @@ nmz_lengthEUCJP(const char *str, int length)
        ch = (unsigned char)str[i];
        if (mode == 0) {
            count++;
-           if (ch == 0x8e || (ch >= 0xa1 && ch <= 0xfe)) {
+           if ((ch >= 0xa1 && ch <= 0xfe) || ch == 0x8e) {
                mode = 1;
            } else if (ch == 0x8f) {
                mode = 2;

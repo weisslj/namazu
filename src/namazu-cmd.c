@@ -2,10 +2,10 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu-cmd.c,v 1.29 2006-08-12 06:56:05 opengl2772 Exp $
+ * $Id: namazu-cmd.c,v 1.30 2006-08-18 18:56:51 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2005 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2006 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -343,6 +343,12 @@ main(int argc, char **argv)
 	exit(EXIT_FAILURE);
     } else {
         int i = 0;
+        int idx;
+
+        for(idx = 0; idx < NUM_QUERY; idx++) {
+            nmz_set_querymode(idx, "normal");
+            nmz_set_query(idx, "");
+        }
 
 	set_refprint(1);
 

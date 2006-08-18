@@ -1,9 +1,9 @@
 /*
  * 
- * $Id: util.c,v 1.92 2006-08-12 07:01:01 opengl2772 Exp $
+ * $Id: util.c,v 1.93 2006-08-18 18:56:03 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000,2001,2004 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2006 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -129,7 +129,7 @@ uri_to_cap ( uchar * p )
     while (1) {
 	if (c >= 0x80) {
 	    *p = ':';      p++;
-	    sprintf(s2, "%02x", c);
+	    sprintf((char *)s2, "%02x", c);
 	    *p =  *s2;     p++;
 	    *p =  *(s2+1); p++;
 	} else {
@@ -167,7 +167,7 @@ uri_to_hex ( uchar * p )
     }
     while (1) {
 	*p = ':';      p++;
-	sprintf(s2, "%02x", c);
+	sprintf((char *)s2, "%02x", c);
 	*p =  *s2;     p++;
 	*p =  *(s2+1); p++;
 	if (!(c = *(s++))) {
@@ -199,7 +199,7 @@ encode_uri_sub(uchar * p)
 	*p = '\0';
 	return;
     }
-    if ((c == '/') && (isalpha(*s)) && (*(s+1) == '|')){
+    if ((c == '/') && (nmz_isalpha(*s)) && (*(s+1) == '|')){
 	/* Win32 drive letter was escaped like "/C|" */
 	*p = '/';  p++;
 	*p = *s;  p++;
@@ -209,7 +209,7 @@ encode_uri_sub(uchar * p)
     while (1) {
 	if (!(nmz_is_safe_char(c))) {
 	    *p = '%';      p++;
-	    sprintf(s2, "%02x", c);
+	    sprintf((char *)s2, "%02x", c);
 	    *p =  *s2;     p++;
 	    *p =  *(s2+1); p++;
 	} else if((c == ':') && (*s == '/') && (*(s+1) == '/')){
@@ -520,7 +520,7 @@ nmz_isnumstr(const char *str)
     }
 
     for (p = (const unsigned char *)str; *p != '\0'; p++) {
-	if (! isdigit((int)*p)) {
+	if (!nmz_isdigit((int)*p)) {
 	    return 0;
 	}
     }
@@ -532,12 +532,12 @@ nmz_isnumstr(const char *str)
  * Substitute for tolower(3).
  */
 
-int 
+int
 _nmz_tolower(int c)
 {
     if (c >= 'A' && c <= 'Z') {
-	c = 'a' + c - 'A';
-	return c;
+        c = 'a' + c - 'A';
+        return c;
     }
     return c;
 }
@@ -546,8 +546,8 @@ int
 _nmz_toupper(int c)
 {
     if (c >= 'a' && c <= 'z') {
-  	c = 'A' + c - 'a';
- 	return c;
+        c = 'A' + c - 'a';
+        return c;
     }
     return c;
 }
@@ -749,6 +749,34 @@ nmz_is_file_exists(const char *fname)
     return stat(fname, &fstatus) == 0;
 }
 
+/*
+ *   for directory traversal issue.
+ *   Must be encoded in EUC-JP encoding.
+ */
+char *
+nmz_delete_since_path_delimitation(char *dest, const char *src, size_t n)
+{
+    char *p;
+
+    if (n < 1) {
+        return dest;
+    }
+
+    strncpy(dest, src, n - 1);
+    dest[n - 1] = '\0';
+
+    p = dest;
+    while(*p) {
+        if (*p == '/' || *p == '\\') {
+            *p = '\0';
+            break;
+        }
+        p++;
+    }
+
+    return dest;
+}
+
 void
 nmz_parse_escape_crosshatch(uchar * p)
 {
@@ -794,7 +822,7 @@ void
 nmz_encode_uri(uchar * p)
 {
     int tmpsize;
-    tmpsize = strlen(p)  + 1;
+    tmpsize = strlen((char *)p)  + 1;
 
     nmz_from_to(p, tmpsize, "UTF-8", filesyscoding);
 

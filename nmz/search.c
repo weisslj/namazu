@@ -1,9 +1,9 @@
 /*
  * 
- * $Id: search.c,v 1.109 2006-08-12 07:01:01 opengl2772 Exp $
+ * $Id: search.c,v 1.110 2006-08-18 18:56:03 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2005 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2006 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -150,7 +150,7 @@ lrget(int *l, int *r)
     *r = get_file_size(NMZ.ii) / sizeof(int) - 1;
 
     if (nmz_is_debugmode()) {
-	show_status(*l, *r);
+        show_status(*l, *r);
     }
 }
 
@@ -176,60 +176,60 @@ prefix_match(const char *key, int v)
     n = strlen(tmpkey);
 
     for (i = v; i >= 0; i--) {
-	fseek(Nmz.w, nmz_getidxptr(Nmz.wi, i), 0);
-	fgets(buf, BUFSIZE - 1, Nmz.w);
-	if (strncmp(tmpkey, buf, n) != 0) {
-	    break;
-	}
+        fseek(Nmz.w, nmz_getidxptr(Nmz.wi, i), 0);
+        fgets(buf, BUFSIZE - 1, Nmz.w);
+        if (strncmp(tmpkey, buf, n) != 0) {
+            break;
+        }
     }
     if (nmz_is_debugmode()) {
-	v = i;
+        v = i;
     }
 
     maxmatch = nmz_get_maxmatch();
     maxhit = nmz_get_maxhit();
 
     for (j = 0, i++;; i++) {
-	/* 
-	 * Return if too much word would be hit
+        /* 
+         * Return if too much word would be hit
          * because treat 'a*' completely is too consuming 
-	 */
+         */
         if (fseek(Nmz.w, nmz_getidxptr(Nmz.wi, i), 0) != 0) {
-	    break;
-	}
+            break;
+        }
         if (fgets(buf, BUFSIZE - 1, Nmz.w) == NULL) {
-	    break;
-	}
+            break;
+        }
         nmz_chomp(buf);
-	if (strncmp(tmpkey, buf, n) == 0) {
-	    tmp = nmz_get_hlist(i);
-	    if (tmp.stat == ERR_FATAL) {
-	        return tmp;
-	    }
-	    if (tmp.num > maxhit) {
-		nmz_free_hlist(val);
-		val.stat = ERR_TOO_MUCH_HIT;
-		break;
-	    }
-	    if (tmp.num > 0) {
-	 	j++;
-  	  	if (j > maxmatch) {
-	 	    nmz_free_hlist(val);
-	 	    val.stat = ERR_TOO_MUCH_MATCH;
-		    break;
-		}
-		val = nmz_ormerge(val, tmp);
-		if (val.stat == ERR_FATAL)
-		    return val;
-		if (val.num > maxhit) {
-		    nmz_free_hlist(val);
-		    val.stat = ERR_TOO_MUCH_HIT;
-		    break;
-		}
-	    }
-	    nmz_debug_printf("fw: %s, %d, %d\n", buf, tmp.num, val.num);
-	} else
-	    break;
+        if (strncmp(tmpkey, buf, n) == 0) {
+            tmp = nmz_get_hlist(i);
+            if (tmp.stat == ERR_FATAL) {
+                return tmp;
+            }
+            if (tmp.num > maxhit) {
+                nmz_free_hlist(val);
+                val.stat = ERR_TOO_MUCH_HIT;
+                break;
+            }
+            if (tmp.num > 0) {
+                j++;
+                if (j > maxmatch) {
+                    nmz_free_hlist(val);
+                    val.stat = ERR_TOO_MUCH_MATCH;
+                    break;
+                }
+                val = nmz_ormerge(val, tmp);
+                if (val.stat == ERR_FATAL)
+                    return val;
+                if (val.num > maxhit) {
+                    nmz_free_hlist(val);
+                    val.stat = ERR_TOO_MUCH_HIT;
+                    break;
+                }
+            }
+            nmz_debug_printf("fw: %s, %d, %d\n", buf, tmp.num, val.num);
+        } else
+            break;
     }
     nmz_debug_printf("range: %d - %d\n", v + 1, i - 1);
     return val;
@@ -243,40 +243,40 @@ detect_search_mode(const char *key) {
     if (strlen(key) <= 1)
         return WORD_MODE;
     if (nmz_isfield(key)) { /* field search */
-	nmz_debug_printf("do FIELD search\n");
+        nmz_debug_printf("do FIELD search\n");
         return FIELD_MODE;
     }
     if (*key == '/' && key[strlen(key) - 1] == '/') {
-	if (nmz_is_regex_searchmode()) {
-	    nmz_debug_printf("do REGEX search\n");
-	    return REGEX_MODE;    /* regex match */
-	} else {
-	    nmz_debug_printf("disabled REGEX search\n");
-	    return WORD_MODE;
-	}
+        if (nmz_is_regex_searchmode()) {
+            nmz_debug_printf("do REGEX search\n");
+            return REGEX_MODE;    /* regex match */
+        } else {
+            nmz_debug_printf("disabled REGEX search\n");
+            return WORD_MODE;
+        }
     } else if (*key == '*' 
                && key[strlen(key) - 1] == '*'
                && *(key + strlen(key) - 2) != '\\' ) 
     {
-	    nmz_debug_printf("do REGEX (INTERNAL_MATCH) search\n");
-	    return REGEX_MODE;    /* internal match search (treated as regex) */
-	    /* [*keyword*] is always enabled */
+        nmz_debug_printf("do REGEX (INTERNAL_MATCH) search\n");
+        return REGEX_MODE;    /* internal match search (treated as regex) */
+        /* [*keyword*] is always enabled */
     } else if (key[strlen(key) - 1] == '*'
         && *(key + strlen(key) - 2) != '\\')
     {
-	nmz_debug_printf("do PREFIX_MATCH search\n");
-	return PREFIX_MODE;    /* prefix match search */
+        nmz_debug_printf("do PREFIX_MATCH search\n");
+        return PREFIX_MODE;    /* prefix match search */
     } else if (*key == '*') {
-	nmz_debug_printf("do REGEX (SUFFIX_MATCH) search\n");
-	return REGEX_MODE;    /* suffix match  (treated as regex)*/
-	/* [*keyword] is always enabled */
+        nmz_debug_printf("do REGEX (SUFFIX_MATCH) search\n");
+        return REGEX_MODE;    /* suffix match  (treated as regex)*/
+        /* [*keyword] is always enabled */
     }
     
     if (strchr(key, '\t')) {
-	nmz_debug_printf("do PHRASE search\n");
-	return PHRASE_MODE;
+        nmz_debug_printf("do PHRASE search\n");
+        return PHRASE_MODE;
     } else {
-	nmz_debug_printf("do WORD search\n");
+        nmz_debug_printf("do WORD search\n");
         return WORD_MODE;
     }
 }
@@ -289,17 +289,17 @@ do_word_search(const char *key, NmzResult val)
     if ((v = nmz_binsearch(key, 0)) != -1) {
         /* If found, get list */
         val = nmz_get_hlist(v);
-	if (val.stat == ERR_FATAL)
-	    return val;
-	if (val.num > nmz_get_maxhit()) {
-  	    nmz_free_hlist(val);
-  	    val.stat = ERR_TOO_MUCH_HIT;
-  	    return val;
-	}
+        if (val.stat == ERR_FATAL)
+            return val;
+        if (val.num > nmz_get_maxhit()) {
+            nmz_free_hlist(val);
+            val.stat = ERR_TOO_MUCH_HIT;
+            return val;
+        }
     } else {
         val.num  = 0;  /* no hit */
-	val.stat = SUCCESS; /* no hit but success */
-	val.data = NULL;
+        val.stat = SUCCESS; /* no hit but success */
+        val.data = NULL;
     }
     return val;
 }
@@ -312,12 +312,12 @@ do_prefix_match_search(const char *key, NmzResult val)
     if ((v = nmz_binsearch(key, 1)) != -1) { /* 2nd argument must be 1  */
         /* If found, do foward match */
         val = prefix_match(key, v);
-	if (val.stat != SUCCESS)
-	    return val;
+        if (val.stat != SUCCESS)
+            return val;
     } else {
         val.num  = 0;  /* no hit */
-	val.stat = SUCCESS; /* no hit but success */
-	val.data = NULL;
+        val.stat = SUCCESS; /* no hit but success */
+        val.data = NULL;
     }
     return val;
 }
@@ -357,7 +357,7 @@ cmp_phrase_hash(int hash_key, NmzResult val,
     }
     ptr = nmz_getidxptr(phrase_index, hash_key);
     if (ptr < 0) {
-	nmz_free_hlist(val);
+        nmz_free_hlist(val);
         val.num = 0;
         return val;
     }
@@ -366,26 +366,26 @@ cmp_phrase_hash(int hash_key, NmzResult val,
 
     list = malloc(n * sizeof(int));
     if (list == NULL) {
-	 nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
-	 val.stat = ERR_FATAL;
-	 return val;
+        nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
+        val.stat = ERR_FATAL;
+        return val;
     }
 
     {
-	int docid, sum = 0;
-	n = nmz_read_unpackw(phrase, list, n);
-	for (i = j = v = 0; i < n; i++) {
-	    docid = *(list + i) + sum;
-	    sum = docid;
-	    for (; j < val.num && docid >= val.data[j].docid; j++) {
-		if (docid == val.data[j].docid) {
-		    nmz_copy_hlist(val, v++, val, j);
-		}
-	    }
-	}
+        int docid, sum = 0;
+        n = nmz_read_unpackw(phrase, list, n);
+        for (i = j = v = 0; i < n; i++) {
+            docid = *(list + i) + sum;
+            sum = docid;
+            for (; j < val.num && docid >= val.data[j].docid; j++) {
+                if (docid == val.data[j].docid) {
+                    nmz_copy_hlist(val, v++, val, j);
+                }
+            }
+        }
     }
     if (v == 0) {
-	nmz_free_hlist(val);
+        nmz_free_hlist(val);
     }
     val.num = v;
     free(list);
@@ -440,103 +440,103 @@ do_phrase_search(const char *key, NmzResult src)
         p++;
     }
     for (i = 0; ;) {
-	char *q;
+        char *q;
 
-	if (*p == '\t') {
-	    p++;
-	    continue;
-	}
-	if (strlen(p) > 0) {
-	    words[i] = p;
-	    i++;
-	}
-	q = strchr(p, '\t');
-	if (q) {
-	    *q = '\0';
-	} else {
-	    break;
-	}
+        if (*p == '\t') {
+            p++;
+            continue;
+        }
+        if (strlen(p) > 0) {
+            words[i] = p;
+            i++;
+        }
+        q = strchr(p, '\t');
+        if (q) {
+            *q = '\0';
+        } else {
+            break;
+        }
         p = q + 1;
     }
     words[i] = NULL;
 
     for (i = 0; words[i] != NULL; i++) {
-	char *word, word_mix[BUFSIZE];
-	NmzResult tmp;
+        char *word, word_mix[BUFSIZE];
+        NmzResult tmp;
 
         tmp.num  = 0;
         tmp.data = NULL;
         tmp.stat = SUCCESS;
 
         word = words[i];
-	tmp = do_word_search(word, val);
-	if (tmp.stat == ERR_FATAL) {
+        tmp = do_word_search(word, val);
+        if (tmp.stat == ERR_FATAL) {
             fclose(phrase);
             fclose(phrase_index);
-	    return tmp;
+            return tmp;
         }
 
-	pr_hitnum = nmz_push_hitnum(pr_hitnum, word, tmp.num, tmp.stat);
-	if (pr_hitnum == NULL) {
+        pr_hitnum = nmz_push_hitnum(pr_hitnum, word, tmp.num, tmp.stat);
+        if (pr_hitnum == NULL) {
             fclose(phrase);
             fclose(phrase_index);
-	    tmp.stat = ERR_FATAL;
-	    return tmp;
-	}
+            tmp.stat = ERR_FATAL;
+            return tmp;
+        }
 
-	if (i == 0) {
-	    val = tmp;
-	} else if (val.num == 0) { /* phrase search is failed halfway */
-	    continue;
-	} else {
-	    val = nmz_andmerge(val, tmp, 0);
+        if (i == 0) {
+            val = tmp;
+        } else if (val.num == 0) { /* phrase search is failed halfway */
+            continue;
+        } else {
+            val = nmz_andmerge(val, tmp, 0);
 
-	    strcpy(word_mix, prevword);
-	    strcat(word_mix, word);
-	    h = hash(word_mix);
-	    val = cmp_phrase_hash(h, val, phrase, phrase_index);
-	    nmz_debug_printf("\nhash:: <%s, %s>: h:%d, val.num:%d\n",
-			     prevword, word, h, val.num);
-	    if (val.stat == ERR_FATAL) {
+            strcpy(word_mix, prevword);
+            strcat(word_mix, word);
+            h = hash(word_mix);
+            val = cmp_phrase_hash(h, val, phrase, phrase_index);
+            nmz_debug_printf("\nhash:: <%s, %s>: h:%d, val.num:%d\n",
+                prevword, word, h, val.num);
+            if (val.stat == ERR_FATAL) {
                 fclose(phrase);
                 fclose(phrase_index);
-		return val;
-	    }
-	}
-	prevword = word;
+                return val;
+            }
+        }
+        prevword = word;
     }
 
     /* Set phrase hit numbers using phrase member */
     {
-	struct nmz_hitnumlist *cur, *tmp;
+        struct nmz_hitnumlist *cur, *tmp;
 
-	/* Get current hitnum list */
-	cur = nmz_get_idx_hitnumlist(cur_idxnum);
+        /* Get current hitnum list */
+        cur = nmz_get_idx_hitnumlist(cur_idxnum);
 
         /* Push dummy element */
-	cur = nmz_push_hitnum(cur, "", 0, SUCCESS);
-	if (cur == NULL) {
+        cur = nmz_push_hitnum(cur, "", 0, SUCCESS);
+        if (cur == NULL) {
             fclose(phrase);
             fclose(phrase_index);
-	    val.stat = ERR_FATAL;
-	    return val;
-	}
-	nmz_set_idx_hitnumlist(cur_idxnum, cur);
+            val.stat = ERR_FATAL;
+            return val;
+        }
+        nmz_set_idx_hitnumlist(cur_idxnum, cur);
 
-	/* Get the last element */
-	tmp = cur;
-	while (1) {
-	    if (tmp->next == NULL) {
-		break;
-	    }
-	    tmp = tmp->next;
-	}
+        /* Get the last element */
+        tmp = cur;
+        while (1) {
+            if (tmp->next == NULL) {
+                break;
+            }
+            tmp = tmp->next;
+        }
 
-	/* 
-	 * Then store phrase information.
-	 */
-	tmp->phrase = pr_hitnum;
-	tmp->hitnum = val.num;  /* total hit of phrases */
+        /* 
+         * Then store phrase information.
+         */
+        tmp->phrase = pr_hitnum;
+        tmp->hitnum = val.num;  /* total hit of phrases */
     }
     
     fclose(phrase);
@@ -551,36 +551,42 @@ do_regex_preprocessing(char *expr)
     if (*expr == '*' && expr[strlen(expr) - 1] != '*') {
         /* If suffix match such as '*bar', enforce it into regex */
         strcpy(expr, expr + 1);
-	escape_meta_characters(expr, BUFSIZE * 2);
-  	strncat(expr, "$", BUFSIZE * 2 - strlen(expr) - 1);
-  	expr[BUFSIZE * 2 - 1] = '\0';
+        escape_meta_characters(expr, BUFSIZE * 2);
+        strncat(expr, "$", BUFSIZE * 2 - strlen(expr) - 1);
+        expr[BUFSIZE * 2 - 1] = '\0';
     } else if (*expr != '*' && expr[strlen(expr) - 1] == '*') {
         /* If prefix match such as 'bar*', enforce it into regex */
-	expr[strlen(expr) - 1] = '\0';
-  	escape_meta_characters(expr, BUFSIZE * 2);
-  	strncat(expr, ".*", BUFSIZE * 2 - strlen(expr) - 1);
-  	expr[BUFSIZE * 2 - 1] = '\0';
+        expr[strlen(expr) - 1] = '\0';
+        escape_meta_characters(expr, BUFSIZE * 2);
+        strncat(expr, ".*", BUFSIZE * 2 - strlen(expr) - 1);
+        expr[BUFSIZE * 2 - 1] = '\0';
     } else if (*expr == '*' && expr[strlen(expr) - 1] == '*') {
         /* If internal match such as '*foo*', enforce it into regex */
         strcpy(expr, expr + 1);
         expr[strlen(expr) - 1] = '\0';
-	escape_meta_characters(expr, BUFSIZE * 2);
+        escape_meta_characters(expr, BUFSIZE * 2);
     } else if (*expr == '/' && expr[strlen(expr) - 1] == '/') {
-        /* Genuine regex */
-        /* Remove the both of '/' chars at begging and end of string */
-        strcpy(expr, expr + 1); 
-        expr[strlen(expr) - 1]= '\0';
+        if (nmz_is_regex_searchmode()) {
+            nmz_debug_printf("do REGEX search\n");
+            /* Genuine regex */
+            /* Remove the both of '/' chars at begging and end of string */
+            strcpy(expr, expr + 1);
+            expr[strlen(expr) - 1]= '\0';
+        } else {
+            nmz_debug_printf("disabled REGEX search\n");
+            escape_meta_characters(expr, BUFSIZE * 2);
+        }
         return;
     } else {
-	/* field search */
+        /* field search */
         if ((*expr == '"' && expr[strlen(expr) - 1] == '"')
             || (*expr == '{' && expr[strlen(expr) - 1] == '}')) 
-	{
+        {
             /* Delimiters of field search */
             strcpy(expr, expr + 1); 
             expr[strlen(expr) - 1] = '\0';
         }
-	escape_meta_characters(expr, BUFSIZE * 2);
+        escape_meta_characters(expr, BUFSIZE * 2);
     }
 }
 
@@ -593,9 +599,9 @@ escape_meta_characters(char *expr, size_t bufsize)
     exprp = expr;
     /* Escape meta characters */
     while (*exprp) {
-  	/* japanese only */
-  	if (!isalnum((unsigned char)*exprp) && !nmz_iseuc(*exprp)) {
-	    *bufp = '\\';
+        /* japanese only */
+        if (!nmz_isalnum((unsigned char)*exprp) && !nmz_iseuc(*exprp)) {
+            *bufp = '\\';
             bufp++;
         }
         *bufp = *exprp;
@@ -680,7 +686,7 @@ is_locked(void)
     FILE *lock;
 
     if ((lock = fopen(NMZ.lock, "rb"))) {
-	fclose(lock);
+        fclose(lock);
         return 1;
     }
     return 0;
@@ -696,33 +702,33 @@ parse_access(const char *line, const char *rhost, const char *raddr, enum nmz_pe
     line += strspn(line, " \t");
 
     if (*line == '\0' || *line == '#') {
-	/* Ignore blank line or comment line */
+        /* Ignore blank line or comment line */
         return perm;
     }
     if (nmz_strprefixcasecmp(line, "allow") == 0) {
-	line += strlen("allow");
-	line += strspn(line, " \t");
-	if (strcasecmp(line, "all") == 0) {
-	    perm = ALLOW;
-	} else if (*raddr != '\0' && nmz_strprefixcmp(line, raddr) == 0) {
-	    /* IP Address : forward match */
-	    perm = ALLOW;
-	} else if (*rhost != '\0' && nmz_strsuffixcmp(line, rhost) == 0) {
-	    /* Hostname : backword match */
-	    perm = ALLOW;
-	}
+        line += strlen("allow");
+        line += strspn(line, " \t");
+        if (strcasecmp(line, "all") == 0) {
+            perm = ALLOW;
+        } else if (*raddr != '\0' && nmz_strprefixcmp(line, raddr) == 0) {
+            /* IP Address : forward match */
+            perm = ALLOW;
+        } else if (*rhost != '\0' && nmz_strsuffixcmp(line, rhost) == 0) {
+            /* Hostname : backword match */
+            perm = ALLOW;
+        }
     } else if (nmz_strprefixcasecmp(line, "deny") == 0) {
-	line += strlen("deny");
-	line += strspn(line, " \t");
-	if (strcasecmp(line, "all") == 0) {
-	    perm = DENY;
-	} else if (*raddr != '\0' && nmz_strprefixcmp(line, raddr) == 0) {
-	    /* IP Address : forward match */
-	    perm = DENY;
-	} else if (*rhost != '\0' && nmz_strsuffixcmp(line, rhost) == 0) {
-	    /* Hostname : backword match */
-	    perm = DENY;
-	}
+        line += strlen("deny");
+        line += strspn(line, " \t");
+        if (strcasecmp(line, "all") == 0) {
+            perm = DENY;
+        } else if (*raddr != '\0' && nmz_strprefixcmp(line, raddr) == 0) {
+            /* IP Address : forward match */
+            perm = DENY;
+        } else if (*rhost != '\0' && nmz_strsuffixcmp(line, rhost) == 0) {
+            /* Hostname : backword match */
+            perm = DENY;
+        }
     }
     return perm;
 }
@@ -739,16 +745,16 @@ check_access(void)
     raddr = nmz_getenv("REMOTE_ADDR");
 
     if (*rhost == '\0' && *raddr == '\0') { /* not from remote */
-	return perm;
+        return perm;
     }
 
     fp = fopen(NMZ.access, "rb");
     if (fp == NULL) {
-	return perm;
+        return perm;
     }
     while (fgets(buf, BUFSIZE, fp)) {
-	nmz_chomp(buf);
-	perm = parse_access(buf, rhost, raddr, perm);
+        nmz_chomp(buf);
+        perm = parse_access(buf, rhost, raddr, perm);
     }
     fclose(fp);
     return perm;
@@ -763,20 +769,20 @@ open_index_files(void)
     Nmz.i = fopen(NMZ.i, "rb");
     if (Nmz.i == NULL) {
         nmz_debug_printf("%s: %s", NMZ.i, strerror(errno));
-	return ERR_CANNOT_OPEN_INDEX;
+        return ERR_CANNOT_OPEN_INDEX;
     }
     Nmz.wi = fopen(NMZ.wi, "rb"); /* Check NMZ.wi at first to recognize index format */
     if (Nmz.wi == NULL) {
         nmz_debug_printf("%s: %s", NMZ.wi, strerror(errno));
         fclose(Nmz.i);
-	return ERR_OLD_INDEX_FORMAT;
+        return ERR_OLD_INDEX_FORMAT;
     }
     Nmz.ii = fopen(NMZ.ii, "rb");
     if (Nmz.ii == NULL) {
         nmz_debug_printf("%s: %s", NMZ.ii, strerror(errno));
         fclose(Nmz.wi);
         fclose(Nmz.i);
-	return ERR_CANNOT_OPEN_INDEX;
+        return ERR_CANNOT_OPEN_INDEX;
     }
     Nmz.w = fopen(NMZ.w, "rb");
     if (Nmz.w == NULL) {
@@ -784,7 +790,7 @@ open_index_files(void)
         fclose(Nmz.ii);
         fclose(Nmz.wi);
         fclose(Nmz.i);
-	return ERR_CANNOT_OPEN_INDEX;
+        return ERR_CANNOT_OPEN_INDEX;
     }
 
     return SUCCESS;
@@ -820,15 +826,15 @@ do_logging(const char *query, int n)
 
     slog = fopen(NMZ.slog, "a");
     if (slog == NULL) {
-	nmz_warn_printf("%s: %s", NMZ.slog, strerror(errno));
-	return;
+        nmz_warn_printf("%s: %s", NMZ.slog, strerror(errno));
+        return;
     }
     rhost = nmz_getenv("REMOTE_HOST");
     if (*rhost == '\0') {
-	rhost = nmz_getenv("REMOTE_ADDR");
+        rhost = nmz_getenv("REMOTE_ADDR");
     }
     if (*rhost == '\0')
-	rhost = "LOCALHOST";
+        rhost = "LOCALHOST";
     fprintf(slog, "%s\t%d\t%s\t%s", query, n, rhost, time_string);
 
     fclose(slog);
@@ -841,18 +847,18 @@ nmz_search_sub(NmzResult hlist, const char *query, int n)
     cur_idxnum = n;
 
     if (check_access() != ALLOW) { /* if access denied */
-	hlist.stat = ERR_NO_PERMISSION;
-	return hlist;
+        hlist.stat = ERR_NO_PERMISSION;
+        return hlist;
     }
 
     if (is_locked()) {
-	hlist.stat = ERR_INDEX_IS_LOCKED;
-	return hlist;
+        hlist.stat = ERR_INDEX_IS_LOCKED;
+        return hlist;
     }
 
     if ((nstat = open_index_files()) != SUCCESS) {
         /* If open failed */
-	hlist.stat = nstat;
+        hlist.stat = nstat;
         return hlist;
     }
 
@@ -905,10 +911,10 @@ static
 void remove_quotes(char *str) 
 {
     if ((strlen(str) >= 3 && (*str == '"' && str[strlen(str) - 1] == '"'))
-	|| (*str == '{' && str[strlen(str) - 1] == '}')) 
+        || (*str == '{' && str[strlen(str) - 1] == '}')) 
     {
-	strcpy(str, str + 1); 
-	str[strlen(str) - 1]= '\0';
+        strcpy(str, str + 1); 
+        str[strlen(str) - 1]= '\0';
     } 
 }
 
@@ -919,7 +925,7 @@ static enum nmz_stat
 normalize_idxnames(void)
 {
     if (nmz_expand_idxname_aliases() != SUCCESS) {
-	return FAILURE;
+        return FAILURE;
     }
     if (nmz_complete_idxnames() != SUCCESS) {
         return FAILURE;
@@ -928,7 +934,7 @@ normalize_idxnames(void)
     nmz_uniq_idxnames();
 
     if (nmz_is_debugmode()) {
-	int i;
+        int i;
         for (i = 0; i < nmz_get_idxnum(); i++) {
             nmz_debug_printf("Index name [%d]: %s\n", i, nmz_get_idxname(i));
         }
@@ -939,10 +945,10 @@ normalize_idxnames(void)
 static int 
 issymbol(int c)
 {
-    if (c >= 0x00 && c < 0x80 && !isalnum(c)) {
+    if (c >= 0x00 && c < 0x80 && !nmz_isalnum(c)) {
         return 1;
     } else {
-	return 0;
+        return 0;
     }
 }
 
@@ -969,47 +975,47 @@ nmz_binsearch(const char *key, int prefix_match_mode)
     }
 
     while (r >= l) {
-	x = (l + r) / 2;
+        x = (l + r) / 2;
 
-	/* Over BUFSIZE (maybe 1024) size keyword is nuisance */
-	fseek(Nmz.w, nmz_getidxptr(Nmz.wi, x), 0);
-	fgets(term, BUFSIZE - 1, Nmz.w);
-	nmz_chomp(term);
+        /* Over BUFSIZE (maybe 1024) size keyword is nuisance */
+        fseek(Nmz.w, nmz_getidxptr(Nmz.wi, x), 0);
+        fgets(term, BUFSIZE - 1, Nmz.w);
+        nmz_chomp(term);
 
-	nmz_debug_printf("searching: %s", term);
-	for (e = 0, i = 0; *(term + i) != '\0' && *(tmpkey + i) != '\0' ; i++)
-	{
-	    /*
-	     * compare in unsigned. 
-	     * because they could be 8 bit characters (0x80 or upper).
-	     */
-	    if ((uchar)*(term + i) > (uchar)*(tmpkey + i)) {
-		e = -1;
-		break;
-	    }
-	    if ((uchar)*(term + i) < (uchar)*(tmpkey + i)) {
-		e = 1;
-		break;
-	    }
-	}
+        nmz_debug_printf("searching: %s", term);
+        for (e = 0, i = 0; *(term + i) != '\0' && *(tmpkey + i) != '\0' ; i++)
+        {
+            /*
+             * compare in unsigned. 
+             * because they could be 8 bit characters (0x80 or upper).
+             */
+            if ((uchar)*(term + i) > (uchar)*(tmpkey + i)) {
+                e = -1;
+                break;
+            }
+            if ((uchar)*(term + i) < (uchar)*(tmpkey + i)) {
+                e = 1;
+                break;
+            }
+        }
 
-	if (*(term + i) == '\0' && *(tmpkey + i)) {
-	    e = 1;
-	} else if (! prefix_match_mode && *(term + i) != '\0' 
+        if (*(term + i) == '\0' && *(tmpkey + i)) {
+            e = 1;
+        } else if (! prefix_match_mode && *(term + i) != '\0' 
                    && (*(tmpkey + i) == '\0')) {
-	    e = -1;
-	}
+            e = -1;
+        }
 
-	/* If hit, return */
-	if (e == 0) {
-	    return x;
-	}
+        /* If hit, return */
+        if (e == 0) {
+            return x;
+        }
 
-	if (e < 0) {
-	    r = x - 1;
-	} else {
-	    l = x + 1;
-	}
+        if (e < 0) {
+            r = x - 1;
+        } else {
+            l = x + 1;
+        }
     }
     return -1;
 }
@@ -1033,50 +1039,50 @@ nmz_search(const char *query)
     }
 
     if (normalize_idxnames() != SUCCESS) {
-	hlist.stat = ERR_FATAL;
-	return hlist;
+        hlist.stat = ERR_FATAL;
+        return hlist;
     }
 
     ret = nmz_make_query(query);
     if (ret != SUCCESS) {
-	nmz_set_dyingmsg(nmz_msg(nmz_strerror(ret)));
-	hlist.stat = ERR_FATAL;
-	return hlist;
+        nmz_set_dyingmsg(nmz_msg(nmz_strerror(ret)));
+        hlist.stat = ERR_FATAL;
+        return hlist;
     }
 
     for (i = 0; i < nmz_get_idxnum(); i++) {
         make_fullpathname_index(i);
         tmp[i] = nmz_search_sub(tmp[i], query, i);
 
-	if (tmp[i].stat != SUCCESS) {
-	    tmp[i].num = 0;
-	    if (tmp[i].stat == ERR_FATAL) {
-		hlist.data = NULL;
-		hlist.stat = tmp[i].stat;
-		return hlist; /* FIXME: need freeing memory? */
-	    }
+        if (tmp[i].stat != SUCCESS) {
+            tmp[i].num = 0;
+            if (tmp[i].stat == ERR_FATAL) {
+                hlist.data = NULL;
+                hlist.stat = tmp[i].stat;
+                return hlist; /* FIXME: need freeing memory? */
+            }
 
-	    {
-		/* 
-		 * Save the error state for later error messaging.
-		 */
-		struct nmz_hitnumlist *cur = NULL;
-		cur = nmz_push_hitnum(cur, "", 0, tmp[i].stat);
-		if (cur == NULL) {
-		    hlist.stat = ERR_FATAL;
-		    return hlist;
-		}
-		nmz_set_idx_hitnumlist(cur_idxnum, cur);
-	    }
+            {
+                /* 
+                 * Save the error state for later error messaging.
+                 */
+                struct nmz_hitnumlist *cur = NULL;
+                cur = nmz_push_hitnum(cur, "", 0, tmp[i].stat);
+                if (cur == NULL) {
+                    hlist.stat = ERR_FATAL;
+                    return hlist;
+                }
+                nmz_set_idx_hitnumlist(cur_idxnum, cur);
+            }
 
-	    /*
-	     * Reset state with SUCCESS. Because at this time, 
-	     * trivial errors such as ERR_TOO_MUCH_MATCH are 
-	     * recorded in cur->stat.
-	     * FIXME: Very acrobatic logic.
-	     */
-	    tmp[i].stat = SUCCESS; 
-	}
+            /*
+             * Reset state with SUCCESS. Because at this time, 
+             * trivial errors such as ERR_TOO_MUCH_MATCH are 
+             * recorded in cur->stat.
+             * FIXME: Very acrobatic logic.
+             */
+            tmp[i].stat = SUCCESS; 
+        }
     }
 
     hlist = nmz_merge_hlist(tmp);
@@ -1085,22 +1091,22 @@ nmz_search(const char *query)
     nmz_recompute_score(&hlist);
 
     if (hlist.stat == SUCCESS && hlist.num > 0) { /* HIT!! */
-	/* Sort by date at first*/
+        /* Sort by date at first*/
         if (nmz_sort_hlist(hlist, SORT_BY_DATE) != SUCCESS) {
-	    hlist.stat = ERR_FATAL;
-	    return hlist;
-	}
-	if (nmz_get_sortmethod() != SORT_BY_DATE) {
-	    if (nmz_sort_hlist(hlist, nmz_get_sortmethod()) != SUCCESS) {
-	        hlist.stat = ERR_FATAL;
-		return hlist;
-	    }
-	}
+            hlist.stat = ERR_FATAL;
+            return hlist;
+        }
+        if (nmz_get_sortmethod() != SORT_BY_DATE) {
+            if (nmz_sort_hlist(hlist, nmz_get_sortmethod()) != SUCCESS) {
+                hlist.stat = ERR_FATAL;
+                return hlist;
+            }
+        }
         if (nmz_get_sortorder() == ASCENDING) {  /* default is descending */
-	    if (nmz_reverse_hlist(hlist)) {
-	        hlist.stat = ERR_FATAL;
-		return hlist; 
-	    }
+            if (nmz_reverse_hlist(hlist)) {
+                hlist.stat = ERR_FATAL;
+                return hlist; 
+            }
         }
     }
 
@@ -1125,25 +1131,25 @@ nmz_do_searching(const char *key, NmzResult src)
 
     mode = detect_search_mode(tmpkey);
     if (mode == ERROR_MODE) {
-	val.stat = ERR_FATAL;
-	return val;
+        val.stat = ERR_FATAL;
+        return val;
     }
 
     if (mode == WORD_MODE || mode == PHRASE_MODE) {
-	remove_quotes(tmpkey);
-	/* If under Japanese mode, do wakatigaki (word segmentation) */
-	if (nmz_is_lang_ja()) {
-	    if (nmz_wakati(tmpkey)) {
-		val.stat = ERR_FATAL;
-		return val;
-	    }
-	    /* Re-examine because tmpkey is wakatied. */
-	    if (strchr(tmpkey, '\t')) {
-		mode = PHRASE_MODE;
-	    } else {
-		mode = WORD_MODE;
-	    }
-	}
+        remove_quotes(tmpkey);
+        /* If under Japanese mode, do wakatigaki (word segmentation) */
+        if (nmz_is_lang_ja()) {
+            if (nmz_wakati(tmpkey)) {
+                val.stat = ERR_FATAL;
+                return val;
+            }
+            /* Re-examine because tmpkey is wakatied. */
+            if (strchr(tmpkey, '\t')) {
+                mode = PHRASE_MODE;
+            } else {
+                mode = WORD_MODE;
+            }
+        }
     }
 
     delete_beginning_backslash(tmpkey);
@@ -1161,14 +1167,14 @@ nmz_do_searching(const char *key, NmzResult src)
     }
 
     if (mode != PHRASE_MODE) {
-	struct nmz_hitnumlist *cur;
-	cur = nmz_get_idx_hitnumlist(cur_idxnum);
-	cur = nmz_push_hitnum(cur, key, val.num, val.stat);
-	if (cur == NULL) {
-	    val.stat = ERR_FATAL;
-	    return val;
-	}
-	nmz_set_idx_hitnumlist(cur_idxnum, cur);
+        struct nmz_hitnumlist *cur;
+        cur = nmz_get_idx_hitnumlist(cur_idxnum);
+        cur = nmz_push_hitnum(cur, key, val.num, val.stat);
+        if (cur == NULL) {
+            val.stat = ERR_FATAL;
+            return val;
+        }
+        nmz_set_idx_hitnumlist(cur_idxnum, cur);
     }
 
     return val;
@@ -1180,32 +1186,33 @@ nmz_free_hitnums(struct nmz_hitnumlist *hn)
     struct nmz_hitnumlist *tmp;
 
     for (; hn != NULL; hn = tmp) {
-	tmp = hn->next;
-	free(hn->word);
-	if (hn->phrase != NULL) { /* it has phrases */
-	    nmz_free_hitnums(hn->phrase);
-	}
-	free(hn);
+        tmp = hn->next;
+        free(hn->word);
+        if (hn->phrase != NULL) { /* it has phrases */
+            nmz_free_hitnums(hn->phrase);
+        }
+        free(hn);
     }
 }
+
 static void nmz_regex_strlower(char *str)
 {
     if (strlen(str) >= 2 && *str == '/' && str[strlen(str) - 1] == '/') {
-	if (nmz_is_regex_searchmode()) {
-	    /* keep \W \S \D \A \Z \B \G */
-	    char bak = '\0';
+        if (nmz_is_regex_searchmode()) {
+            /* keep \W \S \D \A \Z \B \G */
+            char bak = '\0';
 
-	    while (*str) {
-	 	if (bak != '\\') {
-		    /* Using ascii dependent lower same as mknmz. */
-		    bak = *str = _nmz_tolower(*str);
-		} else {
-		    bak = '\0';
-		}
-		str++;
-	    }
-	    return;
-	}
+            while (*str) {
+                if (bak != '\\') {
+                    /* Using ascii dependent lower same as mknmz. */
+                    bak = *str = _nmz_tolower(*str);
+                } else {
+                    bak = '\0';
+                }
+                str++;
+            }
+            return;
+        }
     }
 
     nmz_strlower(str);

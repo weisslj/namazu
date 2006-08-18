@@ -1,9 +1,9 @@
 /*
- * $Id: result.c,v 1.78 2006-08-12 06:56:05 opengl2772 Exp $
+ * $Id: result.c,v 1.79 2006-08-18 18:56:51 opengl2772 Exp $
  * 
  * Copyright (C) 1989, 1990 Free Software Foundation, Inc.
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000,2004 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2006 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -162,9 +162,9 @@ replace_field(struct nmz_data d, int counter,
      * Do not emphasize keywords in URI.
      */
     if (is_htmlmode()) {
-	encode_entity(buf);
 	if (strcasecmp(field, "uri") != 0)
 	    emphasize(buf);
+	encode_entity(buf);
     }
 
     /* Insert commas if the buf is a numeric string. */
@@ -289,38 +289,51 @@ emphasize(char *str)
 	}
 
         if (strlen(key) > 0) {
-            if ((key[0] == '"' && key[strlen(key) - 1] == '"')
+            if (strlen(key) >= 2
+            && ((key[0] == '"' && key[strlen(key) - 1] == '"')
             || (key[0] == '{' && key[strlen(key) - 1] == '}')
-            || (key[0] == '/' && key[strlen(key) - 1] == '/')) {
+            || (key[0] == '/' && key[strlen(key) - 1] == '/'))) {
                 memmove(key, key + 1, strlen(key + 1) + 1);
                 key[strlen(key) - 1] = '\0';
+            } else {
+                /* substring matching */
+                if (key[0] == '*') {
+                    memmove(key, key + 1, strlen(key + 1) + 1);
+                }
+                if (key[strlen(key) - 1] == '*') {
+                    key[strlen(key) - 1] = '\0';
+                }
             }
         }
 
 	keylen = strlen(key);
 
-	do {
-	    ptr = my_strcasestr(ptr, key);
-	    if (ptr != NULL) {
-              if ((ptr == str || is_wordboundary(ptr - 1))
-                  && keylen && is_wordboundary(ptr + keylen - 1)){
-                memmove(ptr + 2, ptr, strlen(ptr) + 1);
-                memmove(ptr + 1, ptr + 2, keylen);
-                *ptr = EM_START_MARK;
-                *(ptr + keylen + 1) = EM_END_MARK;
-                ptr += 2;
-              }
-              ptr += keylen;
-	    }
-	} while (ptr != NULL);
+        if (keylen > 0) {
+	    do {
+	        ptr = my_strcasestr(ptr, key);
+	        if (ptr != NULL) {
+                  if ((ptr == str || is_wordboundary(ptr - 1))
+                      && keylen && is_wordboundary(ptr + keylen - 1)){
+                    memmove(ptr + 2, ptr, strlen(ptr) + 1);
+                    memmove(ptr + 1, ptr + 2, keylen);
+                    *ptr = EM_START_MARK;
+                    *(ptr + keylen + 1) = EM_END_MARK;
+                    ptr += 2;
+                  }
+                  ptr += keylen;
+	        }
+	    } while (ptr != NULL);
+        }
     }
 }
 
 static int
 is_wordboundary(char *p)
 {
-  if (isalpha((unsigned char)*p) && isalpha((unsigned char)*(p + 1))) return 0;
-  if (isdigit((unsigned char)*p) && isdigit((unsigned char)*(p + 1))) return 0;
+  if (nmz_isalpha((unsigned char)*p) && nmz_isalpha((unsigned char)*(p + 1)))
+      return 0;
+  if (nmz_isdigit((unsigned char)*p) && nmz_isdigit((unsigned char)*(p + 1)))
+      return 0;
   return 1;
 }
 

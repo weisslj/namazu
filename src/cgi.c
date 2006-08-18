@@ -2,10 +2,10 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.79 2006-08-12 06:56:05 opengl2772 Exp $
+ * $Id: cgi.c,v 1.80 2006-08-18 18:56:51 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2005 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2006 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -87,6 +87,10 @@ static void process_cgi_var_result ( char *value, struct cgiarg *ca );
 static void process_cgi_var_reference ( char *value, struct cgiarg *ca );
 static void process_cgi_var_submit ( char *value, struct cgiarg *ca );
 static void process_cgi_var_idxname ( char *value, struct cgiarg *ca );
+static void process_cgi_var_querymode ( char *value, struct cgiarg *ca );
+
+static void process_cgi_var_query_index ( int index, char *value );
+static void process_cgi_var_querymode_index ( int index, char *value );
 
 /*
  * Table for cgi vars and corresponding functions. 
@@ -106,6 +110,7 @@ static struct cgivar_func cgifunctab[] = {
     { "idxname",   process_cgi_var_idxname },
     { "dbname",    process_cgi_var_idxname },  /* backward comat. */
     { "submit",    process_cgi_var_submit },
+    { "querymode", process_cgi_var_querymode },
     { NULL,        NULL }   /* sentry */
 };
 
@@ -330,6 +335,7 @@ static int
 apply_cgifunc(const struct cgivar *cv, struct cgiarg *ca) 
 {
     struct cgivar_func *cf = cgifunctab;
+    int i;
 
     for (; cf->name != NULL; cf++) {
 	if (strcmp(cv->name, cf->name) == 0) {
@@ -337,6 +343,22 @@ apply_cgifunc(const struct cgivar *cv, struct cgiarg *ca)
 	    return 1;  /* applied */
 	}
     }
+
+    for (i = 1; i < NUM_QUERY; i++) {
+        char buff[BUFSIZE] = "";
+
+        sprintf(buff, "query%d", i);
+        if (!strcmp(cv->name, buff)) {
+            process_cgi_var_query_index(i, cv->value);
+            return 1;
+        }
+        sprintf(buff, "querymode%d", i);
+        if (!strcmp(cv->name, buff)) {
+            process_cgi_var_querymode_index(i, cv->value);
+            return 1;
+        }
+    }
+
     return 0; /* not applied */
 }
 
@@ -438,7 +460,9 @@ process_cgi_var_max(char *value, struct cgiarg *ca)
 {
     int max;
 
-    sscanf(value, "%d", &max);
+    if (sscanf(value, "%d", &max) != 1) {
+        return;
+    }
 
     if (max < 0)
 	max = 0;
@@ -453,7 +477,10 @@ process_cgi_var_whence(char *value, struct cgiarg *ca)
 {
     int whence;
 
-    sscanf(value, "%d", &whence);
+    if (sscanf(value, "%d", &whence) != 1) {
+        return;
+    }
+
     if (whence < 0) {
 	whence = 0;
     }
@@ -518,6 +545,38 @@ process_cgi_var_idxname(char *value, struct cgiarg *ca)
     }
 }
 
+static void
+process_cgi_var_querymode(char *value, struct cgiarg *ca)
+{
+    nmz_set_querymode(0, value);
+}
+
+static void
+process_cgi_var_query_index(int index, char *value)
+{
+    if (strlen(value) > QUERY_MAX) {
+        die(nmz_strerror(ERR_TOO_LONG_QUERY));
+    }
+#ifdef MSIE4MACFIX
+#define MSIE4MAC "Mozilla/4.0 (compatible; MSIE 4.01; Mac"
+
+    if (nmz_strprefixcasecmp(value, "%1B") == 0) {
+        char *agent = getenv("HTTP_USER_AGENT");
+        if (agent && nmz_strprefixcasecmp(agent, MSIE4MAC) == 0) {
+            nmz_decode_uri(value);
+        }
+    }
+#endif /* MSIE4MACFIX */
+
+    nmz_set_query(index, value);
+}
+
+static void
+process_cgi_var_querymode_index(int index, char *value)
+{
+    nmz_set_querymode(index, value);
+}
+
 /*
  *
  * Public functions
@@ -531,6 +590,12 @@ init_cgi(char *query, char *subquery)
 {
     struct cgiarg ca;  /* passed for process_cgi_var_*() functions 
 		   for modifying important variables. */
+    int idx;
+
+    for(idx = 0; idx < NUM_QUERY; idx++) {
+        nmz_set_querymode(idx, "normal");
+        nmz_set_query(idx, "");
+    }
 
     ca.query    = query;
     ca.subquery = subquery;

@@ -2,10 +2,10 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.90 2006-08-12 06:56:05 opengl2772 Exp $
+ * $Id: form.c,v 1.91 2006-08-18 18:56:51 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2005 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2006 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -77,9 +77,13 @@ static void get_value ( const char *s, char *value );
 static void get_select_name ( const char *s, char *value );
 static enum nmz_stat select_option ( char *s, const char *name, const char *subquery );
 static enum nmz_stat check_checkbox ( char *str );
+static enum nmz_stat check_radio ( char *str, const char *subquery );
+static void fputs_selected();
+static void fputs_checked();
 static void handle_tag ( const char *start, const char *end, const char *query,char *select_name, const char *subquery );
 static char * read_headfoot ( const char *fname );
 static void subst ( char *str, const char *pat, const char *rep );
+void check_xhtml( char *str );
 
 /* 
  * Compare given two elements
@@ -108,33 +112,55 @@ cmp_element(const char *s1, const char *s2)
 }
 
 /* 
- * replace <input type="text" name="query"  value="hogehoge"> 
+ * replace <input type="text" name="query" value="hogehoge"> 
  */
 static enum nmz_stat
 replace_query_value(const char *p, const char *query)
 {
+    char tmp[BUFSIZE] = "";
+    char *str = NULL;
+
     if (cmp_element(p, (char *)"input type=\"text\" name=\"query\"") == 0) {
+        str = (char *)query;
+    } else {
+        char buff[BUFSIZE] = "";
+        int i;
+
+        for (i = 1; i < NUM_QUERY; i++) {
+            sprintf(buff, "input type=\"text\" name=\"query%d\"", i);
+            if (cmp_element(p, buff) == 0) {
+                strncpy(tmp, nmz_get_query(i), BUFSIZE - 1);
+                tmp[BUFSIZE - 1] = '\0';
+                str = tmp;
+                break;
+            }
+        }
+     
+        if (str == NULL) {
+            return FAILURE;
+        }
+    }
+
+    {
+        char buffer[BUFSIZE] = "";
+        char value[BUFSIZE] = "";
 	char *converted;
 
-        {
-            char buffer[BUFSIZE] = "";
-            char value[BUFSIZE] = "";
+        get_value(p, value);
 
-            get_value(p, value);
+        strncpy(buffer, " value=\"", BUFSIZE - 1);
+        strncat(buffer, value, BUFSIZE - strlen(buffer) - 1);
+        strncat(buffer, "\"", BUFSIZE - strlen(buffer) - 1);
+        buffer[BUFSIZE - 1] = '\0';
+        delete_str((char *)p, buffer);
 
-            strncpy(buffer, " value=\"", BUFSIZE - 1);
-            strncat(buffer, value, BUFSIZE - strlen(buffer) - 1);
-            strncat(buffer, "\"", BUFSIZE - strlen(buffer) - 1);
-            buffer[BUFSIZE - 1] = '\0';
-            delete_str((char *)p, buffer);
+        strncpy(buffer, " value='", BUFSIZE - 1);
+        strncat(buffer, value, BUFSIZE - strlen(buffer) - 1);
+        strncat(buffer, "'", BUFSIZE - strlen(buffer) - 1);
+        buffer[BUFSIZE - 1] = '\0';
+        delete_str((char *)p, buffer);
 
-            strncpy(buffer, " value='", BUFSIZE - 1);
-            strncat(buffer, value, BUFSIZE - strlen(buffer) - 1);
-            strncat(buffer, "'", BUFSIZE - strlen(buffer) - 1);
-            buffer[BUFSIZE - 1] = '\0';
-            delete_str((char *)p, buffer);
-	}
-        converted = nmz_query_external(query);
+        converted = nmz_query_external(str);
 	if (converted == NULL) {
 	    die("%s", strerror(errno));
 	}
@@ -251,49 +277,38 @@ select_option(char *s, const char *name, const char *subquery)
 {
     char value[BUFSIZE] = "";
 
+    if (!strcmp(nmz_getenv("QUERY_STRING"), "")) {
+        return FAILURE;
+    }
+
     if (cmp_element(s, (char *)"option") == 0) {
-	{
-            delete_str(s, (char *)" selected=\"selected\"");
-            delete_str(s, (char *)" selected='selected'");
-            delete_str(s, (char *)" selected");
-	}
+
+        delete_str(s, (char *)" selected=\"selected\"");
+        delete_str(s, (char *)" selected='selected'");
+        delete_str(s, (char *)" selected=selected");
+        delete_str(s, (char *)" selected");
+
         fputs(s, stdout);
         get_value(s, value);
         if (strcasecmp(name, "result") == 0) {
             if (strcasecmp(value, get_templatesuffix()) == 0) {
-                if (get_htmlmode() == 1) {
-                    fputs(" selected", stdout);              /* HTML */
-                } else {
-                    fputs(" selected=\"selected\"", stdout); /* XHTML */
-                }
+                fputs_selected();
             }
         } else if (strcasecmp(name, "sort") == 0) {
             if ((strcasecmp(value, "date:late") == 0) && 
 		nmz_get_sortmethod() == SORT_BY_DATE &&
 		nmz_get_sortorder()  == DESCENDING) 
 	    {
-                if (get_htmlmode() == 1) {
-                    fputs(" selected", stdout);              /* HTML */
-                } else {
-                    fputs(" selected=\"selected\"", stdout); /* XHTML */
-                }
+                fputs_selected();
             } else if ((strcasecmp(value, "date:early") == 0) && 
 		       nmz_get_sortmethod() == SORT_BY_DATE &&
 		       nmz_get_sortorder()  == ASCENDING)
             {
-                if (get_htmlmode() == 1) {
-                    fputs(" selected", stdout);              /* HTML */
-                } else {
-                    fputs(" selected=\"selected\"", stdout); /* XHTML */
-                }
+                fputs_selected();
             } else if ((strcasecmp(value, "score") == 0) && 
 		       nmz_get_sortmethod() == SORT_BY_SCORE) 
 	    {
-                if (get_htmlmode() == 1) {
-                    fputs(" selected", stdout);              /* HTML */
-                } else {
-                    fputs(" selected=\"selected\"", stdout); /* XHTML */
-                }
+                fputs_selected();
             } else if ((nmz_strprefixcasecmp(value, "field:") == 0) && 
 		       nmz_get_sortmethod() == SORT_BY_FIELD) 
 	    {
@@ -317,44 +332,41 @@ select_option(char *s, const char *name, const char *subquery)
 		if (strcmp(field, nmz_get_sortfield()) == 0 && 
 		    nmz_get_sortorder() == order)
 		{
-                    if (get_htmlmode() == 1) {
-                        fputs(" selected", stdout);              /* HTML */
-                    } else {
-                        fputs(" selected=\"selected\"", stdout); /* XHTML */
-                    }
+                    fputs_selected();
 		}
             }
 
         } else if (strcasecmp(name, "lang") == 0) {
             if (strcasecmp(value, nmz_get_lang()) == 0) {
-                if (get_htmlmode() == 1) {
-                    fputs(" selected", stdout);              /* HTML */
-                } else {
-                    fputs(" selected=\"selected\"", stdout); /* XHTML */
-                }
+                fputs_selected();
             }
         } else if (strcasecmp(name, "idxname") == 0) {
             if (nmz_get_idxnum() >= 1 && nmz_strsuffixcmp(value, nmz_get_idxname(0)) == 0) {
-                if (get_htmlmode() == 1) {
-                    fputs(" selected", stdout);              /* HTML */
-                } else {
-                    fputs(" selected=\"selected\"", stdout); /* XHTML */
-                }
+                fputs_selected();
             }
         } else if (strcasecmp(name, "subquery") == 0) {
             if (strcasecmp(value, subquery)  == 0) {
-                if (get_htmlmode() == 1) {
-                    fputs(" selected", stdout);              /* HTML */
-                } else {
-                    fputs(" selected=\"selected\"", stdout); /* XHTML */
-                }
+                fputs_selected();
             }
         } else if (strcasecmp(name, "max") == 0) {
             if (atoi(value) == get_maxresult()) {
-                if (get_htmlmode() == 1) {
-                    fputs(" selected", stdout);              /* HTML */
-                } else {
-                    fputs(" selected=\"selected\"", stdout); /* XHTML */
+                fputs_selected();
+            }
+        } else if (strcasecmp(name, "querymode") == 0) {
+            if (strcasecmp(value, nmz_get_querymode(0)) == 0) {
+                fputs_selected();
+            }
+        } else {
+            char buff[BUFSIZE] = "";
+            int i;
+
+            for (i = 1; i < NUM_QUERY; i++) {
+                sprintf(buff, "querymode%d", i);
+                if (strcasecmp(name, buff) == 0) {
+                    if (strcasecmp(value, nmz_get_querymode(i)) == 0) {
+                        fputs_selected();
+                        break;
+                    }
                 }
             }
         }
@@ -372,15 +384,19 @@ check_checkbox(char *str)
     char value[BUFSIZE] = "";
     int i;
 
+    if (!strcmp(nmz_getenv("QUERY_STRING"), "")) {
+        return FAILURE;
+    }
+
     if (cmp_element(str, "input type=\"checkbox\" name=\"idxname\"") == 0) {
         char *pp;
         int db_count, searched;
 
-        if (strcmp(nmz_getenv("QUERY_STRING"), "")) {
-            delete_str(str, (char *)" checked=\"checked\"");
-            delete_str(str, (char *)" checked='checked'");
-            delete_str(str, (char *)" checked");
-	}
+        delete_str(str, (char *)" checked=\"checked\"");
+        delete_str(str, (char *)" checked='checked'");
+        delete_str(str, (char *)" checked=checked");
+        delete_str(str, (char *)" checked");
+
         fputs(str, stdout);
         get_value(str, value);
         for (pp = value, db_count = searched = 0 ; *pp ;db_count++) {
@@ -404,15 +420,181 @@ check_checkbox(char *str)
             }
         }
         if (db_count == searched) {
-            if (get_htmlmode() == 1) {
-                printf(" checked");                /* HTML */
-            } else {
-                printf(" checked=\"checked\"");    /* XHTML */
-            }
+            fputs_checked();
         }
         return SUCCESS;
     }
     return FAILURE;
+}
+
+/* 
+ * Mark RADIO of mode with RADIO 
+ */
+static enum nmz_stat
+check_radio(char *str, const char *subquery)
+{
+    char value[BUFSIZE] = "";
+    enum radio_name {
+        RADIO_UNKNOWN,
+        RADIO_RESULT,
+        RADIO_SORT,
+        RADIO_LANG,
+        RADIO_IDXNAME,
+        RADIO_SUBQUERY,
+        RADIO_MAX,
+        RADIO_QUERYMODE
+    };
+    enum radio_name name = RADIO_UNKNOWN;
+    int idx = 0;
+
+    if (!strcmp(nmz_getenv("QUERY_STRING"), "")) {
+        return FAILURE;
+    }
+
+    if (cmp_element(str, "input type=\"radio\" name=\"result\"") == 0) {
+        name = RADIO_RESULT;
+    } else if (cmp_element(str, "input type=\"radio\" name=\"sort\"") == 0) {
+        name = RADIO_SORT;
+    } else if (cmp_element(str, "input type=\"radio\" name=\"lang\"") == 0) {
+        name = RADIO_LANG;
+    } else if (cmp_element(str, "input type=\"radio\" name=\"idxname\"") == 0) {
+        name = RADIO_IDXNAME;
+    } else if (cmp_element(str, "input type=\"radio\" name=\"subquery\"") == 0) {
+        name = RADIO_SUBQUERY;
+    } else if (cmp_element(str, "input type=\"radio\" name=\"max\"") == 0) {
+        name = RADIO_MAX;
+    } else if (cmp_element(str, "input type=\"radio\" name=\"querymode\"") == 0) {
+        name = RADIO_QUERYMODE;
+        idx = 0;
+    } else {
+        char buff[BUFSIZE] = "";
+        int i;
+
+        idx = 0;
+        for (i = 1; i < NUM_QUERY; i++) {
+            sprintf(buff, "input type=\"radio\" name=\"querymode%d\"", i);
+            if (cmp_element(str, buff) == 0) {
+                name = RADIO_QUERYMODE;
+                idx = i;
+                break;
+            }
+        }
+        if (idx == 0) {
+            return FAILURE;
+        }
+    }
+
+    delete_str(str, (char *)" checked=\"checked\"");
+    delete_str(str, (char *)" checked='checked'");
+    delete_str(str, (char *)" checked=checked");
+    delete_str(str, (char *)" checked");
+
+    fputs(str, stdout);
+    get_value(str, value);
+
+    switch (name) {
+    case RADIO_RESULT:
+        if (strcasecmp(value, get_templatesuffix()) == 0) {
+            fputs_checked();
+        }
+        break;
+    case RADIO_SORT:
+        if ((strcasecmp(value, "date:late") == 0) && 
+		nmz_get_sortmethod() == SORT_BY_DATE &&
+		nmz_get_sortorder()  == DESCENDING) 
+        {
+            fputs_checked();
+        } else if ((strcasecmp(value, "date:early") == 0) && 
+	       nmz_get_sortmethod() == SORT_BY_DATE &&
+	       nmz_get_sortorder()  == ASCENDING)
+        {
+            fputs_checked();
+        } else if ((strcasecmp(value, "score") == 0) && 
+	       nmz_get_sortmethod() == SORT_BY_SCORE) 
+	{
+            fputs_checked();
+        } else if ((nmz_strprefixcasecmp(value, "field:") == 0) && 
+	       nmz_get_sortmethod() == SORT_BY_FIELD) 
+	{
+            char *p;
+            int n, order = DESCENDING;
+            char field[BUFSIZE] = "";
+
+            p = value + strlen("field:");
+            n = strspn(p, FIELD_SAFE_CHARS);
+            if (n >= BUFSIZE) n = BUFSIZE - 1;
+            strncpy(field, p, n);
+            field[n] = '\0'; /* Hey, don't forget this after strncpy()! */
+            p += n;
+
+            if (nmz_strprefixcasecmp(p, ":ascending") == 0) {
+                order = ASCENDING;
+            } else if (nmz_strprefixcasecmp(p, ":descending") == 0) {
+                order = DESCENDING;
+            }
+
+            if (strcmp(field, nmz_get_sortfield()) == 0 &&
+                nmz_get_sortorder() == order)
+            {
+                fputs_checked();
+            }
+        }
+        break;
+    case RADIO_LANG:
+        if (strcasecmp(value, nmz_get_lang()) == 0) {
+            fputs_checked();
+        }
+        break;
+    case RADIO_IDXNAME:
+        if (nmz_get_idxnum() >= 1 && nmz_strsuffixcmp(value, nmz_get_idxname(0)) == 0) {
+            fputs_checked();
+        }
+        break;
+    case RADIO_SUBQUERY:
+        if (strcasecmp(value, subquery) == 0) {
+            fputs_checked();
+        }
+        break;
+    case RADIO_MAX:
+        if (atoi(value) == get_maxresult()) {
+            fputs_checked();
+        }
+        break;
+    case RADIO_QUERYMODE:
+        if (strcasecmp(value, nmz_get_querymode(idx)) == 0) {
+            fputs_checked();
+        }
+        break;
+    default:
+        break;
+    }
+    return SUCCESS;
+}
+
+/*
+ * output " selected"
+ */
+static void
+fputs_selected()
+{
+    if (get_htmlmode() == 1) {
+        fputs(" selected", stdout);              /* HTML */
+    } else {
+        fputs(" selected=\"selected\"", stdout); /* XHTML */
+    }
+}
+
+/*
+ * output " checked"
+ */
+static void
+fputs_checked()
+{
+    if (get_htmlmode() == 1) {
+        fputs(" checked", stdout);             /* HTML */
+    } else {
+        fputs(" checked=\"checked\"", stdout); /* XHTML */
+    }
 }
 
 /*
@@ -435,6 +617,8 @@ handle_tag(const char *start, const char *end, const char *query,
             return;
         if (check_checkbox(tmp) == SUCCESS)
             return;
+        if (check_radio(tmp, subquery) == SUCCESS)
+            return;
         get_select_name(tmp, select_name);
 	fputs(tmp, stdout);
     } else {
@@ -448,6 +632,17 @@ read_headfoot(const char *fname)
     char *buf, *p, tmpfname[BUFSIZE] = "", suffix[BUFSIZE] = "";
     char *script_name;
     char *document_name;
+    size_t bufsize, newsize;
+    int i;
+
+    struct nmz_param {
+        char *name;
+        size_t len_name;
+        char *value;
+        size_t len_value;
+    };
+    struct nmz_param nmz_param_table[2];
+
 
     if (nmz_choose_msgfile_suffix(fname, suffix) != SUCCESS) {
 	nmz_warn_printf("%s: %s", fname, strerror(errno));
@@ -486,20 +681,60 @@ read_headfoot(const char *fname)
 	    if (*s == '?') {*s = 0; break;}
     }
 
-    /* Expand buf memory for replacing {cgi} and {doc} */
-    buf = (char *)realloc(buf, strlen(buf) + strlen(script_name) + strlen(document_name) + 2);
-    if (buf == NULL) {
-        return NULL;
+
+    /*
+       Namazu Parameter
+         0 ... {cgi}
+         1 ... {doc}
+     */
+    nmz_param_table[0].name = "{cgi}";
+    nmz_param_table[0].len_name = strlen(nmz_param_table[0].name);
+    nmz_param_table[0].value = script_name;
+    nmz_param_table[0].len_value = strlen(nmz_param_table[0].value);
+
+    nmz_param_table[1].name = "{doc}";
+    nmz_param_table[1].len_name = strlen(nmz_param_table[1].name);
+    nmz_param_table[1].value = document_name;
+    nmz_param_table[1].len_value = strlen(nmz_param_table[1].value);
+
+    newsize = bufsize = strlen(buf) + 1;
+    for (i = 0; i < sizeof(nmz_param_table) / sizeof(struct nmz_param); i++) {
+        for (p = buf; (p = strstr(p, nmz_param_table[i].name)) != NULL; p += nmz_param_table[i].len_name) {
+            newsize += (nmz_param_table[i].len_value - nmz_param_table[i].len_name);
+        }
+    }
+
+    if (newsize > bufsize) {
+        /* Expand buf memory for replacing {cgi} and {doc} */
+        buf = (char *)realloc(buf, newsize);
+        if (buf == NULL) {
+            return NULL;
+        }
     }
 
     /* Replace {cgi} with a proper namazu.cgi location */
-    while ((p = strstr(buf, "{cgi}")) != NULL) {
-	subst(p, "{cgi}", script_name);
-    }
-
     /* Replace {doc} with the name of the calling document eg, using SSI */
-    while ((p = strstr(buf, "{doc}")) != NULL) {
-	subst(p, "{doc}", document_name);
+    p = buf;
+    while (1) {
+        char *pp = NULL;
+        int idx = 0;
+
+        for (i = 0; i < sizeof(nmz_param_table) / sizeof(struct nmz_param); i++) {
+            char *pos;
+
+            if ((pos = strstr(p, nmz_param_table[i].name)) != NULL) {
+                if (pp == NULL || pp > pos) {
+                    pp = pos;
+                    idx = i;
+                }
+            }
+        }
+        if (pp == NULL) {
+            break;
+        }
+
+        subst(pp, nmz_param_table[idx].name, nmz_param_table[idx].value);
+        p = pp + nmz_param_table[idx].len_value;
     }
 
     return buf;
@@ -528,6 +763,39 @@ subst(char *str, const char *pat, const char *rep)
     }
 }
 
+/* 
+ * check XHTML file. FIXME: very ad hoc.
+ */
+void
+check_xhtml(char *src)
+{
+    char buff[256] = "";
+    char *word;
+
+    /* check first (256 - 1) part of data */
+    strncpy(buff, src, 256 - 1);
+    buff[256 - 1] = '\0';
+
+    word = strtok(buff, " \t\n\r");
+    while (word) {
+        if (!strcmp(word, "<!DOCTYPE")) {
+            if ((word = strtok(NULL, " \t\n\r")) == NULL) {
+                break;
+            }
+    
+            if (!strcmp(word, "html")) {  /* <!DOCTYPE html */
+                set_htmlmode(2);    /* 2: XHTML */
+                break;
+            } else {
+                continue;
+            }
+        } else if (!strncasecmp(word, "<html", strlen("<html"))) {
+            break;
+        }
+        word = strtok(NULL, " \t\n\r");
+    }
+}
+
 /*
  *
  * Public functions
@@ -548,6 +816,8 @@ print_headfoot(const char * fname, const char * query, const char *subquery)
     if (buf == NULL) {
 	return;
     }
+
+    check_xhtml(buf);
 
     for (p = buf, f = f2 = 0; *p; p++) {
         if (f == 0 && *p == '<') {
@@ -593,7 +863,7 @@ print_headfoot(const char * fname, const char * query, const char *subquery)
 		fputs(">", stdout);
 	    } else {		/* for XHTML */
 		handle_tag(p + 1, q - 2, query, name, subquery);
-		fputs("/>", stdout);
+		fputs(" />", stdout);
                 set_htmlmode(2);    /* 2: XHTML */
 	    }
             p = q;

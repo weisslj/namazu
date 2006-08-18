@@ -53,6 +53,7 @@ extern char * nmz_getenv ( const char *str );
 extern void nmz_decode_uri ( char * str );
 extern char * nmz_strerror ( enum nmz_stat errnumt );
 extern int nmz_is_file_exists(const char *fname);
+extern char *nmz_delete_since_path_delimitation( char *dest, const char *src, size_t n);
 extern void nmz_parse_escape_crosshatch ( uchar * p );
 extern void nmz_encode_uri ( uchar * p );
 extern void set_filesyscoding ( const char *str );

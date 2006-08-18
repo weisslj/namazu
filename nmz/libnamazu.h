@@ -2,7 +2,7 @@
  * 
  * libnamazu.h - Namazu library api
  *
- * $Id: libnamazu.h,v 1.57 2006-08-12 07:01:01 opengl2772 Exp $
+ * $Id: libnamazu.h,v 1.58 2006-08-18 18:56:03 opengl2772 Exp $
  * 
  */
 
@@ -59,7 +59,9 @@ enum {
     QUERY_TOKEN_MAX =  32, /* Max number of tokens in the query. */
     QUERY_MAX       = 256, /* Max length of the query. */
 
-    INDEX_MAX = 64        /* Max number of databases */
+    INDEX_MAX       = 64,  /* Max number of databases */
+
+    NUM_QUERY       = (1 + 8)
 };
 
 
@@ -254,6 +256,10 @@ extern void nmz_set_loggingmode ( int mode );
 extern int  nmz_is_loggingmode ( void );
 extern void nmz_set_regex_searchmode ( int mode );
 extern int  nmz_is_regex_searchmode ( void );
+extern void nmz_set_querymode( int idx, char *mode );
+extern char *nmz_get_querymode( int idx );
+extern void nmz_set_query( int idx, char *str );
+extern char *nmz_get_query( int idx );
 extern void nmz_set_output_warn_to_file ( int mode );
 extern int  nmz_is_output_warn_to_file ( void );
 extern char *nmz_get_dyingmsg ( void );
@@ -263,6 +269,19 @@ extern void nmz_free_internal(void);
 
 /* since v2.0.13 */
 extern char *nmz_get_version();
+
+/* since v2.0.17 */
+#define nmz_isascii(c) (!(c & 0x80))
+#define nmz_isprint(c) (nmz_isascii(c) && isprint(c))
+#define nmz_isdigit(c) (nmz_isascii(c) && isdigit(c))
+#define nmz_isalnum(c) (nmz_isascii(c) && isalnum(c))
+#define nmz_isalpha(c) (nmz_isascii(c) && isalpha(c))
+#define nmz_iscntrl(c) (nmz_isascii(c) && iscntrl(c))
+#define nmz_islower(c) (nmz_isascii(c) && islower(c))
+#define nmz_ispunct(c) (nmz_isascii(c) && ispunct(c))
+#define nmz_isspace(c) (nmz_isascii(c) && isspace(c))
+#define nmz_isupper(c) (nmz_isascii(c) && isupper(c))
+#define nmz_isxdigit(c) (nmz_isascii(c) && isxdigit(c))
 
 #ifdef __cplusplus
 }

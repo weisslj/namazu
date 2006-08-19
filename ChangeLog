@@ -6,10 +6,12 @@
         * nmz/*, src/*: Synced from development-2-1 changes 2006-02-01
         to 2006-08-17.
 
+        * template/*: Change in line feed code.
+
 2006-08-12  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* Replaces utf8index-branch. 
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1479 2006-08-18 18:56:50 opengl2772 Exp $
+$Id: ChangeLog,v 1.1480 2006-08-19 05:58:25 opengl2772 Exp $

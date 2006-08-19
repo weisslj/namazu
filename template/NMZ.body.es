@@ -9,11 +9,10 @@ La consulta especifica sólo un término para recibir todos los documentos que c
 namazu
 </p>
 
-<h3><a name="query-and" id="query-and>Consulta AND</a></h3> 
+<h3><a name="query-and" id="query-and">Consulta AND</a></h3> 
 
 <p>
 La consulta especifica dos o más términos para recibir todos los documentos que contienen ambos términos.  Tu puedes insertar el operador <code class="operator">and</code> entre los términos.  Ej:
-
 </p>
 
 <p class="example">
@@ -28,7 +27,6 @@ Tu puedes omitir el operador <code class="operator">and</code>.  Los términos l
 <p>
 La consulta especifica dos o más términos para recibir todos los documentos que contienen alguno de los términos.  Tu puedes insertar el operador
 <code class="operator">or</code> entre los términos.  Ej:
-
 </p>
 
 <p class="example">
@@ -45,7 +43,6 @@ entre los términos para hacer una consulta NOT.  Ej:
 
 <p class="example">
 Linux not UNIX
-
 </p>
 
 
@@ -63,7 +60,6 @@ deben estar separados por uno o más espacios.  Ej:
 <p>
 Tu puedes buscar una frase la cuál consiste de dos o más términos encerrados
 entre comillas como
-
 <code class="operator">"..."</code> o con llaves como
 <code class="operator">{...}</code>.
 La precisión de la búsqueda por frase no es el 100 %, y puede causar ocasionalmente algún resultado erróneo.  Ej:
@@ -82,18 +78,16 @@ You must choose the latter with Tkanamzu or namazu.el.
 <h3><a name="query-substring" id="query-substring">Substring matching</a></h3>
 <p>
 The are three types of substring matching searching.
-
 </p>
 
 <dl> 
 <dt>Prefix matching</dt>
 <dd><code class="example">inter*</code> (terms which begin with <code>inter</code>)</dd>
 <dt>Inside matching</dt>
-<dd><code class="example">*text*</code> (terms which contain <code>text</code>) </dd>
+<dd><code class="example">*text*</code> (terms which contain <code>text</code>)</dd>
 <dt>Suffix matching</dt>
 <dd><code class="example">*net</code> (terms which terminated
 with <code>net</code>)</dd>
-
 </dl>
 
 
@@ -138,6 +132,7 @@ in a <code>Subject:</code> field)
 in a <code>From:</code> field)
 </li>
 
+
 <li><code class="example">+message-id:&lt;199801240555.OAA18737@foo.bar.jp&gt;</code><br>
 (Retrieving a certain document which contains specified
 <code>Message-Id:</code>)
@@ -152,11 +147,13 @@ alphabet characters. In other words, Namazu does
 case-insensitive pattern matching in any time.
 </li>
 
+
 <li>Japanese phrases are forced to be segmented into
 morphemes automatically and are handled them as <a
 href="#query-phrase">phrase searching</a>. This processing
 causes invalid segmentation occasionally.
 </li>
+
 
 <li>Alphabet, numbers or a part of symbols (duplicated in
 ASCII) characters which defined in JIS X 0208 (Japanese
@@ -187,3 +184,4 @@ You must choose the latter with Tkanamzu or namazu.el.
 </li>
 
 </ul>
+

@@ -139,6 +139,7 @@ w <code>Subject:</code> )
 w <code>From:</code> )
 </li>
 
+
 <li><code class="example">+message-id:&lt;199801240555.OAA18737@foo.bar.jp&gt;</code><br>
 (Zwraca pewien dokument zawierający wyszczególnione
 <code>Message-Id:</code>)
@@ -192,3 +193,4 @@ ja nie znaju sztoo eto.
 </li>
 
 </ul>
+

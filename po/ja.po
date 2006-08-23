@@ -6,178 +6,178 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Namazu 2.0.6pre1\n"
 "Report-Msgid-Bugs-To: bugs@namazu.org\n"
-"POT-Creation-Date: 2006-08-12 11:00+0900\n"
+"POT-Creation-Date: 2006-08-23 00:53+0900\n"
 "PO-Revision-Date: 2001-06-26 16:55+0900\n"
 "Last-Translator: Ryuji Abe <rug@namazu.org>\n"
 "Language-Team: Japanese <ja@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=EUC-JP\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: nmz/util.c:690
 msgid "Fatal error occurred!"
-msgstr "Ã×Ì¿Åª¤Ê¥¨¥é¡¼"
+msgstr "è‡´å‘½çš„ãªã‚¨ãƒ©ãƒ¼"
 
 #: nmz/util.c:693
 msgid "Too long query"
-msgstr "¸¡º÷¼°¤¬Ä¹¤¹¤®¤Ş¤¹"
+msgstr "æ¤œç´¢å¼ãŒé•·ã™ãã¾ã™"
 
 #: nmz/util.c:696
 msgid "Invalid query"
-msgstr "ÉÔÀµ¤Ê¸¡º÷¼°¤Ç¤¹"
+msgstr "ä¸æ­£ãªæ¤œç´¢å¼ã§ã™"
 
 #: nmz/util.c:699
 msgid "Too many query tokens"
-msgstr "¸¡º÷¼°¤Î¹àÌÜ¤¬Â¿¤¹¤®¤Ş¤¹"
+msgstr "æ¤œç´¢å¼ã®é …ç›®ãŒå¤šã™ãã¾ã™"
 
 #: nmz/util.c:702
 msgid "Too many words matched. Ignored"
-msgstr "¥Ş¥Ã¥Á¤¹¤ëÃ±¸ì¤¬Â¿¤¹¤®¤ë¤Î¤ÇÌµ»ë¤·¤Ş¤·¤¿"
+msgstr "ãƒãƒƒãƒã™ã‚‹å˜èªãŒå¤šã™ãã‚‹ã®ã§ç„¡è¦–ã—ã¾ã—ãŸ"
 
 #: nmz/util.c:705
 msgid "Too many documents hit. Ignored"
-msgstr "¥Ò¥Ã¥È¿ô¤¬Â¿¤¹¤®¤ë¤Î¤ÇÌµ»ë¤·¤Ş¤·¤¿"
+msgstr "ãƒ’ãƒƒãƒˆæ•°ãŒå¤šã™ãã‚‹ã®ã§ç„¡è¦–ã—ã¾ã—ãŸ"
 
 #: nmz/util.c:708
 msgid "can't open the regex index"
-msgstr "Àµµ¬É½¸½ÍÑ¥¤¥ó¥Ç¥Ã¥¯¥¹¤¬³«¤±¤Ş¤»¤ó¤Ç¤·¤¿"
+msgstr "æ­£è¦è¡¨ç¾ç”¨ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãŒé–‹ã‘ã¾ã›ã‚“ã§ã—ãŸ"
 
 #: nmz/util.c:711
 msgid "can't open the phrase index"
-msgstr "¥Õ¥ì¥¤¥º¸¡º÷ÍÑ¥¤¥ó¥Ç¥Ã¥¯¥¹¤¬³«¤±¤Ş¤»¤ó¤Ç¤·¤¿"
+msgstr "ãƒ•ãƒ¬ã‚¤ã‚ºæ¤œç´¢ç”¨ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãŒé–‹ã‘ã¾ã›ã‚“ã§ã—ãŸ"
 
 #: nmz/util.c:714
 msgid "can't open the field index"
-msgstr "¥Õ¥£¡¼¥ë¥É¸¡º÷ÍÑ¤Î¥¤¥ó¥Ç¥Ã¥¯¥¹¤¬³«¤±¤Ş¤»¤ó¤Ç¤·¤¿"
+msgstr "ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰æ¤œç´¢ç”¨ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãŒé–‹ã‘ã¾ã›ã‚“ã§ã—ãŸ"
 
 #: nmz/util.c:717
 msgid "can't open the index"
-msgstr "¥¤¥ó¥Ç¥Ã¥¯¥¹¤¬³«¤±¤Ş¤»¤ó¤Ç¤·¤¿"
+msgstr "ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãŒé–‹ã‘ã¾ã›ã‚“ã§ã—ãŸ"
 
 #: nmz/util.c:720
 msgid "can't open the result format file"
-msgstr "·ë²Ì½ĞÎÏ¤Î½ñ¼°»ØÄê¥Õ¥¡¥¤¥ë¤¬³«¤±¤Ş¤»¤ó¤Ç¤·¤¿"
+msgstr "çµæœå‡ºåŠ›ã®æ›¸å¼æŒ‡å®šãƒ•ã‚¡ã‚¤ãƒ«ãŒé–‹ã‘ã¾ã›ã‚“ã§ã—ãŸ"
 
 #: nmz/util.c:723
 msgid "You don't have a permission to access the index"
-msgstr "¥¤¥ó¥Ç¥Ã¥¯¥¹¤Ë¥¢¥¯¥»¥¹¤¹¤ë¸¢Íø¤¬¤¢¤ê¤Ş¤»¤ó"
+msgstr "ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã«ã‚¢ã‚¯ã‚»ã‚¹ã™ã‚‹æ¨©åˆ©ãŒã‚ã‚Šã¾ã›ã‚“"
 
 #: nmz/util.c:726
 msgid "The index is locked for maintenance"
-msgstr "¥¤¥ó¥Ç¥Ã¥¯¥¹¤ÏÊİ¼éºî¶È¤ÎºÇÃæ¤Ç¤¹"
+msgstr "ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã¯ä¿å®ˆä½œæ¥­ã®æœ€ä¸­ã§ã™"
 
 #: nmz/util.c:729
 msgid "Present index is old type. it's unsupported."
-msgstr "Â¸ºß¤¹¤ë¥¤¥ó¥Ç¥Ã¥¯¥¹¤Ï¸Å¤¤·Á¼°¤Ç¤¹¡£º£¤ÏÂĞ±ş¤·¤Æ¤¤¤Ş¤»¤ó"
+msgstr "å­˜åœ¨ã™ã‚‹ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã¯å¤ã„å½¢å¼ã§ã™ã€‚ä»Šã¯å¯¾å¿œã—ã¦ã„ã¾ã›ã‚“"
 
 #: nmz/util.c:732
 msgid "Unknown error. Report bug!"
-msgstr "ÉÔÌÀ¤Ê¥¨¥é¡¼¡£¥Ğ¥°Êó¹ğ¤·¤Æ¤¯¤À¤µ¤¤"
+msgstr "ä¸æ˜ãªã‚¨ãƒ©ãƒ¼ã€‚ãƒã‚°å ±å‘Šã—ã¦ãã ã•ã„"
 
-#: src/cgi.c:127 src/cgi.c:139
+#: src/cgi.c:132 src/cgi.c:144
 #, c-format
 msgid "Invalid idxname."
-msgstr "ÉÔÀµ¤Ê idxname ¤Î»ØÄê¤Ç¤¹"
+msgstr "ä¸æ­£ãª idxname ã®æŒ‡å®šã§ã™"
 
-#: src/cgi.c:225
+#: src/cgi.c:230
 msgid "Too long QUERY_STRING"
-msgstr "CGI¤Î QUERY_STRING ¤¬Ä¹¤¹¤®¤Ş¤¹"
+msgstr "CGIã® QUERY_STRING ãŒé•·ã™ãã¾ã™"
 
-#: src/output.c:569
+#: src/output.c:571
 msgid "\t<strong>Page:</strong> "
-msgstr "\t<strong>¥Ú¥¤¥¸:</strong> "
+msgstr "\t<strong>ãƒšã‚¤ã‚¸:</strong> "
 
-#: src/output.c:615
+#: src/output.c:617
 #, c-format
 msgid "Current List: %d"
-msgstr "¸½ºß¤Î¥ê¥¹¥È: %d"
+msgstr "ç¾åœ¨ã®ãƒªã‚¹ãƒˆ: %d"
 
-#: src/output.c:667
+#: src/output.c:669
 #, c-format
 msgid " [ TOTAL: %d ]"
-msgstr " [ ¹ç·×: %d ]"
+msgstr " [ åˆè¨ˆ: %d ]"
 
-#: src/output.c:682
+#: src/output.c:684
 msgid "\t<p><strong> Total "
-msgstr "\t<p><strong>¸¡º÷¼°¤Ë¥Ş¥Ã¥Á¤¹¤ë "
+msgstr "\t<p><strong>æ¤œç´¢å¼ã«ãƒãƒƒãƒã™ã‚‹ "
 
-#: src/output.c:689
+#: src/output.c:691
 msgid ""
 "\t documents matching your query.</strong></p>\n"
 "\n"
 msgstr ""
-"\t ¸Ä¤ÎÊ¸½ñ¤¬¸«¤Ä¤«¤ê¤Ş¤·¤¿¡£</strong></p>\n"
+"\t å€‹ã®æ–‡æ›¸ãŒè¦‹ã¤ã‹ã‚Šã¾ã—ãŸã€‚</strong></p>\n"
 "\n"
 
-#: src/output.c:749
+#: src/output.c:751
 #, c-format
 msgid ""
 "\t<h2>Error!</h2>\n"
 "<p>%s</p>\n"
 msgstr ""
-"\t<h2>¥¨¥é¡¼!</h2>\n"
+"\t<h2>ã‚¨ãƒ©ãƒ¼!</h2>\n"
 "<p>%s</p>\n"
 
-#: src/output.c:785
+#: src/output.c:787
 msgid "\t<h2>Results:</h2>\n"
-msgstr "\t<h2>¸¡º÷·ë²Ì</h2>\n"
+msgstr "\t<h2>æ¤œç´¢çµæœ</h2>\n"
 
-#: src/output.c:792
+#: src/output.c:794
 #, c-format
 msgid "References: "
-msgstr "»²¹Í¥Ò¥Ã¥È¿ô: "
+msgstr "å‚è€ƒãƒ’ãƒƒãƒˆæ•°: "
 
-#: src/output.c:842
+#: src/output.c:844
 msgid "\t<p>No document matching your query.</p>\n"
-msgstr "\t<p>¸¡º÷¼°¤Ë¥Ş¥Ã¥Á¤¹¤ëÊ¸½ñ¤Ï¤¢¤ê¤Ş¤»¤ó¤Ç¤·¤¿¡£</p>\n"
+msgstr "\t<p>æ¤œç´¢å¼ã«ãƒãƒƒãƒã™ã‚‹æ–‡æ›¸ã¯ã‚ã‚Šã¾ã›ã‚“ã§ã—ãŸã€‚</p>\n"
 
-#: src/output.c:1084
+#: src/output.c:1110
 #, c-format
 msgid ""
 "<h2>Error</h2>\n"
 "<p>"
 msgstr ""
-"<h2>¥¨¥é¡¼!</h2>\n"
+"<h2>ã‚¨ãƒ©ãƒ¼!</h2>\n"
 "<p>"
 
-#: src/output.c:1088
+#: src/output.c:1114
 #, c-format
 msgid "</p>"
 msgstr "</p>"
 
 #: src/rcfile.c:435
 msgid "can't find string terminator"
-msgstr "Ê¸»úÎó¤Î½ªÃ¼¤¬¸«¤Ä¤«¤ê¤Ş¤»¤ó"
+msgstr "æ–‡å­—åˆ—ã®çµ‚ç«¯ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“"
 
 #: src/rcfile.c:556
 msgid "invalid directive name"
-msgstr "ÉÔÀµ¤Ê»Ø¼¨»Ò¤Ç¤¹"
+msgstr "ä¸æ­£ãªæŒ‡ç¤ºå­ã§ã™"
 
 #: src/rcfile.c:570
 msgid "can't find arguments"
-msgstr "°ú¿ô¤¬¸«¤Ä¤«¤ê¤Ş¤»¤ó"
+msgstr "å¼•æ•°ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“"
 
 #: src/rcfile.c:673
 msgid "too few arguments"
-msgstr "°ú¿ô¤¬Â­¤ê¤Ş¤»¤ó"
+msgstr "å¼•æ•°ãŒè¶³ã‚Šã¾ã›ã‚“"
 
 #: src/rcfile.c:676
 msgid "too many arguments"
-msgstr "°ú¿ô¤¬Â¿¤¹¤®¤Ş¤¹"
+msgstr "å¼•æ•°ãŒå¤šã™ãã¾ã™"
 
 #: src/rcfile.c:686
 msgid "unknown directive"
-msgstr "ÉÔÌÀ¤Ê»Ø¼¨»Ò¤Ç¤¹"
+msgstr "ä¸æ˜ãªæŒ‡ç¤ºå­ã§ã™"
 
 #: src/rcfile.c:741
 #, c-format
 msgid "%s:%d: syntax error: %s"
-msgstr "%s:%d: ¹½Ê¸¥¨¥é¡¼: %s"
+msgstr "%s:%d: æ§‹æ–‡ã‚¨ãƒ©ãƒ¼: %s"
 
 #: src/rcfile.c:873
 #, c-format
 msgid "Loaded rcfile: %s\n"
-msgstr "ÆÉ¤ß¹ş¤ó¤ÀÀßÄê¥Õ¥¡¥¤¥ë: %s\n"
+msgstr "èª­ã¿è¾¼ã‚“ã è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«: %s\n"
 
 #: src/rcfile.c:878
 #, c-format
@@ -191,24 +191,24 @@ msgid ""
 "MaxMatch:     %d\n"
 "EmphasisTags: %s\t%s\n"
 msgstr ""
-"¥¤¥ó¥Ç¥Ã¥¯¥¹ (Index):    %s\n"
-"¥í¥°¤Îµ­Ï¿ (Logging):    %s\n"
-"»ÈÍÑ¤¹¤ë¸À¸ì (Lang):     %s\n"
-"¥¹¥³¥¢·×»» (Scoring):    %s\n"
-"¥Æ¥ó¥×¥ì¡¼¥È (Template): %s\n"
-"¥Ò¥Ã¥È·ï¿ô¤Î¾å¸Â (MaxHit):      %d\n"
-"¥Ş¥Ã¥Á¤¹¤ë¸ì¤Î¾å¸Â (MaxMatch):  %d\n"
-"¶¯Ä´¥¿¥° (EmphasisTags): %s\t%s\n"
+"ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ (Index):    %s\n"
+"ãƒ­ã‚°ã®è¨˜éŒ² (Logging):    %s\n"
+"ä½¿ç”¨ã™ã‚‹è¨€èª (Lang):     %s\n"
+"ã‚¹ã‚³ã‚¢è¨ˆç®— (Scoring):    %s\n"
+"ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ (Template): %s\n"
+"ãƒ’ãƒƒãƒˆä»¶æ•°ã®ä¸Šé™ (MaxHit):      %d\n"
+"ãƒãƒƒãƒã™ã‚‹èªã®ä¸Šé™ (MaxMatch):  %d\n"
+"å¼·èª¿ã‚¿ã‚° (EmphasisTags): %s\t%s\n"
 
 #: src/rcfile.c:898
 #, c-format
 msgid "Alias:   %-20s\t%s\n"
-msgstr "ÊÌÌ¾ (Alias):   %-20s\t%s\n"
+msgstr "åˆ¥å (Alias):   %-20s\t%s\n"
 
 #: src/rcfile.c:908
 #, c-format
 msgid "Replace: %-20s\t%s\n"
-msgstr "ÃÖ´¹ (Replace): %-20s\t%s\n"
+msgstr "ç½®æ› (Replace): %-20s\t%s\n"
 
 #: src/usage.c:51
 #, c-format
@@ -249,295 +249,295 @@ msgid ""
 "Report bugs to <%s>\n"
 "or <%s>.\n"
 msgstr ""
-"namazu %s, Namazu ¤Î¸¡º÷¥×¥í¥°¥é¥à\n"
+"namazu %s, Namazu ã®æ¤œç´¢ãƒ—ãƒ­ã‚°ãƒ©ãƒ \n"
 "\n"
-"»È¤¤Êı: namazu [options] <query> [index]...\n"
-"    -n, --max=NUM           °ìÅÙ¤ËÉ½¼¨¤¹¤ë·ï¿ô\n"
-"    -w, --whence=NUM        É½¼¨¤¹¤ë¸¡º÷·ë²Ì¤ÎÀèÆ¬ÈÖ¹æ\n"
-"    -l, --list              ¸¡º÷·ë²Ì¤ò URI¡¦¥Ñ¥¹Ì¾¤ò¥ê¥¹¥È¤Ç½ĞÎÏ¤¹¤ë\n"
-"    -s, --short             Ã»¤¤½ñ¼°¤Ç½ĞÎÏ¤¹¤ë\n"
-"        --result=EXT        ·ë²ÌÉ½¼¨¤ËÍÑ¤¤¤ë NMZ.result.EXT ¤ò»ØÄê¤¹¤ë\n"
-"        --late              ¸¡º÷·ë²Ì¤ò¿·¤·¤¤½ç¤Ë¥½¡¼¥È¤¹¤ë\n"
-"        --early             ¸¡º÷·ë²Ì¤ò¸Å¤¤½ç¤Ë¥½¡¼¥È¤¹¤ë\n"
-"        --sort=METHOD       ¥½¡¼¥ÈÊıË¡¤ò»ØÄê¤¹¤ë (score, date, field:name)\n"
-"        --ascending         ¥½¡¼¥È¤ÎÊı¸ş¤ò¾º½ç¤Ë¤¹¤ë (É¸½à¤Ï¹ß½ç)\n"
-"    -a, --all               ¸¡º÷·ë²Ì¤ò¤¹¤Ù¤ÆÉ½¼¨¤¹¤ë\n"
-"    -c, --count             ¥Ò¥Ã¥È¿ô¤Î¤ß¤òÉ½¼¨¤¹¤ë\n"
-"    -h, --html              HTML¤Ç½ĞÎÏ¤¹¤ë\n"
-"    -r, --no-references     »²¹Í¥Ò¥Ã¥È¿ô¤òÉ½¼¨¤·¤Ê¤¤\n"
-"    -H, --page              Àè¤Î¸¡º÷·ë²Ì¤Ø¤Î¥ê¥ó¥¯¤òÉ½¼¨¤¹¤ë (¤Û¤ÜÌµ°ÕÌ£) \n"
-"    -F, --form              <form> ... </form> ¤ÎÉôÊ¬¤ò¶¯À©Åª¤ËÉ½¼¨¤¹¤ë\n"
-"    -R, --no-replace        URI ¤ÎÃÖ¤­´¹¤¨¤ò¹Ô¤ï¤Ê¤¤\n"
-"    -U, --no-decode-uri     URI encode ¤ÎÉü¸µ¤ò¹Ô¤ï¤Ê¤¤\n"
-"    -o, --output=FILE       »ØÄê¤·¤¿¥Õ¥¡¥¤¥ë¤Ë¸¡º÷·ë²Ì¤ò½ĞÎÏ¤¹¤ë\n"
-"    -f, --config=FILE       ÀßÄê¥Õ¥¡¥¤¥ë¤ò»ØÄê¤¹¤ë\n"
-"    -C, --show-config       ÀßÄê¤òÉ½¼¨¤¹¤ë\n"
-"    -q, --quiet             ¸¡º÷·ë²Ì°Ê³°¤Î¥á¥Ã¥»¡¼¥¸¤òÉ½¼¨¤·¤Ê¤¤\n"
-"    -d, --debug             ¥Ç¥Ğ¥Ã¥°¥â¡¼¥É\n"
-"    -v, --version           ¥ô¥¡¡¼¥¸¥ç¥ó¤òÉ½¼¨¤¹¤ë\n"
-"        --help              ¤³¤Î¥Ø¥ë¥×¤òÉ½¼¨¤¹¤ë\n"
-"        --norc              ÀßÄê¥Õ¥¡¥¤¥ë¤òÆÉ¤ß¹ş¤Ş¤Ê¤¤\n"
-"        --                  ¥ª¥×¥·¥ç¥ó¥ê¥¹¥È¤ò½ªÎ»¤¹¤ë\n"
+"ä½¿ã„æ–¹: namazu [options] <query> [index]...\n"
+"    -n, --max=NUM           ä¸€åº¦ã«è¡¨ç¤ºã™ã‚‹ä»¶æ•°\n"
+"    -w, --whence=NUM        è¡¨ç¤ºã™ã‚‹æ¤œç´¢çµæœã®å…ˆé ­ç•ªå·\n"
+"    -l, --list              æ¤œç´¢çµæœã‚’ URIãƒ»ãƒ‘ã‚¹åã‚’ãƒªã‚¹ãƒˆã§å‡ºåŠ›ã™ã‚‹\n"
+"    -s, --short             çŸ­ã„æ›¸å¼ã§å‡ºåŠ›ã™ã‚‹\n"
+"        --result=EXT        çµæœè¡¨ç¤ºã«ç”¨ã„ã‚‹ NMZ.result.EXT ã‚’æŒ‡å®šã™ã‚‹\n"
+"        --late              æ¤œç´¢çµæœã‚’æ–°ã—ã„é †ã«ã‚½ãƒ¼ãƒˆã™ã‚‹\n"
+"        --early             æ¤œç´¢çµæœã‚’å¤ã„é †ã«ã‚½ãƒ¼ãƒˆã™ã‚‹\n"
+"        --sort=METHOD       ã‚½ãƒ¼ãƒˆæ–¹æ³•ã‚’æŒ‡å®šã™ã‚‹ (score, date, field:name)\n"
+"        --ascending         ã‚½ãƒ¼ãƒˆã®æ–¹å‘ã‚’æ˜‡é †ã«ã™ã‚‹ (æ¨™æº–ã¯é™é †)\n"
+"    -a, --all               æ¤œç´¢çµæœã‚’ã™ã¹ã¦è¡¨ç¤ºã™ã‚‹\n"
+"    -c, --count             ãƒ’ãƒƒãƒˆæ•°ã®ã¿ã‚’è¡¨ç¤ºã™ã‚‹\n"
+"    -h, --html              HTMLã§å‡ºåŠ›ã™ã‚‹\n"
+"    -r, --no-references     å‚è€ƒãƒ’ãƒƒãƒˆæ•°ã‚’è¡¨ç¤ºã—ãªã„\n"
+"    -H, --page              å…ˆã®æ¤œç´¢çµæœã¸ã®ãƒªãƒ³ã‚¯ã‚’è¡¨ç¤ºã™ã‚‹ (ã»ã¼ç„¡æ„å‘³) \n"
+"    -F, --form              <form> ... </form> ã®éƒ¨åˆ†ã‚’å¼·åˆ¶çš„ã«è¡¨ç¤ºã™ã‚‹\n"
+"    -R, --no-replace        URI ã®ç½®ãæ›ãˆã‚’è¡Œã‚ãªã„\n"
+"    -U, --no-decode-uri     URI encode ã®å¾©å…ƒã‚’è¡Œã‚ãªã„\n"
+"    -o, --output=FILE       æŒ‡å®šã—ãŸãƒ•ã‚¡ã‚¤ãƒ«ã«æ¤œç´¢çµæœã‚’å‡ºåŠ›ã™ã‚‹\n"
+"    -f, --config=FILE       è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã‚’æŒ‡å®šã™ã‚‹\n"
+"    -C, --show-config       è¨­å®šã‚’è¡¨ç¤ºã™ã‚‹\n"
+"    -q, --quiet             æ¤œç´¢çµæœä»¥å¤–ã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’è¡¨ç¤ºã—ãªã„\n"
+"    -d, --debug             ãƒ‡ãƒãƒƒã‚°ãƒ¢ãƒ¼ãƒ‰\n"
+"    -v, --version           ãƒ´ã‚¡ãƒ¼ã‚¸ãƒ§ãƒ³ã‚’è¡¨ç¤ºã™ã‚‹\n"
+"        --help              ã“ã®ãƒ˜ãƒ«ãƒ—ã‚’è¡¨ç¤ºã™ã‚‹\n"
+"        --norc              è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã¾ãªã„\n"
+"        --                  ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãƒªã‚¹ãƒˆã‚’çµ‚äº†ã™ã‚‹\n"
 "\n"
-"¥Ğ¥°Êó¹ğ¤Ï <%s>\n"
-"¤Ş¤¿¤Ï <%s> ¤Ø¤É¤¦¤¾\n"
+"ãƒã‚°å ±å‘Šã¯ <%s>\n"
+"ã¾ãŸã¯ <%s> ã¸ã©ã†ã\n"
 
 #: src/usage.c:93
 msgid "Usage: namazu [options] <query> [index]...\n"
-msgstr "»È¤¤Êı: namazu [¥ª¥×¥·¥ç¥ó] <¸¡º÷¼°> [¥¤¥ó¥Ç¥Ã¥¯¥¹]...\n"
+msgstr "ä½¿ã„æ–¹: namazu [ã‚ªãƒ—ã‚·ãƒ§ãƒ³] <æ¤œç´¢å¼> [ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹]...\n"
 
 #: src/usage.c:94
 msgid "Try `namazu --help' for more information.\n"
-msgstr "`namazu --help' ¤Ç¤è¤ê¾Ü¤·¤¤¾ğÊó¤¬É½¼¨¤µ¤ì¤Ş¤¹\n"
+msgstr "`namazu --help' ã§ã‚ˆã‚Šè©³ã—ã„æƒ…å ±ãŒè¡¨ç¤ºã•ã‚Œã¾ã™\n"
 
 #: scripts/mknmz.in:119
 msgid " files are found to be indexed.\n"
-msgstr "¸Ä¤Î¥Õ¥¡¥¤¥ë¤¬¥¤¥ó¥Ç¥Ã¥¯¥¹ºîÀ®¤ÎÂĞ¾İ¤È¤·¤Æ¸«¤Ä¤«¤ê¤Ş¤·¤¿\n"
+msgstr "å€‹ã®ãƒ•ã‚¡ã‚¤ãƒ«ãŒã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ä½œæˆã®å¯¾è±¡ã¨ã—ã¦è¦‹ã¤ã‹ã‚Šã¾ã—ãŸ\n"
 
 #: scripts/mknmz.in:137
 msgid "target file: "
-msgstr "ÂĞ¾İ¥Õ¥¡¥¤¥ë: "
+msgstr "å¯¾è±¡ãƒ•ã‚¡ã‚¤ãƒ«: "
 
 #: scripts/mknmz.in:157 scripts/mknmz.in:175
 msgid "Writing index files..."
-msgstr "¥¤¥ó¥Ç¥Ã¥¯¥¹¤ò½ñ¤­½Ğ¤·¤Æ¤¤¤Ş¤¹..."
+msgstr "ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’æ›¸ãå‡ºã—ã¦ã„ã¾ã™..."
 
-#: scripts/mknmz.in:268 scripts/mknmz.in:1133
+#: scripts/mknmz.in:268 scripts/mknmz.in:1143
 msgid "Reading rcfile: "
-msgstr "ÀßÄê¥Õ¥¡¥¤¥ë¤òÆÉ¤ß¹ş¤ßÃæ: "
+msgstr "è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã¿ä¸­: "
 
 #: scripts/mknmz.in:339
 msgid "Checkpoint reached: re-exec mknmz...\n"
-msgstr "¥Á¥§¥Ã¥¯¥İ¥¤¥ó¥È¤ËÅşÃ£¤·¤Ş¤·¤¿¡£mknmz ¤òºÆ¼Â¹Ô¤·¤Ş¤¹...\n"
+msgstr "ãƒã‚§ãƒƒã‚¯ãƒã‚¤ãƒ³ãƒˆã«åˆ°é”ã—ã¾ã—ãŸã€‚mknmz ã‚’å†å®Ÿè¡Œã—ã¾ã™...\n"
 
-#: scripts/mknmz.in:547
+#: scripts/mknmz.in:549
 msgid "after load_document: "
-msgstr "load_document ¼Â¹Ô¸å: "
+msgstr "load_document å®Ÿè¡Œå¾Œ: "
 
-#: scripts/mknmz.in:875
+#: scripts/mknmz.in:877
 msgid "Looking for indexing files...\n"
-msgstr "¸¡º÷ÂĞ¾İ¤Î¥Õ¥¡¥¤¥ë¤òÄ´¤Ù¤Æ¤¤¤Ş¤¹...\n"
+msgstr "æ¤œç´¢å¯¾è±¡ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª¿ã¹ã¦ã„ã¾ã™...\n"
 
-#: scripts/mknmz.in:880 scripts/mknmz.in:1696
+#: scripts/mknmz.in:882 scripts/mknmz.in:1706
 msgid "No files to index.\n"
-msgstr "¥¤¥ó¥Ç¥Ã¥¯¥¹¤¹¤Ù¤­¥Õ¥¡¥¤¥ë¤Ï¤¢¤ê¤Ş¤»¤ó\n"
+msgstr "ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã™ã¹ããƒ•ã‚¡ã‚¤ãƒ«ã¯ã‚ã‚Šã¾ã›ã‚“\n"
 
-#: scripts/mknmz.in:909
+#: scripts/mknmz.in:911
 msgid "wakati: using Text::Kakasi module\n"
-msgstr "¤ï¤«¤Á½ñ¤­¤Ë Text::Kakasi ¥â¥¸¥å¡¼¥ë¤òÍÑ¤¤¤Ş¤¹\n"
+msgstr "ã‚ã‹ã¡æ›¸ãã« Text::Kakasi ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ã‚’ç”¨ã„ã¾ã™\n"
 
-#: scripts/mknmz.in:913
+#: scripts/mknmz.in:915
 msgid "wakati: using Text::ChaSen module\n"
-msgstr "¤ï¤«¤Á½ñ¤­¤Ë Text::ChaSen ¥â¥¸¥å¡¼¥ë¤òÍÑ¤¤¤Ş¤¹¡£\n"
+msgstr "ã‚ã‹ã¡æ›¸ãã« Text::ChaSen ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ã‚’ç”¨ã„ã¾ã™ã€‚\n"
 
-#: scripts/mknmz.in:921
+#: scripts/mknmz.in:923
 msgid "wakati: using MeCab module\n"
-msgstr "¤ï¤«¤Á½ñ¤­¤Ë MeCab ¥â¥¸¥å¡¼¥ë¤òÍÑ¤¤¤Ş¤¹¡£\n"
+msgstr "ã‚ã‹ã¡æ›¸ãã« MeCab ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ã‚’ç”¨ã„ã¾ã™ã€‚\n"
 
-#: scripts/mknmz.in:926
+#: scripts/mknmz.in:928
 msgid "wakati: using Built-in module\n"
-msgstr "¤ï¤«¤Á½ñ¤­¤Ë Built-in ¥â¥¸¥å¡¼¥ë¤òÍÑ¤¤¤Ş¤¹¡£\n"
+msgstr "ã‚ã‹ã¡æ›¸ãã« Built-in ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ã‚’ç”¨ã„ã¾ã™ã€‚\n"
 
-#: scripts/mknmz.in:937
+#: scripts/mknmz.in:939
 msgid ""
 "found. Maybe this index is being updated by another process now.\n"
 "If not, you can remove this file.\n"
 msgstr ""
-"¥Õ¥¡¥¤¥ë¤òÈ¯¸«¤·¤Ş¤·¤¿\n"
-"¤³¤Î¥¤¥ó¥Ç¥Ã¥¯¥¹¤ÏÂ¾¤Î¥×¥í¥»¥¹¤Ë¤è¤Ã¤Æ¹¹¿·¤µ¤ì¤Æ¤¤¤ë²ÄÇ½À­¤¬¤¢¤ê¤Ş¤¹\n"
-"¤½¤¦¤Ç¤Ê¤±¤ì¤Ğ¡¢¤³¤Î¥Õ¥¡¥¤¥ë¤òºï½ü¤·¤Æ¤¯¤À¤µ¤¤\n"
+"ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ç™ºè¦‹ã—ã¾ã—ãŸ\n"
+"ã“ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã¯ä»–ã®ãƒ—ãƒ­ã‚»ã‚¹ã«ã‚ˆã£ã¦æ›´æ–°ã•ã‚Œã¦ã„ã‚‹å¯èƒ½æ€§ãŒã‚ã‚Šã¾ã™\n"
+"ãã†ã§ãªã‘ã‚Œã°ã€ã“ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚’å‰Šé™¤ã—ã¦ãã ã•ã„\n"
 
-#: scripts/mknmz.in:967
+#: scripts/mknmz.in:969
 msgid "Present index is old type. it's unsupported.\n"
-msgstr "Â¸ºß¤¹¤ë¥¤¥ó¥Ç¥Ã¥¯¥¹¤Ï¸Å¤¤·Á¼°¤Ç¤¹¡£º£¤ÏÂĞ±ş¤·¤Æ¤¤¤Ş¤»¤ó\n"
+msgstr "å­˜åœ¨ã™ã‚‹ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã¯å¤ã„å½¢å¼ã§ã™ã€‚ä»Šã¯å¯¾å¿œã—ã¦ã„ã¾ã›ã‚“\n"
 
-#: scripts/mknmz.in:1103
+#: scripts/mknmz.in:1105 scripts/mknmz.in:1113 scripts/mknmz.in:1121
 msgid "No such index: "
-msgstr "¥¤¥ó¥Ç¥Ã¥¯¥¹¤¬¸«¤Ä¤«¤ê¤Ş¤»¤ó: "
+msgstr "ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“: "
 
-#: scripts/mknmz.in:1111
+#: scripts/mknmz.in:1117
 msgid "Inherited argv: "
-msgstr "·Ñ¾µ¤µ¤ì¤¿°ú¿ô (argv): "
+msgstr "ç¶™æ‰¿ã•ã‚ŒãŸå¼•æ•° (argv): "
 
-#: scripts/mknmz.in:1115
+#: scripts/mknmz.in:1125
 msgid "Inherited cwd: "
-msgstr "·Ñ¾µ¤µ¤ì¤¿¥«¥ì¥ó¥È¥Ç¥£¥ì¥¯¥È¥ê (cwd): "
+msgstr "ç¶™æ‰¿ã•ã‚ŒãŸã‚«ãƒ¬ãƒ³ãƒˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª (cwd): "
 
-#: scripts/mknmz.in:1203
+#: scripts/mknmz.in:1213
 msgid "Loaded: "
-msgstr "ÆÉ¤ß¹ş¤ß´°Î»: "
+msgstr "èª­ã¿è¾¼ã¿å®Œäº†: "
 
-#: scripts/mknmz.in:1218
+#: scripts/mknmz.in:1228
 msgid "Invalid replace: "
-msgstr "ÉÔÀµ¤Ê replace »ØÄê: "
+msgstr "ä¸æ­£ãª replace æŒ‡å®š: "
 
-#: scripts/mknmz.in:1220
+#: scripts/mknmz.in:1230
 msgid "Replace: "
 msgstr "Replace: "
 
-#: scripts/mknmz.in:1253
+#: scripts/mknmz.in:1263
 msgid "invalid output directory\n"
-msgstr "Ìµ¸ú¤Ê½ĞÎÏ¥Ç¥£¥ì¥¯¥È¥ê»ØÄê\n"
+msgstr "ç„¡åŠ¹ãªå‡ºåŠ›ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªæŒ‡å®š\n"
 
-#: scripts/mknmz.in:1275
+#: scripts/mknmz.in:1285
 msgid "Loaded rcfile: "
-msgstr "ÆÉ¤ß¹ş¤ó¤ÀÀßÄê¥Õ¥¡¥¤¥ë: "
+msgstr "èª­ã¿è¾¼ã‚“ã è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«: "
 
-#: scripts/mknmz.in:1276
+#: scripts/mknmz.in:1286
 msgid "System: "
-msgstr "¥·¥¹¥Æ¥à: "
+msgstr "ã‚·ã‚¹ãƒ†ãƒ : "
 
-#: scripts/mknmz.in:1277
+#: scripts/mknmz.in:1287
 msgid "Namazu: "
 msgstr "Namazu: "
 
-#: scripts/mknmz.in:1278
+#: scripts/mknmz.in:1288
 msgid "Perl: "
 msgstr "Perl: "
 
-#: scripts/mknmz.in:1279
+#: scripts/mknmz.in:1289
 msgid "File-MMagic: "
 msgstr "File-MMagic: "
 
-#: scripts/mknmz.in:1280
+#: scripts/mknmz.in:1290
 msgid "NKF: "
 msgstr "NKF: "
 
-#: scripts/mknmz.in:1281
+#: scripts/mknmz.in:1291
 msgid "KAKASI: "
 msgstr "KAKASI: "
 
-#: scripts/mknmz.in:1282
+#: scripts/mknmz.in:1292
 msgid "ChaSen: "
-msgstr "Ããä¥: "
+msgstr "èŒ¶ç­Œ: "
 
-#: scripts/mknmz.in:1283
+#: scripts/mknmz.in:1293
 msgid "MeCab: "
-msgstr "ÏÂÉÛÉó: "
+msgstr "å’Œå¸ƒè•ª: "
 
-#: scripts/mknmz.in:1284
+#: scripts/mknmz.in:1294
 msgid "Wakati: "
-msgstr "¤ï¤«¤Á½ñ¤­: "
+msgstr "ã‚ã‹ã¡æ›¸ã: "
 
-#: scripts/mknmz.in:1285
+#: scripts/mknmz.in:1295
 msgid "Lang_Msg: "
-msgstr "¥á¥Ã¥»¡¼¥¸¤Î¸À¸ì: "
+msgstr "ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®è¨€èª: "
 
-#: scripts/mknmz.in:1286
+#: scripts/mknmz.in:1296
 msgid "Lang: "
-msgstr "¸À¸ì: "
+msgstr "è¨€èª: "
 
-#: scripts/mknmz.in:1287
+#: scripts/mknmz.in:1297
 msgid "Coding System: "
-msgstr "Ê¸»ú¥³¡¼¥É: "
+msgstr "æ–‡å­—ã‚³ãƒ¼ãƒ‰: "
 
-#: scripts/mknmz.in:1288
+#: scripts/mknmz.in:1298
 msgid "CONFDIR: "
 msgstr "CONFDIR: "
 
-#: scripts/mknmz.in:1289
+#: scripts/mknmz.in:1299
 msgid "LIBDIR: "
 msgstr "LIBDIR: "
 
-#: scripts/mknmz.in:1290
+#: scripts/mknmz.in:1300
 msgid "FILTERDIR: "
 msgstr "FILTERDIR: "
 
-#: scripts/mknmz.in:1291
+#: scripts/mknmz.in:1301
 msgid "TEMPLATEDIR: "
 msgstr "TEMPLATEDIR: "
 
-#: scripts/mknmz.in:1292
+#: scripts/mknmz.in:1302
 msgid "SCHEMEDIR: "
 msgstr "SCHEMEDIR: "
 
-#: scripts/mknmz.in:1293
+#: scripts/mknmz.in:1303
 msgid "ARCHIVEDIR: "
 msgstr "ARCHIVEDIR: "
 
-#: scripts/mknmz.in:1294
+#: scripts/mknmz.in:1304
 msgid "WAKATIDICDIR: "
 msgstr "WAKATIDICDIR: "
 
-#: scripts/mknmz.in:1365
+#: scripts/mknmz.in:1375
 msgid "find_target starting: "
-msgstr "ÂĞ¾İ¤ÎÃµº÷¤ò³«»Ï: "
+msgstr "å¯¾è±¡ã®æ¢ç´¢ã‚’é–‹å§‹: "
 
-#: scripts/mknmz.in:1414
+#: scripts/mknmz.in:1424
 msgid "unsupported target: "
-msgstr "Ì¤ÂĞ±ş¤ÎÂĞ¾İ: "
+msgstr "æœªå¯¾å¿œã®å¯¾è±¡: "
 
-#: scripts/mknmz.in:1451
+#: scripts/mknmz.in:1461
 #, c-format
 msgid "Unreadable:\t%s"
-msgstr "ÆÉ¤á¤Ê¤¤:\t%s"
+msgstr "èª­ã‚ãªã„:\t%s"
 
-#: scripts/mknmz.in:1460
+#: scripts/mknmz.in:1470
 #, c-format
 msgid "Excluded:\t%s"
-msgstr "½ü³°:\t%s"
+msgstr "é™¤å¤–:\t%s"
 
-#: scripts/mknmz.in:1474 scripts/mknmz.in:1488
+#: scripts/mknmz.in:1484 scripts/mknmz.in:1498
 #, c-format
 msgid "Too old:\t%s"
-msgstr "¸Å¤¹¤®:\t%s"
+msgstr "å¤ã™ã:\t%s"
 
-#: scripts/mknmz.in:1481 scripts/mknmz.in:1491
+#: scripts/mknmz.in:1491 scripts/mknmz.in:1501
 #, c-format
 msgid "Too new:\t%s"
-msgstr "¿·¤·¤¹¤®:\t%s"
+msgstr "æ–°ã—ã™ã:\t%s"
 
-#: scripts/mknmz.in:1508
+#: scripts/mknmz.in:1518
 #, c-format
 msgid "Denied:\t%s"
-msgstr "µñÀä:\t%s"
+msgstr "æ‹’çµ¶:\t%s"
 
-#: scripts/mknmz.in:1513
+#: scripts/mknmz.in:1523
 #, c-format
 msgid "Not allowed:\t%s"
-msgstr "ÉÔµö²Ä:\t%s"
-
-#: scripts/mknmz.in:1517
-#, c-format
-msgid "Targeted:\t%s"
-msgstr "Å¬¹ç:\t%s"
-
-#: scripts/mknmz.in:1526
-msgid "find_target finished: "
-msgstr "ÂĞ¾İ¤ÎÃµº÷¤ò½ªÎ»: "
+msgstr "ä¸è¨±å¯:\t%s"
 
 #: scripts/mknmz.in:1527
 #, c-format
-msgid "Target Files: %d (Scan Performance: Elapsed Sec.: %d, Files/sec: %.1f)"
-msgstr "ÂĞ¾İ¥Õ¥¡¥¤¥ë¿ô: %d (ÁöººÀ­Ç½: ·Ğ²áÉÃ: %d, ¥Õ¥¡¥¤¥ë/ÉÃ: %.1f)"
+msgid "Targeted:\t%s"
+msgstr "é©åˆ:\t%s"
 
-#: scripts/mknmz.in:1530
+#: scripts/mknmz.in:1536
+msgid "find_target finished: "
+msgstr "å¯¾è±¡ã®æ¢ç´¢ã‚’çµ‚äº†: "
+
+#: scripts/mknmz.in:1537
+#, c-format
+msgid "Target Files: %d (Scan Performance: Elapsed Sec.: %d, Files/sec: %.1f)"
+msgstr "å¯¾è±¡ãƒ•ã‚¡ã‚¤ãƒ«æ•°: %d (èµ°æŸ»æ€§èƒ½: çµŒéç§’: %d, ãƒ•ã‚¡ã‚¤ãƒ«/ç§’: %.1f)"
+
+#: scripts/mknmz.in:1540
 #, c-format
 msgid "  Possible: %d, Not allowed: %d, Denied: %d, Excluded: %d"
-msgstr "  Àøºß: %d, ÉÔµö²Ä: %d, µñÀä: %d, ½ü³°: %d"
+msgstr "  æ½œåœ¨: %d, ä¸è¨±å¯: %d, æ‹’çµ¶: %d, é™¤å¤–: %d"
 
-#: scripts/mknmz.in:1535
+#: scripts/mknmz.in:1545
 #, c-format
 msgid "  MTIME too old: %d, MTIME too new: %d"
-msgstr "  MTIME ¸Å¤¹¤®: %d, MTIME ¿·¤·¤¹¤®: %d"
-
-#: scripts/mknmz.in:1541
-msgid "lang_msg: "
-msgstr "¥á¥Ã¥»¡¼¥¸¤Î¸À¸ì: "
-
-#: scripts/mknmz.in:1542
-msgid "lang: "
-msgstr "¸À¸ì: "
-
-#: scripts/mknmz.in:1550
-msgid "Usage: mknmz [options] <target>...\n"
-msgstr "»È¤¤Êı: mknmz [¥ª¥×¥·¥ç¥ó] <ÂĞ¾İ>...\n"
+msgstr "  MTIME å¤ã™ã: %d, MTIME æ–°ã—ã™ã: %d"
 
 #: scripts/mknmz.in:1551
-msgid "Try `mknmz --help' for more information.\n"
-msgstr "`mknmz --help' ¤Ç¤è¤ê¾Ü¤·¤¤¾ğÊó¤¬É½¼¨¤µ¤ì¤Ş¤¹\n"
+msgid "lang_msg: "
+msgstr "ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®è¨€èª: "
 
-#: scripts/mknmz.in:1781
+#: scripts/mknmz.in:1552
+msgid "lang: "
+msgstr "è¨€èª: "
+
+#: scripts/mknmz.in:1560
+msgid "Usage: mknmz [options] <target>...\n"
+msgstr "ä½¿ã„æ–¹: mknmz [ã‚ªãƒ—ã‚·ãƒ§ãƒ³] <å¯¾è±¡>...\n"
+
+#: scripts/mknmz.in:1561
+msgid "Try `mknmz --help' for more information.\n"
+msgstr "`mknmz --help' ã§ã‚ˆã‚Šè©³ã—ã„æƒ…å ±ãŒè¡¨ç¤ºã•ã‚Œã¾ã™\n"
+
+#: scripts/mknmz.in:1791
 msgid ""
 "\n"
 "\n"
@@ -545,9 +545,9 @@ msgid ""
 msgstr ""
 "\n"
 "\n"
-"== ¸«¤Ä¤«¤Ã¤¿¥Õ¥¡¥¤¥ë ==\n"
+"== è¦‹ã¤ã‹ã£ãŸãƒ•ã‚¡ã‚¤ãƒ« ==\n"
 
-#: scripts/mknmz.in:1782
+#: scripts/mknmz.in:1792
 msgid ""
 "\n"
 "\n"
@@ -555,9 +555,9 @@ msgid ""
 msgstr ""
 "\n"
 "\n"
-"== ÅĞÏ¿¤µ¤ì¤Æ¤¤¤ëÊ¸½ñ ==\n"
+"== ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹æ–‡æ›¸ ==\n"
 
-#: scripts/mknmz.in:1783
+#: scripts/mknmz.in:1793
 msgid ""
 "\n"
 "\n"
@@ -565,9 +565,9 @@ msgid ""
 msgstr ""
 "\n"
 "\n"
-"== ½ÅÊ£¤·¤¿Ê¸½ñ ==\n"
+"== é‡è¤‡ã—ãŸæ–‡æ›¸ ==\n"
 
-#: scripts/mknmz.in:1784
+#: scripts/mknmz.in:1794
 msgid ""
 "\n"
 "\n"
@@ -575,9 +575,9 @@ msgid ""
 msgstr ""
 "\n"
 "\n"
-"== ºï½ü¤µ¤ì¤Æ¤¤¤ëÊ¸½ñ ==\n"
+"== å‰Šé™¤ã•ã‚Œã¦ã„ã‚‹æ–‡æ›¸ ==\n"
 
-#: scripts/mknmz.in:1785
+#: scripts/mknmz.in:1795
 msgid ""
 "\n"
 "\n"
@@ -585,9 +585,9 @@ msgid ""
 msgstr ""
 "\n"
 "\n"
-"== ¹¹¿·¤µ¤ì¤Æ¤¤¤ëÊ¸½ñ ==\n"
+"== æ›´æ–°ã•ã‚Œã¦ã„ã‚‹æ–‡æ›¸ ==\n"
 
-#: scripts/mknmz.in:1786
+#: scripts/mknmz.in:1796
 msgid ""
 "\n"
 "\n"
@@ -595,163 +595,163 @@ msgid ""
 msgstr ""
 "\n"
 "\n"
-"== ¥¤¥ó¥Ç¥Ã¥¯¥¹¤¹¤Ù¤­¥Õ¥¡¥¤¥ë ==\n"
+"== ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã™ã¹ããƒ•ã‚¡ã‚¤ãƒ« ==\n"
 
-#: scripts/mknmz.in:1810
+#: scripts/mknmz.in:1820
 msgid "## deleted: "
 msgstr "## deleted: "
 
-#: scripts/mknmz.in:1835
+#: scripts/mknmz.in:1845
 msgid "## indexed: "
 msgstr "## indexed: "
 
-#: scripts/mknmz.in:1865
+#: scripts/mknmz.in:1875
 msgid "update_field_index: "
-msgstr "¥Õ¥£¡¼¥ë¥É¸¡º÷ÍÑ¤Î¥¤¥ó¥Ç¥Ã¥¯¥¹¤¬³«¤±¤Ş¤»¤ó¤Ç¤·¤¿"
+msgstr "ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰æ¤œç´¢ç”¨ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãŒé–‹ã‘ã¾ã›ã‚“ã§ã—ãŸ"
 
-#: scripts/mknmz.in:1880
+#: scripts/mknmz.in:1890
 msgid "was deleted!\n"
-msgstr "¥Õ¥¡¥¤¥ë¤Ïºï½ü¤µ¤ì¤Æ¤¤¤Ş¤¹\n"
+msgstr "ãƒ•ã‚¡ã‚¤ãƒ«ã¯å‰Šé™¤ã•ã‚Œã¦ã„ã¾ã™\n"
 
-#: scripts/mknmz.in:1897
+#: scripts/mknmz.in:1907
 msgid "was updated!\n"
-msgstr "¥Õ¥¡¥¤¥ë¤Ï¹¹¿·¤µ¤ì¤Æ¤¤¤Ş¤¹\n"
+msgstr "ãƒ•ã‚¡ã‚¤ãƒ«ã¯æ›´æ–°ã•ã‚Œã¦ã„ã¾ã™\n"
 
-#: scripts/mknmz.in:2045
+#: scripts/mknmz.in:2055
 msgid "[Append]"
-msgstr "[ÄÉ²Ã]"
+msgstr "[è¿½åŠ ]"
 
-#: scripts/mknmz.in:2047
+#: scripts/mknmz.in:2057
 msgid "[Base]"
-msgstr "[´ğËÜ]"
+msgstr "[åŸºæœ¬]"
 
-#: scripts/mknmz.in:2049
+#: scripts/mknmz.in:2059
 msgid "Date:"
-msgstr "ÆüÉÕ:"
-
-#: scripts/mknmz.in:2050
-msgid "Added Documents:"
-msgstr "ÄÉ²Ã¤µ¤ì¤¿Ê¸½ñ¤Î¿ô:"
-
-#: scripts/mknmz.in:2052
-msgid "Deleted Documents:"
-msgstr "ºï½ü¤µ¤ì¤¿Ê¸½ñ¤Î¿ô:"
-
-#: scripts/mknmz.in:2054
-msgid "Updated Documents:"
-msgstr "¹¹¿·¤µ¤ì¤¿Ê¸½ñ¤Î¿ô:"
-
-#: scripts/mknmz.in:2056
-msgid "Size (bytes):"
-msgstr "¥µ¥¤¥º (bytes): "
-
-#: scripts/mknmz.in:2058
-msgid "Total Documents:"
-msgstr "¹ç·×¤ÎÊ¸½ñ¿ô:"
+msgstr "æ—¥ä»˜:"
 
 #: scripts/mknmz.in:2060
-msgid "Added Keywords:"
-msgstr "ÄÉ²Ã¥­¡¼¥ï¡¼¥É¿ô:"
+msgid "Added Documents:"
+msgstr "è¿½åŠ ã•ã‚ŒãŸæ–‡æ›¸ã®æ•°:"
 
 #: scripts/mknmz.in:2062
-msgid "Total Keywords:"
-msgstr "¹ç·×¥­¡¼¥ï¡¼¥É¿ô:"
+msgid "Deleted Documents:"
+msgstr "å‰Šé™¤ã•ã‚ŒãŸæ–‡æ›¸ã®æ•°:"
 
 #: scripts/mknmz.in:2064
-msgid "Wakati:"
-msgstr "¤ï¤«¤Á½ñ¤­:"
+msgid "Updated Documents:"
+msgstr "æ›´æ–°ã•ã‚ŒãŸæ–‡æ›¸ã®æ•°:"
 
-#: scripts/mknmz.in:2065
-msgid "Time (sec):"
-msgstr "·Ğ²á»ş´Ö (ÉÃ):"
+#: scripts/mknmz.in:2066
+msgid "Size (bytes):"
+msgstr "ã‚µã‚¤ã‚º (bytes): "
 
-#: scripts/mknmz.in:2067
-msgid "File/Sec:"
-msgstr "¥Õ¥¡¥¤¥ë/ÉÃ:"
+#: scripts/mknmz.in:2068
+msgid "Total Documents:"
+msgstr "åˆè¨ˆã®æ–‡æ›¸æ•°:"
 
 #: scripts/mknmz.in:2070
-msgid "System:"
-msgstr "¥·¥¹¥Æ¥à:"
+msgid "Added Keywords:"
+msgstr "è¿½åŠ ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰æ•°:"
 
-#: scripts/mknmz.in:2071
+#: scripts/mknmz.in:2072
+msgid "Total Keywords:"
+msgstr "åˆè¨ˆã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰æ•°:"
+
+#: scripts/mknmz.in:2074
+msgid "Wakati:"
+msgstr "ã‚ã‹ã¡æ›¸ã:"
+
+#: scripts/mknmz.in:2075
+msgid "Time (sec):"
+msgstr "çµŒéæ™‚é–“ (ç§’):"
+
+#: scripts/mknmz.in:2077
+msgid "File/Sec:"
+msgstr "ãƒ•ã‚¡ã‚¤ãƒ«/ç§’:"
+
+#: scripts/mknmz.in:2080
+msgid "System:"
+msgstr "ã‚·ã‚¹ãƒ†ãƒ :"
+
+#: scripts/mknmz.in:2081
 msgid "Perl:"
 msgstr "Perl:"
 
-#: scripts/mknmz.in:2072
+#: scripts/mknmz.in:2082
 msgid "Namazu:"
 msgstr "Namazu:"
 
-#: scripts/mknmz.in:2201
+#: scripts/mknmz.in:2211
 msgid "doing write_phrase_hash() processing.\n"
-msgstr "write_phrase_hash() ¼Â¹Ô.\n"
+msgstr "write_phrase_hash() å®Ÿè¡Œ.\n"
 
-#: scripts/mknmz.in:2351
+#: scripts/mknmz.in:2361
 msgid "doing write_index() processing.\n"
-msgstr "write_index() ¼Â¹Ô.\n"
+msgstr "write_index() å®Ÿè¡Œ.\n"
 
 #: pl/document.pl:290
 msgid "Detected type: "
-msgstr "¸¡½Ğ¤µ¤ì¤¿¥¿¥¤¥×: "
+msgstr "æ¤œå‡ºã•ã‚ŒãŸã‚¿ã‚¤ãƒ—: "
 
-#: pl/document.pl:346 pl/filter.pl.in:98
+#: pl/document.pl:314 pl/document.pl:327 pl/document.pl:350 pl/document.pl:365
+msgid "is larger than your setup before filtered, skipped: "
+msgstr "ãƒ•ã‚¡ã‚¤ãƒ«ãŒè¨­å®šã•ã‚ŒãŸåˆ¶é™ã‚’è¶Šãˆã¦ã„ã‚‹ã®ã§ç„¡è¦–ã—ã¾ã™ "
+
+#: pl/document.pl:348 pl/filter.pl.in:98
 msgid "Unsupported media type "
-msgstr "Ì¤ÂĞ±ş¤Î·Á¼° "
+msgstr "æœªå¯¾å¿œã®å½¢å¼ "
 
-#: pl/document.pl:346 pl/document.pl:351
+#: pl/document.pl:348 pl/document.pl:355
 msgid " skipped."
-msgstr "Ìµ»ë¤·¤Ş¤¹"
-
-#: pl/document.pl:351
-msgid "system error occurred! "
-msgstr "Ã×Ì¿Åª¤Ê¥¨¥é¡¼"
-
-#: pl/document.pl:353
-msgid "does NOT EXIST! skipped."
-msgstr "¤ÏÂ¸ºß¤·¤Ê¤¤¤Î¤ÇÌµ»ë¤·¤Ş¤¹"
+msgstr "ç„¡è¦–ã—ã¾ã™"
 
 #: pl/document.pl:355
-msgid "is NOT READABLE! skipped."
-msgstr "¤ÏÆÉ¤ß¹ş¤ßÉÔ²ÄÇ½¤Ê¤Î¤ÇÌµ»ë¤·¤Ş¤¹"
+msgid "system error occurred! "
+msgstr "è‡´å‘½çš„ãªã‚¨ãƒ©ãƒ¼"
 
 #: pl/document.pl:357
-msgid "is 0 size! skipped."
-msgstr "¤Ï¥µ¥¤¥º¤¬ 0 ¤Ê¤Î¤ÇÌµ»ë¤·¤Ş¤¹"
+msgid "does NOT EXIST! skipped."
+msgstr "ã¯å­˜åœ¨ã—ãªã„ã®ã§ç„¡è¦–ã—ã¾ã™"
 
 #: pl/document.pl:359
-msgid "may be a BINARY file! skipped."
-msgstr "¤Ï¥Ğ¥¤¥Ê¥ê¤È»×¤ï¤ì¤ë¤Î¤ÇÌµ»ë¤·¤Ş¤¹"
+msgid "is NOT READABLE! skipped."
+msgstr "ã¯èª­ã¿è¾¼ã¿ä¸å¯èƒ½ãªã®ã§ç„¡è¦–ã—ã¾ã™"
 
 #: pl/document.pl:361
-msgid "is larger than your setup before filtered, skipped: "
-msgstr "¥Õ¥¡¥¤¥ë¤¬ÀßÄê¤µ¤ì¤¿À©¸Â¤ò±Û¤¨¤Æ¤¤¤ë¤Î¤ÇÌµ»ë¤·¤Ş¤¹ "
+msgid "is 0 size! skipped."
+msgstr "ã¯ã‚µã‚¤ã‚ºãŒ 0 ãªã®ã§ç„¡è¦–ã—ã¾ã™"
 
 #: pl/document.pl:363
+msgid "may be a BINARY file! skipped."
+msgstr "ã¯ãƒã‚¤ãƒŠãƒªã¨æ€ã‚ã‚Œã‚‹ã®ã§ç„¡è¦–ã—ã¾ã™"
+
+#: pl/document.pl:367
 msgid "is larger than your setup after filtered, skipped: "
-msgstr "¥Õ¥¡¥¤¥ë¤¬ÀßÄê¤µ¤ì¤¿À©¸Â¤ò±Û¤¨¤Æ¤¤¤ë¤Î¤ÇÌµ»ë¤·¤Ş¤¹ "
+msgstr "ãƒ•ã‚¡ã‚¤ãƒ«ãŒè¨­å®šã•ã‚ŒãŸåˆ¶é™ã‚’è¶Šãˆã¦ã„ã‚‹ã®ã§ç„¡è¦–ã—ã¾ã™ "
 
 #: pl/filter.pl.in:103
 msgid "Using "
-msgstr "¥â¥¸¥å¡¼¥ë: "
+msgstr "ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«: "
 
 #: pl/filter.pl.in:105
 msgid "unable to require "
-msgstr "°Ê²¼¤Î¥â¥¸¥å¡¼¥ë¤¬ require ¤Ç¤­¤Ş¤»¤ó "
+msgstr "ä»¥ä¸‹ã®ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ãŒ require ã§ãã¾ã›ã‚“ "
 
 #: pl/filter.pl.in:124
 msgid "Failed to call "
-msgstr "¸Æ¤Ó½Ğ¤·¤Ë¼ºÇÔ "
+msgstr "å‘¼ã³å‡ºã—ã«å¤±æ•— "
 
 #: pl/filter.pl.in:179
 msgid "Supported media types:   "
-msgstr "ÂĞ±ş¥á¥Ç¥£¥¢¥¿¥¤¥×:   "
+msgstr "å¯¾å¿œãƒ¡ãƒ‡ã‚£ã‚¢ã‚¿ã‚¤ãƒ—:   "
 
 #: pl/filter.pl.in:180
 msgid "Unsupported media types: "
-msgstr "Ì¤ÂĞ±ş¥á¥Ç¥£¥¢¥¿¥¤¥×: "
+msgstr "æœªå¯¾å¿œãƒ¡ãƒ‡ã‚£ã‚¢ã‚¿ã‚¤ãƒ—: "
 
 #: pl/filter.pl.in:180
 msgid "marked with minus (-) probably missing application in your $path.\n"
-msgstr "É¬Í×¥Ä¡¼¥ë¤¬ $path ¤Ë¤Ê¤¤¤â¤Î¤Ë¤Ï (-) ¤òÉ½¼¨\n"
+msgstr "å¿…è¦ãƒ„ãƒ¼ãƒ«ãŒ $path ã«ãªã„ã‚‚ã®ã«ã¯ (-) ã‚’è¡¨ç¤º\n"
 
 #: pl/util.pl:46
 msgid "Renamed: "
@@ -759,11 +759,11 @@ msgstr "Renamed: "
 
 #: pl/util.pl:81 pl/util.pl:136 pl/util.pl:165 pl/util.pl:187
 msgid "not an IO::File/FileHandle object!\n"
-msgstr "IO::File/FileHandle ¥ª¥Ö¥¸¥§¥¯¥È¤Ç¤Ï¤¢¤ê¤Ş¤»¤ó\n"
+msgstr "IO::File/FileHandle ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã§ã¯ã‚ã‚Šã¾ã›ã‚“\n"
 
 #: pl/util.pl:261
 msgid "Remove temporary files:"
-msgstr "°ì»ş¥Õ¥¡¥¤¥ë¤òºï½ü:"
+msgstr "ä¸€æ™‚ãƒ•ã‚¡ã‚¤ãƒ«ã‚’å‰Šé™¤:"
 
 #: pl/util.pl:325
 msgid "ASSERTION ERROR!: "
@@ -775,15 +775,15 @@ msgstr "Invoked: "
 
 #: pl/wakati.pl:83
 msgid "-- wakatized content --\n"
-msgstr "-- ¤ï¤«¤Á½ñ¤­¤µ¤ì¤¿ÆâÍÆ --\n"
+msgstr "-- ã‚ã‹ã¡æ›¸ãã•ã‚ŒãŸå†…å®¹ --\n"
 
 #: pl/wakati.pl:97 pl/wakati.pl:122
 msgid "wakati: using "
-msgstr "¤ï¤«¤Á½ñ¤­¤Ë¤Ï°Ê²¼¤òÍøÍÑ: "
+msgstr "ã‚ã‹ã¡æ›¸ãã«ã¯ä»¥ä¸‹ã‚’åˆ©ç”¨: "
 
 #: pl/wakati.pl:116
 msgid "invalid wakati module: "
-msgstr "Ìµ¸ú¤Ê¤ï¤«¤Á½ñ¤­¥â¥¸¥å¡¼¥ë: "
+msgstr "ç„¡åŠ¹ãªã‚ã‹ã¡æ›¸ããƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«: "
 
 #: pl/wakati.pl:118
 msgid "-- wakatized bare content --\n"
@@ -864,90 +864,90 @@ msgid ""
 "Report bugs to <%s>\n"
 "or <%s>.\n"
 msgstr ""
-"mknmz %s, Namazu ¤Î¥¤¥ó¥Ç¥Ã¥¯¥¹ºîÀ®¥×¥í¥°¥é¥à \n"
+"mknmz %s, Namazu ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ä½œæˆãƒ—ãƒ­ã‚°ãƒ©ãƒ  \n"
 "\n"
-"»È¤¤Êı: mknmz [¥ª¥×¥·¥ç¥ó] <ÂĞ¾İ>...\n"
+"ä½¿ã„æ–¹: mknmz [ã‚ªãƒ—ã‚·ãƒ§ãƒ³] <å¯¾è±¡>...\n"
 "\n"
-"ÂĞ¾İ¥Õ¥¡¥¤¥ë:\n"
-"  -a, --all                ¤¹¤Ù¤Æ¤Î¥Õ¥¡¥¤¥ë¤òÂĞ¾İ¤È¤¹¤ë\n"
-"  -t, --media-type=MTYPE   ÂĞ¾İ¥Õ¥¡¥¤¥ë¤ÎÊ¸½ñ·Á¼°¤ò»ØÄê¤¹¤ë\n"
-"  -h, --mailnews           --media-type='message/rfc822' ¤ÈÆ±¤¸\n"
-"      --mhonarc            --media-type='text/html; x-type=mhonarc' ¤ÈÆ±¤¸\n"
-"  -F, --target-list=FILE   ¥¤¥ó¥Ç¥Ã¥¯¥¹ÂĞ¾İ¤Î¥Õ¥¡¥¤¥ë¤Î¥ê¥¹¥È¤òÆÉ¤ß¹ş¤à\n"
-"      --allow=PATTERN      ÂĞ¾İ¤È¤¹¤ë¥Õ¥¡¥¤¥ëÌ¾¤ÎÀµµ¬É½¸½¤ò»ØÄê¤¹¤ë\n"
-"      --deny=PATTERN       µñÀä¤¹¤ë¥Õ¥¡¥¤¥ëÌ¾¤ÎÀµµ¬É½¸½¤ò»ØÄê¤¹¤ë\n"
-"      --exclude=PATTERN    ½ü³°¤¹¤ë¥Ñ¥¹Ì¾¤ÎÀµµ¬É½¸½¤ò»ØÄê¤¹¤ë\n"
-"  -e, --robots             ¼¡¤Îµ­½Ò¤ò´Ş¤à HTML¥Õ¥¡¥¤¥ë¤ò½ü³°¤¹¤ë\n"
+"å¯¾è±¡ãƒ•ã‚¡ã‚¤ãƒ«:\n"
+"  -a, --all                ã™ã¹ã¦ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚’å¯¾è±¡ã¨ã™ã‚‹\n"
+"  -t, --media-type=MTYPE   å¯¾è±¡ãƒ•ã‚¡ã‚¤ãƒ«ã®æ–‡æ›¸å½¢å¼ã‚’æŒ‡å®šã™ã‚‹\n"
+"  -h, --mailnews           --media-type='message/rfc822' ã¨åŒã˜\n"
+"      --mhonarc            --media-type='text/html; x-type=mhonarc' ã¨åŒã˜\n"
+"  -F, --target-list=FILE   ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹å¯¾è±¡ã®ãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒªã‚¹ãƒˆã‚’èª­ã¿è¾¼ã‚€\n"
+"      --allow=PATTERN      å¯¾è±¡ã¨ã™ã‚‹ãƒ•ã‚¡ã‚¤ãƒ«åã®æ­£è¦è¡¨ç¾ã‚’æŒ‡å®šã™ã‚‹\n"
+"      --deny=PATTERN       æ‹’çµ¶ã™ã‚‹ãƒ•ã‚¡ã‚¤ãƒ«åã®æ­£è¦è¡¨ç¾ã‚’æŒ‡å®šã™ã‚‹\n"
+"      --exclude=PATTERN    é™¤å¤–ã™ã‚‹ãƒ‘ã‚¹åã®æ­£è¦è¡¨ç¾ã‚’æŒ‡å®šã™ã‚‹\n"
+"  -e, --robots             æ¬¡ã®è¨˜è¿°ã‚’å«ã‚€ HTMLãƒ•ã‚¡ã‚¤ãƒ«ã‚’é™¤å¤–ã™ã‚‹\n"
 "                           <meta name=\"ROBOTS\" content=\"NOINDEX\">\n"
-"  -M, --meta               HTML¤Î meta¥¿¥°¤ò¥Õ¥£¡¼¥ë¥É»ØÄê¸¡º÷¤ËÍÑ¤¤¤ë\n"
-"  -r, --replace=CODE       URI¤òÃÖ´¹¤¹¤ë¤¿¤á¤Î¥³¡¼¥É¤ò»ØÄê¤¹¤ë\n"
-"      --html-split         HTML¥Õ¥¡¥¤¥ë¤ò <a name=\"...\"> Ã±°Ì¤ÇÊ¬³ä½èÍı¤¹"
-"¤ë\n"
-"      --mtime=NUM          ÊÑ¹¹ÆüÀ©¸Â find(1) ¤Î -mtime ¤ÈÆ±¤¸µ¬Â§\n"
-"                           Îã: -50 ¤Ç 50 Æü°ÊÆâ¡¢+50 ¤Ç 50 Æü¤è¤ê¸Å¤¤¤â¤Î¤À"
-"¤±\n"
+"  -M, --meta               HTMLã® metaã‚¿ã‚°ã‚’ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰æŒ‡å®šæ¤œç´¢ã«ç”¨ã„ã‚‹\n"
+"  -r, --replace=CODE       URIã‚’ç½®æ›ã™ã‚‹ãŸã‚ã®ã‚³ãƒ¼ãƒ‰ã‚’æŒ‡å®šã™ã‚‹\n"
+"      --html-split         HTMLãƒ•ã‚¡ã‚¤ãƒ«ã‚’ <a name=\"...\"> å˜ä½ã§åˆ†å‰²å‡¦ç†ã™"
+"ã‚‹\n"
+"      --mtime=NUM          å¤‰æ›´æ—¥åˆ¶é™ find(1) ã® -mtime ã¨åŒã˜è¦å‰‡\n"
+"                           ä¾‹: -50 ã§ 50 æ—¥ä»¥å†…ã€+50 ã§ 50 æ—¥ã‚ˆã‚Šå¤ã„ã‚‚ã®ã "
+"ã‘\n"
 "\n"
-"·ÁÂÖÁÇ²òÀÏ:\n"
-"  -b, --use-mecab          ÆüËÜ¸ì¤ÎÃ±¸ì¤Î¤ï¤«¤Á½ñ¤­¤Ë MeCab ¤òÍÑ¤¤¤ë\n"
-"  -c, --use-chasen         ÆüËÜ¸ì¤ÎÃ±¸ì¤Î¤ï¤«¤Á½ñ¤­¤Ë ChaSen ¤òÍÑ¤¤¤ë\n"
-"  -k, --use-kakasi         ÆüËÜ¸ì¤ÎÃ±¸ì¤Î¤ï¤«¤Á½ñ¤­¤Ë KAKASI ¤òÍÑ¤¤¤ë\n"
-"  -m, --use-chasen-noun    Ì¾»ì¤Î¤ß¤òÃê½Ğ¤¹¤ë\n"
-"      --use-builtinwakati  ÆüËÜ¸ì¤ÎÃ±¸ì¤Î¤ï¤«¤Á½ñ¤­¤ËÆâÂ¢¥ë¡¼¥Á¥ó¤òÍÑ¤¤¤ë\n"
-"  -L, --indexing-lang=LANG ¥¤¥ó¥Ç¥Ã¥¯¥¹»ş¤Ë¸À¸ì¤ËÆÃ²½¤·¤¿½èÍı¤ò¹Ô¤Ê¤¦\n"
+"å½¢æ…‹ç´ è§£æ:\n"
+"  -b, --use-mecab          æ—¥æœ¬èªã®å˜èªã®ã‚ã‹ã¡æ›¸ãã« MeCab ã‚’ç”¨ã„ã‚‹\n"
+"  -c, --use-chasen         æ—¥æœ¬èªã®å˜èªã®ã‚ã‹ã¡æ›¸ãã« ChaSen ã‚’ç”¨ã„ã‚‹\n"
+"  -k, --use-kakasi         æ—¥æœ¬èªã®å˜èªã®ã‚ã‹ã¡æ›¸ãã« KAKASI ã‚’ç”¨ã„ã‚‹\n"
+"  -m, --use-chasen-noun    åè©ã®ã¿ã‚’æŠ½å‡ºã™ã‚‹\n"
+"      --use-builtinwakati  æ—¥æœ¬èªã®å˜èªã®ã‚ã‹ã¡æ›¸ãã«å†…è”µãƒ«ãƒ¼ãƒãƒ³ã‚’ç”¨ã„ã‚‹\n"
+"  -L, --indexing-lang=LANG ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹æ™‚ã«è¨€èªã«ç‰¹åŒ–ã—ãŸå‡¦ç†ã‚’è¡Œãªã†\n"
 "\n"
-"Ê¸»úÎó½èÍı:\n"
-"  -E, --no-edge-symbol     Ã±¸ì¤ÎÎ¾Ã¼¤Îµ­¹æ¤Ïºï½ü¤¹¤ë\n"
-"  -G, --no-okurigana       Á÷¤ê²¾Ì¾¤òºï½ü¤¹¤ë\n"
-"  -H, --no-hiragana        Ê¿²¾Ì¾¤Î¤ß¤ÎÃ±¸ì¤ÏÅĞÏ¿¤·¤Ê¤¤\n"
-"  -K, --no-symbol          µ­¹æ¤ò¤¹¤Ù¤Æºï½ü¤¹¤ë\n"
-"      --decode-base64      ÅºÉÕ¤µ¤ì¤¿Base64¥¨¥ó¥³¡¼¥ÉÉôÊ¬¤ò¥Ç¥³¡¼¥É¤¹¤ë\n"
+"æ–‡å­—åˆ—å‡¦ç†:\n"
+"  -E, --no-edge-symbol     å˜èªã®ä¸¡ç«¯ã®è¨˜å·ã¯å‰Šé™¤ã™ã‚‹\n"
+"  -G, --no-okurigana       é€ã‚Šä»®åã‚’å‰Šé™¤ã™ã‚‹\n"
+"  -H, --no-hiragana        å¹³ä»®åã®ã¿ã®å˜èªã¯ç™»éŒ²ã—ãªã„\n"
+"  -K, --no-symbol          è¨˜å·ã‚’ã™ã¹ã¦å‰Šé™¤ã™ã‚‹\n"
+"      --decode-base64      æ·»ä»˜ã•ã‚ŒãŸBase64ã‚¨ãƒ³ã‚³ãƒ¼ãƒ‰éƒ¨åˆ†ã‚’ãƒ‡ã‚³ãƒ¼ãƒ‰ã™ã‚‹\n"
 "\n"
-"Í×Ìó:\n"
-"  -U, --no-encode-uri      URI¤Îencode¤ò¹Ô¤ï¤Ê¤¤\n"
-"  -x, --no-heading-summary HTML ¤Î¥Ø¥Ç¥£¥ó¥°¤Ë¤è¤ëÍ×ÌóºîÀ®¤ò¹Ô¤ï¤Ê¤¤\n"
+"è¦ç´„:\n"
+"  -U, --no-encode-uri      URIã®encodeã‚’è¡Œã‚ãªã„\n"
+"  -x, --no-heading-summary HTML ã®ãƒ˜ãƒ‡ã‚£ãƒ³ã‚°ã«ã‚ˆã‚‹è¦ç´„ä½œæˆã‚’è¡Œã‚ãªã„\n"
 "\n"
 "\n"
-"¥¤¥ó¥Ç¥Ã¥¯¥¹ºîÀ®:\n"
-"      --update=INDEX       ¹¹¿·¤¹¤ë¥¤¥ó¥Ç¥Ã¥¯¥¹¤ò»ØÄê¤¹¤ë\n"
-"  -z, --check-filesize     ¥µ¥¤¥º¤¬ÊÑ¤ï¤Ã¤¿¥Õ¥¡¥¤¥ë¤âÂĞ¾İ¤È¤¹¤ë\n"
-"  -Y, --no-delete          ºï½ü¤µ¤ì¤¿Ê¸½ñ¤Î¸¡½Ğ¤ò¹Ô¤ï¤Ê¤¤\n"
-"  -Z, --no-update          Ê¸½ñ¤Î¹¹¿·¡¦ºï½ü¤òÈ¿±Ç¤·¤Ê¤¤\n"
+"ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ä½œæˆ:\n"
+"      --update=INDEX       æ›´æ–°ã™ã‚‹ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’æŒ‡å®šã™ã‚‹\n"
+"  -z, --check-filesize     ã‚µã‚¤ã‚ºãŒå¤‰ã‚ã£ãŸãƒ•ã‚¡ã‚¤ãƒ«ã‚‚å¯¾è±¡ã¨ã™ã‚‹\n"
+"  -Y, --no-delete          å‰Šé™¤ã•ã‚ŒãŸæ–‡æ›¸ã®æ¤œå‡ºã‚’è¡Œã‚ãªã„\n"
+"  -Z, --no-update          æ–‡æ›¸ã®æ›´æ–°ãƒ»å‰Šé™¤ã‚’åæ˜ ã—ãªã„\n"
 "\n"
-"¤½¤ÎÂ¾:\n"
-"  -s, --checkpoint         ¥Á¥§¥Ã¥¯¥İ¥¤¥ó¥Èµ¡¹½¤òºîÆ°¤µ¤»¤ë\n"
-"  -C, --show-config        ¸½ºß¤ÎÀßÄê¤òÉ½¼¨¤¹¤ë\n"
-"  -f, --config=FILE        ÀßÄê¥Õ¥¡¥¤¥ë¤ò»ØÄê¤¹¤ë\n"
-"  -I, --include=FILE       ¥«¥¹¥¿¥Ş¥¤¥ºÍÑ¥Õ¥¡¥¤¥ë¤òÆÉ¤ß¹ş¤à\n"
-"  -O, --output-dir=DIR     ¥¤¥ó¥Ç¥Ã¥¯¥¹¤Î½ĞÎÏÀè¤ò»ØÄê¤¹¤ë\n"
-"  -T, --template-dir=DIR   NMZ.{head,foot,body}.* ¤Î¥Ç¥£¥ì¥¯¥È¥ê¤ò»ØÄê¤¹¤ë\n"
-"  -q, --quiet              ¥¤¥ó¥Ç¥Ã¥¯¥¹½èÍı¤ÎºÇÃæ¤Ë¥á¥Ã¥»¡¼¥¸¤òÉ½¼¨¤·¤Ê¤¤\n"
-"  -v, --version            ¥ô¥¡¡¼¥¸¥ç¥ó¤òÉ½¼¨¤¹¤ë\n"
-"  -V, --verbose            ¸ı¤ä¤«¤Ş¤·¤¤¥â¡¼¥É\n"
-"  -d, --debug              ¥Ç¥Ğ¥Ã¥°¥â¡¼¥É\n"
-"      --help               ¤³¤Î¥Ø¥ë¥×¤òÉ½¼¨¤¹¤ë\n"
-"      --norc               ÀßÄê¥Õ¥¡¥¤¥ë¤òÆÉ¤ß¹ş¤Ş¤Ê¤¤\n"
-"      --                   ¥ª¥×¥·¥ç¥ó¥ê¥¹¥È¤ò½ªÎ»¤¹¤ë\n"
+"ãã®ä»–:\n"
+"  -s, --checkpoint         ãƒã‚§ãƒƒã‚¯ãƒã‚¤ãƒ³ãƒˆæ©Ÿæ§‹ã‚’ä½œå‹•ã•ã›ã‚‹\n"
+"  -C, --show-config        ç¾åœ¨ã®è¨­å®šã‚’è¡¨ç¤ºã™ã‚‹\n"
+"  -f, --config=FILE        è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã‚’æŒ‡å®šã™ã‚‹\n"
+"  -I, --include=FILE       ã‚«ã‚¹ã‚¿ãƒã‚¤ã‚ºç”¨ãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã‚€\n"
+"  -O, --output-dir=DIR     ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®å‡ºåŠ›å…ˆã‚’æŒ‡å®šã™ã‚‹\n"
+"  -T, --template-dir=DIR   NMZ.{head,foot,body}.* ã®ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’æŒ‡å®šã™ã‚‹\n"
+"  -q, --quiet              ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹å‡¦ç†ã®æœ€ä¸­ã«ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’è¡¨ç¤ºã—ãªã„\n"
+"  -v, --version            ãƒ´ã‚¡ãƒ¼ã‚¸ãƒ§ãƒ³ã‚’è¡¨ç¤ºã™ã‚‹\n"
+"  -V, --verbose            å£ã‚„ã‹ã¾ã—ã„ãƒ¢ãƒ¼ãƒ‰\n"
+"  -d, --debug              ãƒ‡ãƒãƒƒã‚°ãƒ¢ãƒ¼ãƒ‰\n"
+"      --help               ã“ã®ãƒ˜ãƒ«ãƒ—ã‚’è¡¨ç¤ºã™ã‚‹\n"
+"      --norc               è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã¾ãªã„\n"
+"      --                   ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãƒªã‚¹ãƒˆã‚’çµ‚äº†ã™ã‚‹\n"
 "\n"
-"¥Ğ¥°Êó¹ğ¤Ï <%s>\n"
-"¤Ş¤¿¤Ï <%s> ¤Ø¤É¤¦¤¾\n"
+"ãƒã‚°å ±å‘Šã¯ <%s>\n"
+"ã¾ãŸã¯ <%s> ã¸ã©ã†ã\n"
 
 #: pl/var.pl.in:132
 msgid "No title in original"
-msgstr "ÂêÌ¾¤Ê¤·¤ÎÊ¸½ñ"
+msgstr "é¡Œåãªã—ã®æ–‡æ›¸"
 
 #: filter/html.pl:99
 msgid "is excluded because of <meta name=\"robots\" ...>"
-msgstr "¤Ï <meta name=\"robots\" ...> ¤Ë¤è¤Ã¤Æ½ü³°¤µ¤ì¤Æ¤¤¤Ş¤¹"
+msgstr "ã¯ <meta name=\"robots\" ...> ã«ã‚ˆã£ã¦é™¤å¤–ã•ã‚Œã¦ã„ã¾ã™"
 
 #: filter/msword.pl:152 filter/msword.pl:269
 msgid "Unsupported format: "
-msgstr "Ì¤ÂĞ±ş¤Î·Á¼°: "
+msgstr "æœªå¯¾å¿œã®å½¢å¼: "
 
 #~ msgid "code conversion: using NKF module\n"
-#~ msgstr "¥³¡¼¥ÉÊÑ´¹¤Ë NKF ¥â¥¸¥å¡¼¥ë¤òÍÑ¤¤¤Ş¤¹\n"
+#~ msgstr "ã‚³ãƒ¼ãƒ‰å¤‰æ›ã« NKF ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ã‚’ç”¨ã„ã¾ã™\n"
 
 #~ msgid "ERROR: malformed NMZ.r format!\n"
-#~ msgstr "¥¨¥é¡¼: NMZ.r ¤¬Ìµ¸ú¤Ê·Á¼°¤Ç¤¹\n"
+#~ msgstr "ã‚¨ãƒ©ãƒ¼: NMZ.r ãŒç„¡åŠ¹ãªå½¢å¼ã§ã™\n"
 
 #~ msgid "Unsupported data type "
-#~ msgstr "Ì¤ÂĞ±ş¤Î·Á¼° "
+#~ msgstr "æœªå¯¾å¿œã®å½¢å¼ "

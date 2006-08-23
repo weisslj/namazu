@@ -1,3 +1,9 @@
+2006-08-24  Yukio USUDA <usu@namazu.org>
+
+	* pl/filter.pl.in: _codeconv_document() move to pl/codeconv.pl
+
+	* pl/codeconv.pl: ditto.
+
 2006-08-19  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * pl/*, filter/*, scripts/*: Synced from development-2-1 changes 
@@ -14,4 +20,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1480 2006-08-19 05:58:25 opengl2772 Exp $
+$Id: ChangeLog,v 1.1481 2006-08-23 15:10:58 usu Exp $

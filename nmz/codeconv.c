@@ -2,10 +2,10 @@
  * 
  * codeconv.c -
  * 
- * $Id: codeconv.c,v 1.37 2006-08-18 18:56:03 opengl2772 Exp $
+ * $Id: codeconv.c,v 1.38 2006-08-24 14:10:15 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000,2004 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2006 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -56,8 +56,6 @@
 #include "i18n.h"
 #include "l10n-ja.h"
 
-static int nmz_codeconv_jp(char *buffer, int bufferSize);
-
 
 /*
  *
@@ -66,6 +64,10 @@ static int nmz_codeconv_jp(char *buffer, int bufferSize);
  */
 
 static void utf8_zen2han ( char *str );
+
+static int nmz_codeconv_jp(char *buffer, int bufferSize);
+static char *get_external_charset();
+
 
 static void
 utf8_zen2han(char *str)
@@ -102,6 +104,107 @@ utf8_zen2han(char *str)
     *(s + q) = '\0';
 }
 
+static char *
+get_external_charset()
+{
+    char *env;
+    static char *external_charset = NULL;
+    static char cache[BUFSIZE] = "";
+    char buffer[BUFSIZE] = "";
+    char *pLang, *pCharset;
+    char *p;
+
+
+    if ((env = nmz_get_lang()) == NULL) {
+        return NULL;
+    }
+
+    if (cache[0] != '\0' && !strcmp(cache, env)) {
+        nmz_debug_printf("cache [%s] hit! : get_external_charset()\n", external_charset);
+        return external_charset;
+    }
+
+    strncpy(cache, env, BUFSIZE - 1);
+    cache[BUFSIZE - 1] = '\0';
+
+    strncpy(buffer, env, BUFSIZE - 1);
+    buffer[BUFSIZE - 1] = '\0';
+
+    pLang = buffer;
+    pCharset = NULL;
+    for(p = buffer; *p != '\0'; p++) {
+        if (*p == '.') {
+            *p = '\0';
+            pCharset = p + 1;
+        } else if (*p == '@') {
+            *p = '\0';
+        }
+    }
+
+    external_charset = NULL;
+    if (pCharset) {
+        if (!strcasecmp(pCharset, "utf8")) {
+            external_charset = "UTF-8";
+        } else if (!strcasecmp(pCharset, "eucJP") ||
+            !strcasecmp(pCharset, "ujis"))
+        {
+            external_charset = "EUC-JP";
+        } else if (!strcasecmp(pCharset, "SJIS")) {
+            external_charset = "Shift_JIS";
+        } else if (!strcasecmp(pCharset, "ISO2022JP") ||
+            !strcasecmp(pCharset, "ISO-2022-JP"))
+        {
+            external_charset = "ISO-2022-JP";
+        } else if (!strcasecmp(pCharset, "ISO88591") ||
+            !strcasecmp(pCharset, "ISO-8859-1")) 
+        {
+            external_charset = "ISO-8859-1";
+        } else if (!strcasecmp(pCharset, "ISO885915") ||
+            !strcasecmp(pCharset, "ISO-8859-15")) 
+        {
+            external_charset = "ISO-8859-15";
+        } else if (!strcasecmp(pCharset, "ISO88592") ||
+            !strcasecmp(pCharset, "ISO-8859-2")) 
+        {
+            external_charset = "ISO-8859-2";
+        }
+    }
+
+    if (external_charset == NULL && pLang) {
+        if (!strncasecmp(pLang, "ja_", 3) ||
+            !strcasecmp(pLang, "ja") ||
+            !strcasecmp(pLang, "japanese"))
+        {
+            external_charset = "EUC-JP";
+        } else if (!strncasecmp(pLang, "en_", 3) ||
+            !strcasecmp(pLang, "en") ||
+
+            !strncasecmp(pLang, "fr_", 3) ||
+            !strcasecmp(pLang, "fr") ||
+            !strcasecmp(pLang, "french") ||
+
+            !strncasecmp(pLang, "de_", 3) ||
+            !strcasecmp(pLang, "de") ||
+            !strcasecmp(pLang, "deutsch") ||
+            !strcasecmp(pLang, "german") ||
+
+            !strncasecmp(pLang, "es_", 3) ||
+            !strcasecmp(pLang, "es") ||
+            !strcasecmp(pLang, "spanish"))
+        {
+            external_charset = "ISO-8859-1";
+        } else if (!strncasecmp(pLang, "pl_", 3) ||
+            !strcasecmp(pLang, "pl") ||
+            !strcasecmp(pLang, "polish"))
+        {
+            external_charset = "ISO-8859-2";
+        }
+    }
+
+    return external_charset;
+}
+
+
 /*
  *
  * Public functions
@@ -130,6 +233,7 @@ nmz_codeconv_external (const char *str) {
     lang = nmz_get_lang();
     if (strcasecmp(lang, "japanese") == 0 || 
 	strcasecmp(lang, "ja") == 0 || 
+	strcasecmp(lang, "ja_JP") == 0 || 
 	strcasecmp(lang, "ja_JP.EUC") == 0 || 
 	strcasecmp(lang, "ja_JP.ujis") == 0 ||
 	strcasecmp(lang, "ja_JP.eucJP") == 0)  /* EUC-JP */
@@ -137,7 +241,8 @@ nmz_codeconv_external (const char *str) {
         nmz_from_to(tmp, tmpsize, "UTF-8", "EUC-JP");
     } else if (strcasecmp(lang, "ja_JP.SJIS") == 0) { /* Shift_JIS */
         nmz_from_to(tmp, tmpsize, "UTF-8", "SHIFT_JIS");
-    } else if (strcasecmp(lang, "ja_JP.ISO-2022-JP") == 0) { /* ISO-2022-JP */
+    } else if (strcasecmp(lang, "ja_JP.ISO-2022-JP") == 0 ||
+	strcasecmp(lang, "ja_JP.iso2022jp") == 0) { /* ISO-2022-JP */
 	/*
 	 * Prepare enough memory for ISO-2022-JP encoding.
 	 * FIXME: It's not space-efficient. In the future, 
@@ -153,20 +258,27 @@ nmz_codeconv_external (const char *str) {
     } else if  (strcasecmp(lang, "deutsch") == 0 || 
 	strcasecmp(lang, "german") == 0 || 
 	strcasecmp(lang, "de") == 0 || 
+	strcasecmp(lang, "de_DE") == 0 || 
+	strcasecmp(lang, "de_DE.iso88591") == 0 || 
 	strcasecmp(lang, "de_DE.ISO-8859-1") == 0 || 
 
 	strcasecmp(lang, "french") == 0 || 
 	strcasecmp(lang, "fr") == 0 || 
+	strcasecmp(lang, "fr_FR") == 0 || 
+	strcasecmp(lang, "fr_FR.iso88591") == 0 || 
 	strcasecmp(lang, "fr_FR.ISO-8859-1") == 0 || 
 
 	strcasecmp(lang, "spanish") == 0 || 
 	strcasecmp(lang, "es") == 0 || 
+	strcasecmp(lang, "es_ES") == 0 || 
+	strcasecmp(lang, "es_ES.iso88591") == 0 || 
 	strcasecmp(lang, "es_ES.ISO-8859-1") == 0)  /* ISO-8859-1 */
     {
         nmz_from_to(tmp, tmpsize, "UTF-8", "ISO-8859-1");
     } else if  (strcasecmp(lang, "polish") == 0 || 
-	strcasecmp(lang, "german") == 0 || 
 	strcasecmp(lang, "pl") == 0 || 
+	strcasecmp(lang, "pl_PL") == 0 || 
+	strcasecmp(lang, "pl_PL.iso88592") == 0 || 
 	strcasecmp(lang, "pl_PL.ISO-8859-2") == 0)  /* ISO-8859-2 */
     {
 	nmz_from_to(tmp, tmpsize, "UTF-8", "ISO-8859-2");

@@ -2,7 +2,7 @@
  * 
  * codeconv.c -
  * 
- * $Id: codeconv.c,v 1.38 2006-08-24 14:10:15 opengl2772 Exp $
+ * $Id: codeconv.c,v 1.39 2006-08-24 17:38:35 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2006 Namazu Project All rights reserved.
@@ -219,69 +219,35 @@ get_external_charset()
  *
  */
 char *
-nmz_codeconv_external (const char *str) {
-    char *tmp, *lang;
-    int tmpsize;
+nmz_codeconv_external (const char *str)
+{
+    char *tmp, *charset;
 
     tmp = strdup(str);
     if (tmp == NULL) {
 	nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
 	return NULL;
     }
-    tmpsize = strlen(tmp)  + 1;
 
-    lang = nmz_get_lang();
-    if (strcasecmp(lang, "japanese") == 0 || 
-	strcasecmp(lang, "ja") == 0 || 
-	strcasecmp(lang, "ja_JP") == 0 || 
-	strcasecmp(lang, "ja_JP.EUC") == 0 || 
-	strcasecmp(lang, "ja_JP.ujis") == 0 ||
-	strcasecmp(lang, "ja_JP.eucJP") == 0)  /* EUC-JP */
-    {
-        nmz_from_to(tmp, tmpsize, "UTF-8", "EUC-JP");
-    } else if (strcasecmp(lang, "ja_JP.SJIS") == 0) { /* Shift_JIS */
-        nmz_from_to(tmp, tmpsize, "UTF-8", "SHIFT_JIS");
-    } else if (strcasecmp(lang, "ja_JP.ISO-2022-JP") == 0 ||
-	strcasecmp(lang, "ja_JP.iso2022jp") == 0) { /* ISO-2022-JP */
-	/*
-	 * Prepare enough memory for ISO-2022-JP encoding.
-	 * FIXME: It's not space-efficient. In the future, 
-	 * code conversion functions will be replaced with iconv(3)
-	 */
-        tmpsize = strlen(tmp) * 5  + 1;
-	tmp = realloc(tmp, tmpsize);
-	if (tmp == NULL) {
-	    nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
-	    return NULL;
-	}
-        nmz_from_to(tmp, tmpsize, "UTF-8", "ISO-2022-JP");
-    } else if  (strcasecmp(lang, "deutsch") == 0 || 
-	strcasecmp(lang, "german") == 0 || 
-	strcasecmp(lang, "de") == 0 || 
-	strcasecmp(lang, "de_DE") == 0 || 
-	strcasecmp(lang, "de_DE.iso88591") == 0 || 
-	strcasecmp(lang, "de_DE.ISO-8859-1") == 0 || 
+    if ((charset = get_external_charset())) {
+        int tmpsize;
 
-	strcasecmp(lang, "french") == 0 || 
-	strcasecmp(lang, "fr") == 0 || 
-	strcasecmp(lang, "fr_FR") == 0 || 
-	strcasecmp(lang, "fr_FR.iso88591") == 0 || 
-	strcasecmp(lang, "fr_FR.ISO-8859-1") == 0 || 
-
-	strcasecmp(lang, "spanish") == 0 || 
-	strcasecmp(lang, "es") == 0 || 
-	strcasecmp(lang, "es_ES") == 0 || 
-	strcasecmp(lang, "es_ES.iso88591") == 0 || 
-	strcasecmp(lang, "es_ES.ISO-8859-1") == 0)  /* ISO-8859-1 */
-    {
-        nmz_from_to(tmp, tmpsize, "UTF-8", "ISO-8859-1");
-    } else if  (strcasecmp(lang, "polish") == 0 || 
-	strcasecmp(lang, "pl") == 0 || 
-	strcasecmp(lang, "pl_PL") == 0 || 
-	strcasecmp(lang, "pl_PL.iso88592") == 0 || 
-	strcasecmp(lang, "pl_PL.ISO-8859-2") == 0)  /* ISO-8859-2 */
-    {
-	nmz_from_to(tmp, tmpsize, "UTF-8", "ISO-8859-2");
+        if (!strcmp(charset, "ISO-2022-JP")) {
+	    /*
+	     * Prepare enough memory for ISO-2022-JP encoding.
+	     * FIXME: It's not space-efficient.
+	     */
+            tmpsize = strlen(tmp) * 5 + 1;
+	    tmp = realloc(tmp, tmpsize);
+	    if (tmp == NULL) {
+	        nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
+	        return NULL;
+	    }
+            nmz_from_to(tmp, tmpsize, "UTF-8", "ISO-2022-JP");
+        } else {
+            tmpsize = strlen(tmp) + 1;
+            nmz_from_to(tmp, tmpsize, "UTF-8", charset);
+        }
     }
 
     return (char *)tmp;
@@ -474,9 +440,6 @@ nmz_from_to(char *buffer, int bufferSize,
     iconv_close(cd);
 
     if (status == -1) {
-        if (toBuffer) {
-            free(toBuffer);
-        }
 	switch (errno) {
 	    case E2BIG:
 		nmz_debug_printf("iconv ERR E2BIG\n");
@@ -487,8 +450,13 @@ nmz_from_to(char *buffer, int bufferSize,
 	    case EINVAL:
 		nmz_debug_printf("iconv ERR EINVAL\n");
 		break;
-
+	    default:
+		nmz_debug_printf("iconv ERR UNKNOWN\n");
+		break;
 	}
+        if (toBuffer) {
+            free(toBuffer);
+        }
         return NULL;
     }
     strncpy(buffer, toBuffer, bufferSize - 1);

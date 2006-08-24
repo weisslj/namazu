@@ -2,7 +2,7 @@
  * 
  * codeconv.c -
  * 
- * $Id: codeconv.c,v 1.39 2006-08-24 17:38:35 opengl2772 Exp $
+ * $Id: codeconv.c,v 1.40 2006-08-24 17:59:45 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2006 Namazu Project All rights reserved.
@@ -232,7 +232,9 @@ nmz_codeconv_external (const char *str)
     if ((charset = get_external_charset())) {
         int tmpsize;
 
-        if (!strcmp(charset, "ISO-2022-JP")) {
+        if (!strcmp(charset, "UTF-8")) {
+            ;
+        } else if (!strcmp(charset, "ISO-2022-JP")) {
 	    /*
 	     * Prepare enough memory for ISO-2022-JP encoding.
 	     * FIXME: It's not space-efficient.

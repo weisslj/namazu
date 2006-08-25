@@ -2,7 +2,7 @@
  * 
  * codeconv.c -
  * 
- * $Id: codeconv.c,v 1.40 2006-08-24 17:59:45 opengl2772 Exp $
+ * $Id: codeconv.c,v 1.41 2006-08-25 05:09:52 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2006 Namazu Project All rights reserved.
@@ -120,7 +120,7 @@ get_external_charset()
     }
 
     if (cache[0] != '\0' && !strcmp(cache, env)) {
-        nmz_debug_printf("cache [%s] hit! : get_external_charset()\n", external_charset);
+        nmz_debug_printf("get_external_charset: cache [%s] hit!\n", external_charset);
         return external_charset;
     }
 

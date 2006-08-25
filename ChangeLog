@@ -4,7 +4,8 @@
         get_external_encoding().
         "@euro" modifier to ISO-8859-15. 
 
-        * nmz/i18n.c: @modifier is supported.
+        * nmz/i18n.c(nmz_choose_msgfile_suffix): @modifier is
+        supported.
 
 2006-08-25  Yukio USUDA <usu@namazu.org>
 
@@ -44,4 +45,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1487 2006-08-25 17:25:14 opengl2772 Exp $
+$Id: ChangeLog,v 1.1488 2006-08-25 17:27:24 opengl2772 Exp $

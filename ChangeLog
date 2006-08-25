@@ -3,6 +3,9 @@
         * nmz/codeconv.c(nmz_codeconv_external): To use
         get_external_charset().
 
+        * src/result.c(replace_field): It is cast in 'unsigned char'
+        as for 'char'.
+
 2006-08-24  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * nmz/codeconv.c: Add get_external_query().
@@ -29,4 +32,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1483 2006-08-24 17:38:33 opengl2772 Exp $
+$Id: ChangeLog,v 1.1484 2006-08-25 00:43:54 opengl2772 Exp $

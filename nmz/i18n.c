@@ -1,6 +1,6 @@
 /*
  * i18n.c -
- * $Id: i18n.c,v 1.35 2006-08-18 18:56:03 opengl2772 Exp $
+ * $Id: i18n.c,v 1.36 2006-08-25 17:25:14 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2006 Namazu Project All rights reserved.
@@ -194,6 +194,14 @@ nmz_choose_msgfile_suffix(const char *pfname,  char *lang_suffix)
      * 2. NMZ.tips.ja_JP
      * 3. NMZ.tips.ja
      * 4. NMZ.tips
+     *
+     * Trial example:
+     * 1. NMZ.tips.fr_FR.iso885915@euro
+     * 2. NMZ.tips.fr_FR.iso885915
+     * 3. NMZ.tips.fr_FR
+     * 4. NMZ.tips.fr
+     * 5. NMZ.tips
+     *
      */
 
     do {
@@ -208,8 +216,8 @@ nmz_choose_msgfile_suffix(const char *pfname,  char *lang_suffix)
 	}
 	nmz_debug_printf("choose_msgfile: %s open failed.\n", fname);
 
-	for (i = strlen(fname) - 1;  i >= 0; i--) {
-	    if (fname[i] == '.' ||
+	for (i = strlen(fname) - 1; i >= 0; i--) {
+	    if (fname[i] == '@' || fname[i] == '.' ||
 		fname[i] == '_')
 	    {
 		fname[i] = '\0';

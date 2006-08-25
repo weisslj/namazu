@@ -1,3 +1,9 @@
+2006-08-26  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * nmz/codeconv.c: rename get_external_charset()
+        get_external_encoding().
+        "@euro" modifier to ISO-8859-15. 
+
 2006-08-25  Yukio USUDA <usu@namazu.org>
 
 	* po/{es.po, fr.po}: Code convert to utf-8.
@@ -36,4 +42,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1485 2006-08-25 11:57:03 usu Exp $
+$Id: ChangeLog,v 1.1486 2006-08-25 17:12:36 opengl2772 Exp $

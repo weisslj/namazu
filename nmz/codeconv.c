@@ -2,7 +2,7 @@
  * 
  * codeconv.c -
  * 
- * $Id: codeconv.c,v 1.41 2006-08-25 05:09:52 opengl2772 Exp $
+ * $Id: codeconv.c,v 1.42 2006-08-25 17:12:37 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2006 Namazu Project All rights reserved.
@@ -66,7 +66,7 @@
 static void utf8_zen2han ( char *str );
 
 static int nmz_codeconv_jp(char *buffer, int bufferSize);
-static char *get_external_charset();
+static char *get_external_encoding();
 
 
 static void
@@ -105,13 +105,13 @@ utf8_zen2han(char *str)
 }
 
 static char *
-get_external_charset()
+get_external_encoding()
 {
     char *env;
-    static char *external_charset = NULL;
+    static char *external_encoding = NULL;
     static char cache[BUFSIZE] = "";
     char buffer[BUFSIZE] = "";
-    char *pLang, *pCharset;
+    char *pLanguage, *pEncoding, *pModifier;
     char *p;
 
 
@@ -120,8 +120,8 @@ get_external_charset()
     }
 
     if (cache[0] != '\0' && !strcmp(cache, env)) {
-        nmz_debug_printf("get_external_charset: cache [%s] hit!\n", external_charset);
-        return external_charset;
+        nmz_debug_printf("get_external_encoding: cache [%s] hit!\n", external_encoding);
+        return external_encoding;
     }
 
     strncpy(cache, env, BUFSIZE - 1);
@@ -130,78 +130,85 @@ get_external_charset()
     strncpy(buffer, env, BUFSIZE - 1);
     buffer[BUFSIZE - 1] = '\0';
 
-    pLang = buffer;
-    pCharset = NULL;
+    pLanguage = buffer;
+    pEncoding = pModifier = NULL;
     for(p = buffer; *p != '\0'; p++) {
         if (*p == '.') {
             *p = '\0';
-            pCharset = p + 1;
+            pEncoding = p + 1;
         } else if (*p == '@') {
             *p = '\0';
+            pModifier = p + 1;
         }
     }
 
-    external_charset = NULL;
-    if (pCharset) {
-        if (!strcasecmp(pCharset, "utf8")) {
-            external_charset = "UTF-8";
-        } else if (!strcasecmp(pCharset, "eucJP") ||
-            !strcasecmp(pCharset, "ujis"))
+    external_encoding = NULL;
+    if (pEncoding) {
+        if (!strcasecmp(pEncoding, "utf8")) {
+            external_encoding = "UTF-8";
+        } else if (!strcasecmp(pEncoding, "eucJP") ||
+            !strcasecmp(pEncoding, "ujis"))
         {
-            external_charset = "EUC-JP";
-        } else if (!strcasecmp(pCharset, "SJIS")) {
-            external_charset = "Shift_JIS";
-        } else if (!strcasecmp(pCharset, "ISO2022JP") ||
-            !strcasecmp(pCharset, "ISO-2022-JP"))
+            external_encoding = "EUC-JP";
+        } else if (!strcasecmp(pEncoding, "SJIS")) {
+            external_encoding = "Shift_JIS";
+        } else if (!strcasecmp(pEncoding, "ISO2022JP") ||
+            !strcasecmp(pEncoding, "ISO-2022-JP"))
         {
-            external_charset = "ISO-2022-JP";
-        } else if (!strcasecmp(pCharset, "ISO88591") ||
-            !strcasecmp(pCharset, "ISO-8859-1")) 
+            external_encoding = "ISO-2022-JP";
+        } else if (!strcasecmp(pEncoding, "ISO88591") ||
+            !strcasecmp(pEncoding, "ISO-8859-1")) 
         {
-            external_charset = "ISO-8859-1";
-        } else if (!strcasecmp(pCharset, "ISO885915") ||
-            !strcasecmp(pCharset, "ISO-8859-15")) 
+            external_encoding = "ISO-8859-1";
+        } else if (!strcasecmp(pEncoding, "ISO885915") ||
+            !strcasecmp(pEncoding, "ISO-8859-15")) 
         {
-            external_charset = "ISO-8859-15";
-        } else if (!strcasecmp(pCharset, "ISO88592") ||
-            !strcasecmp(pCharset, "ISO-8859-2")) 
+            external_encoding = "ISO-8859-15";
+        } else if (!strcasecmp(pEncoding, "ISO88592") ||
+            !strcasecmp(pEncoding, "ISO-8859-2")) 
         {
-            external_charset = "ISO-8859-2";
+            external_encoding = "ISO-8859-2";
         }
     }
 
-    if (external_charset == NULL && pLang) {
-        if (!strncasecmp(pLang, "ja_", 3) ||
-            !strcasecmp(pLang, "ja") ||
-            !strcasecmp(pLang, "japanese"))
-        {
-            external_charset = "EUC-JP";
-        } else if (!strncasecmp(pLang, "en_", 3) ||
-            !strcasecmp(pLang, "en") ||
-
-            !strncasecmp(pLang, "fr_", 3) ||
-            !strcasecmp(pLang, "fr") ||
-            !strcasecmp(pLang, "french") ||
-
-            !strncasecmp(pLang, "de_", 3) ||
-            !strcasecmp(pLang, "de") ||
-            !strcasecmp(pLang, "deutsch") ||
-            !strcasecmp(pLang, "german") ||
-
-            !strncasecmp(pLang, "es_", 3) ||
-            !strcasecmp(pLang, "es") ||
-            !strcasecmp(pLang, "spanish"))
-        {
-            external_charset = "ISO-8859-1";
-        } else if (!strncasecmp(pLang, "pl_", 3) ||
-            !strcasecmp(pLang, "pl") ||
-            !strcasecmp(pLang, "polish"))
-        {
-            external_charset = "ISO-8859-2";
+    if (external_encoding == NULL && pModifier) {
+        if (!strcasecmp(pModifier, "euro")) {   /* xx_XX@euro */
+            external_encoding = "ISO-8859-15";
         }
     }
 
-    return external_charset;
+    if (external_encoding == NULL && pLanguage) {
+        if (!strncasecmp(pLanguage, "ja_", 3) ||
+            !strcasecmp(pLanguage, "ja") ||
+            !strcasecmp(pLanguage, "japanese"))
+        {
+            external_encoding = "EUC-JP";
+        } else if (!strncasecmp(pLanguage, "en_", 3) ||
+            !strcasecmp(pLanguage, "en") ||
+
+            !strncasecmp(pLanguage, "fr_", 3) ||
+            !strcasecmp(pLanguage, "fr") ||
+            !strcasecmp(pLanguage, "french") ||
+
+            !strncasecmp(pLanguage, "de_", 3) ||
+            !strcasecmp(pLanguage, "de") ||
+            !strcasecmp(pLanguage, "deutsch") ||
+            !strcasecmp(pLanguage, "german") ||
+
+            !strncasecmp(pLanguage, "es_", 3) ||
+            !strcasecmp(pLanguage, "es") ||
+            !strcasecmp(pLanguage, "spanish"))
+        {
+            external_encoding = "ISO-8859-1";
+        } else if (!strncasecmp(pLanguage, "pl_", 3) ||
+            !strcasecmp(pLanguage, "pl") ||
+            !strcasecmp(pLanguage, "polish"))
+        {
+            external_encoding = "ISO-8859-2";
+        }
+    }
+
+    return external_encoding;
 }
 
 
@@ -221,7 +228,7 @@ get_external_charset()
 char *
 nmz_codeconv_external (const char *str)
 {
-    char *tmp, *charset;
+    char *tmp, *encoding;
 
     tmp = strdup(str);
     if (tmp == NULL) {
@@ -229,12 +236,12 @@ nmz_codeconv_external (const char *str)
 	return NULL;
     }
 
-    if ((charset = get_external_charset())) {
+    if ((encoding = get_external_encoding())) {
         int tmpsize;
 
-        if (!strcmp(charset, "UTF-8")) {
+        if (!strcmp(encoding, "UTF-8")) {
             ;
-        } else if (!strcmp(charset, "ISO-2022-JP")) {
+        } else if (!strcmp(encoding, "ISO-2022-JP")) {
 	    /*
 	     * Prepare enough memory for ISO-2022-JP encoding.
 	     * FIXME: It's not space-efficient.
@@ -248,7 +255,7 @@ nmz_codeconv_external (const char *str)
             nmz_from_to(tmp, tmpsize, "UTF-8", "ISO-2022-JP");
         } else {
             tmpsize = strlen(tmp) + 1;
-            nmz_from_to(tmp, tmpsize, "UTF-8", charset);
+            nmz_from_to(tmp, tmpsize, "UTF-8", encoding);
         }
     }
 

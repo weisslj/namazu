@@ -1,3 +1,8 @@
+2006-08-28  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * pl/codeconv.pl: It is corrected that "ISO-2022-JP" can be used
+        with from_to when nkf is used. 
+
 2006-08-26  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * nmz/codeconv.c: rename get_external_charset()
@@ -44,4 +49,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1489 2006-08-25 17:28:45 opengl2772 Exp $
+$Id: ChangeLog,v 1.1490 2006-08-27 15:44:11 opengl2772 Exp $

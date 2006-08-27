@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: codeconv.pl,v 1.30 2006-08-23 15:11:00 usu Exp $
+# $Id: codeconv.pl,v 1.31 2006-08-27 15:44:13 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
-# Copyright (C) 2000-2004 Namazu Project All rights reserved.
+# Copyright (C) 2000-2006 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -90,19 +90,25 @@ sub chomp_multibytechar ($) {
     return $str;
 }
 
-my %nkfopt_f  = ( '7bit-jis' => 'J',  'euc-jp'   => 'E',
-                  'utf-8'    => 'W',  'shiftjis' => 'S',
-                  'cp932'    => 'S',
-                  'UTF16-BE' => '',   'UTF16-LE' => '',
-                  'unknown'  => '' );
-my %nkfopt_t  = ( 'euc-jp'   => 'e',  'utf-8'    => 'w',
-                  'shiftjis' => 's',  'cp932'    => 's');
+my %nkfopt_f  = ( '7BIT-JIS' => 'J',  'ISO-2022-JP' => 'J',
+                  'UTF-8'    => 'W',  'UTF8'        => 'W',
+                  'EUC-JP'   => 'E',  
+                  'SHIFTJIS' => 'S',  'CP932'       => 'S',
+                  'UTF16-BE' => '',   'UTF16-LE'    => '',
+                  'UNKNOWN'  => '' );
+my %nkfopt_t  = ( '7BIT-JIS' => 'j',  'ISO-2022-JP' => 'j',
+                  'UTF-8'    => 'w',  'UTF8'        => 'w',
+                  'EUC-JP'   => 'e',  
+                  'SHIFTJIS' => 's',  'CP932'       => 's');
 
 sub from_to_by_nkf_m ($$$){
     my ($contref, $code_f, $code_t) = @_;
+
+    $code_f = uc($code_f);
+    $code_t = uc($code_t);
     my $tmp = $nkfopt_f{$code_f};
     if (!$tmp){
-        $nkfopt_f{$code_f}='';
+        $nkfopt_f{$code_f} = '';
     }
     my $nkf_opt = "-". $nkfopt_f{$code_f} . $nkfopt_t{$code_t} . "mXZ1";
     $$contref = NKF::nkf($nkf_opt, $$contref);
@@ -110,19 +116,24 @@ sub from_to_by_nkf_m ($$$){
 
 sub from_to_by_nkf ($$$){
     my ($contref, $code_f, $code_t) = @_;
+
+    $code_f = uc($code_f);
+    $code_t = uc($code_t);
     my $tmp = $nkfopt_f{$code_f};
     if (!$tmp){
-        $nkfopt_f{$code_f}='';
+        $nkfopt_f{$code_f} = '';
     }
     my $nkf_opt = "-". $nkfopt_f{$code_f} . $nkfopt_t{$code_t} . "mXZ1";
     my $nkftmp = util::tmpnam("NMZ.nkf");
     {
         my $nh = util::efopen("|$conf::NKF $nkf_opt > $nkftmp");
         print $nh $$contref;
+        util::fclose($nh);
     }
     {
-       my $nh = util::efopen("< $nkftmp");
-       $$contref = util::readfile($nh);
+        my $nh = util::efopen("< $nkftmp");
+        $$contref = util::readfile($nh);
+        util::fclose($nh);
     }
     unlink($nkftmp);
 }
@@ -160,6 +171,10 @@ sub encode_from_to ($$$){
         Encode::from_to($$contref, $code_f ,$code_t);
 	util::dprint("Encode from $code_f to $code_t via encode_module");
     }else{
+        # FIXME: nkf is a japanese limitation.
+        # In the future, code conversion functions will be replaced with 
+        # Text::Iconv.
+
 	# nkf need UTF-16 BOM.
 	if ($code_f eq 'UTF-16BE') {
 	    $$contref = "\xfe\xff" . $$contref;

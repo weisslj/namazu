@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.42 2006-08-18 17:34:26 opengl2772 Exp $
+# $Id: util.pl,v 1.43 2006-08-27 15:55:25 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2006 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -263,6 +263,8 @@ sub remove_tmpfiles () {
 }
 
 sub set_lang () {
+    my $external_encoding = undef;
+
     for my $cand (("LANGUAGE", "LC_ALL", "LC_MESSAGES", "LANG")) {
 	if (defined($ENV{$cand})) {
 	    $util::LANG_MSG = $ENV{$cand};
@@ -277,25 +279,52 @@ sub set_lang () {
     }
     # print "LANG: $util::LANG\n";
 
-    if ($util::LANG_MSG =~ /utf-8/i) {
-        $util::EXT_ENCODE = 'utf-8';
-    } elsif ($util::LANG_MSG =~ /(SJIS|Shift_JIS|shiftjis|Shift-jis)/i) {
-        $util::EXT_ENCODE = 'shiftjis';
-    } elsif ($util::LANG_MSG =~ /ISO-2022-JP/i) {
-	$util::EXT_ENCODE = 'iso-2022-jp';
-    } elsif (($util::LANG_MSG =~ /ja_JP\.(EUC|ujis|eucJP)/) ||
-	     ($util::LANG_MSG eq 'japanese') || ($util::LANG_MSG eq 'ja')){
-	$util::EXT_ENCODE = 'euc-jp';
-    } elsif (($util::LANG_MSG =~ /ISO-8859-1/i) || 
-	    ($util::LANG_MSG eq 'german') ||
-	    ($util::LANG_MSG eq 'de') || ($util::LANG_MSG eq 'deutsch') ||
-	    ($util::LANG_MSG eq 'fr') || ($util::LANG_MSG eq 'french')  ||
-	    ($util::LANG_MSG eq 'es') || ($util::LANG_MSG eq 'spanish')) {
-	$util::EXT_ENCODE = 'iso-8859-1';
-    } elsif (($util::LANG_MSG =~ /ISO-8859-2/i) || 
-	    ($util::LANG_MSG eq 'polish') || ($util::LANG_MSG eq 'pl')) {
-	$util::EXT_ENCODE = 'iso-8859-2';
+    if ($util::LANG =~ /([^\.\@]+)(?:\.([^\.\@]+))?(?:\@(.+))?$/) {
+        my ($language, $encoding, $modifier) = ($1, $2, $3);
+
+        if (defined($encoding)) {
+            if ($encoding =~ /^UTF8$/i) {
+                $external_encoding = 'utf-8';
+            } elsif ($encoding =~ /^(?:eucJP|ujis)$/i) {
+	        $external_encoding = 'euc-jp';
+            } elsif ($encoding =~ /^sjis$/i) {
+                $external_encoding = 'shiftjis';
+            } elsif ($encoding =~ /^(?:ISO2022JP|ISO-2022-JP)$/i) {
+	        $external_encoding = 'iso-2022-jp';
+            } elsif ($encoding =~ /^(?:ISO88591|ISO-8859-1)$/i) {
+	        $external_encoding = 'iso-8859-1';
+            } elsif ($encoding =~ /^(?:ISO885915|ISO-8859-15)$/i) {
+	        $external_encoding = 'iso-8859-15';
+            } elsif ($encoding =~ /^(?:ISO88592|ISO-8859-2)$/i) {
+	        $external_encoding = 'iso-8859-2';
+            }
+        }
+
+        if (!defined($external_encoding) && defined($modifier)) {
+            if ($modifier =~ /^euro$/i) {
+                $external_encoding = 'iso-8859-15';
+            }
+        }
+
+        if (!defined($external_encoding) && defined($language)) {
+            if ($language =~ /^(?:ja_.*|ja|japanese)$/i) {
+	        $external_encoding = 'euc-jp';
+            } elsif ($language =~ /^(?:en_.*|en)$/i) {
+	        $external_encoding = 'iso-8859-1';
+            } elsif ($language =~ /^(?:fr_.*|fr|french)$/i) {
+	        $external_encoding = 'iso-8859-1';
+            } elsif ($language =~ /^(?:de_.*|de|deutsch|german)$/i) {
+	        $external_encoding = 'iso-8859-1';
+            } elsif ($language =~ /^(?:es_.*|es|spanish)$/i) {
+	        $external_encoding = 'iso-8859-1';
+            } elsif ($language =~ /^(?:pl_.*|pl|polish)$/i) {
+	        $external_encoding = 'iso-8859-2';
+            }
+        }
     }
+
+    $external_encoding = 'us-ascii' if (!defined($external_encoding));
+    $util::EXT_ENCODE = $external_encoding;
 }
 
 sub islang_msg($) {

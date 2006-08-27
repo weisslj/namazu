@@ -3,6 +3,9 @@
         * pl/codeconv.pl: It is corrected that "ISO-2022-JP" can be used
         with from_to when nkf is used. 
 
+        * pl/util.pl(set_lang): The method of setting encode was matched
+        to the processing of namazu.
+
 2006-08-26  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * nmz/codeconv.c: rename get_external_charset()
@@ -49,4 +52,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1490 2006-08-27 15:44:11 opengl2772 Exp $
+$Id: ChangeLog,v 1.1491 2006-08-27 15:55:24 opengl2772 Exp $

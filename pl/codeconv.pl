@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: codeconv.pl,v 1.31 2006-08-27 15:44:13 opengl2772 Exp $
+# $Id: codeconv.pl,v 1.32 2006-08-28 16:43:33 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2006 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -50,17 +50,17 @@ sub utf8han2zen ($$) {
 	my $dakuten = "";
 	$c1 = unpack("n", $c1) & 0x7F;
 	my $mid_low = $utf8_h2z[$c1];
-	if ($c2){
-	    if (unpack("n", $c2) == 0xBE9E){ # dakuten
-		if ($c1 == 0){
+	if ($c2) {
+	    if (unpack("n", $c2) == 0xBE9E) { # dakuten
+		if ($c1 == 0) {
 		    $mid_low = 0x8380; # "ta" to "da"
 		} elsif ($c1<=4 || ($c1>=0x0E && $c1<=0x0E) || $c1>=36) {
 		    $mid_low++;
 		} else {
 		    $dakuten = "\xE3\x82\x9B"; # isolated dakuten
 		}
-	    }elsif (unpack("n", $c2) == 0xBE9F) { # handakuten
-		if ($c1>=0x0A && $c1<=0x0E){
+	    } elsif (unpack("n", $c2) == 0xBE9F) { # handakuten
+		if ($c1>=0x0A && $c1<=0x0E) {
 		     $mid_low += 2;
 		} else {
 		     $dakuten = "\xE3\x82\x9C"; # isolated handakuten
@@ -90,37 +90,39 @@ sub chomp_multibytechar ($) {
     return $str;
 }
 
-my %nkfopt_f  = ( '7BIT-JIS' => 'J',  'ISO-2022-JP' => 'J',
-                  'UTF-8'    => 'W',  'UTF8'        => 'W',
-                  'EUC-JP'   => 'E',  
-                  'SHIFTJIS' => 'S',  'CP932'       => 'S',
-                  'UTF16-BE' => '',   'UTF16-LE'    => '',
-                  'UNKNOWN'  => '' );
-my %nkfopt_t  = ( '7BIT-JIS' => 'j',  'ISO-2022-JP' => 'j',
-                  'UTF-8'    => 'w',  'UTF8'        => 'w',
-                  'EUC-JP'   => 'e',  
-                  'SHIFTJIS' => 's',  'CP932'       => 's');
+my %nkfopt_f  = ( '7BIT-JIS'    => 'J',    'ISO-2022-JP' => 'J',
+                  'UTF-8'       => 'W',    'UTF8'        => 'W',
+                  'EUC-JP'      => 'E',  
+                  'SHIFT_JIS'   => 'S',    'SHIFT-JIS'   => 'S',  
+                  'SHIFTJIS'    => 'S',    'CP932'       => 'S',
+                  'UTF16-BE'    => 'W16B', 'UTF16-LE'    => 'W16L',
+                  'UNKNOWN'     => '' );
+my %nkfopt_t  = ( '7BIT-JIS'    => 'j',    'ISO-2022-JP' => 'j',
+                  'UTF-8'       => 'w',    'UTF8'        => 'w',
+                  'EUC-JP'      => 'e',  
+                  'SHIFT_JIS'   => 's',    'SHIFT-JIS'   => 's',  
+                  'SHIFTJIS'    => 's',    'CP932'       => 's');
 
-sub from_to_by_nkf_m ($$$){
+sub from_to_by_nkf_m ($$$) {
     my ($contref, $code_f, $code_t) = @_;
 
     $code_f = uc($code_f);
     $code_t = uc($code_t);
     my $tmp = $nkfopt_f{$code_f};
-    if (!$tmp){
+    if (!$tmp) {
         $nkfopt_f{$code_f} = '';
     }
     my $nkf_opt = "-". $nkfopt_f{$code_f} . $nkfopt_t{$code_t} . "mXZ1";
     $$contref = NKF::nkf($nkf_opt, $$contref);
 }
 
-sub from_to_by_nkf ($$$){
+sub from_to_by_nkf ($$$) {
     my ($contref, $code_f, $code_t) = @_;
 
     $code_f = uc($code_f);
     $code_t = uc($code_t);
     my $tmp = $nkfopt_f{$code_f};
-    if (!$tmp){
+    if (!$tmp) {
         $nkfopt_f{$code_f} = '';
     }
     my $nkf_opt = "-". $nkfopt_f{$code_f} . $nkfopt_t{$code_t} . "mXZ1";
@@ -138,13 +140,13 @@ sub from_to_by_nkf ($$$){
     unlink($nkftmp);
 }
 
-sub decode_mime_header ($$){
+sub decode_mime_header ($$) {
     my ($contref, $code_t) = @_;
     my $m_head = '=\?(?:ISO-2022-JP|iso-2022-jp|ISO-8859-1|iso-8859-1)\?[BbQq]\?[A-Za-z0-9\+\/]+=*\?=';
     $$contref =~ s/($m_head)/de_mime_header_by_encode($1,$code_t)/ge;
 }
 
-sub de_mime_header_by_encode ($$){
+sub de_mime_header_by_encode ($$) {
     my ($str, $code_t) = @_;
     $str = Encode::decode('MIME-Header', $str);
     _utf8_off($str);
@@ -152,17 +154,19 @@ sub de_mime_header_by_encode ($$){
     return $str;
 }
 
-sub encode_from_to ($$$){
+sub encode_from_to ($$$) {
     my ($contref, $code_f, $code_t) = @_;
     return if ($code_f eq $code_t);
-    if ($conf::NKF eq 'module_encode'){
-        if ($code_f eq 'unknown'){
+    if ($conf::NKF eq 'module_iconv') {
+        # FIXME:
+    } elsif ($conf::NKF eq 'module_encode') {
+        if ($code_f eq 'unknown') {
             #$Encode::Guess::DEBUG=1;
             my $enc = guess_encoding($$contref);
-            if (ref $enc){
+            if (ref $enc) {
                 $code_f = $enc->name;
                 util::dprint("Encode guessed : $code_f\n");
-            }else {
+            } else {
                 $$contref = "";
                 util::dprint("Encode::Guess couldn't find coding name");
                 return "Encode::Guess couldn't find encoding";
@@ -170,21 +174,24 @@ sub encode_from_to ($$$){
         }
         Encode::from_to($$contref, $code_f ,$code_t);
 	util::dprint("Encode from $code_f to $code_t via encode_module");
-    }else{
+    } else {
         # FIXME: nkf is a japanese limitation.
         # In the future, code conversion functions will be replaced with 
         # Text::Iconv.
 
-	# nkf need UTF-16 BOM.
-	if ($code_f eq 'UTF-16BE') {
-	    $$contref = "\xfe\xff" . $$contref;
-	}elsif ($code_f eq 'UTF-16LE') {
-	    $$contref = "\xff\xfe" . $$contref;
-	}
-	if ($conf::NKF eq 'module_nkf'){
+        # FIXME: unnecessary since nkf 2.06. 
+        #
+        # # nkf need UTF-16 BOM.
+        # if ($code_f eq 'UTF-16BE') {
+        #     $$contref = "\xfe\xff" . $$contref;
+        # } elsif ($code_f eq 'UTF-16LE') {
+        #     $$contref = "\xff\xfe" . $$contref;
+        # }
+
+	if ($conf::NKF eq 'module_nkf') {
 	    from_to_by_nkf_m($contref, $code_f, $code_t);
 	    util::dprint("Encode from $code_f to $code_t via nkf_module");
-	}elsif ($conf::NKF ne 'no'){
+	} elsif ($conf::NKF ne 'no') {
 	    from_to_by_nkf($contref, $code_f, $code_t);
 	    util::dprint("Encode from $code_f to $code_t via nkf");
 	}
@@ -195,11 +202,11 @@ sub decode_filename ($$) {
     my ($contref, $code_f) = @_;
     my $code_to = 'utf-8';
     my $err = undef;
-    if (($code_f eq 'CAP')||($code_f eq 'HEX')){
+    if (($code_f eq 'CAP') || ($code_f eq 'HEX')) {
         $$contref =~ s/:(\w\w)/chr(hex($1))/eg;
         $err = encode_from_to($contref, 'cp932', $code_to);
-    }else {
-        $err = encode_from_to($contref,$code_f,$code_to);
+    } else {
+        $err = encode_from_to($contref, $code_f, $code_to);
     }
 }
 
@@ -211,9 +218,9 @@ sub to_inner_encoding ($$) {
         $code_from = 'unknown';
     }
     if (util::islang("ja")) {
-        $err = encode_from_to($contref,$code_from,$code_to);
+        $err = encode_from_to($contref, $code_from, $code_to);
         if ($conf::NKF eq 'module_encode') { 
-            decode_mime_header($contref,$code_to);
+            decode_mime_header($contref, $code_to);
 	    normalize_jp($contref);
         }
     }
@@ -224,22 +231,24 @@ sub to_external_encoding ($) {
     my ($contref) = @_;
 
     my $err;
-    if ($util::EXT_ENCODE ne 'utf-8'){
+    if ($util::EXT_ENCODE ne 'utf-8') {
 	$err = encode_from_to($contref, 'utf-8', $util::EXT_ENCODE);
     }
     return $err;
 }
 
-sub load_encode{
-    if (($conf::NKF =~ /^module_encode/) && ($] >= 5.008)){
+sub load_encode {
+    if ($conf::NKF =~ /^module_iconv/) {
+        # FIXME:
+    } elsif (($conf::NKF =~ /^module_encode/) && ($] >= 5.008)) {
         eval 'use Encode qw/ from_to decode _utf8_off /;';
         if ($@) {return $@};
         eval 'use Encode::Guess qw/ euc-jp shiftjis 7bit-jis utf-8 /;';
         if ($@) {return $@};
 	return undef;
-    } elsif (util::islang("ja")){
+    } elsif (util::islang("ja") || util::islang_msg("ja")) {
 	if ($conf::NKF =~ /^module_nkf/) {
-	    eval 'use NKF 2.0;';
+	    eval 'use NKF 2.06;';
 	    if ($@) {return 'unable to require "NKF": ' . $@};
 	}
     }

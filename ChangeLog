@@ -1,3 +1,8 @@
+2006-08-29  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * pl/codeconv.pl: Addition of alias of charaset of nkf.
+        nkf 2.0.6 or more.(-W16L, -W16B option),
+
 2006-08-28  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * pl/codeconv.pl: It is corrected that "ISO-2022-JP" can be used
@@ -52,4 +57,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1491 2006-08-27 15:55:24 opengl2772 Exp $
+$Id: ChangeLog,v 1.1492 2006-08-28 16:43:31 opengl2772 Exp $

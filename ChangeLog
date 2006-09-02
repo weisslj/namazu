@@ -1,3 +1,7 @@
+2006-09-02  Yukio USUDA <usu@namazu.org>
+
+        * doc/{en,ja}/manual.html: Update Perl module URI.
+
 2006-08-29  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * pl/codeconv.pl: Addition of alias of charaset of nkf.
@@ -57,4 +61,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1492 2006-08-28 16:43:31 opengl2772 Exp $
+$Id: ChangeLog,v 1.1493 2006-09-02 14:47:21 usu Exp $

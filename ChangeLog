@@ -1,3 +1,7 @@
+2006-09-05  Yukio USUDA <usu@namazu.org>
+
+        * doc/{en,ja}/manual.html: Update Perl module URI.
+
 2006-09-02  Yukio USUDA <usu@namazu.org>
 
         * doc/{en,ja}/manual.html: Update Perl module URI.
@@ -61,4 +65,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1493 2006-09-02 14:47:21 usu Exp $
+$Id: ChangeLog,v 1.1494 2006-09-05 14:06:28 usu Exp $

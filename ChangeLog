@@ -2,6 +2,8 @@
 
         * template/NMZ.*.en: Add English files.
 
+        * template/README.txt: Add file.
+
 2006-09-05  Yukio USUDA <usu@namazu.org>
 
         * doc/{en,ja}/manual.html: Update Perl module URI.
@@ -69,4 +71,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1495 2006-09-09 07:46:18 opengl2772 Exp $
+$Id: ChangeLog,v 1.1496 2006-09-09 08:11:07 opengl2772 Exp $

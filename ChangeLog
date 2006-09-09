@@ -1,3 +1,7 @@
+2006-09-09  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * template/NMZ.*.en: Add English files.
+
 2006-09-05  Yukio USUDA <usu@namazu.org>
 
         * doc/{en,ja}/manual.html: Update Perl module URI.
@@ -65,4 +69,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1494 2006-09-05 14:06:28 usu Exp $
+$Id: ChangeLog,v 1.1495 2006-09-09 07:46:18 opengl2772 Exp $

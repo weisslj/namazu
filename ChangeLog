@@ -1,3 +1,8 @@
+2006-09-11  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * src/{form.c, output.c}: Special processing of ISO-2022-JP was 
+        removed. 
+
 2006-09-09  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * template/NMZ.*.en: Add English files.
@@ -71,4 +76,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1496 2006-09-09 08:11:07 opengl2772 Exp $
+$Id: ChangeLog,v 1.1497 2006-09-11 14:37:27 opengl2772 Exp $

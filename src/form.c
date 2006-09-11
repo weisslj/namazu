@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.91 2006-08-18 18:56:51 opengl2772 Exp $
+ * $Id: form.c,v 1.92 2006-09-11 14:37:29 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2006 Namazu Project All rights reserved.
@@ -809,7 +809,7 @@ void
 print_headfoot(const char * fname, const char * query, const char *subquery)
 {
     char *buf, *p, *q, name[BUFSIZE] = "";
-    int f, f2;
+    int f2;
 
     buf = read_headfoot(fname);
 
@@ -819,8 +819,8 @@ print_headfoot(const char * fname, const char * query, const char *subquery)
 
     check_xhtml(buf);
 
-    for (p = buf, f = f2 = 0; *p; p++) {
-        if (f == 0 && *p == '<') {
+    for (p = buf, f2 = 0; *p; p++) {
+        if (*p == '<') {
             if (nmz_strprefixcasecmp(p, "</title>") == 0) {
 		if (*query != '\0') {
 		    char *converted = nmz_query_external(query);
@@ -852,10 +852,6 @@ print_headfoot(const char * fname, const char * query, const char *subquery)
 		continue;
 	    }
 
-            /* 
-	     * In case of file's encoding is ISO-2022-JP, 
-	     * the problem occurs if JIS X 208 characters in element 
-	     */
             q = (char *)strchr(p, (int)'>');
 	    fputs("<", stdout);
 	    if (*(q-1) != '/') {
@@ -868,15 +864,6 @@ print_headfoot(const char * fname, const char * query, const char *subquery)
 	    }
             p = q;
         } else {
-            if ((strncmp(p, "\033$", 2) == 0)
-                && (*(p + 2) == 'B' || *(p + 2) == '@')) 
-            {
-                f = 1;
-            } else if ((strncmp(p, "\033(", 2) == 0) &&
-                       (*(p + 2) == 'J' || *(p + 2) == 'B' || *(p + 2) == 'H'))
-            {
-                f = 0;
-            }
             if (f2) continue;
             fputc(*p, stdout);
         }

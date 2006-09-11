@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.109 2006-08-18 18:56:51 opengl2772 Exp $
+ * $Id: output.c,v 1.110 2006-09-11 14:37:29 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2006 Namazu Project All rights reserved.
@@ -152,34 +152,10 @@ unhtml_buffer(char *ostr) {
     int f, i;
     char buf[BUFSIZE] = "", *str;
     int len;
+
     len = strlen(ostr) + 1;
     str = ostr;
     for (f = 0, i = 0; i < BUFSIZE && *str; str++) {
-
-	/* Iso-2022-jp handling */
-	if ((strncmp(str, "\033$", 2) == 0)
-	    && (*(str + 2) == 'B' || *(str + 2) == '@')) 
-	{
-	    char *p;
-
-	    strncpy(buf + i, str, 3);
-	    i += 3;
-	    str += 3;
-	    p = strstr(str, "\033(");
-	    if (p == NULL) {   /* non-terminating jis x 0208 */
-		strcpy(buf + i, str);
-		return; 
-	    }
-	    if (*(p + 2) == 'J' || *(p + 2) == 'B' || *(p + 2) == 'H') {
-		int len = p - str + 3;
-		strncpy(buf + i, str, len);
-		i += len;
-		str += len;
-	    } else {  /* unknown charset designation */
-		strcpy(buf + i, str);
-		return;
-	    }
-	}
 
 	if (strncasecmp(str, "<br>", 4) == 0 && *(str + 4) != '\n') {
 	    buf[i++] = '\n';

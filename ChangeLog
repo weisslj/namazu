@@ -1,3 +1,8 @@
+2006-09-15  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * nmz/hlist.c: Addition of initialization. 
+        Deletion of unnecessary part. 
+
 2006-09-11  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * src/{form.c, output.c}: Special processing of ISO-2022-JP was 
@@ -76,4 +81,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1497 2006-09-11 14:37:27 opengl2772 Exp $
+$Id: ChangeLog,v 1.1498 2006-09-14 17:37:26 opengl2772 Exp $

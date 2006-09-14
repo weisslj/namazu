@@ -2,10 +2,10 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.68 2006-08-12 07:01:01 opengl2772 Exp $
+ * $Id: hlist.c,v 1.69 2006-09-14 17:37:28 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2005 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2006 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -427,6 +427,10 @@ nmz_ormerge(NmzResult left, NmzResult right)
 void 
 nmz_malloc_hlist(NmzResult * hlist, int n)
 {
+    hlist->num  = 0;
+    hlist->data = NULL;
+    hlist->stat = SUCCESS;
+
     if (n <= 0) return;
     hlist->data = malloc(n * sizeof(struct nmz_data));
     if (hlist->data == NULL) {
@@ -455,8 +459,6 @@ nmz_free_hlist(NmzResult hlist)
 {
     if (hlist.stat != SUCCESS || hlist.num <= 0) return;
     free(hlist.data);
-    hlist.data = NULL;
-    hlist.num = 0;
 }
 
 void 

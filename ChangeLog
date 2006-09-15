@@ -5,6 +5,12 @@
 
         * nmz/parser.c(nmz_expr, term): Add nmz_free_hlist(). 
 
+        * nmz/{re.c, search.c}: NULL was set to the following free() pointer. 
+
+        * nmz/search.c(cmp_phrase_hash): When searching for the phrase,
+        the fix did the bug that referred to the memory free() for
+        ERR_TOO_MUCH_HIT. (namazu-user-ja#821, Thanks to taguchi)
+
 2006-09-11  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * src/{form.c, output.c}: Special processing of ISO-2022-JP was 
@@ -83,4 +89,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1499 2006-09-14 17:50:51 opengl2772 Exp $
+$Id: ChangeLog,v 1.1500 2006-09-15 03:02:51 opengl2772 Exp $

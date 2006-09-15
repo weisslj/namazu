@@ -2,10 +2,10 @@
  * 
  * re.c -
  * 
- * $Id: re.c,v 1.42 2006-08-12 07:01:01 opengl2772 Exp $
+ * $Id: re.c,v 1.43 2006-09-15 03:02:53 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2005 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2006 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -77,25 +77,26 @@ nmz_regex_grep(const char *expr, FILE *fp, const char *field, int field_mode)
     val.stat = SUCCESS;
 
     if (nmz_is_lang_ja()) {
-	/* japanese only */
+        /* japanese only */
         nmz_re_mbcinit(MBCTYPE_UTF8);
     } else {
         nmz_re_mbcinit(MBCTYPE_ASCII);
     }
+
     rp = ALLOC(struct re_pattern_buffer);
     MEMZERO((char *)rp, struct re_pattern_buffer, 1);
     rp->buffer = 0;
     rp->allocated = 0;
-    
+
     strncpy(tmpexpr, expr, BUFSIZE - 1); /* save orig_expr */
     nmz_debug_printf("REGEX: '%s'\n", tmpexpr);
 
     nmz_re_compile_pattern(tmpexpr, strlen(tmpexpr), rp);
 
     if (!field_mode) {
-	val = nmz_regex_grep_standard(rp, fp);
+        val = nmz_regex_grep_standard(rp, fp);
     } else {
-	val = nmz_regex_grep_field(rp, fp, field);
+        val = nmz_regex_grep_field(rp, fp, field);
     }
 
     nmz_re_free_pattern(rp);
@@ -138,6 +139,7 @@ nmz_regex_grep_standard(struct re_pattern_buffer *rp, FILE *fp)
             }
             if (tmp.num > maxhit) {
                 nmz_free_hlist(val);
+                val.data = NULL;
                 val.stat = ERR_TOO_MUCH_HIT;
                 break;
             }
@@ -146,6 +148,7 @@ nmz_regex_grep_standard(struct re_pattern_buffer *rp, FILE *fp)
                 n++;
                 if (n > maxmatch) {
                     nmz_free_hlist(val);
+                    val.data = NULL;
                     val.stat = ERR_TOO_MUCH_MATCH;
                     return val;
                 }
@@ -156,6 +159,7 @@ nmz_regex_grep_standard(struct re_pattern_buffer *rp, FILE *fp)
                 }
                 if (val.num > maxhit) {
                     nmz_free_hlist(val);
+                    val.data = NULL;
                     val.stat = ERR_TOO_MUCH_HIT;
                     break;
                 }
@@ -230,6 +234,7 @@ nmz_regex_grep_field(struct re_pattern_buffer *rp, FILE *fp, const char *field)
                 nmz_set_dyingmsg(nmz_msg("%s: %s", NMZ.t, strerror(errno)));
                 fclose(date_index);
                 nmz_free_hlist(val);
+                val.data = NULL;
                 val.stat = ERR_FATAL;
                 return val; /* error */
             }
@@ -243,6 +248,7 @@ nmz_regex_grep_field(struct re_pattern_buffer *rp, FILE *fp, const char *field)
             if (n > maxhit) {
                 fclose(date_index);
                 nmz_free_hlist(val);
+                val.data = NULL;
                 val.stat = ERR_TOO_MUCH_HIT;
                 return val;
             }
@@ -270,4 +276,3 @@ nmz_regex_grep_field(struct re_pattern_buffer *rp, FILE *fp, const char *field)
 
     return val;
 }
-

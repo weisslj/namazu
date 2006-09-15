@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.110 2006-08-18 18:56:03 opengl2772 Exp $
+ * $Id: search.c,v 1.111 2006-09-15 03:02:53 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2006 Namazu Project All rights reserved.
@@ -208,6 +208,7 @@ prefix_match(const char *key, int v)
             }
             if (tmp.num > maxhit) {
                 nmz_free_hlist(val);
+                val.data = NULL;
                 val.stat = ERR_TOO_MUCH_HIT;
                 break;
             }
@@ -215,6 +216,7 @@ prefix_match(const char *key, int v)
                 j++;
                 if (j > maxmatch) {
                     nmz_free_hlist(val);
+                    val.data = NULL;
                     val.stat = ERR_TOO_MUCH_MATCH;
                     break;
                 }
@@ -223,6 +225,7 @@ prefix_match(const char *key, int v)
                     return val;
                 if (val.num > maxhit) {
                     nmz_free_hlist(val);
+                    val.data = NULL;
                     val.stat = ERR_TOO_MUCH_HIT;
                     break;
                 }
@@ -293,6 +296,7 @@ do_word_search(const char *key, NmzResult val)
             return val;
         if (val.num > nmz_get_maxhit()) {
             nmz_free_hlist(val);
+            val.data = NULL;
             val.stat = ERR_TOO_MUCH_HIT;
             return val;
         }
@@ -355,9 +359,14 @@ cmp_phrase_hash(int hash_key, NmzResult val,
     if (val.num == 0) {
         return val;
     }
+    if (val.stat != SUCCESS) {
+        nmz_debug_printf("cmp_phrase_hash: val.stat [%d]\n", val.stat);
+        return val;
+    }
     ptr = nmz_getidxptr(phrase_index, hash_key);
     if (ptr < 0) {
         nmz_free_hlist(val);
+        val.data = NULL;
         val.num = 0;
         return val;
     }
@@ -386,6 +395,7 @@ cmp_phrase_hash(int hash_key, NmzResult val,
     }
     if (v == 0) {
         nmz_free_hlist(val);
+        val.data = NULL;
     }
     val.num = v;
     free(list);

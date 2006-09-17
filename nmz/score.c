@@ -2,10 +2,10 @@
  * 
  * score.c - scoring-related functions of Namazu
  * 
- * $Id: score.c,v 1.11 2006-08-12 07:01:01 opengl2772 Exp $
+ * $Id: score.c,v 1.12 2006-09-17 15:21:25 opengl2772 Exp $
  * 
  * Copyright (C) 2001 Hajime BABA  All rights reserved.
- * Copyright (C) 2001 Namazu Project All rights reserved.
+ * Copyright (C) 2001-2006 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -431,18 +431,18 @@ nmz_recompute_score(NmzResult *hlist)
     double qds_dis_ratio = 1.0;
     int i;
     
-    orig = malloc(sizeof(int)*(hlist->num + 1));
+    orig = malloc(sizeof(int) * hlist->num);
     if (orig == NULL) {
 	 nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
 	 return;
     }
-    qds =  malloc(sizeof(double)*(hlist->num + 1));
+    qds =  malloc(sizeof(double) * hlist->num);
     if (qds == NULL) {
 	 nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
          free(orig);
 	 return;
     }
-    dis =  malloc(sizeof(double)*(hlist->num + 1));
+    dis =  malloc(sizeof(double) * hlist->num);
     if (dis == NULL) {
 	 nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
          free(orig);

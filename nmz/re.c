@@ -2,7 +2,7 @@
  * 
  * re.c -
  * 
- * $Id: re.c,v 1.44 2006-09-19 15:10:07 opengl2772 Exp $
+ * $Id: re.c,v 1.45 2006-09-19 15:21:07 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2006 Namazu Project All rights reserved.
@@ -158,11 +158,9 @@ nmz_regex_grep_standard(struct re_pattern_buffer *rp, FILE *fp)
 
                 val = nmz_ormerge(val, tmp);
 		if (val.stat == ERR_FATAL) {
-                    nmz_free_hlist(tmp);
 		    return val;
                 }
                 if (val.num > maxhit) {
-                    nmz_free_hlist(tmp);
                     nmz_free_hlist(val);
                     val.data = NULL;
                     val.stat = ERR_TOO_MUCH_HIT;

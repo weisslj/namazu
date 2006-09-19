@@ -4,6 +4,8 @@
 
         * contrib/nmzchkw.pl: Add utility program.
 
+        * nmz/hlist.c(nmz_do_date_processing): Performance improvement.
+
 2006-09-18  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * nmz/score.c: Few modify.
@@ -99,4 +101,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1502 2006-09-19 15:10:06 opengl2772 Exp $
+$Id: ChangeLog,v 1.1503 2006-09-19 16:01:33 opengl2772 Exp $

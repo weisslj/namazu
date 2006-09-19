@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.69 2006-09-14 17:37:28 opengl2772 Exp $
+ * $Id: hlist.c,v 1.70 2006-09-19 16:01:34 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2006 Namazu Project All rights reserved.
@@ -384,8 +384,11 @@ nmz_ormerge(NmzResult left, NmzResult right)
     n = left.num + right.num;
 
     nmz_malloc_hlist(&val, n);
-    if (val.stat == ERR_FATAL)
+    if (val.stat == ERR_FATAL) {
+	nmz_free_hlist(left);
+	nmz_free_hlist(right);
         return val;
+    }
 
     for (v = 0, i = 0, j = 0; i < left.num; i++) {
 	for (; j < right.num; j++) {
@@ -496,8 +499,15 @@ nmz_merge_hlist(NmzResult *hlists)
         }
     }
     nmz_malloc_hlist(&value, n);
-    if (value.stat == ERR_FATAL)
+    if (value.stat == ERR_FATAL) {
+        for(i = 0; i < nmz_get_idxnum(); i++) {
+            if (hlists[i].stat != SUCCESS || hlists[i].num <= 0)
+                continue;
+            nmz_free_hlist(hlists[i]);
+        }
         return value;
+    }
+
     for(i = n = 0; i < nmz_get_idxnum(); i++) {
         if (hlists[i].stat != SUCCESS || hlists[i].num <= 0) 
             continue;
@@ -517,7 +527,7 @@ NmzResult
 nmz_do_date_processing(NmzResult hlist)
 {
     FILE *date_index;
-    int i;
+    int i, v;
 
     date_index = fopen(NMZ.t, "rb");
     if (date_index == NULL) {
@@ -526,9 +536,9 @@ nmz_do_date_processing(NmzResult hlist)
         return hlist; /* error */
     }
 
-    for (i = 0; i < hlist.num ; i++) {
+    for (i = 0; i < hlist.num; i++) {
         if (fseek(date_index,
-                     hlist.data[i].docid * sizeof(hlist.data[i].date), 0) != 0)
+                hlist.data[i].docid * sizeof(hlist.data[i].date), 0) != 0)
 	{
 	    nmz_set_dyingmsg(nmz_msg("%s: %s", NMZ.t, strerror(errno)));
 	    hlist.stat = ERR_FATAL;
@@ -537,20 +547,22 @@ nmz_do_date_processing(NmzResult hlist)
         }
         nmz_fread(&hlist.data[i].date, 
 		  sizeof(hlist.data[i].date), 1, date_index);
-
-        if (hlist.data[i].date == -1) {  
-            /* The missing number, this document has been deleted */
-            int j;
-
-            for (j = i + 1; j < hlist.num; j++) { /* shift */
-                nmz_copy_hlist(hlist, j - 1, hlist, j);
-            }
-            hlist.num--;
-            i--;
-        }
     }
 
     fclose(date_index);
+
+    for (v = 0, i = 0; i < hlist.num; i++) {
+        if (hlist.data[i].date == -1) {  
+            /* The missing number, this document has been deleted */
+        } else {
+            if (v != i) {
+                nmz_copy_hlist(hlist, v, hlist, i);
+            }
+            v++;
+        }
+    }
+    hlist.num = v;
+
     return hlist;
 }
 
@@ -656,25 +668,20 @@ int
 nmz_reverse_hlist(NmzResult hlist)
 {
     int m, n;
-    NmzResult tmp;
+    struct nmz_data tmp;
 
-    tmp.num  = 0;
-    tmp.data = NULL;
-    tmp.stat = SUCCESS;
-
-    nmz_malloc_hlist(&tmp, 1);
-    if (tmp.stat == ERR_FATAL)
-        return FAILURE;
     m = 0;
     n = hlist.num - 1;
     while (m < n) {
-	nmz_copy_hlist(tmp, 0, hlist, m);
-	nmz_copy_hlist(hlist, m, hlist, n);
-	nmz_copy_hlist(hlist, n, tmp, 0);
-	m++;
-	n--;
+        /* swap */
+        tmp = hlist.data[m];
+        hlist.data[m] = hlist.data[n];
+        hlist.data[n] = tmp;
+
+        m++;
+        n--;
     }
-    nmz_free_hlist(tmp);
+
     return 0;
 }
 

@@ -1,3 +1,9 @@
+2006-09-20  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * nmz/re.c: Few modify.
+
+        * contrib/nmzchkw.pl: Add utility program.
+
 2006-09-18  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * nmz/score.c: Few modify.
@@ -93,4 +99,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1501 2006-09-17 15:21:24 opengl2772 Exp $
+$Id: ChangeLog,v 1.1502 2006-09-19 15:10:06 opengl2772 Exp $

@@ -8,4 +8,7 @@ Namazu filter for Microsoft Excel file. It requires
 Spreadsheet::ParseExcel perl module.
 It was contributed by Mineo Kasai. 
 
-$Id: README,v 1.2 2002-05-21 06:19:24 knok Exp $
+* nmzchkw.pl
+It was contributed by Tadamasa Teranishi.
+
+$Id: README,v 1.3 2006-09-19 15:10:07 opengl2772 Exp $

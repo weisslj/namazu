@@ -2,4 +2,4 @@
 
 AUTOMAKE_OPTIONS = no-dependencies
 
-EXTRA_DIST = spreadexcel.pl
+EXTRA_DIST = spreadexcel.pl nmzchkw.pl

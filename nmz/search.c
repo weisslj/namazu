@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.111 2006-09-15 03:02:53 opengl2772 Exp $
+ * $Id: search.c,v 1.112 2006-09-23 08:24:14 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2006 Namazu Project All rights reserved.
@@ -388,7 +388,10 @@ cmp_phrase_hash(int hash_key, NmzResult val,
             sum = docid;
             for (; j < val.num && docid >= val.data[j].docid; j++) {
                 if (docid == val.data[j].docid) {
-                    nmz_copy_hlist(val, v++, val, j);
+                    if (v != j) {
+                        nmz_copy_hlist(val, v, val, j);
+                    }
+                    v++;
                 }
             }
         }

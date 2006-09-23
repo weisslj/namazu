@@ -1,3 +1,8 @@
+2006-09-23  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * nmz/{search.c, hlist.c}: The call of unnecessary nmz_copy_hlist()
+        is omitted and it optimizes it. 
+
 2006-09-20  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * nmz/re.c: Few modify.
@@ -101,4 +106,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1503 2006-09-19 16:01:33 opengl2772 Exp $
+$Id: ChangeLog,v 1.1504 2006-09-23 08:24:13 opengl2772 Exp $

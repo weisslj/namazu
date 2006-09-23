@@ -2,7 +2,7 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.70 2006-09-19 16:01:34 opengl2772 Exp $
+ * $Id: hlist.c,v 1.71 2006-09-23 08:24:14 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2006 Namazu Project All rights reserved.
@@ -279,7 +279,10 @@ nmz_andmerge(NmzResult left, NmzResult right, int *ignore)
 		break;
 	    if (left.data[i].docid == right.data[j].docid) {
 
-		nmz_copy_hlist(left, v, left, i);
+                if (v != i) {
+                    nmz_copy_hlist(left, v, left, i);
+                }
+
                 if (nmz_is_tfidfmode()) {
                     left.data[v].score = 
 			left.data[i].score + right.data[j].score;
@@ -341,7 +344,9 @@ nmz_notmerge(NmzResult left, NmzResult right, int *ignore)
 	    }
 	}
 	if (!f) {
-	    nmz_copy_hlist(left, v, left, i);
+            if (v != i) {
+	        nmz_copy_hlist(left, v, left, i);
+            }
 	    v++;
 	}
     }

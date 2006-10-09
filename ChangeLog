@@ -3,6 +3,9 @@
         * tests/*: It deals with trouble in which make check fails
         because of the environment of Mac + gettext 0.14.2. 
 
+        * script/mknmz.in: Warning is added to the part that should be
+        corrected. 
+
 2006-09-23  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * nmz/{search.c, hlist.c}: The call of unnecessary nmz_copy_hlist()
@@ -111,4 +114,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1505 2006-10-09 02:22:25 opengl2772 Exp $
+$Id: ChangeLog,v 1.1506 2006-10-09 03:15:46 opengl2772 Exp $

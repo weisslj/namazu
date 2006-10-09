@@ -11,11 +11,11 @@ echo "Index $pwd/idx19" > $tmprc
 duprcs
 
 # To make messages English
-LANG= ; export LANG
-unset LANGUAGE
-unset LC_ALL
-unset LC_MESSAGES
-unset LC_CTYPE
+unset LANG;        export LANG
+LANGUAGE=C;        export LANGUAGE
+LC_ALL=C;          export LC_ALL
+unset LC_MESSAGES; export LC_MESSAGES
+unset LC_CTYPE;    export LC_CTYPE
 
 SCRIPT_NAME='namazu.cgi'
 export SCRIPT_NAME

@@ -43,7 +43,7 @@ $ALLOW_FILE =	".*\\.(?:$HTML_SUFFIX)|.*\\.txt" . # HTML, plain text
 		"|.*\\.kwd|.*\\.ksp" .             # KWord, KSpread
                 "|.*\\.kpr|.*\\.flw" .             # KPresenter, Kivio
                 "|.*\\.zip" .			   # ZIP
-		"|\\d+|[-\\w]+\\.[1-9n]";          # Mail/News, man
+                "|.*\\.eml|\\d+|[-\\w]+\\.[1-9n]"; # Mail/News, man
 
 #
 # This pattern specifies file names which will NOT be targeted.

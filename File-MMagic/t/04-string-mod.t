@@ -1,5 +1,5 @@
 # perl-test
-# $Id: 04-string-mod.t,v 1.2 2005-07-22 04:23:50 knok Exp $
+# $Id: 04-string-mod.t,v 1.3 2006-10-13 16:57:31 opengl2772 Exp $
 
 use strict;
 use Test;
@@ -14,6 +14,6 @@ my $dir = -d 't' ? 't/' : '';
 my $m1 = File::MMagic->new($dir . 'test-magic');
 my $ret = $m1->checktype_filename($dir . 'test.html');
 ok($ret eq 'text/html');
-my $m2 = new File::MMagic;
+my $m2 = File::MMagic->new();
 $ret = $m2->checktype_filename($dir . 'test.html');
 ok($ret eq 'text/html');

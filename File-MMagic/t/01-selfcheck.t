@@ -1,5 +1,5 @@
 # perl-test
-# $Id: 01-selfcheck.t,v 1.3 2005-07-22 04:23:50 knok Exp $
+# $Id: 01-selfcheck.t,v 1.4 2006-10-13 16:57:31 opengl2772 Exp $
 
 use strict;
 use Test;

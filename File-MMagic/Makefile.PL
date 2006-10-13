@@ -1,6 +1,6 @@
 # File::MMagic Makefile.PL 
 #
-# $Id: Makefile.PL,v 1.21 2005-07-22 04:23:50 knok Exp $
+# $Id: Makefile.PL,v 1.22 2006-10-13 16:57:31 opengl2772 Exp $
 
 use ExtUtils::MakeMaker;
 

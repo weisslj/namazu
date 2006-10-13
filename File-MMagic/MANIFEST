@@ -12,3 +12,4 @@ t/test.html
 t/04-string-mod.t
 t/test-magic
 contrib/Build.PL
+META.yml                                 Module meta-data (added by MakeMaker)

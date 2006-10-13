@@ -1,5 +1,5 @@
 # perl-test
-# $Id: 03-typecheck.t,v 1.2 2005-07-22 04:23:50 knok Exp $
+# $Id: 03-typecheck.t,v 1.3 2006-10-13 16:57:31 opengl2772 Exp $
 
 use strict;
 use Test;

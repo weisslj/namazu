@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 #
-# $Id: gcnmz.in,v 1.14 2006-08-18 17:36:23 opengl2772 Exp $
+# $Id: gcnmz.in,v 1.15 2006-10-14 14:14:12 opengl2772 Exp $
 #
 # gcnmz.pl - by furukawa@tcp-ip.or.jp
 #
@@ -144,9 +144,9 @@ sub gcnmz{
         $nmzo->write_status($nmzi);
         $nmzo->replace_db($backup);
         if (my $log = $nmzo->log_open("[Garbage Collection]")){
-            $log->printf("%-20s %d\n", "Collected Entry:", util::commas($nmzi->{'flist'}->{'offset'} - $nmzo->{'flist'}->{'offset'}));
-            $log->printf("%-20s %d\n", "Total Documents:", util::commas($nmzo->{'flist'}->{'offset'}));
-            $log->printf("%-20s %d\n", "Total Keywords:", util::commas($nmzo->{'word'}->{'offset'}));
+            $log->printf("%-20s %s\n", "Collected Entry:", util::commas($nmzi->{'flist'}->{'offset'} - $nmzo->{'flist'}->{'offset'}));
+            $log->printf("%-20s %s\n", "Total Documents:", util::commas($nmzo->{'flist'}->{'offset'}));
+            $log->printf("%-20s %s\n", "Total Keywords:", util::commas($nmzo->{'word'}->{'offset'}));
             $nmzo->log_close;
         }
     }else{

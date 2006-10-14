@@ -2,6 +2,9 @@
 
         * File-MMagic: Imported 1.27.
 
+        * scripts/{gcnmz, nmzmerge}.in: Bug fix.
+        (namazu-users-ja#901, Thanks to NOMIYA Masaru)
+
 2006-10-12  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * pl/conf.pl.in: ".eml" is added to $ALLOW_FILE. 
@@ -124,4 +127,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1508 2006-10-13 16:57:31 opengl2772 Exp $
+$Id: ChangeLog,v 1.1509 2006-10-14 14:14:10 opengl2772 Exp $

@@ -1,8 +1,8 @@
 #!%PERL% -w
 #
-# $Id: alltests.pl.in,v 1.6 2006-08-12 06:07:29 opengl2772 Exp $
-# Copyright (C) 2004,2005 Tadamasa Teranishi
-#               2004,2005 Namazu Project All rights reserved.
+# $Id: alltests.pl.in,v 1.7 2006-10-20 00:26:33 opengl2772 Exp $
+# Copyright (C) 2004-2006 Tadamasa Teranishi
+#               2004-2006 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -28,6 +28,7 @@ use strict;
 require 'pltests.pl';
 
 my @TESTS = (
+    'env.pl',
     'mknmz-1.pl', 'mknmz-2.pl', 'mknmz-4.pl', 
     'gcnmz-1.pl',
     'mknmz-5.pl', 'mknmz-6.pl', 'mknmz-7.pl', 'mknmz-8.pl',

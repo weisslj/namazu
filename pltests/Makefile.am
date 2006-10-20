@@ -7,6 +7,7 @@ INDEX = idx1 idx2 idx3 idx4 idx5 idx6 idx7 idx8 idx9 idx10 idx12 idx13 idx15 idx
 	idx101 idx102 idx111 idx112 idx121 idx122
 TMPDATA = tmp-data
 PROGRAM = alltests.pl pltests.pl \
+        env.pl \
 	mknmz-1.pl mknmz-2.pl mknmz-4.pl \
 	mknmz-5.pl mknmz-6.pl mknmz-7.pl mknmz-8.pl \
 	mknmz-10.pl mknmz-12.pl \
@@ -27,6 +28,7 @@ PROGRAM = alltests.pl pltests.pl \
 
 EXTRA_DIST = pltests.pl.in \
 	alltests.pl.in \
+        env.pl.in \
 	mknmz-1.pl.in mknmz-2.pl.in mknmz-4.pl.in \
 	mknmz-5.pl.in mknmz-6.pl.in mknmz-7.pl.in mknmz-8.pl.in \
 	mknmz-10.pl.in mknmz-12.pl.in \
@@ -67,6 +69,11 @@ pltests.pl: pltests.pl.in Makefile
 	sed -e 's!%PERL%!$(PERL)!g' \
 	    -e 's!@pkgdatadir@!$(pkgdatadir)!g' $@.in > $@.tmp
 	mv $@.tmp $@
+
+env.pl: env.pl.in pltests.pl.in Makefile
+	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	mv $@.tmp $@
+	chmod +x $@
 
 mknmz-1.pl: mknmz-1.pl.in pltests.pl.in Makefile
 	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp

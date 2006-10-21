@@ -14,6 +14,7 @@ EXTRA_DIST  =   acrobat3.pdf \
                 taro8.jtd \
 		mail-multipart.txt \
 		mail.txt \
+		mail.eml \
 		man.1 \
 		msg00000.html \
 		plain.txt \

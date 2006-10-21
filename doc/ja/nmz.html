@@ -86,7 +86,7 @@
 <h3>構造</h3>
 
 <p>
-単なる行指向のテキスト。昇順に並ぶ。行番号をもとに 
+単なる行指向のテキスト。昇順に並ぶ。行番号をもとに
 NMZ.ii をseekできる。 (行番号 = 単語ID)
 </p>
 
@@ -152,7 +152,7 @@ NMZ.ii をseekできる。 (行番号 = 単語ID)
 2つの単語を 16bitのハッシュ値に変換して記録する。フレイズ検索
 の際にはあらかじめフレイズを構成する各単語を ANDで検索し、その
 後で NMZ.p を参照して語の順序を確認する。ただし、2単語づつの順
-序しか記録していないのでたとえば "foo bar baz" で検索すると 
+序しか記録していないのでたとえば "foo bar baz" で検索すると
 "foo bar" と "bar baz" を含む文書もヒットしてしまう。また、ハッ
 シュ値の衝突により不適当な文書がヒットすることもある。欠点はあ
 るもののそれなりに機能する。
@@ -171,7 +171,7 @@ NMZ.ii をseekできる。 (行番号 = 単語ID)
 </pre>
 
 
-<h3>注意点</h3>  
+<h3>注意点</h3> 
 
 <ul>
 <li>文書IDは小さい順に並ぶ --重要
@@ -204,7 +204,7 @@ NMZ.ii をseekできる。 (行番号 = 単語ID)
 <p>文書のタイムスタンプ、欠番の情報を記録</p>
 
 <h3>解説</h3>
-  
+ 
 <p>
 ファイルのタイムスタンプを 32bitで記録する。検索結果の日付順の
 ソートに利用される。また、値が -1 のときはその文書は欠番とみな
@@ -223,12 +223,12 @@ NMZ.ii をseekできる。 (行番号 = 単語ID)
 <li>すべてバイナリデータ (pack 'N')
 <li>2038年問題を抱えている
 </ul>
-   
+  
 <h2><a name="field">NMZ.field.{subject,from,date,message-id,...}</a></h2>
 <p>フィールド情報を記録するファイル</p>
 
 <h3>解説</h3>
-  
+ 
 <p>
 フィールド指定の検索に使われる。構造は単なる行単位のテキスト。
 正規表現のエンジンに読まれる。行番号をそのまま文書IDとして使え
@@ -245,9 +245,9 @@ NMZ.ii をseekできる。 (行番号 = 単語ID)
 
 <p>
 単なる行指向のテキストなのでエディタなどで書き換えてもいい。
-ただし、その際は必ず <a href="manual.html#rfnmz">rfnmz</a> 
+ただし、その際は必ず <a href="manual.html#rfnmz">rfnmz</a>
 で <a
-href="#field-i">NMZ.field.{subject,from,date,message-id,...}.i</a> 
+href="#field-i">NMZ.field.{subject,from,date,message-id,...}.i</a>
 ファイルを再構築すること。
 </p>
 
@@ -277,10 +277,10 @@ href="#field-i">NMZ.field.{subject,from,date,message-id,...}.i</a>
 
 <p>
 IPアドレス・ホスト名・ドメイン名によるアクセス制限を行う。
-<code>deny</code> でアクセスを許可しないホストを、 
-<code>allow</code> でアクセスを許可するホストを指定する。IP 
+<code>deny</code> でアクセスを許可しないホストを、
+<code>allow</code> でアクセスを許可するホストを指定する。IP
 アドレスを指定したときは前方一致で評価され、ホスト名・ドメイ
-ン名で指定したときは後方一致で評価される。<code>all</code> 
+ン名で指定したときは後方一致で評価される。<code>all</code>
 は「すべてのホスト」を表す。設定は上から順に評価される。例:
 </p>
 
@@ -350,13 +350,13 @@ ${フィールドの名前} の部分はそのフィールドの内容に置き換
 </p>
 
 
-<h2><a name="body">NMZ.body</a></h2> 
+<h2><a name="body">NMZ.body</a></h2>
 
 <p>
 検索式の説明。キーワードが与えられなかったときに表示される。
 </p>
 
-<h2><a name="tips">NMZ.tips</a></h2> 
+<h2><a name="tips">NMZ.tips</a></h2>
 
 <p>
 検索のコツ。検索に何もヒットしなかったときに表示される。
@@ -384,7 +384,7 @@ ${フィールドの名前} の部分はそのフィールドの内容に置き換
 </p>
 
 
-<h2><a name="slog">NMZ.slog</a></h2> 
+<h2><a name="slog">NMZ.slog</a></h2>
 
 <p>
 検索されたキーワードのログ。
@@ -403,7 +403,7 @@ ${フィールドの名前} の部分はそのフィールドの内容に置き換
 Copyright (C) 2000-2006 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: nmz.html,v 1.17 2006-08-12 06:49:44 opengl2772 Exp $
+$Id: nmz.html,v 1.18 2006-10-21 06:35:28 opengl2772 Exp $
 </div>
 <address>
 developers@namazu.org

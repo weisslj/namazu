@@ -1,3 +1,7 @@
+2006-10-22  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * scripts/mknmz.in(put_log): Few modify.
+
 2006-10-21  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * doc/{en,ja}/*: Update.
@@ -135,4 +139,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1511 2006-10-21 06:35:28 opengl2772 Exp $
+$Id: ChangeLog,v 1.1512 2006-10-21 18:49:48 opengl2772 Exp $

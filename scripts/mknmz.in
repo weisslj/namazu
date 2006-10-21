@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.175 2006-08-18 17:36:23 opengl2772 Exp $
+# $Id: mknmz.in,v 1.176 2006-10-21 18:49:50 opengl2772 Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2006 Namazu Project All rights reserved.
@@ -2078,7 +2078,7 @@ sub put_log ($$$$) {
     	(($added_files_count + $updated_documents_count) / $processtime) 
 	if $processtime;
     push @logmsgs, N_("System:"), "$English::OSNAME" if $English::OSNAME;
-    push @logmsgs, N_("Perl:"),   sprintf("%f\n", $English::PERL_VERSION);
+    push @logmsgs, N_("Perl:"),   sprintf("%f", $English::PERL_VERSION);
     push @logmsgs, N_("Namazu:"), "$var::VERSION" if $var::VERSION;
 
     my $log_for_file = "";

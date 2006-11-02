@@ -1,3 +1,10 @@
+2006-11-03  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * pl/time.pl(rfc822time_to_mtime): The date field is annulled for
+        the future from 2038.
+
+        * scripts/mknmz.in(namazu_core): ditto.
+
 2006-10-22  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * scripts/mknmz.in(put_log): Few modify.
@@ -139,4 +146,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1512 2006-10-21 18:49:48 opengl2772 Exp $
+$Id: ChangeLog,v 1.1513 2006-11-02 17:59:54 opengl2772 Exp $

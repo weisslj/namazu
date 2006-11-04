@@ -1,6 +1,6 @@
 #!%PERL% -w
 #
-# $Id: namazu-cgi-9.pl.in,v 1.4 2006-08-12 06:07:30 opengl2772 Exp $
+# $Id: namazu-cgi-9.pl.in,v 1.5 2006-11-04 15:31:15 opengl2772 Exp $
 # Copyright (C) 2004-2006 Yukio USUDA
 #               2004-2006 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -92,6 +92,7 @@ $ENV{'SCRIPT_NAME'} = 'namazu.cgi';
 # long HOME environment variable
 my $env_home = $ENV{'HOME'};
 $ENV{'HOME'} = '/home/l' . "o" x 2048 . 'ong-dir';
+my $env_namazunorc = $ENV{'NAMAZUNORC'};
 $ENV{'NAMAZUNORC'} = 'SYSCONFIG';
 @cmd = ("$NAMAZU");
 ($status, $result, $conts_err) = pltests::ezsyscmd(\@cmd);
@@ -107,7 +108,11 @@ if (defined $env_home) {
 } else {
     delete $ENV{'HOME'};
 }
-delete $ENV{'NAMAZUNORC'};
+if (defined $env_namazunorc) {
+    $ENV{'NAMAZUNORC'} = $env_namazunorc;
+} else {
+    delete $ENV{'NAMAZUNORC'};
+}
 
 # long LANG environment variable
 $ENV{'LANG'} = 'C-l' . "o" x 2048 .'ong';

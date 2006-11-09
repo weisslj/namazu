@@ -4,7 +4,7 @@
 # mailutime - a tool to unify a file time stamp with 
 #             RFC 822 'Date:' field in a mail.
 #             It also supports MHonArc messages.
-# $Id: mailutime.in,v 1.9 2006-08-12 07:26:20 opengl2772 Exp $
+# $Id: mailutime.in,v 1.10 2006-11-09 15:01:32 opengl2772 Exp $
 #
 # Version 1.0.3    [01/16/2004]
 # Version 1.0.2    [12/12/1998]
@@ -45,7 +45,7 @@ use strict;
 use IO::File;
 use Time::Local;
 
-my $PKGDATADIR = $ENV{'pkgdatadir'} || "/usr/local/share/namazu";
+my $PKGDATADIR = $ENV{'pkgdatadir'} || "@pkgdatadir@";
 push(@INC, $PKGDATADIR . "/pl");
 require 'time.pl';
 

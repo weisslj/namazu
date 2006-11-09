@@ -1,3 +1,9 @@
+2006-11-10  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * scripts/mailutime.in: It was corrected that the default value 
+        when the pkgdatadir environment variable was undefined was 
+        "/usr/local/share/namazu/". 
+
 2006-11-05  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * pltests/namazu-cgi-9.pl.in: Environment variable NAMAZUNORC is
@@ -151,4 +157,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1514 2006-11-04 15:31:12 opengl2772 Exp $
+$Id: ChangeLog,v 1.1515 2006-11-09 15:01:31 opengl2772 Exp $

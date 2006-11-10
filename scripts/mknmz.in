@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.177 2006-11-02 17:59:55 opengl2772 Exp $
+# $Id: mknmz.in,v 1.178 2006-11-10 16:43:31 opengl2772 Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2006 Namazu Project All rights reserved.
@@ -535,6 +535,9 @@ sub namazu_core ($$$$$$$$$$) {
                 $utc = time::rfc822time_to_mtime($fields{'date'})
                         if (defined $fields{'date'});
                 if ($utc == -1) {
+                    my $date = $fields{'date'};
+                    print "$cfile Illegal date format. : $date\n";
+                    print $fh_errorsfile "$cfile Illegal date format. : $date\n";
                     $utc = $fields{'mtime'};
                     delete $fields{'date'};
                 }

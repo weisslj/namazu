@@ -1,3 +1,10 @@
+2006-11-11  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * scripts/mknmz.in: Warning is put out, and an illegal date is 
+        disregarded. 
+
+        * pl/time.pl: ditto.
+
 2006-11-10  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * scripts/mailutime.in: It was corrected that the default value 
@@ -157,4 +164,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1515 2006-11-09 15:01:31 opengl2772 Exp $
+$Id: ChangeLog,v 1.1516 2006-11-10 16:43:29 opengl2772 Exp $

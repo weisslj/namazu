@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: time.pl,v 1.8 2006-11-02 17:59:55 opengl2772 Exp $
+# $Id: time.pl,v 1.9 2006-11-10 16:43:31 opengl2772 Exp $
 # Copyright (C) 2004-2006 Tadamasa Teranishi
 #               2004-2006 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -241,9 +241,12 @@ sub rfc822time_to_mtime ($) {
 
         $year += 2000 if ($year < 50);
         $year += 1900 if (50 <= $year && $year <= 99);
-        return -1 if ($year > 2038);
+        return -1 if ($year >= 2038);
 
-	my $mtime = timegm($sec, $min, $hour, $mday, $month, $year);
+        my $mtime;
+        eval {
+            $mtime = timegm($sec, $min, $hour, $mday, $month, $year);
+        } || return -1;
 
         my $offset;
         if ($timezone =~ /([+-])(\d{2})([0-5][0-9])/) {

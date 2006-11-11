@@ -6,7 +6,7 @@
 #
 LOG=`pwd`/test-log
 echo '  *** starting ' $0 >>$LOG
-. ./commonfuncs
+. ${srcdir}/commonfuncs
 
 pwd=`pwd`
 

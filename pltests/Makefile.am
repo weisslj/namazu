@@ -26,6 +26,8 @@ PROGRAM = alltests.pl pltests.pl \
 	mecab-1.pl mecab-2.pl mecab-3.pl \
 	kakasi-1.pl kakasi-2.pl kakasi-3.pl
 
+noinst_SCRIPTS = $(PROGRAM)
+
 EXTRA_DIST = pltests.pl.in \
 	alltests.pl.in \
         env.pl.in \
@@ -61,262 +63,262 @@ clean:
 	@-rm -rf $(LOG) $(INDEX) $(TMPDATA) $(PROGRAM)
 
 alltests.pl: alltests.pl.in pltests.pl Makefile
-	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	sed -e 's!%PERL%!$(PERL)!g' $(srcdir)/$@.in > $@.tmp
 	mv $@.tmp $@
 	chmod +x $@
 
 pltests.pl: pltests.pl.in Makefile
 	sed -e 's!%PERL%!$(PERL)!g' \
-	    -e 's!@pkgdatadir@!$(pkgdatadir)!g' $@.in > $@.tmp
+	    -e 's!@pkgdatadir@!$(pkgdatadir)!g' $(srcdir)/$@.in > $@.tmp
 	mv $@.tmp $@
 
 env.pl: env.pl.in pltests.pl.in Makefile
-	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	sed -e 's!%PERL%!$(PERL)!g' $(srcdir)/$@.in > $@.tmp
 	mv $@.tmp $@
 	chmod +x $@
 
 mknmz-1.pl: mknmz-1.pl.in pltests.pl.in Makefile
-	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	sed -e 's!%PERL%!$(PERL)!g' $(srcdir)/$@.in > $@.tmp
 	mv $@.tmp $@
 	chmod +x $@
 
 mknmz-2.pl: mknmz-2.pl.in pltests.pl.in Makefile
-	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	sed -e 's!%PERL%!$(PERL)!g' $(srcdir)/$@.in > $@.tmp
 	mv $@.tmp $@
 	chmod +x $@
 
 mknmz-3.pl: mknmz-3.pl.in pltests.pl.in Makefile
-	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	sed -e 's!%PERL%!$(PERL)!g' $(srcdir)/$@.in > $@.tmp
 	mv $@.tmp $@
 	chmod +x $@
 
 mknmz-4.pl: mknmz-4.pl.in pltests.pl.in Makefile
-	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	sed -e 's!%PERL%!$(PERL)!g' $(srcdir)/$@.in > $@.tmp
 	mv $@.tmp $@
 	chmod +x $@
 
 mknmz-5.pl: mknmz-5.pl.in pltests.pl.in Makefile
-	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	sed -e 's!%PERL%!$(PERL)!g' $(srcdir)/$@.in > $@.tmp
 	mv $@.tmp $@
 	chmod +x $@
 
 mknmz-6.pl: mknmz-6.pl.in pltests.pl.in Makefile
-	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	sed -e 's!%PERL%!$(PERL)!g' $(srcdir)/$@.in > $@.tmp
 	mv $@.tmp $@
 	chmod +x $@
 
 mknmz-7.pl: mknmz-7.pl.in pltests.pl.in Makefile
-	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	sed -e 's!%PERL%!$(PERL)!g' $(srcdir)/$@.in > $@.tmp
 	mv $@.tmp $@
 	chmod +x $@
 
 mknmz-8.pl: mknmz-8.pl.in pltests.pl.in Makefile
-	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	sed -e 's!%PERL%!$(PERL)!g' $(srcdir)/$@.in > $@.tmp
 	mv $@.tmp $@
 	chmod +x $@
 
 mknmz-10.pl: mknmz-10.pl.in pltests.pl.in Makefile
-	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	sed -e 's!%PERL%!$(PERL)!g' $(srcdir)/$@.in > $@.tmp
 	mv $@.tmp $@
 	chmod +x $@
 
 mknmz-12.pl: mknmz-12.pl.in pltests.pl.in Makefile
-	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	sed -e 's!%PERL%!$(PERL)!g' $(srcdir)/$@.in > $@.tmp
 	mv $@.tmp $@
 	chmod +x $@
 
 mknmz-14.pl: mknmz-14.pl.in pltests.pl.in Makefile
-	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	sed -e 's!%PERL%!$(PERL)!g' $(srcdir)/$@.in > $@.tmp
 	mv $@.tmp $@
 	chmod +x $@
 
 mknmz-15.pl: mknmz-15.pl.in pltests.pl.in Makefile
-	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	sed -e 's!%PERL%!$(PERL)!g' $(srcdir)/$@.in > $@.tmp
 	mv $@.tmp $@
 	chmod +x $@
 
 mknmz-16.pl: mknmz-16.pl.in pltests.pl.in Makefile
-	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	sed -e 's!%PERL%!$(PERL)!g' $(srcdir)/$@.in > $@.tmp
 	mv $@.tmp $@
 	chmod +x $@
 
 mknmz-17.pl: mknmz-17.pl.in pltests.pl.in Makefile
-	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	sed -e 's!%PERL%!$(PERL)!g' $(srcdir)/$@.in > $@.tmp
 	mv $@.tmp $@
 	chmod +x $@
 
 mknmz-18.pl: mknmz-18.pl.in pltests.pl.in Makefile
-	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	sed -e 's!%PERL%!$(PERL)!g' $(srcdir)/$@.in > $@.tmp
 	mv $@.tmp $@
 	chmod +x $@
 
 gcnmz-1.pl: gcnmz-1.pl.in pltests.pl.in Makefile
-	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	sed -e 's!%PERL%!$(PERL)!g' $(srcdir)/$@.in > $@.tmp
 	mv $@.tmp $@
 	chmod +x $@
 
 idxdiff-1.pl: idxdiff-1.pl.in pltests.pl.in Makefile
-	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	sed -e 's!%PERL%!$(PERL)!g' $(srcdir)/$@.in > $@.tmp
 	mv $@.tmp $@
 	chmod +x $@
 
 idxdiff-2.pl: idxdiff-2.pl.in pltests.pl.in Makefile
-	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	sed -e 's!%PERL%!$(PERL)!g' $(srcdir)/$@.in > $@.tmp
 	mv $@.tmp $@
 	chmod +x $@
 
 idxdiff-3.pl: idxdiff-3.pl.in pltests.pl.in Makefile
-	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	sed -e 's!%PERL%!$(PERL)!g' $(srcdir)/$@.in > $@.tmp
 	mv $@.tmp $@
 	chmod +x $@
 
 namazu-1.pl: namazu-1.pl.in pltests.pl.in Makefile
-	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	sed -e 's!%PERL%!$(PERL)!g' $(srcdir)/$@.in > $@.tmp
 	mv $@.tmp $@
 	chmod +x $@
 
 namazu-2.pl: namazu-2.pl.in pltests.pl.in Makefile
-	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	sed -e 's!%PERL%!$(PERL)!g' $(srcdir)/$@.in > $@.tmp
 	mv $@.tmp $@
 	chmod +x $@
 
 namazu-3.pl: namazu-3.pl.in pltests.pl.in Makefile
-	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	sed -e 's!%PERL%!$(PERL)!g' $(srcdir)/$@.in > $@.tmp
 	mv $@.tmp $@
 	chmod +x $@
 
 namazu-4.pl: namazu-4.pl.in pltests.pl.in Makefile
-	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	sed -e 's!%PERL%!$(PERL)!g' $(srcdir)/$@.in > $@.tmp
 	mv $@.tmp $@
 	chmod +x $@
 
 namazu-5.pl: namazu-5.pl.in pltests.pl.in Makefile
-	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	sed -e 's!%PERL%!$(PERL)!g' $(srcdir)/$@.in > $@.tmp
 	mv $@.tmp $@
 	chmod +x $@
 
 namazu-6.pl: namazu-6.pl.in pltests.pl.in Makefile
-	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	sed -e 's!%PERL%!$(PERL)!g' $(srcdir)/$@.in > $@.tmp
 	mv $@.tmp $@
 	chmod +x $@
 
 namazu-7.pl: namazu-7.pl.in pltests.pl.in Makefile
-	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	sed -e 's!%PERL%!$(PERL)!g' $(srcdir)/$@.in > $@.tmp
 	mv $@.tmp $@
 	chmod +x $@
 
 namazu-8.pl: namazu-8.pl.in pltests.pl.in Makefile
-	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	sed -e 's!%PERL%!$(PERL)!g' $(srcdir)/$@.in > $@.tmp
 	mv $@.tmp $@
 	chmod +x $@
 
 namazu-9.pl: namazu-9.pl.in pltests.pl.in Makefile
-	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	sed -e 's!%PERL%!$(PERL)!g' $(srcdir)/$@.in > $@.tmp
 	mv $@.tmp $@
 	chmod +x $@
 
 namazu-10.pl: namazu-10.pl.in pltests.pl.in Makefile
-	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	sed -e 's!%PERL%!$(PERL)!g' $(srcdir)/$@.in > $@.tmp
 	mv $@.tmp $@
 	chmod +x $@
 
 namazu-11.pl: namazu-11.pl.in pltests.pl.in Makefile
-	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	sed -e 's!%PERL%!$(PERL)!g' $(srcdir)/$@.in > $@.tmp
 	mv $@.tmp $@
 	chmod +x $@
 
 namazu-12.pl: namazu-12.pl.in pltests.pl.in Makefile
-	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	sed -e 's!%PERL%!$(PERL)!g' $(srcdir)/$@.in > $@.tmp
 	mv $@.tmp $@
 	chmod +x $@
 
 namazu-cgi-1.pl: namazu-cgi-1.pl.in pltests.pl.in Makefile
-	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	sed -e 's!%PERL%!$(PERL)!g' $(srcdir)/$@.in > $@.tmp
 	mv $@.tmp $@
 	chmod +x $@
 
 namazu-cgi-2.pl: namazu-cgi-2.pl.in pltests.pl.in Makefile
-	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	sed -e 's!%PERL%!$(PERL)!g' $(srcdir)/$@.in > $@.tmp
 	mv $@.tmp $@
 	chmod +x $@
 
 namazu-cgi-3.pl: namazu-cgi-3.pl.in pltests.pl.in Makefile
-	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	sed -e 's!%PERL%!$(PERL)!g' $(srcdir)/$@.in > $@.tmp
 	mv $@.tmp $@
 	chmod +x $@
 
 namazu-cgi-4.pl: namazu-cgi-4.pl.in pltests.pl.in Makefile
-	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	sed -e 's!%PERL%!$(PERL)!g' $(srcdir)/$@.in > $@.tmp
 	mv $@.tmp $@
 	chmod +x $@
 
 namazu-cgi-5.pl: namazu-cgi-5.pl.in pltests.pl.in Makefile
-	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	sed -e 's!%PERL%!$(PERL)!g' $(srcdir)/$@.in > $@.tmp
 	mv $@.tmp $@
 	chmod +x $@
 
 namazu-cgi-7.pl: namazu-cgi-7.pl.in pltests.pl.in Makefile
-	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	sed -e 's!%PERL%!$(PERL)!g' $(srcdir)/$@.in > $@.tmp
 	mv $@.tmp $@
 	chmod +x $@
 
 namazu-cgi-8.pl: namazu-cgi-8.pl.in pltests.pl.in Makefile
-	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	sed -e 's!%PERL%!$(PERL)!g' $(srcdir)/$@.in > $@.tmp
 	mv $@.tmp $@
 	chmod +x $@
 
 namazu-cgi-9.pl: namazu-cgi-9.pl.in pltests.pl.in Makefile
-	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	sed -e 's!%PERL%!$(PERL)!g' $(srcdir)/$@.in > $@.tmp
 	mv $@.tmp $@
 	chmod +x $@
 
 namazu-cgi-10.pl: namazu-cgi-10.pl.in pltests.pl.in Makefile
-	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	sed -e 's!%PERL%!$(PERL)!g' $(srcdir)/$@.in > $@.tmp
 	mv $@.tmp $@
 	chmod +x $@
 
 chasen-1.pl: chasen-1.pl.in pltests.pl.in Makefile
-	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	sed -e 's!%PERL%!$(PERL)!g' $(srcdir)/$@.in > $@.tmp
 	mv $@.tmp $@
 	chmod +x $@
 
 chasen-2.pl: chasen-2.pl.in pltests.pl.in Makefile
-	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	sed -e 's!%PERL%!$(PERL)!g' $(srcdir)/$@.in > $@.tmp
 	mv $@.tmp $@
 	chmod +x $@
 
 chasen-3.pl: chasen-3.pl.in pltests.pl.in Makefile
-	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	sed -e 's!%PERL%!$(PERL)!g' $(srcdir)/$@.in > $@.tmp
 	mv $@.tmp $@
 	chmod +x $@
 
 mecab-1.pl: mecab-1.pl.in pltests.pl.in Makefile
-	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	sed -e 's!%PERL%!$(PERL)!g' $(srcdir)/$@.in > $@.tmp
 	mv $@.tmp $@
 	chmod +x $@
 
 mecab-2.pl: mecab-2.pl.in pltests.pl.in Makefile
-	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	sed -e 's!%PERL%!$(PERL)!g' $(srcdir)/$@.in > $@.tmp
 	mv $@.tmp $@
 	chmod +x $@
 
 mecab-3.pl: mecab-3.pl.in pltests.pl.in Makefile
-	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	sed -e 's!%PERL%!$(PERL)!g' $(srcdir)/$@.in > $@.tmp
 	mv $@.tmp $@
 	chmod +x $@
 
 kakasi-1.pl: kakasi-1.pl.in pltests.pl.in Makefile
-	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	sed -e 's!%PERL%!$(PERL)!g' $(srcdir)/$@.in > $@.tmp
 	mv $@.tmp $@
 	chmod +x $@
 
 kakasi-2.pl: kakasi-2.pl.in pltests.pl.in Makefile
-	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	sed -e 's!%PERL%!$(PERL)!g' $(srcdir)/$@.in > $@.tmp
 	mv $@.tmp $@
 	chmod +x $@
 
 kakasi-3.pl: kakasi-3.pl.in pltests.pl.in Makefile
-	sed -e 's!%PERL%!$(PERL)!g' $@.in > $@.tmp
+	sed -e 's!%PERL%!$(PERL)!g' $(srcdir)/$@.in > $@.tmp
 	mv $@.tmp $@
 	chmod +x $@
 

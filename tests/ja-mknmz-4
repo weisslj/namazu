@@ -65,11 +65,13 @@ perl <<'TEST'
 	} else {
 	    system "rm -f $idxdir/NMZ.*";
 	}
-	open FH, ">mknmzrc-ja4";
+
+        my $rcfile = "mknmzrc-ja4";
+	open FH, ">$rcfile";
 	print FH  "package conf;\n\$TARGET_FILESYS_CODING = '$dir';\n1;\n" ;
 	close FH;
 	system "../scripts/mknmz -a -f mknmzrc-ja4 -O $idxdir $targetdir >> $LOG";
-	unlink FH;
+	unlink $rcfile;
     }
 TEST
 

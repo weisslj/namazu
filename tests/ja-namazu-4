@@ -44,8 +44,9 @@ perl <<'TEST'
     for $dir (keys(%files)) {
 
 	my $idxdir = "ja-idx4/$dir";
+        my $rcfile = "namazurc-ja4";
 
-	open FH1, ">namazurc-ja4";
+	open FH1, ">$rcfile";
 	my $coding = $dir;
 	if ($coding =~ /CAP/) {
 	    $coding = "CP932#" . $coding;
@@ -59,7 +60,7 @@ perl <<'TEST'
 	    }
 	}
 	close FH2;
-	unlink FH1;
+	unlink $rcfile;
     }
 TEST
 exit $?

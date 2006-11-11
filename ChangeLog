@@ -7,6 +7,8 @@
 
         * tests/ja-*-4: unlink rcfile.
 
+        * autogen.sh: update uri.
+
 2006-11-11  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * scripts/mknmz.in: Warning is put out, and an illegal date is 
@@ -173,4 +175,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1518 2006-11-11 18:21:20 opengl2772 Exp $
+$Id: ChangeLog,v 1.1519 2006-11-11 18:38:30 opengl2772 Exp $

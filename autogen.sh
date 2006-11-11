@@ -49,7 +49,7 @@ test -n "$NO_AUTOCONF" || (autoheader --version) < /dev/null > /dev/null 2>&1 ||
   (libtool --version) < /dev/null > /dev/null 2>&1 || {
     echo
     echo "**Error**: You must have \`libtool' installed to compile Namazu."
-    echo "Get ftp://ftp.gnu.org/pub/gnu/libtool-1.4.tar.gz"
+    echo "Get ftp://ftp.gnu.org/pub/gnu/libtool/libtool-1.4.tar.gz"
     echo "(or a newer version if it is available)"
     DIE=1
   }
@@ -60,7 +60,7 @@ grep "^AM_GNU_GETTEXT" configure.in >/dev/null && {
   (gettext --version) < /dev/null > /dev/null 2>&1 || {
     echo
     echo "**Error**: You must have \`gettext' installed to compile Namazu."
-    echo "Get ftp://ftp.gnu.org/pub/gnu/gettext-0.13.tar.gz"
+    echo "Get ftp://ftp.gnu.org/pub/gnu/gettext/gettext-0.13.1.tar.gz"
     echo "(or a newer version if it is available)"
     DIE=1
   }

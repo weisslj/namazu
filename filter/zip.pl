@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: zip.pl,v 1.21 2006-08-18 17:35:19 opengl2772 Exp $
+# $Id: zip.pl,v 1.22 2006-11-12 16:03:08 opengl2772 Exp $
 #  zip filter for namazu
 #  Copyright (C) 2004 MATSUMURA Namihiko <po-jp@counterghost.net>
 #                2004 Yukio USUDA <usu@namazu.org>
@@ -260,7 +260,6 @@ sub unzip_filter ($$$$$) {
 sub nesting_filter ($$$){
     my ($filename, $contref, $weighted_str) = @_;
     my $err = undef;
-    my $dummy_shelterfname = "";
     my $headings = "";
     my %fields;
     my $mmtype = undef;

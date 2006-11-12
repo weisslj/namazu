@@ -1,7 +1,7 @@
 #
 # -*- Perl -*-
-# $Id: macbinary.pl,v 1.8 2006-08-12 07:18:44 opengl2772 Exp $
-# Copyright (C) 2003 Namazu Project All rights reserved ,
+# $Id: macbinary.pl,v 1.9 2006-11-12 16:03:08 opengl2772 Exp $
+# Copyright (C) 2003-2006 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -108,7 +108,6 @@ sub filter ($$$$$) {
         $mmtype = undef; 
     }
     
-    my $dummy_shelterfilename="";
     my $err = undef;
     my $mtype;
     {

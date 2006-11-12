@@ -1,10 +1,10 @@
 #
 # -*- Perl -*-
-# $Id: lha.pl,v 1.13 2006-08-12 07:18:44 opengl2772 Exp $
+# $Id: lha.pl,v 1.14 2006-11-12 16:03:08 opengl2772 Exp $
 #  lha filter for namazu
-#  Copyright (C) 2004 Tadamasa Teranishi,
+#  Copyright (C) 2004-2006 Tadamasa Teranishi,
 #                2004 MATSUMURA Namihiko <po-jp@counterghost.net>,
-#                2004-2005 Namazu Project All rights reserved.
+#                2004-2006 Namazu Project All rights reserved.
 #
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -261,7 +261,6 @@ sub filter_lha_unix ($$$$$) {
 sub nesting_filter ($$$){
     my ($filename, $contref, $weighted_str) = @_;
     my $err = undef;
-    my $dummy_shelterfname = "";
     my $headings = "";
     my %fields;
     my $mmtype = undef;

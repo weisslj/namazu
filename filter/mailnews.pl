@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mailnews.pl,v 1.49 2006-08-18 17:35:19 opengl2772 Exp $
+# $Id: mailnews.pl,v 1.50 2006-11-12 16:03:08 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu ,
 #               2001,2003-2006 Namazu Project All rights reserved.
@@ -400,7 +400,6 @@ sub quotedprint_filter ($){
 sub nesting_filter ($$$$){
     my ($headref, $bodyref, $mmtype, $weighted_str) = @_;
     my $err = undef;
-    my $dummy_shelterfname="";
     my $headings = "";
     my %fields;
     my $filename = "";

@@ -2,6 +2,8 @@
 
         * filter/win32/ole*.pl: It corresponded to Office 2007, Visio 2007.
 
+        * tests/data/ja/*x: Added test data.
+
 2006-11-12  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * pltests/Makefile.am: Correction for VPATH. However, pltests 
@@ -179,4 +181,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1520 2006-12-27 11:39:53 opengl2772 Exp $
+$Id: ChangeLog,v 1.1521 2006-12-27 14:58:48 opengl2772 Exp $

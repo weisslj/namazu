@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: olevisio.pl,v 1.9 2006-08-18 17:35:19 opengl2772 Exp $
+# $Id: olevisio.pl,v 1.10 2006-12-27 11:39:55 opengl2772 Exp $
 # Copyright (C) 2004-2006 Tadamasa Teranishi,
 #               2004-2006 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -67,7 +67,9 @@ sub status() {
 
     open (SAVEERR, ">&STDERR");
     open (STDERR, ">nul");
-    $const = Win32::OLE::Const->Load("Microsoft Visio 11.0 Type Library");
+    $const = Win32::OLE::Const->Load("Microsoft Visio 12.0 Type Library");
+    $const = Win32::OLE::Const->Load("Microsoft Visio 11.0 Type Library")
+        unless $const;
     $const = Win32::OLE::Const->Load("Microsoft Visio 2002 Type Library")
         unless $const;
     $const = Win32::OLE::Const->Load("Microsoft Visio 2000 Type Library")

@@ -1,9 +1,9 @@
 #
 # -*- Perl -*-
-# $Id: olepowerpoint.pl,v 1.21 2006-08-12 07:06:44 opengl2772 Exp $
+# $Id: olepowerpoint.pl,v 1.22 2006-12-27 11:39:55 opengl2772 Exp $
 # Copyright (C) 1999 Jun Kurabe,
 #               1999 Ken-ichi Hirose,
-#               2004 Namazu Project All rights reserved.
+#               2004-2006 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -60,7 +60,8 @@ sub status() {
     open (SAVEERR,">&STDERR");
     open (STDERR,">nul");
     my $const;
-    $const = Win32::OLE::Const->Load("Microsoft PowerPoint 11.0 Object Library");
+    $const = Win32::OLE::Const->Load("Microsoft PowerPoint 12.0 Object Library");
+    $const = Win32::OLE::Const->Load("Microsoft PowerPoint 11.0 Object Library") unless $const;
     $const = Win32::OLE::Const->Load("Microsoft PowerPoint 10.0 Object Library") unless $const;
     $const = Win32::OLE::Const->Load("Microsoft PowerPoint 9.0 Object Library") unless $const;
     $const = Win32::OLE::Const->Load("Microsoft PowerPoint 8.0 Object Library") unless $const;

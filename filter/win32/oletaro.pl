@@ -1,6 +1,6 @@
 # 
 # -*- Perl -*-
-# $Id: oletaro.pl,v 1.11 2006-08-12 07:06:44 opengl2772 Exp $
+# $Id: oletaro.pl,v 1.12 2006-12-27 11:39:55 opengl2772 Exp $
 # 
 # Copyright (C) 2000-2004 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -35,6 +35,13 @@ sub mediatype() {
     open (SAVEERR,">&STDERR");
     open (STDERR,">nul");
     my $const;
+    $const = Win32::OLE::Const->Load("Microsoft Word 12.0 Object Library");
+    if ($const) {
+        open (STDERR,">&SAVEERR");
+        return (
+            'application/ichitaro7', 'application/x-js-taro'
+        );
+    }
     $const = Win32::OLE::Const->Load("Microsoft Word 11.0 Object Library");
     if ($const) {
         open (STDERR,">&SAVEERR");
@@ -83,7 +90,8 @@ sub status() {
     open (SAVEERR,">&STDERR");
     open (STDERR,">nul");
     my $const;
-    $const = Win32::OLE::Const->Load("Microsoft Word 11.0 Object Library");
+    $const = Win32::OLE::Const->Load("Microsoft Word 12.0 Object Library");
+    $const = Win32::OLE::Const->Load("Microsoft Word 11.0 Object Library") unless $const;
     $const = Win32::OLE::Const->Load("Microsoft Word 10.0 Object Library") unless $const;
     $const = Win32::OLE::Const->Load("Microsoft Word 9.0 Object Library") unless $const;
     $const = Win32::OLE::Const->Load("Microsoft Word 8.0 Object Library") unless $const;

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: olepowerpoint.pl,v 1.22 2006-12-27 11:39:55 opengl2772 Exp $
+# $Id: olepowerpoint.pl,v 1.23 2006-12-27 14:47:53 opengl2772 Exp $
 # Copyright (C) 1999 Jun Kurabe,
 #               1999 Ken-ichi Hirose,
 #               2004-2006 Namazu Project All rights reserved.
@@ -240,7 +240,8 @@ sub ReadPPT ($$$$) {
     # Redirect stderr to null device, to ignore Error and Exception message.
     open (SAVEERR,">&STDERR");
     open (STDERR,">nul");
-    # Load Office 97/98/2000/XP/2003 Constant
+    # Load Office 97/98/2000/XP/2003/2007 Constant
+    $office_consts = Win32::OLE::Const->Load("Microsoft Office 12.0 Object Library") unless $office_consts;
     $office_consts = Win32::OLE::Const->Load("Microsoft Office 11.0 Object Library") unless $office_consts;
     $office_consts = Win32::OLE::Const->Load("Microsoft Office 10.0 Object Library") unless $office_consts;
     $office_consts = Win32::OLE::Const->Load("Microsoft Office 9.0 Object Library") unless $office_consts;

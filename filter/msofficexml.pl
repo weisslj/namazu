@@ -1,7 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: msofficexml.pl,v 1.1 2007-01-08 07:08:25 usu Exp $
+# $Id: msofficexml.pl,v 1.2 2007-01-08 07:30:37 usu Exp $
 # Copyright (C) 2007 Yukio USUDA 
+#               2007 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify

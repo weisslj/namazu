@@ -43,6 +43,7 @@ filter_DATA = bzip2.pl \
 	      applefile.pl \
 	      pipermail.pl \
 	      gnumeric.pl \
+	      msofficexml.pl \
 	      zip.pl
 
 EXTRA_DIST = $(filter_DATA)

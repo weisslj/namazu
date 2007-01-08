@@ -6,6 +6,7 @@ EXTRA_DIST  =   acrobat3.pdf \
 		excel95.xls \
 		excel97.xls \
 		excel98.xls \
+		excel2007.xlsx \
 		html.html \
 		taro4.jsw \
 		taro5.jaw \
@@ -28,9 +29,12 @@ EXTRA_DIST  =   acrobat3.pdf \
 		word97.doc \
 		word98.doc \
 		word2000.doc \
+		word20007.docx \
 		powerpoint97.ppt \
 		powerpoint2002.pps \
 		powerpoint2002.ppt \
+		powerpoint2007.ppsx \
+		powerpoint2007.pptx \
 		powerpoint2002.rtf \
 		postscript.ps \
 	        dvi.dvi \

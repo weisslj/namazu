@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: olepowerpoint.pl,v 1.25 2007-01-14 05:29:27 opengl2772 Exp $
+# $Id: olepowerpoint.pl,v 1.26 2007-01-14 08:33:09 opengl2772 Exp $
 # Copyright (C) 1999 Jun Kurabe,
 #               1999 Ken-ichi Hirose,
 #               2004-2007 Namazu Project All rights reserved.
@@ -53,7 +53,10 @@ require 'util.pl';
 require 'gfilter.pl';
 
 sub mediatype() {
-    return ('application/powerpoint');
+    return (
+        'application/powerpoint',
+        'application/vnd.openxmlformats-officedocument.presentationml',
+    );
 }
 
 sub status() {

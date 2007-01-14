@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: oleexcel.pl,v 1.31 2007-01-14 05:29:27 opengl2772 Exp $
+# $Id: oleexcel.pl,v 1.32 2007-01-14 08:33:09 opengl2772 Exp $
 # Copyright (C) 2001 Yoshinori TAKESAKO,
 #               1999 Jun Kurabe,
 #               1999 Ken-ichi Hirose,
@@ -71,7 +71,10 @@ END {
 }
 
 sub mediatype() {
-    return ('application/excel');
+    return (
+        'application/excel',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml',
+    );
 }
 
 sub status() {

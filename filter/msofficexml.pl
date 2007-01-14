@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: msofficexml.pl,v 1.4 2007-01-14 05:29:27 opengl2772 Exp $
+# $Id: msofficexml.pl,v 1.5 2007-01-14 08:33:09 opengl2772 Exp $
 # Copyright (C) 2007 Yukio USUDA 
 #               2007 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -34,7 +34,11 @@ my $unzippath = undef;
 my @unzipopts;
 
 sub mediatype() {
-    return ('application/vnd.openxmlformats-officedocument');
+    return (
+        'application/vnd.openxmlformats-officedocument.wordprocessingml',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml',
+        'application/vnd.openxmlformats-officedocument.presentationml',
+    );
 }
 
 sub status() {
@@ -49,8 +53,8 @@ sub status() {
         } else {
            return 'yes'; 
         }
-    return 'no';
     }
+    return 'no';
 }
 
 sub recursive() {

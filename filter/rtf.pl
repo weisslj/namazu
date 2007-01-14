@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: rtf.pl,v 1.21 2007-01-14 03:04:31 opengl2772 Exp $
+# $Id: rtf.pl,v 1.22 2007-01-14 03:54:33 opengl2772 Exp $
 # Copyright (C) 2003-2004 Tadamasa Teranishi All rights reserved.
 #               2003-2007 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -94,14 +94,14 @@ sub post_codeconv () {
 sub add_magic ($) {
     my ($magic) = @_;
 
-    # FIXME: very ad hoc.
-    $magic->addFileExts('\\.rtf$', 'application/rtf');
-
     $magic->addMagicEntry("0\tstring\t{\\rtf\t");
     $magic->addMagicEntry(">6\tstring\t\\ansi\tapplication/rtf");
     $magic->addMagicEntry(">6\tstring\t\\mac\tapplication/rtf");
     $magic->addMagicEntry(">6\tstring\t\\pc\tapplication/rtf");
     $magic->addMagicEntry(">6\tstring\t\\pca\tapplication/rtf");
+
+    # FIXME: very ad hoc.
+    $magic->addFileExts('\\.rtf$', 'application/rtf');
 
     return;
 }

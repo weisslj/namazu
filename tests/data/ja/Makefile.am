@@ -29,7 +29,7 @@ EXTRA_DIST  =   acrobat3.pdf \
 		word97.doc \
 		word98.doc \
 		word2000.doc \
-		word20007.docx \
+		word2007.docx \
 		powerpoint97.ppt \
 		powerpoint2002.pps \
 		powerpoint2002.ppt \

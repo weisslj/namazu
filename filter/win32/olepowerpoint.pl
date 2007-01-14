@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: olepowerpoint.pl,v 1.24 2007-01-14 03:04:32 opengl2772 Exp $
+# $Id: olepowerpoint.pl,v 1.25 2007-01-14 05:29:27 opengl2772 Exp $
 # Copyright (C) 1999 Jun Kurabe,
 #               1999 Ken-ichi Hirose,
 #               2004-2007 Namazu Project All rights reserved.
@@ -99,7 +99,7 @@ sub add_magic ($) {
     # FIXME: very ad hoc.
     $magic->addFileExts('\\.pp[st]$', 'application/powerpoint');
 
-    $magic->addFileExts('\\.pp[st]x$', 'application/vnd.openxmlformats-officedocument');
+    $magic->addFileExts('\\.pp[st]x$', 'application/vnd.openxmlformats-officedocument.presentationml');
     return;
 }
 

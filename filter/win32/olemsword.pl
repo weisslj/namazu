@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: olemsword.pl,v 1.25 2007-01-14 03:04:32 opengl2772 Exp $
+# $Id: olemsword.pl,v 1.26 2007-01-14 05:29:27 opengl2772 Exp $
 # Copyright (C) 1999 Jun Kurabe,
 #		1999-2000 Ken-ichi Hirose,
 #               2004-2007 Namazu Project All rights reserved.
@@ -99,7 +99,7 @@ sub add_magic ($) {
     # FIXME: very ad hoc.
     $magic->addFileExts('\\.doc$', 'application/msword');
 
-    $magic->addFileExts('\\.docx$', 'application/vnd.openxmlformats-officedocument');
+    $magic->addFileExts('\\.docx$', 'application/vnd.openxmlformats-officedocument.wordprocessingml');
     return;
 }
 

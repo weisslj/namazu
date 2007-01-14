@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: oleexcel.pl,v 1.30 2007-01-14 03:04:32 opengl2772 Exp $
+# $Id: oleexcel.pl,v 1.31 2007-01-14 05:29:27 opengl2772 Exp $
 # Copyright (C) 2001 Yoshinori TAKESAKO,
 #               1999 Jun Kurabe,
 #               1999 Ken-ichi Hirose,
@@ -116,7 +116,7 @@ sub add_magic ($) {
     # FIXME: very ad hoc.
     $magic->addFileExts('\\.xls$', 'application/excel');
 
-    $magic->addFileExts('\\.xlsx$', 'application/vnd.openxmlformats-officedocument');
+    $magic->addFileExts('\\.xlsx$', 'application/vnd.openxmlformats-officedocument.spreadsheetml');
     return;
 }
 

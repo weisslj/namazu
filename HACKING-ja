@@ -39,7 +39,7 @@ CVS からソースを取得したら、まずautogen.sh スクリプトを実行
 1. 各poファイルの未翻訳部分を翻訳する
 2. ja_JP.SJIS.po に関しては、ja.po の翻訳後に make_sjis_po を
    必ず実行する。これで ja.po における変更が ja_JP.SJIS.po にも
-   反映される。
+   反映される。(Namazu 2.2.X, 2.3.X は不要)
 3. po 以下で、make update-po を実行することによって、全 po を
    namazu.pot に同期させることができる。
 

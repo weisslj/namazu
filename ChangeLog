@@ -5,6 +5,10 @@
 
         * filter/win32/*.pl: ditto.
 
+        * filter/msofficexml.pl, filter/win32/ole*.pl: Change mime-type.
+
+        * pl/conf.pl.in: ditto.
+
 2007-01-08  Yukio USUDA <usu@namazu.org>
 
 	* filter/msofficexml.pl: Added new fiter.
@@ -199,4 +203,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1523 2007-01-14 03:04:31 opengl2772 Exp $
+$Id: ChangeLog,v 1.1524 2007-01-14 09:10:42 opengl2772 Exp $

@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: ichitaro456.pl,v 1.16 2006-08-12 07:06:44 opengl2772 Exp $
+# $Id: ichitaro456.pl,v 1.17 2007-01-14 03:04:32 opengl2772 Exp $
 # Copyright (C) 1999 Ken-ichi Hirose,
-#               2000-2006 Namazu Project All rights reserved.
+#               2000-2007 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -73,9 +73,11 @@ sub post_codeconv () {
 
 sub add_magic ($) {
     my ($magic) = @_;
-    $magic->addFileExts('\\.jsw', 'application/ichitaro4');
-    $magic->addFileExts('\\.jaw', 'application/ichitaro5');
-    $magic->addFileExts('\\.jbw', 'application/ichitaro6');
+
+    # FIXME: very ad hoc.
+    $magic->addFileExts('\\.jsw$', 'application/ichitaro4');
+    $magic->addFileExts('\\.jaw$', 'application/ichitaro5');
+    $magic->addFileExts('\\.jbw$', 'application/ichitaro6');
     return;
 }
 

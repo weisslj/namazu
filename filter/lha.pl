@@ -1,10 +1,10 @@
 #
 # -*- Perl -*-
-# $Id: lha.pl,v 1.14 2006-11-12 16:03:08 opengl2772 Exp $
+# $Id: lha.pl,v 1.15 2007-01-14 03:04:31 opengl2772 Exp $
 #  lha filter for namazu
-#  Copyright (C) 2004-2006 Tadamasa Teranishi,
+#  Copyright (C) 2004-2007 Tadamasa Teranishi,
 #                2004 MATSUMURA Namihiko <po-jp@counterghost.net>,
-#                2004-2006 Namazu Project All rights reserved.
+#                2004-2007 Namazu Project All rights reserved.
 #
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -74,6 +74,7 @@ sub add_magic ($) {
     $magic->addMagicEntry("2\tstring\t-lz4-\tapplication/x-lha");
     $magic->addMagicEntry("2\tstring\t-lz5-\tapplication/x-lha");
 
+    # FIXME: very ad hoc.
 #    $magic->addFileExts('\\.lzh', 'application/x-lha');
     return;
 }

@@ -1,3 +1,10 @@
+2007-01-14  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+	* filter/*.pl: Correction concerning addFileExts and addition
+        of comment. 
+
+        * filter/win32/*.pl: ditto.
+
 2007-01-08  Yukio USUDA <usu@namazu.org>
 
 	* filter/msofficexml.pl: Added new fiter.
@@ -192,4 +199,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1522 2007-01-08 07:08:24 usu Exp $
+$Id: ChangeLog,v 1.1523 2007-01-14 03:04:31 opengl2772 Exp $

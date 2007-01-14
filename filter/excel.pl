@@ -1,9 +1,9 @@
 #
 # -*- Perl -*-
-# $Id: excel.pl,v 1.39 2006-08-12 07:18:44 opengl2772 Exp $
+# $Id: excel.pl,v 1.40 2007-01-14 03:04:31 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi,
 #               1999 NOKUBI Takatsugu, 
-#               2000-2004 Namazu Project All rights reserved.
+#               2000-2007 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -84,6 +84,7 @@ sub post_codeconv () {
 sub add_magic ($) {
     my ($magic) = @_;
 
+    # FIXME: very ad hoc.
     $magic->addFileExts('\\.xls$', 'application/excel');
     return;
 }

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: msofficexml.pl,v 1.2 2007-01-08 07:30:37 usu Exp $
+# $Id: msofficexml.pl,v 1.3 2007-01-14 03:04:31 opengl2772 Exp $
 # Copyright (C) 2007 Yukio USUDA 
 #               2007 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -67,10 +67,12 @@ sub post_codeconv () {
 
 sub add_magic ($) {
     my ($magic) = @_;
-    $magic->addFileExts('\\.docx', 'application/vnd.openxmlformats-officedocument');
-    $magic->addFileExts('\\.xlsx', 'application/vnd.openxmlformats-officedocument');
-    $magic->addFileExts('\\.pptx', 'application/vnd.openxmlformats-officedocument');
-    $magic->addFileExts('\\.ppsx', 'application/vnd.openxmlformats-officedocument');
+
+    # FIXME: very ad hoc.
+    $magic->addFileExts('\\.docx$', 'application/vnd.openxmlformats-officedocument');
+    $magic->addFileExts('\\.xlsx$', 'application/vnd.openxmlformats-officedocument');
+    $magic->addFileExts('\\.pptx$', 'application/vnd.openxmlformats-officedocument');
+    $magic->addFileExts('\\.ppsx$', 'application/vnd.openxmlformats-officedocument');
     return;
 }
 

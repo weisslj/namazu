@@ -1,9 +1,9 @@
 #
 # -*- Perl -*-
-# $Id: xdoc2txt.pl,v 1.5 2006-08-12 13:55:24 opengl2772 Exp $
+# $Id: xdoc2txt.pl,v 1.6 2007-01-14 03:04:32 opengl2772 Exp $
 # Copyright (C) 2004 HANAI,Akira All rights reserved.
 # Copyright (C) 2005 Yukio USUDA All rights reserved.
-# Copyright (C) 2005 Namazu Project All rights reserved.
+# Copyright (C) 2005-2007 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -75,6 +75,7 @@ sub add_magic ($) {
 
     my ($magic) = @_;
 
+    # FIXME: very ad hoc.
     $magic->addFileExts('\\.ppt$', 'application/powerpoint');
     $magic->addFileExts('\\.xls$', 'application/excel');
     $magic->addFileExts('\\.jbw$', 'application/ichitaro6');

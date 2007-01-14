@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: tex.pl,v 1.14 2006-08-12 07:18:44 opengl2772 Exp $
+# $Id: tex.pl,v 1.15 2007-01-14 03:04:31 opengl2772 Exp $
 # Copyright (C) 1999 Satoru Takabayashi ,
-#               2004-2005 Namazu Project All rights reserved.
+#               2004-2007 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -61,6 +61,8 @@ sub add_magic ($) {
 			"^\\\\document(style|class)",
 			"^\\\\begin\\{document\\}",
 			"^\\\\section\\{[^}]+\\}");
+
+    # FIXME: very ad hoc.
     $magic->addFileExts('\\.tex$', 'application/x-tex');
     return;
 }

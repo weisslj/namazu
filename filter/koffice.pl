@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: koffice.pl,v 1.11 2006-08-12 07:18:44 opengl2772 Exp $
+# $Id: koffice.pl,v 1.12 2007-01-14 03:04:31 opengl2772 Exp $
 # Copyright (C) 2004 Yukio USUDA 
-#               2004 Namazu Project All rights reserved ,
+#               2004-2007 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -62,10 +62,12 @@ sub post_codeconv () {
 
 sub add_magic ($) {
     my ($magic) = @_;
-    $magic->addFileExts('\\.kwd', 'application/vnd.kde.kword');
-    $magic->addFileExts('\\.ksp', 'application/vnd.kde.kspread');
-    $magic->addFileExts('\\.kpr', 'application/vnd.kde.kpresenter');
-    $magic->addFileExts('\\.flw', 'application/vnd.kde.kivio');
+
+    # FIXME: very ad hoc.
+    $magic->addFileExts('\\.kwd$', 'application/vnd.kde.kword');
+    $magic->addFileExts('\\.ksp$', 'application/vnd.kde.kspread');
+    $magic->addFileExts('\\.kpr$', 'application/vnd.kde.kpresenter');
+    $magic->addFileExts('\\.flw$', 'application/vnd.kde.kivio');
     return;
 }
 

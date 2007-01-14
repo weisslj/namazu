@@ -1,10 +1,10 @@
 #
 # -*- Perl -*-
-# $Id: zip.pl,v 1.22 2006-11-12 16:03:08 opengl2772 Exp $
+# $Id: zip.pl,v 1.23 2007-01-14 03:04:31 opengl2772 Exp $
 #  zip filter for namazu
 #  Copyright (C) 2004 MATSUMURA Namihiko <po-jp@counterghost.net>
 #                2004 Yukio USUDA <usu@namazu.org>
-#                2004-2006 Namazu Project All rights reserved.
+#                2004-2007 Namazu Project All rights reserved.
 #
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -57,7 +57,9 @@ sub post_codeconv () {
 
 sub add_magic ($) {
     my ($magic) = @_;
-    $magic->addFileExts('\\.zip', 'application/x-zip');
+
+    # FIXME: very ad hoc.
+    $magic->addFileExts('\\.zip$', 'application/x-zip');
     return;
 }
 

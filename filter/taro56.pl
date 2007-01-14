@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: taro56.pl,v 1.13 2006-08-18 17:35:19 opengl2772 Exp $
+# $Id: taro56.pl,v 1.14 2007-01-14 03:04:31 opengl2772 Exp $
 # Copyright (C) 2003 Yukio USUDA
-#               2003-2006 Namazu Project All rights reserved.
+#               2003-2007 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -49,8 +49,10 @@ sub post_codeconv () {
 
 sub add_magic ($) {
     my ($magic) = @_;
-    $magic->addFileExts('\\.jaw', 'application/ichitaro5');
-    $magic->addFileExts('\\.jbw', 'application/ichitaro6');
+
+    # FIXME: very ad hoc.
+    $magic->addFileExts('\\.jaw$', 'application/ichitaro5');
+    $magic->addFileExts('\\.jbw$', 'application/ichitaro6');
     return;
 }
 

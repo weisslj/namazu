@@ -1,8 +1,9 @@
 #
 # -*- Perl -*-
-# $Id: rfc.pl,v 1.18 2006-08-12 07:18:44 opengl2772 Exp $
+# $Id: rfc.pl,v 1.19 2007-01-14 03:04:31 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu All rights reserved.
+#               2000-2007 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -57,6 +58,8 @@ sub add_magic ($) {
 			"^Obsoletes:",
 			"^Category:",
 			"^Updates:");
+
+    # FIXME: very ad hoc.
     $magic->addFileExts('^rfc\d+\.txt$', 'text/plain; x-type=rfc');
     $magic->addFileExts('^draft-(\w*-)+-\d+\.txt$', 'text/plain; x-type=internet-draft');
     $magic->addFileExts('^fyi\d+\.txt$' => 'text/plain; x-type=fyi');

@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: olevisio.pl,v 1.10 2006-12-27 11:39:55 opengl2772 Exp $
-# Copyright (C) 2004-2006 Tadamasa Teranishi,
-#               2004-2006 Namazu Project All rights reserved.
+# $Id: olevisio.pl,v 1.11 2007-01-14 03:04:32 opengl2772 Exp $
+# Copyright (C) 2004-2007 Tadamasa Teranishi,
+#               2004-2007 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -95,6 +95,8 @@ sub post_codeconv () {
 
 sub add_magic ($) {
     my ($magic) = @_;
+
+    # FIXME: very ad hoc.
     $magic->addFileExts('\\.vs[dst]$', 'application/vnd.visio');
     $magic->addFileExts('\\.v[dst]x$', 'application/vnd.visio');
     return;

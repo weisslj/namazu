@@ -1,9 +1,9 @@
 #
 # -*- Perl -*-
-# $Id: olemsword.pl,v 1.24 2006-12-27 14:47:53 opengl2772 Exp $
+# $Id: olemsword.pl,v 1.25 2007-01-14 03:04:32 opengl2772 Exp $
 # Copyright (C) 1999 Jun Kurabe,
 #		1999-2000 Ken-ichi Hirose,
-#               2004-2006 Namazu Project All rights reserved.
+#               2004-2007 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -96,7 +96,10 @@ sub post_codeconv () {
 sub add_magic ($) {
     my ($magic) = @_;
 
+    # FIXME: very ad hoc.
     $magic->addFileExts('\\.doc$', 'application/msword');
+
+    $magic->addFileExts('\\.docx$', 'application/vnd.openxmlformats-officedocument');
     return;
 }
 

@@ -1,10 +1,10 @@
 #
 # -*- Perl -*-
-# $Id: oleexcel.pl,v 1.29 2006-12-27 11:39:55 opengl2772 Exp $
+# $Id: oleexcel.pl,v 1.30 2007-01-14 03:04:32 opengl2772 Exp $
 # Copyright (C) 2001 Yoshinori TAKESAKO,
 #               1999 Jun Kurabe,
 #               1999 Ken-ichi Hirose,
-#               2000-2006 Namazu Project All rights reserved.
+#               2000-2007 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -112,7 +112,11 @@ sub post_codeconv () {
 
 sub add_magic ($) {
     my ($magic) = @_;
+
+    # FIXME: very ad hoc.
     $magic->addFileExts('\\.xls$', 'application/excel');
+
+    $magic->addFileExts('\\.xlsx$', 'application/vnd.openxmlformats-officedocument');
     return;
 }
 

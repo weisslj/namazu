@@ -1,9 +1,9 @@
 #
 # -*- Perl -*-
-# $Id: tar.pl,v 1.11 2006-11-12 16:03:08 opengl2772 Exp $
+# $Id: tar.pl,v 1.12 2007-01-14 03:04:31 opengl2772 Exp $
 #  tar filter for namazu
-#  Copyright (C) 2004-2006 Tadamasa Teranishi,
-#                2004-2006 Namazu Project All rights reserved.
+#  Copyright (C) 2004-2007 Tadamasa Teranishi,
+#                2004-2007 Namazu Project All rights reserved.
 #
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -58,6 +58,8 @@ sub post_codeconv () {
 
 sub add_magic ($) {
 #    my ($magic) = @_;
+
+     # FIXME: very ad hoc.
 #    $magic->addFileExts('\\.tar', 'application/x-tar');
     return;
 }

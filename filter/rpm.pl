@@ -1,7 +1,7 @@
 #
 # -*- Perl -*-
-# $Id: rpm.pl,v 1.17 2006-08-12 07:18:44 opengl2772 Exp $
-# Copyright (C) 2000,2001,2002,2004-2005 Namazu Project All rights reserved.
+# $Id: rpm.pl,v 1.18 2007-01-14 03:04:31 opengl2772 Exp $
+# Copyright (C) 2000-2007 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -56,6 +56,7 @@ sub post_codeconv () {
 sub add_magic ($) {
     my ($magic) = @_;
 
+    # FIXME: very ad hoc.
     $magic->addFileExts('\\.rpm$', 'application/x-rpm');
     return;
 }

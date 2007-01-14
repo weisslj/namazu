@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: ooo.pl,v 1.17 2006-08-12 07:18:44 opengl2772 Exp $
+# $Id: ooo.pl,v 1.18 2007-01-14 03:04:31 opengl2772 Exp $
 # Copyright (C) 2003 Yukio USUDA 
-#               2003-2005 Namazu Project All rights reserved ,
+#               2003-2007 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -75,14 +75,16 @@ sub post_codeconv () {
 
 sub add_magic ($) {
     my ($magic) = @_;
-    $magic->addFileExts('\\.sxw', 'application/vnd.sun.xml.writer');
-    $magic->addFileExts('\\.sxc', 'application/vnd.sun.xml.calc');
-    $magic->addFileExts('\\.sxi', 'application/vnd.sun.xml.impress');
-    $magic->addFileExts('\\.sxd', 'application/vnd.sun.xml.draw');
-    $magic->addFileExts('\\.odt', 'application/vnd.oasis.opendocument.text');
-    $magic->addFileExts('\\.ods', 'application/vnd.oasis.opendocument.spreadsheet');
-    $magic->addFileExts('\\.odp', 'application/vnd.oasis.opendocument.presentation');
-    $magic->addFileExts('\\.odg', 'application/vnd.oasis.opendocument.graphics');
+
+    # FIXME: very ad hoc.
+    $magic->addFileExts('\\.sxw$', 'application/vnd.sun.xml.writer');
+    $magic->addFileExts('\\.sxc$', 'application/vnd.sun.xml.calc');
+    $magic->addFileExts('\\.sxi$', 'application/vnd.sun.xml.impress');
+    $magic->addFileExts('\\.sxd$', 'application/vnd.sun.xml.draw');
+    $magic->addFileExts('\\.odt$', 'application/vnd.oasis.opendocument.text');
+    $magic->addFileExts('\\.ods$', 'application/vnd.oasis.opendocument.spreadsheet');
+    $magic->addFileExts('\\.odp$', 'application/vnd.oasis.opendocument.presentation');
+    $magic->addFileExts('\\.odg$', 'application/vnd.oasis.opendocument.graphics');
     return;
 }
 

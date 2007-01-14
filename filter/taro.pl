@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: taro.pl,v 1.18 2006-08-12 07:18:44 opengl2772 Exp $
+# $Id: taro.pl,v 1.19 2007-01-14 03:04:31 opengl2772 Exp $
 # Copyright (C) 2000 Ken-ichi Hirose, 
-#               2000,2001,2003-2005 Namazu Project All rights reserved.
+#               2000-2007 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -63,12 +63,16 @@ sub add_magic ($) {
     my ($magic) = @_;
 
     # Justsystem Ichitaro 5
+    # FIXME: very ad hoc.
     $magic->addFileExts('\\.jaw$', 'application/ichitaro5');
     # Justsystem Ichitaro 6
+    # FIXME: very ad hoc.
     $magic->addFileExts('\\.jbw$', 'application/ichitaro6');
     # Justsystem Ichitaro 7
+    # FIXME: very ad hoc.
     $magic->addFileExts('\\.jfw$', 'application/ichitaro7');
     # Justsystem Ichitaro 8 - 13, 2004
+    # FIXME: very ad hoc.
     $magic->addFileExts('\\.jt[dt]$', 'application/x-js-taro');
 
     return;

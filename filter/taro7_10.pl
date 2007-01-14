@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: taro7_10.pl,v 1.15 2006-08-12 07:18:44 opengl2772 Exp $
+# $Id: taro7_10.pl,v 1.16 2007-01-14 03:04:31 opengl2772 Exp $
 # Copyright (C) 2003 Yukio USUDA
-#               2003,2004 Namazu Project All rights reserved.
+#               2003-2007 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -55,8 +55,10 @@ sub post_codeconv() {
 
 sub add_magic($) {
     my ($magic) = @_;
-    $magic->addFileExts('(?i)\\.jtd', 'application/x-js-taro');
-    $magic->addFileExts('(?i)\\.jfw', 'application/ichitaro7');
+
+    # FIXME: very ad hoc.
+    $magic->addFileExts('\\.jtd$', 'application/x-js-taro');
+    $magic->addFileExts('\\.jfw$', 'application/ichitaro7');
     return;
 }
 

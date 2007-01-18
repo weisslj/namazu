@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: olemsword.pl,v 1.28 2007-01-18 06:21:46 opengl2772 Exp $
+# $Id: olemsword.pl,v 1.29 2007-01-18 08:50:44 opengl2772 Exp $
 # Copyright (C) 1999 Jun Kurabe,
 #		1999-2000 Ken-ichi Hirose,
 #               2004-2007 Namazu Project All rights reserved.
@@ -67,7 +67,7 @@ sub mediatype() {
             'application/vnd.openxmlformats-officedocument.wordprocessingml',
         );
     } else {
-        #  8.0 Office 97
+        #  8.0 Office 97, 98
         return (
             'application/msword',
         );

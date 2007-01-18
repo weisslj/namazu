@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: oleexcel.pl,v 1.33 2007-01-18 06:21:46 opengl2772 Exp $
+# $Id: oleexcel.pl,v 1.34 2007-01-18 08:50:44 opengl2772 Exp $
 # Copyright (C) 2001 Yoshinori TAKESAKO,
 #               1999 Jun Kurabe,
 #               1999 Ken-ichi Hirose,
@@ -86,7 +86,7 @@ sub mediatype() {
         );
     } else {
         #  9.0 Office 2000
-        #  8.0 Office 97
+        #  8.0 Office 97, 98
         return (
             'application/excel',
         );

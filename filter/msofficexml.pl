@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: msofficexml.pl,v 1.6 2007-01-14 09:03:20 opengl2772 Exp $
+# $Id: msofficexml.pl,v 1.7 2007-01-18 13:44:56 usu Exp $
 # Copyright (C) 2007 Yukio USUDA 
 #               2007 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -28,6 +28,7 @@ use English;
 require 'util.pl';
 require 'gfilter.pl';
 require 'ooo.pl';
+require 'zip.pl';
 
 
 my $utfconvpath = undef;
@@ -164,14 +165,47 @@ sub zip_read ($$$) {
     unlink $tmpfile;
 }
 
+sub get_embedded_list ($$$) {
+    my ($zipref, $embeddingsref, $apptype) = @_;
+    my $tmpfile  = util::tmpnam('NMZ.zip');
+    { 
+        my $fh = util::efopen("> $tmpfile");
+        print $fh $$zipref;
+        util::fclose($fh);
+    }
+    my @unzipopts_getlist = ("-Z", "-1");
+    my @cmd = ($unzippath, @unzipopts_getlist, $tmpfile);
+    my $file_list;
+    my $status = util::syscmd(
+        command => \@cmd,
+        option => {
+            "stdout" => \$file_list,
+            "stderr" => "/dev/null",
+            "mode_stdout" => "wt",
+            "mode_stderr" => "wt",
+        },
+    );
+    if ($status == 0) {
+	while ($file_list =~ m!\n
+			($apptype/embeddings/.+)!gx){	# embeddings filename
+            my $filename = $1;
+            push(@$embeddingsref, $filename);
+	}
+    }
+    unlink $tmpfile;
+}
+
 sub filter_contentfile ($$$$$) {
     my ($contref, $weighted_str, $headings, $fields, $ext) = @_;
     my @contentfile;
+    my @embeddedfiles;
     my $xml = "";
     if ($ext =~ /docx/i){
         $contentfile[0] = 'word/document.xml';
+        get_embedded_list($contref, \@embeddedfiles, 'word');
     }elsif ($ext =~ /xlsx/i){
         $contentfile[0] = 'xl/sharedStrings.xml';
+        get_embedded_list($contref, \@embeddedfiles, 'xl');
     }elsif ($ext =~ /pp(t|s)x/i){
         my $filename = 'docProps/app.xml';
         msofficexml::zip_read($contref, $filename, \$xml);
@@ -182,6 +216,7 @@ sub filter_contentfile ($$$$$) {
         for (my $i = 1; $i <= $slides; $i++){
             $contentfile[$i-1] = 'ppt/slides/slide' . $i . '.xml';
         }
+        get_embedded_list($contref, \@embeddedfiles, 'ppt');
     }
     $xml = "";
     foreach my $filename (@contentfile){
@@ -197,7 +232,41 @@ sub filter_contentfile ($$$$$) {
     if (util::islang("ja")) {
         codeconv::normalize_jp(\$xml);
     }
-    $$contref = $xml;
+
+    my $embeddedcont = '';
+    if (@embeddedfiles) {
+        my $cont = '';
+        my $tmpfile  = util::tmpnam('NMZ.zip');
+        { 
+            my $fh = util::efopen("> $tmpfile");
+            print $fh $$contref;
+            util::fclose($fh);
+        }
+        foreach my $fname (@embeddedfiles){
+            my @cmd = ("$unzippath", "-p", "$tmpfile", "$fname");
+            my $status = util::syscmd(
+                command => \@cmd,
+                option => {
+                    "stdout" => \$cont,
+                    "stderr" => "/dev/null",
+                    "mode_stdout" => "wt",
+                    "mode_stderr" => "wt",
+                },
+            );
+            my $unzippedname = "unzipped_content";
+            if ($fname =~ /.*(\..*)/){
+                $unzippedname = $unzippedname . $1;
+            }
+            my $err = zip::nesting_filter($unzippedname, \$cont, $weighted_str);
+            if (defined $err) {
+                util::dprint("filter/zip.pl gets error message \"$err\"");
+            }
+            $embeddedcont .= " " . $cont;
+        }
+        unlink $tmpfile;
+    }
+    $$contref = $xml . $embeddedcont;
+
     gfilter::line_adjust_filter($contref);
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($contref);

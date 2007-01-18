@@ -1,3 +1,7 @@
+2007-01-18  Yukio USUDA <usu@namazu.org>
+
+	* filter/msofficexml.pl: Added embeddings support.
+
 2007-01-18  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * filter/win32/ole*.pl: The check on the version of Office is added. 
@@ -207,4 +211,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1525 2007-01-18 06:21:46 opengl2772 Exp $
+$Id: ChangeLog,v 1.1526 2007-01-18 13:44:55 usu Exp $

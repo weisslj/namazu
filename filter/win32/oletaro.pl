@@ -1,6 +1,6 @@
 # 
 # -*- Perl -*-
-# $Id: oletaro.pl,v 1.13 2007-01-14 03:04:32 opengl2772 Exp $
+# $Id: oletaro.pl,v 1.14 2007-01-18 06:21:46 opengl2772 Exp $
 # 
 # Copyright (C) 2000-2007 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -31,52 +31,34 @@ require 'olemsword.pl';
 
 use Win32::OLE::Const;
 
+my $version = 0;
+
 sub mediatype() {
-    open (SAVEERR,">&STDERR");
-    open (STDERR,">nul");
-    my $const;
-    $const = Win32::OLE::Const->Load("Microsoft Word 12.0 Object Library");
-    if ($const) {
-        open (STDERR,">&SAVEERR");
+    status();
+
+    if ($version >= 11) {
         return (
             'application/ichitaro7', 'application/x-js-taro'
         );
-    }
-    $const = Win32::OLE::Const->Load("Microsoft Word 11.0 Object Library");
-    if ($const) {
-        open (STDERR,">&SAVEERR");
-        return (
-            'application/ichitaro7', 'application/x-js-taro'
-        );
-    }
-    $const = Win32::OLE::Const->Load("Microsoft Word 10.0 Object Library");
-    if ($const) {
-        open (STDERR,">&SAVEERR");
+    } elsif ($version == 10) {
         return (
             'application/ichitaro5',
             'application/ichitaro6', 'application/ichitaro7',
             'application/x-js-taro'
         );
-    }
-    $const = Win32::OLE::Const->Load("Microsoft Word 9.0 Object Library");
-    if ($const) {
-        open (STDERR,">&SAVEERR");
+    } elsif ($version == 9) {
+        return (
+            'application/ichitaro4', 'application/ichitaro5',
+            'application/ichitaro6', 'application/ichitaro7',
+            'application/x-js-taro'
+        );
+    } elsif ($version == 8) {
         return (
             'application/ichitaro4', 'application/ichitaro5',
             'application/ichitaro6', 'application/ichitaro7',
             'application/x-js-taro'
         );
     }
-    $const = Win32::OLE::Const->Load("Microsoft Word 8.0 Object Library");
-    if ($const) {
-        open (STDERR,">&SAVEERR");
-        return (
-            'application/ichitaro4', 'application/ichitaro5',
-            'application/ichitaro6', 'application/ichitaro7',
-            'application/x-js-taro'
-        );
-    }
-    open (STDERR,">&SAVEERR");
 
     return (
         'application/ichitaro7', 'application/x-js-taro'
@@ -84,18 +66,37 @@ sub mediatype() {
 }
 
 sub status() {
+    my $const = undef;
+
     # The check of a dependence filter.
     return 'no' if (olemsword::status() ne 'yes');
 
     open (SAVEERR,">&STDERR");
     open (STDERR,">nul");
-    my $const;
-    $const = Win32::OLE::Const->Load("Microsoft Word 12.0 Object Library");
-    $const = Win32::OLE::Const->Load("Microsoft Word 11.0 Object Library") unless $const;
-    $const = Win32::OLE::Const->Load("Microsoft Word 10.0 Object Library") unless $const;
-    $const = Win32::OLE::Const->Load("Microsoft Word 9.0 Object Library") unless $const;
-    $const = Win32::OLE::Const->Load("Microsoft Word 8.0 Object Library") unless $const;
+
+    if (!defined $const) {
+        $const = Win32::OLE::Const->Load("Microsoft Word 12.0 Object Library");
+        $version = 12;
+    }
+    if (!defined $const) {
+        $const = Win32::OLE::Const->Load("Microsoft Word 11.0 Object Library");
+        $version = 11;
+    }
+    if (!defined $const) {
+        $const = Win32::OLE::Const->Load("Microsoft Word 10.0 Object Library");
+        $version = 10;
+    }
+    if (!defined $const) {
+        $const = Win32::OLE::Const->Load("Microsoft Word 9.0 Object Library");
+        $version = 9;
+    }
+    if (!defined $const) {
+        $const = Win32::OLE::Const->Load("Microsoft Word 8.0 Object Library");
+        $version = 8;
+    }
+
     open (STDERR,">&SAVEERR");
+
     return 'yes' if (defined $const);
     return 'no';
 }

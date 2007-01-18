@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: olepowerpoint.pl,v 1.26 2007-01-14 08:33:09 opengl2772 Exp $
+# $Id: olepowerpoint.pl,v 1.27 2007-01-18 06:21:46 opengl2772 Exp $
 # Copyright (C) 1999 Jun Kurabe,
 #               1999 Ken-ichi Hirose,
 #               2004-2007 Namazu Project All rights reserved.
@@ -52,22 +52,55 @@ no strict 'refs';  # for symbolic reference: $fields;
 require 'util.pl';
 require 'gfilter.pl';
 
+my $version = 0;
+
 sub mediatype() {
-    return (
-        'application/powerpoint',
-        'application/vnd.openxmlformats-officedocument.presentationml',
-    );
+    status();
+
+    if ($version >= 10) {
+        # 12.0 Office 2007
+        # 11.0 Office 2003
+        # 10.0 Office 2002
+        return (
+            'application/powerpoint',
+            'application/vnd.openxmlformats-officedocument.presentationml',
+        );
+    } else {
+        #  9.0 Office 2000
+        #  8.0 Office 97
+        return (
+            'application/powerpoint',
+        );
+    }
 }
 
 sub status() {
+    my $const = undef;
+
     open (SAVEERR,">&STDERR");
     open (STDERR,">nul");
-    my $const;
-    $const = Win32::OLE::Const->Load("Microsoft PowerPoint 12.0 Object Library");
-    $const = Win32::OLE::Const->Load("Microsoft PowerPoint 11.0 Object Library") unless $const;
-    $const = Win32::OLE::Const->Load("Microsoft PowerPoint 10.0 Object Library") unless $const;
-    $const = Win32::OLE::Const->Load("Microsoft PowerPoint 9.0 Object Library") unless $const;
-    $const = Win32::OLE::Const->Load("Microsoft PowerPoint 8.0 Object Library") unless $const;
+
+    if (!defined $const) {
+        $const = Win32::OLE::Const->Load("Microsoft PowerPoint 12.0 Object Library");
+        $version = 12;
+    }
+    if (!defined $const) {
+        $const = Win32::OLE::Const->Load("Microsoft PowerPoint 11.0 Object Library");
+        $version = 11;
+    }
+    if (!defined $const) {
+        $const = Win32::OLE::Const->Load("Microsoft PowerPoint 10.0 Object Library");
+        $version = 10;
+    }
+    if (!defined $const) {
+        $const = Win32::OLE::Const->Load("Microsoft PowerPoint 9.0 Object Library");
+        $version = 9;
+    }
+    if (!defined $const) {
+        $const = Win32::OLE::Const->Load("Microsoft PowerPoint 8.0 Object Library");
+        $version = 8;
+    }
+
     open (STDERR,">&SAVEERR");
     if (defined $const){
 	if (!util::islang("ja")) {

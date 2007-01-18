@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: oleexcel.pl,v 1.32 2007-01-14 08:33:09 opengl2772 Exp $
+# $Id: oleexcel.pl,v 1.33 2007-01-18 06:21:46 opengl2772 Exp $
 # Copyright (C) 2001 Yoshinori TAKESAKO,
 #               1999 Jun Kurabe,
 #               1999 Ken-ichi Hirose,
@@ -60,6 +60,7 @@ use Win32::OLE::Const;
 # for Excel application start only one time
 my $excel = undef;
 my $const = undef;
+my $version = 0;
 
 # Excel application destructor
 END {
@@ -71,21 +72,54 @@ END {
 }
 
 sub mediatype() {
-    return (
-        'application/excel',
-        'application/vnd.openxmlformats-officedocument.spreadsheetml',
-    );
+    status();
+
+    if ($version >= 10) {
+        # 12.0 Office 2007
+        # 11.0 Office 2003
+        # 10.0 Office 2002
+        return (
+            'application/excel',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml',
+#            'application/vnd.ms-excel.sheet.macroEnabled',
+#            'application/vnd.ms-excel.sheet.binary.macroEnabled',
+        );
+    } else {
+        #  9.0 Office 2000
+        #  8.0 Office 97
+        return (
+            'application/excel',
+        );
+    }
 }
 
 sub status() {
     open (SAVEERR,">&STDERR");
     open (STDERR,">nul");
-    $const = Win32::OLE::Const->Load("Microsoft Excel 12.0 Object Library");
-    $const = Win32::OLE::Const->Load("Microsoft Excel 11.0 Object Library") unless $const;
-    $const = Win32::OLE::Const->Load("Microsoft Excel 10.0 Object Library") unless $const;
-    $const = Win32::OLE::Const->Load("Microsoft Excel 9.0 Object Library") unless $const;
-    $const = Win32::OLE::Const->Load("Microsoft Excel 8.0 Object Library") unless $const;
+
+    if (!defined $const) {
+        $const = Win32::OLE::Const->Load("Microsoft Excel 12.0 Object Library");
+        $version = 12 if (defined $const);
+    }
+    if (!defined $const) {
+        $const = Win32::OLE::Const->Load("Microsoft Excel 11.0 Object Library");
+        $version = 11 if (defined $const);
+    }
+    if (!defined $const) {
+        $const = Win32::OLE::Const->Load("Microsoft Excel 10.0 Object Library");
+        $version = 10 if (defined $const);
+    }
+    if (!defined $const) {
+        $const = Win32::OLE::Const->Load("Microsoft Excel 9.0 Object Library");
+        $version = 9 if (defined $const);
+    }
+    if (!defined $const) {
+        $const = Win32::OLE::Const->Load("Microsoft Excel 8.0 Object Library");
+        $version = 8 if (defined $const);
+    }
+
     open (STDERR,">&SAVEERR");
+
     if (defined $const){
 	if (!util::islang("ja")) {
 	    return 'yes';
@@ -118,8 +152,9 @@ sub add_magic ($) {
 
     # FIXME: very ad hoc.
     $magic->addFileExts('\\.xls$', 'application/excel');
-
     $magic->addFileExts('\\.xlsx$', 'application/vnd.openxmlformats-officedocument.spreadsheetml');
+#    $magic->addFileExts('\\.xlsm$', 'application/vnd.ms-excel.sheet.macroEnabled');
+#    $magic->addFileExts('\\.xlsb$', 'application/vnd.ms-excel.sheet.binary.macroEnabled');
     return;
 }
 

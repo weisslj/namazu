@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: msofficexml.pl,v 1.7 2007-01-18 13:44:56 usu Exp $
+# $Id: msofficexml.pl,v 1.8 2007-01-19 11:22:37 usu Exp $
 # Copyright (C) 2007 Yukio USUDA 
 #               2007 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -236,13 +236,18 @@ sub filter_contentfile ($$$$$) {
     my $embeddedcont = '';
     if (@embeddedfiles) {
         my $cont = '';
-        my $tmpfile  = util::tmpnam('NMZ.zip');
-        { 
-            my $fh = util::efopen("> $tmpfile");
-            print $fh $$contref;
-            util::fclose($fh);
-        }
         foreach my $fname (@embeddedfiles){
+            my $tmpfile;
+            my $uniqnumber = int(rand(10000));
+            do {
+                $tmpfile = util::tmpnam('NMZ.zip' . substr("000$uniqnumber", -4));
+                $uniqnumber++;
+            } while (-f $tmpfile);
+            { 
+                my $fh = util::efopen("> $tmpfile");
+                print $fh $$contref;
+                util::fclose($fh);
+            }
             my @cmd = ("$unzippath", "-p", "$tmpfile", "$fname");
             my $status = util::syscmd(
                 command => \@cmd,
@@ -262,8 +267,8 @@ sub filter_contentfile ($$$$$) {
                 util::dprint("filter/zip.pl gets error message \"$err\"");
             }
             $embeddedcont .= " " . $cont;
+            unlink $tmpfile;
         }
-        unlink $tmpfile;
     }
     $$contref = $xml . $embeddedcont;
 

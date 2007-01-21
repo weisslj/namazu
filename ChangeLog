@@ -3,6 +3,8 @@
         * filter/msofficexml.pl: Added Excel sheet name support.
         Fixed another embeddings support bug.
 
+        * filter/zip.pl: Fixed a bug.
+
 2007-01-19  Yukio USUDA <usu@namazu.org>
 
 	* filter/msofficexml.pl: Fixed embeddings support bug.
@@ -224,4 +226,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1529 2007-01-21 09:19:30 usu Exp $
+$Id: ChangeLog,v 1.1530 2007-01-21 09:29:20 usu Exp $

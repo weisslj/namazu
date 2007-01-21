@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: msofficexml.pl,v 1.8 2007-01-19 11:22:37 usu Exp $
-# Copyright (C) 2007 Yukio USUDA 
-#               2007 Namazu Project All rights reserved ,
+# $Id: msofficexml.pl,v 1.9 2007-01-21 09:19:31 usu Exp $
+# Copyright (C) 2007 Yukio USUDA, 
+#               2007 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -98,23 +98,7 @@ sub filter_metafile ($$$) {
     my ($contref, $weighted_str, $fields) = @_;
     my $metafile = 'docProps/core.xml';
     my $xml = "";
-    my $tmpfile  = util::tmpnam('NMZ.zip');
-    { 
-        my $fh = util::efopen("> $tmpfile");
-        print $fh $$contref;
-        util::fclose($fh);
-    }
-    my @cmd = ($unzippath, @unzipopts, $tmpfile, $metafile);
-    my $status = util::syscmd(
-        command => \@cmd,
-        option => {
-            "stdout" => \$xml,
-            "stderr" => "/dev/null",
-            "mode_stdout" => "wt",
-            "mode_stderr" => "wt",
-        },
-    );
-    unlink $tmpfile;
+    msofficexml::zip_read($contref, $metafile, \$xml);
 
     my $authorname = ooo::get_author(\$xml);
     my $title = ooo::get_title(\$xml);
@@ -146,7 +130,12 @@ sub filter_metafile ($$$) {
 
 sub zip_read ($$$) {
     my ($zipref, $fname, $unzipcontref) = @_;
-    my $tmpfile  = util::tmpnam('NMZ.zip');
+    my $tmpfile;
+    my $uniqnumber = int(rand(10000));
+    do {
+        $tmpfile = util::tmpnam('NMZ.zip' . substr("000$uniqnumber", -4));
+        $uniqnumber++;
+    } while (-f $tmpfile);
     { 
         my $fh = util::efopen("> $tmpfile");
         print $fh $$zipref;
@@ -158,7 +147,7 @@ sub zip_read ($$$) {
         option => {
             "stdout" => $unzipcontref,
             "stderr" => "/dev/null",
-            "mode_stdout" => "wt",
+            "mode_stdout" => "w",
             "mode_stderr" => "wt",
         },
     );
@@ -224,6 +213,12 @@ sub filter_contentfile ($$$$$) {
         msofficexml::zip_read($contref, $filename, \$xmlcont);
         $xml .= $xmlcont
     }
+    if ($ext =~ /xlsx/i){
+        my $xmlcont = '';
+        my $filename = 'xl/workbook.xml';
+        msofficexml::zip_read($contref, $filename, \$xmlcont);
+        $xml .= msofficexml::get_sheetname(\$xmlcont);
+    }
 
     ooo::remove_all_tag(\$xml);
     ooo::decode_entity(\$xml);
@@ -235,29 +230,9 @@ sub filter_contentfile ($$$$$) {
 
     my $embeddedcont = '';
     if (@embeddedfiles) {
-        my $cont = '';
         foreach my $fname (@embeddedfiles){
-            my $tmpfile;
-            my $uniqnumber = int(rand(10000));
-            do {
-                $tmpfile = util::tmpnam('NMZ.zip' . substr("000$uniqnumber", -4));
-                $uniqnumber++;
-            } while (-f $tmpfile);
-            { 
-                my $fh = util::efopen("> $tmpfile");
-                print $fh $$contref;
-                util::fclose($fh);
-            }
-            my @cmd = ("$unzippath", "-p", "$tmpfile", "$fname");
-            my $status = util::syscmd(
-                command => \@cmd,
-                option => {
-                    "stdout" => \$cont,
-                    "stderr" => "/dev/null",
-                    "mode_stdout" => "wt",
-                    "mode_stderr" => "wt",
-                },
-            );
+            my $cont = '';
+            msofficexml::zip_read($contref, $fname, \$cont);
             my $unzippedname = "unzipped_content";
             if ($fname =~ /.*(\..*)/){
                 $unzippedname = $unzippedname . $1;
@@ -267,7 +242,6 @@ sub filter_contentfile ($$$$$) {
                 util::dprint("filter/zip.pl gets error message \"$err\"");
             }
             $embeddedcont .= " " . $cont;
-            unlink $tmpfile;
         }
     }
     $$contref = $xml . $embeddedcont;
@@ -280,10 +254,17 @@ sub filter_contentfile ($$$$$) {
 }
 
 sub get_keywords ($) {
-  my ($contref) = @_;
-  my @keywordstmp;
-  push(@keywordstmp ,$$contref =~ m!<cp:keywords>(.*)</cp:keywords>!g);
-  return  join(" ",@keywordstmp);
+    my ($contref) = @_;
+    my @keywordstmp;
+    push(@keywordstmp ,$$contref =~ m!<cp:keywords>(.*)</cp:keywords>!g);
+    return  join(" ",@keywordstmp);
+}
+
+sub get_sheetname ($) {
+    my ($contref) = @_;
+    my @sheetnames;
+    push(@sheetnames ,$$contref =~ m!<sheet name="([^"]*)"!g);
+    return  join(" ",@sheetnames);
 }
 
 1;

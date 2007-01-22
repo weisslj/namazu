@@ -1,9 +1,9 @@
 /*
  * i18n.c -
- * $Id: i18n.c,v 1.36 2006-08-25 17:25:14 opengl2772 Exp $
+ * $Id: i18n.c,v 1.37 2007-01-22 05:59:48 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2006 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2007 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -178,7 +178,7 @@ enum nmz_stat
 nmz_choose_msgfile_suffix(const char *pfname,  char *lang_suffix)
 {
     FILE *fp;
-    int baselen;
+    size_t baselen;
     char fname[BUFSIZE] = "";
     char suffix[BUFSIZE] = "";
 

@@ -1,9 +1,9 @@
 /*
  * 
- * $Id: rcfile.c,v 1.44 2006-08-12 06:56:05 opengl2772 Exp $
+ * $Id: rcfile.c,v 1.45 2007-01-22 05:59:48 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2005 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2007 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -414,7 +414,7 @@ get_rc_arg(const char *line, char *arg)
     arg[BUFSIZE - 1] = '\0';
     *arg = '\0';
     if (*line != '"') {
-	int n = strcspn(line, " \t");
+	size_t n = strcspn(line, " \t");
 	if (n >= BUFSIZE) n = BUFSIZE - 1;
 	strncpy(arg, line, n);
 	arg[n] = '\0';     /* Hey, don't forget this after strncpy()! */

@@ -1,3 +1,9 @@
+2007-01-22  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * nmz/i18n.c: The type of the variable is changed.
+
+        * src/rcfile.c: ditto.
+
 2007-01-21  Yukio USUDA <usu@namazu.org>
 
         * filter/msofficexml.pl: Added Excel sheet name support.
@@ -226,4 +232,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1530 2007-01-21 09:29:20 usu Exp $
+$Id: ChangeLog,v 1.1531 2007-01-22 05:59:48 opengl2772 Exp $

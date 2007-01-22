@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: lha.pl,v 1.16 2007-01-14 03:54:33 opengl2772 Exp $
+# $Id: lha.pl,v 1.17 2007-01-22 12:48:56 usu Exp $
 #  lha filter for namazu
 #  Copyright (C) 2004-2007 Tadamasa Teranishi,
 #                2004 MATSUMURA Namihiko <po-jp@counterghost.net>,
@@ -235,6 +235,8 @@ sub filter_lha_unix ($$$$$) {
                 option => {
                     "stdout" => $tmpfile3,
                     "stderr" => "/dev/null",
+                    "mode_stdout" => "w",
+                    "mode_stderr" => "wt",
                 },
             );
             if ($status == 0) {

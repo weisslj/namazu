@@ -1,3 +1,8 @@
+2007-01-22  Yukio USUDA <usu@namazu.org>
+
+        * filter/zip.pl(filter_lha_unix): Fixed a bug.
+	(Reported by sharl. Thanks.)
+
 2007-01-22  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * configure.in: Date change.
@@ -234,4 +239,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1532 2007-01-22 06:02:28 opengl2772 Exp $
+$Id: ChangeLog,v 1.1533 2007-01-22 12:48:56 usu Exp $

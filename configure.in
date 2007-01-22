@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.174 2006-08-13 04:11:48 opengl2772 Exp $
+dnl $Id: configure.in,v 1.175 2007-01-22 06:01:25 opengl2772 Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -43,7 +43,7 @@ dnl *
 dnl * Namazu Copyright.
 dnl * 
 COPYRIGHT="Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.\n\
-Copyright (C) 2000-2006 Namazu Project All rights reserved."
+Copyright (C) 2000-2007 Namazu Project All rights reserved."
 AC_SUBST(COPYRIGHT)
 AC_DEFINE_UNQUOTED(COPYRIGHT, "$COPYRIGHT", [Namazu Copyright])
 

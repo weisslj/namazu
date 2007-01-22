@@ -1,5 +1,7 @@
 2007-01-22  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
+        * configure.in: Date change.
+
         * nmz/i18n.c: The type of the variable is changed.
 
         * src/rcfile.c: ditto.
@@ -232,4 +234,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1531 2007-01-22 05:59:48 opengl2772 Exp $
+$Id: ChangeLog,v 1.1532 2007-01-22 06:02:28 opengl2772 Exp $

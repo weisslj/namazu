@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: zip.pl,v 1.24 2007-01-21 09:29:20 usu Exp $
+# $Id: zip.pl,v 1.25 2007-01-26 10:43:00 opengl2772 Exp $
 #  zip filter for namazu
 #  Copyright (C) 2004 MATSUMURA Namihiko <po-jp@counterghost.net>
 #                2004 Yukio USUDA <usu@namazu.org>
@@ -241,7 +241,7 @@ sub unzip_filter ($$$$$) {
                 option => {
                     "stdout" => \$con,
                     "stderr" => "/dev/null",
-                    "mode_stdout" => "w",
+                    "mode_stdout" => "wb",
                     "mode_stderr" => "wt",
                 },
             );

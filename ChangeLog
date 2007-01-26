@@ -1,3 +1,9 @@
+2007-01-26  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * NEWS: update.
+
+        * filter/*.pl: change "w" -> "wb".
+
 2007-01-22  Yukio USUDA <usu@namazu.org>
 
         * filter/zip.pl(filter_lha_unix): Fixed a bug.
@@ -239,4 +245,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1533 2007-01-22 12:48:56 usu Exp $
+$Id: ChangeLog,v 1.1534 2007-01-26 10:42:59 opengl2772 Exp $

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: msofficexml.pl,v 1.9 2007-01-21 09:19:31 usu Exp $
+# $Id: msofficexml.pl,v 1.10 2007-01-26 10:43:00 opengl2772 Exp $
 # Copyright (C) 2007 Yukio USUDA, 
 #               2007 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -147,7 +147,7 @@ sub zip_read ($$$) {
         option => {
             "stdout" => $unzipcontref,
             "stderr" => "/dev/null",
-            "mode_stdout" => "w",
+            "mode_stdout" => "wb",
             "mode_stderr" => "wt",
         },
     );

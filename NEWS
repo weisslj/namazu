@@ -1,3 +1,11 @@
+Overview of Changes in Namazu 2.0.16 - Mar 12, 2006
+
+* Directory traversal problem by lang and result of CGI parameter
+  is corrected.
+* Substitution of "-r" that doesn't correspond to ACL of NTFS.
+* It corresponds to the file name including space.
+* For MeCab-perl-0.90rc10.
+
 Overview of Changes in Namazu 2.0.15 - Jan. XX, 2006
 
 * The mistake of the document concerning ISO-8859-* is corrected.

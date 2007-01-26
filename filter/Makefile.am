@@ -44,6 +44,7 @@ filter_DATA = bzip2.pl \
 	      pipermail.pl \
 	      gnumeric.pl \
 	      msofficexml.pl \
+	      visio.pl \
 	      zip.pl
 
 EXTRA_DIST = $(filter_DATA)

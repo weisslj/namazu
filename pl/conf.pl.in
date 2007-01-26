@@ -275,6 +275,7 @@ $TARGET_FILESYS_CODING = 'euc-jp';
   'application/vnd.openxmlformats-officedocument.wordprocessingml' => ['msofficexml.pl', 'win32/olemsword.pl'],
   'application/vnd.openxmlformats-officedocument.spreadsheetml' => ['msofficexml.pl', 'win32/oleexcel.pl'],
   'application/vnd.openxmlformats-officedocument.presentationml' => ['msofficexml.pl', 'win32/olepowerpoint.pl'],
+  'application/vnd.visio' => ['visio.pl', 'win32/olevisio.pl'],
   'application/x-apache-cache' => ['apachecache.pl'],
   'application/x-bzip2' => ['bzip2.pl'],
   'application/x-compress' => ['compress.pl'],

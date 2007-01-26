@@ -8,6 +8,11 @@
 
         * tests/data/ja/*2007*: update.
 
+        * filter/{visio.pl, Makefile.am}: Added a new file. visio exclusion
+        filter.
+
+        * pl/conf.pl.in: The entry of visio is added to USE_FILTERS. 
+
 2007-01-22  Yukio USUDA <usu@namazu.org>
 
         * filter/zip.pl(filter_lha_unix): Fixed a bug.
@@ -249,4 +254,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1535 2007-01-26 11:30:27 opengl2772 Exp $
+$Id: ChangeLog,v 1.1536 2007-01-26 14:20:52 opengl2772 Exp $

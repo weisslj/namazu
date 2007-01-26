@@ -4,6 +4,10 @@
 
         * filter/*.pl: change "w" -> "wb".
 
+        * tests/data/ja/visio2007.vdx: Added new file.
+
+        * tests/data/ja/*2007*: update.
+
 2007-01-22  Yukio USUDA <usu@namazu.org>
 
         * filter/zip.pl(filter_lha_unix): Fixed a bug.
@@ -245,4 +249,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1534 2007-01-26 10:42:59 opengl2772 Exp $
+$Id: ChangeLog,v 1.1535 2007-01-26 11:30:27 opengl2772 Exp $

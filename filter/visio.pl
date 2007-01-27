@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: visio.pl,v 1.2 2007-01-27 09:10:35 usu Exp $
+# $Id: visio.pl,v 1.3 2007-01-27 14:14:55 usu Exp $
 # Copyright (C) 2007 Tadamasa Teranishi All rights reserved.
 #               2007 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -115,8 +115,10 @@ sub filter_visio ($$$$) {
 
 sub get_content ($) {
     my ($contref) = @_;
+    $$contref =~ m!<Pages>(.*)</Pages>!s;
+    my $pages = $1;
     my @content;
-    push(@content, $$contref =~ m!<Text>(.*?)</Text>!sg);
+    push(@content, $pages =~ m!<Text>(.*?)</Text>!sg);
     $$contref = join("\n", @content);
     ooo::remove_all_tag($contref);
 }

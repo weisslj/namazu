@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: visio.pl,v 1.1 2007-01-26 14:20:54 opengl2772 Exp $
+# $Id: visio.pl,v 1.2 2007-01-27 09:10:35 usu Exp $
 # Copyright (C) 2007 Tadamasa Teranishi All rights reserved.
 #               2007 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -25,13 +25,22 @@
 
 package visio;
 use strict;
+require 'ooo.pl';
 
 sub mediatype() {
     return ('application/vnd.visio');
 }
 
 sub status() {
-    return 'no';
+    my $utfconvpath;
+    if (util::islang("ja")) {
+       if ($conf::NKF ne 'no') {
+            return 'yes';
+       }
+       return 'no';
+    } else {
+       return 'yes';
+    }
 }
 
 sub recursive() {
@@ -56,10 +65,92 @@ sub add_magic ($) {
 }
 
 sub filter ($$$$$) {
-    my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
+    my ($orig_cfile, $contref, $weighted_str, $headings, $fields)
         = @_;
-
+    filter_visio($contref, $weighted_str, $headings, $fields);
+    gfilter::line_adjust_filter($contref);
+    gfilter::line_adjust_filter($weighted_str);
+    gfilter::white_space_adjust_filter($contref);
+    gfilter::show_filter_debug_info($contref, $weighted_str,
+                                    $fields, $headings);
     return undef;
+}
+
+sub filter_visio ($$$$) {
+    my ($contref, $weighted_str, $headings, $fields) = @_;
+
+    my $authorname = visio::get_author($contref);
+    my $title = visio::get_title($contref);
+    my $keywords = visio::get_keywords($contref);
+    visio::get_content($contref);
+
+    ooo::decode_entity(\$authorname);
+    ooo::decode_entity(\$title);
+    ooo::decode_entity(\$keywords);
+    ooo::decode_entity($contref);
+
+    # Code conversion for Japanese document.
+    if (util::islang("ja")) {
+        codeconv::normalize_jp(\$authorname);
+        codeconv::normalize_jp(\$title);
+        codeconv::normalize_jp(\$keywords);
+        codeconv::normalize_jp($contref);
+    }
+    if ($authorname ne ""){
+        $fields->{'author'} = $authorname;
+    }
+    if ($title ne ""){
+        $fields->{'title'} = $title;
+        my $weight = $conf::Weight{'html'}->{'title'};
+        $$weighted_str .= "\x7f$weight\x7f$title\x7f/$weight\x7f\n";
+    }
+    if ($keywords ne ""){
+        my @weight_str = split(' ',$keywords);
+        for my $tmp (@weight_str) {
+            my $weight = $conf::Weight{'metakey'};
+            $$weighted_str .= "\x7f$weight\x7f$tmp\x7f/$weight\x7f\n" if $tmp;
+        }
+    }
+}
+
+sub get_content ($) {
+    my ($contref) = @_;
+    my @content;
+    push(@content, $$contref =~ m!<Text>(.*?)</Text>!sg);
+    $$contref = join("\n", @content);
+    ooo::remove_all_tag($contref);
+}
+
+sub get_author ($){
+    my ($contref) = @_;
+    my $author = "";
+    if ($$contref =~ m!<Creator>(.*?)</Creator>!s){
+        $author = $1;
+    }
+    if ($author eq ""){
+        if ($$contref =~ m!<Manager>(.*?)</Manager>!s){
+            $author = $1;
+        }
+    }
+    return $author;
+}
+
+sub get_title ($){
+    my ($contref) = @_;
+    my $title = "";
+    if ($$contref =~ m!<Title>(.*?)</Title>!s){
+        $title = $1;
+    }
+    return $title;
+}
+
+sub get_keywords ($){
+    my ($contref) = @_;
+    my $keyword = "";
+    if ($$contref =~ m!<Keywords>(.*?)</Keywords>!s){
+        $keyword = $1;
+    }
+    return $keyword;
 }
 
 1;

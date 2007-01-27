@@ -3,6 +3,8 @@
 	* filter/msofficexml.pl(remove_txbodytag): Add a subroutine for
 	Powerpoint txBody tag.
 
+        * filter/visio.pl: Added some subroutin. Seems to work.
+
 2007-01-26  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * NEWS: update.
@@ -259,4 +261,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1537 2007-01-27 02:18:22 usu Exp $
+$Id: ChangeLog,v 1.1538 2007-01-27 09:10:33 usu Exp $

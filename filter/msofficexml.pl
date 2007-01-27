@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: msofficexml.pl,v 1.11 2007-01-27 02:18:22 usu Exp $
+# $Id: msofficexml.pl,v 1.12 2007-01-27 02:33:11 usu Exp $
 # Copyright (C) 2007 Yukio USUDA, 
 #               2007 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -273,6 +273,7 @@ sub remove_txbodytag($){
     my $txbodies = '';
     while ($$contref =~ m!<p:txBody>(.*?)</p:txBody>!sg){
        my $txbody = $1;
+       $txbody =~ s/<a:p>/\n/gs;
        $txbody =~ s/<[^>]*>//gs;
        $txbodies .= " " . $txbody; 
     }

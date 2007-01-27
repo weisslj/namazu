@@ -1,3 +1,8 @@
+2007-01-27  Yukio USUDA <usu@namazu.org>
+
+	* filter/msofficexml.pl(remove_txbodytag): Add a subroutine for
+	Powerpoint txBody tag.
+
 2007-01-26  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * NEWS: update.
@@ -254,4 +259,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1536 2007-01-26 14:20:52 opengl2772 Exp $
+$Id: ChangeLog,v 1.1537 2007-01-27 02:18:22 usu Exp $

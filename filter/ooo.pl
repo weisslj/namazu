@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: ooo.pl,v 1.18 2007-01-14 03:04:31 opengl2772 Exp $
+# $Id: ooo.pl,v 1.19 2007-01-28 20:18:23 opengl2772 Exp $
 # Copyright (C) 2003 Yukio USUDA 
 #               2003-2007 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -57,8 +57,8 @@ sub status() {
         } else {
            return 'yes'; 
         }
-    return 'no';
     }
+    return 'no';
 }
 
 sub recursive() {

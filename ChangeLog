@@ -1,3 +1,9 @@
+2007-01-29  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * filter/ooo.pl: fix small bug.
+
+        * doc/{en,ja}/manual.html: Add msofficexml.pl filter.
+
 2007-01-27  Yukio USUDA <usu@namazu.org>
 
 	* filter/msofficexml.pl(remove_txbodytag): Add a subroutine for
@@ -261,4 +267,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1538 2007-01-27 09:10:33 usu Exp $
+$Id: ChangeLog,v 1.1539 2007-01-28 20:18:22 opengl2772 Exp $

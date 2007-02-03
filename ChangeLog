@@ -1,3 +1,16 @@
+2007-02-03  Yukio USUDA <usu@namazu.org>
+
+	* filter/xps.pl: Add new filter for XML Paper Specification (XPS).
+
+	* filter/mdi.pl: Add new filter for Microsoft Document Imaging (MDI).
+
+	* pl/conf.pl.in ($AlLOW_FILES, %USE_FILTERS): Add entries of
+	XPS and MDI.
+
+	* tests/data/ja/msdocumentimaging: Add new file.
+
+	* tests/data/ja/Makefile.am: Add new file.
+
 2007-01-29  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * filter/ooo.pl: fix small bug.
@@ -81,7 +94,7 @@
 
 	* tests/data/ja/Makefile.am: Added new files.
 
-	* pl/conf.pl.in ($AlLOW_FILES, %USE_FILERS): Added extensions
+	* pl/conf.pl.in ($AlLOW_FILES, %USE_FILTERS): Added extensions
 	of MS-OfficeOpenXML.
 
 2006-11-27  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
@@ -267,4 +280,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1539 2007-01-28 20:18:22 opengl2772 Exp $
+$Id: ChangeLog,v 1.1540 2007-02-03 04:42:48 usu Exp $

@@ -44,6 +44,7 @@ $ALLOW_FILE =	".*\\.(?:$HTML_SUFFIX)|.*\\.txt" . # HTML, plain text
 		"|.*\\.kwd|.*\\.ksp" .             # KWord, KSpread
                 "|.*\\.kpr|.*\\.flw" .             # KPresenter, Kivio
                 "|.*\\.zip" .			   # ZIP
+                "|.*\\.xps|.*\\.mdi" .             # XML Paper Specification, Microsoft Document Imaging
                 "|.*\\.eml|\\d+|[-\\w]+\\.[1-9n]"; # Mail/News, man
 
 #
@@ -300,6 +301,8 @@ $TARGET_FILESYS_CODING = 'euc-jp';
   'text/plain; x-type=rfc' => ['rfc.pl'],
   'text/x-hdml' => ['hdml.pl'],
   'text/x-roff' => ['man.pl'],
+  'image/vnd.ms-modi' => ['mdi.pl'],
+  'application/vnd.ms-xpsdocument' => ['xps.pl'],
   'x-test/x-test' => ['testfilter.pl'], # for tests/mknmz-12
 );
 

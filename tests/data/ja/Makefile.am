@@ -60,5 +60,9 @@ EXTRA_DIST  =   acrobat3.pdf \
 		visio2002.vsd \
 		msdocumentimaging.mdi \
 		xps.xps \
+		word2007.xps \
+		excel2007.xps \
+		powerpoint2007.xps \
+		visio2007.xps \
 		zip.zip
 

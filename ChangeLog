@@ -1,3 +1,11 @@
+2007-02-07  Yukio USUDA <usu@namazu.org>
+
+        * filter/xps.pl: Change codeconv parameter.
+
+        * tests/data/ja/xps.xps: Add a new file.
+
+        * tests/data/ja/Makefile.am: Added new entry for xps.xps.
+
 2007-02-03  Yukio USUDA <usu@namazu.org>
 
 	* filter/xps.pl: Add new filter for XML Paper Specification (XPS).
@@ -280,4 +288,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1540 2007-02-03 04:42:48 usu Exp $
+$Id: ChangeLog,v 1.1541 2007-02-07 12:53:35 usu Exp $

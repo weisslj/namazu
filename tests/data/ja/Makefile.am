@@ -58,6 +58,7 @@ EXTRA_DIST  =   acrobat3.pdf \
 		ooimpress.odp \
 		oowriter.odt \
 		visio2002.vsd \
+		msdocumentimaging.mdi \
 		xps.xps \
 		zip.zip
 

@@ -8,6 +8,8 @@
 
         * tests/data/ja/Makefile.am: Added new entry for *.xps.
 
+        * doc/{en,ja}/manual.html: Add visio.pl filter.
+
 2007-02-07  Yukio USUDA <usu@namazu.org>
 
         * filter/xps.pl: Change codeconv parameter.
@@ -300,4 +302,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1544 2007-02-08 13:30:37 usu Exp $
+$Id: ChangeLog,v 1.1545 2007-02-08 13:49:25 opengl2772 Exp $

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: xps.pl,v 1.2 2007-02-07 12:53:35 usu Exp $
+# $Id: xps.pl,v 1.3 2007-02-08 13:30:38 usu Exp $
 # Copyright (C) 2007 Yukio USUDA, 
 #               2007 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -28,6 +28,7 @@ use English;
 require 'util.pl';
 require 'gfilter.pl';
 require 'ooo.pl';
+require 'msofficexml.pl';
 
 my $utfconvpath = undef;
 my $unzippath = undef;
@@ -79,6 +80,7 @@ sub filter ($$$$$) {
     my ($orig_cfile, $contref, $weighted_str, $headings, $fields)
         = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
+    msofficexml::filter_metafile($contref, $weighted_str, $fields);
     filter_contentfile($contref, $weighted_str, $headings, $fields);
     return undef;
 }

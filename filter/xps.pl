@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: xps.pl,v 1.3 2007-02-08 13:30:38 usu Exp $
+# $Id: xps.pl,v 1.4 2007-02-10 05:42:53 usu Exp $
 # Copyright (C) 2007 Yukio USUDA, 
 #               2007 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -150,7 +150,12 @@ sub filter_contentfile ($$$$$) {
     foreach my $filename (@pagefiles){
         my $xmlcont = '';
         xps::zip_read($contref, $filename, \$xmlcont);
-        codeconv::to_inner_encoding(\$xmlcont, 'unknown');
+
+	if ($xmlcont =~ m!^\377\376\<\000F\000i\000x\000e\000d!){
+            codeconv::to_inner_encoding(\$xmlcont, 'UTF-16LE');
+        }else{
+            codeconv::to_inner_encoding(\$xmlcont, 'unknown');
+        }
         xps::get_document(\$xmlcont);
         $xml .= ' ' . $xmlcont
     }

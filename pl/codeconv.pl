@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: codeconv.pl,v 1.32 2006-08-28 16:43:33 opengl2772 Exp $
+# $Id: codeconv.pl,v 1.33 2007-02-10 05:42:53 usu Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2006 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -154,6 +154,50 @@ sub de_mime_header_by_encode ($$) {
     return $str;
 }
 
+sub decide_encode ($$) {
+    my ($enc, $contref) = @_;
+    my @enc = split(/ /, $enc);
+    my $testdata = substr($$contref, 0, 1024);
+    my $maxct = 1024;
+    my $minres = 1024;
+
+    my $encode = "ascii";
+    while(my $enc = shift(@enc)) {
+        next if ($enc eq 'or');
+        if ($enc eq 'shiftjis') {
+            my $tmp = $testdata;
+            my $ct = 0;
+            $tmp =~ s/([\x00-\x7f]|[\x81-\x9f\xe0-\xfc][\x40-\x7e\x80-\xfc])/$ct++; '';/egs;
+            my $res = length($tmp);
+            if ($res < $minres || ($res == $minres && $ct < $maxct)) {
+                $maxct = $ct;
+                $minres = $res;
+                $encode = 'shiftjis';
+            }
+        } elsif ($enc eq 'euc-jp') {
+            my $tmp = $testdata;
+            my $ct = 0;
+            $tmp =~ s/([\x00-\x7f]|[\x8e\xa1-\xfe][\xa1-\xfe]|\x8f[\xa1-\xfe][\xa1-\xfe])/$ct++; '';/egs;
+            my $res = length($tmp);
+            if ($res < $minres || ($res == $minres && $ct < $maxct)) {
+                $maxct = $ct;
+                $minres = $res;
+                $encode = 'euc-jp';
+            }
+        } elsif ($enc =~ /utf-?8/) {
+            my $tmp = $testdata;
+            my $ct = ($tmp =~ s/([\x00-\x7f]|[\xc0-\xdf][\x80-\xbf]|[\xe0-\xef][\x80-\xbf]{2}|[\xf0-\xf7][\x80-\xbf]{3})//gs);
+            my $res = length($tmp);
+            if ($ct > 0 && (($res < $minres || ($res == $minres && $ct < $maxct)))) {
+                $maxct = $ct;
+                $minres = $res;
+                $encode = 'utf8';
+            }
+        }
+    }
+    return $encode;
+}
+
 sub encode_from_to ($$$) {
     my ($contref, $code_f, $code_t) = @_;
     return if ($code_f eq $code_t);
@@ -162,14 +206,18 @@ sub encode_from_to ($$$) {
     } elsif ($conf::NKF eq 'module_encode') {
         if ($code_f eq 'unknown') {
             #$Encode::Guess::DEBUG=1;
-            my $enc = guess_encoding($$contref);
+            my $enc = Encode::Guess::guess_encoding($$contref);
             if (ref $enc) {
                 $code_f = $enc->name;
                 util::dprint("Encode guessed : $code_f\n");
-            } else {
+            } elsif (!defined $enc){
                 $$contref = "";
                 util::dprint("Encode::Guess couldn't find coding name");
                 return "Encode::Guess couldn't find encoding";
+            } else {
+                util::dprint("Encode guessed : $enc\n");
+                $code_f = decide_encode($enc, $contref);
+                util::dprint("Encode decided : $code_f\n");
             }
         }
         Encode::from_to($$contref, $code_f ,$code_t);

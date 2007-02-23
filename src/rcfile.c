@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.45 2007-01-22 05:59:48 opengl2772 Exp $
+ * $Id: rcfile.c,v 1.46 2007-02-23 07:25:13 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2007 Namazu Project All rights reserved.
@@ -424,7 +424,7 @@ get_rc_arg(const char *line, char *arg)
 	line++;
 	n = 1;
 	do {
-	    int nn = strcspn(line, "\"\\");
+	    size_t nn = strcspn(line, "\"\\");
 	    if (nn >= (BUFSIZE - strlen(arg))) nn = BUFSIZE - strlen(arg) - 1;
 	    strncat(arg, line, nn);
 	    n += nn;

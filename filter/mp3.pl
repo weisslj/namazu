@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mp3.pl,v 1.13 2006-08-12 07:18:44 opengl2772 Exp $
+# $Id: mp3.pl,v 1.14 2007-03-06 12:16:02 usu Exp $
 # Copyright (C) 2002 Luc@2113.ch ,
 #               2003-2005 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -93,6 +93,9 @@ sub filter($$$$$) {
         MP3::Info::use_mp3_utf8(0);
     }
     my $tagref = get_mp3tag($mp3);
+    if (ref $tagref->{TITLE}) {
+        $tagref = get_mp3tag($mp3, 2);
+    }
 
     my $songname = defined $tagref->{TITLE} ? $tagref->{TITLE} : ''; 
     my $artist = defined $tagref->{ARTIST} ? $tagref->{ARTIST} : ''; 

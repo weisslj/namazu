@@ -1,3 +1,7 @@
+2007-03-12  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * doc/{en,ja}/tutorial.html: Update MeCab version.
+
 2007-03-09  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * doc/{en,ja}/tutorial.html: Update Text-ChaSen version and URI.
@@ -329,4 +333,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1550 2007-03-08 17:10:26 opengl2772 Exp $
+$Id: ChangeLog,v 1.1551 2007-03-12 03:06:13 opengl2772 Exp $

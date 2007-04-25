@@ -2,6 +2,9 @@
 
         * pltests/env.pl.in: The checked environment variable is added.
 
+        * conf/namazurc-sample: "charset" was added to "ContentType"
+        of the example.
+
 2007-04-21  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * pltests/env.pl.in: The checked environment variable and
@@ -342,4 +345,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1553 2007-04-25 20:19:11 opengl2772 Exp $
+$Id: ChangeLog,v 1.1554 2007-04-25 20:48:36 opengl2772 Exp $

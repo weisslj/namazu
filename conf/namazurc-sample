@@ -2,6 +2,7 @@
 #
 #  Originally, this file is named 'namazurc-sample'.  so you should
 #  copy this to 'namazurc' to make the file effective.
+#  see 'doc/ja/manual.html#namazurc' or 'doc/en/manual.html#namazurc'.
 #  
 #  Each item is must be separated by one or more SPACE or TAB characters. 
 #  You can use a double-quoted string for represanting a string which 
@@ -96,10 +97,15 @@
 #MaxMatch	1000
 
 ##
-## ContentType: Set "Content-Type" header output. If you want to
-## use non-HTML template files, set it suitably.
+## ContentType: Set "Content-Type" header output. Specify "charset".
 ##
-#ContentType	"text/x-hdml"
+## When you specify English, French, German and Spanish charset
+##
+#ContentType	"text/html; charset=ISO-8859-1"
+##
+## When you specify Polish charset
+##
+#ContentType	"text/html; charset=ISO-8859-2"
 ##
 ## When you specify Japanese charset by UNIX
 ##
@@ -108,6 +114,10 @@
 ## When you specify Japanese charset by Windows
 ##
 #ContentType	"text/html; charset=Shift_JIS"
+##
+## If you want to use non-HTML template files, set it suitably.
+##
+#ContentType	"text/x-hdml; charset=Shift_JIS"
 
 ##
 ## Suicide_Time: namazu.cgi stops the process in 60 seconds by 

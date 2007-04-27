@@ -2,10 +2,10 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu-cmd.c,v 1.30 2006-08-18 18:56:51 opengl2772 Exp $
+ * $Id: namazu-cmd.c,v 1.31 2007-04-27 22:50:49 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2006 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2007 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -77,8 +77,6 @@
 /*
  * Extern variables.
  */
-
-extern char contenttype[BUFSIZE];
 
 /*
  *
@@ -335,7 +333,8 @@ main(int argc, char **argv)
 	 * since 1.9.14, they are different and we cannot
 	 * use "namazu" command as CGI any longer.  
 	 */
-	printf("%s %s" CRLF CRLF, MSG_MIME_HEADER, contenttype);
+        printf("%s %s; %s" CRLF CRLF, MSG_MIME_HEADER,
+            "text/html", "charset=iso-8859-1");
 	printf("You should use \"namazu.cgi\" instead of \"namazu\" command.");
 	exit(EXIT_FAILURE);
     } else if (argc == 1) {

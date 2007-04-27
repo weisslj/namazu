@@ -1,9 +1,9 @@
 /*
- * $Id: result.c,v 1.80 2006-08-25 00:43:54 opengl2772 Exp $
+ * $Id: result.c,v 1.81 2007-04-27 22:39:37 opengl2772 Exp $
  * 
  * Copyright (C) 1989, 1990 Free Software Foundation, Inc.
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2006 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2007 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -192,6 +192,12 @@ encode_entity(char *str)
 	    strncat(str, "&amp;", BUFSIZE - strlen(str) - 1);
 	} else if (tmp[i] == '"') {
 	    strncat(str, "&quot;", BUFSIZE - strlen(str) - 1);
+	} else if (tmp[i] == '\'') {
+	    strncat(str, "&#39;", BUFSIZE - strlen(str) - 1);
+	} else if (tmp[i] == '(') {
+	    strncat(str, "&#40;", BUFSIZE - strlen(str) - 1);
+	} else if (tmp[i] == ')') {
+	    strncat(str, "&#41;", BUFSIZE - strlen(str) - 1);
 	} else {
 	    if (strlen(str) < BUFSIZE - 1)
 		strncat(str, tmp + i, 1);

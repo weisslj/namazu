@@ -6,6 +6,11 @@
         * src/namazu-cmd.c(main): "charset=iso-8859-1" is added to the
         response header.
 
+        * src/output.c(emprint, putc_entitize): '\'', '(', ')' is converted
+        into "&#39;", "&#40;", "&#41;" respectively.
+
+        * src/output.c(die): Sanitize.
+
 2007-04-26  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * pltests/env.pl.in: The checked environment variable is added.
@@ -353,4 +358,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1556 2007-04-27 22:50:49 opengl2772 Exp $
+$Id: ChangeLog,v 1.1557 2007-04-28 10:31:53 opengl2772 Exp $

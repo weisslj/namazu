@@ -1,8 +1,8 @@
 /*
- * $Id: output.c,v 1.110 2006-09-11 14:37:29 opengl2772 Exp $
+ * $Id: output.c,v 1.111 2007-04-28 10:31:53 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2006 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2007 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -78,7 +78,7 @@ static char template_suffix[BUFSIZE] = "normal"; /* suffix of NMZ.result.* */
  */ 
 static char emphasis_start_tag[BUFSIZE] = "<strong class=\"keyword\">";
 static char emphasis_end_tag[BUFSIZE]   = "</strong>";
-char contenttype[BUFSIZE] = "text/html";
+static char contenttype[BUFSIZE] = "text/html";
 
 /*
  *
@@ -135,6 +135,12 @@ emprint(char *s, int entity_encode)
 		fputs("&amp;", stdout);
 	    } else if (*s == '"') {
 		fputs("&quot;", stdout);
+            } else if (*s == '\'') {
+                fputs("&#39;", stdout);
+            } else if (*s == '(') {
+                fputs("&#40;", stdout);
+            } else if (*s == ')') {
+                fputs("&#41;", stdout);
 	    } else {
 		fputc(*s, stdout);
 	    }
@@ -736,12 +742,10 @@ print_errmsg(int errid)
 enum nmz_stat 
 print_result(NmzResult hlist, const char *query, const char *subquery)
 {
-
-    if (is_htmlmode() && is_cgimode()) {
-	printf("%s %s" CRLF CRLF, MSG_MIME_HEADER, contenttype);
-    }
-
     if (is_htmlmode()) {
+        if (is_cgimode()) {
+            printf("%s %s" CRLF CRLF, MSG_MIME_HEADER, contenttype);
+        }
 	print_headfoot(NMZ.head, query, subquery);
     }
 
@@ -870,8 +874,14 @@ putc_entitize(int c)
 	    fputs("&amp;", stdout);
 	} else if (c == '"') {
 	    fputs("&quot;", stdout);
-	} else if (c == '\'') {
-	    fputs("&apos;", stdout);
+        } else if (c == '\'') {
+            /* not support &apos; for HTML 4.01 */
+            /* fputs("&apos;", stdout); */
+            fputs("&#39;", stdout);
+        } else if (c == '(') {
+            fputs("&#40;", stdout);
+        } else if (c == ')') {
+            fputs("&#41;", stdout);
 	} else {
 	    fputc(c, stdout);
 	}
@@ -1081,24 +1091,29 @@ die(const char *fmt, ...)
     fflush(stdout);
     fflush(stderr);
 
-    if (is_cgimode()) {
-	printf("%s %s" CRLF CRLF, MSG_MIME_HEADER, "text/html");
-	printf(_("<h2>Error</h2>\n<p>"));
-	va_start(args, fmt);
-	vprintf(fmt, args);
-	va_end(args);
-	printf(_("</p>"));
-	if (fmt[strlen(fmt) - 1] != '\n') {
-	    printf("\n");
-	}
+    if (is_htmlmode()) {
+        static char msg[BUFSIZE] = "";
+
+        if (is_cgimode()) {
+            printf("%s %s" CRLF CRLF, MSG_MIME_HEADER, "text/html");
+        }
+        printf(_("<h2>Error</h2>\n<p>"));
+        va_start(args, fmt);
+        vsnprintf(msg, BUFSIZE - 1, fmt, args);
+        va_end(args);
+        puts_entitize(msg);
+        printf(_("</p>"));
+        if (fmt[strlen(fmt) - 1] != '\n') {
+            printf("\n");
+        }
     } else {
 	fprintf(stderr, "%s: ", PACKAGE);
 	va_start(args, fmt);
 	vfprintf(stderr, fmt, args);
 	va_end(args);
-       if (fmt[strlen(fmt) - 1] != '\n') {
-	   fprintf(stderr, "\n");
-       }
+        if (fmt[strlen(fmt) - 1] != '\n') {
+            fprintf(stderr, "\n");
+        }
     }
 
     exit(EXIT_FAILURE);

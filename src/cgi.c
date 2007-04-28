@@ -2,10 +2,10 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.80 2006-08-18 18:56:51 opengl2772 Exp $
+ * $Id: cgi.c,v 1.81 2007-04-28 11:01:58 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2006 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2007 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -127,9 +127,11 @@ validate_idxname(const char * idxname)
 
     if (*idxname == '\0' || *idxname == '/' || (win32 && *idxname == '\\')) {
         printf("%s text/html" CRLF CRLF, MSG_MIME_HEADER);
+        printf("<html><body>\n");
 	puts_entitize(idxname);
 	printf(" : ");
         printf(_("Invalid idxname."));
+        printf("</body></html>\n");
         exit(EXIT_FAILURE);
     }
     while (*idxname) {
@@ -139,9 +141,11 @@ validate_idxname(const char * idxname)
             (win32 && nmz_strprefixcasecmp("..." , idxname) == 0)) 
         {
 	    printf("%s text/html" CRLF CRLF, MSG_MIME_HEADER);
+            printf("<html><body>\n");
 	    puts_entitize(idxname);
 	    printf(" : ");
             printf(_("Invalid idxname."));
+            printf("</body></html>\n");
             exit(EXIT_FAILURE);
         }
 	/* Skip until next '/' */

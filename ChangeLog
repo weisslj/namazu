@@ -11,6 +11,10 @@
 
         * src/output.c(die): Sanitize.
 
+        * src/cgi.c(validate_idxname): Add HTML, BODY tags.
+
+        * src/namazu-cmd.c(main): ditto.
+
 2007-04-26  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * pltests/env.pl.in: The checked environment variable is added.
@@ -358,4 +362,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1557 2007-04-28 10:31:53 opengl2772 Exp $
+$Id: ChangeLog,v 1.1558 2007-04-28 11:01:58 opengl2772 Exp $

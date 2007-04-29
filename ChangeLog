@@ -4,6 +4,9 @@
 
         * src/output.[ch]: Add get_contenttype().
 
+        * nmz/i18n.c(_purification_lang): The bug that cannot include the
+        number.
+
 2007-04-28  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * src/result.c(encode_entity): '\'', '(', ')' is converted into
@@ -368,4 +371,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1559 2007-04-29 01:24:57 opengl2772 Exp $
+$Id: ChangeLog,v 1.1560 2007-04-29 03:34:53 opengl2772 Exp $

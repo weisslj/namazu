@@ -1,6 +1,6 @@
 /*
  * i18n.c -
- * $Id: i18n.c,v 1.37 2007-01-22 05:59:48 opengl2772 Exp $
+ * $Id: i18n.c,v 1.38 2007-04-29 03:34:53 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2007 Namazu Project All rights reserved.
@@ -247,6 +247,7 @@ static int _purification_lang(char *lang, size_t n)
         p++;
         while(*p) {
             if ((*p >= 'A' && *p <= 'Z') || (*p >= 'a' && *p <= 'z')
+            || (*p >= '0' && *p <= '9')
             || *p == '_' || *p == ',' || *p == '+' || *p == '@'
             || *p == '-' || *p == '.' || *p == '='
             ) {

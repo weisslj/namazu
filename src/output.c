@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.111 2007-04-28 10:31:53 opengl2772 Exp $
+ * $Id: output.c,v 1.112 2007-04-29 01:24:58 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2007 Namazu Project All rights reserved.
@@ -744,7 +744,7 @@ print_result(NmzResult hlist, const char *query, const char *subquery)
 {
     if (is_htmlmode()) {
         if (is_cgimode()) {
-            printf("%s %s" CRLF CRLF, MSG_MIME_HEADER, contenttype);
+            printf("%s %s" CRLF CRLF, MSG_MIME_HEADER, get_contenttype());
         }
 	print_headfoot(NMZ.head, query, subquery);
     }
@@ -843,7 +843,7 @@ void
 print_default_page (void) {
     if (is_htmlmode()) {
         if (is_cgimode()) {
-	    printf("%s %s" CRLF CRLF, MSG_MIME_HEADER, contenttype);
+	    printf("%s %s" CRLF CRLF, MSG_MIME_HEADER, get_contenttype());
         }
 	print_headfoot(NMZ.head, "", "");
 	print_msgfile(NMZ.body);
@@ -910,6 +910,12 @@ void
 set_contenttype(const char *str)
 {
     strncpy(contenttype, str, BUFSIZE - 1);
+}
+
+char *
+get_contenttype(void)
+{
+    return(contenttype);
 }
 
 void 
@@ -1094,18 +1100,18 @@ die(const char *fmt, ...)
     if (is_htmlmode()) {
         static char msg[BUFSIZE] = "";
 
-        if (is_cgimode()) {
-            printf("%s %s" CRLF CRLF, MSG_MIME_HEADER, "text/html");
-        }
-        printf(_("<h2>Error</h2>\n<p>"));
         va_start(args, fmt);
         vsnprintf(msg, BUFSIZE - 1, fmt, args);
         va_end(args);
+
+        if (is_cgimode()) {
+            printf("%s %s" CRLF CRLF, MSG_MIME_HEADER, "text/html");
+        }
+        printf("<html><body>\n");
+        printf(_("<h2>Error</h2>\n<p>"));
         puts_entitize(msg);
         printf(_("</p>"));
-        if (fmt[strlen(fmt) - 1] != '\n') {
-            printf("\n");
-        }
+        printf("</body></html>\n");
     } else {
 	fprintf(stderr, "%s: ", PACKAGE);
 	va_start(args, fmt);

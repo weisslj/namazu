@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.113 2007-04-29 12:50:32 opengl2772 Exp $
+ * $Id: output.c,v 1.114 2007-04-29 12:55:30 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2007 Namazu Project All rights reserved.
@@ -915,6 +915,31 @@ set_contenttype(const char *str)
 char *
 get_contenttype(void)
 {
+    static char buff[BUFSIZE];
+    char *p;
+    int is_charset = 0;
+
+
+    buff[0] = '\0';
+    p = strtok(contenttype, " \t\n\r;");
+    while(p) {
+        if (!strncasecmp(p, "charset=", strlen("charset="))) {
+            is_charset = 1;
+            break;
+        }
+        p = strtok(NULL, " \t\n\r;");
+    }
+
+    if (!is_charset) {
+        char *charset;
+
+        if ((charset = nmz_get_external_encoding()) == NULL) {
+            charset = "ISO-8859-1";
+        }
+        sprintf(buff, "%s; charset=%s", contenttype, charset);
+        return(buff);
+    }
+
     return(contenttype);
 }
 

@@ -2,10 +2,10 @@
  * 
  * codeconv.c -
  * 
- * $Id: codeconv.c,v 1.42 2006-08-25 17:12:37 opengl2772 Exp $
+ * $Id: codeconv.c,v 1.43 2007-04-29 12:39:21 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2006 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2007 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -66,7 +66,6 @@
 static void utf8_zen2han ( char *str );
 
 static int nmz_codeconv_jp(char *buffer, int bufferSize);
-static char *get_external_encoding();
 
 
 static void
@@ -104,8 +103,8 @@ utf8_zen2han(char *str)
     *(s + q) = '\0';
 }
 
-static char *
-get_external_encoding()
+char *
+nmz_get_external_encoding(void)
 {
     char *env;
     static char *external_encoding = NULL;
@@ -120,7 +119,8 @@ get_external_encoding()
     }
 
     if (cache[0] != '\0' && !strcmp(cache, env)) {
-        nmz_debug_printf("get_external_encoding: cache [%s] hit!\n", external_encoding);
+        nmz_debug_printf("nmz_get_external_encoding: cache [%s] hit!\n", 
+            external_encoding);
         return external_encoding;
     }
 
@@ -236,7 +236,7 @@ nmz_codeconv_external (const char *str)
 	return NULL;
     }
 
-    if ((encoding = get_external_encoding())) {
+    if ((encoding = nmz_get_external_encoding())) {
         int tmpsize;
 
         if (!strcmp(encoding, "UTF-8")) {

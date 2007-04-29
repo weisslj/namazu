@@ -10,6 +10,9 @@
         * nmz/codeconv.[ch]: get_external_encoding() 
         -> nmz_get_external_encoding().
 
+        * src/{cgi.c, output.c}: The character set is output to the contents
+        type of the response header. 
+
 2007-04-28  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * src/result.c(encode_entity): '\'', '(', ')' is converted into
@@ -374,4 +377,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1561 2007-04-29 12:39:20 opengl2772 Exp $
+$Id: ChangeLog,v 1.1562 2007-04-29 12:50:32 opengl2772 Exp $

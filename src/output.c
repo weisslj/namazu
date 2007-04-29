@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.112 2007-04-29 01:24:58 opengl2772 Exp $
+ * $Id: output.c,v 1.113 2007-04-29 12:50:32 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2007 Namazu Project All rights reserved.
@@ -1105,7 +1105,8 @@ die(const char *fmt, ...)
         va_end(args);
 
         if (is_cgimode()) {
-            printf("%s %s" CRLF CRLF, MSG_MIME_HEADER, "text/html");
+            printf("%s %s; %s" CRLF CRLF, MSG_MIME_HEADER,
+                "text/html", "charset=UTF-8");
         }
         printf("<html><body>\n");
         printf(_("<h2>Error</h2>\n<p>"));

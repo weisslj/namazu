@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.115 2007-04-30 00:53:29 opengl2772 Exp $
+ * $Id: output.c,v 1.116 2007-05-01 09:03:54 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2007 Namazu Project All rights reserved.
@@ -934,7 +934,7 @@ get_contenttype(void)
         char *charset;
 
         if ((charset = nmz_get_external_encoding()) == NULL) {
-            charset = "ISO-8859-1";
+            charset = "UTF-8";
         }
         sprintf(buff, "%s; charset=%s", contenttype, charset);
         return(buff);

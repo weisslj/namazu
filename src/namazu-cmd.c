@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu-cmd.c,v 1.33 2007-04-30 00:53:29 opengl2772 Exp $
+ * $Id: namazu-cmd.c,v 1.34 2007-05-01 09:03:54 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2007 Namazu Project All rights reserved.
@@ -334,7 +334,7 @@ main(int argc, char **argv)
 	 * use "namazu" command as CGI any longer.  
 	 */
         printf("%s %s" CRLF CRLF, MSG_MIME_HEADER,
-            "text/html; charset=ISO-8859-1");
+            "text/html; charset=UTF-8");
         printf("<html><body>\n");
 	printf("You should use \"namazu.cgi\" instead of \"namazu\" command.");
         printf("</body></html>\n");

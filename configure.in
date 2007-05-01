@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.175 2007-01-22 06:01:25 opengl2772 Exp $
+dnl $Id: configure.in,v 1.176 2007-05-01 09:10:19 opengl2772 Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -91,7 +91,7 @@ AC_SUBST(LTVERSION)
 dnl *
 dnl * I18N
 dnl *
-ALL_LINGUAS="ja ja_JP.SJIS ja_JP.utf8 es fr"
+ALL_LINGUAS="ja ja_JP.SJIS ja_JP.utf8 es fr de pl"
 
 AM_ICONV
 

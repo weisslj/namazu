@@ -2,6 +2,12 @@
 
         * src/{namazu-cmd.c, output.c}: ISO-8859-1 -> UTF-8.
 
+        * configure.in: add 'de, pl'.
+
+        * po/{de, pl}.po: add Deutsch, Polish.
+
+        * po/*.po: update.
+
 2007-04-29  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * src/output.c(die): Add HTML, BODY tags.
@@ -381,4 +387,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1563 2007-05-01 09:03:53 opengl2772 Exp $
+$Id: ChangeLog,v 1.1564 2007-05-01 09:10:19 opengl2772 Exp $

@@ -41,5 +41,6 @@ extern void print ( const char *str );
 extern void die(const char *fmt, ...);
 extern void puts_entitize( const char *str );
 extern void putc_entitize( int c );
+extern char *get_charset_str(void);
 
 #endif /* _OUTPUT_H */

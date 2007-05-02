@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.83 2007-04-30 00:53:29 opengl2772 Exp $
+ * $Id: cgi.c,v 1.84 2007-05-02 04:33:30 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2007 Namazu Project All rights reserved.
@@ -126,8 +126,8 @@ validate_idxname(const char * idxname)
 #endif
 
     if (*idxname == '\0' || *idxname == '/' || (win32 && *idxname == '\\')) {
-        printf("%s %s" CRLF CRLF, MSG_MIME_HEADER,
-            "text/html; charset=UTF-8");
+        printf("%s %s; %s" CRLF CRLF, MSG_MIME_HEADER,
+            "text/html", "charset=UTF-8");
         printf("<html><body>\n");
 	puts_entitize(idxname);
 	printf(" : ");
@@ -141,8 +141,8 @@ validate_idxname(const char * idxname)
             (win32 && nmz_strprefixcasecmp("..\\", idxname) == 0) || 
             (win32 && nmz_strprefixcasecmp("..." , idxname) == 0)) 
         {
-            printf("%s %s" CRLF CRLF, MSG_MIME_HEADER,
-                "text/html; charset=UTF-8");
+            printf("%s %s; %s" CRLF CRLF, MSG_MIME_HEADER,
+                "text/html", "charset=UTF-8");
             printf("<html><body>\n");
 	    puts_entitize(idxname);
 	    printf(" : ");

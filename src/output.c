@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.116 2007-05-01 09:03:54 opengl2772 Exp $
+ * $Id: output.c,v 1.117 2007-05-02 04:34:55 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2007 Namazu Project All rights reserved.
@@ -913,6 +913,19 @@ set_contenttype(const char *str)
 }
 
 char *
+get_charset_str(void)
+{
+    static char buff[BUFSIZE] = "";
+    char *charset;
+
+    if ((charset = nmz_get_external_encoding()) == NULL) {
+        charset = "UTF-8";
+    }
+    sprintf(buff, "charset=%s", charset);
+    return(buff);
+}
+
+char *
 get_contenttype(void)
 {
     static char buff[BUFSIZE];
@@ -931,12 +944,7 @@ get_contenttype(void)
     }
 
     if (!is_charset) {
-        char *charset;
-
-        if ((charset = nmz_get_external_encoding()) == NULL) {
-            charset = "UTF-8";
-        }
-        sprintf(buff, "%s; charset=%s", contenttype, charset);
+        sprintf(buff, "%s; %s", contenttype, get_charset_str());
         return(buff);
     }
 
@@ -1130,8 +1138,8 @@ die(const char *fmt, ...)
         va_end(args);
 
         if (is_cgimode()) {
-            printf("%s %s" CRLF CRLF, MSG_MIME_HEADER,
-                "text/html; charset=UTF-8");
+            printf("%s %s; %s" CRLF CRLF, MSG_MIME_HEADER,
+                "text/html", "charset=UTF-8");
         }
         printf("<html><body>\n");
         printf(_("<h2>Error</h2>\n<p>"));

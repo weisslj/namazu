@@ -2,10 +2,10 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.111 2006-08-18 18:56:51 opengl2772 Exp $
+ * $Id: namazu.c,v 1.112 2007-05-07 17:57:39 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2006 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2007 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -157,6 +157,12 @@ make_exquery(char *query, char *exquery, size_t sz, char *querymode, int ct_quer
  * Public functions
  *
  */
+
+void
+exit_nmz(int status)
+{
+    exit(status);
+}
 
 void 
 set_templatedir(char *dir)

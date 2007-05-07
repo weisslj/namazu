@@ -1,11 +1,11 @@
 /*
  * 
- * namazu.c - search client of Namazu
+ * namazu-cgi.c - search client of Namazu
  *
- * $Id: namazu-cgi.c,v 1.29 2006-08-18 18:56:51 opengl2772 Exp $
+ * $Id: namazu-cgi.c,v 1.30 2007-05-07 17:57:39 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2006 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2007 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -203,5 +203,5 @@ main(int argc, char **argv)
         die(nmz_get_dyingmsg());
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }

@@ -18,6 +18,7 @@ enum {
 };
 
 extern enum nmz_stat namazu_core ( char * query, char *subquery );
+extern void exit_nmz(int status);
 void set_templatedir(char *dir);
 char *get_templatedir(void);
 

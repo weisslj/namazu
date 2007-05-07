@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.84 2007-05-02 04:33:30 opengl2772 Exp $
+ * $Id: cgi.c,v 1.85 2007-05-07 17:57:39 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2007 Namazu Project All rights reserved.
@@ -132,8 +132,8 @@ validate_idxname(const char * idxname)
 	puts_entitize(idxname);
 	printf(" : ");
         printf(_("Invalid idxname."));
-        printf("</body></html>\n");
-        exit(EXIT_FAILURE);
+        printf("\n</body></html>\n");
+        exit_nmz(EXIT_FAILURE);
     }
     while (*idxname) {
         if (nmz_strprefixcasecmp("../", idxname) == 0 ||
@@ -147,8 +147,8 @@ validate_idxname(const char * idxname)
 	    puts_entitize(idxname);
 	    printf(" : ");
             printf(_("Invalid idxname."));
-            printf("</body></html>\n");
-            exit(EXIT_FAILURE);
+            printf("\n</body></html>\n");
+            exit_nmz(EXIT_FAILURE);
         }
 	/* Skip until next '/' */
 	while (*idxname && *idxname != '/' && !(win32 && *idxname == '\\')) {
@@ -304,7 +304,7 @@ get_cgi_vars(const char *querystring)
 
 	if (cv == NULL) {
 	    fprintf(stderr, "an error occurred at add_cgivar.\n");
-	    exit(EXIT_FAILURE);
+	    exit_nmz(EXIT_FAILURE);
 	}
 
 	if (*querystring == '\0') {
@@ -608,7 +608,7 @@ init_cgi(char *query, char *subquery)
 
     if (process_cgi_vars(&ca)) {
 	show_mini_usage();   /* if it is NOT CGI, show usage and exit */
-	exit(EXIT_FAILURE);
+	exit_nmz(EXIT_FAILURE);
     }
 
     if (nmz_get_idxnum() == 0) {

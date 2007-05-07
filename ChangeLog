@@ -1,3 +1,7 @@
+2007-05-08  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * src/namazu.c: Add new function 'exit_nmz'.
+
 2007-05-05  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * HACKING-ja: update.
@@ -393,4 +397,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1566 2007-05-05 00:48:32 opengl2772 Exp $
+$Id: ChangeLog,v 1.1567 2007-05-07 17:57:41 opengl2772 Exp $

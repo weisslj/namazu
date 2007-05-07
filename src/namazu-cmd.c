@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu-cmd.c,v 1.35 2007-05-02 04:34:00 opengl2772 Exp $
+ * $Id: namazu-cmd.c,v 1.36 2007-05-07 17:57:39 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2007 Namazu Project All rights reserved.
@@ -184,7 +184,7 @@ parse_options(int argc, char **argv)
             break;
 	case '0':
 	    show_usage();
-	    exit(EXIT_SUCCESS);
+	    exit_nmz(EXIT_SUCCESS);
 	    break;
 	case '1':  /* --result */
             if (nmz_optarg == NULL) {
@@ -278,7 +278,7 @@ parse_options(int argc, char **argv)
 	    break;
 	case 'v':
 	    show_version();
-	    exit(EXIT_SUCCESS);
+	    exit_nmz(EXIT_SUCCESS);
 	    break;
 	case 'C':
 	    opt_show_config = 1;
@@ -296,7 +296,7 @@ parse_options(int argc, char **argv)
 	    die(nmz_get_dyingmsg());
 	}
 	show_config();
-	exit(EXIT_SUCCESS);
+	exit_nmz(EXIT_SUCCESS);
     }
 
     return nmz_optind;
@@ -337,11 +337,11 @@ main(int argc, char **argv)
             "text/html", "charset=UTF-8");
         printf("<html><body>\n");
 	printf("You should use \"namazu.cgi\" instead of \"namazu\" command.");
-        printf("</body></html>\n");
-	exit(EXIT_FAILURE);
+        printf("\n</body></html>\n");
+	exit_nmz(EXIT_FAILURE);
     } else if (argc == 1) {
 	show_mini_usage();
-	exit(EXIT_FAILURE);
+	exit_nmz(EXIT_FAILURE);
     } else {
         int i = 0;
         int idx;
@@ -356,7 +356,7 @@ main(int argc, char **argv)
 	i = parse_options(argc, argv); 
 	if (i == argc) {
 	    show_mini_usage();
-	    exit(EXIT_FAILURE);
+	    exit_nmz(EXIT_FAILURE);
 	}
 
 	if (strlen(argv[i]) > QUERY_MAX) {
@@ -395,5 +395,5 @@ main(int argc, char **argv)
 	die(nmz_get_dyingmsg());
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }

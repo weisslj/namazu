@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.117 2007-05-02 04:34:55 opengl2772 Exp $
+ * $Id: output.c,v 1.118 2007-05-07 17:57:39 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2007 Namazu Project All rights reserved.
@@ -1145,7 +1145,7 @@ die(const char *fmt, ...)
         printf(_("<h2>Error</h2>\n<p>"));
         puts_entitize(msg);
         printf(_("</p>"));
-        printf("</body></html>\n");
+        printf("\n</body></html>\n");
     } else {
 	fprintf(stderr, "%s: ", PACKAGE);
 	va_start(args, fmt);
@@ -1156,6 +1156,6 @@ die(const char *fmt, ...)
         }
     }
 
-    exit(EXIT_FAILURE);
+    exit_nmz(EXIT_FAILURE);
 }
 

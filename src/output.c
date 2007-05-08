@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.118 2007-05-07 17:57:39 opengl2772 Exp $
+ * $Id: output.c,v 1.119 2007-05-08 03:26:34 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2007 Namazu Project All rights reserved.
@@ -1138,6 +1138,7 @@ die(const char *fmt, ...)
         va_end(args);
 
         if (is_cgimode()) {
+            /* FIXME: Use nmz_codeconv_external. */
             printf("%s %s; %s" CRLF CRLF, MSG_MIME_HEADER,
                 "text/html", "charset=UTF-8");
         }

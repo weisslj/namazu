@@ -1,15 +1,14 @@
 #
 # -*- Perl -*-
-# $Id: hnf.pl,v 1.14 2006-08-12 07:18:44 opengl2772 Exp $
+# $Id: hnf.pl,v 1.15 2007-05-23 01:47:59 kenji Exp $
 #
 # hnf filter for Namazu 2.0
-# version 0.9.15
-# 2001/9/15  Kenji Suzuki <kenji@h14m.org>
+# version 0.9.16
+# 2007/5/23  Kenji Suzuki <kenji@h14m.org>
 #
-# Copyright (C) 1999-2001  Kenji Suzuki, HyperNikkiSystem Project
+# Copyright (C) 1999-2007  Kenji Suzuki, HyperNikkiSystem Project
 # All rights reserved.
 # Copyright (C) 2005 Namazu Project All rights reserved ,
-#
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -300,6 +299,10 @@ sub make_summary ($$$$$) {
     $summary .= substr($tmp, $conf::MAX_FIELD_LENGTH, 1) if $kanji %2;
     $summary =~ s/^\s+//;
     $summary =~ s/\s+/ /g;   # normalize white spaces
+
+    if ($summary eq "") { # for GRPed section
+        $summary = "n/a";
+    }
 
     return $summary;
 }

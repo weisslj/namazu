@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.43 2006-08-27 15:55:25 opengl2772 Exp $
+# $Id: util.pl,v 1.44 2007-05-28 04:12:02 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
-# Copyright (C) 2000-2006 Namazu Project All rights reserved.
+# Copyright (C) 2000-2007 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -125,7 +125,7 @@ sub rfc822time ($)
 		   $hour, $min, $sec, time::gettimezone());
 }
 
-sub readfile ($;$) {
+sub readfile ($) {
     my ($arg) = @_;
 
     my $fh;

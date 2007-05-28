@@ -3,6 +3,8 @@
         * pltests/mknmz-8.pl.in: The confirmation whether the index
         has been updated is added. 
 
+        * tests/mknmz-9: Expand test file.
+
 2007-05-28  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * pl/util.pl(readfile): Change in argument.
@@ -408,4 +410,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1570 2007-05-28 17:40:39 opengl2772 Exp $
+$Id: ChangeLog,v 1.1571 2007-05-28 18:54:44 opengl2772 Exp $

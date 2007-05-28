@@ -13,7 +13,22 @@ else
     rm -f idx11/NMZ.*
 fi
 
-../scripts/mknmz -O idx11 $TARGET >> $LOG 2>&1 &
+TMPDATA=`pwd`/tmpdata
+
+if test ! -d $TMPDATA; then
+    mkdir $TMPDATA
+else
+    rm -fr $TMPDATA/* 2> /dev/null
+fi
+
+for i in 00 01 02 03 04 05 06 07 08 09
+do
+    SUBDIR=$TMPDATA/$i
+    mkdir $SUBDIR
+    cp -r $TARGET $SUBDIR
+done
+
+../scripts/mknmz -O idx11 $TMPDATA >> $LOG 2>&1 &
 
 i=20
 while test $i -gt 0

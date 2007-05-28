@@ -2,6 +2,8 @@
 
         * pl/util.pl(readfile): Change in argument.
 
+        * filter/hnf.pl: update date.
+
 2007-05-08  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * src/namazu.c: Add new function 'exit_nmz'.
@@ -401,4 +403,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1568 2007-05-28 04:12:01 opengl2772 Exp $
+$Id: ChangeLog,v 1.1569 2007-05-28 06:46:20 opengl2772 Exp $

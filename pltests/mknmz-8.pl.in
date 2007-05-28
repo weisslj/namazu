@@ -1,8 +1,8 @@
 #!%PERL% -w
 #
-# $Id: mknmz-8.pl.in,v 1.3 2006-08-12 06:07:29 opengl2772 Exp $
+# $Id: mknmz-8.pl.in,v 1.4 2007-05-28 17:40:40 opengl2772 Exp $
 # Copyright (C) 2004-2006 Yukio USUDA
-#               2004-2006 Namazu Project All rights reserved.
+#               2004-2007 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -39,6 +39,8 @@ my $INDEX = "$cwd/idx10";
 my $MKNMZ = pltests::binpath('mknmz');
 my $TMPDATA = "$cwd/tmp-data";
 
+sub get_files($);
+
 my @cmd;
 
 pltests::putline($LOG, "  *** starting $0");
@@ -72,6 +74,8 @@ unless (defined $origdocnum) {
     exit 1;
 }
 
+my ($orign_a, $orign_d) = get_files("$INDEX/NMZ.r");
+
 # Update 1.html.
 copy("$TMPDATA/1.html", "$TMPDATA/1.html.bak");
 open IN, "<$TMPDATA/1.html.bak";
@@ -84,8 +88,12 @@ close(IN);
 close(OUT);
 
 open OUT, ">>$TMPDATA/1.html";
+OUT->autoflush(1);
 print OUT "amarok";
 close(OUT);
+open IN, "<$TMPDATA/1.html";
+my @tmp = <IN>;
+close(IN);
 
 # Update the index with --html-split option.
 @cmd = ("$MKNMZ", "--update=$INDEX");
@@ -102,6 +110,14 @@ unless (defined $docnum) {
 if ($docnum != $origdocnum) {
     exit 1;
 }
+
+my ($a, $d) = get_files("$INDEX/NMZ.r");
+pltests::putline($LOG, "added: $orign_a / $a");
+
+if ($orign_a == $a) {
+    exit 1;
+}
+
 
 # Remove 2.html.
 unlink "$TMPDATA/2.html";
@@ -140,5 +156,33 @@ if (($docnum * 2) != $origdocnum) {
     exit 1;
 }
 
-exit 0
+($a, $d) = get_files("$INDEX/NMZ.r");
+pltests::putline($LOG, "deleted: $orign_d / $d");
 
+if ($orign_d == $d) {
+    exit 1;
+}
+
+exit 0;
+
+sub get_files($)
+{
+    my ($file) = @_;
+
+    if (!open(IN, "$file")) {
+        warn "Can not open file : $file";
+        exit 1;
+    }
+    my @all   = <IN>;
+    close(IN);
+    @all      = grep {! /^\#\#/} @all;
+    @all      = grep {! /^$/} @all;
+
+    my @added = grep {! /^\#/} @all;
+    my @deleted  = grep {  /^\#/} @all;
+
+    my $a = @added;
+    my $d = @deleted;
+
+    return ($a, $d);
+}

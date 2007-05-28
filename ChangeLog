@@ -1,3 +1,8 @@
+2007-05-29  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * pltests/mknmz-8.pl.in: The confirmation whether the index
+        has been updated is added. 
+
 2007-05-28  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * pl/util.pl(readfile): Change in argument.
@@ -403,4 +408,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1569 2007-05-28 06:46:20 opengl2772 Exp $
+$Id: ChangeLog,v 1.1570 2007-05-28 17:40:39 opengl2772 Exp $

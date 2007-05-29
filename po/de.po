@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Namazu 2.3.0\n"
 "Report-Msgid-Bugs-To: bugs@namazu.org\n"
-"POT-Creation-Date: 2007-05-01 17:58+0900\n"
+"POT-Creation-Date: 2007-05-29 20:53+0900\n"
 "PO-Revision-Date: 2001-06-26 16:55+0900\n"
 "Last-Translator: developers@namazu.org\n"
 "Language-Team: developers@namazu.org\n"
@@ -74,12 +74,12 @@ msgstr ""
 msgid "Unknown error. Report bug!"
 msgstr ""
 
-#: src/cgi.c:134 src/cgi.c:149
+#: src/cgi.c:135 src/cgi.c:151
 #, c-format
 msgid "Invalid idxname."
 msgstr ""
 
-#: src/cgi.c:236
+#: src/cgi.c:238
 msgid "Too long QUERY_STRING"
 msgstr ""
 
@@ -127,14 +127,14 @@ msgstr ""
 msgid "\t<p>No document matching your query.</p>\n"
 msgstr ""
 
-#: src/output.c:1137
+#: src/output.c:1146
 #, c-format
 msgid ""
 "<h2>Error</h2>\n"
 "<p>"
 msgstr ""
 
-#: src/output.c:1139
+#: src/output.c:1148
 #, c-format
 msgid "</p>"
 msgstr ""

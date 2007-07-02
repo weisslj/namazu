@@ -124,10 +124,10 @@ href="http://www.perl.com/">Perl</a>とほぼ同じです。 例:
 <li><code class="example">+subject:"GNU Emacs"</code><br>
 (Subject: に <code>GNU Emacs</code>が含まれる文書)
 </li>
-<li><code class="example">+from:foo@bar.jp</code><br>
-(From: に <code>foo@bar.jp</code> が含まれる文書)
+<li><code class="example">+from:foo@example.jp</code><br>
+(From: に <code>foo@example.jp</code> が含まれる文書)
 </li>
-<li><code class="example">+message-id:&lt;199801240555.OAA18737@foo.bar.jp&gt;</code><br>
+<li><code class="example">+message-id:&lt;199801240555.OAA18737@foo.example.jp&gt;</code><br>
 (Message-Id を指定)
 </li>
 </ul>

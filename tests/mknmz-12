@@ -1,6 +1,6 @@
 #! /bin/sh
 #
-# Test for $FILTERDIR
+# Test for $FILTERDIR, File::MMagic and decide_type()
 #
 
 LOG=`pwd`/test-log
@@ -8,7 +8,7 @@ TARGET=$top_srcdir/tests/data/filter/  # from script
 echo '  *** starting ' $0 >>$LOG
 
 IDXDIR=idx15
-TXTCOUNT=`ls $top_srcdir/tests/data/filter/*.txt|wc -l`
+TXTCOUNT=`ls $TARGET/*.txt $TARGET/*.x-test |wc -l`
 FDIR=$top_srcdir/tests/data/filter
 pwd=`pwd`
 tmprc="$pwd/tmp.mknmzrc-mknmz12"
@@ -29,15 +29,19 @@ if  test ! -d $IDXDIR; then
     mkdir     $IDXDIR
 fi
 
-../scripts/mknmz -f $tmprc --allow='.*\.txt' -O $IDXDIR $TARGET >> $LOG 2>&1
+../scripts/mknmz -f $tmprc --allow='.*\.(txt|x-test\d*)' -O $IDXDIR $TARGET >> $LOG 2>&1
 rm -f $tmprc
 
-COUNT=`egrep 'foo' $IDXDIR/NMZ.field.from|wc -l`
-if [ $COUNT -ne 1 ]
+COUNT=`egrep 'x-test-author' $IDXDIR/NMZ.field.from|wc -l`
+if [ $COUNT -ne $TXTCOUNT ]
 then
     exit 1
 fi
 
 RESULTCOUNT=`wc -l < $IDXDIR/NMZ.field.uri`
-test $TXTCOUNT -eq $RESULTCOUNT
-exit $?
+if [ $TXTCOUNT -ne $RESULTCOUNT ]
+then
+    exit 1
+fi
+
+exit 0

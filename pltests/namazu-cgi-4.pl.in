@@ -1,6 +1,6 @@
 #!%PERL% -w
 #
-# $Id: namazu-cgi-4.pl.in,v 1.4 2006-08-12 06:07:30 opengl2772 Exp $
+# $Id: namazu-cgi-4.pl.in,v 1.5 2007-07-02 08:01:23 fumiyas Exp $
 # Copyright (C) 2004-2006 Yukio USUDA
 #               2004-2006 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -59,7 +59,7 @@ $ENV{'SCRIPT_NAME'} = 'namazu.cgi';
 pltests::putline($LOG, "  *** starting $0");
 
 $ENV{'QUERY_STRING'} = 'query=namazu&idxname=idx1&lang=C';
-$ENV{'REMOTE_HOST'}='foo.bar.jp';
+$ENV{'REMOTE_HOST'}='foo.example.jp';
 $ENV{'REMOTE_ADDR'}='1.2.3.4';
 
 my @deny_test = ("deny all\n",			# should be denied
@@ -69,8 +69,8 @@ my @deny_test = ("deny all\n",			# should be denied
 		);
 my @allow_test = ("allow all\n",		# should be allowed
 		 "deny all\nallow all\n",	# should be allowed
-		 "deny all\nallow foo.bar.jp\n",# should be allowed
-		 "deny all\nallow bar.jp\n",	# should be allowed
+		 "deny all\nallow foo.example.jp\n",# should be allowed
+		 "deny all\nallow example.jp\n",# should be allowed
 		 "deny all\nallow 1.2.3.4\n",	# should be allowed
 		 "deny all\nallow 1.2.3\n",	# should be allowed
 		);

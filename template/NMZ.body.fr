@@ -133,13 +133,13 @@ dans le champ <code>Subject:</code>)
 dans le champ <code>Subject:</code>)
 </li>
 
-<li><code class="example">+from:foo@bar.jp</code><br>
-(Retrouve tous les documents qui contiennent <code>foo@bar.jp</code>
+<li><code class="example">+from:foo@example.jp</code><br>
+(Retrouve tous les documents qui contiennent <code>foo@example.jp</code>
 dans le champ <code>From:</code>)
 </li>
 
 
-<li><code class="example">+message-id:&lt;199801240555.OAA18737@foo.bar.jp&gt;</code><br>
+<li><code class="example">+message-id:&lt;199801240555.OAA18737@foo.example.jp&gt;</code><br>
 (Retrouve un document qui contient le 
 <code>Message-Id:</code> sp&eacute;cifi&eacute;)
 </li>

@@ -364,10 +364,10 @@ Query
      * +subject:"GNU Emacs"
        (Retrieving all documents which contain GNU Emacs in a Subject:
        field)
-     * +from:foo@bar.jp
-       (Retrieving all documents which contain foo@bar.jp in a From:
+     * +from:foo@example.jp
+       (Retrieving all documents which contain foo@example.jp in a From:
        field)
-     * +message-id:<199801240555.OAA18737@foo.bar.jp>
+     * +message-id:<199801240555.OAA18737@foo.example.jp>
        (Retrieving a certain document which contains specified
        Message-Id:)
        
@@ -462,4 +462,4 @@ Tips on searching
 
 ============================================================================ 
 Copyright (C) 1998-2000 Ken-ichi Hirose. All rights reserved.
-$Id: tknamazu.hlp.en,v 1.5 2000-02-29 19:45:06 kenzo- Exp $
+$Id: tknamazu.hlp.en,v 1.6 2007-07-02 08:01:24 fumiyas Exp $

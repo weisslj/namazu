@@ -2,7 +2,7 @@
 # -*- Perl -*-
 # document.pl - class for document
 #
-# $Id: document.pl,v 1.8 2006-08-18 17:34:26 opengl2772 Exp $
+# $Id: document.pl,v 1.9 2007-07-02 08:01:23 fumiyas Exp $
 #
 # Copyright (C) 2004 Yukio USUDA All rights reserved.
 # Copyright (C) 2000-2006 Namazu Project All rights reversed.
@@ -244,6 +244,9 @@ sub _decide_type ($$) {
 
     util::dprint("decide_type: name: $name, cont: $cont\n");
     if ($cont =~ m!^text/plain! && $name =~ m!^text/plain!) {
+	return $name;
+    } elsif ($cont =~ m!^text/plain! &&
+	     $name !~ m!^application/octet-stream!) {
 	return $name;
     } elsif ($cont =~ m!^application/octet-stream! &&
              $name !~ m!^text/!) {

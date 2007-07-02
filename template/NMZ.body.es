@@ -127,13 +127,13 @@ in a <code>Subject:</code> field)
 in a <code>Subject:</code> field)
 </li>
 
-<li><code class="example">+from:foo@bar.jp</code><br>
-(Retrieving all documents which contain <code>foo@bar.jp</code>
+<li><code class="example">+from:foo@example.jp</code><br>
+(Retrieving all documents which contain <code>foo@example.jp</code>
 in a <code>From:</code> field)
 </li>
 
 
-<li><code class="example">+message-id:&lt;199801240555.OAA18737@foo.bar.jp&gt;</code><br>
+<li><code class="example">+message-id:&lt;199801240555.OAA18737@foo.example.jp&gt;</code><br>
 (Retrieving a certain document which contains specified
 <code>Message-Id:</code>)
 </li>

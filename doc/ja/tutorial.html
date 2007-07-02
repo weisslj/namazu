@@ -570,7 +570,7 @@ mknmz は次のように実行します。
 <pre>
       mkdir /tmp/index
       mknmz -O /tmp/index \
-      --replace='s#/foo/bar/doc/#http://foo.bar.jp/software/#' \
+      --replace='s#/foo/bar/doc/#http://foo.example.jp/software/#' \
       /foo/bar/doc
 </pre>
 
@@ -615,12 +615,12 @@ mknmz は次のように実行します。
 <p>
 「<code>/foo/bar/doc/</code> に置いてあるものは
 外から見ると、
-<code>http://foo.bar.jp/software/</code> の下に見えるもの
+<code>http://foo.example.jp/software/</code> の下に見えるもの
 なので、(Perl 語で言うと)
 s#<em>aaa</em>#<strong>bbb</strong>#
 のように置換してね」という意味です。
 (上の例では aaa (/foo/bar/doc/)
-            bbb (http://foo.bar.jp/) となります。)
+            bbb (http://foo.example.jp/) となります。)
 </p>
   </li>
 
@@ -1012,7 +1012,7 @@ perl -MNKF -e ''
 Copyright (C) 2000-2007 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: tutorial.html,v 1.67 2007-03-12 03:06:14 opengl2772 Exp $
+$Id: tutorial.html,v 1.68 2007-07-02 08:01:22 fumiyas Exp $
 </div>
 <address>
 developers@namazu.org

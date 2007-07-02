@@ -134,13 +134,13 @@ w <code>Subject:</code> )
 w <code>Subject:</code> )
 </li>
 
-<li><code class="example">+from:foo@bar.jp</code><br>
-(Zwraca wszystkie dokument zawierające pola <code>foo@bar.jp</code>
+<li><code class="example">+from:foo@example.jp</code><br>
+(Zwraca wszystkie dokument zawierające pola <code>foo@example.jp</code>
 w <code>From:</code> )
 </li>
 
 
-<li><code class="example">+message-id:&lt;199801240555.OAA18737@foo.bar.jp&gt;</code><br>
+<li><code class="example">+message-id:&lt;199801240555.OAA18737@foo.example.jp&gt;</code><br>
 (Zwraca pewien dokument zawierający wyszczególnione
 <code>Message-Id:</code>)
 </li>

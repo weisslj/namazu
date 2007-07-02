@@ -36,9 +36,9 @@
 ##  
 ## e.g.,
 ##  
-##    Replace  /home/foo/public_html/   http://www.foobar.jp/~foo/
-##    Replace  /home/(.*)/public_html/  http://www.foobar.jp/\1/
-##    Replace  /[Cc]\|/foo/             http://www.foobar.jp/
+##    Replace  /home/foo/public_html/   http://www.example.jp/~foo/
+##    Replace  /home/(.*)/public_html/  http://www.example.jp/\1/
+##    Replace  /[Cc]\|/foo/             http://www.example.jp/
 ##  
 ## If you do not want to do the processing on command line use, 
 ## run namazu with -U option.
@@ -46,7 +46,7 @@
 ## You can specify more than one Replace rules but the only 
 ## first-matched rule are applied. 
 ##
-#Replace       /home/foo/public_html/  http://www.foo.bar.jp/~foo/
+#Replace       /home/foo/public_html/  http://www.example.jp/~foo/
 
 
 ##

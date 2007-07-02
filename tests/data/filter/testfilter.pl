@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: testfilter.pl,v 1.4 2006-08-12 07:03:29 opengl2772 Exp $
+# $Id: testfilter.pl,v 1.5 2007-07-02 08:01:24 fumiyas Exp $
 # Copyright (C) 2000 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -52,6 +52,7 @@ sub post_codeconv () {
 sub add_magic ($) {
     my $magic = shift @_;
     $magic->addMagicEntry("0\tstring\tNamazu-Filter-Test:\tx-test/x-test");
+    $magic->addFileExts('\\.x-test$', 'x-test/x-test');
     return;
 }
 
@@ -70,13 +71,12 @@ sub filter ($$$$$) {
 sub test_filter {
     my ($contref, $weighted_str, $fields) = @_;
 
-    if ($$contref =~ s/^Namazu-Filter-Test: (.*)\n//m) {
+    if ($$contref =~ s/^Namazu-Filter-Test(?:-.*)?: (.*)\n//m) {
+	$fields->{'title'} = $1 if defined $1;
 	$weighted_str .= "\x7f1\x7f$1\x7f/1\x7f\n" if defined $1;
-	my $title = $1 if defined $3;
-	$fields->{'title'} = $title;
     }
 
-    $fields->{'author'} = "foo";
+    $fields->{'author'} = "x-test-author";
 }
 
 1;

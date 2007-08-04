@@ -1,8 +1,8 @@
 2007-08-24  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
-        * scripts/mknmz.in: The bug that copied 'NMZ.{head, foot}*' file
-        of an illegal filename that existed in the template directory
-        onto the index was mended. 
+        * scripts/mknmz.in: The bug that copied 
+        'NMZ.{head, foot, body, tips}*' file of an illegal filename that
+        existed in the template directory onto the index was mended. 
 
 2007-05-29  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
@@ -416,4 +416,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1572 2007-08-04 03:20:35 opengl2772 Exp $
+$Id: ChangeLog,v 1.1573 2007-08-04 03:30:32 opengl2772 Exp $

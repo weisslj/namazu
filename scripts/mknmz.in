@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.179 2007-08-04 03:20:36 opengl2772 Exp $
+# $Id: mknmz.in,v 1.180 2007-08-04 03:30:32 opengl2772 Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2006 Namazu Project All rights reserved.
@@ -1600,18 +1600,20 @@ sub write_nmz_files () {
 # output NMZ.body
 sub write_body_msg () {
     for my $file (glob "$TEMPLATEDIR/NMZ.body*") {
-	$file =~ m!.*/NMZ.body(.*)$!;
-	my $suffix = $1;
-	write_message("$var::NMZ{'body'}${suffix}");
+        if ($file =~ m!^.*/NMZ\.body(\.[-\w\.]+)?$!){
+            my $suffix = $1;
+            write_message("$var::NMZ{'body'}${suffix}");
+        }
     }
 }
 
 # output NMZ.tips
 sub write_tips_msg () {
     for my $file (glob "$TEMPLATEDIR/NMZ.tips*") {
-	$file =~ m!.*/NMZ.tips(.*)$!;
-	my $suffix = $1;
-	write_message("$var::NMZ{'tips'}${suffix}");
+        if ($file =~ m!^.*/NMZ\.tips(\.[-\w\.]+)?$!){
+            my $suffix = $1;
+            write_message("$var::NMZ{'tips'}${suffix}");
+        }
     }
 }
 

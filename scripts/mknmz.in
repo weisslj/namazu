@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.178 2006-11-10 16:43:31 opengl2772 Exp $
+# $Id: mknmz.in,v 1.179 2007-08-04 03:20:36 opengl2772 Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2006 Namazu Project All rights reserved.
@@ -1010,14 +1010,16 @@ sub make_headfoot_pages($$) {
     my ($docid_count, $key_count) = @_;
 
     for my $file (glob "$TEMPLATEDIR/NMZ.head*") {
-	$file =~ m!.*/NMZ.head(.*)$!;
-	my $suffix = $1;
-	make_headfoot("$var::NMZ{'head'}${suffix}", $docid_count, $key_count);
+        if ($file =~ m!^.*/NMZ\.head(\.[-\w\.]+)?$!){
+            my $suffix = $1;
+            make_headfoot("$var::NMZ{'head'}${suffix}", $docid_count, $key_count);
+        }
     }
     for my $file (glob "$TEMPLATEDIR/NMZ.foot*") {
-	$file =~ m!.*/NMZ.foot(.*)$!;
-	my $suffix = $1;
-	make_headfoot("$var::NMZ{'foot'}${suffix}", $docid_count, $key_count);
+        if ($file =~ m!^.*/NMZ\.foot(\.[-\w\.]+)?$!){
+            my $suffix = $1;
+            make_headfoot("$var::NMZ{'foot'}${suffix}", $docid_count, $key_count);
+        }
     }
 }
 

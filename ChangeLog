@@ -1,4 +1,4 @@
-2007-08-24  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+2007-08-04  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * scripts/mknmz.in: The bug that copied 
         'NMZ.{head, foot, body, tips}*' file of an illegal filename that
@@ -416,4 +416,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1573 2007-08-04 03:30:32 opengl2772 Exp $
+$Id: ChangeLog,v 1.1574 2007-08-04 03:32:22 opengl2772 Exp $

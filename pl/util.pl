@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.44 2007-05-28 04:12:02 opengl2772 Exp $
+# $Id: util.pl,v 1.45 2007-08-09 18:37:29 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2007 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -73,6 +73,8 @@ sub fclose ($) {
     if (ref $arg) {
         if ($arg =~ /^(IO::File|FileHandle)/) {
             my $fh = $arg;
+            $fh->flush;
+            cdie("write error: $!\n") if ($fh->error);
             $fh->close();
             return undef;
         }

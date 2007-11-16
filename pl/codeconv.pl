@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: codeconv.pl,v 1.34 2007-11-16 16:58:32 opengl2772 Exp $
+# $Id: codeconv.pl,v 1.35 2007-11-16 17:24:37 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2007 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -341,16 +341,16 @@ sub remove_control_char ($) {
     $$textref =~ tr/\x01-\x08\x0b-\x0c\x0e-\x1f\x7f/ /; # Remove control char.
 }
 
-sub codeconv_document ($) {
-    my ($textref) = @_;
-    codeconv::to_inner_encoding($textref, 'unknown');
-    codeconv::normalize_document($textref);
-}
-
 sub normalize_document ($) {
     my ($textref) = @_;
     codeconv::normalize_nl($textref);
     codeconv::remove_control_char($textref);
+}
+
+sub codeconv_document ($) {
+    my ($textref) = @_;
+    codeconv::to_inner_encoding($textref, 'unknown');
+    codeconv::normalize_document($textref);
 }
 
 sub normalize_jp_document ($) {

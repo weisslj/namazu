@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: msword.pl,v 1.62 2007-11-16 16:44:01 opengl2772 Exp $
+# $Id: msword.pl,v 1.63 2007-11-16 17:16:20 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi,
 #               2000-2007 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -444,6 +444,7 @@ sub getSummaryInfo ($$$$$) {
         codeconv::normalize_jp(\$summary);
     } else {
 	codeconv::to_inner_encoding(\$summary, 'shiftjis');
+        codeconv::normalize_jp(\$summary);
     }
 
     if ($summary =~ /^The title is (.*)$/m) {

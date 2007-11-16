@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: excel.pl,v 1.41 2007-11-16 16:44:01 opengl2772 Exp $
+# $Id: excel.pl,v 1.42 2007-11-16 17:16:20 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi,
 #               1999 NOKUBI Takatsugu, 
 #               2000-2007 Namazu Project All rights reserved.
@@ -282,9 +282,10 @@ sub getSummaryInfo ($$$$$) {
     }
 
     if ($codepage eq "fffffde9") { 
-        codeconv::to_inner_encoding(\$summary, 'utf-8');
+        codeconv::normalize_jp(\$summary);
     } else {
         codeconv::to_inner_encoding(\$summary, 'shiftjis');
+        codeconv::normalize_jp(\$summary);
     }
 
     if ($summary =~ /^The title is (.*)$/m) {

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: powerpoint.pl,v 1.33 2007-11-16 16:44:01 opengl2772 Exp $
+# $Id: powerpoint.pl,v 1.34 2007-11-16 17:16:20 opengl2772 Exp $
 # Copyright (C) 2000 Ken-ichi Hirose, 
 #               2000-2007 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -285,6 +285,7 @@ sub getSummaryInfo ($$$$$) {
         codeconv::normalize_jp(\$summary);
     } else {
 	codeconv::to_inner_encoding(\$summary, 'shiftjis');
+        codeconv::normalize_jp(\$summary);
     }
 
     if ($summary =~ /^The title is (.*)$/m) {

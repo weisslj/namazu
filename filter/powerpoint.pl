@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: powerpoint.pl,v 1.32 2007-01-14 03:04:31 opengl2772 Exp $
+# $Id: powerpoint.pl,v 1.33 2007-11-16 16:44:01 opengl2772 Exp $
 # Copyright (C) 2000 Ken-ichi Hirose, 
 #               2000-2007 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -62,7 +62,7 @@ sub status() {
 	} 
     } else {
         $pptconvpath = util::checkcmd('doccat');
-        @pptconvopts = ("-o", "e");
+        @pptconvopts = ("-o", "8"); # UTF-8
         return 'yes' if defined $pptconvpath;
         return 'no'; 
     }

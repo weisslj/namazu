@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: rtf.pl,v 1.22 2007-01-14 03:54:33 opengl2772 Exp $
+# $Id: rtf.pl,v 1.23 2007-11-16 16:44:01 opengl2772 Exp $
 # Copyright (C) 2003-2004 Tadamasa Teranishi All rights reserved.
 #               2003-2007 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -52,7 +52,7 @@ sub status() {
     }
     else {
         $rtfconvpath = util::checkcmd('doccat');
-        @rtfconvopts = ("-o", "e");
+        @rtfconvopts = ("-o", "8"); # UTF-8
         if (defined $rtfconvpath) {
             my @cmd = ("$rtfconvpath", "-V");
             my $fh_cmd = IO::File->new_tmpfile();

@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: msword.pl,v 1.61 2006-08-12 07:18:44 opengl2772 Exp $
+# $Id: msword.pl,v 1.62 2007-11-16 16:44:01 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi,
-#               2000-2005 Namazu Project All rights reserved.
+#               2000-2007 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -93,7 +93,7 @@ sub status() {
     }
 
     $wordconvpath = util::checkcmd('doccat');
-    @wordconvopts = ("-o", "e");
+    @wordconvopts = ("-o", "8"); # UTF-8
     return 'yes' if defined $wordconvpath;
     return 'no';
 }

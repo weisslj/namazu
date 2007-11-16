@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: taro.pl,v 1.19 2007-01-14 03:04:31 opengl2772 Exp $
+# $Id: taro.pl,v 1.20 2007-11-16 16:44:33 opengl2772 Exp $
 # Copyright (C) 2000 Ken-ichi Hirose, 
 #               2000-2007 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -42,7 +42,7 @@ sub mediatype() {
 
 sub status() {
     $taroconvpath = util::checkcmd('doccat');
-    @taroconvopts = ("-o", "e");
+    @taroconvopts = ("-o", "8"); # UTF-8
     return 'yes' if defined $taroconvpath;
     return 'no'; 
 }

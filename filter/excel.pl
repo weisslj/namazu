@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: excel.pl,v 1.40 2007-01-14 03:04:31 opengl2772 Exp $
+# $Id: excel.pl,v 1.41 2007-11-16 16:44:01 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi,
 #               1999 NOKUBI Takatsugu, 
 #               2000-2007 Namazu Project All rights reserved.
@@ -63,7 +63,7 @@ sub status() {
 	} 
     } else {
         $xlconvpath = util::checkcmd('doccat');
-        @xlconvopts = ("-o", "e");
+        @xlconvopts = ("-o", "8"); # UTF-8
         return 'yes' if defined $xlconvpath;
         return 'no'; 
     }

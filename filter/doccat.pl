@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: doccat.pl,v 1.11 2007-01-14 03:04:31 opengl2772 Exp $
+# $Id: doccat.pl,v 1.12 2007-11-16 16:44:01 opengl2772 Exp $
 # Copyright (C) 2001 SATOH Fumiyasu,
 #               2001-2007 Namazu Project. All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -203,7 +203,7 @@ sub filter ($$$$$) {
     }
 
     my $tmpfile2  = util::tmpnam('NMZ.doccat2');
-    my @cmd = ("$doccatpath", "-p", "-o", "e", "$tmpfile");
+    my @cmd = ("$doccatpath", "-p", "-o", "8", "$tmpfile"); # UTF-8
     my $status = util::syscmd(
         command => \@cmd,
         option => {

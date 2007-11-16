@@ -4,6 +4,8 @@
         taro.pl, wordpro.pl}: Because the output of doccat was EUC-JP,
         this was corrected to UTF-8. 
 
+        * pl/codeconv.pl(normalize_jp_document): Add new function.
+
 2007-08-10  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * pl/util.pl(fclose): At the index output, It reported on 
@@ -428,4 +430,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1576 2007-11-16 16:43:59 opengl2772 Exp $
+$Id: ChangeLog,v 1.1577 2007-11-16 16:58:32 opengl2772 Exp $

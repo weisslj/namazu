@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: olemsword.pl,v 1.29 2007-01-18 08:50:44 opengl2772 Exp $
+# $Id: olemsword.pl,v 1.30 2007-11-18 10:19:35 opengl2772 Exp $
 # Copyright (C) 1999 Jun Kurabe,
 #		1999-2000 Ken-ichi Hirose,
 #               2004-2007 Namazu Project All rights reserved.
@@ -135,8 +135,26 @@ sub add_magic ($) {
 
     # FIXME: very ad hoc.
     $magic->addFileExts('\\.doc$', 'application/msword');
-
     $magic->addFileExts('\\.docx$', 'application/vnd.openxmlformats-officedocument.wordprocessingml');
+
+    # FIXME: very ad hoc. Excel
+    $magic->addFileExts('\\.xls$', 'application/excel');
+    $magic->addFileExts('\\.xlsx$', 'application/vnd.openxmlformats-officedocument.spreadsheetml');
+    $magic->addFileExts('\\.xlsm$', 'application/vnd.ms-excel.sheet.macroEnabled');
+    $magic->addFileExts('\\.xlsb$', 'application/vnd.ms-excel.sheet.binary.macroEnabled');
+    # FIXME: very ad hoc. PowerPoint
+    $magic->addFileExts('\\.pp[st]$', 'application/powerpoint');
+    $magic->addFileExts('\\.pp[st]x$', 'application/vnd.openxmlformats-officedocument.presentationml');
+    # FIXME: very ad hoc. Visio
+    $magic->addFileExts('\\.vs[dst]$', 'application/vnd.visio');
+    $magic->addFileExts('\\.v[dst]x$', 'application/vnd.visio');
+    # FIXME: very ad hoc. Ichitaro
+    $magic->addFileExts('\\.jsw$', 'application/ichitaro4');
+    $magic->addFileExts('\\.jaw$|\\.jtw$', 'application/ichitaro5');
+    $magic->addFileExts('\\.jbw$|\\.juw$', 'application/ichitaro6');
+    $magic->addFileExts('\\.jfw$|\\.jvw$', 'application/ichitaro7');
+    $magic->addFileExts('\\.jtd$|\\.jtt$', 'application/x-js-taro');
+
     return;
 }
 

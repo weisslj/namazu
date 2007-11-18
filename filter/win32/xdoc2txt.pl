@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: xdoc2txt.pl,v 1.6 2007-01-14 03:04:32 opengl2772 Exp $
+# $Id: xdoc2txt.pl,v 1.7 2007-11-18 10:19:35 opengl2772 Exp $
 # Copyright (C) 2004 HANAI,Akira All rights reserved.
 # Copyright (C) 2005 Yukio USUDA All rights reserved.
 # Copyright (C) 2005-2007 Namazu Project All rights reserved.
@@ -76,11 +76,24 @@ sub add_magic ($) {
     my ($magic) = @_;
 
     # FIXME: very ad hoc.
-    $magic->addFileExts('\\.ppt$', 'application/powerpoint');
+    $magic->addFileExts('\\.docx$', 'application/vnd.openxmlformats-officedocument.wordprocessingml');
+    # FIXME: very ad hoc. Excel
     $magic->addFileExts('\\.xls$', 'application/excel');
-    $magic->addFileExts('\\.jbw$', 'application/ichitaro6');
-    $magic->addFileExts('\\.jfw$', 'application/ichitaro7');
-    $magic->addFileExts('\\.jt[dt]$', 'application/x-js-taro');
+    $magic->addFileExts('\\.xlsx$', 'application/vnd.openxmlformats-officedocument.spreadsheetml');
+    $magic->addFileExts('\\.xlsm$', 'application/vnd.ms-excel.sheet.macroEnabled');
+    $magic->addFileExts('\\.xlsb$', 'application/vnd.ms-excel.sheet.binary.macroEnabled');
+    # FIXME: very ad hoc. PowerPoint
+    $magic->addFileExts('\\.pp[st]$', 'application/powerpoint');
+    $magic->addFileExts('\\.pp[st]x$', 'application/vnd.openxmlformats-officedocument.presentationml');
+    # FIXME: very ad hoc. Visio
+    $magic->addFileExts('\\.vs[dst]$', 'application/vnd.visio');
+    $magic->addFileExts('\\.v[dst]x$', 'application/vnd.visio');
+    # FIXME: very ad hoc. Ichitaro
+    $magic->addFileExts('\\.jsw$', 'application/ichitaro4');
+    $magic->addFileExts('\\.jaw$|\\.jtw$', 'application/ichitaro5');
+    $magic->addFileExts('\\.jbw$|\\.juw$', 'application/ichitaro6');
+    $magic->addFileExts('\\.jfw$|\\.jvw$', 'application/ichitaro7');
+    $magic->addFileExts('\\.jtd$|\\.jtt$', 'application/x-js-taro');
 
     return;
 }

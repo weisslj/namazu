@@ -1,3 +1,8 @@
+2007-11-18  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * filter/win32/{olemsword.pl, xdoc2txt.pl}(add_magic): The OLE
+        media-type is added for the misidentification prevention.
+
 2007-11-17  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * filter/{doccat.pl, msword.pl, excel.pl, powerpoint.pl, rtf.pl,
@@ -433,4 +438,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1578 2007-11-16 17:16:19 opengl2772 Exp $
+$Id: ChangeLog,v 1.1579 2007-11-18 10:19:35 opengl2772 Exp $

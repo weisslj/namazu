@@ -19,14 +19,14 @@
    USA.  */
 
 #ifdef HAVE_CONFIG_H
-# include <config.h>
+#  include <config.h>
 #endif
 #ifdef HAVE_SUPPORT_H
-# include "support.h"
+#  include "support.h"
 #endif
 
 #ifdef HAVE_STRING_H
-#include <string.h>
+#  include <string.h>
 #endif
 
 #include <ctype.h>

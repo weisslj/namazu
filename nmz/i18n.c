@@ -1,6 +1,6 @@
 /*
  * i18n.c -
- * $Id: i18n.c,v 1.39 2007-12-05 15:56:35 opengl2772 Exp $
+ * $Id: i18n.c,v 1.40 2007-12-05 16:12:45 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2007 Namazu Project All rights reserved.
@@ -38,7 +38,7 @@
 #endif
 
 #ifdef HAVE_LOCALE_H
-# include <locale.h>
+#  include <locale.h>
 #endif
 
 #include "libnamazu.h"

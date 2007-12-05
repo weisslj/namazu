@@ -21,7 +21,7 @@
    USA.  */
 
 #ifdef HAVE_CONFIG_H
-# include "config.h"
+#  include "config.h"
 #endif
 
 #undef	__ptr_t

@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.113 2007-12-05 15:56:35 opengl2772 Exp $
+ * $Id: search.c,v 1.114 2007-12-05 16:12:45 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2007 Namazu Project All rights reserved.
@@ -34,17 +34,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-#ifdef HAVE_ERRNO_H
-#  include <errno.h>
-#endif
-
 #include <ctype.h>
 #include <time.h>
 #ifdef __EMX__
 #include <sys/types.h>
 #endif
 #include <sys/stat.h>
+
+#ifdef HAVE_ERRNO_H
+#  include <errno.h>
+#endif
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>

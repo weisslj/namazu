@@ -2,7 +2,7 @@
  * 
  * score.c - scoring-related functions of Namazu
  * 
- * $Id: score.c,v 1.13 2007-12-05 15:56:35 opengl2772 Exp $
+ * $Id: score.c,v 1.14 2007-12-05 16:12:45 opengl2772 Exp $
  * 
  * Copyright (C) 2001 Hajime BABA  All rights reserved.
  * Copyright (C) 2001-2007 Namazu Project All rights reserved.
@@ -39,12 +39,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <time.h>
 
 #ifdef HAVE_ERRNO_H
 #  include <errno.h>
 #endif
-
-#include <time.h>
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>

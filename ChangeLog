@@ -1,3 +1,7 @@
+2007-12-06  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * configure.in: Add AC_CHECK_HEADERS(errno.h).
+
 2007-11-18  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * filter/win32/{olemsword.pl, xdoc2txt.pl}(add_magic): The OLE
@@ -438,4 +442,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1579 2007-11-18 10:19:35 opengl2772 Exp $
+$Id: ChangeLog,v 1.1580 2007-12-05 15:50:52 opengl2772 Exp $

@@ -2,10 +2,10 @@
  * 
  * re.c -
  * 
- * $Id: re.c,v 1.45 2006-09-19 15:21:07 opengl2772 Exp $
+ * $Id: re.c,v 1.46 2007-12-05 15:56:35 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2006 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2007 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -26,9 +26,6 @@
  * 
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <errno.h>
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
 #endif
@@ -36,10 +33,17 @@
 #  include "support.h"
 #endif
 
+#include <stdio.h>
+#include <stdlib.h>
+
+#ifdef HAVE_ERRNO_H
+#  include <errno.h>
+#endif
+
 #ifdef HAVE_STRING_H
-#include <string.h>
+#  include <string.h>
 #else
-#include <strings.h>
+#  include <strings.h>
 #endif
 
 #include "libnamazu.h"

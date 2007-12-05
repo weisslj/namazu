@@ -2,9 +2,9 @@
  * 
  * nmzversion.c - Namazu library api - getting version
  *
- * $Id: nmzversion.c.in,v 1.2 2003-07-26 08:25:25 knok Exp $
+ * $Id: nmzversion.c.in,v 1.3 2007-12-05 15:56:35 opengl2772 Exp $
  * 
- * Copyright (C) 2000-2003 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2003,2007 Namazu Project All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
@@ -42,9 +42,9 @@
 #endif
 
 #ifdef HAVE_STRING_H
-#include <string.h>
+#  include <string.h>
 #else
-#include <strings.h>
+#  include <strings.h>
 #endif
 
 #include "libnamazu.h"

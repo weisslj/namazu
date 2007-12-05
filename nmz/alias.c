@@ -2,10 +2,10 @@
  * 
  * alias.c - 
  *
- * $Id: alias.c,v 1.18 2006-08-12 07:01:01 opengl2772 Exp $
+ * $Id: alias.c,v 1.19 2007-12-05 15:56:35 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2007 Namazu Project All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
@@ -33,9 +33,14 @@
 #ifdef HAVE_SUPPORT_H
 #  include "support.h"
 #endif
+
 #include <stdio.h>
 #include <stdlib.h>
-#include <errno.h>
+
+#ifdef HAVE_ERRNO_H
+#  include <errno.h>
+#endif
+
 #include <assert.h>
 
 #ifdef HAVE_STRING_H

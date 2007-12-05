@@ -2,10 +2,10 @@
  * 
  * wakati.c -
  * 
- * $Id: wakati.c,v 1.32 2006-08-12 07:01:01 opengl2772 Exp $
+ * $Id: wakati.c,v 1.33 2007-12-05 15:52:20 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000 Namazu Project All rights reserved.
+ * Copyright (C) 2000,2007 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -26,16 +26,17 @@
  * 
  */
 
-#include <stdio.h>
-#include <ctype.h>
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
 #endif
 
+#include <stdio.h>
+#include <ctype.h>
+
 #ifdef HAVE_STRING_H
-#include <string.h>
+#  include <string.h>
 #else
-#include <strings.h>
+#  include <strings.h>
 #endif
 
 #include "libnamazu.h"

@@ -2,10 +2,10 @@
  * 
  * libnamazu.c - Namazu library api
  *
- * $Id: libnamazu.c,v 1.48 2006-08-18 18:56:03 opengl2772 Exp $
+ * $Id: libnamazu.c,v 1.49 2007-12-05 15:56:35 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2006 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2007 Namazu Project All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
@@ -27,6 +27,13 @@
  * 
  */
 
+#ifdef HAVE_CONFIG_H
+#  include "config.h"
+#endif
+#ifdef HAVE_SUPPORT_H
+#  include "support.h"
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
@@ -35,13 +42,6 @@
 #include <sys/stat.h>
 #include <signal.h>
 #include <stdarg.h>
-
-#ifdef HAVE_CONFIG_H
-#  include "config.h"
-#endif
-#ifdef HAVE_SUPPORT_H
-#  include "support.h"
-#endif
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
@@ -52,9 +52,9 @@
 #endif
 
 #ifdef HAVE_STRING_H
-#include <string.h>
+#  include <string.h>
 #else
-#include <strings.h>
+#  include <strings.h>
 #endif
 
 #include "libnamazu.h"

@@ -4,11 +4,11 @@
    By David MacKenzie <djm@gnu.ai.mit.edu>.  */
 
 #if HAVE_CONFIG_H
-# include <config.h>
+#  include <config.h>
 #endif
 
 #ifdef HAVE_SUPPORT_H
-# include "support.h"
+#  include "support.h"
 #endif
 
 void *

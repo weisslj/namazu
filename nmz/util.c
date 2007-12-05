@@ -1,9 +1,9 @@
 /*
  * 
- * $Id: util.c,v 1.93 2006-08-18 18:56:03 opengl2772 Exp $
+ * $Id: util.c,v 1.94 2007-12-05 15:56:35 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2006 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2007 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -27,16 +27,6 @@
  *
  */
 
-#include <assert.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <ctype.h>
-#include <stdarg.h>
-#include <errno.h>
-#ifdef __EMX__
-#include <sys/types.h>
-#endif
-#include <sys/stat.h>
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
 #endif
@@ -44,10 +34,25 @@
 #  include "support.h"
 #endif
 
+#include <assert.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <stdarg.h>
+
+#ifdef HAVE_ERRNO_H
+#  include <errno.h>
+#endif
+
+#ifdef __EMX__
+#include <sys/types.h>
+#endif
+#include <sys/stat.h>
+
 #ifdef HAVE_STRING_H
-#include <string.h>
+#  include <string.h>
 #else
-#include <strings.h>
+#  include <strings.h>
 #endif
 
 #include "libnamazu.h"

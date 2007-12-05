@@ -2,10 +2,10 @@
  * 
  * parser.c -
  * 
- * $Id: parser.c,v 1.26 2006-09-14 17:50:52 opengl2772 Exp $
+ * $Id: parser.c,v 1.27 2007-12-05 15:56:35 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2006 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2007 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -31,15 +31,16 @@
  * original idea came from Programming Perl 1st edtion
  */
 
-#include <stdio.h>
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
 #endif
 
+#include <stdio.h>
+
 #ifdef HAVE_STRING_H
-#include <string.h>
+#  include <string.h>
 #else
-#include <strings.h>
+#  include <strings.h>
 #endif
 
 #include "libnamazu.h"

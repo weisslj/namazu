@@ -1,6 +1,6 @@
 /*
  * i18n.c -
- * $Id: i18n.c,v 1.38 2007-04-29 03:34:53 opengl2772 Exp $
+ * $Id: i18n.c,v 1.39 2007-12-05 15:56:35 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2007 Namazu Project All rights reserved.
@@ -23,16 +23,18 @@
  * 
  * 
  */
-#include <stdio.h>
-#include <stdlib.h>
+
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
 #endif
 
+#include <stdio.h>
+#include <stdlib.h>
+
 #ifdef HAVE_STRING_H
-#include <string.h>
+#  include <string.h>
 #else
-#include <strings.h>
+#  include <strings.h>
 #endif
 
 #ifdef HAVE_LOCALE_H

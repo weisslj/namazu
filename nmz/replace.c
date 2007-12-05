@@ -2,10 +2,10 @@
  * 
  * replace.c - 
  *
- * $Id: replace.c,v 1.21 2006-08-12 07:01:01 opengl2772 Exp $
+ * $Id: replace.c,v 1.22 2007-12-05 15:56:35 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000,2001 Namazu Project All rights reserved.
+ * Copyright (C) 2000,2001,2007 Namazu Project All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
@@ -33,15 +33,19 @@
 #ifdef HAVE_SUPPORT_H
 #  include "support.h"
 #endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
-#include <errno.h>
+
+#ifdef HAVE_ERRNO_H
+#  include <errno.h>
+#endif
 
 #ifdef HAVE_STRING_H
-#include <string.h>
+#  include <string.h>
 #else
-#include <strings.h>
+#  include <strings.h>
 #endif
 
 #include "replace.h"

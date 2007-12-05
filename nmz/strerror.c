@@ -20,15 +20,17 @@
  */
 
 #ifdef HAVE_CONFIG_H
-#include "config.h"
+#  include "config.h"
 #endif
-
 #ifdef HAVE_SUPPORT_H
-# include "support.h"
+#  include "support.h"
 #endif
 
 #include <stdio.h>
-#include <errno.h>
+
+#ifdef HAVE_ERRNO_H
+#  include <errno.h>
+#endif
 
 #if defined(STDC_HEADERS) || defined(HAVE_STRING_H)
 #include <string.h>

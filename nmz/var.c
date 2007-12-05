@@ -2,10 +2,10 @@
  * 
  * var.c -
  * 
- * $Id: var.c,v 1.23 2006-08-12 07:01:01 opengl2772 Exp $
+ * $Id: var.c,v 1.24 2007-12-05 15:52:20 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000 Namazu Project All rights reserved.
+ * Copyright (C) 2000,2007 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -26,10 +26,11 @@
  * 
  */
 
-#include <stdio.h>
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
 #endif
+
+#include <stdio.h>
 #include "libnamazu.h"
 #include "re.h"
 

@@ -2,10 +2,10 @@
  * 
  * score.c - scoring-related functions of Namazu
  * 
- * $Id: score.c,v 1.12 2006-09-17 15:21:25 opengl2772 Exp $
+ * $Id: score.c,v 1.13 2007-12-05 15:56:35 opengl2772 Exp $
  * 
  * Copyright (C) 2001 Hajime BABA  All rights reserved.
- * Copyright (C) 2001-2006 Namazu Project All rights reserved.
+ * Copyright (C) 2001-2007 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -29,17 +29,22 @@
 
 /* #define SCORE_C_DEBUG    / * for internal use only */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-#include <errno.h>
-#include <time.h>
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
 #endif
 #ifdef HAVE_SUPPORT_H
 #  include "support.h"
 #endif
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+#ifdef HAVE_ERRNO_H
+#  include <errno.h>
+#endif
+
+#include <time.h>
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
@@ -50,9 +55,9 @@
 #endif
 
 #ifdef HAVE_STRING_H
-#include <string.h>
+#  include <string.h>
 #else
-#include <strings.h>
+#  include <strings.h>
 #endif
 
 #include "libnamazu.h"

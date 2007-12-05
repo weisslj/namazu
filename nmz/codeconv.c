@@ -2,7 +2,7 @@
  * 
  * codeconv.c -
  * 
- * $Id: codeconv.c,v 1.43 2007-04-29 12:39:21 opengl2772 Exp $
+ * $Id: codeconv.c,v 1.44 2007-12-05 15:56:35 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2007 Namazu Project All rights reserved.
@@ -32,9 +32,6 @@
  * (Quick KANJI code Converter  C Version 1.0) 
  */
 
-#include <errno.h>
-#include <stdio.h>
-#include <stdlib.h>
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
 #endif
@@ -42,10 +39,17 @@
 #  include "support.h"
 #endif
 
+#include <stdio.h>
+#include <stdlib.h>
+
+#ifdef HAVE_ERRNO_H
+#  include <errno.h>
+#endif
+
 #ifdef HAVE_STRING_H
-#include <string.h>
+#  include <string.h>
 #else
-#include <strings.h>
+#  include <strings.h>
 #endif
 
 #include <iconv.h>

@@ -25,13 +25,13 @@
 #include "config.h"
 
 #ifdef HAVE_SUPPORT_H
-# include "support.h"
+#  include "support.h"
 #endif
 
 #ifdef HAVE_STRING_H
-# include <string.h>
+#  include <string.h>
 #else
-# include <strings.h>
+#  include <strings.h>
 #endif
 
 /* We write fatal error messages on standard error.  */

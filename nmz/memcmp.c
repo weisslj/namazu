@@ -42,7 +42,7 @@
 #endif  /* Not __P.  */
 
 #if defined HAVE_STRING_H || defined _LIBC
-# include <string.h>
+#  include <string.h>
 #endif
 
 #undef memcmp

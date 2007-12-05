@@ -1,9 +1,9 @@
 /*
  * 
- * $Id: search.c,v 1.112 2006-09-23 08:24:14 opengl2772 Exp $
+ * $Id: search.c,v 1.113 2007-12-05 15:56:35 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2006 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2007 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -24,23 +24,27 @@
  * 
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <errno.h>
-#include <ctype.h>
-#include <time.h>
-#ifdef __EMX__
-#include <sys/types.h>
-#endif
-#include <sys/stat.h>
-
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
 #endif
 #ifdef HAVE_SUPPORT_H
 #  include "support.h"
 #endif
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#ifdef HAVE_ERRNO_H
+#  include <errno.h>
+#endif
+
+#include <ctype.h>
+#include <time.h>
+#ifdef __EMX__
+#include <sys/types.h>
+#endif
+#include <sys/stat.h>
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>

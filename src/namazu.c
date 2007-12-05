@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.112 2007-05-07 17:57:39 opengl2772 Exp $
+ * $Id: namazu.c,v 1.113 2007-12-05 16:23:37 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2007 Namazu Project All rights reserved.
@@ -26,6 +26,10 @@
  * 
  */
 
+#ifdef HAVE_CONFIG_H
+#  include "config.h"
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
@@ -33,10 +37,6 @@
 #include <ctype.h>
 #include <sys/stat.h>
 #include <signal.h>
-
-#ifdef HAVE_CONFIG_H
-#  include "config.h"
-#endif
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
@@ -47,9 +47,9 @@
 #endif
 
 #ifdef HAVE_STRING_H
-#include <string.h>
+#  include <string.h>
 #else
-#include <strings.h>
+#  include <strings.h>
 #endif
 
 #include "namazu.h"

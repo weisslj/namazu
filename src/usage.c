@@ -2,10 +2,10 @@
  * 
  * usage.c -
  * 
- * $Id: usage.c,v 1.32 2006-08-12 06:56:05 opengl2772 Exp $
+ * $Id: usage.c,v 1.33 2007-12-05 16:23:37 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2006 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2007 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -25,10 +25,12 @@
  * 
  * 
  */
-#include <stdio.h>
+
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
 #endif
+
+#include <stdio.h>
 #include "namazu.h"
 #include "libnamazu.h"
 #include "codeconv.h"

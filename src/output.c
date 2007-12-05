@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.119 2007-05-08 03:26:34 opengl2772 Exp $
+ * $Id: output.c,v 1.120 2007-12-05 16:23:37 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2007 Namazu Project All rights reserved.
@@ -22,11 +22,7 @@
  * 
  * 
  */
-#include <errno.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <ctype.h>
-#include <stdarg.h>
+
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
 #endif
@@ -34,10 +30,19 @@
 #  include "support.h"
 #endif
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <stdarg.h>
+
+#ifdef HAVE_ERRNO_H
+#  include <errno.h>
+#endif
+
 #ifdef HAVE_STRING_H
-#include <string.h>
+#  include <string.h>
 #else
-#include <strings.h>
+#  include <strings.h>
 #endif
 
 #include "namazu.h"

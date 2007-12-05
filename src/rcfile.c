@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.46 2007-02-23 07:25:13 opengl2772 Exp $
+ * $Id: rcfile.c,v 1.47 2007-12-05 16:23:37 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2007 Namazu Project All rights reserved.
@@ -23,10 +23,6 @@
  * 
  */
 
-#include <assert.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <errno.h>
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
 #endif
@@ -34,10 +30,18 @@
 #  include "support.h"
 #endif
 
+#include <assert.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+#ifdef HAVE_ERRNO_H
+#  include <errno.h>
+#endif
+
 #ifdef HAVE_STRING_H
-#include <string.h>
+#  include <string.h>
 #else
-#include <strings.h>
+#  include <strings.h>
 #endif
 
 #include "namazu.h"

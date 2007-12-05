@@ -1,5 +1,5 @@
 /*
- * $Id: result.c,v 1.81 2007-04-27 22:39:37 opengl2772 Exp $
+ * $Id: result.c,v 1.82 2007-12-05 16:23:37 opengl2772 Exp $
  * 
  * Copyright (C) 1989, 1990 Free Software Foundation, Inc.
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
@@ -23,8 +23,7 @@
  * 
  * 
  */
-#include <stdlib.h>
-#include <ctype.h>
+
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
 #endif
@@ -32,10 +31,13 @@
 #  include "support.h"
 #endif
 
+#include <stdlib.h>
+#include <ctype.h>
+
 #ifdef HAVE_STRING_H
-#include <string.h>
+#  include <string.h>
 #else
-#include <strings.h>
+#  include <strings.h>
 #endif
 
 #include "namazu.h"

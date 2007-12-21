@@ -1,3 +1,7 @@
+2007-12-21  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+	* src/output.c (emprint): Added emphasis tag count check.
+
 2007-12-06  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * configure.in: Add AC_CHECK_HEADERS(errno.h).
@@ -442,4 +446,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1580 2007-12-05 15:50:52 opengl2772 Exp $
+$Id: ChangeLog,v 1.1581 2007-12-21 06:50:37 knok Exp $

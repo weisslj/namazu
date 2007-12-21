@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.120 2007-12-05 16:23:37 opengl2772 Exp $
+ * $Id: output.c,v 1.121 2007-12-21 06:50:38 knok Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2007 Namazu Project All rights reserved.
@@ -122,11 +122,14 @@ static void
 emprint(char *s, int entity_encode)
 {
     int i;
+    int nestedtags = 0;
     for (i = 0; i < BUFSIZE * 16 && *s; s++) {
 	if (*s == EM_START_MARK) {
+            nestedtags++:
 	    fputs(emphasis_start_tag, stdout);
 	    continue;
 	} else if (*s == EM_END_MARK) {
+            nestedtags--:
 	    fputs(emphasis_end_tag, stdout);
 	    continue;
 	} 
@@ -152,6 +155,9 @@ emprint(char *s, int entity_encode)
 	} else {
 	    fputc(*s, stdout);
 	}
+    }
+    for (; nestedtags < 0; nestedtags--) {
+       fputs(emphasis_end_tag, stdout);
     }
 }
 

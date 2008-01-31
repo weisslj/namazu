@@ -3,6 +3,8 @@
         * pl/conf.pl.in: Change pattern from "com[1-9]" to 
         "com[1-9][0-9]?".
 
+	* src/output.c (emprint): Bug fix 2007-12-21.
+
 2007-12-21  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* src/output.c (emprint): Added emphasis tag count check.
@@ -451,4 +453,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1582 2008-01-31 08:31:36 opengl2772 Exp $
+$Id: ChangeLog,v 1.1583 2008-01-31 09:02:20 opengl2772 Exp $

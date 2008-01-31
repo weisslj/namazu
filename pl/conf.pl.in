@@ -61,7 +61,7 @@ $DENY_FILE = ".*\\.(gif|png|jpg|jpeg)|.*\\.tar\\.gz|core|.*\\.bak|.*~|\\..*|\x23
 #       Do NOT use `$' or `^' anchors.
 #       Case-insensitive.
 #
-$DENY_DDN = "con|aux|nul|prn|lpt[1-9]|com[1-9]|clock\$|xmsxxxx0";
+$DENY_DDN = "con|aux|nul|prn|lpt[1-9]|com[1-9][0-9]?|clock\$|xmsxxxx0";
  
 #
 # This pattern specifies PATHNAMEs which will NOT be targeted.

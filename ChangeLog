@@ -1,3 +1,8 @@
+2008-01-31  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * pl/conf.pl.in: Change pattern from "com[1-9]" to 
+        "com[1-9][0-9]?".
+
 2007-12-21  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
 	* src/output.c (emprint): Added emphasis tag count check.
@@ -446,4 +451,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1581 2007-12-21 06:50:37 knok Exp $
+$Id: ChangeLog,v 1.1582 2008-01-31 08:31:36 opengl2772 Exp $

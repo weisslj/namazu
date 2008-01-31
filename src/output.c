@@ -1,8 +1,8 @@
 /*
- * $Id: output.c,v 1.122 2008-01-31 09:02:20 opengl2772 Exp $
+ * $Id: output.c,v 1.123 2008-01-31 14:28:43 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2007 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2008 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify

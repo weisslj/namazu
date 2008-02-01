@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.123 2008-01-31 14:28:43 opengl2772 Exp $
+ * $Id: output.c,v 1.124 2008-02-01 15:28:00 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2008 Namazu Project All rights reserved.
@@ -129,7 +129,7 @@ emprint(char *s, int entity_encode)
 	    fputs(emphasis_start_tag, stdout);
 	    continue;
 	} else if (*s == EM_END_MARK) {
-            nestedtags--;
+            if (nestedtags > 0) nestedtags--;
 	    fputs(emphasis_end_tag, stdout);
 	    continue;
 	} 

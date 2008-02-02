@@ -1,8 +1,8 @@
 #!%PERL% -w
 #
-# $Id: namazu-cgi-4.pl.in,v 1.5 2007-07-02 08:01:23 fumiyas Exp $
+# $Id: namazu-cgi-4.pl.in,v 1.6 2008-02-02 07:01:45 opengl2772 Exp $
 # Copyright (C) 2004-2006 Yukio USUDA
-#               2004-2006 Namazu Project All rights reserved.
+#               2004-2008 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -69,8 +69,8 @@ my @deny_test = ("deny all\n",			# should be denied
 		);
 my @allow_test = ("allow all\n",		# should be allowed
 		 "deny all\nallow all\n",	# should be allowed
-		 "deny all\nallow foo.example.jp\n",# should be allowed
-		 "deny all\nallow example.jp\n",# should be allowed
+		 "deny all\nallow foo.example.jp\n",	# should be allowed
+		 "deny all\nallow example.jp\n",	# should be allowed
 		 "deny all\nallow 1.2.3.4\n",	# should be allowed
 		 "deny all\nallow 1.2.3\n",	# should be allowed
 		);

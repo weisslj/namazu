@@ -2,6 +2,8 @@
 
 	* src/output.c (emprint): fix small bug.
 
+	* nmz/score.c: s/foo\.jp/example.jp/g
+
 2008-01-31  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * pl/conf.pl.in: Change pattern from "com[1-9]" to 
@@ -457,4 +459,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1584 2008-02-01 15:27:59 opengl2772 Exp $
+$Id: ChangeLog,v 1.1585 2008-02-02 07:27:51 opengl2772 Exp $

@@ -2,10 +2,10 @@
  * 
  * score.c - scoring-related functions of Namazu
  * 
- * $Id: score.c,v 1.14 2007-12-05 16:12:45 opengl2772 Exp $
+ * $Id: score.c,v 1.15 2008-02-02 07:27:51 opengl2772 Exp $
  * 
  * Copyright (C) 2001 Hajime BABA  All rights reserved.
- * Copyright (C) 2001-2007 Namazu Project All rights reserved.
+ * Copyright (C) 2001-2008 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -312,11 +312,11 @@ get_freshness_factor(int date)
  *
  * factor  URI
  * ==================================
- * 2.0     http://www.foo.jp/
- * 1.7     http://www.foo.jp/a/
- * 1.5     http://www.foo.jp/a/b/
- * 1.2     http://www.foo.jp/a/b/c/
- * 1.0     http://www.foo.jp/a/b/c/d/
+ * 2.0     http://www.example.jp/
+ * 1.7     http://www.example.jp/a/
+ * 1.5     http://www.example.jp/a/b/
+ * 1.2     http://www.example.jp/a/b/c/
+ * 1.0     http://www.example.jp/a/b/c/d/
  *
  * NOTE: This factor function is derived empirically.
  *

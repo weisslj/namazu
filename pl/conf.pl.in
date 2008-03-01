@@ -316,6 +316,13 @@ $TARGET_FILESYS_CODING = 'euc-jp';
 # $SCHEMEDIR = "@SCHEMEDIR@";
 # $ARCHIVEDIR = "@ARCHIVEDIR@";
 # $WAKATIDICDIR = "@WAKATIDICDIR@";
+#
+#[WIN] $LIBDIR = 'C:/namazu/share/namazu/pl';
+#[WIN] $FILTERDIR = 'C:/namazu/share/namazu/filter';
+#[WIN] $TEMPLATEDIR = 'C:/namazu/share/namazu/template';
+#[WIN] $SCHEMEDIR = 'C:/namazu/share/namazu/scheme';
+#[WIN] $ARCHIVEDIR = 'C:/namazu/share/namazu/archive';
+#[WIN] $WAKATIDICDIR = 'C:/namazu/share/namazu/wakatidict';
 
 1;
 

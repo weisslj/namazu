@@ -1,8 +1,8 @@
 #!%PERL% -w
 #
-# $Id: mknmz-5.pl.in,v 1.3 2006-08-12 06:07:29 opengl2772 Exp $
+# $Id: mknmz-5.pl.in,v 1.4 2008-03-03 10:11:54 opengl2772 Exp $
 # Copyright (C) 2004-2006 Tadamasa Teranishi
-#               2004-2006 Namazu Project All rights reserved.
+#               2004-2008 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -85,7 +85,7 @@ for my $file ("$TMPDATA/plain.txt", "$TMPDATA/mail.txt") {
 }
 
 # Update the index.
-@cmd = ("$MKNMZ", "--update=$INDEX");
+@cmd = ("$MKNMZ", "--update=$INDEX", "--check-filesize");
 pltests::putline($LOG, "  ", \@cmd);
 $status = pltests::logsyscmd($LOG, \@cmd);
 if ($status != 0) {

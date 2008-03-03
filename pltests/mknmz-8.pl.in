@@ -1,8 +1,8 @@
 #!%PERL% -w
 #
-# $Id: mknmz-8.pl.in,v 1.4 2007-05-28 17:40:40 opengl2772 Exp $
+# $Id: mknmz-8.pl.in,v 1.5 2008-03-03 10:11:54 opengl2772 Exp $
 # Copyright (C) 2004-2006 Yukio USUDA
-#               2004-2007 Namazu Project All rights reserved.
+#               2004-2008 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -96,7 +96,7 @@ my @tmp = <IN>;
 close(IN);
 
 # Update the index with --html-split option.
-@cmd = ("$MKNMZ", "--update=$INDEX");
+@cmd = ("$MKNMZ", "--update=$INDEX", "--check-filesize");
 pltests::putline($LOG, "  ", \@cmd);
 $status = pltests::logsyscmd($LOG, \@cmd);
 if ($status != 0) {
@@ -123,7 +123,7 @@ if ($orign_a == $a) {
 unlink "$TMPDATA/2.html";
 
 # Update the index with --html-split option.
-@cmd = ("$MKNMZ", "--update=$INDEX");
+@cmd = ("$MKNMZ", "--update=$INDEX", "--check-filesize");
 pltests::putline($LOG, "  ", \@cmd);
 $status = pltests::logsyscmd($LOG, \@cmd);
 if ($status != 0) {
@@ -141,7 +141,7 @@ if (($docnum * 2) != $origdocnum) {
 # Nothing changed.
 
 # Update the index with --html-split option.
-@cmd = ("$MKNMZ", "--update=$INDEX");
+@cmd = ("$MKNMZ", "--update=$INDEX", "--check-filesize");
 pltests::putline($LOG, "  ", \@cmd);
 $status = pltests::logsyscmd($LOG, \@cmd);
 if ($status != 0) {

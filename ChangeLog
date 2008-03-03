@@ -1,3 +1,9 @@
+2008-03-03  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * pltests/mknmz-{5,8}.pl.in: Add "--check-filesize" option.
+
+        * tests/mknmz-{5,8}: Add "--check-filesize" option.
+
 2008-03-02  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * pl/conf.pl.in: for Windows.
@@ -465,4 +471,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1586 2008-03-01 17:55:17 opengl2772 Exp $
+$Id: ChangeLog,v 1.1587 2008-03-03 10:11:52 opengl2772 Exp $

@@ -29,7 +29,7 @@ perl -i.bak -pe s/xyzzy// $TMPDATA/1.html
 echo amarok >> $TMPDATA/1.html
 
 # Update the index with --html-split option.
-../scripts/mknmz --update=idx10 >> $LOG
+../scripts/mknmz --update=idx10 --check-filesize >> $LOG
 test "$?" != "0" && exit 1  # error if not success
 docnum=`../scripts/gtnmz idx10/NMZ.r`
 test $docnum != $origdocnum && exit 1  # error if not equal

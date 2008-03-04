@@ -317,7 +317,7 @@ ranlib /usr/local/lib/libchasen.a # depending on your system
 manually.
 </li>
 
-<li>Kakasi, ChaSen or MeCab mentioned above should be
+<li>KAKASI, ChaSen or MeCab mentioned above should be
 visible when you run ./configure through $PATH variable. If you add those
 packages later, you have to start over from ./configure.
 </li>
@@ -428,6 +428,11 @@ You can specify language-processing-type with the option
 like <code>--indexing-lang=ja</code>
 (command line option given overrides environment variable).
 
+Some system may require
+<code>ja_JP</code>, <code>ja_JP.eucJP</code>,
+<code>ja_JP.EUC</code>, <code>ja_JP.ujis</code>
+instead of just <code>ja</code>.
+
 <!--
 <h3>rcfile (namazu and namazu.cgi)</h3>
 <p>
@@ -435,6 +440,13 @@ Write in namazurc or .namazurc. (for example)
 <pre>
 Lang: ja
 </pre>
+
+<p>
+Some system may require
+<code>ja_JP</code>, <code>ja_JP.eucJP</code>,
+<code>ja_JP.EUC</code>, <code>ja_JP.ujis</code>
+instead of just <code>ja</code>.
+</p>
 -->
 
 <h2><a name="before-make-install">Test before "make install"</a></h2>
@@ -967,7 +979,7 @@ modules will be used.
 Copyright (C) 2000-2008 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: tutorial.html,v 1.32 2008-03-04 19:36:37 opengl2772 Exp $
+$Id: tutorial.html,v 1.33 2008-03-04 19:59:51 opengl2772 Exp $
 </div>
 <address>
 developers@namazu.org

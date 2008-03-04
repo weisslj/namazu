@@ -312,7 +312,7 @@ ranlib /usr/local/lib/libchasen.a # ここはシステムに応じて
 <li>Namazu 自体の ./configure についてはINSTALL-ja
 を見てください。
 </li>
-<li>以上用意した Kakasi や ChaSen や MeCab は、
+<li>以上用意した KAKASI や ChaSen や MeCab は、
 Namazu を ./configure する時に、
 ($PATH 変数の設定によって) 利用出来るようになっている必要があります。
 後から追加した場合には、./configure からやり直して下さい。
@@ -462,6 +462,13 @@ namazurc または .namazurc に次のように書きます。(一例です)
 <pre>
 Lang: ja
 </pre>
+
+<p>
+<code>ja</code> という値が適当でない時には
+<code>ja_JP</code>, <code>ja_JP.eucJP</code>,
+<code>ja_JP.EUC</code>, <code>ja_JP.ujis</code>
+などという値が必要とされる場合(システム)もあります。
+</p>
 
 <p>
 置く位置などについては
@@ -1010,7 +1017,7 @@ perl -MNKF -e ''
 Copyright (C) 2000-2008 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: tutorial.html,v 1.69 2008-03-04 19:36:36 opengl2772 Exp $
+$Id: tutorial.html,v 1.70 2008-03-04 19:59:51 opengl2772 Exp $
 </div>
 <address>
 developers@namazu.org

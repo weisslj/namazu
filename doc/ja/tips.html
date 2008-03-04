@@ -30,13 +30,13 @@
 
 <ul>
 <li>Perlモジュールを利用する<br>
-NKF, KAKASI (または ChaSen) をそれぞれコマンドとして呼び出し
+NKF, KAKASI (または ChaSen、MeCab) をそれぞれコマンドとして呼び出し
 たときと較べて 1.5倍 - 2倍くらい速くなります。
   <ul>
   <li><a href="ftp://ftp.ie.u-ryukyu.ac.jp/pub/software/kono/nkf171.shar">NKF</a></li>
   <li><a href="http://www.daionet.gr.jp/~knok/kakasi/">Text::Kakasi</a></li>
   <li><a href="http://www.daionet.gr.jp/~knok/chasen/">Text::ChaSen1</a></li>
-  <li><a href="http://www.chasen.org/~taku/software/mecab/bindings/">MeCab</a></li>
+  <li><a href="http://mecab.sourceforge.net/src/">MeCab</a></li>
   </ul>
 </li>
 
@@ -77,6 +77,14 @@ GBくらい積んだ計算機を使っているなら、この値に 100 MB を設定
 </p>
 
 <ul>
+<li>mknmzrc の $ON_MEMORY_MAX の値を小さくする<br>
+
+標準では、mknmz は 5 MB に設定されています。この値はおおよそ
+メモリを 64 MB 程度積んだ計算機を想定しています。 64 MB より
+少ないメモリしか持たない計算機で mknmz を実行する場合は
+mknmzrc の $ON_MEMORY_MAX の値を小さくするといいでしょう。
+</li>
+
 <li>mknmz に --checkpoint オプションを指定する<br>
 
 mknmz は mknmzrc の $ON_MEMORY_MAX の値で、一度にメモリに読
@@ -88,15 +96,9 @@ mknmz は mknmzrc の $ON_MEMORY_MAX の値で、一度にメモリに読
 し直します。結果として mknmz のプロセスはぐっと小さくなりま
 す。興味のある方は挙動を top で眺めてください。
 </li>
-
-<li>mknmzrc の $ON_MEMORY_MAX の値を小さくする<br>
-
-標準では、mknmz は 5 MB に設定されています。この値はおおよそ
-メモリを 64 MB 程度積んだ計算機を想定しています。 64 MB より
-少ないメモリしか持たない計算機で mknmz を実行する場合は
-mknmzrc の $ON_MEMORY_MAX の値を小さくするといいでしょう。
-</li>
 </ul>
+
+ただし、処理速度が極端に落ちますのでご注意ください。
 
 
 <h2><a name="weight">HTML要素によるスコアの重みづけ</a></h2>
@@ -253,10 +255,10 @@ foo bar ...<br>
 <a href="http://www.namazu.org/">Namazu Homepage</a>
 </p>
 <div class="copyright">
-Copyright (C) 2000-2006 Namazu Project. All rights reserved.
+Copyright (C) 2000-2008 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: tips.html,v 1.13 2006-10-21 06:35:28 opengl2772 Exp $
+$Id: tips.html,v 1.14 2008-03-04 20:35:15 opengl2772 Exp $
 </div>
 <address>
 developers@namazu.org

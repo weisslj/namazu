@@ -31,13 +31,13 @@ documents and/or deleted documents</a></li>
 
 <ul>
 <li>Use Perl Modules<br>
-To handle Japanese documents, using NKF, KAKASI (or ChaSen)
+To handle Japanese documents, using NKF, KAKASI (or ChaSen, MeCab)
 Perl modules makes 1.5 - 2 times faster.
   <ul>
   <li><a href="ftp://ftp.ie.u-ryukyu.ac.jp/pub/software/kono/nkf171.shar">NKF</a></li>
   <li><a href="http://www.daionet.gr.jp/~knok/kakasi/">Text::Kakasi</a></li>
   <li><a href="http://www.daionet.gr.jp/~knok/chasen/">Text::ChaSen1</a></li>
-  <li><a href="http://www.chasen.org/~taku/software/mecab/bindings/">MeCab</a></li>
+  <li><a href="http://mecab.sourceforge.net/src/">MeCab</a></li>
   </ul>
 </li>
 
@@ -47,7 +47,7 @@ document type.  If you know the document type of target
 files in advance, you can avoid the automatic document
 identification processing by specifying the
 <code>--media-type=mtype</code> option. By doing so, you can
-gain 10-20% speed improvement. 
+gain 10-20% speed improvement.
 <br>
 
 If the target file is Mail/News, you can use
@@ -87,6 +87,14 @@ precautions can be considered.
 </p>
 
 <ul>
+<li>Decrease the value of $ON_MEMORY_MAX in mknmzrc<br>
+
+
+By default, <code>$ON_MEMORY_MAX</code> is set to 5
+MB. This value assumes your machine has 64 MB memory. If your
+machine have less memory, decrease this.
+</li>
+
 <li>Use --checkpoint option for mknmz<br>
 
 mknmz limits the amounts of documents processed in memory
@@ -98,15 +106,6 @@ Using --checkpoint option makes mknmz re-exec itself at
 this time. As a result, the size of mknmz's process
 decreases considerably. Use top command to see behavior if
 you are curious.
-</li>
-
-
-<li>Decrease the value of $ON_MEMORY_MAX in mknmzrc<br>
-
-
-By default, <code>$ON_MEMORY_MAX</code> is set to 5
-MB. This value assumes your machine has 64 MB memory. If your
-machine have less memory, decrease this.
 </li>
 </ul>
 
@@ -273,10 +272,10 @@ garbage by gcnmz.
 <a href="http://www.namazu.org/">Namazu Homepage</a>
 </p>
 <div class="copyright">
-Copyright (C) 2000-2006 Namazu Project. All rights reserved.
+Copyright (C) 2000-2008 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: tips.html,v 1.12 2007-07-02 08:01:22 fumiyas Exp $
+$Id: tips.html,v 1.13 2008-03-04 20:35:15 opengl2772 Exp $
 </div>
 <address>
 developers@namazu.org

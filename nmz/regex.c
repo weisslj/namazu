@@ -22,8 +22,9 @@
 /* Perl5 extension added by matz <matz@caelum.co.jp> */
 /* UTF-8 extension added Jan 16 1999 by Yoshida Masato  <yoshidam@tau.bekkoame.ne.jp> */
 
-#include "config.h"
-
+#ifdef HAVE_CONFIG_H
+#  include "config.h"
+#endif
 #ifdef HAVE_SUPPORT_H
 #  include "support.h"
 #endif
@@ -90,7 +91,9 @@ void xfree _((void*));
 #endif
 
 /* for using libnamazu */
-#include <stdlib.h>
+#ifdef HAVE_STDLIB_H
+#  include <stdlib.h>
+#endif
 #include "util.h"
 #define xfree free
 

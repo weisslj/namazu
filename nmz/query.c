@@ -1,9 +1,9 @@
 /*
  * 
- * $Id: query.c,v 1.16 2007-12-05 15:56:35 opengl2772 Exp $
+ * $Id: query.c,v 1.17 2008-03-06 15:34:58 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000,2007 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2008 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -31,7 +31,9 @@
 #  include "support.h"
 #endif
 
-#include <stdlib.h>
+#ifdef HAVE_STDLIB_H
+#  include <stdlib.h>
+#endif
 
 #ifdef HAVE_STRING_H
 #  include <string.h>
@@ -102,7 +104,7 @@ set_regex_trick(char *str)
         int field = 0;
         if ((i == 0 || str[i - 1] == ' ') && nmz_isfield(str + i)) {
             field = 1;
-            i += strcspn(str + i, ":") + 1;
+            i += (int)strcspn(str + i, ":") + 1;
         }
         if ((field || i == 0 || str[i - 1] == ' ') && 
             (str[i] == '/' || 

@@ -2,10 +2,10 @@
  * 
  * idxname.c - Idx handling routines.
  *
- * $Id: idxname.c,v 1.35 2007-12-05 15:56:35 opengl2772 Exp $
+ * $Id: idxname.c,v 1.36 2008-03-06 15:34:58 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2007 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2008 Namazu Project All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
@@ -38,7 +38,9 @@
 #  include <errno.h>
 #endif
 
-#include <stdlib.h>
+#ifdef HAVE_STDLIB_H
+#  include <stdlib.h>
+#endif
 #include <ctype.h>
 
 #ifdef HAVE_STRING_H

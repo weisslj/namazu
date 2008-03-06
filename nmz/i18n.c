@@ -1,9 +1,9 @@
 /*
  * i18n.c -
- * $Id: i18n.c,v 1.40 2007-12-05 16:12:45 opengl2772 Exp $
+ * $Id: i18n.c,v 1.41 2008-03-06 15:34:58 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2007 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2008 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -27,9 +27,14 @@
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
 #endif
+#ifdef HAVE_SUPPORT_H
+#  include "support.h"
+#endif
 
 #include <stdio.h>
-#include <stdlib.h>
+#ifdef HAVE_STDLIB_H
+#  include <stdlib.h>
+#endif
 
 #ifdef HAVE_STRING_H
 #  include <string.h>
@@ -218,7 +223,7 @@ nmz_choose_msgfile_suffix(const char *pfname,  char *lang_suffix)
 	}
 	nmz_debug_printf("choose_msgfile: %s open failed.\n", fname);
 
-	for (i = strlen(fname) - 1; i >= 0; i--) {
+	for (i = (int)strlen(fname) - 1; i >= 0; i--) {
 	    if (fname[i] == '@' || fname[i] == '.' ||
 		fname[i] == '_')
 	    {

@@ -2,10 +2,10 @@
  * 
  * hlist.c -
  * 
- * $Id: hlist.c,v 1.72 2007-12-05 15:56:35 opengl2772 Exp $
+ * $Id: hlist.c,v 1.73 2008-03-06 15:34:58 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2007 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2008 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -35,7 +35,9 @@
 #endif
 
 #include <stdio.h>
-#include <stdlib.h>
+#ifdef HAVE_STDLIB_H
+#  include <stdlib.h>
+#endif
 #include <math.h>
 
 #ifdef HAVE_ERRNO_H
@@ -65,6 +67,7 @@
 #include "search.h"
 #include "query.h"
 #include "score.h"
+
 static int document_number = 0;  /* Number of documents covered in a target index */
 static char field_for_sort[BUFSIZE] = "";  /* field_for_sort name used with sorting */
 
@@ -107,7 +110,8 @@ field_sort(NmzResult hlist)
 
     for (i = 0; i < hlist.num; i++) {
 	char buf[BUFSIZE];
-	int leng;
+	size_t leng;
+
 	nmz_get_field_data(hlist.data[i].idxid, 
 			   hlist.data[i].docid, field_for_sort, buf);
 	nmz_chomp(buf);

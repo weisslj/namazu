@@ -2,10 +2,10 @@
  * 
  * libnamazu.c - Namazu library api
  *
- * $Id: libnamazu.c,v 1.49 2007-12-05 15:56:35 opengl2772 Exp $
+ * $Id: libnamazu.c,v 1.50 2008-03-06 15:34:58 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2007 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2008 Namazu Project All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
@@ -35,7 +35,10 @@
 #endif
 
 #include <stdio.h>
-#include <stdlib.h>
+#ifdef HAVE_STDLIB_H
+#  include <stdlib.h>
+#endif
+
 #include <sys/types.h>
 #include <fcntl.h>
 #include <ctype.h>
@@ -280,5 +283,3 @@ nmz_get_dyingmsg(void)
 {
     return dyingmsg;
 }
-
-

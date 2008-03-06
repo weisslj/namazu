@@ -1,9 +1,9 @@
 /*
  * 
- * $Id: search.c,v 1.114 2007-12-05 16:12:45 opengl2772 Exp $
+ * $Id: search.c,v 1.115 2008-03-06 15:35:19 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2007 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2008 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -32,7 +32,9 @@
 #endif
 
 #include <stdio.h>
-#include <stdlib.h>
+#ifdef HAVE_STDLIB_H
+#  include <stdlib.h>
+#endif
 #include <string.h>
 #include <ctype.h>
 #include <time.h>
@@ -163,9 +165,10 @@ lrget(int *l, int *r)
 static NmzResult 
 prefix_match(const char *key, int v)
 {
-    int i, j, n, maxmatch, maxhit;
+    int i, j, maxmatch, maxhit;
     char buf[BUFSIZE], tmpkey[BUFSIZE];
     NmzResult val, tmp;
+    size_t n;
 
     val.num  = 0;
     val.data = NULL;

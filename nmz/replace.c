@@ -2,10 +2,10 @@
  * 
  * replace.c - 
  *
- * $Id: replace.c,v 1.22 2007-12-05 15:56:35 opengl2772 Exp $
+ * $Id: replace.c,v 1.23 2008-03-06 15:34:58 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000,2001,2007 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2008 Namazu Project All rights reserved.
  * Copyright (C) 1999 NOKUBI Takatsugu All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
@@ -35,7 +35,9 @@
 #endif
 
 #include <stdio.h>
-#include <stdlib.h>
+#ifdef HAVE_STDLIB_H
+#  include <stdlib.h>
+#endif
 #include <assert.h>
 
 #ifdef HAVE_ERRNO_H
@@ -169,8 +171,8 @@ nmz_replace_uri(char *uri)
 	}
 	/* Otherwise, we fall back to string substitution */
 
-	npat = strlen(list->pat);
-	nrep = strlen(list->rep);
+	npat = (int)strlen(list->pat);
+	nrep = (int)strlen(list->rep);
 
 	if (strncmp(list->pat, tmp, npat) == 0) {
 	    strcpy(uri, list->rep);

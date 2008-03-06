@@ -1,9 +1,9 @@
 /*
  * 
- * $Id: util.c,v 1.94 2007-12-05 15:56:35 opengl2772 Exp $
+ * $Id: util.c,v 1.95 2008-03-06 15:34:58 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2007 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2008 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -36,7 +36,9 @@
 
 #include <assert.h>
 #include <stdio.h>
-#include <stdlib.h>
+#ifdef HAVE_STDLIB_H
+#  include <stdlib.h>
+#endif
 #include <ctype.h>
 #include <stdarg.h>
 
@@ -71,7 +73,7 @@ static int hexmode = 0;
  *
  */
 
-static void reverse_byte_order (void*, int, int);
+static void reverse_byte_order (void*, size_t, size_t);
 static char decode_uri_sub(char c1, char c2);
 static void uri_to_hex ( uchar * p );
 static void uri_to_cap ( uchar * p );
@@ -85,7 +87,7 @@ static void set_uri_hex (void);
  * Reverse byte order. It's type independent.
  */
 static void 
-reverse_byte_order (void *p, int n, int size)
+reverse_byte_order (void *p, size_t n, size_t size)
 {
     int i, j;
     char *pp, tmp;
@@ -278,7 +280,7 @@ nmz_scan_oct(const char *start, int len, int *retlen)
 	retval |= *s++ - '0';
     }
 
-    *retlen = s - start;
+    *retlen = (int)(s - start);
     return retval;
 }
 
@@ -295,7 +297,7 @@ nmz_scan_hex(const char *start, int len, int *retlen)
 	retval |= (tmp - hexdigit) & 15;
 	s++;
     }
-    *retlen = s - start;
+    *retlen = (int)(s - start);
     return retval;
 }
 
@@ -502,7 +504,7 @@ nmz_pathcat(const char *base, char *name)
     win32 = 1;
 #endif
 
-    for (i = strlen(name) - 1; i >= 0; i--) {
+    for (i = (int)strlen(name) - 1; i >= 0; i--) {
         if (name[i] == '/' || (win32 && name[i] == '\\')) {
             strcpy(name, name + i + 1);
             break;
@@ -570,7 +572,7 @@ nmz_strlower(char *str)
 int 
 nmz_strprefixcasecmp(const char *str1, const char *str2)
 {
-    int len1, len2;
+    size_t len1, len2;
 
     len1 = strlen(str1);
     len2 = strlen(str2);
@@ -585,7 +587,7 @@ nmz_strprefixcasecmp(const char *str1, const char *str2)
 int 
 nmz_strprefixcmp(const char *str1, const char *str2)
 {
-    int len1, len2;
+    size_t len1, len2;
 
     len1 = strlen(str1);
     len2 = strlen(str2);
@@ -600,7 +602,7 @@ nmz_strprefixcmp(const char *str1, const char *str2)
 int 
 nmz_strsuffixcmp(const char *str1, const char *str2)
 {
-    int len1, len2;
+    size_t len1, len2;
 
     len1 = strlen(str1);
     len2 = strlen(str2);

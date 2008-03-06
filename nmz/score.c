@@ -2,7 +2,7 @@
  * 
  * score.c - scoring-related functions of Namazu
  * 
- * $Id: score.c,v 1.15 2008-02-02 07:27:51 opengl2772 Exp $
+ * $Id: score.c,v 1.16 2008-03-06 15:34:58 opengl2772 Exp $
  * 
  * Copyright (C) 2001 Hajime BABA  All rights reserved.
  * Copyright (C) 2001-2008 Namazu Project All rights reserved.
@@ -37,7 +37,9 @@
 #endif
 
 #include <stdio.h>
-#include <stdlib.h>
+#ifdef HAVE_STDLIB_H
+#  include <stdlib.h>
+#endif
 #include <math.h>
 #include <time.h>
 
@@ -113,7 +115,7 @@ static int
 get_field_size(int docid, int idxid)
 {
     FILE *fp_field, *fp_field_idx;
-    char fname[BUFSIZE] = "", buf[BUFSIZE]; 
+    char fname[BUFSIZE] = "", buf[BUFSIZE];
     int size;
     
     /* Make a pathname */

@@ -1,3 +1,8 @@
+2008-03-07  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * nmz/*.[ch]: Added -DHAVE_STDLIB_H. 
+        Do cast for avoiding warning.
+
 2008-03-03  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * pltests/mknmz-{5,8}.pl.in: Add "--check-filesize" option.
@@ -471,4 +476,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1587 2008-03-03 10:11:52 opengl2772 Exp $
+$Id: ChangeLog,v 1.1588 2008-03-06 15:34:06 opengl2772 Exp $

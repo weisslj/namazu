@@ -5,6 +5,16 @@
 # include <config.h>
 #endif
 
+#include <stdio.h>
+#ifdef HAVE_STDLIB_H
+#  include <stdlib.h>
+#endif
+#ifdef HAVE_STRING_H
+#  include <string.h>
+#else
+#  include <strings.h>
+#endif
+
 /* symbol mangling for libnmz.  */
 
 #ifndef HAVE_MEMMOVE
@@ -24,20 +34,22 @@
 #endif
 
 #if defined (_WIN32) && !defined (__CYGWIN__)
-#define strcasecmp stricmp
-#define strncasecmp strnicmp
-#define snprintf _snprintf
-#define vsnprintf _vsnprintf
+# define strcasecmp stricmp
+# define strncasecmp strnicmp
+# define snprintf _snprintf
+# define vsnprintf _vsnprintf
+# define strdup _strdup
+# define putenv _putenv
 #else
 # ifndef HAVE_STRCASECMP
-# define strcasecmp _nmz_strcasecmp
+#  define strcasecmp _nmz_strcasecmp
 # endif
 # ifndef HAVE_STRNCASECMP
-# define strncasecmp _nmz_strncasecmp
+#  define strncasecmp _nmz_strncasecmp
 # endif
 # ifndef HAVE_VSNPRINTF
-# define snprintf _nmz_snprintf
-# define vsnprintf _nmz_vsnprintf
+#  define snprintf _nmz_snprintf
+#  define vsnprintf _nmz_vsnprintf
 # endif 
 #endif
 

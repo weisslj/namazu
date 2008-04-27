@@ -1,6 +1,6 @@
 #
 # -*- Perl *-*
-# $Id: html.pl,v 1.6 2008-04-27 01:51:42 opengl2772 Exp $
+# $Id: html.pl,v 1.7 2008-04-27 18:11:06 opengl2772 Exp $
 #
 # Copyright (C) 2000-2008 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -69,8 +69,29 @@ sub option() {
 
 sub splitfile ($$) {
     my ($fname, $base) = @_;
+
     my $mtime = (stat($fname))[9];
-    my $cont = util::readfile($fname);
+    my $cont = '';
+
+    # for handling a filename which contains Shift_JIS code for Windows.
+    # for handling a filename which contains including space.
+    if (($fname =~ /\s/) ||
+        ($English::OSNAME eq "MSWin32"
+        && $fname =~ /[\x81-\x9f\xe0-\xef][\x40-\x7e\x80-\xfc]|[\x20\xa1-\xdf]/))
+    {
+        my $shelter_fname = $fname;
+        $fname = util::tmpnam("NMZ.win32");
+        unlink $fname if (-e $fname);
+        copy($shelter_fname, $fname);
+
+        $cont = util::readfile($fname);
+
+        unlink $fname;
+        $fname = $shelter_fname;
+    } else {
+        $cont = util::readfile($fname);
+    }
+
     Namazu::Archive::html::split(\$cont, $mtime, $base);
 }
 

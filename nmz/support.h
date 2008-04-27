@@ -34,8 +34,8 @@
 #endif
 
 #if defined (_WIN32) && !defined (__CYGWIN__)
-# define strcasecmp stricmp
-# define strncasecmp strnicmp
+# define strcasecmp _stricmp
+# define strncasecmp _strnicmp
 # define snprintf _snprintf
 # define vsnprintf _vsnprintf
 # define strdup _strdup

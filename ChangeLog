@@ -1,3 +1,8 @@
+2008-04-27  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * archive/html.pl: Trouble to which the code conversion
+        is not done is corrected.
+
 2008-03-07  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * nmz/*.[ch]: Added -DHAVE_STDLIB_H. 
@@ -476,4 +481,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1588 2008-03-06 15:34:06 opengl2772 Exp $
+$Id: ChangeLog,v 1.1589 2008-04-27 01:51:42 opengl2772 Exp $

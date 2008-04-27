@@ -1,7 +1,26 @@
 #
 # -*- Perl *-*
-# $Id: html.pl,v 1.5 2006-08-12 06:38:09 opengl2772 Exp $
+# $Id: html.pl,v 1.6 2008-04-27 01:51:42 opengl2772 Exp $
 #
+# Copyright (C) 2000-2008 Namazu Project All rights reserved.
+#     This is free software with ABSOLUTELY NO WARRANTY.
+#
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either versions 2, or (at your option)
+#  any later version.
+# 
+#  This program is distributed in the hope that it will be useful
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program; if not, write to the Free Software
+#  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+#  02111-1307, USA
+#
+#  This file must be encoded in EUC-JP encoding
 
 package Namazu::Archive::html;
 
@@ -51,16 +70,14 @@ sub option() {
 sub splitfile ($$) {
     my ($fname, $base) = @_;
     my $mtime = (stat($fname))[9];
-    my $fh = util::efopen($fname);
-    my $cont   = join '', <$fh>;
-    util::fclose($fh);
+    my $cont = util::readfile($fname);
     Namazu::Archive::html::split(\$cont, $mtime, $base);
 }
 
 sub split ($$$) {
     my ($contref, $mtime, $base) = @_;
 
-    codeconv::normalize_document($contref);
+    codeconv::codeconv_document($contref);
 
     my %info = (
 		'title'    => get_title($contref),

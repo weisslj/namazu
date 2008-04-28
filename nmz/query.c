@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: query.c,v 1.17 2008-03-06 15:34:58 opengl2772 Exp $
+ * $Id: query.c,v 1.18 2008-04-28 15:08:38 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2008 Namazu Project All rights reserved.
@@ -67,21 +67,27 @@ static void set_regex_trick(char *str);
 static void 
 set_phrase_trick(char *str)
 {
-    int i, state;
+    int i, delim;
     char *b = str, *e;
 
-    for (i = state = 0; str[i] != '\0'; i++) {
-        if ((str[i] == '"' || str[i] == '{') && 
+    for (i = delim = 0; str[i] != '\0'; i++) {
+        if (delim == 0 &&
+            (str[i] == '"' || str[i] == '{') && 
 	    (i == 0 || str[i - 1] == ' ') &&
 	    (str[i + 1] != ' ')) 
         {
-            state = 1;
+            delim = str[i];
+            if (delim == '{') {
+                delim = '}';
+            }
             b = str + i + 1;
-        } else if (state && (str[i] == '"' || str[i] == '}') && 
+        } else if (delim != 0 && str[i] == delim && 
                    (str[i + 1] == ' ' || str[i + 1] == '\0') &&
                    (str[i - 1] != ' ')) 
         {
-	    e = str + i - 1;
+            delim = 0;
+            e = str + i - 1;
+
 	    for (;b <= e; b++) {
 		if (*b == ' ')
 		    *b = '\t';
@@ -115,7 +121,7 @@ set_regex_trick(char *str)
                 delim = '}';
             }
             b = str + i + 1;
-        } else if (str[i] == delim 
+        } else if (delim != 0 && str[i] == delim 
                    && (str[i + 1] == ' ' || str[i + 1] == '\0')) 
         {
             delim = 0;

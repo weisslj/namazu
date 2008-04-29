@@ -3,7 +3,7 @@
 # -*- Perl -*-
 # nmzcat - print file content on the standard output.
 #
-# $Id: nmzcat.in,v 1.6 2007-02-10 05:42:53 usu Exp $
+# $Id: nmzcat.in,v 1.7 2008-04-29 03:21:34 usu Exp $
 #
 # Copyright (C) 2004 Yukio USUDA All rights reserved.
 # Copyright (C) 2004 Namazu Project All rights reserved.
@@ -69,6 +69,7 @@ foreach my $fname (@ARGV) {
     util::dprint("read file: $fname\n");
 
     $Document->init_doc($uri, $fname, \$content, undef);
+    my $err = $Document->get_errmsg();
     my $result='';
     unless ($err) {
         my $orig_filename = $Document->get_orig_filename();

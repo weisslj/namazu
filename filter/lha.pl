@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: lha.pl,v 1.18 2007-01-26 10:43:00 opengl2772 Exp $
+# $Id: lha.pl,v 1.19 2008-04-29 03:21:34 usu Exp $
 #  lha filter for namazu
 #  Copyright (C) 2004-2007 Tadamasa Teranishi,
 #                2004 MATSUMURA Namihiko <po-jp@counterghost.net>,
@@ -30,6 +30,7 @@ use English;
 require 'util.pl';
 require 'document.pl';
 
+my $haslhapm = undef;
 my $lhapath = undef;
 
 sub mediatype() {
@@ -37,12 +38,16 @@ sub mediatype() {
 }
 
 sub status() {
-    return 'no' if ($English::OSNAME =~ /^(?:MSWin32|os2)$/i);
+    if (util::checklib('Archive/Lha.pm')){
+        $haslhapm = 1;
+    }
 
+    return 'no' if ($English::OSNAME =~ /^(?:MSWin32|os2)$/i);
     # Only LHa for UNIX.
     $lhapath = util::checkcmd('lha');
 
     return 'yes' if (defined $lhapath);
+    return 'yes' if (defined $haslhapm);
     return 'no';
 }
 
@@ -84,74 +89,53 @@ sub filter ($$$$$) {
         = @_;
     my $err = undef;
 
-    if ($English::OSNAME =~ /^(?:MSWin32|os2)$/i) {
-#        $err = filter_lha_msdos($orig_cfile, $cont, $weighted_str, $headings, $fields);
+    if (defined $haslhapm) {
+        $err = filter_arc_lha($orig_cfile, $cont, $weighted_str, $headings, $fields);
     } else {
         $err = filter_lha_unix($orig_cfile, $cont, $weighted_str, $headings, $fields);
     }
     return $err;
 }
 
-sub filter_lha_msdos ($$$$$) {
+
+sub filter_arc_lha ($$$$$) {
     my ($orig_cfile, $contref, $weighted_str, $headings, $fields)
       = @_;
 
-    my $tmpfile;
-    my $uniqnumber = int(rand(10000));
-    do {
-       $tmpfile = util::tmpnam('NMZ.lha' . substr("000$uniqnumber", -4));
-       $uniqnumber++;
-    } while (-f $tmpfile);
+    eval 'use Carp;';
+    eval 'use Archive::Lha::Stream;';
+    eval 'use Archive::Lha::Header;';
+    eval 'use Archive::Lha::Decode;';
 
-    {
-        my $fh = util::efopen("> $tmpfile");
-        print $fh $$contref;
-        util::fclose($fh);
-    }
-
-    util::vprint("Processing lha file ... (using  '$lhapath')\n");
-
-    my %files;
-    my $tmpfile2 = util::tmpnam('NMZ.lha.list');
-    my @cmd = ("$lhapath", "v", "-gm", "$tmpfile");
-    my $status = util::syscmd(
-        command => \@cmd,
-        option => {
-            "stdout" => $tmpfile2,
-            "stderr" => "/dev/null",
-        },
-    );
-    if ($status == 0) {
-        my $filelist = util::readfile("$tmpfile2");
-        codeconv::normalize_document(\$filelist);
-        while ($filelist =~ s/^\S+\s+   # permission
-                (?:\S+\s+)?             # (uid, giD)
-                (\d+)\s+                # filesize
-                \S+\s+                  # rate
-                \S+\s+                  # month
-                \S+\s+                  # day
-                \S+\s+                  # year
-                (.+)$//mx)              # filename
-        {
-            my $name = $2;
-            $files{$name} = $1;
-            my $fname = "./" . $name;
-            codeconv::to_inner_encoding(\$fname, 'unknown');
-            $fname = gfilter::filename_to_title($fname, $weighted_str);
-            $$contref .= $fname . " ";
-
-            codeconv::to_inner_encoding(\$name, 'unknown');
-            util::vprint("lha: $name");
+    my $processedcont;
+    my $stream = Archive::Lha::Stream->new( string => $$contref );
+    while(defined(my $level = $stream->search_header)) {
+        my $header = Archive::Lha::Header->new(
+          level => $level,
+          stream => $stream
+        );
+        $stream->seek($header->data_top);
+        my $fname = $header->pathname('guess' => 'utf-8');
+        $processedcont .= $fname . " ";
+        my $decodedcont;
+        my $decoder = Archive::Lha::Decode->new(
+            header => $header,
+            read   => sub { $stream->read(@_) },
+            write  => sub { ($decodedcont) = @_ }, 
+        );
+        my $crc16 = $decoder->decode;
+        return "crc mismatch" if $crc16 != $header->crc16;
+        my $lhaedname = "lhaed_content";
+        if ($fname =~ /.*(\..*)/){
+            $lhaedname = $lhaedname . $1;
         }
-    } else {
-        unlink($tmpfile2);
-        unlink($tmpfile);
-        return "Unable to convert file ($lhapath error occurred).";
+        my $err = lha::nesting_filter($lhaedname, \$decodedcont, $weighted_str);
+        if (defined $err) {
+            util::dprint("filter/lha.pl gets error message \"$err\"");
+        }
+        $processedcont .= $decodedcont . " ";
     }
-    unlink($tmpfile2);
-
-    $$contref = "";
-
+    $$contref = $processedcont;
     return undef;
 }
 

@@ -1,3 +1,10 @@
+2008-04-29 Yukio USUDA <usu@namazu.org>
+
+	* filter/lha.pl(filter_arc_lha): Add new subroutine for use
+	Archive::Lha Perl module.
+
+	* scripts/nmzcat.in: Fix error handlling.
+
 2008-04-29  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * nmz/query.c(set_phrase_trick): The problem of mistaking
@@ -495,4 +502,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1591 2008-04-28 15:08:36 opengl2772 Exp $
+$Id: ChangeLog,v 1.1592 2008-04-29 03:21:33 usu Exp $

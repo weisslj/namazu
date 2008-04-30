@@ -1,9 +1,9 @@
 #
 # -*- Perl -*-
-# $Id: xdoc2txt.pl,v 1.7 2007-11-18 10:19:35 opengl2772 Exp $
+# $Id: xdoc2txt.pl,v 1.8 2008-04-30 14:45:09 opengl2772 Exp $
 # Copyright (C) 2004 HANAI,Akira All rights reserved.
 # Copyright (C) 2005 Yukio USUDA All rights reserved.
-# Copyright (C) 2005-2007 Namazu Project All rights reserved.
+# Copyright (C) 2005-2008 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -31,9 +31,10 @@ require 'util.pl';
 require 'gfilter.pl';
 
 my $wordconvpath  = undef;
+my $wordconvversion = 0.00;
 
 sub mediatype() {
-    return qw(
+    my @media = qw(
 	application/msword
 	application/rtf
 	application/pdf
@@ -43,12 +44,46 @@ sub mediatype() {
 	application/ichitaro6
 	application/ichitaro7
     );
+
+    status();
+
+    if ($wordconvversion >= 1.26) {
+        push(@media,
+            'application/vnd.openxmlformats-officedocument.wordprocessingml');
+        push(@media,
+            'application/vnd.openxmlformats-officedocument.spreadsheetml');
+        push(@media,
+            'application/vnd.openxmlformats-officedocument.presentationml');
+    }
+
+    return @media;
 }
 
 sub status() {
     $wordconvpath = util::checkcmd('xdoc2txt');
     return 'no' unless defined $wordconvpath;
-    if ($English::PERL_VERSION >= 5.008){
+    {
+        my @cmd = ($wordconvpath, "-v");
+        my $fh_out = IO::File->new_tmpfile();
+        my $status = util::syscmd(
+            command => \@cmd,
+            option => {
+                "stdout" => "/dev/null",
+                "stderr" => $fh_out,
+            },
+        );
+        $wordconvversion = util::readfile($fh_out);
+        codeconv::normalize_document(\$wordconvversion);
+        util::fclose($fh_out);
+
+        if ($wordconvversion =~ m/(\d+\.\d+).*/) {
+            $wordconvversion = $1;
+        } else {
+            $wordconvversion = 0.00;
+        }
+        util::dprint("$wordconvpath : $wordconvversion\n");
+    }
+    if ($English::PERL_VERSION >= 5.008) {
         eval 'use Encode qw/ from_to /;';
         if ($@) {return 'no'};
         eval 'use Encode::Guess qw/ shiftjis utf-8 /;';
@@ -72,7 +107,6 @@ sub post_codeconv () {
 }
 
 sub add_magic ($) {
-
     my ($magic) = @_;
 
     # FIXME: very ad hoc.
@@ -108,6 +142,7 @@ sub filter ($$$$$) {
     $cfile =~ /(\.[^\.]+)$/;
     my $ext = $1;
     $ext = '.ppt' if ($ext eq '.pps');
+    $ext = '.pptx' if ($ext eq '.ppsx');
     my $tmpfile = util::tmpnam('NMZxdoc2txt');
     $tmpfile =~ s/\.tmp$/$ext/;
     util::writefile($tmpfile, $cont);
@@ -168,7 +203,7 @@ sub filter ($$$$$) {
 
     if ($prop =~ /\<LastAuthor\>(.+)\<\/LastAuthor\>/) {
         $fields->{'author'} = $1;
-    }elsif ($prop =~ /\<Author\>(.+)\<\/Author\>/) {
+    } elsif ($prop =~ /\<Author\>(.+)\<\/Author\>/) {
         $fields->{'author'} = $1;
     }
 
@@ -193,15 +228,13 @@ sub rm2byteutf8 ($) {
     my ($property) = @_;
 
     my $enc = guess_encoding($$property);
-    if (ref $enc){
+    if (ref $enc) {
         $$property =~ s/[\xC2-\xDF][\x80-\xBF]/ /g if ($enc->name eq 'utf8');
-        Encode::from_to($$property, $enc->name ,'utf-8');
-    }else {
+        Encode::from_to($$property, $enc->name, 'utf-8');
+    } else {
         $$property = "";
         util::dprint("Encode::Guess couldn't find coding name");
     }
 }
 
-
 1;
-

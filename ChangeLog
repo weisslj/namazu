@@ -1,3 +1,7 @@
+2008-05-01  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+	* filter/win32/xdoc2txt.pl: For OpenXML.
+
 2008-04-30 Yukio USUDA <usu@namazu.org>
 
 	* filter/lha.pl(status): Change the priority level of tools. 
@@ -509,4 +513,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1593 2008-04-30 14:38:13 usu Exp $
+$Id: ChangeLog,v 1.1594 2008-04-30 14:45:08 opengl2772 Exp $

@@ -1,3 +1,10 @@
+2008-04-30 Yukio USUDA <usu@namazu.org>
+
+	* filter/lha.pl(status): Change the priority level of tools. 
+	* tests/data/ja/taro2007.jtd: Add a new file.
+	* tests/data/ja/oasys.oas: Add a new file.
+	* scripts/nmzcat.in: Add debug option.
+
 2008-04-29 Yukio USUDA <usu@namazu.org>
 
 	* filter/lha.pl(filter_arc_lha): Add new subroutine for use
@@ -502,4 +509,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1592 2008-04-29 03:21:33 usu Exp $
+$Id: ChangeLog,v 1.1593 2008-04-30 14:38:13 usu Exp $

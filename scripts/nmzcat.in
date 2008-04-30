@@ -3,10 +3,10 @@
 # -*- Perl -*-
 # nmzcat - print file content on the standard output.
 #
-# $Id: nmzcat.in,v 1.7 2008-04-29 03:21:34 usu Exp $
+# $Id: nmzcat.in,v 1.8 2008-04-30 14:38:14 usu Exp $
 #
 # Copyright (C) 2004 Yukio USUDA All rights reserved.
-# Copyright (C) 2004 Namazu Project All rights reserved.
+# Copyright (C) 2004-2008 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -27,6 +27,7 @@
 require 5.004;
 use strict;
 use English;
+use Getopt::Long;
 
 if (@ARGV == 0) {
     print "usage: nmzcat <target>...\n";
@@ -64,6 +65,8 @@ $Document = mknmz::document->new();
 $Document->init();
 my $uri;
 
+GetOptions('debug' => \$var::Opt{'debug'});
+
 foreach my $fname (@ARGV) {
     my $content = util::readfile($fname);
     util::dprint("read file: $fname\n");
@@ -93,7 +96,7 @@ rmdir $tmpdir or die "unable to remove temporary directory \"$tmpdir\"\n";
 
 muda(
     $var::USE_NKF_MODULE, $var::OUTPUT_DIR,
-    $conf::NKF
+    $conf::NKF, $var::Opt{'debug'}
     );
 
 sub muda {};

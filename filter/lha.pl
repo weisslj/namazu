@@ -1,10 +1,10 @@
 #
 # -*- Perl -*-
-# $Id: lha.pl,v 1.19 2008-04-29 03:21:34 usu Exp $
+# $Id: lha.pl,v 1.20 2008-04-30 14:38:14 usu Exp $
 #  lha filter for namazu
 #  Copyright (C) 2004-2007 Tadamasa Teranishi,
 #                2004 MATSUMURA Namihiko <po-jp@counterghost.net>,
-#                2004-2007 Namazu Project All rights reserved.
+#                2004-2008 Namazu Project All rights reserved.
 #
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -38,16 +38,15 @@ sub mediatype() {
 }
 
 sub status() {
+    unless ($English::OSNAME =~ /^(?:MSWin32|os2)$/i){
+        # Only LHa for UNIX.
+        $lhapath = util::checkcmd('lha');
+        return 'yes' if (defined $lhapath);
+    }
     if (util::checklib('Archive/Lha.pm')){
         $haslhapm = 1;
+        return 'yes';
     }
-
-    return 'no' if ($English::OSNAME =~ /^(?:MSWin32|os2)$/i);
-    # Only LHa for UNIX.
-    $lhapath = util::checkcmd('lha');
-
-    return 'yes' if (defined $lhapath);
-    return 'yes' if (defined $haslhapm);
     return 'no';
 }
 

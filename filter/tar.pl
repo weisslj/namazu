@@ -1,9 +1,9 @@
 #
 # -*- Perl -*-
-# $Id: tar.pl,v 1.13 2007-01-14 03:54:33 opengl2772 Exp $
-#  tar filter for namazu
-#  Copyright (C) 2004-2007 Tadamasa Teranishi,
-#                2004-2007 Namazu Project All rights reserved.
+# $Id: tar.pl,v 1.14 2008-04-30 15:12:52 opengl2772 Exp $
+#  tar filter for Namazu
+#  Copyright (C) 2004-2008 Tadamasa Teranishi,
+#                2004-2008 Namazu Project All rights reserved.
 #
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -59,7 +59,7 @@ sub post_codeconv () {
 sub add_magic ($) {
 #    my ($magic) = @_;
 
-     # FIXME: very ad hoc.
+    # FIXME: very ad hoc.
 #    $magic->addFileExts('\\.tar$', 'application/x-tar');
     return;
 }
@@ -83,7 +83,7 @@ sub filter_gtar ($$$$$) {
       = @_;
 
     my $uniqnumber = 0;
-    my $tmpfile;
+    my $tmpfile = '';
     do {
        $tmpfile = util::tmpnam('NMZ.tar' . substr("000$uniqnumber", -4));
        $uniqnumber++;
@@ -135,7 +135,7 @@ sub filter_gtar ($$$$$) {
     }
     unlink($tmpfile2);
 
-    foreach my $fname (keys %files){
+    foreach my $fname (keys %files) {
         my $size = $files{$fname};
         if ($size == 0) {
             util::dprint("$fname: filesize is 0");
@@ -162,7 +162,7 @@ sub filter_gtar ($$$$$) {
                 unlink($tmpfile3);
 
                 my $taredname = "tared_content";
-                if ($fname =~ /.*(\..*)/){
+                if ($fname =~ /.*(\..*)/) {
                     $taredname = $taredname . $1;
                 }
                 my $err = tar::nesting_filter($taredname, \$con, $weighted_str);
@@ -183,7 +183,7 @@ sub filter_archive_tar ($$$$$) {
     my ($orig_cfile, $contref, $weighted_str, $headings, $fields)
       = @_;
 
-    my $tmpfile;
+    my $tmpfile = '';
     my $uniqnumber = int(rand(10000));
     do {
        $tmpfile = util::tmpnam('NMZ.tar' . substr("000$uniqnumber", -4));
@@ -228,7 +228,7 @@ sub filter_archive_tar ($$$$$) {
         util::vprint("tar: $name");
     }
 
-    foreach my $fname (keys %files){
+    foreach my $fname (keys %files) {
         my $size = $files{$fname};
         if ($size == 0) {
             util::dprint("$fname: filesize is 0");
@@ -244,7 +244,7 @@ sub filter_archive_tar ($$$$$) {
             my $con = $tar->get_content($fname);
 
             my $taredname = "tared_content";
-            if ($fname =~ /.*(\..*)/){
+            if ($fname =~ /.*(\..*)/) {
                 $taredname = $taredname . $1;
             }
             my $err = tar::nesting_filter($taredname, \$con, $weighted_str);
@@ -279,13 +279,13 @@ sub nesting_filter ($$$){
 	$headings = $Document->get_headings();
 	%fields = $Document->get_fields();
     }
-    if ($mtype =~ /; x-system=unsupported$/){
+    if ($mtype =~ /; x-system=unsupported$/) {
 	$$contref = "";
         $err = $mtype;
-    }elsif ($mtype =~ /; x-error=(.*)$/){
+    } elsif ($mtype =~ /; x-error=(.*)$/) {
         $$contref = "";
         $err = $1;
-    }else{
+    } else {
 	gfilter::show_filter_debug_info($contref, $weighted_str,
 					\%fields, \$headings);
 	for my $field (keys %fields) {

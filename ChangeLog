@@ -1,4 +1,4 @@
-2008-05-01  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+2008-04-30  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* filter/win32/xdoc2txt.pl: For OpenXML.
 
@@ -513,4 +513,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1594 2008-04-30 14:45:08 opengl2772 Exp $
+$Id: ChangeLog,v 1.1595 2008-04-30 14:46:53 opengl2772 Exp $

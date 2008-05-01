@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: rtf.pl,v 1.23 2007-11-16 16:44:01 opengl2772 Exp $
-# Copyright (C) 2003-2004 Tadamasa Teranishi All rights reserved.
-#               2003-2007 Namazu Project All rights reserved.
+# $Id: rtf.pl,v 1.24 2008-05-01 16:23:42 opengl2772 Exp $
+# Copyright (C) 2003-2008 Tadamasa Teranishi All rights reserved.
+#               2003-2008 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -33,6 +33,7 @@ require 'html.pl';
 my $rtfconvpath  = undef;
 my @rtfconvopts  = undef;
 my $convname = undef;
+my $_filter = undef;
 
 sub mediatype() {
     return ('application/rtf');
@@ -48,12 +49,15 @@ sub status() {
     $rtfconvpath = util::checkcmd('rtf2html');
     if (defined $rtfconvpath) {
         @rtfconvopts = ();
+        $_filter = \&_filter_rtf2html;
         return 'yes';
     }
     else {
         $rtfconvpath = util::checkcmd('doccat');
         @rtfconvopts = ("-o", "8"); # UTF-8
         if (defined $rtfconvpath) {
+            $_filter = \&_filter_doccat;
+
             my @cmd = ("$rtfconvpath", "-V");
             my $fh_cmd = IO::File->new_tmpfile();
             my $status = util::syscmd(
@@ -113,16 +117,12 @@ sub filter ($$$$$) {
 
     $convname = basename($rtfconvpath) unless (defined $convname);
 
-    if ($convname =~ /rtf2html/i) {
-        $err = filter_rtf2html($orig_cfile, $cont, $weighted_str, $headings, $fields);
-    } else {
-        $err = filter_doccat($orig_cfile, $cont, $weighted_str, $headings, $fields);
-    }
+    $err = $_filter->($orig_cfile, $cont, $weighted_str, $headings, $fields);
  
     return $err;
 }   
 
-sub filter_rtf2html ($$$$$) {
+sub _filter_rtf2html ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
       = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
@@ -175,7 +175,7 @@ sub filter_rtf2html ($$$$$) {
     return undef;
 }
 
-sub filter_doccat ($$$$$) {
+sub _filter_doccat ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
         = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';

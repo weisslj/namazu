@@ -1,3 +1,7 @@
+2008-05-02  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+	* filter/{html, rtf, zip}.pl: To use the reference of the subroutine.
+
 2008-05-01 Yukio USUDA <usu@namazu.org>
 
 	* tests/data/ja/oasys.oa2: Add a new file.
@@ -517,4 +521,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1596 2008-05-01 13:06:40 usu Exp $
+$Id: ChangeLog,v 1.1597 2008-05-01 16:23:42 opengl2772 Exp $

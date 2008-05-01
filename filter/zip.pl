@@ -1,10 +1,10 @@
 #
 # -*- Perl -*-
-# $Id: zip.pl,v 1.25 2007-01-26 10:43:00 opengl2772 Exp $
-#  zip filter for namazu
+# $Id: zip.pl,v 1.26 2008-05-01 16:23:42 opengl2772 Exp $
+#  zip filter for Namazu
 #  Copyright (C) 2004 MATSUMURA Namihiko <po-jp@counterghost.net>
 #                2004 Yukio USUDA <usu@namazu.org>
-#                2004-2007 Namazu Project All rights reserved.
+#                2004-2008 Namazu Project All rights reserved.
 #
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -30,15 +30,21 @@ require 'util.pl';
 require 'document.pl';
 
 my $unzippath = undef;
+my $_filter = undef;
 
 sub mediatype() {
     return ('application/x-zip');
 }
 
 sub status() {
-    return 'yes' if (util::checklib('Compress/Zlib.pm') and
-		     util::checklib('Archive/Zip.pm'));
+    if (util::checklib('Compress/Zlib.pm') and
+    util::checklib('Archive/Zip.pm')) {
+        $_filter = \&_az_filter;
+        return 'yes';
+    }
+
     $unzippath = util::checkcmd('unzip');
+    $_filter = \&_unzip_filter;
     return 'yes' if (defined $unzippath);
     return 'no';
 }
@@ -82,16 +88,12 @@ sub filter ($$$$$) {
 
     $$contref ="";
     my $err = undef;
-    if (util::checklib('Archive/Zip.pm')){
-	$err = az_filter($tmpfile, $contref, $weighted_str, $headings, $fields);
-    } else {
-	$err = unzip_filter($tmpfile, $contref, $weighted_str, $headings, $fields);
-    }
+    $err = $_filter->($tmpfile, $contref, $weighted_str, $headings, $fields);
     unlink($tmpfile);
     return $err;
 }
 
-sub az_filter ($$$$$) {
+sub _az_filter ($$$$$) {
     my ($tmpfile, $contref, $weighted_str, $headings, $fields)
       = @_;
 
@@ -113,7 +115,7 @@ sub az_filter ($$$$$) {
     }
     my @members = $zip->members();
     my $member;
-    foreach $member (@members){
+    foreach $member (@members) {
 	next if (($member->isEncrypted() or $member->isDirectory()));
 
 	my $size = $member->uncompressedSize();
@@ -132,7 +134,7 @@ sub az_filter ($$$$$) {
 	    my $con = $zip->contents($member);
 	    if ($con) {
 		my $unzippedname = "unzipped_content";
-		if ($fname =~ /.*(\..*)/){
+		if ($fname =~ /.*(\..*)/) {
 		    $unzippedname = $unzippedname . $1;
 		}
 		my $err = zip::nesting_filter($unzippedname, \$con, $weighted_str);
@@ -146,8 +148,7 @@ sub az_filter ($$$$$) {
     return undef;
 }
 
-
-sub unzip_filter ($$$$$) {
+sub _unzip_filter ($$$$$) {
     my ($tmpfile, $contref, $weighted_str, $headings, $fields)
       = @_;
 
@@ -202,7 +203,7 @@ sub unzip_filter ($$$$$) {
 			\S+\s+		#
 			\S+\s+		# day-month-year
 			\S+\s+		# hour:min
-			(.+)/gx){	# filename
+			(.+)/gx) {	# filename
 	    my $filename = $3;
 	    $files{$filename} = $2;
 	    my $filesystem = $1;
@@ -221,7 +222,7 @@ sub unzip_filter ($$$$$) {
     unlink($tmpfile2);
 
     my $fname;
-    foreach $fname (keys %files){
+    foreach $fname (keys %files) {
 	my $size = $files{$fname};
 	if ($size == 0) {
 	    util::dprint("$fname: filesize is 0");
@@ -246,7 +247,7 @@ sub unzip_filter ($$$$$) {
                 },
             );
 	    my $unzippedname = "unzipped_content";
-	    if ($fname =~ /.*(\..*)/){
+	    if ($fname =~ /.*(\..*)/) {
 		$unzippedname = $unzippedname . $1;
 	    }
 	    my $err = zip::nesting_filter($unzippedname, \$con, $weighted_str);
@@ -279,13 +280,13 @@ sub nesting_filter ($$$){
 	%fields = $Document->get_fields();
     }
 
-    if ($mtype =~ /; x-system=unsupported$/){
+    if ($mtype =~ /; x-system=unsupported$/) {
 	$$contref = "";
         $err = $mtype;
-    }elsif ($mtype =~ /; x-error=(.*)$/){
+    } elsif ($mtype =~ /; x-error=(.*)$/) {
         $$contref = "";
         $err = $1;
-    }else{
+    } else {
 	gfilter::show_filter_debug_info($contref, $weighted_str,
 					\%fields, \$headings);
 	for my $field (keys %fields) {

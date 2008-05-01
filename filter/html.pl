@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: html.pl,v 1.55 2006-08-18 17:35:19 opengl2772 Exp $
+# $Id: html.pl,v 1.56 2008-05-01 16:23:42 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
-# Copyright (C) 2000-2006 Namazu Project All rights reserved.
+# Copyright (C) 2000-2008 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -30,6 +30,7 @@ require 'gfilter.pl';
 
 my $EMBEDDED_FILE = '\.(asp|jsp|php[3s]?|phtml)(?:\.gz)?';
 my $has_parser = undef;
+my $_filter = undef;
 
 sub mediatype() {
     return ('text/html');
@@ -40,9 +41,12 @@ sub status() {
         eval 'use HTML::Parser 3.28 ();';
         unless ($@) {
             $has_parser = 1;
+            $_filter = \&_htmlparser_filter;
             return 'yes';
         }
     }
+
+    $_filter = \&_regex_html_filter;
     return 'yes';
 }
 
@@ -104,11 +108,7 @@ sub isexcluded ($) {
 sub html_filter ($$$$) {
     my ($contref, $weighted_str, $fields, $headings) = @_;
 
-    if ($has_parser) {
-        htmlparser_filter($contref, $weighted_str, $fields, $headings);
-    } else {
-        regex_html_filter($contref, $weighted_str, $fields, $headings);
-    }
+    $_filter->($contref, $weighted_str, $fields, $headings);
 }
 
 my $weighted_str;
@@ -117,7 +117,7 @@ my $headings;
 my %inside;
 my $content;
 
-sub htmlparser_filter ($$$$) {
+sub _htmlparser_filter ($$$$) {
     my ($contref, $weighted_str, $fields, $headings) = @_;
 
     $html::weighted_str = $weighted_str;
@@ -294,7 +294,7 @@ sub set_author ($) {
     }
 }
 
-sub regex_html_filter ($$$$) {
+sub _regex_html_filter ($$$$) {
     my ($contref, $weighted_str, $fields, $headings) = @_;
 
     html::escape_lt_gt($contref);

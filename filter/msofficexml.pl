@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: msofficexml.pl,v 1.12 2007-01-27 02:33:11 usu Exp $
+# $Id: msofficexml.pl,v 1.13 2008-05-01 16:24:02 opengl2772 Exp $
 # Copyright (C) 2007 Yukio USUDA, 
-#               2007 Namazu Project All rights reserved.
+#               2007-2008 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -30,7 +30,6 @@ require 'gfilter.pl';
 require 'ooo.pl';
 require 'zip.pl';
 
-
 my $utfconvpath = undef;
 my $unzippath = undef;
 my @unzipopts;
@@ -45,15 +44,15 @@ sub mediatype() {
 
 sub status() {
     $unzippath = util::checkcmd('unzip');
-    if (defined $unzippath){
+    if (defined $unzippath) {
         @unzipopts = ("-p");
         if (util::islang("ja")) {
            if ($conf::NKF ne 'no') {
                return 'yes';
            }
-           return 'no'; 
+           return 'no';
         } else {
-           return 'yes'; 
+           return 'yes';
         }
     }
     return 'no';
@@ -86,7 +85,7 @@ sub filter ($$$$$) {
         = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
     my $ext = '';
-    if ($cfile =~ m/\.([A-Za-z]{4})$/){
+    if ($cfile =~ m/\.([A-Za-z]{4})$/) {
         $ext = $1;
     }
     filter_metafile($contref, $weighted_str, $fields);
@@ -113,10 +112,10 @@ sub filter_metafile ($$$) {
         codeconv::normalize_jp(\$title);
         codeconv::normalize_jp(\$keywords);
     }
-    if (!($authorname eq "")){
+    if (!($authorname eq "")) {
         $fields->{'author'} = $authorname;
     }
-    if (!($title eq "")){
+    if (!($title eq "")) {
         $fields->{'title'} = $title;
         my $weight = $conf::Weight{'html'}->{'title'};
         $$weighted_str .= "\x7f$weight\x7f$title\x7f/$weight\x7f\n";
@@ -130,13 +129,13 @@ sub filter_metafile ($$$) {
 
 sub zip_read ($$$) {
     my ($zipref, $fname, $unzipcontref) = @_;
-    my $tmpfile;
+    my $tmpfile = '';
     my $uniqnumber = int(rand(10000));
     do {
         $tmpfile = util::tmpnam('NMZ.zip' . substr("000$uniqnumber", -4));
         $uniqnumber++;
     } while (-f $tmpfile);
-    { 
+    {
         my $fh = util::efopen("> $tmpfile");
         print $fh $$zipref;
         util::fclose($fh);
@@ -157,7 +156,7 @@ sub zip_read ($$$) {
 sub get_embedded_list ($$$) {
     my ($zipref, $embeddingsref, $apptype) = @_;
     my $tmpfile  = util::tmpnam('NMZ.zip');
-    { 
+    {
         my $fh = util::efopen("> $tmpfile");
         print $fh $$zipref;
         util::fclose($fh);
@@ -175,11 +174,11 @@ sub get_embedded_list ($$$) {
         },
     );
     if ($status == 0) {
-	while ($file_list =~ m!\n
-			($apptype/embeddings/.+)!gx){	# embeddings filename
+        while ($file_list =~ m!\n
+			($apptype/embeddings/.+)!gx) {	# embeddings filename
             my $filename = $1;
             push(@$embeddingsref, $filename);
-	}
+        }
     }
     unlink $tmpfile;
 }
@@ -189,31 +188,31 @@ sub filter_contentfile ($$$$$) {
     my @contentfile;
     my @embeddedfiles;
     my $xml = "";
-    if ($ext =~ /docx/i){
+    if ($ext =~ /docx/i) {
         $contentfile[0] = 'word/document.xml';
         get_embedded_list($contref, \@embeddedfiles, 'word');
-    }elsif ($ext =~ /xlsx/i){
+    } elsif ($ext =~ /xlsx/i) {
         $contentfile[0] = 'xl/sharedStrings.xml';
         get_embedded_list($contref, \@embeddedfiles, 'xl');
-    }elsif ($ext =~ /pp(t|s)x/i){
+    } elsif ($ext =~ /pp(t|s)x/i) {
         my $filename = 'docProps/app.xml';
         msofficexml::zip_read($contref, $filename, \$xml);
         my $slides = 1;
-        if ($xml =~ m!<Slides>(\d)</Slides>!){
+        if ($xml =~ m!<Slides>(\d)</Slides>!) {
             $slides = $1;
         }
-        for (my $i = 1; $i <= $slides; $i++){
+        for (my $i = 1; $i <= $slides; $i++) {
             $contentfile[$i-1] = 'ppt/slides/slide' . $i . '.xml';
         }
         get_embedded_list($contref, \@embeddedfiles, 'ppt');
     }
     $xml = "";
-    foreach my $filename (@contentfile){
+    foreach my $filename (@contentfile) {
         my $xmlcont = '';
         msofficexml::zip_read($contref, $filename, \$xmlcont);
         $xml .= $xmlcont
     }
-    if ($ext =~ /xlsx/i){
+    if ($ext =~ /xlsx/i) {
         my $xmlcont = '';
         my $filename = 'xl/workbook.xml';
         msofficexml::zip_read($contref, $filename, \$xmlcont);
@@ -231,11 +230,11 @@ sub filter_contentfile ($$$$$) {
 
     my $embeddedcont = '';
     if (@embeddedfiles) {
-        foreach my $fname (@embeddedfiles){
+        foreach my $fname (@embeddedfiles) {
             my $cont = '';
             msofficexml::zip_read($contref, $fname, \$cont);
             my $unzippedname = "unzipped_content";
-            if ($fname =~ /.*(\..*)/){
+            if ($fname =~ /.*(\..*)/) {
                 $unzippedname = $unzippedname . $1;
             }
             my $err = zip::nesting_filter($unzippedname, \$cont, $weighted_str);
@@ -271,11 +270,11 @@ sub get_sheetname ($) {
 sub remove_txbodytag($){
     my ($contref) = @_;
     my $txbodies = '';
-    while ($$contref =~ m!<p:txBody>(.*?)</p:txBody>!sg){
+    while ($$contref =~ m!<p:txBody>(.*?)</p:txBody>!sg) {
        my $txbody = $1;
        $txbody =~ s/<a:p>/\n/gs;
        $txbody =~ s/<[^>]*>//gs;
-       $txbodies .= " " . $txbody; 
+       $txbodies .= " " . $txbody;
     }
     $$contref =~ s!<p:txBody>(.*?)</p:txBody>!!sg;
     $$contref .= $txbodies;

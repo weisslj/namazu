@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: koffice.pl,v 1.12 2007-01-14 03:04:31 opengl2772 Exp $
+# $Id: koffice.pl,v 1.13 2008-05-01 16:24:02 opengl2772 Exp $
 # Copyright (C) 2004 Yukio USUDA 
-#               2004-2007 Namazu Project All rights reserved ,
+#               2004-2008 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -41,7 +41,7 @@ sub mediatype () {
 
 sub status () {
     $unzippath = util::checkcmd('unzip');
-    if (defined $unzippath){
+    if (defined $unzippath) {
 	@unzipopts = ('-p');
 	return 'yes';
     }
@@ -114,15 +114,15 @@ sub filter_docinfofile ($$$) {
         codeconv::normalize_jp(\$title);
         codeconv::normalize_jp(\$abstract);
     }
-    if ($authorname ne ""){
+    if ($authorname ne "") {
         $fields->{'author'} = $authorname;
     }
-    if ($title ne ""){
+    if ($title ne "") {
         $fields->{'title'} = $title;
         my $weight = $conf::Weight{'html'}->{'title'};
         $$weighted_str .= "\x7f$weight\x7f$title\x7f/$weight\x7f\n";
     }
-    if ($abstract ne ""){
+    if ($abstract ne "") {
          $fields->{'summary'} = $abstract;
     }
 }
@@ -172,13 +172,13 @@ sub get_author ($){
     my $author = "";
     if ($authordata =~ m!<full-name>(.*)</full-name>!) {
         $author = $1;
-        if ($author ne ""){
+        if ($author ne "") {
             return $author;
         }
     }
     if ($authordata =~ m!<email>(.*)</email>!) {
         $author = $1;
-        if ($author ne ""){
+        if ($author ne "") {
             return $author;
         }
     }
@@ -189,9 +189,9 @@ sub get_title($){
     my ($contref) = @_;
     $$contref =~ m!<about>(.*)</about>!s;
     my $aboutdata = $1;
-    if ($aboutdata =~ m#<title>(.*)</title>#){
+    if ($aboutdata =~ m#<title>(.*)</title>#) {
         return $1;
-    }else {
+    } else {
         return "";
     }
 }
@@ -200,12 +200,12 @@ sub get_abstract($){
     my ($contref) = @_;
     $$contref =~ m!<about>(.*)</about>!s;
     my $aboutdata = $1;
-    if ($aboutdata =~ m#<abstract>(.*)</abstract>#){
+    if ($aboutdata =~ m#<abstract>(.*)</abstract>#) {
         $aboutdata = $1;
         $aboutdata =~ s/<!\[CDATA\[//;
         $aboutdata =~ s/\]\]>//;
         return $aboutdata;
-    }else {
+    } else {
         return "";
     }
 }

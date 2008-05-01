@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: xps.pl,v 1.4 2007-02-10 05:42:53 usu Exp $
+# $Id: xps.pl,v 1.5 2008-05-01 16:24:03 opengl2772 Exp $
 # Copyright (C) 2007 Yukio USUDA, 
-#               2007 Namazu Project All rights reserved.
+#               2007-2008 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -42,7 +42,7 @@ sub mediatype() {
 
 sub status() {
     $unzippath = util::checkcmd('unzip');
-    if (defined $unzippath){
+    if (defined $unzippath) {
         @unzipopts = ("-p");
         if (util::islang("ja")) {
            if ($conf::NKF ne 'no') {
@@ -133,7 +133,7 @@ sub get_pages_list ($$) {
     );
     if ($status == 0) {
         while ($file_list =~ m!\n
-            (Documents/1/Pages/\d+\.fpage)!gx){
+            (Documents/1/Pages/\d+\.fpage)!gx) {
             my $filename = $1;
             push(@$pagesref, $filename);
         }
@@ -147,11 +147,11 @@ sub filter_contentfile ($$$$$) {
     my $xml = "";
 
     get_pages_list($contref, \@pagefiles);
-    foreach my $filename (@pagefiles){
+    foreach my $filename (@pagefiles) {
         my $xmlcont = '';
         xps::zip_read($contref, $filename, \$xmlcont);
 
-	if ($xmlcont =~ m!^\377\376\<\000F\000i\000x\000e\000d!){
+	if ($xmlcont =~ m!^\377\376\<\000F\000i\000x\000e\000d!) {
             codeconv::to_inner_encoding(\$xmlcont, 'UTF-16LE');
         }else{
             codeconv::to_inner_encoding(\$xmlcont, 'unknown');

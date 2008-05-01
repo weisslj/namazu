@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: ooo.pl,v 1.19 2007-01-28 20:18:23 opengl2772 Exp $
+# $Id: ooo.pl,v 1.20 2008-05-01 16:24:02 opengl2772 Exp $
 # Copyright (C) 2003 Yukio USUDA 
-#               2003-2007 Namazu Project All rights reserved ,
+#               2003-2008 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -47,7 +47,7 @@ sub mediatype() {
 
 sub status() {
     $unzippath = util::checkcmd('unzip');
-    if (defined $unzippath){
+    if (defined $unzippath) {
 	@unzipopts = ("-p");
 	if (util::islang("ja")) {
            if ($conf::NKF ne 'no') {
@@ -131,10 +131,10 @@ sub filter_metafile ($$$) {
         codeconv::normalize_jp(\$title);
         codeconv::normalize_jp(\$keywords);
     }
-    if (!($authorname eq "")){
+    if (!($authorname eq "")) {
         $fields->{'author'} = $authorname;
     }
-    if (!($title eq "")){
+    if (!($title eq "")) {
         $fields->{'title'} = $title;
         my $weight = $conf::Weight{'html'}->{'title'};
         $$weighted_str .= "\x7f$weight\x7f$title\x7f/$weight\x7f\n";
@@ -187,16 +187,16 @@ sub get_author ($){
   my ($contref) = @_;
   if ($$contref =~ m!<dc:creator>(.*)</dc:creator>!) {
       return $1;
-  }else {
+  } else {
       return "";
   }
 }
 
 sub get_title ($){
   my ($contref) = @_;
-  if ($$contref =~ m!<dc:title>(.*)</dc:title>!){
+  if ($$contref =~ m!<dc:title>(.*)</dc:title>!) {
       return $1;
-  }else {
+  } else {
       return "";
   }
 }

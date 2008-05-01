@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: rtf.pl,v 1.24 2008-05-01 16:23:42 opengl2772 Exp $
+# $Id: rtf.pl,v 1.25 2008-05-01 18:28:28 opengl2772 Exp $
 # Copyright (C) 2003-2008 Tadamasa Teranishi All rights reserved.
 #               2003-2008 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -25,7 +25,6 @@
 
 package rtf;
 use strict;
-use File::Basename;
 require 'util.pl';
 require 'gfilter.pl';
 require 'html.pl';
@@ -114,8 +113,6 @@ sub filter ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
         = @_;
     my $err = undef;
-
-    $convname = basename($rtfconvpath) unless (defined $convname);
 
     $err = $_filter->($orig_cfile, $cont, $weighted_str, $headings, $fields);
  

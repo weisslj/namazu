@@ -2,6 +2,8 @@
 
 	* filter/{html, rtf, zip}.pl: To use the reference of the subroutine.
 
+	* filter/rtf.pl: Remove File::Basename.
+
 2008-05-01 Yukio USUDA <usu@namazu.org>
 
 	* tests/data/ja/oasys.oa2: Add a new file.
@@ -521,4 +523,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1597 2008-05-01 16:23:42 opengl2772 Exp $
+$Id: ChangeLog,v 1.1598 2008-05-01 18:28:27 opengl2772 Exp $

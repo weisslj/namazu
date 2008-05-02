@@ -1,9 +1,9 @@
 #
 # -*- Perl -*-
-# $Id: excel.pl,v 1.42 2007-11-16 17:16:20 opengl2772 Exp $
+# $Id: excel.pl,v 1.43 2008-05-02 08:35:58 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi,
 #               1999 NOKUBI Takatsugu, 
-#               2000-2007 Namazu Project All rights reserved.
+#               2000-2008 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -27,7 +27,6 @@
 package excel;
 use strict;
 use English;
-use File::Basename;
 require 'util.pl';
 require 'gfilter.pl';
 require 'html.pl';
@@ -35,8 +34,8 @@ require 'html.pl';
 my $xlconvpath  = undef;
 my @xlconvopts  = undef;
 my $utfconvpath = undef;
-my $convname = undef;
 my $wvsummarypath = undef;
+my $_filter = undef;
 
 sub mediatype() {
     return ('application/excel');
@@ -51,22 +50,22 @@ sub status() {
     $xlconvpath = util::checkcmd('xlhtml') || util::checkcmd('xlHtml');
 #    return 'no' unless defined $xlconvpath;
     if (defined $xlconvpath) {
+        $_filter = \&_filter_xl;
         @xlconvopts = ("-m");
         if (!util::islang("ja")) {
             return 'yes';
 	} else {
 	    if ($conf::NKF ne 'no') {
 		return 'yes';
-	    } else {
-		return 'no';
 	    }
-	} 
-    } else {
-        $xlconvpath = util::checkcmd('doccat');
-        @xlconvopts = ("-o", "8"); # UTF-8
-        return 'yes' if defined $xlconvpath;
-        return 'no'; 
+	}
     }
+
+    $_filter = \&_filter_doccat;
+    $xlconvpath = util::checkcmd('doccat');
+    @xlconvopts = ("-o", "8"); # UTF-8
+    return 'yes' if defined $xlconvpath;
+    return 'no';
 }
 
 sub recursive() {
@@ -94,17 +93,12 @@ sub filter ($$$$$) {
         = @_;
     my $err = undef;
 
-    $convname = basename($xlconvpath) unless (defined $convname);
+    $err = $_filter->($orig_cfile, $cont, $weighted_str, $headings, $fields);
 
-    if ($convname =~ /xlhtml/i) {
-        $err = filter_xl($orig_cfile, $cont, $weighted_str, $headings, $fields);
-    } else {
-        $err = filter_doccat($orig_cfile, $cont, $weighted_str, $headings, $fields);
-    }
     return $err;
 }
 
-sub filter_xl ($$$$$) {
+sub _filter_xl ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
         = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
@@ -156,12 +150,12 @@ sub filter_xl ($$$$$) {
     if (util::islang("ja")) {
 	my $encoding = "utf-8"; # UTF-8
 	# Pattern for xlHtml version 0.2.6.
-	if ($$cont =~ m!^<FONT SIZE="?-1"?><I>Last Updated(&nbsp;using| with) Excel 5.0 or 95</I></FONT><br>$!m) 
+	if ($$cont =~ m!^<FONT SIZE="?-1"?><I>Last Updated(&nbsp;using| with) Excel 5.0 or 95</I></FONT><br>$!m)
 	{
 	    $encoding = "shiftjis"; # Shift_JIS
 	}
 	codeconv::to_inner_encoding($cont, $encoding);
-    } 
+    }
 
     # Extract the author and exclude xlHtml's footer at once.
     $$cont =~ s!^<FONT SIZE="?-1"?><I>Spreadsheet's Author:&nbsp;(.*?)</I></FONT><br>.*!!ms;  # '
@@ -187,7 +181,7 @@ sub filter_xl ($$$$$) {
     return undef;
 }
 
-sub filter_doccat ($$$$$) {
+sub _filter_doccat ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
         = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
@@ -226,7 +220,7 @@ sub filter_doccat ($$$$$) {
     }
     unlink $tmpfile;
 
-    codeconv::normalize_document($cont);
+    codeconv::normalize_jp_document($cont);
 
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);
@@ -281,7 +275,7 @@ sub getSummaryInfo ($$$$$) {
         $codepage = sprintf("%8.8x", hex($1));
     }
 
-    if ($codepage eq "fffffde9") { 
+    if ($codepage eq "fffffde9") {
         codeconv::normalize_jp(\$summary);
     } else {
         codeconv::to_inner_encoding(\$summary, 'shiftjis');

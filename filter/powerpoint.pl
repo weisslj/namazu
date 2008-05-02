@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: powerpoint.pl,v 1.34 2007-11-16 17:16:20 opengl2772 Exp $
+# $Id: powerpoint.pl,v 1.35 2008-05-02 08:35:58 opengl2772 Exp $
 # Copyright (C) 2000 Ken-ichi Hirose, 
-#               2000-2007 Namazu Project All rights reserved.
+#               2000-2008 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -26,7 +26,6 @@
 package powerpoint;
 use strict;
 use English;
-use File::Basename;
 require 'util.pl';
 require 'gfilter.pl';
 require 'html.pl';
@@ -34,8 +33,8 @@ require 'html.pl';
 my $pptconvpath = undef;
 my @pptconvopts = undef;
 my $utfconvpath = undef;
-my $convname = undef;
 my $wvsummarypath = undef;
+my $_filter = undef;
 
 sub mediatype() {
     return ('application/powerpoint');
@@ -50,22 +49,22 @@ sub status() {
     $pptconvpath = util::checkcmd('ppthtml') || util::checkcmd('pptHtml');
 #    return 'no' unless defined $pptconvpath
     if (defined $pptconvpath) {
+        $_filter = \&_filter_ppt;
 	@pptconvopts = ();
 	if (!util::islang("ja")) {
 	    return 'yes';
 	} else {
 	    if ($conf::NKF ne 'no') {
 		return 'yes';
-	    } else {
-		return 'no';
 	    }
-	} 
-    } else {
-        $pptconvpath = util::checkcmd('doccat');
-        @pptconvopts = ("-o", "8"); # UTF-8
-        return 'yes' if defined $pptconvpath;
-        return 'no'; 
+	}
     }
+
+    $_filter = \&_filter_doccat;
+    $pptconvpath = util::checkcmd('doccat');
+    @pptconvopts = ("-o", "8"); # UTF-8
+    return 'yes' if defined $pptconvpath;
+    return 'no';
 }
 
 sub recursive() {
@@ -93,17 +92,12 @@ sub filter ($$$$$) {
         = @_;
     my $err = undef;
 
-    $convname = basename($pptconvpath) unless (defined $convname);
+    $err = $_filter->($orig_cfile, $cont, $weighted_str, $headings, $fields);
 
-    if ($convname =~ /ppthtml/i) {
-        $err = filter_ppt($orig_cfile, $cont, $weighted_str, $headings, $fields);
-    } else {
-        $err = filter_doccat($orig_cfile, $cont, $weighted_str, $headings, $fields);
-    }
     return $err;
 }
 
-sub filter_ppt ($$$$$) {
+sub _filter_ppt ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
         = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
@@ -153,13 +147,13 @@ sub filter_ppt ($$$$$) {
     # Code conversion for Japanese document.
     if (util::islang("ja")) {
 	# Pattern for pptHtml
-	if ($$cont =~ m!^<FONT SIZE=-1><I>Last Updated&nbsp;using Excel 5.0 or 95</I></FONT><br>$!m) 
+	if ($$cont =~ m!^<FONT SIZE=-1><I>Last Updated&nbsp;using Excel 5.0 or 95</I></FONT><br>$!m)
 	{
 	    codeconv::to_inner_encoding($cont, 'shiftjis');
 	} else {
 	    codeconv::normalize_jp($cont);
 	}
-    } 
+    }
 
     # Extract the author and exclude pptHtml's footer at once.
     $$cont =~ s!^<FONT SIZE=-1><I>Spreadsheet's Author:&nbsp;(.*?)</I></FONT><br>.*!!ms;  # '
@@ -184,7 +178,7 @@ sub filter_ppt ($$$$$) {
     return undef;
 }
 
-sub filter_doccat ($$$$$) {
+sub _filter_doccat ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
         = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
@@ -223,7 +217,7 @@ sub filter_doccat ($$$$$) {
     }
     unlink $tmpfile;
 
-    codeconv::normalize_document($cont);
+    codeconv::normalize_jp_document($cont);
 
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);
@@ -281,7 +275,7 @@ sub getSummaryInfo ($$$$$) {
         $codepage = sprintf("%8.8x", hex($1));
     }
 
-    if ($codepage eq "fffffde9") { 
+    if ($codepage eq "fffffde9") {
         codeconv::normalize_jp(\$summary);
     } else {
 	codeconv::to_inner_encoding(\$summary, 'shiftjis');

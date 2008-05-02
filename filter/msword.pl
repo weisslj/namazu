@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: msword.pl,v 1.63 2007-11-16 17:16:20 opengl2772 Exp $
+# $Id: msword.pl,v 1.64 2008-05-02 08:35:58 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi,
-#               2000-2007 Namazu Project All rights reserved.
+#               2000-2008 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -35,8 +35,9 @@ my $wordconvpath  = undef;
 my @wordconvopts  = undef;
 my $wvversionpath = undef;
 my $utfconvpath   = undef;
-my $convname = undef;
 my $wvsummarypath = undef;
+my $_filter = undef;
+my $_subfilter = undef;
 
 sub mediatype() {
     return ('application/msword');
@@ -51,6 +52,8 @@ sub status() {
 
     $wordconvpath = util::checkcmd('wvWare');
     if (defined $wordconvpath) {
+        $_filter = \&_filter_wv;
+        $_subfilter = \&_subfilter_wvWare;
         my @cmd = ($wordconvpath, "--version");
         my $fh_out = IO::File->new_tmpfile();
         my $status = util::syscmd(
@@ -71,8 +74,6 @@ sub status() {
                 } else {
 		    if ($conf::NKF ne 'no') {
 			return 'yes';
-		    } else {
-			return 'no';
 		    }
                 }
             }
@@ -81,17 +82,18 @@ sub status() {
 
     $wordconvpath = util::checkcmd('wvHtml');
     if (defined $wordconvpath) {
+        $_filter = \&_filter_wv;
+        $_subfilter = \&_subfilter_wvHtml;
         if (!util::islang("ja")) {
 	    return 'yes';
         } else {
 	    if ($conf::NKF ne 'no') {
 		return 'yes';
-	    } else {
-		return 'no';
 	    }
        }
     }
 
+    $_filter = \&_filter_doccat;
     $wordconvpath = util::checkcmd('doccat');
     @wordconvopts = ("-o", "8"); # UTF-8
     return 'yes' if defined $wordconvpath;
@@ -119,17 +121,12 @@ sub filter ($$$$$) {
         = @_;
     my $err = undef;
 
-    $convname = basename($wordconvpath) unless (defined $convname);
+    $err = $_filter->($orig_cfile, $cont, $weighted_str, $headings, $fields);
 
-    if ($convname =~ /(?:wvWare|wvHtml)/i) {
-        $err = filter_wv($orig_cfile, $cont, $weighted_str, $headings, $fields);
-    } else { 
-        $err = filter_doccat($orig_cfile, $cont, $weighted_str, $headings, $fields);
-    }
     return $err;
-}   
+}
 
-sub filter_wv ($$$$$) {
+sub _filter_wv ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
         = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
@@ -138,7 +135,7 @@ sub filter_wv ($$$$$) {
     util::vprint("Processing ms-word file ... (using  '$wordconvpath')\n");
 
     my $tmpfile  = util::tmpnam('NMZ.word');
-    { 
+    {
         my $fh = util::efopen("> $tmpfile");
         print $fh $$cont;
         util::fclose($fh);
@@ -157,11 +154,8 @@ sub filter_wv ($$$$$) {
     getSummaryInfo($tmpfile, $cont, $weighted_str, $headings, $fields);
     my $title = $fields->{'title'};
 
-    if ($convname =~ /wvWare/i) {
-        $err = filter_wvWare($tmpfile, $cont, $weighted_str, $headings, $fields);
-    } else {
-        $err = filter_wvHtml($tmpfile, $cont, $weighted_str, $headings, $fields);
-    }
+    $err = $_subfilter->($tmpfile, $cont, $weighted_str, $headings, $fields);
+
     unlink $tmpfile;
     return $err if (defined $err);
 
@@ -182,7 +176,7 @@ sub filter_wv ($$$$$) {
     return undef;
 }
 
-sub filter_wvWare ($$$$$) {
+sub _subfilter_wvWare ($$$$$) {
     my ($cfile, $cont, $weighted_str, $headings, $fields)
         = @_;
 
@@ -193,7 +187,7 @@ sub filter_wvWare ($$$$$) {
 
     if (util::islang("ja")) {
         @wordconvopts = (
-            "--nographics", "-d", "$tpath", "-b", "$name", 
+            "--nographics", "-d", "$tpath", "-b", "$name",
             "--charset=UTF-8"
         );
     } else {
@@ -240,7 +234,7 @@ sub filter_wvWare ($$$$$) {
     return undef;
 }
 
-sub filter_wvHtml ($$$$$) {
+sub _subfilter_wvHtml ($$$$$) {
     my ($cfile, $cont, $weighted_str, $headings, $fields)
         = @_;
 
@@ -316,11 +310,11 @@ sub filter_wvHtml ($$$$$) {
     return undef;
 }
 
-sub filter_doccat ($$$$$) {
+sub _filter_doccat ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
         = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
-    
+
     util::vprint("Processing ms-word file ... (using  '$wordconvpath')\n");
 
     my $tmpfile  = util::tmpnam('NMZ.word');
@@ -355,7 +349,7 @@ sub filter_doccat ($$$$$) {
     }
     unlink $tmpfile;
 
-    codeconv::normalize_document($cont);
+    codeconv::normalize_jp_document($cont);
 
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);
@@ -390,7 +384,7 @@ sub getDocumentVersion ($) {
             $docversion = $1;
         }
     }
- 
+
     return $docversion;
 }
 
@@ -440,7 +434,7 @@ sub getSummaryInfo ($$$$$) {
         $codepage = sprintf("%8.8x", hex($1));
     }
 
-    if ($codepage eq "fffffde9") { 
+    if ($codepage eq "fffffde9") {
         codeconv::normalize_jp(\$summary);
     } else {
 	codeconv::to_inner_encoding(\$summary, 'shiftjis');

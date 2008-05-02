@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: oasys.pl,v 1.15 2007-01-14 03:04:31 opengl2772 Exp $
+# $Id: oasys.pl,v 1.16 2008-05-02 08:06:16 opengl2772 Exp $
 # Copyright (C) 2000 Ken-ichi Hirose , 
-#               2000-2007 Namazu Project All rights reserved.
+#               2000-2008 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -39,7 +39,7 @@ sub status() {
     $oasysconvpath = util::checkcmd('doccat');
     @oasysconvopts  = ("-o", "e");
     return 'yes' if defined $oasysconvpath;
-    return 'no'; 
+    return 'no';
 }
 
 sub recursive() {
@@ -101,7 +101,7 @@ sub filter ($$$$$) {
     }
     unlink $tmpfile;
 
-    codeconv::normalize_document($cont);
+    codeconv::normalize_jp_document($cont);
 
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);

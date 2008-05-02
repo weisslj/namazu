@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: koffice.pl,v 1.13 2008-05-01 16:24:02 opengl2772 Exp $
+# $Id: koffice.pl,v 1.14 2008-05-02 08:06:16 opengl2772 Exp $
 # Copyright (C) 2004 Yukio USUDA 
 #               2004-2008 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -84,7 +84,7 @@ sub filter_docinfofile ($$$) {
     my $metafile = 'documentinfo.xml';
     my $xml = "";
     my $tmpfile  = util::tmpnam('NMZ.zip');
-    { 
+    {
 	my $fh = util::efopen("> $tmpfile");
 	print $fh $$contref;
         util::fclose($fh);
@@ -132,7 +132,7 @@ sub filter_maindocfile ($$$$$) {
     my $contentfile = "maindoc.xml";
     my $xml = "";
     my $tmpfile  = util::tmpnam('NMZ.zip');
-    { 
+    {
 	my $fh = util::efopen("> $tmpfile");
 	print $fh $$contref;
         util::fclose($fh);

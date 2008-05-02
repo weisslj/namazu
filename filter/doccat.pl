@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: doccat.pl,v 1.12 2007-11-16 16:44:01 opengl2772 Exp $
+# $Id: doccat.pl,v 1.13 2008-05-02 08:06:16 opengl2772 Exp $
 # Copyright (C) 2001 SATOH Fumiyasu,
-#               2001-2007 Namazu Project. All rights reserved.
+#               2001-2008 Namazu Project. All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -143,34 +143,27 @@ sub add_magic ($) {
 
     # MS PowerPoint
     # FIXME: very ad hoc.
-    $magic->addFileExts('\\.xls$', 'application/excel');
     $magic->addFileExts('\\.pp[st]$', 'application/powerpoint');
 
     # Justsystem Ichitaro 5
     # FIXME: very ad hoc.
-    $magic->addFileExts('\\.xls$', 'application/excel');
     $magic->addFileExts('\\.jaw$', 'application/ichitaro5');
     # Justsystem Ichitaro 6
     # FIXME: very ad hoc.
-    $magic->addFileExts('\\.xls$', 'application/excel');
     $magic->addFileExts('\\.jbw$', 'application/ichitaro6');
     # Justsystem Ichitaro 7
     # FIXME: very ad hoc.
-    $magic->addFileExts('\\.xls$', 'application/excel');
     $magic->addFileExts('\\.jfw$', 'application/ichitaro7');
     # Justsystem Ichitaro 8 - 13, 2004
     # FIXME: very ad hoc.
-    $magic->addFileExts('\\.xls$', 'application/excel');
     $magic->addFileExts('\\.jt[dt]$', 'application/x-js-taro');
 
     # Lotus WordPro
     # FIXME: very ad hoc.
-    $magic->addFileExts('\\.xls$', 'application/excel');
     $magic->addFileExts('\\.lwp$', 'application/x-lotus-wordpro');
 
     # Fujitsu OASYS for Windows 6, 7, 8, 2002
     # FIXME: very ad hoc.
-    $magic->addFileExts('\\.xls$', 'application/excel');
     $magic->addFileExts('\\.oa[23]$', 'application/oasys');
 
     # Adobe PDF
@@ -178,7 +171,6 @@ sub add_magic ($) {
 
     # RTF
     # FIXME: very ad hoc.
-    $magic->addFileExts('\\.xls$', 'application/excel');
     $magic->addFileExts('\\.rtf$', 'application/rtf');
 
     $magic->addMagicEntry("0\tstring\t{\\rtf\t");
@@ -235,7 +227,7 @@ sub filter ($$$$$) {
     unlink($tmpfile);
     unlink($tmpfile2);
 
-    codeconv::normalize_document($cont);
+    codeconv::normalize_jp_document($cont);
 
     doccat_filter($orig_cfile, $cont, $weighted_str, $headings, $fields);
 

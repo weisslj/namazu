@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: wordpro.pl,v 1.18 2007-11-16 16:44:01 opengl2772 Exp $
-# Copyright (C) 2000 Ken-ichi Hirose , 
-#               2000-2007 Namazu Project All rights reserved.
+# $Id: wordpro.pl,v 1.19 2008-05-02 08:06:16 opengl2772 Exp $
+# Copyright (C) 2000 Ken-ichi Hirose,
+#               2000-2008 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -39,7 +39,7 @@ sub status() {
     $wordproconvpath = util::checkcmd('doccat');
     @wordproconvopts = ("-o", "8"); # UTF-8
     return 'yes' if defined $wordproconvpath;
-    return 'no'; 
+    return 'no';
 }
 
 sub recursive() {
@@ -70,12 +70,12 @@ sub filter ($$$$$) {
     util::vprint("Processing wordpro file ... (using  '$wordproconvpath')\n");
 
     my $tmpfile  = util::tmpnam('NMZ.wordpro');
-    {   
+    {
         my $fh = util::efopen("> $tmpfile");
         print $fh $$cont;
         util::fclose($fh);
     }
-    {   
+    {
         my @cmd = ($wordproconvpath, @wordproconvopts, $tmpfile);
         my $fh_out = IO::File->new_tmpfile();
         my $status = util::syscmd(
@@ -101,7 +101,7 @@ sub filter ($$$$$) {
     }
     unlink $tmpfile;
 
-    codeconv::normalize_document($cont);
+    codeconv::normalize_jp_document($cont);
 
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);

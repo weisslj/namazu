@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: taro.pl,v 1.20 2007-11-16 16:44:33 opengl2772 Exp $
+# $Id: taro.pl,v 1.21 2008-05-02 08:06:16 opengl2772 Exp $
 # Copyright (C) 2000 Ken-ichi Hirose, 
-#               2000-2007 Namazu Project All rights reserved.
+#               2000-2008 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -44,7 +44,7 @@ sub status() {
     $taroconvpath = util::checkcmd('doccat');
     @taroconvopts = ("-o", "8"); # UTF-8
     return 'yes' if defined $taroconvpath;
-    return 'no'; 
+    return 'no';
 }
 
 sub recursive() {
@@ -117,7 +117,7 @@ sub filter ($$$$$) {
     }
     unlink $tmpfile;
 
-    codeconv::normalize_document($cont);
+    codeconv::normalize_jp_document($cont);
 
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);

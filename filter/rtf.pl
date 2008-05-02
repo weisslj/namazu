@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: rtf.pl,v 1.25 2008-05-01 18:28:28 opengl2772 Exp $
+# $Id: rtf.pl,v 1.26 2008-05-02 08:06:16 opengl2772 Exp $
 # Copyright (C) 2003-2008 Tadamasa Teranishi All rights reserved.
 #               2003-2008 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -31,7 +31,6 @@ require 'html.pl';
 
 my $rtfconvpath  = undef;
 my @rtfconvopts  = undef;
-my $convname = undef;
 my $_filter = undef;
 
 sub mediatype() {
@@ -51,35 +50,34 @@ sub status() {
         $_filter = \&_filter_rtf2html;
         return 'yes';
     }
-    else {
-        $rtfconvpath = util::checkcmd('doccat');
-        @rtfconvopts = ("-o", "8"); # UTF-8
-        if (defined $rtfconvpath) {
-            $_filter = \&_filter_doccat;
 
-            my @cmd = ("$rtfconvpath", "-V");
-            my $fh_cmd = IO::File->new_tmpfile();
-            my $status = util::syscmd(
-                command => \@cmd,
-                option => {
-                    "stdout" => $fh_cmd,
-                    "stderr" => "/dev/null",
-                },
-            );
+    $rtfconvpath = util::checkcmd('doccat');
+    @rtfconvopts = ("-o", "8"); # UTF-8
+    if (defined $rtfconvpath) {
+        $_filter = \&_filter_doccat;
 
-            while (<$fh_cmd>) {
-                if (/TF Library *: *Version *: *(\d+\.\d+)/i) {
-                    my $ver = $1;
-                    if ($ver >= 1.42) {
-                        util::fclose($fh_cmd);
-                        return 'yes';
-                    }
+        my @cmd = ("$rtfconvpath", "-V");
+        my $fh_cmd = IO::File->new_tmpfile();
+        my $status = util::syscmd(
+            command => \@cmd,
+            option => {
+                "stdout" => $fh_cmd,
+                "stderr" => "/dev/null",
+            },
+        );
+
+        while (<$fh_cmd>) {
+            if (/TF Library *: *Version *: *(\d+\.\d+)/i) {
+                my $ver = $1;
+                if ($ver >= 1.42) {
+                    util::fclose($fh_cmd);
+                    return 'yes';
                 }
             }
-            util::fclose($fh_cmd);
         }
-        return 'no';
+        util::fclose($fh_cmd);
     }
+    return 'no';
 }
 
 sub recursive() {
@@ -115,9 +113,9 @@ sub filter ($$$$$) {
     my $err = undef;
 
     $err = $_filter->($orig_cfile, $cont, $weighted_str, $headings, $fields);
- 
+
     return $err;
-}   
+}
 
 sub _filter_rtf2html ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
@@ -176,7 +174,7 @@ sub _filter_doccat ($$$$$) {
     my ($orig_cfile, $cont, $weighted_str, $headings, $fields)
         = @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
-    
+
     util::vprint("Processing rtf file ... (using  '$rtfconvpath')\n");
 
     my $tmpfile = util::tmpnam('NMZ.rtf');
@@ -207,7 +205,7 @@ sub _filter_doccat ($$$$$) {
     }
     unlink $tmpfile;
 
-    codeconv::normalize_document($cont);
+    codeconv::normalize_jp_document($cont);
 
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);

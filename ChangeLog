@@ -4,6 +4,13 @@
 
 	* filter/rtf.pl: Remove File::Basename.
 
+        * filter/*.pl: The blank at the end of line is deleted.
+
+        * filter/doccat.pl(add_magic): The overlapping entry is deleted. 
+
+        * filter/{doccat, rtf, taro, wordpro}.pl: normalize_document is
+        changed to normalize_jp_document.
+
 2008-05-01 Yukio USUDA <usu@namazu.org>
 
 	* tests/data/ja/oasys.oa2: Add a new file.
@@ -523,4 +530,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1598 2008-05-01 18:28:27 opengl2772 Exp $
+$Id: ChangeLog,v 1.1599 2008-05-02 08:06:16 opengl2772 Exp $

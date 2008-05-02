@@ -35,13 +35,14 @@ filter_DATA = bzip2.pl \
 	      dvi.pl \
 	      rpm.pl \
 	      deb.pl \
-              ooo.pl \
-              rtf.pl \
+	      ooo.pl \
+	      rtf.pl \
 	      apachecache.pl \
 	      mp3.pl \
 	      macbinary.pl \
 	      applefile.pl \
 	      pipermail.pl \
+	      koffice.pl \
 	      gnumeric.pl \
 	      msofficexml.pl \
 	      visio.pl \

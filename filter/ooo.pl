@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: ooo.pl,v 1.20 2008-05-01 16:24:02 opengl2772 Exp $
+# $Id: ooo.pl,v 1.21 2008-05-02 08:06:41 opengl2772 Exp $
 # Copyright (C) 2003 Yukio USUDA 
 #               2003-2008 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -53,9 +53,9 @@ sub status() {
            if ($conf::NKF ne 'no') {
 		return 'yes';
 	   }
-           return 'no'; 
+           return 'no';
         } else {
-           return 'yes'; 
+           return 'yes';
         }
     }
     return 'no';
@@ -101,7 +101,7 @@ sub filter_metafile ($$$) {
     my $metafile = 'meta.xml';
     my $xml = "";
     my $tmpfile  = util::tmpnam('NMZ.zip');
-    { 
+    {
         my $fh = util::efopen("> $tmpfile");
         print $fh $$contref;
         util::fclose($fh);
@@ -151,7 +151,7 @@ sub filter_contentfile ($$$$$) {
     my $contentfile = "content.xml";
     my $xml = "";
     my $tmpfile  = util::tmpnam('NMZ.zip');
-    { 
+    {
         my $fh = util::efopen("> $tmpfile");
         print $fh $$contref;
         util::fclose($fh);

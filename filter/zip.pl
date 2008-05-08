@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: zip.pl,v 1.26 2008-05-01 16:23:42 opengl2772 Exp $
+# $Id: zip.pl,v 1.27 2008-05-08 16:56:49 opengl2772 Exp $
 #  zip filter for Namazu
 #  Copyright (C) 2004 MATSUMURA Namihiko <po-jp@counterghost.net>
 #                2004 Yukio USUDA <usu@namazu.org>
@@ -73,86 +73,98 @@ sub filter ($$$$$) {
     my ($orig_cfile, $contref, $weighted_str, $headings, $fields)
       = @_;
 
-    my $tmpfile;
-    my $uniqnumber = int(rand(10000));
-    do {
-	$tmpfile = util::tmpnam('NMZ.zip' . substr("000$uniqnumber", -4));
-	$uniqnumber++;
-    } while (-f $tmpfile);
-
-    {
-	my $fh = util::efopen("> $tmpfile");
-	print $fh $$contref;
-        util::fclose($fh);
-    }
-
-    $$contref ="";
+    $$contref = "";
     my $err = undef;
-    $err = $_filter->($tmpfile, $contref, $weighted_str, $headings, $fields);
-    unlink($tmpfile);
+    $err = $_filter->($contref, $weighted_str, $headings, $fields);
     return $err;
 }
 
-sub _az_filter ($$$$$) {
-    my ($tmpfile, $contref, $weighted_str, $headings, $fields)
-      = @_;
+sub _az_filter ($$$$) {
+    my ($contref, $weighted_str, $headings, $fields) = @_;
 
     util::vprint("Processing zip file ... (using  Archive::ZIP module)\n");
 
+    my $tmpfile;
+    my $uniqnumber = int(rand(10000));
+    do {
+        $tmpfile = util::tmpnam('NMZ.zip' . substr("000$uniqnumber", -4));
+        $uniqnumber++;
+    } while (-f $tmpfile);
+
+    {
+        my $fh = util::efopen("> $tmpfile");
+        print $fh $$contref;
+        util::fclose($fh);
+    }
+
     eval 'use Archive::Zip;';
     my $zip = Archive::Zip->new();
-    my $err = $zip->read( $tmpfile );
+    my $err = $zip->read($tmpfile);
     if ($err != 0) {
-	util::dprint("Archive::Zip: there was a error");
-	return $err;
+        util::dprint("Archive::Zip: there was a error");
+        unlink($tmpfile);
+        return $err;
     }
     {
-	my $comment = $zip->zipfileComment();
-	my @filenames = $zip->memberNames();
-	my $tmp = join(" ", @filenames);
-	codeconv::to_inner_encoding(\$tmp, 'unknown');
-	$$contref = $comment . " " . $tmp . " ";
+        my $comment = $zip->zipfileComment();
+        my @filenames = $zip->memberNames();
+        my $tmp = join(" ", @filenames);
+        codeconv::to_inner_encoding(\$tmp, 'unknown');
+        $$contref = $comment . " " . $tmp . " ";
     }
     my @members = $zip->members();
     my $member;
     foreach $member (@members) {
-	next if (($member->isEncrypted() or $member->isDirectory()));
+        next if (($member->isEncrypted() or $member->isDirectory()));
 
-	my $size = $member->uncompressedSize();
-	my $fname = $member->fileName();
-	if ($size == 0) {
-	    util::dprint("$fname: filesize is 0");
-	} elsif ($size > $conf::FILE_SIZE_MAX) {
-	    util::dprint("$fname: Too large ziped file");
-	} elsif ($fname =~ m!^($conf::DENY_FILE)$!i ) {
-	    codeconv::to_inner_encoding(\$fname, 'unknown');
-	    util::vprint(sprintf(_("Denied:	%s"), $fname));
-	} elsif ($fname !~ m!^($conf::ALLOW_FILE)$!i) {
-	    codeconv::to_inner_encoding(\$fname, 'unknown');
-	    util::vprint(sprintf(_("Not allowed:	%s"), $fname));
-	} else {
-	    my $con = $zip->contents($member);
-	    if ($con) {
-		my $unzippedname = "unzipped_content";
-		if ($fname =~ /.*(\..*)/) {
-		    $unzippedname = $unzippedname . $1;
-		}
-		my $err = zip::nesting_filter($unzippedname, \$con, $weighted_str);
-		if (defined $err) {
-		    util::dprint("filter/zip.pl gets error message \"$err\"");
-		}
-		$$contref .= $con . " ";
-	    }
-	}
+        my $size = $member->uncompressedSize();
+        my $fname = $member->fileName();
+        if ($size == 0) {
+            util::dprint("$fname: filesize is 0");
+        } elsif ($size > $conf::FILE_SIZE_MAX) {
+            util::dprint("$fname: Too large ziped file");
+        } elsif ($fname =~ m!^($conf::DENY_FILE)$!i) {
+            codeconv::to_inner_encoding(\$fname, 'unknown');
+            util::vprint(sprintf(_("Denied:	%s"), $fname));
+        } elsif ($fname !~ m!^($conf::ALLOW_FILE)$!i) {
+            codeconv::to_inner_encoding(\$fname, 'unknown');
+            util::vprint(sprintf(_("Not allowed:	%s"), $fname));
+        } else {
+            my $con = $zip->contents($member);
+            if ($con) {
+                my $unzippedname = "unzipped_content";
+                if ($fname =~ /.*(\..*)/) {
+                    $unzippedname = $unzippedname . $1;
+                }
+                my $err = zip::nesting_filter($unzippedname, \$con, $weighted_str);
+                if (defined $err) {
+                    util::dprint("filter/zip.pl gets error message \"$err\"");
+                }
+                $$contref .= $con . " ";
+            }
+        }
     }
+    unlink($tmpfile);
     return undef;
 }
 
-sub _unzip_filter ($$$$$) {
-    my ($tmpfile, $contref, $weighted_str, $headings, $fields)
-      = @_;
+sub _unzip_filter ($$$$) {
+    my ($contref, $weighted_str, $headings, $fields) = @_;
 
     util::vprint("Processing zip file ... (using  '$unzippath')\n");
+
+    my $tmpfile;
+    my $uniqnumber = int(rand(10000));
+    do {
+        $tmpfile = util::tmpnam('NMZ.zip' . substr("000$uniqnumber", -4));
+        $uniqnumber++;
+    } while (-f $tmpfile);
+
+    {
+        my $fh = util::efopen("> $tmpfile");
+        print $fh $$contref;
+        util::fclose($fh);
+    }
 
     my @cmd = ("$unzippath", "-P", "passwd", "-qq", "-t", "$tmpfile");
     my $status = util::syscmd(
@@ -177,9 +189,9 @@ sub _unzip_filter ($$$$$) {
         },
     );
     if ($status == 0) {
-	my $summary = util::readfile("$tmpfile2");
-	codeconv::to_inner_encoding(\$summary, 'unknown');
-	$$contref .= $summary . " ";
+        my $summary = util::readfile("$tmpfile2");
+        codeconv::to_inner_encoding(\$summary, 'unknown');
+        $$contref .= $summary . " ";
     }
 
     my %files;
@@ -193,29 +205,29 @@ sub _unzip_filter ($$$$$) {
         },
     );
     if ($status == 0) {
-	my $filelist = util::readfile("$tmpfile2");
+        my $filelist = util::readfile("$tmpfile2");
         codeconv::normalize_document(\$filelist);
-	while ($filelist =~/\n\S+\s+	# permission
-			\S+\s+		# version
-			(\S+)\s+	# filesystem
-			(\d+)\s+	# filesize
-			\S+\s+		#
-			\S+\s+		#
-			\S+\s+		# day-month-year
-			\S+\s+		# hour:min
-			(.+)/gx) {	# filename
-	    my $filename = $3;
-	    $files{$filename} = $2;
-	    my $filesystem = $1;
-	    # The unzip output japanese filename incorrectly when filesystem
-	    # attribute is 'fat' or 'hpfs'.
-	    if ($filesystem =~ /unx|ntf/) {
-		$filename = './' . $filename;
-		codeconv::to_inner_encoding(\$filename, 'unknown');
-		$filename = gfilter::filename_to_title($filename, $weighted_str);
-		$filenames .= $filename . " ";
-	    }
-	}
+        while ($filelist =~/\n\S+\s+	# permission
+                        \S+\s+		# version
+                        (\S+)\s+	# filesystem
+                        (\d+)\s+	# filesize
+                        \S+\s+		#
+                        \S+\s+		#
+                        \S+\s+		# day-month-year
+                        \S+\s+		# hour:min
+                        (.+)/gx) {	# filename
+            my $filename = $3;
+            $files{$filename} = $2;
+            my $filesystem = $1;
+            # The unzip output japanese filename incorrectly when filesystem
+            # attribute is 'fat' or 'hpfs'.
+            if ($filesystem =~ /unx|ntf/) {
+                $filename = './' . $filename;
+                codeconv::to_inner_encoding(\$filename, 'unknown');
+                $filename = gfilter::filename_to_title($filename, $weighted_str);
+                $filenames .= $filename . " ";
+            }
+        }
     }
     $$contref .= $filenames . " " if (defined $filenames);
 
@@ -223,19 +235,19 @@ sub _unzip_filter ($$$$$) {
 
     my $fname;
     foreach $fname (keys %files) {
-	my $size = $files{$fname};
-	if ($size == 0) {
-	    util::dprint("$fname: filesize is 0");
-	} elsif ($size > $conf::FILE_SIZE_MAX) {
-	    util::dprint("$fname: Too large ziped file");
-	} elsif ($fname =~ m!^($conf::DENY_FILE)$!i ) {
-	    codeconv::to_inner_encoding(\$fname, 'unknown');
-	    util::vprint(sprintf(_("Denied:	%s"), $fname));
-	} elsif ($fname !~ m!^($conf::ALLOW_FILE)$!i) {
-	    codeconv::to_inner_encoding(\$fname, 'unknown');
-	    util::vprint(sprintf(_("Not allowed:	%s"), $fname));
-	} else {
-	    my $con = "";
+        my $size = $files{$fname};
+        if ($size == 0) {
+            util::dprint("$fname: filesize is 0");
+        } elsif ($size > $conf::FILE_SIZE_MAX) {
+            util::dprint("$fname: Too large ziped file");
+        } elsif ($fname =~ m!^($conf::DENY_FILE)$!i) {
+            codeconv::to_inner_encoding(\$fname, 'unknown');
+            util::vprint(sprintf(_("Denied:	%s"), $fname));
+        } elsif ($fname !~ m!^($conf::ALLOW_FILE)$!i) {
+            codeconv::to_inner_encoding(\$fname, 'unknown');
+            util::vprint(sprintf(_("Not allowed:	%s"), $fname));
+        } else {
+            my $con = "";
             my @cmd = ("$unzippath", "-p", "$tmpfile", "$fname");
             my $status = util::syscmd(
                 command => \@cmd,
@@ -246,17 +258,18 @@ sub _unzip_filter ($$$$$) {
                     "mode_stderr" => "wt",
                 },
             );
-	    my $unzippedname = "unzipped_content";
-	    if ($fname =~ /.*(\..*)/) {
-		$unzippedname = $unzippedname . $1;
-	    }
-	    my $err = zip::nesting_filter($unzippedname, \$con, $weighted_str);
-	    if (defined $err) {
-		util::dprint("filter/zip.pl gets error message \"$err\"");
-	    }
-	    $$contref .= $con . " ";
-	}
+            my $unzippedname = "unzipped_content";
+            if ($fname =~ /.*(\..*)/) {
+                $unzippedname = $unzippedname . $1;
+            }
+            my $err = zip::nesting_filter($unzippedname, \$con, $weighted_str);
+            if (defined $err) {
+                util::dprint("filter/zip.pl gets error message \"$err\"");
+            }
+            $$contref .= $con . " ";
+        }
     };
+    unlink($tmpfile);
     return undef;
 }
 
@@ -269,29 +282,29 @@ sub nesting_filter ($$$){
 
     my $mtype;
     {
-	my $uri;
-	my $Document = undef;
-	$Document = mknmz::document->new();
-	$Document->init_doc($uri, $filename, $contref, $mmtype);
-	$$contref = ${$Document->get_filtered_contentref()};
-	$mtype = $Document->get_mimetype();
-	$$weighted_str = $Document->get_weighted_str();
-	$headings = $Document->get_headings();
-	%fields = $Document->get_fields();
+        my $uri;
+        my $Document = undef;
+        $Document = mknmz::document->new();
+        $Document->init_doc($uri, $filename, $contref, $mmtype);
+        $$contref = ${$Document->get_filtered_contentref()};
+        $mtype = $Document->get_mimetype();
+        $$weighted_str = $Document->get_weighted_str();
+        $headings = $Document->get_headings();
+        %fields = $Document->get_fields();
     }
 
     if ($mtype =~ /; x-system=unsupported$/) {
-	$$contref = "";
+        $$contref = "";
         $err = $mtype;
     } elsif ($mtype =~ /; x-error=(.*)$/) {
         $$contref = "";
         $err = $1;
     } else {
-	gfilter::show_filter_debug_info($contref, $weighted_str,
-					\%fields, \$headings);
-	for my $field (keys %fields) {
-	    $$contref .= " ". $fields{$field};
-	}
+        gfilter::show_filter_debug_info($contref, $weighted_str,
+                                        \%fields, \$headings);
+        for my $field (keys %fields) {
+            $$contref .= " ". $fields{$field};
+        }
     }
     return $err;
 }

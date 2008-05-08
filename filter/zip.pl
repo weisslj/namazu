@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: zip.pl,v 1.27 2008-05-08 16:56:49 opengl2772 Exp $
+# $Id: zip.pl,v 1.28 2008-05-08 18:07:10 opengl2772 Exp $
 #  zip filter for Namazu
 #  Copyright (C) 2004 MATSUMURA Namihiko <po-jp@counterghost.net>
 #                2004 Yukio USUDA <usu@namazu.org>
@@ -46,6 +46,8 @@ sub status() {
     $unzippath = util::checkcmd('unzip');
     $_filter = \&_unzip_filter;
     return 'yes' if (defined $unzippath);
+
+    $_filter = undef;
     return 'no';
 }
 
@@ -82,7 +84,7 @@ sub filter ($$$$$) {
 sub _az_filter ($$$$) {
     my ($contref, $weighted_str, $headings, $fields) = @_;
 
-    util::vprint("Processing zip file ... (using  Archive::ZIP module)\n");
+    util::vprint("Processing zip file ... (using  Archive::Zip module)\n");
 
     my $tmpfile;
     my $uniqnumber = int(rand(10000));
@@ -103,7 +105,7 @@ sub _az_filter ($$$$) {
     if ($err != 0) {
         util::dprint("Archive::Zip: there was a error");
         unlink($tmpfile);
-        return $err;
+        return 'Unable to convert zip file (Archive::Zip error occurred).';
     }
     {
         my $comment = $zip->zipfileComment();

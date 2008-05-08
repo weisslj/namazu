@@ -1,6 +1,6 @@
 2008-05-09  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
-	* filter/zip.pl: TAB to SPACE.
+	* filter/zip.pl: TAB to SPACE. fix small bug.
 
 2008-05-03  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
@@ -546,4 +546,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1602 2008-05-08 16:56:48 opengl2772 Exp $
+$Id: ChangeLog,v 1.1603 2008-05-08 18:07:10 opengl2772 Exp $

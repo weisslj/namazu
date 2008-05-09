@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: xps.pl,v 1.5 2008-05-01 16:24:03 opengl2772 Exp $
+# $Id: xps.pl,v 1.6 2008-05-09 06:09:11 opengl2772 Exp $
 # Copyright (C) 2007 Yukio USUDA, 
 #               2007-2008 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -180,15 +180,15 @@ sub filter_contentfile ($$$$$) {
 sub get_keywords ($) {
     my ($contref) = @_;
     my @keywordstmp;
-    push(@keywordstmp ,$$contref =~ m!<cp:keywords>(.*)</cp:keywords>!g);
-    return  join(" ",@keywordstmp);
+    push(@keywordstmp, $$contref =~ m!<cp:keywords>(.*)</cp:keywords>!g);
+    return join(" ", @keywordstmp);
 }
 
 sub get_document ($) {
     my ($contref) = @_;
     my @documents;
-    push(@documents ,$$contref =~ m!UnicodeString="([^"]*)"!g);
-    $$contref = join(" ",@documents);
+    push(@documents, $$contref =~ m!UnicodeString="([^"]*)"!g);
+    $$contref = join(" ", @documents);
 }
 
 1;

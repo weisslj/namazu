@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: msofficexml.pl,v 1.13 2008-05-01 16:24:02 opengl2772 Exp $
+# $Id: msofficexml.pl,v 1.14 2008-05-09 06:09:11 opengl2772 Exp $
 # Copyright (C) 2007 Yukio USUDA, 
 #               2007-2008 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -256,15 +256,15 @@ sub filter_contentfile ($$$$$) {
 sub get_keywords ($) {
     my ($contref) = @_;
     my @keywordstmp;
-    push(@keywordstmp ,$$contref =~ m!<cp:keywords>(.*)</cp:keywords>!g);
-    return  join(" ",@keywordstmp);
+    push(@keywordstmp, $$contref =~ m!<cp:keywords>(.*)</cp:keywords>!g);
+    return join(" ", @keywordstmp);
 }
 
 sub get_sheetname ($) {
     my ($contref) = @_;
     my @sheetnames;
-    push(@sheetnames ,$$contref =~ m!<sheet name="([^"]*)"!g);
-    return  join(" ",@sheetnames);
+    push(@sheetnames, $$contref =~ m!<sheet name="([^"]*)"!g);
+    return join(" ", @sheetnames);
 }
 
 sub remove_txbodytag($){

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: ooo.pl,v 1.21 2008-05-02 08:06:41 opengl2772 Exp $
+# $Id: ooo.pl,v 1.22 2008-05-09 06:09:11 opengl2772 Exp $
 # Copyright (C) 2003 Yukio USUDA 
 #               2003-2008 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -204,7 +204,7 @@ sub get_title ($){
 sub get_keywords ($) {
   my ($contref) = @_;
   my @keywordstmp;
-  push(@keywordstmp ,$$contref =~ m!<meta:keyword>(.*)</meta:keyword>!g);
+  push(@keywordstmp, $$contref =~ m!<meta:keyword>(.*)</meta:keyword>!g);
   return  join(" ",@keywordstmp);
 }
 

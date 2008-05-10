@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: html.pl,v 1.56 2008-05-01 16:23:42 opengl2772 Exp $
+# $Id: html.pl,v 1.57 2008-05-10 07:05:55 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2008 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -83,7 +83,7 @@ sub filter ($$$$$) {
     }
 
     html_filter($cont, $weighted_str, $fields, $headings);
-    
+
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($cont);
@@ -150,7 +150,7 @@ sub _htmlparser_filter ($$$$) {
     }
 }
 
-sub _tag ($$$){
+sub _tag ($$$) {
     my($tag, $num, $attr_hashref) = @_;
 
     $inside{$tag} += $num;
@@ -199,7 +199,7 @@ sub _tag ($$$){
     if ($tag =~ /^META$/i) {
         my $name = $attr_hashref->{name};
         if (defined($name)) {
-            if ($name =~ /^(?:$metatags)$/io){
+            if ($name =~ /^(?:$metatags)$/io) {
                 my $val = $attr_hashref->{content};
                 $$weighted_str .= "\x7f$weight\x7f$val\x7f/$weight\x7f\n";
             }
@@ -217,12 +217,12 @@ sub _tag ($$$){
 
 sub _text ($) {
     my ($tmptext) = @_;
-    if ($inside{script} || $inside{style}){
+    if ($inside{script} || $inside{style}) {
         return;
-    }elsif ($inside{title}) {
+    } elsif ($inside{title}) {
         set_title($tmptext);
         return;
-    }elsif ($inside{address}){
+    } elsif ($inside{address}) {
         set_author($tmptext);
         $content .= $tmptext;
         return;
@@ -240,18 +240,18 @@ sub _text ($) {
     my $space;
     for my $element (sort keys(%{$conf::Weight{'html'}})) {
         $space = "";
-        if ($inside{$element}){
+        if ($inside{$element}) {
             next if (length($tmptext)) >= $conf::INVALID_LENG;
             $space = html::element_space($element);
             $tmptext .= " ";
-            if ($element =~ /^H[1-6]$/i && ! $var::Opt{'noheadabst'}){
+            if ($element =~ /^H[1-6]$/i && ! $var::Opt{'noheadabst'}) {
                 $$html::headings .= "$tmptext ";
                 $weight = $conf::Weight{'html'}->{$element};
                 $addcontent = "no";
                 last;
-            }else {
+            } else {
                 my $ishtag = "";
-                for my $htag ('h1', 'h2', 'h3', 'h4', 'h5', 'h6'){
+                for my $htag ('h1', 'h2', 'h3', 'h4', 'h5', 'h6') {
                     $ishtag = 'yes' if ($inside{$htag});
                 }
                 if ($ishtag) {
@@ -263,7 +263,7 @@ sub _text ($) {
         }
     }
     $tmptext =~ s/^\s+(.*)/$1/;
-    if ($tmptext){
+    if ($tmptext) {
         $content .= "$space$tmptext$space" unless $addcontent;
         $$html::weighted_str .= "\x7f$weight\x7f$tmptext\x7f/$weight\x7f\n" if $weight;
     }
@@ -363,12 +363,12 @@ sub get_author ($$) {
 
 
 # Get title from <title>..</title>
-# It's okay to exits two or more <title>...</TITLE>. 
+# It's okay to exits two or more <title>...</TITLE>.
 # First one will be retrieved.
 sub get_title ($$) {
     my ($contref, $weighted_str) = @_;
     my $title = '';
-    
+
     if ($$contref =~ s!<TITLE[^>]*>(.*?)</TITLE>!!is) {
 	$title = $1;
 	$title =~ s/\s+/ /g;
@@ -383,19 +383,19 @@ sub get_title ($$) {
     return $title;
 }
 
-# get foo bar from <META NAME="keywords|description" CONTENT="foo bar"> 
+# get foo bar from <META NAME="keywords|description" CONTENT="foo bar">
 sub get_meta_tags ($$$) {
     my ($contref, $weighted_str, $fields) = @_;
-    
+
     # <meta name="keywords" content="foo bar baz">
 
     my $weight = $conf::Weight{'metakey'};
-    $$weighted_str .= "\x7f$weight\x7f$3\x7f/$weight\x7f\n" 
+    $$weighted_str .= "\x7f$weight\x7f$3\x7f/$weight\x7f\n"
 	if $$contref =~ /<meta\s+name\s*=\s*([\'\"]?) #"
 	    keywords\1\s+[^>]*content\s*=\s*([\'\"]?)([^>]*?)\2[^>]*>/ix; #"
 
     # <meta name="description" content="foo bar baz">
-    $$weighted_str .= "\x7f$weight\x7f$3\x7f/$weight\x7f\n" 
+    $$weighted_str .= "\x7f$weight\x7f$3\x7f/$weight\x7f\n"
 	if $$contref =~ /<meta\s+name\s*=\s*([\'\"]?)description #"
 	    \1\s+[^>]*content\s*=\s*([\'\"]?)([^>]*?)\2[^>]*>/ix; #"
 
@@ -474,7 +474,7 @@ sub remove_comments ($) {
 }
 
 # Weight a score of a keyword in a given text using %conf::Weight hash.
-# This process make the text be surround by temporary tags 
+# This process make the text be surround by temporary tags
 # \x7fXX\x7f and \x7f/XX\x7f. XX represents score.
 # Sort keys of %conf::Weight for processing <a> first.
 # Because <a> has a tendency to be inside of other tags.
@@ -486,9 +486,9 @@ sub weight_element ($$$ ) {
     for my $element (sort keys(%{$conf::Weight{'html'}})) {
 	my $tmp = "";
 	$$contref =~ s!<($element)>(.*?)</$element>!weight_element_sub($1, $2, \$tmp)!gies;
-	$$headings .= $tmp if $element =~ /^H[1-6]$/i && ! $var::Opt{'noheadabst'} 
+	$$headings .= $tmp if $element =~ /^H[1-6]$/i && ! $var::Opt{'noheadabst'}
 	    && $tmp;
-	my $weight = $element =~ /^H[1-6]$/i && ! $var::Opt{'noheadabst'} ? 
+	my $weight = $element =~ /^H[1-6]$/i && ! $var::Opt{'noheadabst'} ?
 	    $conf::Weight{'html'}->{$element} : $conf::Weight{'html'}->{$element} - 1;
 	$$weighted_str .= "\x7f$weight\x7f$tmp\x7f/$weight\x7f\n" if $tmp;
     }
@@ -528,7 +528,7 @@ sub decode_numbered_entity ($) {
     return ""
         if (($num >= 0 && $num <= 31) || ($num >= 127 && $num <= 159) ||
         ($num >= 256));
-    return "" 
+    return ""
 	if $num >=127 && util::islang('ja');
     sprintf ("%c",$num);
 }

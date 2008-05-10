@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: mp3.pl,v 1.14 2007-03-06 12:16:02 usu Exp $
+# $Id: mp3.pl,v 1.15 2008-05-10 06:58:30 opengl2772 Exp $
 # Copyright (C) 2002 Luc@2113.ch ,
-#               2003-2005 Namazu Project All rights reserved ,
+#               2003-2008 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -38,7 +38,7 @@ sub mediatype() {
 sub status() {
     # http://sourceforge.net/projects/pudge/
     if (util::checklib('MP3/Info.pm')) {
-	eval 'use MP3::Info 1.01;';
+        eval 'use MP3::Info 1.01;';
         return 'yes' unless $@;
     }
     return 'no';
@@ -71,9 +71,9 @@ sub filter($$$$$) {
     unless ($id3v2header =~ /ID3/) {
         my $id3v1header = substr($$contref, -128, 3);
         unless ($id3v1header =~ /TAG/) {
-	    util::vprint("Couldn't find ID3 tag\n");
-	    $$contref="";
-	    return undef;
+            util::vprint("Couldn't find ID3 tag\n");
+            $$contref = "";
+            return undef;
         }
     }
 
@@ -89,42 +89,43 @@ sub filter($$$$$) {
     }
     $mp3 = $tmpfile;
 
-    if ($MP3::Info::VERSION >= 1.10){
+    if ($MP3::Info::VERSION >= 1.10) {
         MP3::Info::use_mp3_utf8(0);
     }
+
     my $tagref = get_mp3tag($mp3);
     if (ref $tagref->{TITLE}) {
         $tagref = get_mp3tag($mp3, 2);
     }
 
-    my $songname = defined $tagref->{TITLE} ? $tagref->{TITLE} : ''; 
-    my $artist = defined $tagref->{ARTIST} ? $tagref->{ARTIST} : ''; 
-    my $album = defined $tagref->{ALBUM} ? $tagref->{ALBUM} : ''; 
-    my $year = defined $tagref->{YEAR} ? $tagref->{YEAR} : ''; 
-    my $comment = defined $tagref->{COMMENT} ? $tagref->{COMMENT} : ''; 
-    my $genre = defined $tagref->{GENRE} ? $tagref->{GENRE} : ''; 
-    my $track = defined $tagref->{TRACKNUM} ? $tagref->{TRACKNUM} : ''; 
-        
-    $songname =~ s/\0//g ;
-    $artist =~ s/\0//g ;
-    $album =~ s/\0//g ;
-    $year =~ s/\0//g ;
-    $comment =~ s/\0//g ;
-    $genre =~ s/\0//g ;
-    $track =~ s/\0//g ;
+    my $songname = defined $tagref->{TITLE} ? $tagref->{TITLE} : '';
+    my $artist = defined $tagref->{ARTIST} ? $tagref->{ARTIST} : '';
+    my $album = defined $tagref->{ALBUM} ? $tagref->{ALBUM} : '';
+    my $year = defined $tagref->{YEAR} ? $tagref->{YEAR} : '';
+    my $comment = defined $tagref->{COMMENT} ? $tagref->{COMMENT} : '';
+    my $genre = defined $tagref->{GENRE} ? $tagref->{GENRE} : '';
+    my $track = defined $tagref->{TRACKNUM} ? $tagref->{TRACKNUM} : '';
+
+    $songname =~ s/\0//g;
+    $artist =~ s/\0//g;
+    $album =~ s/\0//g;
+    $year =~ s/\0//g;
+    $comment =~ s/\0//g;
+    $genre =~ s/\0//g;
+    $track =~ s/\0//g;
 
     my $data1 = "";
     $$contref = "";
 
     $data1 .= "Songname: $songname\n";
-    $data1 .= "Artist: $artist\n" ;
+    $data1 .= "Artist: $artist\n";
     $data1 .= "Filename: " . gfilter::filename_to_title($cfile, $weighted_str);
     $data1 .= "\n\n";
-    $data1 .= "Album: $album\n" ;
-    $data1 .= "Comment: $comment\n" ;
-    $data1 .= "Year: $year\n" ;
-    $data1 .= "Genre: $genre\n" ;
-    $data1 .= "Track: $track\n" ;
+    $data1 .= "Album: $album\n";
+    $data1 .= "Comment: $comment\n";
+    $data1 .= "Year: $year\n";
+    $data1 .= "Genre: $genre\n";
+    $data1 .= "Track: $track\n";
 
     codeconv::to_inner_encoding(\$data1, "");
     $$contref = $data1;
@@ -161,7 +162,7 @@ sub get_title($$$) {
     if ($content =~ /Songname: (.*)/) {
 	my $tmp = $1;
 	$fields->{'title'} = $tmp;
-    }else {
+    } else {
         $content =~ /Filename: (.*)/;
 	my $tmp = $1;
 	$fields->{'title'} = $tmp;

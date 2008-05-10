@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: hdml.pl,v 1.8 2006-08-12 07:18:44 opengl2772 Exp $
+# $Id: hdml.pl,v 1.9 2008-05-10 06:57:13 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
-# Copyright (C) 2000,2005 Namazu Project All rights reserved.
+# Copyright (C) 2000,2005-2008 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -62,7 +62,7 @@ sub filter ($$$$$) {
     util::vprint("Processing hdml file ...\n");
 
     hdml($cont, $weighted_str, $fields, $headings);
-    
+
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);
     gfilter::white_space_adjust_filter($cont);
@@ -104,7 +104,7 @@ sub escape_lt_gt ($) {
 sub get_title ($$) {
     my ($contref, $weighted_str) = @_;
     my $title = '';
-    
+
     if ($$contref =~ s!<[A-Z]+[^>]*\s+TITLE\s*=\s*[\"\']?([^\"\'>]*)[\"\']?[^>]*>! $1 !i) {
 	$title = $1;
 	$title =~ s/\s+/ /g;
@@ -143,7 +143,7 @@ sub normalize_hdml_element ($) {
 
 
 # Weight a score of a keyword in a given text using %conf::Weight hash.
-# This process make the text be surround by temporary tags 
+# This process make the text be surround by temporary tags
 # \x7fXX\x7f and \x7f/XX\x7f. XX represents score.
 # Sort keys of %conf::Weight for processing <a> first.
 # Because <a> has a tendency to be inside of other tags.
@@ -155,9 +155,9 @@ sub weight_element ($$$ ) {
     for my $element (sort keys(%{$conf::Weight{'html'}})) {
 	my $tmp = "";
 	$$contref =~ s!<($element)>(.*?)</$element>!weight_element_sub($1, $2, \$tmp)!gies;
-	$$headings .= $tmp if $element =~ /^H[1-6]$/i && ! $var::Opt{'NoHeadAbst'} 
+	$$headings .= $tmp if $element =~ /^H[1-6]$/i && ! $var::Opt{'NoHeadAbst'}
 	    && $tmp;
-	my $weight = $element =~ /^H[1-6]$/i && ! $var::Opt{'NoHeadAbst'} ? 
+	my $weight = $element =~ /^H[1-6]$/i && ! $var::Opt{'NoHeadAbst'} ?
 	    $conf::Weight{'html'}->{$element} : $conf::Weight{'html'}->{$element} - 1;
 	$$weighted_str .= "\x7f$weight\x7f$tmp\x7f/$weight\x7f\n" if $tmp;
     }

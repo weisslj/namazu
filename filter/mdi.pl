@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: mdi.pl,v 1.1 2007-02-03 04:42:49 usu Exp $
+# $Id: mdi.pl,v 1.2 2008-05-10 07:07:07 opengl2772 Exp $
 # Copyright (C) 2007 Yukio USUDA,
-#               2007 Namazu Project All rights reserved.
+#               2007-2008 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -40,9 +40,9 @@ sub status() {
         if ($conf::NKF ne 'no') {
             return 'yes';
         }
-        return 'no'; 
+        return 'no';
     }
-    return 'yes'; 
+    return 'yes';
 }
 
 sub recursive() {
@@ -74,14 +74,14 @@ sub filter ($$$$$) {
 sub filter_msdocumentimaging ($$$$$) {
     my ($contref, $weighted_str, $headings, $fields) = @_;
 
-    if ($$contref =~ m/\x01\x00(.*?)\x0d\x00/s){
+    if ($$contref =~ m/\x01\x00(.*?)\x0d\x00/s) {
         $$contref = $1;
         $$contref =~ s/.*\x01\x00(.*)/$1/g;
         my $length = substr($$contref, 0, 4);
         $$contref = substr($$contref, 4);
         $$contref =~ s/\x20\x0a/\x0a/g;
         $$contref =~ s/\x20//g;
-    }else {
+    } else {
         $$contref = '';
     }
 

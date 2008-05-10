@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: lha.pl,v 1.20 2008-04-30 14:38:14 usu Exp $
+# $Id: lha.pl,v 1.21 2008-05-10 07:00:07 opengl2772 Exp $
 #  lha filter for namazu
 #  Copyright (C) 2004-2007 Tadamasa Teranishi,
 #                2004 MATSUMURA Namihiko <po-jp@counterghost.net>,
@@ -38,12 +38,12 @@ sub mediatype() {
 }
 
 sub status() {
-    unless ($English::OSNAME =~ /^(?:MSWin32|os2)$/i){
+    unless ($English::OSNAME =~ /^(?:MSWin32|os2)$/i) {
         # Only LHa for UNIX.
         $lhapath = util::checkcmd('lha');
         return 'yes' if (defined $lhapath);
     }
-    if (util::checklib('Archive/Lha.pm')){
+    if (util::checklib('Archive/Lha.pm')) {
         $haslhapm = 1;
         return 'yes';
     }
@@ -96,7 +96,6 @@ sub filter ($$$$$) {
     return $err;
 }
 
-
 sub filter_arc_lha ($$$$$) {
     my ($orig_cfile, $contref, $weighted_str, $headings, $fields)
       = @_;
@@ -120,12 +119,12 @@ sub filter_arc_lha ($$$$$) {
         my $decoder = Archive::Lha::Decode->new(
             header => $header,
             read   => sub { $stream->read(@_) },
-            write  => sub { ($decodedcont) = @_ }, 
+            write  => sub { ($decodedcont) = @_ },
         );
         my $crc16 = $decoder->decode;
         return "crc mismatch" if $crc16 != $header->crc16;
         my $lhaedname = "lhaed_content";
-        if ($fname =~ /.*(\..*)/){
+        if ($fname =~ /.*(\..*)/) {
             $lhaedname = $lhaedname . $1;
         }
         my $err = lha::nesting_filter($lhaedname, \$decodedcont, $weighted_str);
@@ -198,7 +197,7 @@ sub filter_lha_unix ($$$$$) {
 
     $$contref = "";
 
-    foreach my $fname (keys %files){
+    foreach my $fname (keys %files) {
         my $size = $files{$fname};
         if ($size == 0) {
             util::dprint("$fname: filesize is 0");
@@ -227,7 +226,7 @@ sub filter_lha_unix ($$$$$) {
                 unlink($tmpfile3);
 
                 my $lhaedname = "lhaed_content";
-                if ($fname =~ /.*(\..*)/){
+                if ($fname =~ /.*(\..*)/) {
                     $lhaedname = $lhaedname . $1;
                 }
                 my $err = lha::nesting_filter($lhaedname, \$con, $weighted_str);
@@ -244,7 +243,7 @@ sub filter_lha_unix ($$$$$) {
     return undef;
 }
 
-sub nesting_filter ($$$){
+sub nesting_filter ($$$) {
     my ($filename, $contref, $weighted_str) = @_;
     my $err = undef;
     my $headings = "";
@@ -263,13 +262,13 @@ sub nesting_filter ($$$){
 	$headings = $Document->get_headings();
 	%fields = $Document->get_fields();
     }
-    if ($mtype =~ /; x-system=unsupported$/){
+    if ($mtype =~ /; x-system=unsupported$/) {
         $$contref = "";
         $err = $mtype;
-    }elsif ($mtype =~ /; x-error=(.*)$/){
+    } elsif ($mtype =~ /; x-error=(.*)$/) {
         $$contref = "";
         $err = $1;
-    }else{
+    } else {
         gfilter::show_filter_debug_info($contref, $weighted_str,
 					\%fields, \$headings);
         for my $field (keys %fields) {

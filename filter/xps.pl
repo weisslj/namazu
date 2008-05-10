@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: xps.pl,v 1.6 2008-05-09 06:09:11 opengl2772 Exp $
+# $Id: xps.pl,v 1.7 2008-05-10 07:05:06 opengl2772 Exp $
 # Copyright (C) 2007 Yukio USUDA, 
 #               2007-2008 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -48,9 +48,9 @@ sub status() {
            if ($conf::NKF ne 'no') {
                return 'yes';
            }
-           return 'no'; 
+           return 'no';
         } else {
-           return 'yes'; 
+           return 'yes';
         }
     }
     return 'no';
@@ -93,7 +93,7 @@ sub zip_read ($$$) {
         $tmpfile = util::tmpnam('NMZ.zip' . substr("000$uniqnumber", -4));
         $uniqnumber++;
     } while (-f $tmpfile);
-    { 
+    {
         my $fh = util::efopen("> $tmpfile");
         print $fh $$zipref;
         util::fclose($fh);
@@ -114,7 +114,7 @@ sub zip_read ($$$) {
 sub get_pages_list ($$) {
     my ($zipref, $pagesref) = @_;
     my $tmpfile  = util::tmpnam('NMZ.zip');
-    { 
+    {
         my $fh = util::efopen("> $tmpfile");
         print $fh $$zipref;
         util::fclose($fh);

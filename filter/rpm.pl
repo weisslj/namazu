@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: rpm.pl,v 1.18 2007-01-14 03:04:31 opengl2772 Exp $
+# $Id: rpm.pl,v 1.19 2008-05-10 07:01:06 opengl2772 Exp $
 # Copyright (C) 2000-2007 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -70,7 +70,7 @@ sub filter ($$$$$) {
     util::vprint("Processing rpm file ... (using  '$rpmpath')\n");
 
     my $tmpfile = util::tmpnam('NMZ.rpm');
-    {   
+    {
         my $fh = util::efopen("> $tmpfile");
         print $fh $$cont;
         util::fclose($fh);
@@ -79,7 +79,7 @@ sub filter ($$$$$) {
     {
         my %env = (
             "LC_ALL" => undef,
-            "LC_MESSAGE" => $util::LANG, 
+            "LC_MESSAGE" => $util::LANG,
             "LC_TIME" => "C",
         );
         my @cmd = ($rpmpath, @rpmopts, $tmpfile);

@@ -1,7 +1,7 @@
 #
 # -*- Perl -*-
-# $Id: deb.pl,v 1.15 2007-01-14 03:04:31 opengl2772 Exp $
-# Copyright (C) 2000-2007 Namazu Project All rights reserved ,
+# $Id: deb.pl,v 1.16 2008-05-10 06:55:55 opengl2772 Exp $
+# Copyright (C) 2000-2008 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -78,7 +78,7 @@ sub filter ($$$$$) {
         my %env = (
             "LC_ALL" => $util::LANG,
             "LANGUAGE" => $util::LANG,
-        ); 
+        );
 	my @cmd = ($dpkgpath, @dpkgopts, $tmpfile);
         my $fh_out = IO::File->new_tmpfile();
         my $status = util::syscmd(

@@ -1,10 +1,10 @@
 #
 # -*- Perl -*-
-# $Id: mhonarc.pl,v 1.34 2006-08-12 07:18:44 opengl2772 Exp $
+# $Id: mhonarc.pl,v 1.35 2008-05-10 07:03:22 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu ,
 #               2002 Earl Hood ,
-#               2000-2004 Namazu Project All rights reserved.
+#               2000-2008 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -78,12 +78,12 @@ sub filter ($$$$$) {
 
     util::vprint("Processing MHonArc file ...\n");
 
-    if ($$contref !~ /\A\s*<!-- MHonArc /) 
+    if ($$contref !~ /\A\s*<!-- MHonArc /)
     {
 	util::vprint( $$orig_cfile." is not a MHonArc message file, fallback to HTML proccesing" );
 	return html::filter($orig_cfile, $contref, $weighted_str, $headings, $fields);
-    } 
-    
+    }
+
     mhonarc_filter($contref, $weighted_str, $fields);
     html::html_filter($contref, $weighted_str, $fields, $headings);
 

@@ -1,9 +1,9 @@
 #
 # -*- Perl -*-
-# $Id: mailnews.pl,v 1.50 2006-11-12 16:03:08 opengl2772 Exp $
+# $Id: mailnews.pl,v 1.51 2008-05-10 06:58:57 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu ,
-#               2001,2003-2006 Namazu Project All rights reserved.
+#               2001,2003-2008 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -83,7 +83,7 @@ sub filter ($$$$$) {
     return undef;
 }
 
-# Original of this code was contributed by <furukawa@tcp-ip.or.jp>. 
+# Original of this code was contributed by <furukawa@tcp-ip.or.jp>.
 sub mailnews_filter ($$$) {
     my ($contref, $weighted_str, $fields) = @_;
 
@@ -115,7 +115,7 @@ sub mailnews_filter ($$$) {
 	}
 
 	# Handle fields.
-	if ($line =~ s/^subject:\s*//i){
+	if ($line =~ s/^subject:\s*//i) {
 	    $fields->{'title'} = $line;
 	    # Skip [foobar-ML:000] for a typical mailing list subject.
 	    # Practically skip first [...] for simple implementation.
@@ -155,10 +155,10 @@ sub mailnews_filter ($$$) {
 	    if ($name =~ /^($conf::REMAIN_HEADER)$/io) {
 		# keep some fields specified REMAIN_HEADER for search keyword
 		my $weight = $conf::Weight{'headers'};
-		$$weighted_str .= 
+		$$weighted_str .=
 		    "\x7f$weight\x7f$value\x7f/$weight\x7f\n";
 	    }
-	} 
+	}
     }
     if ($partial) {
 	# MHonARC makes several empty lines between header and body,
@@ -192,7 +192,7 @@ sub mailnews_filter ($$$) {
 # "multipart_process() called too early to check prototype at ..." warnings.
 sub multipart_process($$$$);
 
-sub multipart_process ($$$$){
+sub multipart_process ($$$$) {
     my ($contref, $boundary, $weighted_str, $fields) = @_;
 
     # MIME multipart processing,
@@ -201,34 +201,34 @@ sub multipart_process ($$$$){
     $$contref =~ s/\xff[^\xff]*$//s;
     my (@parts) = split(/\xff/, $$contref);
     $$contref = '';
-    for $_ (@parts){
-	if (s/^(.*?\n\n)//s){
-	    my ($head) = $1; 
+    for $_ (@parts) {
+	if (s/^(.*?\n\n)//s) {
+	    my ($head) = $1;
 	    my ($body) .= $_;
 	    my $contenttype = "";
 	    my $cont_encode = "";
-	    if ($head =~ m!^content-type:\s*(\S+?);?\s!mi){
+	    if ($head =~ m!^content-type:\s*(\S+?);?\s!mi) {
 		$contenttype = lc($1);
 		util::dprint("((Content-Type: $contenttype))\n");
 	    }
 
-	    if ($head =~ m!^content-transfer-encoding:\s*(\S+)$!mi){
+	    if ($head =~ m!^content-transfer-encoding:\s*(\S+)$!mi) {
 		$cont_encode = lc($1);
 		util::dprint("((Content-Transfer-Encode: $cont_encode))\n");
 	    }
 
-	    # Image data must not be including text data.  
-	    if ($contenttype !~ m!image/!){
-		if ($cont_encode =~ m/base64/){
+	    # Image data must not be including text data.
+	    if ($contenttype !~ m!image/!) {
+		if ($cont_encode =~ m/base64/) {
 		    base64_filter(\$body);
-		} elsif ($cont_encode =~ m/quoted-printable/){
+		} elsif ($cont_encode =~ m/quoted-printable/) {
 		    quotedprint_filter(\$body);
-		} 
+		}
 
-		if ($contenttype =~ m!text/plain!){
+		if ($contenttype =~ m!text/plain!) {
                     codeconv::codeconv_document(\$body);
 		    $$contref .= $body;
-		} elsif ($contenttype =~ m!multipart/alternative!){
+		} elsif ($contenttype =~ m!multipart/alternative!) {
                     if ($head =~ /boundary="(.*?)"/si ||
                     $head =~ /boundary=(.*?)(?:\s|$)/mi) {
 			my $boundary2 = $1;
@@ -305,12 +305,12 @@ sub mailnews_citation_filter ($$) {
 }
 
 # Skip uuencode and BinHex texts.
-# Original of this code was contributed by <furukawa@tcp-ip.or.jp>. 
+# Original of this code was contributed by <furukawa@tcp-ip.or.jp>.
 sub uuencode_filter ($) {
     my ($content) = @_;
     my @tmp = split(/\n/, $$content);
     $$content = "";
-    
+
     my $uuin = 0;
     while (@tmp) {
 	my $line = shift @tmp;
@@ -325,8 +325,8 @@ sub uuencode_filter ($) {
 	#              FreeBSD 2.2: uuencode.c
 	# For avoiding accidental matching, check a format.
 	#
-	# There are many netnews messages which is separated into several 
-	# files. This kind of files has usually no "begin" line. 
+	# There are many netnews messages which is separated into several
+	# files. This kind of files has usually no "begin" line.
 	# This function handle them as well.
 	#
 	# There are two fashion for line length 62 and 63.
@@ -342,14 +342,14 @@ sub uuencode_filter ($) {
         # But allowing SPACE is dangerous for misrecognizing.
 	# For compromise, only the following case are acceptable.
         #   1. inside of begin - end
-        #   2. previous line is recognized as uuencoded line 
+        #   2. previous line is recognized as uuencoded line
 	#      and ord is identical with previous one.
 	
-	# a line consists of only characters of 0x20-0x60 is recognized 
+	# a line consists of only characters of 0x20-0x60 is recognized
 	# as uuencoded line. v1.1.2.3 (bug fix)
 
         $uuin = 1, next if $line =~ /^begin [0-7]{3,4} \S+$/;
-        if ($line =~ /^end$/){
+        if ($line =~ /^end$/) {
             $uuin = 0,next if $uuin;
         } else {
             # Restrict ord value in range of 32-95.
@@ -362,9 +362,9 @@ sub uuencode_filter ($) {
 
             if ((32 <= $uuord && $uuord < 96) &&
                 length($line) <= 63 &&
-                (4 * int($uuord / 3) == length($line) + $uunumb)){
+                (4 * int($uuord / 3) == length($line) + $uunumb)) {
 
-                if ($uuin == 1 || $uuin == $uuord){
+                if ($uuin == 1 || $uuin == $uuord) {
                     next if $line =~ /^[\x20-\x60]+$/;
                 } else {
 		    # Be strict for files which doesn't begin with "begin".
@@ -377,42 +377,42 @@ sub uuencode_filter ($) {
     }
 }
 
-sub base64_filter ($){
+sub base64_filter ($) {
     my ($bodyref) = @_;
     if ($has_base64 && $var::Opt{'decodebase64'}) {
 	eval 'use MIME::Base64 ();';
 	$$bodyref = MIME::Base64::decode($$bodyref);
     } else {
-	$$bodyref="";
+	$$bodyref = "";
     }
 }
 
-sub quotedprint_filter ($){
+sub quotedprint_filter ($) {
     my ($bodyref) = @_;
     if ($has_base64 && $var::Opt{'decodebase64'}) {
 	eval 'use MIME::QuotedPrint ();';
 	$$bodyref = MIME::QuotedPrint::decode_qp($$bodyref);
     } else {
-	$$bodyref="";
+	$$bodyref = "";
     }
 }
 
-sub nesting_filter ($$$$){
+sub nesting_filter ($$$$) {
     my ($headref, $bodyref, $mmtype, $weighted_str) = @_;
     my $err = undef;
     my $headings = "";
     my %fields;
     my $filename = "";
-    if ($$headref =~ m!^content-disposition:\s*\S+\s*filename="(.+?)"!smi){
+    if ($$headref =~ m!^content-disposition:\s*\S+\s*filename="(.+?)"!smi) {
 	$filename = $1;
 
 	#AL-Mail divides filename into some lines when MIME B encoding.
 	$filename =~ s/\s+//g;
 
-    } elsif ($$headref =~ m!^content-location:\s*(\S+)!mi){
+    } elsif ($$headref =~ m!^content-location:\s*(\S+)!mi) {
 	$filename = $1;
 
-    } elsif ($$headref =~ m!^content-disposition:\s*\S+\s*(filename\*.+?[^;])$!smi){
+    } elsif ($$headref =~ m!^content-disposition:\s*\S+\s*(filename\*.+?[^;])$!smi) {
 	#RFC2231 MIME encoded
 	$filename =$1;
 	$filename =~ s/;.+?=//smg;
@@ -421,7 +421,7 @@ sub nesting_filter ($$$$){
 	    $tmp =~ s/%(\w\w)/chr(hex($1))/eg;
 	    $filename = $tmp;
 	    codeconv::to_inner_encoding(\$filename, "");
-	}else {
+	} else {
 	    $filename =~ s/filename.*=//;
 	}
     }
@@ -436,7 +436,7 @@ sub nesting_filter ($$$$){
 	$err = "Not allowed file.";
 	return $err;
     }
-    #if ($mmtype =~ m!application/octet-stream!){
+    #if ($mmtype =~ m!application/octet-stream!) {
 	$mmtype = undef;
     #}
 
@@ -452,15 +452,15 @@ sub nesting_filter ($$$$){
 	$$headref = $Document->get_headings();
 	%fields = $Document->get_fields();
     }
-    if ($mtype =~ /; x-system=unsupported$/){
+    if ($mtype =~ /; x-system=unsupported$/) {
 	$$bodyref = "";
         $err = $mtype;
 	util::dprint("filter/mailnews.pl gets error message \"$err\"");
-    }elsif ($mtype =~ /; x-error=(.*)$/){
+    } elsif ($mtype =~ /; x-error=(.*)$/) {
         $$bodyref = "";
         $err = $1;
         util::dprint("filter/mailnews.pl gets error message \"$err\"");
-    }else{
+    } else {
 	$$bodyref .= " ". $filename;
 	gfilter::show_filter_debug_info($bodyref, $weighted_str,
 					\%fields, \$headings);

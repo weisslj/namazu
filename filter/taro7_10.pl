@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: taro7_10.pl,v 1.16 2007-01-14 03:04:31 opengl2772 Exp $
+# $Id: taro7_10.pl,v 1.17 2008-05-10 07:02:47 opengl2772 Exp $
 # Copyright (C) 2003 Yukio USUDA
-#               2003-2007 Namazu Project All rights reserved.
+#               2003-2008 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -95,7 +95,7 @@ sub taro7_10_filter($$$$$) {
 }
 
 sub getinfo($) {
-    my($oleobject)=@_;
+    my ($oleobject) = @_;
     my @pps = $oleobject->getPpsSearch(
             [OLE::Storage_Lite::Asc2Ucs("\x04JSRV_SummaryInformation")], 1, 1);
     return (undef) if($#pps < 0);
@@ -105,33 +105,33 @@ sub getinfo($) {
     if ($pps[0]->{Data}) {
         if ($pps[0]->{Data} =~ /\x02\x00\x00\x31\x8b\x89\xfa\x51\x57\x30/g) {
             $position = pos($pps[0]->{Data});
-            my $title_length = unpack("v", substr($pps[0]->{Data}, 
+            my $title_length = unpack("v", substr($pps[0]->{Data},
                                        $position + 70, 2));
-            $title = substr($pps[0]->{Data}, 
+            $title = substr($pps[0]->{Data},
                       $position + 86, $title_length);
         }
         if ($pps[0]->{Data} =~ /\x04\x00\x00\x31\x5c\x4f\x10\x62\x05\x80/g) {
             $position = pos($pps[0]->{Data});
-            my $author_length = unpack("v", substr($pps[0]->{Data}, 
+            my $author_length = unpack("v", substr($pps[0]->{Data},
                                        $position + 70, 2));
-            $author = substr($pps[0]->{Data}, 
+            $author = substr($pps[0]->{Data},
                              $position + 86, $author_length);
         }
     }
     #$author = "\xff\xfe" . $author;
-    codeconv::to_inner_encoding(\$author, 'UTF-16LE'); 
+    codeconv::to_inner_encoding(\$author, 'UTF-16LE');
     #$title = "\xff\xfe" . $title;
-    codeconv::to_inner_encoding(\$title, 'UTF-16LE'); 
+    codeconv::to_inner_encoding(\$title, 'UTF-16LE');
 
     return ($author, $title);
 }
 
 sub getcontent($) {
-    my($oleobject)=@_;
+    my ($oleobject) = @_;
     my @pps = $oleobject->getPpsSearch(
             [OLE::Storage_Lite::Asc2Ucs('DocumentText')], 1, 1);
     return (undef) if($#pps < 0);
-    my $content="";
+    my $content = "";
     for my $i (0..$#pps) {
         if ($pps[$i]->{Data}) {
             my $size = unpack("N", substr($pps[$i]->{Data}, 0x1c, 4)) * 2;
@@ -141,30 +141,30 @@ sub getcontent($) {
         }
     }
     #$content = "\xfe\xff" . $content;
-    codeconv::to_inner_encoding(\$content, 'UTF-16BE'); 
+    codeconv::to_inner_encoding(\$content, 'UTF-16BE');
     return $content;
 }
 
-sub remove_ctlcodearea($){
+sub remove_ctlcodearea($) {
     my ($textref) = @_;
     my $ctl_in  = "\x00\x1c";
     my $ctl_out = "\x00\x1f";
     my $tmptext1 = $$textref;
-    my $tmptext2="";
-    my $pos1=0;
-    my $pos2=0;
+    my $tmptext2 = "";
+    my $pos1 = 0;
+    my $pos2 = 0;
     my @incodes;
-    while ($tmptext1 =~ /$ctl_in/sg){
+    while ($tmptext1 =~ /$ctl_in/sg) {
         push(@incodes, pos($tmptext1)-2);
     }
     push(@incodes, length($tmptext1));
-    my $i=1;
-    while (@incodes){
-        $pos2=shift(@incodes) ;
-        my $tmptext3="";
-        $tmptext3=substr($tmptext1, $pos1, $pos2-$pos1);
-        $tmptext3=~s/$ctl_in.*$ctl_out//s;
-        $tmptext3=~s/$ctl_in.*//s;
+    my $i = 1;
+    while (@incodes) {
+        $pos2 = shift(@incodes) ;
+        my $tmptext3 = "";
+        $tmptext3 = substr($tmptext1, $pos1, $pos2-$pos1);
+        $tmptext3 =~ s/$ctl_in.*$ctl_out//s;
+        $tmptext3 =~ s/$ctl_in.*//s;
         $tmptext2 .= $tmptext3;
         $i++;
         $pos1 = $pos2;

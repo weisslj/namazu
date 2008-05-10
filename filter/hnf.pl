@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: hnf.pl,v 1.16 2007-05-28 06:46:21 opengl2772 Exp $
+# $Id: hnf.pl,v 1.17 2008-05-10 06:57:13 opengl2772 Exp $
 #
 # hnf filter for Namazu 2.0
 # version 0.9.16
@@ -8,7 +8,7 @@
 #
 # Copyright (C) 1999-2007  Kenji Suzuki, HyperNikkiSystem Project
 # All rights reserved.
-# Copyright (C) 2005-2007 Namazu Project All rights reserved ,
+# Copyright (C) 2005-2008 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -76,10 +76,10 @@ sub filter ($$$$$) {
     $end  = "вз" if util::islang("ja");
 
     get_uri($cfile, $fields);
-    hnf_filter($contref, $weighted_str, $fields, $headings, $cfile, 
+    hnf_filter($contref, $weighted_str, $fields, $headings, $cfile,
 	$mark, $end);
     html::html_filter($contref, $weighted_str, $fields, $headings);
-    $fields->{'summary'} = 
+    $fields->{'summary'} =
 	make_summary($contref, $headings, $cfile, $mark, $end);
 
     gfilter::line_adjust_filter($contref);
@@ -132,14 +132,14 @@ sub hnf_filter ($$$$$$$) {
     $$contref =~ s/^GRP (.*)/command_GRP $1/gm;
     $$contref =~ s/^CAT (.*)/command_CAT CAT $1/gm;
     $$contref =~ s/^NEW\s(.*)/command_NEW <h1>$mark$1<\/h1>/gm;
-    $$contref =~ 
+    $$contref =~
 	s/^LNEW (.*?) (.*)/command_LNEW <h1>$mark<a href=\"$1\">$2<\/a><\/h1>/gm;
-    $$contref =~ 
+    $$contref =~
 	s/^RLNEW (.*?) (.*?) (.*)/command_RLNEW <h1>$mark<a href=\"$1 $2\">$3<\/a><\/h1>/gm;
     $$contref =~ s/command_GRP (.*)\n/command_GRP $1 /gm;
     $$contref =~ s/command_CAT (.*)\n/command_CAT $1 /gm;
 
-    # hiding GRP section 
+    # hiding GRP section
     $$contref =~ s/^command_GRP (.*)<h1>(.*)<\/h1>/command_GRP $1 $2/gm
 	if $hnf::grp_hide;
 
@@ -149,7 +149,7 @@ sub hnf_filter ($$$$$$$) {
 	command_LSUB <strong><a href=\"$1\">$2<\/a><\/strong>/gm;
     $$contref =~ s/^RLSUB (.*?) (.*?) (.*)/
         command_RLSUB <strong><a href=\"$1 $2\">$3<\/a><\/strong>/gm;
- 
+
     $$contref =~ s/^LINK (.*?) (.*)/
 	command_LINK <a href=\"$1\">$2<\/a>/gm;
     $$contref =~ s/^URL (.*?) (.*)/

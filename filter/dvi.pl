@@ -1,7 +1,7 @@
 #
 # -*- Perl -*-
-# $Id: dvi.pl,v 1.15 2006-08-12 07:18:44 opengl2772 Exp $
-# Copyright (C) 2000,2004-2005 Namazu Project All rights reserved ,
+# $Id: dvi.pl,v 1.16 2008-05-10 06:57:13 opengl2772 Exp $
+# Copyright (C) 2000,2004-2008 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -28,7 +28,7 @@ require 'util.pl';
 
 my $dviconvpath = undef;
 my @dviconvopts = undef;
-my %env = ( 
+my %env = (
     "DVI2TTY" => undef,
 );
 
@@ -85,9 +85,9 @@ sub filter ($$$$$) {
 
     if (util::islang("ja")) {
         # -J option: dvi2tty-5.1 for Debian
-        if ($dviconvpath =~ /jdvi2tty/){
+        if ($dviconvpath =~ /jdvi2tty/) {
             @dviconvopts = ("-q");
-        }else {
+        } else {
             @dviconvopts = ("-q", "-J");
         }
     } else {
@@ -122,7 +122,7 @@ sub filter ($$$$$) {
 	if ($size > $conf::FILE_SIZE_MAX) {
             util::fclose($fh_out);
 	    return 'Too large dvi file';
-	} 
+	}
 	$$cont = util::readfile($fh_out);
         util::fclose($fh_out);
     }

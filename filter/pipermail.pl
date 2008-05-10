@@ -1,7 +1,7 @@
 #
 # -*- Perl -*-
-# $Id: pipermail.pl,v 1.14 2006-08-12 07:18:44 opengl2772 Exp $
-# Copyright (C) 2004-2006 Namazu Project All rights reserved.
+# $Id: pipermail.pl,v 1.15 2008-05-10 06:59:33 opengl2772 Exp $
+# Copyright (C) 2004-2008 Namazu Project All rights reserved.
 #
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
@@ -77,10 +77,10 @@ sub filter ($$$$$) {
         return $$orig_cfile . " is not a Pipermail message file! skipped."; # error
     }
 
-    unless ($cfile =~ /($PIPERMAIL_MESSAGE_FILE)$/o) 
+    unless ($cfile =~ /($PIPERMAIL_MESSAGE_FILE)$/o)
     {
         return $$orig_cfile . " is not a Pipermail message file! skipped."; # error
-    } 
+    }
 
     pipermail_filter($contref, $weighted_str, $fields);
     html::html_filter($contref, \$dummy_weighted_str, \%dummy_fields, $headings);
@@ -110,7 +110,7 @@ sub pipermail_filter ($$$) {
         my $head = substr($$contref, 0, $pos);
 
         util::vprint("Looking at header: " . $head . "\n");
-        if ($head =~ 
+        if ($head =~
         m!<h1>(.*?)</h1>\s*<b>(.*?)\s*</b>(?:\s*<a\s+.*?href=.*?>(.*?)\s*</a>)?\s*<br>\s*<i>(.*?)</i>!is) {
             {
                 my $title = $1;
@@ -193,7 +193,7 @@ sub decode_entity ($) {
 }
 
 my %wday_names = (
-    "Sun" => 0, "Mon" => 1, "Tue" => 2, "Wed" => 3, 
+    "Sun" => 0, "Mon" => 1, "Tue" => 2, "Wed" => 3,
     "Thu" => 4, "Fri" => 5, "Sat" => 6
 );
 my %month_names = (
@@ -230,8 +230,8 @@ sub time_to_rfc822time ($) {
 
         my $mon = $month_names{$month};
         $week = ("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat")
-                            [time::getwday($year, $mon + 1, $day)];
-  	 
+                                [time::getwday($year, $mon + 1, $day)];
+
         $$conf = sprintf("%s, %2.2d %s %d %2.2d:%2.2d:%2.2d %s\n",
             $week, $day, $month, $year, $hour, $min, $sec, $timezone);
 

@@ -1,9 +1,9 @@
 #
 # -*- Perl -*-
-# $Id: pdf.pl,v 1.45 2006-08-18 17:35:19 opengl2772 Exp $
+# $Id: pdf.pl,v 1.46 2008-05-10 06:58:06 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu ,
-#               2000-2006 Namazu Project All rights reserved.
+#               2000-2008 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -195,7 +195,7 @@ sub filter ($$$$$) {
 
     unlink $tmpfile;
     unlink $tmpfile2;
-    
+
     # Zenkaku-space handling bug fix (before pdftotext-0.90)
     if (util::islang("ja") && $pdfconvver <= 0.90) {
         $$cont =~ s/\xa1\xa0/\xa1\xa1/g;

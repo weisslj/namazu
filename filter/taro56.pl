@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: taro56.pl,v 1.14 2007-01-14 03:04:31 opengl2772 Exp $
+# $Id: taro56.pl,v 1.15 2008-05-10 07:01:43 opengl2772 Exp $
 # Copyright (C) 2003 Yukio USUDA
-#               2003-2007 Namazu Project All rights reserved.
+#               2003-2008 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -84,8 +84,8 @@ sub taro56filter ($$$$$) {
         return $err;
     }
     my $tmp;
-    my $i =0;
-    my $code="";
+    my $i = 0;
+    my $code = "";
     while ( $i < $textsize) {
         my $code1 = $data[0x803 +$i];
         my $code2 = $data[0x804 +$i];
@@ -138,7 +138,7 @@ sub taro56filter ($$$$$) {
         }
         $i++;
         $tmp .= $code;
-        $code ="";
+        $code = "";
     }
 
     $$cont = $tmp;

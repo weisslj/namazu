@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: applefile.pl,v 1.7 2006-11-12 16:03:08 opengl2772 Exp $
-# Copyright (C) 2004-2006 Tadamasa Teranishi All rights reserved ,
-# Copyright (C) 2004-2006 Namazu Project All rights reserved ,
+# $Id: applefile.pl,v 1.8 2008-05-10 06:55:25 opengl2772 Exp $
+# Copyright (C) 2004-2008 Tadamasa Teranishi All rights reserved ,
+# Copyright (C) 2004-2008 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -100,13 +100,13 @@ sub filter ($$$$$) {
     $$contref = $datafork;
 
     my $mmtype = undef;
-    if (($type =~ /^XLS/) && ($creator =~ /XCEL/)) { 
+    if (($type =~ /^XLS/) && ($creator =~ /XCEL/)) {
         $mmtype = 'application/excel';
     } elsif (($type =~ /W.BN/) && ($creator =~ /MSWD/)) {
         $mmtype = 'application/msword';
-    } elsif (($type =~ /(SLD8|PPSS)/) && ($creator =~ /^PPT/)) { 
+    } elsif (($type =~ /(SLD8|PPSS)/) && ($creator =~ /^PPT/)) {
         $mmtype = 'application/powerpoint';
-    } elsif (($type =~ /(SLD3)/) && ($creator =~ /^PPT/)) { 
+    } elsif (($type =~ /(SLD3)/) && ($creator =~ /^PPT/)) {
         # ppthtml doesn't sopport this file.
         $mmtype = 'application/powerpoint4';
     } elsif ($type =~ /^PDF/) {
@@ -114,9 +114,9 @@ sub filter ($$$$$) {
     } elsif ($type =~ /^RTF/) {
         $mmtype = 'application/rtf';
     } elsif ($type =~ /TEXT/) {
-        $mmtype = undef; 
+        $mmtype = undef;
     }
-    
+
     my $err = undef;
     my $mtype;
     {

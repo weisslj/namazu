@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: msword.pl,v 1.64 2008-05-02 08:35:58 opengl2772 Exp $
+# $Id: msword.pl,v 1.65 2008-05-10 15:58:29 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi,
 #               2000-2008 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -54,18 +54,17 @@ sub status() {
     if (defined $wordconvpath) {
         $_filter = \&_filter_wv;
         $_subfilter = \&_subfilter_wvWare;
+
+        my $version = "";
         my @cmd = ($wordconvpath, "--version");
-        my $fh_out = IO::File->new_tmpfile();
         my $status = util::syscmd(
             command => \@cmd,
             option => {
-                "stdout" => $fh_out,
+                "stdout" => \$version,
                 "stderr" => "/dev/null",
             },
         );
-        my $version = util::readfile($fh_out);
         codeconv::normalize_document(\$version);
-        util::fclose($fh_out);
 
         if ($version =~ s/wvWare (\d\.\d)\.(\d).*/$1$2/) {
             if ($version >= 0.75) {
@@ -210,15 +209,14 @@ sub _subfilter_wvWare ($$$$$) {
         util::fclose($fh_out);
         unlink($tmpfile2);
         return "Unable to convert file ($wordconvpath error occurred).";
-    }
-    if ($size > $conf::FILE_SIZE_MAX) {
+    } elsif ($size > $conf::FILE_SIZE_MAX) {
         util::fclose($fh_out);
         unlink($tmpfile2);
         return 'Too large word file.';
     }
     $$cont = util::readfile($fh_out);
-    codeconv::normalize_document($cont);
     util::fclose($fh_out);
+    codeconv::normalize_document($cont);
     unlink($tmpfile2);
 
     if (util::islang("ja")) {
@@ -242,18 +240,17 @@ sub _subfilter_wvHtml ($$$$$) {
     my $tmpfile2 = util::tmpnam('NMZ.word2');
     my ($ofile, $tpath) = ("", "");
     {
+        my $result = "";
         my @cmd = ($wordconvpath, "--version");
-        my $fh_out = IO::File->new_tmpfile();
         my $status = util::syscmd(
             command => \@cmd,
             option => {
-                "stdout" => $fh_out,
+                "stdout" => \$result,
                 "stderr" => "/dev/null",
             },
         );
-        my $result = util::readfile($fh_out);
         codeconv::normalize_document(\$result);
-        util::fclose($fh_out);
+
         if ($result ne "" and $result !~ /usage/i and $result ge "0.7") {
             ($ofile, $tpath) = fileparse($tmpfile2);
             @wordconvopts = ("--targetdir=$tpath");
@@ -284,8 +281,7 @@ sub _subfilter_wvHtml ($$$$$) {
     if ($size == 0) {
         unlink $tmpfile2;
         return "Unable to convert file ($wordconvpath error occurred).";
-    }
-    if ($size > $conf::FILE_SIZE_MAX) {
+    } elsif ($size > $conf::FILE_SIZE_MAX) {
         unlink $tmpfile2;
         return 'Too large word file.';
     }
@@ -338,8 +334,7 @@ sub _filter_doccat ($$$$$) {
             util::fclose($fh_out);
             unlink $tmpfile;
             return "Unable to convert file ($wordconvpath error occurred).";
-        }
-        if ($size > $conf::FILE_SIZE_MAX) {
+        } elsif ($size > $conf::FILE_SIZE_MAX) {
             util::fclose($fh_out);
             unlink $tmpfile;
             return 'Too large word file.';
@@ -368,18 +363,16 @@ sub getDocumentVersion ($) {
 
     # Check version of word document (greater than word7,8 or else).
     if (util::islang("ja")) {
+        my $result = "";
         my @cmd = ($wvversionpath, $cfile);
-        my $fh_out = IO::File->new_tmpfile();
         my $status = util::syscmd(
             command => \@cmd,
             option => {
-                "stdout" => $fh_out,
+                "stdout" => \$result,
                 "stderr" => "/dev/null",
             },
         );
-        my $result = util::readfile($fh_out);
         codeconv::normalize_document(\$result);
-        util::fclose($fh_out);
         if ($result =~ /^Version: (word\d+)(?:,| )/i) {
             $docversion = $1;
         }
@@ -403,19 +396,19 @@ sub getSummaryInfo ($$$$$) {
             "stderr" => "/dev/null",
         },
     );
-    my $summary = util::readfile($fh_out);
-    codeconv::normalize_document(\$summary);
-    my $orgsummary = $summary;
-
     my $size = util::filesize($fh_out);
-    util::fclose($fh_out);
-
     if ($size == 0) {
+        util::fclose($fh_out);
         return undef;
-    }
-    if ($size > $conf::FILE_SIZE_MAX) {
+    } elsif ($size > $conf::FILE_SIZE_MAX) {
+        util::fclose($fh_out);
         return 'Too large summary file.';
     }
+
+    my $summary = util::readfile($fh_out);
+    util::fclose($fh_out);
+    codeconv::normalize_document(\$summary);
+    my $orgsummary = $summary;
 
     # Codepage
     #   932 : 0x000003a4 : Shift_JIS

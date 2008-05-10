@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: powerpoint.pl,v 1.35 2008-05-02 08:35:58 opengl2772 Exp $
+# $Id: powerpoint.pl,v 1.36 2008-05-10 15:58:29 opengl2772 Exp $
 # Copyright (C) 2000 Ken-ichi Hirose, 
 #               2000-2008 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -131,8 +131,7 @@ sub _filter_ppt ($$$$$) {
             util::fclose($fh_out);
             unlink $tmpfile;
             return "Unable to convert file ($pptconvpath error occurred).";
-        }
-        if ($size > $conf::FILE_SIZE_MAX) {
+        } elsif ($size > $conf::FILE_SIZE_MAX) {
             util::fclose($fh_out);
             unlink $tmpfile;
             return 'Too large powerpoint file.';
@@ -206,8 +205,7 @@ sub _filter_doccat ($$$$$) {
             util::fclose($fh_out);
             unlink $tmpfile;
             return "Unable to convert file ($pptconvpath error occurred).";
-        }
-        if ($size > $conf::FILE_SIZE_MAX) {
+        } elsif ($size > $conf::FILE_SIZE_MAX) {
             util::fclose($fh_out);
             unlink $tmpfile;
             return 'Too large powerpoint file.';
@@ -245,18 +243,19 @@ sub getSummaryInfo ($$$$$) {
             "stderr" => "/dev/null",
         },
     );
-    my $summary = util::readfile($fh_out);
-    codeconv::normalize_document(\$summary);
-    my $orgsummary = $summary;
-
     my $size = util::filesize($fh_out);
-    util::fclose($fh_out);
     if ($size == 0) {
+        util::fclose($fh_out);
         return undef;
-    }
-    if ($size > $conf::FILE_SIZE_MAX) {
+    } elsif ($size > $conf::FILE_SIZE_MAX) {
+        util::fclose($fh_out);
         return 'Too large summary file.';
     }
+
+    my $summary = util::readfile($fh_out);
+    util::fclose($fh_out);
+    codeconv::normalize_document(\$summary);
+    my $orgsummary = $summary;
 
     # Codepage
     #   932 : 0x000003a4 : Shift_JIS

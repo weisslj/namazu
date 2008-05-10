@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: excel.pl,v 1.43 2008-05-02 08:35:58 opengl2772 Exp $
+# $Id: excel.pl,v 1.44 2008-05-10 15:58:29 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi,
 #               1999 NOKUBI Takatsugu, 
 #               2000-2008 Namazu Project All rights reserved.
@@ -133,8 +133,7 @@ sub _filter_xl ($$$$$) {
             util::fclose($fh_out);
             unlink $tmpfile;
             return "Unable to convert file ($xlconvpath error occurred).";
-        }
-        if ($size > $conf::FILE_SIZE_MAX) {
+        } elsif ($size > $conf::FILE_SIZE_MAX) {
             util::fclose($fh_out);
             unlink $tmpfile;
             return 'Too large excel file.';
@@ -209,8 +208,7 @@ sub _filter_doccat ($$$$$) {
             util::fclose($fh_out);
             unlink $tmpfile;
             return "Unable to convert file ($xlconvpath error occurred)";
-        }
-        if ($size > $conf::FILE_SIZE_MAX) {
+        } elsif ($size > $conf::FILE_SIZE_MAX) {
             util::fclose($fh_out);
             unlink $tmpfile;
             return 'Too large excel file.';
@@ -246,23 +244,25 @@ sub getSummaryInfo ($$$$$) {
             "stderr" => "/dev/null",
         },
     );
-    my $summary = util::readfile($fh_out);
-    codeconv::normalize_document(\$summary);
-    my $orgsummary = $summary;
-
     my $size = util::filesize($fh_out);
-    util::fclose($fh_out);
     if ($size == 0) {
+        util::fclose($fh_out);
         return undef;
-    }
-    if ($size > $conf::FILE_SIZE_MAX) {
+    } elsif ($size > $conf::FILE_SIZE_MAX) {
+        util::fclose($fh_out);
         return 'Too large summary file.';
     }
+
+    my $summary = util::readfile($fh_out);
+    util::fclose($fh_out);
+    codeconv::normalize_document(\$summary);
+    my $orgsummary = $summary;
 
     # Codepage
     #   932 : 0x000003a4 : Shift_JIS
     # 10001 : 0x00002711 : x-mac-japanese
     # 65001 : 0xfffffde9 : UTF-8
+
 
     my $codepage = "000003a4"; # Shift_JIS
     my $title = undef;

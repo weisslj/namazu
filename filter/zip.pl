@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: zip.pl,v 1.28 2008-05-08 18:07:10 opengl2772 Exp $
+# $Id: zip.pl,v 1.29 2008-05-11 17:59:21 opengl2772 Exp $
 #  zip filter for Namazu
 #  Copyright (C) 2004 MATSUMURA Namihiko <po-jp@counterghost.net>
 #                2004 Yukio USUDA <usu@namazu.org>
@@ -75,7 +75,6 @@ sub filter ($$$$$) {
     my ($orig_cfile, $contref, $weighted_str, $headings, $fields)
       = @_;
 
-    $$contref = "";
     my $err = undef;
     $err = $_filter->($contref, $weighted_str, $headings, $fields);
     return $err;

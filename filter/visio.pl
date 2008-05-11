@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: visio.pl,v 1.3 2007-01-27 14:14:55 usu Exp $
+# $Id: visio.pl,v 1.4 2008-05-11 13:24:21 opengl2772 Exp $
 # Copyright (C) 2007 Tadamasa Teranishi All rights reserved.
 #               2007 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -96,15 +96,15 @@ sub filter_visio ($$$$) {
         codeconv::normalize_jp(\$keywords);
         codeconv::normalize_jp($contref);
     }
-    if ($authorname ne ""){
+    if ($authorname ne "") {
         $fields->{'author'} = $authorname;
     }
-    if ($title ne ""){
+    if ($title ne "") {
         $fields->{'title'} = $title;
         my $weight = $conf::Weight{'html'}->{'title'};
         $$weighted_str .= "\x7f$weight\x7f$title\x7f/$weight\x7f\n";
     }
-    if ($keywords ne ""){
+    if ($keywords ne "") {
         my @weight_str = split(' ',$keywords);
         for my $tmp (@weight_str) {
             my $weight = $conf::Weight{'metakey'};
@@ -123,33 +123,33 @@ sub get_content ($) {
     ooo::remove_all_tag($contref);
 }
 
-sub get_author ($){
+sub get_author ($) {
     my ($contref) = @_;
     my $author = "";
-    if ($$contref =~ m!<Creator>(.*?)</Creator>!s){
+    if ($$contref =~ m!<Creator>(.*?)</Creator>!s) {
         $author = $1;
     }
-    if ($author eq ""){
-        if ($$contref =~ m!<Manager>(.*?)</Manager>!s){
+    if ($author eq "") {
+        if ($$contref =~ m!<Manager>(.*?)</Manager>!s) {
             $author = $1;
         }
     }
     return $author;
 }
 
-sub get_title ($){
+sub get_title ($) {
     my ($contref) = @_;
     my $title = "";
-    if ($$contref =~ m!<Title>(.*?)</Title>!s){
+    if ($$contref =~ m!<Title>(.*?)</Title>!s) {
         $title = $1;
     }
     return $title;
 }
 
-sub get_keywords ($){
+sub get_keywords ($) {
     my ($contref) = @_;
     my $keyword = "";
-    if ($$contref =~ m!<Keywords>(.*?)</Keywords>!s){
+    if ($$contref =~ m!<Keywords>(.*?)</Keywords>!s) {
         $keyword = $1;
     }
     return $keyword;

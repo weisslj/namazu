@@ -1,3 +1,7 @@
+2008-06-01  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * namazu.spec.in: Requires perl-File-MMagic >= 1.27.
+
 2008-05-12  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
 	* filter/zip.pl: Bug fix.
@@ -554,4 +558,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1605 2008-05-11 17:59:19 opengl2772 Exp $
+$Id: ChangeLog,v 1.1606 2008-06-01 08:13:28 opengl2772 Exp $

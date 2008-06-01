@@ -12,10 +12,10 @@ License:	GPL
 Group:		Applications/Text
 URL:		http://www.namazu.org/
 BuildRequires:	perl >= 5.6.0, perl-NKF >= 1.71, perl-Text-Kakasi >= 1.00
-BuildPreReq:	perl-File-MMagic >= 1.25
+BuildPreReq:	perl-File-MMagic >= 1.27
 BuildRoot:	%{_tmppath}/%{name}-%{version}-root
 
-Requires:	perl >= 5.6.0, perl-File-MMagic >= 1.25, perl-NKF >= 1.71
+Requires:	perl >= 5.6.0, perl-File-MMagic >= 1.27, perl-NKF >= 1.71
 Requires:	kakasi >= 2.3.0, perl-Text-Kakasi >= 1.00
 
 Source:		http://www.namazu.org/stable/%{name}-%{version}.tar.gz
@@ -134,6 +134,9 @@ rm -f %{_tmppath}/filter-requires-namazu.sh
 
 
 %changelog
+* Sun Jun 01 2008 Tadamasa Teranishi <yw3t-trns@asahi-net.or.jp>
+- Requires perl-File-MMagic >= 1.27.
+
 * Sat Jun 03 2006 Tadamasa Teranishi <yw3t-trns@asahi-net.or.jp>
 - filter-requires-namazu.sh is deleted with clean.
 

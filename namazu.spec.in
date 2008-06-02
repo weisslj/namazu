@@ -47,7 +47,7 @@ A CGI interface for Namazu.
 LC_ALL=C
 export LC_ALL
 echo "#!/bin/sh" > %{_tmppath}/filter-requires-namazu.sh
-echo "%{__find_requires} $* | egrep -v 'perl\((nmzidx|conf|document|time|util|var).pl\)'" >> %{_tmppath}/filter-requires-namazu.sh
+echo "%{__find_requires} $* | egrep -v 'perl\((nmzidx|conf|document|time|util|var|ext).pl\)'" >> %{_tmppath}/filter-requires-namazu.sh
 chmod +x %{_tmppath}/filter-requires-namazu.sh
 %define __find_requires %{_tmppath}/filter-requires-namazu.sh
 

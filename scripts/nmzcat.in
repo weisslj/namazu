@@ -3,7 +3,7 @@
 # -*- Perl -*-
 # nmzcat - print file content on the standard output.
 #
-# $Id: nmzcat.in,v 1.8 2008-04-30 14:38:14 usu Exp $
+# $Id: nmzcat.in,v 1.9 2008-06-02 09:46:04 opengl2772 Exp $
 #
 # Copyright (C) 2004 Yukio USUDA All rights reserved.
 # Copyright (C) 2004-2008 Namazu Project All rights reserved.
@@ -44,6 +44,7 @@ require "util.pl" || die "unable to require \"util.pl\"\n";
 require "document.pl" || die "unable to require \"document.pl\"\n";
 require "var.pl" || die "unable to require \"var.pl\"\n";
 require "conf.pl" || die "unable to require \"conf.pl\"\n";
+require "ext.pl" || die "unable to require \"ext.pl\"\n";
 
 my $tmpdir = "/tmp/NMZ$$";
 if ($English::OSNAME eq "MSWin32") {

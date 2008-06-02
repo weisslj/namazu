@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.183 2008-04-27 18:11:06 opengl2772 Exp $
+# $Id: mknmz.in,v 1.184 2008-06-02 09:46:04 opengl2772 Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2008 Namazu Project All rights reserved.
@@ -393,6 +393,7 @@ sub preload_modules () {
     require "util.pl" || die "unable to require \"util.pl\"\n";
     require "codeconv.pl" || die "unable to require \"codeconv.pl\"\n";
     require "gettext.pl" || die "unable to require \"gettext.pl\"\n";
+    require "ext.pl" || die "unable to require \"ext.pl\"\n";
 }
 
 sub postload_modules () {

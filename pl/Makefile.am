@@ -21,7 +21,9 @@ perllib_DATA = \
 	time.pl \
 	builtinwakati.pl \
 	document.pl \
-	filter.pl
+	filter.pl \
+	ext.pl \
+	extzip.pl
 
 # Slightly different from perllib_DATA because of *.in files.
 EXTRA_DIST = $\
@@ -40,7 +42,9 @@ EXTRA_DIST = $\
 	time.pl \
 	builtinwakati.pl \
 	document.pl \
-	filter.pl.in
+	filter.pl.in \
+	ext.pl \
+	extzip.pl
 
 CLEANFILES = gettext.pl filter.pl
 

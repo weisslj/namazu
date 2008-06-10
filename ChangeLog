@@ -1,3 +1,8 @@
+2008-06-11  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * pltests/env.pl.in: Version of the checked OLE::Storange_Lite::PPS,
+        etc...
+
 2008-06-02  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * pl/{ext, extzip}.pl: Add new files. (Extensions Zip)
@@ -567,4 +572,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1607 2008-06-02 09:46:31 opengl2772 Exp $
+$Id: ChangeLog,v 1.1608 2008-06-10 16:46:17 opengl2772 Exp $

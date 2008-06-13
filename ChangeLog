@@ -1,3 +1,7 @@
+2008-06-13  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * filter/{koffice, msofficexml, ooo, xps}.pl: update.
+
 2008-06-11  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * pltests/env.pl.in: Version of the checked OLE::Storange_Lite::PPS,
@@ -572,4 +576,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1608 2008-06-10 16:46:17 opengl2772 Exp $
+$Id: ChangeLog,v 1.1609 2008-06-13 14:04:35 opengl2772 Exp $

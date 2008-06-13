@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: koffice.pl,v 1.14 2008-05-02 08:06:16 opengl2772 Exp $
+# $Id: koffice.pl,v 1.15 2008-06-13 14:04:36 opengl2772 Exp $
 # Copyright (C) 2004 Yukio USUDA 
 #               2004-2008 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -27,9 +27,6 @@ use strict;
 use English;
 require 'util.pl';
 
-my $utfconvpath = undef;
-my $unzippath = undef;
-my @unzipopts;
 
 sub mediatype () {
     #http://www.iana.org/assignments/media-types/application/
@@ -40,11 +37,10 @@ sub mediatype () {
 }
 
 sub status () {
-    $unzippath = util::checkcmd('unzip');
-    if (defined $unzippath) {
-	@unzipopts = ('-p');
+    if (ext::issupport('EXT_ZIP') eq 'yes') {
 	return 'yes';
     }
+
     return 'no';
 }
 
@@ -74,32 +70,20 @@ sub add_magic ($) {
 sub filter ($$$$$) {
     my ($orig_cfile, $contref, $weighted_str, $headings, $fields)
         = @_;
-    filter_docinfofile($contref, $weighted_str, $fields);
-    filter_maindocfile($contref, $weighted_str, $headings, $fields);
-    return undef;
+    my $err = undef;
+    $err = filter_docinfofile($contref, $weighted_str, $fields);
+#    return $err if (defined $err);
+    $err = filter_maindocfile($contref, $weighted_str, $headings, $fields);
+    return $err;
 }
 
 sub filter_docinfofile ($$$) {
     my ($contref, $weighted_str, $fields) = @_;
-    my $metafile = 'documentinfo.xml';
+
     my $xml = "";
-    my $tmpfile  = util::tmpnam('NMZ.zip');
-    {
-	my $fh = util::efopen("> $tmpfile");
-	print $fh $$contref;
-        util::fclose($fh);
-    }
-    my @cmd = ($unzippath, @unzipopts, $tmpfile, $metafile);
-    my $status = util::syscmd(
-        command => \@cmd,
-        option => {
-            "stdout" => \$xml,
-            "stderr" => "/dev/null",
-            "mode_stdout" => "wt",
-            "mode_stderr" => "wt",
-        },
-    );
-    unlink $tmpfile;
+    my $err = $extzip::zip_read->($contref, 'documentinfo.xml', \$xml);
+    return $err if (defined $err);
+    codeconv::normalize_nl(\$xml);
 
     my $authorname = koffice::get_author(\$xml);
     my $title = koffice::get_title(\$xml);
@@ -125,29 +109,17 @@ sub filter_docinfofile ($$$) {
     if ($abstract ne "") {
          $fields->{'summary'} = $abstract;
     }
+
+    return undef;
 }
 
 sub filter_maindocfile ($$$$$) {
     my ($contref, $weighted_str, $headings, $fields) = @_;
-    my $contentfile = "maindoc.xml";
+
     my $xml = "";
-    my $tmpfile  = util::tmpnam('NMZ.zip');
-    {
-	my $fh = util::efopen("> $tmpfile");
-	print $fh $$contref;
-        util::fclose($fh);
-    }
-    my @cmd = ($unzippath, @unzipopts, $tmpfile, $contentfile);
-    my $status = util::syscmd(
-        command => \@cmd,
-        option => {
-            "stdout" => \$xml,
-            "stderr" => "/dev/null",
-            "mode_stdout" => "wt",
-            "mode_stderr" => "wt",
-        },
-    );
-    unlink $tmpfile;
+    my $err = $extzip::zip_read->($contref, 'maindoc.xml', \$xml);
+    return $err if (defined $err);
+    codeconv::normalize_nl(\$xml);
 
     koffice::get_kivio_content(\$xml);
     koffice::remove_all_tag(\$xml);
@@ -163,9 +135,11 @@ sub filter_maindocfile ($$$$$) {
     gfilter::white_space_adjust_filter($contref);
     gfilter::show_filter_debug_info($contref, $weighted_str,
                                     $fields, $headings);
+
+    return undef;
 }
 
-sub get_author ($){
+sub get_author($) {
     my ($contref) = @_;
     $$contref =~ m!<author>(.*)</author>!s;
     my $authordata = $1;
@@ -185,7 +159,7 @@ sub get_author ($){
     return $author;
 }
 
-sub get_title($){
+sub get_title($) {
     my ($contref) = @_;
     $$contref =~ m!<about>(.*)</about>!s;
     my $aboutdata = $1;
@@ -196,7 +170,7 @@ sub get_title($){
     }
 }
 
-sub get_abstract($){
+sub get_abstract($) {
     my ($contref) = @_;
     $$contref =~ m!<about>(.*)</about>!s;
     my $aboutdata = $1;

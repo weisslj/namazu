@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: xps.pl,v 1.7 2008-05-10 07:05:06 opengl2772 Exp $
+# $Id: xps.pl,v 1.8 2008-06-13 14:04:36 opengl2772 Exp $
 # Copyright (C) 2007 Yukio USUDA, 
 #               2007-2008 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -30,9 +30,8 @@ require 'gfilter.pl';
 require 'ooo.pl';
 require 'msofficexml.pl';
 
+
 my $utfconvpath = undef;
-my $unzippath = undef;
-my @unzipopts;
 
 sub mediatype() {
     return (
@@ -41,18 +40,19 @@ sub mediatype() {
 }
 
 sub status() {
-    $unzippath = util::checkcmd('unzip');
-    if (defined $unzippath) {
-        @unzipopts = ("-p");
+    if (ext::issupport('EXT_ZIP') eq 'yes') {
+        # The check of a dependence filter.
+        return 'no' if (msofficexml::status() ne 'yes');
+
         if (util::islang("ja")) {
-           if ($conf::NKF ne 'no') {
-               return 'yes';
-           }
-           return 'no';
+            if ($conf::NKF ne 'no') {
+                return 'yes';
+            }
         } else {
-           return 'yes';
+            return 'yes';
         }
     }
+
     return 'no';
 }
 
@@ -79,85 +79,43 @@ sub add_magic ($) {
 sub filter ($$$$$) {
     my ($orig_cfile, $contref, $weighted_str, $headings, $fields)
         = @_;
-    my $cfile = defined $orig_cfile ? $$orig_cfile : '';
-    msofficexml::filter_metafile($contref, $weighted_str, $fields);
-    filter_contentfile($contref, $weighted_str, $headings, $fields);
-    return undef;
-}
-
-sub zip_read ($$$) {
-    my ($zipref, $fname, $unzipcontref) = @_;
-    my $tmpfile;
-    my $uniqnumber = int(rand(10000));
-    do {
-        $tmpfile = util::tmpnam('NMZ.zip' . substr("000$uniqnumber", -4));
-        $uniqnumber++;
-    } while (-f $tmpfile);
-    {
-        my $fh = util::efopen("> $tmpfile");
-        print $fh $$zipref;
-        util::fclose($fh);
-    }
-    my @cmd = ($unzippath, @unzipopts, $tmpfile, $fname);
-    my $status = util::syscmd(
-        command => \@cmd,
-        option => {
-            "stdout" => $unzipcontref,
-            "stderr" => "/dev/null",
-            "mode_stdout" => "wb",
-            "mode_stderr" => "wt",
-        },
-    );
-    unlink $tmpfile;
+    my $err = undef;
+    $err = msofficexml::filter_metafile($contref, $weighted_str, $fields);
+#    return $err if (defined $err);
+    $err = filter_contentfile($contref, $weighted_str, $headings, $fields);
+    return $err;
 }
 
 sub get_pages_list ($$) {
     my ($zipref, $pagesref) = @_;
-    my $tmpfile  = util::tmpnam('NMZ.zip');
-    {
-        my $fh = util::efopen("> $tmpfile");
-        print $fh $$zipref;
-        util::fclose($fh);
-    }
-    my @unzipopts_getlist = ("-Z", "-1");
-    my @cmd = ($unzippath, @unzipopts_getlist, $tmpfile);
-    my $file_list;
-    my $status = util::syscmd(
-        command => \@cmd,
-        option => {
-            "stdout" => \$file_list,
-            "stderr" => "/dev/null",
-            "mode_stdout" => "wt",
-            "mode_stderr" => "wt",
-        },
-    );
-    if ($status == 0) {
-        while ($file_list =~ m!\n
-            (Documents/1/Pages/\d+\.fpage)!gx) {
-            my $filename = $1;
-            push(@$pagesref, $filename);
-        }
-    }
-    unlink $tmpfile;
+
+    my $err = undef;
+    $err = $extzip::zip_membersMatching->($zipref, 'Documents/1/Pages/\d+\.fpage', $pagesref);
+    return $err;
 }
 
 sub filter_contentfile ($$$$$) {
     my ($contref, $weighted_str, $headings, $fields) = @_;
     my @pagefiles;
-    my $xml = "";
 
-    get_pages_list($contref, \@pagefiles);
+    my $xml = "";
+    my $err = get_pages_list($contref, \@pagefiles);
+    return $err if (defined $err);
+
     foreach my $filename (@pagefiles) {
         my $xmlcont = '';
-        xps::zip_read($contref, $filename, \$xmlcont);
+        my $err = $extzip::zip_read->($contref, $filename, \$xmlcont);
+        return $err if (defined $err);
 
-	if ($xmlcont =~ m!^\377\376\<\000F\000i\000x\000e\000d!) {
+        if ($xmlcont =~ m!^\377\376\<\000F\000i\000x\000e\000d!) {
             codeconv::to_inner_encoding(\$xmlcont, 'UTF-16LE');
-        }else{
+        } else {
             codeconv::to_inner_encoding(\$xmlcont, 'unknown');
         }
+        codeconv::normalize_nl(\$xmlcont);
+
         xps::get_document(\$xmlcont);
-        $xml .= ' ' . $xmlcont
+        $xml .= ' ' . $xmlcont;
     }
 
     ooo::remove_all_tag(\$xml);
@@ -175,6 +133,8 @@ sub filter_contentfile ($$$$$) {
     gfilter::white_space_adjust_filter($contref);
     gfilter::show_filter_debug_info($contref, $weighted_str,
                                     $fields, $headings);
+
+    return undef;
 }
 
 sub get_keywords ($) {

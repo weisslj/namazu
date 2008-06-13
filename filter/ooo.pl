@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: ooo.pl,v 1.22 2008-05-09 06:09:11 opengl2772 Exp $
+# $Id: ooo.pl,v 1.23 2008-06-13 14:04:36 opengl2772 Exp $
 # Copyright (C) 2003 Yukio USUDA 
 #               2003-2008 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -29,10 +29,6 @@ require 'util.pl';
 require 'gfilter.pl';
 
 
-my $utfconvpath = undef;
-my $unzippath = undef;
-my @unzipopts;
-
 sub mediatype() {
     # http://framework.openoffice.org/documentation/mimetypes/mimetypes.html
     return ('application/vnd.sun.xml.writer',
@@ -46,18 +42,16 @@ sub mediatype() {
 }
 
 sub status() {
-    $unzippath = util::checkcmd('unzip');
-    if (defined $unzippath) {
-	@unzipopts = ("-p");
-	if (util::islang("ja")) {
-           if ($conf::NKF ne 'no') {
-		return 'yes';
-	   }
-           return 'no';
+    if (ext::issupport('EXT_ZIP') eq 'yes') {
+        if (util::islang("ja")) {
+            if ($conf::NKF ne 'no') {
+                return 'yes';
+            }
         } else {
-           return 'yes';
+            return 'yes';
         }
     }
+
     return 'no';
 }
 
@@ -81,6 +75,7 @@ sub add_magic ($) {
     $magic->addFileExts('\\.sxc$', 'application/vnd.sun.xml.calc');
     $magic->addFileExts('\\.sxi$', 'application/vnd.sun.xml.impress');
     $magic->addFileExts('\\.sxd$', 'application/vnd.sun.xml.draw');
+
     $magic->addFileExts('\\.odt$', 'application/vnd.oasis.opendocument.text');
     $magic->addFileExts('\\.ods$', 'application/vnd.oasis.opendocument.spreadsheet');
     $magic->addFileExts('\\.odp$', 'application/vnd.oasis.opendocument.presentation');
@@ -91,32 +86,20 @@ sub add_magic ($) {
 sub filter ($$$$$) {
     my ($orig_cfile, $contref, $weighted_str, $headings, $fields)
         = @_;
-    filter_metafile($contref, $weighted_str, $fields);
-    filter_contentfile($contref, $weighted_str, $headings, $fields);
-    return undef;
+    my $err = undef;
+    $err = filter_metafile($contref, $weighted_str, $fields);
+#    return $err if (defined $err);
+    $err = filter_contentfile($contref, $weighted_str, $headings, $fields);
+    return $err;
 }
 
 sub filter_metafile ($$$) {
     my ($contref, $weighted_str, $fields) = @_;
-    my $metafile = 'meta.xml';
+
     my $xml = "";
-    my $tmpfile  = util::tmpnam('NMZ.zip');
-    {
-        my $fh = util::efopen("> $tmpfile");
-        print $fh $$contref;
-        util::fclose($fh);
-    }
-    my @cmd = ($unzippath, @unzipopts, $tmpfile, $metafile);
-    my $status = util::syscmd(
-        command => \@cmd,
-        option => {
-            "stdout" => \$xml,
-            "stderr" => "/dev/null",
-            "mode_stdout" => "wt",
-            "mode_stderr" => "wt",
-        },
-    );
-    unlink $tmpfile;
+    my $err = $extzip::zip_read->($contref, 'meta.xml', \$xml);
+    return $err if (defined $err);
+    codeconv::normalize_nl(\$xml);
 
     my $authorname = ooo::get_author(\$xml);
     my $title = ooo::get_title(\$xml);
@@ -144,36 +127,24 @@ sub filter_metafile ($$$) {
         my $weight = $conf::Weight{'metakey'};
         $$weighted_str .= "\x7f$weight\x7f$tmp\x7f/$weight\x7f\n" if $tmp;
     }
+
+    return undef;
 }
 
 sub filter_contentfile ($$$$$) {
     my ($contref, $weighted_str, $headings, $fields) = @_;
-    my $contentfile = "content.xml";
+
     my $xml = "";
-    my $tmpfile  = util::tmpnam('NMZ.zip');
-    {
-        my $fh = util::efopen("> $tmpfile");
-        print $fh $$contref;
-        util::fclose($fh);
-    }
-    my @cmd = ($unzippath, @unzipopts, $tmpfile, $contentfile);
-    my $status = util::syscmd(
-        command => \@cmd,
-        option => {
-            "stdout" => \$xml,
-            "stderr" => "/dev/null",
-            "mode_stdout" => "wt",
-            "mode_stderr" => "wt",
-        },
-    );
-    unlink $tmpfile;
+    my $err = $extzip::zip_read->($contref, 'content.xml', \$xml);
+    return $err if (defined $err);
+    codeconv::normalize_nl(\$xml);
 
     ooo::remove_all_tag(\$xml);
     ooo::decode_entity(\$xml);
 
     # Code conversion for Japanese document.
     if (util::islang("ja")) {
-         codeconv::normalize_jp(\$xml);
+        codeconv::normalize_jp(\$xml);
     }
     $$contref = $xml;
     gfilter::line_adjust_filter($contref);
@@ -181,9 +152,11 @@ sub filter_contentfile ($$$$$) {
     gfilter::white_space_adjust_filter($contref);
     gfilter::show_filter_debug_info($contref, $weighted_str,
                                     $fields, $headings);
+
+    return undef;
 }
 
-sub get_author ($){
+sub get_author($) {
   my ($contref) = @_;
   if ($$contref =~ m!<dc:creator>(.*)</dc:creator>!) {
       return $1;
@@ -192,7 +165,7 @@ sub get_author ($){
   }
 }
 
-sub get_title ($){
+sub get_title($) {
   my ($contref) = @_;
   if ($$contref =~ m!<dc:title>(.*)</dc:title>!) {
       return $1;
@@ -205,7 +178,7 @@ sub get_keywords ($) {
   my ($contref) = @_;
   my @keywordstmp;
   push(@keywordstmp, $$contref =~ m!<meta:keyword>(.*)</meta:keyword>!g);
-  return  join(" ",@keywordstmp);
+  return join(" ", @keywordstmp);
 }
 
 sub remove_all_tag ($) {
@@ -220,7 +193,7 @@ sub decode_numbered_entity ($) {
     my ($num) = @_;
     return ""
         if $num >= 0 && $num <= 8 ||  $num >= 11 && $num <= 31 || $num >=127;
-    sprintf ("%c",$num);
+    sprintf("%c", $num);
 }
 
 # Decode an entity. Ignore characters of right half of ISO-8859-1.

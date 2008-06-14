@@ -3,6 +3,8 @@
         * doc/{en, ja}/manual.html: The dependence filter is added to 
         each filter. 
 
+        * doc/{en, ja}/manual.html: Update Archive::Zip URL.
+
 2008-06-13  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * filter/{koffice, msofficexml, ooo, xps}.pl: update.
@@ -581,4 +583,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1610 2008-06-14 06:18:28 opengl2772 Exp $
+$Id: ChangeLog,v 1.1611 2008-06-14 07:27:34 opengl2772 Exp $

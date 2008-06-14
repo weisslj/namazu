@@ -274,6 +274,7 @@ href="http://sources.redhat.com/bzip2/">bzip2</a> command.</dd>
 -->
 <dd>Suggested software:<a href="http://www.ff.iij4u.or.jp/~nrt/lv/">lv</a>
 (only for Japanese documents)</dd>
+<dd>Dependence: html.pl</dd>
 
 <dt>gnumeric.pl</dt>
 <dd>Handles a Gnumeric file.</dd>
@@ -294,6 +295,7 @@ command or Compress::Zlib perl module.</dd>
 Project</a>.</dd>
 <dd>Requirement: the hnf filter is special:  it requires namazu_for_hns
 of <a href="http://www.h14m.org/">Hyper NIKKI System Project</a>.</dd>
+<dd>Dependence: html.pl</dd>
 
 <dt>html.pl</dt>
 <dd>Handles a HTML file.</dd>
@@ -328,6 +330,7 @@ are required.(perl5.8 contains them.)
 <dt>mhonarc.pl</dt>
 <dd>Handles a <a href="http://www.mhonarc.org/">MHonArc</a> file.</dd>
 <dd>Requirement: None</dd>
+<dd>Dependence: html.pl, mailnews.pl</dd>
 
 <dt>mp3.pl</dt>
 <dd>Handles an MP3 file's ID3 Tag</dd>
@@ -343,6 +346,7 @@ href="http://sourceforge.net/projects/pudge/">MP3::Info perl module.</a>
 -->
 <dd>Suggested software:<a href="http://www.ff.iij4u.or.jp/~nrt/lv/">lv</a>
 (only for Japanese documents)</dd>
+<dd>Dependence: html.pl</dd>
 
 <dt>msofficexml.pl</dt>
 <dd>Handles an Microsoft Office2007 OfficeOpenXML Word, Excel, Powerpoint file.</dd>
@@ -363,6 +367,7 @@ href="http://www.info-zip.org/pub/infozip/UnZip.html">unzip</a></dd>
 <dt>pipermail.pl</dt>
 <dd>Handles a <a href="http://www.gnu.org/software/mailman/">Mailman/pipermail</a> file.</dd>
 <dd>Requirement: None</dd>
+<dd>Dependence: html.pl, mailnews.pl</dd>
 
 <dt>postscript.pl</dt>
 <dd>Handles a PostScript file.</dd>
@@ -377,6 +382,7 @@ href="http://www.info-zip.org/pub/infozip/UnZip.html">unzip</a></dd>
 -->
 <dd>Suggested software:<a href="http://www.ff.iij4u.or.jp/~nrt/lv/">lv</a>
 (only for Japanese documents)</dd>
+<dd>Dependence: html.pl</dd>
 
 <dt>rfc.pl</dt>
 <dd>Handles an RFC file.</dd>
@@ -389,6 +395,7 @@ href="http://www.info-zip.org/pub/infozip/UnZip.html">unzip</a></dd>
 <dt>rtf.pl</dt>
 <dd>Handles a RTF file.</dd>
 <dd>Requirement: <a href="http://www.asahi-net.or.jp/~yw3t-trns/namazu/rtf2html/rtf2html-1.1a.tar.gz">rtf2html</a></dd>
+<dd>Dependence: html.pl</dd>
 
 <!--
 <dt>taro.pl</dt>
@@ -423,6 +430,7 @@ href="http://www.info-zip.org/pub/infozip/UnZip.html">unzip</a></dd>
 <dd>Handles an XML Paper Specification (XPS) file.</dd>
 <dd>Requirement: <a
 href="http://www.info-zip.org/pub/infozip/UnZip.html">unzip</a></dd>
+<dd>Dependence: msofficexml.pl</dd>
 
 <dt>zip.pl</dt>
 <dd>Handles a Zip archive files.</dd>
@@ -476,25 +484,30 @@ JSTXT</a></dd>
 <dd>Handles a file of Ichitaro, a Japanese word processor, versions 4.</dd>
 <dd>Requirement: Microsoft Word 97 SP1 or later, 98 or 2000</dd>
 <dd>Requirement: and applicable document converter of Microsoft Office attachment.
+<dd>Dependence: olemsword.pl</dd>
 <br></dd>
 <dd><br></dd>
 <dd>Handles a file of Ichitaro, a Japanese word processor, versions 5 through 6.</dd>
 <dd>Requirement: Microsoft Word 97 SP1 or later, 98, 2000 or 2002(XP)</dd>
 <dd>Requirement: and applicable document converter of Microsoft Office attachment.
+<dd>Dependence: olemsword.pl</dd>
 <br></dd>
 <dd><br></dd>
 <dd>Handles a file of Ichitaro, a Japanese word processor, versions 7 through 13, 2004.</dd>
 <dd>Requirement: Microsoft Word 97 SP1 or later, 98, 2000, 2002(XP), 2003 or 2007</dd>
 <dd>Requirement: and applicable document converter of Microsoft Office attachment.</dd>
+<dd>Dependence: olemsword.pl</dd>
 
 <dt>olertf.pl</dt>
 <dd>Handles a RTF file.</dd>
 <dd>Requirement: Microsoft Word 97 SP1 or later, 98, 2000, 2002(XP), 2003 or 2007
 </dd>
+<dd>Dependence: olemsword.pl</dd>
 
 <dt>olevisio.pl</dt>
 <dd>Handles a Microsoft Visio file.</dd>
 <dd>Requirement: Microsoft Visio 2000, 2002, 2003 or 2007</dd>
+<dd>Dependence: olemsword.pl</dd>
 
 <dt>xdoc2txt.pl</dt>
 <dd>Handles a file of Microsoft Word, Excel, Powerpoint, Ichitaro, etc.</dd>
@@ -1182,7 +1195,7 @@ You must choose the latter with Tkanamzu or namazu.el.
 Copyright (C) 2000-2008 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: manual.html,v 1.96 2008-03-04 21:23:54 opengl2772 Exp $
+$Id: manual.html,v 1.97 2008-06-14 06:18:30 opengl2772 Exp $
 </div>
 <address>
 developers@namazu.org

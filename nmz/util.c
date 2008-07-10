@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: util.c,v 1.95 2008-03-06 15:34:58 opengl2772 Exp $
+ * $Id: util.c,v 1.96 2008-07-10 19:46:04 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2008 Namazu Project All rights reserved.
@@ -93,9 +93,9 @@ reverse_byte_order (void *p, size_t n, size_t size)
     char *pp, tmp;
 
     pp = (char *)p;
-    for (i = 0; i < n; i++) {
+    for (i = 0; i < (int)n; i++) {
         char *c = (pp + (i * size));
-        for (j = 0; j < (size / 2); j++) {
+        for (j = 0; j < (int)(size / 2); j++) {
             tmp = *(c + j);
             *(c + j)= *(c + size - 1 - j);
             *(c + size - 1 - j) = tmp;

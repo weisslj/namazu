@@ -2,10 +2,10 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.87 2007-12-05 16:23:37 opengl2772 Exp $
+ * $Id: cgi.c,v 1.88 2008-07-15 15:01:10 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2007 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2008 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -226,7 +226,7 @@ free_cgi_vars(struct cgivar *cv)
 static char *
 get_query_string(void) 
 {
-    int contlen;
+    size_t contlen;
     char *script_name    = "";
     char *query_string   = "";
 
@@ -263,7 +263,7 @@ get_cgi_vars(const char *querystring)
     struct cgivar *cv = NULL; /* SHOULD BE NULL for sentinel! */
 
     while (1) {
-	int len;
+	size_t len;
 	const char *tmp;
         char *pSemicolon;
 	char name[BUFSIZE];
@@ -443,7 +443,7 @@ process_cgi_var_sort(char *value, struct cgiarg *ca)
 	nmz_set_sortmethod(SORT_BY_DATE);
 	nmz_set_sortorder(ASCENDING);
     } else if (nmz_strprefixcasecmp(value, "field:") == 0) {
-	int n;
+	size_t n;
 	char field[BUFSIZE];
 
 	value += strlen("field:");

@@ -1,3 +1,8 @@
+2008-07-16  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * src/{cgi, namazu-cgi}.c: The type of the variable is changed. 
+        (int -> size_t)
+
 2008-07-15  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * src/{form, output, rcfile, result}.c: The type of the variable 
@@ -593,4 +598,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1613 2008-07-15 14:27:47 opengl2772 Exp $
+$Id: ChangeLog,v 1.1614 2008-07-15 15:01:10 opengl2772 Exp $

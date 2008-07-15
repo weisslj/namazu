@@ -2,10 +2,10 @@
  * 
  * namazu-cgi.c - search client of Namazu
  *
- * $Id: namazu-cgi.c,v 1.31 2007-12-05 16:23:37 opengl2772 Exp $
+ * $Id: namazu-cgi.c,v 1.32 2008-07-15 15:01:10 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2007 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2008 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -100,7 +100,7 @@ suicide (int signum)
 static void 
 combine_pathname(char *dest, const char *command, const char *name)
 {
-    int i;
+    size_t i;
 
     int win32 = 0;
 #if  defined(_WIN32) || defined(__EMX__)

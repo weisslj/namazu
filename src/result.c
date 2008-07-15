@@ -1,9 +1,9 @@
 /*
- * $Id: result.c,v 1.82 2007-12-05 16:23:37 opengl2772 Exp $
+ * $Id: result.c,v 1.83 2008-07-15 14:27:48 opengl2772 Exp $
  * 
  * Copyright (C) 1989, 1990 Free Software Foundation, Inc.
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2007 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2008 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -80,8 +80,9 @@ static int is_uridecode ( void );
 static void 
 commas(char *numstr)
 {
-    int i, n;
-    int leng = strlen(numstr);
+    int i;
+    size_t n;
+    size_t leng = strlen(numstr);
 
     n = leng + (leng - 1) / 3;
     numstr[n] = '\0';
@@ -218,7 +219,7 @@ emphasize(char *str)
     for (i = 0; nmz_get_querytoken(i) != NULL; i++) {
 	char *ptr = str;
 	char key[BUFSIZE] = "";
-	int keylen = 0;
+	size_t keylen = 0;
         int findFlag = 0;
         char *keys;
         char *word;
@@ -379,7 +380,7 @@ compose_result(struct nmz_data d, int counter,
 	char *pp;
 	pp = strstr(p, "${");
 	if (pp != NULL) {
-	    int n;
+	    size_t n;
 	    strncat(r, p, pp - p);
 	    pp += 2;  /* skip "${" */
 	    n = strspn(pp, achars);

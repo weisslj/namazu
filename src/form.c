@@ -2,10 +2,10 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.93 2007-12-05 16:23:37 opengl2772 Exp $
+ * $Id: form.c,v 1.94 2008-07-15 14:27:48 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2007 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2008 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -228,7 +228,7 @@ nmz_query_external(const char *query)
 static void 
 delete_str(char *s, char *d)
 {
-    int l;
+    size_t l;
     char *tmp;
 
     l = strlen(d);
@@ -316,9 +316,10 @@ select_option(char *s, const char *name, const char *subquery)
             } else if ((nmz_strprefixcasecmp(value, "field:") == 0) && 
 		       nmz_get_sortmethod() == SORT_BY_FIELD) 
 	    {
-		char *p;
-		int n, order = DESCENDING;
-		char field[BUFSIZE] = "";
+                char *p;
+                size_t n;
+                int order = DESCENDING;
+                char field[BUFSIZE] = "";
 
 		p = value + strlen("field:");
 		n = strspn(p, FIELD_SAFE_CHARS);
@@ -609,7 +610,7 @@ handle_tag(const char *start, const char *end, const char *query,
                char *select_name, const char *subquery)
 {
     char tmp[BUFSIZE] = "";
-    int l;
+    size_t l;
 
     l = end - start + 1;
     if (l < BUFSIZE - 1) {

@@ -1,9 +1,9 @@
 /*
  * 
- * $Id: rcfile.c,v 1.47 2007-12-05 16:23:37 opengl2772 Exp $
+ * $Id: rcfile.c,v 1.48 2008-07-15 14:27:48 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2007 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2008 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -113,7 +113,7 @@ struct _StrList {
  */
 
 static char *getenv_namazurc ( void );
-static int get_rc_arg ( const char *line, char *arg );
+static size_t get_rc_arg ( const char *line, char *arg );
 static void replace_home ( char *str );
 static StrList * add_strlist(StrList *list, const char *arg);
 static void free_strlist(StrList *list);
@@ -196,9 +196,9 @@ process_rc_debug(const char *directive, const StrList *args)
     char *arg1 = args->value;
 
     if (strcasecmp(arg1, "ON") == 0) {
-	nmz_set_debugmode(1);
+        nmz_set_debugmode(1);
     } else if (strcasecmp(arg1, "OFF") == 0) {
-	nmz_set_debugmode(0);
+        nmz_set_debugmode(0);
     }
     return SUCCESS;
 }
@@ -222,7 +222,7 @@ process_rc_alias(const char *directive, const StrList *args)
     char *arg2 = args->next->value;
 
     if (nmz_add_alias(arg1, arg2) != SUCCESS) {
-	return FAILURE;
+        return FAILURE;
     }
     return SUCCESS;
 }
@@ -234,7 +234,7 @@ process_rc_replace(const char *directive, const StrList *args)
     char *arg2 = args->next->value;
 
     if (nmz_add_replace(arg1, arg2) != SUCCESS) {
-	return FAILURE;
+        return FAILURE;
     }
     return SUCCESS;
 }
@@ -245,9 +245,9 @@ process_rc_logging(const char *directive, const StrList *args)
     char *arg1 = args->value;
 
     if (strcasecmp(arg1, "ON") == 0) {
-	nmz_set_loggingmode(1);
+        nmz_set_loggingmode(1);
     } else if (strcasecmp(arg1, "OFF") == 0) {
-	nmz_set_loggingmode(0);
+        nmz_set_loggingmode(0);
     }
 
     return SUCCESS;
@@ -298,7 +298,7 @@ process_rc_lang(const char *directive, const StrList *args)
      * It works if environment variable LANG is not set.
      */
     if (getenv("LANG") == NULL) {
-	nmz_set_lang(arg1);
+        nmz_set_lang(arg1);
     }
     return SUCCESS;
 }
@@ -365,9 +365,9 @@ process_rc_regexsearch(const char *directive, const StrList *args)
     char *arg1 = args->value;
 
     if (strcasecmp(arg1, "ON") == 0) {
-	nmz_set_regex_searchmode(1);
+        nmz_set_regex_searchmode(1);
     } else if (strcasecmp(arg1, "OFF") == 0) {
-	nmz_set_regex_searchmode(0);
+        nmz_set_regex_searchmode(0);
     }
 
     return SUCCESS;
@@ -412,7 +412,7 @@ getenv_namazurc(void)
     return NULL;
 }
 
-static int 
+static size_t 
 get_rc_arg(const char *line, char *arg)
 {
     arg[BUFSIZE - 1] = '\0';
@@ -424,10 +424,10 @@ get_rc_arg(const char *line, char *arg)
 	arg[n] = '\0';     /* Hey, don't forget this after strncpy()! */
 	return n;
     } else {  /* double quoted argument */
-	int n;
-	line++;
-	n = 1;
-	do {
+        size_t n;
+        line++;
+        n = 1;
+        do {
 	    size_t nn = strcspn(line, "\"\\");
 	    if (nn >= (BUFSIZE - strlen(arg))) nn = BUFSIZE - strlen(arg) - 1;
 	    strncat(arg, line, nn);
@@ -537,7 +537,7 @@ static StrList *
 get_rc_args(const char *line)
 {
     StrList *list = NULL;
-    int n;
+    size_t n;
 
     /* Skip white spaces in the beginning of this line */
     n = strspn(line, " \t");    /* skip white spaces */
@@ -726,7 +726,7 @@ load_rcfile(const char *fname)
 		int remaining;
 		
 		buf[strlen(buf) - 1] = '\0'; /* Remove ending \ */
-		remaining = BUFSIZE - strlen(buf) - 1;
+		remaining = (int)(BUFSIZE - strlen(buf) - 1);
 		if (remaining == 0) {
 		    nmz_chomp(buf);
 		    break;
@@ -773,9 +773,9 @@ set_namazurc(const char *arg)
 void
 set_namazunorc(const char *arg)
 {
-     strncpy(namazunorc, arg, BUFSIZE - 1);
-     namazunorc[BUFSIZE - 1] = '\0';
-     nmz_strlower(namazunorc);
+    strncpy(namazunorc, arg, BUFSIZE - 1);
+    namazunorc[BUFSIZE - 1] = '\0';
+    nmz_strlower(namazunorc);
 }
 
 /*
@@ -802,7 +802,7 @@ load_rcfiles(void)
 
         if (namazunorc[0] == '\0') {
             set_namazunorc(_norc);
-  	}
+        }
     }
 
     nmz_debug_printf("NAMAZUNORC: '%s'", _norc);

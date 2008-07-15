@@ -1,5 +1,5 @@
 /*
- * $Id: output.c,v 1.124 2008-02-01 15:28:00 opengl2772 Exp $
+ * $Id: output.c,v 1.125 2008-07-15 14:27:48 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2008 Namazu Project All rights reserved.
@@ -166,9 +166,10 @@ emprint(char *s, int entity_encode)
  */
 static void
 unhtml_buffer(char *ostr) {
-    int f, i;
+    int f;
+    size_t i;
     char buf[BUFSIZE] = "", *str;
-    int len;
+    size_t len;
 
     len = strlen(ostr) + 1;
     str = ostr;

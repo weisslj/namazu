@@ -2,7 +2,7 @@
  * 
  * namazu-cgi.c - search client of Namazu
  *
- * $Id: namazu-cgi.c,v 1.32 2008-07-15 15:01:10 opengl2772 Exp $
+ * $Id: namazu-cgi.c,v 1.33 2008-07-19 17:56:00 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2008 Namazu Project All rights reserved.
@@ -100,7 +100,7 @@ suicide (int signum)
 static void 
 combine_pathname(char *dest, const char *command, const char *name)
 {
-    size_t i;
+    int i;
 
     int win32 = 0;
 #if  defined(_WIN32) || defined(__EMX__)
@@ -108,7 +108,7 @@ combine_pathname(char *dest, const char *command, const char *name)
 #endif
 
     strcpy(dest, command);
-    for (i = strlen(dest) - 1; i >= 0; i--) {
+    for (i = (int)strlen(dest) - 1; i >= 0; i--) {
 	if (dest[i] == '/' || (win32 && dest[i] == '\\')) {
 	    break;
 	}

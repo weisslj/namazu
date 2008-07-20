@@ -1,3 +1,7 @@
+2008-07-20  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * pl/codeconv.pl: Add new function.(tousascii)
+
 2008-07-16  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * src/{cgi, namazu-cgi}.c: The type of the variable is changed. 
@@ -598,4 +602,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1614 2008-07-15 15:01:10 opengl2772 Exp $
+$Id: ChangeLog,v 1.1615 2008-07-20 07:14:57 opengl2772 Exp $

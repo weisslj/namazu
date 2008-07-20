@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: codeconv.pl,v 1.35 2007-11-16 17:24:37 opengl2772 Exp $
+# $Id: codeconv.pl,v 1.36 2008-07-20 07:14:58 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
-# Copyright (C) 2000-2007 Namazu Project All rights reserved.
+# Copyright (C) 2000-2008 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -357,6 +357,14 @@ sub normalize_jp_document ($) {
     my ($textref) = @_;
     codeconv::normalize_jp($textref);
     codeconv::normalize_document($textref);
+}
+
+sub tousascii ($) {
+    my ($contref) = @_;
+
+    $$contref =~ s/[\x80-\xFF]/#/g;
+
+    return $$contref;
 }
 
 1;

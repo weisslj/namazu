@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: extzip.pl,v 1.2 2008-06-02 09:46:03 opengl2772 Exp $
+# $Id: extzip.pl,v 1.3 2008-07-26 05:55:16 opengl2772 Exp $
 # Copyright (C) 2008 Tadamasa Teranishi All rights reserved.
 # Copyright (C) 2008 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -40,6 +40,7 @@ use constant NMZ_AZ_ERROR        => 2;
 use constant NMZ_AZ_FORMAT_ERROR => 3;
 use constant NMZ_AZ_IO_ERROR     => 4;
 
+my $_converter = '';
 my $_unzippath = undef;
 my @_unzipopts = ();
 
@@ -54,9 +55,11 @@ sub setup()
             eval 'use IO::String;';
             $zip_read = \&_az_is_zread;
             $zip_membersMatching = \&_az_is_zmembersMatching;
+            $_converter = 'module_archive::zip, module_io::string';
         } else {
             $zip_read = \&_az_zread;
             $zip_membersMatching = \&_az_zmembersMatching;
+            $_converter = 'module_archive::zip';
         }
         return 'yes';
     }
@@ -66,12 +69,18 @@ sub setup()
         $zip_read = \&_unzip_zread;
         @_unzipopts = ("-p");
         $zip_membersMatching = \&_unzip_zmembersMatching;
+        $_converter = 'unzip';
         return 'yes';
     }
 
     $zip_read = undef;
     $zip_membersMatching = undef;
     return 'no';
+}
+
+sub converter()
+{
+    return $_converter;
 }
 
 #

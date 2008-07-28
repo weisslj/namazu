@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: xps.pl,v 1.8 2008-06-13 14:04:36 opengl2772 Exp $
+# $Id: xps.pl,v 1.9 2008-07-28 13:05:26 opengl2772 Exp $
 # Copyright (C) 2007 Yukio USUDA, 
 #               2007-2008 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -30,8 +30,6 @@ require 'gfilter.pl';
 require 'ooo.pl';
 require 'msofficexml.pl';
 
-
-my $utfconvpath = undef;
 
 sub mediatype() {
     return (

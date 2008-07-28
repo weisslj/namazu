@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: msword.pl,v 1.65 2008-05-10 15:58:29 opengl2772 Exp $
+# $Id: msword.pl,v 1.66 2008-07-28 13:05:26 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi,
 #               2000-2008 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -34,7 +34,6 @@ require 'html.pl';
 my $wordconvpath  = undef;
 my @wordconvopts  = undef;
 my $wvversionpath = undef;
-my $utfconvpath   = undef;
 my $wvsummarypath = undef;
 my $_filter = undef;
 my $_subfilter = undef;

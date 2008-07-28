@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: msofficexml.pl,v 1.15 2008-06-13 14:04:36 opengl2772 Exp $
+# $Id: msofficexml.pl,v 1.16 2008-07-28 13:05:26 opengl2772 Exp $
 # Copyright (C) 2007 Yukio USUDA, 
 #               2007-2008 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -30,10 +30,6 @@ require 'gfilter.pl';
 require 'ooo.pl';
 require 'zip.pl';
 
-
-my $utfconvpath = undef;
-my $unzippath = undef;
-my @unzipopts;
 
 sub mediatype() {
     return (

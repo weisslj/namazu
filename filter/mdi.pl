@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mdi.pl,v 1.2 2008-05-10 07:07:07 opengl2772 Exp $
+# $Id: mdi.pl,v 1.3 2008-07-28 13:05:26 opengl2772 Exp $
 # Copyright (C) 2007 Yukio USUDA,
 #               2007-2008 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -28,8 +28,6 @@ use English;
 require 'util.pl';
 require 'gfilter.pl';
 
-
-my $utfconvpath = undef;
 
 sub mediatype() {
     return ('image/vnd.ms-modi');

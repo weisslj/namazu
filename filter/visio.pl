@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: visio.pl,v 1.4 2008-05-11 13:24:21 opengl2772 Exp $
+# $Id: visio.pl,v 1.5 2008-07-28 13:05:26 opengl2772 Exp $
 # Copyright (C) 2007 Tadamasa Teranishi All rights reserved.
-#               2007 Namazu Project All rights reserved.
+#               2007-2008 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -32,7 +32,6 @@ sub mediatype() {
 }
 
 sub status() {
-    my $utfconvpath;
     if (util::islang("ja")) {
        if ($conf::NKF ne 'no') {
             return 'yes';

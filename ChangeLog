@@ -1,3 +1,7 @@
+2008-09-01  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * filter/zip.pl(_unzip_filter): fix initialize bug.
+
 2008-07-20  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * pl/codeconv.pl: Add new function.(tousascii)
@@ -602,4 +606,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1615 2008-07-20 07:14:57 opengl2772 Exp $
+$Id: ChangeLog,v 1.1616 2008-09-01 14:45:00 opengl2772 Exp $

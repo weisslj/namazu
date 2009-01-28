@@ -1,15 +1,15 @@
 #
 # -*- Perl -*-
-# $Id: wakati.pl,v 1.26 2006-08-12 05:45:03 opengl2772 Exp $
+# $Id: wakati.pl,v 1.27 2009-01-28 17:55:55 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
-# Copyright (C) 2000-2006 Namazu Project All rights reserved.
+# Copyright (C) 2000-2009 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation; either versions 2, or (at your option)
 #  any later version.
-# 
+#
 #  This program is distributed in the hope that it will be useful
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -47,13 +47,13 @@ sub wakatize_japanese ($) {
     my @tmp = ();
     @tmp = wakatize_japanese_sub($content);
 
-    # Remove words consists of only Hiragana characters 
+    # Remove words consists of only Hiragana characters
     # when -H option is specified.
-    # Original of this code was contributed by <furukawa@tcp-ip.or.jp>. 
+    # Original of this code was contributed by <furukawa@tcp-ip.or.jp>.
     # [1997-11-13]
     # And do Okurigana processing. [1998-04-24]
-    if ($var::Opt{'hiragana'} || $var::Opt{'okurigana'}){
-        for (my $ndx = 0; $ndx <= $#tmp; ++$ndx){
+    if ($var::Opt{'hiragana'} || $var::Opt{'okurigana'}) {
+        for (my $ndx = 0; $ndx <= $#tmp; ++$ndx) {
 	    $tmp[$ndx] =~ s/(\s)/ $1/g;
 	    $tmp[$ndx] = ' ' . $tmp[$ndx] . ' ';
             $tmp[$ndx] =~ s!\x7f *(\d+) *\x7f([^\x7f]*)\x7f */ *\d+ *\x7f!\x7f$1\x7f $2 \x7f/$1\x7f!g;
@@ -70,7 +70,7 @@ sub wakatize_japanese ($) {
     # Collect only noun words when -m option is specified.
     if ($var::Opt{'noun'}) {
 	$$content = "";
-	$$content .= shift(@tmp) =~ /(.+ )$noun/ ? $1 : "" while @tmp; 
+	$$content .= shift(@tmp) =~ /(.+ )$noun/ ? $1 : "" while @tmp;
     } else {
 	$$content = join("\n", @tmp);
     }
@@ -105,12 +105,12 @@ sub wakatize_japanese_sub ($) {
 		import MeCab;
                 eval '$t = new MeCab::Tagger("-Owakati");' or
 		$t = new MeCab::Tagger([qw(mecab -O wakati)]);
-	    } 
+	    }
 	    END {
 		$t->DESTROY() if defined $t;
-	    }; 
+	    };
 	    $str = $t->parse($$content);
-        }elsif($module eq "builtin") {
+        } elsif ($module eq "builtin") {
             $str = builtinwakati::wakati($content);
 	} else {
 	    util::cdie(_("invalid wakati module: ")."$module\n");

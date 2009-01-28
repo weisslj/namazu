@@ -1,15 +1,15 @@
 #
 # -*- Perl -*-
-# $Id: time.pl,v 1.9 2006-11-10 16:43:31 opengl2772 Exp $
-# Copyright (C) 2004-2006 Tadamasa Teranishi
-#               2004-2006 Namazu Project All rights reserved.
+# $Id: time.pl,v 1.10 2009-01-28 17:57:40 opengl2772 Exp $
+# Copyright (C) 2004-2009 Tadamasa Teranishi
+#               2004-2009 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation; either versions 2, or (at your option)
 #  any later version.
-# 
+#
 #  This program is distributed in the hope that it will be useful
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -81,7 +81,7 @@ my %zone = (
 );
 
 my %wday_names = (
-    "Sun" => 0, "Mon" => 1, "Tue" => 2, "Wed" => 3, 
+    "Sun" => 0, "Mon" => 1, "Tue" => 2, "Wed" => 3,
     "Thu" => 4, "Fri" => 5, "Sat" => 6
 );
 my %month_names = (
@@ -181,7 +181,7 @@ sub normalize_rfc822time ($) {
         ($re_year)\s+                         # year
         ($re_hour):($re_min)(?::($re_sec))?   # HH:MM(:SS)
         (?:\s+([^\s]*))?\s*                   # (timezone)
-        /x) 
+        /x)
     {
 
         my ($mday, $month_name, $year, $hour, $min, $sec, $timezone) =
@@ -193,7 +193,7 @@ sub normalize_rfc822time ($) {
 
         my $month = $month_names{$month_name};
 
-        my $wday_name = 
+        my $wday_name =
             ("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat")
             [getwday($year, $month + 1, $mday)];
 
@@ -203,7 +203,7 @@ sub normalize_rfc822time ($) {
         $sec = 0 unless($sec);
 
         $$datetime = sprintf("%s, %2.2d %s %4.4d %2.2d:%2.2d:%2.2d %s",
-            $wday_name, $mday, $month_name, $year, 
+            $wday_name, $mday, $month_name, $year,
             $hour, $min, $sec, $timezone);
 
         return undef;
@@ -228,7 +228,7 @@ sub rfc822time_to_mtime ($) {
         (?:\s+([^\s]*))?\s*                   # (timezone)
         /x)
     {
-	my ($mday, $month_name, $year, $hour, $min, $sec, $timezone) = 
+	my ($mday, $month_name, $year, $hour, $min, $sec, $timezone) =
             ($2, $3, $4, $5, $6, $7, $8);
 
         $timezone = time::gettimezone() unless($timezone);

@@ -37,13 +37,13 @@ $ALLOW_FILE =	".*\\.(?:$HTML_SUFFIX)|.*\\.txt" . # HTML, plain text
 		"|.*\\.j[sabf]w|.*\\.jtd" .        # Ichitaro 4, 5, 6, 7, 8
 		"|.*\\.sx[widc]" .                 # OpenOffice Writer,Calc,Impress,Draw
 		"|.*\\.od[tspg]" .                 # OpenOffice2.0
-		"|.*\\.rtf" .   	           # Rich Text Format
-		"|.*\\.hdml|.*\\.mht" .		   # HDML MHTML
+		"|.*\\.rtf" .                      # Rich Text Format
+		"|.*\\.hdml|.*\\.mht" .            # HDML MHTML
 		"|.*\\.mp3" .                      # MP3
 		"|.*\\.gnumeric" .                 # Gnumeric
 		"|.*\\.kwd|.*\\.ksp" .             # KWord, KSpread
 		"|.*\\.kpr|.*\\.flw" .             # KPresenter, Kivio
-		"|.*\\.zip" .			   # ZIP
+		"|.*\\.zip" .                      # ZIP
 		"|.*\\.xps|.*\\.mdi" .             # XML Paper Specification, Microsoft Document Imaging
 		"|.*\\.eml|\\d+|[-\\w]+\\.[1-9n]"; # Mail/News, man
 
@@ -62,7 +62,7 @@ $DENY_FILE = ".*\\.(gif|png|jpg|jpeg)|.*\\.tar\\.gz|core|.*\\.bak|.*~|\\..*|\x23
 #       Case-insensitive.
 #
 $DENY_DDN = "con|aux|nul|prn|lpt[1-9]|com[1-9][0-9]?|clock\$|xmsxxxx0";
- 
+
 #
 # This pattern specifies PATHNAMEs which will NOT be targeted.
 # NOTE: Usually specified by --exclude=regex option.
@@ -70,7 +70,7 @@ $DENY_DDN = "con|aux|nul|prn|lpt[1-9]|com[1-9][0-9]?|clock\$|xmsxxxx0";
 $EXCLUDE_PATH = undef;
 
 #
-# This pattern specifies file names which can be omitted 
+# This pattern specifies file names which can be omitted
 # in URI.  e.g., 'index.html|index.htm|Default.html'
 #
 # NOTE: This is similar to Apache's "DirectoryIndex" directive.
@@ -78,19 +78,19 @@ $EXCLUDE_PATH = undef;
 $DIRECTORY_INDEX = "";
 
 #
-# This pattern specifies Mail/News's fields in its header which 
+# This pattern specifies Mail/News's fields in its header which
 # should be searchable.  NOTE: case-insensitive
 #
 $REMAIN_HEADER = "From|Date|Message-ID";
 
 #
-# This pattern specifies fields which used for field-specified 
+# This pattern specifies fields which used for field-specified
 # searching.  NOTE: case-insensitive
 # 
 $SEARCH_FIELD = "message-id|subject|from|date|uri|newsgroups|to|summary|size|utc|mtype|duri";
 
 #
-# This pattern specifies meta tags which used for field-specified 
+# This pattern specifies meta tags which used for field-specified
 # searching.  NOTE: case-insensitive
 #
 $META_TAGS = "keywords|description";
@@ -102,8 +102,8 @@ $META_TAGS = "keywords|description";
 %FIELD_ALIASES = ('title' => 'subject', 'author' => 'from');
 
 #
-# This pattern specifies HTML elements which should be replaced with 
-# null string when removing them. Normally, the elements are replaced 
+# This pattern specifies HTML elements which should be replaced with
+# null string when removing them. Normally, the elements are replaced
 # with a single space character.
 #
 $NON_SEPARATION_ELEMENTS = 'A|TT|CODE|SAMP|KBD|VAR|B|STRONG|I|EM|CITE|FONT|U|'.
@@ -128,15 +128,15 @@ $HTML_ATTRIBUTES = 'ALT|SUMMARY|TITLE';
 $ON_MEMORY_MAX   = 5000000;
 
 #
-# The max file size for indexing. Files larger than this 
+# The max file size for indexing. Files larger than this
 # will be ignored.
-# NOTE: This value is usually larger than TEXT_SIZE_MAX because 
+# NOTE: This value is usually larger than TEXT_SIZE_MAX because
 #       binary-formated files such as PDF, Word are larger.
 #
 $FILE_SIZE_MAX   = 2000000;
 
 #
-# The max text size for indexing. Files larger than this 
+# The max text size for indexing. Files larger than this
 # will be ignored.
 #
 $TEXT_SIZE_MAX   =  600000;
@@ -150,7 +150,7 @@ $WORD_LENG_MAX   = 128;
 #
 # Weights for HTML elements which are used for term weightning.
 #
-%Weight = 
+%Weight =
     (
      'html' => {
          'title'  => 16,
@@ -178,11 +178,11 @@ $WORD_LENG_MAX   = 128;
 
 #
 # The max length of a HTML-tagged string which can be processed for
-# term weighting. 
-# NOTE: There are not a few people has a bad manner using 
+# term weighting.
+# NOTE: There are not a few people has a bad manner using
 #       <h[1-6]> for changing a font size.
 #
-$INVALID_LENG = 128; 
+$INVALID_LENG = 128;
 
 #
 # The max length of a field.
@@ -199,7 +199,7 @@ $MAX_FIELD_LENGTH = 200;
 #
 # Network Kanji Filter nkf v2.04 or later
 #
-$NKF = "@NKF@"; 
+$NKF = "@NKF@";
 
 #
 # KAKASI 2.x or later

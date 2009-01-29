@@ -4,7 +4,7 @@
 
         * pl/{gettext.pl.in, var.pl.in }: Arrangement of text of source file.
 
-        * pl/{builtinwakati.pl, indexer.pl}: ditto.
+        * pl/{builtinwakati.pl, indexer.pl, codeconv.pl}: ditto.
 
 2009-01-28  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
@@ -618,4 +618,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1622 2009-01-29 02:47:52 opengl2772 Exp $
+$Id: ChangeLog,v 1.1623 2009-01-29 07:56:21 opengl2772 Exp $

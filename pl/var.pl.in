@@ -1,14 +1,14 @@
 # -*- Perl -*-
-# $Id: var.pl.in,v 1.18 2006-08-12 05:45:03 opengl2772 Exp $
+# $Id: var.pl.in,v 1.19 2009-01-29 02:29:45 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
-# Copyright (C) 2000-2006 Namazu Project All rights reserved.
+# Copyright (C) 2000-2009 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation; either versions 2, or (at your option)
 #  any later version.
-# 
+#
 #  This program is distributed in the hope that it will be useful
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -133,15 +133,15 @@ $NO_TITLE   = N_("No title in original");
 
 %REQUIRE_ACTIONS = ();
 %RECURSIVE_ACTIONS = ();
-%REQUIRE_PRE_CODECONV = 
+%REQUIRE_PRE_CODECONV =
     (
      'text/plain' => 1,
      );
-%REQUIRE_POST_CODECONV = 
+%REQUIRE_POST_CODECONV =
     (
      'text/plain' => 0,
      );
-%Supported = 
+%Supported =
     (
      'text/plain' => "yes",
      );

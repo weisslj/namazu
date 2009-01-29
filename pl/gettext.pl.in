@@ -69,7 +69,7 @@ sub choose_catalog
 
     while (1) {
 	#
-	# To support a binary package for Windows, we should 
+	# To support a binary package for Windows, we should
 	# allow to change LOCALEDIR with the environment variable
 	# `NAMAZULOCALEDIR' after installation is done.
 	#
@@ -82,7 +82,7 @@ sub choose_catalog
 	my $catalog =  "$base/$language/LC_MESSAGES/$domain.mo";
 	return $catalog if -f $catalog; # if the catalog file exists.
 
-	# Truncate $language by the following order: 
+	# Truncate $language by the following order:
 	# ja_JP.eucJP -> ja_JP -> ja
 	unless ($language =~ s/[\._][^\._]+$//) {
 	    return undef;

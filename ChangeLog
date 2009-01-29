@@ -1,3 +1,7 @@
+2009-01-30  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * pl/document.pl: Arrangement of text of source file.
+
 2009-01-29  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * pl/{wakati.pl, time.pl}: Arrangement of text of source file.
@@ -618,4 +622,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1623 2009-01-29 07:56:21 opengl2772 Exp $
+$Id: ChangeLog,v 1.1624 2009-01-29 17:02:16 opengl2772 Exp $

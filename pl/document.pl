@@ -2,17 +2,17 @@
 # -*- Perl -*-
 # document.pl - class for document
 #
-# $Id: document.pl,v 1.9 2007-07-02 08:01:23 fumiyas Exp $
+# $Id: document.pl,v 1.10 2009-01-29 17:02:16 opengl2772 Exp $
 #
 # Copyright (C) 2004 Yukio USUDA All rights reserved.
-# Copyright (C) 2000-2006 Namazu Project All rights reversed.
+# Copyright (C) 2000-2009 Namazu Project All rights reversed.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation; either versions 2, or (at your option)
 #  any later version.
-# 
+#
 #  This program is distributed in the hope that it will be useful
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -47,8 +47,8 @@ sub new {
 sub init {
     my $self = shift @_;
     unless ($Filter) {
-	$Filter = mknmz::filter->new();
-	$Filter->init($Magic);
+        $Filter = mknmz::filter->new();
+        $Filter->init($Magic);
     }
 }
 
@@ -80,14 +80,14 @@ sub get_text_size {
     my $self = shift @_;
 
     unless ($self->{'_filtered'}) {
-	$self->get_filtered_contentref();
+        $self->get_filtered_contentref();
     }
     my $text_size = 0;
     if ($self->{'_contentref'}) {
-	# Measure the text size after apply filter.
-	$text_size 
-	    = length(${$self->{'_contentref'}}) 
-	    + length($self->{'_weighted_str'}); 
+        # Measure the text size after apply filter.
+        $text_size
+            = length(${$self->{'_contentref'}})
+            + length($self->{'_weighted_str'});
     }
     return $text_size;
 }
@@ -104,7 +104,7 @@ sub get_field_info {
     my $fieldname = shift @_;
 
     unless ($self->{'_filtered'}) {
-	$self->get_filtered_contentref();
+        $self->get_filtered_contentref();
     }
     return $self->{'_field_info'}{$fieldname};
 }
@@ -113,7 +113,7 @@ sub get_fields {
     my $self = shift @_;
 
     unless ($self->{'_filtered'}) {
-	$self->get_filtered_contentref();
+        $self->get_filtered_contentref();
     }
     return %{$self->{'_field_info'}};
 }
@@ -126,9 +126,9 @@ sub get_orig_filename {
 sub get_filename {
     my $self = shift @_;
     unless ( $self->{'_filename'}) {
-	my $tmp = "";
-	my $orig_filename = $self->get_orig_filename();
-	$self->{'_filename'} = gfilter::filename_to_title($orig_filename, $tmp)
+        my $tmp = "";
+        my $orig_filename = $self->get_orig_filename();
+        $self->{'_filename'} = gfilter::filename_to_title($orig_filename, $tmp)
     }
     return $self->{'_filename'};
 }
@@ -137,8 +137,8 @@ sub get_uri {
     my $self = shift @_;
     my $replace_uri = @_;
     unless ($self->{'_uri'}) {
-	my $orig_filename = $self->get_orig_filename();
-	
+        my $orig_filename = $self->get_orig_filename();
+
     }
     return $self->{'_uri'};
 }
@@ -151,35 +151,35 @@ sub get_errmsg {
 sub get_filtered_contentref {
     my $self = shift @_;
     unless ($self->{'_filtered'}) {
-	my $mtype = $self->get_mimetype();
-	my $content_encode = $self->get_content_encode();
-	my ($weighted_str, $headings)
-	 = $Filter->apply_filter(\$self->{'_orig_filename'},
+        my $mtype = $self->get_mimetype();
+        my $content_encode = $self->get_content_encode();
+        my ($weighted_str, $headings)
+            = $Filter->apply_filter(\$self->{'_orig_filename'},
 				$self->{'_contentref'},
 				$mtype,
 				$content_encode,
 				\$self->{'_field_info'},
-				);
-	if ($weighted_str eq 0){
-	    ${$self->{'_contentref'}} = "";
-	    $mtype = $headings;
-	}
-	$self->{'_weighted_str'} = $weighted_str;
-	$self->{'_headings'} = $headings;
-	$self->{'_filtered'} = 'yes';
+            );
+        if ($weighted_str eq 0) {
+            ${$self->{'_contentref'}} = "";
+            $mtype = $headings;
+        }
+        $self->{'_weighted_str'} = $weighted_str;
+        $self->{'_headings'} = $headings;
+        $self->{'_filtered'} = 'yes';
         $self->{'_errmsg'} = _check_file($self->{'_orig_filename'},
-			     $self->get_file_size(),
-			     $self->get_text_size(),
-			     $mtype,
-			     $self->get_uri());
+            $self->get_file_size(),
+            $self->get_text_size(),
+            $mtype,
+            $self->get_uri());
     }
     return $self->{'_contentref'};
 }
 
 sub get_mimetype {
     my $self = shift @_;
-    unless ($self->{'_mimetype'}){
-	$self->{'_mimetype'} = _guess_mimetype($self->{'_orig_filename'},
+    unless ($self->{'_mimetype'}) {
+        $self->{'_mimetype'} = _guess_mimetype($self->{'_orig_filename'},
 						$self->{'_contentref'});
     }
     return $self->{'_mimetype'};
@@ -198,18 +198,18 @@ sub get_headings {
 sub get_mtime {
     my $self = shift @_;
     my $mtime = (stat($self->{'_orig_filename'}))[9]
-	unless util::isurl($self->{'_orig_filename'});
+    unless util::isurl($self->{'_orig_filename'});
     $self->{'_field_info'}{'mtime'} = $mtime;
     return $self->{'_field_info'}{'mtime'};
 }
 
 sub get_content_encode {
     my $self = shift @_;
-    unless ($self->{'_content_encode'}){
-	my $mimetype = $self->get_mimetype;
-	if ($mimetype eq "text/html"){
-	    
-	}
+    unless ($self->{'_content_encode'}) {
+        my $mimetype = $self->get_mimetype;
+        if ($mimetype eq "text/html") {
+
+        }
     }
     return $self->{'_content_encode'};
 }
@@ -227,15 +227,15 @@ sub get_mmagic {
 sub get_info {
     my $self = shift @_;
     my $name = shift @_;
-    if ($name eq 'mmagic_ver'){
-	return "$File::MMagic::VERSION" if $File::MMagic::VERSION;
-	return "";
+    if ($name eq 'mmagic_ver') {
+        return "$File::MMagic::VERSION" if $File::MMagic::VERSION;
+        return "";
     }
 }
 
 #############################################################
 #
-# Decide the media type. 
+# Decide the media type.
 # FIXME: Very ad hoc. It's just a compromise. -- satoru
 #
 sub _decide_type ($$) {
@@ -244,18 +244,18 @@ sub _decide_type ($$) {
 
     util::dprint("decide_type: name: $name, cont: $cont\n");
     if ($cont =~ m!^text/plain! && $name =~ m!^text/plain!) {
-	return $name;
+        return $name;
     } elsif ($cont =~ m!^text/plain! &&
-	     $name !~ m!^application/octet-stream!) {
-	return $name;
+             $name !~ m!^application/octet-stream!) {
+        return $name;
     } elsif ($cont =~ m!^application/octet-stream! &&
              $name !~ m!^text/!) {
-	return $name;
+        return $name;
     } elsif ($cont =~ m!^application/(excel|powerpoint|msword)! &&
-	     $name !~ m!^application/octet-stream!)  {
-	# FIXME: Currently File::MMagic 1.02's checktype_data() 
-	# is unreliable for them.
-	return $name;
+             $name !~ m!^application/octet-stream!)  {
+        # FIXME: Currently File::MMagic 1.02's checktype_data()
+        # is unreliable for them.
+        return $name;
     } elsif ($cont =~ m!^application/x-zip! &&
              $name =~ m!^application/!) {
         # zip format is used other applications e.g. OpenOffice.
@@ -271,24 +271,24 @@ sub _guess_mimetype ($$) {
     my $mtype;
     my $called_dt = 0;
     {
-	my $mtype_n = $Magic->checktype_byfilename($cfile);
-	my $mtype_c = $Magic->checktype_data($$contref);
-	my $mtype_m;
-	$mtype_m = $Magic->checktype_magic($$contref) 
-	  if ((!defined $mtype_c) ||
-	      $mtype_c =~ 
-	      /^(text\/html|text\/plain|application\/octet-stream)$/);
-	$mtype_c = $mtype_m 
-	  if (defined $mtype_m && 
-		$mtype_m !~ 
-		/^(text\/html|text\/plain|application\/octet-stream)$/);
-	$mtype_c = 'text/plain' unless defined $mtype_c;
-	if ($called_dt) {
-	    $mtype = $mtype_c;
-	} else {
-	    $mtype = _decide_type($mtype_n, $mtype_c);
-	    $called_dt = 1;
-	}
+        my $mtype_n = $Magic->checktype_byfilename($cfile);
+        my $mtype_c = $Magic->checktype_data($$contref);
+        my $mtype_m;
+        $mtype_m = $Magic->checktype_magic($$contref)
+          if ((!defined $mtype_c) ||
+          $mtype_c =~
+          /^(text\/html|text\/plain|application\/octet-stream)$/);
+        $mtype_c = $mtype_m
+          if (defined $mtype_m &&
+          $mtype_m !~
+          /^(text\/html|text\/plain|application\/octet-stream)$/);
+        $mtype_c = 'text/plain' unless defined $mtype_c;
+        if ($called_dt) {
+            $mtype = $mtype_c;
+        } else {
+            $mtype = _decide_type($mtype_n, $mtype_c);
+            $called_dt = 1;
+        }
     }
     util::dprint(_("Detected type: ")."$mtype\n");
     return $mtype;
@@ -307,9 +307,9 @@ sub _check_content {
             ($English::OSNAME eq "MSWin32"
             && $cfile =~ /[\x81-\x9f\xe0-\xef][\x40-\x7e\x80-\xfc]|[\x20\xa1-\xdf]/))
         {
-	    my $tmpfile = util::tmpnam("NMZ.win32");
-	    unlink $tmpfile if (-e $tmpfile);
-	    copy($self->{'_orig_filename'}, $tmpfile);
+            my $tmpfile = util::tmpnam("NMZ.win32");
+            unlink $tmpfile if (-e $tmpfile);
+            copy($self->{'_orig_filename'}, $tmpfile);
 
             $file_size = util::filesize($tmpfile); # not only file in feature.
             if ($file_size > $conf::FILE_SIZE_MAX) {
@@ -320,10 +320,10 @@ sub _check_content {
                 return;
             }
 
-	    ${$self->{'_contentref'}} = util::readfile($tmpfile);
+            ${$self->{'_contentref'}} = util::readfile($tmpfile);
 
-	    unlink $tmpfile;
-	} else {
+            unlink $tmpfile;
+        } else {
             $file_size = util::filesize($cfile); # not only file in feature.
             if ($file_size > $conf::FILE_SIZE_MAX) {
                 $self->{'_errmsg'} =
@@ -335,7 +335,7 @@ sub _check_content {
             ${$self->{'_contentref'}} = util::readfile($cfile);
         }
     } else {
-	$file_size = length(${$self->{'_contentref'}});
+        $file_size = length(${$self->{'_contentref'}});
     }
     $self->{'_field_info'}{'size'} = $file_size;
 }
@@ -355,20 +355,20 @@ sub _check_file ($$$$$) {
         $mtype =~ s/^.*; x-error=(.*)$/$1/;
         $msg = $mtype;
     } elsif ($mtype =~ /^x-system/) {
-	$msg = _("system error occurred! ")."($mtype)"._(" skipped.");
+        $msg = _("system error occurred! ")."($mtype)"._(" skipped.");
     } elsif (! util::isurl($cfile) && ! -e $cfile) {
-	$msg = _("does NOT EXIST! skipped.");
+        $msg = _("does NOT EXIST! skipped.");
     } elsif (! util::isurl($cfile) && ! util::canopen($cfile)) {
-	$msg = _("is NOT READABLE! skipped.");
+        $msg = _("is NOT READABLE! skipped.");
     } elsif ($text_size == 0 || $cfile_size == 0) {
-	$msg = _("is 0 size! skipped.");
+        $msg = _("is 0 size! skipped.");
     } elsif ($mtype =~ /^application\/octet-stream/) {
-	$msg = _("may be a BINARY file! skipped.");
+        $msg = _("may be a BINARY file! skipped.");
     } elsif ($cfile_size > $conf::FILE_SIZE_MAX) {
-	$msg = _("is larger than your setup before filtered, skipped: ") . 'conf::FILE_SIZE_MAX (' . $conf::FILE_SIZE_MAX . ') < '. $cfile_size ;
+        $msg = _("is larger than your setup before filtered, skipped: ") . 'conf::FILE_SIZE_MAX (' . $conf::FILE_SIZE_MAX . ') < '. $cfile_size ;
     } elsif ($text_size > $conf::TEXT_SIZE_MAX) {
-	$msg = _("is larger than your setup after filtered, skipped: ") . 'conf::TEXT_SIZE_MAX (' . $conf::TEXT_SIZE_MAX . ') < '. $text_size ;
-    } 
+        $msg = _("is larger than your setup after filtered, skipped: ") . 'conf::TEXT_SIZE_MAX (' . $conf::TEXT_SIZE_MAX . ') < '. $text_size ;
+    }
 
     return $msg;
 }

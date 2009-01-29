@@ -2,9 +2,9 @@
 # -*- Perl -*-
 # indexer.pl - class for indexing
 #
-# $Id: indexer.pl,v 1.5 2006-08-12 05:45:03 opengl2772 Exp $
+# $Id: indexer.pl,v 1.6 2009-01-29 02:47:53 opengl2772 Exp $
 #
-# Copyright (C) 2002-2006 Namazu Project All rights reversed.
+# Copyright (C) 2002-2009 Namazu Project All rights reversed.
 #
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -70,13 +70,14 @@ sub count_words {
     my $part2 = "";
     my $part3 = "";
     my $part3_uniqword = "";
+
     if ($$contref =~ /\x7f/) {
         $part1 = substr $$contref, 0, index($$contref, "\x7f");
         $part2 = substr $$contref, index($$contref, "\x7f"),
-        (rindex($$contref, "\x7f") - index($$contref, "\x7f") +1);
+            (rindex($$contref, "\x7f") - index($$contref, "\x7f") +1);
 #       $part1 = $PREMATCH;  # $& and friends are not efficient
 #       $part2 = $MATCH . $POSTMATCH;
-        if ($$contref =~ /\x7f([^\x7f]+)$/){
+        if ($$contref =~ /\x7f([^\x7f]+)$/) {
             $part3 = $1;
             $part3 = '' if $part3 =~ /^\s+$/;
         }
@@ -85,9 +86,9 @@ sub count_words {
         $part2 = "";
     }
 
-    if ($part3 ne ''){
+    if ($part3 ne '') {
         $part3_uniqword = substr $part3, (rindex($part3, "\n\.\n") +3);
-        if ($part3_uniqword ne ""){
+        if ($part3_uniqword ne "") {
             substr($$contref, rindex($$contref, "\n\.\n")) = "";
         }
     }
@@ -120,13 +121,13 @@ sub _wordcount_sub {
     my @words = split /\s+/, $text;
     for my $word (@words) {
         next if ($word eq "" || length($word) > $self->{'_word_leng_max'});
-	if (defined $self->{'_hook_word'}) {
-	    $word = &{$self->{'_hook_word'}}($word);
-	}
+        if (defined $self->{'_hook_word'}) {
+            $word = &{$self->{'_hook_word'}}($word);
+        }
         $word_count->{$word} = 0 unless defined($word_count->{$word});
         $word_count->{$word} += $weight;
         unless ($self->{'_nosymbol'}) {
-		$self->_splitsymbol($word, $weight);
+            $self->_splitsymbol($word, $weight);
         }
     }
     return "";
@@ -139,24 +140,24 @@ sub _splitsymbol {
     my $word_count = $self->{'_keyindex'};
     
     if ($word =~ /^$allow_c(.+)$allow_c$/) {
-	$word_count->{$1} = 0 unless defined($word_count->{$1});
-	$word_count->{$1} += $weight;
-	return unless $1 =~ /$allow_c/;
+        $word_count->{$1} = 0 unless defined($word_count->{$1});
+        $word_count->{$1} += $weight;
+        return unless $1 =~ /$allow_c/;
     } elsif ($word =~ /^$allow_c(.+)/) {
-	$word_count->{$1} = 0 unless defined($word_count->{$1});
-	$word_count->{$1} += $weight;
-	return unless $1 =~ /$allow_c/;
+        $word_count->{$1} = 0 unless defined($word_count->{$1});
+        $word_count->{$1} += $weight;
+        return unless $1 =~ /$allow_c/;
     } elsif ($word =~ /(.+)$allow_c$/) {
-	$word_count->{$1} = 0 unless defined($word_count->{$1});
-	$word_count->{$1} += $weight;
-	return unless $1 =~ /$allow_c/;
+        $word_count->{$1} = 0 unless defined($word_count->{$1});
+        $word_count->{$1} += $weight;
+        return unless $1 =~ /$allow_c/;
     }
     my @words_ = split(/$allow_c+/, $word)
-      if $word =~ /$allow_c/;
+        if $word =~ /$allow_c/;
     for my $tmp (@words_) {
-	next if $tmp eq "";
-	$word_count->{$tmp} = 0 unless defined($word_count->{$tmp});
-	$word_count->{$tmp} += $weight;
+        next if $tmp eq "";
+        $word_count->{$tmp} = 0 unless defined($word_count->{$tmp});
+        $word_count->{$tmp} += $weight;
     }
 }
 

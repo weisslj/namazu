@@ -4,6 +4,8 @@
 
         * pl/{gettext.pl.in, var.pl.in }: Arrangement of text of source file.
 
+        * pl/builtinwakati.pl: ditto.
+
 2009-01-28  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * pl/conf.pl.in: convert tabs to spaces.
@@ -616,4 +618,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1620 2009-01-29 02:29:45 opengl2772 Exp $
+$Id: ChangeLog,v 1.1621 2009-01-29 02:41:51 opengl2772 Exp $

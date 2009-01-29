@@ -1,15 +1,15 @@
 #
 # -*- Perl -*-
-# $Id: builtinwakati.pl,v 1.3 2006-08-12 05:45:02 opengl2772 Exp $
+# $Id: builtinwakati.pl,v 1.4 2009-01-29 02:41:51 opengl2772 Exp $
 # Copyright (C) 1998 Satoru Takabayashi All rights reserved.
-# Copyright (C) 2005 Namazu Project All rights reserved.
+# Copyright (C) 2005-2009 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation; either versions 2, or (at your option)
 #  any later version.
-# 
+#
 #  This program is distributed in the hope that it will be useful
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -21,7 +21,7 @@
 #  02111-1307, USA
 #
 #
-# Built-in wakati routine 
+# Built-in wakati routine
 #
 
 package builtinwakati;
@@ -51,7 +51,7 @@ sub init ($) {
         util::cdie(_("invalid wakati module: Built-in Module")."$!\n");
     END {
         untie %dict;
-    }; 
+    };
 }
 sub wakatize ($);
 sub wakatize ($) {
@@ -68,12 +68,12 @@ sub wakatize ($) {
         my $matched_part;
 
         # get the match
-        while ($tmp =~ /\G($CHAR)/ogc) { 
+        while ($tmp =~ /\G($CHAR)/ogc) {
             $try .= $1;
             last if ($try eq $string);
             if (defined($dict{$try})) {
                 $matched_part = $try;
-            } 
+            }
         }
         if (defined($matched_part)) {  # matched!
             $rest_string =~ s/^$matched_part//;
@@ -107,11 +107,11 @@ sub wakati ($) {
                     $ss_wakati_cont .= $2 ? $2 : " ";
                 }
             }
-        } elsif ($$contref =~ 
+        } elsif ($$contref =~
                  /\G
                  ([\x21-\x7e]+|$KATAKANA+|$ALNUM+|\S+)
                  (\s*)
-                 /ogcx) 
+                 /ogcx)
         {
             $l_wakati_cont .= $1;
             $l_wakati_cont .= $2 ? $2 : " ";

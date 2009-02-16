@@ -2,10 +2,10 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.113 2007-12-05 16:23:37 opengl2772 Exp $
+ * $Id: namazu.c,v 1.114 2009-02-16 16:50:46 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2007 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2009 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -62,7 +62,6 @@
 #include "idxname.h"
 #include "i18n.h"
 #include "system.h"
-#include "namazu.h"
 #include "var.h"
 
 static char templatedir[BUFSIZE] = "";

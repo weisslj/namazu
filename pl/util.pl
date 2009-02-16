@@ -1,15 +1,15 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.45 2007-08-09 18:37:29 opengl2772 Exp $
+# $Id: util.pl,v 1.46 2009-02-16 16:54:31 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
-# Copyright (C) 2000-2007 Namazu Project All rights reserved.
+# Copyright (C) 2000-2009 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation; either versions 2, or (at your option)
 #  any later version.
-# 
+#
 #  This program is distributed in the hope that it will be useful
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -41,7 +41,7 @@ sub Rename($$) {
     return unless -e $from;
     unlink $to if (-f $from) && (-f $to); # some systems require this
     if (0 == rename($from, $to)) {
-	cdie("rename($from, $to): $!\n");
+        cdie("rename($from, $to): $!\n");
     }
     dprint(_("Renamed: ")."$from, $to\n");
 }
@@ -59,9 +59,9 @@ sub fopen ($) {
     my $fh = new IO::File;
 
     if ($fh->open($fname)) {
-	binmode($fh);
+        binmode($fh);
     } else {
-	$fh = undef;
+        $fh = undef;
     }
 
     return $fh;
@@ -86,19 +86,19 @@ sub fclose ($) {
 
 sub dprint (@) {
     if ($var::Opt{'debug'}) {
-	for my $str (@_) {
-	    map {print STDERR '// ', $_, "\n"} split "\n", $str;
-	}
+        for my $str (@_) {
+           map {print STDERR '// ', $_, "\n"} split "\n", $str;
+        }
     }
-} 
+}
 
 sub vprint (@) {
     if ($var::Opt{'verbose'} || $var::Opt{'debug'}) {
-	for my $str (@_) {
-	    map {print STDERR '@@ ', $_, "\n"} split "\n", $str;
-	}
+        for my $str (@_) {
+           map {print STDERR '@@ ', $_, "\n"} split "\n", $str;
+        }
     }
-} 
+}
 
 sub commas ($) {
     my ($num) = @_;
@@ -118,10 +118,10 @@ sub rfc822time ($)
     my @week_names = ("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat");
     my @month_names = ("Jan", "Feb", "Mar", "Apr", "May", "Jun",
 		       "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
-    my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst) 
+    my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst)
 	= localtime($time);
 
-    return sprintf("%s, %.2d %s %d %.2d:%.2d:%.2d %s", 
+    return sprintf("%s, %.2d %s %d %.2d:%.2d:%.2d %s",
 		   $week_names[$wday],
 		   $mday, $month_names[$mon], $year + 1900,
 		   $hour, $min, $sec, time::gettimezone());
@@ -132,14 +132,14 @@ sub readfile ($) {
 
     my $fh;
     if (ref $arg) {
-	if ($arg =~ /^(IO::File|FileHandle)/) {
-	    $fh = $arg;
-	} else {
-	    warn "$arg: " . _("not an IO::File/FileHandle object!\n");
-	    return '';
-	}
+        if ($arg =~ /^(IO::File|FileHandle)/) {
+            $fh = $arg;
+        } else {
+            warn "$arg: " . _("not an IO::File/FileHandle object!\n");
+            return '';
+        }
     } else {
-	$fh = efopen($arg);
+        $fh = efopen($arg);
     }
 
     my $cont = "";
@@ -161,12 +161,12 @@ sub writefile ($$) {
 
     my $fh;
     if (ref $arg) {
-	if ($arg =~ /^(IO::File|FileHandle)/) {
-	    $fh = $arg;
-	} else {
-	    warn "$arg: " . _("not an IO::File/FileHandle object!\n");
-	    return undef;
-	}
+        if ($arg =~ /^(IO::File|FileHandle)/) {
+            $fh = $arg;
+        } else {
+            warn "$arg: " . _("not an IO::File/FileHandle object!\n");
+            return undef;
+        }
     } else {
         $fh = efopen("> $arg");
     }
@@ -183,14 +183,14 @@ sub filesize($) {
     my ($arg) = @_;
     my $fh;
     if (ref $arg) {
-	if ($arg =~ /^(IO::File|FileHandle)/) {
-	    $fh = $arg;
-	} else {
-	    warn "$arg: " . _("not an IO::File/FileHandle object!\n");
-	    return '';
-	}
+        if ($arg =~ /^(IO::File|FileHandle)/) {
+            $fh = $arg;
+        } else {
+            warn "$arg: " . _("not an IO::File/FileHandle object!\n");
+            return '';
+        }
     } else {
-	$fh = fopen($arg) || return 0; # in case file is removed after find_file
+        $fh = fopen($arg) || return 0; # in case file is removed after find_file
 	                               # 2.0.7 had problem
     }
     my $size = -s $fh;
@@ -200,12 +200,12 @@ sub filesize($) {
     return $size;
 }
 
-# checklib ... check existence of library file 
+# checklib ... check existence of library file
 sub checklib ($) {
     my $libfile = shift;
     for my $path (@INC) {
-	my $cpath = "$path/$libfile";
-	return 1 if -e $cpath;
+        my $cpath = "$path/$libfile";
+        return 1 if -e $cpath;
     }
     return 0;
 }
@@ -235,7 +235,7 @@ sub checkcmd ($) {
 # tmpnam ... make temporary file name
 sub tmpnam ($) {
     my ($base) = @_;
-    cdie("util::tmpnam: Set \$var::OUTPUT_DIR first!\n") 
+    cdie("util::tmpnam: Set \$var::OUTPUT_DIR first!\n")
 	if $var::OUTPUT_DIR eq "";
     my $tmpnam = "$var::OUTPUT_DIR/$base.tmp";
     dprint("tmpnam: $tmpnam\n");
@@ -397,7 +397,7 @@ sub syscmd(%)
     my @args = @{$arg{command}} if (defined $arg{command});
     my %option = %{$arg{option}} if (defined $arg{option});
     my %env = %{$arg{env}} if (defined $arg{env});
- 
+
     dprint(_("Invoked: ") . join(' ', @args));
 
     # default option
@@ -424,7 +424,7 @@ sub syscmd(%)
     if ($option{stdout} eq $option{stderr}) {
         $same = 1;
     }
- 
+
     my $mode_stdout;
     my $mode_stderr;
     if ($option{mode_stdout} =~ /^w/i) {
@@ -576,7 +576,7 @@ sub syscmd(%)
                 read $fh_err, $conts_err, $size;
                 $fh_err->close();
                 codeconv::normalize_nl(\$conts_err) if (defined $text_stderr);
-    
+
                 my $file = $option{stderr};
                 if ($English::OSNAME eq "MSWin32" || $English::OSNAME eq "os2") {
                     $file =~ s!/!\\!g;
@@ -596,7 +596,7 @@ sub syscmd(%)
             codeconv::normalize_nl($conts_err) if (defined $text_stderr);
         }
     }
- 
+
     return ($status);
 }
 

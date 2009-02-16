@@ -1,3 +1,11 @@
+2009-02-17  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * src/namazu.c: Arrangement of source code.
+
+        * src/result.c: convert tabs to spaces.
+
+        * pl/util.pl: convert tabs to spaces.
+
 2009-01-30  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * pl/document.pl: Arrangement of text of source file.
@@ -622,4 +630,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1624 2009-01-29 17:02:16 opengl2772 Exp $
+$Id: ChangeLog,v 1.1625 2009-02-16 16:54:56 opengl2772 Exp $

@@ -1,9 +1,9 @@
 /*
  * 
- * $Id: rcfile.c,v 1.48 2008-07-15 14:27:48 opengl2772 Exp $
+ * $Id: rcfile.c,v 1.49 2009-02-16 17:42:02 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2008 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2009 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -394,19 +394,19 @@ getenv_namazurc(void)
 
     env_namazurc = getenv("NAMAZURC");
     if (env_namazurc != NULL) {
-	return env_namazurc;
+        return env_namazurc;
     }
 
     /* For backward compatibility. */
     env_namazurc = getenv("NAMAZUCONF");
     if (env_namazurc != NULL) {
-	return env_namazurc;
+        return env_namazurc;
     }
 
     /* For backward compatibility. */
     env_namazurc = getenv("NAMAZUCONFPATH");
     if (env_namazurc != NULL) {
-	return env_namazurc;
+        return env_namazurc;
     }
 
     return NULL;
@@ -418,38 +418,38 @@ get_rc_arg(const char *line, char *arg)
     arg[BUFSIZE - 1] = '\0';
     *arg = '\0';
     if (*line != '"') {
-	size_t n = strcspn(line, " \t");
-	if (n >= BUFSIZE) n = BUFSIZE - 1;
-	strncpy(arg, line, n);
-	arg[n] = '\0';     /* Hey, don't forget this after strncpy()! */
-	return n;
+        size_t n = strcspn(line, " \t");
+        if (n >= BUFSIZE) n = BUFSIZE - 1;
+        strncpy(arg, line, n);
+        arg[n] = '\0';     /* Hey, don't forget this after strncpy()! */
+        return n;
     } else {  /* double quoted argument */
         size_t n;
         line++;
         n = 1;
         do {
-	    size_t nn = strcspn(line, "\"\\");
-	    if (nn >= (BUFSIZE - strlen(arg))) nn = BUFSIZE - strlen(arg) - 1;
-	    strncat(arg, line, nn);
-	    n += nn;
-	    line += nn;
-	    arg[n] = '\0';
-	    if (n >= BUFSIZE) return n;
-	    if (*line == '\0') {  /* terminator not matched */
-		errmsg = _("can't find string terminator");
-		return 0;
-	    }
-	    if  (*line == '"') {  /* ending */
-		n++;
-		return n;
-	    }
-	    if (*line == '\\') {  /* escaping character */
-		strncat(arg, line + 1, 1);
-		n += 2;
-		line += 2;
-	    }
-	} while (1);
-	return n;
+            size_t nn = strcspn(line, "\"\\");
+            if (nn >= (BUFSIZE - strlen(arg))) nn = BUFSIZE - strlen(arg) - 1;
+            strncat(arg, line, nn);
+            n += nn;
+            line += nn;
+            arg[n] = '\0';
+            if (n >= BUFSIZE) return n;
+            if (*line == '\0') {  /* terminator not matched */
+                errmsg = _("can't find string terminator");
+                return 0;
+            }
+            if  (*line == '"') {  /* ending */
+                n++;
+                return n;
+            }
+            if (*line == '\\') {  /* escaping character */
+                strncat(arg, line + 1, 1);
+                n += 2;
+                line += 2;
+            }
+        } while (1);
+        return n;
     }
 }
 
@@ -464,15 +464,15 @@ replace_home(char *str)
 
     strcpy(tmp, str);
     if (nmz_strprefixcmp(tmp, "~/") == 0) {
-	char *home;
-	/* Checke a home directory */
-	if ((home = getenv("HOME")) != NULL) {
-	    strncpy(tmp, home, BUFSIZE - 1);
-	    strncat(tmp, "/", BUFSIZE - strlen(tmp) - 1);
-	    strncat(tmp, str + strlen("~/"), BUFSIZE - strlen(tmp) - 1);
-	    strncpy(str, tmp, BUFSIZE - 1);
-	    return;
-	}
+        char *home;
+        /* Checke a home directory */
+        if ((home = getenv("HOME")) != NULL) {
+            strncpy(tmp, home, BUFSIZE - 1);
+            strncat(tmp, "/", BUFSIZE - strlen(tmp) - 1);
+            strncat(tmp, str + strlen("~/"), BUFSIZE - strlen(tmp) - 1);
+            strncpy(str, tmp, BUFSIZE - 1);
+            return;
+        }
     }
 
     return;
@@ -488,28 +488,28 @@ add_strlist(StrList *list, const char *arg)
 
     newp = malloc(sizeof(StrList));
     if (newp == NULL) {
-	return NULL;
+        return NULL;
     }
 
     newp->value = malloc(strlen(arg) + 1);
     if (newp->value == NULL) {
         free(newp);
-	return NULL;
+        return NULL;
     }
     strcpy(newp->value, arg);
     newp->next = NULL;
 
     if (list == NULL) {
-	return newp;
+        return newp;
     } else {
-	StrList *ptr = list;
+        StrList *ptr = list;
 
-	while (ptr->next != NULL) {
-	    ptr = ptr->next;
-	}
-	assert(ptr->next == NULL);
-	ptr->next = newp;
-	return list;
+        while (ptr->next != NULL) {
+            ptr = ptr->next;
+        }
+        assert(ptr->next == NULL);
+        ptr->next = newp;
+        return list;
     }
     assert(0);
     /* NOTREACHED */
@@ -521,9 +521,9 @@ free_strlist(StrList *list)
     StrList *next, *ptr;
 
     for (ptr = list; ptr != NULL; ptr = next) {
-	next = ptr->next;
-	free(ptr->value);
-	free(ptr);
+        next = ptr->next;
+        free(ptr->value);
+        free(ptr);
     }
 }
 
@@ -544,58 +544,58 @@ get_rc_args(const char *line)
     line += n;
     /* Determine whether or not this line is only a blank */
     if (*line == '\0') {
-	return add_strlist(list, "BLANK");
+        return add_strlist(list, "BLANK");
     }
 
     /* Determine whether or not this line is only a comment */
     if (*line == '#') {
-	return add_strlist(list, "COMMENT");
+        return add_strlist(list, "COMMENT");
     }
 
     /* Get a directive name. */
     {
-	char directive[BUFSIZE] = "";
-	n = strspn(line, DIRECTIVE_CHARS);
-	if (n == 0) {
-	    errmsg = _("invalid directive name");
-	    return 0;
-	}
-	if (n >= BUFSIZE) n = BUFSIZE - 1;
-	strncpy(directive, line, n);
-	directive[n] = '\0';  /* Hey, don't forget this after strncpy()! */
-	list = add_strlist(list, directive);
-	line += n;
+        char directive[BUFSIZE] = "";
+        n = strspn(line, DIRECTIVE_CHARS);
+        if (n == 0) {
+            errmsg = _("invalid directive name");
+            return 0;
+        }
+        if (n >= BUFSIZE) n = BUFSIZE - 1;
+        strncpy(directive, line, n);
+        directive[n] = '\0';  /* Hey, don't forget this after strncpy()! */
+        list = add_strlist(list, directive);
+        line += n;
     }
 
     /* Skip a delimiter after a directive */
     n = strspn(line, " \t");    /* skip white spaces */
     line += n;
     if (n == 0) {
-	errmsg = _("can't find arguments");
-	return 0;
+        errmsg = _("can't find arguments");
+        return 0;
     }
 
     while (1) {
-	char arg[BUFSIZE] = "";
-	n = get_rc_arg(line, arg);
-	if (n == 0) { /* cannot get arg1 */
-	    return NULL;
-	}
-	line += n;
+        char arg[BUFSIZE] = "";
+        n = get_rc_arg(line, arg);
+        if (n == 0) { /* cannot get arg1 */
+            return NULL;
+        }
+        line += n;
 
-	/* Replace ~/ */
-	replace_home(arg);
+        /* Replace ~/ */
+        replace_home(arg);
 
-	list = add_strlist(list, arg);
+        list = add_strlist(list, arg);
 
-	/* Skip a delimiter after the arg */
-	n = strspn(line, " \t");    /* skip white spaces */
-	line += n;
+        /* Skip a delimiter after the arg */
+        n = strspn(line, " \t");    /* skip white spaces */
+        line += n;
 
-	if (*line == '\0' || *line == '#') {  /* allow comment at the ending */
-	    /* This line has only one argument (arg) */
-	    break;
-	}
+        if (*line == '\0' || *line == '#') {  /* allow comment at the ending */
+            /* This line has only one argument (arg) */
+            break;
+        }
     }
 
     return list;
@@ -614,7 +614,7 @@ parse_rcfile(const char *line, int lineno)
     */
     d_args = get_rc_args(line); 
     if (d_args == NULL) { 
-	return FAILURE; /* error */
+        return FAILURE; /* error */
     }
     directive = d_args->value; /* the first arg is a directive. */
     args = d_args->next;
@@ -630,18 +630,18 @@ parse_rcfile(const char *line, int lineno)
      * namazurc.
      */
     if (nmz_is_debugmode() &&
-	(strcasecmp(directive, "COMMENT") != 0) &&
-	(strcasecmp(directive, "BLANK") != 0))
+        (strcasecmp(directive, "COMMENT") != 0) &&
+        (strcasecmp(directive, "BLANK") != 0))
     {
-	StrList *ptr;
-	int i;
+        StrList *ptr;
+        int i;
 
-	nmz_debug_printf("%4d: Directive:  [%s]\n", lineno, directive);
+        nmz_debug_printf("%4d: Directive:  [%s]\n", lineno, directive);
 
-	for (ptr = args, i = 1 ; ptr != NULL; i++) {
-	    nmz_debug_printf("      Argument %d: [%s]\n", i, ptr->value);
-	    ptr = ptr->next;
-	}
+        for (ptr = args, i = 1 ; ptr != NULL; i++) {
+            nmz_debug_printf("      Argument %d: [%s]\n", i, ptr->value);
+            ptr = ptr->next;
+        }
     }
 
     free_strlist(d_args);
@@ -656,35 +656,35 @@ apply_rc(int lineno, const char *directive, StrList *args)
     struct conf_directive *dtab = directive_tab;
 
     for (ptr = args; ptr != NULL; ptr = ptr->next) {
-	argnum++;
+        argnum++;
     }
 
     for (; dtab->name != NULL;  dtab++) {
-	if (strcasecmp(dtab->name, directive) == 0) {
-	    /* 
-	     * Check whether the number of argument is right.
-	     */
-	    if (argnum == dtab->argnum ||
-		(dtab->plus && argnum > dtab->argnum)) 
-	    {
-		/* 
-		 * If number of argument is correct, apply
-		 * appropriate function and return with its
-		 * return value.
-		 */
-		return dtab->func(directive, args);
-	    } else if (argnum < dtab->argnum) {
-		errmsg = _("too few arguments");
-		return FAILURE;
-	    } else if (argnum > dtab->argnum) {
-		errmsg = _("too many arguments");
-		return FAILURE;
-	    } else {
-		assert(0);
-		/* NOTREACHED */
-		return FAILURE;
-	    }
-	}
+        if (strcasecmp(dtab->name, directive) == 0) {
+            /* 
+             * Check whether the number of argument is right.
+             */
+            if (argnum == dtab->argnum ||
+                (dtab->plus && argnum > dtab->argnum)) 
+            {
+                /* 
+                 * If number of argument is correct, apply
+                 * appropriate function and return with its
+                 * return value.
+                 */
+                return dtab->func(directive, args);
+            } else if (argnum < dtab->argnum) {
+                errmsg = _("too few arguments");
+                return FAILURE;
+            } else if (argnum > dtab->argnum) {
+                errmsg = _("too many arguments");
+                return FAILURE;
+            } else {
+                assert(0);
+                /* NOTREACHED */
+                return FAILURE;
+            }
+        }
     }
 
     errmsg = _("unknown directive");
@@ -712,41 +712,41 @@ load_rcfile(const char *fname)
 
     fp = fopen(fname, "rb");
     if (fp == NULL) { /* open failed */
-	nmz_set_dyingmsg(nmz_msg("%s: %s", fname, strerror(errno)));
-	return FAILURE;
+        nmz_set_dyingmsg(nmz_msg("%s: %s", fname, strerror(errno)));
+        return FAILURE;
     }
 
     while (fgets(buf, BUFSIZE, fp) != NULL) {
-	int current_lineno = lineno;
-	
-	do {
-	    lineno++;
-	    nmz_chomp(buf);
-	    if (buf[strlen(buf) - 1] == '\\') { /* ending with \ */
-		int remaining;
-		
-		buf[strlen(buf) - 1] = '\0'; /* Remove ending \ */
-		remaining = (int)(BUFSIZE - strlen(buf) - 1);
-		if (remaining == 0) {
-		    nmz_chomp(buf);
-		    break;
-		}
-		if (fgets(buf + strlen(buf), remaining, fp) == NULL) {
-		    nmz_chomp(buf);
-		    break;
-		}
-	    } else {
-		break;
-	    }
-	} while (1);
+        int current_lineno = lineno;
 
-	/* nmz_codeconv_internal(buf);*/  /* for Shift_JIS encoding */
-	if (parse_rcfile(buf, current_lineno) != SUCCESS) {
-	    nmz_set_dyingmsg(nmz_msg(_("%s:%d: syntax error: %s"),  
+        do {
+            lineno++;
+            nmz_chomp(buf);
+            if (buf[strlen(buf) - 1] == '\\') { /* ending with \ */
+                int remaining;
+
+                buf[strlen(buf) - 1] = '\0'; /* Remove ending \ */
+                remaining = (int)(BUFSIZE - strlen(buf) - 1);
+                if (remaining == 0) {
+                    nmz_chomp(buf);
+                    break;
+                }
+                if (fgets(buf + strlen(buf), remaining, fp) == NULL) {
+                    nmz_chomp(buf);
+                    break;
+                }
+            } else {
+                break;
+            }
+        } while (1);
+
+        /* nmz_codeconv_internal(buf);*/  /* for Shift_JIS encoding */
+        if (parse_rcfile(buf, current_lineno) != SUCCESS) {
+            nmz_set_dyingmsg(nmz_msg(_("%s:%d: syntax error: %s"),  
 				     fname, current_lineno, errmsg));
             fclose(fp);
-	    return FAILURE;
-	}
+            return FAILURE;
+        }
     }
     fclose(fp);
 
@@ -813,55 +813,55 @@ load_rcfiles(void)
      *     - This can be overriden by environmentl variable NAMAZURC.
      */
     if (strcmp("all", namazunorc) != 0 && strcmp("sysconfig", namazunorc) != 0) {
-	char *env = getenv_namazurc();
-	if (env != NULL) {
-	    if (load_rcfile(env) != SUCCESS) {
-		return FAILURE;
-	    }
-	} else {
-	    char fname[BUFSIZE] = "";
-	    strncpy(fname, namazurcdir, BUFSIZE - 1);
-	    strncat(fname, "/namazurc",
-		    BUFSIZE - strlen(fname) - 1);
-	    /* 
-	 * Load the file only if it exists.
-	 */
-	    if (nmz_is_file_exists(fname)) {
-		if (load_rcfile(fname) != SUCCESS) {
-		    return FAILURE;
-		}
-	    }
-	}
+        char *env = getenv_namazurc();
+        if (env != NULL) {
+            if (load_rcfile(env) != SUCCESS) {
+                return FAILURE;
+            }
+        } else {
+            char fname[BUFSIZE] = "";
+            strncpy(fname, namazurcdir, BUFSIZE - 1);
+            strncat(fname, "/namazurc",
+                BUFSIZE - strlen(fname) - 1);
+            /* 
+             * Load the file only if it exists.
+             */
+            if (nmz_is_file_exists(fname)) {
+                if (load_rcfile(fname) != SUCCESS) {
+                    return FAILURE;
+                }
+            }
+        }
     }
 
     /*
      *  2. ~/.namazurc
      */
     if (strcmp("all", namazunorc) != 0 && strcmp("home", namazunorc) != 0) {
-	char *home = getenv("HOME");
-	if (home != NULL) {
-	    char fname[BUFSIZE] = "";
-	    strncpy(fname, home, BUFSIZE - 1);
-	    strncat(fname, "/.namazurc",
-		    BUFSIZE - strlen(fname) - 1);
-	    /* 
-	     * Load the file only if it exists.
-	     */
-	    if (nmz_is_file_exists(fname)) {
-		if (load_rcfile(fname) != SUCCESS) {
-		    return FAILURE;
-		}
-	    }
-	}
+        char *home = getenv("HOME");
+        if (home != NULL) {
+            char fname[BUFSIZE] = "";
+            strncpy(fname, home, BUFSIZE - 1);
+            strncat(fname, "/.namazurc",
+                BUFSIZE - strlen(fname) - 1);
+            /* 
+             * Load the file only if it exists.
+             */
+            if (nmz_is_file_exists(fname)) {
+                if (load_rcfile(fname) != SUCCESS) {
+                    return FAILURE;
+                }
+            }
+        }
     }
 
     /*
      *  3. user-specified namazurc set by namazu --config=file option.
      */
     if (user_namazurc[0] != '\0') {
-	if (load_rcfile(user_namazurc) != SUCCESS) {
-	    return FAILURE;
-	}
+        if (load_rcfile(user_namazurc) != SUCCESS) {
+            return FAILURE;
+        }
     }
 
     return SUCCESS;
@@ -873,10 +873,10 @@ show_config(void)
     int i;
 
     if (loaded_rcfiles.num >= 1) {
-	for (i =0; i < loaded_rcfiles.num; i++) {
-	    printf(_("Loaded rcfile: %s\n"), loaded_rcfiles.fnames[i]);
-	}
-	printf("--\n");
+        for (i =0; i < loaded_rcfiles.num; i++) {
+            printf(_("Loaded rcfile: %s\n"), loaded_rcfiles.fnames[i]);
+        }
+        printf("--\n");
     }
 
     printf(_("\
@@ -897,22 +897,22 @@ EmphasisTags: %s\t%s\n\
 
     /* Show aliases. */
     {
-	struct nmz_alias *list = nmz_get_aliases();
-	while (list) {
-	    printf(_("Alias:   %-20s\t%s\n"), 
-		   list->alias, list->real);
-	    list = list->next;
-	}
+        struct nmz_alias *list = nmz_get_aliases();
+        while (list) {
+            printf(_("Alias:   %-20s\t%s\n"), 
+                list->alias, list->real);
+            list = list->next;
+        }
     }
 
     /* Show replaces. */
     {
-	struct nmz_replace *list = nmz_get_replaces();
-	while (list) {
-	    printf(_("Replace: %-20s\t%s\n"), 
-		   list->pat, list->rep);
-	    list = list->next;
-	}
+        struct nmz_replace *list = nmz_get_replaces();
+        while (list) {
+            printf(_("Replace: %-20s\t%s\n"), 
+                list->pat, list->rep);
+            list = list->next;
+        }
     }
 
     /*    exit(0);*/

@@ -1,9 +1,9 @@
 /*
- * $Id: result.c,v 1.83 2008-07-15 14:27:48 opengl2772 Exp $
+ * $Id: result.c,v 1.84 2009-02-16 16:53:04 opengl2772 Exp $
  * 
  * Copyright (C) 1989, 1990 Free Software Foundation, Inc.
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2008 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2009 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -88,11 +88,11 @@ commas(char *numstr)
     numstr[n] = '\0';
     n--;
     for (i = 0; i < leng; i++, n--) {
-	numstr[n] = numstr[leng - 1 - i];
-	if (i % 3 == 2 && n != 0) {
-	    n--;
-	    numstr[n] = ',';
-	}
+        numstr[n] = numstr[leng - 1 - i];
+        if (i % 3 == 2 && n != 0) {
+            n--;
+            numstr[n] = ',';
+        }
     }
 }
 
@@ -114,17 +114,17 @@ my_strcasestr (s1, s2)
     ja_mode = nmz_is_lang_ja ();
 
     for (p2 = s2, i = 0; *s; p2 = s2, i++, s++) {
-	for (p1 = s; *p1 && *p2 && (_nmz_tolower(*p1) == _nmz_tolower(*p2)); p1++, p2++)
-	    ;
-	if (!*p2)
-	    break;
-	if (ja_mode && (nmz_iseuc(*s) || nmz_iseuc_kana1st(*s))) {
-	    i++;
-	    if (!*(++s)) break;
-	}
+        for (p1 = s; *p1 && *p2 && (_nmz_tolower(*p1) == _nmz_tolower(*p2)); p1++, p2++)
+            ;
+        if (!*p2)
+            break;
+        if (ja_mode && (nmz_iseuc(*s) || nmz_iseuc_kana1st(*s))) {
+            i++;
+            if (!*(++s)) break;
+        }
     }
     if (!*p2)
-	return s1 + i;
+        return s1 + i;
 
     return 0;
 }
@@ -140,39 +140,39 @@ replace_field(struct nmz_data d, int counter,
     char buf[BUFSIZE * 8] = "";
 
     if (strcmp(field, "namazu::score") == 0) {
-	sprintf(buf, "%d", d.score);
-	commas(buf);
+        sprintf(buf, "%d", d.score);
+        commas(buf);
     } else if (strcmp(field, "namazu::counter") == 0) {
-	sprintf(buf, "%d", counter);
-	commas(buf);
+        sprintf(buf, "%d", counter);
+        commas(buf);
     } else if (strcasecmp(field, "uri") == 0) {
-	nmz_get_field_data(d.idxid, d.docid, "duri", buf);
-	if (is_urireplace()) {
-	    nmz_replace_uri(buf);
-	}
-	nmz_encode_uri((uchar *)buf);
+        nmz_get_field_data(d.idxid, d.docid, "duri", buf);
+        if (is_urireplace()) {
+            nmz_replace_uri(buf);
+        }
+        nmz_encode_uri((uchar *)buf);
     } else if (strcasecmp(field, "uri#uriencode=\"decode\"") == 0) {
-	nmz_get_field_data(d.idxid, d.docid, "duri", buf);
-	if (is_urireplace()) {
-	    nmz_replace_uri(buf);
-	}
-	nmz_parse_escape_crosshatch((uchar *)buf);
+        nmz_get_field_data(d.idxid, d.docid, "duri", buf);
+        if (is_urireplace()) {
+            nmz_replace_uri(buf);
+        }
+        nmz_parse_escape_crosshatch((uchar *)buf);
     } else {
-	nmz_get_field_data(d.idxid, d.docid, field, buf);
+        nmz_get_field_data(d.idxid, d.docid, field, buf);
     }
 
     /* 
      * Do not emphasize keywords in URI.
      */
     if (is_htmlmode()) {
-	if (strcasecmp(field, "uri") != 0)
-	    emphasize(buf);
-	encode_entity(buf);
+        if (strcasecmp(field, "uri") != 0)
+            emphasize(buf);
+        encode_entity(buf);
     }
 
     /* Insert commas if the buf is a numeric string. */
     if (nmz_isnumstr(buf)) {
-	commas(buf);
+        commas(buf);
     }
 
     strcat(result, buf);
@@ -187,24 +187,24 @@ encode_entity(char *str)
     strncpy(tmp, str, BUFSIZE - 1);
     strcpy(str, "");
     for (i = 0; tmp[i]; i++) {
-	if (tmp[i] == '<') {
-	    strncat(str, "&lt;", BUFSIZE - strlen(str) - 1);
-	} else if (tmp[i] == '>') {
-	    strncat(str, "&gt;", BUFSIZE - strlen(str) - 1);
-	} else if (tmp[i] == '&') {
-	    strncat(str, "&amp;", BUFSIZE - strlen(str) - 1);
-	} else if (tmp[i] == '"') {
-	    strncat(str, "&quot;", BUFSIZE - strlen(str) - 1);
-	} else if (tmp[i] == '\'') {
-	    strncat(str, "&#39;", BUFSIZE - strlen(str) - 1);
-	} else if (tmp[i] == '(') {
-	    strncat(str, "&#40;", BUFSIZE - strlen(str) - 1);
-	} else if (tmp[i] == ')') {
-	    strncat(str, "&#41;", BUFSIZE - strlen(str) - 1);
-	} else {
-	    if (strlen(str) < BUFSIZE - 1)
-		strncat(str, tmp + i, 1);
-	}
+        if (tmp[i] == '<') {
+            strncat(str, "&lt;", BUFSIZE - strlen(str) - 1);
+        } else if (tmp[i] == '>') {
+            strncat(str, "&gt;", BUFSIZE - strlen(str) - 1);
+        } else if (tmp[i] == '&') {
+            strncat(str, "&amp;", BUFSIZE - strlen(str) - 1);
+        } else if (tmp[i] == '"') {
+            strncat(str, "&quot;", BUFSIZE - strlen(str) - 1);
+        } else if (tmp[i] == '\'') {
+            strncat(str, "&#39;", BUFSIZE - strlen(str) - 1);
+        } else if (tmp[i] == '(') {
+            strncat(str, "&#40;", BUFSIZE - strlen(str) - 1);
+        } else if (tmp[i] == ')') {
+            strncat(str, "&#41;", BUFSIZE - strlen(str) - 1);
+        } else {
+            if (strlen(str) < BUFSIZE - 1)
+                strncat(str, tmp + i, 1);
+        }
     }
 }
 
@@ -217,20 +217,20 @@ emphasize(char *str)
     int i;
 
     for (i = 0; nmz_get_querytoken(i) != NULL; i++) {
-	char *ptr = str;
-	char key[BUFSIZE] = "";
-	size_t keylen = 0;
+        char *ptr = str;
+        char key[BUFSIZE] = "";
+        size_t keylen = 0;
         int findFlag = 0;
         char *keys;
         char *word;
 
-	if (nmz_is_query_op(nmz_get_querytoken(i)))
-	    continue;
+        if (nmz_is_query_op(nmz_get_querytoken(i)))
+            continue;
 
-	strncpy(key, nmz_get_querytoken(i), BUFSIZE - 1);
+        strncpy(key, nmz_get_querytoken(i), BUFSIZE - 1);
 
-	if (strchr(key, '\t')) { /* for phrase search */
-	    nmz_tr(key, "\t", " ");
+        if (strchr(key, '\t')) { /* for phrase search */
+            nmz_tr(key, "\t", " ");
             memmove(key, key + 1, strlen(key + 1) + 1);
             key[strlen(key) - 1] = '\0';
 
@@ -295,7 +295,7 @@ emphasize(char *str)
                 ptr += keylen + 2;
             }
             continue;
-	}
+        }
 
         if (strlen(key) > 0) {
             if (strlen(key) >= 2
@@ -315,23 +315,23 @@ emphasize(char *str)
             }
         }
 
-	keylen = strlen(key);
+        keylen = strlen(key);
 
         if (keylen > 0) {
-	    do {
-	        ptr = my_strcasestr(ptr, key);
-	        if (ptr != NULL) {
-                  if ((ptr == str || is_wordboundary(ptr - 1))
-                      && keylen && is_wordboundary(ptr + keylen - 1)){
-                    memmove(ptr + 2, ptr, strlen(ptr) + 1);
-                    memmove(ptr + 1, ptr + 2, keylen);
-                    *ptr = EM_START_MARK;
-                    *(ptr + keylen + 1) = EM_END_MARK;
-                    ptr += 2;
-                  }
-                  ptr += keylen;
-	        }
-	    } while (ptr != NULL);
+            do {
+                ptr = my_strcasestr(ptr, key);
+                if (ptr != NULL) {
+                    if ((ptr == str || is_wordboundary(ptr - 1))
+                    && keylen && is_wordboundary(ptr + keylen - 1)){
+                        memmove(ptr + 2, ptr, strlen(ptr) + 1);
+                        memmove(ptr + 1, ptr + 2, keylen);
+                        *ptr = EM_START_MARK;
+                        *(ptr + keylen + 1) = EM_END_MARK;
+                        ptr += 2;
+                    }
+                    ptr += keylen;
+                }
+            } while (ptr != NULL);
         }
     }
 }
@@ -377,27 +377,27 @@ compose_result(struct nmz_data d, int counter,
     strncat(achars, "#\"=", BUFSIZE - strlen(achars) - 1);  /* for uri#uriencode="decode" */
 
     do {
-	char *pp;
-	pp = strstr(p, "${");
-	if (pp != NULL) {
-	    size_t n;
-	    strncat(r, p, pp - p);
-	    pp += 2;  /* skip "${" */
-	    n = strspn(pp, achars);
-	    if (n > 0 && pp[n] == '}') {
-		char field[BUFSIZE] = "";
-		
-		strncpy(field, pp, n);
-		field[n] = '\0';
-		replace_field(d, counter, field, r);
-		p = pp + n + 1; /* +1 for skipping "}" */
-	    } else {
-		p = pp + 1;
-	    }
-	} else {
-	    strncat(r, p, BUFSIZE * 128 - strlen(r) - 1);
-	    break;
-	}
+        char *pp;
+        pp = strstr(p, "${");
+        if (pp != NULL) {
+            size_t n;
+            strncat(r, p, pp - p);
+            pp += 2;  /* skip "${" */
+            n = strspn(pp, achars);
+            if (n > 0 && pp[n] == '}') {
+                char field[BUFSIZE] = "";
+
+                strncpy(field, pp, n);
+                field[n] = '\0';
+                replace_field(d, counter, field, r);
+                p = pp + n + 1; /* +1 for skipping "}" */
+            } else {
+                p = pp + 1;
+            }
+        } else {
+            strncat(r, p, BUFSIZE * 128 - strlen(r) - 1);
+            break;
+        }
     } while (1);
 }
 

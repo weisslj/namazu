@@ -6,6 +6,8 @@
 
         * pl/util.pl: convert tabs to spaces.
 
+        * nmz/idxname.c: convert tabs to spaces.
+
 2009-01-30  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * pl/document.pl: Arrangement of text of source file.
@@ -630,4 +632,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1625 2009-02-16 16:54:56 opengl2772 Exp $
+$Id: ChangeLog,v 1.1626 2009-02-17 08:46:31 opengl2772 Exp $

@@ -2,7 +2,7 @@
  * 
  * idxname.c - Idx handling routines.
  *
- * $Id: idxname.c,v 1.36 2008-03-06 15:34:58 opengl2772 Exp $
+ * $Id: idxname.c,v 1.37 2009-02-17 08:46:31 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2008 Namazu Project All rights reserved.
@@ -76,12 +76,12 @@ nmz_add_index(const char *idxname)
     int newidxnum = indices.num;
 
     if (newidxnum >= INDEX_MAX) {
-	nmz_warn_printf("Too many indices.\n");
-	return FAILURE;
+        nmz_warn_printf("Too many indices.\n");
+        return FAILURE;
     }
     indices.names[newidxnum] = malloc(strlen(idxname) + 1);
     if (indices.names[newidxnum] == NULL)
-	return FAILURE;
+        return FAILURE;
     strcpy(indices.names[newidxnum], idxname);
     indices.hitnumlists[newidxnum] = NULL;
     indices.num = newidxnum + 1;
@@ -95,7 +95,7 @@ nmz_free_idxnames(void)
     int i;
     for (i = 0; i < indices.num; i++) {
         free(indices.names[i]);
-	nmz_free_hitnums(indices.hitnumlists[i]);
+        nmz_free_hitnums(indices.hitnumlists[i]);
     }
     indices.num = 0;
 }
@@ -132,19 +132,19 @@ nmz_expand_idxname_aliases(void)
     int i;
 
     for (i = 0; i < indices.num; i++) {
-	struct nmz_alias *list = nmz_get_aliases();
-	while (list != NULL) {
-	    if (strcmp(indices.names[i], list->alias) == 0) {
-		free(indices.names[i]);
-		indices.names[i] = malloc(strlen(list->real) + 1);
-		if (indices.names[i] == NULL) {
-		    nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
-		    return FAILURE;
-		}
-		strcpy(indices.names[i], list->real);
+        struct nmz_alias *list = nmz_get_aliases();
+        while (list != NULL) {
+            if (strcmp(indices.names[i], list->alias) == 0) {
+                free(indices.names[i]);
+                indices.names[i] = malloc(strlen(list->real) + 1);
+                if (indices.names[i] == NULL) {
+                    nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
+                    return FAILURE;
+                }
+                strcpy(indices.names[i], list->real);
             }
-	    list = list->next;
-	}
+            list = list->next;
+        }
     }
     return 0;
 }
@@ -159,21 +159,21 @@ nmz_complete_idxnames(void)
     int i;
 
     for (i = 0; i < indices.num; i++) {
- 	if (*indices.names[i] == '+' && 
+        if (*indices.names[i] == '+' && 
         nmz_isalnum((unsigned char)*(indices.names[i] + 1))) {
-	    char *tmp;
-	    tmp = malloc(strlen(defaultidx) 
-				  + 1 + strlen(indices.names[i]) + 1);
-	    if (tmp == NULL) {
-		nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
-		return FAILURE;
-	    }
-	    strcpy(tmp, defaultidx);
-	    strcat(tmp, "/");
-	    strcat(tmp, indices.names[i] + 1);  /* +1 means '+' */
-	    free(indices.names[i]);
-	    indices.names[i] = tmp;
-	}
+            char *tmp;
+            tmp = malloc(strlen(defaultidx) 
+                  + 1 + strlen(indices.names[i]) + 1);
+            if (tmp == NULL) {
+                nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
+                return FAILURE;
+            }
+            strcpy(tmp, defaultidx);
+            strcat(tmp, "/");
+            strcat(tmp, indices.names[i] + 1);  /* +1 means '+' */
+            free(indices.names[i]);
+            indices.names[i] = tmp;
+        }
     }
     return 0;
 }
@@ -241,27 +241,27 @@ nmz_push_hitnum(struct nmz_hitnumlist *hn,
 {
     struct nmz_hitnumlist *hnptr = hn, *prevhnptr = hn;
     while (hnptr != NULL) {
-	prevhnptr = hnptr;
-	hnptr = hnptr->next;
+        prevhnptr = hnptr;
+        hnptr = hnptr->next;
     }
     if ((hnptr = malloc(sizeof(struct nmz_hitnumlist))) == NULL) {
-	nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
-	return NULL;
+        nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
+        return NULL;
     }
     if (prevhnptr != NULL)
-	prevhnptr->next = hnptr;
+        prevhnptr->next = hnptr;
     hnptr->hitnum = hitnum;
     hnptr->stat  = stat;
     hnptr->phrase = NULL;
     hnptr->next  = NULL;
     if ((hnptr->word = malloc(strlen(str) +1)) == NULL) {
-	nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
-	return NULL;
+        nmz_set_dyingmsg(nmz_msg("%s", strerror(errno)));
+        return NULL;
     }
     strcpy(hnptr->word, str);
 
     if (hn == NULL)
-	return hnptr;
+        return hnptr;
     return hn;
 }
 

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.46 2009-02-16 16:54:31 opengl2772 Exp $
+# $Id: util.pl,v 1.47 2009-02-17 08:54:44 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2009 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -87,7 +87,7 @@ sub fclose ($) {
 sub dprint (@) {
     if ($var::Opt{'debug'}) {
         for my $str (@_) {
-           map {print STDERR '// ', $_, "\n"} split "\n", $str;
+            map {print STDERR '// ', $_, "\n"} split "\n", $str;
         }
     }
 }
@@ -95,7 +95,7 @@ sub dprint (@) {
 sub vprint (@) {
     if ($var::Opt{'verbose'} || $var::Opt{'debug'}) {
         for my $str (@_) {
-           map {print STDERR '@@ ', $_, "\n"} split "\n", $str;
+            map {print STDERR '@@ ', $_, "\n"} split "\n", $str;
         }
     }
 }
@@ -219,15 +219,15 @@ sub checkcmd ($) {
     for my $dir (split(/$pd/, $ENV{'PATH'})) {
         next if ($dir eq '');
         win32_yen_to_slash(\$dir);
-	return "$dir/$cmd" if (-x "$dir/$cmd" && ! -d "$dir/$cmd");
-	return "$dir/$cmd.com" if (-x "$dir/$cmd.com" &&
-		(($English::OSNAME eq "MSWin32") || ($English::OSNAME eq "os2")));
-	return "$dir/$cmd.exe" if (-x "$dir/$cmd.exe" &&
-		(($English::OSNAME eq "MSWin32") || ($English::OSNAME eq "os2")));
-	return "$dir/$cmd.bat" if (-x "$dir/$cmd.bat" &&
-			       ($English::OSNAME eq "MSWin32"));
-	return "$dir/$cmd.cmd" if (-x "$dir/$cmd.cmd" &&
-			       ($English::OSNAME eq "os2"));
+        return "$dir/$cmd" if (-x "$dir/$cmd" && ! -d "$dir/$cmd");
+        return "$dir/$cmd.com" if (-x "$dir/$cmd.com" &&
+            (($English::OSNAME eq "MSWin32") || ($English::OSNAME eq "os2")));
+        return "$dir/$cmd.exe" if (-x "$dir/$cmd.exe" &&
+            (($English::OSNAME eq "MSWin32") || ($English::OSNAME eq "os2")));
+        return "$dir/$cmd.bat" if (-x "$dir/$cmd.bat" &&
+            ($English::OSNAME eq "MSWin32"));
+        return "$dir/$cmd.cmd" if (-x "$dir/$cmd.cmd" &&
+            ($English::OSNAME eq "os2"));
     }
     return undef;
 }

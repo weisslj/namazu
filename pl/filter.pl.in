@@ -2,17 +2,17 @@
 # -*- Perl -*-
 # filter.pl - class for filter
 #
-# $Id: filter.pl.in,v 1.7 2006-08-23 15:11:00 usu Exp $
+# $Id: filter.pl.in,v 1.8 2009-02-17 08:54:44 opengl2772 Exp $
 #
 # Copyright (C) 2004 Yukio USUDA All rights reserved.
-# Copyright (C) 2000-2004 Namazu Project All rights reversed.
+# Copyright (C) 2000-2009 Namazu Project All rights reversed.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation; either versions 2, or (at your option)
 #  any later version.
-# 
+#
 #  This program is distributed in the hope that it will be useful
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -56,8 +56,8 @@ sub init {
     my $self = shift @_;
     $MMagic = shift @_;
 
-    if (defined $conf::FILTERDIR && -d $conf::FILTERDIR){
-	$filterdir = $conf::FILTERDIR
+    if (defined $conf::FILTERDIR && -d $conf::FILTERDIR) {
+        $filterdir = $conf::FILTERDIR
     };
 
     if (($English::OSNAME eq "MSWin32") || ($English::OSNAME eq "os2")) {
@@ -87,30 +87,30 @@ sub apply_filter {
 
     # Pre code conversion.
     if ($REQUIRE_PRE_CODECONV{$mtype}) {
-	util::dprint("pre_codeconv\n");
-	codeconv::codeconv_document($contentref);
+        util::dprint("pre_codeconv\n");
+        codeconv::codeconv_document($contentref);
     }
 
     util::vprint("mtype = $mtype\n");
 
     if (! $Supported{$mtype} ||
-	$Supported{$mtype} ne 'yes') {
-	util::vprint(_("Unsupported media type ")."$mtype\n");
-	return (0, "$mtype; x-system=unsupported");
+        $Supported{$mtype} ne 'yes') {
+        util::vprint(_("Unsupported media type ")."$mtype\n");
+        return (0, "$mtype; x-system=unsupported");
     }
 
     if ($REQUIRE_ACTIONS{$mtype}) {
-	util::vprint(_("Using ")."$REQUIRE_ACTIONS{$mtype}.pl\n");
-	require $REQUIRE_ACTIONS{$mtype}.'.pl'
-	    || die _("unable to require ") .
-	     "\"$REQUIRE_ACTIONS{$mtype}.pl\"\n";
-	my $err = undef;
+        util::vprint(_("Using ")."$REQUIRE_ACTIONS{$mtype}.pl\n");
+        require $REQUIRE_ACTIONS{$mtype}.'.pl'
+           || die _("unable to require ") .
+           "$REQUIRE_ACTIONS{$mtype}.pl\"\n";
+        my $err = undef;
 
-	{
-	    local $SIG{'PIPE'} = \&trapintr;
+        {
+           local $SIG{'PIPE'} = \&trapintr;
 	    my $eval_txt = '$err = ' . $REQUIRE_ACTIONS{$mtype} .
-	      '::filter($orig_cfile, $contentref,' . 
-	      ' \$self->{\'weighted_str\'}, ' . 
+	      '::filter($orig_cfile, $contentref,' .
+	      ' \$self->{\'weighted_str\'}, ' .
 	      ' \$self->{\'headings\'}, $$fields_ref);';
 	    eval $eval_txt;
 	}
@@ -148,14 +148,14 @@ sub apply_filter {
 sub get_info {
     my $self = shift @_;
     my $name = shift @_;
-    if ($name eq 'filter_dir'){
-	return $filterdir;
-    }elsif ($name eq 'all_types'){
-	return $self->_get_all_types;
-    }elsif ($name eq 'supported_types'){
-	return $self->_get_supported_list;
-    }elsif ($name eq 'supported_list'){
-	return $self->_get_supported_list;
+    if ($name eq 'filter_dir') {
+        return $filterdir;
+    } elsif ($name eq 'all_types') {
+        return $self->_get_all_types;
+    } elsif ($name eq 'supported_types') {
+        return $self->_get_supported_list;
+    } elsif ($name eq 'supported_list') {
+        return $self->_get_supported_list;
     }
 }
 
@@ -180,19 +180,19 @@ sub _get_supported_list {
     $list .= _("Unsupported media types: ") . "($num_unsupported) " . _("marked with minus (-) probably missing application in your \$path.\n");
     my $supported_list = "";
     for my $mtype (sort keys %Supported) {
-	my $yn = $Supported{$mtype};
-	if ($yn eq 'yes') { $yn = ' ' } else {$yn = '-'};
-	$supported_list .= "$yn $mtype";
-	if ($REQUIRE_ACTIONS{$mtype}){
-	    $supported_list .= ": $REQUIRE_ACTIONS{$mtype}.pl";
-	}
-	$supported_list .= "\n";
+        my $yn = $Supported{$mtype};
+        if ($yn eq 'yes') { $yn = ' ' } else {$yn = '-'};
+        $supported_list .= "$yn $mtype";
+        if ($REQUIRE_ACTIONS{$mtype}) {
+            $supported_list .= ": $REQUIRE_ACTIONS{$mtype}.pl";
+        }
+        $supported_list .= "\n";
     }
     $list .= $supported_list;
     return $list;
 }
 
-sub _load_filtermodules ($){
+sub _load_filtermodules ($) {
     my $filterdir = shift @_;
     unshift @INC, $filterdir;
 
@@ -204,7 +204,7 @@ sub _load_filtermodules ($){
     # Windows modules must be check only when Active Perl environment.
     # Because OLE filters use Win32::OLE module.
     #
-    if ($English::OSNAME eq "MSWin32"){
+    if ($English::OSNAME eq "MSWin32") {
 	@filters = (@filters, glob "$filterdir/win32/*.pl");
 	unshift @INC, "$filterdir/win32";
     }
@@ -216,9 +216,9 @@ sub _load_filters ($) {
     my @filters = @_;
 
     my $mediatype;
-    foreach $mediatype (keys %conf::USE_FILTERS){
+    foreach $mediatype (keys %conf::USE_FILTERS) {
         my $filter;
-        foreach $filter (@{$conf::USE_FILTERS{$mediatype}}){
+        foreach $filter (@{$conf::USE_FILTERS{$mediatype}}) {
 	    $filter = "$filterdir/$filter";
 	    my $exists = grep {m!$filter!} @filters;
 	    next if ($exists == 0);

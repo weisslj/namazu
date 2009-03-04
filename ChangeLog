@@ -1,3 +1,7 @@
+2009-03-04  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * configure.in: Date change.
+
 2009-02-17  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * src/namazu.c: Arrangement of source code.
@@ -634,4 +638,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1627 2009-02-17 09:35:23 opengl2772 Exp $
+$Id: ChangeLog,v 1.1628 2009-03-04 11:23:01 opengl2772 Exp $

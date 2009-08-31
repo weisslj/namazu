@@ -1,5 +1,5 @@
 /*
- * $Id: result.c,v 1.84 2009-02-16 16:53:04 opengl2772 Exp $
+ * $Id: result.c,v 1.85 2009-08-31 13:56:08 opengl2772 Exp $
  * 
  * Copyright (C) 1989, 1990 Free Software Foundation, Inc.
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
@@ -84,6 +84,7 @@ commas(char *numstr)
     size_t n;
     size_t leng = strlen(numstr);
 
+    if (leng <= 0) return;
     n = leng + (leng - 1) / 3;
     numstr[n] = '\0';
     n--;
@@ -171,7 +172,7 @@ replace_field(struct nmz_data d, int counter,
     }
 
     /* Insert commas if the buf is a numeric string. */
-    if (nmz_isnumstr(buf)) {
+    if (buf[0] != '\0' && nmz_isnumstr(buf)) {
         commas(buf);
     }
 

@@ -1,5 +1,5 @@
 /*
- * $Id: result.c,v 1.85 2009-08-31 13:56:08 opengl2772 Exp $
+ * $Id: result.c,v 1.86 2009-08-31 14:03:09 opengl2772 Exp $
  * 
  * Copyright (C) 1989, 1990 Free Software Foundation, Inc.
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
@@ -165,7 +165,7 @@ replace_field(struct nmz_data d, int counter,
     /* 
      * Do not emphasize keywords in URI.
      */
-    if (is_htmlmode()) {
+    if (buf[0] != '\0' && is_htmlmode()) {
         if (strcasecmp(field, "uri") != 0)
             emphasize(buf);
         encode_entity(buf);

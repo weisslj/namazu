@@ -1,5 +1,5 @@
 /*
- * $Id: result.c,v 1.86 2009-08-31 14:03:09 opengl2772 Exp $
+ * $Id: result.c,v 1.87 2009-08-31 23:11:42 opengl2772 Exp $
  * 
  * Copyright (C) 1989, 1990 Free Software Foundation, Inc.
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
@@ -148,13 +148,13 @@ replace_field(struct nmz_data d, int counter,
         commas(buf);
     } else if (strcasecmp(field, "uri") == 0) {
         nmz_get_field_data(d.idxid, d.docid, "duri", buf);
-        if (is_urireplace()) {
+        if (buf[0] != '\0' && is_urireplace()) {
             nmz_replace_uri(buf);
         }
         nmz_encode_uri((uchar *)buf);
     } else if (strcasecmp(field, "uri#uriencode=\"decode\"") == 0) {
         nmz_get_field_data(d.idxid, d.docid, "duri", buf);
-        if (is_urireplace()) {
+        if (buf[0] != '\0' && is_urireplace()) {
             nmz_replace_uri(buf);
         }
         nmz_parse_escape_crosshatch((uchar *)buf);

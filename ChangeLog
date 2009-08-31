@@ -1,3 +1,8 @@
+2009-09-01  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * nmz/replace.c: When the field value is a blank, the bug of
+        buffer overrun is corrected.
+
 2009-08-31  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * src/result.c: When the field value is a blank, the bug of
@@ -643,4 +648,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1629 2009-08-31 13:56:08 opengl2772 Exp $
+$Id: ChangeLog,v 1.1630 2009-08-31 23:11:42 opengl2772 Exp $

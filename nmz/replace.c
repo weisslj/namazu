@@ -2,7 +2,7 @@
  * 
  * replace.c - 
  *
- * $Id: replace.c,v 1.23 2008-03-06 15:34:58 opengl2772 Exp $
+ * $Id: replace.c,v 1.24 2009-08-31 23:11:42 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2008 Namazu Project All rights reserved.
@@ -94,6 +94,9 @@ nmz_replace_uri(char *uri)
     struct nmz_replace *list = replaces;
     int is_regex_matching = 0;
 
+    if (uri[0] == '\0') {
+        return 0;
+    }
     strncpy(tmp, uri, BUFSIZE - 1);
 
     while (list) {

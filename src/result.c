@@ -1,5 +1,5 @@
 /*
- * $Id: result.c,v 1.87 2009-08-31 23:11:42 opengl2772 Exp $
+ * $Id: result.c,v 1.88 2009-09-05 16:06:54 opengl2772 Exp $
  * 
  * Copyright (C) 1989, 1990 Free Software Foundation, Inc.
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
@@ -88,7 +88,7 @@ commas(char *numstr)
     n = leng + (leng - 1) / 3;
     numstr[n] = '\0';
     n--;
-    for (i = 0; i < leng; i++, n--) {
+    for (i = 0; i < (int)leng; i++, n--) {
         numstr[n] = numstr[leng - 1 - i];
         if (i % 3 == 2 && n != 0) {
             n--;

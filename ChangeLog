@@ -1,3 +1,7 @@
+2009-09-06  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * pltests/env.pl.in: Bug fix for check $ENV value TEMP, TMP.
+
 2009-09-01  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * nmz/replace.c: When the field value is a blank, the bug of
@@ -648,4 +652,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1630 2009-08-31 23:11:42 opengl2772 Exp $
+$Id: ChangeLog,v 1.1631 2009-09-05 15:56:25 opengl2772 Exp $

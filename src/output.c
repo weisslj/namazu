@@ -1,8 +1,8 @@
 /*
- * $Id: output.c,v 1.125 2008-07-15 14:27:48 opengl2772 Exp $
+ * $Id: output.c,v 1.126 2009-10-06 15:26:22 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2008 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2009 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -941,12 +941,15 @@ char *
 get_contenttype(void)
 {
     static char buff[BUFSIZE];
+    char tmp[BUFSIZE];
     char *p;
     int is_charset = 0;
 
 
+    strncpy(tmp, contenttype, BUFSIZE - 1);
+    tmp[BUFSIZE - 1] = '\0';
     buff[0] = '\0';
-    p = strtok(contenttype, " \t\n\r;");
+    p = strtok(tmp, " \t\n\r;");
     while(p) {
         if (!strncasecmp(p, "charset=", strlen("charset="))) {
             is_charset = 1;

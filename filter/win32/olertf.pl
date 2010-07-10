@@ -1,11 +1,11 @@
 # 
 # -*- Perl -*-
-# $Id: olertf.pl,v 1.15 2007-01-14 03:04:32 opengl2772 Exp $
+# $Id: olertf.pl,v 1.16 2010-07-10 20:34:41 opengl2772 Exp $
 # 
 # Copyright (C) 2000 Yoshinori.TAKESAKO,
 #               2000 Jun Kurabe,
 #               2000 Ken-ichi Hirose,
-#               2004-2007 Namazu Project All rights reserved.
+#               2004-2010 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -39,18 +39,26 @@ sub mediatype() {
 }
 
 sub status() {
+    my $const = undef;
+
     # The check of a dependence filter.
     return 'no' if (olemsword::status() ne 'yes');
 
     open (SAVEERR,">&STDERR");
     open (STDERR,">nul");
-    my $const;
-    $const = Win32::OLE::Const->Load("Microsoft Word 12.0 Object Library");
+
+##
+##  not support Word 2007, 2010
+##
+#    $const = Win32::OLE::Const->Load("Microsoft Word 14.0 Object Library") unless $const;
+#    $const = Win32::OLE::Const->Load("Microsoft Word 12.0 Object Library") unless $const;
     $const = Win32::OLE::Const->Load("Microsoft Word 11.0 Object Library") unless $const;
     $const = Win32::OLE::Const->Load("Microsoft Word 10.0 Object Library") unless $const;
     $const = Win32::OLE::Const->Load("Microsoft Word 9.0 Object Library") unless $const;
     $const = Win32::OLE::Const->Load("Microsoft Word 8.0 Object Library") unless $const;
+
     open (STDERR,">&SAVEERR");
+
     return 'yes' if (defined $const);
     return 'no';
 }

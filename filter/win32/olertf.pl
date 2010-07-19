@@ -1,6 +1,6 @@
 # 
 # -*- Perl -*-
-# $Id: olertf.pl,v 1.17 2010-07-11 13:45:45 opengl2772 Exp $
+# $Id: olertf.pl,v 1.18 2010-07-19 05:46:16 opengl2772 Exp $
 # 
 # Copyright (C) 2000 Yoshinori.TAKESAKO,
 #               2000 Jun Kurabe,
@@ -44,19 +44,18 @@ sub status() {
     # The check of a dependence filter.
     return 'no' if (olemsword::status() ne 'yes');
 
+    # Redirect stderr to null device, to ignore Error and Exception message.
     open (SAVEERR,">&STDERR");
     open (STDERR,">nul");
-
-##
-##  not support Word 2010
-##
-#    $const = Win32::OLE::Const->Load("Microsoft Word 14.0 Object Library") unless $const;
+    # Load Office 97/98/2000/XP/2003/2007/2010 Constant
+    $const = Win32::OLE::Const->Load("Microsoft Word 14.0 Object Library") unless $const;
     $const = Win32::OLE::Const->Load("Microsoft Word 12.0 Object Library") unless $const;
     $const = Win32::OLE::Const->Load("Microsoft Word 11.0 Object Library") unless $const;
     $const = Win32::OLE::Const->Load("Microsoft Word 10.0 Object Library") unless $const;
     $const = Win32::OLE::Const->Load("Microsoft Word 9.0 Object Library") unless $const;
     $const = Win32::OLE::Const->Load("Microsoft Word 8.0 Object Library") unless $const;
 
+    # Restore stderr device usually.
     open (STDERR,">&SAVEERR");
 
     return 'yes' if (defined $const);

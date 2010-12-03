@@ -2,7 +2,7 @@
  * 
  * re.c -
  * 
- * $Id: re.c,v 1.47 2008-03-06 15:34:58 opengl2772 Exp $
+ * $Id: re.c,v 1.48 2010-12-03 23:29:01 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2008 Namazu Project All rights reserved.
@@ -269,6 +269,7 @@ nmz_regex_grep_field(struct re_pattern_buffer *rp, FILE *fp, const char *field)
 		        return val;
                     }
                 }
+                val.data[n-1].date = data.date;
                 val.data[n-1].docid = i;
                 val.data[n-1].score = 1;  /* score = 1 */
                 val.num = n;

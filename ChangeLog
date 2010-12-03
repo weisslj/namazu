@@ -1,3 +1,8 @@
+2010-12-04  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * nmz/re.c: Bug fix for sorting at the date when searching for
+        field. (Reported by Steve. Thanks.)
+
 2009-10-07  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * src/output.c: fix bug.
@@ -656,4 +661,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1632 2009-10-06 15:26:16 opengl2772 Exp $
+$Id: ChangeLog,v 1.1633 2010-12-03 23:29:00 opengl2772 Exp $

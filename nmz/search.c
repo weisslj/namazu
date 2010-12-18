@@ -1,9 +1,9 @@
 /*
  * 
- * $Id: search.c,v 1.115 2008-03-06 15:35:19 opengl2772 Exp $
+ * $Id: search.c,v 1.116 2010-12-18 19:44:21 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2008 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2010 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -41,7 +41,10 @@
 #ifdef __EMX__
 #include <sys/types.h>
 #endif
-#include <sys/stat.h>
+
+#ifdef HAVE_SYS_STAT_H
+#	include <sys/stat.h>
+#endif
 
 #ifdef HAVE_ERRNO_H
 #  include <errno.h>

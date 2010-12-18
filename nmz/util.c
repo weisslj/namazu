@@ -1,9 +1,9 @@
 /*
  * 
- * $Id: util.c,v 1.96 2008-07-10 19:46:04 opengl2772 Exp $
+ * $Id: util.c,v 1.97 2010-12-18 19:44:21 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2008 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2010 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -49,7 +49,10 @@
 #ifdef __EMX__
 #include <sys/types.h>
 #endif
-#include <sys/stat.h>
+
+#ifdef HAVE_SYS_STAT_H
+#	include <sys/stat.h>
+#endif
 
 #ifdef HAVE_STRING_H
 #  include <string.h>
@@ -623,30 +626,33 @@ nmz_readfile(const char *fname)
     char *buf;
     FILE *fp;
     struct stat fstatus;
+	size_t size;
 
     errno = 0; /* errno must be initialized. */
 
     stat(fname, &fstatus);
+	size = (size_t)fstatus.st_size;
+
     fp = fopen(fname, "rb");
     if (fp == NULL) {
         nmz_warn_printf("%s: %s", fname, strerror(errno));
         return NULL;
     }
-    buf = malloc(fstatus.st_size + 1);
+    buf = malloc(size + 1);
     if (buf == NULL) {
-	nmz_set_dyingmsg(nmz_msg("%s: %s", fname, strerror(errno)));
+        nmz_set_dyingmsg(nmz_msg("%s: %s", fname, strerror(errno)));
         fclose(fp);
-	return NULL;
+        return NULL;
     }
-    if (fstatus.st_size != 0 &&
-	fread(buf, sizeof(char), fstatus.st_size, fp) == 0) 
+    if (size != 0 &&
+	fread(buf, sizeof(char), size, fp) == 0) 
     {
         nmz_set_dyingmsg(nmz_msg("%s: %s", fname, strerror(errno)));
         free(buf);
         fclose(fp);
-	return NULL;
+        return NULL;
     }
-    *(buf + fstatus.st_size) = '\0';
+    *(buf + size) = '\0';
     fclose(fp);
     return buf;
 }

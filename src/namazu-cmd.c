@@ -2,10 +2,10 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu-cmd.c,v 1.38 2007-12-05 16:23:37 opengl2772 Exp $
+ * $Id: namazu-cmd.c,v 1.39 2010-12-18 19:44:21 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2007 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2010 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -38,7 +38,11 @@
 #include <sys/types.h>
 #include <fcntl.h>
 #include <ctype.h>
-#include <sys/stat.h>
+
+#ifdef HAVE_SYS_STAT_H
+#	include <sys/stat.h>
+#endif
+
 #include <signal.h>
 #include <stdarg.h>
 

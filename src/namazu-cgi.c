@@ -2,10 +2,10 @@
  * 
  * namazu-cgi.c - search client of Namazu
  *
- * $Id: namazu-cgi.c,v 1.33 2008-07-19 17:56:00 opengl2772 Exp $
+ * $Id: namazu-cgi.c,v 1.34 2010-12-18 19:44:21 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2008 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2010 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -35,7 +35,11 @@
 #include <sys/types.h>
 #include <fcntl.h>
 #include <ctype.h>
-#include <sys/stat.h>
+
+#ifdef HAVE_SYS_STAT_H
+#	include <sys/stat.h>
+#endif
+
 #include <signal.h>
 #include <stdarg.h>
 

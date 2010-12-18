@@ -1,3 +1,8 @@
+2010-12-19  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * nmz/{libnamazu.c, search.c, util.c}, src/{namazu-cgi.c, 
+        namazu-cmd.c, namazu.c}: for environment without <sys/stat.h>.
+
 2010-12-04  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * nmz/re.c: Bug fix for sorting at the date when searching for
@@ -661,4 +666,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1633 2010-12-03 23:29:00 opengl2772 Exp $
+$Id: ChangeLog,v 1.1634 2010-12-18 19:44:20 opengl2772 Exp $

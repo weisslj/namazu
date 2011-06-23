@@ -102,13 +102,13 @@ mknmz固有の事情
     OS/2 対策。
 
   * プログラム全体に影響をおよぼすグローバル変数は
-    lib/var.pl.in に定義する。
+    pl/var.pl.in に定義する。
 
   * mknmz 内だけに影響をおよぼすグローバル変数は
-    src/mknmz.pl.in に定義する。 $SYSTEM のみ例外。
+    scripts/mknmz.pl.in に定義する。 $SYSTEM のみ例外。
 
   * ユーザが mknmz.conf, ~/.mknmzrc にて変更したいであろう変
-    数は lib/conf.pl.in に定義する。
+    数は pl/conf.pl.in に定義する。
 
 
 書法

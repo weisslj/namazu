@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.185 2011-06-26 04:00:28 opengl2772 Exp $
+# $Id: mknmz.in,v 1.186 2011-06-26 04:11:39 opengl2772 Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2008 Namazu Project All rights reserved.
@@ -492,17 +492,17 @@ sub namazu_core ($$$$$$$$$$) {
 
     my $headings = "";
     my $weighted_str = "";
-    my %fields;
-    my $msg_prefix;
+    my %fields = ();
+    my $msg_prefix = "";
 
     if ($part_id) {
-	$msg_prefix = "    $part_id/$part_num - ";
+        $msg_prefix = "    $part_id/$part_num - ";
     } else {
-	$msg_prefix = $file_count + 1 . "/$total_files_num - ";
+        $msg_prefix = $file_count + 1 . "/$total_files_num - ";
     }
 
     unless ($uri) {
-	$uri = generate_uri($cfile);	# Make a URI from a file name.
+        $uri = generate_uri($cfile);	# Make a URI from a file name.
     }
     my $mtime;
     my $mmtype = '';

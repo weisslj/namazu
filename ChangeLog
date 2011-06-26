@@ -1,6 +1,11 @@
+2011-06-27  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * scripts/mknmz.in: Temporarily deleted at once after use. 
+        (Reported by Aoyagi. Thanks.)
+
 2011-06-26  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
-        * scripts/mknmz.in:  The initialization of the variable 
+        * scripts/mknmz.in: The initialization of the variable 
         is added. (Reported by Aoyagi. Thanks.)
 
 2011-06-23  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
@@ -675,4 +680,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1636 2011-06-26 05:05:37 opengl2772 Exp $
+$Id: ChangeLog,v 1.1637 2011-06-26 17:04:44 opengl2772 Exp $

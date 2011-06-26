@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.189 2011-06-26 09:32:03 opengl2772 Exp $
+# $Id: mknmz.in,v 1.190 2011-06-26 17:04:48 opengl2772 Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2008 Namazu Project All rights reserved.
@@ -362,15 +362,15 @@ sub win32_add_driveletter ($) {
 #   $CodingSystem: Character Coding System 'euc' or 'sjis'
 sub init () {
     if (($English::OSNAME eq "MSWin32") || ($English::OSNAME eq "os2")) {
-	$FILESYS_WIN32 = 1;
-	win32_add_driveletter(\$CONFDIR);
-	win32_add_driveletter(\$LIBDIR);
-	win32_add_driveletter(\$TEMPLATEDIR);
-	win32_add_driveletter(\$SCHEMEDIR);
-	win32_add_driveletter(\$ARCHIVEDIR);
-	win32_add_driveletter(\$WAKATIDICDIR);
+        $FILESYS_WIN32 = 1;
+        win32_add_driveletter(\$CONFDIR);
+        win32_add_driveletter(\$LIBDIR);
+        win32_add_driveletter(\$TEMPLATEDIR);
+        win32_add_driveletter(\$SCHEMEDIR);
+        win32_add_driveletter(\$ARCHIVEDIR);
+        win32_add_driveletter(\$WAKATIDICDIR);
     } else {
-	$FILESYS_WIN32 = 0;
+        $FILESYS_WIN32 = 0;
     }
 
     $SIG{'INT'}  = sub {
@@ -817,7 +817,8 @@ sub put_field_index (\%$) {
 
         # uniq @keys
         my %mark = ();
-        @keys = grep {$mark{$_}++; $mark{$_} == 1} @keys;
+        @keys = grep { ! $mark{$_}++ } @keys;
+        undef(%mark);
     }
     for my $key (@keys) {
 	my $lkey = lc($key);
@@ -1441,7 +1442,8 @@ sub find_target (@) {
     {
         # uniq @flist
         my %mark = ();
-        @flist = grep {$mark{$_}++; $mark{$_} == 1} @flist;
+        @flist = grep { ! $mark{$_}++ } @flist;
+        undef(%mark);
     }
 
     # Sort file names with consideration for numbers.
@@ -1758,6 +1760,7 @@ sub set_target_files() {
 
     # Pick up not overlapped documents which are files to index.
     my @flist = grep { ! $mark1{$_} } @found_files;
+    undef(%mark1);
 	 
     if ($var::Opt{'noupdate'}) {
 	return (scalar @{$rdocs{'name'}}, @flist);
@@ -1786,6 +1789,7 @@ sub set_target_files() {
 	        $rdocs{'deleted'}{$deleted} = 1;
 	        push @deleted_documents, $deleted;
 	    }
+        undef(%mark2);
     }
 
     # check filesize
@@ -1801,9 +1805,12 @@ sub set_target_files() {
         push @flist, @updated_documents;
     }
 
-    # Remove duplicates.
-    my %seen = ();
-    @flist = grep { ! $seen{$_}++ } @flist;
+    {
+        # Remove duplicates.
+        my %seen = ();
+        @flist = grep { ! $seen{$_}++ } @flist;
+        undef(%seen);
+    }
 
     util::dprint(_("\n\n== found files ==\n"), join("\n", @found_files), "\n");
     util::dprint(_("\n\n== registered documents ==\n"), join("\n", @{$rdocs{'name'}}), "\n");
@@ -1815,13 +1822,13 @@ sub set_target_files() {
     # Update NMZ.t with the missing number infomation and
     # append updated files and deleted files to NMZ.r with leading '# '
     if (@updated_documents || @deleted_documents) {
-	$DeletedFilesCount = 0;
-	$UpdatedFilesCount = 0;
-	$UpdatedFilesCount += @updated_documents;
-#	$DeletedFilesCount += @updated_documents;
-	$DeletedFilesCount += @deleted_documents;
-	preupdate_dateindex(@{$rdocs{'mtime'}});
-	preupdate_registry(@updated_documents, @deleted_documents);
+        $DeletedFilesCount = 0;
+        $UpdatedFilesCount = 0;
+        $UpdatedFilesCount += @updated_documents;
+#        $DeletedFilesCount += @updated_documents;
+        $DeletedFilesCount += @deleted_documents;
+        preupdate_dateindex(@{$rdocs{'mtime'}});
+        preupdate_registry(@updated_documents, @deleted_documents);
     }
 
     # Return the number of registered documents and list of files to index.

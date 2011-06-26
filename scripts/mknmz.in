@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.184 2008-06-02 09:46:04 opengl2772 Exp $
+# $Id: mknmz.in,v 1.185 2011-06-26 04:00:28 opengl2772 Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2008 Namazu Project All rights reserved.
@@ -198,14 +198,14 @@ sub process_file ($$$$\%$$) {
 
     if ($var::Opt{'htmlsplit'} && $cfile =~ $conf::HTML_SUFFIX) {
 	my ($contref, $mtime, $mtype) = fetchscheme($cfile);
-	my @parts;
+	my @parts = ();
 	if (defined $contref) {
-            $file_size = length($$contref);
-            @parts = Namazu::Archive::html::split($contref, $mtime, "NMZ.partial")
-                if ($file_size <= $conf::FILE_SIZE_MAX);
+        $file_size = length($$contref);
+        @parts = Namazu::Archive::html::split($contref, $mtime, "NMZ.partial")
+            if ($file_size <= $conf::FILE_SIZE_MAX);
 	} else {
-            @parts = Namazu::Archive::html::splitfile($cfile, "NMZ.partial")
-                if ($file_size <= $conf::FILE_SIZE_MAX);
+        @parts = Namazu::Archive::html::splitfile($cfile, "NMZ.partial")
+            if ($file_size <= $conf::FILE_SIZE_MAX);
 	}
 	if (@parts > 1) {
 	    my $id = 0;

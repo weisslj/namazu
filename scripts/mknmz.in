@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.186 2011-06-26 04:11:39 opengl2772 Exp $
+# $Id: mknmz.in,v 1.187 2011-06-26 05:05:38 opengl2772 Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2008 Namazu Project All rights reserved.
@@ -1063,7 +1063,7 @@ sub parse_options
     my $target_list = undef;
     my $index_lang = undef;
 
-    my %opt_conf;
+    my %opt_conf = ();
 
 #    Getopt::Long::Configure('bundling');
     Getopt::Long::config('bundling', 'pass_through');
@@ -1745,8 +1745,8 @@ sub set_target_files() {
     $rdocs{'name'} = load_registry();
 
     # Pick up overlapped documents and do marking
-    my %mark1;
-    my @overlapped_files;
+    my %mark1 = ();
+    my @overlapped_files = ();
     grep {$_ !~ /^\# / && $mark1{$_}++ } @{$rdocs{'name'}};
     $rdocs{'overlapped'} = {}; # Prepare an anonymous hash.
     for my $overlapped (grep { $mark1{$_} } @found_files) {
@@ -1773,9 +1773,9 @@ sub set_target_files() {
 
     # Pick up deleted documents and do marking
     # (registered in the NMZ.r but not existent in the filesystem)
-    my @deleted_documents;
+    my @deleted_documents = ();
     unless ($var::Opt{'nodelete'}) {
-	my %mark2;
+	my %mark2 = ();
 	grep { $mark2{$_}++ } @found_files;
 	for my $deleted (grep { $_ !~ /^\# / && ! $mark2{$_} && 
 				! $rdocs{'overlapped'}{$_} } 
@@ -1983,11 +1983,10 @@ sub load_registry () {
 sub load_sizefield() {
     my $fh_sizefield = util::efopen($var::NMZ{'field'} . '.size');
     return [] unless defined $fh_sizefield;
-    my $line;
     my @ret = ();
-    while (defined($line = <$fh_sizefield>)) {
-	chomp $line;
-	push @ret, $line;
+    while (defined(my $line = <$fh_sizefield>)) {
+        chomp $line;
+        push @ret, $line;
     }
     util::fclose($fh_sizefield) if (defined $fh_sizefield);
     return \@ret;
@@ -2332,11 +2331,11 @@ sub write_index () {
 sub readw ($) {
     my $fh = shift;
     my $ret = '';
-    my $c;
+    my $c = '';
     
     while (read($fh, $c, 1)){
-	$ret .= $c;
-	last unless 0x80 & ord $c;
+        $ret .= $c;
+        last unless 0x80 & ord $c;
     }
     return unpack('w', $ret);
 }
@@ -2514,8 +2513,8 @@ sub dump_record($$) {
     print STDERR "dump record data to NMZ.bug.info (step: $step)...";
     my $fh_info = util::fopen(">> NMZ.bug.info");
     print $fh_info "dumped record data (step: $step)...";
-    foreach (@data) {
-	print $fh_info sprintf(" %08x", $_);
+    foreach my $elm (@data) {
+        print $fh_info sprintf(" %08x", $elm);
     }
     print $fh_info "\n";
     util::fclose($fh_info);

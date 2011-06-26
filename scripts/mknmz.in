@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.188 2011-06-26 05:41:30 opengl2772 Exp $
+# $Id: mknmz.in,v 1.189 2011-06-26 09:32:03 opengl2772 Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2008 Namazu Project All rights reserved.
@@ -1438,9 +1438,11 @@ sub find_target (@) {
 	}
     }
 
-    # uniq @flist
-    my %mark = ();
-    @flist = grep {$mark{$_}++; $mark{$_} == 1} @flist;
+    {
+        # uniq @flist
+        my %mark = ();
+        @flist = grep {$mark{$_}++; $mark{$_} == 1} @flist;
+    }
 
     # Sort file names with consideration for numbers.
     @flist = map  { $_->[0] }
@@ -1745,13 +1747,13 @@ sub set_target_files() {
     $rdocs{'name'} = load_registry();
 
     # Pick up overlapped documents and do marking
-    my %mark1 = ();
     my @overlapped_files = ();
+    my %mark1 = ();
     grep {$_ !~ /^\# / && $mark1{$_}++ } @{$rdocs{'name'}};
     $rdocs{'overlapped'} = {}; # Prepare an anonymous hash.
     for my $overlapped (grep { $mark1{$_} } @found_files) {
-	$rdocs{'overlapped'}{$overlapped} = 1;
-	push @overlapped_files, $overlapped;
+	    $rdocs{'overlapped'}{$overlapped} = 1;
+	    push @overlapped_files, $overlapped;
     };
 
     # Pick up not overlapped documents which are files to index.
@@ -1775,20 +1777,20 @@ sub set_target_files() {
     # (registered in the NMZ.r but not existent in the filesystem)
     my @deleted_documents = ();
     unless ($var::Opt{'nodelete'}) {
-	my %mark2 = ();
-	grep { $mark2{$_}++ } @found_files;
-	for my $deleted (grep { $_ !~ /^\# / && ! $mark2{$_} && 
+	    my %mark2 = ();
+	    grep { $mark2{$_}++ } @found_files;
+	    for my $deleted (grep { $_ !~ /^\# / && ! $mark2{$_} && 
 				! $rdocs{'overlapped'}{$_} } 
 			 @{$rdocs{'name'}}) 
-	{
-	    $rdocs{'deleted'}{$deleted} = 1;
-	    push @deleted_documents, $deleted;
-	}
+	    {
+	        $rdocs{'deleted'}{$deleted} = 1;
+	        push @deleted_documents, $deleted;
+	    }
     }
 
     # check filesize
     if ($var::Opt{'checkfilesize'}) {
-	$rdocs{'size'} = load_sizefield();
+        $rdocs{'size'} = load_sizefield();
     }
 
     # Pick up updated documents and set the missing number for deleted files.
@@ -1796,7 +1798,7 @@ sub set_target_files() {
 
     # Append updated files to the list of files to index.
     if (@updated_documents) {
-	push @flist, @updated_documents;
+        push @flist, @updated_documents;
     }
 
     # Remove duplicates.

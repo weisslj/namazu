@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.47 2009-02-17 08:54:44 opengl2772 Exp $
+# $Id: util.pl,v 1.48 2011-06-28 16:07:18 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2009 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -477,6 +477,8 @@ sub syscmd(%)
         }
     }
 
+    dprint(_("Invoked: ") . join(' ', @args));
+
     my $fh_out = undef;
     my $fh_err = undef;
 
@@ -512,8 +514,6 @@ sub syscmd(%)
                 delete $ENV{$key};
             }
         }
-
-        dprint(_("Invoked: ") . join(' ', @args));
 
         # Use an indirect object: see Perl Cookbook Recipe 16.2 in detail.
         $status = system { $args[0] } @args;

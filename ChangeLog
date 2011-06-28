@@ -1,3 +1,7 @@
+2011-06-29  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * pl/util.pl: move dprint. (Reported by Aoyagi. Thanks.)
+
 2011-06-27  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * scripts/mknmz.in: Temporarily deleted at once after use. 
@@ -680,4 +684,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1637 2011-06-26 17:04:44 opengl2772 Exp $
+$Id: ChangeLog,v 1.1638 2011-06-28 16:07:14 opengl2772 Exp $

@@ -44,7 +44,7 @@ unset LANG
 pwd=`pwd`
 tmprc="$pwd/../src/.namazurc"
 echo "Index $pwd" > $tmprc
-echo "Lang ja" >> $tmprc
+echo "Lang ja_JP.UTF-8" >> $tmprc
 duprcs
 
 cd ../src
@@ -63,6 +63,7 @@ perl <<'TEST'
     my %query = ('EUC-JP'    => "\xA5\xC6\xA5\xB9\xA5\xC8",
 		'Shift_JIS' => "\x83\x65\x83\x58\x83\x67",
 		'UTF-8'     => "\xE3\x83\x86\xE3\x82\xB9\xE3\x83\x88");
+    my $exitresult = 0;
     for $coding (keys(%query)) {
 	$ENV{'QUERY_STRING'} = 'query=' . $query{$coding} . '&idxname=idx1';
 	open FH, "./namazu.cgi |";
@@ -71,12 +72,13 @@ perl <<'TEST'
 		$hitnum = $1;
 		print LOG "$coding: docnum=$docnum, hitnum=$hitnum\n";
 		if ($docnum != $hitnum){
-		     exit 1;
+		     $exitresult = 1;
 		}
 	    }
 	}
 	close FH;
     }
     close LOG;
+    exit $exitresult;
 TEST
 exit $?

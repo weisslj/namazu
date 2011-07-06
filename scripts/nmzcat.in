@@ -3,7 +3,7 @@
 # -*- Perl -*-
 # nmzcat - print file content on the standard output.
 #
-# $Id: nmzcat.in,v 1.9 2008-06-02 09:46:04 opengl2772 Exp $
+# $Id: nmzcat.in,v 1.10 2011-07-06 11:18:10 usu Exp $
 #
 # Copyright (C) 2004 Yukio USUDA All rights reserved.
 # Copyright (C) 2004-2008 Namazu Project All rights reserved.
@@ -56,11 +56,8 @@ if (mkdir($tmpdir, 0700)) {
     die "unable to make temporary directory \"$tmpdir\"\n";
 }
 util::set_lang();
-if (util::islang("ja") && $conf::NKF =~ /^module_nkf/) {
-    require NKF || die "unable to require \"NKF\"\n";
-    util::dprint(_("code conversion: using NKF module\n"));
-    $var::USE_NKF_MODULE = 1;
-}
+my $err = codeconv::load_encode();
+die "Encode module error: $err\n" if $err;
 
 $Document = mknmz::document->new();
 $Document->init();
@@ -96,8 +93,7 @@ foreach my $fname (@ARGV) {
 rmdir $tmpdir or die "unable to remove temporary directory \"$tmpdir\"\n";
 
 muda(
-    $var::USE_NKF_MODULE, $var::OUTPUT_DIR,
-    $conf::NKF, $var::Opt{'debug'}
+    $var::OUTPUT_DIR, $var::Opt{'debug'}
     );
 
 sub muda {};

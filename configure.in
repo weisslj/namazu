@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.178 2009-03-04 11:23:01 opengl2772 Exp $
+dnl $Id: configure.in,v 1.179 2011-07-06 11:18:07 usu Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -245,11 +245,11 @@ if test $PERL = "no" || $PERL -e 'exit ($] >= 5.004)'; then
 fi
 
 AC_MSG_CHECKING(for NKF perl module)
-if $PERL -e 'exit ($] < 5.008)'; then
-    NKF=module_encode
-    AC_MSG_RESULT(yes)
-elif $PERL -e "use lib '$PMDIR'; use NKF 2.00;" >/dev/null 2>&1; then
+if $PERL -e "use lib '$PMDIR'; use NKF 2.00;" >/dev/null 2>&1; then
     NKF=module_nkf
+    AC_MSG_RESULT(yes)
+elif $PERL -e 'exit ($] < 5.008)'; then
+    NKF=module_encode
     AC_MSG_RESULT(yes)
 else
     AC_MSG_RESULT(no)

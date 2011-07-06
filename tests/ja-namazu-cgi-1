@@ -46,7 +46,7 @@ unset LANG
 pwd=`pwd`
 tmprc="$pwd/../src/.namazurc"
 echo "Index $pwd" > $tmprc
-echo "Lang ja" >> $tmprc
+echo "Lang ja_JP.eucJP" >> $tmprc
 duprcs
 
 HOME="$pwd/../src"

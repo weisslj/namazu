@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.48 2011-06-28 16:07:18 opengl2772 Exp $
+# $Id: util.pl,v 1.49 2011-07-06 11:18:10 usu Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2009 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -285,7 +285,7 @@ sub set_lang () {
         my ($language, $encoding, $modifier) = ($1, $2, $3);
 
         if (defined($encoding)) {
-            if ($encoding =~ /^UTF8$/i) {
+            if ($encoding =~ /^UTF-*8$/i) {
                 $external_encoding = 'utf-8';
             } elsif ($encoding =~ /^(?:eucJP|ujis)$/i) {
 	        $external_encoding = 'euc-jp';

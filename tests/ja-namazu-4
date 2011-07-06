@@ -41,6 +41,7 @@ perl <<'TEST'
 		'Shift_JIS' => "%82%C8%82%DC%82%B8.html",
 		'UTF-8'     => "%E3%81%AA%E3%81%BE%E3%81%9A.html",
 		'CAP' => ":82:C8:82:DC:82:B8.html");
+    my $exitresult = 0;
     for $dir (keys(%files)) {
 
 	my $idxdir = "ja-idx4/$dir";
@@ -56,11 +57,12 @@ perl <<'TEST'
 	open FH2, "../src/namazu namazu -l -f namazurc-ja4 $idxdir |";
 	while (defined(my $result = <FH2>)){
 	    unless ($result =~ /$files{$dir}/i){
-		exit 1;
+		$exitresult = 1;
 	    }
 	}
 	close FH2;
 	unlink $rcfile;
     }
+    exit $exitresult;
 TEST
 exit $?

@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: html.pl,v 1.58 2008-07-27 17:49:12 opengl2772 Exp $
+# $Id: html.pl,v 1.59 2011-07-06 11:18:09 usu Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2008 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -130,13 +130,15 @@ sub _htmlparser_filter ($$$$) {
     $fields->{'author'} = undef;
     $content = "";
 
-    HTML::Parser->new(api_version => 3,
+    my $htp = HTML::Parser->new(api_version => 3,
 		  handlers    => [start => [\&_tag, "tagname, '+1', attr"],
                                   end   => [\&_tag, "tagname, '-1', attr"],
                                   text  => [\&_text, "text"],
 				],
 		  marked_sections => 1,
-	)->parse($$contref);
+	);
+    $htp->utf8_mode(1);
+    $htp->parse($$contref);
 
     $$contref = $content;
 

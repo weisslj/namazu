@@ -2,7 +2,7 @@
  * 
  * codeconv.c -
  * 
- * $Id: codeconv.c,v 1.45 2008-03-06 15:34:58 opengl2772 Exp $
+ * $Id: codeconv.c,v 1.46 2011-07-06 11:18:10 usu Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2008 Namazu Project All rights reserved.
@@ -150,7 +150,9 @@ nmz_get_external_encoding(void)
 
     external_encoding = NULL;
     if (pEncoding) {
-        if (!strcasecmp(pEncoding, "utf8")) {
+        if (!strcasecmp(pEncoding, "utf8") ||
+            !strcasecmp(pEncoding, "UTF-8"))
+	{
             external_encoding = "UTF-8";
         } else if (!strcasecmp(pEncoding, "eucJP") ||
             !strcasecmp(pEncoding, "ujis"))

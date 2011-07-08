@@ -1,7 +1,7 @@
 #! %PERL% -w
 # -*- Perl -*-
 # mknmz - indexer of Namazu
-# $Id: mknmz.in,v 1.190 2011-06-26 17:04:48 opengl2772 Exp $
+# $Id: mknmz.in,v 1.191 2011-07-08 13:23:14 usu Exp $
 #
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2008 Namazu Project All rights reserved.
@@ -2202,8 +2202,9 @@ sub make_phrase_hash ($$$) {
     $$contref =~ s!\x7f */? *\d+ *\x7f!!g;  # remove tags of weight
     # remove all 1byte symbol charcters.
     $$contref =~ tr/\x80-\xefa-z0-9 \n//cd;
+    $$contref =~ s/^\s+//;
+    $$contref =~ s/\s+$//;
     my @words = split(/\s+/, $$contref);
-    @words = grep {$_ ne ""} @words;   # remove empty words
     my $word_b = shift @words;
     my $docid = $docid_count + $docid_base;
     for my $word (@words) {

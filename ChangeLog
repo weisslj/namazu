@@ -1,3 +1,8 @@
+2011-07-08  Yukio USUDA <usu@namazu.org>
+
+        * scripts/mknmz.in: Removed waste grep.
+        (namazu-develop-ja#1552,1564)
+
 2011-07-07 Yukio USUDA <usu@namazu.org>
 
 	* filter/html.pl(html_parser_filter): Workaround for new HTML::Parser. 
@@ -694,4 +699,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1639 2011-07-06 11:18:07 usu Exp $
+$Id: ChangeLog,v 1.1640 2011-07-08 13:23:12 usu Exp $

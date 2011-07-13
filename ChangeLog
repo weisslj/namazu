@@ -2,6 +2,7 @@
 
         * tests/namazu-cgi-12: Import from stable's pltests/namazu-cgi-12.pl.
 	* tests/Makefile.am: Add new entry for namazu-cgi-12.
+	* filter/man.pl: Redesign filter.
 
 2011-07-08  Yukio USUDA <usu@namazu.org>
 
@@ -704,4 +705,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1641 2011-07-13 15:06:31 usu Exp $
+$Id: ChangeLog,v 1.1642 2011-07-13 15:22:02 usu Exp $

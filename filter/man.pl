@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: man.pl,v 1.39 2011-07-13 15:06:34 usu Exp $
+# $Id: man.pl,v 1.40 2011-07-13 15:22:03 usu Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu ,
 #               2004 Namazu Project All rights reserved.
@@ -29,11 +29,6 @@ use strict;
 require 'util.pl';
 require 'gfilter.pl';
 
-my $roffpath = undef;
-my @roffopts = undef;
-my $envpath = undef;
-my @env = undef;
-my $exist_roff = undef;
 
 sub mediatype() {
     return ('text/x-roff');
@@ -64,8 +59,8 @@ sub filter ($$$$$) {
 	= @_;
     my $cfile = defined $orig_cfile ? $$orig_cfile : '';
 
-    #codeconv::to_inner_encoding($cont, undef);
-    codeconv::toeuc($cont, undef);
+    codeconv::to_inner_encoding($cont, undef);
+    #codeconv::toeuc($cont, undef);
     roff_filter($cont, $weighted_str, $fields);
     gfilter::line_adjust_filter($cont);
     gfilter::line_adjust_filter($weighted_str);

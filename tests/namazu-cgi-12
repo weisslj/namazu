@@ -1,0 +1,142 @@
+#! /bin/sh
+#
+# $Id: namazu-cgi-12,v 1.1 2011-07-13 15:06:34 usu Exp $
+# Copyright (C) 2007 Tadamasa Teranishi
+#               2007 Namazu Project All rights reserved.
+#     This is free software with ABSOLUTELY NO WARRANTY.
+#
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either versions 2, or (at your option)
+#  any later version.
+#
+#  This program is distributed in the hope that it will be useful
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program; if not, write to the Free Software
+#  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+#  02111-1307, USA
+#
+#  This file must be encoded in EUC-JP encoding
+#
+#
+
+#
+# Test for namazu.cgi.
+#
+
+LOG=`pwd`/test-log
+echo '  *** starting ' $0 >>$LOG
+
+cd ../src
+
+perl << 'TEST'  >> $LOG
+
+	use strict;
+	require Cwd;
+	use File::Copy;
+
+	my $cwd = Cwd::cwd();
+	my $INDEX = $cwd . "/../tests/idx1";
+	my $NAMAZU = "./namazu.cgi";
+	my $RC = $cwd . '/.namazurc';
+
+	$ENV{'SCRIPT_NAME'} = 'namazu.cgi';
+	$ENV{'QUERY_STRING'} = 'query=namazu&idxname=idx1';
+
+	my %encode = (
+	    'ja' => 'EUC-JP',
+	    'ja_JP.eucJP' => 'EUC-JP',
+	    'ja_JP.SJIS' => 'Shift_JIS',
+	    'ja_JP.ISO-2022-JP' => 'ISO-2022-JP',
+	    'en' => 'ISO-8859-1',
+	    'fr' => 'ISO-8859-1',
+	    'de' => 'ISO-8859-1',
+	    'es' => 'ISO-8859-1',
+	    'pl' => 'ISO-8859-2',
+	    'C' => 'ISO-8859-1',
+	    'POSIX' => 'ISO-8859-1',
+	);
+
+	sub check_charset($);
+
+	foreach my $lang (sort keys %encode) {
+	    open RCFILE, ">$RC";
+	    print RCFILE "Index $cwd/../tests\n";
+	    print RCFILE "Lang $lang\n";
+	    duprcs();
+	    check_charset($lang);
+	}
+
+	my $lang;
+	my $cset;
+
+	$lang = 'eo';
+	$cset = 'ISO-8859-3';
+	$encode{$lang} = $cset;
+	copy("$INDEX/NMZ.head", "$INDEX/NMZ.head.$lang");
+	open RCFILE, ">$RC";
+	print RCFILE "Index $cwd/../tests\n";
+	print RCFILE "Lang $lang\n";
+	print RCFILE "Charset \"$lang\" \"$cset\"\n";
+	duprcs();
+	check_charset($lang);
+
+	exit 0;
+
+	sub check_charset($)
+	{
+	    my ($lang) = @_;
+
+	    delete $ENV{'LANGUAGE'};
+	    delete $ENV{'LC_ALL'};
+	    delete $ENV{'LC_MESSAGE'};
+	    delete $ENV{'LC_CTYPE'};
+	    delete $ENV{'LANG'};
+
+	    # Check simple searching.
+	    my $result = `$NAMAZU 2>&1`;
+	    unless (defined $result) {
+	        exit 1;
+	    }
+
+	    my $charset = undef;
+	    if ($result =~ /^content-type:[^;]*;\s*charset=(.*)$/im) {
+	        $charset = $1;
+		$charset =~ s/[\n\r]//g;
+	    }
+	    unless (defined $charset) {
+	        exit 1;
+	    }
+
+	    my $msg = sprintf("lang: [%s] ; charset: [%s], [%s]", 
+	        $lang, $encode{$lang}, $charset
+	    );
+	    print $msg, "\n";
+
+	    if ($encode{$lang} ne $charset) {
+	        exit 1;
+	    }
+	}
+
+	sub duprcs() {
+	    my $rc = '.namazurc';
+	    `pwd`;
+	    if (-d "../src/.libs") {
+	        copy($rc, "../src/.libs");
+	    }
+	    if (-d "../src/_libs") {
+	        copy($rc, "../src/_libs");
+	    }
+	}
+
+	END {
+	    if (-f $RC) {
+	         unlink("$RC");
+	    }
+	}
+TEST
+exit $?

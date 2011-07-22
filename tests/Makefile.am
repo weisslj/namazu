@@ -19,7 +19,7 @@ TESTS =	mknmz-1 mknmz-2 mknmz-3 mknmz-4 mknmz-5 \
 	namazu-cgi-9 namazu-cgi-10 namazu-cgi-11 namazu-cgi-12 \
 	ja-mknmz-1 ja-mknmz-2 ja-mknmz-3 ja-mknmz-4 \
         ja-mknmz-5 \
-	ja-namazu-cgi-1 ja-namazu-cgi-2 \
+	ja-namazu-cgi-1 ja-namazu-cgi-2 ja-namazu-cgi-3 \
 	ja-namazu-1 ja-namazu-2 ja-namazu-3 ja-namazu-4 \
 	ja-namazu-5
 

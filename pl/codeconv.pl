@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: codeconv.pl,v 1.37 2009-01-29 07:56:22 opengl2772 Exp $
+# $Id: codeconv.pl,v 1.38 2011-07-23 14:29:46 usu Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2009 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -157,9 +157,9 @@ sub de_mime_header_by_encode ($$) {
 sub decide_encode ($$) {
     my ($enc, $contref) = @_;
     my @enc = split(/ /, $enc);
-    my $testdata = substr($$contref, 0, 1024);
     my $maxct = 1024;
-    my $minres = 1024;
+    my $minres = $maxct;
+    my $testdata = substr($$contref, 0, $maxct);
 
     my $encode = "ascii";
     while(my $enc = shift(@enc)) {
@@ -183,6 +183,16 @@ sub decide_encode ($$) {
                 $maxct = $ct;
                 $minres = $res;
                 $encode = 'euc-jp';
+            }
+        } elsif ($enc =~ /7bit-jis/) {
+            my $tmp = $testdata;
+            my $ct = ($tmp =~ s/(\x1b\$B([\x21-\x7e]{2})+\x1b\(B)//gs);
+            $ct +=  ($tmp =~ s/([\x0d\x0a\x20-\x7e])//gs);
+            my $res = length($tmp);
+            if ($res < $minres || ($res == $minres && $ct < $maxct)) {
+                $maxct = $ct;
+                $minres = $res;
+                $encode = '7bit-jis';
             }
         } elsif ($enc =~ /utf-?8/) {
             my $tmp = $testdata;

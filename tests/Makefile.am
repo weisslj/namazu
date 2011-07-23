@@ -21,7 +21,8 @@ TESTS =	mknmz-1 mknmz-2 mknmz-3 mknmz-4 mknmz-5 \
         ja-mknmz-5 \
 	ja-namazu-cgi-1 ja-namazu-cgi-2 ja-namazu-cgi-3 \
 	ja-namazu-1 ja-namazu-2 ja-namazu-3 ja-namazu-4 \
-	ja-namazu-5
+	ja-namazu-5 \
+	ja-documentpl-1
 
 clean-local:
 	rm -rf test-log tmp-data tmp.* idx[0-9]* ja-idx[0-9]*

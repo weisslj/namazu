@@ -1,3 +1,9 @@
+2011-07-23  Yukio USUDA <usu@namazu.org>
+
+        * pl/codeconv.pl(decide_encode): Add 7bit-jis check.
+        * tests/ja-documentpl-1: Add new tests.
+	* tests/Makefile.am: Add new entry for ja-documentpl-1.
+
 2011-07-22  Yukio USUDA <usu@namazu.org>
 
         * tests/ja-namazu-cgi-3: Add new tests.
@@ -710,4 +716,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1644 2011-07-22 13:13:03 usu Exp $
+$Id: ChangeLog,v 1.1645 2011-07-23 14:29:44 usu Exp $

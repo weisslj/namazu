@@ -1,0 +1,124 @@
+#! /bin/sh
+#
+# Test for pl/document.pl.
+#
+
+LOG=`pwd`/test-log
+echo '  *** starting ' $0 >>$LOG
+. ${srcdir}/commonfuncs
+
+EXEC=no
+
+lc_all=$LC_ALL
+lc_ctype=$LC_CTYPE
+lang=$LANG
+
+for ctype in "$lc_all" "$lc_ctype" "$lang"; do
+    if test -n "$ctype" -a "$ctype" = "C"; then
+        ctype="en"
+        break
+    fi
+    cand=`echo "$ctype" | LC_ALL="C" perl -nle 'print $1 if /^(..)/'`
+    if test -n "$cand"; then
+        ctype=$cand
+        break
+    fi
+done
+
+case $ctype in 
+	ja*)
+		EXEC=yes
+		;;
+esac
+if [ $EXEC = 'no' ]
+then
+        echo "Skipping because of LANG does not begin with ja: $0" >> $LOG
+	exit 77
+fi
+
+perl << 'TEST'  >> $LOG
+
+  use strict;
+  use Getopt::Long;
+  use English;
+  my $PKGDATADIR = $ENV{'pkgdatadir'};
+  my $LIBDIR     = $PKGDATADIR . "/pl";  # directory where library etc. are in.
+
+  my $Document = undef;
+
+  unshift @INC, $LIBDIR;
+  require "util.pl" || die "unable to require \"util.pl\"\n";
+  require "document.pl" || die "unable to require \"document.pl\"\n";
+  require "var.pl" || die "unable to require \"var.pl\"\n";
+  require "conf.pl" || die "unable to require \"conf.pl\"\n";
+  require "ext.pl" || die "unable to require \"ext.pl\"\n";
+
+  my $tmpdir = "/tmp/NMZ$$";
+  if ($English::OSNAME eq "MSWin32") {
+    $tmpdir = "$ENV{'TMP'}/NMZ$$";
+  }
+  if (mkdir($tmpdir, 0700)) {
+    $var::OUTPUT_DIR = $tmpdir;
+  } else {
+    die "unable to make temporary directory \"$tmpdir\"\n";
+  }
+  util::set_lang();
+
+  my @nkf = ('module_nkf', 'module_encode');
+  my $resultcode=0;
+  foreach my $nkfmodule (@nkf){
+    $conf::NKF = $nkfmodule;
+    print "$ENV{'LANG'} [$conf::NKF]\n";
+    my $err = codeconv::load_encode();
+    die "Encode module error: $err\n" if $err;
+
+    $Document = mknmz::document->new();
+    $Document->init();
+    my $uri;
+
+    my $indexr = 'idx1/NMZ.r';
+    open FH, "<$indexr";
+    while (<FH>) {
+      my $fname = $_;
+      chomp $fname;
+      last if $fname =~ /^#/;
+      my $content = util::readfile($fname);
+
+      my $uri;
+      $Document->init_doc($uri, $fname, \$content, undef);
+      my $err = $Document->get_errmsg();
+      my $result='';
+      unless ($err) {
+       my $orig_filename = $Document->get_orig_filename();
+        my $author = $Document->get_field_info('author');
+        my $title = $Document->get_field_info('title');
+        my $contref= $Document->get_filtered_contentref();
+        my $mimetype = $Document->get_mimetype();
+        $result = "filename: $orig_filename\n";
+        $result .= "mimetype: $mimetype\n";
+        $result .= "author  : $author\n";
+        $result .= "title   : $title\n";
+        $$contref =~ s/\s//g;
+        $result .= "content :\n$$contref\n";
+
+      }else {
+        $result .= $err . "\n";
+      }
+      codeconv::to_inner_encoding(\$result, undef);
+      my $msg = 'OK';
+      unless ($result =~ /日本語全文検索/){
+        $msg = 'NG';
+        $resultcode++;
+      }
+      print "$msg:$fname\n";
+      print "$result\n" if ($msg eq "NG");
+    }
+  }
+  rmdir $tmpdir or die "unable to remove temporary directory \"$tmpdir\"\n";
+
+  exit  1 if $resultcode;
+  exit 0;
+TEST
+result=$?
+rm -f $tmprc
+exit $result

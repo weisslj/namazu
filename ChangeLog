@@ -2,7 +2,6 @@
 
         * pl/codeconv.pl(from_to_by_nkf, from_to_by_nkf_m): Removed.
         * tests/ja-documentpl-1: remove NKF module test.
-        * autogen.sh: Remove NKF module check.
         * configure.in: Remove NKF module check.
 
 2011-07-23  Yukio USUDA <usu@namazu.org>
@@ -723,4 +722,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1646 2011-07-24 04:17:39 usu Exp $
+$Id: ChangeLog,v 1.1647 2011-07-24 04:19:14 usu Exp $

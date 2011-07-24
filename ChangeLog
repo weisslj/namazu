@@ -1,3 +1,10 @@
+2011-07-24  Yukio USUDA <usu@namazu.org>
+
+        * pl/codeconv.pl(from_to_by_nkf, from_to_by_nkf_m): Removed.
+        * tests/ja-documentpl-1: remove NKF module test.
+        * autogen.sh: Remove NKF module check.
+        * configure.in: Remove NKF module check.
+
 2011-07-23  Yukio USUDA <usu@namazu.org>
 
         * pl/codeconv.pl(decide_encode): Add 7bit-jis check.
@@ -716,4 +723,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1645 2011-07-23 14:29:44 usu Exp $
+$Id: ChangeLog,v 1.1646 2011-07-24 04:17:39 usu Exp $

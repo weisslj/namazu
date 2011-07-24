@@ -64,7 +64,7 @@ perl << 'TEST'  >> $LOG
   }
   util::set_lang();
 
-  my @nkf = ('module_nkf', 'module_encode');
+  my @nkf = ('module_encode');
   my $resultcode=0;
   foreach my $nkfmodule (@nkf){
     $conf::NKF = $nkfmodule;

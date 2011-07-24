@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.179 2011-07-06 11:18:07 usu Exp $
+dnl $Id: configure.in,v 1.180 2011-07-24 04:17:39 usu Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -244,25 +244,16 @@ if test $PERL = "no" || $PERL -e 'exit ($] >= 5.004)'; then
     AC_MSG_ERROR(perl 5.004 or later required)
 fi
 
-AC_MSG_CHECKING(for NKF perl module)
-if $PERL -e "use lib '$PMDIR'; use NKF 2.00;" >/dev/null 2>&1; then
-    NKF=module_nkf
-    AC_MSG_RESULT(yes)
-elif $PERL -e 'exit ($] < 5.008)'; then
+AC_MSG_CHECKING(for Encode perl module)
+if $PERL -e 'exit ($] < 5.008)'; then
     NKF=module_encode
     AC_MSG_RESULT(yes)
 else
     AC_MSG_RESULT(no)
-    AC_PATH_PROG(NKF,nkf, no)
-    if test "$NKF" != "no"; then
-        if $NKF --version 2>&1 | $PERL -ne ' /Version\s+(\d)\.\d/; exit ($1>=2)'; then
-            NKF=no
-        fi
-    fi
+    NKF=no
+    AC_MSG_WARN(Encode not found)
 fi
-if test "$NKF" = "no"; then
-    AC_MSG_WARN(Encode and NKF2 (network kanji filter) not found)
-fi
+AC_SUBST(NKF)
 
 AC_MSG_CHECKING(for Text::Kakasi 2.0 perl module)
 if $PERL -e "use lib '$PMDIR'; use Text::Kakasi 2.0;" >/dev/null 2>&1; then

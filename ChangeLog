@@ -1,3 +1,8 @@
+2011-08-26  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+        * nmz/search.c: Changed to use memmove instead of strcpy with
+	overwrapped buffers.
+
 2011-07-24  Yukio USUDA <usu@namazu.org>
 
         * pl/codeconv.pl(from_to_by_nkf, from_to_by_nkf_m): Removed.
@@ -722,4 +727,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1647 2011-07-24 04:19:14 usu Exp $
+$Id: ChangeLog,v 1.1648 2011-08-26 06:20:22 knok Exp $

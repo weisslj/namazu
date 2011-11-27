@@ -1,3 +1,7 @@
+2011-11-28  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * pltests/env.pl.in: add $Config{osvers}, $Config{archname}.
+
 2011-08-26  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
         * nmz/search.c: Changed to use memmove instead of strcpy with
@@ -727,4 +731,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1648 2011-08-26 06:20:22 knok Exp $
+$Id: ChangeLog,v 1.1649 2011-11-27 18:37:34 opengl2772 Exp $

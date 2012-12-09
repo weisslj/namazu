@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: olevisio.pl,v 1.11 2007-01-14 03:04:32 opengl2772 Exp $
-# Copyright (C) 2004-2007 Tadamasa Teranishi,
-#               2004-2007 Namazu Project All rights reserved.
+# $Id: olevisio.pl,v 1.12 2012-12-09 16:32:46 opengl2772 Exp $
+# Copyright (C) 2004-2012 Tadamasa Teranishi,
+#               2004-2012 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -39,6 +39,8 @@ use Win32::OLE;
 use Win32::OLE::Enum;
 use Win32::OLE::Const;
 
+my $version = 0;
+
 my $const = undef;
 
 # for Visio application start only one time
@@ -54,11 +56,26 @@ END {
 }
 
 sub mediatype() {
-    return (
-        'application/vnd.visio',
-        'application/ms-visio',
-        'application/visio',
-    );
+    status();
+    
+    if ($version >= 14) {
+        # 15.0 Office 2013
+        # 14.0 Office 2010
+        return (
+            'application/vnd.visio; x-type=vdw',
+            'application/vnd.visio; x-type=vdx',
+            'application/vnd.visio',
+            'application/ms-visio',
+            'application/visio',
+        );
+    } else {
+        return (
+            'application/vnd.visio; x-type=vdx',
+            'application/vnd.visio',
+            'application/ms-visio',
+            'application/visio',
+        );
+    }
 }
 
 sub status() {
@@ -67,16 +84,38 @@ sub status() {
 
     open (SAVEERR, ">&STDERR");
     open (STDERR, ">nul");
-    $const = Win32::OLE::Const->Load("Microsoft Visio 12.0 Type Library");
-    $const = Win32::OLE::Const->Load("Microsoft Visio 11.0 Type Library")
-        unless $const;
-    $const = Win32::OLE::Const->Load("Microsoft Visio 2002 Type Library")
-        unless $const;
-    $const = Win32::OLE::Const->Load("Microsoft Visio 2000 Type Library")
-        unless $const;
-    $const = Win32::OLE::Const->Load("Visio 2000 Type Library")
-        unless $const;
+
+	if (!defined $const) {
+    	$const = Win32::OLE::Const->Load("Microsoft Visio 15.0 Type Library");
+		$version = 15;
+	}
+	if (!defined $const) {
+    	$const = Win32::OLE::Const->Load("Microsoft Visio 14.0 Type Library");
+		$version = 14;
+	}
+	if (!defined $const) {
+    	$const = Win32::OLE::Const->Load("Microsoft Visio 12.0 Type Library");
+		$version = 12;
+	}
+	if (!defined $const) {
+    	$const = Win32::OLE::Const->Load("Microsoft Visio 11.0 Type Library");
+		$version = 11;
+	}
+	if (!defined $const) {
+    	$const = Win32::OLE::Const->Load("Microsoft Visio 2002 Type Library");
+		$version = 10;
+	}
+	if (!defined $const) {
+    	$const = Win32::OLE::Const->Load("Microsoft Visio 2000 Type Library");
+		$version = 9;
+	}
+	if (!defined $const) {
+    	$const = Win32::OLE::Const->Load("Visio 2000 Type Library");
+		$version = 9;
+	}
+
     open (STDERR, ">&SAVEERR");
+
     return 'yes' if (defined $const);
     return 'no';
 }
@@ -98,7 +137,11 @@ sub add_magic ($) {
 
     # FIXME: very ad hoc.
     $magic->addFileExts('\\.vs[dst]$', 'application/vnd.visio');
-    $magic->addFileExts('\\.v[dst]x$', 'application/vnd.visio');
+    $magic->addFileExts('\\.v[dst]x$', 'application/vnd.visio; x-type=vdx');
+    $magic->addFileExts('\\.vdw$', 'application/vnd.visio; x-type=vdw');
+    
+    $magic->addSpecials('application/vnd.visio; x-type=vdx',
+                        '^<VisioDocument\s',);
     return;
 }
 

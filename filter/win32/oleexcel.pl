@@ -1,10 +1,10 @@
 #
 # -*- Perl -*-
-# $Id: oleexcel.pl,v 1.34 2007-01-18 08:50:44 opengl2772 Exp $
+# $Id: oleexcel.pl,v 1.35 2012-12-09 16:32:46 opengl2772 Exp $
 # Copyright (C) 2001 Yoshinori TAKESAKO,
 #               1999 Jun Kurabe,
 #               1999 Ken-ichi Hirose,
-#               2000-2007 Namazu Project All rights reserved.
+#               2000-2012 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -75,6 +75,8 @@ sub mediatype() {
     status();
 
     if ($version >= 10) {
+        # 15.0 Office 2013
+        # 14.0 Office 2010
         # 12.0 Office 2007
         # 11.0 Office 2003
         # 10.0 Office 2002
@@ -97,6 +99,14 @@ sub status() {
     open (SAVEERR,">&STDERR");
     open (STDERR,">nul");
 
+    if (!defined $const) {
+        $const = Win32::OLE::Const->Load("Microsoft Excel 15.0 Object Library");
+        $version = 15 if (defined $const);
+    }
+    if (!defined $const) {
+        $const = Win32::OLE::Const->Load("Microsoft Excel 14.0 Object Library");
+        $version = 14 if (defined $const);
+    }
     if (!defined $const) {
         $const = Win32::OLE::Const->Load("Microsoft Excel 12.0 Object Library");
         $version = 12 if (defined $const);

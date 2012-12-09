@@ -1,11 +1,11 @@
 # 
 # -*- Perl -*-
-# $Id: olertf.pl,v 1.18 2010-07-19 05:46:16 opengl2772 Exp $
+# $Id: olertf.pl,v 1.19 2012-12-09 16:32:46 opengl2772 Exp $
 # 
 # Copyright (C) 2000 Yoshinori.TAKESAKO,
 #               2000 Jun Kurabe,
 #               2000 Ken-ichi Hirose,
-#               2004-2010 Namazu Project All rights reserved.
+#               2004-2012 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -47,7 +47,8 @@ sub status() {
     # Redirect stderr to null device, to ignore Error and Exception message.
     open (SAVEERR,">&STDERR");
     open (STDERR,">nul");
-    # Load Office 97/98/2000/XP/2003/2007/2010 Constant
+    # Load Office 97/98/2000/XP/2003/2007/2010/2013 Constant
+    $const = Win32::OLE::Const->Load("Microsoft Word 15.0 Object Library") unless $const;
     $const = Win32::OLE::Const->Load("Microsoft Word 14.0 Object Library") unless $const;
     $const = Win32::OLE::Const->Load("Microsoft Word 12.0 Object Library") unless $const;
     $const = Win32::OLE::Const->Load("Microsoft Word 11.0 Object Library") unless $const;

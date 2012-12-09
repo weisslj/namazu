@@ -1,9 +1,9 @@
 #
 # -*- Perl -*-
-# $Id: olepowerpoint.pl,v 1.28 2007-01-18 08:50:44 opengl2772 Exp $
+# $Id: olepowerpoint.pl,v 1.29 2012-12-09 16:32:46 opengl2772 Exp $
 # Copyright (C) 1999 Jun Kurabe,
 #               1999 Ken-ichi Hirose,
-#               2004-2007 Namazu Project All rights reserved.
+#               2004-2012 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -58,6 +58,8 @@ sub mediatype() {
     status();
 
     if ($version >= 10) {
+        # 15.0 Office 2013
+        # 14.0 Office 2010
         # 12.0 Office 2007
         # 11.0 Office 2003
         # 10.0 Office 2002
@@ -80,6 +82,14 @@ sub status() {
     open (SAVEERR,">&STDERR");
     open (STDERR,">nul");
 
+    if (!defined $const) {
+        $const = Win32::OLE::Const->Load("Microsoft PowerPoint 15.0 Object Library");
+        $version = 15;
+    }
+    if (!defined $const) {
+        $const = Win32::OLE::Const->Load("Microsoft PowerPoint 14.0 Object Library");
+        $version = 14;
+    }
     if (!defined $const) {
         $const = Win32::OLE::Const->Load("Microsoft PowerPoint 12.0 Object Library");
         $version = 12;
@@ -279,7 +289,9 @@ sub ReadPPT ($$$$) {
     # Redirect stderr to null device, to ignore Error and Exception message.
     open (SAVEERR,">&STDERR");
     open (STDERR,">nul");
-    # Load Office 97/98/2000/XP/2003/2007 Constant
+    # Load Office 97/98/2000/XP/2003/2007/2010/2013 Constant
+    $office_consts = Win32::OLE::Const->Load("Microsoft Office 15.0 Object Library") unless $office_consts;
+    $office_consts = Win32::OLE::Const->Load("Microsoft Office 14.0 Object Library") unless $office_consts;
     $office_consts = Win32::OLE::Const->Load("Microsoft Office 12.0 Object Library") unless $office_consts;
     $office_consts = Win32::OLE::Const->Load("Microsoft Office 11.0 Object Library") unless $office_consts;
     $office_consts = Win32::OLE::Const->Load("Microsoft Office 10.0 Object Library") unless $office_consts;

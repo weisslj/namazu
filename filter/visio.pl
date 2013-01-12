@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: visio.pl,v 1.5 2008-07-28 13:05:26 opengl2772 Exp $
-# Copyright (C) 2007 Tadamasa Teranishi All rights reserved.
-#               2007-2008 Namazu Project All rights reserved.
+# $Id: visio.pl,v 1.6 2013-01-12 19:07:54 opengl2772 Exp $
+# Copyright (C) 2007-2013 Tadamasa Teranishi All rights reserved.
+#               2007-2013 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -28,7 +28,7 @@ use strict;
 require 'ooo.pl';
 
 sub mediatype() {
-    return ('application/vnd.visio');
+    return ('application/vnd.visio; x-type=vdx');
 }
 
 sub status() {
@@ -57,7 +57,7 @@ sub post_codeconv () {
 sub add_magic ($) {
     my ($magic) = @_;
 
-    $magic->addSpecials('application/vnd.visio',
+    $magic->addSpecials('application/vnd.visio; x-type=vdx',
                         '^<VisioDocument\s',);
 
     return;

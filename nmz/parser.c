@@ -2,10 +2,10 @@
  * 
  * parser.c -
  * 
- * $Id: parser.c,v 1.27 2007-12-05 15:56:35 opengl2772 Exp $
+ * $Id: parser.c,v 1.28 2013-01-13 18:24:49 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2007 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2013 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -179,9 +179,9 @@ term(void)
 	    return right;
 	}
 	if (op == AND_OP) {
-	    left = nmz_andmerge(left, right, 0);
+	    left = nmz_andmerge(left, right, NULL);
 	} else if (op == NOT_OP) {
-	    left = nmz_notmerge(left, right, 0);
+	    left = nmz_notmerge(left, right, NULL);
 	}
     }
     return left;

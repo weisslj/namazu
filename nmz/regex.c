@@ -1328,6 +1328,7 @@ nmz_re_compile_pattern(pattern, size, bufp)
       /* Caller did not allocate a buffer.  Do it for them.  */
       bufp->buffer = (char*)nmz_xmalloc(INIT_BUF_SIZE);
     if (!bufp->buffer) goto memory_exhausted;
+	bufp->buffer[0] = '\0';
     begalt = b = bufp->buffer;
   }
 

@@ -2,10 +2,10 @@
  * 
  * re.c -
  * 
- * $Id: re.c,v 1.48 2010-12-03 23:29:01 opengl2772 Exp $
+ * $Id: re.c,v 1.49 2013-01-13 18:24:49 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2008 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2013 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -137,7 +137,7 @@ nmz_regex_grep_standard(struct re_pattern_buffer *rp, FILE *fp)
             continue;
         }
         nmz_strlower(buf);
-        if (nmz_re_search(rp, buf, strlen(buf), 0, strlen(buf), 0) != -1) { 
+        if (nmz_re_search(rp, buf, strlen(buf), 0, strlen(buf), NULL) != -1) { 
             /* Matched */
             tmp = nmz_get_hlist(i);
             if (tmp.stat == ERR_FATAL) {
@@ -235,7 +235,7 @@ nmz_regex_grep_field(struct re_pattern_buffer *rp, FILE *fp, const char *field)
             nmz_replace_uri(buf);
         }
         nmz_strlower(buf);
-        if (nmz_re_search(rp, buf, strlen(buf), 0, strlen(buf), 0) != -1) { 
+        if (nmz_re_search(rp, buf, strlen(buf), 0, strlen(buf), NULL) != -1) { 
             /* Matched */
             struct nmz_data data;
 

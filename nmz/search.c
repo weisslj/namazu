@@ -1,9 +1,9 @@
 /*
  * 
- * $Id: search.c,v 1.117 2011-08-26 06:20:23 knok Exp $
+ * $Id: search.c,v 1.118 2013-01-13 18:24:49 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2010 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2013 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -511,7 +511,7 @@ do_phrase_search(const char *key, NmzResult src)
         } else if (val.num == 0) { /* phrase search is failed halfway */
             continue;
         } else {
-            val = nmz_andmerge(val, tmp, 0);
+            val = nmz_andmerge(val, tmp, NULL);
 
             strcpy(word_mix, prevword);
             strcat(word_mix, word);

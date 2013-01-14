@@ -99,7 +99,7 @@ extern __declspec(dllexport)
 extern
 #endif
 const unsigned char *re_mbctab;
-#if defined(__STDC__)
+#if defined(__STDC__) || defined(__cplusplus)
 void nmz_re_mbcinit (int);
 #else
 void nmz_re_mbcinit ();
@@ -190,7 +190,7 @@ typedef struct
 } regmatch_t;
 
 
-#ifdef __STDC__
+#if defined(__STDC__) || defined(__cplusplus)
 
 extern char *nmz_re_compile_pattern (const char *, int, struct re_pattern_buffer *);
 extern void nmz_re_free_pattern (struct re_pattern_buffer *);

@@ -2,7 +2,7 @@
  * 
  * parser.c -
  * 
- * $Id: parser.c,v 1.28 2013-01-13 18:24:49 opengl2772 Exp $
+ * $Id: parser.c,v 1.29 2013-01-15 17:10:26 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2013 Namazu Project All rights reserved.
@@ -179,9 +179,9 @@ term(void)
 	    return right;
 	}
 	if (op == AND_OP) {
-	    left = nmz_andmerge(left, right, NULL);
+	    left = nmz_andmerge(left, right, (int *)NULL);
 	} else if (op == NOT_OP) {
-	    left = nmz_notmerge(left, right, NULL);
+	    left = nmz_notmerge(left, right, (int *)NULL);
 	}
     }
     return left;

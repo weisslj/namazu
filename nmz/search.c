@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: search.c,v 1.118 2013-01-13 18:24:49 opengl2772 Exp $
+ * $Id: search.c,v 1.119 2013-01-15 17:10:26 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2013 Namazu Project All rights reserved.
@@ -511,7 +511,7 @@ do_phrase_search(const char *key, NmzResult src)
         } else if (val.num == 0) { /* phrase search is failed halfway */
             continue;
         } else {
-            val = nmz_andmerge(val, tmp, NULL);
+            val = nmz_andmerge(val, tmp, (int *)NULL);
 
             strcpy(word_mix, prevword);
             strcat(word_mix, word);

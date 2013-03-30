@@ -2,7 +2,7 @@
  * 
  * cgi.c -
  * 
- * $Id: cgi.c,v 1.89 2013-03-07 00:25:17 opengl2772 Exp $
+ * $Id: cgi.c,v 1.90 2013-03-30 13:28:42 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2008 Namazu Project All rights reserved.
@@ -253,6 +253,10 @@ get_query_string(void)
         }
     } else {
 	/* Must not be reached here. */
+	char *server = getenv("SERVER_SOFTWARE");
+	if (!server) {
+		nmz_warn_printf("unknown SERVER_SOFTWARE : %sn", server);
+	}
 	assert(0);
     }
     return query_string;

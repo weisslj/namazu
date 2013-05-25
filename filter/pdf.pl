@@ -1,9 +1,9 @@
 #
 # -*- Perl -*-
-# $Id: pdf.pl,v 1.46 2008-05-10 06:58:06 opengl2772 Exp $
+# $Id: pdf.pl,v 1.47 2013-05-25 18:14:38 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu ,
-#               2000-2008 Namazu Project All rights reserved.
+#               2000-2013 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -46,6 +46,7 @@ sub status() {
     if (defined $pdfconvpath) {
         my @cmd = ("$pdfconvpath");
         my $result = "";
+        my $isPoppler = 0;
         my $status = util::syscmd(
             command => \@cmd,
             option => {
@@ -58,8 +59,11 @@ sub status() {
         if ($result =~ m/^pdftotext\s+version\s+([0-9]+\.[0-9]+)/m) {
             $pdfconvver = $1;
         }
+        if ($result =~ m/^Copyright .* The Poppler Developers/m) {
+            $isPoppler = 1;
+        }
         if (util::islang("ja")) {
-            if ($pdfconvver >= 1.00) {
+            if ($isPoppler || $pdfconvver >= 1.00) {
                 @pdfconvopts = ('-q', '-raw', '-enc', 'EUC-JP');
             } else {
                 @pdfconvopts = ('-q', '-raw', '-eucjp');
@@ -70,6 +74,7 @@ sub status() {
         if (defined $pdfinfopath) {
             my @cmd = ("$pdfinfopath");
             my $result = "";
+            my $isPoppler = 0;
             my $status = util::syscmd(
                 command => \@cmd,
                 option => {
@@ -82,8 +87,11 @@ sub status() {
             if ($result =~ /^pdfinfo\s+version\s+([0-9]+\.[0-9]+)/) {
                 $pdfinfover = $1;
             }
+            if ($result =~ m/^Copyright .* The Poppler Developers/m) {
+                $isPoppler = 1;
+            }
             if (util::islang("ja")) {
-                if ($pdfinfover >= 2.02) {
+                if ($isPoppler || $pdfinfover >= 2.02) {
                     @pdfinfoopts = ('-enc', 'EUC-JP');
                 } else {
                     @pdfinfoopts = ();

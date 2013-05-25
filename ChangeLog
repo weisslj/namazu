@@ -1,3 +1,8 @@
+2013-05-26  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * filer/pdf.pl: support for Poppler version.
+          (Thanks to TANAKA Atushi.)
+
 2011-11-28  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * pltests/env.pl.in: add $Config{osvers}, $Config{archname}.
@@ -731,4 +736,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1649 2011-11-27 18:37:34 opengl2772 Exp $
+$Id: ChangeLog,v 1.1650 2013-05-25 18:14:36 opengl2772 Exp $

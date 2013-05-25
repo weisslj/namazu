@@ -2,6 +2,7 @@
 
         * filer/pdf.pl: support for Poppler version.
           (Thanks to TANAKA Atushi.)
+        * src/form.c(subst): fix warning.
 
 2011-11-28  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
@@ -736,4 +737,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1650 2013-05-25 18:14:36 opengl2772 Exp $
+$Id: ChangeLog,v 1.1651 2013-05-25 18:20:36 opengl2772 Exp $

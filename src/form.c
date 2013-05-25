@@ -2,7 +2,7 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.94 2008-07-15 14:27:48 opengl2772 Exp $
+ * $Id: form.c,v 1.95 2013-05-25 18:20:36 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2008 Namazu Project All rights reserved.
@@ -751,7 +751,7 @@ read_headfoot(const char *fname)
 static void 
 subst(char *str, const char *pat, const char *rep)
 {
-    int patlen, replen;
+    size_t patlen, replen;
     patlen = strlen(pat);
     replen = strlen(rep);
 

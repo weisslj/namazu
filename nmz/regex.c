@@ -1370,7 +1370,7 @@ nmz_re_compile_pattern(pattern, size, bufp)
       if (!laststart) {
 	snprintf(error_msg, ERROR_MSG_MAX_SIZE, 
 		 "invalid regular expression; there's no previous pattern, to which '%c' would define cardinality at %d", 
-		 c, p-pattern);
+		 c, (int)(p-pattern));
 	FREE_AND_RETURN(stackb, error_msg);
       }
       /* If there is a sequence of repetition chars,
@@ -2028,7 +2028,7 @@ nmz_re_compile_pattern(pattern, size, bufp)
       if (!laststart) {
 	snprintf(error_msg, ERROR_MSG_MAX_SIZE, 
 		 "invalid regular expression; there's no previous pattern, to which '{' would define cardinality at %d", 
-		 p-pattern);
+		 (int)(p-pattern));
 	FREE_AND_RETURN(stackb, error_msg);
       }
       if( p == pend)
@@ -3697,7 +3697,7 @@ nmz_re_match(bufp, string_arg, size, pos, regs)
 #ifdef DEBUG_REGEX
     fprintf(stderr,
 	    "regex loop(%d):  matching 0x%02d\n",
-	    p - (unsigned char*)bufp->buffer,
+	    (int)(p - (unsigned char*)bufp->buffer),
 	    *p);
 #endif
     /* End of pattern means we might have succeeded.  */

@@ -1,3 +1,7 @@
+2013-06-02  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * nmz/regex.c: fix warning.
+
 2013-05-26  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * filer/pdf.pl: support for Poppler version.
@@ -737,4 +741,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1651 2013-05-25 18:20:36 opengl2772 Exp $
+$Id: ChangeLog,v 1.1652 2013-06-02 00:54:39 opengl2772 Exp $

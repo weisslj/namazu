@@ -1,7 +1,7 @@
-;;; gnus-nmz-1.el --- interface between Namazu and Gnus.
+;;; gnus-nmz-1.el --- interface between Namazu and Gnus. -*- coding: iso-2022-jp-unix; -*-
 
 ;; Copyright (C) 1999, 2000 KOSEKI Yoshinori <kose@wizard.tamra.co.jp>
-;; Copyright (C) 2000 Namazu Project All rights reserved.
+;; Copyright (C) 2000-2013 Namazu Project All rights reserved.
 
 ;; Author: KOSEKI Yoshinori <kose@wizard.tamra.co.jp>
 ;;         and Namazu Project.

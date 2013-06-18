@@ -1,3 +1,7 @@
+2013-06-19  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * list/namazu.el, gnus-nmz-1.el: add 'coding: iso-2022-jp-unix'
+
 2013-06-02  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * nmz/regex.c: fix warning.
@@ -741,4 +745,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1652 2013-06-02 00:54:39 opengl2772 Exp $
+$Id: ChangeLog,v 1.1653 2013-06-18 23:32:46 opengl2772 Exp $

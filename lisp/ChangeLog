@@ -1,3 +1,7 @@
+2013-06-19  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+	* namazu.el: add 'coding: iso-2022-jp-unix'
+
 2000-02-24  KOSEKI Yoshinori  <kose@yk.NetLaputa.ne.jp>
 
 	* namazu.el (namazu-split-dir): use namazu-dir-alist.

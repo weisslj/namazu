@@ -1,8 +1,8 @@
-;; -*- Mode: Emacs-Lisp -*-
+;; -*- Mode: Emacs-Lisp; coding: iso-2022-jp-unix; -*-
 ;;
 ;; Mule 上で Namazu を利用した検索を行うための elisp です。
 ;;
-;;  $Id: namazu.el,v 1.13 2000-02-24 06:48:33 kose Exp $
+;;  $Id: namazu.el,v 1.14 2013-06-18 23:32:47 opengl2772 Exp $
 
 (defconst namazu-version "namazu.el 1.0.3")
 

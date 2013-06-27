@@ -2,9 +2,9 @@
 ;;
 ;; Mule 上で Namazu を利用した検索を行うための elisp です。
 ;;
-;;  $Id: namazu.el,v 1.14 2013-06-18 23:32:47 opengl2772 Exp $
+;;  $Id: namazu.el,v 1.15 2013-06-27 14:12:25 opengl2772 Exp $
 
-(defconst namazu-version "namazu.el 1.0.3")
+(defconst namazu-version "namazu.el 1.0.4")
 
 ;; Namazu による検索結果が指すドキュメント(類)が
 ;; ローカルディスク上にある場合にはそれを直接参照し、

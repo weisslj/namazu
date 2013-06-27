@@ -5,7 +5,7 @@
 
 ;; Author: KOSEKI Yoshinori <kose@wizard.tamra.co.jp>
 ;;         and Namazu Project.
-;; Version: -1.0.2
+;; Version: -1.0.3
 ;; Keywords: mail, news, Namazu, Gnus
 
 ;; This file is not part of GNU Emacs but obeys its copyright notice.
@@ -31,7 +31,7 @@
 
 ;;; Code:
 
-(defconst gnus-nmz-version "gnus-nmz -1.0.2"
+(defconst gnus-nmz-version "gnus-nmz -1.0.3"
   "Version string for this version of gnus-nmz-1.")
 
 (require 'namazu)

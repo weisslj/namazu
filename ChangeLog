@@ -1,6 +1,6 @@
 2013-07-20  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
-        * doc/ja/tutorial.html: change of File-MMagic.
+        * doc/{en, ja}/tutorial.html: change of File-MMagic.
 
 2013-06-27  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
@@ -754,4 +754,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1655 2013-07-20 03:29:28 opengl2772 Exp $
+$Id: ChangeLog,v 1.1656 2013-07-20 06:28:05 opengl2772 Exp $

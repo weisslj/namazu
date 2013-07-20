@@ -123,7 +123,7 @@ You need the following softwares to build Namazu 2.0.
 <th>Others</th>
 </tr>
 <tr><td>Perl</td><td>Perl Language</td>
-<td>Required</td><td>5.10.0</td><td> &gt;= 5.004</td>
+<td>Required</td><td>5.18.0</td><td> &gt;= 5.004</td>
 <td>perl5.005_03.tar.gz</td>
 <td>Larry Wall
 GNU CPAN</td>
@@ -135,8 +135,8 @@ CPAN</a></td>
 
 <tr><td><a href="http://www.gnu.org/software/make/make.html">make</a></td>
 <td>maintain groups of programs</td>
-<td><br></td><td>3.81</td><td><br></td>
-<td><a href="http://ftp.gnu.org/gnu/make/make-3.81.tar.gz">make-3.81.tar.gz</a></td>
+<td><br></td><td>3.82</td><td><br></td>
+<td><a href="http://ftp.gnu.org/gnu/make/make-3.82.tar.gz">make-3.82.tar.gz</a></td>
 <td>FSF</td>
 <td><a href="http://ftp.gnu.org/gnu/make/">GNU</a></td>
  <td>Required, when it cannot compile by make of system attachment.</td>
@@ -144,8 +144,8 @@ CPAN</a></td>
 
 <tr><td><a href="http://www.gnu.org/software/gettext/gettext.html">gettext</a></td>
 <td>translate message</td>
-<td>Required only because of a multi-language message.</td><td>0.17</td><td>&gt;= 0.13.1</td>
-<td><a href="http://ftp.gnu.org/gnu/gettext/gettext-0.17.tar.gz">gettext-0.17.tar.gz</a></td>
+<td>Required only because of a multi-language message.</td><td>0.18.3</td><td>&gt;= 0.13.1</td>
+<td><a href="http://ftp.gnu.org/gnu/gettext/gettext-0.18.3.tar.gz">gettext-0.18.3.tar.gz</a></td>
 <td>FSF</td>
 <td><a href="http://ftp.gnu.org/gnu/gettext/">GNU</a></td>
  <td>Solaris is indispensable.</td>
@@ -223,8 +223,8 @@ CPAN</a></td>
   <td><a href="http://mecab.sourceforge.net/">MeCab</a></td>
   <td>Yet Another Japanese Morphology Analyzer</td>
   <td>for Japanese processing only. **</td>
-  <td>0.97</td><td>&gt;= 0.6</td>
-  <td>mecab-0.97.tar.gz</td>
+  <td>0.98</td><td>&gt;= 0.6</td>
+  <td>mecab-0.98.tar.gz</td>
   <td>Taku Kudo</td>
   <td><a href="http://mecab.sourceforge.net/src/">MeCab</a></td>
   <td>from Namazu 2.0.15 (It corresponds since Namazu 2.0.16 since MeCab 0.90.)</td>
@@ -234,8 +234,8 @@ CPAN</a></td>
   <td><a href="http://mecab.sourceforge.net/">mecab-perl</a></td>
   <td>MeCab Perl Module</td>
   <td>for Japanese processing only. ++</td>
-  <td>0.97</td><td>&gt;= 0.76</td>
-  <td>mecab-perl-0.97.tar.gz</a></td>
+  <td>0.98</td><td>&gt;= 0.76</td>
+  <td>mecab-perl-0.98.tar.gz</a></td>
   <td>Taku Kudo</td>
   <td><a href="http://mecab.sourceforge.net/src/">MeCab</a></td>
   <td>from Namazu 2.0.15 (It corresponds since Namazu 2.0.16 since MeCab 0.90.)</td>
@@ -244,15 +244,16 @@ CPAN</a></td>
 <tr><td>
 <a href="http://search.cpan.org/search?mode=module&amp;query=MMagic">File::MMagic</a>
 </td><td>File Type</td>
-<td>Included</td><td>1.27</td><td>&gt;= 1.20</td>
-<td>File-MMagic-1.27.tar.gz
+<td>Required</td><td>1.30</td><td>&gt;= 1.20</td>
+<td>File-MMagic-1.30.tar.gz
 <td>
   <a href="http://www.daionet.gr.jp/~knok/">
   NOKUBI Takatsugu</a></td>
 <td>
 <a href="http://search.cpan.org/search?dist=File-MMagic">CPAN dist</a>
 </td><td>
-This is packaged in Namazu distribution.
+It is included with the distribution of Namazu to Namazu 2.0.21.
+Since 1.28 and 1.29 have a problem, the latest version or 1.27 is used (see footnote). 
 </td>
 </tr>
 </table>
@@ -324,6 +325,9 @@ packages later, you have to start over from ./configure.
 <li>nkf-1.90, 1.92 has problem in handling two bytes space character.
  nkf-2.0 - 2.0.3 has another problem.
  Use 1.71 or latest version.
+</li>
+<li>File::MMagic 1.28, 1.29 has problem.
+ Use 1.27 or latest version.
 </li>
 </ul>
 
@@ -976,10 +980,10 @@ modules will be used.
 <a href="http://www.namazu.org/">Namazu Homepage</a>
 </p>
 <div class="copyright">
-Copyright (C) 2000-2008 Namazu Project. All rights reserved.
+Copyright (C) 2000-2013 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: tutorial.html,v 1.33 2008-03-04 19:59:51 opengl2772 Exp $
+$Id: tutorial.html,v 1.34 2013-07-20 06:28:05 opengl2772 Exp $
 </div>
 <address>
 developers@namazu.org

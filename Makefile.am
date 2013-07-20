@@ -38,7 +38,8 @@ EXTRA_DIST = $(etc_DATA) maintMakefile namazu.spec namazu.spec.in \
 	     config.rpath mkinstalldirs
 
 
-EXTRA_DIRS = $(DIST_TKNAMAZU) File-MMagic $(DIST_WAKATIDICT)
+#EXTRA_DIRS = $(DIST_TKNAMAZU) File-MMagic $(DIST_WAKATIDICT)
+EXTRA_DIRS = $(DIST_TKNAMAZU) $(DIST_WAKATIDICT)
 
 install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(localstatedir)/$(PACKAGE)/index

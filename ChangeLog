@@ -2,6 +2,8 @@
 
         * doc/{en, ja}/tutorial.html: change of File-MMagic.
 
+        * Makefile.am: remove File-MMagic in EXTRA_DIRS.
+
 2013-06-27  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * pltests/env.pl.in: output File::MMagic::VERSION
@@ -754,4 +756,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1656 2013-07-20 06:28:05 opengl2772 Exp $
+$Id: ChangeLog,v 1.1657 2013-07-20 07:04:03 opengl2772 Exp $

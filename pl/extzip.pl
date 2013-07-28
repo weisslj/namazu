@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: extzip.pl,v 1.3 2008-07-26 05:55:16 opengl2772 Exp $
-# Copyright (C) 2008 Tadamasa Teranishi All rights reserved.
-# Copyright (C) 2008 Namazu Project All rights reserved.
+# $Id: extzip.pl,v 1.4 2013-07-28 06:15:26 opengl2772 Exp $
+# Copyright (C) 2008-2013 Tadamasa Teranishi All rights reserved.
+# Copyright (C) 2008-2013 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -48,8 +48,7 @@ sub setup()
 {
     return 'yes' if (defined $zip_read);
 
-    if (util::checklib('Compress/Zlib.pm') and
-    util::checklib('Archive/Zip.pm')) {
+    if (util::checklib('Archive/Zip.pm')) {
         eval 'use Archive::Zip;';
         if (util::checklib('IO/String.pm')) {
             eval 'use IO::String;';

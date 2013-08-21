@@ -1,3 +1,11 @@
+2013-08-22  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * filter/epub.pl: EPUB new filter.
+
+        * pl/conf.pl.in: add EPUB filter.
+
+        * tests/data/ja/epub2.epub: EPUB test data.
+
 2013-07-28  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * pl/extzip.pl: remove check 'Compress/Zip.pm'.
@@ -760,4 +768,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1658 2013-07-28 06:15:22 opengl2772 Exp $
+$Id: ChangeLog,v 1.1659 2013-08-21 16:51:11 opengl2772 Exp $

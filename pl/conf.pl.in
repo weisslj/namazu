@@ -45,6 +45,7 @@ $ALLOW_FILE =	".*\\.(?:$HTML_SUFFIX)|.*\\.txt" . # HTML, plain text
 		"|.*\\.kpr|.*\\.flw" .             # KPresenter, Kivio
 		"|.*\\.zip" .                      # ZIP
 		"|.*\\.xps|.*\\.mdi" .             # XML Paper Specification, Microsoft Document Imaging
+		"|.*\\.epub" .                     # EPUB
 		"|.*\\.eml|\\d+|[-\\w]+\\.[1-9n]"; # Mail/News, man
 
 #

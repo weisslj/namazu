@@ -1,10 +1,10 @@
 #
 # -*- Perl -*-
-# $Id: oleexcel.pl,v 1.35 2012-12-09 16:32:46 opengl2772 Exp $
+# $Id: oleexcel.pl,v 1.36 2013-11-09 11:48:36 opengl2772 Exp $
 # Copyright (C) 2001 Yoshinori TAKESAKO,
 #               1999 Jun Kurabe,
 #               1999 Ken-ichi Hirose,
-#               2000-2012 Namazu Project All rights reserved.
+#               2000-2013 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -384,6 +384,7 @@ sub ReadExcel ($$$$$) {
         'SaveChanges' => 0  # False
     });
     undef $Book;
+	# $excel->Quit();
     # undef $excel;
 
     # read all text from temporary file 2

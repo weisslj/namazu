@@ -1,9 +1,9 @@
 #
 # -*- Perl -*-
-# $Id: olepowerpoint.pl,v 1.29 2012-12-09 16:32:46 opengl2772 Exp $
+# $Id: olepowerpoint.pl,v 1.30 2013-11-09 11:48:35 opengl2772 Exp $
 # Copyright (C) 1999 Jun Kurabe,
 #               1999 Ken-ichi Hirose,
-#               2004-2012 Namazu Project All rights reserved.
+#               2004-2013 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -82,10 +82,10 @@ sub status() {
     open (SAVEERR,">&STDERR");
     open (STDERR,">nul");
 
-    if (!defined $const) {
-        $const = Win32::OLE::Const->Load("Microsoft PowerPoint 15.0 Object Library");
-        $version = 15;
-    }
+#    if (!defined $const) {
+#        $const = Win32::OLE::Const->Load("Microsoft PowerPoint 15.0 Object Library");
+#        $version = 15;
+#    }
     if (!defined $const) {
         $const = Win32::OLE::Const->Load("Microsoft PowerPoint 14.0 Object Library");
         $version = 14;
@@ -144,7 +144,6 @@ sub add_magic ($) {
 
     # FIXME: very ad hoc.
     $magic->addFileExts('\\.pp[st]$', 'application/powerpoint');
-
     $magic->addFileExts('\\.pp[st]x$', 'application/vnd.openxmlformats-officedocument.presentationml');
     return;
 }
@@ -236,7 +235,17 @@ sub getProperties ($$$) {
 
 package ReadPPT;
 
+my $ppt = undef;
 my $office_consts = undef;
+
+# PowerPoint application destructor
+END {
+    if (defined $ppt) {
+        util::vprint("PowerPoint->Quit\n");
+        $ppt->Quit();
+        undef $ppt;
+    }
+}
 
 sub GetExt($) {
     my ($filename) = @_;
@@ -277,7 +286,6 @@ sub ReadPPT ($$$$) {
 
     # Copy From Win32::OLE Example Program
     # use existing instance if PowerPoint is already running
-    my $ppt = undef;
     eval {$ppt = Win32::OLE->GetActiveObject('PowerPoint.Application')};
     # die "PowerPoint not installed" if $@;
     unless (defined $ppt) {
@@ -321,6 +329,7 @@ sub ReadPPT ($$$$) {
 
     $prs->Close();
     undef $prs;
+	$ppt->Quit();
     undef $ppt;
 
     return undef;

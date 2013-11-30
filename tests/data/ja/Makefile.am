@@ -67,5 +67,12 @@ EXTRA_DIST  =   acrobat3.pdf \
 		excel2007.xps \
 		powerpoint2007.xps \
 		visio2007.xps \
+		excel2010.xlsx \
+		powerpoint2010.ppsx \
+		powerpoint2010.pptx \
+		visio2010.vdw \
+		visio2010.vdx \
+		visio2010.vsd \
+		word2010.docx \
 		zip.zip
 

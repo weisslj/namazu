@@ -15,6 +15,7 @@ filterdir = $(pkgdatadir)/filter
 
 filter_DATA = bzip2.pl \
 	      compress.pl \
+	      epub.pl \
 	      excel.pl \
 	      gzip.pl \
 	      hnf.pl \

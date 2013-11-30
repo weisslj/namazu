@@ -2,6 +2,7 @@
 EXTRA_DIST  =   acrobat3.pdf \
 		acrobat4.pdf \
 		d20000220.hnf \
+		epub2.epub \
 		excel5.xls \
 		excel95.xls \
 		excel97.xls \

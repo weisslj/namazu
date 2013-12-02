@@ -2,10 +2,10 @@
  * 
  * form.c -
  * 
- * $Id: form.c,v 1.95 2013-05-25 18:20:36 opengl2772 Exp $
+ * $Id: form.c,v 1.96 2013-12-02 14:49:17 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2008 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2013 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -627,7 +627,7 @@ handle_tag(const char *start, const char *end, const char *query,
         get_select_name(tmp, select_name);
 	fputs(tmp, stdout);
     } else {
-	fprintf(stdout, "%*.*s", l, l, start);
+	fprintf(stdout, "%*.*s", (int)l, (int)l, start);
     }
 }
 

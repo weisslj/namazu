@@ -1,3 +1,7 @@
+2013-12-02  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * src/form.c: add cast.
+
 2013-12-01  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * pltests/pltests.pl.in: subtest does not run in parallel.
@@ -778,4 +782,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1662 2013-11-30 22:08:22 opengl2772 Exp $
+$Id: ChangeLog,v 1.1663 2013-12-02 14:49:13 opengl2772 Exp $

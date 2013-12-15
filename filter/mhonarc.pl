@@ -1,10 +1,10 @@
 #
 # -*- Perl -*-
-# $Id: mhonarc.pl,v 1.35 2008-05-10 07:03:22 opengl2772 Exp $
+# $Id: mhonarc.pl,v 1.36 2013-12-15 03:59:03 opengl2772 Exp $
 # Copyright (C) 1997-2000 Satoru Takabayashi ,
 #               1999 NOKUBI Takatsugu ,
 #               2002 Earl Hood ,
-#               2000-2008 Namazu Project All rights reserved.
+#               2000-2013 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -141,9 +141,8 @@ sub mhonarc_filter ($$) {
 
     # Format MHonArc X comment extracted headers as regular headers
     my $mha_header = "";
-    my($fld_name, $fld_value);
-    while (($fld_name, $fld_value) = each %$mha_fields) {
-	$mha_header .= join('', $fld_name, ': ', $fld_value, "\n");
+    for my $key (sort keys %$mha_fields) {
+	$mha_header .= join('', $key, ': ', $mha_fields->{$key}, "\n");
     }
 
     # Added header back to content string.

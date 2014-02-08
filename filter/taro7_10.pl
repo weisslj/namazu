@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: taro7_10.pl,v 1.18 2011-07-06 11:18:09 usu Exp $
+# $Id: taro7_10.pl,v 1.19 2014-02-08 19:57:33 opengl2772 Exp $
 # Copyright (C) 2003 Yukio USUDA
 #               2003-2008 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -118,9 +118,7 @@ sub getinfo($) {
                              $position + 86, $author_length);
         }
     }
-    $author = "\xff\xfe" . $author;
     codeconv::to_inner_encoding(\$author, 'UTF-16LE');
-    $title = "\xff\xfe" . $title;
     codeconv::to_inner_encoding(\$title, 'UTF-16LE');
 
     return ($author, $title);
@@ -140,7 +138,6 @@ sub getcontent($) {
             $content .= $buf . "\x00\x0a";
         }
     }
-    $content = "\xfe\xff" . $content;
     codeconv::to_inner_encoding(\$content, 'UTF-16BE');
     return $content;
 }

@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: ooo.pl,v 1.23 2008-06-13 14:04:36 opengl2772 Exp $
+# $Id: ooo.pl,v 1.24 2014-02-08 21:48:38 opengl2772 Exp $
 # Copyright (C) 2003 Yukio USUDA 
-#               2003-2008 Namazu Project All rights reserved ,
+#               2003-2013 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -131,7 +131,7 @@ sub filter_metafile ($$$) {
     return undef;
 }
 
-sub filter_contentfile ($$$$$) {
+sub filter_contentfile ($$$$) {
     my ($contref, $weighted_str, $headings, $fields) = @_;
 
     my $xml = "";

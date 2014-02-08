@@ -1,3 +1,7 @@
+2013-06-19  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+	* gnus-nmz-1.el: add 'coding: iso-2022-jp-unix'
+
 2000-02-16  KOSEKI Yoshinori  <kose@yk.NetLaputa.ne.jp>
 
 	* gnus-nmz-1.el: Change Copyright notes, and Version up to -1.0.2.

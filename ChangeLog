@@ -1,3 +1,7 @@
+2014-02-08  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * scripts/nmzcat.in: support 'headings'.
+
 2014-01-26  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * doc/{en, ja}/tutorial.html: update.
@@ -791,4 +795,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1665 2014-01-25 21:17:32 opengl2772 Exp $
+$Id: ChangeLog,v 1.1666 2014-02-08 08:14:08 opengl2772 Exp $

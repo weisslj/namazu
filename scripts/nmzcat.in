@@ -3,10 +3,10 @@
 # -*- Perl -*-
 # nmzcat - print file content on the standard output.
 #
-# $Id: nmzcat.in,v 1.10 2011-07-06 11:18:10 usu Exp $
+# $Id: nmzcat.in,v 1.11 2014-02-08 08:14:10 opengl2772 Exp $
 #
 # Copyright (C) 2004 Yukio USUDA All rights reserved.
-# Copyright (C) 2004-2008 Namazu Project All rights reserved.
+# Copyright (C) 2004-2014 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -77,12 +77,17 @@ foreach my $fname (@ARGV) {
         my $author = $Document->get_field_info('author');
         my $title = $Document->get_field_info('title');
         my $contref= $Document->get_filtered_contentref();
+        my $headings = $Document->get_headings();
         my $mimetype = $Document->get_mimetype();
+
+        $$contref =~ s/\s+//s;
+        $headings =~ s/\s+//s;
         $result = "filename: $orig_filename\n";
         $result .= "mimetype: $mimetype\n";
         $result .= "author  : $author\n";
         $result .= "title   : $title\n";
         $result .= "content :\n$$contref\n";
+        $result .= "headings:\n$headings\n";
     }else {
         $result .= $err . "\n";
     }

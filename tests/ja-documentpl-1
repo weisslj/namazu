@@ -93,13 +93,18 @@ perl << 'TEST'  >> $LOG
         my $author = $Document->get_field_info('author');
         my $title = $Document->get_field_info('title');
         my $contref= $Document->get_filtered_contentref();
+        my $headings = $Document->get_headings();
         my $mimetype = $Document->get_mimetype();
+
+        $$contref =~ s/\s+//s;
+        $headings =~ s/\s+//s;
         $result = "filename: $orig_filename\n";
         $result .= "mimetype: $mimetype\n";
         $result .= "author  : $author\n";
         $result .= "title   : $title\n";
         $$contref =~ s/\s//g;
         $result .= "content :\n$$contref\n";
+        $result .= "headings:\n$headings\n";
 
       }else {
         $result .= $err . "\n";

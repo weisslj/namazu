@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: taro7_10.pl,v 1.19 2014-02-08 19:57:33 opengl2772 Exp $
+# $Id: taro7_10.pl,v 1.20 2014-02-08 19:58:31 opengl2772 Exp $
 # Copyright (C) 2003 Yukio USUDA
-#               2003-2008 Namazu Project All rights reserved.
+#               2003-2014 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify

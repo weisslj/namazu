@@ -45,7 +45,7 @@ unset LANG
 pwd=`pwd`
 tmprc="$pwd/../src/.namazurc"
 echo "Index ../tests/idx1" > $tmprc
-echo "Lang ja" >> $tmprc
+echo "Lang jaJP.eucJP" >> $tmprc
 duprcs
 cd ../src
 

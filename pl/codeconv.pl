@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: codeconv.pl,v 1.39 2011-07-24 04:17:41 usu Exp $
+# $Id: codeconv.pl,v 1.40 2014-02-08 21:37:04 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
-# Copyright (C) 2000-2009 Namazu Project All rights reserved.
+# Copyright (C) 2000-2014 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -161,9 +161,30 @@ sub decide_encode ($$) {
 sub encode_from_to ($$$) {
     my ($contref, $code_f, $code_t) = @_;
     return if ($code_f eq $code_t);
-    if ($conf::NKF eq 'module_iconv') {
+    if ($conf::NKF =~ /^module_iconv/) {
         # FIXME:
-    } elsif ($conf::NKF eq 'module_encode') {
+		$code_f = lc($code_f);
+		$code_f = 'shift-jis' if ($code_f eq 'shiftjis');
+		$code_f = 'iso-2022-jp' if ($code_f eq '7bit-jis');
+        if ($code_f eq 'unknown') {
+			foreach my $code ('euc-jp', 'shift-jis', 'iso-2022-jp', 'utf-16le', 'utf-16be') {
+				my $converter = Text::Iconv->new($code, $code_t);
+				my $text = $converter->convert($$contref);
+				if (defined $converter->retval) {
+					$$contref = $text;
+        			util::dprint("Encode from $code_f to $code_t via encode_iconv");
+					undef $converter;
+					return;
+				}
+				undef $converter;
+			}
+			return;
+		}
+		my $converter = Text::Iconv->new($code_f, $code_t);
+		$$contref = $converter->convert($$contref);
+		undef $converter;
+        util::dprint("Encode from $code_f to $code_t via encode_iconv");
+    } elsif ($conf::NKF =~ /^module_encode/) {
         if ($code_f eq 'unknown') {
             #$Encode::Guess::DEBUG=1;
             my $enc = Encode::Guess::guess_encoding($$contref);
@@ -206,7 +227,7 @@ sub to_inner_encoding ($$) {
     }
     if (util::islang("ja")) {
         $err = encode_from_to($contref, $code_from, $code_to);
-        if ($conf::NKF eq 'module_encode') {
+        if ($conf::NKF =~ /^module_encode/) {
             decode_mime_header($contref, $code_to);
             normalize_jp($contref);
         }
@@ -227,6 +248,9 @@ sub to_external_encoding ($) {
 sub load_encode {
     if ($conf::NKF =~ /^module_iconv/) {
         # FIXME:
+        eval 'use Text::Iconv;';
+        if ($@) {return $@};
+        return undef;
     } elsif (($conf::NKF =~ /^module_encode/) && ($] >= 5.008)) {
         eval 'use Encode qw/ from_to decode _utf8_off /;';
         if ($@) {return $@};

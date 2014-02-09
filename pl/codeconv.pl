@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: codeconv.pl,v 1.40 2014-02-08 21:37:04 opengl2772 Exp $
+# $Id: codeconv.pl,v 1.41 2014-02-09 07:45:38 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
 # Copyright (C) 2000-2014 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -163,9 +163,19 @@ sub encode_from_to ($$$) {
     return if ($code_f eq $code_t);
     if ($conf::NKF =~ /^module_iconv/) {
         # FIXME:
+		my $code = undef;
+		my %map_table = (
+			'eucjp'		=> 'euc-jp',
+			'shiftjis'	=> 'shift-jis',
+			'7bit-jis'	=> 'iso-2022-jp',
+			'utf8'		=> 'utf-8',
+		);
 		$code_f = lc($code_f);
-		$code_f = 'shift-jis' if ($code_f eq 'shiftjis');
-		$code_f = 'iso-2022-jp' if ($code_f eq '7bit-jis');
+		$code = $map_table{$code_f};
+		$code_f = $code if (defined $code);
+		$code_t = lc($code_t);
+		$code = $map_table{$code_t};
+		$code_t = $code if (defined $code);
         if ($code_f eq 'unknown') {
 			foreach my $code ('euc-jp', 'shift-jis', 'iso-2022-jp', 'utf-16le', 'utf-16be') {
 				my $converter = Text::Iconv->new($code, $code_t);

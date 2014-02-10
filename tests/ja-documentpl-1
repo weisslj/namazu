@@ -82,7 +82,7 @@ perl << 'TEST'  >> $LOG
       my $fname = $_;
       chomp $fname;
       last if $fname =~ /^#/;
-      last if $fname =~ /ID3v1.mp3/;
+      next if $fname =~ /ID3v1.mp3/;
       my $content = util::readfile($fname);
 
       my $uri;

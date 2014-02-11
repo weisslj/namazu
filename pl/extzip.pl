@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: extzip.pl,v 1.4 2013-07-28 06:15:26 opengl2772 Exp $
-# Copyright (C) 2008-2013 Tadamasa Teranishi All rights reserved.
-# Copyright (C) 2008-2013 Namazu Project All rights reserved.
+# $Id: extzip.pl,v 1.5 2014-02-11 13:27:28 opengl2772 Exp $
+# Copyright (C) 2008-2014 Tadamasa Teranishi All rights reserved.
+# Copyright (C) 2008-2014 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -199,7 +199,10 @@ sub _az_zread($$$)
     }
 
     my $member = $zip->memberNamed($filename);
-    return "Not found '$filename'" if (!defined $member);
+    if (!defined $member) {
+        unlink $tmpfile;
+    	return "Not found '$filename'";
+	}
     my $size = $member->uncompressedSize();
     if ($size == 0) {
         my $fname = $member->fileName();

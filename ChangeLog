@@ -1,3 +1,7 @@
+2014-04-06  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * configure.in: Bug fix for File-MMagic.
+
 2014-03-30  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * man/Makefile.am (man_MANS): Add extra commands manual.
@@ -814,4 +818,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1671 2014-03-29 22:30:51 opengl2772 Exp $
+$Id: ChangeLog,v 1.1672 2014-04-05 22:16:46 opengl2772 Exp $

@@ -1,6 +1,6 @@
 dnl
 dnl configure for Namazu
-dnl $Id: configure.in,v 1.181 2013-08-21 18:17:20 opengl2772 Exp $
+dnl $Id: configure.in,v 1.182 2014-04-05 22:16:47 opengl2772 Exp $
 dnl
 dnl Created  by Satoru Takabayashi <satoru@isoternet.org> [1998-10-09]
 dnl Modified by SATOH Fumiyasu <fumiya@cij.co.jp> [1998-12-05]
@@ -400,11 +400,8 @@ AC_ARG_ENABLE(
     enable_file_mmagic_checking=yes)
 
 if test "$enable_file_mmagic_checking" = "yes"; then
-    changequote(<<, >>)
-    tmp=`$PERL -nle 'print \$1 if /^\\$VERSION = \"([\d\.]+)\";\$/' \
-	$srcdir/File-MMagic/MMagic.pm`
+    tmp="1.20"
     # tmp="10.0"  # for testing
-    changequote([, ])
     AC_MSG_CHECKING(for File::MMagic perl module)
 
     if $PERL -e "use lib '$PMDIR'; use File::MMagic $tmp;"; then

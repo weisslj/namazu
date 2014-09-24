@@ -1,3 +1,7 @@
+2014-09-24  NOKUBI Takatsugu  <knok@daionet.gr.jp>
+
+        * filter/mp3.pl (mp3_filter): remove inaffective regex '?'.
+
 2014-04-06  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * configure.in: Bug fix for File-MMagic.
@@ -818,4 +822,4 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1672 2014-04-05 22:16:46 opengl2772 Exp $
+$Id: ChangeLog,v 1.1673 2014-09-24 05:14:28 knok Exp $

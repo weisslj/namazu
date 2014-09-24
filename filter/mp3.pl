@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: mp3.pl,v 1.16 2014-09-24 05:14:28 knok Exp $
+# $Id: mp3.pl,v 1.17 2014-09-24 05:22:34 knok Exp $
 # Copyright (C) 2002 Luc@2113.ch ,
 #               2003-2008 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -151,7 +151,7 @@ sub mp3_filter($$$$) {
     mp3::get_title($$contref, $weighted_str, $fields);
     mp3::get_author($$contref, $fields);
     mp3::get_album($$contref, $fields);
-    $$contref =~ s/^\w+:{1,1}//gm;
+    $$contref =~ s/^\w+(:{1,1})?//gm;
 
     return;
 }

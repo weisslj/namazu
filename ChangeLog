@@ -1,3 +1,12 @@
+2015-09-24  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * filter/win32/ole*.pl: It corresponded to Office 2016.
+
+2015-01-25  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * pltests/env.pl.in: '.' is added to an effective character
+          of passing.
+
 2014-09-24  NOKUBI Takatsugu  <knok@daionet.gr.jp>
 
         * filter/mp3.pl (mp3_filter): remove inaffective regex '?'.
@@ -822,4 +831,8 @@
 
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
-$Id: ChangeLog,v 1.1673 2014-09-24 05:14:28 knok Exp $
+<<<<<<< ChangeLog
+$Id: ChangeLog,v 1.1674 2015-09-24 13:42:12 opengl2772 Exp $
+=======
+$Id: ChangeLog,v 1.1674 2015-09-24 13:42:12 opengl2772 Exp $
+>>>>>>> 1.1673

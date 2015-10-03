@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: olevisio.pl,v 1.12 2012-12-09 16:32:46 opengl2772 Exp $
-# Copyright (C) 2004-2012 Tadamasa Teranishi,
-#               2004-2012 Namazu Project All rights reserved.
+# $Id: olevisio.pl,v 1.13 2015-10-03 12:38:04 opengl2772 Exp $
+# Copyright (C) 2004-2015 Tadamasa Teranishi,
+#               2004-2015 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -58,8 +58,18 @@ END {
 sub mediatype() {
     status();
     
-    if ($version >= 14) {
+    if ($version >= 15) {
+        # 16.0 Office 2016
         # 15.0 Office 2013
+        return (
+            'application/vnd.visio; x-type=vsdx',
+            'application/vnd.visio; x-type=vdw',
+            'application/vnd.visio; x-type=vdx',
+            'application/vnd.visio',
+            'application/ms-visio',
+            'application/visio',
+        );
+    ) elsif ($version >= 14) {
         # 14.0 Office 2010
         return (
             'application/vnd.visio; x-type=vdw',
@@ -85,6 +95,10 @@ sub status() {
     open (SAVEERR, ">&STDERR");
     open (STDERR, ">nul");
 
+	if (!defined $const) {
+    	$const = Win32::OLE::Const->Load("Microsoft Visio 16.0 Type Library");
+		$version = 16;
+	}
 	if (!defined $const) {
     	$const = Win32::OLE::Const->Load("Microsoft Visio 15.0 Type Library");
 		$version = 15;
@@ -139,6 +153,7 @@ sub add_magic ($) {
     $magic->addFileExts('\\.vs[dst]$', 'application/vnd.visio');
     $magic->addFileExts('\\.v[dst]x$', 'application/vnd.visio; x-type=vdx');
     $magic->addFileExts('\\.vdw$', 'application/vnd.visio; x-type=vdw');
+    $magic->addFileExts('\\.vs[dst]x$', 'application/vnd.visio; x-type=vsdx');
     
     $magic->addSpecials('application/vnd.visio; x-type=vdx',
                         '^<VisioDocument\s',);

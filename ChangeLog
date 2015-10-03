@@ -1,3 +1,12 @@
+2015-10-03  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * pl/conf.pl.in ($ALLOW_FILES): Added extension of vsdx
+
+        * filter/win32/olevisio.pl: The type library name of Visio 2016 is
+        added.
+
+        * tests/data/ja/*x: Added test data.
+
 2015-09-24  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * filter/win32/ole*.pl: It corresponded to Office 2016.
@@ -832,7 +841,7 @@
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
 <<<<<<< ChangeLog
-$Id: ChangeLog,v 1.1674 2015-09-24 13:42:12 opengl2772 Exp $
+$Id: ChangeLog,v 1.1675 2015-10-03 12:38:03 opengl2772 Exp $
 =======
-$Id: ChangeLog,v 1.1674 2015-09-24 13:42:12 opengl2772 Exp $
+$Id: ChangeLog,v 1.1675 2015-10-03 12:38:03 opengl2772 Exp $
 >>>>>>> 1.1673

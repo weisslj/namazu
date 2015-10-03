@@ -265,6 +265,10 @@ href="http://sources.redhat.com/bzip2/">bzip2</a> command.</dd>
 <dd>Suggested software: nkf
 (only for Japanese documents)</dd>
 
+<dt>epub.pl</dt>
+<dd>Handles a epub file.</dd>
+<dd>Requirement: None</dd>
+
 <dt>excel.pl</dt>
 <dd>Handles a Microsoft Excel file.</dd>
 <dd>Requirement: <a href="http://chicago.sourceforge.net/xlhtml/">xlhtml</a>,
@@ -472,30 +476,30 @@ JSTXT</a></dd>
 
 <dt>oleexcel.pl</dt>
 <dd>Handles a Microsoft Excel file.</dd>
-<dd>Requirement: Microsoft Excel 97 SP1 or later, 2000, 2002(XP), 2003 or 2007
+<dd>Requirement: Microsoft Excel 97 SP1 or later, 2000, 2002(XP), 2003, 2007, 2010, 2013 or 2016
 <br></dd>
 <dd><br></dd>
 <dd>Handles a Microsoft Excel 2007 file.</dd>
-<dd>Requirement(A): Microsoft Excel 2007</dd>
-<dd>Requirement(B): Microsoft Excel 2002(XP), 2003 and "Microsoft Office Compatibility Pack SP2 for Word, Excel, and PowerPoint 2007 File Formats"
+<dd>Requirement(A): Microsoft Excel 2007, 2010, 2013, 2016</dd>
+<dd>Requirement(B): Microsoft Excel 2002(XP), 2003 and "Microsoft Office Compatibility Pack SP3 for Word, Excel, and PowerPoint 2007 File Formats"
 
 <dt>olemsword.pl</dt>
 <dd>Handles a Microsoft Word file.</dd>
-<dd>Requirement: Microsoft Word 97 SP1 or later, 98, 2000, 2002(XP), 2003 or 2007
+<dd>Requirement: Microsoft Word 97 SP1 or later, 98, 2000, 2002(XP), 2003, 2007, 2010, 2013 or 2016
 <br></dd>
 <dd><br></dd>
 <dd>Handles a Microsoft Word 2007 file.</dd>
-<dd>Requirement(A): Microsoft Word 2007</dd>
-<dd>Requirement(B): Microsoft Word 2000, 2002(XP), 2003 and "Microsoft Office Compatibility Pack SP2 for Word, Excel, and PowerPoint 2007 File Formats"
+<dd>Requirement(A): Microsoft Word 2007, 2010, 2013, 2016</dd>
+<dd>Requirement(B): Microsoft Word 2000, 2002(XP), 2003 and "Microsoft Office Compatibility Pack SP3 for Word, Excel, and PowerPoint 2007 File Formats"
 
 <dt>olepowerpoint.pl</dt>
 <dd>Handles a Microsoft PowerPoint file.</dd>
-<dd>Requirement: Microsoft PowerPoint 97 SP1 or later, 2000, 2002(XP), 2003 or 2007
+<dd>Requirement: Microsoft PowerPoint 97 SP1 or later, 2000, 2002(XP), 2003, 2007 or 2010
 <br></dd>
 <dd><br></dd>
 <dd>Handles a Microsoft PowerPoint 2007 file.</dd>
-<dd>Requirement(A): Microsoft PowerPoint 2007</dd>
-<dd>Requirement(B): Microsoft PowerPoint 2002(XP), 2003 and "Microsoft Office Compatibility Pack SP2 for Word, Excel, and PowerPoint 2007 File Formats"
+<dd>Requirement(A): Microsoft PowerPoint 2007, 2010</dd>
+<dd>Requirement(B): Microsoft PowerPoint 2002(XP), 2003 and "Microsoft Office Compatibility Pack SP3 for Word, Excel, and PowerPoint 2007 File Formats"
 
 <dt>oletaro.pl</dt>
 <dd>Handles a file of Ichitaro, a Japanese word processor, versions 4.</dd>
@@ -517,14 +521,18 @@ JSTXT</a></dd>
 
 <dt>olertf.pl</dt>
 <dd>Handles a RTF file.</dd>
-<dd>Requirement: Microsoft Word 97 SP1 or later, 98, 2000, 2002(XP), 2003 or 2007
+<dd>Requirement: Microsoft Word 97 SP1 or later, 98, 2000, 2002(XP), 2003, 2007, 2010, 2013 or 2016
 </dd>
 <dd>Dependence: olemsword.pl</dd>
 
 <dt>olevisio.pl</dt>
 <dd>Handles a Microsoft Visio file.</dd>
-<dd>Requirement: Microsoft Visio 2000, 2002, 2003 or 2007</dd>
-<dd>Dependence: olemsword.pl</dd>
+<dd>Requirement: Microsoft Visio 2000, 2002, 2003, 2007, 2010, 2013 or 2016</dd>
+<dd>Dependence: olemsword.pl
+<br></dd>
+<dd><br></dd>
+<dd>Handles a Microsoft Visio 2013 file.</dd>
+<dd>Requirement: Microsoft Visio 2013, 2016</dd>
 
 <dt>xdoc2txt.pl</dt>
 <dd>Handles a file of Microsoft Word, Excel, Powerpoint, Ichitaro, etc.</dd>
@@ -1209,10 +1217,10 @@ You must choose the latter with Tkanamzu or namazu.el.
 <a href="http://www.namazu.org/">Namazu Homepage</a>
 </p>
 <div class="copyright">
-Copyright (C) 2000-2009 Namazu Project. All rights reserved.
+Copyright (C) 2000-2015 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: manual.html,v 1.102 2009-09-20 15:24:10 opengl2772 Exp $
+$Id: manual.html,v 1.103 2015-10-03 15:51:34 opengl2772 Exp $
 </div>
 <address>
 developers@namazu.org

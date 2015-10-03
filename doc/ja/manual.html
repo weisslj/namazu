@@ -273,6 +273,10 @@ href="http://sources.redhat.com/bzip2/">bzip2</a> コマンド</dd>
 <dd>dviファイルを扱う</dd>
 <dd>必需品: dvi2tty, nkf</dd>
 
+<dt>epub.pl</dt>
+<dd>epubファイルを扱う</dd>
+<dd>必需品: なし</dd>
+
 <dt>excel.pl</dt>
 <dd>Microsoft Excel文書を扱う</dd>
 <dd>必需品: <a href="http://chicago.sourceforge.net/xlhtml/">xlhtml</a>,
@@ -484,30 +488,30 @@ JSTXT</a></dd>
 
 <dt>oleexcel.pl</dt>
 <dd>Microsoft Excel文書を扱う</dd>
-<dd>必需品: Microsoft Excel 97 SP1 以降/2000/2002(XP)/2003/2007 のいずれか
+<dd>必需品: Microsoft Excel 97 SP1 以降/2000/2002(XP)/2003/2007/2010/2013/2016 のいずれか
 <br></dd>
 <dd><br></dd>
 <dd>Microsoft Excel 2007文書を扱う</dd>
-<dd>必需品: Microsoft Excel 2007</dd>
-<dd>または: Microsoft Excel 2002(XP)/2003および「Word/Excel/PowerPoint 2007 ファイル形式用 Microsoft Office 互換機能パック SP2」</dd>
+<dd>必需品: Microsoft Excel 2007/2010/2013/2016</dd>
+<dd>または: Microsoft Excel 2002(XP)/2003および「Word/Excel/PowerPoint 2007 ファイル形式用 Microsoft Office 互換機能パック SP3」</dd>
 
 <dt>olemsword.pl</dt>
 <dd>Microsoft Word文書を扱う</dd>
-<dd>必需品: Microsoft Word 97 SP1 以降/98/2000/2002(XP)/2003/2007 のいずれか
+<dd>必需品: Microsoft Word 97 SP1 以降/98/2000/2002(XP)/2003/2007/2010/2013/2016 のいずれか
 <br></dd>
 <dd><br></dd>
 <dd>Microsoft Word 2007文書を扱う</dd>
-<dd>必需品: Microsoft Word 2007</dd>
-<dd>または: Microsoft Word 2000/2002(XP)/2003および「Word/Excel/PowerPoint 2007 ファイル形式用 Microsoft Office 互換機能パック SP2」</dd>
+<dd>必需品: Microsoft Word 2007/2010/2013/2016</dd>
+<dd>または: Microsoft Word 2000/2002(XP)/2003および「Word/Excel/PowerPoint 2007 ファイル形式用 Microsoft Office 互換機能パック SP3」</dd>
 
 <dt>olepowerpoint.pl</dt>
 <dd>Microsoft PowerPoint文書を扱う</dd>
-<dd>必需品: Microsoft PowerPoint 97 SP1 以降/2000/2002(XP)/2003/2007 のいずれか
+<dd>必需品: Microsoft PowerPoint 97 SP1 以降/2000/2002(XP)/2003/2007/2010 のいずれか
 <br></dd>
 <dd><br></dd>
 <dd>Microsoft PowerPoint 2007文書を扱う</dd>
-<dd>必需品: Microsoft PowerPoint 2007</dd>
-<dd>または: Microsoft PowerPoint 2002(XP)/2003および「Word/Excel/PowerPoint 2007 ファイル形式用 Microsoft Office 互換機能パック SP2」</dd>
+<dd>必需品: Microsoft PowerPoint 2007/2010</dd>
+<dd>または: Microsoft PowerPoint 2002(XP)/2003および「Word/Excel/PowerPoint 2007 ファイル形式用 Microsoft Office 互換機能パック SP3」</dd>
 
 
 <dt>oletaro.pl</dt>
@@ -530,13 +534,17 @@ JSTXT</a></dd>
 
 <dt>olertf.pl</dt>
 <dd>RTF (Rich Text Format) 形式の文書を扱う</dd>
-<dd>必需品: Microsoft Word 97 SP1 以降/98/2000/2002(XP)/2003/2007 のいずれか</dd>
+<dd>必需品: Microsoft Word 97 SP1 以降/98/2000/2002(XP)/2003/2007/2010/2013/2016 のいずれか</dd>
 <dd>依存フィルタ: olemsword.pl</dd>
 
 <dt>olevisio.pl</dt>
 <dd>Microsoft Visio文書を扱う</dd>
-<dd>必需品: Microsoft Visio 2000 以降/2002/2003/2007 のいずれか</dd>
-<dd>依存フィルタ: olemsword.pl</dd>
+<dd>必需品: Microsoft Visio 2000 以降/2002/2003/2007/2010/2013/2016 のいずれか</dd>
+<dd>依存フィルタ: olemsword.pl
+<br></dd>
+<dd><br></dd>
+<dd>Microsoft Visio 2013図形を扱う</dd>
+<dd>必需品: Microsoft Visio 2013/2016</dd>
 
 <dt>xdoc2txt.pl</dt>
 <dd>Microsoft Word,Excel,PowerPoint、一太郎の文書を扱う</dd>
@@ -1300,10 +1308,10 @@ Tknamazu および namazu.el から検索するときは必ず後者で指定します。
 <a href="http://www.namazu.org/">Namazu Homepage</a>
 </p>
 <div class="copyright">
-Copyright (C) 2000-2009 Namazu Project. All rights reserved.
+Copyright (C) 2000-2015 Namazu Project. All rights reserved.
 </div>
 <div class="id">
-$Id: manual.html,v 1.127 2009-09-20 15:24:10 opengl2772 Exp $
+$Id: manual.html,v 1.128 2015-10-03 15:51:34 opengl2772 Exp $
 </div>
 <address>
 developers@namazu.org

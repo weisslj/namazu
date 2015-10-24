@@ -1,3 +1,7 @@
+2015-10-24  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * tests/data/ja/Makefile.am: Added new files.
+
 2015-10-04  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * doc/{en,ja}/manual.html: update.
@@ -845,7 +849,7 @@
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
 <<<<<<< ChangeLog
-$Id: ChangeLog,v 1.1676 2015-10-03 15:51:33 opengl2772 Exp $
+$Id: ChangeLog,v 1.1677 2015-10-24 03:38:00 opengl2772 Exp $
 =======
-$Id: ChangeLog,v 1.1676 2015-10-03 15:51:33 opengl2772 Exp $
+$Id: ChangeLog,v 1.1677 2015-10-24 03:38:00 opengl2772 Exp $
 >>>>>>> 1.1673

@@ -12,8 +12,9 @@ EXTRA_DIST  =   acrobat3.pdf \
 		taro4.jsw \
 		taro5.jaw \
 		taro6.jbw \
-	        taro7.jfw \
-                taro8.jtd \
+		taro7.jfw \
+		taro8.jtd \
+		taro2007.jtd \
 		mail-multipart.txt \
 		mail.txt \
 		mail.eml \
@@ -38,15 +39,15 @@ EXTRA_DIST  =   acrobat3.pdf \
 		powerpoint2007.pptx \
 		powerpoint2002.rtf \
 		postscript.ps \
-	        dvi.dvi \
-                rtf.rtf \
-                rpm.rpm \
-                oowriter.sxw \
-                oocalc.sxc \
-                oodraw.sxd \
-                ooimpress.sxi \
-	        apachecache.txt \
-	        hdml.hdml \
+		dvi.dvi \
+		rtf.rtf \
+		rpm.rpm \
+		oowriter.sxw \
+		oocalc.sxc \
+		oodraw.sxd \
+		ooimpress.sxi \
+		apachecache.txt \
+		hdml.hdml \
 		ID3v1.mp3 \
 		ID3v2.mp3 \
 		kivio.flw \
@@ -73,6 +74,8 @@ EXTRA_DIST  =   acrobat3.pdf \
 		visio2010.vdw \
 		visio2010.vdx \
 		visio2010.vsd \
+		visio2013.vsdx \
+		visio2016.vsdx \
 		word2010.docx \
 		zip.zip
 

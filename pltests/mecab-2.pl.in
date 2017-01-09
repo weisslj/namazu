@@ -1,8 +1,8 @@
 #!%PERL% -w
 #
-# $Id: mecab-2.pl.in,v 1.7 2006-08-12 06:07:29 opengl2772 Exp $
-# Copyright (C) 2005-2006 Tadamasa Teranishi
-#               2005-2006 Namazu Project All rights reserved.
+# $Id: mecab-2.pl.in,v 1.8 2017-01-09 13:49:44 opengl2772 Exp $
+# Copyright (C) 2005-2017 Tadamasa Teranishi
+#               2005-2017 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -55,7 +55,7 @@ my $MECAB = "module_mecab";
 
 pltests::putline($LOG, "  *** starting $0");
 
-if (pltests::get_lang() !~ /^ja/) {
+if (pltests::get_lang() !~ /^[jJ]a/) {
     pltests::putline($LOG, "Skipping because of LANG does not begin with ja: $0");
     exit 77;
 }

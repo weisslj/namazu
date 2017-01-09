@@ -1,6 +1,6 @@
 /*
  * 
- * $Id: rcfile.c,v 1.49 2009-02-16 17:42:02 opengl2772 Exp $
+ * $Id: rcfile.c,v 1.50 2017-01-09 13:49:44 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2009 Namazu Project All rights reserved.
@@ -59,6 +59,13 @@
 #include "idxname.h"
 #include "output.h"
 #include "score.h"
+#include "charset.h"
+
+/*
+ * Extern variables.
+ */
+
+extern NMZ_HANDLE handle_charset;
 
 /*
  * Default directory to place namazurc.
@@ -141,6 +148,7 @@ static enum nmz_stat process_rc_maxmatch ( const char *directive, const StrList 
 static enum nmz_stat process_rc_contenttype ( const char *directive, const StrList *args );
 static enum nmz_stat process_rc_suicidetime ( const char *directive, const StrList *args );
 static enum nmz_stat process_rc_regexsearch ( const char *directive, const StrList *args );
+static enum nmz_stat process_rc_charset ( const char *directive, const StrList *args );
 static enum nmz_stat process_rc_filesyscoding ( const char *directive, const StrList *args );
 
 struct conf_directive {
@@ -170,6 +178,7 @@ static struct conf_directive directive_tab[] = {
     { "CONTENTTYPE",   1, 0, process_rc_contenttype },
     { "SUICIDE_TIME",  1, 0, process_rc_suicidetime },
     { "REGEX_SEARCH",  1, 0, process_rc_regexsearch },
+    { "CHARSET",       2, 0, process_rc_charset },
     { "FILESYS_CODING", 1, 0, process_rc_filesyscoding },
     { NULL,            0, 0, NULL }
 };
@@ -370,6 +379,18 @@ process_rc_regexsearch(const char *directive, const StrList *args)
         nmz_set_regex_searchmode(0);
     }
 
+    return SUCCESS;
+}
+
+static enum nmz_stat
+process_rc_charset(const char *directive, const StrList *args)
+{
+    char *arg1 = args->value;
+    char *arg2 = args->next->value;
+
+    if (nmz_add_strlist(handle_charset, arg1, arg2) != SUCCESS) {
+        return FAILURE;
+    }
     return SUCCESS;
 }
 

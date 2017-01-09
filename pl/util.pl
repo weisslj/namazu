@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: util.pl,v 1.49 2011-07-06 11:18:10 usu Exp $
+# $Id: util.pl,v 1.50 2017-01-09 13:49:43 opengl2772 Exp $
 # Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
-# Copyright (C) 2000-2009 Namazu Project All rights reserved.
+# Copyright (C) 2000-2017 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -332,7 +332,7 @@ sub set_lang () {
 sub islang_msg($) {
     my ($lang) = @_;
 
-    if ($util::LANG_MSG =~ /^$lang/) {  # prefix matching
+    if ($util::LANG_MSG =~ /^$lang/i) {  # prefix matching
 	return 1;
     } else {
 	return 0;
@@ -342,7 +342,7 @@ sub islang_msg($) {
 sub islang($) {
     my ($lang) = @_;
 
-    if ($util::LANG =~ /^$lang/) {  # prefix matching
+    if ($util::LANG =~ /^$lang/i) {  # prefix matching
 	return 1;
     } else {
 	return 0;

@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: pltests.pl.in,v 1.13 2013-11-30 22:08:23 opengl2772 Exp $
-# Copyright (C) 2004-2013 Tadamasa Teranishi
-#               2004-2013 Namazu Project All rights reserved.
+# $Id: pltests.pl.in,v 1.14 2017-01-09 13:49:44 opengl2772 Exp $
+# Copyright (C) 2004-2017 Tadamasa Teranishi
+#               2004-2017 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -559,10 +559,10 @@ sub codeconv_to_external($) {
 
     my $lang = get_lang();
 
-    if ($lang =~ /^ja/) {
+    if ($lang =~ /^[jJ]a/) {
         my $nkf_opt = "-emXZ1";
 
-        if ($lang =~ m/sjis/i) {
+        if ($lang =~ m/sjis/i || $lang =~ m/\.932/) {
             $nkf_opt = "-EsmXZ1";
         }
 
@@ -577,10 +577,10 @@ sub codeconv_to_internal($) {
 
     my $lang = get_lang();
 
-    if ($lang =~ /^ja/) {
+    if ($lang =~ /^[jJ]a/) {
         my $nkf_opt = "-emXZ1";
 
-        if ($lang =~ m/sjis/i) {
+        if ($lang =~ m/sjis/i || $lang =~ m/\.932/) {
             $nkf_opt = "-SemXZ1";
         }
 

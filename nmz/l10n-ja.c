@@ -1,9 +1,9 @@
 /*
  * l10n-ja.c -
- * $Id: l10n-ja.c,v 1.6 2007-12-05 15:56:35 opengl2772 Exp $
+ * $Id: l10n-ja.c,v 1.7 2017-01-09 13:49:43 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000,2001,2007 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2017 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -61,6 +61,9 @@ nmz_is_lang_ja(void)
 	return 1; /* TRUE */
     } 
     if (!strncmp(lang, "ja_JP", 5)) {
+	return 1; /* TRUE */
+    } 
+    if (!strncmp(lang, "Japanese", 8)) {
 	return 1; /* TRUE */
     } 
     return 0; /* FALSE */

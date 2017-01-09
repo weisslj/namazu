@@ -1,8 +1,8 @@
 /*
- * $Id: output.c,v 1.126 2009-10-06 15:26:22 opengl2772 Exp $
+ * $Id: output.c,v 1.127 2017-01-09 13:49:44 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2009 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2017 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -84,6 +84,12 @@ static char template_suffix[BUFSIZE] = "normal"; /* suffix of NMZ.result.* */
 static char emphasis_start_tag[BUFSIZE] = "<strong class=\"keyword\">";
 static char emphasis_end_tag[BUFSIZE]   = "</strong>";
 static char contenttype[BUFSIZE] = "text/html";
+
+/*
+ * Extern variables.
+ */
+
+extern NMZ_HANDLE handle_charset;
 
 /*
  *

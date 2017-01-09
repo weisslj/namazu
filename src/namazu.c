@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu.c,v 1.115 2010-12-18 19:44:21 opengl2772 Exp $
+ * $Id: namazu.c,v 1.116 2017-01-09 13:49:44 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2010 Namazu Project All rights reserved.
@@ -67,6 +67,9 @@
 #include "i18n.h"
 #include "system.h"
 #include "var.h"
+#include "charset.h"
+
+extern NMZ_HANDLE handle_charset;
 
 static char templatedir[BUFSIZE] = "";
 
@@ -164,6 +167,13 @@ make_exquery(char *query, char *exquery, size_t sz, char *querymode, int ct_quer
 void
 exit_nmz(int status)
 {
+    /*
+     *
+     * free resource.
+     *
+     */
+    nmz_free_handle(handle_charset);
+
     exit(status);
 }
 

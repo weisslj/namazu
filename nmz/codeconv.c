@@ -2,10 +2,10 @@
  * 
  * codeconv.c -
  * 
- * $Id: codeconv.c,v 1.46 2011-07-06 11:18:10 usu Exp $
+ * $Id: codeconv.c,v 1.47 2017-01-09 13:49:43 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
- * Copyright (C) 2000-2008 Namazu Project All rights reserved.
+ * Copyright (C) 2000-2017 Namazu Project All rights reserved.
  * This is free software with ABSOLUTELY NO WARRANTY.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -158,7 +158,9 @@ nmz_get_external_encoding(void)
             !strcasecmp(pEncoding, "ujis"))
         {
             external_encoding = "EUC-JP";
-        } else if (!strcasecmp(pEncoding, "SJIS")) {
+        } else if (!strcasecmp(pEncoding, "SJIS") ||
+            !strcasecmp(pEncoding, "932")) 
+	{
             external_encoding = "Shift_JIS";
         } else if (!strcasecmp(pEncoding, "ISO2022JP") ||
             !strcasecmp(pEncoding, "ISO-2022-JP"))
@@ -193,6 +195,9 @@ nmz_get_external_encoding(void)
             external_encoding = "EUC-JP";
         } else if (!strncasecmp(pLanguage, "en_", 3) ||
             !strcasecmp(pLanguage, "en") ||
+
+!strcasecmp(pLanguage, "C") ||
+!strcasecmp(pLanguage, "POSIX") ||
 
             !strncasecmp(pLanguage, "fr_", 3) ||
             !strcasecmp(pLanguage, "fr") ||

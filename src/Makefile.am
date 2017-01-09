@@ -27,6 +27,7 @@ LDADD = $(top_builddir)/nmz/libnmz.la $(top_builddir)/lib/libnmzut.a @LTLIBINTL@
 
 common_sources = form.c form.h message.h \
 		 namazu.c namazu.h output.c output.h rcfile.c rcfile.h \
+		 charset.c charset.h \
 		 result.c result.h usage.c usage.h
 
 namazu_SOURCES     = $(common_sources) namazu-cmd.c

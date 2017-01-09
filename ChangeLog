@@ -1,3 +1,9 @@
+2017-01-09  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * src/output.c, nmz/{codeconv.c, l10n-ja.c},
+          pl/util.pl, pltests/*.in :
+          support locale "Japanese_Japan.932" locale for Windows.
+
 2015-10-24  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * tests/data/ja/Makefile.am: Added new files.
@@ -849,7 +855,7 @@
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
 <<<<<<< ChangeLog
-$Id: ChangeLog,v 1.1677 2015-10-24 03:38:00 opengl2772 Exp $
+$Id: ChangeLog,v 1.1678 2017-01-09 13:49:43 opengl2772 Exp $
 =======
-$Id: ChangeLog,v 1.1677 2015-10-24 03:38:00 opengl2772 Exp $
+$Id: ChangeLog,v 1.1678 2017-01-09 13:49:43 opengl2772 Exp $
 >>>>>>> 1.1673

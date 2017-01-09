@@ -2,7 +2,7 @@
  * 
  * namazu.c - search client of Namazu
  *
- * $Id: namazu-cmd.c,v 1.39 2010-12-18 19:44:21 opengl2772 Exp $
+ * $Id: namazu-cmd.c,v 1.40 2017-01-09 13:49:44 opengl2772 Exp $
  * 
  * Copyright (C) 1997-1999 Satoru Takabayashi All rights reserved.
  * Copyright (C) 2000-2010 Namazu Project All rights reserved.
@@ -80,10 +80,13 @@
 #include "var.h"
 #include "result.h"
 #include "system.h"
+#include "charset.h"
 
 /*
  * Extern variables.
  */
+
+NMZ_HANDLE handle_charset = (NMZ_HANDLE)0;
 
 /*
  *
@@ -316,6 +319,13 @@ main(int argc, char **argv)
     char *localedir = getenv("NAMAZULOCALEDIR");
 
     /*
+     *
+     * create resource.
+     *
+     */
+    handle_charset = create_charset_list();
+
+    /*
      * To support a binary package for Windows, we should
      * allow to change LOCALEDIR with the environment
      * variable `NAMAZULOCALEDIR' after installation is
@@ -402,6 +412,13 @@ main(int argc, char **argv)
     if (namazu_core(query, subquery) == ERR_FATAL) {
 	die(nmz_get_dyingmsg());
     }
+
+    /*
+     *
+     * free resource.
+     *
+     */
+    nmz_free_handle(handle_charset);
 
     return EXIT_SUCCESS;
 }

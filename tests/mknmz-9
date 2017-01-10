@@ -34,6 +34,9 @@ i=20
 while test $i -gt 0
 do {
     i=`expr $i - 1`
+    if test -r idx11/NMZ.log ; then
+    	grep '^\[Base\]' idx11/NMZ.log > /dev/null && exit 77 
+	fi
     if test -r idx11/NMZ.lock2
     then {
         kill -TERM `cat idx11/NMZ.lock2`

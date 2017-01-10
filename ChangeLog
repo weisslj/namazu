@@ -1,3 +1,8 @@
+2017-01-10  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * tests/mknmz-9: When mknmz has ended before KILL,
+          this test is skipped. 
+
 2017-01-09  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * src/output.c, nmz/{codeconv.c, l10n-ja.c},
@@ -855,7 +860,7 @@
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
 <<<<<<< ChangeLog
-$Id: ChangeLog,v 1.1678 2017-01-09 13:49:43 opengl2772 Exp $
+$Id: ChangeLog,v 1.1679 2017-01-10 13:59:18 opengl2772 Exp $
 =======
-$Id: ChangeLog,v 1.1678 2017-01-09 13:49:43 opengl2772 Exp $
+$Id: ChangeLog,v 1.1679 2017-01-10 13:59:18 opengl2772 Exp $
 >>>>>>> 1.1673

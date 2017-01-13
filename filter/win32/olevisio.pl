@@ -1,8 +1,8 @@
 #
 # -*- Perl -*-
-# $Id: olevisio.pl,v 1.13 2015-10-03 12:38:04 opengl2772 Exp $
-# Copyright (C) 2004-2015 Tadamasa Teranishi,
-#               2004-2015 Namazu Project All rights reserved.
+# $Id: olevisio.pl,v 1.14 2017-01-13 16:54:42 opengl2772 Exp $
+# Copyright (C) 2004-2017 Tadamasa Teranishi,
+#               2004-2017 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -69,7 +69,7 @@ sub mediatype() {
             'application/ms-visio',
             'application/visio',
         );
-    ) elsif ($version >= 14) {
+    } elsif ($version >= 14) {
         # 14.0 Office 2010
         return (
             'application/vnd.visio; x-type=vdw',

@@ -1,9 +1,9 @@
 #
 # -*- Perl -*-
-# $Id: olemsword.pl,v 1.32 2015-09-24 13:42:12 opengl2772 Exp $
+# $Id: olemsword.pl,v 1.33 2017-02-24 17:49:51 opengl2772 Exp $
 # Copyright (C) 1999 Jun Kurabe,
 #		1999-2000 Ken-ichi Hirose,
-#               2004-2015 Namazu Project All rights reserved.
+#       2004-2017 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -163,6 +163,8 @@ sub add_magic ($) {
     # FIXME: very ad hoc. Visio
     $magic->addFileExts('\\.vs[dst]$', 'application/vnd.visio');
     $magic->addFileExts('\\.v[dst]x$', 'application/vnd.visio; x-type=vdx');
+    $magic->addFileExts('\\.vdw$', 'application/vnd.visio; x-type=vdw');
+    $magic->addFileExts('\\.vs[dst]x$', 'application/vnd.visio; x-type=vsdx');
     # FIXME: very ad hoc. Ichitaro
     $magic->addFileExts('\\.jsw$', 'application/ichitaro4');
     $magic->addFileExts('\\.jaw$|\\.jtw$', 'application/ichitaro5');

@@ -1,3 +1,7 @@
+2017-02-25  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * filter/win32/olemsword.pl: add magic for visio.
+
 2017-01-14  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * filter/win32/olevisio.pl: fix typo.
@@ -864,7 +868,7 @@
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
 <<<<<<< ChangeLog
-$Id: ChangeLog,v 1.1680 2017-01-13 16:54:42 opengl2772 Exp $
+$Id: ChangeLog,v 1.1681 2017-02-24 17:49:50 opengl2772 Exp $
 =======
-$Id: ChangeLog,v 1.1680 2017-01-13 16:54:42 opengl2772 Exp $
+$Id: ChangeLog,v 1.1681 2017-02-24 17:49:50 opengl2772 Exp $
 >>>>>>> 1.1673

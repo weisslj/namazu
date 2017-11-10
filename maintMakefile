@@ -48,7 +48,6 @@ cxref-latex2e: src/namazu
 
 
 update:
-	./make_sjis_po
 	cd doc && make update-doc
 #	cd man && make update-man
 

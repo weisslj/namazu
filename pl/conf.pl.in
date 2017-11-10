@@ -47,6 +47,7 @@ $ALLOW_FILE =	".*\\.(?:$HTML_SUFFIX)|.*\\.txt" . # HTML, plain text
 		"|.*\\.zip" .                      # ZIP
 		"|.*\\.xps|.*\\.mdi" .             # XML Paper Specification, Microsoft Document Imaging
 		"|.*\\.epub" .                     # EPUB
+		"|.*\\.md" .                       # Markdown
 		"|.*\\.eml|\\d+|[-\\w]+\\.[1-9n]"; # Mail/News, man
 
 #

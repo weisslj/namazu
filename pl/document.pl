@@ -2,10 +2,10 @@
 # -*- Perl -*-
 # document.pl - class for document
 #
-# $Id: document.pl,v 1.10 2009-01-29 17:02:16 opengl2772 Exp $
+# $Id: document.pl,v 1.11 2017-11-10 17:26:58 opengl2772 Exp $
 #
 # Copyright (C) 2004 Yukio USUDA All rights reserved.
-# Copyright (C) 2000-2009 Namazu Project All rights reversed.
+# Copyright (C) 2000-2017 Namazu Project All rights reversed.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -243,7 +243,7 @@ sub _decide_type ($$) {
     return $name if (!defined $cont || $name eq $cont);
 
     util::dprint("decide_type: name: $name, cont: $cont\n");
-    if ($cont =~ m!^text/plain! && $name =~ m!^text/plain!) {
+    if ($cont =~ m!^text/plain! && $name =~ m!^text/(plain|markdown)!) {
         return $name;
     } elsif ($cont =~ m!^text/plain! &&
              $name !~ m!^application/octet-stream!) {

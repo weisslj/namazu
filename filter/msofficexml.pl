@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: msofficexml.pl,v 1.16 2008-07-28 13:05:26 opengl2772 Exp $
+# $Id: msofficexml.pl,v 1.17 2017-11-10 17:26:58 opengl2772 Exp $
 # Copyright (C) 2007 Yukio USUDA, 
 #               2007-2008 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
@@ -108,8 +108,11 @@ sub filter_metafile ($$$) {
 
     # Code conversion for Japanese document.
     if (util::islang("ja")) {
+		codeconv::to_inner_encoding(\$authorname, 'unknown');
         codeconv::normalize_jp(\$authorname);
+		codeconv::to_inner_encoding(\$title, 'unknown');
         codeconv::normalize_jp(\$title);
+		codeconv::to_inner_encoding(\$keywords, 'unknown');
         codeconv::normalize_jp(\$keywords);
     }
     if (!($authorname eq "")) {
@@ -189,6 +192,7 @@ sub filter_contentfile ($$$$$) {
 
     # Code conversion for Japanese document.
     if (util::islang("ja")) {
+		codeconv::to_inner_encoding(\$xml, 'unknown');
         codeconv::normalize_jp(\$xml);
     }
 

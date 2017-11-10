@@ -6,6 +6,8 @@
 
         * tests/data/ja/markdown.md: add new test file.
 
+        * doc/{ja, en}/manual.html: add markdown.pl.
+
 2017-02-25  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * filter/win32/olemsword.pl: add magic for visio.
@@ -876,7 +878,7 @@
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
 <<<<<<< ChangeLog
-$Id: ChangeLog,v 1.1682 2017-11-10 17:26:58 opengl2772 Exp $
+$Id: ChangeLog,v 1.1683 2017-11-10 18:34:51 opengl2772 Exp $
 =======
-$Id: ChangeLog,v 1.1682 2017-11-10 17:26:58 opengl2772 Exp $
+$Id: ChangeLog,v 1.1683 2017-11-10 18:34:51 opengl2772 Exp $
 >>>>>>> 1.1673

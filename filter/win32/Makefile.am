@@ -4,10 +4,10 @@ AUTOMAKE_OPTIONS = 1.4 no-dependencies
 
 filterdir = $(pkgdatadir)/filter/win32
 
-filter_DATA = olemsword.pl \
+filter_DATA = ichitaro456.pl \
 	     oleexcel.pl \
+	     olemsword.pl \
 	     olepowerpoint.pl \
-	     ichitaro456.pl \
 	     oletaro.pl \
 	     olertf.pl \
 	     olevisio.pl \

@@ -13,40 +13,42 @@ DIST_SUBDIRS = win32
 
 filterdir = $(pkgdatadir)/filter
 
-filter_DATA = bzip2.pl \
+filter_DATA = apachecache.pl \
+	      applefile.pl \
+	      bzip2.pl \
 	      compress.pl \
+	      deb.pl \
+	      dvi.pl \
 	      epub.pl \
 	      excel.pl \
+	      gnumeric.pl \
 	      gzip.pl \
+	      hdml.pl \
 	      hnf.pl \
 	      html.pl \
+	      koffice.pl \
+	      macbinary.pl \
 	      mailnews.pl \
 	      man.pl \
+	      markdown.pl \
 	      mhonarc.pl \
+	      mp3.pl \
+	      msofficexml.pl \
 	      msword.pl \
+	      ooo.pl \
 	      pdf.pl \
-	      rfc.pl \
-	      tex.pl \
+	      pipermail.pl \
+	      postscript.pl \
 	      powerpoint.pl \
+	      rfc.pl \
+	      rpm.pl \
+	      rtf.pl \
 	      taro.pl \
 	      taro56.pl \
 	      taro7_10.pl \
-	      hdml.pl \
-	      postscript.pl \
-	      dvi.pl \
-	      rpm.pl \
-	      deb.pl \
-	      ooo.pl \
-	      rtf.pl \
-	      apachecache.pl \
-	      mp3.pl \
-	      macbinary.pl \
-	      applefile.pl \
-	      pipermail.pl \
-	      koffice.pl \
-	      gnumeric.pl \
-	      msofficexml.pl \
+	      tex.pl \
 	      visio.pl \
+	      xps.pl \
 	      zip.pl
 
 EXTRA_DIST = $(filter_DATA)

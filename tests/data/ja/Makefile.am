@@ -1,81 +1,81 @@
 ## Process this file with automake to produce Makefile.in
-EXTRA_DIST  =   acrobat3.pdf \
+EXTRA_DIST  =   ID3v1.mp3 \
+		ID3v2.mp3 \
+		acrobat3.pdf \
 		acrobat4.pdf \
+		apachecache.txt \
 		d20000220.hnf \
+		dvi.dvi \
 		epub2.epub \
+		excel2007.xlsx \
+		excel2007.xps \
+		excel2010.xlsx \
 		excel5.xls \
 		excel95.xls \
 		excel97.xls \
 		excel98.xls \
-		excel2007.xlsx \
+		gnumeric.gnumeric \
+		hdml.hdml \
 		html.html \
+		kivio.flw \
+		kpresenter.kpr \
+		kspread.ksp \
+		kword.kwd \
+		mail-multipart.txt \
+		mail.eml \
+		mail.txt \
+		man.1 \
+		markdown.md \
+		msdocumentimaging.mdi \
+		msg00000.html \
+		oocalc.ods \
+		oocalc.sxc \
+		oodraw.odg \
+		oodraw.sxd \
+		ooimpress.odp \
+		ooimpress.sxi \
+		oowriter.odt \
+		oowriter.sxw \
+		plain.txt \
+		plain.txt.Z \
+		plain.txt.bz2 \
+		plain.txt.gz \
+		postscript.ps \
+		powerpoint2002.pps \
+		powerpoint2002.ppt \
+		powerpoint2002.rtf \
+		powerpoint2007.ppsx \
+		powerpoint2007.pptx \
+		powerpoint2007.xps \
+		powerpoint2010.ppsx \
+		powerpoint2010.pptx \
+		powerpoint97.ppt \
+		rfc0000.txt \
+		rpm.rpm \
+		rtf.rtf \
+		taro2007.jtd \
 		taro4.jsw \
 		taro5.jaw \
 		taro6.jbw \
 		taro7.jfw \
 		taro8.jtd \
-		taro2007.jtd \
-		mail-multipart.txt \
-		mail.txt \
-		mail.eml \
-		man.1 \
-		msg00000.html \
-		plain.txt \
-		plain.txt.Z \
-		plain.txt.bz2 \
-		plain.txt.gz \
-		rfc0000.txt \
 		tex.tex \
-		word6.doc \
-		word95.doc \
-		word97.doc \
-		word98.doc \
-		word2000.doc \
-		word2007.docx \
-		powerpoint97.ppt \
-		powerpoint2002.pps \
-		powerpoint2002.ppt \
-		powerpoint2007.ppsx \
-		powerpoint2007.pptx \
-		powerpoint2002.rtf \
-		postscript.ps \
-		dvi.dvi \
-		rtf.rtf \
-		rpm.rpm \
-		oowriter.sxw \
-		oocalc.sxc \
-		oodraw.sxd \
-		ooimpress.sxi \
-		apachecache.txt \
-		hdml.hdml \
-		ID3v1.mp3 \
-		ID3v2.mp3 \
-		kivio.flw \
-		kpresenter.kpr \
-		kspread.ksp \
-		kword.kwd \
-		gnumeric.gnumeric \
-		oocalc.ods \
-		oodraw.odg \
-		ooimpress.odp \
-		oowriter.odt \
 		visio2002.vsd \
-		visio2007.vsd \
 		visio2007.vdx \
-		msdocumentimaging.mdi \
-		xps.xps \
-		word2007.xps \
-		excel2007.xps \
-		powerpoint2007.xps \
+		visio2007.vsd \
 		visio2007.xps \
-		excel2010.xlsx \
-		powerpoint2010.ppsx \
-		powerpoint2010.pptx \
 		visio2010.vdw \
 		visio2010.vdx \
 		visio2010.vsd \
 		visio2013.vsdx \
 		visio2016.vsdx \
+		word2000.doc \
+		word2007.docx \
+		word2007.xps \
 		word2010.docx \
+		word6.doc \
+		word95.doc \
+		word97.doc \
+		word98.doc \
+		xps.xps \
 		zip.zip
-

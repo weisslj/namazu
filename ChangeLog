@@ -1,3 +1,8 @@
+2018-04-02  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
+
+        * filer/hnf.pl: Fixed bug in regular expression
+          (for Perl 5.26).
+
 2017-11-18  Tadamasa Teranishi  <yw3t-trns@asahi-net.or.jp>
 
         * filer/Makefile.am: Added new entry for markdown.pl.
@@ -884,7 +889,7 @@
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version number to 2.3.0.
 
 <<<<<<< ChangeLog
-$Id: ChangeLog,v 1.1684 2017-11-17 23:01:28 opengl2772 Exp $
+$Id: ChangeLog,v 1.1685 2018-04-02 12:32:25 opengl2772 Exp $
 =======
-$Id: ChangeLog,v 1.1684 2017-11-17 23:01:28 opengl2772 Exp $
+$Id: ChangeLog,v 1.1685 2018-04-02 12:32:25 opengl2772 Exp $
 >>>>>>> 1.1673

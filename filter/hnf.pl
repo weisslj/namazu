@@ -1,6 +1,6 @@
 #
 # -*- Perl -*-
-# $Id: hnf.pl,v 1.17 2008-05-10 06:57:13 opengl2772 Exp $
+# $Id: hnf.pl,v 1.18 2018-04-02 12:32:26 opengl2772 Exp $
 #
 # hnf filter for Namazu 2.0
 # version 0.9.16
@@ -8,7 +8,7 @@
 #
 # Copyright (C) 1999-2007  Kenji Suzuki, HyperNikkiSystem Project
 # All rights reserved.
-# Copyright (C) 2005-2008 Namazu Project All rights reserved ,
+# Copyright (C) 2005-2018 Namazu Project All rights reserved ,
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -244,7 +244,7 @@ sub get_uri ($$) {
         $uri = '?%year%month%hiday#%year%month%day0'; # for hns-1.x
       }
       $uri =~ s/%%/\34/g;
-      $uri =~ s/%{?([a-z]+)}?/$param{$1}/g;
+      $uri =~ s/%\{?([a-z]+)\}?/$param{$1}/g;
       $uri =~ s/\34/%/g;
       $uri = $hnf::diary_uri . $uri;
       $uri =~ s/%7E/~/i;

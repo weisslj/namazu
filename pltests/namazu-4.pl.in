@@ -1,8 +1,8 @@
 #!%PERL% -w
 #
-# $Id: namazu-4.pl.in,v 1.3 2006-08-12 06:07:29 opengl2772 Exp $
-# Copyright (C) 2004-2006 Tadamasa Teranishi
-#               2004-2006 Namazu Project All rights reserved.
+# $Id: namazu-4.pl.in,v 1.4 2018-04-02 15:58:33 opengl2772 Exp $
+# Copyright (C) 2004-2018 Tadamasa Teranishi
+#               2004-2018 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -30,6 +30,7 @@
 
 use strict;
 require Cwd;
+push(@INC, '.');
 require 'pltests.pl';
 
 my $cwd = Cwd::cwd();

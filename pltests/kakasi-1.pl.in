@@ -1,8 +1,8 @@
 #!%PERL% -w
 #
-# $Id: kakasi-1.pl.in,v 1.8 2017-01-09 13:49:44 opengl2772 Exp $
-# Copyright (C) 2005-2017 Tadamasa Teranishi
-#               2005-2017 Namazu Project All rights reserved.
+# $Id: kakasi-1.pl.in,v 1.9 2018-04-02 15:58:32 opengl2772 Exp $
+# Copyright (C) 2005-2018 Tadamasa Teranishi
+#               2005-2018 Namazu Project All rights reserved.
 #     This is free software with ABSOLUTELY NO WARRANTY.
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -30,6 +30,7 @@
 
 use strict;
 require Cwd;
+push(@INC, '.');
 require 'pltests.pl';
 
 my $cwd = Cwd::cwd();
